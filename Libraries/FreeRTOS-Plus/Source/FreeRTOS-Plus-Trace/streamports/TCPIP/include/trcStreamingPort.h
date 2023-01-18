@@ -51,15 +51,13 @@
 extern "C" {
 #endif
 
-int32_t trcTcpRead(void *data, uint32_t size, int32_t *ptrBytesRead);
+int32_t trcTcpRead(void* data, uint32_t size, int32_t *ptrBytesRead);
 
-int32_t trcTcpWrite(void *data, uint32_t size, int32_t *ptrBytesWritten);
+int32_t trcTcpWrite(void* data, uint32_t size, int32_t *ptrBytesWritten);
 
-#define TRC_STREAM_PORT_READ_DATA(_ptrData, _size, _ptrBytesRead) \
-    trcTcpRead(_ptrData, _size, _ptrBytesRead)
+#define TRC_STREAM_PORT_READ_DATA(_ptrData, _size, _ptrBytesRead) trcTcpRead(_ptrData, _size, _ptrBytesRead)
 
-#define TRC_STREAM_PORT_WRITE_DATA(_ptrData, _size, _ptrBytesSent) \
-    trcTcpWrite(_ptrData, _size, _ptrBytesSent)
+#define TRC_STREAM_PORT_WRITE_DATA(_ptrData, _size, _ptrBytesSent) trcTcpWrite(_ptrData, _size, _ptrBytesSent)
 
 #ifdef __cplusplus
 }

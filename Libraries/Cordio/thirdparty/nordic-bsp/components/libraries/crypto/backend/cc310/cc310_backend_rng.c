@@ -56,94 +56,98 @@ static ret_code_t result_get(CRYSError_t err_code)
 {
     ret_code_t ret_val;
 
-    switch (err_code) {
-    case CRYS_OK:
-        ret_val = NRF_SUCCESS;
-        break;
+    switch (err_code)
+    {
+        case CRYS_OK:
+            ret_val = NRF_SUCCESS;
+            break;
 
-    case CRYS_RND_ILLEGAL_PARAMETER_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_INVALID_PARAM;
-        break;
+        case CRYS_RND_ILLEGAL_PARAMETER_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_INVALID_PARAM;
+            break;
 
-    case CRYS_RND_INIT_FAILED:
-    case CRYS_RND_STARTUP_FAILED:
-    case CRYS_RND_INSTANTIATION_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_RNG_INIT_FAILED;
-        break;
+        case CRYS_RND_INIT_FAILED:
+        case CRYS_RND_STARTUP_FAILED:
+        case CRYS_RND_INSTANTIATION_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_RNG_INIT_FAILED;
+            break;
 
-    case CRYS_RND_IS_NOT_SUPPORTED:
-    case CRYS_RND_CAN_NOT_GENERATE_RAND_IN_RANGE:
-    case CRYS_RND_TRNG_KAT_NOT_SUPPORTED_ERROR:
-    case CRYS_RND_SRAM_NOT_SUPPORTED_ERROR:
-    case CRYS_RND_OPERATION_IS_NOT_SUPPORTED_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE;
-        break;
+        case CRYS_RND_IS_NOT_SUPPORTED:
+        case CRYS_RND_CAN_NOT_GENERATE_RAND_IN_RANGE:
+        case CRYS_RND_TRNG_KAT_NOT_SUPPORTED_ERROR:
+        case CRYS_RND_SRAM_NOT_SUPPORTED_ERROR:
+        case CRYS_RND_OPERATION_IS_NOT_SUPPORTED_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE;
+            break;
 
-    case CRYS_RND_DATA_OUT_POINTER_INVALID_ERROR:
-    case CRYS_RND_VECTOR_OUT_PTR_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_OUTPUT_NULL;
-        break;
+        case CRYS_RND_DATA_OUT_POINTER_INVALID_ERROR:
+        case CRYS_RND_VECTOR_OUT_PTR_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_OUTPUT_NULL;
+            break;
 
-    case CRYS_RND_ADDITIONAL_INPUT_BUFFER_NULL:
-    case CRYS_RND_WORK_BUFFER_PTR_INVALID_ERROR:
-    case CRYS_RND_ILLEGAL_DATA_PTR_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_INPUT_NULL;
-        break;
+        case CRYS_RND_ADDITIONAL_INPUT_BUFFER_NULL:
+        case CRYS_RND_WORK_BUFFER_PTR_INVALID_ERROR:
+        case CRYS_RND_ILLEGAL_DATA_PTR_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_INPUT_NULL;
+            break;
 
-    case CRYS_RND_DATA_SIZE_OVERFLOW_ERROR:
-    case CRYS_RND_ADDITIONAL_INPUT_SIZE_ERROR:
-    case CRYS_RND_ILLEGAL_DATA_SIZE_ERROR:
-    case CRYS_RND_MAX_VECTOR_IS_TOO_SMALL_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_INPUT_LENGTH;
-        break;
+        case CRYS_RND_DATA_SIZE_OVERFLOW_ERROR:
+        case CRYS_RND_ADDITIONAL_INPUT_SIZE_ERROR:
+        case CRYS_RND_ILLEGAL_DATA_SIZE_ERROR:
+        case CRYS_RND_MAX_VECTOR_IS_TOO_SMALL_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_INPUT_LENGTH;
+            break;
 
-    case CRYS_RND_ILLEGAL_AES_KEY_SIZE_ERROR:
-    case CRYS_RND_VECTOR_OUT_SIZE_ERROR:
-    case CRYS_RND_VECTOR_SIZE_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_OUTPUT_LENGTH;
-        break;
+        case CRYS_RND_ILLEGAL_AES_KEY_SIZE_ERROR:
+        case CRYS_RND_VECTOR_OUT_SIZE_ERROR:
+        case CRYS_RND_VECTOR_SIZE_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_OUTPUT_LENGTH;
+            break;
 
-    case CRYS_RND_CONTEXT_PTR_INVALID_ERROR:
-    case CRYS_RND_STATE_PTR_INVALID_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_CONTEXT_NULL;
-        break;
+        case CRYS_RND_CONTEXT_PTR_INVALID_ERROR:
+        case CRYS_RND_STATE_PTR_INVALID_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_CONTEXT_NULL;
+            break;
 
-    case CRYS_RND_INSTANTIATION_NOT_DONE_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED;
-        break;
+        case CRYS_RND_INSTANTIATION_NOT_DONE_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED;
+            break;
 
-    case CRYS_RND_RESEED_COUNTER_OVERFLOW_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_RNG_RESEED_REQUIRED;
-        break;
+        case CRYS_RND_RESEED_COUNTER_OVERFLOW_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_RNG_RESEED_REQUIRED;
+            break;
 
-    case CRYS_RND_CPRNG_TEST_FAIL_ERROR:
-    case CRYS_RND_TRNG_LOSS_SAMPLES_ERROR:
-    case CRYS_RND_TRNG_TIME_EXCEED_ERROR:
-    case CRYS_RND_TRNG_LOSS_SAMPLES_AND_TIME_EXCEED_ERROR:
-    case CRYS_RND_IS_KAT_MODE_ERROR:
-    case CRYS_RND_STATE_VALIDATION_TAG_ERROR:
-    case CRYS_RND_GEN_VECTOR_FUNC_ERROR:
-    case CRYS_RND_TRNG_ERRORS_ERROR:
-    case CRYS_RND_KAT_DATA_PARAMS_ERROR:
-    case CRYS_RND_AES_ERROR:
-    default:
-        ret_val = NRF_ERROR_CRYPTO_INTERNAL;
-        break;
+        case CRYS_RND_CPRNG_TEST_FAIL_ERROR:
+        case CRYS_RND_TRNG_LOSS_SAMPLES_ERROR:
+        case CRYS_RND_TRNG_TIME_EXCEED_ERROR:
+        case CRYS_RND_TRNG_LOSS_SAMPLES_AND_TIME_EXCEED_ERROR:
+        case CRYS_RND_IS_KAT_MODE_ERROR:
+        case CRYS_RND_STATE_VALIDATION_TAG_ERROR:
+        case CRYS_RND_GEN_VECTOR_FUNC_ERROR:
+        case CRYS_RND_TRNG_ERRORS_ERROR:
+        case CRYS_RND_KAT_DATA_PARAMS_ERROR:
+        case CRYS_RND_AES_ERROR:
+        default:
+            ret_val = NRF_ERROR_CRYPTO_INTERNAL;
+            break;
     }
     return ret_val;
 }
 
-ret_code_t nrf_crypto_rng_backend_init(void *const p_context, void *const p_temp_buffer)
+
+ret_code_t nrf_crypto_rng_backend_init(void * const p_context,
+                                       void * const p_temp_buffer)
 {
-    bool mutex_locked;
-    CRYSError_t err_code;
-    ret_code_t ret_val;
-    CRYS_RND_WorkBuff_t *p_work_buffer = (CRYS_RND_WorkBuff_t *)p_temp_buffer;
-    nrf_crypto_backend_rng_context_t *p_ctx = (nrf_crypto_backend_rng_context_t *)p_context;
+    bool                                mutex_locked;
+    CRYSError_t                         err_code;
+    ret_code_t                          ret_val;
+    CRYS_RND_WorkBuff_t               * p_work_buffer   = (CRYS_RND_WorkBuff_t *)p_temp_buffer;
+    nrf_crypto_backend_rng_context_t  * p_ctx = (nrf_crypto_backend_rng_context_t *)p_context;
 
     // Save time by not reinitializing an already valid CC310 RNG context.
     // (Useful for example in case the context was stored in retained memory during system OFF.)
-    if (p_ctx->header.init_value == NRF_CRYPTO_RNG_CONTEXT_INIT_MAGIC_VALUE) {
+    if (p_ctx->header.init_value == NRF_CRYPTO_RNG_CONTEXT_INIT_MAGIC_VALUE)
+    {
         return NRF_SUCCESS;
     }
 
@@ -162,13 +166,15 @@ ret_code_t nrf_crypto_rng_backend_init(void *const p_context, void *const p_temp
     return ret_val;
 }
 
-ret_code_t nrf_crypto_rng_backend_uninit(void *const p_context)
+
+ret_code_t nrf_crypto_rng_backend_uninit(void   * const p_context)
 {
-    bool mutex_locked;
-    CRYSError_t err_code;
-    ret_code_t ret_val;
-    CRYS_RND_State_t *p_crys_rnd_state =
+    bool                mutex_locked;
+    CRYSError_t         err_code;
+    ret_code_t          ret_val;
+    CRYS_RND_State_t  * p_crys_rnd_state =
         &((nrf_crypto_backend_rng_context_t *)p_context)->crys_rnd_state;
+
 
     mutex_locked = cc310_backend_mutex_trylock();
     VERIFY_TRUE(mutex_locked, NRF_ERROR_CRYPTO_BUSY);
@@ -186,16 +192,20 @@ ret_code_t nrf_crypto_rng_backend_uninit(void *const p_context)
     return ret_val;
 }
 
-ret_code_t nrf_crypto_rng_backend_vector_generate(void *const p_context, uint8_t *const p_target,
-                                                  size_t size, bool use_mutex)
+
+ret_code_t nrf_crypto_rng_backend_vector_generate(void      * const p_context,
+                                                  uint8_t   * const p_target,
+                                                  size_t            size,
+                                                  bool              use_mutex)
 {
-    bool mutex_locked;
-    CRYSError_t err_code;
-    ret_code_t ret_val;
-    CRYS_RND_State_t *p_crys_rnd_state =
+    bool                mutex_locked;
+    CRYSError_t         err_code;
+    ret_code_t          ret_val;
+    CRYS_RND_State_t  * p_crys_rnd_state =
         &((nrf_crypto_backend_rng_context_t *)p_context)->crys_rnd_state;
 
-    if (use_mutex) {
+    if (use_mutex)
+    {
         mutex_locked = cc310_backend_mutex_trylock();
         VERIFY_TRUE(mutex_locked, NRF_ERROR_CRYPTO_BUSY);
     }
@@ -208,21 +218,25 @@ ret_code_t nrf_crypto_rng_backend_vector_generate(void *const p_context, uint8_t
 
     ret_val = result_get(err_code);
 
-    if (use_mutex) {
+    if (use_mutex)
+    {
         cc310_backend_mutex_unlock();
     }
 
     return ret_val;
 }
 
-ret_code_t nrf_crypto_rng_backend_reseed(void *const p_context, void *p_temp_buffer,
-                                         uint8_t *p_input_data, size_t size)
+
+ret_code_t nrf_crypto_rng_backend_reseed(void   * const p_context,
+                                         void         * p_temp_buffer,
+                                         uint8_t      * p_input_data,
+                                         size_t         size)
 {
-    bool mutex_locked;
-    CRYSError_t err_code;
-    ret_code_t ret_val = NRF_SUCCESS;
-    CRYS_RND_WorkBuff_t *p_work_buffer = (CRYS_RND_WorkBuff_t *)p_temp_buffer;
-    CRYS_RND_State_t *p_crys_rnd_state =
+    bool                    mutex_locked;
+    CRYSError_t             err_code;
+    ret_code_t              ret_val = NRF_SUCCESS;
+    CRYS_RND_WorkBuff_t   * p_work_buffer = (CRYS_RND_WorkBuff_t *)p_temp_buffer;
+    CRYS_RND_State_t      * p_crys_rnd_state =
         &((nrf_crypto_backend_rng_context_t *)p_context)->crys_rnd_state;
 
     VERIFY_TRUE(size <= CRYS_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS, NRF_ERROR_CRYPTO_INPUT_LENGTH);
@@ -233,10 +247,12 @@ ret_code_t nrf_crypto_rng_backend_reseed(void *const p_context, void *p_temp_buf
 
     cc310_backend_enable();
 
-    if (size > 0) {
+    if (size > 0)
+    {
         err_code = CRYS_RND_AddAdditionalInput(p_crys_rnd_state, p_input_data, size);
         ret_val = result_get(err_code);
-        if (ret_val != NRF_SUCCESS) {
+        if (ret_val != NRF_SUCCESS)
+        {
             goto exit;
         }
     }
@@ -249,6 +265,7 @@ exit:
     cc310_backend_mutex_unlock();
     return ret_val;
 }
+
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_RNG)
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310)

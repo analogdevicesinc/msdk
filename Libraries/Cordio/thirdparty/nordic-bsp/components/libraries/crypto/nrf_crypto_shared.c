@@ -42,16 +42,19 @@
 #include "nordic_common.h"
 #include "nrf_crypto_shared.h"
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO)
 
-void nrf_crypto_internal_swap_endian_in_place(uint8_t *p_buffer, size_t size)
+
+void nrf_crypto_internal_swap_endian_in_place(uint8_t * p_buffer, size_t size)
 {
     ASSERT(p_buffer != NULL);
 
     uint8_t temp;
-    uint8_t *p_first = p_buffer;
-    uint8_t *p_last = p_buffer + size - 1;
-    while (p_last >= p_first) {
+    uint8_t * p_first = p_buffer;
+    uint8_t * p_last = p_buffer + size - 1;
+    while (p_last >= p_first)
+    {
         temp = *p_first;
         *p_first = *p_last;
         *p_last = temp;
@@ -60,30 +63,35 @@ void nrf_crypto_internal_swap_endian_in_place(uint8_t *p_buffer, size_t size)
     }
 }
 
-void nrf_crypto_internal_swap_endian(uint8_t *p_out, uint8_t const *p_in, size_t size)
+
+void nrf_crypto_internal_swap_endian(uint8_t * p_out, uint8_t const * p_in, size_t size)
 {
     ASSERT(p_out != NULL);
     ASSERT(p_in != NULL);
 
-    uint8_t const *p_first = p_in;
-    uint8_t *p_last = p_out + size - 1;
-    while (p_last >= p_out) {
+    uint8_t const * p_first = p_in;
+    uint8_t * p_last = p_out + size - 1;
+    while (p_last >= p_out)
+    {
         *p_last = *p_first;
         p_first++;
         p_last--;
     }
 }
 
-void nrf_crypto_internal_double_swap_endian(uint8_t *p_out, uint8_t const *p_in, size_t part_size)
+
+void nrf_crypto_internal_double_swap_endian(uint8_t * p_out, uint8_t const * p_in, size_t part_size)
 {
     nrf_crypto_internal_swap_endian(p_out, p_in, part_size);
     nrf_crypto_internal_swap_endian(&p_out[part_size], &p_in[part_size], part_size);
 }
 
-void nrf_crypto_internal_double_swap_endian_in_place(uint8_t *p_buffer, size_t part_size)
+
+void nrf_crypto_internal_double_swap_endian_in_place(uint8_t * p_buffer, size_t part_size)
 {
     nrf_crypto_internal_swap_endian_in_place(p_buffer, part_size);
     nrf_crypto_internal_swap_endian_in_place(&p_buffer[part_size], part_size);
 }
+
 
 #endif

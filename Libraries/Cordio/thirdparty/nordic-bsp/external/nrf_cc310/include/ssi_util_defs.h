@@ -32,8 +32,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
-#ifndef _SSI_UTIL_DEFS_H
-#define _SSI_UTIL_DEFS_H
+
+#ifndef  _SSI_UTIL_DEFS_H
+#define  _SSI_UTIL_DEFS_H
 
 /*!
 @defgroup ssi_utils CryptoCell utility APIs
@@ -50,34 +51,38 @@
 
 */
 
+
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "ssi_pal_types_plat.h"
 #include "ssi_util_key_derivation_defs.h"
 
+
 /******************************************************************************
 *                           DEFINITIONS
 ******************************************************************************/
 /*! Supported AES key size in bits. */
-#define SASI_UTIL_AES_128BIT_SIZE 16 // same as SEP_AES_128_BIT_KEY_SIZE
+#define SASI_UTIL_AES_128BIT_SIZE   16  // same as SEP_AES_128_BIT_KEY_SIZE
 /*****************************************/
 /* CMAC derive key definitions*/
 /*****************************************/
 /*! Minimal data size for CMAC derivation operation. */
-#define SASI_UTIL_CMAC_DERV_MIN_DATA_IN_SIZE SASI_UTIL_FIX_DATA_MIN_SIZE_IN_BYTES + 2
+#define SASI_UTIL_CMAC_DERV_MIN_DATA_IN_SIZE    SASI_UTIL_FIX_DATA_MIN_SIZE_IN_BYTES+2
 /*! Maximal data size for CMAC derivation operation. */
-#define SASI_UTIL_CMAC_DERV_MAX_DATA_IN_SIZE SASI_UTIL_MAX_KDF_SIZE_IN_BYTES
+#define SASI_UTIL_CMAC_DERV_MAX_DATA_IN_SIZE    SASI_UTIL_MAX_KDF_SIZE_IN_BYTES
 /*! AES CMAC result size in bytes. */
 #define SASI_UTIL_AES_CMAC_RESULT_SIZE_IN_BYTES 0x10UL
 /*! AES CMAC result size in words. */
-#define SASI_UTIL_AES_CMAC_RESULT_SIZE_IN_WORDS (SASI_UTIL_AES_CMAC_RESULT_SIZE_IN_BYTES / 4)
+#define SASI_UTIL_AES_CMAC_RESULT_SIZE_IN_WORDS (SASI_UTIL_AES_CMAC_RESULT_SIZE_IN_BYTES/4)
 
 /*! Util Error type. */
 typedef uint32_t SaSiUtilError_t;
 /*! Defines the CMAC result buffer. */
 typedef uint8_t SaSiUtilAesCmacResult_t[SASI_UTIL_AES_CMAC_RESULT_SIZE_IN_BYTES];
+
 
 #ifdef __cplusplus
 }

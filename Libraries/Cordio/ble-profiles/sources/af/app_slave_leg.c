@@ -40,24 +40,27 @@
 /*************************************************************************************************/
 static void appSlaveLegAdvStart(void)
 {
-    uint8_t advHandle;
-    uint8_t maxEaEvents;
-    uint16_t interval;
+  uint8_t  advHandle;
+  uint8_t  maxEaEvents;
+  uint16_t interval;
 
-    interval = pAppAdvCfg->advInterval[appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]];
+  interval = pAppAdvCfg->advInterval[appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]];
 
-    /* if this advertising state is being used */
-    if (interval > 0) {
-        advHandle = DM_ADV_HANDLE_DEFAULT;
-        maxEaEvents = 0;
+  /* if this advertising state is being used */
+  if (interval > 0)
+  {
+    advHandle = DM_ADV_HANDLE_DEFAULT;
+    maxEaEvents = 0;
 
-        appAdvStart(1, &advHandle, &interval,
-                    &(pAppAdvCfg->advDuration[appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]]),
-                    &maxEaEvents, TRUE);
-    } else {
-        /* done with all advertising states */
-        appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STOPPED;
-    }
+    appAdvStart(1, &advHandle, &interval,
+                &(pAppAdvCfg->advDuration[appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]]),
+                &maxEaEvents, TRUE);
+  }
+  else
+  {
+    /* done with all advertising states */
+    appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STOPPED;
+  }
 }
 
 /*************************************************************************************************/
@@ -71,14 +74,14 @@ static void appSlaveLegAdvStart(void)
 /*************************************************************************************************/
 static void appSlaveLegAdvTypeChanged(dmEvt_t *pMsg)
 {
-    /* clear advertising type changed flag */
-    appSlaveCb.advTypeChanged[DM_ADV_HANDLE_DEFAULT] = FALSE;
+  /* clear advertising type changed flag */
+  appSlaveCb.advTypeChanged[DM_ADV_HANDLE_DEFAULT] = FALSE;
 
-    /* set advertising state */
-    appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STATE1;
+  /* set advertising state */
+  appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STATE1;
 
-    /* start advertising */
-    appSlaveLegAdvStart();
+  /* start advertising */
+  appSlaveLegAdvStart();
 }
 
 /*************************************************************************************************/
@@ -92,13 +95,14 @@ static void appSlaveLegAdvTypeChanged(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void appSlaveNextLegAdvState(dmEvt_t *pMsg)
 {
-    /* go to next advertising state */
-    appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]++;
+  /* go to next advertising state */
+  appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]++;
 
-    /* if haven't reached stopped state then start advertising */
-    if (appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] < APP_ADV_STOPPED) {
-        appSlaveLegAdvStart();
-    }
+  /* if haven't reached stopped state then start advertising */
+  if (appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] < APP_ADV_STOPPED)
+  {
+    appSlaveLegAdvStart();
+  }
 }
 
 /*************************************************************************************************/
@@ -112,23 +116,27 @@ static void appSlaveNextLegAdvState(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void appSlaveLegAdvStop(dmEvt_t *pMsg)
 {
-    /* if legacy advertising PDUs are used with advertising extensions feature */
-    if (pMsg->hdr.event == DM_ADV_SET_STOP_IND) {
-        /* if advertising successfully ended with connection being created */
-        if (pMsg->advSetStop.status == HCI_SUCCESS) {
-            /* connection open indication event will determine next advertising state */
-            return;
-        }
+  /* if legacy advertising PDUs are used with advertising extensions feature */
+  if (pMsg->hdr.event == DM_ADV_SET_STOP_IND)
+  {
+    /* if advertising successfully ended with connection being created */
+    if (pMsg->advSetStop.status == HCI_SUCCESS)
+    {
+      /* connection open indication event will determine next advertising state */
+      return;
     }
+  }
 
-    /* if advertising was stopped for change to advertising type */
-    if (appSlaveCb.advTypeChanged[DM_ADV_HANDLE_DEFAULT]) {
-        appSlaveLegAdvTypeChanged(pMsg);
-    }
-    /* else advertising ended for another reason */
-    else {
-        appSlaveNextLegAdvState(pMsg);
-    }
+  /* if advertising was stopped for change to advertising type */
+  if (appSlaveCb.advTypeChanged[DM_ADV_HANDLE_DEFAULT])
+  {
+    appSlaveLegAdvTypeChanged(pMsg);
+  }
+  /* else advertising ended for another reason */
+  else
+  {
+    appSlaveNextLegAdvState(pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -142,34 +150,39 @@ static void appSlaveLegAdvStop(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void appSlaveLegAdvRestart(dmEvt_t *pMsg)
 {
-    /* if connection closed */
-    if (pMsg->hdr.event == DM_CONN_CLOSE_IND) {
-        /* if connectable directed advertising failed to establish connection or was cancelled */
-        if (appSlaveCb.advDirected) {
-            appSlaveCb.advDirected = FALSE;
-            return;
-        }
+  /* if connection closed */
+  if (pMsg->hdr.event == DM_CONN_CLOSE_IND)
+  {
+    /* if connectable directed advertising failed to establish connection or was cancelled */
+    if (appSlaveCb.advDirected)
+    {
+      appSlaveCb.advDirected = FALSE;
+      return;
     }
-    /* else if connection opened */
-    else if (pMsg->hdr.event == DM_CONN_OPEN_IND) {
-        /* if connectable directed advertising */
-        if (appSlaveCb.advDirected) {
-            appSlaveCb.advDirected = FALSE;
-            return;
-        }
-
-        /* advertising is stopped once a connection is opened */
-        appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STOPPED;
+  }
+  /* else if connection opened */
+  else if (pMsg->hdr.event == DM_CONN_OPEN_IND)
+  {
+    /* if connectable directed advertising */
+    if (appSlaveCb.advDirected)
+    {
+      appSlaveCb.advDirected = FALSE;
+      return;
     }
 
-    /* if advertising stopped restart advertising */
-    if (appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] == APP_ADV_STOPPED) {
-        /* set advertising state */
-        appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STATE1;
+    /* advertising is stopped once a connection is opened */
+    appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STOPPED;
+  }
 
-        /* start advertising */
-        appSlaveLegAdvStart();
-    }
+  /* if advertising stopped restart advertising */
+  if (appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] == APP_ADV_STOPPED)
+  {
+    /* set advertising state */
+    appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STATE1;
+
+    /* start advertising */
+    appSlaveLegAdvStart();
+  }
 }
 
 /*************************************************************************************************/
@@ -181,23 +194,25 @@ static void appSlaveLegAdvRestart(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static bool_t appSlaveAdvMode(void)
 {
-    /* legacy app slave works with both DM legacy and extended advertising */
+  /* legacy app slave works with both DM legacy and extended advertising */
 
-    /* if first time since last power-on or reset */
-    if (appSlaveCb.advStopCback == NULL) {
-        appSlaveCb.advStopCback = appSlaveLegAdvStop;
-        appSlaveCb.advRestartCback = appSlaveLegAdvRestart;
+  /* if first time since last power-on or reset */
+  if (appSlaveCb.advStopCback == NULL)
+  {
+    appSlaveCb.advStopCback = appSlaveLegAdvStop;
+    appSlaveCb.advRestartCback = appSlaveLegAdvRestart;
 
-        return TRUE;
-    }
+    return TRUE;
+  }
 
-    if (appSlaveCb.advStopCback == appSlaveLegAdvStop) {
-        return TRUE;
-    }
+  if (appSlaveCb.advStopCback == appSlaveLegAdvStop)
+  {
+    return TRUE;
+  }
 
-    APP_TRACE_WARN0("Invalid DM advertising mode; mode configured as extended");
+  APP_TRACE_WARN0("Invalid DM advertising mode; mode configured as extended");
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -213,16 +228,17 @@ static bool_t appSlaveAdvMode(void)
 /*************************************************************************************************/
 void AppAdvSetData(uint8_t location, uint8_t len, uint8_t *pData)
 {
-    if (appSlaveAdvMode()) {
-        /* legacy advertising data length cannot exceed 31 bytes */
-        if (len > HCI_ADV_DATA_LEN) {
-            len = HCI_ADV_DATA_LEN;
-        }
-
-        /* maximum advertising data length supported by Controller is 31 bytes */
-        appAdvSetData(DM_ADV_HANDLE_DEFAULT, location, len, pData, HCI_ADV_DATA_LEN,
-                      HCI_ADV_DATA_LEN);
+  if (appSlaveAdvMode())
+  {
+    /* legacy advertising data length cannot exceed 31 bytes */
+    if (len > HCI_ADV_DATA_LEN)
+    {
+      len = HCI_ADV_DATA_LEN;
     }
+
+    /* maximum advertising data length supported by Controller is 31 bytes */
+    appAdvSetData(DM_ADV_HANDLE_DEFAULT, location, len, pData, HCI_ADV_DATA_LEN, HCI_ADV_DATA_LEN);
+  }
 }
 
 /*************************************************************************************************/
@@ -236,19 +252,20 @@ void AppAdvSetData(uint8_t location, uint8_t len, uint8_t *pData)
 /*************************************************************************************************/
 void AppAdvStart(uint8_t mode)
 {
-    uint8_t advHandle;
-    uint8_t maxEaEvents;
+  uint8_t advHandle;
+  uint8_t maxEaEvents;
 
-    if (appSlaveAdvMode()) {
-        advHandle = DM_ADV_HANDLE_DEFAULT;
-        maxEaEvents = 0;
+  if (appSlaveAdvMode())
+  {
+    advHandle = DM_ADV_HANDLE_DEFAULT;
+    maxEaEvents = 0;
 
-        /* initialize advertising state */
-        appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STATE1;
+    /* initialize advertising state */
+    appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT] = APP_ADV_STATE1;
 
-        appSlaveAdvStart(1, &advHandle, &(pAppAdvCfg->advInterval[APP_ADV_STATE1]),
-                         &(pAppAdvCfg->advDuration[APP_ADV_STATE1]), &maxEaEvents, TRUE, mode);
-    }
+    appSlaveAdvStart(1, &advHandle, &(pAppAdvCfg->advInterval[APP_ADV_STATE1]),
+                     &(pAppAdvCfg->advDuration[APP_ADV_STATE1]), &maxEaEvents, TRUE, mode);
+  }
 }
 
 /*************************************************************************************************/
@@ -260,13 +277,14 @@ void AppAdvStart(uint8_t mode)
 /*************************************************************************************************/
 void AppAdvStop(void)
 {
-    uint8_t advHandle;
+  uint8_t advHandle;
 
-    if (appSlaveAdvMode()) {
-        advHandle = DM_ADV_HANDLE_DEFAULT;
+  if (appSlaveAdvMode())
+  {
+    advHandle = DM_ADV_HANDLE_DEFAULT;
 
-        appAdvStop(1, &advHandle);
-    }
+    appAdvStop(1, &advHandle);
+  }
 }
 
 /*************************************************************************************************/
@@ -290,11 +308,12 @@ void AppAdvStop(void)
 /*************************************************************************************************/
 bool_t AppAdvSetAdValue(uint8_t location, uint8_t adType, uint8_t len, uint8_t *pValue)
 {
-    if (appSlaveAdvMode()) {
-        return appAdvSetAdValue(DM_ADV_HANDLE_DEFAULT, location, adType, len, pValue);
-    }
+  if (appSlaveAdvMode())
+  {
+    return appAdvSetAdValue(DM_ADV_HANDLE_DEFAULT, location, adType, len, pValue);
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -308,11 +327,12 @@ bool_t AppAdvSetAdValue(uint8_t location, uint8_t adType, uint8_t len, uint8_t *
 /*************************************************************************************************/
 void AppSetAdvType(uint8_t advType)
 {
-    if (appSlaveAdvMode()) {
-        appSetAdvType(DM_ADV_HANDLE_DEFAULT, advType,
-                      pAppAdvCfg->advInterval[appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]],
-                      pAppAdvCfg->advDuration[appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]], 0, TRUE);
-    }
+  if (appSlaveAdvMode())
+  {
+    appSetAdvType(DM_ADV_HANDLE_DEFAULT, advType,
+                  pAppAdvCfg->advInterval[appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]],
+                  pAppAdvCfg->advDuration[appSlaveCb.advState[DM_ADV_HANDLE_DEFAULT]], 0, TRUE);
+  }
 }
 
 /*************************************************************************************************/
@@ -327,8 +347,8 @@ void AppSetAdvType(uint8_t advType)
 /*************************************************************************************************/
 void AppSetAdvPeerAddr(uint8_t peerAddrType, uint8_t *pPeerAddr)
 {
-    appSlaveCb.peerAddrType[DM_ADV_HANDLE_DEFAULT] = peerAddrType;
-    BdaCpy(appSlaveCb.peerAddr[DM_ADV_HANDLE_DEFAULT], pPeerAddr);
+  appSlaveCb.peerAddrType[DM_ADV_HANDLE_DEFAULT] = peerAddrType;
+  BdaCpy(appSlaveCb.peerAddr[DM_ADV_HANDLE_DEFAULT], pPeerAddr);
 }
 
 /*************************************************************************************************/
@@ -342,24 +362,27 @@ void AppSetAdvPeerAddr(uint8_t peerAddrType, uint8_t *pPeerAddr)
  *
  *  \return Connection identifier.
  */
-/************************************************************************************************/
+ /************************************************************************************************/
 dmConnId_t AppConnAccept(uint8_t advType, uint8_t addrType, uint8_t *pAddr, appDbHdl_t dbHdl)
 {
-    dmConnId_t connId;
+  dmConnId_t  connId;
 
-    if (appSlaveAdvMode()) {
-        /* advertising data is not supported with legacy directed advertising */
-        connId = appConnAccept(DM_ADV_HANDLE_DEFAULT, advType,
-                               pAppAdvCfg->advInterval[APP_ADV_STATE1],
-                               pAppAdvCfg->advDuration[APP_ADV_STATE1], 0, addrType, pAddr, dbHdl,
-                               FALSE);
-        if (connId != DM_CONN_ID_NONE) {
-            appSlaveCb.advDirected = TRUE;
-        }
-    } else {
-        /* wrong advertising mode */
-        connId = DM_CONN_ID_NONE;
+  if (appSlaveAdvMode())
+  {
+    /* advertising data is not supported with legacy directed advertising */
+    connId = appConnAccept(DM_ADV_HANDLE_DEFAULT, advType, pAppAdvCfg->advInterval[APP_ADV_STATE1],
+                           pAppAdvCfg->advDuration[APP_ADV_STATE1], 0, addrType, pAddr, dbHdl,
+                           FALSE);
+    if (connId != DM_CONN_ID_NONE)
+    {
+      appSlaveCb.advDirected = TRUE;
     }
+  }
+  else
+  {
+    /* wrong advertising mode */
+    connId = DM_CONN_ID_NONE;
+  }
 
-    return connId;
+  return connId;
 }

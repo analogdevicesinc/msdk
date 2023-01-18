@@ -34,42 +34,43 @@
 **************************************************************************************************/
 
 /*! Flash block size. */
-#define PAL_FLASH_SECTOR4K 1
-#define PAL_FLASH_SECTOR64K 16
+#define PAL_FLASH_SECTOR4K                   1
+#define PAL_FLASH_SECTOR64K                  16
 
-#define PAL_FLASH_SECTOR4K_SIZE 0x1000
-#define PAL_FLASH_SECTOR64K_SIZE 0x10000
+#define PAL_FLASH_SECTOR4K_SIZE              0x1000
+#define PAL_FLASH_SECTOR64K_SIZE             0x10000
 
 /*! Flash Total size. */
-#define PAL_FLASH_TOTAL_SIZE 0x800000
+#define PAL_FLASH_TOTAL_SIZE                 0x800000
 
 /*! Flash internal cache buffer size. Note: should be at least 2. */
-#define PAL_FLASH_CACHE_BUF_SIZE 11
+#define PAL_FLASH_CACHE_BUF_SIZE             11
 
 /*! Flash word size. */
-#define PAL_FLASH_WORD_SIZE 4
+#define PAL_FLASH_WORD_SIZE                  4
 
 /*! Aligns a value to word size. */
-#define PAL_FLASH_WORD_ALIGN(value) \
-    (((value) + (PAL_FLASH_WORD_SIZE - 1)) & ~(PAL_FLASH_WORD_SIZE - 1))
+#define PAL_FLASH_WORD_ALIGN(value)          (((value) + (PAL_FLASH_WORD_SIZE - 1)) & \
+                                                        ~(PAL_FLASH_WORD_SIZE - 1))
 /*! Validates if a value is aligned to word. */
-#define PAL_FLASH_IS_WORD_ALIGNED(value) (((uint32_t)(value) & (PAL_FLASH_WORD_SIZE - 1)) == 0)
+#define PAL_FLASH_IS_WORD_ALIGNED(value)     (((uint32_t)(value) & \
+                                                         (PAL_FLASH_WORD_SIZE - 1)) == 0)
 
 /*! QSPI flash commands. */
-#define QSPI_STD_CMD_WRSR 0x01
-#define QSPI_STD_CMD_RSTEN 0x66
-#define QSPI_STD_CMD_RST 0x99
+#define QSPI_STD_CMD_WRSR   0x01
+#define QSPI_STD_CMD_RSTEN  0x66
+#define QSPI_STD_CMD_RST    0x99
 
 #ifdef DEBUG
 
 /*! \brief      Parameter check. */
-#define PAL_FLASH_PARAM_CHECK(expr)                   \
-    {                                                 \
-        if (!(expr)) {                                \
-            palFlashCb.state = PAL_FLASH_STATE_ERROR; \
-            return;                                   \
-        }                                             \
-    }
+#define PAL_FLASH_PARAM_CHECK(expr)               { \
+                                                  if (!(expr)) \
+                                                  { \
+                                                     palFlashCb.state = PAL_FLASH_STATE_ERROR; \
+                                                     return; \
+                                                  } \
+                                                }
 
 #else
 
@@ -86,9 +87,10 @@
 static uint32_t palFlashCacheBuf[PAL_FLASH_CACHE_BUF_SIZE];
 
 /*! \brief      Control block. */
-struct {
-    PalFlashState_t state; /*!< State. */
-    uint32_t writeAddr; /*!< Write address. */
+struct
+{
+  PalFlashState_t  state;                                   /*!< State. */
+  uint32_t       writeAddr;                                 /*!< Write address. */
 } palFlashCb;
 
 /**************************************************************************************************
@@ -106,12 +108,12 @@ void PalFlashInit(PalFlashCback_t actCback)
 {
 #if defined(NRF52840_XXAA)
 
-    uint32_t status;
-    uint8_t temp = 0x40;
+  uint32_t status;
+  uint8_t  temp = 0x40;
 
-    (void)actCback;
+  (void)actCback;
 
-    nrfx_qspi_config_t config =
+  nrfx_qspi_config_t config =
   {                                                                       \
       .xip_offset  = NRFX_QSPI_CONFIG_XIP_OFFSET,                         \
       .pins = {                                                           \
@@ -136,48 +138,49 @@ void PalFlashInit(PalFlashCback_t actCback)
           .dpmen      = false                                             \
       },                                                                  \
   }
-    {
-    }
+  ;
 
-    /* Verify palFlashCacheBuf size is at least 2. */
-    PAL_FLASH_PARAM_CHECK(PAL_FLASH_CACHE_BUF_SIZE >= 2);
+  /* Verify palFlashCacheBuf size is at least 2. */
+  PAL_FLASH_PARAM_CHECK(PAL_FLASH_CACHE_BUF_SIZE >= 2);
 
-    status = nrfx_qspi_init(&config, NULL, NULL);
+  status = nrfx_qspi_init(&config, NULL, NULL);
 
-    PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
+  PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
 
-    nrf_qspi_cinstr_conf_t cinstr_cfg = { .opcode = QSPI_STD_CMD_RSTEN,
-                                          .length = NRF_QSPI_CINSTR_LEN_1B,
-                                          .io2_level = 1,
-                                          .io3_level = 1,
-                                          .wipwait = 1,
-                                          .wren = 1 };
+  nrf_qspi_cinstr_conf_t cinstr_cfg = {
+      .opcode    = QSPI_STD_CMD_RSTEN,
+      .length    = NRF_QSPI_CINSTR_LEN_1B,
+      .io2_level = 1,
+      .io3_level = 1,
+      .wipwait   = 1,
+      .wren      = 1
+  };
 
-    /* Send reset enable. */
-    status = nrfx_qspi_cinstr_xfer(&cinstr_cfg, NULL, NULL);
+  /* Send reset enable. */
+  status = nrfx_qspi_cinstr_xfer(&cinstr_cfg, NULL, NULL);
 
-    /* Send reset command */
-    cinstr_cfg.opcode = QSPI_STD_CMD_RST;
+  /* Send reset command */
+  cinstr_cfg.opcode = QSPI_STD_CMD_RST;
 
-    status = nrfx_qspi_cinstr_xfer(&cinstr_cfg, NULL, NULL);
+  status = nrfx_qspi_cinstr_xfer(&cinstr_cfg, NULL, NULL);
 
-    PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
+  PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
 
-    /* Switch to qspi mode */
-    cinstr_cfg.opcode = QSPI_STD_CMD_WRSR;
-    cinstr_cfg.length = NRF_QSPI_CINSTR_LEN_2B;
+  /* Switch to qspi mode */
+  cinstr_cfg.opcode = QSPI_STD_CMD_WRSR;
+  cinstr_cfg.length = NRF_QSPI_CINSTR_LEN_2B;
 
-    status = nrfx_qspi_cinstr_xfer(&cinstr_cfg, &temp, NULL);
+  status = nrfx_qspi_cinstr_xfer(&cinstr_cfg, &temp, NULL);
 
-    PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
+  PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
 
-    memset(&palFlashCb, 0, sizeof(palFlashCb));
+  memset(&palFlashCb, 0, sizeof(palFlashCb));
 
-    palFlashCb.state = PAL_FLASH_STATE_READY;
+  palFlashCb.state = PAL_FLASH_STATE_READY;
 
-    (void)status;
+  (void)status;
 #else
-    (void)palFlashCacheBuf;
+  (void)palFlashCacheBuf;
 #endif
 }
 
@@ -189,7 +192,7 @@ void PalFlashInit(PalFlashCback_t actCback)
 void PalFlashDeInit(void)
 {
 #if defined(NRF52840_XXAA)
-    nrfx_qspi_uninit();
+  nrfx_qspi_uninit();
 #else
 #endif
 }
@@ -206,43 +209,46 @@ void PalFlashDeInit(void)
 void PalFlashRead(void *pBuf, uint32_t size, uint32_t srcAddr)
 {
 #if defined(NRF52840_XXAA)
-    uint32_t readSize = PAL_FLASH_WORD_ALIGN(size);
-    uint32_t actualSize = size;
-    uint32_t status;
-    uint16_t addrOffset = 0;
+  uint32_t readSize = PAL_FLASH_WORD_ALIGN(size);
+  uint32_t actualSize = size;
+  uint32_t status;
+  uint16_t addrOffset = 0;
 
-    PAL_FLASH_PARAM_CHECK(palFlashCb.state == PAL_FLASH_STATE_READY);
-    PAL_FLASH_PARAM_CHECK(pBuf != NULL);
-    PAL_FLASH_PARAM_CHECK(size != 0);
-    PAL_FLASH_PARAM_CHECK(PAL_FLASH_IS_WORD_ALIGNED(srcAddr));
+  PAL_FLASH_PARAM_CHECK(palFlashCb.state == PAL_FLASH_STATE_READY);
+  PAL_FLASH_PARAM_CHECK(pBuf != NULL);
+  PAL_FLASH_PARAM_CHECK(size != 0);
+  PAL_FLASH_PARAM_CHECK(PAL_FLASH_IS_WORD_ALIGNED(srcAddr));
 
-    do {
-        if (readSize <= sizeof(palFlashCacheBuf)) {
-            /* Read data. */
-            status = nrfx_qspi_read(palFlashCacheBuf, readSize, srcAddr + addrOffset);
+  do
+  {
+    if (readSize <= sizeof(palFlashCacheBuf))
+    {
+      /* Read data. */
+      status = nrfx_qspi_read(palFlashCacheBuf, readSize, srcAddr + addrOffset);
 
-            PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
+      PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
 
-            memcpy((uint8_t *)pBuf + addrOffset, palFlashCacheBuf, actualSize);
+      memcpy((uint8_t*)pBuf + addrOffset, palFlashCacheBuf, actualSize);
 
-            readSize = 0;
-        } else {
-            /* Read data. */
-            status =
-                nrfx_qspi_read(palFlashCacheBuf, sizeof(palFlashCacheBuf), srcAddr + addrOffset);
+      readSize = 0;
+    }
+    else
+    {
+      /* Read data. */
+      status = nrfx_qspi_read(palFlashCacheBuf, sizeof(palFlashCacheBuf), srcAddr + addrOffset);
 
-            PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
+      PAL_FLASH_PARAM_CHECK (status == NRFX_SUCCESS);
 
-            memcpy((uint8_t *)pBuf + addrOffset, palFlashCacheBuf, sizeof(palFlashCacheBuf));
+      memcpy((uint8_t*)pBuf + addrOffset, palFlashCacheBuf, sizeof(palFlashCacheBuf));
 
-            addrOffset += sizeof(palFlashCacheBuf);
-            readSize -= sizeof(palFlashCacheBuf);
-            actualSize -= sizeof(palFlashCacheBuf);
-        }
-    } while (readSize != 0);
-    (void)status;
+      addrOffset += sizeof(palFlashCacheBuf);
+      readSize -= sizeof(palFlashCacheBuf);
+      actualSize -= sizeof(palFlashCacheBuf);
+    }
+  } while (readSize != 0);
+  (void)status;
 #else
-    memset(pBuf, 0xFF, size);
+  memset(pBuf, 0xFF, size);
 #endif
 }
 
@@ -258,43 +264,45 @@ void PalFlashRead(void *pBuf, uint32_t size, uint32_t srcAddr)
 void PalFlashWrite(void *pBuf, uint32_t size, uint32_t dstAddr)
 {
 #if defined(NRF52840_XXAA)
-    uint32_t writeSize = PAL_FLASH_WORD_ALIGN(size);
-    uint32_t actualSize = size;
-    uint32_t status;
-    uint16_t addrOffset = 0;
+  uint32_t writeSize = PAL_FLASH_WORD_ALIGN(size);
+  uint32_t actualSize = size;
+  uint32_t status;
+  uint16_t addrOffset = 0;
 
-    PAL_FLASH_PARAM_CHECK(palFlashCb.state == PAL_FLASH_STATE_READY);
-    PAL_FLASH_PARAM_CHECK(pBuf != NULL);
-    PAL_FLASH_PARAM_CHECK(size != 0);
-    PAL_FLASH_PARAM_CHECK(PAL_FLASH_IS_WORD_ALIGNED(dstAddr));
+  PAL_FLASH_PARAM_CHECK(palFlashCb.state == PAL_FLASH_STATE_READY);
+  PAL_FLASH_PARAM_CHECK(pBuf != NULL);
+  PAL_FLASH_PARAM_CHECK(size != 0);
+  PAL_FLASH_PARAM_CHECK(PAL_FLASH_IS_WORD_ALIGNED(dstAddr));
 
-    do {
-        if (writeSize <= sizeof(palFlashCacheBuf)) {
-            memcpy(palFlashCacheBuf, (uint8_t *)pBuf + addrOffset, actualSize);
-            memset((uint8_t *)palFlashCacheBuf + actualSize, 0xFF,
-                   sizeof(palFlashCacheBuf) - actualSize);
+  do
+  {
+    if (writeSize <= sizeof(palFlashCacheBuf))
+    {
+      memcpy(palFlashCacheBuf, (uint8_t*)pBuf + addrOffset, actualSize);
+      memset((uint8_t*)palFlashCacheBuf + actualSize, 0xFF, sizeof(palFlashCacheBuf) - actualSize);
 
-            /* Write data. */
-            status = nrfx_qspi_write(palFlashCacheBuf, writeSize, dstAddr + addrOffset);
+      /* Write data. */
+      status = nrfx_qspi_write(palFlashCacheBuf, writeSize, dstAddr + addrOffset);
 
-            PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
+      PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
 
-            writeSize = 0;
-        } else {
-            memcpy(palFlashCacheBuf, (uint8_t *)pBuf + addrOffset, sizeof(palFlashCacheBuf));
+      writeSize = 0;
+    }
+    else
+    {
+      memcpy(palFlashCacheBuf, (uint8_t*)pBuf + addrOffset, sizeof(palFlashCacheBuf));
 
-            /* Write data. */
-            status =
-                nrfx_qspi_write(palFlashCacheBuf, sizeof(palFlashCacheBuf), dstAddr + addrOffset);
+      /* Write data. */
+      status = nrfx_qspi_write(palFlashCacheBuf, sizeof(palFlashCacheBuf), dstAddr + addrOffset);
 
-            PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
+      PAL_FLASH_PARAM_CHECK(status == NRFX_SUCCESS);
 
-            addrOffset += sizeof(palFlashCacheBuf);
-            writeSize -= sizeof(palFlashCacheBuf);
-            actualSize -= sizeof(palFlashCacheBuf);
-        }
-    } while (writeSize != 0);
-    (void)status;
+      addrOffset += sizeof(palFlashCacheBuf);
+      writeSize -= sizeof(palFlashCacheBuf);
+      actualSize -= sizeof(palFlashCacheBuf);
+    }
+  } while (writeSize != 0);
+  (void)status;
 #else
 #endif
 }
@@ -310,12 +318,13 @@ void PalFlashWrite(void *pBuf, uint32_t size, uint32_t dstAddr)
 void PalFlashEraseSector(uint32_t numOfSectors, uint32_t startAddr)
 {
 #if defined(NRF52840_XXAA)
-    PAL_FLASH_PARAM_CHECK(PAL_FLASH_IS_WORD_ALIGNED(startAddr));
-    nrf_qspi_erase_len_t eSize = QSPI_ERASE_LEN_LEN_4KB;
+  PAL_FLASH_PARAM_CHECK(PAL_FLASH_IS_WORD_ALIGNED(startAddr));
+  nrf_qspi_erase_len_t eSize = QSPI_ERASE_LEN_LEN_4KB;
 
-    for (uint32_t i = 0; i < numOfSectors; i++) {
-        nrfx_qspi_erase(eSize, startAddr + PAL_FLASH_SECTOR4K_SIZE * i);
-    }
+  for (uint32_t i = 0; i < numOfSectors; i++)
+  {
+    nrfx_qspi_erase(eSize, startAddr + PAL_FLASH_SECTOR4K_SIZE * i);
+  }
 #endif
 }
 
@@ -327,7 +336,7 @@ void PalFlashEraseSector(uint32_t numOfSectors, uint32_t startAddr)
 void PalFlashEraseChip(void)
 {
 #if defined(NRF52840_XXAA)
-    nrfx_qspi_chip_erase();
+  nrfx_qspi_chip_erase();
 #endif
 }
 
@@ -341,9 +350,9 @@ void PalFlashEraseChip(void)
 uint32_t PalNvmGetTotalSize(void)
 {
 #if defined(NRF52840_XXAA)
-    return PAL_FLASH_TOTAL_SIZE;
+  return PAL_FLASH_TOTAL_SIZE;
 #else
-    return 0;
+  return 0;
 #endif
 }
 
@@ -357,9 +366,9 @@ uint32_t PalNvmGetTotalSize(void)
 uint32_t PalNvmGetSectorSize(void)
 {
 #if defined(NRF52840_XXAA)
-    return PAL_FLASH_SECTOR4K_SIZE;
+  return PAL_FLASH_SECTOR4K_SIZE;
 #else
-    return 0;
+  return 0;
 #endif
 }
 
@@ -372,5 +381,6 @@ uint32_t PalNvmGetSectorSize(void)
 /*************************************************************************************************/
 PalFlashState_t PalFlashGetState(void)
 {
-    return palFlashCb.state;
+  return palFlashCb.state;
 }
+

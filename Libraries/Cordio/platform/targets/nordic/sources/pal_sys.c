@@ -39,13 +39,13 @@
 #ifdef __GNUC__
 
 /*! \brief      Stack initial values. */
-#define INIT_STACK_VAL 0xAFAFAFAF
+#define INIT_STACK_VAL      0xAFAFAFAF
 
 /*! \brief      Starting memory location of free memory. */
-#define FREE_MEM_START ((uint8_t *)&__heap_start__)
+#define FREE_MEM_START      ((uint8_t *)&__heap_start__)
 
 /*! \brief      Total size in bytes of free memory. */
-#define FREE_MEM_SIZE ((uint32_t)&__heap_end__ - (uint32_t)&__heap_start__)
+#define FREE_MEM_SIZE       ((uint32_t)&__heap_end__ - (uint32_t)&__heap_start__)
 
 extern uint8_t *SystemHeapStart;
 extern uint32_t SystemHeapSize;
@@ -63,10 +63,10 @@ extern unsigned long __heap_start__;
 #else
 
 /*! \brief      Starting memory location of free memory. */
-#define FREE_MEM_START ((uint8_t *)palSysFreeMem)
+#define FREE_MEM_START      ((uint8_t *)palSysFreeMem)
 
 /*! \brief      Total size in bytes of free memory. */
-#define FREE_MEM_SIZE (1024 * 196)
+#define FREE_MEM_SIZE       (1024 * 196)
 
 #endif
 
@@ -82,9 +82,9 @@ uint32_t SystemHeapSize;
 #else
 
 /*! \brief      Free memory for pool buffers (align to word boundary). */
-uint32_t palSysFreeMem[FREE_MEM_SIZE / sizeof(uint32_t)];
+uint32_t palSysFreeMem[FREE_MEM_SIZE/sizeof(uint32_t)];
 
-uint8_t *SystemHeapStart = (uint8_t *)palSysFreeMem;
+uint8_t *SystemHeapStart = (uint8_t *) palSysFreeMem;
 uint32_t SystemHeapSize = FREE_MEM_SIZE;
 
 #endif
@@ -108,15 +108,15 @@ static uint32_t palSysBusyCount;
 /*************************************************************************************************/
 void PalEnterCs(void)
 {
-#ifdef __IAR_SYSTEMS_ICC__
-    __disable_interrupt();
-#endif
-#ifdef __GNUC__
-    __asm volatile("cpsid i");
-#endif
-#ifdef __CC_ARM
-    __disable_irq();
-#endif
+  #ifdef __IAR_SYSTEMS_ICC__
+      __disable_interrupt();
+  #endif
+  #ifdef __GNUC__
+      __asm volatile ("cpsid i");
+  #endif
+  #ifdef __CC_ARM
+      __disable_irq();
+  #endif
 }
 
 /*************************************************************************************************/
@@ -126,15 +126,15 @@ void PalEnterCs(void)
 /*************************************************************************************************/
 void PalExitCs(void)
 {
-#ifdef __IAR_SYSTEMS_ICC__
-    __enable_interrupt();
-#endif
-#ifdef __GNUC__
-    __asm volatile("cpsie i");
-#endif
-#ifdef __CC_ARM
-    __enable_irq();
-#endif
+  #ifdef __IAR_SYSTEMS_ICC__
+      __enable_interrupt();
+  #endif
+  #ifdef __GNUC__
+      __asm volatile ("cpsie i");
+  #endif
+  #ifdef __CC_ARM
+      __enable_irq();
+  #endif
 }
 
 /*************************************************************************************************/
@@ -144,27 +144,27 @@ void PalExitCs(void)
 /*************************************************************************************************/
 void PalSysInit(void)
 {
-    /* Enable Flash cache */
-    NRF_NVMC->ICACHECNF |= (NVMC_ICACHECNF_CACHEEN_Enabled << NVMC_ICACHECNF_CACHEEN_Pos);
+  /* Enable Flash cache */
+  NRF_NVMC->ICACHECNF |= (NVMC_ICACHECNF_CACHEEN_Enabled << NVMC_ICACHECNF_CACHEEN_Pos);
 
-    /* Use 16 MHz crystal oscillator (system starts up using 16MHz RC oscillator). */
-    NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
-    NRF_CLOCK->TASKS_HFCLKSTART = 1;
-    while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0) {}
+  /* Use 16 MHz crystal oscillator (system starts up using 16MHz RC oscillator). */
+  NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+  NRF_CLOCK->TASKS_HFCLKSTART    = 1;
+  while (NRF_CLOCK->EVENTS_HFCLKSTARTED == 0) { }
 
-    palSysAssertCount = 0;
-    PalSysAssertTrapEnable = TRUE;
-    palSysBusyCount = 0;
+  palSysAssertCount = 0;
+  PalSysAssertTrapEnable = TRUE;
+  palSysBusyCount = 0;
 
-    PalRtcInit();
+  PalRtcInit();
 
-    PalLedInit();
-    PalLedOff(PAL_LED_ID_ERROR);
-    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+  PalLedInit();
+  PalLedOff(PAL_LED_ID_ERROR);
+  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
 
 #ifdef DEBUG
-    /* Reset free memory. */
-    memset(SystemHeapStart, 0, SystemHeapSize);
+  /* Reset free memory. */
+  memset(SystemHeapStart, 0, SystemHeapSize);
 #endif
 }
 
@@ -175,11 +175,11 @@ void PalSysInit(void)
 /*************************************************************************************************/
 void PalSysAssertTrap(void)
 {
-    PalLedOn(PAL_LED_ID_ERROR);
+  PalLedOn(PAL_LED_ID_ERROR);
 
-    palSysAssertCount++;
+  palSysAssertCount++;
 
-    while (PalSysAssertTrapEnable) {}
+  while (PalSysAssertTrapEnable);
 }
 
 /*************************************************************************************************/
@@ -191,7 +191,7 @@ void PalSysAssertTrap(void)
 /*************************************************************************************************/
 void PalSysSetTrap(bool_t enable)
 {
-    PalSysAssertTrapEnable = enable;
+  PalSysAssertTrapEnable = enable;
 }
 
 /*************************************************************************************************/
@@ -201,7 +201,7 @@ void PalSysSetTrap(bool_t enable)
 /*************************************************************************************************/
 uint32_t PalSysGetAssertCount(void)
 {
-    return palSysAssertCount;
+  return palSysAssertCount;
 }
 
 /*************************************************************************************************/
@@ -214,20 +214,22 @@ uint32_t PalSysGetAssertCount(void)
 uint32_t PalSysGetStackUsage(void)
 {
 #ifdef __GNUC__
-    unsigned long *pUnused = &__stack_limit__;
+  unsigned long *pUnused = &__stack_limit__;
 
-    while (pUnused < &__stack_top__) {
-        if (*pUnused != INIT_STACK_VAL) {
-            break;
-        }
-
-        pUnused++;
+  while (pUnused < &__stack_top__)
+  {
+    if (*pUnused != INIT_STACK_VAL)
+    {
+      break;
     }
 
-    return (uint32_t)(&__stack_top__ - pUnused) * sizeof(*pUnused);
+    pUnused++;
+  }
+
+  return (uint32_t)(&__stack_top__ - pUnused) * sizeof(*pUnused);
 #else
-    /* Not available; stub routine. */
-    return 0;
+  /* Not available; stub routine. */
+  return 0;
 #endif
 }
 
@@ -238,32 +240,34 @@ uint32_t PalSysGetStackUsage(void)
 /*************************************************************************************************/
 void PalSysSleep(void)
 {
-/* Clock management for low power mode. */
-#if BB_CLK_RATE_HZ == 32768
+  /* Clock management for low power mode. */
+  #if BB_CLK_RATE_HZ == 32768
     uint32_t rtcNow = NRF_RTC1->COUNTER;
 
-    if ((BbGetCurrentBod() == NULL) && PalUartGetState(PAL_UART_ID_CHCI) == PAL_UART_STATE_UNINIT) {
-        if ((PalTimerGetState() == PAL_TIMER_STATE_BUSY &&
-             ((NRF_RTC1->CC[3] - rtcNow) & PAL_MAX_RTC_COUNTER_VAL) > PAL_HFCLK_OSC_SETTLE_TICKS) ||
-            (PalTimerGetState() == PAL_TIMER_STATE_READY)) {
-            /* disable HFCLK */
-            NRF_CLOCK->TASKS_HFCLKSTOP = 1;
-            NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
-            (void)NRF_CLOCK->EVENTS_HFCLKSTARTED;
-        }
+    if ((BbGetCurrentBod() == NULL) && PalUartGetState(PAL_UART_ID_CHCI) == PAL_UART_STATE_UNINIT)
+    {
+      if ((PalTimerGetState() == PAL_TIMER_STATE_BUSY &&
+          ((NRF_RTC1->CC[3] - rtcNow) & PAL_MAX_RTC_COUNTER_VAL) > PAL_HFCLK_OSC_SETTLE_TICKS) ||
+          (PalTimerGetState() == PAL_TIMER_STATE_READY))
+      {
+        /* disable HFCLK */
+        NRF_CLOCK->TASKS_HFCLKSTOP = 1;
+        NRF_CLOCK->EVENTS_HFCLKSTARTED = 0;
+        (void)NRF_CLOCK->EVENTS_HFCLKSTARTED;
+      }
     }
-#endif
+  #endif
 
-/* CPU sleep. */
-#ifdef __IAR_SYSTEMS_ICC__
+  /* CPU sleep. */
+  #ifdef __IAR_SYSTEMS_ICC__
     __wait_for_interrupt();
-#endif
-#ifdef __GNUC__
-    __asm volatile("wfi");
-#endif
-#ifdef __CC_ARM
+  #endif
+  #ifdef __GNUC__
+          __asm volatile ("wfi");
+  #endif
+  #ifdef __CC_ARM
     __wfi();
-#endif
+  #endif
 }
 
 /*************************************************************************************************/
@@ -275,11 +279,11 @@ void PalSysSleep(void)
 /*************************************************************************************************/
 bool_t PalSysIsBusy(void)
 {
-    bool_t sysIsBusy = FALSE;
-    PalEnterCs();
-    sysIsBusy = ((palSysBusyCount == 0) ? FALSE : TRUE);
-    PalExitCs();
-    return sysIsBusy;
+  bool_t sysIsBusy = FALSE;
+  PalEnterCs();
+  sysIsBusy = ((palSysBusyCount == 0) ? FALSE : TRUE);
+  PalExitCs();
+  return sysIsBusy;
 }
 
 /*************************************************************************************************/
@@ -291,9 +295,9 @@ bool_t PalSysIsBusy(void)
 /*************************************************************************************************/
 void PalSysSetBusy(void)
 {
-    PalEnterCs();
-    palSysBusyCount++;
-    PalExitCs();
+  PalEnterCs();
+  palSysBusyCount++;
+  PalExitCs();
 }
 
 /*************************************************************************************************/
@@ -303,9 +307,10 @@ void PalSysSetBusy(void)
 /*************************************************************************************************/
 void PalSysSetIdle(void)
 {
-    PalEnterCs();
-    if (palSysBusyCount) {
-        palSysBusyCount--;
-    }
-    PalExitCs();
+  PalEnterCs();
+  if (palSysBusyCount)
+  {
+    palSysBusyCount--;
+  }
+  PalExitCs();
 }

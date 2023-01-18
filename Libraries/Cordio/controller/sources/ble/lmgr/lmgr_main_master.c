@@ -40,13 +40,16 @@ lmgrMstScanCtrlBlk_t lmgrMstScanCb;
 /*************************************************************************************************/
 void LmgrMstInit(void)
 {
-    static const lmgrScanParam_t defScanParam = { .scanType = LL_SCAN_PASSIVE,
-                                                  .scanInterval = 0x0010,
-                                                  .scanWindow = 0x0010,
-                                                  .ownAddrType = LL_ADDR_PUBLIC,
-                                                  .scanFiltPolicy = LL_SCAN_FILTER_NONE };
+  static const lmgrScanParam_t defScanParam =
+  {
+    .scanType       = LL_SCAN_PASSIVE,
+    .scanInterval   = 0x0010,
+    .scanWindow     = 0x0010,
+    .ownAddrType    = LL_ADDR_PUBLIC,
+    .scanFiltPolicy = LL_SCAN_FILTER_NONE
+  };
 
-    memset(&lmgrMstScanCb, 0, sizeof(lmgrMstScanCb));
-    lmgrMstScanCb.scanParam = defScanParam;
-    lmgrMstScanCb.scanChanMap = LL_ADV_CHAN_ALL;
+  memset(&lmgrMstScanCb, 0, sizeof(lmgrMstScanCb));
+  lmgrMstScanCb.scanParam = defScanParam;
+  lmgrMstScanCb.scanChanMap = LL_ADV_CHAN_ALL;
 }

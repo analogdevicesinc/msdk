@@ -59,23 +59,22 @@ extern "C" {
 
 /* Tested on STM32 devices using Keil/CMSIS USB stack */
 
-extern USBD_CDC_ItfTypeDef USBD_Interface_fops_FS;
+extern USBD_CDC_ItfTypeDef  USBD_Interface_fops_FS;
 
-uint8_t CDC_Transmit_FS(uint8_t *Buf, uint16_t Len);
+uint8_t CDC_Transmit_FS(uint8_t* Buf, uint16_t Len);
 
-int32_t trcCDCReceive(void *data, uint32_t size, int32_t *NumBytes);
+int32_t trcCDCReceive(void *data, uint32_t size, int32_t* NumBytes);
 
-int32_t trcCDCTransmit(void *data, uint32_t size, int32_t *noOfBytesSent);
+int32_t trcCDCTransmit(void* data, uint32_t size, int32_t * noOfBytesSent );
 
 #define TRC_STREAM_PORT_INIT() \
-    MX_USB_DEVICE_Init();      \
-    TRC_STREAM_PORT_MALLOC(); /*Dynamic allocation or empty if static */
+        MX_USB_DEVICE_Init(); \
+        TRC_STREAM_PORT_MALLOC(); /*Dynamic allocation or empty if static */
 
-#define TRC_STREAM_PORT_READ_DATA(_ptrData, _size, _ptrBytesRead) \
-    trcCDCReceive(_ptrData, _size, _ptrBytesRead)
+#define TRC_STREAM_PORT_READ_DATA(_ptrData, _size, _ptrBytesRead) trcCDCReceive(_ptrData, _size, _ptrBytesRead)
 
-#define TRC_STREAM_PORT_WRITE_DATA(_ptrData, _size, _ptrBytesSent) \
-    trcCDCTransmit(_ptrData, _size, _ptrBytesSent)
+#define TRC_STREAM_PORT_WRITE_DATA(_ptrData, _size, _ptrBytesSent) trcCDCTransmit(_ptrData, _size, _ptrBytesSent)
+
 
 #ifdef __cplusplus
 }

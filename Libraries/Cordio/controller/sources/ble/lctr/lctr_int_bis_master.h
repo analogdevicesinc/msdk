@@ -35,25 +35,24 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Get reservation manager handle for BIG from the context pointer. */
-#define LCTR_GET_BIG_RM_HANDLE(pBigCtx) \
-    (LL_MAX_CONN + LL_MAX_ADV_SETS + LL_MAX_BIG + (pBigCtx - &pLctrBigTbl[0]))
+#define LCTR_GET_BIG_RM_HANDLE(pBigCtx)   (LL_MAX_CONN + LL_MAX_ADV_SETS + LL_MAX_BIG + (pBigCtx - &pLctrBigTbl[0]))
 
 /*! \brief      Resolve BIG context pointer from the reservation manager handle. */
-#define LCTR_GET_BIG_RM_CTX(rmHandle) \
-    &(pLctrBigTbl[rmHandle - (LL_MAX_CONN + LL_MAX_ADV_SETS + LL_MAX_BIG)])
+#define LCTR_GET_BIG_RM_CTX(rmHandle)     &(pLctrBigTbl[rmHandle - (LL_MAX_CONN + LL_MAX_ADV_SETS + LL_MAX_BIG)])
 
 /**************************************************************************************************
   Constants
 **************************************************************************************************/
 
 /*! \brief      Slave BIG broadcasting states. */
-typedef enum {
-    LCTR_MST_BIG_STATE_DISABLED, /*!< BIG master disabled state. */
-    LCTR_MST_BIG_STATE_SYNCING, /*!< BIG master synchronizing state. */
-    LCTR_MST_BIG_STATE_SYNCED, /*!< BIG master synchronized state. */
-    LCTR_MST_BIG_STATE_SHUTDOWN, /*!< BIG master shutdown in progress. */
-    LCTR_MST_BIG_STATE_RESET, /*!< BIG master reset in progress. */
-    LCTR_MST_BIG_STATE_TOTAL /*!< Total number of BIG master states. */
+typedef enum
+{
+  LCTR_MST_BIG_STATE_DISABLED,          /*!< BIG master disabled state. */
+  LCTR_MST_BIG_STATE_SYNCING,           /*!< BIG master synchronizing state. */
+  LCTR_MST_BIG_STATE_SYNCED,            /*!< BIG master synchronized state. */
+  LCTR_MST_BIG_STATE_SHUTDOWN,          /*!< BIG master shutdown in progress. */
+  LCTR_MST_BIG_STATE_RESET,             /*!< BIG master reset in progress. */
+  LCTR_MST_BIG_STATE_TOTAL              /*!< Total number of BIG master states. */
 } lctrMstBigState_t;
 
 /**************************************************************************************************

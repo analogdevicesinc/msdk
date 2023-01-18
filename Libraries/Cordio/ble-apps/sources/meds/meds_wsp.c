@@ -45,10 +45,11 @@
 **************************************************************************************************/
 
 /*! enumeration of client characteristic configuration descriptors */
-enum {
-    MEDS_WSP_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
-    MEDS_WSP_WSS_WSM_CCC_IDX, /*! Weight scale service, weight scale measurement characteristic */
-    MEDS_WSP_NUM_CCC_IDX
+enum
+{
+  MEDS_WSP_GATT_SC_CCC_IDX,                /*! GATT service, service changed characteristic */
+  MEDS_WSP_WSS_WSM_CCC_IDX,                /*! Weight scale service, weight scale measurement characteristic */
+  MEDS_WSP_NUM_CCC_IDX
 };
 
 /**************************************************************************************************
@@ -56,19 +57,22 @@ enum {
 **************************************************************************************************/
 
 /*! Service UUID list */
-static const uint8_t medsSvcUuidList[] = { UINT16_TO_BYTES(ATT_UUID_WEIGHT_SCALE_SERVICE),
-                                           UINT16_TO_BYTES(ATT_UUID_DEVICE_INFO_SERVICE) };
+static const uint8_t medsSvcUuidList[] =
+{
+  UINT16_TO_BYTES(ATT_UUID_WEIGHT_SCALE_SERVICE),
+  UINT16_TO_BYTES(ATT_UUID_DEVICE_INFO_SERVICE)
+};
 
 /**************************************************************************************************
   Client Characteristic Configuration Descriptors
 **************************************************************************************************/
 
 /*! client characteristic configuration descriptors settings, indexed by above enumeration */
-static const attsCccSet_t medsWspCccSet[MEDS_WSP_NUM_CCC_IDX] = {
-    /* cccd handle          value range               security level */
-    { GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE,
-      DM_SEC_LEVEL_ENC }, /* MEDS_WSP_GATT_SC_CCC_IDX */
-    { WSS_WM_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_ENC } /* MEDS_WSP_WSS_WSM_CCC_IDX */
+static const attsCccSet_t medsWspCccSet[MEDS_WSP_NUM_CCC_IDX] =
+{
+  /* cccd handle          value range               security level */
+  {GATT_SC_CH_CCC_HDL,    ATT_CLIENT_CFG_INDICATE,  DM_SEC_LEVEL_ENC},    /* MEDS_WSP_GATT_SC_CCC_IDX */
+  {WSS_WM_CH_CCC_HDL,     ATT_CLIENT_CFG_INDICATE,  DM_SEC_LEVEL_ENC}     /* MEDS_WSP_WSS_WSM_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -84,7 +88,13 @@ static void medsWspBtn(dmConnId_t connId, uint8_t btn);
 **************************************************************************************************/
 
 /*! profile interface pointer */
-medsIf_t medsWspIf = { NULL, medsWspStart, medsWspProcMsg, medsWspBtn };
+medsIf_t medsWspIf =
+{
+  NULL,
+  medsWspStart,
+  medsWspProcMsg,
+  medsWspBtn
+};
 
 /*************************************************************************************************/
 /*!
@@ -95,21 +105,21 @@ medsIf_t medsWspIf = { NULL, medsWspStart, medsWspProcMsg, medsWspBtn };
 /*************************************************************************************************/
 static void medsWspStart(void)
 {
-    /* set up CCCD table and callback */
-    AttsCccRegister(MEDS_WSP_NUM_CCC_IDX, (attsCccSet_t *)medsWspCccSet, medsCccCback);
+  /* set up CCCD table and callback */
+  AttsCccRegister(MEDS_WSP_NUM_CCC_IDX, (attsCccSet_t *) medsWspCccSet, medsCccCback);
 
-    /* add weight scale service */
-    SvcWssAddGroup();
+  /* add weight scale service */
+  SvcWssAddGroup();
 
-    /* Set Service Changed CCCD index. */
-    GattSetSvcChangedIdx(MEDS_WSP_GATT_SC_CCC_IDX);
+  /* Set Service Changed CCCD index. */
+  GattSetSvcChangedIdx(MEDS_WSP_GATT_SC_CCC_IDX);
 
-    /* initialize weight scale profile sensor */
-    WspsSetWsmFlags(CH_WSM_FLAG_UNITS_LBS | CH_WSM_FLAG_TIMESTAMP);
+  /* initialize weight scale profile sensor */
+  WspsSetWsmFlags(CH_WSM_FLAG_UNITS_LBS | CH_WSM_FLAG_TIMESTAMP);
 
-    /* set advertising data */
-    AppAdvSetAdValue(APP_ADV_DATA_DISCOVERABLE, DM_ADV_TYPE_16_UUID, sizeof(medsSvcUuidList),
-                     (uint8_t *)medsSvcUuidList);
+  /* set advertising data */
+  AppAdvSetAdValue(APP_ADV_DATA_DISCOVERABLE, DM_ADV_TYPE_16_UUID, sizeof(medsSvcUuidList),
+                   (uint8_t *) medsSvcUuidList);
 }
 
 /*************************************************************************************************/
@@ -123,7 +133,7 @@ static void medsWspStart(void)
 /*************************************************************************************************/
 static void medsWspProcMsg(wsfMsgHdr_t *pMsg)
 {
-    return;
+  return;
 }
 
 /*************************************************************************************************/
@@ -138,16 +148,18 @@ static void medsWspProcMsg(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void medsWspBtn(dmConnId_t connId, uint8_t btn)
 {
-    /* button actions when connected */
-    if (connId != DM_CONN_ID_NONE) {
-        switch (btn) {
-        case APP_UI_BTN_1_SHORT:
-            /* send measurement */
-            WspsMeasComplete(connId, MEDS_WSP_WSS_WSM_CCC_IDX);
-            break;
+  /* button actions when connected */
+  if (connId != DM_CONN_ID_NONE)
+  {
+    switch (btn)
+    {
+      case APP_UI_BTN_1_SHORT:
+        /* send measurement */
+        WspsMeasComplete(connId, MEDS_WSP_WSS_WSM_CCC_IDX);
+        break;
 
-        default:
-            break;
-        }
+      default:
+        break;
     }
+  }
 }

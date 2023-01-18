@@ -45,16 +45,20 @@
 #include "sdk_config.h"
 #include "nrf_crypto_types.h"
 
-ret_code_t padding_pkcs7_add(uint8_t *p_padding_buff, uint8_t *p_message_buff,
-                             uint8_t msg_ending_len)
+
+ret_code_t padding_pkcs7_add(uint8_t * p_padding_buff,
+                             uint8_t * p_message_buff,
+                             uint8_t   msg_ending_len)
 {
     uint8_t padding_count;
 
-    if ((p_padding_buff == NULL) || (p_message_buff == NULL)) {
+    if ((p_padding_buff == NULL) || (p_message_buff == NULL))
+    {
         return NRF_ERROR_CRYPTO_INPUT_NULL;
     }
 
-    if (msg_ending_len >= NRF_CRYPTO_AES_BLOCK_SIZE) {
+    if (msg_ending_len >= NRF_CRYPTO_AES_BLOCK_SIZE)
+    {
         return NRF_ERROR_CRYPTO_INVALID_PARAM;
     }
 
@@ -63,39 +67,47 @@ ret_code_t padding_pkcs7_add(uint8_t *p_padding_buff, uint8_t *p_message_buff,
     memcpy(p_padding_buff, p_message_buff, msg_ending_len);
 
     /* step 2: add padding */
-    padding_count = NRF_CRYPTO_AES_BLOCK_SIZE - msg_ending_len;
+    padding_count   = NRF_CRYPTO_AES_BLOCK_SIZE - msg_ending_len;
     p_padding_buff += msg_ending_len;
 
-    for (size_t i = 0; i < padding_count; i++) {
+    for (size_t i = 0; i < padding_count; i++)
+    {
         p_padding_buff[i] = padding_count;
     }
 
     return NRF_SUCCESS;
 }
 
-ret_code_t padding_pkcs7_remove(uint8_t *p_padded_message, size_t *p_message_len)
+ret_code_t padding_pkcs7_remove(uint8_t * p_padded_message,
+                                size_t  * p_message_len)
 {
-    if (p_padded_message == NULL) {
+    if (p_padded_message == NULL)
+    {
         return NRF_ERROR_CRYPTO_INPUT_NULL;
     }
-    if (p_message_len == NULL) {
+    if (p_message_len == NULL)
+    {
         return NRF_ERROR_CRYPTO_OUTPUT_NULL;
     }
 
     /* padded_msg_len must be multiple of 16 */
-    if ((*p_message_len == 0) || ((*p_message_len & 0x0F) != 0)) {
+    if ((*p_message_len == 0) || ((*p_message_len & 0x0F) != 0))
+    {
         return NRF_ERROR_CRYPTO_INVALID_PARAM;
     }
 
     size_t padded_bytes = p_padded_message[*p_message_len - 1];
 
-    if ((padded_bytes == 0) || (padded_bytes > NRF_CRYPTO_AES_BLOCK_SIZE)) {
+    if ((padded_bytes == 0) || (padded_bytes > NRF_CRYPTO_AES_BLOCK_SIZE))
+    {
         return NRF_ERROR_CRYPTO_AES_INVALID_PADDING;
     }
 
     /* i = 2: 1 for valid string and 1 for already checked *p_message_len - 1 */
-    for (size_t i = 2; i < padded_bytes; i++) {
-        if (p_padded_message[*p_message_len - i] != padded_bytes) {
+    for (size_t i = 2; i < padded_bytes; i++)
+    {
+        if (p_padded_message[*p_message_len - i] != padded_bytes)
+        {
             return NRF_ERROR_CRYPTO_AES_INVALID_PADDING;
         }
     }
@@ -106,3 +118,4 @@ ret_code_t padding_pkcs7_remove(uint8_t *p_padded_message, size_t *p_message_len
 }
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO)
+

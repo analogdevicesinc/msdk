@@ -49,99 +49,115 @@ extern bool_t bbTxAccAddrShiftMask;
 /*************************************************************************************************/
 void lctrMstDiscoverEndOp(BbOpDesc_t *pOp)
 {
-    lctrMstScanCtx_t *pCtx = (lctrMstScanCtx_t *)pOp->pCtx;
+  lctrMstScanCtx_t *pCtx = (lctrMstScanCtx_t *)pOp->pCtx;
 
-    WSF_ASSERT(pOp->protId == BB_PROT_BLE);
-    WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
-    WSF_ASSERT(pCtx);
+  WSF_ASSERT(pOp->protId == BB_PROT_BLE);
+  WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
+  WSF_ASSERT(pCtx);
 
-    BbBleData_t *const pBle = &pCtx->bleData;
-    BbBleMstAdvEvent_t *const pScan = &pBle->op.mstAdv;
+  BbBleData_t * const pBle = &pCtx->bleData;
+  BbBleMstAdvEvent_t * const pScan = &pBle->op.mstAdv;
 
-    if (pCtx->shutdown || pCtx->selfTerm) {
-        lctrMsgHdr_t *pMsg;
+  if (pCtx->shutdown || pCtx->selfTerm)
+  {
+    lctrMsgHdr_t *pMsg;
 
-        /* Send SM a scan termination event. */
-        if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL) {
-            if (pCtx == &lctrMstScan) {
-                pMsg->dispId = LCTR_DISP_SCAN;
-                pMsg->event = LCTR_SCAN_MSG_TERMINATE;
-            } else {
-                pMsg->dispId = LCTR_DISP_INIT;
-                pMsg->event = LCTR_INIT_MSG_TERMINATE;
-            }
+    /* Send SM a scan termination event. */
+    if ((pMsg = (lctrMsgHdr_t *)WsfMsgAlloc(sizeof(*pMsg))) != NULL)
+    {
+      if (pCtx == &lctrMstScan)
+      {
+        pMsg->dispId = LCTR_DISP_SCAN;
+        pMsg->event = LCTR_SCAN_MSG_TERMINATE;
+      }
+      else
+      {
+        pMsg->dispId = LCTR_DISP_INIT;
+        pMsg->event = LCTR_INIT_MSG_TERMINATE;
+      }
 
-            WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
-        }
-        return;
+      WsfMsgSend(lmgrPersistCb.handlerId, pMsg);
     }
+    return;
+  }
 
-    /*** Update scan data ***/
+  /*** Update scan data ***/
 
-    /* Update scanner's address. */
-    if (lmgrCb.bdAddrRndModScan && (pCtx->scanParam.ownAddrType & LL_ADDR_RANDOM)) {
-        lmgrCb.bdAddrRndModScan = FALSE;
+  /* Update scanner's address. */
+  if (lmgrCb.bdAddrRndModScan &&
+      (pCtx->scanParam.ownAddrType & LL_ADDR_RANDOM))
+  {
+    lmgrCb.bdAddrRndModScan = FALSE;
 
-        if ((pCtx->scanParam.ownAddrType & LL_ADDR_IDENTITY_BIT) == 0) {
-            /* Update ScanA field. */
-            uint8_t *pBuf = pCtx->reqBuf + LL_ADV_HDR_LEN;
-            BDA64_TO_BSTREAM(pBuf, lmgrCb.bdAddrRnd); /* update ScanA field */
-        }
-        pBle->pduFilt.localAddrMatch = lmgrCb.bdAddrRnd;
+    if ((pCtx->scanParam.ownAddrType & LL_ADDR_IDENTITY_BIT) == 0)
+    {
+      /* Update ScanA field. */
+      uint8_t *pBuf = pCtx->reqBuf + LL_ADV_HDR_LEN;
+      BDA64_TO_BSTREAM(pBuf, lmgrCb.bdAddrRnd);         /* update ScanA field */
     }
+    pBle->pduFilt.localAddrMatch = lmgrCb.bdAddrRnd;
+  }
 
-    /*** Reschedule operation ***/
+  /*** Reschedule operation ***/
 
-    /* Reset due time to start of scan window. */
-    pOp->dueUsec = pCtx->scanWinStartUsec;
+  /* Reset due time to start of scan window. */
+  pOp->dueUsec = pCtx->scanWinStartUsec;
 
-    if ((pCtx->scanParam.scanInterval != pCtx->scanParam.scanWindow) &&
-        ((pScan->elapsedUsec + pOp->minDurUsec) < LCTR_BLE_TO_US(pCtx->scanParam.scanWindow))) {
-        const uint32_t min = pScan->elapsedUsec;
-        const uint32_t max = BB_BLE_TO_US(pCtx->scanParam.scanWindow);
+  if ((pCtx->scanParam.scanInterval != pCtx->scanParam.scanWindow) &&
+      ((pScan->elapsedUsec + pOp->minDurUsec) < LCTR_BLE_TO_US(pCtx->scanParam.scanWindow)))
+  {
+    const uint32_t min = pScan->elapsedUsec;
+    const uint32_t max = BB_BLE_TO_US(pCtx->scanParam.scanWindow);
 
-        if (SchInsertEarlyAsPossible(pOp, min, max)) {
-            /* Continue interrupted operation. */
-            pScan->elapsedUsec = BbGetTargetTimeDelta(pOp->dueUsec, pCtx->scanWinStartUsec);
-            WSF_ASSERT(pScan->elapsedUsec < pOp->maxDurUsec);
-            return;
-        }
+    if (SchInsertEarlyAsPossible(pOp, min, max))
+    {
+      /* Continue interrupted operation. */
+      pScan->elapsedUsec = BbGetTargetTimeDelta(pOp->dueUsec, pCtx->scanWinStartUsec);
+      WSF_ASSERT(pScan->elapsedUsec < pOp->maxDurUsec);
+      return;
     }
+  }
 
-    /* Advance to next scanInterval. */
+  /* Advance to next scanInterval. */
 
-    pScan->elapsedUsec = 0;
+  pScan->elapsedUsec = 0;
 
-    /* Compute next channel. */
-    pBle->chan.chanIdx = lctrScanChanSelectNext(pBle->chan.chanIdx, pScan->scanChMap);
+  /* Compute next channel. */
+  pBle->chan.chanIdx = lctrScanChanSelectNext(pBle->chan.chanIdx, pScan->scanChMap);
 
-    if (pCtx->scanParam.scanInterval == pCtx->scanParam.scanWindow) {
-        /* Continuous scan, move to the next scan window. */
-        SchInsertNextAvailable(pOp);
-        pCtx->scanWinStartUsec = pOp->dueUsec;
-    } else {
-        /* Next scan interval. */
-        const uint32_t min = BB_BLE_TO_US(pCtx->scanParam.scanInterval);
-        const uint32_t max = min + BB_BLE_TO_US(pCtx->scanParam.scanWindow);
+  if (pCtx->scanParam.scanInterval == pCtx->scanParam.scanWindow)
+  {
+    /* Continuous scan, move to the next scan window. */
+    SchInsertNextAvailable(pOp);
+    pCtx->scanWinStartUsec = pOp->dueUsec;
+  }
+  else
+  {
+    /* Next scan interval. */
+    const uint32_t min = BB_BLE_TO_US(pCtx->scanParam.scanInterval);
+    const uint32_t max = min + BB_BLE_TO_US(pCtx->scanParam.scanWindow);
 
-        while (TRUE) {
-            /* Store start of next scan window. */
-            pCtx->scanWinStartUsec = pOp->dueUsec + min;
+    while (TRUE)
+    {
+      /* Store start of next scan window. */
+      pCtx->scanWinStartUsec = pOp->dueUsec + min;
 
-            if (SchInsertEarlyAsPossible(pOp, min, max)) {
-                pScan->elapsedUsec = BbGetTargetTimeDelta(pOp->dueUsec, pCtx->scanWinStartUsec);
-                WSF_ASSERT(pScan->elapsedUsec < pOp->maxDurUsec);
-                break;
-            } else {
-                /* Advance to next scan window. */
-                pOp->dueUsec = pCtx->scanWinStartUsec;
+      if (SchInsertEarlyAsPossible(pOp, min, max))
+      {
+        pScan->elapsedUsec = BbGetTargetTimeDelta(pOp->dueUsec, pCtx->scanWinStartUsec);
+        WSF_ASSERT(pScan->elapsedUsec < pOp->maxDurUsec);
+        break;
+      }
+      else
+      {
+        /* Advance to next scan window. */
+        pOp->dueUsec = pCtx->scanWinStartUsec;
 
-                LL_TRACE_WARN1("!!! Scan schedule conflict at dueUsec=%u", pOp->dueUsec + min);
-                LL_TRACE_WARN1("!!!                           scanWindowUsec=%u",
-                               LCTR_BLE_TO_US(pCtx->scanParam.scanWindow));
-            }
-        }
+        LL_TRACE_WARN1("!!! Scan schedule conflict at dueUsec=%u", pOp->dueUsec + min);
+        LL_TRACE_WARN1("!!!                           scanWindowUsec=%u", LCTR_BLE_TO_US(pCtx->scanParam.scanWindow));
+      }
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -156,75 +172,84 @@ void lctrMstDiscoverEndOp(BbOpDesc_t *pOp)
 /*************************************************************************************************/
 bool_t lctrMstDiscoverAdvPktHandler(BbOpDesc_t *pOp, const uint8_t *pAdvBuf)
 {
-    WSF_ASSERT(pOp->protId == BB_PROT_BLE);
-    WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
+  WSF_ASSERT(pOp->protId == BB_PROT_BLE);
+  WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
 
-    BbBleData_t *const pBle = pOp->prot.pBle;
-    BbBleMstAdvEvent_t *const pScan = &pBle->op.mstAdv;
+  BbBleData_t * const pBle = pOp->prot.pBle;
+  BbBleMstAdvEvent_t * const pScan = &pBle->op.mstAdv;
 
-    /*** Transmit response PDU processing. ***/
+  /*** Transmit response PDU processing. ***/
 
-    bool_t txScanReq = FALSE;
+  bool_t txScanReq = FALSE;
 
-    if (pScan->pTxReqBuf) {
-        switch (pScan->filtResults.pduType) {
-        case LL_PDU_ADV_IND:
-        case LL_PDU_ADV_SCAN_IND: {
-            if (!pScan->filtResults.peerMatch) {
-                /* Require peer match. */
-                txScanReq = FALSE;
-                return txScanReq;
-            }
+  if (pScan->pTxReqBuf)
+  {
+    switch (pScan->filtResults.pduType)
+    {
+      case LL_PDU_ADV_IND:
+      case LL_PDU_ADV_SCAN_IND:
+      {
+        if (!pScan->filtResults.peerMatch)
+        {
+          /* Require peer match. */
+          txScanReq = FALSE;
+          return txScanReq;
+        }
 
-            /* Update scan request header with advertiser's address. */
-            uint8_t *pScanReqAdvA = lctrMstScan.reqBuf + LL_ADV_HDR_LEN + BDA_ADDR_LEN;
-            Bda64ToBstream(pScanReqAdvA, pScan->filtResults.peerAddr);
-            lctrMstScan.reqPduHdr.rxAddrRnd = pScan->filtResults.peerAddrRand;
+        /* Update scan request header with advertiser's address. */
+        uint8_t *pScanReqAdvA = lctrMstScan.reqBuf + LL_ADV_HDR_LEN + BDA_ADDR_LEN;
+        Bda64ToBstream(pScanReqAdvA, pScan->filtResults.peerAddr);
+        lctrMstScan.reqPduHdr.rxAddrRnd = pScan->filtResults.peerAddrRand;
 
-            /* Save AdvA in the SCAN_REQ here and compare it with the one from SCAN_RSP later. */
-            lctrMstScan.data.disc.scanReqAdvAddr = pScan->filtResults.peerAddr;
+        /* Save AdvA in the SCAN_REQ here and compare it with the one from SCAN_RSP later. */
+        lctrMstScan.data.disc.scanReqAdvAddr = pScan->filtResults.peerAddr;
 
-            /* Update scan request header with scanner's address. */
-            if (lctrMstScan.scanParam.ownAddrType & LL_ADDR_IDENTITY_BIT) {
-                bool_t localAddrRand =
-                    BB_BLE_PDU_FILT_FLAG_IS_SET(&pBle->pduFilt, LOCAL_ADDR_MATCH_RAND);
-                uint64_t localAddr = pBle->pduFilt.localAddrMatch;
-                if (BbBleResListReadLocal(pScan->filtResults.peerIdAddrRand,
-                                          pScan->filtResults.peerIdAddr, &localAddr)) {
-                    localAddrRand = TRUE;
-                }
-                uint8_t *pScanReqScanA = lctrMstScan.reqBuf + LL_ADV_HDR_LEN;
-                Bda64ToBstream(pScanReqScanA, localAddr);
-                lctrMstScan.reqPduHdr.txAddrRnd = localAddrRand;
-            }
+        /* Update scan request header with scanner's address. */
+        if (lctrMstScan.scanParam.ownAddrType & LL_ADDR_IDENTITY_BIT)
+        {
+          bool_t   localAddrRand = BB_BLE_PDU_FILT_FLAG_IS_SET(&pBle->pduFilt, LOCAL_ADDR_MATCH_RAND);
+          uint64_t localAddr     = pBle->pduFilt.localAddrMatch;
+          if (BbBleResListReadLocal(pScan->filtResults.peerIdAddrRand, pScan->filtResults.peerIdAddr, &localAddr))
+          {
+            localAddrRand = TRUE;
+          }
+          uint8_t *pScanReqScanA = lctrMstScan.reqBuf + LL_ADV_HDR_LEN;
+          Bda64ToBstream(pScanReqScanA, localAddr);
+          lctrMstScan.reqPduHdr.txAddrRnd = localAddrRand;
+        }
 
-            lctrPackAdvbPduHdr(lctrMstScan.reqBuf, &lctrMstScan.reqPduHdr);
+        lctrPackAdvbPduHdr(lctrMstScan.reqBuf, &lctrMstScan.reqPduHdr);
 
-            /* Scan backoff. */
-            if (lmgrGetOpFlag(LL_OP_MODE_FLAG_ENA_SCAN_BACKOFF)
+        /* Scan backoff. */
+        if (lmgrGetOpFlag(LL_OP_MODE_FLAG_ENA_SCAN_BACKOFF)
 #if (LL_ENABLE_TESTER == TRUE)
-                && !bbTxAccAddrShiftMask
+            && !bbTxAccAddrShiftMask
 #endif
-            ) {
-                if (lctrMstScan.backoffCount) {
-                    lctrMstScan.backoffCount--;
-                }
+            )
+        {
+          if (lctrMstScan.backoffCount)
+          {
+            lctrMstScan.backoffCount--;
+          }
 
-                if (lctrMstScan.backoffCount == 0) {
-                    txScanReq = TRUE;
-                }
-            } else {
-                txScanReq = TRUE;
-            }
-            break;
+          if (lctrMstScan.backoffCount == 0)
+          {
+            txScanReq = TRUE;
+          }
         }
+        else
+        {
+          txScanReq = TRUE;
+        }
+        break;
+      }
 
-        default:
-            break;
-        }
+      default:
+        break;
     }
+  }
 
-    return txScanReq;
+  return txScanReq;
 }
 
 /*************************************************************************************************/
@@ -237,54 +262,60 @@ bool_t lctrMstDiscoverAdvPktHandler(BbOpDesc_t *pOp, const uint8_t *pAdvBuf)
 /*************************************************************************************************/
 void lctrMstDiscoverAdvPktPostProcessHandler(BbOpDesc_t *pOp, const uint8_t *pAdvBuf)
 {
-    WSF_ASSERT(pOp->protId == BB_PROT_BLE);
-    WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
+  WSF_ASSERT(pOp->protId == BB_PROT_BLE);
+  WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
 
-    BbBleData_t *const pBle = pOp->prot.pBle;
-    BbBleMstAdvEvent_t *const pScan = &pBle->op.mstAdv;
+  BbBleData_t * const pBle = pOp->prot.pBle;
+  BbBleMstAdvEvent_t * const pScan = &pBle->op.mstAdv;
 
-    /*** Received advertising PDU post-processing. ***/
+  /*** Received advertising PDU post-processing. ***/
 
-    uint8_t *pRxAdvBuf;
+  uint8_t *pRxAdvBuf;
 
-    /* The peer match will be enforced in the scan SM. */
+  /* The peer match will be enforced in the scan SM. */
 
-    switch (pScan->filtResults.pduType) {
+  switch (pScan->filtResults.pduType)
+  {
     /* Valid PDU types. */
     case LL_PDU_ADV_DIRECT_IND:
     case LL_PDU_ADV_IND:
     case LL_PDU_ADV_NONCONN_IND:
     case LL_PDU_ADV_SCAN_IND:
-        if ((lmgrMstScanCb.numAdvReport < pLctrRtCfg->maxAdvReports) &&
-            ((pRxAdvBuf = WsfMsgAlloc(LCTR_ADVB_BUF_SIZE)) != NULL)) {
-            /* Store data in extra buffer area. */
-            pScan->pRxAdvBuf[LCTR_ADVB_BUF_OFFSET_RSSI] = pScan->advRssi;
-            pScan->pRxAdvBuf[LCTR_ADVB_BUF_OFFSET_RX_RPA] =
-                (pScan->filtResults.peerIdAddrRand != pScan->filtResults.peerAddrRand) ||
-                (pScan->filtResults.peerIdAddr != pScan->filtResults.peerAddr);
-            UINT32_TO_BUF(pScan->pRxAdvBuf + LCTR_ADVB_BUF_OFFSET_CRC, pScan->advCrc);
+      if ((lmgrMstScanCb.numAdvReport < pLctrRtCfg->maxAdvReports) &&
+          ((pRxAdvBuf = WsfMsgAlloc(LCTR_ADVB_BUF_SIZE)) != NULL))
+      {
+        /* Store data in extra buffer area. */
+        pScan->pRxAdvBuf[LCTR_ADVB_BUF_OFFSET_RSSI] = pScan->advRssi;
+        pScan->pRxAdvBuf[LCTR_ADVB_BUF_OFFSET_RX_RPA] =
+            (pScan->filtResults.peerIdAddrRand != pScan->filtResults.peerAddrRand) ||
+            (pScan->filtResults.peerIdAddr     != pScan->filtResults.peerAddr);
+        UINT32_TO_BUF(pScan->pRxAdvBuf + LCTR_ADVB_BUF_OFFSET_CRC, pScan->advCrc);
 
-            /* Queue the received AdvB buffer for post-processing. */
+        /* Queue the received AdvB buffer for post-processing. */
 
-            if (pScan->filtResults.localMatch) {
-                WsfMsgEnq(&lctrMstScan.rxAdvbQ, 0, pScan->pRxAdvBuf);
-                WsfSetEvent(lmgrPersistCb.handlerId, (1 << LCTR_EVENT_RX_ADVB));
-                lctrAdvReportsInc();
-            } else {
-                WsfMsgEnq(&lctrMstScan.rxDirectAdvbQ, 0, pScan->pRxAdvBuf);
-                WsfSetEvent(lmgrPersistCb.handlerId, (1 << LCTR_EVENT_RX_DIRECT_ADVB));
-                lctrAdvReportsInc();
-            }
-
-            /* Update scan operation with new allocated AdvB buffer. */
-            pScan->pRxAdvBuf = pRxAdvBuf;
+        if (pScan->filtResults.localMatch)
+        {
+          WsfMsgEnq(&lctrMstScan.rxAdvbQ, 0, pScan->pRxAdvBuf);
+          WsfSetEvent(lmgrPersistCb.handlerId, (1 << LCTR_EVENT_RX_ADVB));
+          lctrAdvReportsInc();
         }
-        break;
+        else
+        {
+          WsfMsgEnq(&lctrMstScan.rxDirectAdvbQ, 0, pScan->pRxAdvBuf);
+          WsfSetEvent(lmgrPersistCb.handlerId, (1 << LCTR_EVENT_RX_DIRECT_ADVB));
+          lctrAdvReportsInc();
+        }
+
+        /* Update scan operation with new allocated AdvB buffer. */
+        pScan->pRxAdvBuf = pRxAdvBuf;
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
+
 
 /*************************************************************************************************/
 /*!
@@ -298,12 +329,12 @@ void lctrMstDiscoverAdvPktPostProcessHandler(BbOpDesc_t *pOp, const uint8_t *pAd
 /*************************************************************************************************/
 bool_t lctrMstScanReqTxCompHandler(BbOpDesc_t *pOp, const uint8_t *pReqBuf)
 {
-    WSF_ASSERT(pOp->protId == BB_PROT_BLE);
-    WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
+  WSF_ASSERT(pOp->protId == BB_PROT_BLE);
+  WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
 
-    BbBleMstAdvEvent_t *const pAdv = &pOp->prot.pBle->op.mstAdv;
+  BbBleMstAdvEvent_t * const pAdv = &pOp->prot.pBle->op.mstAdv;
 
-    return pAdv->pRxRspBuf ? TRUE : FALSE;
+  return pAdv->pRxRspBuf ? TRUE : FALSE;
 }
 
 /*************************************************************************************************/
@@ -318,81 +349,92 @@ bool_t lctrMstScanReqTxCompHandler(BbOpDesc_t *pOp, const uint8_t *pReqBuf)
 /*************************************************************************************************/
 bool_t lctrMstScanRspRxCompHandler(BbOpDesc_t *pOp, const uint8_t *pRspBuf)
 {
-    WSF_ASSERT(pOp->protId == BB_PROT_BLE);
-    WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
+  WSF_ASSERT(pOp->protId == BB_PROT_BLE);
+  WSF_ASSERT(pOp->prot.pBle->chan.opType == BB_BLE_OP_MST_ADV_EVENT);
 
-    BbBleData_t *const pBle = pOp->prot.pBle;
-    BbBleMstAdvEvent_t *const pScan = &pBle->op.mstAdv;
+  BbBleData_t * const pBle = pOp->prot.pBle;
+  BbBleMstAdvEvent_t * const pScan = &pBle->op.mstAdv;
 
-    if (pRspBuf) {
-        /*** Received advertising PDU post-processing. ***/
+  if (pRspBuf)
+  {
+    /*** Received advertising PDU post-processing. ***/
 
-        uint8_t *pRxRspBuf;
+    uint8_t *pRxRspBuf;
 
-        switch (pScan->filtResults.pduType) {
-        /* Valid PDU types. */
-        case LL_PDU_SCAN_RSP:
+    switch (pScan->filtResults.pduType)
+    {
+      /* Valid PDU types. */
+      case LL_PDU_SCAN_RSP:
 
-            /* scanReqAdvAddr is assigned when LL_PDU_ADV_SCAN_IND is received. */
-            if (lctrMstScan.data.disc.scanReqAdvAddr != pScan->filtResults.peerAddr) {
-                LL_TRACE_WARN0("Ignore SCAN_RSP due to mismatched advAddr in SCAN_REQ");
-                break;
-            }
-
-            if ((lmgrMstScanCb.numAdvReport < pLctrRtCfg->maxAdvReports) &&
-                ((pRxRspBuf = WsfMsgAlloc(LCTR_ADVB_BUF_SIZE)) != NULL)) {
-                /* Store data in extra buffer area. */
-                pScan->pRxRspBuf[LCTR_ADVB_BUF_OFFSET_RSSI] = pScan->advRssi;
-                pScan->pRxRspBuf[LCTR_ADVB_BUF_OFFSET_RX_RPA] =
-                    (pScan->filtResults.peerIdAddr != pScan->filtResults.peerAddrRand) &&
-                    (pScan->filtResults.peerIdAddr != pScan->filtResults.peerAddr);
-                UINT32_TO_BUF(pScan->pRxAdvBuf + LCTR_ADVB_BUF_OFFSET_CRC, pScan->advCrc);
-
-                /* Queue the received AdvB buffer for post-processing. */
-                WsfMsgEnq(&lctrMstScan.rxAdvbQ, 0, pScan->pRxRspBuf);
-                WsfSetEvent(lmgrPersistCb.handlerId, (1 << LCTR_EVENT_RX_ADVB));
-                lctrAdvReportsInc();
-
-                /* Update scan operation with new allocated AdvB buffer. */
-                pScan->pRxRspBuf = pRxRspBuf;
-            }
-            break;
-
-        default:
-            break;
+        /* scanReqAdvAddr is assigned when LL_PDU_ADV_SCAN_IND is received. */
+        if (lctrMstScan.data.disc.scanReqAdvAddr != pScan->filtResults.peerAddr)
+        {
+          LL_TRACE_WARN0("Ignore SCAN_RSP due to mismatched advAddr in SCAN_REQ");
+          break;
         }
+
+        if ((lmgrMstScanCb.numAdvReport < pLctrRtCfg->maxAdvReports) &&
+            ((pRxRspBuf = WsfMsgAlloc(LCTR_ADVB_BUF_SIZE)) != NULL))
+        {
+          /* Store data in extra buffer area. */
+          pScan->pRxRspBuf[LCTR_ADVB_BUF_OFFSET_RSSI] = pScan->advRssi;
+          pScan->pRxRspBuf[LCTR_ADVB_BUF_OFFSET_RX_RPA] =
+              (pScan->filtResults.peerIdAddr != pScan->filtResults.peerAddrRand) &&
+              (pScan->filtResults.peerIdAddr != pScan->filtResults.peerAddr);
+          UINT32_TO_BUF(pScan->pRxAdvBuf + LCTR_ADVB_BUF_OFFSET_CRC, pScan->advCrc);
+
+          /* Queue the received AdvB buffer for post-processing. */
+          WsfMsgEnq(&lctrMstScan.rxAdvbQ, 0, pScan->pRxRspBuf);
+          WsfSetEvent(lmgrPersistCb.handlerId, (1 << LCTR_EVENT_RX_ADVB));
+          lctrAdvReportsInc();
+
+          /* Update scan operation with new allocated AdvB buffer. */
+          pScan->pRxRspBuf = pRxRspBuf;
+        }
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  /*** Scan backoff maintenance ***/
+
+  if (pRspBuf)
+  {
+    if (++lctrMstScan.consRspSuccess >= 2)
+    {
+      lctrMstScan.upperLimit = lctrMstScan.upperLimit >> 1;           /* divide by 2 */
+
+      if (lctrMstScan.upperLimit == 0)
+      {
+        lctrMstScan.upperLimit = 1;
+      }
+
+      lctrMstScan.consRspSuccess = 0;
     }
 
-    /*** Scan backoff maintenance ***/
+    lctrMstScan.consRspFailure = 0;
+  }
+  else
+  {
+    if (++lctrMstScan.consRspFailure >= 2)
+    {
+      lctrMstScan.upperLimit = lctrMstScan.upperLimit << 1;           /* multiply by 2 */
 
-    if (pRspBuf) {
-        if (++lctrMstScan.consRspSuccess >= 2) {
-            lctrMstScan.upperLimit = lctrMstScan.upperLimit >> 1; /* divide by 2 */
+      if (lctrMstScan.upperLimit > 256)
+      {
+        lctrMstScan.upperLimit = 256;
+      }
 
-            if (lctrMstScan.upperLimit == 0) {
-                lctrMstScan.upperLimit = 1;
-            }
-
-            lctrMstScan.consRspSuccess = 0;
-        }
-
-        lctrMstScan.consRspFailure = 0;
-    } else {
-        if (++lctrMstScan.consRspFailure >= 2) {
-            lctrMstScan.upperLimit = lctrMstScan.upperLimit << 1; /* multiply by 2 */
-
-            if (lctrMstScan.upperLimit > 256) {
-                lctrMstScan.upperLimit = 256;
-            }
-
-            lctrMstScan.consRspFailure = 0;
-        }
-
-        lctrMstScan.consRspSuccess = 0;
+      lctrMstScan.consRspFailure = 0;
     }
 
-    /* backoffCount = [1..upperLimit] */
-    lctrMstScan.backoffCount = (LlMathRandNum() & (lctrMstScan.upperLimit - 1)) + 1;
+    lctrMstScan.consRspSuccess = 0;
+  }
 
-    return FALSE;
+  /* backoffCount = [1..upperLimit] */
+  lctrMstScan.backoffCount = (LlMathRandNum() & (lctrMstScan.upperLimit - 1)) + 1;
+
+  return FALSE;
 }

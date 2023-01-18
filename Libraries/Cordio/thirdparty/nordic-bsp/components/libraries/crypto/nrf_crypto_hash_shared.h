@@ -49,60 +49,69 @@
 extern "C" {
 #endif
 
-#define NRF_CRYPTO_HASH_INIT_VALUE \
-    (0x4846526E) //!< Magic value to signal that the nrf_crypto_hash context structure is initialized.
+#define NRF_CRYPTO_HASH_INIT_VALUE  (0x4846526E) //!< Magic value to signal that the nrf_crypto_hash context structure is initialized.
 
 /**@brief Enumeration of supported modes of operation in nrf_crypto_hash
  */
-typedef enum { NRF_CRYPTO_HASH_MODE_SHA256, NRF_CRYPTO_HASH_MODE_SHA512 } nrf_crypto_hash_mode_t;
+typedef enum
+{
+    NRF_CRYPTO_HASH_MODE_SHA256,
+    NRF_CRYPTO_HASH_MODE_SHA512
+} nrf_crypto_hash_mode_t;
+
 
 /**@internal @brief Type declaration to do hash initialization in nrf_crypto backend.
  *
  *  This is an internal API. See @ref nrf_crypto_hash_init for documentation.
  */
-typedef ret_code_t (*nrf_crypto_hash_init_fn_t)(void *const p_context);
+typedef ret_code_t (*nrf_crypto_hash_init_fn_t)(void * const p_context);
+
 
 /**@internal @brief Type declaration to do hash update in nrf_crypto backend.
  *
  *  This is an internal API. See @ref nrf_crypto_hash_init for documentation.
  */
-typedef ret_code_t (*nrf_crypto_hash_update_fn_t)(void *const p_context, uint8_t const *p_data,
-                                                  size_t size);
+typedef ret_code_t (*nrf_crypto_hash_update_fn_t)(void        * const p_context,
+                                                  uint8_t     const * p_data,
+                                                  size_t              size);
+
 
 /**@internal @brief Type declaration to do hash finalize in nrf_crypto backend.
  *
  *  This is an internal API. See @ref nrf_crypto_hash_finalize for documentation.
  */
-typedef ret_code_t (*nrf_crypto_hash_finalize_fn_t)(void *const p_context, uint8_t *p_digest,
-                                                    size_t *const p_digest_size);
+typedef ret_code_t (*nrf_crypto_hash_finalize_fn_t)(void      * const p_context,
+                                                    uint8_t         * p_digest,
+                                                    size_t    * const p_digest_size);
+
 
 /**@internal @brief Type declaration to for a nrf_crypto_hash info strucure
  *
  * @details     This structure contains the calling interface and any meta data required
  *              to call the nrf_crypto_hash API functions.
  */
-typedef struct {
-    nrf_crypto_hash_init_fn_t const
-        init_fn; /**< Function pointer to call to initialize nrf_crypto_hash context in backend. */
-    nrf_crypto_hash_update_fn_t const
-        update_fn; /**< Function pointer to call to add data in the hash calculation. */
-    nrf_crypto_hash_finalize_fn_t const
-        finalize_fn; /**< Function pointer to call to finalize the hash calculation and return the result. */
-    size_t const digest_size; /**< Size of the digest. */
-    size_t const context_size; /**< Size of the context type. */
-    nrf_crypto_hash_mode_t const hash_mode; /**< Mode of hash operation. */
+typedef struct
+{
+    nrf_crypto_hash_init_fn_t      const init_fn;           /**< Function pointer to call to initialize nrf_crypto_hash context in backend. */
+    nrf_crypto_hash_update_fn_t    const update_fn;         /**< Function pointer to call to add data in the hash calculation. */
+    nrf_crypto_hash_finalize_fn_t  const finalize_fn;       /**< Function pointer to call to finalize the hash calculation and return the result. */
+    size_t                         const digest_size;       /**< Size of the digest. */
+    size_t                         const context_size;      /**< Size of the context type. */
+    nrf_crypto_hash_mode_t         const hash_mode;         /**< Mode of hash operation. */
 } nrf_crypto_hash_info_t;
+
 
 /**@internal @brief Type declaration of internal representation of a hash context structure.
  *
  * @details     This is an internal type that should not be used directly.
  */
-typedef struct {
-    uint32_t
-        init_val; /**< Value that is set to NRF_CRYPTO_HASH_INIT_VALUE when context has been initialized. */
-    nrf_crypto_hash_info_t const *p_info; /**< Pointer to an nrf_crypto_hash info structure. */
+typedef struct
+{
+    uint32_t                        init_val;   /**< Value that is set to NRF_CRYPTO_HASH_INIT_VALUE when context has been initialized. */
+    nrf_crypto_hash_info_t  const * p_info;     /**< Pointer to an nrf_crypto_hash info structure. */
 
 } nrf_crypto_hash_internal_context_t;
+
 
 #ifdef __cplusplus
 }

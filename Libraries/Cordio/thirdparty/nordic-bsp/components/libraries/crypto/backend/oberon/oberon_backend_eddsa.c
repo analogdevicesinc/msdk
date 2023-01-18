@@ -41,7 +41,8 @@
 #include "sdk_config.h"
 #include "nordic_common.h"
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) && \
+#if NRF_MODULE_ENABLED(NRF_CRYPTO) && \
+    NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) && \
     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)
 
 #include <stdint.h>
@@ -53,33 +54,44 @@
 #include "nrf_crypto_eddsa.h"
 #include "ocrypto_ed25519.h"
 
-ret_code_t nrf_crypto_backend_ed25519_sign(void *p_context,
-                                           nrf_crypto_ecc_private_key_t const *p_private_key,
-                                           uint8_t const *p_message, size_t message_size,
-                                           uint8_t *p_signature)
+
+ret_code_t nrf_crypto_backend_ed25519_sign(
+    void                                  * p_context,
+    nrf_crypto_ecc_private_key_t    const * p_private_key,
+    uint8_t                         const * p_message,
+    size_t                                  message_size,
+    uint8_t                               * p_signature)
 {
-    ocrypto_ed25519_sign(p_signature, p_message, message_size,
+    ocrypto_ed25519_sign(p_signature,
+                         p_message,
+                         message_size,
                          p_private_key->key_ed25519.private_part,
                          p_private_key->key_ed25519.public_part);
 
     return NRF_SUCCESS;
 }
 
-ret_code_t nrf_crypto_backend_ed25519_verify(void *p_context,
-                                             nrf_crypto_ecc_public_key_t const *p_public_key,
-                                             uint8_t const *p_message, size_t message_size,
-                                             uint8_t const *p_signature)
+ret_code_t nrf_crypto_backend_ed25519_verify(
+    void                              * p_context,
+    nrf_crypto_ecc_public_key_t const * p_public_key,
+    uint8_t                     const * p_message,
+    size_t                              message_size,
+    uint8_t                     const * p_signature)
 {
     int result;
 
-    result =
-        ocrypto_ed25519_verify(p_signature, p_message, message_size, p_public_key->key_ed25519.key);
+    result = ocrypto_ed25519_verify(p_signature,
+                                    p_message,
+                                    message_size,
+                                    p_public_key->key_ed25519.key);
 
-    if (result != 0) {
+    if (result != 0)
+    {
         return NRF_ERROR_CRYPTO_ECDSA_INVALID_SIGNATURE;
     }
 
     return NRF_SUCCESS;
 }
+
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)

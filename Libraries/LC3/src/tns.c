@@ -19,6 +19,7 @@
 #include "tns.h"
 #include "tables.h"
 
+
 /* ----------------------------------------------------------------------------
  *  Filter Coefficients
  * -------------------------------------------------------------------------- */
@@ -30,7 +31,7 @@
  */
 static bool resolve_lpc_weighting(enum lc3_dt dt, int nbytes)
 {
-    return nbytes < (dt == LC3_DT_7M5 ? 360 / 8 : 480 / 8);
+    return nbytes < (dt == LC3_DT_7M5 ? 360/8 : 480/8);
 }
 
 /**
@@ -42,7 +43,8 @@ LC3_HOT static inline float dot(const float *a, const float *b, int n)
 {
     float v = 0;
 
-    while (n--) v += *(a++) * *(b++);
+    while (n--)
+        v += *(a++) * *(b++);
 
     return v;
 }
@@ -53,28 +55,31 @@ LC3_HOT static inline float dot(const float *a, const float *b, int n)
  * x               Spectral coefficients
  * gain, a         Output the prediction gains and LPC coefficients
  */
-LC3_HOT static void compute_lpc_coeffs(enum lc3_dt dt, enum lc3_bandwidth bw, const float *x,
-                                       float *gain, float (*a)[9])
+LC3_HOT static void compute_lpc_coeffs(
+    enum lc3_dt dt, enum lc3_bandwidth bw,
+    const float *x, float *gain, float (*a)[9])
 {
-    static const int sub_7m5_nb[] = { 9, 26, 43, 60 };
-    static const int sub_7m5_wb[] = { 9, 46, 83, 120 };
-    static const int sub_7m5_sswb[] = { 9, 66, 123, 180 };
-    static const int sub_7m5_swb[] = { 9, 46, 82, 120, 159, 200, 240 };
-    static const int sub_7m5_fb[] = { 9, 56, 103, 150, 200, 250, 300 };
+    static const int sub_7m5_nb[]   = {  9, 26,  43,  60 };
+    static const int sub_7m5_wb[]   = {  9, 46,  83, 120 };
+    static const int sub_7m5_sswb[] = {  9, 66, 123, 180 };
+    static const int sub_7m5_swb[]  = {  9, 46,  82, 120, 159, 200, 240 };
+    static const int sub_7m5_fb[]   = {  9, 56, 103, 150, 200, 250, 300 };
 
-    static const int sub_10m_nb[] = { 12, 34, 57, 80 };
-    static const int sub_10m_wb[] = { 12, 61, 110, 160 };
+    static const int sub_10m_nb[]   = { 12, 34,  57,  80 };
+    static const int sub_10m_wb[]   = { 12, 61, 110, 160 };
     static const int sub_10m_sswb[] = { 12, 88, 164, 240 };
-    static const int sub_10m_swb[] = { 12, 61, 110, 160, 213, 266, 320 };
-    static const int sub_10m_fb[] = { 12, 74, 137, 200, 266, 333, 400 };
+    static const int sub_10m_swb[]  = { 12, 61, 110, 160, 213, 266, 320 };
+    static const int sub_10m_fb[]   = { 12, 74, 137, 200, 266, 333, 400 };
 
     /* --- Normalized autocorrelation --- */
 
-    static const float lag_window[] = { 1.00000000e+00, 9.98028026e-01, 9.92135406e-01,
-                                        9.82391584e-01, 9.68910791e-01, 9.51849807e-01,
-                                        9.31404933e-01, 9.07808230e-01, 8.81323137e-01 };
+    static const float lag_window[] = {
+        1.00000000e+00, 9.98028026e-01, 9.92135406e-01, 9.82391584e-01,
+        9.68910791e-01, 9.51849807e-01, 9.31404933e-01, 9.07808230e-01,
+        8.81323137e-01
+    };
 
-    const int *sub = (const int *const[LC3_NUM_DT][LC3_NUM_SRATE]){
+    const int *sub = (const int * const [LC3_NUM_DT][LC3_NUM_SRATE]){
         { sub_7m5_nb, sub_7m5_wb, sub_7m5_sswb, sub_7m5_swb, sub_7m5_fb },
         { sub_10m_nb, sub_10m_wb, sub_10m_sswb, sub_10m_swb, sub_10m_fb },
     }[dt][bw];
@@ -90,16 +95,16 @@ LC3_HOT static void compute_lpc_coeffs(enum lc3_dt dt, enum lc3_bandwidth bw, co
         for (int s = 0; s < 3; s++) {
             xs = xe, xe = x + *(++sub);
 
-            for (int k = 0; k < 9; k++) c[k][s] = dot(xs, xs + k, (xe - xs) - k);
+            for (int k = 0; k < 9; k++)
+                c[k][s] = dot(xs, xs + k, (xe - xs) - k);
         }
 
         float e0 = c[0][0], e1 = c[0][1], e2 = c[0][2];
 
         r[f][0] = 3;
         for (int k = 1; k < 9; k++)
-            r[f][k] = e0 == 0 || e1 == 0 || e2 == 0 ?
-                          0 :
-                          (c[k][0] / e0 + c[k][1] / e1 + c[k][2] / e2) * lag_window[k];
+            r[f][k] = e0 == 0 || e1 == 0 || e2 == 0 ? 0 :
+                (c[k][0]/e0 + c[k][1]/e1 + c[k][2]/e2) * lag_window[k];
     }
 
     /* --- Levinson-Durbin recursion --- */
@@ -111,23 +116,28 @@ LC3_HOT static void compute_lpc_coeffs(enum lc3_dt dt, enum lc3_bandwidth bw, co
         gain[f] = err;
 
         a0[0] = 1;
-        for (int k = 1; k < 9;) {
+        for (int k = 1; k < 9; ) {
+
             rc = -r[f][k];
-            for (int i = 1; i < k; i++) rc -= a0[i] * r[f][k - i];
+            for (int i = 1; i < k; i++)
+                rc -= a0[i] * r[f][k-i];
 
             rc /= err;
             err *= 1 - rc * rc;
 
-            for (int i = 1; i < k; i++) a1[i] = a0[i] + rc * a0[k - i];
+            for (int i = 1; i < k; i++)
+                a1[i] = a0[i] + rc * a0[k-i];
             a1[k++] = rc;
 
             rc = -r[f][k];
-            for (int i = 1; i < k; i++) rc -= a1[i] * r[f][k - i];
+            for (int i = 1; i < k; i++)
+                rc -= a1[i] * r[f][k-i];
 
             rc /= err;
             err *= 1 - rc * rc;
 
-            for (int i = 1; i < k; i++) a0[i] = a1[i] + rc * a1[k - i];
+            for (int i = 1; i < k; i++)
+                a0[i] = a1[i] + rc * a1[k-i];
             a0[k++] = rc;
         }
 
@@ -144,7 +154,8 @@ LC3_HOT static void lpc_weighting(float pred_gain, float *a)
     float gamma = 1.f - (1.f - 0.85f) * (2.f - pred_gain) / (2.f - 1.5f);
     float g = 1.f;
 
-    for (int i = 1; i < 9; i++) a[i] *= (g *= gamma);
+    for (int i = 1; i < 9; i++)
+        a[i] *= (g *= gamma);
 }
 
 /**
@@ -156,11 +167,12 @@ LC3_HOT static void lpc_reflection(const float *a, float *rc)
 {
     float e, b[2][7], *b0, *b1;
 
-    rc[7] = a[1 + 7];
+    rc[7] = a[1+7];
     e = 1 - rc[7] * rc[7];
 
     b1 = b[1];
-    for (int i = 0; i < 7; i++) b1[i] = (a[1 + i] - rc[7] * a[7 - i]) / e;
+    for (int i = 0; i < 7; i++)
+        b1[i] = (a[1+i] - rc[7] * a[7-i]) / e;
 
     for (int k = 6; k > 0; k--) {
         b0 = b1, b1 = b[k & 1];
@@ -168,7 +180,8 @@ LC3_HOT static void lpc_reflection(const float *a, float *rc)
         rc[k] = b0[k];
         e = 1 - rc[k] * rc[k];
 
-        for (int i = 0; i < k; i++) b1[i] = (b0[i] - rc[k] * b0[k - 1 - i]) / e;
+        for (int i = 0; i < k; i++)
+            b1[i] = (b0[i] - rc[k] * b0[k-1-i]) / e;
     }
 
     rc[0] = b1[0];
@@ -184,8 +197,10 @@ static void quantize_rc(const float *rc, int *rc_order, int *rc_q)
 {
     /* Quantization table, sin(delta * (i + 0.5)), delta = Pi / 17 */
 
-    static float q_thr[] = { 9.22683595e-02, 2.73662990e-01, 4.45738356e-01, 6.02634636e-01,
-                             7.39008917e-01, 8.50217136e-01, 9.32472229e-01, 9.82973100e-01 };
+    static float q_thr[] = {
+        9.22683595e-02, 2.73662990e-01, 4.45738356e-01, 6.02634636e-01,
+        7.39008917e-01, 8.50217136e-01, 9.32472229e-01, 9.82973100e-01
+    };
 
     *rc_order = 8;
 
@@ -193,7 +208,7 @@ static void quantize_rc(const float *rc, int *rc_order, int *rc_q)
         float rc_m = fabsf(rc[i]);
 
         rc_q[i] = 4 * (rc_m >= q_thr[4]);
-        for (int j = 0; j < 4 && rc_m >= q_thr[rc_q[i]]; j++, rc_q[i]++) {}
+        for (int j = 0; j < 4 && rc_m >= q_thr[rc_q[i]]; j++, rc_q[i]++);
 
         if (rc[i] < 0)
             rc_q[i] = -rc_q[i];
@@ -212,9 +227,11 @@ static void unquantize_rc(const int *rc_q, int rc_order, float rc[8])
 {
     /* Quantization table, sin(delta * i), delta = Pi / 17 */
 
-    static float q_inv[] = { 0.00000000e+00, 1.83749517e-01, 3.61241664e-01,
-                             5.26432173e-01, 6.73695641e-01, 7.98017215e-01,
-                             8.95163302e-01, 9.61825645e-01, 9.95734176e-01 };
+    static float q_inv[] = {
+        0.00000000e+00, 1.83749517e-01, 3.61241664e-01, 5.26432173e-01,
+        6.73695641e-01, 7.98017215e-01, 8.95163302e-01, 9.61825645e-01,
+        9.95734176e-01
+    };
 
     int i;
 
@@ -223,6 +240,7 @@ static void unquantize_rc(const int *rc_q, int rc_order, float rc[8])
         rc[i] = rc_q[i] < 0 ? -rc_m : rc_m;
     }
 }
+
 
 /* ----------------------------------------------------------------------------
  *  Filtering
@@ -234,16 +252,18 @@ static void unquantize_rc(const int *rc_q, int rc_order, float rc[8])
  * rc_order, rc    Order of coefficients, and coefficients
  * x               Spectral coefficients, filtered as output
  */
-LC3_HOT static void forward_filtering(enum lc3_dt dt, enum lc3_bandwidth bw, const int rc_order[2],
-                                      const float rc[2][8], float *x)
+LC3_HOT static void forward_filtering(
+    enum lc3_dt dt, enum lc3_bandwidth bw,
+    const int rc_order[2], const float rc[2][8], float *x)
 {
     int nfilters = 1 + (bw >= LC3_BANDWIDTH_SWB);
     int nf = LC3_NE(dt, bw) >> (nfilters - 1);
-    int i0, ie = 3 * (3 + dt);
+    int i0, ie = 3*(3 + dt);
 
     float s[8] = { 0 };
 
     for (int f = 0; f < nfilters; f++) {
+
         i0 = ie;
         ie = nf * (1 + f);
 
@@ -258,7 +278,7 @@ LC3_HOT static void forward_filtering(enum lc3_dt dt, enum lc3_bandwidth bw, con
                 s0 = s[k];
                 s[k] = s1;
 
-                s1 = rc[f][k] * xi + s0;
+                s1  = rc[f][k] * xi + s0;
                 xi += rc[f][k] * s0;
             }
 
@@ -273,16 +293,18 @@ LC3_HOT static void forward_filtering(enum lc3_dt dt, enum lc3_bandwidth bw, con
  * rc_order, rc    Order of coefficients, and unquantized coefficients
  * x               Spectral coefficients, filtered as output
  */
-LC3_HOT static void inverse_filtering(enum lc3_dt dt, enum lc3_bandwidth bw, const int rc_order[2],
-                                      const float rc[2][8], float *x)
+LC3_HOT static void inverse_filtering(
+    enum lc3_dt dt, enum lc3_bandwidth bw,
+    const int rc_order[2], const float rc[2][8], float *x)
 {
     int nfilters = 1 + (bw >= LC3_BANDWIDTH_SWB);
     int nf = LC3_NE(dt, bw) >> (nfilters - 1);
-    int i0, ie = 3 * (3 + dt);
+    int i0, ie = 3*(3 + dt);
 
     float s[8] = { 0 };
 
     for (int f = 0; f < nfilters; f++) {
+
         i0 = ie;
         ie = nf * (1 + f);
 
@@ -295,15 +317,17 @@ LC3_HOT static void inverse_filtering(enum lc3_dt dt, enum lc3_bandwidth bw, con
             xi -= s[7] * rc[f][7];
             for (int k = 6; k >= 0; k--) {
                 xi -= s[k] * rc[f][k];
-                s[k + 1] = s[k] + rc[f][k] * xi;
+                s[k+1] = s[k] + rc[f][k] * xi;
             }
             s[0] = xi;
             x[i] = xi;
         }
 
-        for (int k = 7; k >= rc_order[f]; k--) s[k] = 0;
+        for (int k = 7; k >= rc_order[f]; k--)
+            s[k] = 0;
     }
 }
+
 
 /* ----------------------------------------------------------------------------
  *  Interface
@@ -312,8 +336,8 @@ LC3_HOT static void inverse_filtering(enum lc3_dt dt, enum lc3_bandwidth bw, con
 /**
  * TNS analysis
  */
-void lc3_tns_analyze(enum lc3_dt dt, enum lc3_bandwidth bw, bool nn_flag, int nbytes,
-                     struct lc3_tns_data *data, float *x)
+void lc3_tns_analyze(enum lc3_dt dt, enum lc3_bandwidth bw,
+    bool nn_flag, int nbytes, struct lc3_tns_data *data, float *x)
 {
     /* Processing steps :
      * - Determine the LPC (Linear Predictive Coding) Coefficients
@@ -331,6 +355,7 @@ void lc3_tns_analyze(enum lc3_dt dt, enum lc3_bandwidth bw, bool nn_flag, int nb
     compute_lpc_coeffs(dt, bw, x, pred_gain, a);
 
     for (int f = 0; f < data->nfilters; f++) {
+
         data->rc_order[f] = 0;
         if (nn_flag || pred_gain[f] <= 1.5f)
             continue;
@@ -350,10 +375,10 @@ void lc3_tns_analyze(enum lc3_dt dt, enum lc3_bandwidth bw, bool nn_flag, int nb
 /**
  * TNS synthesis
  */
-void lc3_tns_synthesize(enum lc3_dt dt, enum lc3_bandwidth bw, const struct lc3_tns_data *data,
-                        float *x)
+void lc3_tns_synthesize(enum lc3_dt dt, enum lc3_bandwidth bw,
+    const struct lc3_tns_data *data, float *x)
 {
-    float rc[2][8] = {};
+    float rc[2][8] = { };
 
     for (int f = 0; f < data->nfilters; f++)
         if (data->rc_order[f])
@@ -370,12 +395,15 @@ int lc3_tns_get_nbits(const struct lc3_tns_data *data)
     int nbits = 0;
 
     for (int f = 0; f < data->nfilters; f++) {
+
         int nbits_2048 = 2048;
         int rc_order = data->rc_order[f];
 
-        nbits_2048 += rc_order > 0 ? lc3_tns_order_bits[data->lpc_weighting][rc_order - 1] : 0;
+        nbits_2048 += rc_order > 0 ? lc3_tns_order_bits
+            [data->lpc_weighting][rc_order-1] : 0;
 
-        for (int i = 0; i < rc_order; i++) nbits_2048 += lc3_tns_coeffs_bits[i][8 + data->rc[f][i]];
+        for (int i = 0; i < rc_order; i++)
+            nbits_2048 += lc3_tns_coeffs_bits[i][8 + data->rc[f][i]];
 
         nbits += (nbits_2048 + (1 << 11) - 1) >> 11;
     }
@@ -395,30 +423,35 @@ void lc3_tns_put_data(lc3_bits_t *bits, const struct lc3_tns_data *data)
         if (rc_order <= 0)
             continue;
 
-        lc3_put_symbol(bits, lc3_tns_order_models + data->lpc_weighting, rc_order - 1);
+        lc3_put_symbol(bits,
+            lc3_tns_order_models + data->lpc_weighting, rc_order-1);
 
         for (int i = 0; i < rc_order; i++)
-            lc3_put_symbol(bits, lc3_tns_coeffs_models + i, 8 + data->rc[f][i]);
+            lc3_put_symbol(bits,
+                lc3_tns_coeffs_models + i, 8 + data->rc[f][i]);
     }
 }
 
 /**
  * Get bitstream data
  */
-void lc3_tns_get_data(lc3_bits_t *bits, enum lc3_dt dt, enum lc3_bandwidth bw, int nbytes,
-                      lc3_tns_data_t *data)
+void lc3_tns_get_data(lc3_bits_t *bits,
+    enum lc3_dt dt, enum lc3_bandwidth bw, int nbytes, lc3_tns_data_t *data)
 {
     data->nfilters = 1 + (bw >= LC3_BANDWIDTH_SWB);
     data->lpc_weighting = resolve_lpc_weighting(dt, nbytes);
 
     for (int f = 0; f < data->nfilters; f++) {
+
         data->rc_order[f] = lc3_get_bit(bits);
         if (!data->rc_order[f])
             continue;
 
-        data->rc_order[f] += lc3_get_symbol(bits, lc3_tns_order_models + data->lpc_weighting);
+        data->rc_order[f] += lc3_get_symbol(bits,
+            lc3_tns_order_models + data->lpc_weighting);
 
         for (int i = 0; i < data->rc_order[f]; i++)
-            data->rc[f][i] = (int)lc3_get_symbol(bits, lc3_tns_coeffs_models + i) - 8;
+            data->rc[f][i] = (int)lc3_get_symbol(bits,
+                lc3_tns_coeffs_models + i) - 8;
     }
 }

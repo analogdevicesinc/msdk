@@ -40,40 +40,41 @@
 **************************************************************************************************/
 
 /*! RPA high address word for invalid address. */
-#define BB_BLE_RESLIST_RPA_INVALID 0
+#define BB_BLE_RESLIST_RPA_INVALID   0
 
 /*! \brief      Increment statistics counter. */
-#define BB_INC_STAT(s) s++
+#define BB_INC_STAT(s)              s++
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief      Resolving list table entry. */
-typedef struct {
-    uint8_t peerIrk[LL_KEY_LEN]; /*!< Peer IRK. */
-    uint8_t localIrk[LL_KEY_LEN]; /*!< Local IRK. */
-    uint64_t peerIdentityAddr; /*!< Peer identity address. */
-    uint64_t peerRpa; /*!< Peer resolvable private address. */
-    uint64_t localRpa; /*!< Local resolvable private address. */
-    uint64_t localRpaPeer; /*!< Local resolvable private address from peer. */
-    bool_t peerIrkZero; /*!< Indicates that peer IRK is zero. */
-    bool_t localIrkZero; /*!< Indicates that local IRK is zero. */
-    bool_t peerRpaGenerated; /*!< Indicates that peer RPA was locally generated. */
-    uint8_t privMode; /*!< Privacy mode. */
-    bool_t isRpaUpd; /*!< TRUE if either lcaol RPA or peer RPA is updated. */
+typedef struct
+{
+  uint8_t  peerIrk[LL_KEY_LEN];             /*!< Peer IRK. */
+  uint8_t  localIrk[LL_KEY_LEN];            /*!< Local IRK. */
+  uint64_t peerIdentityAddr;                /*!< Peer identity address. */
+  uint64_t peerRpa;                         /*!< Peer resolvable private address. */
+  uint64_t localRpa;                        /*!< Local resolvable private address. */
+  uint64_t localRpaPeer;                    /*!< Local resolvable private address from peer. */
+  bool_t   peerIrkZero;                     /*!< Indicates that peer IRK is zero. */
+  bool_t   localIrkZero;                    /*!< Indicates that local IRK is zero. */
+  bool_t   peerRpaGenerated;                /*!< Indicates that peer RPA was locally generated. */
+  uint8_t  privMode;                        /*!< Privacy mode. */
+  bool_t   isRpaUpd;                        /*!< TRUE if either lcaol RPA or peer RPA is updated. */
 } bbBleResListEntry_t;
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
-static bbBleResListEntry_t *pBbBleResListTbl; /*!< Resolving list. */
-static uint8_t bbBleResListNumEntries; /*!< Number of valid resolving list entries. */
-static uint8_t bbBleResListNumEntriesMax; /*!< Maximum number of resolving list entries. */
+static bbBleResListEntry_t  *pBbBleResListTbl;          /*!< Resolving list. */
+static uint8_t              bbBleResListNumEntries;     /*!< Number of valid resolving list entries. */
+static uint8_t              bbBleResListNumEntriesMax;  /*!< Maximum number of resolving list entries. */
 
 /*! \brief      Device filter statistics. */
-extern BbBlePduFiltStats_t bbBlePduFiltStats;
+extern BbBlePduFiltStats_t  bbBlePduFiltStats;
 
 /*! \brief      Address resolution needed callback. */
 static bbBleResListAddrResNeeded_t bbBleResListAddrResNeededCback;
@@ -95,27 +96,29 @@ static bbBleResListAddrResNeeded_t bbBleResListAddrResNeededCback;
 /*************************************************************************************************/
 uint16_t BbBleInitResolvingList(uint8_t numEntries, uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-    uint8_t *pAvailMem = pFreeMem;
+  uint8_t *pAvailMem = pFreeMem;
 
-    bbBleResListNumEntries = 0;
-    bbBleResListNumEntriesMax = 0;
+  bbBleResListNumEntries    = 0;
+  bbBleResListNumEntriesMax = 0;
 
-    /* Allocate memory. */
-    if (((uint32_t)pAvailMem) & 3) {
-        /* Align to next word. */
-        pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
-    }
-    pBbBleResListTbl = (bbBleResListEntry_t *)pAvailMem;
-    pAvailMem += sizeof(bbBleResListEntry_t) * numEntries;
+  /* Allocate memory. */
+  if (((uint32_t)pAvailMem) & 3)
+  {
+    /* Align to next word. */
+    pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
+  }
+  pBbBleResListTbl = (bbBleResListEntry_t *)pAvailMem;
+  pAvailMem  += sizeof(bbBleResListEntry_t) * numEntries;
 
-    /* Check memory allocation. */
-    if (((uint32_t)(pAvailMem - pFreeMem)) > freeMemSize) {
-        WSF_ASSERT(FALSE);
-        return 0;
-    }
+  /* Check memory allocation. */
+  if (((uint32_t)(pAvailMem - pFreeMem)) > freeMemSize)
+  {
+    WSF_ASSERT(FALSE);
+    return 0;
+  }
 
-    bbBleResListNumEntriesMax = numEntries;
-    return (pAvailMem - pFreeMem);
+  bbBleResListNumEntriesMax = numEntries;
+  return (pAvailMem - pFreeMem);
 }
 
 /*************************************************************************************************/
@@ -127,7 +130,7 @@ uint16_t BbBleInitResolvingList(uint8_t numEntries, uint8_t *pFreeMem, uint32_t 
 /*************************************************************************************************/
 void BbBleResListSetAddrResNeededCback(bbBleResListAddrResNeeded_t cback)
 {
-    bbBleResListAddrResNeededCback = cback;
+  bbBleResListAddrResNeededCback = cback;
 }
 
 /*************************************************************************************************/
@@ -142,20 +145,21 @@ void BbBleResListSetAddrResNeededCback(bbBleResListAddrResNeeded_t cback)
  *  Find entry in resolving list.
  */
 /*************************************************************************************************/
-static bbBleResListEntry_t *bbBleFindResolvingListEntry(uint8_t peerAddrType,
-                                                        uint64_t peerIdentityAddr)
+static bbBleResListEntry_t *bbBleFindResolvingListEntry(uint8_t peerAddrType, uint64_t peerIdentityAddr)
 {
-    peerIdentityAddr |= (uint64_t)peerAddrType << 48;
+  peerIdentityAddr |= (uint64_t)peerAddrType << 48;
 
-    uint8_t i;
+  uint8_t i;
 
-    for (i = 0; i < bbBleResListNumEntries; i++) {
-        if (pBbBleResListTbl[i].peerIdentityAddr == peerIdentityAddr) {
-            return &pBbBleResListTbl[i];
-        }
+  for (i = 0; i < bbBleResListNumEntries; i++)
+  {
+    if (pBbBleResListTbl[i].peerIdentityAddr == peerIdentityAddr)
+    {
+      return &pBbBleResListTbl[i];
     }
+  }
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -172,21 +176,23 @@ static bbBleResListEntry_t *bbBleFindResolvingListEntry(uint8_t peerAddrType,
 /*************************************************************************************************/
 static uint32_t bbGenerateHash(const uint8_t *pIrk, uint32_t r)
 {
-    uint8_t rprime[LL_KEY_LEN];
-    uint32_t hash;
+  uint8_t  rprime[LL_KEY_LEN];
+  uint32_t hash;
 
-    /* r' = padding | r */
-    memset(rprime, 0, sizeof(rprime));
-    rprime[0] = ((r >> 0) & 0xFF);
-    rprime[1] = ((r >> 8) & 0xFF);
-    rprime[2] = ((r >> 16) & 0xFF);
+  /* r' = padding | r */
+  memset(rprime, 0, sizeof(rprime));
+  rprime[0] = ((r >>  0) & 0xFF);
+  rprime[1] = ((r >>  8) & 0xFF);
+  rprime[2] = ((r >> 16) & 0xFF);
 
-    /* r' = e(k, r') */
-    PalCryptoAesEcb(pIrk, rprime, rprime);
+  /* r' = e(k, r') */
+  PalCryptoAesEcb(pIrk, rprime, rprime);
 
-    /* ah(k, r) = e(k, r') mod 2^24 */
-    hash = (rprime[0] << 0) | (rprime[1] << 8) | (rprime[2] << 16);
-    return hash;
+  /* ah(k, r) = e(k, r') mod 2^24 */
+  hash = (rprime[0] <<  0) |
+         (rprime[1] <<  8) |
+         (rprime[2] << 16);
+  return hash;
 }
 
 /*************************************************************************************************/
@@ -202,16 +208,16 @@ static uint32_t bbGenerateHash(const uint8_t *pIrk, uint32_t r)
 /*************************************************************************************************/
 static uint64_t bbGenerateRpa(const uint8_t *pIrk)
 {
-    uint32_t prand;
-    uint32_t hash;
-    uint64_t rpa;
+  uint32_t prand;
+  uint32_t hash;
+  uint64_t rpa;
 
-    PalCryptoGenerateRandomNumber((uint8_t *)&prand, (sizeof(uint32_t) / sizeof(uint8_t)));
+  PalCryptoGenerateRandomNumber((uint8_t *)&prand, (sizeof(uint32_t) / sizeof(uint8_t)));
 
-    prand = (prand & 0x003FFFFF) | 0x00400000;
-    hash = bbGenerateHash(pIrk, prand);
-    rpa = ((uint64_t)prand << 24) | hash;
-    return rpa;
+  prand = (prand & 0x003FFFFF) | 0x00400000;
+  hash  = bbGenerateHash(pIrk, prand);
+  rpa   = ((uint64_t)prand << 24) | hash;
+  return rpa;
 }
 
 /*************************************************************************************************/
@@ -228,14 +234,14 @@ static uint64_t bbGenerateRpa(const uint8_t *pIrk)
 /*************************************************************************************************/
 static bool_t bbVerifyRpa(const uint8_t *pIrk, uint64_t rpa)
 {
-    uint32_t prand;
-    uint32_t hash;
-    uint32_t localHash;
+  uint32_t prand;
+  uint32_t hash;
+  uint32_t localHash;
 
-    prand = (rpa >> 24) & UINT64_C(0xFFFFFF);
-    hash = (rpa >> 0) & UINT64_C(0xFFFFFF);
-    localHash = bbGenerateHash(pIrk, prand);
-    return (hash == localHash);
+  prand     = (rpa >> 24) & UINT64_C(0xFFFFFF);
+  hash      = (rpa >>  0) & UINT64_C(0xFFFFFF);
+  localHash  = bbGenerateHash(pIrk, prand);
+  return (hash == localHash);
 }
 
 /*************************************************************************************************/
@@ -249,7 +255,7 @@ static bool_t bbVerifyRpa(const uint8_t *pIrk, uint64_t rpa)
 /*************************************************************************************************/
 uint8_t BbBleResListGetSize(void)
 {
-    return bbBleResListNumEntriesMax;
+  return bbBleResListNumEntriesMax;
 }
 
 /*************************************************************************************************/
@@ -261,7 +267,7 @@ uint8_t BbBleResListGetSize(void)
 /*************************************************************************************************/
 void BbBleResListClear(void)
 {
-    bbBleResListNumEntries = 0;
+  bbBleResListNumEntries = 0;
 }
 
 /*************************************************************************************************/
@@ -279,61 +285,69 @@ void BbBleResListClear(void)
  */
 /*************************************************************************************************/
 bool_t BbBleResListAdd(uint8_t peerAddrType, uint64_t peerIdentityAddr, const uint8_t *pPeerIrk,
-                       const uint8_t *pLocalIrk)
+    const uint8_t *pLocalIrk)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    /* Check whether this entry already exists. */
-    pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
-    if (pEntry == NULL) {
-        /* Otherwise add new entry. */
-        if (bbBleResListNumEntries < bbBleResListNumEntriesMax) {
-            pEntry = &pBbBleResListTbl[bbBleResListNumEntries];
-            bbBleResListNumEntries++;
-        }
+  /* Check whether this entry already exists. */
+  pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  if (pEntry == NULL)
+  {
+    /* Otherwise add new entry. */
+    if (bbBleResListNumEntries < bbBleResListNumEntriesMax)
+    {
+      pEntry = &pBbBleResListTbl[bbBleResListNumEntries];
+      bbBleResListNumEntries++;
+    }
+  }
+
+  /* Initialize entry. */
+  if (pEntry != NULL)
+  {
+    uint8_t i;
+
+    peerIdentityAddr |= ((uint64_t)peerAddrType << 48);
+    pEntry->peerIdentityAddr = peerIdentityAddr;
+
+    memcpy(pEntry->peerIrk, pPeerIrk, sizeof(pEntry->peerIrk));
+    pEntry->peerIrkZero = TRUE;
+    for (i = 0; i < sizeof(pEntry->peerIrk); i++)
+    {
+      if (pEntry->peerIrk[i] != 0)
+      {
+        pEntry->peerIrkZero = FALSE;
+        break;
+      }
     }
 
-    /* Initialize entry. */
-    if (pEntry != NULL) {
-        uint8_t i;
-
-        peerIdentityAddr |= ((uint64_t)peerAddrType << 48);
-        pEntry->peerIdentityAddr = peerIdentityAddr;
-
-        memcpy(pEntry->peerIrk, pPeerIrk, sizeof(pEntry->peerIrk));
-        pEntry->peerIrkZero = TRUE;
-        for (i = 0; i < sizeof(pEntry->peerIrk); i++) {
-            if (pEntry->peerIrk[i] != 0) {
-                pEntry->peerIrkZero = FALSE;
-                break;
-            }
-        }
-
-        memcpy(pEntry->localIrk, pLocalIrk, sizeof(pEntry->localIrk));
-        pEntry->localIrkZero = TRUE;
-        for (i = 0; i < sizeof(pEntry->localIrk); i++) {
-            if (pEntry->localIrk[i] != 0) {
-                pEntry->localIrkZero = FALSE;
-                break;
-            }
-        }
-
-        pEntry->peerRpa = BB_BLE_RESLIST_RPA_INVALID;
-        pEntry->localRpa = BB_BLE_RESLIST_RPA_INVALID;
-        pEntry->localRpaPeer = BB_BLE_RESLIST_RPA_INVALID;
-        pEntry->peerRpaGenerated = FALSE;
-        pEntry->privMode = BB_BLE_RESLIST_PRIV_MODE_NETWORK;
-
-        /* Generate a local RPA now. */
-        if (!pEntry->localIrkZero) {
-            pEntry->localRpa = bbGenerateRpa(pEntry->localIrk);
-        }
-
-        return TRUE;
+    memcpy(pEntry->localIrk, pLocalIrk, sizeof(pEntry->localIrk));
+    pEntry->localIrkZero = TRUE;
+    for (i = 0; i < sizeof(pEntry->localIrk); i++)
+    {
+      if (pEntry->localIrk[i] != 0)
+      {
+        pEntry->localIrkZero = FALSE;
+        break;
+      }
     }
 
-    /* List full. */
-    return FALSE;
+    pEntry->peerRpa          = BB_BLE_RESLIST_RPA_INVALID;
+    pEntry->localRpa         = BB_BLE_RESLIST_RPA_INVALID;
+    pEntry->localRpaPeer     = BB_BLE_RESLIST_RPA_INVALID;
+    pEntry->peerRpaGenerated = FALSE;
+    pEntry->privMode         = BB_BLE_RESLIST_PRIV_MODE_NETWORK;
+
+    /* Generate a local RPA now. */
+    if (!pEntry->localIrkZero)
+    {
+      pEntry->localRpa = bbGenerateRpa(pEntry->localIrk);
+    }
+
+    return TRUE;
+  }
+
+  /* List full. */
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -350,19 +364,21 @@ bool_t BbBleResListAdd(uint8_t peerAddrType, uint64_t peerIdentityAddr, const ui
 /*************************************************************************************************/
 bool_t BbBleResListRemove(uint8_t peerAddrType, uint64_t peerIdentityAddr)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
-    if (pEntry != NULL) {
-        if (bbBleResListNumEntries > 1) {
-            /* If there is more than one entry, move the last entry into this slot. */
-            memcpy(pEntry, &pBbBleResListTbl[bbBleResListNumEntries - 1], sizeof(*pEntry));
-        }
-        bbBleResListNumEntries--;
-        return TRUE;
+  pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    if (bbBleResListNumEntries > 1)
+    {
+      /* If there is more than one entry, move the last entry into this slot. */
+      memcpy(pEntry, &pBbBleResListTbl[bbBleResListNumEntries - 1], sizeof(*pEntry));
     }
+    bbBleResListNumEntries--;
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -380,15 +396,16 @@ bool_t BbBleResListRemove(uint8_t peerAddrType, uint64_t peerIdentityAddr)
 /*************************************************************************************************/
 bool_t BbBleResListSetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAddr, uint8_t privMode)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
-    if (pEntry != NULL) {
-        pEntry->privMode = privMode;
-        return TRUE;
-    }
+  pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    pEntry->privMode = privMode;
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -404,18 +421,18 @@ bool_t BbBleResListSetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAdd
  *  Get privacy mode of a device.
  */
 /*************************************************************************************************/
-bool_t BbBleResListGetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAddr,
-                                  uint8_t *pPrivMode)
+bool_t BbBleResListGetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAddr, uint8_t *pPrivMode)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
-    if (pEntry != NULL) {
-        *pPrivMode = pEntry->privMode;
-        return TRUE;
-    }
+  pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    *pPrivMode = pEntry->privMode;
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -434,17 +451,19 @@ bool_t BbBleResListGetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAdd
 /*************************************************************************************************/
 bool_t BbBleResListReadPeer(uint8_t peerAddrType, uint64_t peerIdentityAddr, uint64_t *pRpa)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
-    if (pEntry != NULL) {
-        if (pEntry->peerRpa != BB_BLE_RESLIST_RPA_INVALID) {
-            *pRpa = pEntry->peerRpa;
-            return TRUE;
-        }
+  pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    if (pEntry->peerRpa != BB_BLE_RESLIST_RPA_INVALID)
+    {
+      *pRpa = pEntry->peerRpa;
+      return TRUE;
     }
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -463,17 +482,19 @@ bool_t BbBleResListReadPeer(uint8_t peerAddrType, uint64_t peerIdentityAddr, uin
 /*************************************************************************************************/
 bool_t BbBleResListReadLocal(uint8_t peerAddrType, uint64_t peerIdentityAddr, uint64_t *pRpa)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
-    if (pEntry != NULL) {
-        if (pEntry->localRpa != BB_BLE_RESLIST_RPA_INVALID) {
-            *pRpa = pEntry->localRpa;
-            return TRUE;
-        }
+  pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    if (pEntry->localRpa != BB_BLE_RESLIST_RPA_INVALID)
+    {
+      *pRpa = pEntry->localRpa;
+      return TRUE;
     }
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -492,15 +513,16 @@ bool_t BbBleResListReadLocal(uint8_t peerAddrType, uint64_t peerIdentityAddr, ui
 /*************************************************************************************************/
 bool_t BbBleResListUpdateLocal(uint8_t peerAddrType, uint64_t peerIdentityAddr, uint64_t *pRpa)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
-    if (pEntry != NULL) {
-        pEntry->localRpa = *pRpa;
-        return TRUE;
-    }
+  pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    pEntry->localRpa = *pRpa;
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -518,24 +540,27 @@ bool_t BbBleResListUpdateLocal(uint8_t peerAddrType, uint64_t peerIdentityAddr, 
 /*************************************************************************************************/
 bool_t BbBleResListGeneratePeer(uint8_t peerAddrType, uint64_t peerIdentityAddr, uint64_t *pRpa)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
-    if (pEntry != NULL) {
-        /* There will never be a RPA if the IRK is zero. */
-        if (pEntry->peerIrkZero) {
-            return FALSE;
-        }
-        /* Generate a new RPA only if one is not generated locally. */
-        if (!pEntry->peerRpaGenerated) {
-            pEntry->peerRpa = bbGenerateRpa(pEntry->peerIrk);
-            pEntry->peerRpaGenerated = TRUE;
-        }
-        *pRpa = pEntry->peerRpa;
-        return TRUE;
+  pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    /* There will never be a RPA if the IRK is zero. */
+    if (pEntry->peerIrkZero)
+    {
+      return FALSE;
     }
+    /* Generate a new RPA only if one is not generated locally. */
+    if (!pEntry->peerRpaGenerated)
+    {
+      pEntry->peerRpa          = bbGenerateRpa(pEntry->peerIrk);
+      pEntry->peerRpaGenerated = TRUE;
+    }
+    *pRpa = pEntry->peerRpa;
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -553,32 +578,35 @@ bool_t BbBleResListGeneratePeer(uint8_t peerAddrType, uint64_t peerIdentityAddr,
  *  the operation later.
  */
 /*************************************************************************************************/
-bool_t BbBleResListCheckResolvePeer(uint64_t rpa, uint8_t *pPeerAddrType,
-                                    uint64_t *pPeerIdentityAddr)
+bool_t BbBleResListCheckResolvePeer(uint64_t rpa, uint8_t *pPeerAddrType, uint64_t *pPeerIdentityAddr)
 {
-    uint8_t i;
-    bool_t resCback = FALSE; /* Only call callback if we have a non-empty resolving list. */
+  uint8_t i;
+  bool_t resCback = FALSE; /* Only call callback if we have a non-empty resolving list. */
 
-    for (i = 0; i < bbBleResListNumEntries; i++) {
-        bbBleResListEntry_t *pEntry = &pBbBleResListTbl[i];
+  for (i = 0; i < bbBleResListNumEntries; i++)
+  {
+    bbBleResListEntry_t *pEntry = &pBbBleResListTbl[i];
 
-        if (!pEntry->peerIrkZero) {
-            /* Check whether this RPA is the identical to the cached value. */
-            if (rpa == pEntry->peerRpa) {
-                *pPeerAddrType = (pEntry->peerIdentityAddr >> 48) & 0x1;
-                *pPeerIdentityAddr = pEntry->peerIdentityAddr & UINT64_C(0xFFFFFFFFFFFF);
-                return TRUE;
-            }
-            resCback = TRUE;
-        }
+    if (!pEntry->peerIrkZero)
+    {
+      /* Check whether this RPA is the identical to the cached value. */
+      if (rpa == pEntry->peerRpa)
+      {
+        *pPeerAddrType     = (pEntry->peerIdentityAddr >> 48) & 0x1;
+        *pPeerIdentityAddr = pEntry->peerIdentityAddr & UINT64_C(0xFFFFFFFFFFFF);
+        return TRUE;
+      }
+      resCback = TRUE;
     }
+  }
 
-    if (resCback && bbBleResListAddrResNeededCback) {
-        BB_INC_STAT(bbBlePduFiltStats.peerResAddrPend);
-        bbBleResListAddrResNeededCback(rpa, TRUE, *pPeerAddrType, *pPeerIdentityAddr);
-    }
+  if (resCback && bbBleResListAddrResNeededCback)
+  {
+    BB_INC_STAT(bbBlePduFiltStats.peerResAddrPend);
+    bbBleResListAddrResNeededCback(rpa, TRUE, *pPeerAddrType, *pPeerIdentityAddr);
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -598,23 +626,29 @@ bool_t BbBleResListCheckResolvePeer(uint64_t rpa, uint8_t *pPeerAddrType,
 /*************************************************************************************************/
 bool_t BbBleResListCheckResolveLocal(uint64_t rpa, uint8_t peerAddrType, uint64_t peerIdentityAddr)
 {
-    bbBleResListEntry_t *pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  bbBleResListEntry_t *pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
 
-    if (pEntry != NULL) {
-        if (!pEntry->localIrkZero) {
-            /* Check whether this RPA is the identical to the cached value. */
-            if (rpa == pEntry->localRpaPeer) {
-                return TRUE;
-            } else {
-                if (bbBleResListAddrResNeededCback) {
-                    BB_INC_STAT(bbBlePduFiltStats.localResAddrPend);
-                    bbBleResListAddrResNeededCback(rpa, FALSE, peerAddrType, peerIdentityAddr);
-                }
-            }
+  if (pEntry != NULL)
+  {
+    if (!pEntry->localIrkZero)
+    {
+      /* Check whether this RPA is the identical to the cached value. */
+      if (rpa == pEntry->localRpaPeer)
+      {
+        return TRUE;
+      }
+      else
+      {
+        if (bbBleResListAddrResNeededCback)
+        {
+          BB_INC_STAT(bbBlePduFiltStats.localResAddrPend);
+          bbBleResListAddrResNeededCback(rpa, FALSE, peerAddrType, peerIdentityAddr);
         }
+      }
     }
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -631,18 +665,21 @@ bool_t BbBleResListCheckResolveLocal(uint64_t rpa, uint8_t peerAddrType, uint64_
 /*************************************************************************************************/
 bool_t BbBleResListIsLocalResolved(uint64_t rpa, uint8_t peerAddrType, uint64_t peerIdentityAddr)
 {
-    bbBleResListEntry_t *pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  bbBleResListEntry_t *pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
 
-    if (pEntry != NULL) {
-        if (!pEntry->localIrkZero) {
-            /* Check whether this RPA is the identical to the cached value. */
-            if (rpa == pEntry->localRpaPeer) {
-                return TRUE;
-            }
-        }
+  if (pEntry != NULL)
+  {
+    if (!pEntry->localIrkZero)
+    {
+      /* Check whether this RPA is the identical to the cached value. */
+      if (rpa == pEntry->localRpaPeer)
+      {
+        return TRUE;
+      }
     }
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -660,35 +697,41 @@ bool_t BbBleResListIsLocalResolved(uint64_t rpa, uint8_t peerAddrType, uint64_t 
 /*************************************************************************************************/
 bool_t BbBleResListResolvePeer(uint64_t rpa, uint8_t *pPeerAddrType, uint64_t *pPeerIdentityAddr)
 {
-    uint8_t i;
+  uint8_t i;
 
-    for (i = 0; i < bbBleResListNumEntries; i++) {
-        bbBleResListEntry_t *pEntry = &pBbBleResListTbl[i];
+  for (i = 0; i < bbBleResListNumEntries; i++)
+  {
+    bbBleResListEntry_t *pEntry = &pBbBleResListTbl[i];
 
-        if (!pEntry->peerIrkZero) {
-            bool_t found = FALSE;
+    if (!pEntry->peerIrkZero)
+    {
+      bool_t found = FALSE;
 
-            /* Check whether this RPA is the identical to the cached value. */
-            if (rpa == pEntry->peerRpa) {
-                found = TRUE;
-            } else if (bbVerifyRpa(pEntry->peerIrk, rpa)) {
-                /* Cache this RPA. */
-                pEntry->peerRpa = rpa;
-                pEntry->peerRpaGenerated = FALSE;
-                found = TRUE;
-                BB_INC_STAT(bbBlePduFiltStats.passPeerRpaVerify);
-            }
+      /* Check whether this RPA is the identical to the cached value. */
+      if (rpa == pEntry->peerRpa)
+      {
+        found = TRUE;
+      }
+      else if (bbVerifyRpa(pEntry->peerIrk, rpa))
+      {
+        /* Cache this RPA. */
+        pEntry->peerRpa = rpa;
+        pEntry->peerRpaGenerated = FALSE;
+        found = TRUE;
+        BB_INC_STAT(bbBlePduFiltStats.passPeerRpaVerify);
+      }
 
-            if (found) {
-                *pPeerAddrType = (pEntry->peerIdentityAddr >> 48) & 0x1;
-                *pPeerIdentityAddr = pEntry->peerIdentityAddr & UINT64_C(0xFFFFFFFFFFFF);
-                return TRUE;
-            }
-        }
+      if (found)
+      {
+        *pPeerAddrType     = (pEntry->peerIdentityAddr >> 48) & 0x1;
+        *pPeerIdentityAddr = pEntry->peerIdentityAddr & UINT64_C(0xFFFFFFFFFFFF);
+        return TRUE;
+      }
     }
+  }
 
-    BB_INC_STAT(bbBlePduFiltStats.failPeerRpaVerify);
-    return FALSE;
+  BB_INC_STAT(bbBlePduFiltStats.failPeerRpaVerify);
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -706,23 +749,28 @@ bool_t BbBleResListResolvePeer(uint64_t rpa, uint8_t *pPeerAddrType, uint64_t *p
 /*************************************************************************************************/
 bool_t BbBleResListResolveLocal(uint64_t rpa, uint8_t *pPeerAddrType, uint64_t *pPeerIdentityAddr)
 {
-    bbBleResListEntry_t *pEntry = bbBleFindResolvingListEntry(*pPeerAddrType, *pPeerIdentityAddr);
+  bbBleResListEntry_t *pEntry = bbBleFindResolvingListEntry(*pPeerAddrType, *pPeerIdentityAddr);
 
-    if (pEntry != NULL) {
-        if (!pEntry->localIrkZero) {
-            /* Check whether this RPA is the identical to the cached value. */
-            if (rpa == pEntry->localRpaPeer) {
-                return TRUE;
-            } else if (bbVerifyRpa(pEntry->localIrk, rpa)) {
-                pEntry->localRpaPeer = rpa;
-                BB_INC_STAT(bbBlePduFiltStats.passLocalRpaVerify);
-                return TRUE;
-            }
-        }
+  if (pEntry != NULL)
+  {
+    if (!pEntry->localIrkZero)
+    {
+      /* Check whether this RPA is the identical to the cached value. */
+      if (rpa == pEntry->localRpaPeer)
+      {
+        return TRUE;
+      }
+      else if (bbVerifyRpa(pEntry->localIrk, rpa))
+      {
+        pEntry->localRpaPeer = rpa;
+        BB_INC_STAT(bbBlePduFiltStats.passLocalRpaVerify);
+        return TRUE;
+      }
     }
+  }
 
-    BB_INC_STAT(bbBlePduFiltStats.failLocalRpaVerify);
-    return FALSE;
+  BB_INC_STAT(bbBlePduFiltStats.failLocalRpaVerify);
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -739,20 +787,26 @@ bool_t BbBleResListResolveLocal(uint64_t rpa, uint8_t *pPeerAddrType, uint64_t *
 /*************************************************************************************************/
 uint8_t BbBleResListPeerStatus(bool_t peerAddrRand, uint64_t peerIdentityAddr)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrRand, peerIdentityAddr);
-    if (pEntry != NULL) {
-        if (pEntry->peerRpa != BB_BLE_RESLIST_RPA_INVALID) {
-            return BB_BLE_RESLIST_STATUS_RES_ADDR_ASSIGNED;
-        } else if (pEntry->peerIrkZero) {
-            return BB_BLE_RESLIST_STATUS_ZERO_IRK;
-        } else {
-            return BB_BLE_RESLIST_STATUS_RES_ADDR_UNASSIGNED;
-        }
+  pEntry = bbBleFindResolvingListEntry(peerAddrRand, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    if (pEntry->peerRpa != BB_BLE_RESLIST_RPA_INVALID)
+    {
+      return BB_BLE_RESLIST_STATUS_RES_ADDR_ASSIGNED;
     }
+    else if (pEntry->peerIrkZero)
+    {
+      return BB_BLE_RESLIST_STATUS_ZERO_IRK;
+    }
+    else
+    {
+      return BB_BLE_RESLIST_STATUS_RES_ADDR_UNASSIGNED;
+    }
+  }
 
-    return BB_BLE_RESLIST_STATUS_ID_ADDR_NOT_IN_LIST;
+  return BB_BLE_RESLIST_STATUS_ID_ADDR_NOT_IN_LIST;
 }
 
 /*************************************************************************************************/
@@ -769,20 +823,26 @@ uint8_t BbBleResListPeerStatus(bool_t peerAddrRand, uint64_t peerIdentityAddr)
 /*************************************************************************************************/
 uint8_t BbBleResListLocalStatus(bool_t peerAddrRand, uint64_t peerIdentityAddr)
 {
-    bbBleResListEntry_t *pEntry;
+  bbBleResListEntry_t *pEntry;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrRand, peerIdentityAddr);
-    if (pEntry != NULL) {
-        if (pEntry->localRpa != BB_BLE_RESLIST_RPA_INVALID) {
-            return BB_BLE_RESLIST_STATUS_RES_ADDR_ASSIGNED;
-        } else if (pEntry->localIrkZero) {
-            return BB_BLE_RESLIST_STATUS_ZERO_IRK;
-        } else {
-            return BB_BLE_RESLIST_STATUS_RES_ADDR_UNASSIGNED;
-        }
+  pEntry = bbBleFindResolvingListEntry(peerAddrRand, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    if (pEntry->localRpa != BB_BLE_RESLIST_RPA_INVALID)
+    {
+      return BB_BLE_RESLIST_STATUS_RES_ADDR_ASSIGNED;
     }
+    else if (pEntry->localIrkZero)
+    {
+      return BB_BLE_RESLIST_STATUS_ZERO_IRK;
+    }
+    else
+    {
+      return BB_BLE_RESLIST_STATUS_RES_ADDR_UNASSIGNED;
+    }
+  }
 
-    return BB_BLE_RESLIST_STATUS_ID_ADDR_NOT_IN_LIST;
+  return BB_BLE_RESLIST_STATUS_ID_ADDR_NOT_IN_LIST;
 }
 
 /*************************************************************************************************/
@@ -794,20 +854,23 @@ uint8_t BbBleResListLocalStatus(bool_t peerAddrRand, uint64_t peerIdentityAddr)
 /*************************************************************************************************/
 void BbBleResListHandleTimeout(void)
 {
-    uint8_t i;
+  uint8_t i;
 
-    for (i = 0; i < bbBleResListNumEntries; i++) {
-        bbBleResListEntry_t *pEntry = &pBbBleResListTbl[i];
+  for (i = 0; i < bbBleResListNumEntries; i++)
+  {
+    bbBleResListEntry_t *pEntry = &pBbBleResListTbl[i];
 
-        if (!pEntry->localIrkZero) {
-            pEntry->localRpa = bbGenerateRpa(pEntry->localIrk);
-        }
-        if (!pEntry->peerIrkZero && pEntry->peerRpaGenerated) {
-            pEntry->peerRpa = bbGenerateRpa(pEntry->peerIrk);
-        }
-
-        pEntry->isRpaUpd = TRUE;
+    if (!pEntry->localIrkZero)
+    {
+      pEntry->localRpa = bbGenerateRpa(pEntry->localIrk);
     }
+    if (!pEntry->peerIrkZero && pEntry->peerRpaGenerated)
+    {
+      pEntry->peerRpa = bbGenerateRpa(pEntry->peerIrk);
+    }
+
+    pEntry->isRpaUpd = TRUE;
+  }
 }
 
 /*************************************************************************************************/
@@ -823,17 +886,18 @@ void BbBleResListHandleTimeout(void)
 /*************************************************************************************************/
 bool_t BbBleResListIsRpaUpd(uint8_t peerAddrType, uint64_t peerIdentityAddr)
 {
-    bbBleResListEntry_t *pEntry;
-    bool_t result;
+  bbBleResListEntry_t *pEntry;
+  bool_t  result;
 
-    pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
-    if (pEntry != NULL) {
-        result = pEntry->isRpaUpd;
-        pEntry->isRpaUpd = FALSE;
-        return result;
-    }
+  pEntry = bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr);
+  if (pEntry != NULL)
+  {
+    result = pEntry->isRpaUpd;
+    pEntry->isRpaUpd = FALSE;
+    return result;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -849,5 +913,5 @@ bool_t BbBleResListIsRpaUpd(uint8_t peerAddrType, uint64_t peerIdentityAddr)
 /*************************************************************************************************/
 bool_t bbBleIsPeerInResList(uint8_t peerAddrType, uint64_t peerIdentityAddr)
 {
-    return (bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr) != NULL) ? TRUE : FALSE;
+  return (bbBleFindResolvingListEntry(peerAddrType, peerIdentityAddr) != NULL) ? TRUE : FALSE;
 }

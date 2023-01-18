@@ -62,6 +62,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+
 /**
  * AES-GCM encryption.
  *
@@ -77,9 +78,9 @@ extern "C" {
  *
  * @remark @p ct and @p pt can point to the same address.
  */
-void ocrypto_aes_gcm_encrypt(uint8_t *ct, uint8_t tag[16], const uint8_t *pt, size_t pt_len,
-                             const uint8_t *key, size_t size, const uint8_t iv[12],
-                             const uint8_t *aa, size_t aa_len);
+void ocrypto_aes_gcm_encrypt (
+    uint8_t* ct, uint8_t tag[16], const uint8_t* pt, size_t pt_len,
+    const uint8_t *key, size_t size, const uint8_t iv[12], const uint8_t *aa, size_t aa_len);
 
 /**
  * AES-GCM decryption.
@@ -99,9 +100,10 @@ void ocrypto_aes_gcm_encrypt(uint8_t *ct, uint8_t tag[16], const uint8_t *pt, si
  * @retval 0  If @p tag is valid.
  * @retval -1 Otherwise.
  */
-int ocrypto_aes_gcm_decrypt(uint8_t *pt, const uint8_t tag[16], const uint8_t *ct, size_t ct_len,
-                            const uint8_t *key, size_t size, const uint8_t iv[12],
-                            const uint8_t *aa, size_t aa_len);
+int ocrypto_aes_gcm_decrypt (
+    uint8_t* pt, const uint8_t tag[16], const uint8_t* ct, size_t ct_len,
+    const uint8_t *key, size_t size, const uint8_t iv[12], const uint8_t *aa, size_t aa_len);
+
 
 #ifdef __cplusplus
 }

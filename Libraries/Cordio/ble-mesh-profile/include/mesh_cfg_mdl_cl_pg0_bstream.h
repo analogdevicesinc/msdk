@@ -33,7 +33,8 @@
 #define MESH_CFG_MDL_CL_PG0_BSTREAM_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "wsf_types.h"
@@ -54,18 +55,19 @@ extern "C" {
  *   feat = features (see ::meshFeatures_t);
  */
 #define BSTREAM_TO_CFG_CL_COMP_PG0_HDR(pBuf, len, cid, pid, vid, crpl, feat) \
-    do {                                                                     \
-        BSTREAM_TO_UINT16((cid), (pBuf));                                    \
-        (len) -= 2;                                                          \
-        BSTREAM_TO_UINT16((pid), (pBuf));                                    \
-        (len) -= 2;                                                          \
-        BSTREAM_TO_UINT16((vid), (pBuf));                                    \
-        (len) -= 2;                                                          \
-        BSTREAM_TO_UINT16((crpl), (pBuf));                                   \
-        (len) -= 2;                                                          \
-        BSTREAM_TO_UINT16((feat), (pBuf));                                   \
-        (len) -= 2;                                                          \
-    } while (0)
+                                       do                                    \
+                                       {                                     \
+                                         BSTREAM_TO_UINT16((cid), (pBuf));   \
+                                         (len) -= 2;                         \
+                                         BSTREAM_TO_UINT16((pid), (pBuf));   \
+                                         (len) -= 2;                         \
+                                         BSTREAM_TO_UINT16((vid), (pBuf));   \
+                                         (len) -= 2;                         \
+                                         BSTREAM_TO_UINT16((crpl), (pBuf));  \
+                                         (len) -= 2;                         \
+                                         BSTREAM_TO_UINT16((feat), (pBuf));  \
+                                         (len) -= 2;                         \
+                                       } while (0)
 
 /*! Mesh Configuration Client Composition Page 0 stream parser macros for element header.
  *  \note pBuf is remaining of Page 0 raw byte array, len is the remaining length.
@@ -73,50 +75,60 @@ extern "C" {
  *   numS = number of SIG models on this element (1 byte);
  *   numV = number of Vendor models on this element (1 byte);
  */
-#define BSTREAM_TO_CFG_CL_COMP_PG0_ELEM_HDR(pBuf, len, loc, numS, numV) \
-    do {                                                                \
-        if ((len) < 4) {                                                \
-            (len) = 0;                                                  \
-            (loc) = 0;                                                  \
-            (numS) = 0;                                                 \
-            (numV) = 0;                                                 \
-        } else {                                                        \
-            BSTREAM_TO_UINT16((loc), (pBuf));                           \
-            BSTREAM_TO_UINT8((numS), (pBuf));                           \
-            BSTREAM_TO_UINT8((numV), (pBuf));                           \
-            (len) -= 4;                                                 \
-        }                                                               \
-    } while (0)
+#define BSTREAM_TO_CFG_CL_COMP_PG0_ELEM_HDR(pBuf, len, loc, numS, numV)      \
+                                       do                                    \
+                                       {                                     \
+                                         if((len) < 4)                       \
+                                         {                                   \
+                                           (len) = 0;  (loc) = 0;            \
+                                           (numS) = 0; (numV)=0;             \
+                                         }                                   \
+                                         else                                \
+                                         {                                   \
+                                            BSTREAM_TO_UINT16((loc), (pBuf));\
+                                            BSTREAM_TO_UINT8((numS), (pBuf));\
+                                            BSTREAM_TO_UINT8((numV), (pBuf));\
+                                            (len) -= 4;                      \
+                                         }                                   \
+                                       } while (0)
 
 /*! Mesh Configuration Client Composition Page 0 stream parser macros for SIG models.
  *  \note pBuf is remaining of Page 0 raw byte array, len is the remaining length.
  *   sigId = SIG model ID (2 bytes);
  */
-#define BSTREAM_TO_CFG_CL_COMP_PG0_SIG_MODEL_ID(pBuf, len, sigId) \
-    do {                                                          \
-        if ((len) < sizeof(meshSigModelId_t)) {                   \
-            (len) = 0;                                            \
-            (sigId) = 0x0000;                                     \
-        } else {                                                  \
-            BSTREAM_TO_UINT16((sigId), (pBuf));                   \
-            (len) -= sizeof(meshSigModelId_t);                    \
-        }                                                         \
-    } while (0)
+#define BSTREAM_TO_CFG_CL_COMP_PG0_SIG_MODEL_ID(pBuf, len, sigId)              \
+                                       do                                      \
+                                       {                                       \
+                                         if((len) < sizeof(meshSigModelId_t))  \
+                                         {                                     \
+                                           (len) = 0;                          \
+                                           (sigId) = 0x0000;                   \
+                                         }                                     \
+                                         else                                  \
+                                         {                                     \
+                                            BSTREAM_TO_UINT16((sigId), (pBuf));\
+                                            (len) -= sizeof(meshSigModelId_t); \
+                                         }                                     \
+                                       } while (0)
 
 /*! Mesh Configuration Client Composition Page 0 stream parser macros for Vendor models.
  *  \note pBuf is remaining of Page 0 raw byte array, len is the remaining length.
  *        vendId = Vendor model ID (4 bytes);
  */
-#define BSTREAM_TO_CFG_CL_COMP_PG0_VENDOR_MODEL_ID(pBuf, len, vendId) \
-    do {                                                              \
-        if ((len) < sizeof(meshVendorModelId_t)) {                    \
-            (len) = 0;                                                \
-            (vendId) = 0x0000;                                        \
-        } else {                                                      \
-            BSTREAM_TO_UINT32((vendId), (pBuf));                      \
-            (len) -= sizeof(meshVendorModelId_t);                     \
-        }                                                             \
-    } while (0)
+#define BSTREAM_TO_CFG_CL_COMP_PG0_VENDOR_MODEL_ID(pBuf, len, vendId)             \
+                                       do                                         \
+                                       {                                          \
+                                         if((len) < sizeof(meshVendorModelId_t))  \
+                                         {                                        \
+                                           (len) = 0;                             \
+                                           (vendId) = 0x0000;                     \
+                                         }                                        \
+                                         else                                     \
+                                         {                                        \
+                                            BSTREAM_TO_UINT32((vendId), (pBuf));  \
+                                            (len) -= sizeof(meshVendorModelId_t); \
+                                         }                                        \
+                                       } while (0)
 
 /*!<
  * \remarks PAGE 0 structure: Page Header | [Elem X HDR | Elem X SIG IDs | Elem X Vendor IDs]...

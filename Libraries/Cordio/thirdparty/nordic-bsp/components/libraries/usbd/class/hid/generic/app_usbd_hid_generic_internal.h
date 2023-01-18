@@ -55,6 +55,7 @@ extern "C" {
  * @{
  */
 
+
 /**
  * @brief Forward declaration of HID generic class type.
  *
@@ -66,8 +67,8 @@ APP_USBD_CLASS_FORWARD(app_usbd_hid_generic);
  *
  */
 typedef struct {
-    app_usbd_hid_inst_t hid_inst; //!< HID instance data.
-    nrf_queue_t const *p_rep_in_queue; //!< Input report queue.
+    app_usbd_hid_inst_t hid_inst;       //!< HID instance data.
+    nrf_queue_t const * p_rep_in_queue; //!< Input report queue.
 } app_usbd_hid_generic_inst_t;
 
 /**
@@ -75,8 +76,9 @@ typedef struct {
  *
  */
 typedef struct {
-    app_usbd_hid_ctx_t hid_ctx; //!< HID class context.
+    app_usbd_hid_ctx_t hid_ctx;          //!< HID class context.
 } app_usbd_hid_generic_ctx_t;
+
 
 /**
  * @brief HID generic configuration macro.
@@ -87,6 +89,7 @@ typedef struct {
  * @param endpoints     Endpoint list.
  */
 #define APP_USBD_HID_GENERIC_CONFIG(iface, endpoints) ((iface, BRACKET_EXTRACT(endpoints)))
+
 
 /**
  * @brief Specific class constant data for HID generic class.
@@ -104,9 +107,9 @@ typedef struct {
  */
 #define APP_USBD_HID_GENERIC_DEFAULT_INTERVAL 0x01
 
-#define APP_USBD_HID_GENERIC_INTERVAL(ep)                                       \
-    (APP_USBD_EXTRACT_INTERVAL_FLAG(ep) ? APP_USBD_EXTRACT_INTERVAL_VALUE(ep) : \
-                                          APP_USBD_HID_GENERIC_DEFAULT_INTERVAL),
+#define APP_USBD_HID_GENERIC_INTERVAL(ep)   \
+(APP_USBD_EXTRACT_INTERVAL_FLAG(ep) ? APP_USBD_EXTRACT_INTERVAL_VALUE(ep) : APP_USBD_HID_GENERIC_DEFAULT_INTERVAL),
+
 
 /**
  * @brief Configure internal part of HID generic instance.
@@ -121,14 +124,26 @@ typedef struct {
  * @param protocol                  HID protocol (@ref app_usbd_hid_protocol_t).
  * @param endpoint_list             List of endpoints and intervals
  */
-#define APP_USBD_HID_GENERIC_INST_CONFIG(report_buff_in, report_buff_out, report_buff_feature,   \
-                                         user_ev_handler, in_report_queue, subclass_descriptors, \
-                                         subclass_boot, protocol, endpoint_list)                 \
-    .inst = {                                                                                    \
-        .hid_inst = APP_USBD_HID_INST_CONFIG(                                                    \
-            subclass_descriptors, subclass_boot, protocol, report_buff_in, report_buff_out,      \
-            report_buff_feature, user_ev_handler, &app_usbd_hid_generic_methods, endpoint_list), \
-        .p_rep_in_queue = in_report_queue,                                                       \
+#define APP_USBD_HID_GENERIC_INST_CONFIG(report_buff_in,                      \
+                                         report_buff_out,                     \
+                                         report_buff_feature,                 \
+                                         user_ev_handler,                     \
+                                         in_report_queue,                     \
+                                         subclass_descriptors,                \
+                                         subclass_boot,                       \
+                                         protocol,                            \
+                                         endpoint_list)                       \
+    .inst = {                                                                 \
+         .hid_inst = APP_USBD_HID_INST_CONFIG(subclass_descriptors,           \
+                                              subclass_boot,                  \
+                                              protocol,                       \
+                                              report_buff_in,                 \
+                                              report_buff_out,                \
+                                              report_buff_feature,            \
+                                              user_ev_handler,                \
+                                              &app_usbd_hid_generic_methods,  \
+                                              endpoint_list),                 \
+        .p_rep_in_queue = in_report_queue,                                    \
     }
 
 /**
@@ -147,28 +162,46 @@ extern const app_usbd_class_methods_t app_usbd_generic_class_methods;
  * @ref APP_USBD_HID_GENERIC_GLOBAL_DEF
  */
 /*lint -esym( 40, APP_USBD_HID_GENERIC_INTERVAL) */
-#define APP_USBD_HID_GENERIC_GLOBAL_DEF_INTERNAL(instance_name, interface_number, user_ev_handler, \
-                                                 endpoint_list, subclass_descriptors,              \
-                                                 report_in_queue_size, report_out_maxsize,         \
-                                                 report_feature_maxsize, subclass_boot, protocol)  \
-    static app_usbd_hid_report_buffer_t CONCAT_2(instance_name, _in);                              \
-    APP_USBD_HID_GENERIC_GLOBAL_OUT_REP_DEF(CONCAT_2(instance_name, _out),                         \
-                                            report_out_maxsize + 1);                               \
-    APP_USBD_HID_GENERIC_GLOBAL_FEATURE_REP_DEF(CONCAT_2(instance_name, _feature),                 \
-                                                report_feature_maxsize + 1);                       \
-    static uint8_t CONCAT_2(instance_name, _ep)[] = { MACRO_MAP(APP_USBD_HID_GENERIC_INTERVAL,     \
-                                                                BRACKET_EXTRACT(endpoint_list)) }; \
-    NRF_QUEUE_DEF(app_usbd_hid_report_buffer_t, instance_name##_queue, report_in_queue_size,       \
-                  NRF_QUEUE_MODE_OVERFLOW);                                                        \
-    APP_USBD_CLASS_INST_GLOBAL_DEF(                                                                \
-        instance_name, app_usbd_hid_generic, &app_usbd_generic_class_methods,                      \
-        APP_USBD_HID_GENERIC_CONFIG(interface_number, endpoint_list),                              \
-        (APP_USBD_HID_GENERIC_INST_CONFIG(                                                         \
-            &CONCAT_2(instance_name, _in), &CONCAT_2(instance_name, _out),                         \
-            &CONCAT_2(instance_name, _feature), user_ev_handler, &instance_name##_queue,           \
-            subclass_descriptors, subclass_boot, protocol, CONCAT_2(instance_name, _ep))))
+#define APP_USBD_HID_GENERIC_GLOBAL_DEF_INTERNAL(instance_name,                     \
+                                                 interface_number,                  \
+                                                 user_ev_handler,                   \
+                                                 endpoint_list,                     \
+                                                 subclass_descriptors,              \
+                                                 report_in_queue_size,              \
+                                                 report_out_maxsize,                \
+                                                 report_feature_maxsize,            \
+                                                 subclass_boot,                     \
+                                                 protocol)                          \
+    static app_usbd_hid_report_buffer_t CONCAT_2(instance_name, _in);               \
+    APP_USBD_HID_GENERIC_GLOBAL_OUT_REP_DEF(CONCAT_2(instance_name, _out),          \
+                                            report_out_maxsize + 1);                \
+    APP_USBD_HID_GENERIC_GLOBAL_FEATURE_REP_DEF(CONCAT_2(instance_name, _feature),  \
+                                            report_feature_maxsize + 1);            \
+    static uint8_t CONCAT_2(instance_name, _ep)[]=                                  \
+        {MACRO_MAP(APP_USBD_HID_GENERIC_INTERVAL,BRACKET_EXTRACT(endpoint_list))};  \
+    NRF_QUEUE_DEF(app_usbd_hid_report_buffer_t,                                     \
+                  instance_name##_queue,                                            \
+                  report_in_queue_size,                                             \
+                  NRF_QUEUE_MODE_OVERFLOW);                                         \
+    APP_USBD_CLASS_INST_GLOBAL_DEF(                                                 \
+        instance_name,                                                              \
+        app_usbd_hid_generic,                                                       \
+        &app_usbd_generic_class_methods,                                            \
+        APP_USBD_HID_GENERIC_CONFIG(interface_number, endpoint_list),               \
+        (APP_USBD_HID_GENERIC_INST_CONFIG(&CONCAT_2(instance_name, _in),            \
+                                          &CONCAT_2(instance_name, _out),           \
+                                          &CONCAT_2(instance_name, _feature),       \
+                                          user_ev_handler,                          \
+                                          &instance_name##_queue,                   \
+                                          subclass_descriptors,                     \
+                                          subclass_boot,                            \
+                                          protocol,                                 \
+                                          CONCAT_2(instance_name, _ep)))            \
+    )
+
 
 /** @} */
+
 
 #ifdef __cplusplus
 }

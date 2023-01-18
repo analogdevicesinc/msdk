@@ -44,7 +44,8 @@ static nrfx_drv_state_t m_drv_state = NRFX_DRV_STATE_UNINITIALIZED;
 
 ret_code_t nrf_drv_swi_init(void)
 {
-    if (m_drv_state == NRFX_DRV_STATE_INITIALIZED) {
+    if (m_drv_state == NRFX_DRV_STATE_INITIALIZED)
+    {
         return NRF_ERROR_MODULE_ALREADY_INITIALIZED;
     }
 
@@ -54,7 +55,8 @@ ret_code_t nrf_drv_swi_init(void)
 
 ret_code_t nrf_drv_swi_uninit(void)
 {
-    if (m_drv_state == NRFX_DRV_STATE_UNINITIALIZED) {
+    if (m_drv_state == NRFX_DRV_STATE_UNINITIALIZED)
+    {
         return NRF_ERROR_INVALID_STATE;
     }
 

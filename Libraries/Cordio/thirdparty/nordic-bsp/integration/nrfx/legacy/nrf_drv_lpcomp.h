@@ -56,22 +56,22 @@ extern "C" {
  */
 
 /** @brief Type definition for forwarding the new implementation. */
-typedef nrfx_lpcomp_config_t nrf_drv_lpcomp_config_t;
+typedef nrfx_lpcomp_config_t    nrf_drv_lpcomp_config_t;
 
 /** @brief Macro for forwarding the new implementation. */
-#define NRF_DRV_LPCOMP_DEFAULT_CONFIG NRFX_LPCOMP_DEFAULT_CONFIG
+#define NRF_DRV_LPCOMP_DEFAULT_CONFIG   NRFX_LPCOMP_DEFAULT_CONFIG
 
 /** @brief Macro for forwarding the new implementation. */
-#define lpcomp_events_handler_t nrfx_lpcomp_event_handler_t
+#define lpcomp_events_handler_t         nrfx_lpcomp_event_handler_t
 
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_lpcomp_init nrfx_lpcomp_init
+#define nrf_drv_lpcomp_init             nrfx_lpcomp_init
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_lpcomp_uninit nrfx_lpcomp_uninit
+#define nrf_drv_lpcomp_uninit           nrfx_lpcomp_uninit
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_lpcomp_enable nrfx_lpcomp_enable
+#define nrf_drv_lpcomp_enable           nrfx_lpcomp_enable
 /** @brief Macro for forwarding the new implementation. */
-#define nrf_drv_lpcomp_disable nrfx_lpcomp_disable
+#define nrf_drv_lpcomp_disable          nrfx_lpcomp_disable
 
 /** @} */
 

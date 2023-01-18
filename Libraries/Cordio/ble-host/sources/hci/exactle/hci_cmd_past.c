@@ -45,7 +45,7 @@
 /*************************************************************************************************/
 void HciLeSetPerAdvRcvEnableCmd(uint16_t syncHandle, uint8_t enable)
 {
-    LlSetPeriodicAdvRcvEnable(syncHandle, enable);
+  LlSetPeriodicAdvRcvEnable(syncHandle, enable);
 }
 
 /*************************************************************************************************/
@@ -61,16 +61,16 @@ void HciLeSetPerAdvRcvEnableCmd(uint16_t syncHandle, uint8_t enable)
 /*************************************************************************************************/
 void HciLePerAdvSyncTrsfCmd(uint16_t connHandle, uint16_t serviceData, uint16_t syncHandle)
 {
-    hciLePerAdvSyncTrsfCmdCmplEvt_t evt;
+  hciLePerAdvSyncTrsfCmdCmplEvt_t evt;
 
-    evt.hdr.param = connHandle;
-    evt.hdr.status = LlPeriodicAdvSyncTransfer(connHandle, serviceData, syncHandle);
-    evt.hdr.event = HCI_LE_PER_ADV_SYNC_TRSF_CMD_CMPL_CBACK_EVT;
+  evt.hdr.param = connHandle;
+  evt.hdr.status = LlPeriodicAdvSyncTransfer(connHandle, serviceData, syncHandle);
+  evt.hdr.event = HCI_LE_PER_ADV_SYNC_TRSF_CMD_CMPL_CBACK_EVT;
 
-    evt.handle = connHandle;
-    evt.status = evt.hdr.status;
+  evt.handle = connHandle;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -86,16 +86,16 @@ void HciLePerAdvSyncTrsfCmd(uint16_t connHandle, uint16_t serviceData, uint16_t 
 /*************************************************************************************************/
 void HciLePerAdvSetInfoTrsfCmd(uint16_t connHandle, uint16_t serviceData, uint8_t advHandle)
 {
-    hciLePerAdvSetInfoTrsfCmdCmplEvt_t evt;
+  hciLePerAdvSetInfoTrsfCmdCmplEvt_t evt;
 
-    evt.hdr.param = connHandle;
-    evt.hdr.status = LlPeriodicAdvSetInfoTransfer(connHandle, serviceData, advHandle);
-    evt.hdr.event = HCI_LE_PER_ADV_SET_INFO_TRSF_CMD_CMPL_CBACK_EVT;
+  evt.hdr.param = connHandle;
+  evt.hdr.status = LlPeriodicAdvSetInfoTransfer(connHandle, serviceData, advHandle);
+  evt.hdr.event = HCI_LE_PER_ADV_SET_INFO_TRSF_CMD_CMPL_CBACK_EVT;
 
-    evt.handle = connHandle;
-    evt.status = evt.hdr.status;
+  evt.handle = connHandle;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -115,7 +115,7 @@ void HciLePerAdvSetInfoTrsfCmd(uint16_t connHandle, uint16_t serviceData, uint8_
 void HciLeSetPerAdvSyncTrsfParamsCmd(uint16_t connHandle, uint8_t mode, uint16_t skip,
                                      uint16_t syncTimeout, uint8_t cteType)
 {
-    LlSetPeriodicAdvSyncTransParams(connHandle, mode, skip, syncTimeout, cteType);
+  LlSetPeriodicAdvSyncTransParams(connHandle, mode, skip, syncTimeout, cteType);
 }
 
 /*************************************************************************************************/
@@ -132,7 +132,7 @@ void HciLeSetPerAdvSyncTrsfParamsCmd(uint16_t connHandle, uint8_t mode, uint16_t
 */
 /*************************************************************************************************/
 void HciLeSetDefaultPerAdvSyncTrsfParamsCmd(uint8_t mode, uint16_t skip, uint16_t syncTimeout,
-                                            uint8_t cteType)
+                                           uint8_t cteType)
 {
-    LlSetDefaultPeriodicAdvSyncTransParams(mode, skip, syncTimeout, cteType);
+  LlSetDefaultPeriodicAdvSyncTransParams(mode, skip, syncTimeout, cteType);
 }

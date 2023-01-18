@@ -66,13 +66,14 @@ static uint16_t const m_langids[] = { APP_USBD_STRINGS_LANGIDS };
  * Language.
  */
 
+
 /**
  * @brief Mnemonics for the string positions in the array.
  *
  * The mnemonics for the indexes of the strings inside the string array.
  */
 enum {
-    APP_USBD_STRING_ID_LANGIDS_ARRAY_POS = 0, /**< Supported language identifiers. */
+    APP_USBD_STRING_ID_LANGIDS_ARRAY_POS = 0,  /**< Supported language identifiers. */
 
 #if (APP_USBD_STRING_ID_MANUFACTURER != 0)
     APP_USBD_STRING_ID_MANUFACTURER_ARRAY_POS, /**< Manufacturer name. */
@@ -101,7 +102,8 @@ enum {
  * The array that transforms the USB string indexes into internal array position.
  * @note Value 0 is used to mark non-existing string.
  */
-static uint8_t const m_string_translation[APP_USBD_STRING_ID_CNT] = {
+static uint8_t const m_string_translation[APP_USBD_STRING_ID_CNT] =
+{
     [APP_USBD_STRING_ID_LANGIDS] = APP_USBD_STRING_ID_LANGIDS_ARRAY_POS,
 
 #if (APP_USBD_STRING_ID_MANUFACTURER != 0)
@@ -160,9 +162,9 @@ extern uint8_t APP_USBD_STRING_CONFIGURATION[];
 /**
  * @brief String descriptor table.
  * */
-static uint8_t const *m_string_dsc[APP_USBD_STRING_ID_CNT][ARRAY_SIZE(m_langids)] = {
-    [APP_USBD_STRING_ID_LANGIDS_ARRAY_POS] = { APP_USBD_STRING_RAW16_DESC(
-        APP_USBD_STRINGS_LANGIDS) },
+static uint8_t const * m_string_dsc[APP_USBD_STRING_ID_CNT][ARRAY_SIZE(m_langids)] =
+{
+    [APP_USBD_STRING_ID_LANGIDS_ARRAY_POS] = {APP_USBD_STRING_RAW16_DESC(APP_USBD_STRINGS_LANGIDS)},
 
 #if (APP_USBD_STRING_ID_MANUFACTURER != 0)
     [APP_USBD_STRING_ID_MANUFACTURER_ARRAY_POS] = { APP_USBD_STRINGS_MANUFACTURER },
@@ -180,7 +182,7 @@ static uint8_t const *m_string_dsc[APP_USBD_STRING_ID_CNT][ARRAY_SIZE(m_langids)
     [APP_USBD_STRING_ID_CONFIGURATION_ARRAY_POS] = { APP_USBD_STRINGS_CONFIGURATION },
 #endif // (APP_USBD_STRING_ID_CONFIGURATION != 0)
 
-#define X(mnemonic, str_idx, ...) [CONCAT_2(mnemonic, _ARRAY_POS)] = { __VA_ARGS__ },
+#define X(mnemonic, str_idx, ...) [CONCAT_2(mnemonic, _ARRAY_POS)] = {__VA_ARGS__},
     APP_USBD_STRINGS_USER
 #undef X
 };
@@ -193,35 +195,38 @@ static uint8_t const *m_string_dsc[APP_USBD_STRING_ID_CNT][ARRAY_SIZE(m_langids)
  *
  * @return Pointer to the string descriptor.
  */
-static uint16_t *app_usbd_prepare_string(uint8_t idx, uint16_t langid)
+static uint16_t * app_usbd_prepare_string(uint8_t idx, uint16_t langid)
 {
-    if (m_string_dsc[idx][langid][0] == 0x00) {
-        return (uint16_t *)&(m_string_dsc[idx][langid][2]);
+    if (m_string_dsc[idx][langid][0] == 0x00)
+    {
+        return (uint16_t *) &(m_string_dsc[idx][langid][2]);
     }
 
 #if ((APP_USBD_CONFIG_DESC_STRING_SIZE * 2) + 2) <= NRF_DRV_USBD_EPSIZE
-    uint16_t *string_buffer = app_usbd_core_setup_transfer_buff_get(NULL);
+    uint16_t * string_buffer = app_usbd_core_setup_transfer_buff_get(NULL);
 #else
     static uint16_t string_buffer[APP_USBD_CONFIG_DESC_STRING_SIZE + 1];
     // + 1 element for string descriptor type and size
 #endif
 
-    uint8_t size = 0;
-    const uint8_t *p_pos = m_string_dsc[idx][langid];
+    uint8_t         size  = 0;
+    const uint8_t * p_pos = m_string_dsc[idx][langid];
 
 #if APP_USBD_CONFIG_DESC_STRING_UTF_ENABLED
-    size = utf8UTF16Count((char *)p_pos, 0);
+    size = utf8UTF16Count((char *) p_pos, 0);
     ASSERT(size <= APP_USBD_CONFIG_DESC_STRING_SIZE);
 
-    uint16_t *p_out = &(string_buffer[1]);
-    uint32_t rune;
+    uint16_t * p_out = &(string_buffer[1]);
+    uint32_t   rune;
 
-    while (*p_pos != 0) {
-        p_pos = (uint8_t *)utf8DecodeRune((char *)p_pos, 0, &rune);
+    while (*p_pos != 0)
+    {
+        p_pos = (uint8_t *) utf8DecodeRune((char *) p_pos, 0, &rune);
         p_out += utf16EncodeRune(rune, p_out);
     }
 #else
-    while (*p_pos != 0) {
+    while(*p_pos != 0)
+    {
         ASSERT(size < APP_USBD_CONFIG_DESC_STRING_SIZE);
         ++size;
         string_buffer[size] = *p_pos;
@@ -236,41 +241,50 @@ static uint16_t *app_usbd_prepare_string(uint8_t idx, uint16_t langid)
     return string_buffer;
 }
 
-uint16_t const *app_usbd_string_desc_get(uint8_t idx, uint16_t langid)
+uint16_t const * app_usbd_string_desc_get(uint8_t idx, uint16_t langid)
 {
     /* LANGID string. */
-    if (APP_USBD_STRING_ID_LANGIDS == idx) {
+    if (APP_USBD_STRING_ID_LANGIDS == idx)
+    {
         return app_usbd_prepare_string(APP_USBD_STRING_ID_LANGIDS_ARRAY_POS, 0);
     }
 
     /* Searching for the language. */
     uint8_t lang_idx = 0;
-    if (ARRAY_SIZE(m_langids) > 1) {
-        while (m_langids[lang_idx] != langid) {
+    if (ARRAY_SIZE(m_langids) > 1)
+    {
+        while (m_langids[lang_idx] != langid)
+        {
             ++lang_idx;
-            if (lang_idx >= ARRAY_SIZE(m_langids)) {
+            if (lang_idx >= ARRAY_SIZE(m_langids))
+            {
                 return NULL;
             }
         }
     }
 
     /* Get the string index in array. */
-    if (idx >= ARRAY_SIZE(m_string_translation)) {
+    if (idx >= ARRAY_SIZE(m_string_translation))
+    {
         return NULL;
     }
 
     uint8_t str_pos = m_string_translation[idx];
-    if (str_pos == 0) {
+    if (str_pos == 0)
+    {
         return NULL;
     }
 
-    if ((ARRAY_SIZE(m_langids) > 1) && (lang_idx != 0)) {
-        if (m_string_dsc[str_pos][lang_idx] == NULL) {
+    if ((ARRAY_SIZE(m_langids) > 1) && (lang_idx != 0))
+    {
+        if (m_string_dsc[str_pos][lang_idx] == NULL)
+        {
             lang_idx = 0;
         }
     }
 
-    if (m_string_dsc[str_pos][lang_idx] == NULL) {
+    if (m_string_dsc[str_pos][lang_idx] == NULL)
+    {
         return NULL;
     }
 

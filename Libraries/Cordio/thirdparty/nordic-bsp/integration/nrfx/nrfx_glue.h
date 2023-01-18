@@ -66,7 +66,7 @@ extern "C" {
  *
  * @param expression  Expression to evaluate.
  */
-#define NRFX_ASSERT(expression) ASSERT(expression)
+#define NRFX_ASSERT(expression)     ASSERT(expression)
 
 #include <app_util.h>
 /**
@@ -74,7 +74,7 @@ extern "C" {
  *
  * @param expression  Expression to evaluate.
  */
-#define NRFX_STATIC_ASSERT(expression) STATIC_ASSERT(expression)
+#define NRFX_STATIC_ASSERT(expression)  STATIC_ASSERT(expression)
 
 //------------------------------------------------------------------------------
 
@@ -86,8 +86,8 @@ extern "C" {
 #endif //SOFTDEVICE_PRESENT
 #else
 #ifdef SOFTDEVICE_PRESENT
-#define INTERRUPT_PRIORITY_IS_VALID(pri) \
-    ((((pri) > 1) && ((pri) < 4)) || (((pri) > 4) && ((pri) < 8)))
+#define INTERRUPT_PRIORITY_IS_VALID(pri) ((((pri) > 1) && ((pri) < 4)) || \
+                                          (((pri) > 4) && ((pri) < 8)))
 #else
 #define INTERRUPT_PRIORITY_IS_VALID(pri) ((pri) < 8)
 #endif //SOFTDEVICE_PRESENT
@@ -99,8 +99,10 @@ extern "C" {
  * @param irq_number  IRQ number.
  * @param priority    Priority to set.
  */
-#define NRFX_IRQ_PRIORITY_SET(irq_number, priority) _NRFX_IRQ_PRIORITY_SET(irq_number, priority)
-static inline void _NRFX_IRQ_PRIORITY_SET(IRQn_Type irq_number, uint8_t priority)
+#define NRFX_IRQ_PRIORITY_SET(irq_number, priority) \
+    _NRFX_IRQ_PRIORITY_SET(irq_number, priority)
+static inline void _NRFX_IRQ_PRIORITY_SET(IRQn_Type irq_number,
+                                          uint8_t   priority)
 {
     ASSERT(INTERRUPT_PRIORITY_IS_VALID(priority));
     NVIC_SetPriority(irq_number, priority);
@@ -111,7 +113,7 @@ static inline void _NRFX_IRQ_PRIORITY_SET(IRQn_Type irq_number, uint8_t priority
  *
  * @param irq_number  IRQ number.
  */
-#define NRFX_IRQ_ENABLE(irq_number) _NRFX_IRQ_ENABLE(irq_number)
+#define NRFX_IRQ_ENABLE(irq_number)  _NRFX_IRQ_ENABLE(irq_number)
 static inline void _NRFX_IRQ_ENABLE(IRQn_Type irq_number)
 {
     NVIC_EnableIRQ(irq_number);
@@ -125,7 +127,7 @@ static inline void _NRFX_IRQ_ENABLE(IRQn_Type irq_number)
  * @retval true  If the IRQ is enabled.
  * @retval false Otherwise.
  */
-#define NRFX_IRQ_IS_ENABLED(irq_number) _NRFX_IRQ_IS_ENABLED(irq_number)
+#define NRFX_IRQ_IS_ENABLED(irq_number)  _NRFX_IRQ_IS_ENABLED(irq_number)
 static inline bool _NRFX_IRQ_IS_ENABLED(IRQn_Type irq_number)
 {
     return 0 != (NVIC->ISER[irq_number / 32] & (1UL << (irq_number % 32)));
@@ -136,7 +138,7 @@ static inline bool _NRFX_IRQ_IS_ENABLED(IRQn_Type irq_number)
  *
  * @param irq_number  IRQ number.
  */
-#define NRFX_IRQ_DISABLE(irq_number) _NRFX_IRQ_DISABLE(irq_number)
+#define NRFX_IRQ_DISABLE(irq_number)  _NRFX_IRQ_DISABLE(irq_number)
 static inline void _NRFX_IRQ_DISABLE(IRQn_Type irq_number)
 {
     NVIC_DisableIRQ(irq_number);
@@ -181,12 +183,12 @@ static inline bool _NRFX_IRQ_IS_PENDING(IRQn_Type irq_number)
 /**
  * @brief Macro for entering into a critical section.
  */
-#define NRFX_CRITICAL_SECTION_ENTER() CRITICAL_REGION_ENTER()
+#define NRFX_CRITICAL_SECTION_ENTER()   CRITICAL_REGION_ENTER()
 
 /**
  * @brief Macro for exiting from a critical section.
  */
-#define NRFX_CRITICAL_SECTION_EXIT() CRITICAL_REGION_EXIT()
+#define NRFX_CRITICAL_SECTION_EXIT()    CRITICAL_REGION_EXIT()
 
 //------------------------------------------------------------------------------
 
@@ -209,7 +211,7 @@ static inline bool _NRFX_IRQ_IS_PENDING(IRQn_Type irq_number)
 /**
  * @brief Atomic 32 bit unsigned type.
  */
-#define nrfx_atomic_t nrfx_atomic_u32_t
+#define nrfx_atomic_t               nrfx_atomic_u32_t
 
 /**
  * @brief Stores value to an atomic object and returns previously stored value.
@@ -229,7 +231,7 @@ static inline bool _NRFX_IRQ_IS_PENDING(IRQn_Type irq_number)
  *
  * @return Old value stored into atomic object.
  */
-#define NRFX_ATOMIC_FETCH_OR(p_data, value) nrfx_atomic_u32_fetch_or(p_data, value)
+#define NRFX_ATOMIC_FETCH_OR(p_data, value)   nrfx_atomic_u32_fetch_or(p_data, value)
 
 /**
  * @brief Performs logical AND operation on an atomic object and returns previously stored value.
@@ -239,7 +241,7 @@ static inline bool _NRFX_IRQ_IS_PENDING(IRQn_Type irq_number)
  *
  * @return Old value stored into atomic object.
  */
-#define NRFX_ATOMIC_FETCH_AND(p_data, value) nrfx_atomic_u32_fetch_and(p_data, value)
+#define NRFX_ATOMIC_FETCH_AND(p_data, value)   nrfx_atomic_u32_fetch_and(p_data, value)
 
 /**
  * @brief Performs logical XOR operation on an atomic object and returns previously stored value.
@@ -249,7 +251,7 @@ static inline bool _NRFX_IRQ_IS_PENDING(IRQn_Type irq_number)
  *
  * @return Old value stored into atomic object.
  */
-#define NRFX_ATOMIC_FETCH_XOR(p_data, value) nrfx_atomic_u32_fetch_xor(p_data, value)
+#define NRFX_ATOMIC_FETCH_XOR(p_data, value)   nrfx_atomic_u32_fetch_xor(p_data, value)
 
 /**
  * @brief Performs logical ADD operation on an atomic object and returns previously stored value.
@@ -259,7 +261,7 @@ static inline bool _NRFX_IRQ_IS_PENDING(IRQn_Type irq_number)
  *
  * @return Old value stored into atomic object.
  */
-#define NRFX_ATOMIC_FETCH_ADD(p_data, value) nrfx_atomic_u32_fetch_add(p_data, value)
+#define NRFX_ATOMIC_FETCH_ADD(p_data, value)   nrfx_atomic_u32_fetch_add(p_data, value)
 
 /**
  * @brief Performs logical SUB operation on an atomic object and returns previously stored value.
@@ -269,7 +271,7 @@ static inline bool _NRFX_IRQ_IS_PENDING(IRQn_Type irq_number)
  *
  * @return Old value stored into atomic object.
  */
-#define NRFX_ATOMIC_FETCH_SUB(p_data, value) nrfx_atomic_u32_fetch_sub(p_data, value)
+#define NRFX_ATOMIC_FETCH_SUB(p_data, value)   nrfx_atomic_u32_fetch_sub(p_data, value)
 
 //------------------------------------------------------------------------------
 #ifndef NRFX_CUSTOM_ERROR_CODES
@@ -285,23 +287,23 @@ static inline bool _NRFX_IRQ_IS_PENDING(IRQn_Type irq_number)
 
 typedef ret_code_t nrfx_err_t;
 
-#define NRFX_SUCCESS NRF_SUCCESS
-#define NRFX_ERROR_INTERNAL NRF_ERROR_INTERNAL
-#define NRFX_ERROR_NO_MEM NRF_ERROR_NO_MEM
-#define NRFX_ERROR_NOT_SUPPORTED NRF_ERROR_NOT_SUPPORTED
-#define NRFX_ERROR_INVALID_PARAM NRF_ERROR_INVALID_PARAM
-#define NRFX_ERROR_INVALID_STATE NRF_ERROR_INVALID_STATE
-#define NRFX_ERROR_INVALID_LENGTH NRF_ERROR_INVALID_LENGTH
-#define NRFX_ERROR_TIMEOUT NRF_ERROR_TIMEOUT
-#define NRFX_ERROR_FORBIDDEN NRF_ERROR_FORBIDDEN
-#define NRFX_ERROR_NULL NRF_ERROR_NULL
-#define NRFX_ERROR_INVALID_ADDR NRF_ERROR_INVALID_ADDR
-#define NRFX_ERROR_BUSY NRF_ERROR_BUSY
-#define NRFX_ERROR_ALREADY_INITIALIZED NRF_ERROR_MODULE_ALREADY_INITIALIZED
+#define NRFX_SUCCESS                    NRF_SUCCESS
+#define NRFX_ERROR_INTERNAL             NRF_ERROR_INTERNAL
+#define NRFX_ERROR_NO_MEM               NRF_ERROR_NO_MEM
+#define NRFX_ERROR_NOT_SUPPORTED        NRF_ERROR_NOT_SUPPORTED
+#define NRFX_ERROR_INVALID_PARAM        NRF_ERROR_INVALID_PARAM
+#define NRFX_ERROR_INVALID_STATE        NRF_ERROR_INVALID_STATE
+#define NRFX_ERROR_INVALID_LENGTH       NRF_ERROR_INVALID_LENGTH
+#define NRFX_ERROR_TIMEOUT              NRF_ERROR_TIMEOUT
+#define NRFX_ERROR_FORBIDDEN            NRF_ERROR_FORBIDDEN
+#define NRFX_ERROR_NULL                 NRF_ERROR_NULL
+#define NRFX_ERROR_INVALID_ADDR         NRF_ERROR_INVALID_ADDR
+#define NRFX_ERROR_BUSY                 NRF_ERROR_BUSY
+#define NRFX_ERROR_ALREADY_INITIALIZED  NRF_ERROR_MODULE_ALREADY_INITIALIZED
 
-#define NRFX_ERROR_DRV_TWI_ERR_OVERRUN NRF_ERROR_DRV_TWI_ERR_OVERRUN
-#define NRFX_ERROR_DRV_TWI_ERR_ANACK NRF_ERROR_DRV_TWI_ERR_ANACK
-#define NRFX_ERROR_DRV_TWI_ERR_DNACK NRF_ERROR_DRV_TWI_ERR_DNACK
+#define NRFX_ERROR_DRV_TWI_ERR_OVERRUN  NRF_ERROR_DRV_TWI_ERR_OVERRUN
+#define NRFX_ERROR_DRV_TWI_ERR_ANACK    NRF_ERROR_DRV_TWI_ERR_ANACK
+#define NRFX_ERROR_DRV_TWI_ERR_DNACK    NRF_ERROR_DRV_TWI_ERR_DNACK
 
 #endif // NRFX_CUSTOM_ERROR_CODES
 //------------------------------------------------------------------------------
@@ -310,22 +312,22 @@ typedef ret_code_t nrfx_err_t;
 /**
  * @brief Bitmask defining PPI channels reserved to be used outside of nrfx.
  */
-#define NRFX_PPI_CHANNELS_USED NRF_PPI_CHANNELS_USED
+#define NRFX_PPI_CHANNELS_USED  NRF_PPI_CHANNELS_USED
 
 /**
  * @brief Bitmask defining PPI groups reserved to be used outside of nrfx.
  */
-#define NRFX_PPI_GROUPS_USED NRF_PPI_GROUPS_USED
+#define NRFX_PPI_GROUPS_USED    NRF_PPI_GROUPS_USED
 
 /**
  * @brief Bitmask defining SWI instances reserved to be used outside of nrfx.
  */
-#define NRFX_SWI_USED NRF_SWI_USED
+#define NRFX_SWI_USED           NRF_SWI_USED
 
 /**
  * @brief Bitmask defining TIMER instances reserved to be used outside of nrfx.
  */
-#define NRFX_TIMERS_USED NRF_TIMERS_USED
+#define NRFX_TIMERS_USED        NRF_TIMERS_USED
 
 /** @} */
 

@@ -41,18 +41,21 @@ lmgrSlvAdvCtrlBlk_t lmgrSlvAdvCb;
 /*************************************************************************************************/
 void LmgrSlvInit(void)
 {
-    static const lmgrAdvParam_t defAdvParam = { .advInterMinUsec = BB_BLE_TO_US(0x0800),
-                                                .advInterMaxUsec = BB_BLE_TO_US(0x0800),
-                                                .advType = LL_ADV_CONN_UNDIRECT,
-                                                .ownAddrType = LL_ADDR_PUBLIC,
-                                                .peerAddrType = LL_ADDR_PUBLIC,
-                                                .advChanMap = LL_ADV_CHAN_ALL,
-                                                .advFiltPolicy = LL_ADV_FILTER_NONE };
+  static const lmgrAdvParam_t defAdvParam =
+  {
+    .advInterMinUsec    = BB_BLE_TO_US(0x0800),
+    .advInterMaxUsec    = BB_BLE_TO_US(0x0800),
+    .advType        = LL_ADV_CONN_UNDIRECT,
+    .ownAddrType    = LL_ADDR_PUBLIC,
+    .peerAddrType   = LL_ADDR_PUBLIC,
+    .advChanMap     = LL_ADV_CHAN_ALL,
+    .advFiltPolicy  = LL_ADV_FILTER_NONE
+  };
 
-    memset(&lmgrSlvAdvCb, 0, sizeof(lmgrSlvAdvCb));
+  memset(&lmgrSlvAdvCb, 0, sizeof(lmgrSlvAdvCb));
 
-    /* Set default Tx PHY options */
-    lmgrSlvAdvCb.defTxPhyOpts = BB_PHY_OPTIONS_BLE_S8;
+  /* Set default Tx PHY options */
+  lmgrSlvAdvCb.defTxPhyOpts = BB_PHY_OPTIONS_BLE_S8;
 
-    lmgrSlvAdvCb.advParam = defAdvParam;
+  lmgrSlvAdvCb.advParam = defAdvParam;
 }

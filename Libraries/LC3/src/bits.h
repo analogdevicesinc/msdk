@@ -67,6 +67,7 @@
 
 #include "common.h"
 
+
 /**
  * Bitstream mode
  */
@@ -82,7 +83,7 @@ enum lc3_bits_mode {
  */
 
 struct lc3_ac_symbol {
-    uint16_t low : 16;
+    uint16_t low   : 16;
     uint16_t range : 16;
 };
 
@@ -121,13 +122,15 @@ typedef struct lc3_bits {
     struct lc3_bits_buffer buffer;
 } lc3_bits_t;
 
+
 /**
  * Setup bitstream reading/writing
  * bits            Bitstream context
  * mode            Either READ or WRITE mode
  * buffer, len     Output buffer and length (in bytes)
  */
-void lc3_setup_bits(lc3_bits_t *bits, enum lc3_bits_mode mode, void *buffer, int len);
+void lc3_setup_bits(lc3_bits_t *bits,
+    enum lc3_bits_mode mode, void *buffer, int len);
 
 /**
  * Return number of bits left in the bitstream
@@ -162,7 +165,8 @@ static inline void lc3_put_bits(lc3_bits_t *bits, unsigned v, int n);
  * bits            Bitstream context
  * model, s        Model distribution and symbol value
  */
-static inline void lc3_put_symbol(lc3_bits_t *bits, const struct lc3_ac_model *model, unsigned s);
+static inline void lc3_put_symbol(lc3_bits_t *bits,
+    const struct lc3_ac_model *model, unsigned s);
 
 /**
  * Flush and terminate bitstream writing
@@ -182,7 +186,7 @@ static inline int lc3_get_bit(lc3_bits_t *bits);
  * n               Number of bits to read (1 to 32)
  * return          The value read
  */
-static inline unsigned lc3_get_bits(lc3_bits_t *bits, int n);
+static inline unsigned lc3_get_bits(lc3_bits_t *bits,  int n);
 
 /**
  * Get arithmetic coder symbol
@@ -190,7 +194,10 @@ static inline unsigned lc3_get_bits(lc3_bits_t *bits, int n);
  * model           Model distribution
  * return          The value read
  */
-static inline unsigned lc3_get_symbol(lc3_bits_t *bits, const struct lc3_ac_model *model);
+static inline unsigned lc3_get_symbol(lc3_bits_t *bits,
+    const struct lc3_ac_model *model);
+
+
 
 /* ----------------------------------------------------------------------------
  *  Inline implementations
@@ -201,6 +208,7 @@ unsigned lc3_get_bits_generic(struct lc3_bits *bits, int n);
 
 void lc3_ac_read_renorm(lc3_bits_t *bits);
 void lc3_ac_write_renorm(lc3_bits_t *bits);
+
 
 /**
  * Put a bit
@@ -213,7 +221,8 @@ LC3_HOT static inline void lc3_put_bit(lc3_bits_t *bits, int v)
 /**
  * Put from 1 to 32 bits
  */
-LC3_HOT static inline void lc3_put_bits(struct lc3_bits *bits, unsigned v, int n)
+LC3_HOT static inline void lc3_put_bits(
+    struct lc3_bits *bits, unsigned v, int n)
 {
     struct lc3_bits_accu *accu = &bits->accu;
 
@@ -243,7 +252,8 @@ LC3_HOT static inline unsigned lc3_get_bits(struct lc3_bits *bits, int n)
     if (accu->n + n <= LC3_ACCU_BITS) {
         int v = (accu->v >> accu->n) & ((1u << n) - 1);
         return (accu->n += n), v;
-    } else {
+    }
+    else {
         return lc3_get_bits_generic(bits, n);
     }
 }
@@ -251,8 +261,8 @@ LC3_HOT static inline unsigned lc3_get_bits(struct lc3_bits *bits, int n)
 /**
  * Put arithmetic coder symbol
  */
-LC3_HOT static inline void lc3_put_symbol(struct lc3_bits *bits, const struct lc3_ac_model *model,
-                                          unsigned s)
+LC3_HOT static inline void lc3_put_symbol(
+    struct lc3_bits *bits, const struct lc3_ac_model *model, unsigned s)
 {
     const struct lc3_ac_symbol *symbols = model->s;
     struct lc3_bits_ac *ac = &bits->ac;
@@ -271,7 +281,8 @@ LC3_HOT static inline void lc3_put_symbol(struct lc3_bits *bits, const struct lc
 /**
  * Get arithmetic coder symbol
  */
-LC3_HOT static inline unsigned lc3_get_symbol(lc3_bits_t *bits, const struct lc3_ac_model *model)
+LC3_HOT static inline unsigned lc3_get_symbol(
+    lc3_bits_t *bits, const struct lc3_ac_model *model)
 {
     const struct lc3_ac_symbol *symbols = model->s;
     struct lc3_bits_ac *ac = &bits->ac;

@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 /* wolfSSL OCSP API */
 
 #ifndef WOLFSSL_OCSP_H
@@ -30,19 +31,22 @@
 #include <wolfssl/wolfcrypt/asn.h>
 
 #ifdef __cplusplus
-extern "C" {
+    extern "C" {
 #endif
 
 typedef struct WOLFSSL_OCSP WOLFSSL_OCSP;
 
-WOLFSSL_LOCAL int InitOCSP(WOLFSSL_OCSP *, WOLFSSL_CERT_MANAGER *);
-WOLFSSL_LOCAL void FreeOCSP(WOLFSSL_OCSP *, int dynamic);
+WOLFSSL_LOCAL int  InitOCSP(WOLFSSL_OCSP*, WOLFSSL_CERT_MANAGER*);
+WOLFSSL_LOCAL void FreeOCSP(WOLFSSL_OCSP*, int dynamic);
 
-WOLFSSL_LOCAL int CheckCertOCSP(WOLFSSL_OCSP *, DecodedCert *);
+WOLFSSL_LOCAL int  CheckCertOCSP(WOLFSSL_OCSP*, DecodedCert*);
 
 #ifdef __cplusplus
-} /* extern "C" */
+    }  /* extern "C" */
 #endif
+
 
 #endif /* HAVE_OCSP */
 #endif /* WOLFSSL_OCSP_H */
+
+

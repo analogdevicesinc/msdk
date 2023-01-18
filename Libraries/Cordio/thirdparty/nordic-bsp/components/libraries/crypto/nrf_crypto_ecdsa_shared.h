@@ -46,9 +46,11 @@
 #include "nordic_common.h"
 #include "nrf_crypto_ecc.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 /** @internal @brief Function pointer for backend implementation of ECDSA sign.
  *
@@ -64,9 +66,13 @@ extern "C" {
  * @param[in]  data_size       Size of @p p_data.
  * @param[out] p_signature     Pointer where to put generated signature.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecdsa_sign_fn_t)(void *p_context, void const *p_private_key,
-                                                         uint8_t const *p_data, size_t data_size,
-                                                         uint8_t *p_signature);
+typedef ret_code_t (*nrf_crypto_backend_ecdsa_sign_fn_t)(
+    void          * p_context,
+    void    const * p_private_key,
+    uint8_t const * p_data,
+    size_t          data_size,
+    uint8_t       * p_signature);
+
 
 /** @internal @brief Function pointer for backend implementation of ECDSA verify.
  *
@@ -82,10 +88,13 @@ typedef ret_code_t (*nrf_crypto_backend_ecdsa_sign_fn_t)(void *p_context, void c
  * @param[in]  data_size       Size of @p p_data.
  * @param[in]  p_signature     Pointer to signature to verify.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecdsa_verify_fn_t)(void *p_context,
-                                                           void const *p_public_key,
-                                                           uint8_t const *p_data, size_t data_size,
-                                                           uint8_t const *p_signature);
+typedef ret_code_t (*nrf_crypto_backend_ecdsa_verify_fn_t)(
+    void          * p_context,
+    void    const * p_public_key,
+    uint8_t const * p_data,
+    size_t          data_size,
+    uint8_t const * p_signature);
+
 
 #ifdef __cplusplus
 }

@@ -11,8 +11,10 @@
 #include "lfs_util.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
+
 
 // Block device specific tracing
 #ifdef LFS_FILEBD_YES_TRACE
@@ -35,23 +37,24 @@ typedef struct lfs_filebd {
     const struct lfs_filebd_config *cfg;
 } lfs_filebd_t;
 
+
 // Create a file block device using the geometry in lfs_config
 int lfs_filebd_create(const struct lfs_config *cfg, const char *path);
 int lfs_filebd_createcfg(const struct lfs_config *cfg, const char *path,
-                         const struct lfs_filebd_config *bdcfg);
+        const struct lfs_filebd_config *bdcfg);
 
 // Clean up memory associated with block device
 int lfs_filebd_destroy(const struct lfs_config *cfg);
 
 // Read a block
-int lfs_filebd_read(const struct lfs_config *cfg, lfs_block_t block, lfs_off_t off, void *buffer,
-                    lfs_size_t size);
+int lfs_filebd_read(const struct lfs_config *cfg, lfs_block_t block,
+        lfs_off_t off, void *buffer, lfs_size_t size);
 
 // Program a block
 //
 // The block must have previously been erased.
-int lfs_filebd_prog(const struct lfs_config *cfg, lfs_block_t block, lfs_off_t off,
-                    const void *buffer, lfs_size_t size);
+int lfs_filebd_prog(const struct lfs_config *cfg, lfs_block_t block,
+        lfs_off_t off, const void *buffer, lfs_size_t size);
 
 // Erase a block
 //
@@ -61,6 +64,7 @@ int lfs_filebd_erase(const struct lfs_config *cfg, lfs_block_t block);
 
 // Sync the block device
 int lfs_filebd_sync(const struct lfs_config *cfg);
+
 
 #ifdef __cplusplus
 } /* extern "C" */

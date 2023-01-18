@@ -55,29 +55,30 @@ extern "C" {
  */
 
 /** @brief RNG tasks. */
-typedef enum {
-    NRF_RNG_TASK_START =
-        offsetof(NRF_RNG_Type, TASKS_START), /**< Start the random number generator. */
-    NRF_RNG_TASK_STOP = offsetof(NRF_RNG_Type, TASKS_STOP) /**< Stop the random number generator. */
+typedef enum
+{
+    NRF_RNG_TASK_START = offsetof(NRF_RNG_Type, TASKS_START), /**< Start the random number generator. */
+    NRF_RNG_TASK_STOP  = offsetof(NRF_RNG_Type, TASKS_STOP)   /**< Stop the random number generator. */
 } nrf_rng_task_t;
 
 /** @brief RNG events. */
-typedef enum {
-    NRF_RNG_EVENT_VALRDY =
-        offsetof(NRF_RNG_Type, EVENTS_VALRDY) /**< New random number generated event. */
+typedef enum
+{
+    NRF_RNG_EVENT_VALRDY = offsetof(NRF_RNG_Type, EVENTS_VALRDY) /**< New random number generated event. */
 } nrf_rng_event_t;
 
 /** @brief RNG interrupts. */
-typedef enum {
-    NRF_RNG_INT_VALRDY_MASK =
-        RNG_INTENSET_VALRDY_Msk /**< Mask for enabling or disabling an interrupt on VALRDY event. */
+typedef enum
+{
+    NRF_RNG_INT_VALRDY_MASK = RNG_INTENSET_VALRDY_Msk /**< Mask for enabling or disabling an interrupt on VALRDY event. */
 } nrf_rng_int_mask_t;
 
 /** @brief Types of RNG shortcuts. */
-typedef enum {
-    NRF_RNG_SHORT_VALRDY_STOP_MASK =
-        RNG_SHORTS_VALRDY_STOP_Msk /**< Mask for setting shortcut between EVENT_VALRDY and TASK_STOP. */
+typedef enum
+{
+    NRF_RNG_SHORT_VALRDY_STOP_MASK = RNG_SHORTS_VALRDY_STOP_Msk /**< Mask for setting shortcut between EVENT_VALRDY and TASK_STOP. */
 } nrf_rng_short_mask_t;
+
 
 /**
  * @brief Function for enabling interrupts.
@@ -112,7 +113,7 @@ __STATIC_INLINE bool nrf_rng_int_get(nrf_rng_int_mask_t mask);
  *
  * @return Address of the specified task.
  */
-__STATIC_INLINE uint32_t *nrf_rng_task_address_get(nrf_rng_task_t rng_task);
+__STATIC_INLINE uint32_t * nrf_rng_task_address_get(nrf_rng_task_t rng_task);
 
 /**
  * @brief Function for triggering the specified task.
@@ -130,7 +131,7 @@ __STATIC_INLINE void nrf_rng_task_trigger(nrf_rng_task_t rng_task);
  *
  * @return Address of the specified event.
  */
-__STATIC_INLINE uint32_t *nrf_rng_event_address_get(nrf_rng_event_t rng_event);
+__STATIC_INLINE uint32_t * nrf_rng_event_address_get(nrf_rng_event_t rng_event);
 
 /**
  * @brief Function for clearing the specified event.
@@ -176,6 +177,7 @@ __STATIC_INLINE void nrf_rng_error_correction_enable(void);
 /** @brief Function for disabling digital error correction. */
 __STATIC_INLINE void nrf_rng_error_correction_disable(void);
 
+
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
 __STATIC_INLINE void nrf_rng_int_enable(uint32_t mask)
@@ -193,7 +195,7 @@ __STATIC_INLINE bool nrf_rng_int_get(nrf_rng_int_mask_t mask)
     return (bool)(NRF_RNG->INTENCLR & mask);
 }
 
-__STATIC_INLINE uint32_t *nrf_rng_task_address_get(nrf_rng_task_t rng_task)
+__STATIC_INLINE uint32_t * nrf_rng_task_address_get(nrf_rng_task_t rng_task)
 {
     return (uint32_t *)((uint8_t *)NRF_RNG + (uint32_t)rng_task);
 }
@@ -203,7 +205,7 @@ __STATIC_INLINE void nrf_rng_task_trigger(nrf_rng_task_t rng_task)
     *((volatile uint32_t *)((uint8_t *)NRF_RNG + (uint32_t)rng_task)) = 0x1UL;
 }
 
-__STATIC_INLINE uint32_t *nrf_rng_event_address_get(nrf_rng_event_t rng_event)
+__STATIC_INLINE uint32_t * nrf_rng_event_address_get(nrf_rng_event_t rng_event)
 {
     return (uint32_t *)((uint8_t *)NRF_RNG + (uint32_t)rng_event);
 }
@@ -219,17 +221,17 @@ __STATIC_INLINE void nrf_rng_event_clear(nrf_rng_event_t rng_event)
 
 __STATIC_INLINE bool nrf_rng_event_get(nrf_rng_event_t rng_event)
 {
-    return (bool)*((volatile uint32_t *)((uint8_t *)NRF_RNG + (uint32_t)rng_event));
+    return (bool) * ((volatile uint32_t *)((uint8_t *)NRF_RNG + (uint32_t)rng_event));
 }
 
 __STATIC_INLINE void nrf_rng_shorts_enable(uint32_t mask)
 {
-    NRF_RNG->SHORTS |= mask;
+     NRF_RNG->SHORTS |= mask;
 }
 
 __STATIC_INLINE void nrf_rng_shorts_disable(uint32_t mask)
 {
-    NRF_RNG->SHORTS &= ~mask;
+     NRF_RNG->SHORTS &= ~mask;
 }
 
 __STATIC_INLINE uint8_t nrf_rng_random_value_get(void)

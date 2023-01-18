@@ -36,20 +36,17 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Initialize a queue */
-#define WSF_QUEUE_INIT(pQueue)  \
-    {                           \
-        (pQueue)->pHead = NULL; \
-        (pQueue)->pTail = NULL; \
-    }
+#define WSF_QUEUE_INIT(pQueue)          {(pQueue)->pHead = NULL; (pQueue)->pTail = NULL;}
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Queue structure */
-typedef struct {
-    void *pHead; /*!< \brief head of queue */
-    void *pTail; /*!< \brief tail of queue */
+typedef struct
+{
+  void      *pHead;         /*!< \brief head of queue */
+  void      *pTail;         /*!< \brief tail of queue */
 } wsfQueue_t;
 
 /**************************************************************************************************
@@ -146,7 +143,7 @@ bool_t WsfQueueEmpty(wsfQueue_t *pQueue);
 /*************************************************************************************************/
 bool_t WsfIsQueueDepthOne(wsfQueue_t *pQueue);
 
-/*! \} */ /* WSF_QUEUE_API */
+/*! \} */    /* WSF_QUEUE_API */
 
 #ifdef __cplusplus
 };

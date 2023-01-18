@@ -32,21 +32,29 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
+
+
 #ifndef CRYS_COMMON_H
 #define CRYS_COMMON_H
 
 #include "crys_common_error.h"
 
+
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
+
 
 /************************ Defines ******************************/
 
-#define CRYS_AES_SECRET_KEY_SIZE_IN_WORDS 4
+#define CRYS_AES_SECRET_KEY_SIZE_IN_WORDS           4
 
 /* the ROT13 definition - relevant only on SW low level engines compiled in the ROT mode */
-#define CRYS_COMMON_ROT_13_OFFSET 13
+#define CRYS_COMMON_ROT_13_OFFSET                   13
+
+
 
 /************************ Enums ********************************/
 
@@ -57,6 +65,8 @@ extern "C" {
 /************************ Public Variables *********************/
 
 /************************ Public Functions *********************/
+
+
 
 /***********************************************************************
  **
@@ -77,7 +87,8 @@ extern "C" {
  * @param[in] size    - The size in bytes.
  *
  */
-CRYSError_t CRYS_COMMON_ReverseMemcpy(uint8_t *dst_ptr, uint8_t *src_ptr, uint32_t size);
+ CRYSError_t CRYS_COMMON_ReverseMemcpy( uint8_t *dst_ptr , uint8_t *src_ptr , uint32_t size );
+
 
 /***********************************************************************
  **
@@ -98,11 +109,11 @@ CRYSError_t CRYS_COMMON_ReverseMemcpy(uint8_t *dst_ptr, uint8_t *src_ptr, uint32
  *
  *  return - no return value.
  */
-void CRYS_COMMON_AlignedWordsArrayToBytes(uint32_t *in32_ptr, uint32_t *out32_ptr,
-                                          uint32_t outAlignBits, uint32_t sizeWords);
+ void CRYS_COMMON_AlignedWordsArrayToBytes( uint32_t *in32_ptr , uint32_t *out32_ptr ,
+                                            uint32_t outAlignBits, uint32_t sizeWords );
 
 /***********************************************************************/
-/**
+ /**
   * @brief This function converts in place words byffer to bytes buffer with
   *        reversed endianity of output array.
   *
@@ -121,10 +132,13 @@ void CRYS_COMMON_AlignedWordsArrayToBytes(uint32_t *in32_ptr, uint32_t *out32_pt
   *
   * @return - no return value.
   */
-void CRYS_COMMON_InPlaceConvertBytesWordsAndArrayEndianness(uint32_t *buf_ptr, uint32_t sizeWords);
+void CRYS_COMMON_InPlaceConvertBytesWordsAndArrayEndianness(
+                    uint32_t *buf_ptr,
+                    uint32_t  sizeWords);
+
 
 /***********************************************************************/
-/**
+  /**
   * @brief This function converts big endianness bytes array to aligned words
   *        array with words order according to little endian /
   *
@@ -146,13 +160,15 @@ void CRYS_COMMON_InPlaceConvertBytesWordsAndArrayEndianness(uint32_t *buf_ptr, u
   * @return CRYSError_t - On success CRYS_OK is returned, on failure a
   *                        value MODULE_* as defined in .
   */
-CRYSError_t CRYS_COMMON_ConvertMsbLsbBytesToLswMswWords(uint32_t *out32_ptr,
-                                                        uint32_t sizeOutBuffBytes,
-                                                        const uint8_t *in8_ptr,
-                                                        uint32_t sizeInBytes);
+CRYSError_t CRYS_COMMON_ConvertMsbLsbBytesToLswMswWords(
+                    uint32_t *out32_ptr,
+                    uint32_t  sizeOutBuffBytes,
+                    const uint8_t  *in8_ptr,
+                    uint32_t  sizeInBytes);
+
 
 /***********************************************************************/
-/**
+  /**
   * @brief This function converts LE 32bit-words array to BE bytes array.
   *
   *     Note: The function allows output full size of the data and also output
@@ -181,8 +197,12 @@ CRYSError_t CRYS_COMMON_ConvertMsbLsbBytesToLswMswWords(uint32_t *out32_ptr,
   * @return CRYSError_t - On success CRYS_OK is returned, on failure a
   *                        value MODULE_* as defined in .
   */
-CRYSError_t CRYS_COMMON_ConvertLswMswWordsToMsbLsbBytes(uint8_t *out8_ptr, uint32_t sizeOutBytes,
-                                                        uint32_t *in32_ptr, uint32_t sizeInpBytes);
+CRYSError_t CRYS_COMMON_ConvertLswMswWordsToMsbLsbBytes(
+                    uint8_t  *out8_ptr,
+                    uint32_t  sizeOutBytes,
+                    uint32_t *in32_ptr,
+                    uint32_t  sizeInpBytes);
+
 
 /***********************************************************************/
 /**
@@ -198,8 +218,8 @@ CRYSError_t CRYS_COMMON_ConvertLswMswWordsToMsbLsbBytes(uint8_t *out8_ptr, uint3
  *
  * @return CRYSError_t - On success CRYS_OK is returned, on failure an Error as defined in VOS_error
  */
-CRYSError_t CRYS_COMMON_GetGlobalData(uint16_t Globalid, uint32_t *GlobalData_ptr,
-                                      uint16_t GlobalDataSizeWords);
+CRYSError_t CRYS_COMMON_GetGlobalData(uint16_t Globalid, uint32_t *GlobalData_ptr, uint16_t GlobalDataSizeWords);
+
 
 /***********************************************************************/
 /**
@@ -213,8 +233,8 @@ CRYSError_t CRYS_COMMON_GetGlobalData(uint16_t Globalid, uint32_t *GlobalData_pt
 *
 *   Return Value:
 */
-CRYSError_t CRYS_COMMON_StoreGlobalData(uint16_t Globalid, uint32_t *GlobalData_ptr,
-                                        uint16_t GlobalDataSizeWords);
+CRYSError_t CRYS_COMMON_StoreGlobalData(uint16_t Globalid, uint32_t *GlobalData_ptr, uint16_t GlobalDataSizeWords);
+
 
 /***********************************************************************/
 /**
@@ -246,8 +266,11 @@ CRYSError_t CRYS_COMMON_StoreGlobalData(uint16_t Globalid, uint32_t *GlobalData_
  *          are valid.
  *       2. Assumed, that copied source not may to take more than two last chunks of source memory.
  */
-CRYSError_t CRYS_COMMON_CutAndSaveEndOfLliData(uint32_t *SrcLliTab_ptr, uint32_t *SrcLliTabSize_ptr,
-                                               uint8_t *Dst_ptr, uint32_t DataSize);
+ CRYSError_t  CRYS_COMMON_CutAndSaveEndOfLliData(
+                                         uint32_t   *SrcLliTab_ptr,
+                                         uint32_t   *SrcLliTabSize_ptr,
+                                         uint8_t    *Dst_ptr,
+                                         uint32_t    DataSize);
 
 /***********************************************************************/
 /**
@@ -276,11 +299,14 @@ CRYSError_t CRYS_COMMON_CutAndSaveEndOfLliData(uint32_t *SrcLliTab_ptr, uint32_t
  *          are valid.
  *       2. Assumed, that copied source not may to take more than two first chunks of source memory.
  */
-void CRYS_COMMON_CutAndSaveBeginOfLliData(uint32_t **SrcLliTab_ptr_ptr, uint32_t *SrcLliTabSize_ptr,
-                                          uint8_t *Dst_ptr, uint32_t DataSize);
+ void  CRYS_COMMON_CutAndSaveBeginOfLliData(
+                                         uint32_t  **SrcLliTab_ptr_ptr,
+                                         uint32_t   *SrcLliTabSize_ptr,
+                                         uint8_t    *Dst_ptr,
+                                         uint32_t    DataSize);
 
 /***********************************************************************/
-/**
+  /**
   * @brief This function converts 32-bit words array with little endian
   *        order of words to bytes array with little endian (LE) order of bytes.
   *
@@ -294,8 +320,11 @@ void CRYS_COMMON_CutAndSaveBeginOfLliData(uint32_t **SrcLliTab_ptr_ptr, uint32_t
   * @return CRYSError_t - On success CRYS_OK is returned, on failure a
   *                        value MODULE_* as defined in .
   */
-void CRYS_COMMON_ConvertLswMswWordsToLsbMsbBytes(uint8_t *out8Le, const uint32_t *in32Le,
-                                                 size_t sizeInWords);
+void CRYS_COMMON_ConvertLswMswWordsToLsbMsbBytes(
+                    uint8_t  *out8Le,
+                    const uint32_t *in32Le,
+                    size_t  sizeInWords);
+
 
 /***********************************************************************/
 /**
@@ -312,8 +341,11 @@ void CRYS_COMMON_ConvertLswMswWordsToLsbMsbBytes(uint8_t *out8Le, const uint32_t
  * @return CRYSError_t - On success CRYS_OK is returned, on failure a
  *                        value MODULE_* as defined in .
  */
-void CRYS_COMMON_ConvertLsbMsbBytesToLswMswWords(uint32_t *out32Le, const uint8_t *in8Le,
-                                                 size_t sizeInBytes);
+void CRYS_COMMON_ConvertLsbMsbBytesToLswMswWords(
+                    uint32_t *out32Le,
+                    const uint8_t  *in8Le,
+                    size_t  sizeInBytes);
+
 
 /**
  * The function compares value of byte vector to null.
@@ -325,10 +357,15 @@ void CRYS_COMMON_ConvertLsbMsbBytesToLswMswWords(uint32_t *out32Le, const uint8_
  *
  * @return uint32_t - if vector's value iz zero, then returns 1, else - 0;
  */
-uint32_t CRYS_COMMON_CheckIsVectorZero(uint8_t *vect, uint32_t sizeBytes);
+uint32_t  CRYS_COMMON_CheckIsVectorZero(uint8_t *vect, uint32_t sizeBytes);
+
+
+
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+
+

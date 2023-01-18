@@ -34,7 +34,7 @@
 /*************************************************************************************************/
 void LhciEncMasterInit(void)
 {
-    /* Unconditionally override slave settings if exists. */
-    lhciCmdTbl[LHCI_MSG_ENC] = lhciMstEncDecodeCmdPkt;
-    lhciEvtTbl[LHCI_MSG_ENC] = lhciMstEncEncodeEvtPkt;
+  /* Unconditionally override slave settings if exists. */
+  lhciCmdTbl[LHCI_MSG_ENC] = lhciMstEncDecodeCmdPkt;
+  lhciEvtTbl[LHCI_MSG_ENC] = lhciMstEncEncodeEvtPkt;
 }

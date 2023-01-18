@@ -78,8 +78,7 @@ STATIC_ASSERT(offsetof(nrf_atfifo_postag_pos_t, rd) == 2);
  *
  * @sa nrf_atfifo_wspace_close
  */
-static bool nrf_atfifo_wspace_req(nrf_atfifo_t *const p_fifo,
-                                  nrf_atfifo_postag_t *const p_old_tail);
+static bool nrf_atfifo_wspace_req(nrf_atfifo_t * const p_fifo, nrf_atfifo_postag_t * const p_old_tail);
 
 /**
  * @brief Atomically mark all written data available.
@@ -103,7 +102,7 @@ static bool nrf_atfifo_wspace_req(nrf_atfifo_t *const p_fifo,
  *
  * @sa nrf_atfifo_wspace_req
  */
-static void nrf_atfifo_wspace_close(nrf_atfifo_t *const p_fifo);
+static void nrf_atfifo_wspace_close(nrf_atfifo_t * const p_fifo);
 
 /**
  * @brief Atomically get a part of a buffer to read data.
@@ -116,8 +115,7 @@ static void nrf_atfifo_wspace_close(nrf_atfifo_t *const p_fifo);
  *
  * @sa nrf_atfifo_rspace_close
  */
-static bool nrf_atfifo_rspace_req(nrf_atfifo_t *const p_fifo,
-                                  nrf_atfifo_postag_t *const p_old_head);
+static bool nrf_atfifo_rspace_req(nrf_atfifo_t * const p_fifo, nrf_atfifo_postag_t * const p_old_head);
 
 /**
  * @brief Atomically release all read data.
@@ -142,7 +140,7 @@ static bool nrf_atfifo_rspace_req(nrf_atfifo_t *const p_fifo,
  *
  * @sa nrf_atfifo_rspace_req
  */
-static void nrf_atfifo_rspace_close(nrf_atfifo_t *const p_fifo);
+static void nrf_atfifo_rspace_close(nrf_atfifo_t * const p_fifo);
 
 /**
  * @brief Safely clear the FIFO, internal function.
@@ -154,15 +152,18 @@ static void nrf_atfifo_rspace_close(nrf_atfifo_t *const p_fifo);
  * @retval true  All the data was released.
  * @retval false All the data available for releasing was released, but there is some pending transfer.
  */
-static bool nrf_atfifo_space_clear(nrf_atfifo_t *const p_fifo);
+static bool nrf_atfifo_space_clear(nrf_atfifo_t * const p_fifo);
+
 
 /* ---------------------------------------------------------------------------
  * Implementation starts here
  */
 
-#if defined(__CC_ARM)
+#if defined ( __CC_ARM )
 
-__ASM bool nrf_atfifo_wspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t *const p_old_tail){
+
+__ASM bool nrf_atfifo_wspace_req(nrf_atfifo_t * const p_fifo, nrf_atfifo_postag_t * const p_old_tail)
+{
     /* Registry usage:
      * R0 - p_fifo
      * R1 - p_old_tail
@@ -173,69 +174,68 @@ __ASM bool nrf_atfifo_wspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t
      * Returned value:
      * R0 (bool - 32 bits)
      */
-    push{ r4, r5 } nrf_atfifo_wspace_req_repeat
-        /* Load tail tag and set memory monitor !!! R2 - old tail !!! */
-        ldrex r2,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, tail))]
+    push {r4, r5}
+nrf_atfifo_wspace_req_repeat
+    /* Load tail tag and set memory monitor !!! R2 - old tail !!! */
+    ldrex r2, [r0, #__cpp(offsetof(nrf_atfifo_t, tail))]
     /* Extract write position !!! R3 !!! */
-    uxth r3,
-    r2
-        /* Increment address with overload support !!! R4 used temporary !!! */
-        ldrh r4,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, item_size))] add r3,
-    r4 ldrh r4,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, buf_size))] cmp r3,
-    r4 it hs subhs r3,
-    r3,
-    r4
+    uxth r3, r2
+    /* Increment address with overload support !!! R4 used temporary !!! */
+    ldrh  r4, [r0, #__cpp(offsetof(nrf_atfifo_t, item_size))]
+    add   r3, r4
+    ldrh  r4, [r0, #__cpp(offsetof(nrf_atfifo_t, buf_size))]
+    cmp   r3, r4
+    it    hs
+    subhs r3, r3, r4
 
-        /* Check if FIFO would overload after making this increment !!! R4 used temporary !!! */
-        ldrh r4,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, head) + offsetof(nrf_atfifo_postag_pos_t, wr))] cmp r3,
-    r4 ittt eq clrexeq moveq r0,
-    #__cpp(false) beq nrf_atfifo_wspace_req_exit
+    /* Check if FIFO would overload after making this increment !!! R4 used temporary !!! */
+    ldrh  r4, [r0, #__cpp(offsetof(nrf_atfifo_t, head) + offsetof(nrf_atfifo_postag_pos_t, wr))]
+    cmp   r3, r4
+    ittt  eq
+    clrexeq
+    moveq r0, #__cpp(false)
+    beq   nrf_atfifo_wspace_req_exit
 
-        /* Pack everything back !!! R3 - new tail !!! */
-        /* Copy lower byte from new_tail, and higher byte is a value from the top of old_tail */
-        pkhbt r3,
-    r3,
-    r2
+    /* Pack everything back !!! R3 - new tail !!! */
+    /* Copy lower byte from new_tail, and higher byte is a value from the top of old_tail */
+    pkhbt r3, r3, r2
 
-        /* Store new value clearing memory monitor !!! R4 used temporary !!! */
-        strex r4,
-    r3,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, tail))] cmp r4,
-    #0 bne nrf_atfifo_wspace_req_repeat
+    /* Store new value clearing memory monitor !!! R4 used temporary !!! */
+    strex r4, r3, [r0, #__cpp(offsetof(nrf_atfifo_t, tail))]
+    cmp   r4, #0
+    bne   nrf_atfifo_wspace_req_repeat
 
-        /* Return true */
-        mov r0,
-    #__cpp(true) nrf_atfifo_wspace_req_exit
-        /* Save old tail */
-        str r2,
-    [r1] pop { r4, r5 } bx lr
+    /* Return true */
+    mov r0, #__cpp(true)
+nrf_atfifo_wspace_req_exit
+    /* Save old tail */
+    str r2, [r1]
+    pop {r4, r5}
+    bx  lr
 }
 
-__ASM void nrf_atfifo_wspace_close(nrf_atfifo_t *const p_fifo){
+
+__ASM void nrf_atfifo_wspace_close(nrf_atfifo_t * const p_fifo)
+{
     /* Registry usage:
      * R0 - p_fifo
      * R1 - internal temporary register
      * R2 - new_tail
      */
-    nrf_atfifo_wspace_close_repeat ldrex r2,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, tail))]
+nrf_atfifo_wspace_close_repeat
+    ldrex r2, [r0, #__cpp(offsetof(nrf_atfifo_t, tail))]
     /* Copy from lower byte to higher  */
-    pkhbt r2,
-    r2,
-    r2,
-    lsl #16
+    pkhbt r2, r2, r2, lsl #16
 
-    strex r1,
-    r2,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, tail))] cmp r1,
-    #0 bne nrf_atfifo_wspace_close_repeat bx lr
+    strex r1, r2, [r0, #__cpp(offsetof(nrf_atfifo_t, tail))]
+    cmp   r1, #0
+    bne   nrf_atfifo_wspace_close_repeat
+    bx    lr
 }
 
-__ASM bool nrf_atfifo_rspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t *const p_old_head){
+
+__ASM bool nrf_atfifo_rspace_req(nrf_atfifo_t * const p_fifo, nrf_atfifo_postag_t * const p_old_head)
+{
     /* Registry usage:
      * R0 - p_fifo
      * R1 - p_old_head
@@ -246,72 +246,68 @@ __ASM bool nrf_atfifo_rspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t
      * Returned value:
      * R0 (bool - 32 bits)
      */
-    push{ r4, r5 } nrf_atfifo_rspace_req_repeat
-        /* Load tail tag and set memory monitor !!! R2 - old tail !!! */
-        ldrex r2,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, head))]
+    push {r4, r5}
+nrf_atfifo_rspace_req_repeat
+    /* Load tail tag and set memory monitor !!! R2 - old tail !!! */
+    ldrex r2, [r0, #__cpp(offsetof(nrf_atfifo_t, head))]
     /* Extract read position !!! R3 !!! */
-    uxth r3,
-    r2,
-    ror #16
+    uxth r3, r2, ror #16
 
     /* Check if we have any data !!! R4 used temporary !!! */
-    ldrh r4,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, tail) + offsetof(nrf_atfifo_postag_pos_t, rd))] cmp r3,
-    r4 ittt eq clrexeq moveq r0,
-    #__cpp(false) beq nrf_atfifo_rspace_req_exit
+    ldrh  r4, [r0, #__cpp(offsetof(nrf_atfifo_t, tail) + offsetof(nrf_atfifo_postag_pos_t, rd))]
+    cmp   r3, r4
+    ittt  eq
+    clrexeq
+    moveq r0, #__cpp(false)
+    beq   nrf_atfifo_rspace_req_exit
 
-        /* Increment address with overload support !!! R4 used temporary !!! */
-        ldrh r4,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, item_size))] add r3,
-    r4 ldrh r4,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, buf_size))] cmp r3,
-    r4 it hs subhs r3,
-    r3,
-    r4
+    /* Increment address with overload support !!! R4 used temporary !!! */
+    ldrh  r4, [r0, #__cpp(offsetof(nrf_atfifo_t, item_size))]
+    add   r3, r4
+    ldrh  r4, [r0, #__cpp(offsetof(nrf_atfifo_t, buf_size))]
+    cmp   r3, r4
+    it    hs
+    subhs r3, r3, r4
 
-        /* Pack everything back !!! R3 - new tail !!! */
-        /* Copy lower byte from old_head, and higher byte is a value from write_pos */
-        pkhbt r3,
-    r2,
-    r3,
-    lsl #16
+    /* Pack everything back !!! R3 - new tail !!! */
+    /* Copy lower byte from old_head, and higher byte is a value from write_pos */
+    pkhbt r3, r2, r3, lsl #16
 
     /* Store new value clearing memory monitor !!! R4 used temporary !!! */
-    strex r4,
-    r3,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, head))] cmp r4,
-    #0 bne nrf_atfifo_rspace_req_repeat
+    strex r4, r3, [r0, #__cpp(offsetof(nrf_atfifo_t, head))]
+    cmp   r4, #0
+    bne   nrf_atfifo_rspace_req_repeat
 
-        /* Return true */
-        mov r0,
-    #__cpp(true) nrf_atfifo_rspace_req_exit
-        /* Save old head */
-        str r2,
-    [r1] pop { r4, r5 } bx lr
+    /* Return true */
+    mov r0, #__cpp(true)
+nrf_atfifo_rspace_req_exit
+    /* Save old head */
+    str r2, [r1]
+    pop {r4, r5}
+    bx  lr
 }
 
-__ASM void nrf_atfifo_rspace_close(nrf_atfifo_t *const p_fifo){
+
+__ASM void nrf_atfifo_rspace_close(nrf_atfifo_t * const p_fifo)
+{
     /* Registry usage:
      * R0 - p_fifo
      * R1 - internal temporary register
      * R2 - new_tail
      */
-    nrf_atfifo_rspace_close_repeat ldrex r2,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, head))]
+nrf_atfifo_rspace_close_repeat
+    ldrex r2, [r0, #__cpp(offsetof(nrf_atfifo_t, head))]
     /* Copy from higher byte to lower */
-    pkhtb r2,
-    r2,
-    r2,
-    asr #16
+    pkhtb r2, r2, r2, asr #16
 
-    strex r1,
-    r2,
-    [r0, #__cpp(offsetof(nrf_atfifo_t, head))] cmp r1,
-    #0 bne nrf_atfifo_rspace_close_repeat bx lr
+    strex r1, r2, [r0, #__cpp(offsetof(nrf_atfifo_t, head))]
+    cmp   r1, #0
+    bne   nrf_atfifo_rspace_close_repeat
+    bx    lr
 }
 
-__ASM bool nrf_atfifo_space_clear(nrf_atfifo_t *const p_fifo)
+
+__ASM bool nrf_atfifo_space_clear(nrf_atfifo_t * const p_fifo)
 {
     /* Registry usage:
      * R0 - p_fifo as input, bool output after
@@ -319,43 +315,41 @@ __ASM bool nrf_atfifo_space_clear(nrf_atfifo_t *const p_fifo)
      * R2 - head_old, destroyed when creating new_head
      * R3 - p_fifo - copy
      */
-    mov r3,
-        r0 nrf_atfifo_space_clear_repeat
-            /* Load old head in !!! R2 register !!! and read pointer of tail in !!! R1 register !!! */
-            ldrex r2,
-        [r3, #__cpp(offsetof(nrf_atfifo_t, head))] ldrh r1,
-        [r3, #__cpp(offsetof(nrf_atfifo_t, tail) + offsetof(nrf_atfifo_postag_pos_t, rd))] cmp r2,
-        r2,
-        ror #16
-        /* Return false as default */
-        mov r0,
-        #__cpp(false)
-        /* Create new head in !!! R1 register !!! Data in !!! R2 register broken !!! */
-        itett ne uxthne r2,
-        r2 orreq r1, r1, r1, lsl #16 orrne r1, r2, r1,
-        lsl #16
+    mov     r3, r0
+nrf_atfifo_space_clear_repeat
+    /* Load old head in !!! R2 register !!! and read pointer of tail in !!! R1 register !!! */
+    ldrex   r2, [r3, #__cpp(offsetof(nrf_atfifo_t, head))]
+    ldrh    r1, [r3, #__cpp(offsetof(nrf_atfifo_t, tail) + offsetof(nrf_atfifo_postag_pos_t, rd))]
+    cmp     r2, r2, ror #16
+    /* Return false as default */
+    mov     r0, #__cpp(false)
+    /* Create new head in !!! R1 register !!! Data in !!! R2 register broken !!! */
+    itett   ne
+    uxthne  r2, r2
+    orreq   r1, r1, r1, lsl #16
+    orrne   r1, r2, r1, lsl #16
 
-        /* Skip header test */
-        bne nrf_atfifo_space_clear_head_test_skip
+    /* Skip header test */
+    bne     nrf_atfifo_space_clear_head_test_skip
 
-            /* Load whole tail and test it !!! R2 used !!! */
-            ldr r2,
-        [r3, #__cpp(offsetof(nrf_atfifo_t, tail))] cmp r2, r2,
-        ror #16
-        /* Return true if equal */
-        it eq moveq r0,
-        #__cpp(true)
+    /* Load whole tail and test it !!! R2 used !!! */
+    ldr     r2, [r3, #__cpp(offsetof(nrf_atfifo_t, tail))]
+    cmp     r2, r2, ror #16
+    /* Return true if equal */
+    it      eq
+    moveq   r0, #__cpp(true)
 
-            nrf_atfifo_space_clear_head_test_skip
-                /* Store and test if success !!! R2 used temporary !!! */
-                strex r2,
-        r1, [r3, #__cpp(offsetof(nrf_atfifo_t, head))] cmp r2,
-        #0 bne nrf_atfifo_space_clear_repeat bx lr
+nrf_atfifo_space_clear_head_test_skip
+    /* Store and test if success !!! R2 used temporary !!! */
+    strex   r2, r1, [r3, #__cpp(offsetof(nrf_atfifo_t, head))]
+    cmp     r2, #0
+    bne     nrf_atfifo_space_clear_repeat
+    bx      lr
 }
 
-#elif defined(__ICCARM__) || defined(__GNUC__)
+#elif defined ( __ICCARM__ ) || defined ( __GNUC__ )
 
-bool nrf_atfifo_wspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t *const p_old_tail)
+bool nrf_atfifo_wspace_req(nrf_atfifo_t * const p_fifo, nrf_atfifo_postag_t * const p_old_tail)
 {
     volatile bool ret;
     volatile uint32_t old_tail;
@@ -391,15 +385,20 @@ bool nrf_atfifo_wspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t *cons
         "   mov %[ret], %[true_val]                                     \n"
         "2:                                                             \n"
         : /* Output operands */
-        [ret] "=r"(ret), [temp] "=&r"(temp), [old_tail] "=&r"(old_tail), [new_tail] "=&r"(new_tail)
+            [ret]     "=r"(ret),
+            [temp]    "=&r"(temp),
+            [old_tail]"=&r"(old_tail),
+            [new_tail]"=&r"(new_tail)
         : /* Input operands */
-        [p_fifo] "r"(p_fifo), [offset_tail] "J"(offsetof(nrf_atfifo_t, tail)),
-        [offset_head_wr] "J"(offsetof(nrf_atfifo_t, head) + offsetof(nrf_atfifo_postag_pos_t, wr)),
-        [offset_item_size] "J"(offsetof(nrf_atfifo_t, item_size)),
-        [offset_buf_size] "J"(offsetof(nrf_atfifo_t, buf_size)), [true_val] "I"(true),
-        [false_val] "I"(false)
+            [p_fifo]          "r"(p_fifo),
+            [offset_tail]     "J"(offsetof(nrf_atfifo_t, tail)),
+            [offset_head_wr]  "J"(offsetof(nrf_atfifo_t, head) + offsetof(nrf_atfifo_postag_pos_t, wr)),
+            [offset_item_size]"J"(offsetof(nrf_atfifo_t, item_size)),
+            [offset_buf_size] "J"(offsetof(nrf_atfifo_t, buf_size)),
+            [true_val]        "I"(true),
+            [false_val]       "I"(false)
         : /* Clobbers */
-        "cc");
+            "cc");
 
     p_old_tail->tag = old_tail;
     UNUSED_VARIABLE(new_tail);
@@ -407,7 +406,8 @@ bool nrf_atfifo_wspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t *cons
     return ret;
 }
 
-void nrf_atfifo_wspace_close(nrf_atfifo_t *const p_fifo)
+
+void nrf_atfifo_wspace_close(nrf_atfifo_t * const p_fifo)
 {
     uint32_t temp;
     uint32_t new_tail;
@@ -422,17 +422,20 @@ void nrf_atfifo_wspace_close(nrf_atfifo_t *const p_fifo)
         "   cmp   %[temp], #0                                       \n"
         "   bne.n 1b                                                \n"
         : /* Output operands */
-        [temp] "=&r"(temp), [new_tail] "=&r"(new_tail)
+            [temp]     "=&r"(temp),
+            [new_tail] "=&r"(new_tail)
         : /* Input operands */
-        [p_fifo] "r"(p_fifo), [offset_tail] "J"(offsetof(nrf_atfifo_t, tail))
+            [p_fifo]      "r"(p_fifo),
+            [offset_tail] "J"(offsetof(nrf_atfifo_t, tail))
         : /* Clobbers */
-        "cc");
+            "cc");
 
     UNUSED_VARIABLE(temp);
     UNUSED_VARIABLE(new_tail);
 }
 
-bool nrf_atfifo_rspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t *const p_old_head)
+
+bool nrf_atfifo_rspace_req(nrf_atfifo_t * const p_fifo, nrf_atfifo_postag_t * const p_old_head)
 {
     volatile bool ret;
     volatile uint32_t old_head;
@@ -468,15 +471,20 @@ bool nrf_atfifo_rspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t *cons
         "   mov %[ret], %[true_val]                                 \n"
         "2:                                                         \n"
         : /* Output operands */
-        [ret] "=r"(ret), [temp] "=&r"(temp), [old_head] "=&r"(old_head), [new_head] "=&r"(new_head)
+            [ret]     "=r"(ret),
+            [temp]    "=&r"(temp),
+            [old_head]"=&r"(old_head),
+            [new_head]"=&r"(new_head)
         : /* Input operands */
-        [p_fifo] "r"(p_fifo), [offset_head] "J"(offsetof(nrf_atfifo_t, head)),
-        [offset_tail_rd] "J"(offsetof(nrf_atfifo_t, tail) + offsetof(nrf_atfifo_postag_pos_t, rd)),
-        [offset_item_size] "J"(offsetof(nrf_atfifo_t, item_size)),
-        [offset_buf_size] "J"(offsetof(nrf_atfifo_t, buf_size)), [true_val] "I"(true),
-        [false_val] "I"(false)
+            [p_fifo]          "r"(p_fifo),
+            [offset_head]     "J"(offsetof(nrf_atfifo_t, head)),
+            [offset_tail_rd]  "J"(offsetof(nrf_atfifo_t, tail) + offsetof(nrf_atfifo_postag_pos_t, rd)),
+            [offset_item_size]"J"(offsetof(nrf_atfifo_t, item_size)),
+            [offset_buf_size] "J"(offsetof(nrf_atfifo_t, buf_size)),
+            [true_val]        "I"(true),
+            [false_val]       "I"(false)
         : /* Clobbers */
-        "cc");
+            "cc");
 
     p_old_head->tag = old_head;
     UNUSED_VARIABLE(new_head);
@@ -484,7 +492,8 @@ bool nrf_atfifo_rspace_req(nrf_atfifo_t *const p_fifo, nrf_atfifo_postag_t *cons
     return ret;
 }
 
-void nrf_atfifo_rspace_close(nrf_atfifo_t *const p_fifo)
+
+void nrf_atfifo_rspace_close(nrf_atfifo_t * const p_fifo)
 {
     uint32_t temp;
     uint32_t new_head;
@@ -499,17 +508,20 @@ void nrf_atfifo_rspace_close(nrf_atfifo_t *const p_fifo)
         "   cmp   %[temp], #0                                       \n"
         "   bne.n 1b                                                \n"
         : /* Output operands */
-        [temp] "=&r"(temp), [new_head] "=&r"(new_head)
+            [temp]     "=&r"(temp),
+            [new_head] "=&r"(new_head)
         : /* Input operands */
-        [p_fifo] "r"(p_fifo), [offset_head] "J"(offsetof(nrf_atfifo_t, head))
+            [p_fifo]      "r"(p_fifo),
+            [offset_head] "J"(offsetof(nrf_atfifo_t, head))
         : /* Clobbers */
-        "cc");
+            "cc");
 
     UNUSED_VARIABLE(temp);
     UNUSED_VARIABLE(new_head);
 }
 
-bool nrf_atfifo_space_clear(nrf_atfifo_t *const p_fifo)
+
+bool nrf_atfifo_space_clear(nrf_atfifo_t * const p_fifo)
 {
     volatile bool ret;
     uint32_t old_head; /* This variable is left broken after assembly code finishes */
@@ -540,14 +552,18 @@ bool nrf_atfifo_space_clear(nrf_atfifo_t *const p_fifo)
         "   cmp     %[old_head], #0                                       \n"
         "   bne.n     1b                                                  \n"
         : /* Output operands */
-        [ret] "=&r"(ret), [old_head] "=&r"(old_head), [new_head] "=&r"(new_head)
+            [ret]      "=&r"(ret),
+            [old_head] "=&r"(old_head),
+            [new_head] "=&r"(new_head)
         : /* Input operands */
-        [p_fifo] "r"(p_fifo), [offset_head] "J"(offsetof(nrf_atfifo_t, head)),
-        [offset_tail] "J"(offsetof(nrf_atfifo_t, tail)),
-        [offset_tail_rd] "J"(offsetof(nrf_atfifo_t, tail) + offsetof(nrf_atfifo_postag_pos_t, rd)),
-        [true_val] "I"(true), [false_val] "I"(false)
+            [p_fifo]         "r"(p_fifo),
+            [offset_head]    "J"(offsetof(nrf_atfifo_t, head)),
+            [offset_tail]    "J"(offsetof(nrf_atfifo_t, tail)),
+            [offset_tail_rd] "J"(offsetof(nrf_atfifo_t, tail) + offsetof(nrf_atfifo_postag_pos_t, rd)),
+            [true_val]       "I"(true),
+            [false_val]      "I"(false)
         : /* Clobbers */
-        "cc");
+            "cc");
 
     UNUSED_VARIABLE(old_head);
     UNUSED_VARIABLE(new_head);

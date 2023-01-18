@@ -45,100 +45,102 @@
 extern "C" {
 #endif
 
+
 // POWER_CLOCK_IRQn
-#define nrfx_power_clock_irq_handler POWER_CLOCK_IRQHandler
+#define nrfx_power_clock_irq_handler    POWER_CLOCK_IRQHandler
 
 // RADIO_IRQn
 
 // UARTE0_UART0_IRQn
 #if NRFX_CHECK(NRFX_PRS_BOX_2_ENABLED)
-#define nrfx_prs_box_2_irq_handler UARTE0_UART0_IRQHandler
+#define nrfx_prs_box_2_irq_handler  UARTE0_UART0_IRQHandler
 #else
-#define nrfx_uarte_0_irq_handler UARTE0_UART0_IRQHandler
-#define nrfx_uart_0_irq_handler UARTE0_UART0_IRQHandler
+#define nrfx_uarte_0_irq_handler    UARTE0_UART0_IRQHandler
+#define nrfx_uart_0_irq_handler     UARTE0_UART0_IRQHandler
 #endif
 
 // TWIM0_TWIS0_TWI0_IRQn
 #if NRFX_CHECK(NRFX_PRS_BOX_0_ENABLED)
-#define nrfx_prs_box_0_irq_handler TWIM0_TWIS0_TWI0_IRQHandler
+#define nrfx_prs_box_0_irq_handler  TWIM0_TWIS0_TWI0_IRQHandler
 #else
-#define nrfx_twim_0_irq_handler TWIM0_TWIS0_TWI0_IRQHandler
-#define nrfx_twis_0_irq_handler TWIM0_TWIS0_TWI0_IRQHandler
-#define nrfx_twi_0_irq_handler TWIM0_TWIS0_TWI0_IRQHandler
+#define nrfx_twim_0_irq_handler     TWIM0_TWIS0_TWI0_IRQHandler
+#define nrfx_twis_0_irq_handler     TWIM0_TWIS0_TWI0_IRQHandler
+#define nrfx_twi_0_irq_handler      TWIM0_TWIS0_TWI0_IRQHandler
 #endif
 
 // SPIM0_SPIS0_SPI0_IRQn
 #if NRFX_CHECK(NRFX_PRS_BOX_1_ENABLED)
-#define nrfx_prs_box_1_irq_handler SPIM0_SPIS0_SPI0_IRQHandler
+#define nrfx_prs_box_1_irq_handler  SPIM0_SPIS0_SPI0_IRQHandler
 #else
-#define nrfx_spim_0_irq_handler SPIM0_SPIS0_SPI0_IRQHandler
-#define nrfx_spis_0_irq_handler SPIM0_SPIS0_SPI0_IRQHandler
-#define nrfx_spi_0_irq_handler SPIM0_SPIS0_SPI0_IRQHandler
+#define nrfx_spim_0_irq_handler     SPIM0_SPIS0_SPI0_IRQHandler
+#define nrfx_spis_0_irq_handler     SPIM0_SPIS0_SPI0_IRQHandler
+#define nrfx_spi_0_irq_handler      SPIM0_SPIS0_SPI0_IRQHandler
 #endif
 
 // GPIOTE_IRQn
-#define nrfx_gpiote_irq_handler GPIOTE_IRQHandler
+#define nrfx_gpiote_irq_handler     GPIOTE_IRQHandler
 
 // SAADC_IRQn
-#define nrfx_saadc_irq_handler SAADC_IRQHandler
+#define nrfx_saadc_irq_handler      SAADC_IRQHandler
 
 // TIMER0_IRQn
-#define nrfx_timer_0_irq_handler TIMER0_IRQHandler
+#define nrfx_timer_0_irq_handler    TIMER0_IRQHandler
 
 // TIMER1_IRQn
-#define nrfx_timer_1_irq_handler TIMER1_IRQHandler
+#define nrfx_timer_1_irq_handler    TIMER1_IRQHandler
 
 // TIMER2_IRQn
-#define nrfx_timer_2_irq_handler TIMER2_IRQHandler
+#define nrfx_timer_2_irq_handler    TIMER2_IRQHandler
 
 // RTC0_IRQn
-#define nrfx_rtc_0_irq_handler RTC0_IRQHandler
+#define nrfx_rtc_0_irq_handler      RTC0_IRQHandler
 
 // TEMP_IRQn
-#define nrfx_temp_irq_handler TEMP_IRQHandler
+#define nrfx_temp_irq_handler       TEMP_IRQHandler
 
 // RNG_IRQn
-#define nrfx_rng_irq_handler RNG_IRQHandler
+#define nrfx_rng_irq_handler        RNG_IRQHandler
 
 // ECB_IRQn
 
 // CCM_AAR_IRQn
 
 // WDT_IRQn
-#define nrfx_wdt_irq_handler WDT_IRQHandler
+#define nrfx_wdt_irq_handler        WDT_IRQHandler
 
 // RTC1_IRQn
-#define nrfx_rtc_1_irq_handler RTC1_IRQHandler
+#define nrfx_rtc_1_irq_handler      RTC1_IRQHandler
 
 // QDEC_IRQn
-#define nrfx_qdec_irq_handler QDEC_IRQHandler
+#define nrfx_qdec_irq_handler       QDEC_IRQHandler
 
 // COMP_IRQn
-#define nrfx_comp_irq_handler COMP_IRQHandler
+#define nrfx_comp_irq_handler       COMP_IRQHandler
 
 // SWI0_EGU0_IRQn
-#define nrfx_swi_0_irq_handler SWI0_EGU0_IRQHandler
+#define nrfx_swi_0_irq_handler      SWI0_EGU0_IRQHandler
 
 // SWI1_EGU1_IRQn
-#define nrfx_swi_1_irq_handler SWI1_EGU1_IRQHandler
+#define nrfx_swi_1_irq_handler      SWI1_EGU1_IRQHandler
 
 // SWI2_IRQn
-#define nrfx_swi_2_irq_handler SWI2_IRQHandler
+#define nrfx_swi_2_irq_handler      SWI2_IRQHandler
 
 // SWI3_IRQn
-#define nrfx_swi_3_irq_handler SWI3_IRQHandler
+#define nrfx_swi_3_irq_handler      SWI3_IRQHandler
 
 // SWI4_IRQn
-#define nrfx_swi_4_irq_handler SWI4_IRQHandler
+#define nrfx_swi_4_irq_handler      SWI4_IRQHandler
 
 // SWI5_IRQn
-#define nrfx_swi_5_irq_handler SWI5_IRQHandler
+#define nrfx_swi_5_irq_handler      SWI5_IRQHandler
 
 // PWM0_IRQn
-#define nrfx_pwm_0_irq_handler PWM0_IRQHandler
+#define nrfx_pwm_0_irq_handler      PWM0_IRQHandler
 
 // PDM_IRQn
-#define nrfx_pdm_irq_handler PDM_IRQHandler
+#define nrfx_pdm_irq_handler        PDM_IRQHandler
+
 
 #ifdef __cplusplus
 }

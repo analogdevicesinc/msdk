@@ -64,8 +64,7 @@ void PalBbTesterInvalidateNextAccAddr(bool_t forRx);
  *  \b chanMask while stepping through the invalid pattern in \b invalidMask.
  */
 /*************************************************************************************************/
-void PalBbTesterSetInvalidAccessAddress(uint64_t chanMask, uint32_t invalidMask, bool_t shiftMask,
-                                        bool_t forRx);
+void PalBbTesterSetInvalidAccessAddress(uint64_t chanMask, uint32_t invalidMask, bool_t shiftMask, bool_t forRx);
 
 /*************************************************************************************************/
 /*!
@@ -111,8 +110,7 @@ void PalBbTesterSetModifyTxPktTrigger(uint16_t hdrMask, uint16_t hdrValue);
 
 void PalBbTesterAdjTxTifsNs(int16_t adjNs);
 #ifdef __cplusplus
-}
-;
+};
 #endif
 
 #endif /* PAL_BB_BLE_TESTER_H */

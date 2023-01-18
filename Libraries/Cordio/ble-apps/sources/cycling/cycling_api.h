@@ -53,6 +53,7 @@ void CyclingStart(void);
 /*************************************************************************************************/
 void CyclingHandlerInit(wsfHandlerId_t handlerId);
 
+
 /*************************************************************************************************/
 /*!
  *  \brief  WSF event handler for the application.

@@ -38,15 +38,16 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Glucose service enumeration of handle indexes of characteristics to be discovered */
-enum {
-    GLPC_GLS_GLM_HDL_IDX, /*!< \brief Glucose measurement */
-    GLPC_GLS_GLM_CCC_HDL_IDX, /*!< \brief Glucose measurement CCC descriptor */
-    GLPC_GLS_GLMC_HDL_IDX, /*!< \brief Glucose measurement context */
-    GLPC_GLS_GLMC_CCC_HDL_IDX, /*!< \brief Glucose measurement context CCC descriptor */
-    GLPC_GLS_GLF_HDL_IDX, /*!< \brief Glucose feature */
-    GLPC_GLS_RACP_HDL_IDX, /*!< \brief Record access control point */
-    GLPC_GLS_RACP_CCC_HDL_IDX, /*!< \brief Record access control point CCC descriptor */
-    GLPC_GLS_HDL_LIST_LEN /*!< \brief Handle list length */
+enum
+{
+  GLPC_GLS_GLM_HDL_IDX,           /*!< \brief Glucose measurement */
+  GLPC_GLS_GLM_CCC_HDL_IDX,       /*!< \brief Glucose measurement CCC descriptor */
+  GLPC_GLS_GLMC_HDL_IDX,          /*!< \brief Glucose measurement context */
+  GLPC_GLS_GLMC_CCC_HDL_IDX,      /*!< \brief Glucose measurement context CCC descriptor */
+  GLPC_GLS_GLF_HDL_IDX,           /*!< \brief Glucose feature */
+  GLPC_GLS_RACP_HDL_IDX,          /*!< \brief Record access control point */
+  GLPC_GLS_RACP_CCC_HDL_IDX,      /*!< \brief Record access control point CCC descriptor */
+  GLPC_GLS_HDL_LIST_LEN           /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -54,11 +55,13 @@ enum {
 **************************************************************************************************/
 
 /*! \brief Glucose service RACP filter type */
-typedef struct {
-    union {
-        uint16_t seqNum; /*!< \brief Sequence number filter */
-    } param; /*!< \brief Parameter union */
-    uint8_t type; /*!< \brief Filter type */
+typedef struct
+{
+  union
+  {
+    uint16_t      seqNum;         /*!< \brief Sequence number filter */
+  } param;                        /*!< \brief Parameter union */
+  uint8_t         type;           /*!< \brief Filter type */
 } glpcFilter_t;
 
 /**************************************************************************************************
@@ -131,7 +134,7 @@ void GlpcGlsSetLastSeqNum(uint16_t seqNum);
 /*************************************************************************************************/
 uint16_t GlpcGlsGetLastSeqNum(void);
 
-/*! \} */ /* GLUCOSE_PROFILE */
+/*! \} */    /* GLUCOSE_PROFILE */
 
 #ifdef __cplusplus
 };

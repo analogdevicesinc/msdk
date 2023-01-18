@@ -31,10 +31,10 @@
 /*************************************************************************************************/
 static void RunAllTests(void)
 {
-    RUN_TEST_GROUP(Uart);
-    RUN_TEST_GROUP(Twi);
-    RUN_TEST_GROUP(Flash);
-    RUN_TEST_GROUP(Button);
+  RUN_TEST_GROUP(Uart);
+  RUN_TEST_GROUP(Twi);
+  RUN_TEST_GROUP(Flash);
+  RUN_TEST_GROUP(Button);
 }
 
 /*************************************************************************************************/
@@ -44,7 +44,7 @@ static void RunAllTests(void)
 /*************************************************************************************************/
 static void mainUartReadCompletion(void)
 {
-    uartRdCompleteFlag = 1;
+  uartRdCompleteFlag = 1;
 }
 
 /*************************************************************************************************/
@@ -54,7 +54,7 @@ static void mainUartReadCompletion(void)
 /*************************************************************************************************/
 static void mainUartWriteCompletion(void)
 {
-    uartWrCompleteFlag = 1;
+  uartWrCompleteFlag = 1;
 }
 
 /*************************************************************************************************/
@@ -66,33 +66,35 @@ static void mainUartWriteCompletion(void)
 /*************************************************************************************************/
 int main(void)
 {
-    char *unityArgv[] = {
-        "unittest-host", "-v", /* verbose */
-        /* "-g", "", */ /* group filter */
-        /* "-n", "", */ /* name filter */
-        /* "-r", "1" */ /* repeat count */
-    };
+  char * unityArgv[] =
+  {
+      "unittest-host",
+      "-v",                 /* verbose */
+      /* "-g", "", */       /* group filter */
+      /* "-n", "", */       /* name filter */
+      /* "-r", "1" */       /* repeat count */
+  };
 
-    int unityArgc = sizeof(unityArgv) / sizeof(char *);
+  int unityArgc = sizeof(unityArgv) / sizeof(char *);
 
-    PalUartConfig_t cfg;
-    cfg.baud = 1000000;
-    cfg.hwFlow = TRUE;
-    cfg.rdCback = mainUartReadCompletion;
-    cfg.wrCback = mainUartWriteCompletion;
+  PalUartConfig_t cfg;
+  cfg.baud   = 1000000;
+  cfg.hwFlow = TRUE;
+  cfg.rdCback = mainUartReadCompletion;
+  cfg.wrCback = mainUartWriteCompletion;
 
-    PalUartInit(PAL_UART_ID_TERMINAL, &cfg);
+  PalUartInit(PAL_UART_ID_TERMINAL, &cfg);
 
 #ifdef __IAR_SYSTEMS_ICC__
-    __enable_interrupt();
+  __enable_interrupt();
 #endif
 #ifdef __GNUC__
-    __asm volatile("cpsie i");
+  __asm volatile ("cpsie i");
 #endif
 #ifdef __CC_ARM
-    __enable_irq();
+  __enable_irq();
 #endif
-    return UnityMain(unityArgc, unityArgv, RunAllTests);
+  return UnityMain(unityArgc, unityArgv, RunAllTests);
 }
 
 /*************************************************************************************************/
@@ -106,11 +108,11 @@ int main(void)
 /*************************************************************************************************/
 int UnityPutchar(int ch)
 {
-    uartWrCompleteFlag = 0;
-    PalUartWriteData(PAL_UART_ID_TERMINAL, (const uint8_t *)&ch, 1);
-    while (!uartWrCompleteFlag) {}
+  uartWrCompleteFlag = 0;
+  PalUartWriteData(PAL_UART_ID_TERMINAL, (const uint8_t *)&ch, 1);
+  while (!uartWrCompleteFlag);
 
-    return ch;
+  return ch;
 }
 
 /*************************************************************************************************/
@@ -123,11 +125,11 @@ int UnityPutchar(int ch)
 /*************************************************************************************************/
 void WsfAssert(const char *pFile, uint16_t line)
 {
-    UNITY_OUTPUT_CHAR('\n');
-    UnityPrint("Assertion failed at: ");
-    UnityPrint(pFile);
-    UnityPrint(":");
-    UnityPrintNumber(line);
+  UNITY_OUTPUT_CHAR('\n');
+  UnityPrint("Assertion failed at: ");
+  UnityPrint(pFile);
+  UnityPrint(":");
+  UnityPrintNumber(line);
 
-    UNITY_TEST_FAIL(__LINE__, "Assertion failed");
+  UNITY_TEST_FAIL(__LINE__, "Assertion failed");
 }

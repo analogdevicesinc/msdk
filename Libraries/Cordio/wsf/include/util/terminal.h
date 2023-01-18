@@ -38,24 +38,25 @@
 **************************************************************************************************/
 
 #ifndef TERMINAL_MAX_ARGC
-#define TERMINAL_MAX_ARGC 8u /*!< \brief Maximum number of arguments to any command. */
+#define TERMINAL_MAX_ARGC           8u          /*!< \brief Maximum number of arguments to any command. */
 #endif
 #ifndef TERMINAL_MAX_COMMAND_LEN
-#define TERMINAL_MAX_COMMAND_LEN 100u /*!< \brief Maximum length of command line. */
+#define TERMINAL_MAX_COMMAND_LEN    100u        /*!< \brief Maximum length of command line. */
 #endif
-#define TERMINAL_PRINTF_MAX_LEN 256u /*!< \brief Maximum length of any printed output. */
-#define TERMINAL_STRING_PROMPT "> " /*!< \brief Prompt string. */
-#define TERMINAL_STRING_ERROR "ERROR: " /*!< \brief Error prefix. */
-#define TERMINAL_STRING_USAGE "USAGE: " /*!< \brief Usage prefix. */
-#define TERMINAL_STRING_NEW_LINE "\r\n" /*!< \brief New line string. */
+#define TERMINAL_PRINTF_MAX_LEN     256u        /*!< \brief Maximum length of any printed output. */
+#define TERMINAL_STRING_PROMPT      "> "        /*!< \brief Prompt string. */
+#define TERMINAL_STRING_ERROR       "ERROR: "   /*!< \brief Error prefix. */
+#define TERMINAL_STRING_USAGE       "USAGE: "   /*!< \brief Usage prefix. */
+#define TERMINAL_STRING_NEW_LINE    "\r\n"      /*!< \brief New line string. */
 
 /*! \brief    Terminal command error codes. */
-enum {
-    TERMINAL_ERROR_OK = 0, /*!< \brief Command completed. */
-    TERMINAL_ERROR_BAD_ARGUMENTS = 1, /*!< \brief ERROR: Invalid argument(s) */
-    TERMINAL_ERROR_TOO_FEW_ARGUMENTS = 2, /*!< \brief ERROR: Too few arguments */
-    TERMINAL_ERROR_TOO_MANY_ARGUMENTS = 3, /*!< \brief ERROR: Too many arguments */
-    TERMINAL_ERROR_EXEC = 4 /*!< \brief Command completed with execution error. */
+enum
+{
+  TERMINAL_ERROR_OK                 = 0,  /*!< \brief Command completed. */
+  TERMINAL_ERROR_BAD_ARGUMENTS      = 1,  /*!< \brief ERROR: Invalid argument(s) */
+  TERMINAL_ERROR_TOO_FEW_ARGUMENTS  = 2,  /*!< \brief ERROR: Too few arguments */
+  TERMINAL_ERROR_TOO_MANY_ARGUMENTS = 3,  /*!< \brief ERROR: Too many arguments */
+  TERMINAL_ERROR_EXEC               = 4   /*!< \brief Command completed with execution error. */
 };
 
 /**************************************************************************************************
@@ -85,11 +86,12 @@ typedef uint8_t (*terminalHandler_t)(uint32_t argc, char **argv);
 typedef bool_t (*terminalUartTx_t)(const uint8_t *pBuf, uint32_t len);
 
 /*! \brief  Terminal command. */
-typedef struct terminalCommand_tag {
-    struct terminalCommand_tag *pNext; /*!< \brief Pointer to next command in list. */
-    const char *pName; /*!< \brief Name of command. */
-    const char *pHelpStr; /*!< \brief Help String for command. */
-    terminalHandler_t handler; /*!< \brief Handler for command. */
+typedef struct terminalCommand_tag
+{
+  struct terminalCommand_tag   *pNext;     /*!< \brief Pointer to next command in list. */
+  const char                   *pName;     /*!< \brief Name of command. */
+  const char                   *pHelpStr;  /*!< \brief Help String for command. */
+  terminalHandler_t            handler;    /*!< \brief Handler for command. */
 } terminalCommand_t;
 
 /**************************************************************************************************
@@ -180,6 +182,6 @@ void TerminalTxPrint(const char *pStr, ...);
 /*************************************************************************************************/
 void TerminalTx(const uint8_t *pData, uint16_t len);
 
-/*! \} */ /* WSF_UTIL_API */
+/*! \} */    /* WSF_UTIL_API */
 
 #endif /* TERMINAL_H */

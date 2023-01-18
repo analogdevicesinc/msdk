@@ -68,13 +68,15 @@ extern "C" {
  */
 extern const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha256_info;
 
-/**@brief External variable declaration to info structure for SHA-512
+
+ /**@brief External variable declaration to info structure for SHA-512
  *
  * @note The variable is defined in the nrf_crypto backend that is
  *       enabled in the @ref sdk_config.
  *
  */
 extern const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha512_info;
+
 
 /**
  * @brief Context type for Hash.
@@ -84,11 +86,14 @@ extern const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha512_info;
  */
 typedef nrf_crypto_backend_hash_context_t nrf_crypto_hash_context_t;
 
+
 /** @brief Type definition for an array holding a SHA-256 hash digest. */
 typedef uint8_t nrf_crypto_hash_sha256_digest_t[NRF_CRYPTO_HASH_SIZE_SHA256];
 
+
 /** @brief Type definition for an array holding a SHA-512 hash digest. */
 typedef uint8_t nrf_crypto_hash_sha512_digest_t[NRF_CRYPTO_HASH_SIZE_SHA512];
+
 
 /**@brief Function for initializing the context structure required to compute a hash digest from
  *        arbitrary input data.
@@ -115,8 +120,9 @@ typedef uint8_t nrf_crypto_hash_sha512_digest_t[NRF_CRYPTO_HASH_SIZE_SHA512];
  * @retval  NRF_ERROR_CRYPTO_INTERNAL            An internal error occurred when initializing
  *                                               the constext in the nrf_crypto backend.
  */
-ret_code_t nrf_crypto_hash_init(nrf_crypto_hash_context_t *const p_context,
-                                nrf_crypto_hash_info_t const *p_info);
+ret_code_t nrf_crypto_hash_init(nrf_crypto_hash_context_t * const p_context,
+                                nrf_crypto_hash_info_t    const * p_info);
+
 
 /**@brief Function for updating the hash calculation with partial arbitrary data.
  *
@@ -156,8 +162,9 @@ ret_code_t nrf_crypto_hash_init(nrf_crypto_hash_context_t *const p_context,
  * @retval  NRF_ERROR_CRYPTO_INTERNAL                 An internal error occurred in the nrf_crypto
  *                                                    backend.
  */
-ret_code_t nrf_crypto_hash_update(nrf_crypto_hash_context_t *const p_context, uint8_t const *p_data,
-                                  size_t data_size);
+ret_code_t nrf_crypto_hash_update(nrf_crypto_hash_context_t   * const p_context,
+                                  uint8_t                     const * p_data,
+                                  size_t                              data_size);
 
 /**@brief Function for finalizing computation of a hash digest from arbitrary data.
  *
@@ -199,8 +206,10 @@ ret_code_t nrf_crypto_hash_update(nrf_crypto_hash_context_t *const p_context, ui
  * @retval  NRF_ERROR_CRYPTO_INTERNAL                 An internal error occurred in the nrf_crypto
  *                                                    backend.
  */
-ret_code_t nrf_crypto_hash_finalize(nrf_crypto_hash_context_t *const p_context, uint8_t *p_digest,
-                                    size_t *const p_digest_size);
+ret_code_t nrf_crypto_hash_finalize(nrf_crypto_hash_context_t * const p_context,
+                                    uint8_t                         * p_digest,
+                                    size_t                    * const p_digest_size);
+
 
 /**@brief Function for computing a hash from arbitrary data in a single integrated step.
  *
@@ -243,10 +252,12 @@ ret_code_t nrf_crypto_hash_finalize(nrf_crypto_hash_context_t *const p_context, 
  * @retval  NRF_ERROR_CRYPTO_INTERNAL           An internal error occurred in the nrf_crypto
  *                                              backend.
  */
-ret_code_t nrf_crypto_hash_calculate(nrf_crypto_hash_context_t *const p_context,
-                                     nrf_crypto_hash_info_t const *p_info, uint8_t const *p_data,
-                                     size_t data_size, uint8_t *p_digest,
-                                     size_t *const p_digest_size);
+ret_code_t nrf_crypto_hash_calculate(nrf_crypto_hash_context_t    * const p_context,
+                                     nrf_crypto_hash_info_t       const * p_info,
+                                     uint8_t                      const * p_data,
+                                     size_t                               data_size,
+                                     uint8_t                            * p_digest,
+                                     size_t                       * const p_digest_size);
 
 #ifdef __cplusplus
 }

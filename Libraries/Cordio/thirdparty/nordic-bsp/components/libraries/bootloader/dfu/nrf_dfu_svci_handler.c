@@ -48,73 +48,81 @@
 #include "nrf_dfu_settings.h"
 #include "sdk_config.h"
 
+
 #if (NRF_DFU_TRANSPORT_BLE && NRF_DFU_BLE_REQUIRES_BONDS)
 
-NRF_SVCI_ASYNC_HANDLER_CREATE(NRF_DFU_SVCI_SET_PEER_DATA, nrf_dfu_set_peer_data,
-                              nrf_dfu_peer_data_t, nrf_dfu_peer_data_state_t);
 
-static uint32_t nrf_dfu_set_peer_data_handler(nrf_dfu_set_peer_data_svci_async_t *p_async)
+NRF_SVCI_ASYNC_HANDLER_CREATE(NRF_DFU_SVCI_SET_PEER_DATA,
+    nrf_dfu_set_peer_data, nrf_dfu_peer_data_t, nrf_dfu_peer_data_state_t);
+
+
+static uint32_t nrf_dfu_set_peer_data_handler(nrf_dfu_set_peer_data_svci_async_t * p_async)
 {
     VERIFY_PARAM_NOT_NULL(p_async);
 
-    p_async->async_func = nrf_dfu_set_peer_data_on_call;
+    p_async->async_func      = nrf_dfu_set_peer_data_on_call;
     p_async->sys_evt_handler = nrf_dfu_set_peer_data_on_sys_evt;
-    p_async->state = DFU_PEER_DATA_STATE_INITIALIZED;
+    p_async->state           = DFU_PEER_DATA_STATE_INITIALIZED;
 
     return NRF_SUCCESS;
 }
 
-static uint32_t nrf_dfu_set_peer_data_on_call(nrf_dfu_peer_data_t *p_data,
-                                              nrf_dfu_peer_data_state_t *p_state)
+
+static uint32_t nrf_dfu_set_peer_data_on_call(nrf_dfu_peer_data_t       * p_data,
+                                              nrf_dfu_peer_data_state_t * p_state)
 {
     uint32_t ret_val = NRF_ERROR_BUSY;
 
     VERIFY_PARAM_NOT_NULL(p_state);
 
-    switch (*p_state) {
-    case DFU_PEER_DATA_STATE_INVALID:
-        return NRF_ERROR_INVALID_STATE;
+    switch (*p_state)
+    {
+        case DFU_PEER_DATA_STATE_INVALID:
+            return NRF_ERROR_INVALID_STATE;
 
-    case DFU_PEER_DATA_STATE_INITIALIZED:
-        ret_val = nrf_dfu_settings_peer_data_write(p_data);
-        if (ret_val == NRF_SUCCESS) {
-            *p_state = DFU_PEER_DATA_STATE_WRITE_REQUESTED;
-        }
-        break;
+        case DFU_PEER_DATA_STATE_INITIALIZED:
+            ret_val = nrf_dfu_settings_peer_data_write(p_data);
+            if (ret_val == NRF_SUCCESS)
+            {
+                *p_state = DFU_PEER_DATA_STATE_WRITE_REQUESTED;
+            }
+            break;
 
-    case DFU_PEER_DATA_STATE_WRITE_REQUESTED:
-        return NRF_ERROR_BUSY;
+        case DFU_PEER_DATA_STATE_WRITE_REQUESTED:
+            return NRF_ERROR_BUSY;
 
-    case DFU_PEER_DATA_STATE_WRITE_FINISHED:
-        return NRF_ERROR_INVALID_STATE;
+        case DFU_PEER_DATA_STATE_WRITE_FINISHED:
+            return NRF_ERROR_INVALID_STATE;
 
-    case DFU_PEER_DATA_STATE_WRITE_FAILED:
-        return NRF_ERROR_INVALID_STATE;
+        case DFU_PEER_DATA_STATE_WRITE_FAILED:
+            return NRF_ERROR_INVALID_STATE;
     }
 
     return ret_val;
 }
 
-static uint32_t nrf_dfu_set_peer_data_on_sys_evt(uint32_t sys_event,
-                                                 nrf_dfu_peer_data_state_t *p_state)
+
+static uint32_t nrf_dfu_set_peer_data_on_sys_evt(uint32_t sys_event, nrf_dfu_peer_data_state_t * p_state)
 {
     uint32_t ret_val = NRF_ERROR_INVALID_STATE;
 
     VERIFY_PARAM_NOT_NULL(p_state);
 
-    if (*p_state == DFU_PEER_DATA_STATE_WRITE_REQUESTED) {
-        switch (sys_event) {
-        case NRF_EVT_FLASH_OPERATION_ERROR:
-            return NRF_ERROR_BUSY;
+    if (*p_state == DFU_PEER_DATA_STATE_WRITE_REQUESTED)
+    {
+        switch (sys_event)
+        {
+            case NRF_EVT_FLASH_OPERATION_ERROR:
+                return NRF_ERROR_BUSY;
 
-        case NRF_EVT_FLASH_OPERATION_SUCCESS:
-            ret_val = NRF_SUCCESS;
-            (*p_state) = DFU_PEER_DATA_STATE_WRITE_FINISHED;
-            break;
+            case NRF_EVT_FLASH_OPERATION_SUCCESS:
+                ret_val = NRF_SUCCESS;
+                (*p_state) = DFU_PEER_DATA_STATE_WRITE_FINISHED;
+                break;
 
-        default:
-            // Event not intended for us
-            break;
+            default:
+                // Event not intended for us
+                break;
         }
     }
 
@@ -123,75 +131,82 @@ static uint32_t nrf_dfu_set_peer_data_on_sys_evt(uint32_t sys_event,
 
 #elif (NRF_DFU_TRANSPORT_BLE && !NRF_DFU_BLE_REQUIRES_BONDS)
 
-NRF_SVCI_ASYNC_HANDLER_CREATE(NRF_DFU_SVCI_SET_ADV_NAME, nrf_dfu_set_adv_name, nrf_dfu_adv_name_t,
-                              nrf_dfu_set_adv_name_state_t);
 
-static uint32_t nrf_dfu_set_adv_name_handler(nrf_dfu_set_adv_name_svci_async_t *p_async)
+NRF_SVCI_ASYNC_HANDLER_CREATE(NRF_DFU_SVCI_SET_ADV_NAME,
+    nrf_dfu_set_adv_name,  nrf_dfu_adv_name_t,  nrf_dfu_set_adv_name_state_t);
+
+
+static uint32_t nrf_dfu_set_adv_name_handler(nrf_dfu_set_adv_name_svci_async_t * p_async)
 {
     VERIFY_PARAM_NOT_NULL(p_async);
 
-    p_async->async_func = nrf_dfu_set_adv_name_on_call;
+    p_async->async_func      = nrf_dfu_set_adv_name_on_call;
     p_async->sys_evt_handler = nrf_dfu_set_adv_name_on_sys_evt;
-    p_async->state = DFU_ADV_NAME_STATE_INITIALIZED;
+    p_async->state           = DFU_ADV_NAME_STATE_INITIALIZED;
 
     return NRF_SUCCESS;
 }
 
-static uint32_t nrf_dfu_set_adv_name_on_call(nrf_dfu_adv_name_t *p_adv_name,
-                                             nrf_dfu_set_adv_name_state_t *p_state)
+
+static uint32_t nrf_dfu_set_adv_name_on_call(nrf_dfu_adv_name_t           * p_adv_name,
+                                             nrf_dfu_set_adv_name_state_t * p_state)
 {
     uint32_t ret_val = NRF_ERROR_BUSY;
 
     VERIFY_PARAM_NOT_NULL(p_state);
 
-    switch (*p_state) {
-    case DFU_ADV_NAME_STATE_INVALID:
-        return NRF_ERROR_INVALID_STATE;
+    switch (*p_state)
+    {
+        case DFU_ADV_NAME_STATE_INVALID:
+            return NRF_ERROR_INVALID_STATE;
 
-    case DFU_ADV_NAME_STATE_INITIALIZED:
-        ret_val = nrf_dfu_settings_adv_name_write(p_adv_name);
-        if (ret_val == NRF_SUCCESS) {
-            *p_state = DFU_ADV_NAME_STATE_WRITE_REQUESTED;
-        }
-        break;
+        case DFU_ADV_NAME_STATE_INITIALIZED:
+            ret_val = nrf_dfu_settings_adv_name_write(p_adv_name);
+            if (ret_val == NRF_SUCCESS)
+            {
+                *p_state = DFU_ADV_NAME_STATE_WRITE_REQUESTED;
+            }
+            break;
 
-    case DFU_ADV_NAME_STATE_WRITE_REQUESTED:
-        return NRF_ERROR_BUSY;
+        case DFU_ADV_NAME_STATE_WRITE_REQUESTED:
+            return NRF_ERROR_BUSY;
 
-    case DFU_ADV_NAME_STATE_WRITE_FINISHED:
-        return NRF_ERROR_INVALID_STATE;
+        case DFU_ADV_NAME_STATE_WRITE_FINISHED:
+            return NRF_ERROR_INVALID_STATE;
 
-    case DFU_ADV_NAME_STATE_WRITE_FAILED:
-        return NRF_ERROR_INVALID_STATE;
+        case DFU_ADV_NAME_STATE_WRITE_FAILED:
+            return NRF_ERROR_INVALID_STATE;
     }
 
     return ret_val;
 }
 
-static uint32_t nrf_dfu_set_adv_name_on_sys_evt(uint32_t sys_event,
-                                                nrf_dfu_set_adv_name_state_t *p_state)
+
+static uint32_t nrf_dfu_set_adv_name_on_sys_evt(uint32_t sys_event, nrf_dfu_set_adv_name_state_t * p_state)
 {
     uint32_t ret_val = NRF_ERROR_INVALID_STATE;
 
     VERIFY_PARAM_NOT_NULL(p_state);
 
-    if (*p_state == DFU_ADV_NAME_STATE_WRITE_REQUESTED) {
-        switch (sys_event) {
-        case NRF_EVT_FLASH_OPERATION_ERROR:
-            return NRF_ERROR_BUSY;
+    if (*p_state == DFU_ADV_NAME_STATE_WRITE_REQUESTED)
+    {
+        switch (sys_event)
+        {
+            case NRF_EVT_FLASH_OPERATION_ERROR:
+                return NRF_ERROR_BUSY;
 
-        case NRF_EVT_FLASH_OPERATION_SUCCESS:
-            ret_val = NRF_SUCCESS;
-            (*p_state) = DFU_ADV_NAME_STATE_WRITE_FINISHED;
-            break;
+            case NRF_EVT_FLASH_OPERATION_SUCCESS:
+                ret_val = NRF_SUCCESS;
+                (*p_state) = DFU_ADV_NAME_STATE_WRITE_FINISHED;
+                break;
 
-        default:
-            // Event not intended for us
-            break;
+            default:
+                // Event not intended for us
+                break;
         }
     }
 
     return ret_val;
 }
 
-#endif // NRF_DFU_TRANSPORT_BLE && !NRF_DFU_BLE_REQUIRES_BONDS
+#endif  // NRF_DFU_TRANSPORT_BLE && !NRF_DFU_BLE_REQUIRES_BONDS

@@ -37,11 +37,11 @@
 /*************************************************************************************************/
 static void lhciPackAdvSetTermEvt(uint8_t *pBuf, const LlAdvSetTermInd_t *pEvt)
 {
-    UINT8_TO_BSTREAM(pBuf, HCI_LE_ADV_SET_TERM_EVT);
-    UINT8_TO_BSTREAM(pBuf, pEvt->status);
-    UINT8_TO_BSTREAM(pBuf, pEvt->advHandle);
-    UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
-    UINT8_TO_BSTREAM(pBuf, pEvt->numCmplAdvEvt);
+  UINT8_TO_BSTREAM (pBuf, HCI_LE_ADV_SET_TERM_EVT);
+  UINT8_TO_BSTREAM (pBuf, pEvt->status);
+  UINT8_TO_BSTREAM (pBuf, pEvt->advHandle);
+  UINT16_TO_BSTREAM(pBuf, pEvt->connHandle);
+  UINT8_TO_BSTREAM (pBuf, pEvt->numCmplAdvEvt);
 }
 
 /*************************************************************************************************/
@@ -54,10 +54,10 @@ static void lhciPackAdvSetTermEvt(uint8_t *pBuf, const LlAdvSetTermInd_t *pEvt)
 /*************************************************************************************************/
 static void lhciPackScanReqRcvdEvt(uint8_t *pBuf, const LlScanReqRcvdInd_t *pEvt)
 {
-    UINT8_TO_BSTREAM(pBuf, HCI_LE_SCAN_REQ_RCVD_EVT);
-    UINT8_TO_BSTREAM(pBuf, pEvt->handle);
-    UINT8_TO_BSTREAM(pBuf, pEvt->scanAddrType);
-    BDA_TO_BSTREAM(pBuf, pEvt->scanAddr);
+  UINT8_TO_BSTREAM(pBuf, HCI_LE_SCAN_REQ_RCVD_EVT);
+  UINT8_TO_BSTREAM(pBuf, pEvt->handle);
+  UINT8_TO_BSTREAM(pBuf, pEvt->scanAddrType);
+  BDA_TO_BSTREAM  (pBuf, pEvt->scanAddr);
 }
 
 /*************************************************************************************************/
@@ -71,62 +71,70 @@ static void lhciPackScanReqRcvdEvt(uint8_t *pBuf, const LlScanReqRcvdInd_t *pEvt
 /*************************************************************************************************/
 bool_t lhciSlvExtAdvEncodeEvtPkt(LlEvt_t *pEvt)
 {
-    uint8_t *pEvtBuf = NULL;
+  uint8_t *pEvtBuf = NULL;
 
-    switch (pEvt->hdr.event) {
-    case LL_SCAN_REQ_RCVD_IND: {
-        if ((lhciCb.numScanReqRcvd < pLctrRtCfg->maxScanReqRcvdEvt) &&
-            (lhciCb.leEvtMsk &
-             ((uint64_t)(HCI_EVT_MASK_LE_SCAN_REQ_RCVD_EVT) << LHCI_BYTE_TO_BITS(2))) &&
-            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
-            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_SCAN_REQ_RCVD)) != NULL) {
-                uint8_t *pBuf = pEvtBuf;
-                lhciPackScanReqRcvdEvt(pBuf, &pEvt->scanReqRcvdInd);
-                lhciCb.numScanReqRcvd++;
-            }
+  switch (pEvt->hdr.event)
+  {
+    case LL_SCAN_REQ_RCVD_IND:
+    {
+      if ((lhciCb.numScanReqRcvd < pLctrRtCfg->maxScanReqRcvdEvt) &&
+          (lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_SCAN_REQ_RCVD_EVT) << LHCI_BYTE_TO_BITS(2))) &&
+          (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
+      {
+        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_SCAN_REQ_RCVD)) != NULL)
+        {
+          uint8_t *pBuf = pEvtBuf;
+          lhciPackScanReqRcvdEvt(pBuf, &pEvt->scanReqRcvdInd);
+          lhciCb.numScanReqRcvd++;
         }
-        break;
+      }
+      break;
     }
 
-    case LL_EXT_ADV_ENABLE_CNF: {
-        if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT,
-                                    HCI_LEN_CMD_CMPL + LHCI_LEN_LE_SET_EXT_ADV_ENABLE)) != NULL) {
-            uint8_t *pBuf = pEvtBuf;
-            pBuf += lhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_SET_EXT_ADV_ENABLE);
-            lhciPackCmdCompleteEvtStatus(pBuf, pEvt->extAdvEnableCnf.status);
-        }
-        break;
+    case LL_EXT_ADV_ENABLE_CNF:
+    {
+      if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT, HCI_LEN_CMD_CMPL + LHCI_LEN_LE_SET_EXT_ADV_ENABLE)) != NULL)
+      {
+        uint8_t *pBuf = pEvtBuf;
+        pBuf += lhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_SET_EXT_ADV_ENABLE);
+        lhciPackCmdCompleteEvtStatus(pBuf, pEvt->extAdvEnableCnf.status);
+      }
+      break;
     }
 
-    case LL_ADV_SET_TERM_IND: {
-        if ((lhciCb.leEvtMsk &
-             ((uint64_t)(HCI_EVT_MASK_LE_ADV_SET_TERM_EVT) << LHCI_BYTE_TO_BITS(2))) &&
-            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
-            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_ADV_SET_TERM)) != NULL) {
-                lhciPackAdvSetTermEvt(pEvtBuf, &pEvt->advSetTermInd);
-            }
+    case LL_ADV_SET_TERM_IND:
+    {
+      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_ADV_SET_TERM_EVT) << LHCI_BYTE_TO_BITS(2))) &&
+          (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
+      {
+        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_ADV_SET_TERM)) != NULL)
+        {
+          lhciPackAdvSetTermEvt(pEvtBuf, &pEvt->advSetTermInd);
         }
-        break;
+      }
+      break;
     }
 
-    case LL_PER_ADV_ENABLE_CNF: {
-        if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT,
-                                    HCI_LEN_CMD_CMPL + LHCI_LEN_LE_SET_PER_ADV_ENABLE)) != NULL) {
-            uint8_t *pBuf = pEvtBuf;
-            pBuf += lhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_SET_PER_ADV_ENABLE);
-            lhciPackCmdCompleteEvtStatus(pBuf, pEvt->perAdvEnableCnf.status);
-        }
-        break;
+    case LL_PER_ADV_ENABLE_CNF:
+    {
+      if ((pEvtBuf = lhciAllocEvt(HCI_CMD_CMPL_EVT, HCI_LEN_CMD_CMPL + LHCI_LEN_LE_SET_PER_ADV_ENABLE)) != NULL)
+      {
+        uint8_t *pBuf = pEvtBuf;
+        pBuf += lhciPackCmdCompleteEvt(pBuf, HCI_OPCODE_LE_SET_PER_ADV_ENABLE);
+        lhciPackCmdCompleteEvtStatus(pBuf, pEvt->perAdvEnableCnf.status);
+      }
+      break;
     }
 
     default:
-        break;
-    }
+      break;
+  }
 
-    if (pEvtBuf) {
-        lhciSendEvt(pEvtBuf);
-        return TRUE;
-    }
+  if (pEvtBuf)
+  {
+    lhciSendEvt(pEvtBuf);
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }

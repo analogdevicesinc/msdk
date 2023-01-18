@@ -32,19 +32,17 @@
 #include "secure_port_macros.h"
 
 /* Functions implemented in assembler file. */
-extern void SecureContext_LoadContextAsm(SecureContextHandle_t xSecureContextHandle);
-extern void SecureContext_SaveContextAsm(SecureContextHandle_t xSecureContextHandle);
+extern void SecureContext_LoadContextAsm( SecureContextHandle_t xSecureContextHandle );
+extern void SecureContext_SaveContextAsm( SecureContextHandle_t xSecureContextHandle );
 
-secureportNON_SECURE_CALLABLE void
-SecureContext_LoadContext(SecureContextHandle_t xSecureContextHandle)
+secureportNON_SECURE_CALLABLE void SecureContext_LoadContext( SecureContextHandle_t xSecureContextHandle )
 {
-    SecureContext_LoadContextAsm(xSecureContextHandle);
+	SecureContext_LoadContextAsm( xSecureContextHandle );
 }
 /*-----------------------------------------------------------*/
 
-secureportNON_SECURE_CALLABLE void
-SecureContext_SaveContext(SecureContextHandle_t xSecureContextHandle)
+secureportNON_SECURE_CALLABLE void SecureContext_SaveContext( SecureContextHandle_t xSecureContextHandle )
 {
-    SecureContext_SaveContextAsm(xSecureContextHandle);
+	SecureContext_SaveContextAsm( xSecureContextHandle );
 }
 /*-----------------------------------------------------------*/

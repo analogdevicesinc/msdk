@@ -57,6 +57,6 @@
 /*************************************************************************************************/
 uint32_t PrintVsn(char *pStr, uint32_t size, const char *pFmt, va_list ap) PRINT_ATTRIBUTE(3, 0);
 
-/*! \} */ /* WSF_UTIL_API */
+/*! \} */    /* WSF_UTIL_API */
 
 #endif /* PRINT_H */

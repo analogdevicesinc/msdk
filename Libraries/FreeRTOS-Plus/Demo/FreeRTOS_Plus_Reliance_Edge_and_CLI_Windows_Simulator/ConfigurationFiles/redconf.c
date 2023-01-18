@@ -10,4 +10,8 @@
 #include <redmacs.h>
 #include <redvolume.h>
 
-const VOLCONF gaRedVolConf[REDCONF_VOLUME_COUNT] = { { 512U, 65536U, false, 256U, 0U, "" } };
+
+const VOLCONF gaRedVolConf[REDCONF_VOLUME_COUNT] =
+{
+    { 512U, 65536U, false, 256U, 0U, "" }
+};

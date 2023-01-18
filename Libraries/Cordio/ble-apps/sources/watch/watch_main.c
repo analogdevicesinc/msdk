@@ -54,21 +54,22 @@
 **************************************************************************************************/
 
 /*! \brief application control block */
-static struct {
-    uint16_t hdlMasterList[APP_DB_HDL_LIST_LEN]; /*! Cached handle list in master role */
-    uint16_t hdlSlaveList[APP_DB_HDL_LIST_LEN]; /*! Cached handle list in slave role */
-    wsfHandlerId_t handlerId;
-    uint8_t discState;
-    bool_t scanning; /*! TRUE if scanning */
-    bool_t autoConnect; /*! TRUE if auto-connecting */
+static struct
+{
+  uint16_t          hdlMasterList[APP_DB_HDL_LIST_LEN];   /*! Cached handle list in master role */
+  uint16_t          hdlSlaveList[APP_DB_HDL_LIST_LEN];    /*! Cached handle list in slave role */
+  wsfHandlerId_t    handlerId;
+  uint8_t           discState;
+  bool_t            scanning;                             /*! TRUE if scanning */
+  bool_t            autoConnect;                          /*! TRUE if auto-connecting */
 } watchCb;
 
 /*! \brief application connection information */
 typedef struct {
-    appDbHdl_t dbHdl; /*! Device database record handle type */
-    uint8_t addrType; /*! Type of address of device to connect to */
-    bdAddr_t addr; /*! Address of device to connect to */
-    bool_t doConnect; /*! TRUE to issue connect on scan complete */
+  appDbHdl_t        dbHdl;                                /*! Device database record handle type */
+  uint8_t           addrType;                             /*! Type of address of device to connect to */
+  bdAddr_t          addr;                                 /*! Address of device to connect to */
+  bool_t            doConnect;                            /*! TRUE to issue connect on scan complete */
 } watchConnInfo_t;
 
 watchConnInfo_t watchConnInfo;
@@ -78,78 +79,87 @@ watchConnInfo_t watchConnInfo;
 **************************************************************************************************/
 
 /*! configurable parameters for advertising */
-static const appAdvCfg_t watchAdvCfg = {
-    { 0, 0, 0 }, /*! Advertising durations in ms */
-    { 48, 800, 0 } /*! Advertising intervals in 0.625 ms units */
+static const appAdvCfg_t watchAdvCfg =
+{
+  {    0,     0,     0},                  /*! Advertising durations in ms */
+  {   48,   800,     0}                   /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
-static const appSlaveCfg_t watchSlaveCfg = {
-    1, /*! Maximum connections */
+static const appSlaveCfg_t watchSlaveCfg =
+{
+  1,                                      /*! Maximum connections */
 };
 
 /*! configurable parameters for security */
-static const appSecCfg_t watchSecCfg = {
-    DM_AUTH_BOND_FLAG, /*! Authentication and bonding flags */
-    0, /*! Initiator key distribution flags */
-    DM_KEY_DIST_LTK, /*! Responder key distribution flags */
-    FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+static const appSecCfg_t watchSecCfg =
+{
+  DM_AUTH_BOND_FLAG,                      /*! Authentication and bonding flags */
+  0,                                      /*! Initiator key distribution flags */
+  DM_KEY_DIST_LTK,                        /*! Responder key distribution flags */
+  FALSE,                                  /*! TRUE if Out-of-band pairing data is present */
+  TRUE                                    /*! TRUE to initiate security upon connection */
 };
 
 /*! configurable parameters for connection parameter update */
-static const appUpdateCfg_t watchUpdateCfg = {
-    0, /*! Connection idle period in ms before attempting
+static const appUpdateCfg_t watchUpdateCfg =
+{
+  0,                                      /*! Connection idle period in ms before attempting
                                               connection parameter update; set to zero to disable */
-    600, /*! Minimum connection interval in 1.25ms units */
-    800, /*! Maximum connection interval in 1.25ms units */
-    3, /*! Connection latency */
-    900, /*! Supervision timeout in 10ms units */
-    5 /*! Number of update attempts before giving up */
+  600,                                    /*! Minimum connection interval in 1.25ms units */
+  800,                                    /*! Maximum connection interval in 1.25ms units */
+  3,                                      /*! Connection latency */
+  900,                                    /*! Supervision timeout in 10ms units */
+  5                                       /*! Number of update attempts before giving up */
 };
 
 /*! Connection parameters */
-static const hciConnSpec_t watchConnCfg = {
-    40, /*! Minimum connection interval in 1.25ms units */
-    40, /*! Maximum connection interval in 1.25ms units */
-    0, /*! Connection latency */
-    600, /*! Supervision timeout in 10ms units */
-    0, /*! Unused */
-    0 /*! Unused */
+static const hciConnSpec_t watchConnCfg =
+{
+  40,                                     /*! Minimum connection interval in 1.25ms units */
+  40,                                     /*! Maximum connection interval in 1.25ms units */
+  0,                                      /*! Connection latency */
+  600,                                    /*! Supervision timeout in 10ms units */
+  0,                                      /*! Unused */
+  0                                       /*! Unused */
 };
 
 /*! SMP security parameter configuration */
 /* Configuration structure */
-static const smpCfg_t watchSmpCfg = {
-    500, /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_DISP_ONLY, /*! I/O Capability */
-    7, /*! Minimum encryption key length */
-    16, /*! Maximum encryption key length */
-    1, /*! Attempts to trigger 'repeated attempts' timeout */
-    0, /*! Device authentication requirements */
-    64000, /*! Maximum repeated attempts timeout in msec */
-    64000, /*! Time msec before attemptExp decreases */
-    2 /*! Repeated attempts multiplier exponent */
+static const smpCfg_t watchSmpCfg =
+{
+  500,                                    /*! 'Repeated attempts' timeout in msec */
+  SMP_IO_DISP_ONLY,                       /*! I/O Capability */
+  7,                                      /*! Minimum encryption key length */
+  16,                                     /*! Maximum encryption key length */
+  1,                                      /*! Attempts to trigger 'repeated attempts' timeout */
+  0,                                      /*! Device authentication requirements */
+  64000,                                  /*! Maximum repeated attempts timeout in msec */
+  64000,                                  /*! Time msec before attemptExp decreases */
+  2                                       /*! Repeated attempts multiplier exponent */
 };
 
 /*! Configurable parameters for service and characteristic discovery */
-static const appDiscCfg_t watchDiscCfg = {
-    FALSE, /*! TRUE to wait for a secure connection before initiating discovery */
-    FALSE /*! TRUE to fall back on database hash to verify handles when no bond exists. */
+static const appDiscCfg_t watchDiscCfg =
+{
+  FALSE,                                  /*! TRUE to wait for a secure connection before initiating discovery */
+  FALSE                                   /*! TRUE to fall back on database hash to verify handles when no bond exists. */
 };
 
-static const appCfg_t watchAppCfg = {
-    TRUE, /*! TRUE to abort service discovery if service not found */
-    TRUE /*! TRUE to disconnect if ATT transaction times out */
+static const appCfg_t watchAppCfg =
+{
+  TRUE,                                   /*! TRUE to abort service discovery if service not found */
+  TRUE                                    /*! TRUE to disconnect if ATT transaction times out */
 };
 
 /*! configurable parameters for master */
-static const appMasterCfg_t watchMasterCfg = {
-    96, /*! The scan interval, in 0.625 ms units */
-    48, /*! The scan window, in 0.625 ms units  */
-    4000, /*! The scan duration in ms */
-    DM_DISC_MODE_NONE, /*! The GAP discovery mode */
-    DM_SCAN_TYPE_ACTIVE /*! The scan type (active or passive) */
+static const appMasterCfg_t watchMasterCfg =
+{
+  96,                                      /*! The scan interval, in 0.625 ms units */
+  48,                                      /*! The scan window, in 0.625 ms units  */
+  4000,                                    /*! The scan duration in ms */
+  DM_DISC_MODE_NONE,                       /*! The GAP discovery mode */
+  DM_SCAN_TYPE_ACTIVE                      /*! The scan type (active or passive) */
 };
 
 /**************************************************************************************************
@@ -157,40 +167,43 @@ static const appMasterCfg_t watchMasterCfg = {
 **************************************************************************************************/
 
 /*! advertising data, discoverable mode */
-static const uint8_t watchAdvDataDisc[] = {
-    /*! flags */
-    2, /*! length */
-    DM_ADV_TYPE_FLAGS, /*! AD type */
-    DM_FLAG_LE_LIMITED_DISC | /*! flags */
-        DM_FLAG_LE_BREDR_NOT_SUP,
+static const uint8_t watchAdvDataDisc[] =
+{
+  /*! flags */
+  2,                                      /*! length */
+  DM_ADV_TYPE_FLAGS,                      /*! AD type */
+  DM_FLAG_LE_LIMITED_DISC |               /*! flags */
+  DM_FLAG_LE_BREDR_NOT_SUP,
 
-    /*! tx power */
-    2, /*! length */
-    DM_ADV_TYPE_TX_POWER, /*! AD type */
-    0, /*! tx power */
+  /*! tx power */
+  2,                                      /*! length */
+  DM_ADV_TYPE_TX_POWER,                   /*! AD type */
+  0,                                      /*! tx power */
 
-    /*! manufacturer specific data */
-    3, /*! length */
-    DM_ADV_TYPE_MANUFACTURER, /*! AD type */
-    UINT16_TO_BYTES(HCI_ID_ANALOG), /*! company ID */
+  /*! manufacturer specific data */
+  3,                                      /*! length */
+  DM_ADV_TYPE_MANUFACTURER,               /*! AD type */
+  UINT16_TO_BYTES(HCI_ID_ANALOG),         /*! company ID */
 
-    /*! service solicitation UUID list */
-    7, /*! length */
-    DM_ADV_TYPE_16_SOLICIT, /*! AD type */
-    UINT16_TO_BYTES(ATT_UUID_CURRENT_TIME_SERVICE), UINT16_TO_BYTES(ATT_UUID_ALERT_NOTIF_SERVICE),
-    UINT16_TO_BYTES(ATT_UUID_PHONE_ALERT_SERVICE)
+  /*! service solicitation UUID list */
+  7,                                      /*! length */
+  DM_ADV_TYPE_16_SOLICIT,                 /*! AD type */
+  UINT16_TO_BYTES(ATT_UUID_CURRENT_TIME_SERVICE),
+  UINT16_TO_BYTES(ATT_UUID_ALERT_NOTIF_SERVICE),
+  UINT16_TO_BYTES(ATT_UUID_PHONE_ALERT_SERVICE)
 };
 
 /*! scan data, discoverable mode */
-static const uint8_t watchScanDataDisc[] = {
-    /*! device name */
-    6, /*! length */
-    DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
-    'W',
-    'a',
-    't',
-    'c',
-    'h'
+static const uint8_t watchScanDataDisc[] =
+{
+  /*! device name */
+  6,                                      /*! length */
+  DM_ADV_TYPE_LOCAL_NAME,                 /*! AD type */
+  'W',
+  'a',
+  't',
+  'c',
+  'h'
 };
 
 /**************************************************************************************************
@@ -198,19 +211,21 @@ static const uint8_t watchScanDataDisc[] = {
 **************************************************************************************************/
 
 /*! Discovery states:  enumeration of services to be discovered */
-enum {
-    WATCH_DISC_SLAVE_GATT_SVC, /* GATT service */
-    WATCH_DISC_SLAVE_CTS_SVC, /* Current Time service */
-    WATCH_DISC_SLAVE_ANS_SVC, /* Alert Notification service */
-    WATCH_DISC_SLAVE_PASS_SVC, /* Phone Alert Status service */
-    WATCH_DISC_SLAVE_SVC_MAX /* Discovery complete */
+enum
+{
+  WATCH_DISC_SLAVE_GATT_SVC,      /* GATT service */
+  WATCH_DISC_SLAVE_CTS_SVC,       /* Current Time service */
+  WATCH_DISC_SLAVE_ANS_SVC,       /* Alert Notification service */
+  WATCH_DISC_SLAVE_PASS_SVC,      /* Phone Alert Status service */
+  WATCH_DISC_SLAVE_SVC_MAX        /* Discovery complete */
 };
 
 /*! Discovery states:  enumeration of services to be discovered in the master role */
-enum {
-    WATCH_DISC_MASTER_GATT_SVC, /* GATT service */
-    WATCH_DISC_MASTER_DIS_SVC, /* Device Information service */
-    WATCH_DISC_MASTER_HRS_SVC, /* Heart Rate service */
+enum
+{
+  WATCH_DISC_MASTER_GATT_SVC,      /* GATT service */
+  WATCH_DISC_MASTER_DIS_SVC,       /* Device Information service */
+  WATCH_DISC_MASTER_HRS_SVC,       /* Heart Rate service */
 };
 
 /*! the Client handle list, watchCb.hdlList[], is set as follows:
@@ -231,27 +246,27 @@ enum {
  */
 
 /*! Start of each service's handles in the the handle list */
-#define WATCH_DISC_GATT_START 0
-#define WATCH_DISC_CTS_START (WATCH_DISC_GATT_START + GATT_HDL_LIST_LEN)
-#define WATCH_DISC_ANS_START (WATCH_DISC_CTS_START + TIPC_CTS_HDL_LIST_LEN)
-#define WATCH_DISC_PASS_START (WATCH_DISC_ANS_START + ANPC_ANS_HDL_LIST_LEN)
-#define WATCH_DISC_SLAVE_HDL_LIST_LEN (WATCH_DISC_PASS_START + PASPC_PASS_HDL_LIST_LEN)
+#define WATCH_DISC_GATT_START           0
+#define WATCH_DISC_CTS_START            (WATCH_DISC_GATT_START + GATT_HDL_LIST_LEN)
+#define WATCH_DISC_ANS_START            (WATCH_DISC_CTS_START + TIPC_CTS_HDL_LIST_LEN)
+#define WATCH_DISC_PASS_START           (WATCH_DISC_ANS_START + ANPC_ANS_HDL_LIST_LEN)
+#define WATCH_DISC_SLAVE_HDL_LIST_LEN   (WATCH_DISC_PASS_START + PASPC_PASS_HDL_LIST_LEN)
 
 /*! Pointers into handle list for each service's handles */
 static uint16_t *pWatchSlvGattHdlList = &watchCb.hdlSlaveList[WATCH_DISC_GATT_START];
-static uint16_t *pWatchCtsHdlList = &watchCb.hdlSlaveList[WATCH_DISC_CTS_START];
-static uint16_t *pWatchAnsHdlList = &watchCb.hdlSlaveList[WATCH_DISC_ANS_START];
-static uint16_t *pWatchPassHdlList = &watchCb.hdlSlaveList[WATCH_DISC_PASS_START];
+static uint16_t *pWatchCtsHdlList =     &watchCb.hdlSlaveList[WATCH_DISC_CTS_START];
+static uint16_t *pWatchAnsHdlList =     &watchCb.hdlSlaveList[WATCH_DISC_ANS_START];
+static uint16_t *pWatchPassHdlList =    &watchCb.hdlSlaveList[WATCH_DISC_PASS_START];
 
 /* Start of cached heart rate service handles; begins after GATT - Master Role */
-#define WATCH_DISC_DIS_START (WATCH_DISC_GATT_START + GATT_HDL_LIST_LEN)
-#define WATCH_DISC_HRS_START (WATCH_DISC_DIS_START + DIS_HDL_LIST_LEN)
-#define WATCH_DISC_MASTER_HDL_LIST_LEN (WATCH_DISC_HRS_START + HRPC_HRS_HDL_LIST_LEN)
+#define WATCH_DISC_DIS_START            (WATCH_DISC_GATT_START + GATT_HDL_LIST_LEN)
+#define WATCH_DISC_HRS_START            (WATCH_DISC_DIS_START + DIS_HDL_LIST_LEN)
+#define WATCH_DISC_MASTER_HDL_LIST_LEN  (WATCH_DISC_HRS_START + HRPC_HRS_HDL_LIST_LEN)
 
 /*! Pointers into handle list heart rate service handles - Master Role */
 static uint16_t *pWatchMstGattHdlList = &watchCb.hdlMasterList[WATCH_DISC_GATT_START];
-static uint16_t *pWatchDisHdlList = &watchCb.hdlMasterList[WATCH_DISC_DIS_START];
-static uint16_t *pWatchHrsHdlList = &watchCb.hdlMasterList[WATCH_DISC_HRS_START];
+static uint16_t *pWatchDisHdlList =     &watchCb.hdlMasterList[WATCH_DISC_DIS_START];
+static uint16_t *pWatchHrsHdlList =     &watchCb.hdlMasterList[WATCH_DISC_HRS_START];
 
 /* sanity check:  make sure handle list length is <= app db handle list length */
 WSF_CT_ASSERT(WATCH_DISC_SLAVE_HDL_LIST_LEN <= APP_DB_HDL_LIST_LEN);
@@ -266,140 +281,138 @@ WSF_CT_ASSERT(WATCH_DISC_MASTER_HDL_LIST_LEN <= APP_DB_HDL_LIST_LEN);
  */
 
 /* Default value for CCC indications */
-static const uint8_t watchCccIndVal[] = { UINT16_TO_BYTES(ATT_CLIENT_CFG_INDICATE) };
+static const uint8_t watchCccIndVal[] = {UINT16_TO_BYTES(ATT_CLIENT_CFG_INDICATE)};
 
 /* Default value for CCC notifications */
-static const uint8_t watchCccNtfVal[] = { UINT16_TO_BYTES(ATT_CLIENT_CFG_NOTIFY) };
+static const uint8_t watchCccNtfVal[] = {UINT16_TO_BYTES(ATT_CLIENT_CFG_NOTIFY)};
 
 /* Default value for Client Supported Features (enable Robust Caching) */
 static const uint8_t watchCsfVal[1] = { ATTS_CSF_ROBUST_CACHING };
 
 /* ANS Control point value for "Enable New Alert Notification" */
-static const uint8_t watchAncpEnNewVal[] = { CH_ANCP_ENABLE_NEW, CH_ALERT_CAT_ID_ALL };
+static const uint8_t watchAncpEnNewVal[] = {CH_ANCP_ENABLE_NEW, CH_ALERT_CAT_ID_ALL};
 
 /* ANS Control point value for "Notify New Alert Immediately" */
-static const uint8_t watchAncpNotNewVal[] = { CH_ANCP_NOTIFY_NEW, CH_ALERT_CAT_ID_ALL };
+static const uint8_t watchAncpNotNewVal[] = {CH_ANCP_NOTIFY_NEW, CH_ALERT_CAT_ID_ALL};
 
 /* ANS Control point value for "Enable Unread Alert Status Notification" */
-static const uint8_t watchAncpEnUnrVal[] = { CH_ANCP_ENABLE_UNREAD, CH_ALERT_CAT_ID_ALL };
+static const uint8_t watchAncpEnUnrVal[] = {CH_ANCP_ENABLE_UNREAD, CH_ALERT_CAT_ID_ALL};
 
 /* ANS Control point value for "Notify Unread Alert Status Immediately" */
-static const uint8_t watchAncpNotUnrVal[] = { CH_ANCP_NOTIFY_UNREAD, CH_ALERT_CAT_ID_ALL };
+static const uint8_t watchAncpNotUnrVal[] = {CH_ANCP_NOTIFY_UNREAD, CH_ALERT_CAT_ID_ALL};
 
 /* HRS Control point "Reset Energy Expended" */
-static const uint8_t watchHrsRstEnExp[] = { CH_HRCP_RESET_ENERGY_EXP };
+static const uint8_t watchHrsRstEnExp[] = {CH_HRCP_RESET_ENERGY_EXP};
 
 /* List of characteristics to configure after service discovery */
-static const attcDiscCfg_t watchDiscSlaveCfgList[] = {
-    /* Read:  CTS Current time */
-    { NULL, 0, (TIPC_CTS_CT_HDL_IDX + WATCH_DISC_CTS_START) },
+static const attcDiscCfg_t watchDiscSlaveCfgList[] =
+{
+  /* Read:  CTS Current time */
+  {NULL, 0, (TIPC_CTS_CT_HDL_IDX + WATCH_DISC_CTS_START)},
 
-    /* Read:  CTS Local time information */
-    { NULL, 0, (TIPC_CTS_LTI_HDL_IDX + WATCH_DISC_CTS_START) },
+  /* Read:  CTS Local time information */
+  {NULL, 0, (TIPC_CTS_LTI_HDL_IDX + WATCH_DISC_CTS_START)},
 
-    /* Read:  CTS Reference time information */
-    { NULL, 0, (TIPC_CTS_RTI_HDL_IDX + WATCH_DISC_CTS_START) },
+  /* Read:  CTS Reference time information */
+  {NULL, 0, (TIPC_CTS_RTI_HDL_IDX + WATCH_DISC_CTS_START)},
 
-    /* Read:  ANS Supported new alert category */
-    { NULL, 0, (ANPC_ANS_SNAC_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Read:  ANS Supported new alert category */
+  {NULL, 0, (ANPC_ANS_SNAC_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Read:  ANS Supported unread alert category */
-    { NULL, 0, (ANPC_ANS_SUAC_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Read:  ANS Supported unread alert category */
+  {NULL, 0, (ANPC_ANS_SUAC_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Read:  PASS Alert status */
-    { NULL, 0, (PASPC_PASS_AS_HDL_IDX + WATCH_DISC_PASS_START) },
+  /* Read:  PASS Alert status */
+  {NULL, 0, (PASPC_PASS_AS_HDL_IDX + WATCH_DISC_PASS_START)},
 
-    /* Read:  PASS Ringer setting */
-    { NULL, 0, (PASPC_PASS_RS_HDL_IDX + WATCH_DISC_PASS_START) },
+  /* Read:  PASS Ringer setting */
+  {NULL, 0, (PASPC_PASS_RS_HDL_IDX + WATCH_DISC_PASS_START)},
 
-    /* Write:  GATT service changed ccc descriptor */
-    { watchCccIndVal, sizeof(watchCccIndVal), (GATT_SC_CCC_HDL_IDX + WATCH_DISC_GATT_START) },
+  /* Write:  GATT service changed ccc descriptor */
+  {watchCccIndVal, sizeof(watchCccIndVal), (GATT_SC_CCC_HDL_IDX + WATCH_DISC_GATT_START)},
 
-    /* Write:  GATT client supported features */
-    { watchCsfVal, sizeof(watchCsfVal), (GATT_CSF_HDL_IDX + WATCH_DISC_GATT_START) },
+  /* Write:  GATT client supported features */
+  {watchCsfVal, sizeof(watchCsfVal), (GATT_CSF_HDL_IDX + WATCH_DISC_GATT_START) },
 
-    /* Write:  CTS Current time ccc descriptor */
-    { watchCccNtfVal, sizeof(watchCccNtfVal), (TIPC_CTS_CT_CCC_HDL_IDX + WATCH_DISC_CTS_START) },
+  /* Write:  CTS Current time ccc descriptor */
+  {watchCccNtfVal, sizeof(watchCccNtfVal), (TIPC_CTS_CT_CCC_HDL_IDX + WATCH_DISC_CTS_START)},
 
-    /* Write:  ANS New alert ccc descriptor */
-    { watchCccNtfVal, sizeof(watchCccNtfVal), (ANPC_ANS_NA_CCC_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Write:  ANS New alert ccc descriptor */
+  {watchCccNtfVal, sizeof(watchCccNtfVal), (ANPC_ANS_NA_CCC_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Write:  ANS Unread alert status ccc descriptor */
-    { watchCccNtfVal, sizeof(watchCccNtfVal), (ANPC_ANS_UAS_CCC_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Write:  ANS Unread alert status ccc descriptor */
+  {watchCccNtfVal, sizeof(watchCccNtfVal), (ANPC_ANS_UAS_CCC_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Write:  PASS Alert status ccc descriptor */
-    { watchCccNtfVal, sizeof(watchCccNtfVal), (PASPC_PASS_AS_CCC_HDL_IDX + WATCH_DISC_PASS_START) },
+  /* Write:  PASS Alert status ccc descriptor */
+  {watchCccNtfVal, sizeof(watchCccNtfVal), (PASPC_PASS_AS_CCC_HDL_IDX + WATCH_DISC_PASS_START)},
 
-    /* Write:  PASS Ringer setting ccc descriptor */
-    { watchCccNtfVal, sizeof(watchCccNtfVal), (PASPC_PASS_RS_CCC_HDL_IDX + WATCH_DISC_PASS_START) },
+  /* Write:  PASS Ringer setting ccc descriptor */
+  {watchCccNtfVal, sizeof(watchCccNtfVal), (PASPC_PASS_RS_CCC_HDL_IDX + WATCH_DISC_PASS_START)},
 
-    /* Write:  ANS Control point "Enable New Alert Notification" */
-    { watchAncpEnNewVal, sizeof(watchAncpEnNewVal),
-      (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Write:  ANS Control point "Enable New Alert Notification" */
+  {watchAncpEnNewVal, sizeof(watchAncpEnNewVal), (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Write:  ANS Control point "Notify New Alert Immediately" */
-    { watchAncpNotNewVal, sizeof(watchAncpNotNewVal),
-      (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Write:  ANS Control point "Notify New Alert Immediately" */
+  {watchAncpNotNewVal, sizeof(watchAncpNotNewVal), (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Write:  ANS Control point "Enable Unread Alert Status Notification" */
-    { watchAncpEnUnrVal, sizeof(watchAncpEnUnrVal),
-      (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Write:  ANS Control point "Enable Unread Alert Status Notification" */
+  {watchAncpEnUnrVal, sizeof(watchAncpEnUnrVal), (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Write:  ANS Control point "Notify Unread Alert Status Immediately" */
-    { watchAncpNotUnrVal, sizeof(watchAncpNotUnrVal),
-      (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START) }
+  /* Write:  ANS Control point "Notify Unread Alert Status Immediately" */
+  {watchAncpNotUnrVal, sizeof(watchAncpNotUnrVal), (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START)}
 };
 
 /* Characteristic configuration list length */
-#define WATCH_DISC_SLAVE_CFG_LIST_LEN (sizeof(watchDiscSlaveCfgList) / sizeof(attcDiscCfg_t))
+#define WATCH_DISC_SLAVE_CFG_LIST_LEN   (sizeof(watchDiscSlaveCfgList) / sizeof(attcDiscCfg_t))
 
 /* sanity check:  make sure configuration list length is <= handle list length */
 WSF_CT_ASSERT(WATCH_DISC_SLAVE_CFG_LIST_LEN <= WATCH_DISC_SLAVE_HDL_LIST_LEN);
 
 /* List of characteristics to configure after service discovery - Master Role */
-static const attcDiscCfg_t watchDiscMasterCfgList[] = {
-    /* Write:  GATT client supported features */
-    { watchCsfVal, sizeof(watchCsfVal), (GATT_CSF_HDL_IDX + WATCH_DISC_GATT_START) },
+static const attcDiscCfg_t watchDiscMasterCfgList[] =
+{
+  /* Write:  GATT client supported features */
+  { watchCsfVal, sizeof(watchCsfVal), (GATT_CSF_HDL_IDX + WATCH_DISC_GATT_START) },
 
-    /* Read:  DIS Manufacturer name string */
-    { NULL, 0, DIS_MFNS_HDL_IDX },
+  /* Read:  DIS Manufacturer name string */
+  {NULL, 0, DIS_MFNS_HDL_IDX},
 
-    /* Read:  DIS Model number string */
-    { NULL, 0, DIS_MNS_HDL_IDX },
+  /* Read:  DIS Model number string */
+  {NULL, 0, DIS_MNS_HDL_IDX},
 
-    /* Read:  DIS Serial number string */
-    { NULL, 0, DIS_SNS_HDL_IDX },
+  /* Read:  DIS Serial number string */
+  {NULL, 0, DIS_SNS_HDL_IDX},
 
-    /* Read:  DIS Hardware revision string */
-    { NULL, 0, DIS_HRS_HDL_IDX },
+  /* Read:  DIS Hardware revision string */
+  {NULL, 0, DIS_HRS_HDL_IDX},
 
-    /* Read:  DIS Firmware revision string */
-    { NULL, 0, DIS_FRS_HDL_IDX },
+  /* Read:  DIS Firmware revision string */
+  {NULL, 0, DIS_FRS_HDL_IDX},
 
-    /* Read:  DIS Software revision string */
-    { NULL, 0, DIS_SRS_HDL_IDX },
+  /* Read:  DIS Software revision string */
+  {NULL, 0, DIS_SRS_HDL_IDX},
 
-    /* Read:  DIS System ID */
-    { NULL, 0, DIS_SID_HDL_IDX },
+  /* Read:  DIS System ID */
+  {NULL, 0, DIS_SID_HDL_IDX},
 
-    /* Read:  DIS Registration certificate data */
-    { NULL, 0, DIS_RCD_HDL_IDX },
+  /* Read:  DIS Registration certificate data */
+  {NULL, 0, DIS_RCD_HDL_IDX},
 
-    /* Read:  DIS PnP ID */
-    { NULL, 0, DIS_PNP_ID_HDL_IDX },
+  /* Read:  DIS PnP ID */
+  {NULL, 0, DIS_PNP_ID_HDL_IDX},
 
-    /* Read:  HRS Body sensor location */
-    { NULL, 0, HRPC_HRS_BSL_HDL_IDX },
+  /* Read:  HRS Body sensor location */
+  {NULL, 0, HRPC_HRS_BSL_HDL_IDX},
 
-    /* Write:  HRS Control point "Reset Energy Expended"  */
-    { watchHrsRstEnExp, sizeof(watchHrsRstEnExp), HRPC_HRS_HRCP_HDL_IDX + WATCH_DISC_HRS_START },
+  /* Write:  HRS Control point "Reset Energy Expended"  */
+  {watchHrsRstEnExp, sizeof(watchHrsRstEnExp), HRPC_HRS_HRCP_HDL_IDX + WATCH_DISC_HRS_START },
 
-    /* Write:  HRS Heart rate measurement CCC descriptor  */
-    { watchCccNtfVal, sizeof(watchCccNtfVal), HRPC_HRS_HRM_CCC_HDL_IDX + WATCH_DISC_HRS_START },
+  /* Write:  HRS Heart rate measurement CCC descriptor  */
+  {watchCccNtfVal, sizeof(watchCccNtfVal), HRPC_HRS_HRM_CCC_HDL_IDX + WATCH_DISC_HRS_START },
 };
 
 /* Characteristic configuration list length */
-#define WATCH_DISC_MASTER_CFG_LIST_LEN (sizeof(watchDiscMasterCfgList) / sizeof(attcDiscCfg_t))
+#define WATCH_DISC_MASTER_CFG_LIST_LEN   (sizeof(watchDiscMasterCfgList) / sizeof(attcDiscCfg_t))
 
 /* sanity check:  make sure configuration list length is <= handle list length */
 WSF_CT_ASSERT(WATCH_DISC_MASTER_CFG_LIST_LEN <= WATCH_DISC_MASTER_CFG_LIST_LEN);
@@ -409,35 +422,32 @@ WSF_CT_ASSERT(WATCH_DISC_MASTER_CFG_LIST_LEN <= WATCH_DISC_MASTER_CFG_LIST_LEN);
  */
 
 /* List of characteristics to configure on connection setup */
-static const attcDiscCfg_t watchDiscConnCfgList[] = {
-    /* Read:  ANS Supported new alert category */
-    { NULL, 0, (ANPC_ANS_SNAC_HDL_IDX + WATCH_DISC_ANS_START) },
+static const attcDiscCfg_t watchDiscConnCfgList[] =
+{
+  /* Read:  ANS Supported new alert category */
+  {NULL, 0, (ANPC_ANS_SNAC_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Read:  ANS Supported unread alert category */
-    { NULL, 0, (ANPC_ANS_SUAC_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Read:  ANS Supported unread alert category */
+  {NULL, 0, (ANPC_ANS_SUAC_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Read:  PASS Alert status */
-    { NULL, 0, (PASPC_PASS_AS_HDL_IDX + WATCH_DISC_PASS_START) },
+  /* Read:  PASS Alert status */
+  {NULL, 0, (PASPC_PASS_AS_HDL_IDX + WATCH_DISC_PASS_START)},
 
-    /* Write:  ANS Control point "Enable New Alert Notification" */
-    { watchAncpEnNewVal, sizeof(watchAncpEnNewVal),
-      (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Write:  ANS Control point "Enable New Alert Notification" */
+  {watchAncpEnNewVal, sizeof(watchAncpEnNewVal), (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Write:  ANS Control point "Notify New Alert Immediately" */
-    { watchAncpNotNewVal, sizeof(watchAncpNotNewVal),
-      (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Write:  ANS Control point "Notify New Alert Immediately" */
+  {watchAncpNotNewVal, sizeof(watchAncpNotNewVal), (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Write:  ANS Control point "Enable Unread Alert Status Notification" */
-    { watchAncpEnUnrVal, sizeof(watchAncpEnUnrVal),
-      (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START) },
+  /* Write:  ANS Control point "Enable Unread Alert Status Notification" */
+  {watchAncpEnUnrVal, sizeof(watchAncpEnUnrVal), (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START)},
 
-    /* Write:  ANS Control point "Notify Unread Alert Status Immediately" */
-    { watchAncpNotUnrVal, sizeof(watchAncpNotUnrVal),
-      (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START) }
+  /* Write:  ANS Control point "Notify Unread Alert Status Immediately" */
+  {watchAncpNotUnrVal, sizeof(watchAncpNotUnrVal), (ANPC_ANS_ANCP_HDL_IDX + WATCH_DISC_ANS_START)}
 };
 
 /* Characteristic configuration list length */
-#define WATCH_DISC_CONN_CFG_LIST_LEN (sizeof(watchDiscConnCfgList) / sizeof(attcDiscCfg_t))
+#define WATCH_DISC_CONN_CFG_LIST_LEN   (sizeof(watchDiscConnCfgList) / sizeof(attcDiscCfg_t))
 
 /* sanity check:  make sure configuration list length is <= handle list length */
 WSF_CT_ASSERT(WATCH_DISC_CONN_CFG_LIST_LEN <= WATCH_DISC_SLAVE_HDL_LIST_LEN);
@@ -447,15 +457,17 @@ WSF_CT_ASSERT(WATCH_DISC_CONN_CFG_LIST_LEN <= WATCH_DISC_SLAVE_HDL_LIST_LEN);
 **************************************************************************************************/
 
 /*! enumeration of client characteristic configuration descriptors used in local ATT server */
-enum {
-    WATCH_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
-    WATCH_NUM_CCC_IDX /*! Number of ccc's */
+enum
+{
+  WATCH_GATT_SC_CCC_IDX,        /*! GATT service, service changed characteristic */
+  WATCH_NUM_CCC_IDX             /*! Number of ccc's */
 };
 
 /*! client characteristic configuration descriptors settings, indexed by ccc enumeration */
-static const attsCccSet_t watchCccSet[WATCH_NUM_CCC_IDX] = {
-    /* cccd handle         value range                 security level */
-    { GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_ENC } /* WATCH_GATT_SC_CCC_IDX */
+static const attsCccSet_t watchCccSet[WATCH_NUM_CCC_IDX] =
+{
+  /* cccd handle         value range                 security level */
+  {GATT_SC_CH_CCC_HDL,   ATT_CLIENT_CFG_INDICATE,    DM_SEC_LEVEL_ENC}    /* WATCH_GATT_SC_CCC_IDX */
 };
 
 /*************************************************************************************************/
@@ -469,28 +481,33 @@ static const attsCccSet_t watchCccSet[WATCH_NUM_CCC_IDX] = {
 /*************************************************************************************************/
 static void watchDmCback(dmEvt_t *pDmEvt)
 {
-    dmEvt_t *pMsg;
-    uint16_t len;
-    uint16_t reportLen;
+  dmEvt_t *pMsg;
+  uint16_t  len;
+  uint16_t  reportLen;
 
-    len = DmSizeOfEvt(pDmEvt);
+  len = DmSizeOfEvt(pDmEvt);
 
-    if (pDmEvt->hdr.event == DM_SCAN_REPORT_IND) {
-        reportLen = pDmEvt->scanReport.len;
-    } else {
-        reportLen = 0;
+  if (pDmEvt->hdr.event == DM_SCAN_REPORT_IND)
+  {
+    reportLen = pDmEvt->scanReport.len;
+  }
+  else
+  {
+    reportLen = 0;
+  }
+
+  if ((pMsg = WsfMsgAlloc(len + reportLen)) != NULL)
+  {
+    memcpy(pMsg, pDmEvt, len);
+
+    if (pDmEvt->hdr.event == DM_SCAN_REPORT_IND)
+    {
+      pMsg->scanReport.pData = (uint8_t *) ((uint8_t *) pMsg + len);
+      memcpy(pMsg->scanReport.pData, pDmEvt->scanReport.pData, reportLen);
     }
 
-    if ((pMsg = WsfMsgAlloc(len + reportLen)) != NULL) {
-        memcpy(pMsg, pDmEvt, len);
-
-        if (pDmEvt->hdr.event == DM_SCAN_REPORT_IND) {
-            pMsg->scanReport.pData = (uint8_t *)((uint8_t *)pMsg + len);
-            memcpy(pMsg->scanReport.pData, pDmEvt->scanReport.pData, reportLen);
-        }
-
-        WsfMsgSend(watchCb.handlerId, pMsg);
-    }
+    WsfMsgSend(watchCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -504,14 +521,15 @@ static void watchDmCback(dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 static void watchAttCback(attEvt_t *pEvt)
 {
-    attEvt_t *pMsg;
+  attEvt_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL) {
-        memcpy(pMsg, pEvt, sizeof(attEvt_t));
-        pMsg->pValue = (uint8_t *)(pMsg + 1);
-        memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
-        WsfMsgSend(watchCb.handlerId, pMsg);
-    }
+  if ((pMsg = WsfMsgAlloc(sizeof(attEvt_t) + pEvt->valueLen)) != NULL)
+  {
+    memcpy(pMsg, pEvt, sizeof(attEvt_t));
+    pMsg->pValue = (uint8_t *) (pMsg + 1);
+    memcpy(pMsg->pValue, pEvt->pValue, pEvt->valueLen);
+    WsfMsgSend(watchCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -525,9 +543,10 @@ static void watchAttCback(attEvt_t *pEvt)
 /*************************************************************************************************/
 static void watchScanStart(dmEvt_t *pMsg)
 {
-    if (pMsg->hdr.status == HCI_SUCCESS) {
-        watchCb.scanning = TRUE;
-    }
+  if (pMsg->hdr.status == HCI_SUCCESS)
+  {
+    watchCb.scanning = TRUE;
+  }
 }
 
 /*************************************************************************************************/
@@ -541,16 +560,18 @@ static void watchScanStart(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void watchScanStop(dmEvt_t *pMsg)
 {
-    if (pMsg->hdr.status == HCI_SUCCESS) {
-        watchCb.scanning = FALSE;
-        watchCb.autoConnect = FALSE;
+  if (pMsg->hdr.status == HCI_SUCCESS)
+  {
+    watchCb.scanning = FALSE;
+    watchCb.autoConnect = FALSE;
 
-        /* Open connection */
-        if (watchConnInfo.doConnect) {
-            AppConnOpen(watchConnInfo.addrType, watchConnInfo.addr, watchConnInfo.dbHdl);
-            watchConnInfo.doConnect = FALSE;
-        }
+    /* Open connection */
+    if (watchConnInfo.doConnect)
+    {
+      AppConnOpen(watchConnInfo.addrType, watchConnInfo.addr, watchConnInfo.dbHdl);
+      watchConnInfo.doConnect = FALSE;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -564,67 +585,79 @@ static void watchScanStop(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void watchScanReport(dmEvt_t *pMsg)
 {
-    uint8_t *pData;
-    appDbHdl_t dbHdl;
-    bool_t connect = FALSE;
+  uint8_t *pData;
+  appDbHdl_t dbHdl;
+  bool_t  connect = FALSE;
 
-    /* disregard if not scanning or autoconnecting */
-    if (!watchCb.scanning || !watchCb.autoConnect) {
-        return;
+  /* disregard if not scanning or autoconnecting */
+  if (!watchCb.scanning || !watchCb.autoConnect)
+  {
+    return;
+  }
+
+  /* if we already have a bond with this device then connect to it */
+  if ((dbHdl = AppDbFindByAddr(pMsg->scanReport.addrType, pMsg->scanReport.addr)) != APP_DB_HDL_NONE)
+  {
+    /* if this is a directed advertisement where the initiator address is an RPA */
+    if (DM_RAND_ADDR_RPA(pMsg->scanReport.directAddr, pMsg->scanReport.directAddrType))
+    {
+      /* resolve direct address to see if it's addressed to us */
+      AppMasterResolveAddr(pMsg, dbHdl, APP_RESOLVE_DIRECT_RPA);
+    }
+    else
+    {
+      connect = TRUE;
+    }
+  }
+  /* if the peer device uses an RPA */
+  else if (DM_RAND_ADDR_RPA(pMsg->scanReport.addr, pMsg->scanReport.addrType))
+  {
+    /* resolve advertiser's RPA to see if we already have a bond with this device */
+    AppMasterResolveAddr(pMsg, APP_DB_HDL_NONE, APP_RESOLVE_ADV_RPA);
+  }
+  else
+  {
+    /* find Service UUID list; if full list not found search for partial */
+    if ((pData = DmFindAdType(DM_ADV_TYPE_16_UUID, pMsg->scanReport.len,
+                              pMsg->scanReport.pData)) == NULL)
+    {
+      pData = DmFindAdType(DM_ADV_TYPE_16_UUID_PART, pMsg->scanReport.len,
+                           pMsg->scanReport.pData);
     }
 
-    /* if we already have a bond with this device then connect to it */
-    if ((dbHdl = AppDbFindByAddr(pMsg->scanReport.addrType, pMsg->scanReport.addr)) !=
-        APP_DB_HDL_NONE) {
-        /* if this is a directed advertisement where the initiator address is an RPA */
-        if (DM_RAND_ADDR_RPA(pMsg->scanReport.directAddr, pMsg->scanReport.directAddrType)) {
-            /* resolve direct address to see if it's addressed to us */
-            AppMasterResolveAddr(pMsg, dbHdl, APP_RESOLVE_DIRECT_RPA);
-        } else {
-            connect = TRUE;
+    /* if found and length checks out ok */
+    if (pData != NULL && pData[DM_AD_LEN_IDX] >= (ATT_16_UUID_LEN + 1))
+    {
+      uint8_t len = pData[DM_AD_LEN_IDX] - 1;
+      pData += DM_AD_DATA_IDX;
+
+      while ((!connect) && (len >= ATT_16_UUID_LEN))
+      {
+        /* Connect if heart rate service is included */
+        if (BYTES_UINT16_CMP(pData, ATT_UUID_HEART_RATE_SERVICE))
+        {
+          connect = TRUE;
+          break;
         }
+
+        pData += ATT_16_UUID_LEN;
+        len -= ATT_16_UUID_LEN;
+      }
     }
-    /* if the peer device uses an RPA */
-    else if (DM_RAND_ADDR_RPA(pMsg->scanReport.addr, pMsg->scanReport.addrType)) {
-        /* resolve advertiser's RPA to see if we already have a bond with this device */
-        AppMasterResolveAddr(pMsg, APP_DB_HDL_NONE, APP_RESOLVE_ADV_RPA);
-    } else {
-        /* find Service UUID list; if full list not found search for partial */
-        if ((pData = DmFindAdType(DM_ADV_TYPE_16_UUID, pMsg->scanReport.len,
-                                  pMsg->scanReport.pData)) == NULL) {
-            pData = DmFindAdType(DM_ADV_TYPE_16_UUID_PART, pMsg->scanReport.len,
-                                 pMsg->scanReport.pData);
-        }
+  }
 
-        /* if found and length checks out ok */
-        if (pData != NULL && pData[DM_AD_LEN_IDX] >= (ATT_16_UUID_LEN + 1)) {
-            uint8_t len = pData[DM_AD_LEN_IDX] - 1;
-            pData += DM_AD_DATA_IDX;
+  if (connect)
+  {
+    /* stop scanning and connect */
+    watchCb.autoConnect = FALSE;
+    AppScanStop();
 
-            while ((!connect) && (len >= ATT_16_UUID_LEN)) {
-                /* Connect if heart rate service is included */
-                if (BYTES_UINT16_CMP(pData, ATT_UUID_HEART_RATE_SERVICE)) {
-                    connect = TRUE;
-                    break;
-                }
-
-                pData += ATT_16_UUID_LEN;
-                len -= ATT_16_UUID_LEN;
-            }
-        }
-    }
-
-    if (connect) {
-        /* stop scanning and connect */
-        watchCb.autoConnect = FALSE;
-        AppScanStop();
-
-        /* Store peer information for connect on scan stop */
-        watchConnInfo.addrType = DmHostAddrType(pMsg->scanReport.addrType);
-        memcpy(watchConnInfo.addr, pMsg->scanReport.addr, sizeof(bdAddr_t));
-        watchConnInfo.dbHdl = dbHdl;
-        watchConnInfo.doConnect = TRUE;
-    }
+    /* Store peer information for connect on scan stop */
+    watchConnInfo.addrType = DmHostAddrType(pMsg->scanReport.addrType);
+    memcpy(watchConnInfo.addr, pMsg->scanReport.addr, sizeof(bdAddr_t));
+    watchConnInfo.dbHdl = dbHdl;
+    watchConnInfo.doConnect = TRUE;
+  }
 }
 
 /*************************************************************************************************/
@@ -638,21 +671,23 @@ static void watchScanReport(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void watchCccCback(attsCccEvt_t *pEvt)
 {
-    attsCccEvt_t *pMsg;
-    appDbHdl_t dbHdl;
+  attsCccEvt_t  *pMsg;
+  appDbHdl_t    dbHdl;
 
-    /* If CCC not set from initialization and there's a device record and currently bonded */
-    if ((pEvt->handle != ATT_HANDLE_NONE) &&
-        ((dbHdl = AppDbGetHdl((dmConnId_t)pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
-        AppCheckBonded((dmConnId_t)pEvt->hdr.param)) {
-        /* Store value in device database. */
-        AppDbSetCccTblValue(dbHdl, pEvt->idx, pEvt->value);
-    }
+  /* If CCC not set from initialization and there's a device record and currently bonded */
+  if ((pEvt->handle != ATT_HANDLE_NONE) &&
+      ((dbHdl = AppDbGetHdl((dmConnId_t) pEvt->hdr.param)) != APP_DB_HDL_NONE) &&
+      AppCheckBonded((dmConnId_t)pEvt->hdr.param))
+  {
+    /* Store value in device database. */
+    AppDbSetCccTblValue(dbHdl, pEvt->idx, pEvt->value);
+  }
 
-    if ((pMsg = WsfMsgAlloc(sizeof(attsCccEvt_t))) != NULL) {
-        memcpy(pMsg, pEvt, sizeof(attsCccEvt_t));
-        WsfMsgSend(watchCb.handlerId, pMsg);
-    }
+  if ((pMsg = WsfMsgAlloc(sizeof(attsCccEvt_t))) != NULL)
+  {
+    memcpy(pMsg, pEvt, sizeof(attsCccEvt_t));
+    WsfMsgSend(watchCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -666,14 +701,16 @@ static void watchCccCback(attsCccEvt_t *pEvt)
 /*************************************************************************************************/
 static void watchOpen(dmEvt_t *pMsg)
 {
-    if (pMsg->connOpen.role == DM_ROLE_SLAVE) {
-        /* if not bonded send a security request on connection open; devices must pair before
+  if (pMsg->connOpen.role == DM_ROLE_SLAVE)
+  {
+    /* if not bonded send a security request on connection open; devices must pair before
      * service discovery will be initiated
      */
-        if (AppDbCheckBonded() == FALSE) {
-            DmSecSlaveReq((dmConnId_t)pMsg->hdr.param, pAppSecCfg->auth);
-        }
+    if (AppDbCheckBonded() == FALSE)
+    {
+      DmSecSlaveReq((dmConnId_t) pMsg->hdr.param, pAppSecCfg->auth);
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -688,19 +725,18 @@ static void watchOpen(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void watchSetup(dmEvt_t *pMsg)
 {
-    /* set advertising and scan response data for discoverable mode */
-    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(watchAdvDataDisc), (uint8_t *)watchAdvDataDisc);
-    AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(watchScanDataDisc),
-                  (uint8_t *)watchScanDataDisc);
+  /* set advertising and scan response data for discoverable mode */
+  AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(watchAdvDataDisc), (uint8_t *) watchAdvDataDisc);
+  AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(watchScanDataDisc), (uint8_t *) watchScanDataDisc);
 
-    /* set advertising and scan response data for connectable mode */
-    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, 0, NULL);
-    AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, 0, NULL);
+  /* set advertising and scan response data for connectable mode */
+  AppAdvSetData(APP_ADV_DATA_CONNECTABLE, 0, NULL);
+  AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, 0, NULL);
 
-    /* start advertising; automatically set connectable/discoverable mode and bondable mode */
-    AppAdvStart(APP_MODE_AUTO_INIT);
+  /* start advertising; automatically set connectable/discoverable mode and bondable mode */
+  AppAdvStart(APP_MODE_AUTO_INIT);
 
-    DmConnSetConnSpec((hciConnSpec_t *)&watchConnCfg);
+  DmConnSetConnSpec((hciConnSpec_t *) &watchConnCfg);
 }
 
 /*************************************************************************************************/
@@ -715,28 +751,33 @@ static void watchSetup(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void watchSlaveValueUpdate(attEvt_t *pMsg)
 {
-    if (pMsg->hdr.status == ATT_SUCCESS) {
-        /* determine which profile the handle belongs to; start with most likely */
+  if (pMsg->hdr.status == ATT_SUCCESS)
+  {
+    /* determine which profile the handle belongs to; start with most likely */
 
-        /* alert notification */
-        if (AnpcAnsValueUpdate(pWatchAnsHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
-        /* phone alert status */
-        if (PaspcPassValueUpdate(pWatchPassHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
-
-        /* current time */
-        if (TipcCtsValueUpdate(pWatchCtsHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
-
-        /* GATT */
-        if (GattValueUpdate(pWatchSlvGattHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
+    /* alert notification */
+    if (AnpcAnsValueUpdate(pWatchAnsHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
     }
+    /* phone alert status */
+    if (PaspcPassValueUpdate(pWatchPassHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
+    }
+
+    /* current time */
+    if (TipcCtsValueUpdate(pWatchCtsHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
+    }
+
+    /* GATT */
+    if (GattValueUpdate(pWatchSlvGattHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -751,24 +792,28 @@ static void watchSlaveValueUpdate(attEvt_t *pMsg)
 /*************************************************************************************************/
 static void watchMasterValueUpdate(attEvt_t *pMsg)
 {
-    if (pMsg->hdr.status == ATT_SUCCESS) {
-        /* determine which profile the handle belongs to; start with most likely */
+  if (pMsg->hdr.status == ATT_SUCCESS)
+  {
+    /* determine which profile the handle belongs to; start with most likely */
 
-        /* heart rate */
-        if (HrpcHrsValueUpdate(pWatchHrsHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
-
-        /* device information */
-        if (DisValueUpdate(pWatchDisHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
-
-        /* GATT */
-        if (GattValueUpdate(pWatchMstGattHdlList, pMsg) == ATT_SUCCESS) {
-            return;
-        }
+    /* heart rate */
+    if (HrpcHrsValueUpdate(pWatchHrsHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
     }
+
+    /* device information */
+    if (DisValueUpdate(pWatchDisHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
+    }
+
+    /* GATT */
+    if (GattValueUpdate(pWatchMstGattHdlList, pMsg) == ATT_SUCCESS)
+    {
+      return;
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -783,17 +828,20 @@ static void watchMasterValueUpdate(attEvt_t *pMsg)
 /*************************************************************************************************/
 static dmConnId_t watchGetConnIdByRole(dmConnId_t *pConnIdList, uint8_t role)
 {
-    uint8_t i;
+  uint8_t i;
 
-    for (i = 0; i < DM_CONN_MAX; i++) {
-        if (pConnIdList[i] != DM_CONN_ID_NONE) {
-            if (DmConnRole(pConnIdList[i]) == role) {
-                return pConnIdList[i];
-            }
-        }
+  for (i = 0; i < DM_CONN_MAX; i++)
+  {
+    if (pConnIdList[i] != DM_CONN_ID_NONE)
+    {
+      if (DmConnRole(pConnIdList[i]) == role)
+      {
+        return pConnIdList[i];
+      }
     }
+  }
 
-    return DM_CONN_ID_NONE;
+  return DM_CONN_ID_NONE;
 }
 
 /*************************************************************************************************/
@@ -807,105 +855,115 @@ static dmConnId_t watchGetConnIdByRole(dmConnId_t *pConnIdList, uint8_t role)
 /*************************************************************************************************/
 static void watchBtnCback(uint8_t btn)
 {
-    dmConnId_t slaveConnId, masterConnId;
-    static uint8_t ringer = CH_RCP_SILENT;
-    dmConnId_t connIdList[DM_CONN_MAX];
+  dmConnId_t      slaveConnId, masterConnId;
+  static uint8_t  ringer = CH_RCP_SILENT;
+  dmConnId_t      connIdList[DM_CONN_MAX];
 
-    AppConnOpenList(connIdList);
+  AppConnOpenList(connIdList);
 
-    slaveConnId = watchGetConnIdByRole(connIdList, DM_ROLE_SLAVE);
-    masterConnId = watchGetConnIdByRole(connIdList, DM_ROLE_MASTER);
+  slaveConnId = watchGetConnIdByRole(connIdList, DM_ROLE_SLAVE);
+  masterConnId = watchGetConnIdByRole(connIdList, DM_ROLE_MASTER);
 
-    APP_TRACE_INFO3("btn: %d - master conn id: %d - slave conn id: %d", btn, masterConnId,
-                    slaveConnId);
+  APP_TRACE_INFO3("btn: %d - master conn id: %d - slave conn id: %d", btn, masterConnId, slaveConnId);
 
-    if (masterConnId == DM_CONN_ID_NONE) {
-        /* No connection as a master */
-        switch (btn) {
-        case APP_UI_BTN_1_SHORT:
-            /* if scanning cancel scanning */
-            if (watchCb.scanning) {
-                AppScanStop();
-            }
-            /* else auto connect */
-            else if (!watchCb.autoConnect) {
-                watchCb.autoConnect = TRUE;
-                watchConnInfo.doConnect = FALSE;
-                AppScanStart(watchMasterCfg.discMode, watchMasterCfg.scanType,
-                             watchMasterCfg.scanDuration);
-            }
-            return;
-
-        case APP_UI_BTN_1_LONG:
-            /* clear all bonding info */
-            AppClearAllBondingInfo();
-            return;
-
-        default:
-            break;
+  if (masterConnId == DM_CONN_ID_NONE)
+  {
+    /* No connection as a master */
+    switch (btn)
+    {
+      case APP_UI_BTN_1_SHORT:
+        /* if scanning cancel scanning */
+        if (watchCb.scanning)
+        {
+          AppScanStop();
         }
-    } else {
-        /* Active connection as master */
-        switch (btn) {
-        case APP_UI_BTN_1_LONG:
-            /* disconnect master connection */
-            AppConnClose(masterConnId);
-            return;
-
-        default:
-            break;
+        /* else auto connect */
+        else if (!watchCb.autoConnect)
+        {
+          watchCb.autoConnect = TRUE;
+          watchConnInfo.doConnect = FALSE;
+          AppScanStart(watchMasterCfg.discMode, watchMasterCfg.scanType,
+                        watchMasterCfg.scanDuration);
         }
+        return;
+
+      case APP_UI_BTN_1_LONG:
+        /* clear all bonding info */
+        AppClearAllBondingInfo();
+        return;
+
+      default:
+        break;
     }
+  }
+  else
+  {
+    /* Active connection as master */
+    switch (btn)
+    {
+      case APP_UI_BTN_1_LONG:
+        /* disconnect master connection */
+        AppConnClose(masterConnId);
+        return;
 
-    if (slaveConnId == DM_CONN_ID_NONE) {
-        /* No connection as a slave */
-        switch (btn) {
-        case APP_UI_BTN_2_SHORT:
-            /* start or restart advertising */
-            AppAdvStart(APP_MODE_AUTO_INIT);
-            return;
-
-        case APP_UI_BTN_2_MED:
-            /* enter discoverable and bondable mode mode */
-            AppSetBondable(TRUE);
-            AppAdvStart(APP_MODE_DISCOVERABLE);
-            return;
-
-        case APP_UI_BTN_2_LONG:
-            /* clear all bonding info */
-            AppSlaveClearAllBondingInfo();
-
-            /* restart advertising */
-            AppAdvStart(APP_MODE_AUTO_INIT);
-            return;
-
-        default:
-            break;
-        }
-    } else {
-        /* Active connection to a slave */
-        switch (btn) {
-        case APP_UI_BTN_2_SHORT:
-            /* mute ringer once */
-            PaspcPassControl(slaveConnId, pWatchPassHdlList[PASPC_PASS_RCP_HDL_IDX],
-                             CH_RCP_MUTE_ONCE);
-            return;
-
-        case APP_UI_BTN_2_MED:
-            /* toggle between silencing ringer and enabling ringer */
-            PaspcPassControl(slaveConnId, pWatchPassHdlList[PASPC_PASS_RCP_HDL_IDX], ringer);
-            ringer = (ringer == CH_RCP_SILENT) ? CH_RCP_CANCEL_SILENT : CH_RCP_SILENT;
-            return;
-
-        case APP_UI_BTN_2_LONG:
-            /* disconnect slave connection */
-            AppConnClose(slaveConnId);
-            break;
-
-        default:
-            break;
-        }
+      default:
+        break;
     }
+  }
+
+  if (slaveConnId == DM_CONN_ID_NONE)
+  {
+    /* No connection as a slave */
+    switch (btn)
+    {
+      case APP_UI_BTN_2_SHORT:
+        /* start or restart advertising */
+        AppAdvStart(APP_MODE_AUTO_INIT);
+        return;
+
+      case APP_UI_BTN_2_MED:
+        /* enter discoverable and bondable mode mode */
+        AppSetBondable(TRUE);
+        AppAdvStart(APP_MODE_DISCOVERABLE);
+        return;
+
+      case APP_UI_BTN_2_LONG:
+        /* clear all bonding info */
+        AppSlaveClearAllBondingInfo();
+
+        /* restart advertising */
+        AppAdvStart(APP_MODE_AUTO_INIT);
+        return;
+
+      default:
+        break;
+    }
+  }
+  else
+  {
+    /* Active connection to a slave */
+    switch (btn)
+    {
+      case APP_UI_BTN_2_SHORT:
+        /* mute ringer once */
+        PaspcPassControl(slaveConnId, pWatchPassHdlList[PASPC_PASS_RCP_HDL_IDX], CH_RCP_MUTE_ONCE);
+        return;
+
+      case APP_UI_BTN_2_MED:
+        /* toggle between silencing ringer and enabling ringer */
+        PaspcPassControl(slaveConnId, pWatchPassHdlList[PASPC_PASS_RCP_HDL_IDX], ringer);
+        ringer = (ringer == CH_RCP_SILENT) ? CH_RCP_CANCEL_SILENT : CH_RCP_SILENT;
+        return;
+
+      case APP_UI_BTN_2_LONG:
+        /* disconnect slave connection */
+        AppConnClose(slaveConnId);
+        break;
+
+      default:
+        break;
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -920,117 +978,146 @@ static void watchBtnCback(uint8_t btn)
 /*************************************************************************************************/
 static void watchDiscCback(dmConnId_t connId, uint8_t status)
 {
-    switch (status) {
+  switch(status)
+  {
     case APP_DISC_INIT:
-        /* set handle list when initialization requested */
-        if (DmConnRole(connId) == DM_ROLE_MASTER) {
-            AppDiscSetHdlList(connId, WATCH_DISC_MASTER_HDL_LIST_LEN, watchCb.hdlMasterList);
-        } else {
-            AppDiscSetHdlList(connId, WATCH_DISC_SLAVE_HDL_LIST_LEN, watchCb.hdlSlaveList);
-        }
-        break;
+      /* set handle list when initialization requested */
+      if (DmConnRole(connId) == DM_ROLE_MASTER)
+      {
+        AppDiscSetHdlList(connId, WATCH_DISC_MASTER_HDL_LIST_LEN, watchCb.hdlMasterList);
+      }
+      else
+      {
+        AppDiscSetHdlList(connId, WATCH_DISC_SLAVE_HDL_LIST_LEN, watchCb.hdlSlaveList);
+      }
+      break;
 
     case APP_DISC_READ_DATABASE_HASH:
-        /* Read peer's database hash */
-        AppDiscReadDatabaseHash(connId);
-        break;
+      /* Read peer's database hash */
+      AppDiscReadDatabaseHash(connId);
+      break;
 
     case APP_DISC_SEC_REQUIRED:
-        /* request security */
-        if (DmConnRole(connId) == DM_ROLE_MASTER) {
-            AppMasterSecurityReq(connId);
-        } else {
-            AppSlaveSecurityReq(connId);
-        }
-        break;
+      /* request security */
+      if (DmConnRole(connId) == DM_ROLE_MASTER)
+      {
+        AppMasterSecurityReq(connId);
+      }
+      else
+      {
+        AppSlaveSecurityReq(connId);
+      }
+      break;
 
     case APP_DISC_START:
-        /* initialize discovery state */
-        if (DmConnRole(connId) == DM_ROLE_MASTER) {
-            /* discover GATT service - master role */
-            watchCb.discState = WATCH_DISC_MASTER_GATT_SVC;
-            GattDiscover(connId, pWatchMstGattHdlList);
-        } else {
-            /* discover GATT service - slave role */
-            watchCb.discState = WATCH_DISC_SLAVE_GATT_SVC;
-            GattDiscover(connId, pWatchSlvGattHdlList);
-        }
+      /* initialize discovery state */
+      if (DmConnRole(connId) == DM_ROLE_MASTER)
+      {
+        /* discover GATT service - master role */
+        watchCb.discState = WATCH_DISC_MASTER_GATT_SVC;
+        GattDiscover(connId, pWatchMstGattHdlList);
+      }
+      else
+      {
+        /* discover GATT service - slave role */
+        watchCb.discState = WATCH_DISC_SLAVE_GATT_SVC;
+        GattDiscover(connId, pWatchSlvGattHdlList);
+      }
 
-        break;
+      break;
 
     case APP_DISC_FAILED:
     case APP_DISC_CMPL:
-        /* next discovery state */
-        watchCb.discState++;
+      /* next discovery state */
+      watchCb.discState++;
 
-        if (DmConnRole(connId) == DM_ROLE_MASTER) {
-            if (watchCb.discState == WATCH_DISC_MASTER_DIS_SVC) {
-                /* discover device information service */
-                DisDiscover(connId, pWatchDisHdlList);
-            } else if (watchCb.discState == WATCH_DISC_MASTER_HRS_SVC) {
-                /* discover heart rate service */
-                HrpcHrsDiscover(connId, pWatchHrsHdlList);
-            } else {
-                /* discovery complete */
-                AppDiscComplete(connId, APP_DISC_CMPL);
-
-                /* start configuration */
-                AppDiscConfigure(connId, APP_DISC_CFG_START, WATCH_DISC_MASTER_CFG_LIST_LEN,
-                                 (attcDiscCfg_t *)watchDiscMasterCfgList,
-                                 WATCH_DISC_MASTER_HDL_LIST_LEN, watchCb.hdlMasterList);
-            }
-        } else {
-            if (watchCb.discState == WATCH_DISC_SLAVE_CTS_SVC) {
-                /* discover current time service */
-                TipcCtsDiscover(connId, pWatchCtsHdlList);
-            } else if (watchCb.discState == WATCH_DISC_SLAVE_ANS_SVC) {
-                /* discover alert notification service */
-                AnpcAnsDiscover(connId, pWatchAnsHdlList);
-            } else if (watchCb.discState == WATCH_DISC_SLAVE_PASS_SVC) {
-                /* discover phone alert status service */
-                PaspcPassDiscover(connId, pWatchPassHdlList);
-            } else {
-                /* discovery complete */
-                AppDiscComplete(connId, APP_DISC_CMPL);
-
-                /* start configuration */
-                AppDiscConfigure(connId, APP_DISC_CFG_START, WATCH_DISC_SLAVE_CFG_LIST_LEN,
-                                 (attcDiscCfg_t *)watchDiscSlaveCfgList,
-                                 WATCH_DISC_SLAVE_HDL_LIST_LEN, watchCb.hdlSlaveList);
-            }
+      if (DmConnRole(connId) == DM_ROLE_MASTER)
+      {
+        if (watchCb.discState == WATCH_DISC_MASTER_DIS_SVC)
+        {
+          /* discover device information service */
+          DisDiscover(connId, pWatchDisHdlList);
         }
-        break;
+        else if (watchCb.discState == WATCH_DISC_MASTER_HRS_SVC)
+        {
+          /* discover heart rate service */
+          HrpcHrsDiscover(connId, pWatchHrsHdlList);
+        }
+        else
+        {
+          /* discovery complete */
+          AppDiscComplete(connId, APP_DISC_CMPL);
+
+          /* start configuration */
+          AppDiscConfigure(connId, APP_DISC_CFG_START, WATCH_DISC_MASTER_CFG_LIST_LEN,
+                           (attcDiscCfg_t *) watchDiscMasterCfgList,
+                           WATCH_DISC_MASTER_HDL_LIST_LEN, watchCb.hdlMasterList);
+        }
+      }
+      else
+      {
+        if (watchCb.discState == WATCH_DISC_SLAVE_CTS_SVC)
+        {
+          /* discover current time service */
+          TipcCtsDiscover(connId, pWatchCtsHdlList);
+        }
+        else if (watchCb.discState == WATCH_DISC_SLAVE_ANS_SVC)
+        {
+          /* discover alert notification service */
+          AnpcAnsDiscover(connId, pWatchAnsHdlList);
+        }
+        else if (watchCb.discState == WATCH_DISC_SLAVE_PASS_SVC)
+        {
+          /* discover phone alert status service */
+          PaspcPassDiscover(connId, pWatchPassHdlList);
+        }
+        else
+        {
+          /* discovery complete */
+          AppDiscComplete(connId, APP_DISC_CMPL);
+
+          /* start configuration */
+          AppDiscConfigure(connId, APP_DISC_CFG_START, WATCH_DISC_SLAVE_CFG_LIST_LEN,
+                           (attcDiscCfg_t *) watchDiscSlaveCfgList,
+                           WATCH_DISC_SLAVE_HDL_LIST_LEN, watchCb.hdlSlaveList);
+        }
+      }
+      break;
 
     case APP_DISC_CFG_START:
-        if (DmConnRole(connId) == DM_ROLE_MASTER) {
-            /* start configuration */
-            AppDiscConfigure(connId, APP_DISC_CFG_START, WATCH_DISC_MASTER_CFG_LIST_LEN,
-                             (attcDiscCfg_t *)watchDiscMasterCfgList,
-                             WATCH_DISC_MASTER_HDL_LIST_LEN, watchCb.hdlMasterList);
-        } else {
-            /* start configuration */
-            AppDiscConfigure(connId, APP_DISC_CFG_START, WATCH_DISC_SLAVE_CFG_LIST_LEN,
-                             (attcDiscCfg_t *)watchDiscSlaveCfgList, WATCH_DISC_SLAVE_HDL_LIST_LEN,
-                             watchCb.hdlSlaveList);
-        }
-        break;
+      if (DmConnRole(connId) == DM_ROLE_MASTER)
+      {
+        /* start configuration */
+        AppDiscConfigure(connId, APP_DISC_CFG_START, WATCH_DISC_MASTER_CFG_LIST_LEN,
+                         (attcDiscCfg_t *) watchDiscMasterCfgList,
+                         WATCH_DISC_MASTER_HDL_LIST_LEN, watchCb.hdlMasterList);
+      }
+      else
+      {
+        /* start configuration */
+        AppDiscConfigure(connId, APP_DISC_CFG_START, WATCH_DISC_SLAVE_CFG_LIST_LEN,
+                         (attcDiscCfg_t *) watchDiscSlaveCfgList,
+                         WATCH_DISC_SLAVE_HDL_LIST_LEN, watchCb.hdlSlaveList);
+      }
+      break;
 
     case APP_DISC_CFG_CMPL:
-        AppDiscComplete(connId, status);
-        break;
+      AppDiscComplete(connId, status);
+      break;
 
     case APP_DISC_CFG_CONN_START:
-        if (DmConnRole(connId) == DM_ROLE_SLAVE) {
-            /* start connection setup configuration */
-            AppDiscConfigure(connId, APP_DISC_CFG_CONN_START, WATCH_DISC_CONN_CFG_LIST_LEN,
-                             (attcDiscCfg_t *)watchDiscConnCfgList, WATCH_DISC_CONN_CFG_LIST_LEN,
-                             watchCb.hdlSlaveList);
-        }
-        break;
+      if (DmConnRole(connId) == DM_ROLE_SLAVE)
+      {
+        /* start connection setup configuration */
+        AppDiscConfigure(connId, APP_DISC_CFG_CONN_START, WATCH_DISC_CONN_CFG_LIST_LEN,
+                         (attcDiscCfg_t *) watchDiscConnCfgList,
+                         WATCH_DISC_CONN_CFG_LIST_LEN, watchCb.hdlSlaveList);
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -1044,91 +1131,96 @@ static void watchDiscCback(dmConnId_t connId, uint8_t status)
 /*************************************************************************************************/
 static void watchProcMsg(dmEvt_t *pMsg)
 {
-    uint8_t uiEvent = APP_UI_NONE;
+  uint8_t uiEvent = APP_UI_NONE;
 
-    switch (pMsg->hdr.event) {
+  switch(pMsg->hdr.event)
+  {
     case ATTC_READ_RSP:
     case ATTC_HANDLE_VALUE_NTF:
     case ATTC_HANDLE_VALUE_IND:
-        if (DmConnRole((dmConnId_t)pMsg->hdr.param) == DM_ROLE_MASTER) {
-            watchMasterValueUpdate((attEvt_t *)pMsg);
-        } else {
-            watchSlaveValueUpdate((attEvt_t *)pMsg);
-        }
-        break;
+      if (DmConnRole((dmConnId_t) pMsg->hdr.param) == DM_ROLE_MASTER)
+      {
+        watchMasterValueUpdate((attEvt_t *) pMsg);
+      }
+      else
+      {
+        watchSlaveValueUpdate((attEvt_t *) pMsg);
+      }
+      break;
 
     case DM_RESET_CMPL_IND:
-        AttsCalculateDbHash();
-        watchSetup(pMsg);
-        uiEvent = APP_UI_RESET_CMPL;
-        break;
+      AttsCalculateDbHash();
+      watchSetup(pMsg);
+      uiEvent = APP_UI_RESET_CMPL;
+      break;
 
     case DM_ADV_START_IND:
-        uiEvent = APP_UI_ADV_START;
-        break;
+      uiEvent = APP_UI_ADV_START;
+      break;
 
     case DM_ADV_STOP_IND:
-        AppAdvStart(APP_MODE_AUTO_INIT);
-        uiEvent = APP_UI_ADV_STOP;
-        break;
+      AppAdvStart(APP_MODE_AUTO_INIT);
+      uiEvent = APP_UI_ADV_STOP;
+      break;
 
     case DM_SCAN_START_IND:
-        watchScanStart(pMsg);
-        uiEvent = APP_UI_SCAN_START;
-        break;
+      watchScanStart(pMsg);
+      uiEvent = APP_UI_SCAN_START;
+      break;
 
     case DM_SCAN_STOP_IND:
-        watchScanStop(pMsg);
-        uiEvent = APP_UI_SCAN_STOP;
-        break;
+      watchScanStop(pMsg);
+      uiEvent = APP_UI_SCAN_STOP;
+      break;
 
     case DM_SCAN_REPORT_IND:
-        watchScanReport(pMsg);
-        break;
+      watchScanReport(pMsg);
+      break;
 
     case DM_CONN_OPEN_IND:
-        watchOpen(pMsg);
-        uiEvent = APP_UI_CONN_OPEN;
-        break;
+      watchOpen(pMsg);
+      uiEvent = APP_UI_CONN_OPEN;
+      break;
 
     case DM_CONN_CLOSE_IND:
-        AppAdvStart(APP_MODE_AUTO_INIT);
-        uiEvent = APP_UI_CONN_CLOSE;
-        break;
+      AppAdvStart(APP_MODE_AUTO_INIT);
+      uiEvent = APP_UI_CONN_CLOSE;
+      break;
 
     case DM_SEC_PAIR_CMPL_IND:
-        DmSecGenerateEccKeyReq();
-        uiEvent = APP_UI_SEC_PAIR_CMPL;
-        break;
+      DmSecGenerateEccKeyReq();
+      uiEvent = APP_UI_SEC_PAIR_CMPL;
+      break;
 
     case DM_SEC_PAIR_FAIL_IND:
-        DmSecGenerateEccKeyReq();
-        uiEvent = APP_UI_SEC_PAIR_FAIL;
-        break;
+      DmSecGenerateEccKeyReq();
+      uiEvent = APP_UI_SEC_PAIR_FAIL;
+      break;
 
     case DM_SEC_ENCRYPT_IND:
-        uiEvent = APP_UI_SEC_ENCRYPT;
-        break;
+      uiEvent = APP_UI_SEC_ENCRYPT;
+      break;
 
     case DM_SEC_ENCRYPT_FAIL_IND:
-        uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
-        break;
+      uiEvent = APP_UI_SEC_ENCRYPT_FAIL;
+      break;
 
     case DM_SEC_AUTH_REQ_IND:
-        AppHandlePasskey(&pMsg->authReq);
-        break;
+      AppHandlePasskey(&pMsg->authReq);
+      break;
 
     case DM_PRIV_CLEAR_RES_LIST_IND:
-        APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
-        break;
+      APP_TRACE_INFO1("Clear resolving list status 0x%02x", pMsg->hdr.status);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 
-    if (uiEvent != APP_UI_NONE) {
-        AppUiAction(uiEvent);
-    }
+  if (uiEvent != APP_UI_NONE)
+  {
+    AppUiAction(uiEvent);
+  }
 }
 
 /*************************************************************************************************/
@@ -1142,27 +1234,27 @@ static void watchProcMsg(dmEvt_t *pMsg)
 /*************************************************************************************************/
 void WatchHandlerInit(wsfHandlerId_t handlerId)
 {
-    APP_TRACE_INFO0("WatchHandlerInit");
+  APP_TRACE_INFO0("WatchHandlerInit");
 
-    /* store handler ID */
-    watchCb.handlerId = handlerId;
+  /* store handler ID */
+  watchCb.handlerId = handlerId;
 
-    /* Set configuration pointers */
-    pAppMasterCfg = (appMasterCfg_t *)&watchMasterCfg;
-    pAppSlaveCfg = (appSlaveCfg_t *)&watchSlaveCfg;
-    pAppAdvCfg = (appAdvCfg_t *)&watchAdvCfg;
-    pAppSecCfg = (appSecCfg_t *)&watchSecCfg;
-    pAppUpdateCfg = (appUpdateCfg_t *)&watchUpdateCfg;
-    pAppDiscCfg = (appDiscCfg_t *)&watchDiscCfg;
-    pAppCfg = (appCfg_t *)&watchAppCfg;
+  /* Set configuration pointers */
+  pAppMasterCfg = (appMasterCfg_t *) &watchMasterCfg;
+  pAppSlaveCfg = (appSlaveCfg_t *) &watchSlaveCfg;
+  pAppAdvCfg = (appAdvCfg_t *) &watchAdvCfg;
+  pAppSecCfg = (appSecCfg_t *) &watchSecCfg;
+  pAppUpdateCfg = (appUpdateCfg_t *) &watchUpdateCfg;
+  pAppDiscCfg = (appDiscCfg_t *) &watchDiscCfg;
+  pAppCfg = (appCfg_t *) &watchAppCfg;
 
-    /* Set stack configuration pointers */
-    pSmpCfg = (smpCfg_t *)&watchSmpCfg;
+  /* Set stack configuration pointers */
+  pSmpCfg = (smpCfg_t *) &watchSmpCfg;
 
-    /* Initialize application framework */
-    AppMasterInit();
-    AppSlaveInit();
-    AppDiscInit();
+  /* Initialize application framework */
+  AppMasterInit();
+  AppSlaveInit();
+  AppDiscInit();
 }
 
 /*************************************************************************************************/
@@ -1177,44 +1269,47 @@ void WatchHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void WatchHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
-    if (pMsg != NULL) {
-        APP_TRACE_INFO1("Watch got evt %d", pMsg->event);
+  if (pMsg != NULL)
+  {
+    APP_TRACE_INFO1("Watch got evt %d", pMsg->event);
 
-        /* process ATT messages */
-        if (pMsg->event <= ATT_CBACK_END) {
-            /* process discovery-related ATT messages */
-            AppDiscProcAttMsg((attEvt_t *)pMsg);
+    /* process ATT messages */
+    if (pMsg->event <= ATT_CBACK_END)
+    {
+      /* process discovery-related ATT messages */
+      AppDiscProcAttMsg((attEvt_t *) pMsg);
 
-            /* process server-related ATT messages */
-            AppServerProcAttMsg(pMsg);
-        }
-        /* process DM messages */
-        else if (pMsg->event <= DM_CBACK_END) {
-            if (pMsg->param == DM_CONN_ID_NONE ||
-                DmConnRole((dmConnId_t)pMsg->param) == DM_ROLE_MASTER) {
-                /* process advertising and connection-related messages */
-                AppMasterProcDmMsg((dmEvt_t *)pMsg);
-
-                /* process security-related messages */
-                AppMasterSecProcDmMsg((dmEvt_t *)pMsg);
-            }
-
-            if (pMsg->param == DM_CONN_ID_NONE ||
-                DmConnRole((dmConnId_t)pMsg->param) == DM_ROLE_SLAVE) {
-                /* process advertising and connection-related messages */
-                AppSlaveProcDmMsg((dmEvt_t *)pMsg);
-
-                /* process security-related messages */
-                AppSlaveSecProcDmMsg((dmEvt_t *)pMsg);
-            }
-
-            /* process discovery-related messages */
-            AppDiscProcDmMsg((dmEvt_t *)pMsg);
-        }
-
-        /* perform profile and user interface-related operations */
-        watchProcMsg((dmEvt_t *)pMsg);
+      /* process server-related ATT messages */
+      AppServerProcAttMsg(pMsg);
     }
+    /* process DM messages */
+    else if (pMsg->event <= DM_CBACK_END)
+    {
+      if (pMsg->param == DM_CONN_ID_NONE || DmConnRole((dmConnId_t) pMsg->param) == DM_ROLE_MASTER)
+      {
+        /* process advertising and connection-related messages */
+        AppMasterProcDmMsg((dmEvt_t *) pMsg);
+
+        /* process security-related messages */
+        AppMasterSecProcDmMsg((dmEvt_t *) pMsg);
+      }
+
+      if (pMsg->param == DM_CONN_ID_NONE || DmConnRole((dmConnId_t) pMsg->param) == DM_ROLE_SLAVE)
+      {
+        /* process advertising and connection-related messages */
+        AppSlaveProcDmMsg((dmEvt_t *) pMsg);
+
+        /* process security-related messages */
+        AppSlaveSecProcDmMsg((dmEvt_t *) pMsg);
+      }
+
+      /* process discovery-related messages */
+      AppDiscProcDmMsg((dmEvt_t *) pMsg);
+    }
+
+    /* perform profile and user interface-related operations */
+    watchProcMsg((dmEvt_t *) pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -1226,22 +1321,22 @@ void WatchHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void WatchStart(void)
 {
-    /* Register for stack callbacks */
-    DmRegister(watchDmCback);
-    DmConnRegister(DM_CLIENT_ID_APP, watchDmCback);
-    AttRegister(watchAttCback);
-    AttConnRegister(AppServerConnCback);
-    AttsCccRegister(WATCH_NUM_CCC_IDX, (attsCccSet_t *)watchCccSet, watchCccCback);
+  /* Register for stack callbacks */
+  DmRegister(watchDmCback);
+  DmConnRegister(DM_CLIENT_ID_APP, watchDmCback);
+  AttRegister(watchAttCback);
+  AttConnRegister(AppServerConnCback);
+  AttsCccRegister(WATCH_NUM_CCC_IDX, (attsCccSet_t *) watchCccSet, watchCccCback);
 
-    /* Register for app framework button callbacks */
-    AppUiBtnRegister(watchBtnCback);
+  /* Register for app framework button callbacks */
+  AppUiBtnRegister(watchBtnCback);
 
-    /* Register for app framework discovery callbacks */
-    AppDiscRegister(watchDiscCback);
+  /* Register for app framework discovery callbacks */
+  AppDiscRegister(watchDiscCback);
 
-    /* Initialize attribute server database */
-    SvcCoreAddGroup();
+  /* Initialize attribute server database */
+  SvcCoreAddGroup();
 
-    /* Reset the device */
-    DmDevReset();
+  /* Reset the device */
+  DmDevReset();
 }

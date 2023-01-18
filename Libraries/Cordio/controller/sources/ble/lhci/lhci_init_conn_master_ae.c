@@ -34,10 +34,10 @@
 /*************************************************************************************************/
 void LhciExtConnMasterInit(void)
 {
-    LlAclRegister(lhciAclSendComplete, lhciAclRecvPending);
+  LlAclRegister(lhciAclSendComplete, lhciAclRecvPending);
 
-    /* Unconditionally override slave settings if exists. */
-    lhciCmdTbl[LHCI_MSG_CONN] = lhciMstExtConnDecodeCmdPkt;
-    lhciEvtTbl[LHCI_MSG_CONN] = lhciMstConnEncodeEvtPkt;
-    lhciServiceAcl = lhciRecvAcl;
+  /* Unconditionally override slave settings if exists. */
+  lhciCmdTbl[LHCI_MSG_CONN] = lhciMstExtConnDecodeCmdPkt;
+  lhciEvtTbl[LHCI_MSG_CONN] = lhciMstConnEncodeEvtPkt;
+  lhciServiceAcl = lhciRecvAcl;
 }

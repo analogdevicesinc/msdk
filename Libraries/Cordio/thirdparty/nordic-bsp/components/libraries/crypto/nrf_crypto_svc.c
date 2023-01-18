@@ -48,25 +48,29 @@
 
 #ifndef NRF51
 
-SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_init) = {
+SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_init) =
+{
     .svc_num = NRF_SVCI_SVC_NUM,
     .svci_num = NRF_CRYPTO_SVCI_INIT,
     .func_ptr = (nrf_svc_func_t)&nrf_crypto_init
 };
 
-SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_public_key_compute) = {
+SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_public_key_compute) =
+{
     .svc_num = NRF_SVCI_SVC_NUM,
     .svci_num = NRF_CRYPTO_SVCI_PUBLIC_KEY_COMPUTE,
     .func_ptr = (nrf_svc_func_t)&nrf_crypto_public_key_compute
 };
 
-SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_shared_secret_compute) = {
+SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_shared_secret_compute) =
+{
     .svc_num = NRF_SVCI_SVC_NUM,
     .svci_num = NRF_CRYPTO_SVCI_SHARED_SECRET_COMPUTE,
     .func_ptr = (nrf_svc_func_t)&nrf_crypto_shared_secret_compute
 };
 
-SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_sign) = {
+SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_sign) =
+{
     .svc_num = NRF_SVCI_SVC_NUM,
     .svci_num = NRF_CRYPTO_SVCI_SIGN,
     .func_ptr = (nrf_svc_func_t)&nrf_crypto_sign
@@ -74,13 +78,15 @@ SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_sign) = {
 
 #endif // #ifndef NRF51
 
-SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_verify) = {
+SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_verify) =
+{
     .svc_num = NRF_SVCI_SVC_NUM,
     .svci_num = NRF_CRYPTO_SVCI_VERIFY,
     .func_ptr = (nrf_svc_func_t)&nrf_crypto_verify
 };
 
-SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_hash_compute) = {
+SVC_REGISTER_FUNCTION(const nrf_svc_func_reg_t nrf_crypto_svci_hash_compute) =
+{
     .svc_num = NRF_SVCI_SVC_NUM,
     .svci_num = NRF_CRYPTO_SVCI_HASH_COMPUTE,
     .func_ptr = &nrf_crypto_hash_compute

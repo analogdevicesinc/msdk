@@ -39,8 +39,9 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Configurable parameters */
-typedef struct {
-    wsfTimerTicks_t period; /*!< \brief Measurement timer expiration period in ms */
+typedef struct
+{
+  wsfTimerTicks_t     period;     /*!< \brief Measurement timer expiration period in ms */
 } hrpsCfg_t;
 
 /*************************************************************************************************/
@@ -107,8 +108,8 @@ void HrpsProcMsg(wsfMsgHdr_t *pMsg);
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t HrpsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                       uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
+uint8_t HrpsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
+                       uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
 
 /*************************************************************************************************/
 /*!
@@ -121,7 +122,7 @@ uint8_t HrpsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, ui
 /*************************************************************************************************/
 void HrpsSetFlags(uint8_t flags);
 
-/*! \} */ /* HEART_RATE_PROFILE */
+/*! \} */    /* HEART_RATE_PROFILE */
 
 #ifdef __cplusplus
 };

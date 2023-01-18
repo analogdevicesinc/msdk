@@ -36,89 +36,96 @@
 **************************************************************************************************/
 
 /*! Column position of next state */
-#define DM_ISO_NEXT_STATE 0
+#define DM_ISO_NEXT_STATE           0
 
 /*! Column position of action */
-#define DM_ISO_ACTION 1
+#define DM_ISO_ACTION               1
 
 /*! Number of columns in the state machine state tables */
-#define DM_ISO_NUM_COLS 2
+#define DM_ISO_NUM_COLS             2
 
 /*! Number of data path directions */
-#define DM_ISO_NUM_DIR 2
+#define DM_ISO_NUM_DIR              2
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! DM ISO event handler messages for state machine */
-enum {
-    /* messages from API */
-    DM_ISO_MSG_API_SETUP = DM_MSG_START(DM_ID_ISO), /*!< Setup ISO Data Path */
-    DM_ISO_MSG_API_REMOVE, /*!< Remove ISO Data Path */
+enum
+{
+  /* messages from API */
+  DM_ISO_MSG_API_SETUP = DM_MSG_START(DM_ID_ISO),       /*!< Setup ISO Data Path */
+  DM_ISO_MSG_API_REMOVE,                                /*!< Remove ISO Data Path */
 
-    /* messages from HCI */
-    DM_ISO_MSG_HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL, /*!< HCI LE Set ISO Data Path Command Complete Failure Event */
-    DM_ISO_MSG_HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL, /*!< HCI LE Set ISO Data Path Command Complete Event */
-    DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL, /*!< HCI LE Remove ISO Data Path Command Complete Failure Event */
-    DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL /*!< HCI LE Remove ISO Data Path Command Complete Event */
+  /* messages from HCI */
+  DM_ISO_MSG_HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL,  /*!< HCI LE Set ISO Data Path Command Complete Failure Event */
+  DM_ISO_MSG_HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL,       /*!< HCI LE Set ISO Data Path Command Complete Event */
+  DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL, /*!< HCI LE Remove ISO Data Path Command Complete Failure Event */
+  DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL       /*!< HCI LE Remove ISO Data Path Command Complete Event */
 };
 
 /* Number of ISO messages */
-#define DM_ISO_NUM_MSGS (DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL - DM_ISO_MSG_API_SETUP + 1)
+#define DM_ISO_NUM_MSGS             (DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL - DM_ISO_MSG_API_SETUP + 1)
 
 /*! CIS CIG state machine actions */
-enum {
-    DM_ISO_SM_ACT_NONE, /*!< No Action */
-    DM_ISO_SM_ACT_SETUP, /*!< Process Setup */
-    DM_ISO_SM_ACT_SETUP_SUCCESS, /*!< Process Setup Successful */
-    DM_ISO_SM_ACT_SETUP_FAILED, /*!< Process Setup Failed */
-    DM_ISO_SM_ACT_REMOVE, /*!< Process Remove */
-    DM_ISO_SM_ACT_REMOVED, /*!< Process Removed */
-    DM_ISO_SM_ACT_REMOVE_FAILED, /*!< Process Remove Failed */
+enum
+{
+  DM_ISO_SM_ACT_NONE,                                   /*!< No Action */
+  DM_ISO_SM_ACT_SETUP,                                  /*!< Process Setup */
+  DM_ISO_SM_ACT_SETUP_SUCCESS,                          /*!< Process Setup Successful */
+  DM_ISO_SM_ACT_SETUP_FAILED,                           /*!< Process Setup Failed */
+  DM_ISO_SM_ACT_REMOVE,                                 /*!< Process Remove */
+  DM_ISO_SM_ACT_REMOVED,                                /*!< Process Removed */
+  DM_ISO_SM_ACT_REMOVE_FAILED,                          /*!< Process Remove Failed */
 };
 
 /*! CIS CIG state machine states */
-enum {
-    DM_ISO_SM_ST_IDLE, /*!< Idle State */
-    DM_ISO_SM_ST_CONFIGING, /*!< Configuring State */
-    DM_ISO_SM_ST_CONFIGED, /*!< Configured State */
-    DM_ISO_SM_ST_REMOVING, /*!< Removing State */
+enum
+{
+  DM_ISO_SM_ST_IDLE,                                    /*!< Idle State */
+  DM_ISO_SM_ST_CONFIGING,                               /*!< Configuring State */
+  DM_ISO_SM_ST_CONFIGED,                                /*!< Configured State */
+  DM_ISO_SM_ST_REMOVING,                                /*!< Removing State */
 
-    DM_ISO_SM_NUM_STATES
+  DM_ISO_SM_NUM_STATES
 };
 
 /* Data structure for DM_ISO_MSG_API_SETUP */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    HciIsoSetupDataPath_t dataPathParam;
+typedef struct
+{
+  wsfMsgHdr_t                         hdr;
+  HciIsoSetupDataPath_t               dataPathParam;
 } dmIsoApiSetup_t;
 
 /* Data structure for DM_ISO_MSG_API_REMOVE */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t directionBits;
+typedef struct
+{
+  wsfMsgHdr_t                         hdr;
+  uint8_t                             directionBits;
 } dmIsoApiRemove_t;
 
 /*! Union of all DM ISO state machine messages */
-typedef union {
-    wsfMsgHdr_t hdr;
+typedef union
+{
+  wsfMsgHdr_t                         hdr;
 
-    /* API messages */
-    dmIsoApiSetup_t apiSetup;
-    dmIsoApiRemove_t apiRemove;
+  /* API messages */
+  dmIsoApiSetup_t                     apiSetup;
+  dmIsoApiRemove_t                    apiRemove;
 
-    /* HCI LE events */
-    hciLeSetupIsoDataPathCmdCmplEvt_t hciLeSetupIsoDataPathCmdCmpl;
-    hciLeRemoveIsoDataPathCmdCmplEvt_t hciLeRemoveIsoDataPathCmdCmpl;
+  /* HCI LE events */
+  hciLeSetupIsoDataPathCmdCmplEvt_t   hciLeSetupIsoDataPathCmdCmpl;
+  hciLeRemoveIsoDataPathCmdCmplEvt_t  hciLeRemoveIsoDataPathCmdCmpl;
 } dmIsoMsg_t;
 
 /*! ISO connection control block */
-typedef struct {
-    uint16_t handle; /*!< Connection handle of CIS or BIS. */
-    uint8_t state[DM_ISO_NUM_DIR]; /*!< Main state for each direction. */
-    bool_t rmReqEvtSent; /*!< TRUE if remove data path request or event been sent. */
-    uint8_t inUse; /*!< TRUE if entry in use. */
+typedef struct
+{
+  uint16_t                            handle;               /*!< Connection handle of CIS or BIS. */
+  uint8_t                             state[DM_ISO_NUM_DIR];/*!< Main state for each direction. */
+  bool_t                              rmReqEvtSent;         /*!< TRUE if remove data path request or event been sent. */
+  uint8_t                             inUse;                /*!< TRUE if entry in use. */
 } dmIsoCb_t;
 
 /*! Action functions */
@@ -145,52 +152,69 @@ static void dmIsoSmActRemoveFailed(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t 
 **************************************************************************************************/
 
 /*! DM ISO state machine state tables */
-static const uint8_t dmIsoStateTbl[DM_ISO_SM_NUM_STATES][DM_ISO_NUM_MSGS][DM_ISO_NUM_COLS] = {
-    /* Idle state */
-    { /* Event                                        Next state                Action */
-      /* API_SETUP */ { DM_ISO_SM_ST_CONFIGING, DM_ISO_SM_ACT_SETUP },
-      /* API_REMOVE */ { DM_ISO_SM_ST_IDLE, DM_ISO_SM_ACT_NONE },
-      /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL */ { DM_ISO_SM_ST_IDLE, DM_ISO_SM_ACT_NONE },
-      /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL */ { DM_ISO_SM_ST_CONFIGED, DM_ISO_SM_ACT_SETUP_SUCCESS },
-      /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL */ { DM_ISO_SM_ST_IDLE, DM_ISO_SM_ACT_NONE },
-      /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL */ { DM_ISO_SM_ST_IDLE, DM_ISO_SM_ACT_NONE } },
-    /* Configuring state */
-    { /* Event                                        Next state                Action */
-      /* API_SETUP */ { DM_ISO_SM_ST_CONFIGING, DM_ISO_SM_ACT_NONE },
-      /* API_REMOVE */ { DM_ISO_SM_ST_CONFIGING, DM_ISO_SM_ACT_NONE },
-      /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL */ { DM_ISO_SM_ST_IDLE, DM_ISO_SM_ACT_SETUP_FAILED },
-      /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL */ { DM_ISO_SM_ST_CONFIGED, DM_ISO_SM_ACT_SETUP_SUCCESS },
-      /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL */ { DM_ISO_SM_ST_CONFIGING, DM_CIS_SM_ACT_NONE },
-      /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL */ { DM_ISO_SM_ST_IDLE, DM_ISO_SM_ACT_SETUP_FAILED } },
-    /* Configured state */
-    { /* Event                                        Next state                Action */
-      /* API_SETUP */ { DM_ISO_SM_ST_CONFIGED, DM_ISO_SM_ACT_SETUP },
-      /* API_REMOVE */ { DM_ISO_SM_ST_REMOVING, DM_ISO_SM_ACT_REMOVE },
-      /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL */
-      { DM_ISO_SM_ST_CONFIGED, DM_ISO_SM_ACT_SETUP_FAILED },
-      /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL */ { DM_ISO_SM_ST_CONFIGED, DM_ISO_SM_ACT_SETUP_SUCCESS },
-      /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL */
-      { DM_ISO_SM_ST_CONFIGED, DM_ISO_SM_ACT_SETUP_FAILED },
-      /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL */ { DM_ISO_SM_ST_IDLE, DM_ISO_SM_ACT_REMOVED } },
-    /* Removing state */
-    { /* Event                                        Next state                Action */
-      /* API_SETUP */ { DM_ISO_SM_ST_REMOVING, DM_ISO_SM_ACT_NONE },
-      /* API_REMOVE */ { DM_ISO_SM_ST_REMOVING, DM_ISO_SM_ACT_NONE },
-      /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL */ { DM_ISO_SM_ST_REMOVING, DM_ISO_SM_ACT_NONE },
-      /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL */ { DM_ISO_SM_ST_REMOVING, DM_ISO_SM_ACT_REMOVE },
-      /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL */
-      { DM_ISO_SM_ST_CONFIGED, DM_ISO_SM_ACT_REMOVE_FAILED },
-      /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL */ { DM_ISO_SM_ST_IDLE, DM_ISO_SM_ACT_REMOVED } }
+static const uint8_t dmIsoStateTbl[DM_ISO_SM_NUM_STATES][DM_ISO_NUM_MSGS][DM_ISO_NUM_COLS] =
+{
+  /* Idle state */
+  {
+  /* Event                                        Next state                Action */
+  /* API_SETUP */                                 {DM_ISO_SM_ST_CONFIGING,  DM_ISO_SM_ACT_SETUP},
+  /* API_REMOVE */                                {DM_ISO_SM_ST_IDLE,       DM_ISO_SM_ACT_NONE},
+  /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL */  {DM_ISO_SM_ST_IDLE,       DM_ISO_SM_ACT_NONE},
+  /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL */       {DM_ISO_SM_ST_CONFIGED,   DM_ISO_SM_ACT_SETUP_SUCCESS},
+  /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL */ {DM_ISO_SM_ST_IDLE,       DM_ISO_SM_ACT_NONE},
+  /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL */      {DM_ISO_SM_ST_IDLE,       DM_ISO_SM_ACT_NONE}
+  },
+  /* Configuring state */
+  {
+  /* Event                                        Next state                Action */
+  /* API_SETUP */                                 {DM_ISO_SM_ST_CONFIGING,  DM_ISO_SM_ACT_NONE},
+  /* API_REMOVE */                                {DM_ISO_SM_ST_CONFIGING,  DM_ISO_SM_ACT_NONE},
+  /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL */  {DM_ISO_SM_ST_IDLE,       DM_ISO_SM_ACT_SETUP_FAILED},
+  /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL */       {DM_ISO_SM_ST_CONFIGED,   DM_ISO_SM_ACT_SETUP_SUCCESS},
+  /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL */ {DM_ISO_SM_ST_CONFIGING,  DM_CIS_SM_ACT_NONE},
+  /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL */      {DM_ISO_SM_ST_IDLE,       DM_ISO_SM_ACT_SETUP_FAILED}
+  },
+  /* Configured state */
+  {
+  /* Event                                        Next state                Action */
+  /* API_SETUP */                                 {DM_ISO_SM_ST_CONFIGED,   DM_ISO_SM_ACT_SETUP},
+  /* API_REMOVE */                                {DM_ISO_SM_ST_REMOVING,   DM_ISO_SM_ACT_REMOVE},
+  /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL */  {DM_ISO_SM_ST_CONFIGED,   DM_ISO_SM_ACT_SETUP_FAILED},
+  /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL */       {DM_ISO_SM_ST_CONFIGED,   DM_ISO_SM_ACT_SETUP_SUCCESS},
+  /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL */ {DM_ISO_SM_ST_CONFIGED,   DM_ISO_SM_ACT_SETUP_FAILED},
+  /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL */      {DM_ISO_SM_ST_IDLE,       DM_ISO_SM_ACT_REMOVED}
+  },
+  /* Removing state */
+  {
+  /* Event                                        Next state                Action */
+  /* API_SETUP */                                 {DM_ISO_SM_ST_REMOVING,   DM_ISO_SM_ACT_NONE},
+  /* API_REMOVE */                                {DM_ISO_SM_ST_REMOVING,   DM_ISO_SM_ACT_NONE},
+  /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL */  {DM_ISO_SM_ST_REMOVING,   DM_ISO_SM_ACT_NONE},
+  /* HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL */       {DM_ISO_SM_ST_REMOVING,   DM_ISO_SM_ACT_REMOVE},
+  /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL */ {DM_ISO_SM_ST_CONFIGED,   DM_ISO_SM_ACT_REMOVE_FAILED},
+  /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL */      {DM_ISO_SM_ST_IDLE,       DM_ISO_SM_ACT_REMOVED}
+  }
 };
 
 /*! DM ISO action function table */
-static const dmIsoAct_t dmIsoAct[] = { dmIsoSmActNone,         dmIsoSmActSetup,
-                                       dmIsoSmActSetupSuccess, dmIsoSmActSetupFailed,
-                                       dmIsoSmActRemove,       dmIsoSmActRemoved,
-                                       dmIsoSmActRemoveFailed };
+static const dmIsoAct_t dmIsoAct[] =
+{
+  dmIsoSmActNone,
+  dmIsoSmActSetup,
+  dmIsoSmActSetupSuccess,
+  dmIsoSmActSetupFailed,
+  dmIsoSmActRemove,
+  dmIsoSmActRemoved,
+  dmIsoSmActRemoveFailed
+};
 
 /* ISO component function interface */
-static const dmFcnIf_t dmIsoFcnIf = { dmIsoReset, dmIsoHciHandler, dmIsoMsgHandler };
+static const dmFcnIf_t dmIsoFcnIf =
+{
+  dmIsoReset,
+  dmIsoHciHandler,
+  dmIsoMsgHandler
+};
 
 /*! DM ISO control block */
 static dmIsoCb_t dmIsoCb[DM_ISO_DATA_PATH_MAX];
@@ -206,25 +230,27 @@ static dmIsoCb_t dmIsoCb[DM_ISO_DATA_PATH_MAX];
 /*************************************************************************************************/
 dmIsoCb_t *dmIsoCbAlloc(uint16_t handle)
 {
-    dmIsoCb_t *pIsoCb = dmIsoCb;
-    uint8_t i;
+  dmIsoCb_t *pIsoCb = dmIsoCb;
+  uint8_t       i;
 
-    for (i = 0; i < DM_ISO_DATA_PATH_MAX; i++, pIsoCb++) {
-        if (pIsoCb->inUse == FALSE) {
-            memset(pIsoCb, 0, sizeof(dmIsoCb_t));
+  for (i = 0; i < DM_ISO_DATA_PATH_MAX; i++, pIsoCb++)
+  {
+    if (pIsoCb->inUse == FALSE)
+    {
+      memset(pIsoCb, 0, sizeof(dmIsoCb_t));
 
-            pIsoCb->handle = handle;
-            pIsoCb->inUse = TRUE;
+      pIsoCb->handle = handle;
+      pIsoCb->inUse = TRUE;
 
-            DM_TRACE_ALLOC1("dmIsoCbAlloc %d", handle);
+      DM_TRACE_ALLOC1("dmIsoCbAlloc %d", handle);
 
-            return pIsoCb;
-        }
+      return pIsoCb;
     }
+  }
 
-    DM_TRACE_ERR0("dmIsoCbAlloc failed");
+  DM_TRACE_ERR0("dmIsoCbAlloc failed");
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -238,9 +264,9 @@ dmIsoCb_t *dmIsoCbAlloc(uint16_t handle)
 /*************************************************************************************************/
 void dmIsoCbDealloc(dmIsoCb_t *pIsoCb)
 {
-    DM_TRACE_FREE1("dmIsoCbDealloc %d", pIsoCb->handle);
+  DM_TRACE_FREE1("dmIsoCbDealloc %d", pIsoCb->handle);
 
-    pIsoCb->inUse = FALSE;
+  pIsoCb->inUse = FALSE;
 }
 
 /*************************************************************************************************/
@@ -254,18 +280,20 @@ void dmIsoCbDealloc(dmIsoCb_t *pIsoCb)
 /*************************************************************************************************/
 dmIsoCb_t *dmIsoCbByHandle(uint16_t handle)
 {
-    dmIsoCb_t *pIsoCb = dmIsoCb;
-    uint8_t i;
+  dmIsoCb_t   *pIsoCb = dmIsoCb;
+  uint8_t      i;
 
-    for (i = DM_ISO_DATA_PATH_MAX; i > 0; i--, pIsoCb++) {
-        if (pIsoCb->inUse && (pIsoCb->handle == handle)) {
-            return pIsoCb;
-        }
+  for (i = DM_ISO_DATA_PATH_MAX; i > 0; i--, pIsoCb++)
+  {
+    if (pIsoCb->inUse && (pIsoCb->handle == handle))
+    {
+      return pIsoCb;
     }
+  }
 
-    DM_TRACE_WARN1("dmIsoCcbByHandle not found %d", handle);
+  DM_TRACE_WARN1("dmIsoCcbByHandle not found %d", handle);
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -281,7 +309,7 @@ dmIsoCb_t *dmIsoCbByHandle(uint16_t handle)
 /*************************************************************************************************/
 static void dmIsoSmActNone(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldState)
 {
-    return;
+  return;
 }
 
 /*************************************************************************************************/
@@ -297,25 +325,26 @@ static void dmIsoSmActNone(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldState
 /*************************************************************************************************/
 static void dmIsoSmActSetup(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldState)
 {
-    dmIsoApiSetup_t *pSetup = &pMsg->apiSetup;
+  dmIsoApiSetup_t *pSetup = &pMsg->apiSetup;
 
-    /* if connection handle is for CIS, BIS or BIS Sync */
-    if (DmCisConnInUse(pIsoCb->handle) || DmBisInUse(pIsoCb->handle) ||
-        DmBisSyncInUse(pIsoCb->handle)) {
-        /* setup ISO data path */
-        HciLeSetupIsoDataPathCmd(&pSetup->dataPathParam);
-    } else {
-        DM_TRACE_WARN1("dmIsoSmActSetup: connection handle (%d) isn't for CIS or BIS",
-                       pIsoCb->handle);
+  /* if connection handle is for CIS, BIS or BIS Sync */
+  if (DmCisConnInUse(pIsoCb->handle) || DmBisInUse(pIsoCb->handle) || DmBisSyncInUse(pIsoCb->handle))
+  {
+    /* setup ISO data path */
+    HciLeSetupIsoDataPathCmd(&pSetup->dataPathParam);
+  }
+  else
+  {
+    DM_TRACE_WARN1("dmIsoSmActSetup: connection handle (%d) isn't for CIS or BIS", pIsoCb->handle);
 
-        pMsg->hdr.status = HCI_ERR_UNKNOWN_HANDLE;
+    pMsg->hdr.status = HCI_ERR_UNKNOWN_HANDLE;
 
-        /* restore old state */
-        pIsoCb->state[pSetup->dataPathParam.dpDir] = oldState;
+    /* restore old state */
+    pIsoCb->state[pSetup->dataPathParam.dpDir] = oldState;
 
-        /* notify app about failure */
-        dmIsoSmActSetupFailed(pIsoCb, pMsg, oldState);
-    }
+    /* notify app about failure */
+    dmIsoSmActSetupFailed(pIsoCb, pMsg, oldState);
+  }
 }
 
 /*************************************************************************************************/
@@ -331,8 +360,8 @@ static void dmIsoSmActSetup(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldStat
 /*************************************************************************************************/
 static void dmIsoSmActSetupSuccess(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldState)
 {
-    pMsg->hdr.event = DM_ISO_DATA_PATH_SETUP_IND;
-    (*dmCb.cback)((dmEvt_t *)pMsg);
+  pMsg->hdr.event = DM_ISO_DATA_PATH_SETUP_IND;
+  (*dmCb.cback)((dmEvt_t *) pMsg);
 }
 
 /*************************************************************************************************/
@@ -348,14 +377,15 @@ static void dmIsoSmActSetupSuccess(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t 
 /*************************************************************************************************/
 static void dmIsoSmActSetupFailed(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldState)
 {
-    /* if both data path directions in idle state */
-    if ((pIsoCb->state[HCI_ISO_DATA_DIR_INPUT] == DM_ISO_SM_ST_IDLE) &&
-        (pIsoCb->state[HCI_ISO_DATA_DIR_OUTPUT] == DM_ISO_SM_ST_IDLE)) {
-        dmIsoCbDealloc(pIsoCb);
-    }
+  /* if both data path directions in idle state */
+  if ((pIsoCb->state[HCI_ISO_DATA_DIR_INPUT]  == DM_ISO_SM_ST_IDLE) &&
+      (pIsoCb->state[HCI_ISO_DATA_DIR_OUTPUT] == DM_ISO_SM_ST_IDLE))
+  {
+    dmIsoCbDealloc(pIsoCb);
+  }
 
-    pMsg->hdr.event = DM_ISO_DATA_PATH_SETUP_IND;
-    (*dmCb.cback)((dmEvt_t *)pMsg);
+  pMsg->hdr.event = DM_ISO_DATA_PATH_SETUP_IND;
+  (*dmCb.cback)((dmEvt_t *) pMsg);
 }
 
 /*************************************************************************************************/
@@ -371,16 +401,17 @@ static void dmIsoSmActSetupFailed(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t o
 /*************************************************************************************************/
 static void dmIsoSmActRemove(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldState)
 {
-    dmIsoApiRemove_t *pRemove = &pMsg->apiRemove;
+  dmIsoApiRemove_t *pRemove = &pMsg->apiRemove;
 
-    /* if remove data path request hasn't been sent down for this handle */
-    if (pIsoCb->rmReqEvtSent == FALSE) {
-        /* remove ISO data path */
-        HciLeRemoveIsoDataPathCmd(pMsg->hdr.param, pRemove->directionBits);
+  /* if remove data path request hasn't been sent down for this handle */
+  if (pIsoCb->rmReqEvtSent == FALSE)
+  {
+    /* remove ISO data path */
+    HciLeRemoveIsoDataPathCmd(pMsg->hdr.param, pRemove->directionBits);
 
-        /* in case if both data path directions are being removed together */
-        pIsoCb->rmReqEvtSent = TRUE;
-    }
+    /* in case if both data path directions are being removed together */
+    pIsoCb->rmReqEvtSent = TRUE;
+  }
 }
 
 /*************************************************************************************************/
@@ -396,23 +427,25 @@ static void dmIsoSmActRemove(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldSta
 /*************************************************************************************************/
 static void dmIsoSmActRemoved(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldState)
 {
-    /* if remove data path event hasn't been sent up for this handle */
-    if (pIsoCb->rmReqEvtSent == FALSE) {
-        uint8_t event = pMsg->hdr.event;
+  /* if remove data path event hasn't been sent up for this handle */
+  if (pIsoCb->rmReqEvtSent == FALSE)
+  {
+    uint8_t event = pMsg->hdr.event;
 
-        pMsg->hdr.event = DM_ISO_DATA_PATH_REMOVE_IND;
-        (*dmCb.cback)((dmEvt_t *)pMsg);
+    pMsg->hdr.event = DM_ISO_DATA_PATH_REMOVE_IND;
+    (*dmCb.cback)((dmEvt_t *) pMsg);
 
-        /* in case if both data path directions are being removed with single command */
-        pMsg->hdr.event = event;
-        pIsoCb->rmReqEvtSent = TRUE;
-    }
+    /* in case if both data path directions are being removed with single command */
+    pMsg->hdr.event = event;
+    pIsoCb->rmReqEvtSent = TRUE;
+  }
 
-    /* if both data path directions in idle state */
-    if ((pIsoCb->state[HCI_ISO_DATA_DIR_INPUT] == DM_ISO_SM_ST_IDLE) &&
-        (pIsoCb->state[HCI_ISO_DATA_DIR_OUTPUT] == DM_ISO_SM_ST_IDLE)) {
-        dmIsoCbDealloc(pIsoCb);
-    }
+  /* if both data path directions in idle state */
+  if ((pIsoCb->state[HCI_ISO_DATA_DIR_INPUT]  == DM_ISO_SM_ST_IDLE) &&
+      (pIsoCb->state[HCI_ISO_DATA_DIR_OUTPUT] == DM_ISO_SM_ST_IDLE))
+  {
+    dmIsoCbDealloc(pIsoCb);
+  }
 }
 
 /*************************************************************************************************/
@@ -428,8 +461,8 @@ static void dmIsoSmActRemoved(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldSt
 /*************************************************************************************************/
 static void dmIsoSmActRemoveFailed(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t oldState)
 {
-    pMsg->hdr.event = DM_ISO_DATA_PATH_REMOVE_IND;
-    (*dmCb.cback)((dmEvt_t *)pMsg);
+  pMsg->hdr.event = DM_ISO_DATA_PATH_REMOVE_IND;
+  (*dmCb.cback)((dmEvt_t *) pMsg);
 }
 
 /*************************************************************************************************/
@@ -445,23 +478,23 @@ static void dmIsoSmActRemoveFailed(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t 
 /*************************************************************************************************/
 void dmIsoSmExecute(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t direction)
 {
-    uint8_t action;
-    uint8_t event;
-    uint8_t state = pIsoCb->state[direction];
+  uint8_t action;
+  uint8_t event;
+  uint8_t state = pIsoCb->state[direction];
 
-    DM_TRACE_INFO2("dmIsoSmExecute event=%d state=%d", pMsg->hdr.event, state);
+  DM_TRACE_INFO2("dmIsoSmExecute event=%d state=%d", pMsg->hdr.event, state);
 
-    /* get the event */
-    event = DM_MSG_MASK(pMsg->hdr.event);
+  /* get the event */
+  event = DM_MSG_MASK(pMsg->hdr.event);
 
-    /* get action */
-    action = dmIsoStateTbl[state][event][DM_ISO_ACTION];
+  /* get action */
+  action = dmIsoStateTbl[state][event][DM_ISO_ACTION];
 
-    /* set next state */
-    pIsoCb->state[direction] = dmIsoStateTbl[state][event][DM_ISO_NEXT_STATE];
+  /* set next state */
+  pIsoCb->state[direction] = dmIsoStateTbl[state][event][DM_ISO_NEXT_STATE];
 
-    /* execute action function */
-    (*dmIsoAct[action])(pIsoCb, pMsg, state);
+  /* execute action function */
+  (*dmIsoAct[action])(pIsoCb, pMsg, state);
 }
 
 /*************************************************************************************************/
@@ -473,14 +506,16 @@ void dmIsoSmExecute(dmIsoCb_t *pIsoCb, dmIsoMsg_t *pMsg, uint8_t direction)
 /*************************************************************************************************/
 static void dmIsoReset(void)
 {
-    dmIsoCb_t *pIsoCb = dmIsoCb;
-    uint8_t i;
+  dmIsoCb_t  *pIsoCb = dmIsoCb;
+  uint8_t    i;
 
-    for (i = 0; i < DM_ISO_DATA_PATH_MAX; i++, pIsoCb++) {
-        if (pIsoCb->inUse) {
-            dmIsoCbDealloc(pIsoCb);
-        }
+  for (i = 0; i < DM_ISO_DATA_PATH_MAX; i++, pIsoCb++)
+  {
+    if (pIsoCb->inUse)
+    {
+      dmIsoCbDealloc(pIsoCb);
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -494,34 +529,38 @@ static void dmIsoReset(void)
 /*************************************************************************************************/
 static void dmIsoMsgHandler(wsfMsgHdr_t *pMsg)
 {
-    dmIsoCb_t *pIsoCb;
+  dmIsoCb_t *pIsoCb;
 
-    /* look up cb from handle */
-    if ((pIsoCb = dmIsoCbByHandle(pMsg->param)) != NULL) {
-        if (pMsg->event == DM_ISO_MSG_API_SETUP) {
-            /* execute state machine */
-            dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *)pMsg,
-                           ((dmIsoApiSetup_t *)pMsg)->dataPathParam.dpDir);
-        } else /* DM_ISO_MSG_API_REMOVE */
-        {
-            uint8_t directionBits = ((dmIsoApiRemove_t *)pMsg)->directionBits;
-
-            /* in case if both data path directions are being removed with single command */
-            pIsoCb->rmReqEvtSent = FALSE;
-
-            /* if input direction being removed */
-            if (directionBits & HCI_ISO_DATA_PATH_INPUT_BIT) {
-                /* execute state machine */
-                dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *)pMsg, HCI_ISO_DATA_DIR_INPUT);
-            }
-
-            /* if output direction being removed */
-            if (directionBits & HCI_ISO_DATA_PATH_OUTPUT_BIT) {
-                /* execute state machine */
-                dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *)pMsg, HCI_ISO_DATA_DIR_OUTPUT);
-            }
-        }
+  /* look up cb from handle */
+  if ((pIsoCb = dmIsoCbByHandle(pMsg->param)) != NULL)
+  {
+    if (pMsg->event == DM_ISO_MSG_API_SETUP)
+    {
+      /* execute state machine */
+      dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *) pMsg, ((dmIsoApiSetup_t *) pMsg)->dataPathParam.dpDir);
     }
+    else /* DM_ISO_MSG_API_REMOVE */
+    {
+      uint8_t directionBits = ((dmIsoApiRemove_t *) pMsg)->directionBits;
+      
+      /* in case if both data path directions are being removed with single command */
+      pIsoCb->rmReqEvtSent = FALSE;
+
+      /* if input direction being removed */
+      if (directionBits & HCI_ISO_DATA_PATH_INPUT_BIT)
+      {
+        /* execute state machine */
+        dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *) pMsg, HCI_ISO_DATA_DIR_INPUT);
+      }
+
+      /* if output direction being removed */
+      if (directionBits & HCI_ISO_DATA_PATH_OUTPUT_BIT)
+      {
+        /* execute state machine */
+        dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *) pMsg, HCI_ISO_DATA_DIR_OUTPUT);
+      }
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -535,53 +574,67 @@ static void dmIsoMsgHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 static void dmIsoDpHciHandler(hciEvt_t *pEvent)
 {
-    dmIsoCb_t *pIsoCb;
+  dmIsoCb_t *pIsoCb;
 
-    /* look up cb from handle */
-    if ((pIsoCb = dmIsoCbByHandle(pEvent->hdr.param)) != NULL) {
-        /* translate HCI event to state machine event */
-        if (pEvent->hdr.event == HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT) {
-            uint8_t direction;
+  /* look up cb from handle */
+  if ((pIsoCb = dmIsoCbByHandle(pEvent->hdr.param)) != NULL)
+  {
+    /* translate HCI event to state machine event */
+    if (pEvent->hdr.event == HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT)
+    {
+      uint8_t direction;
 
-            if (pEvent->hdr.status == HCI_SUCCESS) {
-                pEvent->hdr.event = DM_ISO_MSG_HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL;
-            } else {
-                pEvent->hdr.event = DM_ISO_MSG_HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL;
-            }
+      if (pEvent->hdr.status == HCI_SUCCESS)
+      {
+        pEvent->hdr.event =  DM_ISO_MSG_HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL;
+      }
+      else
+      {
+        pEvent->hdr.event = DM_ISO_MSG_HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_FAIL;
+      }
 
-            /* find out direction being set up */
-            if (pIsoCb->state[HCI_ISO_DATA_DIR_INPUT] == DM_ISO_SM_ST_CONFIGING) {
-                direction = HCI_ISO_DATA_DIR_INPUT;
-            } else {
-                direction = HCI_ISO_DATA_DIR_OUTPUT;
-            }
+      /* find out direction being set up */
+      if (pIsoCb->state[HCI_ISO_DATA_DIR_INPUT] == DM_ISO_SM_ST_CONFIGING)
+      {
+        direction = HCI_ISO_DATA_DIR_INPUT;
+      }
+      else
+      {
+        direction = HCI_ISO_DATA_DIR_OUTPUT;
+      }
 
-            /* execute state machine */
-            dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *)pEvent, direction);
-        } else /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT */
-        {
-            if (pEvent->hdr.status == HCI_SUCCESS) {
-                pEvent->hdr.event = DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL;
-            } else {
-                pEvent->hdr.event = DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL;
-            }
-
-            /* in case if both data path directions are being removed with single command */
-            pIsoCb->rmReqEvtSent = FALSE;
-
-            /* if input direction being removed */
-            if (pIsoCb->state[HCI_ISO_DATA_DIR_INPUT] == DM_ISO_SM_ST_REMOVING) {
-                /* execute state machine */
-                dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *)pEvent, HCI_ISO_DATA_DIR_INPUT);
-            }
-
-            /* if output direction being removed */
-            if (pIsoCb->state[HCI_ISO_DATA_DIR_OUTPUT] == DM_ISO_SM_ST_REMOVING) {
-                /* execute state machine */
-                dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *)pEvent, HCI_ISO_DATA_DIR_OUTPUT);
-            }
-        }
+      /* execute state machine */
+      dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *) pEvent, direction);
     }
+    else /* HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT */
+    {
+      if (pEvent->hdr.status == HCI_SUCCESS)
+      {
+        pEvent->hdr.event =  DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL;
+      }
+      else
+      {
+        pEvent->hdr.event = DM_ISO_MSG_HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_FAIL;
+      }
+
+      /* in case if both data path directions are being removed with single command */
+      pIsoCb->rmReqEvtSent = FALSE;
+
+      /* if input direction being removed */
+      if (pIsoCb->state[HCI_ISO_DATA_DIR_INPUT] == DM_ISO_SM_ST_REMOVING)
+      {
+        /* execute state machine */
+        dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *) pEvent, HCI_ISO_DATA_DIR_INPUT);
+      }
+
+      /* if output direction being removed */
+      if (pIsoCb->state[HCI_ISO_DATA_DIR_OUTPUT] == DM_ISO_SM_ST_REMOVING)
+      {
+        /* execute state machine */
+        dmIsoSmExecute(pIsoCb, (dmIsoMsg_t *) pEvent, HCI_ISO_DATA_DIR_OUTPUT);
+      }
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -595,36 +648,40 @@ static void dmIsoDpHciHandler(hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmIsoHciHandler(hciEvt_t *pEvent)
 {
-    /* if ISO data path event */
-    if ((pEvent->hdr.event == HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT) ||
-        (pEvent->hdr.event == HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT)) {
-        dmIsoDpHciHandler(pEvent);
-    } else {
-        /* handle incoming event */
-        switch (pEvent->hdr.event) {
-        case HCI_CONFIG_DATA_PATH_CMD_CMPL_CBACK_EVT:
-            pEvent->hdr.event = DM_DATA_PATH_CONFIG_IND;
-            break;
+  /* if ISO data path event */
+  if ((pEvent->hdr.event == HCI_LE_SETUP_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT) ||
+      (pEvent->hdr.event == HCI_LE_REMOVE_ISO_DATA_PATH_CMD_CMPL_CBACK_EVT))
+  {
+    dmIsoDpHciHandler(pEvent);
+  }
+  else
+  {
+    /* handle incoming event */
+    switch (pEvent->hdr.event)
+    {
+    case HCI_CONFIG_DATA_PATH_CMD_CMPL_CBACK_EVT:
+      pEvent->hdr.event = DM_DATA_PATH_CONFIG_IND;
+      break;
 
-        case HCI_READ_LOCAL_SUP_CODECS_CMD_CMPL_CBACK_EVT:
-            pEvent->hdr.event = DM_READ_LOCAL_SUP_CODECS_IND;
-            break;
+    case HCI_READ_LOCAL_SUP_CODECS_CMD_CMPL_CBACK_EVT:
+      pEvent->hdr.event = DM_READ_LOCAL_SUP_CODECS_IND;
+      break;
 
-        case HCI_READ_LOCAL_SUP_CODEC_CAP_CMD_CMPL_CBACK_EVT:
-            pEvent->hdr.event = DM_READ_LOCAL_SUP_CODEC_CAP_IND;
-            break;
+    case HCI_READ_LOCAL_SUP_CODEC_CAP_CMD_CMPL_CBACK_EVT:
+      pEvent->hdr.event = DM_READ_LOCAL_SUP_CODEC_CAP_IND;
+      break;
 
-        case HCI_READ_LOCAL_SUP_CTR_DLY_CMD_CMPL_CBACK_EVT:
-            pEvent->hdr.event = DM_READ_LOCAL_SUP_CTR_DLY_IND;
-            break;
+    case HCI_READ_LOCAL_SUP_CTR_DLY_CMD_CMPL_CBACK_EVT:
+      pEvent->hdr.event = DM_READ_LOCAL_SUP_CTR_DLY_IND;
+      break;
 
-        default:
-            /* should never get here */
-            return;
-        }
-
-        (*dmCb.cback)((dmEvt_t *)pEvent);
+    default:
+      /* should never get here */
+      return;
     }
+
+    (*dmCb.cback)((dmEvt_t *) pEvent);
+  }
 }
 
 /*************************************************************************************************/
@@ -638,26 +695,27 @@ static void dmIsoHciHandler(hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmIsoHciIsoCback(uint8_t *pPacket)
 {
-    uint16_t handle;
-    uint16_t hciLen;
-    uint8_t *p = pPacket;
+  uint16_t  handle;
+  uint16_t  hciLen;
+  uint8_t   *p = pPacket;
 
-    /* parse HCI handle and length */
-    BSTREAM_TO_UINT16(handle, p);
-    handle &= HCI_HANDLE_MASK;
-    BSTREAM_TO_UINT16(hciLen, p);
+  /* parse HCI handle and length */
+  BSTREAM_TO_UINT16(handle, p);
+  handle &= HCI_HANDLE_MASK;
+  BSTREAM_TO_UINT16(hciLen, p);
 
-    /* if connection handle is for BIS Sync */
-    if (DmBisSyncInUse(handle)) {
-        /* if insufficient security for Broadcast_Code */
-        if (DmBigSyncGetSecLevel(handle) > DM_SEC_LEVEL_BCAST_NONE) {
-            DM_TRACE_INFO2("dmIsoHciIsoCback: BIS packet of length %u dropped for handle = %u",
-                           hciLen, handle);
-        }
+  /* if connection handle is for BIS Sync */
+  if (DmBisSyncInUse(handle))
+  {
+    /* if insufficient security for Broadcast_Code */
+    if (DmBigSyncGetSecLevel(handle) > DM_SEC_LEVEL_BCAST_NONE)
+    {
+      DM_TRACE_INFO2("dmIsoHciIsoCback: BIS packet of length %u dropped for handle = %u", hciLen, handle);
     }
+  }
 
-    /* deallocate buffer */
-    WsfMsgFree(pPacket);
+  /* deallocate buffer */
+  WsfMsgFree(pPacket);
 }
 
 /*************************************************************************************************/
@@ -672,7 +730,7 @@ static void dmIsoHciIsoCback(uint8_t *pPacket)
 /*************************************************************************************************/
 static void dmIsoHciFlowCback(uint16_t handle, bool_t flowDisabled)
 {
-    DM_TRACE_INFO2("flowDisabled=%u handle=%u", flowDisabled, handle);
+  DM_TRACE_INFO2("flowDisabled=%u handle=%u", flowDisabled, handle);
 }
 
 /*************************************************************************************************/
@@ -684,14 +742,14 @@ static void dmIsoHciFlowCback(uint16_t handle, bool_t flowDisabled)
 /*************************************************************************************************/
 void DmIsoInit(void)
 {
-    WsfTaskLock();
+  WsfTaskLock();
 
-    dmFcnIfTbl[DM_ID_ISO] = (dmFcnIf_t *)&dmIsoFcnIf;
+  dmFcnIfTbl[DM_ID_ISO] = (dmFcnIf_t *) &dmIsoFcnIf;
 
-    /* Register with HCI */
-    HciIsoRegister(dmIsoHciIsoCback, dmIsoHciFlowCback);
+  /* Register with HCI */
+  HciIsoRegister(dmIsoHciIsoCback, dmIsoHciFlowCback);
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -706,39 +764,43 @@ void DmIsoInit(void)
 /*************************************************************************************************/
 void DmIsoDataPathSetup(HciIsoSetupDataPath_t *pDataPathParam)
 {
-    dmIsoCb_t *pIsoCb = NULL;
-    uint16_t handle = pDataPathParam->handle;
-    dmIsoApiSetup_t *pMsg;
+  dmIsoCb_t        *pIsoCb = NULL;
+  uint16_t         handle = pDataPathParam->handle;
+  dmIsoApiSetup_t  *pMsg;
 
-    WSF_ASSERT(pDataPathParam->dpDir < DM_ISO_NUM_DIR)
+  WSF_ASSERT(pDataPathParam->dpDir < DM_ISO_NUM_DIR)
 
-    /* make sure ISO cb not already allocated */
-    WsfTaskLock();
-    if ((pIsoCb = dmIsoCbByHandle(handle)) == NULL) {
-        /* allocate Cig cb */
-        pIsoCb = dmIsoCbAlloc(handle);
+  /* make sure ISO cb not already allocated */
+  WsfTaskLock();
+  if ((pIsoCb = dmIsoCbByHandle(handle)) == NULL)
+  {
+    /* allocate Cig cb */
+    pIsoCb = dmIsoCbAlloc(handle);
+  }
+  WsfTaskUnlock();
+
+  if (pIsoCb != NULL)
+  {
+    if ((pMsg = WsfMsgAlloc(sizeof(dmIsoApiSetup_t) + pDataPathParam->codecConfigLen)) != NULL)
+    {
+      pMsg->hdr.event = DM_ISO_MSG_API_SETUP;
+      pMsg->hdr.param = handle;
+
+      memcpy(&pMsg->dataPathParam, pDataPathParam, sizeof(HciIsoSetupDataPath_t));
+
+      if (pDataPathParam->codecConfigLen > 0)
+      {
+        pMsg->dataPathParam.pCodecConfig = (uint8_t *)(pMsg + 1);
+        memcpy(pMsg->dataPathParam.pCodecConfig, pDataPathParam->pCodecConfig, pDataPathParam->codecConfigLen);
+      }
+      else
+      {
+        pMsg->dataPathParam.pCodecConfig = NULL;
+      }
+
+      WsfMsgSend(dmCb.handlerId, pMsg);
     }
-    WsfTaskUnlock();
-
-    if (pIsoCb != NULL) {
-        if ((pMsg = WsfMsgAlloc(sizeof(dmIsoApiSetup_t) + pDataPathParam->codecConfigLen)) !=
-            NULL) {
-            pMsg->hdr.event = DM_ISO_MSG_API_SETUP;
-            pMsg->hdr.param = handle;
-
-            memcpy(&pMsg->dataPathParam, pDataPathParam, sizeof(HciIsoSetupDataPath_t));
-
-            if (pDataPathParam->codecConfigLen > 0) {
-                pMsg->dataPathParam.pCodecConfig = (uint8_t *)(pMsg + 1);
-                memcpy(pMsg->dataPathParam.pCodecConfig, pDataPathParam->pCodecConfig,
-                       pDataPathParam->codecConfigLen);
-            } else {
-                pMsg->dataPathParam.pCodecConfig = NULL;
-            }
-
-            WsfMsgSend(dmCb.handlerId, pMsg);
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -754,18 +816,18 @@ void DmIsoDataPathSetup(HciIsoSetupDataPath_t *pDataPathParam)
 /*************************************************************************************************/
 void DmIsoDataPathRemove(uint16_t handle, uint8_t directionBits)
 {
-    dmIsoApiRemove_t *pMsg;
+  dmIsoApiRemove_t *pMsg;
 
-    WSF_ASSERT((directionBits & HCI_ISO_DATA_PATH_INPUT_BIT) ||
-               (directionBits & HCI_ISO_DATA_PATH_OUTPUT_BIT))
+  WSF_ASSERT((directionBits & HCI_ISO_DATA_PATH_INPUT_BIT) || (directionBits & HCI_ISO_DATA_PATH_OUTPUT_BIT))
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmIsoApiRemove_t))) != NULL) {
-        pMsg->hdr.event = DM_ISO_MSG_API_REMOVE;
-        pMsg->hdr.param = handle;
-        pMsg->directionBits = directionBits;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmIsoApiRemove_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_ISO_MSG_API_REMOVE;
+    pMsg->hdr.param = handle;
+    pMsg->directionBits = directionBits;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -780,7 +842,7 @@ void DmIsoDataPathRemove(uint16_t handle, uint8_t directionBits)
 /*************************************************************************************************/
 void DmDataPathConfig(HciConfigDataPath_t *pDataPathParam)
 {
-    HciConfigDataPathCmd(pDataPathParam);
+  HciConfigDataPathCmd(pDataPathParam);
 }
 
 /*************************************************************************************************/
@@ -793,7 +855,7 @@ void DmDataPathConfig(HciConfigDataPath_t *pDataPathParam)
 /*************************************************************************************************/
 void DmReadLocalSupCodecs(void)
 {
-    HciReadLocalSupCodecsCmd();
+  HciReadLocalSupCodecsCmd();
 }
 
 /*************************************************************************************************/
@@ -807,7 +869,7 @@ void DmReadLocalSupCodecs(void)
 /*************************************************************************************************/
 void DmReadLocalSupCodecCap(HciReadLocalSupCodecCaps_t *pCodecParam)
 {
-    HciReadLocalSupCodecCapCmd(pCodecParam);
+  HciReadLocalSupCodecCapCmd(pCodecParam);
 }
 
 /*************************************************************************************************/
@@ -823,5 +885,5 @@ void DmReadLocalSupCodecCap(HciReadLocalSupCodecCaps_t *pCodecParam)
 /*************************************************************************************************/
 void DmReadLocalSupCtrDly(HciReadLocalSupControllerDly_t *pDelayParam)
 {
-    HciReadLocalSupControllerDlyCmd(pDelayParam);
+  HciReadLocalSupControllerDlyCmd(pDelayParam);
 }

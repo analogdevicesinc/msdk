@@ -86,8 +86,7 @@
 extern "C" {
 #endif
 
-#define APP_SCHED_EVENT_HEADER_SIZE \
-    8 /**< Size of app_scheduler.event_header_t (only for use inside APP_SCHED_BUF_SIZE()). */
+#define APP_SCHED_EVENT_HEADER_SIZE 8       /**< Size of app_scheduler.event_header_t (only for use inside APP_SCHED_BUF_SIZE()). */
 
 /**@brief Compute number of bytes required to hold the scheduler buffer.
  *
@@ -97,11 +96,11 @@ extern "C" {
  *
  * @return    Required scheduler buffer size (in bytes).
  */
-#define APP_SCHED_BUF_SIZE(EVENT_SIZE, QUEUE_SIZE) \
-    (((EVENT_SIZE) + APP_SCHED_EVENT_HEADER_SIZE) * ((QUEUE_SIZE) + 1))
+#define APP_SCHED_BUF_SIZE(EVENT_SIZE, QUEUE_SIZE)                                                 \
+            (((EVENT_SIZE) + APP_SCHED_EVENT_HEADER_SIZE) * ((QUEUE_SIZE) + 1))
 
 /**@brief Scheduler event handler type. */
-typedef void (*app_sched_event_handler_t)(void *p_event_data, uint16_t event_size);
+typedef void (*app_sched_event_handler_t)(void * p_event_data, uint16_t event_size);
 
 /**@brief Macro for initializing the event scheduler.
  *
@@ -115,12 +114,13 @@ typedef void (*app_sched_event_handler_t)(void *p_event_data, uint16_t event_siz
  * @note Since this macro allocates a buffer, it must only be called once (it is OK to call it
  *       several times as long as it is from the same location, e.g. to do a reinitialization).
  */
-#define APP_SCHED_INIT(EVENT_SIZE, QUEUE_SIZE)                                                 \
-    do {                                                                                       \
-        static uint32_t APP_SCHED_BUF[CEIL_DIV(APP_SCHED_BUF_SIZE((EVENT_SIZE), (QUEUE_SIZE)), \
-                                               sizeof(uint32_t))];                             \
-        uint32_t ERR_CODE = app_sched_init((EVENT_SIZE), (QUEUE_SIZE), APP_SCHED_BUF);         \
-        APP_ERROR_CHECK(ERR_CODE);                                                             \
+#define APP_SCHED_INIT(EVENT_SIZE, QUEUE_SIZE)                                                     \
+    do                                                                                             \
+    {                                                                                              \
+        static uint32_t APP_SCHED_BUF[CEIL_DIV(APP_SCHED_BUF_SIZE((EVENT_SIZE), (QUEUE_SIZE)),     \
+                                               sizeof(uint32_t))];                                 \
+        uint32_t ERR_CODE = app_sched_init((EVENT_SIZE), (QUEUE_SIZE), APP_SCHED_BUF);             \
+        APP_ERROR_CHECK(ERR_CODE);                                                                 \
     } while (0)
 
 /**@brief Function for initializing the Scheduler.
@@ -141,7 +141,7 @@ typedef void (*app_sched_event_handler_t)(void *p_event_data, uint16_t event_siz
  * @retval      NRF_ERROR_INVALID_PARAM   Invalid parameter (buffer not aligned to a 4 byte
  *                                        boundary).
  */
-uint32_t app_sched_init(uint16_t max_event_size, uint16_t queue_size, void *p_evt_buffer);
+uint32_t app_sched_init(uint16_t max_event_size, uint16_t queue_size, void * p_evt_buffer);
 
 /**@brief Function for executing all scheduled events.
  *
@@ -160,7 +160,8 @@ void app_sched_execute(void);
  *
  * @return      NRF_SUCCESS on success, otherwise an error code.
  */
-uint32_t app_sched_event_put(void const *p_event_data, uint16_t event_size,
+uint32_t app_sched_event_put(void const *              p_event_data,
+                             uint16_t                  event_size,
                              app_sched_event_handler_t handler);
 
 /**@brief Function for getting the maximum observed queue utilization.

@@ -38,22 +38,24 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      BB control block. */
-typedef struct {
-    BbOpDesc_t *pOpInProgress; /*!< Current BB operation in progress. */
-    BbBodCompCback_t bodCompCback; /*!< BOD completion handler. */
+typedef struct
+{
+  BbOpDesc_t        *pOpInProgress;     /*!< Current BB operation in progress. */
+  BbBodCompCback_t  bodCompCback;       /*!< BOD completion handler. */
 
-    struct {
-        BbBodCback_t execOpCback; /*!< Execute operation handler. */
-        BbBodCback_t cancelOpCback; /*!< Cancel operation handler. */
-        BbProtCback_t startProtCback; /*!< Start protocol handler. */
-        BbProtCback_t stopProtCback; /*!< Stop protocol handler. */
-        BbLowPowerCback_t lowPowerOpCback; /*!<  Low power operation handler. */
-        uint32_t startCnt; /*!< Start counter. */
-    } prot[BB_PROT_NUM]; /*!< Protocol callbacks. */
+  struct
+  {
+    BbBodCback_t    execOpCback;        /*!< Execute operation handler. */
+    BbBodCback_t    cancelOpCback;      /*!< Cancel operation handler. */
+    BbProtCback_t   startProtCback;     /*!< Start protocol handler. */
+    BbProtCback_t   stopProtCback;      /*!< Stop protocol handler. */
+    BbLowPowerCback_t lowPowerOpCback;  /*!<  Low power operation handler. */
+    uint32_t        startCnt;           /*!< Start counter. */
+  } prot[BB_PROT_NUM];                  /*!< Protocol callbacks. */
 
-    uint8_t protIdStarted; /*!< Started protocol ID. */
-    bool_t protStarted; /*!< Protocol started. */
-    bool_t termBod; /*!< Terminate current BOD. */
+  uint8_t           protIdStarted;      /*!< Started protocol ID. */
+  bool_t            protStarted;        /*!< Protocol started. */
+  bool_t            termBod;            /*!< Terminate current BOD. */
 } BbCtrlBlk_t;
 
 /**************************************************************************************************

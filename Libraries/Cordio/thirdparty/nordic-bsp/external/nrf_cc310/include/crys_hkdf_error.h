@@ -32,13 +32,16 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 #ifndef CRYS_HKDF_ERROR_H
 #define CRYS_HKDF_ERROR_H
 
 #include "crys_error.h"
 
+
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*!
@@ -49,17 +52,18 @@ extern "C" {
 @ingroup crys_hkdf
  */
 
+
 /************************ Defines *******************************/
 
 /*! CryptoCell HKDF module errors / base address - 0x00F01100. */
 /*! Invalid argument. */
-#define CRYS_HKDF_INVALID_ARGUMENT_POINTER_ERROR (CRYS_HKDF_MODULE_ERROR_BASE + 0x0UL)
+#define CRYS_HKDF_INVALID_ARGUMENT_POINTER_ERROR                (CRYS_HKDF_MODULE_ERROR_BASE + 0x0UL)
 /*! Invalid argument size. */
-#define CRYS_HKDF_INVALID_ARGUMENT_SIZE_ERROR (CRYS_HKDF_MODULE_ERROR_BASE + 0x1UL)
+#define CRYS_HKDF_INVALID_ARGUMENT_SIZE_ERROR                   (CRYS_HKDF_MODULE_ERROR_BASE + 0x1UL)
 /*! Illegal hash mode. */
-#define CRYS_HKDF_INVALID_ARGUMENT_HASH_MODE_ERROR (CRYS_HKDF_MODULE_ERROR_BASE + 0x3UL)
+#define CRYS_HKDF_INVALID_ARGUMENT_HASH_MODE_ERROR              (CRYS_HKDF_MODULE_ERROR_BASE + 0x3UL)
 /*! HKDF not supported. */
-#define CRYS_HKDF_IS_NOT_SUPPORTED (CRYS_HKDF_MODULE_ERROR_BASE + 0xFFUL)
+#define CRYS_HKDF_IS_NOT_SUPPORTED                                      (CRYS_HKDF_MODULE_ERROR_BASE + 0xFFUL)
 
 /************************ Enums *********************************/
 
@@ -71,6 +75,9 @@ extern "C" {
 
 /************************ Public Functions **********************/
 
+
+
+
 #ifdef __cplusplus
 }
 #endif
@@ -78,3 +85,7 @@ extern "C" {
 @}
  */
 #endif
+
+
+
+

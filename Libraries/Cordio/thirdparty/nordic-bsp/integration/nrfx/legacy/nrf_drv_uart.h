@@ -44,94 +44,97 @@
 #include <nrfx.h>
 
 #if defined(UARTE_PRESENT) && NRFX_CHECK(NRFX_UARTE_ENABLED)
-#define NRF_DRV_UART_WITH_UARTE
+    #define NRF_DRV_UART_WITH_UARTE
 #endif
 #if defined(UART_PRESENT) && NRFX_CHECK(NRFX_UART_ENABLED)
-#define NRF_DRV_UART_WITH_UART
+    #define NRF_DRV_UART_WITH_UART
 #endif
 
 #if defined(NRF_DRV_UART_WITH_UARTE)
-#include <nrfx_uarte.h>
-#define NRF_DRV_UART_CREATE_UARTE(id) .uarte = NRFX_UARTE_INSTANCE(id),
+    #include <nrfx_uarte.h>
+    #define NRF_DRV_UART_CREATE_UARTE(id) \
+        .uarte = NRFX_UARTE_INSTANCE(id),
 #else
-// Compilers (at least the smart ones) will remove the UARTE related code
-// (blocks starting with "if (NRF_DRV_UART_USE_UARTE)") when it is not used,
-// but to perform the compilation they need the following definitions.
-#define nrfx_uarte_init(...) 0
-#define nrfx_uarte_uninit(...)
-#define nrfx_uarte_task_address_get(...) 0
-#define nrfx_uarte_event_address_get(...) 0
-#define nrfx_uarte_tx(...) 0
-#define nrfx_uarte_tx_in_progress(...) 0
-#define nrfx_uarte_tx_abort(...)
-#define nrfx_uarte_rx(...) 0
-#define nrfx_uarte_rx_ready(...) 0
-#define nrfx_uarte_rx_abort(...)
-#define nrfx_uarte_errorsrc_get(...) 0
-#define NRF_DRV_UART_CREATE_UARTE(id)
+    // Compilers (at least the smart ones) will remove the UARTE related code
+    // (blocks starting with "if (NRF_DRV_UART_USE_UARTE)") when it is not used,
+    // but to perform the compilation they need the following definitions.
+    #define nrfx_uarte_init(...)                0
+    #define nrfx_uarte_uninit(...)
+    #define nrfx_uarte_task_address_get(...)    0
+    #define nrfx_uarte_event_address_get(...)   0
+    #define nrfx_uarte_tx(...)                  0
+    #define nrfx_uarte_tx_in_progress(...)      0
+    #define nrfx_uarte_tx_abort(...)
+    #define nrfx_uarte_rx(...)                  0
+    #define nrfx_uarte_rx_ready(...)            0
+    #define nrfx_uarte_rx_abort(...)
+    #define nrfx_uarte_errorsrc_get(...)        0
+    #define NRF_DRV_UART_CREATE_UARTE(id)
 #endif
 
 #if defined(NRF_DRV_UART_WITH_UART)
-#include <nrfx_uart.h>
+    #include <nrfx_uart.h>
 
-#define NRF_DRV_UART_CREATE_UART(id) _NRF_DRV_UART_CREATE_UART(id)
-#define _NRF_DRV_UART_CREATE_UART(id) NRF_DRV_UART_CREATE_UART_##id
-#define NRF_DRV_UART_CREATE_UART_0 .uart = NRFX_UART_INSTANCE(0),
-#define NRF_DRV_UART_CREATE_UART_1 .uart = { .p_reg = NULL },
+    #define NRF_DRV_UART_CREATE_UART(id)   _NRF_DRV_UART_CREATE_UART(id)
+    #define _NRF_DRV_UART_CREATE_UART(id)  NRF_DRV_UART_CREATE_UART_##id
+    #define NRF_DRV_UART_CREATE_UART_0  \
+        .uart = NRFX_UART_INSTANCE(0),
+    #define NRF_DRV_UART_CREATE_UART_1  \
+        .uart = { .p_reg = NULL },
 
 #else
-// Compilers (at least the smart ones) will remove the UART related code
-// (blocks starting with "if (NRF_DRV_UART_USE_UART)") when it is not used,
-// but to perform the compilation they need the following definitions.
-#define nrfx_uart_init(...) 0
-#define nrfx_uart_uninit(...)
-#define nrfx_uart_task_address_get(...) 0
-#define nrfx_uart_event_address_get(...) 0
-#define nrfx_uart_tx(...) 0
-#define nrfx_uart_tx_in_progress(...) 0
-#define nrfx_uart_tx_abort(...)
-#define nrfx_uart_rx(...) 0
-#define nrfx_uart_rx_enable(...)
-#define nrfx_uart_rx_disable(...)
-#define nrfx_uart_rx_ready(...) 0
-#define nrfx_uart_rx_abort(...)
-#define nrfx_uart_errorsrc_get(...) 0
-#define NRF_DRV_UART_CREATE_UART(id)
+    // Compilers (at least the smart ones) will remove the UART related code
+    // (blocks starting with "if (NRF_DRV_UART_USE_UART)") when it is not used,
+    // but to perform the compilation they need the following definitions.
+    #define nrfx_uart_init(...)                 0
+    #define nrfx_uart_uninit(...)
+    #define nrfx_uart_task_address_get(...)     0
+    #define nrfx_uart_event_address_get(...)    0
+    #define nrfx_uart_tx(...)                   0
+    #define nrfx_uart_tx_in_progress(...)       0
+    #define nrfx_uart_tx_abort(...)
+    #define nrfx_uart_rx(...)                   0
+    #define nrfx_uart_rx_enable(...)
+    #define nrfx_uart_rx_disable(...)
+    #define nrfx_uart_rx_ready(...)             0
+    #define nrfx_uart_rx_abort(...)
+    #define nrfx_uart_errorsrc_get(...)         0
+    #define NRF_DRV_UART_CREATE_UART(id)
 
-// This part is for old modules that use directly UART HAL definitions
-// (to make them compilable for chips that have only UARTE).
-#define NRF_UART_BAUDRATE_1200 NRF_UARTE_BAUDRATE_1200
-#define NRF_UART_BAUDRATE_2400 NRF_UARTE_BAUDRATE_2400
-#define NRF_UART_BAUDRATE_4800 NRF_UARTE_BAUDRATE_4800
-#define NRF_UART_BAUDRATE_9600 NRF_UARTE_BAUDRATE_9600
-#define NRF_UART_BAUDRATE_14400 NRF_UARTE_BAUDRATE_14400
-#define NRF_UART_BAUDRATE_19200 NRF_UARTE_BAUDRATE_19200
-#define NRF_UART_BAUDRATE_28800 NRF_UARTE_BAUDRATE_28800
-#define NRF_UART_BAUDRATE_38400 NRF_UARTE_BAUDRATE_38400
-#define NRF_UART_BAUDRATE_57600 NRF_UARTE_BAUDRATE_57600
-#define NRF_UART_BAUDRATE_76800 NRF_UARTE_BAUDRATE_76800
-#define NRF_UART_BAUDRATE_115200 NRF_UARTE_BAUDRATE_115200
-#define NRF_UART_BAUDRATE_230400 NRF_UARTE_BAUDRATE_230400
-#define NRF_UART_BAUDRATE_250000 NRF_UARTE_BAUDRATE_250000
-#define NRF_UART_BAUDRATE_460800 NRF_UARTE_BAUDRATE_460800
-#define NRF_UART_BAUDRATE_921600 NRF_UARTE_BAUDRATE_921600
-#define NRF_UART_BAUDRATE_1000000 NRF_UARTE_BAUDRATE_1000000
-typedef nrf_uarte_baudrate_t nrf_uart_baudrate_t;
-#define NRF_UART_ERROR_OVERRUN_MASK NRF_UARTE_ERROR_OVERRUN_MASK
-#define NRF_UART_ERROR_PARITY_MASK NRF_UARTE_ERROR_PARITY_MASK
-#define NRF_UART_ERROR_FRAMING_MASK NRF_UARTE_ERROR_PARITY_MASK
-#define NRF_UART_ERROR_BREAK_MASK NRF_UARTE_ERROR_BREAK_MASK
-typedef nrf_uarte_error_mask_t nrf_uart_error_mask_t;
-#define NRF_UART_HWFC_DISABLED NRF_UARTE_HWFC_DISABLED
-#define NRF_UART_HWFC_ENABLED NRF_UARTE_HWFC_ENABLED
-typedef nrf_uarte_hwfc_t nrf_uart_hwfc_t;
-#define NRF_UART_PARITY_EXCLUDED NRF_UARTE_PARITY_EXCLUDED
-#define NRF_UART_PARITY_INCLUDED NRF_UARTE_PARITY_INCLUDED
-typedef nrf_uarte_parity_t nrf_uart_parity_t;
-typedef nrf_uarte_task_t nrf_uart_task_t;
-typedef nrf_uarte_event_t nrf_uart_event_t;
-#define NRF_UART_PSEL_DISCONNECTED NRF_UARTE_PSEL_DISCONNECTED
-#define nrf_uart_event_clear(...)
+    // This part is for old modules that use directly UART HAL definitions
+    // (to make them compilable for chips that have only UARTE).
+    #define NRF_UART_BAUDRATE_1200      NRF_UARTE_BAUDRATE_1200
+    #define NRF_UART_BAUDRATE_2400      NRF_UARTE_BAUDRATE_2400
+    #define NRF_UART_BAUDRATE_4800      NRF_UARTE_BAUDRATE_4800
+    #define NRF_UART_BAUDRATE_9600      NRF_UARTE_BAUDRATE_9600
+    #define NRF_UART_BAUDRATE_14400     NRF_UARTE_BAUDRATE_14400
+    #define NRF_UART_BAUDRATE_19200     NRF_UARTE_BAUDRATE_19200
+    #define NRF_UART_BAUDRATE_28800     NRF_UARTE_BAUDRATE_28800
+    #define NRF_UART_BAUDRATE_38400     NRF_UARTE_BAUDRATE_38400
+    #define NRF_UART_BAUDRATE_57600     NRF_UARTE_BAUDRATE_57600
+    #define NRF_UART_BAUDRATE_76800     NRF_UARTE_BAUDRATE_76800
+    #define NRF_UART_BAUDRATE_115200    NRF_UARTE_BAUDRATE_115200
+    #define NRF_UART_BAUDRATE_230400    NRF_UARTE_BAUDRATE_230400
+    #define NRF_UART_BAUDRATE_250000    NRF_UARTE_BAUDRATE_250000
+    #define NRF_UART_BAUDRATE_460800    NRF_UARTE_BAUDRATE_460800
+    #define NRF_UART_BAUDRATE_921600    NRF_UARTE_BAUDRATE_921600
+    #define NRF_UART_BAUDRATE_1000000   NRF_UARTE_BAUDRATE_1000000
+    typedef nrf_uarte_baudrate_t        nrf_uart_baudrate_t;
+    #define NRF_UART_ERROR_OVERRUN_MASK NRF_UARTE_ERROR_OVERRUN_MASK
+    #define NRF_UART_ERROR_PARITY_MASK  NRF_UARTE_ERROR_PARITY_MASK
+    #define NRF_UART_ERROR_FRAMING_MASK NRF_UARTE_ERROR_PARITY_MASK
+    #define NRF_UART_ERROR_BREAK_MASK   NRF_UARTE_ERROR_BREAK_MASK
+    typedef nrf_uarte_error_mask_t      nrf_uart_error_mask_t;
+    #define NRF_UART_HWFC_DISABLED      NRF_UARTE_HWFC_DISABLED
+    #define NRF_UART_HWFC_ENABLED       NRF_UARTE_HWFC_ENABLED
+    typedef nrf_uarte_hwfc_t            nrf_uart_hwfc_t;
+    #define NRF_UART_PARITY_EXCLUDED    NRF_UARTE_PARITY_EXCLUDED
+    #define NRF_UART_PARITY_INCLUDED    NRF_UARTE_PARITY_INCLUDED
+    typedef nrf_uarte_parity_t          nrf_uart_parity_t;
+    typedef nrf_uarte_task_t            nrf_uart_task_t;
+    typedef nrf_uarte_event_t           nrf_uart_event_t;
+    #define NRF_UART_PSEL_DISCONNECTED  NRF_UARTE_PSEL_DISCONNECTED
+    #define nrf_uart_event_clear(...)
 #endif
 
 #ifdef __cplusplus
@@ -148,7 +151,8 @@ extern "C" {
 /**
  * @brief Structure for the UART driver instance.
  */
-typedef struct {
+typedef struct
+{
     uint8_t inst_idx;
 #if defined(NRF_DRV_UART_WITH_UARTE)
     nrfx_uarte_t uarte;
@@ -161,73 +165,84 @@ typedef struct {
 /**
  * @brief Macro for creating an UART driver instance.
  */
-#define NRF_DRV_UART_INSTANCE(id)                                                  \
-    {                                                                              \
-        .inst_idx = id, NRF_DRV_UART_CREATE_UARTE(id) NRF_DRV_UART_CREATE_UART(id) \
-    }
+#define NRF_DRV_UART_INSTANCE(id) \
+{                                 \
+    .inst_idx = id,               \
+    NRF_DRV_UART_CREATE_UARTE(id) \
+    NRF_DRV_UART_CREATE_UART(id)  \
+}
 
 /**
  * @brief Types of UART driver events.
  */
-typedef enum {
+typedef enum
+{
     NRF_DRV_UART_EVT_TX_DONE, ///< Requested TX transfer completed.
     NRF_DRV_UART_EVT_RX_DONE, ///< Requested RX transfer completed.
-    NRF_DRV_UART_EVT_ERROR, ///< Error reported by UART peripheral.
+    NRF_DRV_UART_EVT_ERROR,   ///< Error reported by UART peripheral.
 } nrf_drv_uart_evt_type_t;
 
 /**@brief Structure for UART configuration. */
-typedef struct {
-    uint32_t pseltxd; ///< TXD pin number.
-    uint32_t pselrxd; ///< RXD pin number.
-    uint32_t pselcts; ///< CTS pin number.
-    uint32_t pselrts; ///< RTS pin number.
-    void *p_context; ///< Context passed to interrupt handler.
-    nrf_uart_hwfc_t hwfc; ///< Flow control configuration.
-    nrf_uart_parity_t parity; ///< Parity configuration.
-    nrf_uart_baudrate_t baudrate; ///< Baudrate.
-    uint8_t interrupt_priority; ///< Interrupt priority.
+typedef struct
+{
+    uint32_t            pseltxd;            ///< TXD pin number.
+    uint32_t            pselrxd;            ///< RXD pin number.
+    uint32_t            pselcts;            ///< CTS pin number.
+    uint32_t            pselrts;            ///< RTS pin number.
+    void *              p_context;          ///< Context passed to interrupt handler.
+    nrf_uart_hwfc_t     hwfc;               ///< Flow control configuration.
+    nrf_uart_parity_t   parity;             ///< Parity configuration.
+    nrf_uart_baudrate_t baudrate;           ///< Baudrate.
+    uint8_t             interrupt_priority; ///< Interrupt priority.
 #if defined(NRF_DRV_UART_WITH_UARTE) && defined(NRF_DRV_UART_WITH_UART)
-    bool use_easy_dma;
+    bool                use_easy_dma;
 #endif
 } nrf_drv_uart_config_t;
 
 #if defined(NRF_DRV_UART_WITH_UARTE) && defined(NRF_DRV_UART_WITH_UART)
 extern uint8_t nrf_drv_uart_use_easy_dma[];
-#define NRF_DRV_UART_DEFAULT_CONFIG_USE_EASY_DMA .use_easy_dma = true,
+#define NRF_DRV_UART_DEFAULT_CONFIG_USE_EASY_DMA  .use_easy_dma = true,
 #else
 #define NRF_DRV_UART_DEFAULT_CONFIG_USE_EASY_DMA
 #endif
 
 /**@brief UART default configuration. */
-#define NRF_DRV_UART_DEFAULT_CONFIG                                                   \
-    {                                                                                 \
-        .pseltxd = NRF_UART_PSEL_DISCONNECTED, .pselrxd = NRF_UART_PSEL_DISCONNECTED, \
-        .pselcts = NRF_UART_PSEL_DISCONNECTED, .pselrts = NRF_UART_PSEL_DISCONNECTED, \
-        .p_context = NULL, .hwfc = (nrf_uart_hwfc_t)UART_DEFAULT_CONFIG_HWFC,         \
-        .parity = (nrf_uart_parity_t)UART_DEFAULT_CONFIG_PARITY,                      \
-        .baudrate = (nrf_uart_baudrate_t)UART_DEFAULT_CONFIG_BAUDRATE,                \
-        .interrupt_priority = UART_DEFAULT_CONFIG_IRQ_PRIORITY,                       \
-        NRF_DRV_UART_DEFAULT_CONFIG_USE_EASY_DMA                                      \
-    }
+#define NRF_DRV_UART_DEFAULT_CONFIG                                          \
+{                                                                            \
+    .pseltxd            = NRF_UART_PSEL_DISCONNECTED,                        \
+    .pselrxd            = NRF_UART_PSEL_DISCONNECTED,                        \
+    .pselcts            = NRF_UART_PSEL_DISCONNECTED,                        \
+    .pselrts            = NRF_UART_PSEL_DISCONNECTED,                        \
+    .p_context          = NULL,                                              \
+    .hwfc               = (nrf_uart_hwfc_t)UART_DEFAULT_CONFIG_HWFC,         \
+    .parity             = (nrf_uart_parity_t)UART_DEFAULT_CONFIG_PARITY,     \
+    .baudrate           = (nrf_uart_baudrate_t)UART_DEFAULT_CONFIG_BAUDRATE, \
+    .interrupt_priority = UART_DEFAULT_CONFIG_IRQ_PRIORITY,                  \
+    NRF_DRV_UART_DEFAULT_CONFIG_USE_EASY_DMA                                 \
+}
 
 /**@brief Structure for UART transfer completion event. */
-typedef struct {
-    uint8_t *p_data; ///< Pointer to memory used for transfer.
-    uint8_t bytes; ///< Number of bytes transfered.
+typedef struct
+{
+    uint8_t * p_data; ///< Pointer to memory used for transfer.
+    uint8_t   bytes;  ///< Number of bytes transfered.
 } nrf_drv_uart_xfer_evt_t;
 
 /**@brief Structure for UART error event. */
-typedef struct {
-    nrf_drv_uart_xfer_evt_t rxtx; ///< Transfer details includes number of bytes transfered.
-    uint32_t error_mask; ///< Mask of error flags that generated the event.
+typedef struct
+{
+    nrf_drv_uart_xfer_evt_t rxtx;      ///< Transfer details includes number of bytes transfered.
+    uint32_t                error_mask;///< Mask of error flags that generated the event.
 } nrf_drv_uart_error_evt_t;
 
 /**@brief Structure for UART event. */
-typedef struct {
-    nrf_drv_uart_evt_type_t type; ///< Event type.
-    union {
-        nrf_drv_uart_xfer_evt_t rxtx; ///< Data provided for transfer completion events.
-        nrf_drv_uart_error_evt_t error; ///< Data provided for error event.
+typedef struct
+{
+    nrf_drv_uart_evt_type_t type;      ///< Event type.
+    union
+    {
+        nrf_drv_uart_xfer_evt_t  rxtx; ///< Data provided for transfer completion events.
+        nrf_drv_uart_error_evt_t error;///< Data provided for error event.
     } data;
 } nrf_drv_uart_event_t;
 
@@ -238,7 +253,7 @@ typedef struct {
  *                       only within the context of the event handler.
  * @param[in] p_context  Context passed to interrupt handler, set on initialization.
  */
-typedef void (*nrf_uart_event_handler_t)(nrf_drv_uart_event_t *p_event, void *p_context);
+typedef void (*nrf_uart_event_handler_t)(nrf_drv_uart_event_t * p_event, void * p_context);
 
 /**
  * @brief Function for initializing the UART driver.
@@ -253,16 +268,16 @@ typedef void (*nrf_uart_event_handler_t)(nrf_drv_uart_event_t *p_event, void *p_
  * @retval    NRFX_SUCCESS             If initialization was successful.
  * @retval    NRFX_ERROR_INVALID_STATE If driver is already initialized.
  */
-ret_code_t nrf_drv_uart_init(nrf_drv_uart_t const *p_instance,
-                             nrf_drv_uart_config_t const *p_config,
-                             nrf_uart_event_handler_t event_handler);
+ret_code_t nrf_drv_uart_init(nrf_drv_uart_t const *        p_instance,
+                             nrf_drv_uart_config_t const * p_config,
+                             nrf_uart_event_handler_t      event_handler);
 
 /**
  * @brief Function for uninitializing  the UART driver.
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 __STATIC_INLINE
-void nrf_drv_uart_uninit(nrf_drv_uart_t const *p_instance);
+void nrf_drv_uart_uninit(nrf_drv_uart_t const * p_instance);
 
 /**
  * @brief Function for getting the address of a specific UART task.
@@ -273,7 +288,8 @@ void nrf_drv_uart_uninit(nrf_drv_uart_t const *p_instance);
  * @return    Task address.
  */
 __STATIC_INLINE
-uint32_t nrf_drv_uart_task_address_get(nrf_drv_uart_t const *p_instance, nrf_uart_task_t task);
+uint32_t nrf_drv_uart_task_address_get(nrf_drv_uart_t const * p_instance,
+                                       nrf_uart_task_t        task);
 
 /**
  * @brief Function for getting the address of a specific UART event.
@@ -284,7 +300,8 @@ uint32_t nrf_drv_uart_task_address_get(nrf_drv_uart_t const *p_instance, nrf_uar
  * @return    Event address.
  */
 __STATIC_INLINE
-uint32_t nrf_drv_uart_event_address_get(nrf_drv_uart_t const *p_instance, nrf_uart_event_t event);
+uint32_t nrf_drv_uart_event_address_get(nrf_drv_uart_t const * p_instance,
+                                        nrf_uart_event_t       event);
 
 /**
  * @brief Function for sending data over UART.
@@ -310,8 +327,9 @@ uint32_t nrf_drv_uart_event_address_get(nrf_drv_uart_t const *p_instance, nrf_ua
  * @retval    NRFX_ERROR_INVALID_ADDR If p_data does not point to RAM buffer (UARTE only).
  */
 __STATIC_INLINE
-ret_code_t nrf_drv_uart_tx(nrf_drv_uart_t const *p_instance, uint8_t const *const p_data,
-                           uint8_t length);
+ret_code_t nrf_drv_uart_tx(nrf_drv_uart_t const * p_instance,
+                           uint8_t const * const  p_data,
+                           uint8_t                length);
 
 /**
  * @brief Function for checking if UART is currently transmitting.
@@ -322,7 +340,7 @@ ret_code_t nrf_drv_uart_tx(nrf_drv_uart_t const *p_instance, uint8_t const *cons
  * @retval false If UART is not transmitting.
  */
 __STATIC_INLINE
-bool nrf_drv_uart_tx_in_progress(nrf_drv_uart_t const *p_instance);
+bool nrf_drv_uart_tx_in_progress(nrf_drv_uart_t const * p_instance);
 
 /**
  * @brief Function for aborting any ongoing transmission.
@@ -334,7 +352,7 @@ bool nrf_drv_uart_tx_in_progress(nrf_drv_uart_t const *p_instance);
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 __STATIC_INLINE
-void nrf_drv_uart_tx_abort(nrf_drv_uart_t const *p_instance);
+void nrf_drv_uart_tx_abort(nrf_drv_uart_t const * p_instance);
 
 /**
  * @brief Function for receiving data over UART.
@@ -367,7 +385,11 @@ void nrf_drv_uart_tx_abort(nrf_drv_uart_t const *p_instance);
  * @retval    NRFX_ERROR_INVALID_ADDR If p_data does not point to RAM buffer (UARTE only).
  */
 __STATIC_INLINE
-ret_code_t nrf_drv_uart_rx(nrf_drv_uart_t const *p_instance, uint8_t *p_data, uint8_t length);
+ret_code_t nrf_drv_uart_rx(nrf_drv_uart_t const * p_instance,
+                           uint8_t *              p_data,
+                           uint8_t                length);
+
+
 
 /**
  * @brief Function for testing the receiver state in blocking mode.
@@ -378,7 +400,7 @@ ret_code_t nrf_drv_uart_rx(nrf_drv_uart_t const *p_instance, uint8_t *p_data, ui
  * @retval false If the receiver is empty.
  */
 __STATIC_INLINE
-bool nrf_drv_uart_rx_ready(nrf_drv_uart_t const *p_instance);
+bool nrf_drv_uart_rx_ready(nrf_drv_uart_t const * p_instance);
 
 /**
  * @brief Function for enabling the receiver.
@@ -391,7 +413,7 @@ bool nrf_drv_uart_rx_ready(nrf_drv_uart_t const *p_instance);
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 __STATIC_INLINE
-void nrf_drv_uart_rx_enable(nrf_drv_uart_t const *p_instance);
+void nrf_drv_uart_rx_enable(nrf_drv_uart_t const * p_instance);
 
 /**
  * @brief Function for disabling the receiver.
@@ -403,7 +425,7 @@ void nrf_drv_uart_rx_enable(nrf_drv_uart_t const *p_instance);
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 __STATIC_INLINE
-void nrf_drv_uart_rx_disable(nrf_drv_uart_t const *p_instance);
+void nrf_drv_uart_rx_disable(nrf_drv_uart_t const * p_instance);
 
 /**
  * @brief Function for aborting any ongoing reception.
@@ -414,7 +436,7 @@ void nrf_drv_uart_rx_disable(nrf_drv_uart_t const *p_instance);
  * @param[in] p_instance Pointer to the driver instance structure.
  */
 __STATIC_INLINE
-void nrf_drv_uart_rx_abort(nrf_drv_uart_t const *p_instance);
+void nrf_drv_uart_rx_abort(nrf_drv_uart_t const * p_instance);
 
 /**
  * @brief Function for reading error source mask. Mask contains values from @ref nrf_uart_error_mask_t.
@@ -426,148 +448,201 @@ void nrf_drv_uart_rx_abort(nrf_drv_uart_t const *p_instance);
  * @retval    Mask of reported errors.
  */
 __STATIC_INLINE
-uint32_t nrf_drv_uart_errorsrc_get(nrf_drv_uart_t const *p_instance);
+uint32_t nrf_drv_uart_errorsrc_get(nrf_drv_uart_t const * p_instance);
+
 
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
 #if defined(NRF_DRV_UART_WITH_UARTE) && defined(NRF_DRV_UART_WITH_UART)
-#define NRF_DRV_UART_USE_UARTE (nrf_drv_uart_use_easy_dma[p_instance->inst_idx])
+    #define NRF_DRV_UART_USE_UARTE  (nrf_drv_uart_use_easy_dma[p_instance->inst_idx])
 #elif defined(NRF_DRV_UART_WITH_UARTE)
-#define NRF_DRV_UART_USE_UARTE true
+    #define NRF_DRV_UART_USE_UARTE  true
 #else
-#define NRF_DRV_UART_USE_UARTE false
+    #define NRF_DRV_UART_USE_UARTE  false
 #endif
-#define NRF_DRV_UART_USE_UART (!NRF_DRV_UART_USE_UARTE)
+#define NRF_DRV_UART_USE_UART  (!NRF_DRV_UART_USE_UARTE)
 
 __STATIC_INLINE
-void nrf_drv_uart_uninit(nrf_drv_uart_t const *p_instance)
+void nrf_drv_uart_uninit(nrf_drv_uart_t const * p_instance)
 {
-    if (NRF_DRV_UART_USE_UARTE) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
         nrfx_uarte_uninit(&p_instance->uarte);
-    } else if (NRF_DRV_UART_USE_UART) {
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         nrfx_uart_uninit(&p_instance->uart);
     }
 }
 
 __STATIC_INLINE
-uint32_t nrf_drv_uart_task_address_get(nrf_drv_uart_t const *p_instance, nrf_uart_task_t task)
+uint32_t nrf_drv_uart_task_address_get(nrf_drv_uart_t const * p_instance,
+                                       nrf_uart_task_t task)
 {
     uint32_t result = 0;
-    if (NRF_DRV_UART_USE_UARTE) {
-        result = nrfx_uarte_task_address_get(&p_instance->uarte, (nrf_uarte_task_t)task);
-    } else if (NRF_DRV_UART_USE_UART) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
+        result = nrfx_uarte_task_address_get(&p_instance->uarte,
+                                             (nrf_uarte_task_t)task);
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         result = nrfx_uart_task_address_get(&p_instance->uart, task);
     }
     return result;
 }
 
 __STATIC_INLINE
-uint32_t nrf_drv_uart_event_address_get(nrf_drv_uart_t const *p_instance, nrf_uart_event_t event)
+uint32_t nrf_drv_uart_event_address_get(nrf_drv_uart_t const * p_instance,
+                                        nrf_uart_event_t event)
 {
     uint32_t result = 0;
-    if (NRF_DRV_UART_USE_UARTE) {
-        result = nrfx_uarte_event_address_get(&p_instance->uarte, (nrf_uarte_event_t)event);
-    } else if (NRF_DRV_UART_USE_UART) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
+        result = nrfx_uarte_event_address_get(&p_instance->uarte,
+                                              (nrf_uarte_event_t)event);
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         result = nrfx_uart_event_address_get(&p_instance->uart, event);
     }
     return result;
 }
 
 __STATIC_INLINE
-ret_code_t nrf_drv_uart_tx(nrf_drv_uart_t const *p_instance, uint8_t const *p_data, uint8_t length)
+ret_code_t nrf_drv_uart_tx(nrf_drv_uart_t const * p_instance,
+                           uint8_t const *        p_data,
+                           uint8_t                length)
 {
     uint32_t result = 0;
-    if (NRF_DRV_UART_USE_UARTE) {
-        result = nrfx_uarte_tx(&p_instance->uarte, p_data, length);
-    } else if (NRF_DRV_UART_USE_UART) {
-        result = nrfx_uart_tx(&p_instance->uart, p_data, length);
+    if (NRF_DRV_UART_USE_UARTE)
+    {
+        result = nrfx_uarte_tx(&p_instance->uarte,
+                               p_data,
+                               length);
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
+        result = nrfx_uart_tx(&p_instance->uart,
+                              p_data,
+                              length);
     }
     return result;
 }
 
 __STATIC_INLINE
-bool nrf_drv_uart_tx_in_progress(nrf_drv_uart_t const *p_instance)
+bool nrf_drv_uart_tx_in_progress(nrf_drv_uart_t const * p_instance)
 {
     bool result = 0;
-    if (NRF_DRV_UART_USE_UARTE) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
         result = nrfx_uarte_tx_in_progress(&p_instance->uarte);
-    } else if (NRF_DRV_UART_USE_UART) {
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         result = nrfx_uart_tx_in_progress(&p_instance->uart);
     }
     return result;
 }
 
 __STATIC_INLINE
-void nrf_drv_uart_tx_abort(nrf_drv_uart_t const *p_instance)
+void nrf_drv_uart_tx_abort(nrf_drv_uart_t const * p_instance)
 {
-    if (NRF_DRV_UART_USE_UARTE) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
         nrfx_uarte_tx_abort(&p_instance->uarte);
-    } else if (NRF_DRV_UART_USE_UART) {
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         nrfx_uart_tx_abort(&p_instance->uart);
     }
 }
 
 __STATIC_INLINE
-ret_code_t nrf_drv_uart_rx(nrf_drv_uart_t const *p_instance, uint8_t *p_data, uint8_t length)
+ret_code_t nrf_drv_uart_rx(nrf_drv_uart_t const * p_instance,
+                           uint8_t *              p_data,
+                           uint8_t                length)
 {
     uint32_t result = 0;
-    if (NRF_DRV_UART_USE_UARTE) {
-        result = nrfx_uarte_rx(&p_instance->uarte, p_data, length);
-    } else if (NRF_DRV_UART_USE_UART) {
-        result = nrfx_uart_rx(&p_instance->uart, p_data, length);
+    if (NRF_DRV_UART_USE_UARTE)
+    {
+        result = nrfx_uarte_rx(&p_instance->uarte,
+                               p_data,
+                               length);
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
+        result = nrfx_uart_rx(&p_instance->uart,
+                              p_data,
+                              length);
     }
     return result;
 }
 
 __STATIC_INLINE
-bool nrf_drv_uart_rx_ready(nrf_drv_uart_t const *p_instance)
+bool nrf_drv_uart_rx_ready(nrf_drv_uart_t const * p_instance)
 {
     bool result = 0;
-    if (NRF_DRV_UART_USE_UARTE) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
         result = nrfx_uarte_rx_ready(&p_instance->uarte);
-    } else if (NRF_DRV_UART_USE_UART) {
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         result = nrfx_uart_rx_ready(&p_instance->uart);
     }
     return result;
 }
 
 __STATIC_INLINE
-void nrf_drv_uart_rx_enable(nrf_drv_uart_t const *p_instance)
+void nrf_drv_uart_rx_enable(nrf_drv_uart_t const * p_instance)
 {
-    if (NRF_DRV_UART_USE_UARTE) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
         NRFX_ASSERT(false); // not supported
-    } else if (NRF_DRV_UART_USE_UART) {
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         nrfx_uart_rx_enable(&p_instance->uart);
     }
 }
 
 __STATIC_INLINE
-void nrf_drv_uart_rx_disable(nrf_drv_uart_t const *p_instance)
+void nrf_drv_uart_rx_disable(nrf_drv_uart_t const * p_instance)
 {
-    if (NRF_DRV_UART_USE_UARTE) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
         NRFX_ASSERT(false); // not supported
-    } else if (NRF_DRV_UART_USE_UART) {
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         nrfx_uart_rx_disable(&p_instance->uart);
     }
 }
 
 __STATIC_INLINE
-void nrf_drv_uart_rx_abort(nrf_drv_uart_t const *p_instance)
+void nrf_drv_uart_rx_abort(nrf_drv_uart_t const * p_instance)
 {
-    if (NRF_DRV_UART_USE_UARTE) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
         nrfx_uarte_rx_abort(&p_instance->uarte);
-    } else if (NRF_DRV_UART_USE_UART) {
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         nrfx_uart_rx_abort(&p_instance->uart);
     }
 }
 
 __STATIC_INLINE
-uint32_t nrf_drv_uart_errorsrc_get(nrf_drv_uart_t const *p_instance)
+uint32_t nrf_drv_uart_errorsrc_get(nrf_drv_uart_t const * p_instance)
 {
     uint32_t result = 0;
-    if (NRF_DRV_UART_USE_UARTE) {
+    if (NRF_DRV_UART_USE_UARTE)
+    {
         result = nrfx_uarte_errorsrc_get(&p_instance->uarte);
-    } else if (NRF_DRV_UART_USE_UART) {
+    }
+    else if (NRF_DRV_UART_USE_UART)
+    {
         nrf_uart_event_clear(p_instance->uart.p_reg, NRF_UART_EVENT_ERROR);
         result = nrfx_uart_errorsrc_get(&p_instance->uart);
     }

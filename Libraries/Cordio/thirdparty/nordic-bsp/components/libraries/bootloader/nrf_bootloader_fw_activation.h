@@ -51,14 +51,16 @@
 #include <stdbool.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef enum {
-    ACTIVATION_NONE, //!< No new update was found.
-    ACTIVATION_SUCCESS, //!< Update was successfully activated.
+typedef enum
+{
+    ACTIVATION_NONE,                             //!< No new update was found.
+    ACTIVATION_SUCCESS,                          //!< Update was successfully activated.
     ACTIVATION_SUCCESS_EXPECT_ADDITIONAL_UPDATE, //!< Update was successfully activated, but there might be additional update(s) to be transferred.
-    ACTIVATION_ERROR, //!< Activation of an update failed.
+    ACTIVATION_ERROR,                            //!< Activation of an update failed.
 } nrf_bootloader_fw_activation_result_t;
 
 /** @brief Function for activating a firmware received during DFU.
@@ -82,6 +84,8 @@ typedef enum {
  * @retval  ACTIVATION_ERROR                             If the firmware update could not be activated.
  */
 nrf_bootloader_fw_activation_result_t nrf_bootloader_fw_activate(void);
+
+
 
 #ifdef __cplusplus
 }

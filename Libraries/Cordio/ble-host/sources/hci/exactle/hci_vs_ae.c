@@ -38,26 +38,32 @@
 /*************************************************************************************************/
 static void hciCoreExtResetSequence(uint8_t *pMsg, uint16_t opcode)
 {
-    (void)pMsg;
-    (void)opcode;
+  (void) pMsg;
+  (void) opcode;
 
-    /* if LE Extended Advertising is supported by Controller and included */
-    if ((HciGetLeSupFeat() & HCI_LE_SUP_FEAT_LE_EXT_ADV) &&
-        (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_EXT_ADV)) {
-        LlReadMaxAdvDataLen(&hciCoreCb.maxAdvDataLen);
-        LlReadNumSupAdvSets(&hciCoreCb.numSupAdvSets);
-    } else {
-        hciCoreCb.maxAdvDataLen = 0;
-        hciCoreCb.numSupAdvSets = 0;
-    }
+  /* if LE Extended Advertising is supported by Controller and included */
+  if ((HciGetLeSupFeat() & HCI_LE_SUP_FEAT_LE_EXT_ADV) &&
+      (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_EXT_ADV))
+  {
+    LlReadMaxAdvDataLen(&hciCoreCb.maxAdvDataLen);
+    LlReadNumSupAdvSets(&hciCoreCb.numSupAdvSets);
+  }
+  else
+  {
+    hciCoreCb.maxAdvDataLen = 0;
+    hciCoreCb.numSupAdvSets = 0;
+  }
 
-    /* if LE Periodic Advertising is supported by Controller and included */
-    if ((HciGetLeSupFeat() & HCI_LE_SUP_FEAT_LE_PER_ADV) &&
-        (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_PER_ADV)) {
-        LlReadPeriodicAdvListSize(&hciCoreCb.perAdvListSize);
-    } else {
-        hciCoreCb.perAdvListSize = 0;
-    }
+  /* if LE Periodic Advertising is supported by Controller and included */
+  if ((HciGetLeSupFeat() & HCI_LE_SUP_FEAT_LE_PER_ADV) &&
+      (hciLeSupFeatCfg & HCI_LE_SUP_FEAT_LE_PER_ADV))
+  {
+    LlReadPeriodicAdvListSize(&hciCoreCb.perAdvListSize);
+  }
+  else
+  {
+    hciCoreCb.perAdvListSize = 0;
+  }
 }
 
 /*************************************************************************************************/
@@ -71,5 +77,5 @@ static void hciCoreExtResetSequence(uint8_t *pMsg, uint16_t opcode)
 /*************************************************************************************************/
 void HciVsAeInit(uint8_t param)
 {
-    hciCoreCb.extResetSeq = hciCoreExtResetSequence;
+  hciCoreCb.extResetSeq = hciCoreExtResetSequence;
 }

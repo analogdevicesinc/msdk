@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifndef NO_MD4
 
 #ifndef CTAO_CRYPT_MD4_H
@@ -26,10 +27,11 @@
 
 #include <wolfssl/wolfcrypt/md4.h>
 
-#define InitMd4 wc_InitMd4
+#define InitMd4   wc_InitMd4
 #define Md4Update wc_Md4Update
-#define Md4Final wc_Md4Final
+#define Md4Final  wc_Md4Final
 
 #endif /* CTAO_CRYPT_MD4_H */
 
 #endif /* NO_MD4 */
+

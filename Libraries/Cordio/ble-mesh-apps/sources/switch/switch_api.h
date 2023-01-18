@@ -26,7 +26,8 @@
 #define SWITCH_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mmdl_types.h"
@@ -37,9 +38,10 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Generic OnOff Server element control block structure */
-typedef struct switchElemCb_tag {
-    mmdlGenOnOffState_t state; /*!< New OnOff State */
-    uint8_t tid; /*!< Transaction Identifier */
+typedef struct switchElemCb_tag
+{
+  mmdlGenOnOffState_t state;          /*!< New OnOff State */
+  uint8_t             tid;            /*!< Transaction Identifier */
 } switchElemCb_t;
 
 /**************************************************************************************************

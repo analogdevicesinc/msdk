@@ -32,6 +32,8 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
+
 #ifndef _SSI_PAL_MUTEX_H
 #define _SSI_PAL_MUTEX_H
 
@@ -39,7 +41,8 @@
 #include "ssi_pal_types_plat.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*!
@@ -53,6 +56,9 @@ extern "C" {
 @ingroup ssi_pal
 */
 
+
+
+
 /*----------------------------
       PUBLIC FUNCTIONS
 -----------------------------------*/
@@ -64,8 +70,8 @@ extern "C" {
  * @return Zero on success.
  * @return A non-zero value on failure.
  */
-SaSiError_t
-SaSi_PalMutexCreate(SaSi_PalMutex *pMutexId /*!< [out] Pointer to created mutex handle. */);
+SaSiError_t SaSi_PalMutexCreate(SaSi_PalMutex *pMutexId /*!< [out] Pointer to created mutex handle. */);
+
 
 /**
  * @brief This function purpose is to destroy a mutex.
@@ -76,6 +82,7 @@ SaSi_PalMutexCreate(SaSi_PalMutex *pMutexId /*!< [out] Pointer to created mutex 
  */
 SaSiError_t SaSi_PalMutexDestroy(SaSi_PalMutex *pMutexId /*!< [in] Pointer to mutex handle. */);
 
+
 /**
  * @brief This function purpose is to Wait for Mutex with aTimeOut. aTimeOut is
  *        specified in milliseconds (SASI_INFINITE is blocking).
@@ -83,8 +90,9 @@ SaSiError_t SaSi_PalMutexDestroy(SaSi_PalMutex *pMutexId /*!< [in] Pointer to mu
  * @return Zero on success.
  * @return A non-zero value on failure.
  */
-SaSiError_t SaSi_PalMutexLock(SaSi_PalMutex *pMutexId, /*!< [in] Pointer to Mutex handle. */
-                              uint32_t aTimeOut /*!< [in] Timeout in mSec, or SASI_INFINITE. */);
+SaSiError_t SaSi_PalMutexLock (SaSi_PalMutex *pMutexId, /*!< [in] Pointer to Mutex handle. */
+                   uint32_t aTimeOut    /*!< [in] Timeout in mSec, or SASI_INFINITE. */);
+
 
 /**
  * @brief This function purpose is to release the mutex.
@@ -92,7 +100,11 @@ SaSiError_t SaSi_PalMutexLock(SaSi_PalMutex *pMutexId, /*!< [in] Pointer to Mute
  * @return Zero on success.
  * @return A non-zero value on failure.
  */
-SaSiError_t SaSi_PalMutexUnlock(SaSi_PalMutex *pMutexId /*!< [in] Pointer to Mutex handle. */);
+SaSiError_t SaSi_PalMutexUnlock (SaSi_PalMutex *pMutexId/*!< [in] Pointer to Mutex handle. */);
+
+
+
+
 
 #ifdef __cplusplus
 }
@@ -101,3 +113,5 @@ SaSiError_t SaSi_PalMutexUnlock(SaSi_PalMutex *pMutexId /*!< [in] Pointer to Mut
 @}
  */
 #endif
+
+

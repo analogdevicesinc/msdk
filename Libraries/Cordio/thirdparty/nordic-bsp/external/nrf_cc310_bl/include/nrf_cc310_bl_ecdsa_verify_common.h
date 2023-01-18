@@ -48,15 +48,14 @@ extern "C" {
 
 #define NRF_CC310_BL_ECDSA_CONTEXT_INITIALIZED (0xBBAA55DD)
 
-#define NRF_CC310_BL_ECDSA_VERIFY_CONTEXT_SIZE_SECP224R1 \
-    (140) //!< Macro for the size of the ECDSA Verify context.
-#define NRF_CC310_BL_ECDSA_VERIFY_CONTEXT_SIZE_SECP256R1 \
-    (160) //!< Macro for the size of the ECDSA Verify context.
+#define NRF_CC310_BL_ECDSA_VERIFY_CONTEXT_SIZE_SECP224R1   (140)     //!< Macro for the size of the ECDSA Verify context.
+#define NRF_CC310_BL_ECDSA_VERIFY_CONTEXT_SIZE_SECP256R1   (160)     //!< Macro for the size of the ECDSA Verify context.
 
 #ifdef __cplusplus
 }
 #endif
 
 /** @} */
+
 
 #endif // NRF_CC310_BL_ECDSA_VERIFY_COMMON_H__

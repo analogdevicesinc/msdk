@@ -32,6 +32,9 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
+
+
 #ifndef CRYS_RND_H
 #define CRYS_RND_H
 
@@ -39,7 +42,8 @@
 #include "ssi_aes.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*!
@@ -56,21 +60,22 @@ The random-number generation module implements referenced standard [SP800-90].
 /*!  Maximal reseed counter - indicates maximal number of
 requests allowed between reseeds; according to NIST 800-90
 it is (2^48 - 1), our restriction is :  (0xFFFFFFFF - 0xF).*/
-#define CRYS_RND_MAX_RESEED_COUNTER (0xFFFFFFFF - 0xF)
+#define CRYS_RND_MAX_RESEED_COUNTER     (0xFFFFFFFF - 0xF)
 
 /* Max size for one RNG generation (in bits) =
   max_num_of_bits_per_request = 2^19 (FIPS 800-90 Tab.3) */
 /*! Maximal size of generated vector in bits. */
-#define CRYS_RND_MAX_GEN_VECTOR_SIZE_BITS 0x7FFFF
+#define CRYS_RND_MAX_GEN_VECTOR_SIZE_BITS       0x7FFFF
 /*! Maximal size of generated vector in bytes. */
-#define CRYS_RND_MAX_GEN_VECTOR_SIZE_BYTES 0xFFFF
+#define CRYS_RND_MAX_GEN_VECTOR_SIZE_BYTES      0xFFFF
 
 /*! AES output block size in words. */
-#define CRYS_RND_AES_BLOCK_SIZE_IN_WORDS SASI_AES_BLOCK_SIZE_IN_WORDS
+#define CRYS_RND_AES_BLOCK_SIZE_IN_WORDS  SASI_AES_BLOCK_SIZE_IN_WORDS
+
 
 /* RND seed and additional input sizes */
 /*! Maximal size of random seed in words. */
-#define CRYS_RND_SEED_MAX_SIZE_WORDS 12
+#define CRYS_RND_SEED_MAX_SIZE_WORDS                  12
 
 #ifndef CRYS_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS
 /*! Maximal size of additional input data in words. */
@@ -79,11 +84,11 @@ it is (2^48 - 1), our restriction is :  (0xFFFFFFFF - 0xF).*/
 
 /* allowed sizes of AES Key, in words */
 /*! AES key size (128 bits) in words. */
-#define CRYS_RND_AES_KEY_128_SIZE_WORDS 4
+#define CRYS_RND_AES_KEY_128_SIZE_WORDS  4
 /*! AES key size (192 bits) in words. */
-#define CRYS_RND_AES_KEY_192_SIZE_WORDS 6
+#define CRYS_RND_AES_KEY_192_SIZE_WORDS  6
 /*! AES key size (256 bits) in words. */
-#define CRYS_RND_AES_KEY_256_SIZE_WORDS 8
+#define CRYS_RND_AES_KEY_256_SIZE_WORDS  8
 
 /*   Definitions of temp buffer for RND_DMA version of CRYS_RND   */
 /*******************************************************************/
@@ -93,67 +98,76 @@ it is (2^48 - 1), our restriction is :  (0xFFFFFFFF - 0xF).*/
 #define CRYS_RND_WORK_BUFFER_SIZE_WORDS 1528
 
 /*! A definition for RAM buffer to be internally used in instantiation (or reseeding) operation. */
-typedef struct {
+typedef struct
+{
     /*! Internal buffer*/
     uint32_t crysRndWorkBuff[CRYS_RND_WORK_BUFFER_SIZE_WORDS];
-} CRYS_RND_WorkBuff_t;
+}CRYS_RND_WorkBuff_t;
 
 /*! A definition for entropy estimation data type. */
-#define CRYS_RND_EntropyEstimatData_t CRYS_RND_WorkBuff_t
+#define CRYS_RND_EntropyEstimatData_t  CRYS_RND_WorkBuff_t
 /*! A definition for entropy estimation buffer. */
-#define crysRndEntrIntBuff crysRndWorkBuff
+#define crysRndEntrIntBuff  crysRndWorkBuff
+
 
 /* RND source buffer inner (entrpopy) offset       */
 /*! An internal offset definition. */
-#define CRYS_RND_TRNG_SRC_INNER_OFFSET_WORDS 2
+#define CRYS_RND_TRNG_SRC_INNER_OFFSET_WORDS    2
 /*! An internal offset definition. */
-#define CRYS_RND_TRNG_SRC_INNER_OFFSET_BYTES \
-    (CRYS_RND_TRNG_SRC_INNER_OFFSET_WORDS * sizeof(uint32_t))
+#define CRYS_RND_TRNG_SRC_INNER_OFFSET_BYTES    (CRYS_RND_TRNG_SRC_INNER_OFFSET_WORDS*sizeof(uint32_t))
+
+
+
 
 /* Size of the expected output buffer used by FIPS KAT */
 /*! FIPS Known answer test output size. */
-#define CRYS_PRNG_FIPS_KAT_OUT_DATA_SIZE 64
+#define CRYS_PRNG_FIPS_KAT_OUT_DATA_SIZE      64
 
 /************************ Enumerators  ****************************/
 
 /*! Definition of random operation modes. */
-typedef enum {
+typedef  enum
+{
     /*! SW entropy estimation mode. */
-    CRYS_RND_Fast = 0,
+    CRYS_RND_Fast  = 0,
     /*! Full entropy mode. */
-    CRYS_RND_Slow = 1,
+    CRYS_RND_Slow  = 1,
     /*! Reserved. */
     CRYS_RND_ModeLast = 0x7FFFFFFF,
 } CRYS_RND_mode_t;
 
+
+
 /************************ Structs  *****************************/
+
 
 /* The internal state of DRBG mechanism based on AES CTR and CBC-MAC
    algorithms. It is set as global data defined by the following
    structure  */
 /*! RND state structure. Includes internal data that needs to be saved between boots by the user.*/
-typedef struct {
+typedef  struct
+{
     /* Seed buffer, consists from concatenated Key||V: max size 12 words */
     /*! Random Seed buffer */
-    uint32_t Seed[CRYS_RND_SEED_MAX_SIZE_WORDS];
+    uint32_t  Seed[CRYS_RND_SEED_MAX_SIZE_WORDS];
     /* Previous value for continuous test */
     /*! Previous random data (used for continuous test). */
-    uint32_t PreviousRandValue[SASI_AES_BLOCK_SIZE_IN_WORDS];
+    uint32_t  PreviousRandValue[SASI_AES_BLOCK_SIZE_IN_WORDS];
 
     /* AdditionalInput buffer max size = seed max size words + 4w for padding*/
     /*! Previous additional input buffer. */
-    uint32_t PreviousAdditionalInput[CRYS_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS + 5];
+    uint32_t  PreviousAdditionalInput[CRYS_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS+5];
     /*! Additional input buffer. */
-    uint32_t AdditionalInput[CRYS_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS + 4];
+    uint32_t  AdditionalInput[CRYS_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS+4];
     /*! Additional input size in words. */
-    uint32_t AddInputSizeWords; /* size of additional data set by user, words   */
+    uint32_t  AddInputSizeWords; /* size of additional data set by user, words   */
 
     /*! Entropy source size in words */
-    uint32_t EntropySourceSizeWords;
+    uint32_t  EntropySourceSizeWords;
 
     /*! Reseed counter (32 bits active) - indicates number of requests for entropy
     since instantiation or reseeding */
-    uint32_t ReseedCounter;
+    uint32_t  ReseedCounter;
 
     /*! Key size: 4 or 8 words according to security strength 128 bits or 256 bits*/
     uint32_t KeySizeWords;
@@ -180,25 +194,31 @@ typedef struct {
     uint32_t ValidTag;
 
     /*! Rnd source entropy size in bits */
-    uint32_t EntropySizeBits;
+    uint32_t  EntropySizeBits;
 
 } CRYS_RND_State_t;
+
 
 /*! The RND Generate vector function pointer type definition.
    The prototype intendent for External and CRYS internal RND functions
    pointers definitions.
    Full description can be found in ::CRYS_RND_GenerateVector function API. */
-typedef uint32_t (*SaSiRndGenerateVectWorkFunc_t)(void *rndState_ptr, /*context*/
-                                                  uint16_t outSizeBytes, /*in*/
-                                                  uint8_t *out_ptr /*out*/);
+typedef uint32_t (*SaSiRndGenerateVectWorkFunc_t)(        \
+                void  *rndState_ptr, /*context*/   \
+                uint16_t          outSizeBytes,   /*in*/      \
+                uint8_t          *out_ptr         /*out*/);
+
+
 
 /*! Data structure required for internal FIPS verification for PRNG KAT. */
-typedef struct {
-    /*! Internal working buffer. */
-    CRYS_RND_WorkBuff_t rndWorkBuff;
-    /*! Output buffer. */
-    uint8_t rndOutputBuff[CRYS_PRNG_FIPS_KAT_OUT_DATA_SIZE];
+typedef  struct
+{
+       /*! Internal working buffer. */
+       CRYS_RND_WorkBuff_t      rndWorkBuff;
+       /*! Output buffer. */
+       uint8_t                  rndOutputBuff[CRYS_PRNG_FIPS_KAT_OUT_DATA_SIZE];
 } CRYS_PrngFipsKatCtx_t;
+
 
 /*****************************************************************************/
 /**********************        Public Functions      *************************/
@@ -217,11 +237,10 @@ this API is not thread-safe.
 @param[in/out] rnd_ctx - Pointer to the RND state structure.
 @param[in/out] rndWorkBuff_ptr  - Pointer to the RND scratch buffer.
 */
-CEXPORT_C CRYSError_t CRYS_RndInit(
-    void *rnd_ctx, /*!< [in/out] Pointer to the RND state buffer,
+CEXPORT_C CRYSError_t CRYS_RndInit(void* rnd_ctx, /*!< [in/out] Pointer to the RND state buffer,
                                                                 allocated by the user. This state must be saved and provided
                                                                 as parameter to any API that uses the RND module.*/
-    CRYS_RND_WorkBuff_t *rndWorkBuff_ptr /*!< [in] Scratchpad for the RND module's work. */);
+                                             CRYS_RND_WorkBuff_t  *rndWorkBuff_ptr /*!< [in] Scratchpad for the RND module's work. */);
 
 /*!
 @brief This function initializes the RND context.
@@ -238,12 +257,13 @@ It implements referenced standard [SP800-90] - 10.2.1.3.2 - CTR-DRBG Instantiate
 @return A non-zero value from crys_rnd_error.h on failure.
 */
 CIMPORT_C CRYSError_t CRYS_RND_Instantiation(
-    void *rndState_ptr, /*!< [in/out]  Pointer to the RND state buffer allocated by the user, which is used to
+                        void   *rndState_ptr,       /*!< [in/out]  Pointer to the RND state buffer allocated by the user, which is used to
                                            maintain the RND state. This context state must be saved and provided as a
                                            parameter to any API that uses the RND module.
                                            \note the context must be cleared before sent to the function. */
-    CRYS_RND_WorkBuff_t *rndWorkBuff_ptr /*!< [in/out] Scratchpad for the RND module's work. */
+                        CRYS_RND_WorkBuff_t  *rndWorkBuff_ptr       /*!< [in/out] Scratchpad for the RND module's work. */
 );
+
 
 /*!
 @brief Clears existing RNG instantiation state.
@@ -252,8 +272,9 @@ CIMPORT_C CRYSError_t CRYS_RND_Instantiation(
 @return A non-zero value from crys_rnd_error.h on failure.
 */
 CIMPORT_C CRYSError_t CRYS_RND_UnInstantiation(
-    void *rndState_ptr /*!< [in/out] Pointer to the RND context state buffer. */
+                        void *rndState_ptr       /*!< [in/out] Pointer to the RND context state buffer. */
 );
+
 
 /*!
 @brief This function is used for reseeding the RNG with additional entropy and additional user-provided input.
@@ -264,9 +285,10 @@ It implements referenced standard [SP800-90] - 10.2.1.4.2 - CTR-DRBG Reseeding a
 @return A non-zero value from crys_rnd_error.h on failure.
 */
 CIMPORT_C CRYSError_t CRYS_RND_Reseeding(
-    void *rndState_ptr, /*!< [in/out] Pointer to the RND context buffer. */
-    CRYS_RND_WorkBuff_t *rndWorkBuff_ptr /*!< [in/out] Scratchpad for the RND module's work. */
+                        void   *rndState_ptr,          /*!< [in/out] Pointer to the RND context buffer. */
+                        CRYS_RND_WorkBuff_t  *rndWorkBuff_ptr      /*!< [in/out] Scratchpad for the RND module's work. */
 );
+
 
 /****************************************************************************************/
 /*!
@@ -283,12 +305,13 @@ The generation algorithm uses AES (FIPS-PUB 197) and Derivation Function (DF).
 @return A non-zero value from crys_rnd_error.h on failure.
 */
 CIMPORT_C CRYSError_t CRYS_RND_GenerateVector(
-    void *rndState_ptr, /*!< [in/out] Pointer to the RND state structure, which is part of the RND context structure.
+                            void *rndState_ptr,     /*!< [in/out] Pointer to the RND state structure, which is part of the RND context structure.
                                      Use rndContext->rndState field of the context for this parameter. */
-    uint16_t
-        outSizeBytes, /*!< [in]  The size in bytes of the random vector required. The maximal size is 2^16 -1 bytes. */
-    uint8_t *out_ptr /*!< [out] The pointer to output buffer. */
+                            uint16_t   outSizeBytes,            /*!< [in]  The size in bytes of the random vector required. The maximal size is 2^16 -1 bytes. */
+                            uint8_t   *out_ptr                  /*!< [out] The pointer to output buffer. */
 );
+
+
 
 /**********************************************************************************************************/
 /*!
@@ -306,18 +329,15 @@ The RND module must be instantiated prior to invocation of this API.
 @return A non-zero value from crys_rnd_error.h on failure.
 */
 CIMPORT_C CRYSError_t CRYS_RND_GenerateVectorInRange(
-    void *rndState_ptr, /*!< [in/out] Pointer to the RND state structure. */
-    SaSiRndGenerateVectWorkFunc_t
-        rndGenerateVectFunc, /*!< [in] Pointer to the random vector generation function. */
-    uint32_t
-        rndSizeInBits, /*!< [in]  The size in bits of the random vector required. The allowed size in range  2 <= rndSizeInBits < 2^19-1, bits. */
-    uint8_t *
-        maxVect_ptr, /*!< [in]  Pointer to the vector defining the upper limit for the random vector output, Given as little-endian byte array.
+                    void   *rndState_ptr,                 /*!< [in/out] Pointer to the RND state structure. */
+                    SaSiRndGenerateVectWorkFunc_t rndGenerateVectFunc,   /*!< [in] Pointer to the random vector generation function. */
+                    uint32_t  rndSizeInBits,                /*!< [in]  The size in bits of the random vector required. The allowed size in range  2 <= rndSizeInBits < 2^19-1, bits. */
+                    uint8_t  *maxVect_ptr,                  /*!< [in]  Pointer to the vector defining the upper limit for the random vector output, Given as little-endian byte array.
                                                                        If not NULL, its actual size is treated as [(rndSizeInBits+7)/8] bytes and its value must be in range (3, 2^19) */
-    uint8_t *
-        rndVect_ptr /*!< [in/out] Pointer to the output buffer for the random vector. Must be at least [(rndSizeInBits+7)/8] bytes.
+                    uint8_t  *rndVect_ptr                   /*!< [in/out] Pointer to the output buffer for the random vector. Must be at least [(rndSizeInBits+7)/8] bytes.
                                                                  Treated as little-endian byte array. */
 );
+
 
 /*************************************************************************************/
 /*!
@@ -328,9 +348,9 @@ to be later used by the ::CRYS_RND_Instantiation/::CRYS_RND_Reseeding/::CRYS_RND
 @return A non-zero value from crys_rnd_error.h on failure.
 */
 CIMPORT_C CRYSError_t CRYS_RND_AddAdditionalInput(
-    void *rndState_ptr, /*!< [in/out] Pointer to the RND context state buffer. */
-    uint8_t *additonalInput_ptr, /*!< [in]  The Additional Input buffer. */
-    uint16_t additonalInputSize /*!< [in]  The size of the Additional Input buffer. It must
+                            void *rndState_ptr,         /*!< [in/out] Pointer to the RND context state buffer. */
+                            uint8_t *additonalInput_ptr,            /*!< [in]  The Additional Input buffer. */
+                            uint16_t additonalInputSize             /*!< [in]  The size of the Additional Input buffer. It must
                                                                                be <= CRYS_RND_ADDITINAL_INPUT_MAX_SIZE_WORDS and a multiple of 4. */
 );
 
@@ -345,13 +365,12 @@ The user must call this function before calling functions performing KAT tests.
 @return A non-zero value from crys_rnd_error.h on failure.
 */
 CIMPORT_C CRYSError_t CRYS_RND_EnterKatMode(
-    void *rndState_ptr, /*!< [in/out] Pointer to the RND context state buffer. */
-    uint8_t *entrData_ptr, /*!< [in] Entropy data. */
-    uint32_t entrSize, /*!< [in] Entropy size in bytes. */
-    uint8_t *nonce_ptr, /*!< [in] Nonce. */
-    uint32_t nonceSize, /*!< [in] Entropy size in bytes. */
-    CRYS_RND_WorkBuff_t *
-        workBuff_ptr /*!< [out] RND working buffer, must be the same buffer, which should be passed into
+            void   *rndState_ptr,       /*!< [in/out] Pointer to the RND context state buffer. */
+            uint8_t            *entrData_ptr,       /*!< [in] Entropy data. */
+            uint32_t            entrSize,           /*!< [in] Entropy size in bytes. */
+            uint8_t            *nonce_ptr,          /*!< [in] Nonce. */
+            uint32_t            nonceSize,          /*!< [in] Entropy size in bytes. */
+            CRYS_RND_WorkBuff_t  *workBuff_ptr      /*!< [out] RND working buffer, must be the same buffer, which should be passed into
                             Instantiation/Reseeding functions. */
 );
 
@@ -364,9 +383,10 @@ The user must call this function after KAT tests before actual using RND module 
 @return CRYS_OK on success.
 @return A non-zero value from crys_rnd_error.h on failure.
 */
-CIMPORT_C void
-CRYS_RND_DisableKatMode(void *rndState_ptr /*!< [in/out] Pointer to the RND state buffer. */
+CIMPORT_C void CRYS_RND_DisableKatMode(
+                    void   *rndState_ptr     /*!< [in/out] Pointer to the RND state buffer. */
 );
+
 
 #ifdef __cplusplus
 }
@@ -375,3 +395,4 @@ CRYS_RND_DisableKatMode(void *rndState_ptr /*!< [in/out] Pointer to the RND stat
 @}
  */
 #endif /* #ifndef CRYS_RND_H */
+

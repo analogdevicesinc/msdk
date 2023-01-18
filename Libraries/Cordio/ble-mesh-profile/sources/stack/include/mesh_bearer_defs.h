@@ -27,7 +27,8 @@
 #define MESH_BEARER_DEFS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,18 +36,19 @@ extern "C" {
 **************************************************************************************************/
 
 /*! Timeout value in seconds for a GATT Proxy Rx transaction. */
-#define MESH_GATT_PROXY_TIMEOUT_SEC 20
+#define MESH_GATT_PROXY_TIMEOUT_SEC         20
 
 /**************************************************************************************************
   Enums
 **************************************************************************************************/
 
 /*! GATT Proxy PDU SAR enumeration */
-enum meshGattProxyPduSarValues {
-    MESH_GATT_PROXY_PDU_SAR_COMPLETE_MSG = 0x00, /*!< Complete Proxy PDU */
-    MESH_GATT_PROXY_PDU_SAR_FIRST_SEG = 0x01, /*!< First segment of a Proxy PDU */
-    MESH_GATT_PROXY_PDU_SAR_CONT_SEG = 0x02, /*!< Continuation segment of a Proxy PDU */
-    MESH_GATT_PROXY_PDU_SAR_LAST_SEG = 0x03 /*!< Last segment of a Proxy PDU */
+enum meshGattProxyPduSarValues
+{
+  MESH_GATT_PROXY_PDU_SAR_COMPLETE_MSG = 0x00,  /*!< Complete Proxy PDU */
+  MESH_GATT_PROXY_PDU_SAR_FIRST_SEG    = 0x01,  /*!< First segment of a Proxy PDU */
+  MESH_GATT_PROXY_PDU_SAR_CONT_SEG     = 0x02,  /*!< Continuation segment of a Proxy PDU */
+  MESH_GATT_PROXY_PDU_SAR_LAST_SEG     = 0x03   /*!< Last segment of a Proxy PDU */
 };
 
 #ifdef __cplusplus

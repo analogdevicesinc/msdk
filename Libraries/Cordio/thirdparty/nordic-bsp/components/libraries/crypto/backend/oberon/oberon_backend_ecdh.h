@@ -50,17 +50,22 @@
 #include "nrf_crypto_ecc.h"
 #include "nrf_crypto_ecdh_shared.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1)
+
 
 /** @internal See @ref nrf_crypto_backend_ecdh_compute_fn_t.
  */
-ret_code_t nrf_crypto_backend_secp256r1_ecdh_compute(void *p_context, void const *p_private_key,
-                                                     void const *p_public_key,
-                                                     uint8_t *p_shared_secret);
+ret_code_t nrf_crypto_backend_secp256r1_ecdh_compute(
+    void       * p_context,
+    void const * p_private_key,
+    void const * p_public_key,
+    uint8_t    * p_shared_secret);
 
 // Context in not used in OBERON backend
 typedef uint32_t nrf_crypto_backend_secp256r1_ecdh_context_t;
@@ -72,9 +77,11 @@ typedef uint32_t nrf_crypto_backend_secp256r1_ecdh_context_t;
 
 /** @internal See @ref nrf_crypto_backend_ecdh_compute_fn_t.
  */
-ret_code_t nrf_crypto_backend_curve25519_ecdh_compute(void *p_context, void const *p_private_key,
-                                                      void const *p_public_key,
-                                                      uint8_t *p_shared_secret);
+ret_code_t nrf_crypto_backend_curve25519_ecdh_compute(
+    void       * p_context,
+    void const * p_private_key,
+    void const * p_public_key,
+    uint8_t    * p_shared_secret);
 
 // Context in not used in OBERON backend
 typedef uint32_t nrf_crypto_backend_curve25519_ecdh_context_t;
@@ -90,6 +97,7 @@ typedef uint32_t nrf_crypto_backend_ed25519_ecdh_context_t;
 #define NRF_CRYPTO_BACKEND_ED25519_ECDH_CONTEXT_SIZE 0
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_ED25519)
+
 
 #ifdef __cplusplus
 }

@@ -40,9 +40,9 @@ extern "C" {
  *  Type of waveform to output from the Example Stream
  */
 /**@{*/
-#define WDXS_STREAM_WAVEFORM_SINE 0
-#define WDXS_STREAM_WAVEFORM_STEP 1
-#define WDXS_STREAM_WAVEFORM_SAWTOOTH 2
+#define WDXS_STREAM_WAVEFORM_SINE       0
+#define WDXS_STREAM_WAVEFORM_STEP       1
+#define WDXS_STREAM_WAVEFORM_SAWTOOTH   2
 /**@}*/
 
 /**************************************************************************************************
@@ -69,10 +69,11 @@ void wdxsStreamInit(void);
 /*************************************************************************************************/
 void wdxsSetStreamWaveform(uint8_t type);
 
-/*! \} */ /* WIRELESS_DATA_EXCHANGE_PROFILE */
+/*! \} */    /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* WDXS_STREAM_H */
+

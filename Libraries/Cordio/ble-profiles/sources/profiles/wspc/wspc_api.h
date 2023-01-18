@@ -38,11 +38,12 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Weight Scale service enumeration of handle indexes of characteristics to be discovered */
-enum {
-    WSPC_WSS_WSM_HDL_IDX, /*!< \brief Weight scale measurement */
-    WSPC_WSS_WSM_CCC_HDL_IDX, /*!< \brief Weight scale measurement CCC descriptor */
-    WSPC_WSS_WSF_HDL_IDX, /*!< \brief Weight scale feature */
-    WSPC_WSS_HDL_LIST_LEN /*!< \brief Handle list length */
+enum
+{
+  WSPC_WSS_WSM_HDL_IDX,           /*!< \brief Weight scale measurement */
+  WSPC_WSS_WSM_CCC_HDL_IDX,       /*!< \brief Weight scale measurement CCC descriptor */
+  WSPC_WSS_WSF_HDL_IDX,           /*!< \brief Weight scale feature */
+  WSPC_WSS_HDL_LIST_LEN           /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -79,7 +80,7 @@ void WspcWssDiscover(dmConnId_t connId, uint16_t *pHdlList);
 /*************************************************************************************************/
 uint8_t WspcWssValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 
-/*! \} */ /* WEIGHT_SCALE_PROFILE */
+/*! \} */    /* WEIGHT_SCALE_PROFILE */
 
 #ifdef __cplusplus
 };

@@ -130,7 +130,7 @@ void BbBleWhiteListRemoveAnonymous(void);
 /*************************************************************************************************/
 bool_t BbBleWhiteListIsAnonymousAllowed(void);
 
-/*! \} */ /* BB_API_BLE_WL */
+/*! \} */    /* BB_API_BLE_WL */
 
 #ifdef __cplusplus
 };

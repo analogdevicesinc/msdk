@@ -31,7 +31,8 @@
 #define MMDL_GEN_BATTERY_SR_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -39,51 +40,55 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Number of stored states (Present + Target) */
-#define MMDL_GEN_BATTERY_STATE_CNT 2
+#define MMDL_GEN_BATTERY_STATE_CNT             2
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Model Battery Server Status parameters structure */
-typedef struct mmdlGenBatteryStatusParam_tag {
-    uint8_t state; /*!< Received published state */
-    uint32_t timeToDischarge; /*!< Received published time to discharge state */
-    uint32_t timeToCharge; /*!< Received published time to charge state */
-    uint8_t flags; /*!< Receviced published flag state */
+typedef struct mmdlGenBatteryStatusParam_tag
+{
+  uint8_t              state;           /*!< Received published state */
+  uint32_t             timeToDischarge; /*!< Received published time to discharge state */
+  uint32_t             timeToCharge;    /*!< Received published time to charge state */
+  uint8_t              flags;           /*!< Receviced published flag state */
 } mmdlGenBatteryStatusParam_t;
 
 /*! \brief Generic Level Server Model State Update event structure */
-typedef struct mmdlGenBatterySrStateUpdate_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elemId; /*!< Element identifier */
-    mmdlStateUpdateSrc_t stateUpdateSource; /*!< Updated state source */
-    mmdlGenBatteryState_t state; /*!< Updated state */
+typedef struct mmdlGenBatterySrStateUpdate_tag
+{
+  wsfMsgHdr_t           hdr;                /*!< WSF message header */
+  meshElementId_t       elemId;             /*!< Element identifier */
+  mmdlStateUpdateSrc_t  stateUpdateSource;  /*!< Updated state source */
+  mmdlGenBatteryState_t state;              /*!< Updated state */
 } mmdlGenBatterySrStateUpdate_t;
 
 /*! \brief Generic Battery Server Model Current State event structure */
-typedef struct mmdlGenBatterySrCurrentState_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elemId; /*!< Element identifier */
-    mmdlGenBatteryState_t state; /*!< Updated state */
+typedef struct mmdlGenBatterySrCurrentState_tag
+{
+  wsfMsgHdr_t           hdr;              /*!< WSF message header */
+  meshElementId_t       elemId;           /*!< Element identifier */
+  mmdlGenBatteryState_t state;            /*!< Updated state */
 } mmdlGenBatterySrCurrentState_t;
 
 /*! \brief Generic Battery Server Model event callback parameters structure */
-typedef union mmdlGenBatterySrEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlGenBatterySrStateUpdate_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlGenBatterySrEvent_tag
+{
+  wsfMsgHdr_t                    hdr;               /*!< WSF message header */
+  mmdlGenBatterySrStateUpdate_t  statusEvent;       /*!< State updated event. Used for
                                                      *   ::MMDL_GEN_BATTERY_SR_STATE_UPDATE_EVENT.
                                                      */
-    mmdlGenBatterySrCurrentState_t
-        currentStateEvent; /*!< Current state event. Sent after a Get request
+  mmdlGenBatterySrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get request
                                                      *   from the upper layer. Used for
                                                      *   ::MMDL_GEN_BATTERY_SR_CURRENT_STATE_EVENT.
                                                      */
 } mmdlGenBatterySrEvent_t;
 
 /*! \brief Model Generic Battery Server descriptor definition */
-typedef struct mmdlGenBatterySrDesc_tag {
-    mmdlGenBatteryState_t *pStoredStates; /*!< Pointer to the structure that stores
+typedef struct mmdlGenBatterySrDesc_tag
+{
+  mmdlGenBatteryState_t     *pStoredStates;       /*!< Pointer to the structure that stores
                                                    *   current state and scene data. First
                                                    *   value is always the current one.
                                                    *   Second value is the target state.
@@ -163,7 +168,8 @@ void MmdlGenBatterySrPublish(meshElementId_t elementId);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenBatterySrSetState(meshElementId_t elementId, const mmdlGenBatteryState_t *pTargetState);
+void MmdlGenBatterySrSetState(meshElementId_t elementId,
+                              const mmdlGenBatteryState_t *pTargetState);
 
 /*************************************************************************************************/
 /*!

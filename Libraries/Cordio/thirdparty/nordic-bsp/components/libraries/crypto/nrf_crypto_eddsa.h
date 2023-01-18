@@ -62,14 +62,16 @@
 extern "C" {
 #endif
 
+
 /**< @brief Size of the EdDSA Ed25519 signature. */
-#define NRF_CRYPTO_EDDSA_ED25519_SIGNATURE_SIZE (2 * 256 / 8)
+#define NRF_CRYPTO_EDDSA_ED25519_SIGNATURE_SIZE    (2 * 256 / 8)
 
 /**< @brief Context used to store temporary data during the signing with EdDSA Ed25519. */
 typedef nrf_crypto_backend_ed25519_sign_context_t nrf_crypto_eddsa_sign_context_t;
 
 /**< @brief Context used to store temporary data during the verification with EdDSA Ed25519. */
 typedef nrf_crypto_backend_ed25519_verify_context_t nrf_crypto_eddsa_verify_context_t;
+
 
 /** @brief Sign a message using Edwards-curve Digital Signature Algorithm (EdDSA).
  *
@@ -86,10 +88,13 @@ typedef nrf_crypto_backend_ed25519_verify_context_t nrf_crypto_eddsa_verify_cont
  * 
  *  @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_eddsa_sign(nrf_crypto_eddsa_sign_context_t *p_context,
-                                 nrf_crypto_ecc_private_key_t const *p_private_key,
-                                 uint8_t const *p_message, size_t message_size,
-                                 uint8_t *p_signature, size_t *p_signature_size);
+ret_code_t nrf_crypto_eddsa_sign(nrf_crypto_eddsa_sign_context_t          * p_context,
+                                 nrf_crypto_ecc_private_key_t       const * p_private_key,
+                                 uint8_t                            const * p_message,
+                                 size_t                                     message_size,
+                                 uint8_t                                  * p_signature,
+                                 size_t                                   * p_signature_size);
+
 
 /** @brief Verify a message using Edwards-curve Digital Signature Algorithm (EdDSA).
  *
@@ -104,10 +109,13 @@ ret_code_t nrf_crypto_eddsa_sign(nrf_crypto_eddsa_sign_context_t *p_context,
  *
  *  @return NRF_SUCCESS on success.
  */
-ret_code_t nrf_crypto_eddsa_verify(nrf_crypto_eddsa_verify_context_t *p_context,
-                                   nrf_crypto_ecc_public_key_t const *p_public_key,
-                                   uint8_t const *p_message, size_t message_size,
-                                   uint8_t const *p_signature, size_t signature_size);
+ret_code_t nrf_crypto_eddsa_verify(nrf_crypto_eddsa_verify_context_t          * p_context,
+                                   nrf_crypto_ecc_public_key_t          const * p_public_key,
+                                   uint8_t                              const * p_message,
+                                   size_t                                       message_size,
+                                   uint8_t                              const * p_signature,
+                                   size_t                                       signature_size);
+
 
 #ifdef __cplusplus
 }

@@ -38,22 +38,22 @@
 /*************************************************************************************************/
 static uint8_t lctrUnpackEncReqPdu(lctrEncReq_t *pPdu, const uint8_t *pBuf)
 {
-    const uint8_t len = LL_ENC_REQ_LEN;
+  const uint8_t len = LL_ENC_REQ_LEN;
 
-    pBuf += 1; /* skip opcode */
+  pBuf += 1;        /* skip opcode */
 
-    memcpy(pPdu->rand, pBuf, sizeof(pPdu->rand));
-    pBuf += sizeof(pPdu->rand);
+  memcpy(pPdu->rand, pBuf, sizeof(pPdu->rand));
+  pBuf += sizeof(pPdu->rand);
 
-    BSTREAM_TO_UINT16(pPdu->ediv, pBuf);
+  BSTREAM_TO_UINT16(pPdu->ediv, pBuf);
 
-    memcpy(pPdu->skd_m, pBuf, sizeof(pPdu->skd_m));
-    pBuf += sizeof(pPdu->skd_m);
+  memcpy(pPdu->skd_m, pBuf, sizeof(pPdu->skd_m));
+  pBuf += sizeof(pPdu->skd_m);
 
-    memcpy(pPdu->iv_m, pBuf, sizeof(pPdu->iv_m));
-    /* pBuf += sizeof(pPdu->iv_m); */
+  memcpy(pPdu->iv_m, pBuf, sizeof(pPdu->iv_m));
+  /* pBuf += sizeof(pPdu->iv_m); */
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -68,12 +68,12 @@ static uint8_t lctrUnpackEncReqPdu(lctrEncReq_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 static uint8_t lctrUnpackEncRspPdu(lctrEncRsp_t *pPdu, const uint8_t *pBuf)
 {
-    const uint8_t len = LL_ENC_RSP_LEN;
+  const uint8_t len = LL_ENC_RSP_LEN;
 
-    pBuf += 1; /* skip opcode */
-    memcpy(pPdu, pBuf, sizeof(*pPdu));
+  pBuf += 1;        /* skip opcode */
+  memcpy(pPdu, pBuf, sizeof(*pPdu));
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -89,67 +89,80 @@ static uint8_t lctrUnpackEncRspPdu(lctrEncRsp_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrDecodeEncPdu(lctrDataPdu_t *pPdu, const uint8_t *pBuf, uint8_t role)
 {
-    uint8_t result = LL_SUCCESS;
+  uint8_t result = LL_SUCCESS;
 
-    pBuf += lctrUnpackDataPduHdr(&pPdu->hdr, pBuf);
-    pPdu->opcode = *pBuf;
+  pBuf += lctrUnpackDataPduHdr(&pPdu->hdr, pBuf);
+  pPdu->opcode = *pBuf;
 
-    switch (pPdu->opcode) {
+  switch (pPdu->opcode)
+  {
     case LL_PDU_ENC_REQ:
-        if (role == LL_ROLE_MASTER) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        if (lctrUnpackEncReqPdu(&pPdu->pld.encReq, pBuf) != pPdu->hdr.len) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        break;
+      if (role == LL_ROLE_MASTER)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      if (lctrUnpackEncReqPdu(&pPdu->pld.encReq, pBuf) != pPdu->hdr.len)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      break;
     case LL_PDU_ENC_RSP:
-        if (role == LL_ROLE_SLAVE) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        if (lctrUnpackEncRspPdu(&pPdu->pld.encRsp, pBuf) != pPdu->hdr.len) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        break;
+      if (role == LL_ROLE_SLAVE)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      if (lctrUnpackEncRspPdu(&pPdu->pld.encRsp, pBuf) != pPdu->hdr.len)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      break;
     case LL_PDU_START_ENC_REQ:
-        if (role == LL_ROLE_SLAVE) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        if (pPdu->hdr.len != LL_START_ENC_LEN) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        break;
+      if (role == LL_ROLE_SLAVE)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      if ( pPdu->hdr.len != LL_START_ENC_LEN)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      break;
     case LL_PDU_PAUSE_ENC_REQ:
-        if (role == LL_ROLE_MASTER) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        if (pPdu->hdr.len != LL_PAUSE_ENC_LEN) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        break;
+      if (role == LL_ROLE_MASTER)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      if ( pPdu->hdr.len != LL_PAUSE_ENC_LEN)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      break;
     case LL_PDU_START_ENC_RSP:
-        if (pPdu->hdr.len != LL_START_ENC_LEN) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        break;
+      if ( pPdu->hdr.len != LL_START_ENC_LEN)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      break;
     case LL_PDU_PAUSE_ENC_RSP:
-        if (pPdu->hdr.len != LL_PAUSE_ENC_LEN) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        break;
+      if ( pPdu->hdr.len != LL_PAUSE_ENC_LEN)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      break;
     case LL_PDU_PING_REQ:
     case LL_PDU_PING_RSP:
-        if ((lmgrCb.features & LL_FEAT_LE_PING) == 0) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        if (pPdu->hdr.len != LL_PING_PDU_LEN) {
-            return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        }
-        break;
+      if ((lmgrCb.features & LL_FEAT_LE_PING) == 0)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      if ( pPdu->hdr.len != LL_PING_PDU_LEN)
+      {
+        return LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      }
+      break;
     default:
-        result = LL_ERROR_CODE_UNKNOWN_LMP_PDU;
-        break;
-    }
+      result = LL_ERROR_CODE_UNKNOWN_LMP_PDU;
+      break;
+  }
 
-    return result;
+  return result;
 }

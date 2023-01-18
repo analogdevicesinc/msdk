@@ -62,11 +62,9 @@ void lctrStorePeerPowerControlRsp(lctrConnCtx_t *pCtx);
 void lctrAutoPowerMonitorAct(lctrConnCtx_t *pCtx);
 
 /* Power reporting actions. */
-void lctrNotifyPowerReportInd(lctrConnCtx_t *pCtx, uint8_t reason, uint8_t phy, int8_t txPower,
-                              uint8_t limits, int8_t delta);
+void lctrNotifyPowerReportInd(lctrConnCtx_t *pCtx, uint8_t reason, uint8_t phy, int8_t txPower, uint8_t limits, int8_t delta);
 int8_t lctrAttemptTxPowerChange(lctrConnCtx_t *pCtx, uint8_t phy, int8_t delta);
-void lctrSendPowerChangeInd(lctrConnCtx_t *pCtx, uint8_t phy, int8_t delta, int8_t txPower,
-                            bool_t phyChange);
+void lctrSendPowerChangeInd(lctrConnCtx_t *pCtx, uint8_t phy, int8_t delta, int8_t txPower, bool_t phyChange);
 
 /* State machine */
 bool_t lctrLlcpExecutePclSm(lctrConnCtx_t *pCtx, uint8_t event);

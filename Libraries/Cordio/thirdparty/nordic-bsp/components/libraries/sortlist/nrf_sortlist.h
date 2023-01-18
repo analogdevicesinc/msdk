@@ -67,14 +67,14 @@ typedef struct nrf_sortlist_item_s nrf_sortlist_item_t;
  * @return True if Item 0 should be higher than Item 1 and false otherwise.
  *
  */
-typedef bool (*nrf_sortlist_compare_func_t)(nrf_sortlist_item_t *p_item0,
-                                            nrf_sortlist_item_t *p_item1);
+typedef bool (*nrf_sortlist_compare_func_t)(nrf_sortlist_item_t * p_item0, nrf_sortlist_item_t * p_item1);
 
 /**
  * @brief A structure for item in the sorted list.
  */
-struct nrf_sortlist_item_s {
-    nrf_sortlist_item_t *p_next; /* Pointer to the next item in the list. */
+struct nrf_sortlist_item_s
+{
+    nrf_sortlist_item_t * p_next;             /* Pointer to the next item in the list. */
 };
 
 /**
@@ -82,17 +82,19 @@ struct nrf_sortlist_item_s {
  *
  * Control block contains instance data which must be located in read/write memory.
  */
-typedef struct {
-    nrf_sortlist_item_t *p_head; /* List head.*/
+typedef struct
+{
+    nrf_sortlist_item_t *       p_head;       /* List head.*/
 } nrf_sortlist_cb_t;
 /**
  * @brief Structure for sorted list instance.
  *
  * Instance can be placed in read only memory.
  */
-typedef struct {
-    char *p_name; /* List name. */
-    nrf_sortlist_cb_t *p_cb; /* List head.*/
+typedef struct
+{
+    char *                      p_name;       /* List name. */
+    nrf_sortlist_cb_t *         p_cb;         /* List head.*/
     nrf_sortlist_compare_func_t compare_func; /* Function used for comparison. */
 } nrf_sortlist_t;
 
@@ -101,20 +103,22 @@ typedef struct {
  *
  * @param _name Instance name.
  */
-#define NRF_SORTLIST_INST_NAME(_name) \
-    (NRF_LOG_ENABLED && NRF_SORTLIST_CONFIG_LOG_ENABLED) ? STRINGIFY(_name) : NULL
+#define NRF_SORTLIST_INST_NAME(_name) (NRF_LOG_ENABLED && NRF_SORTLIST_CONFIG_LOG_ENABLED) ? \
+                                                                           STRINGIFY(_name) : NULL
 /**
  * @brief Macro for defining a sorted list instance.
  *
  * @param _name         Instance name.
  * @param _compare_func Pointer to a compare function.
  */
-#define NRF_SORTLIST_DEF(_name, _compare_func)                                   \
-    static nrf_sortlist_cb_t CONCAT_2(_name, _sortlist_cb) = { .p_head = NULL }; \
-    static const nrf_sortlist_t _name = {                                        \
-        .p_name = NRF_SORTLIST_INST_NAME(_name),                                 \
-        .p_cb = &CONCAT_2(_name, _sortlist_cb),                                  \
-        .compare_func = _compare_func,                                           \
+#define NRF_SORTLIST_DEF(_name, _compare_func)                   \
+    static nrf_sortlist_cb_t CONCAT_2(_name,_sortlist_cb) = {    \
+        .p_head = NULL                                           \
+    };                                                           \
+    static const nrf_sortlist_t _name = {                        \
+        .p_name = NRF_SORTLIST_INST_NAME(_name),                 \
+        .p_cb = &CONCAT_2(_name,_sortlist_cb),                   \
+        .compare_func = _compare_func,                           \
     }
 
 /**
@@ -125,7 +129,7 @@ typedef struct {
  * @param p_list   List instance.
  * @param p_item   Item.
  */
-void nrf_sortlist_add(nrf_sortlist_t const *p_list, nrf_sortlist_item_t *p_item);
+void nrf_sortlist_add(nrf_sortlist_t const * p_list, nrf_sortlist_item_t * p_item);
 
 /**
  * @brief Function for removing an item from the list head.
@@ -134,7 +138,7 @@ void nrf_sortlist_add(nrf_sortlist_t const *p_list, nrf_sortlist_item_t *p_item)
  *
  * @return Pointer to the item which was on the list head.
  */
-nrf_sortlist_item_t *nrf_sortlist_pop(nrf_sortlist_t const *p_list);
+nrf_sortlist_item_t * nrf_sortlist_pop(nrf_sortlist_t const * p_list);
 
 /**
  * @brief Function for getting (without removing) an item from the list head.
@@ -143,7 +147,7 @@ nrf_sortlist_item_t *nrf_sortlist_pop(nrf_sortlist_t const *p_list);
  *
  * @return Pointer to the item which is on the list head.
  */
-nrf_sortlist_item_t const *nrf_sortlist_peek(nrf_sortlist_t const *p_list);
+nrf_sortlist_item_t const * nrf_sortlist_peek(nrf_sortlist_t const * p_list);
 
 /**
  * @brief Function for iterating over the list.
@@ -152,7 +156,7 @@ nrf_sortlist_item_t const *nrf_sortlist_peek(nrf_sortlist_t const *p_list);
  *
  * @return Pointer to the next item in the list.
  */
-nrf_sortlist_item_t const *nrf_sortlist_next(nrf_sortlist_item_t const *p_item);
+nrf_sortlist_item_t const * nrf_sortlist_next(nrf_sortlist_item_t const * p_item);
 
 /**
  * @brief Function for removing an item from the queue.
@@ -163,7 +167,7 @@ nrf_sortlist_item_t const *nrf_sortlist_next(nrf_sortlist_item_t const *p_item);
  * @retval true  Item was found and removed.
  * @retval false Item not found in the list.
  */
-bool nrf_sortlist_remove(nrf_sortlist_t const *p_list, nrf_sortlist_item_t *p_item);
+bool nrf_sortlist_remove(nrf_sortlist_t const * p_list, nrf_sortlist_item_t * p_item);
 
 /** @} */
 
@@ -172,3 +176,4 @@ bool nrf_sortlist_remove(nrf_sortlist_t const *p_list, nrf_sortlist_item_t *p_it
 #endif
 
 #endif //NRF_SORTLIST_H
+

@@ -42,16 +42,17 @@
 /*************************************************************************************************/
 void HciLeSetPerAdvRcvEnableCmd(uint16_t syncHandle, uint8_t enable)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PER_ADV_RCV_ENABLE,
-                            HCI_LEN_LE_SET_PER_ADV_RCV_ENABLE)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT16_TO_BSTREAM(p, syncHandle);
-        UINT8_TO_BSTREAM(p, enable);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PER_ADV_RCV_ENABLE,
+                          HCI_LEN_LE_SET_PER_ADV_RCV_ENABLE)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT16_TO_BSTREAM(p, syncHandle);
+    UINT8_TO_BSTREAM(p, enable);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -67,17 +68,18 @@ void HciLeSetPerAdvRcvEnableCmd(uint16_t syncHandle, uint8_t enable)
 /*************************************************************************************************/
 void HciLePerAdvSyncTrsfCmd(uint16_t connHandle, uint16_t serviceData, uint16_t syncHandle)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_SYNC_TRANSFER,
-                            HCI_LEN_LE_PER_ADV_SYNC_TRANSFER)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT16_TO_BSTREAM(p, connHandle);
-        UINT16_TO_BSTREAM(p, serviceData);
-        UINT16_TO_BSTREAM(p, syncHandle);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_SYNC_TRANSFER,
+                          HCI_LEN_LE_PER_ADV_SYNC_TRANSFER)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT16_TO_BSTREAM(p, connHandle);
+    UINT16_TO_BSTREAM(p, serviceData);
+    UINT16_TO_BSTREAM(p, syncHandle);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -93,17 +95,18 @@ void HciLePerAdvSyncTrsfCmd(uint16_t connHandle, uint16_t serviceData, uint16_t 
 /*************************************************************************************************/
 void HciLePerAdvSetInfoTrsfCmd(uint16_t connHandle, uint16_t serviceData, uint8_t advHandle)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_SET_INFO_TRANSFER,
-                            HCI_LEN_LE_PER_ADV_SET_INFO_TRANSFER)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT16_TO_BSTREAM(p, connHandle);
-        UINT16_TO_BSTREAM(p, serviceData);
-        UINT8_TO_BSTREAM(p, advHandle);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_PER_ADV_SET_INFO_TRANSFER,
+                          HCI_LEN_LE_PER_ADV_SET_INFO_TRANSFER)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT16_TO_BSTREAM(p, connHandle);
+    UINT16_TO_BSTREAM(p, serviceData);
+    UINT8_TO_BSTREAM(p, advHandle);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -123,18 +126,19 @@ void HciLePerAdvSetInfoTrsfCmd(uint16_t connHandle, uint16_t serviceData, uint8_
 void HciLeSetPerAdvSyncTrsfParamsCmd(uint16_t connHandle, uint8_t mode, uint16_t skip,
                                      uint16_t syncTimeout, uint8_t cteType)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PAST_PARAM, HCI_LEN_LE_SET_PAST_PARAM)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT16_TO_BSTREAM(p, connHandle);
-        UINT8_TO_BSTREAM(p, mode);
-        UINT16_TO_BSTREAM(p, skip);
-        UINT16_TO_BSTREAM(p, syncTimeout);
-        UINT8_TO_BSTREAM(p, cteType);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_PAST_PARAM, HCI_LEN_LE_SET_PAST_PARAM)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT16_TO_BSTREAM(p, connHandle);
+    UINT8_TO_BSTREAM(p, mode);
+    UINT16_TO_BSTREAM(p, skip);
+    UINT16_TO_BSTREAM(p, syncTimeout);
+    UINT8_TO_BSTREAM(p, cteType);
+    hciCmdSend(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -151,18 +155,19 @@ void HciLeSetPerAdvSyncTrsfParamsCmd(uint16_t connHandle, uint8_t mode, uint16_t
 */
 /*************************************************************************************************/
 void HciLeSetDefaultPerAdvSyncTrsfParamsCmd(uint8_t mode, uint16_t skip, uint16_t syncTimeout,
-                                            uint8_t cteType)
+                                           uint8_t cteType)
 {
-    uint8_t *pBuf;
-    uint8_t *p;
+  uint8_t *pBuf;
+  uint8_t *p;
 
-    if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_DEFAULT_PAST_PARAM,
-                            HCI_LEN_LE_SET_DEFAULT_PAST_PARAM)) != NULL) {
-        p = pBuf + HCI_CMD_HDR_LEN;
-        UINT8_TO_BSTREAM(p, mode);
-        UINT16_TO_BSTREAM(p, skip);
-        UINT16_TO_BSTREAM(p, syncTimeout);
-        UINT8_TO_BSTREAM(p, cteType);
-        hciCmdSend(pBuf);
-    }
+  if ((pBuf = hciCmdAlloc(HCI_OPCODE_LE_SET_DEFAULT_PAST_PARAM,
+                          HCI_LEN_LE_SET_DEFAULT_PAST_PARAM)) != NULL)
+  {
+    p = pBuf + HCI_CMD_HDR_LEN;
+    UINT8_TO_BSTREAM(p, mode);
+    UINT16_TO_BSTREAM(p, skip);
+    UINT16_TO_BSTREAM(p, syncTimeout);
+    UINT8_TO_BSTREAM(p, cteType);
+    hciCmdSend(pBuf);
+  }
 }

@@ -65,6 +65,7 @@ typedef struct {
     uint8_t none;
 } app_usbd_dummy_ctx_t;
 
+
 /**
  * @brief Dummy configuration macro.
  *
@@ -73,6 +74,7 @@ typedef struct {
  * @param iface Interface number.
  * */
 #define APP_USBD_DUMMY_CONFIG(iface) (iface)
+
 
 /**
  * @brief Specific class constant data for Dummy.
@@ -88,16 +90,23 @@ typedef struct {
  * */
 #define APP_USBD_DUMMY_DATA_SPECIFIC_DEC app_usbd_dummy_ctx_t ctx;
 
+
 /** @brief Public Dummy class interface */
 extern const app_usbd_class_methods_t app_usbd_dummy_class_methods;
 
 /** @brief Global definition of Dummy instance */
-#define APP_USBD_DUMMY_GLOBAL_DEF_INTERNAL(instance_name, interface_number) \
-    APP_USBD_CLASS_INST_NO_EP_GLOBAL_DEF(instance_name, app_usbd_dummy,     \
-                                         &app_usbd_dummy_class_methods,     \
-                                         APP_USBD_DUMMY_CONFIG((interface_number)), ())
+#define APP_USBD_DUMMY_GLOBAL_DEF_INTERNAL(instance_name, interface_number)                        \
+    APP_USBD_CLASS_INST_NO_EP_GLOBAL_DEF(                                                          \
+        instance_name,                                                                             \
+        app_usbd_dummy,                                                                            \
+        &app_usbd_dummy_class_methods,                                                             \
+        APP_USBD_DUMMY_CONFIG((interface_number)),                                                 \
+        ()                                                                                         \
+    )
+
 
 /** @} */
+
 
 #ifdef __cplusplus
 }

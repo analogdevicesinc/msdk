@@ -70,6 +70,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+
 /**
  * Length of the encryption key.
  */
@@ -84,6 +85,7 @@ extern "C" {
  * Length of the authentication tag.
  */
 #define ocrypto_chacha20_poly1305_TAG_BYTES (16)
+
 
 /**@{*/
 /**
@@ -111,10 +113,12 @@ extern "C" {
  * @remark When reusing an encryption key @p k for a different message @p m, a
  *         different nonce @p n must be used.
  */
-void ocrypto_chacha20_poly1305_encrypt(uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES], uint8_t *c,
-                                       const uint8_t *m, size_t m_len, const uint8_t *n,
-                                       size_t n_len,
-                                       const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
+void ocrypto_chacha20_poly1305_encrypt(
+    uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES],
+    uint8_t *c,
+    const uint8_t *m, size_t m_len,
+    const uint8_t *n, size_t n_len,
+    const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
 
 /**
  * AEAD ChaCha20-Poly1305 encrypt with AAD.
@@ -143,11 +147,13 @@ void ocrypto_chacha20_poly1305_encrypt(uint8_t tag[ocrypto_chacha20_poly1305_TAG
  *         different additional authenticated data @p a, a different nonce @p n
  *         must be used.
  */
-void ocrypto_chacha20_poly1305_encrypt_aad(uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES],
-                                           uint8_t *c, const uint8_t *m, size_t m_len,
-                                           const uint8_t *a, size_t a_len, const uint8_t *n,
-                                           size_t n_len,
-                                           const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
+void ocrypto_chacha20_poly1305_encrypt_aad(
+    uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES],
+    uint8_t *c,
+    const uint8_t *m, size_t m_len,
+    const uint8_t *a, size_t a_len,
+    const uint8_t *n, size_t n_len,
+    const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
 /**@}*/
 
 /**@{*/
@@ -172,10 +178,12 @@ void ocrypto_chacha20_poly1305_encrypt_aad(uint8_t tag[ocrypto_chacha20_poly1305
  *
  * @remark @p m and @p c can point to the same address.
  */
-int ocrypto_chacha20_poly1305_decrypt(const uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES],
-                                      uint8_t *m, const uint8_t *c, size_t c_len, const uint8_t *n,
-                                      size_t n_len,
-                                      const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
+int ocrypto_chacha20_poly1305_decrypt(
+    const uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES],
+    uint8_t *m,
+    const uint8_t *c, size_t c_len,
+    const uint8_t *n, size_t n_len,
+    const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
 
 /**
  * AEAD ChaCha20-Poly1305 decrypt with AAD.
@@ -200,11 +208,13 @@ int ocrypto_chacha20_poly1305_decrypt(const uint8_t tag[ocrypto_chacha20_poly130
  *
  * @remark @p m and @p c can point to the same address.
  */
-int ocrypto_chacha20_poly1305_decrypt_aad(const uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES],
-                                          uint8_t *m, const uint8_t *c, size_t c_len,
-                                          const uint8_t *a, size_t a_len, const uint8_t *n,
-                                          size_t n_len,
-                                          const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
+int ocrypto_chacha20_poly1305_decrypt_aad(
+    const uint8_t tag[ocrypto_chacha20_poly1305_TAG_BYTES],
+    uint8_t *m,
+    const uint8_t *c, size_t c_len,
+    const uint8_t *a, size_t a_len,
+    const uint8_t *n, size_t n_len,
+    const uint8_t k[ocrypto_chacha20_poly1305_KEY_BYTES]);
 /**@}*/
 
 #ifdef __cplusplus

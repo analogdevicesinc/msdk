@@ -62,23 +62,28 @@
 extern "C" {
 #endif
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_RNG)
 #error "More than one RNG backend enabled."
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_RNG)
 #define NRF_CRYPTO_RNG_ENABLED 1
 
+
 /**
  * @internal @brief Internal context for CC310 RNG.
  */
-typedef struct {
-    nrf_crypto_rng_internal_context_t header; //!< Internal common context header.
-    CRYS_RND_State_t crys_rnd_state; //!< CC310 RNG context
+typedef struct
+{
+    nrf_crypto_rng_internal_context_t   header;         //!< Internal common context header.
+    CRYS_RND_State_t                    crys_rnd_state; //!< CC310 RNG context
 } nrf_crypto_backend_rng_context_t;
+
 
 /**
  * @internal @brief Temporary work buffer needed during initialization of the CC310 backend.
  */
 typedef CRYS_RND_WorkBuff_t nrf_crypto_backend_rng_temp_buffer_t;
+
 
 #ifdef __cplusplus
 }

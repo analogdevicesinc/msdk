@@ -27,7 +27,8 @@
 #define MMDL_LIGHT_CTL_TEMP_SR_MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,7 +36,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*!  Timeout for filtering duplicate messages from same source */
-#define MSG_RCVD_TIMEOUT_MS 6000
+#define MSG_RCVD_TIMEOUT_MS                 6000
 
 /**************************************************************************************************
   Function Declarations

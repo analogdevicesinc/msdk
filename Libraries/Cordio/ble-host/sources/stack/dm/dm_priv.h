@@ -40,92 +40,105 @@ extern "C" {
 **************************************************************************************************/
 
 /* DM privacy event handler messages */
-enum {
-    DM_PRIV_MSG_API_RESOLVE_ADDR = DM_MSG_START(DM_ID_PRIV),
-    DM_PRIV_MSG_API_ADD_DEV_TO_RES_LIST,
-    DM_PRIV_MSG_API_REM_DEV_FROM_RES_LIST,
-    DM_PRIV_MSG_API_CLEAR_RES_LIST,
-    DM_PRIV_MSG_API_SET_ADDR_RES_ENABLE,
-    DM_PRIV_MSG_API_SET_PRIVACY_MODE,
-    DM_PRIV_MSG_API_GEN_ADDR
+enum
+{
+  DM_PRIV_MSG_API_RESOLVE_ADDR = DM_MSG_START(DM_ID_PRIV),
+  DM_PRIV_MSG_API_ADD_DEV_TO_RES_LIST,
+  DM_PRIV_MSG_API_REM_DEV_FROM_RES_LIST,
+  DM_PRIV_MSG_API_CLEAR_RES_LIST,
+  DM_PRIV_MSG_API_SET_ADDR_RES_ENABLE,
+  DM_PRIV_MSG_API_SET_PRIVACY_MODE,
+  DM_PRIV_MSG_API_GEN_ADDR
 };
 
 /* DM privacy AES event handler messages */
-enum { DM_PRIV_MSG_RESOLVE_AES_CMPL = DM_MSG_START(DM_ID_PRIV_AES), DM_PRIV_MSG_GEN_ADDR_AES_CMPL };
+enum
+{
+  DM_PRIV_MSG_RESOLVE_AES_CMPL = DM_MSG_START(DM_ID_PRIV_AES),
+  DM_PRIV_MSG_GEN_ADDR_AES_CMPL
+};
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /* Data structure for DM_PRIV_MSG_API_RESOLVE_ADDR */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t irk[SMP_KEY_LEN];
-    bdAddr_t addr;
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  uint8_t                 irk[SMP_KEY_LEN];
+  bdAddr_t                addr;
 } dmPrivApiResolveAddr_t;
 
 /* Data structure for DM_PRIV_MSG_API_GEN_ADDR */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t irk[SMP_KEY_LEN];
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  uint8_t                 irk[SMP_KEY_LEN];
 } dmPrivApiGenAddr_t;
 
 /* Data structure for DM_PRIV_MSG_API_ADD_DEV_TO_RES_LIST */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t addrType;
-    bdAddr_t peerAddr;
-    uint8_t peerIrk[SMP_KEY_LEN];
-    uint8_t localIrk[SMP_KEY_LEN];
-    bool_t enableLlPriv;
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  uint8_t                 addrType;
+  bdAddr_t                peerAddr;
+  uint8_t                 peerIrk[SMP_KEY_LEN];
+  uint8_t                 localIrk[SMP_KEY_LEN];
+  bool_t                  enableLlPriv;
 } dmPrivApiAddDevToResList_t;
 
 /* Data structure for DM_PRIV_MSG_API_REM_DEV_FROM_RES_LIST */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t addrType;
-    bdAddr_t peerAddr;
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  uint8_t                 addrType;
+  bdAddr_t                peerAddr;
 } dmPrivApiRemDevFromResList_t;
 
 /* Data structure for DM_PRIV_MSG_API_SET_ADDR_RES_ENABLE */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    bool_t enable;
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  bool_t                  enable;
 } dmPrivApiSetAddrResEnable_t;
 
 /* Data structure for DM_PRIV_MSG_API_SET_PRIVACY_MODE */
-typedef struct {
-    wsfMsgHdr_t hdr;
-    uint8_t addrType;
-    bdAddr_t peerAddr;
-    uint8_t mode;
+typedef struct
+{
+  wsfMsgHdr_t             hdr;
+  uint8_t                 addrType;
+  bdAddr_t                peerAddr;
+  uint8_t                 mode;
 } dmPrivApiSetPrivacyMode_t;
 
 /* Union of all privacy messages */
-typedef union {
-    wsfMsgHdr_t hdr;
-    dmPrivApiResolveAddr_t apiResolveAddr;
-    dmPrivApiAddDevToResList_t apiAddDevToResList;
-    dmPrivApiRemDevFromResList_t apiRemDevFromResList;
-    dmPrivApiSetAddrResEnable_t apiSetAddrResEnable;
-    dmPrivApiSetPrivacyMode_t apiSetPrivacyMode;
-    dmPrivApiGenAddr_t apiGenerateAddr;
-    dmPrivGenAddrIndEvt_t genAddrInd;
-    secAes_t aes;
+typedef union
+{
+  wsfMsgHdr_t                  hdr;
+  dmPrivApiResolveAddr_t       apiResolveAddr;
+  dmPrivApiAddDevToResList_t   apiAddDevToResList;
+  dmPrivApiRemDevFromResList_t apiRemDevFromResList;
+  dmPrivApiSetAddrResEnable_t  apiSetAddrResEnable;
+  dmPrivApiSetPrivacyMode_t    apiSetPrivacyMode;
+  dmPrivApiGenAddr_t           apiGenerateAddr;
+  dmPrivGenAddrIndEvt_t        genAddrInd;
+  secAes_t                     aes;
 } dmPrivMsg_t;
 
 /* Action function */
 typedef void (*dmPrivAct_t)(dmPrivMsg_t *pMsg);
 
 /* Control block for privacy module */
-typedef struct {
-    uint8_t hash[DM_PRIV_HASH_LEN]; /* Hash part of resolvable address */
-    bool_t inProgress; /* Address resolution in progress */
-    uint16_t addDevToResListParam; /* 'Add device to resolving list' callback param */
-    uint16_t remDevFromResListParam; /* 'Remove device from resolving list' callback param */
-    bool_t enableLlPriv; /* 'Add device to resolving list' input param */
-    bool_t addrResEnable; /* 'Set address resolution enable' input param */
-    uint8_t genAddrBuf[HCI_ENCRYPT_DATA_LEN]; /* Random value buffer for generating an RPA */
+typedef struct
+{
+  uint8_t     hash[DM_PRIV_HASH_LEN];            /* Hash part of resolvable address */
+  bool_t      inProgress;                        /* Address resolution in progress */
+  uint16_t    addDevToResListParam;              /* 'Add device to resolving list' callback param */
+  uint16_t    remDevFromResListParam;            /* 'Remove device from resolving list' callback param */
+  bool_t      enableLlPriv;                      /* 'Add device to resolving list' input param */
+  bool_t      addrResEnable;                     /* 'Set address resolution enable' input param */
+  uint8_t     genAddrBuf[HCI_ENCRYPT_DATA_LEN];  /* Random value buffer for generating an RPA */
 } dmPrivCb_t;
 
 /**************************************************************************************************

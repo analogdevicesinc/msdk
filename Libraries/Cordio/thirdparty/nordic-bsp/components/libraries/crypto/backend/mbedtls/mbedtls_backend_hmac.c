@@ -46,13 +46,15 @@
 #include "nrf_crypto_types.h"
 #include "mbedtls_backend_hmac.h"
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA256)
 
-static ret_code_t mbedtls_backend_hmac_init_sha256(void *const p_context, uint8_t const *p_key,
-                                                   size_t key_size)
+static ret_code_t mbedtls_backend_hmac_init_sha256(void     * const p_context,
+                                                   uint8_t  const * p_key,
+                                                   size_t           key_size)
 {
     int err_code;
-    nrf_crypto_backend_mbedtls_hmac_sha256_context_t *p_ctx =
+    nrf_crypto_backend_mbedtls_hmac_sha256_context_t * p_ctx =
         (nrf_crypto_backend_mbedtls_hmac_sha256_context_t *)p_context;
 
     // Memset context to 0. This is equevalend with a call to mbedtls_md_init().
@@ -67,9 +69,12 @@ static ret_code_t mbedtls_backend_hmac_init_sha256(void *const p_context, uint8_
     p_ctx->mbedtls_ctx.hmac_ctx = p_ctx->hmac_ctx_buffer;
 
     // Enter key to start
-    err_code = mbedtls_md_hmac_starts(&p_ctx->mbedtls_ctx, p_key, key_size);
+    err_code = mbedtls_md_hmac_starts(&p_ctx->mbedtls_ctx,
+                                      p_key,
+                                      key_size);
 
-    if (err_code != 0) {
+    if (err_code != 0)
+    {
         NRF_LOG_ERROR("Error in mbedtls_md_hmac_starts: %u", err_code);
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
@@ -77,15 +82,18 @@ static ret_code_t mbedtls_backend_hmac_init_sha256(void *const p_context, uint8_
     return NRF_SUCCESS;
 }
 
-static ret_code_t mbedtls_backend_hmac_update_sha256(void *const p_context, uint8_t const *p_data,
-                                                     size_t size)
+
+static ret_code_t mbedtls_backend_hmac_update_sha256(void       * const p_context,
+                                                     uint8_t    const * p_data,
+                                                     size_t             size)
 {
     int err_code;
-    nrf_crypto_backend_mbedtls_hmac_sha256_context_t *p_ctx =
+    nrf_crypto_backend_mbedtls_hmac_sha256_context_t * p_ctx =
         (nrf_crypto_backend_mbedtls_hmac_sha256_context_t *)p_context;
 
     err_code = mbedtls_md_hmac_update(&p_ctx->mbedtls_ctx, p_data, size);
-    if (err_code != 0) {
+    if (err_code != 0)
+    {
         NRF_LOG_ERROR("Error in mbedtls_md_hmac_update: %u", err_code);
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
@@ -93,18 +101,21 @@ static ret_code_t mbedtls_backend_hmac_update_sha256(void *const p_context, uint
     return NRF_SUCCESS;
 }
 
-static ret_code_t mbedtls_backend_hmac_finalize_sha256(void *const p_context, uint8_t *p_digest,
-                                                       size_t *const p_size)
+
+static ret_code_t mbedtls_backend_hmac_finalize_sha256(void     * const p_context,
+                                                       uint8_t        * p_digest,
+                                                       size_t   * const p_size)
 {
     int err_code;
-    nrf_crypto_backend_mbedtls_hmac_sha256_context_t *const p_ctx =
+    nrf_crypto_backend_mbedtls_hmac_sha256_context_t * const p_ctx =
         (nrf_crypto_backend_mbedtls_hmac_sha256_context_t *)p_context;
 
     // Set the digest length to 0 so that this is used in case of any error.
     *p_size = 0;
 
     err_code = mbedtls_md_hmac_finish(&p_ctx->mbedtls_ctx, p_digest);
-    if (err_code != 0) {
+    if (err_code != 0)
+    {
         NRF_LOG_ERROR("Error in mbedtls_md_hmac_finish: %u", err_code);
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
@@ -114,25 +125,30 @@ static ret_code_t mbedtls_backend_hmac_finalize_sha256(void *const p_context, ui
     return NRF_SUCCESS;
 }
 
+
 // Information structure for HMAC SHA256 using mbed TLS backend.
-const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha256_info = {
-    .init_fn = mbedtls_backend_hmac_init_sha256,
-    .update_fn = mbedtls_backend_hmac_update_sha256,
-    .finalize_fn = mbedtls_backend_hmac_finalize_sha256,
-    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA256,
-    .context_size = sizeof(nrf_crypto_backend_hmac_sha256_context_t),
-    .type = NRF_CRYPTO_HMAC_SHA256_TYPE
+const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha256_info =
+{
+    .init_fn        = mbedtls_backend_hmac_init_sha256,
+    .update_fn      = mbedtls_backend_hmac_update_sha256,
+    .finalize_fn    = mbedtls_backend_hmac_finalize_sha256,
+    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA256,
+    .context_size   = sizeof(nrf_crypto_backend_hmac_sha256_context_t),
+    .type           = NRF_CRYPTO_HMAC_SHA256_TYPE
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA256)
 
+
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA512)
 
-static ret_code_t mbedtls_backend_hmac_init_sha512(void *const p_context, uint8_t const *p_key,
-                                                   size_t key_size)
+static ret_code_t mbedtls_backend_hmac_init_sha512(void     * const p_context,
+                                                   uint8_t  const * p_key,
+                                                   size_t           key_size)
 {
     int err_code;
-    nrf_crypto_backend_mbedtls_hmac_sha512_context_t *p_ctx =
+    nrf_crypto_backend_mbedtls_hmac_sha512_context_t * p_ctx =
         (nrf_crypto_backend_mbedtls_hmac_sha512_context_t *)p_context;
 
     // Memset context to 0. This is equevalend with a call to mbedtls_md_init().
@@ -147,7 +163,8 @@ static ret_code_t mbedtls_backend_hmac_init_sha512(void *const p_context, uint8_
 
     // Enter key to start
     err_code = mbedtls_md_hmac_starts(&p_ctx->mbedtls_ctx, p_key, key_size);
-    if (err_code != 0) {
+    if (err_code != 0)
+    {
         NRF_LOG_ERROR("Error in mbedtls_md_hmac_starts: %u", err_code);
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
@@ -155,15 +172,18 @@ static ret_code_t mbedtls_backend_hmac_init_sha512(void *const p_context, uint8_
     return NRF_SUCCESS;
 }
 
-static ret_code_t mbedtls_backend_hmac_update_sha512(void *const p_context, uint8_t const *p_data,
-                                                     size_t size)
+
+static ret_code_t mbedtls_backend_hmac_update_sha512(void       * const p_context,
+                                                     uint8_t    const * p_data,
+                                                     size_t             size)
 {
     int err_code;
-    nrf_crypto_backend_mbedtls_hmac_sha512_context_t *p_ctx =
+    nrf_crypto_backend_mbedtls_hmac_sha512_context_t * p_ctx =
         (nrf_crypto_backend_mbedtls_hmac_sha512_context_t *)p_context;
 
     err_code = mbedtls_md_hmac_update(&p_ctx->mbedtls_ctx, p_data, size);
-    if (err_code != 0) {
+    if (err_code != 0)
+    {
         NRF_LOG_ERROR("Error in mbedtls_md_hmac_update: %u", err_code);
         return NRF_ERROR_CRYPTO_INTERNAL;
     }
@@ -171,35 +191,39 @@ static ret_code_t mbedtls_backend_hmac_update_sha512(void *const p_context, uint
     return NRF_SUCCESS;
 }
 
-static ret_code_t mbedtls_backend_hmac_finalize_sha512(void *const p_context, uint8_t *p_digest,
-                                                       size_t *const p_size)
+
+static ret_code_t mbedtls_backend_hmac_finalize_sha512(void     * const p_context,
+                                                       uint8_t        * p_digest,
+                                                       size_t   * const p_size)
 {
     int err_code;
-    nrf_crypto_backend_mbedtls_hmac_sha512_context_t *p_ctx =
+    nrf_crypto_backend_mbedtls_hmac_sha512_context_t * p_ctx =
         (nrf_crypto_backend_mbedtls_hmac_sha512_context_t *)p_context;
 
     // Set the digest length to 0 so that this is used in case of any error.
     *p_size = 0;
 
     err_code = mbedtls_md_hmac_finish(&p_ctx->mbedtls_ctx, p_digest);
-    if (err_code != 0) {
+    if (err_code != 0)
+    {
         NRF_LOG_ERROR("Error in mbedtls_md_hmac_finish: %u", err_code);
-        return NRF_ERROR_CRYPTO_INTERNAL;
-    }
+        return NRF_ERROR_CRYPTO_INTERNAL;    }
 
     *p_size = p_ctx->header.p_info->digest_size;
 
     return NRF_SUCCESS;
 }
 
+
 // Information structure for HMAC SHA512 using mbed TLS backend.
-const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha512_info = {
-    .init_fn = mbedtls_backend_hmac_init_sha512,
-    .update_fn = mbedtls_backend_hmac_update_sha512,
-    .finalize_fn = mbedtls_backend_hmac_finalize_sha512,
-    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA512,
-    .context_size = sizeof(nrf_crypto_backend_hmac_sha512_context_t),
-    .type = NRF_CRYPTO_HMAC_SHA512_TYPE
+const nrf_crypto_hmac_info_t g_nrf_crypto_hmac_sha512_info =
+{
+    .init_fn        = mbedtls_backend_hmac_init_sha512,
+    .update_fn      = mbedtls_backend_hmac_update_sha512,
+    .finalize_fn    = mbedtls_backend_hmac_finalize_sha512,
+    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA512,
+    .context_size   = sizeof(nrf_crypto_backend_hmac_sha512_context_t),
+    .type           = NRF_CRYPTO_HMAC_SHA512_TYPE
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MBEDTLS_HMAC_SHA512)

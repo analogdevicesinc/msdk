@@ -48,26 +48,28 @@
 
 #include "sdk_errors.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-#define NRF_CRYPTO_INTERNAL_ECC_PRIVATE_KEY_INIT_VALUE \
-    (0x4D465276) /**< @internal @brief Init value for all ECC private keys. ASCII "nRFv". */
-#define NRF_CRYPTO_INTERNAL_ECC_PUBLIC_KEY_INIT_VALUE \
-    (0x4D465270) /**< @internal @brief Init value for all ECC public keys. ASCII "nRFp". */
+
+#define NRF_CRYPTO_INTERNAL_ECC_PRIVATE_KEY_INIT_VALUE (0x4D465276) /**< @internal @brief Init value for all ECC private keys. ASCII "nRFv". */
+#define NRF_CRYPTO_INTERNAL_ECC_PUBLIC_KEY_INIT_VALUE  (0x4D465270) /**< @internal @brief Init value for all ECC public keys. ASCII "nRFp". */
+
 
 // Forward declaration only
 struct nrf_crypto_ecc_curve_info_s;
 
+
 /** @brief Header structure at the beginning of each key structure.
  */
-typedef struct {
-    uint32_t
-        init_value; /**< @internal @brief Init value to check if key was correctly initialized. */
-    struct nrf_crypto_ecc_curve_info_s const *
-        p_info; /**< @internal @brief Points to information structure of an associated curve type. */
+typedef struct
+{
+    uint32_t                                   init_value;    /**< @internal @brief Init value to check if key was correctly initialized. */
+    struct nrf_crypto_ecc_curve_info_s const * p_info;        /**< @internal @brief Points to information structure of an associated curve type. */
 } nrf_crypto_internal_ecc_key_header_t;
+
 
 /** @internal @brief Function pointer for backend implementation of a key pair garatarion.
  *
@@ -79,9 +81,11 @@ typedef struct {
  * @param[out] p_private_key  Pointer where to put new private key.
  * @param[out] p_public_key   Pointer where to put new public key.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecc_key_pair_generate_fn_t)(void *p_context,
-                                                                    void *p_private_key,
-                                                                    void *p_public_key);
+typedef ret_code_t (*nrf_crypto_backend_ecc_key_pair_generate_fn_t)(
+    void * p_context,
+    void * p_private_key,
+    void * p_public_key);
+
 
 /** @internal @brief Function pointer for backend implementation of a public key calculation.
  *
@@ -93,9 +97,11 @@ typedef ret_code_t (*nrf_crypto_backend_ecc_key_pair_generate_fn_t)(void *p_cont
  * @param[in]  p_private_key  Pointer to private key.
  * @param[out] p_public_key   Pointer where to put new public key.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecc_public_key_calculate_fn_t)(void *p_context,
-                                                                       void const *p_private_key,
-                                                                       void *p_public_key);
+typedef ret_code_t (*nrf_crypto_backend_ecc_public_key_calculate_fn_t)(
+    void       * p_context,
+    void const * p_private_key,
+    void       * p_public_key);
+
 
 /** @internal @brief Function pointer for backend implementation of raw to private key conversion.
  *
@@ -106,8 +112,10 @@ typedef ret_code_t (*nrf_crypto_backend_ecc_public_key_calculate_fn_t)(void *p_c
  * @param[out] p_private_key  Pointer where to put new private key.
  * @param[in]  p_raw_data     Pointer to raw data.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecc_private_key_from_raw_fn_t)(void *p_private_key,
-                                                                       uint8_t const *p_raw_data);
+typedef ret_code_t (*nrf_crypto_backend_ecc_private_key_from_raw_fn_t)(
+    void          * p_private_key,
+    uint8_t const * p_raw_data);
+
 
 /** @internal @brief Function pointer for backend implementation of private key to raw conversion.
  *
@@ -118,8 +126,10 @@ typedef ret_code_t (*nrf_crypto_backend_ecc_private_key_from_raw_fn_t)(void *p_p
  * @param[in]  p_private_key  Pointer to private key.
  * @param[out] p_raw_data     Pointer where to put raw data.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecc_private_key_to_raw_fn_t)(void const *p_private_key,
-                                                                     uint8_t *p_raw_data);
+typedef ret_code_t (*nrf_crypto_backend_ecc_private_key_to_raw_fn_t)(
+    void    const * p_private_key,
+    uint8_t       * p_raw_data);
+
 
 /** @internal @brief Function pointer for backend implementation of raw to public key conversion.
  *
@@ -130,8 +140,10 @@ typedef ret_code_t (*nrf_crypto_backend_ecc_private_key_to_raw_fn_t)(void const 
  * @param[out] p_public_key  Pointer where to put new public key.
  * @param[in]  p_raw_data    Pointer to raw data.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecc_public_key_from_raw_fn_t)(void *p_public_key,
-                                                                      uint8_t const *p_raw_data);
+typedef ret_code_t (*nrf_crypto_backend_ecc_public_key_from_raw_fn_t)(
+    void          * p_public_key,
+    uint8_t const * p_raw_data);
+
 
 /** @internal @brief Function pointer for backend implementation of public key to raw conversion.
  *
@@ -142,8 +154,10 @@ typedef ret_code_t (*nrf_crypto_backend_ecc_public_key_from_raw_fn_t)(void *p_pu
  * @param[in]  p_public_key  Pointer to public key.
  * @param[out] p_raw_data    Pointer where to put raw data.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecc_public_key_to_raw_fn_t)(void const *p_public_key,
-                                                                    uint8_t *p_raw_data);
+typedef ret_code_t (*nrf_crypto_backend_ecc_public_key_to_raw_fn_t)(
+    void    const * p_public_key,
+    uint8_t       * p_raw_data);
+
 
 /** @internal @brief Function pointer for backend implementation of key (public or private) deallocation.
  *
@@ -153,7 +167,9 @@ typedef ret_code_t (*nrf_crypto_backend_ecc_public_key_to_raw_fn_t)(void const *
  *
  * @param[in]  p_key  Pointer to public or private key.
  */
-typedef ret_code_t (*nrf_crypto_backend_ecc_key_free_fn_t)(void *p_key);
+typedef ret_code_t (*nrf_crypto_backend_ecc_key_free_fn_t)(
+    void * p_key);
+
 
 /** @internal @brief Function for checking and preparing ECC key output parameter.
  *
@@ -161,9 +177,10 @@ typedef ret_code_t (*nrf_crypto_backend_ecc_key_free_fn_t)(void *p_key);
  * @param[out] p_key_header  Key header that have to be prepared.
  * @return                   NRF_SUCCESS if parameters are valid, error otherwise.
  */
-ret_code_t
-nrf_crypto_internal_ecc_key_output_prepare(struct nrf_crypto_ecc_curve_info_s const *p_curve_info,
-                                           nrf_crypto_internal_ecc_key_header_t *p_key_header);
+ret_code_t nrf_crypto_internal_ecc_key_output_prepare(
+    struct nrf_crypto_ecc_curve_info_s   const * p_curve_info,
+    nrf_crypto_internal_ecc_key_header_t       * p_key_header);
+
 
 /** @internal @brief Function for checking ECC key input parameter.
  *
@@ -171,9 +188,10 @@ nrf_crypto_internal_ecc_key_output_prepare(struct nrf_crypto_ecc_curve_info_s co
  * @param[in] init_value   Expected init value in this key.
  * @return                 NRF_SUCCESS if parameter is valid, error otherwise.
  */
-ret_code_t
-nrf_crypto_internal_ecc_key_input_check(nrf_crypto_internal_ecc_key_header_t const *p_key_header,
-                                        uint32_t init_value);
+ret_code_t nrf_crypto_internal_ecc_key_input_check(
+    nrf_crypto_internal_ecc_key_header_t const * p_key_header,
+    uint32_t                                     init_value);
+
 
 /** @internal @brief Function for checking and preparing raw data output parameter.
  *
@@ -184,8 +202,11 @@ nrf_crypto_internal_ecc_key_input_check(nrf_crypto_internal_ecc_key_header_t con
  * @param[in]     expected_size   Size of output data that will be written to the buffer.
  * @return                        NRF_SUCCESS if parameters are valid, error otherwise.
  */
-ret_code_t nrf_crypto_internal_ecc_raw_output_prepare(uint8_t *p_raw_data, size_t *p_raw_data_size,
-                                                      size_t expected_size);
+ret_code_t nrf_crypto_internal_ecc_raw_output_prepare(
+    uint8_t    * p_raw_data,
+    size_t     * p_raw_data_size,
+    size_t       expected_size);
+
 
 /** @internal @brief Function for checking raw data input parameter.
  *
@@ -194,8 +215,11 @@ ret_code_t nrf_crypto_internal_ecc_raw_output_prepare(uint8_t *p_raw_data, size_
  * @param[in] expected_size  Expected size of the data.
  * @return                   NRF_SUCCESS if parameters are valid, error otherwise.
  */
-ret_code_t nrf_crypto_internal_ecc_raw_input_check(uint8_t const *p_raw_data, size_t raw_data_size,
-                                                   size_t expected_size);
+ret_code_t nrf_crypto_internal_ecc_raw_input_check(
+    uint8_t const * p_raw_data,
+    size_t          raw_data_size,
+    size_t          expected_size);
+
 
 #ifdef __cplusplus
 }

@@ -52,13 +52,12 @@
 void HciLeSetExtScanParamCmd(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_t scanPhys,
                              hciExtScanParam_t *pScanParam)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status =
-        LlSetExtScanParam(ownAddrType, scanFiltPolicy, scanPhys, (LlExtScanParam_t *)pScanParam);
-    (void)status;
+  status = LlSetExtScanParam(ownAddrType, scanFiltPolicy, scanPhys, (LlExtScanParam_t *)pScanParam);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -75,7 +74,7 @@ void HciLeSetExtScanParamCmd(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_
 /*************************************************************************************************/
 void HciLeExtScanEnableCmd(uint8_t enable, uint8_t filterDup, uint16_t duration, uint16_t period)
 {
-    LlExtScanEnable(enable, filterDup, duration, period);
+  LlExtScanEnable(enable, filterDup, duration, period);
 }
 
 /*************************************************************************************************/
@@ -92,13 +91,13 @@ void HciLeExtScanEnableCmd(uint8_t enable, uint8_t filterDup, uint16_t duration,
 void HciLeExtCreateConnCmd(hciExtInitParam_t *pInitParam, hciExtInitScanParam_t *pScanParam,
                            hciConnSpec_t *pConnSpec)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status = LlExtCreateConn((LlExtInitParam_t *)pInitParam, (LlExtInitScanParam_t *)pScanParam,
-                             (LlConnSpec_t *)pConnSpec);
-    (void)status;
+  status = LlExtCreateConn((LlExtInitParam_t *)pInitParam, (LlExtInitScanParam_t *)pScanParam,
+                           (LlConnSpec_t *)pConnSpec);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -118,23 +117,22 @@ void HciLeExtCreateConnCmd(hciExtInitParam_t *pInitParam, hciExtInitScanParam_t 
  */
 /*************************************************************************************************/
 void HciLePerAdvCreateSyncCmd(uint8_t options, uint8_t advSid, uint8_t advAddrType,
-                              uint8_t *pAdvAddr, uint16_t skip, uint16_t syncTimeout,
-                              uint8_t unused)
+                              uint8_t *pAdvAddr, uint16_t skip, uint16_t syncTimeout, uint8_t unused)
 {
-    LlPerAdvCreateSyncCmd_t param;
-    uint8_t status;
+  LlPerAdvCreateSyncCmd_t param;
+  uint8_t status;
 
-    param.options = options;
-    param.advSID = advSid;
-    param.advAddrType = advAddrType;
-    param.pAdvAddr = pAdvAddr;
-    param.skip = skip;
-    param.syncTimeOut = syncTimeout;
+  param.options = options;
+  param.advSID = advSid;
+  param.advAddrType = advAddrType;
+  param.pAdvAddr = pAdvAddr;
+  param.skip = skip;
+  param.syncTimeOut = syncTimeout;
 
-    status = LlPeriodicAdvCreateSync(&param);
-    (void)status;
+  status = LlPeriodicAdvCreateSync(&param);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -146,12 +144,12 @@ void HciLePerAdvCreateSyncCmd(uint8_t options, uint8_t advSid, uint8_t advAddrTy
 /*************************************************************************************************/
 void HciLePerAdvCreateSyncCancelCmd(void)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status = LlPeriodicAdvCreateSyncCancel();
-    (void)status;
+  status = LlPeriodicAdvCreateSyncCancel();
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -165,12 +163,12 @@ void HciLePerAdvCreateSyncCancelCmd(void)
 /*************************************************************************************************/
 void HciLePerAdvTerminateSyncCmd(uint16_t syncHandle)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status = LlPeriodicAdvTerminateSync(syncHandle);
-    (void)status;
+  status = LlPeriodicAdvTerminateSync(syncHandle);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -186,17 +184,17 @@ void HciLePerAdvTerminateSyncCmd(uint16_t syncHandle)
 /*************************************************************************************************/
 void HciLeAddDeviceToPerAdvListCmd(uint8_t advAddrType, uint8_t *pAdvAddr, uint8_t advSid)
 {
-    LlDevicePerAdvList_t param;
-    uint8_t status;
+  LlDevicePerAdvList_t param;
+  uint8_t status;
 
-    param.advAddrType = advAddrType;
-    param.pAdvAddr = pAdvAddr;
-    param.advSID = advSid;
+  param.advAddrType = advAddrType;
+  param.pAdvAddr = pAdvAddr;
+  param.advSID = advSid;
 
-    status = LlAddDeviceToPeriodicAdvList(&param);
-    (void)status;
+  status = LlAddDeviceToPeriodicAdvList(&param);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -212,17 +210,17 @@ void HciLeAddDeviceToPerAdvListCmd(uint8_t advAddrType, uint8_t *pAdvAddr, uint8
 /*************************************************************************************************/
 void HciLeRemoveDeviceFromPerAdvListCmd(uint8_t advAddrType, uint8_t *pAdvAddr, uint8_t advSid)
 {
-    LlDevicePerAdvList_t param;
-    uint8_t status;
+  LlDevicePerAdvList_t param;
+  uint8_t status;
 
-    param.advAddrType = advAddrType;
-    param.pAdvAddr = pAdvAddr;
-    param.advSID = advSid;
+  param.advAddrType = advAddrType;
+  param.pAdvAddr = pAdvAddr;
+  param.advSID = advSid;
 
-    status = LlRemoveDeviceFromPeriodicAdvList(&param);
-    (void)status;
+  status = LlRemoveDeviceFromPeriodicAdvList(&param);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -234,7 +232,7 @@ void HciLeRemoveDeviceFromPerAdvListCmd(uint8_t advAddrType, uint8_t *pAdvAddr, 
 /*************************************************************************************************/
 void HciLeClearPerAdvListCmd(void)
 {
-    LlClearPeriodicAdvList();
+  LlClearPeriodicAdvList();
 }
 
 /*************************************************************************************************/
@@ -246,5 +244,5 @@ void HciLeClearPerAdvListCmd(void)
 /*************************************************************************************************/
 void HciLeReadPerAdvListSizeCmd(void)
 {
-    /* unused */
+  /* unused */
 }

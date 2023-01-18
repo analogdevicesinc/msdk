@@ -40,19 +40,19 @@ Macros
  *
  */
 /**@{*/
-#define RSCP_SM_PARAM_SPEED 0 /*!< \brief Instantaneous Speed */
-#define RSCP_SM_PARAM_CADENCE 1 /*!< \brief Instantaneous Cadence */
-#define RSCP_SM_PARAM_STRIDE_LENGTH 2 /*!< \brief Instantaneous Stride Length */
-#define RSCP_SM_PARAM_TOTAL_DISTANCE 3 /*!< \brief Total Distance */
-#define RSCP_SM_PARAM_STATUS 4 /*!< \brief Walking or Running Status (0: walking, 1: running) */
+#define RSCP_SM_PARAM_SPEED                       0     /*!< \brief Instantaneous Speed */
+#define RSCP_SM_PARAM_CADENCE                     1     /*!< \brief Instantaneous Cadence */
+#define RSCP_SM_PARAM_STRIDE_LENGTH               2     /*!< \brief Instantaneous Stride Length */
+#define RSCP_SM_PARAM_TOTAL_DISTANCE              3     /*!< \brief Total Distance */
+#define RSCP_SM_PARAM_STATUS                      4     /*!< \brief Walking or Running Status (0: walking, 1: running) */
 /**@}*/
 
 /** \name Running Speed and Cadence Running Status Values
  *
  */
 /**@{*/
-#define RSCP_SM_STATUS_WALKING 0 /*!< \brief Walking */
-#define RSCP_SM_STATUS_RUNNING 1 /*!< \brief Running */
+#define RSCP_SM_STATUS_WALKING                    0     /*!< \brief Walking */
+#define RSCP_SM_STATUS_RUNNING                    1     /*!< \brief Running */
 /**@}*/
 
 /**************************************************************************************************
@@ -104,7 +104,7 @@ void RscpsSetFeatures(uint16_t features);
 /*************************************************************************************************/
 void RscpsSendSpeedMeasurement(dmConnId_t connId);
 
-/*! \} */ /* RUNNING_SPEED_AND_CADENCE_PROFILE */
+/*! \} */    /* RUNNING_SPEED_AND_CADENCE_PROFILE */
 
 #ifdef __cplusplus
 };

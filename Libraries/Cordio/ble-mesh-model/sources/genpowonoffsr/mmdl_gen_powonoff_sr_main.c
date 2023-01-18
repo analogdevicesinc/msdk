@@ -50,23 +50,24 @@
 **************************************************************************************************/
 
 /*! Present state index in stored states */
-#define PRESENT_STATE_IDX 0
+#define PRESENT_STATE_IDX             0
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! Generic Power OnOff Server control block type definition */
-typedef struct mmdlGenPowOnOffSrCb_tag {
-    mmdlBindResolve_t fResolveBind; /*!< Pointer to the function that checks
+typedef struct mmdlGenPowOnOffSrCb_tag
+{
+  mmdlBindResolve_t fResolveBind;     /*!< Pointer to the function that checks
                                        *   and resolves a bind triggered by a
                                        *   change in this model instance
                                        */
-    mmdlEventCback_t recvCback; /*!< Model Generic Power OnOff received callback */
+  mmdlEventCback_t  recvCback;        /*!< Model Generic Power OnOff received callback */
 } mmdlGenPowOnOffSrCb_t;
 
 /*! Generic Power OnOff Server message handler type definition */
-typedef void (*mmdlGenPowOnOffSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlGenPowOnOffSrHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Global Variables
@@ -76,8 +77,9 @@ typedef void (*mmdlGenPowOnOffSrHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
 wsfHandlerId_t mmdlGenPowOnOffSrHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlGenPowOnOffSrRcvdOpcodes[MMDL_GEN_POWER_ONOFF_SR_NUM_RCVD_OPCODES] = {
-    { { UINT16_OPCODE_TO_BYTES(MMDL_GEN_ONPOWERUP_GET_OPCODE) } }
+const meshMsgOpcode_t mmdlGenPowOnOffSrRcvdOpcodes[MMDL_GEN_POWER_ONOFF_SR_NUM_RCVD_OPCODES] =
+{
+  { {UINT16_OPCODE_TO_BYTES(MMDL_GEN_ONPOWERUP_GET_OPCODE)} }
 };
 
 /**************************************************************************************************
@@ -85,13 +87,13 @@ const meshMsgOpcode_t mmdlGenPowOnOffSrRcvdOpcodes[MMDL_GEN_POWER_ONOFF_SR_NUM_R
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlGenPowOnOffSrHandleMsg_t
-    mmdlGenPowOnOffSrHandleMsg[MMDL_GEN_POWER_ONOFF_SR_NUM_RCVD_OPCODES] = {
-        mmdlGenPowOnOffSrHandleGet,
-    };
+const mmdlGenPowOnOffSrHandleMsg_t mmdlGenPowOnOffSrHandleMsg[MMDL_GEN_POWER_ONOFF_SR_NUM_RCVD_OPCODES] =
+{
+  mmdlGenPowOnOffSrHandleGet,
+};
 
 /*! Generic Power OnOff Server Control Block */
-static mmdlGenPowOnOffSrCb_t powOnOffSrCb;
+static mmdlGenPowOnOffSrCb_t  powOnOffSrCb;
 
 /**************************************************************************************************
   Local Functions
@@ -109,24 +111,26 @@ static mmdlGenPowOnOffSrCb_t powOnOffSrCb;
 /*************************************************************************************************/
 static void mmdlGenPowOnOffSrGetDesc(meshElementId_t elementId, mmdlGenPowOnOffSrDesc_t **ppOutDesc)
 {
-    uint8_t modelIdx;
+  uint8_t modelIdx;
 
-    *ppOutDesc = NULL;
+  *ppOutDesc = NULL;
 
-    if (elementId > pMeshConfig->elementArrayLen) {
-        return;
+  if (elementId > pMeshConfig->elementArrayLen)
+  {
+    return;
+  }
+
+  /* Look for the model instance */
+  for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels; modelIdx ++)
+  {
+    if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
+        MMDL_GEN_POWER_ONOFF_SR_MDL_ID)
+    {
+      /* Matching model ID on elementId */
+      *ppOutDesc = pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
+      break;
     }
-
-    /* Look for the model instance */
-    for (modelIdx = 0; modelIdx < pMeshConfig->pElementArray[elementId].numSigModels; modelIdx++) {
-        if (pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].modelId ==
-            MMDL_GEN_POWER_ONOFF_SR_MDL_ID) {
-            /* Matching model ID on elementId */
-            *ppOutDesc =
-                pMeshConfig->pElementArray[elementId].pSigModelArray[modelIdx].pModelDescriptor;
-            break;
-        }
-    }
+  }
 }
 
 /*************************************************************************************************/
@@ -141,29 +145,30 @@ static void mmdlGenPowOnOffSrGetDesc(meshElementId_t elementId, mmdlGenPowOnOffS
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenPowOnOffSrSendStatus(uint16_t modelId, meshElementId_t elementId, meshAddress_t dstAddr,
-                                 uint16_t appKeyIndex)
+void MmdlGenPowOnOffSrSendStatus(uint16_t modelId, meshElementId_t elementId,
+                                 meshAddress_t dstAddr, uint16_t appKeyIndex)
 {
-    meshMsgInfo_t msgInfo = MESH_MSG_INFO(modelId, MMDL_GEN_ONPOWERUP_STATUS_OPCODE);
-    uint8_t msgParams[MMDL_GEN_POWER_ONOFF_MSG_LEN];
-    mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(modelId, MMDL_GEN_ONPOWERUP_STATUS_OPCODE);
+  uint8_t msgParams[MMDL_GEN_POWER_ONOFF_MSG_LEN];
+  mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
 
-    /* Fill in the msg info parameters */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = dstAddr;
-    msgInfo.ttl = MESH_USE_DEFAULT_TTL;
-    msgInfo.appKeyIndex = appKeyIndex;
+  /* Fill in the msg info parameters */
+  msgInfo.elementId = elementId;
+  msgInfo.dstAddr = dstAddr;
+  msgInfo.ttl = MESH_USE_DEFAULT_TTL;
+  msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Get the model instance descriptor */
-    mmdlGenPowOnOffSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlGenPowOnOffSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        /* Copy the message parameters from the descriptor */
-        msgParams[0] = pDesc->pStoredStates[PRESENT_STATE_IDX];
+  if (pDesc != NULL)
+  {
+    /* Copy the message parameters from the descriptor */
+    msgParams[0] = pDesc->pStoredStates[PRESENT_STATE_IDX];
 
-        /* Send message to the Mesh Core instantly */
-        MeshSendMessage(&msgInfo, msgParams, MMDL_GEN_POWER_ONOFF_MSG_LEN, 20, 50);
-    }
+    /* Send message to the Mesh Core instantly */
+    MeshSendMessage(&msgInfo, msgParams, MMDL_GEN_POWER_ONOFF_MSG_LEN, 20, 50);
+  }
 }
 
 /*************************************************************************************************/
@@ -177,12 +182,13 @@ void MmdlGenPowOnOffSrSendStatus(uint16_t modelId, meshElementId_t elementId, me
 /*************************************************************************************************/
 void mmdlGenPowOnOffSrHandleGet(const meshModelMsgRecvEvt_t *pMsg)
 {
-    /* Validate message length */
-    if (pMsg->messageParamsLen == 0) {
-        /* Send Status message as a response to the Get message */
-        MmdlGenPowOnOffSrSendStatus(MMDL_GEN_POWER_ONOFF_SR_MDL_ID, pMsg->elementId, pMsg->srcAddr,
-                                    pMsg->appKeyIndex);
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen == 0)
+  {
+    /* Send Status message as a response to the Get message */
+    MmdlGenPowOnOffSrSendStatus(MMDL_GEN_POWER_ONOFF_SR_MDL_ID, pMsg->elementId, pMsg->srcAddr,
+                                pMsg->appKeyIndex);
+  }
 }
 
 /**************************************************************************************************
@@ -198,11 +204,11 @@ void mmdlGenPowOnOffSrHandleGet(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSrInit(void)
 {
-    MMDL_TRACE_INFO0("GEN POWER ONOFF SR: init");
+  MMDL_TRACE_INFO0("GEN POWER ONOFF SR: init");
 
-    /* Set event callbacks */
-    powOnOffSrCb.recvCback = MmdlEmptyCback;
-    powOnOffSrCb.fResolveBind = MmdlBindResolve;
+  /* Set event callbacks */
+  powOnOffSrCb.recvCback = MmdlEmptyCback;
+  powOnOffSrCb.fResolveBind = MmdlBindResolve;
 }
 
 /*************************************************************************************************/
@@ -214,20 +220,22 @@ void MmdlGenPowOnOffSrInit(void)
 /*************************************************************************************************/
 void MmdlGenPowOnOffOnPowerUp(void)
 {
-    uint8_t elemIdx;
-    mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
+  uint8_t elemIdx;
+  mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
 
-    if (powOnOffSrCb.fResolveBind) {
-        for (elemIdx = 0; elemIdx < pMeshConfig->elementArrayLen; elemIdx++) {
-            /* Get the model instance descriptor */
-            mmdlGenPowOnOffSrGetDesc(elemIdx, &pDesc);
+  if (powOnOffSrCb.fResolveBind)
+  {
+    for (elemIdx = 0; elemIdx < pMeshConfig->elementArrayLen; elemIdx ++)
+    {
+      /* Get the model instance descriptor */
+      mmdlGenPowOnOffSrGetDesc(elemIdx, &pDesc);
 
-            if ((pDesc != NULL) && (pDesc->pStoredStates != NULL)) {
-                powOnOffSrCb.fResolveBind(elemIdx, MMDL_STATE_GEN_ONPOWERUP,
-                                          &pDesc->pStoredStates[PRESENT_STATE_IDX]);
-            }
-        }
+      if ((pDesc != NULL) &&(pDesc->pStoredStates != NULL))
+      {
+        powOnOffSrCb.fResolveBind(elemIdx, MMDL_STATE_GEN_ONPOWERUP, &pDesc->pStoredStates[PRESENT_STATE_IDX]);
+      }
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -241,8 +249,8 @@ void MmdlGenPowOnOffOnPowerUp(void)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSrHandlerInit(wsfHandlerId_t handlerId)
 {
-    /* Set handler ID */
-    mmdlGenPowOnOffSrHandlerId = handlerId;
+  /* Set handler ID */
+  mmdlGenPowOnOffSrHandlerId = handlerId;
 }
 
 /*************************************************************************************************/
@@ -257,41 +265,45 @@ void MmdlGenPowOnOffSrHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSrHandler(wsfMsgHdr_t *pMsg)
 {
-    meshModelMsgRecvEvt_t *pModelMsg;
-    uint8_t opcodeIdx;
+  meshModelMsgRecvEvt_t *pModelMsg;
+  uint8_t opcodeIdx;
 
-    /* Handle message */
-    if (pMsg != NULL) {
-        switch (pMsg->event) {
-        case MESH_MODEL_EVT_MSG_RECV:
-            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+  /* Handle message */
+  if (pMsg != NULL)
+  {
+    switch (pMsg->event)
+    {
+      case MESH_MODEL_EVT_MSG_RECV:
+        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-            /* Validate opcode size and value */
-            if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_POWER_ONOFF_OPCODES_SIZE) {
-                /* Match the received opcode */
-                for (opcodeIdx = 0; opcodeIdx < MMDL_GEN_POWER_ONOFF_SR_NUM_RCVD_OPCODES;
-                     opcodeIdx++) {
-                    if (!memcmp(&mmdlGenPowOnOffSrRcvdOpcodes[opcodeIdx],
-                                pModelMsg->opCode.opcodeBytes, MMDL_GEN_POWER_ONOFF_OPCODES_SIZE)) {
-                        /* Process message */
-                        (void)mmdlGenPowOnOffSrHandleMsg[opcodeIdx](pModelMsg);
-                    }
-                }
+        /* Validate opcode size and value */
+        if (MESH_OPCODE_SIZE(pModelMsg->opCode) == MMDL_GEN_POWER_ONOFF_OPCODES_SIZE)
+        {
+          /* Match the received opcode */
+          for (opcodeIdx = 0; opcodeIdx < MMDL_GEN_POWER_ONOFF_SR_NUM_RCVD_OPCODES; opcodeIdx++)
+          {
+            if (!memcmp(&mmdlGenPowOnOffSrRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
+                        MMDL_GEN_POWER_ONOFF_OPCODES_SIZE))
+            {
+              /* Process message */
+              (void)mmdlGenPowOnOffSrHandleMsg[opcodeIdx](pModelMsg);
             }
-            break;
-
-        case MESH_MODEL_EVT_PERIODIC_PUB:
-            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
-
-            /* Publishing is requested part of the periodic publishing */
-            MmdlGenPowOnOffSrPublish(pModelMsg->elementId);
-            break;
-
-        default:
-            MMDL_TRACE_WARN0("GEN POWER ONOFF SR: Invalid event message received!");
-            break;
+          }
         }
+        break;
+
+      case MESH_MODEL_EVT_PERIODIC_PUB:
+        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+
+        /* Publishing is requested part of the periodic publishing */
+        MmdlGenPowOnOffSrPublish(pModelMsg->elementId);
+        break;
+
+      default:
+        MMDL_TRACE_WARN0("GEN POWER ONOFF SR: Invalid event message received!");
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -305,24 +317,25 @@ void MmdlGenPowOnOffSrHandler(wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSrPublish(meshElementId_t elementId)
 {
-    meshPubMsgInfo_t pubMsgInfo =
-        MESH_PUB_MSG_INFO(MMDL_GEN_POWER_ONOFF_SR_MDL_ID, MMDL_GEN_ONPOWERUP_STATUS_OPCODE);
-    uint8_t msgParams[MMDL_GEN_POWER_ONOFF_MSG_LEN];
-    mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_GEN_POWER_ONOFF_SR_MDL_ID,
+                                             MMDL_GEN_ONPOWERUP_STATUS_OPCODE);
+  uint8_t msgParams[MMDL_GEN_POWER_ONOFF_MSG_LEN];
+  mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
 
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+  /* Fill in the msg info parameters */
+  pubMsgInfo.elementId = elementId;
 
-    /* Get the model instance descriptor */
-    mmdlGenPowOnOffSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlGenPowOnOffSrGetDesc(elementId, &pDesc);
 
-    if (pDesc != NULL) {
-        /* Copy the message parameters from the descriptor */
-        msgParams[0] = pDesc->pStoredStates[PRESENT_STATE_IDX];
+  if (pDesc != NULL)
+  {
+    /* Copy the message parameters from the descriptor */
+    msgParams[0] = pDesc->pStoredStates[PRESENT_STATE_IDX];
 
-        /* Send message to the Mesh Core */
-        MeshPublishMessage(&pubMsgInfo, msgParams, MMDL_GEN_POWER_ONOFF_MSG_LEN);
-    }
+    /* Send message to the Mesh Core */
+    MeshPublishMessage(&pubMsgInfo, msgParams, MMDL_GEN_POWER_ONOFF_MSG_LEN);
+  }
 }
 
 /*************************************************************************************************/
@@ -336,35 +349,38 @@ void MmdlGenPowOnOffSrPublish(meshElementId_t elementId)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSrGetState(meshElementId_t elementId)
 {
-    mmdlGenPowOnOffSrCurrentState_t event;
-    mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
+  mmdlGenPowOnOffSrCurrentState_t event;
+  mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
 
-    /* Get model instance descriptor */
-    mmdlGenPowOnOffSrGetDesc(elementId, &pDesc);
+  /* Get model instance descriptor */
+  mmdlGenPowOnOffSrGetDesc(elementId, &pDesc);
 
-    /* Set event type */
-    event.hdr.event = MMDL_GEN_POWER_ONOFF_SR_EVENT;
-    event.hdr.param = MMDL_GEN_POWER_ONOFF_SR_CURRENT_STATE_EVENT;
+  /* Set event type */
+  event.hdr.event = MMDL_GEN_POWER_ONOFF_SR_EVENT;
+  event.hdr.param = MMDL_GEN_POWER_ONOFF_SR_CURRENT_STATE_EVENT;
+
+  /* Set event parameters */
+  event.elemId = elementId;
+
+  if (pDesc == NULL)
+  {
+    /* No descriptor found on element */
+    event.hdr.status = MMDL_INVALID_ELEMENT;
+
+    /* Zero out parameters */
+    event.state = 0;
+  }
+  else
+  {
+    /* Descriptor found on element */
+    event.hdr.status = MMDL_SUCCESS;
 
     /* Set event parameters */
-    event.elemId = elementId;
+    event.state = pDesc->pStoredStates[PRESENT_STATE_IDX];
+  }
 
-    if (pDesc == NULL) {
-        /* No descriptor found on element */
-        event.hdr.status = MMDL_INVALID_ELEMENT;
-
-        /* Zero out parameters */
-        event.state = 0;
-    } else {
-        /* Descriptor found on element */
-        event.hdr.status = MMDL_SUCCESS;
-
-        /* Set event parameters */
-        event.state = pDesc->pStoredStates[PRESENT_STATE_IDX];
-    }
-
-    /* Send event to the upper layer */
-    powOnOffSrCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  powOnOffSrCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -379,8 +395,8 @@ void MmdlGenPowOnOffSrGetState(meshElementId_t elementId)
 /*************************************************************************************************/
 void MmdlGenPowOnOffSrSetState(meshElementId_t elementId, mmdlGenOnPowerUpState_t targetState)
 {
-    /* Change state locally. */
-    MmdlGenPowOnOffOnPowerUpSrSetState(elementId, targetState, MMDL_STATE_UPDATED_BY_APP);
+  /* Change state locally. */
+  MmdlGenPowOnOffOnPowerUpSrSetState(elementId, targetState, MMDL_STATE_UPDATED_BY_APP);
 }
 
 /*************************************************************************************************/
@@ -397,37 +413,41 @@ void MmdlGenPowOnOffSrSetState(meshElementId_t elementId, mmdlGenOnPowerUpState_
 void MmdlGenPowOnOffOnPowerUpSrSetState(meshElementId_t elementId, mmdlGenOnPowerUpState_t newState,
                                         mmdlStateUpdateSrc_t stateUpdateSrc)
 {
-    mmdlGenPowOnOffSrStateUpdate_t event;
-    mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
+  mmdlGenPowOnOffSrStateUpdate_t event;
+  mmdlGenPowOnOffSrDesc_t *pDesc = NULL;
 
-    /* Get the model instance descriptor */
-    mmdlGenPowOnOffSrGetDesc(elementId, &pDesc);
+  /* Get the model instance descriptor */
+  mmdlGenPowOnOffSrGetDesc(elementId, &pDesc);
 
-    /* Set event parameters */
-    event.elemId = elementId;
-    event.stateUpdateSource = stateUpdateSrc;
-    event.state = newState;
-    event.hdr.event = MMDL_GEN_POWER_ONOFF_SR_EVENT;
-    event.hdr.param = MMDL_GEN_POWER_ONOFF_SR_STATE_UPDATE_EVENT;
+  /* Set event parameters */
+  event.elemId = elementId;
+  event.stateUpdateSource = stateUpdateSrc;
+  event.state = newState;
+  event.hdr.event = MMDL_GEN_POWER_ONOFF_SR_EVENT;
+  event.hdr.param = MMDL_GEN_POWER_ONOFF_SR_STATE_UPDATE_EVENT;
 
-    if (pDesc != NULL) {
-        event.hdr.status = MMDL_SUCCESS;
+  if (pDesc != NULL)
+  {
+    event.hdr.status = MMDL_SUCCESS;
 
-        /* Copy the message parameters from the descriptor */
-        pDesc->pStoredStates[PRESENT_STATE_IDX] = newState;
+    /* Copy the message parameters from the descriptor */
+    pDesc->pStoredStates[PRESENT_STATE_IDX] = newState;
 
-        /* Update Generic OnPowerUp state entry in NVM. */
-        if (pDesc->fNvmSaveStates) {
-            pDesc->fNvmSaveStates(elementId);
-        }
-    } else {
-        event.hdr.status = MMDL_INVALID_ELEMENT;
+    /* Update Generic OnPowerUp state entry in NVM. */
+    if(pDesc->fNvmSaveStates)
+    {
+      pDesc->fNvmSaveStates(elementId);
     }
+  }
+  else
+  {
+    event.hdr.status = MMDL_INVALID_ELEMENT;
+  }
 
-    MMDL_TRACE_INFO1("GEN POWER ONOFF SR: Set=0x%X", newState);
+  MMDL_TRACE_INFO1("GEN POWER ONOFF SR: Set=0x%X", newState);
 
-    /* Send event to the upper layer */
-    powOnOffSrCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  powOnOffSrCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -441,8 +461,9 @@ void MmdlGenPowOnOffOnPowerUpSrSetState(meshElementId_t elementId, mmdlGenOnPowe
 /*************************************************************************************************/
 void MmdlGenPowOnOffSrRegister(mmdlEventCback_t recvCback)
 {
-    /* Store valid callback */
-    if (recvCback != NULL) {
-        powOnOffSrCb.recvCback = recvCback;
-    }
+  /* Store valid callback */
+  if (recvCback != NULL)
+  {
+    powOnOffSrCb.recvCback = recvCback;
+  }
 }

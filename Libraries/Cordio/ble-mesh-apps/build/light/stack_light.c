@@ -84,106 +84,106 @@ void StackInitLight(void);
 /*************************************************************************************************/
 void StackInitLight(void)
 {
-    wsfHandlerId_t handlerId;
+  wsfHandlerId_t handlerId;
 
-    SecInit();
-    SecAesInit();
-    SecAesRevInit();
-    SecCmacInit();
-    SecEccInit();
-    SecCcmInit();
+  SecInit();
+  SecAesInit();
+  SecAesRevInit();
+  SecCmacInit();
+  SecEccInit();
+  SecCcmInit();
 
-    /* Initialize stack handlers. */
-    handlerId = WsfOsSetNextHandler(HciHandler);
-    HciHandlerInit(handlerId);
+  /* Initialize stack handlers. */
+  handlerId = WsfOsSetNextHandler(HciHandler);
+  HciHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(DmHandler);
-    DmDevVsInit(0);
+  handlerId = WsfOsSetNextHandler(DmHandler);
+  DmDevVsInit(0);
 
 #if (LL_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    DmExtScanInit();
-    DmExtAdvInit();
+  DmExtScanInit();
+  DmExtAdvInit();
 #else
-    DmScanInit();
-    DmAdvInit();
+  DmScanInit();
+  DmAdvInit();
 #endif
 
-    DmConnInit();
+  DmConnInit();
 #if (LL_VER >= LL_VER_BT_CORE_SPEC_5_0)
-    DmExtConnMasterInit();
-    DmExtConnSlaveInit();
+  DmExtConnMasterInit();
+  DmExtConnSlaveInit();
 #else
-    DmConnMasterInit();
-    DmConnSlaveInit();
+  DmConnMasterInit();
+  DmConnSlaveInit();
 #endif
 
-    DmSecInit();
-    DmSecLescInit();
-    DmPrivInit();
-    DmHandlerInit(handlerId);
+  DmSecInit();
+  DmSecLescInit();
+  DmPrivInit();
+  DmHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
-    L2cSlaveHandlerInit(handlerId);
-    L2cInit();
-    L2cSlaveInit();
+  handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
+  L2cSlaveHandlerInit(handlerId);
+  L2cInit();
+  L2cSlaveInit();
 
-    handlerId = WsfOsSetNextHandler(AttHandler);
-    AttHandlerInit(handlerId);
-    AttsInit();
-    AttsIndInit();
+  handlerId = WsfOsSetNextHandler(AttHandler);
+  AttHandlerInit(handlerId);
+  AttsInit();
+  AttsIndInit();
 
-    handlerId = WsfOsSetNextHandler(SmpHandler);
-    SmpHandlerInit(handlerId);
-    SmprInit();
-    SmprScInit();
-    HciSetMaxRxAclLen(100);
+  handlerId = WsfOsSetNextHandler(SmpHandler);
+  SmpHandlerInit(handlerId);
+  SmprInit();
+  SmprScInit();
+  HciSetMaxRxAclLen(100);
 
-    /* Initialize Mesh handler. */
-    handlerId = WsfOsSetNextHandler(MeshHandler);
-    MeshHandlerInit(handlerId);
+  /* Initialize Mesh handler. */
+  handlerId = WsfOsSetNextHandler(MeshHandler);
+  MeshHandlerInit(handlerId);
 
-    /* Initialize Mesh Security handler. */
-    handlerId = WsfOsSetNextHandler(MeshSecurityHandler);
-    MeshSecurityHandlerInit(handlerId);
+  /* Initialize Mesh Security handler. */
+  handlerId = WsfOsSetNextHandler(MeshSecurityHandler);
+  MeshSecurityHandlerInit(handlerId);
 
-    /* Initialize Mesh Provisioning Server handler. */
-    handlerId = WsfOsSetNextHandler(MeshPrvSrHandler);
-    MeshPrvSrHandlerInit(handlerId);
+  /* Initialize Mesh Provisioning Server handler. */
+  handlerId = WsfOsSetNextHandler(MeshPrvSrHandler);
+  MeshPrvSrHandlerInit(handlerId);
 
-    /* Initialize Mesh Models handler. */
-    handlerId = WsfOsSetNextHandler(LightMmdlHandler);
+  /* Initialize Mesh Models handler. */
+  handlerId = WsfOsSetNextHandler(LightMmdlHandler);
 
-    /* Initialize Health Server model handler. */
-    MeshHtSrHandlerInit(handlerId);
+  /* Initialize Health Server model handler. */
+  MeshHtSrHandlerInit(handlerId);
 
-    /* Initialize Generic On Off Server model handler. */
-    MmdlGenOnOffSrHandlerInit(handlerId);
+  /* Initialize Generic On Off Server model handler. */
+  MmdlGenOnOffSrHandlerInit(handlerId);
 
-    /* Initialize Generic Power On Off Server model handler. */
-    MmdlGenPowOnOffSrHandlerInit(handlerId);
-    MmdlGenPowOnOffSetupSrHandlerInit(handlerId);
+  /* Initialize Generic Power On Off Server model handler. */
+  MmdlGenPowOnOffSrHandlerInit(handlerId);
+  MmdlGenPowOnOffSetupSrHandlerInit(handlerId);
 
-    /* Initialize Generic Level Server model handler. */
-    MmdlGenLevelSrHandlerInit(handlerId);
+  /* Initialize Generic Level Server model handler. */
+  MmdlGenLevelSrHandlerInit(handlerId);
 
-    /* Initialize Scene Server model handler. */
-    MmdlSceneSrHandlerInit(handlerId);
+  /* Initialize Scene Server model handler. */
+  MmdlSceneSrHandlerInit(handlerId);
 
-    /* Initialize Generic Default Transition Server model handler. */
-    MmdlGenDefaultTransSrHandlerInit(handlerId);
+  /* Initialize Generic Default Transition Server model handler. */
+  MmdlGenDefaultTransSrHandlerInit(handlerId);
 
-    /* Initialize Light Lightness Server model handler. */
-    MmdlLightLightnessSrHandlerInit(handlerId);
-    MmdlLightLightnessSetupSrHandlerInit(handlerId);
+  /* Initialize Light Lightness Server model handler. */
+  MmdlLightLightnessSrHandlerInit(handlerId);
+  MmdlLightLightnessSetupSrHandlerInit(handlerId);
 
-    /* Initialize Light HSL Client and Server model handler. */
-    MmdlLightHslSrHandlerInit(handlerId);
-    MmdlLightHslHueSrHandlerInit(handlerId);
-    MmdlLightHslSatSrHandlerInit(handlerId);
+  /* Initialize Light HSL Client and Server model handler. */
+  MmdlLightHslSrHandlerInit(handlerId);
+  MmdlLightHslHueSrHandlerInit(handlerId);
+  MmdlLightHslSatSrHandlerInit(handlerId);
 
-    /* Initialize application handler. */
-    handlerId = WsfOsSetNextHandler(LightHandler);
-    LightHandlerInit(handlerId);
+  /* Initialize application handler. */
+  handlerId = WsfOsSetNextHandler(LightHandler);
+  LightHandlerInit(handlerId);
 }
 
 /*************************************************************************************************/
@@ -195,5 +195,5 @@ void StackInitLight(void)
 /*************************************************************************************************/
 void StackInitCfgLight(void)
 {
-    LightConfigInit();
+  LightConfigInit();
 }

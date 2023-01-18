@@ -44,133 +44,133 @@ OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*lint ++flb "Enter library region" */
 
-#if defined(__CC_ARM)
+#if defined ( __CC_ARM )
 
-#ifndef __ASM
-#define __ASM __asm
-#endif
+    #ifndef __ASM
+        #define __ASM               __asm
+    #endif
 
-#ifndef __INLINE
-#define __INLINE __inline
-#endif
+    #ifndef __INLINE
+        #define __INLINE            __inline
+    #endif
 
-#ifndef __WEAK
-#define __WEAK __weak
-#endif
+    #ifndef __WEAK
+        #define __WEAK              __weak
+    #endif
 
-#ifndef __ALIGN
-#define __ALIGN(n) __align(n)
-#endif
+    #ifndef __ALIGN
+        #define __ALIGN(n)          __align(n)
+    #endif
 
-#ifndef __PACKED
-#define __PACKED __packed
-#endif
+    #ifndef __PACKED
+        #define __PACKED            __packed
+    #endif
 
-#define GET_SP() __current_sp()
+    #define GET_SP()                __current_sp()
+    
+#elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
 
-#elif defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+    #ifndef __ASM
+        #define __ASM               __asm
+    #endif
 
-#ifndef __ASM
-#define __ASM __asm
-#endif
+    #ifndef __INLINE
+        #define __INLINE            __inline
+    #endif
 
-#ifndef __INLINE
-#define __INLINE __inline
-#endif
+    #ifndef __WEAK
+        #define __WEAK              __attribute__((weak))
+    #endif
 
-#ifndef __WEAK
-#define __WEAK __attribute__((weak))
-#endif
+    #ifndef __ALIGN
+        #define __ALIGN(n)          __attribute__((aligned(n)))
+    #endif
 
-#ifndef __ALIGN
-#define __ALIGN(n) __attribute__((aligned(n)))
-#endif
+    #ifndef __PACKED
+        #define __PACKED            __attribute__((packed, aligned(1)))
+    #endif
 
-#ifndef __PACKED
-#define __PACKED __attribute__((packed, aligned(1)))
-#endif
+    #define GET_SP()                __current_sp()
 
-#define GET_SP() __current_sp()
+#elif defined ( __ICCARM__ )
 
-#elif defined(__ICCARM__)
+    #ifndef __ASM
+        #define __ASM               __asm
+    #endif
 
-#ifndef __ASM
-#define __ASM __asm
-#endif
+    #ifndef __INLINE
+        #define __INLINE            inline
+    #endif
 
-#ifndef __INLINE
-#define __INLINE inline
-#endif
+    #ifndef __WEAK
+        #define __WEAK              __weak
+    #endif
 
-#ifndef __WEAK
-#define __WEAK __weak
-#endif
+    #ifndef __ALIGN
+        #define STRING_PRAGMA(x) _Pragma(#x)
+        #define __ALIGN(n) STRING_PRAGMA(data_alignment = n)
+    #endif
 
-#ifndef __ALIGN
-#define STRING_PRAGMA(x) _Pragma(#x)
-#define __ALIGN(n) STRING_PRAGMA(data_alignment = n)
-#endif
+    #ifndef __PACKED
+        #define __PACKED            __packed
+    #endif
+    
+    #define GET_SP()                __get_SP()
 
-#ifndef __PACKED
-#define __PACKED __packed
-#endif
+#elif defined   ( __GNUC__ )
 
-#define GET_SP() __get_SP()
+    #ifndef __ASM
+        #define __ASM               __asm
+    #endif
 
-#elif defined(__GNUC__)
+    #ifndef __INLINE
+        #define __INLINE            inline
+    #endif
 
-#ifndef __ASM
-#define __ASM __asm
-#endif
+    #ifndef __WEAK
+        #define __WEAK              __attribute__((weak))
+    #endif
 
-#ifndef __INLINE
-#define __INLINE inline
-#endif
+    #ifndef __ALIGN
+        #define __ALIGN(n)          __attribute__((aligned(n)))
+    #endif
 
-#ifndef __WEAK
-#define __WEAK __attribute__((weak))
-#endif
+    #ifndef __PACKED
+        #define __PACKED           __attribute__((packed)) 
+    #endif
 
-#ifndef __ALIGN
-#define __ALIGN(n) __attribute__((aligned(n)))
-#endif
+    #define GET_SP()                gcc_current_sp()
 
-#ifndef __PACKED
-#define __PACKED __attribute__((packed))
-#endif
+    static inline unsigned int gcc_current_sp(void)
+    {
+        register unsigned sp __ASM("sp");
+        return sp;
+    }
 
-#define GET_SP() gcc_current_sp()
+#elif defined   ( __TASKING__ )
 
-static inline unsigned int gcc_current_sp(void)
-{
-    register unsigned sp __ASM("sp");
-    return sp;
-}
+    #ifndef __ASM
+        #define __ASM               __asm
+    #endif
 
-#elif defined(__TASKING__)
+    #ifndef __INLINE
+        #define __INLINE            inline
+    #endif
 
-#ifndef __ASM
-#define __ASM __asm
-#endif
+    #ifndef __WEAK
+        #define __WEAK              __attribute__((weak))
+    #endif
 
-#ifndef __INLINE
-#define __INLINE inline
-#endif
+    #ifndef __ALIGN
+        #define __ALIGN(n)          __align(n)
+    #endif
+    
+    /* Not defined for TASKING. */
+    #ifndef __PACKED
+        #define __PACKED
+    #endif
 
-#ifndef __WEAK
-#define __WEAK __attribute__((weak))
-#endif
-
-#ifndef __ALIGN
-#define __ALIGN(n) __align(n)
-#endif
-
-/* Not defined for TASKING. */
-#ifndef __PACKED
-#define __PACKED
-#endif
-
-#define GET_SP() __get_MSP()
+    #define GET_SP()                __get_MSP()
 
 #endif
 

@@ -38,10 +38,11 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Enumeration of handle indexes of characteristics to be discovered */
-enum {
-    GAP_CAR_HDL_IDX, /*!< \brief Central Address Resolution */
-    GAP_RPAO_HDL_IDX, /*!< \brief Resolvable Private Address Only */
-    GAP_HDL_LIST_LEN /*!< \brief Handle list length */
+enum
+{
+  GAP_CAR_HDL_IDX,          /*!< \brief Central Address Resolution */
+  GAP_RPAO_HDL_IDX,         /*!< \brief Resolvable Private Address Only */
+  GAP_HDL_LIST_LEN          /*!< \brief Handle list length */
 };
 
 /**************************************************************************************************
@@ -78,7 +79,7 @@ void GapDiscover(dmConnId_t connId, uint16_t *pHdlList);
 /*************************************************************************************************/
 uint8_t GapValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg);
 
-/*! \} */ /* GAP_PROFILE */
+/*! \} */    /* GAP_PROFILE */
 
 #ifdef __cplusplus
 };

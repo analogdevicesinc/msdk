@@ -57,17 +57,18 @@ extern "C" {
 
 #if !NRFX_CHECK(NRFX_WDT_CONFIG_NO_IRQ) || defined(__NRFX_DOXYGEN__)
 /** @brief WDT instance interrupt priority configuration. */
-#define NRFX_WDT_IRQ_CONFIG .interrupt_priority = NRFX_WDT_CONFIG_IRQ_PRIORITY
+    #define NRFX_WDT_IRQ_CONFIG .interrupt_priority = NRFX_WDT_CONFIG_IRQ_PRIORITY
 #else
-#define NRFX_WDT_IRQ_CONFIG
+    #define NRFX_WDT_IRQ_CONFIG
 #endif
 
 /**@brief Struct for WDT initialization. */
-typedef struct {
-    nrf_wdt_behaviour_t behaviour; /**< WDT behaviour when CPU in sleep/halt mode. */
-    uint32_t reload_value; /**< WDT reload value in ms. */
+typedef struct
+{
+    nrf_wdt_behaviour_t    behaviour;          /**< WDT behaviour when CPU in sleep/halt mode. */
+    uint32_t               reload_value;       /**< WDT reload value in ms. */
 #if !NRFX_CHECK(NRFX_WDT_CONFIG_NO_IRQ) || defined(__NRFX_DOXYGEN__)
-    uint8_t interrupt_priority; /**< WDT interrupt priority */
+    uint8_t                interrupt_priority; /**< WDT interrupt priority */
 #endif
 } nrfx_wdt_config_t;
 
@@ -78,10 +79,11 @@ typedef void (*nrfx_wdt_event_handler_t)(void);
 typedef nrf_wdt_rr_register_t nrfx_wdt_channel_id;
 
 /** @brief WDT driver default configuration. */
-#define NRFX_WDT_DEAFULT_CONFIG                                           \
-    {                                                                     \
-        .behaviour = (nrf_wdt_behaviour_t)NRFX_WDT_CONFIG_BEHAVIOUR,      \
-        .reload_value = NRFX_WDT_CONFIG_RELOAD_VALUE, NRFX_WDT_IRQ_CONFIG \
+#define NRFX_WDT_DEAFULT_CONFIG                                               \
+    {                                                                         \
+        .behaviour          = (nrf_wdt_behaviour_t)NRFX_WDT_CONFIG_BEHAVIOUR, \
+        .reload_value       = NRFX_WDT_CONFIG_RELOAD_VALUE,                   \
+        NRFX_WDT_IRQ_CONFIG                                                   \
     }
 /**
  * @brief This function initializes the watchdog.
@@ -92,8 +94,8 @@ typedef nrf_wdt_rr_register_t nrfx_wdt_channel_id;
  *
  * @return NRFX_SUCCESS on success, otherwise an error code.
  */
-nrfx_err_t nrfx_wdt_init(nrfx_wdt_config_t const *p_config,
-                         nrfx_wdt_event_handler_t wdt_event_handler);
+nrfx_err_t nrfx_wdt_init(nrfx_wdt_config_t const * p_config,
+                         nrfx_wdt_event_handler_t  wdt_event_handler);
 
 /**
  * @brief Function for allocating a watchdog channel.
@@ -104,7 +106,7 @@ nrfx_err_t nrfx_wdt_init(nrfx_wdt_config_t const *p_config,
  *
  * @return NRFX_SUCCESS on success, otherwise an error code.
  */
-nrfx_err_t nrfx_wdt_channel_alloc(nrfx_wdt_channel_id *p_channel_id);
+nrfx_err_t nrfx_wdt_channel_alloc(nrfx_wdt_channel_id * p_channel_id);
 
 /**
  * @brief Function for starting the watchdog.
@@ -154,10 +156,13 @@ __STATIC_INLINE uint32_t nrfx_wdt_ppi_event_addr(nrf_wdt_event_t event)
 
 /** @} */
 
+
 void nrfx_wdt_irq_handler(void);
+
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+

@@ -46,4 +46,5 @@ typedef void maxusb_cfg_options_t;
 #define MAXUSB_EXIT_CRITICAL() __enable_interrupt()
 #endif
 
+
 #endif /* _USBIO_HWOPT_H_ */

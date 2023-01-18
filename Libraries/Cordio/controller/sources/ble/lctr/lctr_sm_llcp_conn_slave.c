@@ -33,26 +33,28 @@
 typedef void (*lctrActFn_t)(lctrConnCtx_t *pCtx);
 
 /*! \brief      Slave connection parameter/update states. */
-enum {
-    LCTR_CU_STATE_IDLE, /*!< Idle state. */
-    LCTR_CU_STATE_HOST_REPLY, /*!< Wait for host reply state. */
-    LCTR_CU_STATE_CONN_UPD_IND, /*!< Wait for LL_CONN_PARAM_REQ state. */
-    LCTR_CU_STATE_CONN_UPD_INSTANT, /*!< Wait for connection update instant state. */
-    LCTR_CU_STATE_TOTAL /*!< Total connection parameter/update states. */
+enum
+{
+  LCTR_CU_STATE_IDLE,                   /*!< Idle state. */
+  LCTR_CU_STATE_HOST_REPLY,             /*!< Wait for host reply state. */
+  LCTR_CU_STATE_CONN_UPD_IND,           /*!< Wait for LL_CONN_PARAM_REQ state. */
+  LCTR_CU_STATE_CONN_UPD_INSTANT,       /*!< Wait for connection update instant state. */
+  LCTR_CU_STATE_TOTAL                   /*!< Total connection parameter/update states. */
 };
 
 /*! \brief      Connection parameter/update events. */
-enum {
-    LCTR_CU_EVENT_HOST_CONN_UPD, /*!< Received host connection update command. */
-    LCTR_CU_EVENT_PEER_CONN_PARAM_REQ, /*!< Received peer LL_CONN_PARAM_REQ. */
-    LCTR_CU_EVENT_HOST_REPLY, /*!< Received host connection parameter reply. */
-    LCTR_CU_EVENT_HOST_NEG_REPLY, /*!< Received host connection parameter negative reply. */
-    LCTR_CU_EVENT_PEER_CONN_UPD_IND, /*!< Received peer LL_CONN_UPD_IND. */
-    LCTR_CU_EVENT_PEER_REJECT, /*!< Received peer LL_REJECT_IND OR LL_UNKNOWN_RSP. */
-    LCTR_CU_EVENT_INT_PROC_COMP, /*!< Procedure completion event. */
-    LCTR_CU_EVENT_INT_START_CONN_UPD, /*!< Start pending connection update procedure. */
-    LCTR_CU_EVENT_TOTAL, /*!< Total connection parameter/update states. */
-    LCTR_CU_EVENT_INVALID = 0xFF /*!< Invalid event. */
+enum
+{
+  LCTR_CU_EVENT_HOST_CONN_UPD,          /*!< Received host connection update command. */
+  LCTR_CU_EVENT_PEER_CONN_PARAM_REQ,    /*!< Received peer LL_CONN_PARAM_REQ. */
+  LCTR_CU_EVENT_HOST_REPLY,             /*!< Received host connection parameter reply. */
+  LCTR_CU_EVENT_HOST_NEG_REPLY,         /*!< Received host connection parameter negative reply. */
+  LCTR_CU_EVENT_PEER_CONN_UPD_IND,      /*!< Received peer LL_CONN_UPD_IND. */
+  LCTR_CU_EVENT_PEER_REJECT,            /*!< Received peer LL_REJECT_IND OR LL_UNKNOWN_RSP. */
+  LCTR_CU_EVENT_INT_PROC_COMP,          /*!< Procedure completion event. */
+  LCTR_CU_EVENT_INT_START_CONN_UPD,     /*!< Start pending connection update procedure. */
+  LCTR_CU_EVENT_TOTAL,                  /*!< Total connection parameter/update states. */
+  LCTR_CU_EVENT_INVALID = 0xFF          /*!< Invalid event. */
 };
 
 /**************************************************************************************************
@@ -71,16 +73,17 @@ LctrLlcpHdlr_t lctrSlvLlcpSmTbl[LCTR_LLCP_SM_TOTAL];
 /*************************************************************************************************/
 static void lctrActStartConnUpd(lctrConnCtx_t *pCtx)
 {
-    if (pCtx->usedFeatSet & LL_FEAT_CONN_PARAM_REQ_PROC) {
-        lctrSendConnParamReq(pCtx);
-        lctrStartLlcpTimer(pCtx);
-    } else {
-        lctrNotifyHostConnUpdateInd(pCtx, LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE);
-        LL_TRACE_WARN1(
-            "Connection parameter request feature not supported by connection, handle=%u",
-            LCTR_GET_CONN_HANDLE(pCtx));
-        lctrSendConnMsg(pCtx, LCTR_CONN_LLCP_PROC_CMPL);
-    }
+  if (pCtx->usedFeatSet & LL_FEAT_CONN_PARAM_REQ_PROC)
+  {
+    lctrSendConnParamReq(pCtx);
+    lctrStartLlcpTimer(pCtx);
+  }
+  else
+  {
+    lctrNotifyHostConnUpdateInd(pCtx, LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE);
+    LL_TRACE_WARN1("Connection parameter request feature not supported by connection, handle=%u", LCTR_GET_CONN_HANDLE(pCtx));
+    lctrSendConnMsg(pCtx, LCTR_CONN_LLCP_PROC_CMPL);
+  }
 }
 
 /*************************************************************************************************/
@@ -92,9 +95,9 @@ static void lctrActStartConnUpd(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 static void lctrActHostConnUpd(lctrConnCtx_t *pCtx)
 {
-    pCtx->llcpNotifyMask |= 1 << LCTR_PROC_CONN_UPD;
-    lctrStoreConnUpdateSpec(pCtx);
-    lctrActStartConnUpd(pCtx);
+  pCtx->llcpNotifyMask |= 1 << LCTR_PROC_CONN_UPD;
+  lctrStoreConnUpdateSpec(pCtx);
+  lctrActStartConnUpd(pCtx);
 }
 
 /*************************************************************************************************/
@@ -106,10 +109,10 @@ static void lctrActHostConnUpd(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 static void lctrActPeerConnParam(lctrConnCtx_t *pCtx)
 {
-    lctrStoreConnParamReq(pCtx);
+  lctrStoreConnParamReq(pCtx);
 
-    pCtx->replyWaitingMsk |= LCTR_HOST_REPLY_CONN_PARAM_REQ;
-    lctrNotifyHostConnParamInd(pCtx);
+  pCtx->replyWaitingMsk |= LCTR_HOST_REPLY_CONN_PARAM_REQ;
+  lctrNotifyHostConnParamInd(pCtx);
 }
 
 /*************************************************************************************************/
@@ -121,7 +124,7 @@ static void lctrActPeerConnParam(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 static void lctrActPeerConnParamWithCollision(lctrConnCtx_t *pCtx)
 {
-    lctrActPeerConnParam(pCtx);
+  lctrActPeerConnParam(pCtx);
 }
 
 /*************************************************************************************************/
@@ -133,8 +136,8 @@ static void lctrActPeerConnParamWithCollision(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 static void lctrActPeerConnInd(lctrConnCtx_t *pCtx)
 {
-    lctrStopLlcpTimer(pCtx);
-    lctrStoreConnUpdate(pCtx);
+  lctrStopLlcpTimer(pCtx);
+  lctrStoreConnUpdate(pCtx);
 }
 
 /*************************************************************************************************/
@@ -146,9 +149,9 @@ static void lctrActPeerConnInd(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 static void lctrActHostReply(lctrConnCtx_t *pCtx)
 {
-    pCtx->replyWaitingMsk &= ~LCTR_HOST_REPLY_CONN_PARAM_REQ;
-    lctrSendConnParamRsp(pCtx);
-    lctrStartLlcpTimer(pCtx);
+  pCtx->replyWaitingMsk &= ~LCTR_HOST_REPLY_CONN_PARAM_REQ;
+  lctrSendConnParamRsp(pCtx);
+  lctrStartLlcpTimer(pCtx);
 }
 
 /*************************************************************************************************/
@@ -160,9 +163,9 @@ static void lctrActHostReply(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrActHostNegReply(lctrConnCtx_t *pCtx)
 {
-    pCtx->replyWaitingMsk &= ~LCTR_HOST_REPLY_CONN_PARAM_REQ;
-    lctrSendRejectInd(pCtx, pLctrConnMsg->connParamNegReply.reason, TRUE);
-    lctrStopLlcpTimer(pCtx);
+  pCtx->replyWaitingMsk &= ~LCTR_HOST_REPLY_CONN_PARAM_REQ;
+  lctrSendRejectInd(pCtx, pLctrConnMsg->connParamNegReply.reason, TRUE);
+  lctrStopLlcpTimer(pCtx);
 }
 
 /*************************************************************************************************/
@@ -174,24 +177,22 @@ void lctrActHostNegReply(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrActPeerRejectConnParam(lctrConnCtx_t *pCtx)
 {
-    pCtx->llcpNotifyMask &= ~(1 << LCTR_PROC_CONN_UPD);
+  pCtx->llcpNotifyMask &= ~(1 << LCTR_PROC_CONN_UPD);
 
-    switch (lctrDataPdu.opcode) {
+  switch (lctrDataPdu.opcode)
+  {
     case LL_PDU_REJECT_IND:
     case LL_PDU_REJECT_EXT_IND:
-        LL_TRACE_WARN2("Peer rejected connection parameter request, handle=%u, reason=%u",
-                       LCTR_GET_CONN_HANDLE(pCtx), lctrDataPdu.pld.rejInd.reason);
-        lctrNotifyHostConnUpdateInd(pCtx, lctrDataPdu.pld.rejInd.reason);
-        break;
+      LL_TRACE_WARN2("Peer rejected connection parameter request, handle=%u, reason=%u", LCTR_GET_CONN_HANDLE(pCtx), lctrDataPdu.pld.rejInd.reason);
+      lctrNotifyHostConnUpdateInd(pCtx, lctrDataPdu.pld.rejInd.reason);
+      break;
     case LL_PDU_UNKNOWN_RSP:
-        LL_TRACE_WARN1(
-            "Peer rejected connection parameter request, handle=%u, reason=UNSUPPORTED_REMOTE_FEATURE",
-            LCTR_GET_CONN_HANDLE(pCtx));
-        lctrNotifyHostConnUpdateInd(pCtx, LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE);
-        break;
+      LL_TRACE_WARN1("Peer rejected connection parameter request, handle=%u, reason=UNSUPPORTED_REMOTE_FEATURE", LCTR_GET_CONN_HANDLE(pCtx));
+      lctrNotifyHostConnUpdateInd(pCtx, LL_ERROR_CODE_UNSUPPORTED_REMOTE_FEATURE);
+      break;
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -203,10 +204,11 @@ void lctrActPeerRejectConnParam(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrActNotifyHostConnUpdSuccess(lctrConnCtx_t *pCtx)
 {
-    if (pCtx->llcpNotifyMask & (1 << LCTR_PROC_CONN_UPD)) {
-        pCtx->llcpNotifyMask &= ~(1 << LCTR_PROC_CONN_UPD);
-        lctrNotifyHostConnUpdateInd(pCtx, LL_SUCCESS);
-    }
+  if (pCtx->llcpNotifyMask & (1 << LCTR_PROC_CONN_UPD))
+  {
+    pCtx->llcpNotifyMask &= ~(1 << LCTR_PROC_CONN_UPD);
+    lctrNotifyHostConnUpdateInd(pCtx, LL_SUCCESS);
+  }
 }
 
 /*************************************************************************************************/
@@ -218,9 +220,8 @@ void lctrActNotifyHostConnUpdSuccess(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 static void lctrActNotifyHostColliding(lctrConnCtx_t *pCtx)
 {
-    LL_TRACE_WARN1("Host requested connection update collided with peer, handle=%u",
-                   LCTR_GET_CONN_HANDLE(pCtx));
-    lctrNotifyHostConnUpdateInd(pCtx, lctrDataPdu.pld.rejInd.reason);
+  LL_TRACE_WARN1("Host requested connection update collided with peer, handle=%u", LCTR_GET_CONN_HANDLE(pCtx));
+  lctrNotifyHostConnUpdateInd(pCtx, lctrDataPdu.pld.rejInd.reason);
 }
 
 /*************************************************************************************************/
@@ -232,9 +233,8 @@ static void lctrActNotifyHostColliding(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 static void lctrActConnUpdDisallow(lctrConnCtx_t *pCtx)
 {
-    LL_TRACE_WARN1("Host requested connection update while procedure pending, handle=%u",
-                   LCTR_GET_CONN_HANDLE(pCtx));
-    lctrNotifyHostConnUpdateInd(pCtx, LL_ERROR_CODE_CMD_DISALLOWED);
+  LL_TRACE_WARN1("Host requested connection update while procedure pending, handle=%u", LCTR_GET_CONN_HANDLE(pCtx));
+  lctrNotifyHostConnUpdateInd(pCtx, LL_ERROR_CODE_CMD_DISALLOWED);
 }
 
 /*************************************************************************************************/
@@ -246,9 +246,8 @@ static void lctrActConnUpdDisallow(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 static void lctrActRejectCollision(lctrConnCtx_t *pCtx)
 {
-    LL_TRACE_WARN1("Peer requested connection parameter/update while procedure pending, handle=%u",
-                   LCTR_GET_CONN_HANDLE(pCtx));
-    lctrSendRejectInd(pCtx, LL_ERROR_CODE_LMP_ERR_TRANSACTION_COLLISION, TRUE);
+  LL_TRACE_WARN1("Peer requested connection parameter/update while procedure pending, handle=%u", LCTR_GET_CONN_HANDLE(pCtx));
+  lctrSendRejectInd(pCtx, LL_ERROR_CODE_LMP_ERR_TRANSACTION_COLLISION, TRUE);
 }
 
 /**************************************************************************************************
@@ -256,99 +255,93 @@ static void lctrActRejectCollision(lctrConnCtx_t *pCtx)
 **************************************************************************************************/
 
 /*! \brief      State machine action table. */
-static const lctrActFn_t lctrSlvConnUpdActionTbl[LCTR_CU_STATE_TOTAL][LCTR_CU_EVENT_TOTAL] = {
-    {
-        /* LCTR_CU_STATE_IDLE */
-        lctrActHostConnUpd, /* LCTR_CU_EVENT_HOST_CONN_UPD */
-        lctrActPeerConnParam, /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
-        NULL, /* LCTR_CU_EVENT_HOST_REPLY */
-        NULL, /* LCTR_CU_EVENT_HOST_NEG_REPLY */
-        lctrActPeerConnInd, /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
-        NULL, /* LCTR_CU_EVENT_PEER_REJECT */
-        NULL, /* LCTR_CU_EVENT_INT_PROC_COMP */
-        lctrActStartConnUpd /* LCTR_CU_EVENT_INT_START_CONN_UPD */
-    },
-    {
-        /* LCTR_CU_STATE_HOST_REPLY */
-        lctrActConnUpdDisallow, /* LCTR_CU_EVENT_HOST_CONN_UPD */
-        lctrActRejectCollision, /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
-        lctrActHostReply, /* LCTR_CU_EVENT_HOST_REPLY */
-        lctrActHostNegReply, /* LCTR_CU_EVENT_HOST_NEG_REPLY */
-        lctrActRejectCollision, /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
-        lctrActNotifyHostColliding, /* LCTR_CU_EVENT_PEER_REJECT */
-        NULL, /* LCTR_CU_EVENT_INT_PROC_COMP */
-        lctrActStartConnUpd /* LCTR_CU_EVENT_INT_START_CONN_UPD */
-    },
-    {
-        /* LCTR_CU_STATE_CONN_UPD_IND */
-        lctrActConnUpdDisallow, /* LCTR_CU_EVENT_HOST_CONN_UPD */
-        lctrActPeerConnParamWithCollision, /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
-        NULL, /* LCTR_CU_EVENT_HOST_REPLY */
-        NULL, /* LCTR_CU_EVENT_HOST_NEG_REPLY */
-        lctrActPeerConnInd, /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
-        lctrActPeerRejectConnParam, /* LCTR_CU_EVENT_PEER_REJECT */
-        NULL, /* LCTR_CU_EVENT_INT_PROC_COMP */
-        NULL /* LCTR_CU_EVENT_INT_START_CONN_UPD */
-    },
-    {
-        /* LCTR_CU_STATE_CONN_UPD_INSTANT */
-        lctrActConnUpdDisallow, /* LCTR_CU_EVENT_HOST_CONN_UPD */
-        lctrActRejectCollision, /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
-        NULL, /* LCTR_CU_EVENT_HOST_REPLY */
-        NULL, /* LCTR_CU_EVENT_HOST_NEG_REPLY */
-        lctrActRejectCollision, /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
-        NULL, /* LCTR_CU_EVENT_PEER_REJECT */
-        lctrActNotifyHostConnUpdSuccess, /* LCTR_CU_EVENT_INT_PROC_COMP */
-        NULL /* LCTR_CU_EVENT_INT_START_CONN_UPD */
-    }
+static const lctrActFn_t lctrSlvConnUpdActionTbl[LCTR_CU_STATE_TOTAL][LCTR_CU_EVENT_TOTAL] =
+{
+  { /* LCTR_CU_STATE_IDLE */
+    lctrActHostConnUpd,                 /* LCTR_CU_EVENT_HOST_CONN_UPD */
+    lctrActPeerConnParam,               /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
+    NULL,                               /* LCTR_CU_EVENT_HOST_REPLY */
+    NULL,                               /* LCTR_CU_EVENT_HOST_NEG_REPLY */
+    lctrActPeerConnInd,                 /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
+    NULL,                               /* LCTR_CU_EVENT_PEER_REJECT */
+    NULL,                               /* LCTR_CU_EVENT_INT_PROC_COMP */
+    lctrActStartConnUpd                 /* LCTR_CU_EVENT_INT_START_CONN_UPD */
+  },
+  { /* LCTR_CU_STATE_HOST_REPLY */
+    lctrActConnUpdDisallow,             /* LCTR_CU_EVENT_HOST_CONN_UPD */
+    lctrActRejectCollision,             /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
+    lctrActHostReply,                   /* LCTR_CU_EVENT_HOST_REPLY */
+    lctrActHostNegReply,                /* LCTR_CU_EVENT_HOST_NEG_REPLY */
+    lctrActRejectCollision,             /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
+    lctrActNotifyHostColliding,         /* LCTR_CU_EVENT_PEER_REJECT */
+    NULL,                               /* LCTR_CU_EVENT_INT_PROC_COMP */
+    lctrActStartConnUpd                 /* LCTR_CU_EVENT_INT_START_CONN_UPD */
+  },
+  { /* LCTR_CU_STATE_CONN_UPD_IND */
+    lctrActConnUpdDisallow,             /* LCTR_CU_EVENT_HOST_CONN_UPD */
+    lctrActPeerConnParamWithCollision,  /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
+    NULL,                               /* LCTR_CU_EVENT_HOST_REPLY */
+    NULL,                               /* LCTR_CU_EVENT_HOST_NEG_REPLY */
+    lctrActPeerConnInd,                 /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
+    lctrActPeerRejectConnParam,         /* LCTR_CU_EVENT_PEER_REJECT */
+    NULL,                               /* LCTR_CU_EVENT_INT_PROC_COMP */
+    NULL                                /* LCTR_CU_EVENT_INT_START_CONN_UPD */
+  },
+  { /* LCTR_CU_STATE_CONN_UPD_INSTANT */
+    lctrActConnUpdDisallow,             /* LCTR_CU_EVENT_HOST_CONN_UPD */
+    lctrActRejectCollision,             /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
+    NULL,                               /* LCTR_CU_EVENT_HOST_REPLY */
+    NULL,                               /* LCTR_CU_EVENT_HOST_NEG_REPLY */
+    lctrActRejectCollision,             /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
+    NULL,                               /* LCTR_CU_EVENT_PEER_REJECT */
+    lctrActNotifyHostConnUpdSuccess,    /* LCTR_CU_EVENT_INT_PROC_COMP */
+    NULL                                /* LCTR_CU_EVENT_INT_START_CONN_UPD */
+  }
 };
 
 /*! \brief      State machine next state table. */
-static const uint8_t lctrSlvConnUpdNextStateTbl[LCTR_CU_STATE_TOTAL][LCTR_CU_EVENT_TOTAL] = {
-    {
-        /* LCTR_CU_STATE_IDLE */
-        LCTR_CU_STATE_CONN_UPD_IND, /* LCTR_CU_EVENT_HOST_CONN_UPD */
-        LCTR_CU_STATE_HOST_REPLY, /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
-        LCTR_CU_STATE_IDLE, /* LCTR_CU_EVENT_HOST_REPLY */
-        LCTR_CU_STATE_IDLE, /* LCTR_CU_EVENT_HOST_NEG_REPLY */
-        LCTR_CU_STATE_CONN_UPD_INSTANT, /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
-        LCTR_CU_STATE_IDLE, /* LCTR_CU_EVENT_PEER_REJECT */
-        LCTR_CU_STATE_IDLE, /* LCTR_CU_EVENT_INT_PROC_COMP */
-        LCTR_CU_STATE_IDLE /* LCTR_CU_EVENT_INT_START_CONN_UPD */
-    },
-    {
-        /* LCTR_CU_STATE_HOST_REPLY */
-        LCTR_CU_STATE_HOST_REPLY, /* LCTR_CU_EVENT_HOST_CONN_UPD */
-        LCTR_CU_STATE_HOST_REPLY, /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
-        LCTR_CU_STATE_CONN_UPD_IND, /* LCTR_CU_EVENT_HOST_REPLY */
-        LCTR_CU_STATE_IDLE, /* LCTR_CU_EVENT_HOST_NEG_REPLY */
-        LCTR_CU_STATE_HOST_REPLY, /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
-        LCTR_CU_STATE_HOST_REPLY, /* LCTR_CU_EVENT_PEER_REJECT */
-        LCTR_CU_STATE_HOST_REPLY, /* LCTR_CU_EVENT_INT_PROC_COMP */
-        LCTR_CU_STATE_HOST_REPLY /* LCTR_CU_EVENT_INT_START_CONN_UPD */
-    },
-    {
-        /* LCTR_CU_STATE_CONN_UPD_IND */
-        LCTR_CU_STATE_CONN_UPD_IND, /* LCTR_CU_EVENT_HOST_CONN_UPD */
-        LCTR_CU_STATE_HOST_REPLY, /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
-        LCTR_CU_STATE_CONN_UPD_IND, /* LCTR_CU_EVENT_HOST_REPLY */
-        LCTR_CU_STATE_CONN_UPD_IND, /* LCTR_CU_EVENT_HOST_NEG_REPLY */
-        LCTR_CU_STATE_CONN_UPD_INSTANT, /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
-        LCTR_CU_STATE_IDLE, /* LCTR_CU_EVENT_PEER_REJECT */
-        LCTR_CU_STATE_IDLE, /* LCTR_CU_EVENT_INT_PROC_COMP */
-        LCTR_CU_STATE_CONN_UPD_IND /* LCTR_CU_EVENT_INT_START_CONN_UPD */
-    },
-    {
-        /* LCTR_CU_STATE_CONN_UPD_INSTANT */
-        LCTR_CU_STATE_CONN_UPD_INSTANT, /* LCTR_CU_EVENT_HOST_CONN_UPD */
-        LCTR_CU_STATE_CONN_UPD_INSTANT, /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
-        LCTR_CU_STATE_CONN_UPD_INSTANT, /* LCTR_CU_EVENT_HOST_REPLY */
-        LCTR_CU_STATE_CONN_UPD_INSTANT, /* LCTR_CU_EVENT_HOST_NEG_REPLY */
-        LCTR_CU_STATE_CONN_UPD_INSTANT, /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
-        LCTR_CU_STATE_CONN_UPD_INSTANT, /* LCTR_CU_EVENT_PEER_REJECT */
-        LCTR_CU_STATE_IDLE, /* LCTR_CU_EVENT_INT_PROC_COMP */
-        LCTR_CU_STATE_CONN_UPD_INSTANT /* LCTR_CU_EVENT_INT_START_CONN_UPD */
-    }
+static const uint8_t lctrSlvConnUpdNextStateTbl[LCTR_CU_STATE_TOTAL][LCTR_CU_EVENT_TOTAL] =
+{
+  { /* LCTR_CU_STATE_IDLE */
+    LCTR_CU_STATE_CONN_UPD_IND,         /* LCTR_CU_EVENT_HOST_CONN_UPD */
+    LCTR_CU_STATE_HOST_REPLY,           /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
+    LCTR_CU_STATE_IDLE,                 /* LCTR_CU_EVENT_HOST_REPLY */
+    LCTR_CU_STATE_IDLE,                 /* LCTR_CU_EVENT_HOST_NEG_REPLY */
+    LCTR_CU_STATE_CONN_UPD_INSTANT,     /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
+    LCTR_CU_STATE_IDLE,                 /* LCTR_CU_EVENT_PEER_REJECT */
+    LCTR_CU_STATE_IDLE,                 /* LCTR_CU_EVENT_INT_PROC_COMP */
+    LCTR_CU_STATE_IDLE                  /* LCTR_CU_EVENT_INT_START_CONN_UPD */
+  },
+  { /* LCTR_CU_STATE_HOST_REPLY */
+    LCTR_CU_STATE_HOST_REPLY,           /* LCTR_CU_EVENT_HOST_CONN_UPD */
+    LCTR_CU_STATE_HOST_REPLY,           /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
+    LCTR_CU_STATE_CONN_UPD_IND,         /* LCTR_CU_EVENT_HOST_REPLY */
+    LCTR_CU_STATE_IDLE,                 /* LCTR_CU_EVENT_HOST_NEG_REPLY */
+    LCTR_CU_STATE_HOST_REPLY,           /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
+    LCTR_CU_STATE_HOST_REPLY,           /* LCTR_CU_EVENT_PEER_REJECT */
+    LCTR_CU_STATE_HOST_REPLY,           /* LCTR_CU_EVENT_INT_PROC_COMP */
+    LCTR_CU_STATE_HOST_REPLY            /* LCTR_CU_EVENT_INT_START_CONN_UPD */
+  },
+  { /* LCTR_CU_STATE_CONN_UPD_IND */
+    LCTR_CU_STATE_CONN_UPD_IND,         /* LCTR_CU_EVENT_HOST_CONN_UPD */
+    LCTR_CU_STATE_HOST_REPLY,           /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
+    LCTR_CU_STATE_CONN_UPD_IND,         /* LCTR_CU_EVENT_HOST_REPLY */
+    LCTR_CU_STATE_CONN_UPD_IND,         /* LCTR_CU_EVENT_HOST_NEG_REPLY */
+    LCTR_CU_STATE_CONN_UPD_INSTANT,     /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
+    LCTR_CU_STATE_IDLE,                 /* LCTR_CU_EVENT_PEER_REJECT */
+    LCTR_CU_STATE_IDLE,                 /* LCTR_CU_EVENT_INT_PROC_COMP */
+    LCTR_CU_STATE_CONN_UPD_IND          /* LCTR_CU_EVENT_INT_START_CONN_UPD */
+  },
+  { /* LCTR_CU_STATE_CONN_UPD_INSTANT */
+    LCTR_CU_STATE_CONN_UPD_INSTANT,     /* LCTR_CU_EVENT_HOST_CONN_UPD */
+    LCTR_CU_STATE_CONN_UPD_INSTANT,     /* LCTR_CU_EVENT_PEER_CONN_PARAM_REQ */
+    LCTR_CU_STATE_CONN_UPD_INSTANT,     /* LCTR_CU_EVENT_HOST_REPLY */
+    LCTR_CU_STATE_CONN_UPD_INSTANT,     /* LCTR_CU_EVENT_HOST_NEG_REPLY */
+    LCTR_CU_STATE_CONN_UPD_INSTANT,     /* LCTR_CU_EVENT_PEER_CONN_UPD_IND */
+    LCTR_CU_STATE_CONN_UPD_INSTANT,     /* LCTR_CU_EVENT_PEER_REJECT */
+    LCTR_CU_STATE_IDLE,                 /* LCTR_CU_EVENT_INT_PROC_COMP */
+    LCTR_CU_STATE_CONN_UPD_INSTANT      /* LCTR_CU_EVENT_INT_START_CONN_UPD */
+  }
 };
 
 /*************************************************************************************************/
@@ -361,11 +354,12 @@ static const uint8_t lctrSlvConnUpdNextStateTbl[LCTR_CU_STATE_TOTAL][LCTR_CU_EVE
 /*************************************************************************************************/
 static inline void lctrExecAction(lctrConnCtx_t *pCtx, uint8_t event)
 {
-    if (lctrSlvConnUpdActionTbl[pCtx->connUpdState][event]) {
-        lctrSlvConnUpdActionTbl[pCtx->connUpdState][event](pCtx);
-    }
+  if (lctrSlvConnUpdActionTbl[pCtx->connUpdState][event])
+  {
+    lctrSlvConnUpdActionTbl[pCtx->connUpdState][event](pCtx);
+  }
 
-    pCtx->connUpdState = lctrSlvConnUpdNextStateTbl[pCtx->connUpdState][event];
+  pCtx->connUpdState = lctrSlvConnUpdNextStateTbl[pCtx->connUpdState][event];
 }
 
 /*************************************************************************************************/
@@ -383,74 +377,82 @@ static inline void lctrExecAction(lctrConnCtx_t *pCtx, uint8_t event)
 /*************************************************************************************************/
 static uint8_t lctrSlvConnUpdRemapEvent(lctrConnCtx_t *pCtx, uint8_t event)
 {
-    switch (event) {
-        /*** Peer messages ***/
+  switch (event)
+  {
+    /*** Peer messages ***/
 
     case LCTR_CONN_MSG_RX_LLCP:
-        switch (lctrDataPdu.opcode) {
+      switch (lctrDataPdu.opcode)
+      {
         case LL_PDU_CONN_UPDATE_IND:
-            return LCTR_CU_EVENT_PEER_CONN_UPD_IND;
+          return LCTR_CU_EVENT_PEER_CONN_UPD_IND;
         case LL_PDU_CONN_PARAM_REQ:
-            return LCTR_CU_EVENT_PEER_CONN_PARAM_REQ;
+          return LCTR_CU_EVENT_PEER_CONN_PARAM_REQ;
 
         case LL_PDU_UNKNOWN_RSP:
-            if (lctrDataPdu.pld.unknownRsp.unknownType == LL_PDU_CONN_PARAM_REQ) {
-                /* Remember this remote device does not support Connection Parameters Request procedure. */
-                pCtx->usedFeatSet &= ~LL_FEAT_CONN_PARAM_REQ_PROC;
-                return LCTR_CU_EVENT_PEER_REJECT;
-            }
-            /* Not for this SM. */
-            break;
+          if (lctrDataPdu.pld.unknownRsp.unknownType == LL_PDU_CONN_PARAM_REQ)
+          {
+            /* Remember this remote device does not support Connection Parameters Request procedure. */
+            pCtx->usedFeatSet &= ~LL_FEAT_CONN_PARAM_REQ_PROC;
+            return LCTR_CU_EVENT_PEER_REJECT;
+          }
+          /* Not for this SM. */
+          break;
         case LL_PDU_REJECT_IND:
-            if (pCtx->llcpActiveProc == LCTR_PROC_CONN_UPD) {
-                return LCTR_CU_EVENT_PEER_REJECT;
-            }
-            /* Probably not for this SM. */
-            break;
+          if (pCtx->llcpActiveProc == LCTR_PROC_CONN_UPD)
+          {
+            return LCTR_CU_EVENT_PEER_REJECT;
+          }
+          /* Probably not for this SM. */
+          break;
         case LL_PDU_REJECT_EXT_IND:
-            if (lctrDataPdu.pld.rejInd.opcode == LL_PDU_CONN_PARAM_REQ) {
-                return LCTR_CU_EVENT_PEER_REJECT;
-            }
-            if (lctrDataPdu.pld.rejInd.opcode == LL_PDU_CONN_PARAM_RSP) {
-                return LCTR_CU_EVENT_PEER_REJECT;
-            }
-            /* Not for this SM. */
-            break;
+          if (lctrDataPdu.pld.rejInd.opcode == LL_PDU_CONN_PARAM_REQ)
+          {
+            return LCTR_CU_EVENT_PEER_REJECT;
+          }
+          if (lctrDataPdu.pld.rejInd.opcode == LL_PDU_CONN_PARAM_RSP)
+          {
+            return LCTR_CU_EVENT_PEER_REJECT;
+          }
+          /* Not for this SM. */
+          break;
 
         default:
-            break;
-        }
-        break;
+          break;
+      }
+      break;
 
-        /*** Host messages ***/
+    /*** Host messages ***/
 
     case LCTR_CONN_MSG_API_CONN_UPDATE:
-        return LCTR_CU_EVENT_HOST_CONN_UPD;
+      return LCTR_CU_EVENT_HOST_CONN_UPD;
     case LCTR_CONN_MSG_API_CONN_PARAM_REPLY:
-        return LCTR_CU_EVENT_HOST_REPLY;
+      return LCTR_CU_EVENT_HOST_REPLY;
     case LCTR_CONN_MSG_API_CONN_PARAM_NEG_REPLY:
-        return LCTR_CU_EVENT_HOST_NEG_REPLY;
+      return LCTR_CU_EVENT_HOST_NEG_REPLY;
 
-        /*** Internal messages ***/
+    /*** Internal messages ***/
 
     case LCTR_CONN_LLCP_PROC_CMPL:
-        if (pCtx->llcpActiveProc == LCTR_PROC_CONN_UPD) {
-            return LCTR_CU_EVENT_INT_PROC_COMP;
-        }
-        break;
+      if (pCtx->llcpActiveProc == LCTR_PROC_CONN_UPD)
+      {
+        return LCTR_CU_EVENT_INT_PROC_COMP;
+      }
+      break;
     case LCTR_CONN_LLCP_START_PENDING:
-        if (pCtx->llcpPendMask == (1 << LCTR_PROC_CONN_UPD)) {
-            /* Connection update SM is pending; continue the procedure. */
-            pCtx->llcpPendMask &= ~(1 << LCTR_PROC_CONN_UPD);
-            return LCTR_CU_EVENT_INT_START_CONN_UPD;
-        }
-        break;
+      if (pCtx->llcpPendMask == (1 << LCTR_PROC_CONN_UPD))
+      {
+        /* Connection update SM is pending; continue the procedure. */
+        pCtx->llcpPendMask &= ~(1 << LCTR_PROC_CONN_UPD);
+        return LCTR_CU_EVENT_INT_START_CONN_UPD;
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 
-    return LCTR_CU_EVENT_INVALID;
+  return LCTR_CU_EVENT_INVALID;
 }
 
 /*************************************************************************************************/
@@ -463,39 +465,36 @@ static uint8_t lctrSlvConnUpdRemapEvent(lctrConnCtx_t *pCtx, uint8_t event)
 /*************************************************************************************************/
 static void lctrResolveCollision(lctrConnCtx_t *pCtx, uint8_t event)
 {
-    switch (event) {
+  switch (event)
+  {
     case LCTR_CU_EVENT_PEER_CONN_UPD_IND:
-        LL_TRACE_WARN2(
-            "Rejecting CONN_UPD=%u procedure: activeProc=%u, reason=DIFFERENT_TRANSACTION_COLLISION",
-            LCTR_PROC_CONN_UPD, pCtx->llcpActiveProc);
-        lctrSendRejectInd(pCtx, LL_ERROR_CODE_DIFFERENT_TRANSACTION_COLLISION, FALSE);
-        break;
+      LL_TRACE_WARN2("Rejecting CONN_UPD=%u procedure: activeProc=%u, reason=DIFFERENT_TRANSACTION_COLLISION", LCTR_PROC_CONN_UPD, pCtx->llcpActiveProc);
+      lctrSendRejectInd(pCtx, LL_ERROR_CODE_DIFFERENT_TRANSACTION_COLLISION, FALSE);
+      break;
 
     case LCTR_CU_EVENT_PEER_CONN_PARAM_REQ:
-        LL_TRACE_WARN2(
-            "Rejecting CONN_PARAM=%u procedure: activeProc=%u, reason=DIFFERENT_TRANSACTION_COLLISION",
-            LCTR_PROC_CONN_PARAM, pCtx->llcpActiveProc);
-        lctrSendRejectInd(pCtx, LL_ERROR_CODE_DIFFERENT_TRANSACTION_COLLISION, TRUE);
-        break;
+      LL_TRACE_WARN2("Rejecting CONN_PARAM=%u procedure: activeProc=%u, reason=DIFFERENT_TRANSACTION_COLLISION", LCTR_PROC_CONN_PARAM, pCtx->llcpActiveProc);
+      lctrSendRejectInd(pCtx, LL_ERROR_CODE_DIFFERENT_TRANSACTION_COLLISION, TRUE);
+      break;
 
     case LCTR_CU_EVENT_HOST_CONN_UPD:
-        lctrStoreConnUpdateSpec(pCtx);
-        pCtx->llcpPendMask |= 1 << LCTR_PROC_CONN_UPD;
-        LL_TRACE_INFO2("Pending CONN_UPD=%u procedure: activeProc=%u", LCTR_PROC_CONN_UPD,
-                       pCtx->llcpActiveProc);
-        break;
+      lctrStoreConnUpdateSpec(pCtx);
+      pCtx->llcpPendMask |= 1 << LCTR_PROC_CONN_UPD;
+      LL_TRACE_INFO2("Pending CONN_UPD=%u procedure: activeProc=%u", LCTR_PROC_CONN_UPD, pCtx->llcpActiveProc);
+      break;
 
     case LCTR_CU_EVENT_PEER_REJECT:
-        pCtx->llcpPendMask &= ~(1 << LCTR_PROC_CONN_UPD);
-        if (pCtx->connUpdState != LCTR_CU_STATE_IDLE) {
-            pCtx->connUpdState = LCTR_CU_STATE_IDLE;
-        }
-        lctrNotifyHostConnUpdateInd(pCtx, lctrDataPdu.pld.rejInd.reason);
-        break;
+      pCtx->llcpPendMask &= ~(1 << LCTR_PROC_CONN_UPD);
+      if (pCtx->connUpdState != LCTR_CU_STATE_IDLE)
+      {
+        pCtx->connUpdState = LCTR_CU_STATE_IDLE;
+      }
+      lctrNotifyHostConnUpdateInd(pCtx, lctrDataPdu.pld.rejInd.reason);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -511,31 +510,33 @@ static void lctrResolveCollision(lctrConnCtx_t *pCtx, uint8_t event)
 /*************************************************************************************************/
 static void lctrSlvCheckProcOverride(lctrConnCtx_t *pCtx, uint8_t event)
 {
-    switch (event) {
+  switch (event)
+  {
     case LCTR_CU_EVENT_PEER_CONN_UPD_IND:
     case LCTR_CU_EVENT_PEER_CONN_PARAM_REQ:
-        /* Only the procedure without instant fields can be overridden. */
-        switch (pCtx->llcpActiveProc) {
+      /* Only the procedure without instant fields can be overridden. */
+      switch (pCtx->llcpActiveProc)
+      {
         case LCTR_PROC_CMN_VER_EXCH:
         case LCTR_PROC_CMN_FEAT_EXCH:
         case LCTR_PROC_CMN_DATA_LEN_UPD:
         case LCTR_PROC_CMN_REQ_PEER_SCA:
-            pCtx->llcpPendMask |= 1 << pCtx->llcpActiveProc;
-            pCtx->llcpActiveProc = LCTR_PROC_CONN_UPD;
-            pCtx->llcpIsOverridden = TRUE;
-            break;
+          pCtx->llcpPendMask |= 1 << pCtx->llcpActiveProc;
+          pCtx->llcpActiveProc = LCTR_PROC_CONN_UPD;
+          pCtx->llcpIsOverridden = TRUE;
+          break;
         case LCTR_PROC_PHY_UPD:
-            pCtx->llcpPendMask |= 1 << pCtx->llcpActiveProc;
-            pCtx->llcpActiveProc = LCTR_PROC_CONN_UPD;
-            break;
+          pCtx->llcpPendMask |= 1 << pCtx->llcpActiveProc;
+          pCtx->llcpActiveProc = LCTR_PROC_CONN_UPD;
+          break;
         default:
-            break;
-        }
-        break;
+          break;
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -550,53 +551,56 @@ static void lctrSlvCheckProcOverride(lctrConnCtx_t *pCtx, uint8_t event)
 /*************************************************************************************************/
 bool_t lctrSlvLlcpExecuteConnUpdSm(lctrConnCtx_t *pCtx, uint8_t event)
 {
-    if ((event = lctrSlvConnUpdRemapEvent(pCtx, event)) == LCTR_CU_EVENT_INVALID) {
-        return FALSE;
-    }
+  if ((event = lctrSlvConnUpdRemapEvent(pCtx, event)) == LCTR_CU_EVENT_INVALID)
+  {
+    return FALSE;
+  }
 
-    switch (pCtx->llcpState) {
+  switch (pCtx->llcpState)
+  {
     case LCTR_LLCP_STATE_IDLE:
-        LL_TRACE_INFO3(
-            "lctrSlvLlcpExecuteConnUpdSm: handle=%u, llcpState=IDLE, connUpdState=%u, event=%u",
-            LCTR_GET_CONN_HANDLE(pCtx), pCtx->connUpdState, event);
-        lctrExecAction(pCtx, event);
+      LL_TRACE_INFO3("lctrSlvLlcpExecuteConnUpdSm: handle=%u, llcpState=IDLE, connUpdState=%u, event=%u", LCTR_GET_CONN_HANDLE(pCtx), pCtx->connUpdState, event);
+      lctrExecAction(pCtx, event);
 
-        if (pCtx->connUpdState != LCTR_CU_STATE_IDLE) {
-            pCtx->llcpState = LCTR_LLCP_STATE_BUSY;
-            pCtx->llcpActiveProc = LCTR_PROC_CONN_UPD;
-            pCtx->llcpInstantComp = FALSE;
-        }
-        break;
+      if (pCtx->connUpdState != LCTR_CU_STATE_IDLE)
+      {
+        pCtx->llcpState = LCTR_LLCP_STATE_BUSY;
+        pCtx->llcpActiveProc = LCTR_PROC_CONN_UPD;
+        pCtx->llcpInstantComp = FALSE;
+      }
+      break;
 
     case LCTR_LLCP_STATE_BUSY:
-        LL_TRACE_INFO3(
-            "lctrSlvLlcpExecuteConnUpdSm: handle=%u, llcpState=BUSY, connUpdState=%u, event=%u",
-            LCTR_GET_CONN_HANDLE(pCtx), pCtx->connUpdState, event);
+      LL_TRACE_INFO3("lctrSlvLlcpExecuteConnUpdSm: handle=%u, llcpState=BUSY, connUpdState=%u, event=%u", LCTR_GET_CONN_HANDLE(pCtx), pCtx->connUpdState, event);
 
-        lctrSlvCheckProcOverride(pCtx, event);
+      lctrSlvCheckProcOverride(pCtx, event);
 
-        if (pCtx->llcpActiveProc == LCTR_PROC_CONN_UPD) {
-            lctrExecAction(pCtx, event);
+      if (pCtx->llcpActiveProc == LCTR_PROC_CONN_UPD)
+      {
+        lctrExecAction(pCtx, event);
 
-            if (pCtx->connUpdState == LCTR_CU_STATE_IDLE) {
-                lctrStopLlcpTimer(pCtx);
-                pCtx->replyWaitingMsk &= ~LCTR_HOST_REPLY_CONN_PARAM_REQ;
-                pCtx->llcpState = LCTR_LLCP_STATE_IDLE;
-                pCtx->llcpActiveProc = LCTR_PROC_INVALID;
+        if (pCtx->connUpdState == LCTR_CU_STATE_IDLE)
+        {
+          lctrStopLlcpTimer(pCtx);
+          pCtx->replyWaitingMsk &= ~LCTR_HOST_REPLY_CONN_PARAM_REQ;
+          pCtx->llcpState = LCTR_LLCP_STATE_IDLE;
+          pCtx->llcpActiveProc = LCTR_PROC_INVALID;
 
-                lctrStartPendingLlcp(pCtx);
-            }
-        } else {
-            lctrResolveCollision(pCtx, event);
+          lctrStartPendingLlcp(pCtx);
         }
+      }
+      else
+      {
+        lctrResolveCollision(pCtx, event);
+      }
 
-        break;
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -609,38 +613,35 @@ bool_t lctrSlvLlcpExecuteConnUpdSm(lctrConnCtx_t *pCtx, uint8_t event)
 /*************************************************************************************************/
 void lctrLlcpStatelessEventHandler(lctrConnCtx_t *pCtx, uint8_t event)
 {
-    switch (event) {
+  switch (event)
+  {
     case LCTR_CONN_MSG_RX_LLCP_UNKNOWN:
-        LL_TRACE_WARN2("Received unknown LLCP packet handle=%u, opcode=%u",
-                       LCTR_GET_CONN_HANDLE(pCtx), lctrDataPdu.opcode);
-        lctrSendUnknownRsp(pCtx);
-        break;
+      LL_TRACE_WARN2("Received unknown LLCP packet handle=%u, opcode=%u", LCTR_GET_CONN_HANDLE(pCtx), lctrDataPdu.opcode);
+      lctrSendUnknownRsp(pCtx);
+      break;
     case LCTR_CONN_MSG_RX_LLCP_INVALID_PARAM:
-        LL_TRACE_WARN2("Received LLCP packet with invalid parameter handle=%u, opcode=%u",
-                       LCTR_GET_CONN_HANDLE(pCtx), lctrDataPdu.opcode);
-        lctrSendRejectInd(pCtx, LL_ERROR_CODE_INVALID_LMP_PARAMS, FALSE);
-        break;
+      LL_TRACE_WARN2("Received LLCP packet with invalid parameter handle=%u, opcode=%u", LCTR_GET_CONN_HANDLE(pCtx), lctrDataPdu.opcode);
+      lctrSendRejectInd(pCtx, LL_ERROR_CODE_INVALID_LMP_PARAMS, FALSE);
+      break;
     case LCTR_CONN_TERM_INST_PASSED:
-        lctrStoreInstantPassedTerminateReason(pCtx);
-        lctrFlagLinkTerm(pCtx);
-        break;
+      lctrStoreInstantPassedTerminateReason(pCtx);
+      lctrFlagLinkTerm(pCtx);
+      break;
     case LCTR_CONN_TMR_LLCP_RSP_EXP:
-        lctrStoreLlcpTimeoutTerminateReason(pCtx);
-        lctrFlagLinkTerm(pCtx);
-        break;
+      lctrStoreLlcpTimeoutTerminateReason(pCtx);
+      lctrFlagLinkTerm(pCtx);
+      break;
     case LCTR_CONN_MSG_RX_LLCP:
-        /* Mismatch between parser and available SM. */
-        LL_TRACE_WARN2("Unhandled LLCP packet handle=%u, opcode=%u", LCTR_GET_CONN_HANDLE(pCtx),
-                       lctrDataPdu.opcode);
-        break;
+      /* Mismatch between parser and available SM. */
+      LL_TRACE_WARN2("Unhandled LLCP packet handle=%u, opcode=%u", LCTR_GET_CONN_HANDLE(pCtx), lctrDataPdu.opcode);
+      break;
     case LCTR_CONN_LLCP_START_PENDING:
-        /* No action required. */
-        break;
+      /* No action required. */
+      break;
     default:
-        LL_TRACE_WARN2("Unhandled LLCP SM event, handle=%u, event=%u", LCTR_GET_CONN_HANDLE(pCtx),
-                       event);
-        break;
-    }
+      LL_TRACE_WARN2("Unhandled LLCP SM event, handle=%u, event=%u", LCTR_GET_CONN_HANDLE(pCtx), event);
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -653,36 +654,33 @@ void lctrLlcpStatelessEventHandler(lctrConnCtx_t *pCtx, uint8_t event)
 /*************************************************************************************************/
 void lctrSlvLlcpExecuteSm(lctrConnCtx_t *pCtx, uint8_t event)
 {
-    /* Override state machine */
-    switch (event) {
+  /* Override state machine */
+  switch (event)
+  {
     case LCTR_CONN_MSG_API_REMOTE_VERSION:
-        if (pCtx->remoteVerValid) {
-            /* Use cached remote version data. */
-            lctrNotifyHostReadRemoteVerCnf(pCtx);
-            return;
-        }
-        break;
+      if (pCtx->remoteVerValid)
+      {
+        /* Use cached remote version data. */
+        lctrNotifyHostReadRemoteVerCnf(pCtx);
+        return;
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 
-    if (!(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_ENCRYPT] &&
-          lctrSlvLlcpSmTbl[LCTR_LLCP_SM_ENCRYPT](pCtx, event)) &&
-        !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PING] &&
-          lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PING](pCtx, event)) &&
-        !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CONN_UPD] &&
-          lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CONN_UPD](pCtx, event)) &&
-        !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PHY_UPD] &&
-          lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PHY_UPD](pCtx, event)) &&
-        !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CIS_EST] &&
-          lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CIS_EST](pCtx, event)) &&
-        !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CIS_TERM] &&
-          lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CIS_TERM](pCtx, event)) &&
-        !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PC] && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PC](pCtx, event)) &&
-        !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CMN] && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CMN](pCtx, event))) {
-        lctrLlcpStatelessEventHandler(pCtx, event);
-    }
+  if (!(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_ENCRYPT]  && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_ENCRYPT](pCtx, event)) &&
+      !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PING]     && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PING](pCtx, event)) &&
+      !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CONN_UPD] && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CONN_UPD](pCtx, event)) &&
+      !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PHY_UPD]  && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PHY_UPD](pCtx, event)) &&
+      !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CIS_EST]  && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CIS_EST](pCtx, event)) &&
+      !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CIS_TERM] && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CIS_TERM](pCtx, event)) &&
+      !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PC]       && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_PC](pCtx, event)) &&
+      !(lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CMN]      && lctrSlvLlcpSmTbl[LCTR_LLCP_SM_CMN](pCtx, event)) )
+  {
+    lctrLlcpStatelessEventHandler(pCtx, event);
+  }
 }
 
 /*************************************************************************************************/
@@ -696,12 +694,13 @@ void lctrSlvLlcpExecuteSm(lctrConnCtx_t *pCtx, uint8_t event)
 /*************************************************************************************************/
 bool_t lctrSlvCheckEncOverrideConnParam(lctrConnCtx_t *pCtx)
 {
-    if ((pCtx->llcpActiveProc == LCTR_PROC_CONN_UPD) &&
-        (pCtx->connUpdState == LCTR_CU_STATE_CONN_UPD_IND)) {
-        return TRUE;
-    }
+  if ((pCtx->llcpActiveProc == LCTR_PROC_CONN_UPD) &&
+      (pCtx->connUpdState == LCTR_CU_STATE_CONN_UPD_IND))
+  {
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -715,5 +714,5 @@ bool_t lctrSlvCheckEncOverrideConnParam(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 inline bool_t lctrSlvCheckConnUpdInstant(lctrConnCtx_t *pCtx)
 {
-    return (pCtx->connUpdState == LCTR_CU_STATE_CONN_UPD_INSTANT);
+  return (pCtx->connUpdState == LCTR_CU_STATE_CONN_UPD_INSTANT);
 }

@@ -27,7 +27,8 @@
 #define MESH_NWK_MGMT_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -39,16 +40,17 @@ typedef void (*meshNwkMgmtFriendshipSecChgCback_t)(bool_t ivChg, bool_t keyChg,
                                                    uint16_t netKeyIndex);
 
 /*! Mesh Network Management WSF events */
-enum meshNwkMgmtWsfEvents {
-    MESH_NWK_MGMT_MSG_IV_UPDT_TMR = MESH_NWK_MGMT_MSG_START, /*!< IV Update guard time expired */
-    MESH_NWK_MGMT_MSG_IV_RECOVER_TMR, /*!< IV recovery guard time expired */
-    MESH_NWK_MGMT_MSG_IV_UPDT_DISALLOWED, /*!< Node is disallowed to switch to
+enum meshNwkMgmtWsfEvents
+{
+  MESH_NWK_MGMT_MSG_IV_UPDT_TMR = MESH_NWK_MGMT_MSG_START, /*!< IV Update guard time expired */
+  MESH_NWK_MGMT_MSG_IV_RECOVER_TMR,                        /*!< IV recovery guard time expired */
+  MESH_NWK_MGMT_MSG_IV_UPDT_DISALLOWED,                    /*!< Node is disallowed to switch to
                                                             *   new IV
                                                             */
-    MESH_NWK_MGMT_MSG_IV_UPDT_ALLOWED, /*!< Node is allowed to switch to new
+  MESH_NWK_MGMT_MSG_IV_UPDT_ALLOWED,                       /*!< Node is allowed to switch to new
                                                             *   IV
                                                             */
-    MESH_NWK_MGMT_MSG_PRV_COMPLETE, /*!< Provisioning complete event */
+  MESH_NWK_MGMT_MSG_PRV_COMPLETE,                          /*!< Provisioning complete event */
 };
 
 /**************************************************************************************************

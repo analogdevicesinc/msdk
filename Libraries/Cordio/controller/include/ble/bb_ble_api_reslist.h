@@ -39,17 +39,19 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Resolvable address status. */
-enum {
-    BB_BLE_RESLIST_STATUS_ID_ADDR_NOT_IN_LIST, /*!< Identity address is not in list. */
-    BB_BLE_RESLIST_STATUS_ZERO_IRK, /*!< IRK is zero for address. */
-    BB_BLE_RESLIST_STATUS_RES_ADDR_UNASSIGNED, /*!< Resolvable address is unassigned. */
-    BB_BLE_RESLIST_STATUS_RES_ADDR_ASSIGNED /*!< Resolvable address is assigned. */
+enum
+{
+  BB_BLE_RESLIST_STATUS_ID_ADDR_NOT_IN_LIST,  /*!< Identity address is not in list. */
+  BB_BLE_RESLIST_STATUS_ZERO_IRK,             /*!< IRK is zero for address. */
+  BB_BLE_RESLIST_STATUS_RES_ADDR_UNASSIGNED,  /*!< Resolvable address is unassigned. */
+  BB_BLE_RESLIST_STATUS_RES_ADDR_ASSIGNED     /*!< Resolvable address is assigned. */
 };
 
 /*! \brief      Privacy modes. */
-enum {
-    BB_BLE_RESLIST_PRIV_MODE_NETWORK = 0, /*!< Network privacy mode. */
-    BB_BLE_RESLIST_PRIV_MODE_DEVICE = 1, /*!< Device privacy mode. */
+enum
+{
+  BB_BLE_RESLIST_PRIV_MODE_NETWORK = 0,       /*!< Network privacy mode. */
+  BB_BLE_RESLIST_PRIV_MODE_DEVICE  = 1,       /*!< Device privacy mode. */
 };
 
 /**************************************************************************************************
@@ -57,8 +59,7 @@ enum {
 **************************************************************************************************/
 
 /*! \brief      Address resolution needed callback signature. */
-typedef void (*bbBleResListAddrResNeeded_t)(uint64_t rpa, bool_t peer, uint8_t peerAddrType,
-                                            uint64_t peerIdentityAddr);
+typedef void (*bbBleResListAddrResNeeded_t)(uint64_t rpa, bool_t peer, uint8_t peerAddrType, uint64_t peerIdentityAddr);
 
 /**************************************************************************************************
   Function Declarations
@@ -108,7 +109,7 @@ void BbBleResListClear(void);
  */
 /*************************************************************************************************/
 bool_t BbBleResListAdd(uint8_t peerAddrType, uint64_t peerIdentityAddr, const uint8_t *pPeerIrk,
-                       const uint8_t *pLocalIrk);
+    const uint8_t *pLocalIrk);
 
 /*************************************************************************************************/
 /*!
@@ -137,8 +138,7 @@ bool_t BbBleResListRemove(uint8_t peerAddrType, uint64_t peerIdentityAddr);
  *  Set privacy mode of a device.
  */
 /*************************************************************************************************/
-bool_t BbBleResListSetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAddr,
-                                  uint8_t privMode);
+bool_t BbBleResListSetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAddr, uint8_t privMode);
 
 /*************************************************************************************************/
 /*!
@@ -153,8 +153,7 @@ bool_t BbBleResListSetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAdd
  *  Get privacy mode of a device.
  */
 /*************************************************************************************************/
-bool_t BbBleResListGetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAddr,
-                                  uint8_t *pPrivMode);
+bool_t BbBleResListGetPrivacyMode(uint8_t peerAddrType, uint64_t peerIdentityAddr, uint8_t *pPrivMode);
 
 /*************************************************************************************************/
 /*!
@@ -234,8 +233,7 @@ bool_t BbBleResListGeneratePeer(uint8_t peerAddrType, uint64_t peerIdentityAddr,
  *  the operation later.
  */
 /*************************************************************************************************/
-bool_t BbBleResListCheckResolvePeer(uint64_t rpa, uint8_t *pPeerAddrType,
-                                    uint64_t *pPeerIdentityAddr);
+bool_t BbBleResListCheckResolvePeer(uint64_t rpa, uint8_t *pPeerAddrType, uint64_t *pPeerIdentityAddr);
 
 /*************************************************************************************************/
 /*!
@@ -361,7 +359,7 @@ bool_t BbBleResListIsRpaUpd(uint8_t peerAddrType, uint64_t peerIdentityAddr);
 /*************************************************************************************************/
 bool_t bbBleIsPeerInResList(uint8_t peerAddrType, uint64_t peerIdentityAddr);
 
-/*! \} */ /* BB_API_BLE_RL */
+/*! \} */    /* BB_API_BLE_RL */
 
 #ifdef __cplusplus
 };

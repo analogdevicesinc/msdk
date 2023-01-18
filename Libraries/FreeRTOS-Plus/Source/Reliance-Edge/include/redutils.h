@@ -27,13 +27,15 @@
 #ifndef REDUTILS_H
 #define REDUTILS_H
 
+
 #if REDCONF_ASSERTS == 1
-#define REDERROR() RedOsAssertFail(__FILE__, __LINE__)
-#define REDASSERT(EXP) ((EXP) ? (void)0 : REDERROR())
+#define REDERROR()      RedOsAssertFail(__FILE__, __LINE__)
+#define REDASSERT(EXP)  ((EXP) ? (void)0 : REDERROR())
 #else
-#define REDERROR() ((void)0)
-#define REDASSERT(EXP) ((void)0)
+#define REDERROR()      ((void)0)
+#define REDASSERT(EXP)  ((void)0)
 #endif
+
 
 void RedMemCpy(void *pDest, const void *pSrc, uint32_t ulLen);
 void RedMemMove(void *pDest, const void *pSrc, uint32_t ulLen);
@@ -64,4 +66,6 @@ uint16_t RedRev16(uint16_t uToRev);
 
 void RedSignOn(void);
 
+
 #endif
+

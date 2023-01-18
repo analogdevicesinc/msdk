@@ -33,18 +33,19 @@
 **************************************************************************************************/
 
 /*! \brief      White list filter table entry. */
-typedef struct {
-    uint64_t addr; /*!< Address. */
+typedef struct
+{
+  uint64_t addr;                            /*!< Address. */
 } bbBleWhiteListEntry_t;
 
 /**************************************************************************************************
   Globals
 **************************************************************************************************/
 
-static bbBleWhiteListEntry_t *pBbBleWhiteListFilt; /*!< White list filter. */
-static uint8_t bbBleWhiteListNumEntries; /*!< Number of valid white list entries. */
-static uint8_t bbBleWhiteListNumEntriesMax; /*!< Maximum number of white list entries. */
-static bool_t bbBleWhiteListAllowAnonymous; /*!< Allow anonymous peer address. */
+static bbBleWhiteListEntry_t  *pBbBleWhiteListFilt;         /*!< White list filter. */
+static uint8_t                bbBleWhiteListNumEntries;     /*!< Number of valid white list entries. */
+static uint8_t                bbBleWhiteListNumEntriesMax;  /*!< Maximum number of white list entries. */
+static bool_t                 bbBleWhiteListAllowAnonymous; /*!< Allow anonymous peer address. */
 
 /*************************************************************************************************/
 /*!
@@ -63,28 +64,30 @@ static bool_t bbBleWhiteListAllowAnonymous; /*!< Allow anonymous peer address. *
 /*************************************************************************************************/
 uint16_t BbBleInitWhiteList(uint8_t numEntries, uint8_t *pFreeMem, uint32_t freeMemSize)
 {
-    uint8_t *pAvailMem = pFreeMem;
+  uint8_t *pAvailMem = pFreeMem;
 
-    bbBleWhiteListNumEntries = 0;
-    bbBleWhiteListNumEntriesMax = 0;
-    bbBleWhiteListAllowAnonymous = FALSE;
+  bbBleWhiteListNumEntries     = 0;
+  bbBleWhiteListNumEntriesMax  = 0;
+  bbBleWhiteListAllowAnonymous = FALSE;
 
-    /* Allocate memory. */
-    if (((uint32_t)pAvailMem) & 3) {
-        /* Align to next word. */
-        pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
-    }
-    pBbBleWhiteListFilt = (bbBleWhiteListEntry_t *)pAvailMem;
-    pAvailMem += sizeof(bbBleWhiteListEntry_t) * numEntries;
+  /* Allocate memory. */
+  if (((uint32_t)pAvailMem) & 3)
+  {
+    /* Align to next word. */
+    pAvailMem = (uint8_t *)(((uint32_t)pAvailMem & ~3) + sizeof(uint32_t));
+  }
+  pBbBleWhiteListFilt = (bbBleWhiteListEntry_t *)pAvailMem;
+  pAvailMem   += sizeof(bbBleWhiteListEntry_t) * numEntries;
 
-    /* Check memory allocation. */
-    if (((uint32_t)(pAvailMem - pFreeMem)) > freeMemSize) {
-        WSF_ASSERT(FALSE);
-        return 0;
-    }
+  /* Check memory allocation. */
+  if (((uint32_t)(pAvailMem - pFreeMem)) > freeMemSize)
+  {
+    WSF_ASSERT(FALSE);
+    return 0;
+  }
 
-    bbBleWhiteListNumEntriesMax = numEntries;
-    return (pAvailMem - pFreeMem);
+  bbBleWhiteListNumEntriesMax = numEntries;
+  return (pAvailMem - pFreeMem);
 }
 
 /*************************************************************************************************/
@@ -99,18 +102,20 @@ uint16_t BbBleInitWhiteList(uint8_t numEntries, uint8_t *pFreeMem, uint32_t free
 /*************************************************************************************************/
 bool_t BbBleWhiteListCheckAddr(bool_t randAddr, uint64_t addr)
 {
-    addr |= (uint64_t)randAddr << 48;
+  addr |= (uint64_t)randAddr << 48;
 
-    uint8_t i;
-    for (i = 0; i < bbBleWhiteListNumEntries; i++) {
-        if (addr == pBbBleWhiteListFilt[i].addr) {
-            /* Peer is in white list, allow PDU to pass through the filter. */
-            return TRUE;
-        }
+  uint8_t i;
+  for (i = 0; i < bbBleWhiteListNumEntries; i++)
+  {
+    if (addr == pBbBleWhiteListFilt[i].addr)
+    {
+      /* Peer is in white list, allow PDU to pass through the filter. */
+      return TRUE;
     }
+  }
 
-    /* Peer is not in white list, filter out PDU. */
-    return FALSE;
+  /* Peer is not in white list, filter out PDU. */
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -124,7 +129,7 @@ bool_t BbBleWhiteListCheckAddr(bool_t randAddr, uint64_t addr)
 /*************************************************************************************************/
 uint8_t BbBleWhiteListGetSize(void)
 {
-    return bbBleWhiteListNumEntriesMax;
+  return bbBleWhiteListNumEntriesMax;
 }
 
 /*************************************************************************************************/
@@ -139,8 +144,8 @@ uint8_t BbBleWhiteListGetSize(void)
 /*************************************************************************************************/
 void BbBleWhiteListClear(void)
 {
-    bbBleWhiteListNumEntries = 0;
-    bbBleWhiteListAllowAnonymous = FALSE;
+  bbBleWhiteListNumEntries = 0;
+  bbBleWhiteListAllowAnonymous = FALSE;
 }
 
 /*************************************************************************************************/
@@ -160,21 +165,23 @@ void BbBleWhiteListClear(void)
 /*************************************************************************************************/
 bool_t BbBleWhiteListAdd(bool_t randAddr, uint64_t addr)
 {
-    if (BbBleWhiteListCheckAddr(randAddr, addr)) {
-        /* Return TRUE if the address is already in the list. */
-        return TRUE;
-    }
+  if (BbBleWhiteListCheckAddr(randAddr, addr))
+  {
+    /* Return TRUE if the address is already in the list. */
+    return TRUE;
+  }
 
-    if (bbBleWhiteListNumEntries < bbBleWhiteListNumEntriesMax) {
-        addr |= (uint64_t)randAddr << 48;
-        pBbBleWhiteListFilt[bbBleWhiteListNumEntries].addr = addr;
+  if (bbBleWhiteListNumEntries < bbBleWhiteListNumEntriesMax)
+  {
+    addr |= (uint64_t)randAddr << 48;
+    pBbBleWhiteListFilt[bbBleWhiteListNumEntries].addr = addr;
 
-        bbBleWhiteListNumEntries++;
-        return TRUE;
-    }
+    bbBleWhiteListNumEntries++;
+    return TRUE;
+  }
 
-    /* List full. */
-    return FALSE;
+  /* List full. */
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -194,23 +201,25 @@ bool_t BbBleWhiteListAdd(bool_t randAddr, uint64_t addr)
 /*************************************************************************************************/
 bool_t BbBleWhiteListRemove(bool_t randAddr, uint64_t addr)
 {
-    addr |= (uint64_t)randAddr << 48;
+  addr |= (uint64_t)randAddr << 48;
 
-    uint8_t i;
+  uint8_t i;
 
-    for (i = 0; i < bbBleWhiteListNumEntries; i++) {
-        if (pBbBleWhiteListFilt[i].addr == addr) {
-            /* If there is more than one entry, move the last entry into this slot. */
-            if (bbBleWhiteListNumEntries > 1) {
-                pBbBleWhiteListFilt[i].addr =
-                    pBbBleWhiteListFilt[bbBleWhiteListNumEntries - 1].addr;
-            }
-            bbBleWhiteListNumEntries--;
-            return TRUE;
-        }
+  for (i = 0; i < bbBleWhiteListNumEntries; i++)
+  {
+    if (pBbBleWhiteListFilt[i].addr == addr)
+    {
+      /* If there is more than one entry, move the last entry into this slot. */
+      if (bbBleWhiteListNumEntries > 1)
+      {
+        pBbBleWhiteListFilt[i].addr = pBbBleWhiteListFilt[bbBleWhiteListNumEntries - 1].addr;
+      }
+      bbBleWhiteListNumEntries--;
+      return TRUE;
     }
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -220,7 +229,7 @@ bool_t BbBleWhiteListRemove(bool_t randAddr, uint64_t addr)
 /*************************************************************************************************/
 void BbBleWhiteListAddAnonymous(void)
 {
-    bbBleWhiteListAllowAnonymous = TRUE;
+  bbBleWhiteListAllowAnonymous = TRUE;
 }
 
 /*************************************************************************************************/
@@ -230,7 +239,7 @@ void BbBleWhiteListAddAnonymous(void)
 /*************************************************************************************************/
 void BbBleWhiteListRemoveAnonymous(void)
 {
-    bbBleWhiteListAllowAnonymous = FALSE;
+  bbBleWhiteListAllowAnonymous = FALSE;
 }
 
 /*************************************************************************************************/
@@ -242,5 +251,5 @@ void BbBleWhiteListRemoveAnonymous(void)
 /*************************************************************************************************/
 bool_t BbBleWhiteListIsAnonymousAllowed(void)
 {
-    return bbBleWhiteListAllowAnonymous;
+  return bbBleWhiteListAllowAnonymous;
 }

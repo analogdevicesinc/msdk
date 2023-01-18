@@ -75,6 +75,7 @@ typedef struct nrf_dfu_transport_s nrf_dfu_transport_t;
  */
 typedef uint32_t (*nrf_dfu_init_fn_t)(nrf_dfu_observer_t observer);
 
+
 /** @brief  Function type for closing down a DFU transport.
  *
  * @details This function closes down a DFU transport in a gentle way.
@@ -83,18 +84,20 @@ typedef uint32_t (*nrf_dfu_init_fn_t)(nrf_dfu_observer_t observer);
  *
  * @retval    NRF_SUCCESS    If closing was successful for the transport. Any other return code indicates that the DFU transport could not be closed closed down.
  */
-typedef uint32_t (*nrf_dfu_close_fn_t)(nrf_dfu_transport_t const *p_exception);
+typedef uint32_t (*nrf_dfu_close_fn_t)(nrf_dfu_transport_t const * p_exception);
+
+
 
 /** @brief DFU transport registration.
  *
  * @details     Every DFU transport must provide a registration of the initialization function.
  */
-struct nrf_dfu_transport_s {
-    nrf_dfu_init_fn_t
-        init_func; /**< Registration of the init function to run to initialize a DFU transport. */
-    nrf_dfu_close_fn_t
-        close_func; /**< Registration of the close function to close down a DFU transport. */
+struct nrf_dfu_transport_s
+{
+    nrf_dfu_init_fn_t              init_func;          /**< Registration of the init function to run to initialize a DFU transport. */
+    nrf_dfu_close_fn_t             close_func;         /**< Registration of the close function to close down a DFU transport. */
 };
+
 
 /** @brief Function for initializing all the registered DFU transports.
  *
@@ -111,7 +114,8 @@ uint32_t nrf_dfu_transports_init(nrf_dfu_observer_t observer);
  *                          Any other error code indicates that at least one DFU
  *                          transport could not be closed down.
  */
-uint32_t nrf_dfu_transports_close(nrf_dfu_transport_t const *p_exception);
+uint32_t nrf_dfu_transports_close(nrf_dfu_transport_t const * p_exception);
+
 
 /** @brief  Macro for registering a DFU transport by using section variables.
  *
@@ -119,6 +123,7 @@ uint32_t nrf_dfu_transports_close(nrf_dfu_transport_t const *p_exception);
  *              is initialized by @ref nrf_dfu_transports_init.
  */
 #define DFU_TRANSPORT_REGISTER(trans_var) NRF_SECTION_ITEM_REGISTER(dfu_trans, trans_var)
+
 
 #ifdef __cplusplus
 }

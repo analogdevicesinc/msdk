@@ -38,12 +38,12 @@
 /*************************************************************************************************/
 void WsfAssert(const char *pFile, uint16_t line)
 {
-    PyGILState_STATE state;
+  PyGILState_STATE  state;
 
-    state = PyGILState_Ensure();
+  state = PyGILState_Ensure();
 
-    PyErr_Format(PyExc_RuntimeError, "ASSERT file:%s line:%u", pFile, line);
-    PyErr_Print();
+  PyErr_Format(PyExc_RuntimeError, "ASSERT file:%s line:%u", pFile, line);
+  PyErr_Print();
 
-    PyGILState_Release(state);
+  PyGILState_Release(state);
 }

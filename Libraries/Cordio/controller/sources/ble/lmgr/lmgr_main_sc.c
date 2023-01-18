@@ -40,7 +40,7 @@ lmgrScCtrlBlk_t lmgrScCb;
 /*************************************************************************************************/
 void LmgrScInit(void)
 {
-    lmgrScCb.eccOpActive = FALSE;
-    lmgrScCb.privKeySet = FALSE;
-    lmgrScCb.pubKeyValid = FALSE;
+  lmgrScCb.eccOpActive = FALSE;
+  lmgrScCb.privKeySet = FALSE;
+  lmgrScCb.pubKeyValid = FALSE;
 }

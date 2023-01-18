@@ -28,7 +28,10 @@
 #ifndef REDTOOLCMN_H
 #define REDTOOLCMN_H
 
+
 uint8_t RedFindVolumeNumber(const char *pszVolume);
 bool RedConfirmOperation(const char *pszMessage);
 
+
 #endif
+

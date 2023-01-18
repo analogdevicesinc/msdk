@@ -59,4 +59,4 @@ CRYSError_t nrf_cc310_bl_init(void);
 
 /** @} */
 
-#endif // NRF_CC310_BL_INIT_H__
+ #endif // NRF_CC310_BL_INIT_H__

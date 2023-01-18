@@ -27,7 +27,8 @@
 #define MESH_NWK_BEACON_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -45,7 +46,7 @@ extern "C" {
 #endif
 
 /*! Macro used to indicate that beacons are sent on all network keys */
-#define MESH_NWK_BEACON_SEND_ON_ALL_NETKEYS 0xFFFF
+#define MESH_NWK_BEACON_SEND_ON_ALL_NETKEYS     0xFFFF
 
 /**************************************************************************************************
   Data Types

@@ -37,103 +37,109 @@
 **************************************************************************************************/
 
 /*! BIS event handler messages for state machine */
-enum {
-    /* messages from API */
-    DM_BIS_MSG_API_BIG_START = DM_MSG_START(DM_ID_BIS), /*!< Start BIG */
-    DM_BIS_MSG_API_BIG_STOP, /*!< Stop BIG */
+enum
+{
+  /* messages from API */
+  DM_BIS_MSG_API_BIG_START = DM_MSG_START(DM_ID_BIS),   /*!< Start BIG */
+  DM_BIS_MSG_API_BIG_STOP,                              /*!< Stop BIG */
 
-    /* messages from HCI */
-    DM_BIS_MSG_HCI_LE_CREATE_BIG_CMPL_FAIL, /*!< HCI LE Create BIG Complete Failed Event */
-    DM_BIS_MSG_HCI_LE_CREATE_BIG_CMPL, /*!< HCI LE Create BIG Complete Event */
-    DM_BIS_MSG_HCI_LE_TERM_BIG_CMPL /*!< HCI LE Terminate BIG Complete Event */
+  /* messages from HCI */
+  DM_BIS_MSG_HCI_LE_CREATE_BIG_CMPL_FAIL,               /*!< HCI LE Create BIG Complete Failed Event */
+  DM_BIS_MSG_HCI_LE_CREATE_BIG_CMPL,                    /*!< HCI LE Create BIG Complete Event */
+  DM_BIS_MSG_HCI_LE_TERM_BIG_CMPL                       /*!< HCI LE Terminate BIG Complete Event */
 };
 
 /*! BIS state machine states */
-enum {
-    DM_BIS_SM_ST_IDLE, /*!< Idle State */
-    DM_BIS_SM_ST_BIG_STARTING, /*!< BIG Starting State */
-    DM_BIS_SM_ST_BIG_STARTED, /*!< BIG Started State */
-    DM_BIS_SM_ST_BIG_STOPPING, /*!< BIG Stopping State */
+enum
+{
+  DM_BIS_SM_ST_IDLE,                                    /*!< Idle State */
+  DM_BIS_SM_ST_BIG_STARTING,                            /*!< BIG Starting State */
+  DM_BIS_SM_ST_BIG_STARTED,                             /*!< BIG Started State */
+  DM_BIS_SM_ST_BIG_STOPPING,                            /*!< BIG Stopping State */
 
-    DM_BIS_SM_NUM_STATES
+  DM_BIS_SM_NUM_STATES
 };
 
 /*! BIS state machine actions */
-enum {
-    DM_BIS_SM_ACT_NONE, /*!< No Action */
-    DM_BIS_SM_ACT_BIG_START, /*!< Process Start BIG */
-    DM_BIS_SM_ACT_BIG_STOP, /*!< Process Stop BIG */
-    DM_BIS_SM_ACT_BIG_CANCEL_START, /*!< Process Cancel Start BIG */
-    DM_BIS_SM_ACT_BIG_STARTED, /*!< Process BIG Started */
-    DM_BIS_SM_ACT_BIG_START_FAILED, /*!< Process BIG Start Failed */
-    DM_BIS_SM_ACT_BIG_STOPPED /*!< Process BIG Stopped */
+enum
+{
+  DM_BIS_SM_ACT_NONE,                                   /*!< No Action */
+  DM_BIS_SM_ACT_BIG_START,                              /*!< Process Start BIG */
+  DM_BIS_SM_ACT_BIG_STOP,                               /*!< Process Stop BIG */
+  DM_BIS_SM_ACT_BIG_CANCEL_START,                       /*!< Process Cancel Start BIG */
+  DM_BIS_SM_ACT_BIG_STARTED,                            /*!< Process BIG Started */
+  DM_BIS_SM_ACT_BIG_START_FAILED,                       /*!< Process BIG Start Failed */
+  DM_BIS_SM_ACT_BIG_STOPPED                             /*!< Process BIG Stopped */
 };
 
 /*! Column position of next state */
-#define DM_BIS_NEXT_STATE 0
+#define DM_BIS_NEXT_STATE          0
 
 /*! Column position of action */
-#define DM_BIS_ACTION 1
+#define DM_BIS_ACTION              1
 
 /*! Number of columns in the state machine state tables */
-#define DM_BIS_NUM_COLS 2
+#define DM_BIS_NUM_COLS            2
 
 /* Number of BIS messages */
-#define DM_BIS_NUM_MSGS (DM_BIS_MSG_HCI_LE_TERM_BIG_CMPL - DM_BIS_MSG_API_BIG_START + 1)
+#define DM_BIS_NUM_MSGS            (DM_BIS_MSG_HCI_LE_TERM_BIG_CMPL - DM_BIS_MSG_API_BIG_START + 1)
 
 /*! Translate HCI event to state machine message */
-#define DM_BIS_HCI_EVT_2_MSG(evt) \
-    (DM_BIS_MSG_HCI_LE_TERM_BIG_CMPL - HCI_LE_TERM_BIG_CMPL_CBACK_EVT + (evt))
+#define DM_BIS_HCI_EVT_2_MSG(evt)  (DM_BIS_MSG_HCI_LE_TERM_BIG_CMPL - HCI_LE_TERM_BIG_CMPL_CBACK_EVT + (evt))
 
 /* Uninitialized HCI BIS handle */
-#define DM_BIS_HCI_HANDLE_NONE 0xFFFF
+#define DM_BIS_HCI_HANDLE_NONE     0xFFFF
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /* Data structure for DM_BIS_MSG_API_BIG_START */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< \brief Header structure. */
-    uint8_t advHandle; /*!< \brief Used to identify the periodic advertising train. */
-    uint8_t numBis; /*!< \brief Total number of BISes in the BIG. */
-    uint32_t sduInterval; /*!< \brief Interval, in microseconds, of BIG SDUs. */
-    uint16_t maxSdu; /*!< \brief Maximum size of SDU. */
-    uint16_t mtlMs; /*!< \brief Maximum time, in milliseconds, for transmitting SDU. */
-    uint8_t rtn; /*!< \brief Retransmitted number. */
+typedef struct
+{
+  wsfMsgHdr_t                 hdr;                    /*!< \brief Header structure. */
+  uint8_t                     advHandle;              /*!< \brief Used to identify the periodic advertising train. */
+  uint8_t                     numBis;                 /*!< \brief Total number of BISes in the BIG. */
+  uint32_t                    sduInterval;            /*!< \brief Interval, in microseconds, of BIG SDUs. */
+  uint16_t                    maxSdu;                 /*!< \brief Maximum size of SDU. */
+  uint16_t                    mtlMs;                  /*!< \brief Maximum time, in milliseconds, for transmitting SDU. */
+  uint8_t                     rtn;                    /*!< \brief Retransmitted number. */
 } dmBisApiBigStart_t;
 
 /* Data structure for DM_BIS_MSG_API_BIG_STOP */
-typedef struct {
-    wsfMsgHdr_t hdr; /*!< \brief Header structure. */
-    uint8_t reason; /*!< \brief Reason BIG is terminated. */
+typedef struct
+{
+  wsfMsgHdr_t                 hdr;                    /*!< \brief Header structure. */
+  uint8_t                     reason;                 /*!< \brief Reason BIG is terminated. */
 } dmBisApiBigStop_t;
 
 /* Union of all DM BIS state machine messages */
-typedef union {
-    wsfMsgHdr_t hdr; /*!< \brief Header structure. */
-    dmBisApiBigStart_t apiBigStart; /*!< \brief API BIG start message. */
-    dmBisApiBigStop_t apiBigStop; /*!< \brief API BIG stop message. */
-    HciLeCreateBigCmplEvt_t createBigCmpl; /*!< \brief HCI create BIG complete event. */
-    HciLeTerminateBigCmplEvt_t terminateBigCmpl; /*!< \brief HCI terminate BIG complete event. */
+typedef union
+{
+  wsfMsgHdr_t                 hdr;                    /*!< \brief Header structure. */
+  dmBisApiBigStart_t          apiBigStart;            /*!< \brief API BIG start message. */
+  dmBisApiBigStop_t           apiBigStop;             /*!< \brief API BIG stop message. */
+  HciLeCreateBigCmplEvt_t     createBigCmpl;          /*!< \brief HCI create BIG complete event. */
+  HciLeTerminateBigCmplEvt_t  terminateBigCmpl;       /*!< \brief HCI terminate BIG complete event. */
 } dmBisMsg_t;
 
 /* Control block for BIG */
-typedef struct {
-    uint8_t state; /*!< \brief BIG state. */
-    uint8_t advHandle; /*!< \brief Periodic advertising train associated with BIG. */
-    uint8_t phyBits; /*!< \brief Transmitter PHYs of packets. */
-    uint8_t packing; /*!< \brief Packing scheme. */
-    uint8_t framing; /*!< \brief Format of BIS Data PDUs. */
-    uint8_t secLevel; /*!< \brief Security level. */
-    bool_t encrypt; /*!< \brief Unencrypted or Encrypted. */
-    bool_t authen; /*!< \brief Unauthenticated or Authenticated. */
-    uint8_t bcastCode[HCI_BC_LEN]; /*!< \brief Braodcast code. */
+typedef struct
+{
+  uint8_t                     state;                  /*!< \brief BIG state. */
+  uint8_t                     advHandle;              /*!< \brief Periodic advertising train associated with BIG. */
+  uint8_t                     phyBits;                /*!< \brief Transmitter PHYs of packets. */
+  uint8_t                     packing;                /*!< \brief Packing scheme. */
+  uint8_t                     framing;                /*!< \brief Format of BIS Data PDUs. */
+  uint8_t                     secLevel;               /*!< \brief Security level. */
+  bool_t                      encrypt;                /*!< \brief Unencrypted or Encrypted. */
+  bool_t                      authen;                 /*!< \brief Unauthenticated or Authenticated. */
+  uint8_t                     bcastCode[HCI_BC_LEN];  /*!< \brief Braodcast code. */
 
-    /* BIS */
-    uint8_t numBis; /*!< \brief Total number of BISes in the BIG. */
-    //uint8_t                     bis[DM_BIS_MAX];        /*!< \brief List of indices of BISes (in ascending order). */
-    uint16_t bisHandle[DM_BIS_MAX]; /*!< \brief BIS handles. */
+  /* BIS */
+  uint8_t                     numBis;                 /*!< \brief Total number of BISes in the BIG. */
+  //uint8_t                     bis[DM_BIS_MAX];        /*!< \brief List of indices of BISes (in ascending order). */
+  uint16_t                    bisHandle[DM_BIS_MAX];  /*!< \brief BIS handles. */
 } dmBigCb_t;
 
 /*! Action function */
@@ -160,45 +166,65 @@ static void dmBisHciHandler(hciEvt_t *pEvent);
 **************************************************************************************************/
 
 /*! DM BIS state machine state tables */
-static const uint8_t dmBisStateTbl[DM_BIS_SM_NUM_STATES][DM_BIS_NUM_MSGS][DM_BIS_NUM_COLS] = {
-    /* Idle state */
-    { /* Event                          Next state                    Action */
-      /* API_BIG_START */ { DM_BIS_SM_ST_BIG_STARTING, DM_BIS_SM_ACT_BIG_START },
-      /* API_BIG_STOP */ { DM_BIS_SM_ST_IDLE, DM_BIS_SM_ACT_NONE },
-      /* HCI_LE_CREATE_BIG_CMPL_FAIL */ { DM_BIS_SM_ST_IDLE, DM_BIS_SM_ACT_NONE },
-      /* HCI_LE_CREATE_BIG_CMPL */ { DM_BIS_SM_ST_IDLE, DM_BIS_SM_ACT_NONE },
-      /* HCI_LE_TERM_BIG_CMPL */ { DM_BIS_SM_ST_IDLE, DM_BIS_SM_ACT_NONE } },
-    /* Starting state */
-    { /* Event                          Next state                    Action */
-      /* API_BIG_START */ { DM_BIS_SM_ST_BIG_STARTING, DM_BIS_SM_ACT_NONE },
-      /* API_BIG_STOP */ { DM_BIS_SM_ST_BIG_STOPPING, DM_BIS_SM_ACT_BIG_CANCEL_START },
-      /* HCI_LE_CREATE_BIG_CMPL_FAIL */ { DM_BIS_SM_ST_IDLE, DM_BIS_SM_ACT_BIG_START_FAILED },
-      /* HCI_LE_CREATE_BIG_CMPL */ { DM_BIS_SM_ST_BIG_STARTED, DM_BIS_SM_ACT_BIG_STARTED },
-      /* HCI_LE_TERM_BIG_CMPL */ { DM_BIS_SM_ST_IDLE, DM_BIS_SM_ACT_BIG_START_FAILED } },
-    /* Started state */
-    { /* Event                          Next state                    Action */
-      /* API_BIG_START */ { DM_BIS_SM_ST_BIG_STARTED, DM_BIS_SM_ACT_NONE },
-      /* API_BIG_STOP */ { DM_BIS_SM_ST_BIG_STOPPING, DM_BIS_SM_ACT_BIG_STOP },
-      /* HCI_LE_CREATE_BIG_CMPL_FAIL */ { DM_BIS_SM_ST_BIG_STARTED, DM_BIS_SM_ACT_NONE },
-      /* HCI_LE_CREATE_BIG_CMPL */ { DM_BIS_SM_ST_BIG_STARTED, DM_BIS_SM_ACT_NONE },
-      /* HCI_LE_TERM_BIG_CMPL */ { DM_BIS_SM_ST_IDLE, DM_BIS_SM_ACT_BIG_STOPPED } },
-    /* Stopping state */
-    { /* Event                          Next state                    Action */
-      /* API_BIG_START */ { DM_BIS_SM_ST_BIG_STOPPING, DM_BIS_SM_ACT_NONE },
-      /* API_BIG_STOP */ { DM_BIS_SM_ST_BIG_STOPPING, DM_BIS_SM_ACT_NONE },
-      /* HCI_LE_CREATE_BIG_CMPL_FAIL */ { DM_BIS_SM_ST_IDLE, DM_BIS_SM_ACT_BIG_START_FAILED },
-      /* HCI_LE_CREATE_BIG_CMPL */ { DM_BIS_SM_ST_BIG_STOPPING, DM_BIS_SM_ACT_BIG_STOP },
-      /* HCI_LE_TERM_BIG_CMPL */ { DM_BIS_SM_ST_IDLE, DM_BIS_SM_ACT_BIG_STOPPED } }
-};
+static const uint8_t dmBisStateTbl[DM_BIS_SM_NUM_STATES][DM_BIS_NUM_MSGS][DM_BIS_NUM_COLS] =
+{
+  /* Idle state */
+  {
+    /* Event                          Next state                    Action */
+    /* API_BIG_START */               {DM_BIS_SM_ST_BIG_STARTING,   DM_BIS_SM_ACT_BIG_START},
+    /* API_BIG_STOP */                {DM_BIS_SM_ST_IDLE,           DM_BIS_SM_ACT_NONE},
+    /* HCI_LE_CREATE_BIG_CMPL_FAIL */ {DM_BIS_SM_ST_IDLE,           DM_BIS_SM_ACT_NONE},
+    /* HCI_LE_CREATE_BIG_CMPL */      {DM_BIS_SM_ST_IDLE,           DM_BIS_SM_ACT_NONE},
+    /* HCI_LE_TERM_BIG_CMPL */        {DM_BIS_SM_ST_IDLE,           DM_BIS_SM_ACT_NONE}
+  },
+  /* Starting state */
+  {
+    /* Event                          Next state                    Action */
+    /* API_BIG_START */               {DM_BIS_SM_ST_BIG_STARTING,   DM_BIS_SM_ACT_NONE},
+    /* API_BIG_STOP */                {DM_BIS_SM_ST_BIG_STOPPING,   DM_BIS_SM_ACT_BIG_CANCEL_START},
+    /* HCI_LE_CREATE_BIG_CMPL_FAIL */ {DM_BIS_SM_ST_IDLE,           DM_BIS_SM_ACT_BIG_START_FAILED},
+    /* HCI_LE_CREATE_BIG_CMPL */      {DM_BIS_SM_ST_BIG_STARTED,    DM_BIS_SM_ACT_BIG_STARTED},
+    /* HCI_LE_TERM_BIG_CMPL */        {DM_BIS_SM_ST_IDLE,           DM_BIS_SM_ACT_BIG_START_FAILED}
+  },
+  /* Started state */
+  {
+    /* Event                          Next state                    Action */
+    /* API_BIG_START */               {DM_BIS_SM_ST_BIG_STARTED,    DM_BIS_SM_ACT_NONE},
+    /* API_BIG_STOP */                {DM_BIS_SM_ST_BIG_STOPPING,   DM_BIS_SM_ACT_BIG_STOP},
+    /* HCI_LE_CREATE_BIG_CMPL_FAIL */ {DM_BIS_SM_ST_BIG_STARTED,    DM_BIS_SM_ACT_NONE},
+    /* HCI_LE_CREATE_BIG_CMPL */      {DM_BIS_SM_ST_BIG_STARTED,    DM_BIS_SM_ACT_NONE},
+    /* HCI_LE_TERM_BIG_CMPL */        {DM_BIS_SM_ST_IDLE,           DM_BIS_SM_ACT_BIG_STOPPED}
+  },
+  /* Stopping state */
+  {
+    /* Event                          Next state                    Action */
+    /* API_BIG_START */               {DM_BIS_SM_ST_BIG_STOPPING,   DM_BIS_SM_ACT_NONE},
+    /* API_BIG_STOP */                {DM_BIS_SM_ST_BIG_STOPPING,   DM_BIS_SM_ACT_NONE},
+    /* HCI_LE_CREATE_BIG_CMPL_FAIL */ {DM_BIS_SM_ST_IDLE,           DM_BIS_SM_ACT_BIG_START_FAILED},
+    /* HCI_LE_CREATE_BIG_CMPL */      {DM_BIS_SM_ST_BIG_STOPPING,   DM_BIS_SM_ACT_BIG_STOP},
+    /* HCI_LE_TERM_BIG_CMPL */        {DM_BIS_SM_ST_IDLE,           DM_BIS_SM_ACT_BIG_STOPPED}
+  }
+ };
 
 /*! DM BIS action function table */
-static const dmBisAct_t dmBisAct[] = { dmBisSmActNone,       dmBisSmActBigStart,
-                                       dmBisSmActBigStop,    dmBisSmActBigCancelStart,
-                                       dmBisSmActBigStarted, dmBisSmActBigStartFailed,
-                                       dmBisSmActBigStopped };
+static const dmBisAct_t dmBisAct[] =
+{
+  dmBisSmActNone,
+  dmBisSmActBigStart,
+  dmBisSmActBigStop,
+  dmBisSmActBigCancelStart,
+  dmBisSmActBigStarted,
+  dmBisSmActBigStartFailed,
+  dmBisSmActBigStopped
+};
 
 /*! DM BIG component function interface */
-static const dmFcnIf_t dmBisFcnIf = { dmBisReset, dmBisHciHandler, dmBisMsgHandler };
+static const dmFcnIf_t dmBisFcnIf =
+{
+  dmBisReset,
+  dmBisHciHandler,
+  dmBisMsgHandler
+};
 
 /*! DM BIG control block */
 static dmBigCb_t dmBigCb[DM_BIG_MAX];
@@ -214,20 +240,21 @@ static dmBigCb_t dmBigCb[DM_BIG_MAX];
 /*************************************************************************************************/
 static void dmBigCbInit(dmBigCb_t *pBigCb)
 {
-    /* set BIG default values */
-    pBigCb->state = DM_BIS_SM_ST_IDLE;
-    pBigCb->advHandle = DM_ADV_HCI_HANDLE_NONE;
-    pBigCb->numBis = 0;
-    pBigCb->phyBits = HCI_TRANS_PHY_LE_1M_BIT;
-    pBigCb->packing = HCI_PACKING_SEQUENTIAL;
-    pBigCb->framing = HCI_FRAMING_UNFRAMED;
-    pBigCb->encrypt = FALSE;
-    memset(pBigCb->bcastCode, 0x000, HCI_BC_LEN);
+  /* set BIG default values */
+  pBigCb->state = DM_BIS_SM_ST_IDLE;
+  pBigCb->advHandle = DM_ADV_HCI_HANDLE_NONE;
+  pBigCb->numBis = 0;
+  pBigCb->phyBits = HCI_TRANS_PHY_LE_1M_BIT;
+  pBigCb->packing = HCI_PACKING_SEQUENTIAL;
+  pBigCb->framing = HCI_FRAMING_UNFRAMED;
+  pBigCb->encrypt = FALSE;
+  memset(pBigCb->bcastCode, 0x000, HCI_BC_LEN);
 
-    pBigCb->numBis = 0;
-    for (uint8_t i = 0; i < DM_BIS_MAX; i++) {
-        pBigCb->bisHandle[i] = DM_BIS_HCI_HANDLE_NONE;
-    }
+  pBigCb->numBis = 0;
+  for (uint8_t i = 0; i < DM_BIS_MAX; i++)
+  {
+    pBigCb->bisHandle[i] = DM_BIS_HCI_HANDLE_NONE;
+  }
 }
 
 /*************************************************************************************************/
@@ -241,13 +268,14 @@ static void dmBigCbInit(dmBigCb_t *pBigCb)
 /*************************************************************************************************/
 static dmBigCb_t *dmBigCbByHandle(uint8_t bigHandle)
 {
-    WSF_ASSERT(bigHandle < DM_BIG_MAX);
+  WSF_ASSERT(bigHandle < DM_BIG_MAX);
 
-    if (bigHandle < DM_BIG_MAX) {
-        return &dmBigCb[bigHandle];
-    }
+  if (bigHandle < DM_BIG_MAX)
+  {
+    return &dmBigCb[bigHandle];
+  }
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -261,15 +289,17 @@ static dmBigCb_t *dmBigCbByHandle(uint8_t bigHandle)
 /*************************************************************************************************/
 static bool_t dmBigPerAdvUsed(uint8_t advHandle)
 {
-    for (uint8_t i = 0; i < DM_BIG_MAX; i++) {
-        dmBigCb_t *pBigCb = &dmBigCb[i];
+  for (uint8_t i = 0; i < DM_BIG_MAX; i++)
+  {
+    dmBigCb_t *pBigCb = &dmBigCb[i];
 
-        if ((pBigCb->state != DM_BIS_SM_ST_IDLE) && (pBigCb->advHandle == advHandle)) {
-            return TRUE;
-        }
+    if ((pBigCb->state != DM_BIS_SM_ST_IDLE) && (pBigCb->advHandle == advHandle))
+    {
+      return TRUE;
     }
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -281,21 +311,24 @@ static bool_t dmBigPerAdvUsed(uint8_t advHandle)
 /*************************************************************************************************/
 static uint8_t dmBigGetNumAvailBis(void)
 {
-    uint8_t cnt = 0;
+  uint8_t cnt = 0;
 
-    for (uint8_t i = 0; i < DM_BIG_MAX; i++) {
-        dmBigCb_t *pBigCb = &dmBigCb[i];
+  for (uint8_t i = 0; i < DM_BIG_MAX; i++)
+  {
+    dmBigCb_t *pBigCb = &dmBigCb[i];
 
-        if (pBigCb->state != DM_BIS_SM_ST_IDLE) {
-            cnt += pBigCb->numBis;
-        }
+    if (pBigCb->state != DM_BIS_SM_ST_IDLE)
+    {
+      cnt += pBigCb->numBis;
     }
+  }
 
-    if (cnt >= DM_BIS_MAX) {
-        return 0;
-    }
+  if (cnt >= DM_BIS_MAX)
+  {
+    return 0;
+  }
 
-    return (DM_BIS_MAX - cnt);
+  return (DM_BIS_MAX - cnt);
 }
 
 /*************************************************************************************************/
@@ -310,7 +343,7 @@ static uint8_t dmBigGetNumAvailBis(void)
 /*************************************************************************************************/
 static void dmBisSmActNone(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 {
-    return;
+  return;
 }
 
 /*************************************************************************************************/
@@ -325,61 +358,73 @@ static void dmBisSmActNone(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmBisSmActBigStart(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 {
-    dmBisApiBigStart_t *pBigStart = &pMsg->apiBigStart;
-    uint8_t bigHandle = (uint8_t)pMsg->hdr.param;
-    uint8_t status = HCI_SUCCESS;
+  dmBisApiBigStart_t  *pBigStart = &pMsg->apiBigStart;
+  uint8_t             bigHandle = (uint8_t) pMsg->hdr.param;
+  uint8_t             status = HCI_SUCCESS;
 
-    if (DmPerAdvEnabled(pBigStart->advHandle)) {
-        if (!dmBigPerAdvUsed(pBigStart->advHandle)) {
-            if ((pBigStart->numBis > 0) && (pBigStart->numBis <= DM_BIS_MAX)) {
-                if (pBigStart->numBis > dmBigGetNumAvailBis()) {
-                    DM_TRACE_WARN0("dmBisSmActStart: insufficient BISes");
-                    status = HCI_ERR_REJ_RESOURCES;
-                }
-            } else {
-                DM_TRACE_WARN2("dmBisSmActStart: invalid value for numBis = %u, validRange = 1..%u",
-                               pBigStart->numBis, DM_BIS_MAX);
-                status = HCI_ERR_UNSUP_FEAT;
-            }
-        } else {
-            DM_TRACE_WARN0(
-                "dmBisSmActStart: periodic advertising train is associated with another BIG");
-            status = HCI_ERR_UNKNOWN_ADV_ID;
+  if (DmPerAdvEnabled(pBigStart->advHandle))
+  {
+    if (!dmBigPerAdvUsed(pBigStart->advHandle))
+    {
+      if ((pBigStart->numBis > 0) && (pBigStart->numBis <= DM_BIS_MAX))
+      {
+        if (pBigStart->numBis > dmBigGetNumAvailBis())
+        {
+          DM_TRACE_WARN0("dmBisSmActStart: insufficient BISes");
+          status = HCI_ERR_REJ_RESOURCES;
         }
-    } else {
-        DM_TRACE_WARN0("dmBisSmActStart: advHandle does not identify a periodic advertising train");
-        status = HCI_ERR_UNKNOWN_ADV_ID;
+      }
+      else
+      {
+        DM_TRACE_WARN2("dmBisSmActStart: invalid value for numBis = %u, validRange = 1..%u",
+                       pBigStart->numBis, DM_BIS_MAX);
+        status = HCI_ERR_UNSUP_FEAT;
+      }
     }
-
-    if (status == HCI_SUCCESS) {
-        HciCreateBig_t createBig;
-
-        /* build BIG parameters */
-        createBig.bigHandle = bigHandle;
-        createBig.advHandle = pBigStart->advHandle;
-        createBig.numBis = pBigStart->numBis;
-        createBig.sduInterUsec = pBigStart->sduInterval;
-        createBig.maxSdu = pBigStart->maxSdu;
-        createBig.mtlMs = pBigStart->mtlMs;
-        createBig.rtn = pBigStart->rtn;
-        createBig.phys = dmBigCb[bigHandle].phyBits;
-        createBig.packing = dmBigCb[bigHandle].packing;
-        createBig.framing = dmBigCb[bigHandle].framing;
-        createBig.encrypt = dmBigCb[bigHandle].encrypt;
-        memcpy(createBig.bcstCode, dmBigCb[bigHandle].bcastCode, HCI_BC_LEN);
-
-        /* create BIG */
-        HciLeCreateBigCmd(&createBig);
-
-        /* update BIG CB */
-        dmBigCb[bigHandle].advHandle = pBigStart->advHandle;
-        dmBigCb[bigHandle].numBis = pBigStart->numBis;
-    } else {
-        pMsg->hdr.status = status;
-
-        /* notify app about failure */
-        dmBisSmActBigStartFailed(pBigCb, pMsg);
+    else
+    {
+      DM_TRACE_WARN0("dmBisSmActStart: periodic advertising train is associated with another BIG");
+      status = HCI_ERR_UNKNOWN_ADV_ID;
     }
+  }
+  else
+  {
+    DM_TRACE_WARN0("dmBisSmActStart: advHandle does not identify a periodic advertising train");
+    status = HCI_ERR_UNKNOWN_ADV_ID;
+  }
+
+  if (status == HCI_SUCCESS)
+  {
+    HciCreateBig_t  createBig;
+
+    /* build BIG parameters */
+    createBig.bigHandle = bigHandle;
+    createBig.advHandle = pBigStart->advHandle;
+    createBig.numBis = pBigStart->numBis;
+    createBig.sduInterUsec = pBigStart->sduInterval;
+    createBig.maxSdu = pBigStart->maxSdu;
+    createBig.mtlMs = pBigStart->mtlMs;
+    createBig.rtn = pBigStart->rtn;
+    createBig.phys = dmBigCb[bigHandle].phyBits;
+    createBig.packing = dmBigCb[bigHandle].packing;
+    createBig.framing = dmBigCb[bigHandle].framing;
+    createBig.encrypt = dmBigCb[bigHandle].encrypt;
+    memcpy(createBig.bcstCode, dmBigCb[bigHandle].bcastCode, HCI_BC_LEN);
+
+    /* create BIG */
+    HciLeCreateBigCmd(&createBig);
+
+    /* update BIG CB */
+    dmBigCb[bigHandle].advHandle = pBigStart->advHandle;
+    dmBigCb[bigHandle].numBis = pBigStart->numBis;
+  }
+  else
+  {
+    pMsg->hdr.status = status;
+
+    /* notify app about failure */
+    dmBisSmActBigStartFailed(pBigCb, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -394,9 +439,9 @@ static void dmBisSmActBigStart(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmBisSmActBigStop(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 {
-    dmBisApiBigStop_t *pBigStop = &pMsg->apiBigStop;
+  dmBisApiBigStop_t *pBigStop = &pMsg->apiBigStop;
 
-    HciTerminateBigCmd((uint8_t)pMsg->hdr.param, pBigStop->reason);
+  HciTerminateBigCmd((uint8_t) pMsg->hdr.param, pBigStop->reason);
 }
 
 /*************************************************************************************************/
@@ -411,9 +456,9 @@ static void dmBisSmActBigStop(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmBisSmActBigCancelStart(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 {
-    dmBisApiBigStop_t *pBigStop = &pMsg->apiBigStop;
+  dmBisApiBigStop_t *pBigStop = &pMsg->apiBigStop;
 
-    HciTerminateBigCmd((uint8_t)pMsg->hdr.param, pBigStop->reason);
+  HciTerminateBigCmd((uint8_t) pMsg->hdr.param, pBigStop->reason);
 }
 
 /*************************************************************************************************/
@@ -428,14 +473,15 @@ static void dmBisSmActBigCancelStart(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmBisSmActBigStarted(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 {
-    /* save connection handles of BISes */
-    pBigCb->numBis = WSF_MIN(pMsg->createBigCmpl.numBis, DM_BIS_MAX);
-    for (uint8_t i = 0; i < pBigCb->numBis; i++) {
-        pBigCb->bisHandle[i] = pMsg->createBigCmpl.bisHandle[i];
-    }
+  /* save connection handles of BISes */
+  pBigCb->numBis = WSF_MIN(pMsg->createBigCmpl.numBis, DM_BIS_MAX);
+  for (uint8_t i = 0; i < pBigCb->numBis; i++)
+  {
+    pBigCb->bisHandle[i] = pMsg->createBigCmpl.bisHandle[i];
+  }
 
-    pMsg->hdr.event = DM_BIG_START_IND;
-    (*dmCb.cback)((dmEvt_t *)pMsg);
+  pMsg->hdr.event = DM_BIG_START_IND;
+  (*dmCb.cback)((dmEvt_t *) pMsg);
 }
 
 /*************************************************************************************************/
@@ -450,11 +496,11 @@ static void dmBisSmActBigStarted(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmBisSmActBigStartFailed(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 {
-    /* reset BIG cb */
-    dmBigCbInit(pBigCb);
+  /* reset BIG cb */
+  dmBigCbInit(pBigCb);
 
-    pMsg->hdr.event = DM_BIG_START_IND;
-    (*dmCb.cback)((dmEvt_t *)pMsg);
+  pMsg->hdr.event = DM_BIG_START_IND;
+  (*dmCb.cback)((dmEvt_t *) pMsg);
 }
 
 /*************************************************************************************************/
@@ -469,11 +515,11 @@ static void dmBisSmActBigStartFailed(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmBisSmActBigStopped(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 {
-    /* reset BIG cb */
-    dmBigCbInit(pBigCb);
+  /* reset BIG cb */
+  dmBigCbInit(pBigCb);
 
-    pMsg->hdr.event = DM_BIG_STOP_IND;
-    (*dmCb.cback)((dmEvt_t *)pMsg);
+  pMsg->hdr.event = DM_BIG_STOP_IND;
+  (*dmCb.cback)((dmEvt_t *) pMsg);
 }
 
 /*************************************************************************************************/
@@ -488,22 +534,22 @@ static void dmBisSmActBigStopped(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmBisSmExecute(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 {
-    uint8_t action;
-    uint8_t event;
+  uint8_t action;
+  uint8_t event;
 
-    DM_TRACE_INFO2("dmBisSmExecute event=%d state=%d", pMsg->hdr.event, pBigCb->state);
+  DM_TRACE_INFO2("dmBisSmExecute event=%d state=%d", pMsg->hdr.event, pBigCb->state);
 
-    /* get the event */
-    event = DM_MSG_MASK(pMsg->hdr.event);
+  /* get the event */
+  event = DM_MSG_MASK(pMsg->hdr.event);
 
-    /* get action */
-    action = dmBisStateTbl[pBigCb->state][event][DM_BIS_ACTION];
+  /* get action */
+  action = dmBisStateTbl[pBigCb->state][event][DM_BIS_ACTION];
 
-    /* set next state */
-    pBigCb->state = dmBisStateTbl[pBigCb->state][event][DM_BIS_NEXT_STATE];
+  /* set next state */
+  pBigCb->state = dmBisStateTbl[pBigCb->state][event][DM_BIS_NEXT_STATE];
 
-    /* execute action function */
-    (*dmBisAct[action])(pBigCb, pMsg);
+  /* execute action function */
+  (*dmBisAct[action])(pBigCb, pMsg);
 }
 
 /*************************************************************************************************/
@@ -515,22 +561,24 @@ static void dmBisSmExecute(dmBigCb_t *pBigCb, dmBisMsg_t *pMsg)
 /*************************************************************************************************/
 static void dmBisReset(void)
 {
-    dmBigCb_t *pBigCb = dmBigCb;
-    HciLeTerminateBigCmplEvt_t terminateBigCmpl;
+  dmBigCb_t                   *pBigCb = dmBigCb;
+  HciLeTerminateBigCmplEvt_t  terminateBigCmpl;
 
-    /* generate HCI BIG sync lost event */
-    terminateBigCmpl.hdr.event = HCI_LE_TERM_BIG_CMPL_CBACK_EVT;
-    terminateBigCmpl.hdr.status = HCI_SUCCESS;
+  /* generate HCI BIG sync lost event */
+  terminateBigCmpl.hdr.event = HCI_LE_TERM_BIG_CMPL_CBACK_EVT;
+  terminateBigCmpl.hdr.status = HCI_SUCCESS;
 
-    for (uint8_t i = DM_BIG_MAX; i > 0; i--, pBigCb++) {
-        if (pBigCb->state != DM_BIS_SM_ST_IDLE) {
-            /* set BIG sync handle */
-            terminateBigCmpl.hdr.param = terminateBigCmpl.bigHandle = i;
+  for (uint8_t i = DM_BIG_MAX; i > 0; i--, pBigCb++)
+  {
+    if (pBigCb->state != DM_BIS_SM_ST_IDLE)
+    {
+      /* set BIG sync handle */
+      terminateBigCmpl.hdr.param = terminateBigCmpl.bigHandle = i;
 
-            /* handle the event */
-            dmBisHciHandler((hciEvt_t *)&terminateBigCmpl);
-        }
+      /* handle the event */
+      dmBisHciHandler((hciEvt_t *) &terminateBigCmpl);
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -544,25 +592,31 @@ static void dmBisReset(void)
 /*************************************************************************************************/
 static void dmBisHciHandler(hciEvt_t *pEvent)
 {
-    dmBigCb_t *pBigCb = dmBigCbByHandle((uint8_t)pEvent->hdr.param);
+  dmBigCb_t *pBigCb = dmBigCbByHandle((uint8_t) pEvent->hdr.param);
 
-    /* translate HCI event to state machine event */
-    if (pEvent->hdr.event == HCI_LE_CREATE_BIG_CMPL_CBACK_EVT) {
-        if (pEvent->hdr.status == HCI_SUCCESS) {
-            pEvent->hdr.event = DM_BIS_MSG_HCI_LE_CREATE_BIG_CMPL;
-        } else {
-            pEvent->hdr.event = DM_BIS_MSG_HCI_LE_CREATE_BIG_CMPL_FAIL;
-        }
-    } else /* HCI_LE_TERMINATE_BIG_CMPL_CBACK_EVT */
+  /* translate HCI event to state machine event */
+  if (pEvent->hdr.event == HCI_LE_CREATE_BIG_CMPL_CBACK_EVT)
+  {
+    if (pEvent->hdr.status == HCI_SUCCESS)
     {
-        pEvent->hdr.event = DM_BIS_MSG_HCI_LE_TERM_BIG_CMPL;
+      pEvent->hdr.event =  DM_BIS_MSG_HCI_LE_CREATE_BIG_CMPL;
     }
+    else
+    {
+      pEvent->hdr.event = DM_BIS_MSG_HCI_LE_CREATE_BIG_CMPL_FAIL;
+    }
+  }
+  else /* HCI_LE_TERMINATE_BIG_CMPL_CBACK_EVT */
+  {
+    pEvent->hdr.event =  DM_BIS_MSG_HCI_LE_TERM_BIG_CMPL;
+  }
 
-    /* if BIG cb found */
-    if (pBigCb != NULL) {
-        /* execute state machine */
-        dmBisSmExecute(pBigCb, (dmBisMsg_t *)pEvent);
-    }
+  /* if BIG cb found */
+  if (pBigCb != NULL)
+  {
+    /* execute state machine */
+    dmBisSmExecute(pBigCb, (dmBisMsg_t *) pEvent);
+  }
 }
 
 /*************************************************************************************************/
@@ -576,13 +630,14 @@ static void dmBisHciHandler(hciEvt_t *pEvent)
 /*************************************************************************************************/
 static void dmBisMsgHandler(wsfMsgHdr_t *pMsg)
 {
-    dmBigCb_t *pBigCb;
+  dmBigCb_t *pBigCb;
 
-    /* look up CB from BIG handle */
-    if ((pBigCb = dmBigCbByHandle((uint8_t)pMsg->param)) != NULL) {
-        /* execute state machine */
-        dmBisSmExecute(pBigCb, (dmBisMsg_t *)pMsg);
-    }
+  /* look up CB from BIG handle */
+  if ((pBigCb = dmBigCbByHandle((uint8_t) pMsg->param)) != NULL)
+  {
+    /* execute state machine */
+    dmBisSmExecute(pBigCb, (dmBisMsg_t *) pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -603,26 +658,27 @@ static void dmBisMsgHandler(wsfMsgHdr_t *pMsg)
 void DmBigStart(uint8_t bigHandle, uint8_t advHandle, uint8_t numBis, uint32_t sduInterval,
                 uint16_t maxSdu, uint16_t mtlMs, uint8_t rtn)
 {
-    dmBisApiBigStart_t *pMsg;
+  dmBisApiBigStart_t *pMsg;
 
-    WSF_ASSERT(bigHandle < DM_BIG_MAX);
-    WSF_ASSERT(advHandle < DM_NUM_ADV_SETS);
-    WSF_ASSERT((numBis > 0) && (numBis <= DM_BIS_MAX));
+  WSF_ASSERT(bigHandle < DM_BIG_MAX);
+  WSF_ASSERT(advHandle < DM_NUM_ADV_SETS);
+  WSF_ASSERT((numBis > 0 ) && (numBis <= DM_BIS_MAX));
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmBisApiBigStart_t))) != NULL) {
-        pMsg->hdr.event = DM_BIS_MSG_API_BIG_START;
-        pMsg->hdr.param = bigHandle;
-        pMsg->advHandle = advHandle;
-        pMsg->numBis = numBis;
-        pMsg->advHandle = advHandle;
-        pMsg->numBis = numBis;
-        pMsg->sduInterval = sduInterval;
-        pMsg->maxSdu = maxSdu;
-        pMsg->mtlMs = mtlMs;
-        pMsg->rtn = rtn;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmBisApiBigStart_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_BIS_MSG_API_BIG_START;
+    pMsg->hdr.param = bigHandle;
+    pMsg->advHandle = advHandle;
+    pMsg->numBis = numBis;
+    pMsg->advHandle = advHandle;
+    pMsg->numBis = numBis;
+    pMsg->sduInterval = sduInterval;
+    pMsg->maxSdu = maxSdu;
+    pMsg->mtlMs = mtlMs;
+    pMsg->rtn = rtn;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -637,17 +693,18 @@ void DmBigStart(uint8_t bigHandle, uint8_t advHandle, uint8_t numBis, uint32_t s
 /*************************************************************************************************/
 void DmBigStop(uint8_t bigHandle, uint8_t reason)
 {
-    dmBisApiBigStop_t *pMsg;
+  dmBisApiBigStop_t *pMsg;
 
-    WSF_ASSERT(bigHandle < DM_BIG_MAX);
+  WSF_ASSERT(bigHandle < DM_BIG_MAX);
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmBisApiBigStop_t))) != NULL) {
-        pMsg->hdr.event = DM_BIS_MSG_API_BIG_STOP;
-        pMsg->hdr.param = bigHandle;
-        pMsg->reason = reason;
+  if ((pMsg = WsfMsgAlloc(sizeof(dmBisApiBigStop_t))) != NULL)
+  {
+    pMsg->hdr.event = DM_BIS_MSG_API_BIG_STOP;
+    pMsg->hdr.param = bigHandle;
+    pMsg->reason = reason;
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -661,21 +718,25 @@ void DmBigStop(uint8_t bigHandle, uint8_t reason)
 /*************************************************************************************************/
 bool_t DmBisInUse(uint16_t handle)
 {
-    dmBigCb_t *pBigCb = dmBigCb;
+  dmBigCb_t *pBigCb = dmBigCb;
 
-    for (uint8_t i = DM_BIG_MAX; i > 0; i--, pBigCb++) {
-        if (pBigCb->state == DM_BIS_SM_ST_IDLE) {
-            continue;
-        }
-
-        for (uint8_t j = 0; j < pBigCb->numBis; j++) {
-            if (pBigCb->bisHandle[j] == handle) {
-                return TRUE;
-            }
-        }
+  for (uint8_t i = DM_BIG_MAX; i > 0; i--, pBigCb++)
+  {
+    if (pBigCb->state == DM_BIS_SM_ST_IDLE)
+    {
+      continue;
     }
 
-    return FALSE;
+    for (uint8_t j = 0; j < pBigCb->numBis; j++)
+    {
+      if (pBigCb->bisHandle[j] == handle)
+      {
+        return TRUE;
+      }
+    }
+  }
+
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -691,17 +752,17 @@ bool_t DmBisInUse(uint16_t handle)
 /*************************************************************************************************/
 void DmBigSetPhy(uint8_t bigHandle, uint8_t phyBits)
 {
-    const uint8_t MIN_PHY = 0x01;
-    const uint8_t MAX_PHY = 0x07;
+  const uint8_t MIN_PHY = 0x01;
+  const uint8_t MAX_PHY = 0x07;
 
-    WSF_ASSERT(bigHandle < DM_BIG_MAX);
-    WSF_ASSERT((phyBits >= MIN_PHY) && (phyBits <= MAX_PHY))
+  WSF_ASSERT(bigHandle < DM_BIG_MAX);
+  WSF_ASSERT((phyBits >= MIN_PHY) && (phyBits <= MAX_PHY))
 
-    WsfTaskLock();
+  WsfTaskLock();
 
-    dmBigCb[bigHandle].phyBits = phyBits;
+  dmBigCb[bigHandle].phyBits = phyBits;
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -718,14 +779,14 @@ void DmBigSetPhy(uint8_t bigHandle, uint8_t phyBits)
 /*************************************************************************************************/
 void DmBigSetPackingFraming(uint8_t bigHandle, uint8_t packing, uint32_t framing)
 {
-    WSF_ASSERT(bigHandle < DM_BIG_MAX);
+  WSF_ASSERT(bigHandle < DM_BIG_MAX);
 
-    WsfTaskLock();
+  WsfTaskLock();
 
-    dmBigCb[bigHandle].packing = packing;
-    dmBigCb[bigHandle].framing = framing;
+  dmBigCb[bigHandle].packing = packing;
+  dmBigCb[bigHandle].framing = framing;
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -742,21 +803,24 @@ void DmBigSetPackingFraming(uint8_t bigHandle, uint8_t packing, uint32_t framing
 /*************************************************************************************************/
 void DmBigSetBcastCode(uint8_t bigHandle, bool_t encrypt, bool_t authen, uint8_t *pBcastCode)
 {
-    WSF_ASSERT(bigHandle < DM_BIG_MAX);
+  WSF_ASSERT(bigHandle < DM_BIG_MAX);
 
-    WsfTaskLock();
+  WsfTaskLock();
 
-    if (encrypt) {
-        dmBigCb[bigHandle].encrypt = TRUE;
-        dmBigCb[bigHandle].authen = authen;
-        memcpy(dmBigCb[bigHandle].bcastCode, pBcastCode, HCI_BC_LEN);
-    } else {
-        dmBigCb[bigHandle].encrypt = FALSE;
-        dmBigCb[bigHandle].authen = FALSE;
-        memset(dmBigCb[bigHandle].bcastCode, 0x000, HCI_BC_LEN);
-    }
+  if (encrypt)
+  {
+    dmBigCb[bigHandle].encrypt = TRUE;
+    dmBigCb[bigHandle].authen = authen;
+    memcpy(dmBigCb[bigHandle].bcastCode, pBcastCode, HCI_BC_LEN);
+  }
+  else
+  {
+    dmBigCb[bigHandle].encrypt = FALSE;
+    dmBigCb[bigHandle].authen = FALSE;
+    memset(dmBigCb[bigHandle].bcastCode, 0x000, HCI_BC_LEN);
+  }
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -772,14 +836,14 @@ void DmBigSetBcastCode(uint8_t bigHandle, bool_t encrypt, bool_t authen, uint8_t
 /*************************************************************************************************/
 void DmBigSetSecLevel(uint8_t bigHandle, uint8_t secLevel)
 {
-    WSF_ASSERT(bigHandle < DM_BIG_MAX);
-    WSF_ASSERT(secLevel <= DM_SEC_LEVEL_BCAST_AUTH);
+  WSF_ASSERT(bigHandle < DM_BIG_MAX);
+  WSF_ASSERT(secLevel <= DM_SEC_LEVEL_BCAST_AUTH);
 
-    WsfTaskLock();
+  WsfTaskLock();
 
-    dmBigCb[bigHandle].secLevel = secLevel;
+  dmBigCb[bigHandle].secLevel = secLevel;
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -794,21 +858,25 @@ void DmBigSetSecLevel(uint8_t bigHandle, uint8_t secLevel)
 /*************************************************************************************************/
 uint8_t DmBigGetSecLevel(uint16_t handle)
 {
-    dmBigCb_t *pBigCb = dmBigCb;
+  dmBigCb_t *pBigCb = dmBigCb;
 
-    for (uint8_t i = DM_BIG_MAX; i > 0; i--, pBigCb++) {
-        if (pBigCb->state == DM_BIS_SM_ST_IDLE) {
-            continue;
-        }
-
-        for (uint8_t j = 0; j < pBigCb->numBis; j++) {
-            if (pBigCb->bisHandle[j] == handle) {
-                return pBigCb->secLevel;
-            }
-        }
+  for (uint8_t i = DM_BIG_MAX; i > 0; i--, pBigCb++)
+  {
+    if (pBigCb->state == DM_BIS_SM_ST_IDLE)
+    {
+      continue;
     }
 
-    return DM_SEC_LEVEL_BCAST_NONE;
+    for (uint8_t j = 0; j < pBigCb->numBis; j++)
+    {
+      if (pBigCb->bisHandle[j] == handle)
+      {
+        return pBigCb->secLevel;
+      }
+    }
+  }
+
+  return DM_SEC_LEVEL_BCAST_NONE;
 }
 
 /*************************************************************************************************/
@@ -820,17 +888,18 @@ uint8_t DmBigGetSecLevel(uint16_t handle)
 /*************************************************************************************************/
 void DmBisSlaveInit(void)
 {
-    WsfTaskLock();
+  WsfTaskLock();
 
-    dmBigCb_t *pBigCb = dmBigCb;
+  dmBigCb_t *pBigCb = dmBigCb;
 
-    dmFcnIfTbl[DM_ID_BIS] = (dmFcnIf_t *)&dmBisFcnIf;
+  dmFcnIfTbl[DM_ID_BIS] = (dmFcnIf_t *) &dmBisFcnIf;
 
-    for (uint8_t i = DM_BIG_MAX; i > 0; i--, pBigCb++) {
-        dmBigCbInit(pBigCb);
-    }
+  for (uint8_t i = DM_BIG_MAX; i > 0; i--, pBigCb++)
+  {
+    dmBigCbInit(pBigCb);
+  }
 
-    HciSetLeSupFeat((HCI_LE_SUP_FEAT_ISO_BROADCASTER | HCI_LE_SUP_FEAT_ISO_HOST_SUPPORT), TRUE);
+  HciSetLeSupFeat((HCI_LE_SUP_FEAT_ISO_BROADCASTER | HCI_LE_SUP_FEAT_ISO_HOST_SUPPORT), TRUE);
 
-    WsfTaskUnlock();
+  WsfTaskUnlock();
 }

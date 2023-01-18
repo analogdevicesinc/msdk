@@ -69,10 +69,10 @@ WSF_CT_ASSERT((SCH_RM_MAX_RSVN <= 32));
 **************************************************************************************************/
 
 /*! \brief      Total number of reservation bins. */
-#define SCH_RM_MAX_RSVN_BINS ((sizeof(schRmRsvnRatio) / sizeof(schRmRsvnRatio[0])) - 1)
+#define SCH_RM_MAX_RSVN_BINS      ((sizeof(schRmRsvnRatio)/sizeof(schRmRsvnRatio[0])) - 1)
 
 /*! \brief      Maximum number of attempts to add reservation. */
-#define SCH_RM_ADD_MAX_ATTEMPTS 3
+#define SCH_RM_ADD_MAX_ATTEMPTS   3
 
 /**************************************************************************************************
   Global Variables
@@ -82,7 +82,7 @@ WSF_CT_ASSERT((SCH_RM_MAX_RSVN <= 32));
 SchRmCb_t schRmCb;
 
 /*! \brief      Reservation ratio for each reservation bin. One reservation with 10ms takes 50%, one with 20ms takes 25% and so on. */
-const uint16_t schRmRsvnRatio[] = { 50, 25, 17, 13, 10, 5 };
+const uint16_t schRmRsvnRatio[] = {50, 25, 17, 13, 10, 5};
 
 /*************************************************************************************************/
 /*!
@@ -97,65 +97,69 @@ const uint16_t schRmRsvnRatio[] = { 50, 25, 17, 13, 10, 5 };
  *  \return     Preferred interval in microseconds.
  */
 /*************************************************************************************************/
-static uint32_t schRmSelectPreferredIntervalUsec(uint32_t minUsec, uint32_t maxUsec,
-                                                 uint32_t prefPerUsec, uint8_t pref,
-                                                 uint8_t exclude)
+static uint32_t schRmSelectPreferredIntervalUsec(uint32_t minUsec, uint32_t maxUsec, uint32_t prefPerUsec, uint8_t pref, uint8_t exclude)
 {
-    uint32_t prefInterUsec;
-    uint32_t numInter;
+  uint32_t prefInterUsec;
+  uint32_t numInter;
 
-    if (pref == SCH_RM_PREF_CAPACITY) /* Search from upper bound */
+  if (pref == SCH_RM_PREF_CAPACITY)   /* Search from upper bound */
+  {
+    numInter = (prefPerUsec > SCH_RM_PREF_PER_USEC) ? SCH_RM_DIV_PREF_PER(maxUsec) / SCH_RM_DIV_PREF_PER(prefPerUsec) : SCH_RM_DIV_PREF_PER(maxUsec);
+    prefInterUsec = numInter * prefPerUsec;
+
+    /* Use maxUsec if we can not find any interval between min and max with our preferred periodicity. */
+    if (prefInterUsec < minUsec)
     {
-        numInter = (prefPerUsec > SCH_RM_PREF_PER_USEC) ?
-                       SCH_RM_DIV_PREF_PER(maxUsec) / SCH_RM_DIV_PREF_PER(prefPerUsec) :
-                       SCH_RM_DIV_PREF_PER(maxUsec);
-        prefInterUsec = numInter * prefPerUsec;
+      prefInterUsec = maxUsec;
+    }
+  }
+  else  /* Search from lower bound */
+  {
+    numInter = (prefPerUsec > SCH_RM_PREF_PER_USEC) ? SCH_RM_DIV_PREF_PER(minUsec) / SCH_RM_DIV_PREF_PER(prefPerUsec) : SCH_RM_DIV_PREF_PER(minUsec);
+    prefInterUsec = numInter * prefPerUsec;
 
-        /* Use maxUsec if we can not find any interval between min and max with our preferred periodicity. */
-        if (prefInterUsec < minUsec) {
-            prefInterUsec = maxUsec;
-        }
-    } else /* Search from lower bound */
+    if (prefInterUsec < minUsec)
     {
-        numInter = (prefPerUsec > SCH_RM_PREF_PER_USEC) ?
-                       SCH_RM_DIV_PREF_PER(minUsec) / SCH_RM_DIV_PREF_PER(prefPerUsec) :
-                       SCH_RM_DIV_PREF_PER(minUsec);
-        prefInterUsec = numInter * prefPerUsec;
-
-        if (prefInterUsec < minUsec) {
-            /* Round up to next periodic interval. */
-            prefInterUsec = (numInter + 1) * prefPerUsec;
-        }
+      /* Round up to next periodic interval. */
+      prefInterUsec = (numInter + 1) * prefPerUsec;
     }
+  }
 
-    /*** Prefer existing intervals ***/
+  /*** Prefer existing intervals ***/
 
-    uint32_t intervUsec[SCH_RM_MAX_RSVN];
-    uint8_t numIntervUsec = 0;
+  uint32_t intervUsec[SCH_RM_MAX_RSVN];
+  uint8_t numIntervUsec = 0;
 
-    for (unsigned int i = 0; i < SCH_RM_MAX_RSVN; i++) {
-        if ((i != exclude) && schRmCb.rsvnInterUsec[i]) {
-            intervUsec[numIntervUsec++] = schRmCb.rsvnInterUsec[i];
-        }
+  for (unsigned int i = 0; i < SCH_RM_MAX_RSVN; i++)
+  {
+    if ((i != exclude) &&
+        schRmCb.rsvnInterUsec[i])
+    {
+      intervUsec[numIntervUsec++] = schRmCb.rsvnInterUsec[i];
     }
+  }
 
-    /* Use larger intervals first to avoid capacity limitation. */
-    schRmSortListDescending(intervUsec, numIntervUsec);
+  /* Use larger intervals first to avoid capacity limitation. */
+  schRmSortListDescending(intervUsec, numIntervUsec);
 
-    for (unsigned int i = 0; i < numIntervUsec; i++) {
-        if ((intervUsec[i] >= prefInterUsec) && (intervUsec[i] <= maxUsec)) {
-            return intervUsec[i];
-        }
+  for (unsigned int i = 0; i < numIntervUsec; i++)
+  {
+    if ((intervUsec[i] >= prefInterUsec) &&
+        (intervUsec[i] <= maxUsec))
+    {
+      return intervUsec[i];
     }
+  }
 
-    /*** Limit upper bound ***/
+  /*** Limit upper bound ***/
 
-    if (prefInterUsec > maxUsec) {
-        /* Limit to max value. */
-        prefInterUsec = maxUsec;
-    }
+  if (prefInterUsec > maxUsec)
+  {
+    /* Limit to max value. */
+    prefInterUsec = maxUsec;
+  }
 
-    return prefInterUsec;
+  return prefInterUsec;
 }
 
 /*************************************************************************************************/
@@ -170,57 +174,67 @@ static uint32_t schRmSelectPreferredIntervalUsec(uint32_t minUsec, uint32_t maxU
 /*************************************************************************************************/
 static bool_t schRmCheckRsvnCapacity(uint8_t handle, uint32_t interUsec)
 {
-    unsigned int maxBinIdx = 0;
+  unsigned int maxBinIdx = 0;
 
-    /* Number of reservations by interval size; zero index is SCH_RM_PREF_PER_USEC. */
-    uint8_t numRsvnPerInter[SCH_RM_MAX_RSVN_BINS + 1] = { 0 };
-    for (unsigned int i = 0; i < SCH_RM_MAX_RSVN; i++) {
-        unsigned int rsvnIntervUsec;
-        if (i != handle) {
-            rsvnIntervUsec = schRmCb.rsvnInterUsec[i];
-        } else {
-            rsvnIntervUsec = interUsec;
-        }
-
-        if (!rsvnIntervUsec) {
-            /* Inactive reservation. */
-            continue;
-        }
-
-        /* Bin interval value inclusive of max value. */
-        unsigned int binIdx = SCH_RM_DIV_PREF_PER(rsvnIntervUsec - 1);
-
-        binIdx = (binIdx > SCH_RM_MAX_RSVN_BINS) ? SCH_RM_MAX_RSVN_BINS : binIdx;
-        numRsvnPerInter[binIdx]++;
-        maxBinIdx = WSF_MAX(binIdx, maxBinIdx);
+  /* Number of reservations by interval size; zero index is SCH_RM_PREF_PER_USEC. */
+  uint8_t numRsvnPerInter[SCH_RM_MAX_RSVN_BINS + 1] = { 0 };
+  for (unsigned int i = 0; i < SCH_RM_MAX_RSVN; i++)
+  {
+    unsigned int rsvnIntervUsec;
+    if (i != handle)
+    {
+      rsvnIntervUsec = schRmCb.rsvnInterUsec[i];
+    }
+    else
+    {
+      rsvnIntervUsec = interUsec;
     }
 
-    /* Check capacity. */
-
-    uint16_t rsvnPerc = 0; /* Reservation percentage */
-    uint16_t numRsvn;
-    bool_t isMaxCap = FALSE;
-
-    for (unsigned int i = 0; i < (maxBinIdx + 1); i++) {
-        numRsvn = numRsvnPerInter[i];
-        while (numRsvn) {
-            if (!isMaxCap) {
-                rsvnPerc += schRmRsvnRatio[i];
-                numRsvn--;
-
-                if (rsvnPerc >= 100) {
-                    isMaxCap = TRUE;
-                }
-            }
-
-            if (isMaxCap && (numRsvn > 0)) {
-                /* Capacity exceeded. */
-                return FALSE;
-            }
-        }
+    if (!rsvnIntervUsec)
+    {
+      /* Inactive reservation. */
+      continue;
     }
 
-    return TRUE;
+    /* Bin interval value inclusive of max value. */
+    unsigned int binIdx = SCH_RM_DIV_PREF_PER(rsvnIntervUsec - 1);
+
+    binIdx = (binIdx > SCH_RM_MAX_RSVN_BINS) ? SCH_RM_MAX_RSVN_BINS : binIdx;
+    numRsvnPerInter[binIdx]++;
+    maxBinIdx = WSF_MAX(binIdx, maxBinIdx);
+  }
+
+  /* Check capacity. */
+
+  uint16_t rsvnPerc = 0;    /* Reservation percentage */
+  uint16_t numRsvn;
+  bool_t isMaxCap = FALSE;
+
+  for (unsigned int i = 0; i < (maxBinIdx + 1); i++)
+  {
+    numRsvn = numRsvnPerInter[i];
+    while (numRsvn)
+    {
+      if (!isMaxCap)
+      {
+        rsvnPerc += schRmRsvnRatio[i];
+        numRsvn--;
+
+        if (rsvnPerc >= 100)
+        {
+          isMaxCap = TRUE;
+        }
+      }
+
+      if (isMaxCap && (numRsvn > 0))
+      {
+        /* Capacity exceeded. */
+        return FALSE;
+      }
+    }
+  }
+
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -235,21 +249,23 @@ static bool_t schRmCheckRsvnCapacity(uint8_t handle, uint32_t interUsec)
 /*************************************************************************************************/
 uint8_t schRmIntCalculateDepth(uint32_t intLarge, uint32_t intSmall)
 {
-    uint8_t x;
-    uint8_t depth = 0;
-    uint32_t tmpInt = intLarge;
+  uint8_t x;
+  uint8_t depth = 0;
+  uint32_t tmpInt = intLarge;
 
-    WSF_ASSERT(intLarge > intSmall);
+  WSF_ASSERT(intLarge > intSmall);
 
-    for (x = 0; (x < SCH_RM_MAX_SEARCH_DEPTH) && (tmpInt > SCH_RM_MIN_OFFSET_UNIT_US); x++) {
-        tmpInt >>= 1;
-        if (tmpInt == intSmall) {
-            depth = x + 1;
-            break;
-        }
+  for (x = 0; (x < SCH_RM_MAX_SEARCH_DEPTH) && (tmpInt > SCH_RM_MIN_OFFSET_UNIT_US); x++)
+  {
+    tmpInt >>= 1;
+    if (tmpInt == intSmall)
+    {
+      depth = x + 1;
+      break;
     }
+  }
 
-    return depth;
+  return depth;
 }
 
 /*************************************************************************************************/
@@ -264,77 +280,84 @@ uint8_t schRmIntCalculateDepth(uint32_t intLarge, uint32_t intSmall)
  *  \return     TRUE if update was successful, FALSE otherwise..
  */
 /*************************************************************************************************/
-static bool_t schRmIntAddRmOffset(uint8_t handle, uint8_t depth, uint32_t interUsec,
-                                  uint32_t durUsec)
+static bool_t schRmIntAddRmOffset(uint8_t handle, uint8_t depth, uint32_t interUsec, uint32_t durUsec)
 {
-    bool_t updated = FALSE;
-    uint32_t offsetUnitUs = schRmCb.commonInt >> schRmCb.offsetDepth;
-    uint32_t tmpRmStatus = schRmCb.rmStatus;
-    uint8_t numBitsPerRes = 1; /* Number of bit offsets to be occupied by the reservation. */
-    uint8_t x, y, z, numBitsOn;
+  bool_t updated = FALSE;
+  uint32_t offsetUnitUs = schRmCb.commonInt >> schRmCb.offsetDepth;
+  uint32_t tmpRmStatus = schRmCb.rmStatus;
+  uint8_t numBitsPerRes = 1;    /* Number of bit offsets to be occupied by the reservation. */
+  uint8_t x, y, z, numBitsOn;
 
-    WSF_ASSERT(schRmCb.offsetDepth >= depth);
-    WSF_ASSERT(durUsec < schRmCb.commonInt);
+  WSF_ASSERT(schRmCb.offsetDepth >= depth);
+  WSF_ASSERT(durUsec < schRmCb.commonInt);
 
-    /* If duration is 12ms while offset unit is 5ms, the reservation will occupy 3 consecutive offset bits. */
-    while (durUsec >= offsetUnitUs) {
-        numBitsPerRes++;
-        durUsec -= offsetUnitUs;
-    }
+  /* If duration is 12ms while offset unit is 5ms, the reservation will occupy 3 consecutive offset bits. */
+  while (durUsec >= offsetUnitUs)
+  {
+    numBitsPerRes++;
+    durUsec -= offsetUnitUs;
+  }
 
-    if (numBitsPerRes > 1) {
-        /* Need to duplicate rmStatus to check if the reservation has conflict with lowest bit offset. */
-        tmpRmStatus |= (tmpRmStatus << (1 << schRmCb.offsetDepth));
-    }
+  if (numBitsPerRes > 1)
+  {
+    /* Need to duplicate rmStatus to check if the reservation has conflict with lowest bit offset. */
+    tmpRmStatus |= (tmpRmStatus <<  (1 << schRmCb.offsetDepth));
+  }
 
-    for (x = 0; x < (1 << (schRmCb.offsetDepth - depth)); x++) {
-        /* Depth 0 means that the interval of the handle is same as common interval. Depth 1 means that it is half of common interval. */
-        /* When offsetDepth is 3(8 bits) and depth is 1, we will cut rmStatus in half and check if the bits in same location are all zero. */
-        numBitsOn = 0;
-        for (y = 0; y < (1 << depth); y++) {
-            for (z = 0; z < numBitsPerRes; z++) {
-                if ((tmpRmStatus >> ((1 << (schRmCb.offsetDepth - depth)) * y + x + z)) & 0x01) {
-                    numBitsOn++;
-                }
-            }
+  for (x = 0; x < (1 << (schRmCb.offsetDepth - depth)); x++)
+  {
+    /* Depth 0 means that the interval of the handle is same as common interval. Depth 1 means that it is half of common interval. */
+    /* When offsetDepth is 3(8 bits) and depth is 1, we will cut rmStatus in half and check if the bits in same location are all zero. */
+    numBitsOn = 0;
+    for (y = 0; y < (1 << depth); y++)
+    {
+      for (z = 0; z < numBitsPerRes; z++)
+      {
+        if ((tmpRmStatus >> ((1 << (schRmCb.offsetDepth - depth)) * y + x + z)) & 0x01)
+        {
+          numBitsOn++;
         }
-
-        /* Found available offset bit(s). */
-        if (numBitsOn == 0) {
-            /* Check conflict with TM links. */
-            if (schRmCb.rsvn[schRmCb.refHandle].refTimeCb != NULL) {
-                uint32_t rmRefTime =
-                    schRmCb.rsvn[schRmCb.refHandle].refTimeCb(schRmCb.refHandle, NULL);
-                uint32_t targetTime = rmRefTime + (offsetUnitUs * x);
-
-                if (SchTmCheckConflict(targetTime, interUsec, durUsec)) {
-                    /* Conflict is found, move on to next offset bits. */
-                    continue;
-                }
-            }
-
-            /* Set all the bits */
-            for (y = 0; y < (1 << depth); y++) {
-                for (z = 0; z < numBitsPerRes; z++) {
-                    schRmCb.rmStatus |=
-                        (0x01 << ((1 << (schRmCb.offsetDepth - depth)) * y + x + z));
-                }
-            }
-
-            schRmCb.rsvn[handle].offsetBit = x;
-            schRmCb.rsvn[handle].commIntUsed = TRUE;
-            updated = TRUE;
-
-            LL_TRACE_INFO2("schRmIntAddRmOffset, handle = %u, offsetDepth = %u", handle,
-                           schRmCb.offsetDepth);
-            LL_TRACE_INFO1("                     rmStatus = 0x%x", schRmCb.rmStatus);
-            LL_TRACE_INFO1("                     commonInt = %u", schRmCb.commonInt);
-            LL_TRACE_INFO1("                     offsetBit = %u", schRmCb.rsvn[handle].offsetBit);
-            break;
-        }
+      }
     }
 
-    return updated;
+    /* Found available offset bit(s). */
+    if (numBitsOn == 0)
+    {
+      /* Check conflict with TM links. */
+      if (schRmCb.rsvn[schRmCb.refHandle].refTimeCb != NULL)
+      {
+        uint32_t rmRefTime = schRmCb.rsvn[schRmCb.refHandle].refTimeCb(schRmCb.refHandle, NULL);
+        uint32_t targetTime = rmRefTime + (offsetUnitUs * x);
+
+        if (SchTmCheckConflict(targetTime, interUsec, durUsec))
+        {
+          /* Conflict is found, move on to next offset bits. */
+          continue;
+        }
+      }
+
+      /* Set all the bits */
+      for (y = 0; y < (1 << depth); y++)
+      {
+        for (z = 0; z < numBitsPerRes; z++)
+        {
+          schRmCb.rmStatus |= (0x01 << ((1 << (schRmCb.offsetDepth - depth)) * y + x + z));
+        }
+      }
+
+      schRmCb.rsvn[handle].offsetBit = x;
+      schRmCb.rsvn[handle].commIntUsed = TRUE;
+      updated = TRUE;
+
+      LL_TRACE_INFO2("schRmIntAddRmOffset, handle = %u, offsetDepth = %u", handle, schRmCb.offsetDepth);
+      LL_TRACE_INFO1("                     rmStatus = 0x%x", schRmCb.rmStatus);
+      LL_TRACE_INFO1("                     commonInt = %u", schRmCb.commonInt);
+      LL_TRACE_INFO1("                     offsetBit = %u", schRmCb.rsvn[handle].offsetBit);
+      break;
+    }
+  }
+
+  return updated;
 }
 
 /*************************************************************************************************/
@@ -348,54 +371,61 @@ static bool_t schRmIntAddRmOffset(uint8_t handle, uint8_t depth, uint32_t interU
 /*************************************************************************************************/
 static bool_t schRmIntIncOffsetDepth(uint8_t depth)
 {
-    uint8_t y, z, handle;
-    uint8_t numBitsPerRes, rsvnDepth;
-    uint32_t durUsec;
-    uint32_t offsetUnitUs = schRmCb.commonInt >> (schRmCb.offsetDepth + depth);
+  uint8_t y, z, handle;
+  uint8_t numBitsPerRes, rsvnDepth;
+  uint32_t durUsec;
+  uint32_t offsetUnitUs = schRmCb.commonInt >> (schRmCb.offsetDepth + depth);
 
-    /* Check if the offsetDepth will be valid after the increase. */
-    if (offsetUnitUs < SCH_RM_MIN_OFFSET_UNIT_US) {
-        return FALSE;
-    }
+  /* Check if the offsetDepth will be valid after the increase. */
+  if (offsetUnitUs < SCH_RM_MIN_OFFSET_UNIT_US)
+  {
+    return FALSE;
+  }
 
-    schRmCb.rmStatus = 0;
-    schRmCb.offsetDepth += depth;
+  schRmCb.rmStatus = 0;
+  schRmCb.offsetDepth += depth;
 
-    /* Update database according to the new offsetDepth. */
-    /* rmStatus b'11 becomes b'00010001, when depth is 2. */
-    for (handle = 0; handle < SCH_RM_MAX_RSVN; handle++) {
-        if (schRmCb.rsvn[handle].commIntUsed) {
-            numBitsPerRes = 1; /* Number of bit offsets to be occupied by the reservation. */
-            durUsec = schRmCb.rsvn[handle].durUsec;
-            WSF_ASSERT(durUsec < schRmCb.commonInt);
+  /* Update database according to the new offsetDepth. */
+  /* rmStatus b'11 becomes b'00010001, when depth is 2. */
+  for (handle = 0; handle < SCH_RM_MAX_RSVN; handle++)
+  {
+    if (schRmCb.rsvn[handle].commIntUsed)
+    {
+      numBitsPerRes = 1;    /* Number of bit offsets to be occupied by the reservation. */
+      durUsec = schRmCb.rsvn[handle].durUsec;
+      WSF_ASSERT(durUsec < schRmCb.commonInt);
 
-            if (schRmCb.commonInt == schRmCb.rsvn[handle].interUsec) {
-                rsvnDepth = 0;
-            } else {
-                rsvnDepth =
-                    schRmIntCalculateDepth(schRmCb.commonInt, schRmCb.rsvn[handle].interUsec);
-                WSF_ASSERT(rsvnDepth > 0);
-            }
+      if (schRmCb.commonInt == schRmCb.rsvn[handle].interUsec)
+      {
+        rsvnDepth = 0;
+      }
+      else
+      {
+        rsvnDepth = schRmIntCalculateDepth(schRmCb.commonInt, schRmCb.rsvn[handle].interUsec);
+        WSF_ASSERT(rsvnDepth > 0);
+      }
 
-            while (durUsec >= offsetUnitUs) {
-                numBitsPerRes++;
-                durUsec -= offsetUnitUs;
-            }
+      while (durUsec >= offsetUnitUs)
+      {
+        numBitsPerRes++;
+        durUsec -= offsetUnitUs;
+      }
 
-            /* For example, with depth 2, bit1 will move into bit4. */
-            schRmCb.rsvn[handle].offsetBit *= (1 << depth);
+      /* For example, with depth 2, bit1 will move into bit4. */
+      schRmCb.rsvn[handle].offsetBit *= (1 << depth);
 
-            /* Re-construct rmStatus */
-            for (y = 0; y < (1 << rsvnDepth); y++) {
-                for (z = 0; z < numBitsPerRes; z++) {
-                    schRmCb.rmStatus |= (0x01 << ((0x01 << (schRmCb.offsetDepth - rsvnDepth)) * y +
-                                                  schRmCb.rsvn[handle].offsetBit + z));
-                }
-            }
+      /* Re-construct rmStatus */
+      for (y = 0; y < (1 << rsvnDepth); y++)
+      {
+        for (z = 0; z < numBitsPerRes; z++)
+        {
+          schRmCb.rmStatus |= (0x01 << ((0x01 << (schRmCb.offsetDepth - rsvnDepth)) * y + schRmCb.rsvn[handle].offsetBit + z));
         }
+      }
     }
+  }
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -405,52 +435,62 @@ static bool_t schRmIntIncOffsetDepth(uint8_t depth)
 /*************************************************************************************************/
 static void schRmIntCheckDecOffsetDepth(void)
 {
-    uint32_t tmpStatus = schRmCb.rmStatus;
-    uint8_t x, evenOdd, other, handle, numBitsOn;
-    uint8_t depth = schRmCb.offsetDepth - 1;
+  uint32_t tmpStatus = schRmCb.rmStatus;
+  uint8_t x, evenOdd, other, handle, numBitsOn;
+  uint8_t depth = schRmCb.offsetDepth - 1;
 
-    if (schRmCb.offsetDepth < 2) {
-        /* nothing to do. */
-        return;
+  if (schRmCb.offsetDepth < 2)
+  {
+    /* nothing to do. */
+    return;
+  }
+
+  /* b'1010 with depth 2 is same as b'11 with depth 1. */
+  /* Check if all even or odd bits are zero. */
+  for (evenOdd = 0; evenOdd < 2; evenOdd++)
+  {
+    numBitsOn = 0;
+    other = (evenOdd == 0) ? 1 : 0; /* When checking even bits, other is 1. */
+
+    for (x = 0; x < (1 << depth); x++)
+    {
+      if ((tmpStatus >> (x * 2 + evenOdd)) & 0x01)
+      {
+        numBitsOn++;
+      }
     }
 
-    /* b'1010 with depth 2 is same as b'11 with depth 1. */
-    /* Check if all even or odd bits are zero. */
-    for (evenOdd = 0; evenOdd < 2; evenOdd++) {
-        numBitsOn = 0;
-        other = (evenOdd == 0) ? 1 : 0; /* When checking even bits, other is 1. */
+    if (numBitsOn == 0)
+    {
+      schRmCb.offsetDepth--;
+      schRmCb.rmStatus = 0;
 
-        for (x = 0; x < (1 << depth); x++) {
-            if ((tmpStatus >> (x * 2 + evenOdd)) & 0x01) {
-                numBitsOn++;
-            }
+      for (x = 0; x < (1 << depth); x++)
+      {
+        if ((tmpStatus >> (x * 2 + other)) & 0x01)
+        {
+          schRmCb.rmStatus |= (0x01 << (x));
         }
+      }
 
-        if (numBitsOn == 0) {
-            schRmCb.offsetDepth--;
-            schRmCb.rmStatus = 0;
+      /* Update database according to the new offsetDepth. */
+      for (handle = 0; handle < SCH_RM_MAX_RSVN; handle++)
+      {
+        if (schRmCb.rsvn[handle].commIntUsed)
+        {
+          schRmCb.rsvn[handle].offsetBit >>= 1;
 
-            for (x = 0; x < (1 << depth); x++) {
-                if ((tmpStatus >> (x * 2 + other)) & 0x01) {
-                    schRmCb.rmStatus |= (0x01 << (x));
-                }
-            }
-
-            /* Update database according to the new offsetDepth. */
-            for (handle = 0; handle < SCH_RM_MAX_RSVN; handle++) {
-                if (schRmCb.rsvn[handle].commIntUsed) {
-                    schRmCb.rsvn[handle].offsetBit >>= 1;
-
-                    /* The handle for Bit0 is updated to reference handle. */
-                    if (schRmCb.rsvn[handle].offsetBit == 0) {
-                        schRmCb.refHandle = handle;
-                    }
-                }
-            }
-
-            return;
+          /* The handle for Bit0 is updated to reference handle. */
+          if (schRmCb.rsvn[handle].offsetBit == 0)
+          {
+            schRmCb.refHandle = handle;
+          }
         }
+      }
+
+      return;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -464,62 +504,72 @@ static void schRmIntCheckDecOffsetDepth(void)
 /*************************************************************************************************/
 static void schRmIntRemoveRmOffset(uint8_t handle)
 {
-    uint8_t x, y, depth;
-    uint8_t numBitsPerRes = 1; /* Number of consecutive offset bits occupied by the reservation. */
-    uint32_t durUsec;
-    uint32_t offsetUnitUs = schRmCb.commonInt >> schRmCb.offsetDepth;
+  uint8_t x, y, depth;
+  uint8_t numBitsPerRes = 1;    /* Number of consecutive offset bits occupied by the reservation. */
+  uint32_t durUsec;
+  uint32_t offsetUnitUs = schRmCb.commonInt >> schRmCb.offsetDepth;
 
-    if (schRmCb.rsvn[handle].commIntUsed) {
-        WSF_ASSERT(schRmCb.rsvn[handle].durUsec < schRmCb.commonInt);
+  if (schRmCb.rsvn[handle].commIntUsed)
+  {
+    WSF_ASSERT(schRmCb.rsvn[handle].durUsec < schRmCb.commonInt);
 
-        /* Check how many continuous bit offsets were occupied by this reservation. */
-        durUsec = schRmCb.rsvn[handle].durUsec;
-        while (durUsec >= offsetUnitUs) {
-            numBitsPerRes++;
-            durUsec -= offsetUnitUs;
-        }
-
-        /* The interval of this handle must be equal to or smaller than the common interval. */
-        if (schRmCb.commonInt == schRmCb.rsvn[handle].interUsec) {
-            for (y = 0; y < numBitsPerRes; y++) {
-                schRmCb.rmStatus &= ~(1 << (schRmCb.rsvn[handle].offsetBit + y));
-            }
-        } else {
-            depth = schRmIntCalculateDepth(schRmCb.commonInt, schRmCb.rsvn[handle].interUsec);
-
-            if (depth) {
-                for (x = 0; x < (1 << depth); x++) {
-                    for (y = 0; y < numBitsPerRes; y++) {
-                        schRmCb.rmStatus &= ~(1 << ((1 << (schRmCb.offsetDepth - depth)) * x +
-                                                    schRmCb.rsvn[handle].offsetBit + y));
-                    }
-                }
-            }
-        }
-
-        schRmCb.rsvn[handle].commIntUsed = FALSE;
-
-        /* Adjust offsetDepth if necessary. */
-        schRmIntCheckDecOffsetDepth();
-
-        /* All the reservations are removed. */
-        if (schRmCb.rmStatus == 0) {
-            schRmCb.commonInt = 0;
-            schRmCb.offsetDepth = 0;
-        }
-
-        LL_TRACE_INFO2("schRmIntRemoveRmOffset, handle = %u, offsetDepth = %u", handle,
-                       schRmCb.offsetDepth);
-        LL_TRACE_INFO1("                        rmStatus = 0x%x", schRmCb.rmStatus);
-        LL_TRACE_INFO1("                        commonInt = %u", schRmCb.commonInt);
-    } else {
-        if (schRmCb.indexUncommon > 0) {
-            /* Uncommon handle by reservation manager. */
-            schRmCb.indexUncommon--;
-            LL_TRACE_INFO2("schRmIntRemoveRmOffset, deleted uncommon index %u, Handle = %u",
-                           schRmCb.indexUncommon, handle);
-        }
+    /* Check how many continuous bit offsets were occupied by this reservation. */
+    durUsec = schRmCb.rsvn[handle].durUsec;
+    while (durUsec >= offsetUnitUs)
+    {
+      numBitsPerRes++;
+      durUsec -= offsetUnitUs;
     }
+
+    /* The interval of this handle must be equal to or smaller than the common interval. */
+    if (schRmCb.commonInt == schRmCb.rsvn[handle].interUsec)
+    {
+      for (y = 0; y < numBitsPerRes; y++)
+      {
+        schRmCb.rmStatus &= ~(1 << (schRmCb.rsvn[handle].offsetBit + y));
+      }
+    }
+    else
+    {
+      depth = schRmIntCalculateDepth(schRmCb.commonInt, schRmCb.rsvn[handle].interUsec);
+
+      if (depth)
+      {
+        for (x = 0; x < (1 << depth); x++)
+        {
+          for (y = 0; y < numBitsPerRes; y++)
+          {
+            schRmCb.rmStatus &= ~(1 << ((1 << (schRmCb.offsetDepth - depth)) * x + schRmCb.rsvn[handle].offsetBit + y));
+          }
+        }
+      }
+    }
+
+    schRmCb.rsvn[handle].commIntUsed = FALSE;
+
+    /* Adjust offsetDepth if necessary. */
+    schRmIntCheckDecOffsetDepth();
+
+    /* All the reservations are removed. */
+    if (schRmCb.rmStatus == 0)
+    {
+      schRmCb.commonInt = 0;
+      schRmCb.offsetDepth = 0;
+    }
+
+    LL_TRACE_INFO2("schRmIntRemoveRmOffset, handle = %u, offsetDepth = %u", handle, schRmCb.offsetDepth);
+    LL_TRACE_INFO1("                        rmStatus = 0x%x", schRmCb.rmStatus);
+    LL_TRACE_INFO1("                        commonInt = %u", schRmCb.commonInt);
+  }
+  else
+  {
+    if (schRmCb.indexUncommon > 0)
+    {
+      /* Uncommon handle by reservation manager. */
+      schRmCb.indexUncommon--;
+      LL_TRACE_INFO2("schRmIntRemoveRmOffset, deleted uncommon index %u, Handle = %u", schRmCb.indexUncommon, handle);
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -531,26 +581,29 @@ static void schRmIntRemoveRmOffset(uint8_t handle)
 /*************************************************************************************************/
 static void schRmIntIncCommInterval(uint8_t depth)
 {
-    uint8_t x, y;
-    uint32_t tmpStatus = schRmCb.rmStatus;
+  uint8_t x, y;
+  uint32_t tmpStatus = schRmCb.rmStatus;
 
-    WSF_ASSERT(depth > 0);
+  WSF_ASSERT(depth > 0);
 
-    schRmCb.commonInt = schRmCb.commonInt << depth;
+  schRmCb.commonInt = schRmCb.commonInt << depth;
 
-    /* Reconstruct rmStatus as to the new common interval. */
-    schRmCb.rmStatus = 0;
-    for (x = 0; x < (1 << schRmCb.offsetDepth); x++) {
-        if ((tmpStatus >> x) & 0x01) {
-            for (y = 0; y < (1 << depth); y++) {
-                schRmCb.rmStatus |= (0x01 << (y * (1 << schRmCb.offsetDepth) + x));
-            }
-        }
+  /* Reconstruct rmStatus as to the new common interval. */
+  schRmCb.rmStatus = 0;
+  for (x = 0; x < (1 << schRmCb.offsetDepth); x++)
+  {
+    if ((tmpStatus >> x) & 0x01)
+    {
+      for (y = 0; y < (1 << depth); y++)
+      {
+        schRmCb.rmStatus |= (0x01 << (y * (1 << schRmCb.offsetDepth) + x));
+      }
     }
+  }
 
-    schRmCb.offsetDepth += depth;
+  schRmCb.offsetDepth += depth;
 
-    /* Offset bit location(offsetBit) stays same for existing handles. */
+  /* Offset bit location(offsetBit) stays same for existing handles. */
 }
 
 /*************************************************************************************************/
@@ -566,95 +619,128 @@ static void schRmIntIncCommInterval(uint8_t depth)
 /*************************************************************************************************/
 static bool_t schRmIntHandleAddRmOffset(uint8_t handle, uint32_t newInterUsec, uint32_t durUsec)
 {
-    bool_t status = TRUE;
-    uint8_t numAttempt = 0;
+  bool_t status = TRUE;
+  uint8_t numAttempt = 0;
 
-    /* Let's assume all connections are with common multiples. */
-    /* Will add function later to determine if 2 intervals are with common intervals. */
-    if (schRmCb.commonInt == 0) {
-        schRmCb.commonInt = newInterUsec;
-        schRmCb.indexUncommon = 0;
-        schRmCb.offsetDepth = 0; /* Offset unit is same as commonInt. */
-        schRmCb.rmStatus = 0x01; /* 100 percent reserved. */
+  /* Let's assume all connections are with common multiples. */
+  /* Will add function later to determine if 2 intervals are with common intervals. */
+  if (schRmCb.commonInt == 0)
+  {
+    schRmCb.commonInt = newInterUsec;
+    schRmCb.indexUncommon = 0;
+    schRmCb.offsetDepth = 0;  /* Offset unit is same as commonInt. */
+    schRmCb.rmStatus = 0x01;  /* 100 percent reserved. */
 
-        schRmCb.rsvn[handle].offsetBit = 0;
-        schRmCb.rsvn[handle].commIntUsed = TRUE;
-        schRmCb.refHandle = handle;
-    } else if (schRmCb.commonInt == newInterUsec) {
-        while (status == TRUE) {
-            numAttempt++;
-            if (schRmIntAddRmOffset(handle, 0, newInterUsec, durUsec)) {
-                break;
-            } else if (numAttempt <= SCH_RM_ADD_MAX_ATTEMPTS) {
-                /* Offset depth needs to be increased if RM status is full with the current depth. */
-                status = schRmIntIncOffsetDepth(1);
-            } else {
-                /* Failed with maximum attempts. */
-                status = FALSE;
-            }
-        }
-    } else if (schRmCb.commonInt < newInterUsec) /* new interval is multiple of commonInt. */
+    schRmCb.rsvn[handle].offsetBit = 0;
+    schRmCb.rsvn[handle].commIntUsed = TRUE;
+    schRmCb.refHandle = handle;
+  }
+  else if (schRmCb.commonInt == newInterUsec)
+  {
+    while (status == TRUE)
     {
-        uint8_t depth = schRmIntCalculateDepth(newInterUsec, schRmCb.commonInt);
-
-        if (depth) {
-            schRmIntIncCommInterval(depth);
-
-            while (status == TRUE) {
-                numAttempt++;
-                if (schRmIntAddRmOffset(handle, 0, newInterUsec, durUsec)) {
-                    break;
-                } else if (numAttempt <= SCH_RM_ADD_MAX_ATTEMPTS) {
-                    /* Offset depth needs to be increased if RM status is full with the current depth. */
-                    status = schRmIntIncOffsetDepth(1);
-                } else {
-                    /* Failed with maximum attempts. */
-                    status = FALSE;
-                }
-            }
-        } else {
-            /* Uncommon handle by reservation manager. */
-            schRmCb.indexUncommon++;
-            LL_TRACE_INFO2("Adding uncommon index %u, Handle = %u", schRmCb.indexUncommon, handle);
-        }
-    } else if (schRmCb.commonInt > newInterUsec) {
-        uint8_t depth = schRmIntCalculateDepth(schRmCb.commonInt, newInterUsec);
-
-        if (depth) {
-            /* First update offset depth so that offset unit would be same as new interval. */
-            if (schRmCb.offsetDepth < depth) {
-                status = schRmIntIncOffsetDepth(depth - schRmCb.offsetDepth);
-            }
-
-            while (status == TRUE) {
-                numAttempt++;
-                if (schRmIntAddRmOffset(handle, depth, newInterUsec, durUsec)) {
-                    break;
-                } else if (numAttempt <= SCH_RM_ADD_MAX_ATTEMPTS) {
-                    /* Offset depth needs to be increased if RM status is full with the current depth. */
-                    status = schRmIntIncOffsetDepth(1);
-                } else {
-                    /* Failed with maximum attempts. */
-                    status = FALSE;
-                }
-            }
-        } else {
-            /* Uncommon handle by reservation manager. */
-            schRmCb.indexUncommon++;
-            LL_TRACE_INFO2("Adding uncommon index %u, Handle = %u", schRmCb.indexUncommon, handle);
-        }
+      numAttempt++;
+      if (schRmIntAddRmOffset(handle, 0, newInterUsec, durUsec))
+      {
+        break;
+      }
+      else if (numAttempt <= SCH_RM_ADD_MAX_ATTEMPTS)
+      {
+        /* Offset depth needs to be increased if RM status is full with the current depth. */
+        status = schRmIntIncOffsetDepth(1);
+      }
+      else
+      {
+        /* Failed with maximum attempts. */
+        status = FALSE;
+      }
     }
+  }
+  else if (schRmCb.commonInt < newInterUsec)   /* new interval is multiple of commonInt. */
+  {
+    uint8_t depth = schRmIntCalculateDepth(newInterUsec, schRmCb.commonInt);
 
-    if (status == TRUE) {
-        schRmCb.rsvn[handle].handle = handle;
-        schRmCb.rsvn[handle].interUsec = newInterUsec;
-        schRmCb.rsvn[handle].durUsec = durUsec;
-    } else {
-        LL_TRACE_WARN2("schRmIntHandleAddRmOffset, Add RM failed, Handle = %u, Interval = %u",
-                       handle, newInterUsec);
+    if (depth)
+    {
+      schRmIntIncCommInterval(depth);
+
+      while (status == TRUE)
+      {
+        numAttempt++;
+        if (schRmIntAddRmOffset(handle, 0, newInterUsec, durUsec))
+        {
+          break;
+        }
+        else if (numAttempt <= SCH_RM_ADD_MAX_ATTEMPTS)
+        {
+          /* Offset depth needs to be increased if RM status is full with the current depth. */
+          status = schRmIntIncOffsetDepth(1);
+        }
+        else
+        {
+          /* Failed with maximum attempts. */
+          status = FALSE;
+        }
+      }
     }
+    else
+    {
+      /* Uncommon handle by reservation manager. */
+      schRmCb.indexUncommon++;
+      LL_TRACE_INFO2("Adding uncommon index %u, Handle = %u", schRmCb.indexUncommon, handle);
+    }
+  }
+  else if (schRmCb.commonInt > newInterUsec)
+  {
+    uint8_t depth = schRmIntCalculateDepth(schRmCb.commonInt, newInterUsec);
 
-    return status;
+    if (depth)
+    {
+      /* First update offset depth so that offset unit would be same as new interval. */
+      if (schRmCb.offsetDepth < depth)
+      {
+        status = schRmIntIncOffsetDepth(depth - schRmCb.offsetDepth);
+      }
+
+      while (status == TRUE)
+      {
+        numAttempt++;
+        if (schRmIntAddRmOffset(handle, depth, newInterUsec, durUsec))
+        {
+          break;
+        }
+        else if (numAttempt <= SCH_RM_ADD_MAX_ATTEMPTS)
+        {
+          /* Offset depth needs to be increased if RM status is full with the current depth. */
+          status = schRmIntIncOffsetDepth(1);
+        }
+        else
+        {
+          /* Failed with maximum attempts. */
+          status = FALSE;
+        }
+      }
+    }
+    else
+    {
+      /* Uncommon handle by reservation manager. */
+      schRmCb.indexUncommon++;
+      LL_TRACE_INFO2("Adding uncommon index %u, Handle = %u", schRmCb.indexUncommon, handle);
+    }
+  }
+
+  if (status == TRUE)
+  {
+    schRmCb.rsvn[handle].handle = handle;
+    schRmCb.rsvn[handle].interUsec = newInterUsec;
+    schRmCb.rsvn[handle].durUsec = durUsec;
+  }
+  else
+  {
+    LL_TRACE_WARN2("schRmIntHandleAddRmOffset, Add RM failed, Handle = %u, Interval = %u", handle, newInterUsec);
+  }
+
+  return status;
 }
 
 /*************************************************************************************************/
@@ -668,29 +754,33 @@ static bool_t schRmIntHandleAddRmOffset(uint8_t handle, uint32_t newInterUsec, u
 /*************************************************************************************************/
 void schRmSortListDescending(uint32_t item[], uint8_t numItems)
 {
-    if (numItems <= 1) {
-        return;
+  if (numItems <= 1)
+  {
+    return;
+  }
+
+  unsigned int numUnsorted = numItems;
+
+  do
+  {
+    unsigned int swapIdx = 0;
+
+    for (unsigned int i = 1; i < numUnsorted; i++)
+    {
+      if (item[i-1] < item[i])
+      {
+        uint32_t tmp;
+        tmp = item[i-1];
+        item[i-1] = item[i];
+        item[i] = tmp;
+        swapIdx = i;
+      }
     }
 
-    unsigned int numUnsorted = numItems;
+    /* Items after swapIdx are sorted. */
+    numUnsorted = swapIdx;
 
-    do {
-        unsigned int swapIdx = 0;
-
-        for (unsigned int i = 1; i < numUnsorted; i++) {
-            if (item[i - 1] < item[i]) {
-                uint32_t tmp;
-                tmp = item[i - 1];
-                item[i - 1] = item[i];
-                item[i] = tmp;
-                swapIdx = i;
-            }
-        }
-
-        /* Items after swapIdx are sorted. */
-        numUnsorted = swapIdx;
-
-    } while (numUnsorted > 1);
+  } while (numUnsorted > 1);
 }
 
 /*************************************************************************************************/
@@ -700,7 +790,7 @@ void schRmSortListDescending(uint32_t item[], uint8_t numItems)
 /*************************************************************************************************/
 void SchRmInit(void)
 {
-    memset(&schRmCb, 0, sizeof(schRmCb));
+  memset(&schRmCb, 0, sizeof(schRmCb));
 }
 
 /*************************************************************************************************/
@@ -714,14 +804,15 @@ void SchRmInit(void)
 /*************************************************************************************************/
 uint32_t SchRmCalcCommonPeriodicityUsec(uint32_t peerPerUsec)
 {
-    /* Is peer periodicity a multiple of local periodicity? */
-    if ((SCH_RM_DIV_PREF_PER(peerPerUsec) * SCH_RM_PREF_PER_USEC) == peerPerUsec) {
-        /* Accommodate the peer's periodicity. */
-        return WSF_MAX(SCH_RM_PREF_PER_USEC, peerPerUsec);
-    }
+  /* Is peer periodicity a multiple of local periodicity? */
+  if ((SCH_RM_DIV_PREF_PER(peerPerUsec) * SCH_RM_PREF_PER_USEC) == peerPerUsec)
+  {
+    /* Accommodate the peer's periodicity. */
+    return WSF_MAX(SCH_RM_PREF_PER_USEC, peerPerUsec);
+  }
 
-    /* Default to local preference. */
-    return SCH_RM_PREF_PER_USEC;
+  /* Default to local preference. */
+  return SCH_RM_PREF_PER_USEC;
 }
 
 /*************************************************************************************************/
@@ -739,44 +830,46 @@ uint32_t SchRmCalcCommonPeriodicityUsec(uint32_t peerPerUsec)
  *  \return     TRUE if reservation available, FALSE otherwise.
  */
 /*************************************************************************************************/
-bool_t SchRmAdd(uint8_t handle, uint8_t pref, uint32_t minUsec, uint32_t maxUsec, uint32_t durUsec,
-                uint32_t *pInterUsec, GetRefTimeCb_t refTimeCb)
+bool_t SchRmAdd(uint8_t handle, uint8_t pref, uint32_t minUsec, uint32_t maxUsec, uint32_t durUsec, uint32_t *pInterUsec, GetRefTimeCb_t refTimeCb)
 {
-    bool_t status = FALSE;
-    uint32_t perfPerUsec = SCH_RM_PREF_PER_CONN_USEC;
+  bool_t status = FALSE;
+  uint32_t perfPerUsec = SCH_RM_PREF_PER_CONN_USEC;
 
-    WSF_ASSERT(handle < SCH_RM_MAX_RSVN);
-    WSF_ASSERT(maxUsec >= minUsec);
+  WSF_ASSERT(handle < SCH_RM_MAX_RSVN);
+  WSF_ASSERT(maxUsec >= minUsec);
 
-    if (pref == SCH_RM_PREF_CAPACITY) {
-        perfPerUsec = SCH_RM_PREF_PER_SYNC_USEC;
+  if (pref == SCH_RM_PREF_CAPACITY)
+  {
+    perfPerUsec = SCH_RM_PREF_PER_SYNC_USEC;
+  }
+
+  /*** Select reservation's preferred interval. ***/
+
+  uint32_t prefInterUsec = schRmSelectPreferredIntervalUsec(minUsec, maxUsec, perfPerUsec, pref, handle);
+
+  /*** Check reservation capacity. ***/
+
+  if (!schRmCheckRsvnCapacity(handle, prefInterUsec))
+  {
+    return FALSE;
+  }
+
+  /*** Commit reservation. ***/
+
+  status = schRmIntHandleAddRmOffset(handle, prefInterUsec, durUsec);
+  if (status == TRUE)
+  {
+    schRmCb.rsvn[handle].refTimeCb = refTimeCb;
+
+    schRmCb.rsvnInterUsec[handle] = prefInterUsec;
+    schRmCb.numRsvn++;
+    if (pInterUsec)
+    {
+      *pInterUsec = prefInterUsec;
     }
+  }
 
-    /*** Select reservation's preferred interval. ***/
-
-    uint32_t prefInterUsec =
-        schRmSelectPreferredIntervalUsec(minUsec, maxUsec, perfPerUsec, pref, handle);
-
-    /*** Check reservation capacity. ***/
-
-    if (!schRmCheckRsvnCapacity(handle, prefInterUsec)) {
-        return FALSE;
-    }
-
-    /*** Commit reservation. ***/
-
-    status = schRmIntHandleAddRmOffset(handle, prefInterUsec, durUsec);
-    if (status == TRUE) {
-        schRmCb.rsvn[handle].refTimeCb = refTimeCb;
-
-        schRmCb.rsvnInterUsec[handle] = prefInterUsec;
-        schRmCb.numRsvn++;
-        if (pInterUsec) {
-            *pInterUsec = prefInterUsec;
-        }
-    }
-
-    return status;
+  return status;
 }
 
 /*************************************************************************************************/
@@ -795,32 +888,31 @@ bool_t SchRmAdd(uint8_t handle, uint8_t pref, uint32_t minUsec, uint32_t maxUsec
  *  \note       For BLE, connection belonging to handle must be a master only.
  */
 /*************************************************************************************************/
-bool_t SchRmStartUpdate(uint8_t handle, uint32_t minUsec, uint32_t maxUsec, uint32_t perfPerUsec,
-                        uint32_t durUsec, uint32_t *pInterUsec)
+bool_t SchRmStartUpdate(uint8_t handle, uint32_t minUsec, uint32_t maxUsec, uint32_t perfPerUsec, uint32_t durUsec, uint32_t *pInterUsec)
 {
-    WSF_ASSERT(handle < SCH_RM_MAX_RSVN);
-    WSF_ASSERT(maxUsec >= minUsec);
+  WSF_ASSERT(handle < SCH_RM_MAX_RSVN);
+  WSF_ASSERT(maxUsec >= minUsec);
 
-    /*** Select reservation's preferred interval. ***/
+  /*** Select reservation's preferred interval. ***/
 
-    uint32_t prefInterUsec = schRmSelectPreferredIntervalUsec(minUsec, maxUsec, perfPerUsec,
-                                                              SCH_RM_PREF_PERFORMANCE, handle);
+  uint32_t prefInterUsec = schRmSelectPreferredIntervalUsec(minUsec, maxUsec, perfPerUsec, SCH_RM_PREF_PERFORMANCE, handle);
 
-    /*** Check reservation capacity. ***/
+  /*** Check reservation capacity. ***/
 
-    if (!schRmCheckRsvnCapacity(handle, prefInterUsec)) {
-        return FALSE;
-    }
+  if (!schRmCheckRsvnCapacity(handle, prefInterUsec))
+  {
+    return FALSE;
+  }
 
-    /*** Commit reservation. ***/
+  /*** Commit reservation. ***/
 
-    schRmCb.rsvnInterUsec[handle] = prefInterUsec;
-    *pInterUsec = prefInterUsec;
+  schRmCb.rsvnInterUsec[handle] = prefInterUsec;
+  *pInterUsec = prefInterUsec;
 
-    schRmIntRemoveRmOffset(handle);
-    (void)schRmIntHandleAddRmOffset(handle, prefInterUsec, durUsec);
+  schRmIntRemoveRmOffset(handle);
+  (void)schRmIntHandleAddRmOffset(handle, prefInterUsec, durUsec);
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -832,7 +924,7 @@ bool_t SchRmStartUpdate(uint8_t handle, uint32_t minUsec, uint32_t maxUsec, uint
 /*************************************************************************************************/
 void SchRmCommitUpdate(uint8_t handle)
 {
-    /* No action required; already committed in SchRmStartUpdate(). */
+  /* No action required; already committed in SchRmStartUpdate(). */
 }
 
 /*************************************************************************************************/
@@ -844,13 +936,13 @@ void SchRmCommitUpdate(uint8_t handle)
 /*************************************************************************************************/
 void SchRmRemove(uint8_t handle)
 {
-    WSF_ASSERT(handle < SCH_RM_MAX_RSVN);
-    WSF_ASSERT(schRmCb.rsvnInterUsec[handle]);
+  WSF_ASSERT(handle < SCH_RM_MAX_RSVN);
+  WSF_ASSERT(schRmCb.rsvnInterUsec[handle]);
 
-    schRmCb.rsvnInterUsec[handle] = 0;
-    schRmCb.numRsvn--;
+  schRmCb.rsvnInterUsec[handle] = 0;
+  schRmCb.numRsvn--;
 
-    schRmIntRemoveRmOffset(handle);
+  schRmIntRemoveRmOffset(handle);
 }
 
 /*************************************************************************************************/
@@ -866,79 +958,87 @@ void SchRmRemove(uint8_t handle)
 /*************************************************************************************************/
 uint32_t SchRmGetOffsetUsec(uint32_t defOffsUsec, uint8_t handle, uint32_t refTime)
 {
-    uint32_t rmRefTime = refTime;
-    uint32_t offsUsec, targetTime;
-    uint32_t offsetUnitUs = schRmCb.commonInt >> schRmCb.offsetDepth;
+  uint32_t rmRefTime = refTime;
+  uint32_t offsUsec, targetTime;
+  uint32_t offsetUnitUs = schRmCb.commonInt >> schRmCb.offsetDepth;
 
-    WSF_ASSERT(schRmCb.numRsvn);
+  WSF_ASSERT(schRmCb.numRsvn);
 
-    if (schRmCb.numRsvn <= 1) {
-        /* We do not have reference anchor point yet for the 1st reservation. */
-        /* First anchor point will be chosen to avoid conflict with TM links. */
-        return SchTmGetFirstAnchor(refTime, defOffsUsec, schRmCb.rsvn[handle].interUsec,
-                                   schRmCb.rsvn[handle].durUsec);
+  if (schRmCb.numRsvn <= 1)
+  {
+    /* We do not have reference anchor point yet for the 1st reservation. */
+    /* First anchor point will be chosen to avoid conflict with TM links. */
+    return SchTmGetFirstAnchor(refTime, defOffsUsec, schRmCb.rsvn[handle].interUsec, schRmCb.rsvn[handle].durUsec);
+  }
+
+  /* rmRefTime is the time for offset bit 0. */
+  if (schRmCb.rsvn[schRmCb.refHandle].refTimeCb != NULL)
+  {
+    rmRefTime = schRmCb.rsvn[schRmCb.refHandle].refTimeCb(schRmCb.refHandle, NULL);
+  }
+
+  if ((schRmCb.commonInt != 0) && (schRmCb.rsvn[handle].commIntUsed == TRUE))
+  {
+    /* Time of Offset bit n = rmRefTime + offsetUnit * n. */
+    offsUsec = offsetUnitUs * schRmCb.rsvn[handle].offsetBit;
+    if (offsUsec == 0)
+    {
+      offsUsec += schRmCb.rsvn[handle].interUsec;
     }
 
-    /* rmRefTime is the time for offset bit 0. */
-    if (schRmCb.rsvn[schRmCb.refHandle].refTimeCb != NULL) {
-        rmRefTime = schRmCb.rsvn[schRmCb.refHandle].refTimeCb(schRmCb.refHandle, NULL);
+    targetTime = rmRefTime + offsUsec;
+
+    LL_TRACE_INFO2("SchRmGetOffsetUsec, handle = %u, refHandle = %u", handle, schRmCb.refHandle);
+    LL_TRACE_INFO1("                    refTime = %u", refTime);
+    LL_TRACE_INFO1("                    targetTime = %u", targetTime);
+  }
+  else
+  {
+    uint8_t offsetBit = 0;
+    uint8_t numUncommon = schRmCb.indexUncommon;
+    uint32_t uncommonOffsetUs = SCH_RM_OFFSET_UNCOMMON_US; /* Offset in microseconds for uncommon handle */
+
+    numUncommon--;
+    while (numUncommon)
+    {
+      offsetBit++;
+      numUncommon--;
+      offsetBit = (offsetBit >= (1 << schRmCb.offsetDepth)) ? 0 : offsetBit;
     }
 
-    if ((schRmCb.commonInt != 0) && (schRmCb.rsvn[handle].commIntUsed == TRUE)) {
-        /* Time of Offset bit n = rmRefTime + offsetUnit * n. */
-        offsUsec = offsetUnitUs * schRmCb.rsvn[handle].offsetBit;
-        if (offsUsec == 0) {
-            offsUsec += schRmCb.rsvn[handle].interUsec;
+    /* Find the duration of BOD of the handle which occupies the offset bit. */
+    for (unsigned int i = 0; i < SCH_RM_MAX_RSVN; i++)
+    {
+      if ((schRmCb.rsvn[i].offsetBit == offsetBit) && (schRmCb.rsvn[i].commIntUsed == TRUE))
+      {
+        if (schRmCb.rsvn[i].refTimeCb != NULL)
+        {
+          (void)schRmCb.rsvn[i].refTimeCb(i, &uncommonOffsetUs);
+          uncommonOffsetUs += BbGetSchSetupDelayUs() + SCH_RM_MARGIN_UNCOMMON_US;
         }
-
-        targetTime = rmRefTime + offsUsec;
-
-        LL_TRACE_INFO2("SchRmGetOffsetUsec, handle = %u, refHandle = %u", handle,
-                       schRmCb.refHandle);
-        LL_TRACE_INFO1("                    refTime = %u", refTime);
-        LL_TRACE_INFO1("                    targetTime = %u", targetTime);
-    } else {
-        uint8_t offsetBit = 0;
-        uint8_t numUncommon = schRmCb.indexUncommon;
-        uint32_t uncommonOffsetUs =
-            SCH_RM_OFFSET_UNCOMMON_US; /* Offset in microseconds for uncommon handle */
-
-        numUncommon--;
-        while (numUncommon) {
-            offsetBit++;
-            numUncommon--;
-            offsetBit = (offsetBit >= (1 << schRmCb.offsetDepth)) ? 0 : offsetBit;
-        }
-
-        /* Find the duration of BOD of the handle which occupies the offset bit. */
-        for (unsigned int i = 0; i < SCH_RM_MAX_RSVN; i++) {
-            if ((schRmCb.rsvn[i].offsetBit == offsetBit) && (schRmCb.rsvn[i].commIntUsed == TRUE)) {
-                if (schRmCb.rsvn[i].refTimeCb != NULL) {
-                    (void)schRmCb.rsvn[i].refTimeCb(i, &uncommonOffsetUs);
-                    uncommonOffsetUs += BbGetSchSetupDelayUs() + SCH_RM_MARGIN_UNCOMMON_US;
-                }
-            }
-        }
-
-        /* Place the uncommon handle away from each common ones to avoid conflicts. */
-        targetTime = rmRefTime + (offsetBit * offsetUnitUs) + uncommonOffsetUs;
-
-        LL_TRACE_INFO2("SchRmGetOffsetUsec, uncommon handle = %u, refHandle = %u", handle,
-                       schRmCb.refHandle);
-        LL_TRACE_INFO1("                    refTime = %u", rmRefTime);
-        LL_TRACE_INFO1("                    targetTime = %u", targetTime);
+      }
     }
 
-    /* Time to return has to be future from refTime. */
-    while (BbGetTargetTimeDelta(targetTime, refTime) == 0) {
-        targetTime += schRmCb.rsvn[handle].interUsec;
-    }
+    /* Place the uncommon handle away from each common ones to avoid conflicts. */
+    targetTime = rmRefTime + (offsetBit * offsetUnitUs) + uncommonOffsetUs;
 
-    /* 0 < targetTime <= interval */
-    while (BbGetTargetTimeDelta(targetTime, refTime) > schRmCb.rsvn[handle].interUsec) {
-        targetTime -= schRmCb.rsvn[handle].interUsec;
-    }
+    LL_TRACE_INFO2("SchRmGetOffsetUsec, uncommon handle = %u, refHandle = %u", handle, schRmCb.refHandle);
+    LL_TRACE_INFO1("                    refTime = %u", rmRefTime);
+    LL_TRACE_INFO1("                    targetTime = %u", targetTime);
+  }
 
-    LL_TRACE_INFO1("                    offsUsec = %u", (targetTime - refTime));
-    return BbGetTargetTimeDelta(targetTime, refTime);
+  /* Time to return has to be future from refTime. */
+  while (BbGetTargetTimeDelta(targetTime, refTime) == 0)
+  {
+    targetTime += schRmCb.rsvn[handle].interUsec;
+  }
+
+  /* 0 < targetTime <= interval */
+  while (BbGetTargetTimeDelta(targetTime, refTime) > schRmCb.rsvn[handle].interUsec)
+  {
+    targetTime -= schRmCb.rsvn[handle].interUsec;
+  }
+
+  LL_TRACE_INFO1("                    offsUsec = %u", (targetTime - refTime));
+  return BbGetTargetTimeDelta(targetTime, refTime);
 }

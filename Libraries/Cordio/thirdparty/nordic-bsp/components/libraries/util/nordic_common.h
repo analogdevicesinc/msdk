@@ -77,19 +77,20 @@ extern "C" {
 #warning "Do not use NRF_MODULE_ENABLE_ALL for real builds."
 #define NRF_MODULE_ENABLED(module) 1
 #else
-#define NRF_MODULE_ENABLED(module) ((defined(module##_ENABLED) && (module##_ENABLED)) ? 1 : 0)
+#define NRF_MODULE_ENABLED(module) \
+    ((defined(module ## _ENABLED) && (module ## _ENABLED)) ? 1 : 0)
 #endif
 /** The upper 8 bits of a 32 bit value */
 //lint -emacro(572,MSB_32) // Suppress warning 572 "Excessive shift value"
-#define MSB_32(a) (((a)&0xFF000000) >> 24)
+#define MSB_32(a) (((a) & 0xFF000000) >> 24)
 /** The lower 8 bits (of a 32 bit value) */
-#define LSB_32(a) ((a)&0x000000FF)
+#define LSB_32(a) ((a) & 0x000000FF)
 
 /** The upper 8 bits of a 16 bit value */
 //lint -emacro(572,MSB_16) // Suppress warning 572 "Excessive shift value"
-#define MSB_16(a) (((a)&0xFF00) >> 8)
+#define MSB_16(a) (((a) & 0xFF00) >> 8)
 /** The lower 8 bits (of a 16 bit value) */
-#define LSB_16(a) ((a)&0x00FF)
+#define LSB_16(a) ((a) & 0x00FF)
 
 /** Leaves the minimum of the two 32-bit arguments */
 /*lint -emacro(506, MIN) */ /* Suppress "Constant value Boolean */
@@ -112,9 +113,9 @@ extern "C" {
  *
  * @sa CONCAT_3
  */
-#define CONCAT_2(p1, p2) CONCAT_2_(p1, p2)
+#define CONCAT_2(p1, p2)      CONCAT_2_(p1, p2)
 /** Auxiliary macro used by @ref CONCAT_2 */
-#define CONCAT_2_(p1, p2) p1##p2
+#define CONCAT_2_(p1, p2)     p1##p2
 
 /**@brief Concatenates three parameters.
  *
@@ -131,14 +132,14 @@ extern "C" {
  *
  * @sa CONCAT_2
  */
-#define CONCAT_3(p1, p2, p3) CONCAT_3_(p1, p2, p3)
+#define CONCAT_3(p1, p2, p3)  CONCAT_3_(p1, p2, p3)
 /** Auxiliary macro used by @ref CONCAT_3 */
 #define CONCAT_3_(p1, p2, p3) p1##p2##p3
 
 #define STRINGIFY_(val) #val
 /** Converts a macro argument into a character constant.
  */
-#define STRINGIFY(val) STRINGIFY_(val)
+#define STRINGIFY(val)  STRINGIFY_(val)
 
 /** Counts number of elements inside the array
  */
@@ -149,7 +150,8 @@ extern "C" {
  * @param[in] W  Word whose bit is being set.
  * @param[in] B  Bit number in the word to be set.
  */
-#define SET_BIT(W, B) ((W) |= (uint32_t)(1U << (B)))
+#define SET_BIT(W, B)  ((W) |= (uint32_t)(1U << (B)))
+
 
 /**@brief Clears a bit in the uint32 word.
  *
@@ -157,6 +159,7 @@ extern "C" {
  * @param[in] B   Bit number in the word to be cleared.
  */
 #define CLR_BIT(W, B) ((W) &= (~(uint32_t)(1U << (B))))
+
 
 /**@brief Checks if a bit is set.
  *
@@ -201,7 +204,7 @@ extern "C" {
 #define BIT_30 0x40000000 /**< The value of bit 30 */
 #define BIT_31 0x80000000 /**< The value of bit 31 */
 
-#define UNUSED_VARIABLE(X) ((void)(X))
+#define UNUSED_VARIABLE(X)  ((void)(X))
 #define UNUSED_PARAMETER(X) UNUSED_VARIABLE(X)
 #define UNUSED_RETURN_VALUE(X) UNUSED_VARIABLE(X)
 

@@ -48,11 +48,11 @@ static wsfEfsControl_t wsfEfsFileTbl[WSF_EFS_MAX_FILES];
 /*************************************************************************************************/
 static bool_t wsfEfsMediaValid(uint8_t media)
 {
-    if (media < WSF_EFS_MAX_MEDIA && wsfEfsMediaTbl[media]) {
-        return TRUE;
-    }
+  if (media < WSF_EFS_MAX_MEDIA && wsfEfsMediaTbl[media]) {
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -66,11 +66,12 @@ static bool_t wsfEfsMediaValid(uint8_t media)
 /*************************************************************************************************/
 wsfEfsControl_t *WsfEfsGetFileByHandle(wsfEfsHandle_t handle)
 {
-    if ((handle < WSF_EFS_MAX_FILES) && (wsfEfsFileTbl[handle].maxSize != WSF_EFS_INVALID_SIZE)) {
-        return &wsfEfsFileTbl[handle];
-    }
+  if ((handle < WSF_EFS_MAX_FILES) &&
+      (wsfEfsFileTbl[handle].maxSize != WSF_EFS_INVALID_SIZE)) {
+    return &wsfEfsFileTbl[handle];
+  }
 
-    return NULL;
+  return NULL;
 }
 
 /*************************************************************************************************/
@@ -85,30 +86,29 @@ wsfEfsControl_t *WsfEfsGetFileByHandle(wsfEfsHandle_t handle)
  *  \return TRUE if overlap, else FALSE.
  */
 /*************************************************************************************************/
-static bool_t wsfEfsFileOverlap(wsfEfsHandle_t handle, uint8_t media, uint32_t address,
-                                uint32_t size)
+static bool_t wsfEfsFileOverlap(wsfEfsHandle_t handle, uint8_t media, uint32_t address, uint32_t size)
 {
-    if (wsfEfsMediaValid(media)) {
-        /* Check if the table entry is in use and the physical media are the same */
-        if (size && (wsfEfsFileTbl[handle].maxSize) &&
-            (wsfEfsFileTbl[handle].maxSize != WSF_EFS_INVALID_SIZE) &&
-            (wsfEfsFileTbl[handle].media == media)) {
-            /* Calculate the top and bottom addresses of the files */
-            uint32_t top1 = wsfEfsFileTbl[handle].address;
-            uint32_t bottom1 = wsfEfsFileTbl[handle].address + wsfEfsFileTbl[handle].maxSize - 1;
-            uint32_t top2 = address;
-            uint32_t bottom2 = address + size - 1;
+  if (wsfEfsMediaValid(media)) {
+    /* Check if the table entry is in use and the physical media are the same */
+    if (size && (wsfEfsFileTbl[handle].maxSize) &&
+        (wsfEfsFileTbl[handle].maxSize != WSF_EFS_INVALID_SIZE) &&
+        (wsfEfsFileTbl[handle].media == media)) {
+      /* Calculate the top and bottom addresses of the files */
+      uint32_t top1 = wsfEfsFileTbl[handle].address;
+      uint32_t bottom1 = wsfEfsFileTbl[handle].address + wsfEfsFileTbl[handle].maxSize - 1;
+      uint32_t top2 = address;
+      uint32_t bottom2 = address + size - 1;
 
-            /* Check for overlap */
-            if ((top2 >= top1) && (top2 <= bottom1))
-                return TRUE;
+      /* Check for overlap */
+      if ((top2 >= top1) && (top2 <= bottom1))
+        return TRUE;
 
-            if ((bottom2 >= top1) && (bottom2 <= bottom1))
-                return TRUE;
-        }
+      if ((bottom2 >= top1) && (bottom2 <= bottom1))
+        return TRUE;
     }
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -124,27 +124,27 @@ static bool_t wsfEfsFileOverlap(wsfEfsHandle_t handle, uint8_t media, uint32_t a
 /*************************************************************************************************/
 static uint32_t wsfEfsFindAvailableOffset(uint8_t media, uint32_t size)
 {
-    if (wsfEfsMediaValid(media)) {
-        int8_t i;
-        uint32_t address = wsfEfsMediaTbl[media]->startAddress;
+  if (wsfEfsMediaValid(media)) {
+    int8_t i;
+    uint32_t address = wsfEfsMediaTbl[media]->startAddress;
 
-        for (i = 0; i < WSF_EFS_MAX_FILES; i++) {
-            if (wsfEfsFileOverlap(i, media, address, size)) {
-                /* The offset overlaps another file.  Move the offset to the end of the overlapping */
-                /* file and retest. */
-                address = wsfEfsFileTbl[i].address + wsfEfsFileTbl[i].maxSize;
-                address += address % wsfEfsMediaTbl[media]->pageSize;
-                i = -1;
+    for (i=0; i<WSF_EFS_MAX_FILES; i++) {
+      if (wsfEfsFileOverlap(i, media, address, size)) {
+        /* The offset overlaps another file.  Move the offset to the end of the overlapping */
+        /* file and retest. */
+        address = wsfEfsFileTbl[i].address + wsfEfsFileTbl[i].maxSize;
+        address += address % wsfEfsMediaTbl[media]->pageSize;
+        i = -1;
 
-                if (address + size > wsfEfsMediaTbl[media]->endAddress)
-                    return WSF_EFS_INVALID_OFFSET;
-            }
-        }
-
-        return address;
+        if (address + size > wsfEfsMediaTbl[media]->endAddress)
+          return WSF_EFS_INVALID_OFFSET;
+      }
     }
 
-    return WSF_EFS_INVALID_OFFSET;
+    return address;
+  }
+
+  return WSF_EFS_INVALID_OFFSET;
 }
 
 /*************************************************************************************************/
@@ -156,15 +156,15 @@ static uint32_t wsfEfsFindAvailableOffset(uint8_t media, uint32_t size)
 /*************************************************************************************************/
 void WsfEfsInit(void)
 {
-    int8_t i;
+  int8_t i;
 
-    /* Clear control structures */
-    memset((void *)wsfEfsMediaTbl, 0, sizeof(wsfEfsMediaTbl));
+  /* Clear control structures */
+  memset((void *) wsfEfsMediaTbl, 0, sizeof(wsfEfsMediaTbl));
 
-    /* Set maxSize to invalid indicating file is unused */
-    for (i = 0; i < WSF_EFS_MAX_FILES; i++) {
-        wsfEfsFileTbl[i].maxSize = WSF_EFS_INVALID_SIZE;
-    }
+  /* Set maxSize to invalid indicating file is unused */
+  for (i=0; i<WSF_EFS_MAX_FILES; i++) {
+    wsfEfsFileTbl[i].maxSize = WSF_EFS_INVALID_SIZE;
+  }
 }
 
 /*************************************************************************************************/
@@ -179,66 +179,65 @@ void WsfEfsInit(void)
  *  \return File Handle, or WSF_EFS_INVALID_HANDLE if the operation failed.
  */
 /*************************************************************************************************/
-wsfEfsHandle_t WsfEfsAddFile(uint32_t maxSize, uint8_t media, wsfEsfAttributes_t *pAttr,
-                             uint32_t offset)
+wsfEfsHandle_t WsfEfsAddFile(uint32_t maxSize, uint8_t media, wsfEsfAttributes_t *pAttr, uint32_t offset)
 {
-    wsfEfsHandle_t handle;
-    uint32_t address = offset;
-    wsfEfsControl_t *pFile = NULL;
+  wsfEfsHandle_t handle;
+  uint32_t address = offset;
+  wsfEfsControl_t *pFile = NULL;
 
-    if (wsfEfsMediaValid(media)) {
-        /* Find an available slot in the file table (wsfEfsFileTbl) */
-        for (handle = 0; handle < WSF_EFS_MAX_FILES; handle++) {
-            if (wsfEfsFileTbl[handle].maxSize == WSF_EFS_INVALID_SIZE) {
-                pFile = &wsfEfsFileTbl[handle];
-                break;
-            }
-        }
-
-        if (pFile) {
-            if (address == WSF_EFS_FILE_OFFSET_ANY) {
-                address = wsfEfsFindAvailableOffset(media, maxSize);
-
-                if (address == WSF_EFS_INVALID_OFFSET)
-                    return WSF_EFS_INVALID_HANDLE;
-            } else {
-                int i;
-
-                /* The user specifies a zero based offset when adding a file */
-                /* This offset must be incremented by the media StartAddress */
-                /* to become the file's address in the wsfEfsMediaTbl. */
-                address += wsfEfsMediaTbl[media]->startAddress;
-
-                /* Increment the address to a page boundry */
-                if (wsfEfsMediaTbl[media]->pageSize) {
-                    address += address % wsfEfsMediaTbl[media]->pageSize;
-                }
-
-                /* Verify the given offset doesn't overlap another file */
-                for (i = 0; i < WSF_EFS_MAX_FILES; i++) {
-                    if (wsfEfsFileOverlap(i, media, address, maxSize) == TRUE)
-                        return WSF_EFS_INVALID_HANDLE;
-                }
-            }
-
-            /* Fill in the file control structure */
-            pFile->size = 0;
-            pFile->media = media;
-            pFile->address = address;
-            memcpy(&pFile->attributes, pAttr, sizeof(wsfEsfAttributes_t));
-
-            /* Set the maxSize, and increment the maxSize such that it */
-            /* occupies a full page in the physical medium */
-            pFile->maxSize = maxSize;
-            if (wsfEfsMediaTbl[media]->pageSize) {
-                pFile->maxSize += maxSize % wsfEfsMediaTbl[media]->pageSize;
-            }
-
-            return handle;
-        }
+  if (wsfEfsMediaValid(media)) {
+    /* Find an available slot in the file table (wsfEfsFileTbl) */
+    for (handle = 0; handle < WSF_EFS_MAX_FILES; handle++) {
+      if (wsfEfsFileTbl[handle].maxSize == WSF_EFS_INVALID_SIZE) {
+        pFile = &wsfEfsFileTbl[handle];
+        break;
+      }
     }
 
-    return WSF_EFS_INVALID_HANDLE;
+    if (pFile) {
+      if (address == WSF_EFS_FILE_OFFSET_ANY) {
+        address = wsfEfsFindAvailableOffset(media, maxSize);
+
+        if (address == WSF_EFS_INVALID_OFFSET)
+          return WSF_EFS_INVALID_HANDLE;
+      } else {
+        int i;
+
+        /* The user specifies a zero based offset when adding a file */
+        /* This offset must be incremented by the media StartAddress */
+        /* to become the file's address in the wsfEfsMediaTbl. */
+        address += wsfEfsMediaTbl[media]->startAddress;
+
+        /* Increment the address to a page boundry */
+        if (wsfEfsMediaTbl[media]->pageSize) {
+          address += address % wsfEfsMediaTbl[media]->pageSize;
+        }
+
+        /* Verify the given offset doesn't overlap another file */
+        for (i=0; i<WSF_EFS_MAX_FILES; i++) {
+          if (wsfEfsFileOverlap(i, media, address, maxSize) == TRUE)
+            return WSF_EFS_INVALID_HANDLE;
+        }
+      }
+
+      /* Fill in the file control structure */
+      pFile->size = 0;
+      pFile->media = media;
+      pFile->address = address;
+      memcpy(&pFile->attributes, pAttr, sizeof(wsfEsfAttributes_t));
+
+      /* Set the maxSize, and increment the maxSize such that it */
+      /* occupies a full page in the physical medium */
+      pFile->maxSize = maxSize;
+      if (wsfEfsMediaTbl[media]->pageSize) {
+        pFile->maxSize += maxSize % wsfEfsMediaTbl[media]->pageSize;
+      }
+
+      return handle;
+    }
+  }
+
+  return WSF_EFS_INVALID_HANDLE;
 }
 
 /*************************************************************************************************/
@@ -252,12 +251,12 @@ wsfEfsHandle_t WsfEfsAddFile(uint32_t maxSize, uint8_t media, wsfEsfAttributes_t
 /*************************************************************************************************/
 uint8_t WsfEfsRemoveFile(wsfEfsHandle_t handle)
 {
-    if (handle < WSF_EFS_MAX_FILES) {
-        wsfEfsFileTbl[handle].maxSize = WSF_EFS_INVALID_SIZE;
-        return WSF_EFS_SUCCESS;
-    }
+  if (handle < WSF_EFS_MAX_FILES) {
+    wsfEfsFileTbl[handle].maxSize = WSF_EFS_INVALID_SIZE;
+    return WSF_EFS_SUCCESS;
+  }
 
-    return WSF_EFS_FAILURE;
+  return WSF_EFS_FAILURE;
 }
 
 /*************************************************************************************************/
@@ -271,25 +270,24 @@ uint8_t WsfEfsRemoveFile(wsfEfsHandle_t handle)
 /*************************************************************************************************/
 uint8_t WsfEfsErase(wsfEfsHandle_t handle)
 {
-    uint8_t status = WSF_EFS_FAILURE;
-    wsfEfsControl_t *pFile;
+  uint8_t status = WSF_EFS_FAILURE;
+  wsfEfsControl_t *pFile;
 
-    if ((pFile = WsfEfsGetFileByHandle(handle)) != NULL) {
-        if (pFile->attributes.permissions &
-            (WSF_EFS_REMOTE_ERASE_PERMITTED | WSF_EFS_LOCAL_ERASE_PERMITTED)) {
-            uint8_t media = pFile->media;
+  if ((pFile = WsfEfsGetFileByHandle(handle)) != NULL) {
+    if (pFile->attributes.permissions & (WSF_EFS_REMOTE_ERASE_PERMITTED | WSF_EFS_LOCAL_ERASE_PERMITTED)) {
+      uint8_t media = pFile->media;
 
-            if (wsfEfsMediaTbl[media]->erase) {
-                uint32_t address = pFile->address;
-                uint32_t size = pFile->maxSize;
+      if (wsfEfsMediaTbl[media]->erase) {
+        uint32_t address = pFile->address;
+        uint32_t size = pFile->maxSize;
 
-                status = wsfEfsMediaTbl[media]->erase((uint8_t *)address, size);
-                pFile->size = 0;
-            }
-        }
+        status = wsfEfsMediaTbl[media]->erase((uint8_t *) address, size);
+        pFile->size = 0;
+      }
     }
+  }
 
-    return status;
+  return status;
 }
 
 /*************************************************************************************************/
@@ -304,14 +302,14 @@ uint8_t WsfEfsErase(wsfEfsHandle_t handle)
 /*************************************************************************************************/
 uint8_t WsfEfsGetAttributes(wsfEfsHandle_t handle, wsfEsfAttributes_t *pAttr)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL) && pAttr) {
-        memcpy(pAttr, &pFile->attributes, sizeof(wsfEsfAttributes_t));
-        return WSF_EFS_SUCCESS;
-    }
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL) && pAttr) {
+    memcpy(pAttr, &pFile->attributes, sizeof(wsfEsfAttributes_t));
+    return WSF_EFS_SUCCESS;
+  }
 
-    return WSF_EFS_FAILURE;
+  return WSF_EFS_FAILURE;
 }
 
 /*************************************************************************************************/
@@ -326,14 +324,14 @@ uint8_t WsfEfsGetAttributes(wsfEfsHandle_t handle, wsfEsfAttributes_t *pAttr)
 /*************************************************************************************************/
 uint8_t WsfEfsSetAttributes(wsfEfsHandle_t handle, wsfEsfAttributes_t *pAttr)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL) && pAttr) {
-        memcpy(&pFile->attributes, pAttr, sizeof(wsfEsfAttributes_t));
-        return WSF_EFS_SUCCESS;
-    }
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL) && pAttr) {
+    memcpy(&pFile->attributes, pAttr, sizeof(wsfEsfAttributes_t));
+    return WSF_EFS_SUCCESS;
+  }
 
-    return WSF_EFS_FAILURE;
+  return WSF_EFS_FAILURE;
 }
 
 /*************************************************************************************************/
@@ -350,33 +348,32 @@ uint8_t WsfEfsSetAttributes(wsfEfsHandle_t handle, wsfEsfAttributes_t *pAttr)
 /*************************************************************************************************/
 uint16_t WsfEfsGet(wsfEfsHandle_t handle, uint32_t offset, uint8_t *pBuffer, uint16_t len)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL) && pBuffer) {
-        if (pFile->attributes.permissions &
-            (WSF_EFS_REMOTE_GET_PERMITTED | WSF_EFS_LOCAL_GET_PERMITTED)) {
-            uint8_t media = pFile->media;
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL) && pBuffer) {
+    if (pFile->attributes.permissions & (WSF_EFS_REMOTE_GET_PERMITTED | WSF_EFS_LOCAL_GET_PERMITTED)) {
+      uint8_t media = pFile->media;
 
-            if (wsfEfsMediaTbl[media]->read) {
-                if (pFile->attributes.type == WSF_EFS_FILE_TYPE_STREAM) {
-                    wsfEfsMediaTbl[media]->read(pBuffer, 0, len);
-                    return len;
-                } else if (offset < pFile->size) {
-                    uint32_t address = pFile->address + offset;
+      if (wsfEfsMediaTbl[media]->read) {
+        if (pFile->attributes.type == WSF_EFS_FILE_TYPE_STREAM) {
+          wsfEfsMediaTbl[media]->read(pBuffer, 0, len);
+          return len;
+        } else if (offset < pFile->size) {
+          uint32_t address = pFile->address + offset;
 
-                    if (offset + len > pFile->size) {
-                        len = (uint16_t)(pFile->size - offset);
-                    }
+          if (offset + len > pFile->size) {
+            len = (uint16_t) (pFile->size - offset);
+          }
 
-                    wsfEfsMediaTbl[media]->read(pBuffer, (uint8_t *)address, len);
+          wsfEfsMediaTbl[media]->read(pBuffer, (uint8_t *) address, len);
 
-                    return len;
-                }
-            }
+          return len;
         }
+      }
     }
+  }
 
-    return 0;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -393,38 +390,37 @@ uint16_t WsfEfsGet(wsfEfsHandle_t handle, uint32_t offset, uint8_t *pBuffer, uin
 /*************************************************************************************************/
 uint16_t WsfEfsPut(wsfEfsHandle_t handle, uint32_t offset, const uint8_t *pBuffer, uint16_t len)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL) && pBuffer) {
-        if (pFile->attributes.permissions &
-            (WSF_EFS_REMOTE_PUT_PERMITTED | WSF_EFS_LOCAL_PUT_PERMITTED)) {
-            uint8_t media = pFile->media;
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL) && pBuffer) {
+    if (pFile->attributes.permissions & (WSF_EFS_REMOTE_PUT_PERMITTED | WSF_EFS_LOCAL_PUT_PERMITTED)) {
+      uint8_t media = pFile->media;
 
-            if (wsfEfsMediaTbl[media]->write) {
-                if (pFile->attributes.type == WSF_EFS_FILE_TYPE_STREAM) {
-                    wsfEfsMediaTbl[media]->write(pBuffer, 0, len);
-                    return len;
-                } else if (offset < pFile->maxSize) {
-                    uint32_t address = pFile->address + offset;
+      if (wsfEfsMediaTbl[media]->write) {
+        if (pFile->attributes.type == WSF_EFS_FILE_TYPE_STREAM) {
+          wsfEfsMediaTbl[media]->write(pBuffer, 0, len);
+          return len;
+        } else if (offset < pFile->maxSize) {
+          uint32_t address = pFile->address + offset;
 
-                    if (offset + len > pFile->maxSize) {
-                        len = (uint16_t)(pFile->maxSize - offset);
-                    }
+          if (offset + len > pFile->maxSize) {
+            len = (uint16_t) (pFile->maxSize - offset);
+          }
 
-                    wsfEfsMediaTbl[media]->write(pBuffer, (uint8_t *)address, len);
+          wsfEfsMediaTbl[media]->write(pBuffer, (uint8_t *) address, len);
 
-                    /* If writing to the end of the file, update the file size */
-                    if (offset + len > pFile->size) {
-                        pFile->size = offset + len;
-                    }
+          /* If writing to the end of the file, update the file size */
+          if (offset + len > pFile->size) {
+            pFile->size = offset + len;
+          }
 
-                    return len;
-                }
-            }
+          return len;
         }
+      }
     }
+  }
 
-    return 0;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -438,13 +434,13 @@ uint16_t WsfEfsPut(wsfEfsHandle_t handle, uint32_t offset, const uint8_t *pBuffe
 /*************************************************************************************************/
 char *WsfEfsGetFileName(wsfEfsHandle_t handle)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
-        return pFile->attributes.name;
-    }
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
+    return pFile->attributes.name;
+  }
 
-    return "Unknown";
+  return "Unknown";
 }
 
 /*************************************************************************************************/
@@ -458,13 +454,13 @@ char *WsfEfsGetFileName(wsfEfsHandle_t handle)
 /*************************************************************************************************/
 char *WsfEfsGetFileVersion(wsfEfsHandle_t handle)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
-        return pFile->attributes.version;
-    }
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
+    return pFile->attributes.version;
+  }
 
-    return "Unknown";
+  return "Unknown";
 }
 
 /*************************************************************************************************/
@@ -478,13 +474,13 @@ char *WsfEfsGetFileVersion(wsfEfsHandle_t handle)
 /*************************************************************************************************/
 uint32_t WsfEfsGetFileMaxSize(wsfEfsHandle_t handle)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
-        return pFile->maxSize;
-    }
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
+    return pFile->maxSize;
+  }
 
-    return 0;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -498,13 +494,13 @@ uint32_t WsfEfsGetFileMaxSize(wsfEfsHandle_t handle)
 /*************************************************************************************************/
 uint32_t WsfEfsGetFileSize(wsfEfsHandle_t handle)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
-        return pFile->size;
-    }
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
+    return pFile->size;
+  }
 
-    return 0;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -518,13 +514,13 @@ uint32_t WsfEfsGetFileSize(wsfEfsHandle_t handle)
 /*************************************************************************************************/
 uint8_t WsfEfsGetFileType(wsfEfsHandle_t handle)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
-        return pFile->attributes.type;
-    }
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
+    return pFile->attributes.type;
+  }
 
-    return WSF_EFS_FILE_TYPE_BULK;
+  return WSF_EFS_FILE_TYPE_BULK;
 }
 
 /*************************************************************************************************/
@@ -538,13 +534,13 @@ uint8_t WsfEfsGetFileType(wsfEfsHandle_t handle)
 /*************************************************************************************************/
 uint16_t WsfEfsGetFilePermissions(wsfEfsHandle_t handle)
 {
-    wsfEfsControl_t *pFile;
+  wsfEfsControl_t *pFile;
 
-    if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
-        return pFile->attributes.permissions;
-    }
+  if (((pFile = WsfEfsGetFileByHandle(handle)) != NULL)) {
+    return pFile->attributes.permissions;
+  }
 
-    return 0;
+  return 0;
 }
 
 /*************************************************************************************************/
@@ -560,16 +556,16 @@ uint16_t WsfEfsGetFilePermissions(wsfEfsHandle_t handle)
 /*************************************************************************************************/
 uint8_t WsfEfsMediaSpecificCommand(wsfEfsHandle_t handle, uint8_t cmd, uint32_t param)
 {
-    if (WsfEfsGetFileByHandle(handle)) {
-        uint8_t media = wsfEfsFileTbl[handle].media;
+  if (WsfEfsGetFileByHandle(handle)) {
+    uint8_t media = wsfEfsFileTbl[handle].media;
 
-        /* Call the command handler if it exists */
-        if (wsfEfsMediaTbl[media]->handleCmd) {
-            return wsfEfsMediaTbl[media]->handleCmd(cmd, param);
-        }
+    /* Call the command handler if it exists */
+    if (wsfEfsMediaTbl[media]->handleCmd) {
+      return wsfEfsMediaTbl[media]->handleCmd(cmd, param);
     }
+  }
 
-    return FALSE;
+  return FALSE;
 }
 
 /*************************************************************************************************/
@@ -584,16 +580,16 @@ uint8_t WsfEfsMediaSpecificCommand(wsfEfsHandle_t handle, uint8_t cmd, uint32_t 
 /*************************************************************************************************/
 uint8_t WsfEfsRegisterMedia(const wsfEfsMedia_t *pMediaCtrl, uint8_t mediaID)
 {
-    if (mediaID < WSF_EFS_MAX_MEDIA && pMediaCtrl) {
-        wsfEfsMediaTbl[mediaID] = pMediaCtrl;
+  if (mediaID < WSF_EFS_MAX_MEDIA && pMediaCtrl) {
+    wsfEfsMediaTbl[mediaID] = pMediaCtrl;
 
-        /* Call the initialization function for the media */
-        if (pMediaCtrl->init) {
-            pMediaCtrl->init();
-        }
-
-        return WSF_EFS_SUCCESS;
+    /* Call the initialization function for the media */
+    if (pMediaCtrl->init) {
+      pMediaCtrl->init();
     }
 
-    return WSF_EFS_FAILURE;
+    return WSF_EFS_SUCCESS;
+  }
+
+  return WSF_EFS_FAILURE;
 }

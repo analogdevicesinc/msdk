@@ -42,33 +42,39 @@ WSF_CT_ASSERT((LL_NUM_ADV_FILT <= 32));
 /*************************************************************************************************/
 void lctrScanCleanup(lctrMstScanCtx_t *pCtx)
 {
-    LmgrDecResetRefCount();
-    if (pCtx == &lctrMstScan) {
-        lmgrCb.numScanEnabled = 0;
-    } else {
-        lmgrCb.numInitEnabled = 0;
-    }
-    switch (pCtx->scanParam.scanFiltPolicy) {
+  LmgrDecResetRefCount();
+  if (pCtx == &lctrMstScan)
+  {
+    lmgrCb.numScanEnabled = 0;
+  }
+  else
+  {
+    lmgrCb.numInitEnabled = 0;
+  }
+  switch (pCtx->scanParam.scanFiltPolicy)
+  {
     case LL_SCAN_FILTER_WL_BIT:
     case LL_SCAN_FILTER_WL_OR_RES_INIT:
-        LmgrDecWhitelistRefCount();
-        break;
+      LmgrDecWhitelistRefCount();
+      break;
     default:
-        break;
-    }
-    lctrMstScanCleanupOp(pCtx);
+      break;
+  }
+  lctrMstScanCleanupOp(pCtx);
 
-    uint8_t *pBuf;
-    wsfHandlerId_t handlerId;
+  uint8_t *pBuf;
+  wsfHandlerId_t handlerId;
 
-    while ((pBuf = WsfMsgDeq(&pCtx->rxAdvbQ, &handlerId)) != NULL) {
-        /* Drop pending AdvB PDUs. */
-        WsfMsgFree(pBuf);
-    }
-    while ((pBuf = WsfMsgDeq(&pCtx->rxDirectAdvbQ, &handlerId)) != NULL) {
-        /* Drop pending direct AdvB PDUs. */
-        WsfMsgFree(pBuf);
-    }
+  while ((pBuf = WsfMsgDeq(&pCtx->rxAdvbQ, &handlerId)) != NULL)
+  {
+    /* Drop pending AdvB PDUs. */
+    WsfMsgFree(pBuf);
+  }
+  while ((pBuf = WsfMsgDeq(&pCtx->rxDirectAdvbQ, &handlerId)) != NULL)
+  {
+    /* Drop pending direct AdvB PDUs. */
+    WsfMsgFree(pBuf);
+  }
 }
 
 /*************************************************************************************************/
@@ -78,30 +84,31 @@ void lctrScanCleanup(lctrMstScanCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrScanActDiscover(void)
 {
-    lctrScanEnableMsg_t *pMsg = (lctrScanEnableMsg_t *)pLctrMsg;
+  lctrScanEnableMsg_t *pMsg = (lctrScanEnableMsg_t *)pLctrMsg;
 
-    lctrMstScan.scanParam = lmgrMstScanCb.scanParam;
+  lctrMstScan.scanParam = lmgrMstScanCb.scanParam;
 
-    lctrAdvRptEnable(&lctrMstScan.data.disc.advFilt, pMsg->filtDup);
+  lctrAdvRptEnable(&lctrMstScan.data.disc.advFilt, pMsg->filtDup);
 
-    BbStart(BB_PROT_BLE);
+  BbStart(BB_PROT_BLE);
 
-    LmgrIncResetRefCount();
-    lmgrCb.numScanEnabled = 1;
-    switch (lctrMstScan.scanParam.scanFiltPolicy) {
+  LmgrIncResetRefCount();
+  lmgrCb.numScanEnabled = 1;
+  switch (lctrMstScan.scanParam.scanFiltPolicy)
+  {
     case LL_SCAN_FILTER_WL_BIT:
     case LL_SCAN_FILTER_WL_OR_RES_INIT:
-        LmgrIncWhitelistRefCount();
-        break;
+      LmgrIncWhitelistRefCount();
+      break;
     default:
-        break;
-    }
-    lctrMstDiscoverBuildOp();
-    lmgrCb.scanMode = LMGR_SCAN_MODE_DISCOVER;
-    lctrMstScan.backoffCount = 1;
-    lctrMstScan.upperLimit = 1;
+      break;
+  }
+  lctrMstDiscoverBuildOp();
+  lmgrCb.scanMode = LMGR_SCAN_MODE_DISCOVER;
+  lctrMstScan.backoffCount = 1;
+  lctrMstScan.upperLimit = 1;
 
-    LmgrSendScanEnableCnf(LL_SUCCESS);
+  LmgrSendScanEnableCnf(LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -111,14 +118,17 @@ void lctrScanActDiscover(void)
 /*************************************************************************************************/
 void lctrScanActShutdown(void)
 {
-    if (lmgrCb.numScanEnabled) {
-        lctrMstScan.shutdown = TRUE;
-        SchRemove(&lctrMstScan.scanBod);
+  if (lmgrCb.numScanEnabled)
+  {
+    lctrMstScan.shutdown = TRUE;
+    SchRemove(&lctrMstScan.scanBod);
 
-        /* Shutdown completes with events generated in BOD end callback. */
-    } else {
-        /* TODO Can this occur if a reset or cancel is received after a initiate start fails? */
-    }
+    /* Shutdown completes with events generated in BOD end callback. */
+  }
+  else
+  {
+    /* TODO Can this occur if a reset or cancel is received after a initiate start fails? */
+  }
 }
 
 /*************************************************************************************************/
@@ -128,7 +138,7 @@ void lctrScanActShutdown(void)
 /*************************************************************************************************/
 void lctrScanActScanCnf(void)
 {
-    LmgrSendScanEnableCnf(LL_SUCCESS);
+  LmgrSendScanEnableCnf(LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -138,7 +148,7 @@ void lctrScanActScanCnf(void)
 /*************************************************************************************************/
 void lctrScanActDisallowScan(void)
 {
-    LmgrSendScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
+  LmgrSendScanEnableCnf(LL_ERROR_CODE_CMD_DISALLOWED);
 }
 
 /*************************************************************************************************/
@@ -148,8 +158,8 @@ void lctrScanActDisallowScan(void)
 /*************************************************************************************************/
 void lctrScanActSelfTerm(void)
 {
-    BbStop(BB_PROT_BLE);
-    lctrScanCleanup(&lctrMstScan);
+  BbStop(BB_PROT_BLE);
+  lctrScanCleanup(&lctrMstScan);
 }
 
 /*************************************************************************************************/
@@ -159,10 +169,10 @@ void lctrScanActSelfTerm(void)
 /*************************************************************************************************/
 void lctrScanActScanTerm(void)
 {
-    BbStop(BB_PROT_BLE);
+  BbStop(BB_PROT_BLE);
 
-    lctrScanCleanup(&lctrMstScan);
-    LmgrSendScanEnableCnf(LL_SUCCESS);
+  lctrScanCleanup(&lctrMstScan);
+  LmgrSendScanEnableCnf(LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -172,8 +182,8 @@ void lctrScanActScanTerm(void)
 /*************************************************************************************************/
 void lctrScanActResetTerm(void)
 {
-    BbStop(BB_PROT_BLE);
-    lctrScanCleanup(&lctrMstScan);
+  BbStop(BB_PROT_BLE);
+  lctrScanCleanup(&lctrMstScan);
 }
 
 /*************************************************************************************************/
@@ -183,9 +193,9 @@ void lctrScanActResetTerm(void)
 /*************************************************************************************************/
 void lctrScanActUpdateScanParam(void)
 {
-    lctrScanParamMsg_t *pMsg = (lctrScanParamMsg_t *)pLctrMsg;
+  lctrScanParamMsg_t *pMsg = (lctrScanParamMsg_t *)pLctrMsg;
 
-    lmgrMstScanCb.scanParam = pMsg->param;
+  lmgrMstScanCb.scanParam = pMsg->param;
 }
 
 /*************************************************************************************************/
@@ -195,10 +205,12 @@ void lctrScanActUpdateScanParam(void)
 /*************************************************************************************************/
 void lctrScanActUpdateScanFilt(void)
 {
-    lctrScanEnableMsg_t *pMsg = (lctrScanEnableMsg_t *)pLctrMsg;
-    if (lctrMstScan.data.disc.advFilt.enable != pMsg->filtDup) {
-        lctrAdvRptEnable(&lctrMstScan.data.disc.advFilt, pMsg->filtDup);
-    }
+  lctrScanEnableMsg_t *pMsg = (lctrScanEnableMsg_t *)pLctrMsg;
+  if (lctrMstScan.data.disc.advFilt.enable != pMsg->filtDup)
+  {
+    lctrAdvRptEnable(&lctrMstScan.data.disc.advFilt, pMsg->filtDup);
+  }
 
-    LmgrSendScanEnableCnf(LL_SUCCESS);
+  LmgrSendScanEnableCnf(LL_SUCCESS);
 }
+

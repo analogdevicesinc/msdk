@@ -50,43 +50,50 @@ attsCsfCb_t attsCsfCb;
 /*************************************************************************************************/
 void attsCsfSetHashUpdateStatus(bool_t isUpdating)
 {
-    if (attsCsfCb.isHashUpdating == isUpdating) {
-        /* Already in the current state, nothing to do. */
-        return;
-    } else {
-        /* Update state. */
-        attsCsfCb.isHashUpdating = isUpdating;
-    }
+  if (attsCsfCb.isHashUpdating == isUpdating)
+  {
+    /* Already in the current state, nothing to do. */
+    return;
+  }
+  else
+  {
+    /* Update state. */
+    attsCsfCb.isHashUpdating = isUpdating;
+  }
 
-    /* Update complete.
+  /* Update complete.
    * Check if clients were pending on the hash value and fulfill their requests.
    */
-    if (isUpdating == FALSE) {
-        ATT_TRACE_INFO0("Database hash calculation complete");
+  if (isUpdating == FALSE)
+  {
+    ATT_TRACE_INFO0("Database hash calculation complete");
 
-        attsCheckPendDbHashReadRsp();
+    attsCheckPendDbHashReadRsp();
 
-        /* Note: Clients which were pending on a Database Hash read from a Read by Type Request are not
+    /* Note: Clients which were pending on a Database Hash read from a Read by Type Request are not
      * transitioned to the change-aware state here.  The application is expected to initiate the
      * state transition of all clients when the new hash is set.  If this is not done, the
      * state of pending Clients will be out of sync, and will be corrected on the next database
      * sync.
      */
-    } else {
-        ATT_TRACE_INFO0("Calculating database hash");
+  }
+  else
+  {
+    ATT_TRACE_INFO0("Calculating database hash");
 
-        /* If the application, for whatever reason, previously recalculated the database hash over an
+    /* If the application, for whatever reason, previously recalculated the database hash over an
      * unchanged database and a client pended on a Read By Type Request of the database hash, then
      * that clients state may be out of step if the application did not initiate a state
      * transition.  That state transition is forced here to keep handle next transition.
      */
-        for (uint8_t i = 0; i < DM_CONN_MAX; i++) {
-            if (attsCsfCb.attsCsfTable[i].changeAwareState ==
-                ATTS_CLIENT_CHANGE_AWARE_DB_READ_PENDING) {
-                attsCsfCb.attsCsfTable[i].changeAwareState = ATTS_CLIENT_CHANGE_PENDING_AWARE;
-            }
-        }
+    for (uint8_t i = 0; i < DM_CONN_MAX; i++)
+    {
+      if (attsCsfCb.attsCsfTable[i].changeAwareState == ATTS_CLIENT_CHANGE_AWARE_DB_READ_PENDING)
+      {
+        attsCsfCb.attsCsfTable[i].changeAwareState = ATTS_CLIENT_CHANGE_PENDING_AWARE;
+      }
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -98,7 +105,7 @@ void attsCsfSetHashUpdateStatus(bool_t isUpdating)
 /*************************************************************************************************/
 uint8_t attsCsfGetHashUpdateStatus(void)
 {
-    return attsCsfCb.isHashUpdating;
+  return attsCsfCb.isHashUpdating;
 }
 
 /*************************************************************************************************/
@@ -113,13 +120,14 @@ uint8_t attsCsfGetHashUpdateStatus(void)
 /*************************************************************************************************/
 uint8_t attsCsfIsClientChangeAware(dmConnId_t connId, uint16_t handle)
 {
-    if ((attsCsfCb.attsCsfTable[connId - 1].csf & ATTS_CSF_ROBUST_CACHING) &&
-        (attsCsfCb.attsCsfTable[connId - 1].changeAwareState == ATTS_CLIENT_CHANGE_UNAWARE) &&
-        (handle != GATT_SC_HDL)) {
-        return FALSE;
-    }
+  if ((attsCsfCb.attsCsfTable[connId - 1].csf & ATTS_CSF_ROBUST_CACHING) &&
+      (attsCsfCb.attsCsfTable[connId - 1].changeAwareState == ATTS_CLIENT_CHANGE_UNAWARE) &&
+      (handle != GATT_SC_HDL))
+  {
+    return FALSE;
+  }
 
-    return TRUE;
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -135,89 +143,102 @@ uint8_t attsCsfIsClientChangeAware(dmConnId_t connId, uint16_t handle)
 /*************************************************************************************************/
 uint8_t attsCsfActClientState(uint16_t handle, uint8_t opcode, uint8_t *pPacket)
 {
-    uint8_t err = ATT_SUCCESS;
-    attsCsfRec_t *pRec;
+  uint8_t err = ATT_SUCCESS;
+  attsCsfRec_t *pRec;
 
-    /* PDU which do not operate on att handles are handled agnostically of the client's state. */
-    if (opcode == ATT_PDU_MTU_REQ || opcode == ATT_PDU_VALUE_CNF) {
-        return err;
-    }
+  /* PDU which do not operate on att handles are handled agnostically of the client's state. */
+  if (opcode == ATT_PDU_MTU_REQ || opcode == ATT_PDU_VALUE_CNF)
+  {
+    return err;
+  }
 
-    pRec = &attsCsfCb.attsCsfTable[handle];
+  pRec = &attsCsfCb.attsCsfTable[handle];
 
-    /* If the client is change-unaware */
-    if (pRec->changeAwareState == ATTS_CLIENT_CHANGE_UNAWARE) {
-        /* If not a command */
-        if ((opcode & ATT_PDU_MASK_COMMAND) == 0) {
-            /* Note: there is no need to call back to the application here.  The application only
+  /* If the client is change-unaware */
+  if (pRec->changeAwareState == ATTS_CLIENT_CHANGE_UNAWARE)
+  {
+    /* If not a command */
+    if ((opcode & ATT_PDU_MASK_COMMAND) == 0)
+    {
+      /* Note: there is no need to call back to the application here.  The application only
        * needs to know when a transition to or from the change-aware state occurs.
        */
 
-            /* Move client change-aware state to pending */
-            pRec->changeAwareState = ATTS_CLIENT_CHANGE_PENDING_AWARE;
+      /* Move client change-aware state to pending */
+      pRec->changeAwareState = ATTS_CLIENT_CHANGE_PENDING_AWARE;
 
-            ATT_TRACE_INFO2("ConnId %d change aware state is %d", handle + 1,
-                            ATTS_CLIENT_CHANGE_PENDING_AWARE);
-        }
+      ATT_TRACE_INFO2("ConnId %d change aware state is %d", handle + 1,
+                      ATTS_CLIENT_CHANGE_PENDING_AWARE);
+    }
 
-        /* If this is a command or the Client has indicated Robust Caching, set an error so that
+    /* If this is a command or the Client has indicated Robust Caching, set an error so that
      * this command or request is not processed.
      */
-        if ((opcode & ATT_PDU_MASK_COMMAND) || (pRec->csf & ATTS_CSF_ROBUST_CACHING)) {
-            /* return a database out of sync error */
-            err = ATT_ERR_DATABASE_OUT_OF_SYNC;
-        }
-    } else if (pRec->changeAwareState == ATTS_CLIENT_CHANGE_PENDING_AWARE) {
-        /* If not a command */
-        if ((opcode & ATT_PDU_MASK_COMMAND) == 0) {
-            /* Move client change-aware state to aware */
-            pRec->changeAwareState = ATTS_CLIENT_CHANGE_AWARE;
-
-            ATT_TRACE_INFO2("ConnId %d change aware state is %d", handle + 1,
-                            ATTS_CLIENT_CHANGE_AWARE);
-
-            /* Callback to application to store updated awareness, if bonded. */
-            if (attsCsfCb.writeCback != NULL) {
-                attsCsfCb.writeCback(handle + 1, pRec->changeAwareState, &pRec->csf);
-            }
-        } else {
-            /* Return an error so that command is not processed. */
-            err = ATT_ERR_DATABASE_OUT_OF_SYNC;
-        }
+    if ((opcode & ATT_PDU_MASK_COMMAND) ||
+        (pRec->csf & ATTS_CSF_ROBUST_CACHING))
+    {
+      /* return a database out of sync error */
+      err = ATT_ERR_DATABASE_OUT_OF_SYNC;
     }
+  }
+  else if (pRec->changeAwareState == ATTS_CLIENT_CHANGE_PENDING_AWARE)
+  {
+    /* If not a command */
+    if ((opcode & ATT_PDU_MASK_COMMAND) == 0)
+    {
+      /* Move client change-aware state to aware */
+      pRec->changeAwareState = ATTS_CLIENT_CHANGE_AWARE;
 
-    /* If this is Read by Type request */
-    if (opcode == ATT_PDU_READ_TYPE_REQ) {
-        uint16_t uuid;
+      ATT_TRACE_INFO2("ConnId %d change aware state is %d", handle + 1, ATTS_CLIENT_CHANGE_AWARE);
 
-        /* Extract UUID: Skip L2C, ATT Header and 4 byte handle range */
-        BYTES_TO_UINT16(uuid, (pPacket + L2C_PAYLOAD_START + ATT_HDR_LEN + 4));
+      /* Callback to application to store updated awareness, if bonded. */
+      if (attsCsfCb.writeCback != NULL)
+      {
+        attsCsfCb.writeCback(handle + 1, pRec->changeAwareState, &pRec->csf);
+      }
+    }
+    else
+    {
+      /* Return an error so that command is not processed. */
+      err = ATT_ERR_DATABASE_OUT_OF_SYNC;
+    }
+  }
 
-        /* If this is a Read By Type Request of the Database Hash characteristic value */
-        if (uuid == ATT_UUID_DATABASE_HASH) {
-            err = ATT_SUCCESS;
+  /* If this is Read by Type request */
+  if (opcode == ATT_PDU_READ_TYPE_REQ)
+  {
+    uint16_t    uuid;
 
-            /* Reading the hash during a hash update causes the new hash to be returned and counts
+    /* Extract UUID: Skip L2C, ATT Header and 4 byte handle range */
+    BYTES_TO_UINT16(uuid, (pPacket + L2C_PAYLOAD_START + ATT_HDR_LEN + 4));
+
+    /* If this is a Read By Type Request of the Database Hash characteristic value */
+    if (uuid == ATT_UUID_DATABASE_HASH)
+    {
+      err = ATT_SUCCESS;
+
+      /* Reading the hash during a hash update causes the new hash to be returned and counts
        * towards the peer's progression towards a change-aware state.
        */
-            if (attsCsfCb.isHashUpdating) {
-                /* This read will not be processed until after the hash update completes, so this read
+      if (attsCsfCb.isHashUpdating)
+      {
+        /* This read will not be processed until after the hash update completes, so this read
         * request shall be counted as a move from change-unaware to chang-aware pending.
         */
-                pRec->changeAwareState = ATTS_CLIENT_CHANGE_AWARE_DB_READ_PENDING;
+        pRec->changeAwareState = ATTS_CLIENT_CHANGE_AWARE_DB_READ_PENDING;
 
-                ATT_TRACE_INFO2("ConnId %d change aware state is %d", handle + 1,
-                                ATTS_CLIENT_CHANGE_AWARE_DB_READ_PENDING);
-            }
-        }
+        ATT_TRACE_INFO2("ConnId %d change aware state is %d", handle + 1,
+                        ATTS_CLIENT_CHANGE_AWARE_DB_READ_PENDING);
+      }
     }
+  }
 
-    if (err == ATT_ERR_DATABASE_OUT_OF_SYNC) {
-        ATT_TRACE_INFO2("ConnId %d out of sync, PDU with opcode 0x%02x ignored!", handle + 1,
-                        opcode);
-    }
+  if (err == ATT_ERR_DATABASE_OUT_OF_SYNC)
+  {
+    ATT_TRACE_INFO2("ConnId %d out of sync, PDU with opcode 0x%02x ignored!", handle + 1, opcode);
+  }
 
-    return err;
+  return err;
 }
 
 /*************************************************************************************************/
@@ -236,20 +257,26 @@ uint8_t attsCsfActClientState(uint16_t handle, uint8_t opcode, uint8_t *pPacket)
 /*************************************************************************************************/
 void AttsCsfSetClientChangeAwareState(dmConnId_t connId, uint8_t state)
 {
-    if (connId == DM_CONN_ID_NONE) {
-        for (uint8_t i = 0; i < DM_CONN_MAX; i++) {
-            if (attsCsfCb.attsCsfTable[i].changeAwareState ==
-                ATTS_CLIENT_CHANGE_AWARE_DB_READ_PENDING) {
-                attsCsfCb.attsCsfTable[i].changeAwareState = ATTS_CLIENT_CHANGE_PENDING_AWARE;
-            } else {
-                attsCsfCb.attsCsfTable[i].changeAwareState = state;
-            }
-        }
-    } else {
-        attsCsfCb.attsCsfTable[connId - 1].changeAwareState = state;
-
-        ATT_TRACE_INFO2("ConnId %d change aware state is %d", connId, state);
+  if (connId == DM_CONN_ID_NONE)
+  {
+    for (uint8_t i = 0; i < DM_CONN_MAX; i++)
+    {
+      if (attsCsfCb.attsCsfTable[i].changeAwareState == ATTS_CLIENT_CHANGE_AWARE_DB_READ_PENDING)
+      {
+        attsCsfCb.attsCsfTable[i].changeAwareState = ATTS_CLIENT_CHANGE_PENDING_AWARE;
+      }
+      else
+      {
+        attsCsfCb.attsCsfTable[i].changeAwareState = state;
+      }
     }
+  }
+  else
+  {
+    attsCsfCb.attsCsfTable[connId - 1].changeAwareState = state;
+
+    ATT_TRACE_INFO2("ConnId %d change aware state is %d", connId, state);
+  }
 }
 
 /*************************************************************************************************/
@@ -266,13 +293,16 @@ void AttsCsfSetClientChangeAwareState(dmConnId_t connId, uint8_t state)
 /*************************************************************************************************/
 void AttsCsfConnOpen(dmConnId_t connId, uint8_t changeAwareState, uint8_t *pCsf)
 {
-    if (pCsf != NULL) {
-        attsCsfCb.attsCsfTable[connId - 1].changeAwareState = changeAwareState;
-        memcpy(&attsCsfCb.attsCsfTable[connId - 1].csf, pCsf, ATT_CSF_LEN);
-    } else {
-        /* Note: this set client to the change-aware state. */
-        memset(&attsCsfCb.attsCsfTable[connId - 1], 0, sizeof(attsCsfRec_t));
-    }
+  if (pCsf != NULL)
+  {
+    attsCsfCb.attsCsfTable[connId - 1].changeAwareState = changeAwareState;
+    memcpy(&attsCsfCb.attsCsfTable[connId - 1].csf, pCsf, ATT_CSF_LEN);
+  }
+  else
+  {
+    /* Note: this set client to the change-aware state. */
+    memset(&attsCsfCb.attsCsfTable[connId - 1], 0, sizeof(attsCsfRec_t));
+  }
 }
 
 /*************************************************************************************************/
@@ -286,7 +316,7 @@ void AttsCsfConnOpen(dmConnId_t connId, uint8_t changeAwareState, uint8_t *pCsf)
 /*************************************************************************************************/
 void AttsCsfRegister(attsCsfWriteCback_t writeCback)
 {
-    attsCsfCb.writeCback = writeCback;
+  attsCsfCb.writeCback = writeCback;
 }
 
 /*************************************************************************************************/
@@ -298,8 +328,8 @@ void AttsCsfRegister(attsCsfWriteCback_t writeCback)
 /*************************************************************************************************/
 void AttsCsfInit(void)
 {
-    attsCsfCb.isHashUpdating = FALSE;
-    attsCsfCb.writeCback = NULL;
+  attsCsfCb.isHashUpdating = FALSE;
+  attsCsfCb.writeCback = NULL;
 }
 
 /*************************************************************************************************/
@@ -317,35 +347,38 @@ void AttsCsfInit(void)
 /*************************************************************************************************/
 uint8_t AttsCsfWriteFeatures(dmConnId_t connId, uint16_t offset, uint16_t valueLen, uint8_t *pValue)
 {
-    attsCsfRec_t *pCsfRec = &attsCsfCb.attsCsfTable[connId - 1];
-    uint8_t newCsf;
+  attsCsfRec_t *pCsfRec = &attsCsfCb.attsCsfTable[connId - 1];
+  uint8_t      newCsf;
 
-    /* future parameter in case the client supported features characteristic becomes a multi-octet
+  /* future parameter in case the client supported features characteristic becomes a multi-octet
    * structure.
    */
-    (void)offset;
+  (void)offset;
 
-    if (valueLen > ATT_CSF_LEN) {
-        return ATT_ERR_LENGTH;
-    }
+  if (valueLen > ATT_CSF_LEN)
+  {
+    return ATT_ERR_LENGTH;
+  }
+  
+  newCsf = *pValue & ATTS_CSF_ALL_FEATURES;
 
-    newCsf = *pValue & ATTS_CSF_ALL_FEATURES;
+  /* A client cannot clear any bits it has set. */
+  if ((pCsfRec->csf > 0) && (newCsf == 0))
+  {
+    return ATT_ERR_VALUE_NOT_ALLOWED;
+  }
 
-    /* A client cannot clear any bits it has set. */
-    if ((pCsfRec->csf > 0) && (newCsf == 0)) {
-        return ATT_ERR_VALUE_NOT_ALLOWED;
-    }
+  pCsfRec->csf |= newCsf;
 
-    pCsfRec->csf |= newCsf;
+  ATT_TRACE_INFO2("connId %d updated csf to 0x%02x", connId, pCsfRec->csf);
 
-    ATT_TRACE_INFO2("connId %d updated csf to 0x%02x", connId, pCsfRec->csf);
+  /* Callback to application to store updated features, if bonded. */
+  if (attsCsfCb.writeCback != NULL)
+  {
+    attsCsfCb.writeCback(connId, pCsfRec->changeAwareState, &pCsfRec->csf);
+  }
 
-    /* Callback to application to store updated features, if bonded. */
-    if (attsCsfCb.writeCback != NULL) {
-        attsCsfCb.writeCback(connId, pCsfRec->changeAwareState, &pCsfRec->csf);
-    }
-
-    return ATT_SUCCESS;
+  return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -361,9 +394,10 @@ uint8_t AttsCsfWriteFeatures(dmConnId_t connId, uint16_t offset, uint16_t valueL
 /*************************************************************************************************/
 void AttsCsfGetFeatures(dmConnId_t connId, uint8_t *pCsfOut, uint8_t pCsfOutLen)
 {
-    if (pCsfOutLen <= ATT_CSF_LEN) {
-        memcpy(pCsfOut, &attsCsfCb.attsCsfTable[connId - 1].csf, pCsfOutLen);
-    }
+  if (pCsfOutLen <= ATT_CSF_LEN)
+  {
+    memcpy(pCsfOut, &attsCsfCb.attsCsfTable[connId - 1].csf, pCsfOutLen);
+  }
 }
 
 /*************************************************************************************************/
@@ -377,5 +411,5 @@ void AttsCsfGetFeatures(dmConnId_t connId, uint8_t *pCsfOut, uint8_t pCsfOutLen)
 /*************************************************************************************************/
 uint8_t AttsCsfGetClientChangeAwareState(dmConnId_t connId)
 {
-    return attsCsfCb.attsCsfTable[connId - 1].changeAwareState;
+  return attsCsfCb.attsCsfTable[connId - 1].changeAwareState;
 }

@@ -24,6 +24,7 @@
 #ifndef APP_CFG_H
 #define APP_CFG_H
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -55,7 +56,7 @@ extern "C" {
 #define APP_DB_HDL_LIST_LEN 21
 #endif
 
-/*! \} */ /* APP_FRAMEWORK_DB_API */
+/*! \} */    /* APP_FRAMEWORK_DB_API */
 
 /*! \addtogroup APP_FRAMEWORK_API
  * \{ */
@@ -67,7 +68,7 @@ extern "C" {
 
 /**@}*/
 
-/*! \} */ /*! APP_FRAMEWORK_API */
+/*! \} */    /*! APP_FRAMEWORK_API */
 
 #ifdef __cplusplus
 };

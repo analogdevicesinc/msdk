@@ -45,38 +45,35 @@
 #include "twi_master_config.h"
 
 /*lint -e415 -e845 -save "Out of bounds access" */
-#define TWI_SDA_STANDARD0_NODRIVE1()                                  \
-    do {                                                              \
-        NRF_GPIO->PIN_CNF[TWI_MASTER_CONFIG_DATA_PIN_NUMBER] =        \
-            (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) | \
-            (GPIO_PIN_CNF_DRIVE_S0D1 << GPIO_PIN_CNF_DRIVE_Pos) |     \
-            (GPIO_PIN_CNF_PULL_Pullup << GPIO_PIN_CNF_PULL_Pos) |     \
-            (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |  \
-            (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos);         \
-    } while (0) /*!< Configures SDA pin to Standard-0, No-drive 1 */
+#define TWI_SDA_STANDARD0_NODRIVE1() do { \
+        NRF_GPIO->PIN_CNF[TWI_MASTER_CONFIG_DATA_PIN_NUMBER] = (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) \
+        |(GPIO_PIN_CNF_DRIVE_S0D1 << GPIO_PIN_CNF_DRIVE_Pos)    \
+        |(GPIO_PIN_CNF_PULL_Pullup << GPIO_PIN_CNF_PULL_Pos)  \
+        |(GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) \
+        |(GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos);  \
+} while (0) /*!< Configures SDA pin to Standard-0, No-drive 1 */
 
-#define TWI_SCL_STANDARD0_NODRIVE1()                                  \
-    do {                                                              \
-        NRF_GPIO->PIN_CNF[TWI_MASTER_CONFIG_CLOCK_PIN_NUMBER] =       \
-            (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) | \
-            (GPIO_PIN_CNF_DRIVE_S0D1 << GPIO_PIN_CNF_DRIVE_Pos) |     \
-            (GPIO_PIN_CNF_PULL_Pullup << GPIO_PIN_CNF_PULL_Pos) |     \
-            (GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) |  \
-            (GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos);         \
-    } while (0) /*!< Configures SCL pin to Standard-0, No-drive 1 */
+
+#define TWI_SCL_STANDARD0_NODRIVE1() do { \
+        NRF_GPIO->PIN_CNF[TWI_MASTER_CONFIG_CLOCK_PIN_NUMBER] = (GPIO_PIN_CNF_SENSE_Disabled << GPIO_PIN_CNF_SENSE_Pos) \
+        |(GPIO_PIN_CNF_DRIVE_S0D1 << GPIO_PIN_CNF_DRIVE_Pos)    \
+        |(GPIO_PIN_CNF_PULL_Pullup << GPIO_PIN_CNF_PULL_Pos)  \
+        |(GPIO_PIN_CNF_INPUT_Connect << GPIO_PIN_CNF_INPUT_Pos) \
+        |(GPIO_PIN_CNF_DIR_Input << GPIO_PIN_CNF_DIR_Pos);  \
+} while (0) /*!< Configures SCL pin to Standard-0, No-drive 1 */
+
 
 /*lint -restore */
 
 #ifndef TWI_MASTER_TIMEOUT_COUNTER_LOAD_VALUE
-#define TWI_MASTER_TIMEOUT_COUNTER_LOAD_VALUE \
-    (0UL) //!< Unit is number of empty loops. Timeout for SMBus devices is 35 ms. Set to zero to disable slave timeout altogether.
+#define TWI_MASTER_TIMEOUT_COUNTER_LOAD_VALUE (0UL) //!< Unit is number of empty loops. Timeout for SMBus devices is 35 ms. Set to zero to disable slave timeout altogether.
 #endif
 
 static bool twi_master_clear_bus(void);
 static bool twi_master_issue_startcondition(void);
 static bool twi_master_issue_stopcondition(void);
 static bool twi_master_clock_byte(uint_fast8_t databyte);
-static bool twi_master_clock_byte_in(uint8_t *databyte, bool ack);
+static bool twi_master_clock_byte_in(uint8_t * databyte, bool ack);
 static bool twi_master_wait_while_scl_low(void);
 
 bool twi_master_init(void)
@@ -96,35 +93,43 @@ bool twi_master_init(void)
     return twi_master_clear_bus();
 }
 
-bool twi_master_transfer(uint8_t address, uint8_t *data, uint8_t data_length,
-                         bool issue_stop_condition)
+bool twi_master_transfer(uint8_t address, uint8_t * data, uint8_t data_length, bool issue_stop_condition)
 {
     bool transfer_succeeded = true;
 
     transfer_succeeded &= twi_master_issue_startcondition();
     transfer_succeeded &= twi_master_clock_byte(address);
 
-    if (address & TWI_READ_BIT) {
+    if (address & TWI_READ_BIT)
+    {
         /* Transfer direction is from Slave to Master */
-        while (data_length-- && transfer_succeeded) {
+        while (data_length-- && transfer_succeeded)
+        {
             // To indicate to slave that we've finished transferring last data byte
             // we need to NACK the last transfer.
-            if (data_length == 0) {
+            if (data_length == 0)
+            {
                 transfer_succeeded &= twi_master_clock_byte_in(data, (bool)false);
-            } else {
+            }
+            else
+            {
                 transfer_succeeded &= twi_master_clock_byte_in(data, (bool)true);
             }
             data++;
         }
-    } else {
+    }
+    else
+    {
         /* Transfer direction is from Master to Slave */
-        while (data_length-- && transfer_succeeded) {
+        while (data_length-- && transfer_succeeded)
+        {
             transfer_succeeded &= twi_master_clock_byte(*data);
             data++;
         }
     }
 
-    if (issue_stop_condition || !transfer_succeeded) {
+    if (issue_stop_condition || !transfer_succeeded)
+    {
         transfer_succeeded &= twi_master_issue_stopcondition();
     }
 
@@ -146,23 +151,31 @@ static bool twi_master_clear_bus(void)
     TWI_SCL_HIGH();
     TWI_DELAY();
 
-    if (TWI_SDA_READ() == 1 && TWI_SCL_READ() == 1) {
+
+    if (TWI_SDA_READ() == 1 && TWI_SCL_READ() == 1)
+    {
         bus_clear = true;
-    } else if (TWI_SCL_READ() == 1) {
+    }
+    else if (TWI_SCL_READ() == 1)
+    {
         bus_clear = false;
         // Clock max 18 pulses worst case scenario(9 for master to send the rest of command and 9 for slave to respond) to SCL line and wait for SDA come high
-        for (uint_fast8_t i = 18; i--;) {
+        for (uint_fast8_t i = 18; i--;)
+        {
             TWI_SCL_LOW();
             TWI_DELAY();
             TWI_SCL_HIGH();
             TWI_DELAY();
 
-            if (TWI_SDA_READ() == 1) {
+            if (TWI_SDA_READ() == 1)
+            {
                 bus_clear = true;
                 break;
             }
         }
-    } else {
+    }
+    else
+    {
         bus_clear = false;
     }
 
@@ -228,7 +241,8 @@ static bool twi_master_issue_startcondition(void)
     // Make sure both SDA and SCL are high before pulling SDA low.
     TWI_SDA_HIGH();
     TWI_DELAY();
-    if (!twi_master_wait_while_scl_low()) {
+    if (!twi_master_wait_while_scl_low())
+    {
         return false;
     }
 
@@ -300,7 +314,8 @@ static bool twi_master_issue_stopcondition(void)
 
     TWI_SDA_LOW();
     TWI_DELAY();
-    if (!twi_master_wait_while_scl_low()) {
+    if (!twi_master_wait_while_scl_low())
+    {
         return false;
     }
 
@@ -332,17 +347,22 @@ static bool twi_master_clock_byte(uint_fast8_t databyte)
     TWI_SDA_OUTPUT();
 
     // MSB first
-    for (uint_fast8_t i = 0x80; i != 0; i >>= 1) {
+    for (uint_fast8_t i = 0x80; i != 0; i >>= 1)
+    {
         TWI_SCL_LOW();
         TWI_DELAY();
 
-        if (databyte & i) {
+        if (databyte & i)
+        {
             TWI_SDA_HIGH();
-        } else {
+        }
+        else
+        {
             TWI_SDA_LOW();
         }
 
-        if (!twi_master_wait_while_scl_low()) {
+        if (!twi_master_wait_while_scl_low())
+        {
             transfer_succeeded = false; // Timeout
             break;
         }
@@ -378,6 +398,7 @@ static bool twi_master_clock_byte(uint_fast8_t databyte)
     return transfer_succeeded;
 }
 
+
 /**
  * @brief Function for clocking one data byte in and sends ACK/NACK bit.
  *
@@ -393,8 +414,8 @@ static bool twi_master_clock_byte(uint_fast8_t databyte)
  */
 static bool twi_master_clock_byte_in(uint8_t *databyte, bool ack)
 {
-    uint_fast8_t byte_read = 0;
-    bool transfer_succeeded = true;
+    uint_fast8_t byte_read          = 0;
+    bool         transfer_succeeded = true;
 
     /** @snippet [TWI SW master read] */
     // Make sure SDA is an input
@@ -403,15 +424,20 @@ static bool twi_master_clock_byte_in(uint8_t *databyte, bool ack)
     // SCL state is guaranteed to be high here
 
     // MSB first
-    for (uint_fast8_t i = 0x80; i != 0; i >>= 1) {
-        if (!twi_master_wait_while_scl_low()) {
+    for (uint_fast8_t i = 0x80; i != 0; i >>= 1)
+    {
+        if (!twi_master_wait_while_scl_low())
+        {
             transfer_succeeded = false;
             break;
         }
 
-        if (TWI_SDA_READ()) {
+        if (TWI_SDA_READ())
+        {
             byte_read |= i;
-        } else {
+        }
+        else
+        {
             // No need to do anything
         }
 
@@ -428,9 +454,12 @@ static bool twi_master_clock_byte_in(uint8_t *databyte, bool ack)
     // Send ACK bit
 
     // SDA high == NACK, SDA low == ACK
-    if (ack) {
+    if (ack)
+    {
         TWI_SDA_LOW();
-    } else {
+    }
+    else
+    {
         TWI_SDA_HIGH();
     }
 
@@ -439,7 +468,8 @@ static bool twi_master_clock_byte_in(uint8_t *databyte, bool ack)
 
     // Drive SCL high to start ACK/NACK bit transfer
     // Wait until SCL is high, or timeout occurs
-    if (!twi_master_wait_while_scl_low()) {
+    if (!twi_master_wait_while_scl_low())
+    {
         transfer_succeeded = false; // Timeout
     }
 
@@ -449,6 +479,7 @@ static bool twi_master_clock_byte_in(uint8_t *databyte, bool ack)
 
     return transfer_succeeded;
 }
+
 
 /**
  * @brief Function for pulling SCL high and waits until it is high or timeout occurs.
@@ -469,11 +500,13 @@ static bool twi_master_wait_while_scl_low(void)
     TWI_SCL_HIGH();
     TWI_DELAY();
 
-    while (TWI_SCL_READ() == 0) {
+    while (TWI_SCL_READ() == 0)
+    {
         // If SCL is low, one of the slaves is busy and we must wait
 
 #if TWI_MASTER_TIMEOUT_COUNTER_LOAD_VALUE != 0
-        if (timeout_counter-- == 0) {
+        if (timeout_counter-- == 0)
+        {
             // If timeout_detected, return false
             return false;
         }

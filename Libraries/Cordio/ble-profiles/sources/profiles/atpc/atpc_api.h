@@ -39,14 +39,15 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Enumeration of handle indexes of characteristics to be discovered. */
-enum {
-    ATPC_CTE_ENABLE_HDL, /*!< \brief Constant Tone Extension enable. */
-    ATPC_CTE_MIN_LEN_HDL, /*!< \brief Constant Tone Extension minimum length. */
-    ATPC_CTE_ADV_MIN_TX_CNT_HDL, /*!< \brief Constant Tone Extension minimum transmit count. */
-    ATPC_CTE_ADV_TX_DURATION_HDL, /*!< \brief Constant Tone Extension transmit duration. */
-    ATPC_CTE_ADV_INTERVAL_HDL, /*!< \brief Constant Tone Extension interval. */
-    ATPC_CTE_ADV_EXT_PHY_HDL, /*!< \brief Constant Tone Extension PHY. */
-    ATPC_CTE_HDL_LIST_LEN, /*!< \brief Handle list length. */
+enum
+{
+  ATPC_CTE_ENABLE_HDL,             /*!< \brief Constant Tone Extension enable. */
+  ATPC_CTE_MIN_LEN_HDL,            /*!< \brief Constant Tone Extension minimum length. */
+  ATPC_CTE_ADV_MIN_TX_CNT_HDL,     /*!< \brief Constant Tone Extension minimum transmit count. */
+  ATPC_CTE_ADV_TX_DURATION_HDL,    /*!< \brief Constant Tone Extension transmit duration. */
+  ATPC_CTE_ADV_INTERVAL_HDL,       /*!< \brief Constant Tone Extension interval. */
+  ATPC_CTE_ADV_EXT_PHY_HDL,        /*!< \brief Constant Tone Extension PHY. */
+  ATPC_CTE_HDL_LIST_LEN,           /*!< \brief Handle list length. */
 };
 
 /**************************************************************************************************
@@ -196,7 +197,7 @@ void AtpcCteAclDisableReq(dmConnId_t connId, uint16_t handle);
 /*************************************************************************************************/
 void AtpcProcMsg(wsfMsgHdr_t *pEvt);
 
-/*! \} */ /* ASSET_TRACKING_PROFILE_CLIENT */
+/*! \} */    /* ASSET_TRACKING_PROFILE_CLIENT */
 
 #ifdef __cplusplus
 };

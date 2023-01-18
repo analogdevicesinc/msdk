@@ -33,7 +33,8 @@
 #include "wsf_timer.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -41,59 +42,63 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Light HSL Hue Server Model State Update event structure */
-typedef struct mmdlLightHslHueSrStateUpdate_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elemId; /*!< Element identifier */
-    uint16_t state; /*!< Updated state */
+typedef struct mmdlLightHslHueSrStateUpdate_tag
+{
+  wsfMsgHdr_t                  hdr;              /*!< WSF message header */
+  meshElementId_t              elemId;           /*!< Element identifier */
+  uint16_t                     state;            /*!< Updated state */
 } mmdlLightHslHueSrStateUpdate_t;
 
 /*! \brief Light HSL Hue Server Model event callback parameters structure */
-typedef union mmdlLightHslHueSrEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlLightHslHueSrStateUpdate_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlLightHslHueSrEvent_tag
+{
+  wsfMsgHdr_t                     hdr;           /*!< WSF message header */
+  mmdlLightHslHueSrStateUpdate_t  statusEvent;   /*!< State updated event. Used for
                                                   *   ::MMDL_LIGHT_HSL_HUE_SR_STATE_UPDATE_EVENT.
                                                   */
 } mmdlLightHslHueSrEvent_t;
 
 /*! \brief Light HSL Hue stored state definition */
-typedef struct mmdlLightHslHuesStoredState_tag {
-    uint16_t presentHue; /*!< Present state */
-    uint16_t targetHue; /*!< Target state */
-} mmdlLightHslHueStoredState_t;
+typedef struct mmdlLightHslHuesStoredState_tag
+{
+  uint16_t                     presentHue;       /*!< Present state */
+  uint16_t                     targetHue;        /*!< Target state */
+}mmdlLightHslHueStoredState_t;
 
 /*! \brief Model Light HSL Hue Server descriptor definition */
-typedef struct mmdlLightHslHueSrDesc_tag {
-    mmdlLightHslHueStoredState_t *pStoredState; /*!< Pointer to the structure that stores the Light
+typedef struct mmdlLightHslHueSrDesc_tag
+{
+  mmdlLightHslHueStoredState_t *pStoredState;    /*!< Pointer to the structure that stores the Light
                                                   *   HSL state and scenes
                                                   */
-    wsfTimer_t transitionTimer; /*!< WSF Timer for delay and state transition */
-    wsfTimer_t msgRcvdTimer; /*!< Timer to manage received logically group messages */
-    uint32_t remainingTimeMs; /*!< Time remaining until the current state is
+  wsfTimer_t                   transitionTimer;  /*!< WSF Timer for delay and state transition */
+  wsfTimer_t                   msgRcvdTimer;     /*!< Timer to manage received logically group messages */
+  uint32_t                     remainingTimeMs;  /*!< Time remaining until the current state is
                                                   *   replaced with the target state. If set to 0,
                                                   *   the target state is ignored. Unit is 1 ms.
                                                   */
-    int16_t transitionStep; /*!< Transition state update step */
-    uint16_t steps; /*!< The number of transition steps */
-    uint8_t delay5Ms; /*!< Delay until the transition to the new state
+  int16_t                      transitionStep;   /*!< Transition state update step */
+  uint16_t                     steps;            /*!< The number of transition steps */
+  uint8_t                      delay5Ms;         /*!< Delay until the transition to the new state
                                                   *   begins. Unit is 5 ms.
                                                   */
-    uint8_t transactionId; /*!< Transaction Identifier used to logically group a
+  uint8_t                      transactionId;    /*!< Transaction Identifier used to logically group a
                                                   *   series of messages.
                                                   */
-    meshAddress_t srcAddr; /*!< Source address of the logically grouped series of
+  meshAddress_t                srcAddr;          /*!< Source address of the logically grouped series of
                                                   *   messages.
                                                   */
-    bool_t ackPending; /*!< TRUE if an ACK is pending for the last received
+  bool_t                       ackPending;       /*!< TRUE if an ACK is pending for the last received
                                                   *   message.
                                                   */
-    bool_t ackForUnicast; /*!< TRUE if the delayed message was received as a
+  bool_t                       ackForUnicast;    /*!< TRUE if the delayed message was received as a
                                                   *   unicast, FALSE otherwise.
                                                   */
-    uint16_t ackAppKeyIndex; /*!< AppKeyIndex used for the last received message. */
-    meshElementId_t mainElementId; /*!< Element Id of the Main element that uses
+  uint16_t                     ackAppKeyIndex;   /*!< AppKeyIndex used for the last received message. */
+  meshElementId_t              mainElementId;    /*!< Element Id of the Main element that uses
                                                   *   this Hue instance.
                                                   */
-    mmdlStateUpdateSrc_t updateSource; /*!< State update source. Cached for transitions.
+  mmdlStateUpdateSrc_t         updateSource;     /*!< State update source. Cached for transitions.
                                                   */
 } mmdlLightHslHueSrDesc_t;
 

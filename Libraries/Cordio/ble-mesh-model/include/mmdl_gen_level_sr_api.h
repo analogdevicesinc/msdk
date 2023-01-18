@@ -33,7 +33,8 @@
 #include "wsf_timer.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -41,52 +42,57 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Number of stored states (Present + Target) */
-#define MMDL_GEN_LEVEL_STATE_CNT 2
+#define MMDL_GEN_LEVEL_STATE_CNT             2
 
 /*! \brief The Generic Move Set timer update interval in milliseconds */
-#define MMDL_GEN_LEVEL_MOVE_UPDATE_INTERVAL 100
+#define MMDL_GEN_LEVEL_MOVE_UPDATE_INTERVAL  100
 
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
 /*! \brief Model Level Server Status parameters structure */
-typedef struct mmdlGenLevelStatusParam_tag {
-    mmdlGenLevelState_t presentLevel; /*!< Present Level State */
-    mmdlGenLevelState_t targetLevel; /*!< Target Level State */
-    uint8_t remainingTime; /*!< Remaining time */
+typedef struct mmdlGenLevelStatusParam_tag
+{
+  mmdlGenLevelState_t   presentLevel;       /*!< Present Level State */
+  mmdlGenLevelState_t   targetLevel;        /*!< Target Level State */
+  uint8_t               remainingTime;      /*!< Remaining time */
 } mmdlGenLevelStatusParam_t;
 
 /*! \brief Generic Level Server Model State Update event structure */
-typedef struct mmdlGenLevelSrStateUpdate_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elemId; /*!< Element identifier */
-    mmdlStateUpdateSrc_t stateUpdateSource; /*!< Updated state source */
-    mmdlGenLevelState_t state; /*!< Updated state */
+typedef struct mmdlGenLevelSrStateUpdate_tag
+{
+  wsfMsgHdr_t           hdr;                /*!< WSF message header */
+  meshElementId_t       elemId;             /*!< Element identifier */
+  mmdlStateUpdateSrc_t  stateUpdateSource;  /*!< Updated state source */
+  mmdlGenLevelState_t   state;              /*!< Updated state */
 } mmdlGenLevelSrStateUpdate_t;
 
 /*! \brief Generic Level Server Model Current State event structure */
-typedef struct mmdlGenLevelSrCurrentState_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elemId; /*!< Element identifier */
-    mmdlGenLevelState_t state; /*!< Updated state */
+typedef struct mmdlGenLevelSrCurrentState_tag
+{
+  wsfMsgHdr_t           hdr;                /*!< WSF message header */
+  meshElementId_t       elemId;             /*!< Element identifier */
+  mmdlGenLevelState_t   state;              /*!< Updated state */
 } mmdlGenLevelSrCurrentState_t;
 
 /*! \brief Generic Level Server Model event callback parameters structure */
-typedef union mmdlGenLevelSrEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlGenLevelSrStateUpdate_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlGenLevelSrEvent_tag
+{
+  wsfMsgHdr_t                  hdr;               /*!< WSF message header */
+  mmdlGenLevelSrStateUpdate_t  statusEvent;       /*!< State updated event. Used for
                                                    *   ::MMDL_GEN_LEVEL_SR_STATE_UPDATE_EVENT.
                                                    */
-    mmdlGenLevelSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get request
+  mmdlGenLevelSrCurrentState_t currentStateEvent; /*!< Current state event. Sent after a Get request
                                                    *   from the upper layer. Used for
                                                    *   ::MMDL_GEN_LEVEL_SR_CURRENT_STATE_EVENT.
                                                    */
 } mmdlGenLevelSrEvent_t;
 
 /*! \brief Model Generic Level Server descriptor definition */
-typedef struct mmdlGenLevelSrDesc_tag {
-    mmdlGenLevelState_t *pStoredStates; /*!< Pointer to the structure that stores
+typedef struct mmdlGenLevelSrDesc_tag
+{
+  mmdlGenLevelState_t   *pStoredStates;    /*!< Pointer to the structure that stores
                                             *   current state and scene data. First
                                             *   value is always the current one.
                                             *   Second value is the target state.
@@ -96,42 +102,42 @@ typedef struct mmdlGenLevelSrDesc_tag {
                                             *   Structure will store :MMDL_NUM_OF_SCENES +
                                             *   MMDL_GEN_LEVEL_STATE_CNT states.
                                             */
-    wsfTimer_t transitionTimer; /*!< WSF Timer for delay and state transition */
-    wsfTimer_t msgRcvdTimer; /*!< Timer to manage received logically group
+  wsfTimer_t            transitionTimer;   /*!< WSF Timer for delay and state transition */
+  wsfTimer_t            msgRcvdTimer;      /*!< Timer to manage received logically group
                                             * messages.
                                             */
-    uint32_t remainingTimeMs; /*!< Time remaining until the current state is
+  uint32_t              remainingTimeMs;   /*!< Time remaining until the current state is
                                             *   replaced with the target state. If set to 0,
                                             *   the target state is ignored. Unit is 1 ms.
                                             */
-    int16_t transitionStep; /*!< Transition state update step */
-    uint16_t steps; /*!< The number of transition steps */
-    uint8_t delay5Ms; /*!< Delay until the transition to the new state
+  int16_t               transitionStep;    /*!< Transition state update step */
+  uint16_t              steps;             /*!< The number of transition steps */
+  uint8_t               delay5Ms;          /*!< Delay until the transition to the new state
                                             *   begins. Unit is 5 ms.
                                             */
-    bool_t isMoveSet; /*!< Flag to show if server is processing
+  bool_t                isMoveSet;         /*!< Flag to show if server is processing
                                             *   Move Set message.
                                             */
-    mmdlGenLevelState_t deltaLevelStep; /*!< Delta Level step value to calculate move speed.
+  mmdlGenLevelState_t   deltaLevelStep;    /*!< Delta Level step value to calculate move speed.
                                             *   value is only necessary if isMoveSet == TRUE.
                                             */
-    uint8_t transactionId; /*!< Transaction Identifier used to logically group a
+  uint8_t               transactionId;     /*!< Transaction Identifier used to logically group a
                                             *   series of messages.
                                             */
-    meshAddress_t srcAddr; /*!< Source address of the logically grouped series of
+  meshAddress_t         srcAddr;           /*!< Source address of the logically grouped series of
                                             *   messages.
                                             */
-    bool_t ackPending; /*!< TRUE if an ACK is pending for the last received
+  bool_t                ackPending;        /*!< TRUE if an ACK is pending for the last received
                                             *   message.
                                             */
-    bool_t ackForUnicast; /*!< TRUE if the last message was received as a unicast,
+  bool_t                ackForUnicast;     /*!< TRUE if the last message was received as a unicast,
                                             *   FALSE otherwise.
                                             */
-    uint16_t ackAppKeyIndex; /*!< AppKeyIndex used for the last received message.
+  uint16_t              ackAppKeyIndex;    /*!< AppKeyIndex used for the last received message.
                                             */
-    mmdlGenLevelState_t initialState; /*!< Initial state within a transaction.
+  mmdlGenLevelState_t   initialState;      /*!< Initial state within a transaction.
                                             */
-    mmdlStateUpdateSrc_t updateSource; /*!< State update source. Cached for transitions.
+  mmdlStateUpdateSrc_t  updateSource;      /*!< State update source. Cached for transitions.
                                             */
 } mmdlGenLevelSrDesc_t;
 

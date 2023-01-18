@@ -31,7 +31,7 @@
 #include "mesh_api.h"
 #include "mprvs_api.h"
 
-#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST == 1))
+#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST==1))
 #include "mesh_test_api.h"
 #include "mesh_error_codes.h"
 #endif
@@ -41,15 +41,16 @@
 **************************************************************************************************/
 
 /*! Extracts the PDU type from the first byte of the Proxy PDU */
-#define EXTRACT_PDU_TYPE(byte) ((byte)&0x3F)
+#define EXTRACT_PDU_TYPE(byte)    ((byte) & 0x3F)
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /* Control block */
-static struct {
-    uint8_t dataOutCccIdx; /* Data Out CCCD index */
+static struct
+{
+  uint8_t       dataOutCccIdx;              /* Data Out CCCD index */
 } mprvsCb;
 
 /**************************************************************************************************
@@ -66,7 +67,10 @@ static struct {
  *  \return None.
  */
 /*************************************************************************************************/
-static void mprvsConnOpen(dmEvt_t *pMsg) {}
+static void mprvsConnOpen(dmEvt_t *pMsg)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -80,8 +84,8 @@ static void mprvsConnOpen(dmEvt_t *pMsg) {}
 /*************************************************************************************************/
 static void mprvsConnClose(dmEvt_t *pMsg)
 {
-    /* Signal the Mesh Stack the connection ID is not available. */
-    MeshRemoveGattProxyConn((meshGattProxyConnId_t)pMsg->connClose.hdr.param);
+  /* Signal the Mesh Stack the connection ID is not available. */
+  MeshRemoveGattProxyConn((meshGattProxyConnId_t)pMsg->connClose.hdr.param);
 }
 
 /*************************************************************************************************/
@@ -96,10 +100,10 @@ static void mprvsConnClose(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void mprvsHandleValueCnf(attEvt_t *pMsg)
 {
-    dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
+  dmConnId_t connId = (dmConnId_t) pMsg->hdr.param;
 
-    /* Signal GATT interface is ready to transmit packets */
-    MeshSignalGattProxyIfRdy(connId);
+  /* Signal GATT interface is ready to transmit packets */
+  MeshSignalGattProxyIfRdy(connId);
 }
 
 /*************************************************************************************************/
@@ -114,14 +118,16 @@ static void mprvsHandleValueCnf(attEvt_t *pMsg)
 /*************************************************************************************************/
 static void mprvsHandleCccdStateChangeInd(attsCccEvt_t *pMsg)
 {
-    /* Handle Mesh Proxy Service Data out CCC */
-    if (pMsg->idx == mprvsCb.dataOutCccIdx) {
-        if (pMsg->value == ATT_CLIENT_CFG_NOTIFY) {
-            /* Signal the Mesh Stack a new interface on the connection ID is available. */
-            MeshAddGattProxyConn((meshGattProxyConnId_t)pMsg->hdr.param,
-                                 AttGetMtu((dmConnId_t)pMsg->hdr.param) - ATT_VALUE_NTF_LEN);
-        }
+  /* Handle Mesh Proxy Service Data out CCC */
+  if (pMsg->idx == mprvsCb.dataOutCccIdx)
+  {
+    if (pMsg->value == ATT_CLIENT_CFG_NOTIFY)
+    {
+      /* Signal the Mesh Stack a new interface on the connection ID is available. */
+      MeshAddGattProxyConn((meshGattProxyConnId_t)pMsg->hdr.param,
+                           AttGetMtu((dmConnId_t) pMsg->hdr.param) - ATT_VALUE_NTF_LEN);
     }
+  }
 }
 
 /**************************************************************************************************
@@ -141,26 +147,27 @@ static void mprvsHandleCccdStateChangeInd(attsCccEvt_t *pMsg)
 /*************************************************************************************************/
 void MprvsProcMsg(wsfMsgHdr_t *pMsg)
 {
-    switch (pMsg->event) {
+  switch(pMsg->event)
+  {
     case DM_CONN_OPEN_IND:
-        mprvsConnOpen((dmEvt_t *)pMsg);
-        break;
+      mprvsConnOpen((dmEvt_t *) pMsg);
+      break;
 
     case DM_CONN_CLOSE_IND:
-        mprvsConnClose((dmEvt_t *)pMsg);
-        break;
+      mprvsConnClose((dmEvt_t *) pMsg);
+      break;
 
     case ATTS_HANDLE_VALUE_CNF:
-        mprvsHandleValueCnf((attEvt_t *)pMsg);
-        break;
+      mprvsHandleValueCnf((attEvt_t *) pMsg);
+      break;
 
     case ATTS_CCC_STATE_IND:
-        mprvsHandleCccdStateChangeInd((attsCccEvt_t *)pMsg);
-        break;
+      mprvsHandleCccdStateChangeInd((attsCccEvt_t *) pMsg);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -173,29 +180,32 @@ void MprvsProcMsg(wsfMsgHdr_t *pMsg)
  */
 /*************************************************************************************************/
 uint8_t MprvsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                        uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
+                      uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-    if (EXTRACT_PDU_TYPE(pValue[0]) == MESH_GATT_PROXY_PDU_TYPE_PROVISIONING) {
-        /* Received GATT Write on Data In. Send to Mesh Stack. */
-        MeshProcessGattProxyPdu((meshGattProxyConnId_t)connId, pValue, len);
-    } else {
-#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST == 1))
-        meshTestMprvsWriteInvalidRcvdInd_t mprvsWriteInvalidRcvdInd;
+  if (EXTRACT_PDU_TYPE(pValue[0]) == MESH_GATT_PROXY_PDU_TYPE_PROVISIONING)
+  {
+    /* Received GATT Write on Data In. Send to Mesh Stack. */
+    MeshProcessGattProxyPdu((meshGattProxyConnId_t)connId, pValue, len);
+  }
+  else
+  {
+#if ((defined MESH_ENABLE_TEST) && (MESH_ENABLE_TEST==1))
+    meshTestMprvsWriteInvalidRcvdInd_t mprvsWriteInvalidRcvdInd;
 
-        mprvsWriteInvalidRcvdInd.hdr.event = MESH_TEST_EVENT;
-        mprvsWriteInvalidRcvdInd.hdr.param = MESH_TEST_MPRVS_WRITE_INVALID_RCVD_IND;
-        mprvsWriteInvalidRcvdInd.hdr.status = MESH_SUCCESS;
-        mprvsWriteInvalidRcvdInd.handle = handle;
-        mprvsWriteInvalidRcvdInd.pValue = pValue;
-        mprvsWriteInvalidRcvdInd.len = len;
+    mprvsWriteInvalidRcvdInd.hdr.event = MESH_TEST_EVENT;
+    mprvsWriteInvalidRcvdInd.hdr.param = MESH_TEST_MPRVS_WRITE_INVALID_RCVD_IND;
+    mprvsWriteInvalidRcvdInd.hdr.status = MESH_SUCCESS;
+    mprvsWriteInvalidRcvdInd.handle = handle;
+    mprvsWriteInvalidRcvdInd.pValue = pValue;
+    mprvsWriteInvalidRcvdInd.len = len;
 
-        meshTestCb.testCback((meshTestEvt_t *)&mprvsWriteInvalidRcvdInd);
+    meshTestCb.testCback((meshTestEvt_t *)&mprvsWriteInvalidRcvdInd);
 #endif
 
-        return ATT_ERR_INVALID_PDU;
-    }
+    return ATT_ERR_INVALID_PDU;
+  }
 
-    return ATT_SUCCESS;
+  return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -210,7 +220,7 @@ uint8_t MprvsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, u
 /*************************************************************************************************/
 void MprvsSetCccIdx(uint8_t dataOutCccIdx)
 {
-    mprvsCb.dataOutCccIdx = dataOutCccIdx;
+  mprvsCb.dataOutCccIdx = dataOutCccIdx;
 }
 
 /*************************************************************************************************/
@@ -224,21 +234,23 @@ void MprvsSetCccIdx(uint8_t dataOutCccIdx)
 /*************************************************************************************************/
 void MprvsSendDataOut(meshGattProxyPduSendEvt_t *pEvt)
 {
-    dmConnId_t connId = (dmConnId_t)pEvt->connId;
-    uint8_t *pMsg;
+  dmConnId_t connId = (dmConnId_t)pEvt->connId;
+  uint8_t *pMsg;
 
-    if (AttsCccEnabled(connId, mprvsCb.dataOutCccIdx)) {
-        /* Allocate ATT message. */
-        pMsg = AttMsgAlloc(pEvt->proxyPduLen + sizeof(uint8_t), ATT_PDU_VALUE_NTF);
+  if (AttsCccEnabled(connId, mprvsCb.dataOutCccIdx))
+  {
+    /* Allocate ATT message. */
+    pMsg = AttMsgAlloc(pEvt->proxyPduLen + sizeof(uint8_t), ATT_PDU_VALUE_NTF);
 
-        if (pMsg != NULL) {
-            /* Copy in Proxy PDU. */
-            *pMsg = pEvt->proxyHdr;
-            memcpy(&pMsg[1], pEvt->pProxyPdu, pEvt->proxyPduLen);
+    if (pMsg != NULL)
+    {
+      /* Copy in Proxy PDU. */
+      *pMsg = pEvt->proxyHdr;
+      memcpy(&pMsg[1], pEvt->pProxyPdu, pEvt->proxyPduLen);
 
-            /* Send notification using the local buffer. */
-            AttsHandleValueNtfZeroCpy(connId, MPRVS_DOUT_HDL, pEvt->proxyPduLen + sizeof(uint8_t),
-                                      pMsg);
-        }
+      /* Send notification using the local buffer. */
+      AttsHandleValueNtfZeroCpy(connId, MPRVS_DOUT_HDL, pEvt->proxyPduLen + sizeof(uint8_t),
+                                pMsg);
     }
+  }
 }

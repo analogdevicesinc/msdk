@@ -38,16 +38,16 @@
 /*************************************************************************************************/
 void LhciIsoHandlerInit(wsfHandlerId_t handlerId)
 {
-    ChciTrSetCbacks(CHCI_TR_PROT_BLE, lhciRecv, lhciSendComplete, lhciService);
-    ChciTrSetSendHwErrorCback(lhciSendHwError);
+  ChciTrSetCbacks(CHCI_TR_PROT_BLE, lhciRecv, lhciSendComplete, lhciService);
+  ChciTrSetSendHwErrorCback(lhciSendHwError);
 
-    memset(&lhciPersistCb, 0, sizeof(lhciPersistCb));
-    lhciPersistCb.handlerId = handlerId;
-    memset(&lhciCb, 0, sizeof(lhciCb));
+  memset(&lhciPersistCb, 0, sizeof(lhciPersistCb));
+  lhciPersistCb.handlerId = handlerId;
+  memset(&lhciCb, 0, sizeof(lhciCb));
 
-    LlEvtRegister(lhciLlEvtHandler);
+  LlEvtRegister(lhciLlEvtHandler);
 
-    lhciReset();
+  lhciReset();
 }
 
 /*************************************************************************************************/
@@ -60,10 +60,10 @@ void LhciIsoHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void LhciIsoInit(void)
 {
-    LlIsoRegister(lhciIsoSendComplete, lhciIsoRecvPending);
+  LlIsoRegister(lhciIsoSendComplete, lhciIsoRecvPending);
 
-    lhciServiceIso = lhciRecvIso;
+  lhciServiceIso = lhciRecvIso;
 
-    lhciCmdTbl[LHCI_MSG_ISO] = lhciIsoDecodeCmdPkt;
-    lhciEvtTbl[LHCI_MSG_ISO] = lhciIsoEncodeEvtPkt;
+  lhciCmdTbl[LHCI_MSG_ISO] = lhciIsoDecodeCmdPkt;
+  lhciEvtTbl[LHCI_MSG_ISO] = lhciIsoEncodeEvtPkt;
 }

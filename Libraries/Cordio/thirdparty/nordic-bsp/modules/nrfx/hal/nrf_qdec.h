@@ -58,105 +58,85 @@ extern "C" {
  *        function call to specify that a LED signal shall not be use by the QDEC and
  *        connected to a physical pin.
  */
-#define NRF_QDEC_LED_NOT_CONNECTED 0xFFFFFFFF
+#define NRF_QDEC_LED_NOT_CONNECTED  0xFFFFFFFF
 
 /** @brief QDEC tasks. */
-typedef enum {
-    NRF_QDEC_TASK_START =
-        offsetof(NRF_QDEC_Type, TASKS_START), /**< Starting the quadrature decoder. */
-    NRF_QDEC_TASK_STOP =
-        offsetof(NRF_QDEC_Type, TASKS_STOP), /**< Stopping the quadrature decoder. */
-    NRF_QDEC_TASK_READCLRACC = offsetof(
-        NRF_QDEC_Type, TASKS_READCLRACC) /**< Reading and clearing ACC and ACCDBL registers. */
+typedef enum
+{
+    NRF_QDEC_TASK_START      = offsetof(NRF_QDEC_Type, TASKS_START),     /**< Starting the quadrature decoder. */
+    NRF_QDEC_TASK_STOP       = offsetof(NRF_QDEC_Type, TASKS_STOP),      /**< Stopping the quadrature decoder. */
+    NRF_QDEC_TASK_READCLRACC = offsetof(NRF_QDEC_Type, TASKS_READCLRACC) /**< Reading and clearing ACC and ACCDBL registers. */
 } nrf_qdec_task_t;
 
 /** @brief QDEC events. */
-typedef enum {
-    NRF_QDEC_EVENT_SAMPLERDY =
-        offsetof(NRF_QDEC_Type, EVENTS_SAMPLERDY), /**< Event generated for every new sample.  */
-    NRF_QDEC_EVENT_REPORTRDY =
-        offsetof(NRF_QDEC_Type, EVENTS_REPORTRDY), /**< Event generated for every new report.  */
-    NRF_QDEC_EVENT_ACCOF = offsetof(
-        NRF_QDEC_Type, EVENTS_ACCOF) /**< Event generated for every accumulator overflow. */
+typedef enum
+{
+    NRF_QDEC_EVENT_SAMPLERDY = offsetof(NRF_QDEC_Type, EVENTS_SAMPLERDY), /**< Event generated for every new sample.  */
+    NRF_QDEC_EVENT_REPORTRDY = offsetof(NRF_QDEC_Type, EVENTS_REPORTRDY), /**< Event generated for every new report.  */
+    NRF_QDEC_EVENT_ACCOF     = offsetof(NRF_QDEC_Type, EVENTS_ACCOF)      /**< Event generated for every accumulator overflow. */
 } nrf_qdec_event_t;
 
 /** @brief QDEC shortcuts. */
-typedef enum {
-    NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK =
-        QDEC_SHORTS_REPORTRDY_READCLRACC_Msk, /**< Shortcut between REPORTRDY event and READCLRACC task.  */
-    NRF_QDEC_SHORT_SAMPLERDY_STOP_MASK =
-        QDEC_SHORTS_SAMPLERDY_STOP_Msk /**< Shortcut between SAMPLERDY event and STOP task.  */
+typedef enum
+{
+    NRF_QDEC_SHORT_REPORTRDY_READCLRACC_MASK = QDEC_SHORTS_REPORTRDY_READCLRACC_Msk, /**< Shortcut between REPORTRDY event and READCLRACC task.  */
+    NRF_QDEC_SHORT_SAMPLERDY_STOP_MASK       = QDEC_SHORTS_SAMPLERDY_STOP_Msk        /**< Shortcut between SAMPLERDY event and STOP task.  */
 } nrf_qdec_short_mask_t;
 
 /** @brief QDEC interrupts. */
-typedef enum {
-    NRF_QDEC_INT_SAMPLERDY_MASK =
-        QDEC_INTENSET_SAMPLERDY_Msk, /**< Mask for enabling or disabling an interrupt on SAMPLERDY event.  */
-    NRF_QDEC_INT_REPORTRDY_MASK =
-        QDEC_INTENSET_REPORTRDY_Msk, /**< Mask for enabling or disabling an interrupt on REPORTRDY event.  */
-    NRF_QDEC_INT_ACCOF_MASK =
-        QDEC_INTENSET_ACCOF_Msk /**< Mask for enabling or disabling an interrupt on ACCOF event.  */
+typedef enum
+{
+    NRF_QDEC_INT_SAMPLERDY_MASK = QDEC_INTENSET_SAMPLERDY_Msk, /**< Mask for enabling or disabling an interrupt on SAMPLERDY event.  */
+    NRF_QDEC_INT_REPORTRDY_MASK = QDEC_INTENSET_REPORTRDY_Msk, /**< Mask for enabling or disabling an interrupt on REPORTRDY event.  */
+    NRF_QDEC_INT_ACCOF_MASK     = QDEC_INTENSET_ACCOF_Msk      /**< Mask for enabling or disabling an interrupt on ACCOF event.  */
 } nrf_qdec_int_mask_t;
 
 /** @brief States of the enable bit. */
-typedef enum {
-    NRF_QDEC_DISABLE =
-        QDEC_ENABLE_ENABLE_Disabled, /**< Mask for disabling the QDEC periperal. When disabled, the QDEC decoder pins are not active.  */
-    NRF_QDEC_ENABLE =
-        QDEC_ENABLE_ENABLE_Enabled /**< Mask for enabling the QDEC periperal. When enabled, the QDEC pins are active. */
+typedef enum
+{
+    NRF_QDEC_DISABLE = QDEC_ENABLE_ENABLE_Disabled, /**< Mask for disabling the QDEC periperal. When disabled, the QDEC decoder pins are not active.  */
+    NRF_QDEC_ENABLE  = QDEC_ENABLE_ENABLE_Enabled   /**< Mask for enabling the QDEC periperal. When enabled, the QDEC pins are active. */
 } nrf_qdec_enable_t;
 
 /** @brief States of the debounce filter enable bit. */
-typedef enum {
-    NRF_QDEC_DBFEN_DISABLE =
-        QDEC_DBFEN_DBFEN_Disabled, /**< Mask for disabling the debounce filter.  */
-    NRF_QDEC_DBFEN_ENABLE = QDEC_DBFEN_DBFEN_Enabled /**< Mask for enabling the debounce filter.  */
+typedef enum
+{
+    NRF_QDEC_DBFEN_DISABLE = QDEC_DBFEN_DBFEN_Disabled, /**< Mask for disabling the debounce filter.  */
+    NRF_QDEC_DBFEN_ENABLE  = QDEC_DBFEN_DBFEN_Enabled   /**< Mask for enabling the debounce filter.  */
 } nrf_qdec_dbfen_t;
 
 /** @brief Active LED polarity. */
-typedef enum {
-    NRF_QDEC_LEPOL_ACTIVE_LOW =
-        QDEC_LEDPOL_LEDPOL_ActiveLow, /**< QDEC LED active on output pin low.  */
-    NRF_QDEC_LEPOL_ACTIVE_HIGH =
-        QDEC_LEDPOL_LEDPOL_ActiveHigh /**< QDEC LED active on output pin high.  */
+typedef enum
+{
+    NRF_QDEC_LEPOL_ACTIVE_LOW  = QDEC_LEDPOL_LEDPOL_ActiveLow, /**< QDEC LED active on output pin low.  */
+    NRF_QDEC_LEPOL_ACTIVE_HIGH = QDEC_LEDPOL_LEDPOL_ActiveHigh /**< QDEC LED active on output pin high.  */
 } nrf_qdec_ledpol_t;
 
 /** @brief Available sampling periods. */
-typedef enum {
-    NRF_QDEC_SAMPLEPER_128us =
-        QDEC_SAMPLEPER_SAMPLEPER_128us, /**< QDEC sampling period 128 microseconds.  */
-    NRF_QDEC_SAMPLEPER_256us =
-        QDEC_SAMPLEPER_SAMPLEPER_256us, /**< QDEC sampling period 256 microseconds.  */
-    NRF_QDEC_SAMPLEPER_512us =
-        QDEC_SAMPLEPER_SAMPLEPER_512us, /**< QDEC sampling period 512 microseconds.  */
-    NRF_QDEC_SAMPLEPER_1024us =
-        QDEC_SAMPLEPER_SAMPLEPER_1024us, /**< QDEC sampling period 1024 microseconds.  */
-    NRF_QDEC_SAMPLEPER_2048us =
-        QDEC_SAMPLEPER_SAMPLEPER_2048us, /**< QDEC sampling period 2048 microseconds.  */
-    NRF_QDEC_SAMPLEPER_4096us =
-        QDEC_SAMPLEPER_SAMPLEPER_4096us, /**< QDEC sampling period 4096 microseconds.  */
-    NRF_QDEC_SAMPLEPER_8192us =
-        QDEC_SAMPLEPER_SAMPLEPER_8192us, /**< QDEC sampling period 8192 microseconds.  */
-    NRF_QDEC_SAMPLEPER_16384us =
-        QDEC_SAMPLEPER_SAMPLEPER_16384us /**< QDEC sampling period 16384 microseconds.  */
+typedef enum
+{
+    NRF_QDEC_SAMPLEPER_128us   = QDEC_SAMPLEPER_SAMPLEPER_128us,  /**< QDEC sampling period 128 microseconds.  */
+    NRF_QDEC_SAMPLEPER_256us   = QDEC_SAMPLEPER_SAMPLEPER_256us,  /**< QDEC sampling period 256 microseconds.  */
+    NRF_QDEC_SAMPLEPER_512us   = QDEC_SAMPLEPER_SAMPLEPER_512us,  /**< QDEC sampling period 512 microseconds.  */
+    NRF_QDEC_SAMPLEPER_1024us  = QDEC_SAMPLEPER_SAMPLEPER_1024us, /**< QDEC sampling period 1024 microseconds.  */
+    NRF_QDEC_SAMPLEPER_2048us  = QDEC_SAMPLEPER_SAMPLEPER_2048us, /**< QDEC sampling period 2048 microseconds.  */
+    NRF_QDEC_SAMPLEPER_4096us  = QDEC_SAMPLEPER_SAMPLEPER_4096us, /**< QDEC sampling period 4096 microseconds.  */
+    NRF_QDEC_SAMPLEPER_8192us  = QDEC_SAMPLEPER_SAMPLEPER_8192us, /**< QDEC sampling period 8192 microseconds.  */
+    NRF_QDEC_SAMPLEPER_16384us = QDEC_SAMPLEPER_SAMPLEPER_16384us /**< QDEC sampling period 16384 microseconds.  */
 } nrf_qdec_sampleper_t;
 
 /** @brief Available report periods. */
-typedef enum {
-    NRF_QDEC_REPORTPER_10 = QDEC_REPORTPER_REPORTPER_10Smpl, /**< QDEC report period 10 samples.  */
-    NRF_QDEC_REPORTPER_40 = QDEC_REPORTPER_REPORTPER_40Smpl, /**< QDEC report period 40 samples.  */
-    NRF_QDEC_REPORTPER_80 = QDEC_REPORTPER_REPORTPER_80Smpl, /**< QDEC report period 80 samples.  */
-    NRF_QDEC_REPORTPER_120 =
-        QDEC_REPORTPER_REPORTPER_120Smpl, /**< QDEC report period 120 samples. */
-    NRF_QDEC_REPORTPER_160 =
-        QDEC_REPORTPER_REPORTPER_160Smpl, /**< QDEC report period 160 samples. */
-    NRF_QDEC_REPORTPER_200 =
-        QDEC_REPORTPER_REPORTPER_200Smpl, /**< QDEC report period 200 samples. */
-    NRF_QDEC_REPORTPER_240 =
-        QDEC_REPORTPER_REPORTPER_240Smpl, /**< QDEC report period 240 samples. */
-    NRF_QDEC_REPORTPER_280 =
-        QDEC_REPORTPER_REPORTPER_280Smpl, /**< QDEC report period 280 samples. */
-    NRF_QDEC_REPORTPER_DISABLED /**< QDEC reporting disabled.        */
+typedef enum
+{
+    NRF_QDEC_REPORTPER_10  = QDEC_REPORTPER_REPORTPER_10Smpl,  /**< QDEC report period 10 samples.  */
+    NRF_QDEC_REPORTPER_40  = QDEC_REPORTPER_REPORTPER_40Smpl,  /**< QDEC report period 40 samples.  */
+    NRF_QDEC_REPORTPER_80  = QDEC_REPORTPER_REPORTPER_80Smpl,  /**< QDEC report period 80 samples.  */
+    NRF_QDEC_REPORTPER_120 = QDEC_REPORTPER_REPORTPER_120Smpl, /**< QDEC report period 120 samples. */
+    NRF_QDEC_REPORTPER_160 = QDEC_REPORTPER_REPORTPER_160Smpl, /**< QDEC report period 160 samples. */
+    NRF_QDEC_REPORTPER_200 = QDEC_REPORTPER_REPORTPER_200Smpl, /**< QDEC report period 200 samples. */
+    NRF_QDEC_REPORTPER_240 = QDEC_REPORTPER_REPORTPER_240Smpl, /**< QDEC report period 240 samples. */
+    NRF_QDEC_REPORTPER_280 = QDEC_REPORTPER_REPORTPER_280Smpl, /**< QDEC report period 280 samples. */
+    NRF_QDEC_REPORTPER_DISABLED                                /**< QDEC reporting disabled.        */
 } nrf_qdec_reportper_t;
 
 /** @brief Function for enabling QDEC. */
@@ -216,7 +196,7 @@ __STATIC_INLINE uint32_t nrf_qdec_dbfen_get(void);
  * @param[in] pselb   Pin number.
  * @param[in] pselled Pin number.
  */
-__STATIC_INLINE void nrf_qdec_pio_assign(uint32_t psela, uint32_t pselb, uint32_t pselled);
+__STATIC_INLINE void nrf_qdec_pio_assign( uint32_t psela, uint32_t pselb, uint32_t pselled);
 
 /**
  * @brief Function for setting the specified QDEC task.
@@ -232,7 +212,7 @@ __STATIC_INLINE void nrf_qdec_task_trigger(nrf_qdec_task_t task);
  *
  * @return Address of the specified QDEC task.
  */
-__STATIC_INLINE uint32_t *nrf_qdec_task_address_get(nrf_qdec_task_t task);
+__STATIC_INLINE uint32_t * nrf_qdec_task_address_get(nrf_qdec_task_t task);
 
 /**
  * @brief Function for clearing the specified QDEC event.
@@ -257,7 +237,7 @@ __STATIC_INLINE uint32_t nrf_qdec_event_check(nrf_qdec_event_t event);
  *
  * @return Address of the specified QDEC event.
  */
-__STATIC_INLINE uint32_t *nrf_qdec_event_address_get(nrf_qdec_event_t event);
+__STATIC_INLINE uint32_t * nrf_qdec_event_address_get(nrf_qdec_event_t event);
 
 /**
  * @brief Function for setting QDEC shortcuts.
@@ -384,6 +364,7 @@ __STATIC_INLINE void nrf_qdec_ledpol_set(nrf_qdec_ledpol_t pol);
  */
 __STATIC_INLINE uint32_t nrf_qdec_ledpol_get(void);
 
+
 #ifndef SUPPRESS_INLINE_IMPLEMENTATION
 
 __STATIC_INLINE void nrf_qdec_enable(void)
@@ -431,7 +412,7 @@ __STATIC_INLINE uint32_t nrf_qdec_dbfen_get(void)
     return NRF_QDEC->DBFEN;
 }
 
-__STATIC_INLINE void nrf_qdec_pio_assign(uint32_t psela, uint32_t pselb, uint32_t pselled)
+__STATIC_INLINE void nrf_qdec_pio_assign( uint32_t psela, uint32_t pselb, uint32_t pselled)
 {
 #if defined(QDEC_PSEL_A_CONNECT_Pos)
     NRF_QDEC->PSEL.A = psela;
@@ -454,17 +435,17 @@ __STATIC_INLINE void nrf_qdec_pio_assign(uint32_t psela, uint32_t pselb, uint32_
 
 __STATIC_INLINE void nrf_qdec_task_trigger(nrf_qdec_task_t task)
 {
-    *((volatile uint32_t *)((uint8_t *)NRF_QDEC + (uint32_t)task)) = 1;
+    *( (volatile uint32_t *)( (uint8_t *)NRF_QDEC + (uint32_t)task) ) = 1;
 }
 
-__STATIC_INLINE uint32_t *nrf_qdec_task_address_get(nrf_qdec_task_t task)
+__STATIC_INLINE uint32_t * nrf_qdec_task_address_get(nrf_qdec_task_t task)
 {
-    return (uint32_t *)((uint8_t *)NRF_QDEC + (uint32_t)task);
+    return (uint32_t *)( (uint8_t *)NRF_QDEC + (uint32_t)task);
 }
 
 __STATIC_INLINE void nrf_qdec_event_clear(nrf_qdec_event_t event)
 {
-    *((volatile uint32_t *)((uint8_t *)NRF_QDEC + (uint32_t)event)) = 0;
+    *( (volatile uint32_t *)( (uint8_t *)NRF_QDEC + (uint32_t)event) ) = 0;
 #if __CORTEX_M == 0x04
     volatile uint32_t dummy = *((volatile uint32_t *)((uint8_t *)NRF_QDEC + event));
     (void)dummy;
@@ -473,12 +454,12 @@ __STATIC_INLINE void nrf_qdec_event_clear(nrf_qdec_event_t event)
 
 __STATIC_INLINE uint32_t nrf_qdec_event_check(nrf_qdec_event_t event)
 {
-    return *(volatile uint32_t *)((uint8_t *)NRF_QDEC + (uint32_t)event);
+    return *(volatile uint32_t *)( (uint8_t *)NRF_QDEC + (uint32_t)event);
 }
 
-__STATIC_INLINE uint32_t *nrf_qdec_event_address_get(nrf_qdec_event_t event)
+__STATIC_INLINE uint32_t * nrf_qdec_event_address_get(nrf_qdec_event_t event)
 {
-    return (uint32_t *)((uint8_t *)NRF_QDEC + (uint32_t)event);
+    return (uint32_t *)( (uint8_t *)NRF_QDEC + (uint32_t)event);
 }
 
 __STATIC_INLINE void nrf_qdec_shorts_enable(uint32_t mask)

@@ -57,12 +57,14 @@
 extern "C" {
 #endif
 
+
 /**@brief   Global settings.
  *
  * @note Using this variable is not thread-safe.
  *
  */
 extern nrf_dfu_settings_t s_dfu_settings;
+
 
 /**@brief   Function for writing DFU settings to flash.
  *
@@ -73,6 +75,7 @@ extern nrf_dfu_settings_t s_dfu_settings;
  */
 ret_code_t nrf_dfu_settings_write(nrf_dfu_flash_callback_t callback);
 
+
 /**@brief   Function for backing up the settings.
  *
  * This function copies the contents of the settings page (in flash) to a separate page (in flash).
@@ -81,6 +84,7 @@ ret_code_t nrf_dfu_settings_write(nrf_dfu_flash_callback_t callback);
  * @param[in]   callback    Pointer to a function that is called after completing the write operation.
  */
 void nrf_dfu_settings_backup(nrf_dfu_flash_callback_t callback);
+
 
 /**@brief   Function for writing DFU settings to flash and to backup.
  *
@@ -93,6 +97,7 @@ void nrf_dfu_settings_backup(nrf_dfu_flash_callback_t callback);
  */
 ret_code_t nrf_dfu_settings_write_and_backup(nrf_dfu_flash_callback_t callback);
 
+
 /**@brief   Function for initializing the DFU settings structure.
  *
  * Initializes the RAM structure from the flash contents.
@@ -103,12 +108,14 @@ ret_code_t nrf_dfu_settings_write_and_backup(nrf_dfu_flash_callback_t callback);
  */
 void nrf_dfu_settings_reinit(void);
 
+
 /**@brief   Function for initializing the DFU settings module.
  *
  * @retval  NRF_SUCCESS         If the initialization was successful.
  * @retval  NRF_ERROR_INTERNAL  If a flash error occurred.
  */
 ret_code_t nrf_dfu_settings_init(bool sd_irq_initialized);
+
 
 #if defined(NRF_DFU_TRANSPORT_BLE) && NRF_DFU_TRANSPORT_BLE
 /** @brief Function for storing peer data received through an SVCI call in DFU settings.
@@ -125,7 +132,8 @@ ret_code_t nrf_dfu_settings_init(bool sd_irq_initialized);
  * @retval  NRF_ERROR_NULL  p_data was NULL.
  * @retval  Any other error code reported by SoftDevice API calls.
  */
-ret_code_t nrf_dfu_settings_peer_data_write(nrf_dfu_peer_data_t *p_data);
+ret_code_t nrf_dfu_settings_peer_data_write(nrf_dfu_peer_data_t * p_data);
+
 
 /** @brief Function for copying peer data from DFU settings to RAM.
  *
@@ -134,13 +142,15 @@ ret_code_t nrf_dfu_settings_peer_data_write(nrf_dfu_peer_data_t *p_data);
  * @retval  NRF_SUCCESS     Peer data was successfully copied.
  * @retval  NRF_ERROR_NULL  p_data was NULL.
  */
-ret_code_t nrf_dfu_settings_peer_data_copy(nrf_dfu_peer_data_t *p_data);
+ret_code_t nrf_dfu_settings_peer_data_copy(nrf_dfu_peer_data_t * p_data);
+
 
 /** @brief Function for validating peer data in DFU settings.
  *
  * @retval  True if peer data is validated by CRC, false if not.
  */
 bool nrf_dfu_settings_peer_data_is_valid(void);
+
 
 /** @brief Function for storing an advertisement name received through an SVCI call in DFU settings.
  *
@@ -155,7 +165,8 @@ bool nrf_dfu_settings_peer_data_is_valid(void);
  * @retval  NRF_ERROR_NULL  p_adv_name was NULL.
  * @retval  Any other error code reported by SoftDevice API calls.
  */
-ret_code_t nrf_dfu_settings_adv_name_write(nrf_dfu_adv_name_t *p_adv_name);
+ret_code_t nrf_dfu_settings_adv_name_write(nrf_dfu_adv_name_t * p_adv_name);
+
 
 /** @brief Function for copying the advertisement name from DFU settings to RAM.
  *
@@ -164,7 +175,8 @@ ret_code_t nrf_dfu_settings_adv_name_write(nrf_dfu_adv_name_t *p_adv_name);
  * @retval  NRF_SUCCESS     Advertisement name was successfully copied.
  * @retval  NRF_ERROR_NULL  p_adv_name was NULL.
  */
-ret_code_t nrf_dfu_settings_adv_name_copy(nrf_dfu_adv_name_t *p_adv_name);
+ret_code_t nrf_dfu_settings_adv_name_copy(nrf_dfu_adv_name_t * p_adv_name);
+
 
 /** @brief Function for validating advertisement data in DFU settings.
  *
@@ -183,6 +195,7 @@ bool nrf_dfu_settings_adv_name_is_valid(void);
  * @retval  Any other error code reported by nrf_dfu_flash
  */
 ret_code_t nrf_dfu_settings_additional_erase(void);
+
 
 #ifdef __cplusplus
 }

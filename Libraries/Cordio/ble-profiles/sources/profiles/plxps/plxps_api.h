@@ -38,8 +38,9 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Configurable parameters */
-typedef struct {
-    wsfTimerTicks_t period; /*!< \brief Continuous Measurement timer expiration period in ms */
+typedef struct
+{
+  wsfTimerTicks_t     period;     /*!< \brief Continuous Measurement timer expiration period in ms */
 } plxpsCfg_t;
 
 /*! \brief Pulse Oximeter continuous measurement structure */
@@ -99,8 +100,8 @@ void PlxpsBtn(dmConnId_t connId, uint8_t btn);
  *  \return ATT status.
  */
 /*************************************************************************************************/
-uint8_t PlxpsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                        uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
+uint8_t PlxpsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation,
+                        uint16_t offset, uint16_t len, uint8_t *pValue, attsAttr_t *pAttr);
 
 /*************************************************************************************************/
 /*!
@@ -175,7 +176,7 @@ void plxpsSendSpotCheckMeas(dmConnId_t connId, plxpScm_t *pMeas);
 /*************************************************************************************************/
 void plxpsSendContinuousMeas(dmConnId_t connId, plxpCm_t *pMeas);
 
-/*! \} */ /* PULSE_OXIMETER_PROFILE */
+/*! \} */    /* PULSE_OXIMETER_PROFILE */
 
 #ifdef __cplusplus
 };

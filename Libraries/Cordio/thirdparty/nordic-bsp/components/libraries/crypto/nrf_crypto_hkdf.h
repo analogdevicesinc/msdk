@@ -55,6 +55,7 @@
  * including the backend configured for HMAC in @ref sdk_config.
  */
 
+
 #include <stdint.h>
 #include "sdk_common.h"
 #include "nrf_crypto_hmac.h"
@@ -65,13 +66,16 @@
 extern "C" {
 #endif
 
+
 /**
  * @brief Enumeration of HKDF modes.
  */
-typedef enum {
+typedef enum
+{
     NRF_CRYPTO_HKDF_EXTRACT_AND_EXPAND, //!< HKDF Extract and expand mode (normal).
-    NRF_CRYPTO_HKDF_EXPAND_ONLY //!< HKDF Expand only mode.
+    NRF_CRYPTO_HKDF_EXPAND_ONLY         //!< HKDF Expand only mode.
 } nrf_crypto_hkdf_mode_t;
+
 
 /**
  * @brief Integrated HKDF calculation function
@@ -115,13 +119,18 @@ typedef enum {
  *                                          nrf_crypto backend was busy. Please rerun the
  *                                          cryptographic routine at a later time. CC310 only.
  */
-ret_code_t nrf_crypto_hkdf_calculate(nrf_crypto_hmac_context_t *const p_context,
-                                     nrf_crypto_hmac_info_t const *p_info,
-                                     uint8_t *const p_output_key, size_t *const p_output_key_size,
-                                     uint8_t const *const p_input_key, size_t input_key_size,
-                                     uint8_t const *p_salt, size_t salt_size,
-                                     uint8_t const *const p_ainfo, size_t ainfo_size,
-                                     nrf_crypto_hkdf_mode_t mode);
+ret_code_t nrf_crypto_hkdf_calculate(nrf_crypto_hmac_context_t      * const p_context,
+                                     nrf_crypto_hmac_info_t         const * p_info,
+                                     uint8_t                        * const p_output_key,
+                                     size_t                         * const p_output_key_size,
+                                     uint8_t                  const * const p_input_key,
+                                     size_t                                 input_key_size,
+                                     uint8_t                        const * p_salt,
+                                     size_t                                 salt_size,
+                                     uint8_t                  const * const p_ainfo,
+                                     size_t                                 ainfo_size,
+                                     nrf_crypto_hkdf_mode_t                 mode);
+
 
 #ifdef __cplusplus
 }

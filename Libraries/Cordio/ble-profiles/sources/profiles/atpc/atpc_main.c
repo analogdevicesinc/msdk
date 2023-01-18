@@ -36,51 +36,78 @@
 **************************************************************************************************/
 
 /*! Asset Tracking Profile Client connection control block. */
-typedef struct {
-    uint16_t enableHandle; /*! CTE enable attribute handle. */
-    uint8_t length; /*! Min CTE length. */
-    uint16_t interval; /*! CTE interval. */
-    bool_t numAntenna; /*! Number of antenna and len of pAntennaIds in bytes. */
-    uint8_t *pAntennaIds; /*! Array containing identifiers of antenna for this connection. */
+typedef struct
+{
+  uint16_t enableHandle;              /*! CTE enable attribute handle. */
+  uint8_t  length;                    /*! Min CTE length. */
+  uint16_t interval;                  /*! CTE interval. */
+  bool_t   numAntenna;                /*! Number of antenna and len of pAntennaIds in bytes. */
+  uint8_t  *pAntennaIds;              /*! Array containing identifiers of antenna for this connection. */
 } atpcConnCb_t;
 
 /*! Asset Tracking Profile Server control block. */
-typedef struct {
-    atpcConnCb_t connCb[DM_CONN_MAX]; /*! Connection control block. */
-    uint8_t switchSampleRates; /*! Supported Switching Sampling Rates. */
-    uint8_t switchPatternMaxLen; /*! Max Length of Switching Pattern. */
-    uint8_t numAntennae; /*! Number of Antennae. */
-    uint8_t cteMaxLen; /*! Max CTE Length. */
+typedef struct
+{
+  atpcConnCb_t connCb[DM_CONN_MAX];   /*! Connection control block. */
+  uint8_t      switchSampleRates;     /*! Supported Switching Sampling Rates. */
+  uint8_t      switchPatternMaxLen;   /*! Max Length of Switching Pattern. */
+  uint8_t      numAntennae;           /*! Number of Antennae. */
+  uint8_t      cteMaxLen;             /*! Max CTE Length. */
 } atpcCb_t;
 
 static atpcCb_t atpcCb;
 
 /*! Constant Tone Extension enable. */
-static const attcDiscChar_t atpcCteEnable = { attCteEnChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t atpcCteEnable =
+{
+  attCteEnChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! Constant Tone Extension minimum length. */
-static const attcDiscChar_t atpcCteMinLen = { attCteMinLenChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t atpcCteMinLen =
+{
+  attCteMinLenChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! Constant Tone Extension minimum transmit count. */
-static const attcDiscChar_t atpcCteTxCnt = { attCteTxCntChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t atpcCteTxCnt =
+{
+  attCteTxCntChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! Constant Tone Extension transmit duration. */
-static const attcDiscChar_t atpcCteDurationc = { attCteTxDurChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t atpcCteDurationc =
+{
+  attCteTxDurChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! Constant Tone Extension interval. */
-static const attcDiscChar_t atpcCteInterval = { attCteIntChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t atpcCteInterval =
+{
+  attCteIntChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! Constant Tone Extension PHY. */
-static const attcDiscChar_t atpcCtePhy = { attCtePhyChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t atpcCtePhy =
+{
+  attCtePhyChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! List of characteristics to be discovered; order matches handle index enumeration. */
-static const attcDiscChar_t *atpcCteDiscCharList[] = {
-    &atpcCteEnable, /*! Constant Tone Extension enable. */
-    &atpcCteMinLen, /*! Constant Tone Extension minimum length. */
-    &atpcCteTxCnt, /*! Constant Tone Extension minimum transmit count. */
-    &atpcCteDurationc, /*! Constant Tone Extension transmit duration. */
-    &atpcCteInterval, /*! Constant Tone Extension interval. */
-    &atpcCtePhy, /*! Constant Tone Extension PHY. */
+static const attcDiscChar_t *atpcCteDiscCharList[] =
+{
+  &atpcCteEnable,                   /*! Constant Tone Extension enable. */
+  &atpcCteMinLen,                   /*! Constant Tone Extension minimum length. */
+  &atpcCteTxCnt,                    /*! Constant Tone Extension minimum transmit count. */
+  &atpcCteDurationc,                /*! Constant Tone Extension transmit duration. */
+  &atpcCteInterval,                 /*! Constant Tone Extension interval. */
+  &atpcCtePhy,                      /*! Constant Tone Extension PHY. */
 };
 
 /*! sanity check:  make sure handle list length matches characteristic list length. */
@@ -97,27 +124,27 @@ WSF_CT_ASSERT(ATPC_CTE_HDL_LIST_LEN == ((sizeof(atpcCteDiscCharList) / sizeof(at
 /*************************************************************************************************/
 static void atpcProcWriteRsp(attEvt_t *pEvt)
 {
-    dmConnId_t connId = (dmConnId_t)pEvt->hdr.param;
+  dmConnId_t connId = (dmConnId_t) pEvt->hdr.param;
 
-    if ((pEvt->hdr.status == ATT_SUCCESS) &&
-        (pEvt->handle == atpcCb.connCb[connId - 1].enableHandle)) {
-        atpcConnCb_t *pCcb = &atpcCb.connCb[connId - 1];
+  if ((pEvt->hdr.status == ATT_SUCCESS) && (pEvt->handle == atpcCb.connCb[connId-1].enableHandle))
+  {
+    atpcConnCb_t *pCcb = &atpcCb.connCb[connId-1];
 
-        switch (DmConnCteGetReqState(connId)) {
-        case DM_CONN_CTE_STATE_IDLE:
-            DmConnCteRxSampleStart(connId, HCI_CTE_SLOT_DURATION_2_US, pCcb->numAntenna,
-                                   pCcb->pAntennaIds);
-            break;
+    switch (DmConnCteGetReqState(connId))
+    {
+      case DM_CONN_CTE_STATE_IDLE:
+        DmConnCteRxSampleStart(connId, HCI_CTE_SLOT_DURATION_2_US, pCcb->numAntenna, pCcb->pAntennaIds);
+        break;
 
-        case DM_CONN_CTE_STATE_INITIATING:
-            DmConnCteRxSampleStop(connId);
-            break;
+      case DM_CONN_CTE_STATE_INITIATING:
+        DmConnCteRxSampleStop(connId);
+        break;
 
-        default:
-            APP_TRACE_WARN0("ATPC CTE enable response in unexpected state.");
-            break;
-        }
+      default:
+        APP_TRACE_WARN0("ATPC CTE enable response in unexpected state.");
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -135,8 +162,8 @@ static void atpcProcWriteRsp(attEvt_t *pEvt)
 /*************************************************************************************************/
 void AtpcCteDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attCteSvcUuid, ATPC_CTE_HDL_LIST_LEN,
-                       (attcDiscChar_t **)atpcCteDiscCharList, pHdlList);
+  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attCteSvcUuid,
+                     ATPC_CTE_HDL_LIST_LEN, (attcDiscChar_t **) atpcCteDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -152,9 +179,9 @@ void AtpcCteDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 void AtpcCteWriteEnable(dmConnId_t connId, uint16_t handle, uint8_t enable)
 {
-    WSF_ASSERT(handle != ATT_HANDLE_NONE);
+  WSF_ASSERT(handle != ATT_HANDLE_NONE);
 
-    AttcWriteReq(connId, handle, sizeof(uint8_t), &enable);
+  AttcWriteReq(connId, handle, sizeof(uint8_t), &enable);
 }
 
 /*************************************************************************************************/
@@ -170,9 +197,9 @@ void AtpcCteWriteEnable(dmConnId_t connId, uint16_t handle, uint8_t enable)
 /*************************************************************************************************/
 void AtpcCteWriteMinLen(dmConnId_t connId, uint16_t handle, uint8_t minLen)
 {
-    WSF_ASSERT(handle != ATT_HANDLE_NONE);
+  WSF_ASSERT(handle != ATT_HANDLE_NONE);
 
-    AttcWriteReq(connId, handle, sizeof(uint8_t), &minLen);
+  AttcWriteReq(connId, handle, sizeof(uint8_t), &minLen);
 }
 
 /*************************************************************************************************/
@@ -188,9 +215,9 @@ void AtpcCteWriteMinLen(dmConnId_t connId, uint16_t handle, uint8_t minLen)
 /*************************************************************************************************/
 void AtpcCteWriteMinTxCount(dmConnId_t connId, uint16_t handle, uint8_t txCount)
 {
-    WSF_ASSERT(handle != ATT_HANDLE_NONE);
+  WSF_ASSERT(handle != ATT_HANDLE_NONE);
 
-    AttcWriteReq(connId, handle, sizeof(uint8_t), &txCount);
+  AttcWriteReq(connId, handle, sizeof(uint8_t), &txCount);
 }
 
 /*************************************************************************************************/
@@ -206,9 +233,9 @@ void AtpcCteWriteMinTxCount(dmConnId_t connId, uint16_t handle, uint8_t txCount)
 /*************************************************************************************************/
 void AtpcCteWriteTxDuration(dmConnId_t connId, uint16_t handle, uint8_t duration)
 {
-    WSF_ASSERT(handle != ATT_HANDLE_NONE);
+  WSF_ASSERT(handle != ATT_HANDLE_NONE);
 
-    AttcWriteReq(connId, handle, sizeof(uint8_t), &duration);
+  AttcWriteReq(connId, handle, sizeof(uint8_t), &duration);
 }
 
 /*************************************************************************************************/
@@ -224,14 +251,14 @@ void AtpcCteWriteTxDuration(dmConnId_t connId, uint16_t handle, uint8_t duration
 /*************************************************************************************************/
 void AtpcCteWriteInterval(dmConnId_t connId, uint16_t handle, uint16_t interval)
 {
-    WSF_ASSERT(handle != ATT_HANDLE_NONE);
+  WSF_ASSERT(handle != ATT_HANDLE_NONE);
 
-    uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
-    uint8_t *p = buf;
+  uint8_t buf[ATT_DEFAULT_PAYLOAD_LEN];
+  uint8_t *p = buf;
 
-    UINT16_TO_BSTREAM(p, interval);
+  UINT16_TO_BSTREAM(p, interval);
 
-    AttcWriteReq(connId, handle, sizeof(uint16_t), buf);
+  AttcWriteReq(connId, handle, sizeof(uint16_t), buf);
 }
 
 /*************************************************************************************************/
@@ -247,9 +274,9 @@ void AtpcCteWriteInterval(dmConnId_t connId, uint16_t handle, uint16_t interval)
 /*************************************************************************************************/
 void AtpcCteWritePhy(dmConnId_t connId, uint16_t handle, uint8_t phy)
 {
-    WSF_ASSERT(handle != ATT_HANDLE_NONE)
+  WSF_ASSERT(handle != ATT_HANDLE_NONE)
 
-    AttcWriteReq(connId, handle, sizeof(uint8_t), &phy);
+  AttcWriteReq(connId, handle, sizeof(uint8_t), &phy);
 }
 
 /*************************************************************************************************/
@@ -266,20 +293,21 @@ void AtpcCteWritePhy(dmConnId_t connId, uint16_t handle, uint8_t phy)
 /*************************************************************************************************/
 void AtpcCteAclEnableReq(dmConnId_t connId, uint16_t handle, uint8_t length, uint16_t interval)
 {
-    atpcConnCb_t *pCcb;
+  atpcConnCb_t *pCcb;
 
-    WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
-    WSF_ASSERT(handle != ATT_HANDLE_NONE)
+  WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT(handle != ATT_HANDLE_NONE)
 
-    if (DmConnCteGetReqState(connId) == DM_CONN_CTE_STATE_IDLE) {
-        /* Store the enable handle and CTE configuration */
-        pCcb = &atpcCb.connCb[connId - 1];
-        pCcb->enableHandle = handle;
-        pCcb->length = length;
-        pCcb->interval = interval;
+  if (DmConnCteGetReqState(connId) == DM_CONN_CTE_STATE_IDLE)
+  {
+    /* Store the enable handle and CTE configuration */
+    pCcb = &atpcCb.connCb[connId-1];
+    pCcb->enableHandle = handle;
+    pCcb->length = length;
+    pCcb->interval = interval;
 
-        AtpcCteWriteEnable(connId, handle, CTE_ENABLE_ACL_BIT);
-    }
+    AtpcCteWriteEnable(connId, handle, CTE_ENABLE_ACL_BIT);
+  }
 }
 
 /*************************************************************************************************/
@@ -294,18 +322,19 @@ void AtpcCteAclEnableReq(dmConnId_t connId, uint16_t handle, uint8_t length, uin
 /*************************************************************************************************/
 void AtpcCteAclDisableReq(dmConnId_t connId, uint16_t handle)
 {
-    atpcConnCb_t *pCcb;
+  atpcConnCb_t *pCcb;
 
-    WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
-    WSF_ASSERT(handle != ATT_HANDLE_NONE)
+  WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT(handle != ATT_HANDLE_NONE)
 
-    if (DmConnCteGetReqState(connId) == DM_CONN_CTE_STATE_INITIATING) {
-        /* Store the enable handle */
-        pCcb = &atpcCb.connCb[connId - 1];
-        pCcb->enableHandle = handle;
+  if (DmConnCteGetReqState(connId) == DM_CONN_CTE_STATE_INITIATING)
+  {
+    /* Store the enable handle */
+    pCcb = &atpcCb.connCb[connId-1];
+    pCcb->enableHandle = handle;
 
-        AtpcCteWriteEnable(connId, handle, CTE_ENABLE_NONE);
-    }
+    AtpcCteWriteEnable(connId, handle, CTE_ENABLE_NONE);
+  }
 }
 
 /*************************************************************************************************/
@@ -321,14 +350,14 @@ void AtpcCteAclDisableReq(dmConnId_t connId, uint16_t handle)
 /*************************************************************************************************/
 void AtpcSetAntennaIds(dmConnId_t connId, uint8_t numAntenna, uint8_t *pAntennaIds)
 {
-    atpcConnCb_t *pCcb;
+  atpcConnCb_t *pCcb;
 
-    WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
-    WSF_ASSERT(numAntenna <= atpcCb.numAntennae);
+  WSF_ASSERT((connId > DM_CONN_ID_NONE) && (connId <= DM_CONN_MAX));
+  WSF_ASSERT(numAntenna <= atpcCb.numAntennae);
 
-    pCcb = &atpcCb.connCb[connId - 1];
-    pCcb->numAntenna = numAntenna;
-    pCcb->pAntennaIds = pAntennaIds;
+  pCcb = &atpcCb.connCb[connId-1];
+  pCcb->numAntenna = numAntenna;
+  pCcb->pAntennaIds = pAntennaIds;
 }
 
 /*************************************************************************************************/
@@ -342,42 +371,44 @@ void AtpcSetAntennaIds(dmConnId_t connId, uint8_t numAntenna, uint8_t *pAntennaI
 /*************************************************************************************************/
 void AtpcProcMsg(wsfMsgHdr_t *pEvt)
 {
-    atpcConnCb_t *pCcb = &atpcCb.connCb[pEvt->param - 1];
-    dmEvt_t *pDmEvt = (dmEvt_t *)pEvt;
+  atpcConnCb_t *pCcb = &atpcCb.connCb[pEvt->param - 1];
+  dmEvt_t *pDmEvt = (dmEvt_t*) pEvt;
 
-    switch (pEvt->event) {
+  switch (pEvt->event)
+  {
     case DM_RESET_CMPL_IND:
-        DmReadAntennaInfo();
-        break;
+      DmReadAntennaInfo();
+      break;
 
     case DM_READ_ANTENNA_INFO_IND:
-        atpcCb.cteMaxLen = pDmEvt->readAntennaInfo.cteMaxLen;
-        atpcCb.switchSampleRates = pDmEvt->readAntennaInfo.switchSampleRates;
-        atpcCb.numAntennae = pDmEvt->readAntennaInfo.numAntennae;
-        atpcCb.switchPatternMaxLen = pDmEvt->readAntennaInfo.switchPatternMaxLen;
-        break;
+      atpcCb.cteMaxLen = pDmEvt->readAntennaInfo.cteMaxLen;
+      atpcCb.switchSampleRates = pDmEvt->readAntennaInfo.switchSampleRates;
+      atpcCb.numAntennae = pDmEvt->readAntennaInfo.numAntennae;
+      atpcCb.switchPatternMaxLen = pDmEvt->readAntennaInfo.switchPatternMaxLen;
+      break;
 
     case ATTC_WRITE_RSP:
-        atpcProcWriteRsp((attEvt_t *)pEvt);
-        break;
+      atpcProcWriteRsp((attEvt_t *)pEvt);
+      break;
 
     case DM_CONN_CTE_RX_SAMPLE_START_IND:
-        if (pEvt->status == HCI_SUCCESS) {
-            DmConnCteReqStart((dmConnId_t)pEvt->param, pCcb->interval, pCcb->length,
-                              HCI_CTE_TYPE_REQ_AOA);
-        }
-        break;
+      if (pEvt->status == HCI_SUCCESS)
+      {
+        DmConnCteReqStart((dmConnId_t) pEvt->param, pCcb->interval, pCcb->length, HCI_CTE_TYPE_REQ_AOA);
+      }
+      break;
 
     case DM_CONN_CTE_RX_SAMPLE_STOP_IND:
-        if (pEvt->status == HCI_SUCCESS) {
-            DmConnCteReqStop((dmConnId_t)pEvt->param);
-        }
-        break;
+      if (pEvt->status == HCI_SUCCESS)
+      {
+        DmConnCteReqStop((dmConnId_t) pEvt->param);
+      }
+      break;
 
     case DM_CTE_REQ_FAIL_IND:
-        break;
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }

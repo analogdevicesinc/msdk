@@ -37,8 +37,8 @@
 /*************************************************************************************************/
 void LlConnMasterInit(void)
 {
-    WSF_ASSERT(pLctrRtCfg); /* Runtime configuration must be available. */
+  WSF_ASSERT(pLctrRtCfg);     /* Runtime configuration must be available. */
 
-    LmgrConnInit();
-    LctrMstConnInit();
+  LmgrConnInit();
+  LctrMstConnInit();
 }

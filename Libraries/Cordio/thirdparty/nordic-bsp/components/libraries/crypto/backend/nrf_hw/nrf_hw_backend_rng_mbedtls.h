@@ -67,29 +67,35 @@
 /*lint -restore*/
 #include "nrf_crypto_rng_shared.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_RNG)
 #error "More than one RNG backend enabled."
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_RNG)
 #define NRF_CRYPTO_RNG_ENABLED 1
 
+
 /**
  * @internal @brief Context for nRF RNG peripheral with mbed tls CTR-DRBG.
  */
-typedef struct {
-    nrf_crypto_rng_internal_context_t header; //!< Internal common context header.
-    mbedtls_ctr_drbg_context mbedtls_context; //!< mbed TLS CTR-DRBG context.
+typedef struct
+{
+    nrf_crypto_rng_internal_context_t   header;             //!< Internal common context header.
+    mbedtls_ctr_drbg_context            mbedtls_context;    //!< mbed TLS CTR-DRBG context.
 } nrf_crypto_backend_rng_context_t;
 
 /**
  * @internal @brief Dummy temp buffer for nRF RNG peripheral with mbed tls CTR-DRBG.
  */
-typedef struct {
+typedef struct
+{
     uint32_t reserved;
 } nrf_crypto_backend_rng_temp_buffer_t;
+
 
 #ifdef __cplusplus
 }

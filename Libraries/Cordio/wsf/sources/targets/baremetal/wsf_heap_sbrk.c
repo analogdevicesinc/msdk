@@ -21,7 +21,7 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#if defined(__GNUC__)
+#if defined ( __GNUC__ )
 #include <unistd.h>
 #endif /* __GNUC__ */
 
@@ -37,18 +37,18 @@
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
-#if defined(__GNUC__)
+#if defined ( __GNUC__ )
 extern caddr_t _sbrk(int incr);
-#elif defined(__ICCARM__)
+#elif defined ( __ICCARM__ )
 extern void *_sbrk(int incr);
 #endif
 
-#if defined(__GNUC__)
-static void *freeStartAddr = 0;
+#if defined ( __GNUC__ )
+static void* freeStartAddr = 0;
 extern unsigned int __HeapBase;
 extern unsigned int __HeapLimit;
-#elif defined(__ICCARM__)
-static void *freeStartAddr = 0;
+#elif defined ( __ICCARM__ )
+static void* freeStartAddr = 0;
 extern unsigned char *HeapBase;
 extern unsigned char *HeapLimit;
 #endif
@@ -62,10 +62,10 @@ extern unsigned char *HeapLimit;
 /*************************************************************************************************/
 void WsfHeapAlloc(uint32_t size)
 {
-    /* Round up to nearest multiple of 4 for word alignment */
-    size = (size + 3) & ~3;
+  /* Round up to nearest multiple of 4 for word alignment */
+  size = (size + 3) & ~3;
 
-    freeStartAddr = _sbrk(size);
+  freeStartAddr = _sbrk(size);
 }
 
 /*************************************************************************************************/
@@ -77,8 +77,8 @@ void WsfHeapAlloc(uint32_t size)
 /*************************************************************************************************/
 void *WsfHeapGetFreeStartAddress(void)
 {
-    freeStartAddr = _sbrk(0);
-    return freeStartAddr;
+  freeStartAddr = _sbrk(0);
+  return freeStartAddr;
 }
 
 /*************************************************************************************************/
@@ -90,12 +90,12 @@ void *WsfHeapGetFreeStartAddress(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountAvailable(void)
 {
-    freeStartAddr = _sbrk(0);
-#if defined(__GNUC__)
-    return ((uint32_t)&__HeapLimit - (uint32_t)freeStartAddr);
-#elif defined(__ICCARM__)
-    return ((uint32_t)HeapLimit - (uint32_t)freeStartAddr);
-#endif
+  freeStartAddr = _sbrk(0);
+#if defined ( __GNUC__ )
+  return ((uint32_t)&__HeapLimit - (uint32_t)freeStartAddr);
+#elif defined ( __ICCARM__ )
+  return ((uint32_t)HeapLimit - (uint32_t)freeStartAddr);  
+#endif  
 }
 
 /*************************************************************************************************/
@@ -107,10 +107,11 @@ uint32_t WsfHeapCountAvailable(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountUsed(void)
 {
-    freeStartAddr = _sbrk(0);
-#if defined(__GNUC__)
-    return ((uint32_t)freeStartAddr - (uint32_t)&__HeapBase);
-#elif defined(__ICCARM__)
-    return ((uint32_t)freeStartAddr - (uint32_t)HeapBase);
-#endif
+  freeStartAddr = _sbrk(0);
+#if defined ( __GNUC__ ) 
+  return((uint32_t)freeStartAddr - (uint32_t)&__HeapBase);
+#elif defined ( __ICCARM__ ) 
+  return((uint32_t)freeStartAddr - (uint32_t)HeapBase);   
+#endif  
+  
 }

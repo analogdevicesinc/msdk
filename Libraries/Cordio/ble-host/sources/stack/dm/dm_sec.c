@@ -48,8 +48,12 @@ dmSecCb_t dmSecCb;
 **************************************************************************************************/
 
 /* Component function interface */
-static const dmFcnIf_t dmSecFcnIf = { dmSecReset, dmSecHciHandler,
-                                      (dmMsgHandler_t)dmSecMsgHandler };
+static const dmFcnIf_t dmSecFcnIf =
+{
+  dmSecReset,
+  dmSecHciHandler,
+  (dmMsgHandler_t) dmSecMsgHandler
+};
 
 /*************************************************************************************************/
 /*!
@@ -65,16 +69,17 @@ static const dmFcnIf_t dmSecFcnIf = { dmSecReset, dmSecHciHandler,
 /*************************************************************************************************/
 void dmSecApiLtkMsg(dmConnId_t connId, uint8_t status, dmSecLtk_t *pLtk, uint8_t event)
 {
-    dmSecApiEncryptReq_t *pMsg;
+  dmSecApiEncryptReq_t  *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(dmSecApiEncryptReq_t))) != NULL) {
-        pMsg->hdr.event = event;
-        pMsg->hdr.param = connId;
-        pMsg->hdr.status = status;
-        memcpy(&pMsg->ltk, pLtk, sizeof(dmSecLtk_t));
+  if ((pMsg = WsfMsgAlloc(sizeof(dmSecApiEncryptReq_t))) != NULL)
+  {
+    pMsg->hdr.event = event;
+    pMsg->hdr.param = connId;
+    pMsg->hdr.status = status;
+    memcpy(&pMsg->ltk, pLtk, sizeof(dmSecLtk_t));
 
-        WsfMsgSend(dmCb.handlerId, pMsg);
-    }
+    WsfMsgSend(dmCb.handlerId, pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -88,73 +93,84 @@ void dmSecApiLtkMsg(dmConnId_t connId, uint8_t status, dmSecLtk_t *pLtk, uint8_t
 /*************************************************************************************************/
 void dmSecHciHandler(hciEvt_t *pEvent)
 {
-    dmConnCcb_t *pCcb;
-    uint8_t *pKey;
-    dmSecEncryptIndEvt_t encryptInd;
-    uint8_t secLevel;
+  dmConnCcb_t           *pCcb;
+  uint8_t               *pKey;
+  dmSecEncryptIndEvt_t  encryptInd;
+  uint8_t               secLevel;
 
-    if ((pCcb = dmConnCcbByHandle(pEvent->hdr.param)) != NULL) {
-        if (pEvent->hdr.event == HCI_LE_LTK_REQ_CBACK_EVT) {
-            /* if ediv and rand are zero then check if STK is available from SMP */
-            if ((pEvent->leLtkReq.encDiversifier == 0) &&
-                (memcmp(pEvent->leLtkReq.randNum, calc128Zeros, HCI_RAND_LEN) == 0)) {
-                if ((pKey = SmpDmGetStk(pCcb->connId, &secLevel)) != NULL) {
-                    /* store security level */
-                    pCcb->tmpSecLevel = secLevel;
+  if ((pCcb = dmConnCcbByHandle(pEvent->hdr.param)) != NULL)
+  {
+    if (pEvent->hdr.event == HCI_LE_LTK_REQ_CBACK_EVT)
+    {
+      /* if ediv and rand are zero then check if STK is available from SMP */
+      if ((pEvent->leLtkReq.encDiversifier == 0) &&
+          (memcmp(pEvent->leLtkReq.randNum, calc128Zeros, HCI_RAND_LEN) == 0))
+      {
+        if ((pKey = SmpDmGetStk(pCcb->connId, &secLevel)) != NULL)
+        {
+          /* store security level */
+          pCcb->tmpSecLevel = secLevel;
 
-                    /* not using LTK */
-                    pCcb->usingLtk = FALSE;
+          /* not using LTK */
+          pCcb->usingLtk = FALSE;
 
-                    /* provide key to HCI */
-                    HciLeLtkReqReplCmd(pEvent->hdr.param, pKey);
-                    return;
-                }
-            } else if (SmpDmLescEnabled(pCcb->connId) == TRUE) {
-                /* EDIV and Rand must be zero in LE Secure Connections */
-                HciLeLtkReqNegReplCmd(pEvent->hdr.param);
-                return;
-            }
-
-            /* call callback to get key from app */
-
-            /* set connection busy */
-            DmConnSetIdle(pCcb->connId, DM_IDLE_DM_ENC, DM_CONN_BUSY);
-
-            /* using LTK */
-            pCcb->usingLtk = TRUE;
-
-            /* use the header from the encryptInd struct for efficiency */
-            pEvent->hdr.param = pCcb->connId;
-            pEvent->hdr.event = DM_SEC_LTK_REQ_IND;
-            (*dmCb.cback)((dmEvt_t *)pEvent);
-        } else if (pEvent->hdr.event == HCI_ENC_KEY_REFRESH_CMPL_CBACK_EVT ||
-                   pEvent->hdr.event == HCI_ENC_CHANGE_CBACK_EVT) {
-            /* set connection idle */
-            DmConnSetIdle(pCcb->connId, DM_IDLE_DM_ENC, DM_CONN_IDLE);
-
-            encryptInd.hdr.param = pCcb->connId;
-            encryptInd.hdr.status = pEvent->hdr.status;
-            if (encryptInd.hdr.status == HCI_SUCCESS) {
-                encryptInd.hdr.event = DM_SEC_ENCRYPT_IND;
-
-                /* update security level of connection */
-                pCcb->secLevel = pCcb->tmpSecLevel;
-
-                /* set LTK flag */
-                encryptInd.usingLtk = pCcb->usingLtk;
-            } else {
-                encryptInd.hdr.event = DM_SEC_ENCRYPT_FAIL_IND;
-            }
-
-            /* call callback before passing to SMP */
-            DmSmpCbackExec((dmEvt_t *)&encryptInd);
-
-            /* pass to SMP */
-            encryptInd.hdr.param = pCcb->connId;
-            encryptInd.hdr.status = pEvent->hdr.status;
-            SmpDmEncryptInd((wsfMsgHdr_t *)&encryptInd);
+          /* provide key to HCI */
+          HciLeLtkReqReplCmd(pEvent->hdr.param, pKey);
+          return;
         }
+      }
+      else if (SmpDmLescEnabled(pCcb->connId) == TRUE)
+      {
+        /* EDIV and Rand must be zero in LE Secure Connections */
+        HciLeLtkReqNegReplCmd(pEvent->hdr.param);
+        return;
+      }
+
+      /* call callback to get key from app */
+
+      /* set connection busy */
+      DmConnSetIdle(pCcb->connId, DM_IDLE_DM_ENC, DM_CONN_BUSY);
+
+      /* using LTK */
+      pCcb->usingLtk = TRUE;
+
+      /* use the header from the encryptInd struct for efficiency */
+      pEvent->hdr.param = pCcb->connId;
+      pEvent->hdr.event = DM_SEC_LTK_REQ_IND;
+      (*dmCb.cback)((dmEvt_t *) pEvent);
     }
+    else if (pEvent->hdr.event == HCI_ENC_KEY_REFRESH_CMPL_CBACK_EVT ||
+             pEvent->hdr.event == HCI_ENC_CHANGE_CBACK_EVT)
+    {
+      /* set connection idle */
+      DmConnSetIdle(pCcb->connId, DM_IDLE_DM_ENC, DM_CONN_IDLE);
+
+      encryptInd.hdr.param = pCcb->connId;
+      encryptInd.hdr.status = pEvent->hdr.status;
+      if (encryptInd.hdr.status == HCI_SUCCESS)
+      {
+        encryptInd.hdr.event = DM_SEC_ENCRYPT_IND;
+
+        /* update security level of connection */
+        pCcb->secLevel = pCcb->tmpSecLevel;
+
+        /* set LTK flag */
+        encryptInd.usingLtk = pCcb->usingLtk;
+      }
+      else
+      {
+        encryptInd.hdr.event = DM_SEC_ENCRYPT_FAIL_IND;
+      }
+
+      /* call callback before passing to SMP */
+      DmSmpCbackExec((dmEvt_t *) &encryptInd);
+
+      /* pass to SMP */
+      encryptInd.hdr.param = pCcb->connId;
+      encryptInd.hdr.status = pEvent->hdr.status;
+      SmpDmEncryptInd((wsfMsgHdr_t *) &encryptInd);
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -168,48 +184,53 @@ void dmSecHciHandler(hciEvt_t *pEvent)
 /*************************************************************************************************/
 void dmSecMsgHandler(dmSecMsg_t *pMsg)
 {
-    dmConnCcb_t *pCcb;
+  dmConnCcb_t *pCcb;
 
-    /* look up ccb */
-    if ((pCcb = dmConnCcbById((dmConnId_t)pMsg->hdr.param)) != NULL) {
-        /* process API encrypt req */
-        switch (pMsg->hdr.event) {
-        case DM_SEC_MSG_API_ENCRYPT_REQ:
-            /* set connection busy */
-            DmConnSetIdle(pCcb->connId, DM_IDLE_DM_ENC, DM_CONN_BUSY);
+  /* look up ccb */
+  if ((pCcb = dmConnCcbById((dmConnId_t) pMsg->hdr.param)) != NULL)
+  {
+    /* process API encrypt req */
+    switch (pMsg->hdr.event)
+    {
+    case DM_SEC_MSG_API_ENCRYPT_REQ:
+      /* set connection busy */
+      DmConnSetIdle(pCcb->connId, DM_IDLE_DM_ENC, DM_CONN_BUSY);
 
-            /* store security level */
-            pCcb->tmpSecLevel = pMsg->encryptReq.secLevel;
+      /* store security level */
+      pCcb->tmpSecLevel = pMsg->encryptReq.secLevel;
 
-            /* using LTK */
-            pCcb->usingLtk = TRUE;
+      /* using LTK */
+      pCcb->usingLtk = TRUE;
 
-            /* start encryption */
-            HciLeStartEncryptionCmd(pCcb->handle, pMsg->encryptReq.ltk.rand,
-                                    pMsg->encryptReq.ltk.ediv, pMsg->encryptReq.ltk.key);
+      /* start encryption */
+      HciLeStartEncryptionCmd(pCcb->handle, pMsg->encryptReq.ltk.rand,
+                              pMsg->encryptReq.ltk.ediv, pMsg->encryptReq.ltk.key);
 
-            break;
+      break;
 
-        case DM_SEC_MSG_API_LTK_RSP:
-            /* if key found */
-            if (pMsg->ltkRsp.keyFound) {
-                /* store security level */
-                pCcb->tmpSecLevel = pMsg->ltkRsp.secLevel;
+    case DM_SEC_MSG_API_LTK_RSP:
+      /* if key found */
+      if (pMsg->ltkRsp.keyFound)
+      {
+        /* store security level */
+        pCcb->tmpSecLevel = pMsg->ltkRsp.secLevel;
 
-                /* provide key to HCI */
-                HciLeLtkReqReplCmd(pCcb->handle, pMsg->ltkRsp.key);
-            } else {
-                /* key not found; set connection idle */
-                DmConnSetIdle(pCcb->connId, DM_IDLE_DM_ENC, DM_CONN_IDLE);
+        /* provide key to HCI */
+        HciLeLtkReqReplCmd(pCcb->handle, pMsg->ltkRsp.key);
+      }
+      else
+      {
+        /* key not found; set connection idle */
+        DmConnSetIdle(pCcb->connId, DM_IDLE_DM_ENC, DM_CONN_IDLE);
 
-                HciLeLtkReqNegReplCmd(pCcb->handle);
-            }
-            break;
+        HciLeLtkReqNegReplCmd(pCcb->handle);
+      }
+      break;
 
-        default:
-            break;
-        }
+    default:
+      break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -223,15 +244,18 @@ void dmSecMsgHandler(dmSecMsg_t *pMsg)
 /*************************************************************************************************/
 void DmSmpCbackExec(dmEvt_t *pDmEvt)
 {
-    /* certain messages need to get to ATT */
-    if (pDmEvt->hdr.event == DM_SEC_PAIR_CMPL_IND || pDmEvt->hdr.event == DM_SEC_ENCRYPT_IND) {
-        if (dmConnCb.connCback[DM_CLIENT_ID_ATT] != NULL) {
-            (*dmConnCb.connCback[DM_CLIENT_ID_ATT])(pDmEvt);
-        }
+  /* certain messages need to get to ATT */
+  if (pDmEvt->hdr.event == DM_SEC_PAIR_CMPL_IND ||
+      pDmEvt->hdr.event == DM_SEC_ENCRYPT_IND)
+  {
+    if (dmConnCb.connCback[DM_CLIENT_ID_ATT] != NULL)
+    {
+      (*dmConnCb.connCback[DM_CLIENT_ID_ATT])(pDmEvt);
     }
+  }
 
-    /* execute DM client callback */
-    (*dmCb.cback)(pDmEvt);
+  /* execute DM client callback */
+  (*dmCb.cback)(pDmEvt);
 }
 
 /*************************************************************************************************/
@@ -246,16 +270,17 @@ void DmSmpCbackExec(dmEvt_t *pDmEvt)
 /*************************************************************************************************/
 void DmSecCancelReq(dmConnId_t connId, uint8_t reason)
 {
-    wsfMsgHdr_t *pMsg;
+  wsfMsgHdr_t  *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL) {
-        pMsg->event = SMP_MSG_API_CANCEL_REQ;
-        pMsg->param = connId;
-        pMsg->status = reason;
+  if ((pMsg = WsfMsgAlloc(sizeof(wsfMsgHdr_t))) != NULL)
+  {
+    pMsg->event = SMP_MSG_API_CANCEL_REQ;
+    pMsg->param = connId;
+    pMsg->status = reason;
 
-        /* note we're sending this to SMP */
-        SmpDmMsgSend((smpDmMsg_t *)pMsg);
-    }
+    /* note we're sending this to SMP */
+    SmpDmMsgSend((smpDmMsg_t *) pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -272,22 +297,24 @@ void DmSecCancelReq(dmConnId_t connId, uint8_t reason)
 /*************************************************************************************************/
 void DmSecAuthRsp(dmConnId_t connId, uint8_t authDataLen, uint8_t *pAuthData)
 {
-    smpDmAuthRsp_t *pMsg;
+  smpDmAuthRsp_t   *pMsg;
 
-    WSF_ASSERT(authDataLen <= SMP_OOB_LEN);
+  WSF_ASSERT(authDataLen <= SMP_OOB_LEN);
 
-    if ((pMsg = WsfMsgAlloc(sizeof(smpDmAuthRsp_t))) != NULL) {
-        pMsg->hdr.event = SMP_MSG_API_AUTH_RSP;
-        pMsg->hdr.param = connId;
-        pMsg->authDataLen = authDataLen;
+  if ((pMsg = WsfMsgAlloc(sizeof(smpDmAuthRsp_t))) != NULL)
+  {
+    pMsg->hdr.event = SMP_MSG_API_AUTH_RSP;
+    pMsg->hdr.param = connId;
+    pMsg->authDataLen = authDataLen;
 
-        if (pAuthData != NULL) {
-            memcpy(pMsg->authData, pAuthData, authDataLen);
-        }
-
-        /* note we're sending this to SMP */
-        SmpDmMsgSend((smpDmMsg_t *)pMsg);
+    if (pAuthData != NULL)
+    {
+      memcpy(pMsg->authData, pAuthData, authDataLen);
     }
+
+    /* note we're sending this to SMP */
+    SmpDmMsgSend((smpDmMsg_t *) pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -299,9 +326,9 @@ void DmSecAuthRsp(dmConnId_t connId, uint8_t authDataLen, uint8_t *pAuthData)
 /*************************************************************************************************/
 void DmSecInit(void)
 {
-    dmFcnIfTbl[DM_ID_SEC] = (dmFcnIf_t *)&dmSecFcnIf;
+  dmFcnIfTbl[DM_ID_SEC] = (dmFcnIf_t *) &dmSecFcnIf;
 
-    dmSecCb.pCsrk = dmSecCb.pIrk = (uint8_t *)calc128Zeros;
+  dmSecCb.pCsrk = dmSecCb.pIrk = (uint8_t *) calc128Zeros;
 }
 
 /*************************************************************************************************/
@@ -315,9 +342,9 @@ void DmSecInit(void)
 /*************************************************************************************************/
 void DmSecSetLocalCsrk(uint8_t *pCsrk)
 {
-    WsfTaskLock();
-    dmSecCb.pCsrk = pCsrk;
-    WsfTaskUnlock();
+  WsfTaskLock();
+  dmSecCb.pCsrk = pCsrk;
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -331,9 +358,9 @@ void DmSecSetLocalCsrk(uint8_t *pCsrk)
 /*************************************************************************************************/
 void DmSecSetLocalIrk(uint8_t *pIrk)
 {
-    WsfTaskLock();
-    dmSecCb.pIrk = pIrk;
-    WsfTaskUnlock();
+  WsfTaskLock();
+  dmSecCb.pIrk = pIrk;
+  WsfTaskUnlock();
 }
 
 /*************************************************************************************************/
@@ -345,7 +372,7 @@ void DmSecSetLocalIrk(uint8_t *pIrk)
 /*************************************************************************************************/
 uint8_t *DmSecGetLocalCsrk(void)
 {
-    return dmSecCb.pCsrk;
+  return dmSecCb.pCsrk;
 }
 
 /*************************************************************************************************/
@@ -357,7 +384,7 @@ uint8_t *DmSecGetLocalCsrk(void)
 /*************************************************************************************************/
 uint8_t *DmSecGetLocalIrk(void)
 {
-    return dmSecCb.pIrk;
+  return dmSecCb.pIrk;
 }
 
 /*************************************************************************************************/
@@ -369,6 +396,6 @@ uint8_t *DmSecGetLocalIrk(void)
 /*************************************************************************************************/
 void dmSecReset(void)
 {
-    /* initialize smp database */
-    SmpDbInit();
+  /* initialize smp database */
+  SmpDbInit();
 }

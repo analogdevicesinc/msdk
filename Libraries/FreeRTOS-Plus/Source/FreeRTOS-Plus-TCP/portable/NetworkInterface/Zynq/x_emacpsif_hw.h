@@ -26,11 +26,11 @@
 extern "C" {
 #endif
 
-XEmacPs_Config *lookup_config(unsigned mac_base);
+XEmacPs_Config * lookup_config(unsigned mac_base);
 
 //void init_emacps(xemacpsif_s *xemacpsif, struct netif *netif);
 
-int emacps_check_errors(xemacpsif_s *xemacps);
+int emacps_check_errors( xemacpsif_s *xemacps );
 
 #ifdef __cplusplus
 }

@@ -32,13 +32,16 @@
 * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        *
 **************************************************************************************/
 
+
 #ifndef CRYS_CHACHA_ERROR_H
 #define CRYS_CHACHA_ERROR_H
+
 
 #include "crys_error.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /*!
@@ -49,33 +52,35 @@ extern "C" {
 @ingroup crys_chacha
 */
 
+
+
 /************************ Defines ******************************/
 
 /*! The CRYS CHACHA module errors base address - 0x00F02200. */
 /*! Illegal Nonce. */
-#define CRYS_CHACHA_INVALID_NONCE_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x01UL)
+#define CRYS_CHACHA_INVALID_NONCE_ERROR                         (CRYS_CHACHA_MODULE_ERROR_BASE + 0x01UL)
 /*! Illegal key size. */
-#define CRYS_CHACHA_ILLEGAL_KEY_SIZE_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x02UL)
+#define CRYS_CHACHA_ILLEGAL_KEY_SIZE_ERROR                  (CRYS_CHACHA_MODULE_ERROR_BASE + 0x02UL)
 /*! Illegal key pointer. */
-#define CRYS_CHACHA_INVALID_KEY_POINTER_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x03UL)
+#define CRYS_CHACHA_INVALID_KEY_POINTER_ERROR               (CRYS_CHACHA_MODULE_ERROR_BASE + 0x03UL)
 /*! Illegal operation mode. */
-#define CRYS_CHACHA_INVALID_ENCRYPT_MODE_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x04UL)
+#define CRYS_CHACHA_INVALID_ENCRYPT_MODE_ERROR              (CRYS_CHACHA_MODULE_ERROR_BASE + 0x04UL)
 /*! Illegal data in pointer. */
-#define CRYS_CHACHA_DATA_IN_POINTER_INVALID_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x05UL)
+#define CRYS_CHACHA_DATA_IN_POINTER_INVALID_ERROR           (CRYS_CHACHA_MODULE_ERROR_BASE + 0x05UL)
 /*! Illegal data out pointer. */
-#define CRYS_CHACHA_DATA_OUT_POINTER_INVALID_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x06UL)
+#define CRYS_CHACHA_DATA_OUT_POINTER_INVALID_ERROR          (CRYS_CHACHA_MODULE_ERROR_BASE + 0x06UL)
 /*! Illegal user context. */
-#define CRYS_CHACHA_INVALID_USER_CONTEXT_POINTER_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x07UL)
+#define CRYS_CHACHA_INVALID_USER_CONTEXT_POINTER_ERROR          (CRYS_CHACHA_MODULE_ERROR_BASE + 0x07UL)
 /*! Illegal user context size. */
-#define CRYS_CHACHA_CTX_SIZES_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x08UL)
+#define CRYS_CHACHA_CTX_SIZES_ERROR                             (CRYS_CHACHA_MODULE_ERROR_BASE + 0x08UL)
 /*! Illegal Nonce pointer. */
-#define CRYS_CHACHA_INVALID_NONCE_PTR_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x09UL)
+#define CRYS_CHACHA_INVALID_NONCE_PTR_ERROR                        (CRYS_CHACHA_MODULE_ERROR_BASE + 0x09UL)
 /*! Illegal data in size. */
-#define CRYS_CHACHA_DATA_IN_SIZE_ILLEGAL (CRYS_CHACHA_MODULE_ERROR_BASE + 0x0AUL)
+#define CRYS_CHACHA_DATA_IN_SIZE_ILLEGAL                        (CRYS_CHACHA_MODULE_ERROR_BASE + 0x0AUL)
 /*! General error. */
-#define CRYS_CHACHA_GENERAL_ERROR (CRYS_CHACHA_MODULE_ERROR_BASE + 0x0BUL)
+#define CRYS_CHACHA_GENERAL_ERROR                           (CRYS_CHACHA_MODULE_ERROR_BASE + 0x0BUL)
 /*! CHACHA is not supported. */
-#define CRYS_CHACHA_IS_NOT_SUPPORTED (CRYS_CHACHA_MODULE_ERROR_BASE + 0xFFUL)
+#define CRYS_CHACHA_IS_NOT_SUPPORTED                        (CRYS_CHACHA_MODULE_ERROR_BASE + 0xFFUL)
 
 /************************ Enums ********************************/
 
@@ -94,3 +99,5 @@ extern "C" {
 @}
  */
 #endif
+
+

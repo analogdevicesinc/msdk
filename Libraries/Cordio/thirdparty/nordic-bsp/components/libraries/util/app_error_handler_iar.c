@@ -41,52 +41,55 @@
 #include "compiler_abstraction.h"
 #include "app_error.h"
 
-#if defined(__CORTEX_M) && (__CORTEX_M == 0x04)
-void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t *p_file_name)
+#if defined (__CORTEX_M) && (__CORTEX_M == 0x04)
+void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t * p_file_name)
 {
-    __ASM volatile("push {lr}                      \n"
-                   /* reserve space on stack for error_info_t struct */
-                   "sub sp, sp, %0                 \n"
+    __ASM volatile(
+    "push {lr}                      \n"
+    /* reserve space on stack for error_info_t struct */
+    "sub sp, sp, %0                 \n"
 
-                   /* prepare error_info_t struct */
-                   "str r0, [sp, %1]               \n"
-                   "str r1, [sp, %3]               \n"
-                   "str r2, [sp, %2]               \n"
+    /* prepare error_info_t struct */
+    "str r0, [sp, %1]               \n"
+    "str r1, [sp, %3]               \n"
+    "str r2, [sp, %2]               \n"
 
-                   /* prepare arguments and call function: app_error_fault_handler */
-                   "ldr.n r0, 1f                   \n"
-                   "mov r1, LR                     \n"
-                   "mov r2, sp                     \n"
+    /* prepare arguments and call function: app_error_fault_handler */
+    "ldr.n r0, 1f                   \n"
+    "mov r1, LR                     \n"
+    "mov r2, sp                     \n"
 
-                   /* call app_error_fault_handler */
-                   "bl %c5                         \n"
+    /* call app_error_fault_handler */
+    "bl %c5                         \n"
 
-                   /* release stack */
-                   "add sp, sp, %0                 \n"
-                   "pop {pc}                       \n"
+    /* release stack */
+    "add sp, sp, %0                 \n"
+    "pop {pc}                       \n"
 
-                   "DATA                           \n"
-                   "1:                             \n"
-                   " DC32 %c4                      \n"
+    "DATA                           \n"
+    "1:                             \n"
+    " DC32 %c4                      \n"
 
-                   : /* Outputs */
-                   : /* Inputs */
-                   "i"(APP_ERROR_ERROR_INFO_SIZE_ALIGNED_8BYTE),
-                   "i"(APP_ERROR_ERROR_INFO_OFFSET_ERR_CODE),
-                   "i"(APP_ERROR_ERROR_INFO_OFFSET_P_FILE_NAME),
-                   "i"(APP_ERROR_ERROR_INFO_OFFSET_LINE_NUM), "i"(NRF_FAULT_ID_SDK_ERROR),
-                   "i"(app_error_fault_handler)
-                   : /* CLobbers */
-                   "r0", "r1", "r2");
+    : /* Outputs */
+    : /* Inputs */
+    "i" (APP_ERROR_ERROR_INFO_SIZE_ALIGNED_8BYTE),
+    "i" (APP_ERROR_ERROR_INFO_OFFSET_ERR_CODE),
+    "i" (APP_ERROR_ERROR_INFO_OFFSET_P_FILE_NAME),
+    "i" (APP_ERROR_ERROR_INFO_OFFSET_LINE_NUM),
+    "i" (NRF_FAULT_ID_SDK_ERROR),
+    "i" (app_error_fault_handler)
+    : /* CLobbers */
+    "r0", "r1", "r2"
+    );
 }
 #elif defined(__CORTEX_M) && (__CORTEX_M == 0x00)
 /* NRF51 implementation is currently not supporting PC readout */
-void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t *p_file_name)
+void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t * p_file_name)
 {
     error_info_t error_info = {
-        .line_num = line_num,
+        .line_num    = line_num,
         .p_file_name = p_file_name,
-        .err_code = error_code,
+        .err_code    = error_code,
     };
     app_error_fault_handler(NRF_FAULT_ID_SDK_ERROR, 0, (uint32_t)(&error_info));
 
@@ -95,3 +98,4 @@ void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t *
 #else
 #error Architecture not supported
 #endif
+

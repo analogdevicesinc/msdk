@@ -39,19 +39,19 @@
 /*************************************************************************************************/
 uint8_t lctrPackAdvbPduHdr(uint8_t *pBuf, const lctrAdvbPduHdr_t *pHdr)
 {
-    const uint8_t len = LL_ADV_HDR_LEN;
+  const uint8_t len = LL_ADV_HDR_LEN;
 
-    uint16_t hdr = 0;
+  uint16_t hdr = 0;
 
-    hdr |= pHdr->pduType << LCTR_ADV_HDR_PDU_TYPE_SHIFT;
-    hdr |= pHdr->chSel << LCTR_ADV_HDR_CH_SEL_SHIFT;
-    hdr |= pHdr->txAddrRnd << LCTR_ADV_HDR_TX_ADD_SHIFT;
-    hdr |= pHdr->rxAddrRnd << LCTR_ADV_HDR_RX_ADD_SHIFT;
-    hdr |= pHdr->len << LCTR_ADV_HDR_LEN_SHIFT;
+  hdr |= pHdr->pduType      << LCTR_ADV_HDR_PDU_TYPE_SHIFT;
+  hdr |= pHdr->chSel        << LCTR_ADV_HDR_CH_SEL_SHIFT;
+  hdr |= pHdr->txAddrRnd    << LCTR_ADV_HDR_TX_ADD_SHIFT;
+  hdr |= pHdr->rxAddrRnd    << LCTR_ADV_HDR_RX_ADD_SHIFT;
+  hdr |= pHdr->len          << LCTR_ADV_HDR_LEN_SHIFT;
 
-    UINT16_TO_BSTREAM(pBuf, hdr);
+  UINT16_TO_BSTREAM(pBuf, hdr);
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -67,12 +67,12 @@ uint8_t lctrPackAdvbPduHdr(uint8_t *pBuf, const lctrAdvbPduHdr_t *pHdr)
 /*************************************************************************************************/
 uint8_t lctrPackAdvPdu(uint8_t *pBuf, uint64_t advA, const lmgrAdvbUser_t *pAdvData)
 {
-    const uint8_t len = BDA_ADDR_LEN + pAdvData->len;
+  const uint8_t len = BDA_ADDR_LEN + pAdvData->len;
 
-    BDA64_TO_BSTREAM(pBuf, advA); /* AdvA */
-    memcpy(pBuf, pAdvData->buf, pAdvData->len); /* AdvData */
+  BDA64_TO_BSTREAM(pBuf, advA);                 /* AdvA */
+  memcpy(pBuf, pAdvData->buf, pAdvData->len);   /* AdvData */
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -88,12 +88,12 @@ uint8_t lctrPackAdvPdu(uint8_t *pBuf, uint64_t advA, const lmgrAdvbUser_t *pAdvD
 /*************************************************************************************************/
 uint8_t lctrPackConnDirectIndAdvPdu(uint8_t *pBuf, uint64_t advA, uint64_t initA)
 {
-    const uint8_t len = BDA_ADDR_LEN + BDA_ADDR_LEN;
+  const uint8_t len = BDA_ADDR_LEN + BDA_ADDR_LEN;
 
-    BDA64_TO_BSTREAM(pBuf, advA); /* AdvA */
-    BDA64_TO_BSTREAM(pBuf, initA); /* InitA */
+  BDA64_TO_BSTREAM(pBuf, advA);                 /* AdvA */
+  BDA64_TO_BSTREAM(pBuf, initA);                /* InitA */
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -108,12 +108,12 @@ uint8_t lctrPackConnDirectIndAdvPdu(uint8_t *pBuf, uint64_t advA, uint64_t initA
 /*************************************************************************************************/
 uint8_t lctrPackScanReqPdu(uint8_t *pBuf, const lctrScanReq_t *pPdu)
 {
-    const uint8_t len = LL_SCAN_REQ_PDU_LEN;
+  const uint8_t len = LL_SCAN_REQ_PDU_LEN;
 
-    BDA64_TO_BSTREAM(pBuf, pPdu->scanAddr);
-    BDA64_TO_BSTREAM(pBuf, pPdu->advAddr);
+  BDA64_TO_BSTREAM(pBuf, pPdu->scanAddr);
+  BDA64_TO_BSTREAM(pBuf, pPdu->advAddr);
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -129,8 +129,8 @@ uint8_t lctrPackScanReqPdu(uint8_t *pBuf, const lctrScanReq_t *pPdu)
 /*************************************************************************************************/
 uint8_t lctrPackScanRspPdu(uint8_t *pBuf, uint64_t advA, const lmgrAdvbUser_t *pRspData)
 {
-    /* Same as advertising PDU. */
-    return lctrPackAdvPdu(pBuf, advA, pRspData);
+  /* Same as advertising PDU. */
+  return lctrPackAdvPdu(pBuf, advA, pRspData);
 }
 
 /*************************************************************************************************/
@@ -145,12 +145,12 @@ uint8_t lctrPackScanRspPdu(uint8_t *pBuf, uint64_t advA, const lmgrAdvbUser_t *p
 /*************************************************************************************************/
 uint8_t lctrPackConnIndPduAddr(uint8_t *pBuf, const lctrConnInd_t *pPdu)
 {
-    const uint8_t len = 2 * sizeof(bdAddr_t);
+  const uint8_t len = 2 * sizeof(bdAddr_t);
 
-    BDA64_TO_BSTREAM(pBuf, pPdu->initAddr);
-    BDA64_TO_BSTREAM(pBuf, pPdu->advAddr);
+  BDA64_TO_BSTREAM(pBuf, pPdu->initAddr);
+  BDA64_TO_BSTREAM(pBuf, pPdu->advAddr);
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -165,33 +165,35 @@ uint8_t lctrPackConnIndPduAddr(uint8_t *pBuf, const lctrConnInd_t *pPdu)
 /*************************************************************************************************/
 uint8_t lctrPackConnIndPdu(uint8_t *pBuf, const lctrConnInd_t *pPdu)
 {
-    const uint8_t len = LL_CONN_IND_PDU_LEN;
+  const uint8_t len = LL_CONN_IND_PDU_LEN;
 
-    uint8_t field8;
+  uint8_t field8;
 
-    pBuf += lctrPackConnIndPduAddr(pBuf, pPdu);
+  pBuf += lctrPackConnIndPduAddr(pBuf, pPdu);
 
-    uint16_t interval = pPdu->interval;
+  uint16_t interval = pPdu->interval;
 #if (LL_ENABLE_TESTER == TRUE)
-    if (llTesterCb.connIntervalZero == TRUE) {
-        interval = 0;
-    }
+  if (llTesterCb.connIntervalZero == TRUE)
+  {
+    interval = 0;
+  }
 #endif
 
-    /* LLData */
-    UINT32_TO_BSTREAM(pBuf, pPdu->accessAddr);
-    UINT24_TO_BSTREAM(pBuf, pPdu->crcInit);
-    UINT8_TO_BSTREAM(pBuf, pPdu->txWinSize);
-    UINT16_TO_BSTREAM(pBuf, pPdu->txWinOffset);
-    UINT16_TO_BSTREAM(pBuf, interval);
-    UINT16_TO_BSTREAM(pBuf, pPdu->latency);
-    UINT16_TO_BSTREAM(pBuf, pPdu->timeout);
-    UINT40_TO_BSTREAM(pBuf, pPdu->chanMask);
+  /* LLData */
+  UINT32_TO_BSTREAM(pBuf, pPdu->accessAddr);
+  UINT24_TO_BSTREAM(pBuf, pPdu->crcInit);
+  UINT8_TO_BSTREAM (pBuf, pPdu->txWinSize);
+  UINT16_TO_BSTREAM(pBuf, pPdu->txWinOffset);
+  UINT16_TO_BSTREAM(pBuf, interval);
+  UINT16_TO_BSTREAM(pBuf, pPdu->latency);
+  UINT16_TO_BSTREAM(pBuf, pPdu->timeout);
+  UINT40_TO_BSTREAM(pBuf, pPdu->chanMask);
 
-    field8 = (pPdu->hopInc << 0) | (pPdu->masterSca << 5);
-    UINT8_TO_BSTREAM(pBuf, field8);
+  field8 = (pPdu->hopInc    << 0) |
+           (pPdu->masterSca << 5);
+  UINT8_TO_BSTREAM(pBuf, field8);
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -206,23 +208,26 @@ uint8_t lctrPackConnIndPdu(uint8_t *pBuf, const lctrConnInd_t *pPdu)
 /*************************************************************************************************/
 uint8_t lctrUnpackAdvbPduHdr(lctrAdvbPduHdr_t *pHdr, const uint8_t *pBuf)
 {
-    const uint8_t len = LL_ADV_HDR_LEN;
+  const uint8_t len = LL_ADV_HDR_LEN;
 
-    uint16_t hdr;
+  uint16_t hdr;
 
-    BSTREAM_TO_UINT16(hdr, pBuf);
+  BSTREAM_TO_UINT16(hdr, pBuf);
 
-    pHdr->pduType = (hdr >> LCTR_ADV_HDR_PDU_TYPE_SHIFT) & 0x000F;
-    pHdr->chSel = (hdr >> LCTR_ADV_HDR_CH_SEL_SHIFT) & 0x0001;
-    pHdr->txAddrRnd = (hdr >> LCTR_ADV_HDR_TX_ADD_SHIFT) & 0x0001;
-    pHdr->rxAddrRnd = (hdr >> LCTR_ADV_HDR_RX_ADD_SHIFT) & 0x0001;
-    if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_0) {
-        pHdr->len = (hdr >> LCTR_ADV_HDR_LEN_SHIFT) & LL_ADV_EXT_HDR_LEN_MSK;
-    } else {
-        pHdr->len = (hdr >> LCTR_ADV_HDR_LEN_SHIFT) & LL_ADV_HDR_LEN_MSK;
-    }
+  pHdr->pduType     = (hdr >> LCTR_ADV_HDR_PDU_TYPE_SHIFT) & 0x000F;
+  pHdr->chSel       = (hdr >> LCTR_ADV_HDR_CH_SEL_SHIFT)   & 0x0001;
+  pHdr->txAddrRnd   = (hdr >> LCTR_ADV_HDR_TX_ADD_SHIFT)   & 0x0001;
+  pHdr->rxAddrRnd   = (hdr >> LCTR_ADV_HDR_RX_ADD_SHIFT)   & 0x0001;
+  if (pLctrRtCfg->btVer >= LL_VER_BT_CORE_SPEC_5_0)
+  {
+    pHdr->len       = (hdr >> LCTR_ADV_HDR_LEN_SHIFT)      & LL_ADV_EXT_HDR_LEN_MSK;
+  }
+  else
+  {
+    pHdr->len       = (hdr >> LCTR_ADV_HDR_LEN_SHIFT)      & LL_ADV_HDR_LEN_MSK;
+  }
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -237,12 +242,12 @@ uint8_t lctrUnpackAdvbPduHdr(lctrAdvbPduHdr_t *pHdr, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackScanReqPdu(lctrScanReq_t *pPdu, const uint8_t *pBuf)
 {
-    const uint8_t len = 2 * sizeof(bdAddr_t);
+  const uint8_t len = 2 * sizeof(bdAddr_t);
 
-    BSTREAM_TO_BDA64(pPdu->scanAddr, pBuf);
-    BSTREAM_TO_BDA64(pPdu->advAddr, pBuf);
+  BSTREAM_TO_BDA64(pPdu->scanAddr, pBuf);
+  BSTREAM_TO_BDA64(pPdu->advAddr, pBuf);
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -257,28 +262,28 @@ uint8_t lctrUnpackScanReqPdu(lctrScanReq_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 uint8_t lctrUnpackConnIndPdu(lctrConnInd_t *pPdu, const uint8_t *pBuf)
 {
-    const uint8_t len = LL_CONN_IND_PDU_LEN;
+  const uint8_t len = LL_CONN_IND_PDU_LEN;
 
-    uint8_t field8;
+  uint8_t field8;
 
-    BSTREAM_TO_BDA64(pPdu->initAddr, pBuf);
-    BSTREAM_TO_BDA64(pPdu->advAddr, pBuf);
+  BSTREAM_TO_BDA64(pPdu->initAddr, pBuf);
+  BSTREAM_TO_BDA64(pPdu->advAddr, pBuf);
 
-    /* LLData */
-    BSTREAM_TO_UINT32(pPdu->accessAddr, pBuf);
-    BSTREAM_TO_UINT24(pPdu->crcInit, pBuf);
-    BSTREAM_TO_UINT8(pPdu->txWinSize, pBuf);
-    BSTREAM_TO_UINT16(pPdu->txWinOffset, pBuf);
-    BSTREAM_TO_UINT16(pPdu->interval, pBuf);
-    BSTREAM_TO_UINT16(pPdu->latency, pBuf);
-    BSTREAM_TO_UINT16(pPdu->timeout, pBuf);
-    BSTREAM_TO_UINT40(pPdu->chanMask, pBuf);
+  /* LLData */
+  BSTREAM_TO_UINT32(pPdu->accessAddr, pBuf);
+  BSTREAM_TO_UINT24(pPdu->crcInit, pBuf);
+  BSTREAM_TO_UINT8 (pPdu->txWinSize, pBuf);
+  BSTREAM_TO_UINT16(pPdu->txWinOffset, pBuf);
+  BSTREAM_TO_UINT16(pPdu->interval, pBuf);
+  BSTREAM_TO_UINT16(pPdu->latency, pBuf);
+  BSTREAM_TO_UINT16(pPdu->timeout, pBuf);
+  BSTREAM_TO_UINT40(pPdu->chanMask, pBuf);
 
-    BSTREAM_TO_UINT8(field8, pBuf);
-    pPdu->hopInc = (field8 >> 0) & 0x1F;
-    pPdu->masterSca = (field8 >> 5) & 0x07;
+  BSTREAM_TO_UINT8(field8, pBuf);
+  pPdu->hopInc    = (field8 >> 0) & 0x1F;
+  pPdu->masterSca = (field8 >> 5) & 0x07;
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -295,51 +300,57 @@ uint8_t lctrUnpackConnIndPdu(lctrConnInd_t *pPdu, const uint8_t *pBuf)
 /*************************************************************************************************/
 bool_t lctrValidateConnIndPdu(lctrConnInd_t *pPdu)
 {
-    bool_t result = TRUE;
+  bool_t result = TRUE;
 
-    /* pPdu->initAddr     Allow all values */
-    /* pPdu->advAddr      Allow all values */
-    /* pPdu->accessAddr   Allow all values */
-    /* pPdu->crcInit      Allow all values */
+  /* pPdu->initAddr     Allow all values */
+  /* pPdu->advAddr      Allow all values */
+  /* pPdu->accessAddr   Allow all values */
+  /* pPdu->crcInit      Allow all values */
 
-    /* connInterval: 7.5ms to 4.0s */
-    if ((pPdu->interval < 6) || (pPdu->interval > 3200)) {
-        LL_TRACE_WARN1("Invalid CONN_IND field value interval=%u", pPdu->interval);
-        result = FALSE;
-    }
+  /* connInterval: 7.5ms to 4.0s */
+  if ((pPdu->interval < 6) || (pPdu->interval > 3200))
+  {
+    LL_TRACE_WARN1("Invalid CONN_IND field value interval=%u", pPdu->interval);
+    result = FALSE;
+  }
 
-    /* transmitWindowSize: 1.25ms to 10ms */
-    if (pPdu->txWinSize > 8) {
-        LL_TRACE_WARN1("Invalid CONN_IND field value txWinSize=%u", pPdu->txWinSize);
-        result = FALSE;
-    }
+  /* transmitWindowSize: 1.25ms to 10ms */
+  if (pPdu->txWinSize > 8)
+  {
+    LL_TRACE_WARN1("Invalid CONN_IND field value txWinSize=%u", pPdu->txWinSize);
+    result = FALSE;
+  }
 
-    /* transmitWindowOffset: 0ms to connInterval */
-    if (pPdu->txWinOffset > pPdu->interval) {
-        LL_TRACE_WARN1("Invalid CONN_IND field value txWinOffset=%u", pPdu->txWinOffset);
-        result = FALSE;
-    }
+  /* transmitWindowOffset: 0ms to connInterval */
+  if (pPdu->txWinOffset > pPdu->interval)
+  {
+    LL_TRACE_WARN1("Invalid CONN_IND field value txWinOffset=%u", pPdu->txWinOffset);
+    result = FALSE;
+  }
 
-    /* connSupervisionTimeout: range of 100 ms to 32.0s */
-    if ((pPdu->timeout < 10) || (pPdu->timeout > 3200)) {
-        LL_TRACE_WARN1("Invalid CONN_IND field value timeout=%u", pPdu->timeout);
-        result = FALSE;
-    }
+  /* connSupervisionTimeout: range of 100 ms to 32.0s */
+  if ((pPdu->timeout < 10) || (pPdu->timeout > 3200))
+  {
+    LL_TRACE_WARN1("Invalid CONN_IND field value timeout=%u", pPdu->timeout);
+    result = FALSE;
+  }
 
-    /* ChM */
-    if ((pPdu->chanMask & (UINT64_C(7) << LL_CHAN_ADV_MIN_IDX)) || (pPdu->chanMask == 0)) {
-        LL_TRACE_WARN0("Invalid CONN_IND field value chanMask");
-        result = FALSE;
-    }
+  /* ChM */
+  if ((pPdu->chanMask & (UINT64_C(7) << LL_CHAN_ADV_MIN_IDX)) || (pPdu->chanMask == 0))
+  {
+    LL_TRACE_WARN0("Invalid CONN_IND field value chanMask");
+    result = FALSE;
+  }
 
-    /* hopIncrement: 5 to 16 */
-    if ((pPdu->hopInc < 5) || (pPdu->hopInc > 16)) {
-        LL_TRACE_WARN1("Invalid CONN_IND field value hopInc=%u", pPdu->hopInc);
-        result = FALSE;
-    }
+  /* hopIncrement: 5 to 16 */
+  if ((pPdu->hopInc < 5) || (pPdu->hopInc > 16))
+  {
+    LL_TRACE_WARN1("Invalid CONN_IND field value hopInc=%u", pPdu->hopInc);
+    result = FALSE;
+  }
 
-    /* pPdu->latency      Allow all values */
-    /* pPdu->masterSca    All 3 bits are valid */
+  /* pPdu->latency      Allow all values */
+  /* pPdu->masterSca    All 3 bits are valid */
 
-    return result;
+  return result;
 }

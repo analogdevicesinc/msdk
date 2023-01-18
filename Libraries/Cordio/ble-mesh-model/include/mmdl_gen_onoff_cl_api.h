@@ -31,7 +31,8 @@
 #define MMDL_GEN_ONOFF_CL_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mmdl_defs.h"
@@ -40,27 +41,30 @@ extern "C" {
   Data Types
 **************************************************************************************************/
 /*! \brief Model On Off Client Set parameters structure */
-typedef struct mmdlGenOnOffSetParam_tag {
-    mmdlGenOnOffState_t state; /*!< New OnOff State */
-    uint8_t tid; /*!< Transaction Identifier */
-    uint8_t transitionTime; /*!< Transition time */
-    uint8_t delay; /*!< Delay in steps of 5 ms  */
+typedef struct mmdlGenOnOffSetParam_tag
+{
+  mmdlGenOnOffState_t  state;          /*!< New OnOff State */
+  uint8_t              tid;            /*!< Transaction Identifier */
+  uint8_t              transitionTime; /*!< Transition time */
+  uint8_t              delay;          /*!< Delay in steps of 5 ms  */
 } mmdlGenOnOffSetParam_t;
 
 /*! \brief Generic OnOff Client Model Status event structure */
-typedef struct mmdlGenOnOffClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    mmdlGenOnOffState_t state; /*!< Received published state */
-    mmdlGenOnOffState_t targetState; /*!< Received published target state */
-    uint8_t remainingTime; /*!< Remaining time until the transition completes */
+typedef struct mmdlGenOnOffClStatusEvent_tag
+{
+  wsfMsgHdr_t          hdr;            /*!< WSF message header */
+  meshElementId_t      elementId;      /*!< Element ID */
+  meshAddress_t        serverAddr;     /*!< Server Address */
+  mmdlGenOnOffState_t  state;          /*!< Received published state */
+  mmdlGenOnOffState_t  targetState;    /*!< Received published target state */
+  uint8_t              remainingTime;  /*!< Remaining time until the transition completes */
 } mmdlGenOnOffClStatusEvent_t;
 
 /*! \brief Generic OnOff Client Model event callback parameters structure */
-typedef union mmdlGenOnOffClEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlGenOnOffClStatusEvent_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlGenOnOffClEvent_tag
+{
+  wsfMsgHdr_t hdr;                         /*!< WSF message header */
+  mmdlGenOnOffClStatusEvent_t statusEvent; /*!< State updated event. Used for
                                             *   ::MMDL_GEN_ONOFF_CL_STATUS_EVENT.
                                             */
 } mmdlGenOnOffClEvent_t;
@@ -73,7 +77,7 @@ typedef union mmdlGenOnOffClEvent_tag {
 extern wsfHandlerId_t mmdlGenOnOffClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t mmdlGenOnOffClRcvdOpcodes[];
+extern const meshMsgOpcode_t  mmdlGenOnOffClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations
@@ -114,7 +118,7 @@ void MmdlGenOnOffClHandler(wsfMsgHdr_t *pMsg);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenOnOffClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
+void MmdlGenOnOffClGet(meshElementId_t elementId, meshAddress_t serverAddr,  uint8_t ttl,
                        uint16_t appKeyIndex);
 
 /*************************************************************************************************/

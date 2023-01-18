@@ -48,7 +48,7 @@
 /*************************************************************************************************/
 void HciDisconnectCmd(uint16_t handle, uint8_t reason)
 {
-    LlDisconnect(handle, reason);
+  LlDisconnect(handle, reason);
 }
 
 /*************************************************************************************************/
@@ -58,7 +58,7 @@ void HciDisconnectCmd(uint16_t handle, uint8_t reason)
 /*************************************************************************************************/
 void HciLeAddDevWhiteListCmd(uint8_t addrType, uint8_t *pAddr)
 {
-    LlAddDeviceToWhitelist(addrType, pAddr);
+  LlAddDeviceToWhitelist(addrType, pAddr);
 }
 
 /*************************************************************************************************/
@@ -70,7 +70,7 @@ void HciLeAddDevWhiteListCmd(uint8_t addrType, uint8_t *pAddr)
 /*************************************************************************************************/
 void HciLeClearWhiteListCmd(void)
 {
-    LlClearWhitelist();
+  LlClearWhitelist();
 }
 
 /*************************************************************************************************/
@@ -82,7 +82,7 @@ void HciLeClearWhiteListCmd(void)
 /*************************************************************************************************/
 void HciLeConnUpdateCmd(uint16_t handle, hciConnSpec_t *pConnSpec)
 {
-    LlConnUpdate(handle, (LlConnSpec_t *)pConnSpec);
+  LlConnUpdate(handle, (LlConnSpec_t *)pConnSpec);
 }
 
 /*************************************************************************************************/
@@ -94,17 +94,17 @@ void HciLeConnUpdateCmd(uint16_t handle, hciConnSpec_t *pConnSpec)
 /*************************************************************************************************/
 void HciLeRandCmd(void)
 {
-    hciLeRandCmdCmplEvt_t evt;
+  hciLeRandCmdCmplEvt_t evt;
 
-    evt.hdr.param = 0;
-    evt.hdr.event = HCI_LE_RAND_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = HCI_SUCCESS;
+  evt.hdr.param = 0;
+  evt.hdr.event = HCI_LE_RAND_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = HCI_SUCCESS;
 
-    evt.status = HCI_SUCCESS;
+  evt.status = HCI_SUCCESS;
 
-    LlGetRandNum(evt.randNum);
+  LlGetRandNum(evt.randNum);
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -116,7 +116,7 @@ void HciLeRandCmd(void)
 /*************************************************************************************************/
 void HciLeReadAdvTXPowerCmd(void)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -128,7 +128,7 @@ void HciLeReadAdvTXPowerCmd(void)
 /*************************************************************************************************/
 void HciLeReadBufSizeCmd(void)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -140,16 +140,16 @@ void HciLeReadBufSizeCmd(void)
 /*************************************************************************************************/
 void HciLeReadChanMapCmd(uint16_t handle)
 {
-    hciReadChanMapCmdCmplEvt_t evt;
+  hciReadChanMapCmdCmplEvt_t evt;
 
-    evt.hdr.param = handle;
-    evt.hdr.event = HCI_LE_READ_CHAN_MAP_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlGetChannelMap(handle, evt.chanMap);
+  evt.hdr.param = handle;
+  evt.hdr.event = HCI_LE_READ_CHAN_MAP_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlGetChannelMap(handle, evt.chanMap);
 
-    evt.handle = handle;
-    evt.status = evt.hdr.status;
+  evt.handle = handle;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -161,7 +161,7 @@ void HciLeReadChanMapCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeReadLocalSupFeatCmd(void)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -173,7 +173,7 @@ void HciLeReadLocalSupFeatCmd(void)
 /*************************************************************************************************/
 void HciLeReadRemoteFeatCmd(uint16_t handle)
 {
-    LlReadRemoteFeat(handle);
+  LlReadRemoteFeat(handle);
 }
 
 /*************************************************************************************************/
@@ -185,7 +185,7 @@ void HciLeReadRemoteFeatCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciLeReadSupStatesCmd(void)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -197,7 +197,7 @@ void HciLeReadSupStatesCmd(void)
 /*************************************************************************************************/
 void HciLeReadWhiteListSizeCmd(void)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -209,7 +209,7 @@ void HciLeReadWhiteListSizeCmd(void)
 /*************************************************************************************************/
 void HciLeRemoveDevWhiteListCmd(uint8_t addrType, uint8_t *pAddr)
 {
-    LlRemoveDeviceFromWhitelist(addrType, pAddr);
+  LlRemoveDeviceFromWhitelist(addrType, pAddr);
 }
 
 /*************************************************************************************************/
@@ -221,7 +221,7 @@ void HciLeRemoveDevWhiteListCmd(uint8_t addrType, uint8_t *pAddr)
 /*************************************************************************************************/
 void HciLeSetAdvEnableCmd(uint8_t enable)
 {
-    LlAdvEnable(enable);
+  LlAdvEnable(enable);
 }
 
 /*************************************************************************************************/
@@ -233,7 +233,7 @@ void HciLeSetAdvEnableCmd(uint8_t enable)
 /*************************************************************************************************/
 void HciLeSetAdvDataCmd(uint8_t len, uint8_t *pData)
 {
-    LlSetAdvData(len, pData);
+  LlSetAdvData(len, pData);
 }
 
 /*************************************************************************************************/
@@ -247,8 +247,14 @@ void HciLeSetAdvParamCmd(uint16_t advIntervalMin, uint16_t advIntervalMax, uint8
                          uint8_t ownAddrType, uint8_t peerAddrType, uint8_t *pPeerAddr,
                          uint8_t advChanMap, uint8_t advFiltPolicy)
 {
-    LlSetAdvParam(advIntervalMin, advIntervalMax, advType, ownAddrType, peerAddrType, pPeerAddr,
-                  advChanMap, advFiltPolicy);
+  LlSetAdvParam(advIntervalMin,
+                advIntervalMax,
+                advType,
+                ownAddrType,
+                peerAddrType,
+                pPeerAddr,
+                advChanMap,
+                advFiltPolicy);
 }
 
 /*************************************************************************************************/
@@ -260,7 +266,7 @@ void HciLeSetAdvParamCmd(uint16_t advIntervalMin, uint16_t advIntervalMax, uint8
 /*************************************************************************************************/
 void HciLeSetEventMaskCmd(uint8_t *pLeEventMask)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -272,7 +278,7 @@ void HciLeSetEventMaskCmd(uint8_t *pLeEventMask)
 /*************************************************************************************************/
 void HciLeSetHostChanClassCmd(uint8_t *pChanMap)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -284,13 +290,13 @@ void HciLeSetHostChanClassCmd(uint8_t *pChanMap)
 /*************************************************************************************************/
 void HciLeSetRandAddrCmd(uint8_t *pAddr)
 {
-    wsfMsgHdr_t evt;
+  wsfMsgHdr_t evt;
 
-    evt.param = 0;
-    evt.event = HCI_LE_SET_RAND_ADDR_CMD_CMPL_CBACK_EVT;
-    evt.status = LlSetRandAddr(pAddr);
+  evt.param = 0;
+  evt.event = HCI_LE_SET_RAND_ADDR_CMD_CMPL_CBACK_EVT;
+  evt.status = LlSetRandAddr(pAddr);
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *) &evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -302,7 +308,7 @@ void HciLeSetRandAddrCmd(uint8_t *pAddr)
 /*************************************************************************************************/
 void HciLeSetScanRespDataCmd(uint8_t len, uint8_t *pData)
 {
-    LlSetScanRespData(len, pData);
+  LlSetScanRespData(len, pData);
 }
 
 /*************************************************************************************************/
@@ -314,7 +320,7 @@ void HciLeSetScanRespDataCmd(uint8_t len, uint8_t *pData)
 /*************************************************************************************************/
 void HciReadBdAddrCmd(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -326,7 +332,7 @@ void HciReadBdAddrCmd(void)
 /*************************************************************************************************/
 void HciReadBufSizeCmd(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -338,7 +344,7 @@ void HciReadBufSizeCmd(void)
 /*************************************************************************************************/
 void HciReadLocalSupFeatCmd(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -350,7 +356,7 @@ void HciReadLocalSupFeatCmd(void)
 /*************************************************************************************************/
 void HciReadLocalVerInfoCmd(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -362,7 +368,7 @@ void HciReadLocalVerInfoCmd(void)
 /*************************************************************************************************/
 void HciReadRemoteVerInfoCmd(uint16_t handle)
 {
-    LlReadRemoteVerInfo(handle);
+  LlReadRemoteVerInfo(handle);
 }
 
 /*************************************************************************************************/
@@ -374,16 +380,16 @@ void HciReadRemoteVerInfoCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciReadRssiCmd(uint16_t handle)
 {
-    hciReadRssiCmdCmplEvt_t evt;
+  hciReadRssiCmdCmplEvt_t evt;
 
-    evt.hdr.param = handle;
-    evt.hdr.event = HCI_READ_RSSI_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlGetRssi(handle, &evt.rssi);
+  evt.hdr.param = handle;
+  evt.hdr.event = HCI_READ_RSSI_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlGetRssi(handle, &evt.rssi);
 
-    evt.handle = handle;
-    evt.status = evt.hdr.status;
+  evt.handle = handle;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -395,16 +401,16 @@ void HciReadRssiCmd(uint16_t handle)
 /*************************************************************************************************/
 void HciReadTxPwrLvlCmd(uint16_t handle, uint8_t type)
 {
-    hciReadTxPwrLvlCmdCmplEvt_t evt;
+  hciReadTxPwrLvlCmdCmplEvt_t evt;
 
-    evt.hdr.param = handle;
-    evt.hdr.event = HCI_READ_TX_PWR_LVL_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlGetTxPowerLevel(handle, type, &evt.pwrLvl);
+  evt.hdr.param = handle;
+  evt.hdr.event = HCI_READ_TX_PWR_LVL_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlGetTxPowerLevel(handle, type, &evt.pwrLvl);
 
-    evt.handle = handle;
-    evt.status = evt.hdr.status;
+  evt.handle = handle;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -416,7 +422,7 @@ void HciReadTxPwrLvlCmd(uint16_t handle, uint8_t type)
 /*************************************************************************************************/
 void HciResetCmd(void)
 {
-    LlReset();
+  LlReset();
 }
 
 /*************************************************************************************************/
@@ -428,7 +434,7 @@ void HciResetCmd(void)
 /*************************************************************************************************/
 void HciSetEventMaskCmd(uint8_t *pEventMask)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -446,16 +452,15 @@ void HciSetEventMaskCmd(uint8_t *pEventMask)
 void HciLeAddDeviceToResolvingListCmd(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr,
                                       const uint8_t *pPeerIrk, const uint8_t *pLocalIrk)
 {
-    hciLeAddDevToResListCmdCmplEvt_t evt;
+  hciLeAddDevToResListCmdCmplEvt_t evt;
 
-    evt.hdr.param = 0;
-    evt.hdr.event = HCI_LE_ADD_DEV_TO_RES_LIST_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status =
-        LlAddDeviceToResolvingList(peerAddrType, pPeerIdentityAddr, pPeerIrk, pLocalIrk);
+  evt.hdr.param = 0;
+  evt.hdr.event = HCI_LE_ADD_DEV_TO_RES_LIST_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlAddDeviceToResolvingList(peerAddrType, pPeerIdentityAddr, pPeerIrk, pLocalIrk);
 
-    evt.status = evt.hdr.status;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -470,15 +475,15 @@ void HciLeAddDeviceToResolvingListCmd(uint8_t peerAddrType, const uint8_t *pPeer
 /*************************************************************************************************/
 void HciLeRemoveDeviceFromResolvingList(uint8_t peerAddrType, const uint8_t *pPeerIdentityAddr)
 {
-    hciLeRemDevFromResListCmdCmplEvt_t evt;
+  hciLeRemDevFromResListCmdCmplEvt_t evt;
 
-    evt.hdr.param = 0;
-    evt.hdr.event = HCI_LE_REM_DEV_FROM_RES_LIST_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlRemoveDeviceFromResolvingList(peerAddrType, pPeerIdentityAddr);
+  evt.hdr.param = 0;
+  evt.hdr.event = HCI_LE_REM_DEV_FROM_RES_LIST_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlRemoveDeviceFromResolvingList(peerAddrType, pPeerIdentityAddr);
 
-    evt.status = evt.hdr.status;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -490,15 +495,15 @@ void HciLeRemoveDeviceFromResolvingList(uint8_t peerAddrType, const uint8_t *pPe
 /*************************************************************************************************/
 void HciLeClearResolvingList(void)
 {
-    hciLeClearResListCmdCmplEvt_t evt;
+  hciLeClearResListCmdCmplEvt_t evt;
 
-    evt.hdr.param = 0;
-    evt.hdr.event = HCI_LE_CLEAR_RES_LIST_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlClearResolvingList();
+  evt.hdr.param = 0;
+  evt.hdr.event = HCI_LE_CLEAR_RES_LIST_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlClearResolvingList();
 
-    evt.status = evt.hdr.status;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -510,7 +515,7 @@ void HciLeClearResolvingList(void)
 /*************************************************************************************************/
 void HciLeReadResolvingListSize(void)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -525,15 +530,15 @@ void HciLeReadResolvingListSize(void)
 /*************************************************************************************************/
 void HciLeReadPeerResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr)
 {
-    hciLeReadPeerResAddrCmdCmplEvt_t evt;
+  hciLeReadPeerResAddrCmdCmplEvt_t evt;
 
-    evt.hdr.param = 0;
-    evt.hdr.event = HCI_LE_READ_PEER_RES_ADDR_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlReadPeerResolvableAddr(addrType, pIdentityAddr, evt.peerRpa);
+  evt.hdr.param = 0;
+  evt.hdr.event = HCI_LE_READ_PEER_RES_ADDR_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlReadPeerResolvableAddr(addrType, pIdentityAddr, evt.peerRpa);
 
-    evt.status = evt.hdr.status;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -548,15 +553,15 @@ void HciLeReadPeerResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr)
 /*************************************************************************************************/
 void HciLeReadLocalResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr)
 {
-    hciLeReadLocalResAddrCmdCmplEvt_t evt;
+  hciLeReadLocalResAddrCmdCmplEvt_t evt;
 
-    evt.hdr.param = 0;
-    evt.hdr.event = HCI_LE_READ_LOCAL_RES_ADDR_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlReadLocalResolvableAddr(addrType, pIdentityAddr, evt.localRpa);
+  evt.hdr.param = 0;
+  evt.hdr.event = HCI_LE_READ_LOCAL_RES_ADDR_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlReadLocalResolvableAddr(addrType, pIdentityAddr, evt.localRpa);
 
-    evt.status = evt.hdr.status;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -571,15 +576,15 @@ void HciLeReadLocalResolvableAddr(uint8_t addrType, const uint8_t *pIdentityAddr
 /*************************************************************************************************/
 void HciLeSetAddrResolutionEnable(uint8_t enable)
 {
-    hciLeSetAddrResEnableCmdCmplEvt_t evt;
+  hciLeSetAddrResEnableCmdCmplEvt_t evt;
 
-    evt.hdr.param = 0;
-    evt.hdr.event = HCI_LE_SET_ADDR_RES_ENABLE_CMD_CMPL_CBACK_EVT;
-    evt.hdr.status = LlSetAddrResolutionEnable(enable);
+  evt.hdr.param = 0;
+  evt.hdr.event = HCI_LE_SET_ADDR_RES_ENABLE_CMD_CMPL_CBACK_EVT;
+  evt.hdr.status = LlSetAddrResolutionEnable(enable);
 
-    evt.status = evt.hdr.status;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -593,7 +598,7 @@ void HciLeSetAddrResolutionEnable(uint8_t enable)
 /*************************************************************************************************/
 void HciLeSetResolvablePrivateAddrTimeout(uint16_t rpaTimeout)
 {
-    LlSetResolvablePrivateAddrTimeout(rpaTimeout);
+  LlSetResolvablePrivateAddrTimeout(rpaTimeout);
 }
 
 /*************************************************************************************************/
@@ -609,7 +614,7 @@ void HciLeSetResolvablePrivateAddrTimeout(uint16_t rpaTimeout)
 /*************************************************************************************************/
 void HciLeSetPrivacyModeCmd(uint8_t addrType, uint8_t *pAddr, uint8_t mode)
 {
-    LlSetPrivacyMode(addrType, pAddr, mode);
+  LlSetPrivacyMode(addrType, pAddr, mode);
 }
 
 /*************************************************************************************************/
@@ -623,12 +628,12 @@ void HciLeSetPrivacyModeCmd(uint8_t addrType, uint8_t *pAddr, uint8_t mode)
 /*************************************************************************************************/
 void HciLeRequestPeerScaCmd(uint16_t handle)
 {
-    uint8_t status;
+  uint8_t status;
 
-    status = LlRequestPeerSca(handle);
-    (void)status;
+  status = LlRequestPeerSca(handle);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -645,13 +650,13 @@ void HciLeRequestPeerScaCmd(uint16_t handle)
  */
 /*************************************************************************************************/
 void HciLeSetHostFeatureCmd(uint8_t bitNum, bool_t bitVal)
-{
-    uint8_t status;
+{ 
+  uint8_t status;
 
-    status = LlSetHostFeatures(bitNum, bitVal);
-    (void)status;
+  status = LlSetHostFeatures(bitNum, bitVal);
+  (void)status;
 
-    WSF_ASSERT(status == LL_SUCCESS);
+  WSF_ASSERT(status == LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -663,7 +668,7 @@ void HciLeSetHostFeatureCmd(uint8_t bitNum, bool_t bitVal)
 /*************************************************************************************************/
 void HciVendorSpecificCmd(uint16_t opcode, uint8_t len, uint8_t *pData)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -673,20 +678,19 @@ void HciVendorSpecificCmd(uint16_t opcode, uint8_t len, uint8_t *pData)
  *  \return None.
  */
 /*************************************************************************************************/
-void HciLeRemoteConnParamReqReply(uint16_t handle, uint16_t intervalMin, uint16_t intervalMax,
-                                  uint16_t latency, uint16_t timeout, uint16_t minCeLen,
-                                  uint16_t maxCeLen)
+void HciLeRemoteConnParamReqReply(uint16_t handle, uint16_t intervalMin, uint16_t intervalMax, uint16_t latency,
+                                  uint16_t timeout, uint16_t minCeLen, uint16_t maxCeLen)
 {
-    LlConnSpec_t connSpec;
+  LlConnSpec_t connSpec;
 
-    connSpec.connIntervalMax = intervalMax;
-    connSpec.connIntervalMin = intervalMin;
-    connSpec.connLatency = latency;
-    connSpec.maxCeLen = maxCeLen;
-    connSpec.minCeLen = minCeLen;
-    connSpec.supTimeout = timeout;
+  connSpec.connIntervalMax = intervalMax;
+  connSpec.connIntervalMin = intervalMin;
+  connSpec.connLatency = latency;
+  connSpec.maxCeLen = maxCeLen;
+  connSpec.minCeLen = minCeLen;
+  connSpec.supTimeout = timeout;
 
-    LlRemoteConnParamReqReply(handle, &connSpec);
+  LlRemoteConnParamReqReply(handle, &connSpec);
 }
 
 /*************************************************************************************************/
@@ -698,7 +702,7 @@ void HciLeRemoteConnParamReqReply(uint16_t handle, uint16_t intervalMin, uint16_
 /*************************************************************************************************/
 void HciLeRemoteConnParamReqNegReply(uint16_t handle, uint8_t reason)
 {
-    LlRemoteConnParamReqNegReply(handle, reason);
+  LlRemoteConnParamReqNegReply(handle, reason);
 }
 
 /*************************************************************************************************/
@@ -710,7 +714,7 @@ void HciLeRemoteConnParamReqNegReply(uint16_t handle, uint8_t reason)
 /*************************************************************************************************/
 void HciLeSetDataLen(uint16_t handle, uint16_t txOctets, uint16_t txTime)
 {
-    LlSetDataLen(handle, txOctets, txTime);
+  LlSetDataLen(handle, txOctets, txTime);
 }
 
 /*************************************************************************************************/
@@ -722,7 +726,7 @@ void HciLeSetDataLen(uint16_t handle, uint16_t txOctets, uint16_t txTime)
 /*************************************************************************************************/
 void HciLeReadDefDataLen(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -734,7 +738,7 @@ void HciLeReadDefDataLen(void)
 /*************************************************************************************************/
 void HciLeWriteDefDataLen(uint16_t suggestedMaxTxOctets, uint16_t suggestedMaxTxTime)
 {
-    LlWriteDefaultDataLen(suggestedMaxTxOctets, suggestedMaxTxTime);
+  LlWriteDefaultDataLen(suggestedMaxTxOctets, suggestedMaxTxTime);
 }
 
 /*************************************************************************************************/
@@ -746,7 +750,7 @@ void HciLeWriteDefDataLen(uint16_t suggestedMaxTxOctets, uint16_t suggestedMaxTx
 /*************************************************************************************************/
 void HciLeReadLocalP256PubKey(void)
 {
-    LlGenerateP256KeyPair();
+  LlGenerateP256KeyPair();
 }
 
 /*************************************************************************************************/
@@ -758,16 +762,17 @@ void HciLeReadLocalP256PubKey(void)
 /*************************************************************************************************/
 void HciLeGenerateDHKey(uint8_t *pPubKeyX, uint8_t *pPubKeyY)
 {
-    uint8_t status = LlGenerateDhKey(pPubKeyX, pPubKeyY);
+  uint8_t status = LlGenerateDhKey(pPubKeyX, pPubKeyY);
 
-    if (status != HCI_SUCCESS) {
-        hciLeGenDhKeyEvt_t evt;
+  if (status != HCI_SUCCESS)
+  {
+    hciLeGenDhKeyEvt_t evt;
 
-        evt.hdr.event = HCI_LE_GENERATE_DHKEY_CMPL_CBACK_EVT;
-        evt.hdr.status = evt.status = status;
+    evt.hdr.event = HCI_LE_GENERATE_DHKEY_CMPL_CBACK_EVT;
+    evt.hdr.status = evt.status = status;
 
-        hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
-    }
+    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  }
 }
 
 /*************************************************************************************************/
@@ -779,16 +784,17 @@ void HciLeGenerateDHKey(uint8_t *pPubKeyX, uint8_t *pPubKeyY)
 /*************************************************************************************************/
 void HciLeGenerateDHKeyV2(uint8_t *pPubKeyX, uint8_t *pPubKeyY, uint8_t keyType)
 {
-    uint8_t status = LlGenerateDhKeyV2(pPubKeyX, pPubKeyY, keyType);
+  uint8_t status = LlGenerateDhKeyV2(pPubKeyX, pPubKeyY, keyType);
 
-    if (status != HCI_SUCCESS) {
-        hciLeGenDhKeyEvt_t evt;
+  if (status != HCI_SUCCESS)
+  {
+    hciLeGenDhKeyEvt_t evt;
 
-        evt.hdr.event = HCI_LE_GENERATE_DHKEY_CMPL_CBACK_EVT;
-        evt.hdr.status = evt.status = status;
+    evt.hdr.event = HCI_LE_GENERATE_DHKEY_CMPL_CBACK_EVT;
+    evt.hdr.status = evt.status = status;
 
-        hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
-    }
+    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  }
 }
 
 /*************************************************************************************************/
@@ -800,7 +806,7 @@ void HciLeGenerateDHKeyV2(uint8_t *pPubKeyX, uint8_t *pPubKeyY, uint8_t keyType)
 /*************************************************************************************************/
 void HciLeReadMaxDataLen(void)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -814,7 +820,7 @@ void HciLeReadMaxDataLen(void)
 /*************************************************************************************************/
 void HciReadAuthPayloadTimeout(uint16_t handle)
 {
-    /* not used */
+  /* not used */
 }
 
 /*************************************************************************************************/
@@ -829,15 +835,15 @@ void HciReadAuthPayloadTimeout(uint16_t handle)
 /*************************************************************************************************/
 void HciWriteAuthPayloadTimeout(uint16_t handle, uint16_t timeout)
 {
-    hciWriteAuthPayloadToCmdCmplEvt_t evt;
+  hciWriteAuthPayloadToCmdCmplEvt_t evt;
 
-    evt.hdr.status = LlWriteAuthPayloadTimeout(handle, timeout);
-    evt.hdr.event = HCI_WRITE_AUTH_PAYLOAD_TO_CMD_CMPL_CBACK_EVT;
-    evt.handle = handle;
+  evt.hdr.status = LlWriteAuthPayloadTimeout(handle, timeout);
+  evt.hdr.event = HCI_WRITE_AUTH_PAYLOAD_TO_CMD_CMPL_CBACK_EVT;
+  evt.handle = handle;
 
-    evt.status = evt.hdr.status;
+  evt.status = evt.hdr.status;
 
-    hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
+  hciCoreEvtSendIntEvt((uint8_t *)&evt, sizeof(evt));
 }
 
 /*************************************************************************************************/
@@ -849,5 +855,6 @@ void HciWriteAuthPayloadTimeout(uint16_t handle, uint16_t timeout)
 /*************************************************************************************************/
 void HciSetEventMaskPage2Cmd(uint8_t *pEventMask)
 {
-    /* unused */
+  /* unused */
 }
+

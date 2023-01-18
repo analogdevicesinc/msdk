@@ -27,7 +27,8 @@
 #define MESH_FRIEND_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -35,28 +36,29 @@ extern "C" {
 **************************************************************************************************/
 
 /*! State machines events */
-enum meshFriendWsfMsgEvents {
-    MESH_FRIEND_MSG_STATE_ENABLED = MESH_FRIENDSHIP_MSG_START, /*!< State has changed to enabled */
-    MESH_FRIEND_MSG_STATE_DISABLED, /*!< State has changed to disabled */
-    MESH_FRIEND_MSG_FRIEND_REQ_RECV, /*!< Friend Request received */
-    MESH_FRIEND_MSG_POLL_RECV, /*!< Friend Poll received */
-    MESH_FRIEND_MSG_FRIEND_CLEAR_RECV, /*!< Friend Clear received */
-    MESH_FRIEND_MSG_FRIEND_CLEAR_CNF_RECV, /*!< Friend Clear received */
-    MESH_FRIEND_MSG_KEY_DERIV_SUCCESS, /*!< Key material derivation
+enum meshFriendWsfMsgEvents
+{
+  MESH_FRIEND_MSG_STATE_ENABLED = MESH_FRIENDSHIP_MSG_START, /*!< State has changed to enabled */
+  MESH_FRIEND_MSG_STATE_DISABLED,                            /*!< State has changed to disabled */
+  MESH_FRIEND_MSG_FRIEND_REQ_RECV,                           /*!< Friend Request received */
+  MESH_FRIEND_MSG_POLL_RECV,                                 /*!< Friend Poll received */
+  MESH_FRIEND_MSG_FRIEND_CLEAR_RECV,                         /*!< Friend Clear received */
+  MESH_FRIEND_MSG_FRIEND_CLEAR_CNF_RECV,                     /*!< Friend Clear received */
+  MESH_FRIEND_MSG_KEY_DERIV_SUCCESS,                         /*!< Key material derivation
                                                               *   successful.
                                                               */
-    MESH_FRIEND_MSG_KEY_DERIV_FAILED, /*!< Key material derivation failed */
-    MESH_FRIEND_MSG_RECV_DELAY, /*!< Receive delay timer expired */
-    MESH_FRIEND_MSG_SUBSCR_CNF_DELAY, /*!< Subscription List Confirm
+  MESH_FRIEND_MSG_KEY_DERIV_FAILED,                          /*!< Key material derivation failed */
+  MESH_FRIEND_MSG_RECV_DELAY,                                /*!< Receive delay timer expired */
+  MESH_FRIEND_MSG_SUBSCR_CNF_DELAY,                          /*!< Subscription List Confirm
                                                               *   Receive delay timer expired
                                                               */
-    MESH_FRIEND_MSG_CLEAR_SEND_TIMEOUT, /*!< Friend Clear Period Timeout */
-    MESH_FRIEND_MSG_TIMEOUT, /*!< Establishment timer or Poll
+  MESH_FRIEND_MSG_CLEAR_SEND_TIMEOUT,                        /*!< Friend Clear Period Timeout */
+  MESH_FRIEND_MSG_TIMEOUT,                                   /*!< Establishment timer or Poll
                                                               *   timeout
                                                               */
-    MESH_FRIEND_MSG_SUBSCR_LIST_ADD, /*!< Subscription List Add */
-    MESH_FRIEND_MSG_SUBSCR_LIST_REM, /*!< Subscription List Remove */
-    MESH_FRIEND_MSG_NETKEY_DEL /*!< NetKey Deleted */
+  MESH_FRIEND_MSG_SUBSCR_LIST_ADD,                           /*!< Subscription List Add */
+  MESH_FRIEND_MSG_SUBSCR_LIST_REM,                           /*!< Subscription List Remove */
+  MESH_FRIEND_MSG_NETKEY_DEL                                 /*!< NetKey Deleted */
 };
 
 #ifdef __cplusplus

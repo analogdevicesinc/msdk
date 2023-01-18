@@ -30,17 +30,21 @@
 **************************************************************************************************/
 
 /* Minimux flash write size if 4 bytes */
-#define PAL_NVM_WORD_SIZE 4
+#define PAL_NVM_WORD_SIZE                       4
 
 /*! Aligns a value to word size. */
-#define PAL_NVM_WORD_ALIGN(value) (((value) + (PAL_NVM_WORD_SIZE - 1)) & ~(PAL_NVM_WORD_SIZE - 1))
+#define PAL_NVM_WORD_ALIGN(value)               (((value) + (PAL_NVM_WORD_SIZE - 1)) & \
+                                                        ~(PAL_NVM_WORD_SIZE - 1))
 /*! Validates if a value is aligned to word. */
-#define PAL_NVM_IS_WORD_ALIGNED(value) (((uint32_t)(value) & (PAL_NVM_WORD_SIZE - 1)) == 0)
+#define PAL_NVM_IS_WORD_ALIGNED(value)          (((uint32_t)(value) & \
+                                                        (PAL_NVM_WORD_SIZE - 1)) == 0)
 
 /*! Validates if a value is aligned to sector. */
-#define PAL_NVM_IS_SECTOR_ALIGNED(value) (((uint32_t)(value) & (MXC_FLASH_PAGE_SIZE - 1)) == 0)
+#define PAL_NVM_IS_SECTOR_ALIGNED(value)        (((uint32_t)(value) & \
+                                                        (MXC_FLASH_PAGE_SIZE - 1)) == 0)
 
 extern uint32_t __pal_nvm_db_start__, __pal_nvm_db_end__;
+
 
 /**************************************************************************************************
   Functions: Initialization
@@ -57,7 +61,7 @@ extern uint32_t __pal_nvm_db_start__, __pal_nvm_db_end__;
 /*************************************************************************************************/
 void PalFlashInit(PalFlashCback_t actCback)
 {
-    (void)actCback;
+  (void)actCback;
 }
 
 /*************************************************************************************************/
@@ -67,7 +71,10 @@ void PalFlashInit(PalFlashCback_t actCback)
  *  \return None.
  */
 /*************************************************************************************************/
-void PalFlashDeInit(void) {}
+void PalFlashDeInit(void)
+{
+
+}
 
 /**************************************************************************************************
   Functions: Control and Status
@@ -82,11 +89,11 @@ void PalFlashDeInit(void) {}
 /*************************************************************************************************/
 PalFlashState_t PalNvmGetState(void)
 {
-    if (&__pal_nvm_db_start__ == &__pal_nvm_db_end__) {
-        return PAL_FLASH_STATE_UNINIT;
-    }
+  if(&__pal_nvm_db_start__ == &__pal_nvm_db_end__) {
+    return PAL_FLASH_STATE_UNINIT;
+  }
 
-    return PAL_FLASH_STATE_READY;
+  return PAL_FLASH_STATE_READY;
 }
 
 /*************************************************************************************************/
@@ -98,7 +105,7 @@ PalFlashState_t PalNvmGetState(void)
 /*************************************************************************************************/
 uint32_t PalNvmGetTotalSize(void)
 {
-    return &__pal_nvm_db_end__ - &__pal_nvm_db_start__;
+  return &__pal_nvm_db_end__ - &__pal_nvm_db_start__;
 }
 
 /*************************************************************************************************/
@@ -110,7 +117,7 @@ uint32_t PalNvmGetTotalSize(void)
 /*************************************************************************************************/
 uint32_t PalNvmGetSectorSize(void)
 {
-    return MXC_FLASH_PAGE_SIZE;
+  return MXC_FLASH_PAGE_SIZE;
 }
 
 /**************************************************************************************************
@@ -130,17 +137,18 @@ uint32_t PalNvmGetSectorSize(void)
 /*************************************************************************************************/
 void PalFlashRead(void *pBuf, uint32_t size, uint32_t srcAddr)
 {
-    if (PalNvmGetState() != PAL_FLASH_STATE_READY) {
-        /* Fill the buffer with erased flash data */
-        memset(pBuf, 0xFF, size);
-        return;
-    }
+  if(PalNvmGetState() != PAL_FLASH_STATE_READY) {
+    /* Fill the buffer with erased flash data */
+    memset(pBuf, 0xFF, size);
+    return;
+  }
 
-    /* Offset the address into flash */
-    srcAddr += (uint32_t)&__pal_nvm_db_start__;
+  /* Offset the address into flash */
+  srcAddr += (uint32_t)&__pal_nvm_db_start__;
 
-    uint32_t *src = (uint32_t *)srcAddr;
-    memcpy(pBuf, src, size);
+  uint32_t *src = (uint32_t*)srcAddr;
+  memcpy(pBuf, src, size);
+
 }
 
 /*************************************************************************************************/
@@ -156,20 +164,20 @@ void PalFlashRead(void *pBuf, uint32_t size, uint32_t srcAddr)
 /*************************************************************************************************/
 void PalFlashWrite(void *pBuf, uint32_t size, uint32_t dstAddr)
 {
-    if (PalNvmGetState() != PAL_FLASH_STATE_READY) {
-        return;
-    }
+  if(PalNvmGetState() != PAL_FLASH_STATE_READY) {
+    return;
+  }
 
-    if (!PAL_NVM_IS_WORD_ALIGNED(dstAddr)) {
-        PalSysAssertTrap();
-        return;
-    }
+  if(!PAL_NVM_IS_WORD_ALIGNED(dstAddr)) {
+    PalSysAssertTrap();
+    return;
+  }
 
-    /* Offset the address into flash */
-    dstAddr += (uint32_t)&__pal_nvm_db_start__;
-    PalEnterCs();
-    MXC_FLC_Write(dstAddr, size, pBuf);
-    PalExitCs();
+  /* Offset the address into flash */
+  dstAddr += (uint32_t)&__pal_nvm_db_start__;
+  PalEnterCs();
+  MXC_FLC_Write(dstAddr, size, pBuf);
+  PalExitCs();
 }
 
 /*************************************************************************************************/
@@ -184,18 +192,18 @@ void PalFlashWrite(void *pBuf, uint32_t size, uint32_t dstAddr)
 /*************************************************************************************************/
 void PalFlashEraseSector(uint32_t size, uint32_t startAddr)
 {
-    if (!PAL_NVM_IS_SECTOR_ALIGNED(startAddr)) {
-        PalSysAssertTrap();
-    }
+  if(!PAL_NVM_IS_SECTOR_ALIGNED(startAddr)) {
+    PalSysAssertTrap();
+  }
 
-    /* Offset the address into flash */
-    startAddr += (uint32_t)&__pal_nvm_db_start__;
+  /* Offset the address into flash */
+  startAddr += (uint32_t)&__pal_nvm_db_start__;
 
-    while (size) {
-        MXC_FLC_PageErase(startAddr);
-        startAddr += MXC_FLASH_PAGE_SIZE;
-        size -= MXC_FLASH_PAGE_SIZE;
-    }
+  while(size) {
+    MXC_FLC_PageErase(startAddr);
+    startAddr += MXC_FLASH_PAGE_SIZE;
+    size -= MXC_FLASH_PAGE_SIZE;
+  }
 }
 
 /*************************************************************************************************/
@@ -207,15 +215,15 @@ void PalFlashEraseSector(uint32_t size, uint32_t startAddr)
 /*************************************************************************************************/
 void PalFlashEraseChip(void)
 {
-    uint32_t startAddr, size;
+  uint32_t startAddr, size;
 
-    /* Offset the address into flash */
-    startAddr = (uint32_t)&__pal_nvm_db_start__;
-    size = (uint32_t)&__pal_nvm_db_end__ - (uint32_t)&__pal_nvm_db_start__;
+  /* Offset the address into flash */
+  startAddr = (uint32_t)&__pal_nvm_db_start__;
+  size = (uint32_t)&__pal_nvm_db_end__ - (uint32_t)&__pal_nvm_db_start__;
 
-    while (size) {
-        MXC_FLC_PageErase(startAddr);
-        startAddr += MXC_FLASH_PAGE_SIZE;
-        size -= MXC_FLASH_PAGE_SIZE;
-    }
+  while(size) {
+    MXC_FLC_PageErase(startAddr);
+    startAddr += MXC_FLASH_PAGE_SIZE;
+    size -= MXC_FLASH_PAGE_SIZE;
+  }
 }

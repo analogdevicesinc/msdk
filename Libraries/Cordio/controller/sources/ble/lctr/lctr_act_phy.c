@@ -39,12 +39,12 @@
 /*************************************************************************************************/
 void lctrStoreHostPhyUpdate(lctrConnCtx_t *pCtx)
 {
-    pCtx->allPhys = pLctrConnMsg->phyUpd.allPhys;
-    pCtx->txPhys = pLctrConnMsg->phyUpd.txPhys;
-    pCtx->rxPhys = pLctrConnMsg->phyUpd.rxPhys;
+  pCtx->allPhys = pLctrConnMsg->phyUpd.allPhys;
+  pCtx->txPhys  = pLctrConnMsg->phyUpd.txPhys;
+  pCtx->rxPhys  = pLctrConnMsg->phyUpd.rxPhys;
 
-    /* Update PHY options immediately. */
-    pCtx->bleData.chan.tifsTxPhyOptions = pLctrConnMsg->phyUpd.phyOptions;
+  /* Update PHY options immediately. */
+  pCtx->bleData.chan.tifsTxPhyOptions = pLctrConnMsg->phyUpd.phyOptions;
 }
 
 /*************************************************************************************************/
@@ -56,7 +56,7 @@ void lctrStoreHostPhyUpdate(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrStorePeerPhyReq(lctrConnCtx_t *pCtx)
 {
-    pCtx->phyReq = lctrDataPdu.pld.phyReq;
+  pCtx->phyReq = lctrDataPdu.pld.phyReq;
 }
 
 /*************************************************************************************************/
@@ -68,23 +68,25 @@ void lctrStorePeerPhyReq(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 void lctrStorePeerPhyUpdateInd(lctrConnCtx_t *pCtx)
 {
-    if ((lctrDataPdu.pld.phyUpdInd.masterToSlavePhy == 0) &&
-        (lctrDataPdu.pld.phyUpdInd.slaveToMasterPhy == 0)) {
-        /* No change. */
-        lctrSendConnMsg(pCtx, LCTR_CONN_LLCP_PROC_CMPL);
-        return;
-    }
+  if ((lctrDataPdu.pld.phyUpdInd.masterToSlavePhy == 0) &&
+      (lctrDataPdu.pld.phyUpdInd.slaveToMasterPhy == 0))
+  {
+    /* No change. */
+    lctrSendConnMsg(pCtx, LCTR_CONN_LLCP_PROC_CMPL);
+    return;
+  }
 
-    /* Check for valid instant. */
-    if ((uint16_t)(lctrDataPdu.pld.phyUpdInd.instant - pCtx->eventCounter) >= LCTR_MAX_INSTANT) {
-        /* Consider connection lost. */
-        lctrSendConnMsg(pCtx, LCTR_CONN_TERM_INST_PASSED);
-        return;
-    }
+  /* Check for valid instant. */
+  if ((uint16_t)(lctrDataPdu.pld.phyUpdInd.instant - pCtx->eventCounter) >= LCTR_MAX_INSTANT)
+  {
+    /* Consider connection lost. */
+    lctrSendConnMsg(pCtx, LCTR_CONN_TERM_INST_PASSED);
+    return;
+  }
 
-    /* TODO check for valid PHYs. */
+  /* TODO check for valid PHYs. */
 
-    pCtx->phyUpd = lctrDataPdu.pld.phyUpdInd;
+  pCtx->phyUpd = lctrDataPdu.pld.phyUpdInd;
 }
 
 /*************************************************************************************************/
@@ -99,22 +101,23 @@ void lctrStorePeerPhyUpdateInd(lctrConnCtx_t *pCtx)
 /*************************************************************************************************/
 static void lctrSendPhyPdu(lctrConnCtx_t *pCtx, uint8_t opcode, uint8_t txPhys, uint8_t rxPhys)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_PHY_PDU_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_PHY_PDU_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Assemble control PDU. ***/
+    /*** Assemble control PDU. ***/
 
-        UINT8_TO_BSTREAM(pBuf, opcode);
+    UINT8_TO_BSTREAM(pBuf, opcode);
 
-        UINT8_TO_BSTREAM(pBuf, txPhys);
-        UINT8_TO_BSTREAM(pBuf, rxPhys);
+    UINT8_TO_BSTREAM(pBuf, txPhys);
+    UINT8_TO_BSTREAM(pBuf, rxPhys);
 
-        /*** Queue for transmit. ***/
+    /*** Queue for transmit. ***/
 
-        lctrTxCtrlPduQueue(pCtx, pPdu);
-    }
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -128,14 +131,14 @@ static void lctrSendPhyPdu(lctrConnCtx_t *pCtx, uint8_t opcode, uint8_t txPhys, 
 /*************************************************************************************************/
 void lctrSendPhyReqPdu(lctrConnCtx_t *pCtx, uint8_t txPhys, uint8_t rxPhys)
 {
-    /*** Store PHY request ***/
+  /*** Store PHY request ***/
 
-    pCtx->phyReq.txPhys = txPhys;
-    pCtx->phyReq.rxPhys = rxPhys;
+  pCtx->phyReq.txPhys = txPhys;
+  pCtx->phyReq.rxPhys = rxPhys;
 
-    /*** Send PHY request ***/
+  /*** Send PHY request ***/
 
-    lctrSendPhyPdu(pCtx, LL_PDU_PHY_REQ, txPhys, rxPhys);
+  lctrSendPhyPdu(pCtx, LL_PDU_PHY_REQ, txPhys, rxPhys);
 }
 
 /*************************************************************************************************/
@@ -149,7 +152,7 @@ void lctrSendPhyReqPdu(lctrConnCtx_t *pCtx, uint8_t txPhys, uint8_t rxPhys)
 /*************************************************************************************************/
 void lctrSendPhyRspPdu(lctrConnCtx_t *pCtx, uint8_t txPhys, uint8_t rxPhys)
 {
-    lctrSendPhyPdu(pCtx, LL_PDU_PHY_RSP, txPhys, rxPhys);
+  lctrSendPhyPdu(pCtx, LL_PDU_PHY_RSP, txPhys, rxPhys);
 }
 
 /*************************************************************************************************/
@@ -163,46 +166,52 @@ void lctrSendPhyRspPdu(lctrConnCtx_t *pCtx, uint8_t txPhys, uint8_t rxPhys)
 /*************************************************************************************************/
 void lctrSendPhyUpdateIndPdu(lctrConnCtx_t *pCtx, uint8_t txPhys, uint8_t rxPhys)
 {
-    uint8_t *pPdu;
+  uint8_t *pPdu;
 
-    if ((pPdu = lctrTxCtrlPduAlloc(LL_PHY_UPD_IND_PDU_LEN)) != NULL) {
-        uint8_t *pBuf = pPdu;
+  if ((pPdu = lctrTxCtrlPduAlloc(LL_PHY_UPD_IND_PDU_LEN)) != NULL)
+  {
+    uint8_t *pBuf = pPdu;
 
-        /*** Store PHY update request ***/
+    /*** Store PHY update request ***/
 
-        pCtx->phyUpd.masterToSlavePhy = txPhys;
-        pCtx->phyUpd.slaveToMasterPhy = rxPhys;
+    pCtx->phyUpd.masterToSlavePhy = txPhys;
+    pCtx->phyUpd.slaveToMasterPhy = rxPhys;
 
-        uint16_t ceOffset;
+    uint16_t ceOffset;
 #if (LL_ENABLE_TESTER == TRUE)
-        if (llTesterCb.eventCounterOverride == TRUE) {
-            ceOffset = llTesterCb.eventCounterOffset + 1; /* +1 for next CE */
-        } else
-#endif
-        {
-            ceOffset = LL_MIN_INSTANT + 1 + /* +1 for next CE */
-                       pCtx->maxLatency; /* ensure slave will listen this packet */
-        }
-
-        if (txPhys || rxPhys) {
-            pCtx->phyUpd.instant = pCtx->eventCounter + ceOffset;
-        } else {
-            /* No change. */
-            pCtx->phyUpd.instant = 0;
-            lctrSendConnMsg(pCtx, LCTR_CONN_LLCP_PROC_CMPL);
-        }
-
-        /*** Assemble control PDU. ***/
-
-        UINT8_TO_BSTREAM(pBuf, LL_PDU_PHY_UPDATE_IND);
-        UINT8_TO_BSTREAM(pBuf, txPhys);
-        UINT8_TO_BSTREAM(pBuf, rxPhys);
-        UINT16_TO_BSTREAM(pBuf, pCtx->phyUpd.instant);
-
-        /*** Queue for transmit. ***/
-
-        lctrTxCtrlPduQueue(pCtx, pPdu);
+    if (llTesterCb.eventCounterOverride == TRUE)
+    {
+      ceOffset = llTesterCb.eventCounterOffset + 1;         /* +1 for next CE */
     }
+    else
+#endif
+    {
+      ceOffset = LL_MIN_INSTANT + 1 +                       /* +1 for next CE */
+                 pCtx->maxLatency;                          /* ensure slave will listen this packet */
+    }
+
+    if (txPhys || rxPhys)
+    {
+      pCtx->phyUpd.instant = pCtx->eventCounter + ceOffset;
+    }
+    else
+    {
+      /* No change. */
+      pCtx->phyUpd.instant = 0;
+      lctrSendConnMsg(pCtx, LCTR_CONN_LLCP_PROC_CMPL);
+    }
+
+    /*** Assemble control PDU. ***/
+
+    UINT8_TO_BSTREAM (pBuf, LL_PDU_PHY_UPDATE_IND);
+    UINT8_TO_BSTREAM (pBuf, txPhys);
+    UINT8_TO_BSTREAM (pBuf, rxPhys);
+    UINT16_TO_BSTREAM(pBuf, pCtx->phyUpd.instant);
+
+    /*** Queue for transmit. ***/
+
+    lctrTxCtrlPduQueue(pCtx, pPdu);
+  }
 }
 
 /*************************************************************************************************/
@@ -215,20 +224,26 @@ void lctrSendPhyUpdateIndPdu(lctrConnCtx_t *pCtx, uint8_t txPhys, uint8_t rxPhys
 /*************************************************************************************************/
 void lctrNotifyHostPhyUpdateInd(lctrConnCtx_t *pCtx, uint8_t status)
 {
-    const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
+  const uint16_t handle = LCTR_GET_CONN_HANDLE(pCtx);
 
-    LlPhyUpdateInd_t evt = {
-        .hdr = { .param = handle, .event = LL_PHY_UPDATE_IND, .status = status },
+  LlPhyUpdateInd_t evt =
+  {
+    .hdr =
+    {
+      .param        = handle,
+      .event        = LL_PHY_UPDATE_IND,
+      .status       = status
+    },
 
-        .status = status,
-        .handle = handle,
-    };
+    .status         = status,
+    .handle         = handle,
+  };
 
-    evt.txPhy = pCtx->bleData.chan.txPhy;
-    evt.rxPhy = pCtx->bleData.chan.rxPhy;
+  evt.txPhy = pCtx->bleData.chan.txPhy;
+  evt.rxPhy = pCtx->bleData.chan.rxPhy;
 
-    LL_TRACE_INFO3("### LlEvent ###  LL_PHY_UPDATE_IND, phy=%u, handle=%u, status=%u",
-                   pCtx->bleData.chan.txPhy, handle, status);
+  LL_TRACE_INFO3("### LlEvent ###  LL_PHY_UPDATE_IND, phy=%u, handle=%u, status=%u", 
+    pCtx->bleData.chan.txPhy, handle, status);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }

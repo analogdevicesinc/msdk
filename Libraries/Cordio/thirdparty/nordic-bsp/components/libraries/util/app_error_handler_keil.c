@@ -41,47 +41,43 @@
 #include "compiler_abstraction.h"
 #include "app_error.h"
 
-#if defined(__CORTEX_M) && (__CORTEX_M == 0x04)
-__ASM void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t *p_file_name)
+#if defined (__CORTEX_M) && (__CORTEX_M == 0x04)
+__ASM void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t * p_file_name)
 {
-    PRESERVE8{ TRUE } THUMB
+    PRESERVE8 {TRUE}
+    THUMB
 
-        push{ lr }
+    push {lr}
 
     /* reserve space on stack for error_info_t struct - preserve 8byte stack aligment */
-    sub sp,
-        sp,
-#__cpp(APP_ERROR_ERROR_INFO_SIZE_ALIGNED_8BYTE)
+    sub sp, sp, #__cpp(APP_ERROR_ERROR_INFO_SIZE_ALIGNED_8BYTE)
 
-        /* prepare error_info_t struct */
-        str r0, [sp, #__cpp(APP_ERROR_ERROR_INFO_OFFSET_ERR_CODE)] str r1,
-        [sp, #__cpp(APP_ERROR_ERROR_INFO_OFFSET_LINE_NUM)] str r2,
-        [sp, #__cpp(APP_ERROR_ERROR_INFO_OFFSET_P_FILE_NAME)]
+    /* prepare error_info_t struct */
+    str r0, [sp, #__cpp(APP_ERROR_ERROR_INFO_OFFSET_ERR_CODE)]
+    str r1, [sp, #__cpp(APP_ERROR_ERROR_INFO_OFFSET_LINE_NUM)]
+    str r2, [sp, #__cpp(APP_ERROR_ERROR_INFO_OFFSET_P_FILE_NAME)]
 
-        /* prepare arguments and call function: app_error_fault_handler */
-        mov r0,
-#__cpp(NRF_FAULT_ID_SDK_ERROR) mov r1, lr mov r2,
-        sp
+    /* prepare arguments and call function: app_error_fault_handler */
+    mov r0, #__cpp(NRF_FAULT_ID_SDK_ERROR)
+    mov r1, lr
+    mov r2, sp
 
-            /* call function */
-            bl
-            __cpp(app_error_fault_handler)
+    /* call function */
+    bl __cpp(app_error_fault_handler)
 
-        /* release stack */
-        add sp,
-        sp,
-#__cpp(APP_ERROR_ERROR_INFO_SIZE_ALIGNED_8BYTE)
+    /* release stack */
+    add sp, sp, #__cpp(APP_ERROR_ERROR_INFO_SIZE_ALIGNED_8BYTE)
 
-        pop { pc }
+    pop {pc}
 }
 #elif defined(__CORTEX_M) && (__CORTEX_M == 0x00)
 /* NRF51 implementation is currently not supporting PC readout */
-void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t *p_file_name)
+void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t * p_file_name)
 {
     error_info_t error_info = {
-        .line_num = line_num,
+        .line_num    = line_num,
         .p_file_name = p_file_name,
-        .err_code = error_code,
+        .err_code    = error_code,
     };
     app_error_fault_handler(NRF_FAULT_ID_SDK_ERROR, 0, (uint32_t)(&error_info));
 
@@ -90,3 +86,4 @@ void app_error_handler(ret_code_t error_code, uint32_t line_num, const uint8_t *
 #else
 #error Architecture not supported
 #endif
+

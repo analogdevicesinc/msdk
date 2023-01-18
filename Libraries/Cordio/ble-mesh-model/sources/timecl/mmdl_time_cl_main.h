@@ -27,8 +27,10 @@
 #define MMDL_TIME_CL_MAIN_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
+
 
 /**************************************************************************************************
   Function Declarations

@@ -96,6 +96,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdint.h>
 
+
 /**
  * Salt length.
  */
@@ -136,6 +137,7 @@ extern "C" {
  */
 #define ocrypto_srp_PROOF_BYTES (64)
 
+
 /**@name SRP-6 Password verifier generation
  *
  * A password verifier is generated from a user name and a password. The
@@ -156,9 +158,11 @@ extern "C" {
  * @param      pass     Password.
  * @param      pass_len Length of @p pass.
  */
-void ocrypto_srp_verifier(uint8_t v[ocrypto_srp_VERIFIER_BYTES],
-                          const uint8_t salt[ocrypto_srp_SALT_BYTES], const uint8_t *user,
-                          size_t user_len, const uint8_t *pass, size_t pass_len);
+void ocrypto_srp_verifier(
+    uint8_t v[ocrypto_srp_VERIFIER_BYTES],
+    const uint8_t salt[ocrypto_srp_SALT_BYTES],
+    const uint8_t *user, size_t user_len,
+    const uint8_t *pass, size_t pass_len);
 /**@}*/
 
 /**@name SRP-6 Public key generation
@@ -177,9 +181,10 @@ void ocrypto_srp_verifier(uint8_t v[ocrypto_srp_VERIFIER_BYTES],
  * @param      priv_b Private key.
  * @param      v      Password verifier.
  */
-void ocrypto_srp_public_key(uint8_t pub_b[ocrypto_srp_PUBLIC_KEY_BYTES],
-                            const uint8_t priv_b[ocrypto_srp_SECRET_KEY_BYTES],
-                            const uint8_t v[ocrypto_srp_VERIFIER_BYTES]);
+void ocrypto_srp_public_key(
+    uint8_t pub_b[ocrypto_srp_PUBLIC_KEY_BYTES],
+    const uint8_t priv_b[ocrypto_srp_SECRET_KEY_BYTES],
+    const uint8_t v[ocrypto_srp_VERIFIER_BYTES]);
 /**@}*/
 
 /**@name SRP-6 Session key generation
@@ -200,9 +205,10 @@ void ocrypto_srp_public_key(uint8_t pub_b[ocrypto_srp_PUBLIC_KEY_BYTES],
  * @param      pub_a Client public key.
  * @param      pub_b Server public key.
  */
-void ocrypto_srp_scrambling_parameter(uint8_t u[ocrypto_srp_SCRAMBLING_PARAMETER_BYTES],
-                                      const uint8_t pub_a[ocrypto_srp_PUBLIC_KEY_BYTES],
-                                      const uint8_t pub_b[ocrypto_srp_PUBLIC_KEY_BYTES]);
+void ocrypto_srp_scrambling_parameter(
+    uint8_t u[ocrypto_srp_SCRAMBLING_PARAMETER_BYTES],
+    const uint8_t pub_a[ocrypto_srp_PUBLIC_KEY_BYTES],
+    const uint8_t pub_b[ocrypto_srp_PUBLIC_KEY_BYTES]);
 
 /**
  * SRP-6 Premaster Secret.
@@ -222,11 +228,12 @@ void ocrypto_srp_scrambling_parameter(uint8_t u[ocrypto_srp_SCRAMBLING_PARAMETER
  * @retval 0 If @p pub_a is a legal public key.
  * @retval 1 Otherwise.
  */
-int ocrypto_srp_premaster_secret(uint8_t s[ocrypto_srp_PREMASTER_SECRET_BYTES],
-                                 const uint8_t pub_a[ocrypto_srp_PUBLIC_KEY_BYTES],
-                                 const uint8_t priv_b[ocrypto_srp_SECRET_KEY_BYTES],
-                                 const uint8_t u[ocrypto_srp_SCRAMBLING_PARAMETER_BYTES],
-                                 const uint8_t v[ocrypto_srp_VERIFIER_BYTES]);
+int ocrypto_srp_premaster_secret(
+    uint8_t s[ocrypto_srp_PREMASTER_SECRET_BYTES],
+    const uint8_t pub_a[ocrypto_srp_PUBLIC_KEY_BYTES],
+    const uint8_t priv_b[ocrypto_srp_SECRET_KEY_BYTES],
+    const uint8_t u[ocrypto_srp_SCRAMBLING_PARAMETER_BYTES],
+    const uint8_t v[ocrypto_srp_VERIFIER_BYTES]);
 
 /**
  * SRP-6 SRP Session Key.
@@ -237,8 +244,9 @@ int ocrypto_srp_premaster_secret(uint8_t s[ocrypto_srp_PREMASTER_SECRET_BYTES],
  * @param[out] k Generated SRP session key.
  * @param      s Premaster secret.
  */
-void ocrypto_srp_session_key(uint8_t k[ocrypto_srp_SESSION_KEY_BYTES],
-                             const uint8_t s[ocrypto_srp_PREMASTER_SECRET_BYTES]);
+void ocrypto_srp_session_key(
+    uint8_t k[ocrypto_srp_SESSION_KEY_BYTES],
+    const uint8_t s[ocrypto_srp_PREMASTER_SECRET_BYTES]);
 /**@}*/
 
 /**@name SRP-6 Proof exchange
@@ -265,11 +273,13 @@ void ocrypto_srp_session_key(uint8_t k[ocrypto_srp_SESSION_KEY_BYTES],
  * @param      pub_b    Server public key.
  * @param      k        Session key.
  */
-void ocrypto_srp_proof_m1(uint8_t m1[ocrypto_srp_PROOF_BYTES], const uint8_t *user, size_t user_len,
-                          const uint8_t salt[ocrypto_srp_SALT_BYTES],
-                          const uint8_t pub_a[ocrypto_srp_PUBLIC_KEY_BYTES],
-                          const uint8_t pub_b[ocrypto_srp_PUBLIC_KEY_BYTES],
-                          const uint8_t k[ocrypto_srp_SESSION_KEY_BYTES]);
+void ocrypto_srp_proof_m1(
+    uint8_t m1[ocrypto_srp_PROOF_BYTES],
+    const uint8_t *user, size_t user_len,
+    const uint8_t salt[ocrypto_srp_SALT_BYTES],
+    const uint8_t pub_a[ocrypto_srp_PUBLIC_KEY_BYTES],
+    const uint8_t pub_b[ocrypto_srp_PUBLIC_KEY_BYTES],
+    const uint8_t k[ocrypto_srp_SESSION_KEY_BYTES]);
 
 /**
  * SRP-6 Proof M2 (server to client).
@@ -285,10 +295,11 @@ void ocrypto_srp_proof_m1(uint8_t m1[ocrypto_srp_PROOF_BYTES], const uint8_t *us
  * @param      m1    First proof. Generated with @c srp_proof_m1.
  * @param      k     Session key.
  */
-void ocrypto_srp_proof_m2(uint8_t m2[ocrypto_srp_PROOF_BYTES],
-                          const uint8_t pub_a[ocrypto_srp_PUBLIC_KEY_BYTES],
-                          const uint8_t m1[ocrypto_srp_PROOF_BYTES],
-                          const uint8_t k[ocrypto_srp_SESSION_KEY_BYTES]);
+void ocrypto_srp_proof_m2(
+    uint8_t m2[ocrypto_srp_PROOF_BYTES],
+    const uint8_t pub_a[ocrypto_srp_PUBLIC_KEY_BYTES],
+    const uint8_t m1[ocrypto_srp_PROOF_BYTES],
+    const uint8_t k[ocrypto_srp_SESSION_KEY_BYTES]);
 /**@}*/
 
 #ifdef __cplusplus

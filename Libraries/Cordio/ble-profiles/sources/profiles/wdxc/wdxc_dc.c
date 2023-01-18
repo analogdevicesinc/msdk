@@ -47,16 +47,16 @@ extern wdxcCb_t wdxcCb;
 /*************************************************************************************************/
 void WdxcDcSendDisconnectAndReset(dmConnId_t connId)
 {
-    uint8_t buf[WDX_DC_HDR_LEN];
-    uint8_t *p = buf;
-    uint16_t handle;
+  uint8_t   buf[WDX_DC_HDR_LEN];
+  uint8_t   *p = buf;
+  uint16_t  handle;
 
-    WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
+  WSF_ASSERT(wdxcCb.conn[connId - 1].pHdlList != NULL)
 
-    handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_DC_HDL_IDX];
+  handle = wdxcCb.conn[connId - 1].pHdlList[WDXC_DC_HDL_IDX];
 
-    UINT8_TO_BSTREAM(p, WDX_DC_OP_SET);
-    UINT8_TO_BSTREAM(p, WDX_DC_ID_DISCONNECT_AND_RESET);
+  UINT8_TO_BSTREAM(p, WDX_DC_OP_SET);
+  UINT8_TO_BSTREAM(p, WDX_DC_ID_DISCONNECT_AND_RESET);
 
-    AttcWriteReq(connId, handle, WDX_DC_HDR_LEN, buf);
+  AttcWriteReq(connId, handle, WDX_DC_HDR_LEN, buf);
 }

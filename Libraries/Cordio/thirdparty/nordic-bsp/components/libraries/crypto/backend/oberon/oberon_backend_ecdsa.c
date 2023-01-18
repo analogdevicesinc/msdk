@@ -41,7 +41,8 @@
 #include "sdk_config.h"
 #include "nordic_common.h"
 
-#if NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) && \
+#if NRF_MODULE_ENABLED(NRF_CRYPTO) && \
+    NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) && \
     NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1)
 
 #include <stdint.h>
@@ -55,24 +56,31 @@
 #include "nrf_crypto_eddsa_shared.h"
 #include "ocrypto_ecdsa_p256.h"
 
+
 #define OBERON_HASH_SIZE_FOR_SECP256R1 (256 / 8)
 
-ret_code_t nrf_crypto_backend_secp256r1_sign(void *p_context, void const *p_private_key,
-                                             uint8_t const *p_data, size_t data_size,
-                                             uint8_t *p_signature)
+
+ret_code_t nrf_crypto_backend_secp256r1_sign(
+    void          * p_context,
+    void    const * p_private_key,
+    uint8_t const * p_data,
+    size_t          data_size,
+    uint8_t       * p_signature)
 {
-    int result;
+    int     result;
     uint8_t session_key[32];
 
-    nrf_crypto_backend_secp256r1_private_key_t const *p_prv =
+    nrf_crypto_backend_secp256r1_private_key_t const * p_prv =
         (nrf_crypto_backend_secp256r1_private_key_t const *)p_private_key;
 
-    if (data_size < OBERON_HASH_SIZE_FOR_SECP256R1) {
+    if (data_size < OBERON_HASH_SIZE_FOR_SECP256R1)
+    {
         return NRF_ERROR_CRYPTO_INPUT_LENGTH;
     }
 
     result = nrf_crypto_backend_oberon_ecc_secp256r1_rng(session_key);
-    if (result != NRF_SUCCESS) {
+    if (result != NRF_SUCCESS)
+    {
         return result;
     }
 
@@ -81,25 +89,32 @@ ret_code_t nrf_crypto_backend_secp256r1_sign(void *p_context, void const *p_priv
     return result == 0 ? NRF_SUCCESS : NRF_ERROR_CRYPTO_INTERNAL;
 }
 
-ret_code_t nrf_crypto_backend_secp256r1_verify(void *p_context, void const *p_public_key,
-                                               uint8_t const *p_data, size_t data_size,
-                                               uint8_t const *p_signature)
+
+ret_code_t nrf_crypto_backend_secp256r1_verify(
+    void          * p_context,
+    void    const * p_public_key,
+    uint8_t const * p_data,
+    size_t          data_size,
+    uint8_t const * p_signature)
 {
     int result;
 
-    nrf_crypto_backend_secp256r1_public_key_t const *p_pub =
+    nrf_crypto_backend_secp256r1_public_key_t const * p_pub =
         (nrf_crypto_backend_secp256r1_public_key_t const *)p_public_key;
 
-    if (data_size < OBERON_HASH_SIZE_FOR_SECP256R1) {
+    if (data_size < OBERON_HASH_SIZE_FOR_SECP256R1)
+    {
         return NRF_ERROR_CRYPTO_INPUT_LENGTH;
     }
 
     result = ocrypto_ecdsa_p256_verify_hash(p_signature, p_data, p_pub->key);
 
-    if (result != 0) {
+    if (result != 0)
+    {
         return NRF_ERROR_CRYPTO_ECDSA_INVALID_SIGNATURE;
     }
     return NRF_SUCCESS;
 }
+
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON) && NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_OBERON_ECC_SECP256R1)

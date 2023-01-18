@@ -78,7 +78,8 @@ extern "C" {
  *
  * @ingroup UCL_CBC_AES
  */
-int ucl_aes_cbc(u8 *dst, u8 *src, u32 len, u8 *key, u32 keylen, u8 *IV, int mode);
+int ucl_aes_cbc(u8 *dst, u8 *src, u32 len, u8 *key, u32 keylen, u8 *IV,
+                int mode);
 
 /** <b>AES-CBC Init</b>.
  * Initialize AES CBC Context.
@@ -129,7 +130,8 @@ int ucl_aes_cbc_init(ucl_aes_ctx_t *ctx, u8 *key, u32 keylen, u8 *IV, int mode);
  *
  * @ingroup UCL_CBC_AES 
  */
-int ucl_aes_cbc_core(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len);
+int ucl_aes_cbc_core(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src,
+                     u32 len);
 
 /**<b>AES-CBC Finish</b>.
  * Zeroize the context.
@@ -144,6 +146,7 @@ int ucl_aes_cbc_core(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len);
  * @ingroup UCL_CBC_AES 
  */
 int ucl_aes_cbc_finish(ucl_aes_ctx_t *ctx);
+
 
 /** <b>AES-CBC Core</b>.
  * Process the Data.
@@ -164,7 +167,8 @@ int ucl_aes_cbc_finish(ucl_aes_ctx_t *ctx);
  *          #UCL_AES_BLOCKSIZE
  *
  * @ingroup UCL_CBC_AES */
-int ucl_aes_cbc_core_context(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len);
+  int ucl_aes_cbc_core_context(u8 *dst, ucl_aes_ctx_t *ctx, u8 *src, u32 len);
+
 
 #ifdef __cplusplus
 }

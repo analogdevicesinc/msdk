@@ -42,59 +42,62 @@ API for which can cause Windows threads to block.  Therefore, any FreeRTOS task
 that makes calls to the Windows TCP/IP stack must be assigned the idle priority.
 Note this is only a restriction of the simulated Windows environment - real
 FreeRTOS ports do not have this restriction. */
-#define mainSECURE_SERVER_TASK_PRIORITY (tskIDLE_PRIORITY)
+#define mainSECURE_SERVER_TASK_PRIORITY		( tskIDLE_PRIORITY )
+
 
 /*-----------------------------------------------------------*/
 
 /*
  * The task that implements the server side.
  */
-extern void vSecureTCPServerTask(void *pvParameters);
+extern void vSecureTCPServerTask( void *pvParameters );
 
 /*-----------------------------------------------------------*/
 
-int main(void)
+int main( void )
 {
-    const uint32_t ulLongTime_ms = 250UL;
+const uint32_t ulLongTime_ms = 250UL;
 
-    /* Create the TCP server task.  This will itself create the client task
+	/* Create the TCP server task.  This will itself create the client task
 	once it has completed the wolfSSL initialisation. */
-    xTaskCreate(vSecureTCPServerTask, "Server", configMINIMAL_STACK_SIZE, NULL,
-                mainSECURE_SERVER_TASK_PRIORITY, NULL);
+	xTaskCreate( vSecureTCPServerTask, "Server", configMINIMAL_STACK_SIZE, NULL, mainSECURE_SERVER_TASK_PRIORITY, NULL );
 
-    /* Start the task running. */
-    vTaskStartScheduler();
+	/* Start the task running. */
+	vTaskStartScheduler();
 
-    /* If all is well, the scheduler will now be running, and the following
+	/* If all is well, the scheduler will now be running, and the following
 	line will never be reached.  If the following line does execute, then
 	there was insufficient FreeRTOS heap memory available for the idle and/or
 	timer tasks	to be created.  See the memory management section on the
 	FreeRTOS web site for more details (this is standard text that is not
 	really applicable to the Win32 simulator port). */
-    for (;;) {
-        Sleep(ulLongTime_ms);
-    }
+	for( ;; )
+	{
+		Sleep( ulLongTime_ms );
+	}
 }
 /*-----------------------------------------------------------*/
 
-void vApplicationIdleHook(void)
+void vApplicationIdleHook( void )
 {
-    const unsigned long ulMSToSleep = 5;
+const unsigned long ulMSToSleep = 5;
 
-    /* This function is called on each cycle of the idle task if
+	/* This function is called on each cycle of the idle task if
 	configUSE_IDLE_HOOK is set to 1 in FreeRTOSConfig.h.  Sleep to reduce CPU
 	load. */
-    Sleep(ulMSToSleep);
+	Sleep( ulMSToSleep );
 }
 /*-----------------------------------------------------------*/
 
-void vAssertCalled(void)
+void vAssertCalled( void )
 {
-    const unsigned long ulLongSleep = 1000UL;
+const unsigned long ulLongSleep = 1000UL;
 
-    taskDISABLE_INTERRUPTS();
-    for (;;) {
-        Sleep(ulLongSleep);
-    }
+	taskDISABLE_INTERRUPTS();
+	for( ;; )
+	{
+		Sleep( ulLongSleep );
+	}
 }
 /*-----------------------------------------------------------*/
+

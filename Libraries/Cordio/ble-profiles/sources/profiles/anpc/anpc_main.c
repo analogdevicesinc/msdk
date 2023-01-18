@@ -41,36 +41,63 @@
 /* Characteristics for discovery */
 
 /*! Supported new alert category */
-static const attcDiscChar_t anpcAnsSnac = { attSnacChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t anpcAnsSnac =
+{
+  attSnacChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! New alert */
-static const attcDiscChar_t anpcAnsNa = { attNaChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t anpcAnsNa =
+{
+  attNaChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! New alert CCC descriptor */
-static const attcDiscChar_t anpcAnsNaCcc = { attCliChCfgUuid,
-                                             ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR };
+static const attcDiscChar_t anpcAnsNaCcc =
+{
+  attCliChCfgUuid,
+  ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR
+};
 
 /*! Supported unread alert category */
-static const attcDiscChar_t anpcAnsSuac = { attSuacChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t anpcAnsSuac =
+{
+  attSuacChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! Unread alert status */
-static const attcDiscChar_t anpcAnsUas = { attUasChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t anpcAnsUas =
+{
+  attUasChUuid,
+  ATTC_SET_REQUIRED
+};
 /*! Unread alert status CCC descriptor */
-static const attcDiscChar_t anpcAnsUasCcc = { attCliChCfgUuid,
-                                              ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR };
+static const attcDiscChar_t anpcAnsUasCcc =
+{
+  attCliChCfgUuid,
+  ATTC_SET_REQUIRED | ATTC_SET_DESCRIPTOR
+};
 
 /*! Alert notification control point */
-static const attcDiscChar_t anpcAnsAncp = { attAncpChUuid, ATTC_SET_REQUIRED };
+static const attcDiscChar_t anpcAnsAncp =
+{
+  attAncpChUuid,
+  ATTC_SET_REQUIRED
+};
 
 /*! List of characteristics to be discovered; order matches handle index enumeration  */
-static const attcDiscChar_t *anpcAnsDiscCharList[] = {
-    &anpcAnsSnac, /*! Supported new alert category */
-    &anpcAnsNa, /*! New alert */
-    &anpcAnsNaCcc, /*! New alert CCC descriptor */
-    &anpcAnsSuac, /*! Supported unread alert category */
-    &anpcAnsUas, /*! Unread alert status */
-    &anpcAnsUasCcc, /*! Unread alert status CCC descriptor */
-    &anpcAnsAncp /*! Alert notification control point */
+static const attcDiscChar_t *anpcAnsDiscCharList[] =
+{
+  &anpcAnsSnac,                   /*! Supported new alert category */
+  &anpcAnsNa,                     /*! New alert */
+  &anpcAnsNaCcc,                  /*! New alert CCC descriptor */
+  &anpcAnsSuac,                   /*! Supported unread alert category */
+  &anpcAnsUas,                    /*! Unread alert status */
+  &anpcAnsUasCcc,                 /*! Unread alert status CCC descriptor */
+  &anpcAnsAncp                    /*! Alert notification control point */
 };
 
 /* sanity check:  make sure handle list length matches characteristic list length */
@@ -91,8 +118,8 @@ WSF_CT_ASSERT(ANPC_ANS_HDL_LIST_LEN == ((sizeof(anpcAnsDiscCharList) / sizeof(at
 /*************************************************************************************************/
 void AnpcAnsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
-    AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *)attAnsSvcUuid, ANPC_ANS_HDL_LIST_LEN,
-                       (attcDiscChar_t **)anpcAnsDiscCharList, pHdlList);
+  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) attAnsSvcUuid,
+                     ANPC_ANS_HDL_LIST_LEN, (attcDiscChar_t **) anpcAnsDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/
@@ -109,13 +136,14 @@ void AnpcAnsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 /*************************************************************************************************/
 void AnpcAnsControl(dmConnId_t connId, uint16_t handle, uint8_t command, uint8_t catId)
 {
-    uint8_t buf[2];
+  uint8_t buf[2];
 
-    if (handle != ATT_HANDLE_NONE) {
-        buf[0] = command;
-        buf[1] = catId;
-        AttcWriteReq(connId, handle, sizeof(buf), buf);
-    }
+  if (handle != ATT_HANDLE_NONE)
+  {
+    buf[0] = command;
+    buf[1] = catId;
+    AttcWriteReq(connId, handle, sizeof(buf), buf);
+  }
 }
 
 /*************************************************************************************************/
@@ -133,69 +161,78 @@ void AnpcAnsControl(dmConnId_t connId, uint16_t handle, uint8_t command, uint8_t
 /*************************************************************************************************/
 uint8_t AnpcAnsValueUpdate(uint16_t *pHdlList, attEvt_t *pMsg)
 {
-    uint8_t *p;
-    uint16_t catIdMask;
-    uint8_t catId;
-    uint8_t numAlert;
-    uint8_t status = ATT_SUCCESS;
-    uint8_t buf[19];
+  uint8_t   *p;
+  uint16_t  catIdMask;
+  uint8_t   catId;
+  uint8_t   numAlert;
+  uint8_t   status = ATT_SUCCESS;
+  uint8_t   buf[19];
 
-    /* Suppress unused variable compile warning */
-    (void)catIdMask;
-    (void)catId;
-    (void)numAlert;
+  /* Suppress unused variable compile warning */
+  (void)catIdMask; (void)catId; (void)numAlert;
 
-    /* new alert */
-    if (pMsg->handle == pHdlList[ANPC_ANS_NA_HDL_IDX]) {
-        /* parse value */
-        p = pMsg->pValue;
-        BSTREAM_TO_UINT8(catId, p);
-        BSTREAM_TO_UINT8(numAlert, p);
+  /* new alert */
+  if (pMsg->handle == pHdlList[ANPC_ANS_NA_HDL_IDX])
+  {
+    /* parse value */
+    p = pMsg->pValue;
+    BSTREAM_TO_UINT8(catId, p);
+    BSTREAM_TO_UINT8(numAlert, p);
 
-        /* null terminate string before printing */
-        memcpy(buf, p, pMsg->valueLen - 2);
-        buf[pMsg->valueLen - 2] = '\0';
+    /* null terminate string before printing */
+    memcpy(buf, p, pMsg->valueLen - 2);
+    buf[pMsg->valueLen - 2] = '\0';
 
-        APP_TRACE_INFO2("New alert cat:%d num:%d", catId, numAlert);
-        APP_TRACE_INFO1("Msg:%s", buf);
+    APP_TRACE_INFO2("New alert cat:%d num:%d", catId, numAlert);
+    APP_TRACE_INFO1("Msg:%s", buf);
+  }
+  /* unread alert status */
+  else if (pMsg->handle == pHdlList[ANPC_ANS_UAS_HDL_IDX])
+  {
+    /* parse value */
+    p = pMsg->pValue;
+    BSTREAM_TO_UINT8(catId, p);
+    BSTREAM_TO_UINT8(numAlert, p);
+
+    APP_TRACE_INFO2("Unread alert status cat:%d num:%d", catId, numAlert);
+  }
+  /* supported new alert category */
+  else if (pMsg->handle == pHdlList[ANPC_ANS_SNAC_HDL_IDX])
+  {
+    /* parse value */
+    p = pMsg->pValue;
+    if (pMsg->valueLen == 1)
+    {
+      BSTREAM_TO_UINT8(catIdMask, p);
     }
-    /* unread alert status */
-    else if (pMsg->handle == pHdlList[ANPC_ANS_UAS_HDL_IDX]) {
-        /* parse value */
-        p = pMsg->pValue;
-        BSTREAM_TO_UINT8(catId, p);
-        BSTREAM_TO_UINT8(numAlert, p);
-
-        APP_TRACE_INFO2("Unread alert status cat:%d num:%d", catId, numAlert);
-    }
-    /* supported new alert category */
-    else if (pMsg->handle == pHdlList[ANPC_ANS_SNAC_HDL_IDX]) {
-        /* parse value */
-        p = pMsg->pValue;
-        if (pMsg->valueLen == 1) {
-            BSTREAM_TO_UINT8(catIdMask, p);
-        } else {
-            BSTREAM_TO_UINT16(catIdMask, p);
-        }
-
-        APP_TRACE_INFO1("Supported new alert category: 0x%04x", catIdMask);
-    }
-    /* supported unread alert category */
-    else if (pMsg->handle == pHdlList[ANPC_ANS_SUAC_HDL_IDX]) {
-        /* parse value */
-        p = pMsg->pValue;
-        if (pMsg->valueLen == 1) {
-            BSTREAM_TO_UINT8(catIdMask, p);
-        } else {
-            BSTREAM_TO_UINT16(catIdMask, p);
-        }
-
-        APP_TRACE_INFO1("Supported unread alert category: 0x%04x", catIdMask);
-    }
-    /* handle not found in list */
-    else {
-        status = ATT_ERR_NOT_FOUND;
+    else
+    {
+      BSTREAM_TO_UINT16(catIdMask, p);
     }
 
-    return status;
+    APP_TRACE_INFO1("Supported new alert category: 0x%04x", catIdMask);
+  }
+  /* supported unread alert category */
+  else if (pMsg->handle == pHdlList[ANPC_ANS_SUAC_HDL_IDX])
+  {
+    /* parse value */
+    p = pMsg->pValue;
+    if (pMsg->valueLen == 1)
+    {
+      BSTREAM_TO_UINT8(catIdMask, p);
+    }
+    else
+    {
+      BSTREAM_TO_UINT16(catIdMask, p);
+    }
+
+    APP_TRACE_INFO1("Supported unread alert category: 0x%04x", catIdMask);
+  }
+  /* handle not found in list */
+  else
+  {
+    status = ATT_ERR_NOT_FOUND;
+  }
+
+  return status;
 }

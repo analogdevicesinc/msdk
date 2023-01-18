@@ -58,7 +58,10 @@
 #include "nrf_assert.h"
 #include <drivers/nrfx_common.h>
 
+
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256)
+
 
 #if defined(NRF_CRYPTO_BACKEND_CC310_BL_HASH_LITTLE_ENDIAN_DIGEST_ENABLED)
 
@@ -66,60 +69,64 @@
 
 #endif // defined(NRF_CRYPTO_BACKEND_CC310_BL_HASH_LITTLE_ENDIAN_DIGEST_ENABLED)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER)
 
-__ALIGN(4) static uint8_t m_hash_buffer[NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_SIZE];
+__ALIGN(4) static uint8_t  m_hash_buffer[NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_SIZE];
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER)
+
 
 static ret_code_t hash_result_get(CRYSError_t error)
 {
     ret_code_t ret_val;
 
-    switch (error) {
-    case CRYS_OK:
-        ret_val = NRF_SUCCESS;
-        break;
+    switch (error)
+    {
+        case CRYS_OK:
+            ret_val = NRF_SUCCESS;
+            break;
 
-    case CRYS_HASH_INVALID_USER_CONTEXT_POINTER_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_CONTEXT_NULL;
-        break;
+        case CRYS_HASH_INVALID_USER_CONTEXT_POINTER_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_CONTEXT_NULL;
+            break;
 
-    case CRYS_HASH_ILLEGAL_OPERATION_MODE_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE;
-        break;
+        case CRYS_HASH_ILLEGAL_OPERATION_MODE_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE;
+            break;
 
-    case CRYS_HASH_USER_CONTEXT_CORRUPTED_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED;
-        break;
+        case CRYS_HASH_USER_CONTEXT_CORRUPTED_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_CONTEXT_NOT_INITIALIZED;
+            break;
 
-    // May be added to specialized errors for hash.
-    case CRYS_HASH_LAST_BLOCK_ALREADY_PROCESSED_ERROR:
-        ret_val = NRF_ERROR_CRYPTO_INTERNAL;
-        break;
+        // May be added to specialized errors for hash.
+        case CRYS_HASH_LAST_BLOCK_ALREADY_PROCESSED_ERROR:
+            ret_val = NRF_ERROR_CRYPTO_INTERNAL;
+            break;
 
-    case CRYS_HASH_IS_NOT_SUPPORTED:
-        ret_val = NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE;
-        break;
+        case CRYS_HASH_IS_NOT_SUPPORTED:
+            ret_val = NRF_ERROR_CRYPTO_FEATURE_UNAVAILABLE;
+            break;
 
-    default:
-        ret_val = NRF_ERROR_CRYPTO_INTERNAL;
-        break;
+        default:
+            ret_val = NRF_ERROR_CRYPTO_INTERNAL;
+            break;
     }
 
     return ret_val;
 }
 
-static ret_code_t cc310_bl_backend_hash_sha256_init(void *const p_context)
+
+static ret_code_t cc310_bl_backend_hash_sha256_init(void * const p_context)
 {
-    uint32_t ret_val;
+    uint32_t    ret_val;
     CRYSError_t crys_error;
 
     // Limited parameter testing on this level.
     // This has been done on upper level.
 
-    nrf_cc310_bl_hash_context_sha256_t *const p_backend_context =
-        &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
+    nrf_cc310_bl_hash_context_sha256_t * const p_backend_context
+        = &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
 
     crys_error = nrf_cc310_bl_hash_sha256_init(p_backend_context);
 
@@ -128,21 +135,23 @@ static ret_code_t cc310_bl_backend_hash_sha256_init(void *const p_context)
     return ret_val;
 }
 
-static uint32_t cc310_bl_backend_hash_sha256_update(void *const p_context, uint8_t const *p_data,
-                                                    size_t size)
+
+static uint32_t cc310_bl_backend_hash_sha256_update(void      * const p_context,
+                                                    uint8_t   const * p_data,
+                                                    size_t            size)
 {
-    ret_code_t ret_val;
+    ret_code_t  ret_val;
     CRYSError_t crys_error;
-    uint32_t cur_size;
-    uint32_t size_left;
-    uint8_t *p_cur;
-    bool mutex_locked;
+    uint32_t    cur_size;
+    uint32_t    size_left;
+    uint8_t   * p_cur;
+    bool        mutex_locked;
 
     // Limited parameter testing on this level.
     // This has been done on upper level.
 
-    nrf_cc310_bl_hash_context_sha256_t *const p_backend_context =
-        &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
+    nrf_cc310_bl_hash_context_sha256_t * const p_backend_context
+        = &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
 
     p_cur = (uint8_t *)p_data;
     size_left = size;
@@ -152,14 +161,13 @@ static uint32_t cc310_bl_backend_hash_sha256_update(void *const p_context, uint8
 
     cc310_bl_backend_enable();
 
-#if defined(NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED) && \
-    (NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED == 1)
+#if defined (NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED) && (NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED == 1)
 
-    do {
+    do
+    {
         // Copy a block from FLASH to RAM for use in CC310
         cur_size = (size_left > NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_SIZE) ?
-                       NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_SIZE :
-                       size_left;
+            NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_SIZE : size_left;
 
         // Copy from FLASH to ram
         memcpy(m_hash_buffer, p_cur, cur_size);
@@ -170,24 +178,24 @@ static uint32_t cc310_bl_backend_hash_sha256_update(void *const p_context, uint8
         size_left -= cur_size;
         p_cur += cur_size;
 
-    } while (crys_error == SASI_OK && size_left > 0);
+    } while(crys_error == SASI_OK && size_left > 0);
 
-#elif defined(NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED) && \
-    (NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED == 0)
+#elif defined(NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED) && (NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED == 0) 
 
     // Verify that the data is in RAM (required for CC310 hashing)
     VERIFY_TRUE(nrfx_is_in_ram(p_data), NRF_ERROR_CRYPTO_INPUT_LOCATION);
 
-    do {
+    do
+    {
         // Get the largest block that can sent to the CC310 through DMA
-        cur_size = (size_left > CC310_MAX_LENGTH_DMA_OPERATIONS) ? CC310_MAX_LENGTH_DMA_OPERATIONS :
-                                                                   size_left;
+        cur_size = (size_left > CC310_MAX_LENGTH_DMA_OPERATIONS) ?
+            CC310_MAX_LENGTH_DMA_OPERATIONS : size_left;
 
         crys_error = nrf_cc310_bl_hash_sha256_update(p_backend_context, p_cur, cur_size);
 
         size_left -= cur_size;
         p_cur += cur_size;
-    } while (crys_error == SASI_OK && size_left > 0);
+    } while(crys_error == SASI_OK && size_left > 0);
 
 #else
 
@@ -196,7 +204,7 @@ static uint32_t cc310_bl_backend_hash_sha256_update(void *const p_context, uint8
     UNUSED_PARAMETER(size_left);
     UNUSED_PARAMETER(p_cur);
 
-#warning NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
+    #warning NRF_CRYPTO_BACKEND_CC310_BL_HASH_AUTOMATIC_RAM_BUFFER_ENABLED define not found in sdk_config.h (Is the sdk_config.h valid?).
 
 #endif
 
@@ -209,22 +217,26 @@ static uint32_t cc310_bl_backend_hash_sha256_update(void *const p_context, uint8
     return ret_val;
 }
 
-static uint32_t cc310_bl_backend_hash_sha256_finalize(void *const p_context, uint8_t *p_digest,
-                                                      size_t *const p_digest_size)
+
+static uint32_t cc310_bl_backend_hash_sha256_finalize(void    * const p_context,
+                                                      uint8_t        * p_digest,
+                                                      size_t   * const p_digest_size)
 {
-    ret_code_t ret_val;
+    ret_code_t  ret_val;
     CRYSError_t crys_error;
-    bool mutex_locked;
+    bool        mutex_locked;
 
     // Limited parameter testing on this level.
     // This has been done on upper level.
 
-    nrf_cc310_bl_hash_context_sha256_t *const p_backend_context =
-        &(((nrf_crypto_backend_hash_sha256_context_t *)p_context)->context);
+    nrf_cc310_bl_hash_context_sha256_t * const p_backend_context
+        = &(((nrf_crypto_backend_hash_sha256_context_t * )p_context)->context);
 
-    nrf_cc310_bl_hash_digest_sha256_t *p_int_digest = (nrf_cc310_bl_hash_digest_sha256_t *)p_digest;
+    nrf_cc310_bl_hash_digest_sha256_t * p_int_digest
+        = (nrf_cc310_bl_hash_digest_sha256_t *)p_digest;
 
-    if (NRF_CRYPTO_HASH_SIZE_SHA256 > *p_digest_size) {
+    if (NRF_CRYPTO_HASH_SIZE_SHA256 > *p_digest_size)
+    {
         return NRF_ERROR_CRYPTO_OUTPUT_LENGTH;
     }
 
@@ -242,19 +254,21 @@ static uint32_t cc310_bl_backend_hash_sha256_finalize(void *const p_context, uin
 
     ret_val = hash_result_get(crys_error);
 
-    if (ret_val == NRF_SUCCESS) {
+    if (ret_val == NRF_SUCCESS)
+    {
         *p_digest_size = NRF_CRYPTO_HASH_SIZE_SHA256;
     }
 
     return ret_val;
 }
 
-const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha256_info = {
-    .init_fn = cc310_bl_backend_hash_sha256_init,
-    .update_fn = cc310_bl_backend_hash_sha256_update,
-    .finalize_fn = cc310_bl_backend_hash_sha256_finalize,
-    .digest_size = NRF_CRYPTO_HASH_SIZE_SHA256,
-    .hash_mode = NRF_CRYPTO_HASH_MODE_SHA256
+const nrf_crypto_hash_info_t g_nrf_crypto_hash_sha256_info =
+{
+    .init_fn        = cc310_bl_backend_hash_sha256_init,
+    .update_fn      = cc310_bl_backend_hash_sha256_update,
+    .finalize_fn    = cc310_bl_backend_hash_sha256_finalize,
+    .digest_size    = NRF_CRYPTO_HASH_SIZE_SHA256,
+    .hash_mode      = NRF_CRYPTO_HASH_MODE_SHA256
 };
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_CC310_BL_HASH_SHA256)

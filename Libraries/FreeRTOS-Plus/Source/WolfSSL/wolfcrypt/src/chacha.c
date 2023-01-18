@@ -24,8 +24,9 @@
  *  Public domain.
  */
 
+
 #ifdef HAVE_CONFIG_H
-#include <config.h>
+    #include <config.h>
 #endif
 
 #include <wolfssl/wolfcrypt/settings.h>
@@ -36,50 +37,47 @@
 #include <wolfssl/wolfcrypt/error-crypt.h>
 #include <wolfssl/wolfcrypt/logging.h>
 #ifdef NO_INLINE
-#include <wolfssl/wolfcrypt/misc.h>
+    #include <wolfssl/wolfcrypt/misc.h>
 #else
-#include <wolfcrypt/src/misc.c>
+    #include <wolfcrypt/src/misc.c>
 #endif
 
 #ifdef CHACHA_AEAD_TEST
-#include <stdio.h>
+    #include <stdio.h>
 #endif
 
 #ifdef BIG_ENDIAN_ORDER
-#define LITTLE32(x) ByteReverseWord32(x)
+    #define LITTLE32(x) ByteReverseWord32(x)
 #else
-#define LITTLE32(x) (x)
+    #define LITTLE32(x) (x)
 #endif
 
 /* Number of rounds */
-#define ROUNDS 20
+#define ROUNDS  20
 
 #define U32C(v) (v##U)
-#define U32V(v) ((word32)(v)&U32C(0xFFFFFFFF))
-#define U8TO32_LITTLE(p) LITTLE32(((word32 *)(p))[0])
+#define U32V(v) ((word32)(v) & U32C(0xFFFFFFFF))
+#define U8TO32_LITTLE(p) LITTLE32(((word32*)(p))[0])
 
-#define ROTATE(v, c) rotlFixed(v, c)
-#define XOR(v, w) ((v) ^ (w))
-#define PLUS(v, w) (U32V((v) + (w)))
-#define PLUSONE(v) (PLUS((v), 1))
+#define ROTATE(v,c) rotlFixed(v, c)
+#define XOR(v,w)    ((v) ^ (w))
+#define PLUS(v,w)   (U32V((v) + (w)))
+#define PLUSONE(v)  (PLUS((v),1))
 
-#define QUARTERROUND(a, b, c, d)        \
-    x[a] = PLUS(x[a], x[b]);            \
-    x[d] = ROTATE(XOR(x[d], x[a]), 16); \
-    x[c] = PLUS(x[c], x[d]);            \
-    x[b] = ROTATE(XOR(x[b], x[c]), 12); \
-    x[a] = PLUS(x[a], x[b]);            \
-    x[d] = ROTATE(XOR(x[d], x[a]), 8);  \
-    x[c] = PLUS(x[c], x[d]);            \
-    x[b] = ROTATE(XOR(x[b], x[c]), 7);
+#define QUARTERROUND(a,b,c,d) \
+  x[a] = PLUS(x[a],x[b]); x[d] = ROTATE(XOR(x[d],x[a]),16); \
+  x[c] = PLUS(x[c],x[d]); x[b] = ROTATE(XOR(x[b],x[c]),12); \
+  x[a] = PLUS(x[a],x[b]); x[d] = ROTATE(XOR(x[d],x[a]), 8); \
+  x[c] = PLUS(x[c],x[d]); x[b] = ROTATE(XOR(x[b],x[c]), 7);
+
 
 /**
   * Set up iv(nonce). Earlier versions used 64 bits instead of 96, this version
   * uses the typical AEAD 96 bit nonce and can do record sizes of 256 GB.
   */
-int wc_Chacha_SetIV(ChaCha *ctx, const byte *inIv, word32 counter)
+int wc_Chacha_SetIV(ChaCha* ctx, const byte* inIv, word32 counter)
 {
-    word32 temp[3]; /* used for alignment of memory */
+    word32 temp[3];       /* used for alignment of memory */
 
 #ifdef CHACHA_AEAD_TEST
     word32 i;
@@ -104,17 +102,17 @@ int wc_Chacha_SetIV(ChaCha *ctx, const byte *inIv, word32 counter)
 }
 
 /* "expand 32-byte k" as unsigned 32 byte */
-static const word32 sigma[4] = { 0x61707865, 0x3320646e, 0x79622d32, 0x6b206574 };
+static const word32 sigma[4] = {0x61707865, 0x3320646e, 0x79622d32, 0x6b206574};
 /* "expand 16-byte k" as unsigned 16 byte */
-static const word32 tau[4] = { 0x61707865, 0x3120646e, 0x79622d36, 0x6b206574 };
+static const word32 tau[4] = {0x61707865, 0x3120646e, 0x79622d36, 0x6b206574};
 
 /**
   * Key setup. 8 word iv (nonce)
   */
-int wc_Chacha_SetKey(ChaCha *ctx, const byte *key, word32 keySz)
+int wc_Chacha_SetKey(ChaCha* ctx, const byte* key, word32 keySz)
 {
-    const word32 *constants;
-    const byte *k;
+    const word32* constants;
+    const byte*   k;
 
 #ifdef XSTREAM_ALIGN
     word32 alignKey[8];
@@ -130,8 +128,9 @@ int wc_Chacha_SetKey(ChaCha *ctx, const byte *key, word32 keySz)
     if ((wolfssl_word)key % 4) {
         WOLFSSL_MSG("wc_ChachaSetKey unaligned key");
         XMEMCPY(alignKey, key, keySz);
-        k = (byte *)alignKey;
-    } else {
+        k = (byte*)alignKey;
+    }
+    else {
         k = key;
     }
 #else
@@ -144,29 +143,30 @@ int wc_Chacha_SetKey(ChaCha *ctx, const byte *key, word32 keySz)
     for (i = 0; i < keySz; i++) {
         printf("%02x", key[i]);
         if ((i + 1) % 8 == 0)
-            printf("\n");
+           printf("\n");
     }
     printf("\n\n");
 #endif
 
-    ctx->X[4] = U8TO32_LITTLE(k + 0);
-    ctx->X[5] = U8TO32_LITTLE(k + 4);
-    ctx->X[6] = U8TO32_LITTLE(k + 8);
+    ctx->X[4] = U8TO32_LITTLE(k +  0);
+    ctx->X[5] = U8TO32_LITTLE(k +  4);
+    ctx->X[6] = U8TO32_LITTLE(k +  8);
     ctx->X[7] = U8TO32_LITTLE(k + 12);
     if (keySz == 32) {
         k += 16;
         constants = sigma;
-    } else {
+    }
+    else {
         constants = tau;
     }
-    ctx->X[8] = U8TO32_LITTLE(k + 0);
-    ctx->X[9] = U8TO32_LITTLE(k + 4);
-    ctx->X[10] = U8TO32_LITTLE(k + 8);
+    ctx->X[ 8] = U8TO32_LITTLE(k +  0);
+    ctx->X[ 9] = U8TO32_LITTLE(k +  4);
+    ctx->X[10] = U8TO32_LITTLE(k +  8);
     ctx->X[11] = U8TO32_LITTLE(k + 12);
-    ctx->X[0] = constants[0];
-    ctx->X[1] = constants[1];
-    ctx->X[2] = constants[2];
-    ctx->X[3] = constants[3];
+    ctx->X[ 0] = constants[0];
+    ctx->X[ 1] = constants[1];
+    ctx->X[ 2] = constants[2];
+    ctx->X[ 3] = constants[3];
 
     return 0;
 }
@@ -184,14 +184,14 @@ static INLINE void wc_Chacha_wordtobyte(word32 output[16], const word32 input[16
     }
 
     for (i = (ROUNDS); i > 0; i -= 2) {
-        QUARTERROUND(0, 4, 8, 12)
-        QUARTERROUND(1, 5, 9, 13)
+        QUARTERROUND(0, 4,  8, 12)
+        QUARTERROUND(1, 5,  9, 13)
         QUARTERROUND(2, 6, 10, 14)
         QUARTERROUND(3, 7, 11, 15)
         QUARTERROUND(0, 5, 10, 15)
         QUARTERROUND(1, 6, 11, 12)
-        QUARTERROUND(2, 7, 8, 13)
-        QUARTERROUND(3, 4, 9, 14)
+        QUARTERROUND(2, 7,  8, 13)
+        QUARTERROUND(3, 4,  9, 14)
     }
 
     for (i = 0; i < 16; i++) {
@@ -206,16 +206,16 @@ static INLINE void wc_Chacha_wordtobyte(word32 output[16], const word32 input[16
 /**
   * Encrypt a stream of bytes
   */
-static void wc_Chacha_encrypt_bytes(ChaCha *ctx, const byte *m, byte *c, word32 bytes)
+static void wc_Chacha_encrypt_bytes(ChaCha* ctx, const byte* m, byte* c,
+                                 word32 bytes)
 {
-    byte *output;
+    byte*  output;
     word32 temp[16]; /* used to make sure aligned */
     word32 i;
 
-    output = (byte *)temp;
+    output = (byte*)temp;
 
-    if (!bytes)
-        return;
+    if (!bytes) return;
     for (;;) {
         wc_Chacha_wordtobyte(temp, ctx->X);
         ctx->X[12] = PLUSONE(ctx->X[12]);
@@ -237,7 +237,7 @@ static void wc_Chacha_encrypt_bytes(ChaCha *ctx, const byte *m, byte *c, word32 
 /**
   * API to encrypt/decrypt a message of any size.
   */
-int wc_Chacha_Process(ChaCha *ctx, byte *output, const byte *input, word32 msglen)
+int wc_Chacha_Process(ChaCha* ctx, byte* output, const byte* input, word32 msglen)
 {
     if (ctx == NULL)
         return BAD_FUNC_ARG;
@@ -248,3 +248,4 @@ int wc_Chacha_Process(ChaCha *ctx, byte *output, const byte *input, word32 msgle
 }
 
 #endif /* HAVE_CHACHA*/
+

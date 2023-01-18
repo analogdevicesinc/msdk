@@ -42,8 +42,12 @@
 **************************************************************************************************/
 
 /* Component function interface */
-static const dmFcnIf_t dmSecLescFcnIf = { dmEmptyReset, (dmHciHandler_t)dmEmptyHandler,
-                                          (dmMsgHandler_t)dmSecLescMsgHandler };
+static const dmFcnIf_t dmSecLescFcnIf =
+{
+  dmEmptyReset,
+  (dmHciHandler_t) dmEmptyHandler,
+  (dmMsgHandler_t) dmSecLescMsgHandler
+};
 
 /* OOB random value */
 static uint8_t *dmSecOobRand;
@@ -62,26 +66,29 @@ static secEccKey_t localEccKey;
 /*************************************************************************************************/
 void dmSecLescMsgHandler(dmSecMsg_t *pMsg)
 {
-    if (pMsg->hdr.event == DM_SEC_MSG_ECC_KEY_CNF) {
-        pMsg->hdr.event = DM_SEC_ECC_KEY_IND;
-        (*dmCb.cback)((dmEvt_t *)pMsg);
-    } else if (pMsg->hdr.event == DM_SEC_MSG_CALC_OOB_CNF) {
-        dmSecOobCalcIndEvt_t oobEvt;
-        secCmacMsg_t *pCmacMsg = (secCmacMsg_t *)pMsg;
+  if (pMsg->hdr.event == DM_SEC_MSG_ECC_KEY_CNF)
+  {
+    pMsg->hdr.event = DM_SEC_ECC_KEY_IND;
+    (*dmCb.cback)((dmEvt_t *) pMsg);
+  }
+  else if (pMsg->hdr.event == DM_SEC_MSG_CALC_OOB_CNF)
+  {
+    dmSecOobCalcIndEvt_t oobEvt;
+    secCmacMsg_t *pCmacMsg = (secCmacMsg_t *) pMsg;
 
-        WsfBufFree(pCmacMsg->pPlainText);
+    WsfBufFree(pCmacMsg->pPlainText);
 
-        /* Notify the application of the local confirm and random values */
-        oobEvt.hdr.event = DM_SEC_CALC_OOB_IND;
-        oobEvt.hdr.status = HCI_SUCCESS;
+    /* Notify the application of the local confirm and random values */
+    oobEvt.hdr.event = DM_SEC_CALC_OOB_IND;
+    oobEvt.hdr.status = HCI_SUCCESS;
 
-        Calc128Cpy(oobEvt.confirm, ((secAes_t *)pMsg)->pCiphertext);
-        Calc128Cpy(oobEvt.random, dmSecOobRand);
+    Calc128Cpy(oobEvt.confirm, ((secAes_t *) pMsg)->pCiphertext);
+    Calc128Cpy(oobEvt.random, dmSecOobRand);
 
-        WsfBufFree(dmSecOobRand);
+    WsfBufFree(dmSecOobRand);
 
-        (*dmCb.cback)((dmEvt_t *)&oobEvt);
-    }
+    (*dmCb.cback)((dmEvt_t *) &oobEvt);
+  }
 }
 
 /*************************************************************************************************/
@@ -93,17 +100,18 @@ void dmSecLescMsgHandler(dmSecMsg_t *pMsg)
 /*************************************************************************************************/
 void DmSecKeypressReq(dmConnId_t connId, uint8_t keypressType)
 {
-    smpDmKeypress_t *pMsg;
+  smpDmKeypress_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(smpDmKeypress_t))) != NULL) {
-        /* Execution an an SMP state machine event to send the keypress to the peer device */
-        pMsg->keypress = keypressType;
-        pMsg->hdr.param = connId;
+  if ((pMsg = WsfMsgAlloc(sizeof(smpDmKeypress_t))) != NULL)
+  {
+    /* Execution an an SMP state machine event to send the keypress to the peer device */
+    pMsg->keypress = keypressType;
+    pMsg->hdr.param = connId;
 
-        pMsg->hdr.event = SMP_MSG_API_USER_KEYPRESS;
+    pMsg->hdr.event = SMP_MSG_API_USER_KEYPRESS;
 
-        SmpDmMsgSend((smpDmMsg_t *)pMsg);
-    }
+    SmpDmMsgSend((smpDmMsg_t *) pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -119,8 +127,8 @@ void DmSecKeypressReq(dmConnId_t connId, uint8_t keypressType)
 /*************************************************************************************************/
 void DmSecSetOob(dmConnId_t connId, dmSecLescOobCfg_t *pCfg)
 {
-    /* Update the Security Manager control structure with random and confirm values from the peer */
-    SmpScSetOobCfg(connId, pCfg);
+  /* Update the Security Manager control structure with random and confirm values from the peer */
+  SmpScSetOobCfg(connId, pCfg);
 }
 
 /*************************************************************************************************/
@@ -138,44 +146,46 @@ void DmSecSetOob(dmConnId_t connId, dmSecLescOobCfg_t *pCfg)
 /*************************************************************************************************/
 void DmSecCalcOobReq(uint8_t *pRand, uint8_t *pPubKeyX)
 {
-    uint8_t *pCmacText;
-    dmSecOobCalcIndEvt_t pEvt;
+  uint8_t *pCmacText;
+  dmSecOobCalcIndEvt_t pEvt;
 
-    SMP_TRACE_256("DmSecCalcOobReq Key", pPubKeyX);
-    SMP_TRACE_128("DmSecCalcOobReq Rand", pRand);
+  SMP_TRACE_256("DmSecCalcOobReq Key", pPubKeyX);
+  SMP_TRACE_128("DmSecCalcOobReq Rand", pRand);
 
-    if ((dmSecOobRand = WsfBufAlloc(SMP_RAND_LEN)) != NULL) {
-        /* Store the random value */
-        Calc128Cpy(dmSecOobRand, pRand);
+  if ((dmSecOobRand = WsfBufAlloc(SMP_RAND_LEN)) != NULL)
+  {
+    /* Store the random value */
+    Calc128Cpy(dmSecOobRand, pRand);
 
-        /* Cnf = f4(PKx, PKx, rand, 0x00) where f4(U, V, x, Z) = AES-CMACx (U || V || Z) */
-        if ((pCmacText = (uint8_t *)WsfBufAlloc(SMP_F4_TEXT_LEN)) != NULL) {
-            uint8_t *pCatBuf = pCmacText;
+    /* Cnf = f4(PKx, PKx, rand, 0x00) where f4(U, V, x, Z) = AES-CMACx (U || V || Z) */
+    if ((pCmacText = (uint8_t*) WsfBufAlloc(SMP_F4_TEXT_LEN)) !=  NULL)
+    {
+      uint8_t *pCatBuf = pCmacText;
 
-            /* Concatinate PKx, PKx, 0x00 */
-            pCatBuf = SmpScCat(pCatBuf, pPubKeyX, SMP_PUB_KEY_LEN);
-            pCatBuf = SmpScCat(pCatBuf, pPubKeyX, SMP_PUB_KEY_LEN);
-            *pCatBuf = 0;
+      /* Concatinate PKx, PKx, 0x00 */
+      pCatBuf = SmpScCat(pCatBuf, pPubKeyX, SMP_PUB_KEY_LEN);
+      pCatBuf = SmpScCat(pCatBuf, pPubKeyX, SMP_PUB_KEY_LEN);
+      *pCatBuf = 0;
 
-            /* Execute CMAC with rand as the key */
-            if (SecCmac(dmSecOobRand, pCmacText, SMP_F4_TEXT_LEN, dmCb.handlerId, 0,
-                        DM_SEC_MSG_CALC_OOB_CNF)) {
-                return;
-            }
+      /* Execute CMAC with rand as the key */
+      if (SecCmac(dmSecOobRand, pCmacText, SMP_F4_TEXT_LEN, dmCb.handlerId, 0, DM_SEC_MSG_CALC_OOB_CNF))
+      {
+        return;
+      }
 
-            WsfBufFree(pCmacText);
-        }
-
-        WsfBufFree(dmSecOobRand);
+      WsfBufFree(pCmacText);
     }
 
-    /* Notify the application of a failure */
-    memset(&pEvt, 0, sizeof(dmSecOobCalcIndEvt_t));
+    WsfBufFree(dmSecOobRand);
+  }
 
-    pEvt.hdr.event = DM_SEC_CALC_OOB_IND;
-    pEvt.hdr.status = HCI_ERR_MEMORY_EXCEEDED;
+  /* Notify the application of a failure */
+  memset(&pEvt, 0, sizeof(dmSecOobCalcIndEvt_t));
 
-    (*dmCb.cback)((dmEvt_t *)&pEvt);
+  pEvt.hdr.event = DM_SEC_CALC_OOB_IND;
+  pEvt.hdr.status = HCI_ERR_MEMORY_EXCEEDED;
+
+  (*dmCb.cback)((dmEvt_t *) &pEvt);
 }
 
 /*************************************************************************************************/
@@ -189,7 +199,7 @@ void DmSecCalcOobReq(uint8_t *pRand, uint8_t *pPubKeyX)
 /*************************************************************************************************/
 void DmSecGenerateEccKeyReq()
 {
-    SecEccGenKey(dmCb.handlerId, 0, DM_SEC_MSG_ECC_KEY_CNF);
+  SecEccGenKey(dmCb.handlerId, 0, DM_SEC_MSG_ECC_KEY_CNF);
 }
 
 /*************************************************************************************************/
@@ -201,23 +211,26 @@ void DmSecGenerateEccKeyReq()
 /*************************************************************************************************/
 void DmSecSetDebugEccKey()
 {
-    const uint8_t privateKey[] = { 0x3f, 0x49, 0xf6, 0xd4, 0xa3, 0xc5, 0x5f, 0x38, 0x74, 0xc9, 0xb3,
-                                   0xe3, 0xd2, 0x10, 0x3f, 0x50, 0x4a, 0xff, 0x60, 0x7b, 0xeb, 0x40,
-                                   0xb7, 0x99, 0x58, 0x99, 0xb8, 0xa6, 0xcd, 0x3c, 0x1a, 0xbd };
+  const uint8_t privateKey[] = {0x3f, 0x49, 0xf6, 0xd4,  0xa3, 0xc5, 0x5f, 0x38,
+                                0x74, 0xc9, 0xb3, 0xe3,  0xd2, 0x10, 0x3f, 0x50,
+                                0x4a, 0xff, 0x60, 0x7b,  0xeb, 0x40, 0xb7, 0x99,
+                                0x58, 0x99, 0xb8, 0xa6,  0xcd, 0x3c, 0x1a, 0xbd};
 
-    const uint8_t publicKeyX[] = { 0x20, 0xb0, 0x03, 0xd2, 0xf2, 0x97, 0xbe, 0x2c, 0x5e, 0x2c, 0x83,
-                                   0xa7, 0xe9, 0xf9, 0xa5, 0xb9, 0xef, 0xf4, 0x91, 0x11, 0xac, 0xf4,
-                                   0xfd, 0xdb, 0xcc, 0x03, 0x01, 0x48, 0x0e, 0x35, 0x9d, 0xe6 };
+  const uint8_t publicKeyX[] = {0x20, 0xb0, 0x03, 0xd2,  0xf2, 0x97, 0xbe, 0x2c,
+                                0x5e, 0x2c, 0x83, 0xa7,  0xe9, 0xf9, 0xa5, 0xb9,
+                                0xef, 0xf4, 0x91, 0x11,  0xac, 0xf4, 0xfd, 0xdb,
+                                0xcc, 0x03, 0x01, 0x48,  0x0e, 0x35, 0x9d, 0xe6};
 
-    const uint8_t publicKeyY[] = { 0xdc, 0x80, 0x9c, 0x49, 0x65, 0x2a, 0xeb, 0x6d, 0x63, 0x32, 0x9a,
-                                   0xbf, 0x5a, 0x52, 0x15, 0x5c, 0x76, 0x63, 0x45, 0xc2, 0x8f, 0xed,
-                                   0x30, 0x24, 0x74, 0x1c, 0x8e, 0xd0, 0x15, 0x89, 0xd2, 0x8b };
+  const uint8_t publicKeyY[] = {0xdc, 0x80, 0x9c, 0x49,  0x65, 0x2a, 0xeb, 0x6d,
+                                0x63, 0x32, 0x9a, 0xbf,  0x5a, 0x52, 0x15, 0x5c,
+                                0x76, 0x63, 0x45, 0xc2,  0x8f, 0xed, 0x30, 0x24,
+                                0x74, 0x1c, 0x8e, 0xd0,  0x15, 0x89, 0xd2, 0x8b};
 
-    SMP_TRACE_INFO0("Debug LESC Keys Enabled");
+  SMP_TRACE_INFO0("Debug LESC Keys Enabled");
 
-    memcpy(localEccKey.privKey, privateKey, SEC_ECC_KEY_LEN);
-    memcpy(localEccKey.pubKey_x, publicKeyX, SEC_ECC_KEY_LEN);
-    memcpy(localEccKey.pubKey_y, publicKeyY, SEC_ECC_KEY_LEN);
+  memcpy(localEccKey.privKey, privateKey, SEC_ECC_KEY_LEN);
+  memcpy(localEccKey.pubKey_x, publicKeyX, SEC_ECC_KEY_LEN);
+  memcpy(localEccKey.pubKey_y, publicKeyY, SEC_ECC_KEY_LEN);
 }
 
 /*************************************************************************************************/
@@ -234,7 +247,7 @@ void DmSecSetDebugEccKey()
 /*************************************************************************************************/
 void DmSecSetEccKey(secEccKey_t *pKey)
 {
-    memcpy(&localEccKey, pKey, sizeof(secEccKey_t));
+  memcpy(&localEccKey, pKey, sizeof(secEccKey_t));
 }
 
 /*************************************************************************************************/
@@ -246,7 +259,7 @@ void DmSecSetEccKey(secEccKey_t *pKey)
 /*************************************************************************************************/
 secEccKey_t *DmSecGetEccKey(void)
 {
-    return &localEccKey;
+  return &localEccKey;
 }
 
 /*************************************************************************************************/
@@ -262,20 +275,24 @@ secEccKey_t *DmSecGetEccKey(void)
 /*************************************************************************************************/
 void DmSecCompareRsp(dmConnId_t connId, bool_t valid)
 {
-    smpDmMsg_t *pMsg;
+  smpDmMsg_t *pMsg;
 
-    if ((pMsg = WsfMsgAlloc(sizeof(smpDmMsg_t))) != NULL) {
-        /* Execution an an SMP state machine event to send the compare response */
-        pMsg->hdr.param = connId;
+  if ((pMsg = WsfMsgAlloc(sizeof(smpDmMsg_t))) != NULL)
+  {
+    /* Execution an an SMP state machine event to send the compare response */
+    pMsg->hdr.param = connId;
 
-        if (valid) {
-            pMsg->hdr.event = SMP_MSG_API_USER_CONFIRM;
-        } else {
-            SmpScGetCancelMsgWithReattempt(connId, (wsfMsgHdr_t *)pMsg, SMP_ERR_NUMERIC_COMPARISON);
-        }
-
-        SmpDmMsgSend((smpDmMsg_t *)pMsg);
+    if (valid)
+    {
+      pMsg->hdr.event = SMP_MSG_API_USER_CONFIRM;
     }
+    else
+    {
+      SmpScGetCancelMsgWithReattempt(connId, (wsfMsgHdr_t *) pMsg, SMP_ERR_NUMERIC_COMPARISON);
+    }
+
+    SmpDmMsgSend((smpDmMsg_t *) pMsg);
+  }
 }
 
 /*************************************************************************************************/
@@ -289,11 +306,13 @@ void DmSecCompareRsp(dmConnId_t connId, bool_t valid)
 /*************************************************************************************************/
 uint32_t DmSecGetCompareValue(uint8_t *pConfirm)
 {
-    uint32_t compare = ((uint32_t)pConfirm[15] + ((uint32_t)pConfirm[14] << 8) +
-                        ((uint32_t)pConfirm[13] << 16) + ((uint32_t)pConfirm[12] << 24));
+  uint32_t compare = ((uint32_t) pConfirm[15]        +
+                     ((uint32_t) pConfirm[14] << 8)  +
+                     ((uint32_t) pConfirm[13] << 16) +
+                     ((uint32_t) pConfirm[12] << 24));
 
-    /* return the least significant six digits */
-    return compare % 1000000;
+  /* return the least significant six digits */
+  return compare % 1000000;
 }
 
 /*************************************************************************************************/
@@ -305,5 +324,5 @@ uint32_t DmSecGetCompareValue(uint8_t *pConfirm)
 /*************************************************************************************************/
 void DmSecLescInit(void)
 {
-    dmFcnIfTbl[DM_ID_LESC] = (dmFcnIf_t *)&dmSecLescFcnIf;
+  dmFcnIfTbl[DM_ID_LESC] = (dmFcnIf_t *) &dmSecLescFcnIf;
 }

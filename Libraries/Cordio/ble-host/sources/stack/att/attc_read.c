@@ -32,6 +32,8 @@
 #include "att_main.h"
 #include "attc_main.h"
 
+
+
 /*************************************************************************************************/
 /*!
  *  \brief  Process received Find By Type response packet.
@@ -46,65 +48,75 @@
 /*************************************************************************************************/
 void attcProcFindByTypeRsp(attcCcb_t *pCcb, uint16_t len, uint8_t *pPacket, attEvt_t *pEvt)
 {
-    uint8_t *p;
-    uint8_t *pEnd;
-    uint16_t startHandle;
-    uint16_t endHandle;
-    uint16_t nextHandle;
+  uint8_t   *p;
+  uint8_t   *pEnd;
+  uint16_t  startHandle;
+  uint16_t  endHandle;
+  uint16_t  nextHandle;
 
-    p = pPacket + L2C_PAYLOAD_START + ATT_HDR_LEN;
-    pEnd = pPacket + L2C_PAYLOAD_START + len;
+  p = pPacket + L2C_PAYLOAD_START + ATT_HDR_LEN;
+  pEnd = pPacket + L2C_PAYLOAD_START + len;
 
-    /* get and verify all handles */
-    nextHandle = pCcb->outReqParams.h.startHandle;
-    while (p < pEnd) {
-        /* get handle pair */
-        BSTREAM_TO_UINT16(startHandle, p);
-        BSTREAM_TO_UINT16(endHandle, p);
+  /* get and verify all handles */
+  nextHandle = pCcb->outReqParams.h.startHandle;
+  while (p < pEnd)
+  {
+    /* get handle pair */
+    BSTREAM_TO_UINT16(startHandle, p);
+    BSTREAM_TO_UINT16(endHandle, p);
 
-        /*
+    /*
      * start handle of handle pair must be:
      *  not greater than end handle of handle pair
      *  not less than than start handle of request or end handle of previous handle pair
      *  not greater than end handle of request
      * and no additional handle pairs following end handle = 0xFFFF
      */
-        if ((startHandle > endHandle) || (startHandle < nextHandle) ||
-            (startHandle > pCcb->outReqParams.h.endHandle) || (nextHandle == 0)) {
-            pEvt->hdr.status = ATT_ERR_INVALID_RSP;
-            break;
-        }
-
-        /* set next expected handle, with special case for max handle */
-        if (endHandle == ATT_HANDLE_MAX) {
-            nextHandle = 0;
-        } else {
-            nextHandle = endHandle + 1;
-        }
-
-        /* check for truncated response */
-        if (p > pEnd) {
-            pEvt->hdr.status = ATT_ERR_INVALID_RSP;
-            break;
-        }
+    if ((startHandle > endHandle) || (startHandle < nextHandle) ||
+        (startHandle > pCcb->outReqParams.h.endHandle) || (nextHandle == 0))
+    {
+      pEvt->hdr.status = ATT_ERR_INVALID_RSP;
+      break;
     }
 
-    /* if response was correct */
-    if (pEvt->hdr.status == ATT_SUCCESS) {
-        /* if continuing */
-        if (pCcb->outReq.hdr.status == ATTC_CONTINUING) {
-            /* if all handles read */
-            if (nextHandle == 0 || nextHandle > pCcb->outReqParams.h.endHandle) {
-                /* we're done */
-                pCcb->outReq.hdr.status = ATTC_NOT_CONTINUING;
-            }
-            /* else set up for next request */
-            else {
-                pCcb->outReqParams.h.startHandle = nextHandle;
-                pCcb->outReq.handle = nextHandle;
-            }
-        }
+    /* set next expected handle, with special case for max handle */
+    if (endHandle == ATT_HANDLE_MAX)
+    {
+      nextHandle = 0;
     }
+    else
+    {
+      nextHandle = endHandle + 1;
+    }
+
+    /* check for truncated response */
+    if (p > pEnd)
+    {
+      pEvt->hdr.status = ATT_ERR_INVALID_RSP;
+      break;
+    }
+  }
+
+  /* if response was correct */
+  if (pEvt->hdr.status == ATT_SUCCESS)
+  {
+    /* if continuing */
+    if (pCcb->outReq.hdr.status == ATTC_CONTINUING)
+    {
+      /* if all handles read */
+      if (nextHandle == 0 || nextHandle > pCcb->outReqParams.h.endHandle)
+      {
+        /* we're done */
+        pCcb->outReq.hdr.status = ATTC_NOT_CONTINUING;
+      }
+      /* else set up for next request */
+      else
+      {
+        pCcb->outReqParams.h.startHandle = nextHandle;
+        pCcb->outReq.handle = nextHandle;
+      }
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -121,18 +133,21 @@ void attcProcFindByTypeRsp(attcCcb_t *pCcb, uint16_t len, uint8_t *pPacket, attE
 /*************************************************************************************************/
 void attcProcReadLongRsp(attcCcb_t *pCcb, uint16_t len, uint8_t *pPacket, attEvt_t *pEvt)
 {
-    /* if continuing */
-    if (pCcb->outReq.hdr.status == ATTC_CONTINUING) {
-        /* length of response is less than mtu */
-        if (len < pCcb->pMainCcb->sccb[pCcb->slot].mtu) {
-            /* we're done */
-            pCcb->outReq.hdr.status = ATTC_NOT_CONTINUING;
-        }
-        /* else set up for next request */
-        else {
-            pCcb->outReqParams.o.offset += pEvt->valueLen;
-        }
+  /* if continuing */
+  if (pCcb->outReq.hdr.status == ATTC_CONTINUING)
+  {
+    /* length of response is less than mtu */
+    if (len < pCcb->pMainCcb->sccb[pCcb->slot].mtu)
+    {
+      /* we're done */
+      pCcb->outReq.hdr.status = ATTC_NOT_CONTINUING;
     }
+    /* else set up for next request */
+    else
+    {
+      pCcb->outReqParams.o.offset += pEvt->valueLen;
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -153,27 +168,28 @@ void attcProcReadLongRsp(attcCcb_t *pCcb, uint16_t len, uint8_t *pPacket, attEvt
 void AttcFindByTypeValueReq(dmConnId_t connId, uint16_t startHandle, uint16_t endHandle,
                             uint16_t uuid16, uint16_t valueLen, uint8_t *pValue, bool_t continuing)
 {
-    attcPktParam_t *pPkt;
-    uint8_t *p;
+  attcPktParam_t  *pPkt;
+  uint8_t         *p;
 
-    /* allocate packet and parameter buffer */
-    if ((pPkt = attMsgAlloc(ATT_FIND_TYPE_REQ_BUF_LEN + valueLen)) != NULL) {
-        /* set parameters */
-        pPkt->len = ATT_FIND_TYPE_REQ_LEN + valueLen;
-        pPkt->h.startHandle = startHandle;
-        pPkt->h.endHandle = endHandle;
+  /* allocate packet and parameter buffer */
+  if ((pPkt = attMsgAlloc(ATT_FIND_TYPE_REQ_BUF_LEN + valueLen)) != NULL)
+  {
+    /* set parameters */
+    pPkt->len = ATT_FIND_TYPE_REQ_LEN + valueLen;
+    pPkt->h.startHandle = startHandle;
+    pPkt->h.endHandle = endHandle;
 
-        /* build partial packet */
-        p = (uint8_t *)pPkt + L2C_PAYLOAD_START;
-        UINT8_TO_BSTREAM(p, ATT_PDU_FIND_TYPE_REQ);
-        /* skip start and end handle fields */
-        p += (2 * sizeof(uint16_t));
-        UINT16_TO_BSTREAM(p, uuid16);
-        memcpy(p, pValue, valueLen);
+    /* build partial packet */
+    p = (uint8_t *) pPkt + L2C_PAYLOAD_START;
+    UINT8_TO_BSTREAM(p, ATT_PDU_FIND_TYPE_REQ);
+    /* skip start and end handle fields */
+    p += (2 * sizeof(uint16_t));
+    UINT16_TO_BSTREAM(p, uuid16);
+    memcpy(p, pValue, valueLen);
 
-        /* send message */
-        attcSendMsg(connId, startHandle, ATTC_MSG_API_FIND_BY_TYPE_VALUE, pPkt, continuing);
-    }
+    /* send message */
+    attcSendMsg(connId, startHandle, ATTC_MSG_API_FIND_BY_TYPE_VALUE, pPkt, continuing);
+  }
 }
 
 /*************************************************************************************************/
@@ -190,29 +206,30 @@ void AttcFindByTypeValueReq(dmConnId_t connId, uint16_t startHandle, uint16_t en
  *  \return None.
  */
 /*************************************************************************************************/
-void AttcReadByTypeReq(dmConnId_t connId, uint16_t startHandle, uint16_t endHandle, uint8_t uuidLen,
-                       uint8_t *pUuid, bool_t continuing)
+void AttcReadByTypeReq(dmConnId_t connId, uint16_t startHandle, uint16_t endHandle,
+                       uint8_t uuidLen, uint8_t *pUuid, bool_t continuing)
 {
-    attcPktParam_t *pPkt;
-    uint8_t *p;
+  attcPktParam_t  *pPkt;
+  uint8_t         *p;
 
-    /* allocate packet and parameter buffer */
-    if ((pPkt = attMsgAlloc(ATT_READ_TYPE_REQ_BUF_LEN + uuidLen)) != NULL) {
-        /* set parameters */
-        pPkt->len = ATT_READ_TYPE_REQ_LEN + uuidLen;
-        pPkt->h.startHandle = startHandle;
-        pPkt->h.endHandle = endHandle;
+  /* allocate packet and parameter buffer */
+  if ((pPkt = attMsgAlloc(ATT_READ_TYPE_REQ_BUF_LEN + uuidLen)) != NULL)
+  {
+    /* set parameters */
+    pPkt->len = ATT_READ_TYPE_REQ_LEN + uuidLen;
+    pPkt->h.startHandle = startHandle;
+    pPkt->h.endHandle = endHandle;
 
-        /* build partial packet */
-        p = (uint8_t *)pPkt + L2C_PAYLOAD_START;
-        UINT8_TO_BSTREAM(p, ATT_PDU_READ_TYPE_REQ);
-        /* skip start and end handle fields */
-        p += (2 * sizeof(uint16_t));
-        memcpy(p, pUuid, uuidLen);
+    /* build partial packet */
+    p = (uint8_t *) pPkt + L2C_PAYLOAD_START;
+    UINT8_TO_BSTREAM(p, ATT_PDU_READ_TYPE_REQ);
+    /* skip start and end handle fields */
+    p += (2 * sizeof(uint16_t));
+    memcpy(p, pUuid, uuidLen);
 
-        /* send message */
-        attcSendMsg(connId, startHandle, ATTC_MSG_API_READ_BY_TYPE, pPkt, continuing);
-    }
+    /* send message */
+    attcSendMsg(connId, startHandle, ATTC_MSG_API_READ_BY_TYPE, pPkt, continuing);
+  }
 }
 
 /*************************************************************************************************/
@@ -229,23 +246,24 @@ void AttcReadByTypeReq(dmConnId_t connId, uint16_t startHandle, uint16_t endHand
 /*************************************************************************************************/
 void AttcReadLongReq(dmConnId_t connId, uint16_t handle, uint16_t offset, bool_t continuing)
 {
-    attcPktParam_t *pPkt;
-    uint8_t *p;
+  attcPktParam_t  *pPkt;
+  uint8_t         *p;
 
-    /* allocate packet and parameter buffer */
-    if ((pPkt = attMsgAlloc(ATT_READ_BLOB_REQ_BUF_LEN)) != NULL) {
-        /* set parameters */
-        pPkt->len = ATT_READ_BLOB_REQ_LEN;
-        pPkt->o.offset = offset;
+  /* allocate packet and parameter buffer */
+  if ((pPkt = attMsgAlloc(ATT_READ_BLOB_REQ_BUF_LEN)) != NULL)
+  {
+    /* set parameters */
+    pPkt->len = ATT_READ_BLOB_REQ_LEN;
+    pPkt->o.offset = offset;
 
-        /* build partial packet */
-        p = (uint8_t *)pPkt + L2C_PAYLOAD_START;
-        UINT8_TO_BSTREAM(p, ATT_PDU_READ_BLOB_REQ);
-        UINT16_TO_BSTREAM(p, handle);
+    /* build partial packet */
+    p = (uint8_t *) pPkt + L2C_PAYLOAD_START;
+    UINT8_TO_BSTREAM(p, ATT_PDU_READ_BLOB_REQ);
+    UINT16_TO_BSTREAM(p, handle);
 
-        /* send message */
-        attcSendMsg(connId, handle, ATTC_MSG_API_READ_LONG, pPkt, continuing);
-    }
+    /* send message */
+    attcSendMsg(connId, handle, ATTC_MSG_API_READ_LONG, pPkt, continuing);
+  }
 }
 
 /*************************************************************************************************/
@@ -261,29 +279,31 @@ void AttcReadLongReq(dmConnId_t connId, uint16_t handle, uint16_t offset, bool_t
 /*************************************************************************************************/
 void AttcReadMultipleReq(dmConnId_t connId, uint8_t numHandles, uint16_t *pHandles)
 {
-    attcPktParam_t *pPkt;
-    uint8_t *p;
-    uint16_t handle;
+  attcPktParam_t  *pPkt;
+  uint8_t         *p;
+  uint16_t        handle;
 
-    /* allocate packet and parameter buffer */
-    if ((pPkt = attMsgAlloc(ATT_READ_MULT_REQ_BUF_LEN + (numHandles * sizeof(uint16_t)))) != NULL) {
-        /* set length */
-        pPkt->len = ATT_READ_MULT_REQ_LEN + (numHandles * sizeof(uint16_t));
+  /* allocate packet and parameter buffer */
+  if ((pPkt = attMsgAlloc(ATT_READ_MULT_REQ_BUF_LEN + (numHandles * sizeof(uint16_t)))) != NULL)
+  {
+    /* set length */
+    pPkt->len = ATT_READ_MULT_REQ_LEN + (numHandles * sizeof(uint16_t));
 
-        /* save first handle */
-        handle = pHandles[0];
+    /* save first handle */
+    handle = pHandles[0];
 
-        /* build packet */
-        p = (uint8_t *)pPkt + L2C_PAYLOAD_START;
-        UINT8_TO_BSTREAM(p, ATT_PDU_READ_MULT_REQ);
-        while (numHandles--) {
-            UINT16_TO_BSTREAM(p, *pHandles);
-            pHandles++;
-        }
-
-        /* send message */
-        attcSendMsg(connId, handle, ATTC_MSG_API_READ_MULTIPLE, pPkt, FALSE);
+    /* build packet */
+    p = (uint8_t *) pPkt + L2C_PAYLOAD_START;
+    UINT8_TO_BSTREAM(p, ATT_PDU_READ_MULT_REQ);
+    while (numHandles--)
+    {
+      UINT16_TO_BSTREAM(p, *pHandles);
+      pHandles++;
     }
+
+    /* send message */
+    attcSendMsg(connId, handle, ATTC_MSG_API_READ_MULTIPLE, pPkt, FALSE);
+  }
 }
 
 /*************************************************************************************************/
@@ -303,24 +323,25 @@ void AttcReadMultipleReq(dmConnId_t connId, uint8_t numHandles, uint16_t *pHandl
 void AttcReadByGroupTypeReq(dmConnId_t connId, uint16_t startHandle, uint16_t endHandle,
                             uint8_t uuidLen, uint8_t *pUuid, bool_t continuing)
 {
-    attcPktParam_t *pPkt;
-    uint8_t *p;
+  attcPktParam_t  *pPkt;
+  uint8_t         *p;
 
-    /* allocate packet and parameter buffer */
-    if ((pPkt = attMsgAlloc(ATT_READ_GROUP_TYPE_REQ_BUF_LEN + uuidLen)) != NULL) {
-        /* set parameters */
-        pPkt->len = ATT_READ_GROUP_TYPE_REQ_LEN + uuidLen;
-        pPkt->h.startHandle = startHandle;
-        pPkt->h.endHandle = endHandle;
+  /* allocate packet and parameter buffer */
+  if ((pPkt = attMsgAlloc(ATT_READ_GROUP_TYPE_REQ_BUF_LEN + uuidLen)) != NULL)
+  {
+    /* set parameters */
+    pPkt->len = ATT_READ_GROUP_TYPE_REQ_LEN + uuidLen;
+    pPkt->h.startHandle = startHandle;
+    pPkt->h.endHandle = endHandle;
 
-        /* build partial packet */
-        p = (uint8_t *)pPkt + L2C_PAYLOAD_START;
-        UINT8_TO_BSTREAM(p, ATT_PDU_READ_GROUP_TYPE_REQ);
-        /* skip start and end handle fields */
-        p += (2 * sizeof(uint16_t));
-        memcpy(p, pUuid, uuidLen);
+    /* build partial packet */
+    p = (uint8_t *) pPkt + L2C_PAYLOAD_START;
+    UINT8_TO_BSTREAM(p, ATT_PDU_READ_GROUP_TYPE_REQ);
+    /* skip start and end handle fields */
+    p += (2 * sizeof(uint16_t));
+    memcpy(p, pUuid, uuidLen);
 
-        /* send message */
-        attcSendMsg(connId, startHandle, ATTC_MSG_API_READ_BY_GROUP_TYPE, pPkt, continuing);
-    }
+    /* send message */
+    attcSendMsg(connId, startHandle, ATTC_MSG_API_READ_BY_GROUP_TYPE, pPkt, continuing);
+  }
 }

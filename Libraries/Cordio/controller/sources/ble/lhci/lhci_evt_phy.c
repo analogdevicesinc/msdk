@@ -41,15 +41,15 @@
 /*************************************************************************************************/
 static uint8_t lhciPackPhyUpdateCmplEvt(uint8_t *pBuf, const LlPhyUpdateInd_t *pEvt)
 {
-    const uint8_t len = HCI_LEN_LE_PHY_UPDATE_CMPL;
+  const uint8_t len = HCI_LEN_LE_PHY_UPDATE_CMPL;
 
-    UINT8_TO_BSTREAM(pBuf, HCI_LE_PHY_UPDATE_CMPL_EVT);
-    UINT8_TO_BSTREAM(pBuf, pEvt->status);
-    UINT16_TO_BSTREAM(pBuf, pEvt->handle);
-    UINT8_TO_BSTREAM(pBuf, pEvt->txPhy);
-    UINT8_TO_BSTREAM(pBuf, pEvt->rxPhy);
+  UINT8_TO_BSTREAM (pBuf, HCI_LE_PHY_UPDATE_CMPL_EVT);
+  UINT8_TO_BSTREAM (pBuf, pEvt->status);
+  UINT16_TO_BSTREAM(pBuf, pEvt->handle);
+  UINT8_TO_BSTREAM (pBuf, pEvt->txPhy);
+  UINT8_TO_BSTREAM (pBuf, pEvt->rxPhy);
 
-    return len;
+  return len;
 }
 
 /*************************************************************************************************/
@@ -63,27 +63,30 @@ static uint8_t lhciPackPhyUpdateCmplEvt(uint8_t *pBuf, const LlPhyUpdateInd_t *p
 /*************************************************************************************************/
 bool_t lhciPhyEncodeEvtPkt(LlEvt_t *pEvt)
 {
-    uint8_t *pEvtBuf = NULL;
+  uint8_t *pEvtBuf = NULL;
 
-    switch (pEvt->hdr.event) {
+  switch (pEvt->hdr.event)
+  {
     case LL_PHY_UPDATE_IND:
-        if ((lhciCb.leEvtMsk &
-             ((uint64_t)(HCI_EVT_MASK_LE_PHY_UPDATE_CMPL_EVT) << LHCI_BYTE_TO_BITS(1))) &&
-            (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7)))) {
-            if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_PHY_UPDATE_CMPL)) != NULL) {
-                lhciPackPhyUpdateCmplEvt(pEvtBuf, &pEvt->phyUpdateInd);
-            }
+      if ((lhciCb.leEvtMsk & ((uint64_t)(HCI_EVT_MASK_LE_PHY_UPDATE_CMPL_EVT) << LHCI_BYTE_TO_BITS(1))) &&
+         (lhciCb.evtMsk & ((uint64_t)(HCI_EVT_MASK_LE_META) << LHCI_BYTE_TO_BITS(7))))
+      {
+        if ((pEvtBuf = lhciAllocEvt(HCI_LE_META_EVT, HCI_LEN_LE_PHY_UPDATE_CMPL)) != NULL)
+        {
+          lhciPackPhyUpdateCmplEvt(pEvtBuf, &pEvt->phyUpdateInd);
         }
-        break;
+      }
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 
-    if (pEvtBuf) {
-        lhciSendEvt(pEvtBuf);
-        return TRUE;
-    }
+  if (pEvtBuf)
+  {
+    lhciSendEvt(pEvtBuf);
+    return TRUE;
+  }
 
-    return FALSE;
+  return FALSE;
 }

@@ -72,6 +72,7 @@ extern "C" {
  */
 uint32_t sd_app_evt_wait(void);
 
+
 #ifdef __cplusplus
 }
 #endif

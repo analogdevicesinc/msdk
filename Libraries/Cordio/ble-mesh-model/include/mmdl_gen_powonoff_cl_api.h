@@ -31,7 +31,8 @@
 #define MMDL_GEN_POWER_ONOFF_CL_API_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #include "mmdl_defs.h"
@@ -41,23 +42,26 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief Model Power OnOff Client Set parameters structure */
-typedef struct mmdlGenPowOnOffSetParam_tag {
-    mmdlGenOnPowerUpState_t state; /*!< New OnPowerUp State */
+typedef struct mmdlGenPowOnOffSetParam_tag
+{
+  mmdlGenOnPowerUpState_t         state;         /*!< New OnPowerUp State */
 } mmdlGenPowOnOffSetParam_t;
 
 /*! \brief Generic Power OnOff Client Model Status event structure */
-typedef struct mmdlGenPowOnOffClStatusEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    meshElementId_t elementId; /*!< Element ID */
-    meshAddress_t serverAddr; /*!< Server Address */
-    mmdlGenOnPowerUpState_t state; /*!< Received published state */
-    mmdlGenOnPowerUpState_t targetState; /*!< Received published target state */
+typedef struct mmdlGenPowOnOffClStatusEvent_tag
+{
+  wsfMsgHdr_t                     hdr;           /*!< WSF message header */
+  meshElementId_t                 elementId;     /*!< Element ID */
+  meshAddress_t                   serverAddr;    /*!< Server Address */
+  mmdlGenOnPowerUpState_t         state;         /*!< Received published state */
+  mmdlGenOnPowerUpState_t         targetState;   /*!< Received published target state */
 } mmdlGenPowOnOffClStatusEvent_t;
 
 /*! \brief Generic Power OnOff Client Model event callback parameters structure */
-typedef union mmdlGenPowOnOffClEvent_tag {
-    wsfMsgHdr_t hdr; /*!< WSF message header */
-    mmdlGenPowOnOffClStatusEvent_t statusEvent; /*!< State updated event. Used for
+typedef union mmdlGenPowOnOffClEvent_tag
+{
+  wsfMsgHdr_t                     hdr;           /*!< WSF message header */
+  mmdlGenPowOnOffClStatusEvent_t  statusEvent;   /*!< State updated event. Used for
                                                   *   ::MMDL_GEN_POWER_ONOFF_CL_STATUS_EVENT.
                                                   */
 } mmdlGenPowOnOffClEvent_t;
@@ -81,7 +85,7 @@ typedef void (*mmdlGenPowOnOffClRecvCback_t)(const mmdlGenPowOnOffClEvent_t *pEv
 extern wsfHandlerId_t mmdlGenPowOnOffClHandlerId;
 
 /*! \brief Supported opcodes */
-extern const meshMsgOpcode_t mmdlGenPowOnOffClRcvdOpcodes[];
+extern const meshMsgOpcode_t  mmdlGenPowOnOffClRcvdOpcodes[];
 
 /**************************************************************************************************
   Function Declarations
@@ -122,7 +126,7 @@ void MmdlGenPowOnOffClHandler(wsfMsgHdr_t *pMsg);
  *  \return    None.
  */
 /*************************************************************************************************/
-void MmdlGenPowOnOffClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
+void MmdlGenPowOnOffClGet(meshElementId_t elementId, meshAddress_t serverAddr,  uint8_t ttl,
                           uint16_t appKeyIndex);
 
 /*************************************************************************************************/

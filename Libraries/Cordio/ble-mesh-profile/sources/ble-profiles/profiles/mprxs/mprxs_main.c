@@ -35,15 +35,16 @@
 **************************************************************************************************/
 
 /*! Extracts the PDU type from the first byte of the Proxy PDU */
-#define EXTRACT_PDU_TYPE(byte) ((byte)&0x3F)
+#define EXTRACT_PDU_TYPE(byte)    ((byte) & 0x3F)
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /* Control block */
-static struct {
-    uint8_t dataOutCccIdx; /* Data Out CCCD index */
+static struct
+{
+  uint8_t       dataOutCccIdx;              /* Data Out CCCD index */
 } mprxsCb;
 
 /**************************************************************************************************
@@ -61,7 +62,10 @@ static struct {
  *  \return None.
  */
 /*************************************************************************************************/
-static void mprxsConnOpen(dmEvt_t *pMsg) {}
+static void mprxsConnOpen(dmEvt_t *pMsg)
+{
+
+}
 
 /*************************************************************************************************/
 /*!
@@ -76,8 +80,8 @@ static void mprxsConnOpen(dmEvt_t *pMsg) {}
 /*************************************************************************************************/
 static void mprxsConnClose(dmEvt_t *pMsg)
 {
-    /* Signal the Mesh Stack the connection ID is not available. */
-    MeshRemoveGattProxyConn((meshGattProxyConnId_t)pMsg->connClose.hdr.param);
+  /* Signal the Mesh Stack the connection ID is not available. */
+  MeshRemoveGattProxyConn((meshGattProxyConnId_t)pMsg->connClose.hdr.param);
 }
 
 /*************************************************************************************************/
@@ -93,10 +97,10 @@ static void mprxsConnClose(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void mprxsHandleValueCnf(attEvt_t *pMsg)
 {
-    dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
+  dmConnId_t connId = (dmConnId_t) pMsg->hdr.param;
 
-    /* Signal GATT interface is ready to transmit packets */
-    MeshSignalGattProxyIfRdy(connId);
+  /* Signal GATT interface is ready to transmit packets */
+  MeshSignalGattProxyIfRdy(connId);
 }
 
 /*************************************************************************************************/
@@ -112,14 +116,16 @@ static void mprxsHandleValueCnf(attEvt_t *pMsg)
 /*************************************************************************************************/
 static void mprxsHandleCccdStateChangeInd(attsCccEvt_t *pMsg)
 {
-    /* Handle Mesh Proxy Service Data out CCC */
-    if (pMsg->idx == mprxsCb.dataOutCccIdx) {
-        if (pMsg->value == ATT_CLIENT_CFG_NOTIFY) {
-            /* Signal the Mesh Stack a new interface on the connection ID is available. */
-            MeshAddGattProxyConn((meshGattProxyConnId_t)pMsg->hdr.param,
-                                 AttGetMtu((dmConnId_t)pMsg->hdr.param) - ATT_VALUE_NTF_LEN);
-        }
+  /* Handle Mesh Proxy Service Data out CCC */
+  if (pMsg->idx == mprxsCb.dataOutCccIdx)
+  {
+    if (pMsg->value == ATT_CLIENT_CFG_NOTIFY)
+    {
+      /* Signal the Mesh Stack a new interface on the connection ID is available. */
+      MeshAddGattProxyConn((meshGattProxyConnId_t)pMsg->hdr.param,
+                           AttGetMtu((dmConnId_t) pMsg->hdr.param) - ATT_VALUE_NTF_LEN);
     }
+  }
 }
 
 /**************************************************************************************************
@@ -140,26 +146,27 @@ static void mprxsHandleCccdStateChangeInd(attsCccEvt_t *pMsg)
 /*************************************************************************************************/
 void MprxsProcMsg(wsfMsgHdr_t *pMsg)
 {
-    switch (pMsg->event) {
+  switch(pMsg->event)
+  {
     case DM_CONN_OPEN_IND:
-        mprxsConnOpen((dmEvt_t *)pMsg);
-        break;
+      mprxsConnOpen((dmEvt_t *) pMsg);
+      break;
 
     case DM_CONN_CLOSE_IND:
-        mprxsConnClose((dmEvt_t *)pMsg);
-        break;
+      mprxsConnClose((dmEvt_t *) pMsg);
+      break;
 
     case ATTS_HANDLE_VALUE_CNF:
-        mprxsHandleValueCnf((attEvt_t *)pMsg);
-        break;
+      mprxsHandleValueCnf((attEvt_t *) pMsg);
+      break;
 
     case ATTS_CCC_STATE_IND:
-        mprxsHandleCccdStateChangeInd((attsCccEvt_t *)pMsg);
-        break;
+      mprxsHandleCccdStateChangeInd((attsCccEvt_t *) pMsg);
+      break;
 
     default:
-        break;
-    }
+      break;
+  }
 }
 
 /*************************************************************************************************/
@@ -173,16 +180,19 @@ void MprxsProcMsg(wsfMsgHdr_t *pMsg)
  */
 /*************************************************************************************************/
 uint8_t MprxsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                        uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
+                      uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-    if (EXTRACT_PDU_TYPE(pValue[0]) != MESH_GATT_PROXY_PDU_TYPE_PROVISIONING) {
-        /* Received GATT Write on Data In. Send to Mesh Stack. */
-        MeshProcessGattProxyPdu((meshGattProxyConnId_t)connId, pValue, len);
-    } else {
-        return ATT_ERR_INVALID_PDU;
-    }
+  if (EXTRACT_PDU_TYPE(pValue[0]) != MESH_GATT_PROXY_PDU_TYPE_PROVISIONING)
+  {
+    /* Received GATT Write on Data In. Send to Mesh Stack. */
+    MeshProcessGattProxyPdu((meshGattProxyConnId_t)connId, pValue, len);
+  }
+  else
+  {
+    return ATT_ERR_INVALID_PDU;
+  }
 
-    return ATT_SUCCESS;
+  return ATT_SUCCESS;
 }
 
 /*************************************************************************************************/
@@ -198,7 +208,7 @@ uint8_t MprxsWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, u
 /*************************************************************************************************/
 void MprxsSetCccIdx(uint8_t dataOutCccIdx)
 {
-    mprxsCb.dataOutCccIdx = dataOutCccIdx;
+  mprxsCb.dataOutCccIdx = dataOutCccIdx;
 }
 
 /*************************************************************************************************/
@@ -212,20 +222,22 @@ void MprxsSetCccIdx(uint8_t dataOutCccIdx)
 /*************************************************************************************************/
 void MprxsSendDataOut(meshGattProxyPduSendEvt_t *pEvt)
 {
-    dmConnId_t connId = (dmConnId_t)pEvt->connId;
-    uint8_t *pMsg;
+  dmConnId_t connId = (dmConnId_t)pEvt->connId;
+  uint8_t *pMsg;
 
-    if (AttsCccEnabled(connId, mprxsCb.dataOutCccIdx)) {
-        /* Allocate ATT message. */
-        pMsg = AttMsgAlloc(pEvt->proxyPduLen + sizeof(uint8_t), ATT_PDU_VALUE_NTF);
+  if (AttsCccEnabled(connId, mprxsCb.dataOutCccIdx))
+  {
+    /* Allocate ATT message. */
+    pMsg = AttMsgAlloc(pEvt->proxyPduLen + sizeof(uint8_t), ATT_PDU_VALUE_NTF);
 
-        if (pMsg != NULL) {
-            /* Copy in Proxy PDU. */
-            *pMsg = pEvt->proxyHdr;
-            memcpy(&pMsg[1], pEvt->pProxyPdu, pEvt->proxyPduLen);
+    if (pMsg != NULL)
+    {
+      /* Copy in Proxy PDU. */
+      *pMsg = pEvt->proxyHdr;
+      memcpy(&pMsg[1], pEvt->pProxyPdu, pEvt->proxyPduLen);
 
-            /* Send notification using the local buffer. */
-            AttsHandleValueNtfZeroCpy(connId, MPRXS_DOUT_HDL, pEvt->proxyPduLen + 1, pMsg);
-        }
+      /* Send notification using the local buffer. */
+      AttsHandleValueNtfZeroCpy(connId, MPRXS_DOUT_HDL, pEvt->proxyPduLen + 1, pMsg);
     }
+  }
 }

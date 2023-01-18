@@ -66,7 +66,10 @@ extern "C" {
  * @param[in] val The decimal value to be converted in the range from 0 to 99.
  * @return Calculated BCD value.
  */
-#define APP_USBD_BCD_2_MAKE(val) (((((val) % 100) / 10) * 0x10) + ((((val) % 10) / 1) * 0x1))
+#define APP_USBD_BCD_2_MAKE(val) (   \
+    ((((val) %  100) / 10) * 0x10) + \
+    ((((val) %   10) /  1) *  0x1)   \
+    )
 
 /**
  * @brief Change given decimal version values to 4 digits in BCD notation.
@@ -91,64 +94,60 @@ extern "C" {
  * @param[in] interval  Endpoint interval
  * @return Combined address and interval.
  */
-#define APP_USBD_EP_WITH_INTERVAL(address, interval) ((1UL << 16) | ((interval) << 8) | (address))
+#define APP_USBD_EP_WITH_INTERVAL(address, interval)    \
+    ((1UL << 16) | ((interval) << 8) | (address))
 
-#define APP_USBD_EXTRACT_INTERVAL_VALUE(combined) (((combined)&0xFF00) >> 8)
+#define APP_USBD_EXTRACT_INTERVAL_VALUE(combined)       \
+    (((combined) & 0xFF00) >> 8)
 
-#define APP_USBD_EXTRACT_INTERVAL_FLAG(combined) (((combined) >> 16) & 0x01)
+#define APP_USBD_EXTRACT_INTERVAL_FLAG(combined)        \
+    (((combined) >> 16) & 0x01)
 
 /**
  * @brief Events codes.
  *
  * Redefined application event codes.
  */
-typedef enum {
-    APP_USBD_EVT_DRV_SOF =
-        NRF_DRV_USBD_EVT_SOF, /**< See documentation for @ref NRF_DRV_USBD_EVT_SOF        */
-    APP_USBD_EVT_DRV_RESET =
-        NRF_DRV_USBD_EVT_RESET, /**< See documentation for @ref NRF_DRV_USBD_EVT_RESET      */
-    APP_USBD_EVT_DRV_SUSPEND =
-        NRF_DRV_USBD_EVT_SUSPEND, /**< See documentation for @ref NRF_DRV_USBD_EVT_SUSPEND    */
-    APP_USBD_EVT_DRV_RESUME =
-        NRF_DRV_USBD_EVT_RESUME, /**< See documentation for @ref NRF_DRV_USBD_EVT_RESUME     */
-    APP_USBD_EVT_DRV_WUREQ =
-        NRF_DRV_USBD_EVT_WUREQ, /**< See documentation for @ref NRF_DRV_USBD_EVT_WUREQ      */
-    APP_USBD_EVT_DRV_SETUP =
-        NRF_DRV_USBD_EVT_SETUP, /**< This event type has special structure. See @ref app_usbd_setup_evt_t */
-    APP_USBD_EVT_DRV_EPTRANSFER =
-        NRF_DRV_USBD_EVT_EPTRANSFER, /**< See documentation for @ref NRF_DRV_USBD_EVT_EPTRANSFER */
+typedef enum
+{
+    APP_USBD_EVT_DRV_SOF        = NRF_DRV_USBD_EVT_SOF,        /**< See documentation for @ref NRF_DRV_USBD_EVT_SOF        */
+    APP_USBD_EVT_DRV_RESET      = NRF_DRV_USBD_EVT_RESET,      /**< See documentation for @ref NRF_DRV_USBD_EVT_RESET      */
+    APP_USBD_EVT_DRV_SUSPEND    = NRF_DRV_USBD_EVT_SUSPEND,    /**< See documentation for @ref NRF_DRV_USBD_EVT_SUSPEND    */
+    APP_USBD_EVT_DRV_RESUME     = NRF_DRV_USBD_EVT_RESUME,     /**< See documentation for @ref NRF_DRV_USBD_EVT_RESUME     */
+    APP_USBD_EVT_DRV_WUREQ      = NRF_DRV_USBD_EVT_WUREQ,      /**< See documentation for @ref NRF_DRV_USBD_EVT_WUREQ      */
+    APP_USBD_EVT_DRV_SETUP      = NRF_DRV_USBD_EVT_SETUP,      /**< This event type has special structure. See @ref app_usbd_setup_evt_t */
+    APP_USBD_EVT_DRV_EPTRANSFER = NRF_DRV_USBD_EVT_EPTRANSFER, /**< See documentation for @ref NRF_DRV_USBD_EVT_EPTRANSFER */
 
-    APP_USBD_EVT_FIRST_POWER, /**< First power event code - for internal static assert checking */
+    APP_USBD_EVT_FIRST_POWER,                                  /**< First power event code - for internal static assert checking */
 
-    APP_USBD_EVT_POWER_DETECTED, /**< See documentation for @ref NRF_DRV_POWER_USB_EVT_DETECTED        */
-    APP_USBD_EVT_POWER_REMOVED, /**< See documentation for @ref NRF_DRV_POWER_USB_EVT_REMOVED         */
-    APP_USBD_EVT_POWER_READY, /**< See documentation for @ref NRF_DRV_POWER_USB_EVT_READY           */
+    APP_USBD_EVT_POWER_DETECTED,                               /**< See documentation for @ref NRF_DRV_POWER_USB_EVT_DETECTED        */
+    APP_USBD_EVT_POWER_REMOVED,                                /**< See documentation for @ref NRF_DRV_POWER_USB_EVT_REMOVED         */
+    APP_USBD_EVT_POWER_READY,                                  /**< See documentation for @ref NRF_DRV_POWER_USB_EVT_READY           */
 
-    APP_USBD_EVT_FIRST_APP, /**< First application event code - for internal static assert checking */
 
-    APP_USBD_EVT_INST_APPEND =
-        APP_USBD_EVT_FIRST_APP, /**< The instance was attached to the library, any configuration action can be done now */
-    APP_USBD_EVT_INST_REMOVE, /**<
+    APP_USBD_EVT_FIRST_APP,                                    /**< First application event code - for internal static assert checking */
+
+    APP_USBD_EVT_INST_APPEND = APP_USBD_EVT_FIRST_APP,         /**< The instance was attached to the library, any configuration action can be done now */
+    APP_USBD_EVT_INST_REMOVE,                                  /**<
                                                                 *   The instance is going to be removed, this event is called just before removing the instance.
                                                                 *   This removing cannot be stopped.
                                                                 */
-    APP_USBD_EVT_STARTED, /**< USBD library has just been started and functional - event passed to all instances, before USBD interrupts have been enabled */
-    APP_USBD_EVT_STOPPED, /**< USBD library has just been stopped and is not functional - event passed to all instances, after USBD interrupts have been disabled*/
+    APP_USBD_EVT_STARTED,                                      /**< USBD library has just been started and functional - event passed to all instances, before USBD interrupts have been enabled */
+    APP_USBD_EVT_STOPPED,                                      /**< USBD library has just been stopped and is not functional - event passed to all instances, after USBD interrupts have been disabled*/
 
-    APP_USBD_EVT_STATE_CHANGED, /**<
+    APP_USBD_EVT_STATE_CHANGED,                                /**<
                                                                 *   Informs all the classes that base state has been changed.
                                                                 *   This event is processed before setup stage that caused the state change finishes (before acknowledging it).
                                                                 */
 
-    APP_USBD_EVT_FIRST_INTERNAL =
-        0x80, /**< First internal event, used by the APP library internally. */
+    APP_USBD_EVT_FIRST_INTERNAL = 0x80,                        /**< First internal event, used by the APP library internally. */
 
-    APP_USBD_EVT_HFCLK_READY = APP_USBD_EVT_FIRST_INTERNAL, /**< High frequency clock started */
-    APP_USBD_EVT_START_REQ, /**< Start requested */
-    APP_USBD_EVT_STOP_REQ, /**< Stop requested */
-    APP_USBD_EVT_SUSPEND_REQ, /**< Suspend request - HFCLK would be released and USBD peripheral clock would be disconnected */
-    APP_USBD_EVT_WAKEUP_REQ, /**< Wakeup request - start the whole wakeup generation. */
-    APP_USBD_EVT_SETUP_SETADDRESS, /**<
+    APP_USBD_EVT_HFCLK_READY    = APP_USBD_EVT_FIRST_INTERNAL, /**< High frequency clock started */
+    APP_USBD_EVT_START_REQ,                                    /**< Start requested */
+    APP_USBD_EVT_STOP_REQ,                                     /**< Stop requested */
+    APP_USBD_EVT_SUSPEND_REQ,                                  /**< Suspend request - HFCLK would be released and USBD peripheral clock would be disconnected */
+    APP_USBD_EVT_WAKEUP_REQ,                                   /**< Wakeup request - start the whole wakeup generation. */
+    APP_USBD_EVT_SETUP_SETADDRESS,                             /**<
                                                                 *   Setup request to set address, separated from
                                                                 *   regular EVT_SETUP because this request is
                                                                 *   fully handled by hardware and for the software
@@ -157,12 +156,15 @@ typedef enum {
 
 } app_usbd_event_type_t;
 
+
+
 /**
  * @brief Specific application event structure.
  *
  * All the data required by the events that comes from the application level.
  */
-typedef struct {
+typedef struct
+{
     app_usbd_event_type_t type; //!< Event type
 } app_usbd_evt_t;
 
@@ -172,31 +174,35 @@ typedef struct {
  * This event structure would be used when @ref APP_USBD_EVT_DRV_SETUP
  * is passed to instance event handler.
  */
-typedef struct {
-    app_usbd_event_type_t type; //!< Event type
-    app_usbd_setup_t setup; //!< Setup structure
+typedef struct
+{
+    app_usbd_event_type_t type;  //!< Event type
+    app_usbd_setup_t      setup; //!< Setup structure
 } app_usbd_setup_evt_t;
+
 
 /**
  * @brief Complex event variable type.
  *
  * A variable that can store any kind of event.
  */
-typedef union {
-    app_usbd_event_type_t type; //!< Event type
-    nrf_drv_usbd_evt_t drv_evt; //!< Events that comes directly from the driver.
-    /**< Use this event structure only for event
+typedef union
+{
+    app_usbd_event_type_t type;      //!< Event type
+    nrf_drv_usbd_evt_t    drv_evt;   //!< Events that comes directly from the driver.
+                                     /**< Use this event structure only for event
                                       *   type < @ref APP_USBD_EVT_FIRST_APP
                                       */
-    app_usbd_setup_evt_t setup_evt; //!< Event structure with SETUP structure included.
-    /**< This structure is used in connection with
+    app_usbd_setup_evt_t  setup_evt; //!< Event structure with SETUP structure included.
+                                     /**< This structure is used in connection with
                                       *   @ref APP_USBD_EVT_DRV_SETUP
                                       */
-    app_usbd_evt_t app_evt; //!< Events that comes from the application driver.
-    /**< Use this event structure only for event
+    app_usbd_evt_t        app_evt;   //!< Events that comes from the application driver.
+                                     /**< Use this event structure only for event
                                       *   type >= @ref APP_USBD_EVT_FIRST_APP
                                       */
 } app_usbd_complex_evt_t;
+
 
 /**
  * @brief Internal event variable type.
@@ -208,17 +214,19 @@ typedef union {
  *       This structure would be created when setup event is processed.
  *       The reason for that is the fact that setup event structure has high memory printout.
  */
-typedef union {
-    app_usbd_event_type_t type; //!< Event type
-    nrf_drv_usbd_evt_t drv_evt; //!< Events that comes directly from the driver.
-    /**< Use this event structure only for event
+typedef union
+{
+    app_usbd_event_type_t type;      //!< Event type
+    nrf_drv_usbd_evt_t    drv_evt;   //!< Events that comes directly from the driver.
+                                     /**< Use this event structure only for event
                                       *   type < @ref APP_USBD_EVT_FIRST_APP
                                       */
-    app_usbd_evt_t app_evt; //!< Events that comes from the application driver.
-    /**< Use this event structure only for event
+    app_usbd_evt_t        app_evt;   //!< Events that comes from the application driver.
+                                     /**< Use this event structure only for event
                                       *   type >= @ref APP_USBD_EVT_FIRST_APP
                                       */
 } app_usbd_internal_evt_t;
+
 
 #ifdef DOXYGEN
 /**
@@ -235,8 +243,7 @@ typedef union {
  *       the instance structure.
  * @note The structure is defined in @file app_usbd_class_base.h.
  */
-typedef struct {
-} app_usbd_class_inst_t;
+typedef struct {} app_usbd_class_inst_t;
 #else
 typedef struct app_usbd_class_inst_s app_usbd_class_inst_t;
 #endif
@@ -249,8 +256,10 @@ typedef struct app_usbd_class_inst_s app_usbd_class_inst_t;
  *
  * @note If given event is not supported by class, return @ref NRF_ERROR_NOT_SUPPORTED
  */
-typedef ret_code_t (*app_usbd_ep_event_handler_t)(app_usbd_class_inst_t const *const p_inst,
-                                                  app_usbd_complex_evt_t const *const p_event);
+typedef ret_code_t (*app_usbd_ep_event_handler_t)(
+        app_usbd_class_inst_t  const * const p_inst,
+        app_usbd_complex_evt_t const * const p_event
+    );
 
 /**
  * @brief SOF interrupt callback function.

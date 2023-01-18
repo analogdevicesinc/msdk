@@ -128,7 +128,7 @@ void PalRadioReadRfPathComp(int16_t *pTxPathComp, int16_t *pRxPathComp);
 /*************************************************************************************************/
 int8_t PalRadioGetRxRfPathComp(void);
 
-/*! \} */ /* PAL_RADIO */
+/*! \} */    /* PAL_RADIO */
 
 #ifdef __cplusplus
 };

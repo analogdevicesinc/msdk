@@ -74,10 +74,10 @@ typedef uint8_t nrfx_swi_t;
 typedef uint16_t nrfx_swi_flags_t;
 
 /** @brief Unallocated instance value. */
-#define NRFX_SWI_UNALLOCATED ((nrfx_swi_t)0xFFuL)
+#define NRFX_SWI_UNALLOCATED  ((nrfx_swi_t)0xFFuL)
 
 /** @brief Default SWI priority. */
-#define NRFX_SWI_DEFAULT_PRIORITY APP_IRQ_PRIORITY_LOWEST
+#define NRFX_SWI_DEFAULT_PRIORITY  APP_IRQ_PRIORITY_LOWEST
 
 /**
  * @brief SWI handler function.
@@ -104,8 +104,9 @@ typedef void (*nrfx_swi_handler_t)(nrfx_swi_t swi, nrfx_swi_flags_t flags);
  * @retval NRFX_SUCCESS      The SWI was successfully allocated.
  * @retval NRFX_ERROR_NO_MEM There is no available SWI to be used.
  */
-nrfx_err_t nrfx_swi_alloc(nrfx_swi_t *p_swi, nrfx_swi_handler_t event_handler,
-                          uint32_t irq_priority);
+nrfx_err_t nrfx_swi_alloc(nrfx_swi_t *       p_swi,
+                          nrfx_swi_handler_t event_handler,
+                          uint32_t           irq_priority);
 
 /**
  * @brief Function for disabling an allocated SWI interrupt.
@@ -129,7 +130,7 @@ void nrfx_swi_int_enable(nrfx_swi_t swi);
  * @param[in,out] p_swi SWI instance to free. The value is changed to
  *                      @ref NRFX_SWI_UNALLOCATED on success.
  */
-void nrfx_swi_free(nrfx_swi_t *p_swi);
+void nrfx_swi_free(nrfx_swi_t * p_swi);
 
 /** @brief Function for freeing all allocated SWIs. */
 void nrfx_swi_all_free(void);
@@ -140,7 +141,8 @@ void nrfx_swi_all_free(void);
  * @param[in] swi         SWI to trigger.
  * @param[in] flag_number Number of user flag to trigger.
  */
-void nrfx_swi_trigger(nrfx_swi_t swi, uint8_t flag_number);
+void nrfx_swi_trigger(nrfx_swi_t swi,
+                      uint8_t    flag_number);
 
 /**
  * @brief Function for checking if the specified SWI is currently allocated.
@@ -163,10 +165,11 @@ bool nrfx_swi_is_allocated(nrfx_swi_t swi);
  * @return EGU base address or NULL if the specified SWI instance number
  *         is too high.
  */
-__STATIC_INLINE NRF_EGU_Type *nrfx_swi_egu_instance_get(nrfx_swi_t swi)
+__STATIC_INLINE NRF_EGU_Type * nrfx_swi_egu_instance_get(nrfx_swi_t swi)
 {
 #if (EGU_COUNT < SWI_COUNT)
-    if (swi >= EGU_COUNT) {
+    if (swi >= EGU_COUNT)
+    {
         return NULL;
     }
 #endif
@@ -182,13 +185,15 @@ __STATIC_INLINE NRF_EGU_Type *nrfx_swi_egu_instance_get(nrfx_swi_t swi)
  *
  * @return Address of the EGU trigger task.
  */
-__STATIC_INLINE uint32_t nrfx_swi_task_trigger_address_get(nrfx_swi_t swi, uint8_t channel)
+__STATIC_INLINE uint32_t nrfx_swi_task_trigger_address_get(nrfx_swi_t swi,
+                                                           uint8_t    channel)
 {
     NRFX_ASSERT(nrfx_swi_is_allocated(swi));
 
-    NRF_EGU_Type *p_egu = nrfx_swi_egu_instance_get(swi);
+    NRF_EGU_Type * p_egu = nrfx_swi_egu_instance_get(swi);
 #if (EGU_COUNT < SWI_COUNT)
-    if (p_egu == NULL) {
+    if (p_egu == NULL)
+    {
         return 0;
     }
 #endif
@@ -204,13 +209,15 @@ __STATIC_INLINE uint32_t nrfx_swi_task_trigger_address_get(nrfx_swi_t swi, uint8
  *
  * @return Address of the EGU-triggered event.
  */
-__STATIC_INLINE uint32_t nrfx_swi_event_triggered_address_get(nrfx_swi_t swi, uint8_t channel)
+__STATIC_INLINE uint32_t nrfx_swi_event_triggered_address_get(nrfx_swi_t swi,
+                                                              uint8_t    channel)
 {
     NRFX_ASSERT(nrfx_swi_is_allocated(swi));
 
-    NRF_EGU_Type *p_egu = nrfx_swi_egu_instance_get(swi);
+    NRF_EGU_Type * p_egu = nrfx_swi_egu_instance_get(swi);
 #if (EGU_COUNT < SWI_COUNT)
-    if (p_egu == NULL) {
+    if (p_egu == NULL)
+    {
         return 0;
     }
 #endif
@@ -222,12 +229,14 @@ __STATIC_INLINE uint32_t nrfx_swi_event_triggered_address_get(nrfx_swi_t swi, ui
 
 /** @} */
 
+
 void nrfx_swi_0_irq_handler(void);
 void nrfx_swi_1_irq_handler(void);
 void nrfx_swi_2_irq_handler(void);
 void nrfx_swi_3_irq_handler(void);
 void nrfx_swi_4_irq_handler(void);
 void nrfx_swi_5_irq_handler(void);
+
 
 #ifdef __cplusplus
 }

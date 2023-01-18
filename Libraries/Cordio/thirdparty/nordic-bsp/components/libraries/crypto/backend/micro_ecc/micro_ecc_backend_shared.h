@@ -51,10 +51,11 @@
 extern "C" {
 #endif
 
+
 #if defined(NRF_CRYPTO_BACKEND_MICRO_ECC_LITTLE_ENDIAN_ENABLED)
 
 #error The configuration NRF_CRYPTO_BACKEND_MICRO_ECC_LITTLE_ENDIAN_ENABLED was removed in SDK 15.1.0. Please see release notes for details on removing this error message.
-
+    
 #endif
 
 #define ECC_BACKEND_SWAP_BYTES uECC_VLI_NATIVE_LITTLE_ENDIAN

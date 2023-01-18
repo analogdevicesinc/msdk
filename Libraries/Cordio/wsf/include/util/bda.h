@@ -39,28 +39,28 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      BD address length */
-#define BDA_ADDR_LEN 6
+#define BDA_ADDR_LEN                  6
 
 /*! \brief      BD address string length */
-#define BDA_ADDR_STR_LEN (BDA_ADDR_LEN * 2)
+#define BDA_ADDR_STR_LEN              (BDA_ADDR_LEN * 2)
 
 /*! \brief      BDA RPA check */
-#define BDA_ADDR_IS_RPA(bda) (((bda)[5] & 0xC0) == 0x40)
+#define BDA_ADDR_IS_RPA(bda)          (((bda)[5] & 0xC0) == 0x40)
 
 /*! \brief      BDA NRPA check */
-#define BDA_ADDR_IS_NRPA(bda) (((bda)[5] & 0xC0) == 0x00)
+#define BDA_ADDR_IS_NRPA(bda)         (((bda)[5] & 0xC0) == 0x00)
 
 /*! \brief      BDA static random check */
-#define BDA_ADDR_IS_STATIC(bda) (((bda)[5] & 0xC0) == 0xC0)
+#define BDA_ADDR_IS_STATIC(bda)       (((bda)[5] & 0xC0) == 0xC0)
 
 /*! \brief      BDA64 RPA check */
-#define BDA64_ADDR_IS_RPA(bda64) ((((bda64) >> 40) & 0xC0) == 0x40)
+#define BDA64_ADDR_IS_RPA(bda64)      ((((bda64) >> 40) & 0xC0) == 0x40)
 
 /*! \brief      BDA64 NRPA check */
-#define BDA64_ADDR_IS_NRPA(bda64) ((((bda64) >> 40) & 0xC0) == 0x00)
+#define BDA64_ADDR_IS_NRPA(bda64)     ((((bda64) >> 40) & 0xC0) == 0x00)
 
 /*! \brief      BDA64 static random check */
-#define BDA64_ADDR_IS_STATIC(bda64) ((((bda64) >> 40) & 0xC0) == 0xC0)
+#define BDA64_ADDR_IS_STATIC(bda64)   ((((bda64) >> 40) & 0xC0) == 0xC0)
 
 /**************************************************************************************************
   Data Types
@@ -82,6 +82,7 @@ typedef uint8_t bdAddr_t[BDA_ADDR_LEN];
  */
 /*************************************************************************************************/
 void BdaCpy(uint8_t *pDst, const uint8_t *pSrc);
+
 
 /*************************************************************************************************/
 /*!
@@ -128,7 +129,7 @@ bool_t BdaIsZeros(const uint8_t *pAddr);
 /*************************************************************************************************/
 char *Bda2Str(const uint8_t *pAddr);
 
-/*! \} */ /* WSF_UTIL_API */
+/*! \} */    /* WSF_UTIL_API */
 
 #ifdef __cplusplus
 };

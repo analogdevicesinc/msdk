@@ -48,29 +48,33 @@
  *  \return    None.
  */
 /*************************************************************************************************/
-void meshPrvGenerateRandomAlphanumeric(uint8_t *pOutArray, uint8_t size)
+void meshPrvGenerateRandomAlphanumeric(uint8_t* pOutArray, uint8_t size)
 {
-    uint8_t alphaCount = 'Z' - 'A' + 1;
-    uint8_t numCount = '9' - '0' + 1;
-    uint8_t index;
-    uint32_t random;
+  uint8_t alphaCount = 'Z' - 'A' + 1;
+  uint8_t numCount = '9' - '0' + 1;
+  uint8_t index;
+  uint32_t random;
 
-    for (uint8_t j = 0; j < size; j++) {
-        /* Generate random integer between 0 and 4.294.967.295 */
-        SecRand((uint8_t *)&random, sizeof(uint32_t));
+  for (uint8_t j = 0; j < size; j++)
+  {
+    /* Generate random integer between 0 and 4.294.967.295 */
+    SecRand((uint8_t*)&random, sizeof(uint32_t));
 
-        /* Reduce the large integer modulo number of symbols.
+    /* Reduce the large integer modulo number of symbols.
        The loss of entropy is, on average, negligible. */
-        index = (uint8_t)(random % (alphaCount + numCount));
+    index = (uint8_t)(random % (alphaCount + numCount));
 
-        /* Map the index to the corresponding symbol */
-        if (index < alphaCount) {
-            pOutArray[j] = 'A' + index;
-        } else {
-            index -= alphaCount;
-            pOutArray[j] = '0' + index;
-        }
+    /* Map the index to the corresponding symbol */
+    if (index < alphaCount)
+    {
+      pOutArray[j] = 'A' + index;
     }
+    else
+    {
+      index -= alphaCount;
+      pOutArray[j] = '0' + index;
+    }
+  }
 }
 
 /*************************************************************************************************/
@@ -84,47 +88,31 @@ void meshPrvGenerateRandomAlphanumeric(uint8_t *pOutArray, uint8_t size)
 /*************************************************************************************************/
 uint32_t meshPrvGenerateRandomNumeric(uint8_t digits)
 {
-    uint32_t random;
-    uint32_t max;
+  uint32_t random;
+  uint32_t max;
 
-    switch (digits) {
-    case 1:
-        max = 9;
-        break;
-    case 2:
-        max = 99;
-        break;
-    case 3:
-        max = 999;
-        break;
-    case 4:
-        max = 9999;
-        break;
-    case 5:
-        max = 99999;
-        break;
-    case 6:
-        max = 999999;
-        break;
-    case 7:
-        max = 9999999;
-        break;
-    case 8:
-        max = 99999999;
-        break;
+  switch (digits)
+  {
+    case 1: max = 9; break;
+    case 2: max = 99; break;
+    case 3: max = 999; break;
+    case 4: max = 9999; break;
+    case 5: max = 99999; break;
+    case 6: max = 999999; break;
+    case 7: max = 9999999; break;
+    case 8: max = 99999999; break;
 
-    default:
-        return 0;
-    }
+    default: return 0;
+  }
 
-    /* Generate random integer between 0 and 4.294.967.295 */
-    SecRand((uint8_t *)&random, sizeof(uint32_t));
+  /* Generate random integer between 0 and 4.294.967.295 */
+  SecRand((uint8_t*)&random, sizeof(uint32_t));
 
-    /* Reduce the large integer modulo the maximum representable on the given number of digits.
+  /* Reduce the large integer modulo the maximum representable on the given number of digits.
      The loss of entropy is, on average, negligible. */
-    random = random % (max + 1);
+  random = random % (max + 1);
 
-    return random;
+  return random;
 }
 
 /*************************************************************************************************/
@@ -139,20 +127,22 @@ uint32_t meshPrvGenerateRandomNumeric(uint8_t digits)
 /*************************************************************************************************/
 bool_t meshPrvIsAlphanumericArray(uint8_t *pArray, uint8_t size)
 {
-    bool_t isUppercase;
-    bool_t isDigit;
+  bool_t isUppercase;
+  bool_t isDigit;
 
-    for (uint8_t j = 0; j < size; j++) {
-        isUppercase = (pArray[j] >= 'A' && pArray[j] <= 'Z');
-        isDigit = (pArray[j] >= '0' && pArray[j] <= '9');
+  for (uint8_t j = 0; j < size; j++)
+  {
+    isUppercase = (pArray[j] >= 'A' && pArray[j] <= 'Z');
+    isDigit = (pArray[j] >= '0' && pArray[j] <= '9');
 
-        if (!isUppercase && !isDigit) {
-            return FALSE;
-        }
+    if (!isUppercase && !isDigit)
+    {
+      return FALSE;
     }
+  }
 
-    /* No illegal character was found */
-    return TRUE;
+  /* No illegal character was found */
+  return TRUE;
 }
 
 /*************************************************************************************************/
@@ -166,18 +156,21 @@ bool_t meshPrvIsAlphanumericArray(uint8_t *pArray, uint8_t size)
  *  \return    None.
  */
 /*************************************************************************************************/
-void meshPrvPackInOutOobToAuthArray(uint8_t *pOutOobArray16B, meshPrvInOutOobData_t oobData,
+void meshPrvPackInOutOobToAuthArray(uint8_t* pOutOobArray16B,
+                                    meshPrvInOutOobData_t oobData,
                                     uint8_t oobSize)
 {
-    if (oobSize > 0) {
-        /* OOB data is alphanumeric - copy as array right-padded with zeros */
-        memcpy(pOutOobArray16B, oobData.alphanumericOob, oobSize);
-        memset(pOutOobArray16B + oobSize, 0x00, MESH_PRV_AUTH_VALUE_SIZE - oobSize);
-    } else {
-        /* OOB data is numeric - copy as big-endian 4-octet number, left-padded with zeros */
-        memset(pOutOobArray16B, 0x00, MESH_PRV_AUTH_VALUE_SIZE - MESH_PRV_NUMERIC_OOB_SIZE_OCTETS);
-        UINT32_TO_BE_BUF(
-            (pOutOobArray16B + MESH_PRV_AUTH_VALUE_SIZE - MESH_PRV_NUMERIC_OOB_SIZE_OCTETS),
-            oobData.numericOob);
-    }
+  if (oobSize > 0)
+  {
+    /* OOB data is alphanumeric - copy as array right-padded with zeros */
+    memcpy(pOutOobArray16B, oobData.alphanumericOob, oobSize);
+    memset(pOutOobArray16B + oobSize, 0x00, MESH_PRV_AUTH_VALUE_SIZE - oobSize);
+  }
+  else
+  {
+    /* OOB data is numeric - copy as big-endian 4-octet number, left-padded with zeros */
+    memset(pOutOobArray16B, 0x00, MESH_PRV_AUTH_VALUE_SIZE - MESH_PRV_NUMERIC_OOB_SIZE_OCTETS);
+    UINT32_TO_BE_BUF((pOutOobArray16B + MESH_PRV_AUTH_VALUE_SIZE - MESH_PRV_NUMERIC_OOB_SIZE_OCTETS),
+                     oobData.numericOob);
+  }
 }

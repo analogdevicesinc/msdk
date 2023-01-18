@@ -33,15 +33,15 @@
 **************************************************************************************************/
 
 /*! UriBeacon parameter IDs */
-enum {
-    URI_BEACON_PARAM_LOCK_STATE = 4, /*!< lock state (for UriBeacon) [1 byte] */
-    URI_BEACON_PARAM_URI_DATA = 5, /*!< URI data (for UriBeacon) [18 bytes] */
-    URI_BEACON_PARAM_URI_FLAGS = 6, /*!< URI flags (for UriBeacon) [1 byte] */
-    URI_BEACON_PARAM_ADVERTISED_TX_POWER_LEVELS =
-        7, /*!< advertised tx power levels (for UriBeacon) [4 bytes] */
-    URI_BEACON_PARAM_TX_POWER_MODE = 8, /*!< tx power mode (for UriBeacon) [1 byte] */
-    URI_BEACON_PARAM_BEACON_PERIOD = 9, /*!< beacon period (for beacon) [2 bytes] */
-    URI_BEACON_PARAM_LOCK = 10 /*!< lock [16 bytes] */
+enum
+{
+  URI_BEACON_PARAM_LOCK_STATE                 = 4,  /*!< lock state (for UriBeacon) [1 byte] */
+  URI_BEACON_PARAM_URI_DATA                   = 5,  /*!< URI data (for UriBeacon) [18 bytes] */
+  URI_BEACON_PARAM_URI_FLAGS                  = 6,  /*!< URI flags (for UriBeacon) [1 byte] */
+  URI_BEACON_PARAM_ADVERTISED_TX_POWER_LEVELS = 7,  /*!< advertised tx power levels (for UriBeacon) [4 bytes] */
+  URI_BEACON_PARAM_TX_POWER_MODE              = 8,  /*!< tx power mode (for UriBeacon) [1 byte] */
+  URI_BEACON_PARAM_BEACON_PERIOD              = 9,  /*!< beacon period (for beacon) [2 bytes] */
+  URI_BEACON_PARAM_LOCK                       = 10  /*!< lock [16 bytes] */
 };
 
 /**************************************************************************************************

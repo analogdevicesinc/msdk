@@ -42,7 +42,7 @@ extern "C" {
 
 #ifndef WSF_CS_STATS
 /*! \brief  Use CS statistics hooks. */
-#define WSF_CS_STATS FALSE
+#define WSF_CS_STATS    FALSE
 #endif
 
 /*************************************************************************************************/
@@ -65,7 +65,7 @@ extern "C" {
  *  \param  cs    Critical section variable.
  */
 /*************************************************************************************************/
-#define WSF_CS_ENTER(cs) WsfCsEnter()
+#define WSF_CS_ENTER(cs)        WsfCsEnter()
 
 /*************************************************************************************************/
 /*!
@@ -76,7 +76,7 @@ extern "C" {
  *  \param  cs    Critical section variable.
  */
 /*************************************************************************************************/
-#define WSF_CS_EXIT(cs) WsfCsExit()
+#define WSF_CS_EXIT(cs)        WsfCsExit()
 
 /**************************************************************************************************
   Function Declarations
@@ -105,7 +105,7 @@ void WsfCsEnter(void);
 /*************************************************************************************************/
 void WsfCsExit(void);
 
-/*! \} */ /* WSF_CS_API */
+/*! \} */    /* WSF_CS_API */
 
 #ifdef __cplusplus
 };

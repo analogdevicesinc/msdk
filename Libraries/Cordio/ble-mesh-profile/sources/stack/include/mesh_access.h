@@ -34,7 +34,8 @@
 #define MESH_ACCESS_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -75,15 +76,16 @@ typedef void (*meshAccCoreMdlMsgRecvCback_t)(uint8_t opcodeIdx, uint8_t *pMsgPar
                                              uint16_t netKeyIndex);
 
 /*! Structure containing Access Layer identification of models implemented by the Core stack. */
-typedef struct meshAccCoreMdl_tag {
-    void *pNext; /*!< Pointer to next core model. */
-    meshAccCoreMdlMsgRecvCback_t msgRecvCback; /*!< Core model message received callback. */
-    const meshMsgOpcode_t *pOpcodeArray; /*!< Pointer to opcode array for received messages.
+typedef struct meshAccCoreMdl_tag
+{
+  void                          *pNext;         /*!< Pointer to next core model. */
+  meshAccCoreMdlMsgRecvCback_t  msgRecvCback;   /*!< Core model message received callback. */
+  const meshMsgOpcode_t         *pOpcodeArray;  /*!< Pointer to opcode array for received messages.
                                                  */
-    uint8_t opcodeArrayLen; /*!< Length of the opcode array. */
-    meshElementId_t elemId; /*!< Identifier of the element containing the model.
+  uint8_t                       opcodeArrayLen; /*!< Length of the opcode array. */
+  meshElementId_t               elemId;         /*!< Identifier of the element containing the model.
                                                  */
-    meshModelId_t mdlId; /*!< Model identifier. */
+  meshModelId_t                 mdlId;          /*!< Model identifier. */
 } meshAccCoreMdl_t;
 
 /**************************************************************************************************

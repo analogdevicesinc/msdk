@@ -27,6 +27,7 @@
 */
 #include <redfs.h>
 
+
 /** @brief Query the state of a bit in a bitmap.
 
     Bits are counted from most significant to least significant.  Thus, the mask
@@ -37,19 +38,25 @@
 
     @retval Whether the bit is set (true) or clear (false.
 */
-bool RedBitGet(const uint8_t *pbBitmap, uint32_t ulBit)
+bool RedBitGet(
+    const uint8_t *pbBitmap,
+    uint32_t       ulBit)
 {
-    bool fRet;
+    bool           fRet;
 
-    if (pbBitmap == NULL) {
+    if(pbBitmap == NULL)
+    {
         REDERROR();
         fRet = false;
-    } else {
+    }
+    else
+    {
         fRet = (pbBitmap[ulBit >> 3U] & (0x80U >> (ulBit & 7U))) != 0U;
     }
 
     return fRet;
 }
+
 
 /** @brief Set a bit in a bitmap to one.
 
@@ -59,14 +66,18 @@ bool RedBitGet(const uint8_t *pbBitmap, uint32_t ulBit)
     @param pbBitmap Pointer to the bitmap.
     @param ulBit    The bit to set.
 */
-void RedBitSet(uint8_t *pbBitmap, uint32_t ulBit)
+void RedBitSet(
+    uint8_t *pbBitmap,
+    uint32_t ulBit)
 {
     REDASSERT(pbBitmap != NULL);
 
-    if (pbBitmap != NULL) {
+    if(pbBitmap != NULL)
+    {
         pbBitmap[ulBit >> 3U] |= (0x80U >> (ulBit & 7U));
     }
 }
+
 
 /** @brief Clear a bit in a bitmap to zero.
 
@@ -76,11 +87,15 @@ void RedBitSet(uint8_t *pbBitmap, uint32_t ulBit)
     @param pbBitmap Pointer to the bitmap.
     @param ulBit    The bit to clear.
 */
-void RedBitClear(uint8_t *pbBitmap, uint32_t ulBit)
+void RedBitClear(
+    uint8_t *pbBitmap,
+    uint32_t ulBit)
 {
     REDASSERT(pbBitmap != NULL);
 
-    if (pbBitmap != NULL) {
+    if(pbBitmap != NULL)
+    {
         pbBitmap[ulBit >> 3U] &= ~(0x80U >> (ulBit & 7U));
     }
 }
+

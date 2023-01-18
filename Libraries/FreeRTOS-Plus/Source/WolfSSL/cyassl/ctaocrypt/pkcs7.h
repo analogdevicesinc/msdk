@@ -19,6 +19,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifdef HAVE_PKCS7
 
 #ifndef CTAO_CRYPT_PKCS7_H
@@ -34,17 +35,18 @@
 #include <wolfssl/wolfcrypt/pkcs7.h>
 
 /* for pkcs7 reverse compatibility */
-#define SetContentType wc_SetContentType
-#define GetContentType wc_GetContentType
+#define SetContentType      wc_SetContentType
+#define GetContentType      wc_GetContentType
 #define CreateRecipientInfo wc_CreateRecipientInfo
-#define PKCS7_InitWithCert wc_PKCS7_InitWithCert
-#define PKCS7_Free wc_PKCS7_Free
-#define PKCS7_EncodeData wc_PKCS7_EncodeData
-#define PKCS7_EncodeSignedData wc_PKCS7_EncodeSignedData
-#define PKCS7_VerifySignedData wc_PKCS7_VerifySignedData
+#define PKCS7_InitWithCert  wc_PKCS7_InitWithCert
+#define PKCS7_Free          wc_PKCS7_Free
+#define PKCS7_EncodeData    wc_PKCS7_EncodeData
+#define PKCS7_EncodeSignedData    wc_PKCS7_EncodeSignedData
+#define PKCS7_VerifySignedData    wc_PKCS7_VerifySignedData
 #define PKCS7_EncodeEnvelopedData wc_PKCS7_EncodeEnvelopedData
 #define PKCS7_DecodeEnvelopedData wc_PKCS7_DecodeEnvelopedData
 
 #endif /* CTAO_CRYPT_PKCS7_H */
 
 #endif /* HAVE_PKCS7 */
+

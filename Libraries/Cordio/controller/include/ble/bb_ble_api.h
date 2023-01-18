@@ -39,120 +39,125 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Advertising packet statistics. */
-typedef struct {
-    uint32_t txAdv; /*!< Number of sent advertising packets. */
-    uint32_t rxReq; /*!< Number of successfully received advertising requests. */
-    uint32_t rxReqCrc; /*!< Number of received advertising requests with CRC errors. */
-    uint32_t
-        rxReqTimeout; /*!< Number of timed out received advertising requests (receive timeout). */
-    uint32_t txRsp; /*!< Number of sent response packets. */
-    uint32_t errAdv; /*!< Number of advertising transaction errors. */
-    uint16_t rxSetupUsec; /*!< Rx packet setup watermark in microseconds. */
-    uint16_t txSetupUsec; /*!< Tx packet setup watermark in microseconds. */
-    uint16_t rxIsrUsec; /*!< Rx ISR processing watermark in microseconds. */
-    uint16_t txIsrUsec; /*!< Tx ISR processing watermark in microseconds. */
+typedef struct
+{
+  uint32_t  txAdv;                  /*!< Number of sent advertising packets. */
+  uint32_t  rxReq;                  /*!< Number of successfully received advertising requests. */
+  uint32_t  rxReqCrc;               /*!< Number of received advertising requests with CRC errors. */
+  uint32_t  rxReqTimeout;           /*!< Number of timed out received advertising requests (receive timeout). */
+  uint32_t  txRsp;                  /*!< Number of sent response packets. */
+  uint32_t  errAdv;                 /*!< Number of advertising transaction errors. */
+  uint16_t  rxSetupUsec;            /*!< Rx packet setup watermark in microseconds. */
+  uint16_t  txSetupUsec;            /*!< Tx packet setup watermark in microseconds. */
+  uint16_t  rxIsrUsec;              /*!< Rx ISR processing watermark in microseconds. */
+  uint16_t  txIsrUsec;              /*!< Tx ISR processing watermark in microseconds. */
 } BbBleAdvPktStats_t;
 
 /*! \brief      Auxiliary advertising packet statistics. */
-typedef struct {
-    uint32_t txAdv; /*!< Number of sent advertising packets. */
-    uint32_t rxReq; /*!< Number of successfully received advertising requests. */
-    uint32_t rxReqCrc; /*!< Number of received advertising requests with CRC errors. */
-    uint32_t
-        rxReqTimeout; /*!< Number of timed out received advertising requests (receive timeout). */
-    uint32_t txRsp; /*!< Number of sent response packets. */
-    uint32_t txChain; /*!< Number of sent chain packets. */
-    uint32_t errAdv; /*!< Number of advertising transaction errors. */
-    uint16_t rxSetupUsec; /*!< Rx packet setup watermark in microseconds. */
-    uint16_t txSetupUsec; /*!< Tx packet setup watermark in microseconds. */
-    uint16_t rxIsrUsec; /*!< Rx ISR processing watermark in microseconds. */
-    uint16_t txIsrUsec; /*!< Tx ISR processing watermark in microseconds. */
+typedef struct
+{
+  uint32_t  txAdv;                  /*!< Number of sent advertising packets. */
+  uint32_t  rxReq;                  /*!< Number of successfully received advertising requests. */
+  uint32_t  rxReqCrc;               /*!< Number of received advertising requests with CRC errors. */
+  uint32_t  rxReqTimeout;           /*!< Number of timed out received advertising requests (receive timeout). */
+  uint32_t  txRsp;                  /*!< Number of sent response packets. */
+  uint32_t  txChain;                /*!< Number of sent chain packets. */
+  uint32_t  errAdv;                 /*!< Number of advertising transaction errors. */
+  uint16_t  rxSetupUsec;            /*!< Rx packet setup watermark in microseconds. */
+  uint16_t  txSetupUsec;            /*!< Tx packet setup watermark in microseconds. */
+  uint16_t  rxIsrUsec;              /*!< Rx ISR processing watermark in microseconds. */
+  uint16_t  txIsrUsec;              /*!< Tx ISR processing watermark in microseconds. */
 } BbBleAuxAdvPktStats_t;
 
 /*! \brief      Scan packet statistics. */
-typedef struct {
-    uint32_t rxAdv; /*!< Number of successfully received advertising packets. */
-    uint32_t rxAdvCrc; /*!< Number of received advertising packets with CRC errors. */
-    uint32_t rxAdvTimeout; /*!< Number of timed out advertising packets (receive timeout). */
-    uint32_t txReq; /*!< Number of sent advertising requests. */
-    uint32_t rxRsp; /*!< Number of successfully received advertising response packets. */
-    uint32_t rxRspCrc; /*!< Number of received advertising response packets with CRC errors. */
-    uint32_t rxRspTimeout; /*!< Number of timed out advertising response packets (receive timeout). */
-    uint32_t errScan; /*!< Number of scan transaction errors. */
-    uint16_t rxSetupUsec; /*!< Rx packet setup watermark in microseconds. */
-    uint16_t txSetupUsec; /*!< Tx packet setup watermark in microseconds. */
-    uint16_t rxIsrUsec; /*!< Rx ISR processing watermark in microseconds. */
-    uint16_t txIsrUsec; /*!< Tx ISR processing watermark in microseconds. */
+typedef struct
+{
+  uint32_t  rxAdv;                  /*!< Number of successfully received advertising packets. */
+  uint32_t  rxAdvCrc;               /*!< Number of received advertising packets with CRC errors. */
+  uint32_t  rxAdvTimeout;           /*!< Number of timed out advertising packets (receive timeout). */
+  uint32_t  txReq;                  /*!< Number of sent advertising requests. */
+  uint32_t  rxRsp;                  /*!< Number of successfully received advertising response packets. */
+  uint32_t  rxRspCrc;               /*!< Number of received advertising response packets with CRC errors. */
+  uint32_t  rxRspTimeout;           /*!< Number of timed out advertising response packets (receive timeout). */
+  uint32_t  errScan;                /*!< Number of scan transaction errors. */
+  uint16_t  rxSetupUsec;            /*!< Rx packet setup watermark in microseconds. */
+  uint16_t  txSetupUsec;            /*!< Tx packet setup watermark in microseconds. */
+  uint16_t  rxIsrUsec;              /*!< Rx ISR processing watermark in microseconds. */
+  uint16_t  txIsrUsec;              /*!< Tx ISR processing watermark in microseconds. */
 } BbBleScanPktStats_t;
 
 /*! \brief      Scan packet statistics. */
-typedef struct {
-    uint32_t rxAdv; /*!< Number of successfully received advertising packets. */
-    uint32_t rxAdvCrc; /*!< Number of received advertising packets with CRC errors. */
-    uint32_t rxAdvTimeout; /*!< Number of timed out advertising packets (receive timeout). */
-    uint32_t txReq; /*!< Number of sent advertising requests. */
-    uint32_t rxRsp; /*!< Number of successfully received advertising response packets. */
-    uint32_t rxRspCrc; /*!< Number of received advertising response packets with CRC errors. */
-    uint32_t rxRspTimeout; /*!< Number of timed out advertising response packets (receive timeout). */
-    uint32_t rxChain; /*!< Number of successfully received chain packets. */
-    uint32_t rxChainCrc; /*!< Number of received chain packets with CRC errors. */
-    uint32_t rxChainTimeout; /*!< Number of timed out chain packets (receive timeout). */
-    uint32_t errScan; /*!< Number of scan transaction errors. */
-    uint16_t rxSetupUsec; /*!< Rx packet setup watermark in microseconds. */
-    uint16_t txSetupUsec; /*!< Tx packet setup watermark in microseconds. */
-    uint16_t rxIsrUsec; /*!< Rx ISR processing watermark in microseconds. */
-    uint16_t txIsrUsec; /*!< Tx ISR processing watermark in microseconds. */
+typedef struct
+{
+  uint32_t  rxAdv;                  /*!< Number of successfully received advertising packets. */
+  uint32_t  rxAdvCrc;               /*!< Number of received advertising packets with CRC errors. */
+  uint32_t  rxAdvTimeout;           /*!< Number of timed out advertising packets (receive timeout). */
+  uint32_t  txReq;                  /*!< Number of sent advertising requests. */
+  uint32_t  rxRsp;                  /*!< Number of successfully received advertising response packets. */
+  uint32_t  rxRspCrc;               /*!< Number of received advertising response packets with CRC errors. */
+  uint32_t  rxRspTimeout;           /*!< Number of timed out advertising response packets (receive timeout). */
+  uint32_t  rxChain;                /*!< Number of successfully received chain packets. */
+  uint32_t  rxChainCrc;             /*!< Number of received chain packets with CRC errors. */
+  uint32_t  rxChainTimeout;         /*!< Number of timed out chain packets (receive timeout). */
+  uint32_t  errScan;                /*!< Number of scan transaction errors. */
+  uint16_t  rxSetupUsec;            /*!< Rx packet setup watermark in microseconds. */
+  uint16_t  txSetupUsec;            /*!< Tx packet setup watermark in microseconds. */
+  uint16_t  rxIsrUsec;              /*!< Rx ISR processing watermark in microseconds. */
+  uint16_t  txIsrUsec;              /*!< Tx ISR processing watermark in microseconds. */
 } BbBleAuxScanPktStats_t;
 
 /*! \brief      Periodic scan packet statistics. */
-typedef struct {
-    uint32_t rxAdv; /*!< Number of successfully received advertising packets. */
-    uint32_t rxAdvCrc; /*!< Number of received advertising packets with CRC errors. */
-    uint32_t rxAdvTimeout; /*!< Number of timed out advertising packets (receive timeout). */
-    uint32_t rxChain; /*!< Number of successfully received chain packets. */
-    uint32_t rxChainCrc; /*!< Number of received chain packets with CRC errors. */
-    uint32_t rxChainTimeout; /*!< Number of timed out chain packets (receive timeout). */
-    uint32_t errScan; /*!< Number of scan transaction errors. */
-    uint16_t rxSetupUsec; /*!< Rx packet setup watermark in microseconds. */
-    uint16_t txSetupUsec; /*!< Tx packet setup watermark in microseconds. */
-    uint16_t rxIsrUsec; /*!< Rx ISR processing watermark in microseconds. */
-    uint16_t txIsrUsec; /*!< Tx ISR processing watermark in microseconds. */
+typedef struct
+{
+  uint32_t  rxAdv;                  /*!< Number of successfully received advertising packets. */
+  uint32_t  rxAdvCrc;               /*!< Number of received advertising packets with CRC errors. */
+  uint32_t  rxAdvTimeout;           /*!< Number of timed out advertising packets (receive timeout). */
+  uint32_t  rxChain;                /*!< Number of successfully received chain packets. */
+  uint32_t  rxChainCrc;             /*!< Number of received chain packets with CRC errors. */
+  uint32_t  rxChainTimeout;         /*!< Number of timed out chain packets (receive timeout). */
+  uint32_t  errScan;                /*!< Number of scan transaction errors. */
+  uint16_t  rxSetupUsec;            /*!< Rx packet setup watermark in microseconds. */
+  uint16_t  txSetupUsec;            /*!< Tx packet setup watermark in microseconds. */
+  uint16_t  rxIsrUsec;              /*!< Rx ISR processing watermark in microseconds. */
+  uint16_t  txIsrUsec;              /*!< Tx ISR processing watermark in microseconds. */
 } BbBlePerScanPktStats_t;
 
 /*! \brief      Data packet statistics. */
-typedef struct {
-    uint32_t rxData; /*!< Number of successfully received data packets. */
-    uint32_t rxDataCrc; /*!< Number of received data packets with CRC errors. */
-    uint32_t rxDataTimeout; /*!< Number of timed out data packets (receive timeout). */
-    uint32_t txData; /*!< Number of sent data packets. */
-    uint32_t errData; /*!< Number of data transaction errors. */
-    uint16_t rxSetupUsec; /*!< Rx packet setup watermark in microseconds. */
-    uint16_t txSetupUsec; /*!< Tx packet setup watermark in microseconds. */
-    uint16_t rxIsrUsec; /*!< Rx ISR processing watermark in microseconds. */
-    uint16_t txIsrUsec; /*!< Tx ISR processing watermark in microseconds. */
+typedef struct
+{
+  uint32_t  rxData;                 /*!< Number of successfully received data packets. */
+  uint32_t  rxDataCrc;              /*!< Number of received data packets with CRC errors. */
+  uint32_t  rxDataTimeout;          /*!< Number of timed out data packets (receive timeout). */
+  uint32_t  txData;                 /*!< Number of sent data packets. */
+  uint32_t  errData;                /*!< Number of data transaction errors. */
+  uint16_t  rxSetupUsec;            /*!< Rx packet setup watermark in microseconds. */
+  uint16_t  txSetupUsec;            /*!< Tx packet setup watermark in microseconds. */
+  uint16_t  rxIsrUsec;              /*!< Rx ISR processing watermark in microseconds. */
+  uint16_t  txIsrUsec;              /*!< Tx ISR processing watermark in microseconds. */
 } BbBleDataPktStats_t;
 
 /*! \brief      PDU filtering statistics. */
-typedef struct {
-    uint16_t failPduTypeFilt; /*!< Number of PDUs failing PDU type filter. */
-    uint16_t passPduTypeFilt; /*!< Number of PDUs passing PDU type filter. */
-    uint16_t failWlFilt; /*!< Number of PDUs failing whitelist filter. */
-    uint16_t passWlFilt; /*!< Number of PDUs passing whitelist filter. */
-    uint16_t failPeerAddrMatch; /*!< Number of PDUS failing peer address match. */
-    uint16_t passPeerAddrMatch; /*!< Number of PDUs passing peer address match. */
-    uint16_t failLocalAddrMatch; /*!< Number of PDUS failing local address match. */
-    uint16_t passLocalAddrMatch; /*!< Number of PDUs passing local address match. */
-    uint16_t failPeerRpaVerify; /*!< Number of peer RPAs failing verification. */
-    uint16_t passPeerRpaVerify; /*!< Number of peer RPAs passing verification. */
-    uint16_t failLocalRpaVerify; /*!< Number of local RPAs failing verification. */
-    uint16_t passLocalRpaVerify; /*!< Number of local RPAs passing verification. */
-    uint16_t failPeerPrivAddrReq; /*!< Number of peer addresses failing requirement to be RPAs. */
-    uint16_t failLocalPrivAddrReq; /*!< Number of local addresses failing requirement to be RPAs. */
-    uint16_t failPeerAddrResReq; /*!< Number of PDUs failing required peer address resolution. */
-    uint16_t passPeerAddrResOpt; /*!< Number of PDUs passing optional peer address resolution. */
-    uint16_t passLocalAddrResOpt; /*!< Number of PDUs passing optional local address resolution. */
-    uint16_t peerResAddrPend; /*!< Number of peer address resolutions pended. */
-    uint16_t localResAddrPend; /*!< Number of local address resolutions pended. */
+typedef struct
+{
+  uint16_t  failPduTypeFilt;        /*!< Number of PDUs failing PDU type filter. */
+  uint16_t  passPduTypeFilt;        /*!< Number of PDUs passing PDU type filter. */
+  uint16_t  failWlFilt;             /*!< Number of PDUs failing whitelist filter. */
+  uint16_t  passWlFilt;             /*!< Number of PDUs passing whitelist filter. */
+  uint16_t  failPeerAddrMatch;      /*!< Number of PDUS failing peer address match. */
+  uint16_t  passPeerAddrMatch;      /*!< Number of PDUs passing peer address match. */
+  uint16_t  failLocalAddrMatch;     /*!< Number of PDUS failing local address match. */
+  uint16_t  passLocalAddrMatch;     /*!< Number of PDUs passing local address match. */
+  uint16_t  failPeerRpaVerify;      /*!< Number of peer RPAs failing verification. */
+  uint16_t  passPeerRpaVerify;      /*!< Number of peer RPAs passing verification. */
+  uint16_t  failLocalRpaVerify;     /*!< Number of local RPAs failing verification. */
+  uint16_t  passLocalRpaVerify;     /*!< Number of local RPAs passing verification. */
+  uint16_t  failPeerPrivAddrReq;    /*!< Number of peer addresses failing requirement to be RPAs. */
+  uint16_t  failLocalPrivAddrReq;   /*!< Number of local addresses failing requirement to be RPAs. */
+  uint16_t  failPeerAddrResReq;     /*!< Number of PDUs failing required peer address resolution. */
+  uint16_t  passPeerAddrResOpt;     /*!< Number of PDUs passing optional peer address resolution. */
+  uint16_t  passLocalAddrResOpt;    /*!< Number of PDUs passing optional local address resolution. */
+  uint16_t  peerResAddrPend;        /*!< Number of peer address resolutions pended. */
+  uint16_t  localResAddrPend;       /*!< Number of local address resolutions pended. */
 } BbBlePduFiltStats_t;
 
 /**************************************************************************************************
@@ -415,7 +420,7 @@ void BbBleBisSlaveInit(void);
 /*************************************************************************************************/
 void BbBleGetCisStats(BbBleDataPktStats_t *pStats);
 
-/*! \} */ /* BB_API_BLE */
+/*! \} */    /* BB_API_BLE */
 
 #ifdef __cplusplus
 };

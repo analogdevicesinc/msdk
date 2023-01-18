@@ -27,7 +27,8 @@
 #define MMDL_LIGHT_LIGHTNESS_SR_H
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /**************************************************************************************************
@@ -128,7 +129,7 @@ mmdlLightLightnessState_t mmdlLightLightnessLastSrGetState(meshElementId_t eleme
  */
 /*************************************************************************************************/
 bool_t mmdlLightLightnessRangeSrSetState(meshElementId_t elementId,
-                                         const mmdlLightLightnessRangeState_t *pRangeState,
+                                   const mmdlLightLightnessRangeState_t *pRangeState,
                                          mmdlStateUpdateSrc_t stateUpdateSrc);
 
 /*************************************************************************************************/

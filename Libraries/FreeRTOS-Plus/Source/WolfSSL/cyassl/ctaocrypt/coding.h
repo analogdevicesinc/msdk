@@ -19,9 +19,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA
  */
 
+
 #ifndef CTAO_CRYPT_CODING_H
 #define CTAO_CRYPT_CODING_H
 
 #include <wolfssl/wolfcrypt/coding.h>
 
 #endif /* CTAO_CRYPT_CODING_H */
+

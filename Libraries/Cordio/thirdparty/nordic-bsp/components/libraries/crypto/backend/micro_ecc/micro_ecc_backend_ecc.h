@@ -51,61 +51,80 @@
 #include "nrf_crypto_ecc_shared.h"
 #include "uECC.h"
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+
 /** @internal See @ref nrf_crypto_backend_ecc_key_pair_generate_fn_t.
  */
-ret_code_t nrf_crypto_backend_micro_ecc_key_pair_generate(void *p_context, void *p_private_key,
-                                                          void *p_public_key);
+ret_code_t nrf_crypto_backend_micro_ecc_key_pair_generate(
+    void * p_context,
+    void * p_private_key,
+    void * p_public_key);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_calculate_fn_t.
 */
-ret_code_t nrf_crypto_backend_micro_ecc_public_key_calculate(void *p_context,
-                                                             void const *p_private_key,
-                                                             void *p_public_key);
+ret_code_t nrf_crypto_backend_micro_ecc_public_key_calculate(
+    void       * p_context,
+    void const * p_private_key,
+    void       * p_public_key);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_private_key_from_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_micro_ecc_private_key_from_raw(void *p_private_key,
-                                                             uint8_t const *p_raw_data);
+ret_code_t nrf_crypto_backend_micro_ecc_private_key_from_raw(
+    void          * p_private_key,
+    uint8_t const * p_raw_data);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_private_key_to_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_micro_ecc_private_key_to_raw(void const *p_private_key,
-                                                           uint8_t *p_raw_data);
+ret_code_t nrf_crypto_backend_micro_ecc_private_key_to_raw(
+    void    const * p_private_key,
+    uint8_t       * p_raw_data);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_from_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_micro_ecc_public_key_from_raw(void *p_public_key,
-                                                            uint8_t const *p_raw_data);
+ret_code_t nrf_crypto_backend_micro_ecc_public_key_from_raw(
+    void          * p_public_key,
+    uint8_t const * p_raw_data);
+
 
 /** @internal See @ref nrf_crypto_backend_ecc_public_key_to_raw_fn_t.
 */
-ret_code_t nrf_crypto_backend_micro_ecc_public_key_to_raw(void const *p_public_key,
-                                                          uint8_t *p_raw_data);
+ret_code_t nrf_crypto_backend_micro_ecc_public_key_to_raw(
+    void const * p_public_key,
+    uint8_t    * p_raw_data);
+
 
 /** @internal @brief Represents common uECC backend key structure.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    uint32_t key[1]; /**< @internal @brief micro-ecc specific key representation */
+    uint32_t key[1];                             /**< @internal @brief micro-ecc specific key representation */
 } nrf_crypto_backend_micro_ecc_common_key_t;
+
 
 /** @internal @brief Callback RNG function that can be provided to uECC API.
  *  @param dest     Destination buffer.
  *  @param size     Size of the buffer.
  *  @return         1 on success, 0 on error.
  */
-int nrf_crypto_backend_micro_ecc_rng_callback(uint8_t *dest, unsigned size);
+int nrf_crypto_backend_micro_ecc_rng_callback(uint8_t * dest, unsigned size);
+
 
 /** @internal @brief Gets uECC type based on provided key.
  *  @param p_key    uECC backend key (public or private).
  *  @return         uECC specific value representing a curve.
  */
-uECC_Curve
-nrf_crypto_backend_micro_ecc_curve_get(nrf_crypto_backend_micro_ecc_common_key_t const *p_key);
+uECC_Curve nrf_crypto_backend_micro_ecc_curve_get(
+    nrf_crypto_backend_micro_ecc_common_key_t const * p_key);
+
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP192R1)
 
@@ -116,31 +135,27 @@ nrf_crypto_backend_micro_ecc_curve_get(nrf_crypto_backend_micro_ecc_common_key_t
 
 /** @internal @brief Structure holding private key for secp192r1 (NIST 192-bit) in micro-ecc.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    uint32_t key[192 / 32]; /**< @internal @brief micro-ecc specific key representation */
+    uint32_t key[192 / 32];                      /**< @internal @brief micro-ecc specific key representation */
 } nrf_crypto_backend_secp192r1_private_key_t;
 
 /** @internal @brief Structure holding public key for secp192r1 (NIST 192-bit) in micro-ecc.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    uint32_t key[2 * 192 / 32]; /**< @internal @brief micro-ecc specific key representation */
+    uint32_t key[2 * 192 / 32];                  /**< @internal @brief micro-ecc specific key representation */
 } nrf_crypto_backend_secp192r1_public_key_t;
 
 // Aliases for one common micro-ecc implementation
-#define nrf_crypto_backend_secp192r1_key_pair_generate \
-    nrf_crypto_backend_micro_ecc_key_pair_generate
-#define nrf_crypto_backend_secp192r1_public_key_calculate \
-    nrf_crypto_backend_micro_ecc_public_key_calculate
-#define nrf_crypto_backend_secp192r1_private_key_from_raw \
-    nrf_crypto_backend_micro_ecc_private_key_from_raw
-#define nrf_crypto_backend_secp192r1_private_key_to_raw \
-    nrf_crypto_backend_micro_ecc_private_key_to_raw
-#define nrf_crypto_backend_secp192r1_public_key_from_raw \
-    nrf_crypto_backend_micro_ecc_public_key_from_raw
-#define nrf_crypto_backend_secp192r1_public_key_to_raw \
-    nrf_crypto_backend_micro_ecc_public_key_to_raw
+#define nrf_crypto_backend_secp192r1_key_pair_generate nrf_crypto_backend_micro_ecc_key_pair_generate
+#define nrf_crypto_backend_secp192r1_public_key_calculate nrf_crypto_backend_micro_ecc_public_key_calculate
+#define nrf_crypto_backend_secp192r1_private_key_from_raw nrf_crypto_backend_micro_ecc_private_key_from_raw
+#define nrf_crypto_backend_secp192r1_private_key_to_raw nrf_crypto_backend_micro_ecc_private_key_to_raw
+#define nrf_crypto_backend_secp192r1_public_key_from_raw nrf_crypto_backend_micro_ecc_public_key_from_raw
+#define nrf_crypto_backend_secp192r1_public_key_to_raw nrf_crypto_backend_micro_ecc_public_key_to_raw
 #define nrf_crypto_backend_secp192r1_private_key_free NULL
 #define nrf_crypto_backend_secp192r1_public_key_free NULL
 #define NRF_CRYPTO_BACKEND_SECP192R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
@@ -152,6 +167,7 @@ typedef uint32_t nrf_crypto_backend_secp192r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP192R1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP224R1)
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_ECC_SECP224R1)
@@ -161,31 +177,27 @@ typedef uint32_t nrf_crypto_backend_secp192r1_public_key_calculate_context_t;
 
 /** @internal @brief Structure holding private key for secp224r1 (NIST 224-bit) in micro-ecc.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    uint32_t key[224 / 32]; /**< @internal @brief micro-ecc specific key representation */
+    uint32_t key[224 / 32];                      /**< @internal @brief micro-ecc specific key representation */
 } nrf_crypto_backend_secp224r1_private_key_t;
 
 /** @internal @brief Structure holding public key for secp224r1 (NIST 224-bit) in micro-ecc.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    uint32_t key[2 * 224 / 32]; /**< @internal @brief micro-ecc specific key representation */
+    uint32_t key[2 * 224 / 32];                  /**< @internal @brief micro-ecc specific key representation */
 } nrf_crypto_backend_secp224r1_public_key_t;
 
 // Aliases for one common micro-ecc implementation
-#define nrf_crypto_backend_secp224r1_key_pair_generate \
-    nrf_crypto_backend_micro_ecc_key_pair_generate
-#define nrf_crypto_backend_secp224r1_public_key_calculate \
-    nrf_crypto_backend_micro_ecc_public_key_calculate
-#define nrf_crypto_backend_secp224r1_private_key_from_raw \
-    nrf_crypto_backend_micro_ecc_private_key_from_raw
-#define nrf_crypto_backend_secp224r1_private_key_to_raw \
-    nrf_crypto_backend_micro_ecc_private_key_to_raw
-#define nrf_crypto_backend_secp224r1_public_key_from_raw \
-    nrf_crypto_backend_micro_ecc_public_key_from_raw
-#define nrf_crypto_backend_secp224r1_public_key_to_raw \
-    nrf_crypto_backend_micro_ecc_public_key_to_raw
+#define nrf_crypto_backend_secp224r1_key_pair_generate nrf_crypto_backend_micro_ecc_key_pair_generate
+#define nrf_crypto_backend_secp224r1_public_key_calculate nrf_crypto_backend_micro_ecc_public_key_calculate
+#define nrf_crypto_backend_secp224r1_private_key_from_raw nrf_crypto_backend_micro_ecc_private_key_from_raw
+#define nrf_crypto_backend_secp224r1_private_key_to_raw nrf_crypto_backend_micro_ecc_private_key_to_raw
+#define nrf_crypto_backend_secp224r1_public_key_from_raw nrf_crypto_backend_micro_ecc_public_key_from_raw
+#define nrf_crypto_backend_secp224r1_public_key_to_raw nrf_crypto_backend_micro_ecc_public_key_to_raw
 #define nrf_crypto_backend_secp224r1_private_key_free NULL
 #define nrf_crypto_backend_secp224r1_public_key_free NULL
 #define NRF_CRYPTO_BACKEND_SECP224R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
@@ -197,6 +209,7 @@ typedef uint32_t nrf_crypto_backend_secp224r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP224R1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP256R1)
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_ECC_SECP256R1)
@@ -206,31 +219,27 @@ typedef uint32_t nrf_crypto_backend_secp224r1_public_key_calculate_context_t;
 
 /** @internal @brief Structure holding private key for secp256r1 (NIST 256-bit) in micro-ecc.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    uint32_t key[256 / 32]; /**< @internal @brief micro-ecc specific key representation */
+    uint32_t key[256 / 32];                      /**< @internal @brief micro-ecc specific key representation */
 } nrf_crypto_backend_secp256r1_private_key_t;
 
 /** @internal @brief Structure holding public key for secp256r1 (NIST 256-bit) in micro-ecc.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    uint32_t key[2 * 256 / 32]; /**< @internal @brief micro-ecc specific key representation */
+    uint32_t key[2 * 256 / 32];                  /**< @internal @brief micro-ecc specific key representation */
 } nrf_crypto_backend_secp256r1_public_key_t;
 
 // Aliases for one common micro-ecc implementation
-#define nrf_crypto_backend_secp256r1_key_pair_generate \
-    nrf_crypto_backend_micro_ecc_key_pair_generate
-#define nrf_crypto_backend_secp256r1_public_key_calculate \
-    nrf_crypto_backend_micro_ecc_public_key_calculate
-#define nrf_crypto_backend_secp256r1_private_key_from_raw \
-    nrf_crypto_backend_micro_ecc_private_key_from_raw
-#define nrf_crypto_backend_secp256r1_private_key_to_raw \
-    nrf_crypto_backend_micro_ecc_private_key_to_raw
-#define nrf_crypto_backend_secp256r1_public_key_from_raw \
-    nrf_crypto_backend_micro_ecc_public_key_from_raw
-#define nrf_crypto_backend_secp256r1_public_key_to_raw \
-    nrf_crypto_backend_micro_ecc_public_key_to_raw
+#define nrf_crypto_backend_secp256r1_key_pair_generate nrf_crypto_backend_micro_ecc_key_pair_generate
+#define nrf_crypto_backend_secp256r1_public_key_calculate nrf_crypto_backend_micro_ecc_public_key_calculate
+#define nrf_crypto_backend_secp256r1_private_key_from_raw nrf_crypto_backend_micro_ecc_private_key_from_raw
+#define nrf_crypto_backend_secp256r1_private_key_to_raw nrf_crypto_backend_micro_ecc_private_key_to_raw
+#define nrf_crypto_backend_secp256r1_public_key_from_raw nrf_crypto_backend_micro_ecc_public_key_from_raw
+#define nrf_crypto_backend_secp256r1_public_key_to_raw nrf_crypto_backend_micro_ecc_public_key_to_raw
 #define nrf_crypto_backend_secp256r1_private_key_free NULL
 #define nrf_crypto_backend_secp256r1_public_key_free NULL
 #define NRF_CRYPTO_BACKEND_SECP256R1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
@@ -242,6 +251,7 @@ typedef uint32_t nrf_crypto_backend_secp256r1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP256R1)
 
+
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP256K1)
 
 #if NRF_MODULE_ENABLED(NRF_CRYPTO_ECC_SECP256K1)
@@ -251,31 +261,27 @@ typedef uint32_t nrf_crypto_backend_secp256r1_public_key_calculate_context_t;
 
 /** @internal @brief Structure holding private key for secp256k1 (Koblitz 256-bit) in micro-ecc.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    uint32_t key[256 / 32]; /**< @internal @brief micro-ecc specific key representation */
+    uint32_t key[256 / 32];                      /**< @internal @brief micro-ecc specific key representation */
 } nrf_crypto_backend_secp256k1_private_key_t;
 
 /** @internal @brief Structure holding public key for secp256k1 (Koblitz 256-bit) in micro-ecc.
  */
-typedef struct {
+typedef struct
+{
     nrf_crypto_internal_ecc_key_header_t header; /**< @internal @brief Common ECC key header */
-    uint32_t key[2 * 256 / 32]; /**< @internal @brief micro-ecc specific key representation */
+    uint32_t key[2 * 256 / 32];                  /**< @internal @brief micro-ecc specific key representation */
 } nrf_crypto_backend_secp256k1_public_key_t;
 
 // Aliases for one common micro-ecc implementation
-#define nrf_crypto_backend_secp256k1_key_pair_generate \
-    nrf_crypto_backend_micro_ecc_key_pair_generate
-#define nrf_crypto_backend_secp256k1_public_key_calculate \
-    nrf_crypto_backend_micro_ecc_public_key_calculate
-#define nrf_crypto_backend_secp256k1_private_key_from_raw \
-    nrf_crypto_backend_micro_ecc_private_key_from_raw
-#define nrf_crypto_backend_secp256k1_private_key_to_raw \
-    nrf_crypto_backend_micro_ecc_private_key_to_raw
-#define nrf_crypto_backend_secp256k1_public_key_from_raw \
-    nrf_crypto_backend_micro_ecc_public_key_from_raw
-#define nrf_crypto_backend_secp256k1_public_key_to_raw \
-    nrf_crypto_backend_micro_ecc_public_key_to_raw
+#define nrf_crypto_backend_secp256k1_key_pair_generate nrf_crypto_backend_micro_ecc_key_pair_generate
+#define nrf_crypto_backend_secp256k1_public_key_calculate nrf_crypto_backend_micro_ecc_public_key_calculate
+#define nrf_crypto_backend_secp256k1_private_key_from_raw nrf_crypto_backend_micro_ecc_private_key_from_raw
+#define nrf_crypto_backend_secp256k1_private_key_to_raw nrf_crypto_backend_micro_ecc_private_key_to_raw
+#define nrf_crypto_backend_secp256k1_public_key_from_raw nrf_crypto_backend_micro_ecc_public_key_from_raw
+#define nrf_crypto_backend_secp256k1_public_key_to_raw nrf_crypto_backend_micro_ecc_public_key_to_raw
 #define nrf_crypto_backend_secp256k1_private_key_free NULL
 #define nrf_crypto_backend_secp256k1_public_key_free NULL
 #define NRF_CRYPTO_BACKEND_SECP256K1_KEY_PAIR_GENERATE_CONTEXT_SIZE 0
@@ -286,6 +292,7 @@ typedef uint32_t nrf_crypto_backend_secp256k1_key_pair_generate_context_t;
 typedef uint32_t nrf_crypto_backend_secp256k1_public_key_calculate_context_t;
 
 #endif // NRF_MODULE_ENABLED(NRF_CRYPTO_BACKEND_MICRO_ECC_ECC_SECP256K1)
+
 
 #ifdef __cplusplus
 }

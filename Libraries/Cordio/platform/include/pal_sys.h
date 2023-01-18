@@ -43,12 +43,7 @@ extern "C" {
 #ifdef DEBUG
 
 /*! \brief      Parameter check. */
-#define PAL_SYS_ASSERT(expr)    \
-    {                           \
-        if (!(expr)) {          \
-            PalSysAssertTrap(); \
-        }                       \
-    }
+#define PAL_SYS_ASSERT(expr)    { if (!(expr)) { PalSysAssertTrap(); } }
 
 #else
 
@@ -80,10 +75,10 @@ void PalSysSetIdle(void);
 void PalEnterCs(void);
 void PalExitCs(void);
 
-/*! \} */ /* PAL_SYS */
+/*! \} */    /* PAL_SYS */
 
 #ifdef __cplusplus
 };
 #endif
 
-#endif /* PAL_SYS_H */
+#endif  /* PAL_SYS_H */

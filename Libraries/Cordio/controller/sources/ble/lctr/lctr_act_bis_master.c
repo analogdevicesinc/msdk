@@ -33,34 +33,35 @@
 /*************************************************************************************************/
 static void lctrNotifyHostBigCreateSyncComplete(lctrBigCtx_t *pBigCtx, LlStatus_t status)
 {
-    LlBigSyncEstInd_t evt = { 0 };
+  LlBigSyncEstInd_t evt = { 0 };
 
-    evt.hdr.param = pBigCtx->handle;
-    evt.hdr.event = LL_BIG_SYNC_EST_IND;
-    evt.hdr.status = status;
+  evt.hdr.param = pBigCtx->handle;
+  evt.hdr.event = LL_BIG_SYNC_EST_IND;
+  evt.hdr.status = status;
 
-    evt.status = status;
-    evt.bigHandle = pBigCtx->handle;
+  evt.status = status;
+  evt.bigHandle = pBigCtx->handle;
 
-    if (evt.status == LL_SUCCESS) {
-        evt.transLatUsec = pBigCtx->transLatUsec;
-        evt.nse = pBigCtx->nse;
-        evt.bn = pBigCtx->bn;
-        evt.pto = pBigCtx->pto;
-        evt.irc = pBigCtx->irc;
-        evt.maxPdu = pBigCtx->maxPdu;
-        evt.isoInterval = LL_MATH_DIV_1250(pBigCtx->isoInterUsec);
-        evt.numBis = pBigCtx->numBis;
+  if (evt.status == LL_SUCCESS)
+  {
+    evt.transLatUsec = pBigCtx->transLatUsec;
+    evt.nse = pBigCtx->nse;
+    evt.bn = pBigCtx->bn;
+    evt.pto = pBigCtx->pto;
+    evt.irc = pBigCtx->irc;
+    evt.maxPdu = pBigCtx->maxPdu;
+    evt.isoInterval = LL_MATH_DIV_1250(pBigCtx->isoInterUsec);
+    evt.numBis = pBigCtx->numBis;
 
-        for (unsigned int i = 0; i < evt.numBis; i++) {
-            evt.bisHandle[i] = pBigCtx->pBisCtx[i]->handle;
-        }
+    for (unsigned int i = 0; i < evt.numBis; i++)
+    {
+      evt.bisHandle[i] = pBigCtx->pBisCtx[i]->handle;
     }
+  }
 
-    LL_TRACE_INFO2("### LlEvent ###  LL_BIG_SYNC_EST_IND, bigHandle=%u, status=%u", pBigCtx->handle,
-                   status);
+  LL_TRACE_INFO2("### LlEvent ###  LL_BIG_SYNC_EST_IND, bigHandle=%u, status=%u", pBigCtx->handle, status);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -73,22 +74,21 @@ static void lctrNotifyHostBigCreateSyncComplete(lctrBigCtx_t *pBigCtx, LlStatus_
 /*************************************************************************************************/
 void lctrNotifyHostBigTerminateComplete(LlStatus_t status, uint8_t bigHandle)
 {
-    LlBigTermSyncCnf_t evt;
+  LlBigTermSyncCnf_t evt;
 
-    /* Clear not required; all values are written. */
-    /* memset(&evt, 0, sizeof(LlBigTermSyncCnf_t)); */
+  /* Clear not required; all values are written. */
+  /* memset(&evt, 0, sizeof(LlBigTermSyncCnf_t)); */
 
-    evt.hdr.param = bigHandle;
-    evt.hdr.event = LL_BIG_TERM_SYNC_CNF;
-    evt.hdr.status = status;
+  evt.hdr.param = bigHandle;
+  evt.hdr.event = LL_BIG_TERM_SYNC_CNF;
+  evt.hdr.status = status;
 
-    evt.status = status;
-    evt.bigHandle = bigHandle;
+  evt.status = status;
+  evt.bigHandle = bigHandle;
 
-    LL_TRACE_INFO2("### LlEvent ###  LL_BIG_TERM_SYNC_CNF, status=%u, bigHandle=%u", status,
-                   bigHandle);
+  LL_TRACE_INFO2("### LlEvent ###  LL_BIG_TERM_SYNC_CNF, status=%u, bigHandle=%u", status, bigHandle);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -101,22 +101,21 @@ void lctrNotifyHostBigTerminateComplete(LlStatus_t status, uint8_t bigHandle)
 /*************************************************************************************************/
 void lctrNotifyHostSyncLost(uint8_t bigHandle, LlStatus_t reason)
 {
-    LlBigSyncLostInd_t evt;
+  LlBigSyncLostInd_t evt;
 
-    /* Clear not required; all values are written. */
-    /* memset(&evt, 0, sizeof(LlBigTermSyncCnf_t)); */
+  /* Clear not required; all values are written. */
+  /* memset(&evt, 0, sizeof(LlBigTermSyncCnf_t)); */
 
-    evt.hdr.param = bigHandle;
-    evt.hdr.event = LL_BIG_SYNC_LOST_IND;
-    evt.hdr.status = LL_SUCCESS;
+  evt.hdr.param = bigHandle;
+  evt.hdr.event = LL_BIG_SYNC_LOST_IND;
+  evt.hdr.status = LL_SUCCESS;
 
-    evt.bigHandle = bigHandle;
-    evt.reason = reason;
+  evt.bigHandle = bigHandle;
+  evt.reason = reason;
 
-    LL_TRACE_INFO2("### LlEvent ###  LL_BIG_SYNC_LOST_IND, bigHandle=%u, reason=%u", bigHandle,
-                   reason);
+  LL_TRACE_INFO2("### LlEvent ###  LL_BIG_SYNC_LOST_IND, bigHandle=%u, reason=%u", bigHandle, reason);
 
-    LmgrSendEvent((LlEvt_t *)&evt);
+  LmgrSendEvent((LlEvt_t *)&evt);
 }
 
 /*************************************************************************************************/
@@ -128,12 +127,12 @@ void lctrNotifyHostSyncLost(uint8_t bigHandle, LlStatus_t reason)
 /*************************************************************************************************/
 void lctrMstBigActStart(lctrBigCtx_t *pBigCtx)
 {
-    /* Defer until BIG Info received. */
-    /* lctrMstBigBuildOp(pBigCtx); */
+  /* Defer until BIG Info received. */
+  /* lctrMstBigBuildOp(pBigCtx); */
 
-    BbStart(BB_PROT_BLE);
+  BbStart(BB_PROT_BLE);
 
-    LmgrIncResetRefCount();
+  LmgrIncResetRefCount();
 }
 
 /*************************************************************************************************/
@@ -145,27 +144,27 @@ void lctrMstBigActStart(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrMstBigActBigSync(lctrBigCtx_t *pBigCtx)
 {
-    LctrAcadBigInfo_t *pBigInfo = &pLctrMstBigMsg->bigInfo.data;
+  LctrAcadBigInfo_t *pBigInfo = &pLctrMstBigMsg->bigInfo.data;
 
-    lctrMstSetupBigContext(pBigCtx, pBigInfo);
-    lctrMstSetupBigChannel(pBigCtx, pBigInfo);
+  lctrMstSetupBigContext(pBigCtx, pBigInfo);
+  lctrMstSetupBigChannel(pBigCtx, pBigInfo);
 
-    for (unsigned int i = 0; i < pBigInfo->numBis; i++) {
-        lctrBisCtx_t *pBisCtx;
+  for (unsigned int i = 0; i < pBigInfo->numBis; i++)
+  {
+    lctrBisCtx_t *pBisCtx;
 
-        /* Availability is verified on BIG Create Sync command. */
-        pBisCtx = lctrAllocBisCtx(pBigCtx);
-        WSF_ASSERT(pBisCtx);
+    /* Availability is verified on BIG Create Sync command. */
+    pBisCtx = lctrAllocBisCtx(pBigCtx);
+    WSF_ASSERT(pBisCtx);
 
-        lctrSetupBisContext(pBisCtx, pBigInfo->seedAccAddr, pBigInfo->baseCrcInit,
-                            pBigInfo->chanMap, pBigInfo->phy);
-    }
+    lctrSetupBisContext(pBisCtx, pBigInfo->seedAccAddr, pBigInfo->baseCrcInit, pBigInfo->chanMap, pBigInfo->phy);
+  }
 
-    lctrMstBigBuildOp(pBigCtx, &pLctrMstBigMsg->bigInfo.data);
+  lctrMstBigBuildOp(pBigCtx, &pLctrMstBigMsg->bigInfo.data);
 
-    WsfTimerStartMs(&pBigCtx->roleData.mst.bigSyncTmr, pBigCtx->roleData.mst.bigSyncTimeoutMs);
+  WsfTimerStartMs(&pBigCtx->roleData.mst.bigSyncTmr, pBigCtx->roleData.mst.bigSyncTimeoutMs);
 
-    lctrNotifyHostBigCreateSyncComplete(pBigCtx, LL_SUCCESS);
+  lctrNotifyHostBigCreateSyncComplete(pBigCtx, LL_SUCCESS);
 }
 
 /*************************************************************************************************/
@@ -177,13 +176,13 @@ void lctrMstBigActBigSync(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrMstBigActTerm(lctrBigCtx_t *pBigCtx)
 {
-    BbStop(BB_PROT_BLE);
+  BbStop(BB_PROT_BLE);
 
-    lctrFreeBigCtx(pBigCtx);
+  lctrFreeBigCtx(pBigCtx);
 
-    LmgrDecResetRefCount();
+  LmgrDecResetRefCount();
 
-    lctrNotifyHostSyncLost(pBigCtx->handle, pBigCtx->bcp.term.reason);
+  lctrNotifyHostSyncLost(pBigCtx->handle, pBigCtx->bcp.term.reason);
 }
 
 /*************************************************************************************************/
@@ -195,15 +194,17 @@ void lctrMstBigActTerm(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrMstBigActShutdown(lctrBigCtx_t *pBigCtx)
 {
-    /* By removing BOD from scheduler, BOD end callback will be called. */
-    /* Shutdown completes with events generated in BOD end callback.    */
-    if (!SchRemove(&pBigCtx->bod)) {
-        lctrMstBigSendMsg(pBigCtx, LCTR_MST_BIG_INT_TERMINATED_SYNC);
-    }
+  /* By removing BOD from scheduler, BOD end callback will be called. */
+  /* Shutdown completes with events generated in BOD end callback.    */
+  if (!SchRemove(&pBigCtx->bod))
+  {
+    lctrMstBigSendMsg(pBigCtx, LCTR_MST_BIG_INT_TERMINATED_SYNC);
+  }
 
-    if (pBigCtx->state == LCTR_MST_BIG_STATE_SYNCING) {
-        lctrNotifyHostBigCreateSyncComplete(pBigCtx, LL_ERROR_CODE_CONN_TERM_BY_LOCAL_HOST);
-    }
+  if (pBigCtx->state == LCTR_MST_BIG_STATE_SYNCING)
+  {
+    lctrNotifyHostBigCreateSyncComplete(pBigCtx, LL_ERROR_CODE_CONN_TERM_BY_LOCAL_HOST);
+  }
 }
 
 /*************************************************************************************************/
@@ -215,13 +216,14 @@ void lctrMstBigActShutdown(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrMstBigActSyncLost(lctrBigCtx_t *pBigCtx)
 {
-    /* By removing BOD from scheduler, BOD end callback will be called. */
-    /* Shutdown completes with events generated in BOD end callback.    */
-    if (!SchRemove(&pBigCtx->bod)) {
-        lctrMstBigSendMsg(pBigCtx, LCTR_MST_BIG_INT_TERMINATED_SYNC);
-    }
+  /* By removing BOD from scheduler, BOD end callback will be called. */
+  /* Shutdown completes with events generated in BOD end callback.    */
+  if (!SchRemove(&pBigCtx->bod))
+  {
+    lctrMstBigSendMsg(pBigCtx, LCTR_MST_BIG_INT_TERMINATED_SYNC);
+  }
 
-    pBigCtx->roleData.mst.syncLostReason = LL_ERROR_CODE_CONN_TIMEOUT;
+  pBigCtx->roleData.mst.syncLostReason = LL_ERROR_CODE_CONN_TIMEOUT;
 }
 
 /*************************************************************************************************/
@@ -233,13 +235,14 @@ void lctrMstBigActSyncLost(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrMstBigActMicFailed(lctrBigCtx_t *pBigCtx)
 {
-    /* By removing BOD from scheduler, BOD end callback will be called. */
-    /* Shutdown completes with events generated in BOD end callback.    */
-    if (!SchRemove(&pBigCtx->bod)) {
-        lctrMstBigSendMsg(pBigCtx, LCTR_MST_BIG_INT_TERMINATED_SYNC);
-    }
+  /* By removing BOD from scheduler, BOD end callback will be called. */
+  /* Shutdown completes with events generated in BOD end callback.    */
+  if (!SchRemove(&pBigCtx->bod))
+  {
+    lctrMstBigSendMsg(pBigCtx, LCTR_MST_BIG_INT_TERMINATED_SYNC);
+  }
 
-    pBigCtx->roleData.mst.syncLostReason = LL_ERROR_CODE_CONN_TERM_MIC_FAILURE;
+  pBigCtx->roleData.mst.syncLostReason = LL_ERROR_CODE_CONN_TERM_MIC_FAILURE;
 }
 
 /*************************************************************************************************/
@@ -251,15 +254,18 @@ void lctrMstBigActMicFailed(lctrBigCtx_t *pBigCtx)
 /*************************************************************************************************/
 void lctrMstBigActCleanup(lctrBigCtx_t *pBigCtx)
 {
-    BbStop(BB_PROT_BLE);
+  BbStop(BB_PROT_BLE);
 
-    lctrFreeBigCtx(pBigCtx);
+  lctrFreeBigCtx(pBigCtx);
 
-    LmgrDecResetRefCount();
+  LmgrDecResetRefCount();
 
-    if (pBigCtx->roleData.mst.syncLostReason != LL_SUCCESS) {
-        lctrNotifyHostSyncLost(pBigCtx->handle, pBigCtx->roleData.mst.syncLostReason);
-    } else {
-        lctrNotifyHostBigTerminateComplete(LL_SUCCESS, pBigCtx->handle);
-    }
+  if (pBigCtx->roleData.mst.syncLostReason != LL_SUCCESS)
+  {
+    lctrNotifyHostSyncLost(pBigCtx->handle, pBigCtx->roleData.mst.syncLostReason);
+  }
+  else
+  {
+    lctrNotifyHostBigTerminateComplete(LL_SUCCESS, pBigCtx->handle);
+  }
 }

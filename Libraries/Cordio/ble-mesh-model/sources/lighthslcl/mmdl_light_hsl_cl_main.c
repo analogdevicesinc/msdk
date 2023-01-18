@@ -44,9 +44,10 @@
 **************************************************************************************************/
 
 /*! Light HSL Client control block type definition */
-typedef struct mmdlLightHslClCb_tag {
-    mmdlEventCback_t recvCback; /*!< Model received callback */
-} mmdlLightHslClCb_t;
+typedef struct mmdlLightHslClCb_tag
+{
+  mmdlEventCback_t recvCback;    /*!< Model received callback */
+}mmdlLightHslClCb_t;
 
 /**************************************************************************************************
   Global Variables
@@ -56,30 +57,36 @@ typedef struct mmdlLightHslClCb_tag {
 wsfHandlerId_t mmdlLightHslClHandlerId;
 
 /*! Supported opcodes */
-const meshMsgOpcode_t mmdlLightHslClRcvdOpcodes[MMDL_LIGHT_HSL_CL_NUM_RCVD_OPCODES] = {
-    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_STATUS_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_TARGET_STATUS_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_HUE_STATUS_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_SAT_STATUS_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_DEFAULT_STATUS_OPCODE) } },
-    { { UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_RANGE_STATUS_OPCODE) } }
+const meshMsgOpcode_t mmdlLightHslClRcvdOpcodes[MMDL_LIGHT_HSL_CL_NUM_RCVD_OPCODES] =
+{
+  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_STATUS_OPCODE)} },
+  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_TARGET_STATUS_OPCODE)} },
+  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_HUE_STATUS_OPCODE)} },
+  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_SAT_STATUS_OPCODE)} },
+  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_DEFAULT_STATUS_OPCODE)} },
+  { {UINT16_OPCODE_TO_BYTES(MMDL_LIGHT_HSL_RANGE_STATUS_OPCODE)} }
 };
 
 /*! Light HSL Client message handler type definition */
-typedef void (*mmdlLightHslClHandleMsg_t)(const meshModelMsgRecvEvt_t *pMsg);
+typedef void (*mmdlLightHslClHandleMsg_t )(const meshModelMsgRecvEvt_t *pMsg);
 
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
 /*! Handler functions for supported opcodes */
-const mmdlLightHslClHandleMsg_t mmdlLightHslClHandleMsg[MMDL_LIGHT_HSL_CL_NUM_RCVD_OPCODES] = {
-    mmdlLightHslClHandleStatus,    mmdlLightHslClHandleTargetStatus, mmdlLightHslClHandleHueStatus,
-    mmdlLightHslClHandleSatStatus, mmdlLightHslClHandleDefStatus,    mmdlLightHslClHandleRangeStatus
+const mmdlLightHslClHandleMsg_t mmdlLightHslClHandleMsg[MMDL_LIGHT_HSL_CL_NUM_RCVD_OPCODES] =
+{
+  mmdlLightHslClHandleStatus,
+  mmdlLightHslClHandleTargetStatus,
+  mmdlLightHslClHandleHueStatus,
+  mmdlLightHslClHandleSatStatus,
+  mmdlLightHslClHandleDefStatus,
+  mmdlLightHslClHandleRangeStatus
 };
 
 /*! Light HSL Client control block */
-static mmdlLightHslClCb_t lightHslClCb;
+static mmdlLightHslClCb_t  lightHslClCb;
 
 /**************************************************************************************************
   Local Functions
@@ -104,16 +111,16 @@ static void mmdlLightHslSendMessage(meshElementId_t elementId, meshAddress_t ser
                                     uint8_t ttl, uint16_t appKeyIndex, const uint8_t *pParam,
                                     uint8_t paramLen, uint16_t opcode)
 {
-    meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_HSL_CL_MDL_ID, opcode);
+  meshMsgInfo_t msgInfo = MESH_MSG_INFO(MMDL_LIGHT_HSL_CL_MDL_ID, opcode);
 
-    /* Fill in the message information */
-    msgInfo.elementId = elementId;
-    msgInfo.dstAddr = serverAddr;
-    msgInfo.ttl = ttl;
-    msgInfo.appKeyIndex = appKeyIndex;
+  /* Fill in the message information */
+  msgInfo.elementId = elementId;
+  msgInfo.dstAddr = serverAddr;
+  msgInfo.ttl = ttl;
+  msgInfo.appKeyIndex = appKeyIndex;
 
-    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-    MeshSendMessage(&msgInfo, (uint8_t *)pParam, paramLen, 0, 0);
+  /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+  MeshSendMessage(&msgInfo, (uint8_t *)pParam, paramLen, 0, 0);
 }
 
 /*************************************************************************************************/
@@ -131,13 +138,13 @@ static void mmdlLightHslSendMessage(meshElementId_t elementId, meshAddress_t ser
 static void mmdlLightHslPublishMessage(meshElementId_t elementId, const uint8_t *pParam,
                                        uint8_t paramLen, uint16_t opcode)
 {
-    meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_HSL_CL_MDL_ID, opcode);
+  meshPubMsgInfo_t pubMsgInfo = MESH_PUB_MSG_INFO(MMDL_LIGHT_HSL_CL_MDL_ID, opcode);
 
-    /* Fill in the msg info parameters */
-    pubMsgInfo.elementId = elementId;
+  /* Fill in the msg info parameters */
+  pubMsgInfo.elementId = elementId;
 
-    /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
-    MeshPublishMessage(&pubMsgInfo, (uint8_t *)pParam, paramLen);
+  /* Send message to the Mesh Core. Parameters are already stored in over-the-air order */
+  MeshPublishMessage(&pubMsgInfo, (uint8_t *)pParam, paramLen);
 }
 
 /*************************************************************************************************/
@@ -151,39 +158,43 @@ static void mmdlLightHslPublishMessage(meshElementId_t elementId, const uint8_t 
 /*************************************************************************************************/
 void mmdlLightHslClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlLightHslClStatusEvent_t event;
-    uint8_t *pParams;
+  mmdlLightHslClStatusEvent_t event;
+  uint8_t *pParams;
 
-    /* Validate message length */
-    if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_STATUS_MAX_LEN &&
-        pMsg->messageParamsLen != MMDL_LIGHT_HSL_STATUS_MIN_LEN) {
-        return;
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_STATUS_MAX_LEN &&
+      pMsg->messageParamsLen != MMDL_LIGHT_HSL_STATUS_MIN_LEN)
+  {
+    return;
+  }
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
-    event.hdr.param = MMDL_LIGHT_HSL_CL_STATUS_EVENT;
-    event.hdr.status = MMDL_SUCCESS;
+  /* Set event type and status */
+  event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
+  event.hdr.param = MMDL_LIGHT_HSL_CL_STATUS_EVENT;
+  event.hdr.status = MMDL_SUCCESS;
 
-    /* Extract status event parameters */
-    pParams = pMsg->pMessageParams;
-    BSTREAM_TO_UINT16(event.lightness, pParams);
-    BSTREAM_TO_UINT16(event.hue, pParams);
-    BSTREAM_TO_UINT16(event.saturation, pParams);
+  /* Extract status event parameters */
+  pParams = pMsg->pMessageParams;
+  BSTREAM_TO_UINT16(event.lightness, pParams);
+  BSTREAM_TO_UINT16(event.hue, pParams);
+  BSTREAM_TO_UINT16(event.saturation, pParams);
 
-    /* Check if optional parameters are present */
-    if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_STATUS_MAX_LEN) {
-        BSTREAM_TO_UINT8(event.remainingTime, pParams);
-    } else {
-        event.remainingTime = 0;
-    }
+  /* Check if optional parameters are present */
+  if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_STATUS_MAX_LEN)
+  {
+    BSTREAM_TO_UINT8(event.remainingTime, pParams);
+  }
+  else
+  {
+    event.remainingTime = 0;
+  }
 
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
 
-    /* Send event to the upper layer */
-    lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -197,39 +208,43 @@ void mmdlLightHslClHandleStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightHslClHandleTargetStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlLightHslClStatusEvent_t event;
-    uint8_t *pParams;
+  mmdlLightHslClStatusEvent_t event;
+  uint8_t *pParams;
 
-    /* Validate message length */
-    if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_STATUS_MAX_LEN &&
-        pMsg->messageParamsLen != MMDL_LIGHT_HSL_STATUS_MIN_LEN) {
-        return;
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_STATUS_MAX_LEN &&
+      pMsg->messageParamsLen != MMDL_LIGHT_HSL_STATUS_MIN_LEN)
+  {
+    return;
+  }
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
-    event.hdr.param = MMDL_LIGHT_HSL_CL_TARGET_STATUS_EVENT;
-    event.hdr.status = MMDL_SUCCESS;
+  /* Set event type and status */
+  event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
+  event.hdr.param = MMDL_LIGHT_HSL_CL_TARGET_STATUS_EVENT;
+  event.hdr.status = MMDL_SUCCESS;
 
-    /* Extract status event parameters */
-    pParams = pMsg->pMessageParams;
-    BSTREAM_TO_UINT16(event.lightness, pParams);
-    BSTREAM_TO_UINT16(event.hue, pParams);
-    BSTREAM_TO_UINT16(event.saturation, pParams);
+  /* Extract status event parameters */
+  pParams = pMsg->pMessageParams;
+  BSTREAM_TO_UINT16(event.lightness, pParams);
+  BSTREAM_TO_UINT16(event.hue, pParams);
+  BSTREAM_TO_UINT16(event.saturation, pParams);
 
-    /* Check if optional parameters are present */
-    if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_STATUS_MAX_LEN) {
-        BSTREAM_TO_UINT8(event.remainingTime, pParams);
-    } else {
-        event.remainingTime = 0;
-    }
+  /* Check if optional parameters are present */
+  if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_STATUS_MAX_LEN)
+  {
+    BSTREAM_TO_UINT8(event.remainingTime, pParams);
+  }
+  else
+  {
+    event.remainingTime = 0;
+  }
 
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
 
-    /* Send event to the upper layer */
-    lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -243,40 +258,44 @@ void mmdlLightHslClHandleTargetStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightHslClHandleHueStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlLightHslClHueStatusEvent_t event;
-    uint8_t *pParams;
+  mmdlLightHslClHueStatusEvent_t event;
+  uint8_t *pParams;
 
-    /* Validate message length */
-    if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_HUE_STATUS_MAX_LEN &&
-        pMsg->messageParamsLen != MMDL_LIGHT_HSL_HUE_STATUS_MIN_LEN) {
-        return;
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_HUE_STATUS_MAX_LEN &&
+      pMsg->messageParamsLen != MMDL_LIGHT_HSL_HUE_STATUS_MIN_LEN)
+  {
+    return;
+  }
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
-    event.hdr.param = MMDL_LIGHT_HSL_CL_HUE_STATUS_EVENT;
-    event.hdr.status = MMDL_SUCCESS;
+  /* Set event type and status */
+  event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
+  event.hdr.param = MMDL_LIGHT_HSL_CL_HUE_STATUS_EVENT;
+  event.hdr.status = MMDL_SUCCESS;
 
-    /* Extract status event parameters */
-    pParams = pMsg->pMessageParams;
-    BSTREAM_TO_UINT16(event.presentHue, pParams);
+  /* Extract status event parameters */
+  pParams = pMsg->pMessageParams;
+  BSTREAM_TO_UINT16(event.presentHue, pParams);
 
-    /* Check if optional parameters are present */
-    if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_HUE_STATUS_MAX_LEN) {
-        /* Extract target state */
-        BSTREAM_TO_UINT16(event.targetHue, pParams);
-        BSTREAM_TO_UINT8(event.remainingTime, pParams);
-    } else {
-        event.remainingTime = 0;
-        event.targetHue = 0;
-    }
+  /* Check if optional parameters are present */
+  if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_HUE_STATUS_MAX_LEN)
+  {
+    /* Extract target state */
+    BSTREAM_TO_UINT16(event.targetHue, pParams);
+    BSTREAM_TO_UINT8(event.remainingTime, pParams);
+  }
+  else
+  {
+    event.remainingTime = 0;
+    event.targetHue = 0;
+  }
 
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
 
-    /* Send event to the upper layer */
-    lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -290,40 +309,44 @@ void mmdlLightHslClHandleHueStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightHslClHandleSatStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlLightHslClSatStatusEvent_t event;
-    uint8_t *pParams;
+  mmdlLightHslClSatStatusEvent_t event;
+  uint8_t *pParams;
 
-    /* Validate message length */
-    if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_SAT_STATUS_MAX_LEN &&
-        pMsg->messageParamsLen != MMDL_LIGHT_HSL_SAT_STATUS_MIN_LEN) {
-        return;
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_SAT_STATUS_MAX_LEN &&
+      pMsg->messageParamsLen != MMDL_LIGHT_HSL_SAT_STATUS_MIN_LEN)
+  {
+    return;
+  }
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
-    event.hdr.param = MMDL_LIGHT_HSL_CL_SAT_STATUS_EVENT;
-    event.hdr.status = MMDL_SUCCESS;
+  /* Set event type and status */
+  event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
+  event.hdr.param = MMDL_LIGHT_HSL_CL_SAT_STATUS_EVENT;
+  event.hdr.status = MMDL_SUCCESS;
 
-    /* Extract status event parameters */
-    pParams = pMsg->pMessageParams;
-    BSTREAM_TO_UINT16(event.presentSat, pParams);
+  /* Extract status event parameters */
+  pParams = pMsg->pMessageParams;
+  BSTREAM_TO_UINT16(event.presentSat, pParams);
 
-    /* Check if optional parameters are present */
-    if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_SAT_STATUS_MAX_LEN) {
-        /* Extract target state */
-        BSTREAM_TO_UINT16(event.targetSat, pParams);
-        BSTREAM_TO_UINT8(event.remainingTime, pParams);
-    } else {
-        event.remainingTime = 0;
-        event.targetSat = 0;
-    }
+  /* Check if optional parameters are present */
+  if (pMsg->messageParamsLen == MMDL_LIGHT_HSL_SAT_STATUS_MAX_LEN)
+  {
+    /* Extract target state */
+    BSTREAM_TO_UINT16(event.targetSat, pParams);
+    BSTREAM_TO_UINT8(event.remainingTime, pParams);
+  }
+  else
+  {
+    event.remainingTime = 0;
+    event.targetSat = 0;
+  }
 
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
 
-    /* Send event to the upper layer */
-    lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -337,31 +360,32 @@ void mmdlLightHslClHandleSatStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightHslClHandleDefStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlLightHslClDefStatusEvent_t event;
-    uint8_t *pParams;
+  mmdlLightHslClDefStatusEvent_t event;
+  uint8_t *pParams;
 
-    /* Validate message length */
-    if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_DEF_STATUS_LEN) {
-        return;
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_DEF_STATUS_LEN)
+  {
+    return;
+  }
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
-    event.hdr.param = MMDL_LIGHT_HSL_CL_DEF_STATUS_EVENT;
-    event.hdr.status = MMDL_SUCCESS;
+  /* Set event type and status */
+  event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
+  event.hdr.param = MMDL_LIGHT_HSL_CL_DEF_STATUS_EVENT;
+  event.hdr.status = MMDL_SUCCESS;
 
-    /* Extract status event parameters */
-    pParams = pMsg->pMessageParams;
-    BSTREAM_TO_UINT16(event.lightness, pParams);
-    BSTREAM_TO_UINT16(event.hue, pParams);
-    BSTREAM_TO_UINT16(event.saturation, pParams);
+  /* Extract status event parameters */
+  pParams = pMsg->pMessageParams;
+  BSTREAM_TO_UINT16(event.lightness, pParams);
+  BSTREAM_TO_UINT16(event.hue, pParams);
+  BSTREAM_TO_UINT16(event.saturation, pParams);
 
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
 
-    /* Send event to the upper layer */
-    lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -375,33 +399,34 @@ void mmdlLightHslClHandleDefStatus(const meshModelMsgRecvEvt_t *pMsg)
 /*************************************************************************************************/
 void mmdlLightHslClHandleRangeStatus(const meshModelMsgRecvEvt_t *pMsg)
 {
-    mmdlLightHslClRangeStatusEvent_t event;
-    uint8_t *pParams;
+  mmdlLightHslClRangeStatusEvent_t event;
+  uint8_t *pParams;
 
-    /* Validate message length */
-    if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_RANGE_STATUS_LEN) {
-        return;
-    }
+  /* Validate message length */
+  if (pMsg->messageParamsLen != MMDL_LIGHT_HSL_RANGE_STATUS_LEN)
+  {
+    return;
+  }
 
-    /* Set event type and status */
-    event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
-    event.hdr.param = MMDL_LIGHT_HSL_CL_RANGE_STATUS_EVENT;
-    event.hdr.status = MMDL_SUCCESS;
+  /* Set event type and status */
+  event.hdr.event = MMDL_LIGHT_HSL_CL_EVENT;
+  event.hdr.param = MMDL_LIGHT_HSL_CL_RANGE_STATUS_EVENT;
+  event.hdr.status = MMDL_SUCCESS;
 
-    /* Extract status event parameters */
-    pParams = pMsg->pMessageParams;
-    BSTREAM_TO_UINT8(event.opStatus, pParams);
-    BSTREAM_TO_UINT16(event.minHue, pParams);
-    BSTREAM_TO_UINT16(event.maxHue, pParams);
-    BSTREAM_TO_UINT16(event.minSaturation, pParams);
-    BSTREAM_TO_UINT16(event.maxSaturation, pParams);
+  /* Extract status event parameters */
+  pParams = pMsg->pMessageParams;
+  BSTREAM_TO_UINT8(event.opStatus, pParams);
+  BSTREAM_TO_UINT16(event.minHue, pParams);
+  BSTREAM_TO_UINT16(event.maxHue, pParams);
+  BSTREAM_TO_UINT16(event.minSaturation, pParams);
+  BSTREAM_TO_UINT16(event.maxSaturation, pParams);
 
-    /* Set event contents */
-    event.elementId = pMsg->elementId;
-    event.serverAddr = pMsg->srcAddr;
+  /* Set event contents */
+  event.elementId = pMsg->elementId;
+  event.serverAddr = pMsg->srcAddr;
 
-    /* Send event to the upper layer */
-    lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
+  /* Send event to the upper layer */
+  lightHslClCb.recvCback((wsfMsgHdr_t *)&event);
 }
 
 /*************************************************************************************************/
@@ -419,40 +444,45 @@ void mmdlLightHslClHandleRangeStatus(const meshModelMsgRecvEvt_t *pMsg)
  */
 /*************************************************************************************************/
 static void mmdlLightHslClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                              uint16_t appKeyIndex, const mmdlLightHslSetParam_t *pParam,
-                              bool_t ackReq)
+                       uint16_t appKeyIndex, const mmdlLightHslSetParam_t *pParam, bool_t ackReq)
 {
-    uint8_t param[MMDL_LIGHT_HSL_SET_MAX_LEN];
-    uint8_t *pCursor = param;
-    uint16_t opcode = MMDL_LIGHT_HSL_SET_NO_ACK_OPCODE;
+  uint8_t param[MMDL_LIGHT_HSL_SET_MAX_LEN];
+  uint8_t *pCursor = param;
+  uint16_t opcode = MMDL_LIGHT_HSL_SET_NO_ACK_OPCODE;
 
-    if (pParam == NULL) {
-        return;
-    }
+  if (pParam == NULL)
+  {
+    return;
+  }
 
-    /* Select opcode */
-    if (ackReq) {
-        opcode = MMDL_LIGHT_HSL_SET_OPCODE;
-    }
+  /* Select opcode */
+  if (ackReq)
+  {
+    opcode = MMDL_LIGHT_HSL_SET_OPCODE;
+  }
 
-    /* Build OTA fields */
-    UINT16_TO_BSTREAM(pCursor, pParam->lightness);
-    UINT16_TO_BSTREAM(pCursor, pParam->hue);
-    UINT16_TO_BSTREAM(pCursor, pParam->saturation);
-    UINT8_TO_BSTREAM(pCursor, pParam->tid);
+  /* Build OTA fields */
+  UINT16_TO_BSTREAM(pCursor, pParam->lightness);
+  UINT16_TO_BSTREAM(pCursor, pParam->hue);
+  UINT16_TO_BSTREAM(pCursor, pParam->saturation);
+  UINT8_TO_BSTREAM(pCursor, pParam->tid);
 
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
-        UINT8_TO_BSTREAM(pCursor, pParam->transitionTime);
-        UINT8_TO_BSTREAM(pCursor, pParam->delay);
-    }
+  /* Do not include transition time and delay in the message if it is not used */
+  if (pParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
+  {
+    UINT8_TO_BSTREAM(pCursor, pParam->transitionTime);
+    UINT8_TO_BSTREAM(pCursor, pParam->delay);
+  }
 
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
-                                (uint8_t)(pCursor - param), opcode);
-    } else {
-        mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
+                            (uint8_t)(pCursor - param), opcode);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
+  }
 }
 
 /*************************************************************************************************/
@@ -470,38 +500,44 @@ static void mmdlLightHslClSet(meshElementId_t elementId, meshAddress_t serverAdd
  */
 /*************************************************************************************************/
 static void mmdlLightHslClHueSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                                 uint16_t appKeyIndex, const mmdlLightHslHueSetParam_t *pParam,
-                                 bool_t ackReq)
+                          uint16_t appKeyIndex, const mmdlLightHslHueSetParam_t *pParam,
+                          bool_t ackReq)
 {
-    uint8_t param[MMDL_LIGHT_HSL_HUE_SET_MAX_LEN];
-    uint8_t *pCursor = param;
-    uint16_t opcode = MMDL_LIGHT_HSL_HUE_SET_NO_ACK_OPCODE;
+  uint8_t param[MMDL_LIGHT_HSL_HUE_SET_MAX_LEN];
+  uint8_t *pCursor = param;
+  uint16_t opcode = MMDL_LIGHT_HSL_HUE_SET_NO_ACK_OPCODE;
 
-    if (pParam == NULL) {
-        return;
-    }
+  if (pParam == NULL)
+  {
+    return;
+  }
 
-    /* Select opcode */
-    if (ackReq) {
-        opcode = MMDL_LIGHT_HSL_HUE_SET_OPCODE;
-    }
+  /* Select opcode */
+  if (ackReq)
+  {
+    opcode = MMDL_LIGHT_HSL_HUE_SET_OPCODE;
+  }
 
-    /* Build OTA fields */
-    UINT16_TO_BSTREAM(pCursor, pParam->hue);
-    UINT8_TO_BSTREAM(pCursor, pParam->tid);
+  /* Build OTA fields */
+  UINT16_TO_BSTREAM(pCursor, pParam->hue);
+  UINT8_TO_BSTREAM(pCursor, pParam->tid);
 
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
-        UINT8_TO_BSTREAM(pCursor, pParam->transitionTime);
-        UINT8_TO_BSTREAM(pCursor, pParam->delay);
-    }
+  /* Do not include transition time and delay in the message if it is not used */
+  if (pParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
+  {
+    UINT8_TO_BSTREAM(pCursor, pParam->transitionTime);
+    UINT8_TO_BSTREAM(pCursor, pParam->delay);
+  }
 
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
-                                (uint8_t)(pCursor - param), opcode);
-    } else {
-        mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
+                            (uint8_t)(pCursor - param), opcode);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
+  }
 }
 
 /*************************************************************************************************/
@@ -522,35 +558,41 @@ static void mmdlLightHslClSatSet(meshElementId_t elementId, meshAddress_t server
                                  uint16_t appKeyIndex, const mmdlLightHslSatSetParam_t *pParam,
                                  bool_t ackReq)
 {
-    uint8_t param[MMDL_LIGHT_HSL_SAT_SET_MAX_LEN];
-    uint8_t *pCursor = param;
-    uint16_t opcode = MMDL_LIGHT_HSL_SAT_SET_NO_ACK_OPCODE;
+  uint8_t param[MMDL_LIGHT_HSL_SAT_SET_MAX_LEN];
+  uint8_t *pCursor = param;
+  uint16_t opcode = MMDL_LIGHT_HSL_SAT_SET_NO_ACK_OPCODE;
 
-    if (pParam == NULL) {
-        return;
-    }
+  if (pParam == NULL)
+  {
+    return;
+  }
 
-    /* Select opcode */
-    if (ackReq) {
-        opcode = MMDL_LIGHT_HSL_SAT_SET_OPCODE;
-    }
+  /* Select opcode */
+  if (ackReq)
+  {
+    opcode = MMDL_LIGHT_HSL_SAT_SET_OPCODE;
+  }
 
-    /* Build OTA fields */
-    UINT16_TO_BSTREAM(pCursor, pParam->saturation);
-    UINT8_TO_BSTREAM(pCursor, pParam->tid);
+  /* Build OTA fields */
+  UINT16_TO_BSTREAM(pCursor, pParam->saturation);
+  UINT8_TO_BSTREAM(pCursor, pParam->tid);
 
-    /* Do not include transition time and delay in the message if it is not used */
-    if (pParam->transitionTime != MMDL_GEN_TR_UNKNOWN) {
-        UINT8_TO_BSTREAM(pCursor, pParam->transitionTime);
-        UINT8_TO_BSTREAM(pCursor, pParam->delay);
-    }
+  /* Do not include transition time and delay in the message if it is not used */
+  if (pParam->transitionTime != MMDL_GEN_TR_UNKNOWN)
+  {
+    UINT8_TO_BSTREAM(pCursor, pParam->transitionTime);
+    UINT8_TO_BSTREAM(pCursor, pParam->delay);
+  }
 
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
-                                (uint8_t)(pCursor - param), opcode);
-    } else {
-        mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
+                            (uint8_t)(pCursor - param), opcode);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
+  }
 }
 
 /*************************************************************************************************/
@@ -571,30 +613,35 @@ static void mmdlLightHslClDefSet(meshElementId_t elementId, meshAddress_t server
                                  uint16_t appKeyIndex, const mmdlLightHslParam_t *pParam,
                                  bool_t ackReq)
 {
-    uint8_t param[MMDL_LIGHT_HSL_DEF_SET_LEN];
-    uint8_t *pCursor = param;
-    uint16_t opcode = MMDL_LIGHT_HSL_DEFAULT_SET_NO_ACK_OPCODE;
+  uint8_t param[MMDL_LIGHT_HSL_DEF_SET_LEN];
+  uint8_t *pCursor = param;
+  uint16_t opcode = MMDL_LIGHT_HSL_DEFAULT_SET_NO_ACK_OPCODE;
 
-    if (pParam == NULL) {
-        return;
-    }
+  if (pParam == NULL)
+  {
+    return;
+  }
 
-    /* Select opcode */
-    if (ackReq) {
-        opcode = MMDL_LIGHT_HSL_DEFAULT_SET_OPCODE;
-    }
+  /* Select opcode */
+  if (ackReq)
+  {
+    opcode = MMDL_LIGHT_HSL_DEFAULT_SET_OPCODE;
+  }
 
-    /* Build OTA fields */
-    UINT16_TO_BSTREAM(pCursor, pParam->lightness);
-    UINT16_TO_BSTREAM(pCursor, pParam->hue);
-    UINT16_TO_BSTREAM(pCursor, pParam->saturation);
+  /* Build OTA fields */
+  UINT16_TO_BSTREAM(pCursor, pParam->lightness);
+  UINT16_TO_BSTREAM(pCursor, pParam->hue);
+  UINT16_TO_BSTREAM(pCursor, pParam->saturation);
 
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
-                                (uint8_t)(pCursor - param), opcode);
-    } else {
-        mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
+                            (uint8_t)(pCursor - param), opcode);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
+  }
 }
 
 /*************************************************************************************************/
@@ -615,31 +662,36 @@ static void mmdlLightHslClRangeSet(meshElementId_t elementId, meshAddress_t serv
                                    uint16_t appKeyIndex, const mmdlLightHslRangeSetParam_t *pParam,
                                    bool_t ackReq)
 {
-    uint8_t param[MMDL_LIGHT_HSL_RANGE_SET_LEN];
-    uint8_t *pCursor = param;
-    uint16_t opcode = MMDL_LIGHT_HSL_RANGE_SET_NO_ACK_OPCODE;
+  uint8_t param[MMDL_LIGHT_HSL_RANGE_SET_LEN];
+  uint8_t *pCursor = param;
+  uint16_t opcode = MMDL_LIGHT_HSL_RANGE_SET_NO_ACK_OPCODE;
 
-    if (pParam == NULL) {
-        return;
-    }
+  if (pParam == NULL)
+  {
+    return;
+  }
 
-    /* Select opcode */
-    if (ackReq) {
-        opcode = MMDL_LIGHT_HSL_RANGE_SET_OPCODE;
-    }
+  /* Select opcode */
+  if (ackReq)
+  {
+    opcode = MMDL_LIGHT_HSL_RANGE_SET_OPCODE;
+  }
 
-    /* Build OTA fields */
-    UINT16_TO_BSTREAM(pCursor, pParam->minHue);
-    UINT16_TO_BSTREAM(pCursor, pParam->maxHue);
-    UINT16_TO_BSTREAM(pCursor, pParam->minSaturation);
-    UINT16_TO_BSTREAM(pCursor, pParam->maxSaturation);
+  /* Build OTA fields */
+  UINT16_TO_BSTREAM(pCursor, pParam->minHue);
+  UINT16_TO_BSTREAM(pCursor, pParam->maxHue);
+  UINT16_TO_BSTREAM(pCursor, pParam->minSaturation);
+  UINT16_TO_BSTREAM(pCursor, pParam->maxSaturation);
 
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
-                                (uint8_t)(pCursor - param), opcode);
-    } else {
-        mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, param,
+                            (uint8_t)(pCursor - param), opcode);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, param, (uint8_t)(pCursor - param), opcode);
+  }
 }
 
 /**************************************************************************************************
@@ -657,11 +709,11 @@ static void mmdlLightHslClRangeSet(meshElementId_t elementId, meshAddress_t serv
 /*************************************************************************************************/
 void MmdlLightHslClHandlerInit(wsfHandlerId_t handlerId)
 {
-    /* Set handler ID */
-    mmdlLightHslClHandlerId = handlerId;
+  /* Set handler ID */
+  mmdlLightHslClHandlerId = handlerId;
 
-    /* Initialize control block */
-    lightHslClCb.recvCback = MmdlEmptyCback;
+  /* Initialize control block */
+  lightHslClCb.recvCback = MmdlEmptyCback;
 }
 
 /*************************************************************************************************/
@@ -676,31 +728,35 @@ void MmdlLightHslClHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 void MmdlLightHslClHandler(wsfMsgHdr_t *pMsg)
 {
-    uint8_t opcodeIdx, opcodeSize;
-    meshModelMsgRecvEvt_t *pModelMsg;
+  uint8_t opcodeIdx, opcodeSize;
+  meshModelMsgRecvEvt_t *pModelMsg;
 
-    /* Handle message */
-    if (pMsg != NULL) {
-        switch (pMsg->event) {
-        case MESH_MODEL_EVT_MSG_RECV:
-            pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
+  /* Handle message */
+  if (pMsg != NULL)
+  {
+    switch (pMsg->event)
+    {
+      case MESH_MODEL_EVT_MSG_RECV:
+        pModelMsg = (meshModelMsgRecvEvt_t *)pMsg;
 
-            /* Match the received opcode */
-            for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_HSL_CL_NUM_RCVD_OPCODES; opcodeIdx++) {
-                opcodeSize = MESH_OPCODE_SIZE(pModelMsg->opCode);
-                if (!memcmp(&mmdlLightHslClRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
-                            opcodeSize)) {
-                    /* Process message */
-                    (void)mmdlLightHslClHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
-                }
-            }
-            break;
-
-        default:
-            MMDL_TRACE_WARN0("LIGHT HSL CL: Invalid event message received!");
-            break;
+        /* Match the received opcode */
+        for (opcodeIdx = 0; opcodeIdx < MMDL_LIGHT_HSL_CL_NUM_RCVD_OPCODES; opcodeIdx++)
+        {
+          opcodeSize = MESH_OPCODE_SIZE(pModelMsg->opCode);
+          if (!memcmp(&mmdlLightHslClRcvdOpcodes[opcodeIdx], pModelMsg->opCode.opcodeBytes,
+              opcodeSize))
+          {
+            /* Process message */
+            (void)mmdlLightHslClHandleMsg[opcodeIdx]((meshModelMsgRecvEvt_t *)pModelMsg);
+          }
         }
+        break;
+
+      default:
+        MMDL_TRACE_WARN0("LIGHT HSL CL: Invalid event message received!");
+        break;
     }
+  }
 }
 
 /*************************************************************************************************/
@@ -716,14 +772,16 @@ void MmdlLightHslClHandler(wsfMsgHdr_t *pMsg)
  */
 /*************************************************************************************************/
 void MmdlLightHslClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                       uint16_t appKeyIndex)
+                    uint16_t appKeyIndex)
 {
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
-                                MMDL_LIGHT_HSL_GET_OPCODE);
-    } else {
-        mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_GET_OPCODE);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0, MMDL_LIGHT_HSL_GET_OPCODE);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_GET_OPCODE);
+  }
 }
 
 /*************************************************************************************************/
@@ -742,7 +800,7 @@ void MmdlLightHslClGet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlLightHslClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                        uint16_t appKeyIndex, const mmdlLightHslSetParam_t *pParam)
 {
-    mmdlLightHslClSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
+  mmdlLightHslClSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
 }
 
 /*************************************************************************************************/
@@ -761,7 +819,7 @@ void MmdlLightHslClSet(meshElementId_t elementId, meshAddress_t serverAddr, uint
 void MmdlLightHslClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                             uint16_t appKeyIndex, const mmdlLightHslSetParam_t *pParam)
 {
-    mmdlLightHslClSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
+  mmdlLightHslClSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
 }
 
 /*************************************************************************************************/
@@ -779,12 +837,15 @@ void MmdlLightHslClSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr,
 void MmdlLightHslClTargetGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                              uint16_t appKeyIndex)
 {
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
-                                MMDL_LIGHT_HSL_TARGET_GET_OPCODE);
-    } else {
-        mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_TARGET_GET_OPCODE);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
+                            MMDL_LIGHT_HSL_TARGET_GET_OPCODE);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_TARGET_GET_OPCODE);
+  }
 }
 
 /*************************************************************************************************/
@@ -802,12 +863,15 @@ void MmdlLightHslClTargetGet(meshElementId_t elementId, meshAddress_t serverAddr
 void MmdlLightHslClHueGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                           uint16_t appKeyIndex)
 {
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
-                                MMDL_LIGHT_HSL_HUE_GET_OPCODE);
-    } else {
-        mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_HUE_GET_OPCODE);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
+                            MMDL_LIGHT_HSL_HUE_GET_OPCODE);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_HUE_GET_OPCODE);
+  }
 }
 
 /*************************************************************************************************/
@@ -826,7 +890,7 @@ void MmdlLightHslClHueGet(meshElementId_t elementId, meshAddress_t serverAddr, u
 void MmdlLightHslClHueSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                           uint16_t appKeyIndex, const mmdlLightHslHueSetParam_t *pParam)
 {
-    mmdlLightHslClHueSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
+  mmdlLightHslClHueSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
 }
 
 /*************************************************************************************************/
@@ -845,7 +909,7 @@ void MmdlLightHslClHueSet(meshElementId_t elementId, meshAddress_t serverAddr, u
 void MmdlLightHslClHueSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                                uint16_t appKeyIndex, const mmdlLightHslHueSetParam_t *pParam)
 {
-    mmdlLightHslClHueSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
+  mmdlLightHslClHueSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
 }
 
 /*************************************************************************************************/
@@ -863,12 +927,15 @@ void MmdlLightHslClHueSetNoAck(meshElementId_t elementId, meshAddress_t serverAd
 void MmdlLightHslClSatGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                           uint16_t appKeyIndex)
 {
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
-                                MMDL_LIGHT_HSL_SAT_GET_OPCODE);
-    } else {
-        mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_SAT_GET_OPCODE);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
+                            MMDL_LIGHT_HSL_SAT_GET_OPCODE);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_SAT_GET_OPCODE);
+  }
 }
 
 /*************************************************************************************************/
@@ -887,7 +954,7 @@ void MmdlLightHslClSatGet(meshElementId_t elementId, meshAddress_t serverAddr, u
 void MmdlLightHslClSatSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                           uint16_t appKeyIndex, const mmdlLightHslSatSetParam_t *pParam)
 {
-    mmdlLightHslClSatSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
+  mmdlLightHslClSatSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
 }
 
 /*************************************************************************************************/
@@ -906,7 +973,7 @@ void MmdlLightHslClSatSet(meshElementId_t elementId, meshAddress_t serverAddr, u
 void MmdlLightHslClSatSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                                uint16_t appKeyIndex, const mmdlLightHslSatSetParam_t *pParam)
 {
-    mmdlLightHslClSatSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
+  mmdlLightHslClSatSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
 }
 
 /*************************************************************************************************/
@@ -924,12 +991,15 @@ void MmdlLightHslClSatSetNoAck(meshElementId_t elementId, meshAddress_t serverAd
 void MmdlLightHslClDefGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                           uint16_t appKeyIndex)
 {
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
-                                MMDL_LIGHT_HSL_DEFAULT_GET_OPCODE);
-    } else {
-        mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_DEFAULT_GET_OPCODE);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
+                            MMDL_LIGHT_HSL_DEFAULT_GET_OPCODE);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_DEFAULT_GET_OPCODE);
+  }
 }
 
 /*************************************************************************************************/
@@ -948,7 +1018,7 @@ void MmdlLightHslClDefGet(meshElementId_t elementId, meshAddress_t serverAddr, u
 void MmdlLightHslClDefSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                           uint16_t appKeyIndex, const mmdlLightHslParam_t *pParam)
 {
-    mmdlLightHslClDefSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
+  mmdlLightHslClDefSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
 }
 
 /*************************************************************************************************/
@@ -967,7 +1037,7 @@ void MmdlLightHslClDefSet(meshElementId_t elementId, meshAddress_t serverAddr, u
 void MmdlLightHslClDefSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
                                uint16_t appKeyIndex, const mmdlLightHslParam_t *pParam)
 {
-    mmdlLightHslClDefSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
+  mmdlLightHslClDefSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
 }
 
 /*************************************************************************************************/
@@ -983,14 +1053,17 @@ void MmdlLightHslClDefSetNoAck(meshElementId_t elementId, meshAddress_t serverAd
  */
 /*************************************************************************************************/
 void MmdlLightHslClRangeGet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                            uint16_t appKeyIndex)
+                          uint16_t appKeyIndex)
 {
-    if (serverAddr != MMDL_USE_PUBLICATION_ADDR) {
-        mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
-                                MMDL_LIGHT_HSL_RANGE_GET_OPCODE);
-    } else {
-        mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_RANGE_GET_OPCODE);
-    }
+  if (serverAddr != MMDL_USE_PUBLICATION_ADDR)
+  {
+    mmdlLightHslSendMessage(elementId, serverAddr, ttl, appKeyIndex, NULL, 0,
+                            MMDL_LIGHT_HSL_RANGE_GET_OPCODE);
+  }
+  else
+  {
+    mmdlLightHslPublishMessage(elementId, NULL, 0, MMDL_LIGHT_HSL_RANGE_GET_OPCODE);
+  }
 }
 
 /*************************************************************************************************/
@@ -1007,9 +1080,9 @@ void MmdlLightHslClRangeGet(meshElementId_t elementId, meshAddress_t serverAddr,
  */
 /*************************************************************************************************/
 void MmdlLightHslClRangeSet(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                            uint16_t appKeyIndex, const mmdlLightHslRangeSetParam_t *pParam)
+                          uint16_t appKeyIndex, const mmdlLightHslRangeSetParam_t *pParam)
 {
-    mmdlLightHslClRangeSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
+  mmdlLightHslClRangeSet(elementId, serverAddr, ttl, appKeyIndex, pParam, TRUE);
 }
 
 /*************************************************************************************************/
@@ -1026,9 +1099,9 @@ void MmdlLightHslClRangeSet(meshElementId_t elementId, meshAddress_t serverAddr,
  */
 /*************************************************************************************************/
 void MmdlLightHslClRangeSetNoAck(meshElementId_t elementId, meshAddress_t serverAddr, uint8_t ttl,
-                                 uint16_t appKeyIndex, const mmdlLightHslRangeSetParam_t *pParam)
+                               uint16_t appKeyIndex, const mmdlLightHslRangeSetParam_t *pParam)
 {
-    mmdlLightHslClRangeSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
+  mmdlLightHslClRangeSet(elementId, serverAddr, ttl, appKeyIndex, pParam, FALSE);
 }
 
 /*************************************************************************************************/
@@ -1042,8 +1115,9 @@ void MmdlLightHslClRangeSetNoAck(meshElementId_t elementId, meshAddress_t server
 /*************************************************************************************************/
 void MmdlLightHslClRegister(mmdlEventCback_t recvCback)
 {
-    /* Store valid callback */
-    if (recvCback != NULL) {
-        lightHslClCb.recvCback = recvCback;
-    }
+  /* Store valid callback */
+  if (recvCback != NULL)
+  {
+    lightHslClCb.recvCback = recvCback;
+  }
 }

@@ -53,7 +53,7 @@
 void HciLeSetConnCteRxParamsCmd(uint16_t connHandle, uint8_t samplingEnable, uint8_t slotDurations,
                                 uint8_t switchPatternLen, uint8_t *pAntennaIDs)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -71,7 +71,7 @@ void HciLeSetConnCteRxParamsCmd(uint16_t connHandle, uint8_t samplingEnable, uin
 void HciLeSetConnCteTxParamsCmd(uint16_t connHandle, uint8_t cteTypeBits, uint8_t switchPatternLen,
                                 uint8_t *pAntennaIDs)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -90,7 +90,7 @@ void HciLeSetConnCteTxParamsCmd(uint16_t connHandle, uint8_t cteTypeBits, uint8_
 void HciLeConnCteReqEnableCmd(uint16_t connHandle, uint8_t enable, uint16_t cteReqInt,
                               uint8_t reqCteLen, uint8_t reqCteType)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -105,7 +105,7 @@ void HciLeConnCteReqEnableCmd(uint16_t connHandle, uint8_t enable, uint16_t cteR
 /*************************************************************************************************/
 void HciLeConnCteRspEnableCmd(uint16_t connHandle, uint8_t enable)
 {
-    /* unused */
+  /* unused */
 }
 
 /*************************************************************************************************/
@@ -117,5 +117,5 @@ void HciLeConnCteRspEnableCmd(uint16_t connHandle, uint8_t enable)
 /*************************************************************************************************/
 void HciLeReadAntennaInfoCmd(void)
 {
-    /* unused */
+  /* unused */
 }

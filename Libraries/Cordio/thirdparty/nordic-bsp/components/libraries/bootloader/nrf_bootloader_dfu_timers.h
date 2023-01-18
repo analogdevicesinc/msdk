@@ -50,11 +50,11 @@
 #include <stdint.h>
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-#define NRF_BOOTLOADER_MIN_TIMEOUT_TICKS \
-    (150) //!< The shortest timeout allowed. To avoid the timeout not being activated before the time has passed.
+#define NRF_BOOTLOADER_MIN_TIMEOUT_TICKS (150) //!< The shortest timeout allowed. To avoid the timeout not being activated before the time has passed.
 
 /**@brief Macro for converting milliseconds to timer ticks.
  *
@@ -62,11 +62,12 @@ extern "C" {
  *
  * @return  @p ms converted to ticks.
  */
-#define NRF_BOOTLOADER_MS_TO_TICKS(ms) ((((uint64_t)(ms)*32768)) / 1000)
+#define NRF_BOOTLOADER_MS_TO_TICKS(ms) ((((uint64_t)(ms) * 32768)) / 1000)
 
 /**@brief Handler called on timeout of a timer requested by the watchdog.
  */
 typedef void (*nrf_bootloader_dfu_timeout_callback_t)(void);
+
 
 /**@brief Function for restarting the inactivity timer.
  *
@@ -76,8 +77,9 @@ typedef void (*nrf_bootloader_dfu_timeout_callback_t)(void);
  *                            If 0 is passed, the timer will be stopped and not restarted.
  * @param[in]  callback       Function to be called on timeout.
  */
-void nrf_bootloader_dfu_inactivity_timer_restart(uint32_t timeout_ticks,
+void nrf_bootloader_dfu_inactivity_timer_restart(uint32_t                              timeout_ticks,
                                                  nrf_bootloader_dfu_timeout_callback_t callback);
+
 
 /**@brief Function for initializing and starting a repeated timer for feeding the watchdog.
  *
@@ -85,8 +87,9 @@ void nrf_bootloader_dfu_inactivity_timer_restart(uint32_t timeout_ticks,
  *                           32768 ticks per second.
  * @param[in] callback       Function called on every timeout.
  */
-void nrf_bootloader_wdt_feed_timer_start(uint32_t timeout_ticks,
+void nrf_bootloader_wdt_feed_timer_start(uint32_t                              timeout_ticks,
                                          nrf_bootloader_dfu_timeout_callback_t callback);
+
 
 /**@brief Function for retrieving the number of ticks since the RTC was started.
  *
