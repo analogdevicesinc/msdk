@@ -179,6 +179,7 @@ jobs:
           CHIP_TO_DIE_NAMES[MAX32690]=ME18
           CHIP_TO_DIE_NAMES[MAX32680]=ME20
           CHIP_TO_DIE_NAMES[MAX32672]=ME21
+          CHIP_TO_DIE_NAMES[MAX32572]=ME55
           
           DIE_TO_CHIP_NAMES[AI85]=MAX78000
           DIE_TO_CHIP_NAMES[AI87]=MAX78000
@@ -194,6 +195,7 @@ jobs:
           DIE_TO_CHIP_NAMES[ME18]=MAX32690
           DIE_TO_CHIP_NAMES[ME20]=MAX32680
           DIE_TO_CHIP_NAMES[ME21]=MAX32672
+          DIE_TO_CHIP_NAMES[ME55]=MAX32572
           
           # This set keeps tracks of all the parts (chip names) with updated register files. (No duplicates).
           # The path to the register files from top of MSDK repo requires chip name.
