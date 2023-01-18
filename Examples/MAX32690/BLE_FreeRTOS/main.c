@@ -110,6 +110,11 @@ void vApplicationIdleHook(void)
  */
 int main(void)
 {
+    *(uint32_t*)0x40000c00=1;
+    *(uint32_t*)0x4000040c=1<<6;
+    *(uint32_t*)0x40000c00=0;
+
+    
     /* Print banner (RTOS scheduler not running) */
     printf("\n-=- %s BLE FreeRTOS (%s) Demo -=-\n", STRING(TARGET), tskKERNEL_VERSION_NUMBER);
 #if configUSE_TICKLESS_IDLE
