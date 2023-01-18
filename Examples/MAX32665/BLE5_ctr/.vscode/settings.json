@@ -15,7 +15,7 @@
     },
     
     "target":"MAX32665",
-    "board":"BDB",
+    "board":"EvKit_V1",
 
     "project_name":"${workspaceFolderBasename}",
 
@@ -30,16 +30,10 @@
     "v_Arm_GCC":"10.3",
     "v_xPack_GCC":"10.2.0-1.2",
 
-    "MAXIM_PATH":"C:/Users/TMagnuse/GitHub/msdk-fork",
-    "TOOLS_PATH":"C:/MaximSDK/Tools",
-
-    "OCD_path":"${config:TOOLS_PATH}/OpenOCD",
-    "ARM_GCC_path":"${config:TOOLS_PATH}/GNUTools/${config:v_Arm_GCC}",
-    "xPack_GCC_path":"${config:TOOLS_PATH}/xPack/riscv-none-embed-gcc/${config:v_xPack_GCC}",
-    "Make_path":"${config:TOOLS_PATH}/MSYS2/usr/bin",
-    
-    "RFPHY_PATH":"${config:MAXIM_PATH}/Libraries/RF-PHY-closed/${config:target}",
-    "DEBUG_PATH":"${config:MAXIM_PATH}/../RF-PHY-VScode/Libraries/RF-PHY",
+    "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
+    "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}",
+    "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/${config:v_xPack_GCC}",
+    "Make_path":"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin",
 
     "C_Cpp.default.includePath": [
         "${workspaceFolder}",
@@ -70,20 +64,7 @@
         "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip",
         "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle",
         "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include",
-        "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/util",
-        "${config:RFPHY_PATH}/**",
-        "${config:RFPHY_PATH}/include",
-		"${config:RFPHY_PATH}/dbb/control/pan",
-		"${config:RFPHY_PATH}/dbb/prot/shared",
-		"${config:RFPHY_PATH}/dbb/prot/ble",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5/include",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5/afe",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5/afe/max32665",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5/afe/max32665/include",
-		"${config:RFPHY_PATH}/debug",
-		"${config:RFPHY_PATH}/llc/ble",
-		"${config:RFPHY_PATH}/llc/shared"
+        "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/util"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -105,29 +86,10 @@
         "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources",
         "${config:MAXIM_PATH}/Libraries/Cordio/controller/sources",
         "${config:MAXIM_PATH}/Libraries/Cordio/wsf/sources",
-        "${config:MAXIM_PATH}/Libraries/Cordio/platform/targets/maxim/max32665/sources",
-        "${config:RFPHY_PATH}",
-        "${config:RFPHY_PATH}/include",
-		"${config:RFPHY_PATH}/dbb/control/pan",
-		"${config:RFPHY_PATH}/dbb/prot/shared",
-		"${config:RFPHY_PATH}/dbb/prot/ble",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5/include",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5/afe",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5/afe/max32665",
-		"${config:RFPHY_PATH}/dbb/prot/ble/pan2g5/afe/max32665/include",
-		"${config:RFPHY_PATH}/debug",
-		"${config:RFPHY_PATH}/llc",
-		"${config:RFPHY_PATH}/llc/ble",
-		"${config:RFPHY_PATH}/llc/shared"
+        "${config:MAXIM_PATH}/Libraries/Cordio/platform/targets/maxim/max32665/sources"
     ],
     "C_Cpp.default.defines": [
         "${config:board}"
-    ],
-    "files.associations": {
-        "bstream.h": "c",
-        "dbb_event.h": "c",
-        "ll_dbg_pin.h": "c"
-    }
+    ]
 }
 

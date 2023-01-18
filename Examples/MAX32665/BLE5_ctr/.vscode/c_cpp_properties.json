@@ -14,8 +14,7 @@
                 "path": [
                     "${default}"
                 ]
-            },
-            "configurationProvider": "ms-vscode.makefile-tools"
+            }
         },
         {
             "name": "Linux",

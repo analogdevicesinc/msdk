@@ -96,24 +96,7 @@
                 "--symbols=build/${config:symbol_file}",                
                 "--ex=\"target remote localhost:3333\"",
                 "--ex=\"monitor reset halt\"",
-                "--ex=\"source C:/Users/TMagnuse/.gdbinit\"",
                 "--ex=\"b main\"",
-                "--ex=\"c\""
-            ],
-            "problemMatcher": [],
-            "dependsOn":[]
-        },
-        {
-            "label": "memory dump (m4)",
-            "type": "shell",
-            "command": "arm-none-eabi-gdb",
-            "args": [
-                "--ex=\"cd ${workspaceFolder}\"",
-                "--se=\"build/${config:program_file}\"",
-                "--symbols=build/${config:symbol_file}",                
-                "--ex=\"target remote localhost:3333\"",
-                "--ex=\"dump_image mem_dbg_data.bin 0x40059000 0x3F00\"",
-                "--ex=\"monitor reset init\"",
                 "--ex=\"c\""
             ],
             "problemMatcher": [],

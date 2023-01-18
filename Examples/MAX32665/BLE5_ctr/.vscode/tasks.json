@@ -96,7 +96,6 @@
                 "--symbols=build/${config:symbol_file}",                
                 "--ex=\"target remote localhost:3333\"",
                 "--ex=\"monitor reset halt\"",
-                "--ex=\"source C:/Users/TMagnuse/.gdbinit\"",
                 "--ex=\"b main\"",
                 "--ex=\"c\""
             ],
