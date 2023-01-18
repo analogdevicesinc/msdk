@@ -21,13 +21,13 @@ to properly setup the memory sections to coincide with the Bootloader.
 
 ### Board Selection
 
-Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
+Before building firmware you must select the correct value for BOARD in [project.mk](project.mk), e.g. "EvKit_V1".
 
 ### Required Connections
 -   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
 
 ## Trace Serial Port
-When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can
+When TRACE is enabled in the [project.mk](project.mk), the on-board USB-to-UART adapter can
 be used to view the trace messages and interact with the application. Open a serial port terminal with
 the following settings.
 
@@ -128,7 +128,7 @@ attsCccMainCback connId=1 handle=588
 hciCoreTxAclStart len=5
 ```
 
-Upon reception of File Discovery `btn 2 s` command
+OTA procedure, initiated by peer.
 ```
 WDXS: FTC Write: len=12                                                         
 WDXS: FTC Write: op=1 handle=0                                                  
@@ -147,77 +147,36 @@ WDXS: Task Handler Evt=1
 WDXS: FTC Send                                                                  
 hciCoreTxAclStart len=10                                                        
 WDXS: AttHook handle=581 event=18                                               
-WDXS: Task Handler Evt=1  
-```
-
-Upon reception of Initiate Transfer `btn 2 m` command
-```
-WDXS: FTC Write: len=16
-WDXS: FTC Write: op=3 handle=1
-WDXS: FTC PutReq handle=1 offset=0, len=199096
->>> Erasing 4 64K sectors in external flash <<<
-WDXS: FTC PutReq handle=1 status=0
-WDXS: FTC SendRsp op=4 handle=1 status=0
-hciCoreTxAclStart len=5
-WDXS: Task Handler Evt=1
-WDXS: FTC Send
-hciCoreTxAclStart len=14
-WDXS: AttHook handle=581 event=18
-WDXS: Task Handler Evt=1
-WDXS: FTC SendRsp op=10 handle=1 status=0
-WDXS: Task Handler Evt=1
-WDXS: FTC Send
-hciCoreTxAclStart len=10
-WDXS: AttHook handle=581 event=18
-WDXS: Task Handler Evt=1
-Ext Flash: Wrote 224 bytes @ 0x00000008                                                 
-Ext Flash: Wrote 224 bytes @ 0x000000E8                                                 
-Ext Flash: Wrote 224 bytes @ 0x000001C8                                                 
-Ext Flash: Wrote 224 bytes @ 0x000002A8                                                 
-Ext Flash: Wrote 224 bytes @ 0x00000388                                                 
-Ext Flash: Wrote 224 bytes @ 0x00000468                                                 
-Ext Flash: Wrote 224 bytes @ 0x00000548                                                 
-Ext Flash: Wrote 224 bytes @ 0x00000628                                                 
-Ext Flash: Wrote 224 bytes @ 0x00000708                                                 
-Ext Flash: Wrote 224 bytes @ 0x000007E8 
-...
-...
-```
-
-Upon reception of Verify transfer `btn 2 l` command 
-```
-WDXS: FTC Write: len=3
-WDXS: FTC Write: op=7 handle=1
-WDXS: FTC VerifyReq: handle=1
-CRC start addr: 0x00000000 Len: 0x000309B8
-CRC From File : 0x10EE9CE0
-CRC Calculated: 0x10EE9CE0
-WDXS: FTC SendRsp op=8 handle=1 status=0
-hciCoreTxAclStart len=5
-WDXS: Task Handler Evt=1
-WDXS: FTC Send
-hciCoreTxAclStart len=11
-WDXS: AttHook handle=581 event=18
+WDXS: Task Handler Evt=1                                                        
+WDXS: FTC Write: len=16                                                         
+WDXS: FTC Write: op=3 handle=1                                                  
+WDXS: FTC PutReq handle=1 offset=0, len=190064                                  
+WDXS: FTC PutReq handle=1 status=0                                              
+WDXS: FTC SendRsp op=4 handle=1 status=0                                        
+hciCoreTxAclStart len=5                                                         
+WDXS: Task Handler Evt=1                                                        
+WDXS: FTC Send                                                                  
+hciCoreTxAclStart len=14                                                        
+WDXS: AttHook handle=581 event=18                                               
+WDXS: Task Handler Evt=1                                                        
+WDXS: FTC SendRsp op=10 handle=1 status=0                                       
+WDXS: Task Handler Evt=1                                                        
+WDXS: FTC Send                                                                  
+hciCoreTxAclStart len=10                                                        
+WDXS: AttHook handle=581 event=18                                               
+WDXS: Task Handler Evt=1                                                        
+WDXS: FTC Write: len=3                                                          
+WDXS: FTC Write: op=7 handle=1                                                  
+WDXS: FTC VerifyReq: handle=1                                                   
+CRC start addr: 0x10300000 Len: 0x0002E66C                                      
+WDXS: FTC SendRsp op=8 handle=1 status=0                                        
+hciCoreTxAclStart len=5                                                         
+WDXS: Task Handler Evt=1                                                        
+WDXS: FTC Send                                                                  
+hciCoreTxAclStart len=11                                                        
+WDXS: AttHook handle=581 event=18                                               
 WDXS: Task Handler Evt=1
 ```
-
-Upon reception of Request Reset `btn 2 x` command 
-```
-hciCoreTxAclStart len=5
-dmConnSmExecute event=25 state=3
-dmConnSmExecute event=29 state=4
-dmConnCcbDealloc 1
-AttsCccClearTable connId=1
-smpDbGetRecord: connId: 1 type: 0
-smpDbAddDevice
-SmpDbSetFailureCount: connId: 1 count: 0
-smpSmExecute event=10 state=0
-Dats got evt 40
-Reseting!
-```
-
-On successful update the device resets and connects once again.
-
 
 ### Commands
 Type the desired command and parameter (if applicable) and press enter to execute the command.  

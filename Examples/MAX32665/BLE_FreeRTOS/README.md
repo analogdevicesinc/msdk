@@ -16,7 +16,7 @@ is off, the CPU is in sleep mode.
 
 ### Board Selection
 
-Before building firmware you must select the correct value for _BOARD_  in "project.mk", e.g. "EvKit\_V1".
+Before building firmware you must select the correct value for _BOARD_  in "[project.mk](project.mk)", e.g. "EvKit\_V1".
 
 ### Required Connections
 If using the Standard EV Kit board (EvKit\_V1):
@@ -26,7 +26,7 @@ If using the Standard EV Kit board (EvKit\_V1):
 
 
 ### Serial Port
-When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can be used to view
+When TRACE is enabled in the [project.mk](project.mk), the on-board USB-to-UART adapter can be used to view
 the trace messages as well as interact with the demo. Open a serial port terminal
 with the following settings.
 
@@ -44,8 +44,8 @@ Enable tickless mode in FreeRTOSConfig.h to put the device in deep sleep / stand
 On startup:
 ```
 
--=- MAX32655 BLE FreeRTOS (V10.2.0) Demo -=-
-SystemCoreClock = 100000000
+-=- MAX32665 BLE FreeRTOS (V10.2.0) Demo -=-
+SystemCoreClock = 96000000
 terminal: init
 32kHz trimed to 0x16
 DatsHandlerInit

@@ -36,13 +36,7 @@
 **************************************************************************************************/
 
 #ifndef WSF_HEAP_SIZE
-#if(PAL_CFG_LL_MAX == 1)
-/* Larger link layer configurations will require more heap space. */
-#define WSF_HEAP_SIZE       0x18000
-#else
-/* This is the minimum heap size. */
-#define WSF_HEAP_SIZE       0x8000
-#endif
+#define WSF_HEAP_SIZE 0x18000
 #endif
 
 /**************************************************************************************************
@@ -112,10 +106,6 @@ void *WsfHeapGetFreeStartAddress(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountAvailable(void)
 {
-    if(freeStartAddr == 0) {
-        wsfHeapInit();
-    }
-
     return freeLen;
 }
 
@@ -128,9 +118,5 @@ uint32_t WsfHeapCountAvailable(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountUsed(void)
 {
-    if(freeStartAddr == 0) {
-        wsfHeapInit();
-    }
-
     return (WSF_HEAP_SIZE - freeLen);
 }

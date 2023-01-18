@@ -39,7 +39,6 @@
  */
 
 #include <stdio.h>
-#include "spi.h"
 
 #ifndef LIBRARIES_BOARDS_MAX32570_MN_EVKIT_V1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX32570_MN_EVKIT_V1_INCLUDE_BOARD_H_
@@ -64,9 +63,6 @@ extern "C" {
 #ifndef EXT_FLASH_BAUD
 #define EXT_FLASH_BAUD 4000000
 #endif
-
-#define TS_SPI MXC_SPI0
-#define TS_SPI_FREQ 200000
 
 /**
  * \brief   Initialize the BSP and board interfaces.

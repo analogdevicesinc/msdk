@@ -58,7 +58,7 @@ parser.add_argument('serialPort',help='DUT HCI serial port')
 args = parser.parse_args()
 
 # Create the BLE_hci objects
-hciDUT = BLE_hci(Namespace(serialPort=args.serialPort, monPort="", baud=115200))
+hciDUT = BLE_hci(Namespace(serialPort=args.serialPort, baud=115200))
 hciDUT.resetFunc(None)
 
 # Wait for calibration

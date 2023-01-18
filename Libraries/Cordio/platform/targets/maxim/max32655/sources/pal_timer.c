@@ -376,29 +376,29 @@ void PalTimerSleep(uint32_t expUsec)
 /*************************************************************************************************/
 uint32_t PalTimerGetExpTime(void)
 {
-  uint64_t time;
+    uint64_t time;
 
-  /* See if the timer is currently running */
-  if(palTimerCb.state != PAL_TIMER_STATE_BUSY) {
-    return 0;
-  }
+    /* See if the timer is currently running */
+    if (palTimerCb.state != PAL_TIMER_STATE_BUSY) {
+        return 0;
+    }
 
-  /* See if the timer is enabled */
-  if(!(PAL_TMR->ctrl0 & MXC_F_TMR_CTRL0_EN_A)) {
-    return 0;
-  }
+    /* See if the timer is enabled */
+    if (!(PAL_TMR->ctrl0 & MXC_F_TMR_CTRL0_EN_A)) {
+        return 0;
+    }
 
-  time = MXC_TMR_GetCompare(PAL_TMR) - MXC_TMR_GetCount(PAL_TMR);
+    time = MXC_TMR_GetCompare(PAL_TMR) - MXC_TMR_GetCount(PAL_TMR);
 
-  /* Account for the setup time */
-  if(time > PAL_TMR_SETUP_TICKS) {
-    time -= PAL_TMR_SETUP_TICKS;
+    /* Account for the setup time */
+    if (time > PAL_TMR_SETUP_TICKS) {
+        time -= PAL_TMR_SETUP_TICKS;
 
-    /* Convert back to us */
-    time = ((uint64_t)time * (uint64_t)1000000) / (uint64_t)PAL_RTC_TICKS_PER_SEC;
-  } else {
-    return 0;
-  }
+        /* Convert back to us */
+        time = ((uint64_t)time * (uint64_t)1000000) / (uint64_t)PAL_RTC_TICKS_PER_SEC;
+    } else {
+        return 0;
+    }
 
-  return time;
+    return time;
 }

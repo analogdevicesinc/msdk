@@ -1,4 +1,4 @@
-# MAX78000 FaceID Demo on ARM and RISC-V
+# MAX78000 FaceID Demo
 
 
 
@@ -9,8 +9,6 @@ For this purpose, the CNN model generates a 512-length embedding for a given ima
 
 The CNN model is trained with the VGGFace-2 dataset using MTCNN and FaceNet models for embedding generation.
 
-The demo application runs on two cores: ARM and RISC-V. The RISC-V core gets a video from the camera and controls the CNN engine. The ARM core shows captured images and a result of face identification on the TFT display.
-
 ## FaceID Demo Software
 
 ### Building firmware
@@ -18,7 +16,7 @@ The demo application runs on two cores: ARM and RISC-V. The RISC-V core gets a v
 Navigate directory where FaceID demo software is located and build the project:
 
 ```bash
-$ cd /Examples/MAX78000/CNN/faceid_evkit-riscv
+$ cd /Examples/MAX78000/CNN/faceid_demo
 $ make
 ```
 
@@ -54,79 +52,32 @@ Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1). Note the COM 
 
 Connect PICO adapter to JH5 SWD header.
 
-If you are using Windows, open the MinGW window and start OpenOCD:
+If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
 
 ```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
 ```
 
-Open a second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
+If using Linux, perform this step:
 
 ```bash
-arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
+./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
 ```
 
-If using Linux, perform these steps:
+### Load firmware image to MAX78000 Feather
 
-Start OpenOCD:
+Connect USB cable to CN1 USB connector.
+
+If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
 
 ```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
+openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
 ```
 
-Load combined ARM/RISC-V application image using ARM GDB:
+If using Linux, perform this step:
 
 ```bash
-arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
-```
-
-### Debugging application on MAX78000 EVKIT
-
-To debug the application, change optimization setting in project.mk:
-
-```bash
-# Set a higher optimization level to maximize performance
-#MXC_OPTIMIZE_CFLAGS = -O2
-# Default optimization level for debugging purpose
-MXC_OPTIMIZE_CFLAGS = -Og
-```
-
-disable the low power mode in **faceID.h **and recompile the code:
-
-```bash
-//#define LP_MODE_ENABLE
-```
-
-Load and debug ARM/RISC-V application image using ARM GDB:
-
-```bash
-arm-none-eabi-gdb build/max78000-combined.elf
-(gdb) target remote localhost:3333
-(gdb) monitor reset halt
-(gdb) load
-(gdb) compare-sections
-(gdb) monitor reset halt
-(gdb) c
-```
-
-To debug an application on RISC-V, connect the Olimex adapter to JH4 and start OpenOCD:
-
-In Windows and Linux:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/ftdi/olimex-arm-usb-ocd-h.cfg -f target/max78000_riscv.cfg -c "gdb_port 3334"
-```
-
-Load combined ARM/RISC-V application image using RISC-V GDB:
-
-```bash
-riscv-none-embed-gdb build/max78000-combined.elf
-(gdb) target remote localhost:3334
-(gdb) monitor reset halt
-(gdb) load
-(gdb) compare-sections
-(gdb) monitor reset halt
-(gdb) c
+./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
 ```
 
 ### MAX78000 EVKIT operations
@@ -134,36 +85,6 @@ riscv-none-embed-gdb build/max78000-combined.elf
 After loading FaceID firmware press "**Start_DEMO**" button on TFT screen to capture a face image. Make sure that captured face image should be inside blue rectangle. 
 
 ![](Resources/evkit_tft.jpg)
-
-### Load firmware image to MAX78000 Feather
-
-Connect USB cable to CN1 USB connector.
-
-If you are using Windows, open the MinGW window and start OpenOCD:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
-```
-
-Open a second MinGW window and load combined ARM/RISC-V application image using ARM GDB:
-
-```bash
-arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
-```
-
-If using Linux, perform these steps:
-
-Start OpenOCD:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg
-```
-
-Load combined ARM/RISC-V application image using ARM GDB:
-
-```bash
-arm-none-eabi-gdb build/max78000-combined.elf -x gdb.txt
-```
 
 ### MAX78000 Feather operations
 
@@ -312,7 +233,3 @@ The CNN model synthesized for MAX78000 is 9 layer sequential [model](db_gen/ai85
 [2] FaceNet: https://arxiv.org/pdf/1503.03832.pdf
 
 [3] https://github.com/MaximIntegratedAI/MaximAI_Documentation
-
-[4] [MaximAI_Documentation/README.md at master · MaximIntegratedAI/MaximAI_Documentation (github.com)](https://github.com/MaximIntegratedAI/MaximAI_Documentation/blob/master/MAX78000_Evaluation_Kit/README.md)
-
-[5] [RISC V Debugging Guide · Analog-Devices-MSDK/VSCode-Maxim Wiki (github.com)](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/wiki/RISC-V-Debugging-Guide)

@@ -22,10 +22,6 @@
  */
 /*************************************************************************************************/
 
-#if defined ( __GNUC__ )
-#include <unistd.h>
-#endif /* __GNUC__ */
-
 #include "wsf_types.h"
 #include "wsf_assert.h"
 #include "wsf_cs.h"
@@ -33,38 +29,16 @@
 #include "wsf_buf.h"
 #include "wsf_math.h"
 #include "wsf_os.h"
-
-/**************************************************************************************************
-  Macros
-**************************************************************************************************/
-
-#ifndef WSF_HEAP_SIZE
-#if(PAL_CFG_LL_MAX == 1)
-/* Larger link layer configurations will require more heap space. */
-#define WSF_HEAP_SIZE       0x18000
-#else
-/* This is the minimum heap size. */
-#define WSF_HEAP_SIZE       0x8000
-#endif
-#endif
+#include "pal_sys.h"
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
 
-static void* freeStartAddr = 0;
-static uint32_t freeLen = 0;
-
-/*************************************************************************************************/
-/*!
- *  \brief      Initialize the heap memory.
- */
-/*************************************************************************************************/
-static void wsfHeapInit(void)
-{
-    freeStartAddr = sbrk(WSF_HEAP_SIZE);
-    freeLen = WSF_HEAP_SIZE;
-}
+extern uint8_t *SystemHeapStart;
+extern uint32_t SystemHeapSize;
+extern unsigned long __heap_end__;
+extern unsigned long __heap_start__;
 
 /*************************************************************************************************/
 /*!
@@ -78,16 +52,8 @@ void WsfHeapAlloc(uint32_t size)
     /* Round up to nearest multiple of 4 for word alignment */
     size = (size + 3) & ~3;
 
-    if(freeStartAddr == 0) {
-        wsfHeapInit();
-    }
-
-    if(freeLen < size) {
-        WSF_ASSERT(FALSE);
-    }
-
-    freeStartAddr += size;
-    freeLen -= size;
+    SystemHeapStart += size;
+    SystemHeapSize -= size;
 }
 
 /*************************************************************************************************/
@@ -99,11 +65,7 @@ void WsfHeapAlloc(uint32_t size)
 /*************************************************************************************************/
 void *WsfHeapGetFreeStartAddress(void)
 {
-    if(freeStartAddr == 0) {
-        wsfHeapInit();
-    }
-
-    return freeStartAddr;
+    return (void *)SystemHeapStart;
 }
 
 /*************************************************************************************************/
@@ -115,11 +77,7 @@ void *WsfHeapGetFreeStartAddress(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountAvailable(void)
 {
-    if(freeStartAddr == 0) {
-        wsfHeapInit();
-    }
-
-    return freeLen;
+    return SystemHeapSize;
 }
 
 /*************************************************************************************************/
@@ -131,9 +89,9 @@ uint32_t WsfHeapCountAvailable(void)
 /*************************************************************************************************/
 uint32_t WsfHeapCountUsed(void)
 {
-    if(freeStartAddr == 0) {
-        wsfHeapInit();
-    }
-
-    return (WSF_HEAP_SIZE - freeLen);
+#ifdef __GNUC__
+    return ((uint8_t *)&__heap_end__ - (uint8_t *)&__heap_start__) - SystemHeapSize;
+#else
+    return 0;
+#endif
 }

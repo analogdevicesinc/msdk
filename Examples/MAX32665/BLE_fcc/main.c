@@ -30,7 +30,6 @@
 #include "hci_defs.h"
 #include "wsf_assert.h"
 #include "wsf_buf.h"
-#include "wsf_cs.h"
 #include "wsf_heap.h"
 #include "wsf_timer.h"
 #include "wsf_trace.h"
@@ -485,11 +484,8 @@ static void mainWsfInit(void)
 
     /* Initial buffer configuration. */
     uint16_t memUsed;
-    WsfCsEnter();
     memUsed = WsfBufInit(numPools, poolDesc);
     WsfHeapAlloc(memUsed);
-    WsfCsExit();
-
     WsfOsInit();
     WsfTimerInit();
 #if (WSF_TRACE_ENABLED == TRUE)
@@ -541,13 +537,10 @@ int main(void)
     mainWsfInit();
 
 #if (WSF_TRACE_ENABLED == TRUE)
-    WsfCsEnter();
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
-    WsfCsExit();
 #endif
 
-    WsfCsEnter();
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
                             .wlSizeCfg = 4,
                             .rlSizeCfg = 4,
@@ -558,7 +551,6 @@ int main(void)
 
     memUsed = LlInitControllerInit(&llCfg);
     WsfHeapAlloc(memUsed);
-    WsfCsExit();
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));

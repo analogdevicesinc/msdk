@@ -20,6 +20,11 @@ INIT_BROADCASTER = 1
 INIT_CENTRAL = 0
 INIT_OBSERVER = 0
 
+# TRACE option
+# Set to 1 to enable serial port trace messages
+# Set to 0 to disable
+TRACE = 1
+
 # Add services directory to build
 IPATH += services
 VPATH += services

@@ -40,7 +40,6 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
-#include <stdbool.h>
 #include <string.h>
 #include "mxc_device.h"
 #include "led.h"
@@ -48,7 +47,7 @@
 #include "board.h"
 #include "mxc_delay.h"
 #include "flc.h"
-#include "Ext_Flash.h"
+
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -61,7 +60,6 @@ extern uint32_t _flash1;
 #define FLASH1_START ((uint32_t)&_flash1)
 #define FLASH_ERASED_WORD 0xFFFFFFFF
 #define CRC32_LEN 4
-#define EXT_FLASH_BLOCK_SIZE 224
 
 #define DELAY(loopCount) \
     for (i = 0; i < loopCount; i++) {}
@@ -69,38 +67,13 @@ extern uint32_t _flash1;
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
-typedef struct {
-    uint32_t fileLen;
-    uint32_t fileCRC;
-} fileHeader_t;
-fileHeader_t fileHeader;
 
-typedef enum { COPY_FILE_OP, CALC_CRC32_OP } externFileOp_t;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
 
 /* Defined in boot_lower.S */
 extern void Boot_Lower(void);
-
-void ledSuccessPattern(void)
-{
-    /* Green LED blinks */
-    volatile int i, j;
-    for (j = 0; j < 10; j++) {
-        LED_Toggle(1);
-        DELAY(0xFFFFF);
-    }
-}
-void ledFailPattern(void)
-{
-    /* Red LED blinks */
-    volatile int i, j;
-    for (j = 0; j < 10; j++) {
-        LED_Toggle(0);
-        DELAY(0xFFFFF);
-    }
-}
 
 // http://home.thep.lu.se/~bjorn/crc/
 /*************************************************************************************************/
@@ -146,7 +119,12 @@ void crc32(const void *data, size_t n_bytes, uint32_t *crc)
 void bootError(void)
 {
     /* Flash the failure LED */
-    ledFailPattern();
+    int j;
+    volatile int i;
+    for (j = 0; j < 10; j++) {
+        LED_Toggle(0);
+        for (i = 0; i < 0xFFFFF; i++) {}
+    }
     NVIC_SystemReset();
 }
 
@@ -192,20 +170,23 @@ uint32_t findUpperLen(void)
     return (uint32_t)(flashPagePointer - (4 / 4) - (FLASH1_START / 4));
 }
 
-static int multiPageErase(uint8_t *address, uint32_t pages)
+static int multiPageErase(uint8_t *address, uint32_t size)
 {
     int err;
     volatile uint32_t address32 = (uint32_t)address;
     address32 &= 0xFFFFF;
 
-    while (pages) {
+    /* Page align the size */
+    size += MXC_FLASH_PAGE_SIZE - (size % MXC_FLASH_PAGE_SIZE);
+
+    while (size) {
         err = MXC_FLC_PageErase((uint32_t)address);
         if (err != E_NO_ERROR) {
             return err;
         }
 
         address += MXC_FLASH_PAGE_SIZE;
-        pages--;
+        size -= MXC_FLASH_PAGE_SIZE;
     }
 
     return E_NO_ERROR;
@@ -236,50 +217,9 @@ static int flashWrite(uint32_t *address, uint32_t *data, uint32_t len)
     return E_NO_ERROR;
 }
 
-uint32_t externFileOperation(externFileOp_t fileOperation)
-{
-    uint32_t internalFlashStartingAddress = FLASH0_START;
-    uint8_t extFlashBlockBuff[EXT_FLASH_BLOCK_SIZE] = { 0 };
-    uint32_t startingAddress = 0x00000000 + sizeof(fileHeader_t);
-    uint32_t fileLen = fileHeader.fileLen;
-    uint32_t crcResult = 0;
-    uint32_t err = 0;
-    /* Read blocks from ext flash and perform desired fileOperation */
-    while (fileLen >= EXT_FLASH_BLOCK_SIZE) {
-        Ext_Flash_Read(startingAddress, extFlashBlockBuff, EXT_FLASH_BLOCK_SIZE,
-                       Ext_Flash_DataLine_Quad);
-        if (fileOperation == CALC_CRC32_OP) {
-            crc32(extFlashBlockBuff, EXT_FLASH_BLOCK_SIZE, &crcResult);
-        } else if (fileOperation == COPY_FILE_OP) {
-            err += flashWrite((uint32_t *)internalFlashStartingAddress,
-                              (uint32_t *)extFlashBlockBuff, EXT_FLASH_BLOCK_SIZE);
-            internalFlashStartingAddress += EXT_FLASH_BLOCK_SIZE;
-        }
-        fileLen -= EXT_FLASH_BLOCK_SIZE;
-        startingAddress += EXT_FLASH_BLOCK_SIZE;
-    }
-    /* Read remaining data that did not fill a block */
-    if (fileLen) {
-        Ext_Flash_Read(startingAddress, extFlashBlockBuff, fileLen, Ext_Flash_DataLine_Quad);
-        if (fileOperation == CALC_CRC32_OP) {
-            crc32(extFlashBlockBuff, fileLen, &crcResult);
-        } else if (fileOperation == COPY_FILE_OP) {
-            err += flashWrite((uint32_t *)internalFlashStartingAddress,
-                              (uint32_t *)extFlashBlockBuff, fileLen);
-        }
-    }
-    if (fileOperation == COPY_FILE_OP)
-        return err;
-
-    return crcResult;
-}
-
 int main(void)
 {
     volatile int i;
-    int err = 0x00000000;
-    uint32_t startingAddress = 0x00000000;
-    uint32_t crcResult = 0x00000000;
     int numLedsBlink;
 
     /* Limit the number of LED blinks */
@@ -305,60 +245,51 @@ int main(void)
     /* disable interrupts to prevent these operations from being interrupted */
     __disable_irq();
 
-    /* init external flash */
-    err += Ext_Flash_Init();
-    err += Ext_Flash_Quad(1);
+    /* Get the length of the image in the upper flash array */
+    uint32_t len = findUpperLen();
 
-    if (err == 0) {
-        /* Get header from ext flash */
-        Ext_Flash_Read(startingAddress, (uint8_t *)&fileHeader, sizeof(fileHeader_t),
-                       Ext_Flash_DataLine_Quad);
+    /* Attempt to verify the upper image if we get a valid length */
+    if (len) {
+        /* Validate the image with CRC32 */
+        uint32_t crcResult = 0;
 
-        /* Verify header integrity */
-        if (fileHeader.fileLen != 0xFFFFFFFF && fileHeader.fileCRC != 0xFFFFFFFF) {
-            crcResult = externFileOperation(CALC_CRC32_OP);
-            /* Check the calculated digest against what was received */
-            if (fileHeader.fileCRC != crcResult) {
-                ledFailPattern();
+        crc32((const void *)FLASH1_START, len, &crcResult);
+
+        /* Check the calculated digest against what was received */
+        if (crcResult == (uint32_t) * (uint32_t *)(FLASH1_START + len)) {
+            /* Erase the destination pages */
+            if (multiPageErase((uint8_t *)FLASH0_START, len) != E_NO_ERROR) {
+                /* Failed to erase pages */
+                bootError();
+            }
+            /* Copy the new firmware image */
+            if (flashWrite((uint32_t *)FLASH0_START, (uint32_t *)FLASH1_START, len) != E_NO_ERROR) {
+                /* Failed to write new image */
+                bootError();
             } else {
-                /* Calculate how many pages the new image will occupy, +1 for remainder */
-                uint32_t pagesToErase = (fileHeader.fileLen / MXC_FLASH_PAGE_SIZE) + 1;
-                /* Erase the destination pages */
-                if (multiPageErase((uint8_t *)FLASH0_START, pagesToErase) != E_NO_ERROR) {
-                    /* Failed to erase pages */
-                    bootError();
-                }
-                /* copy external file */
-                err = externFileOperation(COPY_FILE_OP);
-                if (err) {
-                    bootError();
-                }
-                /* check what was written to flash */
-                crcResult = 0;
-                crc32(FLASH0_START, fileHeader.fileLen, &crcResult);
-                if (crcResult != fileHeader.fileCRC) {
-                    /* Bad firmware was written to internal flash */
-                    while (1) {
-                        ledFailPattern();
-                    }
-                }
-                /* As long as first sector is erased so the bootloader does not try to reload its contents */
-                Ext_Flash_Erase(0x00000000, Ext_Flash_Erase_64K);
-                if (err == 0) {
-                    ledSuccessPattern();
+                /* Flash the success LED for a successful update */
+                int j;
+                for (j = 0; j < 10; j++) {
+                    LED_Toggle(1);
+                    DELAY(0xFFFFF);
                 }
             }
+            /* Erase the update pages */
+            if (multiPageErase((uint8_t *)FLASH1_START, len) != E_NO_ERROR) {
+                /* Failed to erase pages, continue to boot from the lower pages */
+            }
+        } else {
+            /* Flash the error LED for a CRC failure */
+            int j;
+            for (j = 0; j < 10; j++) {
+                LED_Toggle(0);
+                DELAY(0xFFFFF);
+            }
         }
-    } else {
-        /* external flash init error */
-        ledFailPattern();
-        bootError();
     }
 
     /* Boot from lower image */
     Boot_Lower();
 
     while (1) {}
-
-    return 0;
 }

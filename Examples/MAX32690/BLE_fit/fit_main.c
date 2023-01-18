@@ -108,7 +108,7 @@ static const appSecCfg_t fitSecCfg = {
     0, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    FALSE /*! TRUE to initiate security upon connection */
 };
 
 /*! configurable parameters for connection parameter update */
@@ -483,16 +483,21 @@ static void fitBtnCback(uint8_t btn)
         switch (btn) {
         case APP_UI_BTN_1_SHORT:
             /* start or restart advertising */
+            APP_TRACE_INFO0("----btn1 s\n");
             AppAdvStart(APP_MODE_AUTO_INIT);
             break;
 
         case APP_UI_BTN_1_MED:
+            APP_TRACE_INFO0("----btn1 m\n");
+
             /* enter discoverable and bondable mode */
             AppSetBondable(TRUE);
             AppAdvStart(APP_MODE_DISCOVERABLE);
             break;
 
         case APP_UI_BTN_1_LONG:
+            APP_TRACE_INFO0("----btn1 L\n");
+
             /* clear all bonding info */
             AppSlaveClearAllBondingInfo();
 

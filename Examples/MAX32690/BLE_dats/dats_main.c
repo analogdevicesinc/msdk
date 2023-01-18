@@ -48,9 +48,8 @@
 #include "wut.h"
 #include "trimsir_regs.h"
 #include "pal_btn.h"
-#include "pal_uart.h"
 #include "tmr.h"
-#include "svc_sds.h"
+
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -79,7 +78,6 @@
 enum {
     DATS_GATT_SC_CCC_IDX, /*! GATT service, service changed characteristic */
     DATS_WP_DAT_CCC_IDX, /*! Arm Ltd. proprietary service, data transfer characteristic */
-    DATS_SEC_DAT_CCC_IDX,
     DATS_NUM_CCC_IDX
 };
 
@@ -98,53 +96,22 @@ static const appSlaveCfg_t datsSlaveCfg = {
     1, /*! Maximum connections */
 };
 
-/*! Configurable security parameters to set
-*   pairing and authentication requirements.
-*
-*   Authentication and bonding flags
-*       -DM_AUTH_BOND_FLAG  : Bonding requested 
-*       -DM_AUTH_SC_FLAG    : LE Secure Connections requested 
-*       -DM_AUTH_KP_FLAG    : Keypress notifications requested 
-*       -DM_AUTH_MITM_FLAG  : MITM (authenticated pairing) requested
-                              pairing method is determined by IO capabilities below
-*
-*   Initiator key distribution flags
-*       -DM_KEY_DIST_LTK   : Distribute LTK used for encryption
-*       -DM_KEY_DIST_IRK   : Distribute IRK used for privacy 
-*       -DM_KEY_DIST_CSRK  : Distribute CSRK used for signed data 
-*/
+/*! configurable parameters for security */
 static const appSecCfg_t datsSecCfg = {
-    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
+    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    FALSE /*! TRUE to initiate security upon connection */
 };
-
-/* OOB UART parameters */
-#define OOB_BAUD 115200
-#define OOB_FLOW FALSE
 
 /*! TRUE if Out-of-band pairing data is to be sent */
 static const bool_t datsSendOobData = FALSE;
 
-/* OOB Connection identifier */
-dmConnId_t oobConnId;
-
-/*! SMP security parameter configuration 
-*
-*   I/O Capability Codes to be set for 
-*   Pairing Request (SMP_CMD_PAIR_REQ) packets and Pairing Response (SMP_CMD_PAIR_RSP) packets
-*   when the MITM flag is set in Configurable security parameters above.
-*       -SMP_IO_DISP_ONLY         : Display only. 
-*       -SMP_IO_DISP_YES_NO       : Display yes/no. 
-*       -SMP_IO_KEY_ONLY          : Keyboard only.
-*       -SMP_IO_NO_IN_NO_OUT      : No input, no output. 
-*       -SMP_IO_KEY_DISP          : Keyboard display. 
-*/
+/*! SMP security parameter configuration */
 static const smpCfg_t datsSmpCfg = {
     500, /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_KEY_ONLY, /*! I/O Capability */
+    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
     7, /*! Minimum encryption key length */
     16, /*! Maximum encryption key length */
     1, /*! Attempts to trigger 'repeated attempts' timeout */
@@ -171,8 +138,8 @@ static const smpCfg_t datsSmpCfg = {
 /*! configurable parameters for connection parameter update */
 static const appUpdateCfg_t datsUpdateCfg = {
     0,
-    /*! ^ Connection idle period in ms before attempting
-    connection parameter update. set to zero to disable */
+    /*! Connection idle period in ms before attempting
+    connection parameter update; set to zero to disable */
     (15 * 8 / 1.25), /*! Minimum connection interval in 1.25ms units */
     (15 * 12 / 1.25), /*! Maximum connection interval in 1.25ms units */
     0, /*! Connection latency */
@@ -229,8 +196,7 @@ static const uint8_t datsScanDataDisc[] = {
 static const attsCccSet_t datsCccSet[DATS_NUM_CCC_IDX] = {
     /* cccd handle          value range               security level */
     { GATT_SC_CH_CCC_HDL, ATT_CLIENT_CFG_INDICATE, DM_SEC_LEVEL_NONE }, /* DATS_GATT_SC_CCC_IDX */
-    { WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE }, /* DATS_WP_DAT_CCC_IDX */
-    { SEC_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE } /* DATS_SEC_DAT_CCC_IDX */
+    { WP_DAT_CH_CCC_HDL, ATT_CLIENT_CFG_NOTIFY, DM_SEC_LEVEL_NONE } /* DATS_WP_DAT_CCC_IDX */
 };
 
 /**************************************************************************************************
@@ -251,22 +217,6 @@ static dmSecLescOobCfg_t *datsOobCfg;
 wsfTimer_t trimTimer;
 
 extern void setAdvTxPower(void);
-
-/*************************************************************************************************/
-/*!
- *  \brief  OOB RX callback.
- *
- *  \return None.
- */
-/*************************************************************************************************/
-void oobRxCback(void)
-{
-    if (datsOobCfg != NULL) {
-        DmSecSetOob(oobConnId, datsOobCfg);
-    }
-
-    DmSecAuthRsp(oobConnId, 0, NULL);
-}
 
 /*************************************************************************************************/
 /*!
@@ -309,31 +259,15 @@ static void datsDmCback(dmEvt_t *pDmEvt)
             uint8_t oobLocalRandom[SMP_RAND_LEN];
             SecRand(oobLocalRandom, SMP_RAND_LEN);
             DmSecCalcOobReq(oobLocalRandom, pDmEvt->eccMsg.data.key.pubKey_x);
-
-            /* Setup HCI UART for OOB */
-            PalUartConfig_t hciUartCfg;
-            hciUartCfg.rdCback = oobRxCback;
-            hciUartCfg.wrCback = NULL;
-            hciUartCfg.baud = OOB_BAUD;
-            hciUartCfg.hwFlow = OOB_FLOW;
-
-            PalUartInit(PAL_UART_ID_CHCI, &hciUartCfg);
         }
     } else if (pDmEvt->hdr.event == DM_SEC_CALC_OOB_IND) {
         if (datsOobCfg == NULL) {
             datsOobCfg = WsfBufAlloc(sizeof(dmSecLescOobCfg_t));
-            memset(datsOobCfg, 0, sizeof(dmSecLescOobCfg_t));
         }
 
         if (datsOobCfg) {
             Calc128Cpy(datsOobCfg->localConfirm, pDmEvt->oobCalcInd.confirm);
             Calc128Cpy(datsOobCfg->localRandom, pDmEvt->oobCalcInd.random);
-
-            /* Start the RX for the peer OOB data */
-            PalUartReadData(PAL_UART_ID_CHCI, datsOobCfg->peerRandom,
-                            (SMP_RAND_LEN + SMP_CONFIRM_LEN));
-        } else {
-            APP_TRACE_ERR0("Error allocating OOB data");
         }
     } else {
         len = DmSizeOfEvt(pDmEvt);
@@ -428,30 +362,6 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
 
         /* send back some data */
         datsSendData(connId);
-    }
-    return ATT_SUCCESS;
-}
-
-/*************************************************************************************************/
-/*!
- *  \brief  ATTS write callback for secured data service.
- *
- *  \return ATT status.
- */
-/*************************************************************************************************/
-uint8_t secDatWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
-                         uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
-{
-    uint8_t str[] = "Secure data received!";
-    APP_TRACE_INFO0(">> Received secure data <<");
-    APP_TRACE_INFO0((const char *)pValue);
-
-    /* Write data recevied into characteristic */
-    AttsSetAttr(SEC_DAT_HDL, len, (uint8_t *)pValue);
-    /* if notifications are enabled send one */
-    if (AttsCccEnabled(connId, DATS_SEC_DAT_CCC_IDX)) {
-        /* send notification */
-        AttsHandleValueNtf(connId, SEC_DAT_HDL, sizeof(str), str);
     }
     return ATT_SUCCESS;
 }
@@ -628,9 +538,6 @@ static void datsProcMsg(dmEvt_t *pMsg)
 
     case DM_CONN_OPEN_IND:
         uiEvent = APP_UI_CONN_OPEN;
-        if (datsSecCfg.initiateSec) {
-            AppSlaveSecurityReq((dmConnId_t)pMsg->hdr.param);
-        }
         break;
 
     case DM_CONN_CLOSE_IND:
@@ -682,13 +589,15 @@ static void datsProcMsg(dmEvt_t *pMsg)
         if (pMsg->authReq.oob) {
             dmConnId_t connId = (dmConnId_t)pMsg->hdr.param;
 
-            APP_TRACE_INFO0("Sending OOB data");
-            oobConnId = connId;
+            /* TODO: Perform OOB Exchange with the peer. */
 
-            /* Start the TX to send the local OOB data */
-            PalUartWriteData(PAL_UART_ID_CHCI, datsOobCfg->localRandom,
-                             (SMP_RAND_LEN + SMP_CONFIRM_LEN));
+            /* TODO: Fill datsOobCfg peerConfirm and peerRandom with value passed out of band */
 
+            if (datsOobCfg != NULL) {
+                DmSecSetOob(connId, datsOobCfg);
+            }
+
+            DmSecAuthRsp(connId, 0, NULL);
         } else {
             AppHandlePasskey(&pMsg->authReq);
         }
@@ -988,11 +897,6 @@ void DatsStart(void)
     SvcCoreAddGroup();
     SvcWpCbackRegister(NULL, datsWpWriteCback);
     SvcWpAddGroup();
-
-    /*register secure data write callback */
-    SvcSecDataCbackRegister(NULL, secDatWriteCback);
-    /* Register secure data service */
-    SvcSecDataAddGroup();
 
     /* Set Service Changed CCCD index. */
     GattSetSvcChangedIdx(DATS_GATT_SC_CCC_IDX);

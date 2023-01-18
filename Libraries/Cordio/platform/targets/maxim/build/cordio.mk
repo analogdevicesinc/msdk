@@ -45,6 +45,11 @@ CFG_DEV         += SCH_CHECK_LIST_INTEGRITY=1
 # 2 = uECC_asm_fast, optimized for speed
 CFG_DEV         += uECC_ASM=2
 
+# Use the sbrk function for allocating heap space
+ifeq ($(RTOS), baremetal)
+WSF_HEAP_SBRK   ?= 1
+endif
+
 # Configure for both the host and controller by default
 BLE_HOST        ?= 1
 BLE_CONTROLLER  ?= 1

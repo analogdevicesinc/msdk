@@ -50,14 +50,11 @@ MAKE=make
 # Select 'GCC' or 'IAR' compiler
 COMPILER=GCC
 
-# *******************************************************************************
-# Include project Makefile.  We do this after formulating TARGET, BOARD, and MAXIM_PATH 
-# in case project.mk needs to reference those values.  However, we also include
-# this as early as possible in the Makefile so that it can append to or override
-# the variables below.
-
-include ./project.mk
-$(info Loaded project.mk)
+# Specify the board used
+ifeq "$(BOARD)" ""
+BOARD=EvKit_V1
+#BOARD=FTHR_RevA
+endif
 
 RISCV_CORE=RV32
 export RISCV_CORE
@@ -122,6 +119,9 @@ PROJ_CFLAGS+=-Wall
 
 # Point this variable to a startup file to override the default file
 #STARTUPFILE=startup_riscv_max78000.S
+
+# Override the default optimization level using this variable
+MXC_OPTIMIZE_CFLAGS=-O2
 
 # Point this variable to a linker file to override the default file
 LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_riscv.ld

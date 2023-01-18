@@ -73,7 +73,11 @@
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 8 } };
+static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 },
+                                           { 32, 4 },
+                                           { 192, 8 },
+                                           { 256, 8 },
+                                           { 512, 4 } };
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;
@@ -114,11 +118,8 @@ static void mainWsfInit(void)
     const uint8_t numPools = sizeof(mainPoolDesc) / sizeof(mainPoolDesc[0]);
 
     uint16_t memUsed;
-    WsfCsEnter();
     memUsed = WsfBufInit(numPools, mainPoolDesc);
     WsfHeapAlloc(memUsed);
-    WsfCsExit();
-
     WsfOsInit();
     WsfTimerInit();
 #if (WSF_TOKEN_ENABLED == TRUE) || (WSF_TRACE_ENABLED == TRUE)
@@ -208,16 +209,13 @@ int main(void)
 #endif
 
     uint32_t memUsed;
-    WsfCsEnter();
     memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
     WsfHeapAlloc(memUsed);
-    WsfCsExit();
 
     mainWsfInit();
     AppTerminalInit();
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
-    WsfCsEnter();
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
                             .wlSizeCfg = 4,
                             .rlSizeCfg = 4,
@@ -228,7 +226,6 @@ int main(void)
 
     memUsed = LlInit(&llCfg);
     WsfHeapAlloc(memUsed);
-    WsfCsExit();
 
     bdAddr_t bdAddr;
     PalCfgLoadData(PAL_CFG_ID_BD_ADDR, bdAddr, sizeof(bdAddr_t));
@@ -238,7 +235,7 @@ int main(void)
     PalBbEnable();
 
     /* Output buffered square wave of 32 kHz clock to GPIO */
-    // MXC_RTC_SquareWaveStart(MXC_RTC_F_32KHZ);
+    MXC_RTC_SquareWaveStart(MXC_RTC_F_32KHZ);
 
     /* Execute the trim procedure */
     wutTrimComplete = 0;

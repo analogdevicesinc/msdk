@@ -64,9 +64,6 @@ extern "C" {
 #define EXT_FLASH_BAUD 3000000
 #endif
 
-#define TS_SPI MXC_SPI0
-#define TS_SPI_FREQ 200000
-
 /**
  * \brief   Initialize the BSP and board interfaces.
  * \returns #E_NO_ERROR if everything is successful
