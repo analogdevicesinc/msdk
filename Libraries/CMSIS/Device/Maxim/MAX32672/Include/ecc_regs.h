@@ -89,10 +89,15 @@ extern "C" {
  * @ingroup ecc_registers
  * Structure type to access the ECC Registers.
  */
+#if defined(__GNUC__)
 typedef struct __attribute__((deprecated("mxc_ecc_regs_t struct and ecc_regs.h no longer supported. Use trimsir_regs.h and MXC_TRIMSIR (mxc_trimsir_regs_t) for ECC. 10-24-2022"))) {
     __R  uint32_t rsv_0x0_0x7[2];
     __IO uint32_t en;                   /**< <tt>\b 0x08:</tt> ECC EN Register */
 } mxc_ecc_regs_t;
+#else
+#warning "Defining deprecated type "mxc_ecc_regs_t" to "mxc_trimsir_regs_t" (trimsir_regs.h)."
+typedef mxc_ecc_regs_t mxc_trimsir_regs_t;
+#endif
 
 /* Register offsets for module ECC */
 /**
