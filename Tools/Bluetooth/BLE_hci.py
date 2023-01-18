@@ -264,8 +264,9 @@ class BLE_hci:
         payload = self.port.read(size=packet_len)
 
         # Print the packet
-        if(print_evt):
-            for i in range(0,packet_len):
+        status_string = ""
+        if print_evt and len(payload) > 0:
+            for i in range(0, len(payload)):
                 status_string += '%02X'%payload[i]
 
             if self.id == "-":
