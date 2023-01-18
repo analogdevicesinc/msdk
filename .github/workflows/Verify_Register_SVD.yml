@@ -30,7 +30,7 @@ jobs:
   # The verify job will check the differences with any updated register file.
   verify:
     # The type of runner that the job will run on
-    runs-on: [ self-hosted ]
+    runs-on: [ self-hosted, btm-ci ]
 
     steps:
       - name: Clean
@@ -136,20 +136,11 @@ jobs:
           
           # Exit msdk repo for next step.
           cd ..
-
-      # SVD Scripts require software that's not preinstalled with GitHub workflow servers.
-      # Only install packages if there are register files to verify. Saves time if there are no
-      # register changes.
-      - name: Detected Register File Change(s). Installing required packages for scripts.
-        if: env.DIFF_FILES_FLAG == 'true'
-        run: |
-          # Install XMLFormatter for scripts.
-          sudo apt-get install -y xmlformat-perl
             
       # Generate the register file for all affected parts.
       # Only generate register files if there are committed register files to verify And if the software packages properly installed. \
       # Saves time if there are no register file changes. 
-      - name: Generating Register Files from Peripheral SVD Files, then Verifying if Register & SVD Files are synced.
+      - name: Detected Register File Change(s). Verifying if Register & SVD Files are synced.
         if: success() && env.DIFF_FILES_FLAG == 'true'
         run: |
           # Verifying register files.
