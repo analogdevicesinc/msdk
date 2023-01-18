@@ -68,7 +68,7 @@ increase the amount of time spent in standby mode, thus reducing average power c
 
 #define configRTC_TICK_RATE_HZ (32768)
 
-#define configTOTAL_HEAP_SIZE ((size_t)(108 * 1024))
+#define configTOTAL_HEAP_SIZE ((size_t)(256 * 1024))
 
 #define configMINIMAL_STACK_SIZE ((uint16_t)128)
 
@@ -78,7 +78,6 @@ increase the amount of time spent in standby mode, thus reducing average power c
 #define configUSE_CO_ROUTINES 0
 #define configUSE_16_BIT_TICKS 0
 #define configUSE_MUTEXES 1
-#define configUSE_MALLOC_FAILED_HOOK 1
 
 /* Define to trap errors during development. */
 void vAssertCalled(const char *const pcFileName, uint32_t ulLine);

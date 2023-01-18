@@ -159,6 +159,12 @@ void PalTimerInit(PalTimerCompCback_t expCback)
   PAL_TIMER_CHECK(palTimerCb.state == PAL_TIMER_STATE_UNINIT);
   PAL_TIMER_CHECK(expCback != NULL);
 
+  /* TODO: Figure out priority for RISCV */
+#ifndef __riscv
+  /* Give scheduler timer the highest priority. */
+  NVIC_SetPriority(PAL_TMR_IRQn, 0);
+#endif
+
   tmr_cfg.pres = TMR_PRES_1;
   tmr_cfg.mode = TMR_MODE_ONESHOT;
   tmr_cfg.clock = MXC_TMR_APB_CLK;
