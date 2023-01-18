@@ -41,7 +41,10 @@ if [[ $DO_MAX32655 -eq 1 ]]; then
     echo 
     echo "Lock the used recourse files."
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
 
     set -e
 
@@ -60,6 +63,9 @@ if [[ $DO_MAX32655 -eq 1 ]]; then
     echo
     ls -hal ~/Workspace/Resource_Share
 
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_2.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
 
@@ -77,7 +83,10 @@ if [[ $DO_MAX32665 -eq 1 ]]; then
 
     echo "Lock the used recourse files."
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
 
     set +e
 
@@ -99,7 +108,10 @@ if [[ $DO_MAX32665 -eq 1 ]]; then
     echo
     ls -hal ~/Workspace/Resource_Share
     
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_2.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
 
     echo 
@@ -117,7 +129,10 @@ if [[ $DO_MAX32690_DEVKIT -eq 1 ]]; then
 
     echo "Lock the used recourse files."
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
 
     set +e
 
@@ -154,9 +169,40 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     echo
     echo "-----------------------------------------------------------------------------------------"
     echo "TEST MAX32690 WLP"
-
     echo
-    echo "TODO: add test for MAX32690 WKP_V1 board."
+
+    echo "Lock the used recourse files."    
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+
+    set +e
+
+    cd $MSDK
+    echo "PWD="`pwd`
+
+    cd .github/workflows/ci-tests/Examples_tests
+    chmod +x test_launcher.sh
+    FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+    dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['con_uart'])"`
+    dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`            
+
+    ./test_launcher.sh max32690 $dut_uart $dut_serial WLP_V1
+ 
+    set -e
+
+    echo 
+    echo "Release the used resource files."
+    echo
+    ls -hal ~/Workspace/Resource_Share
+    
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
 
     echo 
     echo "-----------------------------------------------------------------------------------------"

@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
 # @Filename: ${NAME}.py
@@ -80,7 +81,6 @@ def main(file_name: str, args: dict):
 if __name__ == "__main__":
     file = "local_BLE_Examples_Test.sh"
 
-
-    args = {"max32655": False, "max32665": False, "max32690_devkit": True, "max32690_wlp": True}
+    args = {"max32655": False, "max32665": False, "max32690_devkit": True, "max32690_wlp": False}
 
     main(file, args)

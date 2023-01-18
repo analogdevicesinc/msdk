@@ -1,8 +1,18 @@
 #!/bin/bash
 
+echo args: $@
+if [[ $# -eq 4 ]]; then
+    DUT_BOARD_TYPE=$4
+else
+    DUT_BOARD_TYPE=EvKit_V1        
+fi
+echo "DUT_BOARD_TYPE:" $DUT_BOARD_TYPE
+echo
+
 EXAMPLE_TEST_PATH=$(pwd)
 cd ../../../../
 MSDK_DIR=$(pwd)
+echo pwd=`pwd`
 failedTestList=" "
 numOfFailedTests=0
 
@@ -50,6 +60,7 @@ function initial_setup(){
     DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
     DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
     DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
+    DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`
 
     # setup  all DUT (Device Under Test) varaibles passed into the scripts as arguments
     # eg: 
@@ -133,7 +144,11 @@ function softreset_with_openocd() {
 #****************************************************************************************************
 # Function accepts parameters:device , CMSIS-DAP serial #
 function erase_with_openocd() {
+    echo "-----------------------------------------------------------------------------------------"
     printf "> Erasing $1 : $2 \r\n"
+    echo "-----------------------------------------------------------------------------------------"
+    echo
+
     $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH/ -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init; reset halt; max32xxx mass_erase 0;" -c " exit" &
     openocd_dapLink_pid=$!
     # wait for openocd to finish
@@ -186,7 +201,12 @@ function run_notConntectedTest() {
 function flash_bootloader() {
     #------ -----------Build & Flash Bootloader onto Device 2  : ME17
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
-    make -j8
+    if [ $4 == "WLP_V1" ]; then
+        make -j8 BOARD=WLP_V1
+    else
+        make -j8
+    fi
+
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader/build
     printf "> Flashing Bootloader on DUT\r\n\r\n"
     #not using the flash_with_openocd function here because that causes the application code to be erased and only
@@ -216,6 +236,7 @@ function erase_all_devices() {
     erase_with_openocd max32655 $DEVICE2
     erase_with_openocd max32665 $DEVICE3
     erase_with_openocd max32690 $DEVICE4
+    erase_with_openocd max32690 $DEVICE5
 }
 #****************************************************************************************************
 function print_project_banner() {
@@ -291,7 +312,7 @@ if [ $(hostname) == "wall-e" ]; then
         echo "---------------------------------------"
         make -C ${dir} clean
         make -C ${dir} libclean
-        make -C ${dir} -j8
+        make -C ${dir} -j8 BOARD=$DUT_BOARD_TYPE
     done
 else
 # Allows me to run this script on my local machine with no modifications
@@ -305,7 +326,7 @@ else
         echo "---------------------------------------"
     #   make -C ${dir} clean
     #   make -C ${dir} libclean
-        make -C ${dir} -j8
+        make -C ${dir} -j8 BOARD=$DUT_BOARD_TYPE
     done
 fi
 
@@ -372,24 +393,27 @@ for dir in ./*/; do
 
 done # end non connected tests
 
-#****************************************************************************************************
-#*********************************** Start of Datc/s connected tests ********************************
-#****************************************************************************************************
+echo ****************************************************************************************************
+echo *********************************** Start of Datc/s connected tests ********************************
+echo ****************************************************************************************************
 
 erase_all_devices
 
 # Flash MAIN_DEVICE with BLE_datc
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+echo pwd=`pwd`
+echo
+
 make -j8
 
 # flash client first because it takes longer
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
-printf "> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
+printf "> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n"
 flash_with_openocd_fast $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
 
 # flash DUT with BLE_dats
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
-printf "> Flashing BLE_dats on DUT $DUT_NAME_UPPER \r\n"
+printf "> Flashing BLE_dats on DUT $DUT_NAME_UPPER\r\n"
 flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
 
 cd $EXAMPLE_TEST_PATH/tests
@@ -418,9 +442,9 @@ set -e
 erase_with_openocd $DUT_NAME_LOWER $DUT_ID
 erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
-#****************************************************************************************************
-#*********************************** Start of OTAC/s connected tests ********************************
-#****************************************************************************************************
+echo ****************************************************************************************************
+echo *********************************** Start of OTAC/s connected tests ********************************
+echo ****************************************************************************************************
 
 cd $EXAMPLE_TEST_PATH/tests
 
@@ -435,7 +459,7 @@ flash_bootloader
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
 # change firmware version to verify otas worked
 perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file.c
-make -j8
+make -j8 BOARD=$DUT_BOARD_TYPE
 
 # since  MAIN_DEVICE and DUT are not the same chip we need to make sure the
 # FW update binary is built for the DUT's mcu and not the  MAIN_DEVICE mcu
