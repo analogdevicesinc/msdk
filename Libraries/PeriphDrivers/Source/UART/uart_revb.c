@@ -860,6 +860,7 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
     if (flags & MXC_UART_REVB_ERRINT_FL & uart->int_en) {
         MXC_UART_AsyncStop((mxc_uart_regs_t *)uart);
         MXC_UART_AsyncCallback((mxc_uart_regs_t *)uart, E_COMM_ERR);
+
         return E_INVALID;
     }
 

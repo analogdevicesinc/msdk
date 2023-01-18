@@ -18,6 +18,7 @@ Tools/OpenOCD
 *.d
 /**/make.log
 /**/.idea/
+/**/venv/
 session.txt.log
 flash.log
 Libraries/NFC
