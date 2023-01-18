@@ -54,6 +54,8 @@
 #include "board.h"
 #include "max78000.h"
 #include "uart.h"
+#include "led.h"
+#include "pb.h"
 
 /***** Definitions *****/
 #define WORDS_PER_PG (MXC_FLASH_PAGE_SIZE / 4) // 4 bytes make up a 32-bit word
@@ -64,6 +66,10 @@
 #define TESTSIZE \
     (WORDS_PER_PG * NUM_TEST_PAGES) // Calculate the number of words to write for the test.
 
+#define TEST_ADDRESS 0x1007E000
+#define MAGIC 0xDEADBEEF
+#define TEST_VALUE 0xFEEDBEEF
+
 /***** Globals *****/
 volatile uint32_t isr_cnt;
 volatile uint32_t isr_flags;
@@ -71,6 +77,12 @@ volatile uint32_t isr_flags;
 /***** Functions *****/
 
 //******************************************************************************
+
+int button_pressed = 0;
+void button_handler()
+{
+    button_pressed = 1;
+}
 
 int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 {
@@ -135,15 +147,15 @@ void flash_init(void)
     generate interrupts of its own (as shown in this example), 
     in which case use #2 for the FLC ISRs.
     */
-    NVIC_SetRAM(); // Execute ISRs out of SRAM
-    MXC_NVIC_SetVector(FLC0_IRQn, FLC0_IRQHandler); // Assign ISR
-    NVIC_EnableIRQ(FLC0_IRQn); // Enable interrupt
-    __enable_irq();
+    // NVIC_SetRAM(); // Execute ISRs out of SRAM
+    // MXC_NVIC_SetVector(FLC0_IRQn, FLC0_IRQHandler); // Assign ISR
+    // NVIC_EnableIRQ(FLC0_IRQn); // Enable interrupt
+    // __enable_irq();
 
-    // Clear and enable flash programming interrupts
-    MXC_FLC_EnableInt(MXC_F_FLC_INTR_DONEIE | MXC_F_FLC_INTR_AFIE);
-    isr_flags = 0;
-    isr_cnt = 0;
+    // // Clear and enable flash programming interrupts
+    // MXC_FLC_EnableInt(MXC_F_FLC_INTR_DONEIE | MXC_F_FLC_INTR_AFIE);
+    // isr_flags = 0;
+    // isr_cnt = 0;
 }
 
 //******************************************************************************
@@ -239,51 +251,25 @@ int flash_erase(uint32_t start, uint32_t end, uint32_t *buffer, unsigned length)
 int main(void)
 {
     int fail = 0;
-    int error, i;
+    int err, i;
     uint32_t start, end;
     uint32_t buffer[0x2000];
 
     printf("\n\n***** Flash Control Example *****\n");
-    printf("This example executes entirely from RAM, and\n");
-    printf("will mass erase the entire flash contents before\n");
-    printf("writing and verifying a test pattern from\n");
-    printf("ADDR: 0x%x to ADDR: 0x%x\n", MXC_FLASH_MEM_BASE, MXC_FLASH_MEM_BASE + TESTSIZE);
-    printf("Press Push Button 1 (PB1/SW1) to begin\n");
+    printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
 
-    while (!PB_Get(0)) {}
+    PB_RegisterCallback(0, (pb_callback)button_handler);
+
+    while (!button_pressed) {
+        LED_On(LED_RED);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+        LED_Off(LED_RED);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+    }
+    LED_Off(LED_RED);
 
     // Initialize the Flash (see notes in 'flash_init' definition)
     flash_init();
-
-    /*
-    Mass erase the flash.
-
-    Since this example mass erases the entire flash contents (including application code),
-    then this _entire_ example must be executed out of SRAM.  This is done by
-    assigning a special linkerfile via the project's Makefile (see LINKER=$(TARGET_LC)_ram.ld).
-
-    The '_ram' linkerfile places the .text section (program code) into SRAM instead of Flash.
-    The notes about ISRs executing out of flash still must be considered.  (see flash_init)
-    */
-    printf("Wiping flash...\n");
-    error = MXC_FLC_MassErase();
-
-    if (error == E_NO_ERROR) {
-        printf("Flash has been successfully wiped.");
-    } else if (error == E_BAD_STATE) {
-        printf("Flash erase operation is not allowed in this state.\n");
-    } else {
-        printf("Fail to erase flash's content.\n");
-        fail += 1;
-    }
-
-    // Check flash's content.  Should be all 1's after erasure.
-    if (check_erased(MXC_FLASH_MEM_BASE, MXC_FLASH_MEM_SIZE)) {
-        printf("Flash mass erase is verified.\n");
-    } else {
-        printf("Failed!  Flash mass erase failed.\n");
-        return E_FAIL;
-    }
 
     /*
     Disable the instruction cache controller (ICC).
@@ -293,98 +279,60 @@ int main(void)
     */
     MXC_ICC_Disable(MXC_ICC0);
 
-    i = 0;
-    uint32_t testaddr;
-    for (testaddr = (MXC_FLASH_MEM_BASE); i < TESTSIZE; testaddr += 4) {
-        /* 
-        Write test data to flash one word at a time.
-        Default test value for each word is 0, 1, 2, ..., n, n + 1, etc.
+    uint32_t magic = 0;
+    MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
+    if (magic != MAGIC) {  // Starting example for the first time.
 
-        The test pattern is created "on the fly" with reference to the 
-        running index variable i so that the memory footprint of the 
-        test pattern is minimized.  Remember - this example is executing
-        out of SRAM.  Strange things can happen when the stack and program
-        code start to bleed into each other...
-        */
-        uint32_t testval = i;
-        error = MXC_FLC_Write32(testaddr, testval);
-        if (error != E_NO_ERROR) {
-            printf("Failure writing 0x%x to ADDR: 0x%x with error code %i\n", i, testaddr, error);
-            return error;
+        // Flash must be in the erased state before writing to it.  See
+        // the microcontroller's User Guide for more details.
+        if ((err = MXC_FLC_PageErase(TEST_ADDRESS)) != E_NO_ERROR) {
+            printf("Failed to erase page 64 of flash (addr 0x%x)\n", TEST_ADDRESS);
+        } else {
+            printf("Sucessfully erased page 64 of flash (addr 0x%x)\n", TEST_ADDRESS);
         }
 
-        // Read test data
-        uint32_t read_val;
-        MXC_FLC_Read(testaddr, &read_val, 4);
-        /* ^ Read 4 bytes into 'read_val'.  
-
-        Since 'read_val' is of type uint32_t the 4 bytes -> 1 word 
-        conversion happens automatically on pointer de-reference inside the MXC_FLC_Read function.
-        MXC_FLC_Read is a wrapper around memcpy.
-        */
-
-        // Verify test data
-        if (read_val != testval) {
-            printf("Verification failed at ADDR: %x\t(val: %x != testval: %x)\n", testaddr,
-                   read_val, testval);
+        printf("Writing magic value 0x%x to address 0x%x...\n", MAGIC, TEST_ADDRESS);
+        if ((err = MXC_FLC_Write32(TEST_ADDRESS, MAGIC)) != E_NO_ERROR) {
+            printf("Failed to write magic value to first byte of flash!\n");
+            return -1;
         }
 
-        i++;
-
-        if (i < 16) {
-            // Only printf for the first 16 words.  Otherwise, the program would take forever.
-            printf("Word %d written properly and has been verified.\n", i);
-        } else if (i == 16) {
-            printf("Continuing for %d more words...\n", TESTSIZE - i);
-        } else if (i % (5096) == 0) {
-            // Print a progress indicator every 5096 words
-            printf("%.2f%%\n", ((float)i / TESTSIZE) * 100);
+        for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + 0x2000; addr += 4) {
+            //                                          ^ Address must be word-aligned
+            if ((err = MXC_FLC_Write32(addr, TEST_VALUE)) != E_NO_ERROR) {
+                printf("Failed write on address 0x%x with error code %i\n", addr, err);
+                return -1;
+            }
         }
+        printf("Done!\n");
+        printf("\nNow reset or power cycle the board...\n");
+
+    } else { // Starting example after reset or power cycle
+        printf("** Magic value 0x%x found at address 0x%x! **\n\n", MAGIC, TEST_ADDRESS);
+        printf("Flash modifications have survived a reset and/or power cycle.\n");
+        printf("Verifying test pattern...\n");
+        uint32_t readval = 0;
+        int verified = 1;
+        for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + 0x2000; addr += 4) {
+            MXC_FLC_Read(addr, &readval, 4);
+            if (readval != TEST_VALUE) {
+                printf("Failed verification at address 0x%x!  Expected: 0x%x\tRead: 0x%x\n", addr, TEST_VALUE, readval);
+                verified = 0;
+                break;
+            }
+        }
+
+        if (verified) {
+            printf("Sucessfully verified test pattern!\n");
+        }
+
+        printf("Erasing page again to reset...\n");
+        if ((err = MXC_FLC_PageErase(TEST_ADDRESS)) != E_NO_ERROR) {
+            printf("Failed to erase page!\n");
+            return -1;
+        }
+        printf("Done!\n");
     }
 
-    printf("100%%\n");
-    printf("Done!\n");
-
-    // Erase all of page 2.
-    int page = 2;
-    uint32_t erase_addr = MXC_FLASH_MEM_BASE + (page * MXC_FLASH_PAGE_SIZE);
-    error = MXC_FLC_PageErase(erase_addr);
-
-    if (error) {
-        printf("Failed to erase page %i (ADDR: 0x%x) with error code %i\n", page, erase_addr,
-               error);
-        return error;
-    }
-
-    if (check_erased(erase_addr, MXC_FLASH_PAGE_SIZE)) {
-        printf("Successfully verified erasure of page %i (ADDR: 0x%x)\n", page, erase_addr);
-    } else {
-        printf("Erasure of page %i (ADDR: 0x%x) failed...  Function call completed, but contents "
-               "were not fully erased.\n",
-               page, erase_addr);
-        return E_FAIL;
-    }
-
-    // Erase partial pages or wide range of pages and keep the data on the page not inbetween start and end.
-    // In this case erase part of pages 1 and 2
-    start = (MXC_FLASH_MEM_BASE + 0x80);
-    end = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
-    printf("Testing partial erasure between pages 1 (ADDR: 0x%x) and 2 (ADDR: 0x%x)...\n", start,
-           end);
-
-    flash_erase(start, end, buffer, 0x2000);
-
-    if (check_erased(start, (end - start))) {
-        printf("Successfully verified partial erasure.\n");
-    } else {
-        printf("Failed to verify partial erasure!\n");
-        return E_FAIL;
-    }
-
-    // Flash modifications are complete, so the ICC can be re-enabled.
-    MXC_ICC_Enable(MXC_ICC0);
-
-    printf("Example succeeded!\n");
-
-    return E_NO_ERROR;
+    return 0;
 }

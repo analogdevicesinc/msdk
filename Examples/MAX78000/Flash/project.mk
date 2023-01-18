@@ -11,5 +11,7 @@
 
 # **********************************************************
 
-LINKERFILE=$(TARGET_LC)_ram.ld
-$(info This example executes out of RAM using a special linkerfile: $(LINKERFILE))
+# MXC_OPTIMIZE_CFLAGS = -Og
+
+# LINKERFILE=$(TARGET_LC)_ram.ld
+# $(info This example executes out of RAM using a special linkerfile: $(LINKERFILE))
