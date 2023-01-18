@@ -1,0 +1,4 @@
+write-only %MAXIM_SBT_DIR%\devices\MAX32591\script\scpa_nor_applet.s19
+execute-code 0090ad80
+erase-data 40000000 00000000
+write-file %PARAM_1% 40000000

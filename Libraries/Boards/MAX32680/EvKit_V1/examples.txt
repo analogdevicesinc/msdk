@@ -35,7 +35,6 @@ LP
 Pulse_Train
 RV_ARM_Loader
 SPI
-Temp_Monitor
 TMR
 TRNG
 UART

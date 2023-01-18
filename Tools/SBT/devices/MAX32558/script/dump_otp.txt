@@ -1,0 +1,12 @@
+write-only %MAXIM_SBT_DIR%\devices\MAX32558\script\dump_otp_MAX32558_B1.s19
+execute-code 2000f8b0
+erase-data C0000000 00000030 dump
+erase-data C0000000 00000040 dump
+#
+# Comment:
+# The OTP dump applet can dump specific length too
+# Below command will dump first 256 bytes of OTP,
+# Update length (00000100) if you would like to dump more or less.
+# Please note that, 10, 20, 30, 40 has special meaning (as above usage)
+#
+#erase-data C0000000 00000100 dump
