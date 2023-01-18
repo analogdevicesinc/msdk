@@ -214,7 +214,7 @@ static struct {
 static dmSecLescOobCfg_t *datsOobCfg;
 
 /* Timer for trimming of the 32 kHz crystal */
-wsfTimer_t trimTimer;
+static wsfTimer_t *trimTimer = NULL;
 
 extern void setAdvTxPower(void);
 
@@ -526,13 +526,12 @@ static void datsProcMsg(dmEvt_t *pMsg)
         break;
 
     case DM_ADV_START_IND:
-        WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
-
+        WsfTimerStartMs(trimTimer, 100);
         uiEvent = APP_UI_ADV_START;
         break;
 
     case DM_ADV_STOP_IND:
-        WsfTimerStop(&trimTimer);
+        WsfTimerStop(trimTimer);
         uiEvent = APP_UI_ADV_STOP;
         break;
 
@@ -541,7 +540,7 @@ static void datsProcMsg(dmEvt_t *pMsg)
         break;
 
     case DM_CONN_CLOSE_IND:
-        WsfTimerStop(&trimTimer);
+        WsfTimerStop(trimTimer);
 
         APP_TRACE_INFO2("Connection closed status 0x%x, reason 0x%x", pMsg->connClose.status,
                         pMsg->connClose.reason);
@@ -631,7 +630,7 @@ static void datsProcMsg(dmEvt_t *pMsg)
 
     case TRIM_TIMER_EVT:
         trimStart();
-        WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
+        WsfTimerStartMs(trimTimer, TRIM_TIMER_PERIOD_MS);
         break;
 
     default:
@@ -675,8 +674,12 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
     DmSecSetLocalIrk(localIrk);
 
     /* Setup 32 kHz crystal trim timer */
-    trimTimer.handlerId = handlerId;
-    trimTimer.msg.event = TRIM_TIMER_EVT;
+
+    if (trimTimer == NULL) {
+        trimTimer = (wsfTimer_t *)WsfBufAlloc(sizeof(wsfTimer_t));
+    }
+    trimTimer->handlerId = handlerId;
+    trimTimer->msg.event = TRIM_TIMER_EVT;
 }
 
 /*************************************************************************************************/
