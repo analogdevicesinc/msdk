@@ -244,17 +244,16 @@ extern void setAdvTxPower(void);
  *  \brief  Send notification containing data.
  *
  *  \param  connId      DM connection ID.
- *
+ *  \param  size        Size of message to send.
+ *  \param  msg         Message to send
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsSendData(dmConnId_t connId)
+static void datsSendData(dmConnId_t connId, uint8_t size, uint8_t *msg)
 {
-    uint8_t str[] = "hello back";
-
     if (AttsCccEnabled(connId, DATS_WP_DAT_CCC_IDX)) {
         /* send notification */
-        AttsHandleValueNtf(connId, WP_DAT_HDL, sizeof(str), str);
+        AttsHandleValueNtf(connId, WP_DAT_HDL, size, msg);
     }
 }
 
@@ -372,9 +371,11 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
     if (len == sizeof(fileHeader_t)) {
+        uint8_t msg[] = ">>> Start file transfer <<<";
         fileHeader_t *tmpHeader;
         tmpHeader = (fileHeader_t *)pValue;
         initHeader(tmpHeader);
+        datsSendData(connId, sizeof(msg), msg);
     }
     return ATT_SUCCESS;
 }

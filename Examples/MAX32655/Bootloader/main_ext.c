@@ -335,7 +335,7 @@ int main(void)
                 }
                 /* check what was written to flash */
                 crcResult = 0;
-                crc32(FLASH0_START, fileHeader.fileLen, &crcResult);
+                crc32((const void *)FLASH0_START, fileHeader.fileLen, &crcResult);
                 if (crcResult != fileHeader.fileCRC) {
                     /* Bad firmware was written to internal flash */
                     while (1) {

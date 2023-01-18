@@ -98,8 +98,8 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         err = MXC_FLC_PageErase((uint32_t)eraseAddress);
         WsfCsExit();
         if (err != E_NO_ERROR) {
-            APP_TRACE_INFO0("There was an err");
-            return WSF_EFS_FAILURE;
+            APP_TRACE_INFO0("There was an erase error");
+            return;
         }
         erasePages--;
         eraseAddress += MXC_FLASH_PAGE_SIZE;
@@ -142,7 +142,6 @@ static uint8_t wdxsFileInitMedia(void)
 static uint8_t wdxsFileErase(uint8_t *address, uint32_t size)
 {
     uint32_t address32 = (uint32_t)address;
-    uint32_t sectors = 0; // hard coded for now because image has no len data
 
     if (fileHeader.fileLen != 0) {
         int err = 0;
@@ -222,7 +221,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     }
     if (size) {
         WsfCsEnter();
-        err += MXC_FLC_Write((uint32_t)pAddress, size, (uint8_t *)pBuf);
+        err += MXC_FLC_Write((uint32_t)pAddress, size, (uint32_t *)pBuf);
         WsfCsExit();
     }
     /*revert variables to origianl value*/
@@ -321,7 +320,7 @@ static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
         /* if crc are ok write it to end of file*/
         WsfCsEnter();
         err += MXC_FLC_Write((WDXS_FileMedia.startAddress + verifyLen), sizeof(crcResult),
-                             (uint32_t)&crcResult);
+                             (uint32_t *)&crcResult);
         WsfCsExit();
         uint32_t *temp = (uint32_t *)(WDXS_FileMedia.startAddress + verifyLen);
         /* verify data was written*/
