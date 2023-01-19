@@ -122,8 +122,8 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     sleep(0.1)
 
     # Reset the attenuation
-    mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
-    sleep(0.1)
+    # mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
+    # sleep(0.1)
 
     # Create the connection
     txAddr = "00:12:34:88:77:33"
@@ -131,7 +131,10 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     hciSlave.addrFunc(Namespace(addr=txAddr))
     hciMaster.addrFunc(Namespace(addr=rxAddr))
 
+
+    
     hciSlave.advFunc(Namespace(interval="60", stats="False", connect="True", maintain=False, listen="False"))
+
     hciMaster.initFunc(Namespace(interval="6", timeout="64", addr=txAddr, stats="False", maintain=False, listen="False"))
 
     hciSlave.listenFunc(Namespace(time=1, stats="False"))
@@ -167,8 +170,8 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         print(packetLen," ",phy," ",atten," ",txPower)
 
         # Set the attenuation
-        mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
-        sleep(0.1)
+        # mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
+        # sleep(0.1)
 
         # Reset the packet stats
         hciSlave.cmdFunc(Namespace(cmd="0102FF00"))

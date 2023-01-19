@@ -50,18 +50,26 @@ from BLE_hci import BLE_hci
 from BLE_hci import Namespace
 from termcolor import colored
 
+verbose=True
 
-def printTrace(label, msg, color='white'):
-    print(colored(label + ": ", color), colored(msg, color))
+TRACE_INFO = 2
+TRACE_WARNING =  1
+TRACE_ERROR = 0
+
+traceLevel = TRACE_INFO
+
+def printTrace(label, msg,callerLevel, color='white'):
+    if  callerLevel <= traceLevel:
+        print(colored(label + ": ", color), colored(msg, color))
 
 def printWarning(msg):
-    printTrace('Warning', msg, 'yellow')
+    printTrace('Warning', msg, TRACE_WARNING, 'yellow')
 
 def printInfo(msg):
-    printTrace('Info', msg, 'green')
+    printTrace('Info', msg, TRACE_INFO, 'green')
 
 def printError(msg):
-    printTrace('Error', msg, 'red')
+    printTrace('Error', msg, TRACE_ERROR, 'red')
 
 
 # Setup the command line description text
@@ -143,27 +151,45 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     # Create the connection
     txAddr = "00:12:34:88:77:33"
     rxAddr = "11:12:34:88:77:33"
+
     hciSlave.addrFunc(Namespace(addr=txAddr))
     hciMaster.addrFunc(Namespace(addr=rxAddr))
 
+
+    printInfo('Slave about to begin advertising')
     hciSlave.advFunc(Namespace(interval="60", stats="False", connect="True", maintain=False, listen="False"))
+    
+    printInfo('Master initializeing connection')
     hciMaster.initFunc(Namespace(interval="6", timeout="64", addr=txAddr, stats="False", maintain=False, listen="False"))
 
+
+    printInfo('Devices Listening')
     hciSlave.listenFunc(Namespace(time=1, stats="False"))
     hciMaster.listenFunc(Namespace(time=1, stats="False"))
 
+
+    printInfo('Setting Data Length')
     hciSlave.dataLenFunc(None)
     hciMaster.dataLenFunc(None)
 
+
+    
     hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
+
+    printInfo('Setting PHY')
     # Set the PHY
     hciMaster.phyFunc(Namespace(phy=str(phy)))
     hciMaster.listenFunc(Namespace(time=2, stats="False"))
+    printInfo('Master Listening')
+
+
 
     # Set the TX Power
+    printInfo('Setting TX Power')
     hciSlave.txPowerFunc(Namespace(power=txPower, handle="0"))
     hciMaster.txPowerFunc(Namespace(power=txPower, handle="0"))
+
     hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
     hciSlave.sinkAclFunc(None)
@@ -204,14 +230,16 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         # hciSlave.listenFunc(Namespace(time=1, stats="False"))
         # hciMaster.listenFunc(Namespace(time=1, stats="False"))
 
-        packetsReceived = hciSlave.endTestFunc(None)
+        packetsReceived = hciSlave.endTestFunc(Namespace(noPrint=True))
         masterConnStats = hciMaster.getConnectionStats()
         hciMaster.endTestFunc(Namespace(noPrint=True))
 
 
         if 'txData' in masterConnStats and masterConnStats['txData'] != 0:
+            
             perSlave = 100 * (1 - packetsReceived / masterConnStats['txData'])
         else:
+            printWarning('Connection stats returned invalid data. (TXDATA = 0) PER rate being set to 100')
             perSlave = 100
 
     
