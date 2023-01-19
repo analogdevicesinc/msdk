@@ -372,7 +372,9 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
 {
     if (len == sizeof(fileHeader_t)) {
         uint8_t str[50];
-        snprintf(str, sizeof(str), ">>> Current file version: %d <<<", WdxsFileGetFirmwareVersion);
+        uint16_t version = WdxsFileGetFirmwareVersion();
+        snprintf((char *)str, sizeof(str), ">>> Current fw version: %d.%d <<<",
+                 ((version & 0xFF00) >> 8), version & 0xFF);
         fileHeader_t *tmpHeader;
         tmpHeader = (fileHeader_t *)pValue;
         initHeader(tmpHeader);
@@ -749,9 +751,11 @@ static void datsBtnCback(uint8_t btn)
         }
 
 #endif /* BT_VER */
-        case APP_UI_BTN_2_MED:
-            APP_TRACE_INFO1("FW_VERSION: %d", WdxsFileGetFirmwareVersion());
+        case APP_UI_BTN_2_MED: {
+            uint16_t version = WdxsFileGetFirmwareVersion();
+            APP_TRACE_INFO2("FW_VERSION: %d.%d", ((version & 0xFF00) >> 8), version & 0xFF);
             break;
+        }
 
         default:
             APP_TRACE_INFO0(" - No action assigned");
@@ -785,9 +789,11 @@ static void datsBtnCback(uint8_t btn)
             /* stop advertising */
             AppAdvStop();
             break;
-        case APP_UI_BTN_2_MED:
-            APP_TRACE_INFO1("FW_VERSION: %d", WdxsFileGetFirmwareVersion());
+        case APP_UI_BTN_2_MED: {
+            uint16_t version = WdxsFileGetFirmwareVersion();
+            APP_TRACE_INFO2("FW_VERSION: %d.%d", ((version & 0xFF00) >> 8), version & 0xFF);
             break;
+        }
         default:
             APP_TRACE_INFO0(" - No action assigned");
             break;

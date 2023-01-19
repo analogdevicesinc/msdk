@@ -38,8 +38,9 @@
 #include "app_api.h"
 #include "flc.h"
 
-#ifndef FW_VERSION
-#define FW_VERSION 1
+#ifndef FW_VERSION_MAJOR
+#define FW_VERSION_MAJOR 1
+#define FW_VERSION_MINOR 0
 #endif
 
 #define ERASE_DELAY 50 // ms
@@ -121,7 +122,7 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 static uint8_t wdxsFileInitMedia(void)
 {
     MXC_FLC_Init();
-    APP_TRACE_INFO1("FW_VERSION: %d", FW_VERSION);
+    APP_TRACE_INFO2("FW_VERSION: %d.%d", FW_VERSION_MAJOR, FW_VERSION_MINOR);
 
     /* Setup the erase handler */
     eraseHandlerId = WsfOsSetNextHandler(wdxsFileEraseHandler);
@@ -352,11 +353,11 @@ void WdxsFileInit(void)
     char versionString[WSF_EFS_VERSION_LEN];
 
     /* Add major number */
-    versionString[0] = FW_VERSION & 0xFF;
+    versionString[0] = FW_VERSION_MAJOR;
     /* Add "." */
-    versionString[1] = (FW_VERSION & 0xFF00) >> 8;
+    versionString[1] = '.';
     /* Minor number */
-    versionString[2] = (FW_VERSION & 0xFF0000) >> 16;
+    versionString[2] = FW_VERSION_MINOR;
     /* Add termination character */
     versionString[3] = 0;
 
@@ -414,9 +415,16 @@ uint32_t WdxsFileGetVerifiedLength(void)
  *  \return Firmware version of WDXS file.
  */
 /*************************************************************************************************/
-uint8_t WdxsFileGetFirmwareVersion(void)
+uint16_t WdxsFileGetFirmwareVersion(void)
 {
-    return FW_VERSION;
+    wsfEsfAttributes_t attr;
+    uint8_t minor, major;
+
+    WsfEfsGetAttributes(otaFileHdl, &attr);
+    major = attr.version[0];
+    minor = attr.version[2];
+    // store major in upper byte and minor in lower byte
+    return (uint16_t)major << 8 | minor;
 }
 
 void initHeader(fileHeader_t *header)
