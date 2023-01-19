@@ -116,13 +116,13 @@ int main(void)
     if ((error = MXC_UART_Init(MXC_UART0, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        return error;
     }
 
     if ((error = MXC_UART_Init(MXC_UART2, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        return error;
     }
 
     printf("-->UART Initialized\n\n");
@@ -153,8 +153,7 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
-
-        while (1) {}
+        return error;
     }
 
     error = MXC_UART_Transaction(&write_req);
@@ -162,8 +161,7 @@ int main(void)
     if (error != E_NO_ERROR) {
         printf("-->Error starting sync write: %d\n", error);
         printf("-->Example Failed\n");
-
-        while (1) {}
+        return error;
     }
 
 #ifdef DMA
@@ -188,13 +186,13 @@ int main(void)
         printf("-->Data verified\n");
     }
 
-    if (fail == 0) {
-        LED_On(LED_GREEN);
-        printf("\n-->EXAMPLE SUCCEEDED\n");
-    } else {
-        LED_On(LED_RED);
-        printf("\n-->EXAMPLE FAILED\n");
+    if (fail != 0) {
+        LED_On(LED_RED); // indicates FAIL
+        printf("\n-->Example Failed\n");
+        return E_FAIL;
     }
 
-    return 0;
+    LED_On(LED_GREEN); // indicates SUCCESS
+    printf("\n-->Example Succeeded\n");
+    return E_NO_ERROR;
 }
