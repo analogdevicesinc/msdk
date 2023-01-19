@@ -219,14 +219,13 @@ int main(void)
         }
     }
 
-    if (fail) {
-        printf("\nExample failed!\n");
-        LED_On(0);
+    if (fail != 0) {
+        LED_On(0); // indicates FAIL
+        printf("\nExample Failed\n");
         return E_FAIL;
-    } else {
-        printf("\nExample succeeded!\n");
-        LED_On(1);
     }
 
+    LED_On(1); // indicates SUCCESS
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

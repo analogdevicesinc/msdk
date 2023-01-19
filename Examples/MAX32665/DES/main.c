@@ -563,11 +563,11 @@ int main(void)
     errCnt += TDES_CBC_Decryption_Example();
     errCnt += TDES_CFB_Decryption_Example();
 
-    if (errCnt == 0) {
-        printf("Example Complete.\n");
-    } else {
+    if (errCnt != 0) {
         printf("%d Operations FAILED!\n", errCnt);
         return E_FAIL;
     }
+
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

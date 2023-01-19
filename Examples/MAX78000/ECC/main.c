@@ -175,12 +175,11 @@ int main(void)
     // Return the ECC back to its POR state (disabled)
     MXC_MCR->eccen &= ~MXC_F_MCR_ECCEN_RAM0;
 
-    if (test_fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
+    if (test_fail != 0) {
         printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

@@ -202,12 +202,11 @@ int main(void)
     printf("\n# Passed: %u, # Failed: %u, Test %s\n", test_pass, test_fail,
            test_fail ? "FAIL!" : "Ok");
 
-    if (test_fail == 0) {
-        printf("Example Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+    if (test_fail != 0) {
+        printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

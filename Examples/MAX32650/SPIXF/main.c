@@ -59,8 +59,6 @@
 
 #define BUFF_SIZE 64
 
-int fail = 0;
-
 /***** Functions *****/
 
 // These are set in the linkerfile and give the starting and ending address of xip_section
@@ -108,6 +106,7 @@ void spixf_cfg_setup()
 /******************************************************************************/
 int main(void)
 {
+    int fail = 0;
     uint32_t id;
     void (*func)(void);
     uint8_t rx_buf[BUFF_SIZE];
@@ -203,11 +202,11 @@ int main(void)
     func();
     printf("Returned from external flash\n\n");
 
-    if (fail == 0) {
-        printf("Example Succeeded\n\n");
-    } else {
+    if (fail != 0) {
         printf("Example Failed\n\n");
         return E_FAIL;
     }
+
+    printf("Example Succeeded\n\n");
     return E_NO_ERROR;
 }

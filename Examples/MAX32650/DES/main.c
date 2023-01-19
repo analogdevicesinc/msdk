@@ -90,11 +90,9 @@ int DES_check(char *calculated, char *expected, int len)
     if (fail > 0) {
         printf("Fail.\n");
         return -1;
-    } else {
-        printf("Pass.\n");
-        return 0;
     }
 
+    printf("Pass.\n");
     return 0;
 }
 
@@ -210,12 +208,11 @@ int main(void)
     printf("Triple DES ECB Decryption ... ");
     fail += TDES_ECB_dec();
 
-    if (fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
+    if (fail != 0) {
         printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

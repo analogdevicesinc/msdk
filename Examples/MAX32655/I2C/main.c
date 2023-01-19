@@ -47,7 +47,6 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "nvic_table.h"
-#include "i2c_regs.h"
 #include "i2c.h"
 #include "dma.h"
 
@@ -187,9 +186,9 @@ int verifyData()
 
     if (fails > 0) {
         return E_FAIL;
-    } else {
-        return E_NO_ERROR;
     }
+
+    return E_NO_ERROR;
 }
 
 // *****************************************************************************

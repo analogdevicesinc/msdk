@@ -145,12 +145,11 @@ int main(void)
     fail += ret;
     printf(" --> %s\n", ((ret == E_NO_ERROR) ? "PASS" : "FAIL"));
 
-    if (fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
+    if (fail != 0) {
         printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

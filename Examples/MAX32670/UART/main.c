@@ -193,16 +193,13 @@ int main(void)
         printf("-->Data verified\n");
     }
 
-    printf("\n");
-
-    if (fail == 0) {
-        LED_On(1);
-        printf("-->EXAMPLE SUCCEEDED\n");
-    } else {
+    if (fail != 0) {
         LED_On(0);
-        printf("-->EXAMPLE FAILED\n");
+        printf("\n-->Example Failed\n");
         return E_FAIL;
     }
 
+    LED_On(1);
+    printf("\n-->Example Succeeded\n");
     return E_NO_ERROR;
 }

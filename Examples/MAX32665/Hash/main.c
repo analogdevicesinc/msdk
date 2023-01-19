@@ -49,17 +49,6 @@
 
 char temp[] = { 0x00, 0x00, 0x00 };
 
-int Test_Result(int result)
-{
-    if (result) {
-        printf(" * Failed *\n\n");
-        return -1;
-    } else {
-        printf("   Passed  \n\n");
-        return 0;
-    }
-}
-
 void ascii_to_byte(const char *src, char *dst, int len)
 {
     int i;
@@ -99,11 +88,15 @@ int Test_Hash(void)
 
     MXC_TPU_Hash_SHA((char *)sha256_msg, MXC_TPU_HASH_SHA256, msgLen, (char *)destination);
 
-    ret = Test_Result(memcmp(sha256_result, destination, 32));
-
     MXC_TPU_Shutdown(MXC_SYS_PERIPH_CLOCK_TPU);
 
-    return ret;
+    if (memcmp(sha256_result, destination, 32)) {
+        printf(" * Failed *\n\n");
+        return -1;
+    }
+
+    printf("   Passed  \n\n");
+    return 0;
 }
 
 int main(void)
@@ -113,12 +106,11 @@ int main(void)
     int fail = 0;
     fail += Test_Hash();
 
-    if (fail == 0) {
-        printf("Example Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

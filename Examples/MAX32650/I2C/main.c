@@ -184,11 +184,12 @@ int verifyData()
             ++fails;
         }
     }
+
     if (fails > 0) {
         return E_FAIL;
-    } else {
-        return E_NO_ERROR;
     }
+
+    return E_NO_ERROR;
 }
 
 // *****************************************************************************

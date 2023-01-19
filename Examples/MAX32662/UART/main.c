@@ -213,15 +213,12 @@ int main(void)
         printf("-->Data verified\n");
     }
 
-    printf("\n");
-
     if (fail != 0) {
-        LED_On(0);
-        printf("-->EXAMPLE FAILED\n");
+        LED_On(0); // indicates FAIL
+        printf("\n-->Example Failed\n");
         return E_FAIL;
-    } else {
-        printf("-->EXAMPLE SUCCEEDED\n");
     }
 
+    printf("\n-->Example Succeeded\n");
     return E_NO_ERROR;
 }

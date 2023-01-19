@@ -44,7 +44,6 @@
 #include "mxc_device.h"
 #include "board.h"
 #include "ctb.h"
-#include "ctb_regs.h"
 
 /***** Definitions *****/
 
@@ -414,12 +413,11 @@ int main(void)
     fail += AES256_ECB_dec(0);
     fail += AES256_ECB_dec(1);
 
-    if (fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
+    if (fail != 0) {
         printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

@@ -314,15 +314,11 @@ int main(void)
     fail += TDES_ECB_dec(0);
     fail += TDES_ECB_dec(1);
 
-    printf("\n");
-
-    if (fail == 0) {
-        printf("Example Succeeded\n");
-        return 0;
-    } else {
-        printf("Example Failed\n");
-        return -1;
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

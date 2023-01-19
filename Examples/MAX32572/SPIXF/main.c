@@ -199,12 +199,11 @@ int main(void)
     func();
     printf("Returned from external flash\n\n");
 
-    if (fail == 0) {
-        printf("Example Succeeded\n\n");
-        return 0;
-    } else {
-        printf("Example Failed\n\n");
-        return -1;
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
-    return 0;
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

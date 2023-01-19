@@ -175,9 +175,8 @@ int main(void)
         printf("Overdrive results: %d; %08x; %08x \n", retval, MXC_OWM->cfg, MXC_OWM->intfl);
         printf("Example Failed\n");
         return E_FAIL;
-    } else {
-        printf("Example Succeeded\n");
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

@@ -115,10 +115,11 @@ int AES_Test(mxc_ctb_cipher_t aesKey)
              !(stat & MXC_F_CTB_CTRL_DONE));
 
     // Compare result of encryption-decryption cycle to original data
-    if (memcmp(inputData, (void *)decryptedData, MXC_AES_DATA_LENGTH) == 0) {
-        return E_NO_ERROR;
+    if (memcmp(inputData, (void *)decryptedData, MXC_AES_DATA_LENGTH) != 0) {
+        return 1;
     }
-    return 1;
+
+    return E_NO_ERROR;
 }
 
 // *****************************************************************************
@@ -149,12 +150,11 @@ int main(void)
     fail += ret;
     printf(" --> %s\n", ((ret == E_NO_ERROR) ? "PASS" : "FAIL"));
 
-    if (fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
+    if (fail != 0) {
         printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

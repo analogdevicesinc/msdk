@@ -184,13 +184,11 @@ int main(void)
     MXC_SRCC_Disable();
     test_function();
 
-    if (fail == 0) {
-        printf("EXAMPLE SUCCEEDED\n");
-        return 0;
-    } else {
-        printf("EXAMPLE FAILED\n");
-        return -1;
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

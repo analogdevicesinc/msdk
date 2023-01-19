@@ -47,7 +47,6 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 
 /***** Definitions *****/
@@ -419,12 +418,12 @@ int main(void)
     fail += partial_erase_test(MXC_FLASH1_MEM_BASE);
 
     MXC_ICC_Enable();
-    if (fail == 0) {
-        printf("Example Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+
+    if (fail != 0) {
+        printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

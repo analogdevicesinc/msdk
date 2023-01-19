@@ -86,7 +86,7 @@ int main(void)
     printf("SPI1 pins to SFE Slave device. You can test RAM\n");
     printf("or Flash write and read loopback\n");
 
-    int fail = E_NO_ERROR;
+    int ret = E_NO_ERROR;
 
     // Configure the peripheral
     if (MXC_SPI_Init(MASTER_SPI, 1, 0, 1, 0, MASTER_SPI_SPEED) != E_NO_ERROR) {
@@ -142,10 +142,10 @@ int main(void)
         printf("\nData Verified\n");
     } else {
         printf("\nData Not Verified\n");
-        fail = E_FAIL;
+        ret = E_FAIL;
     }
 
     MXC_SPI_Shutdown(MASTER_SPI);
 
-    return fail;
+    return ret;
 }

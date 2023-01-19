@@ -124,13 +124,11 @@ int main(void)
     printf("Calculated CRC = 0x%08x\n", hw_crc);
     printf("Expected CRC   = 0x%08x\n", sw_crc);
 
-    printf("\n");
-    if (fail == 0) {
-        printf("Example Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

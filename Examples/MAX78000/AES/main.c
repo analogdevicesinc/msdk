@@ -45,7 +45,6 @@
 #include "board.h"
 #include "dma.h"
 #include "aes.h"
-#include "aes_regs.h"
 
 /***** Definitions *****/
 #define MXC_AES_DATA_LENGTH 8 //4 words
@@ -113,14 +112,13 @@ int AES_decrypt(int asynchronous, mxc_aes_keys_t key)
 
     MXC_AES_Shutdown();
 
-    if (memcmp(inputData, decryptedData, MXC_AES_DATA_LENGTH) == 0) {
-        printf("\nData Verified");
-        return E_NO_ERROR;
+    if (memcmp(inputData, decryptedData, MXC_AES_DATA_LENGTH) != 0) {
+        printf("\nData Mismatch");
+        return 1;
     }
 
-    printf("\nData Mismatch");
-
-    return 1;
+    printf("\nData Verified");
+    return E_NO_ERROR;
 }
 
 // *****************************************************************************
@@ -144,12 +142,11 @@ int main(void)
     AES_encrypt(0, MXC_AES_256BITS);
     fail += AES_decrypt(0, MXC_AES_256BITS);
 
-    if (fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
+    if (fail != 0) {
         printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

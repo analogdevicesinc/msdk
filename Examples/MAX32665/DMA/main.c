@@ -45,7 +45,6 @@
 #include "mxc_device.h"
 #include "nvic_table.h"
 #include "dma.h"
-#include "dma_regs.h"
 
 /***** Definitions *****/
 
@@ -54,7 +53,6 @@
 
 /***** Globals *****/
 int mychannel = -1;
-int fail = 0;
 volatile int flag = 0;
 
 /***** Functions *****/
@@ -80,10 +78,10 @@ void DMA8_IRQHandler()
     MXC_DMA_Handler(MXC_DMA1);
 }
 
-void example1(void)
+int example1(void)
 {
     printf("Transfer from memory to memory.\n");
-
+    int fail = 0;
     int retval;
     int i = 0;
 
@@ -117,13 +115,13 @@ void example1(void)
     free(srcdata);
     free(dstdata);
 
-    return;
+    return fail;
 }
 
-void example2(void)
+int example2(void)
 {
     printf("\nTransfer with Reload and Callback.\n");
-
+    int fail = 0;
     int i, retval;
 
     //Init data
@@ -206,30 +204,29 @@ void example2(void)
     free(srcdata2);
     free(dstdata2);
 
-    return;
+    return fail;
 }
 
 // *****************************************************************************
 int main(void)
 {
+    int fail = 0;
     printf("***** DMA Example *****\n");
 
     __enable_irq();
     NVIC_EnableIRQ(DMA0_IRQn);
-    example1();
+    fail += example1();
     NVIC_DisableIRQ(DMA0_IRQn);
 
     NVIC_EnableIRQ(DMA8_IRQn);
-    example2();
+    fail += example2();
     NVIC_DisableIRQ(DMA8_IRQn);
 
-    printf("\n");
-    if (fail == 0) {
-        printf("Example Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

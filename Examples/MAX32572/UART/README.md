@@ -34,7 +34,7 @@ P1.12 -> P1.21 and P1.13 -> P1.20
 
 -->Data verified
 
--->EXAMPLE SUCCEEDED
+-->Example Succeeded
 ```
 
 The LED (P2.17) will illuminate to indicate the success of the test.

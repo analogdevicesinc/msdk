@@ -206,14 +206,13 @@ int main(void)
         printf("-->Data verified\n");
     }
 
-    if (fail == 0) {
-        printf("\n-->EXAMPLE SUCCEEDED\n");
-        LED_On(1);
-    } else {
-        printf("\n-->EXAMPLE FAILED\n");
-        LED_On(0);
+    if (fail != 0) {
+        printf("\n-->Example Failed\n");
+        LED_On(0); // indicates FAIL
         return E_FAIL;
     }
 
+    LED_On(1); // indicates SUCCESS
+    printf("\n-->Example Succeeded\n");
     return E_NO_ERROR;
 }

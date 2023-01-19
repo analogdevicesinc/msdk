@@ -142,13 +142,11 @@ int main(void)
 
     fail += memcmp(result, result_data, sizeof(result_data));
 
-    printf("\n");
-    if (fail == 0) {
-        printf("Example Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
         return E_FAIL;
     }
 
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }
