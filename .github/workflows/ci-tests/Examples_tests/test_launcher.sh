@@ -34,12 +34,45 @@ function initial_setup(){
 
     # Get correct boards config file and tools paths when running on Wall-E
     if [ $(hostname) == "wall-e" ]; then
+        echo "On machine wall-e"
+        echo
+
         FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
         # WALL-E  paths
         export OPENOCD_TCL_PATH=/home/btm-ci/Tools/openocd/tcl
         export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
         export ROBOT=/home/btm-ci/.local/bin/robot
 
+        MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
+        main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])"`
+        MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
+
+        # Get the serial number of all daplink devices, this is used to erase them all.
+        DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
+        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
+        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
+        DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`
+    elif [ $(hostname) == "yingcai-OptiPlex-790" ]; then
+        echo "On machine yingcai-OptiPlex-790"
+        echo
+
+        FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+        
+        export OPENOCD_TCL_PATH=/home/$USER/Tools/openocd/tcl
+        export OPENOCD=/home/$USER/Tools/openocd/src/openocd
+        export ROBOT=/home/$USER/.local/bin/robot
+
+        MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['daplink'])"`
+        main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['uart0'])"`
+        MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
+
+        # Get the serial number of all daplink devices, this is used to erase them all.
+        DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['daplink'])"`
+        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y2']['daplink'])"`
+        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board_2']['daplink'])"`
+        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_3']['daplink'])"`
+        DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`
     else
         # Local- eddie desktop
         FILE=/home/$USER/boards_config.json
@@ -48,19 +81,10 @@ function initial_setup(){
         export OPENOCD=/home/eddie/workspace/openocd/src/openocd
         export ROBOT=/home/eddie/.local/bin/robot
     fi
+    
     # "Main device" is the ME17 used as the cleint dudring connected tests
     MAIN_DEVICE_NAME_UPPER=MAX32655
     MAIN_DEVICE_NAME_LOWER=max32655
-    MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
-    main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])"`
-    MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
-
-    # Get the serial number of all daplink devices, this is used to erase them all.
-    DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
-    DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-    DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-    DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
-    DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`
 
     # setup  all DUT (Device Under Test) varaibles passed into the scripts as arguments
     # eg: 
@@ -170,6 +194,7 @@ function run_notConntectedTest() {
     cd $PROJECT_NAME
     set +x
     echo "> Flashing $DUT_NAME_UPPER $PROJECT_NAME"
+    echo
     # make -j8 projects are build in validation build step
     cd build/
     flash_with_openocd $DUT_NAME_LOWER $DUT_ID
@@ -240,7 +265,7 @@ function erase_all_devices() {
 }
 #****************************************************************************************************
 function print_project_banner() {
-    echo "=============================================================================="
+    echo "*****************************************************************************************"
     printf "> Start of testing $DUT_NAME_LOWER ($DUT_NAME_UPPER) \r\n> ID:$DUT_ID \r\n> Port:$DUT_SERIAL_PORT \r\n\r\n"
 }
 #****************************************************************************************************
@@ -324,8 +349,8 @@ else
         echo "---------------------------------------"
         echo " Validation build for ${dir}"
         echo "---------------------------------------"
-    #   make -C ${dir} clean
-    #   make -C ${dir} libclean
+        make -C ${dir} clean
+        make -C ${dir} libclean
         make -C ${dir} -j8 BOARD=$DUT_BOARD_TYPE
     done
 fi
@@ -393,9 +418,11 @@ for dir in ./*/; do
 
 done # end non connected tests
 
-echo ****************************************************************************************************
-echo *********************************** Start of Datc/s connected tests ********************************
-echo ****************************************************************************************************
+echo
+echo "****************************************************************************************************"
+echo "*********************************** Start of Datc/s connected tests ********************************"
+echo "****************************************************************************************************"
+echo
 
 erase_all_devices
 
@@ -442,20 +469,21 @@ set -e
 erase_with_openocd $DUT_NAME_LOWER $DUT_ID
 erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
-echo ****************************************************************************************************
-echo *********************************** Start of OTAC/s connected tests ********************************
-echo ****************************************************************************************************
+echo
+echo "****************************************************************************************************"
+echo "*********************************** Start of OTAC/s connected tests ********************************"
+echo "****************************************************************************************************"
 
 cd $EXAMPLE_TEST_PATH/tests
 
 # flash Firmware V1 BLE_otas  onto DUT
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
-printf "> Flashing BLE_otas on DUT $DUT_NAME_UPP\r\n\r\n"
+printf "\r\n> Flashing BLE_otas on DUT $DUT_NAME_UPP\r\n\r\n"
 flash_with_openocd $DUT_NAME_LOWER $DUT_ID
 
 flash_bootloader
 
-# change firmware version and rebuild
+printf "\r\nChange firmware version and rebuild.\r\n"
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
 # change firmware version to verify otas worked
 perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file.c
@@ -469,14 +497,14 @@ cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
 #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
 sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
 sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
-# flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
+printf "\nFlash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware.\n"
 make clean
 make FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j8
 
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
 printf "> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
 flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-printf "Flashing done"
+printf "Flashing done\r\n"
 
 #revert files back, took me days to find this bug
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac

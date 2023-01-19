@@ -28,7 +28,7 @@ echo "MSDK=$MSDK"
 
 DO_MAX32655=$1
 DO_MAX32665=$2
-DO_MAX32690_DEVKIT=$3
+DO_MAX32690_EVKIT=$3
 DO_MAX32690_WLP=$4
 
 #--------------------------------------------------------------------------------------------------
@@ -54,8 +54,13 @@ if [[ $DO_MAX32655 -eq 1 ]]; then
     cd .github/workflows/ci-tests/Examples_tests
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-    dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
-    dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+    if [ $(hostname) == "wall-e" ]; then
+        dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
+        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+    else
+        dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y2']['uart0'])"`
+        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y2']['daplink'])"`
+    fi
     ./test_launcher.sh max32655 $dut_uart $dut_serial
  
     echo 
@@ -96,8 +101,13 @@ if [[ $DO_MAX32665 -eq 1 ]]; then
     cd .github/workflows/ci-tests/Examples_tests
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-    dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart2'])"`
-    dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`            
+    if [ $(hostname) == "wall-e" ]; then
+        dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
+        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`            
+    else
+        dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board_2']['uart1'])"`
+        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board_2']['daplink'])"`            
+    fi
 
     ./test_launcher.sh max32665 $dut_uart $dut_serial
  
@@ -120,11 +130,11 @@ if [[ $DO_MAX32665 -eq 1 ]]; then
 fi
 
 #--------------------------------------------------------------------------------------------------
-# For MAX32690_DEVKIT
-if [[ $DO_MAX32690_DEVKIT -eq 1 ]]; then
+# For MAX32690_EVKIT
+if [[ $DO_MAX32690_EVKIT -eq 1 ]]; then
     echo
     echo "-----------------------------------------------------------------------------------------"
-    echo "TEST MAX32690 DEVKIT"
+    echo "TEST MAX32690 EVKIT"
     echo 
 
     echo "Lock the used recourse files."
@@ -142,8 +152,13 @@ if [[ $DO_MAX32690_DEVKIT -eq 1 ]]; then
     cd .github/workflows/ci-tests/Examples_tests
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-    dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
-    dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`            
+    if [ $(hostname) == "wall-e" ]; then
+        dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
+        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`            
+    else
+        dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_3']['uart2'])"`
+        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_3']['daplink'])"`            
+    fi
 
     ./test_launcher.sh max32690 $dut_uart $dut_serial
  
@@ -154,12 +169,15 @@ if [[ $DO_MAX32690_DEVKIT -eq 1 ]]; then
     echo
     ls -hal ~/Workspace/Resource_Share
     
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_a5.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_2.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
 
     echo 
     echo "-----------------------------------------------------------------------------------------"
-    echo "FINISH TEST MAX32690 DEVKIT"
+    echo "FINISH TEST MAX32690 EVKIT"
 fi
 
 
@@ -186,6 +204,7 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     cd .github/workflows/ci-tests/Examples_tests
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+    
     dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['con_uart'])"`
     dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`            
 
