@@ -331,7 +331,6 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
 /* ************************************************************************** */
 int MXC_SYS_Clock_Timeout(uint32_t ready)
 {
-    
     // Start timeout, wait for ready
     MXC_DelayAsync(MXC_SYS_CLOCK_TIMEOUT, NULL);
 #ifndef ME18_WLP_TEST
@@ -347,9 +346,9 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     } while (MXC_DelayCheck() == E_BUSY);
 
     return E_TIME_OUT;
-    #else
+#else
     return E_NO_ERROR;
-    #endif
+#endif
 }
 
 /* ************************************************************************** */
