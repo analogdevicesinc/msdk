@@ -40,11 +40,13 @@ if [[ $DO_MAX32655 -eq 1 ]]; then
 
     echo 
     echo "Lock the used recourse files."
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_2.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+
+    touch /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_EvKit.txt
 
     set -e
 
@@ -87,11 +89,13 @@ if [[ $DO_MAX32665 -eq 1 ]]; then
     echo "TEST MAX32665"
 
     echo "Lock the used recourse files."
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_2.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+
+    touch /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32665.txt
 
     set +e
 
@@ -138,11 +142,13 @@ if [[ $DO_MAX32690_EVKIT -eq 1 ]]; then
     echo 
 
     echo "Lock the used recourse files."
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_2.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+
+    touch /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_EvKit.txt
 
     set +e
 
@@ -169,6 +175,9 @@ if [[ $DO_MAX32690_EVKIT -eq 1 ]]; then
     echo
     ls -hal ~/Workspace/Resource_Share
     
+    if [ -f /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_EvKit.txt ]; then
+        rm /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_EvKit.txt
+    fi
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_a5.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
@@ -190,12 +199,13 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     echo
 
     echo "Lock the used recourse files."    
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_2.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_2.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
 
+    touch /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_WLP.txt # indicate which jos is running
     set +e
 
     cd $MSDK
@@ -205,8 +215,13 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
     
-    dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['con_uart'])"`
-    dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`            
+    if [ $host == "wall-e" ]; then
+        dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['con_sn'])"`
+        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`            
+    else
+        dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A3']['con_sn'])"`
+        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A3']['DAP_sn'])"`            
+    fi
 
     ./test_launcher.sh max32690 $dut_uart $dut_serial WLP_V1
  
@@ -222,6 +237,10 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_2.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+
+    if [ -f /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_WLP.txt ]; then
+        rm /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_WLP.txt
+    fi
 
     echo 
     echo "-----------------------------------------------------------------------------------------"

@@ -81,6 +81,6 @@ def main(file_name: str, args: dict):
 if __name__ == "__main__":
     file = "local_BLE_Examples_Test.sh"
 
-    args = {"max32655": False, "max32665": False, "max32690_evkit": True, "max32690_wlp": False}
+    args = {"max32655": False, "max32665": False, "max32690_evkit": False, "max32690_wlp": True}
 
     main(file, args)
