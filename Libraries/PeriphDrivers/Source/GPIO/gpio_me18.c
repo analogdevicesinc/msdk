@@ -48,18 +48,28 @@
 /* **** Definitions **** */
 #define GPIO4_PIN_MASK 0x00000003
 #define GPIO4_RESET_MASK 0xFFFFFF77
-#define GPIO4_OUTEN_MASK(mask) (((mask & MXC_GPIO_PIN_0) << MXC_F_MCR_GPIO4_CTRL_P40_OE_POS) |\
-                                ((mask & MXC_GPIO_PIN_1) << (MXC_F_MCR_GPIO4_CTRL_P41_OE_POS - 1)))
-#define GPIO4_PULLDIS_MASK(mask) (((mask & MXC_GPIO_PIN_0) << MXC_F_MCR_GPIO4_CTRL_P40_PE_POS) |\
-                                  ((mask & MXC_GPIO_PIN_1) << (MXC_F_MCR_GPIO4_CTRL_P41_PE_POS - 1)))
-#define GPIO4_DATAOUT_MASK(mask) (((mask & MXC_GPIO_PIN_0) << MXC_F_MCR_GPIO4_CTRL_P40_DO_POS) |\
-                                  ((mask & MXC_GPIO_PIN_1) << (MXC_F_MCR_GPIO4_CTRL_P41_DO_POS - 1)))
-#define GPIO4_DATAOUT_GET_MASK(mask) ((((MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_DO) >> MXC_F_MCR_GPIO4_CTRL_P40_DO_POS) |\
-                                      ((MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_DO) >> (MXC_F_MCR_GPIO4_CTRL_P41_DO_POS - 1))) & mask)
-#define GPIO4_DATAIN_MASK(mask) ((((MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_IN) >> MXC_F_MCR_GPIO4_CTRL_P40_IN_POS) |\
-                                 ((MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_IN) >> (MXC_F_MCR_GPIO4_CTRL_P41_IN_POS - 1))) & mask)
-#define GPIO4_AFEN_MASK(mask) (((mask & MXC_GPIO_PIN_0) << MXC_F_MCR_OUTEN_PDOWN_OUT_EN_POS) |\
-                               ((mask & MXC_GPIO_PIN_1) >> (MXC_F_MCR_OUTEN_SQWOUT_EN_POS + 1)))
+#define GPIO4_OUTEN_MASK(mask)                                      \
+    (((mask & MXC_GPIO_PIN_0) << MXC_F_MCR_GPIO4_CTRL_P40_OE_POS) | \
+     ((mask & MXC_GPIO_PIN_1) << (MXC_F_MCR_GPIO4_CTRL_P41_OE_POS - 1)))
+#define GPIO4_PULLDIS_MASK(mask)                                    \
+    (((mask & MXC_GPIO_PIN_0) << MXC_F_MCR_GPIO4_CTRL_P40_PE_POS) | \
+     ((mask & MXC_GPIO_PIN_1) << (MXC_F_MCR_GPIO4_CTRL_P41_PE_POS - 1)))
+#define GPIO4_DATAOUT_MASK(mask)                                    \
+    (((mask & MXC_GPIO_PIN_0) << MXC_F_MCR_GPIO4_CTRL_P40_DO_POS) | \
+     ((mask & MXC_GPIO_PIN_1) << (MXC_F_MCR_GPIO4_CTRL_P41_DO_POS - 1)))
+#define GPIO4_DATAOUT_GET_MASK(mask)                                                             \
+    ((((MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_DO) >> MXC_F_MCR_GPIO4_CTRL_P40_DO_POS) | \
+      ((MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_DO) >>                                    \
+       (MXC_F_MCR_GPIO4_CTRL_P41_DO_POS - 1))) &                                                 \
+     mask)
+#define GPIO4_DATAIN_MASK(mask)                                                                  \
+    ((((MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P40_IN) >> MXC_F_MCR_GPIO4_CTRL_P40_IN_POS) | \
+      ((MXC_MCR->gpio4_ctrl & MXC_F_MCR_GPIO4_CTRL_P41_IN) >>                                    \
+       (MXC_F_MCR_GPIO4_CTRL_P41_IN_POS - 1))) &                                                 \
+     mask)
+#define GPIO4_AFEN_MASK(mask)                                        \
+    (((mask & MXC_GPIO_PIN_0) << MXC_F_MCR_OUTEN_PDOWN_OUT_EN_POS) | \
+     ((mask & MXC_GPIO_PIN_1) >> (MXC_F_MCR_OUTEN_SQWOUT_EN_POS + 1)))
 
 /* **** Globals **** */
 
@@ -137,7 +147,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     mxc_gpio_regs_t *gpio = cfg->port;
 
     port = MXC_GPIO_GET_IDX(cfg->port);
-    if(port == -1) {
+    if (port == -1) {
         return E_BAD_PARAM;
     }
 
@@ -180,7 +190,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     }
 
     // Configure the pad
-    if(port < 4) {
+    if (port < 4) {
         switch (cfg->pad) {
         case MXC_GPIO_PAD_NONE:
             gpio->padctrl0 &= ~cfg->mask;
@@ -224,8 +234,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         case MXC_GPIO_PAD_WEAK_PULL_UP:
         case MXC_GPIO_PAD_PULL_UP:
             // Set to input mode, enable pull-up/down resistors
-            MXC_MCR->gpio4_ctrl &= ~(GPIO4_OUTEN_MASK(cfg->mask) |
-                                     GPIO4_PULLDIS_MASK(cfg->mask));
+            MXC_MCR->gpio4_ctrl &= ~(GPIO4_OUTEN_MASK(cfg->mask) | GPIO4_PULLDIS_MASK(cfg->mask));
 
             // Set to pullup mode
             MXC_MCR->gpio4_ctrl |= GPIO4_DATAOUT_MASK(cfg->mask);
@@ -234,8 +243,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         case MXC_GPIO_PAD_WEAK_PULL_DOWN:
         case MXC_GPIO_PAD_PULL_DOWN:
             // Set to input mode, enable pull-up/down resistors, set to pulldown mode
-            MXC_MCR->gpio4_ctrl &= ~(GPIO4_OUTEN_MASK(cfg->mask) |
-                                     GPIO4_PULLDIS_MASK(cfg->mask) |
+            MXC_MCR->gpio4_ctrl &= ~(GPIO4_OUTEN_MASK(cfg->mask) | GPIO4_PULLDIS_MASK(cfg->mask) |
                                      GPIO4_DATAOUT_MASK(cfg->mask));
             break;
 
@@ -245,7 +253,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     }
 
     // Configure the vssel
-    if(port < 4) {
+    if (port < 4) {
         return MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
     }
 
@@ -287,7 +295,7 @@ void MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if(port == MXC_GPIO4) {
+    if (port == MXC_GPIO4) {
         return GPIO4_DATAOUT_GET_MASK(mask);
     }
 
@@ -297,11 +305,10 @@ uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 void MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val)
 {
-    if(port == MXC_GPIO4) {
+    if (port == MXC_GPIO4) {
         uint32_t gpio4_cp = MXC_MCR->gpio4_ctrl;
-        gpio4_cp &= ~mask; 
 
-        MXC_MCR->gpio4_ctrl = gpio4_cp | GPIO4_DATAOUT_MASK((mask & val));
+        MXC_MCR->gpio4_ctrl = (gpio4_cp & ~mask) | GPIO4_DATAOUT_MASK((mask & val));
         return;
     }
 
@@ -311,7 +318,7 @@ void MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val)
 /* ************************************************************************** */
 void MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if(port == MXC_GPIO4) {
+    if (port == MXC_GPIO4) {
         MXC_MCR->gpio4_ctrl ^= GPIO4_DATAOUT_MASK(mask);
         return;
     }
@@ -322,9 +329,9 @@ void MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 int MXC_GPIO_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
 {
-    if(cfg->port == MXC_GPIO4) {
-        if(pol != MXC_GPIO_INT_BOTH) {
-            return E_NOT_SUPPORTED; 
+    if (cfg->port == MXC_GPIO4) {
+        if (pol != MXC_GPIO_INT_BOTH) {
+            return E_NOT_SUPPORTED;
         }
 
         return E_NO_ERROR;
@@ -336,7 +343,7 @@ int MXC_GPIO_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
 /* ************************************************************************** */
 void MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if(port == MXC_GPIO4) {
+    if (port == MXC_GPIO4) {
         MXC_PWRSEQ->lpwken4 |= (mask & GPIO4_PIN_MASK);
         return;
     }
@@ -347,7 +354,7 @@ void MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 void MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if(port == MXC_GPIO4) {
+    if (port == MXC_GPIO4) {
         MXC_PWRSEQ->lpwken4 &= ~(mask & GPIO4_PIN_MASK);
         return;
     }
@@ -370,7 +377,7 @@ void MXC_GPIO_Handler(unsigned int port)
 /* ************************************************************************** */
 void MXC_GPIO_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags)
 {
-    if(port == MXC_GPIO4) {
+    if (port == MXC_GPIO4) {
         MXC_PWRSEQ->lpwkst4 = flags & GPIO4_PIN_MASK;
         return;
     }
@@ -381,7 +388,7 @@ void MXC_GPIO_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 {
-    if(port == MXC_GPIO4) {
+    if (port == MXC_GPIO4) {
         return MXC_PWRSEQ->lpwkst4 & GPIO4_PIN_MASK;
     }
 
@@ -391,7 +398,7 @@ uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 /* ************************************************************************** */
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
-    if(port == MXC_GPIO4) {
+    if (port == MXC_GPIO4) {
         return E_NOT_SUPPORTED;
     }
 

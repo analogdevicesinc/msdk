@@ -179,7 +179,7 @@ void PB_IntDisable(unsigned int pb)
 void PB_IntClear(unsigned int pb)
 {
     MXC_ASSERT(pb < num_pbs);
-    
+
     MXC_GPIO_ClearFlags(pb_pin[pb].port, pb_pin[pb].mask);
 }
 
