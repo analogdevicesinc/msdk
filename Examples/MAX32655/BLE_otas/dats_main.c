@@ -371,11 +371,12 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
     if (len == sizeof(fileHeader_t)) {
-        uint8_t msg[] = ">>> Start file transfer <<<";
+        uint8_t str[50];
+        snprintf(str, sizeof(str), ">>> Current file version: %d <<<", WdxsFileGetFirmwareVersion);
         fileHeader_t *tmpHeader;
         tmpHeader = (fileHeader_t *)pValue;
         initHeader(tmpHeader);
-        datsSendData(connId, sizeof(msg), msg);
+        datsSendData(connId, sizeof(str), str);
     }
     return ATT_SUCCESS;
 }
