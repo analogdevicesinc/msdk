@@ -88,7 +88,11 @@ extern "C" {
  * Structure type to access the AES_KEY Registers.
  */
 #if defined(__GNUC__)
-typedef struct __attribute__((deprecated("mxc_aes_key_regs_t struct and aes_key_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023"))) {
+__attribute__((deprecated("mxc_aes_key_regs_t struct and aes_key_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023")))
+#else
+#warning "mxc_aes_key_regs_t struct and aes_key_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023"
+#endif
+typedef struct {
     __IO uint32_t aes_key0;             /**< <tt>\b 0x000:</tt> AES_KEY AES_KEY0 Register */
     __R  uint32_t rsv_0x4_0x7f[31];
     __IO uint32_t aes_key1;             /**< <tt>\b 0x080:</tt> AES_KEY AES_KEY1 Register */
@@ -97,11 +101,6 @@ typedef struct __attribute__((deprecated("mxc_aes_key_regs_t struct and aes_key_
     __R  uint32_t rsv_0x104_0x17f[31];
     __IO uint32_t aes_key3;             /**< <tt>\b 0x180:</tt> AES_KEY AES_KEY3 Register */
 } mxc_aes_key_regs_t;
-#else
-#include "aeskeys_regs.h"
-#warning "Defining deprecated type "mxc_aes_key_regs_t" to "mxc_aeskeys_regs_t" (aeskeys_regs.h)."
-typedef mxc_aeskeys_regs_t mxc_aes_key_regs_t;
-#endif
 
 /* Register offsets for module AES_KEY */
 /**
