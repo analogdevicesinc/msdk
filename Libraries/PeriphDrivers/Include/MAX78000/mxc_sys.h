@@ -280,27 +280,75 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
  */
 uint32_t MXC_SYS_RiscVClockRate(void);
 
+typedef struct
+{
+    uint32_t primask;
+    int in_critical;
+} mxc_crit_state_t; 
+
+static mxc_crit_state_t _state = { 
+    .primask = 0xFFFFFFFF, 
+    .in_critical = 0 
+    };
+
+static inline void _mxc_crit_get_state()
+{
+    /*
+        The 0th bit of the Priority Mask register indicates
+        whether interrupts are enabled or not.
+
+        0 = enabled
+        1 = disabled
+    */
+    _state.primask = __get_PRIMASK();
+}
+
 /**
  * @brief Enter a critical section of code that cannot be interrupted.
  */
-void MXC_SYS_Crit_Enter(void);
+static inline void MXC_SYS_Crit_Enter(void)
+{
+    _mxc_crit_get_state();
+    if (_state.primask == 0) __disable_irq();
+    _state.in_critical = 1;
+}
 
 /**
  * @brief Exit a critical section of code, re-enabling interrupts if they
  *        were previously.
  */
-void MXC_SYS_Crit_Exit(void);
+static inline void MXC_SYS_Crit_Exit(void)
+{
+    if (_state.primask == 0) {
+        __enable_irq();
+    }
+    _state.in_critical = 0;
+    _mxc_crit_get_state(); 
+    /*
+        ^ Reset the state again to prevent edge case
+        where interrupts get disabled, then Crit_Exit() gets
+        called, which would inadvertently re-enable interrupts
+        from old state.
+    */
+}
 
 /**
  * @brief Polls whether code is currently executing from a critical section.
  * @returns 1 if code is currently in a critical section (interrupts are disabled).
  *          0 if code is not in a critical section.
  */
-int MXC_SYS_In_Crit_Section(void);
+static inline int MXC_SYS_In_Crit_Section(void)
+{
+    return _state.in_critical;
+}
 
-#define __CRITICAL(code) { \
+/**
+ * @brief Macro for wrapping a section of code to make it critical.  Note: this macro
+ * does not support nesting.
+ */
+#define MXC_CRITICAL(code) { \
     MXC_SYS_Crit_Enter();\
-    code\
+    code;\
     MXC_SYS_Crit_Exit();\
 }
 
