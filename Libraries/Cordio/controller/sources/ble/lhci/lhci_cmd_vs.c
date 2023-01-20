@@ -79,8 +79,10 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
   uint8_t status = HCI_SUCCESS;
   uint8_t evtParamLen = 1;      /* default is status field only */
   uint32_t regReadAddr = 0;
-
+  LlTestReport_t rpt = {0};
+  
   /* Decode and consume command packet. */
+  
   switch (pHdr->opCode)
   {
     /* --- extended device commands --- */
@@ -158,6 +160,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
       evtParamLen += sizeof(BbBleDataPktStats_t);
       break;
     case LHCI_OPCODE_VS_GET_POOL_STATS:
+    
 #if WSF_BUF_STATS == TRUE
       evtParamLen += LHCI_LEN_GET_POOL_STATS_EVT(WSF_MIN(WsfBufGetNumPool(), LHCI_MAX_POOL));
 #else
@@ -205,6 +208,17 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
       status = LlEnhancedTxTest(pBuf[0], pBuf[1], pBuf[2], pBuf[3], numPackets);
       break;
     }
+    case LHCI_OPCODE_VS_END_TEST:
+    {
+
+        status = LlEndTest(&rpt);
+        evtParamLen += sizeof(LlTestReport_t);
+  
+        
+        LL_TRACE_INFO2("Status %u ### Event Param Length %u", status, evtParamLen);
+        break;
+      
+    }
 
     /* --- default --- */
     default:
@@ -230,10 +244,19 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
       case LHCI_OPCODE_VS_SET_TX_TEST_ERR_PATT:
       case LHCI_OPCODE_VS_SET_SNIFFER_ENABLE:
       case LHCI_OPCODE_VS_REG_WRITE:
+      
       case LHCI_OPCODE_VS_TX_TEST:
+      
         /* no action */
         break;
 
+      case LHCI_OPCODE_VS_END_TEST:
+      {
+        
+        memcpy(pBuf, (uint8_t *)&rpt, sizeof(LlTestReport_t));
+        break;
+      }
+     
       case LHCI_OPCODE_VS_SET_LOCAL_FEAT:
       case LHCI_OPCODE_VS_SET_DIAG_MODE:
         /* no action */
@@ -309,6 +332,7 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
       }
       case LHCI_OPCODE_VS_GET_TEST_STATS:
       {
+        
         BbBleDataPktStats_t stats;
         BbBleGetTestStats(&stats);
         memcpy(pBuf, (uint8_t *)&stats, sizeof(stats));
@@ -357,6 +381,8 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
       default:
         break;
     }
+
+
 
     lhciSendCmdCmplEvt(pEvtBuf);
   }

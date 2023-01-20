@@ -371,6 +371,7 @@ class BLE_hci:
     
     def getConnectionStats(self, retries=5) -> dict | None:
         connStats = {}
+        
         for i in range(retries):
             statEvt = self.send_command("01FDFF00")
 
@@ -842,7 +843,40 @@ class BLE_hci:
         phy="%0.2X"%int(args.phy)
         modulationIndex="00"
         self.send_command("01332003"+channel+phy+modulationIndex)
+    
+    def getTestStats(self):
+        stats = 0
+        evtString = self.send_command("01feFF00")
+        
+        
+    
+        return stats
 
+    def endTestVSFunc(self, args):
+        """
+        Vendor specific command to end tx test
+        instead of returning RX packets, returns all information
+        """
+        
+        evtString = self.send_command("0104FF00")
+
+        if evtString:
+            
+            
+            stats = {}
+
+            #reverse the string effectively converting to big endian
+            evtString = evtString[::-1]   
+
+            stats['rxDataTO']   = int(evtString[:4],16)
+            stats['rxDataCRC']  = int(evtString[4:8],16) 
+            stats['rxDataOk']   = int(evtString[8:12],16)
+            stats['txData']     = int(evtString[12:16],16)
+            
+            return stats
+        else:
+
+            return None
     ## End Test function.
      #
      # Sends HCI command for the end test command.
@@ -1254,6 +1288,11 @@ if __name__ == '__main__':
     endTest_parser = subparsers.add_parser('endTest', aliases=['end'], 
         help="End the TX/RX test, print the number of correctly received packets")
     endTest_parser.set_defaults(func=ble_hci.endTestFunc)
+
+    endTestVS_parser = subparsers.add_parser('endTestVS', aliases=['end'], 
+        help="End the TX/RX test, print the number of correctly received packets")
+    endTestVS_parser.set_defaults(func=ble_hci.endTestVSFunc)
+
 
     txPower_parser = subparsers.add_parser('txPower', aliases=['txp'], help="Set the TX power", formatter_class=RawTextHelpFormatter)
     txPower_parser.add_argument('power', help="""Integer power setting in units of dBm""")

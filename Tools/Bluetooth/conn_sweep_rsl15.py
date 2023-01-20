@@ -217,8 +217,9 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         perSlave = 0
 
         #reset the devices
-        hciSlave.resetFunc(None)
-        hciMaster.resetFunc(None)
+    
+        # hciSlave.resetFunc(None)
+        # hciMaster.resetFunc(None)
 
 
         #start the test
@@ -227,19 +228,16 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         
         sleep(int(args.delay))
         
-        # hciSlave.listenFunc(Namespace(time=1, stats="False"))
-        # hciMaster.listenFunc(Namespace(time=1, stats="False"))
+        packtesReceived = hciSlave.endTestFunc(Namespace(noPrint=True))
+        packetsTransmitted = hciMaster.endTestVSFunc(Namespace(noPrint=True))['txData']
 
-        packetsReceived = hciSlave.endTestFunc(Namespace(noPrint=True))
-        masterConnStats = hciMaster.getConnectionStats()
-        hciMaster.endTestFunc(Namespace(noPrint=True))
+        
 
 
-        if 'txData' in masterConnStats and masterConnStats['txData'] != 0:
-            
-            perSlave = 100 * (1 - packetsReceived / masterConnStats['txData'])
+        if packetsTransmitted != 0:
+            perSlave = 100 * (1 - packtesReceived / packetsTransmitted)
         else:
-            printWarning('Connection stats returned invalid data. (TXDATA = 0) PER rate being set to 100')
+            printWarning('Connection stats returned invalid data. (Packets Transmitted = 0) PER rate being set to 100')
             perSlave = 100
 
     
