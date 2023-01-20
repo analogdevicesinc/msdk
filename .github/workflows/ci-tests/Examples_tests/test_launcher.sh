@@ -1,5 +1,11 @@
 #!/bin/bash
 
+echo
+echo "##############################################################################################"
+echo "# test_launcher.sh <target(lower case)> <DUT control port> <DUT DAP sn> <board type>         #"
+echo "##############################################################################################"
+echo 
+
 echo args: $@
 if [[ $# -eq 4 ]]; then
     DUT_BOARD_TYPE=$4
@@ -350,7 +356,7 @@ else
     change_advertising_names_local
     # build BLE examples
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
-    SUBDIRS=$(find . -type d -name "xBLE_*")
+    SUBDIRS=$(find . -type d -name "BLE_*")
     for dir in ${SUBDIRS}; do
         echo "---------------------------------------"
         echo " Validation build for ${dir}"
@@ -368,7 +374,6 @@ cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
 project_filter='BLE_'
 for dir in ./*/; do
     if [[ "$dir" == *"$project_filter"* ]]; then
-
         export PROJECT_NAME=$(echo "$dir" | tr -d /.)
         case $PROJECT_NAME in
 
@@ -442,12 +447,14 @@ make -j8
 # flash client first because it takes longer
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
 printf "\r\n> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n"
-flash_with_openocd_fast $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
+#flash_with_openocd_fast $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
+flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
 
 # flash DUT with BLE_dats
 cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
 printf "\r\n> Flashing BLE_dats on DUT $DUT_NAME_UPPER\r\n"
-flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
+#flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
+flash_with_openocd $DUT_NAME_LOWER $DUT_ID 2
 
 cd $EXAMPLE_TEST_PATH/tests
 # runs desired test but do not exit on failure, save result to list for printing later

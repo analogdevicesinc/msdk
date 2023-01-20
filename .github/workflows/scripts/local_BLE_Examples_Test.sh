@@ -198,12 +198,23 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     echo "TEST MAX32690 WLP"
     echo
 
+    FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+
+    if [ $host == "wall-e" ]; then
+        max32690_wlp_brd=max32690_board_A5
+    else
+        max32690_wlp_brd=max32690_board_A3
+    fi
+
+    dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['${max32690_wlp_brd}']['con_sn'])"`
+    dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['${max32690_wlp_brd}']['DAP_sn'])"`            
+
     echo "Lock the used recourse files."    
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_1.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32655_2.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32665_13.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 1800 /home/$USER/Workspace/Resource_Share/${max32690_wlp_brd}.txt
 
     touch /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_WLP.txt # indicate which jos is running
     set +e
@@ -213,16 +224,6 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
 
     cd .github/workflows/ci-tests/Examples_tests
     chmod +x test_launcher.sh
-    FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-    
-    if [ $host == "wall-e" ]; then
-        dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['con_sn'])"`
-        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`            
-    else
-        dut_uart=`  /usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A3']['con_sn'])"`
-        dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A3']['DAP_sn'])"`            
-    fi
-
     ./test_launcher.sh max32690 $dut_uart $dut_serial WLP_V1
  
     set -e
@@ -232,7 +233,7 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     echo
     ls -hal ~/Workspace/Resource_Share
     
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/${max32690_wlp_brd}.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_2.txt
