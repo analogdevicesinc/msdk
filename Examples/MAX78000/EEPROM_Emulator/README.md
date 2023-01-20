@@ -14,7 +14,7 @@ The default slave address of the EEPROM is 0x24. This can be modified by changin
 
 To help with syncronization, a "Ready Signal" is output from a GPIO pin. When the signal is high, the EEPROM is not currently processing a transaction and is ready for the next transaction to begin. When the signal is low, the EEPROM has either not been initialized or is currently still processing the previous transaction, and thus is not ready to process the next transaction.
 
-**** NOTE ****: Due to the limitations of the flash controller, this example was implemented with a pseudo-cache. The cache copies the current page being operated on into volatile memory, where all reads and writes are performed. The cache is only written back to flash when there is a cache miss. So, to ensure the data you have written gets stored in flash, you will need to perform a read or write operation on another flash page. For reference, the flash memory used as EEPROM memory in this example is made up of four 8KiB flash pages.
+**** NOTE ****: Due to the limitations of the internal flash, EEPROM data is buffered in SRAM. Two events can trigger the buffer to be written back to flash, either an operation (read or write) is performed on a flash page that is not currently buffered (for reference the EEPROM is made of four 8KiB flash pages and the buffer holds a single page at a time) or a write operation is received with a write address of 0xBEEF. 
 
 ## Setup
 

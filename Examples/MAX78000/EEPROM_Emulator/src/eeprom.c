@@ -264,7 +264,17 @@ void eeprom_store_data(void)
     }
 
     // Get write address
-    write_addr = ((eeprom.rx_buf[0] << 8) | eeprom.rx_buf[1]) % EEPROM_FLASH_SZ;
+    write_addr = (eeprom.rx_buf[0] << 8) | eeprom.rx_buf[1];
+
+    // Check write address
+    if (write_addr == EEPROM_WRITE_BACK_CMD) {
+    	// Received write back command --> store cache contents
+    	cache_write_back(&cache);
+    	return;
+    } else if (write_addr >= EEPROM_FLASH_SZ) {
+    	// Invalid write address
+    	return;
+    }
 
     // Refresh cache if write address isn't located in the current cache page
     if (EEPROM_RAW_ADDR(write_addr) < cache.start_addr ||
@@ -276,6 +286,7 @@ void eeprom_store_data(void)
     if (eeprom.num_rx + EEPROM_RAW_ADDR(write_addr) >= cache.end_addr) {
         memcpy(&cache.cache[CACHE_IDX(write_addr)], &eeprom.rx_buf[rx_idx],
                cache.end_addr - EEPROM_RAW_ADDR(write_addr));
+        cache.dirty = true;
 
         // Update index variables
         eeprom.num_rx -= cache.end_addr - EEPROM_RAW_ADDR(write_addr);
@@ -293,6 +304,7 @@ void eeprom_store_data(void)
 
     // Write remaining bytes to cache
     memcpy(&cache.cache[CACHE_IDX(write_addr)], &eeprom.rx_buf[rx_idx], eeprom.num_rx);
+    cache.dirty = true;
 }
 
 void eeprom_cleanup(int err)

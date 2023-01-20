@@ -62,6 +62,7 @@ int cache_init(cache_t *cache, uint32_t init_addr)
     memcpy(cache->cache, (void *)init_addr, MXC_FLASH_PAGE_SIZE);
     cache->start_addr = init_addr;
     cache->end_addr = init_addr + MXC_FLASH_PAGE_SIZE;
+    cache->dirty = false;
 
     return E_NO_ERROR;
 }
@@ -73,29 +74,54 @@ int cache_refresh(cache_t *cache, uint32_t next_addr)
     if (cache == NULL) {
         return E_NULL_PTR;
     } else if (next_addr < MXC_FLASH_MEM_BASE ||
-               next_addr > (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
+               next_addr >= (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE)) {
         return E_BAD_PARAM;
     }
 
-    // Erase flash page before copying cache contents to it
-    err = MXC_FLC_PageErase(cache->start_addr);
-    if (err != E_NO_ERROR) {
-        return err;
-    }
+    // If cache contents modified, store it back to flash
+    if(cache->dirty) {
+		// Erase flash page before copying cache contents to it
+		err = MXC_FLC_PageErase(cache->start_addr);
+		if (err != E_NO_ERROR) {
+			return err;
+		}
 
-    // Copy contents of cache to erase flash page
-    err = MXC_FLC_Write(cache->start_addr, MXC_FLASH_PAGE_SIZE, (uint32_t *)cache->cache);
-    if (err != E_NO_ERROR) {
-        return err;
+		// Copy contents of cache to erase flash page
+		err = MXC_FLC_Write(cache->start_addr, MXC_FLASH_PAGE_SIZE, (uint32_t *)cache->cache);
+		if (err != E_NO_ERROR) {
+			return err;
+		}
     }
 
     // Get starting address of flash page
-    next_addr -= next_addr % MXC_FLASH_PAGE_SIZE;
+    next_addr &= ~(MXC_FLASH_PAGE_SIZE - 1);
 
     // Initialize cache values and starting address
     memcpy(cache->cache, (void *)next_addr, MXC_FLASH_PAGE_SIZE);
     cache->start_addr = next_addr;
     cache->end_addr = next_addr + MXC_FLASH_PAGE_SIZE;
+    cache->dirty = false;
 
     return E_NO_ERROR;
+}
+
+int cache_write_back(cache_t *cache)
+{
+	int err;
+
+	// Erase flash page before copying cache contents to it
+	err = MXC_FLC_PageErase(cache->start_addr);
+	if (err != E_NO_ERROR) {
+		return err;
+	}
+
+	// Copy contents of cache to erase flash page
+	err = MXC_FLC_Write(cache->start_addr, MXC_FLASH_PAGE_SIZE, (uint32_t *)cache->cache);
+	if (err != E_NO_ERROR) {
+		return err;
+	}
+
+	cache->dirty = false;
+
+	return err;
 }

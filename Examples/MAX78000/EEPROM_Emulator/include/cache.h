@@ -35,6 +35,7 @@
 #define EXAMPLES_MAX78000_EEPROM_EMULATOR_CACHE_H_
 
 /***** Included Files *****/
+#include <stdbool.h>
 #include "mxc_device.h"
 
 /***** Definitions *****/
@@ -45,6 +46,7 @@ typedef struct {
     uint8_t cache[MXC_FLASH_PAGE_SIZE];
     uint32_t start_addr;
     uint32_t end_addr;
+    bool dirty;
 } cache_t;
 
 /***** Functions *****/
@@ -67,5 +69,14 @@ int cache_init(cache_t *cache, uint32_t init_addr);
  * @return Success/fail. See \ref MXC_Error_Codes for list of error codes.
  */
 int cache_refresh(cache_t *cache, uint32_t next_addr);
+
+/*
+ * @brief Store data currently in cache to flash.
+ *
+ * @param cache 	Pointer to cache structure.
+ *
+ * @return Success/fail. See \ref MXC_Error_Codes for list of error codes.
+ */
+int cache_write_back(cache_t *cache);
 
 #endif // EXAMPLES_MAX78000_EEPROM_EMULATOR_CACHE_H_
