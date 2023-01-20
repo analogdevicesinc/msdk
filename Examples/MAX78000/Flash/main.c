@@ -126,7 +126,7 @@ void flash_init(void)
     generate interrupts of its own (as shown in this example), 
     in which case use #2 for the FLC ISRs.
     */
-    NVIC_SetRAM(); // Execute ISRs out of SRAM
+    // NVIC_SetRAM(); // Execute ISRs out of SRAM
     MXC_NVIC_SetVector(FLC0_IRQn, FLC0_IRQHandler); // Assign ISR
     NVIC_EnableIRQ(FLC0_IRQn); // Enable interrupt
 
@@ -144,7 +144,6 @@ int write_test_pattern()
     // A flash address must be in the erased state before writing to it, because the
     // flash controller can only write a 1 -> 0.
     // See the microcontroller's User Guide for more details.
-    printf("---(Critical)---\n");
     err = MXC_FLC_PageErase(TEST_ADDRESS);
     if (err) {
         printf("Failed to erase page 64 of flash (addr 0x%x) with error code %i\n", TEST_ADDRESS, err);
@@ -273,7 +272,7 @@ int main(void)
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
 
     if (magic != MAGIC) {  // Starting example for the first time.
-        __CRITICAL(
+        MXC_CRITICAL(
             printf("---(Critical)---\n");
             err = write_test_pattern();
             printf("----------------\n");
@@ -286,7 +285,7 @@ int main(void)
         err = validate_test_pattern();
         if (err) return err;
         
-        __CRITICAL(
+        MXC_CRITICAL(
             printf("---(Critical)---\n");
             err = erase_magic();
             printf("----------------\n");
