@@ -10980,7 +10980,7 @@ memory.
       <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[5:5]</bitRange>
+       <bitRange>[7:7]</bitRange>
        <access>read-only</access>
       </field>
      </fields>

@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief   Trust Protection Unit driver.
+ * @brief   AES driver.
  */
 
 /******************************************************************************
@@ -41,7 +41,7 @@
 
 /***** Includes *****/
 #include "aes_regs.h"
-#include "aes_key_regs.h"
+#include "aeskeys_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
