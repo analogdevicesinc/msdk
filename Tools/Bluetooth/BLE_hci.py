@@ -352,58 +352,9 @@ class BLE_hci:
                         first = False
                     else:
                         print(f'{str(datetime.datetime.now())} - {msg}')
-    def getDataFromConnStatEvent(self, statEvt, dataLabel):
-        
-        #all data values are 8 bytes offset from each other starting at 14
-        offsetLut = {
-            'rxDataOk' : 14,
-            'rxDataCRC' : 22,
-            'rxDataTO' : 30,
-            'txData' : 38,
-            'errTrans' : 46
-        }
-        
-        assert dataLabel in offsetLut
-
-        off = offsetLut[dataLabel]
-
-        return int(statEvt[6+off:8+off]+statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
-    
-    def getConnectionStats(self, retries=5) -> dict | None:
-        connStats = {}
-        
-        for i in range(retries):
-            statEvt = self.send_command("01FDFF00")
-
-            if(retries != 5):
-                # Delay to clear pending events
-                self.wait_events(1)
-                
-            if statEvt is not None:
-
-                connStats['rxDataOk']  = self.getDataFromConnStatEvent(statEvt, 'rxDataOk')
-                connStats['rxDataCRC'] = self.getDataFromConnStatEvent(statEvt, 'rxDataCRC')
-                connStats['rxDataTO'] = self.getDataFromConnStatEvent(statEvt, 'rxDataTO')
-                connStats['txData']    = self.getDataFromConnStatEvent(statEvt, 'txData')
-                connStats['errTrans'] = self.getDataFromConnStatEvent(statEvt, 'errTrans')
-
-
-                if((connStats['rxDataCRC'] + connStats['rxDataTO'] + connStats['rxDataOk']) != 0):
-                    per = round(float(( connStats['rxDataCRC'] + connStats['rxDataTO'])/( connStats['rxDataCRC'] +connStats['rxDataTO'] + connStats['rxDataOk'])) *100 , 2)
-                else:
-                    connStats['per'] = 100.0
-                
-                
-                break
-
-        if retries == 0:
-            print(colored('Warning: Failed to get connection stats', 'yellow'))
-            return None
-        else:
-            return connStats
     
         
-        pass
+        
     ## Get connection stats.
      #
      # Send the command to get the connection stats, parse the return value, return the PER.
