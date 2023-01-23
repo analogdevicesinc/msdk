@@ -22,7 +22,7 @@
         <resetMask>0x00000000</resetMask>
         <fields>
           <field>
-            <name>RTS</name>
+            <name>CNT</name>
             <description>HTimer Long Interval Counter.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -36,7 +36,7 @@
         <resetMask>0x00000000</resetMask>
         <fields>
           <field>
-            <name>RTSS</name>
+            <name>CNT</name>
             <description>HTimer Short Interval Counter.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
@@ -44,13 +44,13 @@
         </fields>
       </register>
       <register>
-        <name>RAS</name>
-        <description>Long Interval Alarm.</description>
+        <name>LNIALM</name>
+        <description>HTimer Long Interval Alarm Value Register.</description>
         <addressOffset>0x08</addressOffset>
         <resetMask>0x00000000</resetMask>
         <fields>
           <field>
-            <name>RAS</name>
+            <name>ALM</name>
             <description>HTimer Long Interval Alarm. An Alarm is triggered when this value matches HTIMER_SEC[19:0]</description>
             <bitOffset>0</bitOffset>
             <bitWidth>20</bitWidth>
@@ -58,13 +58,13 @@
         </fields>
       </register>
       <register>
-        <name>RSSA</name>
-        <description>HTimer Short Interval Alarm. This register contains the reload value for the short interval alarm, HTIMER_CTRL.alarm_ss_fl is raised on rollover.</description>
+        <name>SHIALM</name>
+        <description>HTimer Short Interval Alarm Value Register.</description>
         <addressOffset>0x0C</addressOffset>
         <resetMask>0x00000000</resetMask>
         <fields>
           <field>
-            <name>RSSA</name>
+            <name>ALM</name>
             <description>This register contains the reload value for the short interval alarm.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
@@ -115,7 +115,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SHORT_AL_IE</name>
+            <name>SHORT_ALM_IE</name>
             <description>Short Interval Alarm Interrupt Enable.  Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>

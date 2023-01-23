@@ -57,6 +57,10 @@ int MXC_GPIO_Init(uint32_t portmask)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
     }
 
+    if (portmask & MXC_GPIO_PORT_3) {
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO3);
+    }
+
     return MXC_GPIO_Common_Init(portmask);
 }
 
@@ -74,6 +78,10 @@ int MXC_GPIO_Shutdown(uint32_t portmask)
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO2);
     }
 
+    if (portmask & MXC_GPIO_PORT_3) {
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO3);
+    }
+
     return E_NO_ERROR;
 }
 
@@ -89,6 +97,10 @@ int MXC_GPIO_Reset(uint32_t portmask)
 
     if (portmask & MXC_GPIO_PORT_2) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_GPIO2);
+    }
+
+    if (portmask & MXC_GPIO_PORT_3) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_GPIO3);
     }
 
     return E_NO_ERROR;

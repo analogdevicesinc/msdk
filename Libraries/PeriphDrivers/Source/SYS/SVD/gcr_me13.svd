@@ -1481,6 +1481,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
+            <name>GPIO3</name>
+            <description>GPIO3 Reset.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
             <name>SDHC</name>
             <description>SDHC/SDIO Reset.</description>
             <bitOffset>6</bitOffset>
@@ -1653,6 +1659,12 @@
             <name>WDT1</name>
             <description>WDT1 Clock Disable</description>
             <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>GPIO3</name>
+            <description>GPIO3 Clock Disable</description>
+            <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">

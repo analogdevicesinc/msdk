@@ -90,8 +90,8 @@ extern "C" {
 typedef struct {
     __IO uint32_t lnicnt;               /**< <tt>\b 0x00:</tt> HTMR LNICNT Register */
     __IO uint32_t shicnt;               /**< <tt>\b 0x04:</tt> HTMR SHICNT Register */
-    __IO uint32_t ras;                  /**< <tt>\b 0x08:</tt> HTMR RAS Register */
-    __IO uint32_t rssa;                 /**< <tt>\b 0x0C:</tt> HTMR RSSA Register */
+    __IO uint32_t lnialm;               /**< <tt>\b 0x08:</tt> HTMR LNIALM Register */
+    __IO uint32_t shialm;               /**< <tt>\b 0x0C:</tt> HTMR SHIALM Register */
     __IO uint32_t ctrl;                 /**< <tt>\b 0x10:</tt> HTMR CTRL Register */
     __IO uint32_t trim;                 /**< <tt>\b 0x14:</tt> HTMR TRIM Register */
     __IO uint32_t oscctrl;              /**< <tt>\b 0x18:</tt> HTMR OSCCTRL Register */
@@ -106,8 +106,8 @@ typedef struct {
  */
 #define MXC_R_HTMR_LNICNT                  ((uint32_t)0x00000000UL) /**< Offset from HTMR Base Address: <tt> 0x0000</tt> */
 #define MXC_R_HTMR_SHICNT                  ((uint32_t)0x00000004UL) /**< Offset from HTMR Base Address: <tt> 0x0004</tt> */
-#define MXC_R_HTMR_RAS                     ((uint32_t)0x00000008UL) /**< Offset from HTMR Base Address: <tt> 0x0008</tt> */
-#define MXC_R_HTMR_RSSA                    ((uint32_t)0x0000000CUL) /**< Offset from HTMR Base Address: <tt> 0x000C</tt> */
+#define MXC_R_HTMR_LNIALM                  ((uint32_t)0x00000008UL) /**< Offset from HTMR Base Address: <tt> 0x0008</tt> */
+#define MXC_R_HTMR_SHIALM                  ((uint32_t)0x0000000CUL) /**< Offset from HTMR Base Address: <tt> 0x000C</tt> */
 #define MXC_R_HTMR_CTRL                    ((uint32_t)0x00000010UL) /**< Offset from HTMR Base Address: <tt> 0x0010</tt> */
 #define MXC_R_HTMR_TRIM                    ((uint32_t)0x00000014UL) /**< Offset from HTMR Base Address: <tt> 0x0014</tt> */
 #define MXC_R_HTMR_OSCCTRL                 ((uint32_t)0x00000018UL) /**< Offset from HTMR Base Address: <tt> 0x0018</tt> */
@@ -120,8 +120,8 @@ typedef struct {
  *           bits of the counter.
  * @{
  */
-#define MXC_F_HTMR_LNICNT_RTS_POS                      0 /**< LNICNT_RTS Position */
-#define MXC_F_HTMR_LNICNT_RTS                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_HTMR_LNICNT_RTS_POS)) /**< LNICNT_RTS Mask */
+#define MXC_F_HTMR_LNICNT_CNT_POS                      0 /**< LNICNT_CNT Position */
+#define MXC_F_HTMR_LNICNT_CNT                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_HTMR_LNICNT_CNT_POS)) /**< LNICNT_CNT Mask */
 
 /**@} end of group HTMR_LNICNT_Register */
 
@@ -132,33 +132,32 @@ typedef struct {
  *           HTIMER_SEC is incremented when this register rolls over from 0xFF to 0x00.
  * @{
  */
-#define MXC_F_HTMR_SHICNT_RTSS_POS                     0 /**< SHICNT_RTSS Position */
-#define MXC_F_HTMR_SHICNT_RTSS                         ((uint32_t)(0xFFUL << MXC_F_HTMR_SHICNT_RTSS_POS)) /**< SHICNT_RTSS Mask */
+#define MXC_F_HTMR_SHICNT_CNT_POS                      0 /**< SHICNT_CNT Position */
+#define MXC_F_HTMR_SHICNT_CNT                          ((uint32_t)(0xFFUL << MXC_F_HTMR_SHICNT_CNT_POS)) /**< SHICNT_CNT Mask */
 
 /**@} end of group HTMR_SHICNT_Register */
 
 /**
  * @ingroup  htmr_registers
- * @defgroup HTMR_RAS HTMR_RAS
- * @brief    Long Interval Alarm.
+ * @defgroup HTMR_LNIALM HTMR_LNIALM
+ * @brief    HTimer Long Interval Alarm Value Register.
  * @{
  */
-#define MXC_F_HTMR_RAS_RAS_POS                         0 /**< RAS_RAS Position */
-#define MXC_F_HTMR_RAS_RAS                             ((uint32_t)(0xFFFFFUL << MXC_F_HTMR_RAS_RAS_POS)) /**< RAS_RAS Mask */
+#define MXC_F_HTMR_LNIALM_ALM_POS                      0 /**< LNIALM_ALM Position */
+#define MXC_F_HTMR_LNIALM_ALM                          ((uint32_t)(0xFFFFFUL << MXC_F_HTMR_LNIALM_ALM_POS)) /**< LNIALM_ALM Mask */
 
-/**@} end of group HTMR_RAS_Register */
+/**@} end of group HTMR_LNIALM_Register */
 
 /**
  * @ingroup  htmr_registers
- * @defgroup HTMR_RSSA HTMR_RSSA
- * @brief    HTimer Short Interval Alarm. This register contains the reload value for the
- *           short interval alarm, HTIMER_CTRL.alarm_ss_fl is raised on rollover.
+ * @defgroup HTMR_SHIALM HTMR_SHIALM
+ * @brief    HTimer Short Interval Alarm Value Register.
  * @{
  */
-#define MXC_F_HTMR_RSSA_RSSA_POS                       0 /**< RSSA_RSSA Position */
-#define MXC_F_HTMR_RSSA_RSSA                           ((uint32_t)(0xFFFFFFFFUL << MXC_F_HTMR_RSSA_RSSA_POS)) /**< RSSA_RSSA Mask */
+#define MXC_F_HTMR_SHIALM_ALM_POS                      0 /**< SHIALM_ALM Position */
+#define MXC_F_HTMR_SHIALM_ALM                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_HTMR_SHIALM_ALM_POS)) /**< SHIALM_ALM Mask */
 
-/**@} end of group HTMR_RSSA_Register */
+/**@} end of group HTMR_SHIALM_Register */
 
 /**
  * @ingroup  htmr_registers
@@ -169,11 +168,11 @@ typedef struct {
 #define MXC_F_HTMR_CTRL_EN_POS                         0 /**< CTRL_EN Position */
 #define MXC_F_HTMR_CTRL_EN                             ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_EN_POS)) /**< CTRL_EN Mask */
 
-#define MXC_F_HTMR_CTRL_LONG_AL_IE_POS                 1 /**< CTRL_LONG_AL_IE Position */
-#define MXC_F_HTMR_CTRL_LONG_AL_IE                     ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_LONG_AL_IE_POS)) /**< CTRL_LONG_AL_IE Mask */
+#define MXC_F_HTMR_CTRL_LONG_ALM_IE_POS                1 /**< CTRL_LONG_ALM_IE Position */
+#define MXC_F_HTMR_CTRL_LONG_ALM_IE                    ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_LONG_ALM_IE_POS)) /**< CTRL_LONG_ALM_IE Mask */
 
-#define MXC_F_HTMR_CTRL_SHORT_AL_IE_POS                2 /**< CTRL_SHORT_AL_IE Position */
-#define MXC_F_HTMR_CTRL_SHORT_AL_IE                    ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_SHORT_AL_IE_POS)) /**< CTRL_SHORT_AL_IE Mask */
+#define MXC_F_HTMR_CTRL_SHORT_ALM_IE_POS               2 /**< CTRL_SHORT_ALM_IE Position */
+#define MXC_F_HTMR_CTRL_SHORT_ALM_IE                   ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_SHORT_ALM_IE_POS)) /**< CTRL_SHORT_ALM_IE Mask */
 
 #define MXC_F_HTMR_CTRL_BUSY_POS                       3 /**< CTRL_BUSY Position */
 #define MXC_F_HTMR_CTRL_BUSY                           ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_BUSY_POS)) /**< CTRL_BUSY Mask */

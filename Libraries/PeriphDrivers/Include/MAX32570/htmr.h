@@ -64,8 +64,8 @@ extern "C" {
  * @brief   Bitmasks for each of the HTimer's interrupt enables.
  */
 typedef enum {
-    MXC_HTMR_INTEN_LONG = MXC_F_HTMR_CTRL_LONG_AL_IE, ///< Long-interval alarm interrupt enable
-    MXC_HTMR_INTEN_SHORT = MXC_F_HTMR_CTRL_SHORT_AL_IE, ///< Short-interval alarm interrupt enable
+    MXC_HTMR_INTEN_LONG = MXC_F_HTMR_CTRL_LONG_ALM_IE, ///< Long-interval alarm interrupt enable
+    MXC_HTMR_INTEN_SHORT = MXC_F_HTMR_CTRL_SHORT_ALM_IE, ///< Short-interval alarm interrupt enable
     MXC_HTMR_INTEN_READY = MXC_F_HTMR_CTRL_RDY_IE, ///< Timer ready interrupt enable
 } mxc_htmr_int_en_t;
 
@@ -73,8 +73,8 @@ typedef enum {
  * @brief   Bitmasks for each of the HTimer's interrupt flags.
  */
 typedef enum {
-    MXC_HTMR_INTFL_LONG = MXC_F_HTMR_CTRL_LONG_AL_IE, ///< Long-interval alarm interrupt flag
-    MXC_HTMR_INTFL_SHORT = MXC_F_HTMR_CTRL_SHORT_AL_IE, ///< Short-interval alarm interrupt flag
+    MXC_HTMR_INTFL_LONG = MXC_F_HTMR_CTRL_LONG_ALM_IE, ///< Long-interval alarm interrupt flag
+    MXC_HTMR_INTFL_SHORT = MXC_F_HTMR_CTRL_SHORT_ALM_IE, ///< Short-interval alarm interrupt flag
     MXC_HTMR_INTFL_READY = MXC_F_HTMR_CTRL_RDY, ///< Timer ready interrupt flag
 } mxc_htmr_int_fl_t;
 
