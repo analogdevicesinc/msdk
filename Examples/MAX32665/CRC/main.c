@@ -83,7 +83,7 @@ int main(void)
 
     if (MXC_TPU_CRC_Config() != E_SUCCESS) {
         printf("Failed MXC_TPU_Crc_Config()\n");
-        return -1;
+        return E_FAIL;
     }
 
     printf("CRC16:\n");
@@ -95,7 +95,7 @@ int main(void)
     //Generate hardware result
     if (MXC_TPU_CRC(data, len, MXC_TPU_CRC16, &hw_crc) != E_SUCCESS) {
         printf("Failed MXC_TPU_CRC()\n");
-        return -1;
+        return E_FAIL;
     }
 
     fail += memcmp(&hw_crc, &sw_crc, sizeof(hw_crc));
@@ -106,7 +106,7 @@ int main(void)
     //Call TPU_Crc_Config() again to reset
     if (MXC_TPU_CRC_Config() != E_SUCCESS) {
         printf("Failed MXC_TPU_Crc_Config()\n");
-        return -1;
+        return E_FAIL;
     }
 
     printf("CRC32:\n");
@@ -117,19 +117,18 @@ int main(void)
     //Generate hardware result
     if (MXC_TPU_CRC(data, len, MXC_TPU_CRC32_ETHERNET, &hw_crc) != E_SUCCESS) {
         printf("Failed MXC_TPU_CRC()\n");
-        return -1;
+        return E_FAIL;
     }
 
     fail += memcmp(&hw_crc, &sw_crc, sizeof(hw_crc));
     printf("Calculated CRC = 0x%08x\n", hw_crc);
     printf("Expected CRC   = 0x%08x\n", sw_crc);
 
-    printf("\n");
-    if (fail == 0) {
-        printf("Example Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
-    while (1) {}
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

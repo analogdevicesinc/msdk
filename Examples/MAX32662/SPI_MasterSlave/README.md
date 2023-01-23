@@ -27,5 +27,5 @@ LED will illuminate.
 
 Press SW2 to begin transaction.
 
-EXAMPLE SUCCEEDED!
+Example Succeeded
 ```

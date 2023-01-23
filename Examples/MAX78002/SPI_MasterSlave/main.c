@@ -168,13 +168,12 @@ int main(void)
         printf("\nMaster failed to receive data.\n");
         LED_On(1);
         return E_COMM_ERR;
-    } else {
-        printf("EXAMPLE SUCCEEDED!\n");
-        LED_On(0);
     }
 
     MXC_SPI_Shutdown(SPI_MASTER);
     MXC_SPI_Shutdown(SPI_SLAVE);
 
+    LED_On(0); // indicates SUCCESS
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

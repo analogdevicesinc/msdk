@@ -52,6 +52,7 @@ RTC
 RTC_Backup
 RV_ARM_Loader
 SPI
+Temp_Monitor
 TFT_Demo
 TMR
 TRNG
