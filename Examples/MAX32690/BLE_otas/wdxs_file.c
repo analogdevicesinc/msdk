@@ -26,6 +26,7 @@
 #include "wsf_assert.h"
 #include "wsf_efs.h"
 #include "wsf_cs.h"
+#include "wsf_msg.h"
 #include "util/bstream.h"
 #include "svc_wdxs.h"
 #include "wdxs/wdxs_api.h"
@@ -40,9 +41,15 @@
 #define FW_VERSION 1
 #endif
 
+#define ERASE_DELAY 50 // ms
+
 static volatile uint32_t verifyLen;
 static volatile uint8_t *lastWriteAddr;
 static volatile uint32_t lastWriteLen;
+
+static uint32_t eraseAddress, erasePages;
+wsfHandlerId_t eraseHandlerId;
+wsfTimer_t eraseTimer;
 
 /* Prototypes for file functions */
 static uint8_t wdxsFileInitMedia(void);
@@ -70,6 +77,38 @@ static const wsfEfsMedia_t WDXS_FileMedia = {
 
 /*************************************************************************************************/
 /*!
+ *  \brief  WSF event handler for file erase.
+ *
+ *  \param  event   WSF event mask.
+ *  \param  pMsg    WSF message.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    int err;
+    if (erasePages) {
+        APP_TRACE_INFO1(">>> Erasing address 0x%x in internal flash <<<", eraseAddress);
+
+        /* TODO: Once this is non-blocking, check for ongoing erase, start the next erase */
+        err = MXC_FLC_PageErase((uint32_t)eraseAddress);
+        if (err != E_NO_ERROR) {
+            APP_TRACE_INFO0("There was an err");
+            return WSF_EFS_FAILURE;
+        }
+        erasePages--;
+        eraseAddress += MXC_FLASH1_PAGE_SIZE;
+
+        /* Continue next erase */
+        WsfTimerStartMs(&eraseTimer, ERASE_DELAY);
+    } else {
+        /* Erase is complete */
+        APP_TRACE_INFO0(">>> External flash erase complete <<<");
+    }
+}
+/*************************************************************************************************/
+/*!
  *  \brief  Media Init function, called when media is registered.
  *
  *  \return Status of the operation.
@@ -79,6 +118,11 @@ static uint8_t wdxsFileInitMedia(void)
 {
     MXC_FLC_Init();
     APP_TRACE_INFO1("FW_VERSION: %d", FW_VERSION);
+
+    /* Setup the erase handler */
+    eraseHandlerId = WsfOsSetNextHandler(wdxsFileEraseHandler);
+    eraseTimer.handlerId = eraseHandlerId;
+
     return WSF_EFS_SUCCESS;
 }
 
@@ -95,21 +139,23 @@ static uint8_t wdxsFileInitMedia(void)
 static uint8_t wdxsFileErase(uint8_t *address, uint32_t size)
 {
     int err;
-    uint32_t pages = 0;
     volatile uint32_t address32 = (uint32_t)address;
     if (fileHeader.fileLen != 0) {
+        /* Setup the erase handler variables */
+        eraseAddress = address32;
         /* calculate pages needed to erase */
-        pages = (fileHeader.fileLen / MXC_FLASH1_PAGE_SIZE) + 1;
-        APP_TRACE_INFO1(">>> Erasing %d pages in internal flash <<<", pages);
-        while (pages) {
-            err = MXC_FLC_PageErase((uint32_t)address32);
-            if (err != E_NO_ERROR) {
-                APP_TRACE_INFO0("There was an err");
-                return WSF_EFS_FAILURE;
-            }
-            pages--;
-            address32 += MXC_FLASH1_PAGE_SIZE;
+        erasePages = (fileHeader.fileLen / MXC_FLASH1_PAGE_SIZE) + 1;
+        /* Initiate the erase */
+        err = MXC_FLC_PageErase((uint32_t)address32);
+        if (err != E_NO_ERROR) {
+            APP_TRACE_INFO0("There was an err");
+            return WSF_EFS_FAILURE;
         }
+        erasePages--;
+        eraseAddress += MXC_FLASH1_PAGE_SIZE;
+        /* Wait ERASE_DELAY ms before staring next erase */
+        WsfTimerStartMs(&eraseTimer, ERASE_DELAY);
+
         return WSF_EFS_SUCCESS;
     } else {
         APP_TRACE_INFO0(">>> File size is unknown <<<");
@@ -158,6 +204,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     if (err == E_NO_ERROR) {
         lastWriteAddr = pAddress;
         lastWriteLen = size;
+        APP_TRACE_INFO2("Int. Flash: Wrote %d bytes @ 0x%x", size, pAddress);
         return WSF_EFS_SUCCESS;
     }
 

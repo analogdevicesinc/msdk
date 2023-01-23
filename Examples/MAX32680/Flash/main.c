@@ -408,15 +408,11 @@ int main(void)
 
     MXC_ICC_Enable(MXC_ICC0);
 
-    printf("\n");
-
-    if (fail == 0) {
-        printf("Example Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
-    while (1) {}
-
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

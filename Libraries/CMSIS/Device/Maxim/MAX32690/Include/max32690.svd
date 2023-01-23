@@ -867,7 +867,7 @@
   </peripheral>
 <!--ADC Inter-Integrated Circuit.-->
   <peripheral>
-   <name>AES_KEY</name>
+   <name>AESKEYS</name>
    <description>AES Key Registers.</description>
    <baseAddress>0x40005000</baseAddress>
    <addressBlock>
@@ -877,56 +877,32 @@
    </addressBlock>
    <registers>
     <register>
-     <name>AES_KEY0</name>
+     <name>KEY0</name>
      <description>AES Key 0.</description>
-     <addressOffset>0x00</addressOffset>
-     <size>32</size>
+     <addressOffset>0x000</addressOffset>
+     <size>128</size>
     </register>
     <register>
-     <name>AES_KEY1</name>
+     <name>KEY1</name>
      <description>AES Key 1.</description>
-     <addressOffset>0x04</addressOffset>
-     <size>32</size>
+     <addressOffset>0x010</addressOffset>
+     <size>128</size>
     </register>
     <register>
-     <name>AES_KEY2</name>
-     <description>AES Key 2.</description>
-     <addressOffset>0x08</addressOffset>
-     <size>32</size>
+     <name>PUF_KEY1</name>
+     <description>PUF Key 1.</description>
+     <addressOffset>0x020</addressOffset>
+     <size>256</size>
     </register>
     <register>
-     <name>AES_KEY3</name>
-     <description>AES Key 3.</description>
-     <addressOffset>0x0C</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY4</name>
-     <description>AES Key 4.</description>
-     <addressOffset>0x10</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY5</name>
-     <description>AES Key 5.</description>
-     <addressOffset>0x14</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY6</name>
-     <description>AES Key 6.</description>
-     <addressOffset>0x18</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY7</name>
-     <description>AES Key 7.</description>
-     <addressOffset>0x1C</addressOffset>
-     <size>32</size>
+     <name>PUF_KEY2</name>
+     <description>PUF Key 2.</description>
+     <addressOffset>0x040</addressOffset>
+     <size>256</size>
     </register>
    </registers>
   </peripheral>
-<!--AES_KEY AES Key Registers.-->
+<!--AESKEYS AES Key Registers.-->
   <peripheral>
    <name>CAN0</name>
    <description>Controller Area Network Registers</description>

@@ -201,10 +201,12 @@ int main(void)
 
     printf("\n# Passed: %u, # Failed: %u, Test %s\n", test_pass, test_fail,
            test_fail ? "FAIL!" : "Ok");
-    printf("Example Complete\n");
 
-    while (1) {
-        {
-        }
+    if (test_fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

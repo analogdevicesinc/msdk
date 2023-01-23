@@ -52,7 +52,6 @@
 #include "mxc_delay.h"
 #include "mxc_errors.h"
 #include "nvic_table.h"
-#include "i2c_regs.h"
 #include "i2c.h"
 #include "dma.h"
 #include "led.h"
@@ -69,8 +68,6 @@
 // connected to itself.
 #define I2C_SLAVE_ADDR (0x51)
 #define I2C_BYTES 255
-
-typedef enum { FAILED, PASSED } test_t;
 
 /***** Globals *****/
 static uint8_t Stxdata[I2C_BYTES];
@@ -193,10 +190,10 @@ int verifyData()
         }
     }
     if (fails > 0) {
-        return FAILED;
-    } else {
-        return PASSED;
+        return E_FAIL;
     }
+
+    return E_NO_ERROR;
 }
 
 // *****************************************************************************
@@ -215,14 +212,14 @@ int main()
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
         printf("Failed master\n");
-        return FAILED;
+        return error;
     }
 
     //Setup the I2CS
     error = MXC_I2C_Init(I2C_SLAVE, 0, I2C_SLAVE_ADDR);
     if (error != E_NO_ERROR) {
         printf("Failed slave\n");
-        return FAILED;
+        return error;
     }
 
     MXC_NVIC_SetVector(I2C2_IRQn, I2C2_IRQHandler);
@@ -256,7 +253,7 @@ int main()
 
     if ((error = MXC_I2C_SlaveTransactionAsync(I2C_SLAVE, slaveHandler)) != 0) {
         printf("Error Starting Slave Transaction %d\n", error);
-        return FAILED;
+        return error;
     }
 
 #ifdef MASTERDMA
@@ -269,13 +266,13 @@ int main()
 
     if ((error = MXC_I2C_MasterTransactionDMA(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
-        return FAILED;
+        return error;
     }
     while (DMA_FLAG == 0) {}
 #else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
-        return FAILED;
+        return error;
     }
 
     while (I2C_FLAG == 1) {}
@@ -287,10 +284,11 @@ int main()
     if (verifyData()) {
         printf("\n-->I2C Transaction Successful\n");
         LED_On(LED_GREEN);
-        return PASSED;
     } else {
         printf("\n-->I2C Transaction Failed\n");
         LED_On(LED_RED);
-        return FAILED;
+        return E_FAIL;
     }
+
+    return E_NO_ERROR;
 }

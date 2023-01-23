@@ -93,6 +93,8 @@
 #define E_OVERRUN -18
 /** Operations resulted in unexpected underrun */
 #define E_UNDERRUN -19
+/** The requested operation is failed */
+#define E_FAIL -255
 /**@} end of MXC_Error_Codes group */
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_MXC_ERRORS_H_

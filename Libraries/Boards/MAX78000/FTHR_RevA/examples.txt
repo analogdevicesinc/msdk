@@ -55,6 +55,7 @@ RTC
 RTC_Backup
 SDHC_FTHR
 SPI
+Temp_Monitor
 TFT_Demo
 TMR
 TRNG

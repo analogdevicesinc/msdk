@@ -37,7 +37,7 @@ P0.8 -> P0.15 and P0.9 -> P0.14
 
 -->Data verified
 
--->EXAMPLE SUCCEEDED
+-->Example Succeeded
 ```
 
 The green LED1 will illuminate for successful transaction.
