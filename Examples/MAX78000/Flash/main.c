@@ -228,7 +228,7 @@ int erase_magic()
     for (int i = 0; i < (MXC_FLASH_PAGE_SIZE >> 2); i++) {
         err = MXC_FLC_Write32(TEST_ADDRESS + 4 * i, buffer[i]);
         if (err) {
-            printf("Failed at address 0x%x with error code %i\n", (TEST_ADDRESS+4) * i, err);
+            printf("Failed at address 0x%x with error code %i\n", (TEST_ADDRESS + 4) * i, err);
             return err;
         }
     }
