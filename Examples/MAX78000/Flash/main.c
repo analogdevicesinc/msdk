@@ -92,12 +92,12 @@ void FLC0_IRQHandler(void)
 
     if (temp & MXC_F_FLC_INTR_DONE) {
         MXC_FLC0->intr &= ~MXC_F_FLC_INTR_DONE;
-        printf(" -> Interrupt! (Flash operation done)\n");
+        printf(" -> Interrupt! (Flash operation done)\n\n");
     }
 
     if (temp & MXC_F_FLC_INTR_AF) {
         MXC_FLC0->intr &= ~MXC_F_FLC_INTR_AF;
-        printf(" -> Interrupt! (Flash access failure)\n");
+        printf(" -> Interrupt! (Flash access failure)\n\n");
     }
 
     isr_flags = temp;
@@ -106,7 +106,6 @@ void FLC0_IRQHandler(void)
 void flash_init(void)
 {
     /*
-    The NVIC_SetRAM function below sets ISRs to execute out of RAM.
     All functions modifying flash contents are set to execute out of RAM
     with the (section(".flashprog")) attribute.  Therefore,
     
@@ -122,11 +121,11 @@ void flash_init(void)
     or
     2) ISRs should be set to execute out of RAM with NVIC_SetRAM()
 
-    It's preferable to use #1 but the Flash Controller can also 
-    generate interrupts of its own (as shown in this example), 
-    in which case use #2 for the FLC ISRs.
+    This example demonstrates method #1.  Any code modifying
+    flash is executed from a critical block, and the FLC
+    interrupts will trigger afterwards.
     */
-    // NVIC_SetRAM(); // Execute ISRs out of SRAM
+    // NVIC_SetRAM(); // Execute ISRs out of SRAM (for use with #2 above)
     MXC_NVIC_SetVector(FLC0_IRQn, FLC0_IRQHandler); // Assign ISR
     NVIC_EnableIRQ(FLC0_IRQn); // Enable interrupt
 
@@ -195,7 +194,7 @@ int validate_test_pattern()
         }
     }
 
-    printf("Sucessfully verified test pattern!\n");
+    printf("Sucessfully verified test pattern!\n\n");
 }
 
 int erase_magic() 
@@ -281,7 +280,8 @@ int main(void)
         printf("\nNow reset or power cycle the board...\n");
     } else { // Starting example after reset or power cycle
         printf("** Magic value 0x%x found at address 0x%x! **\n\n", MAGIC, TEST_ADDRESS);
-        printf("Flash modifications have survived a reset and/or power cycle.\n");
+        printf("(Flash modifications have survived a reset and/or power cycle.)\n\n");
+
         err = validate_test_pattern();
         if (err) return err;
         
