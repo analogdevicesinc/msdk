@@ -213,9 +213,6 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
 
         status = LlEndTest(&rpt);
         evtParamLen += sizeof(LlTestReport_t);
-  
-        
-        LL_TRACE_INFO2("Status %u ### Event Param Length %u", status, evtParamLen);
         break;
       
     }
