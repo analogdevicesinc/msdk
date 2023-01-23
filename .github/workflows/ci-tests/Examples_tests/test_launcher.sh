@@ -148,6 +148,27 @@ function flash_with_openocd() {
         openocd_dapLink_pid=$!
     fi
 }
+
+#****************************************************************************************************
+# params: target in lower case, DAP sn
+function reset_board_by_openocd() {
+    echo "function: ${FUNCNAME[0]} $@"
+
+    set +e
+    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg \
+             -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH \
+             -c "adapter serial $2" \
+             -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" \
+             -c "init; reset run" >/dev/null &
+
+    openocd_dapLink_pid=$!
+    sleep 0.5
+    if ps -p $openocd_dapLink_pid >/dev/null; then
+        kill -9 $openocd_dapLink_pid || true
+    fi
+    set -e
+}
+
 #****************************************************************************************************
 # Function accepts parameters: device, CMSIS-DAP serial #
 function flash_with_openocd_fast() {
@@ -455,6 +476,10 @@ cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
 printf "\r\n> Flashing BLE_dats on DUT $DUT_NAME_UPPER\r\n"
 #flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
 flash_with_openocd $DUT_NAME_LOWER $DUT_ID 2
+
+# Reset the two boards
+reset_board_by_openocd max32655 $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+reset_board_by_openocd max32655 $DUT_NAME_UPPER         $DUT_ID
 
 cd $EXAMPLE_TEST_PATH/tests
 # runs desired test but do not exit on failure, save result to list for printing later
