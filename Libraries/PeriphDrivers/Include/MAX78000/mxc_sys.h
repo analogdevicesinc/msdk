@@ -280,16 +280,12 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
  */
 uint32_t MXC_SYS_RiscVClockRate(void);
 
-typedef struct
-{
+typedef struct {
     int ie_status;
     int in_critical;
-} mxc_crit_state_t; 
+} mxc_crit_state_t;
 
-static mxc_crit_state_t _state = { 
-    .ie_status = 0xFFFFFFFF,
-    .in_critical = 0
-    };
+static mxc_crit_state_t _state = { .ie_status = 0xFFFFFFFF, .in_critical = 0 };
 
 static inline void _mxc_crit_get_state()
 {
@@ -323,7 +319,8 @@ static inline void _mxc_crit_get_state()
 static inline void MXC_SYS_Crit_Enter(void)
 {
     _mxc_crit_get_state();
-    if (_state.ie_status) __disable_irq();
+    if (_state.ie_status)
+        __disable_irq();
     _state.in_critical = 1;
 }
 
@@ -337,7 +334,7 @@ static inline void MXC_SYS_Crit_Exit(void)
         __enable_irq();
     }
     _state.in_critical = 0;
-    _mxc_crit_get_state(); 
+    _mxc_crit_get_state();
     /*
         ^ Reset the state again to prevent edge case
         where interrupts get disabled, then Crit_Exit() gets
@@ -360,11 +357,13 @@ static inline int MXC_SYS_In_Crit_Section(void)
  * @brief Macro for wrapping a section of code to make it critical.  Note: this macro
  * does not support nesting.
  */
+// clang-format off
 #define MXC_CRITICAL(code) { \
     MXC_SYS_Crit_Enter();\
     code;\
     MXC_SYS_Crit_Exit();\
 }
+// clang-format on
 
 #ifdef __cplusplus
 }
