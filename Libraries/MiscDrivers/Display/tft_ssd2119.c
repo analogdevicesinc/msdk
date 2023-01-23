@@ -504,7 +504,7 @@ static void tft_spi_init(void)
     int numSlaves = 2;
     int ssPol = 0;
 
-#if defined(OLD_SPI_API) // Defined in spi.h file if the driver if first version
+#if defined(OLD_SPI_API_FUNCTIONS) // Defined in spi.h file if the driver if first version
     MXC_SPI_Init((mxc_spi_regs_t *)spi, master, quadMode, numSlaves, ssPol, tft_spi_freq);
 
     // Todo:
