@@ -103,7 +103,7 @@ void FLC0_IRQHandler(void)
     isr_flags = temp;
 }
 
-void flash_init(void)
+void setup_irqs(void)
 {
     /*
     All functions modifying flash contents are set to execute out of RAM
@@ -125,6 +125,7 @@ void flash_init(void)
     flash is executed from a critical block, and the FLC
     interrupts will trigger afterwards.
     */
+
     // NVIC_SetRAM(); // Execute ISRs out of SRAM (for use with #2 above)
     MXC_NVIC_SetVector(FLC0_IRQn, FLC0_IRQHandler); // Assign ISR
     NVIC_EnableIRQ(FLC0_IRQn); // Enable interrupt
@@ -143,12 +144,12 @@ int write_test_pattern()
     // A flash address must be in the erased state before writing to it, because the
     // flash controller can only write a 1 -> 0.
     // See the microcontroller's User Guide for more details.
+    printf("Erasing page 64 of flash (addr 0x%x)...\n", TEST_ADDRESS);
     err = MXC_FLC_PageErase(TEST_ADDRESS);
     if (err) {
         printf("Failed to erase page 64 of flash (addr 0x%x) with error code %i\n", TEST_ADDRESS, err);
         return err;
     }
-    printf("Sucessfully erased page 64 of flash (addr 0x%x)\n", TEST_ADDRESS);
 
     printf("Writing magic value 0x%x to address 0x%x...\n", MAGIC, TEST_ADDRESS);
     err = MXC_FLC_Write32(TEST_ADDRESS, MAGIC);
@@ -156,7 +157,6 @@ int write_test_pattern()
         printf("Failed to write magic value to 0x%x with error code %i!\n", TEST_ADDRESS, err);
         return err;
     }
-    printf("Done!\n");
 
     printf("Writing test pattern...\n");
     for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
@@ -195,6 +195,7 @@ int validate_test_pattern()
     }
 
     printf("Sucessfully verified test pattern!\n\n");
+    return err;
 }
 
 int erase_magic() 
@@ -209,7 +210,6 @@ int erase_magic()
     int err;
     uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = { 0xFFFFFFFF }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
 
-    printf("Erasing magic...\n");
     printf("Buffering page...\n");
     memcpy(buffer, (uint32_t *)TEST_ADDRESS, MXC_FLASH_PAGE_SIZE);
 
@@ -220,9 +220,11 @@ int erase_magic()
         return err;
     }
 
+    printf("Erasing magic in buffer...\n");
+    // Calculate buffer index based on flash address
     unsigned int target_address = TEST_ADDRESS;
-    unsigned int buffer_index = (target_address - TEST_ADDRESS) >> 2;
-    buffer[buffer_index] = 0xABCD1234;
+    unsigned int buffer_index = (target_address - TEST_ADDRESS) >> 2; // Divide by 4 (4 bytes per 32-bit word)
+    buffer[buffer_index] = 0xABCD1234; // Erase magic value
 
     printf("Re-writing from buffer...\n");
     for (int i = 0; i < (MXC_FLASH_PAGE_SIZE >> 2); i++) {
@@ -240,8 +242,7 @@ int erase_magic()
 
 int main(void)
 {
-    int fail = 0;
-    int err, i;
+    int err = 0;
 
     printf("\n\n***** Flash Control Example *****\n");
     printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
@@ -256,8 +257,7 @@ int main(void)
     }
     LED_Off(LED_RED);
 
-    // Initialize the Flash (see notes in 'flash_init' definition)
-    flash_init();
+    setup_irqs(); // See notes in function definition
 
     /*
     Disable the instruction cache controller (ICC).
@@ -270,7 +270,7 @@ int main(void)
     uint32_t magic = 0;
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
 
-    if (magic != MAGIC) {  // Starting example for the first time.
+    if (magic != MAGIC) { // Starting example for the first time.
         MXC_CRITICAL(
             printf("---(Critical)---\n");
             err = write_test_pattern();
@@ -294,6 +294,8 @@ int main(void)
 
         err = validate_test_pattern();
         if (err) return err;
+
+        printf("Flash example successfully completed.\n");
     }
 
     return E_SUCCESS;
