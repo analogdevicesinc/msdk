@@ -54,6 +54,7 @@ Pulse_Train
 RTC
 RTC_Backup
 SPI
+Temp_Monitor
 TFT_Demo
 TMR
 TRNG

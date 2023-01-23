@@ -51,6 +51,6 @@ Data verified.
 Demonstrating 3DES CBC (cipher feedback) decryption...
 Data verified.
 
-Example Complete.
+Example Succeeded.
 
 ```

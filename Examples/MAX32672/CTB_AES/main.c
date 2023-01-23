@@ -114,35 +114,42 @@ int AES_Test(mxc_ctb_cipher_t aesKey)
     if (memcmp(inputData, (void *)decryptedData, MXC_AES_DATA_LENGTH) == 0) {
         return E_NO_ERROR;
     }
-    return 1;
+    return E_INVALID;
 }
 
 // *****************************************************************************
 int main(void)
 {
     printf("\n***** AES Example *****\n");
-
     int fail = 0;
+    int ret = 0;
     // Initialize CTB and TRNG
     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER | MXC_CTB_FEATURE_DMA);
     MXC_TRNG_Init();
 
     // Run AES Test with 128-Bit encryption key
     printf("AES 128-bit Key Test");
-    fail = AES_Test(MXC_CTB_CIPHER_AES128);
-    printf(" --> %s\n", ((fail == E_NO_ERROR) ? "PASS" : "FAIL"));
+    ret = AES_Test(MXC_CTB_CIPHER_AES128);
+    fail += ret;
+    printf(" --> %s\n", ((ret == E_NO_ERROR) ? "PASS" : "FAIL"));
 
     // Run AES Test with 192-Bit encryption key
     printf("AES 192-bit Key Test");
-    fail = AES_Test(MXC_CTB_CIPHER_AES192);
-    printf(" --> %s\n", ((fail == E_NO_ERROR) ? "PASS" : "FAIL"));
+    ret = AES_Test(MXC_CTB_CIPHER_AES192);
+    fail += ret;
+    printf(" --> %s\n", ((ret == E_NO_ERROR) ? "PASS" : "FAIL"));
 
     // Run AES Test with 256-Bit encryption key
     printf("AES 256-bit Key Test");
-    fail = AES_Test(MXC_CTB_CIPHER_AES256);
-    printf(" --> %s\n", ((fail == E_NO_ERROR) ? "PASS" : "FAIL"));
+    ret = AES_Test(MXC_CTB_CIPHER_AES256);
+    fail += ret;
+    printf(" --> %s\n", ((ret == E_NO_ERROR) ? "PASS" : "FAIL"));
 
-    printf("\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
 
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

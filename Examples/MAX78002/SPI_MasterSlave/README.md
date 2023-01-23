@@ -30,5 +30,5 @@ green LED will illuminate, otherwise the red LED will illuminate.
 
 Press PB1 to begin transaction.
 
-EXAMPLE SUCCEEDED!
+Example Succeeded
 ```

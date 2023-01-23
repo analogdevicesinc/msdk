@@ -22,6 +22,7 @@ Tools/MSYS2
 *.d
 /**/make.log
 /**/.idea/
+/**/venv/
 session.txt.log
 flash.log
 Libraries/NFC

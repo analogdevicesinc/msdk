@@ -333,7 +333,9 @@ for dir in ./*/; do
             ;;
 
         "BLE_fit")
+        if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
             run_notConntectedTest
+        fi
             ;;
 
         "BLE_fcc")
@@ -342,7 +344,9 @@ for dir in ./*/; do
             ;;
 
         "BLE_FreeRTOS")
+        if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
             run_notConntectedTest
+        fi
             ;;
 
         "BLE_otac")

@@ -155,7 +155,8 @@ int main(void)
         printf("\nEXAMPLE SUCCEEDED\n");
     } else {
         printf("\nEXAMPLE FAILED\n");
+        return E_FAIL;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

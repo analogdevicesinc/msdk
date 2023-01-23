@@ -57,7 +57,6 @@
 #define SEC_REMAIN(sec) (sec % 60)
 
 /***** Globals *****/
-int fail = 0;
 
 /***** Functions *****/
 // These are set in the linkerfile and give the starting and ending address of xip_section
@@ -147,6 +146,7 @@ int stop_timer(int test_num)
 /* ************************************************************************** */
 int main(void)
 {
+    int fail = 0;
     int err;
     uint32_t id;
     void (*func)(void);
@@ -226,11 +226,11 @@ int main(void)
     test2_et = stop_timer(1);
 
     // Compare execution times
-    if (test1_et < test2_et) {
-        printf("Example Succeeded\n\n");
-    } else {
+    if (test1_et >= test2_et) {
         printf("Example Failed\n\n");
+        return E_FAIL;
     }
 
-    return 0;
+    printf("Example Succeeded\n\n");
+    return E_NO_ERROR;
 }

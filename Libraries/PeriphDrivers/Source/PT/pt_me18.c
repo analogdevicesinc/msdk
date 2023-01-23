@@ -151,24 +151,24 @@ void MXC_PT_SetPattern(unsigned pts, uint32_t pattern)
     MXC_PT_RevA_SetPattern(pts, pattern);
 }
 
-void MXC_PT_EnableInt(uint32_t pts)
+void MXC_PT_EnableStopInt(uint32_t pts)
 {
-    MXC_PT_RevA_EnableInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+    MXC_PT_RevA_EnableStopInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
 }
 
-void MXC_PT_DisableInt(uint32_t pts)
+void MXC_PT_DisableStopInt(uint32_t pts)
 {
-    MXC_PT_RevA_DisableInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+    MXC_PT_RevA_DisableStopInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
 }
 
-uint32_t MXC_PT_GetFlags(void)
+uint32_t MXC_PT_GetStopFlags(void)
 {
-    return MXC_PT_RevA_GetFlags((mxc_ptg_reva_regs_t *)MXC_PTG);
+    return MXC_PT_RevA_GetStopFlags((mxc_ptg_reva_regs_t *)MXC_PTG);
 }
 
-void MXC_PT_ClearFlags(uint32_t flags)
+void MXC_PT_ClearStopFlags(uint32_t flags)
 {
-    MXC_PT_RevA_ClearFlags((mxc_ptg_reva_regs_t *)MXC_PTG, flags);
+    MXC_PT_RevA_ClearStopFlags((mxc_ptg_reva_regs_t *)MXC_PTG, flags);
 }
 
 void MXC_PT_EnableRestart(unsigned start, unsigned stop, uint8_t restartIndex)
@@ -184,4 +184,24 @@ void MXC_PT_DisableRestart(unsigned channel, uint8_t restartIndex)
 void MXC_PT_Resync(uint32_t pts)
 {
     MXC_PT_RevA_Resync((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+}
+
+void MXC_PT_EnableReadyInt(uint32_t pts)
+{
+    MXC_PT_RevA_EnableReadyInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+}
+
+void MXC_PT_DisableReadyInt(uint32_t pts)
+{
+    MXC_PT_RevA_DisableReadyInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+}
+
+uint32_t MXC_PT_GetReadyFlags(void)
+{
+    return MXC_PT_RevA_GetReadyFlags((mxc_ptg_reva_regs_t *)MXC_PTG);
+}
+
+void MXC_PT_ClearReadyFlags(uint32_t flags)
+{
+    MXC_PT_RevA_ClearReadyFlags((mxc_ptg_reva_regs_t *)MXC_PTG, flags);
 }

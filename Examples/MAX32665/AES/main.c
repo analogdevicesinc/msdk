@@ -94,11 +94,11 @@ int AES_check(char *calculated, char *expected, int len)
     }
     if (fail > 0) {
         printf("Fail.\n");
-    } else {
-        printf("Pass.\n");
-        return 0;
+        return -1;
     }
-    return -1;
+
+    printf("Pass.\n");
+    return 0;
 }
 
 int AES128_ECB_enc(void)
@@ -272,11 +272,11 @@ int main(void)
     fail += AES256_ECB_enc();
     fail += AES256_ECB_dec();
 
-    printf("\n");
-    if (fail == 0) {
-        printf("Example Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
-    while (1) {}
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

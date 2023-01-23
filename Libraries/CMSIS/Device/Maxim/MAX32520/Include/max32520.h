@@ -253,6 +253,11 @@ typedef enum {
 #define MXC_SMON ((mxc_smon_regs_t *)MXC_BASE_SMON)
 
 /******************************************************************************/
+/*                                                                   AES Keys */
+#define MXC_BASE_AESKEYS ((uint32_t)0x40005000UL)
+#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
+
+/******************************************************************************/
 /*                                                            Power Sequencer */
 #define MXC_BASE_PWRSEQ ((uint32_t)0x40006800UL)
 #define MXC_PWRSEQ ((mxc_pwrseq_regs_t *)MXC_BASE_PWRSEQ)

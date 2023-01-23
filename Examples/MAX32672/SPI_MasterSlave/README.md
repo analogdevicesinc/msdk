@@ -27,5 +27,5 @@ green LED will illuminate, otherwise the red LED will illuminate.
 
 Press SW3 to begin transaction.
 
-EXAMPLE SUCCEEDED!
+Example Succeeded
 ```
