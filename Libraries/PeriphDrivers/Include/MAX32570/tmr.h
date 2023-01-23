@@ -3,15 +3,17 @@
  * @brief   Timer (TMR) function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,7 +36,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_TMR_H_
@@ -61,43 +63,43 @@ extern "C" {
  * @brief      Timer prescaler values
  */
 typedef enum {
-    TMR_PRES_1 = MXC_S_TMR_CN_PRES_DIV1, ///< Divide input clock by 1
-    TMR_PRES_2 = MXC_S_TMR_CN_PRES_DIV2, ///< Divide input clock by 2
-    TMR_PRES_4 = MXC_S_TMR_CN_PRES_DIV4, ///< Divide input clock by 4
-    TMR_PRES_8 = MXC_S_TMR_CN_PRES_DIV8, ///< Divide input clock by 8
-    TMR_PRES_16 = MXC_S_TMR_CN_PRES_DIV16, ///< Divide input clock by 16
-    TMR_PRES_32 = MXC_S_TMR_CN_PRES_DIV32, ///< Divide input clock by 32
-    TMR_PRES_64 = MXC_S_TMR_CN_PRES_DIV64, ///< Divide input clock by 64
-    TMR_PRES_128 = MXC_S_TMR_CN_PRES_DIV128, ///< Divide input clock by 128
-    TMR_PRES_256 = MXC_F_TMR_CN_PRES3 | MXC_S_TMR_CN_PRES_DIV1, ///< Divide input clock by 256
-    TMR_PRES_512 = MXC_F_TMR_CN_PRES3 | MXC_S_TMR_CN_PRES_DIV4, ///< Divide input clock by 512
-    TMR_PRES_1024 = MXC_F_TMR_CN_PRES3 | MXC_S_TMR_CN_PRES_DIV8, ///< Divide input clock by 1024
-    TMR_PRES_2048 = MXC_F_TMR_CN_PRES3 | MXC_S_TMR_CN_PRES_DIV16, ///< Divide input clock by 2048
-    TMR_PRES_4096 = MXC_F_TMR_CN_PRES3 | MXC_S_TMR_CN_PRES_DIV32 ///< Divide input clock by 4096
+    MXC_TMR_PRES_1 = MXC_S_TMR_CTRL_CLKDIV_DIV1, ///< Divide input clock by 1
+    MXC_TMR_PRES_2 = MXC_S_TMR_CTRL_CLKDIV_DIV2, ///< Divide input clock by 2
+    MXC_TMR_PRES_4 = MXC_S_TMR_CTRL_CLKDIV_DIV4, ///< Divide input clock by 4
+    MXC_TMR_PRES_8 = MXC_S_TMR_CTRL_CLKDIV_DIV8, ///< Divide input clock by 8
+    MXC_TMR_PRES_16 = MXC_S_TMR_CTRL_CLKDIV_DIV16, ///< Divide input clock by 16
+    MXC_TMR_PRES_32 = MXC_S_TMR_CTRL_CLKDIV_DIV32, ///< Divide input clock by 32
+    MXC_TMR_PRES_64 = MXC_S_TMR_CTRL_CLKDIV_DIV64, ///< Divide input clock by 64
+    MXC_TMR_PRES_128 = MXC_S_TMR_CTRL_CLKDIV_DIV128, ///< Divide input clock by 128
+    MXC_TMR_PRES_256 = MXC_F_TMR_CTRL_CLKDIV3 | MXC_S_TMR_CTRL_CLKDIV_DIV1, ///< Divide input clock by 256
+    MXC_TMR_PRES_512 = MXC_F_TMR_CTRL_CLKDIV3 | MXC_S_TMR_CTRL_CLKDIV_DIV4, ///< Divide input clock by 512
+    MXC_TMR_PRES_1024 = MXC_F_TMR_CTRL_CLKDIV3 | MXC_S_TMR_CTRL_CLKDIV_DIV8, ///< Divide input clock by 1024
+    MXC_TMR_PRES_2048 = MXC_F_TMR_CTRL_CLKDIV3 | MXC_S_TMR_CTRL_CLKDIV_DIV16, ///< Divide input clock by 2048
+    MXC_TMR_PRES_4096 = MXC_F_TMR_CTRL_CLKDIV3 | MXC_S_TMR_CTRL_CLKDIV_DIV32 ///< Divide input clock by 4096
 } mxc_tmr_pres_t;
 
 /**
  * @brief      Timer modes
  */
 typedef enum {
-    TMR_MODE_ONESHOT = MXC_V_TMR_CN_TMODE_ONESHOT, ///< Timer Mode ONESHOT
-    TMR_MODE_CONTINUOUS = MXC_V_TMR_CN_TMODE_CONTINUOUS, ///< Timer Mode CONTINUOUS
-    TMR_MODE_COUNTER = MXC_V_TMR_CN_TMODE_COUNTER, ///< Timer Mode COUNTER
-    TMR_MODE_PWM = MXC_V_TMR_CN_TMODE_PWM, ///< Timer Mode PWM
-    TMR_MODE_CAPTURE = MXC_V_TMR_CN_TMODE_CAPTURE, ///< Timer Mode CAPTURE
-    TMR_MODE_COMPARE = MXC_V_TMR_CN_TMODE_COMPARE, ///< Timer Mode COMPARE
-    TMR_MODE_GATED = MXC_V_TMR_CN_TMODE_GATED, ///< Timer Mode GATED
-    TMR_MODE_CAPTURE_COMPARE = MXC_V_TMR_CN_TMODE_CAPTURECOMPARE ///< Timer Mode CAPTURECOMPARE
+    MXC_TMR_MODE_ONESHOT = MXC_V_TMR_CTRL_MODE_ONESHOT, ///< Timer Mode ONESHOT
+    MXC_TMR_MODE_CONTINUOUS = MXC_V_TMR_CTRL_MODE_CONTINUOUS, ///< Timer Mode CONTINUOUS
+    MXC_TMR_MODE_COUNTER = MXC_V_TMR_CTRL_MODE_COUNTER, ///< Timer Mode COUNTER
+    MXC_TMR_MODE_PWM = MXC_V_TMR_CTRL_MODE_PWM, ///< Timer Mode PWM
+    MXC_TMR_MODE_CAPTURE = MXC_V_TMR_CTRL_MODE_CAPTURE, ///< Timer Mode CAPTURE
+    MXC_TMR_MODE_COMPARE = MXC_V_TMR_CTRL_MODE_COMPARE, ///< Timer Mode COMPARE
+    MXC_TMR_MODE_GATED = MXC_V_TMR_CTRL_MODE_GATED, ///< Timer Mode GATED
+    MXC_TMR_MODE_CAPTURE_COMPARE = MXC_V_TMR_CTRL_MODE_CAPTURECOMPARE ///< Timer Mode CAPTURECOMPARE
 } mxc_tmr_mode_t;
 
 /**
  * @brief      Timer units of time enumeration
  */
 typedef enum {
-    TMR_UNIT_NANOSEC = 0, ///< Nanosecond Unit Indicator
-    TMR_UNIT_MICROSEC, ///< Microsecond Unit Indicator
-    TMR_UNIT_MILLISEC, ///< Millisecond Unit Indicator
-    TMR_UNIT_SEC, ///< Second Unit Indicator
+    MXC_TMR_UNIT_NANOSEC = 0, ///< Nanosecond Unit Indicator
+    MXC_TMR_UNIT_MICROSEC, ///< Microsecond Unit Indicator
+    MXC_TMR_UNIT_MILLISEC, ///< Millisecond Unit Indicator
+    MXC_TMR_UNIT_SEC, ///< Second Unit Indicator
 } mxc_tmr_unit_t;
 
 /**

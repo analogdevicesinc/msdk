@@ -636,8 +636,11 @@ typedef struct {
 #define MXC_F_GCR_MEMCTRL_USBLS_EN_POS                 28 /**< MEMCTRL_USBLS_EN Position */
 #define MXC_F_GCR_MEMCTRL_USBLS_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_USBLS_EN_POS)) /**< MEMCTRL_USBLS_EN Mask */
 
-#define MXC_F_GCR_MEMCTRL_ROMLS_EN_POS                 29 /**< MEMCTRL_ROMLS_EN Position */
-#define MXC_F_GCR_MEMCTRL_ROMLS_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ROMLS_EN_POS)) /**< MEMCTRL_ROMLS_EN Mask */
+#define MXC_F_GCR_MEMCTRL_ROM0LS_EN_POS                29 /**< MEMCTRL_ROM0LS_EN Position */
+#define MXC_F_GCR_MEMCTRL_ROM0LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ROM0LS_EN_POS)) /**< MEMCTRL_ROM0LS_EN Mask */
+
+#define MXC_F_GCR_MEMCTRL_ROM1LS_EN_POS                30 /**< MEMCTRL_ROM1LS_EN Position */
+#define MXC_F_GCR_MEMCTRL_ROM1LS_EN                    ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_ROM1LS_EN_POS)) /**< MEMCTRL_ROM1LS_EN Mask */
 
 #define MXC_F_GCR_MEMCTRL_MAALS_EN_POS                 31 /**< MEMCTRL_MAALS_EN Position */
 #define MXC_F_GCR_MEMCTRL_MAALS_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_MEMCTRL_MAALS_EN_POS)) /**< MEMCTRL_MAALS_EN Mask */
@@ -794,8 +797,8 @@ typedef struct {
 #define MXC_F_GCR_RST1_EMAC_POS                        26 /**< RST1_EMAC Position */
 #define MXC_F_GCR_RST1_EMAC                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_EMAC_POS)) /**< RST1_EMAC Mask */
 
-#define MXC_F_GCR_RST1_PCIF_POS                        27 /**< RST1_PCIF Position */
-#define MXC_F_GCR_RST1_PCIF                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_PCIF_POS)) /**< RST1_PCIF Mask */
+#define MXC_F_GCR_RST1_CAMERAIF_POS                    27 /**< RST1_CAMERAIF Position */
+#define MXC_F_GCR_RST1_CAMERAIF                        ((uint32_t)(0x1UL << MXC_F_GCR_RST1_CAMERAIF_POS)) /**< RST1_CAMERAIF Mask */
 
 #define MXC_F_GCR_RST1_HTMR0_POS                       28 /**< RST1_HTMR0 Position */
 #define MXC_F_GCR_RST1_HTMR0                           ((uint32_t)(0x1UL << MXC_F_GCR_RST1_HTMR0_POS)) /**< RST1_HTMR0 Mask */
@@ -829,11 +832,11 @@ typedef struct {
 #define MXC_F_GCR_PCLKDIS1_WDT1_POS                    5 /**< PCLKDIS1_WDT1 Position */
 #define MXC_F_GCR_PCLKDIS1_WDT1                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_WDT1_POS)) /**< PCLKDIS1_WDT1 Mask */
 
-#define MXC_F_GCR_PCLKDIS1_SCACHE_POS                  7 /**< PCLKDIS1_SCACHE Position */
-#define MXC_F_GCR_PCLKDIS1_SCACHE                      ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SCACHE_POS)) /**< PCLKDIS1_SCACHE Mask */
+#define MXC_F_GCR_PCLKDIS1_SRCC_POS                    7 /**< PCLKDIS1_SRCC Position */
+#define MXC_F_GCR_PCLKDIS1_SRCC                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SRCC_POS)) /**< PCLKDIS1_SRCC Mask */
 
-#define MXC_F_GCR_PCLKDIS1_SDMA0_POS                   8 /**< PCLKDIS1_SDMA0 Position */
-#define MXC_F_GCR_PCLKDIS1_SDMA0                       ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SDMA0_POS)) /**< PCLKDIS1_SDMA0 Mask */
+#define MXC_F_GCR_PCLKDIS1_CAMERAIF_POS                8 /**< PCLKDIS1_CAMERAIF Position */
+#define MXC_F_GCR_PCLKDIS1_CAMERAIF                    ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_CAMERAIF_POS)) /**< PCLKDIS1_CAMERAIF Mask */
 
 #define MXC_F_GCR_PCLKDIS1_SEMA_POS                    9 /**< PCLKDIS1_SEMA Position */
 #define MXC_F_GCR_PCLKDIS1_SEMA                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SEMA_POS)) /**< PCLKDIS1_SEMA Mask */
@@ -846,6 +849,9 @@ typedef struct {
 
 #define MXC_F_GCR_PCLKDIS1_SPI3_POS                    14 /**< PCLKDIS1_SPI3 Position */
 #define MXC_F_GCR_PCLKDIS1_SPI3                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SPI3_POS)) /**< PCLKDIS1_SPI3 Mask */
+
+#define MXC_F_GCR_PCLKDIS1_I2S_POS                     15 /**< PCLKDIS1_I2S Position */
+#define MXC_F_GCR_PCLKDIS1_I2S                         ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_I2S_POS)) /**< PCLKDIS1_I2S Mask */
 
 #define MXC_F_GCR_PCLKDIS1_SPIXIPD_POS                 20 /**< PCLKDIS1_SPIXIPD Position */
 #define MXC_F_GCR_PCLKDIS1_SPIXIPD                     ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SPIXIPD_POS)) /**< PCLKDIS1_SPIXIPD Mask */

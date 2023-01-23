@@ -45,9 +45,8 @@
 
 int MXC_SPIXF_Init(uint32_t cmdval, uint32_t frequency)
 {
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIP); // SPIX
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXFC); // SPIXFC
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ICACHEXIP); // XIP ICACHE
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIP);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPIXIPM);
     MXC_GPIO_Config(&gpio_cfg_spixf);
 
     return MXC_SPIXF_RevA_Init((mxc_spixfc_reva_regs_t *)MXC_SPIXFC,
@@ -57,15 +56,14 @@ int MXC_SPIXF_Init(uint32_t cmdval, uint32_t frequency)
 void MXC_SPIXF_Shutdown(void)
 {
     MXC_SPIXF_RevA_Shutdown((mxc_spixfc_reva_regs_t *)MXC_SPIXFC);
-    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXFC); // SPIXFC
-    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIP); // SPIX
-    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_ICACHEXIP); // XIP ICACHE
+    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIP);
+    MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPIXIPM);
 }
 
 void MXC_SPIXF_IOCtrl(mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,
-                      mxc_spixf_pup_t pupdctrl)
+                      mxc_spixf_pup_t padctrl)
 {
-    MXC_SPIXF_RevA_IOCtrl((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, sclk_ds, ss_ds, sdio_ds, pupdctrl);
+    MXC_SPIXF_RevA_IOCtrl((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, sclk_ds, ss_ds, sdio_ds, padctrl);
 }
 
 int MXC_SPIXF_Clocks(uint32_t len, uint8_t deass)
@@ -556,14 +554,14 @@ uint8_t MXC_SPIXF_GetIoctrlSSDrive(void)
     return MXC_SPIXF_RevA_GetIoctrlSSDrive((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
-void MXC_SPIXF_SetPuPdCtrl(mxc_spixf_pup_t pupd)
+void MXC_SPIXF_SetPadCtrl(mxc_spixf_padctrl_t pad)
 {
-    MXC_SPIXF_RevA_SetPuPdCtrl((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, pupd);
+    MXC_SPIXF_RevA_SetPadCtrl((mxc_spixfm_reva_regs_t *)MXC_SPIXFM, pad);
 }
 
-uint8_t MXC_SPIXF_GetPuPdCtrl(void)
+uint8_t MXC_SPIXF_GetPadCtrl(void)
 {
-    return MXC_SPIXF_RevA_GetPuPdCtrl((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
+    return MXC_SPIXF_RevA_GetPadCtrl((mxc_spixfm_reva_regs_t *)MXC_SPIXFM);
 }
 
 int MXC_SPIXF_SetBusIdle(unsigned int busidle)

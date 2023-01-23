@@ -65,7 +65,7 @@ void MXC_SRCC_Disable(void)
 
 void MXC_SRCC_Flush(void)
 {
-    MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_ICC0_FLUSH;
+    MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_ICC_FLUSH;
 }
 void MXC_SRCC_WriteAllocateEnable(void)
 {

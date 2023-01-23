@@ -698,597 +698,6 @@
   </peripheral>
 <!--CAMERAIF Parallel Camera Interface.-->
   <peripheral>
-   <name>CLCD</name>
-   <description>Color LCD Controller</description>
-   <baseAddress>0x40031000</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x1000</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <registers>
-    <register>
-     <name>CLKCTRL</name>
-     <description>LCD Clock Control Register</description>
-     <addressOffset>0x000</addressOffset>
-     <fields>
-      <field>
-       <name>CLKDIV</name>
-       <description>Clock divsor</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>ACB</name>
-       <description>ACB</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>DPOL</name>
-       <description>D Polarity</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>ACTIVEHI</name>
-         <description>Active Hi</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ACTIVELO</name>
-         <description>Active Low</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VPOL</name>
-       <description>V Polarity</description>
-       <bitOffset>17</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>ACTIVEHI</name>
-         <description>Active Hi</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ACTIVELO</name>
-         <description>Active Low</description>
-         <value>0</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>HPOL</name>
-       <description>H Polarity</description>
-       <bitOffset>18</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>ACTIVEHI</name>
-         <description>Active Hi</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ACTIVELO</name>
-         <description>Active Low</description>
-         <value>0</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>EDGE</name>
-       <description>Edge Selection</description>
-       <bitOffset>19</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>RISEEDGE</name>
-         <description>Rising edge</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>FALLEDGE</name>
-         <description>Falling Edge</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>PASCLK</name>
-       <description>Clock Active on Data</description>
-       <bitOffset>20</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>ALWAYSACTIVE</name>
-         <description>Always Active</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ACTIVEONDATA</name>
-         <description>ACTIVE ON DATA</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>VTIM_0</name>
-     <description>LCD Vertical Timing 0 Register</description>
-     <addressOffset>0x004</addressOffset>
-     <fields>
-      <field>
-       <name>VLINES</name>
-       <description>V Lines</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>VBACKPORCH</name>
-       <description>V BACK PORCH</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>VTIM_1</name>
-     <description>LCD Vertical Timing 1 Register</description>
-     <addressOffset>0x008</addressOffset>
-     <fields>
-      <field>
-       <name>VSYNCWIDTH</name>
-       <description>V Sync Width</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>VFRONTPORCH</name>
-       <description>V Front PORCH</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>HTIM</name>
-     <description>LCD Horizontal Timing Register.</description>
-     <addressOffset>0x00C</addressOffset>
-     <fields>
-      <field>
-       <name>HSYNCWIDTH</name>
-       <description>Horizontal Sync Width in CLCD Clocks from 1 to 256 HSync Width = HSYNCWIDTH+1 Clocks</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>HFRONTPORCH</name>
-       <description>Horizontal Front Porch size in lines from 1 to 256</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>HSIZE</name>
-       <description>Horizontal Front Porch Size in Pixels = (HSIZE + 1) *16</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>HBACKPORCH</name>
-       <description>Horizontal Back Porch size in CLCD Clocks from 1 to 256 -&gt; HBP= (HBACKPORCH+1) </description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>CTRL</name>
-     <description>LCD Control Register</description>
-     <addressOffset>0x010</addressOffset>
-     <fields>
-      <field>
-       <name>EN</name>
-       <description>LCD Enable</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>DISABLE</name>
-         <description>Disable</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ENABLE</name>
-         <description>Enable</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VISEL</name>
-       <description>VI Select</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>2</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>ONVERTSYNC</name>
-         <description>On Vertical Sync</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ONVERTBACKPORCH</name>
-         <description>On Vertical Back Porch</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ONACTIVEVIDEO</name>
-         <description>On Active Video</description>
-         <value>2</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ONVERTFRONTPORCH</name>
-         <description>On Vertical Front Porch</description>
-         <value>3</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>DISPTYPE</name>
-       <description>Display Type</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>4</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>STNCOLOR8BIT</name>
-         <description>STN Color 8 bit</description>
-         <value>4</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>CLCD</name>
-         <description>CLCD</description>
-         <value>8</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>BPP</name>
-       <description>BPP</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>3</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>BPP1</name>
-         <description>BPP 1</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>BPP2</name>
-         <description>BPP 2</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>BPP4</name>
-         <description>BPP 4</description>
-         <value>2</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>BPP8</name>
-         <description>BPP 8</description>
-         <value>3</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>BPP16</name>
-         <description>BPP 16</description>
-         <value>4</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>BPP24</name>
-         <description>BPP 24</description>
-         <value>5</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>MODE565</name>
-       <description>MODE565</description>
-       <bitOffset>11</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>BGR556</name>
-         <description>MODE 556</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>RGB565</name>
-         <description>MODE 565</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>EMODE</name>
-       <description>EMODE</description>
-       <bitOffset>12</bitOffset>
-       <bitWidth>2</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>LLBP</name>
-         <description>LLBP</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>BBBP</name>
-         <description>BBBP</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>LBBP</name>
-         <description>LBBP</description>
-         <value>2</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>RFU</name>
-         <description>RFU</description>
-         <value>3</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>C24</name>
-       <description>C24</description>
-       <bitOffset>15</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>BURST</name>
-       <description>BURST</description>
-       <bitOffset>19</bitOffset>
-       <bitWidth>2</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>WORDS4</name>
-         <description>WORDS4</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>WORDS8</name>
-         <description>WORDS8</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>LPOL</name>
-       <description>LPOL</description>
-       <bitOffset>21</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>ACTIVEHI</name>
-         <description>ACTIVE HIGH</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>ACTIVELO</name>
-         <description>ACTIVE LOW</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>PEN</name>
-       <description>PEN</description>
-       <bitOffset>22</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>FR</name>
-     <description>FRBUF</description>
-     <addressOffset>0x18</addressOffset>
-    </register>
-    <register>
-     <name>INTEN</name>
-     <description>LCD Interrupt Enable Register.</description>
-     <addressOffset>0x020</addressOffset>
-     <fields>
-      <field>
-       <name>UFLO</name>
-       <description>Under FLow Interupt Enable</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>ADRRDY</name>
-       <description>Address Ready Interupt Enable</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>VCI</name>
-       <description>VCI Interupt Enable</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>BERR</name>
-       <description>BERR Interupt Enable</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INTFL</name>
-     <description>LCD Interrupt Status Register.</description>
-     <addressOffset>0x024</addressOffset>
-     <modifiedWriteValues>oneToClear</modifiedWriteValues>
-     <fields>
-      <field>
-       <name>UFLO</name>
-       <description>Under FLow Interupt Status</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Inactive</name>
-         <description>No interrupt pending</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Pending</name>
-         <description>Interrupt pending</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>Clear</name>
-         <description>Clears the interrupt flag</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>ADRRDY</name>
-       <description>Address Ready Interupt Status</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Inactive</name>
-         <description>No interrupt pending</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Pending</name>
-         <description>Interrupt pending</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>Clear</name>
-         <description>Clears the interrupt flag</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VCI</name>
-       <description>VCI Interupt Status</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Inactive</name>
-         <description>No interrupt pending</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Pending</name>
-         <description>Interrupt pending</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>Clear</name>
-         <description>Clears the interrupt flag</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>BERR</name>
-       <description>BERR Interupt Status</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <usage>read</usage>
-        <enumeratedValue>
-         <name>Inactive</name>
-         <description>No interrupt pending</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>Pending</name>
-         <description>Interrupt pending</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-       <enumeratedValues>
-        <usage>write</usage>
-        <enumeratedValue>
-         <name>Clear</name>
-         <description>Clears the interrupt flag</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>LCDIDLE</name>
-       <description>LCD IDLE Staus</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>BUSY</name>
-         <description>BUSY</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>READY</name>
-         <description>READY</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <dim>256</dim>
-     <dimIncrement>4</dimIncrement>
-     <name>PALETTE[%s]</name>
-     <description>Palette</description>
-     <addressOffset>0x400</addressOffset>
-     <fields>
-      <field>
-       <name>RED</name>
-       <description>Red Data for Pallet Entry.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>GREEN</name>
-       <description>Green Data for Pallet Entry.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>BLUE</name>
-       <description>Blue Data for Pallet Entry.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-   </registers>
-  </peripheral>
-<!--CLCD Color LCD Controller-->
-  <peripheral>
    <name>CTB</name>
    <description>The Cryptographic Toolbox is a combination of cryptographic engines and a secure cryptographic accelerator (SCA) used to provide advanced cryptographic security.</description>
    <baseAddress>0x40001000</baseAddress>
@@ -6832,9 +6241,15 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="RAM0LS_EN">
-       <name>ROMLS_EN</name>
-       <description>ROM Light Sleep Mode.</description>
+       <name>ROM0LS_EN</name>
+       <description>ROM0 Light Sleep Mode.</description>
        <bitOffset>29</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="RAM0LS_EN">
+       <name>ROM1LS_EN</name>
+       <description>ROM1 Light Sleep Mode.</description>
+       <bitOffset>30</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="RAM0LS_EN">
@@ -7173,8 +6588,8 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="I2C1">
-       <name>PCIF</name>
-       <description>PCIF Reset.</description>
+       <name>CAMERAIF</name>
+       <description>CameraIF Reset.</description>
        <bitOffset>27</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -7246,14 +6661,14 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
-       <name>SCACHE</name>
+       <name>SRCC</name>
        <description>System Cache Clock Disable.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
-       <name>SDMA0</name>
-       <description>SDMA0 Clock Disable.</description>
+       <name>CAMERAIF</name>
+       <description>CameraIF Clock Disable.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -7279,6 +6694,12 @@
        <name>SPI3</name>
        <description>SPI3 Clock Disable.</description>
        <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field derivedFrom="UART2">
+       <name>I2S</name>
+       <description>I2S Clock Disable.</description>
+       <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
@@ -8502,364 +7923,6 @@
   </peripheral>
 <!--GPIO3 Individual I/O for each GPIO 3-->
   <peripheral>
-   <name>HA</name>
-   <description>Hardware Accelerator</description>
-   <baseAddress>0x40036000</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x1000</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <interrupt>
-    <name>HA</name>
-    <description>Smart DMA interrupt.</description>
-    <value>60</value>
-   </interrupt>
-   <registers>
-    <register>
-     <name>IP</name>
-     <description>Q30E Instruction Pointer.</description>
-     <addressOffset>0x00</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>SP</name>
-     <description>Q30E Stack Pointer.</description>
-     <addressOffset>0x04</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>DP0</name>
-     <description>Q30E Data Pointer 0.</description>
-     <addressOffset>0x08</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>DP1</name>
-     <description>Q30E Data Pointer 1.</description>
-     <addressOffset>0x0C</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>BP</name>
-     <description>Q30E Frame Pointer Base.</description>
-     <addressOffset>0x10</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>OFFS</name>
-     <description>Q30E Frame Pointer Offset.</description>
-     <addressOffset>0x14</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>LC0</name>
-     <description>Q30E Loop Counter 0.</description>
-     <addressOffset>0x18</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>LC1</name>
-     <description>Q30E Loop Counter 1.</description>
-     <addressOffset>0x1C</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>A0</name>
-     <description>Q30E Accumulator 0.</description>
-     <addressOffset>0x20</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>A1</name>
-     <description>Q30E Accumulator 1.</description>
-     <addressOffset>0x24</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>A2</name>
-     <description>Q30E Accumulator 2.</description>
-     <addressOffset>0x28</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>A3</name>
-     <description>Q30E Accumulator 3.</description>
-     <addressOffset>0x2C</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>WDCN</name>
-     <description>Q30E Watchdog Control.</description>
-     <addressOffset>0x30</addressOffset>
-     <access>read-only</access>
-    </register>
-    <register>
-     <name>INT_MUX_CTRL0</name>
-     <description>Interrupt Mux Control 0.</description>
-     <addressOffset>0x80</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>INTSEL16</name>
-       <description>Interrupt Selection For 16th Interrupt.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL17</name>
-       <description>Interrupt Selection For 17th Interrupt.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL18</name>
-       <description>Interrupt Selection For 18th Interrupt.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL19</name>
-       <description>Interrupt Selection For 19th Interrupt.</description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INT_MUX_CTRL1</name>
-     <description>Interrupt Mux Control 1.</description>
-     <addressOffset>0x84</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>INTSEL20</name>
-       <description>Interrupt Selection For 20th Interrupt.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL21</name>
-       <description>Interrupt Selection For 21st Interrupt.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL22</name>
-       <description>Interrupt Selection For 22nd Interrupt.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL23</name>
-       <description>Interrupt Selection For 23rd Interrupt.</description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INT_MUX_CTRL2</name>
-     <description>Interrupt Mux Control 2.</description>
-     <addressOffset>0x88</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>INTSEL24</name>
-       <description>Interrupt Selection For 24th Interrupt.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL25</name>
-       <description>Interrupt Selection For 25th Interrupt.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL26</name>
-       <description>Interrupt Selection For 26th Interrupt.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL27</name>
-       <description>Interrupt Selection For 27th Interrupt.</description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INT_MUX_CTRL3</name>
-     <description>Interrupt Mux Control 3.</description>
-     <addressOffset>0x8C</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>INTSEL28</name>
-       <description>Interrupt Selection For 28th Interrupt.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL29</name>
-       <description>Interrupt Selection For 29th Interrupt.</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL30</name>
-       <description>Interrupt Selection For 30th Interrupt.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-      <field>
-       <name>INTSEL31</name>
-       <description>Interrupt Selection For 31st Interrupt.</description>
-       <bitOffset>24</bitOffset>
-       <bitWidth>8</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>IP_ADDR</name>
-     <description>Configurable starting IP address for Q30E.</description>
-     <addressOffset>0x90</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>START_IP_ADDR</name>
-       <description>Starting IP address for Q30E</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>CTRL</name>
-     <description>Control Register.</description>
-     <addressOffset>0x94</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>EN</name>
-       <description>Enable SDMA.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable SDMA.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable SDMA.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INT_IN_CTRL</name>
-     <description>Interrupt Input From CPU Control Register.</description>
-     <addressOffset>0xA0</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>INTSET</name>
-       <description>Set Interrupt Flag.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Set interrupt Flag to 0.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>set</name>
-         <description>Set Interrupt Flag to 1.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INT_IN_FLAG</name>
-     <description>Interrupt Input From CPU Flag.</description>
-     <addressOffset>0xA4</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>INTFLAG</name>
-       <description>Interrupt Flag.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>no_eff</name>
-         <description>No Effect.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>clear</name>
-         <description>INT_IN_FLAG =0</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>INT_IN_IE</name>
-     <description>Interrupt Input From CPU Enable.</description>
-     <addressOffset>0xA8</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>INT_IN_EN</name>
-       <description>Interrupt Enable.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>IRQ_FLAG</name>
-     <description>Interrupt Output To CPU Flag.</description>
-     <addressOffset>0xB0</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>IRQ_FLAG</name>
-       <description>Interrupt Flag.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>IRQ_IE</name>
-     <description>Interrupt Output To CPU Control Register.</description>
-     <addressOffset>0xB4</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>IRQ_EN</name>
-       <description>Interrupt Enable.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-     </fields>
-    </register>
-   </registers>
-  </peripheral>
-<!--HA Hardware Accelerator-->
-  <peripheral>
    <name>HTMR</name>
    <description>High Speed Timer Module.</description>
    <baseAddress>0x4001B000</baseAddress>
@@ -9047,7 +8110,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ALD_IF</name>
+       <name>LONG_AL_IF</name>
        <description>Long Interval Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
@@ -9066,7 +8129,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ALS_IF</name>
+       <name>SHORT_AL_IF</name>
        <description>Short Interval Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
@@ -9085,7 +8148,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>WEN</name>
+       <name>WR_EN</name>
        <description>Write Enable. This register bit serves as a protection mechanism against unintentional writes to critical HTimer bits.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
@@ -12841,6 +11904,42 @@
        </enumeratedValues>
       </field>
       <field>
+       <name>RAM4</name>
+       <description>System RAM block 4 Shut Down.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>normal</name>
+         <description>Normal Operating Mode.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>shutdown</name>
+         <description>Shutdown Mode.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>RAM5</name>
+       <description>System RAM block 5 Shut Down.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>normal</name>
+         <description>Normal Operating Mode.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>shutdown</name>
+         <description>Shutdown Mode.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
        <name>ICC</name>
        <description>Instruction Cache RAM Shut Down.</description>
        <bitOffset>7</bitOffset>
@@ -12877,7 +11976,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>EMCC</name>
+       <name>SRCC</name>
        <description>System Cache RAM Shut Down.</description>
        <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>
@@ -17929,7 +17028,7 @@
      <access>read-only</access>
      <fields>
       <field>
-       <name>EXTSCTRL_ST</name>
+       <name>EXTSCTRL</name>
        <description>External Sensor Control Register Status.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -17947,7 +17046,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>INTSCTRL_ST</name>
+       <name>INTSCTRL</name>
        <description>Internal Sensor Control Register Status.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -17965,7 +17064,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SECALM_ST</name>
+       <name>SECALM</name>
        <description>Security Alarm Register Status.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -17983,7 +17082,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MEUCTRL_ST</name>
+       <name>MEUCTRL</name>
        <description>Security Alarm Register Status.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>

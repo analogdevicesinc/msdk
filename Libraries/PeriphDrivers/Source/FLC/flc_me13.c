@@ -67,10 +67,10 @@ void MXC_FLC_ME13_Flash_Operation(void)
     */
 
     /* Flush all instruction caches */
-    MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_ICC0_FLUSH;
+    MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_ICC_FLUSH;
 
     /* Wait for flush to complete */
-    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC0_FLUSH) {}
+    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC_FLUSH) {}
 
     // Clear the line fill buffer by reading 2 pages from flash
     volatile uint32_t *line_addr;
@@ -121,7 +121,6 @@ int MXC_FLC_ME13_GetPhysicalAddress(uint32_t addr, uint32_t *result)
 int MXC_FLC_Init()
 {
     MXC_FLC_SetFLCInt(MXC_FLC0);
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_ICACHEXIP);
 
     return E_NO_ERROR;
 }
@@ -248,11 +247,6 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
 
     if ((err = MXC_FLC_ME13_GetPhysicalAddress(aligned, &addr)) < E_NO_ERROR) {
         return err;
-    }
-
-    if ((MXC_MCR->eccen & MXC_F_MCR_ECCEN_FL0ECCEN) ||
-        (MXC_MCR->eccen & MXC_F_MCR_ECCEN_FL1ECCEN)) {
-        return E_BAD_STATE;
     }
 
     err = MXC_FLC_RevA_Write32Using128((mxc_flc_reva_regs_t *)flc, address, data, addr);

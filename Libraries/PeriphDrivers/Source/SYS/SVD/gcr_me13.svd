@@ -1236,9 +1236,15 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0LS_EN">
-            <name>ROMLS_EN</name>
-            <description>ROM Light Sleep Mode.</description>
+            <name>ROM0LS_EN</name>
+            <description>ROM0 Light Sleep Mode.</description>
             <bitOffset>29</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="RAM0LS_EN">
+            <name>ROM1LS_EN</name>
+            <description>ROM1 Light Sleep Mode.</description>
+            <bitOffset>30</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="RAM0LS_EN">
@@ -1577,8 +1583,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
-            <name>PCIF</name>
-            <description>PCIF Reset.</description>
+            <name>CAMERAIF</name>
+            <description>CameraIF Reset.</description>
             <bitOffset>27</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -1650,14 +1656,14 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>SCACHE</name>
+            <name>SRCC</name>
             <description>System Cache Clock Disable.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>SDMA0</name>
-            <description>SDMA0 Clock Disable.</description>
+            <name>CAMERAIF</name>
+            <description>CameraIF Clock Disable.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -1683,6 +1689,12 @@
             <name>SPI3</name>
             <description>SPI3 Clock Disable.</description>
             <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>I2S</name>
+            <description>I2S Clock Disable.</description>
+            <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">

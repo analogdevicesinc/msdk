@@ -3,15 +3,17 @@
  * @brief   Secure Keyboard(SKBD) function prototypes and data types.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,7 +36,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SKBD_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SKBD_H_
@@ -110,9 +112,9 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_SKBD_EVENT_PUSH = MXC_F_SKBD_IER_PUSHIE, ///< Push Event
-    MXC_SKBD_EVENT_RELEASE = MXC_F_SKBD_IER_RELEASEIE, ///< Release Event
-    MXC_SKBD_EVENT_OVERRUN = MXC_F_SKBD_IER_OVERIE ///< Overrun Event
+    MXC_SKBD_EVENT_PUSH = MXC_F_SKBD_INTEN_PUSH, ///< Push Event
+    MXC_SKBD_EVENT_RELEASE = MXC_F_SKBD_INTEN_RELEASE, ///< Release Event
+    MXC_SKBD_EVENT_OVERRUN = MXC_F_SKBD_INTEN_OVERRUN ///< Overrun Event
 } mxc_skbd_events_t;
 
 /**
@@ -120,9 +122,9 @@ typedef enum {
  *
  */
 typedef enum {
-    MXC_SKBD_INTERRUPT_STATUS_PUSHIS = MXC_F_SKBD_ISR_PUSHIS, ///< Push Interupt flag
-    MXC_SKBD_INTERRUPT_STATUS_RELEASEIS = MXC_F_SKBD_ISR_RELEASEIS, ///< Release Interupt flag
-    MXC_SKBD_INTERRUPT_STATUS_OVERIS = MXC_F_SKBD_ISR_OVERIS ///< Overrun Interupt flag
+    MXC_SKBD_INTERRUPT_STATUS_PUSHIS = MXC_F_SKBD_INTFL_PUSH, ///< Push Interupt flag
+    MXC_SKBD_INTERRUPT_STATUS_RELEASEIS = MXC_F_SKBD_INTFL_RELEASE, ///< Release Interupt flag
+    MXC_SKBD_INTERRUPT_STATUS_OVERIS = MXC_F_SKBD_INTFL_OVERRUN ///< Overrun Interupt flag
 } mxc_interrupt_status_t;
 
 /**

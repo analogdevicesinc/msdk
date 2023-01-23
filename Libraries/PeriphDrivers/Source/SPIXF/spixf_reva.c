@@ -121,7 +121,7 @@ void MXC_SPIXF_RevA_Shutdown(mxc_spixfc_reva_regs_t *spixfc)
 }
 
 void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_ds_t sclk_ds,
-                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_pup_t pupdctrl)
+                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_padctrl_t padctrl)
 {
     spixfm->io_ctrl = 0;
 
@@ -141,7 +141,7 @@ void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_ds_t sclk_d
         MXC_SPIXF_RevA_SetIoctrlSDIODriveHigh(spixfm);
     }
 
-    MXC_SPIXF_RevA_SetPuPdCtrl(spixfm, pupdctrl);
+    MXC_SPIXF_RevA_SetPuPdCtrl(spixfm, padctrl);
 }
 
 int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
@@ -1182,13 +1182,23 @@ uint8_t MXC_SPIXF_RevA_GetIoctrlSSDrive(mxc_spixfm_reva_regs_t *spixfm)
     return !!(spixfm->io_ctrl & MXC_F_SPIXFM_REVA_IO_CTRL_SS_DS);
 }
 
-void MXC_SPIXF_RevA_SetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_pup_t pupd)
+void MXC_SPIXF_RevA_SetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad)
 {
-    spixfm->io_ctrl &= ~(MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
-    spixfm->io_ctrl |= (pupd & MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
+    MXC_SPIXF_RevA_SetPadCtrl(spixfm, pad);
 }
 
 uint8_t MXC_SPIXF_RevA_GetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm)
+{
+    return MXC_SPIXF_RevA_GetPadCtrl(spixfm);
+}
+
+void MXC_SPIXF_RevA_SetPadCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad)
+{
+    spixfm->io_ctrl &= ~(MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
+    spixfm->io_ctrl |= (pad & MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
+}
+
+uint8_t MXC_SPIXF_RevA_GetPadCtrl(mxc_spixfm_reva_regs_t *spixfm)
 {
     return (spixfm->io_ctrl & MXC_F_SPIXFM_REVA_IO_CTRL_PU_PD_CTRL);
 }

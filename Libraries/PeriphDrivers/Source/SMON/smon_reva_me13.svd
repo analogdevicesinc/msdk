@@ -1266,7 +1266,7 @@
         <access>read-only</access>
         <fields>
           <field>
-            <name>EXTSCTRL_ST</name>
+            <name>EXTSCTRL</name>
             <description>External Sensor Control Register Status.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1284,7 +1284,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>INTSCTRL_ST</name>
+            <name>INTSCTRL</name>
             <description>Internal Sensor Control Register Status.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1302,7 +1302,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SECALM_ST</name>
+            <name>SECALM</name>
             <description>Security Alarm Register Status.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1320,7 +1320,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>MEUCTRL_ST</name>
+            <name>MEUCTRL</name>
             <description>Security Alarm Register Status.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>

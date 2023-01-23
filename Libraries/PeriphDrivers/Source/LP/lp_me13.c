@@ -88,87 +88,87 @@ void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
 
 void MXC_LP_RetentionRegEnable(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_RETREG_EN;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_RETREG_EN;
 }
 
 void MXC_LP_RetentionRegDisable(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_RETREG_EN;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_RETREG_EN;
 }
 
 int MXC_LP_RetentionRegIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_RETREG_EN);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_RETREG_EN);
 }
 
 void MXC_LP_BandgapOn(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_BG_DIS;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_BG_DIS;
 }
 
 void MXC_LP_BandgapOff(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BG_DIS;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_BG_DIS;
 }
 
 int MXC_LP_BandgapIsOn(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_BG_DIS);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_BG_DIS);
 }
 
 void MXC_LP_PORVCOREoreMonitorEnable(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS;
 }
 
 void MXC_LP_PORVCOREoreMonitorDisable(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS;
 }
 
 int MXC_LP_PORVCOREoreMonitorIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_VCOREPOR_DIS);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS);
 }
 
 void MXC_LP_LDOEnable(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_LDO_DIS;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
 }
 
 void MXC_LP_LDODisable(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_LDO_DIS;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
 }
 
 int MXC_LP_LDOIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_LDO_DIS);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_LDO_DIS);
 }
 
 void MXC_LP_FastWakeupEnable(void)
 {
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_FASTWK_EN;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_FASTWK_EN;
 }
 
 void MXC_LP_FastWakeupDisable(void)
 {
-    MXC_PWRSEQ->lpcn &= ~MXC_F_PWRSEQ_LPCN_FASTWK_EN;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_FASTWK_EN;
 }
 
 int MXC_LP_FastWakeupIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_FASTWK_EN);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_FASTWK_EN);
 }
 
 void MXC_LP_ClearWakeStatus(void)
 {
     // Write 1 to clear
-    MXC_PWRSEQ->lpwkst0 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lpwkst1 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lpwkst2 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lpwkst3 = 0xFFFFFFFF;
-    MXC_PWRSEQ->lppwkst = 0xFFFFFFFF;
+    MXC_PWRSEQ->lpwkfl0 = 0xFFFFFFFF;
+    MXC_PWRSEQ->lpwkfl1 = 0xFFFFFFFF;
+    MXC_PWRSEQ->lpwkfl2 = 0xFFFFFFFF;
+    MXC_PWRSEQ->lpwkfl3 = 0xFFFFFFFF;
+    MXC_PWRSEQ->lppwkfl = 0xFFFFFFFF;
 }
 
 void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
@@ -236,26 +236,6 @@ void MXC_LP_DisableUSBWakeup(void)
     MXC_GCR->pm &= ~MXC_F_GCR_PM_USB_WE;
 }
 
-void MXC_LP_EnableHA0Wakeup(void)
-{
-    MXC_GCR->pm |= MXC_F_GCR_PM_HA0_WE;
-}
-
-void MXC_LP_DisablHAA0Wakeup(void)
-{
-    MXC_GCR->pm &= ~MXC_F_GCR_PM_HA0_WE;
-}
-
-void MXC_LP_EnableHA1Wakeup(void)
-{
-    MXC_GCR->pm |= MXC_F_GCR_PM_HA1_WE;
-}
-
-void MXC_LP_DisableHA1Wakeup(void)
-{
-    MXC_GCR->pm &= ~MXC_F_GCR_PM_HA1_WE;
-}
-
 int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
 {
     if (!(mask & (MXC_F_GCR_PM_NFC_PD | MXC_F_GCR_PM_IBRO_PD | MXC_F_GCR_PM_IPO_PD |
@@ -269,17 +249,17 @@ int MXC_LP_ConfigDeepSleepClocks(uint32_t mask)
 
 void MXC_LP_NFCOscBypassEnable(void)
 {
-    MXC_GCR->pm |= MXC_F_GCR_PM_XTALBP;
+    MXC_GCR->pm |= MXC_F_GCR_PM_ERFO_BP;
 }
 
 void MXC_LP_NFCOscBypassDisable(void)
 {
-    MXC_GCR->pm &= ~MXC_F_GCR_PM_XTALBP;
+    MXC_GCR->pm &= ~MXC_F_GCR_PM_ERFO_BP;
 }
 
 int MXC_LP_NFCOscBypassIsEnabled(void)
 {
-    return (MXC_GCR->pm & MXC_F_GCR_PM_XTALBP);
+    return (MXC_GCR->pm & MXC_F_GCR_PM_ERFO_BP);
 }
 
 void MXC_LP_SysRam0LightSleepEnable(void)
@@ -314,7 +294,7 @@ void MXC_LP_SysRam5LightSleepEnable(void)
 
 void MXC_LP_ICache0LightSleepEnable(void)
 {
-    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICC0LS_EN;
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICCLS_EN;
 }
 
 void MXC_LP_ICacheXIPLightSleepEnable(void)
@@ -337,9 +317,14 @@ void MXC_LP_USBFIFOLightSleepEnable(void)
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_USBLS_EN;
 }
 
-void MXC_LP_ROMLightSleepEnable(void)
+void MXC_LP_ROM0LightSleepEnable(void)
 {
-    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROMLS_EN;
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROM0LS_EN;
+}
+
+void MXC_LP_ROM1LightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROM1LS_EN;
 }
 
 void MXC_LP_SysRam0LightSleepDisable(void)
@@ -374,7 +359,7 @@ void MXC_LP_SysRam5LightSleepDisable(void)
 
 void MXC_LP_ICache0LightSleepDisable(void)
 {
-    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ICC0LS_EN;
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ICCLS_EN;
 }
 
 void MXC_LP_ICacheXIPLightSleepDisable(void)
@@ -397,9 +382,14 @@ void MXC_LP_USBFIFOLightSleepDisable(void)
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_USBLS_EN;
 }
 
-void MXC_LP_ROMLightSleepDisable(void)
+void MXC_LP_ROM0LightSleepDisable(void)
 {
-    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROMLS_EN;
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROM0LS_EN;
+}
+
+void MXC_LP_ROM1LightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROM1LS_EN;
 }
 
 void MXC_LP_SysRam0Shutdown(void)
@@ -464,22 +454,22 @@ void MXC_LP_SysRam5PowerUp(void)
 
 void MXC_LP_ICache0Shutdown(void)
 {
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ICACHE;
+    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ICC;
 }
 
 void MXC_LP_ICache0PowerUp(void)
 {
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ICACHE;
+    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ICC;
 }
 
 void MXC_LP_ICacheXIPShutdown(void)
 {
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP;
+    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ICCXIP;
 }
 
 void MXC_LP_ICacheXIPPowerUp(void)
 {
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ICACHEXIP;
+    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ICCXIP;
 }
 
 void MXC_LP_SRCCShutdown(void)

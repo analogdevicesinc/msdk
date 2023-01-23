@@ -244,7 +244,7 @@ const mxc_gpio_cfg_t gpio_cfg_emac_P2b = { MXC_GPIO2, 0xFFE00000, MXC_GPIO_FUNC_
                                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 // Note that all of the following must be configured for proper operation
-const mxc_gpio_cfg_t gpio_cfg_kbd_P2 = { MXC_GPIO2, 0x000003FC, MXC_GPIO_FUNC_ALT1,
+const mxc_gpio_cfg_t gpio_cfg_skbd_P2 = { MXC_GPIO2, 0x000003FC, MXC_GPIO_FUNC_ALT1,
                                          MXC_GPIO_PAD_PULL_UP };
 
 // Note that both P0 and P1 must be configured for proper operation

@@ -37,6 +37,7 @@
 /****** Includes *******/
 #include "mxc_device.h"
 #include "mxc_sys.h"
+#include "spixf.h"
 #include "spixfc_reva_regs.h"
 #include "spixfm_reva_regs.h"
 #include "spixfc_fifo_reva_regs.h"
@@ -191,12 +192,14 @@ struct mxc_spixf_reva_req {
     spixr_complete_cb_t callback; ///< callback function
 };
 
+typedef mxc_spixf_padctrl_t mxc_spixf_pup_t;
+
 /***** Function Prototypes *****/
 int MXC_SPIXF_RevA_Init(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                         uint32_t cmdval, uint32_t frequency);
 void MXC_SPIXF_RevA_Shutdown(mxc_spixfc_reva_regs_t *spixfc);
 void MXC_SPIXF_RevA_IOCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_ds_t sclk_ds,
-                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_pup_t pupdctrl);
+                           mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds, mxc_spixf_padctrl_t padctrl);
 int MXC_SPIXF_RevA_Clocks(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,
                           mxc_spixfc_fifo_reva_regs_t *spixfc_fifo, uint32_t len, uint8_t deass);
 int MXC_SPIXF_RevA_Transaction(mxc_spixfc_reva_regs_t *spixfc,
@@ -287,8 +290,10 @@ uint8_t MXC_SPIXF_RevA_GetIoctrlSCLKDrive(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetIoctrlSSDriveHigh(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetIoctrlSSDriveLow(mxc_spixfm_reva_regs_t *spixfm);
 uint8_t MXC_SPIXF_RevA_GetIoctrlSSDrive(mxc_spixfm_reva_regs_t *spixfm);
-void MXC_SPIXF_RevA_SetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_pup_t pupd);
-uint8_t MXC_SPIXF_RevA_GetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm);
+void MXC_SPIXF_RevA_SetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad); // Legacy Name. Will start using SetPadCtrl going forward. 1-23-2023
+uint8_t MXC_SPIXF_RevA_GetPuPdCtrl(mxc_spixfm_reva_regs_t *spixfm); // Legacy Name. Will start using GetPadCtrl going forward. 1-23-2023
+void MXC_SPIXF_RevA_SetPadCtrl(mxc_spixfm_reva_regs_t *spixfm, mxc_spixf_padctrl_t pad);
+uint8_t MXC_SPIXF_RevA_GetPadCtrl(mxc_spixfm_reva_regs_t *spixfm);
 void MXC_SPIXF_RevA_SetSCKDriveHigh(mxc_spixfc_reva_regs_t *spixfc);
 void MXC_SPIXF_RevA_SetSCKDriveLow(mxc_spixfc_reva_regs_t *spixfc);
 uint8_t MXC_SPIXF_RevA_GetSCKDrive(mxc_spixfc_reva_regs_t *spixfc);

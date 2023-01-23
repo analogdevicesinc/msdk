@@ -3,15 +3,17 @@
  * @brief   Direct Memory Access (DMA) driver function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,7 +36,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_DMA_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_DMA_H_
@@ -61,102 +63,102 @@ extern "C" {
  *
  */
 typedef enum {
-    MXC_DMA_PRIO_HIGH = MXC_V_DMA_CFG_PRI_HIGH, ///< High Priority
-    MXC_DMA_PRIO_MEDHIGH = MXC_V_DMA_CFG_PRI_MEDHIGH, ///< Medium High Priority
-    MXC_DMA_PRIO_MEDLOW = MXC_V_DMA_CFG_PRI_MEDLOW, ///< Medium Low Priority
-    MXC_DMA_PRIO_LOW = MXC_V_DMA_CFG_PRI_LOW, ///< Low Priority
+    MXC_DMA_PRIO_HIGH = MXC_V_DMA_CTRL_PRI_HIGH, ///< High Priority
+    MXC_DMA_PRIO_MEDHIGH = MXC_V_DMA_CTRL_PRI_MEDHIGH, ///< Medium High Priority
+    MXC_DMA_PRIO_MEDLOW = MXC_V_DMA_CTRL_PRI_MEDLOW, ///< Medium Low Priority
+    MXC_DMA_PRIO_LOW = MXC_V_DMA_CTRL_PRI_LOW, ///< Low Priority
 } mxc_dma_priority_t;
 
 /** @brief DMA request select */
 typedef enum {
     MXC_DMA_REQUEST_MEMTOMEM =
-        MXC_S_DMA_CFG_REQSEL_MEMTOMEM, ///< Memory to Memory DMA Request Selection
-    MXC_DMA_REQUEST_SPI0RX = MXC_S_DMA_CFG_REQSEL_SPI0RX, ///< SPI0 Receive DMA Request Selection
-    MXC_DMA_REQUEST_SPI1RX = MXC_S_DMA_CFG_REQSEL_SPI1RX, ///< SPI1 Receive DMA Request Selection
-    MXC_DMA_REQUEST_SPI2RX = MXC_S_DMA_CFG_REQSEL_SPI2RX, ///< SPI2 Receive DMA Request Selection
-    MXC_DMA_REQUEST_UART0RX = MXC_S_DMA_CFG_REQSEL_UART0RX, ///< UART0 Receive DMA Request Selection
-    MXC_DMA_REQUEST_UART1RX = MXC_S_DMA_CFG_REQSEL_UART1RX, ///< UART1 Receive DMA Request Selection
-    MXC_DMA_REQUEST_I2C0RX = MXC_S_DMA_CFG_REQSEL_I2C0RX, ///< I2C0 Receive DMA Request Selection
-    MXC_DMA_REQUEST_I2C1RX = MXC_S_DMA_CFG_REQSEL_I2C1RX, ///< I2C1 Receive DMA Request Selection
-    MXC_DMA_REQUEST_I2C2RX = MXC_S_DMA_CFG_REQSEL_I2C2RX, ///< I2C2 Receive DMA Request Selection
-    MXC_DMA_REQUEST_ADC = MXC_S_DMA_CFG_REQSEL_ADC, ///< ADC DMA Request Selection
-    MXC_DMA_REQUEST_UART2RX = MXC_S_DMA_CFG_REQSEL_UART2RX, ///< UART2 Receive DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_MEMTOMEM, ///< Memory to Memory DMA Request Selection
+    MXC_DMA_REQUEST_SPI0RX = MXC_S_DMA_CTRL_REQUEST_SPI0RX, ///< SPI0 Receive DMA Request Selection
+    MXC_DMA_REQUEST_SPI1RX = MXC_S_DMA_CTRL_REQUEST_SPI1RX, ///< SPI1 Receive DMA Request Selection
+    MXC_DMA_REQUEST_SPI2RX = MXC_S_DMA_CTRL_REQUEST_SPI2RX, ///< SPI2 Receive DMA Request Selection
+    MXC_DMA_REQUEST_UART0RX = MXC_S_DMA_CTRL_REQUEST_UART0RX, ///< UART0 Receive DMA Request Selection
+    MXC_DMA_REQUEST_UART1RX = MXC_S_DMA_CTRL_REQUEST_UART1RX, ///< UART1 Receive DMA Request Selection
+    MXC_DMA_REQUEST_I2C0RX = MXC_S_DMA_CTRL_REQUEST_I2C0RX, ///< I2C0 Receive DMA Request Selection
+    MXC_DMA_REQUEST_I2C1RX = MXC_S_DMA_CTRL_REQUEST_I2C1RX, ///< I2C1 Receive DMA Request Selection
+    MXC_DMA_REQUEST_I2C2RX = MXC_S_DMA_CTRL_REQUEST_I2C2RX, ///< I2C2 Receive DMA Request Selection
+    MXC_DMA_REQUEST_ADC = MXC_S_DMA_CTRL_REQUEST_ADC, ///< ADC DMA Request Selection
+    MXC_DMA_REQUEST_UART2RX = MXC_S_DMA_CTRL_REQUEST_UART2RX, ///< UART2 Receive DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP1 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP1, ///< USB Receive Endpoint 1 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP1, ///< USB Receive Endpoint 1 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP2 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP2, ///< USB Receive Endpoint 2 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP2, ///< USB Receive Endpoint 2 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP3 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP3, ///< USB Receive Endpoint 3 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP3, ///< USB Receive Endpoint 3 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP4 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP4, ///< USB Receive Endpoint 4 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP4, ///< USB Receive Endpoint 4 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP5 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP5, ///< USB Receive Endpoint 5 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP5, ///< USB Receive Endpoint 5 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP6 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP6, ///< USB Receive Endpoint 6 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP6, ///< USB Receive Endpoint 6 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP7 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP7, ///< USB Receive Endpoint 7 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP7, ///< USB Receive Endpoint 7 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP8 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP8, ///< USB Receive Endpoint 8 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP8, ///< USB Receive Endpoint 8 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP9 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP9, ///< USB Receive Endpoint 9 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP9, ///< USB Receive Endpoint 9 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP10 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP10, ///< USB Receive Endpoint 10 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP10, ///< USB Receive Endpoint 10 DMA Request Selection
     MXC_DMA_REQUEST_USBRXEP11 =
-        MXC_S_DMA_CFG_REQSEL_USBRXEP11, ///< USB Receive Endpoint 11 DMA Request Selection
-    MXC_DMA_REQUEST_SPI0TX = MXC_S_DMA_CFG_REQSEL_SPI0TX, ///< SPI0 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_SPI1TX = MXC_S_DMA_CFG_REQSEL_SPI1TX, ///< SPI1 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_SPI2TX = MXC_S_DMA_CFG_REQSEL_SPI2TX, ///< SPI2 Transmit DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBRXEP11, ///< USB Receive Endpoint 11 DMA Request Selection
+    MXC_DMA_REQUEST_SPI0TX = MXC_S_DMA_CTRL_REQUEST_SPI0TX, ///< SPI0 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_SPI1TX = MXC_S_DMA_CTRL_REQUEST_SPI1TX, ///< SPI1 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_SPI2TX = MXC_S_DMA_CTRL_REQUEST_SPI2TX, ///< SPI2 Transmit DMA Request Selection
     MXC_DMA_REQUEST_UART0TX =
-        MXC_S_DMA_CFG_REQSEL_UART0TX, ///< UART0 Transmit DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_UART0TX, ///< UART0 Transmit DMA Request Selection
     MXC_DMA_REQUEST_UART1TX =
-        MXC_S_DMA_CFG_REQSEL_UART1TX, ///< UART1 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_I2C0TX = MXC_S_DMA_CFG_REQSEL_I2C0TX, ///< I2C0 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_I2C1TX = MXC_S_DMA_CFG_REQSEL_I2C1TX, ///< I2C1 Transmit DMA Request Selection
-    MXC_DMA_REQUEST_I2C2TX = MXC_S_DMA_CFG_REQSEL_I2C2TX, ///< I2C2 Transmit DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_UART1TX, ///< UART1 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_I2C0TX = MXC_S_DMA_CTRL_REQUEST_I2C0TX, ///< I2C0 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_I2C1TX = MXC_S_DMA_CTRL_REQUEST_I2C1TX, ///< I2C1 Transmit DMA Request Selection
+    MXC_DMA_REQUEST_I2C2TX = MXC_S_DMA_CTRL_REQUEST_I2C2TX, ///< I2C2 Transmit DMA Request Selection
     MXC_DMA_REQUEST_UART2TX =
-        MXC_S_DMA_CFG_REQSEL_UART2TX, ///< UART 2 Transmit DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_UART2TX, ///< UART 2 Transmit DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP1 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP1, ///< USB TX Endpoint 1 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP1, ///< USB TX Endpoint 1 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP2 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP2, ///< USB TX Endpoint 2 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP2, ///< USB TX Endpoint 2 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP3 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP3, ///< USB TX Endpoint 3 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP3, ///< USB TX Endpoint 3 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP4 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP4, ///< USB TX Endpoint 4 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP4, ///< USB TX Endpoint 4 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP5 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP5, ///< USB TX Endpoint 5 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP5, ///< USB TX Endpoint 5 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP6 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP6, ///< USB TX Endpoint 6 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP6, ///< USB TX Endpoint 6 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP7 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP7, ///< USB TX Endpoint 7 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP7, ///< USB TX Endpoint 7 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP8 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP8, ///< USB TX Endpoint 8 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP8, ///< USB TX Endpoint 8 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP9 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP9, ///< USB TX Endpoint 9 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP9, ///< USB TX Endpoint 9 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP10 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP10, ///< USB TX Endpoint 10 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP10, ///< USB TX Endpoint 10 DMA Request Selection
     MXC_DMA_REQUEST_USBTXEP11 =
-        MXC_S_DMA_CFG_REQSEL_USBTXEP11, ///< USB TX Endpoint 11 DMA Request Selection
+        MXC_S_DMA_CTRL_REQUEST_USBTXEP11, ///< USB TX Endpoint 11 DMA Request Selection
 } mxc_dma_reqsel_t;
 
 /** @brief Enumeration for the DMA prescaler */
 typedef enum {
-    MXC_DMA_PRESCALE_DISABLE = MXC_S_DMA_CFG_PSSEL_DIS, ///< Prescaler disabled
-    MXC_DMA_PRESCALE_DIV256 = MXC_S_DMA_CFG_PSSEL_DIV256, ///< Divide by 256
-    MXC_DMA_PRESCALE_DIV64K = MXC_S_DMA_CFG_PSSEL_DIV64K, ///< Divide by 65,536
-    MXC_DMA_PRESCALE_DIV16M = MXC_S_DMA_CFG_PSSEL_DIV16M, ///< Divide by 16,777,216
+    MXC_DMA_PRESCALE_DISABLE = MXC_S_DMA_CTRL_TO_CLKDIV_DIS, ///< Prescaler disabled
+    MXC_DMA_PRESCALE_DIV256 = MXC_S_DMA_CTRL_TO_CLKDIV_DIV256, ///< Divide by 256
+    MXC_DMA_PRESCALE_DIV64K = MXC_S_DMA_CTRL_TO_CLKDIV_DIV64K, ///< Divide by 65,536
+    MXC_DMA_PRESCALE_DIV16M = MXC_S_DMA_CTRL_TO_CLKDIV_DIV16M, ///< Divide by 16,777,216
 } mxc_dma_prescale_t;
 
 /** @brief Enumeration for the DMA timeout value */
 typedef enum {
-    MXC_DMA_TIMEOUT_4_CLK = MXC_S_DMA_CFG_TOSEL_TO4, ///< DMA timeout of 4 clocks
-    MXC_DMA_TIMEOUT_8_CLK = MXC_S_DMA_CFG_TOSEL_TO8, ///< DMA timeout of 8 clocks
-    MXC_DMA_TIMEOUT_16_CLK = MXC_S_DMA_CFG_TOSEL_TO16, ///< DMA timeout of 16 clocks
-    MXC_DMA_TIMEOUT_32_CLK = MXC_S_DMA_CFG_TOSEL_TO32, ///< DMA timeout of 32 clocks
-    MXC_DMA_TIMEOUT_64_CLK = MXC_S_DMA_CFG_TOSEL_TO64, ///< DMA timeout of 64 clocks
-    MXC_DMA_TIMEOUT_128_CLK = MXC_S_DMA_CFG_TOSEL_TO128, ///< DMA timeout of 128 clocks
-    MXC_DMA_TIMEOUT_256_CLK = MXC_S_DMA_CFG_TOSEL_TO256, ///< DMA timeout of 256 clocks
-    MXC_DMA_TIMEOUT_512_CLK = MXC_S_DMA_CFG_TOSEL_TO512, ///< DMA timeout of 512 clocks
+    MXC_DMA_TIMEOUT_4_CLK = MXC_S_DMA_CTRL_TO_PER_TO4, ///< DMA timeout of 4 clocks
+    MXC_DMA_TIMEOUT_8_CLK = MXC_S_DMA_CTRL_TO_PER_TO8, ///< DMA timeout of 8 clocks
+    MXC_DMA_TIMEOUT_16_CLK = MXC_S_DMA_CTRL_TO_PER_TO16, ///< DMA timeout of 16 clocks
+    MXC_DMA_TIMEOUT_32_CLK = MXC_S_DMA_CTRL_TO_PER_TO32, ///< DMA timeout of 32 clocks
+    MXC_DMA_TIMEOUT_64_CLK = MXC_S_DMA_CTRL_TO_PER_TO64, ///< DMA timeout of 64 clocks
+    MXC_DMA_TIMEOUT_128_CLK = MXC_S_DMA_CTRL_TO_PER_TO128, ///< DMA timeout of 128 clocks
+    MXC_DMA_TIMEOUT_256_CLK = MXC_S_DMA_CTRL_TO_PER_TO256, ///< DMA timeout of 256 clocks
+    MXC_DMA_TIMEOUT_512_CLK = MXC_S_DMA_CTRL_TO_PER_TO512, ///< DMA timeout of 512 clocks
 } mxc_dma_timeout_t;
 
 /** @brief DMA transfer data width */
@@ -164,9 +166,9 @@ typedef enum {
     /* Using the '_V_' define instead of the '_S_' since these same values will be used to
        specify the DSTWD also.  The API functions will shift the value the correct amount
        prior to writing the cfg register. */
-    MXC_DMA_WIDTH_BYTE = MXC_V_DMA_CFG_SRCWD_BYTE, ///< DMA transfer in bytes
-    MXC_DMA_WIDTH_HALFWORD = MXC_V_DMA_CFG_SRCWD_HALFWORD, ///< DMA transfer in 16-bit half-words
-    MXC_DMA_WIDTH_WORD = MXC_V_DMA_CFG_SRCWD_WORD, ///< DMA transfer in 32-bit words
+    MXC_DMA_WIDTH_BYTE = MXC_V_DMA_CTRL_SRCWD_BYTE, ///< DMA transfer in bytes
+    MXC_DMA_WIDTH_HALFWORD = MXC_V_DMA_CTRL_SRCWD_HALFWORD, ///< DMA transfer in 16-bit half-words
+    MXC_DMA_WIDTH_WORD = MXC_V_DMA_CTRL_SRCWD_WORD, ///< DMA transfer in 32-bit words
 } mxc_dma_width_t;
 
 /**

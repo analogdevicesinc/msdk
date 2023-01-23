@@ -3,15 +3,17 @@
  * @brief   High speed timer (HTMR) functions and prototypes.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,7 +36,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_HTMR_H_
@@ -62,18 +64,18 @@ extern "C" {
  * @brief   Bitmasks for each of the HTimer's interrupt enables.
  */
 typedef enum {
-    MXC_HTMR_INT_EN_LONG = MXC_F_HTMR_CTRL_ADE, ///< Long-interval alarm interrupt enable
-    MXC_HTMR_INT_EN_SHORT = MXC_F_HTMR_CTRL_ASE, ///< Short-interval alarm interrupt enable
-    MXC_HTMR_INT_EN_READY = MXC_F_HTMR_CTRL_RDYE, ///< Timer ready interrupt enable
+    MXC_HTMR_INTEN_LONG = MXC_F_HTMR_CTRL_LONG_AL_IE, ///< Long-interval alarm interrupt enable
+    MXC_HTMR_INTEN_SHORT = MXC_F_HTMR_CTRL_SHORT_AL_IE, ///< Short-interval alarm interrupt enable
+    MXC_HTMR_INTEN_READY = MXC_F_HTMR_CTRL_RDY_IE, ///< Timer ready interrupt enable
 } mxc_htmr_int_en_t;
 
 /**
  * @brief   Bitmasks for each of the HTimer's interrupt flags.
  */
 typedef enum {
-    MXC_HTMR_INT_FL_LONG = MXC_F_HTMR_CTRL_ALDF, ///< Long-interval alarm interrupt flag
-    MXC_HTMR_INT_FL_SHORT = MXC_F_HTMR_CTRL_ALSF, ///< Short-interval alarm interrupt flag
-    MXC_HTMR_INT_FL_READY = MXC_F_HTMR_CTRL_RDY, ///< Timer ready interrupt flag
+    MXC_HTMR_INTFL_LONG = MXC_F_HTMR_CTRL_LONG_AL_IE, ///< Long-interval alarm interrupt flag
+    MXC_HTMR_INTFL_SHORT = MXC_F_HTMR_CTRL_SHORT_AL_IE, ///< Short-interval alarm interrupt flag
+    MXC_HTMR_INTFL_READY = MXC_F_HTMR_CTRL_RDY, ///< Timer ready interrupt flag
 } mxc_htmr_int_fl_t;
 
 /**

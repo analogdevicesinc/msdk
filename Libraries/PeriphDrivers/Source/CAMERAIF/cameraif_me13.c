@@ -35,6 +35,7 @@
 #include <string.h>
 #include "cameraif.h"
 #include "cameraif_reva.h"
+#include "mxc_sys.h"
 
 /* **** Definitions **** */
 
@@ -44,7 +45,9 @@
 
 int MXC_PCIF_Init(void)
 {
-    return MXC_PCIF_RevA_Init();
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CAMERAIF);
+
+    return 0;
 }
 
 void MXC_PCIF_SetDatawidth(mxc_pcif_datawidth_t datawidth)

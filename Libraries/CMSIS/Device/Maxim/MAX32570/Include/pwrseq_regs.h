@@ -272,14 +272,20 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPMEMSD_RAM3_POS                  3 /**< LPMEMSD_RAM3 Position */
 #define MXC_F_PWRSEQ_LPMEMSD_RAM3                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM3_POS)) /**< LPMEMSD_RAM3 Mask */
 
+#define MXC_F_PWRSEQ_LPMEMSD_RAM4_POS                  4 /**< LPMEMSD_RAM4 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM4                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM4_POS)) /**< LPMEMSD_RAM4 Mask */
+
+#define MXC_F_PWRSEQ_LPMEMSD_RAM5_POS                  5 /**< LPMEMSD_RAM5 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM5                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM5_POS)) /**< LPMEMSD_RAM5 Mask */
+
 #define MXC_F_PWRSEQ_LPMEMSD_ICC_POS                   7 /**< LPMEMSD_ICC Position */
 #define MXC_F_PWRSEQ_LPMEMSD_ICC                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICC_POS)) /**< LPMEMSD_ICC Mask */
 
 #define MXC_F_PWRSEQ_LPMEMSD_ICCXIP_POS                8 /**< LPMEMSD_ICCXIP Position */
 #define MXC_F_PWRSEQ_LPMEMSD_ICCXIP                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICCXIP_POS)) /**< LPMEMSD_ICCXIP Mask */
 
-#define MXC_F_PWRSEQ_LPMEMSD_EMCC_POS                  9 /**< LPMEMSD_EMCC Position */
-#define MXC_F_PWRSEQ_LPMEMSD_EMCC                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_EMCC_POS)) /**< LPMEMSD_EMCC Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_SRCC_POS                  9 /**< LPMEMSD_SRCC Position */
+#define MXC_F_PWRSEQ_LPMEMSD_SRCC                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_SRCC_POS)) /**< LPMEMSD_SRCC Mask */
 
 #define MXC_F_PWRSEQ_LPMEMSD_MEU_POS                   11 /**< LPMEMSD_MEU Position */
 #define MXC_F_PWRSEQ_LPMEMSD_MEU                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_MEU_POS)) /**< LPMEMSD_MEU Mask */

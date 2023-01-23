@@ -3,15 +3,17 @@
  * @brief   This file contains constant pin configurations for the peripherals.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,7 +36,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_MXC_PINS_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_MXC_PINS_H_
@@ -130,7 +132,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_emac_P2a;
 extern const mxc_gpio_cfg_t gpio_cfg_emac_P2b;
 
 // Note that all of the following must be configured for proper operation
-extern const mxc_gpio_cfg_t gpio_cfg_kbd_P2;
+extern const mxc_gpio_cfg_t gpio_cfg_skbd_P2;
 
 // Note that both P0 and P1 must be configured for proper operation
 extern const mxc_gpio_cfg_t gpio_cfg_pcif_P0;

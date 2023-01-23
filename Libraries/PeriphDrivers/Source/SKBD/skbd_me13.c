@@ -49,11 +49,11 @@ int MXC_SKBD_Init(mxc_skbd_config_t config)
 {
     /* Enable the SKBD clock i.e. just in case clock is disabled */
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CTB);
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_KBD);
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SKBD);
 
-    // MXC_GPIO_Config(&gpio_cfg_kbd_P0);
-    // MXC_GPIO_Config(&gpio_cfg_kbd_P1);
-    MXC_GPIO_Config(&gpio_cfg_kbd_P2);
+    // MXC_GPIO_Config(&gpio_cfg_skbd_P0);
+    // MXC_GPIO_Config(&gpio_cfg_skbd_P1);
+    MXC_GPIO_Config(&gpio_cfg_skbd_P2);
 
     return MXC_SKBD_RevA_Init((mxc_skbd_reva_regs_t *)MXC_SKBD, config);
 }
@@ -86,10 +86,10 @@ int MXC_SKBD_ReadKeys(mxc_skbd_keys_t *keys)
 int MXC_SKBD_Close(void)
 {
     /* Reset the SKBD controller */
-    MXC_SYS_Reset_Periph(MXC_SYS_RESET1_KBD);
+    MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SKBD);
 
     /* Wait until SKBD reset completes */
-    while (MXC_F_GCR_RST1_KBD & MXC_GCR->rst1) {}
+    while (MXC_F_GCR_RST1_SKBD & MXC_GCR->rst1) {}
 
     return MXC_SKBD_RevA_Close();
 }

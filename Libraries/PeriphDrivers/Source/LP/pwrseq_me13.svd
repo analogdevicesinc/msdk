@@ -440,6 +440,42 @@
             </enumeratedValues>
           </field>
           <field>
+            <name>RAM4</name>
+            <description>System RAM block 4 Shut Down.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM5</name>
+            <description>System RAM block 5 Shut Down.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
             <name>ICC</name>
             <description>Instruction Cache RAM Shut Down.</description>
             <bitOffset>7</bitOffset>
@@ -476,7 +512,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>EMCC</name>
+            <name>SRCC</name>
             <description>System Cache RAM Shut Down.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
