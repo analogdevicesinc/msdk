@@ -50,20 +50,11 @@
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "pb.h"
 #include "uart.h"
 #include "led.h"
 #include "pb.h"
 
 /***** Definitions *****/
-#define WORDS_PER_PG (MXC_FLASH_PAGE_SIZE / 4) // 4 bytes make up a 32-bit word
-#define FLASH_SIZE \
-    (MXC_FLASH_MEM_SIZE / MXC_FLASH_PAGE_SIZE) // Total size of the flash in number of pages
-#define NUM_TEST_PAGES \
-    FLASH_SIZE // Number of flash pages to test.  Defaults to the entire flash bank
-#define TESTSIZE \
-    (WORDS_PER_PG * NUM_TEST_PAGES) // Calculate the number of words to write for the test.
-
 #define TEST_ADDRESS 0x1007E000
 #define MAGIC 0xFEEDBEEF
 #define TEST_VALUE 0xDEADBEEF
@@ -250,12 +241,12 @@ int main(void)
     PB_RegisterCallback(0, (pb_callback)button_handler);
 
     while (!button_pressed) {
-        LED_On(LED_RED);
+        LED_On(LED1);
         MXC_Delay(MXC_DELAY_MSEC(500));
-        LED_Off(LED_RED);
+        LED_Off(LED1);
         MXC_Delay(MXC_DELAY_MSEC(500));
     }
-    LED_Off(LED_RED);
+    LED_Off(LED1);
 
     setup_irqs(); // See notes in function definition
 
