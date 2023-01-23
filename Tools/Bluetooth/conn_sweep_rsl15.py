@@ -197,23 +197,17 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         else:
             printWarning('Connection stats returned invalid data. (Packets Transmitted = 0) PER rate being set to 100')
             perSlave = 100
+        
 
-        # Record max per
-        ## As of now, PER for the master cannot be defined
-        perMaster = 0
-        perSlave = 0
+        #PER cannot be defined for the master with this scheme currently so setting to zero
+        perMaster = 0    
+    
+        if(perSlave > perMax):
+            perMax = perSlave
+            printInfo(perMax)
 
-        if perMaster is not None and perSlave is not None:
-            if(perMaster > perMax):
-                perMax = perMaster
-            if(perSlave > perMax):
-                perMax = perSlave
-
-            # Save the results to file
-            results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
-        else:
-            print(colored('Error: Packet Error Rate Evaluated as NoneType Aborting Test', 'red'))
-            sys.exit(1)
+        # Save the results to file
+        results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
 
 # Reset the devices
 hciSlave.resetFunc(None)
