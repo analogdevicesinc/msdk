@@ -16,3 +16,57 @@ packetLen,phy,atten,txPower,perMaster,perSlave
 250,1,-80,0,0,100
 250,1,-90,0,0,100
 
+# slaveSerial   : /dev/serial/by-id/usb-SEGGER_J-Link_000908805860-if00
+# masterSerial  : /dev/serial/by-id/usb-FTDI_FT230X_Basic_UART_DT03NPY2-if00-port0
+# results       : results
+# delay         : 5
+# packetLengths : [250]
+# phys          : ['1']
+# attens        : [20, 30, 40, 50, 60, 70, 80, 90]
+# PER limit     : 0
+packetLen,phy,atten,txPower,perMaster,perSlave
+250,1,-20,0,0,100
+250,1,-30,0,0,100
+250,1,-40,0,0,100
+250,1,-50,0,0,100
+250,1,-60,0,0,100
+250,1,-70,0,0,100
+250,1,-80,0,0,100
+250,1,-90,0,0,100
+
+# slaveSerial   : /dev/serial/by-id/usb-SEGGER_J-Link_000908805860-if00
+# masterSerial  : /dev/serial/by-id/usb-FTDI_FT230X_Basic_UART_DT03NPY2-if00-port0
+# results       : results
+# delay         : 5
+# packetLengths : [250]
+# phys          : ['1']
+# attens        : [20, 30, 40, 50, 60, 70, 80, 90]
+# PER limit     : 0
+packetLen,phy,atten,txPower,perMaster,perSlave
+250,1,-20,0,0,0.6709741550695814
+250,1,-30,0,0,1.7537313432835822
+250,1,-40,0,0,1.9500683144950903
+250,1,-50,0,0,0.8326084255001809
+250,1,-60,0,0,2.4274866177019794
+250,1,-70,0,0,1.491980604252141
+250,1,-80,0,0,1.3547104151131029
+250,1,-90,0,0,1.5667744342203416
+
+# slaveSerial   : /dev/serial/by-id/usb-SEGGER_J-Link_000908805860-if00
+# masterSerial  : /dev/serial/by-id/usb-FTDI_FT230X_Basic_UART_DT03NPY2-if00-port0
+# results       : results
+# delay         : 5
+# packetLengths : [250]
+# phys          : ['1']
+# attens        : [20, 30, 40, 50, 60, 70, 80, 90]
+# PER limit     : 0
+packetLen,phy,atten,txPower,perMaster,perSlave
+250,1,-20,0,0,1.825860141597313
+250,1,-30,0,0,1.9500683144950903
+250,1,-40,0,0,1.6768103341199825
+250,1,-50,0,0,1.8010185070177598
+250,1,-60,0,0,1.3538690845857682
+250,1,-70,0,0,1.0060862004719895
+250,1,-80,0,0,1.1799776425288733
+250,1,-90,0,0,1.8879642280462017
+

@@ -852,10 +852,15 @@ class BLE_hci:
     
         return stats
 
-    def endTestVSFunc(self, args):
+    def endTestVSFunc(self, args) -> dict | None:
         """
-        Vendor specific command to end tx test
-        instead of returning RX packets, returns all information
+        Vendor specific command to end test\n
+        Returns a dictionary of entire test report\n
+        Keys:\n
+            rxDataTO -  Timeouts on receive\n
+            rxDataCRC - RX data with CRC errors\n
+            rxDataOk - Total RX data received with no issues\n
+            txData   - Total number of TX packets sent\n
         """
         
         evtString = self.send_command("0104FF00")
@@ -865,18 +870,22 @@ class BLE_hci:
             
             stats = {}
 
-            #reverse the string effectively converting to big endian
-            evtString = evtString[::-1]   
+            #flip every two character strings to create a big endian string to cast            
+            stats['rxDataTO']   = int(evtString[-2:] + evtString[-4 :-2],16)
+            stats['rxDataCRC']  = int(evtString[-6 :-4] + evtString[-8:-6],16) 
+            stats['rxDataOk']   = int(evtString[-10 :-8] + evtString[-12:-10] ,16)
+            stats['txData']     = int(evtString[-14 :-12] + evtString[-16:-14],16)
 
-            stats['rxDataTO']   = int(evtString[:4],16)
-            stats['rxDataCRC']  = int(evtString[4:8],16) 
-            stats['rxDataOk']   = int(evtString[8:12],16)
-            stats['txData']     = int(evtString[12:16],16)
-            
+            # if args is None or args.noPrint is False:
+            for item in stats:
+                print(item, stats[item])
+                
             return stats
         else:
 
             return None
+
+
     ## End Test function.
      #
      # Sends HCI command for the end test command.
@@ -1290,7 +1299,7 @@ if __name__ == '__main__':
     endTest_parser.set_defaults(func=ble_hci.endTestFunc)
 
     endTestVS_parser = subparsers.add_parser('endTestVS', aliases=['end'], 
-        help="End the TX/RX test, print the number of correctly received packets")
+        help="End the TX/RX test, print the full test report, and return the report as a dictionary")
     endTestVS_parser.set_defaults(func=ble_hci.endTestVSFunc)
 
 
