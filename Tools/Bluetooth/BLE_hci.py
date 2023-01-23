@@ -351,9 +351,9 @@ class BLE_hci:
                         print(f'\n{str(datetime.datetime.now())} - {msg}')
                         first = False
                     else:
-                        print(f'{str(datetime.datetime.now())} - {msg}')
+                        
     
-        
+                        print(f'{str(datetime.datetime.now())} {self.id}  {msg}')
         
     ## Get connection stats.
      #
