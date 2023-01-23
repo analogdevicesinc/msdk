@@ -148,25 +148,6 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     # mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
     # sleep(0.1)
 
-    # # Create the connection
-    # txAddr = "00:12:34:88:77:33"
-    # rxAddr = "11:12:34:88:77:33"
-
-    # hciSlave.addrFunc(Namespace(addr=txAddr))
-    # hciMaster.addrFunc(Namespace(addr=rxAddr))
-
-
-    # printInfo('Slave about to begin advertising')
-    # hciSlave.advFunc(Namespace(interval="60", stats="False", connect="True", maintain=False, listen="False"))
-    
-    # printInfo('Master initializeing connection')
-    # hciMaster.initFunc(Namespace(interval="6", timeout="64", addr=txAddr, stats="False", maintain=False, listen="False"))
-
-
-    # printInfo('Devices Listening')
-    # hciSlave.listenFunc(Namespace(time=1, stats="False"))
-    # hciMaster.listenFunc(Namespace(time=1, stats="False"))
-
 
     printInfo('Setting Data Length')
     hciSlave.dataLenFunc(None)
@@ -174,14 +155,10 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
 
 
     
-    # hciSlave.listenFunc(Namespace(time=1, stats="False"))
-
 
     printInfo('Setting PHY')
     # Set the PHY
     hciMaster.phyFunc(Namespace(phy=str(phy)))
-    # hciMaster.listenFunc(Namespace(time=2, stats="False"))
-    # printInfo('Master Listening')
 
 
 
@@ -190,19 +167,6 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     hciSlave.txPowerFunc(Namespace(power=txPower, handle="0"))
     hciMaster.txPowerFunc(Namespace(power=txPower, handle="0"))
 
-    # hciSlave.listenFunc(Namespace(time=1, stats="False"))
-
-    # hciSlave.sinkAclFunc(None)
-    # hciMaster.sinkAclFunc(None)
-    # hciSlave.listenFunc(Namespace(time=1, stats="False"))
-
-    # hciSlave.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(0)))
-    # hciMaster.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(0)))
-    # hciSlave.listenFunc(Namespace(time=1, stats="False"))
-
-    # hciSlave.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(1)))
-    # hciMaster.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(1)))
-    # hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
     for atten in attens:
         print(packetLen," ",phy," ",atten," ",txPower)
@@ -210,16 +174,6 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         # Set the attenuation
         # mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
         sleep(0.1)
-
-        # Record max per
-
-        perMaster = 0
-        perSlave = 0
-
-        #reset the devices
-    
-        # hciSlave.resetFunc(None)
-        # hciMaster.resetFunc(None)
 
 
         #start the test
@@ -244,7 +198,11 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
             printWarning('Connection stats returned invalid data. (Packets Transmitted = 0) PER rate being set to 100')
             perSlave = 100
 
-    
+        # Record max per
+        ## As of now, PER for the master cannot be defined
+        perMaster = 0
+        perSlave = 0
+
         if perMaster is not None and perSlave is not None:
             if(perMaster > perMax):
                 perMax = perMaster
