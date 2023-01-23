@@ -129,7 +129,7 @@ void setup_irqs(void)
     isr_cnt = 0;
 }
 
-int write_test_pattern() 
+int write_test_pattern()
 {
     int err;
     // A flash address must be in the erased state before writing to it, because the
@@ -138,7 +138,7 @@ int write_test_pattern()
     printf("Erasing page 64 of flash (addr 0x%x)...\n", TEST_ADDRESS);
     err = MXC_FLC_PageErase(TEST_ADDRESS);
     if (err) {
-        printf("Failed to erase page 64 of flash (addr 0x%x) with error code %i\n", TEST_ADDRESS, err);
+        printf("Failed with error code %i\n", TEST_ADDRESS, err);
         return err;
     }
 
@@ -167,11 +167,11 @@ int write_test_pattern()
         }
     }
     printf("Done!\n");
-    
+
     return err;
 }
 
-int validate_test_pattern() 
+int validate_test_pattern()
 {
     int err = 0;
 
@@ -180,7 +180,12 @@ int validate_test_pattern()
     for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
         MXC_FLC_Read(addr, &readval, 4);
         if (readval != TEST_VALUE) {
-            printf("Failed verification at address 0x%x with error code %i!  Expected: 0x%x\tRead: 0x%x\n", addr, err, TEST_VALUE, readval);
+            printf(
+                "Failed verification at address 0x%x with error code %i!  Expected: 0x%x\tRead: 0x%x\n",
+                addr,
+                err,
+                TEST_VALUE,
+                readval);
             return E_ABORT;
         }
     }
@@ -189,7 +194,7 @@ int validate_test_pattern()
     return err;
 }
 
-int erase_magic() 
+int erase_magic()
 {
     /*
         To modify a location in flash that has already been written to,
@@ -199,7 +204,9 @@ int erase_magic()
         Therefore, the entire page must be buffered, erased, then modified.
     */
     int err;
-    uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = { 0xFFFFFFFF }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
+    uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = {
+        0xFFFFFFFF
+    }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
 
     printf("Buffering page...\n");
     memcpy(buffer, (uint32_t *)TEST_ADDRESS, MXC_FLASH_PAGE_SIZE);
@@ -212,16 +219,16 @@ int erase_magic()
     }
 
     printf("Erasing magic in buffer...\n");
-    // Calculate buffer index based on flash address
+    // Calculate buffer index based on flash address (4 bytes per 32-bit word)
     unsigned int target_address = TEST_ADDRESS;
-    unsigned int buffer_index = (target_address - TEST_ADDRESS) >> 2; // Divide by 4 (4 bytes per 32-bit word)
+    unsigned int buffer_index = (target_address - TEST_ADDRESS) >> 2;
     buffer[buffer_index] = 0xABCD1234; // Erase magic value
 
     printf("Re-writing from buffer...\n");
     for (int i = 0; i < (MXC_FLASH_PAGE_SIZE >> 2); i++) {
-        err = MXC_FLC_Write32(TEST_ADDRESS + 4*i, buffer[i]);
+        err = MXC_FLC_Write32(TEST_ADDRESS + 4 * i, buffer[i]);
         if (err) {
-            printf("Failed to write to address 0x%x with error code %i\n", TEST_ADDRESS + 4*i, err);
+            printf("Failed at address 0x%x with error code %i\n", (TEST_ADDRESS+4) * i, err);
             return err;
         }
     }
@@ -262,25 +269,31 @@ int main(void)
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
 
     if (magic != MAGIC) { // Starting example for the first time.
+        // clang-format off
         MXC_CRITICAL(
             printf("---(Critical)---\n");
             err = write_test_pattern();
             printf("----------------\n");
         )
-        if (err) return err;
+        // clang-format on
+        if (err)
+            return err;
         printf("\nNow reset or power cycle the board...\n");
     } else { // Starting example after reset or power cycle
         printf("** Magic value 0x%x found at address 0x%x! **\n\n", MAGIC, TEST_ADDRESS);
         printf("(Flash modifications have survived a reset and/or power cycle.)\n\n");
 
         err = validate_test_pattern();
-        if (err) return err;
-        
+        if (err)
+            return err;
+
+        // clang-format off
         MXC_CRITICAL(
             printf("---(Critical)---\n");
             err = erase_magic();
             printf("----------------\n");
         )
+        //clang-format on
         if (err) return err;
 
         err = validate_test_pattern();
