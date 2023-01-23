@@ -36,7 +36,7 @@ P0.28 -> P0.15 (AIN7) and P0.29 -> P0.14 (AIN6)
 
 -->Data verified
 
--->EXAMPLE SUCCEEDED
+-->Example Succeeded
 
 ```
 

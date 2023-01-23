@@ -44,7 +44,9 @@ SPI
 SPIMSS
 SPIXF
 SPIXR
+SPI_MasterSlave
 SysTick
+Temp_Monitor
 TMR
 TRNG
 UART

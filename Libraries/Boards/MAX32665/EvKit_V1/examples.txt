@@ -57,6 +57,7 @@ SPI
 SPIXF
 SPIXR
 SRCC
+Temp_Monitor
 TMR
 TRNG
 UART

@@ -48,7 +48,6 @@
 #include "board.h"
 #include "dma.h"
 #include "i2s.h"
-#include "i2s_regs.h"
 #include "icc.h"
 #include "led.h"
 #include "max9867.h"

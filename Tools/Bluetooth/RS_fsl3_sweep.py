@@ -58,7 +58,7 @@ parser.add_argument('serialPort',help='DUT HCI serial port')
 args = parser.parse_args()
 
 # Create the BLE_hci objects
-hciDUT = BLE_hci(Namespace(serialPort=args.serialPort, baud=115200))
+hciDUT = BLE_hci(Namespace(serialPort=args.serialPort, monPort="", baud=115200))
 hciDUT.resetFunc(None)
 
 # Wait for calibration
@@ -74,15 +74,8 @@ channels = [0,1,2,10,19,30,36,37,38,39]
 
 for channel in channels:
     # Start transmitting
-    hciDUT.txTestFunc(Namespace(channel=channel, packetLength=1, payload=0, phy=1))
+    hciDUT.txTestFunc(Namespace(channel=channel, packetLength=255, payload=0, phy=1))
     sleep(1)
-
-    # Start the OBW test
-    retval = sa.testOBW(ch=channel)
-
-    if(retval != True):
-        print("OBW test failed")
-        sys.exit(1)
 
     if(channel > 36):
         # Start the OB2 test
@@ -90,6 +83,13 @@ for channel in channels:
 
         if(retval != True):
             print("RB2 test failed")
+            sys.exit(1)
+    else:
+        # Start the OBW test
+        retval = sa.testOBW(ch=channel)
+
+        if(retval != True):
+            print("OBW test failed")
             sys.exit(1)
 
     if(channel == 0):

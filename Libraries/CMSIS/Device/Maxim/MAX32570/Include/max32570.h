@@ -43,6 +43,7 @@
 #define MXC_NUMCORES 1
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #ifndef FALSE
 #define FALSE (0)

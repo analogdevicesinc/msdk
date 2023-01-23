@@ -280,15 +280,12 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                   AES Keys */
-#define MXC_BASE_AESKEY ((uint32_t)0x40205000UL)
-#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
+#define MXC_BASE_AESKEYS ((uint32_t)0x40205000UL)
+#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
 
-// DEPRECATED(10-24-2022): Scheduled for removal.
-// mxc_sys_aes_key_regs_t struct deprecated. Use mxc_aes_key_regs_t.
-typedef __attribute__((deprecated(
-    "Use MXC_AESKEY (mxc_aes_key_regs_t), not the deprecated MXC_SYS_AESKEY (mxc_sys_aes_key_regs_t) instance name and struct. 10-24-2022")))
-mxc_aes_key_regs_t mxc_sys_aes_key_regs_t;
-#define MXC_SYS_AESKEY ((mxc_sys_aes_key_regs_t *)MXC_BASE_AESKEY)
+// DEPRECATED(1-10-2023): Scheduled for removal.
+#define MXC_BASE_AESKEY MXC_BASE_AESKEYS
+#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
 
 /******************************************************************************/
 /*                                                            Real Time Clock */

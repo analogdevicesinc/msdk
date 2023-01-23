@@ -46,7 +46,6 @@
 #include "board.h"
 #include "mxc_delay.h"
 #include "afe.h"
-#include "afe_dac_regs.h"
 
 /***** Definitions *****/
 

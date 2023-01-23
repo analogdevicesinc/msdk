@@ -40,5 +40,5 @@ Connect UART0 to UART2 (P2.12->P1.9) for this example.
 
 -->Data verified
 
--->EXAMPLE SUCCEEDED
+-->Example Succeeded
 ```

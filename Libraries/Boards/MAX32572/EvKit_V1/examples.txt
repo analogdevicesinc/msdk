@@ -38,7 +38,9 @@ Semaphore
 SPI
 SPIXF
 SPIXR
+SPI_MasterSlave
 SRCC
+Temp_Monitor
 TFT_Demo
 TMR
 TRNG

@@ -53,6 +53,8 @@ RTC_Backup
 SDHC_FAT
 SDHC_Raw
 SPI
+SPI_MasterSlave
+Temp_Monitor
 TFT_Demo
 TMR
 TRNG

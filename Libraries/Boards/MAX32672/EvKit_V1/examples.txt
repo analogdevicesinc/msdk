@@ -35,6 +35,8 @@ RTC
 RTC_Backup
 SCPA_OTP_Dump
 SPI
+SPI_MasterSlave
+Temp_Monitor
 TMR
 TRNG
 UART

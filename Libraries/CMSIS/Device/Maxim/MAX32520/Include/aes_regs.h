@@ -1,7 +1,7 @@
 /**
  * @file    aes_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AES Peripheral Module.
- * @note    This file is @generated.
+ * @note    This file is @deprecated.
  */
 
 /******************************************************************************
@@ -39,6 +39,8 @@
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_AES_REGS_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_AES_REGS_H_
+
+#warning "DEPRECATED(1-10-2023): aes_regs.h - Scheduled for removal. Please use aeskeys_regs.h."
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -85,6 +87,11 @@ extern "C" {
  * @ingroup aes_registers
  * Structure type to access the AES Registers.
  */
+#if defined(__GNUC__)
+__attribute__((deprecated("mxc_aes_regs_t struct and aes_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023")))
+#else
+#warning "mxc_aes_regs_t struct and aes_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023"
+#endif
 typedef struct {
     __IO uint32_t aes_sram_key;         /**< <tt>\b 0x000:</tt> AES AES_SRAM_KEY Register */
     __R  uint32_t rsv_0x4_0x7f[31];
