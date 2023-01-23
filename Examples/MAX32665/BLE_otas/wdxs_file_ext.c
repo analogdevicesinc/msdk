@@ -37,9 +37,12 @@
 #include "app_api.h"
 #include "flc.h"
 #include "Ext_Flash.h"
-#ifndef FW_VERSION
-#define FW_VERSION 1
+
+#ifndef FW_VERSION_MAJOR
+#define FW_VERSION_MAJOR 1
+#define FW_VERSION_MINOR 0
 #endif
+
 #define EXT_FLASH_PAGE_SIZE 256
 #define EXT_FLASH_SECTOR_SIZE ((uint32_t)0x0001000)
 #define HEADER_LOCATION ((uint32_t)0x00000000)
@@ -62,6 +65,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
 static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param);
 
 static fileHeader_t fileHeader = { .fileCRC = 0, .fileLen = 0 };
+wsfEfsHandle_t otaFileHdl;
 #define HEADER_LEN (sizeof(fileHeader_t))
 /* Use the second half of the flash space for scratch space */
 static const wsfEfsMedia_t WDXS_FileMedia = {
@@ -101,6 +105,7 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     } else {
         /* Erase is complete */
         APP_TRACE_INFO0(">>> External flash erase complete <<<");
+        wdxsFtcSendRsp(1, WDX_FTC_OP_PUT_RSP, otaFileHdl, WDX_FTC_ST_SUCCESS);
     }
 }
 
@@ -117,9 +122,11 @@ static uint8_t wdxsFileInitMedia(void)
     MXC_FLC_Init();
     err += Ext_Flash_Init();
     err += Ext_Flash_Quad(1);
-    if (err)
+    if (err) {
         APP_TRACE_INFO0("Error initializing external flash");
-    APP_TRACE_INFO1("FW_VERSION: %d", FW_VERSION);
+    }
+
+    APP_TRACE_INFO2("FW_VERSION: %d.%d", FW_VERSION_MAJOR, FW_VERSION_MINOR);
 
     /* Setup the erase handler */
     eraseHandlerId = WsfOsSetNextHandler(wdxsFileEraseHandler);
@@ -340,11 +347,11 @@ void WdxsFileInit(void)
     char versionString[WSF_EFS_VERSION_LEN];
 
     /* Add major number */
-    versionString[0] = FW_VERSION & 0xFF;
+    versionString[0] = FW_VERSION_MAJOR;
     /* Add "." */
-    versionString[1] = (FW_VERSION & 0xFF00) >> 8;
+    versionString[1] = '.';
     /* Minor number */
-    versionString[2] = (FW_VERSION & 0xFF0000) >> 16;
+    versionString[2] = FW_VERSION_MINOR;
     /* Add termination character */
     versionString[3] = 0;
 
@@ -366,8 +373,9 @@ void WdxsFileInit(void)
     WstrnCpy(attr.version, versionString, WSF_EFS_VERSION_LEN);
 
     /* Add a file for the stream */
-    WsfEfsAddFile(WDXS_FileMedia.endAddress - WDXS_FileMedia.startAddress, WDX_FLASH_MEDIA, &attr,
-                  0);
+    otaFileHdl = WsfEfsAddFile(WDXS_FileMedia.endAddress - WDXS_FileMedia.startAddress,
+                               WDX_FLASH_MEDIA, &attr, 0);
+    APP_TRACE_INFO1("File Hdl: %d", otaFileHdl);
 }
 
 /*************************************************************************************************/
@@ -401,9 +409,16 @@ uint32_t WdxsFileGetVerifiedLength(void)
  *  \return Firmware version of WDXS file.
  */
 /*************************************************************************************************/
-uint8_t WdxsFileGetFirmwareVersion(void)
+uint16_t WdxsFileGetFirmwareVersion(void)
 {
-    return FW_VERSION;
+    wsfEsfAttributes_t attr;
+    uint8_t minor, major;
+
+    WsfEfsGetAttributes(otaFileHdl, &attr);
+    major = attr.version[0];
+    minor = attr.version[2];
+    // store major in upper byte and minor in lower byte
+    return (uint16_t)major << 8 | minor;
 }
 
 void initHeader(fileHeader_t *header)
