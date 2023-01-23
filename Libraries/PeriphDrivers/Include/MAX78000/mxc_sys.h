@@ -282,25 +282,39 @@ uint32_t MXC_SYS_RiscVClockRate(void);
 
 typedef struct
 {
-    uint32_t primask;
+    int ie_status;
     int in_critical;
 } mxc_crit_state_t; 
 
 static mxc_crit_state_t _state = { 
-    .primask = 0xFFFFFFFF, 
-    .in_critical = 0 
+    .ie_status = 0xFFFFFFFF,
+    .in_critical = 0
     };
 
 static inline void _mxc_crit_get_state()
 {
+#ifdef __CORTEX_M
     /*
-        The 0th bit of the Priority Mask register indicates
+        On ARM M the 0th bit of the Priority Mask register indicates
         whether interrupts are enabled or not.
 
         0 = enabled
         1 = disabled
     */
-    _state.primask = __get_PRIMASK();
+    uint32_t primask = __get_PRIMASK();
+    _state.ie_status = (primask == 0);
+#endif
+#ifdef __riscv
+    /*
+        On RISC-V bit position 3 (Machine Interrupt Enable) of the
+        mstatus register indicates whether interrupts are enabled.
+
+        0 = disabled
+        1 = enabled
+    */
+    uint32_t mstatus = get_mstatus();
+    _state.ie_status = ((mstatus & (1 << 3)) != 0);
+#endif
 }
 
 /**
@@ -309,7 +323,7 @@ static inline void _mxc_crit_get_state()
 static inline void MXC_SYS_Crit_Enter(void)
 {
     _mxc_crit_get_state();
-    if (_state.primask == 0) __disable_irq();
+    if (_state.ie_status) __disable_irq();
     _state.in_critical = 1;
 }
 
@@ -319,7 +333,7 @@ static inline void MXC_SYS_Crit_Enter(void)
  */
 static inline void MXC_SYS_Crit_Exit(void)
 {
-    if (_state.primask == 0) {
+    if (_state.ie_status) {
         __enable_irq();
     }
     _state.in_critical = 0;
