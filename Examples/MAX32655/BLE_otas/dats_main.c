@@ -956,7 +956,7 @@ void DatsStart(void)
 #if (BT_VER > 8)
     DmPhyInit();
 #endif /* BT_VER */
-    
+
     WsfNvmInit();
 
     WsfBufDiagRegister(datsWsfBufDiagnostics);
