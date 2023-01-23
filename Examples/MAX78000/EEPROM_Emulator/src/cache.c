@@ -79,18 +79,18 @@ int cache_refresh(cache_t *cache, uint32_t next_addr)
     }
 
     // If cache contents modified, store it back to flash
-    if(cache->dirty) {
-		// Erase flash page before copying cache contents to it
-		err = MXC_FLC_PageErase(cache->start_addr);
-		if (err != E_NO_ERROR) {
-			return err;
-		}
+    if (cache->dirty) {
+        // Erase flash page before copying cache contents to it
+        err = MXC_FLC_PageErase(cache->start_addr);
+        if (err != E_NO_ERROR) {
+            return err;
+        }
 
-		// Copy contents of cache to erase flash page
-		err = MXC_FLC_Write(cache->start_addr, MXC_FLASH_PAGE_SIZE, (uint32_t *)cache->cache);
-		if (err != E_NO_ERROR) {
-			return err;
-		}
+        // Copy contents of cache to erase flash page
+        err = MXC_FLC_Write(cache->start_addr, MXC_FLASH_PAGE_SIZE, (uint32_t *)cache->cache);
+        if (err != E_NO_ERROR) {
+            return err;
+        }
     }
 
     // Get starting address of flash page
@@ -107,21 +107,21 @@ int cache_refresh(cache_t *cache, uint32_t next_addr)
 
 int cache_write_back(cache_t *cache)
 {
-	int err;
+    int err;
 
-	// Erase flash page before copying cache contents to it
-	err = MXC_FLC_PageErase(cache->start_addr);
-	if (err != E_NO_ERROR) {
-		return err;
-	}
+    // Erase flash page before copying cache contents to it
+    err = MXC_FLC_PageErase(cache->start_addr);
+    if (err != E_NO_ERROR) {
+        return err;
+    }
 
-	// Copy contents of cache to erase flash page
-	err = MXC_FLC_Write(cache->start_addr, MXC_FLASH_PAGE_SIZE, (uint32_t *)cache->cache);
-	if (err != E_NO_ERROR) {
-		return err;
-	}
+    // Copy contents of cache to erase flash page
+    err = MXC_FLC_Write(cache->start_addr, MXC_FLASH_PAGE_SIZE, (uint32_t *)cache->cache);
+    if (err != E_NO_ERROR) {
+        return err;
+    }
 
-	cache->dirty = false;
+    cache->dirty = false;
 
-	return err;
+    return err;
 }

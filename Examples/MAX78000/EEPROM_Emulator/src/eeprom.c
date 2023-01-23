@@ -268,12 +268,12 @@ void eeprom_store_data(void)
 
     // Check write address
     if (write_addr == EEPROM_WRITE_BACK_CMD) {
-    	// Received write back command --> store cache contents
-    	cache_write_back(&cache);
-    	return;
+        // Received write back command --> store cache contents
+        cache_write_back(&cache);
+        return;
     } else if (write_addr >= EEPROM_FLASH_SZ) {
-    	// Invalid write address
-    	return;
+        // Invalid write address
+        return;
     }
 
     // Refresh cache if write address isn't located in the current cache page
