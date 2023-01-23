@@ -396,38 +396,6 @@ class BLE_hci:
                 
                 break
 
-
-        # while((per == None) and (retries > 0)):
-        #     # Send the command to get the connection stats, save the event
-        #     statEvt = self.send_command("01FDFF00")
-
-        #     if(retries != 5):
-        #         # Delay to clear pending events
-        #         self.wait_events(1)
-                
-        #     if statEvt is not None:
-
-        #         # Offset into the event where the stats start, each stat is 32 bits, or
-        #         # 8 hex nibbles
-        #         off = 14
-        #         connStats['rxDataOk']  = int(statEvt[6+off:8+off]+statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
-        #         off += 8
-        #         connStats['rxDataCRC'] = int(statEvt[6+off:8+off] + statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
-        #         off += 8
-        #         connStats['rxDataTO']  = int(statEvt[6+off:8+off]+statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
-        #         off += 8
-        #         connStats['txData']    = int(statEvt[6+off:8+off]+statEvt[4+off:6+off] + statEvt[2+off:4+off] + statEvt[0+off:2+off],16)
-        #         off += 8
-        #         connStats['errTrans']  = int(statEvt[6+off:8+off]+statEvt[4+off:6+off]+statEvt[2+off:4+off]+statEvt[0+off:2+off],16)
-        #         connStats['per']
-                
-        #     if((connStats['rxDataCRC'] + connStats['rxDataTO'] + connStats['rxDataOk']) != 0):
-        #         per = round(float(( connStats['rxDataCRC'] + connStats['rxDataTO'])/( connStats['rxDataCRC'] +connStats['rxDataTO'] + connStats['rxDataOk'])) *100 , 2)
-        #     else:
-        #         connStats['per'] = 100.0
-
-        #     retries = retries - 1
-
         if retries == 0:
             print(colored('Warning: Failed to get connection stats', 'yellow'))
             return None
@@ -844,14 +812,7 @@ class BLE_hci:
         modulationIndex="00"
         self.send_command("01332003"+channel+phy+modulationIndex)
     
-    def getTestStats(self):
-        stats = 0
-        evtString = self.send_command("01feFF00")
-        
-        
-    
-        return stats
-
+   
     def endTestVSFunc(self, args) -> dict | None:
         """
         Vendor specific command to end test\n
