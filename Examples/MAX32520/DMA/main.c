@@ -55,6 +55,7 @@
 int mychannel = -1;
 volatile int flag = 0;
 int channels[MAX_CHANNEL];
+
 /***** Functions *****/
 void my_int_func(int a, int b)
 {
