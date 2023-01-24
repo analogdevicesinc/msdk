@@ -43,6 +43,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /***** Definitions *****/
 
 /// Structure used for FIFO management
@@ -138,5 +142,9 @@ unsigned int fifo_level(fifo_t * fifo);
 *   \returns  the remaining elements that can be added to the FIFO
 */
 unsigned int fifo_remaining(fifo_t * fifo);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _FIFO_H_ */
