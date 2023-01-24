@@ -16,30 +16,21 @@ Once complete, the example will prompt the user to reset or power cycle the boar
 
 The _second_ time the example is run the application will see the "magic" 32-bit sequence in flash.  When this happens, the application will verify that the test pattern has survived the power cycle first.  Then, it will _modify_ the "magic" sequence _without_ modifying the rest of the test pattern.
 
-## Building and Running
+## Hardware Connections
 
-### Software Setup
+MAX32680EVKIT:
+
+- Connect a USB cable between the PC and the CN1 (USB/HART/PWR) connector.
+- Connect JP22 (RX_SEL) to UART1 and JP23 (TX_SEL) to UART1
+- Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
+## Building and Running
 
 **See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
 
-This example supports all available MAX78000 evaluation platforms but comes _pre-configured_ for the MAX78000EVKIT by default.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) for instructions on how to configure the project for a different board.
-
-### Hardware Connections
-
-If using the MAX78000EVKIT:
-
-- Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
-- Connect pins 1 and 2 (P0_1) of the JH1 (UART 0 EN) header.
-- Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
-
-If using the Featherboard (FTHR_RevA):
-
-- Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
-- Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
-
 ## Expected Output
 
-After flashing and launching the example, an LED on the board will blink once every second.  This is the application waiting for PushButton 1 (PB1) to be pressed, and gives a window for a serial terminal to be connected.  After connecting the serial terminal, the application will output the following contents:
+After flashing and launching the example, an LED on the board will blink once every second.  This is the application waiting for PushButton 1 (SW1) to be pressed, and gives a window for a serial terminal to be connected.  After connecting the serial terminal, the application will output the following contents:
 
 ```
 ***** Flash Control Example *****
