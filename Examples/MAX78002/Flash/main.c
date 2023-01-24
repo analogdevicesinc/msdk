@@ -181,10 +181,7 @@ int validate_test_pattern()
         if (readval != TEST_VALUE) {
             printf(
                 "Failed verification at address 0x%x with error code %i!  Expected: 0x%x\tRead: 0x%x\n",
-                addr,
-                err,
-                TEST_VALUE,
-                readval);
+                addr, err, TEST_VALUE, readval);
             return E_ABORT;
         }
     }
@@ -203,9 +200,7 @@ int erase_magic()
         Therefore, the entire page must be buffered, erased, then modified.
     */
     int err;
-    uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = {
-        0xFFFFFFFF
-    };
+    uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = { 0xFFFFFFFF };
 
     printf("Buffering page...\n");
     memcpy(buffer, (uint32_t *)TEST_ADDRESS, MXC_FLASH_PAGE_SIZE);

@@ -181,10 +181,7 @@ int validate_test_pattern()
         if (readval != TEST_VALUE) {
             printf(
                 "Failed verification at address 0x%x with error code %i!  Expected: 0x%x\tRead: 0x%x\n",
-                addr,
-                err,
-                TEST_VALUE,
-                readval);
+                addr, err, TEST_VALUE, readval);
             return E_ABORT;
         }
     }
