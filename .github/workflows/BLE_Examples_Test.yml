@@ -50,6 +50,7 @@ jobs:
       #current board undertest
       - name: Lock All Boards
         if: ${{ always() }}
+        id: lock_files
         run: |          
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_0.txt
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
@@ -254,7 +255,7 @@ jobs:
       # This needs some work, if the job is cancelled or times out because it could not get a LOCK
       # it then jumps here and removes all locks, that were set by a different job   
       - name: Unlock All Boards
-        if: always()
+        if: steps.lock_files.outcome == 'success'
         run: |
 
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
