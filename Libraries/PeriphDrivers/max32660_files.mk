@@ -1,6 +1,5 @@
-
 ################################################################################
- # Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -30,9 +29,6 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- # $Date: 2018-08-31 14:08:14 -0500 (Fri, 31 Aug 2018) $
- # $Revision: 37586 $
- #
  ###############################################################################
 
 # This is the name of the build output file
@@ -48,7 +44,6 @@ ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
 
-
 # This is the path to the CMSIS root directory
 ifeq "$(CMSIS_ROOT)" ""
 CMSIS_ROOT=../CMSIS
@@ -57,26 +52,23 @@ ifeq "$(LIBS_DIR)" ""
 LIBS_DIR = $(CMSIS_ROOT)/..
 endif
 
-
 PERIPH_DIR := $(LIBS_DIR)/PeriphDrivers
 SOURCE_DIR := $(PERIPH_DIR)/Source
 INCLUDE_DIR := $(PERIPH_DIR)/Include
 
 PERIPH_DRIVER_INCLUDE_DIR  += $(INCLUDE_DIR)/$(TARGET_UC)/
-# Source files)
+
+# Source files
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/pins_me11.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_me11.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me11.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_reva.c
-
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_me11.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/FLC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_common.c
@@ -91,16 +83,15 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/GPIO/gpio_reva.c
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/I2C
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/I2C/i2c_me11.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/I2C/i2c_reva.c
- 
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPIMSS
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIMSS/i2s_me11.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIMSS/i2s_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ICC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_common.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_me11.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_reva.c
 
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_me11.c
+ 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/RTC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/RTC/rtc_me11.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/RTC/rtc_reva.c
@@ -109,7 +100,10 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPI
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_me11.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_reva.c
 
+# I2S and SPIMSS
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPIMSS
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIMSS/i2s_me11.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIMSS/i2s_reva.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIMSS/spimss_me11.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIMSS/spimss_reva.c
 
