@@ -33,10 +33,9 @@
 
 /**
  * @file    main.c
- * @brief   Flash Control Mass Erase & Write 32-bit enabled mode Example
- * @details This example demonstrates how to properly mass erase the entire flash bank
- * from application code.  Additionally, it shows how to read, write, and verify data
- * from flash.
+ * @brief   Flash Controller Example
+ * @details This example demonstrates how to use the flash controller for general purpose
+ * storage.  See the "README.md" file for more details.
  */
 
 /***** Includes *****/
@@ -55,7 +54,7 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define TEST_ADDRESS 0x1007E000
+#define TEST_ADDRESS 0x1005E000
 #define MAGIC 0xFEEDBEEF
 #define TEST_VALUE 0xDEADBEEF
 
@@ -135,7 +134,7 @@ int write_test_pattern()
     // A flash address must be in the erased state before writing to it, because the
     // flash controller can only write a 1 -> 0.
     // See the microcontroller's User Guide for more details.
-    printf("Erasing page 64 of flash (addr 0x%x)...\n", TEST_ADDRESS);
+    printf("Erasing page of flash at addr 0x%x...\n", TEST_ADDRESS);
     err = MXC_FLC_PageErase(TEST_ADDRESS);
     if (err) {
         printf("Failed with error code %i\n", TEST_ADDRESS, err);
@@ -263,7 +262,7 @@ int main(void)
     Any code that modifies flash contents should disable the ICC,
     since modifying flash contents may invalidate cached instructions.
     */
-    MXC_ICC_Disable(MXC_ICC0);
+    MXC_ICC_Disable();
 
     uint32_t magic = 0;
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
