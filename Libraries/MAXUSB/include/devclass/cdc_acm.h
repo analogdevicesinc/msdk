@@ -36,6 +36,10 @@
 
 #include "usb_protocol.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
 /**
  * @file  cdc_acm.h
  * @brief Communications Device Class ACM (Serial Port) over USB.
@@ -164,5 +168,9 @@ int acm_read(uint8_t *buf, unsigned int len);
  *            successful reception of characters by the host.
  */
 int acm_write(uint8_t *buf, unsigned int len);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _CDC_ACM_H_ */

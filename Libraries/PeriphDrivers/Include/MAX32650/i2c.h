@@ -46,6 +46,10 @@
 #include "i2c_regs.h"
 #include "mxc_sys.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @defgroup i2c I2C
  * @ingroup periphlibs
@@ -854,5 +858,9 @@ void MXC_I2C_AsyncHandler(mxc_i2c_regs_t *i2c);
 void MXC_I2C_DMACallback(int ch, int error);
 
 /**@} end of group i2c */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_I2C_H_
