@@ -33,10 +33,9 @@
 
 /**
  * @file    main.c
- * @brief   Flash Control Mass Erase & Write 32-bit enabled mode Example
- * @details This example demonstrates how to properly mass erase the entire flash bank
- * from application code.  Additionally, it shows how to read, write, and verify data
- * from flash.
+ * @brief   Flash Controller Example
+ * @details This example demonstrates how to use the flash controller for general purpose
+ * storage.  See the "README.md" file for more details.
  */
 
 /***** Includes *****/
