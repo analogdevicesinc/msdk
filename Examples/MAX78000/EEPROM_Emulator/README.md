@@ -4,17 +4,44 @@ This example utilizes the MAX78000 to emulate a 32KiB EEPROM chip with an I2C in
 
 This "EEEPROM" can only perform read and write operations.
 
-To write to the EEPROM, transmit a master write command followed by two write address bytes, and finally the data bytes. The write address is a 16-bit address, with the first address byte as the MSB and the second as the LSB. The EEPROM emulator is able to receive up to 64 bytes per write operation. If you write past the end of the EEPROM address space, the write will continue at the beginning of the EEPROM address space.
+To write data to the EEPROM emulator execute the following steps:
+```
+1. Issue an I2C start followed by the EEPROM Emulator slave address with the R/W bit set to 0.
+2. Send the write address (the address to start storing data bytes at). The write address is 2 bytes long with the first address byte as the MSB and the second address byte as the LSB.
+3. Send up to 64 data bytes.
+```
 
-Unlike write operations, the EEPROM determines the location of the read based on the value of an internal read address pointer. The read pointer is initialized to address 0x0000 and increments by 1 after transmitting the value at the current address. For example, if the value of the read pointer was initially 0x0000 and you read 8 bytes, the device will transmit bytes 0x0000-0x0007 and the final value of the read pointer will be 0x0008 which is where the next read operation will start from.
+![image info](./EEPROM_OP_Diagrams/EEPROM_Write.png)
 
-To initiate a read operation simply transmit a master read command. The device will then begin transmitting bytes starting from the current read pointer. If, however, you do not wish to read from the current address of the read pointer, you may set the read pointer by initiating the read operation with a master write command followed by the new two byte address of the read pointer (same format as the write address). Then, issue a repeated start and master read command. The device will then begin transmitting bytes starting from the new read pointer. Read operations will continue until a NACK+STOP is issued by the master. If you read past the end of the EEPROM address space, the read will continue at the beginning of the EEPROM address space.
+Unlike write operations, the EEPROM determines the location of the read based on the value of an internal read address pointer. The read pointer is initialized to address 0x0000 and increments by 1 after transmitting the value at the current address. For example, if the value of the read pointer was initially 0x0000 and you read 8 bytes, the device will transmit the contents of locations 0x0000-0x0007 and the final value of the read pointer will be 0x0008 which is where the next read operation will start from.
+
+To read from the currrent address of the read pointer:
+```
+1. Issue an I2C start followed by the EEPROM Emulator slave address with the R/W bit set to 1.
+2. Read as many bytes as you need.
+3. Once you have received the last byte, issue a NACK+STOP.
+```
+
+![image info](./EEPROM_OP_Diagrams/EEPROM_Read.png)
+
+To set the read pointer to a new address and read from there, execute the following steps:
+```
+1. Issue an I2C start followed by the EEPROM Emulator slave address with the R/W bit set to 0.
+2. Send the new read pointer address. The read pointer address is the same format as a write address, 2 bytes long with the first address byte as the MSB and the second address byte as the LSB.
+3. Issue a repeated start followed by the EEPROM Emulator slave address with the R/W bit set to 1.
+4. Read as many bytes as you need.
+5. Once you have received the last byte, issue a NACK+STOP.
+```
+
+![image info](./EEPROM_OP_Diagrams/EEPROM_Read_Set_Pointer.png)
 
 The default slave address of the EEPROM is 0x24. This can be modified by changing the value of the EEPROM_ADDR define in include/eeprom.h.
 
-To help with syncronization, a "Ready Signal" is output from a GPIO pin. When the signal is high, the EEPROM is not currently processing a transaction and is ready for the next transaction to begin. When the signal is low, the EEPROM has either not been initialized or is currently still processing the previous transaction, and thus is not ready to process the next transaction.
+To help with syncronization, a "Ready Signal" is set up as an output from a GPIO pin. When the signal is high, the EEPROM is not currently processing a transaction and is ready for the next transaction to begin. When the signal is low, the EEPROM has either not been initialized or is currently still processing the previous transaction, and thus is not ready to process the next transaction.
 
-**** NOTE ****: Due to the limitations of the internal flash, EEPROM data is buffered in SRAM. Two events can trigger the buffer to be written back to flash, either an operation (read or write) is performed on a flash page that is not currently buffered (for reference the EEPROM is made of four 8KiB flash pages and the buffer holds a single page at a time) or a write operation is received with a write address of 0xBEEF. 
+**** NOTE ****: Due to the limitations of the internal flash, EEPROM data is buffered in SRAM. Two events can trigger the buffer to be written back to flash: 1) when an operation (read or write) is performed on a flash page that is not currently buffered (for reference the EEPROM is made of four 8KiB flash pages and the buffer holds a single page at a time), or 2) a write operation is received with a write address of 0xBEEF.
+
+![image info](./EEPROM_OP_Diagrams/EEPROM_Force_WB.png)
 
 ## Setup
 
