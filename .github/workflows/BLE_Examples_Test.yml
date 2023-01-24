@@ -17,7 +17,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: [ self-hosted, btm-ci ]
     if: github.event.pull_request.draft == false
-
+    if: "!contains(github.event.pull_request.labels.*.name, 'WIP')"
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
      # Clean and remove any local modifications
