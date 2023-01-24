@@ -267,6 +267,8 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
     while (attempts) {
         err += Ext_Flash_Program_Page((uint32_t)pAddress, (uint8_t *)addressToBuf, size,
                                       Ext_Flash_DataLine_Quad);
+        if (err)
+            APP_TRACE_INFO0("failed at 0");
         err += Ext_Flash_Read((uint32_t)pAddress, tempBuff, size, Ext_Flash_DataLine_Quad);
         /* verify data was written correctly */
         if (memcmp(tempBuff, pBuf, size) != 0) {
