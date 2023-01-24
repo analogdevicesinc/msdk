@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,9 +28,6 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- * $Date: 2015-12-03 12:01:29 -0600 (Thu, 03 Dec 2015) $
- * $Revision: 20227 $
  *
  ******************************************************************************/
 
