@@ -94,5 +94,5 @@ int main()
 
     printf("\n-->Scan finished. %d devices found\n", counter);
 
-    return 0;
+    return E_NO_ERROR;
 }

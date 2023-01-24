@@ -43,7 +43,6 @@
 #include "mxc_device.h"
 #include "board.h"
 #include "ctb.h"
-#include "ctb_regs.h"
 
 /***** Definitions *****/
 #define POLY 0xEDB88320
@@ -65,16 +64,7 @@ void Test_Callback(void *req, int result)
     callback_result = result;
 }
 
-void Test_Result(int result)
-{
-    if (result) {
-        printf(" * Failed *\n");
-    } else {
-        printf("   Passed  \n");
-    }
-}
-
-void Test_CRC(int asynchronous)
+int Test_CRC(int asynchronous)
 {
     uint32_t array[101];
     int i;
@@ -116,15 +106,31 @@ void Test_CRC(int asynchronous)
         MXC_CTB_CRC_Compute(&crc_req);
     }
 
-    Test_Result(CHECK != crc_req.resultCRC);
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
+
+    if (CHECK != crc_req.resultCRC) {
+        printf(" * Failed *\n");
+        return -1;
+    }
+
+    printf("   Passed  \n");
+    return 0;
 }
 
 // *****************************************************************************
 int main(void)
 {
-    Test_CRC(0);
-    Test_CRC(1);
+    int fail = 0;
+    printf("\n***** CRC Example *****\n");
 
-    return 0;
+    fail += Test_CRC(0);
+    fail += Test_CRC(1);
+
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

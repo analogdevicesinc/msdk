@@ -383,7 +383,8 @@ int main(void)
         printf("\nExample Succeeded\n");
     } else {
         printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

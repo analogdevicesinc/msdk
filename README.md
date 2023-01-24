@@ -2,15 +2,17 @@
 
 ## Introduction
 
-The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://www.analog.com/en/index.html), contains the necessary software and tools to develop firmware for the [MAX32xxx and MAX78xxx Microcontrollers](https://www.analog.com/en/parametricsearch/10984).  This includes register files, peripheral drivers, system startup files, documentation, various utilities, third-party libraries, IDE support files, and a toolchain.
+The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://www.analog.com/en/index.html), contains the necessary software and tools to develop firmware for the [MAX32xxx and MAX78xxx Microcontrollers](https://www.analog.com/en/parametricsearch/10984).  This includes register files, peripheral drivers, system startup files, documentation, various utilities, third-party libraries, IDE support files, and a toolchain.  Full documentation can be found in the User Guide:
 
-**This repository** contains the latest ***source code*** of the MSDK and is used for *development*.  It does _not_ contain the MSDK _toolchain_, which is a separate collection of programs used to build, program, and debug the contents of this repo on hardware.
+* [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+
+**This repository** contains the latest **_source code_** of the MSDK and is being used for _development_.  It does _not_ contain the MSDK _toolchain_, which is a separate collection of programs used for building, programming, and debugging.
 
 ## Installation
 
-The full MSDK is available via an Automatic Installer, and installation instructions can be found in the [MSDK User Guide](Documentation/USERGUIDE.md).
+The MSDK source code is bundled alongside its toolchain into releases that are available via an Automatic Installer.  See the ["Installation"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation) section in the MSDK User Guide for instructions.
 
-Users who would like to use the latest beeding-edge _development_ resources can follow [Developing from the Repo](#developing-from-the-repo) below, but this should only be done **_after_** installing the full MSDK above.
+Users who would like to use the latest bleeding-edge _development_ resources can follow [Developing from the Repo](#developing-from-the-repo) below, but this should only be done **_after_** installing the release MSDK above.
 
 ## Contributing
 
@@ -28,9 +30,9 @@ This repo can be cloned using [Git](https://git-scm.com/) to obtain the latest d
 
 2. Add an SSH key to your Github account.  See the [Github Docs on SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) for instructions.
 
-3. Open a terminal on your system.
+3. Open a terminal.
 
-4. `cd` into a directory ***without any spaces in its filepath***.  The repo will be cloned inside of this folder.
+4. `cd` into a directory **_without any spaces in its filepath_**.
 
 5. Clone the repository using the `git clone` command.
 
@@ -72,7 +74,7 @@ This repo can be cloned using [Git](https://git-scm.com/) to obtain the latest d
 
 This repository contains the MSDK's *source code* only.  In order to develop on it directly the toolchain must be made available at the same file-paths as the full MSDK installation.  The easiest way to do this is to retrieve the toolchain with the automatic installer and then create symbolic links.  This section walks through the process.
 
-1. Install the MSDK via the [Automatic Installer](Documentation/USERGUIDE.md#installation) for your OS if you haven't already.
+1. Install the MSDK via the [Automatic Installer](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation).
 
     At ***minimum***, install the following components:
     * GNU RISC-V Embedded GCC
@@ -125,9 +127,7 @@ This repository contains the MSDK's *source code* only.  In order to develop on 
         
         The [Tools](Tools) directory of the MSDK repo should now contain valid symbolic links to the full installation's toolchain.
         
-        ![Symbolic links (windows)](res/symlinks-windows.jpg)
-
-    4. Proceed to
+        ![Symbolic links (windows)](Documentation/res/symlinks-windows.jpg)
 
     On **Linux/MacOS**:
     * Open a terminal
@@ -172,9 +172,11 @@ This repository contains the MSDK's *source code* only.  In order to develop on 
 
 ### Environment Setup (Visual Studio Code)
 
-To use Visual Studio Code with the _development repository_ simply set `MAXIM_PATH` to the cloned location of the _development repo_ instead of the full *release MSDK* location in your user settings.json file and reload VS Code.  If you have not previously configured VS Code, see See [Setup (VS Code)](USERGUIDE.md#setup-vs-code) in the User Guide.
+If you have not previously configured VS Code, see [Setup (VS Code)](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#setup-vs-code_1) in the User Guide.
 
-The *release* `MAXIM_PATH` can be commented out for later to easily switch back.  For example:
+To configure Visual Studio Code for the _development repository_ simply set `MAXIM_PATH` to the cloned location of the _development repo_ instead of the release MSDK in your user settings.json file.  After making the change, reload VS Code.  
+
+The `MAXIM_PATH` pointing to the _release_ MSDK can be commented out to easily switch back to it if needed.  For example:
 
 ```json
 {
@@ -191,9 +193,11 @@ The *release* `MAXIM_PATH` can be commented out for later to easily switch back.
 
 ### Environment Setup (Eclipse)
 
-Eclipse itself should be launched with the `Tools/Eclipse/cdt/eclipse(.bat/.sh)` script, which will set `MAXIM_PATH` and a few other environment variables for use with the _release_ version of the MSDK by default.  Therefore, there are two options for using Eclipse with the MSDK *development* repository:
+There are two options for using Eclipse with the MSDK *development* repository.
 
 #### Option 1 - Project Settings
+
+This option can configure an _individual_ Eclipse project to use the development repo. 
 
 1. Import or open a project in your Eclipse workspace.
 
@@ -219,6 +223,8 @@ The project is now configured for use with the MSDK development repo, and subseq
 
 #### Option 2 - Edit setenv
 
+This option can be used to configure _all_ Eclipse projects to use the development repo by default.
+
 1. Locate the `setenv.bat` script that can be found in the root directory of the _release_ MSDK installation.
 
 2. (Optional, recommended) Copy the `setenv.bat` file to a backup called `setenv-release.bat`.  This backup file can be used to revert back to the original if needed.
@@ -241,26 +247,16 @@ The project is now configured for use with the MSDK development repo, and subseq
 
 ### Environment Setup (Command-Line)
 
-Pointing the `MAXIM_PATH` environment variable to the cloned location of the repository and restarting the shell is sufficient to configure the command-line to use the development resources.  The shell startup script added in [Setup (Command-Line)](USERGUIDE.md#setup-command-line) can be modified as follows:
+If you have not previously configured the command-line, see [Setup (Command-Line)](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#setup-command-line_1) in the User Guide.
 
-```bash
-# Set MAXIM_PATH to point to the MSDK (release)
-# export MAXIM_PATH=$HOME/MaximSDK
-# Set MAXIM_PATH to point to the MSDK (development)
-export MAXIM_PATH=$HOME/repos/msdk
+To configure the command-line for use with the development repo:
 
-# Add Arm Embedded GCC to path (v10.3)
-export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
-export PATH=$ARM_GCC_ROOT/bin:$PATH
+1. Set the `MAXIM_PATH` environment variable to the cloned location of the development repo instead of the release MSDK.
 
-# Add xPack RISC-V GCC to path (v10.2)
-export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
-export PATH=$XPACK_GCC_ROOT/bin:$PATH
-
-# Add OpenOCD to path
-export OPENOCD_ROOT=$MAXIM_PATH/Tools/OpenOCD
-export PATH=$OPENOCD_ROOT:$PATH
-```
+    - Windows:  Edit `Tools/MSYS2/msys.bat`
+    - Linux/MacOS:  Edit your shell's profile/startup script
+    
+2. Restart your shell
 
 ## License Agreement
 

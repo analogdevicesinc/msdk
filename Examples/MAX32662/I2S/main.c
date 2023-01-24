@@ -133,5 +133,5 @@ int main()
 
     printf("I2S Transmission Complete.\n");
 
-    return 0;
+    return E_NO_ERROR;
 }

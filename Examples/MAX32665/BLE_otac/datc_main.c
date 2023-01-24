@@ -513,7 +513,11 @@ static void datcOpen(dmEvt_t *pMsg) {}
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcValueNtf(attEvt_t *pMsg) {}
+static void datcValueNtf(attEvt_t *pMsg)
+{
+    /* print received message */
+    APP_TRACE_INFO0((const char *)pMsg->pValue);
+}
 
 /*************************************************************************************************/
 /*!
