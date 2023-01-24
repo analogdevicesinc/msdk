@@ -16,19 +16,17 @@ Once complete, the example will prompt the user to reset or power cycle the boar
 
 The _second_ time the example is run the application will see the "magic" 32-bit sequence in flash.  When this happens, the application will verify that the test pattern has survived the power cycle first.  Then, it will _modify_ the "magic" sequence _without_ modifying the rest of the test pattern.
 
-## Building and Running
-
-### Software Setup
-
-**See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
-
-### Hardware Connections
+## Hardware Connections
 
 On the MAX78002EVKIT:
 
 - Connect a USB cable between the PC and the CN2 (USB/UART) connector.
 - Ensure UART 0 EN (JP20) jumpers are connected for TX and RX.
 - Open a terminal application on the host PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
+## Building and Running
+
+**See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
 
 ## Expected Output
 
