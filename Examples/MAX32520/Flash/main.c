@@ -33,10 +33,9 @@
 
 /**
  * @file    main.c
- * @brief   Flash Control Mass Erase & Write 32-bit enabled mode Example
- * @details This example demonstrates how to properly mass erase the entire flash bank
- * from application code.  Additionally, it shows how to read, write, and verify data
- * from flash.
+ * @brief   Flash Controller Example
+ * @details This example demonstrates how to use the flash controller for general purpose
+ * storage.  See the "README.md" file for more details.
  */
 
 /***** Includes *****/
@@ -55,7 +54,7 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define TEST_ADDRESS 0x1007E000
+#define TEST_ADDRESS 0x100FC000
 #define MAGIC 0xFEEDBEEF
 #define TEST_VALUE 0xDEADBEEF
 
@@ -79,15 +78,15 @@ void FLC0_IRQHandler(void)
 {
     uint32_t temp;
     isr_cnt++;
-    temp = MXC_FLC0->intr;
+    temp = MXC_FLC0->flsh_int;
 
-    if (temp & MXC_F_FLC_INTR_DONE) {
-        MXC_FLC0->intr &= ~MXC_F_FLC_INTR_DONE;
+    if (temp & MXC_F_FLC_FLSH_INT_DONE) {
+        MXC_FLC0->flsh_int &= ~MXC_F_FLC_FLSH_INT_DONE;
         printf(" -> Interrupt! (Flash operation done)\n\n");
     }
 
-    if (temp & MXC_F_FLC_INTR_AF) {
-        MXC_FLC0->intr &= ~MXC_F_FLC_INTR_AF;
+    if (temp & MXC_F_FLC_FLSH_INT_AF) {
+        MXC_FLC0->flsh_int &= ~MXC_F_FLC_FLSH_INT_AF;
         printf(" -> Interrupt! (Flash access failure)\n\n");
     }
 
@@ -124,7 +123,7 @@ void setup_irqs(void)
     __enable_irq();
 
     // Clear and enable flash programming interrupts
-    MXC_FLC_EnableInt(MXC_F_FLC_INTR_DONEIE | MXC_F_FLC_INTR_AFIE);
+    MXC_FLC_EnableInt(MXC_F_FLC_FLSH_INT_DONEIE | MXC_F_FLC_FLSH_INT_AFIE);
     isr_flags = 0;
     isr_cnt = 0;
 }
@@ -263,7 +262,7 @@ int main(void)
     Any code that modifies flash contents should disable the ICC,
     since modifying flash contents may invalidate cached instructions.
     */
-    MXC_ICC_Disable(MXC_ICC0);
+    MXC_ICC_Disable();
 
     uint32_t magic = 0;
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
