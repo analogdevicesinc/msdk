@@ -33,10 +33,9 @@
 
 /**
  * @file    main.c
- * @brief   Flash Control Mass Erase & Write 32-bit enabled mode Example
- * @details This example demonstrates how to properly mass erase the entire flash bank
- * from application code.  Additionally, it shows how to read, write, and verify data
- * from flash.
+ * @brief   Flash Controller Example
+ * @details This example demonstrates how to use the flash controller for general purpose
+ * storage.  See the "README.md" file for more details.
  */
 
 /***** Includes *****/
@@ -81,13 +80,13 @@ void FLC0_IRQHandler(void)
     isr_cnt++;
     temp = MXC_FLC0->intr;
 
-    if (temp & MXC_F_FLC_INTR_DONE) {
-        MXC_FLC0->intr &= ~MXC_F_FLC_INTR_DONE;
+    if (temp & MXC_F_FLC_INTR_DONE_IE) {
+        MXC_FLC0->intr &= ~MXC_F_FLC_INTR_DONE_IE;
         printf(" -> Interrupt! (Flash operation done)\n\n");
     }
 
-    if (temp & MXC_F_FLC_INTR_AF) {
-        MXC_FLC0->intr &= ~MXC_F_FLC_INTR_AF;
+    if (temp & MXC_F_FLC_INTR_AF_IE) {
+        MXC_FLC0->intr &= ~MXC_F_FLC_INTR_AF_IE;
         printf(" -> Interrupt! (Flash access failure)\n\n");
     }
 
@@ -118,13 +117,13 @@ void setup_irqs(void)
     */
 
     // NVIC_SetRAM(); // Execute ISRs out of SRAM (for use with #2 above)
-    MXC_NVIC_SetVector(FLC0_IRQn, FLC0_IRQHandler); // Assign ISR
-    NVIC_EnableIRQ(FLC0_IRQn); // Enable interrupt
+    MXC_NVIC_SetVector(FLC_IRQn, FLC0_IRQHandler); // Assign ISR
+    NVIC_EnableIRQ(FLC_IRQn); // Enable interrupt
 
     __enable_irq();
 
     // Clear and enable flash programming interrupts
-    MXC_FLC_EnableInt(MXC_F_FLC_INTR_DONEIE | MXC_F_FLC_INTR_AFIE);
+    MXC_FLC_EnableInt(MXC_F_FLC_INTR_DONE_IE | MXC_F_FLC_INTR_AF_IE);
     isr_flags = 0;
     isr_cnt = 0;
 }
@@ -263,7 +262,7 @@ int main(void)
     Any code that modifies flash contents should disable the ICC,
     since modifying flash contents may invalidate cached instructions.
     */
-    MXC_ICC_Disable(MXC_ICC0);
+    MXC_ICC_Disable();
 
     uint32_t magic = 0;
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
