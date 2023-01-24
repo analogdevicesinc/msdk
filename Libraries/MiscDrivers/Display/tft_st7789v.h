@@ -2,8 +2,9 @@
  * @file    tft_st7789v.h
  * @brief   Driver for NewHaven 2.4" TFT display
  */
-/* ****************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_MISCDRIVERS_DISPLAY_TFT_ST7789V_H_
 #define LIBRARIES_MISCDRIVERS_DISPLAY_TFT_ST7789V_H_
