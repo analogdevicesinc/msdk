@@ -1,0 +1,12 @@
+{
+    "lib_name": "AWS IoT Device Defender",
+    "src": [
+        "source/defender.c"
+    ],
+    "include": [
+        "source/include"
+    ],
+    "compiler_flags": [
+        "DEFENDER_DO_NOT_USE_CUSTOM_CONFIG"
+    ]
+}

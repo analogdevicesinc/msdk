@@ -1,0 +1,12 @@
+{
+    "lib_name": "AWS IoT Fleet Provisioning",
+    "src": [
+        "source/fleet_provisioning.c"
+    ],
+    "include": [
+        "source/include"
+    ],
+    "compiler_flags": [
+        "FLEET_PROVISIONING_DO_NOT_USE_CUSTOM_CONFIG"
+    ]
+}

@@ -1,0 +1,36 @@
+SPDXVersion: SPDX-2.2
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: coreSNTP
+DocumentNamespace: https://github.com/FreeRTOS/coreSNTP/blob/v1.2.0/sbom.spdx
+Creator: Amazon Web Services
+Created: 2022-10-14T20:34:14Z
+CreatorComment: NOASSERTION
+DocumentComment: NOASSERTION
+
+PackageName: coreSNTP
+SPDXID: SPDXRef-Package-coreSNTP
+PackageVersion: v1.2.0
+PackageDownloadLocation: https://github.com/FreeRTOS/coreSNTP/tree/v1.2.0
+PackageLicenseConcluded: MIT
+FilesAnalyzed: True
+PackageVerificationCode: ab422c2e6c223d05b532b98e28c94f6c49ccaba0
+PackageCopyrightText: NOASSERTION
+PackageSummary: NOASSERTION
+PackageDescription: "SNTP client library to allow embedded devices to synchronize time with time servers.\n"
+
+
+FileName: ./core_sntp_serializer.c
+SPDXID: SPDXRef-File-core_sntp_serializer.c
+FileChecksum: SHA1: 7106d519417e32fdb3a26a5e03410e855e2f5ce0
+LicenseConcluded: MIT
+FileCopyrightText: NOASSERTION
+FileComment: NOASSERTION
+
+FileName: ./core_sntp_client.c
+SPDXID: SPDXRef-File-core_sntp_client.c
+FileChecksum: SHA1: 9f1b5c57812deb30376ab76e11d09e81ce09c2fe
+LicenseConcluded: MIT
+FileCopyrightText: NOASSERTION
+FileComment: NOASSERTION
+
