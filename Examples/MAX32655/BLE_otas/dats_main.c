@@ -916,7 +916,7 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void WdxsResetSystem(void)
 {
-    APP_TRACE_INFO0("Reseting!");
+    APP_TRACE_INFO0("Reseting!..");
     /* Wait for the console to finish printing */
     volatile int i;
     for (i = 0; i < 0xFFFFF; i++) {}
