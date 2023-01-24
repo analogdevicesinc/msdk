@@ -1018,10 +1018,22 @@
             <bitWidth>2</bitWidth>
           </field>
           <field>
+            <name>NRNG</name>
+            <description>Enable NIST RNG.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>CARRYPOS</name>
             <description>To set Carry location.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>10</bitWidth>
+          </field>
+          <field>
+            <name>CM_EN</name>
+            <description>Enable Countermeasure.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>12</bitWidth>
           </field>
         </fields>
       </register>
@@ -1233,6 +1245,34 @@
           <field>
             <name>DATA</name>
             <description>Used to load the SCA modulo for modular operations.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_NRNG</name>
+        <description>SCA NIST RNG Address Register.</description>
+        <addressOffset>0x734</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Starting SRAM address where up to 32 words of NIST washed RNG is stored.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SCA_WASH</name>
+        <description>SCA Wash Register.</description>
+        <addressOffset>0x738</addressOffset>
+        <resetValue>0x0</resetValue>
+        <fields>
+          <field>
+            <name>ADDR</name>
+            <description>Starting SRAM address where up to 1 word of random is stored for SRAM washing.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
           </field>
