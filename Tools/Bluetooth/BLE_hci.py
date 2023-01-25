@@ -48,6 +48,7 @@ from time import sleep
 import datetime
 import readline
 import threading
+from termcolor import colored
 
 # Setup the default serial port settings
 defaultBaud=115200
@@ -353,7 +354,6 @@ class BLE_hci:
                     else:
                         print(f'{str(datetime.datetime.now())} - {msg}')
 
-
     ## Get connection stats.
      #
      # Send the command to get the connection stats, parse the return value, return the PER.
@@ -375,7 +375,8 @@ class BLE_hci:
             per = self.parseConnStatsEvt(statEvt)
 
             retries = retries - 1
-
+        if retries == 0 and per is None:
+            print(colored('Warning: Failed to get connection stats', 'yellow'))
         return per
 
 
@@ -729,6 +730,7 @@ class BLE_hci:
      # Sends HCI command for the transmitter test.
     ################################################################################
     def txTestFunc(self, args):
+        
         channel="%0.2X"%int(args.channel)
         packetLength="%0.2X"%int(args.packetLength)
         payload="%0.2X"%int(args.payload)
@@ -759,6 +761,41 @@ class BLE_hci:
         phy="%0.2X"%int(args.phy)
         modulationIndex="00"
         self.send_command("01332003"+channel+phy+modulationIndex)
+    
+   
+    def endTestVSFunc(self, args) -> dict | None:
+        """
+        Vendor specific command to end test\n
+        Returns a dictionary of entire test report\n
+        Keys:\n
+            rxDataTO -  Timeouts on receive\n
+            rxDataCRC - RX data with CRC errors\n
+            rxDataOk - Total RX data received with no issues\n
+            txData   - Total number of TX packets sent\n
+        """
+        
+        evtString = self.send_command("0104FF00")
+
+        if evtString:
+            
+            
+            stats = {}
+
+            #flip every two character strings to create a big endian string to cast            
+            stats['rxDataTO']   = int(evtString[-2:] + evtString[-4 :-2],16)
+            stats['rxDataCRC']  = int(evtString[-6 :-4] + evtString[-8:-6],16) 
+            stats['rxDataOk']   = int(evtString[-10 :-8] + evtString[-12:-10] ,16)
+            stats['txData']     = int(evtString[-14 :-12] + evtString[-16:-14],16)
+
+            # if args is None or args.noPrint is False:
+            for item in stats:
+                print(item, stats[item])
+                
+            return stats
+        else:
+
+            return None
+
 
     ## End Test function.
      #
@@ -771,7 +808,9 @@ class BLE_hci:
         # Parse the event and print the number of received packets
         evtData = int(evtString, 16)
         rxPackets = int((evtData & 0xFF00)>>8)+int((evtData & 0xFF)<<8)
-        print("Received PKTS  : "+str(rxPackets))
+        if(args is None or  vars(args).get('noPrint') is not True):
+            print("Received PKTS  : "+str(rxPackets))
+
         return rxPackets
 
     ## txPower function.
@@ -1169,6 +1208,11 @@ if __name__ == '__main__':
     endTest_parser = subparsers.add_parser('endTest', aliases=['end'], 
         help="End the TX/RX test, print the number of correctly received packets")
     endTest_parser.set_defaults(func=ble_hci.endTestFunc)
+
+    endTestVS_parser = subparsers.add_parser('endTestVS', aliases=['end'], 
+        help="End the TX/RX test, print the full test report, and return the report as a dictionary")
+    endTestVS_parser.set_defaults(func=ble_hci.endTestVSFunc)
+
 
     txPower_parser = subparsers.add_parser('txPower', aliases=['txp'], help="Set the TX power", formatter_class=RawTextHelpFormatter)
     txPower_parser.add_argument('power', help="""Integer power setting in units of dBm""")

@@ -48,10 +48,34 @@ import itertools
 from mini_RCDAT_USB import mini_RCDAT_USB
 from BLE_hci import BLE_hci
 from BLE_hci import Namespace
+from termcolor import colored
+
+verbose=True
+
+TRACE_INFO = 2
+TRACE_WARNING =  1
+TRACE_ERROR = 0
+
+traceLevel = TRACE_INFO
+
+def printTrace(label, msg,callerLevel, color='white'):
+    if  callerLevel <= traceLevel:
+        print(colored(label + ": ", color), colored(msg, color))
+
+def printWarning(msg):
+    printTrace('Warning', msg, TRACE_WARNING, 'yellow')
+
+def printInfo(msg):
+    printTrace('Info', msg, TRACE_INFO, 'green')
+
+def printError(msg):
+    printTrace('Error', msg, TRACE_ERROR, 'red')
+
 
 # Setup the command line description text
 descText = """
 Connection sweep.
+
 This tool uses a Mini Circuits RCDAT to control attenuation between two devices
 running DTM software. A connection is created and PER data is gathered based on a 
 combination of parameters.
@@ -120,47 +144,29 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     hciMaster.resetFunc(None)
     sleep(0.1)
 
-    # Reset the attenuation
+    # # Reset the attenuation
     mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
     sleep(0.1)
 
-    # Create the connection
-    txAddr = "00:12:34:88:77:33"
-    rxAddr = "11:12:34:88:77:33"
-    hciSlave.addrFunc(Namespace(addr=txAddr))
-    hciMaster.addrFunc(Namespace(addr=rxAddr))
 
-    hciSlave.advFunc(Namespace(interval="60", stats="False", connect="True", maintain=False, listen="False"))
-    hciMaster.initFunc(Namespace(interval="6", timeout="64", addr=txAddr, stats="False", maintain=False, listen="False"))
-
-    hciSlave.listenFunc(Namespace(time=1, stats="False"))
-    hciMaster.listenFunc(Namespace(time=1, stats="False"))
-
+    printInfo('Setting Data Length')
     hciSlave.dataLenFunc(None)
     hciMaster.dataLenFunc(None)
 
-    hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
+    
+
+    printInfo('Setting PHY')
     # Set the PHY
     hciMaster.phyFunc(Namespace(phy=str(phy)))
-    hciMaster.listenFunc(Namespace(time=2, stats="False"))
+
+
 
     # Set the TX Power
+    printInfo('Setting TX Power')
     hciSlave.txPowerFunc(Namespace(power=txPower, handle="0"))
     hciMaster.txPowerFunc(Namespace(power=txPower, handle="0"))
-    hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
-    hciSlave.sinkAclFunc(None)
-    hciMaster.sinkAclFunc(None)
-    hciSlave.listenFunc(Namespace(time=1, stats="False"))
-
-    hciSlave.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(0)))
-    hciMaster.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(0)))
-    hciSlave.listenFunc(Namespace(time=1, stats="False"))
-
-    hciSlave.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(1)))
-    hciMaster.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(1)))
-    hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
     for atten in attens:
         print(packetLen," ",phy," ",atten," ",txPower)
@@ -169,29 +175,36 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
         sleep(0.1)
 
-        # Reset the packet stats
-        hciSlave.cmdFunc(Namespace(cmd="0102FF00"))
-        hciMaster.cmdFunc(Namespace(cmd="0102FF00"))
-        hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
-        # Wait for the TX to complete
+        #start the test
+        hciSlave.rxTestFunc(Namespace(channel=0, phy=1))
+        hciMaster.txTestFunc(Namespace(channel=0, phy=1, payload=0,packetLength=0))
+        
         sleep(int(args.delay))
+        
+        packtesReceived = hciSlave.endTestFunc(Namespace(noPrint=True))
+        stats = hciMaster.endTestVSFunc(Namespace(noPrint=True))
+        
+        packetsTransmitted = 0
 
-        # Read any pending events
-        hciSlave.listenFunc(Namespace(time=1, stats="False"))
-        hciMaster.listenFunc(Namespace(time=1, stats="False"))
+        if stats is not None:
+            packetsTransmitted = stats['txData']    
+        
 
-        # Collect the results
-        perMaster = hciMaster.connStatsFunc(None)
-        perSlave = hciSlave.connStatsFunc(None)
-        print("perMaster: ",perMaster)
-        print("perSlave : ",perSlave)
+        if packetsTransmitted != 0:
+            perSlave = 100 * (1 - packtesReceived / packetsTransmitted)
+            printInfo(perSlave)
+        else:
+            printWarning('Connection stats returned invalid data. (Packets Transmitted = 0) PER rate being set to 100')
+            perSlave = 100
+        
 
-        # Record max per
-        if(perMaster > perMax):
-            perMax = perMaster
+        #PER cannot be defined for the master with this scheme currently so setting to zero
+        perMaster = 0    
+    
         if(perSlave > perMax):
             perMax = perSlave
+            printInfo(perMax)
 
         # Save the results to file
         results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
