@@ -13,8 +13,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  # This workflow contains a single job called "Build_Examples"
+  Build_Examples:
     # The type of runner that the job will run on
     runs-on:
       - self-hosted
@@ -60,6 +60,11 @@ jobs:
           SUBDIRS=$(find . -type d -not -path "./MAX3257*" -name "Hello_World")
           for dir in ${SUBDIRS}
           do
+            echo
+            echo "-----------------------------------------"
+            echo ${dir}
+            echo "-----------------------------------------"
+            echo
             make -C ${dir} clean
             make -C ${dir} libclean
             make -C ${dir} -j8
@@ -78,6 +83,29 @@ jobs:
 
           for dir in ${SUBDIRS}
           do
-              make -C ${dir} clean
-              make -C ${dir} -j8
+            echo
+            echo "-----------------------------------------"
+            echo ${dir}
+            echo "-----------------------------------------"
+            echo
+
+            make -C ${dir} clean
+            make -C ${dir} -j8
           done
+
+          # Build MAX32690 WLP_V1 BLE examples
+          SUBDIRS=$(find ./MAX32690 -type d -name "BLE*")
+          echo SUBDIRS: ${SUBDIRS}
+
+          for dir in ${SUBDIRS}
+          do
+            echo
+            echo "---------------------------------------"
+            echo ${dir}
+            echo "---------------------------------------"
+            echo
+            make -C ${dir} clean
+            make -C ${dir} libclean
+            make -C ${dir} -j8 BOARD=WLP_V1
+          done
+          
