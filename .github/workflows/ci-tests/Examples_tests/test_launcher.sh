@@ -479,8 +479,8 @@ printf "\r\n> Flashing BLE_dats on DUT $DUT_NAME_UPPER\r\n"
 flash_with_openocd $DUT_NAME_LOWER $DUT_ID 2
 
 # Reset the two boards
-reset_board_by_openocd max32655        $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-reset_board_by_openocd $DUT_NAME_LOWER $DUT_NAME_LOWER         $DUT_ID
+reset_board_by_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+reset_board_by_openocd $DUT_NAME_LOWER         $DUT_ID
 
 cd $EXAMPLE_TEST_PATH/tests
 # runs desired test but do not exit on failure, save result to list for printing later
