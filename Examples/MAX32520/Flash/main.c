@@ -279,6 +279,11 @@ int main(void)
         // clang-format on
         if (err)
             return err;
+
+        err = validate_test_pattern();
+        if (err)
+            return err;
+
         printf("\nNow reset or power cycle the board...\n");
     } else { // Starting example after reset or power cycle
         printf("** Magic value 0x%x found at address 0x%x! **\n\n", MAGIC, TEST_ADDRESS);
