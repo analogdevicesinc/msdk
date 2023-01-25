@@ -569,7 +569,7 @@ static void datsProcMsg(dmEvt_t *pMsg)
             APP_TRACE_INFO0(" LOCAL TERM");
             break;
         case HCI_ERR_REMOTE_TERMINATED:
-            APP_TRACE_INFO0(" REMOTE TERM");
+            APP_TRACE_INFO0(" REMOTE TERMinate");
             break;
         case HCI_ERR_CONN_FAIL:
             APP_TRACE_INFO0(" FAIL ESTABLISH");
