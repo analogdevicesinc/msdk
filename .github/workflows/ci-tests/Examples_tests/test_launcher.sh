@@ -4,13 +4,13 @@ echo
 echo "##############################################################################################"
 echo "# test_launcher.sh <target(lower case)> <DUT control port> <DUT DAP sn> <board type>         #"
 echo "##############################################################################################"
-echo 
+echo
 
 echo args: $@
 if [[ $# -eq 4 ]]; then
     DUT_BOARD_TYPE=$4
 else
-    DUT_BOARD_TYPE=EvKit_V1        
+    DUT_BOARD_TYPE=EvKit_V1
 fi
 echo "DUT_BOARD_TYPE:" $DUT_BOARD_TYPE
 echo
@@ -18,7 +18,7 @@ echo
 EXAMPLE_TEST_PATH=$(pwd)
 cd ../../../../
 MSDK_DIR=$(pwd)
-echo pwd=`pwd`
+echo pwd=$(pwd)
 failedTestList=" "
 numOfFailedTests=0
 
@@ -49,36 +49,36 @@ function initial_setup() {
         export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
         export ROBOT=/home/btm-ci/.local/bin/robot
 
-        MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`     
-        main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])"`
+        MAIN_DEVICE_ID=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])")
+        main_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])")
         MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
-        
+
         # Get the serial number of all daplink devices, this is used to erase them all.
-        DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
-        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
-        DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`
+        DEVICE1=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])")
+        DEVICE2=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])")
+        DEVICE3=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])")
+        DEVICE4=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])")
+        DEVICE5=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])")
     elif [ $(hostname) == "yingcai-OptiPlex-790" ]; then
         echo "On machine yingcai-OptiPlex-790"
         echo
 
         FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-        
+
         export OPENOCD_TCL_PATH=/home/$USER/Tools/openocd/tcl
         export OPENOCD=/home/$USER/Tools/openocd/src/openocd
         export ROBOT=/home/$USER/.local/bin/robot
 
-        MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['daplink'])"`
-        main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['uart0'])"`
+        MAIN_DEVICE_ID=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['daplink'])")
+        main_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['uart0'])")
         MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
 
         # Get the serial number of all daplink devices, this is used to erase them all.
-        DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['daplink'])"`
-        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y2']['daplink'])"`
-        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board_2']['daplink'])"`
-        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_3']['daplink'])"`
-        DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A3']['DAP_sn'])"`
+        DEVICE1=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['daplink'])")
+        DEVICE2=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y2']['daplink'])")
+        DEVICE3=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board_2']['daplink'])")
+        DEVICE4=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_3']['daplink'])")
+        DEVICE5=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A3']['DAP_sn'])")
     else
         # Local- eddie desktop
         FILE=/home/$USER/boards_config.json
@@ -87,7 +87,7 @@ function initial_setup() {
         export OPENOCD=/home/eddie/workspace/openocd/src/openocd
         export ROBOT=/home/eddie/.local/bin/robot
     fi
-    
+
     # "Main device" is the ME17 used as the cleint dudring connected tests
     MAIN_DEVICE_NAME_UPPER=MAX32655
     MAIN_DEVICE_NAME_LOWER=max32655
@@ -155,10 +155,10 @@ function reset_board_by_openocd() {
 
     set +e
     $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg \
-             -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH \
-             -c "adapter serial $2" \
-             -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" \
-             -c "init; reset run" >/dev/null &
+        -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH \
+        -c "adapter serial $2" \
+        -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" \
+        -c "init; reset run" >/dev/null &
 
     openocd_dapLink_pid=$!
     sleep 0.5
@@ -266,7 +266,7 @@ function flash_bootloader() {
 
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader/build
     printf ">>>>>>>   Flashing Bootloader on DUT\r\n\r\n"
-    
+
     #not using the flash_with_openocd function here because that causes the application code to be erased and only
     #bootloader to remain
     set +e
@@ -412,9 +412,9 @@ for dir in ./*/; do
             ;;
 
         "BLE_fit")
-            if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-                run_notConntectedTest
-            fi
+
+            run_notConntectedTest
+
             ;;
 
         "BLE_fcc")
@@ -423,9 +423,7 @@ for dir in ./*/; do
             ;;
 
         "BLE_FreeRTOS")
-            if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-                run_notConntectedTest
-            fi
+            run_notConntectedTest
             ;;
 
         "BLE_otac")
@@ -461,7 +459,7 @@ erase_all_devices
 
 # Flash MAIN_DEVICE with BLE_datc
 cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
-echo pwd=`pwd`
+echo pwd=$(pwd)
 echo
 
 make -j8
@@ -480,7 +478,7 @@ flash_with_openocd $DUT_NAME_LOWER $DUT_ID 2
 
 # Reset the two boards
 reset_board_by_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-reset_board_by_openocd $DUT_NAME_LOWER         $DUT_ID
+reset_board_by_openocd $DUT_NAME_LOWER $DUT_ID
 
 cd $EXAMPLE_TEST_PATH/tests
 # runs desired test but do not exit on failure, save result to list for printing later
