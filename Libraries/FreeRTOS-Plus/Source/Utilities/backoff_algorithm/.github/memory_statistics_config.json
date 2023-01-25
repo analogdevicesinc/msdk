@@ -1,0 +1,9 @@
+{
+    "lib_name": "backoffAlgorithm",
+    "src": [
+        "source/backoff_algorithm.c"
+    ],
+    "include": [
+        "source/include"
+    ]
+}
