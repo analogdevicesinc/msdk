@@ -190,10 +190,9 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         if stats is not None:
             packetsTransmitted = stats['txData']    
         
-
         if packetsTransmitted != 0:
-            perSlave = 100 * (1 - packtesReceived / packetsTransmitted)
-            printInfo(perSlave)
+            perSlave = round(100 * (1 - packtesReceived / packetsTransmitted), 2)
+            
         else:
             printWarning('Connection stats returned invalid data. (Packets Transmitted = 0) PER rate being set to 100')
             perSlave = 100
@@ -204,7 +203,7 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     
         if(perSlave > perMax):
             perMax = perSlave
-            printInfo(perMax)
+            
 
         # Save the results to file
         results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
