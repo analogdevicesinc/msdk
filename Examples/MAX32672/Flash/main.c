@@ -54,7 +54,12 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define TEST_ADDRESS 0x1007E000
+#define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
+/*
+    ^ Points to last page in flash, which is guaranteed to be unused by this small example.
+    For larger applications it's recommended to reserve a dedicated flash region by creating
+    a modified linkerfile.
+*/
 #define MAGIC 0xFEEDBEEF
 #define TEST_VALUE 0xDEADBEEF
 
@@ -259,7 +264,7 @@ int main(void)
     Any code that modifies flash contents should disable the ICC,
     since modifying flash contents may invalidate cached instructions.
     */
-    MXC_ICC_Disable(MXC_ICC0);
+    MXC_ICC_Disable();
 
     uint32_t magic = 0;
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
@@ -289,11 +294,13 @@ int main(void)
             err = erase_magic();
             printf("----------------\n");
         )
-        //clang-format on
-        if (err) return err;
+        // clang-format on
+        if (err)
+            return err;
 
         err = validate_test_pattern();
-        if (err) return err;
+        if (err)
+            return err;
 
         printf("Flash example successfully completed.\n");
     }
