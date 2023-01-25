@@ -773,7 +773,7 @@ static void datcSpeedTestHandler(dmConnId_t connId)
 
         /* Calculate the throughput */
         unsigned bits = SPEED_TEST_COUNT * SPEED_TEST_PACKET_LEN * 8;
-        APP_TRACE_INFO2("%d bits transferred in %d us.", bits, us);
+        APP_TRACE_INFO2("%d bits transferred in %d us", bits, us);
 
         float bps = (float)bits / ((float)us / (float)1000000);
         APP_TRACE_INFO1("%d bps", (unsigned)bps);
