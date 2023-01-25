@@ -145,8 +145,8 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     sleep(0.1)
 
     # # Reset the attenuation
-    # mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
-    # sleep(0.1)
+    mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
+    sleep(0.1)
 
 
     printInfo('Setting Data Length')
@@ -172,7 +172,7 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         print(packetLen," ",phy," ",atten," ",txPower)
 
         # Set the attenuation
-        # mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
+        mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
         sleep(0.1)
 
 
