@@ -86,17 +86,17 @@ int main(void)
     printf("SPI1 pins to SFE Slave device. You can test RAM\n");
     printf("or Flash write and read loopback\n");
 
+    int ret = E_NO_ERROR;
+
     // Configure the peripheral
     if (MXC_SPI_Init(MASTER_SPI, 1, 0, 1, 0, MASTER_SPI_SPEED) != E_NO_ERROR) {
         printf("\nError configuring SPI\n");
-
-        while (1) {}
+        return E_UNINITIALIZED;
     }
 
     if (MXC_SPI_SetDataSize(MASTER_SPI, 8) != E_NO_ERROR) {
         printf("\nError setting Data size\n");
-
-        while (1) {}
+        return E_FAIL;
     }
 
     // Initialize RX buffer to store data
@@ -142,9 +142,10 @@ int main(void)
         printf("\nData Verified\n");
     } else {
         printf("\nData Not Verified\n");
+        ret = E_FAIL;
     }
 
     MXC_SPI_Shutdown(MASTER_SPI);
 
-    return 0;
+    return ret;
 }

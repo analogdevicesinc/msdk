@@ -244,8 +244,8 @@ static void wdxsFtcProcPutReq(dmConnId_t connId, uint16_t handle, uint16_t len, 
 
   APP_TRACE_INFO2("WDXS: FTC PutReq handle=%d status=%d", handle, status);
 
-  /* send response */
-  wdxsFtcSendRsp(connId, WDX_FTC_OP_PUT_RSP, handle, status);
+  /* End of erase operation sends response */
+  return;
 }
 
 /*************************************************************************************************/

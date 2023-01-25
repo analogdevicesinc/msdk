@@ -34,6 +34,10 @@
 #ifndef _MSC_H_
 #define _MSC_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @file  MSC.h
  * @brief Mass Storage Class over USB.
@@ -111,5 +115,9 @@ int msc_configure(const msc_cfg_t *cfg);
  *  \return   Zero (0) for success, non-zero for failure
  */
 int msc_deconfigure(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _MSC_H_ */

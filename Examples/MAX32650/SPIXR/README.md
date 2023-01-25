@@ -21,4 +21,5 @@ Initializing & Writing pseudo-random data to be written to RAM
 Reading data from RAM and store it inside the read_buffer
 Data is verified.
 
+Example Succeeded
 ```

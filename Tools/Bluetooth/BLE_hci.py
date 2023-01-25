@@ -48,6 +48,7 @@ from time import sleep
 import datetime
 import readline
 import threading
+from termcolor import colored
 
 # Setup the default serial port settings
 defaultBaud=115200
@@ -136,11 +137,6 @@ class BLE_hci:
     def __init__(self, args):
         
         try:
-            if "id" in vars(args).keys():
-                self.id = args.id
-            else:
-                self.id = "-"
-                
             # Open serial port
             serialPort = args.serialPort
             self.port = serial.Serial(
@@ -268,11 +264,7 @@ class BLE_hci:
         if print_evt and len(payload) > 0:
             for i in range(0, len(payload)):
                 status_string += '%02X'%payload[i]
-
-            if self.id == "-":
-                print(str(datetime.datetime.now()) + "  <", status_string)
-            else:
-                print(str(datetime.datetime.now()) + f" {self.id}<", status_string)
+            print(str(datetime.datetime.now()) + " <", status_string)
 
         return status_string
 
@@ -295,19 +287,16 @@ class BLE_hci:
      # Send a HCI command to the serial port. Will add a small delay and wait for
      # and print an HCI event by default.
     ################################################################################
-    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=3):
+    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True):
         # Send the command and data
         if(print_cmd):
-            if self.id == "-":
-                print(str(datetime.datetime.now()) + "  >", packet)
-            else:
-                print(str(datetime.datetime.now()) + f" {self.id}>", packet)
+          print(str(datetime.datetime.now()) + " >", packet)
 
         self.port.write(bytearray.fromhex(packet))
         sleep(delay)
 
         if(resp):
-            return self.wait_event(timeout=timeout)
+            return self.wait_event()
 
 
     ## Parse connection stats event.
@@ -315,30 +304,6 @@ class BLE_hci:
      # Parses a connection stats event and prints the results.
     ################################################################################
     def parseConnStatsEvt(self, evt):
-        """
-        Example:
-            2023-01-04 12:41:48.018410 2> 01FDFF00
-            2023-01-04 12:41:48.029006 2< 040E2001FDFF00880000000100000000000000880000000000000000000A0016000700
-
-            rxDataOk   : 136
-            rxDataCRC  : 1
-            rxDataTO   : 0
-            txData     : 136
-            errTrans   : 0
-            PER        : 0.73 %
-
-            2023-01-04 16:04:27.486935 1> 01FDFF00
-            2023-01-04 16:04:27.497405 1< 040E2001FDFF0000000000000000000000000000000000000000000000000000000000
-            rxDataOk   : 0
-            rxDataCRC  : 0
-            rxDataTO   : 0
-            txData     : 0
-            errTrans   : 0
-            perMaster  :  100.0
-
-        :param evt:
-        :return: per
-        """
         try:
             # Offset into the event where the stats start, each stat is 32 bits, or
             # 8 hex nibbles
@@ -365,8 +330,8 @@ class BLE_hci:
         print("errTrans   : "+str(errTrans))
 
         per = 100.0
-        if (rxDataCRC+rxDataTO+rxDataOk) != 0:
-            per = round(float((rxDataCRC+rxDataTO)/(rxDataCRC+rxDataTO+rxDataOk))*100, 2)
+        if((rxDataCRC+rxDataTO+rxDataOk) != 0):
+            per = round(float((rxDataCRC+rxDataTO)/(rxDataCRC+rxDataTO+rxDataOk))*100,2)
             print("PER        : "+str(per)+" %")
 
         return per
@@ -384,11 +349,10 @@ class BLE_hci:
                 msg = msg.replace("\r\n", "")
                 if msg != "":
                     if first:
-                        print(f'\n{str(datetime.datetime.now())} {self.id}  {msg}')
+                        print(f'\n{str(datetime.datetime.now())} - {msg}')
                         first = False
                     else:
-                        print(f'{str(datetime.datetime.now())} {self.id}  {msg}')
-
+                        print(f'{str(datetime.datetime.now())} - {msg}')
 
     ## Get connection stats.
      #
@@ -411,7 +375,8 @@ class BLE_hci:
             per = self.parseConnStatsEvt(statEvt)
 
             retries = retries - 1
-
+        if retries == 0 and per is None:
+            print(colored('Warning: Failed to get connection stats', 'yellow'))
         return per
 
 
@@ -693,7 +658,7 @@ class BLE_hci:
      # Sends HCI command to switch PHYs. Assumes that we can't do asymmetric PHY settings.
      # Assumes we're using connection handle 0000
     ################################################################################
-    def phyFunc(self, args, timeout=3):
+    def phyFunc(self, args):
         # Convert PHY options to bits
         phy="01"
         phyOptions="0000"
@@ -709,7 +674,7 @@ class BLE_hci:
             print("Invalid PHY selection, using 1M")
 
         self.send_command("01322007"+"0000"+"00"+phy+phy+phyOptions)
-        self.wait_events(timeout)
+        self.wait_events(3)
 
     ## Rest function.
      #
@@ -765,6 +730,7 @@ class BLE_hci:
      # Sends HCI command for the transmitter test.
     ################################################################################
     def txTestFunc(self, args):
+        
         channel="%0.2X"%int(args.channel)
         packetLength="%0.2X"%int(args.packetLength)
         payload="%0.2X"%int(args.payload)
@@ -795,6 +761,41 @@ class BLE_hci:
         phy="%0.2X"%int(args.phy)
         modulationIndex="00"
         self.send_command("01332003"+channel+phy+modulationIndex)
+    
+   
+    def endTestVSFunc(self, args) -> dict | None:
+        """
+        Vendor specific command to end test\n
+        Returns a dictionary of entire test report\n
+        Keys:\n
+            rxDataTO -  Timeouts on receive\n
+            rxDataCRC - RX data with CRC errors\n
+            rxDataOk - Total RX data received with no issues\n
+            txData   - Total number of TX packets sent\n
+        """
+        
+        evtString = self.send_command("0104FF00")
+
+        if evtString:
+            
+            
+            stats = {}
+
+            #flip every two character strings to create a big endian string to cast            
+            stats['rxDataTO']   = int(evtString[-2:] + evtString[-4 :-2],16)
+            stats['rxDataCRC']  = int(evtString[-6 :-4] + evtString[-8:-6],16) 
+            stats['rxDataOk']   = int(evtString[-10 :-8] + evtString[-12:-10] ,16)
+            stats['txData']     = int(evtString[-14 :-12] + evtString[-16:-14],16)
+
+            # if args is None or args.noPrint is False:
+            for item in stats:
+                print(item, stats[item])
+                
+            return stats
+        else:
+
+            return None
+
 
     ## End Test function.
      #
@@ -807,7 +808,9 @@ class BLE_hci:
         # Parse the event and print the number of received packets
         evtData = int(evtString, 16)
         rxPackets = int((evtData & 0xFF00)>>8)+int((evtData & 0xFF)<<8)
-        print("Received PKTS  : "+str(rxPackets))
+        if(args is None or  vars(args).get('noPrint') is not True):
+            print("Received PKTS  : "+str(rxPackets))
+
         return rxPackets
 
     ## txPower function.
@@ -879,11 +882,8 @@ class BLE_hci:
      #
      # Sends HCI commands.
     ################################################################################
-    def cmdFunc(self,args, timeout=None):
-        if timeout is None:
-            self.send_command(args.cmd)
-        else:
-            self.send_command(args.cmd, timeout=timeout)
+    def cmdFunc(self,args):
+        self.send_command(args.cmd)
 
     ## Read register function.
      #
@@ -1208,6 +1208,11 @@ if __name__ == '__main__':
     endTest_parser = subparsers.add_parser('endTest', aliases=['end'], 
         help="End the TX/RX test, print the number of correctly received packets")
     endTest_parser.set_defaults(func=ble_hci.endTestFunc)
+
+    endTestVS_parser = subparsers.add_parser('endTestVS', aliases=['end'], 
+        help="End the TX/RX test, print the full test report, and return the report as a dictionary")
+    endTestVS_parser.set_defaults(func=ble_hci.endTestVSFunc)
+
 
     txPower_parser = subparsers.add_parser('txPower', aliases=['txp'], help="Set the TX power", formatter_class=RawTextHelpFormatter)
     txPower_parser.add_argument('power', help="""Integer power setting in units of dBm""")

@@ -63,17 +63,9 @@ void Test_Callback(void *req, int result)
     callback_result = result;
 }
 
-void Test_Result(int result)
+int Test_CRC(int asynchronous)
 {
-    if (result) {
-        printf(" * Failed *\n");
-    } else {
-        printf("   Passed  \n");
-    }
-}
-
-void Test_CRC(int asynchronous)
-{
+    int ret;
     uint32_t array[101];
     int i;
 
@@ -114,15 +106,32 @@ void Test_CRC(int asynchronous)
         MXC_CTB_CRC_Compute(&crc_req);
     }
 
-    Test_Result(CHECK != crc_req.resultCRC);
+    if (CHECK != crc_req.resultCRC) {
+        printf(" * Failed *\n");
+        ret = -1;
+    } else {
+        printf("   Passed  \n");
+        ret = 0;
+    }
+
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
+    return ret;
 }
 
 // *****************************************************************************
 int main(void)
 {
-    Test_CRC(0);
-    Test_CRC(1);
+    int fail = 0;
+    printf("\n***** CRC Example *****\n");
 
-    while (1) {}
+    fail += Test_CRC(0);
+    fail += Test_CRC(1);
+
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

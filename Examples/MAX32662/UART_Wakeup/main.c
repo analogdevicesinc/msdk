@@ -146,5 +146,5 @@ int main(void)
     printf("Example complete!");
     while (MXC_UART_GetActive(ConsoleUART)) {}
 
-    return 0;
+    return E_NO_ERROR;
 }

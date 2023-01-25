@@ -47,6 +47,10 @@
 #include "mxc_pins.h"
 #include "mxc_lock.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /***** Definitions *****/
 
 /**

@@ -333,7 +333,7 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 {
     // Start timeout, wait for ready
     MXC_DelayAsync(MXC_SYS_CLOCK_TIMEOUT, NULL);
-
+#ifndef ME18_WLP_TEST
     /* TODO: Timeout on clock switch, use this for untrimmed parts. */
     while (!(MXC_GCR->clkctrl & ready)) {}
     return E_NO_ERROR;
@@ -346,6 +346,9 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     } while (MXC_DelayCheck() == E_BUSY);
 
     return E_TIME_OUT;
+#else
+    return E_NO_ERROR;
+#endif
 }
 
 /* ************************************************************************** */
