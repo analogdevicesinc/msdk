@@ -74,6 +74,8 @@ jobs:
           Libraries/libs.mk \
           Libraries/Cordio \
           Libraries/CMSIS/Device/Maxim/MAX32655 \
+          Libraries/FreeRTOS \
+          Libraries/FreeRTOS-Plus \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
           Libraries/PeriphDrivers/periphdriver.mk \
           Libraries/PeriphDrivers/max32655_files.mk \
@@ -137,6 +139,8 @@ jobs:
           Examples/MAX32665/BLE \
           Libraries/libs.mk \
           Libraries/CMSIS/Device/Maxim/MAX32665 \
+          Libraries/FreeRTOS \
+          Libraries/FreeRTOS-Plus \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
           Libraries/PeriphDrivers/periphdriver.mk \
           Libraries/PeriphDrivers/max32665_files.mk \
@@ -196,6 +200,8 @@ jobs:
           Examples/MAX32690/BLE \
           Libraries/libs.mk \
           Libraries/CMSIS/Device/Maxim/MAX32690 \
+          Libraries/FreeRTOS \
+          Libraries/FreeRTOS-Plus \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
           Libraries/PeriphDrivers/periphdriver.mk \
           Libraries/PeriphDrivers/max32690_files.mk \
