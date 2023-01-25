@@ -511,7 +511,7 @@ static void datsPrivRemDevFromResListInd(dmEvt_t *pMsg)
 /*************************************************************************************************/
 void datsDisplayStackVersion(const char *pVersion)
 {
-    APP_TRACE_INFO1("Stack Version: %s", pVersion);
+    APP_TRACE_INFO1(" Stack Version: %s", pVersion);
 }
 
 /*************************************************************************************************/
