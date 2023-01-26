@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -46,7 +46,6 @@
 // for grace period before eventually removing support for deprecated features. 10-24-2022
 //>>>
 #include "trimsir_regs.h"
-#include "aes_key_regs.h"
 #include "aes_regs.h"
 //<<<
 
