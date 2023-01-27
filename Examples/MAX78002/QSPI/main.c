@@ -48,16 +48,31 @@
 #include "mxc_delay.h"
 #include "spi.h"
 #include "tmr.h"
+#include "dma.h"
+#include "nvic_table.h"
 
 /***** Definitions *****/
 #define SPI MXC_SPI0
-#define SPI_SPEED 100000
+#define SPI_SPEED 8000000
+#define TEST_SIZE 800
 
 /***** Globals *****/
+int g_done = 0;
+void spi_done(void *req, int result) 
+{
+    g_done = 1;
+}
+
+void DMA0_IRQHandler()
+{
+    MXC_DMA_Handler();
+}
+
 mxc_spi_req_t g_req = {
     .spi = SPI,
     .ssDeassert = 1,
-    .ssIdx = 0
+    .ssIdx = 0,
+    .completeCB = spi_done
 };
 
 #define MFID_EXPECTED 0x0D
@@ -106,7 +121,7 @@ int spi_init()
     return err;
 }
 
-int spi_init_qspi() 
+int spi_init_qspi()
 {
     int err = 0;
     mxc_spi_pins_t pins = {
@@ -135,6 +150,10 @@ int spi_init_qspi()
     if (err) return err;
 
     NVIC_EnableIRQ(SPI0_IRQn);
+    NVIC_EnableIRQ(DMA0_IRQn);
+    NVIC_EnableIRQ(DMA1_IRQn);
+    NVIC_EnableIRQ(DMA2_IRQn);
+    NVIC_EnableIRQ(DMA3_IRQn);
 
     return err;
 }
@@ -163,6 +182,7 @@ int ram_enter_quadmode(mxc_spi_req_t *req)
     req->rxData = NULL;
     req->rxLen = 0;
     req->ssDeassert = 1;
+    MXC_SPI_SetWidth(req->spi, SPI_WIDTH_STANDARD);
     err = MXC_SPI_MasterTransaction(req);
     if (err) return err;
 
@@ -179,8 +199,9 @@ int ram_exit_quadmode(mxc_spi_req_t *req)
     req->rxData = NULL;
     req->rxLen = 0;
     req->ssDeassert = 1;
+    MXC_SPI_SetWidth(req->spi, SPI_WIDTH_QUAD);
     err = MXC_SPI_MasterTransaction(req);
-    // req->spi->ctrl2 &= ~(2<<12);
+    MXC_SPI_SetWidth(req->spi, SPI_WIDTH_STANDARD);
     return err;
 }
 
@@ -314,7 +335,21 @@ int ram_write_quad(mxc_spi_req_t *req, uint32_t address, uint8_t * data, unsigne
     req->txLen = len;
     req->rxData = NULL;
     req->rxLen = 0;
+    g_done = 0;
     return MXC_SPI_MasterTransaction(req);
+}
+
+int ram_write_quad_dma(mxc_spi_req_t *req, uint32_t address, uint8_t * data, unsigned int len) 
+{
+    int err = 0;
+    err = _transmit_spi_header(req, 0x38, address);
+    if (err) return err;
+
+    req->txData = data;
+    req->txLen = len;
+    req->rxData = NULL;
+    req->rxLen = 0;
+    return MXC_SPI_MasterTransactionDMA(req);
 }
 
 // *****************************************************************************
@@ -324,49 +359,87 @@ int main(void)
 
     MXC_Delay(MXC_DELAY_SEC(2));
 
+    err = spi_init_qspi();
+    ram_exit_quadmode(&g_req);
+
+    printf("Initializing SPI...\n");
     err = spi_init();
     if (err) return err;
 
-    ram_exit_quadmode(&g_req);
-
+    printf("Resetting SRAM...\n");
     err = ram_reset(&g_req);
     if (err) return err;
 
+    printf("Reading ID...\n");
     ram_id_t id;
     err = ram_read_id(&g_req, &id);
-    if (err) return err;
+    if (err) {
+        printf("Failed to read expected SRAM ID!\n");
+        return err;
+    }
     printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", id.MFID, id.KGD, id.density, id.EID);
 
-    uint8_t tx_buffer[320];
-    uint8_t rx_buffer[320];
-    memset(tx_buffer, 0xA5, 320);
-    memset(rx_buffer, 0, 320);
+    uint8_t tx_buffer[TEST_SIZE];
+    uint8_t rx_buffer[TEST_SIZE];
+    memset(rx_buffer, 0, TEST_SIZE);
 
+    // Time tx_buffer initialization as benchmark
+    MXC_TMR_SW_Start(MXC_TMR0);
+    memset(tx_buffer, 0xA5, TEST_SIZE);
+    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("(Benchmark) Wrote %i bytes to internal SRAM in %ius\n", TEST_SIZE, elapsed);
+
+    // Benchmark standard-width SPI write to external SRAM
     MXC_TMR_SW_Start(MXC_TMR0);
     int address = 0;
-    ram_write(&g_req, address, tx_buffer, 320);
-    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Wrote 'QVGA' image row in %ius\n", elapsed);
+    ram_write(&g_req, address, tx_buffer, TEST_SIZE);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Wrote %i bytes in %ius\n", TEST_SIZE, elapsed);
 
+    // Validate test pattern
     uint8_t buffer = 0;
-    ram_read_slow(&g_req, address, rx_buffer, 320);
-    for (int i = 0; i < 320; i++) {
+    ram_read_slow(&g_req, address, rx_buffer, TEST_SIZE);
+    for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, 0xA5, buffer);
         }
     }
 
-    memset(tx_buffer, ~(0x5A), 320);
+    // Invert test pattern
+    memset(tx_buffer, ~(0x5A), TEST_SIZE);
 
-    ram_enter_quadmode(&g_req);
+    // Benchmark QSPI write to external SRAM
+    err = ram_enter_quadmode(&g_req);
     MXC_TMR_SW_Start(MXC_TMR0);
-    ram_write_quad(&g_req, 1024, tx_buffer, 320);
+    err = ram_write_quad(&g_req, 1024, tx_buffer, TEST_SIZE);
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Wrote 'QVGA' image row w/ QSPI in %ius\n", elapsed);
+    printf("Wrote %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed);
 
     MXC_Delay(MXC_DELAY_MSEC(1));
-    ram_read_quad(&g_req, 1024, rx_buffer, 320);
-    for (int i = 0; i < 320; i++) {
+
+    // Validate
+    MXC_Delay(MXC_DELAY_MSEC(1));
+    ram_read_quad(&g_req, 1024, rx_buffer, TEST_SIZE);
+    for (int i = 0; i < TEST_SIZE; i++) {
+        if (rx_buffer[i] != tx_buffer[i]) {
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, 0xA5, rx_buffer[i]);
+        }
+    }
+
+    // Benchmark QSPI write + DMA to external SRAM
+    MXC_TMR_SW_Start(MXC_TMR0);
+    err = ram_write_quad_dma(&g_req, 1024, tx_buffer, TEST_SIZE);
+    if (err) return err;
+    while(!g_done) {}
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Wrote %i bytes w/ QSPI in %ius (DMA)\n", TEST_SIZE, elapsed);
+
+    MXC_Delay(MXC_DELAY_MSEC(1));
+
+    // Validate
+    MXC_Delay(MXC_DELAY_MSEC(1));
+    ram_read_quad(&g_req, 1024, rx_buffer, TEST_SIZE);
+    for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, 0xA5, rx_buffer[i]);
         }
