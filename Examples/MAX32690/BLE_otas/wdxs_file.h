@@ -74,7 +74,7 @@ uint32_t WdxsFileGetVerifiedLength(void);
  *  \return Firmware version of the WDXS file.
  */
 /*************************************************************************************************/
-uint8_t WdxsFileGetFirmwareVersion(void);
+uint16_t WdxsFileGetFirmwareVersion(void);
 /*************************************************************************************************/
 /*!
  *  \brief  set the length of the expected file

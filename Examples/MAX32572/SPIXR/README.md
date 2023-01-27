@@ -28,5 +28,5 @@ RX BUFFER:       0  2d  cf  46  29  4  b4  78  d8  68  a7  ff  3f  2b  f1  fc
 
 DATA IS VERIFIED.
 
-EXAMPLE SUCCEEDED
+Example Succeeded
 ```

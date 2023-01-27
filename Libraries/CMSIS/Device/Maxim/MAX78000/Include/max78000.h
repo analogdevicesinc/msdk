@@ -368,7 +368,11 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                   AES Keys */
-#define MXC_BASE_AESKEY ((uint32_t)0x40007800UL)
+#define MXC_BASE_AESKEYS ((uint32_t)0x40007800UL)
+#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
+
+// DEPRECATED(1-10-2023): Scheduled for removal.
+#define MXC_BASE_AESKEY MXC_BASE_AESKEYS
 #define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
 
 /******************************************************************************/

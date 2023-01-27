@@ -110,5 +110,5 @@ int main(void)
 
     printf("\n\nExample complete.\n");
 
-    return 0;
+    return E_NO_ERROR;
 }

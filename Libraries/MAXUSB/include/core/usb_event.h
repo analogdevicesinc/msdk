@@ -46,6 +46,10 @@
 
 #include "usb.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @file MXC_USB_event.h
  * @brief Defines the API used for USB event handling
@@ -87,5 +91,9 @@ int MXC_USB_EventClear(maxusb_event_t event);
  * from the application.
  */
 void MXC_USB_EventHandler(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _USB_EVENT_H_ */

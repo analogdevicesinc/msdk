@@ -43,6 +43,10 @@
 #include "usb_protocol.h"
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** 
  *  \brief    Initialize the class driver
  *  \details  Initialize the class driver.
@@ -86,5 +90,9 @@ int hidkbd_keypress(uint8_t key);
  *  \return   size of the encoded report
  */
 int hidkbd_encode_report(uint8_t *rpt, uint8_t *ascii, int num);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _HID_KBD_H_ */

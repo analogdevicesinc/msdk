@@ -47,8 +47,8 @@
 /*************************************************************************************************/
 void hciCoreResetStart(void)
 {
-  /* send an HCI Reset command to start the sequence */
-  HciResetCmd();
+    /* send an HCI Reset command to start the sequence */
+    HciResetCmd();
 }
 
 /*************************************************************************************************/
@@ -65,7 +65,7 @@ void hciCoreResetStart(void)
 /*************************************************************************************************/
 uint8_t hciCoreVsEvtRcvd(uint8_t *p, uint8_t len)
 {
-  return HCI_VENDOR_SPEC_EVT;
+    return HCI_VENDOR_SPEC_EVT;
 }
 
 /*************************************************************************************************/
@@ -81,7 +81,7 @@ uint8_t hciCoreVsEvtRcvd(uint8_t *p, uint8_t len)
 /*************************************************************************************************/
 uint8_t hciCoreHwErrorRcvd(uint8_t *p)
 {
-  return 0;
+    return 0;
 }
 
 /*************************************************************************************************/
@@ -97,5 +97,5 @@ uint8_t hciCoreHwErrorRcvd(uint8_t *p)
 /*************************************************************************************************/
 void HciVsInit(uint8_t param)
 {
-  /* unused */
+    /* unused */
 }

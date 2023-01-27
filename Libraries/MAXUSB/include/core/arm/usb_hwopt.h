@@ -31,12 +31,16 @@
  *
  *
  ******************************************************************************/
- 
+
 #ifndef _USBIO_HWOPT_H_
 #define _USBIO_HWOPT_H_
 
 #include "mxc_device.h"
 #include "usb_regs.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /* There are no configuration options for this target */
 typedef void maxusb_cfg_options_t;
@@ -67,5 +71,9 @@ static inline void MXC_USB_RemoteWakeup(void)
 {
     MXC_USB->dev_cn |= MXC_F_USB_DEV_CN_SIGRWU;
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _USBIO_HWOPT_H_ */

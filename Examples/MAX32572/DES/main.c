@@ -122,7 +122,7 @@ int DES_check(char *calculated, char *expected, int len)
     return -1;
 }
 
-void DES_ECB_enc(int asynchronous)
+int DES_ECB_enc(int asynchronous)
 {
     char *xkey = "2f5d4b8c12a4a9c1";
     char key[MXC_DES_KEY_LEN];
@@ -162,10 +162,10 @@ void DES_ECB_enc(int asynchronous)
 
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
 
-    DES_check(result, expected, MXC_DES_DATA_LEN);
+    return DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
-void DES_ECB_dec(int asynchronous)
+int DES_ECB_dec(int asynchronous)
 {
     char *xkey = "00c3de5446614d35";
     char key[MXC_DES_KEY_LEN];
@@ -205,10 +205,10 @@ void DES_ECB_dec(int asynchronous)
 
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
 
-    DES_check(result, expected, MXC_DES_DATA_LEN);
+    return DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
-void TDES_ECB_enc(int asynchronous)
+int TDES_ECB_enc(int asynchronous)
 {
     char *xkey = "2f5d4b8c12a4a9c1";
     char key[MXC_DES_KEY_LEN];
@@ -248,10 +248,10 @@ void TDES_ECB_enc(int asynchronous)
 
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
 
-    DES_check(result, expected, MXC_DES_DATA_LEN);
+    return DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
-void TDES_ECB_dec(int asynchronous)
+int TDES_ECB_dec(int asynchronous)
 {
     char *xkey = "00c3de5446614d35";
     char key[MXC_DES_KEY_LEN];
@@ -291,7 +291,7 @@ void TDES_ECB_dec(int asynchronous)
 
     ascii_to_byte(xexpected, expected, MXC_DES_DATA_LEN);
 
-    DES_check(result, expected, MXC_DES_DATA_LEN);
+    return DES_check(result, expected, MXC_DES_DATA_LEN);
 }
 
 // *****************************************************************************
@@ -299,18 +299,26 @@ int main(void)
 {
     printf("\n***** DES Example *****\n");
 
-    printf("DES ECB Encryption ... ");
-    DES_ECB_enc(0);
-    DES_ECB_enc(1);
-    printf("DES ECB Decryption ... ");
-    DES_ECB_dec(0);
-    DES_ECB_dec(1);
-    printf("Triple DES ECB Encryption ... ");
-    TDES_ECB_enc(0);
-    TDES_ECB_enc(1);
-    printf("Triple DES ECB Decryption ... ");
-    TDES_ECB_dec(0);
-    TDES_ECB_dec(1);
+    int fail = 0;
 
-    printf("\nExample complete.\n");
+    printf("DES ECB Encryption ... ");
+    fail += DES_ECB_enc(0);
+    fail += DES_ECB_enc(1);
+    printf("DES ECB Decryption ... ");
+    fail += DES_ECB_dec(0);
+    fail += DES_ECB_dec(1);
+    printf("Triple DES ECB Encryption ... ");
+    fail += TDES_ECB_enc(0);
+    fail += TDES_ECB_enc(1);
+    printf("Triple DES ECB Decryption ... ");
+    fail += TDES_ECB_dec(0);
+    fail += TDES_ECB_dec(1);
+
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

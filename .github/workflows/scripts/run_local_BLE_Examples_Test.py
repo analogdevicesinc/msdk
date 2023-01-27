@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 
 # @Filename: ${NAME}.py
@@ -36,10 +37,10 @@ def run_file(file_name: str, args:dict) -> int:
         if args["max32665"]:
             do_max32665 = 1
 
-    do_max32690_devkit = 0
-    if "max32690_devkit" in args.keys():
-        if args["max32690_devkit"]:
-            do_max32690_devkit = 1
+    do_max32690_evkit = 0
+    if "max32690_evkit" in args.keys():
+        if args["max32690_evkit"]:
+            do_max32690_evkit = 1
 
     do_max32690_wlp = 0
     if "max32690_wlp" in args.keys():
@@ -48,7 +49,7 @@ def run_file(file_name: str, args:dict) -> int:
 
     try:
         file_name = os.path.realpath(file_name)
-        p = Popen([f'{file_name} {do_max32655} {do_max32665} {do_max32690_devkit} {do_max32690_wlp} 2>&1 | tee temp.log'], 
+        p = Popen([f'{file_name} {do_max32655} {do_max32665} {do_max32690_evkit} {do_max32690_wlp} 2>&1 | tee temp.log'], 
                     stdout=PIPE, stderr=PIPE, shell=True)
 
         for line in iter(p.stdout.readline, b''):
@@ -80,7 +81,6 @@ def main(file_name: str, args: dict):
 if __name__ == "__main__":
     file = "local_BLE_Examples_Test.sh"
 
-
-    args = {"max32655": False, "max32665": False, "max32690_devkit": True, "max32690_wlp": True}
+    args = {"max32655": False, "max32665": False, "max32690_evkit": False, "max32690_wlp": True}
 
     main(file, args)

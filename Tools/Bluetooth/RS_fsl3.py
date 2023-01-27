@@ -62,11 +62,13 @@ class RS_fsl3:
         try:
             # Connect to the instrument
             queryString = "TCPIP::"+args.ipAddress+"::inst0::INSTR"
+            print(f'query: {queryString}')
             self.sa = self.rm.open_resource(queryString)
         except ConnectionRefusedError as err:
             print("Error connecting to instrument at IP:",args.ipAddress)
             sys.exit(1)
 
+        print('query: *IDN?')
         print(self.sa.query('*IDN?'))
 
         # Leave the display on when remote controlling

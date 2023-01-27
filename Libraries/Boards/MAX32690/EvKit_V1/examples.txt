@@ -26,6 +26,7 @@ BLE_otac
 BLE_otas
 BLE_periph
 Bootloader
+CAN
 CRC
 CTB_AES
 DMA
