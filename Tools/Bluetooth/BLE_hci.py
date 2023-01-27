@@ -46,7 +46,6 @@ import argparse
 from argparse import RawTextHelpFormatter
 from time import sleep
 import datetime
-import readline
 import threading
 from termcolor import colored
 
@@ -180,6 +179,7 @@ class BLE_hci:
             print("baud rate exception, "+str(args.baud)+" is too large")
             print(err)
             sys.exit(1)
+
         if self.mon_port != None:
             monTraceMsgThread = threading.Thread(target=self.monTraceMsg, daemon=True)
             monTraceMsgThread.start()
@@ -265,7 +265,6 @@ class BLE_hci:
         payload = self.port.read(size=packet_len)
 
         # Print the packet
-        status_string = ""
         if print_evt and len(payload) > 0:
             for i in range(0, len(payload)):
                 status_string += '%02X'%payload[i]
@@ -535,7 +534,6 @@ class BLE_hci:
 
             return per
 
-
         # Listen for events for a few seconds
         if(args.listen != "True"):
             self.wait_events(int(args.listen))
@@ -628,7 +626,6 @@ class BLE_hci:
         else:
             self.send_command(connCommand)
 
- 
         if(args.listen == "False"):
             return
 
@@ -684,6 +681,8 @@ class BLE_hci:
         self.send_command("01E4FF05"+"0000"+packetLen+numPackets)
 
         ## Set the length of empty packets.
+
+
      #
      #  Sets the length of empty packets.
     ################################################################################
@@ -844,7 +843,7 @@ class BLE_hci:
         # Parse the event and print the number of received packets
         evtData = int(evtString, 16)
         rxPackets = int((evtData & 0xFF00)>>8)+int((evtData & 0xFF)<<8)
-        if(args is None or  vars(args).get('noPrint') is not True):
+        if (args is None) or (vars(args).get('noPrint') is not True):
             print("Received PKTS  : "+str(rxPackets))
 
         return rxPackets
