@@ -8,3 +8,6 @@
 # **********************************************************
 
 # Add your config here!
+
+MXC_OPTIMIZE_CFLAGS = -Og
+DEBUG=1
