@@ -14,19 +14,23 @@ The green LED indicates CPU activity. When the LED is on, the CPU is active, whe
 is off, the CPU is in sleep mode.
 
 ## Setup
-The Bootloader application needs to be loaded prior to loading BLE_otas application. BLE_otas will run on top of the Bootloader. The linker file included with BLE_otas application must be used to properly setup the memory sections to coincide with the Bootloader.
-Both the Bootloader and BLE_otas application contain a project.mk file where the use of internal/external flash for transfer operation is specified via:
- `USE_INTERNAL_FLASH ?=0`
-Bootloader and BLE_otas must agree on file storage location, the default is to use external flash.
+The `Bootloader` application needs to be loaded prior to loading `BLE_otas` application. `BLE_otas` will run on top of the `Bootloader`. 
+The linker file included with `BLE_otas` application must be used to properly setup the memory sections to coincide with the `Bootloader`.
+The `project.mk` in this `BLE_otas` application in conjunction with `project.mk` in `Bootloader` determine
+where the expected file is stored and read from.
+Default configuration is to use external flash to store the transferd file before
+writing it to internal flash space during the update.
+Alternatively by changing `USE_INTERNAL_FLASH ?=0` to `USE_INTERNAL_FLASH ?=1` the transfered file
+is stored in the update space. 
 ### Board Selection
 
-Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
+Before building firmware you must select the correct value for BOARD in `project.mk`, e.g. `EvKit_V1`.
 
 ### Required Connections
 -   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
 
 ## Trace Serial Port
-When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can
+When TRACE is enabled in the `project.mk`, the on-board USB-to-UART adapter can
 be used to view the trace messages and interact with the application. Open a serial port terminal with
 the following settings.
 
