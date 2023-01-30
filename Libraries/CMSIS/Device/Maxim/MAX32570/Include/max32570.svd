@@ -8776,7 +8776,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>LONG_AL_IF</name>
+       <name>LONG_ALM_IF</name>
        <description>Long Interval Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
@@ -8795,7 +8795,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SHORT_AL_IF</name>
+       <name>SHORT_ALM_IF</name>
        <description>Short Interval Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>

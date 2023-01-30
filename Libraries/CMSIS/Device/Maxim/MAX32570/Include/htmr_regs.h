@@ -183,11 +183,11 @@ typedef struct {
 #define MXC_F_HTMR_CTRL_RDY_IE_POS                     5 /**< CTRL_RDY_IE Position */
 #define MXC_F_HTMR_CTRL_RDY_IE                         ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_RDY_IE_POS)) /**< CTRL_RDY_IE Mask */
 
-#define MXC_F_HTMR_CTRL_LONG_AL_IF_POS                 6 /**< CTRL_LONG_AL_IF Position */
-#define MXC_F_HTMR_CTRL_LONG_AL_IF                     ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_LONG_AL_IF_POS)) /**< CTRL_LONG_AL_IF Mask */
+#define MXC_F_HTMR_CTRL_LONG_ALM_IF_POS                6 /**< CTRL_LONG_ALM_IF Position */
+#define MXC_F_HTMR_CTRL_LONG_ALM_IF                    ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_LONG_ALM_IF_POS)) /**< CTRL_LONG_ALM_IF Mask */
 
-#define MXC_F_HTMR_CTRL_SHORT_AL_IF_POS                7 /**< CTRL_SHORT_AL_IF Position */
-#define MXC_F_HTMR_CTRL_SHORT_AL_IF                    ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_SHORT_AL_IF_POS)) /**< CTRL_SHORT_AL_IF Mask */
+#define MXC_F_HTMR_CTRL_SHORT_ALM_IF_POS               7 /**< CTRL_SHORT_ALM_IF Position */
+#define MXC_F_HTMR_CTRL_SHORT_ALM_IF                   ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_SHORT_ALM_IF_POS)) /**< CTRL_SHORT_ALM_IF Mask */
 
 #define MXC_F_HTMR_CTRL_WR_EN_POS                      15 /**< CTRL_WR_EN Position */
 #define MXC_F_HTMR_CTRL_WR_EN                          ((uint32_t)(0x1UL << MXC_F_HTMR_CTRL_WR_EN_POS)) /**< CTRL_WR_EN Mask */
