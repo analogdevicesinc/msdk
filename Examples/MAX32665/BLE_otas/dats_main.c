@@ -57,15 +57,17 @@
 #include "wdxs/wdxs_stream.h"
 #include "wdxs_file.h"
 #include "board.h"
-
+#include "flc.h"
+#include "wsf_cs.h"
+#include "Ext_Flash.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
 #if (BT_VER > 8)
 
 /* PHY Test Modes */
-#define DATS_PHY_1M 1
 #define DATS_PHY_2M 2
+#define DATS_PHY_1M 1
 #define DATS_PHY_CODED 3
 
 #endif /* BT_VER */
@@ -242,17 +244,16 @@ extern void setAdvTxPower(void);
  *  \brief  Send notification containing data.
  *
  *  \param  connId      DM connection ID.
- *
+ *  \param  size        Size of message to send.
+ *  \param  msg         Message to send
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsSendData(dmConnId_t connId)
+static void datsSendData(dmConnId_t connId, uint8_t size, uint8_t *msg)
 {
-    uint8_t str[] = "hello back";
-
     if (AttsCccEnabled(connId, DATS_WP_DAT_CCC_IDX)) {
         /* send notification */
-        AttsHandleValueNtf(connId, WP_DAT_HDL, sizeof(str), str);
+        AttsHandleValueNtf(connId, WP_DAT_HDL, size, msg);
     }
 }
 
@@ -365,18 +366,22 @@ static void trimStart(void)
  *  \return ATT status.
  */
 /*************************************************************************************************/
+
 uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
-    /* print received data */
-    APP_TRACE_INFO0((const char *)pValue);
-
-    /* send back some data */
-    datsSendData(connId);
-
+    if (len == sizeof(fileHeader_t)) {
+        uint8_t str[50];
+        uint16_t version = WdxsFileGetFirmwareVersion();
+        snprintf((char *)str, sizeof(str), ">>> Current fw version: %d.%d <<<",
+                 ((version & 0xFF00) >> 8), version & 0xFF);
+        fileHeader_t *tmpHeader;
+        tmpHeader = (fileHeader_t *)pValue;
+        initHeader(tmpHeader);
+        datsSendData(connId, sizeof(str), str);
+    }
     return ATT_SUCCESS;
 }
-
 /*************************************************************************************************/
 /*!
 *
@@ -746,6 +751,11 @@ static void datsBtnCback(uint8_t btn)
         }
 
 #endif /* BT_VER */
+        case APP_UI_BTN_2_MED: {
+            uint16_t version = WdxsFileGetFirmwareVersion();
+            APP_TRACE_INFO2("FW_VERSION: %d.%d", ((version & 0xFF00) >> 8), version & 0xFF);
+            break;
+        }
 
         default:
             APP_TRACE_INFO0(" - No action assigned");
@@ -779,7 +789,11 @@ static void datsBtnCback(uint8_t btn)
             /* stop advertising */
             AppAdvStop();
             break;
-
+        case APP_UI_BTN_2_MED: {
+            uint16_t version = WdxsFileGetFirmwareVersion();
+            APP_TRACE_INFO2("FW_VERSION: %d.%d", ((version & 0xFF00) >> 8), version & 0xFF);
+            break;
+        }
         default:
             APP_TRACE_INFO0(" - No action assigned");
             break;
@@ -902,6 +916,7 @@ void DatsHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 /*************************************************************************************************/
 void WdxsResetSystem(void)
 {
+    APP_TRACE_INFO0("Reseting!");
     /* Wait for the console to finish printing */
     volatile int i;
     for (i = 0; i < 0xFFFFF; i++) {}

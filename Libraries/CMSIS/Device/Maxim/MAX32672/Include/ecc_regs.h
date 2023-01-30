@@ -43,7 +43,6 @@
 /* **** Includes **** */
 #include <stdint.h>
 #include <stdio.h>
-#include "trimsir_regs.h"
 
 #warning "DEPRECATED(10-24-2022): ecc_regs.h - Scheduled for removal. Please use trimsir_regs.h."
 
@@ -89,7 +88,12 @@ extern "C" {
  * @ingroup ecc_registers
  * Structure type to access the ECC Registers.
  */
-typedef struct __attribute__((deprecated("struct and ecc_regs.h no longer supported. Use trimsir_regs.h and MXC_TRIMSIR (mxc_trimsir_regs_t) for ECC. 10-24-2022"))) {
+#if defined(__GNUC__)
+__attribute__((deprecated("mxc_ecc_regs_t struct and ecc_regs.h no longer supported. Use trimsir_regs.h and MXC_TRIMSIR (mxc_trimsir_regs_t) for ECC. 10-24-2022")))
+#else
+#warning "mxc_ecc_regs_t struct and ecc_regs.h no longer supported. Use trimsir_regs.h and MXC_TRIMSIR (mxc_trimsir_regs_t) for ECC. 10-24-2022"
+#endif
+typedef struct {
     __R  uint32_t rsv_0x0_0x7[2];
     __IO uint32_t en;                   /**< <tt>\b 0x08:</tt> ECC EN Register */
 } mxc_ecc_regs_t;

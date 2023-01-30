@@ -34,7 +34,7 @@ P0.28 -> P0.15 and P0.29 -> P0.14
 
 -->Data verified
 
--->EXAMPLE SUCCEEDED
+-->Example Succeeded
 ```
 
 The green LED (P0_23) will illuminate for successful transaction.

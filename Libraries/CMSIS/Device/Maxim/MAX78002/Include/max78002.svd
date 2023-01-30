@@ -991,67 +991,6 @@
   </peripheral>
 <!--ADC Inter-Integrated Circuit.-->
   <peripheral>
-   <name>AES_KEY</name>
-   <description>AES Key Registers.</description>
-   <baseAddress>0x40007800</baseAddress>
-   <addressBlock>
-    <offset>0x00</offset>
-    <size>0x400</size>
-    <usage>registers</usage>
-   </addressBlock>
-   <registers>
-    <register>
-     <name>AES_KEY0</name>
-     <description>AES Key 0.</description>
-     <addressOffset>0x00</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY1</name>
-     <description>AES Key 1.</description>
-     <addressOffset>0x04</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY2</name>
-     <description>AES Key 2.</description>
-     <addressOffset>0x08</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY3</name>
-     <description>AES Key 3.</description>
-     <addressOffset>0x0C</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY4</name>
-     <description>AES Key 4.</description>
-     <addressOffset>0x10</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY5</name>
-     <description>AES Key 5.</description>
-     <addressOffset>0x14</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY6</name>
-     <description>AES Key 6.</description>
-     <addressOffset>0x18</addressOffset>
-     <size>32</size>
-    </register>
-    <register>
-     <name>AES_KEY7</name>
-     <description>AES Key 7.</description>
-     <addressOffset>0x1C</addressOffset>
-     <size>32</size>
-    </register>
-   </registers>
-  </peripheral>
-<!--AES_KEY AES Key Registers.-->
-  <peripheral>
    <name>AES</name>
    <description>AES Keys.</description>
    <baseAddress>0x40007400</baseAddress>
@@ -1261,6 +1200,43 @@
    </registers>
   </peripheral>
 <!--AES AES Keys.-->
+  <peripheral>
+   <name>AESKEYS</name>
+   <description>AES Key Registers.</description>
+   <baseAddress>0x40007800</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>KEY0</name>
+     <description>AES Key 0.</description>
+     <addressOffset>0x000</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY1</name>
+     <description>AES Key 1.</description>
+     <addressOffset>0x080</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY2</name>
+     <description>AES Key 2.</description>
+     <addressOffset>0x100</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>KEY3</name>
+     <description>AES Key 3.</description>
+     <addressOffset>0x180</addressOffset>
+     <size>32</size>
+    </register>
+   </registers>
+  </peripheral>
+<!--AESKEYS AES Key Registers.-->
   <peripheral>
    <name>CAMERAIF</name>
    <description>Parallel Camera Interface.</description>
@@ -11136,7 +11112,7 @@
       <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[5:5]</bitRange>
+       <bitRange>[7:7]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -11506,19 +11482,19 @@
   <peripheral derivedFrom="PT">
    <name>PT1</name>
    <description>Pulse Train 1</description>
-   <baseAddress>0x4003C040</baseAddress>
+   <baseAddress>0x4003C030</baseAddress>
   </peripheral>
 <!--PT1 Pulse Train 1-->
   <peripheral derivedFrom="PT">
    <name>PT2</name>
    <description>Pulse Train 2</description>
-   <baseAddress>0x4003C060</baseAddress>
+   <baseAddress>0x4003C040</baseAddress>
   </peripheral>
 <!--PT2 Pulse Train 2-->
   <peripheral derivedFrom="PT">
    <name>PT3</name>
    <description>Pulse Train 3</description>
-   <baseAddress>0x4003C080</baseAddress>
+   <baseAddress>0x4003C050</baseAddress>
   </peripheral>
 <!--PT3 Pulse Train 3-->
   <peripheral>
@@ -11530,7 +11506,7 @@
    <access>read-write</access>
    <addressBlock>
     <offset>0</offset>
-    <size>0x0018</size>
+    <size>0x0020</size>
     <usage>registers</usage>
    </addressBlock>
    <interrupt>
@@ -18694,25 +18670,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        </enumeratedValues>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <description> DMA Request Enable </description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable DMA for this IN endpoint.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable DMA for this IN endpoint.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>FRCDATATOG</name>
        <description> Force In Data - Toggle</description>
        <bitOffset>3</bitOffset>
@@ -18727,25 +18684,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
         <enumeratedValue>
          <name>dontcare</name>
          <description>Toggle data-toggle regardless of ACK. </description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <description> DMA Request Mode Enable </description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>0</name>
-         <description>Enable DMA Request Mode 0.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>1</name>
-         <description>Enable DMA Request Mode 1.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -18866,20 +18804,8 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        <access>read-write</access>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
        <name>DISNYET</name>
        <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
@@ -19172,16 +19098,10 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
     </register>
     <register>
      <name>RAMINFO</name>
-     <description>RAM width and DMA hardware information.</description>
+     <description>RAM width information.</description>
      <addressOffset>0x79</addressOffset>
      <size>8</size>
      <fields>
-      <field>
-       <name>DMACHANS</name>
-       <bitOffset>4</bitOffset>
-       <bitWidth>4</bitWidth>
-       <access>read-only</access>
-      </field>
       <field>
        <name>RAMBITS</name>
        <bitOffset>0</bitOffset>
@@ -19204,26 +19124,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
       </field>
       <field>
        <name>RSTS</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EARLYDMA</name>
-     <description>DMA timing control register.</description>
-     <addressOffset>0x7B</addressOffset>
-     <size>8</size>
-     <fields>
-      <field>
-       <name>EDMAIN</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>EDMAOUT</name>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
@@ -19503,12 +19403,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        <name>VRST_VDDB_N_A</name>
        <description>VRST_VDDB_N_A</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>DMA_INT</name>
-       <description>DMA_INT</description>
-       <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
@@ -20161,20 +20055,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      </fields>
     </register>
     <register>
-     <name>PWM</name>
-     <description>Wakeup Timer PWM Register</description>
-     <addressOffset>0x0008</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>PWM</name>
-       <description>Timer PWM Value.</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>32</bitWidth>
-      </field>
-     </fields>
-    </register>
-    <register>
      <name>INTFL</name>
      <description>Wakeup Timer Interrupt Register</description>
      <addressOffset>0x000C</addressOffset>
@@ -20384,30 +20264,6 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field>
-       <name>PWMSYNC</name>
-       <description>PWM SYNC mode.</description>
-       <bitOffset>9</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>NOLHPOL</name>
-       <description>PWM output high polarity.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>NOLLPOL</name>
-       <description>PWM output high polarity.</description>
-       <bitOffset>11</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>PWMCKBD</name>
-       <description>PWM output disable.</description>
-       <bitOffset>12</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
      </fields>
     </register>
     <register>
@@ -20433,17 +20289,41 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
     <register>
      <name>PRESET</name>
      <description>Preset register.</description>
-     <addressOffset>0x18</addressOffset>
+     <addressOffset>0x0018</addressOffset>
+     <fields>
+      <field>
+       <name>PRESET</name>
+       <description>Preset Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
     <register>
      <name>RELOAD</name>
      <description>Reload register.</description>
-     <addressOffset>0x1C</addressOffset>
+     <addressOffset>0x001C</addressOffset>
+     <fields>
+      <field>
+       <name>RELOAD</name>
+       <description>Reload Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
     <register>
      <name>SNAPSHOT</name>
      <description>Snapshot register.</description>
-     <addressOffset>0x20</addressOffset>
+     <addressOffset>0x0020</addressOffset>
+     <fields>
+      <field>
+       <name>SNAPSHOT</name>
+       <description>Snapshot Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
    </registers>
   </peripheral>

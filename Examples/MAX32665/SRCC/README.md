@@ -18,5 +18,5 @@ Connect the jumper (JP7) to SPIRAM.
 
 Running test reads with data cache enabled.   Time elapsed: 0.3587
 Running test reads with data cache disabled.  Time elapsed: 4.2092
-Example complete.
+Example Succeeded.
 ```

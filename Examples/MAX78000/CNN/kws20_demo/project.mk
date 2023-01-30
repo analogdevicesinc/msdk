@@ -23,6 +23,9 @@ IPATH += TFT/evkit/
 VPATH += TFT/evkit/
 endif
 
+# If enabled, it sends out the Mic samples used for inference to the serial port
+#PROJ_CFLAGS+=-DSEND_MIC_OUT_SERIAL
+
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather

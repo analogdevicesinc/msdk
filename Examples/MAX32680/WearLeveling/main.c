@@ -183,11 +183,9 @@ int main(void)
 
     if (error_status != E_NO_ERROR) {
         printf("\nExample Failed\n");
-    } else {
-        printf("\nExample Succeeded\n");
+        return E_FAIL;
     }
 
-    while (1) {}
-
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

@@ -17,13 +17,21 @@ INIT_BROADCASTER = 1
 INIT_CENTRAL = 0
 INIT_OBSERVER = 0
 
-# TRACE option
-# Set to 1 to enable serial port trace messages
-# Set to 0 to disable
-TRACE = 1
 
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
 
-# Use local linkerfile
-LINKERFILE = ota.ld
+AUTOSEARCH=0
+VPATH += .
+SRCS += stack_dats.c 
+SRCS += dats_main.c
+SRCS += main.c
+
+USE_INTERNAL_FLASH ?=0
+ifeq ($(USE_INTERNAL_FLASH), 1)
+LINKERFILE = ota_internal_mem.ld
+SRCS += wdxs_file_int.c
+else
+LINKERFILE = ota_external_mem.ld
+SRCS += wdxs_file_ext.c
+endif

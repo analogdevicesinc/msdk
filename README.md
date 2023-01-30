@@ -1,105 +1,88 @@
 # Analog Devices MSDK
 
-## License Agreement
-
-**© Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.**
-
-This software is protected by copyright laws of the United States and
-of foreign countries. This material may also be protected by patent laws
-and technology transfer regulations of the United States and of foreign
-countries. This software is furnished under a license agreement and/or a
-nondisclosure agreement and may only be used or reproduced in accordance
-with the terms of those agreements. Dissemination of this information to
-any party or parties not specified in the license agreement and/or 
-nondisclosure agreement is expressly prohibited.
-
-The above copyright notice and this permission notice shall be included
-in all copies or substantial portions of the Software.
-
-**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-OTHER DEALINGS IN THE SOFTWARE.**
-
-Except as contained in this notice, the name of **Maxim Integrated Products, Inc.**
-shall not be used except as stated in the **Maxim Integrated Products, Inc. Branding Policy.**
-
-The mere transfer of this software does not imply any licenses
-of trade secrets, proprietary technology, copyrights, patents,
-trademarks, maskwork rights, or any other form of intellectual
-property whatsoever. **Maxim Integrated Products, Inc.** retains all
-ownership rights.
-
-[Final Copyright](https://www.maximintegrated.com/en/aboutus/legal/copyrights/default-copyright.html "Final Copyright")
-
-[Final Software License Agreement](https://www.maximintegrated.com/en/aboutus/legal/sla/no-distribute.html "Final SLA")
-
 ## Introduction
 
-The Maxim Microcontrollers SDK (MSDK), now a part of Analog Devices, contains tools and resources to develop firmware for the [MAX-series of microcontrollers](https://www.maximintegrated.com/en/products/microcontrollers.html).  This includes register files, peripheral drivers, system startup files, documentation, various utilities, third-party libraries, IDE support files, and a toolchain.
+The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://www.analog.com/en/index.html), contains the necessary software and tools to develop firmware for the [MAX32xxx and MAX78xxx Microcontrollers](https://www.analog.com/en/parametricsearch/10984).  This includes register files, peripheral drivers, system startup files, documentation, various utilities, third-party libraries, IDE support files, and a toolchain.  Full documentation can be found in the User Guide:
 
-The following development environments are supported:
+* [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
 
-* Command-line development
-* Eclipse
-* Visual Studio Code
-* IAR
-* Keil
-
-This repository contains the latest source code of the MSDK and is used for development.  It does _not_ contain the MSDK _toolchain_, which is a separate collection of programs used to build, program, and debug the contents of this repo on hardware.
-
-The full MSDK is available via an [Automatic Installer](#automatic-installer), which pulls from the latest release tag of this repo and packages it alongside the toolchain.
-
-Users who would like to retrieve the bleeding-edge development copies of the MSDK resources can pull them from this repository.  See [Developing from the Repo](#developing-from-the-repo).
+**This repository** contains the latest **_source code_** of the MSDK and is being used for _development_.  It does _not_ contain the MSDK _toolchain_, which is a separate collection of programs used for building, programming, and debugging.
 
 ## Installation
 
-### Automatic Installer
+The MSDK source code is bundled alongside its toolchain into releases that are available via an Automatic Installer.  See the ["Installation"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation) section in the MSDK User Guide for instructions.
 
-The MSDK is available via an automatic installer for the platforms below.  The automatic installer will retrieve the latest _release_ version of this repository and the latest toolchain for your OS.
+Users who would like to use the latest bleeding-edge _development_ resources can follow [Developing from the Repo](#developing-from-the-repo) below, but this should only be done **_after_** installing the release MSDK above.
 
-* [Windows 10](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0010820A)
+## Contributing
 
-* [Ubuntu Linux](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018720A)
+Contributions to the MSDK are welcome.  See [CONTRIBUTING.md](Documentation/CONTRIBUTING.md) for guidelines.
 
-  * This file must be made executable before it can be run. Use the command `chmod +x MaximMicrosSDK_linux.run`. Alternatively, set “Allow executing as program” in the Ubuntu GUI.
+## Developing from the Repo
 
-* [MacOS](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018610A)
+This section assumes some familiarity with the MSDK and the standard setup procedure for its supported development environments.  First-time users should work from a standard MSDK installation instead.
 
-  * Some additional steps are required to complete the automatic installation on MacOS.  See the [Completing the Installation on MacOS](#completing-the-installation-on-macos) below.
+### Cloning
 
-### Cloning the Github Repo
+This repo can be cloned using [Git](https://git-scm.com/) to obtain the latest development copies of the MSDK source code.  
 
-This repo can be cloned to obtain the latest development copies of the MSDK source code.
+1. Download and install [Git](https://git-scm.com/downloads).
 
-1. First, you'll need to set up an SSH key for your Github account.  See the [Github Docs on SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) for instructions.
+2. Add an SSH key to your Github account.  See the [Github Docs on SSH](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) for instructions.
 
-2. Once you've set up an SSH key for your account, you can clone this repository with the command:
+3. Open a terminal.
 
-    ```shell
-    git clone --recurse git@github.com:Analog-Devices-MSDK/msdk.git
-    ```
+4. `cd` into a directory **_without any spaces in its filepath_**.
 
-The source code in the repo can now be copied elsewhere, but if you'd like to set it up for "in-place" development you'll also need to perform a few manual steps to link the toolchain.  See [Developing from the Repo](#developing-from-the-repo).
+5. Clone the repository using the `git clone` command.
 
-### Developing from the Repo
+    * **SSH clone (recommended)**
 
-The Github repo contains source code only.  In order to develop on it directly the toolchain must be made available at the same file-paths as the full MSDK installation.  The easiest way to do this is to retrieve the toolchain with the automatic installer and then create symbolic links.  This section walks through the process.
+      ```bash
+      git clone --recurse git@github.com:Analog-Devices-MSDK/msdk.git
+      ```
 
-1. Install the toolchain via the [Automatic Installer](#automatic-installer) for your OS if you haven't already.
+    * **HTTPS Clone**
 
-    At minimum, install the components:
+      ```bash
+      git clone --recurse https://github.com/Analog-Devices-MSDK/msdk.git
+      ```
+
+      Expected output:
+
+      ```shell
+      Cloning into 'msdk'...
+      remote: Enumerating objects: 65643, done.
+      remote: Counting objects: 100% (8622/8622), done.
+      remote: Compressing objects: 100% (4175/4175), done.
+      remote: Total 65643 (delta 4472), reused 8166 (delta 4215), pack-reused 57021
+      Receiving objects: 100% (65643/65643), 231.23 MiB | 15.51 MiB/s, done.
+      Resolving deltas: 100% (48045/48045), done.
+      Updating files: 100% (20873/20873), done.
+      Submodule 'Libraries/Cordio' (git@github.com:Analog-Devices-MSDK/Libraries-cordio.git) registered for path 'Libraries/Cordio'
+      Cloning into '/home/jakecarter/repos/test/msdk/Libraries/Cordio'...
+      remote: Enumerating objects: 2905, done.
+      remote: Counting objects: 100% (228/228), done.
+      remote: Compressing objects: 100% (153/153), done.
+      remote: Total 2905 (delta 81), reused 193 (delta 70), pack-reused 2677
+      Receiving objects: 100% (2905/2905), 10.10 MiB | 14.53 MiB/s, done.
+      Resolving deltas: 100% (1209/1209), done.
+      Submodule path 'Libraries/Cordio': checked out '91cef69d49e5db8b32602b089007ab1aafe26900'
+      ```
+
+### Toolchain Setup
+
+This repository contains the MSDK's *source code* only.  In order to develop on it directly the toolchain must be made available at the same file-paths as the full MSDK installation.  The easiest way to do this is to retrieve the toolchain with the automatic installer and then create symbolic links.  This section walks through the process.
+
+1. Install the MSDK via the [Automatic Installer](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#installation).
+
+    At ***minimum***, install the following components:
     * GNU RISC-V Embedded GCC
     * GNU Tools for ARM Embedded Processors
     * Open On-Chip Debugger
     * MSYS2 (if you're on Windows 10)
 
-    If you've already installed the MSDK, run the `MaintenanceTool` program to ensure these components are selected and updated to the latest version.
-
-2. Clone the Github repository to an accessible location without any spaces in its filepath.  See [Cloning the Github Repo](#cloning-the-github-repo).
+2. [Clone](#cloning) the Github repository to an accessible location *without any spaces in its filepath*.
 
 3. Create symbolic directory links to link the toolchain at the expected locations.
 
@@ -131,17 +114,20 @@ The Github repo contains source code only.  In order to develop on it directly t
         ```cmd
         C:\Users\Username\repos\msdk>mklink /D Tools\GNUTools C:\MaximSDK\Tools\GNUTools
         symbolic link created for Tools\GNUTools <<===>> C:\MaximSDK\Tools\GNUTools
-
+        
         C:\Users\Username\repos\msdk>mklink /D Tools\OpenOCD C:\MaximSDK\Tools\OpenOCD
         symbolic link created for Tools\OpenOCD <<===>> C:\MaximSDK\Tools\OpenOCD
-
+        
         C:\Users\Username\repos\msdk>mklink /D Tools\MSYS2 C:\MaximSDK\Tools\MSYS2
         symbolic link created for Tools\MSYS2 <<===>> C:\MaximSDK\Tools\MSYS2
-
+        
         C:\Users\Username\repos\msdk>mklink /D Tools\xPack C:\MaximSDK\Tools\xPack
         symbolic link created for Tools\xPack <<===>> C:\MaximSDK\Tools\xPack
-
         ```
+        
+        The [Tools](Tools) directory of the MSDK repo should now contain valid symbolic links to the full installation's toolchain.
+        
+        ![Symbolic links (windows)](Documentation/res/symlinks-windows.jpg)
 
     On **Linux/MacOS**:
     * Open a terminal
@@ -184,79 +170,34 @@ The Github repo contains source code only.  In order to develop on it directly t
 
 4. The MSDK now contains a virtual copy of the toolchain at the correct locations.  Some additional setup may be required to use it depending on your chosen development environment.  See [Setup](#setup) below.
 
-### Completing the Installation on MacOS
+### Environment Setup (Visual Studio Code)
 
-On MacOS, some additional missing packages must be manually installed via [Homebrew](https://brew.sh/).
+If you have not previously configured VS Code, see [Setup (VS Code)](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#setup-vs-code_1) in the User Guide.
 
-**For non-M1 platforms:**
+To configure Visual Studio Code for the _development repository_ simply set `MAXIM_PATH` to the cloned location of the _development repo_ instead of the release MSDK in your user settings.json file.  After making the change, reload VS Code.  
 
-1. Follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
+The `MAXIM_PATH` pointing to the _release_ MSDK can be commented out to easily switch back to it if needed.  For example:
 
-2. Then, open a terminal and run the command...
+```json
+{
+    // There may be other settings up here...
+    
+    // "MAXIM_PATH":"C:/MaximSDK", // Work from the release MSDK
+    "MAXIM_PATH":"C:/Users/Username/repos/msdk", // Work from the development MSDK
+    "update.mode": "manual",
+    "extensions.autoUpdate": false,
+    
+    // There may be other settings down here...
+}
+```
 
-    ```shell
-    brew install libusb-compat libftdi hidapi libusb
-    ```
+### Environment Setup (Eclipse)
 
-**For M1 platforms**:
-
-The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386).  As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. This ensures OpenOCD gets the packages with the architecture it needs.  From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
-
-The i386 version of Homebrew can be installed in parallel with the arm64 version, and typically installs into a separate filesystem.
-
-1. Open a terminal and update Rosetta.
-
-    ```shell
-    softwareupdate --install-rosetta --agree-to-license
-    ```
-
-2. Close the terminal.
-
-3. Run a new terminal in Rosetta:
-
-    1. Go to Finder > Applications and find your Terminal
-
-    2. Right-Click Terminal and Duplicate it.  Rename it to "Terminal i386".
-
-    3. Rich-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
-
-    4. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
-
-4. From your Rosetta terminal follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
-
-5. Verify the correct version of Homebrew is running from your Rosetta terminal using the `which brew` command.  This should return a path beginning with `/usr/local`.
-
-    **Note:** On systems with multiple or pre-existing Homebrew installations, the arm64 version of Homebrew may still take precendence over the newly installed x86_64 version.  If `which brew` contains `/opt/homebrew` instead, you may need to edit your terminal profile's startup script.  Alternatively, you can run the correct Homebrew binary directly. `/usr/local/homebrew/bin/brew ...`
-
-6. Run the command...
-
-    ```shell
-    brew install libusb-compat libftdi hidapi libusb
-    ```
-
-    (or, if you need to use the absolute path)
-
-    ```shell
-    /usr/local/homebrew/bin/brew install libusb-compat libftdi hidapi libusb
-    ```
-
-## Setup
-
-The setup guides below demonstrate how to configure supported development environments for use with this repository.  It assumes a successful [installation](#installation).
-
-### Visual Studio Code
-
-All example projects in the MSDK come pre-configured with [Visual Studio Code](https://code.visualstudio.com/) project folders that are managed by the [VSCode-Maxim](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop) repository.  They can be found in the `.vscode` sub-folder of each example, and include local copies of the VSCode-Maxim documentation.
-
-The setup procedure is exactly the same as a standard VSCode-Maxim installation (instructions [here](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#installation)), except on step 9 `"MAXIM_PATH"` can be set to the location of this repository instead of the release version of the MSDK.
-
-See [Usage](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#usage) from the VSCode-Maxim readme for more details on using the projects once setup is complete.
-
-### Eclipse
-
-Eclipse itself should be launched with the `Tools/Eclipse/cdt/eclipse(.bat/.sh)` script, which will set `MAXIM_PATH` and a few other environment variables for use with the _release_ version of the MSDK by default.  Therefore, there are two options for using Eclipse with the MSDK development repository:
+There are two options for using Eclipse with the MSDK *development* repository.
 
 #### Option 1 - Project Settings
+
+This option can configure an _individual_ Eclipse project to use the development repo. 
 
 1. Import or open a project in your Eclipse workspace.
 
@@ -282,6 +223,8 @@ The project is now configured for use with the MSDK development repo, and subseq
 
 #### Option 2 - Edit setenv
 
+This option can be used to configure _all_ Eclipse projects to use the development repo by default.
+
 1. Locate the `setenv.bat` script that can be found in the root directory of the _release_ MSDK installation.
 
 2. (Optional, recommended) Copy the `setenv.bat` file to a backup called `setenv-release.bat`.  This backup file can be used to revert back to the original if needed.
@@ -300,137 +243,54 @@ The project is now configured for use with the MSDK development repo, and subseq
     set MAXIM_PATH=C:\Users\Username\repos\msdk
     ```
 
-**Note:** This will configure _all_ Eclipse sessions to load resources from the development repo.
+​	**Note:** This will configure _all_ Eclipse sessions to load resources from the development repo.
 
-### Command-line Setup
+### Environment Setup (Command-Line)
 
-This section assumes some familiarity with basic terminal concepts such as your system's Path and environment variables.  Since there are such wide variety of terminal applications and Operating Systems, these instructions are intentionally left somewhat generic.  
+If you have not previously configured the command-line, see [Setup (Command-Line)](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#setup-command-line_1) in the User Guide.
 
-However, an example `.bashrc` file is provided below that can be referenced for most Unix systems.  Simply copy and paste the entries below into your shell's startup script and edit `MAXIM_PATH` to the installed location of this repository.
+To configure the command-line for use with the development repo:
 
-```bash
-# ~/.bashrc
+1. Set the `MAXIM_PATH` environment variable to the cloned location of the development repo instead of the release MSDK.
 
-# Set MAXIM_PATH environment variable
-export MAXIM_PATH=#changeme!
+    - Windows:  Edit `Tools/MSYS2/msys.bat`
+    - Linux/MacOS:  Edit your shell's profile/startup script
+    
+2. Restart your shell
 
-# Add Arm Embedded GCC to path (v10.3)
-export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
-export PATH=$ARM_GCC_ROOT/bin:$PATH
+## License Agreement
 
-# Add xPack RISC-V GCC to path (v10.2)
-export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
-export PATH=$XPACK_GCC_ROOT/bin:$PATH
+**© Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.**
 
-# Add OpenOCD to path
-export OPENOCD_ROOT=$MAXIM_PATH/Tools/OpenOCD
-export PATH=$OPENOCD_ROOT:$PATH
-```
+This software is protected by copyright laws of the United States and
+of foreign countries. This material may also be protected by patent laws
+and technology transfer regulations of the United States and of foreign
+countries. This software is furnished under a license agreement and/or a
+nondisclosure agreement and may only be used or reproduced in accordance
+with the terms of those agreements. Dissemination of this information to
+any party or parties not specified in the license agreement and/or 
+nondisclosure agreement is expressly prohibited.
 
-More generic instructions can be found below.  These instructions will use Unix syntax unless a step is targeted specifically at Windows.
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
 
-1. Create a new environment variable on your system called `MAXIM_PATH`.  Set its value to the installed location of this repository.
+**THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.**
 
-2. Add the following entries to your system's path:
+Except as contained in this notice, the name of **Maxim Integrated Products, Inc.**
+shall not be used except as stated in the **Maxim Integrated Products, Inc. Branding Policy.**
 
-    * `$MAXIM_PATH/Tools/GNUTools/10.3/bin`
-    * `$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin`
-    * `$MAXIM_PATH/Tools/OpenOCD`
+The mere transfer of this software does not imply any licenses
+of trade secrets, proprietary technology, copyrights, patents,
+trademarks, maskwork rights, or any other form of intellectual
+property whatsoever. **Maxim Integrated Products, Inc.** retains all
+ownership rights.
 
-3. (Windows only) Add the following entry to your system's path:
-    * `%MAXIM_PATH%/Tools/MSYS2/usr/bin`
+[Final Copyright](https://www.maximintegrated.com/en/aboutus/legal/copyrights/default-copyright.html "Final Copyright")
 
-4. Restart your shell, and verify the tools are accessible with the following commands:
-
-    1. Arm Embedded GCC:
-
-        ```shell
-        $ arm-none-eabi-gcc -v
-
-        Using built-in specs.
-        COLLECT_GCC=arm-none-eabi-gcc
-
-        # ... Lots of other info will be printed here...
-        
-        Supported LTO compression algorithms: zlib
-        gcc version 10.3.1 20210824 (release) (GNU Arm Embedded Toolchain 10.3-2021.10)
-        ```
-
-    2. xPack RISC-V GCC:
-
-        ```shell
-        $ riscv-none-embed-gcc -v
-
-        Using built-in specs.
-        COLLECT_GCC=riscv-none-embed-gcc
-        
-        # ... Lots of other info will be printed here...
-
-        Supported LTO compression algorithms: zlib
-        gcc version 10.2.0 (xPack GNU RISC-V Embedded GCC x86_64)
-        ```
-
-    3. OpenOCD
-
-        ```shell
-        $ openocd -v
-
-        Open On-Chip Debugger 0.11.0+dev-g56a818e4c (2022-07-19-19:00)
-        Licensed under GNU GPL v2
-        For bug reports, read
-            http://openocd.org/doc/doxygen/bugs.html
-        ```
-
-        **Note:** The automatic installer should have installed OpenOCD dependencies.  Should any missing package errors get thrown on this command they can be resolved by installing the missing packages manually.
-
-        **On linux:**
-
-        ```shell
-        sudo apt-get install libusb-1.0 libusb-0.1 libhidapi-libusb0 libhidapi-hidraw0
-        ```
-
-        **On MacOS with [Homebrew](https://brew.sh/)**
-
-        ```shell
-        brew install libusb-compat libftdi hidapi libusb
-        ```
-
-    4. GNU Make
-
-        ```shell
-        $ make -v
-
-        GNU Make 4.3
-        Built for x86_64-pc-linux-gnu
-        Copyright (C) 1988-2020 Free Software Foundation, Inc.
-        License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-        This is free software: you are free to change and redistribute it.
-        There is NO WARRANTY, to the extent permitted by law.
-        ```
-
-        Make should also have been installed by the automatic installer.   If Make is not available, install it with your package manager.
-
-        **On linux:**
-
-        ```shell
-        sudo apt-get install make
-        ```
-
-        **On MacOS with [Homebrew](https://brew.sh/)**
-
-        ```shell
-        brew install make
-        ```
-
-## Usage Quick-Start
-
-Following a successful [installation](#installation) and [setup](#setup), additional documentation on usage can be found below:
-
-* [Visual Studio Code](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#usage)
-* [Eclipse](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/6/6245.html)
-* [IAR](https://www.youtube.com/playlist?list=PLQ4i891m2efIwwd4ScApoPv7RaYLwhAjF)
-* [Keil](https://www.youtube.com/watch?v=d_O2tu5CMbQ)
-
-## Contributing
-
-Contributions to the MSDK are welcome.  See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+[Final Software License Agreement](https://www.maximintegrated.com/en/aboutus/legal/sla/no-distribute.html "Final SLA")

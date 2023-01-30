@@ -36,6 +36,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
 /**
  * @file  hid.h
  * @brief Human Interface Device Class
@@ -68,5 +72,9 @@ typedef __packed struct {
   uint8_t  bHIDDescriptorType;
   uint16_t wDescriptorLength;
 } hid_descriptor_t;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _HID_H_ */

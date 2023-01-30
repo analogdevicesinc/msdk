@@ -43,6 +43,7 @@ SDHC_FAT
 SDHC_Raw
 SCPA_OTP_Dump
 Security_Monitor
+SecureROM_BL_Host
 Semaphore
 SKB
 SMON

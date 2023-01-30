@@ -41,6 +41,7 @@
 import sys
 import argparse
 from argparse import RawTextHelpFormatter
+from pprint import pprint
 from time import sleep
 from BLE_hci import BLE_hci
 from BLE_hci import Namespace
@@ -56,9 +57,10 @@ parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHe
 parser.add_argument('ipAddress',help='Instrument IP address')
 parser.add_argument('serialPort',help='DUT HCI serial port')
 args = parser.parse_args()
+pprint(args)
 
 # Create the BLE_hci objects
-hciDUT = BLE_hci(Namespace(serialPort=args.serialPort, baud=115200))
+hciDUT = BLE_hci(Namespace(serialPort=args.serialPort, monPort="", baud=115200))
 hciDUT.resetFunc(None)
 
 # Wait for calibration

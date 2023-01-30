@@ -279,5 +279,5 @@ int main(void)
         }
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

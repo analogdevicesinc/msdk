@@ -29,5 +29,5 @@ Test Length     : 512 bytes
 
 -->Data verified
 
--->EXAMPLE SUCCEEDED
+-->Example Succeeded
 ```

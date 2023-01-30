@@ -13,8 +13,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  # This workflow contains a single job called "Build_Examples"
+  Build_Examples:
     # The type of runner that the job will run on
     runs-on:
       - self-hosted
@@ -49,14 +49,6 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build_Examples
         run: |
-          # Remove local modifications
-          git scorch
-
-          # Update the submodules, this will use ssh
-          git submodule init
-          git submodule sync
-          git submodule update --init --recursive
-          
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
           export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
@@ -68,6 +60,11 @@ jobs:
           SUBDIRS=$(find . -type d -not -path "./MAX3257*" -name "Hello_World")
           for dir in ${SUBDIRS}
           do
+            echo
+            echo "-----------------------------------------"
+            echo ${dir}
+            echo "-----------------------------------------"
+            echo
             make -C ${dir} clean
             make -C ${dir} libclean
             make -C ${dir} -j8
@@ -76,7 +73,7 @@ jobs:
           # Find all of the examples, 
           # Exclude the MAX32572, currently in development
           # Exclude the MAX32570, examples are located in another repo
-          SUBDIRS=$(find . -mindepth 3 -not -path "./MAX3257*"  -name "?akefile" -printf '%h\n')
+          SUBDIRS=$(find . -mindepth 3 -not \( -path "./MAX3257*" -o -path "./MAX*/UCL*" \) -name "?akefile" -printf '%h\n')
 
           # Exclude some examples
           SUBDIRS=${SUBDIRS//"./MAX32672/Display/lvgl-8.0.2/tests"/}
@@ -86,6 +83,29 @@ jobs:
 
           for dir in ${SUBDIRS}
           do
-              make -C ${dir} clean
-              make -C ${dir} -j8
+            echo
+            echo "-----------------------------------------"
+            echo ${dir}
+            echo "-----------------------------------------"
+            echo
+
+            make -C ${dir} clean
+            make -C ${dir} -j8
           done
+
+          # Build MAX32690 WLP_V1 BLE examples
+          SUBDIRS=$(find ./MAX32690 -type d -name "BLE*")
+          echo SUBDIRS: ${SUBDIRS}
+
+          for dir in ${SUBDIRS}
+          do
+            echo
+            echo "---------------------------------------"
+            echo ${dir}
+            echo "---------------------------------------"
+            echo
+            make -C ${dir} clean
+            make -C ${dir} libclean
+            make -C ${dir} -j8 BOARD=WLP_V1
+          done
+          
