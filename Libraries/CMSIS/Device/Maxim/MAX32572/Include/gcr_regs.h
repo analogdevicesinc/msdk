@@ -309,14 +309,22 @@ typedef struct {
 #define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO             ((uint32_t)0x6UL) /**< CLKCTRL_SYSCLK_SEL_ERTCO Value */
 #define MXC_S_GCR_CLKCTRL_SYSCLK_SEL_ERTCO             (MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO << MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS) /**< CLKCTRL_SYSCLK_SEL_ERTCO Setting */
 
-#define MXC_F_GCR_CLKCTRL_SYSCLK_RDY_POS               13 /**< CLKCTRL_SYSCLK_RDY Position */
-#define MXC_F_GCR_CLKCTRL_SYSCLK_RDY                   ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_SYSCLK_RDY_POS)) /**< CLKCTRL_SYSCLK_RDY Mask */
-
 #define MXC_F_GCR_CLKCTRL_CRYPTOCLK_DIV_POS            12 /**< CLKCTRL_CRYPTOCLK_DIV Position */
 #define MXC_F_GCR_CLKCTRL_CRYPTOCLK_DIV                ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_CRYPTOCLK_DIV_POS)) /**< CLKCTRL_CRYPTOCLK_DIV Mask */
 
+#define MXC_F_GCR_CLKCTRL_SYSCLK_RDY_POS               13 /**< CLKCTRL_SYSCLK_RDY Position */
+#define MXC_F_GCR_CLKCTRL_SYSCLK_RDY                   ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_SYSCLK_RDY_POS)) /**< CLKCTRL_SYSCLK_RDY Mask */
+
 #define MXC_F_GCR_CLKCTRL_IPO_DIV_POS                  14 /**< CLKCTRL_IPO_DIV Position */
-#define MXC_F_GCR_CLKCTRL_IPO_DIV                      ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_IPO_DIV_POS)) /**< CLKCTRL_IPO_DIV Mask */
+#define MXC_F_GCR_CLKCTRL_IPO_DIV                      ((uint32_t)(0x3UL << MXC_F_GCR_CLKCTRL_IPO_DIV_POS)) /**< CLKCTRL_IPO_DIV Mask */
+#define MXC_V_GCR_CLKCTRL_IPO_DIV_DIV1                 ((uint32_t)0x0UL) /**< CLKCTRL_IPO_DIV_DIV1 Value */
+#define MXC_S_GCR_CLKCTRL_IPO_DIV_DIV1                 (MXC_V_GCR_CLKCTRL_IPO_DIV_DIV1 << MXC_F_GCR_CLKCTRL_IPO_DIV_POS) /**< CLKCTRL_IPO_DIV_DIV1 Setting */
+#define MXC_V_GCR_CLKCTRL_IPO_DIV_DIV2                 ((uint32_t)0x1UL) /**< CLKCTRL_IPO_DIV_DIV2 Value */
+#define MXC_S_GCR_CLKCTRL_IPO_DIV_DIV2                 (MXC_V_GCR_CLKCTRL_IPO_DIV_DIV2 << MXC_F_GCR_CLKCTRL_IPO_DIV_POS) /**< CLKCTRL_IPO_DIV_DIV2 Setting */
+#define MXC_V_GCR_CLKCTRL_IPO_DIV_DIV4                 ((uint32_t)0x2UL) /**< CLKCTRL_IPO_DIV_DIV4 Value */
+#define MXC_S_GCR_CLKCTRL_IPO_DIV_DIV4                 (MXC_V_GCR_CLKCTRL_IPO_DIV_DIV4 << MXC_F_GCR_CLKCTRL_IPO_DIV_POS) /**< CLKCTRL_IPO_DIV_DIV4 Setting */
+#define MXC_V_GCR_CLKCTRL_IPO_DIV_DIV8                 ((uint32_t)0x3UL) /**< CLKCTRL_IPO_DIV_DIV8 Value */
+#define MXC_S_GCR_CLKCTRL_IPO_DIV_DIV8                 (MXC_V_GCR_CLKCTRL_IPO_DIV_DIV8 << MXC_F_GCR_CLKCTRL_IPO_DIV_POS) /**< CLKCTRL_IPO_DIV_DIV8 Setting */
 
 #define MXC_F_GCR_CLKCTRL_ERFO_EN_POS                  16 /**< CLKCTRL_ERFO_EN Position */
 #define MXC_F_GCR_CLKCTRL_ERFO_EN                      ((uint32_t)(0x1UL << MXC_F_GCR_CLKCTRL_ERFO_EN_POS)) /**< CLKCTRL_ERFO_EN Mask */
