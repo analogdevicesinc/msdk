@@ -161,6 +161,12 @@ void WsfTimerStop(wsfTimer_t *pTimer)
     if (next) {
       next->prev = prev;
     }
+
+    /* Update tail if removing tail */
+    if(s_timers.tail == itemToRemove) {
+      s_timers.tail = prev;
+    }
+
     itemToRemove->wsfTimerStruct->isStarted = FALSE;
     WsfBufFree(itemToRemove);
   } else {
