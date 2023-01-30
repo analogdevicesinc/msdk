@@ -64,12 +64,14 @@ void Test_Callback(void *req, int result)
     callback_result = result;
 }
 
-void Test_Result(int result)
+int Test_Result(int result)
 {
     if (result) {
         printf(" * Failed *\n\n");
+        return -1;
     } else {
         printf("   Passed  \n\n");
+        return 0;
     }
 }
 
@@ -88,7 +90,7 @@ void ascii_to_byte(const char *src, char *dst, int len)
     }
 }
 
-void Test_Hash(int asynchronous)
+int Test_Hash(int asynchronous)
 {
     printf(asynchronous ? "Test Hash Async\n" : "Test Hash Sync\n");
 
@@ -122,20 +124,29 @@ void Test_Hash(int asynchronous)
         MXC_CTB_Hash_Compute(&hash_req);
     }
 
-    Test_Result(memcmp(sha256_result, destination, 32));
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_HASH);
 
-    return;
+    if (memcmp(sha256_result, destination, 32)) {
+        printf(" * Failed *\n\n");
+        return -1;
+    }
+
+    printf("   Passed  \n\n");
+    return 0;
 }
 
 int main(void)
 {
     printf("\n\n********** CTB Hash Example **********\n\n");
+    int fail = 0;
+    fail += Test_Hash(0);
+    fail += Test_Hash(1);
 
-    Test_Hash(0);
-    Test_Hash(1);
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
 
-    printf("\n*** Done ***\n");
-
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

@@ -123,5 +123,5 @@ int main(void)
     ContinuousPulseTrain();
     SquareWave();
 
-    return 0;
+    return E_NO_ERROR;
 }

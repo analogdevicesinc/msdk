@@ -393,11 +393,11 @@ int main(void)
     }
     MXC_ICC_Enable();
 
-    if (fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
+    if (fail != 0) {
         printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

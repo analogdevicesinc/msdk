@@ -245,6 +245,11 @@ typedef enum {
 #define MXC_SMON ((mxc_smon_regs_t *)MXC_BASE_SMON)
 
 /* ************************************************************************** */
+/*                                                                   AES Keys */
+#define MXC_BASE_AESKEYS ((uint32_t)0x40005000UL)
+#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
+
+/* ************************************************************************** */
 /*                                       Trim System Initialization Registers */
 #define MXC_BASE_TRIMSIR ((uint32_t)0x40005400UL)
 #define MXC_TRIMSIR ((mxc_trimsir_regs_t *)MXC_BASE_TRIMSIR)

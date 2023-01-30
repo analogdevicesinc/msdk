@@ -89,6 +89,8 @@
 #define E_ABORT -16
 /** The requested operation is not supported */
 #define E_NOT_SUPPORTED -17
+/** The requested operation is failed */
+#define E_FAIL -255
 /**@} end of MXC_Error_Codes group */
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_ERRORS_H_

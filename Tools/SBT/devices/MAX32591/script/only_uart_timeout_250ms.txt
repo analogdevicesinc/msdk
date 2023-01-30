@@ -1,2 +1,0 @@
-write-timeout 0 fa00
-write-timeout U ffff

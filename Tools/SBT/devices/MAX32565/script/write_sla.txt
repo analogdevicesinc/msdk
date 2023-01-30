@@ -1,4 +1,0 @@
-write-only %MAXIM_SBT_DIR%\devices\MAX32565\script\ME09_applet.s19
-execute-code 2000AB30
-erase-data 08000000 00000000
-write-file %PARAM_1% 08000000

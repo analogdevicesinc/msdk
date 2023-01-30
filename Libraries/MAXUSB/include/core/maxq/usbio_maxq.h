@@ -32,8 +32,16 @@
  *
  ******************************************************************************/
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int usbio_writereg(unsigned int reg, uint16_t data);
 int usbio_readreg(unsigned int reg, uint16_t *data);
 void usbio_blind_writereg(unsigned int reg, uint16_t data);
 int usbio_readfifo(unsigned int reg, uint8_t *data, unsigned int num);
 int usbio_writefifo(unsigned int reg, uint8_t *data, unsigned int num);
+
+#ifdef __cplusplus
+}
+#endif

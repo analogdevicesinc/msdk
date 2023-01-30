@@ -26,6 +26,7 @@ BLE_otac
 BLE_otas
 BLE_periph
 Bootloader
+CAN
 CRC
 CTB_AES
 DMA
@@ -49,6 +50,7 @@ RTC_Backup
 RV_ARM_Loader
 SCPA_OTP_Dump
 SPI
+Temp_Monitor
 TFT_Demo
 TMR
 TRNG

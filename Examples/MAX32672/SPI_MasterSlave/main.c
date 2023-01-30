@@ -150,19 +150,18 @@ int main(void)
     /***** Verify Results *****/
     if (memcmp(slave_rx, master_tx, sizeof(master_tx)) != 0) { // Master->Slave
         printf("\nSlave failed to receive data.\n");
-        LED_On(0);
+        LED_On(0); // indicates FAIL
         return E_COMM_ERR;
     } else if (memcmp(master_rx, slave_tx, sizeof(slave_tx)) != 0) { // Slave->Master
         printf("\nMaster failed to receive data.\n");
-        LED_On(0);
+        LED_On(0); // indicates FAIL
         return E_COMM_ERR;
-    } else {
-        printf("EXAMPLE SUCCEEDED!\n");
-        LED_On(1);
     }
 
     MXC_SPI_Shutdown(SPI_MASTER);
     MXC_SPI_Shutdown(SPI_SLAVE);
 
+    LED_On(1); // indicates SUCCESS
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }

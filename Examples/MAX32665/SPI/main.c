@@ -121,10 +121,10 @@ int main(void)
         }
 
         // Configure the peripheral
-        if (MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, MAP_A) != E_NO_ERROR) {
+        retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, MAP_A);
+        if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
-
-            while (1) {}
+            return retVal;
         }
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
@@ -218,14 +218,13 @@ int main(void)
         }
     }
 
-    if (fail) {
-        printf("Example failed!\n");
-        LED_On(0);
-        return -1;
-    } else {
-        printf("Example succeeded!\n");
-        LED_On(1);
+    if (fail != 0) {
+        LED_On(0); // indicates FAIL
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
+    LED_On(1); // indicates SUCCESS
+    printf("\nExample Succeeded\n");
     return E_NO_ERROR;
 }
