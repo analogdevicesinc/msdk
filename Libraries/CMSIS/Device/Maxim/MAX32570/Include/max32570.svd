@@ -817,7 +817,7 @@
      </fields>
     </register>
     <register>
-     <name>VTIM_0</name>
+     <name>VTIM0</name>
      <description>LCD Vertical Timing 0 Register</description>
      <addressOffset>0x004</addressOffset>
      <fields>
@@ -836,7 +836,7 @@
      </fields>
     </register>
     <register>
-     <name>VTIM_1</name>
+     <name>VTIM1</name>
      <description>LCD Vertical Timing 1 Register</description>
      <addressOffset>0x008</addressOffset>
      <fields>
@@ -1089,9 +1089,19 @@
      </fields>
     </register>
     <register>
-     <name>FR</name>
-     <description>FRBUF</description>
-     <addressOffset>0x18</addressOffset>
+     <dim>2</dim>
+     <dimIncrement>4</dimIncrement>
+     <name>FRBUF[%s]</name>
+     <description>Frame Buffer Address Register.</description>
+     <addressOffset>0x018</addressOffset>
+     <fields>
+      <field>
+       <name>ADDR</name>
+       <description>Frame Buffer Address.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
     </register>
     <register>
      <name>INTEN</name>
@@ -1255,6 +1265,19 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>HVPHA</name>
+     <description>LCD PHASE, between HSYNC and VSYNC, Register.</description>
+     <addressOffset>0x030</addressOffset>
+     <fields>
+      <field>
+       <name>THV</name>
+       <description>Phase Difference in number of pixel clock.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
       </field>
      </fields>
     </register>

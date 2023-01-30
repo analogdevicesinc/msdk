@@ -537,7 +537,7 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                       Magstripe Reader ADC */
-#define MXC_BASE_MSRADC ((uint32_t)0x4002B000UL)
+#define MXC_BASE_MSRADC ((uint32_t)0x4012B000UL)
 #define MXC_MSRADC ((mxc_msradc_regs_t *)MXC_BASE_MSRADC)
 
 /******************************************************************************/
