@@ -9,6 +9,10 @@
 
 # Add your config here!
 
+# If you have secure version of MCU, set SBT=1 to generate signed binary
+# For more information on how sing process works, see
+# https://www.analog.com/en/education/education-library/videos/6313214207112.html
+SBT=0
 
 SRCS+=max31889_driver.c
 

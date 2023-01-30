@@ -1,11 +1,18 @@
-# This file can be used for project configuration.
-# It's a sibling to the core "Makefile", which offers
-# various configuration variables that you can set here
-# if the default setup isn't suitable.
+# This file can be used to set build configuration
+# variables.  These variables are defined in a file called 
+# "Makefile" that is located next to this one.
 
-# See the comments in the "Makefile" for a detailed
-# description of the default behavior and the full list of
-# available options.
+# For instructions on how to use this system, see
+# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+
+# **********************************************************
+
+# Add your config here!
+
+# If you have secure version of MCU, set SBT=1 to generate signed binary
+# For more information on how sing process works, see
+# https://www.analog.com/en/education/education-library/videos/6313214207112.html
+SBT=0
 
 # Build the FreeRTOS Library
 LIB_FREERTOS = 1
