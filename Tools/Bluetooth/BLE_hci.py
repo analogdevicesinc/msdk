@@ -828,7 +828,7 @@ class BLE_hci:
                 
             return stats
         else:
-
+            print(colored('Error: Device Returned No Data. Command may not be supported, or device might not be updated', 'red'))
             return None
 
 
