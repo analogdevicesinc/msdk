@@ -212,6 +212,13 @@ int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned in
     case 1:
         config.reqsel = MXC_DMA_REQUEST_I2C1RX;
         break;
+
+    case 2:
+        config.reqsel = MXC_DMA_REQUEST_I2C2RX;
+        break;
+
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len,
@@ -244,6 +251,13 @@ int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned i
     case 1:
         config.reqsel = MXC_DMA_REQUEST_I2C1TX;
         break;
+
+    case 2:
+        config.reqsel = MXC_DMA_REQUEST_I2C2TX;
+        break;
+
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len,
