@@ -128,6 +128,11 @@ int Console_PrepForSleep(void);
  */
 int Debug_Init(void);
 
+/**
+ * \brief   Initializes GPIO to conserve power in low power mode.
+ */
+void GPIO_PrepForSleep(void);
+
 #ifdef __cplusplus
 }
 #endif
