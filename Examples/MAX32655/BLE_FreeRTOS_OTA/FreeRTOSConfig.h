@@ -89,7 +89,7 @@ void vAssertCalled(const char *const pcFileName, uint32_t ulLine);
 
 #define configUSE_TIMERS 1
 #define configTIMER_TASK_PRIORITY (configMAX_PRIORITIES - 3)
-#define configTIMER_QUEUE_LENGTH 8
+#define configTIMER_QUEUE_LENGTH 16
 #define configTIMER_TASK_STACK_DEPTH configMINIMAL_STACK_SIZE
 
 /* Run time and task stats gathering related definitions. */
