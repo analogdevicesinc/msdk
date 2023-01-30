@@ -191,6 +191,8 @@ int main(void)
 #endif // !USE_CONSOLE
     setTrigger(1);
 
+    GPIO_PrepForSleep();
+
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
 #endif // USE_BUTTON

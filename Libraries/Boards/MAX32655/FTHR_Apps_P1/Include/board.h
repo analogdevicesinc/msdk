@@ -137,6 +137,11 @@ int Console_Shutdown(void);
  */
 int Console_PrepForSleep(void);
 
+/**
+ * \brief   Initializes GPIO to conserve power in low power mode.
+ */
+void GPIO_PrepForSleep(void);
+
 #ifdef __riscv
 /**
  * \brief   Set up RISCV JTAG
