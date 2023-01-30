@@ -71,6 +71,7 @@ jobs:
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
           Examples/MAX32655/BLE \
+          Examples/MAX32655/Bootloader \
           Libraries/libs.mk \
           Libraries/Cordio \
           Libraries/CMSIS/Device/Maxim/MAX32655 \
@@ -135,6 +136,7 @@ jobs:
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
           Examples/MAX32665/BLE \
+          Examples/MAX32655/Bootloader \
           Libraries/libs.mk \
           Libraries/CMSIS/Device/Maxim/MAX32665 \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
@@ -194,6 +196,7 @@ jobs:
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
           Examples/MAX32690/BLE \
+          Examples/MAX32655/Bootloader \
           Libraries/libs.mk \
           Libraries/CMSIS/Device/Maxim/MAX32690 \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
