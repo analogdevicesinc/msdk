@@ -91,6 +91,7 @@ parser.add_argument('-l', '--limit', default=0,help='PER limit for return value'
 parser.add_argument('-p', '--phys', default="1",help='PHYs to test with, comma separated list with 1-4.')
 parser.add_argument('-t', '--txpows', default="0",help='TX powers to test with, comma separated list.')
 parser.add_argument('-a', '--attens', help='Attenuation settings to use, comma separated list.')
+parser.add_argument('-da', '--disable-atten', action='store_true',help='Disbale Attenuator For Testing Purposes')
 
 args = parser.parse_args()
 print(args)
@@ -106,6 +107,11 @@ if(args.attens == None):
     attens.append(90)
 else:
     attens = args.attens.strip().split(",")
+
+if args.disable_atten is not None:
+    disableAttenuator = True
+else:
+    disableAttenuator = False
 
 print("slaveSerial   :",args.slaveSerial)
 print("masterSerial  :",args.masterSerial)
@@ -145,8 +151,9 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     sleep(0.1)
 
     # # Reset the attenuation
-    mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
-    sleep(0.1)
+    if not disableAttenuator:
+        mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
+        sleep(0.1)
 
 
     printInfo('Setting Data Length')
@@ -172,8 +179,10 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         print(packetLen," ",phy," ",atten," ",txPower)
 
         # Set the attenuation
-        mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
-        sleep(0.1)
+        if not disableAttenuator:
+            mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
+            sleep(0.1)
+        
 
 
         #start the test
@@ -190,10 +199,9 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         if stats is not None:
             packetsTransmitted = stats['txData']    
         
-
         if packetsTransmitted != 0:
-            perSlave = 100 * (1 - packtesReceived / packetsTransmitted)
-            printInfo(perSlave)
+            perSlave = round(100 * (1 - packtesReceived / packetsTransmitted), 2)
+            
         else:
             printWarning('Connection stats returned invalid data. (Packets Transmitted = 0) PER rate being set to 100')
             perSlave = 100
@@ -204,7 +212,7 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     
         if(perSlave > perMax):
             perMax = perSlave
-            printInfo(perMax)
+            
 
         # Save the results to file
         results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
