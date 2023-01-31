@@ -84,7 +84,7 @@ parser.add_argument('-t', '--txpows', default="0",help='TX powers to test with, 
 parser.add_argument('-a', '--attens', help='Attenuation settings to use, comma separated list.')
 parser.add_argument('-s', '--step', default=10, help='Attenuation sweep step size in dBm.')
 parser.add_argument('-e', '--pktlen', default="250", help="packet length, comma separated list.")
-parser.add_argument('-n', '--numpkt', default=5,help='Number of packets in test.')
+parser.add_argument('-n', '--numpkt', default='5',help='Number of packets in test.')
 parser.add_argument('--mtp', default="", help="master TRACE serial port")
 parser.add_argument('--stp', default="", help="slave TRACE serial port")
  
