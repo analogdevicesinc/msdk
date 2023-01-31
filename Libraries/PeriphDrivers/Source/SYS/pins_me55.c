@@ -107,12 +107,12 @@ const mxc_gpio_cfg_t gpio_cfg_spi1 = {
     MXC_GPIO1, (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5),
     MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO
 };
-// NOTE: SPI2 defined here with SS0 only, and NOT SS1 and SS2
-const mxc_gpio_cfg_t gpio_cfg_spi2 = {
+// NOTE: SPI3 defined here with SS0 only, and NOT SS1 and SS2
+const mxc_gpio_cfg_t gpio_cfg_spi3 = {
     MXC_GPIO1, (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16 | MXC_GPIO_PIN_17),
     MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO
 };
-const mxc_gpio_cfg_t gpio_cfg_spi2b = {
+const mxc_gpio_cfg_t gpio_cfg_spi3b = {
     MXC_GPIO1, (MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_24 | MXC_GPIO_PIN_25),
     MXC_GPIO_FUNC_ALT3, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO
 };

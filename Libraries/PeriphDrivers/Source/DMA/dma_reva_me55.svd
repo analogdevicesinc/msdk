@@ -430,8 +430,8 @@
                   <value>0x0E</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>SPI2RX</name>
-                  <description>SPI2 RX</description>
+                  <name>SPI3RX</name>
+                  <description>SPI3 RX</description>
                   <value>0x0F</value>
                 </enumeratedValue>
                 <enumeratedValue>
@@ -535,8 +535,8 @@
                   <value>0x2E</value>
                 </enumeratedValue>
                 <enumeratedValue>
-                  <name>SPI2TX</name>
-                  <description>SPI2 TX</description>
+                  <name>SPI3TX</name>
+                  <description>SPI3 TX</description>
                   <value>0x2F</value>
                 </enumeratedValue>
                 <enumeratedValue>

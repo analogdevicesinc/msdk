@@ -65,9 +65,9 @@ extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_spi0;
 // NOTE: SPI1 definied here with SS1 only, SS0 is on port0 by itself.
 extern const mxc_gpio_cfg_t gpio_cfg_spi1;
-// NOTE: SPI2 defined here with SS0 only, and NOT SS1 and SS2
-extern const mxc_gpio_cfg_t gpio_cfg_spi2;
-extern const mxc_gpio_cfg_t gpio_cfg_spi2b;
+// NOTE: SPI3 defined here with SS0 only, and NOT SS1 and SS2
+extern const mxc_gpio_cfg_t gpio_cfg_spi3;
+extern const mxc_gpio_cfg_t gpio_cfg_spi3b;
 
 // Timers are only defined once, depending on package, each timer could be mapped to other pins
 extern const mxc_gpio_cfg_t gpio_cfg_tmr0;

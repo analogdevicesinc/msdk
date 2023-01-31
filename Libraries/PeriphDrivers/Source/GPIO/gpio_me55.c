@@ -106,25 +106,25 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     case MXC_GPIO_PAD_WEAK_PULL_UP:
         gpio->padctrl0 |= cfg->mask;
         gpio->padctrl1 &= ~cfg->mask;
-        gpio->ps &= ~cfg->mask;
+        gpio->pssel &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_UP:
         gpio->padctrl0 |= cfg->mask;
         gpio->padctrl1 &= ~cfg->mask;
-        gpio->ps |= cfg->mask;
+        gpio->pssel |= cfg->mask;
         break;
 
     case MXC_GPIO_PAD_WEAK_PULL_DOWN:
         gpio->padctrl0 &= ~cfg->mask;
         gpio->padctrl1 |= cfg->mask;
-        gpio->ps &= ~cfg->mask;
+        gpio->pssel &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_DOWN:
         gpio->padctrl0 &= ~cfg->mask;
         gpio->padctrl1 |= cfg->mask;
-        gpio->ps |= cfg->mask;
+        gpio->pssel |= cfg->mask;
         break;
 
     default:

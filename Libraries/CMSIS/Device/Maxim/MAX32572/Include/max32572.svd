@@ -3031,8 +3031,8 @@
           <value>0x0E</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>SPI2RX</name>
-          <description>SPI2 RX</description>
+          <name>SPI3RX</name>
+          <description>SPI3 RX</description>
           <value>0x0F</value>
          </enumeratedValue>
          <enumeratedValue>
@@ -3136,8 +3136,8 @@
           <value>0x2E</value>
          </enumeratedValue>
          <enumeratedValue>
-          <name>SPI2TX</name>
-          <description>SPI2 TX</description>
+          <name>SPI3TX</name>
+          <description>SPI3 TX</description>
           <value>0x2F</value>
          </enumeratedValue>
          <enumeratedValue>
@@ -4842,8 +4842,8 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="I2C1">
-       <name>SPI2</name>
-       <description>SPI2 Reset.</description>
+       <name>SPI3</name>
+       <description>SPI3 Reset.</description>
        <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -4969,8 +4969,8 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
-       <name>SPI2</name>
-       <description>SPI2 Clock Disable.</description>
+       <name>SPI3</name>
+       <description>SPI3 Clock Disable.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -5988,7 +5988,7 @@
    </interrupt>
    <registers>
     <register>
-     <name>LONG</name>
+     <name>LNICNT</name>
      <description>HTimer Long-Interval Counter. This register contains the 32 most significant bits of the counter.</description>
      <addressOffset>0x00</addressOffset>
      <resetMask>0x00000000</resetMask>
@@ -6002,8 +6002,8 @@
      </fields>
     </register>
     <register>
-     <name>SHORT</name>
-     <description>HTimer Short Interval Counter. This counter ticks every t_htclk (16.48uS). HTIMER_LONG is incremented when this register rolls over from 0xFF to 0x00.</description>
+     <name>SHICNT</name>
+     <description>HTimer Short Interval Counter. This counter ticks every t_htclk (16.48uS). HTIMER_SEC is incremented when this register rolls over from 0xFF to 0x00.</description>
      <addressOffset>0x04</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
@@ -6016,27 +6016,27 @@
      </fields>
     </register>
     <register>
-     <name>LONGA</name>
-     <description>Long Interval Alarm.</description>
+     <name>LNIALM</name>
+     <description>HTimer Long Interval Alarm Value Register.</description>
      <addressOffset>0x08</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>ALARM</name>
-       <description>HTimer Long Interval Alarm. An Alarm is triggered when this value matches HTMR_LONG</description>
+       <name>ALM</name>
+       <description>HTimer Long Interval Alarm. An Alarm is triggered when this value matches HTIMER_SEC[19:0]</description>
        <bitOffset>0</bitOffset>
        <bitWidth>20</bitWidth>
       </field>
      </fields>
     </register>
     <register>
-     <name>SHORTA</name>
-     <description>HTimer Short Interval Alarm. This register contains the reload value for the short interval alarm, HTIMER_CTRL.alarm_ss_fl is raised on rollover.</description>
+     <name>SHIALM</name>
+     <description>HTimer Short Interval Alarm Value Register.</description>
      <addressOffset>0x0C</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
-       <name>ALARM</name>
+       <name>ALM</name>
        <description>This register contains the reload value for the short interval alarm.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
@@ -6069,7 +6069,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>LONGA_IE</name>
+       <name>LONG_ALM_IE</name>
        <description>Long Interval Alarm Interrupt Enable. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6087,7 +6087,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SHORTA_IE</name>
+       <name>SHORT_ALM_IE</name>
        <description>Short Interval Alarm Interrupt Enable.  Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6160,7 +6160,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>LONGA_IF</name>
+       <name>LONG_ALM_IF</name>
        <description>Long Interval Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6179,7 +6179,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SHORTA_IF</name>
+       <name>SHORT_ALM_IF</name>
        <description>Short Interval Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
        <bitOffset>7</bitOffset>
        <bitWidth>1</bitWidth>
@@ -6225,13 +6225,13 @@
      <fields>
       <field>
        <name>TRIM</name>
-       <description>HTMR Trim. This register contains the 2's complement value that specifies the trim resolution. Each increment or decrement of the bit adds or subtracts 1ppm at each 4KHz clock value, with a maximum correction of +/- 127ppm.</description>
+       <description>HTimer Trim. This register contains the 2's complement value that specifies the trim resolution. Each increment or decrement of the bit adds or subtracts 1ppm at each 4KHz clock value, with a maximum correction of +/- 127ppm.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>VBAT_HTMR</name>
-       <description>VBAT HTimer Value. When HTMR is running off of VBAT, this field is incremented every 32 seconds.</description>
+       <name>VBAT_TMR</name>
+       <description>VBAT Timer Value. When HTimer is running off of VBAT, this field is incremented every 32 seconds.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>24</bitWidth>
       </field>
@@ -6269,19 +6269,19 @@
       </field>
       <field>
        <name>HYST_EN</name>
-       <description>HTMR Hysteresis Enable.</description>
+       <description>HTimer Hysteresis Enable.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
        <name>IBIAS_EN</name>
-       <description>HTMR IBIAS Enable.</description>
+       <description>HTimer IBIAS Enable.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
        <name>BYPASS</name>
-       <description>HTMR Crystal Bypass</description>
+       <description>HTimer Crystal Bypass</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -6299,7 +6299,7 @@
       </field>
       <field>
        <name>SQW_32K</name>
-       <description>HTMR 32kHz Square Wave Output</description>
+       <description>HTimer 32kHz Square Wave Output</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>

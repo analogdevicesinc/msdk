@@ -36,6 +36,9 @@
  *
  ******************************************************************************/
 
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_WDT_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32572_WDT_H_
+
 /* **** Includes **** */
 #include <stdint.h>
 #include "mxc_device.h"

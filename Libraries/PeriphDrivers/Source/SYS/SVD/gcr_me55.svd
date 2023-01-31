@@ -1249,8 +1249,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
-            <name>SPI2</name>
-            <description>SPI2 Reset.</description>
+            <name>SPI3</name>
+            <description>SPI3 Reset.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -1376,8 +1376,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>SPI2</name>
-            <description>SPI2 Clock Disable.</description>
+            <name>SPI3</name>
+            <description>SPI3 Clock Disable.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
