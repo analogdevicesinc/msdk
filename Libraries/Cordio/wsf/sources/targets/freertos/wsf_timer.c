@@ -75,6 +75,9 @@ void prvTimerCallback(TimerHandle_t xTimer)
     }
     WsfTaskSetReady(handler, WSF_TIMER_EVENT);
     firedTimer->wsfTimerStruct->isStarted = FALSE;
+  } else {
+    /* Timer not found */
+    WSF_ASSERT(0);
   }
   WsfCsExit();
 }
@@ -155,6 +158,7 @@ void WsfTimerStop(wsfTimer_t *pTimer)
     if (prev) {
       prev->next = next;
     } else {
+      /* Removing head */
       s_timers.head = NULL;
       s_timers.tail = NULL;
     }
