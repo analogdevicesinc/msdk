@@ -183,8 +183,8 @@ __isr_vector:
     .long RSV81_IRQHandler          /* 0x61  0x0184  97: Reserved */
     .long ECC_IRQHandler            /* 0x62  0x0188  98: Error Correction */
     .long RSV83_IRQHandler          /* 0x63  0x018C  99: Reserved */
-    .long SCA_IRQHandler            /* 0x64  0x0190  100: SCA */
-    .long RSV85_IRQHandler          /* 0x65  0x0194  101: Reserved */
+    .long RSV84_IRQHandler          /* 0x64  0x0190  100: Reserved */
+    .long SCA_IRQHandler            /* 0x65  0x0194  101: SCA */
     .long RSV86_IRQHandler          /* 0x66  0x0198  102: Reserved */
     .long FLC1_IRQHandler           /* 0x67  0x019C  103: Flash Controller 1 */
     .long UART3_IRQHandler          /* 0x68  0x01A0  104: UART 3 */
@@ -421,8 +421,8 @@ Reset_Handler:
     def_irq_handler    RSV81_IRQHandler          /* 0x61  0x0184  97: Reserved */
     def_irq_handler    ECC_IRQHandler            /* 0x62  0x0188  98: Error Correction */
     def_irq_handler    RSV83_IRQHandler          /* 0x63  0x018C  99: Reserved */
-    def_irq_handler    SCA_IRQHandler            /* 0x64  0x0190  100: SCA */
-    def_irq_handler    RSV85_IRQHandler          /* 0x65  0x0194  101: Reserved */
+    def_irq_handler    RSV84_IRQHandler          /* 0x64  0x0190  100: Reserved */
+    def_irq_handler    SCA_IRQHandler            /* 0x65  0x0194  101: SCA */
     def_irq_handler    RSV86_IRQHandler          /* 0x66  0x0198  102: Reserved */
     def_irq_handler    FLC1_IRQHandler           /* 0x67  0x019C  103: Reserved */
     def_irq_handler    UART3_IRQHandler          /* 0x68  0x01A0  104: UART 3 */

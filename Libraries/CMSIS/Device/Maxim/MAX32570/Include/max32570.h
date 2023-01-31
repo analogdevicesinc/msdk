@@ -166,8 +166,8 @@ typedef enum {
     RSV81_IRQn, /* 0x61  0x0184  97: Reserved */
     ECC_IRQn, /* 0x62  0x0188  98: Error Correction */
     RSV83_IRQn, /* 0x63  0x018C  99: Reserved */
-    SCA_IRQn, /* 0x64  0x0190  100: SCA */
-    RSV85_IRQn, /* 0x65  0x0194  101: Reserved */
+    RSV84_IRQn, /* 0x64  0x0190  100: Reserved */
+    SCA_IRQn, /* 0x65  0x0194  101: SCA */
     RSV86_IRQn, /* 0x66  0x0198  102: Reserved */
     FLC1_IRQn, /* 0x67  0x019C  103: Flash Control 1 */
     UART3_IRQn, /* 0x68  0x01A0  104: UART 3 */
