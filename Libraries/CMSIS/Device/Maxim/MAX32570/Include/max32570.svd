@@ -22432,17 +22432,17 @@
         <enumeratedValue>
          <name>RO_0</name>
          <description>Ring Oscillator 0.</description>
-         <value>0</value>
+         <value>1</value>
         </enumeratedValue>
         <enumeratedValue>
          <name>RO_1</name>
          <description>Ring Oscillator 1.</description>
-         <value>1</value>
+         <value>2</value>
         </enumeratedValue>
         <enumeratedValue>
          <name>RO_2</name>
          <description>Ring Oscillator 2.</description>
-         <value>2</value>
+         <value>4</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
