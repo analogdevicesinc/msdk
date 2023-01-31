@@ -216,6 +216,7 @@ static void wdxsFtcProcGetReq(dmConnId_t connId, uint16_t handle, uint16_t len, 
 static void wdxsFtcProcPutReq(dmConnId_t connId, uint16_t handle, uint16_t len, uint8_t *pValue)
 {
   uint8_t status;
+  (void)status;
 
   /* verify operation not already in progress */
   if (wdxsCb.ftInProgress != WDX_FTC_OP_NONE)
