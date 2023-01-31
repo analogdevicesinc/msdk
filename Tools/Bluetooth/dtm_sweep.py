@@ -58,11 +58,17 @@ else:
 
 # Setup the command line description text
 descText = """
-Connection sweep.
+DTM sweep.
 
 This tool uses a Mini Circuits RCDAT to control attenuation between two devices
-running DTM software. A connection is created and PER data is gathered based on a 
-combination of parameters.
+running DTM software. The Packet error rate (PER) of the master will be collected by setting the slave device in tx test mode and the master in rx test mode.
+A vendor specific command is sent which sets the total number of packets which shoule be transmitted. 
+The total number of packets transmitted will be compared to the number of packtes received and the PER will be  
+calculated as numPacketsReceived/numPacketsTransmitted * 100
+
+IMPORTANT:
+The tx test command is vendor specific and is only guarenteed to work on MAX32 BLE devices running the latest stack. 
+The command is also supported by Nordic SoCs
 """
 
 # Parse the command line arguments
