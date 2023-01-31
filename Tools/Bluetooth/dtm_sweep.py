@@ -165,26 +165,18 @@ for packetLen, numPkt, phy, txPower, dtmCh in itertools.product(packetLengths, n
             sleep(0.1)
 
             print("\nSet the PHY.")
-            hciMaster.phyFunc(Namespace(phy=str(phy)), timeout=1)
-            #hciMaster.listenFunc(Namespace(time=2, stats="False"))
+            hciMaster.phyFunc(Namespace(phy=phy), timeout=1)
 
             print("\nSet the txPower.")
             hciSlave.txPowerFunc(Namespace(power=txPower, handle="0")) 
             hciMaster.txPowerFunc(Namespace(power=txPower, handle="0"))
-            #hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
-            #print("\nSet addresses.")
-            #txAddr = "00:12:34:88:77:33"
-            #rxAddr = "11:12:34:88:77:33"
-            #hciSlave.addrFunc(Namespace(addr=txAddr))
-            #hciMaster.addrFunc(Namespace(addr=rxAddr))
-       
+
             print('--------------')
             print("\nSet slave to RX.")
-            hciSlave.rxTestFunc(Namespace(channel=str(chan), phy=str(phy)))
+            hciSlave.rxTestFunc(Namespace(channel=chan, phy=phy))
             print("\nSet master to TX, start test.")
-            hciMaster.txTestVSFunc(Namespace(channel=str(chan), phy=str(phy), packetLength=str(packetLen), numPackets=str(numPkt)))            
-
+            hciMaster.txTestVSFunc(Namespace(channel=chan, phy=phy, packetLength=packetLen, numPackets=numPkt))            
             print(f"\nWait {args.delay} secs for the DTM Test to complete.")
             sleep(int(args.delay))
 
@@ -197,11 +189,11 @@ for packetLen, numPkt, phy, txPower, dtmCh in itertools.product(packetLengths, n
             hciSlave.resetFunc(None)
             hciMaster.resetFunc(None)
             sleep(0.1)
-
+            print(chan)
             print("\nSet master to RX.")
-            hciMaster.rxTestFunc(Namespace(channel=str(chan), phy=str(phy)))
+            hciMaster.rxTestFunc(Namespace(channel=chan, phy=phy))
             print("\nSet slave to TX, start test.")
-            hciSlave.txTestVSFunc(Namespace(channel=str(chan), phy=str(phy), packetLength=str(packetLen), numPackets=str(numPkt)))            
+            hciSlave.txTestVSFunc(Namespace(channel=chan, phy=phy, packetLength=packetLen, numPackets=numPkt))            
 
             print(f"\nWait {args.delay} secs for the DTM Test to complete.")
             sleep(int(args.delay))
