@@ -22,4 +22,6 @@ The Console UART of the device will output these messages:
 
 ```
 Display demo
+This example uses LVGL graphics library to manage display
+For more demos please check: https://github.com/lvgl/lvgl
 ```

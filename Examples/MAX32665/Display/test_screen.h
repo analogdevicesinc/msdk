@@ -10,8 +10,8 @@
 
 #include "lvgl/lvgl.h"
 
-extern lv_chart_series_t * ser;
-extern lv_obj_t * chart;
+extern lv_chart_series_t *ser;
+extern lv_obj_t *chart;
 
 void test_screen(void);
 

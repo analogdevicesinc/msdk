@@ -4,8 +4,8 @@
 static lv_obj_t *label1;
 static lv_obj_t *img1;
 
-lv_obj_t * chart;
-lv_chart_series_t * ser;
+lv_obj_t *chart;
+lv_chart_series_t *ser;
 
 /**
  * Display 1000 data points with zooming and scrolling.
@@ -19,10 +19,10 @@ void test_screen(void)
     lv_img_set_src(img1, &adi_logo);
     lv_obj_align(img1, LV_ALIGN_CENTER, -40, -45);
 
-	label1 = lv_label_create(lv_scr_act());
-	lv_label_set_text(label1, "Analog\nDevices");
-	lv_obj_set_style_text_align(label1, LV_TEXT_ALIGN_CENTER, 0);
-	lv_obj_align(label1, LV_ALIGN_CENTER, 10, -45);
+    label1 = lv_label_create(lv_scr_act());
+    lv_label_set_text(label1, "Analog\nDevices");
+    lv_obj_set_style_text_align(label1, LV_TEXT_ALIGN_CENTER, 0);
+    lv_obj_align(label1, LV_ALIGN_CENTER, 10, -45);
 
     /*Create a chart*/
     chart = lv_chart_create(lv_scr_act());
@@ -39,5 +39,4 @@ void test_screen(void)
 
     lv_chart_set_point_count(chart, 300);
     lv_chart_set_update_mode(chart, LV_CHART_UPDATE_MODE_CIRCULAR);
-
 }

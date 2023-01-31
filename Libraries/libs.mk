@@ -124,7 +124,6 @@ endif
 LIB_LVGL ?= 0
 ifeq ($(LIB_LVGL), 1)
 LVGL_DIR ?= $(LIBS_DIR)/LVGL
-LVGL_DIR_NAME ?= lvgl
 include $(LVGL_DIR)/lvgl.mk
 endif
 # ************************

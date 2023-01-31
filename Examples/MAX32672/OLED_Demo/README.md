@@ -22,4 +22,7 @@ The Console UART of the device will output these messages:
 
 ```
 OLED demo
+This example uses LVGL graphics library to manage display
+For more demos please check: https://github.com/lvgl/lvgl
+Note: This example only works on MAX32672 FTHR board
 ```
