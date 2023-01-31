@@ -39,6 +39,7 @@ VPATH += .
 SRCS += stack_dats.c 
 SRCS += dats_main.c
 SRCS += main.c
+SRCS += freertos_tickless.c
 
 USE_INTERNAL_FLASH ?= 1
 
