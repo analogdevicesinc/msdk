@@ -42,7 +42,7 @@ SRCS += led.c
 SRCS += pb.c
 SRCS += rom_stub.c
 
-MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
+MISC_DRIVERS_DIR ?= $(BOARD_DIR)/../../../MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
