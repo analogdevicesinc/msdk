@@ -5,37 +5,37 @@
  */
 
 /******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_I2C_REGS_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32520_INCLUDE_I2C_REGS_H_
@@ -103,8 +103,9 @@ typedef struct {
     __IO uint32_t ckh;                  /**< <tt>\b 0x38:</tt> I2C CKH Register */
     __R  uint32_t rsv_0x3c;
     __IO uint32_t to;                   /**< <tt>\b 0x40:</tt> I2C TO Register */
-    __IO uint32_t sla;                  /**< <tt>\b 0x44:</tt> I2C SLA Register */
+    __R  uint32_t rsv_0x44;
     __IO uint32_t dma;                  /**< <tt>\b 0x48:</tt> I2C DMA Register */
+    __IO uint32_t sla;                  /**< <tt>\b 0x4C:</tt> I2C SLA Register */
 } mxc_i2c_regs_t;
 
 /* Register offsets for module I2C */
@@ -130,8 +131,8 @@ typedef struct {
 #define MXC_R_I2C_CKL                      ((uint32_t)0x00000034UL) /**< Offset from I2C Base Address: <tt> 0x0034</tt> */
 #define MXC_R_I2C_CKH                      ((uint32_t)0x00000038UL) /**< Offset from I2C Base Address: <tt> 0x0038</tt> */
 #define MXC_R_I2C_TO                       ((uint32_t)0x00000040UL) /**< Offset from I2C Base Address: <tt> 0x0040</tt> */
-#define MXC_R_I2C_SLA                      ((uint32_t)0x00000044UL) /**< Offset from I2C Base Address: <tt> 0x0044</tt> */
 #define MXC_R_I2C_DMA                      ((uint32_t)0x00000048UL) /**< Offset from I2C Base Address: <tt> 0x0048</tt> */
+#define MXC_R_I2C_SLA                      ((uint32_t)0x0000004CUL) /**< Offset from I2C Base Address: <tt> 0x004C</tt> */
 /**@} end of group i2c_registers */
 
 /**
@@ -504,6 +505,20 @@ typedef struct {
 
 /**
  * @ingroup  i2c_registers
+ * @defgroup I2C_DMA I2C_DMA
+ * @brief    DMA Register.
+ * @{
+ */
+#define MXC_F_I2C_DMA_TXEN_POS                         0 /**< DMA_TXEN Position */
+#define MXC_F_I2C_DMA_TXEN                             ((uint32_t)(0x1UL << MXC_F_I2C_DMA_TXEN_POS)) /**< DMA_TXEN Mask */
+
+#define MXC_F_I2C_DMA_RXEN_POS                         1 /**< DMA_RXEN Position */
+#define MXC_F_I2C_DMA_RXEN                             ((uint32_t)(0x1UL << MXC_F_I2C_DMA_RXEN_POS)) /**< DMA_RXEN Mask */
+
+/**@} end of group I2C_DMA_Register */
+
+/**
+ * @ingroup  i2c_registers
  * @defgroup I2C_SLA I2C_SLA
  * @brief    Slave Address Register.
  * @{
@@ -519,20 +534,6 @@ typedef struct {
 #define MXC_F_I2C_SLA_EA                               ((uint32_t)(0x1UL << MXC_F_I2C_SLA_EA_POS)) /**< SLA_EA Mask */
 
 /**@} end of group I2C_SLA_Register */
-
-/**
- * @ingroup  i2c_registers
- * @defgroup I2C_DMA I2C_DMA
- * @brief    DMA Register.
- * @{
- */
-#define MXC_F_I2C_DMA_TXEN_POS                         0 /**< DMA_TXEN Position */
-#define MXC_F_I2C_DMA_TXEN                             ((uint32_t)(0x1UL << MXC_F_I2C_DMA_TXEN_POS)) /**< DMA_TXEN Mask */
-
-#define MXC_F_I2C_DMA_RXEN_POS                         1 /**< DMA_RXEN Position */
-#define MXC_F_I2C_DMA_RXEN                             ((uint32_t)(0x1UL << MXC_F_I2C_DMA_RXEN_POS)) /**< DMA_RXEN Mask */
-
-/**@} end of group I2C_DMA_Register */
 
 #ifdef __cplusplus
 }
