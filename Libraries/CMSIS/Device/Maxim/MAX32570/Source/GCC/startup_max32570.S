@@ -134,7 +134,7 @@ __isr_vector:
     .long TMR6_IRQHandler           /* 0x30  0x00C0  48: Timer 6 */
     .long TMR7_IRQHandler           /* 0x31  0x00C4  49: Timer 7 */
     .long UART2_IRQHandler          /* 0x32  0x00C8  50: UART 2 */
-    .long CLC_IRQHandler            /* 0x33  0x00CC  51: Contact Link Control */
+    .long NFC_IRQHandler            /* 0x33  0x00CC  51: NFC Link Control */
     .long I2C1_IRQHandler           /* 0x34  0x00D0  52: I2C1 */
     .long SC1_IRQHandler            /* 0x35  0x00D4  53: Smart Card 1 */
     .long SPIXC_IRQHandler          /* 0x36  0x00D8  54: SPI execute in place */
@@ -372,7 +372,7 @@ Reset_Handler:
     def_irq_handler    TMR6_IRQHandler           /* 0x30  0x00C0  48: Timer 6 */
     def_irq_handler    TMR7_IRQHandler           /* 0x31  0x00C4  49: Timer 7 */
     def_irq_handler    UART2_IRQHandler          /* 0x32  0x00C8  50: UART 2 */
-    def_irq_handler    CLC_IRQHandler            /* 0x33  0x00CC  51: Contact Link Control */
+    def_irq_handler    NFC_IRQHandler            /* 0x33  0x00CC  51: NFC Link Control */
     def_irq_handler    I2C1_IRQHandler           /* 0x34  0x00D0  52: I2C1 */
     def_irq_handler    SC1_IRQHandler            /* 0x35  0x00D4  53: Smart Card 1 */
     def_irq_handler    SPIXC_IRQHandler          /* 0x36  0x00D8  54: SPI execute in place */
