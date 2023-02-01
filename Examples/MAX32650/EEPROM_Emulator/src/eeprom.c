@@ -327,7 +327,7 @@ void eeprom_cleanup(int err)
             // Decrement read counter if there are unsent data bytes
             eeprom.read_addr -= EEPROM_FIFO_DEPTH - MXC_I2C_GetTXFIFOAvailable(eeprom.i2c);
 
-            while(eeprom.i2c->stat & MXC_F_I2C_STAT_BUSY) {}
+            while (eeprom.i2c->stat & MXC_F_I2C_STAT_BUSY) {}
         }
     }
 
