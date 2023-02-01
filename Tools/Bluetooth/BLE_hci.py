@@ -779,10 +779,24 @@ class BLE_hci:
      # Sends a vendor specific HCI command for the transmitter test.
     ################################################################################
     def txTestVSFunc(self, args):
-        channel="%0.2X"%int(args.channel)
-        packetLength="%0.2X"%int(args.packetLength)
-        payload="%0.2X"%int(args.payload)
-        phy="%0.2X"%int(args.phy)
+
+        if args.channel is not None:
+            channel="%0.2X"%int(args.channel)
+        else:
+            channle = "%0.2X"%int(0)
+        if args.packetLength is not None:
+            packetLength="%0.2X"%int(args.packetLength)
+        else:
+            packetLength = '00'
+
+        if args.payload is not None:
+            payload="%0.2X"%int(args.payload)
+        else:
+            payload="%0.2X"%int(0)
+        if args.phy is not None:
+            phy="%0.2X"%int(args.phy)
+        else:   
+            phy = '01'
 
         numPackets = "%0.2X"%(int(args.numPackets) & 0xFF)
         numPackets+= "%0.2X"%((int(args.numPackets) & 0xFF00) >> 8)
@@ -841,7 +855,12 @@ class BLE_hci:
         evtString = self.send_command("011F2000")
 
         # Parse the event and print the number of received packets
-        evtData = int(evtString, 16)
+        try:
+            evtData = int(evtString, 16)
+        except ValueError:
+            print('Value Error Has occured. Response most likely empty')
+            return 0
+        
         rxPackets = int((evtData & 0xFF00)>>8)+int((evtData & 0xFF)<<8)
         if (args is None) or (vars(args).get('noPrint') is not True):
             print("Received PKTS  : "+str(rxPackets))
@@ -1042,6 +1061,7 @@ class BLE_hci:
 
         self.send_command("0100FF"+totalLen+writeLen+addrBytes+data)
 
+    
 ## Help function.
  #
  # Prints the help text.
@@ -1199,7 +1219,7 @@ if __name__ == '__main__':
     """)
     txTest_parser.set_defaults(func=ble_hci.txTestFunc)
 
-    txTestVS_parser = subparsers.add_parser('txTestVS', aliases=['tx'], help="Execute the transmitter test", formatter_class=RawTextHelpFormatter)
+    txTestVS_parser = subparsers.add_parser('txTestVS', aliases=['txvs'], help="Execute the transmitter test", formatter_class=RawTextHelpFormatter)
     txTestVS_parser.add_argument('-c', '--channel', default="0", help="TX test channel, 0-39, default: 0")
     txTestVS_parser.add_argument('--phy', default="1", help=
     """TX test PHY
@@ -1247,7 +1267,7 @@ if __name__ == '__main__':
         help="End the TX/RX test, print the number of correctly received packets")
     endTest_parser.set_defaults(func=ble_hci.endTestFunc)
 
-    endTestVS_parser = subparsers.add_parser('endTestVS', aliases=['end'], 
+    endTestVS_parser = subparsers.add_parser('endTestVS', aliases=['endvs'], 
         help="End the TX/RX test, print the full test report, and return the report as a dictionary")
     endTestVS_parser.set_defaults(func=ble_hci.endTestVSFunc)
 

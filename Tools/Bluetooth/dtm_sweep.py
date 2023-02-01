@@ -84,7 +84,7 @@ parser.add_argument('-t', '--txpows', default="0",help='TX powers to test with, 
 parser.add_argument('-a', '--attens', help='Attenuation settings to use, comma separated list.')
 parser.add_argument('-s', '--step', default=10, help='Attenuation sweep step size in dBm.')
 parser.add_argument('-e', '--pktlen', default="250", help="packet length, comma separated list.")
-parser.add_argument('-n', '--numpkt', default='5',help='Number of packets in test.')
+parser.add_argument('-n', '--numpkt', default='5000',help='Number of packets in test.')
 parser.add_argument('--mtp', default="", help="master TRACE serial port")
 parser.add_argument('--stp', default="", help="slave TRACE serial port")
  
@@ -145,14 +145,14 @@ hciMaster = BLE_hci(Namespace(serialPort=args.masterSerial, monPort=args.mtp, ba
 
 perMax = 0
 
-for packetLen, numPkt, phy, txPower, dtmCh in itertools.product(packetLengths, numPackets, phys, txPowers, chan):
+for packetLen, numPkt, phy, txPower, chan in itertools.product(packetLengths, numPackets, phys, txPowers, chan):
     per_100 = 0
     for atten in attens:
         RETRY = 2
         while per_100 < RETRY:
             start_secs = time.time()
             print(f'\n---------------------------------------------------------------------------------------')
-            print(f'packetLen: {packetLen}, numPackets: {numPkt}, phy: {phy}, atten: {atten}, txPower: {txPower}, Channel: {dtmCh}\n')
+            print(f'packetLen: {packetLen}, numPackets: {numPkt}, phy: {phy}, atten: {atten}, txPower: {txPower}, Channel: {chan}\n')
 
             print("Set the requested attenuation.")
             if rf_switch:
@@ -174,9 +174,10 @@ for packetLen, numPkt, phy, txPower, dtmCh in itertools.product(packetLengths, n
 
             print('--------------')
             print("\nSet slave to RX.")
+            print(chan)
             hciSlave.rxTestFunc(Namespace(channel=chan, phy=phy))
             print("\nSet master to TX, start test.")
-            hciMaster.txTestVSFunc(Namespace(channel=chan, phy=phy, packetLength=packetLen, numPackets=numPkt))            
+            hciMaster.txTestVSFunc(Namespace(channel=chan, phy=phy, packetLength=packetLen, numPackets=numPkt,payload=0))            
             print(f"\nWait {args.delay} secs for the DTM Test to complete.")
             sleep(int(args.delay))
 
@@ -193,7 +194,7 @@ for packetLen, numPkt, phy, txPower, dtmCh in itertools.product(packetLengths, n
             print("\nSet master to RX.")
             hciMaster.rxTestFunc(Namespace(channel=chan, phy=phy))
             print("\nSet slave to TX, start test.")
-            hciSlave.txTestVSFunc(Namespace(channel=chan, phy=phy, packetLength=packetLen, numPackets=numPkt))            
+            hciSlave.txTestVSFunc(Namespace(channel=chan, phy=phy, packetLength=packetLen, numPackets=numPkt,payload=0))            
 
             print(f"\nWait {args.delay} secs for the DTM Test to complete.")
             sleep(int(args.delay))
@@ -227,7 +228,7 @@ for packetLen, numPkt, phy, txPower, dtmCh in itertools.product(packetLengths, n
             perMax = 100
 
         # Save the results to file
-        results.write(str(packetLen)+","+str(numPkt)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(dtmCh)+","+str(perMaster)+","+str(perSlave)+"\n")
+        results.write(str(packetLen)+","+str(numPkt)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(chan)+","+str(perMaster)+","+str(perSlave)+"\n")
         end_secs = time.time()
         print(f'\nUsed {(end_secs - start_secs):.0f} seconds.')
 
