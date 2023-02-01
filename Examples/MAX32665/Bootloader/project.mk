@@ -18,6 +18,9 @@ MXC_OPTIMIZE_CFLAGS=-Os
 # Strip debug symbols
 DEBUG=0
 
+# To close display related code in board.c file
+PROJ_CFLAGS+=-DNO_DISPLAY
+
 SRCS += boot_lower.S
 LINKERFILE = bootloader.ld
 
