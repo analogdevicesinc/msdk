@@ -377,7 +377,7 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
         tmpHeader = (fileHeader_t *)pValue;
         initHeader(tmpHeader);
 
-        datsSendData(connId, sizeof(version), (uint8_t*)&version);
+        datsSendData(connId, sizeof(version), (uint8_t *)&version);
     }
 
     return ATT_SUCCESS;

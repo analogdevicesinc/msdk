@@ -98,9 +98,8 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     int err = 0;
 
     if (erasePages) {
-
         /* Only erase the flash if the scheduler is idle. */
-        if(SchGetState() != SCH_STATE_IDLE) {
+        if (SchGetState() != SCH_STATE_IDLE) {
             /* Pend the erase */
             WsfTimerStartMs(&eraseTimer, ERASE_DELAY);
             return;
@@ -141,16 +140,16 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 static void wdxsFileWriteMessage(uint32_t address, uint32_t size, const uint8_t *pBuf)
 {
     /* Allocate the message */
-    uint8_t* writeBuf = WsfMsgAlloc(size + 4 + 4);
+    uint8_t *writeBuf = WsfMsgAlloc(size + 4 + 4);
 
-    if(writeBuf == NULL) {
+    if (writeBuf == NULL) {
         WSF_ASSERT(0);
     }
 
     /* Copy in the address, size, and data */
     memcpy(&writeBuf[0], &address, sizeof(uint32_t));
     memcpy(&writeBuf[sizeof(uint32_t)], &size, sizeof(uint32_t));
-    memcpy(&writeBuf[2*sizeof(uint32_t)], pBuf, size);
+    memcpy(&writeBuf[2 * sizeof(uint32_t)], pBuf, size);
 
     /* Enqueue the message */
     WsfMsgEnq(&writeQueue, 0, writeBuf);
@@ -174,8 +173,8 @@ void wdxsFileWriteHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     int err;
     static const unsigned writeBufLen = 256;
     uint32_t writeAddress, writeLen;
-    uint32_t writeBuf[writeBufLen/sizeof(uint32_t)];
-    uint8_t* pBuf;
+    uint32_t writeBuf[writeBufLen / sizeof(uint32_t)];
+    uint8_t *pBuf;
     wsfHandlerId_t retHandler;
     wsfMsgHdr_t *queueMsg;
 
@@ -183,10 +182,9 @@ void wdxsFileWriteHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     queueMsg = WsfMsgDeq(&writeQueue, &retHandler);
 
     /* Perform all of the pending writes */
-    while(queueMsg != NULL) {
-
+    while (queueMsg != NULL) {
         /* Get a uint8_t pointer into the message */
-        pBuf = (uint8_t*)queueMsg;
+        pBuf = (uint8_t *)queueMsg;
 
         /* Get the address and length from the buffer */
         memcpy(&writeAddress, &pBuf[0], sizeof(uint32_t));
@@ -196,13 +194,13 @@ void wdxsFileWriteHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         WSF_ASSERT(writeLen <= writeBufLen);
 
         /* Align the data */
-        memcpy(writeBuf, &pBuf[2*sizeof(uint32_t)], writeLen);
+        memcpy(writeBuf, &pBuf[2 * sizeof(uint32_t)], writeLen);
 
         /* Only write the flash if the scheduler is idle. */
-        if(SchGetState() != SCH_STATE_IDLE) {
+        if (SchGetState() != SCH_STATE_IDLE) {
             /* Re-queue the message */
             WsfMsgFree(queueMsg);
-            wdxsFileWriteMessage(writeAddress, writeLen, (const uint8_t*)writeBuf);
+            wdxsFileWriteMessage(writeAddress, writeLen, (const uint8_t *)writeBuf);
             return;
         }
 
@@ -214,7 +212,7 @@ void wdxsFileWriteHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         WSF_ASSERT(err == E_NO_ERROR);
 
         /* Save the last write address and length */
-        if(writeAddress > (uint32_t)lastWriteAddr) {
+        if (writeAddress > (uint32_t)lastWriteAddr) {
             lastWriteAddr = (volatile uint8_t *)writeAddress;
             lastWriteLen = writeLen;
         }
