@@ -11,11 +11,9 @@ ENABLE_TFT = 1
 # ^ Set to 1 to enable TFT display, or 0 to disable.
 
 ifeq ($(ENABLE_TFT),1)
-# TFT drivers can be selected to match the connected display below. 
+# Uncomment to use legacy Adafruit 3315 TFT drivers (TFT = ADAFRUIT)
+# Otherwise, default drivers (TFT = NEWHAVEN) will be used for NewHaven NHD-2.4
 # TFT = ADAFRUIT
-# ^ Use for Adafruit 3315 TFT (legacy option)
-TFT = NEWHAVEN
-# ^ Use for NewHaven NHD-2.4-240320CF (Default)
 
 PROJ_CFLAGS += -DENABLE_TFT
 

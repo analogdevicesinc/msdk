@@ -29,12 +29,11 @@ See ["Build System"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build
 
 This project offers the option to enable or disable the TFT display in [project.mk](project.mk) via the `ENABLE_TFT` build configuration variable.
 
-* Set `ENABLE_TFT = 1` to enable the display, or `ENABLE_TFT = 0` to disable.
+* Set `ENABLE_TFT = 1` to enable the display, or `ENABLE_TFT = 0` to disable in [project.mk](project.mk).
 
-Additionally, this project [project.mk](project.mk) also offers the option to switch the display drivers for use with the legacy [Adafruit 3315](https://www.adafruit.com/product/3315) display shipped with some early MAX78002EVKITs.
+Additionally, this project also offers the option to switch the display drivers for use with the legacy [Adafruit 3315](https://www.adafruit.com/product/3315) display shipped with some early MAX78002EVKITs.
 
-* Use `TFT = ADAFRUIT` for the [Adafruit 3315](https://www.adafruit.com/product/3315)
-* Use `TFT = NEWHAVEN` for the [NewHaven NHD-2.4-240320CF](https://newhavendisplay.com/2-4-inch-premium-spi-resistive-tft-display/) (default)
+* Uncomment `TFT = ADAFRUIT` in [project.mk] to use drivers for the legacy [Adafruit 3315](https://www.adafruit.com/product/3315).  Otherwise, the default drivers for the [NewHaven NHD-2.4-240320CF](https://newhavendisplay.com/2-4-inch-premium-spi-resistive-tft-display/) will be used.
 
 ## Hardware
 
