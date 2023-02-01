@@ -49,7 +49,7 @@
             <InvalidFlash>1</InvalidFlash>
           </TargetStatus>
           <OutputDirectory>.\Objects\</OutputDirectory>
-          <OutputName>SPIXF</OutputName>
+          <OutputName>External_Flash</OutputName>
           <CreateExecutable>1</CreateExecutable>
           <CreateLib>0</CreateLib>
           <CreateHexFile>1</CreateHexFile>
@@ -339,7 +339,7 @@
               <MiscControls>--diag_suppress 1295 --diag_suppress 111</MiscControls>
               <Define>TARGET=32655 TARGET_REV=0x4131</Define>
               <Undefine></Undefine>
-              <IncludePath>..\..\SPIXF</IncludePath>
+              <IncludePath>..\..\External_Flash</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -370,7 +370,7 @@
             <TextAddressRange>0x10000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\SPIXF.sct</ScatterFile>
+            <ScatterFile>.\External_Flash.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -463,12 +463,6 @@
         </targetInfos>
       </component>
       <component Cbundle="Maxim API" Cclass="Device" Cgroup="ICC" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 CMSIS ICC">
-        <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
-        <targetInfos>
-          <targetInfo name="Flash Debug"/>
-        </targetInfos>
-      </component>
-      <component Cbundle="Maxim API" Cclass="Device" Cgroup="SPIXF" Cvendor="Maxim" Cversion="1.0.0" condition="MAX32655 CMSIS SPIXF">
         <package name="MAX32655" schemaVersion="1.3" url="http://www.mxim.net/microcontroller/pack/" vendor="Maxim" version="1.0.0"/>
         <targetInfos>
           <targetInfo name="Flash Debug"/>

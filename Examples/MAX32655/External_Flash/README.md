@@ -12,16 +12,14 @@ This example communicates with the W25 flash on the EvKit. It loads "Analog Devi
 The Console UART of the device will output these messages:
 
 ```
-********************* SPIX Example *********************
-This example communicates with an W25 flash on the EvKit
-loads code onto it and then executes that code using the
-SPIX execute-in-place peripheral
+********************* External_Flash Example *********************
+This example communicates with an W25 flash over SPI (Quad mode).
 
 SPI Clock: 5000000 Hz
 
 External flash Initialized.
 
-External flash ID verified
+External flash ID: 0xef7018
 
 Erasing first 64k sector
 Erased
@@ -30,9 +28,11 @@ Quad mode enabled
 
 Programming function (15 bytes @ 0x20000000) into external flash
 Programmed
+Written Data:Analog Devices
 
 Verifying external flash
 Verified
+Read Data:Analog Devices
 
 Example Succeeded
 

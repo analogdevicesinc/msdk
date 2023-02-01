@@ -33,9 +33,11 @@
 
 /**
  * @file    main.c
- * @brief   SPIX example using the external flash.
- * @details Uses the external flash on the EvKit to show the SPIX. Erases, writes, and then
- *          verifies the data. EXT_FLASH_BAUD, EXT_FLASH_ADDR, and EXT_FLASH_SPIXFC_WIDTH
+ * @brief   External flash example.
+ * @details Demonstrate how external flash can be driven over SPI interface. 
+ *          To see low level SPI function call, see board.c file
+ *          Erases, writes, and then verifies the data. 
+ *          EXT_FLASH_BAUD, EXT_FLASH_ADDR, and EXT_FLASH_SPIXFC_WIDTH
  *          can be changed to alter the communication between the devices. Refer
  *          to the schematic for the pinout and ensure that there are no switches
  *          blocking the communication to the external flash.
@@ -58,28 +60,25 @@
 
 #define BUFF_SIZE 64
 
-int fail = 0;
-
 /***** Functions *****/
 
-static char data_to_write[] = {"Analog Devices"};
-static char data_to_read[sizeof(data_to_write) / sizeof(char)];
+static char data_to_write[] = { "Analog Devices" };
+static char data_to_read[32];
 
 /******************************************************************************/
 int main(void)
 {
+    int fail = 0;
     uint32_t id;
     int rx_len = sizeof(data_to_write) / sizeof(char);
     int remain = rx_len;
 
-    printf("\n\n********************* SPIX Example *********************\n");
-    printf("This example communicates with an %s flash on the EvKit\n", EXT_FLASH_NAME);
-    printf("loads code onto it and then executes that code using the \n");
-    printf("SPIX execute-in-place peripheral\n\n");
+    printf("\n\n********************* External Flash Example *********************\n");
+    printf("This example communicates with an %s flash over SPI (Quad mode)\n\n", EXT_FLASH_NAME);
 
     printf("SPI Clock: %d Hz\n\n", EXT_FLASH_BAUD);
 
-    // Initialize the SPIXFC registers and set the appropriate output pins
+    // Initialize external flash
     if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("Board Init Failed\n");
         printf("Example Failed\n");
@@ -90,13 +89,8 @@ int main(void)
     Ext_Flash_Reset();
 
     // Get the ID of the external flash
-    if ((id = Ext_Flash_ID()) == EXT_FLASH_EXP_ID) {
-        printf("External flash ID verified\n\n");
-    } else {
-        printf("Error verifying external flash ID: 0x%x\n", id);
-        printf("Example Failed\n");
-        while (1) {}
-    }
+    id = Ext_Flash_ID();
+    printf("External flash ID: 0x%x\n", id);
 
     int err;
 
@@ -125,19 +119,21 @@ int main(void)
     // Program the external flash
     printf("Programming function (%d bytes @ 0x%08x) into external flash\n",
            (uint32_t)(sizeof(data_to_write)), data_to_write);
-    if ((err = Ext_Flash_Program_Page(EXT_FLASH_ADDR, (uint8_t*) data_to_write,
-                                      (uint32_t)(sizeof(data_to_write) / sizeof(char)), EXT_FLASH_SPIXFC_WIDTH)) !=
-        E_NO_ERROR) {
+
+    if ((err = Ext_Flash_Program_Page(EXT_FLASH_ADDR, (uint8_t *)data_to_write,
+                                      (uint32_t)(sizeof(data_to_write) / sizeof(char)),
+                                      EXT_FLASH_SPIXFC_WIDTH)) != E_NO_ERROR) {
         printf("Error Programming: %d\n", err);
         fail++;
     } else {
-        printf("Programmed\n\n");
+        printf("Programmed\n");
+        printf("Written Data:%s\n\n", data_to_write);
     }
 
     printf("Verifying external flash\n");
     while (remain) {
         int chunk = ((remain > BUFF_SIZE) ? BUFF_SIZE : remain);
-        if ((err = Ext_Flash_Read(EXT_FLASH_ADDR + rx_len - remain, (uint8_t*) data_to_read, chunk,
+        if ((err = Ext_Flash_Read(EXT_FLASH_ADDR + rx_len - remain, (uint8_t *)data_to_read, chunk,
                                   EXT_FLASH_SPIXFC_WIDTH)) != E_NO_ERROR) {
             printf("Error verifying data %d\n", err);
             fail++;
@@ -147,15 +143,17 @@ int main(void)
             fail++;
             break;
         } else if (remain == chunk) {
-            printf("Verified\n\n");
+            printf("Verified\n");
+            printf("Read Data:%s\n\n", data_to_read);
         }
         remain -= chunk;
     }
 
-    if (fail == 0) {
-        printf("Example Succeeded\n\n");
-    } else {
-        printf("Example Failed\n\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
-    return 0;
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }
