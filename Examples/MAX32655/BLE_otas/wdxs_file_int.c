@@ -46,7 +46,6 @@
 #endif
 
 #define ERASE_DELAY 1 // ms
-#define WRITE_DELAY 1 // ms
 
 extern uint32_t _flash_update;
 extern uint32_t _eflash_update;
@@ -99,6 +98,14 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     int err = 0;
 
     if (erasePages) {
+
+        /* Only erase the flash if the scheduler is idle. */
+        if(SchGetState() != SCH_STATE_IDLE) {
+            /* Pend the erase */
+            WsfTimerStartMs(&eraseTimer, ERASE_DELAY);
+            return;
+        }
+
         APP_TRACE_INFO1(">>> Erasing address 0x%x in internal flash <<<", eraseAddress);
 
         /* The flash can not be accessed while the write is being performed. */
