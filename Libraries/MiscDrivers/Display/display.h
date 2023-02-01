@@ -34,14 +34,13 @@
 #ifndef DRIVER_DISPLAY_H_
 #define DRIVER_DISPLAY_H_
 
-#define DISP_E_SUCCESS 			 0
-#define DISP_E_ERROR 			-1
-#define DISP_E_BUSY 			-99
-#define DISP_E_BAD_STATE 		-98
-#define DISP_E_TIME_OUT 		-97
-#define DISP_E_BAD_PARAM 		-96
-#define DISP_E_NOT_CONFIGURED	-95
-
+#define DISP_E_SUCCESS 0
+#define DISP_E_ERROR -1
+#define DISP_E_BUSY -99
+#define DISP_E_BAD_STATE -98
+#define DISP_E_TIME_OUT -97
+#define DISP_E_BAD_PARAM -96
+#define DISP_E_NOT_CONFIGURED -95
 
 typedef struct {
     uint16_t x1;
@@ -58,8 +57,8 @@ typedef enum {
 
 typedef struct {
     int (*init)(void);
-    int (*write)(uint8_t* data, uint32_t data_len);
-    uint8_t* comm_buffer;
+    int (*write)(uint8_t *data, uint32_t data_len);
+    uint8_t *comm_buffer;
     uint32_t comm_buffer_len;
 } display_comm_api;
 

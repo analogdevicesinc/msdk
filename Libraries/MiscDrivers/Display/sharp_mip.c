@@ -68,57 +68,61 @@
 #include <stdbool.h>
 
 /************************************ DEFINES ********************************/
-#define SHARP_MIP_REV_BYTE(x)         ( \
-  ((x & 0x01) << 7) | ((x & 0x02) << 5) | ((x & 0x04) << 3) | ((x & 0x08) << 1) | \
-  ((x & 0x80) >> 7) | ((x & 0x40) >> 5) | ((x & 0x20) >> 3) | ((x & 0x10) >> 1))  /*Architecture / compiler dependent byte bits order reverse*/
+#define SHARP_MIP_REV_BYTE(x)                                                        \
+    (((x & 0x01) << 7) | ((x & 0x02) << 5) | ((x & 0x04) << 3) | ((x & 0x08) << 1) | \
+     ((x & 0x80) >> 7) | ((x & 0x40) >> 5) | ((x & 0x20) >> 3) |                     \
+     ((x & 0x10) >> 1)) /*Architecture / compiler dependent byte bits order reverse*/
 
-#define SHARP_MIP_HEADER              0
-#define SHARP_MIP_CLEAR_SCREEN_FLAG   (1 << 5)  /* (M2) All clear flag : H -> clear all pixels               */
-#define SHARP_MIP_COM_INVERSION_FLAG  (1 << 6)  /* (M1) Frame inversion flag : relevant when EXTMODE = L,    */
-                                                /*      H -> outputs VCOM = H, L -> outputs VCOM = L         */
-#define SHARP_MIP_UPDATE_RAM_FLAG     (1 << 7)  /* (M0) Mode flag : H -> update memory, L -> maintain memory */
+#define SHARP_MIP_HEADER 0
+#define SHARP_MIP_CLEAR_SCREEN_FLAG \
+    (1 << 5) /* (M2) All clear flag : H -> clear all pixels               */
+#define SHARP_MIP_COM_INVERSION_FLAG \
+    (1 << 6) /* (M1) Frame inversion flag : relevant when EXTMODE = L,    */
+/*      H -> outputs VCOM = H, L -> outputs VCOM = L         */
+#define SHARP_MIP_UPDATE_RAM_FLAG \
+    (1 << 7) /* (M0) Mode flag : H -> update memory, L -> maintain memory */
 
-#define BUFIDX(x, y)  (((x) >> 3) + ((y) * (2 + (dev->init_param.col >> 3))) + 2)
-#define PIXIDX(x)     SHARP_MIP_REV_BYTE(1 << ((x) & 7))
+#define BUFIDX(x, y) (((x) >> 3) + ((y) * (2 + (dev->init_param.col >> 3))) + 2)
+#define PIXIDX(x) SHARP_MIP_REV_BYTE(1 << ((x)&7))
 
-#define BIT_SET(a,b) (a |= b)
-#define BIT_CLEAR(a,b) (a &= ~b)
+#define BIT_SET(a, b) (a |= b)
+#define BIT_CLEAR(a, b) (a &= ~b)
 
 /***** Static Functions *****/
-static void sharp_mip_send_payload(sharp_mip_dev* dev, uint8_t* payload, uint32_t payloadlen)
+static void sharp_mip_send_payload(sharp_mip_dev *dev, uint8_t *payload, uint32_t payloadlen)
 {
-	dev->comm_api.write(payload, payloadlen);
+    dev->comm_api.write(payload, payloadlen);
 }
 
 /***** Functions *****/
-void sharp_mip_onoff(sharp_mip_dev* dev, int on)
+void sharp_mip_onoff(sharp_mip_dev *dev, int on)
 {
-	if(on) {
-	    MXC_GPIO_OutSet(dev->init_param.on_off_port, dev->init_param.on_off_pin);
-	}
-	else {
-	    MXC_GPIO_OutClr(dev->init_param.on_off_port, dev->init_param.on_off_pin);
-	}
+    if (on) {
+        MXC_GPIO_OutSet(dev->init_param.on_off_port, dev->init_param.on_off_pin);
+    } else {
+        MXC_GPIO_OutClr(dev->init_param.on_off_port, dev->init_param.on_off_pin);
+    }
 }
 
-int sharp_mip_configure(sharp_mip_dev* dev, sharp_mip_init_param_t* init_param, display_comm_api* comm_api)
+int sharp_mip_configure(sharp_mip_dev *dev, sharp_mip_init_param_t *init_param,
+                        display_comm_api *comm_api)
 {
     int err = DISP_E_SUCCESS;
 
     if (init_param == NULL || comm_api == NULL || dev == NULL) {
         return DISP_E_BAD_PARAM;
     }
-	dev->init_param = *init_param;
-	dev->comm_api = *comm_api;
-	return err;
+    dev->init_param = *init_param;
+    dev->comm_api = *comm_api;
+    return err;
 }
 
-int sharp_mip_init(sharp_mip_dev* dev)
+int sharp_mip_init(sharp_mip_dev *dev)
 {
     if (dev == NULL) {
         return DISP_E_NOT_CONFIGURED;
     }
-	dev->comm_api.init();
+    dev->comm_api.init();
 
     mxc_gpio_cfg_t gpio_cfg;
     gpio_cfg.pad = MXC_GPIO_PAD_NONE;
@@ -132,58 +136,63 @@ int sharp_mip_init(sharp_mip_dev* dev)
     sharp_mip_onoff(dev, 0);
     sharp_mip_onoff(dev, 1);
 
-	return DISP_E_SUCCESS;
+    return DISP_E_SUCCESS;
 }
 
-void sharp_mip_flush_area(sharp_mip_dev *dev, const display_area_t* area, const uint8_t* data)
+void sharp_mip_flush_area(sharp_mip_dev *dev, const display_area_t *area, const uint8_t *data)
 {
-	/*Return if the area is out the screen*/
-	if(area->y2 < 0) return;
-	if(area->y1 > dev->init_param.row - 1) return;
+    /*Return if the area is out the screen*/
+    if (area->y2 < 0)
+        return;
+    if (area->y1 > dev->init_param.row - 1)
+        return;
 
-	/*Truncate the area to the screen*/
-	uint16_t act_y1 = area->y1 < 0 ? 0 : area->y1;
-	uint16_t act_y2 = area->y2 > dev->init_param.row - 1 ? dev->init_param.row - 1 : area->y2;
+    /*Truncate the area to the screen*/
+    uint16_t act_y1 = area->y1 < 0 ? 0 : area->y1;
+    uint16_t act_y2 = area->y2 > dev->init_param.row - 1 ? dev->init_param.row - 1 : area->y2;
 
-	uint8_t * buf      = (uint8_t*) data;                     			/*Get the buffer address*/
-	uint16_t  buf_h    = (act_y2 - act_y1 + 1);                			/*Number of buffer lines*/
-	uint16_t  buf_size = buf_h * (2 + dev->init_param.col / 8) + 2;		/*Buffer size in bytes  */
+    uint8_t *buf = (uint8_t *)data; /*Get the buffer address*/
+    uint16_t buf_h = (act_y2 - act_y1 + 1); /*Number of buffer lines*/
+    uint16_t buf_size = buf_h * (2 + dev->init_param.col / 8) + 2; /*Buffer size in bytes  */
 
-	/* Set lines to flush dummy byte & gate address in draw_buf*/
-	for(uint16_t act_y = 0 ; act_y < buf_h ; act_y++) {
-		buf[BUFIDX(0, act_y) - 1] = SHARP_MIP_REV_BYTE((act_y1 + act_y + 1));
-		buf[BUFIDX(0, act_y) - 2] = 0;
-	}
+    /* Set lines to flush dummy byte & gate address in draw_buf*/
+    for (uint16_t act_y = 0; act_y < buf_h; act_y++) {
+        buf[BUFIDX(0, act_y) - 1] = SHARP_MIP_REV_BYTE((act_y1 + act_y + 1));
+        buf[BUFIDX(0, act_y) - 2] = 0;
+    }
 
-	/* Set last dummy two bytes in draw_buf */
-	buf[BUFIDX(0, buf_h) - 1] = 0;
-	buf[BUFIDX(0, buf_h) - 2] = 0;
+    /* Set last dummy two bytes in draw_buf */
+    buf[BUFIDX(0, buf_h) - 1] = 0;
+    buf[BUFIDX(0, buf_h) - 2] = 0;
 
-	/* Set frame header in draw_buf */
-	buf[0] = SHARP_MIP_HEADER | SHARP_MIP_UPDATE_RAM_FLAG;
+    /* Set frame header in draw_buf */
+    buf[0] = SHARP_MIP_HEADER | SHARP_MIP_UPDATE_RAM_FLAG;
 
-	/* Write the frame on display memory */
-	sharp_mip_send_payload(dev, buf, buf_size);
+    /* Write the frame on display memory */
+    sharp_mip_send_payload(dev, buf, buf_size);
 }
 
-void sharp_mip_set_buffer_pixel_util(sharp_mip_dev *dev, uint8_t* buf, uint16_t buf_w, uint16_t x, uint16_t y, uint8_t color, uint8_t is_opaque)
+void sharp_mip_set_buffer_pixel_util(sharp_mip_dev *dev, uint8_t *buf, uint16_t buf_w, uint16_t x,
+                                     uint16_t y, uint8_t color, uint8_t is_opaque)
 {
-	//TODO:: check buf_w with dev->init_param.col!
-	if ( color == 0 && is_opaque) {
-		BIT_SET( buf[BUFIDX(x, y)] , PIXIDX(x) );		/*Set draw_buf pixel bit to 1 for other colors than BLACK*/
-	} else {
-		BIT_CLEAR( buf[BUFIDX(x, y)] , PIXIDX(x) );	/*Set draw_buf pixel bit to 0 for BLACK color*/
-	}
+    //TODO:: check buf_w with dev->init_param.col!
+    if (color == 0 && is_opaque) {
+        BIT_SET(buf[BUFIDX(x, y)],
+                PIXIDX(x)); /*Set draw_buf pixel bit to 1 for other colors than BLACK*/
+    } else {
+        BIT_CLEAR(buf[BUFIDX(x, y)], PIXIDX(x)); /*Set draw_buf pixel bit to 0 for BLACK color*/
+    }
 }
 
-void sharp_mip_com_inversion(sharp_mip_dev *dev, int inversion_on) {
-	uint8_t inversion_header[2] = {0};
+void sharp_mip_com_inversion(sharp_mip_dev *dev, int inversion_on)
+{
+    uint8_t inversion_header[2] = { 0 };
 
-	/* Set inversion header */
-	if (inversion_on) {
-		inversion_header[0] |= SHARP_MIP_COM_INVERSION_FLAG;
-	}
+    /* Set inversion header */
+    if (inversion_on) {
+        inversion_header[0] |= SHARP_MIP_COM_INVERSION_FLAG;
+    }
 
-	/* Write inversion header on display memory */
-	sharp_mip_send_payload(dev, inversion_header, 2);
+    /* Write inversion header on display memory */
+    sharp_mip_send_payload(dev, inversion_header, 2);
 }
