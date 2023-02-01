@@ -117,7 +117,7 @@ typedef enum {
     TMR6_IRQn, /* 0x30  0x00C0  48: Timer 6 */
     TMR7_IRQn, /* 0x31  0x00C4  49: Timer 7 */
     UART2_IRQn, /* 0x32  0x00C8  50: UART 2 */
-    CLC_IRQn, /* 0x33  0x00CC  51: Contactless Link Control */
+    NFC_IRQn, /* 0x33  0x00CC  51: NFC Link Control */
     I2C1_IRQn, /* 0x34  0x00D0  52: I2C1 */
     SC1_IRQn, /* 0x35  0x00D4  53: Smart Card 1 */
     SPIXFC_IRQn, /* 0x36  0x00D8  54: SPI execute in place */
