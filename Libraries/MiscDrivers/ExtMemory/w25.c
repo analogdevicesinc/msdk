@@ -238,7 +238,7 @@ int Ext_Flash_Reset(void)
 
     while (flash_busy()) {
         busy_count++;
-        if (busy_count > 10000) {
+        if (busy_count > 20000) {
             return EF_E_TIME_OUT;
         }
     }
