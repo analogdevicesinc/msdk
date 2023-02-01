@@ -37,7 +37,7 @@ After flashing and launching the example, an LED on the board will blink once ev
 Press Push Button 1 (PB1/SW1) to continue...
 
 ---(Critical)---
-Sucessfully erased page 64 of flash (addr 0x1005E000)
+Successfully erased page 64 of flash (addr 0x1005E000)
 Writing magic value 0xfeedbeef to address 0x1005E000...
 Done!
 Writing test pattern...
@@ -61,7 +61,7 @@ Press Push Button 1 (PB1/SW1) to continue...
 (Flash modifications have survived a reset and/or power cycle.)
 
 Verifying test pattern...
-Sucessfully verified test pattern!
+Successfully verified test pattern!
 
 ---(Critical)---
 Erasing magic...
@@ -73,7 +73,7 @@ New magic value: 0xabcd1234
  -> Interrupt! (Flash operation done)
 
 Verifying test pattern...
-Sucessfully verified test pattern!
+Successfully verified test pattern!
 
 Flash example successfully completed.
 

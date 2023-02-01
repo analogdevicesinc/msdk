@@ -191,7 +191,7 @@ int validate_test_pattern()
         }
     }
 
-    printf("Sucessfully verified test pattern!\n\n");
+    printf("Successfully verified test pattern!\n\n");
     return err;
 }
 
