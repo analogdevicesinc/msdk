@@ -20,6 +20,8 @@ TRACE = 1
 
 DEBUG = 1
 
+PAL_NVM_SIZE=0x2000
+
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
 

@@ -371,15 +371,15 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
     if (len == sizeof(fileHeader_t)) {
-        uint8_t str[50];
         uint16_t version = WdxsFileGetFirmwareVersion();
-        snprintf((char *)str, sizeof(str), ">>> Current fw version: %d.%d <<<",
-                 ((version & 0xFF00) >> 8), version & 0xFF);
+
         fileHeader_t *tmpHeader;
         tmpHeader = (fileHeader_t *)pValue;
         initHeader(tmpHeader);
-        datsSendData(connId, sizeof(str), str);
+
+        datsSendData(connId, sizeof(version), (uint8_t*)&version);
     }
+
     return ATT_SUCCESS;
 }
 /*************************************************************************************************/
@@ -753,6 +753,7 @@ static void datsBtnCback(uint8_t btn)
 #endif /* BT_VER */
         case APP_UI_BTN_2_MED: {
             uint16_t version = WdxsFileGetFirmwareVersion();
+            (void)version;
             APP_TRACE_INFO2("FW_VERSION: %d.%d", ((version & 0xFF00) >> 8), version & 0xFF);
             break;
         }
@@ -791,6 +792,7 @@ static void datsBtnCback(uint8_t btn)
             break;
         case APP_UI_BTN_2_MED: {
             uint16_t version = WdxsFileGetFirmwareVersion();
+            (void)version;
             APP_TRACE_INFO2("FW_VERSION: %d.%d", ((version & 0xFF00) >> 8), version & 0xFF);
             break;
         }
