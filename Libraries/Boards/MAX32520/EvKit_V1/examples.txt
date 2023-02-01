@@ -15,6 +15,7 @@ ARM-DSP/arm_variance_example
 CRC
 DMA
 ECDSA
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo
