@@ -55,20 +55,28 @@ if socket.gethostname() == "wall-e":
     rf_switch = True
 else:
     rf_switch = False
+TRACE_INFO = 2
+TRACE_WARNING =  1
+TRACE_ERROR = 0
+
+traceLevel = TRACE_INFO
+
+def printTrace(label, msg,callerLevel, color='white'):
+    if  callerLevel <= traceLevel:
+        print(colored(label + ": ", color), colored(msg, color))
+
+def printWarning(msg):
+    printTrace('Warning', msg, TRACE_WARNING, 'yellow')
+
+def printInfo(msg):
+    printTrace('Info', msg, TRACE_INFO, 'green')
+
+def printError(msg):
+    printTrace('Error', msg, TRACE_ERROR, 'red')
 
 # Setup the command line description text
 descText = """
-DTM sweep.
-
-This tool uses a Mini Circuits RCDAT to control attenuation between two devices
-running DTM software. The Packet error rate (PER) of the master will be collected by setting the slave device in tx test mode and the master in rx test mode.
-A vendor specific command is sent which sets the total number of packets which shoule be transmitted. 
-The total number of packets transmitted will be compared to the number of packtes received and the PER will be  
-calculated as numPacketsReceived/numPacketsTransmitted * 100
-
-IMPORTANT:
-The tx test command is vendor specific and is only guarenteed to work on MAX32 BLE devices running the latest stack. 
-The command is also supported by Nordic SoCs
+Run Calibration and Initialization Tests
 """
 
 # Parse the command line arguments
@@ -84,9 +92,7 @@ parser.add_argument('-t', '--txpows', default="0",help='TX powers to test with, 
 parser.add_argument('-a', '--attens', help='Attenuation settings to use, comma separated list.')
 parser.add_argument('-s', '--step', default=10, help='Attenuation sweep step size in dBm.')
 parser.add_argument('-e', '--pktlen', default="250", help="packet length, comma separated list.")
-
-parser.add_argument('-n', '--numpkt', default='5000',help='Number of packets in test.')
-
+parser.add_argument('-n', '--numpkt', default=5,help='Number of packets in test.')
 parser.add_argument('--mtp', default="", help="master TRACE serial port")
 parser.add_argument('--stp', default="", help="slave TRACE serial port")
  
@@ -147,14 +153,31 @@ hciMaster = BLE_hci(Namespace(serialPort=args.masterSerial, monPort=args.mtp, ba
 
 perMax = 0
 
-for packetLen, numPkt, phy, txPower, chan in itertools.product(packetLengths, numPackets, phys, txPowers, chan):
+def readDBB(hciInterface: BLE_hci) -> dict | None:
+    """
+    Function to read DBB register of device 
+    Return DBB registers as a struct
+    """
+
+    dbbReg = {}
+    DBB_START_REG= 0x00000000
+    DBB_SIZE = 0x4
+    evtBytes = hciInterface.readRegFunc(Namespace(addr=DBB_START_REG,length=DBB_SIZE))
+
+
+    if evtBytes is None:
+        printError('Failed to read DBB register. Returning None')
+        return None
+
+
+for packetLen, numPkt, phy, txPower, dtmCh in itertools.product(packetLengths, numPackets, phys, txPowers, chan):
     per_100 = 0
     for atten in attens:
         RETRY = 2
         while per_100 < RETRY:
             start_secs = time.time()
             print(f'\n---------------------------------------------------------------------------------------')
-            print(f'packetLen: {packetLen}, numPackets: {numPkt}, phy: {phy}, atten: {atten}, txPower: {txPower}, Channel: {chan}\n')
+            print(f'packetLen: {packetLen}, numPackets: {numPkt}, phy: {phy}, atten: {atten}, txPower: {txPower}, Channel: {dtmCh}\n')
 
             print("Set the requested attenuation.")
             if rf_switch:
@@ -167,19 +190,19 @@ for packetLen, numPkt, phy, txPower, chan in itertools.product(packetLengths, nu
             sleep(0.1)
 
             print("\nSet the PHY.")
-            hciMaster.phyFunc(Namespace(phy=phy), timeout=1)
+            hciMaster.phyFunc(Namespace(phy=str(phy)), timeout=1)
+            #hciMaster.listenFunc(Namespace(time=2, stats="False"))
 
             print("\nSet the txPower.")
             hciSlave.txPowerFunc(Namespace(power=txPower, handle="0")) 
             hciMaster.txPowerFunc(Namespace(power=txPower, handle="0"))
 
-
             print('--------------')
             print("\nSet slave to RX.")
-            print(chan)
-            hciSlave.rxTestFunc(Namespace(channel=chan, phy=phy))
+            hciSlave.rxTestFunc(Namespace(channel=str(chan), phy=str(phy)))
             print("\nSet master to TX, start test.")
-            hciMaster.txTestVSFunc(Namespace(channel=chan, phy=phy, packetLength=packetLen, numPackets=numPkt,payload=0))            
+            hciMaster.txTestVSFunc(Namespace(channel=str(chan), phy=str(phy), packetLength=str(packetLen), numPackets=str(numPkt)))            
+
             print(f"\nWait {args.delay} secs for the DTM Test to complete.")
             sleep(int(args.delay))
 
@@ -192,11 +215,11 @@ for packetLen, numPkt, phy, txPower, chan in itertools.product(packetLengths, nu
             hciSlave.resetFunc(None)
             hciMaster.resetFunc(None)
             sleep(0.1)
-            print(chan)
+
             print("\nSet master to RX.")
-            hciMaster.rxTestFunc(Namespace(channel=chan, phy=phy))
+            hciMaster.rxTestFunc(Namespace(channel=str(chan), phy=str(phy)))
             print("\nSet slave to TX, start test.")
-            hciSlave.txTestVSFunc(Namespace(channel=chan, phy=phy, packetLength=packetLen, numPackets=numPkt,payload=0))            
+            hciSlave.txTestVSFunc(Namespace(channel=str(chan), phy=str(phy), packetLength=str(packetLen), numPackets=str(numPkt)))            
 
             print(f"\nWait {args.delay} secs for the DTM Test to complete.")
             sleep(int(args.delay))
@@ -230,7 +253,7 @@ for packetLen, numPkt, phy, txPower, chan in itertools.product(packetLengths, nu
             perMax = 100
 
         # Save the results to file
-        results.write(str(packetLen)+","+str(numPkt)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(chan)+","+str(perMaster)+","+str(perSlave)+"\n")
+        results.write(str(packetLen)+","+str(numPkt)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(dtmCh)+","+str(perMaster)+","+str(perSlave)+"\n")
         end_secs = time.time()
         print(f'\nUsed {(end_secs - start_secs):.0f} seconds.')
 
