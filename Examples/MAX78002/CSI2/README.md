@@ -4,6 +4,21 @@ This example captures an image using the camera (e.g. OV5640) via MIPI CSI-2 Pro
 
 Use the [utils/console.py](utils/console.py) script to grab the camera data and create a png image of the captured image. More information can be found in [utils/README.md](utils/README.md).
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
+
+### Project-Specific Build Notes
+
+TODO
+
+## Expected Output
+
 Ex:
 ```shell
 $ python utils/console.py COM6

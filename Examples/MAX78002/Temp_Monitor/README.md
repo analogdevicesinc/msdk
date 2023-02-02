@@ -10,6 +10,19 @@ Additionally, pressing push button SW4 will print the last 12 temperature readin
 
 The temperature limits, flash storage page, and RTC time-of-day alarm period are defined in [temp_monitor.c](./temp_monitor.c) with the HI/LO\_TEMP\_THRESHOLD, TR\_STORAGE\_PAGE, and TEMP\_CHECK\_PERIOD defines respectively.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
+
+### Project-Specific Build Notes
+
+(None)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

@@ -7,6 +7,19 @@ When the application begins, it initializes and starts the watchdog timer.  The 
 - Push SW2 to trigger a "too-late" watchdog reset. This will stop resetting the watchdog timer until it generates the "too-late" interrupt.  After that it will reset the watchdog timer only once, allowing it to pass the reset timeout period.
 - Push SW3 to reset the watchdog timer in the "too-early" period.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
+
+### Project-Specific Build Notes
+
+(None)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

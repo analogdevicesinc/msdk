@@ -6,6 +6,19 @@ A word is then modified to have a single bit error.  That word is read and the E
 
 That same word is modified again to contain a double bit error.  The word is read and the ECC flags are examined to make sure a non-correctable error is reported.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
+
+### Project-Specific Build Notes
+
+(None)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

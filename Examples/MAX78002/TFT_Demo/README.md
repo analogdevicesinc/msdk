@@ -1,38 +1,17 @@
 # MAX78002 TFT and Touchscreen Demo Example
 
-### Building firmware:
+## Software
 
-Navigate directory where **TFT_Demo** software is located and build the project:
+### Project Usage
 
-```bash
-$ cd /Examples/MAX78002/TFT_Demo
-$ make -r
-```
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
 
-```bash
-$ make -r distclean
-```
+### Project-Specific Build Notes
 
-
-### Load firmware image to MAX78002 EVKIT
-
-Connect USB cable to CN2 (USB/PWR) and turn ON power switch (SW4).
-
-Connect PICO adapter to JH8 SWD header.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78002.cfg -c "program build/max78002.elf verify reset exit"
-```
+(None)
 
 ### MAX78002 EVKIT operations
 

@@ -2,6 +2,19 @@
 
 This application demonstrates receiving data from the microphone on the MAX78002 EV Kits using the I2S and DMA modules.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
+
+### Project-Specific Build Notes
+
+(None)
+
 ## Required Connections:
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

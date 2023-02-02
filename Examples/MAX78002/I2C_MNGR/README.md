@@ -6,6 +6,19 @@ More specifically, in this example the EEPROM0 task attempts to read data from E
 
 You may change the configuration of each EEPROM's I2C transaction parameters (slave address, bus frequency, EEPROM read address, transaction interval, I2C timeout) by modifying their definitions at the top of main.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
+
+### Project-Specific Build Notes
+
+(None)
+
 ## Setup
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Connect the 5V power cable at (5V IN).

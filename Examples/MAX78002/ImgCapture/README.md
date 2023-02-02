@@ -19,19 +19,22 @@ It supports the following output destinations:
 
 * Save image to SD card. (MAX7800FTHR only)
 
-## Building, Flashing, & Debugging
+## Software
 
-For instructions on how to build, flash, and debug this example see [.vscode/readme.md](.vscode/readme.md).
+### Project Usage
 
-## Console Interface & Utilites
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
 
-For more details on running the serial console, converting images, and excercising the example, see [utils/README.md](utils/README.md)
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
 
-## Build Notes
+### Console Interface & Utilites
 
-Full documentation on the build system can be found in the "Build Configuration" section of [.vscode/README.md](.vscode/README.md#build-configuration).  The following notes contain important quick-start info.
+For more details on running the serial console, converting images, and excercising the example with serial commands, see [utils/README.md](utils/README.md)
 
-### Enabling Firmware Features
+### Project-Specific Build Notes
+
+#### Enabling Firmware Features
 
 Firmware features can be toggled in [project.mk](project.mk).
 
@@ -41,7 +44,7 @@ Firmware features can be toggled in [project.mk](project.mk).
 
 After making any changes, fully clean the project and then rebuild.
 
-### Setting CAMERA
+#### Setting CAMERA
 
 The `CAMERA` variable in [project.mk](project.mk) is used to select the correct drivers for the attached camera.  When this variable is changed, you should also ensure the `CAMERA_xxx` compiler definitions in [.vscode/settings.json](.vscode/settings.json) is also changed to match.  The project settings cannot automatically changes in the compiler definitons to match the camera.
 

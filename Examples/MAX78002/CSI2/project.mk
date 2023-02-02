@@ -13,10 +13,13 @@
 
 # Add your config here!
 
+<<<<<<< HEAD
 # Set the camera drivers.  Select a line to match the
 # connected camera.  These are some common values.  
 # For a full list of options for the 'CAMERA' variable, 
 # see the documentation.
+=======
+>>>>>>> 77359e218 (Update MAX78002 READMEs)
 CAMERA=OV5640
 
 # Set a higher optimization level.  The increased performance

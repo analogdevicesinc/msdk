@@ -8,7 +8,20 @@ The internal storage flash memory block count is specified by *FLASH_STORAGE_PAG
  #define FLASH_STORAGE_PAGE_CNT 8
  ```
  
- that corresponds to 64kb (8 of 8kb blocks) 
+ that corresponds to 64kb (8 of 8kb blocks)
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
+
+### Project-Specific Build Notes
+
+(None)
 
 ## Required Connections
 

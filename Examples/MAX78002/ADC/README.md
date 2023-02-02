@@ -2,11 +2,24 @@
 
 Demonstrates the use of the ADC by continuously monitoring ADC input channel 0.  Vary the voltage on the AIN0 input (0 to 1.8V) to observe different readings from the ADC.
 
-The example can be configured to either use a polling, interrupt driven, or DMA ADC Conversion by commenting or uncommenting the defined modes. 
+The example can be configured to either use a polling, interrupt driven, or DMA ADC Conversion by commenting or uncommenting the defined modes.
 
 Any reading that exceeds the full-scale value of the ADC will have an '*' appended to the value.
 
 Beware which Port 2 (channel) you use. Some of the Port 2 pins are connected to the switches, LED, and TFT display, so the readings may be off when using the EV Kit.
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+
+- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
+- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
+
+### Project-Specific Build Notes
+
+(None)
 
 ## Required Connections
 
