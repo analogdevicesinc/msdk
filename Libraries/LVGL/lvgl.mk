@@ -32,7 +32,12 @@
  ###############################################################################
 
 ifeq "$(LVGL_DIR)" ""
-$(error LVGL_DIR must be specified")
+# If LVGL_DIR is not specified, this Makefile will locate itself.
+LVGL_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+endif
+
+ifeq ($(ENABLE_DISPLAY),1)
+PROJ_CFLAGS += -DENABLE_DISPLAY
 endif
 
 # require by library

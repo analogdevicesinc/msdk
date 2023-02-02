@@ -15,7 +15,7 @@
 SBT=0
 
 # Enforce to use FTHR board, the example works on FTHR only.
-BOARD = FTHR
+override BOARD = FTHR
 
 # Enable LVGL library
 LIB_LVGL = 1

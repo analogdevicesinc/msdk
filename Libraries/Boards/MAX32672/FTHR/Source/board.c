@@ -67,6 +67,8 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
+#ifdef ENABLE_DISPLAY
+
 ssd1306_dev cfal12832c_controller;
 
 /***** File Scope Variables *****/
@@ -109,6 +111,7 @@ static int display_comm_write(uint8_t *data, uint32_t data_len)
     }
     return error;
 }
+#endif // ENABLE_DISPLAY
 
 /******************************************************************************/
 void mxc_assert(const char *expr, const char *file, int line)
@@ -137,6 +140,7 @@ int Board_Init(void)
         return err;
     }
 
+#ifdef ENABLE_DISPLAY
     display_comm_api comm_api = { .init = display_comm_init,
                                   .write = display_comm_write,
                                   .comm_buffer = txdata,
@@ -146,6 +150,7 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
+#endif // ENABLE_DISPLAY
 
     return E_NO_ERROR;
 }

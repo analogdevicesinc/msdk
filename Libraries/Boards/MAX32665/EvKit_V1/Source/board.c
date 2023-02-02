@@ -81,7 +81,7 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
-#ifndef NO_DISPLAY
+#ifdef ENABLE_DISPLAY
 
 sharp_mip_dev ls013b7dh03_controller;
 
@@ -146,7 +146,7 @@ static int display_comm_write(uint8_t *data, uint32_t data_len)
     SPI_CS(0);
     return error;
 }
-#endif // NO_DISPLAY
+#endif // ENABLE_DISPLAY
 
 /******************************************************************************/
 static int ext_flash_board_init(void)
@@ -213,7 +213,7 @@ int Board_Init(void)
         return err;
     }
 
-#ifndef NO_DISPLAY
+#ifdef ENABLE_DISPLAY
     display_comm_api comm_api = { .init = display_comm_init,
                                   .write = display_comm_write,
                                   .comm_buffer = NULL,
@@ -226,7 +226,7 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
-#endif // NO_DISPLAY
+#endif // ENABLE_DISPLAY
 
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
