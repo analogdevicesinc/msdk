@@ -23,6 +23,7 @@
 /*************************************************************************************************/
 
 #include <string.h>
+#include <stdlib.h>
 #include "wsf_types.h"
 #include "util/bstream.h"
 #include "wsf_msg.h"
@@ -620,6 +621,7 @@ static void datcDiscGapCmpl(dmConnId_t connId)
 static void datcWdxcFtdCallback(dmConnId_t connId, uint16_t fileHdl, uint16_t len, uint8_t *pData)
 {
 }
+
 /*************************************************************************************************/
 /*!
  *  \brief  Send file header.
@@ -636,6 +638,7 @@ static void sendFileHeader(dmConnId_t connId)
                      (uint8_t *)&fileHeader);
     }
 }
+
 /*************************************************************************************************/
 /*!
  *  \brief  Send a block of file data to the peer. Combines the address with the data.
@@ -666,6 +669,7 @@ static void datcSendBlock(dmConnId_t connId, uint32_t address, uint32_t len, uin
     /* Increment the address of the data that we're sending */
     datcCb.blockOffset[connId - 1] += len;
 }
+
 /*************************************************************************************************/
 /*!
  *  \brief  WDXC File Transfer Control Callback.
