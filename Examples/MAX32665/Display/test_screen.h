@@ -34,7 +34,7 @@
 #ifndef TEST_SCREEN_H_
 #define TEST_SCREEN_H_
 
-#include "lvgl/lvgl.h"
+#include "lvgl.h"
 
 extern lv_chart_series_t *ser;
 extern lv_obj_t *chart;

@@ -46,7 +46,7 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "lv_conf.h"
-#include "lvgl/lvgl.h"
+#include "lvgl.h"
 
 #include "sharp_mip.h"
 #include "test_screen.h"

@@ -51,7 +51,10 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/LVGL/lvgl",
+        "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src",
+        "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src/**"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -64,7 +67,9 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers",
+        "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src",
+        "${config:MAXIM_PATH}/Libraries/LVGL/lvgl/src/**"
     ],
     "C_Cpp.default.defines": [
         "${config:board}"
