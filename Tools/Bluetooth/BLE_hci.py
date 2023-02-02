@@ -814,7 +814,7 @@ class BLE_hci:
         self.send_command("01332003"+channel+phy+modulationIndex)
     
    
-    def endTestVSFunc(self, args) -> dict | None:
+    def endTestVSFunc(self, args):
         """
         Vendor specific command to end test\n
         Returns a dictionary of entire test report\n
