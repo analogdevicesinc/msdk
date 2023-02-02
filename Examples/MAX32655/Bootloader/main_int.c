@@ -225,6 +225,11 @@ int main(void)
     fileHeader.fileLen = (uint32_t) * (uint32_t *)FLASH1_START;
     fileHeader.fileCRC = (uint32_t) * (uint32_t *)(FLASH1_START + sizeof(uint32_t));
 
+    /* Check if FLASH1 is erased */
+    if (fileHeader.fileLen == 0xFFFFFFFF) {
+        fileHeader.fileLen = 0;
+    }
+
     /* Attempt to verify the upper image if we get a valid length */
     if (fileHeader.fileLen) {
         /* Validate the image with CRC32 */
