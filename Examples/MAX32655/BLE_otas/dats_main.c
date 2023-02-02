@@ -84,6 +84,10 @@
 #define BTN_1_TMR MXC_TMR2
 #define BTN_2_TMR MXC_TMR3
 
+#ifndef OTA_INTERNAL
+#define OTA_INTERNAL 0
+#endif
+
 /*! Enumeration of client characteristic configuration descriptors */
 enum {
     WDXS_DC_CH_CCC_IDX, /*! WDXS DC service, service changed characteristic */
@@ -164,7 +168,11 @@ static const appUpdateCfg_t datsUpdateCfg = {
 /*! ATT configurable parameters (increase MTU) */
 static const attCfg_t datsAttCfg = {
     15, /* ATT server service discovery connection idle timeout in seconds */
+#if OTA_INTERNAL
+    128, /* desired ATT MTU */
+#else
     241, /* desired ATT MTU */
+#endif
     ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
     4 /* number of queued prepare writes supported by server */
 };
