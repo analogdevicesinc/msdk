@@ -406,11 +406,11 @@ typedef enum {
 #define MXC_TMR3 ((mxc_tmr_regs_t *)MXC_BASE_TMR3)
 #define MXC_BASE_TMR4 ((uint32_t)0x40014000UL)
 #define MXC_TMR4 ((mxc_tmr_regs_t *)MXC_BASE_TMR4)
-#define MXC_BASE_TMR5 ((uint32_t)0x40015000UL)
+#define MXC_BASE_TMR5 ((uint32_t)0x40115000UL)
 #define MXC_TMR5 ((mxc_tmr_regs_t *)MXC_BASE_TMR5)
-#define MXC_BASE_TMR6 ((uint32_t)0x40016000UL)
+#define MXC_BASE_TMR6 ((uint32_t)0x40216000UL)
 #define MXC_TMR6 ((mxc_tmr_regs_t *)MXC_BASE_TMR6)
-#define MXC_BASE_TMR7 ((uint32_t)0x40017000UL)
+#define MXC_BASE_TMR7 ((uint32_t)0x40217000UL)
 #define MXC_TMR7 ((mxc_tmr_regs_t *)MXC_BASE_TMR7)
 
 #define MXC_TMR_GET_IRQ(i)             \
@@ -678,7 +678,7 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                         Contactless RF NFC */
-#define MXC_BASE_NFC ((uint32_t)0x40040000UL)
+#define MXC_BASE_NFC ((uint32_t)0x40240000UL)
 #define MXC_NFC ((mxc_nfc_regs_t *)MXC_BASE_NFC)
 
 /******************************************************************************/
