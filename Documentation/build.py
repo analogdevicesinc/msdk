@@ -21,9 +21,6 @@ for f in periph_docs_dir.glob("*_Doxyfile"):
 for f in repo.glob("*.md"):
     shutil.copy(f, here)
 
-# Pre-populate resources folder
-shutil.copytree(repo / "res", here / "res", dirs_exist_ok=True)
-
 # Run mkdocs build
 # A subprocess is used because the Mkdocs Python API does not print any logging info
 print("Building docs (this could take a few minutes)...")

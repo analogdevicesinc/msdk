@@ -301,17 +301,17 @@ The MSDK offers support for multiple development environments to support the use
 
 - **System Path**:  Your system's _Path_ is a special environment variable that tells it where to search for program binaries.   It's also expected that the user has some familiarity with this concept, and how to modify the system Path if necessary.
 
-- **Build Configuration vs Project Configuration**: An MSDK project is primarily made up of two complementary systems:  The _Build System_ and the _Project Management System_.  These systems each offer their own configuration interfaces, and it's important to note what each is used for.
+- **Integrated Development Environment (IDE)**:  An IDE offers a higher level user interface (typically with a GUI) that manages the tools for **editing** source code, **building** source code, **flashing** program binaries, and **debugging**.  The abbreviation is frequently used in this document, and the MSDK supports _multiple_ IDEs that can be used depending on preference.  (See ["Supported Development Environments"](#supported-development-environments))
+
+- **Build Configuration vs Project Configuration**: An MSDK project is primarily made up of two complementary systems:  The _Build System_ and the _Integrated Development Environment (IDE)_.  These systems each offer their own configuration interfaces, and it's important to note what each is used for.
 
     The **Build System** manages the compilation of source code into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**.
 
-    The **Project Management System** offers a higher level user interface (typically with a GUI) to manage the tools for **editing** source code, **flashing** program binaries, and **debugging** them on hardware.  The Project Management System sits _on top_ of the build system's _CLI_ and uses it to manage fundamental aspects of the build such as:
+    The **IDE** offers a higher level user interface (typically with a GUI) for managing a project and sits _on top_ of the build system's _CLI_.  Each IDE offers its own settings for managing fundamental aspects of the build such as:
 
     - Setting the _Target Microcontroller_
     - Setting the _Board Support Package_
     - Configuring the _Environment_ and _System Path_ for use with the MSDK toolchain
-
-- **Integrated Development Environment (IDE)**:  An IDE combines the _Build System_ and _Project Management_ systems and typically features a Graphical User Interface (GUI) and other development features.  The abbreviation is used frequently in the document.
 
 ### Getting Started with Visual Studio Code
 
@@ -432,7 +432,9 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 
 #### Creating a New Project
 
-1. [Launch](#running-eclipse) Eclipse.
+1. Launch Eclipse with its start menu shortcut.
+
+    ![Figure 22](res/Fig22.jpg)
 
 2. Ensure that the Eclipse is set to the **C/C++ perspective** in the top right corner. Otherwise, the new project wizard will not show up.
 
@@ -725,21 +727,21 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 ## Development Guide
 
-As discussed in [Key Concepts](#key-concepts), an MSDK project is primarily made up of two distinct systems:  The **_Build System_** and the _**Project Management System**_.  [Getting Started](#getting-started) demonstrates the basic usage and configuration of these systems, while this section offers a more detailed reference.
-
-MSDK development primarily involves using the Project Management System, which offers a higher level user interface (typically with a GUI) that manages the tools for **editing** source code, **flashing** program binaries, and **debugging** for the MSDK's [supported IDEs](#supported-development-environments).  Additionally, the Project Management System sits _on top_ of the [Build System](#build-system)'s _CLI_, allowing it to manage fundamental build variables aspects of development such as:
-
-- Setting the _Target Microcontroller_  (`TARGET` _[Build Configuration Variable](#build-configuration-variables-reference-table)_)
-- Setting the _Board Support Package_ (`BOARD` _[Build Configuration Variable](#build-configuration-variables-reference-table)_)
-- Configuring the _Environment_ and _System Path_ for use with the MSDK toolchain (`MAXIM_PATH` _[Build Configuration Variable](#build-configuration-variables-reference-table)_)
+This section offers detailed usage info on the entire MSDK focusing on the typical _development_ cycle.  It expands on the info presented in ["Getting Started"](#getting-started) with more detailed usage info for each of the MSDK's supported IDEs.  Additionally, advanced topics that users will encounter as they proceed into custom application and/or hardware development are also covered.
 
 ### Board Support Packages
 
-The role of a Board Support Package (BSP) is to provide a hardware abstraction layer for board-level initialization code such as initializing and assigning UART instances, pushbuttons, LEDs, external peripheral devices, TFT displays, and other board-specific hardware.  The MSDK's available Board Support Packages (BSPs) can be found in the `Libraries/Boards` folder for each _Target Microcontroller_.
+The MSDK supports multiple parts and evaluation platforms (see [supported parts](#supported-parts)) through **"Board Support Packages" (BSPs)**.
+
+The role of a _BSP_ is to provide a hardware abstraction layer for the initialization and management of board-level hardware such as serial interfaces, pushbuttons, LEDs, external peripheral devices, TFT displays, etc. which will vary between evaluation platforms.  The BSP abstraction layer also improves code portability to custom devices.  
+
+This topic is presented _first_ because the first task when opening or creating any project is to set the BSP correctly.
+
+Available BSPs are located in the `Libraries/Boards` folder for each _Target Microcontroller_.
 
 ![Figure 34](res/Fig34.jpg)
 
-The name of the BSP is the name of the folder.  For example, the MAX78000 supports the `Aud01_RevA`, `EvKit_V1`, `FTHR_RevA`, and `MAXREFDES178` BSPs.  However, it is not always clear how these BSP names match the part numbers for different evaluation kits.  The table below can be used to match an external part number with an MSDK BSP.
+The name of each folder is the BSP's _internal_ string for use with the `BOARD` [build configuration variable](#build-configuration-variables).  The table below can be used to match these _internal_ strings to _external part numbers_.
 
 | External Part Number                                         | `BOARD`        |
 | ------------------------------------------------------------ | -------------- |
@@ -774,38 +776,9 @@ To set the BSP for a project:
 
 ### Visual Studio Code
 
-Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) Github repository.  This section augments the VSCode-Maxim [README](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) with more detailed usage info and insight.
+Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) Github repository.
 
-#### Setup (VS Code)
-
-The setup below only needs to be done once per MSDK [installation](#installation).
-
-1. Download & install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).
-
-2. Launch Visual Studio Code.
-
-3. Install the Microsoft [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
-
-4. Use **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS) to open the developer prompt.
-
-5. Type "open settings json" and select the **"Preferences: Open Settings (JSON)"** option (_not_ "Preferences: Open _Default_ Settings (JSON)").  This will open your **user** settings.json file in VS Code's editor.
-
-    ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
-
-6. Add the entries below into your **_user settings.json_** file.
-
-        :::json
-        {
-            // There may be other settings up here...
-            
-            "MAXIM_PATH":"C:/MaximSDK", // Set this to the installed location of the MaximSDK.  Only use forward slashes '/' when setting this path!
-            "update.mode": "manual",
-            "extensions.autoUpdate": false,
-            
-            // There may be other settings down here...
-        }
-
-7. Save your changes to the file with **`CTRL + S`** and restart VS Code.
+For setup/quick-start instructions, see ["Getting Started with Visual Studio Code"](#getting-started-with-visual-studio-code) first.
 
 #### Opening Example Projects
 
@@ -835,11 +808,11 @@ To open a project:
 
     ![Figure 16](res/Fig16.jpg)
 
-6. (Optional) Set the **Board Support Package** to match your evaluation platform if necessary.  Projects default to the **"EVKIT"** BSP for the target microcontroller.  See [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code) below.
+6. Verify the **_Board Support Package_** for the project is set correctly.  See [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code) below.
 
 #### How to Set the BSP (VS Code)
 
-To set the BSP for a project:
+To set the BSP for an opened project:
 
 1. Set the `"board"` [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-configuration-variables-reference-table)_.
 
@@ -847,7 +820,7 @@ To set the BSP for a project:
 
     ![Figure 17](res/Fig17.jpg)
 
-2. Reload the VS Code window to re-index its Intellisense engine.
+2. **Reload the VS Code window** to re-index its Intellisense engine.
 
     VS Code can be conveniently re-loaded with the **Reload Window** developer command accessed with **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS).
 
@@ -855,7 +828,7 @@ To set the BSP for a project:
 
 #### Building a Project
 
-Once a project is opened 4 available [build tasks](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks) will become available via **Terminal > Run Build task...** or the shortcut **`Ctrl+Shift+B`**.
+An opened project will present 4 available [build tasks](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks) via **Terminal > Run Build task...** or the shortcut **`Ctrl+Shift+B`**.
 
 ![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
 
@@ -863,11 +836,15 @@ Run the **"build"** task to compile the project for the configured _Target Micro
 
 ![Figure 18](res/Fig18.jpg)
 
-To **clean** a project, run the **clean** [build task](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks).  This will wipe the contents of the build folder entirely.  Additionally, the **clean-periph** task can be used to clean the project _and_ the peripheral drivers.
+#### Cleaning a Project
+
+To **clean** a project, run the _clean_ [build task](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks).  This will delete the build folder and its contents.  The next time the project is built, it will be re-built from scratch.
+
+It should be noted that _clean_ will only remove the _project's_ build output.  The **clean-periph** task can be used to clean the project _and_ the peripheral driver libraries.
 
 #### Flashing and Debugging
 
-This section assumes a debugger is connected between the host PC and the evaluation platform.  For more detailed instructions on this hardware setup refer to the evaluation platforms Datasheet and Quick-Start Guide, which are available on the evaluation platform's product page.
+This section assumes a debugger is connected between the host PC and the evaluation platform.  For more detailed instructions on this hardware setup refer to the evaluation platforms Datasheet and Quick-Start Guide, which are available on each evaluation platform's product page.
 
 ##### Arm Core Debugging
 
@@ -1073,50 +1050,13 @@ When Eclipse is launched, it will prompt for a **_workspace_** location.  This i
 
 ### Command-Line Development
 
-#### Setup (Command-Line)
+This section offers more detailed info on command-line development.
 
-##### Windows
-
-On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the `Tools/MSYS2/msys.bat` file can be launched directly.
-
-![Figure 22](res/Fig22.jpg)
-
-##### Linux/MacOS
-
-1. On Linux and MacOS, copy the following contents into your shell's terminal profile/startup script.  Depending on your system and shell this could be `~/.profile`, `~/.zprofile`, `~/.bashrc`, `~/.zshrc`, etc.
-
-        # Set MAXIM_PATH to point to the MSDK
-        export MAXIM_PATH=#changeme!
-        
-        # Add Arm Embedded GCC to path (v10.3)
-        export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
-        export PATH=$ARM_GCC_ROOT/bin:$PATH
-        
-        # Add xPack RISC-V GCC to path (v10.2)
-        export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
-        export PATH=$XPACK_GCC_ROOT/bin:$PATH
-        
-        # Add OpenOCD to path
-        export OPENOCD_ROOT=$MAXIM_PATH/Tools/OpenOCD
-        export PATH=$OPENOCD_ROOT:$PATH
-
-2. Change `export MAXIM_PATH=#changeme!` to the installation location of the MSDK.  This will make the toolchain accessible from the command-line by adding it to your *system's path*.
-
-        # Set MAXIM_PATH environment variable
-        export MAXIM_PATH=$HOME/MaximSDK
-
-##### Verification
-
-The following commands can be used to verify that the toolchain is accessible.  They should display version numbers successfully.
-
-- `arm-none-eabi-gcc -v`
-- `arm-none-eabi-gdb -v`
-- `make -v`
-- `openocd -v`
+For setup/quick-start see ["Getting Started with Command-Line Development"](#getting-started-with-command-line-development)
 
 #### How to Set the BSP (Command-Line)
 
-- Set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ in **project.mk**
+- To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_. by editing the **project.mk** that can be found inside each project.
 
         :::makefile
         # This file can be used to set build configuration
@@ -1124,15 +1064,15 @@ The following commands can be used to verify that the toolchain is accessible.  
         # "Makefile" that is located next to this one.
         
         # For instructions on how to use this system, see
-        # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+        # https://analog-devices-msdk.github.io/msdk/USERGUIDE/
         
         # **********************************************************
         
         # Add your config here!
         
-        BOARD=FTHR_RevA # Set the BSP
+        BOARD=FTHR_RevA # Set the BSP for the MAX78000FTHR
 
-- Alternatively, set **`BOARD`** on the command-line when building (ie. `make -r -j BOARD=FTHR_RevA`)
+- Alternatively, set **`BOARD`** on the command-line when building (ie. `make -r -j BOARD=FTHR_RevA`) to set/override the BSP for a single build.
 
 #### Building on the Command-Line
 
@@ -1365,13 +1305,11 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 ## Build System
 
-As discussed in [Key Concepts](#key-concepts), an MSDK project is primarily made up of two distinct systems:  The **_Build System_** and the _**Project Management System**_.  [Getting Started](#getting-started) demonstrates the basic usage and configuration of these systems, while this section offers a detailed reference into the build system's **CLI** and  additional documentation on advanced options and use-cases.
-
 ### Build System Overview
 
-The **Build System** manages the compilation of source code into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**.
+The **Build System** manages the compilation of source code into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**.  All IDEs interface with this system.
 
-The Build System is managed by two files found in a project's root directory, one called **Makefile** and one called **project.mk**.  These files are used alongside the [GNU Make](https://www.gnu.org/software/make/) program (which is a part of the MSDK toolchain) to locate and build a project's source code.
+The Build System is managed by two files found in a project's root directory, one called **Makefile** and one called **project.mk**.  These files are used by the [GNU Make](https://www.gnu.org/software/make/) program (which is a part of the MSDK toolchain) to locate and build a project's source code.
 
 * **Makefile** is the "core" file, and should not be edited directly.  Instead, it exposes the **CLI** that can be accessed in the _project.mk_ file, on the command-line, in your system's environment, or via your IDE.  It also comes with a default configuration that is suitable for most projects.
 * **project.mk** offers a convenient and stable access point for advanced build configuration, and this is the file that should be edited if necessary.
@@ -1418,7 +1356,7 @@ The **`=`** operater is used for _most_ configuration variables with a few excep
 
 #### Where to Set a Build Configuration Variable
 
-For most variables, you should set them in the **project.mk** file (exceptions are documented in the [reference table](#build-configuration-variables-reference-table) and IDE-specific sections). 
+For most variables, you should set them in the **project.mk** file (exceptions are documented in the [reference table](#build-configuration-variables-reference-table) and IDE-specific sections).
 
 For example, to enable hardware floating-point acceleration for a project, the **`MFLOAT_ABI`** configuration variable can be used with a value of **`hard`**.  The contents of **project.mk** might then look as follows:
 
@@ -1430,7 +1368,7 @@ For example, to enable hardware floating-point acceleration for a project, the *
     # "Makefile" that is located next to this one.
     
     # For instructions on how to use this system, see
-    # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+    # https://analog-devices-msdk.github.io/msdk/USERGUIDE/
     
     # **********************************************************
     
@@ -1503,33 +1441,11 @@ The precedence hierarchy for the value of a configuration variable is:
 
 ## Peripheral Driver API
 
-### Overview
-
 A microcontroller is made up of a Central Processing Unit (CPU) that is surrounded by additional _peripheral_ hardware blocks such as timers, memory controllers, UART controllers, ADCs, RTCs, audio interfaces, and many more.  The **Peripheral Driver API** is an important core library in the MSDK that allows the CPU to utilize the microcontroller's hardware blocks over a higher-level **_Application Programming Interface (API)_**.
 
 ![Figure 38](res/Fig38.jpg)
 
-A detailed API reference can be found in the [Documentation](Documentation) folder of the MSDK installation for each microcontroller.  This documentation is auto-generated with DoxyGen from the API's source code, and is organized into _modules_ matching each of the available hardware peripherals.  The MSDK will contain at _minimum_ one example per module demonstrating its usage.
-
-### Organization
-
-The Peripheral Driver API's source code is organized as follows:
-
-- **Header files _(.h)_** can be found in the [`Libraries/PeriphDrivers/Include`](Libraries/PeriphDrivers/Include) folder.
-    - These files contain function _declarations_ for the API, describing the function prototypes and their associated documentation.
-- **Source files _(.c)_** can be found in the [`Libraries/PeriphDrivers/Source`](Libraries/PeriphDrivers/Source) folder.
-    - These file contain the function _definitions_ for the API - the _implementations_ of the functions declared by the header files.
-
-The _**implementation**_ files are further organized based on _**die type**_ and **_hardware revision_**.  This is worthy to note when browsing or debugging through the drivers.  
-
-- The **_die type_** files follow the **`_MEXX`** or **`_AIXX`** naming convention
-    - These file's responsibility is to manage microcontroller-specific implementation details that may interact with other peripheral APIs _before_ ultimately calling the revision-specific files.
-- The **_hardware** revision_ files follow the **`_revX`** naming convention.  
-    - These files contain the _pure_ driver implementation for a peripheral block, and typically interact with the hardware almost entirely at the register level.
-
-### API Reference Manuals
-
-A full Peripheral Driver API reference manual is available for each microcontroller below.
+A detailed API reference can be found in the [Documentation](Documentation) folder of the MSDK installation for each microcontroller.  See the links below for online copies.
 
 - [MAX32520 API](Libraries/PeriphDrivers/Documentation/MAX32520/index.html)
 
@@ -1552,6 +1468,26 @@ A full Peripheral Driver API reference manual is available for each microcontrol
 - [MAX78000 API](Libraries/PeriphDrivers/Documentation/MAX78000/index.html)
 
 - [MAX78002 API](Libraries/PeriphDrivers/Documentation/MAX78002/index.html)
+
+### Examples
+
+The MSDK contains examples on how to use the Peripheral Driver API in the [`Examples`](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder.  They are organized primarily by part number, then by peripheral block.
+
+### Organization
+
+The Peripheral Driver API's source code is organized as follows:
+
+- **Header files _(.h)_** can be found in the [`Libraries/PeriphDrivers/Include`](Libraries/PeriphDrivers/Include) folder.
+    - These files contain function _declarations_ for the API, describing the function prototypes and their associated documentation.
+- **Source files _(.c)_** can be found in the [`Libraries/PeriphDrivers/Source`](Libraries/PeriphDrivers/Source) folder.
+    - These file contain the function _definitions_ for the API - the _implementations_ of the functions declared by the header files.
+
+The _**implementation**_ files are further organized based on _**die type**_ and **_hardware revision_**.  This is worthy to note when browsing or debugging through the drivers.  
+
+- The **_die type_** files follow the **`_MEXX`** or **`_AIXX`** naming convention
+    - These file's responsibility is to manage microcontroller-specific implementation details that may interact with other peripheral APIs _before_ ultimately calling the revision-specific files.
+- The **_hardware** revision_ files follow the **`_revX`** naming convention.  
+    - These files contain the _pure_ driver implementation for a peripheral block, and typically interact with the hardware almost entirely at the register level.
 
 ## Libraries
 
