@@ -222,8 +222,8 @@ int main(void)
     __disable_irq();
 
     /* Get the file header */
-    fileHeader.fileLen = (uint32_t)*(uint32_t*)FLASH1_START;
-    fileHeader.fileCRC = (uint32_t)*(uint32_t*)(FLASH1_START + sizeof(uint32_t));
+    fileHeader.fileLen = (uint32_t) * (uint32_t *)FLASH1_START;
+    fileHeader.fileCRC = (uint32_t) * (uint32_t *)(FLASH1_START + sizeof(uint32_t));
 
     /* Attempt to verify the upper image if we get a valid length */
     if (fileHeader.fileLen) {
@@ -240,7 +240,8 @@ int main(void)
                 bootError();
             }
             /* Copy the new firmware image */
-            if (flashWrite((uint32_t *)FLASH0_START, (uint32_t *)FLASH1_START, fileHeader.fileLen) != E_NO_ERROR) {
+            if (flashWrite((uint32_t *)FLASH0_START, (uint32_t *)FLASH1_START,
+                           fileHeader.fileLen) != E_NO_ERROR) {
                 /* Failed to write new image */
                 bootError();
             } else {

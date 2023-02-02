@@ -797,7 +797,7 @@ static void datcBtnCback(uint8_t btn)
 
                 /* Subtract for the address and message overhead */
                 datcCb.blockSize = datcCb.blockSize - 8;
-                if(datcCb.blockSize > BLOCK_SIZE) {
+                if (datcCb.blockSize > BLOCK_SIZE) {
                     datcCb.blockSize = BLOCK_SIZE;
                 }
             }

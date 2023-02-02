@@ -325,7 +325,7 @@ static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t si
 {
     uint32_t address = (uint32_t)pAddress;
 
-    if(!savedHeader) {
+    if (!savedHeader) {
         wdxsFileWriteMessage(HEADER_LOCATION, HEADER_LEN, (const uint8_t *)&fileHeader);
         savedHeader = TRUE;
     }
@@ -401,8 +401,8 @@ static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
         APP_TRACE_INFO2("CRC start addr: 0x%08X Len: 0x%08X", WDXS_FileMedia.startAddress,
                         fileHeader.fileLen);
 
-        crc32((const void *)(WDXS_FileMedia.startAddress + HEADER_LEN),
-            fileHeader.fileLen, &crcResult);
+        crc32((const void *)(WDXS_FileMedia.startAddress + HEADER_LEN), fileHeader.fileLen,
+              &crcResult);
 
         APP_TRACE_INFO1("CRC From File : 0x%08x", fileHeader.fileCRC);
         APP_TRACE_INFO1("CRC Calculated: 0x%08X", crcResult);
