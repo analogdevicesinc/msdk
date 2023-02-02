@@ -67,7 +67,7 @@ def batchconvert(input_dir, output_dir = "converted"):
 
                         out_file = f"{Path(output_dir).joinpath(file.name)}.png"
                         convert(content, out_file, w, h, pixel_format)
-                        print(f"Sucessfully converted {file} -> {out_file}")
+                        print(f"Successfully converted {file} -> {out_file}")
             except:
                 print(f"Error converting {file}, skipping...")
                 print(traceback.format_exc())

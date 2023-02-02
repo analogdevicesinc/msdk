@@ -65,15 +65,6 @@ extern "C" {
   @{
  */
 
-/*  CMSIS CM4 definitions */
-#define __CM4_CMSIS_VERSION_MAIN (0x03) /*!< [31:16] CMSIS HAL main version   */
-#define __CM4_CMSIS_VERSION_SUB (0x20) /*!< [15:0]  CMSIS HAL sub version    */
-#define __CM4_CMSIS_VERSION             \
-    ((__CM4_CMSIS_VERSION_MAIN << 16) | \
-     __CM4_CMSIS_VERSION_SUB) /*!< CMSIS HAL version number         */
-
-#define __CORTEX_M (0x04) /*!< Cortex-M Core                    */
-
 #if defined(__CC_ARM)
 // #define __ASM            __asm                                      /*!< asm keyword for ARM Compiler          */
 // #define __INLINE         __inline                                   /*!< inline keyword for ARM Compiler       */

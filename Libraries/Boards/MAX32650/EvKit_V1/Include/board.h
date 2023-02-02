@@ -63,6 +63,11 @@ extern "C" {
 #define EXT_FLASH_BAUD 4000000
 #endif
 
+#define LED1 0
+#define LED_RED LED1
+#define LED2 1
+#define LED_GREEN LED2
+
 /**
  * @brief   Initialize the BSP and board interfaces.
  * @return  #E_NO_ERROR if everything is successful
