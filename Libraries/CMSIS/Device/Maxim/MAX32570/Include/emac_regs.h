@@ -135,7 +135,8 @@ typedef struct {
     __IO uint32_t sa4h;                 /**< <tt>\b 0xB4:</tt> EMAC SA4H Register */
     __IO uint32_t tid_ck;               /**< <tt>\b 0xB8:</tt> EMAC TID_CK Register */
     __IO uint32_t tpq;                  /**< <tt>\b 0xBC:</tt> EMAC TPQ Register */
-    __R  uint32_t rsv_0xc0_0xfb[15];
+    __IO uint32_t io_ctrl;              /**< <tt>\b 0xC0:</tt> EMAC IO_CTRL Register */
+    __R  uint32_t rsv_0xc4_0xfb[14];
     __I  uint32_t rev;                  /**< <tt>\b 0xFC:</tt> EMAC REV Register */
 } mxc_emac_regs_t;
 
@@ -192,6 +193,7 @@ typedef struct {
 #define MXC_R_EMAC_SA4H                    ((uint32_t)0x000000B4UL) /**< Offset from EMAC Base Address: <tt> 0x00B4</tt> */
 #define MXC_R_EMAC_TID_CK                  ((uint32_t)0x000000B8UL) /**< Offset from EMAC Base Address: <tt> 0x00B8</tt> */
 #define MXC_R_EMAC_TPQ                     ((uint32_t)0x000000BCUL) /**< Offset from EMAC Base Address: <tt> 0x00BC</tt> */
+#define MXC_R_EMAC_IO_CTRL                 ((uint32_t)0x000000C0UL) /**< Offset from EMAC Base Address: <tt> 0x00C0</tt> */
 #define MXC_R_EMAC_REV                     ((uint32_t)0x000000FCUL) /**< Offset from EMAC Base Address: <tt> 0x00FC</tt> */
 /**@} end of group emac_registers */
 
@@ -982,6 +984,17 @@ typedef struct {
 #define MXC_F_EMAC_TPQ_TPQ                             ((uint32_t)(0xFFFFUL << MXC_F_EMAC_TPQ_TPQ_POS)) /**< TPQ_TPQ Mask */
 
 /**@} end of group EMAC_TPQ_Register */
+
+/**
+ * @ingroup  emac_registers
+ * @defgroup EMAC_IO_CTRL EMAC_IO_CTRL
+ * @brief    IO Control Register.
+ * @{
+ */
+#define MXC_F_EMAC_IO_CTRL_MODE_POS                    0 /**< IO_CTRL_MODE Position */
+#define MXC_F_EMAC_IO_CTRL_MODE                        ((uint32_t)(0x1UL << MXC_F_EMAC_IO_CTRL_MODE_POS)) /**< IO_CTRL_MODE Mask */
+
+/**@} end of group EMAC_IO_CTRL_Register */
 
 /**
  * @ingroup  emac_registers
