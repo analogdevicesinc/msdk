@@ -33,6 +33,7 @@ SRCS += main.c
 
 USE_INTERNAL_FLASH ?=0
 ifeq ($(USE_INTERNAL_FLASH), 1)
+PROJ_CFLAGS += -DOTA_INTERNAL=1
 LINKERFILE = ota_internal_mem.ld
 SRCS += wdxs_file_int.c
 else
