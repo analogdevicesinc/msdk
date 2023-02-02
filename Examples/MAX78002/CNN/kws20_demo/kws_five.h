@@ -1,7 +1,7 @@
 #ifndef KWS20_TEST_VECTOR_H
 #define KWS20_TEST_VECTOR_H
 
-
+// clang-format off
 #define KWS20_TEST_VECTOR {\
 17,\
 29,\
@@ -16389,4 +16389,5 @@
 0,\
 } 
 #define KWS20_TEST_VECTOR_SIZE 16384
-#endif 
+// clang-format on
+#endif
