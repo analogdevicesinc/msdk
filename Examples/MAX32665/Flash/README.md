@@ -1,72 +1,80 @@
+# Flash Example
+
 ## Description
 
-This example demonstrates the basic functions of the Flash Controller: mass erase, page erase, and write. Initially the flash is cleared using the mass erase function. Next, a page in each flash bank is filled with data and is subsequently cleared using page erase.
+This example demonstrates the usage of the Flash Controller (FLC) for general purpose storage.  The following use-cases are demonstrated:
 
-## Required Connections
+1. Reading bytes from a specific location in Flash
+2. Writing and verifying a test pattern into Flash
+3. Modifying Flash contents
 
--   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+Flash is **non-volatile** memory, meaning that it can retain state through power cycles.  However, application code is stored in Flash and the FLC has some limitations in how it can perform writes, so there are a few minor challenges to deal with when using it for general purpose storage.  This example demonstrates a simplified use-case that covers the most common scenarios.
+
+The _first_ time the example is run the application will use the FLC to write and verify a test pattern into the last page of flash.  It will also write a 32-bit "magic" sequence into the page.
+
+Once complete, the example will prompt the user to reset or power cycle the board.  This is to demonstrate that the written data is non-volatile and can survive a power cycle.
+
+The _second_ time the example is run the application will see the "magic" 32-bit sequence in flash.  When this happens, the application will verify that the test pattern has survived the power cycle first.  Then, it will _modify_ the "magic" sequence _without_ modifying the rest of the test pattern.
+
+## Hardware Connections
+
+MAX32665EVKIT:
+
+- Connect a USB cable between the PC and the CN2 (USB/PWR - UARTS) connector.
+- Connect jumpers JP9 (RX_SEL) to RX1 and JP10 (TX SEL) to TX1
+- Open a terminal application on the PC and connect to the board's console UART at 115200, 8-N-1.
+
+## Building and Running
+
+**See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
 
 ## Expected Output
 
-The Console UART of the device will output these messages:
+After flashing and launching the example, an LED on the board will blink once every second.  This is the application waiting for PushButton 1 (PB1) to be pressed, and gives a window for a serial terminal to be connected.  After connecting the serial terminal, the application will output the following contents:
 
 ```
 ***** Flash Control Example *****
-Flash erased.
-Flash mass erase is verified.
+Press Push Button 1 (PB1/SW1) to continue...
 
-Writing 8192 32-bit words to flash 0
-Size of testdata : 32768
-Word 0 written properly and has been verified.
-Word 1 written properly and has been verified.
-Word 2 written properly and has been verified.
-Word 3 written properly and has been verified.
-Word 4 written properly and has been verified.
-Word 5 written properly and has been verified.
-Word 6 written properly and has been verified.
-Word 7 written properly and has been verified.
-Word 8 written properly and has been verified.
-Word 9 written properly and has been verified.
-Word 10 written properly and has been verified.
-Word 11 written properly and has been verified.
-Word 12 written properly and has been verified.
-Word 13 written properly and has been verified.
-Word 14 written properly and has been verified.
-Word 15 written properly and has been verified.
-Continuing for 8176 more words...
+---(Critical)---
+Successfully erased page 64 of flash (addr 0x1007e000)
+Writing magic value 0xfeedbeef to address 0x1007e000...
+Done!
+Writing test pattern...
+Done!
+----------------
+ -> Interrupt! (Flash operation done)
 
-Writing 8192 32-bit words to flash 1
-Size of testdata : 32768
-Word 0 written properly and has been verified.
-Word 1 written properly and has been verified.
-Word 2 written properly and has been verified.
-Word 3 written properly and has been verified.
-Word 4 written properly and has been verified.
-Word 5 written properly and has been verified.
-Word 6 written properly and has been verified.
-Word 7 written properly and has been verified.
-Word 8 written properly and has been verified.
-Word 9 written properly and has been verified.
-Word 10 written properly and has been verified.
-Word 11 written properly and has been verified.
-Word 12 written properly and has been verified.
-Word 13 written properly and has been verified.
-Word 14 written properly and has been verified.
-Word 15 written properly and has been verified.
-Continuing for 8176 more words...
 
-Attempting to erase page 0 in flash bank 0
-Page Erase is verified
+Now reset or power cycle the board...
 
-Attempting to erase page 0 in flash bank 1
-Page Erase is verified
+```
 
-Attempting to partially erase pages 2 and 3 in flash bank 0
-Flash Erase is verified
+At this point, the "magic" and test pattern values have been written to flash.  Press SW5 to reset the board, after which the application will restart.  Push PB1 to continue the application again, which will print out the following contents:
 
-Attempting to partially erase pages 2 and 3 in flash bank 1
-Flash Erase is verified
+```
+***** Flash Control Example *****
+Press Push Button 1 (PB1/SW1) to continue...
 
-Example Succeeded
+** Magic value 0xfeedbeef found at address 0x1007e000! **
+
+(Flash modifications have survived a reset and/or power cycle.)
+
+Verifying test pattern...
+Successfully verified test pattern!
+
+---(Critical)---
+Erasing magic...
+Buffering page...
+Erasing page...
+Re-writing from buffer...
+New magic value: 0xabcd1234
+----------------
+ -> Interrupt! (Flash operation done)
+
+Verifying test pattern...
+Successfully verified test pattern!
+
+Flash example successfully completed.
+
 ```
