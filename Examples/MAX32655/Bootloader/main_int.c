@@ -245,7 +245,7 @@ int main(void)
                 bootError();
             }
             /* Copy the new firmware image */
-            if (flashWrite((uint32_t *)FLASH0_START, (uint32_t *)FLASH1_START,
+            if (flashWrite((uint32_t *)FLASH0_START, (uint32_t *)(FLASH1_START + sizeof(fileHeader)),
                            fileHeader.fileLen) != E_NO_ERROR) {
                 /* Failed to write new image */
                 bootError();
