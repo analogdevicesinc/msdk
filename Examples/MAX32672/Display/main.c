@@ -56,7 +56,7 @@
 #include "lvgl.h"
 
 /***** Preprocessors *****/
-#define SPI_SPEED 6000000 /* Bit Rate */
+#define SPI_SPEED 4000000 /* Bit Rate */
 
 /* Time (ms) between moving text location
  * Lower bound set by display update over SPI and 1ms SysTick rate
