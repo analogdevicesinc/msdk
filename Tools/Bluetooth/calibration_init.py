@@ -50,6 +50,7 @@ from BLE_hci import BLE_hci
 from BLE_hci import Namespace
 import socket
 import time
+import mxc_radio
 
 from json import JSONEncoder
 
@@ -100,7 +101,6 @@ print("results       :", args.results)
 results = open(args.results, "a")
 
 
-MXC_BASE_BTLE=0x40050000
 
 
 
@@ -178,7 +178,7 @@ def readDBB(hciInterface):
     Function to read DBB register of device 
     Return DBB registers as a DBB class
     """
-    dbb = DBB()
+    dbb = mxcDBB()
 
     dbb.ctrlReg = readDbbCtrl(hciInterface)
     dbb.txReg = readDbbRx(hciInterface)
@@ -187,15 +187,31 @@ def readDBB(hciInterface):
 
     return dbb
 
+def verifyDBB(dbb):
+    
+    #get expected dbb values
+    
+    
+    #make sure the all values match
+    dbbMatches = True
+
+
+    return dbbMatches
+    
 
 def main():
     # Create the BLE_hci objects
     hciInterface  = BLE_hci(Namespace(serialPort=args.serialPort,  monPort="", baud=115200, id=1))
-    hciInterface.resetFunc(None)
-    hciInterface.txTestFunc(Namespace(channel=0, phy=1, packetLength=0, payload=3))
-    dbb = readDBB(hciInterface)
+    # hciInterface.resetFunc(None)
+    # hciInterface.txTestFunc(Namespace(channel=0, phy=1, packetLength=0, payload=3))
 
-    hciInterface.endTestFunc(None)
+    dbb = mxc_radio.DBB(hciInterface=hciInterface)
+    ctrlReg = dbb.readCtrlReg()
+
+    # print(ctrlReg)
+    
+
+    
 
     
     sys.exit(0)

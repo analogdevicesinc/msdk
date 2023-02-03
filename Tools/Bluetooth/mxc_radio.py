@@ -56,7 +56,7 @@ class DBB:
         ctrlReg = self.readRegs(CTRL_REG_ADDR, 0x96)
 
         # assume reserved registers are 0x00
-        ctrlReg.extend(['00'] * (0xff - 0x96))
+        ctrlReg.extend(['00'] * (0xff - 0x96 + 1))
 
         next = self.readRegs(CTRL_REG_ADDR + 0x100, 0x108 - 0x100)
         ctrlReg.extend(next)
