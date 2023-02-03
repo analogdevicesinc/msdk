@@ -303,6 +303,7 @@ class BLE_hci:
             else:
                 print(str(datetime.datetime.now()) + f" {self.id}>", packet)
 
+        print(packet)
         self.port.write(bytearray.fromhex(packet))
         sleep(delay)
 
@@ -646,7 +647,7 @@ class BLE_hci:
 
             return per
 
-        # Listen for events for a few seconds
+        # Listen for events for a few seconds``
         if(args.listen != "True"):
             self.wait_events(int(args.listen))
             return
