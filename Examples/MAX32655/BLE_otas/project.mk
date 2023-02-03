@@ -11,12 +11,16 @@
 LIB_CORDIO = 1
 
 # Cordio library options
-STANDBY_ENABLED = 0
 INIT_PERIPHERAL = 1
-INIT_BROADCASTER = 1
+INIT_BROADCASTER = 0
 INIT_CENTRAL = 0
 INIT_OBSERVER = 0
 
+TRACE = 1
+
+DEBUG = 1
+
+PAL_NVM_SIZE=0x2000
 
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
@@ -29,6 +33,7 @@ SRCS += main.c
 
 USE_INTERNAL_FLASH ?=0
 ifeq ($(USE_INTERNAL_FLASH), 1)
+PROJ_CFLAGS += -DOTA_INTERNAL=1
 LINKERFILE = ota_internal_mem.ld
 SRCS += wdxs_file_int.c
 else

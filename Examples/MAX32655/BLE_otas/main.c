@@ -121,9 +121,19 @@ static void mainWsfInit(void)
 
     WsfOsInit();
     WsfTimerInit();
+
 #if (WSF_TOKEN_ENABLED == TRUE) || (WSF_TRACE_ENABLED == TRUE)
+
+    WsfCsEnter();
+    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    WsfHeapAlloc(memUsed);
+    WsfCsExit();
+
     WsfTraceRegisterHandler(WsfBufIoWrite);
     WsfTraceEnable(TRUE);
+
+    AppTerminalInit();
+
 #endif
 }
 
@@ -190,6 +200,8 @@ void setAdvTxPower(void)
 /*************************************************************************************************/
 int main(void)
 {
+    uint32_t memUsed;
+
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     /* Configurations must be persistent. */
     static BbRtCfg_t mainBbRtCfg;
@@ -221,14 +233,7 @@ int main(void)
     mainLlRtCfg.defTxPwrLvl = DEFAULT_TX_POWER;
 #endif
 
-    uint32_t memUsed;
-    WsfCsEnter();
-    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
-    WsfHeapAlloc(memUsed);
-    WsfCsExit();
-
     mainWsfInit();
-    AppTerminalInit();
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();

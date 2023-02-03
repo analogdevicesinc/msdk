@@ -58,7 +58,6 @@ void wdxsDcSend(dmConnId_t connId)
     /* send notification */
     wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_DC_BIT | WDXS_TX_MASK_READY_BIT);
     AttsHandleValueNtf(connId, WDXS_DC_HDL, wdxsDcCb.dcMsgLen, wdxsDcCb.dcMsgBuf);
-
   }
 }
 
