@@ -857,7 +857,9 @@ class BLE_hci:
 
         # Parse the event and print the number of received packets
         try:
+
             print("evtString", evtString)
+
             evtData = int(evtString, 16)
         except ValueError:
             print('Value Error Has occured. Response most likely empty')
