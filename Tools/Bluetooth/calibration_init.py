@@ -115,10 +115,25 @@ class DbbTxRegs:
     pass
 class DbbRffeRegs:
     pass
+class DBB:
+    def __init__(self,ctrlReg=None, rxReg=None, txReg=None, rffeReg=None):
+        self.ctrlReg = ctrlReg
+        self.rxReg = rxReg
+        self.txReg = txReg
+        self.rffeReg = rffeReg
 
-def hexVal2Str(hexVal):
-    s = hex(hexVal)
-    return s[2:]
+
+def listEq(list1,list2):
+
+    if len(list1) != len(list2):
+        return False
+    length = len(list1)
+    
+    for i in range(length):
+        if list1[i] != list2[i]:
+            return False
+
+    return True
 
 def readDbbCtrl(hciInterface):
     """
@@ -161,19 +176,16 @@ def readDbbRffe(hciInterface):
 def readDBB(hciInterface):
     """
     Function to read DBB register of device 
-    Return DBB registers as a struct
+    Return DBB registers as a DBB class
     """
-    readDbbCtrl(hciInterface)
-    readDbbRx(hciInterface)
-    readDbbTx(hciInterface)
-    readDbbRffe(hciInterface)
+    dbb = DBB()
 
-    # evtBytes = hciInterface.readRegFunc(Namespace(addr=DBB_START_REG,length=DBB_SIZE))
+    dbb.ctrlReg = readDbbCtrl(hciInterface)
+    dbb.txReg = readDbbRx(hciInterface)
+    dbb.rxReg = readDbbTx(hciInterface)
+    dbb.rffeReg = readDbbRffe(hciInterface)
 
-
-    # if evtBytes is None:
-    #     printError('Failed to read DBB register. Returning None')
-    #     return None
+    return dbb
 
 
 def main():
@@ -185,9 +197,7 @@ def main():
 
     hciInterface.endTestFunc(None)
 
-    encodedDbb = RegisterEncoder().encode(dbb)
-    #write to file
-
+    
     sys.exit(0)
 
 if __name__ == "__main__":
