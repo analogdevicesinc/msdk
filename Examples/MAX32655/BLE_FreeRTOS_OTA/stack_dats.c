@@ -178,9 +178,17 @@ static void mainWsfInit(void)
 
     WsfOsInit();
     WsfTimerInit();
+
 #if (WSF_TOKEN_ENABLED == TRUE) || (WSF_TRACE_ENABLED == TRUE)
     WsfTraceRegisterHandler(WsfBufIoWrite);
     WsfTraceEnable(TRUE);
+
+    WsfCsEnter();
+    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
+    WsfHeapAlloc(memUsed);
+    WsfCsExit();
+
+    AppTerminalInit();
 #endif
 }
 
@@ -309,6 +317,8 @@ void trim32k(void)
 /*************************************************************************************************/
 void bleStartup(void)
 {
+    uint32_t memUsed;
+
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     /* Configurations must be persistent. */
     static BbRtCfg_t mainBbRtCfg;
@@ -340,19 +350,8 @@ void bleStartup(void)
     mainLlRtCfg.defTxPwrLvl = DEFAULT_TX_POWER;
 #endif
 
-    uint32_t memUsed;
-
 
     mainWsfInit();
-
-#if (WSF_TRACE_ENABLED == TRUE)
-    WsfCsEnter();
-    memUsed = WsfBufIoUartInit(WsfHeapGetFreeStartAddress(), PLATFORM_UART_TERMINAL_BUFFER_SIZE);
-    WsfHeapAlloc(memUsed);
-    WsfCsExit();
-
-    AppTerminalInit();
-#endif
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
     WsfCsEnter();

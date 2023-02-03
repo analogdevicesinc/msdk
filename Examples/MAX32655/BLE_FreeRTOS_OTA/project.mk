@@ -22,6 +22,9 @@ DEBUG = 1
 # Set to zero to minimize code size
 TRACE = 1
 
+# Minimize the database for storing pairing information
+PAL_NVM_SIZE = 0x2000
+
 # This application only operates as a peripheral
 RTOS = freertos
 BT_VER = 8
@@ -44,6 +47,7 @@ SRCS += freertos_tickless.c
 USE_INTERNAL_FLASH ?= 1
 
 ifeq ($(USE_INTERNAL_FLASH), 1)
+PROJ_CFLAGS += -DOTA_INTERNAL=1
 LINKERFILE = ota_internal_mem.ld
 SRCS += wdxs_file_int.c
 else
