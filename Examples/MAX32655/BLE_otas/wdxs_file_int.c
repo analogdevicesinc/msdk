@@ -28,6 +28,7 @@
 #include "wsf_efs.h"
 #include "wsf_cs.h"
 #include "wsf_msg.h"
+#include "wsf_buf.h"
 #include "util/bstream.h"
 #include "svc_wdxs.h"
 #include "wdxs/wdxs_api.h"
@@ -37,23 +38,25 @@
 #include "att_api.h"
 #include "app_api.h"
 #include "flc.h"
+#include "sch_api.h"
 
 #ifndef FW_VERSION_MAJOR
 #define FW_VERSION_MAJOR 1
 #define FW_VERSION_MINOR 0
 #endif
 
-#define ERASE_DELAY 50 // ms
+#define ERASE_DELAY 1 // ms
 
 extern uint32_t _flash_update;
 extern uint32_t _eflash_update;
-static volatile uint32_t verifyLen;
-static volatile uint8_t *lastWriteAddr;
-static volatile uint32_t lastWriteLen;
 
 static uint32_t eraseAddress, erasePages;
 wsfHandlerId_t eraseHandlerId;
 wsfTimer_t eraseTimer;
+
+wsfHandlerId_t writeHandlerId;
+wsfQueue_t writeQueue;
+static bool_t savedHeader = FALSE;
 
 /* Prototypes for file functions */
 static uint8_t wdxsFileInitMedia(void);
@@ -64,7 +67,7 @@ static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param);
 
 static fileHeader_t fileHeader = { .fileCRC = 0, .fileLen = 0 };
 wsfEfsHandle_t otaFileHdl;
-#define HEADER_LEN (sizeof(fileHeader_t))
+
 /* Use the second half of the flash space for scratch space */
 static const wsfEfsMedia_t WDXS_FileMedia = {
 
@@ -77,6 +80,9 @@ static const wsfEfsMedia_t WDXS_FileMedia = {
     /*   wsfMediaWriteFunc_t     *write;        Media write callback. */ wdxsFileWrite,
     /*   wsfMediaHandleCmdFunc_t *handleCmd;    Media command handler callback. */ wsfFileHandle
 };
+
+#define HEADER_LEN (sizeof(fileHeader_t))
+#define HEADER_LOCATION WDXS_FileMedia.startAddress
 
 /*************************************************************************************************/
 /*!
@@ -91,10 +97,18 @@ static const wsfEfsMedia_t WDXS_FileMedia = {
 void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
 {
     int err = 0;
+
     if (erasePages) {
+        /* Only erase the flash if the scheduler is idle. */
+        if (SchGetState() != SCH_STATE_IDLE) {
+            /* Pend the erase */
+            WsfTimerStartMs(&eraseTimer, ERASE_DELAY);
+            return;
+        }
+
         APP_TRACE_INFO1(">>> Erasing address 0x%x in internal flash <<<", eraseAddress);
 
-        /* TODO: Once this is non-blocking, check for ongoing erase, start the next erase */
+        /* The flash can not be accessed while the write is being performed. */
         WsfCsEnter();
         err = MXC_FLC_PageErase((uint32_t)eraseAddress);
         WsfCsExit();
@@ -112,6 +126,103 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
         wdxsFtcSendRsp(1, WDX_FTC_OP_PUT_RSP, otaFileHdl, WDX_FTC_ST_SUCCESS);
     }
 }
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Enqueue the next message and send an indication to the handler.
+ *
+ *  \param  address     Flash address.
+ *  \param  size        Data length.
+ *  \param  pBuf        Data to write.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void wdxsFileWriteMessage(uint32_t address, uint32_t size, const uint8_t *pBuf)
+{
+    /* Allocate the message */
+    uint8_t *writeBuf = WsfMsgAlloc(size + 4 + 4);
+
+    if (writeBuf == NULL) {
+        WSF_ASSERT(0);
+    }
+
+    /* Copy in the address, size, and data */
+    memcpy(&writeBuf[0], &address, sizeof(uint32_t));
+    memcpy(&writeBuf[sizeof(uint32_t)], &size, sizeof(uint32_t));
+    memcpy(&writeBuf[2 * sizeof(uint32_t)], pBuf, size);
+
+    /* Enqueue the message */
+    WsfMsgEnq(&writeQueue, 0, writeBuf);
+
+    /* Signal the handler */
+    WsfSetEvent(writeHandlerId, 1);
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  WSF event handler for file write.
+ *
+ *  \param  event   WSF event mask.
+ *  \param  pMsg    WSF message.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void wdxsFileWriteHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
+{
+    int err;
+    static const unsigned writeBufLen = 256;
+    uint32_t writeAddress, writeLen;
+    uint32_t writeBuf[writeBufLen / sizeof(uint32_t)];
+    uint8_t *pBuf;
+    wsfHandlerId_t retHandler;
+    wsfMsgHdr_t *queueMsg;
+
+    /* Dequeue the next message */
+    queueMsg = WsfMsgDeq(&writeQueue, &retHandler);
+
+    /* Perform all of the pending writes */
+    while (queueMsg != NULL) {
+        /* Get a uint8_t pointer into the message */
+        pBuf = (uint8_t *)queueMsg;
+
+        /* Get the address and length from the buffer */
+        memcpy(&writeAddress, &pBuf[0], sizeof(uint32_t));
+        memcpy(&writeLen, &pBuf[sizeof(uint32_t)], sizeof(uint32_t));
+
+        /* Make sure message doesn't overflow */
+        WSF_ASSERT(writeLen <= writeBufLen);
+
+        /* Align the data */
+        memcpy(writeBuf, &pBuf[2 * sizeof(uint32_t)], writeLen);
+
+        /* Only write the flash if the scheduler is idle. */
+        if (SchGetState() != SCH_STATE_IDLE) {
+            /* Re-queue the message */
+            WsfMsgFree(queueMsg);
+            wdxsFileWriteMessage(writeAddress, writeLen, (const uint8_t *)writeBuf);
+            return;
+        }
+
+        /* Perform the write, use critical section because we must execute from SRAM.
+         * The flash can not be accessed while the write is being performed.
+         */
+        WsfCsEnter();
+        err = MXC_FLC_Write(writeAddress, writeLen, writeBuf);
+        WSF_ASSERT(err == E_NO_ERROR);
+
+        /* Free the message */
+        WsfMsgFree(queueMsg);
+
+        WsfCsExit();
+
+        APP_TRACE_INFO2("Int. Flash: Wrote %d bytes @ 0x%x", writeLen, writeAddress);
+
+        /* Get the next message */
+        queueMsg = WsfMsgDeq(&writeQueue, &retHandler);
+    }
+}
 /*************************************************************************************************/
 /*!
  *  \brief  Media Init function, called when media is registered.
@@ -127,6 +238,11 @@ static uint8_t wdxsFileInitMedia(void)
     /* Setup the erase handler */
     eraseHandlerId = WsfOsSetNextHandler(wdxsFileEraseHandler);
     eraseTimer.handlerId = eraseHandlerId;
+
+    /* Setup the write handler */
+    writeHandlerId = WsfOsSetNextHandler(wdxsFileWriteHandler);
+    WSF_QUEUE_INIT(&writeQueue);
+
     return WSF_EFS_SUCCESS;
 }
 
@@ -162,6 +278,9 @@ static uint8_t wdxsFileErase(uint8_t *address, uint32_t size)
         }
         erasePages--;
         eraseAddress += MXC_FLASH_PAGE_SIZE;
+
+        savedHeader = FALSE;
+
         /* Wait ERASE_DELAY ms before staring next erase */
         WsfTimerStartMs(&eraseTimer, ERASE_DELAY);
 
@@ -204,43 +323,21 @@ static uint8_t wdxsFileRead(uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
 /*************************************************************************************************/
 static uint8_t wdxsFileWrite(const uint8_t *pBuf, uint8_t *pAddress, uint32_t size)
 {
-    int err = 0;
-    uint32_t count = 0;
+    uint32_t address = (uint32_t)pAddress;
 
-    //256bit fragments
-    uint8_t fragment = 32;
-    while (size >= fragment) {
-        WsfCsEnter();
-        err += MXC_FLC_Write((uint32_t)pAddress, fragment, (uint32_t *)pBuf);
-        WsfCsExit();
-        size -= fragment;
-        pAddress += fragment;
-        pBuf += fragment;
-        count += fragment;
-        /* yield so OS can service interrupts */
-        MXC_Delay(MXC_DELAY_MSEC(1));
+    if (!savedHeader) {
+        wdxsFileWriteMessage(HEADER_LOCATION, HEADER_LEN, (const uint8_t *)&fileHeader);
+        savedHeader = TRUE;
     }
-    if (size) {
-        WsfCsEnter();
-        err += MXC_FLC_Write((uint32_t)pAddress, size, (uint32_t *)pBuf);
-        WsfCsExit();
-    }
-    /*revert variables to origianl value*/
-    pAddress -= count;
-    size += count;
-    pBuf -= count;
-    /* verify data was written*/
-    err += memcmp(pAddress, pBuf, size);
 
-    if (err == E_NO_ERROR) {
-        lastWriteAddr = pAddress;
-        lastWriteLen = size;
-        APP_TRACE_INFO2("Int. Flash: Wrote %d bytes @ 0x%x", size, pAddress);
-        return WSF_EFS_SUCCESS;
-    }
-    APP_TRACE_ERR1("Error writing to flash 0x%08X", (uint32_t)pAddress);
-    return err;
+    /* offset by the header length written into flash */
+    address += HEADER_LEN;
+
+    wdxsFileWriteMessage(address, size, pBuf);
+
+    return WSF_EFS_SUCCESS;
 }
+
 // http://home.thep.lu.se/~bjorn/crc/
 /*************************************************************************************************/
 /*!
@@ -300,14 +397,12 @@ static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
     default: {
         /* Validate the image with CRC32 */
         uint32_t crcResult = 0;
-        int err = 0;
-
-        verifyLen = ((uint32_t)lastWriteAddr + lastWriteLen) - WDXS_FileMedia.startAddress;
 
         APP_TRACE_INFO2("CRC start addr: 0x%08X Len: 0x%08X", WDXS_FileMedia.startAddress,
-                        verifyLen);
+                        fileHeader.fileLen);
 
-        crc32((const void *)WDXS_FileMedia.startAddress, verifyLen, &crcResult);
+        crc32((const void *)(WDXS_FileMedia.startAddress + HEADER_LEN), fileHeader.fileLen,
+              &crcResult);
 
         APP_TRACE_INFO1("CRC From File : 0x%08x", fileHeader.fileCRC);
         APP_TRACE_INFO1("CRC Calculated: 0x%08X", crcResult);
@@ -317,21 +412,6 @@ static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
             APP_TRACE_INFO0("Update file verification failure");
             return WDX_FTC_ST_VERIFICATION;
         }
-
-        /* if crc are ok write it to end of file*/
-        WsfCsEnter();
-        err += MXC_FLC_Write((WDXS_FileMedia.startAddress + verifyLen), sizeof(crcResult),
-                             (uint32_t *)&crcResult);
-        WsfCsExit();
-        uint32_t *temp = (uint32_t *)(WDXS_FileMedia.startAddress + verifyLen);
-        /* verify data was written*/
-        err += memcmp(temp, &crcResult, sizeof(crcResult));
-        if (err) {
-            APP_TRACE_INFO0("Error appending CRC to flash");
-            return WDX_FTC_ST_VERIFICATION;
-        }
-
-        crcResult = 0;
         return WDX_FTC_ST_SUCCESS;
     } break;
     }
@@ -405,7 +485,7 @@ uint32_t WdxsFileGetBaseAddr(void)
 /*************************************************************************************************/
 uint32_t WdxsFileGetVerifiedLength(void)
 {
-    return verifyLen;
+    return fileHeader.fileLen;
 }
 
 /*************************************************************************************************/
