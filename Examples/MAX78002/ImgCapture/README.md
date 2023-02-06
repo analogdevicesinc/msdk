@@ -25,9 +25,6 @@ It supports the following output destinations:
 
 Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
 
-- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
-- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
-
 ### Console Interface & Utilites
 
 For more details on running the serial console, converting images, and excercising the example with serial commands, see [utils/README.md](utils/README.md)

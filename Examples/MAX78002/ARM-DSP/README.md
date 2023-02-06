@@ -16,9 +16,6 @@ Development with Visual Studio Code is also supported.  See [VSCode-Maxim](https
 
 Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
 
-- For a "quick-start" or for first-time users see ["Getting Started"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#getting-started)
-- See ["Development Guide"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#development-guide) for a detailed reference.
-
 ### Project-Specific Build Notes
 
 The ARM-DSP projects build with hardware floating point acceleration enabled by default setting the `MFLOAT_ABI` build configuration variable in [project.mk](project.mk).  This is the highest performance option, and is suitable for most projects.  However, if an external library is added to the project that has been compiled using soft-float calling conventions, then `MFLOAT_ABI=softfp` or `MFLOAT_ABI=soft` must be used.  See the `-mfloat-abi` section of the [GCC ARM-Options documentation](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) for more details.
