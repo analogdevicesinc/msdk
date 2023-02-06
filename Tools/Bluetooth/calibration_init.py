@@ -85,8 +85,8 @@ Run Calibration and Initialization Tests
 # Parse the command line arguments
 parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHelpFormatter)
 parser.add_argument('serialPort',help='Serial port for slave device')
-parser.add_argument('results',help='CSV files to store the results')
 parser.add_argument('-d', '--dbb', default=5,help='Read and dump DBB registers')
+parser.add_argument('-r', '--results', default='',help='File to store results')
 
 args = parser.parse_args()
 print(args)
@@ -98,7 +98,9 @@ print("results       :", args.results)
 
 
 # Open the results file, write the parameters
-results = open(args.results, "a")
+
+if args.results != '':
+    results = open(args.results, "a")
 
 
 
@@ -107,20 +109,7 @@ results = open(args.results, "a")
 class RegisterEncoder(JSONEncoder):
     def default(self, o):
             return o.__dict__
-class DbbCtrlRegs:
-    pass
-class DbbRxRegs:
-    pass
-class DbbTxRegs:
-    pass
-class DbbRffeRegs:
-    pass
-class DBB:
-    def __init__(self,ctrlReg=None, rxReg=None, txReg=None, rffeReg=None):
-        self.ctrlReg = ctrlReg
-        self.rxReg = rxReg
-        self.txReg = txReg
-        self.rffeReg = rffeReg
+
 
 
 def listEq(list1,list2):
@@ -154,12 +143,12 @@ def main():
     hciInterface  = BLE_hci(Namespace(serialPort=args.serialPort,  monPort="", baud=115200, id=1))
 
     dbb = mxc_radio.DBB(hciInterface=hciInterface)
-    ctrlReg = dbb.readCtrlReg()
+    # ctrlReg = dbb.readCtrlReg()
     rxReg = dbb.readRxReg()
 
 
     # print(ctrlReg)
-    print(rxReg)
+    # print('Rx', rxReg)
 
 
     

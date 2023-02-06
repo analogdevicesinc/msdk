@@ -22,7 +22,7 @@ class DBB:
         
         #put radio into good state for DBB
         self.hciInterface.resetFunc(None)
-        self.hciInterface.txTestFunc(Namespace(channel=0, phy=1, packetLength=0, payload=3))
+        # self.hciInterface.txTestFunc(Namespace(channel=0, phy=1, packetLength=0, payload=3))
 
     def __del__(self):
         # close out of hci
@@ -37,8 +37,8 @@ class DBB:
         addr =  "0x%08X" % (start)
 
         print(f'Reading {sizeBytes} from address {addr}')
-        
-        return self.hciInterface.readRegFunc(Namespace(addr=addr,length=regReadSize))
+        return self.hciInterface.readReg(addr=addr,length=regReadSize)
+        # return self.hciInterface.readRegFunc(Namespace(addr=addr,length=regReadSize))
         
             
         
@@ -50,7 +50,7 @@ class DBB:
         # DBB has a reserved region from Offset 0x96 to 0xff 
         # Offset 0x108 is also reserved
         # Attempting to read them causes a hardfault
-    
+
         CTRL_REG_ADDR = MXC_BASE_BTLE + 0x1000
 
         ctrlReg = self.readRegs(CTRL_REG_ADDR, 0x96)
@@ -80,6 +80,10 @@ class DBB:
 
     
     def readRxReg(self):
+        """
+        Reads the contents of the rx register and returns data as a list
+        All reserved regions initialized as '00'
+        """
         MXC_BASE_BTLE_DBB_RX = MXC_BASE_BTLE + 0x3000
         
         #Reserved Offsets 
@@ -104,81 +108,58 @@ class DBB:
         #reserved region lengths
         RESERVED1_LEN = 2
         RESERVED2_LEN = 2
-        RESERVED3_LEN = 73 * 4
+        RESERVED3_LEN = 73 * 4 
         RESERVED4_LEN = 4  * 5
         RESERVED5_LEN = 1
         RESERVED6_LEN = 2
         RESERVED7_LEN = 0
+
+        self.hciInterface.rxTestFunc(Namespace(channel=0, phy=1))
         
-        # Used to iterate through sections of memory getting/appending data
-        regionMap = [(RESERVED1_START, REGION1_START, RESERVED1_LEN),
-                     (RESERVED2_START, REGION2_START, RESERVED2_LEN),
-                     (RESERVED3_START, REGION3_START, RESERVED3_LEN),
-                     (RESERVED4_START, REGION4_START, RESERVED4_LEN),
-                     (RESERVED5_START, REGION5_START, RESERVED5_LEN),
-                     (RESERVED6_START, REGION6_START, RESERVED6_LEN),
-                     (END_OF_RX_REG,   REGION7_START, RESERVED7_LEN),
+        # # Used to iterate through sections of memory getting/appending data
+        regionMap = [( REGION1_START, RESERVED1_START,RESERVED1_LEN),
+                     ( REGION2_START, RESERVED2_START,RESERVED2_LEN),
+                     ( REGION3_START, RESERVED3_START,RESERVED3_LEN),
+                     ( REGION4_START, RESERVED4_START,RESERVED4_LEN),
+                     ( REGION5_START, RESERVED5_START,RESERVED5_LEN),
+                     ( REGION6_START, RESERVED6_START, RESERVED6_LEN),
+                     ( REGION7_START, END_OF_RX_REG, RESERVED7_LEN),
                      ]
-        ctrlReg = []
+        
+        
+        # There is a lot of traps reading this out.
+        # Kind of just have to walk around reserved memory regions 
+        # and sections lengths that mess up packet formats
 
-        readout = self.readRegs(regionMap[1][1], regionMap[1][0] - regionMap[0][1] )
-        # for count, region in enumerate(regionMap):
+        rxReg = []
 
-        #     print('Reading Region ', count)
+        for count, region in enumerate(regionMap):
+            print('Reading Region', count + 1)
+            regionLength = region[1] - region[0]
+            print('Region Length', regionLength)
+            readout = self.readRegs(region[0], 255)
 
-        #     #get the data from the device 
+            if len(readout) != regionLength:
+                print('Error occurred during readout. Aborting operation')
+                return []
 
-        #     print('Start', hex(region[1]))
-        #     print('Reserved', hex(region[0]))
-        #     regionLength =  region[0] - region[1]
-        #     print('Region Length', regionLength)
-        #     readout = self.readRegs(region[1], regionLength)
-        #     ctrlReg.extend(readout)
+            rxReg.extend(readout)
 
-        #     #insert reserved regions as zeros
-        #     reserved = ['00'] * region[2]
-        #     ctrlReg.extend(reserved)
-         
-        
-        # return ctrlReg
-        
-        # read up to reserved region 1
-        ctrlReg = self.readRegs(MXC_BASE_BTLE_DBB_RX, RESERVED1_START - REGION1_START)
+            #add reserved region to the register read
+            rxReg.extend(['00'] * region[2])
+
+
+        # # readout = self.readRegs(REGION1_START, RESERVED1_START - REGION1_START)
+        # # ctrlReg.extend(readout)
+   
+        # readout = self.readRegs(MXC_BASE_BTLE_DBB_RX + 0x180, 251)
+        # print(readout)
+
 
         
-        # #read region 2
-        
-        # next = self.readRegs(REGION2_START, RESERVED2_START - REGION2_START)
-        # ctrlReg.extend(next)
-        
-        # #read region 3
-        
-        # next = self.readRegs(REGION3_START, RESERVED3_START - REGION3_START)
-        # ctrlReg.extend(next)
-        
-        # #read region 4
-        # REGION4_START=0x400
-        # next = self.readRegs(0x400, 0x40c - 0x400)
-        # ctrlReg.extend(next)
-        
-
-        # #read region 4
-        # REGION5_START=0x420
-        # next = self.readRegs(0x420, 0x47b - 0x420)
-        # ctrlReg.extend(next)
-
-        # #read region 5
-        # REGION6_START=0x47c
-        # next = self.readRegs(0x47c, 0x484 - 0x47c)
-        # ctrlReg.extend(next)
-        
-        # #last but not least
-        # #last place is a 2 element 32bit array so 8 bytes
-        # next = self.readRegs(0x584, 8)
-        # ctrlReg.extend(next)
         
         
-        return ctrlReg
+        return rxReg
 
         
     def readTxReg(self):

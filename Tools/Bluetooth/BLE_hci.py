@@ -295,7 +295,7 @@ class BLE_hci:
      # Send a HCI command to the serial port. Will add a small delay and wait for
      # and print an HCI event by default.
     ################################################################################
-    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=6):
+    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=16):
         # Send the command and data
         if(print_cmd):
             if self.id == "-":
@@ -304,17 +304,14 @@ class BLE_hci:
                 print(str(datetime.datetime.now()) + f" {self.id}>", packet)
 
         print('Packet', packet)
-        try:
-            arr = bytearray.fromhex(packet)
-            
-            print(arr)
-            
-            self.port.write(arr)
-            
-
-            sleep(delay)
-        except:
-            print('Exception occured')
+        
+        arr = bytearray.fromhex(packet)
+        
+        print(arr)
+        
+        self.port.write(arr)
+        
+        sleep(delay)
             
         if(resp):
             return self.wait_event(timeout=timeout)
