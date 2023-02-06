@@ -3806,12 +3806,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDOTXVSEL0</name>
-       <description>LDOTX Voltage Setting.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>LDOTXVSEL</name>
        <description>LDOTX Voltage Setting.</description>
        <bitOffset>2</bitOffset>
@@ -3840,12 +3834,6 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>LDOTXVSEL1</name>
-       <description>LDOTX Voltage Setting.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>LDORXEN</name>
        <description>LDORX Enable.</description>
        <bitOffset>4</bitOffset>
@@ -3855,12 +3843,6 @@
        <name>LDORXPULLD</name>
        <description>LDOrX Pull Down.</description>
        <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>LDORXVSEL0</name>
-       <description>LDORX Voltage Setting.</description>
-       <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -3890,12 +3872,6 @@
          <value>3</value>
         </enumeratedValue>
        </enumeratedValues>
-      </field>
-      <field>
-       <name>LDORXVSEL1</name>
-       <description>LDORX Voltage Setting.</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
       </field>
       <field>
        <name>LDORXBYP</name>
@@ -9111,6 +9087,28 @@
        <name>ERRADDR</name>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>BTLE_LDO_TRIM</name>
+     <description>BTLE LDO Trim register.</description>
+     <addressOffset>0x48</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>TX</name>
+       <description>TX LDO trim value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>RX</name>
+       <description>RX LDO trim value.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
       </field>
      </fields>
     </register>

@@ -1231,17 +1231,33 @@
       <bitWidth>1</bitWidth>
      </field>    
      <field>
-      <name>LDOTXVSEL0</name>
-      <description>LDOTX Voltage Setting.</description>
-      <bitOffset>2</bitOffset>
-      <bitWidth>1</bitWidth>
-     </field>  
-     <field>
-      <name>LDOTXVSEL1</name>
-      <description>LDOTX Voltage Setting.</description>
-      <bitOffset>3</bitOffset>
-      <bitWidth>1</bitWidth>
-     </field>  
+       <name>LDOTXVSEL</name>
+       <description>LDOTX Voltage Setting.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0_7</name>
+         <description>0.7V</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>0_85</name>
+         <description>0.85V</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>0_9</name>
+         <description>0.9V</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_1</name>
+         <description>1.1V</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
      <field>
       <name>LDORXEN</name>
       <description>LDORX Enable.</description>
@@ -1255,17 +1271,33 @@
       <bitWidth>1</bitWidth>
      </field>  
      <field>
-      <name>LDORXVSEL0</name>
-      <description>LDORX Voltage Setting.</description>
-      <bitOffset>6</bitOffset>
-      <bitWidth>1</bitWidth>
-     </field>  
-     <field>
-      <name>LDORXVSEL1</name>
-      <description>LDORX Voltage Setting.</description>
-      <bitOffset>7</bitOffset>
-      <bitWidth>1</bitWidth>
-     </field>       
+       <name>LDORXVSEL</name>
+       <description>LDORX Voltage Setting.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>0_7</name>
+         <description>0.7V</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>0_85</name>
+         <description>0.85V</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>0_9</name>
+         <description>0.9V</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>1_1</name>
+         <description>1.1V</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>       
      <field>
       <name>LDORXBYP</name>
       <description>LDORX Bypass Enable.</description>
