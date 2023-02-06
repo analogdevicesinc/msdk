@@ -1273,7 +1273,7 @@
      <field>
        <name>LDORXVSEL</name>
        <description>LDORX Voltage Setting.</description>
-       <bitOffset>2</bitOffset>
+       <bitOffset>6</bitOffset>
        <bitWidth>2</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
