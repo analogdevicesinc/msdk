@@ -317,8 +317,6 @@ class BLE_hci:
             print('Exception occured')
             
         if(resp):
-
-            if 
             return self.wait_event(timeout=timeout)
 
 
