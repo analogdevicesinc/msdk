@@ -73,8 +73,8 @@ org.eclipse.cdt.codan.internal.checkers.StatementHasNoEffectProblem=Warning
 org.eclipse.cdt.codan.internal.checkers.StatementHasNoEffectProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Statement has no effect\\")",macro\=>true,exceptions\=>()}
 org.eclipse.cdt.codan.internal.checkers.SuggestedParenthesisProblem=Warning
 org.eclipse.cdt.codan.internal.checkers.SuggestedParenthesisProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Suggested parenthesis around expression\\")",paramNot\=>false}
-org.eclipse.cdt.codan.internal.checkers.SuSPIXFciousSemicolonProblem=Warning
-org.eclipse.cdt.codan.internal.checkers.SuSPIXFciousSemicolonProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"SuSPIXFcious semicolon\\")",else\=>false,afterelse\=>false}
+org.eclipse.cdt.codan.internal.checkers.SuspiciousSemicolonProblem=Warning
+org.eclipse.cdt.codan.internal.checkers.SuspiciousSemicolonProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Suspicious semicolon\\")",else\=>false,afterelse\=>false}
 org.eclipse.cdt.codan.internal.checkers.TypeResolutionProblem=Error
 org.eclipse.cdt.codan.internal.checkers.TypeResolutionProblem.params={launchModes\=>{RUN_ON_FULL_BUILD\=>true,RUN_ON_INC_BUILD\=>true,RUN_ON_FILE_OPEN\=>false,RUN_ON_FILE_SAVE\=>false,RUN_AS_YOU_TYPE\=>true,RUN_ON_DEMAND\=>true},suppression_comment\=>"@suppress(\\"Type cannot be resolved\\")"}
 org.eclipse.cdt.codan.internal.checkers.UnusedFunctionDeclarationProblem=Warning
