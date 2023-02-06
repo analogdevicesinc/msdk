@@ -366,7 +366,7 @@ To open a project:
 
 2. Select **File -> Open Folder...**
 
-3. Navigate to an example project for the target microcontroller in the MSDK's [Examples folder](Examples) and open it with **Select Folder**.
+3. Navigate to an example project for the target microcontroller in the MSDK's [Examples folder](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) and open it with **Select Folder**.
 
 4. VS Code will prompt for trust the first time.  Select _Trust folder and enable all features_
 
@@ -467,7 +467,7 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 
     ![Figure 23](res/Fig23.jpg)
 
-4. **Browse** to the [`Examples`](Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
+4. **Browse** to the [`Examples`](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
 
     ![Figure 24](res/Fig24.jpg)
 
@@ -555,7 +555,7 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 #### Building and Running an Example
 
-1. First, copy an [example project](Examples) to an accessible directory outside of the SDK. It is strongly recommended to keep the MSDK examples unmodified in case they need to be referenced again later.
+1. First, copy an [example project](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) to an accessible directory outside of the SDK. It is strongly recommended to keep the MSDK examples unmodified in case they need to be referenced again later.
 
 2. Launch your terminal.  On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
 
@@ -798,7 +798,7 @@ To open a project:
 
 2. Select **File -> Open Folder...**
 
-3. Navigate to an example project for the target microcontroller in the MSDK's [Examples folder](Examples) and open it with **Select Folder**.
+3. Navigate to an example project for the target microcontroller in the MSDK's [Examples folder](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) and open it with **Select Folder**.
 
 4. VS Code will prompt for trust the first time.  Select _**Trust folder and enable all features**_.
 
@@ -991,7 +991,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location.  This i
 
     ![Figure 23](res/Fig23.jpg)
 
-4. **Browse** to the [`Examples`](Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
+4. **Browse** to the [`Examples`](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
 
     ![Figure 24](res/Fig24.jpg)
 
@@ -1499,7 +1499,7 @@ Source code is located in the [Libraries](Libraries) folder of the SDK and manag
 
 ### CMSIS-DSP
 
-The CMSIS-DSP library provides a suite of common **Digital Signal Processing _(DSP)_** functions that take advantage of hardware accelerated _Floating Point Unit (FPU)_ available on microcontrollers with Arm Cortex-M cores.  This library is distributed in the MSDK as a pre-compiled static library file and the MSDK maintains a port of the official code examples in the **ARM-DSP** [Examples](Examples) folder for each microcontroller.
+The CMSIS-DSP library provides a suite of common **Digital Signal Processing _(DSP)_** functions that take advantage of hardware accelerated _Floating Point Unit (FPU)_ available on microcontrollers with Arm Cortex-M cores.  This library is distributed in the MSDK as a pre-compiled static library file and the MSDK maintains a port of the official code examples in the **ARM-DSP** [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder for each microcontroller.
 
 Please refer to the [CMSIS-DSP official documentation](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) for more detailed documentation on the library functions and usage.
 
