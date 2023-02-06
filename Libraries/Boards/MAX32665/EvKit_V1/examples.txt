@@ -27,6 +27,7 @@ BLE_periph
 Bootloader
 Bootloader_Host
 CRC
+Display
 DES
 DMA
 ECC
