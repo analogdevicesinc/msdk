@@ -199,7 +199,6 @@ static const uint8_t datsAdvDataDisc[] = {
     UINT16_TO_BYTES(HCI_ID_ANALOG) /*! company ID */
 };
 
-#if 0
 /*! scan data, discoverable mode */
 static const uint8_t datsScanDataDisc[] = {
     /*! device name */
@@ -219,18 +218,6 @@ static const uint8_t datsScanDataDisc[] = {
     'A',
     'S'
 };
-#else
-/*! scan data, discoverable mode */
-static const uint8_t datsScanDataDisc[] = {
-    /*! device name */
-    5, /*! length */
-    DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
-    'O',
-    'T',
-    'A',
-    'S'
-};
-#endif
 
 /**************************************************************************************************
   Client Characteristic Configuration Descriptors
