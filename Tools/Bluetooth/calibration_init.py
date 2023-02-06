@@ -135,59 +135,9 @@ def listEq(list1,list2):
 
     return True
 
-def readDbbCtrl(hciInterface):
-    """
-    Read and return the DBB Ctrl Reg
-    """
-
-    reg = MXC_BASE_BTLE + 0x1000
 
 
-    MXC_BASE_BTLE_DBB_CTRL =  "0x%08X" % (reg)
-    
-    
-    #anything bigger than 128 bytes seems to cause a problem with the fromhex function
-    ctrlRegSize = "0x%02X" %(32 * 4)
-    regBase = reg
-    ctrlReg = []
-    
-    #size of the ctrl reg is 304 bytes so just go  through more than that
-    while reg <  regBase + 128 * 3:
-
-        evtBytes = hciInterface.readRegFunc(Namespace(addr=MXC_BASE_BTLE_DBB_CTRL,length=ctrlRegSize))
-        ctrlReg.extend(evtBytes)
-        reg += 128
-    
-    print(ctrlReg)
-    print('length', len(ctrlReg))
-    
-    
-
-    
-def readDbbRx(hciInterface):
-    MXC_BASE_BTLE_DBB_RX = MXC_BASE_BTLE + 0x3000
-    
-def readDbbTx(hciInterface):
-    MXC_BASE_BTLE_DBB_TX = MXC_BASE_BTLE + 0x2000
-def readDbbRffe(hciInterface):
-    MXC_BASE_BTLE_DBB_EXT_RFFE  = MXC_BASE_BTLE + 0x8000
-    
-
-def readDBB(hciInterface):
-    """
-    Function to read DBB register of device 
-    Return DBB registers as a DBB class
-    """
-    dbb = mxcDBB()
-
-    dbb.ctrlReg = readDbbCtrl(hciInterface)
-    dbb.txReg = readDbbRx(hciInterface)
-    dbb.rxReg = readDbbTx(hciInterface)
-    dbb.rffeReg = readDbbRffe(hciInterface)
-
-    return dbb
-
-def verifyDBB(dbb):
+def verifyDBB(dbbReference):
     
     #get expected dbb values
     
@@ -202,16 +152,15 @@ def verifyDBB(dbb):
 def main():
     # Create the BLE_hci objects
     hciInterface  = BLE_hci(Namespace(serialPort=args.serialPort,  monPort="", baud=115200, id=1))
-    # hciInterface.resetFunc(None)
-    # hciInterface.txTestFunc(Namespace(channel=0, phy=1, packetLength=0, payload=3))
 
     dbb = mxc_radio.DBB(hciInterface=hciInterface)
     ctrlReg = dbb.readCtrlReg()
+    rxReg = dbb.readRxReg()
+
 
     # print(ctrlReg)
-    
+    print(rxReg)
 
-    
 
     
     sys.exit(0)
