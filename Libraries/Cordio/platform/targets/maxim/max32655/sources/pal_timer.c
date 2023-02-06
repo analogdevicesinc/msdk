@@ -25,6 +25,7 @@
 #include "lp.h"
 #include "gcr_regs.h"
 #include "mxc_device.h"
+#include "wsf_cs.h"
 #include "wsf_trace.h"
 #include "pal_rtc.h"
 
@@ -282,7 +283,9 @@ void PalTimerStart(uint32_t expUsec)
 
   palTimerCb.state = PAL_TIMER_STATE_BUSY;
 
+  WsfCsEnter();
   MXC_TMR_Start(PAL_TMR);
+  WsfCsExit();
 }
 
 /*************************************************************************************************/
