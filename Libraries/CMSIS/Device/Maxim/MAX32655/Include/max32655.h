@@ -298,19 +298,6 @@ typedef enum {
 #define MXC_BASE_GCR ((uint32_t)0x40000000UL)
 #define MXC_GCR ((mxc_gcr_regs_t *)MXC_BASE_GCR)
 
-// DEPRECATED bit fields
-#define MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL0_POS           2 /**< BTLELDOCTRL_LDOTXVSEL0 Position */
-#define MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL0               ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL0_POS)) /**< BTLELDOCTRL_LDOTXVSEL0 Mask */
-
-#define MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL1_POS           3 /**< BTLELDOCTRL_LDOTXVSEL1 Position */
-#define MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL1               ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL1_POS)) /**< BTLELDOCTRL_LDOTXVSEL1 Mask */
-
-#define MXC_F_GCR_BTLELDOCTRL_LDORXVSEL0_POS           6 /**< BTLELDOCTRL_LDORXVSEL0 Position */
-#define MXC_F_GCR_BTLELDOCTRL_LDORXVSEL0               ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_LDORXVSEL0_POS)) /**< BTLELDOCTRL_LDORXVSEL0 Mask */
-
-#define MXC_F_GCR_BTLELDOCTRL_LDORXVSEL1_POS           7 /**< BTLELDOCTRL_LDORXVSEL1 Position */
-#define MXC_F_GCR_BTLELDOCTRL_LDORXVSEL1               ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_LDORXVSEL1_POS)) /**< BTLELDOCTRL_LDORXVSEL1 Mask */
-
 /******************************************************************************/
 /*                                            Non-battery backed SI Registers */
 #define MXC_BASE_SIR ((uint32_t)0x40000400UL)
