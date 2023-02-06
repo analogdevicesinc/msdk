@@ -295,7 +295,7 @@ class BLE_hci:
      # Send a HCI command to the serial port. Will add a small delay and wait for
      # and print an HCI event by default.
     ################################################################################
-    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=3):
+    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=6):
         # Send the command and data
         if(print_cmd):
             if self.id == "-":
@@ -303,11 +303,22 @@ class BLE_hci:
             else:
                 print(str(datetime.datetime.now()) + f" {self.id}>", packet)
 
-        print(packet)
-        self.port.write(bytearray.fromhex(packet))
-        sleep(delay)
+        print('Packet', packet)
+        try:
+            arr = bytearray.fromhex(packet)
+            
+            print(arr)
+            
+            self.port.write(arr)
+            
 
+            sleep(delay)
+        except:
+            print('Exception occured')
+            
         if(resp):
+
+            if 
             return self.wait_event(timeout=timeout)
 
 
@@ -946,6 +957,41 @@ class BLE_hci:
         else:
             self.send_command(args.cmd, timeout=timeout)
 
+    def readReg(self, addr, length):
+
+        # Reverse the bytes to LSB first
+        addrBytes = parseAddr(addr)
+
+        # Get the read length
+        readLen = length
+        if(readLen[:2] != "0x"):
+            print("Length must be a hex number starting with 0x")
+            return
+        readLen = readLen[2:]
+
+        # assert(readLen < 256)
+
+        readLenString = "%0.2X"%int(readLen, 16)
+        print(readLenString)
+        # Calculate the total length, 1 for the read len, 4 for the address length
+        totalLen = "%0.2X"%(1+4)
+
+        # Send the command and save the event
+        evtString = self.send_command("0101FF"+totalLen+readLenString+addrBytes)
+
+        print('Return String',evtString)
+        # print('EvtString Length', len(evtString))
+
+        # Get the data
+        evtString = evtString[14:]
+        # print('EvtString Length', len(evtString))
+        print(evtString)
+        # Split the data into bytes
+        chunks, chunk_size = len(evtString), 2
+        evtBytes = [ evtString[i:i+chunk_size] for i in range(0, chunks, chunk_size) ]
+        
+        return evtBytes
+
     ## Read register function.
      #
      # Sends HCI command to read a register.
@@ -964,8 +1010,11 @@ class BLE_hci:
             print("Length must be a hex number starting with 0x")
             return
         readLen = readLen[2:]
-        readLenString = "%0.2X"%int(readLen, 16)
 
+        # assert(readLen < 256)
+
+        readLenString = "%0.2X"%int(readLen, 16)
+        print(readLenString)
         # Calculate the total length, 1 for the read len, 4 for the address length
         totalLen = "%0.2X"%(1+4)
 
@@ -979,6 +1028,7 @@ class BLE_hci:
         chunks, chunk_size = len(evtString), 2
         evtBytes = [ evtString[i:i+chunk_size] for i in range(0, chunks, chunk_size) ]
 
+        
         # Print the data
         startingAddr = int(args.addr, 16)
 
@@ -1003,7 +1053,7 @@ class BLE_hci:
                 print("__", end="")
             else:
                 print(evtBytes[lineAddr], end="")
-
+                
             # Print a new line at the end of the 32 bit value
             if(i%4 == 3):
                 print()
