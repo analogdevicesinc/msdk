@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -42,10 +42,7 @@
 #include <stdint.h>
 #include <string.h>
 
-#include "mxc_errors.h"
-
-#include "st7735s_regs.h"
-#include "st7735s_drv.h"
+#include "st7735s.h"
 
 static st7735s_cfg_t panel_cfg;
 
@@ -71,8 +68,8 @@ int st7735s_write_pixels(uint8_t *data, unsigned int len)
 
 int st7735s_xyloc(uint8_t row, uint8_t col)
 {
-    uint8_t tx_data[5];
     int ret;
+    uint8_t tx_data[5];
 
     /* Column Address Set */
     tx_data[0] = ST7735S_CASET;
@@ -81,7 +78,8 @@ int st7735s_xyloc(uint8_t row, uint8_t col)
     tx_data[3] = 0;
     tx_data[4] = 0x81;
 
-    if ((ret = panel_cfg.sendfn(tx_data, 1, tx_data + 1, 4)) != E_NO_ERROR) {
+    ret = panel_cfg.sendfn(tx_data, 1, tx_data + 1, 4);
+    if (ret != 0) {
         return ret;
     }
 
@@ -92,7 +90,9 @@ int st7735s_xyloc(uint8_t row, uint8_t col)
     tx_data[3] = 0;
     tx_data[4] = 0x81;
 
-    return panel_cfg.sendfn(tx_data, 1, tx_data + 1, 4);
+    ret = panel_cfg.sendfn(tx_data, 1, tx_data + 1, 4);
+
+    return ret;
 }
 
 int st7735s_init(st7735s_cfg_t *cfg)
@@ -115,7 +115,7 @@ int st7735s_init(st7735s_cfg_t *cfg)
     rc = cfg->regcfg;
 
     while (i != 0) {
-        if (panel_cfg.sendfn(&rc->cmd, 1, rc->data, rc->len) != E_NO_ERROR) {
+        if (panel_cfg.sendfn(&rc->cmd, 1, rc->data, rc->len) != 0) {
             return -1;
         }
         if (rc->delay > 0) {
@@ -125,5 +125,5 @@ int st7735s_init(st7735s_cfg_t *cfg)
         i--;
     }
 
-    return E_NO_ERROR;
+    return 0;
 }

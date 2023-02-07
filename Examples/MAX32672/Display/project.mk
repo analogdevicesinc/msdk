@@ -14,8 +14,5 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-
 # Enable LVGL library
 LIB_LVGL = 1
-
-SRCS += st7735s_drv.c

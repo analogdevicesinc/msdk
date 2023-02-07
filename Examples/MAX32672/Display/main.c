@@ -6,7 +6,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45,85 +45,74 @@
 #include "mxc_device.h"
 #include "mxc_pins.h"
 #include "nvic_table.h"
-#include "uart.h"
 #include "spi.h"
 #include "led.h"
 #include "board.h"
+#include "tmr.h"
+#include "mxc_delay.h"
 
-#include "st7735s_drv.h"
-#include "disp_cfaf128128b1.h"
+#include "st7735s.h"
+#include "st7735s_cfaf128128b1.h"
 
 #include "lvgl.h"
 
 /***** Preprocessors *****/
-#define SPI_SPEED 4000000 /* Bit Rate */
 
-/* Time (ms) between moving text location
- * Lower bound set by display update over SPI and 1ms SysTick rate
- */
+// Time (ms) between moving text location
 #define TEXT_BOUNCE_DELAY 10
 
+// Parameters for Continuous timer
+#define CONT_TIMER MXC_TMR3 // Can be MXC_TMR0 through MXC_TMR5
+#define CONT_TIMER_IRQn TMR3_IRQn
+
 /***** Definitions *****/
-#define MY_HOR_RES 128
-#define MY_VER_RES 128
-#define DRAW_BUF_SIZE (MY_HOR_RES * MY_VER_RES) / 10
-#define LINEBUF_SIZE (3 * MY_HOR_RES)
 
 /***** Globals *****/
-volatile uint32_t demo_ticks;
-lv_disp_draw_buf_t disp_buf;
-lv_disp_drv_t disp_drv;
-lv_disp_t *disp;
-lv_color_t disp_buf1[DRAW_BUF_SIZE];
-lv_color_t disp_buf2[DRAW_BUF_SIZE];
-uint8_t linebuf[LINEBUF_SIZE];
-
-mxc_spi_req_t req;
+static lv_disp_draw_buf_t disp_buf;
+static lv_disp_drv_t disp_drv;
+static lv_disp_t *disp;
+static lv_color_t disp_buf1[DRAW_BUF_SIZE];
+static lv_color_t disp_buf2[DRAW_BUF_SIZE];
+static uint8_t linebuf[LINEBUF_SIZE];
 
 /***** Functions *****/
-void SPI_IRQHandler(void)
+static void on_timer_irq(void)
 {
-    MXC_SPI_AsyncHandler(MXC_SPI0);
-}
+    // Clear interrupt
+    MXC_TMR_ClearFlags(CONT_TIMER);
 
-void SysTick_Handler(void)
-{
-    /* 1ms tick LVGL tick */
+    // tick lvgl lib
     lv_tick_inc(1);
-
-    /* Used during initialization and for demo timing */
-    demo_ticks++;
 }
 
-/* The standard mxc_delay() is not used, as it will re-program the SysTick timer
- *  which is also used by the lvgl demo. Instead, we provide a 1ms-resolution 
- * pause function which blocks until the specified time has elapsed.
- */
-void pause_ms(uint32_t x)
+static void tmr_init_for_1KHz_periodic_interrupt(void)
 {
-    /* Determine remaining time */
-    x = demo_ticks + x;
+    mxc_tmr_cfg_t tmr;
+    uint32_t freq = 1000; // 1KHz
+    mxc_tmr_clock_t clk_source = MXC_TMR_APB_CLK;
 
-    /* Counter wrap check */
-    if (x < demo_ticks) {
-        /* Wait until overflow */
-        while (demo_ticks > x) {}
-    }
+    // Parameters for PWM output
+    uint32_t periodTicks = MXC_TMR_GetPeriod(CONT_TIMER, clk_source, 128, freq);
 
-    /* Burn CPU cycles */
-    while (x > demo_ticks) {}
+    MXC_TMR_Shutdown(CONT_TIMER);
 
-    return;
+    tmr.pres = TMR_PRES_128;
+    tmr.mode = TMR_MODE_CONTINUOUS;
+    tmr.clock = clk_source;
+    tmr.cmp_cnt = periodTicks;
+    tmr.pol = 0;
+
+    MXC_TMR_Init(CONT_TIMER, &tmr, 1);
+    MXC_TMR_EnableInt(CONT_TIMER);
+    MXC_TMR_Start(CONT_TIMER);
+
+    MXC_NVIC_SetVector(CONT_TIMER_IRQn, on_timer_irq);
+    NVIC_EnableIRQ(CONT_TIMER_IRQn);
 }
 
-/* 
- * Interface-specific transmit of command and data to the controller
- *
- * Args: 
- * Returns: 
- */
-int spi_tx(uint8_t *cmd, unsigned int cmd_len, uint8_t *data, unsigned int data_len)
+static int spi_tx(uint8_t *cmd, uint32_t cmd_len, uint8_t *data, uint32_t data_len)
 {
+    mxc_spi_req_t req;
     uint8_t spibuf[(1 + LINEBUF_SIZE) * 2], *bptr;
     unsigned int txlen;
 
@@ -159,6 +148,55 @@ int spi_tx(uint8_t *cmd, unsigned int cmd_len, uint8_t *data, unsigned int data_
     req.completeCB = NULL;
 
     return MXC_SPI_MasterTransaction(&req);
+}
+
+static int spi_init(void)
+{
+    int spi_speed = 4 * 1000 * 1000; // x*MHz
+    int retVal;
+
+    retVal = MXC_SPI_Init(MXC_SPI0, 1, 0, 1, 0, spi_speed);
+    if (retVal) {
+        printf("Error configuring SPI\n");
+        return retVal;
+    }
+
+    retVal = MXC_SPI_SetDataSize(MXC_SPI0, 9);
+    if (retVal) {
+        printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
+        return retVal;
+    }
+
+    retVal = MXC_SPI_SetWidth(MXC_SPI0, SPI_WIDTH_STANDARD);
+    if (retVal) {
+        printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
+        return retVal;
+    }
+
+    return E_NO_ERROR;
+}
+
+static void delay_ms(uint32_t x)
+{
+    MXC_Delay(MXC_DELAY_MSEC(x));
+}
+
+static int display_init(void)
+{
+    st7735s_cfg_t panel;
+
+    //
+    spi_init();
+
+    /* Initialize ST7735S controller with panel-specific sequence */
+    panel.delayfn = delay_ms;
+    panel.sendfn = spi_tx;
+    panel.regcfg = cfaf128128b1_regcfg;
+    panel.ncfgs = sizeof(cfaf128128b1_regcfg) / sizeof(st7735s_regcfg_t);
+    //
+    st7735s_init(&panel);
+
+    return 0;
 }
 
 static void disp_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_t *color_p)
@@ -198,7 +236,7 @@ static void disp_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_color_
     lv_disp_flush_ready(disp_drv);
 }
 
-unsigned int roll_led(void)
+static unsigned int roll_led(void)
 {
     static unsigned int state = 0;
     unsigned int max_state = (1 << num_leds) - 1; /* 2^n - 1 */
@@ -220,53 +258,8 @@ unsigned int roll_led(void)
     return state;
 }
 
-int main(void)
+static void lvgl_setup(void)
 {
-    uint32_t last_tick, last_roll_tick, last_bounce_tick;
-    int x, y, incx, incy;
-    lv_obj_t *label1, *led0, *led1;
-    unsigned int state;
-    int retVal;
-    st7735s_cfg_t panel;
-
-    /* Configure SysTick for 1ms rate */
-    SysTick->LOAD = (SystemCoreClock / 1000);
-    SysTick->VAL = 0;
-    SysTick->CTRL |=
-        (SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_TICKINT_Msk);
-    demo_ticks = 0;
-
-    printf("LCD demo\n");
-
-    /* Configure SPI interface */
-    retVal = MXC_SPI_Init(MXC_SPI0, 1, 0, 1, 0, SPI_SPEED);
-
-    if (retVal != E_NO_ERROR) {
-        printf("Error configuring SPI\n");
-        return retVal;
-    }
-
-    retVal = MXC_SPI_SetDataSize(MXC_SPI0, 9);
-
-    if (retVal != E_NO_ERROR) {
-        printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
-        return retVal;
-    }
-
-    retVal = MXC_SPI_SetWidth(MXC_SPI0, SPI_WIDTH_STANDARD);
-
-    if (retVal != E_NO_ERROR) {
-        printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
-        return retVal;
-    }
-
-    /* Initialize ST7735S controller with panel-specific sequence */
-    panel.delayfn = pause_ms;
-    panel.sendfn = spi_tx;
-    panel.regcfg = cfaf128128b1_regcfg;
-    panel.ncfgs = cfaf128128b1_ncfgs;
-    st7735s_init(&panel);
-
     /* LittlevGL setup */
     lv_init();
 
@@ -277,13 +270,33 @@ int main(void)
     lv_disp_drv_init(&disp_drv);
     disp_drv.draw_buf = &disp_buf;
     disp_drv.flush_cb = disp_flush;
-    disp_drv.hor_res = MY_HOR_RES;
-    disp_drv.ver_res = MY_VER_RES;
+    disp_drv.hor_res = DISP_HOR_RES;
+    disp_drv.ver_res = DISP_VER_RES;
     disp = lv_disp_drv_register(&disp_drv);
+}
+
+int main(void)
+{
+    uint32_t last_tick, last_roll_tick, last_bounce_tick;
+    int x, y, incx, incy;
+    lv_obj_t *label1, *led0, *led1;
+    unsigned int state;
+
+    printf("MAX32672 EvKit Display Demo\n");
+    printf("This example uses LVGL graphics library to manage display\n");
+    printf("For more demos please check: https://github.com/lvgl/lvgl\n");
+
+    /* Configure SysTick for 1ms rate */
+    tmr_init_for_1KHz_periodic_interrupt();
+
+    //
+    display_init();
+    //
+    lvgl_setup();
 
     /* Generate a text label to bounce around the screen */
     label1 = lv_label_create(lv_scr_act());
-    lv_label_set_text(label1, "Maxim\nIntegrated");
+    lv_label_set_text(label1, "Analog\nDevices");
     lv_obj_set_style_text_align(label1, LV_TEXT_ALIGN_CENTER, 0);
 
     /* Align the Label to the center of the screen
@@ -299,7 +312,7 @@ int main(void)
 
     led1 = lv_led_create(lv_scr_act());
     lv_obj_set_size(led1, 10, 10);
-    lv_obj_align(led1, LV_ALIGN_BOTTOM_LEFT, 20, -5);
+    lv_obj_align(led1, LV_ALIGN_BOTTOM_LEFT, 5, -20);
     lv_led_set_color(led1, lv_color_hex(0x00ff00));
     lv_led_off(led1);
 
@@ -321,6 +334,7 @@ int main(void)
                 incx = 1;
             }
             x += incx;
+
             if (y >= 25) {
                 incy = -1;
             } else if (y <= -50) {
@@ -351,15 +365,7 @@ int main(void)
             lv_task_handler();
             last_tick = lv_tick_get();
         }
-
-        /* Sleep in low-power while nothing to do */
-        if (demo_ticks > 1000) {
-            /* Always wise to allow debugger access early in the demo */
-            //__WFI(); /* FIXME -- causes visual artifacts, perhaps SPI is not done sending bits when core sleeps? */
-        }
     }
-
-    printf("Done.\n");
 
     return E_NO_ERROR;
 }

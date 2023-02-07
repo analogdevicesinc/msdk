@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,7 +32,7 @@
  ******************************************************************************/
 
 /**
- * @file    disp_cfaf128128b1.h
+ * @file    st7735s_cfaf128128b1.h
  * @brief   CrystalFontz CFAF128128B1 controller configuration data
  *          
  */
@@ -49,7 +49,7 @@
 #ifndef EXAMPLES_MAX32672_DISPLAY_DISP_CFAF128128B1_H_
 #define EXAMPLES_MAX32672_DISPLAY_DISP_CFAF128128B1_H_
 
-#include "st7735s_regs.h"
+#include "st7735s.h"
 
 st7735s_regcfg_t cfaf128128b1_regcfg[] = {
     /* Send a software reset to clear regs (120ms delay mandatory) */
@@ -91,7 +91,5 @@ st7735s_regcfg_t cfaf128128b1_regcfg[] = {
     /* Memory Data Access Control; Reverse row and column address order for panel orientation */
     { .cmd = ST7735S_MADCTL, .delay = 0, .len = 1, .data = (uint8_t *)"\xc0" },
 };
-
-unsigned int cfaf128128b1_ncfgs = sizeof(cfaf128128b1_regcfg) / sizeof(st7735s_regcfg_t);
 
 #endif // EXAMPLES_MAX32672_DISPLAY_DISP_CFAF128128B1_H_
