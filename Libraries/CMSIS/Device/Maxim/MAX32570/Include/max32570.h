@@ -594,14 +594,14 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                               SPI XIP Data */
-#define MXC_BASE_SPID ((uint32_t)0x4003A000UL)
-#define MXC_SPID ((mxc_spid_regs_t *)MXC_BASE_SPID)
-#define MXC_SPIXR ((mxc_spixr_regs_t *)MXC_BASE_SPID)
+#define MXC_BASE_SPIXR ((uint32_t)0x4003A000UL)
+#define MXC_SPIXR ((mxc_spixr_regs_t *)MXC_BASE_SPIXR)
 
-/******************************************************************************/
-/*                                                                   MIPI DSI */
-#define MXC_BASE_MIPI ((uint32_t)0x4003B000UL)
-#define MXC_MIPI ((mxc_mipi_regs_t *)MXC_BASE_MIPI)
+// TODO(2-7-2023): Verify register file for MIPI DSI.
+// /******************************************************************************/
+//                                                                    MIPI DSI 
+// #define MXC_BASE_DSI ((uint32_t)0x4003B000UL)
+// #define MXC_DSI ((mxc_dsi_regs_t *)MXC_BASE_DSI)
 
 /*******************************************************************************/
 /*                                                      Pulse Train Generation */
