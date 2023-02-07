@@ -52,6 +52,8 @@ typedef enum {
 
 /* **** Functions **** */
 int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_src);
+void MXC_TMR_RevB_SetClockSourceFreq(mxc_tmr_revb_regs_t *tmr, int clksrc_freq);
+int MXC_TMR_RevB_GetClockSourceFreq(mxc_tmr_revb_regs_t *tmr);
 void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg);
 void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr);
 void MXC_TMR_RevB_Start(mxc_tmr_revb_regs_t *tmr);
