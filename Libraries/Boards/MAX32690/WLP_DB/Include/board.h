@@ -54,10 +54,22 @@ extern "C" {
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
+#ifndef HCI_UART
+#define HCI_UART 3
+#endif
+
+#ifndef USER_UART
+#define USER_UART 1
+#endif
+
+#ifndef TERMINAL_UART
+#define TERMINAL_UART CONSOLE_UART
+#endif
+
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON 0 /// Active state of LEDs
 
-#define TQFN_DB /// Used in examples to control program flow
+#define WLP_DB /// Used in examples to control program flow
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
