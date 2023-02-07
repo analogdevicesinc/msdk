@@ -47,7 +47,7 @@ extern "C" {
 #endif
 
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 0 /// UART instance to use for console
+#define CONSOLE_UART 2 /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
@@ -55,7 +55,7 @@ extern "C" {
 #endif
 
 #ifndef HCI_UART
-#define HCI_UART 3
+#define HCI_UART 0
 #endif
 
 #ifndef USER_UART

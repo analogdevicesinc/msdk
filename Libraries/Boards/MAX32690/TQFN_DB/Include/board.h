@@ -45,9 +45,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 0 /// UART instance to use for console
+#define CONSOLE_UART 2 /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
@@ -58,12 +57,12 @@ extern "C" {
 #define HCI_UART 3
 #endif
 
-#ifndef USER_UART
-#define USER_UART 1
-#endif
-
 #ifndef TERMINAL_UART
 #define TERMINAL_UART CONSOLE_UART
+#endif
+
+#ifndef USER_UART
+#define USER_UART 1
 #endif
 
 #define LED_OFF 1 /// Inactive state of LEDs
