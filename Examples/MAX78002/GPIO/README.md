@@ -8,11 +8,11 @@ P2.6 (PB1) is continuously scanned and whatever value is read on that pin is the
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
 ### Project-Specific Build Notes
 
-(None)
+(None - this project builds as a standard example)
 
 ## Required Connections
 

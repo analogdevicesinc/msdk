@@ -22,7 +22,7 @@ If using the standard (EvKit_V1):
 -   Close jumper JP2 (LED2 EN).
 -   Connect I2C2 (SCL - P0.30, SDA - P0.31) to I2C bus. These pins are connected to camera header J4 (SDA - Pin 6, SCL - Pin 8).
 
-If using the featherboard (FTHR_RevA):
+If using the MAX78000FTHR (FTHR_RevA)
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect I2C1 (SCL - P0.16, SDA - P0.17) to I2C bus. These pins are connected to header J4 (SCL - Pin 11, SDA - Pin 12).

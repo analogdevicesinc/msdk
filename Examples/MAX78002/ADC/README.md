@@ -12,11 +12,11 @@ Beware which Port 2 (channel) you use. Some of the Port 2 pins are connected to 
 
 ### Project Usage
 
-Universal instructions on building, flashing, and debugging this project can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
+Universal instructions on building, flashing, and debugging this project on supported boards can be found in the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/).
 
 ### Project-Specific Build Notes
 
-(None)
+(None - this project builds as a standard example)
 
 ## Required Connections
 

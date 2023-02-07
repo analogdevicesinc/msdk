@@ -24,14 +24,14 @@ $ make
 
 ##### Required Connections:
 
-If using the Standard EV Kit (EvKit_V1):
+If using the MAX78000EVKIT (EvKit_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins 1 and 2 (P0_1) of the JH1 (UART 0 EN) header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect pin 12 of JH4 (Camera) to pin 2 of JP1 (LED1).
 -   Connect pin 4 of the DSP2 connector to pin 2 of JP2 (LED2).
 
-If using the Featherboard (FTHR_RevA):
+If using the MAX78000FTHR (FTHR_RevA)
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect logic analyzer to pin 9 (P0.19) on header J4 to view the continuous bit pattern

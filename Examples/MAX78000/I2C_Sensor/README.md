@@ -13,7 +13,7 @@ If using the Standard EvKit (EvKit_V1):
 -	Select "EvKit\_V1" for _BOARD_ in "project.mk"
 -   You must connect pin 8 on camera header J4 (SCL), pin 6 on camera header J4 (SDA), VDD and GND to corresponding pins of MAX31889 EVKIT_A board (via J3 terminal)
 
-If using the Featherboard (FTHR_RevA):
+If using the MAX78000FTHR (FTHR_RevA)
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -	Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -	Select "FTHR\_RevA" for _BOARD_ in "project.mk"

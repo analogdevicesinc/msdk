@@ -18,7 +18,7 @@ If using the Standard EvKit (EvKit_V1):
 -   Connect P0.31, pin 6 on camera header (J4) to the SDA line of the I2C Bus.
 -   Connect two EEPROM IC's to the I2C Bus.
 
-If using the Featherboard (FTHR_RevA):
+If using the MAX78000FTHR (FTHR_RevA)
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Select "FTHR_RevA" for _BOARD_ in "Makefile"

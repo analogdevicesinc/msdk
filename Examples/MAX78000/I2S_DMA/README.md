@@ -13,13 +13,13 @@ $ make
 ```
 
 ##### Required Connections:
-If using the standard EV Kit (EvKit_V1):
+If using the MAX78000EVKIT (EvKit_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins 1 and 2 (P0_1) of the JH1 (UART 0 EN) header.
 -	Select "INT" with jumper J20 to supply the clock signal to the I2S module.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
-If using the Featherboard (FTHR_RevA):
+If using the MAX78000FTHR (FTHR_RevA)
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 

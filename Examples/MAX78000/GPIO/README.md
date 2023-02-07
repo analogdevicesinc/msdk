@@ -29,7 +29,7 @@ If using the standard (EvKit_V1):
 -   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED2 EN).
 
-If using the featherboard (FTHR_RevA):
+If using the MAX78000FTHR (FTHR_RevA)
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect a logic analyzer to the SDIO3 pin on header J4 to observe the pin toggling on each SW1 button press.
