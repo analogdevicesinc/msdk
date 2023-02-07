@@ -69,7 +69,7 @@ extern "C" {
 #define LED_ON 0 /// Active state of LEDs
 
 #define TQFN_DB /// Used in examples to control program flow
-
+#define TESTING_IS_FUN FALSE
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
