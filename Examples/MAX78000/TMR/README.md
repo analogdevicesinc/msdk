@@ -8,18 +8,17 @@ Three timers are used to demonstrate three different modes of the general purpos
 
 Push PB1/SW1 to start the PWM and continuous timers and PB2/SW2 to start the oneshot timer.
 
-## Setup
+## Software
 
-##### Building Firmware:
-Before building firmware you must select the correct value for _BOARD_  in "project.mk", either "EvKit\_V1" or "FTHR\_RevA", depending on the EV kit you are using to run the example.
+### Project Usage
 
-After doing so, navigate to the directory where the example is located using a terminal window. Enter the following comand to build all of the files needed to run the example.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-```
-$ make
-```
+### Project-Specific Build Notes
 
-##### Required Connections:
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+
+## Required Connections
 
 If using the MAX78000EVKIT (EvKit_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

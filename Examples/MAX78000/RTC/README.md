@@ -9,18 +9,17 @@ The time-of-day alarm is set to 10 seconds.  When the time-of-day alarm triggers
 
 Pressing SW2 will output the current value of the RTC to the console UART.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+
 ## Setup
-
-##### Building Firmware:
-Before building firmware you must select the correct value for _BOARD_  in "project.mk", either "EvKit\_V1" or "FTHR\_RevA", depending on the EV kit you are using to run the example.
-
-After doing so, navigate to the directory where the example is located using a terminal window. Enter the following comand to build all of the files needed to run the example.
-
-```
-$ make
-```
-
-##### Required Connections:
 
 If using the MAX78000EVKIT (EvKit_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

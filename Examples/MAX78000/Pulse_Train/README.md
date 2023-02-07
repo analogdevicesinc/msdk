@@ -10,19 +10,17 @@ On the Standard EV Kit, the continuous bit pattern and square wave signals are o
 
 On the featherboard, the continuous bit pattern and square wave signals are output to the P0.19 (PT1, pin 9 on header J4) and P0.16 (PT2, pin 11 on header J4) header pins respectively.
 
-##Setup
+## Software
 
-##### Building Firmware:
+### Project Usage
 
-Before building firmware you must select the correct value for _BOARD_  in "project.mk", either "EvKit\_V1" or "FTHR\_RevA", depending on the EV kit you are using to run the example.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-After doing so, navigate to the directory where the example is located using a terminal window. Enter the following comand to build all of the files needed to run the example.
+### Project-Specific Build Notes
 
-```
-$ make
-```
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
-##### Required Connections:
+## Setup
 
 If using the MAX78000EVKIT (EvKit_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
