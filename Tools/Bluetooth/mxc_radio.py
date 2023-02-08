@@ -9,11 +9,6 @@ from time import sleep
 MXC_BASE_BTLE = 0x40050000
 
 
-class AFE:
-    def __init__(self) -> None:
-        pass
-
-
 class DBB:
     """
     Class Used to Read registers of DBB

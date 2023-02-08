@@ -87,11 +87,10 @@ Run Calibration and Initialization Tests
 # Parse the command line arguments
 parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHelpFormatter)
 parser.add_argument('serialPort',help='Serial port for slave device')
-parser.add_argument('-r', '--results', default='',help='File to store results')
+# parser.add_argument('-r', '--results', default='',help='File to store results')
 parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
 parser.add_argument('-ura', '--update-reference-afe', action='store_true')
 parser.add_argument('-vd', '--verify-dbb',  action='store_true')
-parser.add_argument('-va', '--verify-afe',  action='store_true')
 parser.add_argument('-p', '--print',  action='store_true')
 
 args = parser.parse_args()
@@ -100,41 +99,13 @@ print(args)
 print("--------------------------------------------------------------------------------------------")
 
 print("Serial Port   :", args.serialPort)
-print("results       :", args.results)
+
 
 
 # Open the results file, write the parameters
 
-if args.results != '':
-    results = open(args.results, "a")
-
-
-
-def listEq(list1,list2):
-
-    if len(list1) != len(list2):
-        return False
-    length = len(list1)
-    
-    for i in range(length):
-        if list1[i] != list2[i]:
-            return False
-
-    return True
-
-
-
-def verifyDBB(dbbReference):
-    
-    #get expected dbb values
-    
-    
-    #make sure the all values match
-    dbbMatches = True
-
-
-    return dbbMatches
-    
+# if args.results != '':
+#     results = open(args.results, "a")    
 
 def main():
     # Create the BLE_hci objects
@@ -142,15 +113,13 @@ def main():
 
     dbb = mxc_radio.DBB(hciInterface=hciInterface)
     dbbReadout = dbb.readAll()
-    # afeReadout = afe.readAll()
+    
 
     if args.update_reference_dbb:
         with open('dbb_reference.json', 'w') as write:
             json.dump(dbbReadout, write)
     
-    if args.update_reference_afe:
-        pass
-        
+    
 
     if args.print:
         print(colored(dbbReadout, 'green'))
@@ -161,9 +130,6 @@ def main():
             dbbRef = json.load(read)
         print('DBB Match', dbbRef == dbbReadout)
     
-    if args.verify_afe:
-        pass
-
 
 
     
