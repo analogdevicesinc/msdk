@@ -6,21 +6,23 @@ and Digital Base Band (DBB) Registers
 import BLE_hci
 from BLE_hci import Namespace
 from time import sleep
-MXC_BASE_BTLE=0x40050000
+MXC_BASE_BTLE = 0x40050000
+
 
 class AFE:
     def __init__(self) -> None:
         pass
 
+
 class DBB:
-    def __init__(self,hciInterface,ctrlReg=None, rxReg=None, txReg=None, rffeReg=None):
+    def __init__(self, hciInterface, ctrlReg=None, rxReg=None, txReg=None, rffeReg=None):
         self.ctrlReg = ctrlReg
         self.rxReg = rxReg
         self.txReg = txReg
         self.rffeReg = rffeReg
-        self.hciInterface : BLE_hci.BLE_hci = hciInterface
-        
-        #put radio into good state for DBB
+        self.hciInterface: BLE_hci.BLE_hci = hciInterface
+
+        # put radio into good state for DBB
         self.hciInterface.resetFunc(None)
         # self.hciInterface.txTestFunc(Namespace(channel=0, phy=1, packetLength=0, payload=3))
 
@@ -33,19 +35,19 @@ class DBB:
         Read length sizeBytes of memory starting at address start
         NOTE: Function does not check for unmapped regions
         """
-        
-        # There seems to be a problem when lengths are greater than 251. 
+
+        # There seems to be a problem when lengths are greater than 251.
         # I believe it is because the header packet is 3 bytes and so if you have 252 then the total length is 255 and the format is wrong
         # Just gonna assert for now
-        assert(sizeBytes <= 251)
-        
-        regReadSize = "0x%02X" %(sizeBytes)
-        addr =  "0x%08X" % (start)
+        assert (sizeBytes <= 251)
+
+        regReadSize = "0x%02X" % (sizeBytes)
+        addr = "0x%08X" % (start)
 
         print(f'Reading {sizeBytes} from address {addr}')
-        return self.hciInterface.readReg(addr=addr,length=regReadSize)
+        return self.hciInterface.readReg(addr=addr, length=regReadSize)
         # return self.hciInterface.readRegFunc(Namespace(addr=addr,length=regReadSize))
-        
+
     def readRegion(self, start, stop):
         """
         Read region from start to stop, non inclusive of stop
@@ -54,10 +56,10 @@ class DBB:
         region = []
 
         totalLen = stop - start
-        READ_LEN_MAX=251
-        
-        while  totalLen > 0:
-            
+        READ_LEN_MAX = 251
+
+        while totalLen > 0:
+
             if totalLen <= READ_LEN_MAX:
                 readout = self.readRegs(start, totalLen)
                 amtRead = totalLen
@@ -66,19 +68,52 @@ class DBB:
                 amtRead = READ_LEN_MAX
             region.extend(readout)
             totalLen -= amtRead
-        
 
         print('Length', len(region))
-        assert(len(region) == stop - start)
+        assert (len(region) == stop - start)
 
         return region
-        
+
+    def readRegions(self, baseAddr, offsetLut: dict):
+        """
+        Reads multiple regions give region map 
+        and returns data as list
+        """
+        regions = []
+        for count, region in enumerate(offsetLut):
+
+            # unpack to make readable
+            region_start, reserved_start, reserved_len = region
+
+            # add base to offset address
+            region_start += baseAddr
+            reserved_start += baseAddr
+
+            print('Reading Region', count)
+
+            regionLength = reserved_start - region_start
+            print('Expected Region Length', regionLength)
+
+            readout = self.readRegion(region_start, reserved_start)
+
+            if len(readout) != (regionLength):
+                print('Error occurred during readout. Aborting operation')
+                return []
+
+            regions.extend(readout)
+
+            # add reserved region to the register read
+            regions.extend(['00'] * reserved_len)
+            sleep(0.1)
+
+        return regions
+
     def readCtrlReg(self):
         """
         Read and return the DBB Ctrl Reg
         """
 
-        # DBB has a reserved region from Offset 0x96 to 0xff 
+        # DBB has a reserved region from Offset 0x96 to 0xff
         # Offset 0x108 is also reserved
         # Attempting to read them causes a hardfault
 
@@ -91,96 +126,85 @@ class DBB:
 
         next = self.readRegs(CTRL_REG_ADDR + 0x100, 0x108 - 0x100)
         ctrlReg.extend(next)
-        
-        #Add reserved 0x104 regoion
+
+        # Add reserved 0x104 regoion
         ctrlReg.extend(['00'] * 4)
 
-
-        
-        #The last bit is the AES information including the key 
+        # The last bit is the AES information including the key
         # which is protected so we have to stop before or we get a hardfault
         next = self.readRegs(CTRL_REG_ADDR + 0x10C, 0x110 - 0x10C)
         ctrlReg.extend(next)
         ctrlReg.extend(['00']*(0x120-0x100))
-        
+
         print('Ctrl Reg Read', len(ctrlReg))
-        
 
         return ctrlReg
 
+    def readTxReg(self):
+        """
+        Read out the TX register of the DBB and return as list
+        Reserved regions will be set as '00'
+        """
 
-    
+        MXC_BASE_BTLE_DBB_TX = MXC_BASE_BTLE + 0x2000
+
+        offsetLut = [
+            (0x00, 0x70, 0x180 - 0x70),
+            # any address offset past 0x18c causes a hardfault
+            (0x180, 0x18c, 0x194 + 76 - 0x18c)
+        ]
+
+        self.hciInterface.txTestFunc(
+            Namespace(channel=0, phy=1, packetLength=0, payload=3))
+
+        txRegs = self.readRegions(
+            baseAddr=MXC_BASE_BTLE_DBB_TX, offsetLut=offsetLut)
+
+        self.hciInterface.endTestFunc(None)
+
+        return txRegs
+
     def readRxReg(self):
         """
         Reads the contents of the rx register and returns data as a list
         All reserved regions initialized as '00'
         """
         MXC_BASE_BTLE_DBB_RX = MXC_BASE_BTLE + 0x3000
-        
+
         # Offset Lookup for RX registers
         # There are a lot of traps and so some of these offsets were found by trial and error
         # Start of region, Start of reserved region, reserved region len
-        regionMap = [( 0x00,    0x76  , 2),
-                     ( 0x78,    0x13a , 2),
-                     ( 0x13c,   0x2dc , 73*4),
-                     ( 0x400,   0x404 , 4),
-                     ( 0x408,   0x40c , 4*5),
-                     ( 0x420,   0x424 , 0x586 - 0x424), #The entire region with CTE values causes hardfaults
+        offsetLut = [(0x00,    0x76, 2),
+                     (0x78,    0x13a, 2),
+                     (0x13c,   0x2dc, 73*4),
+                     (0x400,   0x404, 4),
+                     (0x408,   0x40c, 4*5),
+                     # The entire region with CTE values causes hardfaults
+                     (0x420,   0x424, 0x586 - 0x424),
                      ]
 
         self.hciInterface.rxTestFunc(Namespace(channel=0, phy=1))
-        
-        rxReg = []
-        
-        for count, region in enumerate(regionMap):
 
-            #unpack to make readable
-            region_start, reserved_start, reserved_len = region
-            
-            #add base to offset address
-            region_start += MXC_BASE_BTLE_DBB_RX
-            reserved_start += MXC_BASE_BTLE_DBB_RX
+        rxRegs = self.readRegions(MXC_BASE_BTLE_DBB_RX, offsetLut)
 
-            print('Reading Region', count)
-
-            regionLength = reserved_start - region_start
-            print('Expected Region Length', regionLength)
-            
-            readout = self.readRegion(region_start, reserved_start)
-
-            if len(readout) != (regionLength):
-                print('Error occurred during readout. Aborting operation')
-                return []
-
-            rxReg.extend(readout)
-
-            #add reserved region to the register read
-            rxReg.extend(['00'] * reserved_len)
-            sleep(0.1)
-    
-
-        
         self.hciInterface.endTestFunc(None)
-        
-        return rxReg
 
-        
-    def readTxReg(self):
-        MXC_BASE_BTLE_DBB_TX = MXC_BASE_BTLE + 0x2000
+        return rxRegs
+
     def readRffeReg(self):
-        MXC_BASE_BTLE_DBB_EXT_RFFE  = MXC_BASE_BTLE + 0x8000
+        MXC_BASE_BTLE_DBB_EXT_RFFE = MXC_BASE_BTLE + 0x8000
+
     def readAll(self):
         self.ctrlReg = self.readCtrlReg()
         self.rxReg = self.readRxReg()
         self.txReg = self.readTxReg()
         self.rffeReg = self.readRffeReg()
 
-        return {'ctrl' : self.ctrlReg, 
-                'rx' : self.rxReg, 
-                'tx' : self.txReg, 
-                'rffe' : self.rffeReg }
-        
+        return {'ctrl': self.ctrlReg,
+                'rx': self.rxReg,
+                'tx': self.txReg,
+                'rffe': self.rffeReg}
+
     def dump(self):
         dumpRead = self.readAll()
         print(dumpRead)
-    
