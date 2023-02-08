@@ -1,0 +1,24 @@
+name: Doxygen Generation
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  doxygen-generation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Doxygen generation
+        uses: FreeRTOS/CI-CD-Github-Actions/doxygen-generation@main
+        with:
+          generate_command: |
+            # generate coreMQTT docs
+            git submodule update --init --checkout source/dependency/coreMQTT
+            cd source/dependency/coreMQTT
+            doxygen docs/doxygen/config.doxyfile 2>&1 | tee doxyoutput.txt
+            cd ../../..
+            # generate coreMQTT-Agent docs
+            ( cat docs/doxygen/config.doxyfile;
+              echo "TAGFILES = source/dependency/coreMQTT/docs/doxygen/output/mqtt.tag=coreMQTT"
+            ) | doxygen - 2>&1 | tee -a doxyoutput.txt
+            mv source/dependency/coreMQTT/docs/doxygen/output/html docs/doxygen/output/html/coreMQTT
+            if [ "$(wc -c < doxyoutput.txt | bc)" = "0" ]; then exit 0; else exit 1; fi

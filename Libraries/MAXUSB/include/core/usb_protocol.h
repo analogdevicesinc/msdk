@@ -37,6 +37,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
 /* SETUP message byte offsets */
 #define SETUP_bmRequestType   0
 #define	SETUP_bRequest        1
@@ -205,5 +209,8 @@ typedef __packed struct {
   uint8_t  bMaxPower;
 } MXC_USB_other_speed_configuration_descriptor_t;
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

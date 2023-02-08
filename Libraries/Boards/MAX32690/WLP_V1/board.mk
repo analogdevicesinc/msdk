@@ -39,11 +39,7 @@ endif
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
-SRCS += mx25.c
 SRCS += pb.c
-SRCS += tft_st7735.c
-
-PROJ_CFLAGS+=-DEXT_FLASH_MX25
 
 MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 

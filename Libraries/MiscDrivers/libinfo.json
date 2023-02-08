@@ -21,6 +21,12 @@
 		"./"],
 	"whitelist":"True",
 	"targets":[
+        {
+            "name":"MAX32665"
+        },
+        {
+            "name":"MAX32672"
+        },
 		{
 			"name":"MAX78000"
 		},

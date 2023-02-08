@@ -13,9 +13,13 @@
 
 # Add your config here!
 
+# If you have secure version of MCU, set SBT=1 to generate signed binary
+# For more information on how sing process works, see
+# https://www.analog.com/en/education/education-library/videos/6313214207112.html
+SBT=0
+
 # Set hardware floating-point acceleration
 MFLOAT_ABI = hard
 
 # Include the CMSIS-DSP library
 LIB_CMSIS_DSP = 1
-

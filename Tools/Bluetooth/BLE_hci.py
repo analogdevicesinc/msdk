@@ -46,8 +46,8 @@ import argparse
 from argparse import RawTextHelpFormatter
 from time import sleep
 import datetime
-import readline
 import threading
+from termcolor import colored
 
 # Setup the default serial port settings
 defaultBaud=115200
@@ -136,6 +136,11 @@ class BLE_hci:
     def __init__(self, args):
         
         try:
+            if "id" in vars(args).keys():
+                self.id = args.id
+            else:
+                self.id = "-"
+                
             # Open serial port
             serialPort = args.serialPort
             self.port = serial.Serial(
@@ -174,6 +179,7 @@ class BLE_hci:
             print("baud rate exception, "+str(args.baud)+" is too large")
             print(err)
             sys.exit(1)
+
         if self.mon_port != None:
             monTraceMsgThread = threading.Thread(target=self.monTraceMsg, daemon=True)
             monTraceMsgThread.start()
@@ -259,11 +265,14 @@ class BLE_hci:
         payload = self.port.read(size=packet_len)
 
         # Print the packet
-        status_string = ""
         if print_evt and len(payload) > 0:
             for i in range(0, len(payload)):
                 status_string += '%02X'%payload[i]
-            print(str(datetime.datetime.now()) + " <", status_string)
+
+            if self.id == "-":
+                print(str(datetime.datetime.now()) + "  <", status_string)
+            else:
+                print(str(datetime.datetime.now()) + f" {self.id}<", status_string)
 
         return status_string
 
@@ -286,16 +295,26 @@ class BLE_hci:
      # Send a HCI command to the serial port. Will add a small delay and wait for
      # and print an HCI event by default.
     ################################################################################
-    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True):
+    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=16):
         # Send the command and data
         if(print_cmd):
-          print(str(datetime.datetime.now()) + " >", packet)
+            if self.id == "-":
+                print(str(datetime.datetime.now()) + "  >", packet)
+            else:
+                print(str(datetime.datetime.now()) + f" {self.id}>", packet)
 
-        self.port.write(bytearray.fromhex(packet))
+        print('Packet', packet)
+        
+        arr = bytearray.fromhex(packet)
+        
+        print(arr)
+        
+        self.port.write(arr)
+        
         sleep(delay)
-
+            
         if(resp):
-            return self.wait_event()
+            return self.wait_event(timeout=timeout)
 
 
     ## Parse connection stats event.
@@ -303,6 +322,30 @@ class BLE_hci:
      # Parses a connection stats event and prints the results.
     ################################################################################
     def parseConnStatsEvt(self, evt):
+        """
+        Example:
+            2023-01-04 12:41:48.018410 2> 01FDFF00
+            2023-01-04 12:41:48.029006 2< 040E2001FDFF00880000000100000000000000880000000000000000000A0016000700
+
+            rxDataOk   : 136
+            rxDataCRC  : 1
+            rxDataTO   : 0
+            txData     : 136
+            errTrans   : 0
+            PER        : 0.73 %
+
+            2023-01-04 16:04:27.486935 1> 01FDFF00
+            2023-01-04 16:04:27.497405 1< 040E2001FDFF0000000000000000000000000000000000000000000000000000000000
+            rxDataOk   : 0
+            rxDataCRC  : 0
+            rxDataTO   : 0
+            txData     : 0
+            errTrans   : 0
+            perMaster  :  100.0
+
+        :param evt:
+        :return: per
+        """
         try:
             # Offset into the event where the stats start, each stat is 32 bits, or
             # 8 hex nibbles
@@ -329,8 +372,8 @@ class BLE_hci:
         print("errTrans   : "+str(errTrans))
 
         per = 100.0
-        if((rxDataCRC+rxDataTO+rxDataOk) != 0):
-            per = round(float((rxDataCRC+rxDataTO)/(rxDataCRC+rxDataTO+rxDataOk))*100,2)
+        if (rxDataCRC+rxDataTO+rxDataOk) != 0:
+            per = round(float((rxDataCRC+rxDataTO)/(rxDataCRC+rxDataTO+rxDataOk))*100, 2)
             print("PER        : "+str(per)+" %")
 
         return per
@@ -348,10 +391,10 @@ class BLE_hci:
                 msg = msg.replace("\r\n", "")
                 if msg != "":
                     if first:
-                        print(f'\n{str(datetime.datetime.now())} - {msg}')
+                        print(f'\n{str(datetime.datetime.now())} {self.id}  {msg}')
                         first = False
                     else:
-                        print(f'{str(datetime.datetime.now())} - {msg}')
+                        print(f'{str(datetime.datetime.now())} {self.id}  {msg}')
 
 
     ## Get connection stats.
@@ -376,6 +419,9 @@ class BLE_hci:
 
             retries = retries - 1
 
+        if retries == 0 and per is None:
+            print(colored('Warning: Failed to get connection stats', 'yellow'))
+        
         return per
 
 
@@ -495,7 +541,6 @@ class BLE_hci:
 
             return per
 
-
         # Listen for events for a few seconds
         if(args.listen != "True"):
             self.wait_events(int(args.listen))
@@ -588,7 +633,6 @@ class BLE_hci:
         else:
             self.send_command(connCommand)
 
- 
         if(args.listen == "False"):
             return
 
@@ -609,7 +653,7 @@ class BLE_hci:
 
             return per
 
-        # Listen for events for a few seconds
+        # Listen for events for a few seconds``
         if(args.listen != "True"):
             self.wait_events(int(args.listen))
             return
@@ -644,6 +688,8 @@ class BLE_hci:
         self.send_command("01E4FF05"+"0000"+packetLen+numPackets)
 
         ## Set the length of empty packets.
+
+
      #
      #  Sets the length of empty packets.
     ################################################################################
@@ -657,7 +703,7 @@ class BLE_hci:
      # Sends HCI command to switch PHYs. Assumes that we can't do asymmetric PHY settings.
      # Assumes we're using connection handle 0000
     ################################################################################
-    def phyFunc(self, args):
+    def phyFunc(self, args, timeout=3):
         # Convert PHY options to bits
         phy="01"
         phyOptions="0000"
@@ -673,7 +719,7 @@ class BLE_hci:
             print("Invalid PHY selection, using 1M")
 
         self.send_command("01322007"+"0000"+"00"+phy+phy+phyOptions)
-        self.wait_events(3)
+        self.wait_events(timeout)
 
     ## Rest function.
      #
@@ -740,10 +786,24 @@ class BLE_hci:
      # Sends a vendor specific HCI command for the transmitter test.
     ################################################################################
     def txTestVSFunc(self, args):
-        channel="%0.2X"%int(args.channel)
-        packetLength="%0.2X"%int(args.packetLength)
-        payload="%0.2X"%int(args.payload)
-        phy="%0.2X"%int(args.phy)
+
+        if args.channel is not None:
+            channel="%0.2X"%int(args.channel)
+        else:
+            channle = "%0.2X"%int(0)
+        if args.packetLength is not None:
+            packetLength="%0.2X"%int(args.packetLength)
+        else:
+            packetLength = '00'
+
+        if args.payload is not None:
+            payload="%0.2X"%int(args.payload)
+        else:
+            payload="%0.2X"%int(0)
+        if args.phy is not None:
+            phy="%0.2X"%int(args.phy)
+        else:   
+            phy = '01'
 
         numPackets = "%0.2X"%(int(args.numPackets) & 0xFF)
         numPackets+= "%0.2X"%((int(args.numPackets) & 0xFF00) >> 8)
@@ -759,6 +819,39 @@ class BLE_hci:
         phy="%0.2X"%int(args.phy)
         modulationIndex="00"
         self.send_command("01332003"+channel+phy+modulationIndex)
+    
+   
+    def endTestVSFunc(self, args):
+        """
+        Vendor specific command to end test\n
+        Returns a dictionary of entire test report\n
+        Keys:\n
+            rxDataTO -  Timeouts on receive\n
+            rxDataCRC - RX data with CRC errors\n
+            rxDataOk - Total RX data received with no issues\n
+            txData   - Total number of TX packets sent\n
+        """
+        
+        evtString = self.send_command("0104FF00")
+
+        if evtString:                      
+            stats = {}
+
+            #flip every two character strings to create a big endian string to cast            
+            stats['rxDataTO']   = int(evtString[-2:] + evtString[-4 :-2],16)
+            stats['rxDataCRC']  = int(evtString[-6 :-4] + evtString[-8:-6],16) 
+            stats['rxDataOk']   = int(evtString[-10 :-8] + evtString[-12:-10] ,16)
+            stats['txData']     = int(evtString[-14 :-12] + evtString[-16:-14],16)
+
+            # if args is None or args.noPrint is False:
+            for item in stats:
+                print(item, stats[item])
+                
+            return stats
+        else:
+            print(colored('Error: Device Returned No Data. Command may not be supported, or device might not be updated', 'red'))
+            return None
+
 
     ## End Test function.
      #
@@ -769,9 +862,19 @@ class BLE_hci:
         evtString = self.send_command("011F2000")
 
         # Parse the event and print the number of received packets
-        evtData = int(evtString, 16)
+        try:
+
+            print("evtString", evtString)
+
+            evtData = int(evtString, 16)
+        except ValueError:
+            print('Value Error Has occured. Response most likely empty')
+            return 0
+        
         rxPackets = int((evtData & 0xFF00)>>8)+int((evtData & 0xFF)<<8)
-        print("Received PKTS  : "+str(rxPackets))
+        if (args is None) or (vars(args).get('noPrint') is not True):
+            print("Received PKTS  : "+str(rxPackets))
+
         return rxPackets
 
     ## txPower function.
@@ -843,8 +946,46 @@ class BLE_hci:
      #
      # Sends HCI commands.
     ################################################################################
-    def cmdFunc(self,args):
-        self.send_command(args.cmd)
+    def cmdFunc(self,args, timeout=None):
+        if timeout is None:
+            self.send_command(args.cmd)
+        else:
+            self.send_command(args.cmd, timeout=timeout)
+
+    def readReg(self, addr, length):
+
+        # Reverse the bytes to LSB first
+        addrBytes = parseAddr(addr)
+
+        # Get the read length
+        readLen = length
+        if(readLen[:2] != "0x"):
+            print("Length must be a hex number starting with 0x")
+            return
+        readLen = readLen[2:]
+
+        # assert(readLen < 256)
+
+        readLenString = "%0.2X"%int(readLen, 16)
+        print(readLenString)
+        # Calculate the total length, 1 for the read len, 4 for the address length
+        totalLen = "%0.2X"%(1+4)
+
+        # Send the command and save the event
+        evtString = self.send_command("0101FF"+totalLen+readLenString+addrBytes)
+
+        print('Return String',evtString)
+        # print('EvtString Length', len(evtString))
+
+        # Get the data
+        evtString = evtString[14:]
+        # print('EvtString Length', len(evtString))
+        print(evtString)
+        # Split the data into bytes
+        chunks, chunk_size = len(evtString), 2
+        evtBytes = [ evtString[i:i+chunk_size] for i in range(0, chunks, chunk_size) ]
+        
+        return evtBytes
 
     ## Read register function.
      #
@@ -864,8 +1005,11 @@ class BLE_hci:
             print("Length must be a hex number starting with 0x")
             return
         readLen = readLen[2:]
-        readLenString = "%0.2X"%int(readLen, 16)
 
+        # assert(readLen < 256)
+
+        readLenString = "%0.2X"%int(readLen, 16)
+        print(readLenString)
         # Calculate the total length, 1 for the read len, 4 for the address length
         totalLen = "%0.2X"%(1+4)
 
@@ -879,6 +1023,7 @@ class BLE_hci:
         chunks, chunk_size = len(evtString), 2
         evtBytes = [ evtString[i:i+chunk_size] for i in range(0, chunks, chunk_size) ]
 
+        
         # Print the data
         startingAddr = int(args.addr, 16)
 
@@ -903,7 +1048,7 @@ class BLE_hci:
                 print("__", end="")
             else:
                 print(evtBytes[lineAddr], end="")
-
+                
             # Print a new line at the end of the 32 bit value
             if(i%4 == 3):
                 print()
@@ -965,6 +1110,7 @@ class BLE_hci:
 
         self.send_command("0100FF"+totalLen+writeLen+addrBytes+data)
 
+    
 ## Help function.
  #
  # Prints the help text.
@@ -1122,7 +1268,7 @@ if __name__ == '__main__':
     """)
     txTest_parser.set_defaults(func=ble_hci.txTestFunc)
 
-    txTestVS_parser = subparsers.add_parser('txTestVS', aliases=['tx'], help="Execute the transmitter test", formatter_class=RawTextHelpFormatter)
+    txTestVS_parser = subparsers.add_parser('txTestVS', aliases=['txvs'], help="Execute the transmitter test", formatter_class=RawTextHelpFormatter)
     txTestVS_parser.add_argument('-c', '--channel', default="0", help="TX test channel, 0-39, default: 0")
     txTestVS_parser.add_argument('--phy', default="1", help=
     """TX test PHY
@@ -1169,6 +1315,10 @@ if __name__ == '__main__':
     endTest_parser = subparsers.add_parser('endTest', aliases=['end'], 
         help="End the TX/RX test, print the number of correctly received packets")
     endTest_parser.set_defaults(func=ble_hci.endTestFunc)
+
+    endTestVS_parser = subparsers.add_parser('endTestVS', aliases=['endvs'], 
+        help="End the TX/RX test, print the full test report, and return the report as a dictionary")
+    endTestVS_parser.set_defaults(func=ble_hci.endTestVSFunc)
 
     txPower_parser = subparsers.add_parser('txPower', aliases=['txp'], help="Set the TX power", formatter_class=RawTextHelpFormatter)
     txPower_parser.add_argument('power', help="""Integer power setting in units of dBm""")

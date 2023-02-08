@@ -45,6 +45,10 @@
 #include "uart_regs.h"
 #include "mxc_sys.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /***** Definitions *****/
 
 /**
@@ -661,5 +665,9 @@ uint32_t MXC_UART_GetAsyncTXCount(mxc_uart_req_t *req);
 uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req);
 
 /**@} end of group uart */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_UART_H_

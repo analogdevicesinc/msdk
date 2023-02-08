@@ -1,11 +1,22 @@
-# This file can be used for project configuration.
-# It's a sibling to the core "Makefile", which offers
-# various configuration variables that you can set here
-# if the default setup isn't suitable.
+# This file can be used to set build configuration
+# variables.  These variables are defined in a file called 
+# "Makefile" that is located next to this one.
 
-# See the comments in the "Makefile" for a detailed
-# description of the default behavior and the full list of
-# available options.
+# For instructions on how to use this system, see
+# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+
+#BOARD=FTHR_RevA
+# ^ For example, you can uncomment this line to make the 
+# project build for the "FTHR_RevA" board.
+
+# **********************************************************
+
+# Add your config here!
+
+# If you have secure version of MCU (MAX32651), set SBT=1 to generate signed binary
+# For more information on how sing process works, see
+# https://www.analog.com/en/education/education-library/videos/6313214207112.html
+SBT=0
 
 # Build the FreeRTOS Library
 LIB_FREERTOS = 1

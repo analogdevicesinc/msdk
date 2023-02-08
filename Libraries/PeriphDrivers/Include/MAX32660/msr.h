@@ -44,6 +44,10 @@
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_MSR_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_MSR_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /***** Definitions *****/
 
 /// Number of tracks on a card
@@ -167,5 +171,9 @@ void msr_set_complete_callback(void (*func)(void));
 *   \returns  number of samples retrieved
 */
 unsigned int mcr_get_track_samples(unsigned int track, msr_samples_t *samples);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_MSR_H_

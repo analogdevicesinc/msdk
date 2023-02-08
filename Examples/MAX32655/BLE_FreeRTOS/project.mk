@@ -22,3 +22,6 @@ INIT_OBSERVER = 0
 
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
+
+# Adjust WSF heap to optimize SRAM usage
+WSF_HEAP_SIZE = 0x8000

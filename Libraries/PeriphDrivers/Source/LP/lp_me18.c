@@ -138,6 +138,7 @@ void MXC_LP_ClearWakeStatus(void)
     MXC_PWRSEQ->lpwkst1 = 0xFFFFFFFF;
     MXC_PWRSEQ->lpwkst2 = 0xFFFFFFFF;
     MXC_PWRSEQ->lpwkst3 = 0xFFFFFFFF;
+    MXC_PWRSEQ->lpwkst4 = 0xFFFFFFFF;
     MXC_PWRSEQ->lppwst = 0xFFFFFFFF;
 }
 

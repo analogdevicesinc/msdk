@@ -163,35 +163,6 @@ int flashPageErased(uint32_t *addr)
     return 1;
 }
 
-uint32_t findUpperLen(void)
-{
-    uint32_t *flashPagePointer = (uint32_t *)FLASH1_START;
-
-    /* Find the first erased page in the upper flash*/
-    while (1) {
-        if (*flashPagePointer == FLASH_ERASED_WORD) {
-            /* Make sure the entire page is erased */
-            if (flashPageErased(flashPagePointer)) {
-                break;
-            }
-        }
-
-        flashPagePointer += (MXC_FLASH_PAGE_SIZE / 4);
-    }
-
-    /* Length is 0 */
-    if (flashPagePointer == (uint32_t *)FLASH1_START) {
-        return 0;
-    }
-
-    /* search backwards for the first bytes that isn't erased */
-    while (*(flashPagePointer--) == FLASH_ERASED_WORD) {}
-    flashPagePointer += 2;
-
-    /* return the starting address of the CRC, last address of the image */
-    return (uint32_t)(flashPagePointer - (4 / 4) - (FLASH1_START / 4));
-}
-
 static int multiPageErase(uint8_t *address, uint32_t pages)
 {
     int err;

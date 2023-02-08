@@ -363,6 +363,12 @@ int Console_PrepForSleep(void)
 }
 
 /******************************************************************************/
+void GPIO_PrepForSleep(void)
+{
+    /* TODO: Setup the unused GPIO high */
+}
+
+/******************************************************************************/
 void NMI_Handler(void)
 {
     __NOP();

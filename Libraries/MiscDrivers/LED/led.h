@@ -60,6 +60,13 @@ extern "C" {
 #define LED_ON 1 /**< Define to turn on the LED. */
 #endif
 
+#ifndef LED1
+#define LED1 0
+#endif
+#ifndef LED2
+#define LED2 1
+#endif
+
 /* **** Global Variables **** */
 extern const mxc_gpio_cfg_t led_pin[];
 extern const unsigned int num_leds;

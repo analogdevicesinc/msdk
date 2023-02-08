@@ -46,7 +46,6 @@
 // for grace period before eventually removing support for deprecated features. 10-24-2022
 //>>>
 #include "trimsir_regs.h"
-#include "aes_key_regs.h"
 #include "aes_regs.h"
 //<<<
 

@@ -42,6 +42,10 @@
 
 #include <stdint.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @ingroup devicelibs
  * @defgroup    MXC_delay Delay Utility Functions
@@ -147,5 +151,9 @@ void MXC_DelayHandler(void);
 /**@} end of group MXC_delay */
 
 #endif /* __riscv */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_DELAY_H_

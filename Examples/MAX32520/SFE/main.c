@@ -149,8 +149,6 @@ void Flash_Write()
 //******************************************************************************
 void Flash_Init(void)
 {
-    MXC_FLC0->flsh_clkdiv = 54;
-
     // Setup and enable interrupt
     NVIC_EnableIRQ(FLC0_IRQn);
     __enable_irq();

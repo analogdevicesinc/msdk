@@ -50,11 +50,12 @@ jobs:
       #current board undertest
       - name: Lock All Boards
         if: ${{ always() }}
+        id: lock_files
         run: |          
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 780 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
 
       # ME17
       - name: TEST MAX32655
@@ -70,6 +71,7 @@ jobs:
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
           Examples/MAX32655/BLE \
+          Examples/MAX32655/Bootloader \
           Libraries/libs.mk \
           Libraries/Cordio \
           Libraries/CMSIS/Device/Maxim/MAX32655 \
@@ -134,7 +136,9 @@ jobs:
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
           Examples/MAX32665/BLE \
+          Examples/MAX32665/Bootloader \
           Libraries/libs.mk \
+          Libraries/Cordio \
           Libraries/CMSIS/Device/Maxim/MAX32665 \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
           Libraries/PeriphDrivers/periphdriver.mk \
@@ -193,7 +197,9 @@ jobs:
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
           Examples/MAX32690/BLE \
+          Examples/MAX32690/Bootloader \
           Libraries/libs.mk \
+          Libraries/Cordio \
           Libraries/CMSIS/Device/Maxim/MAX32690 \
           Libraries/PeriphDrivers/libPeriphDriver.mk \
           Libraries/PeriphDrivers/periphdriver.mk \
@@ -254,12 +260,10 @@ jobs:
       # This needs some work, if the job is cancelled or times out because it could not get a LOCK
       # it then jumps here and removes all locks, that were set by a different job   
       - name: Unlock All Boards
-        if: always()
+        if: ${{ always() && steps.lock_files.outcome == 'success' }}
         run: |
-
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
           

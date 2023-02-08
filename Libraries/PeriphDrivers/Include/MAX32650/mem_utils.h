@@ -40,6 +40,10 @@
 
 #include "mxc_device.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * @defgroup    mem_utils Memory Utility Functions 
  * @ingroup     devicelibs 
@@ -99,5 +103,9 @@ void memcpy32(uint32_t *dst, uint32_t *src, unsigned int len);
 int memcmp32(uint32_t *dst, uint32_t *src, unsigned int len);
 
 /**@} end of group mem_utils */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MEM_UTILS_H_
