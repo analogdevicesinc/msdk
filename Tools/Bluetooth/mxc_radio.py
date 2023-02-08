@@ -210,6 +210,15 @@ class DBB:
         return rffe
 
     def readAll(self):
+        """
+        Read all registers associated with dbb
+        Return dict of register readouts
+        Keys:
+        ctrl: ctrl registers
+        rx: rx registers
+        tx : tx registers
+        rffe: rffe registers 
+        """
         self.ctrlReg = self.readCtrlReg()
         self.rxReg = self.readRxReg()
         self.txReg = self.readTxReg()

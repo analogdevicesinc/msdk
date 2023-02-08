@@ -50,7 +50,9 @@ from BLE_hci import BLE_hci
 from BLE_hci import Namespace
 import socket
 import time
+import json
 import mxc_radio
+from termcolor import colored
 
 from json import JSONEncoder
 
@@ -85,8 +87,12 @@ Run Calibration and Initialization Tests
 # Parse the command line arguments
 parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHelpFormatter)
 parser.add_argument('serialPort',help='Serial port for slave device')
-parser.add_argument('-d', '--dbb', default=5,help='Read and dump DBB registers')
 parser.add_argument('-r', '--results', default='',help='File to store results')
+parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
+parser.add_argument('-ura', '--update-reference-afe', action='store_true')
+parser.add_argument('-vd', '--verify-dbb',  action='store_true')
+parser.add_argument('-va', '--verify-afe',  action='store_true')
+parser.add_argument('-p', '--print',  action='store_true')
 
 args = parser.parse_args()
 print(args)
@@ -101,14 +107,6 @@ print("results       :", args.results)
 
 if args.results != '':
     results = open(args.results, "a")
-
-
-
-
-
-class RegisterEncoder(JSONEncoder):
-    def default(self, o):
-            return o.__dict__
 
 
 
@@ -143,14 +141,29 @@ def main():
     hciInterface  = BLE_hci(Namespace(serialPort=args.serialPort,  monPort="", baud=115200, id=1))
 
     dbb = mxc_radio.DBB(hciInterface=hciInterface)
-    # ctrlReg = dbb.readCtrlReg()
-    rxReg = dbb.readRxReg()
+    dbbReadout = dbb.readAll()
+    # afeReadout = afe.readAll()
 
+    if args.update_reference_dbb:
+        with open('dbb_reference.json', 'w') as write:
+            json.dump(dbbReadout, write)
+    
+    if args.update_reference_afe:
+        pass
+        
 
+    if args.print:
+        print(colored(dbbReadout, 'green'))
 
+    if args.verify_dbb:
+        dbbRef = {}
+        with open('dbb_reference.json', 'r') as read:
+            dbbRef = json.load(read)
+        print('DBB Match', dbbRef == dbbReadout)
+    
+    if args.verify_afe:
+        pass
 
-    # print(ctrlReg)
-    print('Rx', rxReg)
 
 
     
