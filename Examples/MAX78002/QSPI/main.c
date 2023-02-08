@@ -53,7 +53,8 @@
 
 /***** Definitions *****/
 #define SPI MXC_SPI0
-#define SPI_SPEED 8000000
+// #define SPI_SPEED 8000000
+#define SPI_SPEED 100000
 #define TEST_SIZE 800
 
 /***** Globals *****/
@@ -407,6 +408,7 @@ int main(void)
 
     // Invert test pattern
     memset(tx_buffer, ~(0x5A), TEST_SIZE);
+    memset(rx_buffer, 0, TEST_SIZE);
 
     // Benchmark QSPI write to external SRAM
     err = ram_enter_quadmode(&g_req);
@@ -425,6 +427,10 @@ int main(void)
             printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, 0xA5, rx_buffer[i]);
         }
     }
+
+    // Invert test pattern
+    memset(tx_buffer, ~(0x5A), TEST_SIZE);
+    memset(rx_buffer, 0, TEST_SIZE);
 
     // Benchmark QSPI write + DMA to external SRAM
     MXC_TMR_SW_Start(MXC_TMR0);
