@@ -147,8 +147,10 @@ def main():
     rxReg = dbb.readRxReg()
 
 
+
+
     # print(ctrlReg)
-    # print('Rx', rxReg)
+    print('Rx', rxReg)
 
 
     
