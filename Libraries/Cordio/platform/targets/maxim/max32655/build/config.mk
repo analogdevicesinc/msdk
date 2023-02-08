@@ -45,6 +45,3 @@ endif
 ifneq ($(HCI_TR_MAIL),)
 CFG_DEV     += HCI_TR_MAIL=${HCI_TR_MAIL}
 endif
-
-# Use a smaller heap with wsf FreeRTOS
-CFG_DEV     += WSF_HEAP_SIZE=0x10000

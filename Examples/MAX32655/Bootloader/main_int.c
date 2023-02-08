@@ -67,6 +67,11 @@ extern uint32_t _flash1;
 /**************************************************************************************************
   Local Variables
 **************************************************************************************************/
+typedef struct {
+    uint32_t fileLen;
+    uint32_t fileCRC;
+} fileHeader_t;
+fileHeader_t fileHeader;
 
 /**************************************************************************************************
   Functions
@@ -139,35 +144,6 @@ int flashPageErased(uint32_t *addr)
     }
 
     return 1;
-}
-
-uint32_t findUpperLen(void)
-{
-    uint32_t *flashPagePointer = (uint32_t *)FLASH1_START;
-
-    /* Find the first erased page in the upper flash*/
-    while (1) {
-        if (*flashPagePointer == FLASH_ERASED_WORD) {
-            /* Make sure the entire page is erased */
-            if (flashPageErased(flashPagePointer)) {
-                break;
-            }
-        }
-
-        flashPagePointer += (MXC_FLASH_PAGE_SIZE / 4);
-    }
-
-    /* Length is 0 */
-    if (flashPagePointer == (uint32_t *)FLASH1_START) {
-        return 0;
-    }
-
-    /* search backwards for the first bytes that isn't erased */
-    while (*(flashPagePointer--) == FLASH_ERASED_WORD) {}
-    flashPagePointer += 2;
-
-    /* return the starting address of the CRC, last address of the image */
-    return (uint32_t)(flashPagePointer - (4 / 4) - (FLASH1_START / 4));
 }
 
 static int multiPageErase(uint8_t *address, uint32_t size)
@@ -245,25 +221,33 @@ int main(void)
     /* disable interrupts to prevent these operations from being interrupted */
     __disable_irq();
 
-    /* Get the length of the image in the upper flash array */
-    uint32_t len = findUpperLen();
+    /* Get the file header */
+    fileHeader.fileLen = (uint32_t) * (uint32_t *)FLASH1_START;
+    fileHeader.fileCRC = (uint32_t) * (uint32_t *)(FLASH1_START + sizeof(uint32_t));
+
+    /* Check if FLASH1 is erased */
+    if (fileHeader.fileLen == 0xFFFFFFFF) {
+        fileHeader.fileLen = 0;
+    }
 
     /* Attempt to verify the upper image if we get a valid length */
-    if (len) {
+    if (fileHeader.fileLen) {
         /* Validate the image with CRC32 */
         uint32_t crcResult = 0;
 
-        crc32((const void *)FLASH1_START, len, &crcResult);
+        crc32((const void *)(FLASH1_START + sizeof(fileHeader)), fileHeader.fileLen, &crcResult);
 
         /* Check the calculated digest against what was received */
-        if (crcResult == (uint32_t) * (uint32_t *)(FLASH1_START + len)) {
+        if (crcResult == fileHeader.fileCRC) {
             /* Erase the destination pages */
-            if (multiPageErase((uint8_t *)FLASH0_START, len) != E_NO_ERROR) {
+            if (multiPageErase((uint8_t *)FLASH0_START, fileHeader.fileLen) != E_NO_ERROR) {
                 /* Failed to erase pages */
                 bootError();
             }
             /* Copy the new firmware image */
-            if (flashWrite((uint32_t *)FLASH0_START, (uint32_t *)FLASH1_START, len) != E_NO_ERROR) {
+            if (flashWrite((uint32_t *)FLASH0_START,
+                           (uint32_t *)(FLASH1_START + sizeof(fileHeader)),
+                           fileHeader.fileLen) != E_NO_ERROR) {
                 /* Failed to write new image */
                 bootError();
             } else {
@@ -275,7 +259,7 @@ int main(void)
                 }
             }
             /* Erase the update pages */
-            if (multiPageErase((uint8_t *)FLASH1_START, len) != E_NO_ERROR) {
+            if (multiPageErase((uint8_t *)FLASH1_START, fileHeader.fileLen) != E_NO_ERROR) {
                 /* Failed to erase pages, continue to boot from the lower pages */
             }
         } else {

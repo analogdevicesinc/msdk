@@ -295,6 +295,7 @@ class BLE_hci:
      # Send a HCI command to the serial port. Will add a small delay and wait for
      # and print an HCI event by default.
     ################################################################################
+
     def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=6):
         # Send the command and data
         if(print_cmd):
@@ -303,11 +304,13 @@ class BLE_hci:
             else:
                 print(str(datetime.datetime.now()) + f" {self.id}>", packet)
 
+
         # print('Packet', packet)
         
         arr = bytearray.fromhex(packet)
         
         # print(arr)
+
         
         self.port.write(arr)
         
@@ -964,19 +967,20 @@ class BLE_hci:
             return
         readLen = readLen[2:]
 
-        
 
         readLenString = "%0.2X"%int(readLen, 16)
         
+
         # Calculate the total length, 1 for the read len, 4 for the address length
         totalLen = "%0.2X"%(1+4)
 
         # Send the command and save the event
         evtString = self.send_command("0101FF"+totalLen+readLenString+addrBytes)
 
+
         # Get the data
         evtString = evtString[14:]
-    
+
         # Split the data into bytes
         chunks, chunk_size = len(evtString), 2
         evtBytes = [ evtString[i:i+chunk_size] for i in range(0, chunks, chunk_size) ]

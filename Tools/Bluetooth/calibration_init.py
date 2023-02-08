@@ -50,9 +50,11 @@ from BLE_hci import BLE_hci
 from BLE_hci import Namespace
 import socket
 import time
+
 import json
 import mxc_radio
 from termcolor import colored
+
 
 from json import JSONEncoder
 
@@ -87,11 +89,13 @@ Run Calibration and Initialization Tests
 # Parse the command line arguments
 parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHelpFormatter)
 parser.add_argument('serialPort',help='Serial port for slave device')
+
 # parser.add_argument('-r', '--results', default='',help='File to store results')
 parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
 parser.add_argument('-ura', '--update-reference-afe', action='store_true')
 parser.add_argument('-vd', '--verify-dbb',  action='store_true')
 parser.add_argument('-p', '--print',  action='store_true')
+
 
 args = parser.parse_args()
 print(args)
@@ -129,9 +133,7 @@ def main():
         with open('dbb_reference.json', 'r') as read:
             dbbRef = json.load(read)
         print('DBB Match', dbbRef == dbbReadout)
-    
-
-
+  
     
     sys.exit(0)
 

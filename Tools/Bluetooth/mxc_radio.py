@@ -5,6 +5,7 @@ and Digital Base Band (DBB) Registers
 """
 import BLE_hci
 from BLE_hci import Namespace
+
 from time import sleep
 MXC_BASE_BTLE = 0x40050000
 
@@ -15,13 +16,16 @@ class DBB:
     All offsets and data taken from datasheet
     """
     def __init__(self, hciInterface, ctrlReg=None, rxReg=None, txReg=None, rffeReg=None):
+
         self.ctrlReg = ctrlReg
         self.rxReg = rxReg
         self.txReg = txReg
         self.rffeReg = rffeReg
+
         self.hciInterface: BLE_hci.BLE_hci = hciInterface
 
         # put radio into good state for DBB
+
         self.hciInterface.resetFunc(None)
         # self.hciInterface.txTestFunc(Namespace(channel=0, phy=1, packetLength=0, payload=3))
 
@@ -34,6 +38,7 @@ class DBB:
         Read length sizeBytes of memory starting at address start
         NOTE: Function does not check for unmapped regions
         """
+
 
         # There seems to be a problem when lengths are greater than 251.
         # I believe it is because the header packet is 3 bytes and so if you have 252 then the total length is 255 and the format is wrong
@@ -107,12 +112,15 @@ class DBB:
 
         return regions
 
+
     def readCtrlReg(self):
         """
         Read and return the DBB Ctrl Reg
         """
 
+
         # DBB has a reserved region from Offset 0x96 to 0xff
+
         # Offset 0x108 is also reserved
         # Attempting to read them causes a hardfault
 
@@ -126,14 +134,17 @@ class DBB:
         next = self.readRegs(CTRL_REG_ADDR + 0x100, 0x108 - 0x100)
         ctrlReg.extend(next)
 
+
         # Add reserved 0x104 regoion
         ctrlReg.extend(['00'] * 4)
 
         # The last bit is the AES information including the key
+
         # which is protected so we have to stop before or we get a hardfault
         next = self.readRegs(CTRL_REG_ADDR + 0x10C, 0x110 - 0x10C)
         ctrlReg.extend(next)
         ctrlReg.extend(['00']*(0x120-0x100))
+
 
         print('Ctrl Reg Read', len(ctrlReg))
 
@@ -169,6 +180,7 @@ class DBB:
         All reserved regions initialized as '00'
         """
         MXC_BASE_BTLE_DBB_RX = MXC_BASE_BTLE + 0x3000
+
 
         # Offset Lookup for RX registers
         # There are a lot of traps and so some of these offsets were found by trial and error
@@ -214,6 +226,7 @@ class DBB:
         tx : tx registers
         rffe: rffe registers 
         """
+
         self.ctrlReg = self.readCtrlReg()
         self.rxReg = self.readRxReg()
         self.txReg = self.readTxReg()
@@ -227,3 +240,4 @@ class DBB:
     def dump(self):
         dumpRead = self.readAll()
         print(dumpRead)
+
