@@ -15,6 +15,10 @@ class AFE:
 
 
 class DBB:
+    """
+    Class Used to Read registers of DBB
+    All offsets and data taken from datasheet
+    """
     def __init__(self, hciInterface, ctrlReg=None, rxReg=None, txReg=None, rffeReg=None):
         self.ctrlReg = ctrlReg
         self.rxReg = rxReg
@@ -180,7 +184,7 @@ class DBB:
                      (0x400,   0x404, 4),
                      (0x408,   0x40c, 4*5),
                      # The entire region with CTE values causes hardfaults
-                     (0x420,   0x424, 0x586 - 0x424),
+                     (0x420, 0x424, 0x586 - 0x424),
                      ]
 
         self.hciInterface.rxTestFunc(Namespace(channel=0, phy=1))
@@ -192,7 +196,18 @@ class DBB:
         return rxRegs
 
     def readRffeReg(self):
+        
         MXC_BASE_BTLE_DBB_EXT_RFFE = MXC_BASE_BTLE + 0x8000
+        
+        
+        offsetLut = [(0x00, 0x11e, 2),
+                    (0x120, 0x146, 0x164 - 0x146),
+                    (0x164, 0x168 + 2, 0x168 + 2 - 0x164)
+            ]
+        
+        rffe = self.readRegions(baseAddr=MXC_BASE_BTLE_DBB_EXT_RFFE, offsetLut=offsetLut)
+        
+        return rffe
 
     def readAll(self):
         self.ctrlReg = self.readCtrlReg()
