@@ -36,7 +36,7 @@ INIT_PERIPHERAL := 1
 INIT_OBSERVER   := 1
 INIT_CENTRAL    := 1
 INIT_ENCRYPTED  := 1
-BT_VER          := 9
+BT_VER          := 11
 
 #--------------------------------------------------------------------------------------------------
 #     Configuration
