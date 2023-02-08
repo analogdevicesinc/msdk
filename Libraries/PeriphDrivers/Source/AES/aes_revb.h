@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_AES_AES_REVB_H_
 #define LIBRARIES_PERIPHDRIVERS_SOURCE_AES_AES_REVB_H_
@@ -37,7 +37,7 @@
 #include <stdint.h>
 #include "aes.h"
 #include "aes_revb_regs.h"
-#include "aes_key_revb_regs.h"
+#include "aeskeys_revb_regs.h"
 #include "trng_revb_regs.h"
 
 /**
@@ -95,6 +95,6 @@ int MXC_AES_RevB_GenericAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req,
 int MXC_AES_RevB_EncryptAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req);
 int MXC_AES_RevB_DecryptAsync(mxc_aes_revb_regs_t *aes, mxc_aes_revb_req_t *req);
 void MXC_AES_RevB_DMACallback(int ch, int error);
-void MXC_AES_RevB_SetExtKey(mxc_aes_key_revb_regs_t *aeskey, const void *key, mxc_aes_keys_t len);
+void MXC_AES_RevB_SetExtKey(mxc_aeskeys_revb_regs_t *aeskey, const void *key, mxc_aes_keys_t len);
 
 #endif // LIBRARIES_PERIPHDRIVERS_SOURCE_AES_AES_REVB_H_

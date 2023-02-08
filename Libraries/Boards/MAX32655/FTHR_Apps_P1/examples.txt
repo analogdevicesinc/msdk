@@ -28,6 +28,7 @@ Bootloader
 Coremark
 CRC
 DMA
+External_Flash
 Flash
 Flash_CLI
 FreeRTOSDemo

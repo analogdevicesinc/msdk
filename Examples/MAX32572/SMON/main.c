@@ -128,4 +128,5 @@ int main(void)
     Test2();
 
     printf("\nExample Completed\n\n");
+    return E_NO_ERROR;
 }

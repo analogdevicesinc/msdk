@@ -28,6 +28,7 @@ Bootloader
 Bootloader_Host
 Coremark
 CRC
+Display
 DES
 DMA
 ECC
@@ -58,6 +59,7 @@ SPI
 SPIXF
 SPIXR
 SRCC
+Temp_Monitor
 TMR
 TRNG
 UART

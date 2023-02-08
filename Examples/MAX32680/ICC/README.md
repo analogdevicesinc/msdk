@@ -85,6 +85,6 @@ With instruction cache disabled:
 Time Elapsed: 15.845614 Seconds
 
 
-EXAMPLE SUCCEEDED
+Example Succeeded
 ```
 

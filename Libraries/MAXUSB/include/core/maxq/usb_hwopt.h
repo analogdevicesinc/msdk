@@ -35,6 +35,10 @@
 #ifndef _USBIO_HWOPT_H_
 #define _USBIO_HWOPT_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* There are no configuration options for this target */
 typedef void maxusb_cfg_options_t;
 
@@ -46,5 +50,8 @@ typedef void maxusb_cfg_options_t;
 #define MAXUSB_EXIT_CRITICAL() __enable_interrupt()
 #endif
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _USBIO_HWOPT_H_ */

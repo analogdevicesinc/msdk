@@ -33,9 +33,9 @@
 
 /**
  * @file    main.c
- * @brief   Flash Control Mass Erase & Write 32-bit enabled mode Example
- * @details This example shows how to mass erase the flash using the library
- *          and also how to Write and Verify 4 Words to the flash. 
+ * @brief   Flash Controller Example
+ * @details This example demonstrates how to use the flash controller for general purpose
+ * storage.  See the "README.md" file for more details.
  */
 
 /***** Includes *****/
@@ -45,124 +45,36 @@
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_delay.h"
+#include "mxc_sys.h"
 #include "nvic_table.h"
 #include "flc.h"
 #include "icc.h"
-#include "gcr_regs.h"
+#include "uart.h"
+#include "led.h"
+#include "pb.h"
 
 /***** Definitions *****/
-#define TESTSIZE 8192 //2 pages worth so we can do erase functions
-
-#define MXC_FLASH_MEM_SIZE_TEST MXC_FLASH_MEM_SIZE
+#define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
+/*
+    ^ Points to last page in flash, which is guaranteed to be unused by this small example.
+    For larger applications it's recommended to reserve a dedicated flash region by creating
+    a modified linkerfile.
+*/
+#define MAGIC 0xFEEDBEEF
+#define TEST_VALUE 0xDEADBEEF
 
 /***** Globals *****/
-uint32_t testaddr;
-uint32_t testdata[TESTSIZE];
 volatile uint32_t isr_cnt;
 volatile uint32_t isr_flags;
 
 /***** Functions *****/
 
-int flash_fill(uint32_t address, uint32_t size, uint32_t data)
-{
-    // Check if flash controller is busy
-    if (MXC_FLC->ctrl & MXC_F_FLC_CTRL_BUSY) {
-        return 0;
-    }
-
-    // Unlock flash
-    MXC_FLC->ctrl &= ~MXC_F_FLC_CTRL_UNLOCK_CODE;
-    MXC_FLC->ctrl |= MXC_S_FLC_CTRL_UNLOCK_CODE_UNLOCKED;
-
-    // Write in 32-bit units until we are 128-bit aligned
-    MXC_FLC->ctrl &= 0xF7FFFFFF;
-    MXC_FLC_MassErase();
-    MXC_FLC->addr = address;
-
-    while (size >= 4) {
-        MXC_FLC_Write(address, 4, &data);
-        address += 4;
-        size -= 4;
-    }
-
-    if (size > 0) {
-        // Write remaining bytes in a 32-bit unit
-
-        uint32_t last_word = 0xffffffff;
-        uint32_t mask = 0xff;
-
-        while (size > 0) {
-            last_word &= (data | ~mask);
-            mask <<= 8;
-            size--;
-        }
-        MXC_FLC_Write(address, 4, &last_word);
-    }
-
-    /* If error interrupt is disabled, check access violations */
-    if (!(MXC_FLC->intr & MXC_F_FLC_INTR_ACCESS_FAIL_IE) &&
-        (MXC_FLC->intr & MXC_F_FLC_INTR_ACCESS_FAIL)) {
-        MXC_FLC->intr &= ~MXC_F_FLC_INTR_ACCESS_FAIL;
-        return 0;
-    }
-
-    return 1;
-}
-// *****************************************************************************
-
-int flash_verify(uint32_t address, uint32_t length, uint8_t *data)
-{
-    volatile uint8_t *ptr;
-
-    for (ptr = (uint8_t *)address; ptr < (uint8_t *)(address + length); ptr++, data++) {
-        if (*ptr != *data) {
-            printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
-                   (unsigned int)*data);
-            return E_UNKNOWN;
-        }
-    }
-
-    return E_NO_ERROR;
-}
 //******************************************************************************
 
-int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
+int button_pressed = 0;
+void button_handler()
 {
-    uint32_t *ptr;
-    for (ptr = (uint32_t *)startaddr; ptr < (uint32_t *)(startaddr + length); ptr++) {
-        if (*ptr != data) {
-            return 0;
-        }
-    }
-
-    return 1;
-}
-
-//******************************************************************************
-
-int check_erased(uint32_t startaddr, uint32_t length)
-{
-    return check_mem(startaddr, length, 0xFFFFFFFF);
-}
-
-//******************************************************************************
-
-int check_not_erased(uint32_t startaddr, uint32_t length)
-{
-    uint32_t *ptr;
-    int erasedvaluefound = 0;
-
-    for (ptr = (uint32_t *)startaddr; ptr < (uint32_t *)(startaddr + length); ptr++) {
-        if (*ptr == 0xFFFFFFFF) {
-            if (!erasedvaluefound) {
-                erasedvaluefound = 1;
-            } else {
-                return 0;
-            }
-        }
-    }
-
-    return 1;
+    button_pressed = 1;
 }
 
 //******************************************************************************
@@ -171,233 +83,232 @@ void FLC0_IRQHandler(void)
 {
     uint32_t temp;
     isr_cnt++;
-    temp = MXC_FLC->intr;
+    temp = MXC_FLC0->intr;
 
     if (temp & MXC_F_FLC_INTR_DONE) {
-        MXC_FLC->intr &= ~MXC_F_FLC_INTR_DONE;
+        MXC_FLC0->intr &= ~MXC_F_FLC_INTR_DONE;
+        printf(" -> Interrupt! (Flash operation done)\n\n");
     }
 
     if (temp & MXC_F_FLC_INTR_ACCESS_FAIL) {
-        MXC_FLC->intr &= ~MXC_F_FLC_INTR_ACCESS_FAIL;
-        printf("Access Fail!\n");
+        MXC_FLC0->intr &= ~MXC_F_FLC_INTR_ACCESS_FAIL;
+        printf(" -> Interrupt! (Flash access failure)\n\n");
     }
 
     isr_flags = temp;
 }
 
-void flash_init(void)
+void setup_irqs(void)
 {
-    // Set flash clock divider to generate a 1MHz clock from the APB clock
-    // APB clock is 54MHz on the real silicon
-    MXC_FLC->clkdiv = 24;
+    /*
+    All functions modifying flash contents are set to execute out of RAM
+    with the (section(".flashprog")) attribute.  Therefore,
+    
+    If:
+    - An FLC function is in the middle of execution (from RAM)
+    ... and...
+    - An interrupt triggers an ISR which executes from Flash
 
-    MXC_FLC_ClearFlags(0x3);
-    // Setup and enable interrupt
-    MXC_NVIC_SetVector(FLC_IRQn, FLC0_IRQHandler);
-    NVIC_EnableIRQ(FLC_IRQn);
+    ... Then a hard fault will be triggered.  
+    
+    FLC functions should be:
+    1) Executed from a critical code block (interrupts disabled)
+    or
+    2) ISRs should be set to execute out of RAM with NVIC_SetRAM()
+
+    This example demonstrates method #1.  Any code modifying
+    flash is executed from a critical block, and the FLC
+    interrupts will trigger afterwards.
+    */
+
+    // NVIC_SetRAM(); // Execute ISRs out of SRAM (for use with #2 above)
+    MXC_NVIC_SetVector(FLC_IRQn, FLC0_IRQHandler); // Assign ISR
+    NVIC_EnableIRQ(FLC_IRQn); // Enable interrupt
+
     __enable_irq();
+
+    // Clear and enable flash programming interrupts
+    MXC_FLC_EnableInt(MXC_F_FLC_INTR_DONE_IE | MXC_F_FLC_INTR_ACCESS_FAIL_IE);
+    isr_flags = 0;
+    isr_cnt = 0;
 }
-//******************************************************************************
 
-void interrupt_enabler(mxc_flc_regs_t *regs)
+int write_test_pattern()
 {
-    regs->intr = (MXC_F_FLC_INTR_DONE_IE | MXC_F_FLC_INTR_ACCESS_FAIL_IE);
+    int err;
+    // A flash address must be in the erased state before writing to it, because the
+    // flash controller can only write a 1 -> 0.
+    // See the microcontroller's User Guide for more details.
+    printf("Erasing page of flash at addr 0x%x...\n", TEST_ADDRESS);
+    err = MXC_FLC_PageErase(TEST_ADDRESS);
+    if (err) {
+        printf("Failed with error code %i\n", TEST_ADDRESS, err);
+        return err;
+    }
+
+    printf("Writing magic value 0x%x to address 0x%x...\n", MAGIC, TEST_ADDRESS);
+    err = MXC_FLC_Write32(TEST_ADDRESS, MAGIC);
+    if (err) {
+        printf("Failed to write magic value to 0x%x with error code %i!\n", TEST_ADDRESS, err);
+        return err;
+    }
+
+    printf("Writing test pattern...\n");
+    for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
+        /*  
+            A single flash page is organized into 4096 128-bit "words", but is still 
+            byte-addressible.  Increment the address by 4 bytes to write in 32-bit 
+            chunks.  
+            
+            The Flash Controller also only supports 128-bit writes. The driver
+            function below handles the technicalities of inserting the 32-bit value 
+            into a 128-bit word without modifying the rest of the word.
+        */
+        err = MXC_FLC_Write32(addr, TEST_VALUE);
+        if (err) {
+            printf("Failed write on address 0x%x with error code %i\n", addr, err);
+            return err;
+        }
+    }
+    printf("Done!\n");
+
+    return err;
 }
 
-//******************************************************************************
-int flash_erase(uint32_t start, uint32_t end, uint32_t *buffer, unsigned length)
+int validate_test_pattern()
 {
-    int retval;
-    uint32_t start_align, start_len, end_align, end_len, i;
+    int err = 0;
 
-    MXC_ASSERT(buffer);
-
-    // Align start and end on page boundaries, calculate length of data to buffer
-    start_align = start - (start % MXC_FLASH_PAGE_SIZE);
-    start_len = (start % MXC_FLASH_PAGE_SIZE);
-    end_align = end - (end % MXC_FLASH_PAGE_SIZE);
-    end_len = MXC_FLASH_PAGE_SIZE - (end % MXC_FLASH_PAGE_SIZE);
-
-    // Make sure the length of buffer is sufficient
-    if ((length < start_len) || (length < end_len)) {
-        return E_BAD_PARAM;
-    }
-
-    // Start and end address are in the same page
-    if (start_align == end_align) {
-        if (length < (start_len + end_len)) {
-            return E_BAD_PARAM;
-        }
-
-        // Buffer first page data and last page data, erase and write
-        memcpy(buffer, (void *)start_align, start_len);
-        memcpy(&buffer[start_len], (void *)end, end_len);
-        retval = MXC_FLC_PageErase(start_align);
-        if (retval != E_NO_ERROR) {
-            return retval;
-        }
-
-        retval = MXC_FLC_Write(start_align, start_len, buffer);
-        if (retval != E_NO_ERROR) {
-            return retval;
-        }
-        retval = MXC_FLC_Write(end, end_len, &buffer[start_len]);
-        if (retval != E_NO_ERROR) {
-            return retval;
-        }
-
-        return E_NO_ERROR;
-    }
-
-    // Buffer, erase, and write the data in the first page
-    memcpy(buffer, (void *)start_align, start_len);
-    retval = MXC_FLC_PageErase(start_align);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
-
-    retval = MXC_FLC_Write(start_align, start_len, buffer);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
-
-    // Buffer, erase, and write the data in the last page
-    memcpy(buffer, (void *)end, end_len);
-    retval = MXC_FLC_PageErase(end_align);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
-
-    retval = MXC_FLC_Write(end, end_len, buffer);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
-
-    // Erase the remaining pages. MultiPageErase will not erase if start is greater than end.
-    for (i = (start_align + MXC_FLASH_PAGE_SIZE); i < (end_align - MXC_FLASH_PAGE_SIZE);
-         i += MXC_FLASH_PAGE_SIZE) {
-        retval = MXC_FLC_PageErase(i);
-        if (retval != E_NO_ERROR) {
-            break;
+    printf("Verifying test pattern...\n");
+    uint32_t readval = 0;
+    for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
+        MXC_FLC_Read(addr, &readval, 4);
+        if (readval != TEST_VALUE) {
+            printf(
+                "Failed verification at address 0x%x with error code %i!  Expected: 0x%x\tRead: 0x%x\n",
+                addr, err, TEST_VALUE, readval);
+            return E_ABORT;
         }
     }
-    return retval;
+
+    printf("Successfully verified test pattern!\n\n");
+    return err;
+}
+
+int erase_magic()
+{
+    /*
+        To modify a location in flash that has already been written to,
+        that location must first be restored to its erased state.
+        However, the flash controller only supports erasing a full page
+        at a time.
+        Therefore, the entire page must be buffered, erased, then modified.
+    */
+    int err;
+    uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = {
+        0xFFFFFFFF
+    }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
+
+    printf("Buffering page...\n");
+    memcpy(buffer, (uint32_t *)TEST_ADDRESS, MXC_FLASH_PAGE_SIZE);
+
+    printf("Erasing page...\n");
+    err = MXC_FLC_PageErase(TEST_ADDRESS);
+    if (err) {
+        printf("Failed to erase page 0x%x with error code %i!\n", TEST_ADDRESS, err);
+        return err;
+    }
+
+    printf("Erasing magic in buffer...\n");
+    // Calculate buffer index based on flash address (4 bytes per 32-bit word)
+    unsigned int target_address = TEST_ADDRESS;
+    unsigned int buffer_index = (target_address - TEST_ADDRESS) >> 2;
+    buffer[buffer_index] = 0xABCD1234; // Erase magic value
+
+    printf("Re-writing from buffer...\n");
+    for (int i = 0; i < (MXC_FLASH_PAGE_SIZE >> 2); i++) {
+        err = MXC_FLC_Write32(TEST_ADDRESS + 4 * i, buffer[i]);
+        if (err) {
+            printf("Failed at address 0x%x with error code %i\n", (TEST_ADDRESS + 4) * i, err);
+            return err;
+        }
+    }
+    uint32_t magic = 0;
+    MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
+    printf("New magic value: 0x%x\n", magic);
+    return err;
 }
 
 int main(void)
 {
-    int fail = 0;
-    int error_status, i;
-    uint32_t start, end;
-    uint32_t buffer[0x1000];
+    int err = 0;
 
-    MXC_ICC_Disable();
-    /* Note: This example must execute out of RAM, due to MXC_FLC_MassErase() call, below */
     printf("\n\n***** Flash Control Example *****\n");
-    NVIC_SetRAM();
-    // Initialize the Flash
-    flash_init();
+    printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
 
-    // Clear and enable flash programming interrupts
-    MXC_FLC_EnableInt((MXC_F_FLC_INTR_DONE_IE | MXC_F_FLC_INTR_ACCESS_FAIL_IE));
-    isr_flags = 0;
-    isr_cnt = 0;
+    PB_RegisterCallback(0, (pb_callback)button_handler);
 
-    error_status = MXC_FLC_MassErase();
+    while (!button_pressed) {
+        LED_On(LED1);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+        LED_Off(LED1);
+        MXC_Delay(MXC_DELAY_MSEC(500));
+    }
+    LED_Off(LED1);
 
-    if (error_status == E_NO_ERROR) {
-        printf("Flash erased.\n");
-    } else if (error_status == E_BAD_STATE) {
-        printf("Flash erase operation is not allowed in this state.\n");
-    } else {
-        printf("Fail to erase flash's content.\n");
-        fail += 1;
+    setup_irqs(); // See notes in function definition
+
+    /*
+    Disable the instruction cache controller (ICC).
+
+    Any code that modifies flash contents should disable the ICC,
+    since modifying flash contents may invalidate cached instructions.
+    */
+    MXC_ICC_Disable();
+
+    uint32_t magic = 0;
+    MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
+
+    if (magic != MAGIC) { // Starting example for the first time.
+        // clang-format off
+        MXC_CRITICAL(
+            printf("---(Critical)---\n");
+            err = write_test_pattern();
+            printf("----------------\n");
+        )
+        // clang-format on
+        if (err)
+            return err;
+
+        err = validate_test_pattern();
+        if (err)
+            return err;
+
+        printf("\nNow reset or power cycle the board...\n");
+    } else { // Starting example after reset or power cycle
+        printf("** Magic value 0x%x found at address 0x%x! **\n\n", MAGIC, TEST_ADDRESS);
+        printf("(Flash modifications have survived a reset and/or power cycle.)\n\n");
+
+        err = validate_test_pattern();
+        if (err)
+            return err;
+
+        // clang-format off
+        MXC_CRITICAL(
+            printf("---(Critical)---\n");
+            err = erase_magic();
+            printf("----------------\n");
+        )
+        // clang-format on
+        if (err)
+            return err;
+
+        err = validate_test_pattern();
+        if (err)
+            return err;
+
+        printf("Flash example successfully completed.\n");
     }
 
-    // Checking Interrupt's occurence
-    if ((isr_cnt != 1) && (isr_flags != MXC_F_FLC_INTR_DONE)) {
-        printf("Interrupt did not occur\n");
-        fail += 1;
-    }
-
-    // Check flash's content
-    if (check_erased(MXC_FLASH_MEM_BASE, MXC_FLASH_MEM_SIZE_TEST)) {
-        printf("Flash mass erase is verified.\n");
-    } else {
-        printf("Flash mass erase failed.\n");
-        fail += 1;
-    }
-
-    printf("Writing %d 128-bit words to flash\n", TESTSIZE / 4);
-    printf("Size of testdata : %d\n", sizeof(testdata));
-    // Initializing Test Data
-    for (i = 0; i < TESTSIZE; i++) {
-        testdata[i] = i;
-    }
-
-    i = 0;
-    for (testaddr = (MXC_FLASH_MEM_BASE); i < TESTSIZE; testaddr += 16) {
-        // Clear and enable flash programming interrupts
-        isr_flags = 0;
-        isr_cnt = 0;
-        // Write a word
-        if (MXC_FLC_Write(testaddr, 16, &testdata[i]) != E_NO_ERROR) {
-            printf("Failure in writing a word.\n");
-            fail += 1;
-            break;
-        } else {
-            //printf("Word %d : %u is written to the flash.\n", i, testdata[i]);
-        }
-
-        // Checking Interrupt
-        if ((isr_cnt != 1) && (isr_flags != MXC_F_FLC_INTR_DONE)) {
-            printf("Interrupt did not occur at 0x%08x\n", (unsigned int)testaddr);
-            fail += 1;
-        }
-
-        // Verify that word is written properly
-        if (flash_verify(testaddr, 16, (uint8_t *)&testdata[i]) != E_NO_ERROR) {
-            printf("Word is not written properly.\n");
-            fail += 1;
-            break;
-        }
-
-        if (i < 16) {
-            printf("Word %d written properly and has been verified.\n", i / 4);
-        } else if (i == 16) {
-            printf("Continuing for %d more words...\n", (TESTSIZE - i) / 4);
-        }
-
-        i += 4;
-    }
-
-    //Page Erase
-    MXC_FLC_PageErase(MXC_FLASH_MEM_BASE);
-    if (check_erased(MXC_FLASH_MEM_BASE, MXC_FLASH_PAGE_SIZE)) {
-        printf("Page Erase is verified\n");
-
-    } else {
-        printf("Page Erase failed\n");
-        fail += 1;
-    }
-
-    // Erase parital pages or wide range of pages and keep the data on the page not inbetween start and end.
-    start = (MXC_FLASH_MEM_BASE + MXC_FLASH_PAGE_SIZE + 0x500);
-    end = (MXC_FLASH_MEM_BASE + (2 * MXC_FLASH_PAGE_SIZE) - 0x500);
-    flash_erase(start, end, buffer, 0x1000);
-    if (check_erased(start, ((end - start) - 0x1000))) {
-        printf("Flash Erase is verified\n");
-    } else {
-        printf("Flash Erase failed\n");
-        fail += 1;
-    }
-    MXC_ICC_Enable();
-
-    if (fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
-        printf("\nExample Failed\n");
-    }
-
-    return 0;
+    return E_SUCCESS;
 }

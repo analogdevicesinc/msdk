@@ -298,6 +298,7 @@ typedef enum {
 #define MXC_FLASH1_PAGE_SIZE 0x00002000UL
 #define MXC_FLASH0_MEM_SIZE 0x00300000UL
 #define MXC_FLASH1_MEM_SIZE 0x00040000UL
+#define MXC_FLASH_MEM_SIZE (MXC_FLASH0_MEM_SIZE + MXC_FLASH1_MEM_SIZE)
 #define MXC_INFO0_MEM_BASE 0x10800000UL
 #define MXC_INFO1_MEM_BASE 0x10802000UL
 #define MXC_INFO_MEM_BASE MXC_INFO0_MEM_BASE
@@ -351,7 +352,11 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                   AES Keys */
-#define MXC_BASE_AESKEY ((uint32_t)0x40005000UL)
+#define MXC_BASE_AESKEYS ((uint32_t)0x40005000UL)
+#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
+
+// DEPRECATED(1-10-2023): Scheduled for removal.
+#define MXC_BASE_AESKEY MXC_BASE_AESKEYS
 #define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
 
 /******************************************************************************/

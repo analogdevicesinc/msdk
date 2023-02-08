@@ -110,8 +110,8 @@ void wdxsFtcSend(dmConnId_t connId)
   if (AttsCccEnabled(connId, wdxsCb.ftcCccIdx))
   {
     /* send notification */
-    AttsHandleValueNtf(connId, WDXS_FTC_HDL, wdxsCb.ftcMsgLen, wdxsCb.ftcMsgBuf);
     wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_FTC_BIT | WDXS_TX_MASK_READY_BIT);
+    AttsHandleValueNtf(connId, WDXS_FTC_HDL, wdxsCb.ftcMsgLen, wdxsCb.ftcMsgBuf);
   }
 }
 
@@ -216,6 +216,7 @@ static void wdxsFtcProcGetReq(dmConnId_t connId, uint16_t handle, uint16_t len, 
 static void wdxsFtcProcPutReq(dmConnId_t connId, uint16_t handle, uint16_t len, uint8_t *pValue)
 {
   uint8_t status;
+  (void)status;
 
   /* verify operation not already in progress */
   if (wdxsCb.ftInProgress != WDX_FTC_OP_NONE)
@@ -244,8 +245,8 @@ static void wdxsFtcProcPutReq(dmConnId_t connId, uint16_t handle, uint16_t len, 
 
   APP_TRACE_INFO2("WDXS: FTC PutReq handle=%d status=%d", handle, status);
 
-  /* send response */
-  wdxsFtcSendRsp(connId, WDX_FTC_OP_PUT_RSP, handle, status);
+  /* End of erase operation sends response */
+  return;
 }
 
 /*************************************************************************************************/
@@ -498,8 +499,8 @@ void wdxsFtdSend(dmConnId_t connId)
         }
 
         /* send notification */
-        AttsHandleValueNtfZeroCpy(connId, WDXS_FTD_HDL, (uint16_t)readLen, pBuf);
         wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_READY_BIT);
+        AttsHandleValueNtfZeroCpy(connId, WDXS_FTD_HDL, (uint16_t)readLen, pBuf);
       }
       else
       {

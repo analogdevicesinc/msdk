@@ -27,3 +27,4 @@ session.txt.log
 flash.log
 Libraries/NFC
 Libraries/EMV
+.github/workflows/ci-tests/Examples_tests/results/

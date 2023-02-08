@@ -83,6 +83,11 @@ int Console_Init(void);
 int Console_PrepForSleep(void);
 
 /**
+ * \brief   Initializes GPIO to conserve power in low power mode.
+ */
+void GPIO_PrepForSleep(void);
+
+/**
  * \brief   Shutdown the console.
  * \returns #E_NO_ERROR if everything is successful
  */

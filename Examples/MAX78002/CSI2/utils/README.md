@@ -112,22 +112,22 @@ Usage example:
 
 ```shell
 $ python batchconvert.py D:/raw
-Sucessfully converted D:\raw\img0 -> converted\img0.png
-Sucessfully converted D:\raw\img1 -> converted\img1.png
-Sucessfully converted D:\raw\img10 -> converted\img10.png
-Sucessfully converted D:\raw\img11 -> converted\img11.png
-Sucessfully converted D:\raw\img12 -> converted\img12.png
-Sucessfully converted D:\raw\img13 -> converted\img13.png
-Sucessfully converted D:\raw\img14 -> converted\img14.png
-Sucessfully converted D:\raw\img15 -> converted\img15.png
-Sucessfully converted D:\raw\img16 -> converted\img16.png
-Sucessfully converted D:\raw\img2 -> converted\img2.png
-Sucessfully converted D:\raw\img3 -> converted\img3.png
-Sucessfully converted D:\raw\img4 -> converted\img4.png
-Sucessfully converted D:\raw\img5 -> converted\img5.png
-Sucessfully converted D:\raw\img6 -> converted\img6.png
-Sucessfully converted D:\raw\img7 -> converted\img7.png
-Sucessfully converted D:\raw\img8 -> converted\img8.png
-Sucessfully converted D:\raw\img9 -> converted\img9.png
+Successfully converted D:\raw\img0 -> converted\img0.png
+Successfully converted D:\raw\img1 -> converted\img1.png
+Successfully converted D:\raw\img10 -> converted\img10.png
+Successfully converted D:\raw\img11 -> converted\img11.png
+Successfully converted D:\raw\img12 -> converted\img12.png
+Successfully converted D:\raw\img13 -> converted\img13.png
+Successfully converted D:\raw\img14 -> converted\img14.png
+Successfully converted D:\raw\img15 -> converted\img15.png
+Successfully converted D:\raw\img16 -> converted\img16.png
+Successfully converted D:\raw\img2 -> converted\img2.png
+Successfully converted D:\raw\img3 -> converted\img3.png
+Successfully converted D:\raw\img4 -> converted\img4.png
+Successfully converted D:\raw\img5 -> converted\img5.png
+Successfully converted D:\raw\img6 -> converted\img6.png
+Successfully converted D:\raw\img7 -> converted\img7.png
+Successfully converted D:\raw\img8 -> converted\img8.png
+Successfully converted D:\raw\img9 -> converted\img9.png
 $ 
 ```

@@ -26,6 +26,7 @@ I2C
 I2C_SCAN
 ICC
 LP
+OLED_Demo
 RTC
 RTC_Backup
 SPI

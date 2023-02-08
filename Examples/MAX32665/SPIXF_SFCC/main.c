@@ -246,7 +246,8 @@ int main(void)
         printf("Example Succeeded\n\n");
     } else {
         printf("Example Failed\n\n");
+        return E_FAIL;
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

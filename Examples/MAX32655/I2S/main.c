@@ -48,7 +48,6 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "nvic_table.h"
-#include "i2s_regs.h"
 #include "board.h"
 #include "i2s.h"
 
@@ -141,5 +140,5 @@ int main()
         }
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

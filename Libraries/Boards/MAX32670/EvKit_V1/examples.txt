@@ -27,9 +27,11 @@ I2S
 ICC
 LP
 RTC
+SecureROM_BL_Host
 SPI
 SPI_Usecase
 SPI_MasterSlave
+Temp_Monitor
 TMR
 TRNG
 UART

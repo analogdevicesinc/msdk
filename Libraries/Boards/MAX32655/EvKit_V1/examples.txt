@@ -31,6 +31,7 @@ CRC
 DMA
 Dual_core_sync/Dual_core_sync_arm
 Dual_core_sync/Dual_core_sync_riscv
+External_Flash
 Flash
 Flash_CLI
 FreeRTOSDemo
@@ -53,6 +54,7 @@ RTC
 RTC_Backup
 RV_ARM_Loader
 SPI
+Temp_Monitor
 TFT_Demo
 TMR
 TRNG

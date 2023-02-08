@@ -23,6 +23,7 @@
 /*************************************************************************************************/
 
 #include <string.h>
+#include <stdlib.h>
 #include "wsf_types.h"
 #include "util/bstream.h"
 #include "wsf_msg.h"
@@ -114,6 +115,7 @@ struct {
     wsfEfsFileInfo_t fileList[DM_CONN_MAX][DATC_WDXC_MAX_FILES]; /*! Buffer to hold WDXC file list */
     uint8_t *fileData; /*! Pointer for accessing the fw_update image*/
     uint32_t fileCRC; /*! Holds the CRC32 value of the file */
+    uint32_t blockSize;
 
     appDbHdl_t resListRestoreHdl; /*! Resolving List restoration handle */
     bool_t restoringResList; /*! Restoring resolving list from NVM */
@@ -512,7 +514,11 @@ static void datcOpen(dmEvt_t *pMsg) {}
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcValueNtf(attEvt_t *pMsg) {}
+static void datcValueNtf(attEvt_t *pMsg)
+{
+    /* print received message */
+    APP_TRACE_INFO0((const char *)pMsg->pValue);
+}
 
 /*************************************************************************************************/
 /*!
@@ -647,7 +653,7 @@ static void sendFileHeader(dmConnId_t connId)
 /*************************************************************************************************/
 static void datcSendBlock(dmConnId_t connId, uint32_t address, uint32_t len, uint8_t *pData)
 {
-    uint8_t addrData[BLOCK_SIZE + sizeof(uint32_t)];
+    uint8_t *addrData = WsfBufAlloc(datcCb.blockSize + sizeof(uint32_t));
 
     /* Insert the address into the block */
     memcpy(addrData, &address, sizeof(uint32_t));
@@ -657,6 +663,8 @@ static void datcSendBlock(dmConnId_t connId, uint32_t address, uint32_t len, uin
 
     /* Send the address and data, add the length of the address to the length */
     WdxcFtdSendBlock(connId, len + sizeof(uint32_t), addrData);
+
+    WsfBufFree(addrData);
 
     /* Increment the address of the data that we're sending */
     datcCb.blockOffset[connId - 1] += len;
@@ -684,7 +692,8 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
         MXC_TMR_SW_Start(MXC_TMR2);
         datcCb.sendingFile[connId - 1] = TRUE;
         uint32_t address = datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT;
-        datcSendBlock(connId, address, BLOCK_SIZE, (uint8_t *)&datcCb.fileData[address]);
+        datcSendBlock(connId, address, datcCb.blockSize, (uint8_t *)&datcCb.fileData[address]);
+
     } else if (op == WDX_FTC_OP_EOF) {
         if (handle == WDX_FLIST_HANDLE) {
             /* on discovery completion we can send the header */
@@ -788,6 +797,13 @@ static void datcBtnCback(uint8_t btn)
         case APP_UI_BTN_2_SHORT:
             if (datcCb.discState[connId - 1] > DATC_DISC_WDXC_SCV) {
                 WdxcDiscoverFiles(connId, datcCb.fileList[connId - 1], DATC_WDXC_MAX_FILES);
+                datcCb.blockSize = AttGetMtu(connId);
+
+                /* Subtract for the address and message overhead */
+                datcCb.blockSize = datcCb.blockSize - 8;
+                if (datcCb.blockSize > BLOCK_SIZE) {
+                    datcCb.blockSize = BLOCK_SIZE;
+                }
             }
             break;
 
@@ -988,16 +1004,16 @@ static void datcProcMsg(dmEvt_t *pMsg)
         if ((((attEvt_t *)pMsg)->hdr.status == ATT_SUCCESS) &&
             (((attEvt_t *)pMsg)->handle == pDatcWdxHdlList[connId - 1][WDXC_FTD_HDL_IDX])) {
             if (datcCb.sendingFile[connId - 1] == TRUE) {
-                uint32_t blockSize;
-                if ((datcCb.blockOffset[connId - 1] + BLOCK_SIZE) > FILE_SIZE) {
-                    blockSize = FILE_SIZE - datcCb.blockOffset[connId - 1];
+                uint32_t tempBlockSize;
+                if ((datcCb.blockOffset[connId - 1] + datcCb.blockSize) > FILE_SIZE) {
+                    tempBlockSize = FILE_SIZE - datcCb.blockOffset[connId - 1];
                 } else {
-                    blockSize = BLOCK_SIZE;
+                    tempBlockSize = datcCb.blockSize;
                 }
 
                 /* Keep writing the file */
                 uint32_t address = datcCb.blockOffset[connId - 1] - BLOCK_OFFSET_INIT;
-                datcSendBlock(connId, address, blockSize, (uint8_t *)&datcCb.fileData[address]);
+                datcSendBlock(connId, address, tempBlockSize, (uint8_t *)&datcCb.fileData[address]);
             }
         }
         break;

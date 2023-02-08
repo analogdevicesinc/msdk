@@ -50,6 +50,9 @@ INIT_ENCRYPTED  ?= 1
 INIT_PERIPHERAL ?= 1
 INIT_BROADCASTER?= 1
 
+WSF_HEAP_SIZE ?= 0x10000
+CFG_DEV += WSF_HEAP_SIZE=$(WSF_HEAP_SIZE)
+
 # Enter standby mode when idle
 STANDBY_ENABLED ?= 0
 
@@ -116,6 +119,16 @@ LIB_LITTLEFS ?= 0
 ifeq ($(LIB_LITTLEFS), 1)
 LITTLEFS_DIR ?= $(LIBS_DIR)/littlefs
 include $(LITTLEFS_DIR)/littlefs.mk
+endif
+# ************************
+
+# lvgl (Disabled by default)
+# ************************
+LIB_LVGL ?= 0
+ifeq ($(LIB_LVGL), 1)
+LVGL_DIR ?= $(LIBS_DIR)/LVGL
+ENABLE_DISPLAY ?= 1
+include $(LVGL_DIR)/lvgl.mk
 endif
 # ************************
 

@@ -294,24 +294,24 @@ int main(void)
         // power is not shown in this mode as it resets after wakeup
         MXC_LP_EnterBackupMode();
         while (1) {}
-// we should not come here
+        // we should not come here
 #endif // DO_BACKUP
 
 #if DO_POWERDOWN
-        PRINT("Entering Power Down mode, press reset or P3.0/1 = 0 to restart.\n");
+        PRINT("Entering Power Down mode, press reset or P3.0 = 0 to restart.\n");
         setTrigger(0);
 
         mxc_gpio_cfg_t gpio_in;
 
         // The two GPIO3 pins are pulled down to 0 by default due to internal weak pulldown.
         // As soon as you enter PDM mode, the pin becomes a weak pull-up and causes an immidiate wakeup condition.
-        // To avoid, configure P3.3 and P3.1 as input with pullup for PDM to work properly"
+        // To avoid, configure P3.0 as input with pullup for PDM to work properly
         gpio_in.port = MXC_GPIO3;
         gpio_in.pad = MXC_GPIO_PAD_PULL_UP;
         gpio_in.func = MXC_GPIO_FUNC_IN;
         gpio_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
-        gpio_in.mask = MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1;
+        gpio_in.mask = MXC_GPIO_PIN_0;
         MXC_GPIO_Config(&gpio_in);
 
         LED_On(LED1);

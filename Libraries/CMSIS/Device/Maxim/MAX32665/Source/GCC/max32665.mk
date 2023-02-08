@@ -82,7 +82,10 @@ VPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32665/Source
 
 # Add target specific CMSIS include directories
 IPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32665/Include
-IPATH+=$(CMSIS_ROOT)/Include
+
+# Add CMSIS Core files
+CMSIS_VER ?= 5.9.0
+IPATH+=$(CMSIS_ROOT)/$(CMSIS_VER)/Core/Include
 
 # Add directory with linker include file
 LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32665/Source/GCC
