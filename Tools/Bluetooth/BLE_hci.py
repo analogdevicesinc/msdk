@@ -305,12 +305,8 @@ class BLE_hci:
                 print(str(datetime.datetime.now()) + f" {self.id}>", packet)
 
 
-        # print('Packet', packet)
         
         arr = bytearray.fromhex(packet)
-        
-        # print(arr)
-
         
         self.port.write(arr)
         
