@@ -27,6 +27,7 @@ BLE_otas
 BLE_periph
 Bootloader
 CAN
+Coremark
 CRC
 CTB_AES
 DMA
