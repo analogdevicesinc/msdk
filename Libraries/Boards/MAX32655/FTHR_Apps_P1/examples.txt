@@ -27,6 +27,7 @@ BLE_periph
 Bootloader
 CRC
 DMA
+External_Flash
 Flash
 Flash_CLI
 FreeRTOSDemo

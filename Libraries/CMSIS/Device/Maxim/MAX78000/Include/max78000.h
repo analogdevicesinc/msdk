@@ -267,7 +267,11 @@ typedef enum {
 #else // __riscv
 
 #include <core_rv32.h>
-
+#undef __CORTEX_M
+/* ^ TODO (Jake):  Re-work our core_rv32.h file so this isn't
+    necessary.  Somehow __CORTEX_M is still getting defined
+    even after removing it from the file.
+*/
 #endif // __riscv
 
 #include "system_max78000.h" /*!< System Header                                          */

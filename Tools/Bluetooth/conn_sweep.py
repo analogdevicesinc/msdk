@@ -48,6 +48,7 @@ import itertools
 from mini_RCDAT_USB import mini_RCDAT_USB
 from BLE_hci import BLE_hci
 from BLE_hci import Namespace
+from pprint import pprint
 import socket
 import time
 
@@ -81,9 +82,9 @@ parser.add_argument('--mtp', default="", help="master TRACE serial port")
 parser.add_argument('--stp', default="", help="slave TRACE serial port")
  
 args = parser.parse_args()
-print(args)
-
 print("--------------------------------------------------------------------------------------------")
+pprint(vars(args))
+
 packetLengths    = args.pktlen.strip().split(",")
 phys             = args.phys.strip().split(",")
 txPowers         = args.txpows.strip().split(",")
@@ -101,6 +102,8 @@ else:
 
 print("slaveSerial   :", args.slaveSerial)
 print("masterSerial  :", args.masterSerial)
+print("slave TRACE   :", args.stp)
+print("master TRACE  :", args.mtp)
 print("results       :", args.results)
 print("delay         :", args.delay)
 print("packetLengths :", packetLengths)
