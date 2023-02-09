@@ -1,0 +1,19 @@
+{
+  "lib_name": "AWS IoT OTA",
+  "src": [
+    "source/ota.c",
+    "source/ota_interface.c",
+    "source/ota_base64.c",
+    "source/ota_mqtt.c",
+    "source/ota_cbor.c",
+    "source/ota_http.c"
+  ],
+  "include": [
+    "source/include",
+    "source/dependency/coreJSON/source/include",
+    "source/dependency/3rdparty/tinycbor/src"
+  ],
+  "compiler_flags": [
+    "OTA_DO_NOT_USE_CUSTOM_CONFIG"
+  ]
+}

@@ -122,6 +122,16 @@ include $(LITTLEFS_DIR)/littlefs.mk
 endif
 # ************************
 
+# lvgl (Disabled by default)
+# ************************
+LIB_LVGL ?= 0
+ifeq ($(LIB_LVGL), 1)
+LVGL_DIR ?= $(LIBS_DIR)/LVGL
+ENABLE_DISPLAY ?= 1
+include $(LVGL_DIR)/lvgl.mk
+endif
+# ************************
+
 # lwIP (Disabled by default)
 # ************************
 LIB_LWIP ?= 0

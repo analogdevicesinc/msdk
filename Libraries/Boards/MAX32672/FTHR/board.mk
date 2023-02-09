@@ -41,6 +41,7 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
 SRCS += rom_stub.c
+SRCS += ssd1306.c
 
 MISC_DRIVERS_DIR ?= $(BOARD_DIR)/../../../MiscDrivers
 
