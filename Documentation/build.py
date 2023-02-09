@@ -17,6 +17,13 @@ for f in periph_docs_dir.glob("*_Doxyfile"):
     # ^ Recreate directory structure so built links work
     shutil.copytree(periph_docs_dir / micro, dest, dirs_exist_ok=True)
 
+# Pre-populate markdown files
+for f in repo.glob("*.md"):
+    shutil.copy(f, here)
+
+# Pre-populate resources folder
+shutil.copytree(repo / "res", here / "res", dirs_exist_ok=True)
+
 # Run mkdocs build
 # A subprocess is used because the Mkdocs Python API does not print any logging info
 print("Building docs (this could take a few minutes)...")
