@@ -48,7 +48,7 @@ from time import sleep
 import datetime
 import threading
 from termcolor import colored
-
+import readline
 # Setup the default serial port settings
 defaultBaud=115200
 defaultSP="/dev/ttyUSB0"
