@@ -22384,8 +22384,14 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>AES_KEYGEN</name>
-       <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
+       <name>AESKG_MEU</name>
+       <description>AES Key Generate MEU. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AESKG_MEMPROT</name>
+       <description>AES Key Generate Mem Prot. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
