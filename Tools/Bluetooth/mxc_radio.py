@@ -164,6 +164,11 @@ class DBB:
             (0x180, 0x18c, 0x194 + 76 - 0x18c)
         ]
 
+        # Channel 0
+        # Phy 1MB
+        # Packet Length Default
+        # Payload PRBS15
+
         self.hciInterface.txTestFunc(
             Namespace(channel=0, phy=1, packetLength=0, payload=3))
 
