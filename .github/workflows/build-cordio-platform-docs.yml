@@ -22,11 +22,11 @@ jobs:
       - name: Build PDF
         run: |
           echo "Building PDF..."
-          make -C Libraries/Cordio/docs/latex
+          sudo make -C Libraries/Cordio/docs/latex
 
           echo "Copying PDF to Cordio/platform/Documentation"
-          mv Libraries/Cordio/docs/latex/refman.pdf Libraries/Cordio/platform/Documentation/MAX32655.pdf
-          rm -r latex
+          sudo mv Libraries/Cordio/docs/latex/refman.pdf Libraries/Cordio/platform/Documentation/MAX32655.pdf
+          sudo rm -r latex
 
 
 
