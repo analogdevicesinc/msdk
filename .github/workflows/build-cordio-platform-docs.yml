@@ -19,15 +19,15 @@ steps:
       enable-latex: true
 
   - name: Build PDF
-      run: |
-        echo "Building PDF..."
-        SOURCE  = Libraries/Cordio/Documentation
-        DEST = Libraries/Cordio/platform/Documentation
-        make -C $SOURCE/latex
-        
-        echo "Copying PDF to Cordio/platform/Documentation"
-        mv $SOURCE/latex/refman.pdf $DEST/MAX32655.pdf
-        rm -r latex
+    run: |
+      echo "Building PDF..."
+      SOURCE  = Libraries/Cordio/Documentation
+      DEST = Libraries/Cordio/platform/Documentation
+      make -C $SOURCE/latex
+      
+      echo "Copying PDF to Cordio/platform/Documentation"
+      mv $SOURCE/latex/refman.pdf $DEST/MAX32655.pdf
+      rm -r latex
 
 
 
