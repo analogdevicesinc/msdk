@@ -5,19 +5,19 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
-#MXC_OPTIMIZE_CFLAGS = -Og
-# ^ For example, you can uncomment this line to 
-# optimize the project for debugging
-
 # **********************************************************
 
-# Set the camera driver to the HM0360 color drivers
-# These are the only drivers supported by this example.
-CAMERA=HM0360_COLOR
+ENABLE_TFT = 1
+# ^ Set to 1 to enable TFT display, or 0 to disable.
 
-# Enable optimization level 2 (faster code but this should be turned off for debugging)
-MXC_OPTIMIZE_CFLAGS = -O2
-
+ifeq ($(ENABLE_TFT),1)
 # Uncomment to use legacy Adafruit 3315 TFT drivers (TFT = ADAFRUIT)
 # Otherwise, default drivers (TFT = NEWHAVEN) will be used for NewHaven NHD-2.4
 # TFT = ADAFRUIT
+
+PROJ_CFLAGS += -DENABLE_TFT
+
+# Add TFT resources folder to build
+VPATH += tft
+IPATH += tft
+endif
