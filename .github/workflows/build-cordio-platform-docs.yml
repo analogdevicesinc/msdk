@@ -22,12 +22,10 @@ jobs:
       - name: Build PDF
         run: |
           echo "Building PDF..."
-          SOURCE  = Libraries/Cordio/docs
-          DEST = Libraries/Cordio/platform/Documentation
-          make -C $SOURCE/latex
+          make -C Libraries/Cordio/docs/latex
 
           echo "Copying PDF to Cordio/platform/Documentation"
-          mv $SOURCE/latex/refman.pdf $DEST/MAX32655.pdf
+          mv Libraries/Cordio/docs/latex/refman.pdf Libraries/Cordio/platform/Documentation/MAX32655.pdf
           rm -r latex
 
 
