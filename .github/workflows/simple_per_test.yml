@@ -279,6 +279,7 @@ jobs:
               do
                   echo "---------------------------------------------------------------------------------------------"
                   echo "Next turn: pkt_len ${pkt_len}, phy ${phy}"
+                  echo
 
                   echo "Program or reset the board ${BRD2}."
                   if [[ $i -eq 0 ]]; then
@@ -292,26 +293,29 @@ jobs:
                           ${BRD2_DAP_SN} \
                           False \
                           True
-                      
-                      echo "Sleep 5 secs."
-                      sleep 5
-                      echo "Continue the test."
-                      echo
                   else
                       echo "Reset the board ${BRD1}"
                       set -x
                       nrfjprog --family nrf52 -sn ${BRD1_DAP_SN} --debugreset
                       set +x
+                      echo
 
                       echo "Hard reset the board ${BRD2}."
                       bash -ex $MSDK/msdk_dev_tools/scripts/hard_reset.sh ${BRD2_CHIP_LC}.cfg ${BRD2_DAP_SN} $(realpath ${MSDK}/Examples/${BRD2_CHIP_UC}/BLE5_ctr/build/${BRD2_CHIP_LC}.elf)
                       set +e
                       set +x
+                      echo
                   fi
+
+                  echo
+                  echo "Sleep 5 secs."
+                  sleep 5
+                  echo "Continue the test."
+                  echo
 
                   # Run the PER test
                   res_files[i]=${res}_${BRD2_CHIP_LC}_${i}.csv
-                  echo The test results will be saved in file ${res_files[i]}.
+                  echo "The test results will be saved in file ${res_files[i]}."
 
                   slv_ser=${BRD2_HCI}
                   mst_ser=${BRD1_HCI}
