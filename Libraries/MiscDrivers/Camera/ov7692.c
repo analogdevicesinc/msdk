@@ -296,7 +296,7 @@ static int set_framesize(int width, int height)
     }
 
     // Image typically outputs one line short, add a line to account.
-    height = height + 1;
+    //height = height + 1;
     // TODO: <RA> There is no need to add and extra line.
     // Apply passed in resolution as output resolution.
     ret |= cambus_writeb(OH_HIGH, (width >> 8) & 0xff);

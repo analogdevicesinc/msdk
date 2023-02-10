@@ -348,7 +348,7 @@ int main(void)
     MXC_TFT_SetRotation(SCREEN_NORMAL);
   #endif
   #ifdef BOARD_FTHR_REVA
-    MXC_TFT_SetRotation(ROTATE_270);
+    //MXC_TFT_SetRotation(ROTATE_270);
   #endif
  #endif
 
@@ -361,15 +361,15 @@ int main(void)
 
     MXC_Delay(SEC(1));
 
-#if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
-    // set camera clock prescaller to prevent streaming overflow for QVGA
-#ifdef BOARD_EVKIT_V1
-    camera_write_reg(0x11, 0x8); // can be set to 0x6 in release mode ( -o2 )
-#endif
-#ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x11, 0xE); // can be set to 0xB in release mode ( -o2 )
-#endif
-#endif
+//#if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
+//    // set camera clock prescaller to prevent streaming overflow for QVGA
+//#ifdef BOARD_EVKIT_V1
+//    camera_write_reg(0x11, 0x8); // can be set to 0x6 in release mode ( -o2 )
+//#endif
+//#ifdef BOARD_FTHR_REVA
+//    camera_write_reg(0x11, 0xE); // can be set to 0xB in release mode ( -o2 )
+//#endif
+//#endif
 
     // Start capturing a first camera image frame.
     printf("Starting\n");
