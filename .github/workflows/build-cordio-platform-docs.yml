@@ -15,18 +15,18 @@ jobs:
       - name: Generate Docs (MAX32655)
         uses: mattnotmitt/doxygen-action@v1.9.5
         with:
-          working-directory: Libraries/Cordio/Documentation
+          working-directory: Libraries/Cordio/docs
           doxyfile-path: max32655_platform_doxyfile
           enable-latex: true
 
       - name: Build PDF
         run: |
           echo "Building PDF..."
-          SOURCE  = Libraries/Cordio/Documentation
+          SOURCE  = Libraries/Cordio/docs
           DEST = Libraries/Cordio/platform/Documentation
           make -C $SOURCE/latex
 
-          echo "Copying PDF to Cordio/platform/docs"
+          echo "Copying PDF to Cordio/platform/Documentation"
           mv $SOURCE/latex/refman.pdf $DEST/MAX32655.pdf
           rm -r latex
 
