@@ -285,8 +285,8 @@ static void setup_dma(void)
         }
 
         // Set the initial streaming buffer to 1
-        current_stream_buffer = 1;
-        ///current_stream_buffer = 0;
+        //current_stream_buffer = 1;
+        current_stream_buffer = 0;
         /// Let's use 2nd half of buffer for current_stream_buffer = 0
         MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
 

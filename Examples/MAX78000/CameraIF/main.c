@@ -64,7 +64,9 @@
 // Configuration options
 // ------------------------
 #define ENABLE_TFT // Comment out to disable TFT and send image to serial port instead.
-// #define STREAM_ENABLE
+#define STREAM_ENABLE
+#define BOARD_FTHR_REVA
+#undef BOARD_EVKIT_V1
 /* If enabled, camera is setup in streaming mode to send the image
 line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
 image first and then sends to TFT or serial port.
@@ -311,39 +313,45 @@ int main(void)
 #endif
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef STREAM_ENABLE
-#ifndef CAMERA_MONO
+ #ifndef CAMERA_MONO
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
                        dma_channel); // RGB565
-#else
+ #else
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA,
                        dma_channel); // Mono
-#endif
+ #endif
 
-#ifdef ENABLE_TFT
+ #ifdef ENABLE_TFT
     /* Set the screen rotation */
     MXC_TFT_SetRotation(SCREEN_ROTATE); //ROTATE_0
     /* Change entry mode settings */
     MXC_TFT_WriteReg(0x0011, 0x6858);
-#endif
-#else
-#ifndef CAMERA_MONO
+ #endif
+#else  //STREAM_ENABLE
+ #ifndef CAMERA_MONO
+  #ifndef FEATHER_FAST_STREAM
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel); // RGB565 stream
-#else
+  #else
+    MXC_TFT_Stream(0, 0, IMAGE_XRES, IMAGE_YRES);
+    ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
+  #endif
+
+ #else //CAMERA_MONO
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel); // Mono stream
-#endif
+ #endif  //CAMERA_MONO
 
-#ifdef ENABLE_TFT
+ #ifdef ENABLE_TFT
     /* Set the screen rotation */
-#ifdef BOARD_EVKIT_V1
+  #ifdef BOARD_EVKIT_V1
     MXC_TFT_SetRotation(SCREEN_NORMAL);
-#endif
-#ifdef BOARD_FTHR_REVA
+  #endif
+  #ifdef BOARD_FTHR_REVA
     MXC_TFT_SetRotation(ROTATE_270);
-#endif
+  #endif
+ #endif
 
-#endif
 #endif //#ifndef STREAM_ENABLE
 
     if (ret != STATUS_OK) {

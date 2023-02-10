@@ -21,3 +21,6 @@ CAMERA=OV7692
 # Set optimization level to -O2, which is required for the CameraIF DMA
 # timing to work properly.
 MXC_OPTIMIZE_CFLAGS=-O2
+
+MAXIM_PATH=
+BOARD=FTHR_RevA
