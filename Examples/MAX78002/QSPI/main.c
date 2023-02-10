@@ -69,6 +69,11 @@ void DMA0_IRQHandler()
     MXC_DMA_Handler();
 }
 
+void DMA1_IRQHandler()
+{
+    MXC_DMA_Handler();
+}
+
 mxc_spi_req_t g_req = {
     .spi = SPI,
     .ssDeassert = 1,
@@ -285,6 +290,7 @@ int ram_read_slow(mxc_spi_req_t *req, uint32_t address, uint8_t *out, unsigned i
 
     req->rxData = out;
     req->rxLen = len;
+    g_done = 0;
     return MXC_SPI_MasterTransaction(req);
 }
 
@@ -310,7 +316,34 @@ int ram_read_quad(mxc_spi_req_t *req, uint32_t address, uint8_t *out, unsigned i
     req->ssDeassert = 1;
     req->rxData = out;
     req->rxLen = len;
+    g_done = 0;
     return MXC_SPI_MasterTransaction(req);
+}
+
+int ram_read_quad_dma(mxc_spi_req_t *req, uint32_t address, uint8_t *out, unsigned int len)
+{
+    int err = 0;
+    uint8_t header[6];
+    _parse_spi_header(0x0B, address, header);
+    header[4] = 0xFF; // Extra dummy bytes to satisfy wait cycle
+    header[5] = 0xFF;
+
+    // Transmit header, but keep Chip Select asserted
+    req->txData = header;
+    req->txLen = 6;
+    req->rxData = NULL;
+    req->rxLen = 0;
+    req->ssDeassert = 0;
+    err = MXC_SPI_MasterTransaction(req);
+    if (err) return err;
+
+    req->txData = NULL;
+    req->txLen = 0;
+    req->ssDeassert = 1;
+    req->rxData = out;
+    req->rxLen = len;
+    g_done = 0;
+    return MXC_SPI_MasterTransactionDMA(req);
 }
 
 int ram_write(mxc_spi_req_t *req, uint32_t address, uint8_t * data, unsigned int len) 
@@ -323,6 +356,7 @@ int ram_write(mxc_spi_req_t *req, uint32_t address, uint8_t * data, unsigned int
     req->txLen = len;
     req->rxData = NULL;
     req->rxLen = 0;
+    g_done = 0;
     return MXC_SPI_MasterTransaction(req);
 }
 
@@ -350,6 +384,7 @@ int ram_write_quad_dma(mxc_spi_req_t *req, uint32_t address, uint8_t * data, uns
     req->txLen = len;
     req->rxData = NULL;
     req->rxLen = 0;
+    g_done = 0;
     return MXC_SPI_MasterTransactionDMA(req);
 }
 
@@ -444,7 +479,12 @@ int main(void)
 
     // Validate
     MXC_Delay(MXC_DELAY_MSEC(1));
+#if 0
     ram_read_quad(&g_req, 1024, rx_buffer, TEST_SIZE);
+#else
+    ram_read_quad_dma(&g_req, 1024, rx_buffer, TEST_SIZE);
+    while(!g_done) {}
+#endif
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, 0xA5, rx_buffer[i]);
