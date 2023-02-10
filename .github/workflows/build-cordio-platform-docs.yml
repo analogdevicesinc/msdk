@@ -26,7 +26,7 @@ jobs:
           DEST = Libraries/Cordio/platform/Documentation
           make -C $SOURCE/latex
 
-          echo "Copying PDF to Cordio/platform/Documentation"
+          echo "Copying PDF to Cordio/platform/docs"
           mv $SOURCE/latex/refman.pdf $DEST/MAX32655.pdf
           rm -r latex
 
