@@ -123,6 +123,8 @@ jobs:
 
         run: |
 
+          MSDK=${GITHUB_WORKSPACE}
+          
           echo     DO_MAX32655: ${DO_MAX32655}
           echo MAX32655_PKG_RA: ${MAX32655_PKG_RA}          
           echo MAX32655_PHY_RA: ${MAX32655_PHY_RA}
@@ -192,15 +194,16 @@ jobs:
 
           # Lock the hardware resources
           CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
-          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_LC}.txt
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
           echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
           echo CURR_JOB_FILE: ${CURR_JOB_FILE}
           touch ${CURR_JOB_FILE}
 
-          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_LC}.log
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log
           touch ${CURR_LOG}
           echo "::set-env name=CURR_LOG::${CURR_LOG}"
           echo CURR_LOG: ${CURR_LOG}
+          echo
 
           echo /home/$USER/Workspace/Resource_Share/${BRD2}.txt  >> ${CURR_JOB_FILE}
           echo /home/$USER/Workspace/Resource_Share/${BRD1}.txt  >> ${CURR_JOB_FILE}
@@ -213,7 +216,7 @@ jobs:
 
           #------------------------------------------------
           echo "Disable UART assertion."
-          cd $MSDK
+          cd ${MSDK}
           echo PWD: `pwd`
           echo
 
