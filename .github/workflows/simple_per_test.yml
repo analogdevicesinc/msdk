@@ -41,9 +41,9 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: false
-          repository: yc-adi/msdk_ci_per_tool
+          repository: yc-adi/msdk_dev_tools
           ref: main
-          path: msdk_ci_per_tool
+          path: msdk_dev_tools
 
       # Runs a set of commands using the runners shell
       - name: get_and_set_configurations
@@ -116,6 +116,8 @@ jobs:
           echo MAX32690_WLP_STEP: ${MAX32690_WLP_STEP}
           echo 
   
+          
+
       # Runs a set of commands using the runners shell
       - name: max32655_simple_per_test
         env:
@@ -124,7 +126,12 @@ jobs:
         run: |
 
           MSDK=${GITHUB_WORKSPACE}
-          
+
+          RESULT_PATH=~/Workspace/Resource_Share/Temp
+          if [ ! -d "${RESULT_PATH}" ]; then
+              mkdir -p ${RESULT_PATH}
+          fi
+
           echo     DO_MAX32655: ${DO_MAX32655}
           echo MAX32655_PKG_RA: ${MAX32655_PKG_RA}          
           echo MAX32655_PHY_RA: ${MAX32655_PHY_RA}
@@ -238,7 +245,7 @@ jobs:
           echo "Build the project BLE5_ctr for the 2nd board ${BRD2}"
           echo
 
-          bash -e $MSDK/Libraries/RF-PHY-closed/.github/workflows/build_flash.sh \
+          bash -e $MSDK/msdk_dev_tools/scripts/build_flash.sh \
               ${MSDK} \
               /home/$USER/Tools/openocd \
               ${BRD2_CHIP_UC} \
@@ -271,7 +278,7 @@ jobs:
                   echo "Program or reset the board ${BRD2}."
                   if [[ $i -eq 0 ]]; then
                       echo "Flash the board."            
-                      bash -e $MSDK/Libraries/RF-PHY-closed/.github/workflows/build_flash.sh \
+                      bash -e $MSDK/msdk_dev_tools/scripts/build_flash.sh \
                           ${MSDK} \
                           /home/$USER/Tools/openocd \
                           ${BRD2_CHIP_UC} \
@@ -292,7 +299,7 @@ jobs:
                       set +x
 
                       echo "Hard reset the board ${BRD2}."
-                      bash -ex $MSDK/Libraries/RF-PHY-closed/.github/workflows/hard_reset.sh ${BRD2_CHIP_LC}.cfg ${BRD2_DAP_SN} $(realpath ${MSDK}/Examples/${BRD2_CHIP_UC}/BLE5_ctr/build/${BRD2_CHIP_LC}.elf)
+                      bash -ex $MSDK/msdk_dev_tools/scripts/hard_reset.sh ${BRD2_CHIP_LC}.cfg ${BRD2_DAP_SN} $(realpath ${MSDK}/Examples/${BRD2_CHIP_UC}/BLE5_ctr/build/${BRD2_CHIP_LC}.elf)
                       set +e
                       set +x
                   fi
@@ -343,6 +350,6 @@ jobs:
           echo PWD: `pwd`
           echo
 
-          chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
-          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} 2>&1 | tee -a ${CURR_LOG}
+          chmod u+x ${GITHUB_WORKSPACE}/msdk_dev_tools/scripts/unlock_plot.sh
+          ${GITHUB_WORKSPACE}/msdk_dev_tools/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} 2>&1 | tee -a ${CURR_LOG}
 
