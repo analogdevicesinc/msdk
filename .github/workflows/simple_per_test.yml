@@ -66,6 +66,7 @@ jobs:
           NO_SKIP=`python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['no_skip'])"`
           echo "::set-env name=NO_SKIP::${NO_SKIP}"
           echo "NO_SKIP: ${NO_SKIP}"
+          echo
 
           DO_MAX32655=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32655'])")
           DO_MAX32665=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32665'])")
@@ -89,10 +90,10 @@ jobs:
           echo "::set-env name=MAX32665_PKG_RA::${MAX32665_PKG_RA}"
           echo "::set-env name=MAX32690_PKG_RA::${MAX32690_PKG_RA}"
           echo "::set-env name=MAX32690_WLP_PKG_RA::${MAX32690_WLP_PKG_RA}"
-          echo MAX32655_PKG_RA: ${MAX3255_PKG_RA}
-          echo MAX32665_PKG_RA: ${MAX3265_PKG_RA}
-          echo MAX32690_PKG_RA: ${MAX3290_PKG_RA}
-          echo MAX32690_WLP_PKG_RA: ${MAX3290_WLP_PKG_RA}
+          echo MAX32655_PKG_RA: ${MAX32655_PKG_RA}
+          echo MAX32665_PKG_RA: ${MAX32665_PKG_RA}
+          echo MAX32690_PKG_RA: ${MAX32690_PKG_RA}
+          echo MAX32690_WLP_PKG_RA: ${MAX32690_WLP_PKG_RA}
           echo
 
           export MAX32655_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_phy_range'])")
