@@ -349,6 +349,9 @@ jobs:
           echo "cat ${all_in_one}"
           cat "${all_in_one}"
           echo
+          echo "Check the PER values."
+          python3 ${GITHUB_WORKSPACE}/msdk_ci_per_tool/check_results.py --csv $(realpath ${all_in_one})
+
 
       # Unlock even when cancelled or failed
       - name: unlock_max32655
