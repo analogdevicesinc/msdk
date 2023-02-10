@@ -132,6 +132,12 @@ jobs:
 
           #------------------------------------------------
           # Prepare the arguments for function call
+
+          if [ "${DO_MAX32655}" == "0" ]; then
+            echo "Skip the test for MAX32655."
+            exit 0
+          fi
+
           BRD2_CHIP_LC=max32655
 
           MSDK=${GITHUB_WORKSPACE}
@@ -159,7 +165,11 @@ jobs:
             $CURR_TIME \
             $(realpath ${CURR_JOB_FILE}) \
             $(realpath ${CURR_LOG})      \
-            $(realpath ${all_in_one})
+            $(realpath ${all_in_one})    \
+            ${MAX32655_PKG_RA}           \
+            ${MAX32655_PHY_RA}           \
+            ${MAX32655_STEP}             \
+            2>&1 | tee -a ${CURR_LOG}
             
           #------------------------------------------------          
 
