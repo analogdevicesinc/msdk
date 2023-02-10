@@ -45,6 +45,8 @@
 #include "camera.h"
 #include "sccb.h"
 #include "dma_regs.h"
+#include "spi_regs.h"
+#include "spi.h"
 
 /*******************************      DEFINES      ***************************/
 #define FIFO_THRES_HOLD (4)
@@ -65,6 +67,8 @@ static int g_pixel_format = PIXFORMAT_RGB888;
 static fifomode_t g_fifo_mode = FIFO_THREE_BYTE;
 static dmamode_t g_dma_mode = NO_DMA;
 static int g_dma_channel = 0;
+static int g_dma_channel_tft = 1;
+static int g_dma_already_setup = 0;
 static camera_t camera;
 extern int sensor_register(camera_t *camera);
 
@@ -203,6 +207,70 @@ static void stream_callback(int a, int b)
     }
 }
 
+static void stream_callback_tft(int a, int b)
+{
+	if (MXC_DMA->ch[g_dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {
+        MXC_DMA->ch[g_dma_channel].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
+
+        // Check current streaming buffer and reconfigure DMA
+        if (current_stream_buffer) {
+            // Set buffer[0] for next DMA transfer
+        	MXC_GPIO_OutSet(MXC_GPIO3, MXC_GPIO_PIN_1);
+            MXC_DMA->ch[g_dma_channel].dst = (uint32_t)rx_data;
+        	// wait until TFT is done
+            while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS));
+            if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF)
+            	MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
+            //MXC_DMA->ch[g_dma_channel].dst = (uint32_t)rx_data;
+            MXC_DMA->ch[g_dma_channel_tft].cnt = g_stream_buffer_size;
+            MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)(rx_data + g_stream_buffer_size);
+            MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+            MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+            // Set current streaming buffer[1] as full, otherwise report overflow
+            if (stream_buffer_ptr == NULL) {
+                stream_buffer_ptr = rx_data + g_stream_buffer_size;
+            }
+            else {
+                statistic.overflow_count++;
+            }
+        }
+        else {
+            // Set buffer[1] for next DMA transfer
+        	MXC_GPIO_OutSet(MXC_GPIO3, MXC_GPIO_PIN_1);
+            MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
+        	// wait until TFT is done
+			while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS));
+			if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF)
+				MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
+			//MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
+			MXC_DMA->ch[g_dma_channel_tft].cnt = g_stream_buffer_size;
+			MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)rx_data;
+			MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+			MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+			// Set current streaming buffer[0] as full, otherwise report overflow
+            if (stream_buffer_ptr == NULL) {
+                stream_buffer_ptr  = rx_data;
+            }
+            else {
+                statistic.overflow_count++;
+            }
+        }
+
+        // Alternate streaming buffers
+        current_stream_buffer ^= 1;
+        // Set DMA counter
+        MXC_DMA->ch[g_dma_channel].cnt = g_stream_buffer_size;
+
+        // Re-enable DMA channel
+        MXC_DMA->ch[g_dma_channel].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+
+        statistic.dma_transfer_count++;
+        MXC_GPIO_OutClr(MXC_GPIO3, MXC_GPIO_PIN_1);
+    }
+}
+
 static void setup_dma(void)
 {
     MXC_DMA->ch[g_dma_channel].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
@@ -218,6 +286,8 @@ static void setup_dma(void)
 
         // Set the initial streaming buffer to 1
         current_stream_buffer = 1;
+        ///current_stream_buffer = 0;
+        /// Let's use 2nd half of buffer for current_stream_buffer = 0
         MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
 
         stream_buffer_ptr = NULL;
@@ -243,6 +313,102 @@ static void setup_dma(void)
          (0x1 << MXC_F_DMA_CTRL_EN_POS)); // Enable DMA channel
 
     MXC_DMA->inten |= (1 << g_dma_channel);
+}
+
+static void setup_dma_tft(void)
+{
+    MXC_DMA->ch[g_dma_channel].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
+    MXC_DMA->ch[g_dma_channel].dst = (uint32_t) rx_data; // Cast Pointer
+    // TFT DMA
+    MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
+    MXC_DMA->ch[g_dma_channel_tft].dst = (uint32_t) rx_data; // Cast Pointer
+
+    if (g_dma_mode == STREAMING_DMA) {
+
+    	//camera DMA
+    	if (PCIF_DATA_BUS_WITH == MXC_V_CAMERAIF_CTRL_DATA_WIDTH_8BIT) {
+            MXC_DMA->ch[g_dma_channel].cnt = g_stream_buffer_size;
+        }
+        else {
+            MXC_DMA->ch[g_dma_channel].cnt = g_stream_buffer_size * 2; // 10 and 12 bit use 2 bytes per word in the fifo
+        }
+
+        current_stream_buffer = 0;
+        /// Let's use 2nd half of buffer for current_stream_buffer = 0
+        MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
+
+        stream_buffer_ptr = NULL;
+        statistic.dma_transfer_count = 0;
+
+        //TFT DMA
+		if (PCIF_DATA_BUS_WITH == MXC_V_CAMERAIF_CTRL_DATA_WIDTH_8BIT) {
+			MXC_DMA->ch[g_dma_channel_tft].cnt = g_stream_buffer_size;
+		}
+		else {
+			MXC_DMA->ch[g_dma_channel_tft].cnt = g_stream_buffer_size * 2; // 10 and 12 bit use 2 bytes per word in the fifo
+		}
+
+		//current_stream_buffer = 0;
+		/// Let's use 2nd half of buffer for current_stream_buffer = 0
+		MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)(rx_data + g_stream_buffer_size);
+
+		//stream_buffer_ptr = NULL;
+		//statistic.dma_transfer_count = 0;
+
+    }
+    else {
+        if (PCIF_DATA_BUS_WITH == MXC_V_CAMERAIF_CTRL_DATA_WIDTH_8BIT) {
+            MXC_DMA->ch[g_dma_channel].cnt = g_total_img_size;
+        }
+        else {
+            MXC_DMA->ch[g_dma_channel].cnt = g_total_img_size * 2; // 10 and 12 bit use 2 bytes per word in the fifo
+        }
+    }
+
+    MXC_DMA->ch[g_dma_channel].ctrl = ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS)  +
+                                       (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS)  +
+                                       (0x3 << MXC_F_DMA_CTRL_BURST_SIZE_POS) +
+                                       (0x1 << MXC_F_DMA_CTRL_DSTINC_POS)  +
+                                       (0x2 << MXC_F_DMA_CTRL_DSTWD_POS)   +
+                                       (0x0 << MXC_F_DMA_CTRL_SRCINC_POS)  +
+                                       (0x2 << MXC_F_DMA_CTRL_SRCWD_POS)   +
+                                       (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
+                                       (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) +
+                                       (0xD << MXC_F_DMA_CTRL_REQUEST_POS) +  // From PCIF_RX
+                                       (0x0 << MXC_F_DMA_CTRL_PRI_POS)     +  // High Priority
+                                       (0x0 << MXC_F_DMA_CTRL_RLDEN_POS)   +  // Reload disabled
+                                       (0x1 << MXC_F_DMA_CTRL_EN_POS)         // Enable DMA channel
+                                      );
+
+    MXC_DMA->ch[g_dma_channel_tft].ctrl = ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS)  +
+                                       (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS)  +
+                                       (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) +
+                                       (0x0 << MXC_F_DMA_CTRL_DSTINC_POS)  +
+                                       (0x1 << MXC_F_DMA_CTRL_DSTWD_POS)   +
+                                       (0x1 << MXC_F_DMA_CTRL_SRCINC_POS)  +
+                                       (0x1 << MXC_F_DMA_CTRL_SRCWD_POS)   +
+                                       (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
+                                       (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) +
+                                       (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) +  // To SPI0 -> TFT
+                                       (0x0 << MXC_F_DMA_CTRL_PRI_POS)     +  // High Priority
+                                       (0x0 << MXC_F_DMA_CTRL_RLDEN_POS)   //+  // Reload disabled
+                                      // (0x1 << MXC_F_DMA_CTRL_EN_POS)         // Enable DMA channel
+                                      );
+    MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
+    MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR, (0x9600) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+    MXC_SPI0->dma   |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
+        // QSPIn port is enabled
+    //MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
+
+        // Clear master done flag
+    MXC_SPI0->intfl = MXC_F_SPI_INTFL_MST_DONE;
+    MXC_SETFIELD (MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_DMA_TX_EN);
+    MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
+    MXC_DMA->inten |= (1 << g_dma_channel);
+    MXC_GPIO_OutClr(MXC_GPIO3, MXC_GPIO_PIN_1);
+    g_dma_already_setup = 1;
 }
 
 /******************************** Public Functions ***************************/
@@ -464,6 +630,144 @@ int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode
     return ret;
 }
 
+int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode, dmamode_t dma_mode, int dma_channel)
+{
+    int ret = STATUS_OK;
+    int bytes_per_pixel = 2;
+
+    // Setup fifo mode.
+    g_fifo_mode = fifo_mode;
+
+    switch (g_fifo_mode) {
+    case FIFO_THREE_BYTE: // data is 3 bytes in FIFO, it will be converted to 32-bit with MSB set to zero
+        MXC_PCIF->ctrl |= MXC_F_CAMERAIF_CTRL_THREE_CH_EN;  // CNN mode enabled
+        break;
+
+    case FIFO_FOUR_BYTE: // data is 4 bytes in FIFO, no need to convert to 32-bit
+        MXC_PCIF->ctrl &= ~MXC_F_CAMERAIF_CTRL_THREE_CH_EN; // CNN mode disabled
+
+        if (pixformat == PIXFORMAT_RGB888)  // cannot be 4 bytes in FIFO in RGB888 case
+        	return -1;
+        break;
+
+    default:
+        return -1;
+    }
+
+    // Setup DMA.
+    g_dma_mode = dma_mode;
+
+    g_pixel_format = pixformat;
+
+    // Setup hardware bit expansion from rgb565 to rgb888 conversion.
+    // If enabled then hardware will read in rgb565 from the camera
+    // and treat it as rgb888.
+    if (pixformat == PIXFORMAT_RGB888) {
+        MXC_PCIF_SetDataWidth(MXC_PCIF_DATAWIDTH_12_BIT);
+
+        // Bit expansion mode will yeild three bytes per pixel.
+        if ((g_dma_mode == USE_DMA) || (g_dma_mode == STREAMING_DMA)) {
+            bytes_per_pixel = 4;
+        }
+        else {
+            bytes_per_pixel = 3;
+        }
+    }
+    else if (pixformat == PIXFORMAT_BAYER) {
+        bytes_per_pixel = 1;
+    }
+
+    // Setup camera resolution and allocate a camera frame buffer.
+    g_framesize_width = xres;
+    g_framesize_height = yres;
+    // Calculate the number of bytes for the frame buffer.
+    g_total_img_size = g_framesize_width * g_framesize_height * bytes_per_pixel;
+
+    // Free up memory if a camera frame buffer was previously allocated.
+    if (rx_data != NULL) {
+        free(rx_data);
+        rx_data = NULL;
+    }
+
+    if (g_dma_mode == STREAMING_DMA) {
+        statistic.overflow_count = 0;
+        // Stream buffer size
+        g_stream_buffer_size = g_framesize_width * bytes_per_pixel;
+
+        // Allocate memory with a buffer just to keep two horizontal
+        // lines of a camera image for CNN streaming
+        rx_data = (uint8_t*)malloc(2 * g_stream_buffer_size);
+
+        // Register streaming callback function
+        MXC_DMA_SetCallback(dma_channel, stream_callback_tft);
+
+#ifndef __riscv
+        //MXC_NVIC_SetVector(DMA0_IRQn, stream_irq_handler);
+        switch(dma_channel)
+        {
+        	case 0:
+        		 MXC_NVIC_SetVector(DMA0_IRQn, stream_irq_handler);
+        		 break;
+        	case 1:
+        	     MXC_NVIC_SetVector(DMA1_IRQn, stream_irq_handler);
+        	     break;
+        	case 2:
+        	     MXC_NVIC_SetVector(DMA2_IRQn, stream_irq_handler);
+        	     break;
+        	case 3:
+        	     MXC_NVIC_SetVector(DMA3_IRQn, stream_irq_handler);
+        	     break;
+        	default:
+        		printf("DMA channel not supported!\n");
+        		while(1);
+
+        }
+
+#else
+        NVIC_EnableIRQ(DMA0_IRQn);
+#endif
+    }
+    else {
+
+        // Allocate memory with a buffer large enough for a camera frame.
+        rx_data = (uint8_t*)malloc(g_total_img_size);
+    }
+
+    if (rx_data == NULL) {
+        // Return error if unable to allocate memory.
+        return STATUS_ERROR_ALLOCATING;
+    }
+
+    // Initialize buffer
+    if (g_dma_mode == STREAMING_DMA) {
+        memset((uint8_t*)rx_data, 0xff, 2 * g_stream_buffer_size);
+    }
+    else {
+        memset((uint8_t*)rx_data, 0xff, g_total_img_size);
+    }
+
+    if ((g_dma_mode == USE_DMA) || (g_dma_mode == STREAMING_DMA)) {
+        g_dma_channel = dma_channel;
+        setup_dma_tft();
+        MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH, (0x1 << MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS));
+        MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA, MXC_F_CAMERAIF_CTRL_RX_DMA);
+        MXC_PCIF_DisableInt(MXC_F_CAMERAIF_INT_EN_FIFO_THRESH);
+    }
+    else {
+        // Slow down clock if not using dma
+#if defined(CAMERA_OV7692)
+        ret |= camera.write_reg(0x11, 0x4); // clock prescaler
+#endif
+        MXC_SETFIELD(MXC_PCIF->ctrl, MXC_F_CAMERAIF_CTRL_RX_DMA, 0x0);
+        MXC_PCIF_EnableInt(MXC_F_CAMERAIF_INT_EN_FIFO_THRESH);
+    }
+
+    camera.set_pixformat(pixformat);
+    camera.set_framesize(g_framesize_width, g_framesize_height);
+
+    return ret;
+}
+
 #if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
     defined(CAMERA_OV5642)
 int camera_read_reg(uint16_t reg_addr, uint8_t *reg_data)
@@ -535,6 +839,22 @@ int camera_start_capture_image(void)
     rx_data_index = 0;
     MXC_PCIF->int_fl = MXC_PCIF->int_fl;
     MXC_PCIF_Start(MXC_PCIF_READMODE_SINGLE_MODE);
+    return ret;
+}
+
+int camera_start_capture_image_tft(void)
+{
+    int ret = STATUS_OK;
+
+    if ((g_dma_mode == USE_DMA) || (g_dma_mode == STREAMING_DMA) & (g_dma_already_setup == 0)) {
+        setup_dma();
+    }
+
+    // Clear flags.
+    g_is_img_rcv = 0;
+    rx_data_index = 0;
+    MXC_PCIF->int_fl = MXC_PCIF->int_fl;
+    MXC_PCIF_Start(MXC_PCIF_READMODE_CONTINUES_MODE);
     return ret;
 }
 

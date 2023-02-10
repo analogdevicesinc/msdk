@@ -77,6 +77,12 @@ if stream mode is disabled, or 320x240 if enabled
 If BUTTON is defined, you'll need to push PB1 to capture an image frame.  Otherwise, images
 will be captured continuously.
 */
+#if defined(STREAM_ENABLE) && defined(ENABLE_TFT) && defined(BOARD_FTHR_REVA)
+#define FEATHER_FAST_STREAM
+#endif
+/* If enabled, can stream up to 16fps when the TFT is available
+ * This option only works if Feather board is selected
+ */
 
 // ------------------------
 
@@ -94,12 +100,14 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 
 #endif
-
+#ifndef FEATHER_FAST_STREAM
 #define CAMERA_FREQ (10 * 1000 * 1000)
+#else
+#define CAMERA_FREQ (8330000)
+#endif
 
 // Match image dimensions to the selected camera and capture mode.
 // These definitions, including "CAMERA_MONO", come from board.mk
-
 #if defined(CAMERA_HM01B0)
 
 #ifdef STREAM_ENABLE
@@ -282,8 +290,24 @@ int main(void)
 
 #ifdef BOARD_FTHR_REVA
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+    /* Set the screen rotation */
+    MXC_TFT_SetRotation(ROTATE_270);
 #endif
     MXC_TFT_SetBackGroundColor(4);
+#endif
+
+#if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
+    // set camera clock prescaler to prevent streaming overflow for QVGA
+#ifdef BOARD_EVKIT_V1
+    camera_write_reg(0x11, 0x8);
+#endif
+#ifdef BOARD_FTHR_REVA
+#ifndef FEATHER_FAST_STREAM
+    camera_write_reg(0x11, 0xE);
+#else
+    camera_write_reg(0x11, 0x0);
+#endif
+#endif
 #endif
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef STREAM_ENABLE
@@ -297,7 +321,7 @@ int main(void)
 
 #ifdef ENABLE_TFT
     /* Set the screen rotation */
-    MXC_TFT_SetRotation(SCREEN_ROTATE);
+    MXC_TFT_SetRotation(SCREEN_ROTATE); //ROTATE_0
     /* Change entry mode settings */
     MXC_TFT_WriteReg(0x0011, 0x6858);
 #endif
@@ -344,6 +368,7 @@ int main(void)
 #ifdef BUTTON
     while (!PB_Get(0)) {}
 #endif
+#ifndef FEATHER_FAST_STREAM
     camera_start_capture_image();
 
     while (1) {
@@ -363,6 +388,11 @@ int main(void)
             camera_start_capture_image();
         }
     }
+#else
+    camera_start_capture_image_tft();
+    while(1)
+    	;
+#endif
 
     return ret;
 }

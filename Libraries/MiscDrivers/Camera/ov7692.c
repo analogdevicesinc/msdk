@@ -57,7 +57,7 @@ static const uint8_t default_regs[][2] = {
     {0xb5, 0x30}, // Power down MIPI and low power transmitter (default: 0x70)
     {0xff, 0x00}, // Select system control register bank
     {0x16, 0x03}, // (default)
-    {0x0c, 0xd6}, // Vertival flip, Horizontal mirror, YU/YV swap (default: 0x16)
+    {0x0c, 0xd6}, // Vertical flip, Horizontal mirror, YU/YV swap (default: 0x16)
     {0x82, 0x03}, // YUV422 (default is 0x0)
     {0x11, 0x00}, // CLKRC, Internal clock pre-scalar divide by 1 (default: 0x0)
     {0x12, 0x06}, // RGB565 output format (default: 0x0)
@@ -297,6 +297,7 @@ static int set_framesize(int width, int height)
 
     // Image typically outputs one line short, add a line to account.
     height = height + 1;
+    // TODO: <RA> There is no need to add and extra line.
     // Apply passed in resolution as output resolution.
     ret |= cambus_writeb(OH_HIGH, (width >> 8) & 0xff);
     ret |= cambus_writeb(OH_LOW, (width >> 0) & 0xff);
