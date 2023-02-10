@@ -28,17 +28,18 @@ echo
 echo "Show lock files in folder Resource_Share."
 ls -hal /home/$USER/Workspace/Resource_Share
 echo
-echo "Show locked files for this job."
-cat ${CURR_JOB_FILE}
-echo
 
 if [ -f "${CURR_JOB_FILE}" ]; then
-while IFS= read -r line; do
-    echo "python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py ${line}"
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py ${line}
-done <$CURR_JOB_FILE
+    echo "Show locked files for this job."
+    cat ${CURR_JOB_FILE}
+    echo
+
+    while IFS= read -r line; do
+        echo "python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py ${line}"
+        python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py ${line}
+    done <$CURR_JOB_FILE
 else
-echo "${CURR_JOB_FILE} not exist."
+    echo "${CURR_JOB_FILE} not exist."
 fi
 
 echo "-----------------------------------------------------------------------------------"

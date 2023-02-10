@@ -68,6 +68,10 @@ jobs:
           echo "::set-env name=DO_MAX32665::${DO_MAX32665}"
           echo "::set-env name=DO_MAX32690::${DO_MAX32690}"
           echo "::set-env name=DO_MAX32690_WLP::${DO_MAX32690_wlp}"
+          echo DO_MAX32655: ${DO_MAX32655}
+          echo DO_MAX32665: ${DO_MAX32665}
+          echo DO_MAX32690: ${DO_MAX32690}
+          echo DO_MAX32690_WLP: ${DO_MAX32690_WLP}
           echo
 
           MAX32655_PKG_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_pkglen_range'])")
@@ -78,6 +82,24 @@ jobs:
           echo "::set-env name=MAX32665_PKG_RA::${MAX32665_PKG_RA}"
           echo "::set-env name=MAX32690_PKG_RA::${MAX32690_PKG_RA}"
           echo "::set-env name=MAX32690_WLP_PKG_RA::${MAX32690_WLP_PKG_RA}"
+          echo MAX32655_PKG_RA: ${MAX3255_PKG_RA}
+          echo MAX32665_PKG_RA: ${MAX3265_PKG_RA}
+          echo MAX32690_PKG_RA: ${MAX3290_PKG_RA}
+          echo MAX32690_WLP_PKG_RA: ${MAX3290_WLP_PKG_RA}
+          echo
+
+          export MAX32655_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_phy_range'])")
+          export MAX32665_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32665_phy_range'])")
+          export MAX32690_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_phy_range'])")
+          export MAX32690_WLP_PHY_RA=$(python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_wlp_phy_range'])")
+          echo "::set-env name=MAX32655_PHY_RA::${MAX32655_PHY_RA}"
+          echo "::set-env name=MAX32665_PHY_RA::${MAX32665_PHY_RA}"
+          echo "::set-env name=MAX32690_PHY_RA::${MAX32690_PHY_RA}"
+          echo "::set-env name=MAX32690_WLP_PHY_RA::${MAX32690_WLP_PHY_RA}"
+          echo MAX32655_PHY_RA: ${MAX32655_PHY_RA}
+          echo MAX32665_PHY_RA: ${MAX32665_PHY_RA}
+          echo MAX32690_PHY_RA: ${MAX32690_PHY_RA}
+          echo MAX32690_WLP_PHY_RA: ${MAX32690_WLP_PHY_RA}
           echo
 
           MAX32655_STEP=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_step'])")
@@ -88,29 +110,11 @@ jobs:
           echo "::set-env name=MAX32665_STEP::${MAX32665_STEP}"
           echo "::set-env name=MAX32690_STEP::${MAX32690_STEP}"
           echo "::set-env name=MAX32690_WLP_STEP::${MAX32690_WLP_STEP}"
+          echo MAX32655_STEP: ${MAX32655_STEP}
+          echo MAX32665_STEP: ${MAX32665_STEP}
+          echo MAX32690_STEP: ${MAX32690_STEP}
+          echo MAX32690_WLP_STEP: ${MAX32690_WLP_STEP}
           echo 
-
-          export MAX32655_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_phy_range'])")
-          export MAX32665_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32665_phy_range'])")
-          export MAX32690_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_phy_range'])")
-          export MAX32690_WLP_PHY_RA=$(python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_wlp_phy_range'])")
-          echo "::set-env name=MAX32655_PHY_RA::${MAX32655_PHY_RA}"
-          echo "::set-env name=MAX32665_PHY_RA::${MAX32665_PHY_RA}"
-          echo "::set-env name=MAX32690_PHY_RA::${MAX32690_PHY_RA}"
-          echo "::set-env name=MAX32690_WLP_PHY_RA::${MAX32690_WLP_PHY_RA}"
-
-          echo "Void the assertion trap for UART error."
-          cd ${GITHUB_WORKSPACE}
-          echo PWD: `pwd`
-          echo
-
-          sed -i "s/ PAL_SYS_ASSERT(result3 == 0)/ \/\/PAL_SYS_ASSERT(result3 == 0)/g" Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_uart.c
-          cat Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_uart.c | grep PAL_SYS_ASSERT\(result[0-3]
-          echo
-
-          sed -i "s/ PAL_SYS_ASSERT(result3 == 0)/ \/\/PAL_SYS_ASSERT(result3 == 0)/g" Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_uart.c
-          cat Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_uart.c | grep PAL_SYS_ASSERT\(result[0-3]
-
   
       # Runs a set of commands using the runners shell
       - name: max32655_simple_per_test
@@ -123,7 +127,7 @@ jobs:
           echo MAX32655_PKG_RA: ${MAX32655_PKG_RA}          
           echo MAX32655_PHY_RA: ${MAX32655_PHY_RA}
           echo   MAX32655_STEP: ${MAX32655_STEP}
-          echo
+          echo 
 
           if [ "${DO_MAX32655}" == "0" ]; then
             exit 0
@@ -137,6 +141,10 @@ jobs:
 
           BRD1=nRF52840_1
           BRD2=max32655_board_2
+
+          RS_FILE=~/Workspace/Resource_Share/boards_config.json
+          echo "The board info are stored in ${RS_FILE}."
+          echo
 
           BRD1_DAP_SN=$(python3 -c "import json; import os; obj=json.load(open('${RS_FILE}')); print(obj['${BRD1}']['DAP_sn'])")
           echo BRD1_DAP_SN: ${BRD1_DAP_SN}
@@ -186,11 +194,13 @@ jobs:
           CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
           CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_LC}.txt
           echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
+          echo CURR_JOB_FILE: ${CURR_JOB_FILE}
           touch ${CURR_JOB_FILE}
 
           CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_LC}.log
           touch ${CURR_LOG}
           echo "::set-env name=CURR_LOG::${CURR_LOG}"
+          echo CURR_LOG: ${CURR_LOG}
 
           echo /home/$USER/Workspace/Resource_Share/${BRD2}.txt  >> ${CURR_JOB_FILE}
           echo /home/$USER/Workspace/Resource_Share/${BRD1}.txt  >> ${CURR_JOB_FILE}
@@ -210,11 +220,6 @@ jobs:
           set +e
           sed -i "s/ PAL_SYS_ASSERT(result3 == 0)/ \/\/PAL_SYS_ASSERT(result3 == 0)/g" Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_uart.c || true
           cat Libraries/Cordio/platform/targets/maxim/max32655/sources/pal_uart.c | grep PAL_SYS_ASSERT\(result[0-3]
-          echo
-          sed -i "s/ PAL_SYS_ASSERT(result3 == 0)/ \/\/PAL_SYS_ASSERT(result3 == 0)/g" Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_uart.c || true
-          cat Libraries/Cordio/platform/targets/maxim/max32690/sources/pal_uart.c | grep PAL_SYS_ASSERT\(result[0-3]
-          echo
-          set -e
 
           echo "#--------------------------------------------------------------------------------------------"
           echo "Set the Mini-circuits RF Switches."
@@ -335,6 +340,6 @@ jobs:
           echo PWD: `pwd`
           echo
 
-          chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/script/unlock_plot.sh
-          ${GITHUB_WORKSPACE}/.github/workflows/script/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} 2>&1 | tee -a ${CURR_LOG}
+          chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
+          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} 2>&1 | tee -a ${CURR_LOG}
 
