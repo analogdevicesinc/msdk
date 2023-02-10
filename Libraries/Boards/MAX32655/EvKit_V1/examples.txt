@@ -30,6 +30,7 @@ CRC
 DMA
 Dual_core_sync/Dual_core_sync_arm
 Dual_core_sync/Dual_core_sync_riscv
+EEPROM_Emulator
 External_Flash
 Flash
 Flash_CLI
