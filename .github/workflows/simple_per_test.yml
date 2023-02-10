@@ -133,7 +133,7 @@ jobs:
             exit 0
           fi
 
-          echo "Use python 3.10.9.""
+          echo "Use python 3.10.9."
           source ~/anaconda3/etc/profile.d/conda.sh
           conda activate py3_10
           python3 -c "import sys; print(sys.version)"
