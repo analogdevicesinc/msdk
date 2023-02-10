@@ -132,7 +132,7 @@ jobs:
 
           MSDK=${GITHUB_WORKSPACE}
 
-          RESULT_PATH=~/Workspace/Resource_Share/Temp
+          RESULT_PATH=~/Workspace/ci_results/per
           if [ ! -d "${RESULT_PATH}" ]; then
               mkdir -p ${RESULT_PATH}
           fi
@@ -267,7 +267,7 @@ jobs:
           echo "Test in different packet length, PHY, attenuation, and txPower"
 
           i=0
-          res=${RESULT_PATH}/$(date +%Y-%m-%d_%H-%M-%S)
+          res=${RESULT_PATH}/${CURR_TIME}
           all_in_one=${res}_${BRD2_CHIP_LC}.csv
           echo "::set-env name=all_in_one::${all_in_one}"
           echo "packetLen,phy,atten,txPower,perMaster,perSlave" > "${all_in_one}"
