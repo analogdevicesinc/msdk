@@ -18,7 +18,7 @@ jobs:
       contains(github.event.comment.body, '/generate-register-files')
 
     # The type of runner that the job will run on
-    runs-on: [ self-hosted, btm-ci ]
+    runs-on: [ self-hosted, software ]
 
     steps:
       - name: Command Dispatch
