@@ -55,7 +55,6 @@ jobs:
         with:
           add: 'Libraries/Cordio/platform/Documentation/MAX32655.pdf'
           message: 'Update documentation.'
-          new_branch: cordio-platform-docs
           push: true
 
 
