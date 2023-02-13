@@ -17,27 +17,11 @@ jobs:
   Build_Examples:
     # The type of runner that the job will run on
     runs-on:
-      - self-hosted
-      - software
+      - ubuntu-latest
 
     steps:
-      - name: Clean
-        continue-on-error: true
-        run: |
-          # Remove local modifications
-          set +e
-
-          # Attempt to clean the repo
-          git scorch
-          retval=$?
-
-          # Remove everything if this fails
-          if [[ $retval -ne 0 ]]
-          then
-            rm -rf *
-          fi
-
-          set -e
+      - name: Install Arm GNU Toolchain (arm-none-eabi-gcc)
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
