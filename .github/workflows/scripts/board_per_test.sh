@@ -112,9 +112,9 @@ echo "#-------------------------------------------------------------------------
 echo "Set the Mini-circuits RF Switches."
 set -x
 echo RF switch for ${BRD1}
-python3 $MSDK/Tools/Bluetooth/mc_rf_sw.py --model ${BRD1_SW_MODEL} --op set --state ${BRD1_SW_ST}
+unbuffer python3 $MSDK/Tools/Bluetooth/mc_rf_sw.py --model ${BRD1_SW_MODEL} --op set --state ${BRD1_SW_ST} --debug
 echo RF switch for ${BRD2}
-python3 $MSDK/Tools/Bluetooth/mc_rf_sw.py --model ${BRD2_SW_MODEL} --op set --state ${BRD2_SW_ST}
+unbuffer python3 $MSDK/Tools/Bluetooth/mc_rf_sw.py --model ${BRD2_SW_MODEL} --op set --state ${BRD2_SW_ST} --debug
 set +x
 echo
 
@@ -185,7 +185,7 @@ do
         # Run the PER test
         RESULT_PATH=~/Workspace/ci_results/per
         res=${RESULT_PATH}/msdk-${CURR_TIME}
-        res_files[i]=${res}_${BRD2_CHIP_LC}_${i}.csv
+        res_files[i]=${res}_${BRD2_CHIP_LC}_${BRD2_TYPE}_${i}.csv
         echo "The test results will be saved in file ${res_files[i]}."
 
         slv_ser=${BRD2_HCI}

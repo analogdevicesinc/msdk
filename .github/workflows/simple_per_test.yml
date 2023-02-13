@@ -33,7 +33,6 @@ jobs:
           # Remove old archives
           rm -f *.zip
 
-
       # Runs a set of commands using the runners shell
       - name: get_and_set_configurations
         env:
@@ -173,6 +172,7 @@ jobs:
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
+            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
             exit 1
           fi
           #------------------------------------------------          
@@ -257,6 +257,7 @@ jobs:
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
+            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
             exit 1
           fi
           #------------------------------------------------          
@@ -340,6 +341,7 @@ jobs:
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
+            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
             exit 1
           fi
           #------------------------------------------------          
@@ -423,6 +425,7 @@ jobs:
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
+            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
             exit 1
           fi
           #------------------------------------------------          
