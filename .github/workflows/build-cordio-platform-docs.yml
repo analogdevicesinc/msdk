@@ -1,8 +1,6 @@
 name: Build & Deploy Cordio Platform Docs (MAX32655)
 
 on:
-  pull_request:
-    branches: [main]
   workflow_dispatch:
 
 
