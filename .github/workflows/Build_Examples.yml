@@ -43,6 +43,20 @@ jobs:
           
           export PATH=$PATH:/home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-embed-gcc/$TOOL_VER/.content/bin
           
+          # Install ccache
+          sudo apt install -y ccache
+
+          # Update symlinks
+          sudo /usr/sbin/update-ccache-symlinks
+
+          # Prepend ccache into the PATH
+          export PATH="/usr/lib/ccache:$PATH"
+          
+          # Test the ccache paths
+          echo $PATH
+          ls -la $(which arm-none-eabi-gcc)
+          ls -la $(which riscv-none-embed-gcc)
+
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
           export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
@@ -61,7 +75,7 @@ jobs:
             echo
             make -C ${dir} clean
             make -C ${dir} libclean
-            make -C ${dir} -j8
+            make -C ${dir} -j8 > /dev/null
           done
           
           # Find all of the examples, 
@@ -84,7 +98,7 @@ jobs:
             echo
 
             make -C ${dir} clean
-            make -C ${dir} -j8
+            make -C ${dir} -j8  > /dev/null
           done
 
           # Build MAX32690 WLP_V1 BLE examples
@@ -100,6 +114,6 @@ jobs:
             echo
             make -C ${dir} clean
             make -C ${dir} libclean
-            make -C ${dir} -j8 BOARD=WLP_V1
+            make -C ${dir} -j8 BOARD=WLP_V1  > /dev/null
           done
           
