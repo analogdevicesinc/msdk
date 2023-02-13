@@ -13,7 +13,7 @@ env:
 jobs:
   # Generate register files job.
   generate-on-pr:
-    # Run on branchs, not forked PR branches
+    # Run on branches, not forked PR branches
     if: |
       contains(github.event.comment.body, '/generate-register-files')
 
@@ -52,19 +52,11 @@ jobs:
           ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
           fetch-depth: 0
           script: |
-            core.info(`Comment: #${github.event.comment.body})
+            core.info(`Comment: ${github.event.comment.body}`)
 
       - name: Generating register files.
         run: |
           pwd
 
           cd ${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
-
-
-      # - name: Push generated register files
-      #   uses: EndBug/add-and-commit@v9.0.1
-      #   with:
-      #     add: '*'
-      #     message: 'Added generated register files.'
-      #     push: true
 
