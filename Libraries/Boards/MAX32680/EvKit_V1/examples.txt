@@ -18,6 +18,7 @@ BLE4_ctr
 BLE_dats
 CRC
 DMA
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo
