@@ -571,9 +571,12 @@ jobs:
                 if [[ -n ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} ]]; then
                   echo -e "[\e[0;31mERROR\e[0m] Could not find ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} for ${affected_pr_reg_file#./*/}. Please add the correct SVD file. Contact the developers if you are adding a new register file.\n\n"
                 else
-                  # This goes for deleted deprecated files.
-                  # If no SVD file was added to REGISTER_SVD_FILE_LIST, then it's likely a deprecated file.
-                  echo -e "[\e[0;31mERROR\e[0m] Could not find corresponding peripheral SVD file for ${affected_pr_reg_file#./*/}. Please make sure this register file is supported. Contact the developers for any assistance.\n\n"
+                  # Exception for deleted files.
+                  # If the script reaches this point, then that means an unsupported file was deleted. Typically, that means a deprecated file was deleted.
+                  # The action will not fail if an unsupported file was deleted, but be wary of what was deleted.
+                  # Note: If no SVD file was added to REGISTER_SVD_FILE_LIST, then it's likely a deprecated file.
+                  CHECK_FAIL=0
+                  echo -e "[\e[0;31mWARNING\e[0m] Could not find corresponding peripheral SVD file for ${affected_pr_reg_file#./*/}. Please confirm this is correct. Contact the developers for any assistance.\n\n"
                 fi
               fi
             fi
