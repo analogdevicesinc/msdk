@@ -32,12 +32,10 @@ jobs:
           
           TOOL_VER=10.2.0-1.2.1
           xpm install --global @xpack-dev-tools/riscv-none-embed-gcc@$TOOL_VER
-          mv /home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-embed-gcc/10.2.0-1.2.1/.content/bin /home/runner/riscv-none-embed-gcc
+          cp -r /home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-embed-gcc/10.2.0-1.2.1/.content/bin /home/runner/riscv-none-embed-gcc
           
           # Reset PATH
           PATH=$(getconf PATH)
-          
-          
           
           # Add ARM tools to path
           export PATH=$PATH:${{ steps.arm-none-eabi-gcc-action.outputs.path }}
