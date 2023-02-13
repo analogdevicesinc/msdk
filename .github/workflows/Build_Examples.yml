@@ -20,8 +20,6 @@ jobs:
       - ubuntu-latest
 
     steps:
-
-          
       - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         id: arm-none-eabi-gcc-action
@@ -93,11 +91,13 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build_Examples
         run: |
-
+          # Test paths
           echo $GITHUB_PATH
           echo $PATH
           arm-none-eabi-gcc --version
           riscv-none-embed-gcc --version
+          which arm-none-eabi-gcc
+          which riscv-none-embed-gcc
           
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
@@ -113,11 +113,6 @@ jobs:
           SUBDIRS=$(find . -type d -not -path "./MAX3257*" -name "Hello_World")
           for dir in ${SUBDIRS}
           do
-            echo
-            echo "-----------------------------------------"
-            echo ${dir}
-            echo "-----------------------------------------"
-            echo
             make -C ${dir} clean
             make -C ${dir} libclean
             make -C ${dir} -j8 > /dev/null
@@ -136,12 +131,6 @@ jobs:
 
           for dir in ${SUBDIRS}
           do
-            echo
-            echo "-----------------------------------------"
-            echo ${dir}
-            echo "-----------------------------------------"
-            echo
-
             make -C ${dir} clean
             make -C ${dir} -j8  > /dev/null
           done
@@ -152,11 +141,6 @@ jobs:
 
           for dir in ${SUBDIRS}
           do
-            echo
-            echo "---------------------------------------"
-            echo ${dir}
-            echo "---------------------------------------"
-            echo
             make -C ${dir} clean
             make -C ${dir} libclean
             make -C ${dir} -j8 BOARD=WLP_V1  > /dev/null
