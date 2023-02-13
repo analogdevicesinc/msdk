@@ -56,6 +56,8 @@ typedef enum
 
 /*! \brief      Action callback signature. */
 typedef void (*PalBtnActionCback_t)(uint8_t btnId, PalBtnPos_t state);
+  
+/*! \}  */       /* PAL_BUTTON */
 
 /*! \brief      Audio button assignments (only mapped in audio applications). */
 enum
@@ -68,6 +70,11 @@ enum
   PAL_BTN_AUDIO_MUTE            /*!< Mute button. */
 };
 
+  
+/*! 
+ * \addtogroup PAL_BUTTON
+ * \{
+ */
 /**************************************************************************************************
   Function Declarations
 **************************************************************************************************/
@@ -86,4 +93,4 @@ PalBtnPos_t PalBtnGetPosition(uint8_t id);
 };
 #endif
 
-#endif /* PAL_BTN_H */
+#endif /* PAL_BUTTON */
