@@ -48,7 +48,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Nonce modes. */
-enum
+enum PalBbBleNonce_m
 {
   PAL_BB_NONCE_MODE_PKT_CNTR,           /*!< Packet counter mode (default). */
   PAL_BB_NONCE_MODE_EXT16_CNTR,         /*!< 16-bit counter mode, PalCryptoEnc_t::pEventCounter must be non-NULL. */
@@ -56,7 +56,7 @@ enum
 };
 
 /*! \brief      Connection type. */
-enum
+enum PalBbBleConn_t
 {
   PAL_BB_TYPE_ACL,                      /*!< ACL. */
   PAL_BB_TYPE_CIS,                      /*!< CIS. */
