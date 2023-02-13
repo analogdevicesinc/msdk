@@ -28,6 +28,14 @@ jobs:
           echo "Copying PDF to Cordio/platform/Documentation"
           sudo mv Libraries/Cordio/docs/latex/refman.pdf Libraries/Cordio/docs/latex/MAX32655.pdf
           sudo mkdir Libraries/Cordio/platform/Documentation && sudo cp -r Libraries/Cordio/docs/latex/MAX32655.pdf Libraries/Cordio/platform/Documentation/
+          
+          
+      - name: Push Documentation Files
+        uses: EndBug/add-and-commit@v9.0.1
+        with:
+          add: 'Libraries/Cordio/platform/Documentation/MAX32655.pdf'
+          message: 'Update documentation.'
+          push: true
 
 
 
