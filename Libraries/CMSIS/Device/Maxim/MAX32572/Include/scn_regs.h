@@ -200,7 +200,7 @@ typedef struct {
 /**
  * @ingroup  scn_registers
  * @defgroup SCN_PN SCN_PN
- * @brief    Pin Register,
+ * @brief    Pin Register.
  * @{
  */
 #define MXC_F_SCN_PN_CRDRST_POS                        0 /**< PN_CRDRST Position */
@@ -374,7 +374,7 @@ typedef struct {
 /**
  * @ingroup  scn_registers
  * @defgroup SCN_CCR SCN_CCR
- * @brief    Clock Counter Register,
+ * @brief    Clock Counter Register.
  * @{
  */
 #define MXC_F_SCN_CCR_CCYC_POS                         0 /**< CCR_CCYC Position */

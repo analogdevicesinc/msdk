@@ -18238,7 +18238,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>rv32_irq</name>
+       <name>cm4_irq</name>
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -18269,7 +18269,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>cm4_irq</name>
+       <name>rv32_irq</name>
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -18495,7 +18495,7 @@
     </register>
     <register>
      <name>PN</name>
-     <description>Pin Register,</description>
+     <description>Pin Register.</description>
      <addressOffset>0x08</addressOffset>
      <fields>
       <field>
@@ -18762,7 +18762,7 @@
     </register>
     <register>
      <name>CCR</name>
-     <description>Clock Counter Register,</description>
+     <description>Clock Counter Register.</description>
      <addressOffset>0x2C</addressOffset>
      <fields>
       <field>
