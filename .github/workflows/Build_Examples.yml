@@ -33,16 +33,16 @@ jobs:
           
           TOOL_VER=10.2.0-1.2.1
           xpm install --global @xpack-dev-tools/riscv-none-embed-gcc@$TOOL_VER
-          cp -r /home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-embed-gcc/10.2.0-1.2.1/.content/bin /home/runner/riscv-none-embed-gcc
+          cp -r /home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-embed-gcc /home/runner/riscv-none-embed-gcc
           
-          # Remove ARM tools from PATH
-          PATH=${PATH//${{ steps.arm-none-eabi-gcc-action.outputs.path }}/}
+          # Reset PATH
+          PATH=$(getconf PATH)
           
           # Add ARM tools to path
           export PATH=$PATH:${{ steps.arm-none-eabi-gcc-action.outputs.path }}
           
           # Add riscv tools to path
-          export PATH=$PATH:/home/runner/riscv-none-embed-gcc
+          export PATH=$PATH:/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin
           
           # Install ccache
           sudo apt install -y ccache
