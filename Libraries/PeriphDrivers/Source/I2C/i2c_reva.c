@@ -144,14 +144,17 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
         return E_NULL_PTR;
     }
 
-    if (hz > MXC_I2C_REVA_FASTPLUS_SPEED) {
-        // We're going to enable high speed
+    if (hz > MXC_I2C_REVA_FASTPLUS_SPEED && hz <= MXC_I2C_REVA_HS_MODE) {
+        // Enable high speed mode
         int hsLowClks, hsHiClks;
 
         // Calculate the period of SCL and set up 33% duty cycle
         ticksTotal = PeripheralClock / hz;
         hsLowClks = (ticksTotal * 2) / 3 - 1;
         hsHiClks = ticksTotal / 3 - 1;
+
+        printf("Periph: %d\nHz: %d\n", PeripheralClock, hz);
+        printf("--\nHI: %d\nLO: %d\n", hsHiClks, hsLowClks);
 
         // For rounding errors, adjust by 1 clock tick
         if (ticksTotal % 1) {
@@ -163,7 +166,17 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
             return E_BAD_PARAM;
         }
 
+        hsLowClks = (hsLowClks << MXC_F_I2C_REVA_HSCLK_LO_POS) & MXC_F_I2C_REVA_HSCLK_LO;
+        hsHiClks = (hsHiClks << MXC_F_I2C_REVA_HSCLK_HI_POS) & MXC_F_I2C_REVA_HSCLK_HI;
+
+        i2c->hsclk = (hsLowClks | hsHiClks);
+
+        i2c->ctrl |= MXC_F_I2C_REVA_CTRL_HS_EN;
+
         hz = MXC_I2C_REVA_FAST_SPEED; // High speed preambles will be sent at 400kHz
+
+    } else if (hz > MXC_I2C_REVA_HS_MODE) {
+        return E_BAD_PARAM;
     }
 
     // Calculate the period of SCL, 50% duty cycle
