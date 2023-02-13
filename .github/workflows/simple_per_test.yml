@@ -16,6 +16,7 @@ jobs:
   test_each_board:
     # The type of runner that the job will run on
     runs-on: [self-hosted, btm-ci]
+    if: github.event.pull_request.draft == false
     steps:
       # Checks-out repository under $GITHUB_WORKSPACE so that each job can access it
       - uses: actions/checkout@v3
