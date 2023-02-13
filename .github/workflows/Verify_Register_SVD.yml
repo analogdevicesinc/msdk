@@ -442,7 +442,7 @@ jobs:
               # Helps minimize runtime by using a temporary list as a checklist instead of fully reiterating.
               updated_part_list=${CHANGED_REG_FILES_PER_PART[$die_name]}
               
-              # Find parts dependant on current peripheral SVD file. 
+              # Find parts dependent on current peripheral SVD file. 
               # Read chip_periph.txt
               if [[ -n $updated_part_list ]]; then
                 # Check whether one of the changed register files matches with SVD path
