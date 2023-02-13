@@ -443,7 +443,7 @@ uint8_t secDatWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
     uint8_t str[] = "Secure data received!";
-    APP_TRACE_INFO0(">> Received secure datass <<");
+    APP_TRACE_INFO0(">> Received secure data <<");
     APP_TRACE_INFO0((const char *)pValue);
 
     /* Write data recevied into characteristic */
