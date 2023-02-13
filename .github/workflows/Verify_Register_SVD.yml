@@ -316,11 +316,13 @@ jobs:
             do
               # Isolate to file name.
               periph=${changed_svd_file##*/}
-              periph=${periph%*.svd}
+
+              # Adding '/' to differentiate between trimsir and sir.
+              periph="/${periph%*.svd}"
               
               # Check if "Peripheral Rev#" SVD File or "SYS/SVD" (e.g. gcr_me14.svd) SVD File.
               if [[ "$periph" =~ "_rev" ]]; then
-                periph=${periph%_rev*}
+                periph="/${periph%_rev*}"
               else
                 # Remove attached die type name (Usually SYS register SVD files like gcr_me14.svd and fcr_me18.svd)
                 for die_name in ${!DIE_TO_CHIP_NAMES[@]}
@@ -328,7 +330,7 @@ jobs:
                   lowercase_die_name=${die_name,,}
                   
                   if [[  "$periph" =~ "_${lowercase_die_name}" ]]; then
-                    periph=${periph%_${lowercase_die_name}*}
+                    periph="/${periph%_${lowercase_die_name}*}"
                     break
                   fi
                 done
@@ -440,7 +442,7 @@ jobs:
               # Helps minimize runtime by using a temporary list as a checklist instead of fully reiterating.
               updated_part_list=${CHANGED_REG_FILES_PER_PART[$die_name]}
               
-              # Find parts depend on current peripheral SVD file. 
+              # Find parts dependant on current peripheral SVD file. 
               # Read chip_periph.txt
               if [[ -n $updated_part_list ]]; then
                 # Check whether one of the changed register files matches with SVD path
@@ -448,7 +450,7 @@ jobs:
                 do
                   # Isolate peripheral of changed register file to find corresponding peripheral SVD file
                   periph=${changed_reg_file##*/}
-                  periph=${periph%_regs.h}
+                  periph="/${periph%_regs.h}""
                   
                   # Check if peripheral SVD file matches with changed register file using the peripheral name
                   match_line=$(find $CHIP_PERIPH -exec grep -s "$periph" {} \;)
