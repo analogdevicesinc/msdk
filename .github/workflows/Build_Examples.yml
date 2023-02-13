@@ -91,7 +91,8 @@ jobs:
           ls -la $(which arm-none-eabi-gcc)
           ls -la $(which riscv-none-embed-gcc)
           
-          exit 1
+          arm-none-eabi-gcc --version
+          riscv-none-embed-gcc --version
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
