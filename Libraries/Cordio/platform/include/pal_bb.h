@@ -30,7 +30,11 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+/*! 
+ * \addtogroup PAL_BB
+ * \{
+ */
+  
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -47,7 +51,7 @@ typedef enum
 } PalBbProt_t;
 
 /*! \brief      Status codes */
-enum
+enum PalBbStat_c
 {
   BB_STATUS_SUCCESS,                    /*!< Operation successful. */
   BB_STATUS_FAILED,                     /*!< General failure. */
@@ -71,7 +75,7 @@ typedef enum
 } PalBbPhy_t;
 
 /*! \brief      PHY options. */
-enum
+enum PalBbPhy_op
 {
   BB_PHY_OPTIONS_DEFAULT          = 0,  /*!< BB defined PHY Options behavior. */
   BB_PHY_OPTIONS_BLE_S2           = 1,  /*!< Always use S=2 coding when transmitting on LE Coded PHY. */
@@ -156,12 +160,6 @@ typedef struct
   Function Declarations
 **************************************************************************************************/
 
-/*! \addtogroup PAL_BB_INIT
- *  \{
- *  This section contains driver routines which initialize as well as enable the sleep mode
- *  of the BB hardware.
- */
-
 /*************************************************************************************************/
 /*!
  *  \brief      Initialize the baseband driver.
@@ -213,13 +211,6 @@ void PalBbDisable(void);
 /*************************************************************************************************/
 void PalBbLoadCfg(PalBbCfg_t *pCfg);
 
-/*! \} */    /* PAL_BB_INIT */
-
-/*! \addtogroup PAL_BB_CLOCK
- *  \{
- *  This section contains driver routines related to the BB clock.
- */
-
 /*************************************************************************************************/
 /*!
  *  \brief      Get the current BB clock value in microseconds.
@@ -267,7 +258,7 @@ void PalBbRegisterProtIrq(uint8_t protId, bbDrvIrqCback_t timerCback, bbDrvIrqCb
 /*************************************************************************************************/
 void PalBbSetProtId(uint8_t protId);
 
-/*! \} */    /* PAL_BB_CLOCK */
+/*! \} */    /* PAL_BB */
 
 #ifdef __cplusplus
 };
