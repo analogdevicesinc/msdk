@@ -20,6 +20,15 @@ jobs:
       - ubuntu-latest
 
     steps:
+      - name: Install ccache
+        run: |
+          # Install ccache
+          sudo apt install -y ccache
+
+          # Prepend ccache into the PATH
+          echo "/usr/lib/ccache" >> $GITHUB_PATH
+          echo "/usr/bin" >> $GITHUB_PATH
+          
       - name: Install Arm GNU Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         id: arm-none-eabi-gcc-action
@@ -35,24 +44,8 @@ jobs:
           xpm install --global @xpack-dev-tools/riscv-none-embed-gcc@$TOOL_VER
           cp -r /home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-embed-gcc /home/runner/riscv-none-embed-gcc
           
-          # Reset PATH
-          PATH=$(getconf PATH)
-          
-          # Add ARM tools to path
-          export PATH=$PATH:${{ steps.arm-none-eabi-gcc-action.outputs.path }}
-          
           # Add riscv tools to path
-          export PATH=$PATH:/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin
-          ls -la /home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin
-          
-          # Install ccache
-          sudo apt install -y ccache
-
-          # Update symlinks
-          sudo /usr/sbin/update-ccache-symlinks
-
-          # Prepend ccache into the PATH
-          export PATH="/usr/lib/ccache:$PATH"
+          echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
           
           # Setup the links
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-addr2line
