@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: self-host
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
 
@@ -22,6 +22,7 @@ jobs:
       - name: Build PDF
         run: |
           echo "Building PDF..."
+          sudo apt-get install texlive-full
           sudo make -C Libraries/Cordio/docs/latex
 
           echo "Copying PDF to Cordio/platform/Documentation"
