@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -88,9 +88,9 @@ extern "C" {
 typedef struct {
     __I  uint32_t sistat;               /**< <tt>\b 0x00:</tt> SIR SISTAT Register */
     __I  uint32_t siaddr;               /**< <tt>\b 0x04:</tt> SIR SIADDR Register */
-    __R  uint32_t rsv_0x8_0x47[8];
+    __R  uint32_t rsv_0x8_0x27[8];
     __IO uint32_t btle_ldo_trim;        /**< <tt>\b 0x28:</tt> SIR BTLE_LDO_TRIM Register */
-    __R  uint32_t rsv_0x4c_0xff[53];
+    __R  uint32_t rsv_0x2c_0xff[53];
     __I  uint32_t fstat;                /**< <tt>\b 0x100:</tt> SIR FSTAT Register */
     __I  uint32_t sfstat;               /**< <tt>\b 0x104:</tt> SIR SFSTAT Register */
 } mxc_sir_regs_t;
