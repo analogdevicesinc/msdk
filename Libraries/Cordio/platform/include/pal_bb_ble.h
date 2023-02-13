@@ -31,7 +31,10 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
+/*! 
+ * \addtogroup PAL_BB_BLE
+ * \{
+ */
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -60,9 +63,6 @@ enum
   PAL_BB_TYPE_BIS                       /*!< BIS. */
 };
 
-/*! \addtogroup PAL_BB_BLE_CHAN
- *  \{ */
-
 /*! \brief      BLE channelization parameters. */
 typedef struct
 {
@@ -87,13 +87,6 @@ typedef struct
   int8_t        txPwrOffset;            /*!< override offset for txPower. */
 #endif
 } PalBbBleChan_t;
-
-/*! \} */    /* PAL_BB_BLE_CHAN */
-
-/*! \addtogroup PAL_BB_BLE_DATA
- *  \{
- *  This section contains driver routines used for packet transmission.
- */
 
 /*! \brief      Transmit complete ISR callback signature. */
 typedef void (*PalBbBleTxIsr_t)(uint8_t status);
@@ -134,17 +127,9 @@ typedef struct
   uint8_t           *pBuf;          /*!< Pointer to buffer. */
 } PalBbBleTxBufDesc_t;
 
-/*! \} */    /* PAL_BB_BLE_DATA */
-
 /**************************************************************************************************
   Function Declarations
 **************************************************************************************************/
-
-/*! \addtogroup PAL_BB_BLE_INIT
- *  \{
- *  This section contains driver routines which initialize as well as enable the BLE mode of the
- *  BB hardware.
- */
 
 /*************************************************************************************************/
 /*!
@@ -302,13 +287,6 @@ void PalBbBleCancelTifs(void);
 /*************************************************************************************************/
 void PalBbBleCancelData(void);
 
-/*! \} */    /* PAL_BB_BLE_DATA */
-
-/*! \addtogroup PAL_BB_BLE_TEST
- *  \{
- *  This section contains driver routines used for test modes.
- */
-
 /*************************************************************************************************/
 /*!
  *  \brief      Enable or disable data whitening.
@@ -363,7 +341,7 @@ void PalBbBleInlineEncryptSetPacketCount(uint64_t count);
 /*************************************************************************************************/
 void PalBbBleLowPower(void);
 
-/*! \} */    /* PAL_BB_BLE_TEST */
+/*! \} */    /* PAL_BB_BLE */
 
 #ifdef __cplusplus
 };
