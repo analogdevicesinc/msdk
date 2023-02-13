@@ -1,0 +1,348 @@
+name: simple_per_test
+
+# Control when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  test_each_board:
+    # The type of runner that the job will run on
+    runs-on: [self-hosted, btm-ci]
+    steps:
+      # Checks-out repository under $GITHUB_WORKSPACE so that each job can access it
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          repository: Analog-Devices-MSDK/msdk
+          ref: main
+
+      - name: clean
+        run: |
+
+          # Clean up the working copy
+          git scorch
+
+          # Remove old archives
+          rm -f *.zip
+
+
+      # Runs a set of commands using the runners shell
+      - name: get_and_set_configurations
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+
+        run: |
+
+          #------------------------------------------------
+          # Get the configuration
+          CONFIG_FILE=/home/$USER/Workspace/ci_config/msdk.json
+
+          NO_SKIP=`python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['no_skip'])"`
+          echo "::set-env name=NO_SKIP::${NO_SKIP}"
+          echo "NO_SKIP: ${NO_SKIP}"
+          echo
+
+          DO_MAX32655=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32655'])")
+          DO_MAX32665=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32665'])")
+          DO_MAX32690=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32690'])")
+          DO_MAX32690_WLP=$(python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32690_wlp'])")
+          echo "::set-env name=DO_MAX32655::${DO_MAX32655}"
+          echo "::set-env name=DO_MAX32665::${DO_MAX32665}"
+          echo "::set-env name=DO_MAX32690::${DO_MAX32690}"
+          echo "::set-env name=DO_MAX32690_WLP::${DO_MAX32690_wlp}"
+          echo DO_MAX32655: ${DO_MAX32655}
+          echo DO_MAX32665: ${DO_MAX32665}
+          echo DO_MAX32690: ${DO_MAX32690}
+          echo DO_MAX32690_WLP: ${DO_MAX32690_WLP}
+          echo
+
+          MAX32655_PKG_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_pkglen_range'])")
+          MAX32665_PKG_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32665_pkglen_range'])")
+          MAX32690_PKG_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_pkglen_range'])")
+          MAX32690_WLP_PKG_RA=$(python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_wlp_pkglen_range'])")
+          echo "::set-env name=MAX32655_PKG_RA::${MAX32655_PKG_RA}"
+          echo "::set-env name=MAX32665_PKG_RA::${MAX32665_PKG_RA}"
+          echo "::set-env name=MAX32690_PKG_RA::${MAX32690_PKG_RA}"
+          echo "::set-env name=MAX32690_WLP_PKG_RA::${MAX32690_WLP_PKG_RA}"
+          echo MAX32655_PKG_RA: ${MAX32655_PKG_RA}
+          echo MAX32665_PKG_RA: ${MAX32665_PKG_RA}
+          echo MAX32690_PKG_RA: ${MAX32690_PKG_RA}
+          echo MAX32690_WLP_PKG_RA: ${MAX32690_WLP_PKG_RA}
+          echo
+
+          export MAX32655_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_phy_range'])")
+          export MAX32665_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32665_phy_range'])")
+          export MAX32690_PHY_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_phy_range'])")
+          export MAX32690_WLP_PHY_RA=$(python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_wlp_phy_range'])")
+          echo "::set-env name=MAX32655_PHY_RA::${MAX32655_PHY_RA}"
+          echo "::set-env name=MAX32665_PHY_RA::${MAX32665_PHY_RA}"
+          echo "::set-env name=MAX32690_PHY_RA::${MAX32690_PHY_RA}"
+          echo "::set-env name=MAX32690_WLP_PHY_RA::${MAX32690_WLP_PHY_RA}"
+          echo MAX32655_PHY_RA: ${MAX32655_PHY_RA}
+          echo MAX32665_PHY_RA: ${MAX32665_PHY_RA}
+          echo MAX32690_PHY_RA: ${MAX32690_PHY_RA}
+          echo MAX32690_WLP_PHY_RA: ${MAX32690_WLP_PHY_RA}
+          echo
+
+          MAX32655_STEP=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_step'])")
+          MAX32665_STEP=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32665_step'])")
+          MAX32690_STEP=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_step'])")
+          MAX32690_WLP_STEP=$(python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_wlp_step'])")
+          echo "::set-env name=MAX32655_STEP::${MAX32655_STEP}"
+          echo "::set-env name=MAX32665_STEP::${MAX32665_STEP}"
+          echo "::set-env name=MAX32690_STEP::${MAX32690_STEP}"
+          echo "::set-env name=MAX32690_WLP_STEP::${MAX32690_WLP_STEP}"
+          echo MAX32655_STEP: ${MAX32655_STEP}
+          echo MAX32665_STEP: ${MAX32665_STEP}
+          echo MAX32690_STEP: ${MAX32690_STEP}
+          echo MAX32690_WLP_STEP: ${MAX32690_WLP_STEP}
+          echo
+
+      # Runs a set of commands using the runners shell
+      - name: max32655_simple_per_test
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+
+        run: |
+
+          #------------------------------------------------------------------------------------------------------------
+          # Prepare the arguments for script.                    
+          MSDK=${GITHUB_WORKSPACE}
+          CHIP_UC=MAX32655
+
+          $MSDK/.github/workflows/msdk_per_skip_check.sh \
+            $NO_SKIP \
+            $MSDK    \
+            $CHIP_UC
+
+          if [[ $? -ne 0 ]]; then
+            echo "SKIPPED."
+            exit 0
+          fi
+
+          #------------------------------------------------
+          # Prepare the arguments for function call
+
+          if [ "${DO_MAX32655}" == "0" ]; then
+            echo "Skip the test for MAX32655."
+            exit 0
+          fi
+
+          BRD2_CHIP_LC=max32655
+
+          MSDK=${GITHUB_WORKSPACE}
+          BRD1=nRF52840_1
+          BRD2=max32655_board_2
+
+          CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
+
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
+          echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
+
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log          
+          echo "::set-env name=CURR_LOG::${CURR_LOG}"
+
+          RESULT_PATH=~/Workspace/ci_results/per
+          res=${RESULT_PATH}/msdk-${CURR_TIME}
+          all_in_one=${res}_${BRD2_CHIP_LC}.csv
+          echo "::set-env name=all_in_one::${all_in_one}"
+
+          #------------------------------------------------
+          ${MSDK}/.github/workflows/scripts/board_per_test.sh \
+            $MSDK      \
+            $BRD1      \
+            $BRD2      \
+            $CURR_TIME \
+            $(realpath ${CURR_JOB_FILE}) \
+            $(realpath ${CURR_LOG})      \
+            $(realpath ${all_in_one})    \
+            "${MAX32655_PKG_RA}"         \
+            "${MAX32655_PHY_RA}"         \
+            ${MAX32655_STEP}             \
+            2>&1 | tee -a ${CURR_LOG}
+          
+          if [[ $? -ne 0 ]]; then
+            exit 1
+          fi
+          #------------------------------------------------          
+
+      # Unlock even when cancelled or failed
+      - name: unlock_max32655
+        if: always()
+        run: |
+
+          cd ${GITHUB_WORKSPACE}
+          echo PWD: `pwd`
+          echo
+
+          chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
+          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} True 2>&1 | tee -a ${CURR_LOG}
+
+
+      # Runs a set of commands using the runners shell
+      - name: max32665_simple_per_test
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+
+        run: |
+
+          #------------------------------------------------------------------------------------------------------------
+          # Prepare the arguments for script.                    
+          MSDK=${GITHUB_WORKSPACE}
+          CHIP_UC=MAX32665
+
+          $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
+            $NO_SKIP \
+            $MSDK    \
+            $CHIP_UC
+
+          if [[ $? -ne 0 ]]; then
+            echo "SKIPPED."
+            exit 0
+          fi
+
+          #------------------------------------------------
+          # Prepare the arguments for function call
+
+          if [ "${DO_MAX32665}" == "0" ]; then
+            echo "Skip the test for MAX32665."
+            exit 0
+          fi
+
+          BRD2_CHIP_LC=max32665
+
+          MSDK=${GITHUB_WORKSPACE}
+          BRD1=nRF52840_1
+          BRD2=max32665_board_w3
+
+          CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
+
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
+          echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
+
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log          
+          echo "::set-env name=CURR_LOG::${CURR_LOG}"
+
+          RESULT_PATH=~/Workspace/ci_results/per
+          res=${RESULT_PATH}/msdk-${CURR_TIME}
+          all_in_one=${res}_${BRD2_CHIP_LC}.csv
+          echo "::set-env name=all_in_one::${all_in_one}"
+
+          #------------------------------------------------
+          ${MSDK}/.github/workflows/scripts/board_per_test.sh \
+            $MSDK      \
+            $BRD1      \
+            $BRD2      \
+            $CURR_TIME \
+            $(realpath ${CURR_JOB_FILE}) \
+            $(realpath ${CURR_LOG})      \
+            $(realpath ${all_in_one})    \
+            "${MAX32665_PKG_RA}"         \
+            "${MAX32665_PHY_RA}"         \
+            ${MAX32665_STEP}             \
+            2>&1 | tee -a ${CURR_LOG}
+          
+          if [[ $? -ne 0 ]]; then
+            exit 1
+          fi
+          #------------------------------------------------          
+
+      # Unlock even when cancelled or failed
+      - name: unlock_max32665
+        if: always()
+        run: |
+
+          cd ${GITHUB_WORKSPACE}
+          echo PWD: `pwd`
+          echo
+
+          chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
+          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} True 2>&1 | tee -a ${CURR_LOG}
+
+      # Runs a set of commands using the runners shell
+      - name: max32690_simple_per_test
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+
+        run: |
+
+          #------------------------------------------------------------------------------------------------------------
+          # Prepare the arguments for script.                    
+          MSDK=${GITHUB_WORKSPACE}
+          CHIP_UC=MAX32690
+
+          $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
+            $NO_SKIP \
+            $MSDK    \
+            $CHIP_UC
+
+          if [[ $? -ne 0 ]]; then
+            echo "SKIPPED."
+            exit 0
+          fi
+
+          #------------------------------------------------
+          # Prepare the arguments for function call
+
+          if [ "${DO_MAX32690}" == "0" ]; then
+            echo "Skip the test for MAX32690."
+            exit 0
+          fi
+
+          BRD2_CHIP_LC=max32690
+
+          MSDK=${GITHUB_WORKSPACE}
+          BRD1=nRF52840_1
+          BRD2=max32690_board_w2
+
+          CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
+
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
+          echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
+
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log          
+          echo "::set-env name=CURR_LOG::${CURR_LOG}"
+
+          RESULT_PATH=~/Workspace/ci_results/per
+          res=${RESULT_PATH}/msdk-${CURR_TIME}
+          all_in_one=${res}_${BRD2_CHIP_LC}.csv
+          echo "::set-env name=all_in_one::${all_in_one}"
+
+          #------------------------------------------------
+          ${MSDK}/.github/workflows/scripts/board_per_test.sh \
+            $MSDK      \
+            $BRD1      \
+            $BRD2      \
+            $CURR_TIME \
+            $(realpath ${CURR_JOB_FILE}) \
+            $(realpath ${CURR_LOG})      \
+            $(realpath ${all_in_one})    \
+            "${MAX32690_PKG_RA}"         \
+            "${MAX32690_PHY_RA}"         \
+            ${MAX32690_STEP}             \
+            2>&1 | tee -a ${CURR_LOG}
+          
+          if [[ $? -ne 0 ]]; then
+            exit 1
+          fi
+          #------------------------------------------------          
+
+      # Unlock even when cancelled or failed
+      - name: unlock_max32690
+        if: always()
+        run: |
+
+          cd ${GITHUB_WORKSPACE}
+          echo PWD: `pwd`
+          echo
+
+          chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
+          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} True 2>&1 | tee -a ${CURR_LOG}
