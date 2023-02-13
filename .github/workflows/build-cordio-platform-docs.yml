@@ -27,7 +27,6 @@ jobs:
 
           echo "Copying PDF to Cordio/platform/Documentation"
           sudo mv Libraries/Cordio/docs/latex/refman.pdf Libraries/Cordio/platform/Documentation/MAX32655.pdf
-          sudo rm -r latex
 
 
 
