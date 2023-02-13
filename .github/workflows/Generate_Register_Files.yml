@@ -1,0 +1,70 @@
+name: Generate Register Files
+
+# Controls when the workflow will run
+on:
+  issue_comment:
+      types: [created]
+
+env:
+  MSDK_DIR: msdk
+  MSDK-INTERNAL_DIR: msdk-internal
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Generate register files job.
+  generate-on-pr:
+    # Run on branchs, not forked PR branches
+    if: |
+      contains(github.event.comment.body, '/generate-register-files')
+
+    # The type of runner that the job will run on
+    runs-on: [ self-hosted, software ]
+
+    steps:
+      - name: Command Dispatch
+        uses: actions/github-script@v6
+        id: get-pr
+        with:
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+            
+            try {
+              const result = await github.pulls.get(request)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+      
+      - name: Checkout msdk internal repository
+        run: |
+          git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
+      
+      - name: Checkout source repository
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+          fetch-depth: 0
+          script: |
+            core.info(`Comment: #${github.event.comment.body})
+
+      - name: Generating register files.
+        run: |
+          pwd
+
+          cd ${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
+
+
+      # - name: Push generated register files
+      #   uses: EndBug/add-and-commit@v9.0.1
+      #   with:
+      #     add: '*'
+      #     message: 'Added generated register files.'
+      #     push: true
+
