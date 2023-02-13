@@ -5,6 +5,10 @@
 #################################
 name: Lint Code Base
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 #
 # Documentation:
 # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions

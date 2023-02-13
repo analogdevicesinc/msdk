@@ -1,5 +1,9 @@
 name: simple_per_test
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Control when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -16,6 +20,7 @@ jobs:
   test_each_board:
     # The type of runner that the job will run on
     runs-on: [self-hosted, btm-ci]
+    if: github.event.pull_request.draft == false
     steps:
       # Checks-out repository under $GITHUB_WORKSPACE so that each job can access it
       - uses: actions/checkout@v3
