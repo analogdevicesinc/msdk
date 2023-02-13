@@ -36,6 +36,7 @@ jobs:
       - name: Build_Examples
         run: |
           # Install RISCV tools
+          npm install --global xpm@latest
           xpm install --global @xpack-dev-tools/riscv-none-embed-gcc@latest
           
           # This environment variable is required for the SBTs.
