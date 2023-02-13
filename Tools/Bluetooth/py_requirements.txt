@@ -1,3 +1,4 @@
 pyserial
 pyusb
 termcolor
+readline

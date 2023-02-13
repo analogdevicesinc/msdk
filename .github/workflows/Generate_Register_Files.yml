@@ -59,4 +59,3 @@ jobs:
           pwd
 
           cd ${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
-
