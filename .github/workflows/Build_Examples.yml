@@ -20,22 +20,15 @@ jobs:
       - ubuntu-latest
 
     steps:
-      - name: Install ccache
-        run: |
-          # Install ccache
-          sudo apt install -y ccache
 
-          # Prepend ccache into the PATH
-          echo "/usr/lib/ccache" >> $GITHUB_PATH
-          echo "/usr/bin" >> $GITHUB_PATH
           
-      - name: Install Arm GNU Toolchain (arm-none-eabi-gcc)
+      - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         id: arm-none-eabi-gcc-action
         with:
           release: '11.2-2022.02' # <-- The compiler release to use
           
-      - name: Install_tools
+      - name: Install RISCV GCC Toolchain (riscv-none-embed-gcc)
         run: |
           # Install RISCV tools
           npm install --global xpm@latest
@@ -46,6 +39,15 @@ jobs:
           
           # Add riscv tools to path
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
+          
+      - name: Install ccache
+        run: |
+          # Install ccache
+          sudo apt install -y ccache
+
+          # Prepend ccache into the PATH
+          echo "/usr/bin" >> $GITHUB_PATH
+          echo "/usr/lib/ccache" >> $GITHUB_PATH
           
           # Setup the links
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-addr2line
@@ -80,14 +82,6 @@ jobs:
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strings
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strip
           sudo ln -s ../../bin/ccache /usr/bin/riscv-none-embed-gcc
-          
-          # Test the ccache paths
-          echo $PATH
-          ls -la $(which arm-none-eabi-gcc)
-          ls -la $(which riscv-none-embed-gcc)
-          
-          arm-none-eabi-gcc --version
-          riscv-none-embed-gcc --version
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -100,6 +94,7 @@ jobs:
       - name: Build_Examples
         run: |
 
+          echo $GITHUB_PATH
           echo $PATH
           arm-none-eabi-gcc --version
           riscv-none-embed-gcc --version
