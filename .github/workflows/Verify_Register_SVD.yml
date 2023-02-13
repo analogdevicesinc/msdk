@@ -450,7 +450,7 @@ jobs:
                 do
                   # Isolate peripheral of changed register file to find corresponding peripheral SVD file
                   periph=${changed_reg_file##*/}
-                  periph="/${periph%_regs.h}""
+                  periph="/${periph%_regs.h}"
                   
                   # Check if peripheral SVD file matches with changed register file using the peripheral name
                   match_line=$(find $CHIP_PERIPH -exec grep -s "$periph" {} \;)
