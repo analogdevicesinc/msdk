@@ -15,6 +15,7 @@ on:
       - '**/README.md'	
       # Any .pdf file anywhere in the repository.
       - '**/*.pdf'
+      - '**/*.yml'
       
 
   # Allows you to run this workflow manually from the Actions tab
