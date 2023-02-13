@@ -829,17 +829,17 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = Libraries/Cordio/platform/include/pal_btn.h \
-                         Libraries/Cordio/platform/include/pal_cfg.h \
-                         Libraries/Cordio/platform/include/pal_sys.h \
-                         Libraries/Cordio/platform/include/pal_codec.h \
-                         Libraries/Cordio/platform/include/pal_crypto.h \
-                         Libraries/Cordio/platform/include/pal_bb_ble.h \
-                         Libraries/Cordio/platform/include/pal_timer.h \
-                         Libraries/Cordio/platform/include/pal_led.h \
-                         Libraries/Cordio/platform/include/pal_rtc.h \
-                         Libraries/Cordio/platform/include/pal_bb.h \
-                         Libraries/Cordio/platform/include/pal_uart.h
+INPUT                  = ../platform/include/pal_btn.h \
+                         ../platform/include/pal_cfg.h \
+                         ../platform/include/pal_sys.h \
+                         ../platform/include/pal_codec.h \
+                         ../platform/include/pal_crypto.h \
+                         ../platform/include/pal_bb_ble.h \
+                         ../platform/include/pal_timer.h \
+                         ../platform/include/pal_led.h \
+                         ../platform/include/pal_rtc.h \
+                         ../platform/include/pal_bb.h \
+                         ../platform/include/pal_uart.h
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
