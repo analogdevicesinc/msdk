@@ -102,7 +102,7 @@ typedef enum {
         MXC_S_DMA_CTRL_REQUEST_UART2TX, ///< UART2 Transmit DMA Request Selection
     MXC_DMA_REQUEST_AESTX = MXC_S_DMA_CTRL_REQUEST_AESTX, ///< AES Transmit DMA Request Selection
     MXC_DMA_REQUEST_UART3TX =
-        MXC_S_DMA_CTRL_REQUEST_UART3TX, ///< UART3 Transmit DMA Request Selection    
+        MXC_S_DMA_CTRL_REQUEST_UART3TX, ///< UART3 Transmit DMA Request Selection
     MXC_DMA_REQUEST_I2STX = MXC_S_DMA_CTRL_REQUEST_I2STX, ///< I2S Transmit DMA Request Selection
 } mxc_dma_reqsel_t;
 
