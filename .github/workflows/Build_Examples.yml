@@ -1,5 +1,9 @@
 name: Build_Examples
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -46,8 +50,22 @@ jobs:
           # Prepend ccache into the PATH
           echo "/usr/bin" >> $GITHUB_PATH
           echo "/usr/lib/ccache" >> $GITHUB_PATH
+
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          # Update the submodules below, doing so here will convert ssh to https
+          submodules: false
+          fetch-depth: 0
+
+      # Runs a set of commands using the runners shell
+      - name: Build_Examples
+        run: |
+          # Test paths
+          echo $GITHUB_PATH
+          echo $PATH
           
-          # Setup the links
+          # Setup ccache links
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-addr2line
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ar
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-as
@@ -80,20 +98,8 @@ jobs:
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strings
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strip
           sudo ln -s ../../bin/ccache /usr/bin/riscv-none-embed-gcc
-
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          # Update the submodules below, doing so here will convert ssh to https
-          submodules: false
-          fetch-depth: 0
-
-      # Runs a set of commands using the runners shell
-      - name: Build_Examples
-        run: |
-          # Test paths
-          echo $GITHUB_PATH
-          echo $PATH
+          
+          # Test the links
           arm-none-eabi-gcc --version
           riscv-none-embed-gcc --version
           which arm-none-eabi-gcc
@@ -134,15 +140,3 @@ jobs:
             make -C ${dir} clean
             make -C ${dir} -j8  > /dev/null
           done
-
-          # Build MAX32690 WLP_V1 BLE examples
-          SUBDIRS=$(find ./MAX32690 -type d -name "BLE*")
-          echo SUBDIRS: ${SUBDIRS}
-
-          for dir in ${SUBDIRS}
-          do
-            make -C ${dir} clean
-            make -C ${dir} libclean
-            make -C ${dir} -j8 BOARD=WLP_V1  > /dev/null
-          done
-          
