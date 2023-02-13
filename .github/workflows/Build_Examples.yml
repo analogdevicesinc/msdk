@@ -37,7 +37,19 @@ jobs:
         run: |
           # Install RISCV tools
           npm install --global xpm@latest
-          xpm install --global @xpack-dev-tools/riscv-none-embed-gcc@latest
+          
+          TOOL_VER=10.2.0-1.2.1
+          xpm install --global @xpack-dev-tools/riscv-none-embed-gcc@$TOOL_VER
+          
+          echo $PATH
+          
+          export PATH=$PATH:/home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-embed-gcc/$TOOL_VER/.content/bin
+          
+          echo $PATH
+          
+          riscv-none-embed-gcc --version
+          
+          exit 1
           
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
