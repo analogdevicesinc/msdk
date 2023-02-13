@@ -832,7 +832,6 @@ WARN_LOGFILE           =
 INPUT                  = ../platform/include/pal_btn.h \
                          ../platform/include/pal_cfg.h \
                          ../platform/include/pal_sys.h \
-                         ../platform/include/pal_codec.h \
                          ../platform/include/pal_crypto.h \
                          ../platform/include/pal_bb_ble.h \
                          ../platform/include/pal_timer.h \
