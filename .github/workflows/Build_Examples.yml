@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Install Arm GNU Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
+        with:
+          release: '11.2-2022.02' # <-- The compiler release to use
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
