@@ -43,6 +43,7 @@ jobs:
           
           # Add riscv tools to path
           export PATH=$PATH:/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin
+          ls -la /home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin
           
           # Install ccache
           sudo apt install -y ccache
@@ -106,9 +107,16 @@ jobs:
       - name: Build_Examples
         run: |
 
+          echo $PATH
+          arm-none-eabi-gcc --version
+          riscv-none-embed-gcc --version
+          
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
           export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
+          
+          # Set MAXIM_PATH to limit warnings
+          export MAXIM_PATH=$(pwd)
 
           cd Examples
           # Rebuild all of the peripheral drivers and build all of the Hello_World examples
