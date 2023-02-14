@@ -330,11 +330,12 @@ static void setup_dma_tft(void)
             MXC_DMA->ch[g_dma_channel].cnt = g_stream_buffer_size;
         }
         else {
-            MXC_DMA->ch[g_dma_channel].cnt = g_stream_buffer_size * 2; // 10 and 12 bit use 2 bytes per word in the fifo
+            // 10 and 12 bit use 2 bytes per word in the fifo
+            MXC_DMA->ch[g_dma_channel].cnt = g_stream_buffer_size * 2; 
         }
 
-        current_stream_buffer = 0;
-        /// Let's use 2nd half of buffer for current_stream_buffer = 0
+        // Set the initial streaming buffer to 1
+        current_stream_buffer = 1 ;
         MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
 
         stream_buffer_ptr = NULL;
@@ -345,11 +346,10 @@ static void setup_dma_tft(void)
 			MXC_DMA->ch[g_dma_channel_tft].cnt = g_stream_buffer_size;
 		}
 		else {
-			MXC_DMA->ch[g_dma_channel_tft].cnt = g_stream_buffer_size * 2; // 10 and 12 bit use 2 bytes per word in the fifo
+			// 10 and 12 bit use 2 bytes per word in the fifo
+            MXC_DMA->ch[g_dma_channel_tft].cnt = g_stream_buffer_size * 2; 
 		}
 
-		//current_stream_buffer = 0;
-		/// Let's use 2nd half of buffer for current_stream_buffer = 0
 		MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)(rx_data + g_stream_buffer_size);
 
 		//stream_buffer_ptr = NULL;
@@ -361,7 +361,8 @@ static void setup_dma_tft(void)
             MXC_DMA->ch[g_dma_channel].cnt = g_total_img_size;
         }
         else {
-            MXC_DMA->ch[g_dma_channel].cnt = g_total_img_size * 2; // 10 and 12 bit use 2 bytes per word in the fifo
+            // 10 and 12 bit use 2 bytes per word in the fifo
+            MXC_DMA->ch[g_dma_channel].cnt = g_total_img_size * 2;
         }
     }
 
@@ -534,7 +535,7 @@ int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode
     if (pixformat == PIXFORMAT_RGB888) {
         MXC_PCIF_SetDataWidth(MXC_PCIF_DATAWIDTH_12_BIT);
 
-        // Bit expansion mode will yeild three bytes per pixel.
+        // Bit expansion mode will yield three bytes per pixel.
         if ((g_dma_mode == USE_DMA) || (g_dma_mode == STREAMING_DMA)) {
             bytes_per_pixel = 4;
         } else {
@@ -665,7 +666,7 @@ int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_
     if (pixformat == PIXFORMAT_RGB888) {
         MXC_PCIF_SetDataWidth(MXC_PCIF_DATAWIDTH_12_BIT);
 
-        // Bit expansion mode will yeild three bytes per pixel.
+        // Bit expansion mode will yield three bytes per pixel.
         if ((g_dma_mode == USE_DMA) || (g_dma_mode == STREAMING_DMA)) {
             bytes_per_pixel = 4;
         }
@@ -867,7 +868,7 @@ uint8_t *camera_get_pixel_format(void)
 {
     pixformat_t pix_format;
 
-    // Get the pixel format from the camers driver.
+    // Get the pixel format from the camera driver.
     camera.get_pixformat(&pix_format);
 
     if (pix_format == PIXFORMAT_RGB444) {
