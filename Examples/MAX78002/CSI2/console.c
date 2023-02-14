@@ -68,7 +68,7 @@ int starts_with(char *a, char *b)
     return 1;
 }
 
-int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len) 
+int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len)
 {
     int err = E_NO_ERROR;
     for (int i = 0; i < len; i++) {

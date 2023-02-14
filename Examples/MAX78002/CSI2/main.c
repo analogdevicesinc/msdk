@@ -111,7 +111,8 @@
 // This buffer will hold the full output image after the CSI2 has converted it
 // to color.
 // #define IMAGE_SIZE ((BITS_PER_PIXEL_ODD + BITS_PER_PIXEL_EVEN) * IMAGE_WIDTH * IMAGE_HEIGHT) >> 4
-#define IMAGE_SIZE (IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL_EVEN) + (IMAGE_WIDTH * BYTES_PER_PIXEL_EVEN)
+#define IMAGE_SIZE \
+    (IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL_EVEN) + (IMAGE_WIDTH * BYTES_PER_PIXEL_EVEN)
 // ^ The addition of the extra row above is a workaround to another CSI2 hardware and/or driver issue.
 // When writing to the output image buffer the CSI2 block will overflow beyond the bounds of the array
 // by a variable amount and cause a hard fault.  At 160x120 it overflows by exactly 5 bytes.  At 320x240
