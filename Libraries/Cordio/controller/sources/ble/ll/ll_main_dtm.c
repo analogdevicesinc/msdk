@@ -109,7 +109,7 @@ static struct
  *  \return     Packet length in microseconds.
  */
 /*************************************************************************************************/
-static uint32_t llCalcPacketInterval(uint8_t len, uint8_t phy, uint8_t phyOptions)
+uint32_t llCalcPacketTime(uint8_t len, uint8_t phy, uint8_t phyOptions)
 {
   unsigned int totalTime;
 
@@ -136,6 +136,24 @@ static uint32_t llCalcPacketInterval(uint8_t len, uint8_t phy, uint8_t phyOption
       totalTime = (LL_PREAMBLE_LEN_1M + LL_AA_LEN + LL_DTM_HDR_LEN + len + LL_CRC_LEN) * LL_BLE_US_PER_BYTE_1M;
       break;
   }
+
+  return totalTime;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Calculate packet interval.
+ *
+ *  \param      len         Packet length.
+ *  \param      phy         PHY.
+ *  \param      phyOptions  PHY options.
+ *
+ *  \return     Interval between packets in microseconds.
+ */
+/*************************************************************************************************/
+uint32_t llCalcPacketInterval(uint8_t len, uint8_t phy, uint8_t phyOptions)
+{
+  unsigned int totalTime = llCalcPacketTime(len, phy, phyOptions);
 
   /* ceil((L + 249) / 625) * 625 */
   return LL_MATH_DIV_625(totalTime + 249 + 624) * 625;
