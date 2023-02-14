@@ -145,7 +145,7 @@ jobs:
           fi
           
           # End the test early if there wasn't a significant change
-          if [[ $RUN_TEST -eq 0 ]] 
+          if [[ $RUN_TEST -eq 0 ]]; then
             exit 0
           fi
           
