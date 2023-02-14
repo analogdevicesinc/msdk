@@ -6,7 +6,11 @@
 # Optional arguments to include the changes file
 # bash -ex .github/workflows/clang-format-run.sh main.c src/foo.c
 
+# Get CLANG_VERSION from environment if available
+if [[ $CLANG_VERSION == "" ]]; then
 CLANG_VERSION=14
+fi
+
 CHANGES_NEEDED=0
 FILES=""
 
