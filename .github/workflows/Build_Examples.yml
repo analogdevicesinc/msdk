@@ -113,13 +113,13 @@ jobs:
           # Check for changes made to these files
           WATCH_FILES="\
             Build_Example.yml \
-            *.c \
-            *.cpp \
-            *.S \
-            *.s \
-            *.h \
-            *.a \
-            *.mk \
+            .c \
+            .cpp \
+            .S \
+            .s \
+            .h \
+            .a \
+            .mk \
             makefile \
             Makefile"
           
