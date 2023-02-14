@@ -58,6 +58,7 @@ int main(void)
     int count = 0;
 
     printf("Hello World!\n");
+
     while (1) {
         LED_On(LED_RED);
         MXC_Delay(500000);
