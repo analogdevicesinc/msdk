@@ -45,34 +45,4 @@ jobs:
       #   Exclude register header files. Those don't follow clang formatting or it becomes unreadable
       - name: clang-format-check
         run: |
-          CLANG_VERSION=14
-          cat .clang-format
-
-          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*.c' '*.h' ':!*_regs.h' ':!*weights.h' ':!*cnn.h' ':!*cnn.c' ':!*sampledata.h' ':!*sampleoutput.h' ':!*softmax.c' ':!Libraries/FCL' ':!Libraries/FreeRTOS' ':!Libraries/lwIP' ':!Libraries/littlefs' ':!Libraries/FreeRTOS-Plus' ':!Libraries/LC3' ':!Libraries/SDHC' ':!Libraries/MAXUSB' ':!Libraries/Cordio' ':!Libraries/LVGL')
-          CHECK_FAIL=0
-
-          set +e
-          for change_file in ${CHANGE_FILES}
-          do
-            if [ -f ${change_file} ];
-            then
-            clang-format-${CLANG_VERSION} --verbose --style=file -n -Werror ${change_file}
-            if [ $? != 0 ];
-            then
-              echo ""
-              echo "===================================================="
-              echo "FAIL: ${change_file}"
-              echo "----------------------------------------------------"
-              echo "Expected:"
-              clang-format-${CLANG_VERSION} --style=file ${change_file} > ${change_file}.clang
-              diff -u --color=always ${change_file} ${change_file}.clang
-              rm ${change_file}.clang
-              CHECK_FAIL=1
-              echo "===================================================="
-              echo ""
-            fi
-            fi
-          done
-          set -e
-
-          exit $CHECK_FAIL
+          bash -ex clang-format-run.sh
