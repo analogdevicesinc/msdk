@@ -50,29 +50,56 @@
 #include "tmr.h"
 #include "dma.h"
 #include "nvic_table.h"
+#include "fastSPI.h"
 
 /***** Definitions *****/
 #define SPI MXC_SPI0
 // #define SPI_SPEED 8000000
-#define SPI_SPEED 100000
+#define SPI_SPEED 1000
 #define TEST_SIZE 800
+
+// A macro to convert a DMA channel number to an IRQn number
+#define GetIRQnForDMAChannel(x) ((IRQn_Type)(((x) == 0 ) ? DMA0_IRQn  : \
+                                             ((x) == 1 ) ? DMA1_IRQn  : \
+                                             ((x) == 2 ) ? DMA2_IRQn  : \
+                                                           DMA3_IRQn))
 
 /***** Globals *****/
 int g_done = 0;
+int g_dma_done = 0;
+int g_tx_channel;
+int g_rx_channel;
+
 void spi_done(void *req, int result) 
 {
     g_done = 1;
 }
 
-void DMA0_IRQHandler()
+void DMA_TX_IRQHandler()
 {
-    MXC_DMA_Handler();
+    uint32_t status = MXC_DMA->ch[g_tx_channel].status;
+
+    if (status & MXC_F_DMA_STATUS_CTZ_IF) { // Count-to-Zero (TX complete)
+        printf("CTZ!\n");
+        g_done = 1;
+        MXC_DMA->ch[g_tx_channel].status |= MXC_F_DMA_STATUS_CTZ_IF;  // Clear flag
+    }
+
+    if (status & MXC_F_DMA_STATUS_BUS_ERR) { // Bus Error
+        printf("Bus error!\n");
+        MXC_DMA->ch[g_tx_channel].status |= MXC_F_DMA_STATUS_BUS_ERR;  // Clear flag
+    }
 }
 
-void DMA1_IRQHandler()
-{
-    MXC_DMA_Handler();
-}
+// void DMA0_IRQHandler()
+// {
+//     MXC_DMA_Handler();
+// }
+
+// void DMA1_IRQHandler()
+// {
+//     MXC_DMA_Handler();
+// }
 
 mxc_spi_req_t g_req = {
     .spi = SPI,
@@ -376,16 +403,58 @@ int ram_write_quad(mxc_spi_req_t *req, uint32_t address, uint8_t * data, unsigne
 
 int ram_write_quad_dma(mxc_spi_req_t *req, uint32_t address, uint8_t * data, unsigned int len) 
 {
-    int err = 0;
-    err = _transmit_spi_header(req, 0x38, address);
-    if (err) return err;
+    req->spi->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
 
-    req->txData = data;
-    req->txLen = len;
-    req->rxData = NULL;
-    req->rxLen = 0;
-    g_done = 0;
-    return MXC_SPI_MasterTransactionDMA(req);
+    uint8_t header[4];
+    _parse_spi_header(0x38, address, header);
+
+    req->spi->ctrl1 = 4 << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
+
+    MXC_DMA->ch[g_tx_channel].src = (uint32_t)&header[0];
+    MXC_DMA->ch[g_tx_channel].cnt = sizeof(header) / sizeof(header[0]);
+    MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;
+
+    req->spi->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+    while(!g_done) {}
+
+    MXC_DMA->ch[g_tx_channel].src = (uint32_t)data;
+    MXC_DMA->ch[g_tx_channel].cnt = len;
+    MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;
+    req->spi->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+    while(!g_done) {}
+
+    return E_SUCCESS;
+}
+
+int ram_dma_init(mxc_spi_req_t *req)
+{
+    req->spi->dma |= (MXC_F_SPI_DMA_DMA_TX_EN); // Enable TX DMA FIFO
+    req->spi->dma |= (0 << MXC_F_SPI_DMA_RX_LVL_POS | 31 << MXC_F_SPI_DMA_TX_LVL_POS); // Set FIFO levels
+
+    int err = MXC_DMA_Init();
+    if (err)
+        return err;
+    
+    g_tx_channel = MXC_DMA_AcquireChannel();
+    g_rx_channel = MXC_DMA_AcquireChannel();
+    if (g_tx_channel < 0 || g_rx_channel < 0) {
+        return E_NONE_AVAIL;  // Failed to acquire DMA channels
+    }
+
+    MXC_DMA->ch[g_tx_channel].ctrl &= ~(MXC_F_DMA_CTRL_EN | MXC_F_DMA_CTRL_RLDEN);
+    MXC_DMA->ch[g_tx_channel].status &= ~(MXC_F_DMA_STATUS_CTZ_IF);
+    MXC_DMA->ch[g_tx_channel].src = 0;  // Initialize DMA source to empty
+    MXC_DMA->ch[g_tx_channel].ctrl |= (0x2F << MXC_F_DMA_CTRL_REQUEST_POS);  // Set DMA destination = SPI0 TX FIFO
+    MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_SRCINC;  // Auto-increment the tx source buffer pointer during DMA transfers
+    MXC_DMA->ch[g_tx_channel].ctrl |= (MXC_F_DMA_CTRL_CTZ_IE | MXC_F_DMA_CTRL_DIS_IE);  // Enable CTZ and DIS interrupts
+    MXC_DMA->inten |= (1 << g_tx_channel);  // Enable DMA interrupts for channel
+
+    MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_tx_channel), DMA_TX_IRQHandler);
+    NVIC_EnableIRQ(GetIRQnForDMAChannel(g_tx_channel));
+
+    return E_SUCCESS;
 }
 
 // *****************************************************************************
@@ -394,6 +463,78 @@ int main(void)
     int err = 0;
 
     MXC_Delay(MXC_DELAY_SEC(2));
+
+#if 1
+    // Initialize SPI
+
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
+    MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
+
+    const mxc_gpio_cfg_t spi_pins = {
+        .port = MXC_GPIO0,
+        .mask = MXC_GPIO_PIN_5 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9,
+        .func = MXC_GPIO_FUNC_ALT1,
+        .pad = MXC_GPIO_PAD_NONE,
+        .vssel = MXC_GPIO_VSSEL_VDDIOH
+    };
+
+    MXC_GPIO_Config(&spi_pins);
+    
+    MXC_SPI0->ctrl0 = (1 << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) |    // Set SSEL = SS0
+                        MXC_F_SPI_CTRL0_MST_MODE |              // Select controller mode
+                        MXC_F_SPI_CTRL0_EN;                     // Enable SPI
+
+    MXC_SPI0->ctrl2 = (8 << MXC_F_SPI_CTRL2_NUMBITS_POS);       // Set 8 bits per character
+    
+    MXC_SPI0->sstime = (1 << MXC_F_SPI_SSTIME_PRE_POS) |        // Remove any delay time between SSEL and SCLK edges
+                        (1 << MXC_F_SPI_SSTIME_POST_POS) |
+                        (1 << MXC_F_SPI_SSTIME_INACT_POS);
+
+    MXC_SPI0->dma = MXC_F_SPI_DMA_TX_FIFO_EN |                  // Enable TX FIFO, set TX threshold to 31 
+                    (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS) |
+                    MXC_F_SPI_DMA_DMA_TX_EN; 
+
+    MXC_SPI0->intfl = MXC_SPI0->intfl;                           // Clear any any interrupt flags that may already be set
+
+    MXC_SPI_SetFrequency(MXC_SPI0, SPI_SPEED);
+    NVIC_EnableIRQ(SPI0_IRQn);
+
+    // Initialize DMA
+
+    err = MXC_DMA_Init();
+    if (err)
+        return err;
+    
+    g_tx_channel = MXC_DMA_AcquireChannel();
+    g_rx_channel = MXC_DMA_AcquireChannel();
+    if (g_tx_channel < 0 || g_rx_channel < 0) {
+        return E_NONE_AVAIL;  // Failed to acquire DMA channels
+    }
+
+    MXC_DMA->ch[g_tx_channel].ctrl = MXC_F_DMA_CTRL_SRCINC | (0x2F << MXC_F_DMA_CTRL_REQUEST_POS);  // Enable incrementing the src address pointer, set to SPI0 TX destination
+    MXC_DMA->ch[g_tx_channel].ctrl |= (MXC_F_DMA_CTRL_CTZ_IE | MXC_F_DMA_CTRL_DIS_IE);              // Enable CTZ and DIS interrupts
+    MXC_DMA->inten |= (1 << g_tx_channel);                                                          // Enable DMA interrupts for channel
+
+    MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_tx_channel), DMA_TX_IRQHandler);
+    NVIC_EnableIRQ(GetIRQnForDMAChannel(g_tx_channel));
+
+    uint8_t test[5];
+    for (int i = 0; i < 5; i++) {
+        test[i] = i;
+    }
+
+    MXC_SPI0->ctrl1 = (5 << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+    MXC_DMA->ch[g_tx_channel].src = (uint32_t)test;
+    MXC_DMA->ch[g_tx_channel].cnt = 5;
+    MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;
+
+    MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+    while(!g_done) {}
+
+    printf("Complete!  dma_tx_en: %i\n", (MXC_SPI0->dma >> MXC_F_SPI_DMA_DMA_TX_EN_POS) & 0b1);
+
+#else
 
     err = spi_init_qspi();
     ram_exit_quadmode(&g_req);
@@ -468,6 +609,12 @@ int main(void)
     memset(rx_buffer, 0, TEST_SIZE);
 
     // Benchmark QSPI write + DMA to external SRAM
+    err = ram_dma_init(&g_req);
+    if (err) {
+        printf("Failed to initialize DMA!\n");
+        return err;
+    }
+
     MXC_TMR_SW_Start(MXC_TMR0);
     err = ram_write_quad_dma(&g_req, 1024, tx_buffer, TEST_SIZE);
     if (err) return err;
@@ -479,7 +626,7 @@ int main(void)
 
     // Validate
     MXC_Delay(MXC_DELAY_MSEC(1));
-#if 0
+#if 1
     ram_read_quad(&g_req, 1024, rx_buffer, TEST_SIZE);
 #else
     ram_read_quad_dma(&g_req, 1024, rx_buffer, TEST_SIZE);
@@ -492,6 +639,8 @@ int main(void)
     }
 
     ram_exit_quadmode(&g_req);
+
+#endif
 
     printf("Success!\n");
     return err;
