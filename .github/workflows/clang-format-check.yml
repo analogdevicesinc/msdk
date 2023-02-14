@@ -46,6 +46,6 @@ jobs:
       - name: clang-format-check
         run: |
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*.c' '*.h' ':!*_regs.h' ':!*weights.h' ':!*cnn.h' ':!*cnn.c' ':!*sampledata.h' ':!*sampleoutput.h' ':!*softmax.c' ':!Libraries/FCL' ':!Libraries/FreeRTOS' ':!Libraries/lwIP' ':!Libraries/littlefs' ':!Libraries/FreeRTOS-Plus' ':!Libraries/LC3' ':!Libraries/SDHC' ':!Libraries/MAXUSB' ':!Libraries/Cordio' ':!Libraries/LVGL')
-          if [[ $CHANGE_FILES -ne "" ]]; then
+          if [[ "$CHANGE_FILES" != "" ]]; then
             bash -e .github/workflows/clang-format-run.sh $CHANGE_FILES
           fi
