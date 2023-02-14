@@ -42,6 +42,7 @@ SRCS += led.c
 SRCS += mx25.c
 SRCS += pb.c
 SRCS += rom_stub.c
+SRCS += max11261.c
 
 PROJ_CFLAGS+=-DEXT_FLASH_MX25
 
@@ -51,8 +52,10 @@ MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 VPATH += $(BOARD_DIR)/Source
 VPATH += $(BOARD_DIR)/../Source
 VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
+VPATH += $(MISC_DRIVERS_DIR)/ADC
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
 IPATH += $(BOARD_DIR)/../Include
 IPATH += $(MISC_DRIVERS_DIR)/ExtMemory
+IPATH += $(MISC_DRIVERS_DIR)/ADC
