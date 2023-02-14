@@ -107,6 +107,48 @@ jobs:
           ls -la $(which arm-none-eabi-gcc)
           ls -la $(which riscv-none-embed-gcc)
           
+          # Determine if we need to run the test
+          RUN_TEST=0
+          
+          # Check for changes made to these files
+          WATCH_FILES="\
+            Build_Example.yml \
+            *.c \
+            *.cpp \
+            *.S \
+            *.s \
+            *.h \
+            *.a \
+            *.mk \
+            makefile \
+            Makefile"
+          
+          # Get the diff from main
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+          
+          echo "Watching these locations and files"
+          echo $WATCH_FILES
+          
+          echo "Checking the following changes"
+          echo $CHANGE_FILES
+          
+          # Assume we want to actually run the workflow if no files changed
+          if [[ "$CHANGE_FILES" != "" ]]; then
+            for watch_file in $WATCH_FILES; do 
+              if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
+                RUN_TEST=1
+              fi
+            done
+          else 
+          # Assume we want to actually run the workflow if no files changed
+            RUN_TEST=1
+          fi
+          
+          # End the test early if there wasn't a significant change
+          if [[ $RUN_TEST -eq 0 ]] 
+            exit 0
+          fi
+          
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
           export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
