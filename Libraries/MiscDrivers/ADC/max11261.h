@@ -173,6 +173,17 @@ typedef enum {
 } max11261_fmt_t;
 
 /**
+ * ADC conversion result and miscelleanous info.
+ */
+typedef struct {
+    int32_t val; /**< Conversion result */
+    uint8_t chn:3; /**< Channel number */
+    uint8_t aor:1; /**< Analog input overrange detection */
+    uint8_t dor:1; /**< Data overrun detection */
+    uint8_t rfu:3;
+} max11261_adc_result_t;
+
+/**
  * @brief Initializes MAX11261 platform configuration.
  *
  * These are platform-specific functions and must be provided by the user. The
@@ -344,11 +355,12 @@ int max11261_adc_convert_prepare(void);
  *
  * Device must be in conversion state otherwise the function will fail.
  *
- * @param val Pointer to the variable to write the result into.
+ * @param res An \a max11261_adc_result_t structure to write the conversion
+ * result into.
  *
  * @return Success/Fail, see \ref errno.h for a list of return codes.
  */
-int max11261_adc_result(int32_t *val);
+int max11261_adc_result(max11261_adc_result_t *res);
 
 /**
  * @brief Starts conversion by sending a sequencer command.

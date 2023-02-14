@@ -265,7 +265,7 @@ int max11261_adc_reset(void)
 static int max11261_read_reg(uint8_t addr, uint32_t *val)
 {
     int error;
-    uint8_t txbuf[0];
+    uint8_t txbuf[1];
     uint8_t rxbuf[MAX11261_MAX_REG_SIZE];
 
     txbuf[0] = MAX11261_CMD_READ(addr);
@@ -572,7 +572,7 @@ int max11261_adc_convert_prepare(void)
     return error;
 }
 
-int max11261_adc_result(int32_t *val)
+int max11261_adc_result(max11261_adc_result_t *res)
 {
     int error;
     uint32_t cnt, timeout, reg;
@@ -595,6 +595,13 @@ int max11261_adc_result(int32_t *val)
     if (timeout == 0)
         return -ETIMEDOUT;
 
+    error = max11261_read_reg(MAX11261_STAT, &reg);
+    if (error < 0)
+        return error;
+
+    res->dor = !!(reg & MAX11261_STAT_DOR);
+    res->aor = !!(reg & MAX11261_STAT_AOR);
+
     error = max11261_read_reg(MAX11261_FIFO_LEVEL, &cnt);
     if (error < 0)
         return error;
@@ -607,6 +614,8 @@ int max11261_adc_result(int32_t *val)
         if (error < 0)
             return error;
     }
+
+    res->chn = (reg & MAX11261_FIFO_CH) >> MAX11261_FIFO_CH_POS;
 
     reg &= ((1 << cfg.res) - 1);
     tmp = reg;
@@ -623,7 +632,7 @@ int max11261_adc_result(int32_t *val)
         else
             tmp = 2 * tmp;
     }
-    *val = tmp;
+    res->val = tmp;
 
     return 0;
 }
