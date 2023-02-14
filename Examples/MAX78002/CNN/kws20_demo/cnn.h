@@ -6,7 +6,7 @@
 **************************************************************************************************/
 
 /*
- * This header file was automatically @generated for the kws20_v3_1 network from a template.
+ * This header file was automatically @generated for the kws20_v3_ai87 network from a template.
  * Please do not edit; instead, edit the template and regenerate.
  */
 
