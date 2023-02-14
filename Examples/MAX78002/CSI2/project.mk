@@ -17,10 +17,7 @@
 # connected camera.  These are some common values.  
 # For a full list of options for the 'CAMERA' variable, 
 # see the documentation.
-#CAMERA=OV7692
 CAMERA=OV5640
-#CAMERA=HM0360_MONO
-#CAMERA=HM01B0
 
 # Set a higher optimization level.  The increased performance
 # is required for the Camera DMA code to work within the
