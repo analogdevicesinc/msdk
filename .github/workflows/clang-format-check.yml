@@ -45,4 +45,4 @@ jobs:
       #   Exclude register header files. Those don't follow clang formatting or it becomes unreadable
       - name: clang-format-check
         run: |
-          bash -ex clang-format-run.sh
+          bash -ex .github/workflows/clang-format-run.sh
