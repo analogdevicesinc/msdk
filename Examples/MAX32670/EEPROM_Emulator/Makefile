@@ -29,7 +29,7 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
-###############################################################################
+ ###############################################################################
 
 # ** Readme! **
 # Don't edit this file! This is the core Makefile for a MaximSDK 
