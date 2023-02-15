@@ -12,9 +12,7 @@ on:
   #  branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-    # When to run the workflow on PR
-    types: [opened, reopened, synchronize, ready_for_review]
+    types: [opened, reopened, synchronize, ready_for_review]  # When to run the workflow on PR
 
     paths-ignore:
       # Any files in a docs directory anywhere in the repository.
