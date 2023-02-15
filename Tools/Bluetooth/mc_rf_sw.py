@@ -118,7 +118,8 @@ class McRfSw:
         self.dev.reset()
         
         if args.op.lower() == "get":
-            self.get_sw_state()
+            state = self.get_sw_state()
+            print(f'Current state: {state}')
         elif args.op.lower() == "set":
             self.set_sw_state(args.state)
         else:
@@ -126,14 +127,13 @@ class McRfSw:
 
         usb.util.release_interface(self.dev, 0)
         
-        
     def find_the_device(self, model):
         """find the right device by its model name
         """
         all_devs = usb.core.find(idVendor=0x20ce, idProduct=0x0022, find_all=True)
         for d in all_devs:
             # check configuration in this device
-            self.deattach_and_config(d)
+            self.dettach_and_config(d)
             
             # get model name
             model_name = ""
@@ -153,24 +153,23 @@ class McRfSw:
 
         return None
    
-    def deattach_and_config(self, d):
+    def dettach_and_config(self, d):
         for configuration in d:
-           PRINT("configuration:")
-           PRINT(configuration)
-           
-           for interface in configuration:
-               PRINT("interface:")
-               PRINT(interface)
-               if_num = interface.bInterfaceNumber
-               if not d.is_kernel_driver_active(if_num):
-                   continue
+            PRINT("configuration:")
+            PRINT(configuration)
+            
+            for interface in configuration:
+                PRINT("interface:")
+                PRINT(interface)
+                if_num = interface.bInterfaceNumber
+                if not d.is_kernel_driver_active(if_num):
+                    continue
                 
-               try:
-                   d.detach_kernel_driver(if_num)
-               except usb.core.USBError as e:
-                   print(f'Interface Number: {if_num}')
-                   print(e)
-        PRINT("")
+                try:
+                    d.detach_kernel_driver(if_num)
+                except usb.core.USBError as e:
+                    print(f'Interface Number: {if_num}')
+                    print(e)
     
         # set the active configuration. with no args we use first config.
         d.set_configuration()
@@ -224,7 +223,7 @@ class McRfSw:
         while 255 > state_ret[i] > 0 and i <= len(state_ret):
             resp = resp + chr(state_ret[i])
             i = i + 1
-
+        PRINT(f'Resp: {resp}')
         return resp
 
 

@@ -888,18 +888,6 @@
      <addressOffset>0x010</addressOffset>
      <size>128</size>
     </register>
-    <register>
-     <name>PUF_KEY1</name>
-     <description>PUF Key 1.</description>
-     <addressOffset>0x020</addressOffset>
-     <size>256</size>
-    </register>
-    <register>
-     <name>PUF_KEY2</name>
-     <description>PUF Key 2.</description>
-     <addressOffset>0x040</addressOffset>
-     <size>256</size>
-    </register>
    </registers>
   </peripheral>
 <!--AESKEYS AES Key Registers.-->
@@ -10980,7 +10968,7 @@ memory.
       <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[7:7]</bitRange>
+       <bitRange>[5:5]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -13478,6 +13466,28 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        <bitWidth>32</bitWidth>
       </field>
      </fields>
+    </register>
+    <register>
+      <name>BTLE_LDO_TRIM</name>
+      <description>BTLE LDO Trim register.</description>
+      <addressOffset>0x28</addressOffset>
+      <access>read-write</access>
+      <fields>
+        <field>
+          <name>TX</name>
+          <description>TX LDO trim value.</description>
+          <bitOffset>0</bitOffset>
+          <bitWidth>5</bitWidth>
+          <access>read-write</access>
+        </field>
+        <field>
+          <name>RX</name>
+          <description>RX LDO trim value.</description>
+          <bitOffset>5</bitOffset>
+          <bitWidth>5</bitWidth>
+          <access>read-write</access>
+        </field>
+      </fields>
     </register>
     <register>
      <name>FSTAT</name>

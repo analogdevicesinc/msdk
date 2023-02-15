@@ -416,6 +416,7 @@ unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t *i2c,
             callback(i2c, MXC_I2C_REVB_EVT_MASTER_RD, NULL);
             i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
             i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
+            i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_TXLOI;
             interruptEnables = MXC_F_I2C_REVB_INT_FL0_TXTHI | MXC_F_I2C_REVB_INT_FL1_TXUFI |
                                MXC_F_I2C_REVB_INT_FL0_TXLOI | MXC_I2C_REVB_ERROR;
         } else {

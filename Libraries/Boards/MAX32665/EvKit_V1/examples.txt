@@ -31,6 +31,7 @@ Display
 DES
 DMA
 ECC
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo

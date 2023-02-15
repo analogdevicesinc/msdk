@@ -7,7 +7,17 @@ on:
   #  branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
+    paths-ignore:
+      # Any files in a docs directory anywhere in the repository.
+      - '**/docs/**'
+      - '**/Documentation/**'
+      # Any README.md file anywhere in the repository.
+      - '**/README.md'	
+      # Any .pdf file anywhere in the repository.
+      - '**/*.pdf'
+      # Any .yml file anywhere in the repository.
+      # can comment this out when testing changes to THIS yml file
+      - '**/*.yml'
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
   
