@@ -430,6 +430,7 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
   WSF_CS_INIT();
 
   LL_TRACE_INFO3("### LlApi ###  LlTxTest, rfChan=%u, len=%u, pktType=%u", rfChan, len, pktType);
+  LL_TRACE_INFO1("  numPkt=%u", numPkt);
 
   if ((LL_API_PARAM_CHECK == 1) &&
       (!((llTestCb.state == LL_TEST_STATE_IDLE) || (llTestCb.state == LL_TEST_STATE_TX)) ||
@@ -795,7 +796,7 @@ static bool_t llTestRxComplete(BbOpDesc_t *pBod, uint8_t status)
 /*************************************************************************************************/
 uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t numPkt)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlRxTest, rfChan=%u", rfChan);
+  LL_TRACE_INFO2("### LlApi ###  LlRxTest, rfChan=%u phy=%u", rfChan, phy);
 
   if ((LL_API_PARAM_CHECK == 1) &&
       ((llTestCb.state != LL_TEST_STATE_IDLE) ||
