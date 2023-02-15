@@ -32,6 +32,7 @@ CRC
 CSI2
 DMA
 ECC
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo

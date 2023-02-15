@@ -80,6 +80,7 @@ parser.add_argument('-s', '--step', default=10, help='Attenuation sweep step siz
 parser.add_argument('-e', '--pktlen', default="250", help="packet length, comma separated list.")
 parser.add_argument('--mtp', default="", help="master TRACE serial port")
 parser.add_argument('--stp', default="", help="slave TRACE serial port")
+parser.add_argument('--loss', default=0, help="Calibrated path loss, -17.4 dBm (-16.4-0.7)")
  
 args = parser.parse_args()
 print("--------------------------------------------------------------------------------------------")
@@ -90,13 +91,14 @@ phys             = args.phys.strip().split(",")
 txPowers         = args.txpows.strip().split(",")
 
 if args.attens is None:
-    if int(args.step) == 0:
+    if int(args.step) == 0 or int(args.step) == -1:
         attens = [20, 70]
     else:
         attens = list(range(20, 90, int(args.step)))
 
     # Add the max attenuation
-    attens.append(90)
+    if int(args.step) != -1:
+        attens.append(90)
 else:
     attens = args.attens.strip().split(",")
 
@@ -149,7 +151,8 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
 
             print("\nReset the attenuation to 30.")
             if rf_switch:
-                mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
+                set_val = 30 + float(args.loss)
+                mini_RCDAT = mini_RCDAT_USB(Namespace(atten=set_val))
             sleep(0.1)
 
             print("\nSet the PHY.")
@@ -177,7 +180,8 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
        
             print("Set the requested attenuation.")
             if rf_switch:
-                mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
+                set_val = atten + float(args.loss)
+                mini_RCDAT = mini_RCDAT_USB(Namespace(atten=set_val))
             sleep(0.1)
 
             print("\nReset the packet stats.")

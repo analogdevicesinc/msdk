@@ -88,7 +88,9 @@ extern "C" {
 typedef struct {
     __I  uint32_t sistat;               /**< <tt>\b 0x00:</tt> SIR SISTAT Register */
     __I  uint32_t siaddr;               /**< <tt>\b 0x04:</tt> SIR SIADDR Register */
-    __R  uint32_t rsv_0x8_0xff[62];
+    __R  uint32_t rsv_0x8_0x27[8];
+    __IO uint32_t btle_ldo_trim;        /**< <tt>\b 0x28:</tt> SIR BTLE_LDO_TRIM Register */
+    __R  uint32_t rsv_0x2c_0xff[53];
     __I  uint32_t fstat;                /**< <tt>\b 0x100:</tt> SIR FSTAT Register */
     __I  uint32_t sfstat;               /**< <tt>\b 0x104:</tt> SIR SFSTAT Register */
 } mxc_sir_regs_t;
@@ -102,6 +104,7 @@ typedef struct {
  */
 #define MXC_R_SIR_SISTAT                   ((uint32_t)0x00000000UL) /**< Offset from SIR Base Address: <tt> 0x0000</tt> */
 #define MXC_R_SIR_SIADDR                   ((uint32_t)0x00000004UL) /**< Offset from SIR Base Address: <tt> 0x0004</tt> */
+#define MXC_R_SIR_BTLE_LDO_TRIM            ((uint32_t)0x00000028UL) /**< Offset from SIR Base Address: <tt> 0x0028</tt> */
 #define MXC_R_SIR_FSTAT                    ((uint32_t)0x00000100UL) /**< Offset from SIR Base Address: <tt> 0x0100</tt> */
 #define MXC_R_SIR_SFSTAT                   ((uint32_t)0x00000104UL) /**< Offset from SIR Base Address: <tt> 0x0104</tt> */
 /**@} end of group sir_registers */
@@ -132,6 +135,20 @@ typedef struct {
 #define MXC_F_SIR_SIADDR_ERRADDR                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_SIR_SIADDR_ERRADDR_POS)) /**< SIADDR_ERRADDR Mask */
 
 /**@} end of group SIR_SIADDR_Register */
+
+/**
+ * @ingroup  sir_registers
+ * @defgroup SIR_BTLE_LDO_TRIM SIR_BTLE_LDO_TRIM
+ * @brief    BTLE LDO Trim register.
+ * @{
+ */
+#define MXC_F_SIR_BTLE_LDO_TRIM_TX_POS                 0 /**< BTLE_LDO_TRIM_TX Position */
+#define MXC_F_SIR_BTLE_LDO_TRIM_TX                     ((uint32_t)(0x1FUL << MXC_F_SIR_BTLE_LDO_TRIM_TX_POS)) /**< BTLE_LDO_TRIM_TX Mask */
+
+#define MXC_F_SIR_BTLE_LDO_TRIM_RX_POS                 5 /**< BTLE_LDO_TRIM_RX Position */
+#define MXC_F_SIR_BTLE_LDO_TRIM_RX                     ((uint32_t)(0x1FUL << MXC_F_SIR_BTLE_LDO_TRIM_RX_POS)) /**< BTLE_LDO_TRIM_RX Mask */
+
+/**@} end of group SIR_BTLE_LDO_TRIM_Register */
 
 /**
  * @ingroup  sir_registers

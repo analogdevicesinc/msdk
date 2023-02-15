@@ -538,6 +538,8 @@ int MXC_CAN_MessageSend(uint32_t can_idx, mxc_can_req_t *req);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32662 does not support CAN FD, setting req->msg_info->fdf will return an error.
+ * @warning The structure pointed to by 'req' must remain unchanged and in scope until the 
+ *          TX complete event has been signaled.
  */
 int MXC_CAN_MessageSendAsync(uint32_t can_idx, mxc_can_req_t *req);
 
@@ -550,6 +552,8 @@ int MXC_CAN_MessageSendAsync(uint32_t can_idx, mxc_can_req_t *req);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32662 does not support CAN FD, setting req->msg_info->fdf will return an error.
+ * @warning The structure pointed to by 'req' must remain unchanged and in scope until the 
+ *          TX complete event has been signaled.
  */
 int MXC_CAN_MessageSendDMA(uint32_t can_idx, mxc_can_req_t *req);
 
@@ -574,6 +578,8 @@ int MXC_CAN_MessageRead(uint32_t can_idx, mxc_can_req_t *req);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32662 does not support CAN FD, setting req->msg_info->fdf will return an error.
+ * @warning The structure pointed to by 'req' must remain unchanged and in scope until the 
+ *          RX complete event has been signaled.
  */
 int MXC_CAN_MessageReadAsync(uint32_t can_idx, mxc_can_req_t *req);
 
@@ -586,6 +592,8 @@ int MXC_CAN_MessageReadAsync(uint32_t can_idx, mxc_can_req_t *req);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32662 does not support CAN FD, setting req->msg_info->fdf will return an error.
+ * @warning The structure pointed to by 'req' must remain unchanged and in scope until the 
+ *          RX complete event has been signaled.
  */
 int MXC_CAN_MessageReadDMA(uint32_t can_idx, mxc_can_req_t *req, void (*dma_cb)(int, int));
 
