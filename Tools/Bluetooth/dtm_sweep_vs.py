@@ -114,7 +114,7 @@ txPowers         = args.txpows.strip().split(",")
 
 
 if(args.attens == None):
-    attens = list(range(20,90,args.atten_step))
+    attens = list(range(20,90,int(args.atten_step)))
 
     # Add the max attenuation 
     attens.append(90)
