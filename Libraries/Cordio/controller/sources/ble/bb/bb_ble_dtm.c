@@ -170,7 +170,7 @@ static void bbTestRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint32_
       bbBleCb.bbParam.dueUsec = BbAdjustTime(dueTime);
       bbBleCb.bbParam.rxTimeoutUsec = pRx->rxSyncDelayUsec;
 
-    } else
+    } else {
       const uint32_t pktInterUsec = pBbRtCfg->rfSetupDelayUs;
       bbBleCb.bbParam.dueUsec     = BbAdjustTime(PalBbGetCurrentTime() + pktInterUsec);
       bbBleCb.bbParam.rxTimeoutUsec = pRx->rxSyncDelayUsec;
