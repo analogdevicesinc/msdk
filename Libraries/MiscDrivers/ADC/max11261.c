@@ -82,6 +82,8 @@
 #define MAX11261_CHANNEL_COUNT  6
 #define MAX11261_ADC_RESOLUTION 24
 
+#define MAX11261_MUX_DELAY_MAX  1020
+#define MAX11261_MUX_DELAY_MIN  4
 /* **** Variable Declaration **** */
 
 /**
@@ -118,6 +120,7 @@ typedef struct {
     max11261_sequencer_mode_t seqMode;      /**< Sequencer mode */
     max11261_pol_t polarity;      /**< Input polarity */
     max11261_fmt_t format;        /**< Result format */
+    uint16_t delay;  /**< Multiplexer delay, 0 - 1020us */
 } max11261_adc_seq_t;
 
 struct max11261_reg {
@@ -204,6 +207,7 @@ static max11261_adc_seq_t seq = {
         .seqMode = MAX11261_SEQ_MODE_1,
         .polarity = MAX11261_POL_UNIPOLAR,
         .format = MAX11261_FMT_OFFSET_BINARY,
+        .delay = 0,
 };
 
 /* **** Function Prototypes **** */
@@ -465,6 +469,19 @@ int max11261_adc_set_mode(max11261_conversion_mode_t convMode,
     return 0;
 }
 
+int max11261_adc_set_mux_delay(uint16_t delay)
+{
+    if (delay > MAX11261_MUX_DELAY_MAX)
+        return -EINVAL;
+
+    if (delay && delay < MAX11261_MUX_DELAY_MIN)
+        delay = MAX11261_MUX_DELAY_MIN;
+
+    seq.delay = delay;
+
+    return 0;
+}
+
 max11261_pd_state_t max11261_adc_pd_state(void)
 {
     int error;
@@ -539,10 +556,20 @@ int max11261_adc_convert_prepare(void)
 
     /* Set sequencer register */
     error = max11261_update_reg(MAX11261_SEQ,
-            MAX11261_SEQ_MUX | MAX11261_SEQ_SIF_FREQ,
-            (seq.chan << MAX11261_SEQ_MUX_POS) | sif_freq(cfg.freq));
+            MAX11261_SEQ_MUX | MAX11261_SEQ_MDREN | MAX11261_SEQ_SIF_FREQ,
+            (seq.chan << MAX11261_SEQ_MUX_POS)
+            | (seq.delay ? MAX11261_SEQ_MDREN : 0)
+            | sif_freq(cfg.freq));
     if (error < 0)
         return error;
+
+    if (seq.delay) {
+        /* Delay resolution is 4us */
+        error = max11261_update_reg(MAX11261_DELAY, MAX11261_DELAY_MUX,
+                (seq.delay / 4) << MAX11261_DELAY_MUX_POS);
+        if (error < 0)
+            return error;
+    }
 
     /* Set control register 1
      * PD       : Go to standby after conversion
@@ -580,7 +607,7 @@ int max11261_adc_result(max11261_adc_result_t *res)
 
     /* 10 times delay amounts to the data rates given in the datasheet. Adding
      * two extra delay cycles to make up for the communication delay. */
-    timeout = 12;
+    timeout = 12 + seq.delay / max11261_single_cycle_delay[seq.srate];
     if (platCtx.ready) {
         while (!platCtx.ready() && --timeout) {
             platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);

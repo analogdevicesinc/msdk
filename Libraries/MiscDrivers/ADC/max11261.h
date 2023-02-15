@@ -140,6 +140,7 @@ typedef enum {
     MAX11261_SINGLE_RATE_4000,
     MAX11261_SINGLE_RATE_6400,
     MAX11261_SINGLE_RATE_12800,
+    MAX11261_SINGLE_RATE_MAX,
 } max11261_single_rate_t;
 
 typedef enum {
@@ -309,6 +310,20 @@ int max11261_adc_set_channel(max11261_adc_channel_t chan);
  */
 int max11261_adc_set_mode(max11261_conversion_mode_t convMode,
         max11261_sequencer_mode_t seqMode);
+
+/**
+ * @brief Sets the multiplexer delay.
+ *
+ * Start of conversion is delayed by the set amount of time to allow for input
+ * to become stable. Recommended to use with high impedance source networks.
+ *
+ * @param delay Delay value in microseconds. Must be less than 1021
+ * microseconds.
+ *
+ * @return Success/Fail, 0 if success, -EINVAL if the value is out
+ * of supported range.
+ */
+int max11261_adc_set_mux_delay(uint16_t delay);
 
 /**
  * @brief Returns the MAX11261 powerdown state.
