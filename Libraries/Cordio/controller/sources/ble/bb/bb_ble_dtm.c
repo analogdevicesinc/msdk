@@ -155,26 +155,26 @@ static void bbTestRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint32_
   {
     PalBbBleCancelTifs();
 
-#if DTM_RX_SCHEDULING
-    /* Schedule the receiver to minimize the RX setup time */
-    uint8_t rxPacketLen = pRx->pRxBuf[1];
-    uint32_t interval = llCalcPacketInterval(rxPacketLen, pBle->chan.rxPhy, rxPhyOptions);
-    uint32_t dueTime = timestamp + interval;
+    if (DTM_RX_SCHEDULING && (status == BB_STATUS_SUCCESS)) {
+      /* Schedule the receiver to minimize the RX setup time */
+      uint8_t rxPacketLen = pRx->pRxBuf[1];
+      uint32_t interval = llCalcPacketInterval(rxPacketLen, pBle->chan.rxPhy, rxPhyOptions);
+      uint32_t dueTime = timestamp + interval;
+      uint32_t now = PalBbGetCurrentTime();
 
-    uint32_t now = PalBbGetCurrentTime();
+      /* Make sure we don't violate the setup time */
+      if((now - dueTime) < pBbRtCfg->rfSetupDelayUs) {
+        dueTime = now + pBbRtCfg->rfSetupDelayUs;
+      }
 
-    /* Make sure we don't violate the setup time */
-    if((now - dueTime) < pBbRtCfg->rfSetupDelayUs) {
-      dueTime = now + pBbRtCfg->rfSetupDelayUs;
+      bbBleCb.bbParam.dueUsec = BbAdjustTime(dueTime);
+      bbBleCb.bbParam.rxTimeoutUsec = pRx->rxSyncDelayUsec;
+
+    } else
+      const uint32_t pktInterUsec = pBbRtCfg->rfSetupDelayUs;
+      bbBleCb.bbParam.dueUsec     = BbAdjustTime(PalBbGetCurrentTime() + pktInterUsec);
+      bbBleCb.bbParam.rxTimeoutUsec = pRx->rxSyncDelayUsec;
     }
-
-    bbBleCb.bbParam.dueUsec = BbAdjustTime(dueTime);
-    bbBleCb.bbParam.rxTimeoutUsec = pRx->rxSyncDelayUsec;
-#else
-    const uint32_t pktInterUsec = pBbRtCfg->rfSetupDelayUs;
-    bbBleCb.bbParam.dueUsec     = BbAdjustTime(PalBbGetCurrentTime() + pktInterUsec);
-    bbBleCb.bbParam.rxTimeoutUsec = pRx->rxSyncDelayUsec;
-#endif
 
     PalBbBleSetChannelParam(&pBle->chan);
     PalBbBleSetDataParams(&bbBleCb.bbParam);
