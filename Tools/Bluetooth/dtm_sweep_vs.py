@@ -99,7 +99,7 @@ parser.add_argument('-t', '--txpows', default="0",help='TX powers to test with, 
 parser.add_argument('-a', '--attens', help='Attenuation settings to use, comma separated list.')
 parser.add_argument('-da', '--disable-atten', action='store_true',help='Disbale Attenuator For Testing Purposes')
 parser.add_argument('-cl', '--channel-loss', default="0",help='TX powers to test with, comma separated list.')
-parser.add_argument('-as', '--atten-step', default="10",help='TX powers to test with, comma separated list.')
+parser.add_argument('-as', '--atten-step', default="10",help='Attenuation Step Size.')
 
 
 args = parser.parse_args()
