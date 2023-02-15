@@ -9,9 +9,6 @@ env:
   MSDK_DIR: msdk
   MSDK-INTERNAL_DIR: msdk-internal
 
-  # Environment variable that tracks whether command was successful or not.
-  COMMAND_STATUS: false
-
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # Generate register files job.
