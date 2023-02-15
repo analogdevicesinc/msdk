@@ -66,13 +66,9 @@ jobs:
           fetch-depth: 0
           path: ${{ env.MSDK_DIR }}
 
-      - name: Checkout msdk-internal repository.
-        uses: actions/checkout@v3
-        with:
-          repository: ADI-MSDK-Workflow-Test/msdk-internal
-          fetch-depth: 0
-          token: ${{ secrets.PAT }}
-          path: ${{ env.MSDK-INTERNAL_DIR }}
+      - name: Checkout msdk internal repository
+        run: |
+          git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
 
       - name: Generating register files.
         run: |
