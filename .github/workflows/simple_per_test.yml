@@ -39,7 +39,6 @@ jobs:
           # Remove old archives
           rm -f *.zip
 
-
       # Runs a set of commands using the runners shell
       - name: get_and_set_configurations
         env:
@@ -123,11 +122,13 @@ jobs:
           # Prepare the arguments for script.                    
           MSDK=${GITHUB_WORKSPACE}
           CHIP_UC=MAX32655
+          BRD_TYPE=EvKit_V1
 
-          $MSDK/.github/workflows/msdk_per_skip_check.sh \
+          $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
             $NO_SKIP \
             $MSDK    \
-            $CHIP_UC
+            $CHIP_UC \
+            $BRD_TYPE
 
           if [[ $? -ne 0 ]]; then
             echo "SKIPPED."
@@ -150,18 +151,19 @@ jobs:
 
           CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
 
-          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.txt
           echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
 
-          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log          
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.log          
           echo "::set-env name=CURR_LOG::${CURR_LOG}"
 
           RESULT_PATH=~/Workspace/ci_results/per
           res=${RESULT_PATH}/msdk-${CURR_TIME}
-          all_in_one=${res}_${BRD2_CHIP_LC}.csv
+          all_in_one=${res}_${BRD2_CHIP_LC}_${BRD_TYPE}.csv
           echo "::set-env name=all_in_one::${all_in_one}"
 
           #------------------------------------------------
+          set -e
           ${MSDK}/.github/workflows/scripts/board_per_test.sh \
             $MSDK      \
             $BRD1      \
@@ -176,6 +178,7 @@ jobs:
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
+            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
             exit 1
           fi
           #------------------------------------------------          
@@ -204,11 +207,13 @@ jobs:
           # Prepare the arguments for script.                    
           MSDK=${GITHUB_WORKSPACE}
           CHIP_UC=MAX32665
+          BRD_TYPE=EvKit_V1
 
           $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
             $NO_SKIP \
             $MSDK    \
-            $CHIP_UC
+            $CHIP_UC \
+            $BRD_TYPE
 
           if [[ $? -ne 0 ]]; then
             echo "SKIPPED."
@@ -231,18 +236,19 @@ jobs:
 
           CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
 
-          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.txt
           echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
 
-          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log          
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.log
           echo "::set-env name=CURR_LOG::${CURR_LOG}"
 
           RESULT_PATH=~/Workspace/ci_results/per
           res=${RESULT_PATH}/msdk-${CURR_TIME}
-          all_in_one=${res}_${BRD2_CHIP_LC}.csv
+          all_in_one=${res}_${BRD2_CHIP_LC}_${BRD_TYPE}.csv
           echo "::set-env name=all_in_one::${all_in_one}"
 
           #------------------------------------------------
+          set -e
           ${MSDK}/.github/workflows/scripts/board_per_test.sh \
             $MSDK      \
             $BRD1      \
@@ -257,6 +263,7 @@ jobs:
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
+            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
             exit 1
           fi
           #------------------------------------------------          
@@ -284,11 +291,13 @@ jobs:
           # Prepare the arguments for script.                    
           MSDK=${GITHUB_WORKSPACE}
           CHIP_UC=MAX32690
+          BRD_TYPE=EvKit_V1
 
           $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
             $NO_SKIP \
             $MSDK    \
-            $CHIP_UC
+            $CHIP_UC \
+            $BRD_TYPE
 
           if [[ $? -ne 0 ]]; then
             echo "SKIPPED."
@@ -311,18 +320,19 @@ jobs:
 
           CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
 
-          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.txt
           echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
 
-          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log          
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.log
           echo "::set-env name=CURR_LOG::${CURR_LOG}"
 
           RESULT_PATH=~/Workspace/ci_results/per
           res=${RESULT_PATH}/msdk-${CURR_TIME}
-          all_in_one=${res}_${BRD2_CHIP_LC}.csv
+          all_in_one=${res}_${BRD2_CHIP_LC}_${BRD_TYPE}.csv
           echo "::set-env name=all_in_one::${all_in_one}"
 
           #------------------------------------------------
+          set -e
           ${MSDK}/.github/workflows/scripts/board_per_test.sh \
             $MSDK      \
             $BRD1      \
@@ -337,12 +347,97 @@ jobs:
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
+            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
             exit 1
           fi
           #------------------------------------------------          
 
       # Unlock even when cancelled or failed
       - name: unlock_max32690
+        if: always()
+        run: |
+
+          cd ${GITHUB_WORKSPACE}
+          echo PWD: `pwd`
+          echo
+
+          chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
+          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} True 2>&1 | tee -a ${CURR_LOG}
+
+      # Runs a set of commands using the runners shell
+      - name: max32690-wlp_simple_per_test
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+
+        run: |
+
+          #------------------------------------------------------------------------------------------------------------
+          # Prepare the arguments for script.                    
+          MSDK=${GITHUB_WORKSPACE}
+          CHIP_UC=MAX32690
+          BRD_TYPE=WLP_V1
+
+          $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
+            $NO_SKIP \
+            $MSDK    \
+            $CHIP_UC \
+            $BRD_TYPE
+
+          if [[ $? -ne 0 ]]; then
+            echo "SKIPPED."
+            exit 0
+          fi
+
+          #------------------------------------------------
+          # Prepare the arguments for function call
+
+          if [ "${DO_MAX32690_WLP}" == "0" ]; then
+            echo "Skip the test for MAX32690 WLP_V1."
+            exit 0
+          fi
+
+          BRD2_CHIP_LC=max32690
+
+          MSDK=${GITHUB_WORKSPACE}
+          BRD1=nRF52840_1
+          BRD2=max32690_board_A1
+
+          CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
+
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.txt
+          echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
+
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.log
+          echo "::set-env name=CURR_LOG::${CURR_LOG}"
+
+          RESULT_PATH=~/Workspace/ci_results/per
+          res=${RESULT_PATH}/msdk-${CURR_TIME}
+          all_in_one=${res}_${BRD2_CHIP_LC}_${BRD_TYPE}.csv
+          echo "::set-env name=all_in_one::${all_in_one}"
+
+          #------------------------------------------------
+          set -e
+          ${MSDK}/.github/workflows/scripts/board_per_test.sh \
+            $MSDK      \
+            $BRD1      \
+            $BRD2      \
+            $CURR_TIME \
+            $(realpath ${CURR_JOB_FILE}) \
+            $(realpath ${CURR_LOG})      \
+            $(realpath ${all_in_one})    \
+            "${MAX32690_WLP_PKG_RA}"     \
+            "${MAX32690_WLP_PHY_RA}"     \
+            ${MAX32690_WLP_STEP}         \
+            2>&1 | tee -a ${CURR_LOG}
+          
+          if [[ $? -ne 0 ]]; then
+            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
+            exit 1
+          fi
+          #------------------------------------------------          
+
+      # Unlock even when cancelled or failed
+      - name: unlock_max32690-wlp
         if: always()
         run: |
 
