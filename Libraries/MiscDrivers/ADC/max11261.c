@@ -121,6 +121,9 @@ typedef struct {
     max11261_pol_t polarity;      /**< Input polarity */
     max11261_fmt_t format;        /**< Result format */
     uint16_t delay;  /**< Multiplexer delay, 0 - 1020us */
+    /**< Scan order of channels in mode 2,3 or 4 */
+    uint8_t order[MAX11261_ADC_CHANNEL_MAX];
+    uint8_t srdy;    /**< STAT:SRDY mask depending on enabled channels */
 } max11261_adc_seq_t;
 
 struct max11261_reg {
@@ -208,6 +211,8 @@ static max11261_adc_seq_t seq = {
         .polarity = MAX11261_POL_UNIPOLAR,
         .format = MAX11261_FMT_OFFSET_BINARY,
         .delay = 0,
+        .order = {0, 0, 0, 0, 0, 0},
+        .srdy = 0,
 };
 
 /* **** Function Prototypes **** */
@@ -437,6 +442,21 @@ int max11261_adc_set_channel(max11261_adc_channel_t chan)
     return 0;
 }
 
+int max11261_adc_set_channel_order(max11261_adc_channel_t chan, uint8_t order)
+{
+    if (chan < MAX11261_ADC_CHANNEL_0 || chan >= MAX11261_ADC_CHANNEL_MAX)
+        return -EINVAL;
+
+    if (order > MAX11261_ADC_CHANNEL_MAX)
+        return -EINVAL;
+
+    seq.order[chan] = order;
+    seq.srdy &= ~(1 << chan);
+    seq.srdy |= (1 << chan);
+
+    return 0;
+}
+
 int max11261_adc_set_mode(max11261_conversion_mode_t convMode,
         max11261_sequencer_mode_t seqMode)
 {
@@ -553,12 +573,17 @@ static inline int sif_freq(uint16_t freq)
 int max11261_adc_convert_prepare(void)
 {
     int error;
+    uint32_t chmap;
 
     /* Set sequencer register */
     error = max11261_update_reg(MAX11261_SEQ,
-            MAX11261_SEQ_MUX | MAX11261_SEQ_MDREN | MAX11261_SEQ_SIF_FREQ,
-            (seq.chan << MAX11261_SEQ_MUX_POS)
+              MAX11261_SEQ_MUX | MAX11261_SEQ_MODE | MAX11261_SEQ_MDREN
+            | MAX11261_SEQ_RDYBEN
+            | MAX11261_SEQ_SIF_FREQ,
+              (seq.chan << MAX11261_SEQ_MUX_POS)
+            | (seq.seqMode << MAX11261_SEQ_MODE_POS)
             | (seq.delay ? MAX11261_SEQ_MDREN : 0)
+            | MAX11261_SEQ_RDYBEN
             | sif_freq(cfg.freq));
     if (error < 0)
         return error;
@@ -567,6 +592,51 @@ int max11261_adc_convert_prepare(void)
         /* Delay resolution is 4us */
         error = max11261_update_reg(MAX11261_DELAY, MAX11261_DELAY_MUX,
                 (seq.delay / 4) << MAX11261_DELAY_MUX_POS);
+        if (error < 0)
+            return error;
+    }
+
+    /* If one of the multichannel scan modes are selected, set scan orders */
+    if (seq.seqMode != MAX11261_SEQ_MODE_1) {
+        /* Channel 0, 1 and 2 -> CHMAP0 */
+        chmap = 0;
+        if (seq.order[MAX11261_ADC_CHANNEL_0]) {
+            chmap |=  MAX11261_CHMAP0_CH0_EN;
+            chmap |= seq.order[MAX11261_ADC_CHANNEL_0] <<
+                    MAX11261_CHMAP0_CH0_ORD_POS;
+        }
+        if (seq.order[MAX11261_ADC_CHANNEL_1]) {
+            chmap |=  MAX11261_CHMAP0_CH1_EN;
+            chmap |= seq.order[MAX11261_ADC_CHANNEL_1] <<
+                    MAX11261_CHMAP0_CH1_ORD_POS;
+        }
+        if (seq.order[MAX11261_ADC_CHANNEL_2]) {
+            chmap |=  MAX11261_CHMAP0_CH2_EN;
+            chmap |= seq.order[MAX11261_ADC_CHANNEL_2] <<
+                    MAX11261_CHMAP0_CH2_ORD_POS;
+        }
+        error = max11261_write_reg(MAX11261_CHMAP0, chmap);
+        if (error < 0)
+            return error;
+
+        /* Channel 3, 4 and 5 -> CHMAP1 */
+        chmap = 0;
+        if (seq.order[MAX11261_ADC_CHANNEL_3]) {
+            chmap |=  MAX11261_CHMAP1_CH3_EN;
+            chmap |= seq.order[MAX11261_ADC_CHANNEL_3] <<
+                    MAX11261_CHMAP1_CH3_ORD_POS;
+        }
+        if (seq.order[MAX11261_ADC_CHANNEL_4]) {
+            chmap |=  MAX11261_CHMAP1_CH4_EN;
+            chmap |= seq.order[MAX11261_ADC_CHANNEL_4] <<
+                    MAX11261_CHMAP1_CH4_ORD_POS;
+        }
+        if (seq.order[MAX11261_ADC_CHANNEL_5]) {
+            chmap |=  MAX11261_CHMAP1_CH5_EN;
+            chmap |= seq.order[MAX11261_ADC_CHANNEL_5] <<
+                    MAX11261_CHMAP1_CH5_ORD_POS;
+        }
+        error = max11261_write_reg(MAX11261_CHMAP1, chmap);
         if (error < 0)
             return error;
     }
@@ -599,22 +669,35 @@ int max11261_adc_convert_prepare(void)
     return error;
 }
 
-int max11261_adc_result(max11261_adc_result_t *res)
+int max11261_adc_result(max11261_adc_result_t *res, int count)
 {
-    int error;
+    int error, rd = 0;
     uint32_t cnt, timeout, reg;
     int32_t tmp;
 
     /* 10 times delay amounts to the data rates given in the datasheet. Adding
      * two extra delay cycles to make up for the communication delay. */
-    timeout = 12 + seq.delay / max11261_single_cycle_delay[seq.srate];
+    timeout = 10 * count + 2 + seq.delay
+            / max11261_single_cycle_delay[seq.srate];
+
+    /* Use ready function to check if data is available, otherwise poll STAT
+     * register's RDY or SRDY bits */
     if (platCtx.ready) {
         while (!platCtx.ready() && --timeout) {
             platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);
         }
     } else {
         max11261_read_reg(MAX11261_STAT, &reg);
-        while ((reg & MAX11261_STAT_RDY) == 0 && --timeout) {
+        while (--timeout) {
+            if (seq.seqMode == MAX11261_SEQ_MODE_1) {
+                if (reg & MAX11261_STAT_RDY)
+                    break;
+            } else {
+                /* RDY bit is invalid in modes 2, 3 and 4 */
+                if ((reg & (seq.srdy << MAX11261_STAT_SRDY_POS))
+                    == (seq.srdy << MAX11261_STAT_SRDY_POS))
+                    break;
+            }
             platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);
             max11261_read_reg(MAX11261_STAT, &reg);
         }
@@ -622,46 +705,42 @@ int max11261_adc_result(max11261_adc_result_t *res)
     if (timeout == 0)
         return -ETIMEDOUT;
 
-    error = max11261_read_reg(MAX11261_STAT, &reg);
-    if (error < 0)
-        return error;
-
-    res->dor = !!(reg & MAX11261_STAT_DOR);
-    res->aor = !!(reg & MAX11261_STAT_AOR);
-
     error = max11261_read_reg(MAX11261_FIFO_LEVEL, &cnt);
     if (error < 0)
         return error;
 
-    if (cnt > 1)
-        log_inf("More than 1 conversion result is available: %u", cnt);
+    while (cnt-- && count--) {
+        error = max11261_read_reg(MAX11261_STAT, &reg);
+        if (error < 0)
+            return error;
 
-    while (cnt--) {
+        res->dor = !!(reg & MAX11261_STAT_DOR);
+        res->aor = !!(reg & MAX11261_STAT_AOR);
         error = max11261_read_reg(MAX11261_FIFO, &reg);
         if (error < 0)
             return error;
+        res->chn = (reg & MAX11261_FIFO_CH) >> MAX11261_FIFO_CH_POS;
+        reg &= ((1 << cfg.res) - 1);
+        tmp = reg;
+        /* Extend signed 24-bit integer to 32-bit if the value read from the FIFO
+         * is negative. */
+        if (seq.format == MAX11261_FMT_TWOS_COMPLEMENT && (tmp & 0x800000)) {
+            tmp |= 0xFF000000;
+        }
+
+        tmp = ((int64_t) (tmp) * cfg.vref) >> cfg.res;
+        if (seq.polarity == MAX11261_POL_BIPOLAR) {
+            if (seq.format == MAX11261_FMT_OFFSET_BINARY)
+                tmp = 2 * tmp - cfg.vref;
+            else
+                tmp = 2 * tmp;
+        }
+        res->val = tmp;
+        res++;
+        rd++;
     }
 
-    res->chn = (reg & MAX11261_FIFO_CH) >> MAX11261_FIFO_CH_POS;
-
-    reg &= ((1 << cfg.res) - 1);
-    tmp = reg;
-    /* Extend signed 24-bit integer to 32-bit if the value read from the FIFO
-     * is negative. */
-    if (seq.format == MAX11261_FMT_TWOS_COMPLEMENT && (tmp & 0x800000)) {
-        tmp |= 0xFF000000;
-    }
-
-    tmp = ((int64_t) (tmp) * cfg.vref) >> cfg.res;
-    if (seq.polarity == MAX11261_POL_BIPOLAR) {
-        if (seq.format == MAX11261_FMT_OFFSET_BINARY)
-            tmp = 2 * tmp - cfg.vref;
-        else
-            tmp = 2 * tmp;
-    }
-    res->val = tmp;
-
-    return 0;
+    return rd;
 }
 
 int max11261_adc_convert(void)

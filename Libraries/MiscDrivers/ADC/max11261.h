@@ -96,6 +96,7 @@ typedef enum {
     MAX11261_SEQ_MODE_2,    /**< Multichannel Scan with GPO Control and MUX Delays */
     MAX11261_SEQ_MODE_3,    /**< Scan, with Sequenced GPO Controls */
     MAX11261_SEQ_MODE_4,    /**< Autoscan with GPO Controls (CHMAP) and Interrupt */
+    MAX11261_SEQ_MODE_MAX,  /**< Autoscan with GPO Controls (CHMAP) and Interrupt */
 } max11261_sequencer_mode_t;
 
 /**
@@ -291,13 +292,28 @@ void max11261_adc_set_rate_single(max11261_single_rate_t rate);
 int max11261_adc_set_rate_continuous(max11261_cont_rate_t rate);
 
 /**
- * @brief Sets the ADC channel to be scanned. Default is \a MAX11261_ADC_CHANNEL_0.
+ * @brief Sets the ADC channel to be scanned in sequencer mode 1. Default is
+ * \a MAX11261_ADC_CHANNEL_0.
  *
  * @param chan Channel to scan.
  *
  * @return Success/Fail, see \ref errno.h for a list of return codes.
  */
 int max11261_adc_set_channel(max11261_adc_channel_t chan);
+
+/**
+ * @brief Sets the scan order of ADC channel in sequencer modes 2, 3 and 4.
+ *
+ * The allowed values range from 1 to 6. Scanning will be disabled for \a chan
+ * if \a order is 0. The order numbers must start from 1 and be sequential,
+ * i.e. there should not be any missing numbers in the sequence. For example,
+ * if there are two channels to be scanned, they must be ordered 1 and 2. 2
+ * and 3 will be invalid as number 1 has not been assigned to any channel.
+ *
+ * @return Success/Fail, 0 if success, -EINVAL if \a chan or \a order is
+ * invalid.
+ */
+int max11261_adc_set_channel_order(max11261_adc_channel_t chan, uint8_t order);
 
 /**
  * @brief Sets conversion and sequencer mode to be used. Default values are
@@ -368,14 +384,19 @@ int max11261_adc_convert_prepare(void);
 /**
  * @brief Reads the available conversion result into @p val.
  *
- * Device must be in conversion state otherwise the function will fail.
+ * A conversion command must have already been sent otherwise the function will
+ * timeout.
+ * For sequencer modes 2 and 3, SEQ:RDYBEN is enabled, meaning that all
+ * channels will have been converted before the ready bit is asserted.
  *
- * @param res An \a max11261_adc_result_t structure to write the conversion
- * result into.
+ * @param res A \a max11261_adc_result_t buffer to write the conversion
+ * results into.
+ * @param count Number of elements in \a max11261_adc_result_t buffer.
  *
- * @return Success/Fail, see \ref errno.h for a list of return codes.
+ * @return Success/Fail, returns the number of conversion results read,
+ * negative error code otherwise.
  */
-int max11261_adc_result(max11261_adc_result_t *res);
+int max11261_adc_result(max11261_adc_result_t *res, int count);
 
 /**
  * @brief Starts conversion by sending a sequencer command.
