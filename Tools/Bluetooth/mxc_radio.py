@@ -50,7 +50,6 @@ class DBB:
 
         print(f'Reading {sizeBytes} from address {addr}')
         return self.hciInterface.readReg(addr=addr, length=regReadSize)
-        # return self.hciInterface.readRegFunc(Namespace(addr=addr,length=regReadSize))
 
     def readRegion(self, start, stop):
         """
