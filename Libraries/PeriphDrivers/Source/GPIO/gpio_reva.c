@@ -217,3 +217,18 @@ int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32
 
     return E_NO_ERROR;
 }
+
+void MXC_GPIO_RevA_SetWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask)
+{
+    port->wken_set = mask;
+}
+
+void MXC_GPIO_RevA_ClearWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask)
+{
+    port->wken_clr = mask;
+}
+
+uint32_t MXC_GPIO_RevA_GetWakeEn(mxc_gpio_reva_regs_t *port)
+{
+    return port->wken;
+}
