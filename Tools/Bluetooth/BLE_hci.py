@@ -815,7 +815,13 @@ class BLE_hci:
     ################################################################################
     def rxTestFunc(self, args):
         channel="%0.2X"%int(args.channel)
-        phy="%0.2X"%int(args.phy)
+
+        # Convert S2 to coded PHY
+        phy = int(args.phy)
+        if(phy == 4):
+            phy = 3
+
+        phy="%0.2X"%phy
         modulationIndex="00"
         self.send_command("01332003"+channel+phy+modulationIndex)
     
