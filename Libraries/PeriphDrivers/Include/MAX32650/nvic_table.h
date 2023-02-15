@@ -3,8 +3,8 @@
  * @brief Interrupt vector table manipulation functions.
  */
 
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,9 +33,6 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- * $Date: 2020-04-20 15:48:35 -0500 (Mon, 20 Apr 2020) $
- * $Revision: 53144 $
  *
  ******************************************************************************/
 
