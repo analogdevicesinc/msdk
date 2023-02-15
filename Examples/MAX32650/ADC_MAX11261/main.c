@@ -55,222 +55,194 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define I2C_MASTER	MXC_I2C1	// SDA P2_17; SCL P2_18
-#define I2C_FREQ	100			// 100kHz
+#define I2C_MASTER      MXC_I2C1    // SDA P2_17; SCL P2_18
+#define I2C_FREQ        400         // 100kHz
 
-#define ADC_V_AVDD      3000	// 3V
-#define ADC_V_REF       2500	// 2.5V
+#define ADC_V_AVDD      3000    // 3V
+#define ADC_V_REF       2500    // 2.5V
 
-#define ADC_SLAVE_ADDR  0x30	// Depends on ADR0 and ADR1 pins
+#define ADC_SLAVE_ADDR  0x30    // Depends on ADR0 and ADR1 pins
 
-#define ADC_RST_PORT	MXC_GPIO_PORT_0
-#define ADC_RST_PIN  	16
-#define ADC_INT_PORT	MXC_GPIO_PORT_0
-#define ADC_INT_PIN		17
-
-#define ADC_RST_ACTIVE_LOW  1 // Reset is active low
-
-#define PB_MODE_SWITCH      0 // Use push button 0 for mode switching
+#define PB_RATE_SWITCH      0 // Use push button 0 for mode switching
 #define PB_CHANNEL_SWITCH   1 // Use push button 1 for channel switching
+
+/**
+ * Uncomment if you want to test different modes using channel switch button
+ */
+#define CHANNEL_CHG_MODE    1
 
 /**
  * Event flags that will be handled in main loop
  */
-#define FLAG_CHANNEL_CHANGED    (0x01UL << 0)
-#define FLAG_RATE_CHANGED       (0x01UL << 1)
-#define FLAG_POLARITY_CHANGED   (0x01UL << 2)
-#define FLAG_FORMAT_CHANGED     (0x01UL << 3)
-#define FLAG_MODE_PRESSED       (0x01UL << 8)
-#define FLAG_CHANNEL_PRESSED    (0x01UL << 9)
-#define FLAG_TMR_100MS          (0x01UL << 16)
+#define FLAG_CHANNEL_PRESSED    (0x01UL << 0)
+#define FLAG_MODE_PRESSED       (0x01UL << 1)
+#define FLAG_RATE_PRESSED       (0x01UL << 2)
 
 /***** Globals *****/
-static volatile uint32_t ticksUs = 0;
+volatile uint32_t ticksUs = 0;
 static volatile uint32_t flags = 0;
 
 /***** Functions *****/
+static void print_results(const max11261_adc_result_t *res, int count,
+        uint32_t ticks);
 static void pb_irq_handler(void *pb);
 static void sys_timer_handler(void);
 
-static int i2c1_transfer(uint8_t *txbuf, uint8_t txsize, uint8_t *rxbuf,
-        uint8_t rxsize, uint8_t slave)
-{
-    mxc_i2c_req_t req;
-    req.addr = slave;
-    req.i2c = I2C_MASTER;
-    req.restart = 0;
-    req.rx_buf = rxbuf;
-    req.rx_len = rxsize;
-    req.tx_buf = txbuf;
-    req.tx_len = txsize;
-
-    return MXC_I2C_MasterTransaction(&req) == 0 ? 0 : -EIO;
-}
-
-static void max11261_reset_set(int ctrl)
-{
-    MXC_GPIO_OutPut(MXC_GPIO_GET_GPIO(ADC_RST_PORT), 1 << ADC_RST_PIN,
-            (ctrl ^ ADC_RST_ACTIVE_LOW) << ADC_RST_PIN);
-}
-
-static int max11261_ready()
-{
-    return !MXC_GPIO_InGet(MXC_GPIO_GET_GPIO(ADC_INT_PORT), 1 << ADC_INT_PIN);
-}
-
-static inline void delay_us(uint32_t us)
-{
-    MXC_Delay(us);
-}
-
 int main(void)
 {
-	int error;
-	mxc_gpio_cfg_t gpioCfg;
-	mxc_tmr_cfg_t tmrCfg;
-	max11261_conversion_mode_t convMode = MAX11261_SINGLE_CYCLE;
-	max11261_sequencer_mode_t seqMode = MAX11261_SEQ_MODE_1;
-	max11261_adc_channel_t channel = MAX11261_ADC_CHANNEL_0;
-	max11261_pol_t polarity = MAX11261_POL_UNIPOLAR;
-	max11261_fmt_t format = MAX11261_FMT_OFFSET_BINARY;
-	int32_t adcVal;
-	uint32_t tickStart;
+    int error;
+    mxc_tmr_cfg_t tmrCfg;
+    max11261_conversion_mode_t convMode = MAX11261_SINGLE_CYCLE;
+    max11261_sequencer_mode_t seqMode = MAX11261_SEQ_MODE_1;
+    max11261_adc_channel_t channel = MAX11261_ADC_CHANNEL_0;
+    max11261_pol_t polarity = MAX11261_POL_UNIPOLAR;
+    max11261_fmt_t format = MAX11261_FMT_OFFSET_BINARY;
+    max11261_single_rate_t rate = MAX11261_SINGLE_RATE_50;
+    max11261_adc_result_t adcRes[MAX11261_ADC_CHANNEL_MAX];
+    uint32_t tickStart;
+    uint16_t sampleCount;
 
-    printf("\n******************** ADC Example ********************\n\n");
-    printf("Demonstrates various features of MAX11261 ADC.\n");
-    printf("An input voltage between -Vref and +Vref can be applied to AIN "
-    		"inputs. Conversion results for the input values outside this "
-    		"range will be clipped to the minimum or maximum level\n");
+    printf("\n******************** MAX11261 ADC Example ********************\n");
+    printf("Demonstrates various features of MAX11261 ADC.\n\n");
+    printf("An input voltage between -Vref and +Vref can be applied to AIN \n");
+    printf("inputs. Conversion results for any input voltage outside this \n");
+    printf("range will be clipped to the minimum or maximum level.\n\n\n");
 
     /* Setup I2C master */
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
-    	printf("Failed to initialize I2C%d master!\n", I2C_MASTER, error);
-    	return -1;
+        printf("Failed to initialize I2C%d master!\n", I2C_MASTER, error);
+        return -1;
     }
 
     error = MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ * 1000);
     if (error < 0) {
-    	printf("Failed to set I2C bus speed to %d kHz\n", I2C_FREQ);
-    	return -1;
+        printf("Failed to set I2C bus speed to %d kHz\n", I2C_FREQ);
+        return -1;
     }
 
-    /* Setup reset GPIO */
-	gpioCfg.func = MXC_GPIO_FUNC_OUT;
-	gpioCfg.mask = 1 << ADC_RST_PIN;
-	gpioCfg.pad = MXC_GPIO_PAD_NONE;
-	gpioCfg.port = MXC_GPIO_GET_GPIO(ADC_RST_PORT);
-	gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIO; /* 3V3 */
-	error = MXC_GPIO_Config(&gpioCfg);
-	if (error != E_NO_ERROR) {
-		printf("Failed to configure reset GPIO\n");
-		return -1;
-	}
+    /* Enable push button interrupts */
+    PB_IntEnable(PB_RATE_SWITCH);
+    PB_IntEnable(PB_CHANNEL_SWITCH);
+    PB_RegisterCallback(PB_RATE_SWITCH, pb_irq_handler);
+    PB_RegisterCallback(PB_CHANNEL_SWITCH, pb_irq_handler);
 
-	/* Setup ready GPIO */
-	gpioCfg.func = MXC_GPIO_FUNC_IN;
-	gpioCfg.mask = 1 << ADC_INT_PIN;
-	gpioCfg.pad = MXC_GPIO_PAD_NONE;
-	gpioCfg.port = MXC_GPIO_GET_GPIO(ADC_INT_PORT);;
-	gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIO; /* 3V3 */
-	//MXC_GPIO_RegisterCallback(&gpioCfg, gpio_irq_handler, NULL);
-	MXC_GPIO_IntConfig(&gpioCfg, MXC_GPIO_INT_FALLING);
-	if (error != E_NO_ERROR) {
-		printf("Failed to configure ready GPIO\n");
-		return -1;
-	}
-	//MXC_GPIO_EnableInt(gpioCfg.port, gpioCfg.mask);
-	//NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(ADC_INT_PORT));
+    /* Setup timer 0 as system tick timer */
+    /* Configure for 1us */
+    tmrCfg.cmp_cnt = (PeripheralClock / 1000000) / 4;
+    tmrCfg.mode = TMR_MODE_CONTINUOUS;
+    tmrCfg.pol = 0;
+    tmrCfg.pres = TMR_PRES_4;
+    MXC_NVIC_SetVector(TMR0_IRQn, sys_timer_handler);
+    NVIC_EnableIRQ(TMR0_IRQn);
+    MXC_TMR_Init(MXC_TMR0, &tmrCfg);
+    MXC_TMR_Start(MXC_TMR0);
 
-	/* Enable push button interrupts */
-	PB_IntEnable(PB_MODE_SWITCH);
-	PB_IntEnable(PB_CHANNEL_SWITCH);
-	PB_RegisterCallback(PB_MODE_SWITCH, pb_irq_handler);
-	PB_RegisterCallback(PB_CHANNEL_SWITCH, pb_irq_handler);
+    /* Set ADC hardware parameters */
+    error = max11261_adc_config_init(ADC_V_AVDD, ADC_V_REF, I2C_FREQ,
+            ADC_SLAVE_ADDR);
+    if (error != E_NO_ERROR) {
+        printf("Failed to initialize MAX11261\n");
+        return -1;
+    }
 
-	/* Setup timer 0 as system tick timer */
-	/* Configure for 1us */
-	tmrCfg.cmp_cnt = (PeripheralClock / 1000000) / 4;
-	tmrCfg.mode = TMR_MODE_CONTINUOUS;
-	tmrCfg.pol = 0;
-	tmrCfg.pres = TMR_PRES_4;
-	MXC_NVIC_SetVector(TMR0_IRQn, sys_timer_handler);
-	NVIC_EnableIRQ(TMR0_IRQn);
-	MXC_TMR_Init(MXC_TMR0, &tmrCfg);
-	MXC_TMR_Start(MXC_TMR0);
+    /* Reset ADC */
+    max11261_adc_reset();
 
-	/* Initialize MAX11261 platform specific functions */
-	max11261_adc_platform_init(i2c1_transfer, max11261_reset_set,
-	            delay_us);
+    /* Set ADC sequencer parameters. Default values are already set by the
+     * driver */
+    error = max11261_adc_set_channel(channel);
+    if (error < 0) {
+        printf("Failed to set ADC channel to %d: %d\n", channel, error);
+        return -1;
+    }
 
-	/* Set ADC hardware parameters */
-	error = max11261_adc_config_init(ADC_V_AVDD, ADC_V_REF, I2C_FREQ,
-			ADC_SLAVE_ADDR);
-	if (error != E_NO_ERROR) {
-		printf("Failed to initialize MAX11261\n");
-		return -1;
-	}
+    error = max11261_adc_set_mode(convMode, seqMode);
+    if (error < 0) {
+        printf("Failed to set conversion and sequencer modes: %d\n", error);
+        return -1;
+    }
 
-	/* Use max11261_ready to check ADC status */
-	max11261_adc_set_ready_func(max11261_ready);
+    error = max11261_adc_set_polarity(polarity);
+    if (error < 0) {
+        printf("Failed to set ADC polarity: %d\n", error);
+        return -1;
+    }
 
-	/* Reset ADC */
-	max11261_adc_reset();
-	max11261_adc_standby();
+    error = max11261_adc_set_format(format);
+    if (error < 0) {
+        printf("Failed to set ADC format: %d\n", error);
+    }
 
-	/* Set ADC sequencer parameters. Default values are already set by the
-	 * driver */
-	error = max11261_adc_set_channel(channel);
-	if (error < 0) {
-		printf("Failed to set ADC channel to %d: %d\n", channel, error);
-		return -1;
-	}
+    error = max11261_adc_convert_prepare();
+    if (error < 0) {
+        printf("Failed to prepare for conversion: %d\n", error);
+        return -1;
+    }
 
-	error = max11261_adc_set_mode(convMode, seqMode);
-	if (error < 0) {
-		printf("Failed to set conversion and sequencer modes: %d\n", error);
-		return -1;
-	}
+    // Uncomment to use register poll mode
+    //max11261_adc_set_ready_func(NULL);
+    printf("\n\n\n\n\n\n\n");
 
-	error = max11261_adc_set_polarity(polarity);
-	if (error < 0) {
-		printf("Failed to set ADC polarity: %d\n", error);
-		return -1;
-	}
-
-	error = max11261_adc_set_format(format);
-	if (error < 0) {
-		printf("Failed to set ADC format: %d\n", error);
-	}
-
-	error = max11261_adc_convert_prepare();
-	if (error < 0) {
-		printf("Failed to prepare for conversion: %d\n", error);
-		return -1;
-	}
-
+    sampleCount = 0;
     while (1) {
+        /* Handle channel switch GPIO */
+        if (flags & FLAG_CHANNEL_PRESSED) {
+            channel = (channel + 1) % MAX11261_ADC_CHANNEL_MAX;
+            max11261_adc_set_channel(channel);
+            max11261_adc_convert_prepare();
+            flags &= ~FLAG_CHANNEL_PRESSED;
+        }
+
+        /* Handle mode switch GPIO */
+        if (flags & FLAG_MODE_PRESSED) {
+            seqMode = (seqMode + 1) % MAX11261_SEQ_MODE_MAX;
+            max11261_adc_set_mode(MAX11261_SINGLE_CYCLE, seqMode);
+            max11261_adc_set_channel_order(MAX11261_ADC_CHANNEL_5, 1);
+            max11261_adc_set_channel_order(MAX11261_ADC_CHANNEL_4, 2);
+            max11261_adc_set_channel_order(MAX11261_ADC_CHANNEL_3, 3);
+            max11261_adc_set_channel_order(MAX11261_ADC_CHANNEL_2, 4);
+            max11261_adc_set_channel_order(MAX11261_ADC_CHANNEL_1, 5);
+            max11261_adc_set_channel_order(MAX11261_ADC_CHANNEL_0, 6);
+            max11261_adc_convert_prepare();
+            printf("\n\n\n\n\n\n\n\n\n\n");
+            flags &= ~FLAG_MODE_PRESSED;
+        }
+
+        /* Handle speed switch GPIO */
+        if (flags & FLAG_RATE_PRESSED) {
+            rate = (rate + 1) % MAX11261_SINGLE_RATE_MAX;
+            max11261_adc_set_rate_single(rate);
+            sampleCount = 0;
+            flags &= ~FLAG_RATE_PRESSED;
+        }
 
         tickStart = ticksUs;
         switch (convMode) {
         case MAX11261_LATENT_CONTINUOUS:
-        	break;
+            break;
         case MAX11261_SINGLE_CYCLE:
-        	if (max11261_adc_convert() < 0) {
-        		printf("Failed to start conversion\n");
-        		return -1;
-        	}
+            if (max11261_adc_convert() < 0) {
+                printf("Failed to start conversion\n");
+                return -1;
+            }
 
-        	error = max11261_adc_result(&adcVal);
-        	if (error == 0) {
-        		printf("\r     %5d mV at %u us", adcVal, ticksUs - tickStart);
-        	} else {
-        		printf("Error obtaining result: %d\n", error);
-        		return -1;
-        	}
-        	break;
+            error = max11261_adc_result(&adcRes[0], MAX11261_ADC_CHANNEL_MAX);
+            if (error > 0) {
+                /* Print in reasonable intervals since UART output cannot catch
+                 * up to high sample rates */
+                sampleCount++;
+                if (sampleCount == 1 + rate * 10) {
+                    sampleCount = 0;
+                    print_results(&adcRes[0], error, ticksUs - tickStart);
+                }
+            } else {
+                printf("Error obtaining result: %d\n", error);
+                return -1;
+            }
+            break;
         case MAX11261_SINGLE_CYCLE_CONTINUOUS:
-        	break;
+            break;
         }
         fflush(stdout);
     }
@@ -278,12 +250,28 @@ int main(void)
     return 0;
 }
 
+void print_results(const max11261_adc_result_t *res, int count, uint32_t ticks)
+{
+    int j;
+    printf("\033[%dA", count);
+    for (j = 0; j < count; j++) {
+        printf("  CH%u:   %5d%s%s mV in %u us  \n",
+                res->chn, res->val, (res->dor ? "*" : ""),
+                (res->aor ? "[!]" : ""), ticks / count);
+        res++;
+    }
+}
+
 static void pb_irq_handler(void *pb)
 {
     if (pb == (void *) PB_CHANNEL_SWITCH) {
-        flags |= FLAG_CHANNEL_PRESSED;
-    } else if (pb == (void *) PB_MODE_SWITCH) {
+#if CHANNEL_CHG_MODE == 1
         flags |= FLAG_MODE_PRESSED;
+#else
+        flags |= FLAG_CHANNEL_PRESSED;
+#endif
+    } else if (pb == (void *) PB_RATE_SWITCH) {
+        flags |= FLAG_RATE_PRESSED;
     }
 }
 
