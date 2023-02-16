@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -40,11 +40,9 @@ endif
 TARGET_UC ?= $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
 TARGET_LC ?= $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
-
 ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
-
 
 # This is the path to the CMSIS root directory
 ifeq "$(CMSIS_ROOT)" ""
@@ -54,19 +52,19 @@ ifeq "$(LIBS_DIR)" ""
 LIBS_DIR = $(CMSIS_ROOT)/..
 endif
 
-
 PERIPH_DIR := $(LIBS_DIR)/PeriphDrivers
 SOURCE_DIR := $(PERIPH_DIR)/Source
 INCLUDE_DIR := $(PERIPH_DIR)/Include
 
 PERIPH_DRIVER_INCLUDE_DIR  += $(INCLUDE_DIR)/$(TARGET_UC)/
-# Source files)
+
+# Source files
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/pins_ai87.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_ai87.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ADC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_ai87.c

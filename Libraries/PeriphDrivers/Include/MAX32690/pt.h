@@ -3,8 +3,8 @@
  * @brief Pulse Train data types, definitions and function prototypes.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -31,13 +31,10 @@
  * The mere transfer of this software does not imply any licenses
  * of trade secrets, proprietary technology, copyrights, patents,
  * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains allts
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date$
- * $Revision$
- *
- ***************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_PT_H_
