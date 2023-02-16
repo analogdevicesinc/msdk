@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -32,25 +32,17 @@
  ******************************************************************************/
 
 MEMORY {
-    HEADER (rx) : ORIGIN = 0x10000000, LENGTH = 0x200
-    FLASH (rx)  : ORIGIN = 0x10000200, LENGTH = 1024K - 0x200 /* 1024kB "FLASH" */
-    SRAM (rwx)  : ORIGIN = 0x20000000, LENGTH = 32k
+    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 1024K /* 1024kB "FLASH" */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 32K /* 32kB LP reduced SRAM with ECC */
+    /* SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 160K /* 160kB max SRAM with ECC */
+    /*^ If ECC is enabled, the stack size must be reduced.  Otherwise, a
+        HardFault will occur on startup as the stack is expanded into the
+        ECC's reserved SRAM space.
+    */
+    /* SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 200K /* 200kB SRAM, no ECC */
 }
 
-ENTRY(Reset_Handler)
-PROVIDE( _start_SWAP = (((Reset_Handler) >> 24) | (((Reset_Handler) & 0x00FF0000) >> 8) | (((Reset_Handler) & 0x0000FF00) << 8) | ((Reset_Handler) << 24)));
-PROVIDE_HIDDEN( _SLA_Size = _endimage - __end_header );
-PROVIDE( _SLA_Size_SWAP = (((_SLA_Size) >> 24) | (((_SLA_Size) & 0x00FF0000) >> 8) | (((_SLA_Size) & 0x0000FF00) << 8) | ((_SLA_Size) << 24)));
-
-/* Sections Definitions */
 SECTIONS {
-     .sb_sla_header : ALIGN(4)
-    {
-       FILL(0xFF)
-        KEEP(*(.sb_sla_header)) /* Header for ROM code */ 
-         __end_header = . ;
-        . = ALIGN(512);
-    } > HEADER
 
     .text :
     {
@@ -65,6 +57,16 @@ SECTIONS {
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
+    } > FLASH
+
+    /* Binary import */
+    .bin_storage :
+    {
+       FILL(0xFF)
+      _bin_start_ = .;
+      KEEP(*(.bin_storage_img))
+      _bin_end_ = .;
+      . = ALIGN(4);
     } > FLASH
 
     /* it's used for C++ exception handling      */
@@ -107,24 +109,6 @@ SECTIONS {
         _edata = ALIGN(., 4);
     } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
-    _enddata = LOADADDR(.data)+SIZEOF(.data);
-
-    .sb_sla_trailer : AT(_enddata)
-    {
-        KEEP(*(.sb_sla_trailer))
-        /* Align image with 16 byte boundary to conform to flash encryption block size. */
-        FILL(0xDEADC0DE);
-        /* NOTE: The FILL and ALIGN will not work unless something is written to the section.  So, we use LONG. */
-        LONG(0xDEADC0DE);
-        . = ALIGN(16);
-    }  > FLASH
-    _endimage = LOADADDR(.sb_sla_trailer)+SIZEOF(.sb_sla_trailer);
-    .sig :
-    {
-        KEEP(*(.sig))
-        LONG(0xDEADBEEF);
-
-    }  > FLASH
 
     .bss :
     {

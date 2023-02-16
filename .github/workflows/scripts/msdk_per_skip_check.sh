@@ -2,9 +2,9 @@
 
 echo
 echo "#################################################################################################################"
-echo "msdk_per_skip_check.sh 1_NO_SKIP 2_MSDK 3_CHIP_UC                                                               #"
-echo "      return 0: run the test                                                                                    #"
-echo "      return 1: skip the test                                                                                   #"
+echo "# msdk_per_skip_check.sh 1_NO_SKIP 2_MSDK 3_CHIP_UC 4_BRD_TYPE                                                  #"
+echo "#      return 0: run the test                                                                                   #"
+echo "#      return 1: skip the test                                                                                  #"
 echo "#################################################################################################################"
 echo
 echo $0 $@
@@ -13,10 +13,12 @@ echo
 NO_SKIP=$1
 MSDK=$2
 CHIP_UC=$3
+BRD_TYPE=$4
 
-echo NO_SKIP: $NO_SKIP
-echo    MSDK: $MSDK
-echo CHIP_UC: $CHIP_UC
+echo " NO_SKIP: $NO_SKIP"
+echo "    MSDK: $MSDK"
+echo " CHIP_UC: $CHIP_UC"
+echo "BRD_TYPE: $BRD_TYPE"
 echo
 
 CHIP_LC=${CHIP_UC,,}

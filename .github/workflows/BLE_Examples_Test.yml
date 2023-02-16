@@ -1,5 +1,10 @@
 name: BLE Examples Test
 
+# Cancels workflows in progress that are in the same PR
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -7,6 +12,19 @@ on:
   #  branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    types: [opened, reopened, synchronize, ready_for_review]  # When to run the workflow on PR
+
+    paths-ignore:
+      # Any files in a docs directory anywhere in the repository.
+      - '**/docs/**'
+      - '**/Documentation/**'
+      # Any README.md file anywhere in the repository.
+      - '**/README.md'	
+      # Any .pdf file anywhere in the repository.
+      - '**/*.pdf'
+      # Any .yml file anywhere in the repository.
+      # can comment this out when testing changes to THIS yml file
+      - '**/*.yml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -51,7 +69,7 @@ jobs:
       - name: Lock All Boards
         if: ${{ always() }}
         id: lock_files
-        run: |          
+        run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
