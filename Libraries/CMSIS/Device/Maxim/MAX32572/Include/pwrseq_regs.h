@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -264,14 +264,32 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPMEMSD_RAM3_POS                  3 /**< LPMEMSD_RAM3 Position */
 #define MXC_F_PWRSEQ_LPMEMSD_RAM3                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM3_POS)) /**< LPMEMSD_RAM3 Mask */
 
+#define MXC_F_PWRSEQ_LPMEMSD_RAM4_POS                  4 /**< LPMEMSD_RAM4 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM4                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM4_POS)) /**< LPMEMSD_RAM4 Mask */
+
+#define MXC_F_PWRSEQ_LPMEMSD_RAM5_POS                  5 /**< LPMEMSD_RAM5 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM5                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM5_POS)) /**< LPMEMSD_RAM5 Mask */
+
+#define MXC_F_PWRSEQ_LPMEMSD_RAM6_POS                  6 /**< LPMEMSD_RAM6 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_RAM6                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_RAM6_POS)) /**< LPMEMSD_RAM6 Mask */
+
 #define MXC_F_PWRSEQ_LPMEMSD_ICCXIP_POS                8 /**< LPMEMSD_ICCXIP Position */
 #define MXC_F_PWRSEQ_LPMEMSD_ICCXIP                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ICCXIP_POS)) /**< LPMEMSD_ICCXIP Mask */
+
+#define MXC_F_PWRSEQ_LPMEMSD_CRYPTO_POS                10 /**< LPMEMSD_CRYPTO Position */
+#define MXC_F_PWRSEQ_LPMEMSD_CRYPTO                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_CRYPTO_POS)) /**< LPMEMSD_CRYPTO Mask */
 
 #define MXC_F_PWRSEQ_LPMEMSD_USBFIFO_POS               11 /**< LPMEMSD_USBFIFO Position */
 #define MXC_F_PWRSEQ_LPMEMSD_USBFIFO                   ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_USBFIFO_POS)) /**< LPMEMSD_USBFIFO Mask */
 
-#define MXC_F_PWRSEQ_LPMEMSD_ROM_POS                   12 /**< LPMEMSD_ROM Position */
-#define MXC_F_PWRSEQ_LPMEMSD_ROM                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ROM_POS)) /**< LPMEMSD_ROM Mask */
+#define MXC_F_PWRSEQ_LPMEMSD_ROM0_POS                  12 /**< LPMEMSD_ROM0 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ROM0                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ROM0_POS)) /**< LPMEMSD_ROM0 Mask */
+
+#define MXC_F_PWRSEQ_LPMEMSD_MEUMEM_POS                13 /**< LPMEMSD_MEUMEM Position */
+#define MXC_F_PWRSEQ_LPMEMSD_MEUMEM                    ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_MEUMEM_POS)) /**< LPMEMSD_MEUMEM Mask */
+
+#define MXC_F_PWRSEQ_LPMEMSD_ROM1_POS                  15 /**< LPMEMSD_ROM1 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ROM1                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ROM1_POS)) /**< LPMEMSD_ROM1 Mask */
 
 /**@} end of group PWRSEQ_LPMEMSD_Register */
 

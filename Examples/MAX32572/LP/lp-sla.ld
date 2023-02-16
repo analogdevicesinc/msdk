@@ -38,7 +38,7 @@ MEMORY {
     SPIX (rx)  : ORIGIN = 0x08000000, LENGTH = 128M
     HEADER (rx): ORIGIN = 0x10000000, LENGTH = 0x200 /* 256B SLA Header, start on next page */
     FLASH (rx) : ORIGIN = 0x10000200, LENGTH = 0x1FFE00 /* Remainder of 2MB flash */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 64k
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 64k /* Limit SRAM usage to SRAM0 and SRAM1 to prevent hardfault. */
     SPID (r)   : ORIGIN = 0x80000000, LENGTH = 512M
 }
 

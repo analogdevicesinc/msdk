@@ -184,6 +184,9 @@ int main(void)
     MXC_LP_CryptoLightSleepEnable();
     MXC_LP_ICacheXIPLightSleepEnable();
     MXC_LP_ICache0LightSleepEnable();
+    MXC_LP_SysRam6LightSleepEnable();
+    MXC_LP_SysRam5LightSleepEnable();
+    MXC_LP_SysRam4LightSleepEnable();
     MXC_LP_SysRam3LightSleepEnable();
     MXC_LP_SysRam2LightSleepEnable();
 
@@ -195,10 +198,13 @@ int main(void)
 #endif // USE_CONSOLE
     setTrigger(1);
 
-    MXC_LP_ROMShutdown();
+    MXC_LP_ROM0Shutdown();
     MXC_LP_USBFIFOShutdown();
-    // MXC_LP_CryptoShutdown();
+    MXC_LP_CryptoShutdown();
     MXC_LP_ICacheXIPShutdown();
+    MXC_LP_SysRam6Shutdown();
+    MXC_LP_SysRam5Shutdown();
+    MXC_LP_SysRam4Shutdown();
     MXC_LP_SysRam3Shutdown();
     MXC_LP_SysRam2Shutdown();
 
@@ -212,6 +218,7 @@ int main(void)
 
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
