@@ -359,11 +359,11 @@ class BLE_hci:
             i += 8
             errTrans  = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
         except ValueError as err:
+            print(f'{self.id}: {evt}')
             print(err)
             return None
 
-
-        print(self.serialPort)
+        print(f'{self.id}<')
         print("rxDataOk   : "+str(rxDataOk))
         print("rxDataCRC  : "+str(rxDataCRC))
         print("rxDataTO   : "+str(rxDataTO))
@@ -472,7 +472,7 @@ class BLE_hci:
         self.send_command("01012008FFFFFFFFFFFFFFFF")
 
         # Reset the connection stats
-        if(args.stats):
+        if args.stats == "True":
             self.send_command("0102FF00")
 
         # Set default PHY to enable all PHYs
@@ -524,7 +524,7 @@ class BLE_hci:
             return
 
         # Listen for events indef
-        if(args.stats):
+        if args.stats == "True":
             per = 100.0
             listenTime = int(args.listen)
             while (listenTime > 0):
@@ -589,7 +589,7 @@ class BLE_hci:
         self.send_command("01012008FFFFFFFFFFFFFFFF")
 
         # Reset the connection stats
-        if(args.stats):
+        if args.stats == "True":
             self.send_command("0102FF00")
 
         # Set default PHY to enable all PHYs
@@ -636,7 +636,7 @@ class BLE_hci:
             return
 
         # Listen for events indef
-        if(args.stats):
+        if args.stats == "True":
             per = 100.0
             listenTime = int(args.listen)
             while (listenTime > 0):
@@ -741,7 +741,7 @@ class BLE_hci:
 
         per = 100.0
 
-        if(args.stats):
+        if args.stats == "True":
 
             startTime = datetime.datetime.now()
             while True:

@@ -18,7 +18,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test_each_board:
+  simple_per_test_on_all_boards:
     # The type of runner that the job will run on
     runs-on: [self-hosted, btm-ci]
     if: github.event.pull_request.draft == false
@@ -53,7 +53,12 @@ jobs:
           NO_SKIP=`python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['no_skip'])"`
           echo "::set-env name=NO_SKIP::${NO_SKIP}"
           echo "NO_SKIP: ${NO_SKIP}"
-          echo
+          echo ""
+
+          LIMIT=`python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['limit'])"`
+          echo "::set-env name=LIMIT::${LIMIT}"
+          echo "LIMIT: ${LIMIT}"
+          echo ""
 
           DO_MAX32655=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32655'])")
           DO_MAX32665=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32665'])")
@@ -62,12 +67,12 @@ jobs:
           echo "::set-env name=DO_MAX32655::${DO_MAX32655}"
           echo "::set-env name=DO_MAX32665::${DO_MAX32665}"
           echo "::set-env name=DO_MAX32690::${DO_MAX32690}"
-          echo "::set-env name=DO_MAX32690_WLP::${DO_MAX32690_wlp}"
+          echo "::set-env name=DO_MAX32690_WLP::${DO_MAX32690_WLP}"
           echo DO_MAX32655: ${DO_MAX32655}
           echo DO_MAX32665: ${DO_MAX32665}
           echo DO_MAX32690: ${DO_MAX32690}
           echo DO_MAX32690_WLP: ${DO_MAX32690_WLP}
-          echo
+          echo ""
 
           MAX32655_PKG_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_pkglen_range'])")
           MAX32665_PKG_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32665_pkglen_range'])")
@@ -146,8 +151,15 @@ jobs:
           BRD2_CHIP_LC=max32655
 
           MSDK=${GITHUB_WORKSPACE}
-          BRD1=nRF52840_1
-          BRD2=max32655_board_2
+
+          host_name=`hostname`
+          if [ "$host_name" == "wall-e" ]; then
+            BRD1=nRF52840_1
+            BRD2=max32655_board_2
+          else
+            BRD1=nRF52840_2
+            BRD2=max32655_board_y1
+          fi
 
           CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
 
@@ -175,10 +187,12 @@ jobs:
             "${MAX32655_PKG_RA}"         \
             "${MAX32655_PHY_RA}"         \
             ${MAX32655_STEP}             \
+            ${LIMIT}                     \
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
-            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
+            echo "${CHIP_UC} ${BRD2_TYPE} FAILED!"
+            #core.setFailed("PER test failed.")
             exit 1
           fi
           #------------------------------------------------          
@@ -260,10 +274,12 @@ jobs:
             "${MAX32665_PKG_RA}"         \
             "${MAX32665_PHY_RA}"         \
             ${MAX32665_STEP}             \
+            ${LIMIT}                     \
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
-            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
+            echo "${CHIP_UC} ${BRD2_TYPE} FAILED!"
+            #core.setFailed("PER test failed.")
             exit 1
           fi
           #------------------------------------------------          
@@ -344,10 +360,12 @@ jobs:
             "${MAX32690_PKG_RA}"         \
             "${MAX32690_PHY_RA}"         \
             ${MAX32690_STEP}             \
+            ${LIMIT}                     \
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
-            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
+            echo "${CHIP_UC} ${BRD2_TYPE} FAILED!"
+            #core.setFailed("PER test failed.")
             exit 1
           fi
           #------------------------------------------------          
@@ -428,10 +446,12 @@ jobs:
             "${MAX32690_WLP_PKG_RA}"     \
             "${MAX32690_WLP_PHY_RA}"     \
             ${MAX32690_WLP_STEP}         \
+            ${LIMIT}                     \
             2>&1 | tee -a ${CURR_LOG}
           
           if [[ $? -ne 0 ]]; then
-            #core.setFailed('${CHIP_UC} ${BRD_TYPE} PER test failed.')
+            echo "${CHIP_UC} ${BRD2_TYPE} FAILED!"
+            #core.setFailed("PER test failed.")
             exit 1
           fi
           #------------------------------------------------          
@@ -447,3 +467,20 @@ jobs:
 
           chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
           ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} True 2>&1 | tee -a ${CURR_LOG}
+
+      - name: show_results
+        if: always()
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+        run: |
+          basename=$(echo "${all_in_one##*/}")
+          echo $basename
+          url_file_name=$(echo "$basename" | sed "s/.csv/.url/")
+          url_file=/tmp/msdk/ci/per/$url_file_name
+          echo "URLs are saved in file: $url_file."
+          echo ""
+
+          if [ -f $url_file ]; then
+            cat $url_file
+          fi
+          

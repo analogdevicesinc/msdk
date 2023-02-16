@@ -43,13 +43,15 @@ import argparse
 from argparse import RawTextHelpFormatter
 from time import sleep
 import matplotlib.pyplot as plt
+import ntpath
 import numpy as np
 import os
 import pandas
+import socket
 import itertools
 
 RES_DIR = '/home/btm-ci/Workspace/ci_results/per'
-
+TMP_PATH = '/tmp/msdk/ci/per'
 SPEC = 30  # per spec in %
 phy_str = ["", "1M", "2M", "S8", "S2"]
 
@@ -81,6 +83,18 @@ print(f'csv full: {csv_full_path}')
 pdf_file_name = args.csvFile.replace('.csv', '.pdf')
 pdf_file_name = os.path.expanduser(pdf_file_name)
 
+# Get the IP of this machine
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+ip = s.getsockname()[0]
+print(f'ip: {ip}')
+
+# final url file
+url_file_name = TMP_PATH + '/' + ntpath.basename(args.csvFile.replace('.csv', '.url'))
+url_file = open(url_file_name, 'w+')
+
+url_links = list()
+
 # Create the plots
 phys = []
 lens = []
@@ -108,7 +122,7 @@ if row > 1 or col > 1:
 
     name = pdf_file_name.split('/')[-1]
     board = name.split('_')[2].replace('.pdf', '').upper()
-    fig.suptitle(f'Packet Error Rate vs Attenuation\n{board}', fontsize=10)
+    fig.suptitle(f'Packet Error Rate vs Rx Power\n{board}', fontsize=10)
 
     if axs.ndim == 1:
         plt.subplots_adjust(top=0.83, hspace=0.5)
@@ -132,22 +146,22 @@ if row > 1 or col > 1:
         '''
         name = pdf_file_name.split('/')[-1]
         board = name.split('_')[2].replace('.pdf', '').upper()
-        fig.suptitle(f'Packet Error Rate vs Attenuation\n{board}', fontsize=10)
+        fig.suptitle(f'Packet Error Rate vs Rx Power\n{board}', fontsize=10)
         fig.tight_layout()
         plt.subplots_adjust(bottom=0.1)
         '''
         title = f'packet len: {packetLen}\nphy: {phy_str[phy]}\ntxPower:{txPower}'
         if axs.ndim == 1:
             axs[row].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
-            axs[row].set_xlabel('Attenuation, dBm', fontdict={"fontsize": 5})
+            axs[row].set_xlabel('Rx Power (dBm)', fontdict={"fontsize": 5})
             axs[row].set_ylabel('PER (%)', fontdict={"fontsize": 5})
             axs[row].tick_params(axis='both', which='major', labelsize=4)
             axs[row].plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=0.25, ms=0.5)
             axs[row].axhline(y=SPEC, color='r', linestyle=':', linewidth=0.5)
         else:
             axs[row, col].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
-            axs[row, col].set_xlabel('Attenuation, dBm', fontdict={"fontsize": 5})
-            axs[row, col].set_ylabel('PER (%)', fontdict={"fontsize": 5})
+            axs[row, col].set_xlabel('Rx Power (dBm)', fontdict={"fontsize": 4})
+            axs[row, col].set_ylabel('PER (%)', fontdict={"fontsize": 4})
             axs[row, col].tick_params(axis='both', which='major', labelsize=4)
             axs[row, col].plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=0.25, ms=0.5)
             axs[row, col].axhline(y=SPEC, color='r', linestyle=':', linewidth=0.5)
@@ -177,6 +191,10 @@ if row > 1 or col > 1:
     saved_file = pdf_file_name
     print(saved_file)
 
+    # http://10.20.14.104:8000/per/pdf/?pdf=msdk-2023-02-13_15-34-35_max32655_EvKit_V1.pdf
+    url = f'http://{ip}:8000/per/pdf/?pdf={ntpath.basename(saved_file)}'
+    url_links.append(url)
+
     plt.savefig(saved_file)
 
     # save to a png file
@@ -184,6 +202,11 @@ if row > 1 or col > 1:
     print(f'Save to file: {png_file}.')
     plt.savefig(png_file)
     # plt.show()
+
+    # http://10.20.14.104:8000/per/image/?image=msdk-2023-02-13_15-34-35_max32655_EvKit_V1.png
+    url = f'http://{ip}:8000/per/image/?image={ntpath.basename(png_file)}'
+    url_links.append(url)
+
 
 # -------------------------------------------------------------------------------------------------
 # Save each test into separated PDF files.
@@ -205,12 +228,12 @@ for packetLen, phy, txPower in itertools.product(lens, phys, txPowers):
     fig = plt.figure()
     ax1 = fig.add_axes((0.1, 0.2, 0.8, 0.7))
 
-    title = f'Packet Error Rate vs Attenuation\n'\
+    title = f'Packet Error Rate vs Rx Power\n'\
             f'\n{board}\n'\
             f'Packet length: {packetLen}, PHY: {phy_str[phy]}, txPower:{txPower}'
     ax1.set_title(title)
-    ax1.set_xlabel('Attenuation, dBm')
-    ax1.set_ylabel('PER, Percentage')
+    ax1.set_xlabel('Rx Power (dBm)')
+    ax1.set_ylabel('PER (%)')
 
     ax1.plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=1, ms=2)
 
@@ -236,14 +259,26 @@ for packetLen, phy, txPower in itertools.product(lens, phys, txPowers):
     print(f'Save to file: {filename}.')
     plt.savefig(filename)
 
+    url = f'http://{ip}:8000/per/pdf/?pdf={ntpath.basename(filename)}'
+    url_links.append(url)
+
     # save to a png file
     png_file = filename.replace(".pdf", ".png")
     print(f'Save to file: {png_file}.')
     plt.savefig(png_file)
 
+    url = f'http://{ip}:8000/per/image/?image={ntpath.basename(png_file)}'
+    url_links.append(url)
+
     print()
     case += 1
 
 print("DONE!")
+
+for url in url_links:
+    url_file.write(url + '\n')
+    print(url)
+
+url_file.close()
 
 sys.exit(0)

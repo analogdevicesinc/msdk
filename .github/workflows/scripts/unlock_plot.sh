@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "#############################################################################################"
-echo "# ./unlock_plot.sh MSDK LOCK_FILE_LIST PER_RESULT_FILE NEED_TO_PLOT                         #"
+echo "# ./unlock_plot.sh 1MSDK 2LOCK_FILE_LIST 3PER_RESULT_FILE 4NEED_TO_PLOT                     #"
 echo "#############################################################################################"
 echo
 echo $0 $@
@@ -67,7 +67,7 @@ echo PWD: `pwd`
 echo
 
 chmod u+x plot_per_results.py
-echo "./plot_per_results.py ${all_in_one} desc basename"
-./plot_per_results.py ${all_in_one} desc basename
+echo "python3 plot_per_results.py ${all_in_one} desc basename"
+python3 plot_per_results.py ${all_in_one} desc basename
 
 echo "$0: DONE!"
