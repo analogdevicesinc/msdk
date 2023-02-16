@@ -334,17 +334,38 @@ void MXC_GPIO_Handler(unsigned int port)
     MXC_GPIO_Common_Handler(port);
 }
 
+/* ************************************************************************** */
 void MXC_GPIO_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags)
 {
     MXC_GPIO_RevA_ClearFlags((mxc_gpio_reva_regs_t *)port, flags);
 }
 
+/* ************************************************************************** */
 uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 {
     return MXC_GPIO_RevA_GetFlags((mxc_gpio_reva_regs_t *)port);
 }
 
+/* ************************************************************************** */
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
     return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
+}
+
+/* ************************************************************************** */
+void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    MXC_GPIO_RevA_SetWakeEn((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+/* ************************************************************************** */
+void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    MXC_GPIO_RevA_ClearWakeEn((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+/* ************************************************************************** */
+uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
+{
+    return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port); 
 }
