@@ -182,25 +182,29 @@ int main(void)
 #endif // USE_CONSOLE
     setTrigger(1);
 
-    //MXC_LP_ROMLightSleepEnable();
-
+    MXC_LP_EnableICacheLightSleep();
+    MXC_LP_EnableSysRAM3LightSleep();
     MXC_LP_EnableSysRAM2LightSleep();
-    MXC_LP_DisableSysRAM1LightSleep();
-    MXC_LP_DisableSysRAM0LightSleep(); // Global variables are in RAM0 and RAM1
+
+    MXC_LP_DisableSysRAM1LightSleep(); // Global variables are in RAM0 and RAM1
+    MXC_LP_DisableSysRAM0LightSleep();
 
     PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
-    //MXC_LP_ShutdownSysRAM2();
 
-    MXC_LP_DisableSysRAM1LightSleep(); // Bring RAM back to active state
-    MXC_LP_DisableSysRAM0LightSleep();
+    MXC_LP_DisableSRAM3();
+    MXC_LP_DisableSRAM2();
+
+    MXC_LP_EnableSRAM1(); // Global variables are in RAM0 and RAM1
+    MXC_LP_EnableSRAM0();
 
     PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
 
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
