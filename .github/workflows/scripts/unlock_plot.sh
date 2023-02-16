@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "#############################################################################################"
-echo "# ./unlock_plot.sh GITHUB_WORKSPACE LOCK_FILE_LIST PER_RESULT_FILE NEED_TO_PLOT             #"
+echo "# ./unlock_plot.sh MSDK LOCK_FILE_LIST PER_RESULT_FILE NEED_TO_PLOT                         #"
 echo "#############################################################################################"
 echo
 echo $0 $@
@@ -12,14 +12,10 @@ if [ "x$2" == "x" ] || [ "x$3" == "x" ]; then
     exit 2
 fi
 
-GITHUB_WORKSPACE=$1
+MSDK=$1
 CURR_JOB_FILE=$2
 all_in_one=$3
 NEED_TO_PLOT=$4
-
-echo CURR_JOB_FILE: ${CURR_JOB_FILE}
-echo "Result file: "${all_in_one}
-echo
 
 # Use python 3.10.9
 source ~/anaconda3/etc/profile.d/conda.sh && conda activate py3_10
@@ -66,7 +62,7 @@ echo "--------------------------------------------------------------------------
 echo "Plot the results"
 echo
 
-cd ${GITHUB_WORKSPACE}/.github/workflows/scripts
+cd ${MSDK}/.github/workflows/scripts
 echo PWD: `pwd`
 echo
 

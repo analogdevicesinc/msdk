@@ -24,25 +24,24 @@ PKG_RA=$8
 PHY_RA=$9
 STEP=${10}
 
-
-echo          MSDK: $MSDK
-echo          BRD1: $BRD1
-echo          BRD2: $BRD2 
-echo     CURR_TIME: $CURR_TIME
-echo CURR_JOB_FILE: $CURR_JOB_FILE
-echo      CURR_LOG: $CURR_LOG
-echo    all_in_one: $all_in_one
-echo        PKG_RA: $PKG_RA
-echo        PHY_RA: $PHY_RA
-echo          STEP: $STEP
-echo
+echo "         MSDK: $MSDK"
+echo "         BRD1: $BRD1"
+echo "         BRD2: $BRD2"
+echo "    CURR_TIME: $CURR_TIME"
+echo "CURR_JOB_FILE: $CURR_JOB_FILE"
+echo "     CURR_LOG: $CURR_LOG"
+echo "   all_in_one: $all_in_one"
+echo "       PKG_RA: $PKG_RA"
+echo "       PHY_RA: $PHY_RA"
+echo "         STEP: $STEP"
+echo ""
 
 #------------------------------------------------
 echo "Use python 3.10.9."
 source ~/anaconda3/etc/profile.d/conda.sh
 conda activate py3_10
 python3 -c "import sys; print(sys.version)"
-echo
+echo ""
 
 RS_FILE=~/Workspace/Resource_Share/boards_config.json
 echo "The board info are stored in ${RS_FILE}."
@@ -79,7 +78,7 @@ echo BRD2_SW_ST: ${BRD2_SW_ST}
 echo
 
 echo "#--------------------------------------------------------------------------------------------"
-echo "# PER test on board ${BRD2}"
+echo "# PER test on board ${BRD2} ${BRD2_TYPE}"
 echo "#--------------------------------------------------------------------------------------------"
 echo
 
@@ -87,6 +86,7 @@ echo "Try to lock the hardware resources."
 python3 ~/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/mc_rf_sw.txt
 python3 ~/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/${BRD1}.txt
 python3 ~/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/${BRD2}.txt
+echo ""
 
 echo CURR_JOB_FILE: ${CURR_JOB_FILE}
 touch ${CURR_JOB_FILE}
@@ -112,9 +112,9 @@ echo "#-------------------------------------------------------------------------
 echo "Set the Mini-circuits RF Switches."
 set -x
 echo RF switch for ${BRD1}
-python3 $MSDK/Tools/Bluetooth/mc_rf_sw.py --model ${BRD1_SW_MODEL} --op set --state ${BRD1_SW_ST}
+unbuffer python3 $MSDK/Tools/Bluetooth/mc_rf_sw.py --model ${BRD1_SW_MODEL} --op set --state ${BRD1_SW_ST} --debug
 echo RF switch for ${BRD2}
-python3 $MSDK/Tools/Bluetooth/mc_rf_sw.py --model ${BRD2_SW_MODEL} --op set --state ${BRD2_SW_ST}
+unbuffer python3 $MSDK/Tools/Bluetooth/mc_rf_sw.py --model ${BRD2_SW_MODEL} --op set --state ${BRD2_SW_ST} --debug
 set +x
 echo
 
@@ -185,15 +185,15 @@ do
         # Run the PER test
         RESULT_PATH=~/Workspace/ci_results/per
         res=${RESULT_PATH}/msdk-${CURR_TIME}
-        res_files[i]=${res}_${BRD2_CHIP_LC}_${i}.csv
+        res_files[i]=${res}_${BRD2_CHIP_LC}_${BRD2_TYPE}_${i}.csv
         echo "The test results will be saved in file ${res_files[i]}."
 
         slv_ser=${BRD2_HCI}
         mst_ser=${BRD1_HCI}
         
         set -x
-        python3 $MSDK/Tools/Bluetooth/conn_sweep.py ${slv_ser} ${mst_ser} ${res_files[i]} \
-            --stp ${BRD2_CON} --pktlen ${pkt_len} --phys ${phy} --step ${step}
+        unbuffer python3 $MSDK/Tools/Bluetooth/conn_sweep.py ${slv_ser} ${mst_ser} ${res_files[i]} \
+            --stp ${BRD2_CON} --pktlen ${pkt_len} --phys ${phy} --step ${step} --loss -17.4
         set +x
 
         echo "cat ${res_files[i]}"
@@ -222,7 +222,7 @@ echo "cat ${all_in_one}"
 cat "${all_in_one}"
 echo
 echo "Check the PER values."
-python3 ${MSDK}/.github/workflows/scripts/check_results.py --csv $(realpath ${all_in_one}) --debug
+unbuffer python3 ${MSDK}/.github/workflows/scripts/check_results.py --csv $(realpath ${all_in_one}) --debug
 
 if [[ $? -ne 0 ]]; then
     echo
