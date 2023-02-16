@@ -8,5 +8,3 @@
 # **********************************************************
 
 # Add your config here!
-
-MAXIM_PATH=../../../GitRepos/msdk
