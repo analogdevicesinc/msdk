@@ -175,6 +175,35 @@ typedef enum {
 } max11261_fmt_t;
 
 /**
+ * PGA gain values.
+ */
+typedef enum {
+    MAX11261_PGA_GAIN_1 = 0,
+    MAX11261_PGA_GAIN_2,
+    MAX11261_PGA_GAIN_4,
+    MAX11261_PGA_GAIN_8,
+    MAX11261_PGA_GAIN_16,
+    MAX11261_PGA_GAIN_32,
+    MAX11261_PGA_GAIN_64,
+    MAX11261_PGA_GAIN_128,
+    MAX11261_PGA_GAIN_MAX,
+} max11261_pga_gain_t;
+
+/**
+ * General-purpose outputs.
+ * There are six GPOs available in this chip. Each enum corresponds to a
+ * bit in GPO_DIR:GPO[5:0].
+ */
+typedef enum {
+    MAX11261_GPO_0 = 0x01,
+    MAX11261_GPO_1 = 0x02,
+    MAX11261_GPO_2 = 0x04,
+    MAX11261_GPO_3 = 0x08,
+    MAX11261_GPO_4 = 0x10,
+    MAX11261_GPO_5 = 0x20,
+} max11261_gpo_t;
+
+/**
  * ADC conversion result and miscelleanous info.
  */
 typedef struct {
@@ -328,6 +357,21 @@ int max11261_adc_set_mode(max11261_conversion_mode_t convMode,
         max11261_sequencer_mode_t seqMode);
 
 /**
+ * @brief Sets the gain of the PGA. PGA is automatically enabled when this
+ * function is called.
+ *
+ * @param gain Gain value.
+ *
+ * @return Success/Fail, 0 if success, -EINVAL if \a gain is out of range.
+ */
+int max11261_adc_set_gain(max11261_pga_gain_t gain);
+
+/**
+ * @brief Disables the amplifier.
+ */
+void max11261_adc_disable_pga(void);
+
+/**
  * @brief Sets the multiplexer delay.
  *
  * Start of conversion is delayed by the set amount of time to allow for input
@@ -373,6 +417,27 @@ int max11261_adc_standby(void);
  * @brief Performs a self-calibration operation.
  */
 int max11261_adc_calibrate_self(void);
+
+/**
+ * @brief Enable the given general-purpose outputs.
+ *
+ * GPOs can only be controlled directly in sequencer modes 1 and 2. In sleep
+ * state GPOs are inactive regardless of the setting.
+ *
+ * @param mask Mask of outputs to set. See \ref max11261_gpo_t.
+ *
+ * @return Success/Fail, see \ref errno.h for a list of return codes.
+ */
+int max11261_adc_set_gpo(uint8_t mask);
+
+/**
+ * @brief Disable the given general-purpose outputs.
+ *
+ * @param mask Mask of outputs to clear. See \ref max11261_gpo_t.
+ *
+ * @return Success/Fail, see \ref errno.h for a list of return codes.
+ */
+int max11261_adc_clear_gpo(uint8_t mask);
 
 /**
  * @brief Prepares MAX11261 internal registers for conversion.

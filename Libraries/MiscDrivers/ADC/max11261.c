@@ -126,6 +126,18 @@ typedef struct {
     uint8_t srdy;    /**< STAT:SRDY mask depending on enabled channels */
 } max11261_adc_seq_t;
 
+/**
+ * @brief Miscellaneous control parameters.
+ */
+typedef struct {
+    uint8_t pga    : 3; /**< PGA gain */
+    uint8_t pga_en : 1; /**< PGA enable switch */
+    uint8_t lp_mode: 1; /**< PGA low-power mode */
+    uint8_t ldo_en : 1; /**< Integrated LDO enable */
+    uint8_t css_en : 1; /**< Current source and sink on inputs */
+    uint8_t rfu    : 1;
+} max11261_ctrl_t;
+
 struct max11261_reg {
     const char *name;
     uint8_t size;
@@ -213,6 +225,17 @@ static max11261_adc_seq_t seq = {
         .delay = 0,
         .order = {0, 0, 0, 0, 0, 0},
         .srdy = 0,
+};
+
+/**
+ * @brief Other control parameters.
+ */
+static max11261_ctrl_t ctrl = {
+        .pga = MAX11261_PGA_GAIN_1,
+        .pga_en = 0,
+        .lp_mode = 0,
+        .ldo_en = 1,
+        .css_en = 0,
 };
 
 /* **** Function Prototypes **** */
@@ -489,6 +512,22 @@ int max11261_adc_set_mode(max11261_conversion_mode_t convMode,
     return 0;
 }
 
+int max11261_adc_set_gain(max11261_pga_gain_t gain)
+{
+    if (gain < MAX11261_PGA_GAIN_1 || gain >= MAX11261_PGA_GAIN_MAX)
+        return -EINVAL;
+
+    ctrl.pga = gain;
+    ctrl.pga_en = 1;
+
+    return 0;
+}
+
+void max11261_adc_disable_pga(void)
+{
+    ctrl.pga_en = 0;
+}
+
 int max11261_adc_set_mux_delay(uint16_t delay)
 {
     if (delay > MAX11261_MUX_DELAY_MAX)
@@ -556,6 +595,31 @@ int max11261_adc_calibrate_self(void)
     platCtx.delayUs(100000);
 
     return 0;
+}
+
+int max11261_adc_set_gpo(uint8_t mask)
+{
+    if (mask > (MAX11261_GPO_0 | MAX11261_GPO_1
+              | MAX11261_GPO_2 | MAX11261_GPO_3
+              | MAX11261_GPO_4 | MAX11261_GPO_5)) {
+        return -EINVAL;
+    }
+
+    return max11261_update_reg(MAX11261_GPO_DIR,
+            (mask << MAX11261_GPO_DIR_GPO_POS),
+            (mask << MAX11261_GPO_DIR_GPO_POS));
+}
+
+int max11261_adc_clear_gpo(uint8_t mask)
+{
+    if (mask > (MAX11261_GPO_0 | MAX11261_GPO_1
+              | MAX11261_GPO_2 | MAX11261_GPO_3
+              | MAX11261_GPO_4 | MAX11261_GPO_5)) {
+        return -EINVAL;
+    }
+
+    return max11261_update_reg(MAX11261_GPO_DIR,
+            (mask << MAX11261_GPO_DIR_GPO_POS), 0);
 }
 
 static inline int sif_freq(uint16_t freq)
@@ -658,6 +722,22 @@ int max11261_adc_convert_prepare(void)
             | ((seq.convMode != MAX11261_LATENT_CONTINUOUS) ?
                     MAX11261_CTRL1_SCYCLE_SINGLE :
                     MAX11261_CTRL1_SCYCLE_CONT));
+    if (error < 0)
+        return error;
+
+    /* Set control register 2
+     * CSSEN    : Current source and sink
+     * LDOEN    : LDO enable
+     * LPMODE   : Low power PGA
+     * PGAEN    : PGA enable
+     * PGA      : PGA level
+     */
+    error = max11261_write_reg(MAX11261_CTRL2,
+             (ctrl.css_en << MAX11261_CTRL2_CSSEN_POS)
+           | (ctrl.ldo_en << MAX11261_CTRL2_LDOEN_POS)
+           | (ctrl.lp_mode << MAX11261_CTRL2_LPMODE_POS)
+           | (ctrl.pga_en << MAX11261_CTRL2_PGAEN_POS)
+           | (ctrl.pga << MAX11261_CTRL2_PGA_POS));
     if (error < 0)
         return error;
 
