@@ -167,11 +167,11 @@ To invoke network training execute the script:
 (ai8x-training) $ ./scripts/train_kws20_v3_ai87.sh
 ```
 
-If this is the first time, and the dataset does not exist locally, the scrip will automatically download Google speech commands dataset (1-second keyword .wav files, sampled at 16KHz, 16-bit) into /data/KWS/raw, and process it to make appropriate training, test and validation dataset integrated in /data/KWS/process/dataset.pt. The processing step expands the training dataset by using augmentation techniques like adding white noise, random time shift, and stretch to improve training results. In addition, each 16000 sample word example is padded with zeros to make it 128x128=16384 speech samples. The augmentation process triples the size of dataset and could take 30min to complete.
+If this is the first time, and the dataset does not exist locally, the script will automatically download Google speech commands dataset (1-second keyword .wav files, sampled at 16KHz, 16-bit) into /data/KWS/raw, and process it to make appropriate training, test and validation dataset integrated in /data/KWS/process/dataset.pt. The processing step expands the training dataset by using augmentation techniques like adding white noise, random time shift, and stretch to improve training results. In addition, each 16000 sample word example is padded with zeros to make it 128x128=16384 speech samples. The augmentation process triples the size of dataset and could take 30min to complete.
 
 Details of network training methodology are described in [AI8X Model Training and Quantization](https://github.com/MaximIntegratedAI/ai8x-synthesis/blob/master/README.md)
 
-After training unquantized network can be evaluated by executing the script:
+After training the un-quantized network can be evaluated by executing the script:
 
 ```bash
 (ai8x-training) $ ./scripts/evaluate_kws20_v3_ai87.sh
@@ -213,11 +213,11 @@ KWS20 demo works in two modes:  Using microphone (real-time), or offline process
 
 ### Microphone Mode
 
-In this mode, EVKIT I2S Mic is initialized to operate at 16KHz 32-bit samples.  In the main loop, I2S buffer is checked and sampled are stored into  the buffer.  
+If **ENABLE_MIC_PROCESSING** is defined, the demo will operate in microphone mode.  In this mode, the EVKIT's I2S Mic is initialized to operate at 16KHz 32-bit samples.  In the main loop, the microphone is sampled, filtered (high-pass to remove DC), and stored into a buffer before being sent to the CNN accelerator.  
 
 ### Offline Mode
 
-if **ENABLE_MIC_PROCESSING** is not defined, a header file containing the 16-bit samples (e.g. **kws_five.h**) should be included in the project to be used as the input. To create a header file from a wav file, use included utilities to record a wav file and convert it to header file.
+if **ENABLE_MIC_PROCESSING** is _not_ defined, a header file containing pre-defined 16-bit samples (**kws_five.h**) is used as input to the CNN accelerator.  These samples can be generated using the included `VoiceRecorder.py` and `RealtimeAudio.py` utilities to record a wav file and convert it to header file.
 
 ```bash
 # record 3sec of 16-bit 16KHz sampled wav file 
@@ -228,7 +228,7 @@ $ python RealtimeAudio.py -i voicefile.wav -o voicefile.h
 
 ### Sending Sound Snippets to serial
 
-To send the snippets to the serial port in binary format, uncomment the following line in [`project.mk`](project.mk). 
+To send the snippets to the serial port in binary format, uncomment the following line in [`project.mk`](project.mk).
 
 ```make
 # If enabled, it sends out the Mic samples used for inference to the serial port
