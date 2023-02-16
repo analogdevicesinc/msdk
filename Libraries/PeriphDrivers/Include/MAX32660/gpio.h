@@ -302,6 +302,32 @@ void MXC_GPIO_Handler(unsigned int port);
  */
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask);
 
+/**
+ * @brief      Enables GPIO pins to be used as a wakeup source.
+ *
+ * @param      port   The GPIO port
+ * @param      mask   Pins in the GPIO port that will be enabled as a wakeup source.
+ */
+void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask);
+
+/**
+ * @brief      Disables GPIO pins from being used as a wakeup source.
+ *
+ * @param      port   The GPIO port
+ * @param      mask   Pins in the GPIO port that will be disabled as a wakeup source.
+ */
+void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask);
+
+/**
+ * @brief      Returns the pins currently enabled as wakeup sources.
+ *
+ * @param      port   The GPIO port to check.
+ * 
+ * @returns    The value of the wake enable register.
+ */
+uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port);
+
+
 /**@} end of group gpio */
 
 #ifdef __cplusplus
