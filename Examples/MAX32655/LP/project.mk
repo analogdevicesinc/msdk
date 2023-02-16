@@ -9,5 +9,4 @@
 
 # Add your config here!
 
-# Use the local linker file
-LINKERFILE=lp.ld
+MAXIM_PATH=../../../GitRepos/msdk

@@ -191,14 +191,15 @@ int main(void)
 #endif // !USE_CONSOLE
     setTrigger(1);
 
-    GPIO_PrepForSleep();
-
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
 #endif // USE_ALARM
+
+    GPIO_PrepForSleep();
 
     while (1) {
 #if DO_SLEEP
