@@ -200,6 +200,7 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
         #start the test
         hciSlave.rxTestFunc(Namespace(channel=0, phy=1))
         sleep(2)
+        
         hciMaster.txTestFunc(Namespace(channel=0, phy=1, payload=0,packetLength=0))
         
         sleep(int(args.delay))
