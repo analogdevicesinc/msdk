@@ -328,8 +328,7 @@ void MXC_ADC_RevA_DisableMonitorAsync(mxc_adc_monitor_t monitor)
 int MXC_ADC_RevA_StartConversion(mxc_adc_reva_regs_t *adc, mxc_adc_chsel_t channel)
 {
     uint16_t data;
-    
-    
+
     int error;
 #if TARGET_NUM != 32650
     if (channel > AIN16) {
