@@ -195,12 +195,14 @@ typedef enum {
  * bit in GPO_DIR:GPO[5:0].
  */
 typedef enum {
-    MAX11261_GPO_0 = 0x01,
-    MAX11261_GPO_1 = 0x02,
-    MAX11261_GPO_2 = 0x04,
-    MAX11261_GPO_3 = 0x08,
-    MAX11261_GPO_4 = 0x10,
-    MAX11261_GPO_5 = 0x20,
+    MAX11261_GPO_INVALID = -1,
+    MAX11261_GPO_0 = 0,
+    MAX11261_GPO_1,
+    MAX11261_GPO_2,
+    MAX11261_GPO_3,
+    MAX11261_GPO_4,
+    MAX11261_GPO_5,
+    MAX11261_GPO_MAX,
 } max11261_gpo_t;
 
 /**
@@ -340,9 +342,24 @@ int max11261_adc_set_channel(max11261_adc_channel_t chan);
  * and 3 will be invalid as number 1 has not been assigned to any channel.
  *
  * @return Success/Fail, 0 if success, -EINVAL if \a chan or \a order is
- * invalid.
+ * invalid, -EACCES if \a gpo is already mapped to another channel.
  */
 int max11261_adc_set_channel_order(max11261_adc_channel_t chan, uint8_t order);
+
+/**
+ * @brief Map given general-purpose output to a channel.
+ *
+ * A GPO can only be mapped to a single channel.
+ *
+ * @param chan Channel to map the GPO to.
+ * @param gpo GPO to map. Pass MAX11261_GPO_INVALID to disable the mapping for
+ * channel \a chan.
+ *
+ * @return Success/Fail, 0 if success, -EINVAL if \a chan or \a gpo is invalid,
+ * or \a gpo is already mapped to another channel.
+ */
+int max11261_adc_set_channel_gpo(max11261_adc_channel_t chan,
+        max11261_gpo_t gpo);
 
 /**
  * @brief Sets conversion and sequencer mode to be used. Default values are
@@ -386,6 +403,23 @@ void max11261_adc_disable_pga(void);
 int max11261_adc_set_mux_delay(uint16_t delay);
 
 /**
+ * @brief Sets the GPO delay.
+ *
+ * Start of conversion is delayed by the set amount of time to allow sufficient
+ * settling time if GPOs are used to bias external circuitry such as bridge
+ * sensors.
+ *
+ * GPO delay is only used in sequencer modes 3 and 4.
+ *
+ * @param delay Delay value in microseconds. Must be less than or equal to 5100
+ * microseconds.
+ *
+ * @return Success/Fail, 0 if success, -EINVAL if the value is out
+ * of supported range.
+ */
+int max11261_adc_set_gpo_delay(uint16_t delay);
+
+/**
  * @brief Returns the MAX11261 powerdown state.
  *
  * @return Current power-down state, error code otherwise.
@@ -419,25 +453,25 @@ int max11261_adc_standby(void);
 int max11261_adc_calibrate_self(void);
 
 /**
- * @brief Enable the given general-purpose outputs.
+ * @brief Enable the given general-purpose output.
  *
  * GPOs can only be controlled directly in sequencer modes 1 and 2. In sleep
  * state GPOs are inactive regardless of the setting.
  *
- * @param mask Mask of outputs to set. See \ref max11261_gpo_t.
+ * @param gpo Output to enable. One of \ref max11261_gpo_t.
  *
  * @return Success/Fail, see \ref errno.h for a list of return codes.
  */
-int max11261_adc_set_gpo(uint8_t mask);
+int max11261_adc_enable_gpo(max11261_gpo_t gpo);
 
 /**
- * @brief Disable the given general-purpose outputs.
+ * @brief Disable the given general-purpose output.
  *
- * @param mask Mask of outputs to clear. See \ref max11261_gpo_t.
+ * @param gpo Output to disable. One of \ref max11261_gpo_t.
  *
  * @return Success/Fail, see \ref errno.h for a list of return codes.
  */
-int max11261_adc_clear_gpo(uint8_t mask);
+int max11261_adc_disable_gpo(max11261_gpo_t gpo);
 
 /**
  * @brief Prepares MAX11261 internal registers for conversion.

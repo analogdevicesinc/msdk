@@ -84,6 +84,8 @@
 
 #define MAX11261_MUX_DELAY_MAX  1020
 #define MAX11261_MUX_DELAY_MIN  4
+#define MAX11261_GPO_DELAY_MAX  5100
+#define MAX11261_GPO_DELAY_MIN  20
 /* **** Variable Declaration **** */
 
 /**
@@ -120,9 +122,11 @@ typedef struct {
     max11261_sequencer_mode_t seqMode;      /**< Sequencer mode */
     max11261_pol_t polarity;      /**< Input polarity */
     max11261_fmt_t format;        /**< Result format */
-    uint16_t delay;  /**< Multiplexer delay, 0 - 1020us */
+    uint16_t muxDelay;  /**< Multiplexer delay, 0 - 1020us */
+    uint16_t gpoDelay;  /**< GPO delay, 20 - 5100 us */
     /**< Scan order of channels in mode 2,3 or 4 */
     uint8_t order[MAX11261_ADC_CHANNEL_MAX];
+    max11261_gpo_t gpoMap[MAX11261_ADC_CHANNEL_MAX]; /**< GPO map */
     uint8_t srdy;    /**< STAT:SRDY mask depending on enabled channels */
 } max11261_adc_seq_t;
 
@@ -178,7 +182,7 @@ static const struct max11261_reg regs[] = {
 };
 
 /**
- * 10x microseconds delay for each sample rate.
+ * 1/10th of delay for each sample rate.
  */
 static const uint32_t max11261_single_cycle_delay[] = {
         2000,  // MAX11261_SINGLE_RATE_50
@@ -222,8 +226,14 @@ static max11261_adc_seq_t seq = {
         .seqMode = MAX11261_SEQ_MODE_1,
         .polarity = MAX11261_POL_UNIPOLAR,
         .format = MAX11261_FMT_OFFSET_BINARY,
-        .delay = 0,
+        .muxDelay = 0,
+        .gpoDelay = 0,
         .order = {0, 0, 0, 0, 0, 0},
+        .gpoMap = {
+                MAX11261_GPO_INVALID, MAX11261_GPO_INVALID,
+                MAX11261_GPO_INVALID, MAX11261_GPO_INVALID,
+                MAX11261_GPO_INVALID, MAX11261_GPO_INVALID
+        },
         .srdy = 0,
 };
 
@@ -475,7 +485,30 @@ int max11261_adc_set_channel_order(max11261_adc_channel_t chan, uint8_t order)
 
     seq.order[chan] = order;
     seq.srdy &= ~(1 << chan);
-    seq.srdy |= (1 << chan);
+    if (order > 0)
+        seq.srdy |= (1 << chan);
+
+    return 0;
+}
+
+int max11261_adc_set_channel_gpo(max11261_adc_channel_t chan,
+        max11261_gpo_t gpo)
+{
+    uint8_t c;
+
+    if (chan < MAX11261_ADC_CHANNEL_0 || chan >= MAX11261_ADC_CHANNEL_MAX)
+            return -EINVAL;
+    if (gpo < MAX11261_GPO_INVALID || gpo >= MAX11261_GPO_MAX)
+        return -EINVAL;
+
+    /* Check if GPO has already been mapped to another channel */
+    if (gpo != MAX11261_GPO_INVALID) {
+        for (c = MAX11261_ADC_CHANNEL_0; c < MAX11261_ADC_CHANNEL_MAX; c++) {
+            if (seq.gpoMap[c] == gpo && c != chan)
+                return -EACCES;
+        }
+    }
+    seq.gpoMap[chan] = gpo;
 
     return 0;
 }
@@ -536,7 +569,20 @@ int max11261_adc_set_mux_delay(uint16_t delay)
     if (delay && delay < MAX11261_MUX_DELAY_MIN)
         delay = MAX11261_MUX_DELAY_MIN;
 
-    seq.delay = delay;
+    seq.muxDelay = delay;
+
+    return 0;
+}
+
+int max11261_adc_set_gpo_delay(uint16_t delay)
+{
+    if (delay > MAX11261_GPO_DELAY_MAX)
+        return -EINVAL;
+
+    if (delay && delay < MAX11261_GPO_DELAY_MIN)
+        delay = MAX11261_GPO_DELAY_MIN;
+
+    seq.gpoDelay = delay;
 
     return 0;
 }
@@ -597,29 +643,23 @@ int max11261_adc_calibrate_self(void)
     return 0;
 }
 
-int max11261_adc_set_gpo(uint8_t mask)
+int max11261_adc_enable_gpo(max11261_gpo_t gpo)
 {
-    if (mask > (MAX11261_GPO_0 | MAX11261_GPO_1
-              | MAX11261_GPO_2 | MAX11261_GPO_3
-              | MAX11261_GPO_4 | MAX11261_GPO_5)) {
+    if (gpo >= MAX11261_GPO_MAX)
         return -EINVAL;
-    }
 
     return max11261_update_reg(MAX11261_GPO_DIR,
-            (mask << MAX11261_GPO_DIR_GPO_POS),
-            (mask << MAX11261_GPO_DIR_GPO_POS));
+            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS),
+            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS));
 }
 
-int max11261_adc_clear_gpo(uint8_t mask)
+int max11261_adc_disable_gpo(max11261_gpo_t gpo)
 {
-    if (mask > (MAX11261_GPO_0 | MAX11261_GPO_1
-              | MAX11261_GPO_2 | MAX11261_GPO_3
-              | MAX11261_GPO_4 | MAX11261_GPO_5)) {
+    if (gpo >= MAX11261_GPO_MAX)
         return -EINVAL;
-    }
 
     return max11261_update_reg(MAX11261_GPO_DIR,
-            (mask << MAX11261_GPO_DIR_GPO_POS), 0);
+            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS), 0);
 }
 
 static inline int sif_freq(uint16_t freq)
@@ -637,70 +677,121 @@ static inline int sif_freq(uint16_t freq)
 int max11261_adc_convert_prepare(void)
 {
     int error;
-    uint32_t chmap;
+    uint32_t chmap0, chmap1;
 
     /* Set sequencer register */
     error = max11261_update_reg(MAX11261_SEQ,
-              MAX11261_SEQ_MUX | MAX11261_SEQ_MODE | MAX11261_SEQ_MDREN
+              MAX11261_SEQ_MUX | MAX11261_SEQ_MODE | MAX11261_SEQ_GPODREN
+            | MAX11261_SEQ_MDREN
             | MAX11261_SEQ_RDYBEN
             | MAX11261_SEQ_SIF_FREQ,
               (seq.chan << MAX11261_SEQ_MUX_POS)
             | (seq.seqMode << MAX11261_SEQ_MODE_POS)
-            | (seq.delay ? MAX11261_SEQ_MDREN : 0)
+            | (seq.gpoDelay ? MAX11261_SEQ_GPODREN : 0)
+            | (seq.muxDelay ? MAX11261_SEQ_MDREN : 0)
             | MAX11261_SEQ_RDYBEN
             | sif_freq(cfg.freq));
     if (error < 0)
         return error;
 
-    if (seq.delay) {
+    if (seq.muxDelay) {
         /* Delay resolution is 4us */
         error = max11261_update_reg(MAX11261_DELAY, MAX11261_DELAY_MUX,
-                (seq.delay / 4) << MAX11261_DELAY_MUX_POS);
+                (seq.muxDelay / 4) << MAX11261_DELAY_MUX_POS);
         if (error < 0)
             return error;
+    }
+
+    chmap0 = 0;
+    chmap1 = 0;
+    /* Operations specific to mode 3 or 4 */
+    if (seq.seqMode == MAX11261_SEQ_MODE_3
+        || seq.seqMode == MAX11261_SEQ_MODE_4)
+    {
+        /* Apply GPO delay */
+        if (seq.gpoDelay) {
+            /* Delay resolution is 20us */
+            error = max11261_update_reg(MAX11261_DELAY, MAX11261_DELAY_GPO,
+                    (seq.gpoDelay / 20) << MAX11261_DELAY_GPO_POS);
+            if (error < 0)
+                return error;
+        }
+
+        /* Map GPO channels */
+        /* Channel 0, 1 and 2 -> CHMAP0 */
+        if (seq.gpoMap[MAX11261_ADC_CHANNEL_0] != MAX11261_GPO_INVALID) {
+            chmap0 |=  MAX11261_CHMAP0_CH0_GPOEN;
+            chmap0 |= seq.gpoMap[MAX11261_ADC_CHANNEL_0] <<
+                    MAX11261_CHMAP0_CH0_GPO_POS;
+        }
+        if (seq.gpoMap[MAX11261_ADC_CHANNEL_1] != MAX11261_GPO_INVALID) {
+            chmap0 |=  MAX11261_CHMAP0_CH1_GPOEN;
+            chmap0 |= seq.gpoMap[MAX11261_ADC_CHANNEL_1] <<
+                    MAX11261_CHMAP0_CH1_GPO_POS;
+        }
+        if (seq.gpoMap[MAX11261_ADC_CHANNEL_2] != MAX11261_GPO_INVALID) {
+            chmap0 |=  MAX11261_CHMAP0_CH2_GPOEN;
+            chmap0 |= seq.gpoMap[MAX11261_ADC_CHANNEL_2] <<
+                    MAX11261_CHMAP0_CH2_GPO_POS;
+        }
+
+        /* Channel 3, 4 and 5 -> CHMAP1 */
+        if (seq.gpoMap[MAX11261_ADC_CHANNEL_3] != MAX11261_GPO_INVALID) {
+            chmap1 |=  MAX11261_CHMAP1_CH3_GPOEN;
+            chmap1 |= seq.gpoMap[MAX11261_ADC_CHANNEL_3] <<
+                    MAX11261_CHMAP1_CH3_GPO_POS;
+        }
+        if (seq.gpoMap[MAX11261_ADC_CHANNEL_4] != MAX11261_GPO_INVALID) {
+            chmap1 |=  MAX11261_CHMAP1_CH4_GPOEN;
+            chmap1 |= seq.gpoMap[MAX11261_ADC_CHANNEL_4] <<
+                    MAX11261_CHMAP1_CH4_GPO_POS;
+        }
+        if (seq.gpoMap[MAX11261_ADC_CHANNEL_5] != MAX11261_GPO_INVALID) {
+            chmap1 |=  MAX11261_CHMAP1_CH5_GPOEN;
+            chmap1 |= seq.gpoMap[MAX11261_ADC_CHANNEL_5] <<
+                    MAX11261_CHMAP1_CH5_GPO_POS;
+        }
     }
 
     /* If one of the multichannel scan modes are selected, set scan orders */
     if (seq.seqMode != MAX11261_SEQ_MODE_1) {
         /* Channel 0, 1 and 2 -> CHMAP0 */
-        chmap = 0;
         if (seq.order[MAX11261_ADC_CHANNEL_0]) {
-            chmap |=  MAX11261_CHMAP0_CH0_EN;
-            chmap |= seq.order[MAX11261_ADC_CHANNEL_0] <<
+            chmap0 |=  MAX11261_CHMAP0_CH0_EN;
+            chmap0 |= seq.order[MAX11261_ADC_CHANNEL_0] <<
                     MAX11261_CHMAP0_CH0_ORD_POS;
         }
         if (seq.order[MAX11261_ADC_CHANNEL_1]) {
-            chmap |=  MAX11261_CHMAP0_CH1_EN;
-            chmap |= seq.order[MAX11261_ADC_CHANNEL_1] <<
+            chmap0 |=  MAX11261_CHMAP0_CH1_EN;
+            chmap0 |= seq.order[MAX11261_ADC_CHANNEL_1] <<
                     MAX11261_CHMAP0_CH1_ORD_POS;
         }
         if (seq.order[MAX11261_ADC_CHANNEL_2]) {
-            chmap |=  MAX11261_CHMAP0_CH2_EN;
-            chmap |= seq.order[MAX11261_ADC_CHANNEL_2] <<
+            chmap0 |=  MAX11261_CHMAP0_CH2_EN;
+            chmap0 |= seq.order[MAX11261_ADC_CHANNEL_2] <<
                     MAX11261_CHMAP0_CH2_ORD_POS;
         }
-        error = max11261_write_reg(MAX11261_CHMAP0, chmap);
+        error = max11261_write_reg(MAX11261_CHMAP0, chmap0);
         if (error < 0)
             return error;
 
         /* Channel 3, 4 and 5 -> CHMAP1 */
-        chmap = 0;
         if (seq.order[MAX11261_ADC_CHANNEL_3]) {
-            chmap |=  MAX11261_CHMAP1_CH3_EN;
-            chmap |= seq.order[MAX11261_ADC_CHANNEL_3] <<
+            chmap1 |=  MAX11261_CHMAP1_CH3_EN;
+            chmap1 |= seq.order[MAX11261_ADC_CHANNEL_3] <<
                     MAX11261_CHMAP1_CH3_ORD_POS;
         }
         if (seq.order[MAX11261_ADC_CHANNEL_4]) {
-            chmap |=  MAX11261_CHMAP1_CH4_EN;
-            chmap |= seq.order[MAX11261_ADC_CHANNEL_4] <<
+            chmap1 |=  MAX11261_CHMAP1_CH4_EN;
+            chmap1 |= seq.order[MAX11261_ADC_CHANNEL_4] <<
                     MAX11261_CHMAP1_CH4_ORD_POS;
         }
         if (seq.order[MAX11261_ADC_CHANNEL_5]) {
-            chmap |=  MAX11261_CHMAP1_CH5_EN;
-            chmap |= seq.order[MAX11261_ADC_CHANNEL_5] <<
+            chmap1 |=  MAX11261_CHMAP1_CH5_EN;
+            chmap1 |= seq.order[MAX11261_ADC_CHANNEL_5] <<
                     MAX11261_CHMAP1_CH5_ORD_POS;
         }
-        error = max11261_write_reg(MAX11261_CHMAP1, chmap);
+        error = max11261_write_reg(MAX11261_CHMAP1, chmap1);
         if (error < 0)
             return error;
     }
@@ -749,26 +840,81 @@ int max11261_adc_convert_prepare(void)
     return error;
 }
 
+/**
+ * @brief Return the number of enabled channels by counting the bits in srdy
+ * mask.
+ * See https://graphics.stanford.edu/~seander/bithacks.html.
+ */
+static inline uint8_t channel_count(uint8_t srdy)
+{
+    /* Counting bits set, Brian Kernighan's way */
+    uint8_t c; // c accumulates the total bits set in v
+    for (c = 0; srdy; c++)
+    {
+        srdy &= srdy - 1; // clear the least significant bit set
+    }
+    return c;
+}
+
+/**
+ * @brief Calculate conversion delay count for each mode.
+ *
+ * The minimum delay interval is (SampleRateDelay / 10)us. If the sample rate
+ * is 50sps for instance, the SampleRateDelay = 1s / 50sps = 0.02s = 20000us.
+ * The delay interval in this case is 2000us which is also hardcoded in
+ * \ref max11261_single_cycle_delay. Hence the delay function has to be called
+ * at least 10 times before deciding if a timeout has occurred. Two extra delay
+ * cycles are added to the final delay count to prevent false negatives.
+ *
+ * Extra delay sources such as multiplexer and GPO delays are also considered
+ * when calculating the delay count.
+ *
+ * Sequencer mode 1: Sum of sample rate and mux delay.
+ * Sequencer mode 2: Sum of sample rate and mux delay for each enabled
+ * channel.
+ * Sequencer mode 3: Delay count in sequencer mode 2 plus one GPO delay. The
+ * GPOs mapped to other channels are enabled during conversion of the previous
+ * channel. Thus only one GPO delay needs to be considered.
+ */
+static inline uint32_t delay_count(void)
+{
+    switch (seq.seqMode) {
+    case MAX11261_SEQ_MODE_1:
+        return 12
+                + (seq.muxDelay / max11261_single_cycle_delay[seq.srate]);
+    case MAX11261_SEQ_MODE_2:
+        return 12 * channel_count(seq.srdy)
+        + ((channel_count(seq.srdy) * seq.muxDelay)
+                / max11261_single_cycle_delay[seq.srate]);
+    case MAX11261_SEQ_MODE_3:
+        return 12 * channel_count(seq.srdy)
+                + (((channel_count(seq.srdy) * seq.muxDelay) + seq.gpoDelay)
+                        / max11261_single_cycle_delay[seq.srate]);
+    case MAX11261_SEQ_MODE_4:
+            return 1;
+    default:
+        return 0;
+    }
+    return 0;
+}
+
 int max11261_adc_result(max11261_adc_result_t *res, int count)
 {
     int error, rd = 0;
-    uint32_t cnt, timeout, reg;
+    uint32_t cnt, to, reg;
     int32_t tmp;
 
-    /* 10 times delay amounts to the data rates given in the datasheet. Adding
-     * two extra delay cycles to make up for the communication delay. */
-    timeout = 10 * count + 2 + seq.delay
-            / max11261_single_cycle_delay[seq.srate];
+    to = delay_count();
 
     /* Use ready function to check if data is available, otherwise poll STAT
      * register's RDY or SRDY bits */
     if (platCtx.ready) {
-        while (!platCtx.ready() && --timeout) {
+        while (!platCtx.ready() && --to) {
             platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);
         }
     } else {
         max11261_read_reg(MAX11261_STAT, &reg);
-        while (--timeout) {
+        while (--to) {
             if (seq.seqMode == MAX11261_SEQ_MODE_1) {
                 if (reg & MAX11261_STAT_RDY)
                     break;
@@ -782,7 +928,7 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
             max11261_read_reg(MAX11261_STAT, &reg);
         }
     }
-    if (timeout == 0)
+    if (to == 0)
         return -ETIMEDOUT;
 
     error = max11261_read_reg(MAX11261_FIFO_LEVEL, &cnt);
@@ -793,6 +939,8 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
         error = max11261_read_reg(MAX11261_STAT, &reg);
         if (error < 0)
             return error;
+        if (reg & MAX11261_STAT_GPOERR)
+            return -EPERM;
 
         res->dor = !!(reg & MAX11261_STAT_DOR);
         res->aor = !!(reg & MAX11261_STAT_AOR);
