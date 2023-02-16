@@ -25,10 +25,8 @@ class DBB:
         self.hciInterface: BLE_hci.BLE_hci = hciInterface
 
         # put radio into good state for DBB
-
         self.hciInterface.resetFunc(None)
-        # self.hciInterface.txTestFunc(Namespace(channel=0, phy=1, packetLength=0, payload=3))
-
+        
     def __del__(self):
         # close out of hci
         self.hciInterface.endTestFunc(None)
@@ -41,7 +39,8 @@ class DBB:
 
 
         # There seems to be a problem when lengths are greater than 251.
-        # I believe it is because the header packet is 3 bytes and so if you have 252 then the total length is 255 and the format is wrong
+        # I believe it is because the header packet is 3 bytes and 
+        # so if you have 252 then the total length is 255 and the format is wrong
         # Just gonna assert for now
         assert (sizeBytes <= 251)
 
@@ -50,7 +49,6 @@ class DBB:
 
         print(f'Reading {sizeBytes} from address {addr}')
         return self.hciInterface.readReg(addr=addr, length=regReadSize)
-        # return self.hciInterface.readRegFunc(Namespace(addr=addr,length=regReadSize))
 
     def readRegion(self, start, stop):
         """

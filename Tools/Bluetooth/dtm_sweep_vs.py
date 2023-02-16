@@ -156,6 +156,9 @@ parser.add_argument('-p', '--phys', default="1",help='PHYs to test with, comma s
 parser.add_argument('-t', '--txpows', default="0",help='TX powers to test with, comma separated list.')
 parser.add_argument('-a', '--attens', help='Attenuation settings to use, comma separated list.')
 parser.add_argument('-da', '--disable-atten', action='store_true',help='Disbale Attenuator For Testing Purposes')
+parser.add_argument('-cl', '--channel-loss', default="0",help='TX powers to test with, comma separated list.')
+parser.add_argument('-as', '--atten-step', default="10",help='Attenuation Step Size.')
+
 
 args = parser.parse_args()
 print(args)
@@ -165,20 +168,25 @@ phys             = args.phys.strip().split(",")
 txPowers         = args.txpows.strip().split(",")
 numPackets       = args.numPackets
 
+
+
+
+
 if(args.attens == None):
-    attens = list(range(20,90,10))
+    attens = list(range(20,90,int(args.atten_step)))
 
     # Add the max attenuation 
     attens.append(90)
 else:
     attens = args.attens.strip().split(",")
 
-if(args.disable_atten):
-    attens=[0]
 
-if args.disable_atten is not None:
+if args.disable_atten:
+    attens=[0]
+    printInfo('Disabling Attenuator')
     disableAttenuator = True
 else:
+    printInfo('Attenuator active')
     disableAttenuator = False
 
 print("slaveSerial   :",args.slaveSerial)
@@ -207,6 +215,8 @@ results.write("# PER limit     : "+str(args.limit)+"\n")
 # Write the header line
 results.write("packetLen,phy,atten,txPower,perSlave\n")
 
+assert(args.slaveSerial != args.masterSerial)
+
 # Create the BLE_hci objects
 hciSlave = BLE_hci(Namespace(serialPort=args.slaveSerial, monPort="", baud=115200))
 hciMaster = BLE_hci(Namespace(serialPort=args.masterSerial, monPort="", baud=115200))
@@ -222,6 +232,7 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
 
     # # Reset the attenuation
     if not disableAttenuator:
+        print('Setting attenuation')
         mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
         sleep(0.1)
     
@@ -235,12 +246,19 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
 
         # Set the attenuation
         if not disableAttenuator:
+            printInfo(f'Setting attenuation {atten}')
             mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
             sleep(0.1)
+        
+        hciMaster.resetFunc(None)
+        hciSlave.resetFunc(None)
+        sleep(0.1)
         
         #start the test
         hciSlave.rxTestFunc(Namespace(channel=0, phy=phy))
         hciMaster.txTestVSFunc(Namespace(channel=0, phy=phy,payload=0,packetLength=packetLen,numPackets=numPackets))
+
+
         
         if(numPackets == 0):
             sleep(int(args.delay))
@@ -249,25 +267,26 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
             # Convert us to seconds
             sleep(calcTestTime(packetLen, phy, numPackets) / 1000000)
         
-        packtesReceived = hciSlave.endTestFunc(Namespace(noPrint=True))
         stats = hciMaster.endTestVSFunc(Namespace(noPrint=True))
+        packetsReceived = hciSlave.endTestFunc(Namespace(noPrint=True))
+
 
         packetsTransmitted = 0
-        
+        perMaster = 0
         if(numPackets == 0):
             if stats is not None:
                 packetsTransmitted = stats['txData']
 
             if packetsTransmitted != 0:
-                perSlave = round(100 * (1 - packtesReceived / packetsTransmitted), 2)
+                perSlave = round(100 * (1 - packetsReceived / packetsTransmitted), 2)
             
             else:
                 printWarning('End Test stats returned invalid data. (Packets Transmitted = 0) PER rate being set to 100')
                 perSlave = 100
         else:
-            perSlave = round(100 * (1 - packtesReceived / int(numPackets)), 2)
+            perSlave = round(100 * (1 - packetsReceived / int(numPackets)), 2)
 
-        if(packtesReceived == 0):
+        if(packetsReceived == 0):
             printWarning('Did not receive any packets')
 
         if(perSlave >= 50.0):
@@ -275,9 +294,9 @@ for packetLen,phy,txPower in itertools.product(packetLengths,phys,txPowers):
     
         if(perSlave > perMax):
             perMax = perSlave
-
+            
         # Save the results to file
-        results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perSlave)+"\n")
+        results.write(str(packetLen)+","+str(phy)+",-"+str(atten+float(args.channel_loss))+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
 
 # Reset the devices
 hciSlave.resetFunc(None)
@@ -286,6 +305,12 @@ sleep(0.1)
 
 results.write("\n")
 results.close()
+# Set the attenuation
+if not disableAttenuator:
+    printInfo(f'Setting attenuation {10}')
+    mini_RCDAT = mini_RCDAT_USB(Namespace(atten=10))
+    sleep(0.1)
+        
 
 print("perMax: ",perMax)
 
