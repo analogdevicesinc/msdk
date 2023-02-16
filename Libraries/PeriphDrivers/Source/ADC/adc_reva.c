@@ -354,22 +354,13 @@ int MXC_ADC_RevA_StartConversion(mxc_adc_reva_regs_t *adc, mxc_adc_chsel_t chann
 
     while (adc->status & MXC_F_ADC_REVA_STATUS_ACTIVE) {}
 
-    #if 0
-
-    if ((error = MXC_ADC_GetData((uint16_t *)&data)) != E_NO_ERROR) {
-        return error;
-    }
-
-    return data;
-
-    #else
     if ((error = MXC_ADC_GetData(&data)) != E_NO_ERROR) {
         return error;
     }
 
     return (int)data;
 
-    #endif
+    
 }
 
 int MXC_ADC_RevA_StartConversionAsync(mxc_adc_reva_regs_t *adc, mxc_adc_chsel_t channel,
