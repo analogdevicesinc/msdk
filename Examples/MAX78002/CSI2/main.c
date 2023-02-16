@@ -210,7 +210,7 @@ void service_console()
     clear_serial_buffer();
 }
 
-int buttonPressed = 0;
+volatile int buttonPressed = 0;
 void buttonHandler()
 {
     buttonPressed = 1;
