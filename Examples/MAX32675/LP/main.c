@@ -165,6 +165,7 @@ int main(void)
     setTrigger(1);
 
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 
     while (1) {
 #if DO_SLEEP
