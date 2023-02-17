@@ -654,11 +654,11 @@ typedef enum {
 #define MXC_SPI_GET_BASE(i) \
     ((i) == 0 ? MXC_BASE_SPI0 : (i) == 1 ? MXC_BASE_SPI1 : (i) == 3 ? MXC_BASE_SPI3 : 0)
 
-#define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI0 : (i) == 1 ? MXC_SPI1 : (i) == 2 ? MXC_SPI3 : 0)
+#define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI0 : (i) == 1 ? MXC_SPI1 : (i) == 3 ? MXC_SPI3 : 0)
 
 #ifndef __riscv
 #define MXC_SPI_GET_IRQ(i) \
-    (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : (i) == 2 ? SPI3_IRQn : 0)
+    (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : (i) == 3 ? SPI3_IRQn : 0)
 #endif // __riscv
 
 /******************************************************************************/
