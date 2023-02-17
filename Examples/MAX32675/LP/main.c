@@ -69,7 +69,7 @@
 #define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
 #define DO_BACKUP 0
-#define DO_SHUTDOWN 0
+#define DO_STORAGE 0
 
 #if (DO_BACKUP && DO_STORAGE)
 #error "You must select either DO_BACKUP or DO_STORAGE or neither, not both."
@@ -127,10 +127,6 @@ void configure_gpio(void)
     MXC_GPIO1->padctrl0 &= ~0xFFFFF7FFUL;
     MXC_GPIO1->padctrl1 |= 0xFFFFF7FFUL;
     MXC_GPIO1->ps &= ~0xFFFFF7FFUL;
-
-    //Set output low
-    // MXC_GPIO0->out      &= ~0xFFDFFCFFUL;
-    // MXC_GPIO1->out      &= ~0xFFFFFFFFUL;
 }
 
 int main(void)
@@ -151,8 +147,8 @@ int main(void)
     setTrigger(1);
 
     MXC_LP_ROMLightSleepEnable();
-
-    // MXC_LP_SysRam3LightSleepDisable();
+    MXC_LP_ICache0LightSleepEnable();
+    MXC_LP_SysRam3LightSleepEnable();
     MXC_LP_SysRam2LightSleepEnable();
     MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
@@ -160,9 +156,8 @@ int main(void)
     PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
-    // MXC_LP_SysRam3Shutdown();
+    MXC_LP_SysRam3Shutdown();
     MXC_LP_SysRam2Shutdown();
-
     MXC_LP_SysRam1PowerUp();
     MXC_LP_SysRam0PowerUp(); // Global variables are in RAM0 and RAM1
 
@@ -192,10 +187,10 @@ int main(void)
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP
 
-#if DO_SHUTDOWN
-        PRINT("Entering Shutdown mode.\n");
+#if DO_STORAGE
+        PRINT("Entering Storage mode.\n");
         setTrigger(0);
-        MXC_LP_EnterShutDownMode();
+        MXC_LP_EnterStorageMode();
 #endif // DO_STORAGE
     }
 }
