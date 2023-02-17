@@ -82,8 +82,8 @@ will be captured continuously.
 #if defined(STREAM_ENABLE) && defined(ENABLE_TFT) && defined(BOARD_FTHR_REVA)
 #define FEATHER_FAST_STREAM
 #endif
-/* If enabled, can stream up to 16fps when the TFT is available
- * This option only works if Feather board is selected
+/* If enabled, can stream up to 16fps when the TFT is available up to 320x240
+ * This option only works when Feather board is selected
  */
 
 // ------------------------
@@ -137,8 +137,8 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 #ifdef ENABLE_TFT
 #ifdef STREAM_ENABLE
-#define IMAGE_XRES 80 //320
-#define IMAGE_YRES 80 //240
+#define IMAGE_XRES 320 
+#define IMAGE_YRES 240 
 
 #else
 #define IMAGE_XRES 176

@@ -53,7 +53,7 @@
 #define PCIF_DATA_BUS_WITH MXC_S_CAMERAIF_CTRL_DATA_WIDTH_8BIT
 #define CAMERA_STARTUP_DELAY (300)
 #define CAMERA_DATA_BIT_WIDTH MXC_PCIF_GPIO_DATAWIDTH_8_BIT
-
+//#define TFT_DMA_DEBUG //uncomment to enable the debug GPIOs P1.6 and P3.1
 /******************************** Static Functions ***************************/
 
 static uint8_t *rx_data = NULL;
@@ -168,6 +168,29 @@ static stream_stat_t statistic;
 static volatile uint32_t current_stream_buffer = 0;
 static uint8_t *stream_buffer_ptr = NULL;
 
+#ifdef TFT_DMA_DEBUG
+const mxc_gpio_cfg_t debug_pin[] = {
+        { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+        { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+};
+const unsigned int num_debugs = (sizeof(debug_pin) / sizeof(mxc_gpio_cfg_t));
+
+int debug_Init(void)
+{
+    int retval = E_NO_ERROR;
+    unsigned int i;
+
+    /* setup 2 GPIOs for the debug */
+    for (i = 0; i < num_debugs; i++) {
+        if (MXC_GPIO_Config(&debug_pin[i]) != E_NO_ERROR) {
+            retval = E_UNKNOWN;
+        }
+    }
+
+    return retval;
+}
+#endif
+
 static void stream_callback(int a, int b)
 {
     if (MXC_DMA->ch[g_dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {
@@ -214,8 +237,10 @@ static void stream_callback_tft(int a, int b)
 
         // Check current streaming buffer and reconfigure DMA
         if (current_stream_buffer) {
-            // Set buffer[0] for next DMA transfer
-        	MXC_GPIO_OutSet(MXC_GPIO3, MXC_GPIO_PIN_1);
+#ifdef TFT_DMA_DEBUG
+            MXC_GPIO_OutSet(MXC_GPIO3, MXC_GPIO_PIN_1); //debug GPIO
+#endif
+            // Set buffer[0] for next DMA transfer 
             MXC_DMA->ch[g_dma_channel].dst = (uint32_t)rx_data;
         	// wait until TFT is done
             while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS));
@@ -236,8 +261,10 @@ static void stream_callback_tft(int a, int b)
             }
         }
         else {
+#ifdef TFT_DMA_DEBUG
+            MXC_GPIO_OutSet(MXC_GPIO1, MXC_GPIO_PIN_6);  //debug GPIO
+#endif
             // Set buffer[1] for next DMA transfer
-        	MXC_GPIO_OutSet(MXC_GPIO3, MXC_GPIO_PIN_1);
             MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
         	// wait until TFT is done
 			while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS));
@@ -267,7 +294,10 @@ static void stream_callback_tft(int a, int b)
         MXC_DMA->ch[g_dma_channel].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
 
         statistic.dma_transfer_count++;
+#ifdef TFT_DMA_DEBUG
         MXC_GPIO_OutClr(MXC_GPIO3, MXC_GPIO_PIN_1);
+        MXC_GPIO_OutClr(MXC_GPIO1, MXC_GPIO_PIN_6);
+#endif
     }
 }
 
@@ -285,9 +315,7 @@ static void setup_dma(void)
         }
 
         // Set the initial streaming buffer to 1
-        //current_stream_buffer = 1;
-        current_stream_buffer = 0;
-        /// Let's use 2nd half of buffer for current_stream_buffer = 0
+        current_stream_buffer = 1;
         MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
 
         stream_buffer_ptr = NULL;
@@ -396,7 +424,7 @@ static void setup_dma_tft(void)
                                       // (0x1 << MXC_F_DMA_CTRL_EN_POS)         // Enable DMA channel
                                       );
     MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
-    MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR, (0x9600) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+    MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR, (g_total_img_size/4) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
     MXC_SPI0->dma   |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
         // QSPIn port is enabled
     //MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
@@ -408,7 +436,11 @@ static void setup_dma_tft(void)
     MXC_SPI0->dma |= (MXC_F_SPI_DMA_DMA_TX_EN);
     MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
     MXC_DMA->inten |= (1 << g_dma_channel);
+#ifdef TFT_DMA_DEBUG
+    debug_Init();
     MXC_GPIO_OutClr(MXC_GPIO3, MXC_GPIO_PIN_1);
+    MXC_GPIO_OutClr(MXC_GPIO1, MXC_GPIO_PIN_6);
+#endif
     g_dma_already_setup = 1;
 }
 
