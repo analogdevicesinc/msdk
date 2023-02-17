@@ -263,8 +263,7 @@ int main(void)
     default:
         printf("UNKNOWN CLOCK SOURCE \n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     MXC_GCR->ipll_ctrl |= MXC_F_GCR_IPLL_CTRL_EN; // Enable IPLL
@@ -643,8 +642,7 @@ int main(void)
     TFT_End(wordCounter);
 #endif
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 /* **************************************************************************** */
@@ -680,8 +678,7 @@ void I2SInit()
     if ((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
         PR_DEBUG("\nError in I2S_Init: %d\n", err);
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Set I2S RX FIFO threshold to generate interrupt */
@@ -772,8 +769,7 @@ void fail(void)
 {
     PR_DEBUG("\n*** FAIL ***\n\n");
 
-    while (1)
-        ;
+    while (1) {}
 }
 /* **************************************************************************** */
 uint8_t cnn_load_data(uint8_t *pIn)
@@ -1104,8 +1100,7 @@ void TFT_Intro(void)
     TFT_Print(buff, 35, 185, font_1, sprintf(buff, "stop, go, yes, no, on, off"));
     TFT_Print(buff, 5, 210, font_2, sprintf(buff, "PRESS PB1 TO START!"));
 
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) {}
 
     MXC_TFT_ClearScreen();
     TFT_Print(buff, 20, 50, font_1, sprintf(buff, "Start saying keywords..."));

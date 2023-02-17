@@ -69,7 +69,9 @@
 
 // Check CSI-2 Standard and your color format for these values.
 #define BITS_PER_PIXEL_ODD 24 // e.g. RGB888
+#define BYTES_PER_PIXEL_ODD (BITS_PER_PIXEL_ODD >> 3)
 #define BITS_PER_PIXEL_EVEN 24 // e.g. RGB888
+#define BYTES_PER_PIXEL_EVEN (BITS_PER_PIXEL_EVEN >> 3)
 
 // CSI-2 Peripheral Configuration
 #define NUM_DATA_LANES 2
@@ -106,7 +108,16 @@
 #endif
 
 // Size of Image Buffer
-#define IMAGE_SIZE ((BITS_PER_PIXEL_ODD + BITS_PER_PIXEL_EVEN) * IMAGE_WIDTH * IMAGE_HEIGHT) >> 4
+// This buffer will hold the full output image after the CSI2 has converted it
+// to color.
+// #define IMAGE_SIZE ((BITS_PER_PIXEL_ODD + BITS_PER_PIXEL_EVEN) * IMAGE_WIDTH * IMAGE_HEIGHT) >> 4
+#define IMAGE_SIZE \
+    (IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL_EVEN) + (IMAGE_WIDTH * BYTES_PER_PIXEL_EVEN)
+// ^ The addition of the extra row above is a workaround to another CSI2 hardware and/or driver issue.
+// When writing to the output image buffer the CSI2 block will overflow beyond the bounds of the array
+// by a variable amount and cause a hard fault.  At 160x120 it overflows by exactly 5 bytes.  At 320x240
+// It overflows by somewhere between 64 and 96 bytes (Exact # TBD by sheer trial and error).
+// Extending the output array by this extra row seems to be a reliable workaround to this issue.
 
 // Update for future cameras
 #if defined(CAMERA_OV5640)
@@ -120,8 +131,12 @@
 volatile int DMA_FLAG = 1;
 
 // RAW Line Buffers
-__attribute__((section(".csi2_buff_raw0"), aligned(4))) uint32_t RAW_ADDR0[IMAGE_WIDTH];
-__attribute__((section(".csi2_buff_raw1"), aligned(4))) uint32_t RAW_ADDR1[IMAGE_WIDTH];
+// These buffers are used by the CSI2 hardware for debayering.
+// The size of these is hard-coded to 2048 because there appears
+// to be some instability in the CSI2 hardware if they are scaled
+// based on the image dimensions
+__attribute__((section(".csi2_buff_raw0"))) uint32_t RAW_ADDR0[2048];
+__attribute__((section(".csi2_buff_raw1"))) uint32_t RAW_ADDR1[2048];
 
 // Buffer for processed image
 uint8_t IMAGE[IMAGE_SIZE];
@@ -146,6 +161,8 @@ void process_img(void)
     uint32_t imgLen;
     uint32_t w, h;
 
+    printf("Capturing image...\n");
+
     MXC_CSI2_CaptureFrameDMA(NUM_DATA_LANES);
 
     while (DMA_FLAG) {}
@@ -165,12 +182,10 @@ void process_img(void)
     send_msg(g_serial_buffer);
 
     clear_serial_buffer();
-    MXC_UART_Write(Con_Uart, raw, (int *)&imgLen);
+    MXC_UART_WriteBytes(Con_Uart, raw, imgLen);
 
     int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
-
-    // utils_send_img_to_pc(raw, imgLen, w, h, mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT));
 }
 
 void service_console()
@@ -293,11 +308,12 @@ int main(void)
     MXC_NVIC_SetVector(CSI2_IRQn, CSI2_Handler);
 
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
+    buttonPressed = 0;
 
     while (1) {
         LED_On(0);
 
-        MXC_Delay(MXC_DELAY_MSEC(1));
+        MXC_Delay(MXC_DELAY_MSEC(100));
         // ^ Slow down main processing loop to work around some timing issues
         // with the console at extreme speeds.  1000 checks/sec is plenty
         service_console();

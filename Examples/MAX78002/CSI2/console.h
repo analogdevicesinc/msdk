@@ -53,6 +53,8 @@ extern char g_serial_buffer[SERIAL_BUFFER_SIZE];
 extern int g_buffer_index;
 extern int g_num_commands;
 
+int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len);
+
 int console_init();
 int send_msg(const char *msg);
 int recv_msg(char *buffer);
