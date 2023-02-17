@@ -206,14 +206,25 @@ typedef enum {
 } max11261_gpo_t;
 
 /**
+ * Compare mode for input activity and Out-Of-Range bit generation in sequencer
+ * mode 4.
+ */
+typedef enum {
+    MAX11261_COMP_MODE_CURR = 0, /**< Current result is within limits */
+    MAX11261_COMP_MODE_DIFF,     /**< Current result minus previous result is within limits*/
+    MAX11261_COMP_MODE_HPF,      /**< Highpass digital filter output is within limits */
+} max11261_comp_mode_t;
+
+/**
  * ADC conversion result and miscelleanous info.
  */
 typedef struct {
-    int32_t val; /**< Conversion result */
-    uint8_t chn:3; /**< Channel number */
-    uint8_t aor:1; /**< Analog input overrange detection */
-    uint8_t dor:1; /**< Data overrun detection */
-    uint8_t rfu:3;
+    int32_t val;    /**< Conversion result */
+    uint8_t chn:3;  /**< Channel number */
+    uint8_t aor:1;  /**< Analog input overrange detection */
+    uint8_t dor:1;  /**< Data overrun detection */
+    uint8_t oor:1;  /**< Data out-of-range detection */
+    uint8_t rfu:2;
 } max11261_adc_result_t;
 
 /**
@@ -271,6 +282,39 @@ void max11261_adc_set_ready_func(max11261_ready_func_t readyFunc);
 int max11261_adc_reset(void);
 
 /**
+ * @brief Returns the MAX11261 powerdown state.
+ *
+ * @return Current power-down state, error code otherwise.
+ */
+max11261_pd_state_t max11261_adc_pd_state(void);
+
+/**
+ * @brief Read and print the values inside the MAX11261 registers.
+ *
+ * @return Success/Fail, see \ref errno.h for a list of return codes.
+ */
+int max11261_adc_dump_regs(void);
+
+/**
+ * @brief Puts the MAX11261 to sleep mode.
+ *
+ * @return Success/Fail, see \ref errno.h for a list of return codes.
+ */
+int max11261_adc_sleep(void);
+
+/**
+ * @brief Puts the MAX11261 to standby mode.
+ *
+ * @return Success/Fail, see \ref errno.h for a list of return codes.
+ */
+int max11261_adc_standby(void);
+
+/**
+ * @brief Performs a self-calibration operation.
+ */
+int max11261_adc_calibrate_self(void);
+
+/**
  * @brief Sets the polarity of the input. Default polarity is
  * \a MAX11261_POL_UNIPOLAR.
  *
@@ -293,6 +337,9 @@ int max11261_adc_set_polarity(max11261_pol_t pol);
  * the negative full-scale value is 0x800000, the midscale is 0x000000,
  * and the positive full scale is 0x7FFFFF.
  *
+ * In sequencer mode 4, bipolar input range with two's complement numbers must
+ * be used otherwise the results will be incorrect.
+ *
  * @param fmt Data format. See \ref max11261_fmt_t.
  *
  * @return Success/Fail, 0 if success, -EINVAL if the format is not compatible
@@ -306,7 +353,6 @@ int max11261_adc_set_format(max11261_fmt_t fmt);
  * The maximum data rate depends on the I2C interface speed.
  *
  * @param rate Data rate to be used.
- *
  */
 void max11261_adc_set_rate_single(max11261_single_rate_t rate);
 
@@ -331,6 +377,27 @@ int max11261_adc_set_rate_continuous(max11261_cont_rate_t rate);
  * @return Success/Fail, see \ref errno.h for a list of return codes.
  */
 int max11261_adc_set_channel(max11261_adc_channel_t chan);
+
+/**
+ * @brief Enable the given general-purpose output.
+ *
+ * GPOs can only be controlled directly in sequencer modes 1 and 2. In sleep
+ * state GPOs are inactive regardless of the setting.
+ *
+ * @param gpo Output to enable. One of \ref max11261_gpo_t.
+ *
+ * @return Success/Fail, see \ref errno.h for a list of return codes.
+ */
+int max11261_adc_enable_gpo(max11261_gpo_t gpo);
+
+/**
+ * @brief Disable the given general-purpose output.
+ *
+ * @param gpo Output to disable. One of \ref max11261_gpo_t.
+ *
+ * @return Success/Fail, see \ref errno.h for a list of return codes.
+ */
+int max11261_adc_disable_gpo(max11261_gpo_t gpo);
 
 /**
  * @brief Sets the scan order of ADC channel in sequencer modes 2, 3 and 4.
@@ -394,7 +461,7 @@ void max11261_adc_disable_pga(void);
  * Start of conversion is delayed by the set amount of time to allow for input
  * to become stable. Recommended to use with high impedance source networks.
  *
- * @param delay Delay value in microseconds. Must be less than 1021
+ * @param delay Delay value in microseconds. Must be less than 1024
  * microseconds.
  *
  * @return Success/Fail, 0 if success, -EINVAL if the value is out
@@ -420,58 +487,71 @@ int max11261_adc_set_mux_delay(uint16_t delay);
 int max11261_adc_set_gpo_delay(uint16_t delay);
 
 /**
- * @brief Returns the MAX11261 powerdown state.
+ * @brief Sets the autoscan delay.
  *
- * @return Current power-down state, error code otherwise.
+ * Autoscan delay controls the idle time between consecutive conversions.
+ *
+ * Autoscan delay is only used in sequencer mode 4. It is ignored in other
+ * modes.
+ *
+ * @param delay Delay value in miliseconds. Must be less than 1024ms.
+ *
+ * @return Success/Fail, 0 if success, -EINVAL if the value is not supported.
  */
-max11261_pd_state_t max11261_adc_pd_state(void);
+int max11261_adc_set_autoscan_delay(uint16_t delay);
 
 /**
- * @brief Read and print the values inside the MAX11261 registers.
+ * @brief Sets the highpass filter cutoff frequency.
  *
- * @return Success/Fail, see \ref errno.h for a list of return codes.
+ * Cutoff frequency is calculated as follows:
+ * 0 -> Scan Rate / 39.0625
+ * 1 -> Scan Rate / 78.125
+ * 2 -> Scan Rate / 156.25
+ * 3 -> Scan Rate / 312.5
+ * 4 -> Scan Rate / 625
+ * 5 -> Scan Rate / 1250
+ * 6 -> Scan Rate / 2500
+ * 7 -> Scan Rate / 5000
+ *
+ * @param freq Frequency setting.
  */
-int max11261_adc_dump_regs(void);
+int max11261_adc_set_hpf_frequency(uint8_t freq);
 
 /**
- * @brief Puts the MAX11261 into sleep mode.
+ * @brief Sets the comparison mode used during math operation in sequencer
+ * mode 4.
  *
- * @return Success/Fail, see \ref errno.h for a list of return codes.
+ * @param mode Comparison mode. See \ref max11261_mode_t.
+ *
+ * @return Success/Fail, 0 if success, -EINVAL if \a mode is not supported.
  */
-int max11261_adc_sleep(void);
+int max11261_adc_set_compare_mode(max11261_comp_mode_t mode);
 
 /**
- * @brief Puts the MAX11261 into standby mode.
+ * @brief Sets the lower bound for the comparator.
  *
- * @return Success/Fail, see \ref errno.h for a list of return codes.
+ * Limit value can be in the range <-Vref/gain, +Vref/gain>.
+ *
+ * @param chan  Channel to set the limit for.
+ * @param limit Limit value in millivolts.
+ *
+ * @return Success/Fail, 0 if success, -EINVAL if \a chan is invalid or
+ * \a limit is out of reference voltage range.
  */
-int max11261_adc_standby(void);
+int max11261_adc_set_limit_low(max11261_adc_channel_t chan, int16_t limit);
 
 /**
- * @brief Performs a self-calibration operation.
+ * @brief Sets the higher bound for the comparator.
+ *
+ * Limit value can be in the range <-Vref/gain, +Vref/gain>.
+ *
+ * @param chan  Channel to set the limit for.
+ * @param limit Limit value in millivolts.
+ *
+ * @return Success/Fail, 0 if success, -EINVAL if \a chan is invalid or
+ * \a limit is out of reference voltage range.
  */
-int max11261_adc_calibrate_self(void);
-
-/**
- * @brief Enable the given general-purpose output.
- *
- * GPOs can only be controlled directly in sequencer modes 1 and 2. In sleep
- * state GPOs are inactive regardless of the setting.
- *
- * @param gpo Output to enable. One of \ref max11261_gpo_t.
- *
- * @return Success/Fail, see \ref errno.h for a list of return codes.
- */
-int max11261_adc_enable_gpo(max11261_gpo_t gpo);
-
-/**
- * @brief Disable the given general-purpose output.
- *
- * @param gpo Output to disable. One of \ref max11261_gpo_t.
- *
- * @return Success/Fail, see \ref errno.h for a list of return codes.
- */
-int max11261_adc_disable_gpo(max11261_gpo_t gpo);
+int max11261_adc_set_limit_high(max11261_adc_channel_t chan, int16_t limit);
 
 /**
  * @brief Prepares MAX11261 internal registers for conversion.
@@ -481,7 +561,8 @@ int max11261_adc_disable_gpo(max11261_gpo_t gpo);
 int max11261_adc_convert_prepare(void);
 
 /**
- * @brief Reads the available conversion result into @p val.
+ * @brief Reads the available conversion results into @p res. Blocks until data
+ * is available or timeout occurs.
  *
  * A conversion command must have already been sent otherwise the function will
  * timeout.

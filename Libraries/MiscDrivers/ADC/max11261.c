@@ -82,10 +82,14 @@
 #define MAX11261_CHANNEL_COUNT  6
 #define MAX11261_ADC_RESOLUTION 24
 
-#define MAX11261_MUX_DELAY_MAX  1020
+#define MAX11261_MUX_DELAY_MAX  1023
 #define MAX11261_MUX_DELAY_MIN  4
 #define MAX11261_GPO_DELAY_MAX  5100
 #define MAX11261_GPO_DELAY_MIN  20
+#define MAX11261_AUTOSCAN_DELAY_MAX  1023
+#define MAX11261_AUTOSCAN_DELAY_MIN  4
+
+#define MAX11261_HPF_CUTOFF_MAX 7
 
 #define MAX11261_READ_REG(addr, val) \
     do { \
@@ -145,8 +149,9 @@ typedef struct {
     max11261_sequencer_mode_t seqMode;      /**< Sequencer mode */
     max11261_pol_t polarity;      /**< Input polarity */
     max11261_fmt_t format;        /**< Result format */
-    uint16_t muxDelay;  /**< Multiplexer delay, 0 - 1020us */
-    uint16_t gpoDelay;  /**< GPO delay, 20 - 5100 us */
+    uint16_t muxDelay;      /**< Multiplexer delay, 0 - 1020ms */
+    uint16_t gpoDelay;      /**< GPO delay, 20 - 5100us */
+    uint16_t autoscanDelay; /**< Autoscan delay, 4 - 1020ms */
     /**< Scan order of channels in mode 2,3 or 4 */
     uint8_t order[MAX11261_ADC_CHANNEL_MAX];
     max11261_gpo_t gpoMap[MAX11261_ADC_CHANNEL_MAX]; /**< GPO map */
@@ -164,6 +169,17 @@ typedef struct {
     uint8_t css_en : 1; /**< Current source and sink on inputs */
     uint8_t rfu    : 1;
 } max11261_ctrl_t;
+
+/**
+ * @brief Highpass filter parameters.
+ */
+typedef struct {
+    int16_t limitMin[MAX11261_ADC_CHANNEL_MAX];
+    int16_t limitMax[MAX11261_ADC_CHANNEL_MAX];
+    uint8_t freq    : 3;    /**< HPF cutoff frequency */
+    uint8_t cmp_mode: 2;    /**< Compare method of input conversion results */
+    uint8_t rfu     : 3;
+} max11261_hpf_t;
 
 struct max11261_reg {
     const char *name;
@@ -269,6 +285,16 @@ static max11261_ctrl_t ctrl = {
         .lp_mode = 0,
         .ldo_en = 1,
         .css_en = 0,
+};
+
+/**
+ * @brief Highpass filter parameters.
+ */
+static max11261_hpf_t hpf = {
+        .limitMin = { 0, 0, 0, 0, 0, 0},
+        .limitMax = { 0, 0, 0, 0, 0, 0},
+        .freq = 0,
+        .cmp_mode = MAX11261_COMP_MODE_CURR,
 };
 
 /* **** Function Prototypes **** */
@@ -442,6 +468,55 @@ static int max11261_set_powerdown_mode(uint8_t mode)
     return error;
 }
 
+max11261_pd_state_t max11261_adc_pd_state(void)
+{
+    int error;
+    uint32_t val;
+
+    MAX11261_READ_REG(MAX11261_STAT, &val);
+
+    return (val & MAX11261_STAT_PDSTAT) >> MAX11261_STAT_PDSTAT_POS;
+}
+
+int max11261_adc_dump_regs(void)
+{
+    int error;
+    uint32_t val;
+
+    for (uint8_t reg = MAX11261_STAT; reg <= MAX11261_LIMIT_HIGH5; reg++) {
+        MAX11261_READ_REG(reg, &val);
+        log_inf("%s@%02Xh: 0x%08X", regs[reg].name, reg, val);
+    }
+
+    return 0;
+}
+
+int max11261_adc_sleep(void)
+{
+    return max11261_set_powerdown_mode(MAX11261_CTRL1_PD_SLEEP);
+}
+
+int max11261_adc_standby(void)
+{
+    return max11261_set_powerdown_mode(MAX11261_CTRL1_PD_STANDBY);
+}
+
+int max11261_adc_calibrate_self(void)
+{
+    int error;
+
+    MAX11261_UPDATE_REG(MAX11261_CTRL1, MAX11261_CTRL1_CAL,
+            MAX11261_CTRL1_CAL_SELF);
+
+    error = max11261_write_byte(MAX11261_CMD_CALIBRATE);
+    if (error < 0)
+        return error;
+
+    platCtx.delayUs(100000);
+
+    return 0;
+}
+
 int max11261_adc_set_polarity(max11261_pol_t pol)
 {
     if (pol == MAX11261_POL_UNIPOLAR && seq.seqMode == MAX11261_SEQ_MODE_4)
@@ -494,6 +569,25 @@ int max11261_adc_set_channel(max11261_adc_channel_t chan)
     seq.chan = chan;
 
     return 0;
+}
+
+int max11261_adc_enable_gpo(max11261_gpo_t gpo)
+{
+    if (gpo >= MAX11261_GPO_MAX)
+        return -EINVAL;
+
+    return max11261_update_reg(MAX11261_GPO_DIR,
+            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS),
+            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS));
+}
+
+int max11261_adc_disable_gpo(max11261_gpo_t gpo)
+{
+    if (gpo >= MAX11261_GPO_MAX)
+        return -EINVAL;
+
+    return max11261_update_reg(MAX11261_GPO_DIR,
+            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS), 0);
 }
 
 int max11261_adc_set_channel_order(max11261_adc_channel_t chan, uint8_t order)
@@ -608,72 +702,78 @@ int max11261_adc_set_gpo_delay(uint16_t delay)
     return 0;
 }
 
-max11261_pd_state_t max11261_adc_pd_state(void)
+int max11261_adc_set_autoscan_delay(uint16_t delay)
 {
-    int error;
-    uint32_t val;
+    if (delay > MAX11261_AUTOSCAN_DELAY_MAX)
+        return -EINVAL;
 
-    MAX11261_READ_REG(MAX11261_STAT, &val);
+    if (delay && delay < MAX11261_AUTOSCAN_DELAY_MIN)
+        delay = MAX11261_AUTOSCAN_DELAY_MIN;
 
-    return (val & MAX11261_STAT_PDSTAT) >> MAX11261_STAT_PDSTAT_POS;
+    seq.autoscanDelay = delay;
+
+    return 0;
 }
 
-int max11261_adc_dump_regs(void)
+int max11261_adc_set_hpf_frequency(uint8_t freq)
 {
-    int error;
-    uint32_t val;
+    if (freq > MAX11261_HPF_CUTOFF_MAX)
+        return -EINVAL;
 
-    for (uint8_t reg = MAX11261_STAT; reg <= MAX11261_LIMIT_HIGH5; reg++) {
-        MAX11261_READ_REG(reg, &val);
-        log_inf("%s@%02Xh: 0x%08X", regs[reg].name, reg, val);
+    hpf.freq = freq;
+
+    return 0;
+}
+
+int max11261_adc_set_compare_mode(max11261_comp_mode_t mode)
+{
+    if (mode > MAX11261_COMP_MODE_HPF)
+        return -EINVAL;
+
+    hpf.cmp_mode = mode;
+
+    return 0;
+}
+
+static int limit_valid(max11261_adc_channel_t chan, int16_t limit)
+{
+    double min, max;
+
+    if (chan < MAX11261_ADC_CHANNEL_0 || chan >= MAX11261_ADC_CHANNEL_MAX)
+        return -EINVAL;
+
+    if (ctrl.pga_en) {
+        max = (double) cfg.vref / (1 << ctrl.pga);
+        min = -1 * max;
+    } else {
+        max = cfg.vref;
+        min = -1 * max;
     }
 
-    return 0;
-}
-
-int max11261_adc_sleep(void)
-{
-    return max11261_set_powerdown_mode(MAX11261_CTRL1_PD_SLEEP);
-}
-
-int max11261_adc_standby(void)
-{
-    return max11261_set_powerdown_mode(MAX11261_CTRL1_PD_STANDBY);
-}
-
-int max11261_adc_calibrate_self(void)
-{
-    int error;
-
-    MAX11261_UPDATE_REG(MAX11261_CTRL1, MAX11261_CTRL1_CAL,
-            MAX11261_CTRL1_CAL_SELF);
-
-    error = max11261_write_byte(MAX11261_CMD_CALIBRATE);
-    if (error < 0)
-        return error;
-
-    platCtx.delayUs(100000);
+    if (limit < min || limit > max)
+        return -EINVAL;
 
     return 0;
 }
 
-int max11261_adc_enable_gpo(max11261_gpo_t gpo)
+int max11261_adc_set_limit_low(max11261_adc_channel_t chan, int16_t limit)
 {
-    if (gpo >= MAX11261_GPO_MAX)
+    if (limit_valid(chan, limit))
         return -EINVAL;
 
-    return max11261_update_reg(MAX11261_GPO_DIR,
-            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS),
-            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS));
+    hpf.limitMin[chan] = limit;
+
+    return 0;
 }
 
-int max11261_adc_disable_gpo(max11261_gpo_t gpo)
+int max11261_adc_set_limit_high(max11261_adc_channel_t chan, int16_t limit)
 {
-    if (gpo >= MAX11261_GPO_MAX)
+    if (limit_valid(chan, limit))
         return -EINVAL;
 
-    return max11261_update_reg(MAX11261_GPO_DIR,
-            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS), 0);
+    hpf.limitMax[chan] = limit;
+
+    return 0;
 }
 
 static inline int sif_freq(uint16_t freq)
@@ -688,9 +788,29 @@ static inline int sif_freq(uint16_t freq)
         return MAX11261_SIF_FREQ_3001_5000;
 }
 
+/**
+ * Return the given millivolts as 24-bit ADC representation.
+ */
+static uint32_t mv_to_d(int16_t mv)
+{
+    int64_t tmp = 0;
+
+    tmp = mv / 2;
+    if (tmp < 0) tmp = -1 * tmp;
+    tmp = tmp << cfg.res;
+    tmp = tmp / cfg.vref;
+
+    /* Add sign bit if \a mv is negative. */
+    if (mv < 0) {
+        tmp |= 0x800000;
+    }
+
+    return (uint32_t) (tmp & ((1 << cfg.res) - 1));
+}
+
 int max11261_adc_convert_prepare(void)
 {
-    int error;
+    int error, j;
     uint32_t chmap0, chmap1;
 
     /* Set sequencer register */
@@ -800,6 +920,26 @@ int max11261_adc_convert_prepare(void)
         MAX11261_WRITE_REG(MAX11261_CHMAP1, chmap1);
     }
 
+    /* Set limits if operating in sequencer mode 4 */
+    if (seq.seqMode == MAX11261_SEQ_MODE_4) {
+        uint8_t inten = 0;
+        for (j = MAX11261_ADC_CHANNEL_0; j < MAX11261_ADC_CHANNEL_MAX; j++) {
+            if (seq.order[j] != 0) {
+                MAX11261_WRITE_REG(MAX11261_LIMIT_LOW0 + j,
+                        mv_to_d(hpf.limitMin[j]));
+                MAX11261_WRITE_REG(MAX11261_LIMIT_HIGH0 + j,
+                        mv_to_d(hpf.limitMax[j]));
+                inten |= (1 << j);
+            }
+        }
+        MAX11261_UPDATE_REG(MAX11261_INPUT_INT_EN, MAX11261_INPUT_INT_EN_CH,
+                inten << MAX11261_INPUT_INT_EN_CH_POS);
+        /* Write HPF settings */
+        MAX11261_WRITE_REG(MAX11261_HPF,
+                (hpf.cmp_mode << MAX11261_HPF_CMP_MODE_POS)
+              | (hpf.freq << MAX11261_HPF_FREQUENCY_POS));
+    }
+
     /* Set control register 1
      * PD       : Go to standby after conversion
      * U_B      : Unipolar input range
@@ -859,8 +999,8 @@ static inline uint8_t channel_count(uint8_t srdy)
 /**
  * @brief Calculate conversion delay count for each mode.
  *
- * The minimum delay interval is (SampleRateDelay / 10)us. If the sample rate
- * is 50sps for instance, the SampleRateDelay = 1s / 50sps = 0.02s = 20000us.
+ * The minimum delay interval is (SampleRateDelay / 10)us. If sample rate is
+ * 50sps for instance, SampleRateDelay becomes 1s / 50sps = 0.02s = 20000us.
  * The delay interval in this case is 2000us which is also hardcoded in
  * \ref max11261_single_cycle_delay. Hence the delay function has to be called
  * at least 10 times before deciding if a timeout has occurred. Two extra delay
@@ -875,6 +1015,8 @@ static inline uint8_t channel_count(uint8_t srdy)
  * Sequencer mode 3: Delay count in sequencer mode 2 plus one GPO delay. The
  * GPOs mapped to other channels are enabled during conversion of the previous
  * channel. Thus only one GPO delay needs to be considered.
+ * Sequencer mode 4: Delay count in sequencer mode 3 plus autoscan delay. Math
+ * operation delay should be negligible.
  */
 static inline uint32_t delay_count(void)
 {
@@ -891,7 +1033,11 @@ static inline uint32_t delay_count(void)
                 + (((channel_count(seq.srdy) * seq.muxDelay) + seq.gpoDelay)
                         / max11261_single_cycle_delay[seq.srate]);
     case MAX11261_SEQ_MODE_4:
-            return 1;
+        return 12 * channel_count(seq.srdy)
+                + (((channel_count(seq.srdy)
+                        * (seq.muxDelay + 1000 * seq.autoscanDelay))
+                        + seq.gpoDelay)
+                        / max11261_single_cycle_delay[seq.srate]);
     default:
         return 0;
     }
@@ -932,6 +1078,8 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
         return -ETIMEDOUT;
 
     MAX11261_READ_REG(MAX11261_FIFO_LEVEL, &cnt);
+    if (seq.seqMode == MAX11261_SEQ_MODE_4)
+        MAX11261_READ_REG(MAX11261_INT_STAT, &reg);
 
     while (cnt-- && count--) {
         MAX11261_READ_REG(MAX11261_STAT, &reg);
@@ -943,6 +1091,7 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
 
         MAX11261_READ_REG(MAX11261_FIFO, &reg);
         res->chn = (reg & MAX11261_FIFO_CH) >> MAX11261_FIFO_CH_POS;
+        res->oor = (reg & MAX11261_FIFO_OOR) >> MAX11261_FIFO_OOR_POS;
         reg &= ((1 << cfg.res) - 1);
         tmp = reg;
         /* Extend signed 24-bit integer to 32-bit if the value read from the FIFO
