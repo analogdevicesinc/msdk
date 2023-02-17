@@ -86,6 +86,29 @@
 #define MAX11261_MUX_DELAY_MIN  4
 #define MAX11261_GPO_DELAY_MAX  5100
 #define MAX11261_GPO_DELAY_MIN  20
+
+#define MAX11261_READ_REG(addr, val) \
+    do { \
+            error = max11261_read_reg(addr, val); \
+            if (error < 0) \
+                return error; \
+    } while (0);
+
+#define MAX11261_WRITE_REG(addr, val) \
+    do { \
+        error = max11261_write_reg(addr, val); \
+        if (error < 0) \
+            return error; \
+    } while(0);
+
+#define MAX11261_UPDATE_REG(addr, mask, val) \
+    do { \
+        error = max11261_update_reg(addr, mask, val); \
+        if (error < 0) \
+            return error; \
+    } while(0);
+
+
 /* **** Variable Declaration **** */
 
 /**
@@ -381,14 +404,14 @@ static int max11261_update_reg(uint8_t addr, uint32_t mask, uint32_t val)
     int error;
     uint32_t tmp;
 
-    error = max11261_read_reg(addr, &tmp);
-    if (error < 0)
-        return error;
+    MAX11261_READ_REG(addr, &tmp);
 
     tmp &= ~mask;
     tmp |= val;
 
-    return max11261_write_reg(addr, tmp);
+    MAX11261_WRITE_REG(addr, tmp);
+
+    return 0;
 }
 
 static int max11261_set_powerdown_mode(uint8_t mode)
@@ -397,9 +420,7 @@ static int max11261_set_powerdown_mode(uint8_t mode)
     uint32_t val, timeout;
     uint8_t mask;
 
-    error = max11261_update_reg(MAX11261_CTRL1, MAX11261_CTRL1_PD, mode);
-    if (error < 0)
-        return error;
+    MAX11261_UPDATE_REG(MAX11261_CTRL1, MAX11261_CTRL1_PD, mode);
 
     error = max11261_write_byte(MAX11261_CMD_POWERDOWN);
     if (error < 0)
@@ -408,10 +429,10 @@ static int max11261_set_powerdown_mode(uint8_t mode)
     mask = (mode == MAX11261_CTRL1_PD_SLEEP) ? MAX11261_STAT_PDSTAT_SLEEP
             : MAX11261_STAT_PDSTAT_STANDBY;
     timeout = 2000; /* 2000 x 10us */
-    max11261_read_reg(MAX11261_STAT, &val);
+    MAX11261_READ_REG(MAX11261_STAT, &val);
     while ((val & MAX11261_STAT_PDSTAT) != mask && --timeout) {
         platCtx.delayUs(10);
-        max11261_read_reg(MAX11261_STAT, &val);
+        MAX11261_READ_REG(MAX11261_STAT, &val);
     }
 
     if (timeout == 0)
@@ -592,12 +613,9 @@ max11261_pd_state_t max11261_adc_pd_state(void)
     int error;
     uint32_t val;
 
-    error = max11261_read_reg(MAX11261_STAT, &val);
+    MAX11261_READ_REG(MAX11261_STAT, &val);
 
-    if (error == 0)
-        return (val & MAX11261_STAT_PDSTAT) >> MAX11261_STAT_PDSTAT_POS;
-
-    return error;
+    return (val & MAX11261_STAT_PDSTAT) >> MAX11261_STAT_PDSTAT_POS;
 }
 
 int max11261_adc_dump_regs(void)
@@ -606,14 +624,11 @@ int max11261_adc_dump_regs(void)
     uint32_t val;
 
     for (uint8_t reg = MAX11261_STAT; reg <= MAX11261_LIMIT_HIGH5; reg++) {
-        error = max11261_read_reg(reg, &val);
-        if (error == 0)
-            log_inf("%s@%02Xh: 0x%08X", regs[reg].name, reg, val);
-        else
-            break;
+        MAX11261_READ_REG(reg, &val);
+        log_inf("%s@%02Xh: 0x%08X", regs[reg].name, reg, val);
     }
 
-    return error;
+    return 0;
 }
 
 int max11261_adc_sleep(void)
@@ -628,11 +643,10 @@ int max11261_adc_standby(void)
 
 int max11261_adc_calibrate_self(void)
 {
-    int error = max11261_update_reg(MAX11261_CTRL1, MAX11261_CTRL1_CAL,
-            MAX11261_CTRL1_CAL_SELF);
+    int error;
 
-    if (error < 0)
-        return error;
+    MAX11261_UPDATE_REG(MAX11261_CTRL1, MAX11261_CTRL1_CAL,
+            MAX11261_CTRL1_CAL_SELF);
 
     error = max11261_write_byte(MAX11261_CMD_CALIBRATE);
     if (error < 0)
@@ -680,7 +694,7 @@ int max11261_adc_convert_prepare(void)
     uint32_t chmap0, chmap1;
 
     /* Set sequencer register */
-    error = max11261_update_reg(MAX11261_SEQ,
+    MAX11261_UPDATE_REG(MAX11261_SEQ,
               MAX11261_SEQ_MUX | MAX11261_SEQ_MODE | MAX11261_SEQ_GPODREN
             | MAX11261_SEQ_MDREN
             | MAX11261_SEQ_RDYBEN
@@ -691,15 +705,11 @@ int max11261_adc_convert_prepare(void)
             | (seq.muxDelay ? MAX11261_SEQ_MDREN : 0)
             | MAX11261_SEQ_RDYBEN
             | sif_freq(cfg.freq));
-    if (error < 0)
-        return error;
 
     if (seq.muxDelay) {
         /* Delay resolution is 4us */
-        error = max11261_update_reg(MAX11261_DELAY, MAX11261_DELAY_MUX,
+        MAX11261_UPDATE_REG(MAX11261_DELAY, MAX11261_DELAY_MUX,
                 (seq.muxDelay / 4) << MAX11261_DELAY_MUX_POS);
-        if (error < 0)
-            return error;
     }
 
     chmap0 = 0;
@@ -711,10 +721,8 @@ int max11261_adc_convert_prepare(void)
         /* Apply GPO delay */
         if (seq.gpoDelay) {
             /* Delay resolution is 20us */
-            error = max11261_update_reg(MAX11261_DELAY, MAX11261_DELAY_GPO,
+            MAX11261_UPDATE_REG(MAX11261_DELAY, MAX11261_DELAY_GPO,
                     (seq.gpoDelay / 20) << MAX11261_DELAY_GPO_POS);
-            if (error < 0)
-                return error;
         }
 
         /* Map GPO channels */
@@ -771,9 +779,7 @@ int max11261_adc_convert_prepare(void)
             chmap0 |= seq.order[MAX11261_ADC_CHANNEL_2] <<
                     MAX11261_CHMAP0_CH2_ORD_POS;
         }
-        error = max11261_write_reg(MAX11261_CHMAP0, chmap0);
-        if (error < 0)
-            return error;
+        MAX11261_WRITE_REG(MAX11261_CHMAP0, chmap0);
 
         /* Channel 3, 4 and 5 -> CHMAP1 */
         if (seq.order[MAX11261_ADC_CHANNEL_3]) {
@@ -791,9 +797,7 @@ int max11261_adc_convert_prepare(void)
             chmap1 |= seq.order[MAX11261_ADC_CHANNEL_5] <<
                     MAX11261_CHMAP1_CH5_ORD_POS;
         }
-        error = max11261_write_reg(MAX11261_CHMAP1, chmap1);
-        if (error < 0)
-            return error;
+        MAX11261_WRITE_REG(MAX11261_CHMAP1, chmap1);
     }
 
     /* Set control register 1
@@ -802,7 +806,7 @@ int max11261_adc_convert_prepare(void)
      * FORMAT   : Offset binary format
      * SCYCLE   : Single cycle conversion
      */
-    error = max11261_write_reg(MAX11261_CTRL1,
+    MAX11261_WRITE_REG(MAX11261_CTRL1,
               MAX11261_CTRL1_PD_STANDBY
             | ((seq.format == MAX11261_FMT_TWOS_COMPLEMENT) ?
                     MAX11261_CTRL1_FORMAT_TWOS_COMP :
@@ -813,8 +817,6 @@ int max11261_adc_convert_prepare(void)
             | ((seq.convMode != MAX11261_LATENT_CONTINUOUS) ?
                     MAX11261_CTRL1_SCYCLE_SINGLE :
                     MAX11261_CTRL1_SCYCLE_CONT));
-    if (error < 0)
-        return error;
 
     /* Set control register 2
      * CSSEN    : Current source and sink
@@ -823,17 +825,15 @@ int max11261_adc_convert_prepare(void)
      * PGAEN    : PGA enable
      * PGA      : PGA level
      */
-    error = max11261_write_reg(MAX11261_CTRL2,
+    MAX11261_WRITE_REG(MAX11261_CTRL2,
              (ctrl.css_en << MAX11261_CTRL2_CSSEN_POS)
            | (ctrl.ldo_en << MAX11261_CTRL2_LDOEN_POS)
            | (ctrl.lp_mode << MAX11261_CTRL2_LPMODE_POS)
            | (ctrl.pga_en << MAX11261_CTRL2_PGAEN_POS)
            | (ctrl.pga << MAX11261_CTRL2_PGA_POS));
-    if (error < 0)
-        return error;
 
     /* Enable input interrupts if ready function is set, disable otherwise */
-    error = max11261_update_reg(MAX11261_INPUT_INT_EN,
+    MAX11261_UPDATE_REG(MAX11261_INPUT_INT_EN,
             MAX11261_INPUT_INT_EN_RDYB,
             platCtx.ready ? MAX11261_INPUT_INT_EN_RDYB : 0);
 
@@ -913,7 +913,7 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
             platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);
         }
     } else {
-        max11261_read_reg(MAX11261_STAT, &reg);
+        MAX11261_READ_REG(MAX11261_STAT, &reg);
         while (--to) {
             if (seq.seqMode == MAX11261_SEQ_MODE_1) {
                 if (reg & MAX11261_STAT_RDY)
@@ -925,28 +925,23 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
                     break;
             }
             platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);
-            max11261_read_reg(MAX11261_STAT, &reg);
+            MAX11261_READ_REG(MAX11261_STAT, &reg);
         }
     }
     if (to == 0)
         return -ETIMEDOUT;
 
-    error = max11261_read_reg(MAX11261_FIFO_LEVEL, &cnt);
-    if (error < 0)
-        return error;
+    MAX11261_READ_REG(MAX11261_FIFO_LEVEL, &cnt);
 
     while (cnt-- && count--) {
-        error = max11261_read_reg(MAX11261_STAT, &reg);
-        if (error < 0)
-            return error;
+        MAX11261_READ_REG(MAX11261_STAT, &reg);
         if (reg & MAX11261_STAT_GPOERR)
             return -EPERM;
 
         res->dor = !!(reg & MAX11261_STAT_DOR);
         res->aor = !!(reg & MAX11261_STAT_AOR);
-        error = max11261_read_reg(MAX11261_FIFO, &reg);
-        if (error < 0)
-            return error;
+
+        MAX11261_READ_REG(MAX11261_FIFO, &reg);
         res->chn = (reg & MAX11261_FIFO_CH) >> MAX11261_FIFO_CH_POS;
         reg &= ((1 << cfg.res) - 1);
         tmp = reg;
