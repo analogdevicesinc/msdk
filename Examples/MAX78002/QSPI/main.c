@@ -54,7 +54,7 @@
 /***** Definitions *****/
 #define SPI MXC_SPI0
 // #define SPI_SPEED 8000000
-#define SPI_SPEED 100000
+#define SPI_SPEED 1000000
 #define TEST_SIZE 320
 
 // A macro to convert a DMA channel number to an IRQn number
@@ -424,6 +424,15 @@ int ram_read_quad_dma(mxc_spi_req_t *req, uint32_t address, uint8_t *out, unsign
     return MXC_SPI_MasterTransactionDMA(req);
 }
 
+int benchmark_overhead(uint32_t address)
+{
+    int err = E_NO_ERROR;
+    uint8_t buffer[5];
+    _parse_spi_header(0x02, address, buffer);
+
+    return spi_transmit(buffer, 5, NULL, 0, true, true, false);
+}
+
 int ram_write(uint32_t address, uint8_t * data, unsigned int len) 
 {
     int err = E_NO_ERROR;
@@ -520,6 +529,13 @@ int main(void)
     memset(tx_buffer, 0x42, TEST_SIZE);
     int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("(Benchmark) Wrote %i bytes to internal SRAM in %ius\n", TEST_SIZE, elapsed);
+
+    // Measure DMA transaction overhead
+    MXC_TMR_SW_Start(MXC_TMR0);
+    benchmark_overhead(0);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("(Benchmark) DMA overhead: %ius\n", elapsed);
+    while(!g_tx_done) {}
 
     // Benchmark standard-width SPI write to external SRAM
     MXC_TMR_SW_Start(MXC_TMR0);
