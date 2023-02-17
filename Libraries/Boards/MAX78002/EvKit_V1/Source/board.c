@@ -64,7 +64,8 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 // and therefore must be initialized to VDDIOH to prevent current injection into VDDIO/VDDA
 // in standby, backup, and powerdown modes.
 const uint32_t _port0_vddioh_mask = MXC_GPIO_PIN_0;
-const uint32_t _port1_vddioh_mask = (MXC_GPIO_PIN_10 | MXC_GPIO_PIN_11 | MXC_GPIO_PIN_12 | MXC_GPIO_PIN_13 | MXC_GPIO_PIN_14 | MXC_GPIO_PIN_16);
+const uint32_t _port1_vddioh_mask = (MXC_GPIO_PIN_10 | MXC_GPIO_PIN_11 | MXC_GPIO_PIN_12 |
+                                     MXC_GPIO_PIN_13 | MXC_GPIO_PIN_14 | MXC_GPIO_PIN_16);
 const uint32_t _port2_vddioh_mask = MXC_GPIO_PIN_2;
 
 // TFT Data/Command pin
