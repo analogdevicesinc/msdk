@@ -190,22 +190,29 @@ int main(void)
 #endif // !USE_CONSOLE
     setTrigger(1);
 
-    //MXC_LP_ROMLightSleepEnable(); // TODO: Re-enable this?
-
+    MXC_LP_EnableICacheLightSleep();
+    MXC_LP_ROMLightSleepEnable();
+    MXC_LP_EnableSysRAMLightSleep(3);
     MXC_LP_EnableSysRAMLightSleep(2);
-    MXC_LP_DisableSysRAMLightSleep(1);
-    MXC_LP_DisableSysRAMLightSleep(0); // Global variables are in RAM0 and RAM1
+
+    MXC_LP_DisableSysRAMLightSleep(1); // Global variables are in RAM0 and RAM1
+    MXC_LP_DisableSysRAMLightSleep(0);
 
     PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
-    //MXC_LP_DisableSRAM2(); // Disabling SRAM2 will prevent RSTN from working...
+    MXC_LP_DisableSRAM(3);
+    MXC_LP_DisableSRAM(2);
+
+    MXC_LP_EnableSRAM(1); // Global variables are in RAM0 and RAM1
+    MXC_LP_EnableSRAM(0);
 
     PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
 
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();

@@ -32,20 +32,33 @@
  ******************************************************************************/
 
 MEMORY {
-    ROM   (rx) : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128 kB ROM */
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00040000 /* 256 kB Flash */
-    /* Reduce the SRAM size to shutdown extra instances and conserve power */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00010000 /* 64 kB SRAM */
+    HEADER (rx)  : ORIGIN = 0x10000000, LENGTH = 0x200
+    FLASH  (rx)  : ORIGIN = 0x10000200, LENGTH = 256K - 0x200 /* 256kB "FLASH" */
+    SRAM   (rwx) : ORIGIN = 0x20000000, LENGTH = 32k /* Limit SRAM usage to SRAM0 and SRAM1 to prevent hardfault. */
 }
 
+ENTRY(Reset_Handler)
+PROVIDE( _start_SWAP = (((Reset_Handler) >> 24) | (((Reset_Handler) & 0x00FF0000) >> 8) | (((Reset_Handler) & 0x0000FF00) << 8) | ((Reset_Handler) << 24)));
+PROVIDE_HIDDEN( _SLA_Size = _endimage - __end_header );
+PROVIDE( _SLA_Size_SWAP = (((_SLA_Size) >> 24) | (((_SLA_Size) & 0x00FF0000) >> 8) | (((_SLA_Size) & 0x0000FF00) << 8) | ((_SLA_Size) << 24)));
+
+
 SECTIONS {
+
+    .sb_sla_header : ALIGN(4)
+    {
+       FILL(0xFF)
+        KEEP(*(.sb_sla_header)) /* Header for ROM code */ 
+         __end_header = . ;
+        . = ALIGN(512);
+    } > HEADER
+    
     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))
         *(.text*)    /* program code */
         *(.rodata*)  /* read-only data: "const" */
-        *(.flashprog*)  /* Flash program */
 
         KEEP(*(.init))
         KEEP(*(.fini))
@@ -69,6 +82,7 @@ SECTIONS {
         _data = ALIGN(., 4);
         *(.data*)           /*read-write initialized data: initialized global variable*/
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
+        *(.flashprog*)      /* Flash program */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -94,7 +108,25 @@ SECTIONS {
         _edata = ALIGN(., 4);
     } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
+    _enddata = LOADADDR(.data)+SIZEOF(.data);
 
+    .sb_sla_trailer : 
+    {
+        KEEP(*(.sb_sla_trailer))
+        /* Align image with 16 byte boundary to conform to flash encryption block size. */
+        FILL(0xDEADC0DE);
+        /* NOTE: The FILL and ALIGN will not work unless something is written to the section.  So, we use LONG. */
+        LONG(0xDEADC0DE);
+        . = ALIGN(16);
+    }  > FLASH
+    _endimage = LOADADDR(.sb_sla_trailer)+SIZEOF(.sb_sla_trailer);
+    .sig :
+    {
+        KEEP(*(.sig))
+        LONG(0xDEADBEEF);
+
+    }  > FLASH
+    
     .bss :
     {
         . = ALIGN(4);
