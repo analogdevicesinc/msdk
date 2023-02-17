@@ -38,6 +38,9 @@
 #include "pal_cfg.h"
 #include "mxc_device.h"
 #include "uart.h"
+#include "nvic_table.h"
+#include "board.h"
+#include "pal_timer.h"
 
 #ifndef PAL_TMR_IDX
 #define PAL_TMR_IDX 0
@@ -245,9 +248,9 @@ void setInterruptPriority(void)
     /* Trace UART */
     NVIC_SetPriority(UART0_IRQn, 3);
     /* HCI UART highest priority */
-    NVIC_SetPriority(UART3_IRQn, 0);
+    NVIC_SetPriority(MXC_UART_GET_IRQ(MXC_UART_GET_UART(HCI_UART)), 0);
     /* PAL Timer */
-    NVIC_SetPriority(PAL_TMR_IRQn, 2);
+    PalTimerSetIRQPriority(2);
 }
 /*************************************************************************************************/
 /*!

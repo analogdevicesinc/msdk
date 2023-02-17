@@ -396,3 +396,17 @@ uint32_t PalTimerGetExpTime(void)
 
   return time;
 }
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Configure PAL timer interrupt priority.
+ *
+ *  \param      priority     Interrupt priority.
+ *
+ *  \return     None.
+ */
+/*************************************************************************************************/
+void PalTimerSetIRQPriority(uint32_t priority)
+{
+  NVIC_SetPriority(PAL_TMR_IRQn, priority);
+}
