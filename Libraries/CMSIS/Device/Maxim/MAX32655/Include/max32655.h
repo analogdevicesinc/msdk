@@ -550,12 +550,12 @@ typedef enum {
 #define MXC_BASE_UART3 ((uint32_t)0x40081400UL)
 #define MXC_UART3 ((mxc_uart_regs_t *)MXC_BASE_UART3)
 
-#define MXC_UART_GET_IRQ(i)             \
-    (IRQn_Type)((i) == 0 ? UART0_IRQn : \
+#define MXC_UART_GET_IRQ(i)                        \
+    (IRQn_Type)((i) == 0            ? UART0_IRQn : \
                 (IRQn_Type)(i) == 1 ? UART1_IRQn : \
                 (IRQn_Type)(i) == 2 ? UART2_IRQn : \
                 (IRQn_Type)(i) == 3 ? UART3_IRQn : \
-                           0)
+                                      0)
 
 #define MXC_UART_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_UART0 : \
