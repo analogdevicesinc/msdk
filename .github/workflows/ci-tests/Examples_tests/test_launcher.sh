@@ -294,7 +294,7 @@ function erase_all_devices() {
     erase_with_openocd max32655 $DEVICE2
     erase_with_openocd max32665 $DEVICE3
     erase_with_openocd max32690 $DEVICE4
-    erase_with_openocd max32690 $DEVICE5
+    #erase_with_openocd max32690 $DEVICE5
 }
 #****************************************************************************************************
 function print_project_banner() {
