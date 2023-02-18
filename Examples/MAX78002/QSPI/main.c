@@ -54,8 +54,9 @@
 /***** Definitions *****/
 #define SPI MXC_SPI0
 // #define SPI_SPEED 8000000
-#define SPI_SPEED 1000000
+#define SPI_SPEED 2000000
 #define TEST_SIZE 320
+#define TEST_VALUE 0x42
 
 // A macro to convert a DMA channel number to an IRQn number
 #define GetIRQnForDMAChannel(x) ((IRQn_Type)(((x) == 0 ) ? DMA0_IRQn  : \
@@ -190,11 +191,13 @@ int dma_init()
     }
 
     // TX Channel
+    MXC_DMA->ch[g_tx_channel].ctrl &= ~(MXC_F_DMA_CTRL_EN);
     MXC_DMA->ch[g_tx_channel].ctrl = MXC_F_DMA_CTRL_SRCINC | (0x2F << MXC_F_DMA_CTRL_REQUEST_POS);  // Enable incrementing the src address pointer, set destination to SPI0 TX FIFO (REQSEL = 0x2F)
     MXC_DMA->ch[g_tx_channel].ctrl |= (MXC_F_DMA_CTRL_CTZ_IE | MXC_F_DMA_CTRL_DIS_IE);              // Enable CTZ and DIS interrupts
     MXC_DMA->inten |= (1 << g_tx_channel);                                                          // Enable DMA interrupts
 
     // RX Channel
+    MXC_DMA->ch[g_rx_channel].ctrl &= ~(MXC_F_DMA_CTRL_EN);
     MXC_DMA->ch[g_rx_channel].ctrl = MXC_F_DMA_CTRL_DSTINC | (0x0F << MXC_F_DMA_CTRL_REQUEST_POS);  // Enable incrementing the dest address pointer, set to source to SPI0 RX FIFO (REQSEL = 0x0F)
     MXC_DMA->ch[g_rx_channel].ctrl |= (MXC_F_DMA_CTRL_CTZ_IE | MXC_F_DMA_CTRL_DIS_IE);              // Enable CTZ and DIS interrupts
     MXC_DMA->inten |= (1 << g_rx_channel);                                                          // Enable DMA interrupts
@@ -212,43 +215,58 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
 {
     g_tx_done = 0;
     g_rx_done = 0;
+    mxc_spi_width_t width = MXC_SPI_GetWidth(SPI); 
 
     // Set the number of bytes to transmit/receive for the SPI transaction
-    if (MXC_SPI_GetWidth(SPI) == SPI_WIDTH_STANDARD && rxlen > txlen) {
-        g_dummy_len = rxlen - txlen;
-
-        SPI->ctrl1 = ((txlen + g_dummy_len) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
-    } else {
-        SPI->ctrl1 = (txlen << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS) |   // Set number of bytes to transmit
-                     (rxlen << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS);    // Set the number of bytes to receive
+    if (width == SPI_WIDTH_STANDARD) {
+        if (rxlen > txlen) {
+            /*
+            In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
+            The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
+            because the hardware always assume full duplex.  Therefore extra
+            dummy bytes must be transmitted to support half duplex. 
+            */
+            g_dummy_len = rxlen - txlen;
+            SPI->ctrl1 = ((txlen + g_dummy_len) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+        } else {
+            SPI->ctrl1 = txlen << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
+        }
+    } else { // width != SPI_WIDTH_STANDARD
+        SPI->ctrl1 = (txlen << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS) |
+                     (rxlen << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS);
     }
 
     if (use_dma) {
+        SPI->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);  // Disable FIFOs before clearing as recommended by UG
         SPI->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);  // Clear the FIFOs
 
-        if (txlen == 0 && MXC_SPI_GetWidth(SPI) == SPI_WIDTH_STANDARD) {
-            MXC_DMA->ch[g_tx_channel].src = (uint32_t)&g_dummy_byte;
-            MXC_DMA->ch[g_tx_channel].cnt = rxlen;
-            MXC_DMA->ch[g_tx_channel].ctrl &= ~MXC_F_DMA_CTRL_SRCINC; // Don't increment source - simply retransmit the dummy byte
-        } else {
+        if (txlen > 0) {
             // Configure TX DMA channel to fill the SPI TX FIFO
+            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
             MXC_DMA->ch[g_tx_channel].src = (uint32_t)src;
             MXC_DMA->ch[g_tx_channel].cnt = txlen;
             MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_SRCINC;
+            MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
+        } else if (txlen == 0 && width == SPI_WIDTH_STANDARD) {
+            // Configure TX DMA channel to retransmit a dummy byte
+            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
+            MXC_DMA->ch[g_tx_channel].src = (uint32_t)&g_dummy_byte;
+            MXC_DMA->ch[g_tx_channel].cnt = rxlen;
+            MXC_DMA->ch[g_tx_channel].ctrl &= ~MXC_F_DMA_CTRL_SRCINC;
+            MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
         }
-        MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;
 
-        // Configure RX DMA channel to unload the SPI RX FIFO
         if (rxlen > 0) {
+            // Configure RX DMA channel to unload the SPI RX FIFO
             SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
             MXC_DMA->ch[g_rx_channel].dst = (uint32_t)dest;
             MXC_DMA->ch[g_rx_channel].cnt = rxlen;
-            MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN;
-        } else {
-            SPI->dma &= ~(MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
-            MXC_DMA->ch[g_rx_channel].ctrl &= ~MXC_F_DMA_CTRL_EN;
+            MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
         }
-    } else {
+
+        // Start the SPI transaction
+        SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+    } else { // !use_dma
         // Manually fill the SPI TX FIFO with a blocking while loop
         uint32_t tx_remaining = txlen;
 
@@ -259,8 +277,6 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
 
         // TODO: set up interrupt, 
     }
-
-    SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
 
     if (deassert) {  // Peripheral select is deasserted at end of transmission
         SPI->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
@@ -372,30 +388,17 @@ int ram_read_slow(uint32_t address, uint8_t *out, unsigned int len)
     return spi_transmit(NULL, 0, out, len, true, true, true);
 }
 
-int ram_read_quad(mxc_spi_req_t *req, uint32_t address, uint8_t *out, unsigned int len) 
+int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len)
 {
     int err = E_NO_ERROR;
-    uint8_t header[6];
-    _parse_spi_header(0x0B, address, header);
-    header[4] = 0xFF; // Extra dummy bytes to satisfy wait cycle
-    header[5] = 0xFF;
+    uint8_t header[7];
+    memset(header, 0xFF, 7);
+    _parse_spi_header(0xEB, address, header);
 
-    // Transmit header, but keep Chip Select asserted
-    req->txData = header;
-    req->txLen = 6;
-    req->rxData = NULL;
-    req->rxLen = 0;
-    req->ssDeassert = 0;
-    err = MXC_SPI_MasterTransaction(req);
-    if (err) return err;
-
-    req->txData = NULL; // Reset TX struct members here for convenience
-    req->txLen = 0;
-    req->ssDeassert = 1;
-    req->rxData = out;
-    req->rxLen = len;
-    g_tx_done = 0;
-    return MXC_SPI_MasterTransaction(req);
+    MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
+    err = spi_transmit(&header[0], 7, NULL, 0, false, true, true);
+    err = spi_transmit(NULL, 0, out, len, true, true, true);
+    return err;
 }
 
 int ram_read_quad_dma(mxc_spi_req_t *req, uint32_t address, uint8_t *out, unsigned int len)
@@ -442,18 +445,13 @@ int ram_write(uint32_t address, uint8_t * data, unsigned int len)
     return spi_transmit(data, len, NULL, 0, true, true, true);
 }
 
-int ram_write_quad(mxc_spi_req_t *req, uint32_t address, uint8_t * data, unsigned int len) 
+int ram_write_quad(uint32_t address, uint8_t * data, unsigned int len) 
 {
     int err = E_NO_ERROR;
     err = _transmit_spi_header(0x38, address);
     if (err) return err;
 
-    req->txData = data;
-    req->txLen = len;
-    req->rxData = NULL;
-    req->rxLen = 0;
-    g_tx_done = 0;
-    return MXC_SPI_MasterTransaction(req);
+    return spi_transmit(data, len, NULL, 0, true, true, true);
 }
 
 int ram_write_quad_dma(mxc_spi_req_t *req, uint32_t address, uint8_t * data, unsigned int len) 
@@ -506,7 +504,7 @@ int main(void)
 
 #if 1
 
-    // ram_exit_quadmode();
+    ram_exit_quadmode();
 
     printf("Resetting SRAM...\n");
     ram_reset();
@@ -526,7 +524,7 @@ int main(void)
 
     // Time tx_buffer initialization as benchmark
     MXC_TMR_SW_Start(MXC_TMR0);
-    memset(tx_buffer, 0x42, TEST_SIZE);
+    memset(tx_buffer, TEST_VALUE, TEST_SIZE);
     int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("(Benchmark) Wrote %i bytes to internal SRAM in %ius\n", TEST_SIZE, elapsed);
 
@@ -552,29 +550,28 @@ int main(void)
         }
     }
 
-#else
-
     // Invert test pattern
     memset(tx_buffer, ~(0x5A), TEST_SIZE);
     memset(rx_buffer, 0, TEST_SIZE);
 
     // Benchmark QSPI write to external SRAM
-    err = ram_enter_quadmode(&g_req);
+    err = ram_enter_quadmode();
     MXC_TMR_SW_Start(MXC_TMR0);
-    err = ram_write_quad(&g_req, 1024, tx_buffer, TEST_SIZE);
+    err = ram_write_quad(address, tx_buffer, TEST_SIZE);
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Wrote %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed);
 
     MXC_Delay(MXC_DELAY_MSEC(1));
 
     // Validate
-    MXC_Delay(MXC_DELAY_MSEC(1));
-    ram_read_quad(&g_req, 1024, rx_buffer, TEST_SIZE);
+    ram_read_quad(address, rx_buffer, TEST_SIZE);
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, 0xA5, rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + i, tx_buffer[i], rx_buffer[i]);
         }
     }
+
+#else
 
     // Invert test pattern
     memset(tx_buffer, ~(0x5A), TEST_SIZE);
