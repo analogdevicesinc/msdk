@@ -77,7 +77,7 @@ jobs:
           if [[ $RUN_TEST -eq 0 ]]; then
             echo "Skipping Build"
           else
-            ehco "Running Build"
+            echo "Running Build"
           fi
           
           echo "RUN_TEST=$RUN_TEST" >> $GITHUB_OUTPUT
