@@ -73,12 +73,9 @@ jobs:
           # End the test early if there wasn't a significant change
           if [[ $RUN_TEST -eq 0 ]]; then
             echo "Skipping Build"
-            echo "::set-env name=RUN_TEST::$RUN_TEST"
-            exit 0
           fi
 
-          echo "Running build"
-          echo "::set-env name=RUN_TEST::$RUN_TEST"
+          echo "{RUN_TEST}={$RUN_TEST}" >> $GITHUB_ENV
           
       - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
