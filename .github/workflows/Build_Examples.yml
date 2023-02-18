@@ -95,21 +95,12 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build_Examples
         run: |
-          # Test paths
-          echo $GITHUB_PATH
-          echo $PATH
-          
-          # Test the links
-          arm-none-eabi-gcc --version
-          riscv-none-embed-gcc --version
-          which arm-none-eabi-gcc
-          which riscv-none-embed-gcc
-          ls -la $(which arm-none-eabi-gcc)
-          ls -la $(which riscv-none-embed-gcc)
-          
           # Determine if we need to run the test
           RUN_TEST=0
-          
+          if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]] then;
+            RUN_TEST=1
+          fi
+
           # Check for changes made to these files
           WATCH_FILES="\
             Build_Example.yml \
@@ -122,32 +113,30 @@ jobs:
             .mk \
             makefile \
             Makefile"
-          
+
           # Get the diff from main
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
-          
+
           echo "Watching these locations and files"
           echo $WATCH_FILES
-          
+
           echo "Checking the following changes"
           echo $CHANGE_FILES
-          
+
           # Assume we want to actually run the workflow if no files changed
-          if [[ "$CHANGE_FILES" != "" ]]; then
-            for watch_file in $WATCH_FILES; do 
-              if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
-                RUN_TEST=1
-              fi
-            done
-          else 
-          # Assume we want to actually run the workflow if no files changed
-            RUN_TEST=1
-          fi
-          
+          for watch_file in $WATCH_FILES; do 
+            if [[ "$CHANGE_FILES" == *"$watch_file" ]]; then
+              RUN_TEST=1
+            fi
+          done
+
           # End the test early if there wasn't a significant change
           if [[ $RUN_TEST -eq 0 ]]; then
+            echo "Skipping Build"
             exit 0
           fi
+
+          echo "Running build"
           
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
