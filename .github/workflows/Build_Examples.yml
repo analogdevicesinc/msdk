@@ -24,13 +24,71 @@ jobs:
       - ubuntu-latest
 
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          # Update the submodules below, doing so here will convert ssh to https
+          submodules: false
+          fetch-depth: 0
+          
+      - name: Check watch files
+        run: |
+          # Determine if we need to run the test
+          RUN_TEST=0
+
+          # Always run test if a workflow_dispatch
+          if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]]; then
+            RUN_TEST=1
+          fi
+
+          # Check for changes made to these files
+          WATCH_FILES="\
+            Build_Example.yml \
+            .c \
+            .cpp \
+            .S \
+            .s \
+            .h \
+            .a \
+            .mk \
+            makefile \
+            Makefile"
+
+          # Get the diff from main
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+
+          echo "Watching these locations and files"
+          echo $WATCH_FILES
+
+          echo "Checking the following changes"
+          echo $CHANGE_FILES
+
+          # Assume we want to actually run the workflow if no files changed
+          for watch_file in $WATCH_FILES; do 
+            if [[ "$CHANGE_FILES" == *"$watch_file" ]]; then
+              RUN_TEST=1
+            fi
+          done
+
+          # End the test early if there wasn't a significant change
+          if [[ $RUN_TEST -eq 0 ]]; then
+            echo "Skipping Build"
+            echo "::set-env name=RUN_TEST::$RUN_TEST"
+            exit 0
+          fi
+
+          echo "Running build"
+          echo "::set-env name=RUN_TEST::$RUN_TEST"
+          
       - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         id: arm-none-eabi-gcc-action
+        if: env.RUN_TEST == 1
         with:
           release: '11.2-2022.02' # <-- The compiler release to use
           
       - name: Install RISCV GCC Toolchain (riscv-none-embed-gcc)
+        if: env.RUN_TEST == 1
         run: |
           # Install RISCV tools
           npm install --global xpm@latest
@@ -43,6 +101,7 @@ jobs:
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
           
       - name: Install ccache
+        if: env.RUN_TEST == 1
         run: |
           # Install ccache
           sudo apt install -y ccache
@@ -85,59 +144,10 @@ jobs:
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strip
           sudo ln -s ../../bin/ccache /usr/bin/riscv-none-embed-gcc
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          # Update the submodules below, doing so here will convert ssh to https
-          submodules: false
-          fetch-depth: 0
-
       # Runs a set of commands using the runners shell
       - name: Build_Examples
+        if: env.RUN_TEST == 1
         run: |
-          # Determine if we need to run the test
-          RUN_TEST=0
-          if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]] then;
-            RUN_TEST=1
-          fi
-
-          # Check for changes made to these files
-          WATCH_FILES="\
-            Build_Example.yml \
-            .c \
-            .cpp \
-            .S \
-            .s \
-            .h \
-            .a \
-            .mk \
-            makefile \
-            Makefile"
-
-          # Get the diff from main
-          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
-
-          echo "Watching these locations and files"
-          echo $WATCH_FILES
-
-          echo "Checking the following changes"
-          echo $CHANGE_FILES
-
-          # Assume we want to actually run the workflow if no files changed
-          for watch_file in $WATCH_FILES; do 
-            if [[ "$CHANGE_FILES" == *"$watch_file" ]]; then
-              RUN_TEST=1
-            fi
-          done
-
-          # End the test early if there wasn't a significant change
-          if [[ $RUN_TEST -eq 0 ]]; then
-            echo "Skipping Build"
-            exit 0
-          fi
-
-          echo "Running build"
-          
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
           export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
