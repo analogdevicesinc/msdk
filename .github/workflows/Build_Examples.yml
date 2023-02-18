@@ -22,8 +22,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on:
       - ubuntu-latest
-    outputs:
-      RUN_TEST: ${{ steps.check_watch.outputs.RUN_TEST }}
+
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -34,7 +33,7 @@ jobs:
           fetch-depth: 0
           
       - name: Check watch files
-        id: check_watch
+        id: check_watch 
         run: |
           # Determine if we need to run the test
           RUN_TEST=0
@@ -85,12 +84,12 @@ jobs:
       - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         id: arm-none-eabi-gcc-action
-        if: needs.build.outputs.RUN_TEST == '1'
+        if: ${{ steps.check_watch.outputs.RUN_TEST }}
         with:
           release: '11.2-2022.02' # <-- The compiler release to use
           
       - name: Install RISCV GCC Toolchain (riscv-none-embed-gcc)
-        if: needs.build.outputs.RUN_TEST == '1'
+        if: ${{ steps.check_watch.outputs.RUN_TEST }}
         run: |
           # Install RISCV tools
           npm install --global xpm@latest
@@ -103,7 +102,7 @@ jobs:
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
           
       - name: Install ccache
-        if: needs.build.outputs.RUN_TEST == '1'
+        if: ${{ steps.check_watch.outputs.RUN_TEST }}
         run: |
           # Install ccache
           sudo apt install -y ccache
@@ -148,7 +147,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Build_Examples
-        if: needs.build.outputs.RUN_TEST == '1'
+        if: ${{ steps.check_watch.outputs.RUN_TEST }}
         run: |
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
