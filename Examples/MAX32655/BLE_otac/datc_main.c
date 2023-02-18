@@ -969,8 +969,8 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
     case APP_DISC_CFG_CMPL:
         WdxcStoreAttrHandles(connId, pDatcWdxHdlList[connId - 1]);
         AppDiscComplete(connId, status);
-        // TODO: 
-        datcCb.discState[connId - 1] = DATC_DISC_SVC_MAX ;
+        // TODO:
+        datcCb.discState[connId - 1] = DATC_DISC_SVC_MAX;
         break;
 
     case APP_DISC_CFG_CONN_START:
