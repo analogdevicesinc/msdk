@@ -151,7 +151,7 @@ static const appSecCfg_t datcSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    FALSE /*! TRUE to initiate security upon connection */
+    TRUE /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
@@ -967,7 +967,10 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
         break;
 
     case APP_DISC_CFG_CMPL:
+        WdxcStoreAttrHandles(connId, pDatcWdxHdlList[connId - 1]);
         AppDiscComplete(connId, status);
+        // TODO: 
+        datcCb.discState[connId - 1] = DATC_DISC_SVC_MAX ;
         break;
 
     case APP_DISC_CFG_CONN_START:
