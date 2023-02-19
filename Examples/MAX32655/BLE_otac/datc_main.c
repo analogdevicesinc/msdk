@@ -960,21 +960,17 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
         break;
 
     case APP_DISC_CFG_START:
+    case APP_DISC_CFG_CONN_START:
         /* start configuration */
+        WdxcStoreAttrHandles(connId, pDatcWdxHdlList[connId - 1]);
+        datcCb.discState[connId - 1] = DATC_DISC_SVC_MAX;
         AppDiscConfigure(connId, APP_DISC_CFG_START, DATC_DISC_CFG_LIST_LEN,
                          (attcDiscCfg_t *)datcDiscCfgList, DATC_DISC_HDL_LIST_LEN,
                          datcCb.hdlList[connId - 1]);
         break;
 
     case APP_DISC_CFG_CMPL:
-        WdxcStoreAttrHandles(connId, pDatcWdxHdlList[connId - 1]);
         AppDiscComplete(connId, status);
-        // TODO:
-        datcCb.discState[connId - 1] = DATC_DISC_SVC_MAX;
-        break;
-
-    case APP_DISC_CFG_CONN_START:
-        /* no connection setup configuration */
         break;
 
     default:
