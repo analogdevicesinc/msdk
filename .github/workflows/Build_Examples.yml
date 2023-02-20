@@ -23,7 +23,6 @@ jobs:
     runs-on:
       - ubuntu-latest
 
-
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -45,7 +44,7 @@ jobs:
 
           # Check for changes made to these files
           WATCH_FILES="\
-            Build_Example.yml \
+            Build_Examples.yml \
             .c \
             .cpp \
             .S \
