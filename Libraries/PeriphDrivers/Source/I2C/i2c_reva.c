@@ -153,9 +153,6 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
         hsLowClks = (ticksTotal * 2) / 3 - 1;
         hsHiClks = ticksTotal / 3 - 1;
 
-        printf("Periph: %d\nHz: %d\n", PeripheralClock, hz);
-        printf("--\nHI: %d\nLO: %d\n", hsHiClks, hsLowClks);
-
         // For rounding errors, adjust by 1 clock tick
         if (ticksTotal % 1) {
             hsHiClks++;

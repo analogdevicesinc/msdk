@@ -263,7 +263,6 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
             MXC_GPIO_Config(&gpio_cfg_uart0_flow);
             break;
 
-#if (TARGET_NUM != 78000)
         case 1:
             MXC_GPIO_Config(&gpio_cfg_uart1_flow);
             break;
@@ -271,7 +270,6 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
         case 2:
             MXC_GPIO_Config(&gpio_cfg_uart2_flow);
             break;
-#endif
 
         default:
             return E_BAD_PARAM;
@@ -282,7 +280,6 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
             MXC_GPIO_Config(&gpio_cfg_uart0_flow_disable);
             break;
 
-#if (TARGET_NUM != 78000)
         case 1:
             MXC_GPIO_Config(&gpio_cfg_uart1_flow_disable);
             break;
@@ -290,7 +287,6 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
         case 2:
             MXC_GPIO_Config(&gpio_cfg_uart2_flow_disable);
             break;
-#endif
 
         default:
             return E_BAD_PARAM;
