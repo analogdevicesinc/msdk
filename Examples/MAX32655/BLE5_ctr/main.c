@@ -42,19 +42,6 @@
 #include "board.h"
 #include "pal_timer.h"
 
-#ifndef PAL_TMR_IDX
-#define PAL_TMR_IDX 0
-#endif
-
-#ifndef PAL_SLEEP_TMR_IDX
-#define PAL_SLEEP_TMR_IDX 1
-#endif
-
-#if (PAL_TMR_IDX == PAL_SLEEP_TMR_IDX)
-#error "Must use a different timer for sleep"
-#endif
-#define PAL_TMR_IRQn MXC_TMR_GET_IRQ(PAL_TMR_IDX)
-#define DEFAULT_TX_POWER 0 /* dBm */
 #define MAX_PRIORITY ((0x1 << __NVIC_PRIO_BITS) - 1)
 
 /*! \brief UART TX buffer size */
