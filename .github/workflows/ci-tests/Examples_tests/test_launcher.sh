@@ -86,6 +86,16 @@ function initial_setup() {
         export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
         export OPENOCD=/home/eddie/workspace/openocd/src/openocd
         export ROBOT=/home/eddie/.local/bin/robot
+    
+        MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`     
+        main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])"`
+        MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
+
+        # Get the serial number of all daplink devices, this is used to erase them all.
+        DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
+        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
+        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
     fi
     
     # "Main device" is the ME17 used as the cleint dudring connected tests
