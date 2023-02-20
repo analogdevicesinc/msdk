@@ -144,7 +144,7 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
         return E_NULL_PTR;
     }
 
-    if (hz > MXC_I2C_REVA_FASTPLUS_SPEED && hz <= MXC_I2C_REVA_HS_MODE) {
+    if (hz > MXC_I2C_REVA_FASTPLUS_SPEED && hz <= MXC_I2C_REVA_HIGH_SPEED) {
         // Enable high speed mode
         int hsLowClks, hsHiClks;
 
@@ -172,7 +172,7 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
 
         hz = MXC_I2C_REVA_FAST_SPEED; // High speed preambles will be sent at 400kHz
 
-    } else if (hz > MXC_I2C_REVA_HS_MODE) {
+    } else if (hz > MXC_I2C_REVA_HIGH_SPEED) {
         return E_BAD_PARAM;
     }
 
