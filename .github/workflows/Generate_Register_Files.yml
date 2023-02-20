@@ -207,9 +207,7 @@ jobs:
 
               # Remove any non-alphanumeric characters (like newline and whitespaces)
               part="${part//[^[:alnum:]]/}"
-              echo "___${part}___"
-              echo "___${DIE_TO_CHIP_NAMES[${part}]}___"
-              echo "___${CHIP_TO_DIE_NAMES[${part}]}___"
+
               # Confirm second argument is the part designation
               if [[ ${DIE_TO_CHIP_NAMES[${part}]+_} ]]; then
                 chip_name=${DIE_TO_CHIP_NAMES[$part]}
@@ -243,11 +241,8 @@ jobs:
           if [[ ${#cmdarr[@]} == 1 ]]; then
             list_affected_parts_die_name=$(find_affected_parts .)
 
-            echo $list_affected_parts_die_name
-
             for part_die_name in $list_affected_parts_die_name
             do
-              echo "Part:  ${DIE_TO_CHIP_NAMES[$part_die_name]} ; $part_die_name"
               generate_register_file_for_part ${DIE_TO_CHIP_NAMES[$part_die_name]} $part_die_name .
             done
 
