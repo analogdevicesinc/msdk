@@ -237,7 +237,6 @@ jobs:
           # Note: The generated register files will be automatically copied to their
           #   respective part's CMSIS location: "msdk/Libraries/CMSIS/Device/Maxim/{part}/Include/"
           # 1 - Generate register files for all parts affected by PR changes.
-          echo "CMD: ${#cmdarr[@]} or $part"
           if [[ ${#cmdarr[@]} == 1 ]]; then
             list_affected_parts_die_name=$(find_affected_parts .)
 
