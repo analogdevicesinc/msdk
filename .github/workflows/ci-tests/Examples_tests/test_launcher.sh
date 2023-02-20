@@ -58,7 +58,7 @@ function initial_setup() {
         DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
         DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
         DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
-        DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`
+       # DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`
     elif [ $(hostname) == "yingcai-OptiPlex-790" ]; then
         echo "On machine yingcai-OptiPlex-790"
         echo
@@ -294,7 +294,7 @@ function erase_all_devices() {
     erase_with_openocd max32655 $DEVICE2
     erase_with_openocd max32665 $DEVICE3
     erase_with_openocd max32690 $DEVICE4
-    erase_with_openocd max32690 $DEVICE5
+   # erase_with_openocd max32690 $DEVICE5
 }
 #****************************************************************************************************
 function print_project_banner() {
