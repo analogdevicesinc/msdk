@@ -89,7 +89,7 @@ jobs:
           release: '11.2-2022.02' # <-- The compiler release to use
           
       - name: Install RISCV GCC Toolchain (riscv-none-embed-gcc)
-        if: ${{ steps.check_watch.outputs.RUN_TEST }}
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         run: |
           # Install RISCV tools
           npm install --global xpm@latest
