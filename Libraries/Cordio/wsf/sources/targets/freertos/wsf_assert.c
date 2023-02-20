@@ -28,6 +28,8 @@
 #include "wsf_trace.h"
 #include "pal_sys.h"
 
+#include "FreeRTOS.h"
+
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
@@ -60,5 +62,5 @@ void WsfAssert(const char *pFile, uint16_t line)
   WSF_TRACE_ERR2("Assertion detected on %s:%u", pFile, line);
 #endif
 
-  PalSysAssertTrap();
+  configASSERT(0);
 }

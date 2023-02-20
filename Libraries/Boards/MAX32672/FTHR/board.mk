@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -41,12 +41,22 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
 SRCS += rom_stub.c
+SRCS += ssd1306.c
 
+MISC_DRIVERS_DIR ?= $(BOARD_DIR)/../../../MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
 VPATH += $(BOARD_DIR)/../Source
+VPATH += $(MISC_DRIVERS_DIR)
+VPATH += $(MISC_DRIVERS_DIR)/Display
+VPATH += $(MISC_DRIVERS_DIR)/LED
+VPATH += $(MISC_DRIVERS_DIR)/PushButton
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
 IPATH += $(BOARD_DIR)/../Include
+IPATH += $(MISC_DRIVERS_DIR)
+IPATH += $(MISC_DRIVERS_DIR)/Display
+IPATH += $(MISC_DRIVERS_DIR)/LED
+IPATH += $(MISC_DRIVERS_DIR)/PushButton

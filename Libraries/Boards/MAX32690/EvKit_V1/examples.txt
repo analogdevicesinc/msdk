@@ -30,6 +30,7 @@ CAN
 CRC
 CTB_AES
 DMA
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo

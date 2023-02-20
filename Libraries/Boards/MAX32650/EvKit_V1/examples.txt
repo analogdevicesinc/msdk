@@ -17,6 +17,7 @@ CLCD
 CRC
 DES
 DMA
+EEPROM_Emulator
 EMCC
 Flash
 Flash_CLI

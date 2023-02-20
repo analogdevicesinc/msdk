@@ -1,35 +1,35 @@
-/*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 /**
 * @file console.c
 * @brief Serial console implementation file
@@ -66,6 +66,21 @@ int starts_with(char *a, char *b)
     }
 
     return 1;
+}
+
+int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len)
+{
+    int err = E_NO_ERROR;
+    for (int i = 0; i < len; i++) {
+        // Wait until FIFO has space for the character.
+        while (MXC_UART_GetTXFIFOAvailable(uart) < 1) {}
+
+        if ((err = MXC_UART_WriteCharacterRaw(uart, bytes[i])) != E_NO_ERROR) {
+            return err;
+        }
+    }
+
+    return E_NO_ERROR;
 }
 
 // Initialize the serial console and transmits the "*SYNC*" string out of the UART port.
@@ -118,12 +133,11 @@ int send_msg(const char *msg)
     int len = strlen(msg);
 
     // Transmit message string
-    if ((ret = MXC_UART_Write(Con_Uart, (uint8_t *)msg, &len)) != E_NO_ERROR) {
+    if ((ret = MXC_UART_WriteBytes(Con_Uart, (uint8_t *)msg, len)) != E_NO_ERROR) {
         return ret;
     }
     // Transmit newline to complete the message.
-    len = 1;
-    if ((ret = MXC_UART_Write(Con_Uart, (uint8_t *)"\n", &len)) != E_NO_ERROR) {
+    if ((ret = MXC_UART_WriteBytes(Con_Uart, (uint8_t *)"\n", 1)) != E_NO_ERROR) {
         return ret;
     }
 

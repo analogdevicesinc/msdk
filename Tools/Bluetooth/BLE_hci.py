@@ -48,7 +48,7 @@ from time import sleep
 import datetime
 import threading
 from termcolor import colored
-
+import readline
 # Setup the default serial port settings
 defaultBaud=115200
 defaultSP="/dev/ttyUSB0"
@@ -151,7 +151,7 @@ class BLE_hci:
                 bytesize=serial.EIGHTBITS,
                 rtscts=False,
                 dsrdtr=False,
-                timeout=1.0
+                timeout=2.0
             )
             self.port.isOpen()
 
@@ -167,7 +167,7 @@ class BLE_hci:
                     bytesize=serial.EIGHTBITS,
                     rtscts=False,
                     dsrdtr=False,
-                    timeout=1.0
+                    timeout=2.0
                 )
                 self.mon_port.isOpen()
                 
@@ -227,7 +227,7 @@ class BLE_hci:
      # Waits for an HCI event, optionally prints the received event. 
      # Will timeout on the serial port if nothing arrives.
     ################################################################################
-    def wait_event(self, print_evt = True, timeout=1.0):
+    def wait_event(self, print_evt = True, timeout=6.0):
 
         # Set the serial port timeout
         self.port.timeout=timeout
@@ -261,9 +261,9 @@ class BLE_hci:
         else:
             print("Error: unknown evt = "+str(evt))
             return
-
+        
         payload = self.port.read(size=packet_len)
-
+        
         # Print the packet
         if print_evt and len(payload) > 0:
             for i in range(0, len(payload)):
@@ -295,7 +295,8 @@ class BLE_hci:
      # Send a HCI command to the serial port. Will add a small delay and wait for
      # and print an HCI event by default.
     ################################################################################
-    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=3):
+
+    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=6):
         # Send the command and data
         if(print_cmd):
             if self.id == "-":
@@ -303,9 +304,14 @@ class BLE_hci:
             else:
                 print(str(datetime.datetime.now()) + f" {self.id}>", packet)
 
-        self.port.write(bytearray.fromhex(packet))
-        sleep(delay)
 
+        
+        arr = bytearray.fromhex(packet)
+        
+        self.port.write(arr)
+        
+        sleep(delay)
+            
         if(resp):
             return self.wait_event(timeout=timeout)
 
@@ -646,7 +652,7 @@ class BLE_hci:
 
             return per
 
-        # Listen for events for a few seconds
+        # Listen for events for a few seconds``
         if(args.listen != "True"):
             self.wait_events(int(args.listen))
             return
@@ -779,10 +785,24 @@ class BLE_hci:
      # Sends a vendor specific HCI command for the transmitter test.
     ################################################################################
     def txTestVSFunc(self, args):
-        channel="%0.2X"%int(args.channel)
-        packetLength="%0.2X"%int(args.packetLength)
-        payload="%0.2X"%int(args.payload)
-        phy="%0.2X"%int(args.phy)
+
+        if args.channel is not None:
+            channel="%0.2X"%int(args.channel)
+        else:
+            channle = "%0.2X"%int(0)
+        if args.packetLength is not None:
+            packetLength="%0.2X"%int(args.packetLength)
+        else:
+            packetLength = '00'
+
+        if args.payload is not None:
+            payload="%0.2X"%int(args.payload)
+        else:
+            payload="%0.2X"%int(0)
+        if args.phy is not None:
+            phy="%0.2X"%int(args.phy)
+        else:   
+            phy = '01'
 
         numPackets = "%0.2X"%(int(args.numPackets) & 0xFF)
         numPackets+= "%0.2X"%((int(args.numPackets) & 0xFF00) >> 8)
@@ -800,7 +820,7 @@ class BLE_hci:
         self.send_command("01332003"+channel+phy+modulationIndex)
     
    
-    def endTestVSFunc(self, args) -> dict | None:
+    def endTestVSFunc(self, args):
         """
         Vendor specific command to end test\n
         Returns a dictionary of entire test report\n
@@ -828,7 +848,7 @@ class BLE_hci:
                 
             return stats
         else:
-
+            print(colored('Error: Device Returned No Data. Command may not be supported, or device might not be updated', 'red'))
             return None
 
 
@@ -841,7 +861,15 @@ class BLE_hci:
         evtString = self.send_command("011F2000")
 
         # Parse the event and print the number of received packets
-        evtData = int(evtString, 16)
+        try:
+
+            print("evtString", evtString)
+
+            evtData = int(evtString, 16)
+        except ValueError:
+            print('Value Error Has occured. Response most likely empty')
+            return 0
+        
         rxPackets = int((evtData & 0xFF00)>>8)+int((evtData & 0xFF)<<8)
         if (args is None) or (vars(args).get('noPrint') is not True):
             print("Received PKTS  : "+str(rxPackets))
@@ -923,6 +951,38 @@ class BLE_hci:
         else:
             self.send_command(args.cmd, timeout=timeout)
 
+    def readReg(self, addr, length):
+
+        # Reverse the bytes to LSB first
+        addrBytes = parseAddr(addr)
+
+        # Get the read length
+        readLen = length
+        if(readLen[:2] != "0x"):
+            print("Length must be a hex number starting with 0x")
+            return
+        readLen = readLen[2:]
+
+
+        readLenString = "%0.2X"%int(readLen, 16)
+        
+
+        # Calculate the total length, 1 for the read len, 4 for the address length
+        totalLen = "%0.2X"%(1+4)
+
+        # Send the command and save the event
+        evtString = self.send_command("0101FF"+totalLen+readLenString+addrBytes)
+
+
+        # Get the data
+        evtString = evtString[14:]
+
+        # Split the data into bytes
+        chunks, chunk_size = len(evtString), 2
+        evtBytes = [ evtString[i:i+chunk_size] for i in range(0, chunks, chunk_size) ]
+        
+        return evtBytes
+
     ## Read register function.
      #
      # Sends HCI command to read a register.
@@ -941,8 +1001,11 @@ class BLE_hci:
             print("Length must be a hex number starting with 0x")
             return
         readLen = readLen[2:]
-        readLenString = "%0.2X"%int(readLen, 16)
 
+        # assert(readLen < 256)
+
+        readLenString = "%0.2X"%int(readLen, 16)
+        print(readLenString)
         # Calculate the total length, 1 for the read len, 4 for the address length
         totalLen = "%0.2X"%(1+4)
 
@@ -956,6 +1019,7 @@ class BLE_hci:
         chunks, chunk_size = len(evtString), 2
         evtBytes = [ evtString[i:i+chunk_size] for i in range(0, chunks, chunk_size) ]
 
+        
         # Print the data
         startingAddr = int(args.addr, 16)
 
@@ -980,7 +1044,7 @@ class BLE_hci:
                 print("__", end="")
             else:
                 print(evtBytes[lineAddr], end="")
-
+                
             # Print a new line at the end of the 32 bit value
             if(i%4 == 3):
                 print()
@@ -1042,6 +1106,7 @@ class BLE_hci:
 
         self.send_command("0100FF"+totalLen+writeLen+addrBytes+data)
 
+    
 ## Help function.
  #
  # Prints the help text.
@@ -1199,7 +1264,7 @@ if __name__ == '__main__':
     """)
     txTest_parser.set_defaults(func=ble_hci.txTestFunc)
 
-    txTestVS_parser = subparsers.add_parser('txTestVS', aliases=['tx'], help="Execute the transmitter test", formatter_class=RawTextHelpFormatter)
+    txTestVS_parser = subparsers.add_parser('txTestVS', aliases=['txvs'], help="Execute the transmitter test", formatter_class=RawTextHelpFormatter)
     txTestVS_parser.add_argument('-c', '--channel', default="0", help="TX test channel, 0-39, default: 0")
     txTestVS_parser.add_argument('--phy', default="1", help=
     """TX test PHY
@@ -1247,7 +1312,7 @@ if __name__ == '__main__':
         help="End the TX/RX test, print the number of correctly received packets")
     endTest_parser.set_defaults(func=ble_hci.endTestFunc)
 
-    endTestVS_parser = subparsers.add_parser('endTestVS', aliases=['end'], 
+    endTestVS_parser = subparsers.add_parser('endTestVS', aliases=['endvs'], 
         help="End the TX/RX test, print the full test report, and return the report as a dictionary")
     endTestVS_parser.set_defaults(func=ble_hci.endTestVSFunc)
 

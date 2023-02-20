@@ -11,9 +11,9 @@
 
 # **********************************************************
 
-# Select TFT drivers to match the connected display 
-TFT=ADAFRUIT
-# TFT=NEWHAVEN
+# Uncomment to use legacy Adafruit 3315 TFT drivers (TFT = ADAFRUIT)
+# Otherwise, default drivers (TFT = NEWHAVEN) will be used for NewHaven NHD-2.4
+# TFT = ADAFRUIT
 
 # Add TFT resources folder to build
 VPATH += resources/tft

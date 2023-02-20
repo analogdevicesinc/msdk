@@ -1,0 +1,5 @@
+name : "FreeRTOS-Cellular-Interface"
+version: "v1.3.0"
+description: |
+  "FreeRTOS Cellular Interface implementation of the 3GPP TS v27.007 standard..\n"
+license: "MIT"

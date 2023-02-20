@@ -1,5 +1,9 @@
 name: Verify Register and SVD Files
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -316,11 +320,13 @@ jobs:
             do
               # Isolate to file name.
               periph=${changed_svd_file##*/}
-              periph=${periph%*.svd}
+
+              # Adding '/' to differentiate between trimsir and sir.
+              periph="/${periph%*.svd}"
               
               # Check if "Peripheral Rev#" SVD File or "SYS/SVD" (e.g. gcr_me14.svd) SVD File.
               if [[ "$periph" =~ "_rev" ]]; then
-                periph=${periph%_rev*}
+                periph="/${periph%_rev*}"
               else
                 # Remove attached die type name (Usually SYS register SVD files like gcr_me14.svd and fcr_me18.svd)
                 for die_name in ${!DIE_TO_CHIP_NAMES[@]}
@@ -328,7 +334,7 @@ jobs:
                   lowercase_die_name=${die_name,,}
                   
                   if [[  "$periph" =~ "_${lowercase_die_name}" ]]; then
-                    periph=${periph%_${lowercase_die_name}*}
+                    periph="/${periph%_${lowercase_die_name}*}"
                     break
                   fi
                 done
@@ -440,7 +446,7 @@ jobs:
               # Helps minimize runtime by using a temporary list as a checklist instead of fully reiterating.
               updated_part_list=${CHANGED_REG_FILES_PER_PART[$die_name]}
               
-              # Find parts depend on current peripheral SVD file. 
+              # Find parts dependent on current peripheral SVD file. 
               # Read chip_periph.txt
               if [[ -n $updated_part_list ]]; then
                 # Check whether one of the changed register files matches with SVD path
@@ -448,7 +454,7 @@ jobs:
                 do
                   # Isolate peripheral of changed register file to find corresponding peripheral SVD file
                   periph=${changed_reg_file##*/}
-                  periph=${periph%_regs.h}
+                  periph="/${periph%_regs.h}"
                   
                   # Check if peripheral SVD file matches with changed register file using the peripheral name
                   match_line=$(find $CHIP_PERIPH -exec grep -s "$periph" {} \;)
@@ -571,9 +577,12 @@ jobs:
                 if [[ -n ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} ]]; then
                   echo -e "[\e[0;31mERROR\e[0m] Could not find ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} for ${affected_pr_reg_file#./*/}. Please add the correct SVD file. Contact the developers if you are adding a new register file.\n\n"
                 else
-                  # This goes for deleted deprecated files.
-                  # If no SVD file was added to REGISTER_SVD_FILE_LIST, then it's likely a deprecated file.
-                  echo -e "[\e[0;31mERROR\e[0m] Could not find corresponding peripheral SVD file for ${affected_pr_reg_file#./*/}. Please make sure this register file is supported. Contact the developers for any assistance.\n\n"
+                  # Exception for deleted files.
+                  # If the script reaches this point, then that means an unsupported file was deleted. Typically, that means a deprecated file was deleted.
+                  # The action will not fail if an unsupported file was deleted, but be wary of what was deleted.
+                  # Note: If no SVD file was added to REGISTER_SVD_FILE_LIST, then it's likely a deprecated file.
+                  CHECK_FAIL=0
+                  echo -e "[\e[0;31mWARNING\e[0m] Could not find corresponding peripheral SVD file for ${affected_pr_reg_file#./*/}. Please confirm this is correct. Contact the developers for any assistance.\n\n"
                 fi
               fi
             fi

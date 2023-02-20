@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -68,7 +68,7 @@ increase the amount of time spent in standby mode, thus reducing average power c
 
 #define configRTC_TICK_RATE_HZ (32768)
 
-#define configTOTAL_HEAP_SIZE ((size_t)(108 * 1024))
+#define configTOTAL_HEAP_SIZE ((size_t)(70 * 1024))
 
 #define configMINIMAL_STACK_SIZE ((uint16_t)128)
 
