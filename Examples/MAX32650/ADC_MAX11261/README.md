@@ -25,20 +25,11 @@ An input voltage between -Vref and +Vref can be applied to AIN
 inputs. Conversion results for any input voltage outside this
 range will be clipped to the minimum or maximum level.
 
-
+Push button 0 will switch scanned channel while push button 1 will change the conversion rate. 
 
 
 
 
   CH0:    1753 mV in 20598 us
-  
-  
-  
-  CH5:       4 mV in 20442 us
-  CH4:       4 mV in 20442 us
-  CH3:    1753 mV in 20442 us
-  CH2:       4 mV in 20442 us
-  CH1:       4 mV in 20442 us
-  CH0:       4 mV in 20442 us
 ...
 ```
