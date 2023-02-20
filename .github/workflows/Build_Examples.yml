@@ -84,7 +84,7 @@ jobs:
       - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         id: arm-none-eabi-gcc-action
-        if: ${{ steps.check_watch.outputs.RUN_TEST }}
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         with:
           release: '11.2-2022.02' # <-- The compiler release to use
           
@@ -102,7 +102,7 @@ jobs:
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
           
       - name: Install ccache
-        if: ${{ steps.check_watch.outputs.RUN_TEST }}
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         run: |
           # Install ccache
           sudo apt install -y ccache
@@ -147,7 +147,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Build_Examples
-        if: ${{ steps.check_watch.outputs.RUN_TEST }}
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         run: |
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
