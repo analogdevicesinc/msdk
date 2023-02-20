@@ -114,6 +114,83 @@ jobs:
           chip_name=""
           die_name=""
 
+          #---------= START - FUNCTION generate_register_file_for_part =---------
+          # Function to generate register files for specified part.
+          #   This function will copy the generated register files housed in 
+          #   "msdk-internal/SVD/Devices/{part}/chip_test/" to 
+          #   "msdk/Libraries/CMSIS/Device/Maxim/{part}/Include/".
+          # This function depends on relative paths from workspace.
+          # Inputs:
+          #   $1 - Specified part's chip name to generate register files
+          #   $2 - Specified part's die name to generate register files
+          #   $3 - Path to workspace (outside of msdk and msdk-internal repos)
+          function generate_register_file_for_part() {
+            part_chip_name="${1^^}"
+            part_die_name="${2^^}"
+            workspace_path=$3
+
+            cd ./${workspace_path}/${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/${part_die_name}
+            
+            if [[ ! (-d ./chip_test) ]]; then
+              chmod u+x makeRegs.sh
+              makeregs_log=$(./makeRegs.sh ubuntu)
+            fi
+
+            echo "Copying generated files to msdk/Libraries/CMSIS/Device/Maxim/${part_chip_name}/Include/"
+            cp -r ./chip_test/* ../../../../${{ env.MSDK_DIR }}/Libraries/CMSIS/Device/Maxim/${part_chip_name}/Include/
+
+            # Return to workspace root
+            cd ../../../../
+          }
+          #---------= END - generate_register_file_for_part =---------
+
+          #---------= START - FUNCTION find_affected_parts =---------
+          # Function to find all parts affected by any peripheral SVD file changes.
+          # This function depends on relative paths from workspace.
+          # Inputs:
+          #   $1 - Path to workspace (outside of msdk and msdk-internal repos)
+          # Return:
+          #   $? - List of affected parts.
+          function find_affected_parts() {
+            workspace_path=$1
+
+            cd ./${workspace_path}/${{ env.MSDK_DIR }}/
+
+            AFFECTED_CHIP_SET=""
+
+            CHANGED_PERIPH_SVD_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/PeriphDrivers/Source/*/*.svd')
+
+            for periph_svd_file in $CHANGED_PERIPH_SVD_FILES
+            do
+              # Each part has its own directory (using die names) in the SVD scripts
+              list_affected_parts_paths=$(grep -rl $periph_svd_file ../${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/)
+
+              # Isolate part from SVD paths
+              for affected_parts in $list_affected_parts_paths
+              do
+                part=${affected_parts#*/Devices/}
+                part=${part%%/*}
+
+                # There are some directories in SVD/Devices not named after a part.
+                #   Only generate files for parts.
+                if [[ ${DIE_TO_CHIP_NAMES[${part^^}]+_} ]]; then
+                  # Don't add duplicate parts to list
+                  if [[ ! "${AFFECTED_CHIP_SET[*]}" =~ "$part" ]]; then
+                    # Add space delimiter if list is not empty
+                    if [[ ${#AFFECTED_CHIP_SET[@]} ]]; then
+                      AFFECTED_CHIP_SET+=" "
+                    fi
+                    AFFECTED_CHIP_SET+=$part
+                  fi
+                fi
+
+              done
+            done
+
+            echo $AFFECTED_CHIP_SET
+          }
+          #---------= END - find_affected_parts =---------
+
           # Parse command to generate part specific file
           command="${{ github.event.comment.body }}"
 
@@ -124,19 +201,21 @@ jobs:
             # Generate all register files if you only run the command with no part specified
             if [[ "${cmdarr[1],,}" =~ "all" ]]; then
               part="all"
-            else
+            elif [[ ${#cmdarr[@]} != 1 ]]; then
               # Capitalize part designation argument
               part="${cmdarr[1]^^}"
 
               # Remove any non-alphanumeric characters (like newline and whitespaces)
               part="${part//[^[:alnum:]]/}"
-
+              echo "___${part}___"
+              echo "___${DIE_TO_CHIP_NAMES[${part}]}___"
+              echo "___${CHIP_TO_DIE_NAMES[${part}]}___"
               # Confirm second argument is the part designation
-              if [[ ${DIE_TO_CHIP_NAMES[$part]+_} ]]; then
+              if [[ ${DIE_TO_CHIP_NAMES[${part}]+_} ]]; then
                 chip_name=${DIE_TO_CHIP_NAMES[$part]}
                 die_name=$part
 
-              elif [[ ${CHIP_TO_DIE_NAMES[$part]+_} ]]; then
+              elif [[ ${CHIP_TO_DIE_NAMES[${part}]+_} ]]; then
                 chip_name=$part
                 die_name=${CHIP_TO_DIE_NAMES[$part]}
 
@@ -152,48 +231,40 @@ jobs:
 
           echo "Valid Command Found."
 
-          # Generate all register files if part not specified.
-          if [[ "$part" =~ "all" ]]; then
-            cd ${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
+          # Currently in workspace root (outside of msdk and msdk-internal directories)
+          # Generate register files depending on command parameter:
+          #   1 - only parts affected by PR changes
+          #   2 - all parts
+          #   3 - specified parts
+          # Note: The generated register files will be automatically copied to their
+          #   respective part's CMSIS location: "msdk/Libraries/CMSIS/Device/Maxim/{part}/Include/"
+          # 1 - Generate register files for all parts affected by PR changes.
+          echo "CMD: ${#cmdarr[@]} or $part"
+          if [[ ${#cmdarr[@]} == 1 ]]; then
+            list_affected_parts_die_name=$(find_affected_parts .)
 
-            for part_chip_name in "${!CHIP_TO_DIE_NAMES[@]}"
+            echo $list_affected_parts_die_name
+
+            for part_die_name in $list_affected_parts_die_name
             do
-              # Enter part's SVD directory only if it exists. Sometimes a new part could be added to dictionary with
-              #   no supported SVD scripts.
-              if [[ -d ./${CHIP_TO_DIE_NAMES[$part_chip_name]} ]]; then
-                echo "Enter ${CHIP_TO_DIE_NAMES[$part_chip_name]}"
-                cd ${CHIP_TO_DIE_NAMES[$part_chip_name]}
-
-                if [[ ! (-d ./chip_test) ]]; then
-                  chmod u+x makeRegs.sh
-                  makeregs_log=$(./makeRegs.sh ubuntu)
-                fi
-
-                echo "Copying generated files to msdk/Libraries/CMSIS/Device/Maxim/${part_chip_name}/Include/"
-                cp -r ./chip_test/* ../../../../${{ env.MSDK_DIR }}/Libraries/CMSIS/Device/Maxim/${part_chip_name}/Include/
-
-                cd ..
-              fi
+              echo "Part:  ${DIE_TO_CHIP_NAMES[$part_die_name]} ; $part_die_name"
+              generate_register_file_for_part ${DIE_TO_CHIP_NAMES[$part_die_name]} $part_die_name .
             done
 
-            # Return to msdk repo
-            cd ../../../${{ env.MSDK_DIR }}
+          # 2 - Generate all register files.
+          elif [[ "$part" =~ "all" ]]; then
+            for part_chip_name in "${!CHIP_TO_DIE_NAMES[@]}"
+            do
+              generate_register_file_for_part $part_chip_name ${CHIP_TO_DIE_NAMES[$part_chip_name]} .
+            done
 
+          # 3 - Only generate register file for specified part
           else
-            cd ${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/$die_name/
-
-            if [[ ! (-d ./chip_test) ]]; then
-              chmod u+x makeRegs.sh
-              makeregs_log=$(./makeRegs.sh ubuntu)
-            fi
-
-            echo "Copying generated files to msdk/Libraries/CMSIS/Device/Maxim/${chip_name}/Include/"
-            cp -r ./chip_test/* ../../../../${{ env.MSDK_DIR }}/Libraries/CMSIS/Device/Maxim/${chip_name}/Include/
-
-            # Return to msdk repo
-            cd ../../../../${{ env.MSDK_DIR }}
-
+            generate_register_file_for_part $chip_name $die_name .
           fi
+
+          # Enter msdk repo
+          cd ${{ env.MSDK_DIR }}
           
           exit 0
 
@@ -226,7 +297,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Error with command. Make sure you input a valid part number and your comment only contains:\n\n/generate-register-files [VALID_PART_NUMBER]'
+              body: 'Error with command. Make sure you input a valid part number (if specified) and your comment only contains:\n\n/generate-register-files [VALID_PART_NUMBER]'
             }
 
             github.rest.issues.createComment(failmsg)
