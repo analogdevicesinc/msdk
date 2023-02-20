@@ -197,7 +197,7 @@ int main(void)
     WsfHeapAlloc(memUsed);
     WsfCsExit();
 #endif
-#define TEST
+
     WsfCsEnter();
     LlInitRtCfg_t llCfg = { .pBbRtCfg = &mainBbRtCfg,
                             .wlSizeCfg = 4,
