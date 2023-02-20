@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
 echo
-echo "##########################################################################################################################"
-echo "# board_per_test.sh 1_MSDK 2_BRD1 3_BRD2 4_CURR_TIME 5_CURR_JOB_FILE 6_CURR_LOG 7_all_in_one 8PKG 9PHY 10STEP  11LIMIT   #"
-echo "##########################################################################################################################"
+echo "########################################################################################################################################"
+echo "# board_per_test.sh 1_MSDK 2_BRD1 3_BRD2 4_CURR_TIME 5_CURR_JOB_FILE 6_CURR_LOG 7_all_in_one 8PKG 9PHY 10STEP 11LIMIT 12RETRY 13ATTENS #"
+echo "########################################################################################################################################"
 echo
 echo $0 $@
 echo
 
-if [[ $# -ne 11 ]]; then
-    echo "Invalid call. Follow: board_per_test.sh 1_MSDK 2_BRD1 3_BRD2 4_CURR_TIME 5_CURR_JOB_FILE 6_CURR_LOG 7_all_in_one 8PKG 9PHY 10STEP 11LIMIT"
+if [[ $# -ne 13 ]]; then
+    echo "Invalid call. Follow: board_per_test.sh 1_MSDK 2_BRD1 3_BRD2 4_CURR_TIME 5_CURR_JOB_FILE 6_CURR_LOG 7_all_in_one 8PKG 9PHY 10STEP 11LIMIT 12RETRY 13ATTENS"
     exit 1
 fi
 
@@ -24,6 +24,8 @@ PKG_RA=$8
 PHY_RA=$9
 STEP=${10}
 LIMIT=${11}
+RETRY=${12}
+ATTENS=${13}
 
 echo "         MSDK: $MSDK"
 echo "         BRD1: $BRD1"
@@ -36,7 +38,16 @@ echo "       PKG_RA: $PKG_RA"
 echo "       PHY_RA: $PHY_RA"
 echo "         STEP: $STEP"
 echo "        LIMIT: $LIMIT"
-echo ""
+echo "        RETRY: $RETRY"
+echo "       ATTENS: ${ATTENS}"
+echo
+
+#----------------------------------------------------------------------------------------------------------------------
+# Function
+function ctrl_c_trap() {
+    #TODO: for local PER test
+    echo "Release the locked files."
+}
 
 #------------------------------------------------
 # Set up the running environment
@@ -153,6 +164,24 @@ echo "packetLen,phy,atten,txPower,perMaster,perSlave" > "${all_in_one}"
 step=${STEP}
 echo ""
 
+echo "Prepare the script file to flash/reset the boards."
+SH_RESET_BRD1=$TMP_PATH/${CURR_TIME}_brd1_reset.sh
+echo $SH_RESET_BRD1
+echo "#!/usr/bin/env bash" > $SH_RESET_BRD1
+echo "nrfjprog --family nrf52 -s ${BRD1_DAP_SN} --debugreset" >> $SH_RESET_BRD1
+chmod u+x $SH_RESET_BRD1
+cat $SH_RESET_BRD1
+echo ""
+
+SH_RESET_BRD2=$TMP_PATH/${CURR_TIME}_brd2_reset.sh
+echo $SH_RESET_BRD2
+echo "#!/usr/bin/env bash" > $SH_RESET_BRD2
+#echo "bash -ex $MSDK/.github/workflows/scripts/hard_reset.sh ${BRD2_CHIP_LC}.cfg ${BRD2_DAP_SN} $(realpath ${MSDK}/Examples/${BRD2_CHIP_UC}/BLE5_ctr/build/${BRD2_CHIP_LC}.elf) 2>&1 | tee test.log" >> $SH_RESET_BRD2
+echo "bash -e $MSDK/.github/workflows/scripts/build_flash.sh ${MSDK} /home/$USER/Tools/openocd ${BRD2_CHIP_UC} ${BRD2_TYPE} BLE5_ctr ${BRD2_DAP_SN} False True 2>&1 | tee ${TMP_PATH}/test.log" >> $SH_RESET_BRD2
+echo "sleep 10" >> $SH_RESET_BRD2
+chmod u+x $SH_RESET_BRD2
+cat $SH_RESET_BRD2
+
 SH_RESET_BRD1=$TMP_PATH/${CURR_TIME}_brd1_reset.sh
 echo $SH_RESET_BRD1
 echo "#!/usr/bin/env bash" > $SH_RESET_BRD1
@@ -218,9 +247,15 @@ do
         mst_ser=${BRD1_HCI}
         
         set -x
-        unbuffer python3 $MSDK/Tools/Bluetooth/conn_sweep.py ${slv_ser} ${mst_ser} ${res_files[i]} \
-            --stp ${BRD2_CON} --pktlen ${pkt_len} --phys ${phy} --step ${step} --loss -15.7 \
-            --brd1_reset $SH_RESET_BRD1 --brd2_reset $SH_RESET_BRD2
+        if [ "x${ATTENS}" == "x" ]; then
+            unbuffer python3 $MSDK/Tools/Bluetooth/conn_sweep.py ${slv_ser} ${mst_ser} ${res_files[i]} \
+                --stp ${BRD2_CON} --pktlen ${pkt_len} --phys ${phy} --step ${step} --loss -15.7 \
+                --brd1_reset $SH_RESET_BRD1 --brd2_reset $SH_RESET_BRD2 --retry_limit ${RETRY}
+        else
+            unbuffer python3 $MSDK/Tools/Bluetooth/conn_sweep.py ${slv_ser} ${mst_ser} ${res_files[i]} \
+                --stp ${BRD2_CON} --pktlen ${pkt_len} --phys ${phy} --attens ${ATTENS} --loss -15.7 \
+                --brd1_reset $SH_RESET_BRD1 --brd2_reset $SH_RESET_BRD2 --retry_limit ${RETRY}
+        fi
         set +x
 
         echo "cat ${res_files[i]}"

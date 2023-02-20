@@ -113,4 +113,6 @@ res = check_results(input.csv, float(input.limit))
 if res > 0:
     print("FAILED!")
     sys.exit(1)
+else:
+    print("PASSED")
 

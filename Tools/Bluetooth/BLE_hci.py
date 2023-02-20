@@ -462,6 +462,13 @@ class BLE_hci:
      # Sends HCI commands to start advertising.
     ################################################################################
     def advFunc(self, args):
+        if isinstance(args.stats, str):
+            #print(f'args.stats type: {type(args.stats)}, value: {args.stats}')
+            if args.stats.lower() == "true":
+                args.stats = True
+            else:
+                args.stats = False
+        
         # Bogus address to use for commands, allows any peer to connect
         peer_addr = "000000000000"
 
@@ -472,7 +479,7 @@ class BLE_hci:
         self.send_command("01012008FFFFFFFFFFFFFFFF")
 
         # Reset the connection stats
-        if args.stats == "True":
+        if(args.stats):
             self.send_command("0102FF00")
 
         # Set default PHY to enable all PHYs
@@ -524,7 +531,7 @@ class BLE_hci:
             return
 
         # Listen for events indef
-        if args.stats == "True":
+        if(args.stats):
             per = 100.0
             listenTime = int(args.listen)
             while (listenTime > 0):
@@ -579,6 +586,13 @@ class BLE_hci:
      # Sends HCI commands to start initiating and create a connection.
     ################################################################################
     def initFunc(self, args):
+        if isinstance(args.stats, str):
+            #print(f'args.stats type: {type(args.stats)}, value: {args.stats}')
+            if args.stats.lower() == "true":
+                args.stats = True
+            else:
+                args.stats = False
+
         # Reorder the address
         addrBytes = parseBdAddr(args.addr)
 
@@ -589,7 +603,7 @@ class BLE_hci:
         self.send_command("01012008FFFFFFFFFFFFFFFF")
 
         # Reset the connection stats
-        if args.stats == "True":
+        if(args.stats):
             self.send_command("0102FF00")
 
         # Set default PHY to enable all PHYs
@@ -636,7 +650,7 @@ class BLE_hci:
             return
 
         # Listen for events indef
-        if args.stats == "True":
+        if(args.stats):
             per = 100.0
             listenTime = int(args.listen)
             while (listenTime > 0):
@@ -737,11 +751,17 @@ class BLE_hci:
      # Listen for HCI events.
     ################################################################################
     def listenFunc(self, args):
+        if isinstance(args.stats, str):
+            #print(f'args.stats type: {type(args.stats)}, value: {args.stats}')
+            if args.stats.lower() == "true":
+                args.stats = True
+            else:
+                args.stats = False
+
         waitSeconds = int(args.time)
 
         per = 100.0
-
-        if args.stats == "True":
+        if(args.stats):
 
             startTime = datetime.datetime.now()
             while True:

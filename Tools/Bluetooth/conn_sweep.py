@@ -56,6 +56,7 @@ import socket
 from subprocess import call, Popen, PIPE, CalledProcessError, STDOUT
 import time
 
+total_retry_times = 0
 
 if socket.gethostname() == "wall-e":
     rf_switch = True
@@ -105,6 +106,7 @@ parser.add_argument('--stp', default="", help="slave TRACE serial port")
 parser.add_argument('--loss', default=0, help="Calibrated path loss, -15.7 dBm (-16.4+0.7)")
 parser.add_argument('--brd1_reset', default="", help="script file to reset board1")
 parser.add_argument('--brd2_reset', default="", help="script file to reset board2")
+parser.add_argument('--retry_limit', default=3, help="limit of retry times after fail")
  
 args = parser.parse_args()
 
@@ -126,6 +128,7 @@ if args.attens is None:
         attens.append(90)
 else:
     attens = args.attens.strip().split(",")
+    attens = [float(x) for x in attens]
 
 print("slaveSerial   :", args.slaveSerial)
 print("masterSerial  :", args.masterSerial)
@@ -163,7 +166,7 @@ perMax = 0
 for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
     for atten in attens:
         per_100 = 0
-        RETRY = 2
+        RETRY = int(args.retry_limit)
         while per_100 < RETRY:
             start_secs = time.time()
             print(f'\n---------------------------------------------------------------------------------------')
@@ -269,11 +272,6 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                 print("perMaster invalid. Reset the master.")
                 reset_master = True
             
-            if reset_master:
-                run_script_reset_board(args.brd1_reset)
-                per_100 += 1
-                continue
-
             reset_slave = False
             if perSlave is None:
                 print("perSlave is None. Reset the slave.")
@@ -282,9 +280,13 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                 print("perSlave invalid. Reset the slave.")
                 reset_slave = True
             
-            if reset_slave:
+            if reset_slave or reset_master:
+                run_script_reset_board(args.brd1_reset)
                 run_script_reset_board(args.brd2_reset)
+
                 per_100 += 1
+                total_retry_times += 1
+                sleep(10)
                 continue
 
             # Record max per
@@ -317,6 +319,8 @@ results.write("\n")
 results.close()
 
 print("perMax: ", perMax)
+
+print(f'total_retry_times: {total_retry_times}')
 
 if float(args.limit) != 0.0:
     if perMax > float(args.limit):
