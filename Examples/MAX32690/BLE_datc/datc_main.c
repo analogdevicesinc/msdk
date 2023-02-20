@@ -1003,8 +1003,7 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
     case APP_DISC_FAILED:
         if (pAppCfg->abortDisc) {
             /* if discovery failed for proprietary data service then disconnect */
-            if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC ||
-                (datcCb.discState[connId - 1] == DATC_DISC_SDS_SVC)) {
+            if (datcCb.discState[connId - 1] < DATC_DISC_SVC_MAX ) {
                 AppConnClose(connId);
                 break;
             }
