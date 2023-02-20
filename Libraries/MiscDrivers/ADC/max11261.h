@@ -45,23 +45,23 @@
 /**
  * @brief MAX11261 device access function prototype.
  */
-typedef int (*max11261_transfer_func_t) (uint8_t *txbuf, uint8_t txsize,
-        uint8_t *rxbuf, uint8_t rxsize, uint8_t slave);
+typedef int (*max11261_transfer_func_t)(uint8_t *txbuf, uint8_t txsize, uint8_t *rxbuf,
+                                        uint8_t rxsize, uint8_t slave);
 
 /**
  * @brief MAX11261 reset function prototype.
  */
-typedef void (*max11261_reset_ctrl_t) (int);
+typedef void (*max11261_reset_ctrl_t)(int);
 
 /**
  * @brief MAX11261 microseconds delay function prototype.
  */
-typedef void (*max11261_delay_func_t) (uint32_t);
+typedef void (*max11261_delay_func_t)(uint32_t);
 
 /**
  * @brief MAX11261 RDYB pin status check function.
  */
-typedef int (*max11261_ready_func_t) (void);
+typedef int (*max11261_ready_func_t)(void);
 
 /**
  * Channel enumeration.
@@ -82,9 +82,9 @@ typedef enum {
  * Sequencer modes 2, 3 and 4 can only run in \a MAX11261_SINGLE_CYCLE mode.
  */
 typedef enum {
-    MAX11261_LATENT_CONTINUOUS,         /**< Latent continuous single cycle conversion. Valid only in 1 */
-    MAX11261_SINGLE_CYCLE,              /**< No-latency single cycle conversion. Valid in 1, 2, 3 and 4 */
-    MAX11261_SINGLE_CYCLE_CONTINUOUS,   /**< Continuous no-latency single cycle conversion. Valid only in 1. */
+    MAX11261_LATENT_CONTINUOUS, /**< Latent continuous single cycle conversion. Valid only in 1 */
+    MAX11261_SINGLE_CYCLE, /**< No-latency single cycle conversion. Valid in 1, 2, 3 and 4 */
+    MAX11261_SINGLE_CYCLE_CONTINUOUS, /**< Continuous no-latency single cycle conversion. Valid only in 1. */
 } max11261_conversion_mode_t;
 
 /**
@@ -92,11 +92,11 @@ typedef enum {
  * 2, 3 and 4 are only valid with MAX11261_SINGLE_CYCLE.
  */
 typedef enum {
-    MAX11261_SEQ_MODE_1,    /**< Single-Channel Conversion with GPO Control and MUX Delays. */
-    MAX11261_SEQ_MODE_2,    /**< Multichannel Scan with GPO Control and MUX Delays */
-    MAX11261_SEQ_MODE_3,    /**< Scan, with Sequenced GPO Controls */
-    MAX11261_SEQ_MODE_4,    /**< Autoscan with GPO Controls (CHMAP) and Interrupt */
-    MAX11261_SEQ_MODE_MAX,  /**< Autoscan with GPO Controls (CHMAP) and Interrupt */
+    MAX11261_SEQ_MODE_1, /**< Single-Channel Conversion with GPO Control and MUX Delays. */
+    MAX11261_SEQ_MODE_2, /**< Multichannel Scan with GPO Control and MUX Delays */
+    MAX11261_SEQ_MODE_3, /**< Scan, with Sequenced GPO Controls */
+    MAX11261_SEQ_MODE_4, /**< Autoscan with GPO Controls (CHMAP) and Interrupt */
+    MAX11261_SEQ_MODE_MAX, /**< Autoscan with GPO Controls (CHMAP) and Interrupt */
 } max11261_sequencer_mode_t;
 
 /**
@@ -162,8 +162,8 @@ typedef enum {
  * Input polarity.
  */
 typedef enum {
-    MAX11261_POL_UNIPOLAR = 0,  /**< 0 to +VREF */
-    MAX11261_POL_BIPOLAR,       /**< -VREF to +VREF */
+    MAX11261_POL_UNIPOLAR = 0, /**< 0 to +VREF */
+    MAX11261_POL_BIPOLAR, /**< -VREF to +VREF */
 } max11261_pol_t;
 
 /**
@@ -211,20 +211,20 @@ typedef enum {
  */
 typedef enum {
     MAX11261_COMP_MODE_CURR = 0, /**< Current result is within limits */
-    MAX11261_COMP_MODE_DIFF,     /**< Current result minus previous result is within limits*/
-    MAX11261_COMP_MODE_HPF,      /**< Highpass digital filter output is within limits */
+    MAX11261_COMP_MODE_DIFF, /**< Current result minus previous result is within limits*/
+    MAX11261_COMP_MODE_HPF, /**< Highpass digital filter output is within limits */
 } max11261_comp_mode_t;
 
 /**
  * ADC conversion result and miscelleanous info.
  */
 typedef struct {
-    int32_t val;    /**< Conversion result */
-    uint8_t chn:3;  /**< Channel number */
-    uint8_t aor:1;  /**< Analog input overrange detection */
-    uint8_t dor:1;  /**< Data overrun detection */
-    uint8_t oor:1;  /**< Data out-of-range detection */
-    uint8_t rfu:2;
+    int32_t val; /**< Conversion result */
+    uint8_t chn : 3; /**< Channel number */
+    uint8_t aor : 1; /**< Analog input overrange detection */
+    uint8_t dor : 1; /**< Data overrun detection */
+    uint8_t oor : 1; /**< Data out-of-range detection */
+    uint8_t rfu : 2;
 } max11261_adc_result_t;
 
 /**
@@ -245,8 +245,7 @@ typedef struct {
  * @param delayFunc Microseconds delay function.
  */
 void max11261_adc_platform_init(max11261_transfer_func_t transferFunc,
-        max11261_reset_ctrl_t resetCtrl, max11261_delay_func_t delayFunc
-);
+                                max11261_reset_ctrl_t resetCtrl, max11261_delay_func_t delayFunc);
 
 /**
  * @brief Configures MAX11261 hardware parameters.
@@ -258,8 +257,7 @@ void max11261_adc_platform_init(max11261_transfer_func_t transferFunc,
  *
  * @return Success/Fail, see \ref errno.h for a list of return codes.
  */
-int max11261_adc_config_init(uint16_t vavdd, uint16_t vref, uint16_t freq,
-        uint8_t slaveAddr);
+int max11261_adc_config_init(uint16_t vavdd, uint16_t vref, uint16_t freq, uint8_t slaveAddr);
 
 /**
  * @brief Sets the function that checks if data is available by monitoring the
@@ -425,8 +423,7 @@ int max11261_adc_set_channel_order(max11261_adc_channel_t chan, uint8_t order);
  * @return Success/Fail, 0 if success, -EINVAL if \a chan or \a gpo is invalid,
  * or \a gpo is already mapped to another channel.
  */
-int max11261_adc_set_channel_gpo(max11261_adc_channel_t chan,
-        max11261_gpo_t gpo);
+int max11261_adc_set_channel_gpo(max11261_adc_channel_t chan, max11261_gpo_t gpo);
 
 /**
  * @brief Sets conversion and sequencer mode to be used. Default values are
@@ -437,8 +434,7 @@ int max11261_adc_set_channel_gpo(max11261_adc_channel_t chan,
  *
  * @return Success/Fail, see \ref errno.h for a list of return codes.
  */
-int max11261_adc_set_mode(max11261_conversion_mode_t convMode,
-        max11261_sequencer_mode_t seqMode);
+int max11261_adc_set_mode(max11261_conversion_mode_t convMode, max11261_sequencer_mode_t seqMode);
 
 /**
  * @brief Sets the gain of the PGA. PGA is automatically enabled when this

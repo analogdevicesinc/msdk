@@ -51,67 +51,69 @@
 #endif
 
 #if DBG_LVL > 0
-#define log_err(fmt, ...) do { \
-        printf("[MAX11261] ERR: %s:"  fmt "\n", __func__, ##__VA_ARGS__); \
-} while (0)
+#define log_err(fmt, ...)                                                \
+    do {                                                                 \
+        printf("[MAX11261] ERR: %s:" fmt "\n", __func__, ##__VA_ARGS__); \
+    } while (0)
 #else
 #define log_err(fmt, ...)
 #endif
 
 #if DBG_LVL > 1
-#define log_inf(fmt, ...) do { \
+#define log_inf(fmt, ...)                                   \
+    do {                                                    \
         printf("[MAX11261] INF: " fmt "\n", ##__VA_ARGS__); \
-} while (0)
+    } while (0)
 #else
 #define log_inf(fmt, ...)
 #endif
 
 #if DBG_LVL > 2
-#define log_dbg(fmt, ...) do { \
+#define log_dbg(fmt, ...)                                                 \
+    do {                                                                  \
         printf("[MAX11261] DBG: %s: " fmt "\n", __func__, ##__VA_ARGS__); \
-} while (0)
+    } while (0)
 #else
 #define log_dbg(fmt, ...)
 #endif
 
-#define MAX11261_V_AVDD_MIN     2700
-#define MAX11261_V_AVDD_MAX     3600
-#define MAX11261_V_REF_MIN      1500
-#define MAX11261_MAX_SERIAL_FREQ    5000 // KHz
-#define MAX11261_MAX_REG_SIZE   4U
-#define MAX11261_CHANNEL_COUNT  6
+#define MAX11261_V_AVDD_MIN 2700
+#define MAX11261_V_AVDD_MAX 3600
+#define MAX11261_V_REF_MIN 1500
+#define MAX11261_MAX_SERIAL_FREQ 5000 // KHz
+#define MAX11261_MAX_REG_SIZE 4U
+#define MAX11261_CHANNEL_COUNT 6
 #define MAX11261_ADC_RESOLUTION 24
 
-#define MAX11261_MUX_DELAY_MAX  1023
-#define MAX11261_MUX_DELAY_MIN  4
-#define MAX11261_GPO_DELAY_MAX  5100
-#define MAX11261_GPO_DELAY_MIN  20
-#define MAX11261_AUTOSCAN_DELAY_MAX  1023
-#define MAX11261_AUTOSCAN_DELAY_MIN  4
+#define MAX11261_MUX_DELAY_MAX 1023
+#define MAX11261_MUX_DELAY_MIN 4
+#define MAX11261_GPO_DELAY_MAX 5100
+#define MAX11261_GPO_DELAY_MIN 20
+#define MAX11261_AUTOSCAN_DELAY_MAX 1023
+#define MAX11261_AUTOSCAN_DELAY_MIN 4
 
 #define MAX11261_HPF_CUTOFF_MAX 7
 
-#define MAX11261_READ_REG(addr, val) \
-    do { \
-            error = max11261_read_reg(addr, val); \
-            if (error < 0) \
-                return error; \
+#define MAX11261_READ_REG(addr, val)          \
+    do {                                      \
+        error = max11261_read_reg(addr, val); \
+        if (error < 0)                        \
+            return error;                     \
     } while (0);
 
-#define MAX11261_WRITE_REG(addr, val) \
-    do { \
+#define MAX11261_WRITE_REG(addr, val)          \
+    do {                                       \
         error = max11261_write_reg(addr, val); \
-        if (error < 0) \
-            return error; \
-    } while(0);
+        if (error < 0)                         \
+            return error;                      \
+    } while (0);
 
-#define MAX11261_UPDATE_REG(addr, mask, val) \
-    do { \
+#define MAX11261_UPDATE_REG(addr, mask, val)          \
+    do {                                              \
         error = max11261_update_reg(addr, mask, val); \
-        if (error < 0) \
-            return error; \
-    } while(0);
-
+        if (error < 0)                                \
+            return error;                             \
+    } while (0);
 
 /* **** Variable Declaration **** */
 
@@ -121,21 +123,21 @@
  * Structure to hold platform specific methods used by this driver.
  */
 typedef struct {
-    max11261_transfer_func_t transfer;  /**< MCU specific I2C transfer function */
-    max11261_reset_ctrl_t reset;        /**< MCU specific hard reset function */
-    max11261_delay_func_t delayUs;      /**< MCU specific delay function */
-    max11261_ready_func_t ready;        /**< MCU specific ready function */
+    max11261_transfer_func_t transfer; /**< MCU specific I2C transfer function */
+    max11261_reset_ctrl_t reset; /**< MCU specific hard reset function */
+    max11261_delay_func_t delayUs; /**< MCU specific delay function */
+    max11261_ready_func_t ready; /**< MCU specific ready function */
 } max11261_adc_platform_ctx_t;
 
 /**
  * @brief Structure to hold configuration parameters.
  */
 typedef struct {
-    uint16_t avdd;  /**< V_AVDD in millivolts */
-    uint16_t vref;  /**< REFP - REFN in millivolts */
-    uint8_t slave;  /**< I2C slave address */
-    uint8_t freq;   /**< Interface speed */
-    uint8_t res;    /**< ADC resolution */
+    uint16_t avdd; /**< V_AVDD in millivolts */
+    uint16_t vref; /**< REFP - REFN in millivolts */
+    uint8_t slave; /**< I2C slave address */
+    uint8_t freq; /**< Interface speed */
+    uint8_t res; /**< ADC resolution */
 } max11261_adc_config_t;
 
 /**
@@ -143,31 +145,31 @@ typedef struct {
  */
 typedef struct {
     max11261_single_rate_t srate; /**< Conversion rate in single cycle mode */
-    max11261_cont_rate_t crate;   /**< Conversion rate in continuous mode */
-    max11261_adc_channel_t chan;  /**< Conversion channel */
-    max11261_conversion_mode_t convMode;    /**< Conversion mode */
-    max11261_sequencer_mode_t seqMode;      /**< Sequencer mode */
-    max11261_pol_t polarity;      /**< Input polarity */
-    max11261_fmt_t format;        /**< Result format */
-    uint16_t muxDelay;      /**< Multiplexer delay, 0 - 1020ms */
-    uint16_t gpoDelay;      /**< GPO delay, 20 - 5100us */
+    max11261_cont_rate_t crate; /**< Conversion rate in continuous mode */
+    max11261_adc_channel_t chan; /**< Conversion channel */
+    max11261_conversion_mode_t convMode; /**< Conversion mode */
+    max11261_sequencer_mode_t seqMode; /**< Sequencer mode */
+    max11261_pol_t polarity; /**< Input polarity */
+    max11261_fmt_t format; /**< Result format */
+    uint16_t muxDelay; /**< Multiplexer delay, 0 - 1020ms */
+    uint16_t gpoDelay; /**< GPO delay, 20 - 5100us */
     uint16_t autoscanDelay; /**< Autoscan delay, 4 - 1020ms */
     /**< Scan order of channels in mode 2,3 or 4 */
     uint8_t order[MAX11261_ADC_CHANNEL_MAX];
     max11261_gpo_t gpoMap[MAX11261_ADC_CHANNEL_MAX]; /**< GPO map */
-    uint8_t srdy;    /**< STAT:SRDY mask depending on enabled channels */
+    uint8_t srdy; /**< STAT:SRDY mask depending on enabled channels */
 } max11261_adc_seq_t;
 
 /**
  * @brief Miscellaneous control parameters.
  */
 typedef struct {
-    uint8_t pga    : 3; /**< PGA gain */
+    uint8_t pga : 3; /**< PGA gain */
     uint8_t pga_en : 1; /**< PGA enable switch */
-    uint8_t lp_mode: 1; /**< PGA low-power mode */
+    uint8_t lp_mode : 1; /**< PGA low-power mode */
     uint8_t ldo_en : 1; /**< Integrated LDO enable */
     uint8_t css_en : 1; /**< Current source and sink on inputs */
-    uint8_t rfu    : 1;
+    uint8_t rfu : 1;
 } max11261_ctrl_t;
 
 /**
@@ -176,9 +178,9 @@ typedef struct {
 typedef struct {
     int16_t limitMin[MAX11261_ADC_CHANNEL_MAX];
     int16_t limitMax[MAX11261_ADC_CHANNEL_MAX];
-    uint8_t freq    : 3;    /**< HPF cutoff frequency */
-    uint8_t cmp_mode: 2;    /**< Compare method of input conversion results */
-    uint8_t rfu     : 3;
+    uint8_t freq : 3; /**< HPF cutoff frequency */
+    uint8_t cmp_mode : 2; /**< Compare method of input conversion results */
+    uint8_t rfu : 3;
 } max11261_hpf_t;
 
 struct max11261_reg {
@@ -187,79 +189,56 @@ struct max11261_reg {
 };
 
 static const struct max11261_reg regs[] = {
-        {"STAT", 3},
-        {"CTRL1", 1},
-        {"CTRL2", 1},
-        {"CTRL3", 1},
-        {"SEQ", 2},
-        {"CHMAP1", 3},
-        {"CHMAP0", 3},
-        {"DELAY", 3},
-        {"LIMIT_LOW0", 3},
-        {"LIMIT_LOW1", 3},
-        {"LIMIT_LOW2", 3},
-        {"LIMIT_LOW3", 3},
-        {"LIMIT_LOW4", 3},
-        {"LIMIT_LOW5", 3},
-        {"SOC", 3},
-        {"SGC", 3},
-        {"SCOC", 3},
-        {"SCGC", 3},
-        {"GPO_DIR", 1},
-        {"FIFO", 4},
-        {"FIFO_LEVEL", 1},
-        {"FIFO_CTRL", 1},
-        {"INPUT_INT_EN", 1},
-        {"INT_STAT", 2},
-        {"HPF", 1},
-        {"LIMIT_HIGH0", 3},
-        {"LIMIT_HIGH1", 3},
-        {"LIMIT_HIGH2", 3},
-        {"LIMIT_HIGH3", 3},
-        {"LIMIT_HIGH4", 3},
-        {"LIMIT_HIGH5", 3},
+    { "STAT", 3 },        { "CTRL1", 1 },       { "CTRL2", 1 },        { "CTRL3", 1 },
+    { "SEQ", 2 },         { "CHMAP1", 3 },      { "CHMAP0", 3 },       { "DELAY", 3 },
+    { "LIMIT_LOW0", 3 },  { "LIMIT_LOW1", 3 },  { "LIMIT_LOW2", 3 },   { "LIMIT_LOW3", 3 },
+    { "LIMIT_LOW4", 3 },  { "LIMIT_LOW5", 3 },  { "SOC", 3 },          { "SGC", 3 },
+    { "SCOC", 3 },        { "SCGC", 3 },        { "GPO_DIR", 1 },      { "FIFO", 4 },
+    { "FIFO_LEVEL", 1 },  { "FIFO_CTRL", 1 },   { "INPUT_INT_EN", 1 }, { "INT_STAT", 2 },
+    { "HPF", 1 },         { "LIMIT_HIGH0", 3 }, { "LIMIT_HIGH1", 3 },  { "LIMIT_HIGH2", 3 },
+    { "LIMIT_HIGH3", 3 }, { "LIMIT_HIGH4", 3 }, { "LIMIT_HIGH5", 3 },
 };
 
 /**
  * 1/10th of delay for each sample rate.
  */
 static const uint32_t max11261_single_cycle_delay[] = {
-        2000,  // MAX11261_SINGLE_RATE_50
-        1600,  // MAX11261_SINGLE_RATE_62_5
-        1000,  // MAX11261_SINGLE_RATE_100
-        800,   // MAX11261_SINGLE_RATE_125
-        500,   // MAX11261_SINGLE_RATE_200
-        400,   // MAX11261_SINGLE_RATE_250
-        250,   // MAX11261_SINGLE_RATE_400
-        200,   // MAX11261_SINGLE_RATE_500
-        125,   // MAX11261_SINGLE_RATE_800
-        100,   // MAX11261_SINGLE_RATE_1000
-        62,    // MAX11261_SINGLE_RATE_1600
-        50,    // MAX11261_SINGLE_RATE_2000
-        31,    // MAX11261_SINGLE_RATE_3200
-        25,    // MAX11261_SINGLE_RATE_4000
-        16,    // MAX11261_SINGLE_RATE_6400
-        8      // MAX11261_SINGLE_RATE_12800
+    2000, // MAX11261_SINGLE_RATE_50
+    1600, // MAX11261_SINGLE_RATE_62_5
+    1000, // MAX11261_SINGLE_RATE_100
+    800, // MAX11261_SINGLE_RATE_125
+    500, // MAX11261_SINGLE_RATE_200
+    400, // MAX11261_SINGLE_RATE_250
+    250, // MAX11261_SINGLE_RATE_400
+    200, // MAX11261_SINGLE_RATE_500
+    125, // MAX11261_SINGLE_RATE_800
+    100, // MAX11261_SINGLE_RATE_1000
+    62, // MAX11261_SINGLE_RATE_1600
+    50, // MAX11261_SINGLE_RATE_2000
+    31, // MAX11261_SINGLE_RATE_3200
+    25, // MAX11261_SINGLE_RATE_4000
+    16, // MAX11261_SINGLE_RATE_6400
+    8 // MAX11261_SINGLE_RATE_12800
 };
 
 /**
  * 1/10th of delay for each sample rate.
  */
 static const uint32_t max11261_cont_cycle_delay[] = {
-        52600, // MAX11261_CONT_RATE_1_9
-        25600, // MAX11261_CONT_RATE_3_9
-        12800, // MAX11261_CONT_RATE_7_8
-        6400,  // MAX11261_CONT_RATE_15_6
-        3200,  // MAX11261_CONT_RATE_31_2
-        1600,  // MAX11261_CONT_RATE_62_5
-        800,   // MAX11261_CONT_RATE_125
-        400,   // MAX11261_CONT_RATE_250
-        200,   // MAX11261_CONT_RATE_500
-        100,   // MAX11261_CONT_RATE_1000
-        50,    // MAX11261_CONT_RATE_2000
-        25,    // MAX11261_CONT_RATE_4000
-        12,    // MAX11261_CONT_RATE_8000
-        6      // MAX11261_CONT_RATE_16000
+    52600, // MAX11261_CONT_RATE_1_9
+    25600, // MAX11261_CONT_RATE_3_9
+    12800, // MAX11261_CONT_RATE_7_8
+    6400, // MAX11261_CONT_RATE_15_6
+    3200, // MAX11261_CONT_RATE_31_2
+    1600, // MAX11261_CONT_RATE_62_5
+    800, // MAX11261_CONT_RATE_125
+    400, // MAX11261_CONT_RATE_250
+    200, // MAX11261_CONT_RATE_500
+    100, // MAX11261_CONT_RATE_1000
+    50, // MAX11261_CONT_RATE_2000
+    25, // MAX11261_CONT_RATE_4000
+    12, // MAX11261_CONT_RATE_8000
+    6 // MAX11261_CONT_RATE_16000
 };
 
 /* **** Global Variables **** */
@@ -278,51 +257,46 @@ static max11261_adc_config_t cfg;
  * @brief Variables concerning ADC behaviour.
  */
 static max11261_adc_seq_t seq = {
-        .srate = MAX11261_SINGLE_RATE_50,
-        .crate = MAX11261_CONT_RATE_1_9,
-        .chan = MAX11261_ADC_CHANNEL_0,
-        .convMode = MAX11261_SINGLE_CYCLE,
-        .seqMode = MAX11261_SEQ_MODE_1,
-        .polarity = MAX11261_POL_UNIPOLAR,
-        .format = MAX11261_FMT_OFFSET_BINARY,
-        .muxDelay = 0,
-        .gpoDelay = 0,
-        .order = {0, 0, 0, 0, 0, 0},
-        .gpoMap = {
-                MAX11261_GPO_INVALID, MAX11261_GPO_INVALID,
-                MAX11261_GPO_INVALID, MAX11261_GPO_INVALID,
-                MAX11261_GPO_INVALID, MAX11261_GPO_INVALID
-        },
-        .srdy = 0,
+    .srate = MAX11261_SINGLE_RATE_50,
+    .crate = MAX11261_CONT_RATE_1_9,
+    .chan = MAX11261_ADC_CHANNEL_0,
+    .convMode = MAX11261_SINGLE_CYCLE,
+    .seqMode = MAX11261_SEQ_MODE_1,
+    .polarity = MAX11261_POL_UNIPOLAR,
+    .format = MAX11261_FMT_OFFSET_BINARY,
+    .muxDelay = 0,
+    .gpoDelay = 0,
+    .order = { 0, 0, 0, 0, 0, 0 },
+    .gpoMap = { MAX11261_GPO_INVALID, MAX11261_GPO_INVALID, MAX11261_GPO_INVALID,
+                MAX11261_GPO_INVALID, MAX11261_GPO_INVALID, MAX11261_GPO_INVALID },
+    .srdy = 0,
 };
 
 /**
  * @brief Other control parameters.
  */
 static max11261_ctrl_t ctrl = {
-        .pga = MAX11261_PGA_GAIN_1,
-        .pga_en = 0,
-        .lp_mode = 0,
-        .ldo_en = 1,
-        .css_en = 0,
+    .pga = MAX11261_PGA_GAIN_1,
+    .pga_en = 0,
+    .lp_mode = 0,
+    .ldo_en = 1,
+    .css_en = 0,
 };
 
 /**
  * @brief Highpass filter parameters.
  */
 static max11261_hpf_t hpf = {
-        .limitMin = { 0, 0, 0, 0, 0, 0},
-        .limitMax = { 0, 0, 0, 0, 0, 0},
-        .freq = 0,
-        .cmp_mode = MAX11261_COMP_MODE_CURR,
+    .limitMin = { 0, 0, 0, 0, 0, 0 },
+    .limitMax = { 0, 0, 0, 0, 0, 0 },
+    .freq = 0,
+    .cmp_mode = MAX11261_COMP_MODE_CURR,
 };
 
 /* **** Function Prototypes **** */
 
-
 void max11261_adc_platform_init(max11261_transfer_func_t transferFunc,
-        max11261_reset_ctrl_t resetCtrl,
-        max11261_delay_func_t delayFunc)
+                                max11261_reset_ctrl_t resetCtrl, max11261_delay_func_t delayFunc)
 {
     platCtx.transfer = transferFunc;
     platCtx.reset = resetCtrl;
@@ -330,11 +304,10 @@ void max11261_adc_platform_init(max11261_transfer_func_t transferFunc,
     platCtx.ready = NULL;
 }
 
-int max11261_adc_config_init(uint16_t vavdd, uint16_t vref, uint16_t freq,
-        uint8_t slaveAddr)
+int max11261_adc_config_init(uint16_t vavdd, uint16_t vref, uint16_t freq, uint8_t slaveAddr)
 {
     if (vavdd < MAX11261_V_AVDD_MIN || vavdd > MAX11261_V_AVDD_MAX)
-            return -EINVAL;
+        return -EINVAL;
 
     if (vref < MAX11261_V_REF_MIN || vref > vavdd)
         return -EINVAL;
@@ -385,20 +358,19 @@ static int max11261_read_reg(uint8_t addr, uint32_t *val)
         log_err("Failed to read reg 0x%02X (%s)", addr, regs[addr].name);
     } else {
         switch (regs[addr].size) {
-            case 1:
-                *val = rxbuf[0];
-                break;
-            case 2:
-                *val = rxbuf[1] | rxbuf[0] << 8;
-                break;
-            case 3:
-                *val = rxbuf[2] | rxbuf[1] << 8 | rxbuf[0] << 16;
-                break;
-            case 4:
-            default:
-                *val = rxbuf[3] | rxbuf[2] << 8 | rxbuf[1] << 16
-                | rxbuf[0] << 24;
-                break;
+        case 1:
+            *val = rxbuf[0];
+            break;
+        case 2:
+            *val = rxbuf[1] | rxbuf[0] << 8;
+            break;
+        case 3:
+            *val = rxbuf[2] | rxbuf[1] << 8 | rxbuf[0] << 16;
+            break;
+        case 4:
+        default:
+            *val = rxbuf[3] | rxbuf[2] << 8 | rxbuf[1] << 16 | rxbuf[0] << 24;
+            break;
         }
     }
 
@@ -417,25 +389,25 @@ static int max11261_write_reg(uint8_t addr, uint32_t val)
 
     txbuf[0] = MAX11261_CMD_WRITE(addr);
     switch (regs[addr].size) {
-        case 1:
-            txbuf[1] = val & 0xFF;
-            break;
-        case 2:
-            txbuf[1] = (val >> 8) & 0xFF;
-            txbuf[2] = val & 0xFF;
-            break;
-        case 3:
-            txbuf[1] = (val >> 16) & 0xFF;
-            txbuf[2] = (val >> 8) & 0xFF;
-            txbuf[3] = val & 0xFF;
-            break;
-        case 4:
-        default:
-            txbuf[1] = (val >> 24) & 0xFF;
-            txbuf[2] = (val >> 16) & 0xFF;
-            txbuf[3] = (val >> 8) & 0xFF;
-            txbuf[4] = val & 0xFF;
-            break;
+    case 1:
+        txbuf[1] = val & 0xFF;
+        break;
+    case 2:
+        txbuf[1] = (val >> 8) & 0xFF;
+        txbuf[2] = val & 0xFF;
+        break;
+    case 3:
+        txbuf[1] = (val >> 16) & 0xFF;
+        txbuf[2] = (val >> 8) & 0xFF;
+        txbuf[3] = val & 0xFF;
+        break;
+    case 4:
+    default:
+        txbuf[1] = (val >> 24) & 0xFF;
+        txbuf[2] = (val >> 16) & 0xFF;
+        txbuf[3] = (val >> 8) & 0xFF;
+        txbuf[4] = val & 0xFF;
+        break;
     }
 
     error = platCtx.transfer(txbuf, regs[addr].size + 1, NULL, 0, cfg.slave);
@@ -472,8 +444,8 @@ static int max11261_set_powerdown_mode(uint8_t mode)
     if (error < 0)
         return error;
 
-    mask = (mode == MAX11261_CTRL1_PD_SLEEP) ? MAX11261_STAT_PDSTAT_SLEEP
-            : MAX11261_STAT_PDSTAT_STANDBY;
+    mask = (mode == MAX11261_CTRL1_PD_SLEEP) ? MAX11261_STAT_PDSTAT_SLEEP :
+                                               MAX11261_STAT_PDSTAT_STANDBY;
     timeout = 2000; /* 2000 x 10us */
     MAX11261_READ_REG(MAX11261_STAT, &val);
     while ((val & MAX11261_STAT_PDSTAT) != mask && --timeout) {
@@ -525,8 +497,7 @@ int max11261_adc_calibrate_self(void)
 {
     int error;
 
-    MAX11261_UPDATE_REG(MAX11261_CTRL1, MAX11261_CTRL1_CAL,
-            MAX11261_CTRL1_CAL_SELF);
+    MAX11261_UPDATE_REG(MAX11261_CTRL1, MAX11261_CTRL1_CAL, MAX11261_CTRL1_CAL_SELF);
 
     error = max11261_write_byte(MAX11261_CMD_CALIBRATE);
     if (error < 0)
@@ -596,9 +567,8 @@ int max11261_adc_enable_gpo(max11261_gpo_t gpo)
     if (gpo >= MAX11261_GPO_MAX)
         return -EINVAL;
 
-    return max11261_update_reg(MAX11261_GPO_DIR,
-            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS),
-            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS));
+    return max11261_update_reg(MAX11261_GPO_DIR, ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS),
+                               ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS));
 }
 
 int max11261_adc_disable_gpo(max11261_gpo_t gpo)
@@ -606,8 +576,7 @@ int max11261_adc_disable_gpo(max11261_gpo_t gpo)
     if (gpo >= MAX11261_GPO_MAX)
         return -EINVAL;
 
-    return max11261_update_reg(MAX11261_GPO_DIR,
-            ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS), 0);
+    return max11261_update_reg(MAX11261_GPO_DIR, ((1 << gpo) << MAX11261_GPO_DIR_GPO_POS), 0);
 }
 
 int max11261_adc_set_channel_order(max11261_adc_channel_t chan, uint8_t order)
@@ -626,13 +595,12 @@ int max11261_adc_set_channel_order(max11261_adc_channel_t chan, uint8_t order)
     return 0;
 }
 
-int max11261_adc_set_channel_gpo(max11261_adc_channel_t chan,
-        max11261_gpo_t gpo)
+int max11261_adc_set_channel_gpo(max11261_adc_channel_t chan, max11261_gpo_t gpo)
 {
     uint8_t c;
 
     if (chan < MAX11261_ADC_CHANNEL_0 || chan >= MAX11261_ADC_CHANNEL_MAX)
-            return -EINVAL;
+        return -EINVAL;
     if (gpo < MAX11261_GPO_INVALID || gpo >= MAX11261_GPO_MAX)
         return -EINVAL;
 
@@ -648,12 +616,10 @@ int max11261_adc_set_channel_gpo(max11261_adc_channel_t chan,
     return 0;
 }
 
-int max11261_adc_set_mode(max11261_conversion_mode_t convMode,
-        max11261_sequencer_mode_t seqMode)
+int max11261_adc_set_mode(max11261_conversion_mode_t convMode, max11261_sequencer_mode_t seqMode)
 {
     int error;
-    if (convMode < MAX11261_LATENT_CONTINUOUS
-        || convMode > MAX11261_SINGLE_CYCLE_CONTINUOUS)
+    if (convMode < MAX11261_LATENT_CONTINUOUS || convMode > MAX11261_SINGLE_CYCLE_CONTINUOUS)
         return -EINVAL;
 
     if (seqMode < MAX11261_SEQ_MODE_1 || seqMode > MAX11261_SEQ_MODE_4)
@@ -763,7 +729,7 @@ static int limit_valid(max11261_adc_channel_t chan, int16_t limit)
         return -EINVAL;
 
     if (ctrl.pga_en) {
-        max = (double) cfg.vref / (1 << ctrl.pga);
+        max = (double)cfg.vref / (1 << ctrl.pga);
         min = -1 * max;
     } else {
         max = cfg.vref;
@@ -816,7 +782,8 @@ static uint32_t mv_to_d(int16_t mv)
     int64_t tmp = 0;
 
     tmp = mv / 2;
-    if (tmp < 0) tmp = -1 * tmp;
+    if (tmp < 0)
+        tmp = -1 * tmp;
     tmp = tmp << cfg.res;
     tmp = tmp / cfg.vref;
 
@@ -825,7 +792,7 @@ static uint32_t mv_to_d(int16_t mv)
         tmp |= 0x800000;
     }
 
-    return (uint32_t) (tmp & ((1 << cfg.res) - 1));
+    return (uint32_t)(tmp & ((1 << cfg.res) - 1));
 }
 
 int max11261_adc_convert_prepare(void)
@@ -834,70 +801,58 @@ int max11261_adc_convert_prepare(void)
     uint32_t chmap0, chmap1;
 
     /* Set sequencer register */
-    MAX11261_UPDATE_REG(MAX11261_SEQ,
-              MAX11261_SEQ_MUX | MAX11261_SEQ_MODE | MAX11261_SEQ_GPODREN
-            | MAX11261_SEQ_MDREN
-            | MAX11261_SEQ_RDYBEN
-            | MAX11261_SEQ_SIF_FREQ,
-              (seq.chan << MAX11261_SEQ_MUX_POS)
-            | (seq.seqMode << MAX11261_SEQ_MODE_POS)
-            | (seq.gpoDelay ? MAX11261_SEQ_GPODREN : 0)
-            | (seq.muxDelay ? MAX11261_SEQ_MDREN : 0)
-            | MAX11261_SEQ_RDYBEN
-            | sif_freq(cfg.freq));
+    MAX11261_UPDATE_REG(
+        MAX11261_SEQ,
+        MAX11261_SEQ_MUX | MAX11261_SEQ_MODE | MAX11261_SEQ_GPODREN | MAX11261_SEQ_MDREN |
+            MAX11261_SEQ_RDYBEN | MAX11261_SEQ_SIF_FREQ,
+        (seq.chan << MAX11261_SEQ_MUX_POS) | (seq.seqMode << MAX11261_SEQ_MODE_POS) |
+            (seq.gpoDelay ? MAX11261_SEQ_GPODREN : 0) | (seq.muxDelay ? MAX11261_SEQ_MDREN : 0) |
+            MAX11261_SEQ_RDYBEN | sif_freq(cfg.freq));
 
     if (seq.muxDelay) {
         /* Delay resolution is 4us */
         MAX11261_UPDATE_REG(MAX11261_DELAY, MAX11261_DELAY_MUX,
-                (seq.muxDelay / 4) << MAX11261_DELAY_MUX_POS);
+                            (seq.muxDelay / 4) << MAX11261_DELAY_MUX_POS);
     }
 
     chmap0 = 0;
     chmap1 = 0;
     /* Operations specific to mode 3 or 4 */
-    if (seq.seqMode == MAX11261_SEQ_MODE_3
-        || seq.seqMode == MAX11261_SEQ_MODE_4)
-    {
+    if (seq.seqMode == MAX11261_SEQ_MODE_3 || seq.seqMode == MAX11261_SEQ_MODE_4) {
         /* Apply GPO delay */
         if (seq.gpoDelay) {
             /* Delay resolution is 20us */
             MAX11261_UPDATE_REG(MAX11261_DELAY, MAX11261_DELAY_GPO,
-                    (seq.gpoDelay / 20) << MAX11261_DELAY_GPO_POS);
+                                (seq.gpoDelay / 20) << MAX11261_DELAY_GPO_POS);
         }
 
         /* Map GPO channels */
         /* Channel 0, 1 and 2 -> CHMAP0 */
         if (seq.gpoMap[MAX11261_ADC_CHANNEL_0] != MAX11261_GPO_INVALID) {
-            chmap0 |=  MAX11261_CHMAP0_CH0_GPOEN;
-            chmap0 |= seq.gpoMap[MAX11261_ADC_CHANNEL_0] <<
-                    MAX11261_CHMAP0_CH0_GPO_POS;
+            chmap0 |= MAX11261_CHMAP0_CH0_GPOEN;
+            chmap0 |= seq.gpoMap[MAX11261_ADC_CHANNEL_0] << MAX11261_CHMAP0_CH0_GPO_POS;
         }
         if (seq.gpoMap[MAX11261_ADC_CHANNEL_1] != MAX11261_GPO_INVALID) {
-            chmap0 |=  MAX11261_CHMAP0_CH1_GPOEN;
-            chmap0 |= seq.gpoMap[MAX11261_ADC_CHANNEL_1] <<
-                    MAX11261_CHMAP0_CH1_GPO_POS;
+            chmap0 |= MAX11261_CHMAP0_CH1_GPOEN;
+            chmap0 |= seq.gpoMap[MAX11261_ADC_CHANNEL_1] << MAX11261_CHMAP0_CH1_GPO_POS;
         }
         if (seq.gpoMap[MAX11261_ADC_CHANNEL_2] != MAX11261_GPO_INVALID) {
-            chmap0 |=  MAX11261_CHMAP0_CH2_GPOEN;
-            chmap0 |= seq.gpoMap[MAX11261_ADC_CHANNEL_2] <<
-                    MAX11261_CHMAP0_CH2_GPO_POS;
+            chmap0 |= MAX11261_CHMAP0_CH2_GPOEN;
+            chmap0 |= seq.gpoMap[MAX11261_ADC_CHANNEL_2] << MAX11261_CHMAP0_CH2_GPO_POS;
         }
 
         /* Channel 3, 4 and 5 -> CHMAP1 */
         if (seq.gpoMap[MAX11261_ADC_CHANNEL_3] != MAX11261_GPO_INVALID) {
-            chmap1 |=  MAX11261_CHMAP1_CH3_GPOEN;
-            chmap1 |= seq.gpoMap[MAX11261_ADC_CHANNEL_3] <<
-                    MAX11261_CHMAP1_CH3_GPO_POS;
+            chmap1 |= MAX11261_CHMAP1_CH3_GPOEN;
+            chmap1 |= seq.gpoMap[MAX11261_ADC_CHANNEL_3] << MAX11261_CHMAP1_CH3_GPO_POS;
         }
         if (seq.gpoMap[MAX11261_ADC_CHANNEL_4] != MAX11261_GPO_INVALID) {
-            chmap1 |=  MAX11261_CHMAP1_CH4_GPOEN;
-            chmap1 |= seq.gpoMap[MAX11261_ADC_CHANNEL_4] <<
-                    MAX11261_CHMAP1_CH4_GPO_POS;
+            chmap1 |= MAX11261_CHMAP1_CH4_GPOEN;
+            chmap1 |= seq.gpoMap[MAX11261_ADC_CHANNEL_4] << MAX11261_CHMAP1_CH4_GPO_POS;
         }
         if (seq.gpoMap[MAX11261_ADC_CHANNEL_5] != MAX11261_GPO_INVALID) {
-            chmap1 |=  MAX11261_CHMAP1_CH5_GPOEN;
-            chmap1 |= seq.gpoMap[MAX11261_ADC_CHANNEL_5] <<
-                    MAX11261_CHMAP1_CH5_GPO_POS;
+            chmap1 |= MAX11261_CHMAP1_CH5_GPOEN;
+            chmap1 |= seq.gpoMap[MAX11261_ADC_CHANNEL_5] << MAX11261_CHMAP1_CH5_GPO_POS;
         }
     }
 
@@ -905,37 +860,31 @@ int max11261_adc_convert_prepare(void)
     if (seq.seqMode != MAX11261_SEQ_MODE_1) {
         /* Channel 0, 1 and 2 -> CHMAP0 */
         if (seq.order[MAX11261_ADC_CHANNEL_0]) {
-            chmap0 |=  MAX11261_CHMAP0_CH0_EN;
-            chmap0 |= seq.order[MAX11261_ADC_CHANNEL_0] <<
-                    MAX11261_CHMAP0_CH0_ORD_POS;
+            chmap0 |= MAX11261_CHMAP0_CH0_EN;
+            chmap0 |= seq.order[MAX11261_ADC_CHANNEL_0] << MAX11261_CHMAP0_CH0_ORD_POS;
         }
         if (seq.order[MAX11261_ADC_CHANNEL_1]) {
-            chmap0 |=  MAX11261_CHMAP0_CH1_EN;
-            chmap0 |= seq.order[MAX11261_ADC_CHANNEL_1] <<
-                    MAX11261_CHMAP0_CH1_ORD_POS;
+            chmap0 |= MAX11261_CHMAP0_CH1_EN;
+            chmap0 |= seq.order[MAX11261_ADC_CHANNEL_1] << MAX11261_CHMAP0_CH1_ORD_POS;
         }
         if (seq.order[MAX11261_ADC_CHANNEL_2]) {
-            chmap0 |=  MAX11261_CHMAP0_CH2_EN;
-            chmap0 |= seq.order[MAX11261_ADC_CHANNEL_2] <<
-                    MAX11261_CHMAP0_CH2_ORD_POS;
+            chmap0 |= MAX11261_CHMAP0_CH2_EN;
+            chmap0 |= seq.order[MAX11261_ADC_CHANNEL_2] << MAX11261_CHMAP0_CH2_ORD_POS;
         }
         MAX11261_WRITE_REG(MAX11261_CHMAP0, chmap0);
 
         /* Channel 3, 4 and 5 -> CHMAP1 */
         if (seq.order[MAX11261_ADC_CHANNEL_3]) {
-            chmap1 |=  MAX11261_CHMAP1_CH3_EN;
-            chmap1 |= seq.order[MAX11261_ADC_CHANNEL_3] <<
-                    MAX11261_CHMAP1_CH3_ORD_POS;
+            chmap1 |= MAX11261_CHMAP1_CH3_EN;
+            chmap1 |= seq.order[MAX11261_ADC_CHANNEL_3] << MAX11261_CHMAP1_CH3_ORD_POS;
         }
         if (seq.order[MAX11261_ADC_CHANNEL_4]) {
-            chmap1 |=  MAX11261_CHMAP1_CH4_EN;
-            chmap1 |= seq.order[MAX11261_ADC_CHANNEL_4] <<
-                    MAX11261_CHMAP1_CH4_ORD_POS;
+            chmap1 |= MAX11261_CHMAP1_CH4_EN;
+            chmap1 |= seq.order[MAX11261_ADC_CHANNEL_4] << MAX11261_CHMAP1_CH4_ORD_POS;
         }
         if (seq.order[MAX11261_ADC_CHANNEL_5]) {
-            chmap1 |=  MAX11261_CHMAP1_CH5_EN;
-            chmap1 |= seq.order[MAX11261_ADC_CHANNEL_5] <<
-                    MAX11261_CHMAP1_CH5_ORD_POS;
+            chmap1 |= MAX11261_CHMAP1_CH5_EN;
+            chmap1 |= seq.order[MAX11261_ADC_CHANNEL_5] << MAX11261_CHMAP1_CH5_ORD_POS;
         }
         MAX11261_WRITE_REG(MAX11261_CHMAP1, chmap1);
     }
@@ -945,19 +894,16 @@ int max11261_adc_convert_prepare(void)
         uint8_t inten = 0;
         for (j = MAX11261_ADC_CHANNEL_0; j < MAX11261_ADC_CHANNEL_MAX; j++) {
             if (seq.order[j] != 0) {
-                MAX11261_WRITE_REG(MAX11261_LIMIT_LOW0 + j,
-                        mv_to_d(hpf.limitMin[j]));
-                MAX11261_WRITE_REG(MAX11261_LIMIT_HIGH0 + j,
-                        mv_to_d(hpf.limitMax[j]));
+                MAX11261_WRITE_REG(MAX11261_LIMIT_LOW0 + j, mv_to_d(hpf.limitMin[j]));
+                MAX11261_WRITE_REG(MAX11261_LIMIT_HIGH0 + j, mv_to_d(hpf.limitMax[j]));
                 inten |= (1 << j);
             }
         }
         MAX11261_UPDATE_REG(MAX11261_INPUT_INT_EN, MAX11261_INPUT_INT_EN_CH,
-                inten << MAX11261_INPUT_INT_EN_CH_POS);
+                            inten << MAX11261_INPUT_INT_EN_CH_POS);
         /* Write HPF settings */
-        MAX11261_WRITE_REG(MAX11261_HPF,
-                (hpf.cmp_mode << MAX11261_HPF_CMP_MODE_POS)
-              | (hpf.freq << MAX11261_HPF_FREQUENCY_POS));
+        MAX11261_WRITE_REG(MAX11261_HPF, (hpf.cmp_mode << MAX11261_HPF_CMP_MODE_POS) |
+                                             (hpf.freq << MAX11261_HPF_FREQUENCY_POS));
     }
 
     /* Set control register 1
@@ -967,19 +913,16 @@ int max11261_adc_convert_prepare(void)
      * SCYCLE   : Single cycle conversion
      * CONTSC   : Continuous single cycle
      */
-    MAX11261_WRITE_REG(MAX11261_CTRL1,
-              MAX11261_CTRL1_PD_STANDBY
-            | ((seq.format == MAX11261_FMT_TWOS_COMPLEMENT) ?
-                    MAX11261_CTRL1_FORMAT_TWOS_COMP :
-                    MAX11261_CTRL1_FORMAT_OFFSET_BIN)
-            | ((seq.polarity == MAX11261_POL_UNIPOLAR) ?
-                    MAX11261_CTRL1_U_B_UNIPOLAR :
-                    MAX11261_CTRL1_U_B_BIPOLAR)
-            | ((seq.convMode != MAX11261_LATENT_CONTINUOUS) ?
-                    MAX11261_CTRL1_SCYCLE_SINGLE :
-                    MAX11261_CTRL1_SCYCLE_CONT)
-            | ((seq.convMode == MAX11261_SINGLE_CYCLE_CONTINUOUS) ?
-                    MAX11261_CTRL1_CONTSC : 0));
+    MAX11261_WRITE_REG(
+        MAX11261_CTRL1,
+        MAX11261_CTRL1_PD_STANDBY |
+            ((seq.format == MAX11261_FMT_TWOS_COMPLEMENT) ? MAX11261_CTRL1_FORMAT_TWOS_COMP :
+                                                            MAX11261_CTRL1_FORMAT_OFFSET_BIN) |
+            ((seq.polarity == MAX11261_POL_UNIPOLAR) ? MAX11261_CTRL1_U_B_UNIPOLAR :
+                                                       MAX11261_CTRL1_U_B_BIPOLAR) |
+            ((seq.convMode != MAX11261_LATENT_CONTINUOUS) ? MAX11261_CTRL1_SCYCLE_SINGLE :
+                                                            MAX11261_CTRL1_SCYCLE_CONT) |
+            ((seq.convMode == MAX11261_SINGLE_CYCLE_CONTINUOUS) ? MAX11261_CTRL1_CONTSC : 0));
 
     /* Set control register 2
      * CSSEN    : Current source and sink
@@ -988,17 +931,15 @@ int max11261_adc_convert_prepare(void)
      * PGAEN    : PGA enable
      * PGA      : PGA level
      */
-    MAX11261_WRITE_REG(MAX11261_CTRL2,
-             (ctrl.css_en << MAX11261_CTRL2_CSSEN_POS)
-           | (ctrl.ldo_en << MAX11261_CTRL2_LDOEN_POS)
-           | (ctrl.lp_mode << MAX11261_CTRL2_LPMODE_POS)
-           | (ctrl.pga_en << MAX11261_CTRL2_PGAEN_POS)
-           | (ctrl.pga << MAX11261_CTRL2_PGA_POS));
+    MAX11261_WRITE_REG(MAX11261_CTRL2, (ctrl.css_en << MAX11261_CTRL2_CSSEN_POS) |
+                                           (ctrl.ldo_en << MAX11261_CTRL2_LDOEN_POS) |
+                                           (ctrl.lp_mode << MAX11261_CTRL2_LPMODE_POS) |
+                                           (ctrl.pga_en << MAX11261_CTRL2_PGAEN_POS) |
+                                           (ctrl.pga << MAX11261_CTRL2_PGA_POS));
 
     /* Enable input interrupts if ready function is set, disable otherwise */
-    MAX11261_UPDATE_REG(MAX11261_INPUT_INT_EN,
-            MAX11261_INPUT_INT_EN_RDYB,
-            platCtx.ready ? MAX11261_INPUT_INT_EN_RDYB : 0);
+    MAX11261_UPDATE_REG(MAX11261_INPUT_INT_EN, MAX11261_INPUT_INT_EN_RDYB,
+                        platCtx.ready ? MAX11261_INPUT_INT_EN_RDYB : 0);
 
     return error;
 }
@@ -1012,8 +953,7 @@ static inline uint8_t channel_count(uint8_t srdy)
 {
     /* Counting bits set, Brian Kernighan's way */
     uint8_t c; // c accumulates the total bits set in v
-    for (c = 0; srdy; c++)
-    {
+    for (c = 0; srdy; c++) {
         srdy &= srdy - 1; // clear the least significant bit set
     }
     return c;
@@ -1047,27 +987,23 @@ static inline uint32_t delay_count(void)
     case MAX11261_SEQ_MODE_1:
         switch (seq.convMode) {
         case MAX11261_LATENT_CONTINUOUS:
-            return 12
-                + (seq.muxDelay / max11261_cont_cycle_delay[seq.crate]);
+            return 12 + (seq.muxDelay / max11261_cont_cycle_delay[seq.crate]);
         default:
-            return 12
-                + (seq.muxDelay / max11261_single_cycle_delay[seq.srate]);
+            return 12 + (seq.muxDelay / max11261_single_cycle_delay[seq.srate]);
         }
 
     case MAX11261_SEQ_MODE_2:
-        return 12 * channel_count(seq.srdy)
-        + ((channel_count(seq.srdy) * seq.muxDelay)
-                / max11261_single_cycle_delay[seq.srate]);
+        return 12 * channel_count(seq.srdy) +
+               ((channel_count(seq.srdy) * seq.muxDelay) / max11261_single_cycle_delay[seq.srate]);
     case MAX11261_SEQ_MODE_3:
-        return 12 * channel_count(seq.srdy)
-                + (((channel_count(seq.srdy) * seq.muxDelay) + seq.gpoDelay)
-                        / max11261_single_cycle_delay[seq.srate]);
+        return 12 * channel_count(seq.srdy) +
+               (((channel_count(seq.srdy) * seq.muxDelay) + seq.gpoDelay) /
+                max11261_single_cycle_delay[seq.srate]);
     case MAX11261_SEQ_MODE_4:
-        return 12 * channel_count(seq.srdy)
-                + (((channel_count(seq.srdy)
-                        * (seq.muxDelay + 1000 * seq.autoscanDelay))
-                        + seq.gpoDelay)
-                        / max11261_single_cycle_delay[seq.srate]);
+        return 12 * channel_count(seq.srdy) +
+               (((channel_count(seq.srdy) * (seq.muxDelay + 1000 * seq.autoscanDelay)) +
+                 seq.gpoDelay) /
+                max11261_single_cycle_delay[seq.srate]);
     default:
         return 0;
     }
@@ -1099,8 +1035,8 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
                     break;
             } else {
                 /* RDY bit is invalid in modes 2, 3 and 4 */
-                if ((reg & (seq.srdy << MAX11261_STAT_SRDY_POS))
-                    == (seq.srdy << MAX11261_STAT_SRDY_POS))
+                if ((reg & (seq.srdy << MAX11261_STAT_SRDY_POS)) ==
+                    (seq.srdy << MAX11261_STAT_SRDY_POS))
                     break;
             }
             if (seq.convMode != MAX11261_LATENT_CONTINUOUS)
@@ -1136,7 +1072,7 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
             tmp |= 0xFF000000;
         }
 
-        tmp = ((int64_t) (tmp) * cfg.vref) >> cfg.res;
+        tmp = ((int64_t)(tmp)*cfg.vref) >> cfg.res;
         if (seq.polarity == MAX11261_POL_BIPOLAR) {
             if (seq.format == MAX11261_FMT_OFFSET_BINARY)
                 tmp = 2 * tmp - cfg.vref;
