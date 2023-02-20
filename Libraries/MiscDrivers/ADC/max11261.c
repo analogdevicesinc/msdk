@@ -242,6 +242,26 @@ static const uint32_t max11261_single_cycle_delay[] = {
         8      // MAX11261_SINGLE_RATE_12800
 };
 
+/**
+ * 1/10th of delay for each sample rate.
+ */
+static const uint32_t max11261_cont_cycle_delay[] = {
+        52600, // MAX11261_CONT_RATE_1_9
+        25600, // MAX11261_CONT_RATE_3_9
+        12800, // MAX11261_CONT_RATE_7_8
+        6400,  // MAX11261_CONT_RATE_15_6
+        3200,  // MAX11261_CONT_RATE_31_2
+        1600,  // MAX11261_CONT_RATE_62_5
+        800,   // MAX11261_CONT_RATE_125
+        400,   // MAX11261_CONT_RATE_250
+        200,   // MAX11261_CONT_RATE_500
+        100,   // MAX11261_CONT_RATE_1000
+        50,    // MAX11261_CONT_RATE_2000
+        25,    // MAX11261_CONT_RATE_4000
+        12,    // MAX11261_CONT_RATE_8000
+        6      // MAX11261_CONT_RATE_16000
+};
+
 /* **** Global Variables **** */
 
 /**
@@ -945,6 +965,7 @@ int max11261_adc_convert_prepare(void)
      * U_B      : Unipolar input range
      * FORMAT   : Offset binary format
      * SCYCLE   : Single cycle conversion
+     * CONTSC   : Continuous single cycle
      */
     MAX11261_WRITE_REG(MAX11261_CTRL1,
               MAX11261_CTRL1_PD_STANDBY
@@ -956,7 +977,9 @@ int max11261_adc_convert_prepare(void)
                     MAX11261_CTRL1_U_B_BIPOLAR)
             | ((seq.convMode != MAX11261_LATENT_CONTINUOUS) ?
                     MAX11261_CTRL1_SCYCLE_SINGLE :
-                    MAX11261_CTRL1_SCYCLE_CONT));
+                    MAX11261_CTRL1_SCYCLE_CONT)
+            | ((seq.convMode == MAX11261_SINGLE_CYCLE_CONTINUOUS) ?
+                    MAX11261_CTRL1_CONTSC : 0));
 
     /* Set control register 2
      * CSSEN    : Current source and sink
@@ -1022,8 +1045,15 @@ static inline uint32_t delay_count(void)
 {
     switch (seq.seqMode) {
     case MAX11261_SEQ_MODE_1:
-        return 12
+        switch (seq.convMode) {
+        case MAX11261_LATENT_CONTINUOUS:
+            return 12
+                + (seq.muxDelay / max11261_cont_cycle_delay[seq.crate]);
+        default:
+            return 12
                 + (seq.muxDelay / max11261_single_cycle_delay[seq.srate]);
+        }
+
     case MAX11261_SEQ_MODE_2:
         return 12 * channel_count(seq.srdy)
         + ((channel_count(seq.srdy) * seq.muxDelay)
@@ -1056,7 +1086,10 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
      * register's RDY or SRDY bits */
     if (platCtx.ready) {
         while (!platCtx.ready() && --to) {
-            platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);
+            if (seq.convMode != MAX11261_LATENT_CONTINUOUS)
+                platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);
+            else
+                platCtx.delayUs(max11261_cont_cycle_delay[seq.crate]);
         }
     } else {
         MAX11261_READ_REG(MAX11261_STAT, &reg);
@@ -1070,7 +1103,10 @@ int max11261_adc_result(max11261_adc_result_t *res, int count)
                     == (seq.srdy << MAX11261_STAT_SRDY_POS))
                     break;
             }
-            platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);
+            if (seq.convMode != MAX11261_LATENT_CONTINUOUS)
+                platCtx.delayUs(max11261_single_cycle_delay[seq.srate]);
+            else
+                platCtx.delayUs(max11261_cont_cycle_delay[seq.crate]);
             MAX11261_READ_REG(MAX11261_STAT, &reg);
         }
     }
@@ -1120,7 +1156,11 @@ int max11261_adc_convert(void)
     int error;
 
     /* Start conversion */
-    error = max11261_write_byte(MAX11261_CMD_SEQUENCER(seq.srate));
+    if (seq.convMode != MAX11261_LATENT_CONTINUOUS)
+        error = max11261_write_byte(MAX11261_CMD_SEQUENCER(seq.srate));
+    else
+        error = max11261_write_byte(MAX11261_CMD_SEQUENCER(seq.crate));
+
     if (error < 0)
         return error;
 
