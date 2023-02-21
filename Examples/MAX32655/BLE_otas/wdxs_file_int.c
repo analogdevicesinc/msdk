@@ -123,7 +123,7 @@ void wdxsFileEraseHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg)
     } else {
         /* Erase is complete */
         APP_TRACE_INFO0(">>> Internal flash erase complete <<<");
-        wdxsFtcSendRsp(1, WDX_FTC_OP_PUT_RSP, otaFileHdl, WDX_FTC_ST_SUCCESS);
+        wdxsFtcSendRsp(AppConnIsOpen(), WDX_FTC_OP_PUT_RSP, otaFileHdl, WDX_FTC_ST_SUCCESS);
     }
 }
 
