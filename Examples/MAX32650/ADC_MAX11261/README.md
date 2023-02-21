@@ -17,9 +17,10 @@ Any reading that exceeds the full-scale value of the ADC will have an '*' append
 The Console UART of the device will output messages similar to below:
 
 ```
-***** ADC Example *****
-******************** MAX11261 ADC Example ********************
-Demonstrates various features of MAX11261 ADC.
+***** MAX32650 FTHR_APPS Board External ADC (MAX11261) Example *****
+
+MAX32650 FTHR_APPS board has MAX11261 external ADC converter.
+This example demonstrates various features of MAX11261 ADC.
 
 An input voltage between -Vref and +Vref can be applied to AIN
 inputs. Conversion results for any input voltage outside this

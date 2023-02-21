@@ -91,8 +91,9 @@ int main(void)
     uint32_t tickStart;
     uint16_t sampleCount;
 
-    printf("\n******************** MAX11261 ADC Example ********************\n");
-    printf("Demonstrates various features of MAX11261 ADC.\n\n");
+    printf("\n***** MAX32650 FTHR_APPS Board External ADC (MAX11261) Example *****\n\n");
+    printf("MAX32650 FTHR_APPS board has MAX11261 external ADC converter.\n");
+    printf("This example demonstrates various features of MAX11261 ADC.\n\n");
     printf("An input voltage between -Vref and +Vref can be applied to AIN \n");
     printf("inputs. Conversion results for any input voltage outside this \n");
     printf("range will be clipped to the minimum or maximum level.\n\n");

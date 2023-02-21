@@ -48,7 +48,7 @@
 #include "max11261.h"
 
 /* **** Definitions **** */
-#define ADC_RST_ACTIVE_LOW  1 // Reset is active low
+#define ADC_RST_ACTIVE_LOW 1 // Reset is active low
 
 /* **** Global Variables **** */
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
@@ -125,8 +125,8 @@ void NMI_Handler(void)
 #endif /* __GNUC__ */
 
 /* ************************************************************************** */
-static int i2c1_transfer(uint8_t *txbuf, uint8_t txsize, uint8_t *rxbuf,
-        uint8_t rxsize, uint8_t slave)
+static int i2c1_transfer(uint8_t *txbuf, uint8_t txsize, uint8_t *rxbuf, uint8_t rxsize,
+                         uint8_t slave)
 {
     mxc_i2c_req_t req;
     req.addr = slave;
@@ -142,8 +142,7 @@ static int i2c1_transfer(uint8_t *txbuf, uint8_t txsize, uint8_t *rxbuf,
 
 static void max11261_reset_set(int ctrl)
 {
-    MXC_GPIO_OutPut(MXC_GPIO0, MXC_GPIO_PIN_16,
-            (ctrl ^ ADC_RST_ACTIVE_LOW) << 16);
+    MXC_GPIO_OutPut(MXC_GPIO0, MXC_GPIO_PIN_16, (ctrl ^ ADC_RST_ACTIVE_LOW) << 16);
 }
 
 static int max11261_ready()
