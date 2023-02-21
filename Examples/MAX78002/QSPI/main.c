@@ -240,6 +240,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
         SPI->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);  // Disable FIFOs before clearing as recommended by UG
         SPI->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);  // Clear the FIFOs
 
+        // TX
         if (txlen > 0) {
             // Configure TX DMA channel to fill the SPI TX FIFO
             SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
@@ -256,6 +257,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
             MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
         }
 
+        // RX
         if (rxlen > 0) {
             // Configure RX DMA channel to unload the SPI RX FIFO
             SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
@@ -392,12 +394,16 @@ int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len)
 {
     int err = E_NO_ERROR;
     uint8_t header[7];
-    memset(header, 0xFF, 7);
+    memset(header, 0x00, 7);
     _parse_spi_header(0xEB, address, header);
 
     MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
+#if 0
+    err = spi_transmit(header, 7, out, len, true, true, true);
+#else
     err = spi_transmit(&header[0], 7, NULL, 0, false, true, true);
     err = spi_transmit(NULL, 0, out, len, true, true, true);
+#endif
     return err;
 }
 
@@ -454,33 +460,6 @@ int ram_write_quad(uint32_t address, uint8_t * data, unsigned int len)
     return spi_transmit(data, len, NULL, 0, true, true, true);
 }
 
-int ram_write_quad_dma(mxc_spi_req_t *req, uint32_t address, uint8_t * data, unsigned int len) 
-{
-    req->spi->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
-
-    uint8_t header[4];
-    _parse_spi_header(0x38, address, header);
-
-    req->spi->ctrl1 = 4 << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
-
-    MXC_DMA->ch[g_tx_channel].src = (uint32_t)&header[0];
-    MXC_DMA->ch[g_tx_channel].cnt = sizeof(header) / sizeof(header[0]);
-    MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;
-
-    req->spi->ctrl0 |= MXC_F_SPI_CTRL0_START;
-
-    while(!g_tx_done) {}
-
-    MXC_DMA->ch[g_tx_channel].src = (uint32_t)data;
-    MXC_DMA->ch[g_tx_channel].cnt = len;
-    MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;
-    req->spi->ctrl0 |= MXC_F_SPI_CTRL0_START;
-
-    while(!g_tx_done) {}
-
-    return E_SUCCESS;
-}
-
 // *****************************************************************************
 int main(void)
 {
@@ -501,6 +480,15 @@ int main(void)
         printf("DMA initialization failed with error %i!\n", err);
         return err;
     }
+
+    // uint8_t test_tx[64];
+    // uint8_t test_rx[64];
+    // memset(test_tx, 0xFF, 64);
+    // memset(test_rx, 0xFF, 64);
+
+    // spi_transmit(test_tx, 64, test_rx, 64, true, true, true);
+
+    // while(1) {}
 
 #if 1
 
