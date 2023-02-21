@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 echo "#############################################################################################"
-echo "# ./unlock_plot.sh MSDK LOCK_FILE_LIST PER_RESULT_FILE NEED_TO_PLOT                         #"
+echo "# ./unlock_plot.sh 1MSDK 2LOCK_FILE_LIST 3PER_RESULT_FILE 4NEED_TO_PLOT 5JOB_CURR_TIME      #"
 echo "#############################################################################################"
 echo
 echo $0 $@
@@ -16,6 +16,7 @@ MSDK=$1
 CURR_JOB_FILE=$2
 all_in_one=$3
 NEED_TO_PLOT=$4
+JOB_CURR_TIME=$5
 
 # Use python 3.10.9
 source ~/anaconda3/etc/profile.d/conda.sh && conda activate py3_10
@@ -51,9 +52,11 @@ echo
 #----------------------------------------------------------------------------------------------------------------------
 echo "Show results."
 cat ${all_in_one}
+res=$?
+echo "Exit: $res"
 echo
 
-if [ "${NEED_TO_PLOT}" != "True" ]; then
+if [ "${NEED_TO_PLOT}" != "True" ] || [[ res -ne 0 ]]; then
     echo "No need to plot the PER results."
     exit 0
 fi
@@ -64,10 +67,16 @@ echo
 
 cd ${MSDK}/.github/workflows/scripts
 echo PWD: `pwd`
+REPO_NAME=$(basename `git rev-parse --show-toplevel`)
+echo "REPO_NAME: ${REPO_NAME}"
+SHA=$(git rev-parse --short HEAD)
+echo "SHA: ${SHA}"
+DESC="Repo: ${REPO_NAME}, SHA: ${SHA}"
+echo "DESC: ${DESC}"
 echo
 
 chmod u+x plot_per_results.py
-echo "./plot_per_results.py ${all_in_one} desc basename"
-./plot_per_results.py ${all_in_one} desc basename
+echo python3 plot_per_results.py ${all_in_one} "${DESC}" basename --job_time ${JOB_CURR_TIME}
+python3 plot_per_results.py ${all_in_one} "${DESC}" basename --job_time ${JOB_CURR_TIME}
 
 echo "$0: DONE!"
