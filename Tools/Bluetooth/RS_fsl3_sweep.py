@@ -56,6 +56,8 @@ RS_fsl3.py test sweep.
 parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHelpFormatter)
 parser.add_argument('ipAddress',help='Instrument IP address')
 parser.add_argument('serialPort',help='DUT HCI serial port')
+parser.add_argument("--tx_pwr", default=4, help="TX POWE (0, 4)")
+
 args = parser.parse_args()
 pprint(args)
 
@@ -70,7 +72,7 @@ sleep(1)
 sa = RS_fsl3(Namespace(ipAddress=args.ipAddress))
 
 # Setup the DUT to TX at max power
-hciDUT.txPowerFunc(Namespace(power=4, handle=None))
+hciDUT.txPowerFunc(Namespace(power=int(args.tx_pwr), handle=None))
 
 channels = [0,1,2,10,19,30,36,37,38,39]
 

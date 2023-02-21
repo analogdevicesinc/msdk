@@ -35,17 +35,31 @@
 
 import argparse
 from argparse import RawTextHelpFormatter
+from datetime import datetime
+import fcntl
+import logging
+import os
 from pprint import pprint
+import subprocess
 import usb.core
 import usb.util
 import sys
 
+logging.basicConfig(filename=os.path.expanduser('~/Workspace/Resource_Share/Logs/mc_rf_sw.log'), 
+                    level=logging.DEBUG,
+                    format='%(message)s')
+
+
 WITH_PRINT = False
+
+# Equivalent of the _IO('U', 20) constant in the linux kernel.
+USBDEVFS_RESET = ord('U') << (4*2) | 20
 
 
 def PRINT(msg):
     if WITH_PRINT:
         print(msg)
+        logging.debug(f'{datetime.now()} {msg}')
 
 
 class Namespace:
@@ -70,6 +84,8 @@ class McRfSw:
         else:
             WITH_PRINT = False
             
+        PRINT(f'{args}')
+
         if args.model not in McRfSw.available_models:
             msg = f"Invalid model: {args.model}"
             raise Exception(msg)
@@ -119,9 +135,15 @@ class McRfSw:
         
         if args.op.lower() == "get":
             state = self.get_sw_state()
-            print(f'Current state: {state}')
+            msg = f'Current state: {state}'
+            logging.debug(msg)
+            print(msg)
         elif args.op.lower() == "set":
             self.set_sw_state(args.state)
+        elif args.op.lower() == "reset":
+            PRINT("")
+            PRINT("Reset the device.")
+            #self.reset_device()
         else:
             raise ValueError("Invalid op.")
 
@@ -150,15 +172,18 @@ class McRfSw:
             
             if model_name == model:
                 return d
-
+            else:
+                PRINT('--- NOT THIS DEVICE ---')
         return None
    
     def dettach_and_config(self, d):
         for configuration in d:
+            PRINT("")
             PRINT("configuration:")
             PRINT(configuration)
             
             for interface in configuration:
+                PRINT("")
                 PRINT("interface:")
                 PRINT(interface)
                 if_num = interface.bInterfaceNumber
@@ -184,7 +209,10 @@ class McRfSw:
                 status  0:command failed, 1: command completed successfully
         """
         curr_state = self.get_sw_state()
-        print(f'Current state: {curr_state}')
+        PRINT("")
+        msg = f'Current state: {curr_state}'
+        logging.debug(msg)
+        print(msg)
         
         if curr_state == str(state):
             return curr_state
@@ -203,9 +231,13 @@ class McRfSw:
             PRINT("Success")
             
             new_state = self.get_sw_state()
-            print(f'    New state: {new_state}')
+            PRINT("")
+            msg = f'    New state: {new_state}'
         else:
-            print("Fail")
+            msg = 'FAILED!'
+        
+        logging.debug(msg)
+        print(msg)
             
         return set_resp
     
@@ -226,6 +258,27 @@ class McRfSw:
         PRINT(f'Resp: {resp}')
         return resp
 
+    def reset_device(self):
+        """reset the RF switch
+        """
+        proc = subprocess.Popen(['lsusb'], stdout=subprocess.PIPE)
+        out = proc.communicate()[0]
+        out = out.decode('utf-8')
+        lines = out.split('\n')
+        for line in lines:
+            if "Minicircuits I/O Controller" in line:
+                parts = line.split()
+                bus = parts[1]
+                dev = parts[3][:3]
+                dev_path = '/dev/bus/usb/%s/%s' % (bus, dev)
+                PRINT(f'dev_path: {dev_path}')
+
+                fd = os.open(dev_path, os.O_WRONLY)
+                try:
+                    fcntl.ioctl(fd, USBDEVFS_RESET, 0)
+                finally:
+                    os.close(fd)
+
 
 if __name__ == "__main__":
     WITH_PRINT = 1
@@ -238,13 +291,14 @@ if __name__ == "__main__":
     # Parse the command line arguments
     parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHelpFormatter)
     parser.add_argument('--model', help='Model: USB-1SP16T-83H, or USB-1SP8T-63H')
-    parser.add_argument('--op', help='get or set')
+    parser.add_argument('--op', help='get, set, reset')
     parser.add_argument('--state', help='state')
     parser.add_argument('--debug', action="store_true", help='display debug info')
 
     args = parser.parse_args()
     
     if args.debug:
+        PRINT("\n\n\n")
         print("Mini-Circuits RF Switch Control Tool")
         print(f'Input arguments: {args}')
     

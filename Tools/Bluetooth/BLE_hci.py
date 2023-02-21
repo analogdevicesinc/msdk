@@ -359,11 +359,11 @@ class BLE_hci:
             i += 8
             errTrans  = int(evt[6+i:8+i]+evt[4+i:6+i]+evt[2+i:4+i]+evt[0+i:2+i],16)
         except ValueError as err:
+            print(f'{self.id}: {evt}')
             print(err)
             return None
 
-
-        print(self.serialPort)
+        print(f'{self.id}<')
         print("rxDataOk   : "+str(rxDataOk))
         print("rxDataCRC  : "+str(rxDataCRC))
         print("rxDataTO   : "+str(rxDataTO))
@@ -462,6 +462,13 @@ class BLE_hci:
      # Sends HCI commands to start advertising.
     ################################################################################
     def advFunc(self, args):
+        if isinstance(args.stats, str):
+            #print(f'args.stats type: {type(args.stats)}, value: {args.stats}')
+            if args.stats.lower() == "true":
+                args.stats = True
+            else:
+                args.stats = False
+        
         # Bogus address to use for commands, allows any peer to connect
         peer_addr = "000000000000"
 
@@ -579,6 +586,13 @@ class BLE_hci:
      # Sends HCI commands to start initiating and create a connection.
     ################################################################################
     def initFunc(self, args):
+        if isinstance(args.stats, str):
+            #print(f'args.stats type: {type(args.stats)}, value: {args.stats}')
+            if args.stats.lower() == "true":
+                args.stats = True
+            else:
+                args.stats = False
+
         # Reorder the address
         addrBytes = parseBdAddr(args.addr)
 
@@ -737,10 +751,16 @@ class BLE_hci:
      # Listen for HCI events.
     ################################################################################
     def listenFunc(self, args):
+        if isinstance(args.stats, str):
+            #print(f'args.stats type: {type(args.stats)}, value: {args.stats}')
+            if args.stats.lower() == "true":
+                args.stats = True
+            else:
+                args.stats = False
+
         waitSeconds = int(args.time)
 
         per = 100.0
-
         if(args.stats):
 
             startTime = datetime.datetime.now()

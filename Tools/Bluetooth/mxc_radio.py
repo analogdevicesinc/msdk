@@ -9,29 +9,39 @@ from BLE_hci import Namespace
 from time import sleep
 MXC_BASE_BTLE = 0x40050000
 
+BoardBaseRegs = {
+    "max32690": 0x40050000,
+    "max32655": 0x40050000,
+    "max32665": 0x40050000,
+}
+
 
 class DBB:
     """
     Class Used to Read registers of DBB
     All offsets and data taken from datasheet
     """
-    def __init__(self, hciInterface, ctrlReg=None, rxReg=None, txReg=None, rffeReg=None):
+
+    def __init__(self, hciInterface, board, ctrlReg=None, rxReg=None, txReg=None, rffeReg=None):
 
         self.ctrlReg = ctrlReg
         self.rxReg = rxReg
         self.txReg = txReg
         self.rffeReg = rffeReg
 
+        assert (board in BoardBaseRegs)
+
+        self.board = board
+
         self.hciInterface: BLE_hci.BLE_hci = hciInterface
 
         # put radio into good state for DBB
-
         self.hciInterface.resetFunc(None)
-        # self.hciInterface.txTestFunc(Namespace(channel=0, phy=1, packetLength=0, payload=3))
 
     def __del__(self):
         # close out of hci
-        self.hciInterface.endTestFunc(None)
+        print('Resetting Board')
+        self.hciInterface.resetFunc(None)
 
     def readRegs(self, start, sizeBytes):
         """
@@ -39,9 +49,9 @@ class DBB:
         NOTE: Function does not check for unmapped regions
         """
 
-
         # There seems to be a problem when lengths are greater than 251.
-        # I believe it is because the header packet is 3 bytes and so if you have 252 then the total length is 255 and the format is wrong
+        # I believe it is because the header packet is 3 bytes and
+        # so if you have 252 then the total length is 255 and the format is wrong
         # Just gonna assert for now
         assert (sizeBytes <= 251)
 
@@ -111,19 +121,17 @@ class DBB:
 
         return regions
 
-
     def readCtrlReg(self):
         """
         Read and return the DBB Ctrl Reg
         """
-
 
         # DBB has a reserved region from Offset 0x96 to 0xff
 
         # Offset 0x108 is also reserved
         # Attempting to read them causes a hardfault
 
-        CTRL_REG_ADDR = MXC_BASE_BTLE + 0x1000
+        CTRL_REG_ADDR = BoardBaseRegs[self.board] + 0x1000
 
         ctrlReg = self.readRegs(CTRL_REG_ADDR, 0x96)
 
@@ -132,7 +140,6 @@ class DBB:
 
         next = self.readRegs(CTRL_REG_ADDR + 0x100, 0x108 - 0x100)
         ctrlReg.extend(next)
-
 
         # Add reserved 0x104 regoion
         ctrlReg.extend(['00'] * 4)
@@ -144,7 +151,6 @@ class DBB:
         ctrlReg.extend(next)
         ctrlReg.extend(['00']*(0x120-0x100))
 
-
         print('Ctrl Reg Read', len(ctrlReg))
 
         return ctrlReg
@@ -155,7 +161,7 @@ class DBB:
         Reserved regions will be set as '00'
         """
 
-        MXC_BASE_BTLE_DBB_TX = MXC_BASE_BTLE + 0x2000
+        MXC_BASE_BTLE_DBB_TX = BoardBaseRegs[self.board] + 0x2000
 
         offsetLut = [
             (0x00, 0x70, 0x180 - 0x70),
@@ -183,8 +189,7 @@ class DBB:
         Reads the contents of the rx register and returns data as a list
         All reserved regions initialized as '00'
         """
-        MXC_BASE_BTLE_DBB_RX = MXC_BASE_BTLE + 0x3000
-
+        MXC_BASE_BTLE_DBB_RX = BoardBaseRegs[self.board] + 0x3000
 
         # Offset Lookup for RX registers
         # There are a lot of traps and so some of these offsets were found by trial and error
@@ -207,17 +212,17 @@ class DBB:
         return rxRegs
 
     def readRffeReg(self):
-        
-        MXC_BASE_BTLE_DBB_EXT_RFFE = MXC_BASE_BTLE + 0x8000
-        
-        
+
+        MXC_BASE_BTLE_DBB_EXT_RFFE = BoardBaseRegs[self.board] + 0x8000
+
         offsetLut = [(0x00, 0x11e, 2),
-                    (0x120, 0x146, 0x164 - 0x146),
-                    (0x164, 0x168 + 2, 0x168 + 2 - 0x164)
-            ]
-        
-        rffe = self.readRegions(baseAddr=MXC_BASE_BTLE_DBB_EXT_RFFE, offsetLut=offsetLut)
-        
+                     (0x120, 0x146, 0x164 - 0x146),
+                     (0x164, 0x168 + 2, 0x168 + 2 - 0x164)
+                     ]
+
+        rffe = self.readRegions(
+            baseAddr=MXC_BASE_BTLE_DBB_EXT_RFFE, offsetLut=offsetLut)
+
         return rffe
 
     def readAll(self):
@@ -244,4 +249,3 @@ class DBB:
     def dump(self):
         dumpRead = self.readAll()
         print(dumpRead)
-
