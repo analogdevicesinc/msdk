@@ -1520,6 +1520,12 @@ The Cordio Bluetooth Low Energy (BLE) library provides a full BLE stack for micr
 - MAX32680
 - MAX32690
 
+#### Cordio Documentation
+
+- [Architecture](ARCHITECTURE.md)
+- [Bluetooth LE Basics](BLUETOOTH_LE_BASICS.md)
+- [Packetcraft](PACKETCRAFT.md)
+
 ---
 
 ### MAXUSB
@@ -1553,3 +1559,4 @@ The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level inte
 - MAX32570
 - MAX32665-MAX32668
 - MAX78002
+
