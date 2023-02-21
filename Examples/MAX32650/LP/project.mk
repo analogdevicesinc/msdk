@@ -30,5 +30,3 @@ else
 # This linkerfile is for use with standard non-secure applications.
 override LINKERFILE = lp-nonsecure.ld
 endif # SBT
-
-MAXIM_PATH=../../../GitRepos/msdk
