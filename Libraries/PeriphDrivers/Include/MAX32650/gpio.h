@@ -3,8 +3,8 @@
  * @brief   General-Purpose Input/Output (GPIO) function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-12-18 15:37:22 -0600 (Tue, 18 Dec 2018) $
- * $Revision: 40072 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_GPIO_H_

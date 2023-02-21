@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -44,7 +44,6 @@ ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
 
-
 # This is the path to the CMSIS root directory
 ifeq "$(CMSIS_ROOT)" ""
 CMSIS_ROOT=../CMSIS
@@ -53,21 +52,19 @@ ifeq "$(LIBS_DIR)" ""
 LIBS_DIR = $(CMSIS_ROOT)/..
 endif
 
-
 PERIPH_DIR := $(LIBS_DIR)/PeriphDrivers
 SOURCE_DIR := $(PERIPH_DIR)/Source
 INCLUDE_DIR := $(PERIPH_DIR)/Include
 
 PERIPH_DRIVER_INCLUDE_DIR  += $(INCLUDE_DIR)/$(TARGET_UC)/
-# Source files)
+
+# Source files
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
-
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
-
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/pins_ai85.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_ai85.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ADC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_me17.c
@@ -81,20 +78,13 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CAMERAIF
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CAMERAIF/cameraif_ai85.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CAMERAIF/cameraif_reva.c
 
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me17.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_reva.c
-
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CRC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CRC/crc_me17.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CRC/crc_reva.c
 
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_ai85.c
-
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LPCMP
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LPCMP/lpcmp_ai85.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LPCMP/lpcmp_reva.c
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me17.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/FLC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_common.c
@@ -117,6 +107,13 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/I2S/i2s_reva.c
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ICC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_me17.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_reva.c
+
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_ai85.c
+
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LPCMP
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LPCMP/lpcmp_ai85.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LPCMP/lpcmp_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/OWM
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/OWM/owm_me17.c

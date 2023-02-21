@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-09-11 14:32:22 -0500 (Wed, 11 Sep 2019) $
- * $Revision: 46047 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include "mxc_errors.h"

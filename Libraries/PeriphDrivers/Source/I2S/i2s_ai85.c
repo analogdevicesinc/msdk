@@ -3,8 +3,8 @@
  * @brief   Inter-Integrated Sound (I2S) driver implementation.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stddef.h>

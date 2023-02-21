@@ -1,6 +1,5 @@
-
 ################################################################################
- # Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -30,9 +29,6 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- # $Date: 2018-08-31 14:08:14 -0500 (Fri, 31 Aug 2018) $
- # $Revision: 37586 $
- #
  ###############################################################################
 
 # This is the name of the build output file
@@ -48,7 +44,6 @@ ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
 
-
 # This is the path to the CMSIS root directory
 ifeq "$(CMSIS_ROOT)" ""
 CMSIS_ROOT=../CMSIS
@@ -62,14 +57,14 @@ SOURCE_DIR := $(PERIPH_DIR)/Source
 INCLUDE_DIR := $(PERIPH_DIR)/Include
 
 PERIPH_DRIVER_INCLUDE_DIR  += $(INCLUDE_DIR)/$(TARGET_UC)/
-# Source files)
+
+# Source files
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
-
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/pins_me20.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_me17.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ADC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_me17.c
@@ -82,21 +77,16 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/AES/aes_revb.c
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/AFE
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/AFE/afe.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/AFE/afe_gpio.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/AFE/infoblock.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/AFE/hart_uart.c
-
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me17.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_reva.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/AFE/infoblock.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CRC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CRC/crc_me17.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CRC/crc_reva.c
 
-ifeq "$(RISCV_CORE)" ""
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_me17.c
-endif
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me17.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/FLC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_common.c
@@ -119,6 +109,11 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/I2S/i2s_reva.c
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ICC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_me17.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_reva.c
+
+ifeq "$(RISCV_CORE)" ""
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_me17.c
+endif
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/OWM
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/OWM/owm_me17.c
