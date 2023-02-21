@@ -11,18 +11,14 @@ These books are also excellent references for developers.
 ## Architecture
 The Bluetooth stack closely resembles the layers of the network stack. We have the application layer at the top and the physical layer at the bottom. Each layer encapsulates the data and passes it to the appropriate section of the upper and lower layers.
 
-<p align="center">
-  <img width="500" src="./pics/Stack.PNG">
-</p>
+![Stack](res/Stack.PNG)
 
 The Host Conroller Interface (HCI) is the common point where devices are split. Typically this this interface is over an asynchronous protocol such as UART. Some devices will define proprietary interfaces between the application and host layers. Multi-core SOCs can also use the HCI or proprietay interfaces to split the stack between multiple CPUs.
 
 
 When testing the Controller layers, test equipment will have a USB interface and act as a Host device. Devices under test will use a USB to UART adapter and act as Controller devices. 
 
-<p align="center">
-  <img width="500" src="./pics/HCI.PNG">
-</p>
+![HCI](res/HCI.PNG)
 
 ## States
 These are the common states used in Bluetooth LE communication. Typically devices will be in only one of these states at a time, but it is possible for devices to be in all simultaneously. 
@@ -30,9 +26,7 @@ These are the common states used in Bluetooth LE communication. Typically device
 ### Advertising
 Devices in this state are broadcasting advertisement packets to scanning/initiating devices. This is an asychronous operation that has no synchronization with peer devices. Advertising devices are transmitting without any previous knowledge of peer devices. Advertising and scanning operations are done on channels 37, 38, and 39. The interval between advertising events is configurable between 20 ms and 10.24 s.
 
-<p align="center">
-  <img width="500" src="./pics/ADV_SCN.png">
-</p>
+![ADV Scan](res/ADV_SCN.png)
 
 ### Scanning / Initiating
 Devices in the scanning state listen for advertising devcies and can send scan optionally requests for additional information. The scanning interval and window settings are configurable. 
@@ -46,6 +40,4 @@ In order to minimize interference, devices in the connected state will hop betwe
 
 Each connection event is separated by the connection interval. This interval is configurable from 7.5 ms to 4 s. The master will always transmit first and receive second. The Slave will always receive first and transmit second. Devices will typically always send and receive at least one packet in each interval, and they can optionally transmit and receive multiple packets in each interval. 
 
-<p align="center">
-  <img width="500" src="./pics/Connected.png">
-</p>
+![Connected](res/Connected.png)

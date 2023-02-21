@@ -2,9 +2,7 @@
 
 This document describes the Cordio software architecture. Refer to the Bluetooth specificaion Volume 1, Part A for additional information regarding the Bluetooth architecture.
 
-<p align="center">
-  <img width="400" src="./pics/Software_Stack.jpg">
-</p>
+![Software Stack](res/Software_Stack.jpg)
 
 ## Application
 
@@ -17,9 +15,7 @@ The App Framework performs many operations common to Bluetooth LE embedded appli
 
 The GATT Profile specifies the structure in which profile data is exchanged. This structure defines basic elements such as services and characteristics, used in a profile. The top level of the hierarchy is a profile. A profile is composed of one or more services necessary to fulfill a use case. A service is composed of characteristics or references to other services. Each characteristic contains a value and may contain optional information about the value. The service and characteristic and the components of the characteristic (i.e., value and descriptors) contain the profile data and are all stored in Attributes on the server.
 
-<p align="center">
-  <img width="400" src="./pics/Profiles.PNG">
-</p>
+![Profiles](res/Profiles.PNG)
 
 ## Wireless Stack Framework
 
