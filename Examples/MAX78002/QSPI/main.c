@@ -54,8 +54,8 @@
 /***** Definitions *****/
 #define SPI MXC_SPI0
 // #define SPI_SPEED 8000000
-#define SPI_SPEED 2000000
-#define TEST_SIZE 320
+#define SPI_SPEED 24000000
+#define TEST_SIZE 640
 #define TEST_VALUE 0x42
 
 // A macro to convert a DMA channel number to an IRQn number
@@ -158,7 +158,7 @@ int spi_init()
     SPI->ctrl2 = (8 << MXC_F_SPI_CTRL2_NUMBITS_POS);       // Set 8 bits per character
     
     SPI->sstime = (1 << MXC_F_SPI_SSTIME_PRE_POS) |        // Remove any delay time between SSEL and SCLK edges
-                        (256 << MXC_F_SPI_SSTIME_POST_POS) |
+                        (128 << MXC_F_SPI_SSTIME_POST_POS) |
                         (1 << MXC_F_SPI_SSTIME_INACT_POS);
 
     SPI->dma = MXC_F_SPI_DMA_TX_FIFO_EN |                  // Enable TX FIFO
@@ -407,32 +407,6 @@ int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len)
     return err;
 }
 
-int ram_read_quad_dma(mxc_spi_req_t *req, uint32_t address, uint8_t *out, unsigned int len)
-{
-    int err = E_NO_ERROR;
-    uint8_t header[6];
-    _parse_spi_header(0x0B, address, header);
-    header[4] = 0xFF; // Extra dummy bytes to satisfy wait cycle
-    header[5] = 0xFF;
-
-    // Transmit header, but keep Chip Select asserted
-    req->txData = header;
-    req->txLen = 6;
-    req->rxData = NULL;
-    req->rxLen = 0;
-    req->ssDeassert = 0;
-    err = MXC_SPI_MasterTransaction(req);
-    if (err) return err;
-
-    req->txData = NULL;
-    req->txLen = 0;
-    req->ssDeassert = 1;
-    req->rxData = out;
-    req->rxLen = len;
-    g_tx_done = 0;
-    return MXC_SPI_MasterTransactionDMA(req);
-}
-
 int benchmark_overhead(uint32_t address)
 {
     int err = E_NO_ERROR;
@@ -464,8 +438,12 @@ int ram_write_quad(uint32_t address, uint8_t * data, unsigned int len)
 int main(void)
 {
     int err = E_NO_ERROR;
+    int elapsed = 0;
+    int fail_count = 0;
 
     MXC_Delay(MXC_DELAY_SEC(2));
+
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 
     printf("Initializing SPI...\n");
     err = spi_init();
@@ -481,17 +459,9 @@ int main(void)
         return err;
     }
 
-    // uint8_t test_tx[64];
-    // uint8_t test_rx[64];
-    // memset(test_tx, 0xFF, 64);
-    // memset(test_rx, 0xFF, 64);
-
-    // spi_transmit(test_tx, 64, test_rx, 64, true, true, true);
-
-    // while(1) {}
-
-#if 1
-
+    MXC_TMR_SW_Start(MXC_TMR0);
+    int sw_overhead = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Stopwatch overhead: %ius\n", sw_overhead);
     ram_exit_quadmode();
 
     printf("Resetting SRAM...\n");
@@ -513,13 +483,13 @@ int main(void)
     // Time tx_buffer initialization as benchmark
     MXC_TMR_SW_Start(MXC_TMR0);
     memset(tx_buffer, TEST_VALUE, TEST_SIZE);
-    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
     printf("(Benchmark) Wrote %i bytes to internal SRAM in %ius\n", TEST_SIZE, elapsed);
 
     // Measure DMA transaction overhead
     MXC_TMR_SW_Start(MXC_TMR0);
     benchmark_overhead(0);
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
     printf("(Benchmark) DMA overhead: %ius\n", elapsed);
     while(!g_tx_done) {}
 
@@ -527,13 +497,17 @@ int main(void)
     MXC_TMR_SW_Start(MXC_TMR0);
     int address = 0;
     ram_write(address, tx_buffer, TEST_SIZE);
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
     printf("Wrote %i bytes in %ius\n", TEST_SIZE, elapsed);
 
     // Validate test pattern
+    MXC_TMR_SW_Start(MXC_TMR0);
     ram_read_slow(address, rx_buffer, TEST_SIZE);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
+    printf("Read %i bytes QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
+            fail_count++;
             printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, tx_buffer[i], rx_buffer[i]);
         }
     }
@@ -546,59 +520,26 @@ int main(void)
     err = ram_enter_quadmode();
     MXC_TMR_SW_Start(MXC_TMR0);
     err = ram_write_quad(address, tx_buffer, TEST_SIZE);
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Wrote %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed);
-
-    MXC_Delay(MXC_DELAY_MSEC(1));
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
+    printf("Wrote %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
 
     // Validate
+    MXC_TMR_SW_Start(MXC_TMR0);
     ram_read_quad(address, rx_buffer, TEST_SIZE);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
+    printf("Read %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
+            fail_count++;
             printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + i, tx_buffer[i], rx_buffer[i]);
         }
     }
 
-#else
-
-    // Invert test pattern
-    memset(tx_buffer, ~(0x5A), TEST_SIZE);
-    memset(rx_buffer, 0, TEST_SIZE);
-
-    // Benchmark QSPI write + DMA to external SRAM
-    err = ram_dma_init(&g_req);
-    if (err) {
-        printf("Failed to initialize DMA!\n");
-        return err;
+    if (fail_count > 0) {
+        printf("Failed with %i mismatches!\n", fail_count);
+        return E_FAIL;
     }
-
-    MXC_TMR_SW_Start(MXC_TMR0);
-    err = ram_write_quad_dma(&g_req, 1024, tx_buffer, TEST_SIZE);
-    if (err) return err;
-    while(!g_done) {}
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Wrote %i bytes w/ QSPI in %ius (DMA)\n", TEST_SIZE, elapsed);
-
-    MXC_Delay(MXC_DELAY_MSEC(1));
-
-    // Validate
-    MXC_Delay(MXC_DELAY_MSEC(1));
-#if 1
-    ram_read_quad(&g_req, 1024, rx_buffer, TEST_SIZE);
-#else
-    ram_read_quad_dma(&g_req, 1024, rx_buffer, TEST_SIZE);
-    while(!g_done) {}
-#endif
-    for (int i = 0; i < TEST_SIZE; i++) {
-        if (rx_buffer[i] != tx_buffer[i]) {
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, 0xA5, rx_buffer[i]);
-        }
-    }
-
-    ram_exit_quadmode(&g_req);
-
-#endif
-
+    
     printf("Success!\n");
     return err;
 }
