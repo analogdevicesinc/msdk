@@ -3220,7 +3220,7 @@
        <name>ADCFRQ</name>
        <description>ADC clock Frequency. These bits define the ADC clock frequency. fADC = fPCLK / (ADCFRQ)</description>
        <bitOffset>10</bitOffset>
-       <bitWidth>3</bitWidth>
+       <bitWidth>4</bitWidth>
       </field>
       <field>
        <name>CNNCLKDIV</name>
