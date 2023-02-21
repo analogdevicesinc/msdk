@@ -192,7 +192,6 @@ int main(void)
     PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
-
     MXC_LP_DisableSRAM3();
     MXC_LP_DisableSRAM2();
 

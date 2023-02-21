@@ -148,7 +148,7 @@ void buttonHandler(void *pb)
 
 void GPIO4_Handler(void)
 {
-	MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO4));
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO4));
 }
 
 void setTrigger(int waitForTrigger)

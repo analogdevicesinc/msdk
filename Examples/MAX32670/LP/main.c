@@ -238,9 +238,9 @@ int main(void)
     MXC_LP_SysRam2Shutdown();
     MXC_LP_SysRam1PowerUp(); // Global variables RAM 0 and 1.
     MXC_LP_SysRam0PowerUp();
-	PRINT("Unused RAMs shutdown.\n");
+    PRINT("Unused RAMs shutdown.\n");
 
-	setTrigger(1);
+    setTrigger(1);
 
     while (1) {
 #if DO_SLEEP

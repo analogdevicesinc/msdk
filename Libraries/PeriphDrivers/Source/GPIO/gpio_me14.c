@@ -236,5 +236,5 @@ void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
 {
-    return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *) port);
+    return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port);
 }

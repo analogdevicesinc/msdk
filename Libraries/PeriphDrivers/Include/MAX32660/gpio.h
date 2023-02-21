@@ -327,7 +327,6 @@ void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask);
  */
 uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port);
 
-
 /**@} end of group gpio */
 
 #ifdef __cplusplus
