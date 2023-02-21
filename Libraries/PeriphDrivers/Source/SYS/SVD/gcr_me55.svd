@@ -1370,12 +1370,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>ICCXIP</name>
-            <description>ICC XIP Clock Disable.</description>
-            <bitOffset>12</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="UART2">
             <name>SPI3</name>
             <description>SPI3 Clock Disable.</description>
             <bitOffset>14</bitOffset>

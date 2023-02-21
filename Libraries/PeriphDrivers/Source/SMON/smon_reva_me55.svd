@@ -334,18 +334,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>DFD_STDBY_EN</name>
-            <description>Digital Fault Dector Stand by Enable</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>DFD_NMI_STDBY_EN</name>
-            <description>Digital Fault Dector Stand by Enable</description>
-            <bitOffset>9</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
             <name>LOTEMP_SEL</name>
             <description>Low Temperature Detection Select.</description>
             <bitOffset>16</bitOffset>
@@ -362,6 +350,12 @@
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
+          </field>
+          <field>
+            <name>HITEMP_SEL</name>
+            <description>High Temperature Detection Select.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>VCORELO_EN</name>

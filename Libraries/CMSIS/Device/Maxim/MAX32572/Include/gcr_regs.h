@@ -728,9 +728,6 @@ typedef struct {
 #define MXC_F_GCR_PCLKDIS1_SEMA_POS                    9 /**< PCLKDIS1_SEMA Position */
 #define MXC_F_GCR_PCLKDIS1_SEMA                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SEMA_POS)) /**< PCLKDIS1_SEMA Mask */
 
-#define MXC_F_GCR_PCLKDIS1_ICCXIP_POS                  12 /**< PCLKDIS1_ICCXIP Position */
-#define MXC_F_GCR_PCLKDIS1_ICCXIP                      ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_ICCXIP_POS)) /**< PCLKDIS1_ICCXIP Mask */
-
 #define MXC_F_GCR_PCLKDIS1_SPI3_POS                    14 /**< PCLKDIS1_SPI3 Position */
 #define MXC_F_GCR_PCLKDIS1_SPI3                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SPI3_POS)) /**< PCLKDIS1_SPI3 Mask */
 
