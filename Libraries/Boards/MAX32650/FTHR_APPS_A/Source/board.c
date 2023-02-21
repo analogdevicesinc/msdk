@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-08-10 11:01:15 -0500 (Thu, 10 Aug 2017) $
- * $Revision: 29282 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include "mxc_sys.h"

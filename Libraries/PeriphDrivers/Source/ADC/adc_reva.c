@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include "mxc_device.h"
@@ -327,7 +327,8 @@ void MXC_ADC_RevA_DisableMonitorAsync(mxc_adc_monitor_t monitor)
 
 int MXC_ADC_RevA_StartConversion(mxc_adc_reva_regs_t *adc, mxc_adc_chsel_t channel)
 {
-    int data;
+    uint16_t data;
+
     int error;
 #if TARGET_NUM != 32650
     if (channel > AIN16) {
@@ -352,11 +353,11 @@ int MXC_ADC_RevA_StartConversion(mxc_adc_reva_regs_t *adc, mxc_adc_chsel_t chann
 
     while (adc->status & MXC_F_ADC_REVA_STATUS_ACTIVE) {}
 
-    if ((error = MXC_ADC_GetData((uint16_t *)&data)) != E_NO_ERROR) {
+    if ((error = MXC_ADC_GetData(&data)) != E_NO_ERROR) {
         return error;
     }
 
-    return data;
+    return (int)data;
 }
 
 int MXC_ADC_RevA_StartConversionAsync(mxc_adc_reva_regs_t *adc, mxc_adc_chsel_t channel,
