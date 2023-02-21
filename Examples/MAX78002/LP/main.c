@@ -69,8 +69,8 @@
 #define DELAY_IN_SEC 4
 #define USE_CONSOLE 1
 
-#define USE_BUTTON 0
-#define USE_ALARM 1
+#define USE_BUTTON 1
+#define USE_ALARM 0
 
 #define DISABLE_GPIO 0 // it configures all GPIOs as input to save power
 
@@ -78,8 +78,8 @@
 #define DO_LPM 1
 #define DO_UPM 0
 #define DO_STANDBY 1
-#define DO_BACKUP 1 // will reset after wakeing up`
-#define DO_POWERDOWN 0 // will reset after wakeing up
+#define DO_BACKUP 1 // will reset after waking up
+#define DO_POWERDOWN 0 // will reset after waking up
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
@@ -236,15 +236,13 @@ int main(void)
 #if !USE_CONSOLE
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
 #endif // USE_CONSOLE
-    LED_On(LED1);
     MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
     setTrigger(1);
-
     MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-    LED_Off(LED1);
 
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
@@ -254,61 +252,44 @@ int main(void)
 #if DO_SLEEP
         PRINT("Entering SLEEP mode.\n");
         setTrigger(0);
-        LED_On(LED1);
         MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
         MXC_LP_EnterSleepMode();
         MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-        LED_Off(LED1);
         PRINT("Waking up from SLEEP mode.\n");
-        MXC_Delay(SEC(2));
 #endif // DO_SLEEP
 
 #if DO_LPM
         PRINT("Entering Low power mode.\n");
         setTrigger(0);
-        LED_On(LED1);
+        MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
         MXC_LP_EnterLowPowerMode();
         MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-        LED_Off(LED1);
         PRINT("Waking up from Low power mode.\n");
-        MXC_Delay(SEC(2));
 #endif // DO_LPM
 
 #if DO_UPM
         PRINT("Entering Micro power mode.\n");
         setTrigger(0);
-        LED_On(LED1);
         MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
         MXC_LP_EnterMicroPowerMode();
         MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-        LED_Off(LED1);
         PRINT("Waking up from Micro power mode.\n");
-        MXC_Delay(SEC(2));
 #endif // DO_UPM
 
 #if DO_STANDBY
         PRINT("Entering STANDBY mode.\n");
         setTrigger(0);
-        LED_On(LED1);
         MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
-        MXC_LP_ClearWakeStatus();
         MXC_LP_EnterStandbyMode();
         MXC_GPIO_OutClr(gpio_trig1.port, gpio_trig1.mask);
-        LED_Off(LED1);
         PRINT("Waking up from STANDBY mode.\n");
-        MXC_Delay(SEC(2));
 #endif // DO_STANDBY
 
 #if DO_BACKUP
         PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
-        MXC_LP_ClearWakeStatus();
-        LED_On(LED1);
         MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
-        // power is not shown in this mode as it resets after wakeup
         MXC_LP_EnterBackupMode();
-        while (1) {}
-// we should not come here
 #endif // DO_BACKUP
 
 #if DO_POWERDOWN
@@ -328,11 +309,8 @@ int main(void)
         gpio_in.mask = MXC_GPIO_PIN_0;
         MXC_GPIO_Config(&gpio_in);
 
-        LED_On(LED1);
-        // power is not shown in this mode as it resets after wakeup
+        MXC_GPIO_OutSet(gpio_trig1.port, gpio_trig1.mask);
         MXC_LP_EnterPowerDownMode();
-        while (1) {}
-// we should not come here
 #endif // DO_POWERDOWN
     }
 }
