@@ -39,8 +39,6 @@ from curses.ascii import isdigit
 import os
 import sys
 
-LIMIT = 30.0
-
 WITH_PRINT = False
 
 
@@ -62,6 +60,7 @@ def parse_input():
     # Parse the command line arguments
     parser = argparse.ArgumentParser(description=descText, formatter_class=RawTextHelpFormatter)
     parser.add_argument('--csv', default='', help='The csv file of the PER test results.')
+    parser.add_argument('--limit', default=30.0, help='PER limit' )
     parser.add_argument('--debug', action="store_true", help='display debug info')
 
     args = parser.parse_args()
@@ -75,7 +74,7 @@ def parse_input():
     return args
 
 
-def check_results(res_file):
+def check_results(res_file, limit):
     """read the result file and check the PER
 
         return:
@@ -95,13 +94,13 @@ def check_results(res_file):
             if len(temp) >= 2:
                 if temp[-1].replace('.', '', 1).isdigit():
                     per = float(temp[-1])                    
-                    if per > LIMIT:
-                        PRINT(f'FAILED: {per}')
+                    if per > limit:
+                        print(f'FAILED: {per} > {limit}')
                         return 2
                 if temp[-2].replace('.', '', 1).isdigit():
                     per = float(temp[-2])
-                    if per > LIMIT:
-                        PRINT(f'FAILED: {per}')
+                    if per > limit:
+                        print(f'FAILED: {per} > {limit}')
                         return 2
 
     return 0
@@ -110,11 +109,10 @@ def check_results(res_file):
 input = parse_input()
 #input.csv = "/home/ying-cai/temp/simple-2023-02-09_23-08-41_max32655.csv"
 #WITH_PRINT = True
-res = check_results(input.csv)
+res = check_results(input.csv, float(input.limit))
 if res > 0:
     print("FAILED!")
     sys.exit(1)
-
-
-
+else:
+    print("PASSED")
 

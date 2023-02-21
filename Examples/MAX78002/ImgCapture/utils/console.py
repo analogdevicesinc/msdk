@@ -228,6 +228,7 @@ class CameraIFConsole():
     def quit(self):
         self.kill_get_input = True
         self.kill_serial = True
+        self.s.write(bytes("reset\n", encoding="ascii"))
         exit()
 
 # Set up command-line arguments
