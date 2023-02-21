@@ -49,6 +49,7 @@
 #include "util/calc128.h"
 #include "wsf_efs.h"
 #include "wdxc/wdxc_api.h"
+#include "wdxc/wdxc_main.h"
 #include "wdx_defs.h"
 #include "pal_btn.h"
 #include "tmr.h"
@@ -293,6 +294,23 @@ extern void setAdvTxPower(void);
 
 /*************************************************************************************************/
 /*!
+ *  \brief  Reset the OTA state.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void datcResetOTAState(void)
+{
+    int i;
+    for (i = 0; i < DM_CONN_MAX; i++) {
+        datcCb.sendingFile[i] = FALSE;
+        datcCb.fileVerified[i] = FALSE;
+        datcCb.blockOffset[i] = BLOCK_OFFSET_INIT;
+    }
+}
+
+/*************************************************************************************************/
+/*!
  *  \brief  Application DM callback.
  *
  *  \param  pDmEvt  DM callback event
@@ -503,7 +521,10 @@ static void datcScanReport(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcOpen(dmEvt_t *pMsg) {}
+static void datcOpen(dmEvt_t *pMsg)
+{
+    datcResetOTAState();
+}
 
 /*************************************************************************************************/
 /*!
@@ -1228,12 +1249,7 @@ void DatcHandlerInit(wsfHandlerId_t handlerId)
     APP_TRACE_INFO2("File addr: %08X file size: %08X", (uint32_t)datcCb.fileData, FILE_SIZE);
     APP_TRACE_INFO1("Update File CRC: 0x%08X", datcCb.fileCRC);
 
-    int i;
-    for (i = 0; i < DM_CONN_MAX; i++) {
-        datcCb.sendingFile[i] = FALSE;
-        datcCb.fileVerified[i] = FALSE;
-        datcCb.blockOffset[i] = BLOCK_OFFSET_INIT;
-    }
+    datcResetOTAState();
 
     /* Setup scan start timer */
     datcCb.scanTimer.handlerId = handlerId;
