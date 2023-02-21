@@ -77,7 +77,7 @@ int MXC_GPIO_RevA_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
 
     switch (pol) {
     case MXC_GPIO_INT_HIGH:
-        gpio->intpol &= ~cfg->mask;
+        gpio->intpol |= cfg->mask;
         gpio->dualedge &= ~cfg->mask;
         gpio->intmode &= ~cfg->mask;
         break;
@@ -89,7 +89,7 @@ int MXC_GPIO_RevA_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
         break;
 
     case MXC_GPIO_INT_LOW: /* MXC_GPIO_INT_LOW */
-        gpio->intpol |= cfg->mask;
+        gpio->intpol &= ~cfg->mask;
         gpio->dualedge &= ~cfg->mask;
         gpio->intmode &= ~cfg->mask;
         break;
