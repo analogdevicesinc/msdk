@@ -1,0 +1,4 @@
+pyserial
+pyusb
+termcolor
+readline

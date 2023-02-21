@@ -4,7 +4,7 @@
 */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -41,6 +41,10 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MXC_DELAY_H_
 
 #include <stdint.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @ingroup devicelibs
@@ -128,5 +132,9 @@ void MXC_DelayAbort(void);
 void MXC_DelayHandler(void);
 
 /**@} end of group MXC_delay */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MXC_DELAY_H_

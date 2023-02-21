@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-04-27 09:12:38 -0700 (Wed, 27 Apr 2016) $
- * $Revision: 22537 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_MAX32650_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_MAX32650_H_
@@ -243,6 +240,11 @@ typedef enum {
 /*                                                           Security Monitor */
 #define MXC_BASE_SMON ((uint32_t)0x40004000UL)
 #define MXC_SMON ((mxc_smon_regs_t *)MXC_BASE_SMON)
+
+/* ************************************************************************** */
+/*                                                                   AES Keys */
+#define MXC_BASE_AESKEYS ((uint32_t)0x40005000UL)
+#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
 
 /* ************************************************************************** */
 /*                                       Trim System Initialization Registers */

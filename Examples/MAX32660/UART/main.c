@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -119,13 +119,13 @@ int main(void)
     if ((error = MXC_UART_Init(UART0, UART_BAUD, MAP_A)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        return error;
     }
 
     if ((error = MXC_UART_Init(UART1, UART_BAUD, MAP_A)) != E_NO_ERROR) {
         printf("-->Error initializing UART: %d\n", error);
         printf("-->Example Failed\n");
-        while (1) {}
+        return error;
     }
 
     printf("-->UART Initialized\n\n");
@@ -157,7 +157,7 @@ int main(void)
         printf("-->Error starting async read: %d\n", error);
         printf("-->Example Failed\n");
         LED_On(0);
-        while (1) {}
+        return error;
     }
 
 #ifdef DMA
@@ -169,7 +169,7 @@ int main(void)
         printf("-->Error starting sync write: %d\n", error);
         printf("-->Example Failed\n");
         LED_On(0);
-        while (1) {}
+        return error;
     }
 
 #ifdef DMA
@@ -189,21 +189,12 @@ int main(void)
         printf("-->Data verified\n");
     }
 
-    printf("\n");
-
     if (fail != 0) {
-        LED_On(0);
-        printf("-->EXAMPLE FAILED\n");
-    } else {
-        printf("-->EXAMPLE SUCCEEDED\n");
+        LED_On(0); // indicates FAIL
+        printf("\n-->Example Failed\n");
+        return E_FAIL;
     }
 
-    while (1) {
-        LED_On(0);
-        MXC_Delay(500000); // 500ms
-        LED_Off(0);
-        MXC_Delay(500000); // 500ms
-    }
-
-    return 0;
+    printf("\n-->Example Succeeded\n");
+    return E_NO_ERROR;
 }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -59,8 +59,6 @@
 
 #define BUFF_SIZE 64
 
-int fail = 0;
-
 /***** Functions *****/
 
 // These are set in the linkerfile and give the starting and ending address of xip_section
@@ -108,6 +106,7 @@ void spixf_cfg_setup()
 /******************************************************************************/
 int main(void)
 {
+    int fail = 0;
     uint32_t id;
     void (*func)(void);
     uint8_t rx_buf[BUFF_SIZE];
@@ -125,7 +124,7 @@ int main(void)
     if (Ext_Flash_Init() != E_NO_ERROR) {
         printf("Board Init Failed\n");
         printf("Example Failed\n");
-        while (1) {}
+        return E_FAIL;
     }
     printf("External flash Initialized.\n\n");
 
@@ -137,7 +136,7 @@ int main(void)
     } else {
         printf("Error verifying external flash ID: 0x%x\n", id);
         printf("Example Failed\n");
-        while (1) {}
+        return E_FAIL;
     }
 
     int err;
@@ -203,10 +202,11 @@ int main(void)
     func();
     printf("Returned from external flash\n\n");
 
-    if (fail == 0) {
-        printf("Example Succeeded\n\n");
-    } else {
-        printf("Example Failed\n\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
-    return 0;
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

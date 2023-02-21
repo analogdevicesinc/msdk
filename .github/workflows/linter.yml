@@ -5,6 +5,10 @@
 #################################
 name: Lint Code Base
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 #
 # Documentation:
 # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
@@ -15,17 +19,11 @@ name: Lint Code Base
 #############################
 on:
   push:
-    branches-ignore: [master, main]
-    # Remove the line above to run when pushing to master
+    branches: [master, main]
   pull_request:
     branches: [master, main]
 
   workflow_dispatch:
-    
-# Prevent duplicate runs
-concurrency: 
-  group: ${{ github.ref }}
-  cancel-in-progress: true
 
 ###############
 # Set the Job #

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -133,6 +133,9 @@ int Console_Shutdown(void)
 
     return E_NO_ERROR;
 }
+
+/******************************************************************************/
+void GPIO_PrepForSleep(void) {}
 
 /******************************************************************************/
 void NMI_Handler(void)

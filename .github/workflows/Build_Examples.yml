@@ -1,5 +1,9 @@
 name: Build_Examples
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -13,31 +17,73 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+    
+  Build_Examples:
     # The type of runner that the job will run on
     runs-on:
-      - self-hosted
-      - software
+      - ubuntu-latest
 
     steps:
-      - name: Clean
-        continue-on-error: true
+      - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        id: arm-none-eabi-gcc-action
+        with:
+          release: '11.2-2022.02' # <-- The compiler release to use
+          
+      - name: Install RISCV GCC Toolchain (riscv-none-embed-gcc)
         run: |
-          # Remove local modifications
-          set +e
+          # Install RISCV tools
+          npm install --global xpm@latest
+          
+          TOOL_VER=10.2.0-1.2.1
+          xpm install --global @xpack-dev-tools/riscv-none-embed-gcc@$TOOL_VER
+          cp -r /home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-embed-gcc /home/runner/riscv-none-embed-gcc
+          
+          # Add riscv tools to path
+          echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
+          
+      - name: Install ccache
+        run: |
+          # Install ccache
+          sudo apt install -y ccache
 
-          # Attempt to clean the repo
-          git scorch
-          retval=$?
-
-          # Remove everything if this fails
-          if [[ $retval -ne 0 ]]
-          then
-            rm -rf *
-          fi
-
-          set -e
+          # Prepend ccache into the PATH
+          echo "/usr/bin" >> $GITHUB_PATH
+          echo "/usr/lib/ccache" >> $GITHUB_PATH
+          
+          # Setup ccache links
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-addr2line
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ar
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-as
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-c
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-c++filt
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-cpp
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-elfedit
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-g
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-10.2.1
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-ar
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-nm
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-ranlib
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcov
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcov-dump
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcov-tool
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gdb-add-index
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gdb-add-index-py
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gdb-py
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gprof
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ld
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ld.bfd
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-lto-dump
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-nm
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-objcopy
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-objdump
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ranlib
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-readelf
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-size
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strings
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strip
+          sudo ln -s ../../bin/ccache /usr/bin/riscv-none-embed-gcc
 
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
@@ -49,9 +95,66 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Build_Examples
         run: |
+          # Test paths
+          echo $GITHUB_PATH
+          echo $PATH
+          
+          # Test the links
+          arm-none-eabi-gcc --version
+          riscv-none-embed-gcc --version
+          which arm-none-eabi-gcc
+          which riscv-none-embed-gcc
+          ls -la $(which arm-none-eabi-gcc)
+          ls -la $(which riscv-none-embed-gcc)
+          
+          # Determine if we need to run the test
+          RUN_TEST=0
+          
+          # Check for changes made to these files
+          WATCH_FILES="\
+            Build_Example.yml \
+            .c \
+            .cpp \
+            .S \
+            .s \
+            .h \
+            .a \
+            .mk \
+            makefile \
+            Makefile"
+          
+          # Get the diff from main
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+          
+          echo "Watching these locations and files"
+          echo $WATCH_FILES
+          
+          echo "Checking the following changes"
+          echo $CHANGE_FILES
+          
+          # Assume we want to actually run the workflow if no files changed
+          if [[ "$CHANGE_FILES" != "" ]]; then
+            for watch_file in $WATCH_FILES; do 
+              if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
+                RUN_TEST=1
+              fi
+            done
+          else 
+          # Assume we want to actually run the workflow if no files changed
+            RUN_TEST=1
+          fi
+          
+          # End the test early if there wasn't a significant change
+          if [[ $RUN_TEST -eq 0 ]]; then
+            exit 0
+          fi
+          
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
           export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
+          
+          # Set MAXIM_PATH to limit warnings
+          export MAXIM_PATH=$(pwd)
 
           cd Examples
           # Rebuild all of the peripheral drivers and build all of the Hello_World examples
@@ -62,7 +165,7 @@ jobs:
           do
             make -C ${dir} clean
             make -C ${dir} libclean
-            make -C ${dir} -j8
+            make -C ${dir} -j8 > /dev/null
           done
           
           # Find all of the examples, 
@@ -78,6 +181,6 @@ jobs:
 
           for dir in ${SUBDIRS}
           do
-              make -C ${dir} clean
-              make -C ${dir} -j8
+            make -C ${dir} clean
+            make -C ${dir} -j8  > /dev/null
           done

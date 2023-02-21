@@ -3,8 +3,8 @@
  * @brief Pulse Train data types, definitions and function prototypes.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -31,13 +31,10 @@
  * The mere transfer of this software does not imply any licenses
  * of trade secrets, proprietary technology, copyrights, patents,
  * trademarks, maskwork rights, or any other form of intellectual
- * property whatsoever. Maxim Integrated Products, Inc. retains allts
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date$
- * $Revision$
- *
- ***************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_PT_H_
@@ -172,39 +169,116 @@ uint32_t MXC_PT_IsActive(uint32_t pts);
 void MXC_PT_SetPattern(unsigned pts, uint32_t pattern);
 
 /**
- * @brief      Enable interrupts for the pulse trains selected.
+ * @brief      Enable Stop interrupts for the pulse trains selected.
+ * 
+ * @note       This is just an explicit version of MXC_PT_EnableInt()
  *
  * @param      pts   Bit mask of which pulse trains to enable. Set the bit
  *                   position of each pulse train to enable it. Bit0-\>pt0,
  *                   Bit1-\>pt1... etc, 1 will enable the interrupt, 0 to leave
  *                   a PT channel in its current state.
  */
-void MXC_PT_EnableInt(uint32_t pts);
+void MXC_PT_EnableStopInt(uint32_t pts);
 
 /**
- * @brief      Disable interrupts for the pulse trains selected.
+ * @brief      Disable Stop interrupts for the pulse trains selected.
+ * 
+ * @note       This is an explicit version of MXC_PT_DisableInt()
  *
  * @param      pts   Bit mask of what pulse trains to disable. Set the bit
  *                   position of each pulse train to disable it. Bit0-\>pt0,
  *                   Bit1-\>pt1... etc, 1 will disable the interrupt, 0 to leave
  *                   a PT channel in its current state.
  */
-void MXC_PT_DisableInt(uint32_t pts);
+void MXC_PT_DisableStopInt(uint32_t pts);
 
 /**
- * @brief      Gets the pulse trains's interrupt flags.
+ * @brief      Gets the pulse trains's Stop interrupt flags.
+ * 
+ * @note       This is an explicit version of MXC_PT_GetStopFlags()
  *
- * @return     The Pulse Train Interrupt Flags, \ref MXC_PT_INTFL_Register Register
+ * @return     The Pulse Train Interrupt Flags, \ref MXC_PT_STOP_INTFL_Register Register
  *             for details.
  */
-uint32_t MXC_PT_GetFlags(void);
+uint32_t MXC_PT_GetStopFlags(void);
 
 /**
- * @brief      Clears the pulse train's interrupt flag.
+ * @brief      Clears the pulse train's Stop interrupt flag.
+ * 
+ * @note       This is an explicit version of MXC_PT_ClearStopFlags()
  *
- * @param      flags  bits to clear, see \ref MXC_PT_INTFL_Register Register for details.
+ * @param      flags  bits to clear, see \ref MXC_PT_STOP_INTFL_Register Register for details.
  */
-void MXC_PT_ClearFlags(uint32_t flags);
+void MXC_PT_ClearStopFlags(uint32_t flags);
+
+#if defined(__GNUC__)
+/**
+ * @brief      Enable Stop interrupts for the pulse trains selected.
+ * 
+ * @note       This function is deprecated. Use MXC_PT_EnableStopInt instead to
+ *             differentiate between the STOP and READY interrupts.
+ *
+ * @param      pts   Bit mask of which pulse trains to enable. Set the bit
+ *                   position of each pulse train to enable it. Bit0-\>pt0,
+ *                   Bit1-\>pt1... etc, 1 will enable the interrupt, 0 to leave
+ *                   a PT channel in its current state.
+ */
+inline
+    __attribute__((deprecated("Use MXC_PT_EnableStopInt instead.  See pt.h for more details."))) void
+    MXC_PT_EnableInt(uint32_t pts)
+{
+    MXC_PT_EnableStopInt(pts);
+}
+
+/**
+ * @brief      Disable Stop interrupts for the pulse trains selected.
+ * 
+ * @note       This function is deprecated. Use MXC_PT_DisableStopInt instead to
+ *             differentiate between the STOP and READY interrupts.
+ *
+ * @param      pts   Bit mask of what pulse trains to disable. Set the bit
+ *                   position of each pulse train to disable it. Bit0-\>pt0,
+ *                   Bit1-\>pt1... etc, 1 will disable the interrupt, 0 to leave
+ *                   a PT channel in its current state.
+ */
+inline __attribute__((
+    deprecated("Use MXC_PT_DisableStopInt instead.  See pt.h for more details."))) void
+MXC_PT_DisableInt(uint32_t pts)
+{
+    MXC_PT_DisableStopInt(pts);
+}
+
+/**
+ * @brief      Gets the pulse trains's Stop interrupt flags.
+ * 
+ * @note       This function is deprecated. Use MXC_PT_GetStopFlags instead to
+ *             differentiate between the STOP and READY interrupts.
+ *
+ * @return     The Pulse Train Interrupt Flags, \ref MXC_PT_STOP_INTFL_Register Register
+ *             for details.
+ */
+inline __attribute__((deprecated("Use MXC_PT_GetStopFlags instead.  See pt.h for more details.")))
+uint32_t
+MXC_PT_GetFlags(void)
+{
+    return MXC_PT_GetStopFlags();
+}
+
+/**
+ * @brief      Clears the pulse train's Stop interrupt flag.
+ * 
+ * @note       This function is deprecated. Use MXC_PT_ClearStopFlags instead to
+ *             differentiate between the STOP and READY interrupts.
+ *
+ * @param      flags  bits to clear, see \ref MXC_PT_STOP_INTFL_Register Register for details.
+ */
+inline __attribute__((
+    deprecated("Use MXC_PT_ClearStopFlags instead.  See pt.h for more details."))) void
+MXC_PT_ClearFlags(uint32_t flags)
+{
+    MXC_PT_ClearStopFlags(flags);
+}
+#endif
 
 /**
  * @brief      Setup and enables a pulse train to restart after another pulse
@@ -233,6 +307,42 @@ void MXC_PT_DisableRestart(unsigned channel, uint8_t restartIndex);
  *                        number. Bit0-\>pt0, Bit1-\>pt1... etc.
  */
 void MXC_PT_Resync(uint32_t pts);
+
+/**
+ * @brief      Enable Ready interrupts for the pulse trains selected.
+ *
+ * @param      pts   Bit mask of which pulse trains to enable. Set the bit
+ *                   position of each pulse train to enable it. Bit0-\>pt0,
+ *                   Bit1-\>pt1... etc, 1 will enable the interrupt, 0 to leave
+ *                   a PT channel in its current state.
+ */
+void MXC_PT_EnableReadyInt(uint32_t pts);
+
+/**
+ * @brief      Disable Ready interrupts for the pulse trains selected.
+ *
+ * @param      pts   Bit mask of what pulse trains to disable. Set the bit
+ *                   position of each pulse train to disable it. Bit0-\>pt0,
+ *                   Bit1-\>pt1... etc, 1 will disable the interrupt, 0 to leave
+ *                   a PT channel in its current state.
+ */
+void MXC_PT_DisableReadyInt(uint32_t pts);
+
+/**
+ * @brief      Gets the pulse trains's Ready interrupt flags.
+ *
+ * @return     The Pulse Train Interrupt Flags, \ref MXC_PT_READY_INTFL_Register Register
+ *             for details.
+ */
+uint32_t MXC_PT_GetReadyFlags(void);
+
+/**
+ * @brief      Clears the pulse train's Ready interrupt flag.
+ *
+ * @param      flags  bits to clear, see \ref MXC_PT_READY_INTFL_Register Register for details.
+ */
+void MXC_PT_ClearReadyFlags(uint32_t flags);
+
 /**@} end of group pulsetrains*/
 
 #ifdef __cplusplus

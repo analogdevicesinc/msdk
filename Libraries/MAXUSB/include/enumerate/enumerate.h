@@ -42,6 +42,10 @@
 
 #include <usb_protocol.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /// User can register callbacks for various control endpoint requests
 typedef enum {
   ENUM_CLASS_REQ,
@@ -131,5 +135,9 @@ uint8_t enum_getconfig(void);
  *  \details  Clears the configuration value. This function should be called when a host disconnect is detected.
  */
 void enum_clearconfig(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

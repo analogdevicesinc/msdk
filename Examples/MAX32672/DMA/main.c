@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -55,7 +55,6 @@
 
 /***** Globals *****/
 int mychannel = -1;
-int fail = 0;
 volatile int flag = 0;
 
 /***** Functions *****/
@@ -76,10 +75,10 @@ void DMA0_IRQHandler()
     MXC_DMA_Handler();
 }
 
-void example1(void)
+int example1(void)
 {
     printf("Transfer from memory to memory.\n");
-
+    int fail = 0;
     int retval;
     int i = 0;
 
@@ -97,36 +96,32 @@ void example1(void)
 
     if (retval != E_NO_ERROR) {
         printf("Failed MXC_DMA_Init().\n");
-
-        while (1) {}
-    }
-
-    flag = 0;
-    MXC_DMA_MemCpy(dstdata, srcdata, MAX_SIZE, memCpyComplete);
-
-    while (flag == 0) {}
-
-    //Validate
-    if (memcmp(srcdata, dstdata, MAX_SIZE) != 0) {
-        printf("Data mismatch.\n");
-
-        while (1) {}
-
         fail += 1;
     } else {
-        printf("Data verified.\n");
+        flag = 0;
+        MXC_DMA_MemCpy(dstdata, srcdata, MAX_SIZE, memCpyComplete);
+
+        while (flag == 0) {}
+
+        //Validate
+        if (memcmp(srcdata, dstdata, MAX_SIZE) != 0) {
+            printf("Data mismatch.\n");
+            fail += 1;
+        } else {
+            printf("Data verified.\n");
+        }
     }
 
     free(srcdata);
     free(dstdata);
 
-    return;
+    return fail;
 }
 
-void example2(void)
+int example2(void)
 {
     printf("\nTransfer with Reload and Callback.\n");
-
+    int fail = 0;
     int i, retval;
 
     //Init data
@@ -195,9 +190,6 @@ void example2(void)
     // Validate
     if (memcmp(srcdata, dstdata, MAX_SIZE) != 0 || memcmp(srcdata2, dstdata2, MAX_SIZE) != 0) {
         printf("Data mismatch.\n");
-
-        while (1) {}
-
         fail += 1;
     } else {
         printf("Data verified.\n");
@@ -205,8 +197,7 @@ void example2(void)
 
     if (MXC_DMA_ReleaseChannel(mychannel) != E_NO_ERROR) {
         printf("Failed to release channel 0\n");
-
-        while (1) {}
+        fail += 1;
     }
 
     free(srcdata);
@@ -214,7 +205,7 @@ void example2(void)
     free(srcdata2);
     free(dstdata2);
 
-    return;
+    return fail;
 }
 
 void disableECCforRAM(void)
@@ -227,19 +218,20 @@ void disableECCforRAM(void)
 // *****************************************************************************
 int main(void)
 {
+    int fail = 0;
     printf("***** DMA Example *****\n");
 
     disableECCforRAM();
 
     NVIC_EnableIRQ(DMA0_IRQn);
-    example1();
-    example2();
+    fail += example1();
+    fail += example2();
 
-    if (fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
+    if (fail != 0) {
         printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

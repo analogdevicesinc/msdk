@@ -6,7 +6,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -153,11 +153,11 @@ int main(void)
         fail += 1;
     }
 
-    if (fail == 0) {
-        printf("\nEXAMPLE SUCCEEDED\n");
-    } else {
-        printf("\nEXAMPLE FAILED\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
-    return fail;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

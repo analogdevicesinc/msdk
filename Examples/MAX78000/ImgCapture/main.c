@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -190,7 +190,7 @@ void transmit_capture_uart(img_data_t img_data)
         // Since standard image captures are buffered into SRAM, sending them
         // over the serial port is straightforward...
         clear_serial_buffer();
-        MXC_UART_Write(Con_Uart, img_data.raw, (int *)&img_data.imglen);
+        MXC_UART_WriteBytes(Con_Uart, img_data.raw, img_data.imglen);
 
         int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
         printf("Done! (serial transmission took %i us)\n", elapsed);

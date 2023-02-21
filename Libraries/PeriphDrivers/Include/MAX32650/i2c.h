@@ -3,8 +3,8 @@
  * @brief   Inter-integrated circuit (I2C) communications interface driver.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-06-28 09:42:42 -0500 (Fri, 28 Jun 2019) $
- * $Revision: 44330 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_I2C_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_I2C_H_
@@ -45,6 +42,10 @@
 #include <stdint.h>
 #include "i2c_regs.h"
 #include "mxc_sys.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @defgroup i2c I2C
@@ -854,5 +855,9 @@ void MXC_I2C_AsyncHandler(mxc_i2c_regs_t *i2c);
 void MXC_I2C_DMACallback(int ch, int error);
 
 /**@} end of group i2c */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_I2C_H_

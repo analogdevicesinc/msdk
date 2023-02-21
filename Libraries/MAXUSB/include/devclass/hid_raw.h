@@ -34,6 +34,10 @@
 #ifndef _HID_RAW_H_
 #define _HID_RAW_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
 /**
  * @file  hid_raw.h
  * @brief Raw Human Interface Device Class over USB
@@ -110,5 +114,9 @@ int hidraw_read(uint8_t *data, unsigned int len);
  *            successful reception of characters by the host.
  */
 int hidraw_write(const uint8_t *data, unsigned int len);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _HID_RAW_H_ */

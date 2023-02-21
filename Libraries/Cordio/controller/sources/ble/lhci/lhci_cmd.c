@@ -22,6 +22,7 @@
  */
 /*************************************************************************************************/
 
+
 #include "lhci_int.h"
 #include "hci_defs.h"
 #include "pal_bb_ble.h"
@@ -275,9 +276,11 @@ static void lhciCommonSendCmdCmplEvt(LhciHdr_t *pCmdHdr, uint8_t status, uint8_t
       LlTestReport_t rpt = {0};
       status = LlEndTest(&rpt);
       pBuf += lhciPackCmdCompleteEvtStatus(pBuf, status);
-      UINT16_TO_BSTREAM(pBuf, rpt.numRxSuccess);
+      UINT16_TO_BSTREAM(pBuf,  rpt.numRxSuccess);
+      
       break;
     }
+
 
     /* --- default --- */
 

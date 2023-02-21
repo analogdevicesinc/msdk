@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -73,7 +73,10 @@ VPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32662/Source
 
 # Add target specific CMSIS include directories
 IPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32662/Include
-IPATH+=$(CMSIS_ROOT)/Include
+
+# Add CMSIS Core files
+CMSIS_VER ?= 5.9.0
+IPATH+=$(CMSIS_ROOT)/$(CMSIS_VER)/Core/Include
 
 # Add directory with linker include file
 LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32662/Source/GCC

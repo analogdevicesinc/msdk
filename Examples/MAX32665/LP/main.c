@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -82,6 +82,12 @@
 #endif
 #if (USE_BUTTON && USE_ALARM)
 #error "You must select either USE_BUTTON or USE_ALARM, not both."
+#endif
+
+#if USE_CONSOLE
+#define PRINT(...) fprintf(stdout, __VA_ARGS__)
+#else
+#define PRINT(...)
 #endif
 
 // *****************************************************************************
@@ -232,32 +238,25 @@ void recoverFromDeepSleep(void)
 
 int main(void)
 {
-#if USE_CONSOLE
-    printf("\n\n****Low Power Mode Example****\n\n");
-#endif // USE_CONSOLE
+    PRINT("\n\n****Low Power Mode Example****\n\n");
 
 #if USE_ALARM
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32665 power modes, using the RTC alarm to exit from "
-           "each mode.  The modes will change every %d seconds.\n\n",
-           DELAY_IN_SEC);
-#endif // USE_CONSOLE
+    PRINT("This code cycles through the MAX32665 power modes, using the RTC alarm to exit from "
+          "each mode.  The modes will change every %d seconds.\n\n",
+          DELAY_IN_SEC);
     MXC_NVIC_SetVector(RTC_IRQn, alarmHandler);
 #endif // USE_ALARM
 
 #if USE_BUTTON
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32665 power modes, using a push button 0 to exit from "
-           "each mode and enter the next.\n\n");
-#endif // USE_CONSOLE
+    PRINT("This code cycles through the MAX32665 power modes, using a push button 0 to exit from "
+          "each mode and enter the next.\n\n");
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
 #endif // USE_BUTTON
 
-#if USE_CONSOLE
-    printf("Running in ACTIVE mode.\n");
-#else
+    PRINT("Running in ACTIVE mode.\n");
+#if !USE_CONSOLE
     SYS_ClockDisable(SYS_PERIPH_CLOCK_UART0);
-#endif // USE_CONSOLE
+#endif // !USE_CONSOLE
     setTrigger(1);
 
     /* Prevent SIMO leakage in DS by reducing the SIMO buck clock */
@@ -278,9 +277,8 @@ int main(void)
     MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
 
-#if USE_CONSOLE
-    printf("All unused RAMs placed in LIGHT SLEEP mode.\n");
-#endif // USE_CONSOLE
+    PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
+
     setTrigger(1);
 
     MXC_LP_ROM0Shutdown();
@@ -296,9 +294,8 @@ int main(void)
     MXC_LP_SysRam1PowerUp();
     MXC_LP_SysRam0PowerUp(); // Global variables are in RAM0 and RAM1
 
-#if USE_CONSOLE
-    printf("All unused RAMs shutdown.\n");
-#endif // USE_CONSOLE
+    PRINT("All unused RAMs shutdown.\n");
+
     setTrigger(1);
 
 #if USE_BUTTON
@@ -310,29 +307,23 @@ int main(void)
 
     while (1) {
 #if DO_SLEEP
-#if USE_CONSOLE
-        printf("Entering SLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
-        printf("Waking up from SLEEP mode.\n");
+        PRINT("Waking up from SLEEP mode.\n");
 
 #endif // DO_SLEEP
 #if DO_DEEPSLEEP
-#if USE_CONSOLE
-        printf("Entering DEEPSLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
         prepForDeepSleep();
         MXC_LP_EnterDeepSleepMode();
         recoverFromDeepSleep();
-        printf("Waking up from DEEPSLEEP mode.\n");
+        PRINT("Waking up from DEEPSLEEP mode.\n");
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
-#if USE_CONSOLE
-        printf("Entering BACKUP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
         prepForDeepSleep();
         MXC_LP_EnterBackupMode(NULL);

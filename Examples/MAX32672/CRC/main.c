@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -67,16 +67,7 @@ void Test_Callback(void *req, int result)
     callback_result = result;
 }
 
-void Test_Result(int result)
-{
-    if (result) {
-        printf(" * Failed *\n\n");
-    } else {
-        printf("   Passed  \n\n");
-    }
-}
-
-void Test_CRC(int asynchronous)
+int Test_CRC(int asynchronous)
 {
     uint32_t array[101];
     int i;
@@ -118,17 +109,31 @@ void Test_CRC(int asynchronous)
         MXC_CTB_CRC_Compute(&crc_req);
     }
 
-    Test_Result(CHECK != crc_req.resultCRC);
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
+
+    if (CHECK != crc_req.resultCRC) {
+        printf(" * Failed *\n\n");
+        return -1;
+    }
+
+    printf("   Passed  \n\n");
+    return 0;
 }
 
 // *****************************************************************************
 int main(void)
 {
     printf("\n************ CRC Example ***********\n");
-    Test_CRC(0);
+    int fail = 0;
+    fail += Test_CRC(0);
     NVIC_EnableIRQ(CRYPTO_IRQn);
-    Test_CRC(1);
+    fail += Test_CRC(1);
 
-    return 0;
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

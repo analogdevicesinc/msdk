@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -43,6 +43,10 @@
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MSR_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MSR_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /***** Definitions *****/
 
@@ -167,5 +171,9 @@ void msr_set_complete_callback(void (*func)(void));
 *   \returns  number of samples retrieved
 */
 unsigned int mcr_get_track_samples(unsigned int track, msr_samples_t *samples);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MSR_H_

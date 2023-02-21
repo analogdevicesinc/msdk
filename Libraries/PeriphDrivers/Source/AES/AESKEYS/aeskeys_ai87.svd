@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <!-- AESKEYS-->
+    <name>AESKEYS</name>
+    <description>AES Key Registers.</description>
+    <baseAddress>0x40007800</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>KEY0</name>
+        <description>AES Key 0.</description>
+        <addressOffset>0x000</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY1</name>
+        <description>AES Key 1.</description>
+        <addressOffset>0x080</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY2</name>
+        <description>AES Key 2.</description>
+        <addressOffset>0x100</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>KEY3</name>
+        <description>AES Key 3.</description>
+        <addressOffset>0x180</addressOffset>
+        <size>32</size>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- AESKEYS-->
+</device>

@@ -14,6 +14,7 @@ ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
 CRC
 DMA
+EEPROM_Emulator
 Flash
 FreeRTOSDemo
 GPIO
@@ -26,9 +27,11 @@ I2S
 ICC
 LP
 RTC
+SecureROM_BL_Host
 SPI
 SPI_Usecase
 SPI_MasterSlave
+Temp_Monitor
 TMR
 TRNG
 UART

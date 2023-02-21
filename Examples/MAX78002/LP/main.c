@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -319,13 +319,13 @@ int main(void)
 
         // The two GPIO3 pins are pulled down to 0 by default due to internal weak pulldown.
         // As soon as you enter PDM mode, the pin becomes a weak pull-up and causes an immidiate wakeup condition.
-        // To avoid, configure P3.3 and P3.1 as input with pullup for PDM to work properly"
+        // To avoid, configure P3.0 as input with pullup for PDM to work properly
         gpio_in.port = MXC_GPIO3;
         gpio_in.pad = MXC_GPIO_PAD_PULL_UP;
         gpio_in.func = MXC_GPIO_FUNC_IN;
         gpio_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
-        gpio_in.mask = MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1;
+        gpio_in.mask = MXC_GPIO_PIN_0;
         MXC_GPIO_Config(&gpio_in);
 
         LED_On(LED1);

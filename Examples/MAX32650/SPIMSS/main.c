@@ -6,7 +6,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -212,11 +212,12 @@ int main(void)
     if (fails != 0) {
         printf("\nTest failed!\n");
         LED_On(0);
+        return E_FAIL;
     } else {
         printf("\nTest successful!\n");
         LED_Init();
         LED_On(1);
     }
 
-    return 0;
+    return E_NO_ERROR;
 }

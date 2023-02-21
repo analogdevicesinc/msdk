@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-08-28 17:03:02 -0500 (Tue, 28 Aug 2018) $
- * $Revision: 37424 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include "mxc_sys.h"
 #include "mxc_pins.h"
@@ -153,24 +150,24 @@ void MXC_PT_SetPattern(unsigned pts, uint32_t pattern)
     MXC_PT_RevA_SetPattern(pts, pattern);
 }
 
-void MXC_PT_EnableInt(uint32_t pts)
+void MXC_PT_EnableStopInt(uint32_t pts)
 {
-    MXC_PT_RevA_EnableInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+    MXC_PT_RevA_EnableStopInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
 }
 
-void MXC_PT_DisableInt(uint32_t pts)
+void MXC_PT_DisableStopInt(uint32_t pts)
 {
-    MXC_PT_RevA_DisableInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+    MXC_PT_RevA_DisableStopInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
 }
 
-uint32_t MXC_PT_GetFlags(void)
+uint32_t MXC_PT_GetStopFlags(void)
 {
-    return MXC_PT_RevA_GetFlags((mxc_ptg_reva_regs_t *)MXC_PTG);
+    return MXC_PT_RevA_GetStopFlags((mxc_ptg_reva_regs_t *)MXC_PTG);
 }
 
-void MXC_PT_ClearFlags(uint32_t flags)
+void MXC_PT_ClearStopFlags(uint32_t flags)
 {
-    MXC_PT_RevA_ClearFlags((mxc_ptg_reva_regs_t *)MXC_PTG, flags);
+    MXC_PT_RevA_ClearStopFlags((mxc_ptg_reva_regs_t *)MXC_PTG, flags);
 }
 
 void MXC_PT_EnableRestart(unsigned start, unsigned stop, uint8_t restartIndex)
@@ -186,4 +183,24 @@ void MXC_PT_DisableRestart(unsigned channel, uint8_t restartIndex)
 void MXC_PT_Resync(uint32_t pts)
 {
     MXC_PT_RevA_Resync((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+}
+
+void MXC_PT_EnableReadyInt(uint32_t pts)
+{
+    MXC_PT_RevA_EnableReadyInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+}
+
+void MXC_PT_DisableReadyInt(uint32_t pts)
+{
+    MXC_PT_RevA_DisableReadyInt((mxc_ptg_reva_regs_t *)MXC_PTG, pts);
+}
+
+uint32_t MXC_PT_GetReadyFlags(void)
+{
+    return MXC_PT_RevA_GetReadyFlags((mxc_ptg_reva_regs_t *)MXC_PTG);
+}
+
+void MXC_PT_ClearReadyFlags(uint32_t flags)
+{
+    MXC_PT_RevA_ClearReadyFlags((mxc_ptg_reva_regs_t *)MXC_PTG, flags);
 }

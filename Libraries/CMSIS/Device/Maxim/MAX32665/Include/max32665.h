@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -275,13 +275,17 @@ typedef enum {
 #define MXC_SIMO ((mxc_simo_regs_t *)MXC_BASE_SIMO)
 
 /******************************************************************************/
-/*                                                                         DVS*/
+/*                                                                        DVS */
 #define MXC_BASE_DVS ((uint32_t)0x40004800UL)
 #define MXC_DVS ((mxc_dvs_regs_t *)MXC_BASE_DVS)
 
 /******************************************************************************/
-/*                                                                         DVS*/
-#define MXC_BASE_AESKEY ((uint32_t)0x40005000UL)
+/*                                                                   AES Keys */
+#define MXC_BASE_AESKEYS ((uint32_t)0x40005000UL)
+#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
+
+// DEPRECATED(1-10-2023): Scheduled for removal.
+#define MXC_BASE_AESKEY MXC_BASE_AESKEYS
 #define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
 
 /******************************************************************************/

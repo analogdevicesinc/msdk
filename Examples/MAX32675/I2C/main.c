@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -51,7 +51,6 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "nvic_table.h"
-#include "i2c_regs.h"
 #include "i2c.h"
 #include "dma.h"
 
@@ -67,8 +66,6 @@
 // connected to itself.
 #define I2C_SLAVE_ADDR (0x51)
 #define I2C_BYTES 100
-
-typedef enum { FAILED, PASSED } test_t;
 
 /***** Globals *****/
 static uint8_t Stxdata[I2C_BYTES];
@@ -192,9 +189,9 @@ int verifyData()
     }
 
     if (fails > 0) {
-        return FAILED;
+        return E_FAIL;
     } else {
-        return PASSED;
+        return E_NO_ERROR;
     }
 }
 
@@ -215,7 +212,7 @@ int main()
 
     if (error != E_NO_ERROR) {
         printf("-->Failed master\n");
-        return FAILED;
+        return error;
     } else {
         printf("\n-->I2C Master Initialization Complete");
     }
@@ -225,7 +222,7 @@ int main()
 
     if (error != E_NO_ERROR) {
         printf("Failed slave\n");
-        return FAILED;
+        return error;
     } else {
         printf("\n-->I2C Slave Initialization Complete");
     }
@@ -261,12 +258,12 @@ int main()
 
     if ((error = MXC_I2C_SlaveTransactionAsync(I2C_SLAVE, slaveHandler)) != 0) {
         printf("Error Starting Slave Transaction %d\n", error);
-        return FAILED;
+        return error;
     }
 
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
-        return FAILED;
+        return error;
     }
 
     while (I2C_FLAG == 1) {}
@@ -279,9 +276,10 @@ int main()
 
     if (verifyData()) {
         printf("\n-->I2C Transaction Successful\n");
-        return PASSED;
     } else {
         printf("\n-->I2C Transaction Failed\n");
-        return FAILED;
+        return E_FAIL;
     }
+
+    return E_NO_ERROR;
 }

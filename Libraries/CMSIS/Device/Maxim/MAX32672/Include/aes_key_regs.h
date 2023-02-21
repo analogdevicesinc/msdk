@@ -1,11 +1,11 @@
 /**
  * @file    aes_key_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
- * @note    This file is @generated.
+ * @note    This file is @deprecated.
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -39,6 +39,8 @@
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_AES_KEY_REGS_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_AES_KEY_REGS_H_
+
+#warning "DEPRECATED(1-10-2023): aes_key_regs.h - Scheduled for removal. Please use aeskeys_regs.h."
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -85,6 +87,11 @@ extern "C" {
  * @ingroup aes_key_registers
  * Structure type to access the AES_KEY Registers.
  */
+#if defined(__GNUC__)
+__attribute__((deprecated("mxc_aes_key_regs_t struct and aes_key_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023")))
+#else
+#warning "mxc_aes_key_regs_t struct and aes_key_regs.h no longer supported. Use aeskeys_regs.h and MXC_AESKEYS (mxc_aeskeys_regs_t) for AES Key Access. 1-10-2023"
+#endif
 typedef struct {
     __IO uint32_t aes_key0;             /**< <tt>\b 0x00:</tt> AES_KEY AES_KEY0 Register */
     __IO uint32_t aes_key1;             /**< <tt>\b 0x04:</tt> AES_KEY AES_KEY1 Register */

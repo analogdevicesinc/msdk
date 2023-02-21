@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -446,6 +446,30 @@ int Console_Shutdown(void)
 int Console_PrepForSleep(void)
 {
     return MXC_UART_ReadyForSleep(ConsoleUart);
+}
+
+/******************************************************************************/
+void GPIO_PrepForSleep(void)
+{
+    /* Setup the unused GPIO high */
+    mxc_gpio_cfg_t lpGpio;
+
+    /* Set the wakeup pins high */
+    lpGpio.port = MXC_GPIO3;
+    lpGpio.mask = (0x3);
+    lpGpio.func = MXC_GPIO_FUNC_OUT;
+    lpGpio.pad = MXC_GPIO_PAD_NONE;
+    lpGpio.vssel = MXC_GPIO_VSSEL_VDDIO;
+    MXC_GPIO_Config(&lpGpio);
+    MXC_GPIO_OutSet(MXC_GPIO3, 0x3);
+
+    lpGpio.port = MXC_GPIO0;
+    lpGpio.mask = (0xE7F3FFF0);
+    lpGpio.func = MXC_GPIO_FUNC_OUT;
+    lpGpio.pad = MXC_GPIO_PAD_NONE;
+    lpGpio.vssel = MXC_GPIO_VSSEL_VDDIO;
+    MXC_GPIO_Config(&lpGpio);
+    MXC_GPIO_OutSet(MXC_GPIO0, 0xE7F3FFF0);
 }
 
 #ifdef __riscv

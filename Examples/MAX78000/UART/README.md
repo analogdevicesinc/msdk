@@ -44,6 +44,6 @@ Connect the TX pin of UART3 to the RX pin of UART2 for this example.
 
 -->Data verified
 
--->EXAMPLE SUCCEEDED
+-->Example Succeeded
 ```
 

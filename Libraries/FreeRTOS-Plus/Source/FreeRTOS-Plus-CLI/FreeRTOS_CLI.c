@@ -19,10 +19,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.FreeRTOS.org
- * http://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
+ * https://aws.amazon.com/freertos
  *
- * 1 tab == 4 spaces!
  */
 
 /* Standard includes. */
@@ -46,10 +45,6 @@ one of the application files:
 	#define configAPPLICATION_PROVIDES_cOutputBuffer 0
 #endif
 
-/* Overides the use of "help" as the internal help command */
-#ifndef configUSE_CUSTOM_HELP_COMMAND
-	#define configUSE_CUSTOM_HELP_COMMAND 0
-#endif
 typedef struct xCOMMAND_INPUT_LIST
 {
 	const CLI_Command_Definition_t *pxCommandLineDefinition;
@@ -71,11 +66,7 @@ static int8_t prvGetNumberOfParameters( const char *pcCommandString );
 of the list of registered commands. */
 static const CLI_Command_Definition_t xHelpCommand =
 {
-#if configUSE_CUSTOM_HELP_COMMAND
-    "help-internal",
-#else
-    "help",
-#endif
+	"help",
 	"\r\nhelp:\r\n Lists all the registered commands\r\n\r\n",
 	prvHelpCommand,
 	0
@@ -173,9 +164,9 @@ size_t xCommandStringLength;
 			a sub-string of a longer command, check the byte after the expected
 			end of the string is either the end of the string or a space before
 			a parameter. */
-			if( ( pcCommandInput[ xCommandStringLength ] == ' ' ) || ( pcCommandInput[ xCommandStringLength ] == 0x00 ) )
+			if( strncmp( pcCommandInput, pcRegisteredCommandString, xCommandStringLength ) == 0 )
 			{
-				if( strncmp( pcCommandInput, pcRegisteredCommandString, xCommandStringLength ) == 0 )
+				if( ( pcCommandInput[ xCommandStringLength ] == ' ' ) || ( pcCommandInput[ xCommandStringLength ] == 0x00 ) )
 				{
 					/* The command has been found.  Check it has the expected
 					number of parameters.  If cExpectedNumberOfParameters is -1,

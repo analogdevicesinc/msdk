@@ -3,8 +3,8 @@
  * @brief   Serial Peripheral Interface (UART) communications driver.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_UART_H_
@@ -301,7 +301,8 @@ int MXC_UART_ReadCharacterRaw(mxc_uart_regs_t *uart);
 
 /**
  * @brief   Writes a character on the UART. If the character cannot be written because the
- *          transmit FIFO is currently full, this function returns an error.
+ *          transmit FIFO is currently full, this function returns an error. This is a
+ *          non-blocking function.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   character         The character to write
@@ -320,7 +321,7 @@ int MXC_UART_WriteCharacterRaw(mxc_uart_regs_t *uart, uint8_t character);
 int MXC_UART_ReadCharacter(mxc_uart_regs_t *uart);
 
 /**
- * @brief   Writes a character on the UART
+ * @brief   Writes a character on the UART. This is a blocking function.
  *
  * @param   uart         Pointer to UART registers (selects the UART block used.)
  * @param   character    The character to write 

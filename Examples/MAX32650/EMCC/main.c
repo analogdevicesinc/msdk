@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -61,6 +61,7 @@
 #define ITERATIONS 100
 
 /* **** Globals **** */
+int fail = 0;
 int s, ss;
 unsigned int g_seed = 0;
 
@@ -75,7 +76,7 @@ mxc_spixr_cfg_t init_cfg = {
 
 /* **** Functions **** */
 
-void setup(void)
+int setup(void)
 {
     uint8_t quad_cmd = A1024_EQIO; /* pre-defined command to use quad mode         */
 
@@ -85,7 +86,7 @@ void setup(void)
     // Initialize the desired configuration
     if (MXC_SPIXR_Init(&init_cfg) != E_NO_ERROR) {
         printf("FAILED: SPIXR was not initialized properly.\n");
-        return;
+        return E_UNINITIALIZED;
     }
 
     /* Hide this with function in SPID.C later */
@@ -107,6 +108,8 @@ void setup(void)
                            (A1024_READ << MXC_F_SPIXR_XMEM_CTRL_XMEM_RD_CMD_POS) |
                            (A1024_WRITE << MXC_F_SPIXR_XMEM_CTRL_XMEM_WR_CMD_POS) |
                            MXC_F_SPIXR_XMEM_CTRL_XMEM_EN;
+
+    return E_NO_ERROR;
 }
 
 void start_timer(void)
@@ -135,7 +138,9 @@ void test_function(void)
     int temp, i;
 
     // Configure the SPID
-    setup();
+    if (E_NO_ERROR != setup()) {
+        fail += 1;
+    }
 
     // Initialize & write pseudo-random data to be written to the RAM
     for (i = 0; i < BUFFER_SIZE; i++) {
@@ -155,6 +160,7 @@ void test_function(void)
         // Verify data being read from RAM
         if (memcmp(write_buffer, read_buffer, BUFFER_SIZE)) {
             printf("FAILED: Data was not read properly.\n\n");
+            fail += 1;
             break;
         }
     }
@@ -179,7 +185,11 @@ int main(void)
     MXC_EMCC_Disable();
     test_function();
 
-    printf("Example complete.\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
 
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

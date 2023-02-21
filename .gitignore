@@ -5,6 +5,9 @@ Examples/*/*/*/buildrv
 .vscode/settings.json
 Libraries/PeriphDrivers/bin/MAX78000/softfp/libPeriphDriver_softfp.a
 Libraries/PeriphDrivers/bin/MAX78000/softfp_riscv/libPeriphDriver_softfp.a
+Libraries/PeriphDrivers/Documentation/MAX*
+docs
+Documentation/Libraries
 Examples/MAX78000/PowerTest
 __pycache__
 msdk-internal
@@ -14,11 +17,15 @@ Tools/GNUTools
 Tools/OpenOCD
 Tools/xPack
 Tools/OpenOCD
+Tools/MSYS2
 *.o
 *.d
 /**/make.log
 /**/.idea/
+/**/venv/
 session.txt.log
 flash.log
 Libraries/NFC
 Libraries/EMV
+Libraries/RF-PHY-closed
+.github/workflows/ci-tests/Examples_tests/results/

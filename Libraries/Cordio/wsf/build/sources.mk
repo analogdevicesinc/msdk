@@ -22,14 +22,6 @@ INC_DIRS += \
 	$(ROOT_DIR)/wsf/include \
 	$(ROOT_DIR)/platform/include
 
-WSF_C_FILES = \
+C_FILES += \
 	$(sort $(wildcard $(ROOT_DIR)/wsf/sources/util/*.c)) \
 	$(sort $(wildcard $(ROOT_DIR)/wsf/sources/targets/$(RTOS)/*.c))
-
-# Use SBRK for heap allocation
-ifeq ($(WSF_HEAP_SBRK),1)
-C_FILES += $(subst $(ROOT_DIR)/wsf/sources/targets/$(RTOS)/wsf_heap.c,,$(WSF_C_FILES))
-else
-C_FILES += $(subst $(ROOT_DIR)/wsf/sources/targets/$(RTOS)/wsf_heap_sbrk.c,,$(WSF_C_FILES))
-endif
-	

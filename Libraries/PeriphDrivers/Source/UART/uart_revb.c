@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include "mxc_device.h"
@@ -467,7 +467,7 @@ int MXC_UART_RevB_Write(mxc_uart_revb_regs_t *uart, const uint8_t *byte, int *le
     }
 
     for (; written < *len; written++) {
-        retVal = MXC_UART_WriteCharacter((mxc_uart_regs_t *)uart, byte[written]);
+        retVal = MXC_UART_WriteCharacterRaw((mxc_uart_regs_t *)uart, byte[written]);
 
         if (retVal != E_NO_ERROR) {
             *len = written;

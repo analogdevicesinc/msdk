@@ -29,6 +29,6 @@ Blinking->Success, Solid->Failure
 
 -->Data verified
 
--->EXAMPLE SUCCEEDED
+-->Example Succeeded
 ```
 
