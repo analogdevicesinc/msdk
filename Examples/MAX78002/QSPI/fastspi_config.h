@@ -1,6 +1,7 @@
 #include "spi.h"
 #include "gpio.h"
 
+// TODO: Config struct
 #define SPI MXC_SPI0
 #define SPI_SPEED 24000000
 #define SPI_PINS_PORT MXC_GPIO0
