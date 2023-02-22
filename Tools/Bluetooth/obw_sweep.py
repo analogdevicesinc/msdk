@@ -85,7 +85,7 @@ for channel in channels:
     # Start the OBW test
     retval = sa.testOBW(ch=channel)
     if(retval != True):
-        print("OBW test failed")
+        print(f'OBW test failed ch: {channel}')
         sys.exit(1)
 
 print("Test passed!")
