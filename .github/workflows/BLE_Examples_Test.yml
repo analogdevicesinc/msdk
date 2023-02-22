@@ -332,6 +332,7 @@ jobs:
             ./test_launcher.sh max32690 $dut_uart $dut_serial     
           fi   
   Cleanup:
+    runs-on: [ self-hosted, btm-ci ]
     steps:
       # Save test reports
       - uses: actions/upload-artifact@v3
