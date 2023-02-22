@@ -138,6 +138,8 @@ jobs:
           cp -r Libraries/Cordio/docs/res/* Documentation/res/
           cp -r Libraries/Cordio/platform/Documentation/*.pdf Documentation/
 
+          python3 Documentation/updateUSERGUIDE-Cordio.py
+
           mkdocs build
 
       - name: Publish
