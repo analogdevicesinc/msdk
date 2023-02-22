@@ -33,7 +33,17 @@ int _transmit_spi_header(uint8_t cmd, uint32_t address)
 
 int ram_init() 
 {
-    return spi_init();
+    int err = E_NO_ERROR;
+    err = spi_init();
+    if (err)
+        return err;
+
+    err = ram_exit_quadmode(); // Protect against quad-mode lock-up
+    if (err)
+        return err;
+    
+    err = ram_reset();
+    return err;
 }
 
 int ram_reset() 
