@@ -73,7 +73,7 @@ jobs:
 
       # ME17
       - name: TEST MAX32655
-      - id: MAX32655
+        id: MAX32655
         run: |
 
           # Remove local modifications
@@ -135,7 +135,7 @@ jobs:
       
       # ME14
       - name: TEST MAX32665
-      - id: MAX32665
+        id: MAX32665
         run: |
           # Remove local modifications
           git scorch
@@ -195,7 +195,7 @@ jobs:
           fi
       # ME18
       - name: TEST MAX32690
-      - id: MAX32690
+        id: MAX32690
         run: |
           # Remove local modifications
           git scorch
@@ -265,12 +265,8 @@ jobs:
       #     test_max32665: ${{needs.Check.outputs.check_max32665}}
       #     test_max32690: ${{needs.Check.outputs.check_max32690}}
             # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          submodules: false
-          fetch-depth: 0
       - name: Lock Boards
-      - id: locked_boards
+        id: locked_boards
         run: |
           # if [[ $test_max32655  -eq 1 ]] || [[ $test_max32665  -eq 1 ]] || [[ $test_max32690  -eq 1 ]]
           # then
@@ -336,19 +332,20 @@ jobs:
             ./test_launcher.sh max32690 $dut_uart $dut_serial     
           fi   
   Cleanup:
-    # Save test reports
-    - uses: actions/upload-artifact@v3
-      if: failure()
-      with:
-          name: failure-report
-          path: .github/workflows/ci-tests/Examples_tests/results/
-    
-    # Unlock even when cancelled or failed, but only if this workflow instance locked them
-    - name: Unlock All Boards
-      if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
-      run: |
-        python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-        python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-        python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-        python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
-        
+    steps:
+      # Save test reports
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+            name: failure-report
+            path: .github/workflows/ci-tests/Examples_tests/results/
+      
+      # Unlock even when cancelled or failed, but only if this workflow instance locked them
+      - name: Unlock All Boards
+        if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          
