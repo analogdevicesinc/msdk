@@ -353,7 +353,6 @@ jobs:
     steps: 
       # Unlock even when cancelled or failed, but only if this workflow instance locked them
       - name: Unlock All Boards
-        if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
