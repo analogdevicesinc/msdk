@@ -94,9 +94,11 @@ int dma_init()
 
 int spi_init()
 {
+    // TODO: Add software-controlled slave select functionality
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
 
+    // TODO: Separate slave select config
     const mxc_gpio_cfg_t spi_pins = {
         .port = SPI_PINS_PORT,
         .mask = SPI_PINS_MASK,
@@ -113,6 +115,9 @@ int spi_init()
     spi_pins.port->ds0 |= spi_pins.mask;
     spi_pins.port->ds1 |= spi_pins.mask;
     
+    // TODO: Expose some of the config options below
+    // TODO: Move QSPI-SRAM specific options into aps6404.c
+
     SPI->ctrl0 = (1 << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) |    // Set SSEL = SS0
                         MXC_F_SPI_CTRL0_MST_MODE |         // Select controller mode
                         MXC_F_SPI_CTRL0_EN;                // Enable SPI
@@ -134,8 +139,7 @@ int spi_init()
     err = MXC_SPI_SetFrequency(SPI, SPI_SPEED);
     if (err)
         return err;
-    
-    printf("Using SPI instance %i\n", MXC_SPI_GET_IDX(SPI));
+
     NVIC_EnableIRQ(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)));
     MXC_NVIC_SetVector(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), SPI_IRQHandler);
 
@@ -210,7 +214,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
             tx_remaining--;
         }
 
-        // TODO: set up interrupt, 
+        // TODO: set up interrupt and blocking transactions without DMA
     }
 
     if (deassert) {  // Peripheral select is deasserted at end of transmission
