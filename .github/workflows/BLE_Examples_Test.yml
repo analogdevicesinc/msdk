@@ -31,10 +31,14 @@ on:
   
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  Check:
     # The type of runner that the job will run on
     runs-on: [ self-hosted, btm-ci ]
     if: github.event.pull_request.draft == false
+    outputs:
+      check_max32655: ${{ steps.MAX32655.outputs.test }}
+      check_max32665: ${{ steps.MAX32665.outputs.test }}
+      check_max32690: ${{ steps.MAX32690.outputs.test }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -66,17 +70,10 @@ jobs:
       # even if only one board is being tested. This is so that another job
       # does not possibly used one of the free boards that may connect to the 
       #current board undertest
-      - name: Lock All Boards
-        if: ${{ always() }}
-        id: lock_files
-        run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
 
       # ME17
       - name: TEST MAX32655
+      - id: MAX32655
         run: |
 
           # Remove local modifications
@@ -128,21 +125,17 @@ jobs:
           # Assume we want to actually run the workflow if no files changed
             RUN_TEST=1
           fi
-
+          # save result to steps output
           if [[ $RUN_TEST -eq 1 ]]
           then
-            echo "Running Test"
-
-            cd .github/workflows/ci-tests/Examples_tests
-            chmod +x test_launcher.sh
-            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
-            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-            ./test_launcher.sh max32655 $dut_uart $dut_serial
+            echo "test=1" >> $GITHUB_OUTPUT
+          else
+            echo "test=0" >> $GITHUB_OUTPUT
           fi
       
       # ME14
       - name: TEST MAX32665
+      - id: MAX32665
         run: |
           # Remove local modifications
           git scorch
@@ -193,18 +186,16 @@ jobs:
             RUN_TEST=1
           fi
 
+          # save result to steps output
           if [[ $RUN_TEST -eq 1 ]]
           then
-            echo "Running Test"   
-            cd .github/workflows/ci-tests/Examples_tests
-            chmod +x test_launcher.sh
-            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
-            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-            ./test_launcher.sh max32665 $dut_uart $dut_serial          
+            echo "test=1" >> $GITHUB_OUTPUT
+          else
+            echo "test=0" >> $GITHUB_OUTPUT        
           fi
       # ME18
       - name: TEST MAX32690
+      - id: MAX32690
         run: |
           # Remove local modifications
           git scorch
@@ -256,32 +247,102 @@ jobs:
           
           if [[ $RUN_TEST -eq 1 ]]
           then
+            echo "test=1" >> $GITHUB_OUTPUT 
+          else
+            echo "test=0" >> $GITHUB_OUTPUT 
+          fi     
+  Lock:
+    needs: [Check]
+    # The type of runner that the job will run on
+    runs-on: [ self-hosted, btm-ci ]
+    if: github.event.pull_request.draft == false   && (needs.Check.outputs.check_max32655 == 1 || needs.Check.outputs.check_max32665 == 1 || needs.Check.outputs.check_max32690 == 1)
+    outputs:
+      boards_locked: ${{ steps.locked_boards.outputs.test_active }}
+    steps:
+      # - env:
+      #     test_max32655: ${{needs.Check.outputs.check_max32655}}
+      #     test_max32665: ${{needs.Check.outputs.check_max32665}}
+      #     test_max32690: ${{needs.Check.outputs.check_max32690}}
+      - name: Lock Boards
+      - id: locked_boards
+        run: |
+          # if [[ $test_max32655  -eq 1 ]] || [[ $test_max32665  -eq 1 ]] || [[ $test_max32690  -eq 1 ]]
+          # then
+          echo "test_active=0" >> $GITHUB_OUTPUT 
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+          echo "test_active=1" >> $GITHUB_OUTPUT 
+         
+  Test:
+    needs: [Lock]
+    # The type of runner that the job will run on
+    runs-on: [ self-hosted, btm-ci ]
+    if: github.event.pull_request.draft == false && needs.Lock.outputs.boards_locked == 1
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          fetch-depth: 0
 
-            echo "Running Test"
-            
+      # ME17
+      - name: TEST MAX32655
+        run: |
+
+          if [[ ${{ steps.MAX32655.outputs.test }}  -eq 1 ]]
+          then
+            echo "Running Test on MAX32655"
+            cd .github/workflows/ci-tests/Examples_tests
+            chmod +x test_launcher.sh
+            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
+            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+            ./test_launcher.sh max32655 $dut_uart $dut_serial
+          fi
+      
+      # ME14
+      - name: TEST MAX32665
+        run: |
+          if [[ ${{ steps.MAX32665.outputs.test }}  -eq 1 ]]
+          then
+            echo "Running Test on  MAX32665"   
+            cd .github/workflows/ci-tests/Examples_tests
+            chmod +x test_launcher.sh
+            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
+            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
+            ./test_launcher.sh max32665 $dut_uart $dut_serial          
+          fi
+      # ME18
+      - name: TEST MAX32690
+        run: |
+         
+          if [[ ${{ steps.MAX32690.outputs.test }}  -eq 1 ]]
+          then
+            echo "Running Test on MAX32690"
             cd .github/workflows/ci-tests/Examples_tests
             chmod +x test_launcher.sh
             FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
             dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`            
             ./test_launcher.sh max32690 $dut_uart $dut_serial     
-          fi     
-      
-      # Save test reports
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-            name: failure-report
-            path: .github/workflows/ci-tests/Examples_tests/results/
-      
-      # Unlock even when cancelled or failed
-      # This needs some work, if the job is cancelled or times out because it could not get a LOCK
-      # it then jumps here and removes all locks, that were set by a different job   
-      - name: Unlock All Boards
-        if: ${{ always() && steps.lock_files.outcome == 'success' }}
-        run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          
+          fi   
+  Cleanup:
+    # Save test reports
+    - uses: actions/upload-artifact@v3
+      if: failure()
+      with:
+          name: failure-report
+          path: .github/workflows/ci-tests/Examples_tests/results/
+    
+    # Unlock even when cancelled or failed, but only if this workflow instance locked them
+    - name: Unlock All Boards
+      if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
+      run: |
+        python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+        python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+        python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+        python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+        
