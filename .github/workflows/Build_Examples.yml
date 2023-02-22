@@ -28,7 +28,7 @@ jobs:
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         id: arm-none-eabi-gcc-action
         with:
-          release: '11.2-2022.02' # <-- The compiler release to use
+          release: '10.3-2021.10' # <-- The compiler release to use
           
       - name: Install RISCV GCC Toolchain (riscv-none-embed-gcc)
         run: |
