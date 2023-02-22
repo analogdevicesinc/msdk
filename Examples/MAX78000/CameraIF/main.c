@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -67,6 +67,7 @@
 #define STREAM_ENABLE
 #define BOARD_FTHR_REVA
 #undef BOARD_EVKIT_V1
+#define CAMERA_OV7692
 /* If enabled, camera is setup in streaming mode to send the image
 line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
 image first and then sends to TFT or serial port.
@@ -137,8 +138,8 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 #ifdef ENABLE_TFT
 #ifdef STREAM_ENABLE
-#define IMAGE_XRES 320 
-#define IMAGE_YRES 240 
+#define IMAGE_XRES 320
+#define IMAGE_YRES 240
 
 #else
 #define IMAGE_XRES 176
@@ -147,8 +148,14 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 #else
 #ifdef STREAM_ENABLE
+#ifdef BOARD_EVKIT_V1
 #define IMAGE_XRES 80
 #define IMAGE_YRES 80
+#else
+#define IMAGE_XRES 52   // When using feather board,
+#define IMAGE_YRES 52   // streaming is very limited due to serial port low speed.
+#warning This configuration may be unstable!
+#endif
 #else
 #define IMAGE_XRES 176
 #define IMAGE_YRES 144
@@ -157,8 +164,14 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 #endif
 
+#ifdef BOARD_EVKIT_V1
 #define CON_BAUD \
     115200 * 8 //UART baudrate used for sending data to PC, use max 921600 for serial stream
+#else
+#define CON_BAUD \
+    115200 * 1 //UART baudrate used for sending data to PC, use max 115200 for serial stream with feather board
+#endif
+
 #define X_START 0
 #define Y_START 0
 
@@ -180,8 +193,13 @@ void process_img(void)
     utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
 #else
 #ifndef CAMERA_MONO
-    // Send the image to TFT
+#ifdef BOARD_EVKIT_V1
+    // Send the image to EVKIT TFT
     MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, h, w);
+#else
+    // Send the image to feather TFT
+    MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
+#endif
 #else
     MXC_TFT_ShowImageCameraMono(X_START, Y_START, raw, h, w);
 #endif // #ifndef CAMERA_MONO
@@ -292,8 +310,10 @@ int main(void)
 
 #ifdef BOARD_FTHR_REVA
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+#ifdef FEATHER_FAST_STREAM
     /* Set the screen rotation */
     MXC_TFT_SetRotation(ROTATE_270);
+#endif
 #endif
     MXC_TFT_SetBackGroundColor(4);
 #endif
@@ -313,44 +333,46 @@ int main(void)
 #endif
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef STREAM_ENABLE
- #ifndef CAMERA_MONO
+#ifndef CAMERA_MONO
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
                        dma_channel); // RGB565
- #else
+#else
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA,
                        dma_channel); // Mono
- #endif
+#endif
 
- #ifdef ENABLE_TFT
+#ifdef ENABLE_TFT
+#ifdef BOARD_EVKIT_V1
     /* Set the screen rotation */
-    MXC_TFT_SetRotation(SCREEN_ROTATE); //ROTATE_0
+    MXC_TFT_SetRotation(SCREEN_ROTATE);
     /* Change entry mode settings */
     MXC_TFT_WriteReg(0x0011, 0x6858);
- #endif
+#endif
+#endif
 #else  //STREAM_ENABLE
- #ifndef CAMERA_MONO
-  #ifndef FEATHER_FAST_STREAM
+#ifndef CAMERA_MONO
+#ifndef FEATHER_FAST_STREAM
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel); // RGB565 stream
-  #else
+#else
     MXC_TFT_Stream(0, 0, IMAGE_XRES, IMAGE_YRES);
     ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
-  #endif
+#endif
 
- #else //CAMERA_MONO
+#else //CAMERA_MONO
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel); // Mono stream
- #endif  //CAMERA_MONO
+#endif  //CAMERA_MONO
 
- #ifdef ENABLE_TFT
+#ifdef ENABLE_TFT
     /* Set the screen rotation */
-  #ifdef BOARD_EVKIT_V1
+#ifdef BOARD_EVKIT_V1
     MXC_TFT_SetRotation(SCREEN_NORMAL);
-  #endif
-  #ifdef BOARD_FTHR_REVA
-    //MXC_TFT_SetRotation(ROTATE_270);
-  #endif
- #endif
+#endif
+#ifdef BOARD_FTHR_REVA
+   //MXC_TFT_SetRotation(ROTATE_270);
+#endif
+#endif
 
 #endif //#ifndef STREAM_ENABLE
 
