@@ -64,10 +64,7 @@
 // Configuration options
 // ------------------------
 #define ENABLE_TFT // Comment out to disable TFT and send image to serial port instead.
-#define STREAM_ENABLE
-#define BOARD_FTHR_REVA
-#undef BOARD_EVKIT_V1
-#define CAMERA_OV7692
+//#define STREAM_ENABLE
 /* If enabled, camera is setup in streaming mode to send the image
 line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
 image first and then sends to TFT or serial port.
@@ -111,6 +108,7 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 // Match image dimensions to the selected camera and capture mode.
 // These definitions, including "CAMERA_MONO", come from board.mk
+
 #if defined(CAMERA_HM01B0)
 
 #ifdef STREAM_ENABLE
@@ -369,9 +367,6 @@ int main(void)
 #ifdef BOARD_EVKIT_V1
     MXC_TFT_SetRotation(SCREEN_NORMAL);
 #endif
-#ifdef BOARD_FTHR_REVA
-   //MXC_TFT_SetRotation(ROTATE_270);
-#endif
 #endif
 
 #endif //#ifndef STREAM_ENABLE
@@ -382,16 +377,6 @@ int main(void)
     }
 
     MXC_Delay(SEC(1));
-
-//#if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
-//    // set camera clock prescaller to prevent streaming overflow for QVGA
-//#ifdef BOARD_EVKIT_V1
-//    camera_write_reg(0x11, 0x8); // can be set to 0x6 in release mode ( -o2 )
-//#endif
-//#ifdef BOARD_FTHR_REVA
-//    camera_write_reg(0x11, 0xE); // can be set to 0xB in release mode ( -o2 )
-//#endif
-//#endif
 
     // Start capturing a first camera image frame.
     printf("Starting\n");
