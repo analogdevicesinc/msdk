@@ -330,17 +330,27 @@ jobs:
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
             dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`            
             ./test_launcher.sh max32690 $dut_uart $dut_serial     
-          fi   
-  Cleanup:
-    runs-on: [ self-hosted, btm-ci ]
-    steps:
+          fi 
       # Save test reports
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
             name: failure-report
-            path: .github/workflows/ci-tests/Examples_tests/results/
+            path: .github/workflows/ci-tests/Examples_tests/results/  
+      # - name: Unlock All Boards
+      #   if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
+      #   run: |
+      #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+      #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+      #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+      #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+          
       
+  Cleanup:
+    needs: [Test]
+    runs-on: [ self-hosted, btm-ci ]
+    if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
+    steps: 
       # Unlock even when cancelled or failed, but only if this workflow instance locked them
       - name: Unlock All Boards
         if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
