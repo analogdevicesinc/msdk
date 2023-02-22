@@ -253,6 +253,7 @@ jobs:
           fi     
   Lock:
     needs: [Check]
+    
     # The type of runner that the job will run on
     runs-on: [ self-hosted, btm-ci ]
     if: github.event.pull_request.draft == false   && (needs.Check.outputs.check_max32655 == 1 || needs.Check.outputs.check_max32665 == 1 || needs.Check.outputs.check_max32690 == 1)
@@ -263,6 +264,11 @@ jobs:
       #     test_max32655: ${{needs.Check.outputs.check_max32655}}
       #     test_max32665: ${{needs.Check.outputs.check_max32665}}
       #     test_max32690: ${{needs.Check.outputs.check_max32690}}
+            # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          fetch-depth: 0
       - name: Lock Boards
       - id: locked_boards
         run: |
