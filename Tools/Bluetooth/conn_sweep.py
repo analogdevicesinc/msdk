@@ -33,13 +33,15 @@
  #
  ###############################################################################
 
-## dtm_sweep.py
+## conn_sweep.py
  #
  # Sweep connection parameters.
  #
  # Ensure that both targets are built with BT_VER := 9
  #
 
+
+from datetime import datetime as dt
 import sys
 import argparse
 from argparse import RawTextHelpFormatter
@@ -48,14 +50,35 @@ import itertools
 from mini_RCDAT_USB import mini_RCDAT_USB
 from BLE_hci import BLE_hci
 from BLE_hci import Namespace
+import os
 from pprint import pprint
 import socket
+from subprocess import call, Popen, PIPE, CalledProcessError, STDOUT
 import time
+
+total_retry_times = 0
 
 if socket.gethostname() == "wall-e":
     rf_switch = True
 else:
     rf_switch = False
+
+
+def run_script_reset_board(sh_file):
+    """call a prepared script file to reset a board"""
+    sh_file = os.path.realpath(sh_file)
+    print(f"Run script file {sh_file}.")
+    p = Popen([f'{sh_file}'], stdout=PIPE, stderr=PIPE, shell=True)
+
+    for line in iter(p.stdout.readline, b''):
+        print(f'{dt.now()} - {line.strip().decode("utf-8")}')
+    
+    p.stdout.close()
+    p.wait()
+    result = p.returncode
+    print(f'Exit: {result}')
+    return result
+
 
 # Setup the command line description text
 descText = """
@@ -80,8 +103,13 @@ parser.add_argument('-s', '--step', default=10, help='Attenuation sweep step siz
 parser.add_argument('-e', '--pktlen', default="250", help="packet length, comma separated list.")
 parser.add_argument('--mtp', default="", help="master TRACE serial port")
 parser.add_argument('--stp', default="", help="slave TRACE serial port")
+parser.add_argument('--loss', default=0, help="Calibrated path loss, -15.7 dBm (-16.4+0.7)")
+parser.add_argument('--brd1_reset', default="", help="script file to reset board1")
+parser.add_argument('--brd2_reset', default="", help="script file to reset board2")
+parser.add_argument('--retry_limit', default=3, help="limit of retry times after fail")
  
 args = parser.parse_args()
+
 print("--------------------------------------------------------------------------------------------")
 pprint(vars(args))
 
@@ -90,15 +118,17 @@ phys             = args.phys.strip().split(",")
 txPowers         = args.txpows.strip().split(",")
 
 if args.attens is None:
-    if int(args.step) == 0:
+    if int(args.step) == 0 or int(args.step) == -1:
         attens = [20, 70]
     else:
         attens = list(range(20, 90, int(args.step)))
 
     # Add the max attenuation
-    attens.append(90)
+    if int(args.step) != -1:
+        attens.append(90)
 else:
     attens = args.attens.strip().split(",")
+    attens = [float(x) for x in attens]
 
 print("slaveSerial   :", args.slaveSerial)
 print("masterSerial  :", args.masterSerial)
@@ -134,9 +164,9 @@ hciMaster = BLE_hci(Namespace(serialPort=args.masterSerial, monPort=args.mtp, ba
 perMax = 0
 
 for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
-    per_100 = 0
     for atten in attens:
-        RETRY = 2
+        per_100 = 0
+        RETRY = int(args.retry_limit)
         while per_100 < RETRY:
             start_secs = time.time()
             print(f'\n---------------------------------------------------------------------------------------')
@@ -149,17 +179,9 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
 
             print("\nReset the attenuation to 30.")
             if rf_switch:
-                mini_RCDAT = mini_RCDAT_USB(Namespace(atten=30))
+                set_val = 30 + float(args.loss)
+                mini_RCDAT = mini_RCDAT_USB(Namespace(atten=set_val))
             sleep(0.1)
-
-            print("\nSet the PHY.")
-            hciMaster.phyFunc(Namespace(phy=str(phy)), timeout=1)
-            #hciMaster.listenFunc(Namespace(time=2, stats="False"))
-
-            print("\nSet the txPower.")
-            hciSlave.txPowerFunc(Namespace(power=txPower, handle="0")) 
-            hciMaster.txPowerFunc(Namespace(power=txPower, handle="0"))
-            #hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
             print("\nSet addresses.")
             txAddr = "00:12:34:88:77:33"
@@ -169,39 +191,102 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
 
             print("\nStart advertising.")
             hciSlave.advFunc(Namespace(interval="60", stats="False", connect="True", maintain=False, listen="False"))
+
             print("\nStart connection.")
             hciMaster.initFunc(Namespace(interval="6", timeout="64", addr=txAddr, stats="False", maintain=False, listen="False"))
             
+            print("\nSlave and master listenFunc")
+            hciSlave.listenFunc(Namespace(time=1, stats="False"))
+            hciMaster.listenFunc(Namespace(time=1, stats="False"))
+
+            print("\nSlave and master dataLenFunc")
+            hciSlave.dataLenFunc(None)
+            hciMaster.dataLenFunc(None)
+
+            print("\nSlave listenFunc")
+            hciSlave.listenFunc(Namespace(time=1, stats="False"))
+
+            print("\nMaster set PHY and listenFunc.")
+            hciMaster.phyFunc(Namespace(phy=str(phy)), timeout=1)
+            hciMaster.listenFunc(Namespace(time=2, stats="False"))
+
+            print("\nSlave and master set the txPower.")
+            hciSlave.txPowerFunc(Namespace(power=txPower, handle="0")) 
+            hciMaster.txPowerFunc(Namespace(power=txPower, handle="0"))
+
+            print("\nSlave listenFunc")
+            hciSlave.listenFunc(Namespace(time=1, stats="False"))
+
+            print("\nSlave and master sinkAclFunc")
+            hciSlave.sinkAclFunc(None)
+            hciMaster.sinkAclFunc(None)
+            print("\nslave listenFunc, 1 sec")
+            hciSlave.listenFunc(Namespace(time=1, stats="False"))
+
+            print("\nSlave and master sendAclFunc, slave listenFunc")
+            hciSlave.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(0)))
+            hciMaster.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(0)))
+            hciSlave.listenFunc(Namespace(time=1, stats="False"))
+
+            print("\nSlave and master sendAclFunc, slave listenFunc")
+            hciSlave.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(1)))
+            hciMaster.sendAclFunc(Namespace(packetLen=str(packetLen), numPackets=str(1)))
+            hciSlave.listenFunc(Namespace(time=1, stats="False"))
+
             print('--------------')
             print(f'packetLen: {packetLen}, phy: {phy}, atten: {atten}, txPower: {txPower}\n')
        
-            print("Set the requested attenuation.")
+            print(f"Set the requested attenuation: {atten}.")
             if rf_switch:
-                mini_RCDAT = mini_RCDAT_USB(Namespace(atten=atten))
+                set_val = atten + float(args.loss)
+                mini_RCDAT = mini_RCDAT_USB(Namespace(atten=set_val))
             sleep(0.1)
 
             print("\nReset the packet stats.")
-            hciSlave.cmdFunc(Namespace(cmd="0102FF00"), timeout=0.5)
-            hciMaster.cmdFunc(Namespace(cmd="0102FF00"), timeout=0.5)
+            hciSlave.cmdFunc(Namespace(cmd="0102FF00"), timeout=10.0)
+            hciMaster.cmdFunc(Namespace(cmd="0102FF00"), timeout=10.0)
+
+            print("\nSlave listenFunc")
             hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
             print(f"\nWait {args.delay} secs for the TX to complete.")
             sleep(int(args.delay))
 
-            print("\nRead any pending events.")
+            print("\nRead any pending events. slave and master listenFunc")
             hciSlave.listenFunc(Namespace(time=1, stats="False"))
             hciMaster.listenFunc(Namespace(time=1, stats="False"))
 
-            print("\nCollect results.")
+            print("\nMaster collects results.")
             perMaster = hciMaster.connStatsFunc(None)
+            print("\nSlave collects results.")
             perSlave = hciSlave.connStatsFunc(None)
 
             print("perMaster  : ", perMaster)
             print("perSlave   : ", perSlave)
 
-            if perMaster is None or perSlave is None:
+            reset_master = False
+            if perMaster is None:
+                print("perMaster is None. Reset the master.")
+                reset_master = True
+            elif perMaster >= 99.99:
+                print("perMaster invalid. Reset the master.")
+                reset_master = True
+            
+            reset_slave = False
+            if perSlave is None:
+                print("perSlave is None. Reset the slave.")
+                reset_slave = True
+            elif perSlave >= 99.99:
+                print("perSlave invalid. Reset the slave.")
+                reset_slave = True
+            
+            if reset_slave or reset_master:
+                run_script_reset_board(args.brd1_reset)
+                run_script_reset_board(args.brd2_reset)
+
                 per_100 += 1
-                print(f'Retry: {per_100}')
+                total_retry_times += 1
+                sleep(10)
                 continue
 
             # Record max per
@@ -234,6 +319,8 @@ results.write("\n")
 results.close()
 
 print("perMax: ", perMax)
+
+print(f'total_retry_times: {total_retry_times}')
 
 if float(args.limit) != 0.0:
     if perMax > float(args.limit):

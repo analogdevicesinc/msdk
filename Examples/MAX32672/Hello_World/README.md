@@ -22,4 +22,4 @@ count : 2
 count : 3
 ```
 
-You will also observe LED1 blinking at a rate of 2Hz.
+You will also observe LED1 blinking at a rate of 1Hz.

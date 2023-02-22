@@ -1,84 +1,25 @@
-Packetcraft Protocol Software
-=============================
+# Cordio
+This library implements the Bluetooth Low Energy stack , forked from [Packetcraft](https://github.com/packetcraft-inc/stacks). It depends on additional libraries within the msdk repository. All of the applications utilizing this library can be found in the [Examples](../../Examples) directory.
 
-Packetcraft protocol software is a collection of embedded stacks implementing the Bluetooth Low Energy Link Layer, Host, Profile and Mesh specification (www.bluetooth.org).
+## Getting Started
+The best application to get started with is the [BLE_periph](docs/Applications/BLE_periph.md) application. It is a simple periphal application that will allow you to advertise and connect with a central device such as a smart phone. 
 
-This repository contains open source release of Packetcraft's software. This is a qualified release and may be used in products. Please consult the [Bluetooth Qualification Process](https://www.bluetooth.com/develop-with-bluetooth/qualification-listing) for further details regarding additional certification requirements.
+Follow the MSDK [README](../../README.md) instructions to install the necessary tools and create a new project. Build and run the BLE_periph application for the appropriate target.
 
+## ADI Attach
+ADI Attach is a smart phone applicaiton that can be used for Bluetooth debugging and development.
+* Scan for advertising peripherals.
+* Connect to devices and discover profiles, services.
+* Read and write charcteristics.
+* Subscribe to noficiations.
+* Perform over-the-air firmware updates with supporing devices. 
 
-Release notes
--------------
+## BLE-PyDex
+BLE-PyDex is a hardware agnostic Bluetooth device explorer designed to aid in the development and debugging of Bluetooth applications.
 
-This latest release of the Packetcraft Host and Packetcraft Controller is Bluetooth 5.2 qualified and implements the following new Bluetooth 5.2 features: LE Isochronous Channels, Enhanced Attribute Protocol, and LE Power Control.
+https://github.com/EdwinFairchild/BLE-PyDex
 
-This release includes the following completed requirements for r20.05:
-
-    FW-3340 Isochronous Demo: single BIS data stream
-    FW-3354 TCRL.2019-1 compliant
-    FW-3359 Core v5.2: LE Isochronous Channels (ISO)
-    FW-3360 Core v5.2: LE Power Control
-    FW-3361 Core v5.2: Enhanced ATT (EATT)
-    FW-3617 Core v5.2: Isochronous Abstraction Layer (ISOAL)
-    FW-3726 Core v5.2: Host Support for LE Isochronous Channels (ISO)
-    FW-3727 Nordic nRF5 SDK 16.0.0
-    FW-3730 Compile BLE host for 64-bit platform
-    FW-3736 Light CTL Model
-    FW-3738 Mesh v1.0.1 compliant
-    FW-3739 TCRL.2019-2 qualification
-    FW-3750 Laird BL654 platform
-    FW-3767 SBC codec
-    FW-3803 GCC compiler support for gcc-arm-none-eabi-9-2019-q4-major
-    FW-3820 Protect against SweynTooth vulnerability
-
-
-Getting Started
----------------
-
-**1. Toolchain**
-
-If using a system with package manager such as Ubuntu, use the following command line to install dependent tools:
-
-```
-sudo apt-get install build-essential binutils-arm-none-eabi
-```
-
-Alternatively download and install the GNU Arm Embedded Toolchain from here and add the path to the `bin` folder to your PATH environment.
-
-* [GNU Arm Embedded Toolchain](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm)
-
-
-**2. Build**
-
-Select a project to build. The following folders contains buildable projects:
-
-* Packetcraft Profile sample application: [ble-apps/build](ble-apps/build)
-* Packetcraft Mesh sample application: [ble-mesh-apps/build](ble-mesh-apps/build)
-* Packetcraft Controller sample application: [controller/build](controller/build)
-
-Consult the Sample App Developer's Guide (below) for more information about the application usage.
-
-For example, to build Packetcraft's sample Bluetooth Low Energy Tag device use the following make command from the root repo folder:
-
-```
-make -C ble-apps/build/tag/gcc
-```
-
-This command will build a complete device image including the Tag sample application, Profiles, Host, Link Layer and platform drivers for the Nordic nRF52840 / PCA10056 development board. The resulting image is located at `ble-apps/build/tag/gcc/bin/tag.bin`.
-
-
-**3. Program**
-
-To install the firmware image on a Nordic PCA10056 developmnent board, plug a USB cable into your PCA10056. Drag-n-Drop the resulting image from the previous step onto the mass storage drive called "JLINK".
-
-
-Documentation
--------------
-
-See the docs directory.
-
-
-Certification
--------------
+## Certification
 
 Bluetooth LE Mesh solution implementing of the Bluetooth Mesh Profile 1.0 and the Bluetooth Mesh Model 1.0 wireless technical specifications
 
@@ -92,36 +33,111 @@ Bluetooth LE Link Layer protocol stack implementing Bluetooth 5.2 specification
 
 * [QDID 146281](https://launchstudio.bluetooth.com/ListingDetails/103599)
 
+MAX32655 controller subsystem
 
-Verification
-------------
+* [QDID 159701](https://launchstudio.bluetooth.com/ListingDetails/119468)
 
-Packetcraft Mesh is verified with the TCRL.2019-2 compliance tester using the following:
+MAX32665 controller subsystem
 
-* Bluetooth Profile Tuning Suites 7.6.1
+* [QDID 142345](https://launchstudio.bluetooth.com/ListingDetails/98880)
 
-Packetcraft Host is verified with the TCRL.2019-2 compliance tester using the following:
+Consult the [Bluetooth Qualification Process](https://www.bluetooth.com/develop-with-bluetooth/qualification-listing) for further details regarding certification.
 
-* Bluetooth Profile Tuning Suites 7.6.1
+## Supported Features
 
-Packetcraft Profiles is verified with the TCRL.2018-2 compliance tester using the following:
+* **LE Dual Mode Topology:** Advertise/Scan while maintaining multiple adjacent connections.
+* **2M PHY:** High speed PHY with 2 Mbps symbol rate.
+* **Coded PHY:** Forward error correction, 125 kbps or 500 kbps symbol rate.
+* **Extended Advertising:** Enhanced advertising and scanning.
+* **Periodic Advertising:** Broadcasting and receiving periodic advertisements.
+* **EATT:** Enhanced Attribute protocol.
+* **LE Secure Connections:** LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation.
+* **Data Length Extension:** Extend the maximum data length supported in a connection.
+* **LE Power Control:** Dynamic TX power control.
+* **\*OTA firmware update:** Over-the-air firmware update is not a standard Bluetooth feature. We have a wireless data exchange service that can be used for OTA firmware updates. See the BLE_otac_otas examples, the ADI Attach smart phone app, and [BLE-PyDex](https://github.com/EdwinFairchild/BLE-PyDex) for details.
 
-* Bluetooth Profile Tuning Suites 7.3.0
+## Features in development
+* **Direction finding:** Detect the direction of the incoming signal. Also known as Angle of Arrival (AoA) and Angle of Departure (AoD). Hardware support on MAX32655 and MAX32690, unavailable on MAX32665, software in development. 
+* **LE Audio:** Isochronous audio with Bluetooth LE. Hardare support on all platforms, software in development. 
 
-Packetcraft Link Layer conforms to the Bluetooth TCRL.2019-2 requirements verified with the following:
+## Frequently asked questions
 
-* Teledyne Harmony LE Tester version 19.12.16916.21195
-
-This product was compiled and tested with the following version of GNU GCC
-
-* gcc-arm-none-eabi-9-2019-q4-major
+### How do I change the advertising parameters?
+Peripheral applications will have a static structure that contains all of the advertising parameters. If run-time changes are desired, you must call ```AppAdvStop()``` before changing the parameters and ```AppAdvStart()``` to resume.
 
 
-Platforms
----------
+With this configuration, the device will advertise at a fast interval (300 * 0.625 = 187.5 ms) for 5 seconds. It will then advertise slowly (1600 * 0.625 = 1000 ms) indefinetly. 
+``` c
+/*! configurable parameters for advertising */
+static const appAdvCfg_t datsAdvCfg = {
+    { 5000,    0}, /*! Advertising durations in ms, 0 is infinite */
+    { 300,  1600}  /*! Advertising intervals in 0.625 ms units */
+};
+```
 
-This release was tested on the following platforms. Note: platforms listed may not be available in this repository.
+### How do I change the connection parameters?
+Only the master of the connection can change the connection parameters. Peripheral devices can request a change, but only the master can accept and set the connection parameters. Cell phones and mobile operatings systems have different restrictions on the connection parameters.
 
-* Nordic nRF52840 / PCA10056 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10056")
-* Nordic nRF52832 / PCA10040 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10040")
-* Laird BL654 / 451-00004 USB adapter / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=laird")
+Peripheral applications have the following structure that is used to request connection parameter updates. 
+
+```c
+/* iOS connection parameter update requirements
+
+ The connection parameter request may be rejected if it does not meet the following guidelines:
+ * Peripheral Latency of up to 30 connection intervals.
+ * Supervision Timeout from 2 seconds to 6 seconds.
+ * Interval Min of at least 15 ms.
+ * Interval Min is a multiple of 15 ms.
+ * One of the following:
+   * Interval Max at least 15 ms greater than Interval Min.
+   * Interval Max and Interval Min both set to 15 ms.
+   * Interval Max * (Peripheral Latency + 1) of 2 seconds or less.
+   * Supervision Timeout greater than Interval Max * (Peripheral Latency + 1) * 3.
+*/
+
+/*! configurable parameters for connection parameter update */
+static const appUpdateCfg_t datsUpdateCfg = {
+    0,
+    /*! ^ Connection idle period in ms before attempting
+    connection parameter update. set to zero to disable */
+    (15 * 8 / 1.25), /*! Minimum connection interval in 1.25ms units */
+    (15 * 12 / 1.25), /*! Maximum connection interval in 1.25ms units */
+    0, /*! Connection latency */
+    600, /*! Supervision timeout in 10ms units */
+    5 /*! Number of update attempts before giving up */
+};
+```
+The DmConnUpdate() function can also be used to request a connection parameter update from the peripheral or initiate one from the master.
+
+```c
+/*************************************************************************************************/
+/*!
+ *  \brief  Update the connection parameters of an open connection
+ *
+ *  \param  connId      Connection identifier.
+ *  \param  pConnSpec   Connection specification.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void DmConnUpdate(dmConnId_t connId, hciConnSpec_t *pConnSpec);
+```
+
+### How do I use the low power modes?
+All of the applications will enter sleep mode in idle when build with ```DEBUG=0```. The Wireless Stack Framework (WSF) operating system will call PalSysSleep() mode when idle. With ```DEBUG=1```, the CPU will stay in active mode to leave the debugger enabled.
+
+To enter the lowest power states, refer to the BLE_FreeRTOS application. This will create FreeRTOS tasks for the Cordio stack and allow users to add additional tasks. Enable ```configUSE_TICKLESS_IDLE``` and the device will enter standby mode and deep sleep between events.
+
+**WARNING:** The CPU debugger is disabled in sleep modes. If your application enters sleep mode directly after reset, it will be difficult to debug and reporgram.
+
+### How do I send unformatted data like a UART?
+Unfortunatly there is not a Bluetooth SIG defined standard for this protocol. This stack has a proprietary data transfer service that is used to transmit unformatted data between devices. Refer to the BLE_dats (BLE Data Server) for the peripheral application. You can connect to this device with the BLE_datc (BLE data client) application to see simple data transmission. Refer to the BLE_dats and BLE_dats [README](docs/Applications/BLE_datc_dats.md) for more information.
+
+### How do I additional tasks and handlers to the WSF RTOS?
+
+## Additional Documentation
+The Cordio architecture is described [here](docs/ARCHITECTURE.md). 
+
+Documentation for each of the supporting applications can be found [here](docs/Applications).
+
+Documentation for Python tools used for Bluetooth development and debugging can be found [here](../../Tools/Bluetooth/README.md).
