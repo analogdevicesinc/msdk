@@ -56,6 +56,7 @@
 /***** Definitions *****/
 #define TEST_SIZE 640
 #define TEST_VALUE 0x42
+#define TEST_COUNT 480
 
 /***** Globals *****/
 
@@ -149,6 +150,32 @@ int main(void)
             fail_count++;
             printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + i, tx_buffer[i], rx_buffer[i]);
         }
+    }
+
+    memset(tx_buffer, 0xAB, TEST_SIZE);
+    for (int i = 0; i < TEST_SIZE; i++) {
+        tx_buffer[i] = i % 256;
+    }
+    memset(rx_buffer, 0, TEST_SIZE);
+    address = 0;
+    printf("Writing across page boundaries...\n");
+    for (int i = 0; i < TEST_COUNT; i++) {
+        ram_write_quad(address, tx_buffer, TEST_SIZE);
+        address += TEST_SIZE;
+    }
+    printf("Done!\n");
+
+    address = 0;
+    for (int i = 0; i < TEST_COUNT; i++) {
+        ram_read_quad(address, rx_buffer, TEST_SIZE);
+        for (int j = 0; j < TEST_SIZE; j++) {
+            if (rx_buffer[j] != tx_buffer[j]) {
+                fail_count++;
+                printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + j, tx_buffer[j], rx_buffer[j]);
+            }
+        }
+        address += TEST_SIZE;
+        memset(rx_buffer, 0, TEST_SIZE);
     }
 
     if (fail_count > 0) {
