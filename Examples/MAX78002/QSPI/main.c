@@ -78,10 +78,6 @@ int main(void)
     MXC_TMR_SW_Start(MXC_TMR0);
     int sw_overhead = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Stopwatch overhead: %ius\n", sw_overhead);
-    ram_exit_quadmode();
-
-    printf("Resetting SRAM...\n");
-    ram_reset();
 
     printf("Reading ID...\n");
     ram_id_t id;
