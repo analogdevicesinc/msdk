@@ -55,14 +55,6 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define I2C_MASTER MXC_I2C1 // SDA P2_17; SCL P2_18
-#define I2C_FREQ 400 // 100kHz
-
-#define ADC_V_AVDD 3000 // 3V
-#define ADC_V_REF 2500 // 2.5V
-
-#define ADC_SLAVE_ADDR 0x30 // Depends on ADR0 and ADR1 pins
-
 #define PB_0 0 // Use push button 0 for channel switching
 #define PB_1 1 // Use push button 1 for channel switching
 
@@ -100,19 +92,6 @@ int main(void)
     printf("Use PB0 to change the input channel being converted and PB1 to \n");
     printf("change the conversion rate\n\n\n");
 
-    /* Setup I2C master */
-    error = MXC_I2C_Init(I2C_MASTER, 1, 0);
-    if (error != E_NO_ERROR) {
-        printf("Failed to initialize I2C%d master!\n", I2C_MASTER, error);
-        return -1;
-    }
-
-    error = MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ * 1000);
-    if (error < 0) {
-        printf("Failed to set I2C bus speed to %d kHz\n", I2C_FREQ);
-        return -1;
-    }
-
     /* Enable push button interrupts */
     PB_IntEnable(PB_0);
     PB_IntEnable(PB_1);
@@ -130,13 +109,6 @@ int main(void)
     MXC_TMR_Init(MXC_TMR0, &tmrCfg);
     MXC_TMR_Start(MXC_TMR0);
 
-    /* Set ADC hardware parameters */
-    error = max11261_adc_config_init(ADC_V_AVDD, ADC_V_REF, I2C_FREQ, ADC_SLAVE_ADDR);
-    if (error != E_NO_ERROR) {
-        printf("Failed to initialize MAX11261\n");
-        return -1;
-    }
-
     /* Reset ADC */
     max11261_adc_reset();
 
@@ -150,6 +122,9 @@ int main(void)
 
     // Uncomment to use register poll mode
     //max11261_adc_set_ready_func(NULL);
+
+    max11261_adc_convert_prepare();
+
     printf("\n\n\n\n\n\n\n");
     sampleCount = 0;
     while (1) {

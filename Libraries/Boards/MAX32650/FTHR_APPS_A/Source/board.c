@@ -50,6 +50,14 @@
 /* **** Definitions **** */
 #define ADC_RST_ACTIVE_LOW 1 // Reset is active low
 
+#define ADC_V_AVDD 3000 // 3V
+#define ADC_V_REF 2500 // 2.5V
+
+#define ADC_SLAVE_ADDR 0x30 // Depends on ADR0 and ADR1 pins
+
+#define I2C_MASTER MXC_I2C1 // SDA P2_17; SCL P2_18
+#define I2C_FREQ 400 // 400kHz
+
 /* **** Global Variables **** */
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
@@ -81,6 +89,15 @@ void mxc_assert(const char *expr, const char *file, int line)
 int Board_Init(void)
 {
     int err;
+
+    /* Setup I2C master */
+    if ((err = MXC_I2C_Init(I2C_MASTER, 1, 0)) != E_NO_ERROR) {
+        return err;
+    }
+
+    if ((err = MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ * 1000)) < 0) {
+        return err;
+    }
 
     if ((err = MAX11261_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
@@ -157,6 +174,7 @@ static inline void delay_us(uint32_t us)
 
 int MAX11261_Init(void)
 {
+    int error;
     mxc_gpio_cfg_t adc_reset_n;
     mxc_gpio_cfg_t adc_int_n;
 
@@ -180,6 +198,12 @@ int MAX11261_Init(void)
     //NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(ADC_INT_PORT));
     /* Initialize MAX11261 platform specific functions */
     max11261_adc_platform_init(i2c1_transfer, max11261_reset_set, delay_us);
+
+    /* Set ADC hardware parameters */
+    error = max11261_adc_config_init(ADC_V_AVDD, ADC_V_REF, I2C_FREQ, ADC_SLAVE_ADDR);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
 
     /* Use max11261_ready to check ADC status */
     max11261_adc_set_ready_func(max11261_ready);
