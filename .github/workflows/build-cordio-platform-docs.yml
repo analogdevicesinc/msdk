@@ -44,8 +44,8 @@ jobs:
           sudo make -C Libraries/Cordio/docs/latex
 
           echo "Copying PDF to Cordio/platform/Documentation"
-          sudo mv Libraries/Cordio/docs/latex/refman.pdf Libraries/Cordio/docs/latex/MAX32655.pdf
-          sudo mkdir -p Libraries/Cordio/platform/Documentation && sudo cp -r Libraries/Cordio/docs/latex/Platform_ref.pdf Libraries/Cordio/platform/Documentation/
+          sudo mv Libraries/Cordio/docs/latex/refman.pdf Libraries/Cordio/docs/latex/Cordio-Platform-Documentation.pdf
+          sudo mkdir -p Libraries/Cordio/platform/Documentation && sudo cp -r Libraries/Cordio/docs/latex/Cordio-Platform-Documentation.pdf Libraries/Cordio/platform/Documentation/
           
           
       - name: Push Documentation Files
