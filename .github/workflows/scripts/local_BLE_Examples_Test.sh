@@ -53,7 +53,7 @@ if [[ $DO_MAX32655 -eq 1 ]]; then
     cd $MSDK
     echo "PWD="`pwd`
 
-    cd .github/workflows/ci-tests/Examples_tests
+    cd .github/workflows/scripts
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
     if [ $(hostname) == "wall-e" ]; then
@@ -102,7 +102,7 @@ if [[ $DO_MAX32665 -eq 1 ]]; then
     cd $MSDK
     echo "PWD="`pwd`
 
-    cd .github/workflows/ci-tests/Examples_tests
+    cd .github/workflows/scripts
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
     if [ $(hostname) == "wall-e" ]; then
@@ -155,7 +155,7 @@ if [[ $DO_MAX32690_EVKIT -eq 1 ]]; then
     cd $MSDK
     echo "PWD="`pwd`
 
-    cd .github/workflows/ci-tests/Examples_tests
+    cd .github/workflows/scripts
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
     if [ $(hostname) == "wall-e" ]; then
@@ -222,7 +222,7 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     cd $MSDK
     echo "PWD="`pwd`
 
-    cd .github/workflows/ci-tests/Examples_tests
+    cd .github/workflows/scripts
     chmod +x test_launcher.sh
     ./test_launcher.sh max32690 $dut_uart $dut_serial WLP_V1
  
