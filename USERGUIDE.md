@@ -1560,4 +1560,3 @@ The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level inte
 - MAX32570
 - MAX32665-MAX32668
 - MAX78002
-
