@@ -3,16 +3,14 @@ from os import listdir
 
 
 TEMPLATE = "- [%s](%s/%s)\n"
-here = Path.cwd()
-repo = here.parent.parent
+repo = Path.cwd().parent.parent
 cordio_docs_dir =  repo / "Libraries" / "Cordio" / "docs"
 platform_docs_dir = repo / "Libraries" / "Cordio" / "platform" / "Documentation"
-userguide_dir = repo / "Documentation"
 
 cordio_doc_files = [f for f in listdir(cordio_docs_dir) if f.endswith('.md')]
 platform_doc_files = [f for f in listdir(platform_docs_dir) if f.endswith('.pdf')]
 
-with open(userguide_dir / "USERGUIDE.md", 'r') as f:
+with open(repo / "USERGUIDE.md", 'r') as f:
     lines = f.readlines()
 
 idx = 0
@@ -70,5 +68,5 @@ if len(platform_doc_files) > 0:
 
     content = "".join(lines)
 
-    with open(userguide_dir / "USERGUIDE.md", 'w') as f:
+    with open(repo / "USERGUIDE.md", 'w') as f:
         f.write(content)
