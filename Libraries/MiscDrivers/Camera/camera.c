@@ -666,6 +666,7 @@ int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode
     return ret;
 }
 
+#ifndef __riscv
 int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode, dmamode_t dma_mode, int dma_channel)
 {
     int ret = STATUS_OK;
@@ -803,6 +804,7 @@ int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_
 
     return ret;
 }
+#endif
 
 #if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
     defined(CAMERA_OV5642)
@@ -878,6 +880,7 @@ int camera_start_capture_image(void)
     return ret;
 }
 
+#ifndef __riscv
 int camera_start_capture_image_tft(void)
 {
     int ret = STATUS_OK;
@@ -893,6 +896,7 @@ int camera_start_capture_image_tft(void)
     MXC_PCIF_Start(MXC_PCIF_READMODE_CONTINUES_MODE);
     return ret;
 }
+#endif
 
 int camera_is_image_rcv(void)
 {

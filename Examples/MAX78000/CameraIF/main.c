@@ -77,8 +77,10 @@ if stream mode is disabled, or 320x240 if enabled
 If BUTTON is defined, you'll need to push PB1 to capture an image frame.  Otherwise, images
 will be captured continuously.
 */
+#ifndef __riscv
 #if defined(STREAM_ENABLE) && defined(ENABLE_TFT) && defined(BOARD_FTHR_REVA)
 #define FEATHER_FAST_STREAM
+#endif
 #endif
 /* If enabled, can stream up to 16fps when the TFT is available up to 320x240
  * This option only works when Feather board is selected
