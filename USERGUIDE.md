@@ -1586,6 +1586,10 @@ The Cordio Bluetooth Low Energy (BLE) library provides a full BLE stack for micr
 
 #### Cordio Documentation
 
+- [Architecture](Libraries/Cordio/docs/ARCHITECTURE.md)
+- [Bluetooth LE Basics](Libraries/Cordio/docs/BLUETOOTH_LE_BASICS.md)
+- [Packetcraft](Libraries/Cordio/docs/PACKETCRAFT.md)
+- [Platform](Libraries/Cordio/platform/Documentation/Cordio-Platform-Documentation.pdf)
 
 ---
 
