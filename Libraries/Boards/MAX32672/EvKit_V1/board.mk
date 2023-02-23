@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -41,6 +41,7 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
 SRCS += rom_stub.c
+SRCS += st7735s.c
 
 MISC_DRIVERS_DIR ?= $(BOARD_DIR)/../../../MiscDrivers
 

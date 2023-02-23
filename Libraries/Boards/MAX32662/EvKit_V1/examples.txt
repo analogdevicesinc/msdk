@@ -16,6 +16,7 @@ Bootloader_Host
 CAN
 Coremark
 DMA
+EEPROM_Emulator
 Flash
 Flash_CLI
 GPIO

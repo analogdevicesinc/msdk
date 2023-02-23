@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <stddef.h>
@@ -77,7 +77,7 @@ int MXC_GPIO_RevA_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
 
     switch (pol) {
     case MXC_GPIO_INT_HIGH:
-        gpio->intpol &= ~cfg->mask;
+        gpio->intpol |= cfg->mask;
         gpio->dualedge &= ~cfg->mask;
         gpio->intmode &= ~cfg->mask;
         break;
@@ -89,7 +89,7 @@ int MXC_GPIO_RevA_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
         break;
 
     case MXC_GPIO_INT_LOW: /* MXC_GPIO_INT_LOW */
-        gpio->intpol |= cfg->mask;
+        gpio->intpol &= ~cfg->mask;
         gpio->dualedge &= ~cfg->mask;
         gpio->intmode &= ~cfg->mask;
         break;

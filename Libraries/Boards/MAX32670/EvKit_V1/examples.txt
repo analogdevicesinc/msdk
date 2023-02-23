@@ -15,6 +15,7 @@ ARM-DSP/arm_variance_example
 Coremark
 CRC
 DMA
+EEPROM_Emulator
 Flash
 FreeRTOSDemo
 GPIO

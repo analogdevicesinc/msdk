@@ -1,6 +1,106 @@
-Changes in V2.0.11
+Changes between V3.0.0 and V3.1.0 releases:
+        + Fixed a bug in the Connect function where multiple SYN and RST packet combinations can
+          lead to orphaned sockets.
+        + Added network interface support for NetifSlirp.
 
-	+ Updates some drivers in the portable layer.
+Changes between V3.0.0 and V2.4.0 releases:
+        + Split the source files according to the function the code performs.
+          This makes the code modular making test coverage easier.
+        + Achieved 100% unit-test coverage.
+        + Improved RFC compliance.
+        + Improved MISRA c-2012 compliance.
+
+        Helpful links to help you upgrade to V3
+        + https://github.com/FreeRTOS/FreeRTOS-plus-tcp#generating-pre-v300-folder-structure-for-backward-compatibility
+        + https://www.freertos.org/2022/08/the-freertos-plus-tcp-library-is-now-more-robust-and-secure.html
+
+Changes between V2.3.3 and V2.3.4 releases:
+        + Added a check in BufferAllocation_2.c to ensure adding (2 +
+          ipBUFFER_PADDING) bytes to the requested allocation size does
+          not cause an integer overflow. Thanks to Bernard Lebel
+          (RMDS Innovation) reporting this potential issue.
+        + Updated FreeRTOS_inet_pton4() so it rejects IP addresses that
+          have leading zeros. Previously, if the IP address had leading
+          zeros, perhaps because it was entered in octal format, the
+          address was interpreted as decimal (the leading zeros were
+          stripped). That could result in the function returning an
+          unexpected IP address.
+        + Added logic to clear flags of a stored TCP packet to avoid
+          sending incorrect flags when receiving incorrect packets from
+          the peer.
+        + Fixed the IP header checksum calculation of ICMP response.
+
+Changes between V2.3.2 and V2.3.3 releases:
+        + When a listening socket is closed, all child sockets not yet owned by the
+          application will be closed too. (Thanks Bernd Edlinger).
+        + Updated buffer allocation to return a zero length buffer when
+          requested. (Thanks Thomas Pedersen).
+        + When there is insufficient space in the network event queue, closing of a
+          socket will be deferred for a later time. (Thanks Bernd Edlinger).
+        + Allow IP-task to clean up while deleting socket-sets to avoid race
+          conditions. (Thanks Bernd Edlinger).
+        + Added FreeRTOS+TCP version number macros.
+	+ Repaired buffer leak in NBNS reply logic.
+	+ Added a hook function which can be used to process unsupported ethernet
+	  frames.
+	+ Added a check for ICMP packets with incorrect checksum.
+
+Changes between V2.3.1 and V2.3.2 releases:
+	+ When a protocol error occurs during the SYN-phase of a TCP connection, a
+	  child socket will now be closed ( calling FreeRTOS_closesocket() ),
+	  instead of being given the eCLOSE_WAIT status. A client socket, which calls
+	  connect() to establish a connection, will receive the eCLOSE_WAIT status,
+	  just like before.
+	+ Fixed a race condition in DHCP state machine which occured when the macro
+	  dhcpINITIAL_TIMER_PERIOD was set to a very low value.
+
+Changes between V2.3.0 and V2.3.1 releases:
+	+ Fixed UDP only compilation.
+	+ Added description for functions and variables in Doxygen compatible format.
+	+ Fixed asynchronous DNS lookup which was broken due to changed function
+	  signature of prvParseDNSReply.
+
+Changes between V2.2.2 and V2.3.0 releases:
+	+ Moved FreeRTOS+TCP source code to an independent repository
+	  FreeRTOS/FreeRTOS-Plus-TCP.
+
+Changes between V2.2.1 and V2.2.2 releases:
+	+ Updated the source code to adhere to stricter MISRA compliance.
+
+Changes between V2.0.0 and V2.2.1 releases:
+	+ Improved security by giving users the option to reject UDP packets with a
+	  checksum of zero even though the UDP spec allows it.
+	+ Improved robustness by checking packet lengths in software even if the check
+	  has already been performed in the hardware.
+	+ Added ipconfigIP_PASS_PACKETS_WITH_IP_OPTIONS macro to enable users to
+	  drop/accept IP Packets containing IP options (IP options are not supported).
+	+ Modified xDataLength to always mean "total number of bytes" to impart more
+	  clarity.
+	+ Replaced the ipconfigRAND32 macro with a function
+	  xApplicationGetRandomNumber(). The return value indicates if the randomiser
+	  is broken or working properly. Before this, a random value of 0 was treated
+	  as invalid, whereas 0 can be a proper random value.
+	+ Made changes in DNS to make asynchronous lookup work.
+	+ Made FreeRTOS_OutputARPRequest() available for application code. Now the
+	  application can start an ARP request directly by sending a UDP packet.
+	+ Made Socket_t and SocketSet_t point to a struct in stead of void.
+	+ Corrected the DNSs protocol-checksum calculation length.
+	+ Corrected length-check in usGenerateProtocolChecksum().
+	+ Modified pxGetNetworkBufferWithDescriptor() function to check if a counting
+	  semaphore has been created. Earlier when a user tried to get a Network
+	  Buffer before the IP-task started, the function could crash.
+	+ Made TCP low-water/high-water limits configurable with a socket option.
+	+ The 'ucFirstOptionByte' was counted twice in earlier releases, subtract 1
+	  byte to send the correct amount of bytes.
+	+ Corrected the WIN size reporting to the TCP peer. The WIN size as reported
+	  to the TCP peer was sometimes running slightly behind.
+	+ Added a function FreeRTOS_dnsclear() which invalidates the entire DNS cache.
+	+ Added DNS response transaction ID check. The DNS cache shall only be updated
+	  when the ID in the reply comes from the device.
+
+Changes between 180821 and V2.0.0 releases:
+	+ Move the TCP source code from FreeRTOS/FreeRTOS-Labs to FreeRTOS/FreeRTOS
+	  repository.
 
 Changes between 160919 and 180821 releases:
 
@@ -9,17 +109,7 @@ Changes between 160919 and 180821 releases:
 	+ Disable NBNS and LLMNR by default.
 	+ Add TCP hang protection by default.
 
-	We thank Ori Karliner of Zimperium zLabs Team for reporting these issues.
-
-	+ Update FreeRTOS_gethostbyname() to allow an IP address to be passed in -
-	  in which case it is just returned as a uint32_t.
-	+ Introduce ipconfigSOCKET_HAS_USER_WAKE_CALLBACK to FreeRTOS_Sockets.c to
-	  allow a user supposed callback function to be executed when socket events
-	  occur in the same way that the socket semaphore is currently used.
-	+ Update xNetworkBuffersInitialise() to ensure the semaphore created by the
-	  function is not accessed until after the NULL check.
-	+ Improve print messages output by the Win32 port layer version of
-	  prvPrintAvailableNetworkInterfaces().
+We thank Ori Karliner of Zimperium zLabs Team for reporting these issues.
 
 Changes between 160908 and 160919 releases:
 

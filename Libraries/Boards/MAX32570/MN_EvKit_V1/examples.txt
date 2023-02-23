@@ -19,6 +19,7 @@ Coremark
 CRC
 DES
 DMA
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo

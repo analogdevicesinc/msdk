@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-05-13 17:53:42 -0500 (Mon, 13 May 2019) $
- * $Revision: 43338 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stddef.h>
@@ -48,7 +45,10 @@
 #include "i2c_reva.h"
 
 /* **** Definitions **** */
+#define MXC_I2C_STD_MODE 100000
+#define MXC_I2C_FAST_SPEED 400000
 #define MXC_I2C_FASTPLUS_SPEED 1000000
+#define MXC_I2C_HIGH_SPEED 3400000
 
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INTFL0_ADDR_MATCH | MXC_F_I2C_INTFL0_DNR_ERR;
@@ -124,8 +124,7 @@ int MXC_I2C_Reset(mxc_i2c_regs_t *i2c)
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz)
 {
-    // ME17 doesn't support high speed more
-    if (hz > MXC_I2C_FASTPLUS_SPEED) {
+    if (hz > MXC_I2C_HIGH_SPEED) {
         return E_NOT_SUPPORTED;
     }
 
@@ -212,6 +211,13 @@ int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned in
     case 1:
         config.reqsel = MXC_DMA_REQUEST_I2C1RX;
         break;
+
+    case 2:
+        config.reqsel = MXC_DMA_REQUEST_I2C2RX;
+        break;
+
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len,
@@ -244,6 +250,13 @@ int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned i
     case 1:
         config.reqsel = MXC_DMA_REQUEST_I2C1TX;
         break;
+
+    case 2:
+        config.reqsel = MXC_DMA_REQUEST_I2C2TX;
+        break;
+
+    default:
+        return E_BAD_PARAM;
     }
 
     return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len,

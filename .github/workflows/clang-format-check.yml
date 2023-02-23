@@ -1,5 +1,10 @@
 name: clang-format-check
 
+# Cancel in-progress jobs if we're adding additional commits
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
@@ -11,37 +16,27 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  CLANG_VERSION: 14 
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
   build:
     # The type of runner that the job will run on
     runs-on:
-      - self-hosted
-      - software
+      - ubuntu-latest
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Clean
-        continue-on-error: true
+    
+      - name: Install clang tools
         run: |
-          # Remove local modifications
-          set +e
-
-          # Attempt to clean the repo
-          git scorch
-          retval=$?
-
-          # Remove everything if this fails
-          if [[ $retval -ne 0 ]]
-          then
-            rm -rf *
-          fi
-
-          set -e
-
+          sudo apt-get install clang-format-${CLANG_VERSION}
+      
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
           submodules: false
           fetch-depth: 0
@@ -50,34 +45,7 @@ jobs:
       #   Exclude register header files. Those don't follow clang formatting or it becomes unreadable
       - name: clang-format-check
         run: |
-          CLANG_VERSION=14
-          cat .clang-format
-
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main '*.c' '*.h' ':!*_regs.h' ':!*weights.h' ':!*cnn.h' ':!*cnn.c' ':!*sampledata.h' ':!*sampleoutput.h' ':!*softmax.c' ':!Examples/*/Coremark/*' ':!Libraries/FCL' ':!Libraries/FreeRTOS' ':!Libraries/lwIP' ':!Libraries/littlefs' ':!Libraries/FreeRTOS-Plus' ':!Libraries/LC3' ':!Libraries/SDHC' ':!Libraries/MAXUSB' ':!Libraries/Cordio' ':!Libraries/LVGL' ':!Libraries/Coremark')
-          CHECK_FAIL=0
-
-          set +e
-          for change_file in ${CHANGE_FILES}
-          do
-            if [ -f ${change_file} ];
-            then
-            clang-format-${CLANG_VERSION} --verbose --style=file -n -Werror ${change_file}
-            if [ $? != 0 ];
-            then
-              echo ""
-              echo "===================================================="
-              echo "FAIL: ${change_file}"
-              echo "----------------------------------------------------"
-              echo "Expected:"
-              clang-format-${CLANG_VERSION} --style=file ${change_file} > ${change_file}.clang
-              diff -u --color=always ${change_file} ${change_file}.clang
-              rm ${change_file}.clang
-              CHECK_FAIL=1
-              echo "===================================================="
-              echo ""
-            fi
-            fi
-          done
-          set -e
-
-          exit $CHECK_FAIL
+          if [[ "$CHANGE_FILES" != "" ]]; then
+            bash -e .github/workflows/clang-format-run.sh $CHANGE_FILES
+          fi
