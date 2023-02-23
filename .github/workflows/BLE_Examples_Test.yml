@@ -296,7 +296,10 @@ jobs:
       # ME17
       - name: TEST MAX32655     #name used for display purposes on github webpage
         run: |
-
+          echo  ${{needs.Check.outputs.check_max32655}}
+          echo  ${{needs.Check.outputs.check_max32665}}
+          echo  ${{needs.Check.outputs.check_max32690}}
+          echo  $test_max32655
           if [[ $test_max32655  -eq 1 ]]
           then
             echo "Running Test on MAX32655"
