@@ -293,7 +293,7 @@ jobs:
       - name: TEST MAX32655     #name used for display purposes on github webpage
         run: |
 
-          if [[ ${{ steps.MAX32655.outputs.test }}  -eq 1 ]]
+          if [[ ${{needs.Check.outputs.check_max32655}}  -eq 1 ]]
           then
             echo "Running Test on MAX32655"
             cd .github/workflows/ci-tests/Examples_tests
@@ -307,7 +307,7 @@ jobs:
       # ME14
       - name: TEST MAX32665       #name used for display purposes on github webpage
         run: |
-          if [[ ${{ steps.MAX32665.outputs.test }}  -eq 1 ]]
+          if [[ ${{needs.Check.outputs.check_max32665}}  -eq 1 ]]
           then
             echo "Running Test on  MAX32665"   
             cd .github/workflows/ci-tests/Examples_tests
@@ -321,7 +321,7 @@ jobs:
       - name: TEST MAX32690     #name used for display purposes on github webpage
         run: |
          
-          if [[ ${{ steps.MAX32690.outputs.test }}  -eq 1 ]]
+          if [[ ${{needs.Check.outputs.check_max32690}}  -eq 1 ]]
           then
             echo "Running Test on MAX32690"
             cd .github/workflows/ci-tests/Examples_tests
