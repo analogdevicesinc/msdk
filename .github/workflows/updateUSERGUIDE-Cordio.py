@@ -4,7 +4,7 @@ from os import listdir
 
 TEMPLATE = "- [%s](%s)\n"
 here = Path.cwd()
-repo = here.parent
+repo = here.parent.parent
 cordio_docs_dir =  repo / "Libraries" / "Cordio" / "docs"
 platform_docs_dir = repo / "Libraries" / "Cordio" / "platform" / "Documentation"
 
