@@ -423,6 +423,9 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                 print("\nSlave listenFunc")
                 hciSlave.listenFunc(Namespace(time=1, stats="False"))
 
+                print("\nMaster listenFunc")
+                hciMaster.listenFunc(Namespace(time=1, stats="False"))
+
                 print(f"\nWait {args.delay} secs for the TX to complete.")
                 sleep(int(args.delay))
 
