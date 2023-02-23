@@ -46,7 +46,7 @@
  * @brief MAX11261 device access function prototype.
  */
 typedef int (*max11261_transfer_func_t)(uint8_t *txbuf, uint8_t txsize, uint8_t *rxbuf,
-                                        uint8_t rxsize, uint8_t slave);
+                                        uint8_t rxsize);
 
 /**
  * @brief MAX11261 reset function prototype.
@@ -252,12 +252,12 @@ void max11261_adc_platform_init(max11261_transfer_func_t transferFunc,
  *
  * @param vavdd V_AVDD in millivolts.
  * @param vref  REFP - REFN in millivolts.
- * @param freq Interface frequency.
- * @param slaveAddr I2C slave address of the MAX11261 chip.
+ * @param freq Interface frequency range. See \ref max11261_sif_freq_t for
+ * possible values.
  *
  * @return Success/Fail, see \ref errno.h for a list of return codes.
  */
-int max11261_adc_config_init(uint16_t vavdd, uint16_t vref, uint16_t freq, uint8_t slaveAddr);
+int max11261_adc_config_init(uint16_t vavdd, uint16_t vref, max11261_sif_freq_t freq);
 
 /**
  * @brief Sets the function that checks if data is available by monitoring the

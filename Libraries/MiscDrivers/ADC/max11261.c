@@ -135,8 +135,7 @@ typedef struct {
 typedef struct {
     uint16_t avdd; /**< V_AVDD in millivolts */
     uint16_t vref; /**< REFP - REFN in millivolts */
-    uint8_t slave; /**< I2C slave address */
-    uint8_t freq; /**< Interface speed */
+    max11261_sif_freq_t freq; /**< Interface speed */
     uint8_t res; /**< ADC resolution */
 } max11261_adc_config_t;
 
@@ -304,7 +303,7 @@ void max11261_adc_platform_init(max11261_transfer_func_t transferFunc,
     platCtx.ready = NULL;
 }
 
-int max11261_adc_config_init(uint16_t vavdd, uint16_t vref, uint16_t freq, uint8_t slaveAddr)
+int max11261_adc_config_init(uint16_t vavdd, uint16_t vref, max11261_sif_freq_t freq)
 {
     if (vavdd < MAX11261_V_AVDD_MIN || vavdd > MAX11261_V_AVDD_MAX)
         return -EINVAL;
@@ -312,13 +311,12 @@ int max11261_adc_config_init(uint16_t vavdd, uint16_t vref, uint16_t freq, uint8
     if (vref < MAX11261_V_REF_MIN || vref > vavdd)
         return -EINVAL;
 
-    if (freq < 100 || freq >= MAX11261_MAX_SERIAL_FREQ)
+    if (freq < MAX11261_SIF_FREQ_100_400 || freq > MAX11261_SIF_FREQ_3001_5000)
         return -EINVAL;
 
     cfg.avdd = vavdd;
     cfg.vref = vref;
     cfg.freq = freq;
-    cfg.slave = slaveAddr;
     cfg.res = MAX11261_ADC_RESOLUTION;
 
     return 0;
@@ -337,7 +335,7 @@ int max11261_adc_reset(void)
     platCtx.reset(0);
     /* From any state to STANDBY state: 10ms */
     platCtx.delayUs(10000);
-    error = platCtx.transfer(NULL, 0, NULL, 0, cfg.slave);
+    error = platCtx.transfer(NULL, 0, NULL, 0);
     if (error < 0) {
         log_err("Probe failed unexpectedly: %d", error);
         return error;
@@ -353,7 +351,7 @@ static int max11261_read_reg(uint8_t addr, uint32_t *val)
     uint8_t rxbuf[MAX11261_MAX_REG_SIZE];
 
     txbuf[0] = MAX11261_CMD_READ(addr);
-    error = platCtx.transfer(txbuf, 1, &rxbuf[0], regs[addr].size, cfg.slave);
+    error = platCtx.transfer(txbuf, 1, &rxbuf[0], regs[addr].size);
     if (error < 0) {
         log_err("Failed to read reg 0x%02X (%s)", addr, regs[addr].name);
     } else {
@@ -379,7 +377,7 @@ static int max11261_read_reg(uint8_t addr, uint32_t *val)
 
 static inline int max11261_write_byte(uint8_t byte)
 {
-    return platCtx.transfer(&byte, 1, NULL, 0, cfg.slave);
+    return platCtx.transfer(&byte, 1, NULL, 0);
 }
 
 static int max11261_write_reg(uint8_t addr, uint32_t val)
@@ -410,7 +408,7 @@ static int max11261_write_reg(uint8_t addr, uint32_t val)
         break;
     }
 
-    error = platCtx.transfer(txbuf, regs[addr].size + 1, NULL, 0, cfg.slave);
+    error = platCtx.transfer(txbuf, regs[addr].size + 1, NULL, 0);
     if (error < 0)
         log_err("Failed to write reg 0x%02X", addr);
 
@@ -762,18 +760,6 @@ int max11261_adc_set_limit_high(max11261_adc_channel_t chan, int16_t limit)
     return 0;
 }
 
-static inline int sif_freq(uint16_t freq)
-{
-    if (freq <= 400)
-        return MAX11261_SIF_FREQ_100_400;
-    else if (freq <= 1000)
-        return MAX11261_SIF_FREQ_401_1000;
-    else if (freq <= 3000)
-        return MAX11261_SIF_FREQ_1001_3000;
-    else
-        return MAX11261_SIF_FREQ_3001_5000;
-}
-
 /**
  * Return the given millivolts as 24-bit ADC representation.
  */
@@ -807,7 +793,7 @@ int max11261_adc_convert_prepare(void)
             MAX11261_SEQ_RDYBEN | MAX11261_SEQ_SIF_FREQ,
         (seq.chan << MAX11261_SEQ_MUX_POS) | (seq.seqMode << MAX11261_SEQ_MODE_POS) |
             (seq.gpoDelay ? MAX11261_SEQ_GPODREN : 0) | (seq.muxDelay ? MAX11261_SEQ_MDREN : 0) |
-            MAX11261_SEQ_RDYBEN | sif_freq(cfg.freq));
+            MAX11261_SEQ_RDYBEN | cfg.freq);
 
     if (seq.muxDelay) {
         /* Delay resolution is 4us */

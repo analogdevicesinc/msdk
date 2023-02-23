@@ -58,6 +58,9 @@
 #define PB_0 0 // Use push button 0 for channel switching
 #define PB_1 1 // Use push button 1 for channel switching
 
+#define ADC_V_AVDD 3000 // 3V
+#define ADC_V_REF 2500 // 2.5V
+
 /**
  * Event flags that will be handled in main loop
  */
@@ -108,6 +111,12 @@ int main(void)
     NVIC_EnableIRQ(TMR0_IRQn);
     MXC_TMR_Init(MXC_TMR0, &tmrCfg);
     MXC_TMR_Start(MXC_TMR0);
+
+    /* Set ADC hardware parameters */
+    error = max11261_adc_config_init(ADC_V_AVDD, ADC_V_REF, MAX11261_SIF_FREQ_100_400);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
 
     /* Reset ADC */
     max11261_adc_reset();

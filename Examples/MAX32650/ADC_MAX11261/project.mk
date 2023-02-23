@@ -20,3 +20,4 @@ SBT=0
 
 # Enforce to use FTHR board, the example works on FTHR only.
 override BOARD = FTHR_APPS_A
+PROJ_CFLAGS += -DENABLE_MAX11261_ADC

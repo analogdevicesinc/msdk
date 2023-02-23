@@ -50,13 +50,10 @@
 /* **** Definitions **** */
 #define ADC_RST_ACTIVE_LOW 1 // Reset is active low
 
-#define ADC_V_AVDD 3000 // 3V
-#define ADC_V_REF 2500 // 2.5V
-
 #define ADC_SLAVE_ADDR 0x30 // Depends on ADR0 and ADR1 pins
 
 #define I2C_MASTER MXC_I2C1 // SDA P2_17; SCL P2_18
-#define I2C_FREQ 400 // 400kHz
+#define I2C_FREQ 400000 // 400kHz
 
 /* **** Global Variables **** */
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
@@ -75,8 +72,10 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
+#ifdef ENABLE_MAX11261_ADC
 /* **** Functions **** */
 int MAX11261_Init(void);
+#endif
 
 /* ************************************************************************** */
 void mxc_assert(const char *expr, const char *file, int line)
@@ -90,12 +89,13 @@ int Board_Init(void)
 {
     int err;
 
+#ifdef ENABLE_MAX11261_ADC
     /* Setup I2C master */
     if ((err = MXC_I2C_Init(I2C_MASTER, 1, 0)) != E_NO_ERROR) {
         return err;
     }
 
-    if ((err = MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ * 1000)) < 0) {
+    if ((err = MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ)) < 0) {
         return err;
     }
 
@@ -103,6 +103,7 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
+#endif
 
     if ((err = Console_Init()) != E_NO_ERROR) {
         return err;
@@ -141,12 +142,12 @@ void NMI_Handler(void)
 }
 #endif /* __GNUC__ */
 
+#ifdef ENABLE_MAX11261_ADC
 /* ************************************************************************** */
-static int i2c1_transfer(uint8_t *txbuf, uint8_t txsize, uint8_t *rxbuf, uint8_t rxsize,
-                         uint8_t slave)
+static int i2c1_transfer(uint8_t *txbuf, uint8_t txsize, uint8_t *rxbuf, uint8_t rxsize)
 {
     mxc_i2c_req_t req;
-    req.addr = slave;
+    req.addr = ADC_SLAVE_ADDR;
     req.i2c = MXC_I2C1;
     req.restart = 0;
     req.rx_buf = rxbuf;
@@ -174,7 +175,6 @@ static inline void delay_us(uint32_t us)
 
 int MAX11261_Init(void)
 {
-    int error;
     mxc_gpio_cfg_t adc_reset_n;
     mxc_gpio_cfg_t adc_int_n;
 
@@ -199,14 +199,9 @@ int MAX11261_Init(void)
     /* Initialize MAX11261 platform specific functions */
     max11261_adc_platform_init(i2c1_transfer, max11261_reset_set, delay_us);
 
-    /* Set ADC hardware parameters */
-    error = max11261_adc_config_init(ADC_V_AVDD, ADC_V_REF, I2C_FREQ, ADC_SLAVE_ADDR);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
     /* Use max11261_ready to check ADC status */
     max11261_adc_set_ready_func(max11261_ready);
 
     return E_NO_ERROR;
 }
+#endif
