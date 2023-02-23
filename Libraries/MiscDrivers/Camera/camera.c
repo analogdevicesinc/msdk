@@ -230,6 +230,7 @@ static void stream_callback(int a, int b)
     }
 }
 
+#ifndef __riscv
 static void stream_callback_tft(int a, int b)
 {
 	if (MXC_DMA->ch[g_dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {
@@ -300,6 +301,7 @@ static void stream_callback_tft(int a, int b)
 #endif
     }
 }
+#endif
 
 static void setup_dma(void)
 {
@@ -343,6 +345,7 @@ static void setup_dma(void)
     MXC_DMA->inten |= (1 << g_dma_channel);
 }
 
+#ifndef __riscv
 static void setup_dma_tft(void)
 {
     MXC_DMA->ch[g_dma_channel].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
@@ -443,7 +446,7 @@ static void setup_dma_tft(void)
 #endif
     g_dma_already_setup = 1;
 }
-
+#endif
 /******************************** Public Functions ***************************/
 int camera_init(uint32_t freq)
 {
