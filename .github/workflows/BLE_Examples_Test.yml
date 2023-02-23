@@ -278,7 +278,7 @@ jobs:
           echo "test_active=1" >> $GITHUB_OUTPUT 
          
   Test:
-    needs: [Lock]
+    needs: [Check, Lock]
     # The type of runner that the job will run on
     runs-on: [ self-hosted, btm-ci ]
     if: github.event.pull_request.draft == false && needs.Lock.outputs.boards_locked == 1
