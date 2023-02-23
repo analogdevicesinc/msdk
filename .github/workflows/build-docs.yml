@@ -131,6 +131,14 @@ jobs:
           mkdir -p $DEST/MAX78000 && cp -r $SOURCE/MAX78000 $DEST/
           mkdir -p $DEST/MAX78002 && cp -r $SOURCE/MAX78002 $DEST/
 
+          SOURCE=Libraries/Cordio
+          DEST=Documentation/$SOURCE
+
+          echo "Copying Cordio documentation..."
+          mkdir -p $DEST/docs && cp -r $SOURCE/docs/*.md $DEST/docs
+          mkdir -p $DEST/docs/res && cp -r $SOURCE/docs/res/* $DEST/docs/res
+          mkdir -p $DEST/platform/Documentation && cp -r $SOURCE/platform/Documentation/*.pdf $DEST/platform/Documentation
+
           echo "Copying any root markdown files into Documentation..."
           cp -r *.md Documentation/
 
