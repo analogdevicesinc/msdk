@@ -283,11 +283,11 @@ jobs:
     runs-on: [ self-hosted, btm-ci ]
     if: github.event.pull_request.draft == false && needs.Lock.outputs.boards_locked == 1
     # Steps represent a sequence of tasks that will be executed as part of the job
+    env:
+      test_max32655: ${{needs.Check.outputs.check_max32655}}
+      test_max32665: ${{needs.Check.outputs.check_max32665}}
+      test_max32690: ${{needs.Check.outputs.check_max32690}}
     steps:
-      - env:
-          test_max32655: ${{needs.Check.outputs.check_max32655}}
-          test_max32665: ${{needs.Check.outputs.check_max32665}}
-          test_max32690: ${{needs.Check.outputs.check_max32690}}
       - uses: actions/checkout@v3
         with:
           submodules: false
