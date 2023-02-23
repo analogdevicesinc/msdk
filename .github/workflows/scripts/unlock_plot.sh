@@ -18,6 +18,13 @@ all_in_one=$3
 NEED_TO_PLOT=$4
 JOB_CURR_TIME=$5
 
+echo "         MSDK:" $MSDK
+echo "CURR_JOB_FILE:" $CURR_JOB_FILE
+echo "   all_in_one:" $all_in_one
+echo " NEED_TO_PLOT:" $NEED_TO_PLOT
+echo "JOB_CURR_TIME:" $JOB_CURR_TIME
+echo
+
 # Use python 3.10.9
 source ~/anaconda3/etc/profile.d/conda.sh && conda activate py3_10
 python3 -c "import sys; print(sys.version)"
@@ -40,6 +47,9 @@ if [ -f "${CURR_JOB_FILE}" ]; then
         echo "python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py ${line}"
         python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py ${line}
     done <$CURR_JOB_FILE
+
+    echo "Clear the lock resource file."
+    echo "" > ${CURR_JOB_FILE}
 else
     echo "${CURR_JOB_FILE} not exist."
 fi
