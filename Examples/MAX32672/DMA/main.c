@@ -92,18 +92,20 @@ int example1(void)
         dstdata[i] = 0;
     }
 
+    // Initialize DMA
     retval = MXC_DMA_Init();
 
     if (retval != E_NO_ERROR) {
         printf("Failed MXC_DMA_Init().\n");
         fail += 1;
     } else {
+    	// Initiate Mem-to-Mem data transfer
         flag = 0;
         MXC_DMA_MemCpy(dstdata, srcdata, MAX_SIZE, memCpyComplete);
 
         while (flag == 0) {}
 
-        //Validate
+        // Validate transfer
         if (memcmp(srcdata, dstdata, MAX_SIZE) != 0) {
             printf("Data mismatch.\n");
             fail += 1;
@@ -124,7 +126,7 @@ int example2(void)
     int fail = 0;
     int i, retval;
 
-    //Init data
+    //Initialize data data
     uint8_t *srcdata, *dstdata, *srcdata2, *dstdata2;
     srcdata = (uint8_t *)malloc(MAX_SIZE);
     dstdata = (uint8_t *)malloc(MAX_SIZE);
@@ -139,11 +141,11 @@ int example2(void)
         dstdata2[i] = 0;
     }
 
-    NVIC_EnableIRQ(DMA0_IRQn);
-    __enable_irq();
+    // Initialize DMA
     MXC_DMA_Init();
     mychannel = MXC_DMA_AcquireChannel();
 
+    // Configure First DMA Transfer
     mxc_dma_srcdst_t firstTransfer;
     firstTransfer.ch = mychannel;
     firstTransfer.source = srcdata;
@@ -168,26 +170,27 @@ int example2(void)
 
     MXC_DMA_ConfigChannel(config, firstTransfer);
     MXC_DMA_AdvConfigChannel(advConfig);
+    MXC_DMA_SetSrcDst(firstTransfer);
 
+    // Configure Reload DMA Transfer
     mxc_dma_srcdst_t secondTransfer;
     secondTransfer.ch = mychannel;
     secondTransfer.source = srcdata2;
     secondTransfer.dest = dstdata2;
     secondTransfer.len = MAX_SIZE;
 
-    MXC_DMA_SetSrcDst(firstTransfer);
-
     retval = MXC_DMA_SetSrcReload(secondTransfer);
-
     if (retval != E_NO_ERROR) {
         printf("Failed MXC_DMA_SetReload.\n");
     }
 
     MXC_DMA_SetCallback(mychannel, my_int_func);
     MXC_DMA_EnableInt(mychannel);
+
+    // Start DMA Transfer
     MXC_DMA_Start(mychannel);
 
-    // Validate
+    // Validate transfer
     if (memcmp(srcdata, dstdata, MAX_SIZE) != 0 || memcmp(srcdata2, dstdata2, MAX_SIZE) != 0) {
         printf("Data mismatch.\n");
         fail += 1;
@@ -224,7 +227,11 @@ int main(void)
     disableECCforRAM();
 
     NVIC_EnableIRQ(DMA0_IRQn);
+
+    // Execute Mem-to-Mem DMA transfer
     fail += example1();
+
+    // Execute Mem-to-Mem DMA transfer w/ reload transfer
     fail += example2();
 
     if (fail != 0) {
