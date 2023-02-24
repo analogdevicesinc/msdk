@@ -163,9 +163,9 @@ jobs:
           for dir in ${SUBDIRS}
           do
             echo "Testing peripheral driver build from: ${dir}"
-            make -C ${dir} clean > /dev/null
-            make -C ${dir} libclean > /dev/null
-            make -C ${dir} -j8 --output-sync=target --no-print-directory > /dev/null
+            make -C ${dir} FORCE_COLOR=1 clean > /dev/null
+            make -C ${dir} FORCE_COLOR=1 libclean > /dev/null
+            make -C ${dir} -j8 --output-sync=target  --no-print-directory FORCE_COLOR=1 > /dev/null
             echo "---"
           done
           
@@ -183,7 +183,7 @@ jobs:
           for dir in ${SUBDIRS}
           do
             echo "Building ${dir}"
-            make -C ${dir} clean > /dev/null
-            make -C ${dir} -j8 --output-sync=target --no-print-directory > /dev/null
+            make -C ${dir} clean FORCE_COLOR=1 > /dev/null
+            make -C ${dir} -j8 --output-sync=target --no-print-directory FORCE_COLOR=1 > /dev/null
             echo "---"
           done
