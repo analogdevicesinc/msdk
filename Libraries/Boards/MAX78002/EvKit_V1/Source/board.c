@@ -300,7 +300,7 @@ int Board_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
 
-    // Set VSSEL to VDDIOH to for any pins that are pulled
+    // Set VSSEL to VDDIOH for any pins that are pulled
     // up to 3V3 on the EVKIT.
     MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH, _port0_vddioh_mask);
     MXC_GPIO_SetVSSEL(MXC_GPIO1, MXC_GPIO_VSSEL_VDDIOH, _port1_vddioh_mask);
