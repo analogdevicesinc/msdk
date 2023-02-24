@@ -164,7 +164,7 @@ jobs:
           do
             make -C ${dir} clean
             make -C ${dir} libclean
-            make -C ${dir} -j8 > /dev/null
+            make -C ${dir} -j8 --output-sync=target --no-print-directory > /dev/null
           done
           
           # Find all of the examples, 
@@ -181,5 +181,5 @@ jobs:
           for dir in ${SUBDIRS}
           do
             make -C ${dir} clean
-            make -C ${dir} -j8  > /dev/null
+            make -C ${dir} -j8 --output-sync=target --no-print-directory > /dev/null
           done
