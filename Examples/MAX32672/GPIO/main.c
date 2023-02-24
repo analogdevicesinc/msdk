@@ -40,6 +40,7 @@
 /***** Includes *****/
 #include <stdio.h>
 #include <string.h>
+#include "mxc_delay.h"
 #include "mxc_device.h"
 #include "nvic_table.h"
 #include "board.h"
@@ -70,6 +71,7 @@
 /***** Functions *****/
 void gpio_isr(void *cbdata)
 {
+	MXC_Delay(MXC_DELAY_MSEC(10));
     mxc_gpio_cfg_t *cfg = cbdata;
     MXC_GPIO_OutToggle(cfg->port, cfg->mask);
 }
@@ -80,16 +82,19 @@ int main(void)
     mxc_gpio_cfg_t gpio_interrupt;
     mxc_gpio_cfg_t gpio_interrupt_status;
 
-    printf("\n\n****** GPIO Example ******\n");
-    printf("Demonstrates GPIO get/set and interrupt usage\n");
+    printf("\n\n************************* GPIO Example *************************\n");
 #if defined(BOARD_FTHR)
-    printf("1.This example both reads and sets interrupt for P0.10 (SW2) \n");
-    printf("  When state changes, set P0.2 (LED0) accordingly. When interrupt occurs, P0.3 (LED1) "
-           "toggles.\n\n");
+    printf("\nThis example controls the state of the LEDs based on the state of\n");
+	printf("the push button P0.10 (SW2). An interrupt is setup so that when\n");
+	printf("the button is pressed P0.3 (LED1) will toggle. P0.2 (LED0) is set\n");
+	printf("up to mirror the state of the button; when the button is depressed\n");
+	printf("LED0 is illuminated and when it is released LED0 is turned off.\n\n");
 #else
-    printf("1.This example both reads and sets interrupt for P0.18 (SW3) \n");
-    printf("  When state changes, set P0.22 (LED0) accordingly. When interrupt occurs, P0.23 "
-           "(LED1) toggles.\n\n");
+    printf("\nThis example controls the state of the LEDs based on the state of\n");
+    printf("the push button P0.18 (SW3). An interrupt is setup so that when\n");
+    printf("the button is pressed P0.23 (LED1) will toggle. P0.22 (LED0) is set\n");
+    printf("up to mirror the state of the button; when the button is depressed\n");
+    printf("LED0 is illuminated and when it is released LED0 is turned off.\n\n");
 #endif
 
     /* Setup interrupt status pin as an output so we can toggle it on each interrupt. */
