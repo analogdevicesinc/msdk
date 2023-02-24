@@ -1,0 +1,25 @@
+{
+	"name":"MiscDrivers",
+	"ipaths":[
+        "Include",
+        "ff14/Source"
+	],
+	"vpaths":[
+		"ff14/Source"
+    ],
+	"whitelist":"True",
+	"targets":[
+        {
+            "name":"MAX32650"
+        },
+        {
+            "name":"MAX32665"
+        },
+		{
+			"name":"MAX78000"
+		},
+		{
+			"name":"MAX78002"
+		}
+	]
+}
