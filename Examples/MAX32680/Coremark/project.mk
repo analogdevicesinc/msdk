@@ -13,20 +13,6 @@
 IPATH+=$(MAXIM_PATH)/Libraries/Coremark
 VPATH+=$(MAXIM_PATH)/Libraries/Coremark
 
-MXC_OPTIMIZE_CFLAGS=-O2
-
-PROJ_CFLAGS+=-funroll-all-loops
-PROJ_CFLAGS+=-fgcse-sm
-PROJ_CFLAGS+=-fgcse-las
-PROJ_CFLAGS+=-finline-functions
-PROJ_CFLAGS+=-finline-limit=1000
-
-# CoreMark build flags
-PROJ_CFLAGS+=-DPERFORMANCE_RUN=1  # Run the CoreMark test with performance parameters
-PROJ_CFLAGS+=-DITERATIONS=4000    # Number of times the coremark test is executed
-
-MFLOAT_ABI=soft
-
 # To comply with the Coremark rules, these source files
 # must be unmodified. They are located in the Coremark
 # library.
@@ -36,9 +22,21 @@ SRCS+=core_matrix.c
 SRCS+=core_state.c
 SRCS+=core_util.c
 
-# This is the source file can be modified and has
+# This source file can be modified, however it has
 # already been set up for the MAX32xxx and MAX78xxx
 # series microcontrollers.
 SRCS+=core_portme.c
 
+# CoreMark build flags
+PROJ_CFLAGS+=-DPERFORMANCE_RUN=1  # Run the CoreMark test with performance parameters
+PROJ_CFLAGS+=-DITERATIONS=4000    # Number of times the coremark test is executed
+
+PROJ_CFLAGS+=-funroll-all-loops
+PROJ_CFLAGS+=-fgcse-sm
+PROJ_CFLAGS+=-fgcse-las
+PROJ_CFLAGS+=-finline-functions
+PROJ_CFLAGS+=-finline-limit=1000
+
+MFLOAT_ABI=soft
+MXC_OPTIMIZE_CFLAGS=-O2
 AUTOSEARCH=0
