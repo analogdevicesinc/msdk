@@ -215,7 +215,7 @@ static mxc_crit_state_t _state = { .ie_status = 0xFFFFFFFF, .in_critical = 0 };
 
 static inline void _mxc_crit_get_state()
 {
-#ifdef __CORTEX_M
+#ifndef __riscv
     /*
         On ARM M the 0th bit of the Priority Mask register indicates
         whether interrupts are enabled or not.
@@ -225,8 +225,7 @@ static inline void _mxc_crit_get_state()
     */
     uint32_t primask = __get_PRIMASK();
     _state.ie_status = (primask == 0);
-#endif
-#ifdef __riscv
+#else
     /*
         On RISC-V bit position 3 (Machine Interrupt Enable) of the
         mstatus register indicates whether interrupts are enabled.
