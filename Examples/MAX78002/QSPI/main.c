@@ -55,8 +55,8 @@
 
 /***** Definitions *****/
 #define TEST_SIZE 640
-#define TEST_VALUE 0x42
 #define TEST_COUNT 480
+#define TEST_VALUE 0x42
 
 /***** Globals *****/
 
@@ -66,18 +66,15 @@
 int main(void)
 {
     int err = E_NO_ERROR;
-    int elapsed = 0;
+    unsigned int elapsed = 0;
     int fail_count = 0;
 
     MXC_Delay(MXC_DELAY_SEC(2));
 
+    // Set the Internal Primary Oscillator for the fastest system clock speed
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 
     ram_init();
-
-    MXC_TMR_SW_Start(MXC_TMR0);
-    int sw_overhead = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Stopwatch overhead: %ius\n", sw_overhead);
 
     printf("Reading ID...\n");
     ram_id_t id;
@@ -87,6 +84,10 @@ int main(void)
         return err;
     }
     printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", id.MFID, id.KGD, id.density, id.EID);
+
+    // Time the measurement overhead of our measurement functions
+    MXC_TMR_SW_Start(MXC_TMR0);
+    int sw_overhead = MXC_TMR_SW_Stop(MXC_TMR0);
 
     uint8_t tx_buffer[TEST_SIZE];
     uint8_t rx_buffer[TEST_SIZE];
@@ -101,9 +102,9 @@ int main(void)
     // Measure DMA transaction overhead
     if (benchmark_dma_overhead(&elapsed) == E_NO_ERROR){
         elapsed -= sw_overhead;
-        printf("(Benchmark) DMA overhead: %ius\n", elapsed);
+        printf("DMA overhead: %ius\n", elapsed);
     } else {
-        printf("(Benchmark) DMA overhead timed out...\n");
+        printf("DMA overhead timed out...\n");
     }
 
     // Benchmark standard-width SPI write to external SRAM
@@ -113,7 +114,7 @@ int main(void)
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
     printf("Wrote %i bytes in %ius\n", TEST_SIZE, elapsed);
 
-    // Validate test pattern
+    // Read and validate
     MXC_TMR_SW_Start(MXC_TMR0);
     ram_read_slow(address, rx_buffer, TEST_SIZE);
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
@@ -125,8 +126,8 @@ int main(void)
         }
     }
 
-    // Invert test pattern
-    memset(tx_buffer, ~(0x5A), TEST_SIZE);
+    // Invert test pattern - this ensures every bit has to be updated in the next write
+    memset(tx_buffer, ~(TEST_VALUE), TEST_SIZE);
     memset(rx_buffer, 0, TEST_SIZE);
 
     // Benchmark QSPI write to external SRAM
@@ -136,7 +137,7 @@ int main(void)
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
     printf("Wrote %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
 
-    // Validate
+    // Read and validate
     MXC_TMR_SW_Start(MXC_TMR0);
     ram_read_quad(address, rx_buffer, TEST_SIZE);
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
@@ -148,19 +149,24 @@ int main(void)
         }
     }
 
-    memset(tx_buffer, 0xAB, TEST_SIZE);
+    // Generate a new more interesting test pattern
     for (int i = 0; i < TEST_SIZE; i++) {
         tx_buffer[i] = i % 256;
     }
     memset(rx_buffer, 0, TEST_SIZE);
+
+    // Benchmark writing across multiple pages boundaries.
     address = 0;
     printf("Writing across page boundaries...\n");
+    MXC_TMR_SW_Start(MXC_TMR0);
     for (int i = 0; i < TEST_COUNT; i++) {
         ram_write_quad(address, tx_buffer, TEST_SIZE);
         address += TEST_SIZE;
     }
-    printf("Done!\n");
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
+    printf("Wrote %i bytes in %ius\n", TEST_SIZE * TEST_COUNT, elapsed);
 
+    // Validate
     address = 0;
     for (int i = 0; i < TEST_COUNT; i++) {
         ram_read_quad(address, rx_buffer, TEST_SIZE);
