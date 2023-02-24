@@ -162,9 +162,11 @@ jobs:
           SUBDIRS=$(find . -type d -not -path "./MAX3257*" -name "Hello_World")
           for dir in ${SUBDIRS}
           do
-            make -C ${dir} clean
-            make -C ${dir} libclean
+            echo "Testing peripheral driver build from: ${dir}"
+            make -C ${dir} clean > /dev/null
+            make -C ${dir} libclean > /dev/null
             make -C ${dir} -j8 --output-sync=target --no-print-directory > /dev/null
+            echo ""
           done
           
           # Find all of the examples, 
@@ -180,6 +182,8 @@ jobs:
 
           for dir in ${SUBDIRS}
           do
-            make -C ${dir} clean
+            echo "Testing ${dir}"
+            make -C ${dir} clean > /dev/null
             make -C ${dir} -j8 --output-sync=target --no-print-directory > /dev/null
+            echo ""
           done
