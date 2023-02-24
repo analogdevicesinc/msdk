@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -59,6 +59,14 @@ const mxc_gpio_cfg_t led_pin[] = {
     { MXC_GPIO2, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
+
+// The following pins are pulled up to 3V3 via external resistors on the AI87 EVKIT,
+// and therefore must be initialized to VDDIOH to prevent current injection into VDDIO/VDDA
+// in standby, backup, and powerdown modes.
+const uint32_t _port0_vddioh_mask = MXC_GPIO_PIN_0;
+const uint32_t _port1_vddioh_mask = (MXC_GPIO_PIN_10 | MXC_GPIO_PIN_11 | MXC_GPIO_PIN_12 |
+                                     MXC_GPIO_PIN_13 | MXC_GPIO_PIN_14 | MXC_GPIO_PIN_16);
+const uint32_t _port2_vddioh_mask = MXC_GPIO_PIN_2;
 
 // TFT Data/Command pin
 const mxc_gpio_cfg_t tft_dc_pin = { TFT_DC_PORT, TFT_DC_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
@@ -291,6 +299,12 @@ int Board_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO0);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
+
+    // Set VSSEL to VDDIOH for any pins that are pulled
+    // up to 3V3 on the EVKIT.
+    MXC_GPIO_SetVSSEL(MXC_GPIO0, MXC_GPIO_VSSEL_VDDIOH, _port0_vddioh_mask);
+    MXC_GPIO_SetVSSEL(MXC_GPIO1, MXC_GPIO_VSSEL_VDDIOH, _port1_vddioh_mask);
+    MXC_GPIO_SetVSSEL(MXC_GPIO2, MXC_GPIO_VSSEL_VDDIOH, _port2_vddioh_mask);
 
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;

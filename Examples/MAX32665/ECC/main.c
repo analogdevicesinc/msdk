@@ -6,7 +6,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -201,10 +201,12 @@ int main(void)
 
     printf("\n# Passed: %u, # Failed: %u, Test %s\n", test_pass, test_fail,
            test_fail ? "FAIL!" : "Ok");
-    printf("Example Complete\n");
 
-    while (1) {
-        {
-        }
+    if (test_fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

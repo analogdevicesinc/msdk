@@ -38,6 +38,10 @@
 #include "mxc_device.h"
 #include "usbhs_regs.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /* Configuration options for MUSBHSFC */
 typedef struct {
   unsigned int enable_hs; /* 0 = full-speed only, otherwise high-speed if negotiated */
@@ -70,5 +74,9 @@ void MXC_USB_RemoteWakeup(void);
  * @brief USB internal DMA engine interrupt handler
  */
 void MXC_USB_DmaIsr(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _USBIO_HWOPT_H_ */

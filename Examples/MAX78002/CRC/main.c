@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -64,16 +64,6 @@ void DMA0_IRQHandler(void)
     wait = 0;
 }
 
-void Test_Result(int result)
-{
-    if (result) {
-        printf(" \n**Test Failed**\n\n");
-        fail++;
-    } else {
-        printf(" \n**Test Passed**\n\n");
-    }
-}
-
 void Test_CRC(int asynchronous)
 {
     uint32_t array[101];
@@ -121,8 +111,14 @@ void Test_CRC(int asynchronous)
 
     printf("\nCRC Check Result: %x", crc_req.resultCRC);
 
-    Test_Result(CHECK != crc_req.resultCRC);
     MXC_CRC_Shutdown();
+
+    if (CHECK != crc_req.resultCRC) {
+        printf(" \n**Test Failed**\n\n");
+        fail++;
+    } else {
+        printf(" \n**Test Passed**\n\n");
+    }
 }
 
 // *****************************************************************************
@@ -137,11 +133,11 @@ int main(void)
     NVIC_EnableIRQ(DMA0_IRQn);
     Test_CRC(1);
 
-    if (fail) {
+    if (fail != 0) {
         printf("\nExample Failed\n");
-    } else {
-        printf("\nExample Succeeded\n");
+        return E_FAIL;
     }
 
-    return fail;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

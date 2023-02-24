@@ -84,6 +84,10 @@
 #define BTN_1_TMR MXC_TMR2
 #define BTN_2_TMR MXC_TMR3
 
+#ifndef OTA_INTERNAL
+#define OTA_INTERNAL 0
+#endif
+
 /*! Enumeration of client characteristic configuration descriptors */
 enum {
     WDXS_DC_CH_CCC_IDX, /*! WDXS DC service, service changed characteristic */
@@ -116,7 +120,7 @@ static const appSecCfg_t datsSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    FALSE /*! TRUE to initiate security upon connection */
+    TRUE /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
@@ -164,7 +168,11 @@ static const appUpdateCfg_t datsUpdateCfg = {
 /*! ATT configurable parameters (increase MTU) */
 static const attCfg_t datsAttCfg = {
     15, /* ATT server service discovery connection idle timeout in seconds */
+#if OTA_INTERNAL
+    128, /* desired ATT MTU */
+#else
     241, /* desired ATT MTU */
+#endif
     ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
     4 /* number of queued prepare writes supported by server */
 };
@@ -244,17 +252,16 @@ extern void setAdvTxPower(void);
  *  \brief  Send notification containing data.
  *
  *  \param  connId      DM connection ID.
- *
+ *  \param  size        Size of message to send.
+ *  \param  msg         Message to send
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsSendData(dmConnId_t connId)
+static void datsSendData(dmConnId_t connId, uint8_t size, uint8_t *msg)
 {
-    uint8_t str[] = "hello back";
-
     if (AttsCccEnabled(connId, DATS_WP_DAT_CCC_IDX)) {
         /* send notification */
-        AttsHandleValueNtf(connId, WP_DAT_HDL, sizeof(str), str);
+        AttsHandleValueNtf(connId, WP_DAT_HDL, size, msg);
     }
 }
 
@@ -372,10 +379,15 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
     if (len == sizeof(fileHeader_t)) {
+        uint16_t version = WdxsFileGetFirmwareVersion();
+
         fileHeader_t *tmpHeader;
         tmpHeader = (fileHeader_t *)pValue;
         initHeader(tmpHeader);
+
+        datsSendData(connId, sizeof(version), (uint8_t *)&version);
     }
+
     return ATT_SUCCESS;
 }
 /*************************************************************************************************/
@@ -747,9 +759,12 @@ static void datsBtnCback(uint8_t btn)
         }
 
 #endif /* BT_VER */
-        case APP_UI_BTN_2_MED:
-            APP_TRACE_INFO1("FW_VERSION: %d", WdxsFileGetFirmwareVersion());
+        case APP_UI_BTN_2_MED: {
+            uint16_t version = WdxsFileGetFirmwareVersion();
+            (void)version;
+            APP_TRACE_INFO2("FW_VERSION: %d.%d", ((version & 0xFF00) >> 8), version & 0xFF);
             break;
+        }
 
         default:
             APP_TRACE_INFO0(" - No action assigned");
@@ -783,9 +798,12 @@ static void datsBtnCback(uint8_t btn)
             /* stop advertising */
             AppAdvStop();
             break;
-        case APP_UI_BTN_2_MED:
-            APP_TRACE_INFO1("FW_VERSION: %d", WdxsFileGetFirmwareVersion());
+        case APP_UI_BTN_2_MED: {
+            uint16_t version = WdxsFileGetFirmwareVersion();
+            (void)version;
+            APP_TRACE_INFO2("FW_VERSION: %d.%d", ((version & 0xFF00) >> 8), version & 0xFF);
             break;
+        }
         default:
             APP_TRACE_INFO0(" - No action assigned");
             break;

@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stddef.h>
@@ -57,10 +57,8 @@ typedef struct {
     int mtFirstTrans;
     bool txrx_req;
     uint8_t req_done;
+    uint8_t async;
 } spi_req_reva_state_t;
-
-/* states whether to use call back or not */
-uint8_t async;
 
 static spi_req_reva_state_t states[MXC_SPI_INSTANCES];
 
@@ -894,7 +892,7 @@ uint32_t MXC_SPI_RevA_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t 
         MXC_FreeLock((uint32_t *)&states[spi_num].req);
 
         // Callback if not NULL
-        if (async && req->completeCB != NULL) {
+        if (states[spi_num].async && req->completeCB != NULL) {
             req->completeCB(req, E_NO_ERROR);
         }
     }
@@ -923,7 +921,7 @@ uint32_t MXC_SPI_RevA_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t 
             MXC_FreeLock((uint32_t *)&states[spi_num].req);
 
             // Callback if not NULL
-            if (async && req->completeCB != NULL) {
+            if (states[spi_num].async && req->completeCB != NULL) {
                 req->completeCB(req, E_NO_ERROR);
             }
         }
@@ -935,7 +933,7 @@ uint32_t MXC_SPI_RevA_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t 
         MXC_FreeLock((uint32_t *)&states[spi_num].req);
 
         // Callback if not NULL
-        if (async && req->completeCB != NULL) {
+        if (states[spi_num].async && req->completeCB != NULL) {
             req->completeCB(req, E_NO_ERROR);
         }
     }
@@ -951,7 +949,7 @@ int MXC_SPI_RevA_MasterTransaction(mxc_spi_reva_req_t *req)
         return error;
     }
 
-    async = 0;
+    states[MXC_SPI_GET_IDX((mxc_spi_regs_t *)req->spi)].async = 0;
 
     //call master transHandler
     while (MXC_SPI_RevA_MasterTransHandler(req->spi, req) != 0) {}
@@ -969,7 +967,7 @@ int MXC_SPI_RevA_MasterTransactionAsync(mxc_spi_reva_req_t *req)
         return error;
     }
 
-    async = 1;
+    states[MXC_SPI_GET_IDX((mxc_spi_regs_t *)req->spi)].async = 1;
 
     MXC_SPI_EnableInt((mxc_spi_regs_t *)req->spi, MXC_SPI_RevA_MasterTransHandler(req->spi, req));
 
@@ -1134,7 +1132,7 @@ int MXC_SPI_RevA_SlaveTransaction(mxc_spi_reva_req_t *req)
         return error;
     }
 
-    async = 0;
+    states[MXC_SPI_GET_IDX((mxc_spi_regs_t *)req->spi)].async = 0;
 
     while (MXC_SPI_RevA_SlaveTransHandler(req) != 0) {}
 
@@ -1149,7 +1147,7 @@ int MXC_SPI_RevA_SlaveTransactionAsync(mxc_spi_reva_req_t *req)
         return error;
     }
 
-    async = 1;
+    states[MXC_SPI_GET_IDX((mxc_spi_regs_t *)req->spi)].async = 1;
 
     MXC_SPI_EnableInt((mxc_spi_regs_t *)req->spi, MXC_SPI_RevA_SlaveTransHandler(req));
 

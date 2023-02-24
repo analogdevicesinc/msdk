@@ -5,8 +5,8 @@
  * @note
  */
 
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -48,7 +48,6 @@
 #include "board.h"
 #include "dma.h"
 #include "i2s.h"
-#include "i2s_regs.h"
 #include "icc.h"
 #include "led.h"
 #include "max9867.h"

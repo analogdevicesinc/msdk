@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -75,6 +75,12 @@
 #error "You must select either DO_BACKUP or DO_STORAGE or neither, not both."
 #endif
 
+#if USE_CONSOLE
+#define PRINT(...) fprintf(stdout, __VA_ARGS__)
+#else
+#define PRINT(...)
+#endif
+
 // *****************************************************************************
 volatile int buttonPressed;
 void buttonHandler(void *pb)
@@ -129,24 +135,19 @@ void configure_gpio(void)
 
 int main(void)
 {
-#if USE_CONSOLE
-    printf("****Low Power Mode Example****\n\n");
-#endif // USE_CONSOLE
+    PRINT("****Low Power Mode Example****\n\n");
 
-#if USE_CONSOLE
-    printf("This code cycles through the MAX32675 power modes, using a push button 0 (SW1) to exit "
-           "from each mode and enter the next.\n\n");
-#endif // USE_CONSOLE
+    PRINT("This code cycles through the MAX32675 power modes, using a push button 0 (SW1) to exit "
+          "from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
 
     //Pull down all GPIOs except PB0 and UART0 pins
     configure_gpio();
 
-#if USE_CONSOLE
-    printf("Running in ACTIVE mode.\n");
-#else
+    PRINT("Running in ACTIVE mode.\n");
+#if !USE_CONSOLE
     MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_UART0);
-#endif // USE_CONSOLE
+#endif // !USE_CONSOLE
     setTrigger(1);
 
     MXC_LP_ROMLightSleepEnable();
@@ -156,9 +157,7 @@ int main(void)
     MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
 
-#if USE_CONSOLE
-    printf("All unused RAMs placed in LIGHT SLEEP mode.\n");
-#endif // USE_CONSOLE
+    PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
     // MXC_LP_SysRam3Shutdown();
@@ -167,44 +166,34 @@ int main(void)
     MXC_LP_SysRam1PowerUp();
     MXC_LP_SysRam0PowerUp(); // Global variables are in RAM0 and RAM1
 
-#if USE_CONSOLE
-    printf("All unused RAMs shutdown.\n");
-#endif // USE_CONSOLE
+    PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
 
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
 
     while (1) {
 #if DO_SLEEP
-#if USE_CONSOLE
-        printf("Entering SLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering SLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterSleepMode();
-        printf("Waking up from SLEEP mode.\n");
+        PRINT("Waking up from SLEEP mode.\n");
 
 #endif // DO_SLEEP
 #if DO_DEEPSLEEP
-#if USE_CONSOLE
-        printf("Entering DEEPSLEEP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
         MXC_LP_EnterDeepSleepMode();
-        printf("Waking up from DEEPSLEEP mode.\n");
+        PRINT("Waking up from DEEPSLEEP mode.\n");
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
-#if USE_CONSOLE
-        printf("Entering BACKUP mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP
 
 #if DO_SHUTDOWN
-#if USE_CONSOLE
-        printf("Entering Shutdown mode.\n");
-#endif // USE_CONSOLE
+        PRINT("Entering Shutdown mode.\n");
         setTrigger(0);
         MXC_LP_EnterShutDownMode();
 #endif // DO_STORAGE

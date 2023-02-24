@@ -5,6 +5,10 @@
 #################################
 name: Lint Code Base
 
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 #
 # Documentation:
 # https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions
@@ -20,11 +24,6 @@ on:
     branches: [master, main]
 
   workflow_dispatch:
-    
-# This allows a subsequently queued workflow run to interrupt previous runs
-concurrency:
-  group: '${{ github.workflow }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}'
-  cancel-in-progress: true
 
 ###############
 # Set the Job #

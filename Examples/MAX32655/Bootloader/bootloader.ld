@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35,10 +35,11 @@ BOOTLOADER_ORIGIN = 0x10000000;
 BOOTLOADER_LEN = 0x4000;
 FLASH_SECTION_LEN = 0x40000 - BOOTLOADER_LEN;
 FLASH0_ORIGIN = BOOTLOADER_ORIGIN + BOOTLOADER_LEN;
-FLASH0_LEN = 0x1007FFFF - FLASH0_ORIGIN;
+FLASH0_LEN = 0x40000;
 MEMORY {
     FLASH      (rx) : ORIGIN = BOOTLOADER_ORIGIN,   LENGTH = BOOTLOADER_LEN
     FLASH0     (rx) : ORIGIN = FLASH0_ORIGIN,       LENGTH = FLASH0_LEN
+    FLASH1     (rx) : ORIGIN = 0x10040000,          LENGTH = 0x40000
     SRAM      (rwx) : ORIGIN = 0x20000000,          LENGTH = 0x20000
 }
 
@@ -66,6 +67,13 @@ SECTIONS {
         _eflash0 = ALIGN(., 4);
     } > FLASH0
 
+    .flash1 (NOLOAD) :
+    {
+        _flash1 = ALIGN(., 4); 
+        . = . + FLASH_SECTION_LEN;
+        _eflash1 = ALIGN(., 4);
+    } > FLASH1
+    
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
     .ARM.exidx :

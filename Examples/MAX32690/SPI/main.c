@@ -6,7 +6,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -125,10 +125,10 @@ int main(void)
         }
 
         // Configure the peripheral
-        if (MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins) != E_NO_ERROR) {
+        retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins);
+        if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
-
-            while (1) {}
+            return retVal;
         }
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
@@ -214,7 +214,7 @@ int main(void)
         if (memcmp(rx_data, tx_data, sizeof(tx_data)) != 0) {
             printf("\n-->%2d Bits Transaction Failed\n", i);
             LED_On(LED_RED);
-            while (1) {}
+            return E_INVALID;
         } else {
             printf("\n-->%2d Bits Transaction Successful\n", i);
         }

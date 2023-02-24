@@ -3,8 +3,8 @@
  * @brief      This file contains constant pin configurations for the peripherals.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-10-22 08:47:59 -0500 (Mon, 22 Oct 2018) $
- * $Revision: 38626 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #include "gpio.h"
 #include "mxc_device.h"

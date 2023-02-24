@@ -13,6 +13,7 @@ ARM-DSP/arm_signal_converge_example
 ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
+Coremark
 CNN/UNet-demo
 CNN/cats-dogs_demo
 CNN/cats-vs-dogs
@@ -36,6 +37,7 @@ CRC
 CameraIF
 DMA
 ECC
+EEPROM_Emulator
 FTHR_I2C
 Flash
 Flash_CLI
@@ -55,6 +57,7 @@ RTC
 RTC_Backup
 SDHC_FTHR
 SPI
+Temp_Monitor
 TFT_Demo
 TMR
 TRNG

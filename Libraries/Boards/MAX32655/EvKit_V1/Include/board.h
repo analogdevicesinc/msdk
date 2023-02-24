@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -127,6 +127,11 @@ int Console_PrepForSleep(void);
  * \returns #E_NO_ERROR if everything is successful
  */
 int Debug_Init(void);
+
+/**
+ * \brief   Initializes GPIO to conserve power in low power mode.
+ */
+void GPIO_PrepForSleep(void);
 
 #ifdef __cplusplus
 }

@@ -3,8 +3,8 @@
  * @brief      This file contains constant pin configurations for the peripherals.
  */
 
-/* *****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 #include "gpio.h"
 #include "mxc_device.h"
@@ -60,10 +60,6 @@ const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable = { MXC_GPIO0, (MXC_GPIO_PIN_2 
                                                      MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE };
 const mxc_gpio_cfg_t gpio_cfg_uart1 = { MXC_GPIO0, (MXC_GPIO_PIN_12 | MXC_GPIO_PIN_13),
                                         MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE };
-const mxc_gpio_cfg_t gpio_cfg_uart1_flow = { MXC_GPIO0, (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15),
-                                             MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE };
-const mxc_gpio_cfg_t gpio_cfg_uart1_flow_disable = { MXC_GPIO0, (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15),
-                                                     MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE };
 const mxc_gpio_cfg_t gpio_cfg_uart2 = { MXC_GPIO1, (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1),
                                         MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE };
 const mxc_gpio_cfg_t gpio_cfg_uart3 = { MXC_GPIO2, (MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7),

@@ -7,7 +7,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45,7 +45,6 @@
 #include <string.h>
 #include "mxc_device.h"
 #include "mxc_delay.h"
-#include "i2c_regs.h"
 #include "i2c.h"
 #include "board.h"
 
@@ -106,4 +105,5 @@ int main()
     }
 
     printf("\n-->Scan finished. %d devices found\n", counter);
+    return E_NO_ERROR;
 }

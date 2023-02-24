@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -50,7 +50,6 @@
 #include "definitions.h"
 #include "dma.h"
 #include "flc.h"
-#include "flc_regs.h"
 #include "gcr_regs.h"
 #include "icc.h"
 #include "mxc_assert.h"
@@ -324,10 +323,6 @@ int check_erased(uint32_t startaddr, uint32_t length)
 //******************************************************************************
 void flash_init(void)
 {
-    // Set flash clock divider to generate a 1MHz clock from the APB clock
-    // APB clock is 54MHz on the real silicon
-    MXC_FLC0->clkdiv = 24;
-
     MXC_FLC_ClearFlags(0x3);
 }
 

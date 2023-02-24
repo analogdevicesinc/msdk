@@ -17,5 +17,5 @@ The Console UART of the device will output these messages:
 
 Running test reads with data cache enabled.   Time elapsed: 0.3587
 Running test reads with data cache disabled.  Time elapsed: 4.2092
-Example complete.
+Example Succeeded.
 ```

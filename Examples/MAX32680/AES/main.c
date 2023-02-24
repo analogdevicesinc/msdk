@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -144,15 +144,11 @@ int main(void)
     AES_encrypt(0, MXC_AES_256BITS);
     fail += AES_decrypt(0, MXC_AES_256BITS);
 
-    printf("\n");
-
-    if (fail == 0) {
-        printf("\nExample Succeeded\n");
-    } else {
-        printf("Example Failed\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
     }
 
-    while (1) {}
-
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

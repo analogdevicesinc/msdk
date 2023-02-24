@@ -13,8 +13,10 @@ ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
 AES
+Coremark
 CRC
 DMA
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo

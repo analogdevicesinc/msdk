@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -563,9 +563,11 @@ int main(void)
     errCnt += TDES_CBC_Decryption_Example();
     errCnt += TDES_CFB_Decryption_Example();
 
-    if (errCnt == 0) {
-        printf("Example Complete.\n");
-    } else {
+    if (errCnt != 0) {
         printf("%d Operations FAILED!\n", errCnt);
+        return E_FAIL;
     }
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

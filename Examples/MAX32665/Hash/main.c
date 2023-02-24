@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -49,14 +49,6 @@
 
 char temp[] = { 0x00, 0x00, 0x00 };
 
-void Test_Result(int result)
-{
-    if (result)
-        printf(" * Failed *\n\n");
-    else
-        printf("   Passed  \n\n");
-}
-
 void ascii_to_byte(const char *src, char *dst, int len)
 {
     int i;
@@ -71,8 +63,9 @@ void ascii_to_byte(const char *src, char *dst, int len)
     }
 }
 
-void Test_Hash(void)
+int Test_Hash(void)
 {
+    int ret;
     printf("Test Hash\n");
 
     unsigned char sha256_msg[] =
@@ -95,20 +88,29 @@ void Test_Hash(void)
 
     MXC_TPU_Hash_SHA((char *)sha256_msg, MXC_TPU_HASH_SHA256, msgLen, (char *)destination);
 
-    Test_Result(memcmp(sha256_result, destination, 32));
-
     MXC_TPU_Shutdown(MXC_SYS_PERIPH_CLOCK_TPU);
 
-    return;
+    if (memcmp(sha256_result, destination, 32)) {
+        printf(" * Failed *\n\n");
+        return -1;
+    }
+
+    printf("   Passed  \n\n");
+    return 0;
 }
 
 int main(void)
 {
     printf("\n\n********** CTB Hash Example **********\n\n");
 
-    Test_Hash();
+    int fail = 0;
+    fail += Test_Hash();
 
-    printf("\n*** Done ***\n");
+    if (fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
 
-    return 0;
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

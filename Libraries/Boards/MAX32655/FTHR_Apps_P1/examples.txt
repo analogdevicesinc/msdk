@@ -25,8 +25,10 @@ BLE_otac
 BLE_otas
 BLE_periph
 Bootloader
+Coremark
 CRC
 DMA
+External_Flash
 Flash
 Flash_CLI
 FreeRTOSDemo

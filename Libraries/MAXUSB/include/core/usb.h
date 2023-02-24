@@ -38,6 +38,10 @@
 #include "usb_hwopt.h"
 #include "usb_protocol.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+  
 /**
  * @file usb.h
  * @brief Defines the API used to abstract USB hardware away from upper layers.
@@ -403,5 +407,9 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req);
  *
  */
 int MXC_USB_TestMode(unsigned int value);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _USB_H_ */

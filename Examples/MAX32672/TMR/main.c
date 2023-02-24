@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -79,10 +79,6 @@
 #error "Duty Cycle must be between 0 and 100."
 #endif
 
-// led pins are defined in board.c file
-#define LED0 0 // P0.22 on EvKit, P0.2 on FTHR board
-#define LED1 1 // P0.23 on EvKit, P0.3 on FTHR board
-
 /***** Globals *****/
 
 /***** Functions *****/
@@ -127,7 +123,7 @@ void ContinuousTimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(CONT_TIMER);
-    LED_Toggle(LED0);
+    LED_Toggle(LED1);
 }
 
 void ContinuousTimer()
@@ -164,7 +160,7 @@ void OneshotTimerHandler()
 {
     // Clear interrupt
     MXC_TMR_ClearFlags(OST_TIMER);
-    LED_Toggle(LED1);
+    LED_Toggle(LED2);
 }
 
 void OneshotTimer()

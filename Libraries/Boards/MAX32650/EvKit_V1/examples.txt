@@ -14,9 +14,11 @@ ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
 CLCD
+Coremark
 CRC
 DES
 DMA
+EEPROM_Emulator
 EMCC
 Flash
 Flash_CLI
@@ -46,6 +48,7 @@ SPIXF
 SPIXR
 SPI_MasterSlave
 SysTick
+Temp_Monitor
 TMR
 TRNG
 UART

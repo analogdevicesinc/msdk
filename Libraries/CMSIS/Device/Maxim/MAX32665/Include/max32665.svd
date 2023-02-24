@@ -362,7 +362,7 @@
   </peripheral>
 <!--ADC 10-bit Analog to Digital Converter-->
   <peripheral>
-   <name>AES_KEY</name>
+   <name>AESKEYS</name>
    <description>AES Key Registers.</description>
    <baseAddress>0x40005000</baseAddress>
    <addressBlock>
@@ -372,32 +372,32 @@
    </addressBlock>
    <registers>
     <register>
-     <name>AES_KEY0</name>
+     <name>KEY0</name>
      <description>AES Key 0.</description>
      <addressOffset>0x000</addressOffset>
      <size>32</size>
     </register>
     <register>
-     <name>AES_KEY1</name>
+     <name>KEY1</name>
      <description>AES Key 1.</description>
      <addressOffset>0x080</addressOffset>
      <size>32</size>
     </register>
     <register>
-     <name>AES_KEY2</name>
+     <name>KEY2</name>
      <description>AES Key 2.</description>
      <addressOffset>0x100</addressOffset>
      <size>32</size>
     </register>
     <register>
-     <name>AES_KEY3</name>
+     <name>KEY3</name>
      <description>AES Key 3.</description>
      <addressOffset>0x180</addressOffset>
      <size>32</size>
     </register>
    </registers>
   </peripheral>
-<!--AES_KEY AES Key Registers.-->
+<!--AESKEYS AES Key Registers.-->
   <peripheral>
    <name>DMA</name>
    <description>DMA Controller Fully programmable, chaining capable DMA channels.</description>
@@ -7931,91 +7931,91 @@
   <peripheral derivedFrom="PT">
    <name>PT1</name>
    <description>Pulse Train 1</description>
-   <baseAddress>0x4003C040</baseAddress>
+   <baseAddress>0x4003C030</baseAddress>
   </peripheral>
 <!--PT1 Pulse Train 1-->
   <peripheral derivedFrom="PT">
    <name>PT2</name>
    <description>Pulse Train 2</description>
-   <baseAddress>0x4003C060</baseAddress>
+   <baseAddress>0x4003C040</baseAddress>
   </peripheral>
 <!--PT2 Pulse Train 2-->
   <peripheral derivedFrom="PT">
    <name>PT3</name>
    <description>Pulse Train 3</description>
-   <baseAddress>0x4003C080</baseAddress>
+   <baseAddress>0x4003C050</baseAddress>
   </peripheral>
 <!--PT3 Pulse Train 3-->
   <peripheral derivedFrom="PT">
    <name>PT4</name>
    <description>Pulse Train 4</description>
-   <baseAddress>0x4003C0A0</baseAddress>
+   <baseAddress>0x4003C060</baseAddress>
   </peripheral>
 <!--PT4 Pulse Train 4-->
   <peripheral derivedFrom="PT">
    <name>PT5</name>
    <description>Pulse Train 5</description>
-   <baseAddress>0x4003C0C0</baseAddress>
+   <baseAddress>0x4003C070</baseAddress>
   </peripheral>
 <!--PT5 Pulse Train 5-->
   <peripheral derivedFrom="PT">
    <name>PT6</name>
    <description>Pulse Train 6</description>
-   <baseAddress>0x4003C0E0</baseAddress>
+   <baseAddress>0x4003C080</baseAddress>
   </peripheral>
 <!--PT6 Pulse Train 6-->
   <peripheral derivedFrom="PT">
    <name>PT7</name>
    <description>Pulse Train 7</description>
-   <baseAddress>0x4003C100</baseAddress>
+   <baseAddress>0x4003C090</baseAddress>
   </peripheral>
 <!--PT7 Pulse Train 7-->
   <peripheral derivedFrom="PT">
    <name>PT8</name>
    <description>Pulse Train 8</description>
-   <baseAddress>0x4003C120</baseAddress>
+   <baseAddress>0x4003C0A0</baseAddress>
   </peripheral>
 <!--PT8 Pulse Train 8-->
   <peripheral derivedFrom="PT">
    <name>PT9</name>
    <description>Pulse Train 9</description>
-   <baseAddress>0x4003C140</baseAddress>
+   <baseAddress>0x4003C0B0</baseAddress>
   </peripheral>
 <!--PT9 Pulse Train 9-->
   <peripheral derivedFrom="PT">
    <name>PT10</name>
    <description>Pulse Train 10</description>
-   <baseAddress>0x4003C160</baseAddress>
+   <baseAddress>0x4003C0C0</baseAddress>
   </peripheral>
 <!--PT10 Pulse Train 10-->
   <peripheral derivedFrom="PT">
    <name>PT11</name>
    <description>Pulse Train 11</description>
-   <baseAddress>0x4003C180</baseAddress>
+   <baseAddress>0x4003C0D0</baseAddress>
   </peripheral>
 <!--PT11 Pulse Train 11-->
   <peripheral derivedFrom="PT">
    <name>PT12</name>
    <description>Pulse Train 12</description>
-   <baseAddress>0x4003C1A0</baseAddress>
+   <baseAddress>0x4003C0E0</baseAddress>
   </peripheral>
 <!--PT12 Pulse Train 12-->
   <peripheral derivedFrom="PT">
    <name>PT13</name>
    <description>Pulse Train 13</description>
-   <baseAddress>0x4003C1C0</baseAddress>
+   <baseAddress>0x4003C0F0</baseAddress>
   </peripheral>
 <!--PT13 Pulse Train 13-->
   <peripheral derivedFrom="PT">
    <name>PT14</name>
    <description>Pulse Train 14</description>
-   <baseAddress>0x4003C1E0</baseAddress>
+   <baseAddress>0x4003C100</baseAddress>
   </peripheral>
 <!--PT14 Pulse Train 14-->
   <peripheral derivedFrom="PT">
    <name>PT15</name>
    <description>Pulse Train 15</description>
-   <baseAddress>0x4003C200</baseAddress>
+   <baseAddress>0x4003C110</baseAddress>
   </peripheral>
 <!--PT15 Pulse Train 15-->
   <peripheral>
@@ -21889,25 +21889,6 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <description> DMA Request Enable </description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable DMA for this IN endpoint.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable DMA for this IN endpoint.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>FRCDATATOG</name>
        <description> Force In Data - Toggle</description>
        <bitOffset>3</bitOffset>
@@ -21922,25 +21903,6 @@
         <enumeratedValue>
          <name>dontcare</name>
          <description>Toggle data-toggle regardless of ACK. </description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <description> DMA Request Mode Enable </description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>0</name>
-         <description>Enable DMA Request Mode 0.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>1</name>
-         <description>Enable DMA Request Mode 1.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -22061,20 +22023,8 @@
        <access>read-write</access>
       </field>
       <field>
-       <name>DMAREQEN</name>
-       <bitOffset>5</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
        <name>DISNYET</name>
        <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>DMAREQMODE</name>
-       <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
@@ -22367,16 +22317,10 @@
     </register>
     <register>
      <name>RAMINFO</name>
-     <description>RAM width and DMA hardware information.</description>
+     <description>RAM width information.</description>
      <addressOffset>0x79</addressOffset>
      <size>8</size>
      <fields>
-      <field>
-       <name>DMACHANS</name>
-       <bitOffset>4</bitOffset>
-       <bitWidth>4</bitWidth>
-       <access>read-only</access>
-      </field>
       <field>
        <name>RAMBITS</name>
        <bitOffset>0</bitOffset>
@@ -22399,26 +22343,6 @@
       </field>
       <field>
        <name>RSTS</name>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>EARLYDMA</name>
-     <description>DMA timing control register.</description>
-     <addressOffset>0x7B</addressOffset>
-     <size>8</size>
-     <fields>
-      <field>
-       <name>EDMAIN</name>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>EDMAOUT</name>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
@@ -22698,12 +22622,6 @@
        <name>VRST_VDDB_N_A</name>
        <description>VRST_VDDB_N_A</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>DMA_INT</name>
-       <description>DMA_INT</description>
-       <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>

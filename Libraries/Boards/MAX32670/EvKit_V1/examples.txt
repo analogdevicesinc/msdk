@@ -12,8 +12,10 @@ ARM-DSP/arm_signal_converge_example
 ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
+Coremark
 CRC
 DMA
+EEPROM_Emulator
 Flash
 FreeRTOSDemo
 GPIO
@@ -26,9 +28,11 @@ I2S
 ICC
 LP
 RTC
+SecureROM_BL_Host
 SPI
 SPI_Usecase
 SPI_MasterSlave
+Temp_Monitor
 TMR
 TRNG
 UART

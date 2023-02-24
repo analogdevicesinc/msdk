@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-08-28 17:03:02 -0500 (Tue, 28 Aug 2018) $
- * $Revision: 37424 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <stddef.h>
@@ -60,6 +57,10 @@ int MXC_GPIO_Init(uint32_t portmask)
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     }
 
+    if (portmask & 0x4) {
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
+    }
+
     return MXC_GPIO_Common_Init(portmask);
 }
 
@@ -73,6 +74,10 @@ int MXC_GPIO_Shutdown(uint32_t portmask)
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     }
 
+    if (portmask & 0x4) {
+        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_GPIO2);
+    }
+
     return E_NO_ERROR;
 }
 
@@ -84,6 +89,10 @@ int MXC_GPIO_Reset(uint32_t portmask)
 
     if (portmask & 0x2) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_GPIO1);
+    }
+
+    if (portmask & 0x4) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET_GPIO2);
     }
 
     return E_NO_ERROR;

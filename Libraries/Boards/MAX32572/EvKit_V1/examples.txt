@@ -15,6 +15,7 @@ ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
 Barcode_Decoder
 CameraIF
+Coremark
 CRC
 DES
 DMA
@@ -40,6 +41,7 @@ SPIXF
 SPIXR
 SPI_MasterSlave
 SRCC
+Temp_Monitor
 TFT_Demo
 TMR
 TRNG

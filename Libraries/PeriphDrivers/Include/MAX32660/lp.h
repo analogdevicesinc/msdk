@@ -3,8 +3,8 @@
  * @brief   Low power function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-09-26 08:48:30 -0500 (Wed, 26 Sep 2018) $
- * $Revision: 38105 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 // Define to prevent redundant inclusion
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32660_LP_H_

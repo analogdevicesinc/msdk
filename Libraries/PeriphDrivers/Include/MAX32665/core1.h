@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,13 +29,14 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-08-10 17:11:51 -0500 (Fri, 10 Aug 2018) $
- * $Revision: 36872 $
- *
  ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_CORE1_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_CORE1_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * @file    core1.h
@@ -73,5 +74,9 @@ void PreInit_Core1(void);
  *        Sets interrupt vector
  */
 void SystemInit_Core1(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_CORE1_H_

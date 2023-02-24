@@ -35,6 +35,10 @@
 #ifndef _LOGGER_H_
 #define _LOGGER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
   DBG_EVT_START = 0,
   DBG_EVT_RESET,
@@ -76,5 +80,9 @@ typedef enum {
 int dbg_log_init(void);
 int dbg_log_add(uint32_t t, dbg_evt_type_t e, uint32_t e_p, char *txt);
 void dbg_log_print(int num);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

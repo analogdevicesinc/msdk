@@ -7,7 +7,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -175,5 +175,11 @@ int main(void)
     // Return the ECC back to its POR state (disabled)
     MXC_MCR->eccen &= ~MXC_F_MCR_ECCEN_RAM0;
 
-    return test_fail;
+    if (test_fail != 0) {
+        printf("\nExample Failed\n");
+        return E_FAIL;
+    }
+
+    printf("\nExample Succeeded\n");
+    return E_NO_ERROR;
 }

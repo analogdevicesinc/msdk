@@ -26,10 +26,13 @@ BLE_otas
 BLE_periph
 Bootloader
 Bootloader_Host
+Coremark
 CRC
+Display
 DES
 DMA
 ECC
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo
@@ -57,6 +60,7 @@ SPI
 SPIXF
 SPIXR
 SRCC
+Temp_Monitor
 TMR
 TRNG
 UART

@@ -3,8 +3,8 @@
  * @brief   Instruction Controller Cache(ICC) function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_ICC_H_
@@ -84,6 +84,32 @@ void MXC_ICC_Disable(void);
  * @brief   Flush the instruction cache controller.
  */
 void MXC_ICC_Flush(void);
+
+/**
+ * @brief   Reads ID information from one of the ICC's Cache ID Register.
+ * @param   icc     Pointer ICC instance to get ID information from.
+ * @param   cid     Selects what information to get from the Cache ID Register
+ * @retval  Returns the selected value from the Cache ID Register.
+ */
+int MXC_ICC_IDInst(mxc_icc_regs_t *icc, mxc_icc_info_t cid);
+
+/**
+ * @brief   Enables one of the ICC's.
+ * @param   icc     Pointer to ICC instance to enable.
+ */
+void MXC_ICC_EnableInst(mxc_icc_regs_t *icc);
+
+/**
+ * @brief   Disables one of the ICC's.
+ * @param   icc     Pointer to ICC instance to disable.
+ */
+void MXC_ICC_DisableInst(mxc_icc_regs_t *icc);
+
+/**
+ * @brief   Flushes data from one of the ICC's.
+ * @param   icc     Pointer to ICC instance to flush.
+ */
+void MXC_ICC_FlushInst(mxc_icc_regs_t *icc);
 
 /**@} end of group icc */
 

@@ -12,9 +12,11 @@ ARM-DSP/arm_signal_converge_example
 ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
+Coremark
 CRC
 DMA
 ECDSA
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo

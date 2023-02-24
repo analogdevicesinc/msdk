@@ -39,6 +39,9 @@ CFG_DEV         += BB_ENABLE_INLINE_ENC_TX=1
 CFG_DEV         += BB_ENABLE_INLINE_DEC_RX=1
 CFG_DEV         += PAL_MAX_RTC_COUNTER_VAL=0xFFFFFFFF
 
+# Schedule the DTM RX due time based on previously received packets
+CFG_DEV         += DTM_RX_SCHEDULING=1
+
 # Enable standby mode when idle
 # LL_WW_RX_DEVIATION_USEC is a constant defined in the Bluetooth specification
 # Set to 0 to improve RX performance, set to 16 to comply with the specification

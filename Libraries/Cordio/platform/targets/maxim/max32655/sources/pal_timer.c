@@ -25,6 +25,7 @@
 #include "lp.h"
 #include "gcr_regs.h"
 #include "mxc_device.h"
+#include "wsf_cs.h"
 #include "wsf_trace.h"
 #include "pal_rtc.h"
 
@@ -261,6 +262,9 @@ void PalTimerStart(uint32_t expUsec)
     expUsec = 1;
   }
 
+  /* TODO: Determine how to best use the timer to prevent CLK EN race condition */
+  PAL_TMR->ctrl0 |= (MXC_F_TMR_CTRL0_RST_A | MXC_F_TMR_CTRL0_RST_B);
+
   MXC_TMR_SetCount(PAL_TMR, 0);
 
   /* Calculate the compare value */
@@ -282,7 +286,9 @@ void PalTimerStart(uint32_t expUsec)
 
   palTimerCb.state = PAL_TIMER_STATE_BUSY;
 
+  WsfCsEnter();
   MXC_TMR_Start(PAL_TMR);
+  WsfCsExit();
 }
 
 /*************************************************************************************************/
@@ -393,6 +399,6 @@ uint32_t PalTimerGetExpTime(void)
   } else {
     return 0;
   }
-  
+
   return time;
 }

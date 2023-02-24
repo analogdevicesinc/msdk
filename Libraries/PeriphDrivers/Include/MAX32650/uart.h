@@ -4,8 +4,8 @@
  *          and function prototypes.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35,10 +35,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-10-07 11:05:30 -0500 (Mon, 07 Oct 2019) $
- * $Revision: 47429 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_UART_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_UART_H_
@@ -47,6 +44,10 @@
 #include <stdint.h>
 #include "uart_regs.h"
 #include "mxc_sys.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /***** Definitions *****/
 
@@ -664,5 +665,9 @@ uint32_t MXC_UART_GetAsyncTXCount(mxc_uart_req_t *req);
 uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req);
 
 /**@} end of group uart */
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_UART_H_

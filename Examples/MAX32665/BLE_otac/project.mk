@@ -7,6 +7,11 @@
 
 # **********************************************************
 
+# If you have secure version of MCU (MAX32666), set SBT=1 to generate signed binary
+# For more information on how sing process works, see
+# https://www.analog.com/en/education/education-library/videos/6313214207112.html
+SBT=0
+
 # Enable CORDIO library
 LIB_CORDIO = 1
 
@@ -18,11 +23,6 @@ INIT_PERIPHERAL = 0
 INIT_BROADCASTER = 0
 INIT_CENTRAL = 1
 INIT_OBSERVER = 1
-
-# TRACE option
-# Set to 1 to enable serial port trace messages
-# Set to 0 to disable
-TRACE = 1
 
 # **********************************************************
 # Firmware builder

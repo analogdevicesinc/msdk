@@ -3,7 +3,7 @@
  * @brief    List of common error return codes for Maxim Integrated libraries.
 */
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -86,6 +86,8 @@
 #define E_ABORT -16
 /** The requested operation is not supported */
 #define E_NOT_SUPPORTED -17
+/** The requested operation is failed */
+#define E_FAIL -255
 /**@} end of MXC_Error_Codes group */
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MXC_ERRORS_H_
