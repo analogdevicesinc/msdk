@@ -664,6 +664,12 @@ static void datcSendBlock(dmConnId_t connId, uint32_t address, uint32_t len, uin
     /* Send the address and data, add the length of the address to the length */
     WdxcFtdSendBlock(connId, len + sizeof(uint32_t), addrData);
 
+    /* Clear out the buf->free field to prevent un-intended assertion in WsfBufFree */
+    addrData[4] = 0;
+    addrData[5] = 0;
+    addrData[6] = 0;
+    addrData[7] = 0;
+
     WsfBufFree(addrData);
 
     /* Increment the address of the data that we're sending */
