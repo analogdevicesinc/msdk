@@ -1,7 +1,7 @@
 name: BLE Examples Test
 
 # Cancels workflows in progress that are in the same PR
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -11,38 +11,38 @@ on:
   #push:
   #  branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
-    types: [opened, reopened, synchronize, ready_for_review]  # When to run the workflow on PR
+    branches: ["main"]
+    types: [opened, reopened, synchronize, ready_for_review] # When to run the workflow on PR
 
     paths-ignore:
       # Any files in a docs directory anywhere in the repository.
-      - '**/docs/**'
-      - '**/Documentation/**'
+      - "**/docs/**"
+      - "**/Documentation/**"
       # Any README.md file anywhere in the repository.
-      - '**/README.md'	
+      - "**/README.md"
       # Any .pdf file anywhere in the repository.
-      - '**/*.pdf'
+      - "**/*.pdf"
       # Any .yml file anywhere in the repository.
       # can comment this out when testing changes to THIS yml file
-      - '**/*.yml'
+      - "**/*.yml"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+env:
+  TEST_MAX32655: false
+  TEST_MAX32665: false
+  TEST_MAX32690: false
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  Check:
+  TEST_BLE_Devices:
     # The type of runner that the job will run on
-    runs-on: [ self-hosted, btm-ci ]
+    runs-on: [self-hosted, btm-ci]
     if: github.event.pull_request.draft == false
-    outputs:
-      check_max32655: ${{ steps.MAX32655.outputs.test }}
-      check_max32665: ${{ steps.MAX32665.outputs.test }}
-      check_max32690: ${{ steps.MAX32690.outputs.test }}
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-     # Clean and remove any local modifications
+      # Clean and remove any local modifications
       - name: Clean
         continue-on-error: true
         run: |
@@ -65,15 +65,15 @@ jobs:
         with:
           submodules: false
           fetch-depth: 0
-      
+
       # Locks all board preventing them from being used during a test
       # even if only one board is being tested. This is so that another job
-      # does not possibly used one of the free boards that may connect to the 
+      # does not possibly used one of the free boards that may connect to the
       #current board undertest
 
       # ME17
-      - name: Check MAX32655     #name used for display purposes on github webpage
-        id: MAX32655            #id used to reference this step in other parts of the yml
+      - name: Check MAX32655 #name used for display purposes on github webpage
+        id: MAX32655 #id used to reference this step in other parts of the yml
         run: |
 
           # Remove local modifications
@@ -81,7 +81,7 @@ jobs:
 
           BLE_FILES_CHANGED=0
           RUN_TEST=0
-          
+
           # Check for changes made to these files
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
@@ -97,16 +97,16 @@ jobs:
           Libraries/PeriphDrivers/Include/MAX32655 \
           Libraries/BlePhy/MAX32655 \
           Libraries/Boards/MAX32655"
-          
+
           # Get the diff from main
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
-          
+
           echo "Watching these locations and files"
           echo $WATCH_FILES
-          
+
           echo "Checking the following changes"
           echo $CHANGE_FILES
-          
+
           # Assume we want to actually run the workflow if no files changed
           if [[ "$CHANGE_FILES" != "" ]]; then
             for watch_file in $WATCH_FILES; do 
@@ -128,21 +128,19 @@ jobs:
           # save result to steps output
           if [[ $RUN_TEST -eq 1 ]]
           then
-            echo "test=1" >> $GITHUB_OUTPUT
-          else
-            echo "test=0" >> $GITHUB_OUTPUT
+            echo "TEST_MAX32655=true" >> $GITHUB_ENV
           fi
-      
+
       # ME14
-      - name: Check MAX32665     #name used for display purposes on github webpage
-        id: MAX32665            #id used to reference this step in other parts of the yml
+      - name: Check MAX32665 #name used for display purposes on github webpage
+        id: MAX32665 #id used to reference this step in other parts of the yml
         run: |
           # Remove local modifications
           git scorch
 
           BLE_FILES_CHANGED=0
           RUN_TEST=0
-          
+
           # Check for changes made to these files
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
@@ -158,16 +156,16 @@ jobs:
           Libraries/PeriphDrivers/Include/MAX32665 \
           Libraries/BlePhy/MAX32665 \
           Libraries/Boards/MAX32665"
-          
+
           # Get the diff from main
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
-          
+
           echo "Watching these locations and files"
           echo $WATCH_FILES
-          
+
           echo "Checking the following changes"
           echo $CHANGE_FILES
-          
+
           # Assume we want to actually run the workflow if no files changed
           if [[ "$CHANGE_FILES" != "" ]]; then
             for watch_file in $WATCH_FILES; do 
@@ -189,13 +187,11 @@ jobs:
           # save result to steps output
           if [[ $RUN_TEST -eq 1 ]]
           then
-            echo "test=1" >> $GITHUB_OUTPUT
-          else
-            echo "test=0" >> $GITHUB_OUTPUT        
+            echo "TEST_MAX32665=true" >> $GITHUB_ENV
           fi
       # ME18
-      - name: Check MAX32690     #name used for display purposes on github webpage
-        id: MAX32690            #id used to reference this step in other parts of the yml
+      - name: Check MAX32690 #name used for display purposes on github webpage
+        id: MAX32690 #id used to reference this step in other parts of the yml
         run: |
           # Remove local modifications
           git scorch
@@ -217,16 +213,16 @@ jobs:
           Libraries/PeriphDrivers/Include/MAX32690 \
           Libraries/BlePhy/MAX32690 \
           Libraries/Boards/MAX32690"
-          
+
           # Get the diff from main
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
-          
+
           echo "Watching these locations and files"
           echo $WATCH_FILES
-          
+
           echo "Checking the following changes"
           echo $CHANGE_FILES
-          
+
           # Assume we want to actually run the workflow if no files changed
           if [[ "$CHANGE_FILES" != "" ]]; then
             for watch_file in $WATCH_FILES; do 
@@ -244,116 +240,146 @@ jobs:
           else 
             RUN_TEST=1
           fi
-          
+
           if [[ $RUN_TEST -eq 1 ]]
           then
-            echo "test=1" >> $GITHUB_OUTPUT 
-          else
-            echo "test=0" >> $GITHUB_OUTPUT 
-          fi     
-  Lock:
-    # This job needs outputs from Check job so it waits until they are available
-    needs: [Check]
-    
-    # The type of runner that the job will run on
-    runs-on: [ self-hosted, btm-ci ]
-    # if any of the checks determined a test is needed then lock the boards
-    if: github.event.pull_request.draft == false   && (needs.Check.outputs.check_max32655 == 1 || needs.Check.outputs.check_max32665 == 1 || needs.Check.outputs.check_max32690 == 1)
-    outputs:
-      boards_locked: ${{ steps.locked_boards.outputs.test_active }}
-    steps:
-      - name: Lock Boards     #name used for display purposes on github webpage
-        id: locked_boards     #id used to reference this step in other parts of the yml
-        run: |
-          # if [[ $test_max32655  -eq 1 ]] || [[ $test_max32665  -eq 1 ]] || [[ $test_max32690  -eq 1 ]]
-          # then
-          echo "test_active=0" >> $GITHUB_OUTPUT 
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-          echo "test_active=1" >> $GITHUB_OUTPUT         
-  Test:
-    # This job needs outputs from Check and Lock jobs, it waits until those outputs are available
-    needs: [Check, Lock]
-    # The type of runner that the job will run on
-    runs-on: [ self-hosted, btm-ci ]
-    if: github.event.pull_request.draft == false && needs.Lock.outputs.boards_locked == 1
-    env:
-      test_max32655: ${{needs.Check.outputs.check_max32655}}
-      test_max32665: ${{needs.Check.outputs.check_max32665}}
-      test_max32690: ${{needs.Check.outputs.check_max32690}}
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: false
-          fetch-depth: 0
+            echo "TEST_MAX32690=true" >> $GITHUB_ENV
+          fi
 
-      # ME17
-      - name: TEST MAX32655     #name used for display purposes on github webpage
+      - name: LOCK_BOARDS #name used for display purposes on github webpage
+        if: env.TEST_MAX32655 == 'true' || env.TEST_MAX32665 == 'true' || env.TEST_MAX32690 == 'true'
+        id: LOCK_BOARDS #id used to reference this step in other parts of the yml
         run: |
-          if [[ $test_max32655  -eq 1 ]]
-          then
-            echo "Running Test on MAX32655"
-            cd .github/workflows/ci-tests/Examples_tests
-            chmod +x test_launcher.sh
-            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
-            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-            ./test_launcher.sh max32655 $dut_uart $dut_serial
-          fi
-      
-      # ME14
-      - name: TEST MAX32665       #name used for display purposes on github webpage
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
+
+      - name: Test MAX32655 #name used for display purposes on github webpage
+        if: steps.LOCK_BOARDS.outcome == 'success' && env.TEST_MAX32655 == 'true'
+        id: Test_MAX32655 #id used to reference this step in other parts of the yml
         run: |
-          if [[ $test_max32665  -eq 1 ]]
-          then
-            echo "Running Test on  MAX32665"   
-            cd .github/workflows/ci-tests/Examples_tests
-            chmod +x test_launcher.sh
-            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
-            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-            ./test_launcher.sh max32665 $dut_uart $dut_serial          
-          fi
-      # ME18
-      - name: TEST MAX32690     #name used for display purposes on github webpage
+          echo "Running Test on MAX32655"
+          cd .github/workflows/ci-tests/Examples_tests
+          chmod +x test_launcher.sh
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
+          dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+          ./test_launcher.sh max32655 $dut_uart $dut_serial
+
+      # Unlock even when cancelled or failed
+      # This needs some work, if the job is cancelled or times out because it could not get a LOCK
+      # it then jumps here and removes all locks, that were set by a different job
+      - name: Unlock All Boards
+        if: ${{ always() && steps.LOCK_BOARDS.outcome == 'success' }}
         run: |
-         
-          if [[ $test_max32690  -eq 1 ]]
-          then
-            echo "Running Test on MAX32690"
-            cd .github/workflows/ci-tests/Examples_tests
-            chmod +x test_launcher.sh
-            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
-            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`            
-            ./test_launcher.sh max32690 $dut_uart $dut_serial     
-          fi 
-      # Save test reports
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-            name: failure-report      #name of output zip file
-            path: .github/workflows/ci-tests/Examples_tests/results/  
-      # - name: Unlock All Boards
-      #   if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
-      #   run: |
-      #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-      #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-      #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-      #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt 
-  Cleanup:
-    needs: [Test]
-    runs-on: [ self-hosted, btm-ci ]
-    if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
-    steps: 
-      # Unlock even when cancelled or failed, but only if this workflow instance locked them
-      - name: Unlock All Boards     #name used for display purposes on github webpage
-        run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
+
+  # Lock:
+  #   # This job needs outputs from Check job so it waits until they are available
+  #   needs: [Check]
+
+  #   # The type of runner that the job will run on
+  #   runs-on: [self-hosted, btm-ci]
+  #   # if any of the checks determined a test is needed then lock the boards
+  #   if: github.event.pull_request.draft == false   && (needs.Check.outputs.check_max32655 == 1 || needs.Check.outputs.check_max32665 == 1 || needs.Check.outputs.check_max32690 == 1)
+  #   outputs:
+  #     boards_locked: ${{ steps.locked_boards.outputs.test_active }}
+  #   steps:
+  #     - name: Lock Boards #name used for display purposes on github webpage
+  #       id: locked_boards #id used to reference this step in other parts of the yml
+  #       run: |
+  #         # if [[ $test_max32655  -eq 1 ]] || [[ $test_max32665  -eq 1 ]] || [[ $test_max32690  -eq 1 ]]
+  #         # then
+  #         echo "test_active=0" >> $GITHUB_OUTPUT
+  #         python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+  #         python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
+  #         python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
+  #         python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+  #         echo "test_active=1" >> $GITHUB_OUTPUT
+  # Test:
+  #   # This job needs outputs from Check and Lock jobs, it waits until those outputs are available
+  #   needs: [Check, Lock]
+  #   # The type of runner that the job will run on
+  #   runs-on: [self-hosted, btm-ci]
+  #   if: github.event.pull_request.draft == false && needs.Lock.outputs.boards_locked == 1
+  #   env:
+  #     test_max32655: ${{needs.Check.outputs.check_max32655}}
+  #     test_max32665: ${{needs.Check.outputs.check_max32665}}
+  #     test_max32690: ${{needs.Check.outputs.check_max32690}}
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #       with:
+  #         submodules: false
+  #         fetch-depth: 0
+
+  #     # ME17
+  #     - name: TEST MAX32655 #name used for display purposes on github webpage
+  #       run: |
+  #         if [[ $test_max32655  -eq 1 ]]
+  #         then
+  #           echo "Running Test on MAX32655"
+  #           cd .github/workflows/ci-tests/Examples_tests
+  #           chmod +x test_launcher.sh
+  #           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+  #           dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
+  #           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+  #           ./test_launcher.sh max32655 $dut_uart $dut_serial
+  #         fi
+
+  #     # ME14
+  #     - name: TEST MAX32665 #name used for display purposes on github webpage
+  #       run: |
+  #         if [[ $test_max32665  -eq 1 ]]
+  #         then
+  #           echo "Running Test on  MAX32665"
+  #           cd .github/workflows/ci-tests/Examples_tests
+  #           chmod +x test_launcher.sh
+  #           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+  #           dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
+  #           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
+  #           ./test_launcher.sh max32665 $dut_uart $dut_serial
+  #         fi
+  #     # ME18
+  #     - name: TEST MAX32690 #name used for display purposes on github webpage
+  #       run: |
+
+  #         if [[ $test_max32690  -eq 1 ]]
+  #         then
+  #           echo "Running Test on MAX32690"
+  #           cd .github/workflows/ci-tests/Examples_tests
+  #           chmod +x test_launcher.sh
+  #           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+  #           dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
+  #           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
+  #           ./test_launcher.sh max32690 $dut_uart $dut_serial
+  #         fi
+  #     # Save test reports
+  #     - uses: actions/upload-artifact@v3
+  #       if: failure()
+  #       with:
+  #         name: failure-report #name of output zip file
+  #         path: .github/workflows/ci-tests/Examples_tests/results/
+  #     # - name: Unlock All Boards
+  #     #   if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
+  #     #   run: |
+  #     #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+  #     #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+  #     #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+  #     #     python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+  # Cleanup:
+  #   needs: [Test]
+  #   runs-on: [self-hosted, btm-ci]
+  #   if: ${{ always() && needs.Lock.outputs.boards_locked == 1 }}
+  #   steps:
+  #     # Unlock even when cancelled or failed, but only if this workflow instance locked them
+  #     - name: Unlock All Boards #name used for display purposes on github webpage
+  #       run: |
+  #         python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+  #         python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
+  #         python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
+  #         python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
