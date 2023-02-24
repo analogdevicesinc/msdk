@@ -156,8 +156,6 @@ int ram_write_quad(uint32_t address, uint8_t * data, unsigned int len)
 
 int benchmark_dma_overhead(unsigned int *out)
 {
-    int err = E_NO_ERROR;
-    int timeout = 0;
     uint8_t buffer[5];
     _parse_spi_header(0x02, 0x0, buffer);
 
