@@ -14,7 +14,7 @@ else
 fi
 echo "DUT_BOARD_TYPE:" $DUT_BOARD_TYPE
 echo
-
+cd ../ci-tests/Examples_tests/
 EXAMPLE_TEST_PATH=$(pwd)
 cd ../../../../
 MSDK_DIR=$(pwd)
