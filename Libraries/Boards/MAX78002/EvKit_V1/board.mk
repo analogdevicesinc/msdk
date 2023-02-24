@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -35,10 +35,10 @@ ifeq "$(BOARD_DIR)" ""
 $(error BOARD_DIR must be set)
 endif
 
-TFT?=ADAFRUIT
+TFT ?= NEWHAVEN
 # Supported values for TFT:
-# - ADAFRUIT (default)
-# - NEWHAVEN
+# - ADAFRUIT (for use with legacy Adafruit 3315)
+# - NEWHAVEN (default - for use with NewHaven NHD-2.4-320240CF))
 
 # Source files for this application (add path to VPATH below)
 SRCS += board.c

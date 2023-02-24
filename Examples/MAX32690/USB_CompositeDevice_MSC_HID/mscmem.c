@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,11 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * Description: Communications Device Class ACM (Serial Port) over USB
- * $Id: descriptors.h 31172 2017-10-05 19:05:57Z zach.metzinger $
- *
- *******************************************************************************
- */
+ ******************************************************************************/
 
 /**
  * @file    mscmem.h

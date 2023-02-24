@@ -3,8 +3,8 @@
  * @brief   Analog to Digital Converter(ADC) function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-08-28 17:03:02 -0500 (Tue, 28 Aug 2018) $
- * $Revision: 37424 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_CAN_H_
@@ -534,12 +531,15 @@ int MXC_CAN_MessageSend(uint32_t can_idx, mxc_can_req_t *req);
 /**
  * @brief   Send message (non-blocking).
  * 
+ * 
  * @param can_idx   Index of the CAN peripheral to send the message from
  * @param req       Contains information about the format and data of message to send
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32690 does not support CAN FD, setting req->msg_info->fdf will return an error.
+ * @warning The structure pointed to by 'req' must remain unchanged and in scope until the 
+ *          TX complete event has been signaled.
  */
 int MXC_CAN_MessageSendAsync(uint32_t can_idx, mxc_can_req_t *req);
 
@@ -552,6 +552,8 @@ int MXC_CAN_MessageSendAsync(uint32_t can_idx, mxc_can_req_t *req);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32690 does not support CAN FD, setting req->msg_info->fdf will return an error.
+ * @warning The structure pointed to by 'req' must remain unchanged and in scope until the 
+ *          TX complete event has been signaled.
  */
 int MXC_CAN_MessageSendDMA(uint32_t can_idx, mxc_can_req_t *req);
 
@@ -576,6 +578,8 @@ int MXC_CAN_MessageRead(uint32_t can_idx, mxc_can_req_t *req);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32690 does not support receiving CAN FD messages.
+ * @warning The structure pointed to by 'req' must remain unchanged and in scope until the 
+ *          RX complete event has been signaled.
  */
 int MXC_CAN_MessageReadAsync(uint32_t can_idx, mxc_can_req_t *req);
 
@@ -588,6 +592,8 @@ int MXC_CAN_MessageReadAsync(uint32_t can_idx, mxc_can_req_t *req);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  * 
  * @warning MAX32690 does not support receiving CAN FD messages.
+ * @warning The structure pointed to by 'req' must remain unchanged and in scope until the 
+ *          RX complete event has been signaled.
  */
 int MXC_CAN_MessageReadDMA(uint32_t can_idx, mxc_can_req_t *req, void (*dma_cb)(int, int));
 

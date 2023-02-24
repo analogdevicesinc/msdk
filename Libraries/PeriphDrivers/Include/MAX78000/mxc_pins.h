@@ -3,8 +3,8 @@
  * @brief      This file contains constant pin configurations for the peripherals.
  */
 
-/* *****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_PINS_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_PINS_H_
@@ -52,14 +52,8 @@ extern const mxc_gpio_cfg_t gpio_cfg_uart0;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart0_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart1;
-extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow;
-extern const mxc_gpio_cfg_t gpio_cfg_uart1_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart2;
-extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow;
-extern const mxc_gpio_cfg_t gpio_cfg_uart2_flow_disable;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3;
-extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow;
-extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow_disable;
 
 // Timers are only defined once, depending on package, each timer could be mapped to other pins
 extern const mxc_gpio_cfg_t gpio_cfg_tmr0;

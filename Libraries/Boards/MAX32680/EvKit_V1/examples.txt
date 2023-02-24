@@ -19,6 +19,7 @@ BLE_dats
 Coremark
 CRC
 DMA
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo

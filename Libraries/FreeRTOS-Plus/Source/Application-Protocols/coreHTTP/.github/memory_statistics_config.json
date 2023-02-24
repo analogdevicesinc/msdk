@@ -1,0 +1,26 @@
+{
+  "lib_name": "coreHTTP",
+  "src": [
+    "source/core_http_client.c",
+    {
+      "file": "source/dependency/3rdparty/llhttp/src/api.c",
+      "tag": "llhttp"
+    },
+    {
+      "file": "source/dependency/3rdparty/llhttp/src/http.c",
+      "tag": "llhttp"
+    },
+    {
+      "file": "source/dependency/3rdparty/llhttp/src/llhttp.c",
+      "tag": "llhttp"
+    }
+  ],
+  "include": [
+    "source/include",
+    "source/interface",
+    "source/dependency/3rdparty/llhttp/include"
+  ],
+  "compiler_flags": [
+    "HTTP_DO_NOT_USE_CUSTOM_CONFIG"
+  ]
+}

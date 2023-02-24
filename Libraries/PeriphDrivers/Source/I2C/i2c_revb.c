@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2020-02-03 10:33:50 -0600 (Mon, 03 Feb 2020) $
- * $Revision: 51326 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stddef.h>
@@ -416,6 +413,7 @@ unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t *i2c,
             callback(i2c, MXC_I2C_REVB_EVT_MASTER_RD, NULL);
             i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
             i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
+            i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_TXLOI;
             interruptEnables = MXC_F_I2C_REVB_INT_FL0_TXTHI | MXC_F_I2C_REVB_INT_FL1_TXUFI |
                                MXC_F_I2C_REVB_INT_FL0_TXLOI | MXC_I2C_REVB_ERROR;
         } else {

@@ -14,6 +14,7 @@ ARM-DSP/arm_variance_example
 Bootloader_Host
 Coremark
 DMA
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo

@@ -19,6 +19,7 @@ CRC
 CTB_AES
 DMA
 Display
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo

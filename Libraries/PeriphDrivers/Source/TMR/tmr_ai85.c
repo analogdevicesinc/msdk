@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 #include "tmr.h"
 #include "tmr_revb.h"
@@ -56,16 +56,18 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
         clockSource = MXC_TMR_CLK1;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
+        MXC_TMR_SetClockSourceFreq(tmr, ISO_FREQ);
         break;
 
     case MXC_TMR_8M_CLK:
-
         if (tmr_id > 3) {
             clockSource = MXC_TMR_CLK0;
         } else {
             clockSource = MXC_TMR_CLK2;
         }
+
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        MXC_TMR_SetClockSourceFreq(tmr, IBRO_FREQ);
         break;
 
     case MXC_TMR_32K_CLK:
@@ -78,6 +80,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         }
 
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+        MXC_TMR_SetClockSourceFreq(tmr, ERTCO_FREQ);
         break;
 
     case MXC_TMR_8K_CLK:
@@ -87,9 +90,23 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
         clockSource = MXC_TMR_CLK2;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
+        MXC_TMR_SetClockSourceFreq(tmr, INRO_FREQ);
+        break;
+
+    // IBRO/8
+    case MXC_TMR_8M_DIV8_CLK:
+        if (tmr_id != 5) { // Only Timer 5 supports this clock source divide
+            return E_NOT_SUPPORTED;
+        }
+
+        clockSource = MXC_TMR_CLK1;
+        MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        MXC_TMR_SetClockSourceFreq(tmr, (IBRO_FREQ / 8));
         break;
 
     default:
+        // PCLK
+        MXC_TMR_SetClockSourceFreq(tmr, PeripheralClock);
         break;
     }
 
@@ -165,6 +182,16 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
     }
 
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
+}
+
+void MXC_TMR_SetClockSourceFreq(mxc_tmr_regs_t *tmr, int clksrc_freq)
+{
+    MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, clksrc_freq);
+}
+
+int MXC_TMR_GetClockSourceFreq(mxc_tmr_regs_t *tmr)
+{
+    return MXC_TMR_RevB_GetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr);
 }
 
 void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)

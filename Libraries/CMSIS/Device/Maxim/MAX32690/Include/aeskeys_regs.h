@@ -88,8 +88,6 @@ extern "C" {
 typedef struct {
     __IO uint128_t key0;                 /**< <tt>\b 0x000:</tt> AESKEYS KEY0 Register */
     __IO uint128_t key1;                 /**< <tt>\b 0x010:</tt> AESKEYS KEY1 Register */
-    __IO uint256_t puf_key1;             /**< <tt>\b 0x020:</tt> AESKEYS PUF_KEY1 Register */
-    __IO uint256_t puf_key2;             /**< <tt>\b 0x040:</tt> AESKEYS PUF_KEY2 Register */
 } mxc_aeskeys_regs_t;
 
 /* Register offsets for module AESKEYS */
@@ -101,8 +99,6 @@ typedef struct {
  */
 #define MXC_R_AESKEYS_KEY0                 ((uint32_t)0x00000000UL) /**< Offset from AESKEYS Base Address: <tt> 0x0000</tt> */
 #define MXC_R_AESKEYS_KEY1                 ((uint32_t)0x00000010UL) /**< Offset from AESKEYS Base Address: <tt> 0x0010</tt> */
-#define MXC_R_AESKEYS_PUF_KEY1             ((uint32_t)0x00000020UL) /**< Offset from AESKEYS Base Address: <tt> 0x0020</tt> */
-#define MXC_R_AESKEYS_PUF_KEY2             ((uint32_t)0x00000040UL) /**< Offset from AESKEYS Base Address: <tt> 0x0040</tt> */
 /**@} end of group aeskeys_registers */
 
 #ifdef __cplusplus

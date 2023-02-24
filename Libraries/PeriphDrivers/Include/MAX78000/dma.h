@@ -3,8 +3,8 @@
  * @brief   Direct Memory Access (DMA) driver function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_DMA_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_DMA_H_
@@ -84,6 +84,8 @@ typedef enum {
     MXC_DMA_REQUEST_UART2RX =
         MXC_S_DMA_CTRL_REQUEST_UART2RX, ///< UART2 Receive DMA Request Selection
     MXC_DMA_REQUEST_AESRX = MXC_S_DMA_CTRL_REQUEST_AESRX, ///< AES Receive DMA Request Selection
+    MXC_DMA_REQUEST_UART3RX =
+        MXC_S_DMA_CTRL_REQUEST_UART3RX, ///< UART3 Receive DMA Request Selection
     MXC_DMA_REQUEST_I2SRX = MXC_S_DMA_CTRL_REQUEST_I2SRX, ///< I2S Receive DMA Request Selection
     MXC_DMA_REQUEST_SPI1TX = MXC_S_DMA_CTRL_REQUEST_SPI1TX, ///< SPI1 Transmit DMA Request Selection
     MXC_DMA_REQUEST_SPI0TX = MXC_S_DMA_CTRL_REQUEST_SPI0TX, ///< SPI0 Transmit DMA Request Selection
@@ -99,6 +101,8 @@ typedef enum {
     MXC_DMA_REQUEST_UART2TX =
         MXC_S_DMA_CTRL_REQUEST_UART2TX, ///< UART2 Transmit DMA Request Selection
     MXC_DMA_REQUEST_AESTX = MXC_S_DMA_CTRL_REQUEST_AESTX, ///< AES Transmit DMA Request Selection
+    MXC_DMA_REQUEST_UART3TX =
+        MXC_S_DMA_CTRL_REQUEST_UART3TX, ///< UART3 Transmit DMA Request Selection
     MXC_DMA_REQUEST_I2STX = MXC_S_DMA_CTRL_REQUEST_I2STX, ///< I2S Transmit DMA Request Selection
 } mxc_dma_reqsel_t;
 
