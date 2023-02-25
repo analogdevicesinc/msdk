@@ -295,11 +295,11 @@ static int set_framesize(int width, int height)
         input_factor_ptr = input_factor_1_1;
     }
 
-    // Image typically outputs one line short, add a line to account.
+    // Image is one line short for low resolution, add a line to account it.
     if ((width <= 68) || (height <= 68)) {
         height = height + 1;
     }
-    
+
     // Apply passed in resolution as output resolution.
     ret |= cambus_writeb(OH_HIGH, (width >> 8) & 0xff);
     ret |= cambus_writeb(OH_LOW, (width >> 0) & 0xff);
