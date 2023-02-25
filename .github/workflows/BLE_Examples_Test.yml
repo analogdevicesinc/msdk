@@ -256,7 +256,7 @@ jobs:
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
 
       - name: Test MAX32655 #name used for display purposes on github webpage
-        if: steps.LOCK_BOARDS.outcome == 'success' && $TEST_MAX32655 == 'true'
+        if: steps.LOCK_BOARDS.outcome == 'success' && env.TEST_MAX32655 == 'true'
         id: Test_MAX32655 #id used to reference this step in other parts of the yml
         run: |
           echo "Running Test on MAX32655"
@@ -271,10 +271,12 @@ jobs:
           #./test_launcher.sh max32655 $dut_uart $dut_serial
 
       - name: Test MAX32665 #name used for display purposes on github webpage
-        if: steps.LOCK_BOARDS.outcome == 'success' && $TEST_MAX32665 == 'true'
+        if: steps.LOCK_BOARDS.outcome == 'success' && env.TEST_MAX32665 == 'true'
         id: Test_MAX32665 #id used to reference this step in other parts of the yml
         run: |
           echo "Running Test on MAX32665"
+          echo $env.TEST_MAX32655
+          echo $TEST_MAX32655
           cd .github/workflows/ci-tests/Examples_tests
           chmod +x test_launcher.sh
           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
@@ -283,7 +285,7 @@ jobs:
           #./test_launcher.sh max32665 $dut_uart $dut_serial
 
       - name: Test MAX32690 #name used for display purposes on github webpage
-        if: steps.LOCK_BOARDS.outcome == 'success' && $TEST_MAX32690 == 'true'
+        if: steps.LOCK_BOARDS.outcome == 'success' && env.TEST_MAX32690 == 'true'
         id: Test_MAX32690 #id used to reference this step in other parts of the yml
         run: |
           echo "Running Test on MAX32690"
