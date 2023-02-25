@@ -43,13 +43,15 @@ import argparse
 from argparse import RawTextHelpFormatter
 from time import sleep
 import matplotlib.pyplot as plt
+import ntpath
 import numpy as np
 import os
 import pandas
+import socket
 import itertools
 
 RES_DIR = '/home/btm-ci/Workspace/ci_results/per'
-
+TMP_PATH = '/tmp/msdk/ci/per'
 SPEC = 30  # per spec in %
 phy_str = ["", "1M", "2M", "S8", "S2"]
 
@@ -69,6 +71,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument('csvFile', help='csv file containing PER data.')
 parser.add_argument('desc', help='Description of data.')
 parser.add_argument('basename', help='PDF file base name.')
+parser.add_argument('--job_time', default="2023-01-01_00-00-00", help="current time of this job, use for part of url file name")
 
 args = parser.parse_args()
 
@@ -80,6 +83,21 @@ print(f'csv full: {csv_full_path}')
 
 pdf_file_name = args.csvFile.replace('.csv', '.pdf')
 pdf_file_name = os.path.expanduser(pdf_file_name)
+
+# Get the IP of this machine
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(("8.8.8.8", 80))
+ip = s.getsockname()[0]
+print(f'ip: {ip}')
+
+# final url file
+url_file_name = TMP_PATH + '/' + args.job_time + '.url'
+url_file = open(url_file_name, 'a')
+
+zip_file_list_name = TMP_PATH + '/' + args.job_time + '_zip_list.txt'
+zip_file_list = open(zip_file_list_name, 'a')
+
+url_links = list()
 
 # Create the plots
 phys = []
@@ -93,22 +111,22 @@ phys = df["phy"].unique()
 attens = df["atten"].unique()
 txPowers = df["txPower"].unique()
 
-print("lens     :", lens)
-print("phys     :", phys)
-print("attens   :", attens)
-print("txPowers :", txPowers)
+#print("lens     :", lens)
+#print("phys     :", phys)
+#print("attens   :", attens)
+#print("txPowers :", txPowers)
 
-print("--------------------------------------------------------------------------------------------")
+#print("--------------------------------------------------------------------------------------------")
 row = len(lens) * len(txPowers)
 col = len(phys)
-print(f'row: {row}, col: {col}')
+#print(f'row: {row}, col: {col}')
 
 if row > 1 or col > 1:
     fig, axs = plt.subplots(row, col)
 
     name = pdf_file_name.split('/')[-1]
     board = name.split('_')[2].replace('.pdf', '').upper()
-    fig.suptitle(f'Packet Error Rate vs Attenuation\n{board}', fontsize=10)
+    fig.suptitle(f'Packet Error Rate vs Rx Power\n{board}', fontsize=10)
 
     if axs.ndim == 1:
         plt.subplots_adjust(top=0.83, hspace=0.5)
@@ -118,36 +136,37 @@ if row > 1 or col > 1:
 
     case = 0
     for packetLen, phy, txPower in itertools.product(lens, phys, txPowers):
-        print(f'CASE: {case + 1}')
+        #print(f'CASE: {case + 1}')
         col = case % len(phys)
         row = int(case / len(phys))
-        print(f'row: {row}, col: {col}')
+        #print(f'row: {row}, col: {col}')
 
         # Create line plot with atten to perSlave
-        print("len     :", packetLen)
-        print("phy     :", phy)
-        print("txPower :", txPower)
+        #print("len     :", packetLen)
+        #print("phy     :", phy)
+        #print("txPower :", txPower)
         tempDf = df.loc[(df['packetLen'] == packetLen) & (
             df['phy'] == phy) & (df['txPower'] == txPower)]
         '''
         name = pdf_file_name.split('/')[-1]
         board = name.split('_')[2].replace('.pdf', '').upper()
-        fig.suptitle(f'Packet Error Rate vs Attenuation\n{board}', fontsize=10)
+        fig.suptitle(f'Packet Error Rate vs Rx Power\n{board}', fontsize=10)
         fig.tight_layout()
         plt.subplots_adjust(bottom=0.1)
         '''
-        title = f'packet len: {packetLen}\nphy: {phy_str[phy]}\ntxPower:{txPower}'
+        #title = f'packet len: {packetLen}\nphy: {phy_str[phy]}\ntxPower:{txPower}'
+        title = f'packet len: {packetLen}, txPower: 0.7 dBm\nphy: {phy_str[phy]}'
         if axs.ndim == 1:
-            axs[row].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
-            axs[row].set_xlabel('Attenuation, dBm', fontdict={"fontsize": 5})
-            axs[row].set_ylabel('PER (%)', fontdict={"fontsize": 5})
-            axs[row].tick_params(axis='both', which='major', labelsize=4)
-            axs[row].plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=0.25, ms=0.5)
-            axs[row].axhline(y=SPEC, color='r', linestyle=':', linewidth=0.5)
+            axs[col].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
+            axs[col].set_xlabel('Rx Power (dBm)', fontdict={"fontsize": 5})
+            axs[col].set_ylabel('PER (%)', fontdict={"fontsize": 5})
+            axs[col].tick_params(axis='both', which='major', labelsize=4)
+            axs[col].plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=0.25, ms=0.5)
+            axs[col].axhline(y=SPEC, color='r', linestyle=':', linewidth=0.5)
         else:
             axs[row, col].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
-            axs[row, col].set_xlabel('Attenuation, dBm', fontdict={"fontsize": 5})
-            axs[row, col].set_ylabel('PER (%)', fontdict={"fontsize": 5})
+            axs[row, col].set_xlabel('Rx Power (dBm)', fontdict={"fontsize": 4})
+            axs[row, col].set_ylabel('PER (%)', fontdict={"fontsize": 4})
             axs[row, col].tick_params(axis='both', which='major', labelsize=4)
             axs[row, col].plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=0.25, ms=0.5)
             axs[row, col].axhline(y=SPEC, color='r', linestyle=':', linewidth=0.5)
@@ -156,7 +175,7 @@ if row > 1 or col > 1:
         p = list(tempDf['perSlave'])
         for i in range(len(a)):
             if p[i] > SPEC:
-                print(f'{a[i]}, {p[i]}')
+                #print(f'{a[i]}, {p[i]}')
                 if axs.ndim == 1:
                     axs[row].axvline(x=a[i], color='r', linestyle=':', linewidth=0.5)
                     axs[row].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', horizontalalignment='left',
@@ -168,34 +187,46 @@ if row > 1 or col > 1:
                 break
 
         # note
-        fig.text(.5, .01, "Run on all data channels (no advertising channels).", ha='center',
+        fig.text(.5, .01, f'Run on all data channels (no advertising channels).\n{args.desc}', ha='center',
                  fontdict={"fontsize": 5})
 
-        print()
+        #print()
         case += 1
 
     saved_file = pdf_file_name
-    print(saved_file)
+    #print(saved_file)
+    zip_file_list.write(saved_file + '\n')
+
+    # http://10.20.14.104:8000/per/pdf/?pdf=msdk-2023-02-13_15-34-35_max32655_EvKit_V1.pdf
+    url = f'http://{ip}:8000/per/pdf/?pdf={ntpath.basename(saved_file)}'
+    url_links.append(url)
 
     plt.savefig(saved_file)
 
     # save to a png file
     png_file = pdf_file_name.replace(".pdf", ".png")
-    print(f'Save to file: {png_file}.')
+    #print(f'Save to file: {png_file}.')
     plt.savefig(png_file)
+    zip_file_list.write(saved_file + '\n')
+
     # plt.show()
+
+    # http://10.20.14.104:8000/per/image/?image=msdk-2023-02-13_15-34-35_max32655_EvKit_V1.png
+    url = f'http://{ip}:8000/per/image/?image={ntpath.basename(png_file)}'
+    url_links.append(url)
+
 
 # -------------------------------------------------------------------------------------------------
 # Save each test into separated PDF files.
 # -------------------------------------------------------------------------------------------------
 case = 0
 for packetLen, phy, txPower in itertools.product(lens, phys, txPowers):
-    print(f'CASE: {case + 1}')
+    #print(f'CASE: {case + 1}')
 
     # Create line plot with atten to perSlave
-    print("len     :", packetLen)
-    print("phy     :", phy)
-    print("txPower :", txPower)
+    #print("len     :", packetLen)
+    #print("phy     :", phy)
+    #print("txPower :", txPower)
     tempDf = df.loc[(df['packetLen'] == packetLen) & (
         df['phy'] == phy) & (df['txPower'] == txPower)]
 
@@ -205,12 +236,13 @@ for packetLen, phy, txPower in itertools.product(lens, phys, txPowers):
     fig = plt.figure()
     ax1 = fig.add_axes((0.1, 0.2, 0.8, 0.7))
 
-    title = f'Packet Error Rate vs Attenuation\n'\
+    title = f'Packet Error Rate vs Rx Power\n'\
             f'\n{board}\n'\
-            f'Packet length: {packetLen}, PHY: {phy_str[phy]}, txPower:{txPower}'
+            f'Packet length: {packetLen}, txPower: 0.7 dBm, PHY: {phy_str[phy]}'
+            #f'Packet length: {packetLen}, PHY: {phy_str[phy]}, txPower:{txPower}'
     ax1.set_title(title)
-    ax1.set_xlabel('Attenuation, dBm')
-    ax1.set_ylabel('PER, Percentage')
+    ax1.set_xlabel('Rx Power (dBm)')
+    ax1.set_ylabel('PER (%)')
 
     ax1.plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=1, ms=2)
 
@@ -228,22 +260,38 @@ for packetLen, phy, txPower in itertools.product(lens, phys, txPowers):
     # resize the figure to match the aspect ratio of the Axes
     fig.set_size_inches(7, 8, forward=True)
     #fig.text(.5, .10, args.desc, ha='center', fontdict={"fontsize": 12})
-    fig.text(.5, .05, "Run on all data channels (no advertising channels).", ha='center',
+    fig.text(.5, .05, f'Run on all data channels (no advertising channels).\n{args.desc}', ha='center',
              fontdict={"fontsize": 12})
 
     filename = csv_full_path.replace('.csv', '')
     filename += f'_{packetLen}_{phy_str[phy]}_{txPower}.pdf'
-    print(f'Save to file: {filename}.')
+    #print(f'Save to file: {filename}.')
     plt.savefig(filename)
+
+    zip_file_list.write(filename + '\n')
+
+    url = f'http://{ip}:8000/per/pdf/?pdf={ntpath.basename(filename)}'
+    url_links.append(url)
 
     # save to a png file
     png_file = filename.replace(".pdf", ".png")
-    print(f'Save to file: {png_file}.')
+    #print(f'Save to file: {png_file}.')
     plt.savefig(png_file)
+    zip_file_list.write(png_file + '\n')
 
-    print()
+    url = f'http://{ip}:8000/per/image/?image={ntpath.basename(png_file)}'
+    url_links.append(url)
+
+    #print()
     case += 1
 
-print("DONE!")
+print("PLOT DONE!\n")
+
+for url in url_links:
+    url_file.write(url + '\n')
+    print(url)
+
+url_file.close()
+zip_file_list.close()
 
 sys.exit(0)

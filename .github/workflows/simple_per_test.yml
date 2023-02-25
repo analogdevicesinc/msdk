@@ -1,23 +1,24 @@
 name: simple_per_test
 
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 # Control when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+  # push:
+  #   branches: ["main"]
+  # pull_request:
+  #   branches: ["main"]
+  #   types: [opened, reopened, synchronize, ready_for_review]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  test_each_board:
+  simple_per_test_on_all_boards:
     # The type of runner that the job will run on
     runs-on: [self-hosted, btm-ci]
     if: github.event.pull_request.draft == false
@@ -38,7 +39,6 @@ jobs:
           # Remove old archives
           rm -f *.zip
 
-
       # Runs a set of commands using the runners shell
       - name: get_and_set_configurations
         env:
@@ -53,7 +53,22 @@ jobs:
           NO_SKIP=`python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['no_skip'])"`
           echo "::set-env name=NO_SKIP::${NO_SKIP}"
           echo "NO_SKIP: ${NO_SKIP}"
-          echo
+          echo ""
+
+          COMMIT_ID=`python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['commit_id'])"`
+          echo "::set-env name=COMMIT_ID::${COMMIT_ID}"
+          echo "COMMIT_ID: ${COMMIT_ID}"
+          echo ""
+
+          START_TIME=`python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['start_time'])"`
+          echo "::set-env name=START_TIME::${START_TIME}"
+          echo "START_TIME: ${START_TIME}"
+          echo ""
+
+          LIMIT=`python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['limit'])"`
+          echo "::set-env name=LIMIT::${LIMIT}"
+          echo "LIMIT: ${LIMIT}"
+          echo ""
 
           DO_MAX32655=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32655'])")
           DO_MAX32665=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['do_max32665'])")
@@ -62,12 +77,12 @@ jobs:
           echo "::set-env name=DO_MAX32655::${DO_MAX32655}"
           echo "::set-env name=DO_MAX32665::${DO_MAX32665}"
           echo "::set-env name=DO_MAX32690::${DO_MAX32690}"
-          echo "::set-env name=DO_MAX32690_WLP::${DO_MAX32690_wlp}"
+          echo "::set-env name=DO_MAX32690_WLP::${DO_MAX32690_WLP}"
           echo DO_MAX32655: ${DO_MAX32655}
           echo DO_MAX32665: ${DO_MAX32665}
           echo DO_MAX32690: ${DO_MAX32690}
           echo DO_MAX32690_WLP: ${DO_MAX32690_WLP}
-          echo
+          echo ""
 
           MAX32655_PKG_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_pkglen_range'])")
           MAX32665_PKG_RA=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32665_pkglen_range'])")
@@ -97,6 +112,20 @@ jobs:
           echo MAX32690_WLP_PHY_RA: ${MAX32690_WLP_PHY_RA}
           echo
 
+          MAX32655_ATTENS=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_attens'])")
+          MAX32665_ATTENS=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32665_attens'])")
+          MAX32690_ATTENS=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_attens'])")
+          MAX32690_WLP_ATTENS=$(python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_attens'])")
+          echo "::set-env name=MAX32655_ATTENS::${MAX32655_ATTENS}"
+          echo "::set-env name=MAX32665_ATTENS::${MAX32665_ATTENS}"
+          echo "::set-env name=MAX32690_ATTENS::${MAX32690_ATTENS}"
+          echo "::set-env name=MAX32690_ATTENS::${MAX32690_WLP_ATTENS}"
+          echo MAX32655_ATTENS: ${MAX32655_ATTENS}
+          echo MAX32665_ATTENS: ${MAX32665_ATTENS}
+          echo MAX32690_ATTENS: ${MAX32690_ATTENS}
+          echo MAX32690_WLP_ATTENS: ${MAX32690_WLP_ATTENS}
+          echo 
+
           MAX32655_STEP=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32655_step'])")
           MAX32665_STEP=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32665_step'])")
           MAX32690_STEP=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['max32690_step'])")
@@ -111,6 +140,21 @@ jobs:
           echo MAX32690_WLP_STEP: ${MAX32690_WLP_STEP}
           echo
 
+          JOB_CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
+          echo "::set-env name=JOB_CURR_TIME::${JOB_CURR_TIME}"
+          echo JOB_CURR_TIME: ${JOB_CURR_TIME}
+          echo
+
+          RETRY=$(python3     -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['tests']['simple_per_test.yml']['retry_limit'])")
+          echo "::set-env name=RETRY::${RETRY}"
+          echo RETRY: ${RETRY}
+          echo
+
+          MSDK=${GITHUB_WORKSPACE}
+          echo "::set-env name=MSDK::${MSDK}"
+          echo MSDK: ${MSDK}
+          echo
+
       # Runs a set of commands using the runners shell
       - name: max32655_simple_per_test
         env:
@@ -119,14 +163,15 @@ jobs:
         run: |
 
           #------------------------------------------------------------------------------------------------------------
-          # Prepare the arguments for script.                    
-          MSDK=${GITHUB_WORKSPACE}
+          # Prepare the arguments for script.                              
           CHIP_UC=MAX32655
+          BRD_TYPE=EvKit_V1
 
-          $MSDK/.github/workflows/msdk_per_skip_check.sh \
+          $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
             $NO_SKIP \
             $MSDK    \
-            $CHIP_UC
+            $CHIP_UC \
+            $BRD_TYPE
 
           if [[ $? -ne 0 ]]; then
             echo "SKIPPED."
@@ -144,23 +189,33 @@ jobs:
           BRD2_CHIP_LC=max32655
 
           MSDK=${GITHUB_WORKSPACE}
-          BRD1=nRF52840_1
-          BRD2=max32655_board_2
+
+          host_name=`hostname`
+          if [ "$host_name" == "wall-e" ]; then
+            BRD1=nRF52840_1
+            BRD2=max32655_board_2
+          else
+            BRD1=nRF52840_2
+            BRD2=max32655_board_y1
+          fi
 
           CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
 
-          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.txt
           echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
 
-          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log          
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.log          
           echo "::set-env name=CURR_LOG::${CURR_LOG}"
 
           RESULT_PATH=~/Workspace/ci_results/per
           res=${RESULT_PATH}/msdk-${CURR_TIME}
-          all_in_one=${res}_${BRD2_CHIP_LC}.csv
+          all_in_one=${res}_${BRD2_CHIP_LC}_${BRD_TYPE}.csv
           echo "::set-env name=all_in_one::${all_in_one}"
+          echo "all_in_one: ${all_in_one}"
+          echo
 
           #------------------------------------------------
+          set -e
           ${MSDK}/.github/workflows/scripts/board_per_test.sh \
             $MSDK      \
             $BRD1      \
@@ -172,16 +227,23 @@ jobs:
             "${MAX32655_PKG_RA}"         \
             "${MAX32655_PHY_RA}"         \
             ${MAX32655_STEP}             \
+            ${LIMIT}                     \
+            ${RETRY}                     \
+            "${MAX32655_ATTENS}"         \
             2>&1 | tee -a ${CURR_LOG}
-          
+
           if [[ $? -ne 0 ]]; then
+            echo "${CHIP_UC} ${BRD2_TYPE} FAILED!"
+            #core.setFailed("PER test failed.")
             exit 1
           fi
-          #------------------------------------------------          
+          #------------------------------------------------
 
       # Unlock even when cancelled or failed
       - name: unlock_max32655
         if: always()
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         run: |
 
           cd ${GITHUB_WORKSPACE}
@@ -189,8 +251,31 @@ jobs:
           echo
 
           chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
-          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} True 2>&1 | tee -a ${CURR_LOG}
+          echo ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} "${CURR_JOB_FILE}" "${all_in_one}" True ${JOB_CURR_TIME} 2>&1 | tee -a ${CURR_LOG}
+          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} "${CURR_JOB_FILE}" "${all_in_one}" True ${JOB_CURR_TIME} 2>&1 | tee -a ${CURR_LOG}
 
+          echo "Add files to per.zip"
+          if [ -f ${all_in_one} ]; then
+            echo "Add ${all_in_one}"
+            if [[ `wc -c ${all_in_one} | awk '{print $1}'` -gt 0 ]]; then
+              zip ${MSDK}/per.zip ${all_in_one}
+            else
+              echo "Empty file."
+            fi
+          fi
+          echo
+
+          if [ -f ${CURR_LOG} ]; then
+            echo "Add ${CURR_LOG}"
+            if [[ `wc -c ${CURR_LOG} | awk '{print $1}'` -gt 0 ]]; then
+              zip ${MSDK}/per.zip ${CURR_LOG}
+            else
+              echo "Empty file."
+            fi
+          fi
+
+          echo "::set-env name=all_in_one::"
+          echo "::set-env name=CURR_JOB_FILE::"
 
       # Runs a set of commands using the runners shell
       - name: max32665_simple_per_test
@@ -201,13 +286,14 @@ jobs:
 
           #------------------------------------------------------------------------------------------------------------
           # Prepare the arguments for script.                    
-          MSDK=${GITHUB_WORKSPACE}
           CHIP_UC=MAX32665
+          BRD_TYPE=EvKit_V1
 
           $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
             $NO_SKIP \
             $MSDK    \
-            $CHIP_UC
+            $CHIP_UC \
+            $BRD_TYPE
 
           if [[ $? -ne 0 ]]; then
             echo "SKIPPED."
@@ -230,18 +316,19 @@ jobs:
 
           CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
 
-          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.txt
           echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
 
-          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log          
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.log
           echo "::set-env name=CURR_LOG::${CURR_LOG}"
 
           RESULT_PATH=~/Workspace/ci_results/per
           res=${RESULT_PATH}/msdk-${CURR_TIME}
-          all_in_one=${res}_${BRD2_CHIP_LC}.csv
+          all_in_one=${res}_${BRD2_CHIP_LC}_${BRD_TYPE}.csv
           echo "::set-env name=all_in_one::${all_in_one}"
 
           #------------------------------------------------
+          set -e
           ${MSDK}/.github/workflows/scripts/board_per_test.sh \
             $MSDK      \
             $BRD1      \
@@ -253,16 +340,23 @@ jobs:
             "${MAX32665_PKG_RA}"         \
             "${MAX32665_PHY_RA}"         \
             ${MAX32665_STEP}             \
+            ${LIMIT}                     \
+            ${RETRY}                     \
+            "${MAX32665_ATTENS}"         \
             2>&1 | tee -a ${CURR_LOG}
-          
+
           if [[ $? -ne 0 ]]; then
+            echo "${CHIP_UC} ${BRD2_TYPE} FAILED!"
+            #core.setFailed("PER test failed.")
             exit 1
           fi
-          #------------------------------------------------          
+          #------------------------------------------------
 
       # Unlock even when cancelled or failed
       - name: unlock_max32665
         if: always()
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         run: |
 
           cd ${GITHUB_WORKSPACE}
@@ -270,7 +364,30 @@ jobs:
           echo
 
           chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
-          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} True 2>&1 | tee -a ${CURR_LOG}
+          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} "${CURR_JOB_FILE}" "${all_in_one}" True ${JOB_CURR_TIME} 2>&1 | tee -a ${CURR_LOG}
+
+          echo "Add files to per.zip"
+          if [ -f ${all_in_one} ]; then
+            echo "Add ${all_in_one}"
+            if [[ `wc -c ${all_in_one} | awk '{print $1}'` -gt 0 ]]; then
+              zip ${MSDK}/per.zip ${all_in_one}
+            else
+              echo "Empty file."
+            fi
+          fi
+          echo
+
+          if [ -f ${CURR_LOG} ]; then
+            echo "Add ${CURR_LOG}"
+            if [[ `wc -c ${CURR_LOG} | awk '{print $1}'` -gt 0 ]]; then
+              zip ${MSDK}/per.zip ${CURR_LOG}
+            else
+              echo "Empty file."
+            fi
+          fi
+
+          echo "::set-env name=all_in_one::"
+          echo "::set-env name=CURR_JOB_FILE::"
 
       # Runs a set of commands using the runners shell
       - name: max32690_simple_per_test
@@ -281,13 +398,14 @@ jobs:
 
           #------------------------------------------------------------------------------------------------------------
           # Prepare the arguments for script.                    
-          MSDK=${GITHUB_WORKSPACE}
           CHIP_UC=MAX32690
+          BRD_TYPE=EvKit_V1
 
           $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
             $NO_SKIP \
             $MSDK    \
-            $CHIP_UC
+            $CHIP_UC \
+            $BRD_TYPE
 
           if [[ $? -ne 0 ]]; then
             echo "SKIPPED."
@@ -310,18 +428,19 @@ jobs:
 
           CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
 
-          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.txt
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.txt
           echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
 
-          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}.log          
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.log
           echo "::set-env name=CURR_LOG::${CURR_LOG}"
 
           RESULT_PATH=~/Workspace/ci_results/per
           res=${RESULT_PATH}/msdk-${CURR_TIME}
-          all_in_one=${res}_${BRD2_CHIP_LC}.csv
+          all_in_one=${res}_${BRD2_CHIP_LC}_${BRD_TYPE}.csv
           echo "::set-env name=all_in_one::${all_in_one}"
 
           #------------------------------------------------
+          set -e
           ${MSDK}/.github/workflows/scripts/board_per_test.sh \
             $MSDK      \
             $BRD1      \
@@ -333,16 +452,23 @@ jobs:
             "${MAX32690_PKG_RA}"         \
             "${MAX32690_PHY_RA}"         \
             ${MAX32690_STEP}             \
+            ${LIMIT}                     \
+            ${RETRY}                     \
+            "${MAX32690_ATTENS}"         \
             2>&1 | tee -a ${CURR_LOG}
-          
+
           if [[ $? -ne 0 ]]; then
+            echo "${CHIP_UC} ${BRD2_TYPE} FAILED!"
+            #core.setFailed("PER test failed.")
             exit 1
           fi
-          #------------------------------------------------          
+          #------------------------------------------------
 
       # Unlock even when cancelled or failed
       - name: unlock_max32690
         if: always()
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
         run: |
 
           cd ${GITHUB_WORKSPACE}
@@ -350,4 +476,170 @@ jobs:
           echo
 
           chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
-          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} ${CURR_JOB_FILE} ${all_in_one} True 2>&1 | tee -a ${CURR_LOG}
+          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} "${CURR_JOB_FILE}" "${all_in_one}" True ${JOB_CURR_TIME} 2>&1 | tee -a ${CURR_LOG}
+
+          echo "Add files to per.zip"
+          if [ -f ${all_in_one} ]; then
+            echo "Add ${all_in_one}"
+            if [[ `wc -c ${all_in_one} | awk '{print $1}'` -gt 0 ]]; then
+              zip ${MSDK}/per.zip ${all_in_one}
+            else
+              echo "Empty file."
+            fi
+          fi
+          echo
+
+          if [ -f ${CURR_LOG} ]; then
+            echo "Add ${CURR_LOG}"
+            if [[ `wc -c ${CURR_LOG} | awk '{print $1}'` -gt 0 ]]; then
+              zip ${MSDK}/per.zip ${CURR_LOG}
+            else
+              echo "Empty file."
+            fi
+          fi
+
+          echo "::set-env name=all_in_one::"
+          echo "::set-env name=CURR_JOB_FILE::"
+
+      # Runs a set of commands using the runners shell
+      - name: max32690-wlp_simple_per_test
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+
+        run: |
+
+          #------------------------------------------------------------------------------------------------------------
+          # Prepare the arguments for script.
+          CHIP_UC=MAX32690
+          BRD_TYPE=WLP_V1
+
+          $MSDK/.github/workflows/scripts/msdk_per_skip_check.sh \
+            $NO_SKIP \
+            $MSDK    \
+            $CHIP_UC \
+            $BRD_TYPE
+
+          if [[ $? -ne 0 ]]; then
+            echo "SKIPPED."
+            exit 0
+          fi
+
+          #------------------------------------------------
+          # Prepare the arguments for function call
+
+          if [ "${DO_MAX32690_WLP}" == "0" ]; then
+            echo "Skip the test for MAX32690 WLP_V1."
+            exit 0
+          fi
+
+          BRD2_CHIP_LC=max32690
+
+          MSDK=${GITHUB_WORKSPACE}
+          BRD1=nRF52840_1
+          BRD2=max32690_board_A1
+
+          CURR_TIME=$(date +%Y-%m-%d_%H-%M-%S)
+
+          CURR_JOB_FILE=/home/$USER/Workspace/Resource_Share/History/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.txt
+          echo "::set-env name=CURR_JOB_FILE::${CURR_JOB_FILE}"
+
+          CURR_LOG=/home/$USER/Workspace/Resource_Share/Logs/msdk_simple_per_test_${CURR_TIME}_${BRD2_CHIP_LC}_${BRD_TYPE}.log
+          echo "::set-env name=CURR_LOG::${CURR_LOG}"
+
+          RESULT_PATH=~/Workspace/ci_results/per
+          res=${RESULT_PATH}/msdk-${CURR_TIME}
+          all_in_one=${res}_${BRD2_CHIP_LC}_${BRD_TYPE}.csv
+          echo "::set-env name=all_in_one::${all_in_one}"
+
+          #------------------------------------------------
+          set -e
+          ${MSDK}/.github/workflows/scripts/board_per_test.sh \
+            $MSDK      \
+            $BRD1      \
+            $BRD2      \
+            $CURR_TIME \
+            $(realpath ${CURR_JOB_FILE}) \
+            $(realpath ${CURR_LOG})      \
+            $(realpath ${all_in_one})    \
+            "${MAX32690_WLP_PKG_RA}"     \
+            "${MAX32690_WLP_PHY_RA}"     \
+            ${MAX32690_WLP_STEP}         \
+            ${LIMIT}                     \
+            ${RETRY}                     \
+            "${MAX32690_WLP_ATTENS}"     \
+            2>&1 | tee -a ${CURR_LOG}
+
+          if [[ $? -ne 0 ]]; then
+            echo "${CHIP_UC} ${BRD2_TYPE} FAILED!"
+            #core.setFailed("PER test failed.")
+            exit 1
+          fi
+          #------------------------------------------------
+
+      # Unlock even when cancelled or failed
+      - name: unlock_max32690-wlp
+        if: always()
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+        run: |
+
+          cd ${GITHUB_WORKSPACE}
+          echo PWD: `pwd`
+          echo
+
+          chmod u+x ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh
+          ${GITHUB_WORKSPACE}/.github/workflows/scripts/unlock_plot.sh ${GITHUB_WORKSPACE} "${CURR_JOB_FILE}" "${all_in_one}" True ${JOB_CURR_TIME} 2>&1 | tee -a ${CURR_LOG}
+
+          echo "Add files to per.zip"
+          if [ -f ${all_in_one} ]; then
+            echo "Add ${all_in_one}"
+            if [[ `wc -c ${all_in_one} | awk '{print $1}'` -gt 0 ]]; then
+              zip ${MSDK}/per.zip ${all_in_one}
+            else
+              echo "Empty file."
+            fi
+          fi
+          echo
+
+          if [ -f ${CURR_LOG} ]; then
+            echo "Add ${CURR_LOG}"
+            if [[ `wc -c ${CURR_LOG} | awk '{print $1}'` -gt 0 ]]; then
+              zip ${MSDK}/per.zip ${CURR_LOG}
+            else
+              echo "Empty file."
+            fi
+          fi
+
+          echo "::set-env name=all_in_one::"
+          echo "::set-env name=CURR_JOB_FILE::"
+
+      - name: show_results
+        if: always()
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+        run: |
+          # add all results to per.zip
+          result_files=/tmp/msdk/ci/per/${JOB_CURR_TIME}_zip_list.txt
+          if [ -f $result_files ]; then
+            while IFS= read -r line; do
+              #echo $line
+              if [[ `wc -c ${line} | awk '{print $1}'` -gt 0 ]]; then
+                zip ${MSDK}/per.zip ${line}
+              fi
+            done <$result_files
+          fi
+
+          # show ULRs
+          url_file=/tmp/msdk/ci/per/${JOB_CURR_TIME}.url
+          echo "URLs are saved in file: $url_file"
+          echo ""
+
+          if [ -f $url_file ]; then
+            cat $url_file
+          fi
+
+      - name: "Upload Artifact"
+        uses: actions/upload-artifact@v3
+        with:
+          name: simple_per_results
+          path: per.zip

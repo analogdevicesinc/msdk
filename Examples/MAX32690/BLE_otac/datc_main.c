@@ -664,6 +664,12 @@ static void datcSendBlock(dmConnId_t connId, uint32_t address, uint32_t len, uin
     /* Send the address and data, add the length of the address to the length */
     WdxcFtdSendBlock(connId, len + sizeof(uint32_t), addrData);
 
+    /* Clear out the buf->free field to prevent un-intended assertion in WsfBufFree */
+    addrData[4] = 0;
+    addrData[5] = 0;
+    addrData[6] = 0;
+    addrData[7] = 0;
+
     WsfBufFree(addrData);
 
     /* Increment the address of the data that we're sending */
@@ -923,7 +929,7 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
     case APP_DISC_FAILED:
         if (pAppCfg->abortDisc) {
             /* if discovery failed for proprietary data service then disconnect */
-            if (datcCb.discState[connId - 1] == DATC_DISC_WP_SVC) {
+            if (datcCb.discState[connId - 1] < DATC_DISC_SVC_MAX) {
                 AppConnClose(connId);
                 break;
             }

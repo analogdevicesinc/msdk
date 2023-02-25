@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- # $Date: 2018-08-31 14:08:14 -0500 (Fri, 31 Aug 2018) $
- # $Revision: 37586 $
- #
  ###############################################################################
 
 # This is the name of the build output file
@@ -47,7 +44,6 @@ ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
 
-
 # This is the path to the CMSIS root directory
 ifeq "$(CMSIS_ROOT)" ""
 CMSIS_ROOT=../CMSIS
@@ -61,38 +57,26 @@ SOURCE_DIR := $(PERIPH_DIR)/Source
 INCLUDE_DIR := $(PERIPH_DIR)/Include
 
 PERIPH_DRIVER_INCLUDE_DIR  += $(INCLUDE_DIR)/$(TARGET_UC)/
-# Source files)
-#PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)
 
+# Source files
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/pins_me14.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_me14.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ADC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_me14.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_reva.c
 
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me14.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_reva.c
-
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CORE1
 PERIPH_DRIVER_A_FILES += $(SOURCE_DIR)/CORE1/startup_core1.S
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CORE1/system_core1.c
 
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/PT
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_me14.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_reva.c
-
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_me14.c
-
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SRCC
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SRCC/srcc_me14.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SRCC/srcc_reva.c
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me14.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/FLC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_common.c
@@ -116,9 +100,16 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ICC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_me14.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_reva.c
 
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_me14.c
+
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/OWM
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/OWM/owm_me14.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/OWM/owm_reva.c
+
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/PT
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_me14.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/RPU
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/RPU/rpu_me14.c
@@ -153,6 +144,10 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPIXR
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIXR/spixr_me14.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIXR/spixr_reva.c
 
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SRCC
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SRCC/srcc_me14.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SRCC/srcc_reva.c
+
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/TMR
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/TMR/tmr_common.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/TMR/tmr_me14.c
@@ -179,8 +174,6 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/WDT/wdt_reva.c
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/WUT
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/WUT/wut_me14.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/WUT/wut_reva.c
-
-#need to ask about dvs, rpu, simo, and wut later
 
 # Where to find header files for this project
 PERIPH_DRIVER_H_FILES +=  $(shell find $(PERIPH_DRIVER_INCLUDE_DIR) -name '*.h')

@@ -1,36 +1,37 @@
-/*******************************************************************************
-* Copyright (C) 2020-2022 Maxim Integrated Products, Inc., All rights Reserved.
-*
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************/
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 /**
  * @file    main.c
@@ -60,8 +61,9 @@
 #include "led.h"
 #include "pb.h"
 #include "cnn.h"
+#include <math.h>
 
-#define VERSION "3.0.2 (02/08/21)" // Low power mode
+#define VERSION "3.2.0 (02/13/23)" // trained with background noise and more unknown keywords
 
 /* **** Definitions **** */
 #define CLOCK_SOURCE 0 // 0: IPO,  1: ISO, 2: IBRO
@@ -74,6 +76,10 @@
 #ifndef WUT_ENABLE
 #define WUT_ENABLE
 #endif
+#endif
+
+#ifdef ENABLE_TFT
+#define DISPLAY_AUDIO // displays audio waveform on TFT
 #endif
 
 /* Enable/Disable Features */
@@ -89,13 +95,15 @@
 #undef ENABLE_PRINT_ENVELOPE // print is slow with live mic data
 #endif
 
+#define CON_BAUD 1 * 115200
+
 /*-----------------------------*/
 /* keep following unchanged */
 #define SAMPLE_SIZE 16384 // size of input vector for CNN, keep it multiple of 128
 #define CHUNK \
     128 // number of data points to read at a time and average for threshold, keep multiple of 128
 #define TRANSPOSE_WIDTH 128 // width of 2d data model to be used for transpose
-#define NUM_OUTPUTS 21 // number of classes
+#define NUM_OUTPUTS CNN_NUM_OUTPUTS // number of classes
 #define I2S_RX_BUFFER_SIZE 64 // I2S buffer size
 #define TFT_BUFF_SIZE 50 // TFT buffer size
 /*-----------------------------*/
@@ -109,7 +117,7 @@
 #define SILENCE_COUNTER_THRESHOLD \
     20 // [>20] number of back to back CHUNK periods with avg < THRESHOLD_LOW to declare the end of a word
 #define PREAMBLE_SIZE 30 * CHUNK // how many samples before beginning of a keyword to include
-#define INFERENCE_THRESHOLD 49 // min probability (0-100) to accept an inference
+#define INFERENCE_THRESHOLD 91 // min probability (0-100) to accept an inference
 #else
 #define SAMPLE_SCALE_FACTOR \
     1 // multiplies 16-bit samples by this scale factor before converting to 8-bit
@@ -140,11 +148,15 @@
 
 /* **** Globals **** */
 volatile uint32_t cnn_time; // Stopwatch
+int8_t micBuff[SAMPLE_SIZE];
+int micBufIndex = 0;
+int utteranceIndex = 0;
+uint16_t utteranceAvg = 0;
+int zeroPad = 0;
 
 static int32_t ml_data[NUM_OUTPUTS];
 static q15_t ml_softmax[NUM_OUTPUTS];
 uint8_t pAI85Buffer[SAMPLE_SIZE];
-uint8_t pPreambleCircBuffer[PREAMBLE_SIZE];
 int16_t Max, Min;
 uint16_t thresholdHigh = THRESHOLD_HIGH;
 uint16_t thresholdLow = THRESHOLD_LOW;
@@ -173,7 +185,7 @@ const int16_t voiceVector[] = KWS20_TEST_VECTOR;
 const int8_t voiceVector[] = KWS20_TEST_VECTOR;
 #endif
 
-int8_t MicReader(int16_t *sample);
+int8_t MicReader(int32_t *sample);
 
 #else
 void i2s_isr(void)
@@ -187,7 +199,7 @@ void i2s_isr(void)
 /* **** Functions Prototypes **** */
 void fail(void);
 uint8_t cnn_load_data(uint8_t *pIn);
-uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg);
+uint8_t MicReadChunk(uint16_t *avg);
 uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outSize,
                      uint16_t width);
 uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, double *out_prob);
@@ -215,6 +227,45 @@ void WUT_IRQHandler()
 }
 #endif
 
+int console_UART_init(uint32_t baud)
+{
+    mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+    int err;
+    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    NVIC_SetPriority(MXC_UART_GET_IRQ(CONSOLE_UART), 1);
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+
+    if ((err = MXC_UART_Init(ConsoleUart, baud, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
+        return err;
+    }
+
+    return 0;
+}
+
+#ifdef SEND_MIC_OUT_SERIAL
+static void console_uart_send_byte(uint8_t value)
+{
+    while (MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), value) == E_OVERFLOW) {}
+}
+#endif
+
+#ifdef DISPLAY_AUDIO
+static uint32_t setColor(int r, int g, int b)
+{
+    uint32_t color;
+
+#ifdef BOARD_EVKIT_V1
+    color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
+#endif
+#ifdef BOARD_FTHR_REVA
+    color = RGB(r, g, b); // convert to RGB565
+#endif
+
+    return color;
+}
+#endif
+
 /* **************************************************************************** */
 
 int main(void)
@@ -225,7 +276,6 @@ int main(void)
     uint8_t pChunkBuff[CHUNK];
 
     uint16_t avg = 0;
-    uint16_t preambleCounter = 0;
     uint16_t ai85Counter = 0;
     uint16_t wordCounter = 0;
 
@@ -262,13 +312,15 @@ int main(void)
     default:
         printf("UNKNOWN CLOCK SOURCE \n");
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     MXC_GCR->ipll_ctrl |= MXC_F_GCR_IPLL_CTRL_EN; // Enable IPLL
 
     SystemCoreClockUpdate();
+
+    // Initialize UART
+    console_UART_init(CON_BAUD);
 
     /* Enable peripheral, enable CNN interrupt, turn on CNN clock */
     // CNN clock: 200 MHz div 1
@@ -277,10 +329,8 @@ int main(void)
     PR_INFO("Analog Devices \nKeyword Spotting Demo\nVer. %s \n", VERSION);
     PR_INFO("\n***** Init *****\n");
     memset(pAI85Buffer, 0x0, sizeof(pAI85Buffer));
-    memset(pPreambleCircBuffer, 0x0, sizeof(pPreambleCircBuffer));
 
     PR_DEBUG("pChunkBuff: %d\n", sizeof(pChunkBuff));
-    PR_DEBUG("pPreambleCircBuffer: %d\n", sizeof(pPreambleCircBuffer));
     PR_DEBUG("pAI85Buffer: %d\n", sizeof(pAI85Buffer));
 
     /* Bring state machine into consistent state */
@@ -365,7 +415,7 @@ int main(void)
 #endif
 
         /* Read from Mic driver to get CHUNK worth of samples, otherwise next sample*/
-        if (MicReadChunk(pChunkBuff, &avg) == 0) {
+        if (MicReadChunk(&avg) == 0) {
 #ifdef WUT_ENABLE
 #ifdef ENERGY
 
@@ -394,16 +444,12 @@ int main(void)
 
         sampleCounter += CHUNK;
 
+        /* wait for at least PREAMBLE_SIZE samples before detecting the utterance */
+        if (sampleCounter < PREAMBLE_SIZE)
+            continue;
+
 #ifdef ENABLE_SILENCE_DETECTION // disable to start collecting data immediately.
-
-        /* copy the preamble data*/
-        /* add the new chunk to the end of circular buffer*/
-        memcpy(&pPreambleCircBuffer[preambleCounter], pChunkBuff, sizeof(uint8_t) * CHUNK);
-
-        /* increment circular buffer pointer*/
-        preambleCounter = (preambleCounter + CHUNK) % (PREAMBLE_SIZE);
-
-        /* Display average envelope as a bar */
+            /* Display average envelope as a bar */
 #ifdef ENABLE_PRINT_ENVELOPE
         PR_DEBUG("%.6d|", sampleCounter);
 
@@ -424,32 +470,11 @@ int main(void)
             if (avg >= thresholdHigh) {
                 /* switch to keyword data collection*/
                 procState = KEYWORD;
-                PR_DEBUG("%.6d Word starts from index: %d, avg:%d > %d \n", sampleCounter,
-                         sampleCounter - PREAMBLE_SIZE - CHUNK, avg, thresholdHigh);
 
-                /* reorder circular buffer according to time at the beginning of pAI85Buffer */
-                if (preambleCounter == 0) {
-                    /* copy latest samples afterwards */
-                    if (AddTranspose(&pPreambleCircBuffer[0], pAI85Buffer, PREAMBLE_SIZE,
-                                     SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
-                        PR_DEBUG("ERROR: Transpose ended early \n");
-                    }
-                } else {
-                    /* copy oldest samples to the beginning*/
-                    if (AddTranspose(&pPreambleCircBuffer[preambleCounter], pAI85Buffer,
-                                     PREAMBLE_SIZE - preambleCounter, SAMPLE_SIZE,
-                                     TRANSPOSE_WIDTH)) {
-                        PR_DEBUG("ERROR: Transpose ended early \n");
-                    }
+                /* record the average and index of the begining of the word */
+                utteranceAvg = avg;
+                utteranceIndex = micBufIndex;
 
-                    /* copy latest samples afterwards */
-                    if (AddTranspose(&pPreambleCircBuffer[0], pAI85Buffer, preambleCounter,
-                                     SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
-                        PR_DEBUG("ERROR: Transpose ended early \n");
-                    }
-                }
-
-                /* preamble is copied and state is changed, start adding keyword samples next run */
                 ai85Counter += PREAMBLE_SIZE;
                 continue;
             }
@@ -459,9 +484,6 @@ int main(void)
 #endif //#ifdef ENABLE_SILENCE_DETECTION
         {
             uint8_t ret = 0;
-
-            /* add sample, rearrange buffer */
-            ret = AddTranspose(pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE, TRANSPOSE_WIDTH);
 
             /* increment number of stored samples */
             ai85Counter += CHUNK;
@@ -486,21 +508,78 @@ int main(void)
 #endif
             {
                 memset(pChunkBuff, 0, CHUNK);
-                PR_DEBUG("%.6d: Word ends, Appends %d zeros \n", sampleCounter,
-                         SAMPLE_SIZE - ai85Counter);
-                ret = 0;
 
-                while (!ret) {
-                    ret =
-                        AddTranspose(pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE, TRANSPOSE_WIDTH);
-                    ai85Counter += CHUNK;
-                }
+                zeroPad = SAMPLE_SIZE - ai85Counter;
+                ai85Counter = SAMPLE_SIZE;
             }
 
             /* if enough samples are collected, start CNN */
             if (ai85Counter >= SAMPLE_SIZE) {
                 int16_t out_class = -1;
                 double probability = 0;
+
+                /* end of the utterance */
+                int endIndex =
+                    (utteranceIndex + SAMPLE_SIZE - PREAMBLE_SIZE - zeroPad) % SAMPLE_SIZE;
+
+                PR_DEBUG("Word starts from index %d to %d, padded with %d zeros, avg:%d > %d \n",
+                         utteranceIndex, endIndex, zeroPad, utteranceAvg, thresholdHigh);
+
+                // zero padding
+                memset(pChunkBuff, 0, CHUNK);
+
+                /* PREAMBLE copy  */
+                if (utteranceIndex - PREAMBLE_SIZE >= 0) {
+                    if (AddTranspose((uint8_t *)&micBuff[utteranceIndex - PREAMBLE_SIZE],
+                                     pAI85Buffer, PREAMBLE_SIZE, SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+                } else {
+                    /* copy oldest samples to the beginning*/
+                    if (AddTranspose(
+                            (uint8_t *)&micBuff[SAMPLE_SIZE - PREAMBLE_SIZE + utteranceIndex],
+                            pAI85Buffer, PREAMBLE_SIZE - utteranceIndex, SAMPLE_SIZE,
+                            TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+
+                    /* copy latest samples afterwards */
+                    if (AddTranspose((uint8_t *)&micBuff[0], pAI85Buffer, utteranceIndex,
+                                     SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+                }
+
+                /* Utterance copy */
+                if (utteranceIndex < endIndex) {
+                    /* copy from utternace to the end */
+                    if (AddTranspose((uint8_t *)&micBuff[utteranceIndex], pAI85Buffer,
+                                     endIndex - utteranceIndex, SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+                    // copy zero padding
+                    while (!ret) {
+                        ret = AddTranspose(pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE,
+                                           TRANSPOSE_WIDTH);
+                    }
+                } else {
+                    /* copy from utternace to the end*/
+                    if (AddTranspose((uint8_t *)&micBuff[utteranceIndex], pAI85Buffer,
+                                     SAMPLE_SIZE - utteranceIndex, SAMPLE_SIZE, TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+
+                    /* copy from begining*/
+                    if (AddTranspose((uint8_t *)&micBuff[0], pAI85Buffer, endIndex, SAMPLE_SIZE,
+                                     TRANSPOSE_WIDTH)) {
+                        PR_DEBUG("ERROR: Transpose ended early \n");
+                    }
+                    // copy zero padding
+                    while (!ret) {
+                        ret = AddTranspose(pChunkBuff, pAI85Buffer, CHUNK, SAMPLE_SIZE,
+                                           TRANSPOSE_WIDTH);
+                    }
+                }
 
                 /* reset counters */
                 ai85Counter = 0;
@@ -611,18 +690,79 @@ int main(void)
                 ret = check_inference(ml_softmax, ml_data, &out_class, &probability);
 
                 PR_DEBUG("----------------------------------------- \n");
-
-                if (!ret) {
-                    PR_DEBUG("LOW CONFIDENCE!: ");
+                /* Treat low confidence detections as unknown*/
+                if (!ret || out_class == 20) {
+                    PR_DEBUG("Detected word: %s", "Unknown");
+                } else {
+                    PR_DEBUG("Detected word: %s (%0.1f%%)", keywords[out_class], probability);
                 }
-
-                PR_DEBUG("Detected word: %s (%0.1f%%)", keywords[out_class], probability);
-
                 PR_DEBUG("\n----------------------------------------- \n");
 
                 Max = 0;
                 Min = 0;
                 //------------------------------------------------------------
+#ifdef DISPLAY_AUDIO
+                uint32_t color;
+                int i, j;
+                char buff[TFT_BUFF_SIZE];
+                double db;
+                int32_t x, y, energy;
+                int32_t lasty;
+                int32_t h0, h1;
+
+                lasty = 140;
+                x = 0;
+                energy = 0;
+
+                color = setColor(255, 255, 0); // yellow
+
+                /* Down sample to display according to the TFT width */
+                for (i = 0; i < SAMPLE_SIZE; i += (SAMPLE_SIZE / 320)) {
+                    y = micBuff[(micBufIndex + i + 30 * CHUNK) % SAMPLE_SIZE]; // offset to align
+
+                    /* Energy of downsampled signal */
+                    energy += y * y;
+
+                    y = 140 - y; // vertical offset on TFT
+
+                    if (lasty < y) {
+                        h0 = lasty;
+                        h1 = y;
+                    } else {
+                        h0 = y;
+                        h1 = lasty;
+                    }
+
+                    /* Draw a line */
+                    for (j = h0; j <= h1; j++) {
+                        MXC_TFT_WritePixel(x, j, 1, 1, color);
+                    }
+                    lasty = y;
+                    x++;
+                }
+
+                memset(buff, 32, TFT_BUFF_SIZE);
+                /* rms */
+                db = 10 * log10((double)energy / 320);
+                TFT_Print(buff, 240, 30, font_2,
+                          snprintf(buff, sizeof(buff), "%0.1fdB", (double)db));
+#endif
+
+#ifdef SEND_MIC_OUT_SERIAL
+                printf("START: %d\n", micBufIndex);
+
+                int k = 0;
+                for (k = 0; k < SAMPLE_SIZE; k++)
+                    // printf("%d\n", micBuff[(micBufIndex + k) % SAMPLE_SIZE]);
+                    console_uart_send_byte(micBuff[(micBufIndex + k) % SAMPLE_SIZE]);
+
+                printf("END\n");
+#endif
+
+                /* clear the buffer */
+                memset(micBuff, 0, SAMPLE_SIZE);
+                micBufIndex = 0;
+                //sampleCounter = 0;  // comment to start immediately after the last utterance
             }
         }
 
@@ -642,8 +782,7 @@ int main(void)
     TFT_End(wordCounter);
 #endif
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 /* **************************************************************************** */
@@ -679,8 +818,7 @@ void I2SInit()
     if ((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
         PR_DEBUG("\nError in I2S_Init: %d\n", err);
 
-        while (1)
-            ;
+        while (1) {}
     }
 
     /* Set I2S RX FIFO threshold to generate interrupt */
@@ -733,15 +871,18 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
 #else
             MXC_TFT_ClearScreen();
             memset(buff, 32, TFT_BUFF_SIZE);
-            TFT_Print(buff, 20, 30, font_2,
-                      sprintf(buff, "%s (%0.1f%%)", keywords[max_index],
-                              (double)100.0 * max / 32768.0));
-            TFT_Print(buff, 1, 50, font_1, sprintf(buff, "__________________________ "));
-            TFT_Print(buff, 1, 80, font_1, sprintf(buff, "Top classes:"));
+            if (max_index == 20 || *out_prob <= INFERENCE_THRESHOLD)
+                TFT_Print(buff, 20, 30, font_2, snprintf(buff, sizeof(buff), "Unknown"));
+            else
+                TFT_Print(buff, 20, 30, font_2,
+                          snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
+                                   (double)100.0 * max / 32768.0));
+            //TFT_Print(buff, 1, 80, font_1, snprintf(buff, sizeof(buff), "Top classes:"));
         } else {
-            TFT_Print(buff, 20, 80 + 20 * top, font_1,
-                      sprintf(buff, "%s (%0.1f%%)", keywords[max_index],
-                              (double)100.0 * max / 32768.0));
+            /* uncomment to show the next 4 top classes */
+            //TFT_Print(buff, 20, 80 + 20 * top, font_1,
+            //          snprintf(buff, sizeof(buff), "%s (%0.1f%%)", keywords[max_index],
+            //                   (double)100.0 * max / 32768.0));
         }
 
         /* reset for next top */
@@ -750,7 +891,8 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
         max_index = -1;
 
         if (top == 4) {
-            TFT_Print(buff, 20, 200, font_1, sprintf(buff, "Sample Min: %d    Max: %d", Min, Max));
+            TFT_Print(buff, 20, 215, font_1,
+                      snprintf(buff, sizeof(buff), "Sample Min: %d    Max: %d", Min, Max));
         }
 
 #endif
@@ -771,8 +913,7 @@ void fail(void)
 {
     PR_DEBUG("\n*** FAIL ***\n\n");
 
-    while (1)
-        ;
+    while (1) {}
 }
 /* **************************************************************************** */
 uint8_t cnn_load_data(uint8_t *pIn)
@@ -884,73 +1025,7 @@ uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outS
 }
 /* **************************************************************************** */
 #ifndef ENABLE_MIC_PROCESSING
-uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
-{
-    static uint16_t chunkCount = 0;
-    static uint16_t sum = 0;
-    int16_t sample = 0;
-    int16_t temp = 0;
-    uint8_t ret = 0;
-
-    /* Read one sample from mic emulated by test vector and add to buffer*/
-    ret = MicReader(&sample);
-
-    /* sample not ready */
-    if (!ret) {
-        *avg = 0;
-        return 0;
-    }
-
-#ifndef ENERGY
-    /* Turn on LED2 (Red) */
-    LED_On(LED2);
-#endif
-
-    /* absolute for averaging */
-    if (sample >= 0) {
-        sum += sample;
-    } else {
-        sum -= sample;
-    }
-
-    /* convert to 8 bit unsigned */
-#ifndef EIGHT_BIT_SAMPLES
-    pBuff[chunkCount++] = (uint8_t)((sample)*SAMPLE_SCALE_FACTOR / 256);
-#else
-    pBuff[chunkCount++] = (uint8_t)((sample)*SAMPLE_SCALE_FACTOR / 256);
-#endif
-
-    temp = (int8_t)pBuff[chunkCount - 1];
-
-    /* record max and min */
-    if (temp > Max) {
-        Max = temp;
-    }
-
-    if (temp < Min) {
-        Min = temp;
-    }
-
-    /* if not enough samples, return 0 */
-    if (chunkCount < CHUNK) {
-        *avg = 0;
-        return 0;
-    }
-
-#ifdef EIGHT_BIT_SAMPLES
-    /* scale up sum in 8-bit case to work with same threshold as 16bit */
-    sum = sum * 256;
-#endif
-
-    /* enough samples are collected, calculate average and return 1 */
-    *avg = ((uint16_t)(sum / CHUNK));
-
-    chunkCount = 0;
-    sum = 0;
-    return 1;
-}
-/* **************************************************************************** */
-int8_t MicReader(int16_t *sample)
+int8_t MicReader(int32_t *sample)
 {
     static uint32_t micSampleCount = 0;
     int16_t temp;
@@ -960,17 +1035,20 @@ int8_t MicReader(int16_t *sample)
     *sample = temp;
     return (1);
 }
-#else // #ifndef ENABLE_MIC_PROCESSING
+#endif
 /* **************************************************************************** */
-uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
+uint8_t MicReadChunk(uint16_t *avg)
 {
     static uint16_t chunkCount = 0;
     static uint16_t sum = 0;
-    static uint32_t index = 0;
     int32_t sample = 0;
     int16_t temp = 0;
     uint32_t rx_size = 0;
 
+#ifndef ENABLE_MIC_PROCESSING
+    rx_size = 16;
+#else
+    static uint32_t index = 0;
     /* sample not ready */
     if (!i2s_flag) {
         *avg = 0;
@@ -982,9 +1060,14 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
     /* Read number of samples in I2S RX FIFO */
     rx_size = MXC_I2S->dmach0 >> MXC_F_I2S_DMACH0_RX_LVL_POS;
     //  PR_DEBUG("%d ", rx_size);
-
+#endif
     /* read until fifo is empty or enough samples are collected */
     while ((rx_size--) && (chunkCount < CHUNK)) {
+#ifndef ENABLE_MIC_PROCESSING
+        /* Read one sample from mic emulated by test vector and add to buffer*/
+        MicReader(&sample);
+        temp = sample;
+#else
         /* Read microphone sample from I2S FIFO */
         sample = (int32_t)MXC_I2S->fifoch0;
         /* The actual value is 18 MSB of 32-bit word */
@@ -992,11 +1075,11 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
 
         /* Remove DC from microphone signal */
         sample = HPF((int16_t)temp); // filter needs about 1K sample to converge
-
         /* Discard first 10k samples due to microphone charging cap effect */
         if (index++ < 10000) {
             continue;
         }
+#endif
 
 #ifndef ENERGY
         /* Turn on LED2 (Red) */
@@ -1011,12 +1094,10 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
         }
 
         /* Convert to 8 bit unsigned */
-        pBuff[chunkCount] = (uint8_t)((sample)*SAMPLE_SCALE_FACTOR / 256);
-
-        temp = (int8_t)pBuff[chunkCount];
-
+        micBuff[micBufIndex] = (sample)*SAMPLE_SCALE_FACTOR / 256;
         chunkCount++;
 
+        temp = (int8_t)micBuff[micBufIndex];
         /* record max and min */
         if (temp > Max) {
             Max = temp;
@@ -1025,6 +1106,8 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
         if (temp < Min) {
             Min = temp;
         }
+
+        micBufIndex = (micBufIndex + 1) % SAMPLE_SIZE;
     }
 
     /* if not enough samples, return 0 */
@@ -1041,17 +1124,17 @@ uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
     return 1;
 }
 
-static int16_t x0, x1, Coeff;
-static int32_t y0, y1;
+static int16_t x_0, x_1, Coeff;
+static int32_t y_0, y_1;
 
 /************************************************************************************/
 void HPF_init(void)
 {
     Coeff = 32604; //0.995
-    x0 = 0;
-    y0 = 0;
-    y1 = y0;
-    x1 = x0;
+    x_0 = 0;
+    y_0 = 0;
+    y_1 = y_0;
+    x_1 = x_0;
 }
 
 /************************************************************************************/
@@ -1063,30 +1146,29 @@ int16_t HPF(int16_t input)
     /* a 1st order IIR high pass filter (100 Hz cutoff frequency)  */
     /* y(n)=x(n)-x(n-1)+A*y(n-1) and A =.995*2^15 */
 
-    x0 = input;
+    x_0 = input;
 
-    tmp = (Coeff * y1);
+    tmp = (Coeff * y_1);
     Acc = (int16_t)((tmp + (1 << 14)) >> 15);
-    y0 = x0 - x1 + Acc;
+    y_0 = x_0 - x_1 + Acc;
 
     /* Clipping */
-    if (y0 > 32767) {
-        y0 = 32767;
+    if (y_0 > 32767) {
+        y_0 = 32767;
     }
 
-    if (y0 < -32768) {
-        y0 = -32768;
+    if (y_0 < -32768) {
+        y_0 = -32768;
     }
 
     /* Update filter state */
-    y1 = y0;
-    x1 = x0;
+    y_1 = y_0;
+    x_1 = x_0;
 
-    output = (int16_t)y0;
+    output = (int16_t)y_0;
 
     return (output);
 }
-#endif // #ifndef ENABLE_MIC_PROCESSING
 
 /************************************************************************************/
 #ifdef ENABLE_TFT
@@ -1094,20 +1176,27 @@ void TFT_Intro(void)
 {
     char buff[TFT_BUFF_SIZE];
     memset(buff, 32, TFT_BUFF_SIZE);
-    TFT_Print(buff, 55, 10, font_2, sprintf(buff, "ANALOG DEVICES"));
-    TFT_Print(buff, 35, 40, font_1, sprintf(buff, "Keyword Spotting Demo"));
-    TFT_Print(buff, 70, 70, font_1, sprintf(buff, "Ver. %s", VERSION));
-    TFT_Print(buff, 5, 110, font_1, sprintf(buff, "Following keywords can be"));
-    TFT_Print(buff, 5, 135, font_1, sprintf(buff, "detected:"));
-    TFT_Print(buff, 35, 160, font_1, sprintf(buff, "0...9, up, down, left, right"));
-    TFT_Print(buff, 35, 185, font_1, sprintf(buff, "stop, go, yes, no, on, off"));
-    TFT_Print(buff, 5, 210, font_2, sprintf(buff, "PRESS PB1 TO START!"));
+    TFT_Print(buff, 55, 10, font_2, snprintf(buff, sizeof(buff), "ANALOG DEVICES"));
+    TFT_Print(buff, 35, 40, font_1, snprintf(buff, sizeof(buff), "Keyword Spotting Demo"));
+    TFT_Print(buff, 65, 70, font_1, snprintf(buff, sizeof(buff), "Ver. %s", VERSION));
+    TFT_Print(buff, 5, 110, font_1, snprintf(buff, sizeof(buff), "Following keywords can be"));
+    TFT_Print(buff, 5, 135, font_1, snprintf(buff, sizeof(buff), "detected:"));
+    TFT_Print(buff, 35, 160, font_1, snprintf(buff, sizeof(buff), "0...9, up, down, left, right"));
+    TFT_Print(buff, 35, 185, font_1, snprintf(buff, sizeof(buff), "stop, go, yes, no, on, off"));
+    TFT_Print(buff, 30, 210, font_2, snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO START!"));
 
-    while (!PB_Get(0))
-        ;
+    while (!PB_Get(0)) {}
 
     MXC_TFT_ClearScreen();
-    TFT_Print(buff, 20, 50, font_1, sprintf(buff, "Start saying keywords..."));
+#ifdef BOARD_EVKIT_V1
+    TFT_Print(buff, 20, 20, font_1, snprintf(buff, sizeof(buff), "Wait for RED LED to turn on"));
+    TFT_Print(buff, 20, 50, font_1, snprintf(buff, sizeof(buff), "and start saying keywords..."));
+    TFT_Print(buff, 20, 110, font_1, snprintf(buff, sizeof(buff), "If RED LED didn't turn on in"));
+    TFT_Print(buff, 20, 140, font_1, snprintf(buff, sizeof(buff), "2 sec, disconnect SWD and"));
+    TFT_Print(buff, 20, 170, font_1, snprintf(buff, sizeof(buff), "power cycle."));
+#else
+    TFT_Print(buff, 20, 50, font_1, snprintf(buff, sizeof(buff), "Start saying keywords..."));
+#endif
 }
 
 /***************************************************************************** */
@@ -1126,8 +1215,8 @@ void TFT_End(uint16_t words)
     char buff[TFT_BUFF_SIZE];
     memset(buff, 32, TFT_BUFF_SIZE);
     MXC_TFT_ClearScreen();
-    TFT_Print(buff, 70, 30, font_2, sprintf(buff, "Demo Stopped!"));
-    TFT_Print(buff, 10, 60, font_1, sprintf(buff, "Number of words: %d ", words));
-    TFT_Print(buff, 20, 180, font_1, sprintf(buff, "PRESS RESET TO TRY AGAIN!"));
+    TFT_Print(buff, 70, 30, font_2, snprintf(buff, sizeof(buff), "Demo Stopped!"));
+    TFT_Print(buff, 10, 60, font_1, snprintf(buff, sizeof(buff), "Number of words: %d ", words));
+    TFT_Print(buff, 20, 180, font_1, snprintf(buff, sizeof(buff), "PRESS RESET TO TRY AGAIN!"));
 }
 #endif

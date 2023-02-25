@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stddef.h>
@@ -144,8 +144,8 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
         return E_NULL_PTR;
     }
 
-    if (hz > MXC_I2C_REVA_FASTPLUS_SPEED) {
-        // We're going to enable high speed
+    if (hz > MXC_I2C_REVA_FASTPLUS_SPEED && hz <= MXC_I2C_REVA_HIGH_SPEED) {
+        // Enable high speed mode
         int hsLowClks, hsHiClks;
 
         // Calculate the period of SCL and set up 33% duty cycle
@@ -163,7 +163,17 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
             return E_BAD_PARAM;
         }
 
+        hsLowClks = (hsLowClks << MXC_F_I2C_REVA_HSCLK_LO_POS) & MXC_F_I2C_REVA_HSCLK_LO;
+        hsHiClks = (hsHiClks << MXC_F_I2C_REVA_HSCLK_HI_POS) & MXC_F_I2C_REVA_HSCLK_HI;
+
+        i2c->hsclk = (hsLowClks | hsHiClks);
+
+        i2c->ctrl |= MXC_F_I2C_REVA_CTRL_HS_EN;
+
         hz = MXC_I2C_REVA_FAST_SPEED; // High speed preambles will be sent at 400kHz
+
+    } else if (hz > MXC_I2C_REVA_HIGH_SPEED) {
+        return E_BAD_PARAM;
     }
 
     // Calculate the period of SCL, 50% duty cycle

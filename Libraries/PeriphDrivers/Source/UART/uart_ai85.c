@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include "uart.h"
 #include "mxc_device.h"
@@ -245,14 +245,6 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
             MXC_GPIO_Config(&gpio_cfg_uart0_flow);
             break;
 
-        case 1:
-            MXC_GPIO_Config(&gpio_cfg_uart1_flow);
-            break;
-
-        case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2_flow);
-            break;
-
         default:
             return E_BAD_PARAM;
         }
@@ -260,14 +252,6 @@ int MXC_UART_SetFlowCtrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int rt
         switch (MXC_UART_GET_IDX(uart)) {
         case 0:
             MXC_GPIO_Config(&gpio_cfg_uart0_flow_disable);
-            break;
-
-        case 1:
-            MXC_GPIO_Config(&gpio_cfg_uart1_flow_disable);
-            break;
-
-        case 2:
-            MXC_GPIO_Config(&gpio_cfg_uart2_flow_disable);
             break;
 
         default:
@@ -348,6 +332,10 @@ int MXC_UART_ReadRXFIFODMA(mxc_uart_regs_t *uart, unsigned char *bytes, unsigned
         config.reqsel = MXC_DMA_REQUEST_UART2RX;
         break;
 
+    case 3:
+        config.reqsel = MXC_DMA_REQUEST_UART3RX;
+        break;
+
     default:
         return E_BAD_PARAM;
         break;
@@ -385,6 +373,10 @@ int MXC_UART_WriteTXFIFODMA(mxc_uart_regs_t *uart, const unsigned char *bytes, u
 
     case 2:
         config.reqsel = MXC_DMA_REQUEST_UART2TX;
+        break;
+
+    case 3:
+        config.reqsel = MXC_DMA_REQUEST_UART3TX;
         break;
 
     default:

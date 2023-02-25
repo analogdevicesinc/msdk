@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-echo "###################################################################################################"
-echo "# build_flash.sh <msdk_path> <openocd> <target_type> <board_type> <project> <port> <build> <flash>#"
-echo "###################################################################################################"
+echo "############################################################################################################"
+echo "# build_flash.sh 1<msdk_path> 2<openocd> 3<target_type> 4<board_type> 5<project> 6<port> 7<build> 8<flash> #"
+echo "############################################################################################################"
 echo
 
 # Examples
@@ -13,10 +13,11 @@ echo
 MSDK=$1
 OPENOCD=$2
 TARGET=$3
-echo TARGET=${TARGET}
+echo TARGET: ${TARGET}
 TARGET_LC=`echo $TARGET | tr '[:upper:]' '[:lower:]'`
-echo TARGET_LC=${TARGET_LC}
+echo TARGET_LC: ${TARGET_LC}
 BOARD_TYPE=$4
+echo BOARD_TYPE: ${BOARD_TYPE}
 PROJECT=$5
 PORT=$6
 BUILD=$7

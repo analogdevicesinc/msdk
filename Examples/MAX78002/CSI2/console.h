@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -52,6 +52,8 @@ static mxc_uart_regs_t *Con_Uart = MXC_UART_GET_UART(CONSOLE_UART);
 extern char g_serial_buffer[SERIAL_BUFFER_SIZE];
 extern int g_buffer_index;
 extern int g_num_commands;
+
+int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len);
 
 int console_init();
 int send_msg(const char *msg);
