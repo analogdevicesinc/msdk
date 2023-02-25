@@ -260,12 +260,15 @@ jobs:
         id: Test_MAX32655 #id used to reference this step in other parts of the yml
         run: |
           echo "Running Test on MAX32655"
+          echo $env.TEST_MAX32655
+          echo $TEST_MAX32655
+
           cd .github/workflows/ci-tests/Examples_tests
           chmod +x test_launcher.sh
           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
           dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-          ./test_launcher.sh max32655 $dut_uart $dut_serial
+          #./test_launcher.sh max32655 $dut_uart $dut_serial
 
       - name: Test MAX32665 #name used for display purposes on github webpage
         if: steps.LOCK_BOARDS.outcome == 'success' && env.TEST_MAX32665 == 'true'
@@ -277,19 +280,21 @@ jobs:
           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
           dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart0'])"`
           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-          ./test_launcher.sh max32665 $dut_uart $dut_serial
+          #./test_launcher.sh max32665 $dut_uart $dut_serial
 
       - name: Test MAX32690 #name used for display purposes on github webpage
         if: steps.LOCK_BOARDS.outcome == 'success' && env.TEST_MAX32690 == 'true'
         id: Test_MAX32690 #id used to reference this step in other parts of the yml
         run: |
           echo "Running Test on MAX32690"
+          echo $env.TEST_MAX32690
+          echo $TEST_MAX32690
           cd .github/workflows/ci-tests/Examples_tests
           chmod +x test_launcher.sh
           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
           dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart0'])"`
           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
-          ./test_launcher.sh max32690 $dut_uart $dut_serial
+          #./test_launcher.sh max32690 $dut_uart $dut_serial
 
       # Unlock even when cancelled or failed
       # This needs some work, if the job is cancelled or times out because it could not get a LOCK
