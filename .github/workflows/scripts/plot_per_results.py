@@ -157,12 +157,12 @@ if row > 1 or col > 1:
         #title = f'packet len: {packetLen}\nphy: {phy_str[phy]}\ntxPower:{txPower}'
         title = f'packet len: {packetLen}, txPower: 0.7 dBm\nphy: {phy_str[phy]}'
         if axs.ndim == 1:
-            axs[row].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
-            axs[row].set_xlabel('Rx Power (dBm)', fontdict={"fontsize": 5})
-            axs[row].set_ylabel('PER (%)', fontdict={"fontsize": 5})
-            axs[row].tick_params(axis='both', which='major', labelsize=4)
-            axs[row].plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=0.25, ms=0.5)
-            axs[row].axhline(y=SPEC, color='r', linestyle=':', linewidth=0.5)
+            axs[col].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
+            axs[col].set_xlabel('Rx Power (dBm)', fontdict={"fontsize": 5})
+            axs[col].set_ylabel('PER (%)', fontdict={"fontsize": 5})
+            axs[col].tick_params(axis='both', which='major', labelsize=4)
+            axs[col].plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=0.25, ms=0.5)
+            axs[col].axhline(y=SPEC, color='r', linestyle=':', linewidth=0.5)
         else:
             axs[row, col].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
             axs[row, col].set_xlabel('Rx Power (dBm)', fontdict={"fontsize": 4})
@@ -187,7 +187,7 @@ if row > 1 or col > 1:
                 break
 
         # note
-        fig.text(.5, .01, "Run on all data channels (no advertising channels).", ha='center',
+        fig.text(.5, .01, f'Run on all data channels (no advertising channels).\n{args.desc}', ha='center',
                  fontdict={"fontsize": 5})
 
         #print()
@@ -285,7 +285,7 @@ for packetLen, phy, txPower in itertools.product(lens, phys, txPowers):
     #print()
     case += 1
 
-print("DONE!\n")
+print("PLOT DONE!\n")
 
 for url in url_links:
     url_file.write(url + '\n')

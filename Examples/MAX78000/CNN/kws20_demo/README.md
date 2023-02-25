@@ -12,8 +12,6 @@ The KWS20 demo software utilizes 2nd version of the Google speech commands datas
 
 https://storage.cloud.google.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz
 
-
-
 The following 20 keyword subset from the complete dataset is used for this demo:
 
  ['**up', 'down', 'left', 'right', 'stop', 'go', 'yes', 'no', 'on', 'off', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'zero**']

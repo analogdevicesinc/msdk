@@ -70,6 +70,14 @@ jobs:
       # even if only one board is being tested. This is so that another job
       # does not possibly used one of the free boards that may connect to the
       #current board undertest
+      - name: Lock All Boards
+        if: ${{ always() }}
+        id: lock_files
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
 
       # ME17
       - name: Check MAX32655 #name used for display purposes on github webpage
@@ -246,7 +254,7 @@ jobs:
             echo "TEST_MAX32690=true" >> $GITHUB_ENV
           fi
 
-      - name: LOCK_BOARDS #name used for display purposes on github webpage
+      - name: Lock boards #name used for display purposes on github webpage
         if: env.TEST_MAX32655 == 'true' || env.TEST_MAX32665 == 'true' || env.TEST_MAX32690 == 'true'
         id: LOCK_BOARDS #id used to reference this step in other parts of the yml
         run: |
@@ -297,7 +305,7 @@ jobs:
           dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
           dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
           #./test_launcher.sh max32690 $dut_uart $dut_serial
-
+      
       # Unlock even when cancelled or failed
       # This needs some work, if the job is cancelled or times out because it could not get a LOCK
       # it then jumps here and removes all locks, that were set by a different job
