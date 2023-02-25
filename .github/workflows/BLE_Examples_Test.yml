@@ -250,6 +250,10 @@ jobs:
         if: env.TEST_MAX32655 == 'true' || env.TEST_MAX32665 == 'true' || env.TEST_MAX32690 == 'true'
         id: LOCK_BOARDS #id used to reference this step in other parts of the yml
         run: |
+          rm /home/$USER/Workspace/Resource_Share/max32655_board1.txt
+          rm /home/$USER/Workspace/Resource_Share/max32655_board2.txt
+          rm /home/$USER/Workspace/Resource_Share/max32665_board1.txt
+          rm /home/$USER/Workspace/Resource_Share/max32690_board_w1.txt
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
