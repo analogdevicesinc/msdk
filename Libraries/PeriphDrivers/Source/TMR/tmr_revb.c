@@ -443,7 +443,7 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
     uint32_t prescale = (tmr->ctrl0 & MXC_F_TMR_REVB_CTRL0_CLKDIV_A) >>
                         MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS;
 
-    uint32_t timerClock = MXC_TMR_RevB_GetClockSourceFreq(tmr);
+    int timerClock = MXC_TMR_RevB_GetClockSourceFreq(tmr);
 
     // Confirm clock is configured by checking for error return.
     if (timerClock < 0) {

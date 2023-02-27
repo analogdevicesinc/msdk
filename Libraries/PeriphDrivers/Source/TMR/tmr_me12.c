@@ -56,6 +56,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins, sys_ma
 
         clockSource = MXC_TMR_CLK3;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
+        MXC_TMR_SetClockSourceFreq(tmr, ERFO_FREQ);
         break;
 
     case MXC_TMR_8M_CLK:
@@ -65,6 +66,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins, sys_ma
 
         clockSource = MXC_TMR_CLK2;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
+        MXC_TMR_SetClockSourceFreq(tmr, IBRO_FREQ);
         break;
 
     case MXC_TMR_32K_CLK:
@@ -74,6 +76,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins, sys_ma
 
         clockSource = MXC_TMR_CLK2;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
+        MXC_TMR_SetClockSourceFreq(tmr, ERTCO_FREQ);
         break;
 
     case MXC_TMR_8K_CLK:
@@ -83,6 +86,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins, sys_ma
 
         clockSource = MXC_TMR_CLK3;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
+        MXC_TMR_SetClockSourceFreq(tmr, INRO_FREQ);
         break;
 
     case MXC_TMR_EXT_CLK:
@@ -175,6 +179,16 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins, sys_ma
     }
 
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
+}
+
+void MXC_TMR_SetClockSourceFreq(mxc_tmr_regs_t *tmr, int clksrc_freq)
+{
+    MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, clksrc_freq);
+}
+
+int MXC_TMR_GetClockSourceFreq(mxc_tmr_regs_t *tmr)
+{
+    return MXC_TMR_RevB_GetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr);
 }
 
 void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)

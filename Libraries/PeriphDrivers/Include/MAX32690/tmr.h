@@ -157,6 +157,23 @@ typedef void (*mxc_tmr_complete_t)(int error);
 int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins);
 
 /**
+ * @brief   Save the TMRn's Clock Source Frequency.
+ * @param   tmr          Pointer to timer module to save clock source frequency.
+ * @param   clksrc_freq  Clock Source Frequency (Hz) value to save.
+ */
+void MXC_TMR_SetClockSourceFreq(mxc_tmr_regs_t *tmr, int clksrc_freq);
+
+/**
+ * @brief   Get the saved TMRn's Clock Source Frequency.
+ * @note    This function will return an error code if the selected Timer was not
+ *          initialized.
+ * @param   tmr  Pointer to timer module to retrieve respective clock source frequency.
+ * 
+ * @return  Frequency of TMRn's selected clock source (Hz). Error if bad state.
+ */
+int MXC_TMR_GetClockSourceFreq(mxc_tmr_regs_t *tmr);
+
+/**
  * @brief   Shutdown timer module clock.
  * @param   tmr  Pointer to timer module to initialize.
  */
