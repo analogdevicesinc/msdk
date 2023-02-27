@@ -83,7 +83,10 @@ class DBB:
             totalLen -= amtRead
 
         print('Length', len(region))
-        assert (len(region) == stop - start)
+
+        
+
+        
 
         return region
 
@@ -108,11 +111,14 @@ class DBB:
             print('Expected Region Length', regionLength)
 
             readout = self.readRegion(region_start, reserved_start)
-
+            
             if len(readout) != (regionLength):
-                print('Error occurred during readout. Aborting operation')
-                return []
-
+                print('Error occurred during readout. Attempting retry')
+                readout = self.readRegion(region_start, reserved_start)
+                if(len(readout) != regionLength):
+                    print('Could not get data, aborting')
+                    return []
+            
             regions.extend(readout)
 
             # add reserved region to the register read
