@@ -34,13 +34,7 @@
 MEMORY {
     HEADER (rx) : ORIGIN = 0x10000000, LENGTH = 0x200
     FLASH (rx)  : ORIGIN = 0x10000200, LENGTH = 1024K - 0x200 /* 1024kB "FLASH" */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 32K /* 32kB LP reduced SRAM with ECC */
-    /* SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 160K /* 160kB max SRAM with ECC */
-    /*^ If ECC is enabled, the stack size must be reduced.  Otherwise, a
-    HardFault will occur on startup as the stack is expanded into the
-    ECC's reserved SRAM space.
-    */
-    /* SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 200K /* 200kB SRAM, no ECC */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 32K /* Limit SRAM usage to SRAM0 and SRAM1 to prevent hardfault. */
 }
 
 ENTRY(Reset_Handler)

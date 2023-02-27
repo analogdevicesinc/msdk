@@ -385,6 +385,11 @@ void MXC_LP_SysRam3LightSleepEnable(void)
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM3LS_EN;
 }
 
+void MXC_LP_ICache0LightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICC0LS_EN;
+}
+
 void MXC_LP_ROMLightSleepEnable(void)
 {
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROMLS_EN;
@@ -410,9 +415,14 @@ void MXC_LP_SysRam3LightSleepDisable(void)
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM3LS_EN;
 }
 
+void MXC_LP_ICache0LightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ICC0LS_EN;
+}
+
 void MXC_LP_ROMLightSleepDisable(void)
 {
-    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM0LS_EN;
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROMLS_EN;
 }
 
 void MXC_LP_SysRam0Shutdown(void)

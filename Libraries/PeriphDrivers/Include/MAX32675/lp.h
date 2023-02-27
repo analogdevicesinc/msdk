@@ -325,39 +325,9 @@ void MXC_LP_SysRam2LightSleepEnable(void);
 void MXC_LP_SysRam3LightSleepEnable(void);
 
 /**
- * @brief Enable System Ram 4 in light sleep
- */
-void MXC_LP_SysRam4LightSleepEnable(void);
-
-/**
- * @brief Enable System Ram 5 in light sleep
- */
-void MXC_LP_SysRam5LightSleepEnable(void);
-
-/**
  * @brief Enable Icache 0 in light sleep
  */
 void MXC_LP_ICache0LightSleepEnable(void);
-
-/**
- * @brief Enable Icache XIP in light sleep
- */
-void MXC_LP_ICacheXIPLightSleepEnable(void);
-
-/**
- * @brief Enable System Cache in light sleep
- */
-void MXC_LP_SRCCLightSleepEnable(void);
-
-/**
- * @brief Enable Crypto in light sleep
- */
-void MXC_LP_CryptoLightSleepEnable(void);
-
-/**
- * @brief Enable USB in light sleep
- */
-void MXC_LP_USBFIFOLightSleepEnable(void);
 
 /**
  * @brief Enable ROM 0 in light sleep
@@ -385,39 +355,9 @@ void MXC_LP_SysRam2LightSleepDisable(void);
 void MXC_LP_SysRam3LightSleepDisable(void);
 
 /**
- * @brief Disable System Ram 4 in light sleep
- */
-void MXC_LP_SysRam4LightSleepDisable(void);
-
-/**
- * @brief Disable System Ram 5 in light sleep
- */
-void MXC_LP_SysRam5LightSleepDisable(void);
-
-/**
  * @brief Disable Icache 0 in light sleep
  */
 void MXC_LP_ICache0LightSleepDisable(void);
-
-/**
- * @brief Disable Icache XIP in light sleep
- */
-void MXC_LP_ICacheXIPLightSleepDisable(void);
-
-/**
- * @brief Disable System Cache in light sleep
- */
-void MXC_LP_SRCCLightSleepDisable(void);
-
-/**
- * @brief Disable Crypto in light sleep
- */
-void MXC_LP_CryptoLightSleepDisable(void);
-
-/**
- * @brief Disable USB in light sleep
- */
-void MXC_LP_USBFIFOLightSleepDisable(void);
 
 /**
  * @brief Disable ROM 0 in light sleep
@@ -463,76 +403,6 @@ void MXC_LP_SysRam3Shutdown(void);
  * @brief PowerUp System Ram 3
  */
 void MXC_LP_SysRam3PowerUp(void);
-
-/**
- * @brief Shutdown System Ram 4
- */
-void MXC_LP_SysRam4Shutdown(void);
-
-/**
- * @brief PowerUp System Ram 4
- */
-void MXC_LP_SysRam4PowerUp(void);
-
-/**
- * @brief Shutdown System Ram 5
- */
-void MXC_LP_SysRam5Shutdown(void);
-
-/**
- * @brief PowerUp System Ram 5
- */
-void MXC_LP_SysRam5PowerUp(void);
-
-/**
- * @brief Shutdown Internal Cache
- */
-void MXC_LP_ICache0Shutdown(void);
-
-/**
- * @brief PowerUp Internal Cache
- */
-void MXC_LP_ICache0PowerUp(void);
-
-/**
- * @brief Shutdown Internal Cache XIP
- */
-void MXC_LP_ICacheXIPShutdown(void);
-
-/**
- * @brief PowerUp Internal Cache XIP
- */
-void MXC_LP_ICacheXIPPowerUp(void);
-
-/**
- * @brief Shutdown SRCC
- */
-void MXC_LP_SRCCShutdown(void);
-
-/**
- * @brief PowerUp SRCC
- */
-void MXC_LP_SRCCPowerUp(void);
-
-/**
- * @brief Shutdown USB FIFO
- */
-void MXC_LP_USBFIFOShutdown(void);
-
-/**
- * @brief PowerUp USB FIFO
- */
-void MXC_LP_USBFIFOPowerUp(void);
-
-/**
- * @brief Shutdown ROM
- */
-void MXC_LP_ROMShutdown(void);
-
-/**
- * @brief PowerUp ROM
- */
-void MXC_LP_ROMPowerUp(void);
 
 /**@} end of group pwrseq */
 

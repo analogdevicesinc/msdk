@@ -73,7 +73,7 @@
 #define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
 #define DO_BACKUP 0
-#define DO_SHUTDOWN 0
+#define DO_STORAGE 0
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
@@ -196,6 +196,7 @@ int main(void)
 
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
@@ -224,7 +225,20 @@ int main(void)
     setTrigger(1);
 
     MXC_LP_ROMLightSleepEnable();
-    PRINT("ROM placed in LIGHT SLEEP mode.\n");
+    MXC_LP_ICache0LightSleepEnable();
+    MXC_LP_SysRam3LightSleepEnable();
+    MXC_LP_SysRam2LightSleepEnable();
+    MXC_LP_SysRam1LightSleepDisable(); // Global variables RAM 0 and 1.
+    MXC_LP_SysRam0LightSleepDisable();
+    PRINT("Unused RAMs placed in LIGHT SLEEP mode.\n");
+
+    setTrigger(1);
+
+    MXC_LP_SysRam3Shutdown();
+    MXC_LP_SysRam2Shutdown();
+    MXC_LP_SysRam1PowerUp(); // Global variables RAM 0 and 1.
+    MXC_LP_SysRam0PowerUp();
+    PRINT("Unused RAMs shutdown.\n");
 
     setTrigger(1);
 
@@ -236,6 +250,7 @@ int main(void)
         PRINT("Waking up from SLEEP mode.\n");
 
 #endif // DO_SLEEP
+
 #if DO_DEEPSLEEP
         PRINT("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
@@ -249,10 +264,10 @@ int main(void)
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP
 
-#if DO_SHUTDOWN
-        PRINT("Entering Shutdown mode.\n");
+#if DO_STORAGE
+        PRINT("Entering Storage mode.\n");
         setTrigger(0);
-        MXC_LP_EnterShutDownMode();
+        MXC_LP_EnterStorageMode();
 #endif // DO_STORAGE
     }
 }
