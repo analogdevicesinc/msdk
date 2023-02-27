@@ -28,8 +28,8 @@ class DBB:
         self.rxReg = rxReg
         self.txReg = txReg
         self.rffeReg = rffeReg
-
-        assert (board in BoardBaseRegs)
+        
+        assert (board in BoardBaseRegs), f'{board} not available {BoardBaseRegs}'
 
         self.board = board
 

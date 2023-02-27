@@ -60,9 +60,12 @@ extern "C" {
 
 /**
  * @brief   Enumeration type for voltage selection
- *
  */
-typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
+typedef enum {
+    MXC_LP_OVR_0_9 = MXC_S_PWRSEQ_LPCN_OVR_0_9V, /**< OVR 0.9V */
+    MXC_LP_OVR_1_0 = MXC_S_PWRSEQ_LPCN_OVR_1_0V, /**< OVR 1.0V */
+    MXC_LP_OVR_1_1 = MXC_S_PWRSEQ_LPCN_OVR_1_1V, /**< OVR 1.1V */
+} mxc_lp_ovr_t;
 
 /**
  * @brief   Enumeration type for PM Mode
@@ -103,11 +106,14 @@ void MXC_LP_EnterStorageMode(void);
 void MXC_LP_EnterShutDownMode(void);
 
 /**
- * @brief      Set ovr bits to set the voltage the micro will run at.
+ * @brief      Sets the operating voltage for the device. The caller must perform the peripheral reset after 
+ *             calling this function.
  *
  * @param[in]  ovr   The ovr options are only 0.9V, 1.0V, and 1.1V use enum mxc_lp_ovr_t
+ * 
+ * @return     Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
  */
-void MXC_LP_SetOVR(mxc_lp_ovr_t ovr);
+int MXC_LP_SetOVR(mxc_lp_ovr_t ovr);
 
 /**
  * @brief      Enable retention regulator

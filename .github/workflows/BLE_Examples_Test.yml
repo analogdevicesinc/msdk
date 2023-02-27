@@ -70,10 +70,10 @@ jobs:
         if: ${{ always() }}
         id: lock_files
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
 
       # ME17
       - name: TEST MAX32655
@@ -133,7 +133,7 @@ jobs:
           then
             echo "Running Test"
 
-            cd .github/workflows/ci-tests/Examples_tests
+            cd .github/workflows/scripts
             chmod +x test_launcher.sh
             FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
@@ -196,7 +196,7 @@ jobs:
           if [[ $RUN_TEST -eq 1 ]]
           then
             echo "Running Test"   
-            cd .github/workflows/ci-tests/Examples_tests
+            cd .github/workflows/scripts
             chmod +x test_launcher.sh
             FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
@@ -259,7 +259,7 @@ jobs:
 
             echo "Running Test"
             
-            cd .github/workflows/ci-tests/Examples_tests
+            cd .github/workflows/scripts
             chmod +x test_launcher.sh
             FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
@@ -280,7 +280,10 @@ jobs:
       - name: Unlock All Boards
         if: ${{ always() && steps.lock_files.outcome == 'success' }}
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
+          
+
