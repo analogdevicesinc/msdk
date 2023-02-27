@@ -129,7 +129,7 @@ int MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
 
     // Set the OVR bits
     //  The OVR enums in mxc_lp_ovr_t equals to their appropriate register setting.
-    MXC_SETFIELD(MXC_PWRSEQ->lpcn, MXC_F_PWRSEQ_LPCN_OVR, ovr)
+    MXC_SETFIELD(MXC_PWRSEQ->lpcn, MXC_F_PWRSEQ_LPCN_OVR, ovr);
 
     // Set LVE bit
     if (ovr == MXC_LP_OVR_0_9) {
