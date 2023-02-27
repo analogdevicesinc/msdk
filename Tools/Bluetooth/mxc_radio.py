@@ -138,7 +138,9 @@ class DBB:
         # Attempting to read them causes a hardfault
 
         CTRL_REG_ADDR = BoardBaseRegs[self.board] + 0x1000
-
+        self.hciInterface.txTestFunc(
+            Namespace(channel=0, phy=1, packetLength=0, payload=3))
+        
         ctrlReg = self.readRegs(CTRL_REG_ADDR, 0x96)
 
         # assume reserved registers are 0x00
@@ -158,6 +160,8 @@ class DBB:
         ctrlReg.extend(['00']*(0x120-0x100))
 
         print('Ctrl Reg Read', len(ctrlReg))
+
+        self.hciInterface.endTestFunc(None)
 
         return ctrlReg
 
