@@ -1,13 +1,5 @@
 name: ME18_Example_Build
 on: 
-
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  #push:
-  #  branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-    types: [opened, reopened, synchronize, ready_for_review]  # When to run the workflow on PR
-
   workflow_dispatch:
 jobs:
   # This workflow contains a single job called "build"
