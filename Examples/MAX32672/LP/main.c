@@ -165,7 +165,7 @@ void setTrigger(int waitForTrigger)
 
 int main(void)
 {
-    PRINT("****Low Power Mode Example****\n\n");
+    PRINT("\n************ Low Power Mode Example ************\n\n");
 
 #if USE_ALARM
     PRINT("This code cycles through the MAX32672 power modes, using the RTC alarm to exit from "
@@ -186,8 +186,8 @@ int main(void)
 #endif // USE_CONSOLE
     setTrigger(1);
 
+    // Put unused RAMs in light sleep
     MXC_LP_ROMLightSleepEnable();
-
     MXC_LP_SysRam3LightSleepEnable();
     MXC_LP_SysRam2LightSleepEnable();
     MXC_LP_SysRam1LightSleepDisable();
@@ -196,6 +196,7 @@ int main(void)
     PRINT("All unused RAMs placed in LIGHT SLEEP mode.\n");
     setTrigger(1);
 
+    // Shutdown unused RAMs
     MXC_LP_SysRam3Shutdown();
     MXC_LP_SysRam2Shutdown();
 
@@ -205,6 +206,7 @@ int main(void)
     PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
 
+    // Enable Wakeup source
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
 #endif // USE_BUTTON
@@ -218,7 +220,6 @@ int main(void)
         setTrigger(0);
         MXC_LP_EnterSleepMode();
         PRINT("Waking up from SLEEP mode.\n");
-
 #endif // DO_SLEEP
 
 #if DO_DEEPSLEEP
