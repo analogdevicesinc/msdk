@@ -109,8 +109,10 @@ void MXC_LP_EnterShutDownMode(void);
  * @brief      Set ovr bits to set the voltage the micro will run at.
  *
  * @param[in]  ovr   The ovr options are only 0.9V, 1.0V, and 1.1V use enum mxc_lp_ovr_t
+ * 
+ * @return     Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
  */
-void MXC_LP_SetOVR(mxc_lp_ovr_t ovr);
+int MXC_LP_SetOVR(mxc_lp_ovr_t ovr);
 
 /**
  * @brief      Enable retention regulator
