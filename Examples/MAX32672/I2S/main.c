@@ -42,13 +42,15 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include "board.h"
+#include "dma.h"
+#include "i2s.h"
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "nvic_table.h"
-#include "board.h"
-#include "i2s.h"
+#include "pb.h"
 #include "tmr.h"
-#include "dma.h"
+#include "uart.h"
 
 #define DMA_CALLBACK 0
 
@@ -87,11 +89,21 @@ int main()
 {
     int err;
     mxc_i2s_req_t req;
-    printf("\nI2S Transmission Example\n");
-    printf("I2S Signals may be viewed on pins AIN0-AIN2.\n");
-    printf("Remove header JP10 to see I2S data on AIN0.\n");
-    printf("\n\n\n\n");
 
+    printf("\n******************** I2S Example ********************\n");
+    printf("In this example a sample I2S transmission is demonstrated.\n");
+    printf("The I2S Signals are output on pins AIN0-AIN2.\n");
+    printf("Header JP10 must be removed to see I2S data on AIN0.\n");
+
+    printf("\nPress SW3 to begin transmission.\n");
+    while(!PB_Get(0)) {}
+    printf("Transmitting...\n\n");
+
+    // Shutdown UART console since it shares the I2S pins
+    while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
+    Console_Shutdown();
+
+    // Initialize I2S
     req.wordSize = MXC_I2S_DATASIZE_HALFWORD;
     req.sampleSize = MXC_I2S_SAMPLESIZE_SIXTEEN;
     req.justify = MXC_I2S_LSB_JUSTIFY;
@@ -101,8 +113,6 @@ int main()
     req.txData = toneTX;
     req.length = 64;
 
-    Console_Shutdown();
-
     if ((err = MXC_I2S_Init(&req)) != E_NO_ERROR) {
         Console_Init();
         printf("\nError in I2S_Init: %d\n", err);
@@ -110,6 +120,7 @@ int main()
         while (1) {}
     }
 
+    // Configure DMA
     MXC_DMA_ReleaseChannel(0);
     NVIC_EnableIRQ(DMA0_IRQn);
 
@@ -119,15 +130,17 @@ int main()
     MXC_I2S_RegisterDMACallback(NULL);
 #endif
 
+    // Initiate I2S Transmission
     dma_flag = 1;
     MXC_I2S_TXDMAConfig(toneTX, 64 * 2);
 
-    /* Wait for DMA transactions to finish */
+    // Wait for DMA transactions to finish
     while (dma_flag) {}
 
-    /* Wait for I2S TX Buffer to empty */
+    // Wait for I2S TX Buffer to empty
     while (MXC_I2S->dmach0 & MXC_F_I2S_DMACH0_TX_LVL) {}
 
+    // Cleanup
     if ((err = MXC_I2S_Shutdown()) != E_NO_ERROR) {
         Console_Init();
         printf("\nCould not shut down I2S driver: %d\n", err);
