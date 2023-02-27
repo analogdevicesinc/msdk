@@ -11,6 +11,7 @@
         "CODEC"
 	],
 	"vpaths":[
+		"ADC",
 		"Camera",
 		"Display",
 		"LED",
