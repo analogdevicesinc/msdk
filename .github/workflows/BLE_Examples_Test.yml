@@ -1,7 +1,7 @@
 name: BLE Examples Test
 
 # Cancels workflows in progress that are in the same PR
-concurrency: 
+concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -11,60 +11,60 @@ on:
   #push:
   #  branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
-    types: [opened, reopened, synchronize, ready_for_review]  # When to run the workflow on PR
+    branches: ["main"]
+    types: [opened, reopened, synchronize, ready_for_review] # When to run the workflow on PR
 
     paths-ignore:
       # Any files in a docs directory anywhere in the repository.
-      - '**/docs/**'
-      - '**/Documentation/**'
+      - "**/docs/**"
+      - "**/Documentation/**"
       # Any README.md file anywhere in the repository.
-      - '**/README.md'	
+      - "**/README.md"
       # Any .pdf file anywhere in the repository.
-      - '**/*.pdf'
+      - "**/*.pdf"
       # Any .yml file anywhere in the repository.
       # can comment this out when testing changes to THIS yml file
-      - '**/*.yml'
+      - "**/*.yml"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-  
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
     # The type of runner that the job will run on
-    runs-on: [ self-hosted, btm-ci ]
+    runs-on: [self-hosted, btm-ci]
     if: github.event.pull_request.draft == false
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-     # Clean and remove any local modifications
-      - name: Clean
-        continue-on-error: true
-        run: |
-          # Remove local modifications
-          set +e
+      #  # Clean and remove any local modifications
+      #   - name: Clean
+      #     continue-on-error: true
+      #     run: |
+      #       # Remove local modifications
+      #       set +e
 
-          # Attempt to clean the repo
-          git scorch
-          retval=$?
+      #       # Attempt to clean the repo
+      #       git scorch
+      #       retval=$?
 
-          # Remove everything if this fails
-          if [[ $retval -ne 0 ]]
-          then
-            rm -rf *
-          fi
+      #       # Remove everything if this fails
+      #       if [[ $retval -ne 0 ]]
+      #       then
+      #         rm -rf *
+      #       fi
 
-          set -e
+      #       set -e
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
           submodules: false
           fetch-depth: 0
-      
+
       # Locks all board preventing them from being used during a test
       # even if only one board is being tested. This is so that another job
-      # does not possibly used one of the free boards that may connect to the 
+      # does not possibly used one of the free boards that may connect to the
       #current board undertest
       - name: Lock All Boards
         if: ${{ always() }}
@@ -84,7 +84,7 @@ jobs:
 
           BLE_FILES_CHANGED=0
           RUN_TEST=0
-          
+
           # Check for changes made to these files
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
@@ -100,16 +100,16 @@ jobs:
           Libraries/PeriphDrivers/Include/MAX32655 \
           Libraries/BlePhy/MAX32655 \
           Libraries/Boards/MAX32655"
-          
+
           # Get the diff from main
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
-          
+
           echo "Watching these locations and files"
           echo $WATCH_FILES
-          
+
           echo "Checking the following changes"
           echo $CHANGE_FILES
-          
+
           # Assume we want to actually run the workflow if no files changed
           if [[ "$CHANGE_FILES" != "" ]]; then
             for watch_file in $WATCH_FILES; do 
@@ -140,7 +140,7 @@ jobs:
             dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
             ./test_launcher.sh max32655 $dut_uart $dut_serial
           fi
-      
+
       # ME14
       - name: TEST MAX32665
         run: |
@@ -149,7 +149,7 @@ jobs:
 
           BLE_FILES_CHANGED=0
           RUN_TEST=0
-          
+
           # Check for changes made to these files
           WATCH_FILES="\
           .github/workflows/ci-tests/Examples_tests \
@@ -165,16 +165,16 @@ jobs:
           Libraries/PeriphDrivers/Include/MAX32665 \
           Libraries/BlePhy/MAX32665 \
           Libraries/Boards/MAX32665"
-          
+
           # Get the diff from main
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
-          
+
           echo "Watching these locations and files"
           echo $WATCH_FILES
-          
+
           echo "Checking the following changes"
           echo $CHANGE_FILES
-          
+
           # Assume we want to actually run the workflow if no files changed
           if [[ "$CHANGE_FILES" != "" ]]; then
             for watch_file in $WATCH_FILES; do 
@@ -226,16 +226,16 @@ jobs:
           Libraries/PeriphDrivers/Include/MAX32690 \
           Libraries/BlePhy/MAX32690 \
           Libraries/Boards/MAX32690"
-          
+
           # Get the diff from main
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
-          
+
           echo "Watching these locations and files"
           echo $WATCH_FILES
-          
+
           echo "Checking the following changes"
           echo $CHANGE_FILES
-          
+
           # Assume we want to actually run the workflow if no files changed
           if [[ "$CHANGE_FILES" != "" ]]; then
             for watch_file in $WATCH_FILES; do 
@@ -253,7 +253,7 @@ jobs:
           else 
             RUN_TEST=1
           fi
-          
+
           if [[ $RUN_TEST -eq 1 ]]
           then
 
@@ -265,18 +265,18 @@ jobs:
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
             dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`            
             ./test_launcher.sh max32690 $dut_uart $dut_serial     
-          fi     
-      
+          fi
+
       # Save test reports
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
-            name: failure-report
-            path: .github/workflows/ci-tests/Examples_tests/results/
-      
+          name: failure-report
+          path: .github/workflows/ci-tests/Examples_tests/results/
+
       # Unlock even when cancelled or failed
       # This needs some work, if the job is cancelled or times out because it could not get a LOCK
-      # it then jumps here and removes all locks, that were set by a different job   
+      # it then jumps here and removes all locks, that were set by a different job
       - name: Unlock All Boards
         if: ${{ always() && steps.lock_files.outcome == 'success' }}
         run: |
@@ -284,4 +284,3 @@ jobs:
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          
