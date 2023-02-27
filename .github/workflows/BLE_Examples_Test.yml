@@ -43,23 +43,15 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Clean and remove any local modifications
-      - name: Clean
-        continue-on-error: true
-        run: |
-          # Remove local modifications
-          set +e
+      # - name: Clean
+      #   continue-on-error: true
+      #   run: |
+      #     # Remove local modifications
+      #     set +e
 
-          # Attempt to clean the repo
-         # #git scorch
-          retval=$?
+      #     # Attempt to clean the repo
 
-          # Remove everything if this fails
-          if [[ $retval -ne 0 ]]
-          then
-            rm -rf *
-          fi
-
-          set -e
+      #     set -e
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
