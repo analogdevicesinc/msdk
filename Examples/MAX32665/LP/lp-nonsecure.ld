@@ -1,5 +1,5 @@
-/******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+/*******************************************************************************
+ * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,29 +29,35 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
+ * $Date: 2019-11-25 16:16:00 -0600 (Mon, 25 Nov 2019) $ 
+ * $Revision: 49208 $
+ *
  ******************************************************************************/
 
+/* Make room for PAL_NVM_DB */
+FLASH_MEM_SIZE = 0x100000 - _PAL_NVM_SIZE;
+PAL_NVM_ORIGIN = 0x100000 - _PAL_NVM_SIZE + 0x10000000;
+
+/* SPID and SPIX Sections here are maximum possible sizes */
+/* If used, they should be adjusted for the external Flash/RAM size */
 MEMORY {
-    ROM        (rx) : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64kB ROM */
-    FLASH      (rx) : ORIGIN = 0x10000000, LENGTH = 0x00080000 /* 512KB Flash */
-    /* Reduce the flash length to one SRAM block, the others will be shut down */
-    SRAM      (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00010000 /* 64kB SRAM */
+    SPIX (rx)  : ORIGIN = 0x08000000,          LENGTH = 128M
+    FLASH (rx) : ORIGIN = 0x10000000,          LENGTH = FLASH_MEM_SIZE
+    PAL_NVM_DB (r)  : ORIGIN = PAL_NVM_ORIGIN, LENGTH = _PAL_NVM_SIZE
+    
+    SRAM (rwx)      : ORIGIN = 0x20000000,     LENGTH = 64k /* Limit SRAM usage to SRAM0 and SRAM1 to prevent hardfault. */
+    SPID (rw)       : ORIGIN = 0x80000000,     LENGTH = 512M
 }
 
+/* Sections Definitions */
 SECTIONS {
-    .rom :
-    {
-        KEEP(*(.rom_vector))
-        *(.rom_handlers*)
-    } > ROM
-
     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))
         *(.text*)    /* program code */
         *(.rodata*)  /* read-only data: "const" */
-
+        
         KEEP(*(.init))
         KEEP(*(.fini))
 
@@ -59,40 +65,16 @@ SECTIONS {
         KEEP(*(.eh_frame*))
         _etext = .;
     } > FLASH
-
-    /* Binary import */
-    .bin_storage :
-    {
-       FILL(0xFF)
-      _bin_start_ = .;
-      KEEP(*(.bin_storage_img))
-      _bin_end_ = .;
-      . = ALIGN(4);
-    } > FLASH
     
-    .rom_code :
+    /* This section will keep the SPIX data until loaded into the external device */
+    /* Upon initialization of SPIX (user code needs to do this) */
+    .xip_section :
     {
-        . = ALIGN(16);
-        _sran_code = .;
-        *(.rom_code_section)
-        _esran_code = .;
-    } > ROM
+        KEEP(*(.xip_section*))
+    } > SPIX AT>FLASH
 
-    .flash_code :
-    {
-        . = ALIGN(16);
-        _sran_code = .;
-        *(.flash_code_section)
-        _esran_code = .;
-    } > FLASH
-
-    .sram_code :
-    {
-        . = ALIGN(16);
-        _sran_code = .;
-        *(.sram_code_section)
-        _esran_code = .;
-    } > SRAM
+    __load_start_xip = LOADADDR(.xip_section);
+    __load_length_xip = SIZEOF(.xip_section);
 
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
@@ -107,7 +89,9 @@ SECTIONS {
     {
         _data = ALIGN(., 4);
         *(.data*)           /*read-write initialized data: initialized global variable*/
+        *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
         *(.flashprog*)      /* Flash program */
+        
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -134,6 +118,15 @@ SECTIONS {
     } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
 
+    .pal_nvm_db :
+    {
+    /* Align to the sector size */
+    . = ALIGN(0x2000);
+    __pal_nvm_db_start__ = .;
+    . = . + _PAL_NVM_SIZE;
+    __pal_nvm_db_end__ = .;
+    } > PAL_NVM_DB
+
     .bss :
     {
         . = ALIGN(4);
@@ -143,29 +136,18 @@ SECTIONS {
         _ebss = ALIGN(., 4);
     } > SRAM
 
-    .shared :
-    {
-        . = ALIGN(4);
-        _shared = .;
-        *(.mailbox*)
-        . = ALIGN(4);
-        *(.shared*)     /*read-write zero initialized data: uninitialzed global variable*/
-        _eshared = ALIGN(., 4);
-    } > SRAM
-    __shared_data = LOADADDR(.shared);
+    /* Setup the stack for Core 1, it will only be used if the user code
+     * includes a definition of Stack_Size_Core1, which defines the space
+     * reserved above the main core's stack for core 1's stack */
 
-    /* Set stack top to end of RAM, and stack limit move down by
-     * size of stack_dummy section */
-    __StackTop = ORIGIN(SRAM) + LENGTH(SRAM);
-    __StackLimit = __StackTop - SIZEOF(.stack_dummy);
+    __StackTop_Core1 = ORIGIN(SRAM) + LENGTH(SRAM);
+    __StackLimit_Core1 = DEFINED(Stack_Size_Core1) ? __StackTop_Core1 - Stack_Size_Core1 : __StackTop_Core1;
 
-    /* .stack_dummy section doesn't contains any symbols. It is only
-     * used for linker to calculate size of stack sections, and assign
-     * values to stack symbols later */
-    .stack_dummy (COPY):
-    {
-        *(.stack*)
-    } > SRAM
+    /* Set stack top to end of RAM, and stack limit move down by Stack_Size. 
+     * If core 1 is used, set the stack to the bottom of Core 1's stack region */
+
+    __StackTop = DEFINED(Stack_Size_Core1) ? __StackLimit_Core1 : ORIGIN(SRAM) + LENGTH(SRAM);
+    __StackLimit = __StackTop - Stack_Size;
 
     .heap (COPY):
     {
@@ -176,6 +158,6 @@ SECTIONS {
 
     PROVIDE(__stack = __StackTop);
 
-    /* Check if data + heap + stack exceeds RAM limit */
+    /* Check if data + heap + stack(s) exceeds RAM limit */
     ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
 }

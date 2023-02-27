@@ -32,26 +32,19 @@
  ******************************************************************************/
 
 MEMORY {
-    ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64 kB ROM */
-    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00280000 /* 2.5 MB Flash */
-    /* Reduce the flash length to one SRAM block, the others will be shut down */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00010000 /* 64 kB SRAM */
-    /*CSI2 (rwx) : ORIGIN = 0x2001F000, LENGTH = 0x00001000 4096 B CSI2 Buffer */
+    ROM   (rx) : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128 kB ROM */
+    FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00040000 /* 256 kB Flash */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 32k /* Limit SRAM usage to SRAM0 and SRAM1 to prevent hardfault. */
 }
 
 SECTIONS {
-    .rom :
-    {
-        KEEP(*(.rom_vector))
-        *(.rom_handlers*)
-    } > ROM
-
     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))
         *(.text*)    /* program code */
         *(.rodata*)  /* read-only data: "const" */
+        *(.flashprog*)  /* Flash program */
 
         KEEP(*(.init))
         KEEP(*(.fini))
@@ -60,40 +53,6 @@ SECTIONS {
         KEEP(*(.eh_frame*))
         _etext = .;
     } > FLASH
-
-    /* Binary import */
-    .bin_storage :
-    {
-       FILL(0xFF)
-      _bin_start_ = .;
-      KEEP(*(.bin_storage_img))
-      _bin_end_ = .;
-      . = ALIGN(4);
-    } > FLASH
-    
-    .rom_code :
-    {
-        . = ALIGN(16);
-        _sran_code = .;
-        *(.rom_code_section)
-        _esran_code = .;
-    } > ROM
-
-    .flash_code :
-    {
-        . = ALIGN(16);
-        _sran_code = .;
-        *(.flash_code_section)
-        _esran_code = .;
-    } > FLASH
-
-    .sram_code :
-    {
-        . = ALIGN(16);
-        _sran_code = .;
-        *(.sram_code_section)
-        _esran_code = .;
-    } > SRAM
 
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
@@ -107,9 +66,8 @@ SECTIONS {
     .data :
     {
         _data = ALIGN(., 4);
-        _csi = . + 0x20000;
         *(.data*)           /*read-write initialized data: initialized global variable*/
-
+        *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -133,7 +91,6 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-
     } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
 
@@ -145,17 +102,6 @@ SECTIONS {
         *(COMMON)
         _ebss = ALIGN(., 4);
     } > SRAM
-
-    .shared :
-    {
-        . = ALIGN(4);
-        _shared = .;
-        *(.mailbox*)
-        . = ALIGN(4);
-        *(.shared*)     /*read-write zero initialized data: uninitialzed global variable*/
-        _eshared = ALIGN(., 4);
-    } > SRAM
-    __shared_data = LOADADDR(.shared);
 
     /* Set stack top to end of RAM, and stack limit move down by
      * size of stack_dummy section */

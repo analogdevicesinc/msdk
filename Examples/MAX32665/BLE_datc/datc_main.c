@@ -1041,6 +1041,7 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
         break;
 
     case APP_DISC_CFG_START:
+    case APP_DISC_CFG_CONN_START:
         /* start configuration */
         AppDiscConfigure(connId, APP_DISC_CFG_START, DATC_DISC_CFG_LIST_LEN,
                          (attcDiscCfg_t *)datcDiscCfgList, DATC_DISC_HDL_LIST_LEN,
@@ -1049,10 +1050,6 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
 
     case APP_DISC_CFG_CMPL:
         AppDiscComplete(connId, status);
-        break;
-
-    case APP_DISC_CFG_CONN_START:
-        /* no connection setup configuration */
         break;
 
     default:
