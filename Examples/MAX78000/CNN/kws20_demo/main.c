@@ -72,7 +72,7 @@
 #endif
 #include <math.h>
 
-#define VERSION "3.2.1 (12/13/22)" // trained with background noise and more unknown keywords
+#define VERSION "3.2.2 (2/13/23)" // trained with background noise and more unknown keywords
 /* **** Definitions **** */
 #define CLOCK_SOURCE 0 // 0: IPO,  1: ISO, 2: IBRO
 #define SLEEP_MODE 0 // 0: no sleep,  1: sleep,   2:deepsleep(LPM)
@@ -220,7 +220,7 @@ const int16_t voiceVector[] = KWS20_TEST_VECTOR;
 const int8_t voiceVector[] = KWS20_TEST_VECTOR;
 #endif
 
-int8_t MicReader(int16_t *sample);
+int8_t MicReader(int32_t *sample);
 
 #else
 void i2s_isr(void)
@@ -1143,73 +1143,7 @@ uint8_t AddTranspose(uint8_t *pIn, uint8_t *pOut, uint16_t inSize, uint16_t outS
 }
 /* **************************************************************************** */
 #ifndef ENABLE_MIC_PROCESSING
-uint8_t MicReadChunk(uint8_t *pBuff, uint16_t *avg)
-{
-    static uint16_t chunkCount = 0;
-    static uint16_t sum = 0;
-    int16_t sample = 0;
-    int16_t temp = 0;
-    uint8_t ret = 0;
-
-    /* Read one sample from mic emulated by test vector and add to buffer*/
-    ret = MicReader(&sample);
-
-    /* sample not ready */
-    if (!ret) {
-        *avg = 0;
-        return 0;
-    }
-
-#ifndef ENERGY
-    /* Turn on LED2 (Red) */
-    LED_On(LED2);
-#endif
-
-    /* absolute for averaging */
-    if (sample >= 0) {
-        sum += sample;
-    } else {
-        sum -= sample;
-    }
-
-    /* convert to 8 bit unsigned */
-#ifndef EIGHT_BIT_SAMPLES
-    pBuff[chunkCount++] = (uint8_t)((sample)*SAMPLE_SCALE_FACTOR / 256);
-#else
-    pBuff[chunkCount++] = (uint8_t)((sample)*SAMPLE_SCALE_FACTOR / 256);
-#endif
-
-    temp = (int8_t)pBuff[chunkCount - 1];
-
-    /* record max and min */
-    if (temp > Max) {
-        Max = temp;
-    }
-
-    if (temp < Min) {
-        Min = temp;
-    }
-
-    /* if not enough samples, return 0 */
-    if (chunkCount < CHUNK) {
-        *avg = 0;
-        return 0;
-    }
-
-#ifdef EIGHT_BIT_SAMPLES
-    /* scale up sum in 8-bit case to work with same threshold as 16bit */
-    sum = sum * 256;
-#endif
-
-    /* enough samples are collected, calculate average and return 1 */
-    *avg = ((uint16_t)(sum / CHUNK));
-
-    chunkCount = 0;
-    sum = 0;
-    return 1;
-}
-/* **************************************************************************** */
-int8_t MicReader(int16_t *sample)
+int8_t MicReader(int32_t *sample)
 {
     static uint32_t micSampleCount = 0;
     int16_t temp;
@@ -1219,17 +1153,20 @@ int8_t MicReader(int16_t *sample)
     *sample = temp;
     return (1);
 }
-#else // #ifndef ENABLE_MIC_PROCESSING
+#endif
 /* **************************************************************************** */
 uint8_t MicReadChunk(uint16_t *avg)
 {
     static uint16_t chunkCount = 0;
     static uint16_t sum = 0;
-    static uint32_t index = 0;
     int32_t sample = 0;
     int16_t temp = 0;
     uint32_t rx_size = 0;
 
+#ifndef ENABLE_MIC_PROCESSING
+    rx_size = 16;
+#else
+    static uint32_t index = 0;
     /* sample not ready */
     if (!i2s_flag) {
         *avg = 0;
@@ -1241,9 +1178,14 @@ uint8_t MicReadChunk(uint16_t *avg)
     /* Read number of samples in I2S RX FIFO */
     rx_size = MXC_I2S->dmach0 >> MXC_F_I2S_DMACH0_RX_LVL_POS;
     //  PR_DEBUG("%d ", rx_size);
-
+#endif
     /* read until fifo is empty or enough samples are collected */
     while ((rx_size--) && (chunkCount < CHUNK)) {
+#ifndef ENABLE_MIC_PROCESSING
+        /* Read one sample from mic emulated by test vector and add to buffer*/
+        MicReader(&sample);
+        temp = sample;
+#else
         /* Read microphone sample from I2S FIFO */
         sample = (int32_t)MXC_I2S->fifoch0;
 
@@ -1261,6 +1203,7 @@ uint8_t MicReadChunk(uint16_t *avg)
         if (index++ < 10000) {
             continue;
         }
+#endif
 
 #ifndef ENERGY
         /* Turn on LED2 (Red) */
@@ -1350,7 +1293,6 @@ int16_t HPF(int16_t input)
 
     return (output);
 }
-#endif // #ifndef ENABLE_MIC_PROCESSING
 
 /************************************************************************************/
 #ifdef ENABLE_TFT
@@ -1381,7 +1323,7 @@ void TFT_Intro(void)
 #endif
 }
 
-/* **************************************************************************** */
+/***************************************************************************** */
 void TFT_Print(char *str, int x, int y, int font, int length)
 {
     // fonts id
@@ -1391,7 +1333,7 @@ void TFT_Print(char *str, int x, int y, int font, int length)
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
 
-/* **************************************************************************** */
+/***************************************************************************** */
 void TFT_End(uint16_t words)
 {
     char buff[TFT_BUFF_SIZE];

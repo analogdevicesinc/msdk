@@ -40,11 +40,11 @@ if [[ $DO_MAX32655 -eq 1 ]]; then
 
     echo 
     echo "Lock the used recourse files."
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_A5
 
     touch /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_EvKit.txt
 
@@ -53,7 +53,7 @@ if [[ $DO_MAX32655 -eq 1 ]]; then
     cd $MSDK
     echo "PWD="`pwd`
 
-    cd .github/workflows/ci-tests/Examples_tests
+    cd .github/workflows/scripts
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
     if [ $(hostname) == "wall-e" ]; then
@@ -70,11 +70,11 @@ if [[ $DO_MAX32655 -eq 1 ]]; then
     echo
     ls -hal ~/Workspace/Resource_Share
 
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_a5.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_A5
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
 
     echo 
     echo "-----------------------------------------------------------------------------------------"
@@ -89,11 +89,11 @@ if [[ $DO_MAX32665 -eq 1 ]]; then
     echo "TEST MAX32665"
 
     echo "Lock the used recourse files."
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_A5
 
     touch /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32665.txt
 
@@ -102,7 +102,7 @@ if [[ $DO_MAX32665 -eq 1 ]]; then
     cd $MSDK
     echo "PWD="`pwd`
 
-    cd .github/workflows/ci-tests/Examples_tests
+    cd .github/workflows/scripts
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
     if [ $(hostname) == "wall-e" ]; then
@@ -122,11 +122,11 @@ if [[ $DO_MAX32665 -eq 1 ]]; then
     echo
     ls -hal ~/Workspace/Resource_Share
     
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_a5.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_A5
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
 
     echo 
     echo "-----------------------------------------------------------------------------------------"
@@ -142,11 +142,11 @@ if [[ $DO_MAX32690_EVKIT -eq 1 ]]; then
     echo 
 
     echo "Lock the used recourse files."
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_a5.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_A5
 
     touch /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_EvKit.txt
 
@@ -155,7 +155,7 @@ if [[ $DO_MAX32690_EVKIT -eq 1 ]]; then
     cd $MSDK
     echo "PWD="`pwd`
 
-    cd .github/workflows/ci-tests/Examples_tests
+    cd .github/workflows/scripts
     chmod +x test_launcher.sh
     FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
     if [ $(hostname) == "wall-e" ]; then
@@ -178,11 +178,11 @@ if [[ $DO_MAX32690_EVKIT -eq 1 ]]; then
     if [ -f /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_EvKit.txt ]; then
         rm /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_EvKit.txt
     fi
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_a5.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_A5
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
 
     echo 
     echo "-----------------------------------------------------------------------------------------"
@@ -210,11 +210,11 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['${max32690_wlp_brd}']['DAP_sn'])"`            
 
     echo "Lock the used recourse files."    
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/${max32690_wlp_brd}.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 ${max32690_wlp_brd}
 
     touch /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_WLP.txt # indicate which jos is running
     set +e
@@ -222,7 +222,7 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     cd $MSDK
     echo "PWD="`pwd`
 
-    cd .github/workflows/ci-tests/Examples_tests
+    cd .github/workflows/scripts
     chmod +x test_launcher.sh
     ./test_launcher.sh max32690 $dut_uart $dut_serial WLP_V1
  
@@ -233,11 +233,11 @@ if [[ $DO_MAX32690_WLP -eq 1 ]]; then
     echo
     ls -hal ~/Workspace/Resource_Share
     
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/${max32690_wlp_brd}.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py ${max32690_wlp_brd}
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
+    python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
 
     if [ -f /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_WLP.txt ]; then
         rm /home/$USER/Workspace/Resource_Share/local-BLE_Examples_Test-MAX32690_WLP.txt
