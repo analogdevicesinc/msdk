@@ -97,6 +97,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins, sys_ma
         }
 
     default:
+        MXC_TMR_SetClockSourceFreq(tmr, PeripheralClock);
         break;
     }
 
