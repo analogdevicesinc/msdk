@@ -60,9 +60,12 @@ extern "C" {
 
 /**
  * @brief   Enumeration type for voltage selection
- *
  */
-typedef enum { MXC_LP_V0_9 = 0, MXC_LP_V1_0, MXC_LP_V1_1 } mxc_lp_ovr_t;
+typedef enum {
+    MXC_LP_OVR_0_9 = MXC_S_PWRSEQ_LPCN_OVR_0_9V, /**< OVR 0.9V */
+    MXC_LP_OVR_1_0 = MXC_S_PWRSEQ_LPCN_OVR_1_0V, /**< OVR 1.0V */
+    MXC_LP_OVR_1_1 = MXC_S_PWRSEQ_LPCN_OVR_1_1V, /**< OVR 1.1V */
+} mxc_lp_ovr_t;
 
 /**
  * @brief   Enumeration type for PM Mode
