@@ -281,7 +281,7 @@ int main()
     printf("\n-->Result: \n");
     printData();
     printf("\n");
-    if (verifyData()) {
+    if (!verifyData()) {
         printf("\n-->I2C Transaction Successful\n");
         LED_On(LED_GREEN);
     } else {

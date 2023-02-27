@@ -77,6 +77,14 @@ if stream mode is disabled, or 320x240 if enabled
 If BUTTON is defined, you'll need to push PB1 to capture an image frame.  Otherwise, images
 will be captured continuously.
 */
+#ifndef __riscv
+#if defined(STREAM_ENABLE) && defined(ENABLE_TFT) && defined(BOARD_FTHR_REVA)
+#define FEATHER_FAST_STREAM
+#endif
+#endif
+/* If enabled, can stream up to 16fps when the TFT is available up to 320x240
+ * This option only works when Feather board is selected
+ */
 
 // ------------------------
 
@@ -94,8 +102,11 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 
 #endif
-
+#ifndef FEATHER_FAST_STREAM
 #define CAMERA_FREQ (10 * 1000 * 1000)
+#else
+#define CAMERA_FREQ (8330000)
+#endif
 
 // Match image dimensions to the selected camera and capture mode.
 // These definitions, including "CAMERA_MONO", come from board.mk
@@ -137,8 +148,14 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 #else
 #ifdef STREAM_ENABLE
+#ifdef BOARD_EVKIT_V1
 #define IMAGE_XRES 80
 #define IMAGE_YRES 80
+#else
+#define IMAGE_XRES 52 // When using feather board,
+#define IMAGE_YRES 52 // streaming is very limited due to serial port low speed.
+#warning This configuration may be unstable!
+#endif
 #else
 #define IMAGE_XRES 176
 #define IMAGE_YRES 144
@@ -147,8 +164,14 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 #endif
 
-#define CON_BAUD \
-    115200 * 8 //UART baudrate used for sending data to PC, use max 921600 for serial stream
+#ifdef BOARD_EVKIT_V1
+#define CON_BAUD 115200 * 8
+//UART baudrate used for sending data to PC, use max 921600 for serial stream
+#else
+#define CON_BAUD 115200 * 1
+//UART baudrate used for sending data to PC, use max 115200 for serial stream with feather board
+#endif
+
 #define X_START 0
 #define Y_START 0
 
@@ -170,8 +193,13 @@ void process_img(void)
     utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
 #else
 #ifndef CAMERA_MONO
-    // Send the image to TFT
+#ifdef BOARD_EVKIT_V1
+    // Send the image to EVKIT TFT
     MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, h, w);
+#else
+    // Send the image to feather TFT
+    MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
+#endif
 #else
     MXC_TFT_ShowImageCameraMono(X_START, Y_START, raw, h, w);
 #endif // #ifndef CAMERA_MONO
@@ -282,8 +310,26 @@ int main(void)
 
 #ifdef BOARD_FTHR_REVA
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
+#ifdef FEATHER_FAST_STREAM
+    /* Set the screen rotation */
+    MXC_TFT_SetRotation(ROTATE_270);
+#endif
 #endif
     MXC_TFT_SetBackGroundColor(4);
+#endif
+
+#if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
+    // set camera clock prescaler to prevent streaming overflow for QVGA
+#ifdef BOARD_EVKIT_V1
+    camera_write_reg(0x11, 0x8);
+#endif
+#ifdef BOARD_FTHR_REVA
+#ifndef FEATHER_FAST_STREAM
+    camera_write_reg(0x11, 0xE);
+#else
+    camera_write_reg(0x11, 0x0);
+#endif
+#endif
 #endif
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef STREAM_ENABLE
@@ -296,30 +342,36 @@ int main(void)
 #endif
 
 #ifdef ENABLE_TFT
+#ifdef BOARD_EVKIT_V1
     /* Set the screen rotation */
     MXC_TFT_SetRotation(SCREEN_ROTATE);
     /* Change entry mode settings */
     MXC_TFT_WriteReg(0x0011, 0x6858);
 #endif
-#else
+#endif
+#else //STREAM_ENABLE
 #ifndef CAMERA_MONO
+#ifndef FEATHER_FAST_STREAM
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel); // RGB565 stream
 #else
+    MXC_TFT_Stream(0, 0, IMAGE_XRES, IMAGE_YRES);
+    ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+                           dma_channel); // RGB565 stream
+#endif
+
+#else //CAMERA_MONO
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel); // Mono stream
-#endif
+#endif //CAMERA_MONO
 
 #ifdef ENABLE_TFT
     /* Set the screen rotation */
 #ifdef BOARD_EVKIT_V1
     MXC_TFT_SetRotation(SCREEN_NORMAL);
 #endif
-#ifdef BOARD_FTHR_REVA
-    MXC_TFT_SetRotation(ROTATE_270);
 #endif
 
-#endif
 #endif //#ifndef STREAM_ENABLE
 
     if (ret != STATUS_OK) {
@@ -329,21 +381,12 @@ int main(void)
 
     MXC_Delay(SEC(1));
 
-#if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
-    // set camera clock prescaller to prevent streaming overflow for QVGA
-#ifdef BOARD_EVKIT_V1
-    camera_write_reg(0x11, 0x8); // can be set to 0x6 in release mode ( -o2 )
-#endif
-#ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x11, 0xE); // can be set to 0xB in release mode ( -o2 )
-#endif
-#endif
-
     // Start capturing a first camera image frame.
     printf("Starting\n");
 #ifdef BUTTON
     while (!PB_Get(0)) {}
 #endif
+#ifndef FEATHER_FAST_STREAM
     camera_start_capture_image();
 
     while (1) {
@@ -363,6 +406,11 @@ int main(void)
             camera_start_capture_image();
         }
     }
+#else
+    camera_start_capture_image_tft();
+    while (1)
+        ;
+#endif
 
     return ret;
 }

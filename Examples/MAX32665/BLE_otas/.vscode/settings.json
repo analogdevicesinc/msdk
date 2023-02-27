@@ -64,7 +64,15 @@
         "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/dual_chip",
         "${config:MAXIM_PATH}/Libraries/Cordio/ble-host/sources/hci/exactle",
         "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include",
-        "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/util"
+        "${config:MAXIM_PATH}/Libraries/Cordio/wsf/include/util",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -86,10 +94,21 @@
         "${config:MAXIM_PATH}/Libraries/Cordio/ble-profiles/sources",
         "${config:MAXIM_PATH}/Libraries/Cordio/controller/sources",
         "${config:MAXIM_PATH}/Libraries/Cordio/wsf/sources",
-        "${config:MAXIM_PATH}/Libraries/Cordio/platform/targets/maxim/max32665/sources"
+        "${config:MAXIM_PATH}/Libraries/Cordio/platform/targets/maxim/max32665/sources",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-        "${config:board}"
+        "${config:board}",
+        "TARGET=${config:target}",
+        "TARGET_REV=0x4131",
+        "__GNUC__"
     ]
 }
 

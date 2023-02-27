@@ -15,7 +15,7 @@
     },
     
     "target":"MAX32672",
-    "board":"EvKit_V1",
+    "board":"FTHR",
 
     "project_name":"${workspaceFolderBasename}",
 
@@ -88,7 +88,10 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-        "${config:board}"
+        "${config:board}",
+        "TARGET=${config:target}",
+        "TARGET_REV=0x4131",
+        "__GNUC__"
     ]
 }
 

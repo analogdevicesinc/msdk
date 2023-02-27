@@ -23,7 +23,8 @@ The following features are supported:
 ## Dependencies
 
 * [Visual Studio Code](https://code.visualstudio.com/)
-* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools)
+  * [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+  * [Cortex-Debug Extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
 * [Analog Devices MSDK](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820A)
 
 ## Installation
@@ -47,13 +48,15 @@ The steps below are also available in video form in "Understanding Artificial In
 
 6. Install the Microsoft [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-7. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.
+7. Install the [Cortex-Debug Extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
 
-8. Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
+8. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.
+
+9. Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
 
     ![Open Settings JSON Command](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/open_settings_json.jpg)
 
-9. Add the entries below into your user settings.json file.
+10. Add the entries below into your user settings.json file.
 
     ```json
     {
@@ -67,9 +70,9 @@ The steps below are also available in video form in "Understanding Artificial In
     }
     ```
 
-10. Save your changes to the file with `CTRL + S` and restart VS Code.
+11. Save your changes to the file with `CTRL + S` and restart VS Code.
 
-11. That's it! You're ready to start using Visual Studio Code to develop with Analog Devices MAX-series Microcontrollers. The MSDK examples come pre-populated with .vscode project folders, and the `Tools/VSCode-Maxim` folder of the MSDK contains documentation and templates.  See [Usage](#usage) below for more details.
+12. That's it! You're ready to start using Visual Studio Code to develop with Analog Devices MAX-series Microcontrollers. The MSDK examples come pre-populated with .vscode project folders, and the `Tools/VSCode-Maxim` folder of the MSDK contains documentation and templates.  See [Usage](#usage) below for more details.
 
 ## Usage
 
