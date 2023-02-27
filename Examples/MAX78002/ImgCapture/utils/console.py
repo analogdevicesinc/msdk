@@ -30,7 +30,6 @@
  # ownership rights.
  #
  ###############################################################################
-"""
 
 """
 This file implements a simple console program for communicating

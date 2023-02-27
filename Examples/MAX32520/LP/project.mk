@@ -12,3 +12,8 @@
 # **********************************************************
 
 # Add your config here!
+
+# Use local linker file that restricts SRAM usage to
+# SRAM0 and SRAM1 to prevent hardfault when all other
+# SRAMs shutdown.
+override LINKERFILE=lp-sla.ld 

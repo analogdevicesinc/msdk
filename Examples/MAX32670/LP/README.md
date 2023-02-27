@@ -15,14 +15,13 @@ The Console UART of the device will output these messages:
 ```
 ****Low Power Mode Example****
 
-This code cycles through the MAX32670 power modes, using a push button (SW2) to exit from each mode and enter the next.
+This code cycles through the MAX32670 power modes, using a push button (SW3) to exit from each mode and enter the next.
 
 Running in ACTIVE mode.
-All unused RAMs placed in LIGHT SLEEP mode.
-All unused RAMs shutdown.
+Unused RAMs placed in LIGHT SLEEP mode.
+Unused RAMs shutdown.
 Entering SLEEP mode.
 Waking up from SLEEP mode.
 Entering DEEPSLEEP mode.
 Waking up from DEEPSLEEP mode.
-
 ```

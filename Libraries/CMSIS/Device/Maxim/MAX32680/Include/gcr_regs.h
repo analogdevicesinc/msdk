@@ -386,7 +386,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_GCR_PCLKDIV_ADCFRQ_POS                   10 /**< PCLKDIV_ADCFRQ Position */
-#define MXC_F_GCR_PCLKDIV_ADCFRQ                       ((uint32_t)(0x7UL << MXC_F_GCR_PCLKDIV_ADCFRQ_POS)) /**< PCLKDIV_ADCFRQ Mask */
+#define MXC_F_GCR_PCLKDIV_ADCFRQ                       ((uint32_t)(0xFUL << MXC_F_GCR_PCLKDIV_ADCFRQ_POS)) /**< PCLKDIV_ADCFRQ Mask */
 
 #define MXC_F_GCR_PCLKDIV_CNNCLKDIV_POS                14 /**< PCLKDIV_CNNCLKDIV Position */
 #define MXC_F_GCR_PCLKDIV_CNNCLKDIV                    ((uint32_t)(0x7UL << MXC_F_GCR_PCLKDIV_CNNCLKDIV_POS)) /**< PCLKDIV_CNNCLKDIV Mask */

@@ -73,7 +73,10 @@
         "ARM_MATH_CM4",
         "__FPU_PRESENT",
         "SEMIHOSTING",
-        "${config:board}"
+        "${config:board}",
+        "TARGET=${config:target}",
+        "TARGET_REV=0x4131",
+        "__GNUC__"
     ]
 }
 

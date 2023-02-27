@@ -84,7 +84,9 @@
     ],
     "C_Cpp.default.defines": [
         "${config:board}",
-        "ENABLE_TFT"
+        "TARGET=${config:target}",
+        "TARGET_REV=0x4131",
+        "__GNUC__"
     ]
 }
 

@@ -957,3 +957,12 @@ void MXC_TFT_WriteReg(unsigned char command, unsigned char data)
     write_command(command);
     write_data(data);
 }
+
+void MXC_TFT_Stream(int x0, int y0, int width, int height)
+{
+    if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180)
+        window(x0, y0, height, width);
+    else
+        window(x0, y0, width, height);
+    write_command(0x2C); // send pixel
+}

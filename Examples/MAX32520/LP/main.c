@@ -118,9 +118,9 @@ int main(void)
 
     MXC_LP_ROMLightSleepEnable();
     MXC_LP_ICache0LightSleepEnable();
-    MXC_LP_SysRam4LightSleepDisable();
-    MXC_LP_SysRam3LightSleepDisable();
-    MXC_LP_SysRam2LightSleepDisable();
+    MXC_LP_SysRam4LightSleepEnable();
+    MXC_LP_SysRam3LightSleepEnable();
+    MXC_LP_SysRam2LightSleepEnable();
 
     MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
@@ -135,6 +135,7 @@ int main(void)
     setTrigger(1);
 
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 
     while (1) {
 #if DO_SLEEP

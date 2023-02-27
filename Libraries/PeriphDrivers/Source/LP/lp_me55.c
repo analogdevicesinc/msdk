@@ -283,6 +283,21 @@ void MXC_LP_SysRam3LightSleepEnable(void)
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM3LS_EN;
 }
 
+void MXC_LP_SysRam4LightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM4LS_EN;
+}
+
+void MXC_LP_SysRam5LightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM5LS_EN;
+}
+
+void MXC_LP_SysRam6LightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM6LS_EN;
+}
+
 void MXC_LP_ICache0LightSleepEnable(void)
 {
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICCLS_EN;
@@ -331,6 +346,21 @@ void MXC_LP_SysRam2LightSleepDisable(void)
 void MXC_LP_SysRam3LightSleepDisable(void)
 {
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM3LS_EN;
+}
+
+void MXC_LP_SysRam4LightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM4LS_EN;
+}
+
+void MXC_LP_SysRam5LightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM5LS_EN;
+}
+
+void MXC_LP_SysRam6LightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM6LS_EN;
 }
 
 void MXC_LP_ICache0LightSleepDisable(void)
@@ -403,6 +433,36 @@ void MXC_LP_SysRam3PowerUp(void)
     MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_RAM3;
 }
 
+void MXC_LP_SysRam4Shutdown(void)
+{
+    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_RAM4;
+}
+
+void MXC_LP_SysRam4PowerUp(void)
+{
+    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_RAM4;
+}
+
+void MXC_LP_SysRam5Shutdown(void)
+{
+    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_RAM5;
+}
+
+void MXC_LP_SysRam5PowerUp(void)
+{
+    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_RAM5;
+}
+
+void MXC_LP_SysRam6Shutdown(void)
+{
+    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_RAM6;
+}
+
+void MXC_LP_SysRam6PowerUp(void)
+{
+    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_RAM6;
+}
+
 void MXC_LP_ICacheXIPShutdown(void)
 {
     MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ICCXIP;
@@ -411,6 +471,16 @@ void MXC_LP_ICacheXIPShutdown(void)
 void MXC_LP_ICacheXIPPowerUp(void)
 {
     MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ICCXIP;
+}
+
+void MXC_LP_CryptoShutdown(void)
+{
+    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_CRYPTO;
+}
+
+void MXC_LP_CryptoPowerUp(void)
+{
+    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_CRYPTO;
 }
 
 void MXC_LP_USBFIFOShutdown(void)
@@ -423,12 +493,22 @@ void MXC_LP_USBFIFOPowerUp(void)
     MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_USBFIFO;
 }
 
-void MXC_LP_ROMShutdown(void)
+void MXC_LP_ROM0Shutdown(void)
 {
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ROM;
+    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ROM0;
 }
 
-void MXC_LP_ROMPowerUp(void)
+void MXC_LP_ROM0PowerUp(void)
 {
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ROM;
+    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ROM0;
+}
+
+void MXC_LP_ROM1Shutdown(void)
+{
+    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ROM1;
+}
+
+void MXC_LP_ROM1PowerUp(void)
+{
+    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ROM1;
 }

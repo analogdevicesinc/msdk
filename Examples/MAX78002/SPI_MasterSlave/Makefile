@@ -29,7 +29,7 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- ###############################################################################
+###############################################################################
 
 # ** Readme! **
 # Don't edit this file! This is the core Makefile for a MaximSDK 
@@ -37,7 +37,7 @@
 # in "project.mk", on the command-line, or with system environment 
 # variables.
 
-# See https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration 
+# See https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 # for more detailed instructions on how to use this system.
 
 # The detailed instructions mentioned above are easier to read than 
@@ -198,6 +198,8 @@ PROJECT ?= $(TARGET_LC)
 # Compiler options
 
 # Configuration Variables:
+# - DEBUG : Set DEBUG=1 to build explicitly for debugging.  This adds some additional
+#			symbols and sets -Og as the default optimization level.
 # - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.  
 #			Ex: MXC_OPTIMIZE_CFLAGS = -O2
 # - PROJ_CFLAGS : Add additional compiler flags to the build.
@@ -226,17 +228,14 @@ DEBUG = 0
 endif
 
 ifeq ($(DEBUG),1)
-# Default optimization level for debug builds (make DEBUG=1 ...)
-# gcc.mk checks for this flag to add some additional debug
-# info to the build, and should be used when you really need to
-# debug.
+# Optimizes for debugging as recommended
+# by GNU for code-edit-debug cycles
+# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
 MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
-# Fallback default optimizes for debugging as recommended
-# by GNU for code-edit-debug cycles
-# https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
-MXC_OPTIMIZE_CFLAGS ?= -Og
+# Default level if not building for release or explicitly for debug
+MXC_OPTIMIZE_CFLAGS ?= -O2
 
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
@@ -248,7 +247,7 @@ PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
 # - soft
 # - softfp (default if MFLOAT_ABI is not set)
 MFLOAT_ABI ?= softfp
-# MFLOAT_ABI must be exported to other Makefiles, who check this too
+# MFLOAT_ABI must be exported to other Makefiles
 export MFLOAT_ABI
 
 ifeq "$(RISCV_CORE)" ""
@@ -330,6 +329,16 @@ endif
 # It's also necessary to explicitly set MAKECMDGOALS...
 ifeq "$(MAKECMDGOALS)" ""
 MAKECMDGOALS:=$(.DEFAULT_GOAL)
+endif
+
+# Enable colors when --sync-output is used.
+# See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
+ifneq ($(MAKE_TERMOUT),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+ifneq ($(FORCE_COLOR),)
+PROJ_CFLAGS += -fdiagnostics-color=always
 endif
 
 # *******************************************************************************

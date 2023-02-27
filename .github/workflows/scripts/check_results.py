@@ -87,9 +87,13 @@ def check_results(res_file, limit):
         return 1
     
     with open(res_file) as file:
-        while (line := file.readline().rstrip()):
-            PRINT(line)
-            temp = line.split(',')
+        while True:
+            line = file.readline()
+            if not line:
+                break
+            
+            #PRINT(line.strip())
+            temp = line.strip().split(',')
             #PRINT(temp)
             if len(temp) >= 2:
                 if temp[-1].replace('.', '', 1).isdigit():

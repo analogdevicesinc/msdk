@@ -33,8 +33,10 @@
 
 #include "mxc_device.h"
 #include "mxc_assert.h"
+#include "mxc_errors.h"
 #include "mxc_sys.h"
 #include "gcr_regs.h"
+#include "flc_regs.h"
 #include "lp.h"
 
 void MXC_LP_EnterSleepMode(void)
@@ -102,9 +104,94 @@ void MXC_LP_EnterShutDownMode(void)
     // Should never reach this line - device will reset on exit from shutdown mode.
 }
 
-void MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
+int MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
 {
-    //not supported yet
+    uint32_t current_clock, div;
+    int error;
+
+    // Ensure part is operating from internal LDO for core power
+    if (MXC_PWRSEQ->lpcn & MXC_F_PWRSEQ_LPCN_LDO_DIS) {
+        return E_BAD_STATE;
+    }
+
+    // Select the 8KHz nanoring (no guarantee 32KHz is attached) as system clock source
+    current_clock = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL;
+    if (current_clock == MXC_SYS_CLOCK_IPO) {
+        error = MXC_SYS_Clock_Select(MXC_SYS_CLOCK_INRO);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+    }
+
+    // Set flash wait state for any clock so its not to low after clock changes.
+    MXC_GCR->memctrl = (MXC_GCR->memctrl & ~(MXC_F_GCR_MEMCTRL_FWS)) |
+                       (0x5UL << MXC_F_GCR_MEMCTRL_FWS_POS);
+
+    // Set the OVR bits
+    //  The OVR enums in mxc_lp_ovr_t equals to their appropriate register setting.
+    MXC_SETFIELD(MXC_PWRSEQ->lpcn, MXC_F_PWRSEQ_LPCN_OVR, ovr);
+
+    // Set LVE bit
+    if (ovr == MXC_LP_OVR_0_9) {
+        MXC_FLC0->ctrl |= MXC_F_FLC_CTRL_LVE;
+
+    } else {
+        MXC_FLC0->ctrl &= ~(MXC_F_FLC_CTRL_LVE);
+    }
+
+    // Revert the clock to original state if it was IPO
+    if (current_clock == MXC_SYS_CLOCK_IPO) {
+        error = MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+    }
+
+    // Update SystemCoreClock variable
+    SystemCoreClockUpdate();
+
+    // Get the clock divider
+    div = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_DIV) >> MXC_F_GCR_CLKCTRL_SYSCLK_DIV_POS;
+
+    // Set Flash Wait States
+    if (ovr == MXC_LP_OVR_0_9) {
+        if (div == 0) {
+            MXC_GCR->memctrl = (MXC_GCR->memctrl & ~(MXC_F_GCR_MEMCTRL_FWS)) |
+                               (0x2UL << MXC_F_GCR_MEMCTRL_FWS_POS);
+
+        } else {
+            MXC_GCR->memctrl = (MXC_GCR->memctrl & ~(MXC_F_GCR_MEMCTRL_FWS)) |
+                               (0x1UL << MXC_F_GCR_MEMCTRL_FWS_POS);
+        }
+
+    } else if (ovr == MXC_LP_OVR_1_0) {
+        if (div == 0) {
+            MXC_GCR->memctrl = (MXC_GCR->memctrl & ~(MXC_F_GCR_MEMCTRL_FWS)) |
+                               (0x2UL << MXC_F_GCR_MEMCTRL_FWS_POS);
+
+        } else {
+            MXC_GCR->memctrl = (MXC_GCR->memctrl & ~(MXC_F_GCR_MEMCTRL_FWS)) |
+                               (0x1UL << MXC_F_GCR_MEMCTRL_FWS_POS);
+        }
+
+    } else {
+        if (div == 0) {
+            MXC_GCR->memctrl = (MXC_GCR->memctrl & ~(MXC_F_GCR_MEMCTRL_FWS)) |
+                               (0x4UL << MXC_F_GCR_MEMCTRL_FWS_POS);
+
+        } else if (div == 1) {
+            MXC_GCR->memctrl = (MXC_GCR->memctrl & ~(MXC_F_GCR_MEMCTRL_FWS)) |
+                               (0x2UL << MXC_F_GCR_MEMCTRL_FWS_POS);
+
+        } else {
+            MXC_GCR->memctrl = (MXC_GCR->memctrl & ~(MXC_F_GCR_MEMCTRL_FWS)) |
+                               (0x1UL << MXC_F_GCR_MEMCTRL_FWS_POS);
+        }
+    }
+
+    // Caller must perform peripheral reset
+
+    return E_NO_ERROR;
 }
 
 void MXC_LP_RetentionRegEnable(void)
@@ -298,6 +385,11 @@ void MXC_LP_SysRam3LightSleepEnable(void)
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM3LS_EN;
 }
 
+void MXC_LP_ICache0LightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICC0LS_EN;
+}
+
 void MXC_LP_ROMLightSleepEnable(void)
 {
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROMLS_EN;
@@ -323,9 +415,14 @@ void MXC_LP_SysRam3LightSleepDisable(void)
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM3LS_EN;
 }
 
+void MXC_LP_ICache0LightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ICC0LS_EN;
+}
+
 void MXC_LP_ROMLightSleepDisable(void)
 {
-    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM0LS_EN;
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROMLS_EN;
 }
 
 void MXC_LP_SysRam0Shutdown(void)

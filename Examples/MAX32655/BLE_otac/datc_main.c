@@ -49,6 +49,7 @@
 #include "util/calc128.h"
 #include "wsf_efs.h"
 #include "wdxc/wdxc_api.h"
+#include "wdxc/wdxc_main.h"
 #include "wdx_defs.h"
 #include "pal_btn.h"
 #include "tmr.h"
@@ -151,7 +152,7 @@ static const appSecCfg_t datcSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    FALSE /*! TRUE to initiate security upon connection */
+    TRUE /*! TRUE to initiate security upon connection */
 };
 
 /*! TRUE if Out-of-band pairing data is to be sent */
@@ -290,6 +291,23 @@ static const attcDiscCfg_t datcDiscCfgList[] = {
 WSF_CT_ASSERT(DATC_DISC_CFG_LIST_LEN <= DATC_DISC_HDL_LIST_LEN);
 
 extern void setAdvTxPower(void);
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Reset the OTA state.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+static void datcResetOTAState(void)
+{
+    int i;
+    for (i = 0; i < DM_CONN_MAX; i++) {
+        datcCb.sendingFile[i] = FALSE;
+        datcCb.fileVerified[i] = FALSE;
+        datcCb.blockOffset[i] = BLOCK_OFFSET_INIT;
+    }
+}
 
 /*************************************************************************************************/
 /*!
@@ -503,7 +521,10 @@ static void datcScanReport(dmEvt_t *pMsg)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datcOpen(dmEvt_t *pMsg) {}
+static void datcOpen(dmEvt_t *pMsg)
+{
+    datcResetOTAState();
+}
 
 /*************************************************************************************************/
 /*!
@@ -663,6 +684,12 @@ static void datcSendBlock(dmConnId_t connId, uint32_t address, uint32_t len, uin
 
     /* Send the address and data, add the length of the address to the length */
     WdxcFtdSendBlock(connId, len + sizeof(uint32_t), addrData);
+
+    /* Clear out the buf->free field to prevent un-intended assertion in WsfBufFree */
+    addrData[4] = 0;
+    addrData[5] = 0;
+    addrData[6] = 0;
+    addrData[7] = 0;
 
     WsfBufFree(addrData);
 
@@ -960,7 +987,10 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
         break;
 
     case APP_DISC_CFG_START:
+    case APP_DISC_CFG_CONN_START:
         /* start configuration */
+        WdxcStoreAttrHandles(connId, pDatcWdxHdlList[connId - 1]);
+        datcCb.discState[connId - 1] = DATC_DISC_SVC_MAX;
         AppDiscConfigure(connId, APP_DISC_CFG_START, DATC_DISC_CFG_LIST_LEN,
                          (attcDiscCfg_t *)datcDiscCfgList, DATC_DISC_HDL_LIST_LEN,
                          datcCb.hdlList[connId - 1]);
@@ -968,10 +998,6 @@ static void datcDiscCback(dmConnId_t connId, uint8_t status)
 
     case APP_DISC_CFG_CMPL:
         AppDiscComplete(connId, status);
-        break;
-
-    case APP_DISC_CFG_CONN_START:
-        /* no connection setup configuration */
         break;
 
     default:
@@ -1229,12 +1255,7 @@ void DatcHandlerInit(wsfHandlerId_t handlerId)
     APP_TRACE_INFO2("File addr: %08X file size: %08X", (uint32_t)datcCb.fileData, FILE_SIZE);
     APP_TRACE_INFO1("Update File CRC: 0x%08X", datcCb.fileCRC);
 
-    int i;
-    for (i = 0; i < DM_CONN_MAX; i++) {
-        datcCb.sendingFile[i] = FALSE;
-        datcCb.fileVerified[i] = FALSE;
-        datcCb.blockOffset[i] = BLOCK_OFFSET_INIT;
-    }
+    datcResetOTAState();
 
     /* Setup scan start timer */
     datcCb.scanTimer.handlerId = handlerId;
