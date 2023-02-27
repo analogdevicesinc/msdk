@@ -107,6 +107,8 @@ void MXC_LP_EnterShutDownMode(void);
 
 /**
  * @brief      Set ovr bits to set the voltage the micro will run at.
+ * 
+ * @note       The caller must perform the peripheral reset.
  *
  * @param[in]  ovr   The ovr options are only 0.9V, 1.0V, and 1.1V use enum mxc_lp_ovr_t
  * 
