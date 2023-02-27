@@ -83,7 +83,10 @@ class DBB:
             totalLen -= amtRead
 
         print('Length', len(region))
-        assert (len(region) == stop - start)
+        assert (len(region) == stop - start), "expected readout does not match"
+        
+
+        
 
         return region
 
@@ -108,11 +111,11 @@ class DBB:
             print('Expected Region Length', regionLength)
 
             readout = self.readRegion(region_start, reserved_start)
-
+            
             if len(readout) != (regionLength):
-                print('Error occurred during readout. Aborting operation')
+                print('Error occurred during readout.')
                 return []
-
+            
             regions.extend(readout)
 
             # add reserved region to the register read
@@ -132,7 +135,9 @@ class DBB:
         # Attempting to read them causes a hardfault
 
         CTRL_REG_ADDR = BoardBaseRegs[self.board] + 0x1000
-
+        self.hciInterface.txTestFunc(
+            Namespace(channel=0, phy=1, packetLength=0, payload=3))
+        
         ctrlReg = self.readRegs(CTRL_REG_ADDR, 0x96)
 
         # assume reserved registers are 0x00
@@ -152,6 +157,8 @@ class DBB:
         ctrlReg.extend(['00']*(0x120-0x100))
 
         print('Ctrl Reg Read', len(ctrlReg))
+
+        self.hciInterface.endTestFunc(None)
 
         return ctrlReg
 
