@@ -64,7 +64,7 @@
 #define EEPROM0_READ_ADDR 200 // Starting address of data read in EEPROM memory
 
 // EEPROM1 Transaction Parameters
-#define EEPROM1_SLAVE_ADDR 0x50
+#define EEPROM1_SLAVE_ADDR 0x51
 #define EEPROM1_BUS_SPEED 400000
 #define EEPROM1_TIMEOUT_US 5000
 #define EEPROM1_TRANSACTION_INTERVAL_MS 50
