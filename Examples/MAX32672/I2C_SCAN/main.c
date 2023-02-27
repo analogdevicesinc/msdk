@@ -97,7 +97,7 @@ int main()
         printf(".");
         fflush(0);
 
-        // Set slave next address
+        // Set next slave address
         reqMaster.addr = address;
 
         // Do I2C inquiry
