@@ -128,8 +128,8 @@ int MXC_LP_SetOVR(mxc_lp_ovr_t ovr)
                        (0x5UL << MXC_F_GCR_MEMCTRL_FWS_POS);
 
     // Set the OVR bits
-    MXC_PWRSEQ->lpcn &= ~(MXC_F_PWRSEQ_LPCN_OVR);
-    MXC_PWRSEQ->lpcn |= ovr;
+    //  The OVR enums in mxc_lp_ovr_t equals to their appropriate register setting.
+    MXC_SETFIELD(MXC_PWRSEQ->lpcn, MXC_F_PWRSEQ_LPCN_OVR, ovr)
 
     // Set LVE bit
     if (ovr == MXC_LP_OVR_0_9) {
