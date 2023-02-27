@@ -83,7 +83,7 @@ class DBB:
             totalLen -= amtRead
 
         print('Length', len(region))
-
+        assert (len(region) == stop - start), "expected readout does not match"
         
 
         
@@ -113,11 +113,8 @@ class DBB:
             readout = self.readRegion(region_start, reserved_start)
             
             if len(readout) != (regionLength):
-                print('Error occurred during readout. Attempting retry')
-                readout = self.readRegion(region_start, reserved_start)
-                if(len(readout) != regionLength):
-                    print('Could not get data, aborting')
-                    return []
+                print('Error occurred during readout.')
+                return []
             
             regions.extend(readout)
 
