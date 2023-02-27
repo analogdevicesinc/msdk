@@ -189,8 +189,8 @@ int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode
                  dmamode_t dma_mode, int dma_channel);
 
 // Setup the camera resolution, pixel format, expand bits option, fifo byte mode and dma option and stream to TFT
-int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode, 
-                 dmamode_t dma_mode, int dma_channel);
+int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode,
+                     dmamode_t dma_mode, int dma_channel);
 
 // Set the sensor contrast level (from -2 to +2).
 int camera_set_contrast(int level);

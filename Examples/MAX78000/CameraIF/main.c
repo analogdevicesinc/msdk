@@ -64,7 +64,7 @@
 // Configuration options
 // ------------------------
 #define ENABLE_TFT // Comment out to disable TFT and send image to serial port instead.
-//#define STREAM_ENABLE
+// #define STREAM_ENABLE
 /* If enabled, camera is setup in streaming mode to send the image
 line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
 image first and then sends to TFT or serial port.
@@ -152,8 +152,8 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #define IMAGE_XRES 80
 #define IMAGE_YRES 80
 #else
-#define IMAGE_XRES 52   // When using feather board,
-#define IMAGE_YRES 52   // streaming is very limited due to serial port low speed.
+#define IMAGE_XRES 52 // When using feather board,
+#define IMAGE_YRES 52 // streaming is very limited due to serial port low speed.
 #warning This configuration may be unstable!
 #endif
 #else
@@ -165,11 +165,11 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 #endif
 
 #ifdef BOARD_EVKIT_V1
-#define CON_BAUD \
-    115200 * 8 //UART baudrate used for sending data to PC, use max 921600 for serial stream
+#define CON_BAUD 115200 * 8
+//UART baudrate used for sending data to PC, use max 921600 for serial stream
 #else
-#define CON_BAUD \
-    115200 * 1 //UART baudrate used for sending data to PC, use max 115200 for serial stream with feather board
+#define CON_BAUD 115200 * 1
+//UART baudrate used for sending data to PC, use max 115200 for serial stream with feather board
 #endif
 
 #define X_START 0
@@ -349,20 +349,21 @@ int main(void)
     MXC_TFT_WriteReg(0x0011, 0x6858);
 #endif
 #endif
-#else  //STREAM_ENABLE
+#else //STREAM_ENABLE
 #ifndef CAMERA_MONO
 #ifndef FEATHER_FAST_STREAM
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel); // RGB565 stream
 #else
     MXC_TFT_Stream(0, 0, IMAGE_XRES, IMAGE_YRES);
-    ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA, dma_channel); // RGB565 stream
+    ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+                           dma_channel); // RGB565 stream
 #endif
 
 #else //CAMERA_MONO
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel); // Mono stream
-#endif  //CAMERA_MONO
+#endif //CAMERA_MONO
 
 #ifdef ENABLE_TFT
     /* Set the screen rotation */
@@ -407,8 +408,8 @@ int main(void)
     }
 #else
     camera_start_capture_image_tft();
-    while(1)
-    	;
+    while (1)
+        ;
 #endif
 
     return ret;
