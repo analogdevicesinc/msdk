@@ -4,14 +4,14 @@ _(If you're viewing this document from within Visual Studio Code you can press `
 
 ## Quick Links
 
+* [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+  * If it's not in the README, check the UG.
+  * If it's not in the UG, open a ticket!
 * [VSCode-Maxim Github](https://github.com/Analog-Devices-MSDK/VSCode-Maxim)
-* [Wiki](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/wiki)
-  * If it's not in the readme, check the wiki.
-  * If it's not in the wiki, open a ticket!
 
 ## Introduction
 
-VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/Analog-Devices-MSDK/msdk) and the [MAX-series](https://www.maximintegrated.com/en/products/microcontrollers.html) microcontrollers.
+VSCode-Maxim is a set of [Visual Studio Code](https://code.visualstudio.com/) project configurations and utilities for enabling embedded development for [Analog Device's MSDK](https://github.com/Analog-Devices-MSDK/msdk) and the [MAX32xxx/MAX78xxx microcontrollers](https://www.analog.com/en/product-category/microcontrollers.html).
 
 The following features are supported:
 
@@ -23,23 +23,24 @@ The following features are supported:
 ## Dependencies
 
 * [Visual Studio Code](https://code.visualstudio.com/)
-* [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools)
-* [Maxim Micros SDK](https://www.maximintegrated.com/content/maximintegrated/en/design/software-description.html/swpart=SFW0010820A)
+  * [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+  * [Cortex-Debug Extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
+* [Analog Devices MSDK](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820A)
 
 ## Installation
 
-The steps below are also available in video form in "Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code" [here](https://www.maximintegrated.com/en/products/microcontrollers/artificial-intelligence.html/tab4/vd_1_2eaktism#.YyDxHaE8U_Y.mailto).
+The steps below are also available in video form in "Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code" [here](https://www.analog.com/en/education/education-library/videos/6313212752112.html).
 
-1. Download & install the Maxim Microcontrollers SDK for your OS from the links below.
-    * [Windows](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0010820A)
-    * [Linux (Ubuntu)](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018720A)
-    * [MacOS](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0018610A)
+1. Download and install the Analog Devices MSDK for your OS from the links below.  For more detailed instructions on installing the MSDK, see the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+    * [Windows](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820A)
+    * [Linux (Ubuntu)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720A)
+    * [MacOS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610A)
 
 2. Run the installer executable, and ensure that "Visual Studio Code Support" is enabled for your installation.
 
-    ![Selected Components](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/installer_components.JPG)
+    ![Selected Components](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/installer_components.JPG)
 
-3. Finish the MaximSDK installation, taking note of where the MaximSDK was installed.
+3. Finish the MSDK installation, taking note of where the MSDK was installed.
 
 4. Download & install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).
 
@@ -47,19 +48,21 @@ The steps below are also available in video form in "Understanding Artificial In
 
 6. Install the Microsoft [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-7. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.
+7. Install the [Cortex-Debug Extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
 
-8. Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
+8. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.
 
-    ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
+9. Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
 
-9. Add the entries below into your user settings.json file.
+    ![Open Settings JSON Command](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/open_settings_json.jpg)
+
+10. Add the entries below into your user settings.json file.
 
     ```json
     {
         // There may be other settings up here...
         
-        "MAXIM_PATH":"C:/MaximSDK", // Set this to the installed location of the MaximSDK.  Only use forward slashes '/' when setting this path!
+        "MAXIM_PATH":"C:/MaximSDK", // Set this to the installed location of the Analog Devices MSDK. Only use forward slashes '/' when setting this path!
         "update.mode": "manual",
         "extensions.autoUpdate": false,
         
@@ -67,9 +70,9 @@ The steps below are also available in video form in "Understanding Artificial In
     }
     ```
 
-10. Save your changes to the file with `CTRL + S` and restart VS Code.
+11. Save your changes to the file with `CTRL + S` and restart VS Code.
 
-11. That's it!  You're ready to start using Visual Studio Code to develop with Maxim's Microcontrollers.  The MaximSDK examples come pre-populated with .vscode project folders, and the `Tools/VSCode-Maxim` folder of the SDK contains documentation and templates.  See [Usage](#usage) below for more details.
+12. That's it! You're ready to start using Visual Studio Code to develop with Analog Devices MAX-series Microcontrollers. The MSDK examples come pre-populated with .vscode project folders, and the `Tools/VSCode-Maxim` folder of the MSDK contains documentation and templates.  See [Usage](#usage) below for more details.
 
 ## Usage
 
@@ -79,27 +82,27 @@ This section covers basic usage of the VSCode-Maxim project files.  For document
 
 Visual Studio Code is built around a "working directory" paradigm.  The editor is always rooted in a working directory, and the main mechanism for changing that directory is `File -> Open Folder...`.
 
-![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
+![File -> Open Folder](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/file_openfolder.JPG)
 
 As a result, you'll notice that there is no "New Project" mechanism.  A "project" in VS Code is simply a folder.  It will look inside of the opened folder for a `.vscode` _sub_-folder to load project-specific settings from.
 
-A project that is configured for VS Code will have, at minimum, a .vscode sub-folder and a Makefile in its directory _(Note:  You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder)_.  
+A project that is configured for VS Code will have, at minimum, a .vscode sub-folder and a Makefile in its directory _(Note: You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder)_.  
 
 Ex:
 
-![Example Directory Contents](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/opening_projects_2.jpg)
+![Example Directory Contents](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/opening_projects_2.jpg)
 
 ### Where to Find Projects
 
 The [Examples](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) in the MSDK come with with pre-configured .vscode project folders.  These projects can be opened "out of the box", but it's good practice to copy example folders _outside_ of the MSDK so that the original copies are kept as clean references.  The examples can be freely moved to any location _without a space in its path_.
 
-Additionally, empty project templates and a drag-and-drop folder for "injecting" a VSCode-Maxim project can be found under `Tools/VSCode-Maxim` in the MaximSDK installation.
+Additionally, empty project templates and a drag-and-drop folder for "injecting" a VSCode-Maxim project can be found under `Tools/VSCode-Maxim` in the MSDK installation.
 
 ### Build Tasks
 
 Once a project is opened 4 available build tasks will become available via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.  These tasks are configured by the `.vscode/task.json` file.
 
-![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
+![Build Tasks Image](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/buildtasks.JPG)
 
 #### Build
 
@@ -113,7 +116,7 @@ Once a project is opened 4 available build tasks will become available via `Term
 
 #### Clean-Periph
 
-* This task is the same as 'clean', but it also removes the build output for Maxim's peripheral drivers.
+* This task is the same as 'clean', but it also removes the build output for the MSDK's peripheral drivers.
 * Use this if you would like to recompile the peripheral drivers from source on the next build.
 
 #### Flash
@@ -135,7 +138,7 @@ Once a project is opened 4 available build tasks will become available via `Term
 
 ### Debugging
 
-![Debug Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger.JPG)
+![Debug Window](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/debugger.JPG)
 
 Debugging is enabled by Visual Studio Code's integrated debugger.  Launch configurations can be found in the `.vscode/launch.json` file.
 
@@ -143,7 +146,7 @@ Debugging is enabled by Visual Studio Code's integrated debugger.  Launch config
 
 #### Debugger Limitations
 
-In general, Maxim's microcontrollers have the following debugger limitations at the hardware level:
+In general, the MAX-series microcontrollers have the following debugger limitations at the hardware level:
 
 * The debugger can not be connected _while_ the device is in reset.
 
@@ -159,11 +162,11 @@ In general, Maxim's microcontrollers have the following debugger limitations at 
 
 3. Launch the debugger with `Run > Start Debugging`, with the shortcut `F5`, or via the `Run and Debug` window (Ctrl + Shift + D) and the green "launch" arrow.  
 
-    ![Debug Tab](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger_window.JPG)
+    ![Debug Tab](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/debugger_window.JPG)
 
 4. The debugger will launch a GDB client & OpenOCD server, reset the microcontroller, and should break on entry into `main`.
 
-    ![Debugger Break on Main](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger_breakmain.JPG)
+    ![Debugger Break on Main](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/debugger_breakmain.JPG)
 
 #### Using the Debugger
 
@@ -171,13 +174,13 @@ In general, Maxim's microcontrollers have the following debugger limitations at 
 
 The main interface for the debugger is the debugger control bar:
 
-![Debugger Control Bar Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger_bar.JPG)
+![Debugger Control Bar Image](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/debugger_bar.JPG)
 
 `Continue | Step Over | Step Into | Step Out | Restart | Stop`
 
 Breakpoints can be set by clicking in the space next to the line number in a source code file.  A red dot indicates a line to break on.  Breakpoints can be removed by clicking on them again.  Ex:
 
-![Breakpoint](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/breakpoint.JPG)
+![Breakpoint](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/breakpoint.JPG)
 
 ## Project Configuration
 
@@ -187,7 +190,7 @@ Breakpoints can be set by clicking in the space next to the line number in a sou
 
 **When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -> Reload Window (or alternatively restarted completely) to force a re-parse.**
 
-![Reload Window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
+![Reload Window](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/reload_window.JPG)
 
 The default project configuration should work for most use cases as long as `"target"` and `"board"` are set correctly.
 
@@ -221,21 +224,21 @@ The following configuration options are available:
 
 * This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
 * Supported values:
-  * ... can be found in the `Libraries/Boards` folder of the MaximSDK
+  * ... can be found in the `Libraries/Boards` folder of the MSDK
   * For example, the supported options for the MAX78000 are `"EvKit_V1"`, `"FTHR_RevA"`, and `"MAXREFDES178"`.
 
-  ![MAX78000 Boards](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/78000_boards.JPG)
+  ![MAX78000 Boards](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/78000_boards.JPG)
 
 ### Advanced Config Options
 
 #### `"MAXIM_PATH"`
 
-* This option must point to the root installation directory of the MaximSDK.  
+* This option must point to the root installation directory of the MSDK.  
 * It should be placed in the _global_ user settings.json file during first-time VSCode-Maxim setup.  See [Installation](#installation).
 
 #### `"terminal.integrated.env.[platform]:Path"`
 
-* This prepends the location of toolchain binaries to the system `Path` used by VSCode's integrated terminal.
+* This prepends the location of the MSDK toolchain binaries to the system `Path` used by VSCode's integrated terminal.
 * The Path is not sanitized by default, which means that the terminal inherits the system path.
 * Don't touch unless you know what you're doing :)
 
@@ -333,7 +336,7 @@ The following configuration options are available:
 
 ### Setting Search Paths for Intellisense
 
-VS Code's intellisense engine must be told where to find the header files for your source code.  By default, Maxim's perpiheral drivers, the C standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, the MSDK's peripheral drivers, the C standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
 
 To add additional search paths :
 
@@ -345,12 +348,12 @@ To add additional search paths :
 
 ## Build Configuration
 
-A project's build system is managed by two files found in the project's root directory.  These files are used alongside the [GNU Make](https://www.gnu.org/software/make/) program (which is a part of the MaximSDK toolchain) to locate and build a project's source code for the correct microcontroller.
+A project's build system is managed by two files found in the project's root directory.  These files are used alongside the [GNU Make](https://www.gnu.org/software/make/) program (which is a part of the MSDK toolchain) to locate and build a project's source code for the correct microcontroller.
 
 * `Makefile`
 * `project.mk`
 
-![Files are located in the root directory](img/projectmk.JPG)
+![Files are located in the root directory](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/65af7c61800c7039956f3c1971ffd7915008668d/img/projectmk.JPG)
 
 When the command...
 
@@ -392,7 +395,7 @@ To set a configuration variable, use the syntax...
 VARIABLE=VALUE
 ```
 
-The `=` operater is used for _most_ configuration variables with a few exceptions (that are clearly documented) when a variable should contain a _list_ of values.  In such cases, use the syntax...
+The `=` operator is used for _most_ configuration variables with a few exceptions (that are clearly documented) when a variable should contain a _list_ of values.  In such cases, use the syntax...
 
 ```Makefile
 VARIABLE+=VALUE1
@@ -458,10 +461,10 @@ The following configuration variables are available.
 |--- | --- | --- | ---|
 **Target**
 | `TARGET` | Set the target microcontroller | `TARGET=MAX78000` |
-| `BOARD` | Set the Board Support Package (BSP) | `BOARD=FTHR_RevA` | Every microcontroller has a number of BSPs available for it that can be found in the `Libraries/Boards/TARGET` folder of the MaximSDK.  When you change this option, it's usually a good idea to fully clean your project, then re-build.
+| `BOARD` | Set the Board Support Package (BSP) | `BOARD=FTHR_RevA` | Every microcontroller has a number of BSPs available for it that can be found in the `Libraries/Boards/TARGET` folder of the MSDK.  When you change this option, it's usually a good idea to fully clean your project, then re-build.
 **SDK**
-| `MAXIM_PATH` | (Optional) Specify the location of the MaximSDK | `MAXIM_PATH=/path/to/MSDK` | This optional variable can be used to change where the Makefile looks for the MaximSDK.  By default, the Makefile will attempt to locate the MaximSDK with a relative path moving "up" from its original location.  This option is most useful when a project is moved _outside_ of the SDK and you're developing on the command-line, since VS Code and Eclipse will set this via an environment variable.  It's also useful for re-targeting a project to point to the development repository.
-| `CAMERA` | (Optional) Set the Camera drivers to use | `CAMERA=HM0360_MONO` | This option is only useful for the MAX78000 and MAX78002, and sets the camera drivers to use for the project.  Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`.  Camera drivers can be found in the `Libraries/MiscDrivers/Camera` folder of the MaximSDK.  Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` Makefile in the active BSP for more details.
+| `MAXIM_PATH` | (Optional) Specify the location of the MSDK | `MAXIM_PATH=/path/to/MSDK` | This optional variable can be used to change where the Makefile looks for the MSDK.  By default, the Makefile will attempt to locate the MSDK with a relative path moving "up" from its original location.  This option is most useful when a project is moved _outside_ of the MSDK and you're developing on the command-line, since VS Code and Eclipse will set this via an environment variable.  It's also useful for re-targeting a project to point to the development repository.
+| `CAMERA` | (Optional) Set the Camera drivers to use | `CAMERA=HM0360_MONO` | This option is only useful for the MAX78000 and MAX78002, and sets the camera drivers to use for the project.  Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`.  Camera drivers can be found in the `Libraries/MiscDrivers/Camera` folder of the MSDK.  Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` Makefile in the active BSP for more details.
 **Source Code**
 | `VPATH` | Where to search for source (.c) files | `VPATH+=your/source/path` | **Use the `+=` operator with this option**.  This controls where the Makefile will look for **source code** files.  If `AUTOSEARCH` is enabled (which it is by default) this controls which paths will be searched.  If `AUTOSEARCH` is disabled, this tells the Makefile where to look for the files specified by `SRCS`.
 | `IPATH` | Where to search for header (.h) files | `IPATH+=your/include/path` | **Use the `+=` operator with this option**.  This controls where the Makefile will look for **header** files.  _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`.  Individual header files are _not_ ever manually added into the build.  Instead, you only need to specify the _location_ of your header files.
@@ -473,7 +476,7 @@ The following configuration variables are available.
 | `PROJ_CFLAGS` | Add a compiler flag to the build | `PROJ_CFLAGS+=-Wextra`, `PROJ_CFLAGS+=-DMYDEFINE` | Compiler flags can be added with this option, including compiler definitions.  For each value, the same syntax should be used as if the compiler flag was passed in via the command-line.  These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options.
 | `MFLOAT_ABI` | Set the floating point acceleration level | `MFLOAT_ABI=hard` | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, `softfp` (default).  To enable full hardware acceleration instructions use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`.  If there is any conflict, you'll get a linker error.  For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html).
 **Linker**
-| `LINKERFILE` | Set the linkerfile to use | `LINKERFILE=newlinker.ld` | You can use a different linkerfile with this option.  The file should exists in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MaximSDK, or it should be placed inside the root directory of the project.
+| `LINKERFILE` | Set the linkerfile to use | `LINKERFILE=newlinker.ld` | You can use a different linkerfile with this option.  The file should exists in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MSDK, or it should be placed inside the root directory of the project.
 **Libraries**
 | `LIB_BOARD` | Include the BSP library (enabled by default) | `LIB_BOARD=0` | Inclusion of the Board-Support Package (BSP) library, which is enabled by default, can be toggled with this variable.  This library contains important startup code specific to a microcontroller's evaluation platform, such as serial port initialization, power sequencing, external peripheral initalization, etc.  Set to `0` to disable, or `1` to enable.
 | `LIB_PERIPHDRIVERS` | Include the peripheral driver library (enabled by default) | `LIB_PERIPHDRIVERS=0` | The peripheral driver library can be toggled with this option.  If disabled, you'll lose access to the higher-level driver functions but still have access to the register-level files.  Set to `0` to disable, or `1` to enable.
@@ -487,11 +490,11 @@ The following configuration variables are available.
 | `LIB_MAXUSB` | Include the MaxUSB library | `LIB_MAXUSB=1` | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers.  Set to `0` to disable, or `1` to enable.
 | `LIB_SDHC` | Include the SDHC library | `LIB_SDHC=1` | This options toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards.  Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem.
 **Secure Boot Tools (SBT)**
-| `SBT` | Toggle SBT integration | `SBT=1` | Toggles integration with the [Secure Boot Tools (SBTs)](https://www.maximintegrated.com/en/design/technical-documents/userguides-and-manuals/7/7637.html).  These are a suite of applications designed for use with microcontrollers that have secure bootloaders.  When this is enabled, some additional rules become available such as `make sla` and `make scpa`.  Set to `0` to disable or `1` to enable.
-| `MAXIM_SBT_DIR` | Where to find the SBTs | `MAXIM_SBT_DIR=C:/MaximSBT` | This option can be used to manually specify the location of the SBTs.  Usually, this is not necessary.  By default, the `Tools/SBT` directory of the MaximSDK will be searched.  If the [SBT installer](https://www.maximintegrated.com/en/design/software-description.html/swpart=SFW0015360C) is used, it will set the `MAXIM_SBT_DIR` environment variable to point to itself automatically.
+| `SBT` | Toggle SBT integration | `SBT=1` | Toggles integration with the [Secure Boot Tools (SBTs)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C). These are a suite of applications designed for use with microcontrollers that have secure bootloaders.  When this is enabled, some additional rules become available such as `make sla` and `make scpa`.  Set to `0` to disable or `1` to enable.
+| `MAXIM_SBT_DIR` | Where to find the SBTs | `MAXIM_SBT_DIR=C:/MaximSBT` | This option can be used to manually specify the location of the SBTs.  Usually, this is not necessary.  By default, the `Tools/SBT` directory of the MSDK will be searched.  If the [SBT installer](hhttps://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C) is used, it will set the `MAXIM_SBT_DIR` environment variable to point to itself automatically.
 | `TARGET_SEC` | Secure part number to use | `TARGET_SEC=MAX32651` | Some secure microcontrollers have multiple secure variants, and this option can be used to specify the variant to use with the SBTs.  Defaults are intelligently selected, and can be found in `$(MAXIM_SBT_DIR)/SBT-config.mk`
 | `SCP_PACKETS` | Where to build the scp_packets folder | | Defaults to `build/scp_packets` |
-| `TEST_KEY` | Which test key to sign applications with | | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the Maxim test key that can be used for development.
+| `TEST_KEY` | Which test key to sign applications with | | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the test key that can be used for development.
 
 ## Project Creation
 
@@ -499,7 +502,7 @@ The following configuration variables are available.
 
 Copying a pre-made example project is a great way to get rolling quickly, and is currently the recommended method for creating new projects.  
 
-The release package for this project (Located at Tools/VSCode-Maxim in the MaximSDK) contains a `New_Project` folder designed for such purposes.  Additionally, any of the VS Code-enabled Example projects can be copied from the SDK.
+The release package for this project (Located at Tools/VSCode-Maxim in the Analog Devices MSDK) contains a `New_Project` folder designed for such purposes. Additionally, any of the VS Code-enabled Example projects can be copied from the MSDK.
 
 1. Copy the existing project folder to an accessible location.  This will be the location of your new project.
 
@@ -537,7 +540,7 @@ If you want to start from scratch, take this option.
 
 ## Issue Tracker
 
-Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim/issues) tracker on Github.
+Bug reports, feature requests, and contributions are welcome via the [issues](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/issues) tracker on Github.
 
 New issues should contain _at minimum_ the following information:
 
