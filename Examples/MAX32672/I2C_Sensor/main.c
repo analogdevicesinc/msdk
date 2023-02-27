@@ -58,25 +58,27 @@ int main(void)
 
     printf("\n****************** I2C SENSOR DEMO *******************\n");
 
+    // Initialize the I2C instance used to communicate with the MAX31889
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
     if (error != E_NO_ERROR) {
         printf("I2C master configure failed with error %i\n", error);
         return error;
     }
-
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
 
+    // Initialize the MAX31889 Temperature Sensor
     max31889_driver_t MAX31889 = MAX31889_Open();
-
-    MAX31889.init(I2C_MASTER, MAX31889_I2C_SLAVE_ADDR0); // init the sensor
+    MAX31889.init(I2C_MASTER, MAX31889_I2C_SLAVE_ADDR0);
 
     while (1) {
+    	// Take temperature reading and print it to the terminal
         error = MAX31889.read(&temperature);
         if (error != E_NO_ERROR) {
             printf("\nSensor read error: %i", error);
         } else {
             printf("\n-->Temperature: %02f %cC", (double)temperature, 176);
         }
+
         // Wait for 1s
         MXC_Delay(MXC_DELAY_SEC(1));
     }
