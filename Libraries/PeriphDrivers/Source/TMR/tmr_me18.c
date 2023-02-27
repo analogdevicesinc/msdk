@@ -57,7 +57,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
         clockSource = MXC_TMR_CLK1;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ISO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *) tmr, ISO_FREQ);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ISO_FREQ);
         break;
 
     case MXC_TMR_8M_CLK:
@@ -68,7 +68,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         }
 
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IBRO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *) tmr, IBRO_FREQ);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, IBRO_FREQ);
         break;
 
     case MXC_TMR_32M_CLK:
@@ -78,7 +78,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
         clockSource = MXC_TMR_CLK3;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *) tmr, ERFO_FREQ);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERFO_FREQ);
         break;
 
     case MXC_TMR_32K_CLK:
@@ -89,7 +89,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         }
 
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *) tmr, ERTCO_FREQ);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, ERTCO_FREQ);
         break;
 
     case MXC_TMR_8K_CLK:
@@ -99,7 +99,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
         clockSource = MXC_TMR_CLK2;
         MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_INRO);
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *) tmr, INRO_FREQ);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, INRO_FREQ);
         break;
 
     case MXC_TMR_EXT_CLK:
@@ -113,7 +113,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     default:
-        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *) tmr, PeripheralClock);
+        MXC_TMR_RevB_SetClockSourceFreq((mxc_tmr_revb_regs_t *)tmr, PeripheralClock);
         break;
     }
 
