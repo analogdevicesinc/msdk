@@ -4,6 +4,16 @@ This example demonstrates the time differences when running code with the instru
 
 Two test functions (one which runs 2.5 million operations and the other which runs 25 mllion operations) are each run twice, once with the ICC enabled and once with the ICC disabled. The execution time is measured for each function call and the results between the two trials are compared at the end to ensure the ICC enabled run was faster.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+Do not modify the value of MXC_OPTIMIZE_CFLAGS in *project.mk*. Turning on compiler optimizations will change the behavior of the test functions resulting in behavior that doesn't demonstrate the effects of enabling the instruction cache.
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
