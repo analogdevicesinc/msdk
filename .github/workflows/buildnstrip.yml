@@ -1,3 +1,5 @@
+name: Build and Deploy Peripheral Driver Libraries
+
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
@@ -12,17 +14,12 @@ jobs:
       - ubuntu-latest
       
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
-        with:
-          # Update the submodules below, doing so here will convert ssh to https
-          submodules: false
-          fetch-depth: 0
-          
+      
       - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         id: arm-none-eabi-gcc-action
-        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         with:
           release: '10.3-2021.10' # <-- The compiler release to use
           
