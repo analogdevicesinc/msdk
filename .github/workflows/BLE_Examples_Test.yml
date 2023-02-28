@@ -28,10 +28,14 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+env:
+  TEST_MAX32655: false
+  TEST_MAX32665: false
+  TEST_MAX32690: false
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build:
+  TEST_BLE_Devices:
     # The type of runner that the job will run on
     runs-on: [self-hosted, btm-ci]
     if: github.event.pull_request.draft == false
@@ -46,7 +50,7 @@ jobs:
           set +e
 
           # Attempt to clean the repo
-          git scorch
+          #git scorch
           retval=$?
 
           # Remove everything if this fails
@@ -62,25 +66,13 @@ jobs:
           submodules: false
           fetch-depth: 0
 
-      # Locks all board preventing them from being used during a test
-      # even if only one board is being tested. This is so that another job
-      # does not possibly used one of the free boards that may connect to the
-      #current board undertest
-      - name: Lock All Boards
-        if: ${{ always() }}
-        id: lock_files
-        run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
-
       # ME17
-      - name: TEST MAX32655
+      - name: Check MAX32655 #name used for display purposes on github webpage
+        id: MAX32655 #id used to reference this step in other parts of the yml
         run: |
 
           # Remove local modifications
-          git scorch
+          #git scorch
 
           BLE_FILES_CHANGED=0
           RUN_TEST=0
@@ -128,24 +120,18 @@ jobs:
           # Assume we want to actually run the workflow if no files changed
             RUN_TEST=1
           fi
-
+          # save result to steps output
           if [[ $RUN_TEST -eq 1 ]]
           then
-            echo "Running Test"
-
-            cd .github/workflows/scripts
-            chmod +x test_launcher.sh
-            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
-            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-            ./test_launcher.sh max32655 $dut_uart $dut_serial
+            echo "TEST_MAX32655=true" >> $GITHUB_ENV
           fi
 
       # ME14
-      - name: TEST MAX32665
+      - name: Check MAX32665 #name used for display purposes on github webpage
+        id: MAX32665 #id used to reference this step in other parts of the yml
         run: |
           # Remove local modifications
-          git scorch
+          #git scorch
 
           BLE_FILES_CHANGED=0
           RUN_TEST=0
@@ -193,21 +179,17 @@ jobs:
             RUN_TEST=1
           fi
 
+          # save result to steps output
           if [[ $RUN_TEST -eq 1 ]]
           then
-            echo "Running Test"   
-            cd .github/workflows/scripts
-            chmod +x test_launcher.sh
-            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
-            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-            ./test_launcher.sh max32665 $dut_uart $dut_serial          
+            echo "TEST_MAX32665=true" >> $GITHUB_ENV
           fi
       # ME18
-      - name: TEST MAX32690
+      - name: Check MAX32690 #name used for display purposes on github webpage
+        id: MAX32690 #id used to reference this step in other parts of the yml
         run: |
           # Remove local modifications
-          git scorch
+          #git scorch
 
           BLE_FILES_CHANGED=0
           RUN_TEST=0
@@ -256,29 +238,66 @@ jobs:
 
           if [[ $RUN_TEST -eq 1 ]]
           then
-
-            echo "Running Test"
-            
-            cd .github/workflows/scripts
-            chmod +x test_launcher.sh
-            FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-            dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
-            dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`            
-            ./test_launcher.sh max32690 $dut_uart $dut_serial     
+            echo "TEST_MAX32690=true" >> $GITHUB_ENV
           fi
 
-      # Save test reports
-      - uses: actions/upload-artifact@v3
-        if: failure()
-        with:
-          name: failure-report
-          path: .github/workflows/ci-tests/Examples_tests/results/
+      - name: LOCK_BOARDS #name used for display purposes on github webpage
+        if: env.TEST_MAX32655 == 'true' || env.TEST_MAX32665 == 'true' || env.TEST_MAX32690 == 'true'
+        id: LOCK_BOARDS #id used to reference this step in other parts of the yml
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
+
+      - name: Test MAX32655 #name used for display purposes on github webpage
+        if: steps.LOCK_BOARDS.outcome == 'success' && env.TEST_MAX32655 == 'true'
+        id: Test_MAX32655 #id used to reference this step in other parts of the yml
+        run: |
+          echo "Running Test on MAX32655"
+          echo $env.TEST_MAX32655
+          echo $TEST_MAX32655
+
+          cd .github/workflows/scripts
+          chmod +x test_launcher.sh
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
+          dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
+          ./test_launcher.sh max32655 $dut_uart $dut_serial
+
+      - name: Test MAX32665 #name used for display purposes on github webpage
+        if: steps.LOCK_BOARDS.outcome == 'success' && env.TEST_MAX32665 == 'true'
+        id: Test_MAX32665 #id used to reference this step in other parts of the yml
+        run: |
+          echo "Running Test on MAX32665"
+          echo $env.TEST_MAX32665
+          echo $TEST_MAX32665
+          cd .github/workflows/scripts
+          chmod +x test_launcher.sh
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
+          dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
+          ./test_launcher.sh max32665 $dut_uart $dut_serial
+
+      - name: Test MAX32690 #name used for display purposes on github webpage
+        if: steps.LOCK_BOARDS.outcome == 'success' && env.TEST_MAX32690 == 'true'
+        id: Test_MAX32690 #id used to reference this step in other parts of the yml
+        run: |
+          echo "Running Test on MAX32690"
+          echo $env.TEST_MAX32690
+          echo $TEST_MAX32690
+          cd .github/workflows/scripts
+          chmod +x test_launcher.sh
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
+          dut_serial=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
+          ./test_launcher.sh max32690 $dut_uart $dut_serial
 
       # Unlock even when cancelled or failed
       # This needs some work, if the job is cancelled or times out because it could not get a LOCK
       # it then jumps here and removes all locks, that were set by a different job
       - name: Unlock All Boards
-        if: ${{ always() && steps.lock_files.outcome == 'success' }}
+        if: ${{ always() && steps.LOCK_BOARDS.outcome == 'success' }}
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
