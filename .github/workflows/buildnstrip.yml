@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-python@v4.5.0
           
       - name: Build Periph Drivers
-      - run: |
+        run: |
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
           export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
