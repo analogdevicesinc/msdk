@@ -1,6 +1,9 @@
-name: Build & Strip Periph Drivers
+name: Build and Deploy Peripheral Driver Libraries
 
 on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "release" ]
   workflow_dispatch:
     
 jobs:
@@ -39,5 +42,4 @@ jobs:
         with:
           add: 'Libraries/PeriphDrivers/bin/**/*.a'
           message: '(Bot) Auto rebuild periph drivers.'
-          default_author: github_actor
           push: true
