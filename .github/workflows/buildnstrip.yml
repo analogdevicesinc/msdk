@@ -37,7 +37,7 @@ jobs:
           
           python .github/workflows/scripts/buildnstrip.py
 
-      - name: Push generated register files.
+      - name: Push updated library files
         uses: EndBug/add-and-commit@v9
         with:
           add: '$MAXIM_PATH/Libraries/PeriphDrivers/**/*.a'
