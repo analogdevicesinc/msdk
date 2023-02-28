@@ -47,10 +47,10 @@ extern "C" {
 
 /*
     Define board name:
-    Use as #if defined(BOARD_EVKIT_V1)
-    Not as #if BOARD_EVKIT_V1
+    Use as #if defined(BOARD_FTHR)
+    Not as #if BOARD_FTHR
 */
-#define BOARD_EVKIT_V1 1
+#define BOARD_FTHR 1
 
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console

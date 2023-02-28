@@ -31,68 +31,52 @@
  *
  ******************************************************************************/
 
-/**
- * @file    board.h
- * @brief   Board support package API.
+#include "max32662.h"
+
+/* The stack address is defined by the linker
+ * It is typed as a function here to avoid compiler warnings
  */
+extern void __StackTop(void);
 
-#include <stdio.h>
+void Reset_Handler(void);
+void NMI_Handler_ROM(void);
+void HardFault_Handler_ROM(void);
+void MemManage_Handler(void);
+void BusFault_Handler(void);
+void UsageFault_Handler(void);
+void SVC_Handler(void);
+void DebugMon_Handler(void);
+void PendSV_Handler(void);
+void SysTick_Handler(void);
 
-#ifndef LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
-#define LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
+/* Create a vector table to locate at zero in the ROM for handling reset and startup */
+__attribute__((section(".rom_vector"))) void (*const rom_vector[])(void) = {
+    __StackTop, /* Top of Stack */
+    Reset_Handler, /* Reset Handler */
+    NMI_Handler_ROM, /* NMI Handler */
+    HardFault_Handler_ROM, /* Hard Fault Handler */
+    MemManage_Handler, /* MPU Fault Handler */
+    BusFault_Handler, /* Bus Fault Handler */
+    UsageFault_Handler, /* Usage Fault Handler */
+    0, /* Reserved */
+    0, /* Reserved */
+    0, /* Reserved */
+    0, /* Reserved */
+    SVC_Handler, /* SVCall Handler */
+    DebugMon_Handler, /* Debug Monitor Handler */
+    0, /* Reserved */
+    PendSV_Handler, /* PendSV Handler */
+    SysTick_Handler, /* SysTick Handler */
+};
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*
-    Define board name:
-    Use as #if defined(BOARD_EVKIT_V1)
-    Not as #if BOARD_EVKIT_V1
-*/
-#define BOARD_EVKIT_V1 1
-
-#ifndef CONSOLE_UART
-#define CONSOLE_UART 0 /// UART instance to use for console
-#endif
-
-#ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD 115200 /// Console baud rate
-#endif
-
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
-
-#define LED1 0
-#define LED2 1
-
-/**
- * \brief   Initialize the BSP and board interfaces.
- * \returns #E_NO_ERROR if everything is successful
- */
-int Board_Init(void);
-
-/**
- * \brief   Initialize or reinitialize the console. This may be necessary if the
- *          system clock rate is changed.
- * \returns #E_NO_ERROR if everything is successful
- */
-int Console_Init(void);
-
-/**
- * \brief   Shutdown the console.
- * \returns #E_NO_ERROR if everything is successful
- */
-int Console_Shutdown(void);
-
-/**
- * \brief   Attempt to prepare the console for sleep.
- * \returns #E_NO_ERROR if ready to sleep, #E_BUSY if not ready for sleep.
- */
-int Console_PrepForSleep(void);
-
-#ifdef __cplusplus
+/* This is needed to handle the NMI at POR */
+__attribute__((section(".rom_handlers"))) void NMI_Handler_ROM(void)
+{
+    __NOP();
 }
-#endif
 
-#endif // LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
+/* This is needed to handle the fault after initial programming */
+__attribute__((section(".rom_handlers"))) void HardFault_Handler_ROM(void)
+{
+    NVIC_SystemReset();
+}
