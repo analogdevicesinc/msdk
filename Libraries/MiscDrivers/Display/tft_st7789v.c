@@ -726,8 +726,26 @@ void MXC_TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area)
     locate(x0, y0);
 
     // Check if IRQs are currently enabled
-    // __disable_irq always uses cpsid i, so check PRIMASK bit to save state
-    uint32_t irq_enabled = !(__get_PRIMASK() & 0b1);
+    uint32_t irq_enabled = 0;
+#ifndef __riscv
+    /*
+        On ARM M the 0th bit of the Priority Mask register indicates
+        whether interrupts are enabled or not.
+
+        0 = enabled
+        1 = disabled
+    */
+    irq_enabled = !(__get_PRIMASK() & 0b1);
+#else
+    /*
+        On RISC-V bit position 3 (Machine Interrupt Enable) of the
+        mstatus register indicates whether interrupts are enabled.
+
+        0 = disabled
+        1 = enabled
+    */
+    irq_enabled = ((get_mstatus() & (1 << 3)) != 0);
+#endif
     __disable_irq();
 
     for (i = 0; i < str->len; i++) {
@@ -764,7 +782,13 @@ void MXC_TFT_WriteReg(unsigned char command, unsigned char data)
 {
     // Check if IRQs are currently enabled
     // __disable_irq always uses cpsid i, so check PRIMASK bit to save state
-    uint32_t irq_enabled = !(__get_PRIMASK() & 0b1);
+    uint32_t irq_enabled = 0;
+
+#ifndef __riscv
+    irq_enabled = !(__get_PRIMASK() & 0b1);
+#else
+    irq_enabled = ((get_mstatus() & (1 << 3)) != 0);
+#endif
     __disable_irq();
 
     write_command(command);
