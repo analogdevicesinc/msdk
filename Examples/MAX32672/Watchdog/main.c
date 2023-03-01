@@ -57,36 +57,30 @@
 #include "mxc_delay.h"
 #include "led.h"
 #include "pb.h"
+#include "uart.h"
 
 /***** Definitions *****/
-#define OVERFLOW //Test Windowed timer
-//OVERFLOW
-//UNDERFLOW
+#define OVERFLOW
+//#define UNDERFLOW
 
 /***** Globals *****/
 static mxc_wdt_cfg_t cfg;
 
 /***** Functions *****/
-
-void watchdogHandler()
-{
-    MXC_WDT_ClearIntFlag(MXC_WDT0);
-    printf("\nTIMEOUT! \n");
-}
-
 void WDT0_IRQHandler(void)
 {
-    watchdogHandler();
+	MXC_WDT_ClearIntFlag(MXC_WDT0);
+	printf("\nTIMEOUT!\n");
 }
 
-void MXC_WDT_Setup()
+void wdt_setup()
 {
     MXC_WDT_Disable(MXC_WDT0);
     MXC_WDT_ResetTimer(MXC_WDT0);
     MXC_WDT_Enable(MXC_WDT0);
 }
 
-void blinkled(int led, int num_of_blink, unsigned int delay_ms)
+void blink_led(int led, int num_of_blink, unsigned int delay_ms)
 {
     for (int i = 0; i < num_of_blink; i++) {
         LED_On(led);
@@ -103,62 +97,79 @@ int main(void)
     MXC_WDT_Init(MXC_WDT0, &cfg);
 
     if (MXC_WDT_GetResetFlag(MXC_WDT0)) {
-        uint32_t resetFlags = MXC_WDT_GetResetFlag(MXC_WDT0);
+    	// WDT Caused device reset
+    	uint32_t resetFlags = MXC_WDT_GetResetFlag(MXC_WDT0);
 
+    	// Determine whether Underflow or Overflow caused reset
         if (resetFlags == MXC_F_WDT_CTRL_RST_LATE) {
-            printf("\nWatchdog Reset occured too late (OVERFLOW)\n");
+            printf("\nWatchdog Reset occurred too late (OVERFLOW)\n");
         } else if (resetFlags == MXC_F_WDT_CTRL_RST_EARLY) {
-            printf("\nWatchdog Reset occured too soon (UNDERFLOW)\n");
+            printf("\nWatchdog Reset occurred too soon (UNDERFLOW)\n");
         }
 
+        // Clear Flags
         MXC_WDT_ClearResetFlag(MXC_WDT0);
         MXC_WDT_ClearIntFlag(MXC_WDT0);
-        MXC_WDT_EnableReset(MXC_WDT0);
-        MXC_WDT_Enable(MXC_WDT0);
     }
 
-    printf("\n************** Watchdog Timer Demo ****************\n");
-    printf("Watchdog timer is configured in Windowed mode. You can\n");
-    printf("select between two tests: Timer Overflow and Underflow.\n");
-    printf("\nPress a button to create watchdog interrupt and reset:\n");
-    printf("SW3 (P0.18)= timeout and reset program\n\n");
+    printf("\n******************** Watchdog Timer Demo ********************\n");
+    printf("This example demonstrates the WDT in windowed mode. With UNDERFLOW\n");
+    printf("defined the WDT count reset will occur before the window, causing\n");
+    printf("a \"too soon\" WDT system reset. With OVERFLOW defined the device\n");
+    printf("will wait in an infinite loop until the window expires, causing a\n");
+    printf("\"too late\" WDT system reset\n\n");
+
+    printf("Press push button SW3 (P0.18) to trigger the WDT interrupt and system\n");
+    printf("reset described above.\n\n");
 
     //Blink LED three times at startup
-    blinkled(0, 3, 100);
+    blink_led(0, 3, 100);
 
-    //Setup watchdog
-    MXC_WDT_Setup();
+    //Setup Watchdog
+    wdt_setup();
 
     while (1) {
         //Push user push button to reset watchdog
         if (PB_Get(0) == TRUE) {
-            printf("\nEnabling Timeout Interrupt...\n");
             MXC_WDT_Disable(MXC_WDT0);
+
+            // Configure reset window
+            cfg.mode = MXC_WDT_WINDOWED;
             cfg.upperResetPeriod = MXC_WDT_PERIOD_2_28;
             cfg.upperIntPeriod = MXC_WDT_PERIOD_2_27;
             cfg.lowerResetPeriod = MXC_WDT_PERIOD_2_24;
-            cfg.lowerIntPeriod = MXC_WDT_PERIOD_2_23;
+            cfg.lowerIntPeriod = MXC_WDT_PERIOD_2_25;
             MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
             MXC_WDT_SetIntPeriod(MXC_WDT0, &cfg);
-            MXC_WDT_ResetTimer(MXC_WDT0);
+
+            // Enable WDT reset and interrupts
             MXC_WDT_EnableReset(MXC_WDT0);
+            MXC_WDT_ClearIntFlag(MXC_WDT0);
             MXC_WDT_EnableInt(MXC_WDT0);
-            MXC_NVIC_SetVector(WDT0_IRQn, WDT0_IRQHandler);
             NVIC_EnableIRQ(WDT0_IRQn);
-            MXC_WDT_Enable(MXC_WDT0);
+
+            MXC_WDT_ResetTimer(MXC_WDT0); //Feed the dog
+            MXC_WDT_Enable(MXC_WDT0); //Re-enable WDT
+
+            printf("Watchdog reset window configured.\n");
 
 #ifdef OVERFLOW
+            // Wait for reset window to pass (causes reset)
+            printf("Starving the dog until reset window expires...\n");
             while (1) {}
 #else
-            MXC_Delay(MXC_DELAY_MSEC(200));
+            printf("Feeding the dog before entering reset window...\n");
+            while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)));
+
+            // Reset timer before window (causes reset)
             MXC_WDT_ResetTimer(MXC_WDT0);
-#endif
+#endif //OVERFLOW
         }
 
-        //blink LED0
-        blinkled(0, 1, 500);
+        // blink LED0
+        blink_led(0, 1, 500);
 
-        //Reset watchdog
+        // Feed the dog
         MXC_WDT_ResetTimer(MXC_WDT0);
     }
 }
