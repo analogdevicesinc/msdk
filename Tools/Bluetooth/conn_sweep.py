@@ -57,6 +57,7 @@ from subprocess import call, Popen, PIPE, CalledProcessError, STDOUT
 import time
 
 total_retry_times = 0
+RESET_CNT = 1
 
 if socket.gethostname() == "wall-e":
     rf_switch = True
@@ -146,18 +147,12 @@ print("PER limit     :", args.limit)
 
 # Open the results file, write the parameters
 results = open(args.results, "a")
-if 0:
-    results.write("# slaveSerial   : "+str(args.slaveSerial)+"\n")
-    results.write("# masterSerial  : "+str(args.masterSerial)+"\n")
-    results.write("# results       : "+str(args.results)+"\n")
-    results.write("# delay         : "+str(args.delay)+"\n")
-    results.write("# packetLengths : "+str(packetLengths)+"\n")
-    results.write("# phys          : "+str(phys)+"\n")
-    results.write("# attens        : "+str(attens)+"\n")
-    results.write("# PER limit     : "+str(args.limit)+"\n")
 
-    # Write the header line
-    results.write("packetLen,phy,atten,txPower,perMaster,perSlave\n")
+print("\nReset the attenuation to 30.")
+if rf_switch:
+    set_val = 30 + float(args.loss)
+    mini_RCDAT = mini_RCDAT_USB(Namespace(atten=set_val))
+sleep(1)
 
 # Create the BLE_hci objects
 hciSlave  = BLE_hci(Namespace(serialPort=args.slaveSerial,  monPort=args.stp, baud=115200, id=2))
@@ -168,6 +163,7 @@ perMax = 0
 RETRY = int(args.retry_limit)
 need_to_setup = True  # only do it at the beginning or after flash
 
+testing = 1
 for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
     if args.short:
         for atten in attens:
@@ -178,32 +174,36 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
 
                     start_secs = time.time()
 
-                    print("\nReset the devices at the beginning of the test or after flash the board again.")
+                    print(f"{dt.now()} ----- sleep extra 2 secs\n")
+                    sleep(2)
+                    print(f"\n{dt.now()} ----- end of the sleep")
+
+                    print("\n\n\nReset the devices at the beginning of the test or after flash the board again.")
+                    
+                    print("\nslave reset")
                     hciSlave.resetFunc(None)
+                    print("\nmaster reset")
                     hciMaster.resetFunc(None)
-                    sleep(10)
+                    sleep(0.2)
 
                     print("\nSet addresses.")
                     txAddr = "00:12:34:88:77:33"
                     rxAddr = "11:12:34:88:77:33"
+                    print(f"\nslave set txAddr: {txAddr}")
                     hciSlave.addrFunc(Namespace(addr=txAddr))
+                    print(f"\nmaster set rxAddr: {rxAddr}")
                     hciMaster.addrFunc(Namespace(addr=rxAddr))
-                    sleep(1)
+                    sleep(0.2)
 
                     print("\n----------------------------------")                
                     print("pre-test setup")
                     print("----------------------------------")
-            
-                    print("\nReset the attenuation to 30.")
-                    if rf_switch:
-                        set_val = 30 + float(args.loss)
-                        mini_RCDAT = mini_RCDAT_USB(Namespace(atten=set_val))
-                    sleep(0.1)
 
-                    print("\nStart advertising.")
+
+                    print("\nslave start advertising.")
                     hciSlave.advFunc(Namespace(interval="60", stats="False", connect="True", maintain=False, listen="False"))
 
-                    print("\nStart connection.")
+                    print("\nmaster start connection.")
                     hciMaster.initFunc(Namespace(interval="6", timeout="64", addr=txAddr, stats="False", maintain=False, listen="False"))
 
                     print("\nSlave and master listenFunc")
@@ -247,9 +247,9 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                 
                 start_secs = time.time()
 
-                print('\n---------------------------')
-                print(f'packetLen: {packetLen}, phy: {phy}, atten: {atten}, txPower: {txPower}')
-                print('---------------------------')
+                print('\n-----------------------------------------------------------------------------------------')
+                print(f'packetLen: {packetLen}, phy: {phy}, atten: {atten}, txPower: {txPower}, testing point: {testing}')
+                print('-------------------------------------------------------------------------------------------')
 
                 print(f"\nSet the requested attenuation: {atten}.")
                 if rf_switch:
@@ -283,7 +283,7 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                 print("\nSlave collects results.")
                 perSlave = hciSlave.connStatsFunc(None)
 
-                print("perMaster  : ", perMaster)
+                print("\n\nperMaster  : ", perMaster)
                 print("perSlave   : ", perSlave)
 
                 reset_master = False
@@ -308,9 +308,16 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
 
                     per_100 += 1
                     total_retry_times += 1
+
+                    print("\nReset the attenuation to 30.")
+                    if rf_switch:
+                        set_val = 30 + float(args.loss)
+                        mini_RCDAT = mini_RCDAT_USB(Namespace(atten=set_val))
+
                     sleep(10)
 
                     need_to_setup = True
+                    type_string = 1
 
                     continue
                 
@@ -319,7 +326,7 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                     perMax = perMaster
                 if perSlave > perMax:
                     perMax = perSlave
-                print("perMax     : ", perMax)
+                print("\nperMax     : ", perMax)
 
                 break  # no retry
 
@@ -336,6 +343,12 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
             results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
             end_secs = time.time()
             print(f'\nTotally used {(end_secs - start_secs):.0f} seconds for this point.')
+
+            if testing >= RESET_CNT:
+                testing = RESET_CNT
+                need_to_setup = True
+            else:
+                testing += 1
 
     else:  # original method
         for atten in attens:
