@@ -4,8 +4,15 @@ This example demonstrates read/write to OTP area inside device's internal memory
 
 ## Required Connections
 
+### MAX32520 Evaluation Kit
 -   Connect a USB cable between the PC and the CN1 (USB TO UART) connector.
+-   Connect a debugger to J2 or J3 (JTAG/SWD).
 -   Select RX SEL and TX SEL on headers JP7 and JP8.
+-   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
+### MAX32520FTHR Evaluation Kit
+-   Connect a USB cable between the PC and the J1 connector.
+-   Connect a debugger to J2.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output

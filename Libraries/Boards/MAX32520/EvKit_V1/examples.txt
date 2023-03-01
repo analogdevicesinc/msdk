@@ -28,6 +28,7 @@ I2C_Sensor
 ICC
 LockDebug
 LP
+OTP_Dump
 SCPA_OTP_Dump
 SFE
 SFE_Host

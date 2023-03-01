@@ -212,7 +212,7 @@ The following configuration options are available:
   * `"MAX32670"`
   * `"MAX32672"`
   * `"MAX32675"`
-  * `"MAX32520"`
+  * `"MAX32680"`
   * `"MAX32690"`
   * `"MAX78000"`
   * `"MAX78002"`
