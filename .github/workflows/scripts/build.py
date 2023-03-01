@@ -1,6 +1,7 @@
 from pathlib import Path
 import os
 from subprocess import run
+import argparse
 
 blacklist = [
     "MAX32570",
@@ -22,12 +23,6 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
     else:
         print("MAXIM_PATH not set.")
         return
-
-    # Simulate the VS Code terminal by appending to the Path
-    # if curplatform == 'Linux':
-    #     env["PATH"] = f"{maxim_path.as_posix()}/Tools/GNUTools/10.3/bin:{maxim_path.as_posix()}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin:" + env["PATH"]
-    # elif curplatform == 'Windows':
-    #     env["PATH"] = f"{maxim_path.as_posix()}/Tools/GNUTools/10.3/bin;{maxim_path.as_posix()}/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2/bin;{maxim_path.as_posix()}/Tools/MSYS2/usr/bin;" + env["PATH"]
 
     # Get list of target micros if none is specified
     if targets is None:
@@ -102,13 +97,21 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                     print(f"Build command: {build_cmd}")
                     print("Error:")
                     print(res.stderr)
-                    if project not in failed:
-                        failed.append(project)
+                    project_info = {
+                        "target":target,
+                        "project":project_name,
+                        "board":board,
+                        "path":project,
+                        "stdout":res.stdout,
+                        "stderr":res.stderr
+                    }
+                    if project_info not in failed:
+                        failed.append(project_info)
 
                 else:
                     print("Success!")
 
-                print("------------------")
+                print("------------------", flush=True)
                 res = run("make clean", cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
                 count += 1
@@ -116,15 +119,29 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
         boards = None # Reset boards list
         projects = None # Reset projects list
 
-    print(f"Tested {count} projects.  {count - len(failed)}/{count} succeeded.")
+    print(f"Tested {count} cases.  {count - len(failed)}/{count} succeeded.")
     if (len(failed) > 0):
         print("Failed projects:")
         for p in failed:
-            print(p)
+            print(f"{p['target']}: {p['project']} failed for {p['board']}")
 
         return -1
     else:
         return 0
 
+parser = argparse.ArgumentParser("MSDK Build Test Script")
+parser.add_argument("--maxim_path", type=str, help="(Optional) Location of the MaximSDK.  If this is not specified then the script will attempt to use the MAXIM_PATH environment variable.")
+parser.add_argument("--targets", type=str, nargs="+", required=False, help="Target microcontrollers to test.")
+parser.add_argument("--boards", type=str, nargs="+", required=False, help="Boards to test.  Should match the BSP folder-name exactly.")
+parser.add_argument("--projects", type=str, nargs="+", required=False, help="Examples to populate.  Should match the example's folder name.")
+
 if __name__ == "__main__":
-    exit(test())
+    args = parser.parse_args()
+    exit(
+        test(
+            maxim_path=args.maxim_path,
+            targets=args.targets,
+            boards=args.boards,
+            projects=args.projects
+        )
+    )
