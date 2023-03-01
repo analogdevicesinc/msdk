@@ -16,7 +16,7 @@
     </interrupt>
     <registers>
       <register>
-        <name>CTRL</name>
+        <name>CTRL0</name>
         <description>Control Register.</description>
         <addressOffset>0x00</addressOffset>
         <size>32</size>
