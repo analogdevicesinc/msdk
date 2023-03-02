@@ -135,6 +135,7 @@ jobs:
                   if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
                       # TODO this needs to be an env variable
                       echo "MAX32655_RUN_ALL_TEST=true" >> $GITHUB_ENV
+                      echo "Enabled all tests to run because of $watch_file"
                       
                   fi
               done
@@ -145,6 +146,7 @@ jobs:
                       example_to_test=$(basename "$watch_file")
                       # Add new element at the end of the array
                       examples_list+=($example_to_test)
+                      echo "Enabled example tests to run because of $watch_file"
 
                   fi
               done
@@ -176,7 +178,7 @@ jobs:
           echo
 
           if [[ $MAX32655_RUN_ALL_TEST -eq 'true' ]]; then
-              echo "Running ALL MAX32655 Test"
+              echo "Running ALL MAX32655 Test : $MAX32655_RUN_ALL_TEST or $MAX32655_BLE_FILES_CHANGED  "
               #***************** uncomment actual test here *************
               #./new_test_launcher.sh max32655 $dut_uart $dut_serial "all"
           else
