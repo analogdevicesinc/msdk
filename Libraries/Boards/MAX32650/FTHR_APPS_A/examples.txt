@@ -23,6 +23,7 @@ Hello_World
 I2C_SCAN
 ICC
 LP
+OTP_Dump
 OWM
 Pulse_Train
 RTC
