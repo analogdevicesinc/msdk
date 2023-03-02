@@ -293,7 +293,6 @@ jobs:
       #Unlock the board if we successfully locked it
       - name: Unlock 655 B1
         if: ${{ always() && steps.lock655_b1.outcome == 'success'}}
-        id: lock655_b1
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
       - name: Lock 655 B2
