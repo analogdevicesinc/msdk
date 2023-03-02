@@ -295,7 +295,7 @@ jobs:
         if: ${{ always() && steps.lock655_b1.outcome == 'success'}}
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
-      - name: Lock 655 B2
+      - name: Unlock 655 B2
         if: ${{ always() && steps.lock655_b2.outcome == 'success'}}
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
