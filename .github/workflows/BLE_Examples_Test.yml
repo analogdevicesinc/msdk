@@ -150,7 +150,7 @@ jobs:
 
                   fi
               done
-              echo "MAX32655_EXAMPLES_TO_TEST=${examples_list[@]}" >> $GITHUB_ENV
+              echo 'MAX32655_EXAMPLES_TO_TEST=("${examples_list[@]}")' >> $GITHUB_ENV
           else
               # Assume we want to actually run the workflow if no files changed
               #echo "MAX32655_RUN_ALL_TEST=true" >> $GITHUB_ENV
