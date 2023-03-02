@@ -177,12 +177,12 @@ jobs:
           echo
           echo
 
-          if [[ $MAX32655_RUN_ALL_TEST -eq 'true' ]]; then
+          if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
               echo "Running ALL MAX32655 Test : $MAX32655_RUN_ALL_TEST or $MAX32655_BLE_FILES_CHANGED  "
               #***************** uncomment actual test here *************
               #./new_test_launcher.sh max32655 $dut_uart $dut_serial "all"
           else
-              if [[ $MAX32655_BLE_FILES_CHANGED -eq 'true' ]]; then
+              if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
                   cd .github/workflows/scripts
                   for example in "${MAX32655_EXAMPLES_TO_TEST[@]}"; do
                       echo ">> Running $example test on MAX32655"
@@ -209,7 +209,7 @@ jobs:
                   done
 
                   # connected tests
-                  if [ $DATS_CONNETED_TEST -eq 'true' ]; then
+                  if [ $DATS_CONNETED_TEST == 'true' ]; then
                       #conencted test launcher
                       set +e
                       #***************** uncomment actual test here *************
@@ -223,7 +223,7 @@ jobs:
                       set -e
 
                   fi
-                  if [ $OTAS_CONNETED_TEST -eq 'true' ]; then
+                  if [ $OTAS_CONNETED_TEST == 'true' ]; then
                       #conencted test launcher
                       set +e
                       #call test here
