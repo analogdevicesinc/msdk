@@ -188,7 +188,7 @@ jobs:
                       echo ">> Running $example test on MAX32655"
                       
                       # launch single tests
-                      echo "Testing $example"
+                      echo "Testing example: $example"
                       set +e
                       #***************** uncomment actual test here *************
                       #./new_test_launcher.sh max32655 $dut_uart $dut_serial $example
@@ -245,7 +245,7 @@ jobs:
               fi
           fi
 
-          if [ "$numOfFailedTests" -ne "0" ]; then
+          if [ $numOfFailedTests -ne 0 ]; then
               printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
           else
               echo "Relax! ALL TESTS PASSED"
