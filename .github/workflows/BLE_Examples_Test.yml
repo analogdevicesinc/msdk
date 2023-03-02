@@ -188,6 +188,7 @@ jobs:
                       echo ">> Running $example test on MAX32655"
                       
                       # launch single tests
+                      echo "Testing $example"
                       set +e
                       #***************** uncomment actual test here *************
                       #./new_test_launcher.sh max32655 $dut_uart $dut_serial $example
@@ -211,6 +212,7 @@ jobs:
                   # connected tests
                   if [[ $MAX32655_DATS_CONNETED_TEST == 'true' ]]; then
                       #conencted test launcher
+                      echo "Testing MAX32655_DATS_CONNETED_TEST"
                       set +e
                       #***************** uncomment actual test here *************
                       #./new_test_launcher.sh max32655 $dut_uart $dut_serial "dats"
@@ -225,6 +227,7 @@ jobs:
                   fi
                   if [[ $MAX32655_OTAS_CONNETED_TEST == 'true' ]]; then
                       #conencted test launcher
+                      echo "Testing MAX32655_OTAS_CONNETED_TEST"
                       set +e
                       #call test here
                       #***************** uncomment actual test here *************
