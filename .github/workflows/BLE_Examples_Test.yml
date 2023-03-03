@@ -171,7 +171,7 @@ jobs:
           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
           dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])")
           dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])")
-          examples_to_test=(${MAX32655_EXAMPLES_TO_TEST[@]})
+          examples_to_test=${MAX32655_EXAMPLES_TO_TEST[@]}
           echo
           echo
           echo "Examples to be tested : ${examples_to_test[@]}"
