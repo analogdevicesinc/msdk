@@ -171,6 +171,9 @@ jobs:
 
           if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
             echo "LOCK_MAX32655_B2=true" >>  $GITHUB_ENV
+            echo "setting lock to true"
+          else
+            echo lock not set to true
           fi
 
       #----------------------------------------------------------------------------------------------
