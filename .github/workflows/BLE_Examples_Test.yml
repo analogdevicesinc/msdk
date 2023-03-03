@@ -35,7 +35,7 @@ env:
 #----------------------------------------------------------------------------------------------
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  BLE Tests:
+  BLE_Tests:
     # The type of runner that the job will run on
     runs-on: [self-hosted, btm-ci]
     if: github.event.pull_request.draft == false
