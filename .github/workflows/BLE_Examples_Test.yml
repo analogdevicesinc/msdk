@@ -28,12 +28,7 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
-env:
-  MAX32655_BLE_FILES_CHANGED: false
-  MAX32655_EXAMPLES_TO_TEST: ()
-  MAX32655_RUN_ALL_TEST: false
-  MAX32655_DATS_CONNECTED_TEST: false
-  MAX32655_OTAS_CONNECTED_TEST: false
+
   # TODO WLP
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -72,7 +67,12 @@ jobs:
       # ME17
       - name: Check MAX32655 #name used for display purposes on github webpage
         id: MAX32655 #id used to reference this step in other parts of the yml
-
+        env:
+          MAX32655_BLE_FILES_CHANGED: false
+          MAX32655_EXAMPLES_TO_TEST: ()
+          MAX32655_RUN_ALL_TEST: false
+          MAX32655_DATS_CONNECTED_TEST: false
+          MAX32655_OTAS_CONNECTED_TEST: false
         run: |
 
           declare -a watched_examples=(
@@ -144,11 +144,11 @@ jobs:
                       # Add new element at the end of the array
                       examples_list+=($example_to_test)
                       echo "Enabled example tests to run because of $watch_file"# if needed enable connected state tests
-                      if [[ $watch_file == "BLE_dats" ]] || [[ $watch_file == "BLE_datc" ]]; then
+                      if [[ $example_to_test == "BLE_dats" ]] || [[ $example_to_test == "BLE_datc" ]]; then
                           echo "MAX32655_DATS_CONNECTED_TEST=true"  >> $GITHUB_ENV
                           echo "Enabled Datsc connected test"
                       fi
-                      if [[ $watch_file == "BLE_otas" ]] || [[ $watch_file == "BLE_otac" ]]; then
+                      if [[ $example_to_test == "BLE_otas" ]] || [[ $example_to_test == "BLE_otac" ]]; then
                           echo "MAX32655_OTAS_CONNECTED_TEST=true"  >> $GITHUB_ENV
                       fi
 
@@ -185,10 +185,10 @@ jobs:
           echo
           echo
           echo "Examples to be tested : ${examples_to_test[@]}"
-          echo "MAX32655_RUN_ALL_TEST : $MAX32655_RUN_ALL_TEST"
+          echo "MAX32655_RUN_ALL_TEST        : $MAX32655_RUN_ALL_TEST"
           echo "MAX32655_DATS_CONNECTED_TEST : $MAX32655_DATS_CONNECTED_TEST "
-          echo "MAX32655_OTAS_CONNETED_TEST : $MAX32655_OTAS_CONNETED_TEST"
-
+          echo "MAX32655_OTAS_CONNETED_TEST  : $MAX32655_OTAS_CONNETED_TEST"
+          echo "MAX32655_BLE_FILES_CHANGED   : $MAX32655_BLE_FILES_CHANGED "
           if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
               echo testing all examples
               #./new_test_launcher.sh max32655 $dut_uart $dut_serial "all"
