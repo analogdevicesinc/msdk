@@ -74,8 +74,8 @@ jobs:
           MAX32655_BLE_FILES_CHANGED: false
           MAX32655_EXAMPLES_TO_TEST: ()
           MAX32655_RUN_ALL_TEST: false
-          MAX32655_DATS_CONNECTED_TEST : false
-          MAX32655_OTAS_CONNECTED_TEST : false
+          MAX32655_DATS_CONNECTED_TEST: false
+          MAX32655_OTAS_CONNECTED_TEST: false
           
         run: |
 
@@ -190,12 +190,12 @@ jobs:
           echo
           echo
           echo "Examples to be tested : ${examples_to_test[@]}"
-          echo
-          echo
+          echo "MAX32655_RUN_ALL_TEST : $MAX32655_RUN_ALL_TEST"
+          echo "MAX32655_DATS_CONNECTED_TEST : $MAX32655_DATS_CONNECTED_TEST "
+          echo "MAX32655_OTAS_CONNETED_TEST : $MAX32655_OTAS_CONNETED_TEST"
 
           if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
-              echo "Running ALL MAX32655 Test : $MAX32655_RUN_ALL_TEST "
-              #***************** uncomment actual test here *************
+
               #./new_test_launcher.sh max32655 $dut_uart $dut_serial "all"
           else
               if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
@@ -227,7 +227,7 @@ jobs:
                   done
 
                   # connected tests
-                  echo ">>>> $MAX32655_DATS_CONNECTED_TEST"
+                  
                   if [[ $MAX32655_DATS_CONNECTED_TEST == 'true' ]]; then
                       #conencted test launcher
                       echo "Testing MAX32655_DATS_CONNECTED_TEST"
