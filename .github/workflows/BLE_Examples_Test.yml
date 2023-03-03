@@ -163,6 +163,7 @@ jobs:
                       if [[ $example_to_test == "BLE_otas" ]] || [[ $example_to_test == "BLE_otac" ]]; then
                           MAX32655_OTAS_CONNECTED_TEST=true
                           echo "MAX32655_OTAS_CONNECTED_TEST=true"  >> $GITHUB_ENV
+                          echo "Enabled OTA connected test"
                       fi
 
                   fi
@@ -210,7 +211,7 @@ jobs:
           echo "Examples to be tested : ${examples_to_test[@]}"
           echo "MAX32655_RUN_ALL_TEST        : $MAX32655_RUN_ALL_TEST"
           echo "MAX32655_DATS_CONNECTED_TEST : $MAX32655_DATS_CONNECTED_TEST "
-          echo "MAX32655_OTAS_CONNETED_TEST  : $MAX32655_OTAS_CONNETED_TEST"
+          echo "MAX32655_OTAS_CONNECTED_TEST  : $MAX32655_OTAS_CONNECTED_TEST"
           echo "MAX32655_BLE_FILES_CHANGED   : $MAX32655_BLE_FILES_CHANGED "
           echo "LOCK_MAX32655_B2             : $LOCK_MAX32655_B2 "
           if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
@@ -250,9 +251,9 @@ jobs:
 
                   fi
                   #------connected tests---------
-                  if [[ $MAX32655_OTAS_CONNETED_TEST == 'true' ]]; then
+                  if [[ $MAX32655_OTAS_CONNECTED_TEST == 'true' ]]; then
                       #conencted test launcher
-                      echo "Testing MAX32655_OTAS_CONNETED_TEST"
+                      echo "Testing MAX32655_OTAS_CONNECTED_TEST"
                       set +e
                       #call test here
                       #***************** uncomment actual test here *************
