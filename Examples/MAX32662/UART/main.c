@@ -54,10 +54,18 @@
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 1024
-#define READING_UART MXC_UART0
-#define READ_IDX MXC_UART_GET_IDX(MXC_UART0)
-#define WRITING_UART MXC_UART1
-#define WRITE_IDX MXC_UART_GET_IDX(MXC_UART1)
+
+#if defined(BOARD_EVKIT_V1)
+	#define READING_UART MXC_UART0
+	#define READ_IDX MXC_UART_GET_IDX(MXC_UART0)
+	#define WRITING_UART MXC_UART1
+	#define WRITE_IDX MXC_UART_GET_IDX(MXC_UART1)
+#else
+	#define READING_UART MXC_UART1
+	#define READ_IDX MXC_UART_GET_IDX(MXC_UART1)
+	#define WRITING_UART MXC_UART0
+	#define WRITE_IDX MXC_UART_GET_IDX(MXC_UART0)
+#endif
 
 /***** Globals *****/
 volatile int READ_FLAG;
@@ -100,7 +108,11 @@ int main(void)
 
     printf("\n\n**************** UART Example ******************\n");
     printf("This example shows a loopback test between the 2 UARTs on the MAX32662.\n");
-    printf("\nConnect UART0 to UART1 (P0.11 (AIN2) -> P0.2) for this example.\n");
+#if defined(BOARD_EVKIT_V1)
+    printf("\nConnect UART0A RX to UART1A TX (P0.11 (AIN2) -> P0.2) for this example.\n");
+#else
+    printf("\nConnect UART0B TX to UART1A RX (P0.8 -> P0.3) for this example.\n");
+#endif
     printf("The LEDs are used to indicate the success of the test.\nBlinking->Success, "
            "Solid->Failure\n");
 
@@ -133,7 +145,11 @@ int main(void)
     MXC_Delay(MXC_DELAY_SEC(1));
 
     // Initialize the UART
+#if defined(BOARD_EVKIT_V1)
     if ((error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK, MAP_A)) != E_NO_ERROR) {
+#else
+    if ((error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK, MAP_B)) != E_NO_ERROR) {
+#endif
         Shutdown_UARTS();
         Console_Init();
         printf("-->Error initializing UART: %d\n", error);
@@ -141,7 +157,11 @@ int main(void)
         return error;
     }
 
+#if defined(BOARD_EVKIT_V1)
     if ((error = MXC_UART_Init(READING_UART, UART_BAUD, MXC_UART_APB_CLK, MAP_A)) != E_NO_ERROR) {
+#else
+    if ((error = MXC_UART_Init(READING_UART, UART_BAUD, MXC_UART_APB_CLK, MAP_A)) != E_NO_ERROR) {
+#endif
         Shutdown_UARTS();
         Console_Init();
         printf("-->Error initializing UART: %d\n", error);
