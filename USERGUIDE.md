@@ -731,17 +731,23 @@ This section offers detailed usage info on the entire MSDK focusing on the typic
 
 ### Board Support Packages
 
-The MSDK supports multiple parts and evaluation platforms (see [supported parts](#supported-parts)) through **"Board Support Packages" (BSPs)**.
+The MSDK supports multiple parts and evaluation platforms (see [supported parts](#supported-parts)) through **"Board Support Packages" (BSPs)**.  For microcontrollers with multiple evaluation platforms, multiple BSPs will be available.
 
 The role of a _BSP_ is to provide a hardware abstraction layer for the initialization and management of board-level hardware such as serial interfaces, pushbuttons, LEDs, external peripheral devices, TFT displays, etc. which will vary between evaluation platforms.  The BSP abstraction layer also improves code portability to custom devices.  
 
 This topic is presented _first_ because the first task when opening or creating any project is to set the BSP correctly.
 
+To set the BSP for a project:
+
+- In **VS Code**:  [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code)
+- In **Eclipse**:  [How to Set the BSP (Eclipse)](#how-to-set-the-bsp-eclipse)
+- **Command-Line** Development:  [How to Set the BSP (Command-Line)](#how-to-set-the-bsp-command-line)
+
 Available BSPs are located in the `Libraries/Boards` folder for each _Target Microcontroller_.
 
 ![Figure 34](res/Fig34.jpg)
 
-The name of each folder is the BSP's _internal_ string for use with the `BOARD` [build configuration variable](#build-configuration-variables).  The table below can be used to match these _internal_ strings to _external part numbers_.
+The names of a BSP's folder is used with the `BOARD` [build configuration variable](#build-configuration-variables) to build a project for a specific BSP.  The table below can be used to match the correct `BOARD` values to _external part numbers_.
 
 | External Part Number                                         | `BOARD`        |
 | ------------------------------------------------------------ | -------------- |
@@ -767,12 +773,6 @@ The name of each folder is the BSP's _internal_ string for use with the `BOARD` 
 | [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html) | `FTHR_RevA`    |
 | [MAXREFDES178](https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html) | `MAXREFDES178` |
 | [MAX78002EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html) | `EvKit_V1`     |
-
-To set the BSP for a project:
-
-- In **VS Code**:  [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code)
-- In **Eclipse**:  [How to Set the BSP (Eclipse)](#how-to-set-the-bsp-eclipse)
-- **Command-Line** Development:  [How to Set the BSP (Command-Line)](#how-to-set-the-bsp-command-line)
 
 ### Visual Studio Code
 
@@ -1445,7 +1445,7 @@ A microcontroller is made up of a Central Processing Unit (CPU) that is surround
 
 ![Figure 38](res/Fig38.jpg)
 
-A detailed API reference can be found in the [Documentation](Documentation) folder of the MSDK installation for each microcontroller.  See the links below for online copies.
+The links below will open detailed API references for each microcontroller.  Offline copies of these API references can also be found in the `Documentation` folder of the MSDK [installation](#installation).
 
 - [MAX32520 API](Libraries/PeriphDrivers/Documentation/MAX32520/index.html)
 
