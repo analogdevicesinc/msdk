@@ -18,8 +18,14 @@ for f in periph_docs_dir.glob("*_Doxyfile"):
     # ^ Recreate directory structure so built links work
     shutil.copytree(periph_docs_dir / micro, dest, dirs_exist_ok=True)
 
+# Copy res (resources) folder
+print("Copying res folder")
+shutil.copytree(repo / "res", repo / "Documentation" / "res", dirs_exist_ok=True)
+
 # Pre-populate markdown files
+print("Copying root markdown files")
 for f in repo.glob("*.md"):
+    print(f.name)
     shutil.copy(f, here)
 
 ############################## UPDATE USER GUIDE FOR CORDIO ###################
@@ -110,5 +116,5 @@ for f in src.glob("*.pdf"):
 # Run mkdocs build
 # A subprocess is used because the Mkdocs Python API does not print any logging info
 print("Building docs (this could take a few minutes)...")
-#run("mkdocs build")  # Build with CLI
-build(load_config())  # Build with Python API
+run(f"mkdocs build", cwd=repo, shell=True)  # Build with CLI
+# build(load_config())  # Build with Python API
