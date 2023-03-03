@@ -28,17 +28,20 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+env:
+  LOCK_MAX32655_B1: false
+  LOCK_MAX32655_B2: false
 
-  # TODO WLP
-
+#----------------------------------------------------------------------------------------------
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  TEST_BLE_Devices:
+  BLE Tests:
     # The type of runner that the job will run on
     runs-on: [self-hosted, btm-ci]
     if: github.event.pull_request.draft == false
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    #----------------------------------------------------------------------------------------------
+    # De inits submodules and cleans repo
     steps:
       # Clean and remove any local modifications
       - name: Clean
@@ -48,7 +51,7 @@ jobs:
           set +e
 
           # Attempt to clean the repo
-          #git scorch
+          git scorch
           retval=$?
 
           # Remove everything if this fails
@@ -58,15 +61,17 @@ jobs:
           fi
 
           set -e
+      #----------------------------------------------------------------------------------------------
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
           submodules: false
           fetch-depth: 0
 
-      # ME17
-      - name: Check MAX32655 #name used for display purposes on github webpage
-        id: MAX32655 #id used to reference this step in other parts of the yml
+      #----------------------------------------------------------------------------------------------
+      # Checks if changes have been made to require a test on ME17
+      - name: Check MAX32655
+        id: MAX32655
         env:
           MAX32655_BLE_FILES_CHANGED: false
           MAX32655_EXAMPLES_TO_TEST: ()
@@ -75,13 +80,14 @@ jobs:
           MAX32655_OTAS_CONNECTED_TEST: false
         run: |
 
+          # BLE examples to watch
           declare -a watched_examples=(
-              # underscore is to ignore the BLE5_ctr examples
+              # underscore in filter to ignore the BLE5_ctr examples
               Examples/MAX32655/BLE_*
               Examples/MAX32655/Bootloader
           )
-          # Check for changes made to these files
-          # Directories to watch
+
+          # Other directories to watch
           declare -a watched_other=(
               .github/workflows/ci-tests/Examples_tests
               Libraries/libs.mk
@@ -128,22 +134,26 @@ jobs:
           CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
           # Assume we want to actually run the workflow if no files changed
           if [[ "$CHANGE_FILES" != "" ]]; then
+              # Check if ALL test are required due to 'OTHER' non BLE example directory modified
               for watch_file in "${results_other[@]}"; do
                   if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
-                      # TODO this needs to be an env variable
+                      
                       echo "MAX32655_RUN_ALL_TEST=true" >> $GITHUB_ENV
-                      echo "Enabled all tests to run because of $watch_file"
+                      echo "Enabled all tests to run because $watch_file was  modified"
                       
                   fi
               done
+              # Check to see which examples have been modified to only test those
               for watch_file in "${results_examples[@]}"; do
                   if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
-                      # TODO this needs to be an env variable
                       echo "MAX32655_BLE_FILES_CHANGED=true" >> $GITHUB_ENV
+                      
                       example_to_test=$(basename "$watch_file")
-                      # Add new element at the end of the array
+                      # Store list of examples that need to be tested
                       examples_list+=($example_to_test)
-                      echo "Enabled example tests to run because of $watch_file"# if needed enable connected state tests
+                      echo "Enabled example tests to run because $watch_file was modified"
+
+                      # If dats/c or OTAC/s were modified we should also test the connected functionality
                       if [[ $example_to_test == "BLE_dats" ]] || [[ $example_to_test == "BLE_datc" ]]; then
                           echo "MAX32655_DATS_CONNECTED_TEST=true"  >> $GITHUB_ENV
                           echo "Enabled Datsc connected test"
@@ -154,26 +164,33 @@ jobs:
 
                   fi
               done
+              # Save examples list to env varaible available across steps
               echo "MAX32655_EXAMPLES_TO_TEST=${examples_list[@]}" >> $GITHUB_ENV
           else
               # Assume we want to actually run the workflow if no files changed
-              #echo "MAX32655_RUN_ALL_TEST=true" >> $GITHUB_ENV
-              echo "here we set it to run all test even if now files changed"
+              echo "MAX32655_RUN_ALL_TEST=true" >> $GITHUB_ENV
           fi
-          #-----------------------------------------------------------------------
+          if [[ $MAX32655_DATS_CONNECTED_TEST == 'true' ]] || [[ $MAX32655_OTAS_CONNECTED_TEST == 'true' ]] || [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
+            echo "LOCK_MAX32655_B1=true" >> $GITHUB_ENV
+            echo "LOCK_MAX32655_B2=true" >> $GITHUB_ENV
+          fi
+          if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
+            echo "LOCK_MAX32655_B2=true" >> $GITHUB_ENV
+          fi
 
+      #----------------------------------------------------------------------------------------------
       - name: Lock MAX32655 B1
-        if: env.MAX32655_RUN_ALL_TEST == 'true' || env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_OTAS_CONNECTED_TEST == 'true'
+        if: env.LOCK_MAX32655_B1 == 'true'
         id: lock_max32655_b1
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
-
+      #----------------------------------------------------------------------------------------------
       - name: Lock MAX32655 B2
-        if: env.MAX32655_RUN_ALL_TEST == 'true' || env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_OTAS_CONNECTED_TEST == 'true' || env.MAX32655_BLE_FILES_CHANGED == 'true'
+        if: env.LOCK_MAX32655_B2 == 'true'
         id: lock_max32655_b2
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
-
+      #----------------------------------------------------------------------------------------------
       - name: Test MAX32655 #name used for display purposes on github webpage
         if: steps.lock_max32655_b2.outcome == 'success'
         id: Test_MAX32655 #id used to reference this step in other parts of the yml
