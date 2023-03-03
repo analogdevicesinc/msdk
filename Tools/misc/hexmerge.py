@@ -40,11 +40,10 @@
  # Ensure that both targets are built with BT_VER := 9
  #
 
-import sys
+
 import argparse
 from argparse import RawTextHelpFormatter
-from time import sleep
-import itertools
+
 from intelhex import IntelHex
 
 
