@@ -170,7 +170,7 @@ jobs:
           fi
 
           if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
-            echo "LOCK_MAX32655_B2=true" >>  $GITHHUB_ENV
+            echo "LOCK_MAX32655_B2=true" >>  $GITHUB_ENV
           fi
 
       #----------------------------------------------------------------------------------------------
