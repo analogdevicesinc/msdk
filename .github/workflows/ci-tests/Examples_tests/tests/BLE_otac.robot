@@ -16,7 +16,7 @@ Stop Scanning Test
 
 Connection ID Test
     [Timeout]    30s
-    Expect and timeout    btn 1 m\n      ConnID for Button Press:    5    ${SERIAL_PORT_1}
+    Expect and timeout    btn 1 m\n      Medium Button 1 Press    5    ${SERIAL_PORT_1}
 
 Clear Resolving List Test
     [Timeout]    30s

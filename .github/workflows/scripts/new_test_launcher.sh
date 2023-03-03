@@ -651,6 +651,8 @@ function run_ota_test() {
 # takes the three args given to the script: eg: max32655 , D3073ICQ , 0409000052fb0cd70000000000000000097969906
 initial_setup $1 $2 $3
 CURRENT_TEST=$4
+change_advertising_names_walle
+
 if [ $CURRENT_TEST == "all" ]; then
     echo
     echo "Running all tests"
