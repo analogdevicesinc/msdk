@@ -203,10 +203,10 @@ jobs:
 
                       # if needed enable connected state tests
                       if [[ $example == "BLE_dats" ]] || [[ $example == "BLE_datc" ]]; then
-                          echo "MAX32655_DATS_CONNETED_TEST=1" >> $GITHUB_ENV
+                          echo "MAX32655_DATS_CONNETED_TEST=true" >> $GITHUB_ENV
                       fi
                       if [[ $example == "BLE_otas" ]] || [[ $example == "BLE_otac" ]]; then
-                          echo "MAX32655_OTAS_CONNETED_TEST=1" >> $GITHUB_ENV
+                          echo "MAX32655_OTAS_CONNETED_TEST=true" >> $GITHUB_ENV
                       fi
                   done
 
