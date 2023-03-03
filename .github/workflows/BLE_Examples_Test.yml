@@ -148,11 +148,11 @@ jobs:
                       # Add new element at the end of the array
                       examples_list+=($example_to_test)
                       echo "Enabled example tests to run because of $watch_file"# if needed enable connected state tests
-                      if [[ $example == "BLE_dats" ]] || [[ $example == "BLE_datc" ]]; then
+                      if [[ $watch_file == "BLE_dats" ]] || [[ $watch_file == "BLE_datc" ]]; then
                           echo "MAX32655_DATS_CONNECTED_TEST=true"  >> $GITHUB_ENV
                           echo "Enabled Datsc connected test"
                       fi
-                      if [[ $example == "BLE_otas" ]] || [[ $example == "BLE_otac" ]]; then
+                      if [[ $watch_file == "BLE_otas" ]] || [[ $watch_file == "BLE_otac" ]]; then
                           echo "MAX32655_OTAS_CONNECTED_TEST=true"  >> $GITHUB_ENV
                       fi
 
