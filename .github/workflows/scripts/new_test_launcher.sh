@@ -671,11 +671,8 @@ elif [ $CURRENT_TEST == "ota" ]; then
 else
     echo
     echo "Running single test"
-    # run_single_not_conencted_tests $CURRENT_TEST
+    run_single_not_conencted_tests $CURRENT_TEST
     echo
 fi
-
-echo "=============================================================================="
-echo "=============================================================================="
 
 exit $numOfFailedTests
