@@ -180,7 +180,7 @@ jobs:
 
           
       - name: Test MAX32655 #name used for display purposes on github webpage
-        if: steps.lock_max32655_b1.outcome == 'success'
+        if: steps.lock_max32655_b2.outcome == 'success'
         id: Test_MAX32655 #id used to reference this step in other parts of the yml
         run: |
           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
