@@ -87,7 +87,7 @@ lens = []
 attens = []
 txPowers = []
 
-df = pandas.read_csv(csv_full_path)
+df = pandas.read_csv(csv_full_path,comment='#')
 lens = df["packetLen"].unique()
 phys = df["phy"].unique()
 attens = df["atten"].unique()
