@@ -72,7 +72,7 @@ jobs:
         id: MAX32655 #id used to reference this step in other parts of the yml
         env:
           MAX32655_BLE_FILES_CHANGED: false
-          MAX32655_EXAMPLES_TO_TEST: false
+          MAX32655_EXAMPLES_TO_TEST: ()
           MAX32655_RUN_ALL_TEST: false
           MAX32655_DATS_CONNETED_TEST: false
           MAX32655_OTAS_CONNETED_TEST: false
@@ -171,9 +171,10 @@ jobs:
           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
           dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])")
           dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])")
+          examples_to_test=(${MAX32655_EXAMPLES_TO_TEST[@]})
           echo
           echo
-          echo "Examples to be tested : ${MAX32655_EXAMPLES_TO_TEST[@]}"
+          echo "Examples to be tested : ${examples_to_test[@]}"
           echo
           echo
 
@@ -184,7 +185,7 @@ jobs:
           else
               if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
                   cd .github/workflows/scripts
-                  for example in "${MAX32655_EXAMPLES_TO_TEST[@]}"; do
+                  for example in "${examples_to_test[@]}"; do
                       echo ">> Running $example test on MAX32655"
                       
                       # launch single tests
