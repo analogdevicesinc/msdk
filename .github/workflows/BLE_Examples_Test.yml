@@ -191,7 +191,7 @@ jobs:
                       echo "Testing example: $example"
                       set +e
                       #***************** uncomment actual test here *************
-                      #./new_test_launcher.sh max32655 $dut_uart $dut_serial $example
+                      ./new_test_launcher.sh max32655 $dut_uart $dut_serial $example
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed test count
@@ -217,7 +217,7 @@ jobs:
                       echo "Testing MAX32655_DATS_CONNETED_TEST"
                       set +e
                       #***************** uncomment actual test here *************
-                      #./new_test_launcher.sh max32655 $dut_uart $dut_serial "dats"
+                      ./new_test_launcher.sh max32655 $dut_uart $dut_serial "dats"
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed_test count
@@ -233,7 +233,7 @@ jobs:
                       set +e
                       #call test here
                       #***************** uncomment actual test here *************
-                      #./new_test_launcher.sh max32655 $dut_uart $dut_serial "ota"
+                      ./new_test_launcher.sh max32655 $dut_uart $dut_serial "ota"
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed test count
