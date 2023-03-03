@@ -249,7 +249,7 @@ function run_notConntectedTest() {
 function flash_bootloader() {
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
     make clean
-    make liblcean
+    make libclean
     make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$1 -j
 
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader/build
