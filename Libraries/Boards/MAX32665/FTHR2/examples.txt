@@ -42,6 +42,7 @@ I2C_SCAN
 ICC
 LP
 MAA
+OTP_Dump
 OWM
 Pulse_Train
 RPU

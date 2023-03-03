@@ -15,6 +15,10 @@ This example demonstrates read/write to OTP area inside device's internal memory
 -   Connect a debugger to JH2.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
+### MAX32666FTHR2
+-   Connect a USB cable between the PC and the J10 connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
 ## Expected Output
 
 ```
