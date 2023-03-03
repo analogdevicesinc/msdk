@@ -75,6 +75,7 @@ jobs:
           MAX32655_RUN_ALL_TEST: false
           MAX32655_DATS_CONNECTED_TEST: false
           MAX32655_OTAS_CONNECTED_TEST: false
+          LOCK_MAX32655_B2: false
         run: |
 
           # BLE examples to watch
@@ -168,6 +169,10 @@ jobs:
               echo "MAX32655_RUN_ALL_TEST=true" >> $GITHUB_ENV
           fi
 
+          if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
+            echo "LOCK_MAX32655_B2=true" >>  $GITHHUB_ENV
+          fi
+
       #----------------------------------------------------------------------------------------------
       - name: Lock MAX32655 B1
         if: env.MAX32655_RUN_ALL_TEST == 'true' || env.MAX32655_DATS_CONNECTED_TEST == 'true' || env.MAX32655_OTAS_CONNECTED_TEST == 'true'
@@ -180,6 +185,7 @@ jobs:
         id: lock_max32655_b2
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+          echo "LOCK_MAX32655_B2             : $LOCK_MAX32655_B2 "
       #----------------------------------------------------------------------------------------------
       - name: Test MAX32655 #name used for display purposes on github webpage
         if: steps.lock_max32655_b2.outcome == 'success'
@@ -196,6 +202,7 @@ jobs:
           echo "MAX32655_DATS_CONNECTED_TEST : $MAX32655_DATS_CONNECTED_TEST "
           echo "MAX32655_OTAS_CONNETED_TEST  : $MAX32655_OTAS_CONNETED_TEST"
           echo "MAX32655_BLE_FILES_CHANGED   : $MAX32655_BLE_FILES_CHANGED "
+          echo "LOCK_MAX32655_B2             : $LOCK_MAX32655_B2 "
           if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
               echo testing all examples
               #./new_test_launcher.sh max32655 $dut_uart $dut_serial "all"
