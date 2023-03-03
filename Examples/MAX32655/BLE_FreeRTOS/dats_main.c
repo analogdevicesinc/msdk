@@ -229,7 +229,7 @@ extern void setAdvTxPower(void);
 /*************************************************************************************************/
 static void datsSendData(dmConnId_t connId)
 {
-    uint8_t str[] = "hello back ";
+    uint8_t str[] = "hello back";
 
     if (AttsCccEnabled(connId, DATS_WP_DAT_CCC_IDX)) {
         /* send notification */
