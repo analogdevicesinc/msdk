@@ -31,6 +31,7 @@ on:
 env:
   LOCK_MAX32655_B2: false
   LOCK_MAX32655_B1: false
+  LOCK_MAX32665_B1: false
 #----------------------------------------------------------------------------------------------
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -68,7 +69,8 @@ jobs:
           fetch-depth: 0
 
       #----------------------------------------------------------------------------------------------
-      # Checks if changes have been made to require a test on ME17
+      #------------------------------| MAX32655 |----------------------------------------------------
+      #----------------------------------------------------------------------------------------------
       - name: Check MAX32655
         id: MAX32655
         env:
@@ -188,7 +190,7 @@ jobs:
       #----------------------------------------------------------------------------------------------
       - name: Lock MAX32655 B1
         if: env.LOCK_MAX32655_B1 == 'true'
-        id: lock_max32655_b1
+        id: lock_max32655_b1_0
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
       #----------------------------------------------------------------------------------------------
@@ -286,11 +288,245 @@ jobs:
           exit $numOfFailedTests
 
       - name: Unlock MAX32655 B1
-        if: ${{ always() && steps.lock_max32655_b1.outcome == 'success'}}
+        if: ${{ always() && steps.lock_max32655_b1_0.outcome == 'success'}}
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
+          echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
 
       - name: Unlock MAX32655 B2
         if: ${{ always() && steps.lock_max32655_b2.outcome == 'success'}}
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
+
+
+ #----------------------------------------------------------------------------------------------
+ #------------------------------| MAX32665 |----------------------------------------------------
+ #----------------------------------------------------------------------------------------------
+
+      # Checks if changes have been made to require a test on ME14
+      - name: Check MAX32665
+        id: MAX32665
+        env:
+          MAX32665_BLE_FILES_CHANGED: false
+          MAX32665_EXAMPLES_TO_TEST: ()
+          MAX32665_RUN_ALL_TEST: false
+          MAX32665_DATS_CONNECTED_TEST: false
+          MAX32665_OTAS_CONNECTED_TEST: false
+
+        run: |
+
+          # BLE examples to watch
+          declare -a watched_examples=(
+              # underscore in filter to ignore the BLE5_ctr examples
+              Examples/MAX32665/BLE_*
+              Examples/MAX32665/Bootloader
+          )
+
+          # Other directories to watch
+          declare -a watched_other=(
+              #.github/workflows/ci-tests/Examples_tests
+              Libraries/libs.mk
+              Libraries/Cordio
+              Libraries/CMSIS/Device/Maxim/MAX32665
+              Libraries/PeriphDrivers/libPeriphDriver.mk
+              Libraries/PeriphDrivers/periphdriver.mk
+              Libraries/PeriphDrivers/max32665_files.mk
+              Libraries/PeriphDrivers/Source
+              Libraries/PeriphDrivers/Include/MAX32665
+              Libraries/BlePhy/MAX32665
+              Libraries/Boards/MAX32665)
+
+          # Directories to ignore
+          declare -a ignored=(
+              Libraries/Cordio/docs
+              Documentation
+
+          )
+
+          # Create an associative array for ignored()
+          declare -A aignored=()
+          for ignore in "${ignored[@]}"; do aignored["${ignore%/}"]=1; done
+
+          # Copy the working directory list, skipping entries in ignored()
+          declare -a results_other=()
+          for watch in "${watched_other[@]}"; do test -v aignored["${watch%/}"] || results_other+=("${watch%/}"); done
+
+          # Copy the working directory list, skipping entries in ignored()
+          declare -a results_examples=()
+          for watch in "${watched_examples[@]}"; do test -v aignored["${watch%/}"] || results_examples+=("${watch%/}"); done
+
+          # Print the resulting array, separated by newlines, in sorted order
+          printf "\r\n-------- Watched Examples ------------\r\n\r\n"
+          printf '%s\n' "${results_examples[@]}" | sort
+          printf "\r\n-----------------------------------\r\n"
+
+          # Print the resulting array, separated by newlines, in sorted order
+          printf "\r\n-------- Watched Other ------------\r\n\r\n"
+          printf '%s\n' "${results_other[@]}" | sort
+          printf "\r\n-----------------------------------\r\n"
+
+          #Get the diff from main
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+          # Assume we want to actually run the workflow if no files changed
+          if [[ "$CHANGE_FILES" != "" ]]; then
+              # Check if ALL test are required due to 'OTHER' non BLE example directory modified
+              for watch_file in "${results_other[@]}"; do
+                  if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
+                      MAX32665_RUN_ALL_TEST=true
+                      echo "MAX32665_RUN_ALL_TEST=true" >> $GITHUB_ENV
+                      echo "Enabled all tests to run because $watch_file was  modified"
+                      
+                  fi
+              done
+              # Check to see which examples have been modified to only test those
+              for watch_file in "${results_examples[@]}"; do
+                  if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
+                      MAX32665_BLE_FILES_CHANGED=true
+                      echo "MAX32665_BLE_FILES_CHANGED=true" >> $GITHUB_ENV
+                      
+                      example_to_test=$(basename "$watch_file")
+                      # Store list of examples that need to be tested
+                      examples_list+=($example_to_test)
+                      echo "Enabled example tests to run because $watch_file was modified"
+
+                      # If dats/c or OTAC/s were modified we should also test the connected functionality
+                      if [[ $example_to_test == "BLE_dats" ]] || [[ $example_to_test == "BLE_datc" ]]; then
+                          MAX32665_DATS_CONNECTED_TEST=true
+                          echo "MAX32665_DATS_CONNECTED_TEST=true"  >> $GITHUB_ENV
+                          echo "Enabled Datsc connected test"
+                      fi
+                      if [[ $example_to_test == "BLE_otas" ]] || [[ $example_to_test == "BLE_otac" ]]; then
+                          MAX32665_OTAS_CONNECTED_TEST=true
+                          echo "MAX32665_OTAS_CONNECTED_TEST=true"  >> $GITHUB_ENV
+                          echo "Enabled OTA connected test"
+                      fi
+
+                  fi
+              done
+              # Save examples list to env varaible available across steps
+              echo "MAX32665_EXAMPLES_TO_TEST=${examples_list[@]}" >> $GITHUB_ENV
+          else
+              # Assume we want to actually run the workflow if no files changed
+              MAX32665_RUN_ALL_TEST=true
+              echo "MAX32665_RUN_ALL_TEST=true" >> $GITHUB_ENV
+          fi
+          # Lock main board and DUT if any connected test is required otherwise just lock DUT
+          if [[ $MAX32665_OTAS_CONNECTED_TEST == 'true' ]] || [[ $MAX32665_DATS_CONNECTED_TEST == 'true' ]] || [[ $MAX32665_RUN_ALL_TEST == 'true' ]]; then
+            echo "LOCK_MAX32655_B1=true" >>  $GITHUB_ENV
+            echo "LOCK_MAX32665_B1=true" >>  $GITHUB_ENV
+          elif [[ $MAX32665_BLE_FILES_CHANGED == 'true' ]]; then
+            echo "LOCK_MAX32665_B1=true" >>  $GITHUB_ENV
+          else
+            echo "no tests enabled, NOT locking anything at this step"
+          fi
+
+      #----------------------------------------------------------------------------------------------
+      - name: Lock MAX32655 B1
+        if: env.LOCK_MAX32655_B1 == 'true'
+        id: lock_max32655_b1_1
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+      #----------------------------------------------------------------------------------------------
+      - name: Lock MAX32665 B1
+        if: env.LOCK_MAX32665_B1 == 'true'
+        id: lock_max32665_b1
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+      #----------------------------------------------------------------------------------------------
+      - name: Test MAX32665 #name used for display purposes on github webpage
+        if: steps.lock_max32665_b1.outcome == 'success'
+        id: Test_MAX32665 #id used to reference this step in other parts of the yml
+        run: |
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])")
+          dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])")
+          examples_to_test=(${MAX32665_EXAMPLES_TO_TEST[@]})
+          echo
+          echo
+          echo "Examples to be tested : ${examples_to_test[@]}"
+          echo "MAX32665_RUN_ALL_TEST        : $MAX32665_RUN_ALL_TEST"
+          echo "MAX32665_DATS_CONNECTED_TEST : $MAX32665_DATS_CONNECTED_TEST "
+          echo "MAX32665_OTAS_CONNECTED_TEST  : $MAX32665_OTAS_CONNECTED_TEST"
+          echo "MAX32665_BLE_FILES_CHANGED   : $MAX32665_BLE_FILES_CHANGED "
+          echo "LOCK_MAX32665_B1             : $LOCK_MAX32665_B1 "
+          if [[ $MAX32665_RUN_ALL_TEST == 'true' ]]; then
+              echo "Testing all examples"
+              ./new_test_launcher.sh max32665 $dut_uart $dut_serial "all"
+          else
+              if [[ $MAX32665_BLE_FILES_CHANGED == 'true' ]]; then
+                  cd .github/workflows/scripts
+                  #------non connected tests---------
+                  for example in "${examples_to_test[@]}"; do
+                      # launch single tests
+                      echo "Running $example test on MAX32665"
+                      set +e
+                      ./new_test_launcher.sh max32665 $dut_uart $dut_serial $example
+                      let "testResult=$?"
+                      if [ "$testResult" -ne "0" ]; then
+                          # update failed test count
+                          let "numOfFailedTests+=$testResult"
+                          failedTestList+="| $example"
+                      fi
+                      set -e
+                  done
+
+                  #------connected tests---------
+                  if [[ $MAX32665_DATS_CONNECTED_TEST == 'true' ]]; then
+                      #conencted test launcher
+                      echo "Testing MAX32665_DATS_CONNECTED_TEST"
+                      set +e
+                      ./new_test_launcher.sh max32665 $dut_uart $dut_serial "dats"
+                      let "testResult=$?"
+                      if [ "$testResult" -ne "0" ]; then
+                          # update failed_test count
+                          let "numOfFailedTests+=$testResult"
+                          failedTestList+="| MAX32665 Dats/c"
+                      fi
+                      set -e
+
+                  fi
+                  #------connected tests---------
+                  if [[ $MAX32665_OTAS_CONNECTED_TEST == 'true' ]]; then
+                      #conencted test launcher
+                      echo "Testing MAX32665_OTAS_CONNECTED_TEST"
+                      set +e
+                      #call test here
+                      #***************** uncomment actual test here *************
+                      ./new_test_launcher.sh max32665 $dut_uart $dut_serial "ota"
+                      let "testResult=$?"
+                      if [ "$testResult" -ne "0" ]; then
+                          # update failed test count
+                          let "numOfFailedTests+=$testResult"
+                          failedTestList+="| MAX32665 OTAS/C"
+                      fi
+                      set -e
+                  fi
+              else
+                  echo "Skipping all tests"
+              fi
+          fi
+
+          echo "=============================================================================="
+          echo "=============================================================================="
+
+          if [[ $numOfFailedTests -ne 0 ]]; then
+              printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+          else
+              echo "Relax! ALL TESTS PASSED"
+          fi
+          echo
+          echo "=============================================================================="
+          echo "=============================================================================="
+          echo
+          exit $numOfFailedTests
+
+      - name: Unlock MAX32655 B1
+        if: ${{ always() && steps.lock_max32655_b1_1.outcome == 'success'}}
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
+          echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
+
+      - name: Unlock MAX32665 B1
+        if: ${{ always() && steps.lock_max32665_b1.outcome == 'success'}}
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
