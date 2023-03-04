@@ -726,7 +726,7 @@ static void datcWdxcFtcCallback(dmConnId_t connId, uint16_t handle, uint8_t op, 
             /* on discovery completion we can send the header */
             sendFileHeader(connId);
             /* File discovery complete */
-            APP_TRACE_INFO0(">>> File discovery complete <<< \n");
+            APP_TRACE_INFO0(">>> File discovery complete <<<\n");
         } else {
             /* Stop timer, calculate time and Bps */
             uint32_t usec = MXC_TMR_SW_Stop(MXC_TMR2);
