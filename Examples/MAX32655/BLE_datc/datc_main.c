@@ -625,7 +625,7 @@ static void datcOpen(dmEvt_t *pMsg)
 static void datcValueNtf(attEvt_t *pMsg)
 {
     if (pMsg->handle == pSecDatHdlList[pMsg->hdr.param - 1][SEC_DAT_HDL_IDX])
-        APP_TRACE_INFO0(">> Notification from secure data service <<< ");
+        APP_TRACE_INFO0(">> Notification from secure data service <<<");
     /* print the received data */
     if (datcCb.speedTestCounter == 0) {
         APP_TRACE_INFO0((const char *)pMsg->pValue);
