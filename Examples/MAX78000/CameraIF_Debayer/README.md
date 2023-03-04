@@ -12,9 +12,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
-
-TODO
+* This project only supports the MAX78000EVKIT.
+* This project supports displaying the captured image on the TFT display.  To enable this functionality, define `ENABLE_TFT` in [main.c](main.c)
 
 ## Required Connections
 
