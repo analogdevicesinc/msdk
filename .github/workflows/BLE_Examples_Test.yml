@@ -763,3 +763,10 @@ jobs:
         if: ${{ always() && steps.lock_max32690_b1.outcome == 'success'}}
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
+
+      # Save test reports
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+            name: failure-report
+            path: .github/workflows/ci-tests/Examples_tests/results/
