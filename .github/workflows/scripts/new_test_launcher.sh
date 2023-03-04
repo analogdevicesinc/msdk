@@ -431,6 +431,10 @@ function run_datcs_conencted_tests() {
     flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
 
     # flash DUT with BLE_dats
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+    make clean
+    make libclean
+    make -j
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
     printf "\r\n> Flashing BLE_dats on DUT $DUT_NAME_UPPER\r\n"
     #flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
