@@ -150,7 +150,7 @@ static const smpCfg_t datsSmpCfg = {
    * Interval Max at least 15 ms greater than Interval Min.
    * Interval Max and Interval Min both set to 15 ms.
    * Interval Max * (Peripheral Latency + 1) of 2 seconds or less.
-   * Supervision Timeout greater than Interval Max * (Peripheral Latency + 1) * 3.  
+   * Supervision Timeout greater than Interval Max * (Peripheral Latency + 1) * 3.
 */
 
 /*! configurable parameters for connection parameter update */
