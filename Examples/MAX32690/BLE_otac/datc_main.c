@@ -94,7 +94,7 @@ extern uint32_t _binary_fw_update_bin_end;
 #define SCAN_START_MS 500
 
 /**************************************************************************************************
-  Local Variables
+  Local Variables  
 **************************************************************************************************/
 typedef struct {
     uint32_t fileLen;
