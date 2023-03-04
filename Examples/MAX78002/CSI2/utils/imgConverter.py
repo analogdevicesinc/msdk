@@ -30,7 +30,6 @@
  # ownership rights.
  #
  ###############################################################################
-"""
 
 import struct
 from PIL import Image
