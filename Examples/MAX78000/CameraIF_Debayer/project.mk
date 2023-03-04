@@ -15,3 +15,7 @@ CAMERA=HM0360_COLOR
 # is required for the CameraIF DMA code to work within the
 # timing requirements of the Parallel Camera Interface.
 MXC_OPTIMIZE_CFLAGS = -O2
+
+ifeq ($(BOARD),FTHR_RevA)
+$(error This example is not supported on the MAX78000FTHR!)
+endif
