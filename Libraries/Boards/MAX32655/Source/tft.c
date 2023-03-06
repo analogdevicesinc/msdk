@@ -838,14 +838,16 @@ int MXC_TFT_Init(mxc_spi_regs_t *tft_spi, int ss_idx, mxc_gpio_cfg_t *reset_ctrl
     reset_pin = reset_ctrl;
     blen_pin = bl_ctrl;
 
-    // set images start addr
-    if (images_start_addr == NULL) {
-        images_start_addr = (uint8_t *)&_bin_start_;
-    }
-
-    // set header
+    // Initialize images_header to contain no image data.
+    // This sets the number of palettes, fonts, and bitmaps to 0.
     memset(&images_header, 0, sizeof(Header_images_t));
-    memcpy(&images_header, images_start_addr, sizeof(Header_images_t));
+
+    // Is there any image data to work with?
+    if(_bin_start_ != _bin_end_) {
+        images_start_addr = (uint8_t *)&_bin_start_;
+        // set header
+        memcpy(&images_header, images_start_addr, sizeof(Header_images_t));
+    }
 
     /*
      *      Configure GPIO Pins
