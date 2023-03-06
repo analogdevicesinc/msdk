@@ -18,28 +18,7 @@
  # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
  # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- # OTHER DEALINGS IN THE SOFTWARE.
- #
- # Except as contained in this notice, the name of Maxim Integrated
- # Products, Inc. shall not be used except as stated in the Maxim Integrated
- # Products, Inc. Branding Policy.
- #
- # The mere transfer of this software does not imply any licenses
- # of trade secrets, proprietary technology, copyrights, patents,
- # trademarks, maskwork rights, or any other form of intellectual
- # property whatsoever. Maxim Integrated Products, Inc. retains all
- # ownership rights.
- #
- ###############################################################################
-
-## dtm_sweep.py
- #
- # Sweep connection parameters.
- #
- # Ensure that both targets are built with BT_VER := 9
- #
-
+ 
 
 import argparse
 from argparse import RawTextHelpFormatter
