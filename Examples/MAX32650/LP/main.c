@@ -186,6 +186,12 @@ int main(void)
     MXC_LP_EnableICacheXIPLightSleep();
     MXC_ICC_Disable();
     MXC_LP_EnableICacheLightSleep();
+    MXC_LP_EnableSysRAM1LightSleep();
+    MXC_LP_EnableSysRAM2LightSleep();
+    MXC_LP_EnableSysRAM3LightSleep();
+    MXC_LP_EnableSysRAM4LightSleep();
+    MXC_LP_EnableSysRAM5LightSleep();
+    MXC_LP_EnableSysRAM6LightSleep();
 
     MXC_LP_DisableSysRAM0LightSleep(); // Global variables are in RAM0
 
@@ -198,29 +204,21 @@ int main(void)
     MXC_LP_DisableSCache();
     MXC_LP_DisableICacheXIP();
     MXC_LP_DisableICache();
-    MXC_LP_DisableSRAM5();
-    MXC_LP_DisableSRAM4();
-    MXC_LP_DisableSRAM3();
-    MXC_LP_DisableSRAM2();
     MXC_LP_DisableSRAM1();
+    MXC_LP_DisableSRAM2();
+    MXC_LP_DisableSRAM3();
+    MXC_LP_DisableSRAM4();
+    MXC_LP_DisableSRAM5();
     MXC_LP_DisableSRAM6();
 
-    /*
-     *  SRAM can be enabled/disabled
-     */
     MXC_LP_EnableSRAM0(); // Global variables are in RAM0
-    //MXC_LP_EnableSRAM1(); // Global variables are in RAM1
-    //MXC_LP_EnableSRAM2(); // Global variables are in RAM2
-    //MXC_LP_EnableSRAM3(); // Global variables are in RAM3
-    //MXC_LP_EnableSRAM4(); // Global variables are in RAM4
-    //MXC_LP_EnableSRAM5(); // Global variables are in RAM5
-    MXC_LP_EnableSRAM6(); // Global variables are in RAM6
 
     PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
 
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();

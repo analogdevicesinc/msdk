@@ -52,6 +52,8 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
+        "${config:MAXIM_PATH}/Libraries/SDHC/Include",
+        "${config:MAXIM_PATH}/Libraries/SDHC/ff14/Source",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
@@ -73,6 +75,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
+        "${config:MAXIM_PATH}/Libraries/SDHC/ff14/Source",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
@@ -83,7 +86,10 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-        "${config:board}"
+        "${config:board}",
+        "TARGET=${config:target}",
+        "TARGET_REV=0x4131",
+        "__GNUC__"
     ]
 }
 

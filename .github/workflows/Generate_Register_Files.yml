@@ -1,0 +1,313 @@
+name: Generate Register Files
+
+# Controls when the workflow will run
+on:
+  issue_comment:
+      types: [created]
+
+env:
+  MSDK_DIR: msdk
+  MSDK-INTERNAL_DIR: msdk-internal
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Generate register files job.
+  generate-on-pr:
+    # Run on branches, not forked PR branches
+    if: |
+      contains(github.event.comment.body, '/generate-register-files')
+
+    # The type of runner that the job will run on
+    runs-on: [ self-hosted, btm-ci ]
+
+    steps:
+      - name: Dispatch.
+        uses: actions/github-script@v6
+        id: get-pr
+        with:
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+
+            try {
+              const result = await github.rest.pulls.get(request)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+
+      - name: Acknowledged.
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const acknowledge = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'rocket'
+            }
+
+            core.info(`Getting comment ID: ${acknowledge.comment_id}`)
+          
+            github.rest.reactions.createForIssueComment(acknowledge)
+
+            core.info(`Comment: ${{ github.event.comment.body }}`)
+
+      - name: Checkout source repository.
+        uses: actions/checkout@v3
+        with:
+          repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
+          ref: ${{ fromJSON(steps.get-pr.outputs.result).head.ref }}
+          fetch-depth: 0
+          path: ${{ env.MSDK_DIR }}
+
+      - name: Checkout msdk internal repository
+        run: |
+          git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
+
+      - name: Generating register files.
+        run: |
+          # Create associative array for dictionary
+          declare -A CHIP_TO_DIE_NAMES 
+          declare -A DIE_TO_CHIP_NAMES
+
+          # Add future parts to this dictionary
+          CHIP_TO_DIE_NAMES[MAX78000]=AI85
+          CHIP_TO_DIE_NAMES[MAX78002]=AI87
+          CHIP_TO_DIE_NAMES[MAX32520]=ES17
+          CHIP_TO_DIE_NAMES[MAX32650]=ME10
+          CHIP_TO_DIE_NAMES[MAX32660]=ME11
+          CHIP_TO_DIE_NAMES[MAX32662]=ME12
+          CHIP_TO_DIE_NAMES[MAX32570]=ME13
+          CHIP_TO_DIE_NAMES[MAX32665]=ME14
+          CHIP_TO_DIE_NAMES[MAX32670]=ME15
+          CHIP_TO_DIE_NAMES[MAX32675]=ME16
+          CHIP_TO_DIE_NAMES[MAX32655]=ME17
+          CHIP_TO_DIE_NAMES[MAX32690]=ME18
+          CHIP_TO_DIE_NAMES[MAX32680]=ME20
+          CHIP_TO_DIE_NAMES[MAX32672]=ME21
+          CHIP_TO_DIE_NAMES[MAX32572]=ME55
+          
+          DIE_TO_CHIP_NAMES[AI85]=MAX78000
+          DIE_TO_CHIP_NAMES[AI87]=MAX78000
+          DIE_TO_CHIP_NAMES[ES17]=MAX32520
+          DIE_TO_CHIP_NAMES[ME10]=MAX32650
+          DIE_TO_CHIP_NAMES[ME11]=MAX32660
+          DIE_TO_CHIP_NAMES[ME12]=MAX32662
+          DIE_TO_CHIP_NAMES[ME13]=MAX32570
+          DIE_TO_CHIP_NAMES[ME14]=MAX32665
+          DIE_TO_CHIP_NAMES[ME15]=MAX32670
+          DIE_TO_CHIP_NAMES[ME16]=MAX32675
+          DIE_TO_CHIP_NAMES[ME17]=MAX32655
+          DIE_TO_CHIP_NAMES[ME18]=MAX32690
+          DIE_TO_CHIP_NAMES[ME20]=MAX32680
+          DIE_TO_CHIP_NAMES[ME21]=MAX32672
+          DIE_TO_CHIP_NAMES[ME55]=MAX32572
+
+          # Generate files for specific part if argument is valid.
+          part=""
+          chip_name=""
+          die_name=""
+
+          #---------= START - FUNCTION generate_register_file_for_part =---------
+          # Function to generate register files for specified part.
+          #   This function will copy the generated register files housed in 
+          #   "msdk-internal/SVD/Devices/{part}/chip_test/" to 
+          #   "msdk/Libraries/CMSIS/Device/Maxim/{part}/Include/".
+          # This function depends on relative paths from workspace.
+          # Inputs:
+          #   $1 - Specified part's chip name to generate register files
+          #   $2 - Specified part's die name to generate register files
+          #   $3 - Path to workspace (outside of msdk and msdk-internal repos)
+          function generate_register_file_for_part() {
+            part_chip_name="${1^^}"
+            part_die_name="${2^^}"
+            workspace_path=$3
+
+            cd ./${workspace_path}/${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/${part_die_name}
+            
+            if [[ ! (-d ./chip_test) ]]; then
+              chmod u+x makeRegs.sh
+              makeregs_log=$(./makeRegs.sh ubuntu)
+            fi
+
+            echo "Copying generated files to msdk/Libraries/CMSIS/Device/Maxim/${part_chip_name}/Include/"
+            cp -r ./chip_test/* ../../../../${{ env.MSDK_DIR }}/Libraries/CMSIS/Device/Maxim/${part_chip_name}/Include/
+
+            # Return to workspace root
+            cd ../../../../
+          }
+          #---------= END - generate_register_file_for_part =---------
+
+          #---------= START - FUNCTION find_affected_parts =---------
+          # Function to find all parts affected by any peripheral SVD file changes.
+          # This function depends on relative paths from workspace.
+          # Inputs:
+          #   $1 - Path to workspace (outside of msdk and msdk-internal repos)
+          # Return:
+          #   $? - List of affected parts.
+          function find_affected_parts() {
+            workspace_path=$1
+
+            cd ./${workspace_path}/${{ env.MSDK_DIR }}/
+
+            AFFECTED_CHIP_SET=""
+
+            CHANGED_PERIPH_SVD_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/PeriphDrivers/Source/*/*.svd')
+
+            for periph_svd_file in $CHANGED_PERIPH_SVD_FILES
+            do
+              # Each part has its own directory (using die names) in the SVD scripts
+              list_affected_parts_paths=$(grep -rl $periph_svd_file ../${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/)
+
+              # Isolate part from SVD paths
+              for affected_parts in $list_affected_parts_paths
+              do
+                part=${affected_parts#*/Devices/}
+                part=${part%%/*}
+
+                # There are some directories in SVD/Devices not named after a part.
+                #   Only generate files for parts.
+                if [[ ${DIE_TO_CHIP_NAMES[${part^^}]+_} ]]; then
+                  # Don't add duplicate parts to list
+                  if [[ ! "${AFFECTED_CHIP_SET[*]}" =~ "$part" ]]; then
+                    # Add space delimiter if list is not empty
+                    if [[ ${#AFFECTED_CHIP_SET[@]} ]]; then
+                      AFFECTED_CHIP_SET+=" "
+                    fi
+                    AFFECTED_CHIP_SET+=$part
+                  fi
+                fi
+
+              done
+            done
+
+            echo $AFFECTED_CHIP_SET
+          }
+          #---------= END - find_affected_parts =---------
+
+          # Parse command to generate part specific file
+          command="${{ github.event.comment.body }}"
+
+          readarray -d " " -t cmdarr <<< "$command"
+
+          # Only run if the first argument is the command
+          if [[ "${cmdarr[0]}" =~ "/generate-register-files" ]]; then
+            # Generate all register files if you only run the command with no part specified
+            if [[ "${cmdarr[1],,}" =~ "all" ]]; then
+              part="all"
+            elif [[ ${#cmdarr[@]} != 1 ]]; then
+              # Capitalize part designation argument
+              part="${cmdarr[1]^^}"
+
+              # Remove any non-alphanumeric characters (like newline and whitespaces)
+              part="${part//[^[:alnum:]]/}"
+
+              # Confirm second argument is the part designation
+              if [[ ${DIE_TO_CHIP_NAMES[${part}]+_} ]]; then
+                chip_name=${DIE_TO_CHIP_NAMES[$part]}
+                die_name=$part
+
+              elif [[ ${CHIP_TO_DIE_NAMES[${part}]+_} ]]; then
+                chip_name=$part
+                die_name=${CHIP_TO_DIE_NAMES[$part]}
+
+              else
+                echo -e "[\e[0;31mERROR\e[0m] Unknown part number."
+                exit 1
+              fi
+            fi
+          else
+            echo -e "[\e[0;31mERROR\e[0m] Incorrect command. Please start comment with: /generate-register-files"
+            exit 1
+          fi
+
+          echo "Valid Command Found."
+
+          # Currently in workspace root (outside of msdk and msdk-internal directories)
+          # Generate register files depending on command parameter:
+          #   1 - only parts affected by PR changes
+          #   2 - all parts
+          #   3 - specified parts
+          # Note: The generated register files will be automatically copied to their
+          #   respective part's CMSIS location: "msdk/Libraries/CMSIS/Device/Maxim/{part}/Include/"
+          # 1 - Generate register files for all parts affected by PR changes.
+          if [[ ${#cmdarr[@]} == 1 ]]; then
+            list_affected_parts_die_name=$(find_affected_parts .)
+
+            for part_die_name in $list_affected_parts_die_name
+            do
+              generate_register_file_for_part ${DIE_TO_CHIP_NAMES[$part_die_name]} $part_die_name .
+            done
+
+          # 2 - Generate all register files.
+          elif [[ "$part" =~ "all" ]]; then
+            for part_chip_name in "${!CHIP_TO_DIE_NAMES[@]}"
+            do
+              generate_register_file_for_part $part_chip_name ${CHIP_TO_DIE_NAMES[$part_chip_name]} .
+            done
+
+          # 3 - Only generate register file for specified part
+          else
+            generate_register_file_for_part $chip_name $die_name .
+          fi
+
+          # Enter msdk repo
+          cd ${{ env.MSDK_DIR }}
+          
+          exit 0
+
+      - name: Push generated register files.
+        if: success()
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: '*'
+          cwd: '${{ env.MSDK_DIR }}'
+          message: '"Generate_Register_Files" bot updating requested register files.'
+          push: true
+
+      - name: Failed.
+        if: failure()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const failreact = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'confused'
+            }
+
+            core.info(`Getting comment ID: ${failreact.comment_id}`)
+          
+            github.rest.reactions.createForIssueComment(failreact)
+
+            const failmsg = {
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Error with command. Make sure you input a valid part number (if specified) and your comment only contains:\n\n/generate-register-files [VALID_PART_NUMBER]'
+            }
+
+            github.rest.issues.createComment(failmsg)
+
+      - name: Successfully Completed.
+        if: success()
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const success = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'hooray'
+            }
+
+            core.info(`Getting comment ID: ${success.comment_id}`)
+          
+            github.rest.reactions.createForIssueComment(success)

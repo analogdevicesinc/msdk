@@ -66,14 +66,30 @@ jobs:
       # even if only one board is being tested. This is so that another job
       # does not possibly used one of the free boards that may connect to the 
       #current board undertest
-      - name: Lock All Boards
+
+      - name: Lock 655 B1
         if: ${{ always() }}
-        id: lock_files
+        id: lock655_b1
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 /home/$USER/Workspace/Resource_Share/max32690_w1.txt
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+      - name: Lock 655 B2
+        if: ${{ always() }}
+        id: lock655_b2 
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+
+          
+      - name: Lock 665
+        if: ${{ always() }}
+        id: lock665
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
+
+      - name: Lock 690
+        if: ${{ always() }}
+        id: lock690
+        run: |    
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
 
       # ME17
       - name: TEST MAX32655
@@ -133,7 +149,7 @@ jobs:
           then
             echo "Running Test"
 
-            cd .github/workflows/ci-tests/Examples_tests
+            cd .github/workflows/scripts
             chmod +x test_launcher.sh
             FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])"`
@@ -196,7 +212,7 @@ jobs:
           if [[ $RUN_TEST -eq 1 ]]
           then
             echo "Running Test"   
-            cd .github/workflows/ci-tests/Examples_tests
+            cd .github/workflows/scripts
             chmod +x test_launcher.sh
             FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])"`
@@ -259,7 +275,7 @@ jobs:
 
             echo "Running Test"
             
-            cd .github/workflows/ci-tests/Examples_tests
+            cd .github/workflows/scripts
             chmod +x test_launcher.sh
             FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
             dut_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['uart2'])"`
@@ -274,14 +290,21 @@ jobs:
             name: failure-report
             path: .github/workflows/ci-tests/Examples_tests/results/
       
-      # Unlock even when cancelled or failed
-      # This needs some work, if the job is cancelled or times out because it could not get a LOCK
-      # it then jumps here and removes all locks, that were set by a different job   
-      - name: Unlock All Boards
-        if: ${{ always() && steps.lock_files.outcome == 'success' }}
+      #Unlock the board if we successfully locked it
+      - name: Unlock 655 B1
+        if: ${{ always() && steps.lock655_b1.outcome == 'success'}}
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32690_w1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32665_13.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_1.txt
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py /home/$USER/Workspace/Resource_Share/max32655_0.txt
-          
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
+      - name: Unlock 655 B2
+        if: ${{ always() && steps.lock655_b2.outcome == 'success'}}
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
+      - name: Unlock 665
+        if: ${{ always() && steps.lock665.outcome == 'success'}}
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
+
+      - name: Unlock 690
+        if: ${{ always() && steps.lock690.outcome == 'success'}}
+        run: |    
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
