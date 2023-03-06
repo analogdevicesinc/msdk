@@ -6,7 +6,7 @@ from mkdocs.config import load_config
 from os import listdir
 
 # Locate some directories relative to this file
-here = Path.cwd()
+here = Path(__file__).parent
 repo = here.parent
 periph_docs_dir = repo / "Libraries" / "PeriphDrivers" / "Documentation"
 
