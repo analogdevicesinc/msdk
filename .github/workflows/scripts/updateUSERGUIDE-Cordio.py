@@ -3,7 +3,7 @@ from os import listdir
 
 
 TEMPLATE = "- [%s](%s/%s)\n"
-repo = Path.cwd().parent.parent
+repo = Path(__file__).parent.parent
 cordio_docs_dir =  repo / "Libraries" / "Cordio" / "docs"
 platform_docs_dir = repo / "Libraries" / "Cordio" / "platform" / "Documentation"
 
