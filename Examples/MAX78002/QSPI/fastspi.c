@@ -7,12 +7,18 @@
 #include "spi.h"
 #include "dma.h"
 #include "nvic_table.h"
+#include "mxc_delay.h"
 
 int g_tx_channel;
 int g_rx_channel;
 int g_fill_dummy_bytes = 0;
 int g_dummy_len = 0;
 uint8_t g_dummy_byte = 0x00;
+volatile int g_rx_repeated_start = 0;
+volatile bool g_rx_deassert = 0;
+
+// #define REPEATED_START
+// ^ Not working for multiple transactions, reads bleed into each other.
 
 // A macro to convert a DMA channel number to an IRQn number
 #define GetIRQnForDMAChannel(x) ((IRQn_Type)(((x) == 0 ) ? DMA0_IRQn  : \
@@ -26,6 +32,7 @@ void DMA_TX_IRQHandler()
     uint32_t status = ch->status;
 
     if (status & MXC_F_DMA_STATUS_CTZ_IF) { // Count-to-Zero (DMA TX complete)
+        g_tx_done = 1;
         ch->status |= MXC_F_DMA_STATUS_CTZ_IF;
     }
 
@@ -54,7 +61,7 @@ void SPI_IRQHandler()
     uint32_t status = SPI->intfl;
 
     if (status & MXC_F_SPI_INTFL_MST_DONE) { // Master done (TX complete)
-        g_tx_done = 1;
+        g_master_done = 1;
         SPI->intfl |= MXC_F_SPI_INTFL_MST_DONE;  // Clear flag
     }
 }
@@ -85,9 +92,11 @@ int dma_init()
 
     MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_tx_channel), DMA_TX_IRQHandler);
     NVIC_EnableIRQ(GetIRQnForDMAChannel(g_tx_channel));
+    NVIC_SetPriority(GetIRQnForDMAChannel(g_tx_channel), 0);
 
     MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_rx_channel), DMA_RX_IRQHandler);
     NVIC_EnableIRQ(GetIRQnForDMAChannel(g_rx_channel));
+    NVIC_SetPriority(GetIRQnForDMAChannel(g_tx_channel), 0);
 
     return err;
 }
@@ -98,16 +107,11 @@ int spi_init()
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
 
-    // TODO: Separate slave select config
-    const mxc_gpio_cfg_t spi_pins = {
-        .port = SPI_PINS_PORT,
-        .mask = SPI_PINS_MASK,
-        .func = MXC_GPIO_FUNC_ALT1,
-        .pad = MXC_GPIO_PAD_NONE,
-        .vssel = MXC_GPIO_VSSEL_VDDIOH
-    };
-
     int err = MXC_GPIO_Config(&spi_pins);
+    if (err)
+        return err;
+
+    err = MXC_GPIO_Config(&spi_ss_pin);
     if (err)
         return err;
 
@@ -142,6 +146,7 @@ int spi_init()
 
     NVIC_EnableIRQ(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)));
     MXC_NVIC_SetVector(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), SPI_IRQHandler);
+    NVIC_SetPriority(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), 1);
 
     err = dma_init();
 
@@ -152,6 +157,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
 {
     g_tx_done = 0;
     g_rx_done = 0;
+    g_master_done = 0;
     mxc_spi_width_t width = MXC_SPI_GetWidth(SPI); 
 
     // Set the number of bytes to transmit/receive for the SPI transaction
@@ -178,13 +184,20 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
         SPI->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);  // Clear the FIFOs
 
         // TX
-        if (txlen > 0) {
+        if (txlen > 1) {
             // Configure TX DMA channel to fill the SPI TX FIFO
-            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
-            MXC_DMA->ch[g_tx_channel].src = (uint32_t)src;
-            MXC_DMA->ch[g_tx_channel].cnt = txlen;
+            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
+            SPI->fifo8[0] = src[0];
+            // ^ Hardware requires writing the first byte into the FIFO manually.
+            MXC_DMA->ch[g_tx_channel].src = (uint32_t)(src + 1);
+            MXC_DMA->ch[g_tx_channel].cnt = txlen - 1;
             MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_SRCINC;
             MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
+        } else if (txlen == 1) {
+            // Workaround for single-length transactions not triggering CTZ
+            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
+            SPI->fifo8[0] = src[0]; // Write first byte into FIFO
+            g_tx_done = 1;
         } else if (txlen == 0 && width == SPI_WIDTH_STANDARD) {
             // Configure TX DMA channel to retransmit a dummy byte
             SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
@@ -197,9 +210,9 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
         // RX
         if (rxlen > 0) {
             // Configure RX DMA channel to unload the SPI RX FIFO
-            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
             MXC_DMA->ch[g_rx_channel].dst = (uint32_t)dest;
             MXC_DMA->ch[g_rx_channel].cnt = rxlen;
+            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
             MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
         }
 
@@ -224,7 +237,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     }
 
     if (block)
-        while(!(g_tx_done && (src != NULL && txlen > 0)) && !(g_rx_done && (dest != NULL && rxlen > 0))) {}
+        while(!((g_tx_done && g_master_done) && (src != NULL && txlen > 0)) && !(g_rx_done && (dest != NULL && rxlen > 0))) {}
 
     return E_SUCCESS;
 }
