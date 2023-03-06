@@ -6,6 +6,10 @@
 #include "fastspi.h"
 #include "tmr.h"
 
+enum MODE {STANDARD_MODE, QUAD_MODE};
+typedef enum MODE MODE_t;
+MODE_t g_current_mode;
+
 inline void _parse_spi_header(uint8_t cmd, uint32_t address, uint8_t *out)
 {
     out[0] = cmd;
@@ -31,7 +35,7 @@ int _transmit_spi_header(uint8_t cmd, uint32_t address)
     return err;
 }
 
-int ram_init() 
+int ram_init()
 {
     int err = E_NO_ERROR;
     err = spi_init();
@@ -65,6 +69,8 @@ int ram_enter_quadmode()
     MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
     spi_transmit(&tx_data, 1, NULL, 0, true, true, true);
     MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
+
+    g_current_mode = QUAD_MODE;
     
     return err;
 }
@@ -78,6 +84,8 @@ int ram_exit_quadmode()
     spi_transmit(&tx_data, 1, NULL, 0, true, true, true);
     MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
 
+    g_current_mode = STANDARD_MODE;
+
     return err;
 }
 
@@ -85,6 +93,9 @@ int ram_read_id(ram_id_t *out) {
     int err = E_NO_ERROR;
     uint8_t tx_data = 0x9F;
     uint8_t rx_data[12];
+
+    if (g_current_mode != STANDARD_MODE)
+        ram_exit_quadmode();
 
     spi_transmit(&tx_data, 1, NULL, 0, false, true, true);
     spi_transmit(NULL, 0, rx_data, 12, true, true, true);
@@ -111,6 +122,9 @@ int ram_read_id(ram_id_t *out) {
 
 int ram_read_slow(uint32_t address, uint8_t *out, unsigned int len) 
 {
+    if (g_current_mode != STANDARD_MODE)
+        ram_exit_quadmode();
+
     int err = E_NO_ERROR;
     err = _transmit_spi_header(0x03, address);
     if (err) return err;
@@ -120,24 +134,30 @@ int ram_read_slow(uint32_t address, uint8_t *out, unsigned int len)
 
 int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len)
 {
+    if (g_current_mode != QUAD_MODE)
+        ram_enter_quadmode();
+
     int err = E_NO_ERROR;
     uint8_t header[7];
     memset(header, 0x00, 7);
     _parse_spi_header(0xEB, address, header);
 
-    MXC_SPI_SetWidth(SPI, SPI_WIDTH_QUAD);
-#if 0
-    // TODO: Address QSPI hardware limitations preventing single transaction
-    err = spi_transmit(header, 7, out, len, true, true, true);
-#else
     err = spi_transmit(&header[0], 7, NULL, 0, false, true, true);
+    /*
+    Our QSPI hardware requires a repeated start to execute the read portion of the transiation.  we split the TX/RX portions here into
+    two separate transactions to satisfy that requirement.  Significant
+    optimizations have been made to the transmit functions/DMA to reduce
+    the "gap" as much as possible.
+    */
     err = spi_transmit(NULL, 0, out, len, true, true, true);
-#endif
     return err;
 }
 
 int ram_write(uint32_t address, uint8_t * data, unsigned int len) 
 {
+    if (g_current_mode != STANDARD_MODE)
+        ram_exit_quadmode();
+
     int err = E_NO_ERROR;
     err = _transmit_spi_header(0x02, address);
     if (err) return err;
@@ -145,8 +165,11 @@ int ram_write(uint32_t address, uint8_t * data, unsigned int len)
     return spi_transmit(data, len, NULL, 0, true, true, true);
 }
 
-int ram_write_quad(uint32_t address, uint8_t * data, unsigned int len) 
+int ram_write_quad(uint32_t address, uint8_t * data, unsigned int len)
 {
+    if (g_current_mode != QUAD_MODE)
+        ram_enter_quadmode();
+
     int err = E_NO_ERROR;
     err = _transmit_spi_header(0x38, address);
     if (err) return err;
