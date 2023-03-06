@@ -105,7 +105,7 @@ void printTime()
     uint32_t dummy;
 
     // Get current time (don't care about Sub-second count here)
-    while(MXC_RTC_GetTime(&sec, &dummy) != E_NO_ERROR) {}
+    while (MXC_RTC_GetTime(&sec, &dummy) != E_NO_ERROR) {}
 
     day = sec / SECS_PER_DAY;
     sec -= day * SECS_PER_DAY;
@@ -176,14 +176,14 @@ int configureRTC()
 int main(void)
 {
     if (!(MXC_PWRSEQ->lppwkst & MXC_F_PWRSEQ_LPPWKST_BACKUP)) {
-    	// Did not wake from backup mode --> start RTC
+        // Did not wake from backup mode --> start RTC
         if (configureRTC() != E_NO_ERROR) {
             printf("Example Failed\n");
             while (1) {}
         }
     } else {
-    	// Woke up from backup mode --> Reset backup status and print time
-        MXC_PWRSEQ->lppwkst |=MXC_F_PWRSEQ_LPPWKST_BACKUP;
+        // Woke up from backup mode --> Reset backup status and print time
+        MXC_PWRSEQ->lppwkst |= MXC_F_PWRSEQ_LPPWKST_BACKUP;
 
         LED_On(LED_TODA); // RTC alarm fired off. Perform periodic task here
         printTime();
@@ -199,7 +199,7 @@ int main(void)
 
     // Enter backup mode and wait for RTC to send wakeup signal
     MXC_LP_EnterBackupMode();
-    while(1);
+    while (1) {}
 
     return 0;
 }

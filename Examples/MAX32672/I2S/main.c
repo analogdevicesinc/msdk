@@ -96,11 +96,11 @@ int main()
     printf("Header JP10 must be removed to see I2S data on AIN0.\n");
 
     printf("\nPress SW3 to begin transmission.\n");
-    while(!PB_Get(0)) {}
+    while (!PB_Get(0)) {}
     printf("Transmitting...\n\n");
 
     // Shutdown UART console since it shares the I2S pins
-    while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
+    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
     Console_Shutdown();
 
     // Initialize I2S

@@ -105,7 +105,7 @@ int main(void)
     PB_IntEnable(0);
 
     while (1) {
-    	// Make sure print statements have finished before sleeping
+        // Make sure print statements have finished before sleeping
         while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
 
         MXC_LP_EnterSleepMode(); // Wait for next RTC interrupt

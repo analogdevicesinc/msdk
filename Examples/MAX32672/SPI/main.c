@@ -111,20 +111,20 @@ int main(void)
     printf("\nThis demo shows Asynchronous, Synchronous and DMA transaction for SPI1\n");
 
     // Initialize the peripheral
-	retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED);
-	if (retVal != E_NO_ERROR) {
-		printf("\nSPI INITIALIZATION ERROR\n");
-		return retVal;
-	}
+    retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED);
+    if (retVal != E_NO_ERROR) {
+        printf("\nSPI INITIALIZATION ERROR\n");
+        return retVal;
+    }
 
-	// Set SPI bus width
-	retVal = MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
-	if (retVal != E_NO_ERROR) {
-		printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
-		return retVal;
-	}
+    // Set SPI bus width
+    retVal = MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
+    if (retVal != E_NO_ERROR) {
+        printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
+        return retVal;
+    }
 
-	// Run sample SPI transaction for character sizes 2-16
+    // Run sample SPI transaction for character sizes 2-16
     for (i = 2; i < 17; i++) {
         // Initialize Data Buffers
         for (j = 0; j < DATA_LEN; j++) {
@@ -132,7 +132,7 @@ int main(void)
         }
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
-		// Set next character size to test
+        // Set next character size to test
         retVal = MXC_SPI_SetDataSize(SPI, i);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
@@ -212,10 +212,10 @@ int main(void)
     }
 
     retVal = MXC_SPI_Shutdown(SPI);
-	if (retVal != E_NO_ERROR) {
-		printf("\n-->SPI SHUTDOWN ERROR: %d\n", retVal);
-		return retVal;
-	}
+    if (retVal != E_NO_ERROR) {
+        printf("\n-->SPI SHUTDOWN ERROR: %d\n", retVal);
+        return retVal;
+    }
 
     return E_NO_ERROR;
 }

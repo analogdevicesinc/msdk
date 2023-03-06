@@ -71,7 +71,7 @@ int main(void)
     MAX31889.init(I2C_MASTER, MAX31889_I2C_SLAVE_ADDR0);
 
     while (1) {
-    	// Take temperature reading and print it to the terminal
+        // Take temperature reading and print it to the terminal
         error = MAX31889.read(&temperature);
         if (error != E_NO_ERROR) {
             printf("\nSensor read error: %i", error);

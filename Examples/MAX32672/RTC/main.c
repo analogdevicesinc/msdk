@@ -92,7 +92,8 @@ void RTC_IRQHandler(void)
         // Set a new alarm TIME_OF_DAY_SEC seconds from current time.
         while (MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {}
 
-        time = MXC_RTC_GetSecond(); // Don't need to check busy here as it was checked in MXC_RTC_DisableInt()
+        // Re-arm RTC Time of Day alarm
+        time = MXC_RTC_GetSecond(); // busy already checked in MXC_RTC_DisableInt
         if (MXC_RTC_SetTimeofdayAlarm(time + TIME_OF_DAY_SEC) != E_NO_ERROR) {
             /* Handle Error */
         }

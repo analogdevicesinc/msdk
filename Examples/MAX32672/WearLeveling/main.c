@@ -57,7 +57,7 @@
 // Non-modifiable LittleFS macros
 #define LFS_START_PGE 16 ///< Page number of the first LittleFS block
 #define LFS_START_ADDR MXC_FLASH_PAGE_ADDR(LFS_START_PGE) ///< Start address of LittleFS
-#define LFS_SIZE LFS_PGE_CNT * MXC_FLASH_PAGE_SIZE ///< Size of LittleFS
+#define LFS_SIZE (LFS_PGE_CNT * MXC_FLASH_PAGE_SIZE) ///< Size of LittleFS
 
 // Set to 1 to perform erase, test data write, and test read back/verify over LittleFS Flash space
 #define FLASH_TEST 0
@@ -99,8 +99,8 @@ int main(void)
 
     // Disable ECC on Flash 0 if necessary
     uint32_t ecc_status = (MXC_TRIMSIR->bb_sir2 & MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN);
-    if(ecc_status) {
-    	MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN;
+    if (ecc_status) {
+        MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN;
     }
 
     printf("\n\n***** MAX32672 Wear Leveling *****\n");
@@ -133,7 +133,6 @@ int main(void)
     // Write test data to flash
     error_status = flash_write4(LFS_START_ADDR, TESTSIZE, testdata, TRUE);
 
-
     printf("Verifying %d 32-bit words in flash\n", TESTSIZE);
     printf("Size of testdata : %d\n", sizeof(testdata));
 
@@ -148,12 +147,12 @@ int main(void)
     error_status = lfs_mount(&lfs, &cfg);
 
     if (error_status) {
-    	// Mount failed --> format filesytem (this should only be necessary on the first boot)
+        // Mount failed --> format filesytem (this should only be necessary on the first boot)
         printf("Filesystem is invalid, formatting...\n");
         lfs_format(&lfs, &cfg);
         error_status = lfs_mount(&lfs, &cfg);
     } else {
-    	// Initial mount attempt successful
+        // Initial mount attempt successful
         printf("Filesystem is mounted\n");
     }
 
@@ -185,8 +184,8 @@ int main(void)
     printf("\nExample Succeeded\n");
 
     // Re-enable ECC if necessary
-    if(ecc_status) {
-    	MXC_TRIMSIR->bb_sir2 |= MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN;
+    if (ecc_status) {
+        MXC_TRIMSIR->bb_sir2 |= MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN;
     }
 
     return E_NO_ERROR;

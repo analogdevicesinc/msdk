@@ -117,19 +117,19 @@ int main(void)
     // Initialize the UART
     error = MXC_UART_Init(READING_UART, UART_BAUD, MXC_UART_APB_CLK);
     if (error < E_NO_ERROR) {
-		printf("-->Error initializing UART: %d\n", error);
-		printf("-->Example Failed\n");
-		return error;
-	}
+        printf("-->Error initializing UART: %d\n", error);
+        printf("-->Example Failed\n");
+        return error;
+    }
     printf("-->Reading UART Initialized\n");
 
     // Initialize writing UART
     error = MXC_UART_Init(WRITING_UART, UART_BAUD, MXC_UART_APB_CLK);
     if (error < E_NO_ERROR) {
-		printf("-->Error initializing UART: %d\n", error);
-		printf("-->Example Failed\n");
-		return error;
-	}
+        printf("-->Error initializing UART: %d\n", error);
+        printf("-->Example Failed\n");
+        return error;
+    }
     printf("-->Writing UART Initialized\n\n");
 
     // Set Parameters for UART transaction requests
@@ -202,8 +202,8 @@ int main(void)
         printf("\n-->Example Failed\n");
         return E_FAIL;
     } else {
-		LED_On(1);
-		printf("\n-->Example Succeeded\n");
+        LED_On(1);
+        printf("\n-->Example Succeeded\n");
     }
 
     return E_NO_ERROR;

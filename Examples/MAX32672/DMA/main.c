@@ -99,7 +99,7 @@ int example1(void)
         printf("Failed MXC_DMA_Init().\n");
         fail += 1;
     } else {
-    	// Initiate Mem-to-Mem data transfer
+        // Initiate Mem-to-Mem data transfer
         flag = 0;
         MXC_DMA_MemCpy(dstdata, srcdata, MAX_SIZE, memCpyComplete);
 

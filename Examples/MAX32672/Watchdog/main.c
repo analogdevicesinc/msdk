@@ -69,8 +69,8 @@ static mxc_wdt_cfg_t cfg;
 /***** Functions *****/
 void WDT0_IRQHandler(void)
 {
-	MXC_WDT_ClearIntFlag(MXC_WDT0);
-	printf("\nTIMEOUT!\n");
+    MXC_WDT_ClearIntFlag(MXC_WDT0);
+    printf("\nTIMEOUT!\n");
 }
 
 void wdt_setup()
@@ -97,10 +97,10 @@ int main(void)
     MXC_WDT_Init(MXC_WDT0, &cfg);
 
     if (MXC_WDT_GetResetFlag(MXC_WDT0)) {
-    	// WDT Caused device reset
-    	uint32_t resetFlags = MXC_WDT_GetResetFlag(MXC_WDT0);
+        // WDT Caused device reset
+        uint32_t resetFlags = MXC_WDT_GetResetFlag(MXC_WDT0);
 
-    	// Determine whether Underflow or Overflow caused reset
+        // Determine whether Underflow or Overflow caused reset
         if (resetFlags == MXC_F_WDT_CTRL_RST_LATE) {
             printf("\nWatchdog Reset occurred too late (OVERFLOW)\n");
         } else if (resetFlags == MXC_F_WDT_CTRL_RST_EARLY) {
@@ -159,7 +159,7 @@ int main(void)
             while (1) {}
 #else
             printf("Feeding the dog before entering reset window...\n");
-            while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART)));
+            while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
 
             // Reset timer before window (causes reset)
             MXC_WDT_ResetTimer(MXC_WDT0);

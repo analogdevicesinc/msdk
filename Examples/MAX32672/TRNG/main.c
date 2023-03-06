@@ -66,12 +66,12 @@ void trng_cb(void *req, int result)
 void print_rnd_data(char *rnd_data)
 {
     // Print four bytes per line
-	for (int i = 0; i < NUM_RND_BYTES; ++i) {
-    	printf("0x%02x ", rnd_data[i]);
+    for (int i = 0; i < NUM_RND_BYTES; ++i) {
+        printf("0x%02x ", rnd_data[i]);
 
-    	if(i % 4 == 3) {
-    		printf("\n"); // Start new line after fourth byte
-    	}
+        if (i % 4 == 3) {
+            printf("\n"); // Start new line after fourth byte
+        }
     }
 
     return;
@@ -88,14 +88,14 @@ void Test_TRNG(int asynchronous)
     MXC_TRNG_Init();
 
     if (asynchronous) {
-    	// Do asynchronous TRNG generation
+        // Do asynchronous TRNG generation
         done = 0;
         NVIC_EnableIRQ(TRNG_IRQn);
         MXC_TRNG_RandomAsync(var_rnd_no, NUM_RND_BYTES, &trng_cb);
 
         while (!done) {} //Wait for result
     } else {
-    	// Do asynchronous TRNG generation
+        // Do blocking TRNG generation
         MXC_TRNG_Random(var_rnd_no, NUM_RND_BYTES);
     }
 
