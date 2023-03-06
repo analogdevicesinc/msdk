@@ -56,7 +56,8 @@
 /***** Definitions *****/
 #define TEST_SIZE 640
 #define TEST_COUNT 480
-#define TEST_VALUE 0x42
+#define TEST_VALUE 0x00
+#define TEST_ADDR 0x000
 
 /***** Globals *****/
 
@@ -73,6 +74,12 @@ int main(void)
 
     // Set the Internal Primary Oscillator for the fastest system clock speed
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+
+    printf("QSPI SRAM Test:\n");
+    printf("\tTest Address: 0x%x\n", TEST_ADDR);
+    printf("\tTest size: %i bytes\n", TEST_SIZE);
+    printf("\tTest count: %i rows\n", TEST_COUNT);
+    printf("\tTest speed: %i Hz\n", SPI_SPEED);
 
     ram_init();
 
@@ -100,54 +107,93 @@ int main(void)
     printf("(Benchmark) Wrote %i bytes to internal SRAM in %ius\n", TEST_SIZE, elapsed);
 
     // Measure DMA transaction overhead
-    if (benchmark_dma_overhead(&elapsed) == E_NO_ERROR){
-        elapsed -= sw_overhead;
-        printf("DMA overhead: %ius\n", elapsed);
-    } else {
-        printf("DMA overhead timed out...\n");
-    }
+    // if (benchmark_dma_overhead(&elapsed) == E_NO_ERROR){
+    //     elapsed -= sw_overhead;
+    //     printf("DMA overhead: %ius\n", elapsed);
+    // } else {
+    //     printf("DMA overhead timed out...\n");
+    // }
 
     // Benchmark standard-width SPI write to external SRAM
+    printf("Test 1: Standard SPI write...\n");
     MXC_TMR_SW_Start(MXC_TMR0);
-    int address = 0;
-    ram_write(address, tx_buffer, TEST_SIZE);
+    ram_write(TEST_ADDR, tx_buffer, TEST_SIZE);
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
-    printf("Wrote %i bytes in %ius\n", TEST_SIZE, elapsed);
+    printf("\tDone (%i bytes in %ius)\n", TEST_SIZE, elapsed);
 
     // Read and validate
+    printf("Test 2: Validate w/ standard SPI...\n");
     MXC_TMR_SW_Start(MXC_TMR0);
-    ram_read_slow(address, rx_buffer, TEST_SIZE);
+    ram_read_slow(TEST_ADDR, rx_buffer, TEST_SIZE);
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
-    printf("Read %i bytes QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
+    printf("\tRead finished (%i bytes in %ius)\n", TEST_SIZE, elapsed);
+    printf("\tChecking for mismatches...\n");
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
         }
     }
+    printf("\tDone\n");
+
+    printf("Test 3: Validate w/ QSPI...\n");
+    MXC_TMR_SW_Start(MXC_TMR0);
+    ram_read_quad(TEST_ADDR, rx_buffer, TEST_SIZE);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
+    printf("\tRead finished (%i bytes in %ius)\n", TEST_SIZE, elapsed);
+    printf("\tChecking for mismatches...\n");
+    for (int i = 0; i < TEST_SIZE; i++) {
+        if (rx_buffer[i] != tx_buffer[i]) {
+            fail_count++;
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+        }
+    }
+    printf("\tDone\n");
+
 
     // Invert test pattern - this ensures every bit has to be updated in the next write
     memset(tx_buffer, ~(TEST_VALUE), TEST_SIZE);
+    // memset(tx_buffer, 0x00, TEST_SIZE);
     memset(rx_buffer, 0, TEST_SIZE);
 
     // Benchmark QSPI write to external SRAM
-    err = ram_enter_quadmode();
+    printf("Test 4: QSPI Write...\n");
     MXC_TMR_SW_Start(MXC_TMR0);
-    err = ram_write_quad(address, tx_buffer, TEST_SIZE);
+    err = ram_write_quad(TEST_ADDR, tx_buffer, TEST_SIZE);
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
-    printf("Wrote %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
+    printf("\tDone (%i bytes in %ius)\n", TEST_SIZE, elapsed);
 
     // Read and validate
+    printf("Test 5: Validate w/ standard SPI...\n");
     MXC_TMR_SW_Start(MXC_TMR0);
-    ram_read_quad(address, rx_buffer, TEST_SIZE);
+    ram_read_slow(TEST_ADDR, rx_buffer, TEST_SIZE);
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
-    printf("Read %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
+    printf("\tRead finished (%i bytes in %ius)\n", TEST_SIZE, elapsed);
+    printf("\tChecking for mismatches...\n");
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
         }
     }
+    printf("\tDone\n");
+
+    memset(rx_buffer, 0, TEST_SIZE);
+
+    // Read and validate
+    printf("Test 6: Validate w/ QSPI...\n");
+    MXC_TMR_SW_Start(MXC_TMR0);
+    ram_read_quad(TEST_ADDR, rx_buffer, TEST_SIZE);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
+    printf("\tRead finished (%i bytes in %ius)\n", TEST_SIZE, elapsed);
+    printf("\tChecking for mismatches...\n");
+    for (int i = 0; i < TEST_SIZE; i++) {
+        if (rx_buffer[i] != tx_buffer[i]) {
+            fail_count++;
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+        }
+    }
+    printf("\tDone\n");
 
     // Generate a new more interesting test pattern
     for (int i = 0; i < TEST_SIZE; i++) {
@@ -156,32 +202,75 @@ int main(void)
     memset(rx_buffer, 0, TEST_SIZE);
 
     // Benchmark writing across multiple pages boundaries.
-    address = 0;
-    printf("Writing across page boundaries...\n");
+    int address = TEST_ADDR;
+    printf("Test 7: QSPI Writing across page boundaries...\n", TEST_SIZE, TEST_COUNT);
     MXC_TMR_SW_Start(MXC_TMR0);
     for (int i = 0; i < TEST_COUNT; i++) {
         ram_write_quad(address, tx_buffer, TEST_SIZE);
         address += TEST_SIZE;
     }
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
-    printf("Wrote %i bytes in %ius\n", TEST_SIZE * TEST_COUNT, elapsed);
+    printf("\tWrote %i bytes in %ius\n", TEST_SIZE * TEST_COUNT, elapsed);
 
-    // Validate
-    address = 0;
+    printf("Test 8: Validating with standard SPI...\n");
+    address = TEST_ADDR;
+    int temp = fail_count;
     for (int i = 0; i < TEST_COUNT; i++) {
-        ram_read_quad(address, rx_buffer, TEST_SIZE);
+        ram_read_slow(address, rx_buffer, TEST_SIZE);
         for (int j = 0; j < TEST_SIZE; j++) {
             if (rx_buffer[j] != tx_buffer[j]) {
                 fail_count++;
-                printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + j, tx_buffer[j], rx_buffer[j]);
+                // printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + j, tx_buffer[j], rx_buffer[j]);
             }
         }
         address += TEST_SIZE;
         memset(rx_buffer, 0, TEST_SIZE);
     }
+    if (fail_count != temp) {
+        printf("\tFailed (%i) mismatches\n", fail_count - temp);
+    } else {
+        printf("\tSuccess\n");
+    }
+
+    // Validate
+    printf("Test 9: Validating with QSPI...\n");
+    address = TEST_ADDR;
+    temp = fail_count;
+    for (int i = 0; i < TEST_COUNT; i++) {
+        ram_read_quad(address, rx_buffer, TEST_SIZE);
+        for (int j = 0; j < TEST_SIZE; j++) {
+            if (rx_buffer[j] != tx_buffer[j]) {
+                fail_count++;
+                // printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + j, tx_buffer[j], rx_buffer[j]);
+            }
+        }
+        address += TEST_SIZE;
+        memset(rx_buffer, 0, TEST_SIZE);
+    }
+    if (fail_count != temp) {
+        printf("\tFailed (%i) mismatches\n", fail_count - temp);
+    } else {
+        printf("\tSuccess\n");
+    }
+
+    // Prototype memory inspector...
+    // uint8_t row[1024];
+    // address = 0;
+    // printf("0x%.3x: ", address);
+    // for (int i = 0; i < 4; i++) {
+    //     ram_read_quad(address, row, 1024);
+    //     for (int j = 0; j < 1024; j++) {
+    //         printf("%.2x ", row[j]);
+    //         if ((j+1) % 16 == 0) {
+    //             printf("\n");
+    //             printf("0x%.3x: ", address + j);
+    //         }
+    //     }
+    //     address += 1024;
+    // }
 
     if (fail_count > 0) {
-        printf("Failed with %i mismatches!\n", fail_count);
+        printf("\nFailed with %i mismatches (%.2f%%)!\n", fail_count, 100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT)));
         return E_FAIL;
     }
     
