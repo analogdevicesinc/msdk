@@ -35,10 +35,13 @@ ifeq "$(BOARD_DIR)" ""
 $(error BOARD_DIR must be set)
 endif
 
+ifeq "$(RISCV_CORE)" ""
+# Note: RISC-V core does not have access to SPI0, cannot drive TFT
 TFT ?= NEWHAVEN
 # Supported values for TFT:
 # - ADAFRUIT (for use with legacy Adafruit 3315)
 # - NEWHAVEN (default - for use with NewHaven NHD-2.4-320240CF))
+endif
 
 # Source files for this application (add path to VPATH below)
 SRCS += board.c

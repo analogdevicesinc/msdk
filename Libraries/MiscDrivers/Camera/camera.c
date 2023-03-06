@@ -68,8 +68,10 @@ static int g_pixel_format = PIXFORMAT_RGB888;
 static fifomode_t g_fifo_mode = FIFO_THREE_BYTE;
 static dmamode_t g_dma_mode = NO_DMA;
 static int g_dma_channel = 0;
+#ifndef __riscv
 static int g_dma_channel_tft = 1;
 static int g_dma_already_setup = 0;
+#endif
 static camera_t camera;
 extern int sensor_register(camera_t *camera);
 
