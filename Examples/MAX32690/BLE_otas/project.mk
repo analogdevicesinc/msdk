@@ -26,5 +26,31 @@ INIT_OBSERVER = 0
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
 
+PROJ_CFLAGS += -Wl,--section-start=.text=0x10004000
+
 # Use local linkerfile
 LINKERFILE = ota.ld
+
+# build bootloader
+BOOTLOADER_DIR=../Bootloader
+
+BUILD_DIR := $(abspath ./build)
+BOOTLOADER_BUILD_DIR := $(BUILD_DIR)/buildbl
+
+BOOTLOADER_BIN=$(BOOTLOADER_BUILD_DIR)/bootloader.bin
+BOOTLOADER_OBJ=$(BOOTLOADER_BUILD_DIR)/bootloader.o
+
+PROJ_OBJS = ${BOOTLOADER_OBJ}
+
+.PHONY: bl_bin
+bl_bin: $(BOOTLOADER_BIN)
+
+${BOOTLOADER_BIN}:
+	$(MAKE) -C ${BOOTLOADER_DIR} BUILD_DIR=$(BOOTLOADER_BUILD_DIR) PROJECT=bootloader
+	$(MAKE) -C $(BOOTLOADER_DIR) BUILD_DIR=$(BOOTLOADER_BUILD_DIR) $(BOOTLOADER_BIN)
+
+.PHONY: bl_obj
+bl_obj: $(BOOTLOADER_OBJ)
+
+${BOOTLOADER_OBJ}: bl_build.S ${BOOTLOADER_BIN}
+	${CC} ${AFLAGS} -o ${@} -c bl_build.S
