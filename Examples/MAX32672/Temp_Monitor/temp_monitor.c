@@ -173,8 +173,8 @@ static int start_rtc(void)
         return err;
     }
 
-    // Setup TOD alarm
-    MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG); //TOD alarm interrupt most be disabled to set period
+    // Setup Time-of-Day alarm
+    MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG); //TOD alarm interrupt must be disabled to set period
     if ((err = MXC_RTC_SetTimeofdayAlarm(TEMP_CHECK_PERIOD)) != E_NO_ERROR) {
         return err;
     }
