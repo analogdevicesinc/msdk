@@ -56,6 +56,17 @@ ${FW_UPDATE_BIN}:
 .PHONY: fw_obj
 fw_obj: $(FW_UPDATE_OBJ)
 
+# Create binary output file without the bootloader
+%.bin.noboot: %.elf
+	@if [ 'x${VERBOSE}' = x ];                                                   \
+	 then                                                                        \
+	     echo "Creating ${@}";                                                   \
+	     echo "Excluding bootloader section";                                    \
+	 else                                                                        \
+	     echo ${OBJCOPY} -O binary --remove-section .bootloader $(call fixpath,${<}) $(call fixpath,${@});    \
+	 fi
+	@$(OBJCOPY) -O binary --remove-section .bootloader $< $(call fixpath,${@})
+
 ${FW_UPDATE_OBJ}: fw_update.S ${FW_UPDATE_BIN}
 	${CC} ${AFLAGS} -o ${@} -c fw_update.S
 
