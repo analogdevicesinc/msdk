@@ -34,6 +34,7 @@ FW_BUILD_DIR := $(BUILD_DIR)/buildfw
 # Firmware update files, do not rename
 FW_UPDATE_BIN=$(FW_BUILD_DIR)/fw_update.bin
 FW_UPDATE_OBJ=$(FW_BUILD_DIR)/fw_update.o
+FW_UPDATE_ELF=$(FW_BUILD_DIR)/fw_update.elf
 
 # This is the 'magic' line that gets the linker to combine in
 # the external application's object file.
@@ -45,7 +46,7 @@ fw_bin: $(FW_UPDATE_BIN)
 
 ${FW_UPDATE_BIN}:
 	$(MAKE) -C ${FW_UPDATE_DIR} BUILD_DIR=$(FW_BUILD_DIR) PROJECT=fw_update
-	$(MAKE) -C $(FW_UPDATE_DIR) BUILD_DIR=$(FW_BUILD_DIR) $(FW_UPDATE_BIN)
+	$(OBJCOPY) -O binary --remove-section .bootloader $(FW_UPDATE_ELF) $(FW_UPDATE_BIN)
 
 # Target for creating the firmware update obj file
 .PHONY: fw_obj
