@@ -34,7 +34,7 @@ cordio_docs_dir =  repo / "Libraries" / "Cordio" / "docs"
 platform_docs_dir = repo / "Libraries" / "Cordio" / "platform" / "Documentation"
 
 # cordio_doc_files = [f for f in listdir(cordio_docs_dir) if f.endswith('.md')]
-# platform_doc_files = [f for f in listdir(platform_docs_dir) if f.endswith('.pdf')]
+platform_doc_files = [f for f in listdir(platform_docs_dir) if f.endswith('.pdf')]
 
 # with open(repo / "USERGUIDE.md", 'r') as f:
 #     lines = f.readlines()
