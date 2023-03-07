@@ -263,3 +263,16 @@ This release was tested on the following platforms. Note: platforms listed may n
 * Nordic nRF52840 / PCA10056 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10056")
 * Nordic nRF52832 / PCA10040 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10040")
 * Laird BL654 / 451-00004 USB adapter / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=laird")
+
+## Applications
+* [BLE4](Applications/BLE4_ctr.md)
+* [BlLE5](Applications/BLE5_ctr.md)
+* [FreeRTOS](Applications/BLE_FreeRTOS.md)
+* [DAT Client/Server](Applications/BLE_datc_dats.md)
+* [BLE FCC](Applications/BLE_fcc.md)
+* [BLE Fit](Applications/BLE_fit.md)
+* [BLE MCS](Applications/BLE_mcs.md)
+* [OTA Client/Server](Applications/BLE_otac_otas.md)
+* [BLE Periph](Applications/BLE_periph.md)
+* [Bootloader](Applications/Bootloader.md)
+* [RF Test](Applications/RF_Test.md)
