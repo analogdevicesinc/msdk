@@ -36,7 +36,7 @@ The Wireless Software Foundation (WSF) is a simple OS wrapper, porting layer, an
 
 The Platform Adaption Layer is the abstraction between the software stack and the hardware. It includes APIs for timers, UART, RTC, and various system level functions such as sleep and memory management.
 
-See [Libraries/Cordio/platform/Documentation/Cordio-Platform-Documentation.pdf](Libraries/Cordio/platform/Documentation/Cordio-Platform-Documentation.pdf).
+See [Libraries/Cordio/platform/Documentation/Cordio-Platform-Documentation.pdf](../platform/Documentation/Cordio-Platform-Documentation.pdf).
 
 ### Attribute Protocol
 
