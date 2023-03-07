@@ -1,4 +1,4 @@
-# Analog Devices MSDK User Guide
+# MSDK User Guide
 
 [TOC]
 
@@ -1513,19 +1513,14 @@ Please refer to the [CMSIS-DSP official documentation](https://www.keil.com/pack
 
 The Cordio Bluetooth Low Energy (BLE) library provides a full BLE stack for microcontrollers with an integrated BLE controller.
 
+The Cordio library warrants its own separate documentation.  See the **[Cordio BLE User Guide](Libraries/Cordio/docs/CORDIO_USERGUIDE.md)**.
+
 #### Cordio Supported Parts
 
 - MAX32655
 - MAX32665
 - MAX32680
 - MAX32690
-
-#### Cordio Documentation
-
-- [Architecture](Libraries/Cordio/docs/ARCHITECTURE.md)
-- [Bluetooth LE Basics](Libraries/Cordio/docs/BLUETOOTH_LE_BASICS.md)
-- [Packetcraft](Libraries/Cordio/docs/PACKETCRAFT.md)
-- [Platform](Libraries/Cordio/platform/Documentation/Cordio-Platform-Documentation.pdf)
 
 ---
 
