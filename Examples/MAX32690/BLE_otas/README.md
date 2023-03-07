@@ -14,16 +14,20 @@ The red LED will indicate that an error assertion has occurred.
 The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
 is off, the CPU is in sleep mode.
 
-## Setup
-This Bootloader application needs to be loaded prior to loading this application. This application
-will run on top of the Bootloader. The linker file included with this application must be used
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+* The Bootloader application needs to be loaded prior to loading this application. This application
+will run on top of the Bootloader. The [ota.ld] linker file included with this application must be used
 to properly setup the memory sections to coincide with the Bootloader.
 
-### Board Selection
+## Required Connections
 
-Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
-
-### Required Connections
 -   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
 
 ## Trace Serial Port

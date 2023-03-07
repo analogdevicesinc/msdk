@@ -2,18 +2,17 @@
 
 A basic getting started program for the RISCV, run from the ARM core.
 
-RV_ARM_Loader runs on the ARM core to load the RISCV code space, setup the RISCV debugger pins, and start the RISCV core.
+RV_ARM_Loader runs on the ARM core to load the RISCV code space, setup the RISCV debugger pins, and start the RISCV core with the specified application.
 
-The Hello_World example runs on the the RISCV core. 
+## Software
 
-## Setup
+### Project Usage
 
-##### Linker File Selection
-Before building firmware you must select the correct linker file (line 111) in the "[project.mk](project.mk)" to in the Hello_World example. The Hello_World example must be in the same workspace as the the RV_ARM_Loader example.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-```
-LINKER=$(TARGET_LC)_riscv.ld
-```
+### Project-Specific Build Notes
+
+* The application to load into the RISC-V core can be selected using the `RISCV_APP` option in [project.mk](project.mk).  By default, the `Hello_World` example is used.
 
 ## Expected Output
 

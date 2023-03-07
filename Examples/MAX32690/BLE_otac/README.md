@@ -14,17 +14,18 @@ The red LED will indicate that an error assertion has occurred.
 The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
 is off, the CPU is in sleep mode.
 
-## Setup
-The project.mk can be edited to select the appropriate application directory for the update
-image. Change FW_UPDATE_DIR to modify which application is used for the update. Whichever
-application is selected must be setup to run from the appropriate memory section, as defined
-by the Bootloader.
+## Software
 
-### Board Selection
+### Project Usage
 
-Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-### Required Connections
+### Project-Specific Build Notes
+
+* The application to use for the firmware update can be selected using the `FW_UPDATE_DIR` option in [project.mk](project.mk).  Whichever application is selected by this option must be configured to run from the appropriate memory section, as defined by the Bootloader (see the `Bootloader` example for more details).
+
+## Required Connections
+
 -   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
 
 ## Trace Serial Port

@@ -12,13 +12,18 @@ The red LED will indicate that an error assertion has occurred.
 The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
 is off, the CPU is in sleep mode.
 
-## Setup
+## Software
 
-### Board Selection
+### Project Usage
 
-Before building firmware you must select the correct value for _BOARD_  in "project.mk", e.g. "EvKit\_V1".
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-### Required Connections
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
+## Required Connections
+
 If using the Standard EV Kit board (EvKit\_V1):
 -   Connect a USB cable between the PC and the CN2 (USB/PWR - UART) connector.
 -   Close jumpers JP7 (RX_EN) and JP8 (TX_EN).

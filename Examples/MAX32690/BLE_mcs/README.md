@@ -14,13 +14,18 @@ Red LED Characteristic   : 0x85FC567F31D9418587C6339924D1C5BE
 Green LED Characteristic : 0x85FC568031D9418587C6339924D1C5BE  
 Blue LED Characteristic  : 0x85FC568131D9418587C6339924D1C5BE  
 
-## Setup
+## Software
 
-### Board Selection
+### Project Usage
 
-Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-### Required Connections
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
+## Required Connections
+
 -   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
 
 ## Trace Serial Port

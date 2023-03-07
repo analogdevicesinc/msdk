@@ -11,13 +11,18 @@ The red LED will indicate that an error assertion has occurred.
 The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
 is off, the CPU is in sleep mode.
 
-## Setup
+## Software
 
-### Board Selection
+### Project Usage
 
-Before building firmware you must select the correct value for BOARD in [project.mk](project.mk), e.g. "EvKit_V1".
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-### Required Connections
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
+## Required Connections
+
 -   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
 -   Use an external USB-to-UART adapter to access HCI UART. Connect a USB cable between the PC or BLE Tester
     and USB side of the adapter. Connect UART side of the adapter to board TX,RX and GND header pins.

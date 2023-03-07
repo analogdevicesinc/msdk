@@ -14,6 +14,16 @@ The internal storage flash memory block count is specified by *FLASH_STORAGE_PAG
  
  that corresponds to 128kb (8 of 16kb blocks) 
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
