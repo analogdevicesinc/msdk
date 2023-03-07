@@ -26,6 +26,7 @@ var modules =
     [ "WDT", "group__wdt.html", "group__wdt" ],
     [ "Wakeup Timer (WUT)", "group__wut.html", "group__wut" ],
     [ "AES_KEY_Registers", "group__aes__key__registers.html", "group__aes__key__registers" ],
+    [ "AESKEYS_Registers", "group__aeskeys__registers.html", "group__aeskeys__registers" ],
     [ "DVS_Registers", "group__dvs__registers.html", "group__dvs__registers" ],
     [ "FCR_Registers", "group__fcr__registers.html", "group__fcr__registers" ],
     [ "GCFR_Registers", "group__gcfr__registers.html", "group__gcfr__registers" ],

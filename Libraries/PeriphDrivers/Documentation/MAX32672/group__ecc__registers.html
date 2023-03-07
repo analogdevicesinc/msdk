@@ -86,7 +86,7 @@ $(document).ready(function(){initNavTree('group__ecc__registers.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#nested-classes">Data Structures</a>  </div>
   <div class="headertitle"><div class="title">ECC_Registers</div></div>
 </div><!--header-->
 <div class="contents">
@@ -98,33 +98,48 @@ Modules</h2></td></tr>
 <tr class="memitem:group___e_c_c___e_n"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___e_c_c___e_n.html">ECC_EN</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:ga0467730442042e319967b5d61b671f65"><td class="memItemLeft" align="right" valign="top">struct&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ecc__registers.html#ga0467730442042e319967b5d61b671f65">__attribute__</a> ((deprecated(&quot;struct and ecc_regs.h no longer supported. Use trimsir_regs.h and MXC_TRIMSIR (<a class="el" href="group__trimsir__registers.html#structmxc__trimsir__regs__t">mxc_trimsir_regs_t</a>) for ECC. 10-24-2022&quot;)))</td></tr>
-<tr class="separator:ga0467730442042e319967b5d61b671f65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:structmxc__ecc__regs__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ecc__registers.html#structmxc__ecc__regs__t">mxc_ecc_regs_t</a></td></tr>
+<tr class="separator:structmxc__ecc__regs__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <p >Registers, Bit Masks and Bit Positions for the ECC Peripheral Module. </p>
 <p >Error Correction Code </p>
-<h2 class="groupheader">Function Documentation</h2>
-<a id="ga0467730442042e319967b5d61b671f65" name="ga0467730442042e319967b5d61b671f65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0467730442042e319967b5d61b671f65">&#9670;&nbsp;</a></span>__attribute__()</h2>
+<hr/><h2 class="groupheader">Data Structure Documentation</h2>
+<a name="structmxc__ecc__regs__t" id="structmxc__ecc__regs__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmxc__ecc__regs__t">&#9670;&nbsp;</a></span>mxc_ecc_regs_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">struct __attribute__ </td>
-          <td>(</td>
-          <td class="paramtype">(deprecated(&quot;struct and ecc_regs.h no longer supported. Use trimsir_regs.h and MXC_TRIMSIR (<a class="el" href="group__trimsir__registers.html#structmxc__trimsir__regs__t">mxc_trimsir_regs_t</a>) for ECC. 10-24-2022&quot;))&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td class="memname">struct mxc_ecc_regs_t</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<p >Structure type to access the ECC Registers. </p>
+<div class="textblock"><p >Structure type to access the ECC Registers. </p>
+</div><table class="memberdecls">
+<tr><td colspan="2"><h3>Data Fields</h3></td></tr>
+<tr class="memitem:ad64ed354f35ac607fc9568da4fd80337"><td class="memItemLeft" align="right" valign="top">__IO uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__ecc__registers.html#ad64ed354f35ac607fc9568da4fd80337">en</a></td></tr>
+<tr class="separator:ad64ed354f35ac607fc9568da4fd80337"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h4 class="groupheader">Field Documentation</h4>
+<a id="ad64ed354f35ac607fc9568da4fd80337" name="ad64ed354f35ac607fc9568da4fd80337"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad64ed354f35ac607fc9568da4fd80337">&#9670;&nbsp;</a></span>en</h2>
 
-<p class="reference">References <a class="el" href="group__ecc__registers.html#ga0467730442042e319967b5d61b671f65">__attribute__()</a>.</p>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__IO uint32_t en</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p ><code><b>0x08:</code></b> ECC EN Register </p>
+
+</div>
+</div>
 
 </div>
 </div>
@@ -133,7 +148,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Dec 15 2022 22:46:44 for MAX32672 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Mar 7 2023 00:06:43 for MAX32672 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

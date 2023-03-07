@@ -88,8 +88,8 @@ $(document).ready(function(){initNavTree('clcd_8h_source.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/* ****************************************************************************</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/******************************************************************************</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span></div>
@@ -119,68 +119,65 @@ $(document).ready(function(){initNavTree('clcd_8h_source.html',''); initResizabl
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> * property whatsoever. Maxim Integrated Products, Inc. retains all</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> * ownership rights.</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"> * $Date: 2017-06-08 09:55:03 -0500 (Thu, 08 Jun 2017) $</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"> * $Revision: 28436 $</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"> *************************************************************************** */</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">/* Define to prevent redundant inclusion */</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_CLCD_H_</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_CLCD_H_</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/* **** Includes **** */</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#include &quot;clcd_regs.h&quot;</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#include &quot;mxc_sys.h&quot;</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="comment">/* **** Definitions **** */</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="group__clcd.html#ga40933e5f1caad128b08860eb62b4919b">   65</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baefb31f5cd5a9469cb6656f51ff43e34e">   66</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baefb31f5cd5a9469cb6656f51ff43e34e">MXC_BPP1</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#gaf06d182f2061cd317d06b1f18676a5b7">MXC_S_CLCD_CTRL_BPP_BPP1</a>, </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba9ecbe743ea1ae997f704209891610d22">   67</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba9ecbe743ea1ae997f704209891610d22">MXC_BPP2</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#ga326234b5cd0814538176bcb2ac118956">MXC_S_CLCD_CTRL_BPP_BPP2</a>, </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baf8b19d3fceaefd3871de7c8191b026c8">   68</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baf8b19d3fceaefd3871de7c8191b026c8">MXC_BPP4</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#ga8b760c38521b69159433de717784042c">MXC_S_CLCD_CTRL_BPP_BPP4</a>, </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba85711d3a41659d3584bdd3cfb2bfa07b">   69</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba85711d3a41659d3584bdd3cfb2bfa07b">MXC_BPP8</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#gafb37dca0f43e117c6174d714099c150a">MXC_S_CLCD_CTRL_BPP_BPP8</a>, </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919bac0d6752c2842ff151e9f50829b445e66">   70</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919bac0d6752c2842ff151e9f50829b445e66">MXC_BPP16</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#ga1e3639ed1edf1e0eafcf7adc1dd9f566">MXC_S_CLCD_CTRL_BPP_BPP16</a>, </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba8364fd06bae9556d0c322b3d13467985">   71</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba8364fd06bae9556d0c322b3d13467985">MXC_BPP24</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#gada6298c7143780fdc9157171c53258a7">MXC_S_CLCD_CTRL_BPP_BPP24</a>, </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>} <a class="code hl_enumeration" href="group__clcd.html#ga40933e5f1caad128b08860eb62b4919b">mxc_clcd_bpp_t</a>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="group__clcd.html">   77</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>mxc_clcd_cfg {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    uint32_t width;</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    uint32_t height;</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    uint32_t frequency;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    uint32_t vfrontporch;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    uint32_t vbackporch;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    uint32_t vsyncwidth;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    uint32_t hfrontporch;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    uint32_t hbackporch;</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    uint32_t hsyncwidth;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    uint32_t *palette;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    uint32_t paletteSize;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <a class="code hl_enumeration" href="group__clcd.html#ga40933e5f1caad128b08860eb62b4919b">mxc_clcd_bpp_t</a> bpp;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>} <a class="code hl_struct" href="group__clcd.html#structmxc__clcd__cfg__t">mxc_clcd_cfg_t</a>;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">/* **** Function Prototypes **** */</span></div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="group__clcd.html#gad2d59f7f41f4557110eb1fd7adf459c7">   99</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#gad2d59f7f41f4557110eb1fd7adf459c7">MXC_CLCD_Init</a>(<a class="code hl_struct" href="group__clcd.html#structmxc__clcd__cfg__t">mxc_clcd_cfg_t</a> *cfg);</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="group__clcd.html#gaa688f164e0a2129ca8ac90d92bb0212a">  105</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#gaa688f164e0a2129ca8ac90d92bb0212a">MXC_CLCD_Shutdown</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="group__clcd.html#ga3adc0276e44bcdfedac3203010ff55ff">  112</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#ga3adc0276e44bcdfedac3203010ff55ff">MXC_CLCD_ConfigPanel</a>(<a class="code hl_struct" href="group__clcd.html#structmxc__clcd__cfg__t">mxc_clcd_cfg_t</a> *cfg);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="group__clcd.html#gacfa9ccdb9ed20c12d35974420dbd9671">  118</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#gacfa9ccdb9ed20c12d35974420dbd9671">MXC_CLCD_Enable</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="group__clcd.html#gabd11dd35f6f6d80e531c41013680139d">  124</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#gabd11dd35f6f6d80e531c41013680139d">MXC_CLCD_Disable</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="group__clcd.html#ga2c090920f2dc33921c7286986861601b">  131</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#ga2c090920f2dc33921c7286986861601b">MXC_CLCD_SetFrameAddr</a>(<span class="keywordtype">void</span> *addr);</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>}</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_CLCD_H_</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"> ******************************************************************************/</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">/* Define to prevent redundant inclusion */</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_CLCD_H_</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_CLCD_H_</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">/* **** Includes **** */</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;clcd_regs.h&quot;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;mxc_sys.h&quot;</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">/* **** Definitions **** */</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="group__clcd.html#ga40933e5f1caad128b08860eb62b4919b">   62</a></span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baefb31f5cd5a9469cb6656f51ff43e34e">   63</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baefb31f5cd5a9469cb6656f51ff43e34e">MXC_BPP1</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#gaf06d182f2061cd317d06b1f18676a5b7">MXC_S_CLCD_CTRL_BPP_BPP1</a>, </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba9ecbe743ea1ae997f704209891610d22">   64</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba9ecbe743ea1ae997f704209891610d22">MXC_BPP2</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#ga326234b5cd0814538176bcb2ac118956">MXC_S_CLCD_CTRL_BPP_BPP2</a>, </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baf8b19d3fceaefd3871de7c8191b026c8">   65</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baf8b19d3fceaefd3871de7c8191b026c8">MXC_BPP4</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#ga8b760c38521b69159433de717784042c">MXC_S_CLCD_CTRL_BPP_BPP4</a>, </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba85711d3a41659d3584bdd3cfb2bfa07b">   66</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba85711d3a41659d3584bdd3cfb2bfa07b">MXC_BPP8</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#gafb37dca0f43e117c6174d714099c150a">MXC_S_CLCD_CTRL_BPP_BPP8</a>, </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919bac0d6752c2842ff151e9f50829b445e66">   67</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919bac0d6752c2842ff151e9f50829b445e66">MXC_BPP16</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#ga1e3639ed1edf1e0eafcf7adc1dd9f566">MXC_S_CLCD_CTRL_BPP_BPP16</a>, </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba8364fd06bae9556d0c322b3d13467985">   68</a></span>    <a class="code hl_enumvalue" href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba8364fd06bae9556d0c322b3d13467985">MXC_BPP24</a> = <a class="code hl_define" href="group___c_l_c_d___c_t_r_l.html#gada6298c7143780fdc9157171c53258a7">MXC_S_CLCD_CTRL_BPP_BPP24</a>, </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} <a class="code hl_enumeration" href="group__clcd.html#ga40933e5f1caad128b08860eb62b4919b">mxc_clcd_bpp_t</a>;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="group__clcd.html">   74</a></span><span class="keyword">typedef</span> <span class="keyword">struct </span>mxc_clcd_cfg {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    uint32_t width;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    uint32_t height;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    uint32_t frequency;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    uint32_t vfrontporch;</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    uint32_t vbackporch;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    uint32_t vsyncwidth;</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    uint32_t hfrontporch;</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    uint32_t hbackporch;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    uint32_t hsyncwidth;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    uint32_t *palette;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    uint32_t paletteSize;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <a class="code hl_enumeration" href="group__clcd.html#ga40933e5f1caad128b08860eb62b4919b">mxc_clcd_bpp_t</a> bpp;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>} <a class="code hl_struct" href="group__clcd.html#structmxc__clcd__cfg__t">mxc_clcd_cfg_t</a>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">/* **** Function Prototypes **** */</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="group__clcd.html#gad2d59f7f41f4557110eb1fd7adf459c7">   96</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#gad2d59f7f41f4557110eb1fd7adf459c7">MXC_CLCD_Init</a>(<a class="code hl_struct" href="group__clcd.html#structmxc__clcd__cfg__t">mxc_clcd_cfg_t</a> *cfg);</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="group__clcd.html#gaa688f164e0a2129ca8ac90d92bb0212a">  102</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#gaa688f164e0a2129ca8ac90d92bb0212a">MXC_CLCD_Shutdown</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="group__clcd.html#ga3adc0276e44bcdfedac3203010ff55ff">  109</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#ga3adc0276e44bcdfedac3203010ff55ff">MXC_CLCD_ConfigPanel</a>(<a class="code hl_struct" href="group__clcd.html#structmxc__clcd__cfg__t">mxc_clcd_cfg_t</a> *cfg);</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="group__clcd.html#gacfa9ccdb9ed20c12d35974420dbd9671">  115</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#gacfa9ccdb9ed20c12d35974420dbd9671">MXC_CLCD_Enable</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="group__clcd.html#gabd11dd35f6f6d80e531c41013680139d">  121</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#gabd11dd35f6f6d80e531c41013680139d">MXC_CLCD_Disable</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="group__clcd.html#ga2c090920f2dc33921c7286986861601b">  128</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__clcd.html#ga2c090920f2dc33921c7286986861601b">MXC_CLCD_SetFrameAddr</a>(<span class="keywordtype">void</span> *addr);</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>}</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span> </div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_CLCD_H_</span></div>
 <div class="ttc" id="agroup___c_l_c_d___c_t_r_l_html_ga1e3639ed1edf1e0eafcf7adc1dd9f566"><div class="ttname"><a href="group___c_l_c_d___c_t_r_l.html#ga1e3639ed1edf1e0eafcf7adc1dd9f566">MXC_S_CLCD_CTRL_BPP_BPP16</a></div><div class="ttdeci">#define MXC_S_CLCD_CTRL_BPP_BPP16</div><div class="ttdef"><b>Definition:</b> clcd_regs.h:260</div></div>
 <div class="ttc" id="agroup___c_l_c_d___c_t_r_l_html_ga326234b5cd0814538176bcb2ac118956"><div class="ttname"><a href="group___c_l_c_d___c_t_r_l.html#ga326234b5cd0814538176bcb2ac118956">MXC_S_CLCD_CTRL_BPP_BPP2</a></div><div class="ttdeci">#define MXC_S_CLCD_CTRL_BPP_BPP2</div><div class="ttdef"><b>Definition:</b> clcd_regs.h:254</div></div>
 <div class="ttc" id="agroup___c_l_c_d___c_t_r_l_html_ga8b760c38521b69159433de717784042c"><div class="ttname"><a href="group___c_l_c_d___c_t_r_l.html#ga8b760c38521b69159433de717784042c">MXC_S_CLCD_CTRL_BPP_BPP4</a></div><div class="ttdeci">#define MXC_S_CLCD_CTRL_BPP_BPP4</div><div class="ttdef"><b>Definition:</b> clcd_regs.h:256</div></div>
@@ -189,25 +186,25 @@ $(document).ready(function(){initNavTree('clcd_8h_source.html',''); initResizabl
 <div class="ttc" id="agroup___c_l_c_d___c_t_r_l_html_gafb37dca0f43e117c6174d714099c150a"><div class="ttname"><a href="group___c_l_c_d___c_t_r_l.html#gafb37dca0f43e117c6174d714099c150a">MXC_S_CLCD_CTRL_BPP_BPP8</a></div><div class="ttdeci">#define MXC_S_CLCD_CTRL_BPP_BPP8</div><div class="ttdef"><b>Definition:</b> clcd_regs.h:258</div></div>
 <div class="ttc" id="agroup__clcd_html_ga2c090920f2dc33921c7286986861601b"><div class="ttname"><a href="group__clcd.html#ga2c090920f2dc33921c7286986861601b">MXC_CLCD_SetFrameAddr</a></div><div class="ttdeci">int MXC_CLCD_SetFrameAddr(void *addr)</div><div class="ttdoc">Set CLCD frame module.</div></div>
 <div class="ttc" id="agroup__clcd_html_ga3adc0276e44bcdfedac3203010ff55ff"><div class="ttname"><a href="group__clcd.html#ga3adc0276e44bcdfedac3203010ff55ff">MXC_CLCD_ConfigPanel</a></div><div class="ttdeci">int MXC_CLCD_ConfigPanel(mxc_clcd_cfg_t *cfg)</div><div class="ttdoc">Configure CLCD frame module.</div></div>
-<div class="ttc" id="agroup__clcd_html_ga40933e5f1caad128b08860eb62b4919b"><div class="ttname"><a href="group__clcd.html#ga40933e5f1caad128b08860eb62b4919b">mxc_clcd_bpp_t</a></div><div class="ttdeci">mxc_clcd_bpp_t</div><div class="ttdef"><b>Definition:</b> clcd.h:65</div></div>
+<div class="ttc" id="agroup__clcd_html_ga40933e5f1caad128b08860eb62b4919b"><div class="ttname"><a href="group__clcd.html#ga40933e5f1caad128b08860eb62b4919b">mxc_clcd_bpp_t</a></div><div class="ttdeci">mxc_clcd_bpp_t</div><div class="ttdef"><b>Definition:</b> clcd.h:62</div></div>
 <div class="ttc" id="agroup__clcd_html_gaa688f164e0a2129ca8ac90d92bb0212a"><div class="ttname"><a href="group__clcd.html#gaa688f164e0a2129ca8ac90d92bb0212a">MXC_CLCD_Shutdown</a></div><div class="ttdeci">int MXC_CLCD_Shutdown(void)</div><div class="ttdoc">Shutdown CLCD module.</div></div>
 <div class="ttc" id="agroup__clcd_html_gabd11dd35f6f6d80e531c41013680139d"><div class="ttname"><a href="group__clcd.html#gabd11dd35f6f6d80e531c41013680139d">MXC_CLCD_Disable</a></div><div class="ttdeci">int MXC_CLCD_Disable(void)</div><div class="ttdoc">Disable CLCD module.</div></div>
 <div class="ttc" id="agroup__clcd_html_gacfa9ccdb9ed20c12d35974420dbd9671"><div class="ttname"><a href="group__clcd.html#gacfa9ccdb9ed20c12d35974420dbd9671">MXC_CLCD_Enable</a></div><div class="ttdeci">int MXC_CLCD_Enable(void)</div><div class="ttdoc">Enable CLCD module.</div></div>
 <div class="ttc" id="agroup__clcd_html_gad2d59f7f41f4557110eb1fd7adf459c7"><div class="ttname"><a href="group__clcd.html#gad2d59f7f41f4557110eb1fd7adf459c7">MXC_CLCD_Init</a></div><div class="ttdeci">int MXC_CLCD_Init(mxc_clcd_cfg_t *cfg)</div><div class="ttdoc">Initialize the clcd.</div></div>
-<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919ba8364fd06bae9556d0c322b3d13467985"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba8364fd06bae9556d0c322b3d13467985">MXC_BPP24</a></div><div class="ttdeci">@ MXC_BPP24</div><div class="ttdef"><b>Definition:</b> clcd.h:71</div></div>
-<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919ba85711d3a41659d3584bdd3cfb2bfa07b"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba85711d3a41659d3584bdd3cfb2bfa07b">MXC_BPP8</a></div><div class="ttdeci">@ MXC_BPP8</div><div class="ttdef"><b>Definition:</b> clcd.h:69</div></div>
-<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919ba9ecbe743ea1ae997f704209891610d22"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba9ecbe743ea1ae997f704209891610d22">MXC_BPP2</a></div><div class="ttdeci">@ MXC_BPP2</div><div class="ttdef"><b>Definition:</b> clcd.h:67</div></div>
-<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919bac0d6752c2842ff151e9f50829b445e66"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919bac0d6752c2842ff151e9f50829b445e66">MXC_BPP16</a></div><div class="ttdeci">@ MXC_BPP16</div><div class="ttdef"><b>Definition:</b> clcd.h:70</div></div>
-<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919baefb31f5cd5a9469cb6656f51ff43e34e"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baefb31f5cd5a9469cb6656f51ff43e34e">MXC_BPP1</a></div><div class="ttdeci">@ MXC_BPP1</div><div class="ttdef"><b>Definition:</b> clcd.h:66</div></div>
-<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919baf8b19d3fceaefd3871de7c8191b026c8"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baf8b19d3fceaefd3871de7c8191b026c8">MXC_BPP4</a></div><div class="ttdeci">@ MXC_BPP4</div><div class="ttdef"><b>Definition:</b> clcd.h:68</div></div>
-<div class="ttc" id="agroup__clcd_html_structmxc__clcd__cfg__t"><div class="ttname"><a href="group__clcd.html#structmxc__clcd__cfg__t">mxc_clcd_cfg_t</a></div><div class="ttdef"><b>Definition:</b> clcd.h:77</div></div>
+<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919ba8364fd06bae9556d0c322b3d13467985"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba8364fd06bae9556d0c322b3d13467985">MXC_BPP24</a></div><div class="ttdeci">@ MXC_BPP24</div><div class="ttdef"><b>Definition:</b> clcd.h:68</div></div>
+<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919ba85711d3a41659d3584bdd3cfb2bfa07b"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba85711d3a41659d3584bdd3cfb2bfa07b">MXC_BPP8</a></div><div class="ttdeci">@ MXC_BPP8</div><div class="ttdef"><b>Definition:</b> clcd.h:66</div></div>
+<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919ba9ecbe743ea1ae997f704209891610d22"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919ba9ecbe743ea1ae997f704209891610d22">MXC_BPP2</a></div><div class="ttdeci">@ MXC_BPP2</div><div class="ttdef"><b>Definition:</b> clcd.h:64</div></div>
+<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919bac0d6752c2842ff151e9f50829b445e66"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919bac0d6752c2842ff151e9f50829b445e66">MXC_BPP16</a></div><div class="ttdeci">@ MXC_BPP16</div><div class="ttdef"><b>Definition:</b> clcd.h:67</div></div>
+<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919baefb31f5cd5a9469cb6656f51ff43e34e"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baefb31f5cd5a9469cb6656f51ff43e34e">MXC_BPP1</a></div><div class="ttdeci">@ MXC_BPP1</div><div class="ttdef"><b>Definition:</b> clcd.h:63</div></div>
+<div class="ttc" id="agroup__clcd_html_gga40933e5f1caad128b08860eb62b4919baf8b19d3fceaefd3871de7c8191b026c8"><div class="ttname"><a href="group__clcd.html#gga40933e5f1caad128b08860eb62b4919baf8b19d3fceaefd3871de7c8191b026c8">MXC_BPP4</a></div><div class="ttdeci">@ MXC_BPP4</div><div class="ttdef"><b>Definition:</b> clcd.h:65</div></div>
+<div class="ttc" id="agroup__clcd_html_structmxc__clcd__cfg__t"><div class="ttname"><a href="group__clcd.html#structmxc__clcd__cfg__t">mxc_clcd_cfg_t</a></div><div class="ttdef"><b>Definition:</b> clcd.h:74</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_7e706e2ddc2451d8dedddaedfab11dd4.html">MAX32650</a></li><li class="navelem"><b>clcd.h</b></li>
-    <li class="footer">Generated on Thu Dec 15 2022 22:46:24 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Mar 7 2023 00:06:23 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

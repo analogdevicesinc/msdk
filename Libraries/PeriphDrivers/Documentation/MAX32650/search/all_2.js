@@ -20,11 +20,12 @@ var searchData=
   ['aes_5fkey2_17',['aes_key2',['../group__aes__key__registers.html#a9d24f6ba43fa3a39d6b16a35bc9c3111',1,'mxc_aes_key_regs_t']]],
   ['aes_5fkey3_18',['aes_key3',['../group__aes__key__registers.html#ab8e0932b61a86d0bc5fd5fe5d68e9b19',1,'mxc_aes_key_regs_t']]],
   ['aes_5fkey_5fregisters_19',['AES_KEY_Registers',['../group__aes__key__registers.html',1,'']]],
-  ['af_5fsel_20',['af_sel',['../group__gpio__registers.html#a70f7eea1dfd4344814fefa9ea71115d6',1,'mxc_gpio_regs_t']]],
-  ['af_5fsel_5fclr_21',['af_sel_clr',['../group__gpio__registers.html#aee9d5ed877bd35b9a9b884585c78891e',1,'mxc_gpio_regs_t']]],
-  ['af_5fsel_5fset_22',['af_sel_set',['../group__gpio__registers.html#aec150af158c54e9f5b61043e2609affd',1,'mxc_gpio_regs_t']]],
-  ['analog_20digital_20converter_20_28adc_29_23',['Analog Digital Converter (ADC)',['../group__adc.html',1,'']]],
-  ['arg_5f1_24',['arg_1',['../group__sdhc__registers.html#a161dd294ef481eb935e45882805eb994',1,'mxc_sdhc_regs_t::arg_1()'],['../group__sdhc.html#ac6a986b9977edc7f6afd8adc881be3bc',1,'mxc_sdhc_cmd_cfg_t::arg_1()']]],
-  ['assertion_20checks_20for_20debugging_25',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]],
-  ['auto_5fcmd_5fer_26',['auto_cmd_er',['../group__sdhc__registers.html#acc57f6faf0d828fc867f2e4bd5cf176d',1,'mxc_sdhc_regs_t']]]
+  ['aeskeys_5fregisters_20',['AESKEYS_Registers',['../group__aeskeys__registers.html',1,'']]],
+  ['af_5fsel_21',['af_sel',['../group__gpio__registers.html#a70f7eea1dfd4344814fefa9ea71115d6',1,'mxc_gpio_regs_t']]],
+  ['af_5fsel_5fclr_22',['af_sel_clr',['../group__gpio__registers.html#aee9d5ed877bd35b9a9b884585c78891e',1,'mxc_gpio_regs_t']]],
+  ['af_5fsel_5fset_23',['af_sel_set',['../group__gpio__registers.html#aec150af158c54e9f5b61043e2609affd',1,'mxc_gpio_regs_t']]],
+  ['analog_20digital_20converter_20_28adc_29_24',['Analog Digital Converter (ADC)',['../group__adc.html',1,'']]],
+  ['arg_5f1_25',['arg_1',['../group__sdhc__registers.html#a161dd294ef481eb935e45882805eb994',1,'mxc_sdhc_regs_t::arg_1()'],['../group__sdhc.html#ac6a986b9977edc7f6afd8adc881be3bc',1,'mxc_sdhc_cmd_cfg_t::arg_1()']]],
+  ['assertion_20checks_20for_20debugging_26',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]],
+  ['auto_5fcmd_5fer_27',['auto_cmd_er',['../group__sdhc__registers.html#acc57f6faf0d828fc867f2e4bd5cf176d',1,'mxc_sdhc_regs_t']]]
 ];

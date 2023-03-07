@@ -26,9 +26,10 @@ var searchData=
   ['aes_5fkey_5fregisters_23',['AES_KEY_Registers',['../group__aes__key__registers.html',1,'']]],
   ['aes_5fregisters_24',['AES_Registers',['../group__aes__registers.html',1,'']]],
   ['aes_5fstatus_25',['AES_STATUS',['../group___a_e_s___s_t_a_t_u_s.html',1,'']]],
-  ['analog_20to_20digital_20converter_20_28adc_29_26',['Analog to Digital Converter (ADC)',['../group__adc.html',1,'']]],
-  ['assertion_20checks_20for_20debugging_27',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]],
-  ['autocal0_28',['autocal0',['../group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26',1,'mxc_fcr_regs_t']]],
-  ['autocal1_29',['autocal1',['../group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba',1,'mxc_fcr_regs_t']]],
-  ['autocal2_30',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]]
+  ['aeskeys_5fregisters_26',['AESKEYS_Registers',['../group__aeskeys__registers.html',1,'']]],
+  ['analog_20to_20digital_20converter_20_28adc_29_27',['Analog to Digital Converter (ADC)',['../group__adc.html',1,'']]],
+  ['assertion_20checks_20for_20debugging_28',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]],
+  ['autocal0_29',['autocal0',['../group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26',1,'mxc_fcr_regs_t']]],
+  ['autocal1_30',['autocal1',['../group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba',1,'mxc_fcr_regs_t']]],
+  ['autocal2_31',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]]
 ];

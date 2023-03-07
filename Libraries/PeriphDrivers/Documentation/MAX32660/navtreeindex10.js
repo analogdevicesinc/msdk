@@ -1,5 +1,9 @@
 var NAVTREEINDEX10 =
 {
+"group__uart.html#struct__mxc__uart__req__t":[0,15,1],
+"group__uart__registers.html":[0,15,0],
+"group__uart__registers.html#a01beaa79871f6d4fa5ac69f6e29ab45d":[0,15,0,11,2],
+"group__uart__registers.html#a082142366c4b8762be50630a277cafd1":[0,15,0,11,7],
 "group__uart__registers.html#a165ffa7e0db53fbc622c375b63a436d7":[0,15,0,11,8],
 "group__uart__registers.html#a3e6d001d1e0e8d1e47c89262c1acc0f2":[0,15,0,11,6],
 "group__uart__registers.html#a5a575d2571d830db6f729bef12cbe338":[0,15,0,11,0],

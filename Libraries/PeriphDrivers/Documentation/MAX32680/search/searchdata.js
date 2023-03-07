@@ -7,7 +7,8 @@ var indexSectionsWithContent =
   4: "ms",
   5: "lm",
   6: "imst",
-  7: "1acdefgilmoprstuw"
+  7: "1acdefgilmoprstuw",
+  8: "d"
 };
 
 var indexSectionNames =
@@ -19,7 +20,8 @@ var indexSectionNames =
   4: "typedefs",
   5: "enums",
   6: "enumvalues",
-  7: "groups"
+  7: "groups",
+  8: "pages"
 };
 
 var indexSectionLabels =
@@ -31,6 +33,7 @@ var indexSectionLabels =
   4: "Typedefs",
   5: "Enumerations",
   6: "Enumerator",
-  7: "Modules"
+  7: "Modules",
+  8: "Pages"
 };
 

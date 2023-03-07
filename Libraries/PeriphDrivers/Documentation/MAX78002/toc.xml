@@ -1,4 +1,5 @@
 <toc label="MAX78002 Peripheral Driver API" topic="index.html">
+  <topic label="Deprecated List" href="deprecated.html"/>
   <topic label="Modules" href="modules.html">
     <topic label="ADC" href="group__adc.html">
       <topic label="ADC_Registers" href="group__adc__registers.html">
@@ -2684,10 +2685,12 @@
         <topic label="MXC_GPIO_VSSEL_VDDIOH" href="group__gpio.html#gga03b13c78f2f773dabd26b93943a4b201ac9be2a87256b05745f444b401e89b6db"/>
       </topic>
       <topic label="MXC_GPIO_ClearFlags" href="group__gpio.html#ga8bf6b06c6cae315736a2766647fc4494"/>
+      <topic label="MXC_GPIO_ClearWakeEn" href="group__gpio.html#ga7893e171ce9cb1008acb7c587e140e2e"/>
       <topic label="MXC_GPIO_Config" href="group__gpio.html#ga0d26c61a9e47c6b9824ba453c702ca2c"/>
       <topic label="MXC_GPIO_DisableInt" href="group__gpio.html#ga686faf01d860135ff6fedecb80ec09f7"/>
       <topic label="MXC_GPIO_EnableInt" href="group__gpio.html#ga3a040873cbd5575341c4afa415f9ef4c"/>
       <topic label="MXC_GPIO_GetFlags" href="group__gpio.html#ga22364077384b494cbee39b5abd355e47"/>
+      <topic label="MXC_GPIO_GetWakeEn" href="group__gpio.html#ga6e08685c79836b62652ea85c583ed406"/>
       <topic label="MXC_GPIO_Handler" href="group__gpio.html#gae3606e5c2b0e93254e117e3c3dac4b9e"/>
       <topic label="MXC_GPIO_InGet" href="group__gpio.html#gaf4eb05624cd4979d262d0dc77bbad3b1"/>
       <topic label="MXC_GPIO_Init" href="group__gpio.html#ga638585621edcdf639763def1e8fd09e5"/>
@@ -2700,6 +2703,7 @@
       <topic label="MXC_GPIO_RegisterCallback" href="group__gpio.html#ga3265819f3bee4f107d6f02716b4394d1"/>
       <topic label="MXC_GPIO_Reset" href="group__gpio.html#gaa54a2fd9780d13ef0805aff24e3b2345"/>
       <topic label="MXC_GPIO_SetVSSEL" href="group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549"/>
+      <topic label="MXC_GPIO_SetWakeEn" href="group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f"/>
       <topic label="MXC_GPIO_Shutdown" href="group__gpio.html#ga573834d158ef9678e57c5f677b3a5c22"/>
     </topic>
     <topic label="I2C" href="group__i2c.html">
@@ -3478,6 +3482,7 @@
       <topic label="E_BAD_STATE" href="group___m_x_c___error___codes.html#gafd30d7289fced0a47ec3f06ef47bb490"/>
       <topic label="E_BUSY" href="group___m_x_c___error___codes.html#ga12289e8715fd56a16034f610666d900c"/>
       <topic label="E_COMM_ERR" href="group___m_x_c___error___codes.html#ga52b168e8df885a6861076e16363af90a"/>
+      <topic label="E_FAIL" href="group___m_x_c___error___codes.html#ga8f0547e641e1efc8110437fa85aa722e"/>
       <topic label="E_INVALID" href="group___m_x_c___error___codes.html#ga79cad4bcfba6b7b498354d36522bea1a"/>
       <topic label="E_NO_DEVICE" href="group___m_x_c___error___codes.html#ga174550cea68ee75877346900afe967a6"/>
       <topic label="E_NO_ERROR" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4"/>
@@ -5835,6 +5840,20 @@
         <topic label="aes_key7" href="group__aes__key__registers.html#ad09528c1fb348e3a4f397fa9dd08ef0f"/>
       </topic>
     </topic>
+    <topic label="AESKEYS_Registers" href="group__aeskeys__registers.html">
+      <topic label="Register Offsets" href="group___a_e_s_k_e_y_s___register___offsets.html">
+        <topic label="MXC_R_AESKEYS_KEY0" href="group___a_e_s_k_e_y_s___register___offsets.html#ga041e067f129b50f223521d8b1265ab13"/>
+        <topic label="MXC_R_AESKEYS_KEY1" href="group___a_e_s_k_e_y_s___register___offsets.html#gad0930de063de3d2f4e2dfe034f2e9e01"/>
+        <topic label="MXC_R_AESKEYS_KEY2" href="group___a_e_s_k_e_y_s___register___offsets.html#ga2329db2270d5c3ce8554282ec5588547"/>
+        <topic label="MXC_R_AESKEYS_KEY3" href="group___a_e_s_k_e_y_s___register___offsets.html#gaaa1d6f4d129f6d4148653261265c3e51"/>
+      </topic>
+      <topic label="mxc_aeskeys_regs_t" href="group__aeskeys__registers.html#structmxc__aeskeys__regs__t">
+        <topic label="key0" href="group__aeskeys__registers.html#a759ead215580b1f203395aae6ad551c3"/>
+        <topic label="key1" href="group__aeskeys__registers.html#a0a05bb26168fc57a007b9f8f596250ef"/>
+        <topic label="key2" href="group__aeskeys__registers.html#ac24670b744610f5cf7877086005e49dc"/>
+        <topic label="key3" href="group__aeskeys__registers.html#a8943ef7d57c4892d4ac5f11220c804ce"/>
+      </topic>
+    </topic>
     <topic label="DVS_Registers" href="group__dvs__registers.html">
       <topic label="Register Offsets" href="group___d_v_s___register___offsets.html">
         <topic label="MXC_R_DVS_ADJ_DWN" href="group___d_v_s___register___offsets.html#gaa54713c607b7591ad5cb0028958bdd6b"/>
@@ -7905,6 +7924,12 @@
         <topic label="keySize" href="group__aes.html#acd3280be19b3415b561b62aaea8a6e5b"/>
         <topic label="length" href="group__aes.html#aebb70c2aab3407a9f05334c47131a43b"/>
         <topic label="resultData" href="group__aes.html#a9b0ce351b04c0481ffe81cd5338e8f6c"/>
+      </topic>
+      <topic label="mxc_aeskeys_regs_t" href="group__aeskeys__registers.html#structmxc__aeskeys__regs__t">
+        <topic label="key0" href="group__aeskeys__registers.html#a759ead215580b1f203395aae6ad551c3"/>
+        <topic label="key1" href="group__aeskeys__registers.html#a0a05bb26168fc57a007b9f8f596250ef"/>
+        <topic label="key2" href="group__aeskeys__registers.html#ac24670b744610f5cf7877086005e49dc"/>
+        <topic label="key3" href="group__aeskeys__registers.html#a8943ef7d57c4892d4ac5f11220c804ce"/>
       </topic>
       <topic label="mxc_cameraif_regs_t" href="group__cameraif__registers.html#structmxc__cameraif__regs__t">
         <topic label="ctrl" href="group__cameraif__registers.html#a5f3ab705a4a67b17dcc04560cef193f3"/>

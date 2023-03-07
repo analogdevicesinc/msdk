@@ -162,6 +162,12 @@ Functions</h2></td></tr>
 <tr class="separator:gae3606e5c2b0e93254e117e3c3dac4b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga53687f1fd275708a6404f9d64b6e0549"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549">MXC_GPIO_SetVSSEL</a> (<a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *port, <a class="el" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">mxc_gpio_vssel_t</a> vssel, uint32_t mask)</td></tr>
 <tr class="separator:ga53687f1fd275708a6404f9d64b6e0549"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae3e2023e6c3b8783aaaa2f68aa4d9b2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f">MXC_GPIO_SetWakeEn</a> (<a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *port, uint32_t mask)</td></tr>
+<tr class="separator:gae3e2023e6c3b8783aaaa2f68aa4d9b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7893e171ce9cb1008acb7c587e140e2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga7893e171ce9cb1008acb7c587e140e2e">MXC_GPIO_ClearWakeEn</a> (<a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *port, uint32_t mask)</td></tr>
+<tr class="separator:ga7893e171ce9cb1008acb7c587e140e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga6e08685c79836b62652ea85c583ed406"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga6e08685c79836b62652ea85c583ed406">MXC_GPIO_GetWakeEn</a> (<a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *port)</td></tr>
+<tr class="separator:ga6e08685c79836b62652ea85c583ed406"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -455,6 +461,43 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga7893e171ce9cb1008acb7c587e140e2e" name="ga7893e171ce9cb1008acb7c587e140e2e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7893e171ce9cb1008acb7c587e140e2e">&#9670;&nbsp;</a></span>MXC_GPIO_ClearWakeEn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_GPIO_ClearWakeEn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disables GPIO pins from being used as a wakeup source. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>The GPIO port </td></tr>
+    <tr><td class="paramname">mask</td><td>Pins in the GPIO port that will be disabled as a wakeup source. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga0d26c61a9e47c6b9824ba453c702ca2c" name="ga0d26c61a9e47c6b9824ba453c702ca2c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga0d26c61a9e47c6b9824ba453c702ca2c">&#9670;&nbsp;</a></span>MXC_GPIO_Config()</h2>
 
@@ -578,6 +621,33 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The requested interrupt status. </dd></dl>
+
+</div>
+</div>
+<a id="ga6e08685c79836b62652ea85c583ed406" name="ga6e08685c79836b62652ea85c583ed406"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga6e08685c79836b62652ea85c583ed406">&#9670;&nbsp;</a></span>MXC_GPIO_GetWakeEn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint32_t MXC_GPIO_GetWakeEn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>port</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the pins currently enabled as wakeup sources. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>The GPIO port to check.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The value of the wake enable register. </dd></dl>
 
 </div>
 </div>
@@ -1009,6 +1079,43 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="gae3e2023e6c3b8783aaaa2f68aa4d9b2f" name="gae3e2023e6c3b8783aaaa2f68aa4d9b2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae3e2023e6c3b8783aaaa2f68aa4d9b2f">&#9670;&nbsp;</a></span>MXC_GPIO_SetWakeEn()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_GPIO_SetWakeEn </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enables GPIO pins to be used as a wakeup source. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">port</td><td>The GPIO port </td></tr>
+    <tr><td class="paramname">mask</td><td>Pins in the GPIO port that will be enabled as a wakeup source. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga7da8e2e92a5f84bb2c49da60b14f6ff9" name="ga7da8e2e92a5f84bb2c49da60b14f6ff9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7da8e2e92a5f84bb2c49da60b14f6ff9">&#9670;&nbsp;</a></span>MXC_GPIO_Shutdown()</h2>
 
@@ -1041,7 +1148,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Dec 15 2022 22:46:24 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Mar 7 2023 00:06:23 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

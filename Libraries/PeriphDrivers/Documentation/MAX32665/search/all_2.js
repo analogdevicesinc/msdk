@@ -24,11 +24,12 @@ var searchData=
   ['aes_5fkey2_21',['aes_key2',['../group__aes__key__registers.html#a798cc7a9a8b7addbd574237505bfa9fa',1,'mxc_aes_key_regs_t']]],
   ['aes_5fkey3_22',['aes_key3',['../group__aes__key__registers.html#aceacd09301eb4c669ec57824c306d519',1,'mxc_aes_key_regs_t']]],
   ['aes_5fkey_5fregisters_23',['AES_KEY_Registers',['../group__aes__key__registers.html',1,'']]],
-  ['aincomp_24',['aincomp',['../group__mcr__registers.html#a1f1a1a126050db081f95eaa80bd041a9',1,'mxc_mcr_regs_t']]],
-  ['analog_20to_20digital_20converter_20_28adc_29_25',['Analog to Digital Converter (ADC)',['../group__adc.html',1,'']]],
-  ['apb_5fasync_26',['apb_async',['../group__gcr__registers.html#a6e1ff66da9e7f6caa395e59a775b6ac1',1,'mxc_gcr_regs_t']]],
-  ['arg_5f1_27',['arg_1',['../group__sdhc__registers.html#a161dd294ef481eb935e45882805eb994',1,'mxc_sdhc_regs_t::arg_1()'],['../group__sdhc.html#ac6a986b9977edc7f6afd8adc881be3bc',1,'mxc_sdhc_cmd_cfg_t::arg_1()']]],
-  ['assertion_20checks_20for_20debugging_28',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]],
-  ['audio_29',['audio',['../group__rpu__registers.html#af01ef8a85eb0c79cdaa7a1a90937d4da',1,'mxc_rpu_regs_t']]],
-  ['auto_5fcmd_5fer_30',['auto_cmd_er',['../group__sdhc__registers.html#acc57f6faf0d828fc867f2e4bd5cf176d',1,'mxc_sdhc_regs_t']]]
+  ['aeskeys_5fregisters_24',['AESKEYS_Registers',['../group__aeskeys__registers.html',1,'']]],
+  ['aincomp_25',['aincomp',['../group__mcr__registers.html#a1f1a1a126050db081f95eaa80bd041a9',1,'mxc_mcr_regs_t']]],
+  ['analog_20to_20digital_20converter_20_28adc_29_26',['Analog to Digital Converter (ADC)',['../group__adc.html',1,'']]],
+  ['apb_5fasync_27',['apb_async',['../group__gcr__registers.html#a6e1ff66da9e7f6caa395e59a775b6ac1',1,'mxc_gcr_regs_t']]],
+  ['arg_5f1_28',['arg_1',['../group__sdhc__registers.html#a161dd294ef481eb935e45882805eb994',1,'mxc_sdhc_regs_t::arg_1()'],['../group__sdhc.html#ac6a986b9977edc7f6afd8adc881be3bc',1,'mxc_sdhc_cmd_cfg_t::arg_1()']]],
+  ['assertion_20checks_20for_20debugging_29',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]],
+  ['audio_30',['audio',['../group__rpu__registers.html#af01ef8a85eb0c79cdaa7a1a90937d4da',1,'mxc_rpu_regs_t']]],
+  ['auto_5fcmd_5fer_31',['auto_cmd_er',['../group__sdhc__registers.html#acc57f6faf0d828fc867f2e4bd5cf176d',1,'mxc_sdhc_regs_t']]]
 ];

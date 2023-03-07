@@ -35,5 +35,6 @@ var searchData=
   ['aes_5fkey_5fregisters_32',['AES_KEY_Registers',['../group__aes__key__registers.html',1,'']]],
   ['aes_5fregisters_33',['AES_Registers',['../group__aes__registers.html',1,'']]],
   ['aes_5fstatus_34',['AES_STATUS',['../group___a_e_s___s_t_a_t_u_s.html',1,'']]],
-  ['assertion_20checks_20for_20debugging_35',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]]
+  ['aeskeys_5fregisters_35',['AESKEYS_Registers',['../group__aeskeys__registers.html',1,'']]],
+  ['assertion_20checks_20for_20debugging_36',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]]
 ];

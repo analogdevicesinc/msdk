@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "MAX32670 Peripheral Driver API", "index.html", [
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -40,19 +41,19 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group___d_m_a___c_t_r_l.html#gaaf9fa00c75fa62912282067260ab4c9f",
-"group___g_c_r___c_l_k_c_t_r_l.html#ga1a19d0fb1bc8bdbf5ec9ccff3e879ffe",
-"group___g_c_r___r_s_t0.html#gaf36e674305200ab3c4d33417c2312f85",
-"group___g_p_i_o___register___offsets.html#gacedd52f61c661de1cfdb2ec550ce0f2b",
-"group___i2_c___t_x_c_t_r_l0.html#gaa7409db56d6e107cf7e307554b438ca3",
-"group___p_w_r_s_e_q___l_p_p_w_k_s_t.html",
-"group___s_p_i___register___offsets.html#ga1fb933e2071a655a4f7d16fe9570394d",
-"group___t_m_r___n_o_l_c_m_p.html#gadb62760952a69566a73001e265c4bad6",
-"group___w_d_t___c_t_r_l.html#ga3d9ec95b80fa466bede7233ffcbebeb4",
-"group__dma.html#gac4096ee4e50eab71c4b1416ea7261e97",
-"group__gpio__registers.html#af2d2d31f5bfd87cd995ecc3c8178e7e4",
-"group__pwrseq.html#gafc72801a23b9d57627a4b4ade155c672",
-"group__uart.html#ga256350715ed900f67d05e7a29f8632fc"
+"group___d_m_a___c_t_r_l.html#ga9c14496602a672afd2e98661c463f1fd",
+"group___g_c_r___c_l_k_c_t_r_l.html",
+"group___g_c_r___r_s_t0.html#ga9c9018030f49a6a368456652d55eab1a",
+"group___g_p_i_o___register___offsets.html#ga8fd3cf8691808ed971d73650b65c35e1",
+"group___i2_c___t_x_c_t_r_l0.html",
+"group___p_w_r_s_e_q___l_p_m_e_m_s_d.html#gac66371873e71ddceac5e8f307beb6cc2",
+"group___s_p_i___i_n_t_f_l.html#ga8b1eae5c531d7fce1635fbe5c37bf099",
+"group___t_m_r___i_n_t_f_l.html#gadcd3045d77f0bc86c20c5213e5691015",
+"group___w_d_t___c_t_r_l.html#ga2c0d369c980d8af0526af8b6da0e9490",
+"group__dma.html#afed088663f8704004425cdae2120b9b3",
+"group__gpio__registers.html#a3966f88b0d7d63574afa3a4a373f119b",
+"group__pwrseq.html#gga428cd955ec855f628fc24392a67ecebba72e6f2949e6a7511975075706cd4ad5d",
+"group__uart.html#ga1275a45a60c1cfd4cb4acbd6737a1c50"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

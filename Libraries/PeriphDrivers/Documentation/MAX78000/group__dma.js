@@ -49,6 +49,7 @@ var group__dma =
       [ "MXC_DMA_REQUEST_I2C2RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a80cdb9fa7aa5c2ed4d2f8fd8a4d63e16", null ],
       [ "MXC_DMA_REQUEST_UART2RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ab33c71fe39629a4bb6703fc936fbc3d9", null ],
       [ "MXC_DMA_REQUEST_AESRX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ac2344c8ea291fb9a4cdc673351ae196c", null ],
+      [ "MXC_DMA_REQUEST_UART3RX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3abc5896ffab7d9d1f3bf6e94034625d0c", null ],
       [ "MXC_DMA_REQUEST_I2SRX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3acfd17bfe9f5cf14596500e7afcc6a58a", null ],
       [ "MXC_DMA_REQUEST_SPI1TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ae94894558704ac84f7a5dd60c674879a", null ],
       [ "MXC_DMA_REQUEST_SPI0TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a568d9362cf11302e081da4a2db5a8b52", null ],
@@ -60,6 +61,7 @@ var group__dma =
       [ "MXC_DMA_REQUEST_CRCTX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a27442896c300496c53e3951ba376da83", null ],
       [ "MXC_DMA_REQUEST_UART2TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a68c1b577821399e2f8690d434e6b696a", null ],
       [ "MXC_DMA_REQUEST_AESTX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a53f51970642a6f93e1319672a985d846", null ],
+      [ "MXC_DMA_REQUEST_UART3TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a7f5214a648f591052736ccb9636040fc", null ],
       [ "MXC_DMA_REQUEST_I2STX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3af4a819af5d3369e6a83ae3737ca3dff6", null ]
     ] ],
     [ "mxc_dma_timeout_t", "group__dma.html#gab010374c529e9da4bf17c357dfa637eb", [

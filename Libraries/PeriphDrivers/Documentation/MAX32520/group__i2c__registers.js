@@ -17,8 +17,8 @@ var group__i2c__registers =
     [ "I2C_CKL", "group___i2_c___c_k_l.html", "group___i2_c___c_k_l" ],
     [ "I2C_CKH", "group___i2_c___c_k_h.html", "group___i2_c___c_k_h" ],
     [ "I2C_TO", "group___i2_c___t_o.html", "group___i2_c___t_o" ],
-    [ "I2C_SLA", "group___i2_c___s_l_a.html", "group___i2_c___s_l_a" ],
     [ "I2C_DMA", "group___i2_c___d_m_a.html", "group___i2_c___d_m_a" ],
+    [ "I2C_SLA", "group___i2_c___s_l_a.html", "group___i2_c___s_l_a" ],
     [ "mxc_i2c_regs_t", "group__i2c__registers.html#structmxc__i2c__regs__t", [
       [ "ckh", "group__i2c__registers.html#a433150c4b5fc73d30da967fa9587ef43", null ],
       [ "ckl", "group__i2c__registers.html#a1d76bb8e71742dba05b08a5396f3b1ae", null ],

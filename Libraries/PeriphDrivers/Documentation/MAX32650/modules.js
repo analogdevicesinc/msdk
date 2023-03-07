@@ -32,6 +32,7 @@ var modules =
     [ "UART", "group__uart.html", "group__uart" ],
     [ "Watchdog Timer (WDT)", "group__wdt.html", "group__wdt" ],
     [ "AES_KEY_Registers", "group__aes__key__registers.html", "group__aes__key__registers" ],
+    [ "AESKEYS_Registers", "group__aeskeys__registers.html", "group__aeskeys__registers" ],
     [ "BBFC_Registers", "group__bbfc__registers.html", "group__bbfc__registers" ],
     [ "GCR_Registers", "group__gcr__registers.html", "group__gcr__registers" ],
     [ "NBBFC_Registers", "group__nbbfc__registers.html", "group__nbbfc__registers" ],

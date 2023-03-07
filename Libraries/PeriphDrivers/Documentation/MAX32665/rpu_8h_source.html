@@ -88,8 +88,8 @@ $(document).ready(function(){initNavTree('rpu_8h_source.html',''); initResizable
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/* ****************************************************************************</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment">/******************************************************************************</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span></div>
@@ -119,109 +119,106 @@ $(document).ready(function(){initNavTree('rpu_8h_source.html',''); initResizable
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> * property whatsoever. Maxim Integrated Products, Inc. retains all</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> * ownership rights.</span></div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"> * $Date: 2019-12-24 11:42:21 -0600 (Tue, 24 Dec 2019) $</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"> * $Revision: 50314 $</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="comment"> *************************************************************************** */</span></div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">/* Define to prevent redundant inclusion */</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_RPU_H_</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_RPU_H_</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"> ******************************************************************************/</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">/* Define to prevent redundant inclusion */</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_RPU_H_</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_RPU_H_</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">/* **** Includes **** */</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;rpu_regs.h&quot;</span></div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/* **** Includes **** */</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#include &quot;rpu_regs.h&quot;</span></div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="comment">/* **** Definitions **** */</span></div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span><span class="comment">// Bus Masters whose access to peripherals is controlled by the RPU</span></div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    MXC_RPU_DMA0_ALLOW = 0x01,</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    MXC_RPU_DMA1_ALLOW = 0x02,</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    MXC_RPU_USB_ALLOW = 0x04,</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    MXC_RPU_SYS0_ALLOW = 0x08,</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    MXC_RPU_SYS1_ALLOW = 0x10,</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    MXC_RPU_SDMAD_ALLOW = 0x20,</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    MXC_RPU_SDMAI_ALLOW = 0x40,</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    MXC_RPU_CRYPTO_ALLOW = 0x80,</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    MXC_RPU_SDIO_ALLOW = 0x100</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>} mxc_rpu_allow_t;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span><span class="comment">// Peripherals gated by the RPU</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    MXC_RPU_GCR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga825b219b3f230d1b1e46121a81330e2b">MXC_R_RPU_GCR</a>,</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    MXC_RPU_FLC0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaa6b3f26966806128b9526fd5afe8fefd">MXC_R_RPU_FLC0</a>,</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    MXC_RPU_SDHCCTRL = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gac35bab8d18cc60bf5a2c26e6ac570fc8">MXC_R_RPU_SDHCCTRL</a>,</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    MXC_RPU_SIR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga08e5da34f084d5828f0b7d87de0e3934">MXC_R_RPU_SIR</a>,</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    MXC_RPU_FCR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga288078ece23c2fd5e462c487fef6b8cd">MXC_R_RPU_FCR</a>,</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    MXC_RPU_CRYPTO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gac0cdbecceb72f3258053951c87f60761">MXC_R_RPU_TPU</a>,</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    MXC_RPU_WDT0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga4b9a63572672e8f54098314babb1cafe">MXC_R_RPU_WDT0</a>,</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    MXC_RPU_WDT1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga8178aa4e26199e56b5638f4303bbe746">MXC_R_RPU_WDT1</a>,</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    MXC_RPU_WDT2 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gadac918df083790b46d844d0a14e5a9db">MXC_R_RPU_WDT2</a>,</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    MXC_RPU_SMON = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga6b246b4f9b96120df219e2bd17136c2b">MXC_R_RPU_SMON</a>,</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    MXC_RPU_SIMO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga1d0f34cba28bac53dc792c9771bac914">MXC_R_RPU_SIMO</a>,</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    MXC_RPU_DVS = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga60bf4b11fd8fc194e351b18143bb9fc3">MXC_R_RPU_DVS</a>,</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    MXC_RPU_RTC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga1ce634242a53c466a24d37c7d1f5b1db">MXC_R_RPU_RTC</a>,</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    MXC_RPU_WUT = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga195ab65b469105cd3b9f94f39a9f2211">MXC_R_RPU_WUT</a>,</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    MXC_RPU_PWRSEQ = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga3aa16487adf823d6da62ef102304513a">MXC_R_RPU_PWRSEQ</a>,</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    MXC_RPU_MCR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga21b6c3af682ef64e5178e15e509588da">MXC_R_RPU_MCR</a>,</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    MXC_RPU_GPIO0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga75ed135f829f917e0a5df435779b6cb9">MXC_R_RPU_GPIO0</a>,</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    MXC_RPU_GPIO1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga6485a93c06828e0a150fed7a9f606416">MXC_R_RPU_GPIO1</a>,</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    MXC_RPU_TMR0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gab2d78a4ac627079ab600e4d70f37f9d6">MXC_R_RPU_TMR0</a>,</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    MXC_RPU_TMR1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga54091642839ac8e783bc70518fce2b32">MXC_R_RPU_TMR1</a>,</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    MXC_RPU_TMR2 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga54b0a6e7c104e60ee4052bc26c2dc6bc">MXC_R_RPU_TMR2</a>,</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    MXC_RPU_TMR3 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaf1f0e4cd8e917fb7623020ecc35db7b8">MXC_R_RPU_TMR3</a>,</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    MXC_RPU_TMR4 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaccea9e5decdbbb8f69e6bb4c7f5f835b">MXC_R_RPU_TMR4</a>,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    MXC_RPU_TMR5 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gabd1887d752901b0228a696b5436f2adf">MXC_R_RPU_TMR5</a>,</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    MXC_RPU_HTIMER0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga01b922fb60ac3bd05effd03440ea8a52">MXC_R_RPU_HTIMER0</a>,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    MXC_RPU_HTIMER1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaa58379e2534bb94356a25513fcd63fb9">MXC_R_RPU_HTIMER1</a>,</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    MXC_RPU_I2C0_BUS0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaefb51f683d5b95a5eb7f8b96baa916e0">MXC_R_RPU_I2C0_BUS0</a>,</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    MXC_RPU_I2C1_BUS0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga35491a688595e6a95011d50b045fa087">MXC_R_RPU_I2C1_BUS0</a>,</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    MXC_RPU_I2C2_BUS0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga3c770e9f2dac8ddb3d8811ab78ed4ec5">MXC_R_RPU_I2C2_BUS0</a>,</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    MXC_RPU_SPIXFM = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gae1db0eeb2bf918bcd61de3eb74150a9d">MXC_R_RPU_SPIXFM</a>,</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    MXC_RPU_SPIXFC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga36ab22a27b914e37e8ac89738b311409">MXC_R_RPU_SPIXFC</a>,</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    MXC_RPU_DMA0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga057a038e76a4e64b85b8ae1a1efea609">MXC_R_RPU_DMA0</a>,</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    MXC_RPU_FLC1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga0bc3cc9ea9796806169c81de21f64850">MXC_R_RPU_FLC1</a>,</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    MXC_RPU_ICC0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga25089af9382221427f076a0a744dcbc0">MXC_R_RPU_ICC0</a>,</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    MXC_RPU_ICC1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga4b79d6a28a97c7e4672d87343f6e000a">MXC_R_RPU_ICC1</a>,</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    MXC_RPU_SFCC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaa5c2e1662d3e38eeb649437d5ea7b732">MXC_R_RPU_SFCC</a>,</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    MXC_RPU_SRCC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga5f1e62fc14fe4e1804029026aef6a31c">MXC_R_RPU_SRCC</a>,</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    MXC_RPU_ADC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga5ddb3702ca58e824b39080fd943ad0e8">MXC_R_RPU_ADC</a>,</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    MXC_RPU_DMA1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaae53b6ab781ae22de703e2eefe48cf8a">MXC_R_RPU_DMA1</a>,</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    MXC_RPU_SDMA = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga8a5327625d0202b91e35df282035fb15">MXC_R_RPU_SDMA</a>,</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    MXC_RPU_SPIXR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga81a72a43bdfa013b0483f14367077d90">MXC_R_RPU_SPIXR</a>,</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    MXC_RPU_PTG_BUS0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga3d11b03929af18e7a7a25937b1c9b63c">MXC_R_RPU_PTG_BUS0</a>,</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    MXC_RPU_OWM = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga2f9642cfb30ad9b3022f70b6866a7b66">MXC_R_RPU_OWM</a>,</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    MXC_RPU_SEMA = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gacba86cb3b3d9b5e6fb6eaa0ea8c9f94d">MXC_R_RPU_SEMA</a>,</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    MXC_RPU_UART0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga85374954f0649679ed9bb6c2285462a0">MXC_R_RPU_UART0</a>,</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    MXC_RPU_UART1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gab8f74f1ffbabee67c6e99a7ec0db1ec1">MXC_R_RPU_UART1</a>,</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    MXC_RPU_UART2 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gac516a6afad33b1224b22756bf1eb996c">MXC_R_RPU_UART2</a>,</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    MXC_RPU_SPI1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga6e25854a9510774e7aa70a1cd10f79c9">MXC_R_RPU_SPI1</a>,</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    MXC_RPU_SPI2 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga50ac3cdb93d1c48ace45667fec075bfe">MXC_R_RPU_SPI2</a>,</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    MXC_RPU_AUDIO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga62858ee59d0413033e261d2fa6ac3260">MXC_R_RPU_AUDIO</a>,</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    MXC_RPU_TRNG = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga941d1c10cedf99ac6175ffe1fd13348c">MXC_R_RPU_TRNG</a>,</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    MXC_RPU_BTLE = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaceec8d8b6f34220875c91ce9d95e4fdb">MXC_R_RPU_BTLE</a>,</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    MXC_RPU_USBHS = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga83f9fb182fac2146eeb38d7f4c2f48f1">MXC_R_RPU_USBHS</a>,</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    MXC_RPU_SDIO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga875e2159d2590cb82bb0aaf08a896894">MXC_R_RPU_SDIO</a>,</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    MXC_RPU_SPIXFM_FIFO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga6b6a5dae810e7d32ca362d3cedd1cbdf">MXC_R_RPU_SPIXFM_FIFO</a>,</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    MXC_RPU_SPI0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaaead5559747a6cf80244155c9a3fb00d">MXC_R_RPU_SPI0</a></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>} mxc_rpu_device_t;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">/* **** Function Prototypes **** */</span></div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="group__rpu.html#gadf2f6ffae2c7e31d580300962b8324ce">  142</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__rpu.html#gadf2f6ffae2c7e31d580300962b8324ce">MXC_RPU_Allow</a>(mxc_rpu_device_t periph, uint32_t allow_mask);</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span> </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="group__rpu.html#ga295a6060c4639b98898f628e6b4c4c1c">  151</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__rpu.html#ga295a6060c4639b98898f628e6b4c4c1c">MXC_RPU_Disallow</a>(mxc_rpu_device_t periph, uint32_t disallow_mask);</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="group__rpu.html#ga86aa0d20216cbeac4eb17c416026be8c">  158</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__rpu.html#ga86aa0d20216cbeac4eb17c416026be8c">MXC_RPU_IsAllowed</a>(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>}</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_RPU_H_</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">/* **** Definitions **** */</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">// Bus Masters whose access to peripherals is controlled by the RPU</span></div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    MXC_RPU_DMA0_ALLOW = 0x01,</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    MXC_RPU_DMA1_ALLOW = 0x02,</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    MXC_RPU_USB_ALLOW = 0x04,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    MXC_RPU_SYS0_ALLOW = 0x08,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    MXC_RPU_SYS1_ALLOW = 0x10,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    MXC_RPU_SDMAD_ALLOW = 0x20,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    MXC_RPU_SDMAI_ALLOW = 0x40,</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    MXC_RPU_CRYPTO_ALLOW = 0x80,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    MXC_RPU_SDIO_ALLOW = 0x100</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>} mxc_rpu_allow_t;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span><span class="comment">// Peripherals gated by the RPU</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    MXC_RPU_GCR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga825b219b3f230d1b1e46121a81330e2b">MXC_R_RPU_GCR</a>,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    MXC_RPU_FLC0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaa6b3f26966806128b9526fd5afe8fefd">MXC_R_RPU_FLC0</a>,</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    MXC_RPU_SDHCCTRL = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gac35bab8d18cc60bf5a2c26e6ac570fc8">MXC_R_RPU_SDHCCTRL</a>,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    MXC_RPU_SIR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga08e5da34f084d5828f0b7d87de0e3934">MXC_R_RPU_SIR</a>,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    MXC_RPU_FCR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga288078ece23c2fd5e462c487fef6b8cd">MXC_R_RPU_FCR</a>,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    MXC_RPU_CRYPTO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gac0cdbecceb72f3258053951c87f60761">MXC_R_RPU_TPU</a>,</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    MXC_RPU_WDT0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga4b9a63572672e8f54098314babb1cafe">MXC_R_RPU_WDT0</a>,</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    MXC_RPU_WDT1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga8178aa4e26199e56b5638f4303bbe746">MXC_R_RPU_WDT1</a>,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    MXC_RPU_WDT2 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gadac918df083790b46d844d0a14e5a9db">MXC_R_RPU_WDT2</a>,</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    MXC_RPU_SMON = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga6b246b4f9b96120df219e2bd17136c2b">MXC_R_RPU_SMON</a>,</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    MXC_RPU_SIMO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga1d0f34cba28bac53dc792c9771bac914">MXC_R_RPU_SIMO</a>,</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    MXC_RPU_DVS = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga60bf4b11fd8fc194e351b18143bb9fc3">MXC_R_RPU_DVS</a>,</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    MXC_RPU_RTC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga1ce634242a53c466a24d37c7d1f5b1db">MXC_R_RPU_RTC</a>,</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    MXC_RPU_WUT = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga195ab65b469105cd3b9f94f39a9f2211">MXC_R_RPU_WUT</a>,</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    MXC_RPU_PWRSEQ = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga3aa16487adf823d6da62ef102304513a">MXC_R_RPU_PWRSEQ</a>,</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    MXC_RPU_MCR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga21b6c3af682ef64e5178e15e509588da">MXC_R_RPU_MCR</a>,</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    MXC_RPU_GPIO0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga75ed135f829f917e0a5df435779b6cb9">MXC_R_RPU_GPIO0</a>,</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    MXC_RPU_GPIO1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga6485a93c06828e0a150fed7a9f606416">MXC_R_RPU_GPIO1</a>,</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    MXC_RPU_TMR0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gab2d78a4ac627079ab600e4d70f37f9d6">MXC_R_RPU_TMR0</a>,</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    MXC_RPU_TMR1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga54091642839ac8e783bc70518fce2b32">MXC_R_RPU_TMR1</a>,</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    MXC_RPU_TMR2 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga54b0a6e7c104e60ee4052bc26c2dc6bc">MXC_R_RPU_TMR2</a>,</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    MXC_RPU_TMR3 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaf1f0e4cd8e917fb7623020ecc35db7b8">MXC_R_RPU_TMR3</a>,</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    MXC_RPU_TMR4 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaccea9e5decdbbb8f69e6bb4c7f5f835b">MXC_R_RPU_TMR4</a>,</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    MXC_RPU_TMR5 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gabd1887d752901b0228a696b5436f2adf">MXC_R_RPU_TMR5</a>,</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    MXC_RPU_HTIMER0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga01b922fb60ac3bd05effd03440ea8a52">MXC_R_RPU_HTIMER0</a>,</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    MXC_RPU_HTIMER1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaa58379e2534bb94356a25513fcd63fb9">MXC_R_RPU_HTIMER1</a>,</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    MXC_RPU_I2C0_BUS0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaefb51f683d5b95a5eb7f8b96baa916e0">MXC_R_RPU_I2C0_BUS0</a>,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    MXC_RPU_I2C1_BUS0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga35491a688595e6a95011d50b045fa087">MXC_R_RPU_I2C1_BUS0</a>,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    MXC_RPU_I2C2_BUS0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga3c770e9f2dac8ddb3d8811ab78ed4ec5">MXC_R_RPU_I2C2_BUS0</a>,</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    MXC_RPU_SPIXFM = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gae1db0eeb2bf918bcd61de3eb74150a9d">MXC_R_RPU_SPIXFM</a>,</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    MXC_RPU_SPIXFC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga36ab22a27b914e37e8ac89738b311409">MXC_R_RPU_SPIXFC</a>,</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    MXC_RPU_DMA0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga057a038e76a4e64b85b8ae1a1efea609">MXC_R_RPU_DMA0</a>,</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    MXC_RPU_FLC1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga0bc3cc9ea9796806169c81de21f64850">MXC_R_RPU_FLC1</a>,</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    MXC_RPU_ICC0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga25089af9382221427f076a0a744dcbc0">MXC_R_RPU_ICC0</a>,</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    MXC_RPU_ICC1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga4b79d6a28a97c7e4672d87343f6e000a">MXC_R_RPU_ICC1</a>,</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    MXC_RPU_SFCC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaa5c2e1662d3e38eeb649437d5ea7b732">MXC_R_RPU_SFCC</a>,</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    MXC_RPU_SRCC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga5f1e62fc14fe4e1804029026aef6a31c">MXC_R_RPU_SRCC</a>,</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    MXC_RPU_ADC = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga5ddb3702ca58e824b39080fd943ad0e8">MXC_R_RPU_ADC</a>,</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    MXC_RPU_DMA1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaae53b6ab781ae22de703e2eefe48cf8a">MXC_R_RPU_DMA1</a>,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    MXC_RPU_SDMA = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga8a5327625d0202b91e35df282035fb15">MXC_R_RPU_SDMA</a>,</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    MXC_RPU_SPIXR = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga81a72a43bdfa013b0483f14367077d90">MXC_R_RPU_SPIXR</a>,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    MXC_RPU_PTG_BUS0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga3d11b03929af18e7a7a25937b1c9b63c">MXC_R_RPU_PTG_BUS0</a>,</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    MXC_RPU_OWM = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga2f9642cfb30ad9b3022f70b6866a7b66">MXC_R_RPU_OWM</a>,</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    MXC_RPU_SEMA = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gacba86cb3b3d9b5e6fb6eaa0ea8c9f94d">MXC_R_RPU_SEMA</a>,</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    MXC_RPU_UART0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga85374954f0649679ed9bb6c2285462a0">MXC_R_RPU_UART0</a>,</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    MXC_RPU_UART1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gab8f74f1ffbabee67c6e99a7ec0db1ec1">MXC_R_RPU_UART1</a>,</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    MXC_RPU_UART2 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gac516a6afad33b1224b22756bf1eb996c">MXC_R_RPU_UART2</a>,</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    MXC_RPU_SPI1 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga6e25854a9510774e7aa70a1cd10f79c9">MXC_R_RPU_SPI1</a>,</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    MXC_RPU_SPI2 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga50ac3cdb93d1c48ace45667fec075bfe">MXC_R_RPU_SPI2</a>,</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    MXC_RPU_AUDIO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga62858ee59d0413033e261d2fa6ac3260">MXC_R_RPU_AUDIO</a>,</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    MXC_RPU_TRNG = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga941d1c10cedf99ac6175ffe1fd13348c">MXC_R_RPU_TRNG</a>,</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    MXC_RPU_BTLE = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaceec8d8b6f34220875c91ce9d95e4fdb">MXC_R_RPU_BTLE</a>,</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    MXC_RPU_USBHS = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga83f9fb182fac2146eeb38d7f4c2f48f1">MXC_R_RPU_USBHS</a>,</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    MXC_RPU_SDIO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga875e2159d2590cb82bb0aaf08a896894">MXC_R_RPU_SDIO</a>,</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    MXC_RPU_SPIXFM_FIFO = <a class="code hl_define" href="group___r_p_u___register___offsets.html#ga6b6a5dae810e7d32ca362d3cedd1cbdf">MXC_R_RPU_SPIXFM_FIFO</a>,</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    MXC_RPU_SPI0 = <a class="code hl_define" href="group___r_p_u___register___offsets.html#gaaead5559747a6cf80244155c9a3fb00d">MXC_R_RPU_SPI0</a></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>} mxc_rpu_device_t;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span><span class="comment">/* **** Function Prototypes **** */</span></div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="group__rpu.html#gadf2f6ffae2c7e31d580300962b8324ce">  139</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__rpu.html#gadf2f6ffae2c7e31d580300962b8324ce">MXC_RPU_Allow</a>(mxc_rpu_device_t periph, uint32_t allow_mask);</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="group__rpu.html#ga295a6060c4639b98898f628e6b4c4c1c">  148</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__rpu.html#ga295a6060c4639b98898f628e6b4c4c1c">MXC_RPU_Disallow</a>(mxc_rpu_device_t periph, uint32_t disallow_mask);</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="group__rpu.html#ga86aa0d20216cbeac4eb17c416026be8c">  155</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="group__rpu.html#ga86aa0d20216cbeac4eb17c416026be8c">MXC_RPU_IsAllowed</a>(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>}</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_RPU_H_</span></div>
 <div class="ttc" id="agroup___r_p_u___register___offsets_html_ga01b922fb60ac3bd05effd03440ea8a52"><div class="ttname"><a href="group___r_p_u___register___offsets.html#ga01b922fb60ac3bd05effd03440ea8a52">MXC_R_RPU_HTIMER0</a></div><div class="ttdeci">#define MXC_R_RPU_HTIMER0</div><div class="ttdef"><b>Definition:</b> rpu_regs.h:248</div></div>
 <div class="ttc" id="agroup___r_p_u___register___offsets_html_ga057a038e76a4e64b85b8ae1a1efea609"><div class="ttname"><a href="group___r_p_u___register___offsets.html#ga057a038e76a4e64b85b8ae1a1efea609">MXC_R_RPU_DMA0</a></div><div class="ttdeci">#define MXC_R_RPU_DMA0</div><div class="ttdef"><b>Definition:</b> rpu_regs.h:255</div></div>
 <div class="ttc" id="agroup___r_p_u___register___offsets_html_ga08e5da34f084d5828f0b7d87de0e3934"><div class="ttname"><a href="group___r_p_u___register___offsets.html#ga08e5da34f084d5828f0b7d87de0e3934">MXC_R_RPU_SIR</a></div><div class="ttdeci">#define MXC_R_RPU_SIR</div><div class="ttdef"><b>Definition:</b> rpu_regs.h:225</div></div>
@@ -287,7 +284,7 @@ $(document).ready(function(){initNavTree('rpu_8h_source.html',''); initResizable
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_ff3a3eb0fa2363f2f676c4d2ad0d5eb2.html">MAX32665</a></li><li class="navelem"><b>rpu.h</b></li>
-    <li class="footer">Generated on Thu Dec 15 2022 22:46:36 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Mar 7 2023 00:06:35 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -5,6 +5,7 @@ var group___m_x_c___error___codes =
     [ "E_BAD_STATE", "group___m_x_c___error___codes.html#gafd30d7289fced0a47ec3f06ef47bb490", null ],
     [ "E_BUSY", "group___m_x_c___error___codes.html#ga12289e8715fd56a16034f610666d900c", null ],
     [ "E_COMM_ERR", "group___m_x_c___error___codes.html#ga52b168e8df885a6861076e16363af90a", null ],
+    [ "E_FAIL", "group___m_x_c___error___codes.html#ga8f0547e641e1efc8110437fa85aa722e", null ],
     [ "E_INVALID", "group___m_x_c___error___codes.html#ga79cad4bcfba6b7b498354d36522bea1a", null ],
     [ "E_NO_DEVICE", "group___m_x_c___error___codes.html#ga174550cea68ee75877346900afe967a6", null ],
     [ "E_NO_ERROR", "group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4", null ],

@@ -87,8 +87,8 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
   <div class="headertitle"><div class="title">mxc_sys.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*******************************************************************************</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/******************************************************************************</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span></div>
@@ -269,39 +269,107 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
 <div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
 <div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span><span class="comment">/***** Function Prototypes *****/</span></div>
 <div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span> </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span><span class="keywordtype">int</span> MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="keywordtype">int</span> MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock);</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="keywordtype">void</span> MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock);</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="keywordtype">void</span> MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock);</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="keywordtype">void</span> MXC_SYS_RTCClockEnable(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="keywordtype">int</span> MXC_SYS_RTCClockDisable();</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock);</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span> </div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span><span class="keywordtype">void</span> MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);</div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span> </div>
-<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span><span class="keywordtype">int</span> MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);</div>
-<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span> </div>
-<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="keywordtype">int</span> MXC_SYS_Clock_Timeout(uint32_t ready);</div>
-<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span> </div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span><span class="keywordtype">void</span> MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);</div>
-<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>uint32_t MXC_SYS_RiscVClockRate(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>}</div>
-<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span> </div>
-<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_SYS_H_</span></div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    <span class="keywordtype">int</span> ie_status;</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    <span class="keywordtype">int</span> in_critical;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>} mxc_crit_state_t;</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span><span class="keyword">static</span> mxc_crit_state_t _state = { .ie_status = 0xFFFFFFFF, .in_critical = 0 };</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> _mxc_crit_get_state()</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>{</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span><span class="preprocessor">#ifndef __riscv</span></div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span><span class="comment">        On ARM M the 0th bit of the Priority Mask register indicates</span></div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span><span class="comment">        whether interrupts are enabled or not.</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="comment"></span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="comment">        0 = enabled</span></div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="comment">        1 = disabled</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    uint32_t primask = __get_PRIMASK();</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>    _state.ie_status = (primask == 0);</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="comment">        On RISC-V bit position 3 (Machine Interrupt Enable) of the</span></div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="comment">        mstatus register indicates whether interrupts are enabled.</span></div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span><span class="comment"></span> </div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span><span class="comment">        0 = disabled</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span><span class="comment">        1 = enabled</span></div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    uint32_t mstatus = get_mstatus();</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    _state.ie_status = ((mstatus &amp; (1 &lt;&lt; 3)) != 0);</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>}</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> MXC_SYS_Crit_Enter(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>{</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    _mxc_crit_get_state();</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    <span class="keywordflow">if</span> (_state.ie_status)</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        __disable_irq();</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>    _state.in_critical = 1;</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>}</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span> </div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> MXC_SYS_Crit_Exit(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>{</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keywordflow">if</span> (_state.ie_status) {</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        __enable_irq();</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    }</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    _state.in_critical = 0;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>    _mxc_crit_get_state();</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="comment">        ^ Reset the state again to prevent edge case</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="comment">        where interrupts get disabled, then Crit_Exit() gets</span></div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span><span class="comment">        called, which would inadvertently re-enable interrupts</span></div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span><span class="comment">        from old state.</span></div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>}</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span> </div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">int</span> MXC_SYS_In_Crit_Section(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span>{</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <span class="keywordflow">return</span> _state.in_critical;</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>}</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span> </div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span><span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment"></span><span class="preprocessor">#define MXC_CRITICAL(code) {\</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="preprocessor">    MXC_SYS_Crit_Enter();\</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="preprocessor">    code;\</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="preprocessor">    MXC_SYS_Crit_Exit();\</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span><span class="preprocessor">}</span></div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span><span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span><span class="keywordtype">int</span> MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span><span class="keywordtype">int</span> MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span> </div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="keywordtype">void</span> MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="keywordtype">void</span> MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="keywordtype">void</span> MXC_SYS_RTCClockEnable(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="keywordtype">int</span> MXC_SYS_RTCClockDisable();</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span> </div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span> </div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span><span class="keywordtype">void</span> MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span><span class="keywordtype">int</span> MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span> </div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span><span class="keywordtype">int</span> MXC_SYS_Clock_Timeout(uint32_t ready);</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span> </div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span><span class="keywordtype">void</span> MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span> </div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>uint32_t MXC_SYS_RiscVClockRate(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span> </div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span>}</div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_SYS_H_</span></div>
 <div class="ttc" id="agroup___g_c_r___c_l_k_c_t_r_l_html_ga1ffe8cf9bd1d6d082c21fb5ab18c832a"><div class="ttname"><a href="group___g_c_r___c_l_k_c_t_r_l.html#ga1ffe8cf9bd1d6d082c21fb5ab18c832a">MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV64</a></div><div class="ttdeci">#define MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV64</div><div class="ttdef"><b>Definition:</b> gcr_regs.h:267</div></div>
 <div class="ttc" id="agroup___g_c_r___c_l_k_c_t_r_l_html_ga44b3ca77fd6d6e2fc8cd8db32435fd22"><div class="ttname"><a href="group___g_c_r___c_l_k_c_t_r_l.html#ga44b3ca77fd6d6e2fc8cd8db32435fd22">MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK</a></div><div class="ttdeci">#define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK</div><div class="ttdef"><b>Definition:</b> gcr_regs.h:283</div></div>
 <div class="ttc" id="agroup___g_c_r___c_l_k_c_t_r_l_html_ga50e6e597d4bcec03ec5d47e113303b3c"><div class="ttname"><a href="group___g_c_r___c_l_k_c_t_r_l.html#ga50e6e597d4bcec03ec5d47e113303b3c">MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO</a></div><div class="ttdeci">#define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO</div><div class="ttdef"><b>Definition:</b> gcr_regs.h:279</div></div>
@@ -394,7 +462,7 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_dcb11d61604df3e99de982723ef6ded8.html">MAX78000</a></li><li class="navelem"><b>mxc_sys.h</b></li>
-    <li class="footer">Generated on Thu Dec 15 2022 22:46:56 for MAX78000 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Mar 7 2023 00:06:54 for MAX78000 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -14,6 +14,7 @@ var searchData=
   ['aes_5fkey_5fregisters_11',['AES_KEY_Registers',['../group__aes__key__registers.html',1,'']]],
   ['aes_5fregisters_12',['AES_Registers',['../group__aes__registers.html',1,'']]],
   ['aes_5fstatus_13',['AES_STATUS',['../group___a_e_s___s_t_a_t_u_s.html',1,'']]],
-  ['analog_20to_20digital_20converter_20_28adc_29_14',['Analog to Digital Converter (ADC)',['../group__adc.html',1,'']]],
-  ['assertion_20checks_20for_20debugging_15',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]]
+  ['aeskeys_5fregisters_14',['AESKEYS_Registers',['../group__aeskeys__registers.html',1,'']]],
+  ['analog_20to_20digital_20converter_20_28adc_29_15',['Analog to Digital Converter (ADC)',['../group__adc.html',1,'']]],
+  ['assertion_20checks_20for_20debugging_16',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]]
 ];

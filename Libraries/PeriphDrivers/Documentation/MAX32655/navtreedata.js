@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "MAX32655 Peripheral Driver API", "index.html", [
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -40,24 +41,24 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group___c_r_c___d_a_t_a_i_n16.html#gae557720217951f86ed21e443f2077d7c",
-"group___d_v_s___c_t_l.html#gae571db13b9826aac84ccdaeb8bb45329",
-"group___g_c_r___b_t_l_e_l_d_o_c_t_r_l.html#ga15249610863f6bae5d3d64566ea4357e",
-"group___g_c_r___r_s_t0.html#ga081a98c1b6ed1c6e5329264359ab2f30",
-"group___g_p_i_o___p_a_d_c_t_r_l0.html#ga20bdf1e65fa190056a7d7b354a64ee32",
-"group___i2_c___register___offsets.html#ga4427f5d08b22519b1a8beba3179a07ef",
-"group___m_c_r___g_p_i_o3___c_t_r_l.html",
-"group___p_t_g___r_e_s_y_n_c.html#ga9378f01f3826e08fdb7afe93294929e3",
-"group___s_i_m_o___i_l_o_a_d___c.html",
-"group___s_p_i___i_n_t_e_n.html#gafd1729d8ed040e781093f532b12735f8",
-"group___t_m_r___c_t_r_l1.html#gaa4ddc309b15116a7b3eccd68cca76d53",
-"group___u_a_r_t___s_t_a_t_u_s.html#ga8cc2eed60ed7624934d4b66f2fefae9d",
-"group___w_u_t___i_n_t_r.html#gaf3a8554b3173a16ba3a7d95efa28a16b",
-"group__dma__registers.html#a94c4f5eef76d302a87d752959a6ad04b",
-"group__i2c.html#ga9ef10e74237bebc99697454754fa2cc5",
-"group__pwrseq.html#ga4caf9d16812934c3802285f7e7f3071e",
-"group__spi__registers.html#a68b9185f3a676fec2f7152e4198cc087",
-"group__wut.html#ga517f6521a20226466ccf7b349e7bc359"
+"group___c_r_c___c_t_r_l.html#ga6a26846a40886380f4abbb07e62f7132",
+"group___d_v_s___c_t_l.html#ga9579a8c9ef79ba412533ad7cf5ba5acc",
+"group___g_c_f_r___r_e_g1.html#ga16a322697f96442eec502682bf6923c3",
+"group___g_c_r___p_m.html#ga4f3327bbbd4954f0321c4f785f61e698",
+"group___g_p_i_o___o_u_t.html#ga6c818e902ab9cc94006b0d8e854ac83c",
+"group___i2_c___i_n_t_f_l1.html#ga296df8f6ee3b32811c4d411964e5bec6",
+"group___l_p_g_c_r___r_s_t.html#gadc9a6c1593d29d65fd64763541219c72",
+"group___p_t_g___e_n_a_b_l_e.html#ga18d6a7b08f7d2da2e6114fb540d2ce76",
+"group___s_e_m_a___s_t_a_t_u_s.html#gab7f4c284f2ea84a526e8a4847fcca847",
+"group___s_p_i___d_m_a.html#gaea39d4a596770a2ec2e057b1b9bb91d4",
+"group___t_m_r___c_t_r_l0.html#gafbbf8a061d845e6edc93989e65db25e4",
+"group___u_a_r_t___i_n_t___f_l.html#ga7bb65b2f6d534c07d60bec24ba907297",
+"group___w_u_t___c_t_r_l.html#ga379d3b55ec1df87f1c1e04be72228b51",
+"group__dma.html#ggab010374c529e9da4bf17c357dfa637eba52c5405f7d53f2e8c0da25686f0bcd51",
+"group__gpio__registers.html#ac62ea7024ef7188e6d2a325df28a4244",
+"group__ptg__registers.html#a44d9d228426e9049d9fc9638ecadfe59",
+"group__spi__registers.html#a2111734d9cad2c32f9f0a899ae9077f0",
+"group__wut.html#ga201ccc7fec26a0ef116c555fe0a11107"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

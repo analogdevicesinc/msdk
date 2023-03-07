@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"group___s_p_i___register___offsets.html#gadfdcd06c0aa50e33a5fa75a0129b4d57":[0,12,0,0,7],
 "group___s_p_i___s_s___t_i_m_e.html":[0,12,0,5],
 "group___s_p_i___s_s___t_i_m_e.html#ga2730acba4c7cecb2ff167aebb71cb5b7":[0,12,0,5,7],
 "group___s_p_i___s_s___t_i_m_e.html#ga358e4416da48651931ce0302f00dfeb9":[0,12,0,5,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "group___t_m_r___c_n.html#gaf361704db6ea598a3720263cc670c961":[0,14,0,5,0],
 "group___t_m_r___c_n.html#gaf3e0f18d84b154ad1762c05b193cca94":[0,14,0,5,36],
 "group___t_m_r___c_n.html#gaf6fe4cb4033560233cf5254df95e91e5":[0,14,0,5,18],
-"group___t_m_r___c_n.html#gaff781a76c476bf6333bf50e3347737ec":[0,14,0,5,9],
-"group___t_m_r___c_n_t.html":[0,14,0,1]
+"group___t_m_r___c_n.html#gaff781a76c476bf6333bf50e3347737ec":[0,14,0,5,9]
 };

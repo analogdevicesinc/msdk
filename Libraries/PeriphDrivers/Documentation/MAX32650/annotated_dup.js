@@ -4,6 +4,7 @@ var annotated_dup =
     [ "mxc_adc_monitor_req_t", "group__adc.html#structmxc__adc__monitor__req__t", "group__adc_structmxc__adc__monitor__req__t" ],
     [ "mxc_adc_regs_t", "group__adc__registers.html#structmxc__adc__regs__t", "group__adc__registers_structmxc__adc__regs__t" ],
     [ "mxc_aes_key_regs_t", "group__aes__key__registers.html#structmxc__aes__key__regs__t", "group__aes__key__registers_structmxc__aes__key__regs__t" ],
+    [ "mxc_aeskeys_regs_t", "group__aeskeys__registers.html#structmxc__aeskeys__regs__t", "group__aeskeys__registers_structmxc__aeskeys__regs__t" ],
     [ "mxc_bbfc_regs_t", "group__bbfc__registers.html#structmxc__bbfc__regs__t", "group__bbfc__registers_structmxc__bbfc__regs__t" ],
     [ "mxc_clcd_cfg_t", "group__clcd.html#structmxc__clcd__cfg__t", null ],
     [ "mxc_clcd_regs_t", "group__clcd__registers.html#structmxc__clcd__regs__t", "group__clcd__registers_structmxc__clcd__regs__t" ],

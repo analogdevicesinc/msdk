@@ -88,8 +88,8 @@ $(document).ready(function(){initNavTree('mxc__errors_8h_source.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/* ****************************************************************************</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment">/******************************************************************************</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="comment"> * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="comment"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span></div>
@@ -119,42 +119,40 @@ $(document).ready(function(){initNavTree('mxc__errors_8h_source.html',''); initR
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"> * property whatsoever. Maxim Integrated Products, Inc. retains all</span></div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> * ownership rights.</span></div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"> * $Date: 2019-08-20 09:48:07 -0500 (Tue, 20 Aug 2019) $ </span></div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment"> * $Revision: 45527 $</span></div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment"> *************************************************************************** */</span></div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">/* Define to prevent redundant inclusion */</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_ERRORS_H_</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_ERRORS_H_</span></div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">   55</a></span><span class="preprocessor">#define E_NO_ERROR 0</span></div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gad1a31c5316d5f51ca5c1c4fb2b9b1958">   57</a></span><span class="preprocessor">#define E_SUCCESS 0</span></div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga97fcdfde06438bcf94181400389bd7b9">   59</a></span><span class="preprocessor">#define E_NULL_PTR -1</span></div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga174550cea68ee75877346900afe967a6">   61</a></span><span class="preprocessor">#define E_NO_DEVICE -2</span></div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gabcb1b1463f4ea8746d13eafa58048a9c">   63</a></span><span class="preprocessor">#define E_BAD_PARAM -3</span></div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga79cad4bcfba6b7b498354d36522bea1a">   65</a></span><span class="preprocessor">#define E_INVALID -4</span></div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga9b082eeb1f1f2b42716c266d8e5cfcf5">   67</a></span><span class="preprocessor">#define E_UNINITIALIZED -5</span></div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga12289e8715fd56a16034f610666d900c">   69</a></span><span class="preprocessor">#define E_BUSY -6</span></div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gafd30d7289fced0a47ec3f06ef47bb490">   71</a></span><span class="preprocessor">#define E_BAD_STATE -7</span></div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gae18e2ea113a973952f0f850eb6ecb476">   73</a></span><span class="preprocessor">#define E_UNKNOWN -8</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga52b168e8df885a6861076e16363af90a">   75</a></span><span class="preprocessor">#define E_COMM_ERR -9</span></div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga0ceb96680c8c5a1ab4fa6f9224e0588b">   77</a></span><span class="preprocessor">#define E_TIME_OUT -10</span></div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gad25fe37a3e666eccc5c39b0649b8e956">   79</a></span><span class="preprocessor">#define E_NO_RESPONSE -11</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga2ae9bebfa7ace670d4d2718bd17142b1">   81</a></span><span class="preprocessor">#define E_OVERFLOW -12</span></div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gacb13f1b2a8324564117de8667601d3a1">   83</a></span><span class="preprocessor">#define E_UNDERFLOW -13</span></div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gad230cb92a2c7133ecdc8bbe820042310">   85</a></span><span class="preprocessor">#define E_NONE_AVAIL -14</span></div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gab45a288b4079b16ffce3f406a18e8675">   87</a></span><span class="preprocessor">#define E_SHUTDOWN -15</span></div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gaf3855021d27c900e3234bcc086f9f8f5">   89</a></span><span class="preprocessor">#define E_ABORT -16</span></div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gac32e2eaa0134cd9626a55a2587662501">   91</a></span><span class="preprocessor">#define E_NOT_SUPPORTED -17</span></div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_ERRORS_H_</span></div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span><span class="comment"> ******************************************************************************/</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">/* Define to prevent redundant inclusion */</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_ERRORS_H_</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_ERRORS_H_</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">   52</a></span><span class="preprocessor">#define E_NO_ERROR 0</span></div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gad1a31c5316d5f51ca5c1c4fb2b9b1958">   54</a></span><span class="preprocessor">#define E_SUCCESS 0</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga97fcdfde06438bcf94181400389bd7b9">   56</a></span><span class="preprocessor">#define E_NULL_PTR -1</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga174550cea68ee75877346900afe967a6">   58</a></span><span class="preprocessor">#define E_NO_DEVICE -2</span></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gabcb1b1463f4ea8746d13eafa58048a9c">   60</a></span><span class="preprocessor">#define E_BAD_PARAM -3</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga79cad4bcfba6b7b498354d36522bea1a">   62</a></span><span class="preprocessor">#define E_INVALID -4</span></div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga9b082eeb1f1f2b42716c266d8e5cfcf5">   64</a></span><span class="preprocessor">#define E_UNINITIALIZED -5</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga12289e8715fd56a16034f610666d900c">   66</a></span><span class="preprocessor">#define E_BUSY -6</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gafd30d7289fced0a47ec3f06ef47bb490">   68</a></span><span class="preprocessor">#define E_BAD_STATE -7</span></div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gae18e2ea113a973952f0f850eb6ecb476">   70</a></span><span class="preprocessor">#define E_UNKNOWN -8</span></div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga52b168e8df885a6861076e16363af90a">   72</a></span><span class="preprocessor">#define E_COMM_ERR -9</span></div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga0ceb96680c8c5a1ab4fa6f9224e0588b">   74</a></span><span class="preprocessor">#define E_TIME_OUT -10</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gad25fe37a3e666eccc5c39b0649b8e956">   76</a></span><span class="preprocessor">#define E_NO_RESPONSE -11</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga2ae9bebfa7ace670d4d2718bd17142b1">   78</a></span><span class="preprocessor">#define E_OVERFLOW -12</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gacb13f1b2a8324564117de8667601d3a1">   80</a></span><span class="preprocessor">#define E_UNDERFLOW -13</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gad230cb92a2c7133ecdc8bbe820042310">   82</a></span><span class="preprocessor">#define E_NONE_AVAIL -14</span></div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gab45a288b4079b16ffce3f406a18e8675">   84</a></span><span class="preprocessor">#define E_SHUTDOWN -15</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gaf3855021d27c900e3234bcc086f9f8f5">   86</a></span><span class="preprocessor">#define E_ABORT -16</span></div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#gac32e2eaa0134cd9626a55a2587662501">   88</a></span><span class="preprocessor">#define E_NOT_SUPPORTED -17</span></div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="group___m_x_c___error___codes.html#ga8f0547e641e1efc8110437fa85aa722e">   90</a></span><span class="preprocessor">#define E_FAIL -255</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_ERRORS_H_</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_ff3a3eb0fa2363f2f676c4d2ad0d5eb2.html">MAX32665</a></li><li class="navelem"><b>mxc_errors.h</b></li>
-    <li class="footer">Generated on Thu Dec 15 2022 22:46:36 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Mar 7 2023 00:06:35 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -25,6 +25,7 @@
 var NAVTREE =
 [
   [ "MAX32520 Peripheral Driver API", "index.html", [
+    [ "Deprecated List", "deprecated.html", null ],
     [ "Modules", "modules.html", "modules" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -40,17 +41,17 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"group___c_t_b___register___offsets.html#ga91be523321cb2de1084e26ad4f1e71ee",
-"group___d_m_a___s_t.html#gafdd0fce12884fac18f3c4656eaa7249d",
-"group___g_c_r___p_m.html#ga1901a11f2db7a90ecb015d8a48b68d58",
-"group___g_p_i_o___register___offsets.html#ga3ca1e9abd3eaa6beeda74df4b1b25835",
-"group___i_c_c___c_a_c_h_e___c_t_r_l.html#gac4a289662ce13e8ae7c93fd68ffc6cc8",
-"group___s_m_o_n___i_n_t_s_c_n.html#ga3860234af21de8654ac433500ba8bfdb",
-"group___s_p_i___register___offsets.html#gac59796626c00fdc026b4d6a0160561ce",
-"group___w_d_t___c_t_r_l.html#ga0e3bbc26871e5a17203f81df6150a855",
-"group__dma.html#ga5eaf7d9ab53aea7b09238773b0139180",
-"group__i2c.html#ga2ae59db133ca586c021568cb92a0b1bc",
-"group__spi.html#ga86f66284a2899897a4e0fc760d01bc6d"
+"group___c_t_b___register___offsets.html#ga72e5b7aeb4eccc0d7ff1d7df08cc027a",
+"group___d_m_a___s_t.html#gabec7a3b5aa15482766edc29249552e5a",
+"group___g_c_r___p_c_l_k_d_i_v.html#gad2aeef12eceab06bf80fafd62574a451",
+"group___g_p_i_o___register___offsets.html#ga1cabc6e94d9c034f093e99e2b52e4ad8",
+"group___i2_c___t_x_c_f_g.html#gaf7112b754f0439a35f223ef46f32a055",
+"group___s_m_o_n___e_x_t_s_c_n.html#gaf47d9366e7528b13b02fafc7dff45d85",
+"group___s_p_i___register___offsets.html#ga4d4f56b1d44e3f0c41a6380c06151c53",
+"group___w_d_t___c_t_r_l.html#ga0058bded6b8dab1053cf204f66d80e20",
+"group__dma.html#acb6885039c6762ab023729939db525f5",
+"group__i2c.html#a62d96b3e83f506af2c4c5c1ddfd3c785",
+"group__spi.html#ga3fa6c3821155ce8782390638f2632a86"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

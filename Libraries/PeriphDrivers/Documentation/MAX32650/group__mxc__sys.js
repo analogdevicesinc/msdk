@@ -1,5 +1,6 @@
 var group__mxc__sys =
 [
+    [ "MXC_CRITICAL", "group__mxc__sys.html#ga911e0d4e99fa7da740f33eae7aa8d6d2", null ],
     [ "mxc_sys_cfg_scache_t", "group__mxc__sys.html#ga86711099274868fd8b42f89eda76b2f8", null ],
     [ "mxc_sys_cfg_usbhs_t", "group__mxc__sys.html#gaa9b220a08bc664f0c54d6313c33339e6", null ],
     [ "mxc_sys_control_t", "group__mxc__sys.html#ga2324f24922cf900cc099be85f962c28a", null ],

@@ -41,10 +41,12 @@ var group__gpio =
       [ "MXC_GPIO_VSSEL_VDDIOH", "group__gpio.html#gga03b13c78f2f773dabd26b93943a4b201ac9be2a87256b05745f444b401e89b6db", null ]
     ] ],
     [ "MXC_GPIO_ClearFlags", "group__gpio.html#ga8bf6b06c6cae315736a2766647fc4494", null ],
+    [ "MXC_GPIO_ClearWakeEn", "group__gpio.html#ga7893e171ce9cb1008acb7c587e140e2e", null ],
     [ "MXC_GPIO_Config", "group__gpio.html#ga0d26c61a9e47c6b9824ba453c702ca2c", null ],
     [ "MXC_GPIO_DisableInt", "group__gpio.html#ga686faf01d860135ff6fedecb80ec09f7", null ],
     [ "MXC_GPIO_EnableInt", "group__gpio.html#ga3a040873cbd5575341c4afa415f9ef4c", null ],
     [ "MXC_GPIO_GetFlags", "group__gpio.html#ga22364077384b494cbee39b5abd355e47", null ],
+    [ "MXC_GPIO_GetWakeEn", "group__gpio.html#ga6e08685c79836b62652ea85c583ed406", null ],
     [ "MXC_GPIO_Handler", "group__gpio.html#gae3606e5c2b0e93254e117e3c3dac4b9e", null ],
     [ "MXC_GPIO_InGet", "group__gpio.html#gaf4eb05624cd4979d262d0dc77bbad3b1", null ],
     [ "MXC_GPIO_Init", "group__gpio.html#ga638585621edcdf639763def1e8fd09e5", null ],
@@ -57,5 +59,6 @@ var group__gpio =
     [ "MXC_GPIO_RegisterCallback", "group__gpio.html#ga3265819f3bee4f107d6f02716b4394d1", null ],
     [ "MXC_GPIO_Reset", "group__gpio.html#gaa54a2fd9780d13ef0805aff24e3b2345", null ],
     [ "MXC_GPIO_SetVSSEL", "group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549", null ],
+    [ "MXC_GPIO_SetWakeEn", "group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f", null ],
     [ "MXC_GPIO_Shutdown", "group__gpio.html#ga573834d158ef9678e57c5f677b3a5c22", null ]
 ];

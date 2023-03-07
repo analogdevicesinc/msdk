@@ -87,8 +87,8 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
   <div class="headertitle"><div class="title">mxc_sys.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/*******************************************************************************</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">/******************************************************************************</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment"> * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment"> *</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="comment"> * Permission is hereby granted, free of charge, to any person obtaining a</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="comment"> * copy of this software and associated documentation files (the &quot;Software&quot;),</span></div>
@@ -118,214 +118,279 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="comment"> * property whatsoever. Maxim Integrated Products, Inc. retains all</span></div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span><span class="comment"> * ownership rights.</span></div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> * $Date: 2020-01-16 08:38:14 -0600 (Thu, 16 Jan 2020) $</span></div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment"> * $Revision: 50696 $</span></div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span><span class="comment"> *</span></div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="comment"> ******************************************************************************/</span></div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_SYS_H_</span></div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_SYS_H_</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment"> ******************************************************************************/</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="preprocessor">#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_SYS_H_</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><span class="preprocessor">#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_SYS_H_</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="preprocessor">#include &quot;mxc_device.h&quot;</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &quot;gcr_regs.h&quot;</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;mxc_device.h&quot;</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#include &quot;gcr_regs.h&quot;</span></div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    MXC_SYS_RESET_DMA0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gaa337aca633e9303672675b7e66a38a34">MXC_F_GCR_RSTR0_DMA_POS</a>, </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    MXC_SYS_RESET_WDT0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga21bfecbafdfc0479f7d5e2d912d48281">MXC_F_GCR_RSTR0_WDT0_POS</a>, </div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    MXC_SYS_RESET_GPIO0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gae7a42c299b69633ae4591b6cd77a33e2">MXC_F_GCR_RSTR0_GPIO0_POS</a>, </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    MXC_SYS_RESET_GPIO1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga282b5b4563a7cacfbe4e736c4425490b">MXC_F_GCR_RSTR0_GPIO1_POS</a>, </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    MXC_SYS_RESET_TIMER0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga0c54ca46a5b8f885f3ef672e14bf5474">MXC_F_GCR_RSTR0_TIMER0_POS</a>, </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    MXC_SYS_RESET_TIMER1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gac925445b65422699c70970f1ad24bee1">MXC_F_GCR_RSTR0_TIMER1_POS</a>, </div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    MXC_SYS_RESET_TIMER2 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga7a0474dfe521412a7fd5a9a0fd90a7d7">MXC_F_GCR_RSTR0_TIMER2_POS</a>, </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    MXC_SYS_RESET_TIMER3 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gadbc5a01b510099918ee17ba39ea0fe2f">MXC_F_GCR_RSTR0_TIMER3_POS</a>, </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    MXC_SYS_RESET_TIMER4 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga1be30c4ef6f59b69db709b25d3ec1d70">MXC_F_GCR_RSTR0_TIMER4_POS</a>, </div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    MXC_SYS_RESET_TIMER5 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gac46b77181394f499bed6e22bf1e6df62">MXC_F_GCR_RSTR0_TIMER5_POS</a>, </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    MXC_SYS_RESET_UART0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga77fdc8f3d3247e5d8c7706d40a5f4365">MXC_F_GCR_RSTR0_UART0_POS</a>, </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    MXC_SYS_RESET_UART1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga7727641f072db1e7e4315438309598c6">MXC_F_GCR_RSTR0_UART1_POS</a>, </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    MXC_SYS_RESET_SPI1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga2c47ff3e06a77e2b652ab2db8351ad53">MXC_F_GCR_RSTR0_SPI1_POS</a>, </div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    MXC_SYS_RESET_SPI2 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga8de87f6c63ab5e503c015960615a68d1">MXC_F_GCR_RSTR0_SPI2_POS</a>, </div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    MXC_SYS_RESET_I2C0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gabef8f3b27f82682f94d3f0bce342daf3">MXC_F_GCR_RSTR0_I2C0_POS</a>, </div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    MXC_SYS_RESET_RTC = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gada66f989ef32bf892fffbdbca4f6bb2f">MXC_F_GCR_RSTR0_RTC_POS</a>, </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    MXC_SYS_RESET_CRYPTO = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gaea547a7185494a4f8dccdb0c7d0ae97a">MXC_F_GCR_RSTR0_CRYPTO_POS</a>, </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    MXC_SYS_RESET_SMPHR = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga8d56b9005f8b4c1331e1df8dd0c991f4">MXC_F_GCR_RSTR0_SMPHR_POS</a>, </div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    MXC_SYS_RESET_USB = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga2a7bd75317fc2c857463b150258b6347">MXC_F_GCR_RSTR0_USB_POS</a>, </div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="comment">//  MXC_SYS_RESET_TRNG      = MXC_F_GCR_RSTR0_TRNG_POS,        /**&lt; Reset TRNG */</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    MXC_SYS_RESET_ADC = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gac551cdc5d2a515276ecbc113bf9ea93f">MXC_F_GCR_RSTR0_ADC_POS</a>, </div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    MXC_SYS_RESET_DMA1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga08272bbb274bc96e4a47897a4754ca7b">MXC_F_GCR_RSTR0_DMA1_POS</a>, </div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    MXC_SYS_RESET_UART2 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga2fc0ddf543bd1e7fe612ae54d2857a1f">MXC_F_GCR_RSTR0_UART2_POS</a>, </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    MXC_SYS_RESET_SRST = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gae41757f6ebdb290ae1ee17ca9bcc3411">MXC_F_GCR_RSTR0_SRST_POS</a>, </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    MXC_SYS_RESET_PRST = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga8698ead3af87427933cb2dfb87e550c3">MXC_F_GCR_RSTR0_PRST_POS</a>, </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    MXC_SYS_RESET_SYSTEM = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga28480759d7e4fa77b9428c8d3334a43c">MXC_F_GCR_RSTR0_SYSTEM_POS</a>, </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="comment">/* RESET1 Below this line we add 32 to separate RESET0 and RESET1 */</span></div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    MXC_SYS_RESET_I2C1 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gaac0f337c555eb1d0771ce77aedf6a4fa">MXC_F_GCR_RSTR1_I2C1_POS</a> + 32), </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    MXC_SYS_RESET_PT = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga08bf4302bbde12020c74c4efe6393b78">MXC_F_GCR_RSTR1_PT_POS</a> + 32), </div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    MXC_SYS_RESET_SPIXIP = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga980babec395985e7c88c4821865b0bcc">MXC_F_GCR_RSTR1_SPIXIP_POS</a> + 32), </div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    MXC_SYS_RESET_XSPIM = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga89e7ff174a64c6b6862a9c2ebae27514">MXC_F_GCR_RSTR1_XSPIM_POS</a> + 32), </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    MXC_SYS_RESET_SDHC = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga236f2ce3b5d98fdaf5de7ae4e85f0826">MXC_F_GCR_RSTR1_SDHC_POS</a> + 32), </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    MXC_SYS_RESET_OWIRE = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gac9ad133f9cee27e4589fc480737decca">MXC_F_GCR_RSTR1_OWIRE_POS</a> + 32), </div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    MXC_SYS_RESET_WDT1 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gabc217b69fef9ee3126121bb75c8ca407">MXC_F_GCR_RSTR1_WDT1_POS</a> + 32), </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    MXC_SYS_RESET_SPI0 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga4b9c3d22e16594ce2f5dc2e01c45f967">MXC_F_GCR_RSTR1_SPI0_POS</a> + 32), </div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    MXC_SYS_RESET_SPIXMEM = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga6e4ffb1737ac2515642f01fa96090af4">MXC_F_GCR_RSTR1_SPIXMEM_POS</a> + 32), </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    MXC_SYS_RESET_SEMA = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga2fec66e209319c3a856ff8213930b852">MXC_F_GCR_RSTR1_SMPHR_POS</a> + 32), </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    MXC_SYS_RESET_WDT2 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga7b007bbfe67bb198cbe0412f0ed05dbf">MXC_F_GCR_RSTR1_WDT2_POS</a> + 32), </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    MXC_SYS_RESET_BTLE = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga1932bd51dda2074b7f84df0cc16d20ab">MXC_F_GCR_RSTR1_BTLE_POS</a> + 32), </div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    MXC_SYS_RESET_AUDIO = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gad5f45d4a714bb7c9cc26dba087e77e55">MXC_F_GCR_RSTR1_AUDIO_POS</a> + 32), </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    MXC_SYS_RESET_RPU = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga32b0980de12bf991ed3fe605bb0c0ad7">MXC_F_GCR_RSTR1_RPU_POS</a> + 32), </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    MXC_SYS_RESET_I2C2 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gad55c4e9cca2c8f4eaa7a66be7e1c3426">MXC_F_GCR_RSTR1_I2C2_POS</a> + 32), </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    MXC_SYS_RESET_HTMR0 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga7d8c222cb519b9f6bee4e45c0b0700b8">MXC_F_GCR_RSTR1_HTMR0_POS</a> + 32), </div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    MXC_SYS_RESET_HTMR1 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gab106d940a0423c7f98e8dd8e837045ed">MXC_F_GCR_RSTR1_HTMR1_POS</a> + 32), </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    MXC_SYS_RESET_DVS = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gab13bab1b930d14141cf2ff27e680a47c">MXC_F_GCR_RSTR1_DVS_POS</a> + 32), </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    MXC_SYS_RESET_SIMO = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gae4b2876f88703818fee195c2fbf2aa12">MXC_F_GCR_RSTR1_SIMO_POS</a> + 32), </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>} mxc_sys_reset_t;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    MXC_SYS_PERIPH_CLOCK_GPIO0 =</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga8c46cd8e04af271c6c9bb58cdbcdc6c9">MXC_F_GCR_PERCKCN0_GPIO0D_POS</a>, </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    MXC_SYS_PERIPH_CLOCK_GPIO1 =</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga4c0ab54bc604d412d64f9149e72b83df">MXC_F_GCR_PERCKCN0_GPIO1D_POS</a>, </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    MXC_SYS_PERIPH_CLOCK_USB =</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga5915a505a0238711bf20dfb7edf3d613">MXC_F_GCR_PERCKCN0_USBD_POS</a>, </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    MXC_SYS_PERIPH_CLOCK_DMA =</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga8bc7f0993737743d9e2310fd8ebf4740">MXC_F_GCR_PERCKCN0_DMAD_POS</a>, </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    MXC_SYS_PERIPH_CLOCK_SPI1 =</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga66d4b5e02e0ddbd04d68560c138d6af6">MXC_F_GCR_PERCKCN0_SPI1D_POS</a>, </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    MXC_SYS_PERIPH_CLOCK_SPI2 =</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga24f9c1a94e24f22602b619dd90ad7990">MXC_F_GCR_PERCKCN0_SPI2D_POS</a>, </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    MXC_SYS_PERIPH_CLOCK_UART0 =</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga13399d6e80ed9ce23d0f787fca9d49c3">MXC_F_GCR_PERCKCN0_UART0D_POS</a>, </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    MXC_SYS_PERIPH_CLOCK_UART1 =</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga513450219413a4925978fec6c687a41f">MXC_F_GCR_PERCKCN0_UART1D_POS</a>, </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    MXC_SYS_PERIPH_CLOCK_I2C0 =</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#gac5e58e3e1e1a79136f1e5bce5eb0d3c7">MXC_F_GCR_PERCKCN0_I2C0D_POS</a>, </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    MXC_SYS_PERIPH_CLOCK_TPU =</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga98667b2c90c7bccf37f11d956003bdde">MXC_F_GCR_PERCKCN0_CRYPTOD_POS</a>, </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    MXC_SYS_PERIPH_CLOCK_T0 =</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga5ea6915a8d6bfdd4b6a3d7a45296c999">MXC_F_GCR_PERCKCN0_TIMER0D_POS</a>, </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    MXC_SYS_PERIPH_CLOCK_T1 =</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga8a56ae31d2dfdd3db8ab304f855ebe63">MXC_F_GCR_PERCKCN0_TIMER1D_POS</a>, </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    MXC_SYS_PERIPH_CLOCK_T2 =</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga1f2d77629f1a789f7fb1014283e8c282">MXC_F_GCR_PERCKCN0_TIMER2D_POS</a>, </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    MXC_SYS_PERIPH_CLOCK_T3 =</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga90b31f3946550d1d0eb306c0c62897f9">MXC_F_GCR_PERCKCN0_TIMER3D_POS</a>, </div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    MXC_SYS_PERIPH_CLOCK_T4 =</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga42d95ad8f9e331d3d1c80c2ce760a99e">MXC_F_GCR_PERCKCN0_TIMER4D_POS</a>, </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>    MXC_SYS_PERIPH_CLOCK_T5 =</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga84e085e32538d8dad352faa34041cb8d">MXC_F_GCR_PERCKCN0_TIMER5D_POS</a>, </div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    MXC_SYS_PERIPH_CLOCK_ADC =</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga301e8a99c0a86cb97d57bc403cba1752">MXC_F_GCR_PERCKCN0_ADCD_POS</a>, </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    MXC_SYS_PERIPH_CLOCK_I2C1 =</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga1df59c15fe8f49097d36b5409ca52af9">MXC_F_GCR_PERCKCN0_I2C1D_POS</a>, </div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    MXC_SYS_PERIPH_CLOCK_PT =</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga37c96ff6becd6bafee077b78d85f90a8">MXC_F_GCR_PERCKCN0_PTD_POS</a>, </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    MXC_SYS_PERIPH_CLOCK_SPIXIP =</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga2a030663c920241b997a245a59cbb4e2">MXC_F_GCR_PERCKCN0_SPIXIPD_POS</a>, </div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    MXC_SYS_PERIPH_CLOCK_SPIXFC =</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#gaeff81733b4a675013542ef38e0e593be">MXC_F_GCR_PERCKCN0_SPIMD_POS</a>, </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="comment">/* PERCKCN1 Below this line we add 32 to separate PERCKCN0 and PERCKCN1 */</span></div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    MXC_SYS_PERIPH_CLOCK_BTLE = (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga758678ba7a0f177c8e6151dacd0b7889">MXC_F_GCR_PERCKCN1_BTLED_POS</a> + 32),</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    MXC_SYS_PERIPH_CLOCK_UART2 =</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaf8e3de9889bf06846a5b61f9364c7b87">MXC_F_GCR_PERCKCN1_UART2D_POS</a> + 32), </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    MXC_SYS_PERIPH_CLOCK_TRNG =</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga1f855ed57ba8bd0bd081493e11ad3844">MXC_F_GCR_PERCKCN1_TRNGD_POS</a> + 32), </div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    MXC_SYS_PERIPH_CLOCK_SCACHE =</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaafab949e71e6f8c70172b69784c04d62">MXC_F_GCR_PERCKCN1_SCACHED_POS</a> + 32), </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    MXC_SYS_PERIPH_CLOCK_SDMA =</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gae7f992a5f816717cbe78f1744b45e75e">MXC_F_GCR_PERCKCN1_SDMAD_POS</a> + 32), </div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    MXC_SYS_PERIPH_CLOCK_SMPHR =</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga8e0c41c0b6bf4911e1d7b543c29aaf29">MXC_F_GCR_PERCKCN1_SMPHRD_POS</a> + 32), </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    MXC_SYS_PERIPH_CLOCK_SDHC =</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gabf57a4d6462cada8d94c7865ab86f9f4">MXC_F_GCR_PERCKCN1_SDHCD_POS</a> + 32), </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    MXC_SYS_PERIPH_CLOCK_ICACHEXIP =</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga5ac2ce85368f72f6357bef2018156244">MXC_F_GCR_PERCKCN1_ICACHEXIPD_POS</a> + 32), </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    MXC_SYS_PERIPH_CLOCK_OWIRE =</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga6985319c9b0a87df7bc0af36fecc1062">MXC_F_GCR_PERCKCN1_OWIRED_POS</a> + 32), </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    MXC_SYS_PERIPH_CLOCK_SPI0 =</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga68cc9a8c63d1dcd579e68598222e9afa">MXC_F_GCR_PERCKCN1_SPI0D_POS</a> + 32), </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    MXC_SYS_PERIPH_CLOCK_SPIXIPD =</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga31c8f50f3b63ca94b14a9f7a5c0b0133">MXC_F_GCR_PERCKCN1_SPIXIPDD_POS</a> + 32), </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    MXC_SYS_PERIPH_CLOCK_DMA1 =</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gac7e329419cfcd0e8739e51b904826992">MXC_F_GCR_PERCKCN1_DMA1D_POS</a> + 32), </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    MXC_SYS_PERIPH_CLOCK_AUDIO =</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga0ad2d473eb737dbc3fa6f10b3bfcf251">MXC_F_GCR_PERCKCN1_AUDIOD_POS</a> + 32), </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    MXC_SYS_PERIPH_CLOCK_I2C2 =</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga6249e976a4504de6a2f7555330f6debe">MXC_F_GCR_PERCKCN1_I2C2D_POS</a> + 32), </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    MXC_SYS_PERIPH_CLOCK_HTMR0 =</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaa7662f28a9e576e15e89995c139f6c21">MXC_F_GCR_PERCKCN1_HTMR0D_POS</a> + 32), </div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    MXC_SYS_PERIPH_CLOCK_HTMR1 =</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaafbf95c383dbf9b0a70be65969f4f79e">MXC_F_GCR_PERCKCN1_HTMR1D_POS</a> + 32), </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    MXC_SYS_PERIPH_CLOCK_WDT0 =</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gacfdc806301288d184a3045c7c8689ed8">MXC_F_GCR_PERCKCN1_WDT0D_POS</a> + 32), </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    MXC_SYS_PERIPH_CLOCK_WDT1 =</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaa4c3856213e6b7742a40dafa99c7bc97">MXC_F_GCR_PERCKCN1_WDT1D_POS</a> + 32), </div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    MXC_SYS_PERIPH_CLOCK_WDT2 =</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gabaeef2f9f9e5537d47fa37c273bd971f">MXC_F_GCR_PERCKCN1_WDT2D_POS</a> + 32), </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    MXC_SYS_PERIPH_CLOCK_CPU1 =</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga581a39fa69eb1031d1b5cba542db9d6d">MXC_F_GCR_PERCKCN1_CPU1D_POS</a> + 32), </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>} mxc_sys_periph_clock_t;</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    MXC_SYS_SYSTEM_DIV_1 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#gab921054421686801a3fe0d64f029eb53">MXC_S_GCR_CLKCN_PSC_DIV1</a>,</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    MXC_SYS_SYSTEM_DIV_2 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga28706c29c285d867a646ca8d77ef0117">MXC_S_GCR_CLKCN_PSC_DIV2</a>,</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    MXC_SYS_SYSTEM_DIV_4 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga4852583c3685bfcd7f3a8f235dadddc1">MXC_S_GCR_CLKCN_PSC_DIV4</a>,</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    MXC_SYS_SYSTEM_DIV_8 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga6c3917242ceb859e3cbed871e37f5a88">MXC_S_GCR_CLKCN_PSC_DIV8</a>,</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    MXC_SYS_SYSTEM_DIV_16 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga799b8d8913a397265a5b397a9cf46dd7">MXC_S_GCR_CLKCN_PSC_DIV16</a>,</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    MXC_SYS_SYSTEM_DIV_32 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga8c93587c963cc34c59ade7f995e274e3">MXC_S_GCR_CLKCN_PSC_DIV32</a>,</div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    MXC_SYS_SYSTEM_DIV_64 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#gad64e7e1d25cb9bcb6d4d8e11844f0447">MXC_S_GCR_CLKCN_PSC_DIV64</a>,</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>    MXC_SYS_SYSTEM_DIV_128 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga2440016d66f178b9bb4c47cee576adde">MXC_S_GCR_CLKCN_PSC_DIV128</a>,</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>} mxc_sys_system_div_t;</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    MXC_SYS_CLOCK_HIRC96 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga0d83db9ac4ff7e37307e89d529f4fb77">MXC_V_GCR_CLKCN_CLKSEL_HIRC96</a>,</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    MXC_SYS_CLOCK_HIRC8 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#gaccb8db130ed20e52e9d6ffdebca23140">MXC_V_GCR_CLKCN_CLKSEL_HIRC8</a>,</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    MXC_SYS_CLOCK_HIRC = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga87764e401fb9d85f8e3040912e8ea70d">MXC_V_GCR_CLKCN_CLKSEL_HIRC</a>,</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    MXC_SYS_CLOCK_XTAL32M = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#gadb69cec8ab9e0b1b0b25529afe875f8b">MXC_V_GCR_CLKCN_CLKSEL_XTAL32M</a>,</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    MXC_SYS_CLOCK_LIRC8K = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga2445dfcdee0dc2bd7fcbbea2ae4fb43c">MXC_V_GCR_CLKCN_CLKSEL_LIRC8</a>,</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    MXC_SYS_CLOCK_XTAL32K = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga2097270c07091caa971d474d9fd8c42d">MXC_V_GCR_CLKCN_CLKSEL_XTAL32K</a>,</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>} mxc_sys_system_clock_t;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    MXC_SYS_RESET_DMA0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gaa337aca633e9303672675b7e66a38a34">MXC_F_GCR_RSTR0_DMA_POS</a>, </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    MXC_SYS_RESET_WDT0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga21bfecbafdfc0479f7d5e2d912d48281">MXC_F_GCR_RSTR0_WDT0_POS</a>, </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    MXC_SYS_RESET_GPIO0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gae7a42c299b69633ae4591b6cd77a33e2">MXC_F_GCR_RSTR0_GPIO0_POS</a>, </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    MXC_SYS_RESET_GPIO1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga282b5b4563a7cacfbe4e736c4425490b">MXC_F_GCR_RSTR0_GPIO1_POS</a>, </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    MXC_SYS_RESET_TIMER0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga0c54ca46a5b8f885f3ef672e14bf5474">MXC_F_GCR_RSTR0_TIMER0_POS</a>, </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    MXC_SYS_RESET_TIMER1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gac925445b65422699c70970f1ad24bee1">MXC_F_GCR_RSTR0_TIMER1_POS</a>, </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    MXC_SYS_RESET_TIMER2 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga7a0474dfe521412a7fd5a9a0fd90a7d7">MXC_F_GCR_RSTR0_TIMER2_POS</a>, </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    MXC_SYS_RESET_TIMER3 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gadbc5a01b510099918ee17ba39ea0fe2f">MXC_F_GCR_RSTR0_TIMER3_POS</a>, </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    MXC_SYS_RESET_TIMER4 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga1be30c4ef6f59b69db709b25d3ec1d70">MXC_F_GCR_RSTR0_TIMER4_POS</a>, </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    MXC_SYS_RESET_TIMER5 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gac46b77181394f499bed6e22bf1e6df62">MXC_F_GCR_RSTR0_TIMER5_POS</a>, </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    MXC_SYS_RESET_UART0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga77fdc8f3d3247e5d8c7706d40a5f4365">MXC_F_GCR_RSTR0_UART0_POS</a>, </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    MXC_SYS_RESET_UART1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga7727641f072db1e7e4315438309598c6">MXC_F_GCR_RSTR0_UART1_POS</a>, </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    MXC_SYS_RESET_SPI1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga2c47ff3e06a77e2b652ab2db8351ad53">MXC_F_GCR_RSTR0_SPI1_POS</a>, </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    MXC_SYS_RESET_SPI2 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga8de87f6c63ab5e503c015960615a68d1">MXC_F_GCR_RSTR0_SPI2_POS</a>, </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    MXC_SYS_RESET_I2C0 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gabef8f3b27f82682f94d3f0bce342daf3">MXC_F_GCR_RSTR0_I2C0_POS</a>, </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    MXC_SYS_RESET_RTC = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gada66f989ef32bf892fffbdbca4f6bb2f">MXC_F_GCR_RSTR0_RTC_POS</a>, </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    MXC_SYS_RESET_CRYPTO = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gaea547a7185494a4f8dccdb0c7d0ae97a">MXC_F_GCR_RSTR0_CRYPTO_POS</a>, </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    MXC_SYS_RESET_SMPHR = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga8d56b9005f8b4c1331e1df8dd0c991f4">MXC_F_GCR_RSTR0_SMPHR_POS</a>, </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    MXC_SYS_RESET_USB = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga2a7bd75317fc2c857463b150258b6347">MXC_F_GCR_RSTR0_USB_POS</a>, </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    <span class="comment">//  MXC_SYS_RESET_TRNG      = MXC_F_GCR_RSTR0_TRNG_POS,        /**&lt; Reset TRNG */</span></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    MXC_SYS_RESET_ADC = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gac551cdc5d2a515276ecbc113bf9ea93f">MXC_F_GCR_RSTR0_ADC_POS</a>, </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    MXC_SYS_RESET_DMA1 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga08272bbb274bc96e4a47897a4754ca7b">MXC_F_GCR_RSTR0_DMA1_POS</a>, </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    MXC_SYS_RESET_UART2 = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga2fc0ddf543bd1e7fe612ae54d2857a1f">MXC_F_GCR_RSTR0_UART2_POS</a>, </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    MXC_SYS_RESET_SRST = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#gae41757f6ebdb290ae1ee17ca9bcc3411">MXC_F_GCR_RSTR0_SRST_POS</a>, </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    MXC_SYS_RESET_PRST = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga8698ead3af87427933cb2dfb87e550c3">MXC_F_GCR_RSTR0_PRST_POS</a>, </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    MXC_SYS_RESET_SYSTEM = <a class="code hl_define" href="group___g_c_r___r_s_t_r0.html#ga28480759d7e4fa77b9428c8d3334a43c">MXC_F_GCR_RSTR0_SYSTEM_POS</a>, </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="comment">/* RESET1 Below this line we add 32 to separate RESET0 and RESET1 */</span></div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    MXC_SYS_RESET_I2C1 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gaac0f337c555eb1d0771ce77aedf6a4fa">MXC_F_GCR_RSTR1_I2C1_POS</a> + 32), </div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    MXC_SYS_RESET_PT = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga08bf4302bbde12020c74c4efe6393b78">MXC_F_GCR_RSTR1_PT_POS</a> + 32), </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    MXC_SYS_RESET_SPIXIP = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga980babec395985e7c88c4821865b0bcc">MXC_F_GCR_RSTR1_SPIXIP_POS</a> + 32), </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    MXC_SYS_RESET_XSPIM = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga89e7ff174a64c6b6862a9c2ebae27514">MXC_F_GCR_RSTR1_XSPIM_POS</a> + 32), </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    MXC_SYS_RESET_SDHC = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga236f2ce3b5d98fdaf5de7ae4e85f0826">MXC_F_GCR_RSTR1_SDHC_POS</a> + 32), </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    MXC_SYS_RESET_OWIRE = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gac9ad133f9cee27e4589fc480737decca">MXC_F_GCR_RSTR1_OWIRE_POS</a> + 32), </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    MXC_SYS_RESET_WDT1 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gabc217b69fef9ee3126121bb75c8ca407">MXC_F_GCR_RSTR1_WDT1_POS</a> + 32), </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    MXC_SYS_RESET_SPI0 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga4b9c3d22e16594ce2f5dc2e01c45f967">MXC_F_GCR_RSTR1_SPI0_POS</a> + 32), </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    MXC_SYS_RESET_SPIXMEM = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga6e4ffb1737ac2515642f01fa96090af4">MXC_F_GCR_RSTR1_SPIXMEM_POS</a> + 32), </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    MXC_SYS_RESET_SEMA = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga2fec66e209319c3a856ff8213930b852">MXC_F_GCR_RSTR1_SMPHR_POS</a> + 32), </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    MXC_SYS_RESET_WDT2 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga7b007bbfe67bb198cbe0412f0ed05dbf">MXC_F_GCR_RSTR1_WDT2_POS</a> + 32), </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    MXC_SYS_RESET_BTLE = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga1932bd51dda2074b7f84df0cc16d20ab">MXC_F_GCR_RSTR1_BTLE_POS</a> + 32), </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    MXC_SYS_RESET_AUDIO = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gad5f45d4a714bb7c9cc26dba087e77e55">MXC_F_GCR_RSTR1_AUDIO_POS</a> + 32), </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    MXC_SYS_RESET_RPU = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga32b0980de12bf991ed3fe605bb0c0ad7">MXC_F_GCR_RSTR1_RPU_POS</a> + 32), </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    MXC_SYS_RESET_I2C2 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gad55c4e9cca2c8f4eaa7a66be7e1c3426">MXC_F_GCR_RSTR1_I2C2_POS</a> + 32), </div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    MXC_SYS_RESET_HTMR0 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#ga7d8c222cb519b9f6bee4e45c0b0700b8">MXC_F_GCR_RSTR1_HTMR0_POS</a> + 32), </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    MXC_SYS_RESET_HTMR1 = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gab106d940a0423c7f98e8dd8e837045ed">MXC_F_GCR_RSTR1_HTMR1_POS</a> + 32), </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    MXC_SYS_RESET_DVS = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gab13bab1b930d14141cf2ff27e680a47c">MXC_F_GCR_RSTR1_DVS_POS</a> + 32), </div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    MXC_SYS_RESET_SIMO = (<a class="code hl_define" href="group___g_c_r___r_s_t_r1.html#gae4b2876f88703818fee195c2fbf2aa12">MXC_F_GCR_RSTR1_SIMO_POS</a> + 32), </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>} mxc_sys_reset_t;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    MXC_SYS_PERIPH_CLOCK_GPIO0 =</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga8c46cd8e04af271c6c9bb58cdbcdc6c9">MXC_F_GCR_PERCKCN0_GPIO0D_POS</a>, </div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    MXC_SYS_PERIPH_CLOCK_GPIO1 =</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga4c0ab54bc604d412d64f9149e72b83df">MXC_F_GCR_PERCKCN0_GPIO1D_POS</a>, </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    MXC_SYS_PERIPH_CLOCK_USB =</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga5915a505a0238711bf20dfb7edf3d613">MXC_F_GCR_PERCKCN0_USBD_POS</a>, </div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    MXC_SYS_PERIPH_CLOCK_DMA =</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga8bc7f0993737743d9e2310fd8ebf4740">MXC_F_GCR_PERCKCN0_DMAD_POS</a>, </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    MXC_SYS_PERIPH_CLOCK_SPI1 =</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga66d4b5e02e0ddbd04d68560c138d6af6">MXC_F_GCR_PERCKCN0_SPI1D_POS</a>, </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    MXC_SYS_PERIPH_CLOCK_SPI2 =</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga24f9c1a94e24f22602b619dd90ad7990">MXC_F_GCR_PERCKCN0_SPI2D_POS</a>, </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    MXC_SYS_PERIPH_CLOCK_UART0 =</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga13399d6e80ed9ce23d0f787fca9d49c3">MXC_F_GCR_PERCKCN0_UART0D_POS</a>, </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    MXC_SYS_PERIPH_CLOCK_UART1 =</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga513450219413a4925978fec6c687a41f">MXC_F_GCR_PERCKCN0_UART1D_POS</a>, </div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    MXC_SYS_PERIPH_CLOCK_I2C0 =</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#gac5e58e3e1e1a79136f1e5bce5eb0d3c7">MXC_F_GCR_PERCKCN0_I2C0D_POS</a>, </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    MXC_SYS_PERIPH_CLOCK_TPU =</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga98667b2c90c7bccf37f11d956003bdde">MXC_F_GCR_PERCKCN0_CRYPTOD_POS</a>, </div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    MXC_SYS_PERIPH_CLOCK_T0 =</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga5ea6915a8d6bfdd4b6a3d7a45296c999">MXC_F_GCR_PERCKCN0_TIMER0D_POS</a>, </div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    MXC_SYS_PERIPH_CLOCK_T1 =</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga8a56ae31d2dfdd3db8ab304f855ebe63">MXC_F_GCR_PERCKCN0_TIMER1D_POS</a>, </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    MXC_SYS_PERIPH_CLOCK_T2 =</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga1f2d77629f1a789f7fb1014283e8c282">MXC_F_GCR_PERCKCN0_TIMER2D_POS</a>, </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    MXC_SYS_PERIPH_CLOCK_T3 =</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga90b31f3946550d1d0eb306c0c62897f9">MXC_F_GCR_PERCKCN0_TIMER3D_POS</a>, </div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    MXC_SYS_PERIPH_CLOCK_T4 =</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga42d95ad8f9e331d3d1c80c2ce760a99e">MXC_F_GCR_PERCKCN0_TIMER4D_POS</a>, </div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    MXC_SYS_PERIPH_CLOCK_T5 =</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga84e085e32538d8dad352faa34041cb8d">MXC_F_GCR_PERCKCN0_TIMER5D_POS</a>, </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    MXC_SYS_PERIPH_CLOCK_ADC =</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga301e8a99c0a86cb97d57bc403cba1752">MXC_F_GCR_PERCKCN0_ADCD_POS</a>, </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    MXC_SYS_PERIPH_CLOCK_I2C1 =</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga1df59c15fe8f49097d36b5409ca52af9">MXC_F_GCR_PERCKCN0_I2C1D_POS</a>, </div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    MXC_SYS_PERIPH_CLOCK_PT =</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga37c96ff6becd6bafee077b78d85f90a8">MXC_F_GCR_PERCKCN0_PTD_POS</a>, </div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    MXC_SYS_PERIPH_CLOCK_SPIXIP =</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#ga2a030663c920241b997a245a59cbb4e2">MXC_F_GCR_PERCKCN0_SPIXIPD_POS</a>, </div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    MXC_SYS_PERIPH_CLOCK_SPIXFC =</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n0.html#gaeff81733b4a675013542ef38e0e593be">MXC_F_GCR_PERCKCN0_SPIMD_POS</a>, </div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="comment">/* PERCKCN1 Below this line we add 32 to separate PERCKCN0 and PERCKCN1 */</span></div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    MXC_SYS_PERIPH_CLOCK_BTLE = (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga758678ba7a0f177c8e6151dacd0b7889">MXC_F_GCR_PERCKCN1_BTLED_POS</a> + 32),</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    MXC_SYS_PERIPH_CLOCK_UART2 =</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaf8e3de9889bf06846a5b61f9364c7b87">MXC_F_GCR_PERCKCN1_UART2D_POS</a> + 32), </div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    MXC_SYS_PERIPH_CLOCK_TRNG =</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga1f855ed57ba8bd0bd081493e11ad3844">MXC_F_GCR_PERCKCN1_TRNGD_POS</a> + 32), </div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    MXC_SYS_PERIPH_CLOCK_SCACHE =</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaafab949e71e6f8c70172b69784c04d62">MXC_F_GCR_PERCKCN1_SCACHED_POS</a> + 32), </div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    MXC_SYS_PERIPH_CLOCK_SDMA =</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gae7f992a5f816717cbe78f1744b45e75e">MXC_F_GCR_PERCKCN1_SDMAD_POS</a> + 32), </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    MXC_SYS_PERIPH_CLOCK_SMPHR =</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga8e0c41c0b6bf4911e1d7b543c29aaf29">MXC_F_GCR_PERCKCN1_SMPHRD_POS</a> + 32), </div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    MXC_SYS_PERIPH_CLOCK_SDHC =</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gabf57a4d6462cada8d94c7865ab86f9f4">MXC_F_GCR_PERCKCN1_SDHCD_POS</a> + 32), </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    MXC_SYS_PERIPH_CLOCK_ICACHEXIP =</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga5ac2ce85368f72f6357bef2018156244">MXC_F_GCR_PERCKCN1_ICACHEXIPD_POS</a> + 32), </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    MXC_SYS_PERIPH_CLOCK_OWIRE =</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga6985319c9b0a87df7bc0af36fecc1062">MXC_F_GCR_PERCKCN1_OWIRED_POS</a> + 32), </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    MXC_SYS_PERIPH_CLOCK_SPI0 =</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga68cc9a8c63d1dcd579e68598222e9afa">MXC_F_GCR_PERCKCN1_SPI0D_POS</a> + 32), </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    MXC_SYS_PERIPH_CLOCK_SPIXIPD =</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga31c8f50f3b63ca94b14a9f7a5c0b0133">MXC_F_GCR_PERCKCN1_SPIXIPDD_POS</a> + 32), </div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    MXC_SYS_PERIPH_CLOCK_DMA1 =</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gac7e329419cfcd0e8739e51b904826992">MXC_F_GCR_PERCKCN1_DMA1D_POS</a> + 32), </div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    MXC_SYS_PERIPH_CLOCK_AUDIO =</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga0ad2d473eb737dbc3fa6f10b3bfcf251">MXC_F_GCR_PERCKCN1_AUDIOD_POS</a> + 32), </div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    MXC_SYS_PERIPH_CLOCK_I2C2 =</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga6249e976a4504de6a2f7555330f6debe">MXC_F_GCR_PERCKCN1_I2C2D_POS</a> + 32), </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    MXC_SYS_PERIPH_CLOCK_HTMR0 =</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaa7662f28a9e576e15e89995c139f6c21">MXC_F_GCR_PERCKCN1_HTMR0D_POS</a> + 32), </div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    MXC_SYS_PERIPH_CLOCK_HTMR1 =</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaafbf95c383dbf9b0a70be65969f4f79e">MXC_F_GCR_PERCKCN1_HTMR1D_POS</a> + 32), </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    MXC_SYS_PERIPH_CLOCK_WDT0 =</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gacfdc806301288d184a3045c7c8689ed8">MXC_F_GCR_PERCKCN1_WDT0D_POS</a> + 32), </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    MXC_SYS_PERIPH_CLOCK_WDT1 =</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gaa4c3856213e6b7742a40dafa99c7bc97">MXC_F_GCR_PERCKCN1_WDT1D_POS</a> + 32), </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    MXC_SYS_PERIPH_CLOCK_WDT2 =</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#gabaeef2f9f9e5537d47fa37c273bd971f">MXC_F_GCR_PERCKCN1_WDT2D_POS</a> + 32), </div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    MXC_SYS_PERIPH_CLOCK_CPU1 =</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        (<a class="code hl_define" href="group___g_c_r___p_e_r_c_k_c_n1.html#ga581a39fa69eb1031d1b5cba542db9d6d">MXC_F_GCR_PERCKCN1_CPU1D_POS</a> + 32), </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>} mxc_sys_periph_clock_t;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    MXC_SYS_SYSTEM_DIV_1 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#gab921054421686801a3fe0d64f029eb53">MXC_S_GCR_CLKCN_PSC_DIV1</a>,</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    MXC_SYS_SYSTEM_DIV_2 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga28706c29c285d867a646ca8d77ef0117">MXC_S_GCR_CLKCN_PSC_DIV2</a>,</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    MXC_SYS_SYSTEM_DIV_4 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga4852583c3685bfcd7f3a8f235dadddc1">MXC_S_GCR_CLKCN_PSC_DIV4</a>,</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    MXC_SYS_SYSTEM_DIV_8 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga6c3917242ceb859e3cbed871e37f5a88">MXC_S_GCR_CLKCN_PSC_DIV8</a>,</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>    MXC_SYS_SYSTEM_DIV_16 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga799b8d8913a397265a5b397a9cf46dd7">MXC_S_GCR_CLKCN_PSC_DIV16</a>,</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    MXC_SYS_SYSTEM_DIV_32 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga8c93587c963cc34c59ade7f995e274e3">MXC_S_GCR_CLKCN_PSC_DIV32</a>,</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    MXC_SYS_SYSTEM_DIV_64 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#gad64e7e1d25cb9bcb6d4d8e11844f0447">MXC_S_GCR_CLKCN_PSC_DIV64</a>,</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    MXC_SYS_SYSTEM_DIV_128 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga2440016d66f178b9bb4c47cee576adde">MXC_S_GCR_CLKCN_PSC_DIV128</a>,</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>} mxc_sys_system_div_t;</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span> </div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="keyword">typedef</span> <span class="keyword">enum</span> {</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    MXC_SYS_CLOCK_HIRC96 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga0d83db9ac4ff7e37307e89d529f4fb77">MXC_V_GCR_CLKCN_CLKSEL_HIRC96</a>,</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>    MXC_SYS_CLOCK_HIRC8 = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#gaccb8db130ed20e52e9d6ffdebca23140">MXC_V_GCR_CLKCN_CLKSEL_HIRC8</a>,</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    MXC_SYS_CLOCK_HIRC = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga87764e401fb9d85f8e3040912e8ea70d">MXC_V_GCR_CLKCN_CLKSEL_HIRC</a>,</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    MXC_SYS_CLOCK_XTAL32M = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#gadb69cec8ab9e0b1b0b25529afe875f8b">MXC_V_GCR_CLKCN_CLKSEL_XTAL32M</a>,</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    MXC_SYS_CLOCK_LIRC8K = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga2445dfcdee0dc2bd7fcbbea2ae4fb43c">MXC_V_GCR_CLKCN_CLKSEL_LIRC8</a>,</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    MXC_SYS_CLOCK_XTAL32K = <a class="code hl_define" href="group___g_c_r___c_l_k_c_n.html#ga2097270c07091caa971d474d9fd8c42d">MXC_V_GCR_CLKCN_CLKSEL_XTAL32K</a>,</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>} mxc_sys_system_clock_t;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="preprocessor">#define MXC_SYS_SCACHE_CLK 1 </span><span class="comment">// Enable SCACHE CLK</span></div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="preprocessor">#define MXC_SYS_CTB_CLK 1 </span><span class="comment">// Enable CTB CLK</span></div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">#define MXC_SYS_SCACHE_CLK 1 </span><span class="comment">// Enable SCACHE CLK</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="preprocessor">#define MXC_SYS_CTB_CLK 1 </span><span class="comment">// Enable CTB CLK</span></div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span><span class="preprocessor">#define MXC_SYS_USN_CHECKSUM_LEN 16</span></div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span><span class="preprocessor">#define MXC_SYS_USN_LEN 16</span></div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="preprocessor">#define MXC_SYS_USN_CHECKSUM_LEN 16</span></div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span><span class="preprocessor">#define MXC_SYS_USN_LEN 16</span></div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span><span class="comment">/***** Function Prototypes *****/</span></div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="keywordtype">int</span> MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="keywordtype">int</span> MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock);</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="keywordtype">void</span> MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock);</div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span> </div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span><span class="keywordtype">void</span> MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock);</div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span> </div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span><span class="keywordtype">void</span> MXC_SYS_RTCClockEnable(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span> </div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="keywordtype">int</span> MXC_SYS_RTCClockDisable();</div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
-<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock);</div>
-<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span> </div>
-<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);</div>
-<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span> </div>
-<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span><span class="keywordtype">int</span> MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);</div>
-<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span> </div>
-<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="keywordtype">void</span> MXC_SYS_Clock_Div(mxc_sys_system_div_t div);</div>
-<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keywordtype">int</span> MXC_SYS_Clock_Timeout(uint32_t ready);</div>
-<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="keywordtype">void</span> MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>uint8_t MXC_SYS_GetRev(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
-<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span>}</div>
-<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span> </div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_SYS_H_</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span><span class="comment">/***** Function Prototypes *****/</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span><span class="keyword">typedef</span> <span class="keyword">struct </span>{</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    <span class="keywordtype">int</span> ie_status;</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    <span class="keywordtype">int</span> in_critical;</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>} mxc_crit_state_t;</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span> </div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span><span class="keyword">static</span> mxc_crit_state_t _state = { .ie_status = 0xFFFFFFFF, .in_critical = 0 };</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> _mxc_crit_get_state()</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>{</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span><span class="preprocessor">#ifndef __riscv</span></div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span><span class="comment">        On ARM M the 0th bit of the Priority Mask register indicates</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span><span class="comment">        whether interrupts are enabled or not.</span></div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span><span class="comment"></span> </div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span><span class="comment">        0 = enabled</span></div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span><span class="comment">        1 = disabled</span></div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>    uint32_t primask = __get_PRIMASK();</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    _state.ie_status = (primask == 0);</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span><span class="comment">        On RISC-V bit position 3 (Machine Interrupt Enable) of the</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span><span class="comment">        mstatus register indicates whether interrupts are enabled.</span></div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span><span class="comment"></span> </div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span><span class="comment">        0 = disabled</span></div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span><span class="comment">        1 = enabled</span></div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    uint32_t mstatus = get_mstatus();</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    _state.ie_status = ((mstatus &amp; (1 &lt;&lt; 3)) != 0);</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>}</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span> </div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> MXC_SYS_Crit_Enter(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>{</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    _mxc_crit_get_state();</div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>    <span class="keywordflow">if</span> (_state.ie_status)</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        __disable_irq();</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>    _state.in_critical = 1;</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>}</div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span> </div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> MXC_SYS_Crit_Exit(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>{</div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    <span class="keywordflow">if</span> (_state.ie_status) {</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        __enable_irq();</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>    }</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span>    _state.in_critical = 0;</div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>    _mxc_crit_get_state();</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>    <span class="comment">/*</span></div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span><span class="comment">        ^ Reset the state again to prevent edge case</span></div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span><span class="comment">        where interrupts get disabled, then Crit_Exit() gets</span></div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span><span class="comment">        called, which would inadvertently re-enable interrupts</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span><span class="comment">        from old state.</span></div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span><span class="comment">    */</span></div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>}</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">int</span> MXC_SYS_In_Crit_Section(<span class="keywordtype">void</span>)</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span>{</div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>    <span class="keywordflow">return</span> _state.in_critical;</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span>}</div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span> </div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span><span class="comment">// clang-format off</span></div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span><span class="comment"></span><span class="preprocessor">#define MXC_CRITICAL(code) {\</span></div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span><span class="preprocessor">    MXC_SYS_Crit_Enter();\</span></div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span><span class="preprocessor">    code;\</span></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span><span class="preprocessor">    MXC_SYS_Crit_Exit();\</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="preprocessor">}</span></div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="comment">// clang-format on</span></div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><span class="keywordtype">int</span> MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);</div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span> </div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span><span class="keywordtype">int</span> MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span> </div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span><span class="keywordtype">void</span> MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span> </div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span><span class="keywordtype">void</span> MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="keywordtype">void</span> MXC_SYS_RTCClockEnable(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span><span class="keywordtype">int</span> MXC_SYS_RTCClockDisable();</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span> </div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span><span class="keywordtype">int</span> MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span> </div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="keywordtype">void</span> MXC_SYS_Clock_Div(mxc_sys_system_div_t div);</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span><span class="keywordtype">int</span> MXC_SYS_Clock_Timeout(uint32_t ready);</div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span> </div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span><span class="keywordtype">void</span> MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span> </div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>uint8_t MXC_SYS_GetRev(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span> </div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>}</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span> </div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_SYS_H_</span></div>
 <div class="ttc" id="agroup___g_c_r___c_l_k_c_n_html_ga0d83db9ac4ff7e37307e89d529f4fb77"><div class="ttname"><a href="group___g_c_r___c_l_k_c_n.html#ga0d83db9ac4ff7e37307e89d529f4fb77">MXC_V_GCR_CLKCN_CLKSEL_HIRC96</a></div><div class="ttdeci">#define MXC_V_GCR_CLKCN_CLKSEL_HIRC96</div><div class="ttdef"><b>Definition:</b> gcr_regs.h:310</div></div>
 <div class="ttc" id="agroup___g_c_r___c_l_k_c_n_html_ga2097270c07091caa971d474d9fd8c42d"><div class="ttname"><a href="group___g_c_r___c_l_k_c_n.html#ga2097270c07091caa971d474d9fd8c42d">MXC_V_GCR_CLKCN_CLKSEL_XTAL32K</a></div><div class="ttdeci">#define MXC_V_GCR_CLKCN_CLKSEL_XTAL32K</div><div class="ttdef"><b>Definition:</b> gcr_regs.h:314</div></div>
 <div class="ttc" id="agroup___g_c_r___c_l_k_c_n_html_ga2440016d66f178b9bb4c47cee576adde"><div class="ttname"><a href="group___g_c_r___c_l_k_c_n.html#ga2440016d66f178b9bb4c47cee576adde">MXC_S_GCR_CLKCN_PSC_DIV128</a></div><div class="ttdeci">#define MXC_S_GCR_CLKCN_PSC_DIV128</div><div class="ttdef"><b>Definition:</b> gcr_regs.h:300</div></div>
@@ -431,7 +496,7 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_ff3a3eb0fa2363f2f676c4d2ad0d5eb2.html">MAX32665</a></li><li class="navelem"><b>mxc_sys.h</b></li>
-    <li class="footer">Generated on Thu Dec 15 2022 22:46:36 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Mar 7 2023 00:06:35 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

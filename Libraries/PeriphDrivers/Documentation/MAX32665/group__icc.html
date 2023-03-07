@@ -115,6 +115,14 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_ICC_Disable</b> (
 <tr class="memitem:ga633d09318eb3d395dc6211f99cf4e060"><td class="memItemLeft" align="right" valign="top"><a id="ga633d09318eb3d395dc6211f99cf4e060" name="ga633d09318eb3d395dc6211f99cf4e060"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_ICC_Flush</b> (void)</td></tr>
 <tr class="separator:ga633d09318eb3d395dc6211f99cf4e060"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga296add8d3a100529527dadd0bd9b9189"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icc.html#ga296add8d3a100529527dadd0bd9b9189">MXC_ICC_IDInst</a> (<a class="el" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a> *icc, <a class="el" href="group__icc.html#ga9254ee07d84b706398d5e4e0f1c41134">mxc_icc_info_t</a> cid)</td></tr>
+<tr class="separator:ga296add8d3a100529527dadd0bd9b9189"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga982c5134f25e28727b16c9cf6dfd5897"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icc.html#ga982c5134f25e28727b16c9cf6dfd5897">MXC_ICC_EnableInst</a> (<a class="el" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a> *icc)</td></tr>
+<tr class="separator:ga982c5134f25e28727b16c9cf6dfd5897"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4985eb0be0a3dc3643eff787a85f2be1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icc.html#ga4985eb0be0a3dc3643eff787a85f2be1">MXC_ICC_DisableInst</a> (<a class="el" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a> *icc)</td></tr>
+<tr class="separator:ga4985eb0be0a3dc3643eff787a85f2be1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad15e29c8737fb446dab1c85fbe51d6a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icc.html#gad15e29c8737fb446dab1c85fbe51d6a2">MXC_ICC_FlushInst</a> (<a class="el" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a> *icc)</td></tr>
+<tr class="separator:gad15e29c8737fb446dab1c85fbe51d6a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
@@ -143,6 +151,84 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_ICC_Flush</b> (vo
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="ga4985eb0be0a3dc3643eff787a85f2be1" name="ga4985eb0be0a3dc3643eff787a85f2be1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4985eb0be0a3dc3643eff787a85f2be1">&#9670;&nbsp;</a></span>MXC_ICC_DisableInst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_ICC_DisableInst </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>icc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Disables one of the ICC's. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">icc</td><td>Pointer to ICC instance to disable. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga982c5134f25e28727b16c9cf6dfd5897" name="ga982c5134f25e28727b16c9cf6dfd5897"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga982c5134f25e28727b16c9cf6dfd5897">&#9670;&nbsp;</a></span>MXC_ICC_EnableInst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_ICC_EnableInst </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>icc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enables one of the ICC's. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">icc</td><td>Pointer to ICC instance to enable. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gad15e29c8737fb446dab1c85fbe51d6a2" name="gad15e29c8737fb446dab1c85fbe51d6a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad15e29c8737fb446dab1c85fbe51d6a2">&#9670;&nbsp;</a></span>MXC_ICC_FlushInst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_ICC_FlushInst </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>icc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Flushes data from one of the ICC's. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">icc</td><td>Pointer to ICC instance to flush. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga3a72ee60131925bd068e477ba84513bc" name="ga3a72ee60131925bd068e477ba84513bc"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga3a72ee60131925bd068e477ba84513bc">&#9670;&nbsp;</a></span>MXC_ICC_ID()</h2>
 
@@ -175,12 +261,55 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_ICC_Flush</b> (vo
 
 </div>
 </div>
+<a id="ga296add8d3a100529527dadd0bd9b9189" name="ga296add8d3a100529527dadd0bd9b9189"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga296add8d3a100529527dadd0bd9b9189">&#9670;&nbsp;</a></span>MXC_ICC_IDInst()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_ICC_IDInst </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__icc__registers.html#structmxc__icc__regs__t">mxc_icc_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>icc</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__icc.html#ga9254ee07d84b706398d5e4e0f1c41134">mxc_icc_info_t</a>&#160;</td>
+          <td class="paramname"><em>cid</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reads ID information from one of the ICC's Cache ID Register. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">icc</td><td>Pointer ICC instance to get ID information from. </td></tr>
+    <tr><td class="paramname">cid</td><td>Selects what information to get from the Cache ID Register </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">Returns</td><td>the selected value from the Cache ID Register. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Dec 15 2022 22:46:36 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Mar 7 2023 00:06:35 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

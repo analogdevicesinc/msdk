@@ -49,9 +49,10 @@ var searchData=
   ['aes_5fregisters_46',['AES_Registers',['../group__aes__registers.html',1,'']]],
   ['aes_5fstatus_47',['AES_STATUS',['../group___a_e_s___s_t_a_t_u_s.html',1,'']]],
   ['aeskey_48',['aeskey',['../group__mcr__registers.html#a6c425a9dbc533b7972a2d992f63f73cb',1,'mxc_mcr_regs_t']]],
-  ['aincomp_49',['aincomp',['../group__mcr__registers.html#a1f1a1a126050db081f95eaa80bd041a9',1,'mxc_mcr_regs_t']]],
-  ['assertion_20checks_20for_20debugging_50',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]],
-  ['autocal0_51',['autocal0',['../group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26',1,'mxc_fcr_regs_t']]],
-  ['autocal1_52',['autocal1',['../group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba',1,'mxc_fcr_regs_t']]],
-  ['autocal2_53',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]]
+  ['aeskeys_5fregisters_49',['AESKEYS_Registers',['../group__aeskeys__registers.html',1,'']]],
+  ['aincomp_50',['aincomp',['../group__mcr__registers.html#a1f1a1a126050db081f95eaa80bd041a9',1,'mxc_mcr_regs_t']]],
+  ['assertion_20checks_20for_20debugging_51',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]],
+  ['autocal0_52',['autocal0',['../group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26',1,'mxc_fcr_regs_t']]],
+  ['autocal1_53',['autocal1',['../group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba',1,'mxc_fcr_regs_t']]],
+  ['autocal2_54',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]]
 ];
