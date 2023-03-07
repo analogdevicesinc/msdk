@@ -31,8 +31,6 @@ SRCS += stack_dats.c
 SRCS += dats_main.c
 SRCS += main.c
 
-#PROJ_CFLAGS += -Wl,--section-start=.text=0x10004000
-
 USE_INTERNAL_FLASH ?=0
 ifeq ($(USE_INTERNAL_FLASH), 1)
 PROJ_CFLAGS += -DOTA_INTERNAL=1

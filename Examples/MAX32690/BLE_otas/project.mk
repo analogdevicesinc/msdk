@@ -26,8 +26,6 @@ INIT_OBSERVER = 0
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
 
-PROJ_CFLAGS += -Wl,--section-start=.text=0x10004000
-
 # Use local linkerfile
 LINKERFILE = ota.ld
 
