@@ -101,18 +101,6 @@ platform_docs_dir = repo / "Libraries" / "Cordio" / "platform" / "Documentation"
 shutil.copytree(cordio_docs_dir, here / "Libraries" / "Cordio" / "docs", dirs_exist_ok=True)
 shutil.copytree(platform_docs_dir, here / "Libraries" / "Cordio" / "platform" / "Documentation", dirs_exist_ok=True)
 
-# Pre-populate markdown files
-src = repo / "Libraries" / "Cordio" / "docs" 
-dest = repo / "Documentation" / "Libraries" / "Cordio" / "docs"
-for f in src.glob("*.md"):
-    shutil.copy(f, dest)
-
-src = repo / "Libraries" / "Cordio" / "platform" / "Documentation"
-dest = repo / "Documentation" / "Libraries" / "Cordio" / "platform" / "Documentation"
-for f in src.glob("*.pdf"):
-    shutil.copy(f, dest)
-
-
 # Run mkdocs build
 # A subprocess is used because the Mkdocs Python API does not print any logging info
 print("Building docs (this could take a few minutes)...")
