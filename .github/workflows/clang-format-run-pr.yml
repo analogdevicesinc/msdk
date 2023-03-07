@@ -24,7 +24,7 @@ jobs:
       run: |
         sudo apt-get install clang-format-${CLANG_VERSION}
 
-    - uses: actions/github-script@v3
+    - uses: actions/github-script@v6
       id: get-pr
       with:
         script: |
@@ -33,13 +33,24 @@ jobs:
             repo: context.repo.repo,
             pull_number: context.issue.number
           }
+
           core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+
+          const acknowledge = {
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            comment_id: context.payload.comment.id,
+            content: 'rocket'
+          }
+
           try {
-            const result = await github.pulls.get(request)
+            github.rest.reactions.createForIssueComment(acknowledge)
+            const result = await github.rest.pulls.get(request)
             return result.data
           } catch (err) {
             core.setFailed(`Request failed with error ${err}`)
           }
+
     - uses: actions/checkout@v3
       with:
         repository: ${{ fromJSON(steps.get-pr.outputs.result).head.repo.full_name }}
