@@ -11,12 +11,12 @@ repo = here.parent
 periph_docs_dir = repo / "Libraries" / "PeriphDrivers" / "Documentation"
 
 # Run Doxygen builds
-#for f in periph_docs_dir.glob("*_Doxyfile"):
- #   run(f"doxygen {f.name}", cwd=f.parent)
-  #  micro = f.name.split("_")[0].upper()  # max32xxx_Doxyfile -> MAX32XXX
-   # dest = here / "Libraries" / "PeriphDrivers" / "Documentation" / micro
+for f in periph_docs_dir.glob("*_Doxyfile"):
+    run(f"doxygen {f.name}", cwd=f.parent, shell=True)
+    micro = f.name.split("_")[0].upper()  # max32xxx_Doxyfile -> MAX32XXX
+    dest = here / "Libraries" / "PeriphDrivers" / "Documentation" / micro
     # ^ Recreate directory structure so built links work
-   # shutil.copytree(periph_docs_dir / micro, dest, dirs_exist_ok=True)
+    shutil.copytree(periph_docs_dir / micro, dest, dirs_exist_ok=True)
 
 # Pre-populate markdown files
 for f in repo.glob("*.md"):
