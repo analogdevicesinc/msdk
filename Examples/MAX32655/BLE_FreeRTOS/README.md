@@ -18,7 +18,7 @@ If using the Standard EV Kit board (EvKit\_V1):
 
 
 ### Project-Specific Build Notes
-* Setting `TRACE=1` in **project.mk** initializes the on-board USB-to-UART adapter for
+* Setting `TRACE=1` in [**project.mk**](project.mk) initializes the on-board USB-to-UART adapter for
 viewing the trace messages and interacting with the application. Port uses settings:
     - Baud            : 115200  
     - Char size       : 8  

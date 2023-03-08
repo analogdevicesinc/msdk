@@ -19,7 +19,7 @@ Universal instructions on building, flashing, and debugging this project can be 
     adapter for the HCI UART.
 
 ### Project-Specific Build Notes
-* Setting `TRACE=1` in **project.mk** initializes the on-board USB-to-UART adapter for
+* Setting `TRACE=1` in [**project.mk**](project.mk) initializes the on-board USB-to-UART adapter for
 viewing the trace messages and interacting with the application. Port uses settings:
     - Baud            : 115200  
     - Char size       : 8  

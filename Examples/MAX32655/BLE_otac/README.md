@@ -18,7 +18,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 * The application to use for the firmware update can be selected using the `FW_UPDATE_DIR` option in [project.mk](project.mk).  Whichever application is selected by this option must be configured to run from the appropriate memory section, as defined by the Bootloader (see the `Bootloader` example for more details).
-* Setting `TRACE=1` in **project.mk** initializes the on-board USB-to-UART adapter for
+* Setting `TRACE=1` in [**project.mk**](project.mk) initializes the on-board USB-to-UART adapter for
 viewing the trace messages and interacting with the application. Port uses settings:
     - Baud            : 115200  
     - Char size       : 8  

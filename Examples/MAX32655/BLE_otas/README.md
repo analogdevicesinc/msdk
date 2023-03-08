@@ -19,9 +19,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 * The Bootloader application needs to be loaded prior to loading this application. This application
-will run on top of the Bootloader. The [ota.ld] linker file included with this application must be used
+will run on top of the Bootloader. The [ota.ld](ota.ld) linker file included with this application must be used
 to properly setup the memory sections to coincide with the Bootloader.
-* Setting `TRACE=1` in **project.mk** initializes the on-board USB-to-UART adapter for
+* Setting `TRACE=1` in [**project.mk**](project.mk) initializes the on-board USB-to-UART adapter for
 viewing the trace messages and interacting with the application. Port uses settings:
     - Baud            : 115200  
     - Char size       : 8  
