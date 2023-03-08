@@ -40,7 +40,7 @@ which for demonstration purposes,is echoed via the trace mechanism
 Note that either the client or server can enter the passkey first.
 The peer device must then match.
 
-### Commands
+## Commands
 Type the desired command and parameter (if applicable) and press enter to execute the command.  
 
 __help__  Displays the available commands.  
