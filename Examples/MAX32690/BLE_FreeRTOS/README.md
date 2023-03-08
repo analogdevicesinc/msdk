@@ -30,7 +30,7 @@ If using the Standard EV Kit board (EvKit\_V1):
 -   Close jumpers JP5 (LED1 EN) and JP6 (LED2 EN).
 
 
-### Serial Port
+## Serial Port
 When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can be used to view
 the trace messages as well as interact with the demo. Open a serial port terminal
 with the following settings.
@@ -41,10 +41,10 @@ Parity:           None
 Stop bits:        1
 HW Flow Control:  No
 
-### Tickless
+## Tickless
 Enable tickless mode in FreeRTOSConfig.h to put the device in deep sleep / standby when idle.
 
-### Commands
+## Commands
 Type the desired command and parameter (if applicable) and press enter to execute the command.  
 
 __help__  Displays the available commands.  
