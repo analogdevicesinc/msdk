@@ -40,11 +40,24 @@ The following microcontrollers and evaluation platforms are officially supported
 
 ---
 
+* **MAX32572** **(Not Yet Publicly Available)**
+    - MAX32572EVKIT **(Not Yet Publicly Available)**
+
+
+---
+
 * [**MAX32650**](https://www.analog.com/en/products/max32650.html):  Ultra-Low-Power Arm Cortex-M4 with FPU-Based Microcontroller (MCU) with 3MB Flash and 1MB SRAM
 
     - [MAX32650-EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650-evkit.html)
 
     - [MAX32650FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650fthr.html)
+
+
+---
+
+* [**MAX32651**](https://www.analog.com/en/products/max32651.html):  Ultra-Low-Power Arm Cortex-M4 with FPU-Based Microcontroller (MCU) with 3MB Flash and 1MB SRAM
+
+    - [MAX32651-EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32651-evkit.html)
 
 
 ---
@@ -71,7 +84,7 @@ The following microcontrollers and evaluation platforms are officially supported
 
 ---
 
-* [**MAX32665-MAX32668 Family**](https://www.analog.com/en/products/max32665.html):  Low-Power ARM Cortex-M4 with FPU-Based Microcontroller with Bluetooth 5 for Wearables
+* [**MAX32665-MAX32666 Family**](https://www.analog.com/en/products/max32665.html):  Low-Power ARM Cortex-M4 with FPU-Based Microcontroller with Bluetooth 5 for Wearables
 
     - [MAX32666EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666evkit.html)
 
@@ -112,8 +125,9 @@ The following microcontrollers and evaluation platforms are officially supported
 
 ---
 
-* MAX32690 **(Not Yet Publicly Available)**
-    - MAX32690EVKIT **(Not Yet Publicly Available)**
+* [**MAX32690**](https://www.analog.com/en/products/max32690.html):  Arm Cortex-M4 with FPU Microcontroller and Bluetooth LE 5 for Industrial and Wearables
+
+    - MAX32690EVKIT (Product Page Not Yet Available)
 
 
 ---
@@ -1548,7 +1562,7 @@ The links below will open detailed API references for each microcontroller.  Off
 
 - [MAX32660 API](Libraries/PeriphDrivers/Documentation/MAX32660/index.html)
 
-- [MAX32665-MAX32668 API](Libraries/PeriphDrivers/Documentation/MAX32665/index.html)
+- [MAX32665-MAX32666 API](Libraries/PeriphDrivers/Documentation/MAX32665/index.html)
 
 - [MAX32670 API](Libraries/PeriphDrivers/Documentation/MAX32670/index.html)
 
@@ -1557,6 +1571,8 @@ The links below will open detailed API references for each microcontroller.  Off
 - [MAX32675 API](Libraries/PeriphDrivers/Documentation/MAX32675/index.html)
 
 - [MAX32680 API](Libraries/PeriphDrivers/Documentation/MAX32680/index.html)
+
+- [MAX32690 API](Libraries/PeriphDrivers/Documentation/MAX32690/index.html)
 
 - [MAX78000 API](Libraries/PeriphDrivers/Documentation/MAX78000/index.html)
 
