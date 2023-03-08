@@ -267,13 +267,13 @@ An MSDK installation contains a `MaintenanceTool` executable program in the root
 
 MSDK updates are typically released on a quarterly basis, and the Maintenance Tool will retrieve the latest release when **Update components** is run.
 
-#### Development Resources
-
-Development copies of the MSDK resources can be obtained via [Github](https://github.com/Analog-Devices-MSDK/msdk), and instructions on how to work from the development repository can be found in the repository's [README](https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md).
-
 #### Older Versions and Offline Installer
 
 Older versions of the MSDK are available as an **_offline installer_** for each release tag.  They are available on the [Releases page](https://github.com/Analog-Devices-MSDK/msdk/releases) of the MSDK Github and can be used to roll back to a specific MSDK release.
+
+#### Development Resources
+
+Development copies of the MSDK resources can be obtained via [Github](https://github.com/Analog-Devices-MSDK/msdk).  Instructions on how to work from the development repository can be found in the repository's [README](https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md).
 
 ## Getting Started
 
@@ -295,7 +295,7 @@ The MSDK offers support for multiple development environments to support the use
 
 - **Board Support Package (BSP)**:  The MSDK supports evaluation platforms for target microcontrollers via _Board Support Packages_.  For microcontrollers with multiple evaluation platforms, multiple BSPs are available.  These can be found in the `Libraries/Boards` folder of the MSDK installation.
 
-    By default, most projects in the MSDK come pre-configured for the "EVKIT"-type BSP, which is generally the largest "traditional" evaluation platform for that device.  It's important to note that the active BSP may need to be reconfigured for a project, and this is done slightly differently for each development environment.  This is covered in more detail below.
+    By default, most projects in the MSDK come pre-configured for the "EVKIT"-type BSP, which is generally the largest evaluation platform for that device with most (or all) pins broken out.  It's important to note that the active BSP may need to be reconfigured for a project, and this is done slightly differently for each development environment.  This is covered in more detail below.
 
 - **System Environment**:  Your system's _environment_ is a broad term that encapsulates the programs and variables that are available to your system's shell on the command-line.  It's expected that the user has some basic familiarity with this concept.
 
@@ -331,9 +331,9 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
 4. Use **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS) to open the developer prompt.
 
-5. Type "open settings json" and select the **"Preferences: Open Settings (JSON)"** option.
+5. Type "open user settings" and select the **"Preferences: Open User Settings (JSON)"** option.
 
-    ![Open Settings JSON Command](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg)
+    ![Open Settings JSON Command](res/Fig42.jpg)
 
 6. Add the entries below into your user settings.json file.
 
@@ -348,25 +348,17 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
 7. Save your changes to the file with **`CTRL + S`** and restart VS Code.
 
-#### Opening Example Projects
-
-Visual Studio Code is built around a "working directory" paradigm.  The editor is always rooted in a working directory, and the main mechanism for changing that directory is **File -> Open Folder...**
-
-![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
-
-As a result, you'll notice that there is no "New Project" mechanism.  A "project" in VS Code is simply a folder.  It will look inside of the opened folder for a `.vscode` _sub_-folder to load project-specific settings from.
-
-![Example Directory Contents](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/opening_projects_2.jpg)
-
-_(Note:  You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder)._
-
-To open a project:
+#### Building & Running a Project (VS Code)
 
 1. Launch Visual Studio Code.
 
 2. Select **File -> Open Folder...**
 
-3. Navigate to an example project for the target microcontroller in the MSDK's [Examples folder](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) and open it with **Select Folder**.
+    ![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
+
+3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder and open it with **Select Folder**.
+
+    ![Figure 43](res/Fig43.jpg)
 
 4. VS Code will prompt for trust the first time.  Select _Trust folder and enable all features_
 
@@ -390,47 +382,47 @@ To open a project:
 
     ![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
 
-#### Building and Running a Project
+9. Press the shortcut **`Ctrl+Shift+B`** to open the available **Build Tasks** (alternatively navigate to _Terminal -> Run Build task..._).
 
-Once a project is opened 4 available [build tasks](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks) will become available via **Terminal > Run Build task...** or the shortcut **`Ctrl+Shift+B`**.  These are the primary interface to the build system.
+    ![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
 
-![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
-
-1. Run the **"build"** task to compile the project for the configured _Target Microcontroller_ and _BSP_.  Notice the `TARGET` and `BOARD` Build Configuration Variables being set on the command-line, and the program binary successfully compiled into the `.elf` program binary in the **build** sub-folder of the project.
+10. Run the **"build"** task to compile the project for the configured _Target Microcontroller_ and _BSP_.  Notice the `TARGET` and `BOARD` Build Configuration Variables being set on the command-line, and the program binary successfully compiled into the `.elf` program binary in the **build** sub-folder of the project.
 
     ![Figure 18](res/Fig18.jpg)
 
-2. Connect a debug adapter between the host PC and the evaluation platform.  For more detailed instructions on this hardware setup refer to the evaluation platforms Datasheet and Quick-Start Guide.
+11. Connect a debug adapter between the host PC and the evaluation platform.  For more detailed instructions on this hardware setup refer to the evaluation platforms Datasheet and Quick-Start Guide.
 
-3. Run the **`flash`**  build task.  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.
+12. Run the **`flash`**  build task.  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.
 
     ![Figure 19](res/Fig19.jpg)
 
-4. Open the **Run and Debug** window (**`CTRL+SHIFT+D`**) and launch the debugger (**`F5`**).
+13. Open the **Run and Debug** window (**`CTRL+SHIFT+D`**) and launch the debugger (**`F5`**).
 
     ![Figure 20](res/Fig20.jpg)
 
-5. Verify the program counter enters `main` successfully.
+14. Verify the program counter enters `main` successfully.
 
     ![Figure 21](res/Fig21.jpg)
 
-6. Press **Continue** (**`F5`**) to run the program.
+15. Press **Continue** (**`F5`**) to run the program.
 
     ![Debugger Control Bar Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/debugger_bar.JPG)
 
         Continue | Step Over | Step Into | Step Out | Restart | Stop
 
-7. Exercise the debugger, and press stop to disconnect when finished.
+16. Exercise the debugger, and press stop to disconnect when finished.
 
 ---
 
 ### Getting Started with Eclipse
 
+#### Setup (Eclipse)
+
 The only setup required to use Eclipse is to ensure that the “Eclipse” component has been selected during the [MSDK installation](#installation). If the MSDK is already installed the Eclipse can be retrieved using the [Maintenance Tool](#maintenance).  
 
 This section is an Eclipse "quick-start" that walks through creating, building, and running a project.  For full documentation, see the [Eclipse](#eclipse) section of this User Guide.
 
-#### Creating a New Project
+#### Building and Running a Project (Eclipse)
 
 1. Launch Eclipse with its start menu shortcut.
 
@@ -457,52 +449,25 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 
 6. Select **Finish** to create the new project.
 
-#### Importing Examples
-
-1. [Launch](#running-eclipse) Eclipse.
-
-2. Use **File -> Import** to open the import wizard.
-
-3. Select **General -> Existing Projects into Workspace** and hit **Next**.
-
-    ![Figure 23](res/Fig23.jpg)
-
-4. **Browse** to the [`Examples`](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.
-
-    ![Figure 24](res/Fig24.jpg)
-
-5. Ensure that **Copy projects into workspace** is selected. This will copy the projects out of the MSDK, and leave the originals unmodified.
-
-6. Select **Finish** to import the project(s).
-
-7. The projects should now show up in the Project Explorer.
-
-    ![Figure 25](res/Fig25.jpg)
-
-
-#### Building and Running Examples
-
-1. Ensure that the Eclipse is set to the **C/C++ perspective** (top right).  
-
-2. Select the correct project in the **Launch Configuration** dropdown and ensure it's set to **Debug** mode.
-
-3. Use the **Build** hammer button (top left) to build the project.
+7. Use the **Build** hammer button (top left) to build the project.
 
     ![Figure 27](res/Fig27.jpg)
 
-4. Use the **Debug** button (top left) to flash the program binary and connect the debugger.
+8. Select the correct project in the **Launch Configuration** dropdown and ensure it's set to **Debug** mode.
 
-    ![Figure 28](res/Fig28.jpg) 
+9. Use the **Debug** button (top left) to flash the program binary and connect the debugger.
 
-5. The Eclipse view will switch to debug mode, and the debugger will break on entry into main.
+    ![Figure 28](res/Fig28.jpg)
+
+10. The Eclipse view will switch to debug mode, and the debugger will break on entry into main.
 
     ![Figure 29](res/Fig29.jpg)
 
-6. **Resume** the program (**`F8`**) using the top control bar and exercise the debugger.
+11. **Resume** the program (**`F8`**) using the top control bar and exercise the debugger.
 
     ![Figure 30](res/Fig30.jpg)
 
-7. **Terminate** the debugger (**`CTRL+F2`**) when finished.
+12. **Terminate** the debugger (**`CTRL+F2`**) when finished.
 
 ---
 
@@ -553,7 +518,7 @@ The following commands can be used to verify that the toolchain is accessible.  
 - `make -v`
 - `openocd -v`
 
-#### Building and Running an Example
+#### Building and Running an Example (Command-Line)
 
 1. First, copy an [example project](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) to an accessible directory outside of the SDK. It is strongly recommended to keep the MSDK examples unmodified in case they need to be referenced again later.
 
@@ -725,11 +690,7 @@ The following commands can be used to verify that the toolchain is accessible.  
 
 16. In the terminal window running the OpenOCD _server_, press `CTRL + C` to issue the shutdown command and quit.
 
-## Development Guide
-
-This section offers detailed usage info on the entire MSDK focusing on the typical _development_ cycle.  It expands on the info presented in ["Getting Started"](#getting-started) with more detailed usage info for each of the MSDK's supported IDEs.  Additionally, advanced topics that users will encounter as they proceed into custom application and/or hardware development are also covered.
-
-### Board Support Packages
+## Board Support Packages
 
 The MSDK supports multiple parts and evaluation platforms (see [supported parts](#supported-parts)) through **"Board Support Packages" (BSPs)**.  For microcontrollers with multiple evaluation platforms, multiple BSPs will be available.
 
@@ -747,32 +708,36 @@ Available BSPs are located in the `Libraries/Boards` folder for each _Target Mic
 
 ![Figure 34](res/Fig34.jpg)
 
-The names of a BSP's folder is used with the `BOARD` [build configuration variable](#build-configuration-variables) to build a project for a specific BSP.  The table below can be used to match the correct `BOARD` values to _external part numbers_.
+The name of a BSP's folder is used with the `BOARD` [build configuration variable](#build-configuration-variables) to build a project for a specific BSP.  The table below can be used to match the correct `BOARD` values to _external part numbers_.
 
-| External Part Number                                         | `BOARD`        |
-| ------------------------------------------------------------ | -------------- |
-| [MAX32520-KIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32520-kit.html) | `EvKit_V1`     |
-| [MAX32520FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32520fthr.html) | `MAX32520FTHR` |
-| [MAX32650-EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650-evkit.html) | `EvKit_V1`     |
-| [MAX32650FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650fthr.html) | `FTHR_APPS_A`  |
-| [MAX32655EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655evkit.html) | `EvKit_V1`     |
-| [MAX32655FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655fthr.html) | `FTHR_Apps_P1` |
-| [MAX32660-EVSYS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32660-evsys.html) | `EvKit_V1`     |
-| MAX32662EVKIT                                                | `EvKit_V1`     |
-| [MAX32666EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666evkit.html) | `EvKit_V1`     |
-| [MAX32666FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666fthr.html) | `FTHR`         |
-| MAX32666FTHR2                                                | `FTHR2`        |
-| [MAX32670EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32670evkit.html) | `EvKit_V1`     |
-| [MAX32672EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672evkit.html) | `EvKit_V1`     |
-| [MAX32672FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672fthr.html) | `FTHR`         |
-| [MAX32675EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32675evkit.html) | `EvKit_V1`     |
-| MAX32675FTHR                                                 | `FTHR_Apps_B`  |
-| [MAX32680EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32680evkit.html) | `EvKit_V1`     |
-| MAX32690EVKIT                                                | `EvKit_V1`     |
-| [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html) | `EvKit_V1`     |
-| [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html) | `FTHR_RevA`    |
-| [MAXREFDES178](https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html) | `MAXREFDES178` |
-| [MAX78002EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html) | `EvKit_V1`     |
+| External Part Number                         | `TARGET`       | `BOARD`        |
+| ---------------------------------------------|--------------- | -------------- |
+| [MAX32520-KIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32520-kit.html)      | `MAX32520`     | `EvKit_V1`     |
+| [MAX32520FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32520fthr.html)      | `MAX32520`     | `MAX32520FTHR` |
+| [MAX32650-EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650-evkit.html)    | `MAX32650`     | `EvKit_V1`     |
+| [MAX32650FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650fthr.html)      | `MAX32650`     | `FTHR_APPS_A`  |
+| [MAX32655EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655evkit.html)     | `MAX32655`     | `EvKit_V1`     |
+| [MAX32655FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655fthr.html)      | `MAX32655`     | `FTHR_Apps_P1` |
+| [MAX32660-EVSYS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32660-evsys.html)    | `MAX32660`     | `EvKit_V1`     |
+| MAX32662EVKIT                                | `MAX32662`     | `EvKit_V1`     |
+| [MAX32666EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666evkit.html)     | `MAX32665`     | `EvKit_V1`     |
+| [MAX32666FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666fthr.html)      | `MAX32665`     | `FTHR`         |
+| MAX32666FTHR2                                | `MAX32665`     | `FTHR2`        |
+| [MAX32670EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32670evkit.html)     | `MAX32670`     | `EvKit_V1`     |
+| [MAX32672EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672evkit.html)     | `MAX32672`     | `EvKit_V1`     |
+| [MAX32672FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672fthr.html)      | `MAX32672`     | `FTHR`         |
+| [MAX32675EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32675evkit.html)     | `MAX32675`     | `EvKit_V1`     |
+| MAX32675FTHR                                 | `MAX32675`     | `FTHR_Apps_B`  |
+| [MAX32680EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32680evkit.html)     | `MAX32680`     | `EvKit_V1`     |
+| MAX32690EVKIT                                | `MAX32690`     | `EvKit_V1`     |
+| [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html)     | `MAX78000`     | `EvKit_V1`     |
+| [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html)      | `MAX78000`     | `FTHR_RevA`    |
+| [MAXREFDES178](https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html)                                          | `MAX78000`     |  `MAXREFDES178` |
+| [MAX78002EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html)     | `MAX78002`     | `EvKit_V1`     |
+
+## IDEs
+
+This section offers detailed usage info on the MSDK's supported Integrated Development Environments (IDEs) focusing on the typical _development_ cycle.  It expands on the info presented in ["Getting Started"](#getting-started) with more detailed usage info.
 
 ### Visual Studio Code
 
@@ -793,14 +758,17 @@ As a result, you'll notice that there is no "New Project" mechanism.  A "project
 _(Note:  You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder)._
 
 To open a project:
-
 1. Launch Visual Studio Code.
 
 2. Select **File -> Open Folder...**
 
-3. Navigate to an example project for the target microcontroller in the MSDK's [Examples folder](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) and open it with **Select Folder**.
+    ![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
 
-4. VS Code will prompt for trust the first time.  Select _**Trust folder and enable all features**_.
+3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder and open it with **Select Folder**.
+
+    ![Figure 43](res/Fig43.jpg)
+
+4. VS Code will prompt for trust the first time.  Select _Trust folder and enable all features_
 
     ![Trust Prompt](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrustPrompt.JPG)
 
@@ -1485,11 +1453,21 @@ The _**implementation**_ files are further organized based on _**die type**_ and
 - The **_hardware** revision_ files follow the **`_revX`** naming convention.  
     - These files contain the _pure_ driver implementation for a peripheral block, and typically interact with the hardware almost entirely at the register level.
 
+## Examples
+
+The MSDK contains examples for each microcontroller that demonstrate the usage of its [Peripheral APIs](#peripheral-driver-api).  They can be found in the `Examples` folder of an MSDK installation.
+
+![Figure 40](res/Fig40.jpg)
+
+Each example contains a `README.md` file describing what it does.  In general, there is at least one example per peripheral block and the example's name will indicate what it matches (ie. `DMA`, `ADC`, `SPI`).
+
+![Figure 41](res/Fig41.jpg)
+
 ## Libraries
 
-The MSDK contains a large number of **libraries**, both third-party and in-house.  These libraries are an extension to the "core" SDK resources and contain drivers for miscellaneous _**external**_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices.  The MSDK also contains libraries for more advanced _**internal**_ hardware peripherals that provide an _additional_ higher-level abstraction layer above the [Peripheral Driver API](#peripheral-driver-api) such as USB, the SDHC interface, and the Cordio BLE stack.
+The MSDK contains a large number of libraries, both third-party and in-house.  These libraries are an extension to the "core" SDK resources and contain drivers for various _external_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices.  The MSDK also contains libraries for more advanced _internal_ hardware peripherals that provide an additional abstraction layer over the [Peripheral Driver API](#peripheral-driver-api) such as USB, the SDHC interface, and the Cordio BLE stack.
 
-These libraries may also offer their _own_ Build Configuration Variables in addition to those already available in the [Build System](#build-system).  These additional build options are enabled alongside the library itself via a convenient *toggle switch* (See the **"Libraries"** section of the _[Build Configuration Variables](#build-configuration-variables-reference-table)_).
+These libraries may also offer their _own_ Build Configuration Variables in addition to those already available in the core [Build System](#build-system).  These additional build options are enabled alongside the library itself via a convenient *toggle switch* (See the **"Libraries"** section of the _[Build Configuration Variables](#build-configuration-variables-reference-table)_).
 
 Source code is located in the [Libraries](Libraries) folder of the SDK and managed with the `Libraries/libs.mk` file, which comes pre-included in each example project.
 
@@ -1551,13 +1529,3 @@ The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level inte
 - MAX32570
 - MAX32665-MAX32668
 - MAX78002
-
-## Examples
-
-The MSDK contains examples for each microcontroller that demonstrate the usage of its [Peripheral APIs](#peripheral-driver-api).  They can be found in the `Examples` folder of an MSDK installation.
-
-![Figure 40](res/Fig40.jpg)
-
-Each example contains a `README.md` file describing what it does.  In general, there is at least one example per peripheral block and the example's name will indicate what it matches (ie. `DMA`, `ADC`, `SPI`).
-
-![Figure 41](res/Fig41.jpg)
