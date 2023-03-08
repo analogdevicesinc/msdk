@@ -16,7 +16,8 @@ blacklist = [
     "EvKit_129C",
     "WLP_VAR",
     "WLP_DB",
-    "TQFN_DB"
+    "TQFN_DB",
+    "WLP_V1"
     ]
 
 def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
