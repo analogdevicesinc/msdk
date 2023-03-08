@@ -264,7 +264,7 @@ This release was tested on the following platforms. Note: platforms listed may n
 
 ## Applications
 * [BLE4](Applications/BLE4_ctr.md)
-* [BlLE5](Applications/BLE5_ctr.md)
+* [BLE5](Applications/BLE5_ctr.md)
 * [FreeRTOS](Applications/BLE_FreeRTOS.md)
 * [DAT Client/Server](Applications/BLE_datc_dats.md)
 * [BLE FCC](Applications/BLE_fcc.md)
