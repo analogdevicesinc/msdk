@@ -22,6 +22,7 @@ INIT_BROADCASTER = 1
 INIT_CENTRAL = 0
 INIT_OBSERVER = 0
 
+BUILD_BOOTLOADER?=1
 
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
@@ -30,6 +31,7 @@ MXC_OPTIMIZE_CFLAGS = -Os
 LINKERFILE = ota.ld
 
 # build bootloader
+ifeq ($(BUILD_BOOTLOADER), 1)
 BOOTLOADER_DIR=../Bootloader
 
 BUILD_DIR := $(abspath ./build)
@@ -52,3 +54,4 @@ bl_obj: $(BOOTLOADER_OBJ)
 
 ${BOOTLOADER_OBJ}: bl_build.S ${BOOTLOADER_BIN}
 	${CC} ${AFLAGS} -o ${@} -c bl_build.S
+endif

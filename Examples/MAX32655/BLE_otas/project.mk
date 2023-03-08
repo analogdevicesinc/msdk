@@ -22,6 +22,8 @@ DEBUG = 1
 
 PAL_NVM_SIZE=0x2000
 
+BUILD_BOOTLOADER?=1
+
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os
 
@@ -42,6 +44,7 @@ SRCS += wdxs_file_ext.c
 endif
 
 # build bootloader
+ifeq ($(BUILD_BOOTLOADER), 1)
 BOOTLOADER_DIR=../Bootloader
 
 BUILD_DIR := $(abspath ./build)
@@ -63,4 +66,5 @@ ${BOOTLOADER_BIN}:
 bl_obj: $(BOOTLOADER_OBJ)
 
 ${BOOTLOADER_OBJ}: bl_build.S ${BOOTLOADER_BIN}
-	${CC} ${AFLAGS} -o ${@} -c bl_build.S
+	${CC} ${AFLAGS} -o ${@} -c bl_build.S 
+endif
