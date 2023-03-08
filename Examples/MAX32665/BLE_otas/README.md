@@ -216,3 +216,15 @@ __extra long__ press is greater than 1000 ms
 4. Button 1 extra long press: Add RPAO characteristic to GAP service -- needed only when DM Privacy enabled
 5. Button 2 medium press : Display firmware version
 6. Button 2 extra long press: Enable device privacy -- start generating local RPAs every 15 minutes
+
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+

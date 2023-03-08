@@ -20,3 +20,15 @@ The ARM-DSP projects also come pre-configured for the EVKIT for the target micro
 * Visual Studio Code: [.vscode/settings.json](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#project-configuration)
 * Eclipse: Project Properties -> C/C++ Build -> Environment
 
+
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+

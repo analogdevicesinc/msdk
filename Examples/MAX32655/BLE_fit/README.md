@@ -163,3 +163,15 @@ __extra long__ press is greater than 1000 ms
 ## Use ARM core and RISC-V core for split HCI
 In the project.mk, changing USE_DUAL_CORE to 1 will enable using both ARM core and RISC-V core for the split HCI.
 
+
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
