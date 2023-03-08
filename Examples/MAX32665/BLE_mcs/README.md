@@ -23,4 +23,3 @@ viewing the trace messages and interacting with the application. Port uses setti
     - Stop bits       : 1  
     - HW Flow Control : No  
     - SW Flow Control : No  
-* Setting `SBT=1` in **project.mk** enables Secure Boot Tools for the project
