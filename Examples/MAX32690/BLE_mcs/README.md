@@ -40,130 +40,7 @@ Stop bits       : 1
 HW Flow Control : No  
 SW Flow Control : No  
 
-
-
-### Expected Output
-
-On startup:
-```
-terminal: init
-McsAppHandlerInit
-Calculating database hash
-McsApp got evt 119
-McsApp got evt 32
->>> Reset complete <<<
-dmAdvActConfig: state: 0
-dmAdvActSetData: state: 0
-dmAdvActSetData: state: 0
-dmAdvActStart: state: 0
-HCI_LE_ADV_ENABLE_CMD_CMPL_CBACK_EVT: state: 3
-dmDevPassEvtToDevPriv: event: 12, param: 33, advHandle: 0
-McsApp got evt 33
->>> Advertising started <<<
-Database hash calculation complete
-McsApp got evt 21
-Database hash updated
-```
-
-When a connection has been made.
-```
-HCI_LE_ADV_ENABLE_CMD_CMPL_CBACK_EVT: state: 5
-dmDevPassEvtToDevPriv: event: 13, param: 34, advHandle: 0
-McsApp got evt 34
->>> Advertising stopped <<<
-dmAdvActConfig: state: 0
-dmAdvActStart: state: 0
-HCI_LE_ADV_ENABLE_CMD_CMPL_CBACK_EVT: state: 3
-dmDevPassEvtToDevPriv: event: 12, param: 33, advHandle: 0
-McsApp got evt 33
->>> Advertising started <<<
-dmConnIdByBdAddr not found
-dmConnCcbAlloc 1
-dmConnSmExecute event=28 state=0
-dmAdvConnected: state: 1
-dmDevPassEvtToDevPriv: event: 13, param: 34, advHandle: 0
-AttsCccInitTable connId=1
-smpDbGetRecord: connId: 1 type: 1
-smpDbAddDevice
-SmpDbGetFailureCount: connId: 1 count: 0
-smpDbGetRecord: connId: 1 type: 1
-smpDbAddDevice
-SmpDbGetPairingDisabledTime: connId: 1 period: 0 attemptMult: 0
-McsApp got evt 39
->>> Connection opened <<<
-McsApp got evt 65
-McsApp got evt 87
-attsProcMtuReq features 0x00
-hciCoreTxAclStart len=7
-McsApp got evt 22
-connId=1 idleMask=0x0004
-hciCoreTxAclStart len=18
-connId=1 idleMask=0x0004
-hciCoreTxAclStart len=26
-hciCoreTxAclStart len=34
-connId=1 idleMask=0x0004
-hciCoreTxAclStart len=34
-attsCccMainCback connId=1 handle=19
-hciCoreTxAclStart len=5
-McsApp got evt 20
-ccc state ind value:2 handle:19 idx:0
-hciCoreTxAclStart len=90
-hciCoreTxAclStart len=9
-connId=1 idleMask=0x0004
-hciCoreTxAclStart len=10
-connId=1 idleMask=0x0004
-hciCoreTxAclStart len=9
-attsCccMainCback connId=1 handle=5379
-hciCoreTxAclStart len=7
-hciCoreTxAclStart len=14
-```
-
-When push buttons pressed
-```
-btn 1 s
-Short Button 1 Press
-mcsAppBtnCback; 2
-> hciCoreTxAclStart len=8
-McsApp got evt 18
-btn 1 m
-Medium Button 1 Press
-mcsAppBtnCback; 3
-> hciCoreTxAclStart len=8
-McsApp got evt 18
-btn 1 l
-Long Button 1 Press
-mcsAppBtnCback; 4
-> hciCoreTxAclStart len=8
-McsApp got evt 18
-btn 1 x
-XL Button 1 Press
-mcsAppBtnCback; 5
-> hciCoreTxAclStart len=8
-McsApp got evt 18
-btn 2 s
-Short Button 2 Press
-mcsAppBtnCback; 7
-> hciCoreTxAclStart len=8
-McsApp got evt 18
-btn 2 m
-Medium Button 2 Press
-mcsAppBtnCback; 8
-> hciCoreTxAclStart len=8
-McsApp got evt 18
-btn 2 l
-Long Button 2 Press
-mcsAppBtnCback; 9
-> hciCoreTxAclStart len=8
-McsApp got evt 18
-btn 2 x
-XL Button 2 Press
-mcsAppBtnCback; 10
-> hciCoreTxAclStart len=8
-McsApp got evt 18
-```
-
-
-### Commands
+## Commands
 Type the desired command and parameter (if applicable) and press enter to execute the command.  
 
 __help__  Displays the available commands.  
@@ -173,12 +50,7 @@ __pin (ConnID) (Pin Code)__  Used to input the pairing pin code.
 
 ## Push buttons
 Push buttons can be used to set McsButton characteristic.
-The value can be read via BLE.
-
-__short__ press is less than 200 ms  
-__medium__ press is between 200 and 500 ms  
-__long__ press is between 500 and 1000 ms  
-__extra long__ press is greater than 1000 ms  
+The value can be read via BLE. 
 
 ### When connected
 1. Button 1 short press:      set McsButton = 0x02
