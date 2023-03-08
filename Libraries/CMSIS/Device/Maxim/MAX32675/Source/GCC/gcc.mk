@@ -92,8 +92,13 @@ endif
 # auto-generated dependencies. Also if this is Cygwin, file paths for ARM GCC
 # will be converted from /cygdrive/c to C:.
 ################################################################################
-ifneq ($(findstring CYGWIN, ${shell uname -s}), )
+UNAME := $(shell uname -s)
+ifneq ($(findstring CYGWIN, $(UNAME)), )
 CYGWIN=True
+endif
+
+ifneq ($(findstring MSYS, $(UNAME)), )
+MSYS=True
 endif
 
 # Get the prefix for the tools to use.
@@ -258,7 +263,14 @@ endif
 AFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 CFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 CXXFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
-LDFLAGS+=${patsubst %,-L%,$(call fixpath,$(LIBPATH))}
+UNAME := $(shell uname -s)
+ifneq ($(findstring CYGWIN, $(UNAME)), )
+CYGWIN=True
+endif
+
+ifneq ($(findstring MSYS, $(UNAME)), )
+MSYS=True
+endif
 
 ################################################################################
 # The rule for building the object file from each C source file.
