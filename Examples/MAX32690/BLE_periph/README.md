@@ -11,7 +11,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 * Connect a USB cable between the PC and the (USB/PWR - UART) connector. An anteanna or wired connection can be used if SMA is available on the board. 
 
 ### Project-Specific Build Notes
- Setting `TRACE=1` in **project.mk** initializes the on-board USB-to-UART adapter for
+ Setting `TRACE=1` in [**project.mk**](project.mk) initializes the on-board USB-to-UART adapter for
 viewing the trace messages and interacting with the application. Port uses settings:
     - Baud            : 115200  
     - Char size       : 8  
@@ -19,4 +19,4 @@ viewing the trace messages and interacting with the application. Port uses setti
     - Stop bits       : 1  
     - HW Flow Control : No  
     - SW Flow Control : No  
-* Setting `SBT=1` in **project.mk** enables Secure Boot Tools for the project
+* Setting `SBT=1` in [**project.mk**](project.mk) enables Secure Boot Tools for the project
