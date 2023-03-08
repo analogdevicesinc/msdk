@@ -23,7 +23,7 @@ jobs:
           cache: pip
           
       - name: Install mkdocs
-        run: pip install mkdocs
+        run: pip install -r Documentation/requirements.txt
 
       - name: Doxygen (MAX32520)
         uses: mattnotmitt/doxygen-action@1.9.4
@@ -115,36 +115,7 @@ jobs:
 
       - name: Build User Guide
         run: | # Build Documentation Folder and run mkdocs
-          SOURCE=Libraries/PeriphDrivers/Documentation
-          DEST=Documentation/$SOURCE
-
-          echo "Copying Periph Driver APIs..."
-          mkdir -p $DEST/MAX32520 && cp -r $SOURCE/MAX32520 $DEST/
-          mkdir -p $DEST/MAX32650 && cp -r $SOURCE/MAX32650 $DEST/
-          mkdir -p $DEST/MAX32655 && cp -r $SOURCE/MAX32655 $DEST/
-          mkdir -p $DEST/MAX32660 && cp -r $SOURCE/MAX32660 $DEST/
-          mkdir -p $DEST/MAX32665 && cp -r $SOURCE/MAX32665 $DEST/
-          mkdir -p $DEST/MAX32670 && cp -r $SOURCE/MAX32670 $DEST/
-          mkdir -p $DEST/MAX32672 && cp -r $SOURCE/MAX32672 $DEST/
-          mkdir -p $DEST/MAX32675 && cp -r $SOURCE/MAX32675 $DEST/
-          mkdir -p $DEST/MAX32680 && cp -r $SOURCE/MAX32680 $DEST/
-          mkdir -p $DEST/MAX78000 && cp -r $SOURCE/MAX78000 $DEST/
-          mkdir -p $DEST/MAX78002 && cp -r $SOURCE/MAX78002 $DEST/
-
-          SOURCE=Libraries/Cordio
-          DEST=Documentation/$SOURCE
-
-          echo "Copying Cordio documentation..."
-          mkdir -p $DEST/docs && cp -r $SOURCE/docs/*.md $DEST/docs
-          mkdir -p $DEST/docs/res && cp -r $SOURCE/docs/res/* $DEST/docs/res
-          mkdir -p $DEST/platform/Documentation && cp -r $SOURCE/platform/Documentation/*.pdf $DEST/platform/Documentation
-
-          echo "Copying any root markdown files into Documentation..."
-          cp -r *.md Documentation/
-
-          python3 Documentation/updateUSERGUIDE-Cordio.py
-
-          mkdocs build
+          python3 Documentation/build.py
 
       - name: Publish
         uses: JamesIves/github-pages-deploy-action@v4.3.0
