@@ -49,12 +49,7 @@ __btn__ (ID) (s|m|l|x) Simulates button presses. Example: "btn 1 s" for a short 
 __pin__ (ConnID) (Pin Code) Used to input the pairing pin code.  
 
 ## Push buttons
-Push buttons can be used to interact with the application.
-
-__short__ press is less than 200 ms  
-__medium__ press is between 200 and 500 ms  
-__long__ press is between 500 and 1000 ms  
-__extra long__ press is greater than 1000 ms  
+Push buttons can be used to interact with the application. 
 
 ### When connected
 1. Button 1 short: On/Off scanning  
