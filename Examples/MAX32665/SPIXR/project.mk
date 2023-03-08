@@ -13,3 +13,8 @@
 # For more information on how sing process works, see
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
+
+ifneq ($(BOARD),EvKit_V1)
+$(error This example requires an external flash IC that is only available for the MAX32665EVKIT)
+endif
+
