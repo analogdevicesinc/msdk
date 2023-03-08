@@ -33,6 +33,14 @@ jobs:
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
 
+      - name: Doxygen (MAX32572)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32572_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
       - name: Doxygen (MAX32650)
         uses: mattnotmitt/doxygen-action@1.9.4
         with:
