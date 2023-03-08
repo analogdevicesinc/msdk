@@ -39,7 +39,6 @@ endif
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
-SRCS += mx25.c
 SRCS += pb.c
 SRCS += rom_stub.c
 SRCS += max11261.c
