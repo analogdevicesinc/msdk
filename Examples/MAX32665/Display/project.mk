@@ -18,3 +18,8 @@ SBT=0
 LIB_LVGL = 1
 
 VPATH += resources
+
+ifneq ($(BOARD),EvKit_V1)
+$(error This example requires a TFT display, therefore it's not supported only supported by the MAX32665EVKIT)
+endif
+
