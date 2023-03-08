@@ -1469,10 +1469,6 @@ The links below will open detailed API references for each microcontroller.  Off
 
 - [MAX78002 API](Libraries/PeriphDrivers/Documentation/MAX78002/index.html)
 
-### Examples
-
-The MSDK contains examples on how to use the Peripheral Driver API in the [`Examples`](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) folder.  They are organized primarily by part number, then by peripheral block.
-
 ### Organization
 
 The Peripheral Driver API's source code is organized as follows:
@@ -1555,3 +1551,13 @@ The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level inte
 - MAX32570
 - MAX32665-MAX32668
 - MAX78002
+
+## Examples
+
+The MSDK contains examples for each microcontroller that demonstrate the usage of its [Peripheral APIs](#peripheral-driver-api).  They can be found in the `Examples` folder of an MSDK installation.
+
+![Figure 40](res/Fig40.jpg)
+
+Each example contains a `README.md` file describing what it does.  In general, there is at least one example per peripheral block and the example's name will indicate what it matches (ie. `DMA`, `ADC`, `SPI`).
+
+![Figure 41](res/Fig41.jpg)
