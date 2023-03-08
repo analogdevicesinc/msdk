@@ -14,3 +14,8 @@ SBT=0
 
 # Enable MAXUSB library
 LIB_MAXUSB = 1
+
+ifneq ($(BOARD),EvKit_V1)
+$(error This example requires an external flash IC that is only available for the MAX32665EVKIT)
+endif
+
