@@ -13,7 +13,8 @@ blacklist = [
     "Emulator", 
     "Emulator_NFC", 
     "EvKit_129B", 
-    "EvKit_129C"
+    "EvKit_129C",
+    "WLP_VAR"
     ]
 
 def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
