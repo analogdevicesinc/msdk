@@ -21,24 +21,6 @@ image. Change FW_UPDATE_DIR to modify which application is used for the update. 
 application is selected must be setup to run from the appropriate memory section, as defined
 by the Bootloader.
 
-#### Board Selection
-
-Before building firmware you must select the correct value for BOARD in `project.mk`, e.g. "EvKit_V1".
-
-#### Required Connections
--   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
-
-## Trace Serial Port
-When TRACE is enabled in the `project.mk`, the on-board USB-to-UART adapter can
-be used to view the trace messages and interact with the application. Open a serial port terminal with
-the following settings.
-
-Baud            : 115200  
-Char size       : 8  
-Parity          : None  
-Stop bits       : 1  
-HW Flow Control : No  
-SW Flow Control : No  
 
 ### Expected Output
 
@@ -220,24 +202,6 @@ Default configuration is to use external flash to store the transferd file befor
 writing it to internal flash space during the update.
 Alternatively by changing `USE_INTERNAL_FLASH ?=0` to `USE_INTERNAL_FLASH ?=1` the transfered file
 is stored in the update space. 
-#### Board Selection
-
-Before building firmware you must select the correct value for BOARD in `project.mk`, e.g. `EvKit_V1`.
-
-#### Required Connections
--   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
-
-## Trace Serial Port
-When TRACE is enabled in the `project.mk`, the on-board USB-to-UART adapter can
-be used to view the trace messages and interact with the application. Open a serial port terminal with
-the following settings.
-
-Baud            : 115200  
-Char size       : 8  
-Parity          : None  
-Stop bits       : 1  
-HW Flow Control : No  
-SW Flow Control : No  
 
 ### Expected Output
 

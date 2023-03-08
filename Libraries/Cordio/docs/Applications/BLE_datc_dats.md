@@ -5,9 +5,7 @@ The Bluetooth specification does not define a simple data exchange protocol, sim
 
 The data server will advertise with a devices name of "DATS". The data client will scan for this device and create a connection. Once the conneciton has been created and the client completes the discovery, it will enable notificaitons and indiciations on the proprietary data serivce. This will allow the server to transmit data to the client with notifications to the proprietary data characteristic. The client can transmit data to the server by writing to the proprietary data characteristic.
 
-<p align="center">
-  <img width="300" src="../pics/ADI_Attach_DATS.jpg">
-</p>
+![ADI Attach connected to DATS](res/ADI_Attach_DATS.jpg)
 
 <p align = "center">
 ADI Attach connected to DATS
@@ -25,49 +23,12 @@ This is a proprietary serivce is used for simple unformatted data exchange betwe
 
 This is another proprietary service used for secure data exchange that requires elevated levels of encryption and authentication. Devices must be paired with LE Secure Connections to enable data transfer with this service.
 
-## Passkey input
-Upon server discovery the user will be prompted to enter a passkey.
-An arbitrary pin can be entered in the following format 
-``` 
-pin (connId) passkey
-Eg: 
-pin 1 123456
-
-```
-Next the server is expected to enter the same connId and passkey
-to establish a secure connection and share bonding information
-which for demonstration purposes,is echoed via the trace mechanism
-
-Note that either the client or server can enter the passkey first.
-The peer device must then match.
-
 ## LEDs
 
 The red LED will indicate that an error assertion has occurred.  
 
 The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
 is off, the CPU is in sleep mode.
-
-## Board Setup
-
-### Board Selection
-
-Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
-
-### Required Connections
--   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
-
-### Trace Serial Port
-When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can
-be used to view the trace messages and interact with the application. Open a serial port terminal with
-the following settings.
-
-Baud            : 115200  
-Char size       : 8  
-Parity          : None  
-Stop bits       : 1  
-HW Flow Control : No  
-SW Flow Control : No  
 
 
 # BLE_Dats

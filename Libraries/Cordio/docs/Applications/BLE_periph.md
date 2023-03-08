@@ -13,21 +13,6 @@ The red LED will indicate that an error assertion has occurred.
 The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
 is off, the CPU is in sleep mode.
 
-### Required Connections
-Connect a USB cable between the PC and the (USB/PWR - UART) connector. An anteanna or wired connection can be used if SMA is available on the board. 
-
-### Trace Serial Port
-When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can
-be used to view the trace messages and interact with the application. Open a serial port terminal with
-the following settings.
-
-Baud            : 115200  
-Char size       : 8  
-Parity          : None  
-Stop bits       : 1  
-HW Flow Control : No  
-SW Flow Control : No  
-
 ### Expected Output
 
 On startup:

@@ -1,6 +1,6 @@
-## Description
+# BLE_fcc
 
-Simple serial port console for FCC testing.
+Project builds a simple serial port console for FCC testing.
 
 # Usage
 
@@ -11,28 +11,7 @@ The red LED will indicate that an error assertion has occurred.
 The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
 is off, the CPU is in sleep mode.
 
-## Setup
-
-### Board Selection
-
-Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".
-
-### Required Connections
--   Connect a USB cable between the PC and the (USB/PWR - UART) connector.
-
-## Trace Serial Port
-When TRACE is enabled in the project.mk, the on-board USB-to-UART adapter can
-be used to view the trace messages and interact with the application. Open a serial port terminal with
-the following settings.
-
-Baud            : 115200  
-Char size       : 8  
-Parity          : None  
-Stop bits       : 1  
-HW Flow Control : No  
-SW Flow Control : No  
-
-### Expected Output
+## Expected Output
 
 
 On startup:
