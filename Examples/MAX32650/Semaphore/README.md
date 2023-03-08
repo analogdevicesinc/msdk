@@ -4,6 +4,17 @@ The example demonstartes the use of Semaphore.
 
 A semaphore is shared between task A and task B. The buttons are used to start and stop the tasks (SW2 = Task A, SW3 = Task B). The first time the button is pressed the corresponding task will start and acquire the semaphore if it is available. The second time the button is pressed the corresponding task will end and free the semaphore. If a task is initiated and the sempahore is unavailable then the task will fail to run.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

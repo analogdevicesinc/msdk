@@ -4,6 +4,17 @@ This example demonstrates the use of the quadrature decoder interface and output
 
 The example configures the QDEC with the Compare and Reset on MAXCNT functions. The range of the position is currently set to 0 - 255. A Compare interrupt event will occur when the position matches the the compare value (128 in the example's case). The position counter resets after reaching the maximum count (255).
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
