@@ -3,6 +3,17 @@
 This example demonstrates of the SPIMSS I2S functionality. To demonstrate, an audio signal is output to the I2S pins (P2.2, P2.4 and P2.5). 
 
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

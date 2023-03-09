@@ -1,74 +1,50 @@
 # MAX78000 Rock Paper Scissors Game
 
-
-
-Description
------------
-
 This is a classic rock-paper-scissors game demo that user can play against the computer via the camera module. The model trained in this demo is used to classify images of "rock", "paper" and "scissors" hand gestures. The input size is 64x64 pixels RGB which is 3x64x64 in CHW format.
 
 The example supports live capture from camera module and displays the result on the TFT LCD. The code also uses a sample data header (sampledata.h) file to test a pre-defined input sample.
 
-### Building Firmware:
+## Software
 
-Navigate directory where **rps-demo** software is located and build the project:
+### Project Usage
 
-```bash
-$ cd /Examples/MAX78000/CNN/rps-demo
-$ make
-```
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+### Project-Specific Build Notes
 
-```bash
-$ make distclean
-```
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
+* By default, this project is configured for [camera mode](#camera-mode).  It can be configured for [offline mode](#offline-mode) by defining `USE_SAMPLE_DATA` in [main.c](main.c).
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
-```
+    ```C
+    // Comment out USE_SAMPLEDATA to use Camera module
+    #define USE_SAMPLEDATA
+    ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
+* This project supports output to a TFT display.  When building for the MAX78000EVKIT, the display is **enabled** by default.
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
-BOARD=FTHR_RevA
-endif
-```
+    * To _disable_ the TFT display code, comment out `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
 
-**Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
+        ```Makefile
+        ifeq "$(BOARD)" "EvKit_V1"
+        # PROJ_CFLAGS+=-DTFT_ENABLE
+        IPATH += TFT/evkit/
+        VPATH += TFT/evkit/
+        endif
+        ```
 
-*Right click project name > Properties > C/C++ Build > Environment > Board"*
+* When building for the MAX78000FTHR, the TFT display is **disabled** by default.  The compatible 2.4'' TFT FeatherWing is an optional display that does not come with the MAX7800FTHR.  It can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing)
 
-<img src="Resources/eclipse_board.png" style="zoom:33%;" />
+    * To _enable_ the TFT display code, uncomment `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
 
-
-
-### Load firmware image to MAX78000 EVKIT
-
-Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
-
-Connect PICO adapter to JH5 SWD header.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
+        ```Makefile
+        ifeq "$(BOARD)" "FTHR_RevA"
+        # Only Enable if 2.4" TFT is connected to Feather
+        PROJ_CFLAGS+=-DTFT_ENABLE
+        IPATH += TFT/fthr
+        VPATH += TFT/fthr
+        endif
+        ```
 
 ### MAX78000 EVKIT operations
 
@@ -81,22 +57,6 @@ This demo is operated in two modes: Real-time data using Camera module or using 
 
 In either mode, pushbutton trigger PB1(SW2) is used to capture and load an image into CNN engine. User is prompted to press PB1 to load an image
 
-### Load firmware image to MAX78000 Feather
-
-Connect USB cable to CN1 USB connector.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
-
 ### MAX78000 Feather operations
 
 The TFT display is optional and not supplied with the MAX78000 Feather board.
@@ -106,24 +66,16 @@ The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered her
 
 https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
+See [build notes](#project-specific-build-notes) for instructions on enabling the display.
+
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
-
-To compile code with enabled TFT feature use following setting in project.mk:
-
-```bash
-ifeq "$(BOARD)" "FTHR_RevA"
-PROJ_CFLAGS += -DENABLE_TFT
-endif
-```
 
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
 Press PB1 (SW1) button to start demo.
 
-
-
 ### Camera Mode�
 
-To operate in this mode, comment out "#define USE\_SAMPLEDATA", defined in main.c.
+If `USE_SAMPLEDATA` is _not_ defined the project will operate in "Camera mode".  See [build notes](#project-specific-build-notes) for instructions on enabling this mode.
 
 This mode uses OVM7692 camera module to capture an image in RGB888 format. Since the model is trained using 64x64 pixel image, the PCIF peripheral captures 64x64 pixel image and displays it on LCD.
 
@@ -131,9 +83,9 @@ The data received from camera interface is an unsigned data and should be conver
 
 ### Offline Mode
 
-To operate in this mode, uncomment "#define USE\_SAMPLEDATA", defined in main.c.�
+If `USE_SAMPLEDATA` is defined this project will operate in "offline mode".
 
-This mode uses a header file "sampledata.h" containing RGB image data and it should be included in the project to use it as an input to the cnn network.�
+This mode uses a header file [sampledata.h](sampledata.h) containing RGB image data and it should be included in the project to use it as an input to the cnn network.
 
 To create your own header file follow these steps:
 
