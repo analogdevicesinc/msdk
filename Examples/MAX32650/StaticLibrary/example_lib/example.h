@@ -37,7 +37,6 @@
  *
  ******************************************************************************/
 
-
 #ifndef EXAMPLE_LIB_EXAMPLE_H_
 #define EXAMPLE_LIB_EXAMPLE_H_
 
