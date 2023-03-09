@@ -1,11 +1,18 @@
 ## Description
 
-This example demonstrates the time differences when running code with the instruction cache on vs. off.  It runs four trials, reporting the time required for each.  The trials are:
+This example demonstrates the time differences when running code with the instruction cache enabled vs. disable. 
 
-1. Perform 2.5 million multiplies in a loop with the instruction cache on.  The variables used in the loop are all declared as 'volatile'.
-2.  Perform 2.5 million multiplies in a loop with the instruction cache off.  The variables used in the loop are all declared as 'volatile'.
-3. Perform 25 million multiplies in a loop with the instruction cache on.  The variables used in the loop are all local variables.
-4.  Perform 25 million multiplies in a loop with the instruction cache off.    The variables used in the loop are all local variables.
+Two test functions (one which runs 2.5 million operations and the other which runs 25 mllion operations) are each run twice, once with the ICC enabled and once with the ICC disabled. The execution time is measured for each function call and the results between the two trials are compared at the end to ensure the ICC enabled run was faster.
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+Do not modify the value of MXC_OPTIMIZE_CFLAGS in *project.mk*. Turning on compiler optimizations will change the behavior of the test functions resulting in behavior that doesn't demonstrate the effects of enabling the instruction cache.
 
 
 ## Software
@@ -29,9 +36,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-******** ICC Example ********
+*************** ICC Example ***************
 
-***** Volatile  Example *****
+***** 2.5M Operations w/ Volatile Variables Test *****
 
 With instruction cache enabled:
 0%,      k=0
@@ -44,9 +51,7 @@ With instruction cache enabled:
 70%,     k=3500
 80%,     k=4000
 90%,     k=4500
-
-Time Elapsed: 0.908515 Seconds
-
+Time Elapsed: 0.956636 Seconds
 
 With instruction cache disabled:
 0%,      k=0
@@ -59,11 +64,10 @@ With instruction cache disabled:
 70%,     k=3500
 80%,     k=4000
 90%,     k=4500
+Time Elapsed: 2.98415 Seconds
 
-Time Elapsed: 1.76167 Seconds
 
-
-***** Non-volatile Example *****
+***** 25M Operations w/ Non-volatile Variables Test *****
 
 With instruction cache enabled:
 10%,     k=500
@@ -76,9 +80,7 @@ With instruction cache enabled:
 80%,     k=4000
 90%,     k=4500
 100%,    k=5000
-
-Time Elapsed: 1.756249 Seconds
-
+Time Elapsed: 4.256422 Seconds
 
 With instruction cache disabled:
 10%,     k=500
@@ -91,11 +93,8 @@ With instruction cache disabled:
 80%,     k=4000
 90%,     k=4500
 100%,    k=5000
-
-Time Elapsed: 9.507815 Seconds
-
+Time Elapsed: 31.509351 Seconds
 
 Example Succeeded
-
 ```
 

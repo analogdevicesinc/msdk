@@ -4,7 +4,6 @@ A simple DMA transaction is shown that copies a block of memory from one locatio
 
 A second more complex memory-to-memory DMA transaction is then shown that chains two transfers together.  A callback function is used to notify the application once both transfers have completed.
 
-
 ## Software
 
 ### Project Usage

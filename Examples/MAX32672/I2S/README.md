@@ -1,6 +1,16 @@
 ## Description
 
-This example demonstrates the use of I2S peripheral. In this example 128 bytes of data are output using an I2S DMA transaction. The I2S signals can be viewed on pins AIN0-AIN2. 
+This example demonstrates the use of I2S peripheral. In this example sixty four 16-bit samples are output using an I2S DMA transaction. The I2S signals can be viewed on pins AIN0-AIN2.
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
 
 
 ## Software
@@ -24,9 +34,15 @@ Universal instructions on building, flashing, and debugging this project can be 
 ## Expected Output
 
 ```
-I2S Transmission Example
-Remove header JP10 to see I2S data on AIN0.
+******************** I2S Example ********************
+In this example a sample I2S transmission is demonstrated.
+The I2S Signals are output on pins AIN0-AIN2.
+Header JP10 must be removed to see I2S data on AIN0.
+
+Press SW3 to begin transmission.
+Transmitting...
 
 I2S Transaction Complete. Ignore any random characters previously
 displayed. The I2S and UART are sharing the same pins.
+
 ```

@@ -4,7 +4,6 @@ This example demonstrates the use of the quadrature decoder interface and output
 
 The example configures the QDEC with the Compare and Reset on MAXCNT functions. The range of the position is currently set to 0 - 255. A Compare interrupt event will occur when the position matches the the compare value (128 in the example's case). The position counter resets after reaching the maximum count (255).
 
-
 ## Software
 
 ### Project Usage

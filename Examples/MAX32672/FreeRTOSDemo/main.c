@@ -49,7 +49,7 @@
 /* FreeRTOS+ */
 #include "FreeRTOS_CLI.h"
 
-/* Maxim */
+/* ADI */
 #include "mxc_sys.h"
 #include "mxc_device.h"
 #include "uart.h"
@@ -120,8 +120,10 @@ void vTask0(void *pvParameters)
         if (xSemaphoreTake(xGPIOmutex, portMAX_DELAY) == pdTRUE) {
             if (x == LED_OFF) {
                 x = LED_ON;
+                LED_On(0);
             } else {
                 x = LED_OFF;
+                LED_Off(0);
             }
 
             /* Return the mutex after we have modified the hardware state */
@@ -139,9 +141,6 @@ void vTask0(void *pvParameters)
  *  drift due to the use of vTaskDelayUntil(). It may have
  *  jitter, however, due to any higher-priority task or
  *  interrupt causing delays in scheduling.
- *
- * NOTE: The MAX32660 EV Kit has only 1 LED, so this task
- *  does not blink an LED.
  *
  * =======================================================
  */
@@ -162,10 +161,10 @@ void vTask1(void *pvParameters)
         */
         if (xSemaphoreTake(xGPIOmutex, portMAX_DELAY) == pdTRUE) {
             if (x == LED_OFF) {
-                LED_On(0);
+                LED_On(1);
                 x = LED_ON;
             } else {
-                LED_Off(0);
+                LED_Off(1);
                 x = LED_OFF;
             }
 
@@ -430,9 +429,10 @@ int main(void)
     NVIC_ClearPendingIRQ(RTC_IRQn);
     NVIC_EnableIRQ(RTC_IRQn);
 
-    //  LP_EnableRTCAlarmWakeup();
+    MXC_LP_EnableRTCAlarmWakeup();
+
     /* If running tickless idle, must reduce baud rate to avoid losing character */
-    if (MXC_UART_Init(ConsoleUART, 115200) < E_NO_ERROR) {
+    if (MXC_UART_Init(ConsoleUART, 9600, MXC_UART_APB_CLK) < E_NO_ERROR) {
         MXC_ASSERT_FAIL();
     }
 

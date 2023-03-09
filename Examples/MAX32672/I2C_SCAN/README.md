@@ -1,6 +1,16 @@
 ## Description
 
-This example uses the I2C Master to find the addresses of any I2C Slave devices connected to the same bus as I2C0.
+This example finds the addresses of any I2C Slave devices connected to the bus.
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
 
 
 ## Software

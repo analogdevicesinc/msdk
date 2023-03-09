@@ -12,8 +12,9 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Include MAX31889 drivers from MiscDrivers library.
-SRCS+=max31889_driver.c
-
+# Include TempSensor lirary in the search path
 VPATH+=$(LIBS_DIR)/MiscDrivers/TempSensor
 IPATH+=$(LIBS_DIR)/MiscDrivers/TempSensor
+
+# Include MAX31889 drivers from TempSensor library.
+SRCS+=max31889_driver.c

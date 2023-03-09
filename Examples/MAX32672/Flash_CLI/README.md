@@ -12,7 +12,6 @@ For more details on how to input these commands, enter "help" in the terminal wi
 
 *** NOTE ***: Attempting to overwrite flash will return error. If you want to overwrite an address you must first erase.
 
-
 ## Software
 
 ### Project Usage
