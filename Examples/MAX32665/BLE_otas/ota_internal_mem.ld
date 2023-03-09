@@ -49,7 +49,7 @@ SECTIONS {
     .bootloader :
     {
 	KEEP(*bootloader.o)
-    }
+    } > BOOT
 
     .text :
     {
