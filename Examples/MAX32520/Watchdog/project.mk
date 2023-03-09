@@ -12,3 +12,7 @@
 # **********************************************************
 
 # Add your config here!
+
+ifeq ($(BOARD),MAX32520FTHR)
+$(error This example requires a pushbutton, there it's not supported for the MAX32520FTHR)
+endif
