@@ -2,10 +2,9 @@
 
 This example configures the SPI to send data between the MISO (P0.14 - AIN6) and MOSI (P0.15 - AIN7) pins.  Connect these two pins together.
 
-Multiple word sizes (2 through 16 bits) are demonstrated.
+The SPI transaction is repeated for SPI character sizes 2 to 16.
 
 By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, undefine the MASTERSYNC macro and define the MASTERASYNC macro.  To use DMA transactions, define the MASTERDMA macro instead.
-
 
 ## Software
 

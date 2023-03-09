@@ -10,7 +10,6 @@ Additionally, pressing push button SW3 will print the last 12 temperature readin
 
 The temperature limits, flash storage page, and RTC time-of-day alarm period are defined in [temp_monitor.c](./temp_monitor.c) with the HI/LO\_TEMP\_THRESHOLD, TR\_STORAGE\_PAGE, and TEMP\_CHECK\_PERIOD defines respectively.
 
-
 ## Software
 
 ### Project Usage

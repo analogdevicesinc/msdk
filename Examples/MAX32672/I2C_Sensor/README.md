@@ -4,7 +4,6 @@ This example demonstrates how to take temperature readings from the MAX31889 usi
 
 After initialization, a new reading is printed to the terminal every second.
 
-
 ## Software
 
 ### Project Usage

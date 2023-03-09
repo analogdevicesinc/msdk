@@ -1,6 +1,20 @@
 ## Description
 
-TBD<!--TBD-->
+This example demonstrates the various low power modes on the MAX32672.
+
+The device is capable of entering the Sleep, Deep Sleep, Backup and Storage low power modes. The user may select which low power modes to enter in this example by setting the DO\_SLEEP, DO\_DEEPSLEEP, DO\_BACKUP, and DO\_STORAGE defines at the top of main.
+
+Either the push button or the RTC may be used as a wakeup source in this example. Select which one is used by setting either the USE\_BUTTON or USE\_ALARM defines at the top of main.
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+This example uses a special linkerfile (either lp-nonsecure.ld or lp-sla.ld depending on whether Secure Boot Tools are enabled) that limits the SRAM usage to SRAM0 and SRAM1. This prevents a hardfault that would otherwise occur when the other SRAMs are shutdown in the example.
 
 
 ## Software
@@ -24,7 +38,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-****Low Power Mode Example****
+************ Low Power Mode Example ************
 
 This code cycles through the MAX32672 power modes, using a push button (SW3) to exit from each mode and enter the next.
 
@@ -35,5 +49,4 @@ Entering SLEEP mode.
 Waking up from SLEEP mode.
 Entering DEEPSLEEP mode.
 Waking up from DEEPSLEEP mode.
-
 ```

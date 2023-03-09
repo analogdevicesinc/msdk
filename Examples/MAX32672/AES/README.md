@@ -2,7 +2,6 @@
 
 This application demonstrates both encryption and decryption using AES.  A block of data is encrypted.  The resulting encrypted data is then decrypted.  The new plain text is then compared with the original plain text to confirm they match.  This is repeated three times using a different key size each time.
 
-
 ## Software
 
 ### Project Usage

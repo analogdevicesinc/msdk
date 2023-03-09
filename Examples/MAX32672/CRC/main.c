@@ -50,12 +50,13 @@
 /***** Definitions *****/
 #define POLY 0xEDB88320
 #define CHECK 0xDEBB20E3
+
 /***** Globals *****/
 volatile int wait;
 volatile int callback_result;
 volatile int counter;
-/***** Functions *****/
 
+/***** Functions *****/
 void CTB_IRQHandler(void)
 {
     MXC_CTB_Handler();
@@ -69,8 +70,9 @@ void Test_Callback(void *req, int result)
 
 int Test_CRC(int asynchronous)
 {
-    uint32_t array[101];
     int i;
+    uint32_t array[101];
+    mxc_ctb_crc_req_t crc_req = { (uint8_t *)&array, 400, 0, &Test_Callback };
 
     printf(asynchronous ? "Test CRC Async\n" : "Test CRC Sync\n");
 
@@ -83,12 +85,10 @@ int Test_CRC(int asynchronous)
     // Load CRC polynomial into crc polynomial register
     MXC_CTB_CRC_SetPoly(POLY);
 
-    mxc_ctb_crc_req_t crc_req = { (uint8_t *)&array, 400, 0, &Test_Callback };
-
-    MXC_CTB_EnableInt();
-
+    // Compute CRC
     if (asynchronous) {
         wait = 1;
+        MXC_CTB_EnableInt();
         MXC_CTB_CRC_ComputeAsync(&crc_req);
 
         while (wait) {}
@@ -96,10 +96,11 @@ int Test_CRC(int asynchronous)
         MXC_CTB_CRC_Compute(&crc_req);
     }
 
+    // Add CRC result to end of data array
     array[100] = ~(crc_req.resultCRC);
-
     crc_req.dataLen += sizeof(array[100]);
 
+    // Compute CRC
     if (asynchronous) {
         wait = 1;
         MXC_CTB_CRC_ComputeAsync(&crc_req);
@@ -111,6 +112,7 @@ int Test_CRC(int asynchronous)
 
     MXC_CTB_Shutdown(MXC_CTB_FEATURE_CRC | MXC_CTB_FEATURE_DMA);
 
+    // Check CRC result
     if (CHECK != crc_req.resultCRC) {
         printf(" * Failed *\n\n");
         return -1;
@@ -125,15 +127,19 @@ int main(void)
 {
     printf("\n************ CRC Example ***********\n");
     int fail = 0;
+
+    // Test polling driven CRC compute
     fail += Test_CRC(0);
+
+    // Test interrupt driven CRC compute
     NVIC_EnableIRQ(CRYPTO_IRQn);
     fail += Test_CRC(1);
 
     if (fail != 0) {
-        printf("\nExample Failed\n");
+        printf("Example Failed\n");
         return E_FAIL;
     }
 
-    printf("\nExample Succeeded\n");
+    printf("Example Succeeded\n");
     return E_NO_ERROR;
 }

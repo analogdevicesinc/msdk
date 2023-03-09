@@ -9,7 +9,17 @@ This example
 To create LVGL compatible fonts and images use [Font Converter](https://lvgl.io/tools/fontconverter) and [Bitmap Converter](https://lvgl.io/tools/imageconverter)
 To create LVGL compatible screens with drag & drop use [SquareLine GUI Builder](https://squareline.io/)
 
-Please check project.mk to learn how compile lvgl in MSDK
+Please check project.mk to learn how compile lvgl in MSDK.
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
 
 
 ## Software

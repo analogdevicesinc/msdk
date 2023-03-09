@@ -6,7 +6,6 @@ SPI1 is setup as the master in this example and is configured by default to send
 
 Once the master ends the transaction, the data received by the master and the slave is compared to the data sent by their counterpart to ensure all bytes were received properly.
 
-
 ## Software
 
 ### Project Usage

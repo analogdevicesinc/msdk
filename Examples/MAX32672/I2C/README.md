@@ -1,6 +1,16 @@
 ## Description
 
-This example uses the I2C Master to read/write from/to the I2C Slave. 
+This example uses the I2C0 as an I2C master to read/write from/to I2C2, an I2C slave. 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
 
 
 ## Software
@@ -31,7 +41,7 @@ read and write to another I2C which acts as a slave.
 You will need to connect AIN10 (P0.18) to P0.6 (SCL) and
 AIN11 (P0.19) to P0.7 (SDA).
 
-Connect the I2C Pull-Up Resisters by connecting jumpers
+Connect the I2C Pull-Up Registers by connecting jumpers
 at JP4 and JP5.
 
 -->I2C Master Initialization Complete
