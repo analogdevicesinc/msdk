@@ -36,7 +36,7 @@
 /**
  * @file    main.c
  * @brief   OTP Dump Example
- * @details This example demonstrate how to read/write data from OTP memory
+ * @details This example shows how to read from and write to OTP memory.
  *
  */
 
@@ -44,8 +44,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-
 #include "mxc_device.h"
+#include "flc.h"
 
 /***** Definitions *****/
 /*
@@ -56,8 +56,8 @@
 #define WITH_WRITE_TEST 0 // set it to test write test
 
 // OTP Address
-#define OTP_MAXIM_AREA MXC_INFO0_MEM_BASE
-#define OTP_MAXIM_AREA_SIZE 0x6000
+#define OTP_MANUFACTURER_AREA MXC_INFO0_MEM_BASE
+#define OTP_MANUFACTURER_AREA_SIZE 0x6000
 
 #define OTP_USER_AREA MXC_INFO1_MEM_BASE
 #define OTP_USER_AREA_SIZE 0x2000
@@ -142,11 +142,11 @@ static int write_test(void)
 int main(void)
 {
     printf("\n\n***** OTP Memory Read/Write Example *****\n");
-    printf("***** This example demonstrates how you can read/write OTP memory *****\n");
+    printf("***** This example demonstrates how to read/write OTP memory *****\n");
 
-    /* Dump maxim section */
-    printf("\n\n***** MAXIM AREA *****\n");
-    dump_section(OTP_MAXIM_AREA, 1024);
+    /* Dump manufacturer section */
+    printf("\n\n***** MANUFACTURER AREA *****\n");
+    dump_section(OTP_MANUFACTURER_AREA, 1024);
 
     /* Dump user section */
     printf("\n\n***** USER AREA *****\n");
