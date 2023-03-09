@@ -14,8 +14,11 @@ int g_rx_channel;
 int g_fill_dummy_bytes = 0;
 int g_dummy_len = 0;
 uint8_t g_dummy_byte = 0xFF;
-volatile int g_rx_repeated_start = 0;
-volatile bool g_rx_deassert = 0;
+
+uint8_t *g_rx_buffer;
+uint8_t *g_tx_buffer;
+uint32_t g_rx_len;
+uint32_t g_tx_len;
 
 // A macro to convert a DMA channel number to an IRQn number
 #define GetIRQnForDMAChannel(x) ((IRQn_Type)(((x) == 0 ) ? DMA0_IRQn  : \
@@ -53,6 +56,21 @@ void DMA_RX_IRQHandler()
     }
 }
 
+void processSPI()
+{
+    // Unload any SPI data that has come in
+    while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL)) {
+        *g_rx_buffer++ = SPI->fifo8[0];
+        g_rx_len--;
+    }
+
+    // Write any pending bytes out.
+    while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
+        SPI->fifo8[0] = *g_tx_buffer++;
+        g_tx_len--;
+    }
+}
+
 void SPI_IRQHandler()
 {
     uint32_t status = SPI->intfl;
@@ -61,6 +79,30 @@ void SPI_IRQHandler()
         g_master_done = 1;
         SPI->intfl |= MXC_F_SPI_INTFL_MST_DONE;  // Clear flag
     }
+
+    if (status & MXC_F_SPI_INTFL_RX_THD) {
+        SPI->intfl |= MXC_F_SPI_INTFL_RX_THD;
+    }
+
+    // Unload any SPI data that has come in
+    while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL)) {
+        *g_rx_buffer++ = SPI->fifo8[0];
+        g_rx_len--;
+    }
+
+    if (g_rx_len <= 0) {
+        g_rx_done = 1;
+    }
+
+    // Write any pending bytes out.
+    while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
+        SPI->fifo8[0] = *g_tx_buffer++;
+        g_tx_len--;
+    }
+
+    // if (g_tx_len <= 0) {
+    //     g_tx_done = 1;
+    // }
 }
 
 int dma_init()
@@ -207,29 +249,47 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
         // RX
         if (rxlen > 0) {
             // Configure RX DMA channel to unload the SPI RX FIFO
+            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
             MXC_DMA->ch[g_rx_channel].dst = (uint32_t)dest;
             MXC_DMA->ch[g_rx_channel].cnt = rxlen;
-            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
             MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
         }
 
-        // Start the SPI transaction
-        SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
     } else { // !use_dma
-        // Manually fill the SPI TX FIFO with a blocking while loop
-        uint32_t tx_remaining = txlen;
+        g_rx_buffer = dest;
+        g_tx_buffer = src;
+        g_rx_len = rxlen;
+        g_tx_len = txlen;
 
-        while(tx_remaining && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
-            SPI->fifo8[0] = *src++;
-            tx_remaining--;
+        if (txlen > 0) {
+            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
         }
 
-        // TODO: set up interrupt and blocking transactions without DMA
+        if (rxlen > 0) {
+            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
+        }
+
+        SPI->inten |= MXC_F_SPI_INTEN_RX_THD | MXC_F_SPI_INTEN_MST_DONE;
+
+        // Unload any SPI data that has come in
+        while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL)) {
+            *g_rx_buffer++ = SPI->fifo8[0];
+            g_rx_len--;
+        }
+
+        // Write any pending bytes out.
+        while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
+            SPI->fifo8[0] = *g_tx_buffer++;
+            g_tx_len--;
+        }
     }
+
+    // Start the SPI transaction
+    SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
 
     if (deassert) {  // Peripheral select is deasserted at end of transmission
         SPI->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
-    } else {  // Peripheral select says asserted at end of transmission
+    } else {  // Peripheral select stays asserted at end of transmission
         SPI->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
     }
 
