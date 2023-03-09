@@ -139,22 +139,21 @@ Each connection event is separated by the connection interval. This interval is 
 Getting Started
 ---------------
 
-**1. Setup**
+1. Setup
 
-Follow the steps outlined in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** "Getting Started" section.
+    Follow the steps outlined in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** "Getting Started" section.
 
-**2. Starter Projects**
-* [BLE4](Applications/BLE4_ctr.md)
-* [BLE5](Applications/BLE5_ctr.md)
-* [FreeRTOS](Applications/BLE_FreeRTOS.md)
-* [DAT Client/Server](Applications/BLE_datc_dats.md)
-* [BLE FCC](Applications/BLE_fcc.md)
-* [BLE Fit](Applications/BLE_fit.md)
-* [BLE MCS](Applications/BLE_mcs.md)
-* [OTA Client/Server](Applications/BLE_otac_otas.md)
-* [BLE Periph](Applications/BLE_periph.md)
-* [Bootloader](Applications/Bootloader.md)
-* [RF Test](Applications/RF_Test.md)
+2. Starter Projects
+    - [BLE4](Applications/BLE4_ctr.md)
+    - [BLE5](Applications/BLE5_ctr.md)
+    - [FreeRTOS](Applications/BLE_FreeRTOS.md)
+    - [DAT Client/Server](Applications/BLE_datc_dats.md)
+    - [BLE FCC](Applications/BLE_fcc.md)
+    - [BLE Fit](Applications/BLE_fit.md)
+    - [BLE MCS](Applications/BLE_mcs.md)
+    - [OTA Client/Server](Applications/BLE_otac_otas.md)
+    - [BLE Periph](Applications/BLE_periph.md)
+    - [RF Test](Applications/RF_Test.md)
 
 Platforms
 ---------
