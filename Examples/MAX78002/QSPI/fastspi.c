@@ -18,7 +18,6 @@ volatile int g_rx_repeated_start = 0;
 volatile bool g_rx_deassert = 0;
 
 // #define REPEATED_START
-// ^ Not working for multiple transactions, reads bleed into each other.
 
 // A macro to convert a DMA channel number to an IRQn number
 #define GetIRQnForDMAChannel(x) ((IRQn_Type)(((x) == 0 ) ? DMA0_IRQn  : \
@@ -63,6 +62,21 @@ void SPI_IRQHandler()
     if (status & MXC_F_SPI_INTFL_MST_DONE) { // Master done (TX complete)
         g_master_done = 1;
         SPI->intfl |= MXC_F_SPI_INTFL_MST_DONE;  // Clear flag
+
+#ifdef REPEATED_START
+        if (g_rx_repeated_start) {
+            g_rx_repeated_start = 0;
+            // SPI->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
+            // SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
+            SPI->dma = (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
+            MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN;
+            SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+            if (g_rx_deassert) {
+                SPI->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
+                g_rx_deassert = 0;
+            }
+        }
+#endif
     }
 }
 
@@ -212,8 +226,18 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
             // Configure RX DMA channel to unload the SPI RX FIFO
             MXC_DMA->ch[g_rx_channel].dst = (uint32_t)dest;
             MXC_DMA->ch[g_rx_channel].cnt = rxlen;
+            // TODO: Repeated start for QSPI
+#ifdef REPEATED_START
+            if (width == SPI_WIDTH_QUAD) {
+                g_rx_repeated_start = 1;
+            } else {
+                SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
+                MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
+            }
+#else
             SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
             MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
+#endif
         }
 
         // Start the SPI transaction
@@ -231,7 +255,16 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     }
 
     if (deassert) {  // Peripheral select is deasserted at end of transmission
+#ifdef REPEATED_START
+        if (width == SPI_WIDTH_QUAD && rxlen > 0) {
+            SPI->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
+            g_rx_deassert = true;
+        } else {
+            SPI->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
+        }
+#else
         SPI->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
+#endif
     } else {  // Peripheral select says asserted at end of transmission
         SPI->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
     }

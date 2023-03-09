@@ -139,17 +139,23 @@ int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len)
 
     int err = E_NO_ERROR;
     uint8_t header[7];
-    memset(header, 0x00, 7);
+    memset(header, 0x13, 7);
     _parse_spi_header(0xEB, address, header);
 
+#if 0
+    // TODO: Address QSPI hardware limitations preventing single transaction
+    err = spi_transmit(header, 7, out, len, true, true, true);
+#else
     err = spi_transmit(&header[0], 7, NULL, 0, false, true, true);
-    /*
-    Our QSPI hardware requires a repeated start to execute the read portion of the transiation.  we split the TX/RX portions here into
-    two separate transactions to satisfy that requirement.  Significant
-    optimizations have been made to the transmit functions/DMA to reduce
-    the "gap" as much as possible.
-    */
+    // mxc_gpio_cfg_t wtf = spi_pins;
+    // wtf.func = MXC_GPIO_FUNC_IN;
+    // wtf.pad = MXC_GPIO_PAD_NONE;
+    // wtf.mask = (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9);
+    // MXC_GPIO_Config(&wtf);
+
+    // MXC_GPIO_Config(&spi_pins);
     err = spi_transmit(NULL, 0, out, len, true, true, true);
+#endif
     return err;
 }
 
