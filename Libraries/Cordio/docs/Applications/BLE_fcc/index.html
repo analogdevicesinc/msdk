@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../../../../../img/favicon.ico" />
+    <title>BLE_fcc - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "BLE_fcc";
+        var mkdocs_page_input_path = "Libraries/Cordio/docs/Applications/BLE_fcc.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../../../../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../../../.." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../CONTRIBUTING/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>BLE_fcc</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/Libraries/Cordio/docs/Applications/BLE_fcc.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ble_fcc">BLE_fcc</h1>
+<p>Project builds a simple serial port console for FCC testing.</p>
+<h1 id="usage">Usage</h1>
+<h2 id="leds">LEDs</h2>
+<p>The red LED will indicate that an error assertion has occurred.  </p>
+<p>The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
+is off, the CPU is in sleep mode.</p>
+<h2 id="expected-output">Expected Output</h2>
+<p>On startup:</p>
+<pre><code>    RAM: 4 x 752 bytes -- connection context
+    RAM: 16 x 719 bytes -- Tx buffer descriptors
+    RAM: 6 x 2296 bytes -- advertising set context
+LlHandlerInit: LL initialization completed
+    opModeFlags = 0x005F5C40
+### LlApi ###  LlSetBdAddr
+Static BDA[5:3]=00:18:80
+       BDA[2:0]=06:81:0C
+Usage:
+ (0) Transmit on RF channel 0 (2402 MHz)
+ (1) Transmit on RF channel 19 (2440 MHz)
+ (2) Transmit on RF channel 39 (2480 MHz)
+ (3) Receive  on RF channel 39 (2480 MHz)
+ (4) Set Transmit power
+ (5) Enable constant TX
+ (6) Disable constant TX -- MUST be called after (5)
+ (8) Set PHY
+ (9) TX Frequency Hop
+ (e) End transmission -- MUST be used after each (0-3, 9)
+ (u) Print usage
+</code></pre>
+<p>On TX test start (0) and stop (e)</p>
+<pre><code>Transmit RF channel 0, 255 bytes/pkt, 0xAA, 1M PHY, forever ..
+### LlApi ###  LlTxTest, rfChan=0, len=255, pktType=7
+res = 0 (SUCCESS)
+End test
+### LlApi ###  LlEndTest
+Test completed, numTx=1106
+                numRxSuccess=0
+                numRxCrcError=0
+                numRxTimeout=0
+</code></pre>
+<p>On RX test start (3) and stop (e)</p>
+<pre><code>Receive RF channel 39, 1M PHY, forever ..                                                                              
+### LlApi ###  LlRxTest, rfChan=39                                                                                     
+res = 0 (SUCCESS)                                                                                                      
+End test                                                                                                               
+### LlApi ###  LlEndTest                                                                                               
+Test completed, numTx=0                                                                                                
+                numRxSuccess=658                                                                                       
+                numRxCrcError=0                                                                                        
+                numRxTimeout=0                                                                                         
+</code></pre>
+<p>On TX Frequency Hop test start (9) and stop (e)</p>
+<pre><code>Starting frequency hopping
+### LlApi ###  LlTxTest, rfChan=0, len=255, pktType=7
+### LlApi ###  LlTxTest, rfChan=1, len=255, pktType=7
+...
+### LlApi ###  LlTxTest, rfChan=23, len=255, pktType=7
+### LlApi ###  LlTxTest, rfChan=24, len=255, pktType=7
+End test
+### LlApi ###  LlEndTest
+Test completed, numTx=1304
+                numRxSuccess=0
+                numRxCrcError=0
+                numRxTimeout=0
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '../../../../..';</script>
+    <script src="../../../../../js/theme_extra.js" defer></script>
+    <script src="../../../../../js/theme.js" defer></script>
+      <script src="../../../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

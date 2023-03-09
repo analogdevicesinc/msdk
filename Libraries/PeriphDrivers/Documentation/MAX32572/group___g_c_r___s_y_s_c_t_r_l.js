@@ -1,0 +1,25 @@
+var group___g_c_r___s_y_s_c_t_r_l =
+[
+    [ "MXC_F_GCR_SYSCTRL_BSTAPEN", "group___g_c_r___s_y_s_c_t_r_l.html#gaefb1e8c74230ded073ea13cd647f20e7", null ],
+    [ "MXC_F_GCR_SYSCTRL_BSTAPEN_POS", "group___g_c_r___s_y_s_c_t_r_l.html#ga07d845292780fbc2d0b5f96348e8c9ed", null ],
+    [ "MXC_F_GCR_SYSCTRL_CCHK0", "group___g_c_r___s_y_s_c_t_r_l.html#gaedf4bcbbdc448fe795617d445208b220", null ],
+    [ "MXC_F_GCR_SYSCTRL_CCHK0_POS", "group___g_c_r___s_y_s_c_t_r_l.html#gaf07e0d3c0bd8873dc4b32193526d7dff", null ],
+    [ "MXC_F_GCR_SYSCTRL_CCHK1", "group___g_c_r___s_y_s_c_t_r_l.html#ga78642bc94f5ca622fd886a1aa352c979", null ],
+    [ "MXC_F_GCR_SYSCTRL_CCHK1_POS", "group___g_c_r___s_y_s_c_t_r_l.html#ga5c26a47972feb600c35f31796c631af9", null ],
+    [ "MXC_F_GCR_SYSCTRL_CHKRES0", "group___g_c_r___s_y_s_c_t_r_l.html#gade8bbbd630f4a81f35002b634dcdd71d", null ],
+    [ "MXC_F_GCR_SYSCTRL_CHKRES0_POS", "group___g_c_r___s_y_s_c_t_r_l.html#ga982941596204081ca4946463bddaa243", null ],
+    [ "MXC_F_GCR_SYSCTRL_CHKRES1", "group___g_c_r___s_y_s_c_t_r_l.html#ga77715f02d36f1e1c26b9bd86c4754d4d", null ],
+    [ "MXC_F_GCR_SYSCTRL_CHKRES1_POS", "group___g_c_r___s_y_s_c_t_r_l.html#ga1b89c78393bdbac794416328ca50d973", null ],
+    [ "MXC_F_GCR_SYSCTRL_FPU_DIS", "group___g_c_r___s_y_s_c_t_r_l.html#ga445e7fddf87c6eb8645a73a767ad1589", null ],
+    [ "MXC_F_GCR_SYSCTRL_FPU_DIS_POS", "group___g_c_r___s_y_s_c_t_r_l.html#ga3bac2f78381b94d3a330da2edc3168af", null ],
+    [ "MXC_F_GCR_SYSCTRL_SBUSARB", "group___g_c_r___s_y_s_c_t_r_l.html#ga6fb39a839a1c2e5804bbc13092927261", null ],
+    [ "MXC_F_GCR_SYSCTRL_SBUSARB_POS", "group___g_c_r___s_y_s_c_t_r_l.html#ga7dcef79e6cc39e2b9e62b1b5a6f05d87", null ],
+    [ "MXC_F_GCR_SYSCTRL_SFCC_FLUSH", "group___g_c_r___s_y_s_c_t_r_l.html#ga4d6ec4395c5b8c271881155537a70ad3", null ],
+    [ "MXC_F_GCR_SYSCTRL_SFCC_FLUSH_POS", "group___g_c_r___s_y_s_c_t_r_l.html#gafa6530d2274f77ee6db3a5d633f7e1da", null ],
+    [ "MXC_F_GCR_SYSCTRL_SWD_DIS", "group___g_c_r___s_y_s_c_t_r_l.html#ga58c1ab5aaece340c7b766ba8f5078ef8", null ],
+    [ "MXC_F_GCR_SYSCTRL_SWD_DIS_POS", "group___g_c_r___s_y_s_c_t_r_l.html#ga4c77947b0a40d66848c30bca411f5e0e", null ],
+    [ "MXC_S_GCR_SYSCTRL_SBUSARB_FIX", "group___g_c_r___s_y_s_c_t_r_l.html#ga68450b05ea663e7af5cfb819f5e55275", null ],
+    [ "MXC_S_GCR_SYSCTRL_SBUSARB_ROUND", "group___g_c_r___s_y_s_c_t_r_l.html#ga580d92dc5811c6193874ccbd784d4a71", null ],
+    [ "MXC_V_GCR_SYSCTRL_SBUSARB_FIX", "group___g_c_r___s_y_s_c_t_r_l.html#ga81ba80e37f70ed97f3363cb120dd173a", null ],
+    [ "MXC_V_GCR_SYSCTRL_SBUSARB_ROUND", "group___g_c_r___s_y_s_c_t_r_l.html#gaef15d7d1e5793de60b545e358ed4f24d", null ]
+];

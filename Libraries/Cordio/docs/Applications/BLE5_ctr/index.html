@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../../../../../img/favicon.ico" />
+    <title>Description - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Description";
+        var mkdocs_page_input_path = "Libraries/Cordio/docs/Applications/BLE5_ctr.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../../../../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../../../.." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../CONTRIBUTING/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Description</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/Libraries/Cordio/docs/Applications/BLE5_ctr.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="description">Description</h1>
+<p>Bluetooth version 5.2 controller, accepts HCI commands via Serial Port.</p>
+<h1 id="usage">Usage</h1>
+<h2 id="leds">LEDs</h2>
+<p>The red LED will indicate that an error assertion has occurred.  </p>
+<p>The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
+is off, the CPU is in sleep mode.</p>
+<h3 id="expected-output">Expected Output</h3>
+<p>On startup:</p>
+<pre><code>    RAM: 4 x 752 bytes -- connection context
+    RAM: 16 x 719 bytes -- Tx buffer descriptors
+    RAM: 2 x 2296 bytes -- advertising set context
+    RAM: 2 x 704 bytes -- CIS context
+    RAM: 2 x 124 bytes -- CIG context
+    RAM: 2 x 208 bytes -- BIS context
+    RAM: 2 x 584 bytes -- BIG context
+    RAM: 8 x 120 bytes -- Tx buffer descriptors
+LlHandlerInit: LL initialization completed
+    opModeFlags = 0x005F5C40
+### LlApi ###  LlSetBdAddr
+Static BDA[5:3]=00:18:80
+       BDA[2:0]=F9:69:42
+### LlApi ###  LlSetAdvTxPower, advTxPwr=0
+</code></pre>
+<p>HCI:</p>
+<pre><code>python3 BLE_hci.py /dev/ttyUSB0
+Bluetooth Low Energy HCI tool
+Serial port: /dev/ttyUSB0
+8N1 115200
+
+&gt;&gt;&gt; reset
+2022-03-08 09:03:26.602167 &gt; 01030C00
+2022-03-08 09:03:26.616613 &lt; 040E0401030C00
+&gt;&gt;&gt; 
+
+</code></pre>
+<p>This shows HCI_Reset command sent to controller along with response event
+from controller. If command successful then the terminal shows
+the following trace messages.</p>
+<pre><code>### LlApi ###  LlReset
+lctrMstScanExecuteSm: state=0, event=0
+lctrMstInitExecuteSm: state=0, event=0
+lctrSlvAdvExecuteSm: state=0, event=0
+lctrMstExtScanExecuteSm: phy=0, state=0, event=0
+lctrMstExtScanExecuteCommonSm: numScanEnabled=0, scanMode=0, event=RESET
+lctrMstExtInitExecuteSm: state=0, event=0
+lctrMstExtInitExecuteCommonSm: scanMode=0, event=RESET
+lctrMstCreateSyncExecuteSm: state=0, event=0
+lctrMstTransferSyncExecuteSm: state=0, event=0                                                                         
+lctrMstPerScanExecuteSm: state=0, event=0                                                                              
+lctrMstPerScanExecuteSm: state=0, event=0                                                                              
+lctrMstPerScanExecuteSm: state=0, event=0                                                                              
+lctrMstPerScanExecuteSm: state=0, event=0                                                                              
+lctrMstPerScanExecuteSm: state=0, event=0                                                                              
+lctrMstPerScanExecuteSm: state=0, event=0                                                                              
+lctrSlvAcadDisp: handle=4, event=0                                                                                     
+### LlEvent ###  LL_RESET_CNF, status=LL_SUCCESS                                                                       
+</code></pre>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '../../../../..';</script>
+    <script src="../../../../../js/theme_extra.js" defer></script>
+    <script src="../../../../../js/theme.js" defer></script>
+      <script src="../../../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

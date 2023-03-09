@@ -45,7 +45,11 @@
                 </li>
               </ul>
               <ul>
-                <li class="toctree-l1"><a class="reference internal" href="../USERGUIDE/">User Guide</a>
+                <li class="toctree-l1"><a class="reference internal" href="../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Libraries/Cordio/docs/CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
                 </li>
               </ul>
               <ul class="current">
@@ -322,12 +326,12 @@ SRCS += libfile2.c
 <p>The <code>Documentation/build.py</code> script can be used to build the MSDK User Guide and supporting documentation locally.  This script:</p>
 <ul>
 <li>Builds all the Peripheral API references using Doxygen and copies them into <code>Documentation</code></li>
-<li>Copies any markdown files in the root of the repo into the <code>Documentation</code> folder.</li>
-<li>Copies the <code>res</code> (resources) folder into <code>Documentation</code></li>
-<li>Builds the MSDK User Guide using <a href="https://www.mkdocs.org/">Mkdocs</a>, which packages everything in <code>Documentation</code> into a static HTML/CSS/JavaScript site.</li>
+<li>Copies any markdown (.md) files from the root of the repo into <code>Documentation</code></li>
+<li>Builds the MSDK User Guide using <a href="https://www.mkdocs.org/">Mkdocs</a>, which packages everything in <code>Documentation</code> into a static HTML/CSS/JavaScript site in the <code>docs</code> folder.</li>
 </ul>
 <p>To <strong>build</strong> the docs:</p>
 <ol>
+<li>Install <a href="https://www.doxygen.nl/download.html">doxygen</a></li>
 <li>Install Python 3</li>
 <li><code>pip install -r Documentation/requirements.txt</code></li>
 <li><code>python Documentation/build.py</code></li>
@@ -344,7 +348,7 @@ SRCS += libfile2.c
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../USERGUIDE/" class="btn btn-neutral float-left" title="User Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Libraries/Cordio/docs/CORDIO_USERGUIDE/" class="btn btn-neutral float-left" title="Cordio BLE User Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../LICENSE/" class="btn btn-neutral float-right" title="License">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -373,7 +377,7 @@ SRCS += libfile2.c
         </span>
     
     
-      <span><a href="../USERGUIDE/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../Libraries/Cordio/docs/CORDIO_USERGUIDE/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../LICENSE/" style="color: #fcfcfc">Next &raquo;</a></span>

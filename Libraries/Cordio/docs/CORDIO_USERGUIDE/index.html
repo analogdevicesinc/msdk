@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>Cordio BLE User Guide - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Cordio BLE User Guide";
+        var mkdocs_page_input_path = "Libraries/Cordio/docs/CORDIO_USERGUIDE.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../../../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../../.." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">Cordio BLE User Guide</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#supported-features">Supported Features</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#features-in-development">Features in Development</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#platforms">Platforms</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#bluetooth-le-basics">Bluetooth LE Basics</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#references">References</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#states">States</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#advertising">Advertising</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#scanning-initiating">Scanning / Initiating</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#connected">Connected</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#cordio-stack-architecture">Cordio Stack Architecture</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#application">Application</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#profiles-and-services">Profiles and Services</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#wireless-stack-framework">Wireless Stack Framework</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#platform-adaption-layer">Platform Adaption Layer</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#attribute-protocol">Attribute Protocol</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#device-manager">Device Manager</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#security-manager-protocol">Security Manager Protocol</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#logical-link-control-adaptation-protocol">Logical Link Control Adaptation Protocol</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#host-controller-interface">Host Controller Interface</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#link-layer">Link Layer</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#physical-layer">Physical Layer</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#adi-attach">ADI Attach</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#ble-pydex">BLE-PyDex</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#frequently-asked-questions">Frequently asked questions</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#how-do-i-change-the-advertising-parameters">How do I change the advertising parameters?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-do-i-change-the-connection-parameters">How do I change the connection parameters?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-do-i-use-the-low-power-modes">How do I use the low power modes?</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#how-do-i-send-unformatted-data-like-a-uart">How do I send unformatted data like a UART?</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#additional-documentation">Additional Documentation</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#certification">Certification</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../CONTRIBUTING/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Cordio BLE User Guide</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/Libraries/Cordio/docs/CORDIO_USERGUIDE.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="cordio-ble-user-guide">Cordio BLE User Guide</h1>
+<p>This library implements the Bluetooth Low Energy stack , forked from <a href="https://github.com/packetcraft-inc/stacks">Packetcraft</a>. It depends on additional libraries within the msdk repository. All of the applications utilizing this library can be found in the <code>Examples</code> directory of an MSDK installation.</p>
+<h2 id="supported-features">Supported Features</h2>
+<ul>
+<li><strong>LE Dual Mode Topology:</strong> Advertise/Scan while maintaining multiple adjacent connections.</li>
+<li><strong>2M PHY:</strong> High speed PHY with 2 Mbps symbol rate.</li>
+<li><strong>Coded PHY:</strong> Forward error correction, 125 kbps or 500 kbps symbol rate.</li>
+<li><strong>Extended Advertising:</strong> Enhanced advertising and scanning.</li>
+<li><strong>Periodic Advertising:</strong> Broadcasting and receiving periodic advertisements.</li>
+<li><strong>EATT:</strong> Enhanced Attribute protocol.</li>
+<li><strong>LE Secure Connections:</strong> LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation.</li>
+<li><strong>Data Length Extension:</strong> Extend the maximum data length supported in a connection.</li>
+<li><strong>LE Power Control:</strong> Dynamic TX power control.</li>
+<li><strong>*OTA firmware update:</strong> Over-the-air firmware update is not a standard Bluetooth feature. We have a wireless data exchange service that can be used for OTA firmware updates. See the BLE_otac_otas examples, the ADI Attach smart phone app, and <a href="https://github.com/EdwinFairchild/BLE-PyDex">BLE-PyDex</a> for details.</li>
+</ul>
+<h3 id="features-in-development">Features in Development</h3>
+<ul>
+<li><strong>Direction finding:</strong> Detect the direction of the incoming signal. Also known as Angle of Arrival (AoA) and Angle of Departure (AoD). Hardware support on MAX32655 and MAX32690, unavailable on MAX32665, software in development.</li>
+<li><strong>LE Audio:</strong> Isochronous audio with Bluetooth LE. Hardare support on all platforms, software in development.</li>
+</ul>
+<h2 id="platforms">Platforms</h2>
+<p>This release was tested on the following platforms. Note: platforms listed may not be available in this repository.</p>
+<ul>
+<li>Nordic nRF52840 / PCA10056 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10056")</li>
+<li>Nordic nRF52832 / PCA10040 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10040")</li>
+<li>Laird BL654 / 451-00004 USB adapter / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=laird")</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<p>The best application to get started with is the <a href="../Applications/BLE_periph/">BLE_periph</a> application. It is a simple periphal application that will allow you to advertise and connect with a central device such as a smart phone.</p>
+<p>Follow the MSDK <a href="../../../../USERGUIDE/">User Guide</a> instructions to install the necessary tools and create a new project. Build and run the <code>BLE_periph</code> application for the appropriate target.</p>
+<h2 id="bluetooth-le-basics">Bluetooth LE Basics</h2>
+<h3 id="references">References</h3>
+<p>The Bluetooth Special Interest Group (SIG) has documentation available on their <a href="https://www.bluetooth.com/">website</a>. Refer to the <a href="https://www.bluetooth.com/specifications/specs/">documentation</a> page to see the latest core specification. This will be your best resource for learning the details of Bluetooth Low Energy.</p>
+<p>These books are also excellent references for developers.</p>
+<ul>
+<li><em>Getting Started with Bluetooth Low Energy</em> by O'Reilly</li>
+<li><em>Bluetooth Low Energy: The Developer's Handbook</em> by Robin Heydon</li>
+</ul>
+<h3 id="architecture">Architecture</h3>
+<p>The Bluetooth stack closely resembles the layers of the network stack. We have the application layer at the top and the physical layer at the bottom. Each layer encapsulates the data and passes it to the appropriate section of the upper and lower layers.</p>
+<p><img alt="Stack" src="../res/Stack.PNG" /></p>
+<p>The Host Conroller Interface (HCI) is the common point where devices are split. Typically this this interface is over an asynchronous protocol such as UART. Some devices will define proprietary interfaces between the application and host layers. Multi-core SOCs can also use the HCI or proprietay interfaces to split the stack between multiple CPUs.</p>
+<p>When testing the Controller layers, test equipment will have a USB interface and act as a Host device. Devices under test will use a USB to UART adapter and act as Controller devices. </p>
+<p><img alt="HCI" src="../res/HCI.PNG" /></p>
+<h3 id="states">States</h3>
+<p>These are the common states used in Bluetooth LE communication. Typically devices will be in only one of these states at a time, but it is possible for devices to be in all simultaneously. </p>
+<h4 id="advertising">Advertising</h4>
+<p>Devices in this state are broadcasting advertisement packets to scanning/initiating devices. This is an asychronous operation that has no synchronization with peer devices. Advertising devices are transmitting without any previous knowledge of peer devices. Advertising and scanning operations are done on channels 37, 38, and 39. The interval between advertising events is configurable between 20 ms and 10.24 s.</p>
+<p><img alt="ADV Scan" src="../res/ADV_SCN.png" /></p>
+<h4 id="scanning-initiating">Scanning / Initiating</h4>
+<p>Devices in the scanning state listen for advertising devcies and can send scan optionally requests for additional information. The scanning interval and window settings are configurable. </p>
+<p>If a devices is scanning with the intent of connecting to a specific device, that is called the initiating state. The initiating devcies will send a connection indication to the desired advertising device to indicate it's desire to create a connection.</p>
+<h4 id="connected">Connected</h4>
+<p>Once a initiating devices sends the connection requset and the advertising devices accepts the connection request, the two devices enter the connected state. This is a point to point connection allowing devcies to directly exchange information.</p>
+<p>In order to minimize interference, devices in the connected state will hop between channels 0-36 in a pseudo random order. The channel hopping information is communicated in the connection indication.</p>
+<p>Each connection event is separated by the connection interval. This interval is configurable from 7.5 ms to 4 s. The master will always transmit first and receive second. The Slave will always receive first and transmit second. Devices will typically always send and receive at least one packet in each interval, and they can optionally transmit and receive multiple packets in each interval.</p>
+<p><img alt="Connected" src="../res/Connected.png" /></p>
+<h2 id="cordio-stack-architecture">Cordio Stack Architecture</h2>
+<p>This document describes the Cordio software architecture. Refer to the Bluetooth specificaion Volume 1, Part A for additional information regarding the Bluetooth architecture.</p>
+<p><img alt="Software Stack" src="../res/Software_Stack.jpg" /></p>
+<h3 id="application">Application</h3>
+<p>The App Framework performs many operations common to Bluetooth LE embedded applications, such as:</p>
+<ul>
+<li>Application-level device, connection, and security management.</li>
+<li>Simple user interface abstractions for button press handling, sounds, display, and other user feedback.</li>
+<li>An abstracted device database for storing bonding data and other device parameters.</li>
+</ul>
+<h3 id="profiles-and-services">Profiles and Services</h3>
+<p>The GATT Profile specifies the structure in which profile data is exchanged. This structure defines basic elements such as services and characteristics, used in a profile. The top level of the hierarchy is a profile. A profile is composed of one or more services necessary to fulfill a use case. A service is composed of characteristics or references to other services. Each characteristic contains a value and may contain optional information about the value. The service and characteristic and the components of the characteristic (i.e., value and descriptors) contain the profile data and are all stored in Attributes on the server.</p>
+<p><img alt="Profiles" src="../res/Profiles.PNG" /></p>
+<h3 id="wireless-stack-framework">Wireless Stack Framework</h3>
+<p>The Wireless Software Foundation (WSF) is a simple OS wrapper, porting layer, and general-purpose software service used by the software system. The goal of WSF is to stay small and lean, supporting only the basic services required by the stack. It consists of the following:</p>
+<ul>
+<li>Event handler service with event and message passing.</li>
+<li>Timer service.</li>
+<li>Queue and buffer management service.</li>
+<li>Portable data types.</li>
+<li>Critical sections and task locking.</li>
+<li>Trace and assert diagnostic services.</li>
+<li>Security interfaces for encryption and random number generation.</li>
+</ul>
+<h4 id="platform-adaption-layer">Platform Adaption Layer</h4>
+<p>The Platform Adaption Layer is the abstraction between the software stack and the hardware. It includes APIs for timers, UART, RTC, and various system level functions such as sleep and memory management. </p>
+<h3 id="attribute-protocol">Attribute Protocol</h3>
+<p>The ATT subsystem implements the attribute protocol and generic attribute profile (GATT). It contains two independent subsystems: The attribute protocol client (ATTC) and attribute protocol server (ATTS).</p>
+<p>ATTC implements all attribute protocol client features and is designed to meet the client requirements of the generic attribute profile. ATTC can support multiple simultaneous connections to different servers.</p>
+<p>ATTS implements all attribute protocol server features and has support for multiple simultaneous client connections. ATTS also implements the server features defined by the generic attribute profile.</p>
+<h3 id="device-manager">Device Manager</h3>
+<p>The DM subsystem implements device management procedures required by the stack. These procedures are partitioned by procedure category and device role (master or slave). The following procedures are implemented in DM:</p>
+<ul>
+<li>Advertising and device visibility: Enable/disable advertising, set advertising parameters and data, set connectability and discoverability.</li>
+<li>Scanning and device discovery: Start/stop scanning, set scan parameters, advertising reports, name discovery.</li>
+<li>Connection management: Create/accept/remove connections, set/update connection parameters, read RSSI.</li>
+<li>Security management: Bonding, storage of security parameters, authentication, encryption, authorization, random address management.</li>
+<li>Local device management: Initialization and reset, set local parameters, vendor-specific commands.
+DM procedures support the Generic Access Profile (GAP) when applicable.</li>
+</ul>
+<h3 id="security-manager-protocol">Security Manager Protocol</h3>
+<p>The Security Manager Protocol (SMP) is the peer-to-peer protocol used to generate encryption keys and identity keys. The protocol operates over a dedicated fixed L2CAP channel. The SMP block also manages storage of the encryption keys and identity keys and is responsible for generating random addresses and resolving random addresses to known device identities. The SMP block interfaces directly with the Controller to provide stored keys used for encryption and authentication during the encryption or pairing procedures.</p>
+<p>The SMP subsystem implements the security manager protocol. It contains two independent subsystems:</p>
+<ul>
+<li>The initiator (SMPI). SMPI implements the initiator features of the security manager protocol and has support for multiple simultaneous connections.</li>
+<li>The responder (SMPR). SMPR implements the responder features of the security manager protocol and has support for only one connection (by Bluetooth specification design).</li>
+</ul>
+<p>SMP also implements the cryptographic toolbox, which uses AES. The interface to AES is asynchronous and abstracted through WSF. SMP also implements functions to support data signing.</p>
+<h3 id="logical-link-control-adaptation-protocol">Logical Link Control Adaptation Protocol</h3>
+<p>The L2CAP (Logical Link Control Adaptation Protocol) resource manager block is responsible for managing the ordering of submission of PDU fragments to the baseband and some relative scheduling between channels to ensure that L2CAP channels with QoS commitments are not denied access to the physical channel due to Controller resource exhaustion. This is required because the architectural model does not assume that a Controller has limitless buffering, or that the HCI is a pipe of infinite bandwidth.</p>
+<p>L2CAP Resource Managers may also carry out traffic conformance policing to ensure that applications are submitting L2CAP SDUs within the bounds of their negotiated QoS settings. The general Bluetooth data transport model assumes well-behaved applications, and does not define how an implementation is expected to deal with this problem.</p>
+<h3 id="host-controller-interface">Host Controller Interface</h3>
+<p>The HCI subsystem implements the host-controller interface specification. This specification defines commands, events, and data packets sent between a Bluetooth LE protocol stack on a host and a link layer on a controller.
+The HCI API is optimized to be a thin interface layer for a single chip system. It is configurable for either a single chip system or traditional system with wired HCI.
+This configurability is accomplished through a layered implementation. A core layer can be configured for either a single chip system or wired HCI. A transport and driver layer below the core layer can be configured for different wired transports such as UART.</p>
+<h3 id="link-layer">Link Layer</h3>
+<p>The link layer is responsible for the creation, modification and release of logical links (and, if required, their associated logical transports), as well as the update of parameters related to physical links between devices. The link layer achieves this by communicating with the link layer in remote Bluetooth devices using the  Link Layer Protocol (LL) in LE. The LL protocol allows the creation of new logical links and logical transports between devices when required, as well as the general control of link and transport attributes such as the enabling of encryption on the logical transport, and the adapting of transmit power on the physical link.</p>
+<h3 id="physical-layer">Physical Layer</h3>
+<p>The PHY block is responsible for transmitting and receiving packets of information on the physical channel. A control path between the baseband and the PHY block allows the baseband block to control the timing and frequency carrier of the PHY block. The PHY block transforms a stream of data to and from the physical channel and the baseband into required formats.</p>
+<h2 id="adi-attach">ADI Attach</h2>
+<p>ADI Attach is a smart phone application that can be used for Bluetooth debugging and development.</p>
+<ul>
+<li>Scan for advertising peripherals.</li>
+<li>Connect to devices and discover profiles, services.</li>
+<li>Read and write charcteristics.</li>
+<li>Subscribe to noficiations.</li>
+<li>Perform over-the-air firmware updates with supporing devices.</li>
+</ul>
+<h2 id="ble-pydex">BLE-PyDex</h2>
+<p>BLE-PyDex is a hardware agnostic Bluetooth device explorer designed to aid in the development and debugging of Bluetooth applications.</p>
+<p><a href="https://github.com/EdwinFairchild/BLE-PyDex">https://github.com/EdwinFairchild/BLE-PyDex</a></p>
+<h2 id="frequently-asked-questions">Frequently asked questions</h2>
+<h3 id="how-do-i-change-the-advertising-parameters">How do I change the advertising parameters?</h3>
+<p>Peripheral applications will have a static structure that contains all of the advertising parameters. If run-time changes are desired, you must call <code>AppAdvStop()</code> before changing the parameters and <code>AppAdvStart()</code> to resume.</p>
+<p>With this configuration, the device will advertise at a fast interval (300 * 0.625 = 187.5 ms) for 5 seconds. It will then advertise slowly (1600 * 0.625 = 1000 ms) indefinetly. </p>
+<pre><code class="language-c">/*! configurable parameters for advertising */
+static const appAdvCfg_t datsAdvCfg = {
+    { 5000,    0}, /*! Advertising durations in ms, 0 is infinite */
+    { 300,  1600}  /*! Advertising intervals in 0.625 ms units */
+};
+</code></pre>
+<h3 id="how-do-i-change-the-connection-parameters">How do I change the connection parameters?</h3>
+<p>Only the master of the connection can change the connection parameters. Peripheral devices can request a change, but only the master can accept and set the connection parameters. Cell phones and mobile operatings systems have different restrictions on the connection parameters.</p>
+<p>Peripheral applications have the following structure that is used to request connection parameter updates. </p>
+<pre><code class="language-c">/* iOS connection parameter update requirements
+
+ The connection parameter request may be rejected if it does not meet the following guidelines:
+ * Peripheral Latency of up to 30 connection intervals.
+ * Supervision Timeout from 2 seconds to 6 seconds.
+ * Interval Min of at least 15 ms.
+ * Interval Min is a multiple of 15 ms.
+ * One of the following:
+   * Interval Max at least 15 ms greater than Interval Min.
+   * Interval Max and Interval Min both set to 15 ms.
+   * Interval Max * (Peripheral Latency + 1) of 2 seconds or less.
+   * Supervision Timeout greater than Interval Max * (Peripheral Latency + 1) * 3.
+*/
+
+/*! configurable parameters for connection parameter update */
+static const appUpdateCfg_t datsUpdateCfg = {
+    0,
+    /*! ^ Connection idle period in ms before attempting
+    connection parameter update. set to zero to disable */
+    (15 * 8 / 1.25), /*! Minimum connection interval in 1.25ms units */
+    (15 * 12 / 1.25), /*! Maximum connection interval in 1.25ms units */
+    0, /*! Connection latency */
+    600, /*! Supervision timeout in 10ms units */
+    5 /*! Number of update attempts before giving up */
+};
+</code></pre>
+<p>The DmConnUpdate() function can also be used to request a connection parameter update from the peripheral or initiate one from the master.</p>
+<pre><code class="language-c">/*************************************************************************************************/
+/*!
+ *  \brief  Update the connection parameters of an open connection
+ *
+ *  \param  connId      Connection identifier.
+ *  \param  pConnSpec   Connection specification.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void DmConnUpdate(dmConnId_t connId, hciConnSpec_t *pConnSpec);
+</code></pre>
+<h3 id="how-do-i-use-the-low-power-modes">How do I use the low power modes?</h3>
+<p>All of the applications will enter sleep mode in idle when build with <code>DEBUG=0</code>. The Wireless Stack Framework (WSF) operating system will call PalSysSleep() mode when idle. With <code>DEBUG=1</code>, the CPU will stay in active mode to leave the debugger enabled.</p>
+<p>To enter the lowest power states, refer to the BLE_FreeRTOS application. This will create FreeRTOS tasks for the Cordio stack and allow users to add additional tasks. Enable <code>configUSE_TICKLESS_IDLE</code> and the device will enter standby mode and deep sleep between events.</p>
+<p><strong>WARNING:</strong> The CPU debugger is disabled in sleep modes. If your application enters sleep mode directly after reset, it will be difficult to debug and reporgram.</p>
+<h3 id="how-do-i-send-unformatted-data-like-a-uart">How do I send unformatted data like a UART?</h3>
+<p>Unfortunatly there is not a Bluetooth SIG defined standard for this protocol. This stack has a proprietary data transfer service that is used to transmit unformatted data between devices. Refer to the BLE_dats (BLE Data Server) for the peripheral application. You can connect to this device with the BLE_datc (BLE data client) application to see simple data transmission. Refer to the BLE_dats and BLE_dats <a href="../Applications/BLE_datc_dats/">README</a> for more information.</p>
+<h2 id="additional-documentation">Additional Documentation</h2>
+<p>Documentation for Python tools used for Bluetooth development and debugging can be found <a href="../../../../Tools/Bluetooth/">here</a>.</p>
+<p>Documentation for each of the supporting applications can be found below:</p>
+<ul>
+<li><a href="../Applications/BLE4_ctr/">BLE4</a></li>
+<li><a href="../Applications/BLE5_ctr/">BLE5</a></li>
+<li><a href="../Applications/BLE_FreeRTOS/">FreeRTOS</a></li>
+<li><a href="../Applications/BLE_datc_dats/">DAT Client/Server</a></li>
+<li><a href="../Applications/BLE_fcc/">BLE FCC</a></li>
+<li><a href="../Applications/BLE_fit/">BLE Fit</a></li>
+<li><a href="../Applications/BLE_mcs/">BLE MCS</a></li>
+<li><a href="../Applications/BLE_otac_otas/">OTA Client/Server</a></li>
+<li><a href="../Applications/BLE_periph/">BLE Periph</a></li>
+<li><a href="../Applications/RF_Test/">RF Test</a></li>
+</ul>
+<h2 id="certification">Certification</h2>
+<p>Bluetooth LE Mesh solution implementing of the Bluetooth Mesh Profile 1.0 and the Bluetooth Mesh Model 1.0 wireless technical specifications</p>
+<ul>
+<li><a href="https://launchstudio.bluetooth.com/ListingDetails/66212">QDID 116593</a></li>
+</ul>
+<p>Bluetooth LE Host protocol stack implementing Bluetooth Core 5.2 specification</p>
+<ul>
+<li><a href="https://launchstudio.bluetooth.com/ListingDetails/103670">QDID 146344</a></li>
+</ul>
+<p>Bluetooth LE Link Layer protocol stack implementing Bluetooth 5.2 specification</p>
+<ul>
+<li><a href="https://launchstudio.bluetooth.com/ListingDetails/103599">QDID 146281</a></li>
+</ul>
+<p>MAX32655 controller subsystem</p>
+<ul>
+<li><a href="https://launchstudio.bluetooth.com/ListingDetails/119468">QDID 159701</a></li>
+</ul>
+<p>MAX32665 controller subsystem</p>
+<ul>
+<li><a href="https://launchstudio.bluetooth.com/ListingDetails/98880">QDID 142345</a></li>
+</ul>
+<p>Consult the <a href="https://www.bluetooth.com/develop-with-bluetooth/qualification-listing">Bluetooth Qualification Process</a> for further details regarding certification.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../../../USERGUIDE/" class="btn btn-neutral float-left" title="MSDK User Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../../../../CONTRIBUTING/" class="btn btn-neutral float-right" title="Contributing">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../../../../USERGUIDE/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../../../../CONTRIBUTING/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script>var base_url = '../../../..';</script>
+    <script src="../../../../js/theme_extra.js" defer></script>
+    <script src="../../../../js/theme.js" defer></script>
+      <script src="../../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

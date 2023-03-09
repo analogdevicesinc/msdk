@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../../../../img/favicon.ico" />
+    <title>PACKETCRAFT - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "PACKETCRAFT";
+        var mkdocs_page_input_path = "Libraries/Cordio/docs/PACKETCRAFT.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../../../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../../.." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../CONTRIBUTING/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>PACKETCRAFT</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/Libraries/Cordio/docs/PACKETCRAFT.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h2 id="packetcraft-protocol-software">Packetcraft Protocol Software</h2>
+<p>Packetcraft protocol software is a collection of embedded stacks implementing the Bluetooth Low Energy Link Layer, Host, Profile and Mesh specification (www.bluetooth.org).</p>
+<p>This repository contains open source release of Packetcraft's software. This is a qualified release and may be used in products. Please consult the <a href="https://www.bluetooth.com/develop-with-bluetooth/qualification-listing">Bluetooth Qualification Process</a> for further details regarding additional certification requirements.</p>
+<h2 id="release-notes">Release notes</h2>
+<p>This latest release of the Packetcraft Host and Packetcraft Controller is Bluetooth 5.2 qualified and implements the following new Bluetooth 5.2 features: LE Isochronous Channels, Enhanced Attribute Protocol, and LE Power Control.</p>
+<p>This release includes the following completed requirements for r20.05:</p>
+<pre class="codehilite"><code>FW-3340 Isochronous Demo: single BIS data stream
+FW-3354 TCRL.2019-1 compliant
+FW-3359 Core v5.2: LE Isochronous Channels (ISO)
+FW-3360 Core v5.2: LE Power Control
+FW-3361 Core v5.2: Enhanced ATT (EATT)
+FW-3617 Core v5.2: Isochronous Abstraction Layer (ISOAL)
+FW-3726 Core v5.2: Host Support for LE Isochronous Channels (ISO)
+FW-3727 Nordic nRF5 SDK 16.0.0
+FW-3730 Compile BLE host for 64-bit platform
+FW-3736 Light CTL Model
+FW-3738 Mesh v1.0.1 compliant
+FW-3739 TCRL.2019-2 qualification
+FW-3750 Laird BL654 platform
+FW-3767 SBC codec
+FW-3803 GCC compiler support for gcc-arm-none-eabi-9-2019-q4-major
+FW-3820 Protect against SweynTooth vulnerability
+</code></pre>
+
+<h2 id="certification">Certification</h2>
+<p>Bluetooth LE Mesh solution implementing of the Bluetooth Mesh Profile 1.0 and the Bluetooth Mesh Model 1.0 wireless technical specifications</p>
+<ul>
+<li><a href="https://launchstudio.bluetooth.com/ListingDetails/66212">QDID 116593</a></li>
+</ul>
+<p>Bluetooth LE Host protocol stack implementing Bluetooth Core 5.2 specification</p>
+<ul>
+<li><a href="https://launchstudio.bluetooth.com/ListingDetails/103670">QDID 146344</a></li>
+</ul>
+<p>Bluetooth LE Link Layer protocol stack implementing Bluetooth 5.2 specification</p>
+<ul>
+<li><a href="https://launchstudio.bluetooth.com/ListingDetails/103599">QDID 146281</a></li>
+</ul>
+<h2 id="verification">Verification</h2>
+<p>Packetcraft Mesh is verified with the TCRL.2019-2 compliance tester using the following:</p>
+<ul>
+<li>Bluetooth Profile Tuning Suites 7.6.1</li>
+</ul>
+<p>Packetcraft Host is verified with the TCRL.2019-2 compliance tester using the following:</p>
+<ul>
+<li>Bluetooth Profile Tuning Suites 7.6.1</li>
+</ul>
+<p>Packetcraft Profiles is verified with the TCRL.2018-2 compliance tester using the following:</p>
+<ul>
+<li>Bluetooth Profile Tuning Suites 7.3.0</li>
+</ul>
+<p>Packetcraft Link Layer conforms to the Bluetooth TCRL.2019-2 requirements verified with the following:</p>
+<ul>
+<li>Teledyne Harmony LE Tester version 19.12.16916.21195</li>
+</ul>
+<p>This product was compiled and tested with the following version of GNU GCC</p>
+<ul>
+<li>gcc-arm-none-eabi-9-2019-q4-major</li>
+</ul>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '../../../..';</script>
+    <script src="../../../../js/theme_extra.js" defer></script>
+    <script src="../../../../js/theme.js" defer></script>
+      <script src="../../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

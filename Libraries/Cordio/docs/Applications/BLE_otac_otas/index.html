@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../../../../../img/favicon.ico" />
+    <title>BLE_otac - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "BLE_otac";
+        var mkdocs_page_input_path = "Libraries/Cordio/docs/Applications/BLE_otac_otas.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../../../../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../../../.." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../CONTRIBUTING/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>BLE_otac</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/Libraries/Cordio/docs/Applications/BLE_otac_otas.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ble_otac">BLE_otac</h1>
+<h2 id="description">Description</h2>
+<p>Bluetooth data client that scans for and connects to advertisers with the name of "OTAS".</p>
+<p>The Wireless Data Exchange profile is used to transfer files from the client to the server. 
+A CRC32 value is used to check the integrity of the transferred file. </p>
+<h2 id="usage">Usage</h2>
+<h3 id="leds">LEDs</h3>
+<p>The red LED will indicate that an error assertion has occurred.  </p>
+<p>The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
+is off, the CPU is in sleep mode.</p>
+<h3 id="setup">Setup</h3>
+<p>The <code>project.mk</code> can be edited to select the appropriate application directory for the update
+image. Change FW_UPDATE_DIR to modify which application is used for the update. Whichever
+application is selected must be setup to run from the appropriate memory section, as defined
+by the Bootloader.</p>
+<h3 id="expected-output">Expected Output</h3>
+<p>On startup:</p>
+<pre><code>terminal: init
+32kHz trimmed to 0x16
+DatcHandlerInit
+File addr: 10025950 file size: 00033368
+Update File CRC: 0x8871C78B
+WDXC: WdxcHandlerInit
+&gt;&gt;&gt; Reset complete &lt;&lt;&lt;
+Database hash updated
+dmDevPassEvtToDevPriv: event: 12, param: 36, advHandle: 0
+&gt;&gt;&gt; Scanning started &lt;&lt;&lt;
+
+</code></pre>
+<p>When a connection has been made.</p>
+<pre><code>dmDevPassEvtToDevPriv: event: 13, param: 37, advHandle: 0
+Scan results: 10
+dmConnIdByBdAddr not found
+dmConnCcbAlloc 1
+&gt;&gt;&gt; Scanning stopped &lt;&lt;&lt;
+dmConnSmExecute event=24 state=0
+dmDevPassEvtToDevPriv: event: 14, param: 0, advHandle: 0
+dmConnSmExecute event=28 state=1
+dmDevPassEvtToDevPriv: event: 14, param: 1, advHandle: 0
+dmDevPassEvtToDevPriv: event: 12, param: 39, advHandle: 0
+smpDbGetRecord: connId: 1 type: 0
+smpDbAddDevice
+SmpDbGetFailureCount: connId: 1 count: 0
+smpDbGetRecord: connId: 1 type: 0
+smpDbAddDevice
+SmpDbGetPairingDisabledTime: connId: 1 period: 0 attemptMult: 0
+&gt;&gt;&gt; Connection opened &lt;&lt;&lt;
+connId=1 idleMask=0x0008
+AttcDiscServiceCmpl status 0x00
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x00
+connId=1 idleMask=0x0008
+AttcDiscServiceCmpl status 0x00
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x00
+connId=1 idleMask=0x0008
+AttcDiscServiceCmpl status 0x00
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x00
+connId=1 idleMask=0x0008
+AttcDiscServiceCmpl status 0x00
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x79
+AttcDiscCharCmpl status 0x00
+connId=1 idleMask=0x0000
+AppDiscComplete connId:1 status:0x04
+connId=1 idleMask=0x0008
+AttcDiscConfigCmpl status 0x79
+AttcDiscConfigCmpl status 0x79
+AttcDiscConfigCmpl status 0x79
+AttcDiscConfigCmpl status 0x79
+AttcDiscConfigCmpl status 0x79
+AttcDiscConfigCmpl status 0x79
+AttcDiscConfigCmpl status 0x00
+connId=1 idleMask=0x0000
+AppDiscComplete connId:1 status:0x08
+
+</code></pre>
+<p>OTA procedure</p>
+<pre><code>btn 2 s
+Short Button 2 Press
+&gt; 
+WDXC file transfer control.
+FTC op: 2 status: 0
+
+WDXC file transfer control.
+FTC op: 10 status: 0
+&gt;&gt;&gt; File discovery complete &lt;&lt;&lt;
+
+&gt;&gt;&gt; Current fw version: 1.0 &lt;&lt;&lt;                                              
+
+btn 2 m                                                                       
+Medium Button 2 Press                                                         
+&gt; WDXC file transfer control.                                                 
+FTC op: 4 status: 0                                                           
+&gt;&gt;&gt; Starting file transfer &lt;&lt;&lt;
+... 
+WDXC file transfer control.
+FTC op: 10 status: 0
+&gt;&gt;&gt; File transfer complete 3547207 us &lt;&lt;&lt;
+file_size = 209768 usec = 3547207 bps = 473112
+flowDisabled=0 handle=0
+
+
+btn 2 l                                                                       
+Long Button 2 Press                                                           
+&gt; WDXC file transfer control.                                                 
+FTC op: 8 status: 0                                                           
+&gt;&gt;&gt; Verify complete status: 0 &lt;&lt;&lt; 
+
+
+btn 2 x                                                                       
+XL Button 2 Press                                                             
+&gt; dmConnSmExecute event=29 state=3                                            
+dmConnCcbDealloc 1                                                            
+dmDevPassEvtToDevPriv: event: 13, param: 40, advHandle: 0                     
+smpDbGetRecord: connId: 1 type: 0                                             
+smpDbAddDevice                                                                
+SmpDbSetFailureCount: connId: 1 count: 0                                      
+smpSmExecute event=10 state=0                                                 
+Connection closed status 0x0, reason 0x13                                     
+ REMOTE TERM                                                                  
+&gt;&gt;&gt; Connection closed &lt;&lt;&lt;
+</code></pre>
+<h3 id="commands">Commands</h3>
+<p>Type the desired command and parameter (if applicable) and press enter to execute the command.  </p>
+<p><strong>help</strong>  Displays the available commands.<br />
+<strong>echo</strong> (on|off) Enables or disables the input echo. On by default.<br />
+<strong>btn</strong> (ID) (s|m|l|x) Simulates button presses. Example: "btn 1 s" for a short button press on button 1.<br />
+<strong>pin</strong> (ConnID) (Pin Code) Used to input the pairing pin code.  </p>
+<h2 id="push-buttons">Push buttons</h2>
+<p>Push buttons can be used to interact with the application.</p>
+<p><strong>short</strong> press is less than 200 ms<br />
+<strong>medium</strong> press is between 200 and 500 ms<br />
+<strong>long</strong> press is between 500 and 1000 ms<br />
+<strong>extra long</strong> press is greater than 1000 ms  </p>
+<h3 id="when-connected">When connected</h3>
+<ol>
+<li>Button 1 short: On/Off scanning  </li>
+<li>Button 1 medium: Cycle through the connection index  </li>
+<li>Button 1 long: Drop selected connection  </li>
+<li>Button 1 extra long: Toggle PHY </li>
+<li>Button 2 short: Discover file space on the peer device.</li>
+<li>Button 2 medium: Start the update transfer.</li>
+<li>Button 2 long: Verify the transfer.</li>
+<li>Button 2 extra long: Command the peer to disconnect and reset.</li>
+</ol>
+<h3 id="when-disconnected">When disconnected</h3>
+<ol>
+<li>Button 1 short press: On/Off scanning</li>
+<li>Button 1 medium press: Cycle through the connection index</li>
+<li>Button 1 long press: Clear all bonding info</li>
+<li>Button 1 extra long press: Add RPAO characteristic to GAP service -- needed only when DM Privacy enabled</li>
+<li>Button 2 extra long press: Enable device privacy -- start generating local RPAs every 15 minutes</li>
+</ol>
+<h1 id="ble_otas">BLE_otas</h1>
+<h2 id="description_1">Description</h2>
+<p>Bluetooth data server that advertises as "OTAS" and accepts connection requests.</p>
+<p>The Wireless Data Exchange profile is used to transfer files from the client to the server's internal/external flash. 
+A CRC32 value is used to check the integrity of the transferred file.</p>
+<h2 id="usage_1">Usage</h2>
+<h3 id="leds_1">LEDs</h3>
+<p>The red LED will indicate that an error assertion has occurred.  </p>
+<p>The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
+is off, the CPU is in sleep mode.</p>
+<h3 id="setup_1">Setup</h3>
+<p>The <code>Bootloader</code> application needs to be loaded prior to loading <code>BLE_otas</code> application. <code>BLE_otas</code> will run on top of the <code>Bootloader</code>. 
+The linker file included with <code>BLE_otas</code> application must be used to properly setup the memory sections to coincide with the <code>Bootloader</code>.
+The <code>project.mk</code> in this <code>BLE_otas</code> application in conjunction with <code>project.mk</code> in <code>Bootloader</code> determine
+where the expected file is stored and read from.
+Default configuration is to use external flash to store the transferd file before
+writing it to internal flash space during the update.
+Alternatively by changing <code>USE_INTERNAL_FLASH ?=0</code> to <code>USE_INTERNAL_FLASH ?=1</code> the transfered file
+is stored in the update space. </p>
+<h3 id="expected-output_1">Expected Output</h3>
+<p>On startup:</p>
+<pre><code>terminal: init
+32kHz trimmed to 0x18
+DatsHandlerInit
+WDXS: WdxsHandlerInit
+FW_VERSION: 1.0
+File Hdl: 1
+Dats got evt 32
+&gt;&gt;&gt; Reset complete &lt;&lt;&lt;
+dmAdvActConfig: state: 0
+dmAdvActSetData: state: 0
+dmAdvActSetData: state: 0
+dmAdvActStart: state: 0
+HCI_LE_ADV_ENABLE_CMD_CMPL_CBACK_EVT: state: 3
+dmDevPassEvtToDevPriv: event: 12, param: 33, advHandle: 0
+Dats got evt 33
+&gt;&gt;&gt; Advertising started &lt;&lt;&lt;
+
+</code></pre>
+<p>When a connection has been made.</p>
+<pre><code>dmConnIdByBdAddr not found
+dmConnCcbAlloc 1
+dmConnSmExecute event=28 state=0
+dmAdvConnected: state: 1
+dmDevPassEvtToDevPriv: event: 13, param: 34, advHandle: 0
+smpDbGetRecord: connId: 1 type: 0
+smpDbAddDevice
+SmpDbGetFailureCount: connId: 1 count: 0
+smpDbGetRecord: connId: 1 type: 0
+smpDbAddDevice
+SmpDbGetPairingDisabledTime: connId: 1 period: 0 attemptMult: 0
+Dats got evt 39
+&gt;&gt;&gt; Connection opened &lt;&lt;&lt;
+Dats got evt 65
+Dats got evt 87
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+connId=1 idleMask=0x0004
+
+</code></pre>
+<p>Upon reception of <code>btn 2 s</code> command</p>
+<pre><code>WDXS: FTC Write: len=12
+WDXS: FTC Write: op=1 handle=0
+WDXS: FTC GetReq handle=0 len=9
+WDXS: FTC SendRsp op=2 handle=0 status=0
+WDXS: Task Handler Evt=1
+WDXS: FTC Send
+WDXS: AttHook handle=581 event=18
+WDXS: Task Handler Evt=1
+WDXS: FTC SendRsp op=10 handle=0 status=0
+WDXS: AttHook handle=584 event=18
+WDXS: Task Handler Evt=1
+WDXS: FTC Send
+WDXS: AttHook handle=581 event=18
+WDXS: Task Handler Evt=1
+
+</code></pre>
+<p>Upon reception of <code>btn 2 m</code> command</p>
+<pre><code>WDXS: FTC Write: len=16
+WDXS: FTC Write: op=3 handle=1
+WDXS: FTC PutReq handle=1 offset=0, len=209768
+&gt;&gt;&gt; Initiating erase of 52 4K sectors in external flash &lt;&lt;&lt;
+WDXS: FTC PutReq handle=1 status=0
+&gt;&gt;&gt; Erasing address 0x1000 in external flash &lt;&lt;&lt;
+&gt;&gt;&gt; Erasing address 0x2000 in external flash &lt;&lt;&lt;
+&gt;&gt;&gt; Erasing address 0x3000 in external flash &lt;&lt;&lt;
+&gt;&gt;&gt; Erasing address 0x4000 in external flash &lt;&lt;&lt;
+&gt;&gt;&gt; Erasing address 0x5000 in external flash &lt;&lt;&lt;
+&gt;&gt;&gt; Erasing address 0x6000 in external flash &lt;&lt;&lt;
+&gt;&gt;&gt; Erasing address 0x7000 in external flash &lt;&lt;&lt;
+&gt;&gt;&gt; Erasing address 0x8000 in external flash &lt;&lt;&lt;
+...
+...
+&gt;&gt;&gt; External flash erase complete &lt;&lt;&lt;
+WDXS: FTC SendRsp op=4 handle=1 status=0
+WDXS: Task Handler Evt=1
+WDXS: FTC Send
+WDXS: AttHook handle=581 event=18
+WDXS: Task Handler Evt=1
+Ext Flash: Wrote 224 bytes @ 0x00000008
+Ext Flash: Wrote 224 bytes @ 0x000000E8
+Ext Flash: Wrote 224 bytes @ 0x000001C8
+Ext Flash: Wrote 224 bytes @ 0x000002A8
+Ext Flash: Wrote 224 bytes @ 0x00000388
+Ext Flash: Wrote 224 bytes @ 0x00000468
+Ext Flash: Wrote 224 bytes @ 0x00000548
+Ext Flash: Wrote 224 bytes @ 0x00000628
+...
+...
+WDXS: FTC SendRsp op=10 handle=1 status=0
+WDXS: Task Handler Evt=1
+WDXS: FTC Send
+WDXS: AttHook handle=581 event=18
+WDXS: Task Handler Evt=1
+
+
+</code></pre>
+<p>Upon reception of <code>btn 2 l</code> command </p>
+<pre><code>WDXS: FTC Write: len=3
+WDXS: FTC Write: op=7 handle=1
+WDXS: FTC VerifyReq: handle=1
+CRC start addr: 0x00000000 Len: 0x00033368
+CRC From File : 0x8871C78B
+CRC Calculated: 0x8871C78B
+WDXS: FTC SendRsp op=8 handle=1 status=0
+WDXS: Task Handler Evt=1
+WDXS: FTC Send
+WDXS: AttHook handle=581 event=18
+WDXS: Task Handler Evt=1
+
+</code></pre>
+<p>Upon reception of <code>btn 2 x</code> command </p>
+<pre><code>connId=1 idleMask=0x0000
+dmConnSmExecute event=25 state=3
+dmConnSmExecute event=29 state=4
+dmConnCcbDealloc 1
+smpDbGetRecord: connId: 1 type: 0
+smpDbAddDevice
+SmpDbSetFailureCount: connId: 1 count: 0
+smpSmExecute event=10 state=0
+Dats got evt 40
+Reseting!
+
+</code></pre>
+<p>On successful update the device resets and connects once again.</p>
+<h3 id="commands_1">Commands</h3>
+<p>Type the desired command and parameter (if applicable) and press enter to execute the command.  </p>
+<p><strong>help</strong>  Displays the available commands.<br />
+<strong>echo</strong> (on|off) Enables or disables the input echo. On by default.<br />
+<strong>btn</strong> (ID) (s|m|l|x) Simulates button presses. Example: "btn 1 s" for a short button press on button 1.<br />
+<strong>pin</strong> (ConnID) (Pin Code) Used to input the pairing pin code.  </p>
+<h2 id="push-buttons_1">Push buttons</h2>
+<p>Push buttons can be used to interact with the application.</p>
+<p><strong>short</strong> press is less than 200 ms<br />
+<strong>medium</strong> press is between 200 and 500 ms<br />
+<strong>long</strong> press is between 500 and 1000 ms<br />
+<strong>extra long</strong> press is greater than 1000 ms  </p>
+<h3 id="when-connected_1">When connected</h3>
+<ol>
+<li>Button 2 short press: Toggle PHY </li>
+<li>Button 2 medium press : Display firmware version</li>
+</ol>
+<h3 id="when-disconnected_1">When disconnected</h3>
+<ol>
+<li>Button 1 short press: On/Off advertising</li>
+<li>Button 1 medium press: Cycle through the connection index</li>
+<li>Button 1 long press: Clear all bonding info</li>
+<li>Button 1 extra long press: Add RPAO characteristic to GAP service -- needed only when DM Privacy enabled</li>
+<li>Button 2 medium press : Display firmware version</li>
+<li>Button 2 extra long press: Enable device privacy -- start generating local RPAs every 15 minutes</li>
+</ol>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '../../../../..';</script>
+    <script src="../../../../../js/theme_extra.js" defer></script>
+    <script src="../../../../../js/theme.js" defer></script>
+      <script src="../../../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../../../../../img/favicon.ico" />
+    <title>BLE_periph - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../../../../../css/theme.css" />
+    <link rel="stylesheet" href="../../../../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "BLE_periph";
+        var mkdocs_page_input_path = "Libraries/Cordio/docs/Applications/BLE_periph.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../../../../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../../../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../../../../.." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../../../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../CONTRIBUTING/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../../../../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../../../../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>BLE_periph</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/Libraries/Cordio/docs/Applications/BLE_periph.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="ble_periph">BLE_periph</h1>
+<p>This is the simplest application that should be used when getting started. It will advertise as "Periph" and accepts connection requests.</p>
+<h2 id="board-setup">Board Setup</h2>
+<p>Before building firmware you must select the correct value for BOARD in project.mk, e.g. "EvKit_V1".</p>
+<h3 id="leds">LEDs</h3>
+<p>The red LED will indicate that an error assertion has occurred.  </p>
+<p>The green LED indicates CPU activity. When the LED is on, the CPU is active, when the LED
+is off, the CPU is in sleep mode.</p>
+<h3 id="expected-output">Expected Output</h3>
+<p>On startup:</p>
+<pre><code>terminal: init
+PeriphHandlerInit
+Calculating database hash
+Periph got evt 119
+Periph got evt 32
+&gt;&gt;&gt; Reset complete &lt;&lt;&lt;
+dmAdvActConfig: state: 0
+dmAdvActSetData: state: 0
+dmAdvActStart: state: 0
+HCI_LE_ADV_ENABLE_CMD_CMPL_CBACK_EVT: state: 3
+dmDevPassEvtToDevPriv: event: 12, param: 33, advHandle: 0
+Periph got evt 33
+&gt;&gt;&gt; Advertising started &lt;&lt;&lt;
+
+</code></pre>
+<p>When a connection has been made.</p>
+<pre><code>dmConnIdByBdAddr not found
+dmConnCcbAlloc 1
+dmConnSmExecute event=28 state=0
+dmAdvConnected: state: 1
+dmDevPassEvtToDevPriv: event: 13, param: 34, advHandle: 0
+AttsCccInitTable connId=1
+smpDbGetRecord: connId: 1 type: 1
+smpDbAddDevice
+SmpDbGetFailureCount: connId: 1 count: 0
+smpDbGetRecord: connId: 1 type: 1
+smpDbAddDevice
+SmpDbGetPairingDisabledTime: connId: 1 period: 0 attemptMult: 0
+Periph got evt 39
+&gt;&gt;&gt; Connection opened &lt;&lt;&lt;
+Periph got evt 65
+Periph got evt 87
+attsProcMtuReq features 0x00
+hciCoreTxAclStart len=7
+Periph got evt 22
+connId=1 idleMask=0x0004
+hciCoreTxAclStart len=18
+connId=1 idleMask=0x0004
+hciCoreTxAclStart len=26
+hciCoreTxAclStart len=34                                                                                              
+connId=1 idleMask=0x0004                                                                                              
+hciCoreTxAclStart len=34                                                                                              
+attsCccMainCback connId=1 handle=19                                                                                   
+hciCoreTxAclStart len=5                                                                                               
+hciCoreTxAclStart len=27                                                                                              
+hciCoreTxAclStart len=9                                                                                               
+connId=1 idleMask=0x0004                                                                                              
+hciCoreTxAclStart len=10                                                                                              
+connId=1 idleMask=0x0004                                                                                              
+hciCoreTxAclStart len=9                                                                                               
+attsCccMainCback connId=1 handle=515                                                                                  
+hciCoreTxAclStart len=7                                                                                               
+hciCoreTxAclStart len=14
+</code></pre>
+<h3 id="commands">Commands</h3>
+<p>Type the desired command and parameter (if applicable) and press enter to execute the command.  </p>
+<p><strong>help</strong>  Displays the available commands.<br />
+<strong>echo (on|off)</strong>  Enables or disables the input echo. On by default.<br />
+<strong>btn (ID) (s|m|l|x)</strong>  Simulates button presses. Example: "btn 1 s" for a short button press on button 1.<br />
+<strong>pin (ConnID) (Pin Code)</strong>  Used to input the pairing pin code.  </p>
+<h3 id="push-buttons">Push buttons</h3>
+<p>Push buttons are not implemented in this example.</p>
+<h2 id="stack-initialization">Stack Initialization</h2>
+<h2 id="gap-peripheral-slave-role">GAP Peripheral / Slave Role</h2>
+<h3 id="advertising-interval">Advertising interval</h3>
+<p>The advertising interval is configurable in this structure. We can define multiple interverals, each with their own duration. In this case we will advertise at a short interval (96*0.625ms = 60ms) for 30 seconds. We will then transition to a long interval (1600*0.625 ms = 1000 ms) indefinetly. Longer advertising intervals will conserve power, but increase the latency when communicating with scanning devices or creating connections.</p>
+<pre><code class="language-c">/*! configurable parameters for advertising */
+static const appAdvCfg_t periphAdvCfg = {
+    { 30000, 0,    0 }, /*! Advertising durations in ms, 0 corresponds to infinite */
+    { 96,    1600, 0 }  /*! Advertising intervals in 0.625 ms units */
+};
+</code></pre>
+<p>Applications can also set a definite advertising duration with will cause the device to stop advertising at the end of the duation. The application can restart advertising by calling AppAdvStart().</p>
+<h3 id="advertising-data">Advertising data</h3>
+<p>Applications can define the advertising data with this structure. This information will be broadcast in every advertising event. Each portion of the advertising data is defined by a length byte, a type byte, and the data. In this case we're advertising the flags that the device is discoverable and BR/EDR (Bluetooth Classic) is not supported. We're also advertising the device name "Periph". </p>
+<pre><code class="language-c">/*! advertising data, discoverable mode */
+static const uint8_t periphAdvDataDisc[] = {
+    /*! flags */
+    2, /*! length */
+    DM_ADV_TYPE_FLAGS, /*! AD type */
+    DM_FLAG_LE_GENERAL_DISC | /*! flags */
+        DM_FLAG_LE_BREDR_NOT_SUP,
+    /*! device name */
+    7, /*! length */
+    DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
+    'P', 'e', 'r', 'i', 'p', 'h'
+};
+</code></pre>
+<h2 id="gatt-server">GATT Server</h2>
+<h2 id="mtu-size-and-throughput">MTU size and Throughput</h2>
+<p>Each layer of the stack has parameters that will bottleneck the throughput of the system. The ATT layer defines a Maximum Transmission Unit (MTU) to indiate the maximum length of an ATT packet. </p>
+<pre><code class="language-c">/*! ATT configurable parameters (increase MTU) 
+ * ATT_MAX_TRANS_TIMEOUT = 30 seconds
+ */
+static const attCfg_t periphAttCfg = {
+    15, /* ATT server service discovery connection idle timeout in seconds */
+    241, /* desired ATT MTU */
+    ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
+    4 /* number of queued prepare writes supported by server */
+};
+</code></pre>
+<p>This MaxRxAclLen defines the maximum reassembled RX Asynchronous Connection-Orientated Logical(ACL) packet length. Packets received at the HCI layer must be buffered until the entire ACL packet has been received. Once the entire ACL packet has been received, the HCI layer will send the packet to the L2CAP layer.</p>
+<pre><code class="language-c">/*************************************************************************************************/
+/*!
+ *  \brief  Set the maximum reassembled RX ACL packet length.  Minimum value is 27.
+ *
+ *  \param  len     ACL packet length.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void HciSetMaxRxAclLen(uint16_t len);
+</code></pre>
+<p>The MTU must be less than or equal to the MaxRxAclLen - L2C Header Length (4 bytes).</p>
+<pre><code class="language-c">  /* if configured MTU size is larger than maximum RX PDU length */
+  if (pAttCfg-&gt;mtu &gt; (HciGetMaxRxAclLen() - L2C_HDR_LEN))
+  {
+    /* notify app about MTU misconfiguration */
+    attExecCallback(0, DM_ERROR_IND, 0, DM_ERR_ATT_RX_PDU_LEN_EXCEEDED, 0);
+  }
+</code></pre>
+<h2 id="callbacks">Callbacks</h2>
+<h2 id="adding-wsf-events-and-handlers">Adding WSF events and handlers</h2>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '../../../../..';</script>
+    <script src="../../../../../js/theme_extra.js" defer></script>
+    <script src="../../../../../js/theme.js" defer></script>
+      <script src="../../../../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

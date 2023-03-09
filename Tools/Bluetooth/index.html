@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>Bluetooth Tools - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Bluetooth Tools";
+        var mkdocs_page_input_path = "Tools/Bluetooth/README.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <script src="../../js/jquery-3.6.0.min.js" defer></script>
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+      <script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../Libraries/Cordio/docs/CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+      <li>Bluetooth Tools</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/Tools/Bluetooth/README.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="bluetooth-tools">Bluetooth Tools</h1>
+<p>These python tools are used for Bluetooth development and debugging.</p>
+<h2 id="ble_hci">BLE_hci</h2>
+<p>Host Controller Interface for controlling Bluetooth Controller devices. Uses a serial port and the HCI interface to send commands and receive events.</p>
+<pre><code>usage: BLE_hci.py [-h] [--monPort [MONPORT]] [--serialPort [SERIALPORT]] [--baud [BAUD]] [-c COMMAND] [serial_port] [baud]
+
+    Bluetooth Low Energy HCI tool.
+
+    This tool is used in tandem with the BLE controller examples. This tools sends
+    HCI commands through the serial port to the target device. It will receive and print
+    the HCI events received from the target device.
+
+    Serial port is configured as 8N1, no flow control, default baud rate of 115200.
+
+
+positional arguments:
+  serial_port           Serial port path or COM#, default: /dev/ttyUSB0
+  baud                  Serial port baud rate, default: 115200
+
+options:
+  -h, --help            show this help message and exit
+  --monPort [MONPORT]   Monitor Trace Msg Serial Port path or COM#, default: 
+  --serialPort [SERIALPORT]
+                        Serial port path or COM#, default: /dev/ttyUSB0
+  --baud [BAUD]         Serial port baud rate, default: 115200
+  -c COMMAND, --command COMMAND
+                        Commands to run
+
+commands:
+    addr                Set the device address
+    adv                 Send the advertising commands
+    scan                Send the scanning commands and print scan reports. ctrl-c to exit
+    init                Send the initiating commands to open a connection
+    dataLen             Set the max data length
+    sendAcl             Send ACL packets
+    sinkAcl             Sink ACL packets, do not send events to host
+    connStats           Get the connection stats
+    phy                 Update the PHY in the active connection
+    reset               Sends a HCI reset command
+    listen              Listen for HCI events, print to screen
+    txTest (tx)         Execute the transmitter test
+    txTestVS (tx)       Execute the transmitter test
+    rxTest (rx)         Execute the receiver test
+    endTest (end)       End the TX/RX test, print the number of correctly received packets
+    txPower (txp)       Set the TX power
+    discon (dc)         Send the command to disconnect
+    setChMap            Set the connection channel map to a given channel.
+    cmd                 Send raw HCI commands
+    readReg             Read register, device performs a memcpy from address and returns the value
+    writeReg            Write register, device performs a memcpy to memory address
+    exit (quit)         Exit the program
+    help (h)            Show help message
+</code></pre>
+<h2 id="mini-rcdat-usb">Mini RCDAT USB</h2>
+<p>Control a Minicircuits attenuator over USB.</p>
+<h2 id="rs-fsl">RS FSL</h2>
+<p>Control a Rhode and Schwartz FSL Spectrum analyzer over ethernet.</p>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme_extra.js" defer></script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+    <script defer>
+        window.onload = function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        };
+    </script>
+
+</body>
+</html>

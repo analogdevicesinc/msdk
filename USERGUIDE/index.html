@@ -5,14 +5,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>User Guide - Analog Devices MSDK Documentation</title>
+    <title>MSDK User Guide - Analog Devices MSDK Documentation</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css" />
     
       <script>
         // Current page data
-        var mkdocs_page_name = "User Guide";
+        var mkdocs_page_name = "MSDK User Guide";
         var mkdocs_page_input_path = "USERGUIDE.md";
         var mkdocs_page_url = null;
       </script>
@@ -45,7 +45,7 @@
                 </li>
               </ul>
               <ul class="current">
-                <li class="toctree-l1 current"><a class="reference internal current" href="./">User Guide</a>
+                <li class="toctree-l1 current"><a class="reference internal current" href="./">MSDK User Guide</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
         <ul>
@@ -75,9 +75,9 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#updates">Updates</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#development-resources">Development Resources</a>
-    </li>
     <li class="toctree-l4"><a class="reference internal" href="#older-versions-and-offline-installer">Older Versions and Offline Installer</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#development-resources">Development Resources</a>
     </li>
         </ul>
     </li>
@@ -91,19 +91,15 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#setup-vs-code">Setup (VS Code)</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#opening-example-projects">Opening Example Projects</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#building-and-running-a-project">Building and Running a Project</a>
+    <li class="toctree-l4"><a class="reference internal" href="#building-and-running-a-project-vs-code">Building and Running a Project (VS Code)</a>
     </li>
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#getting-started-with-eclipse">Getting Started with Eclipse</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#creating-a-new-project">Creating a New Project</a>
+    <li class="toctree-l4"><a class="reference internal" href="#setup-eclipse">Setup (Eclipse)</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#importing-examples">Importing Examples</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#building-and-running-examples">Building and Running Examples</a>
+    <li class="toctree-l4"><a class="reference internal" href="#building-and-running-a-project-eclipse">Building and Running a Project (Eclipse)</a>
     </li>
         </ul>
     </li>
@@ -111,25 +107,23 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#setup-command-line">Setup (Command-Line)</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#building-and-running-an-example">Building and Running an Example</a>
+    <li class="toctree-l4"><a class="reference internal" href="#building-and-running-an-example-command-line">Building and Running an Example (Command-Line)</a>
     </li>
         </ul>
     </li>
         </ul>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#development-guide">Development Guide</a>
+    <li class="toctree-l2"><a class="reference internal" href="#ides">IDEs</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#board-support-packages">Board Support Packages</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#visual-studio-code">Visual Studio Code</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#setup-vs-code_1">Setup (VS Code)</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#opening-example-projects_1">Opening Example Projects</a>
+    <li class="toctree-l4"><a class="reference internal" href="#opening-example-projects">Opening Example Projects</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#how-to-set-the-bsp-vs-code">How to Set the BSP (VS Code)</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#building-a-project">Building a Project</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#cleaning-a-project">Cleaning a Project</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#flashing-and-debugging">Flashing and Debugging</a>
     </li>
@@ -139,9 +133,9 @@
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#running-eclipse">Running Eclipse</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#creating-a-new-project_1">Creating a New Project</a>
+    <li class="toctree-l4"><a class="reference internal" href="#creating-a-new-project">Creating a New Project</a>
     </li>
-    <li class="toctree-l4"><a class="reference internal" href="#importing-examples_1">Importing Examples</a>
+    <li class="toctree-l4"><a class="reference internal" href="#importing-examples">Importing Examples</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#how-to-set-the-bsp-eclipse">How to Set the BSP (Eclipse)</a>
     </li>
@@ -153,8 +147,6 @@
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#command-line-development">Command-Line Development</a>
         <ul>
-    <li class="toctree-l4"><a class="reference internal" href="#setup-command-line_1">Setup (Command-Line)</a>
-    </li>
     <li class="toctree-l4"><a class="reference internal" href="#how-to-set-the-bsp-command-line">How to Set the BSP (Command-Line)</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#building-on-the-command-line">Building on the Command-Line</a>
@@ -168,6 +160,18 @@
     <li class="toctree-l4"><a class="reference internal" href="#common-gdb-commands">Common GDB Commands</a>
     </li>
         </ul>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#board-support-packages">Board Support Packages</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#how-to-set-the-bsp">How to Set the BSP</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#bsp-table">BSP Table</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#custom-bsps">Custom BSPs</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#disabling-bsps">Disabling BSPs</a>
     </li>
         </ul>
     </li>
@@ -193,13 +197,11 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#peripheral-driver-api">Peripheral Driver API</a>
         <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#overview_1">Overview</a>
-    </li>
     <li class="toctree-l3"><a class="reference internal" href="#organization">Organization</a>
     </li>
-    <li class="toctree-l3"><a class="reference internal" href="#api-reference-manuals">API Reference Manuals</a>
-    </li>
         </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#libraries">Libraries</a>
         <ul>
@@ -235,6 +237,10 @@
                 </li>
               </ul>
               <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Libraries/Cordio/docs/CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
+                </li>
+              </ul>
+              <ul>
                 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING/">Contributing</a>
                 </li>
               </ul>
@@ -256,7 +262,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
-      <li>User Guide</li>
+      <li>MSDK User Guide</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/USERGUIDE.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
@@ -266,10 +272,10 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="analog-devices-msdk-user-guide">Analog Devices MSDK User Guide</h1>
+                <h1 id="msdk-user-guide">MSDK User Guide</h1>
 <div class="toc">
 <ul>
-<li><a href="#analog-devices-msdk-user-guide">Analog Devices MSDK User Guide</a><ul>
+<li><a href="#msdk-user-guide">MSDK User Guide</a><ul>
 <li><a href="#overview">Overview</a><ul>
 <li><a href="#supported-operating-systems">Supported Operating Systems</a></li>
 <li><a href="#supported-parts">Supported Parts</a></li>
@@ -286,8 +292,8 @@
 </li>
 <li><a href="#maintenance">Maintenance</a><ul>
 <li><a href="#updates">Updates</a></li>
-<li><a href="#development-resources">Development Resources</a></li>
 <li><a href="#older-versions-and-offline-installer">Older Versions and Offline Installer</a></li>
+<li><a href="#development-resources">Development Resources</a></li>
 </ul>
 </li>
 </ul>
@@ -296,14 +302,12 @@
 <li><a href="#key-concepts">Key Concepts</a></li>
 <li><a href="#getting-started-with-visual-studio-code">Getting Started with Visual Studio Code</a><ul>
 <li><a href="#setup-vs-code">Setup (VS Code)</a></li>
-<li><a href="#opening-example-projects">Opening Example Projects</a></li>
-<li><a href="#building-and-running-a-project">Building and Running a Project</a></li>
+<li><a href="#building-and-running-a-project-vs-code">Building and Running a Project (VS Code)</a></li>
 </ul>
 </li>
 <li><a href="#getting-started-with-eclipse">Getting Started with Eclipse</a><ul>
-<li><a href="#creating-a-new-project">Creating a New Project</a></li>
-<li><a href="#importing-examples">Importing Examples</a></li>
-<li><a href="#building-and-running-examples">Building and Running Examples</a></li>
+<li><a href="#setup-eclipse">Setup (Eclipse)</a></li>
+<li><a href="#building-and-running-a-project-eclipse">Building and Running a Project (Eclipse)</a></li>
 </ul>
 </li>
 <li><a href="#getting-started-with-command-line-development">Getting Started with Command-Line Development</a><ul>
@@ -313,18 +317,17 @@
 <li><a href="#verification">Verification</a></li>
 </ul>
 </li>
-<li><a href="#building-and-running-an-example">Building and Running an Example</a></li>
+<li><a href="#building-and-running-an-example-command-line">Building and Running an Example (Command-Line)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#development-guide">Development Guide</a><ul>
-<li><a href="#board-support-packages">Board Support Packages</a></li>
+<li><a href="#ides">IDEs</a><ul>
 <li><a href="#visual-studio-code">Visual Studio Code</a><ul>
-<li><a href="#setup-vs-code_1">Setup (VS Code)</a></li>
-<li><a href="#opening-example-projects_1">Opening Example Projects</a></li>
+<li><a href="#opening-example-projects">Opening Example Projects</a></li>
 <li><a href="#how-to-set-the-bsp-vs-code">How to Set the BSP (VS Code)</a></li>
 <li><a href="#building-a-project">Building a Project</a></li>
+<li><a href="#cleaning-a-project">Cleaning a Project</a></li>
 <li><a href="#flashing-and-debugging">Flashing and Debugging</a><ul>
 <li><a href="#arm-core-debugging">Arm Core Debugging</a></li>
 <li><a href="#breakpoints">Breakpoints</a></li>
@@ -336,20 +339,14 @@
 </li>
 <li><a href="#eclipse">Eclipse</a><ul>
 <li><a href="#running-eclipse">Running Eclipse</a></li>
-<li><a href="#creating-a-new-project_1">Creating a New Project</a></li>
-<li><a href="#importing-examples_1">Importing Examples</a></li>
+<li><a href="#creating-a-new-project">Creating a New Project</a></li>
+<li><a href="#importing-examples">Importing Examples</a></li>
 <li><a href="#how-to-set-the-bsp-eclipse">How to Set the BSP (Eclipse)</a></li>
 <li><a href="#building-a-project_1">Building a Project</a></li>
 <li><a href="#flashing-and-debugging_1">Flashing and Debugging</a></li>
 </ul>
 </li>
 <li><a href="#command-line-development">Command-Line Development</a><ul>
-<li><a href="#setup-command-line_1">Setup (Command-Line)</a><ul>
-<li><a href="#windows_1">Windows</a></li>
-<li><a href="#linuxmacos_1">Linux/MacOS</a></li>
-<li><a href="#verification_1">Verification</a></li>
-</ul>
-</li>
 <li><a href="#how-to-set-the-bsp-command-line">How to Set the BSP (Command-Line)</a></li>
 <li><a href="#building-on-the-command-line">Building on the Command-Line</a></li>
 <li><a href="#cleaning-on-the-command-line">Cleaning on the Command-Line</a></li>
@@ -358,6 +355,13 @@
 <li><a href="#common-gdb-commands">Common GDB Commands</a></li>
 </ul>
 </li>
+</ul>
+</li>
+<li><a href="#board-support-packages">Board Support Packages</a><ul>
+<li><a href="#how-to-set-the-bsp">How to Set the BSP</a></li>
+<li><a href="#bsp-table">BSP Table</a></li>
+<li><a href="#custom-bsps">Custom BSPs</a></li>
+<li><a href="#disabling-bsps">Disabling BSPs</a></li>
 </ul>
 </li>
 <li><a href="#build-system">Build System</a><ul>
@@ -373,11 +377,10 @@
 </ul>
 </li>
 <li><a href="#peripheral-driver-api">Peripheral Driver API</a><ul>
-<li><a href="#overview_1">Overview</a></li>
 <li><a href="#organization">Organization</a></li>
-<li><a href="#api-reference-manuals">API Reference Manuals</a></li>
 </ul>
 </li>
+<li><a href="#examples">Examples</a></li>
 <li><a href="#libraries">Libraries</a><ul>
 <li><a href="#cmsis-dsp">CMSIS-DSP</a><ul>
 <li><a href="#cmsis-dsp-supported-parts">CMSIS-DSP Supported Parts</a></li>
@@ -449,6 +452,13 @@
 </ul>
 <hr />
 <ul>
+<li><strong>MAX32572</strong> <strong>(Not Yet Publicly Available)</strong><ul>
+<li>MAX32572EVKIT <strong>(Not Yet Publicly Available)</strong></li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
 <li>
 <p><a href="https://www.analog.com/en/products/max32650.html"><strong>MAX32650</strong></a>:  Ultra-Low-Power Arm Cortex-M4 with FPU-Based Microcontroller (MCU) with 3MB Flash and 1MB SRAM</p>
 <ul>
@@ -458,6 +468,15 @@
 <li>
 <p><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650fthr.html">MAX32650FTHR</a></p>
 </li>
+</ul>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p><a href="https://www.analog.com/en/products/max32651.html"><strong>MAX32651</strong></a>:  Ultra-Low-Power Arm Cortex-M4 with FPU-Based Microcontroller (MCU) with 3MB Flash and 1MB SRAM</p>
+<ul>
+<li><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32651-evkit.html">MAX32651-EVKIT</a></li>
 </ul>
 </li>
 </ul>
@@ -494,7 +513,7 @@
 <hr />
 <ul>
 <li>
-<p><a href="https://www.analog.com/en/products/max32665.html"><strong>MAX32665-MAX32668 Family</strong></a>:  Low-Power ARM Cortex-M4 with FPU-Based Microcontroller with Bluetooth 5 for Wearables</p>
+<p><a href="https://www.analog.com/en/products/max32665.html"><strong>MAX32665-MAX32666 Family</strong></a>:  Low-Power ARM Cortex-M4 with FPU-Based Microcontroller with Bluetooth 5 for Wearables</p>
 <ul>
 <li>
 <p><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666evkit.html">MAX32666EVKIT</a></p>
@@ -551,8 +570,10 @@
 </ul>
 <hr />
 <ul>
-<li>MAX32690 <strong>(Not Yet Publicly Available)</strong><ul>
-<li>MAX32690EVKIT <strong>(Not Yet Publicly Available)</strong></li>
+<li>
+<p><a href="https://www.analog.com/en/products/max32690.html"><strong>MAX32690</strong></a>:  Arm Cortex-M4 with FPU Microcontroller and Bluetooth LE 5 for Industrial and Wearables</p>
+<ul>
+<li>MAX32690EVKIT (Product Page Not Yet Available)</li>
 </ul>
 </li>
 </ul>
@@ -739,10 +760,10 @@
 <p><img alt="Figure 11" src="../res/Fig11.jpg" /></p>
 <h4 id="updates">Updates</h4>
 <p>MSDK updates are typically released on a quarterly basis, and the Maintenance Tool will retrieve the latest release when <strong>Update components</strong> is run.</p>
-<h4 id="development-resources">Development Resources</h4>
-<p>Development copies of the MSDK resources can be obtained via <a href="https://github.com/Analog-Devices-MSDK/msdk">Github</a>, and instructions on how to work from the development repository can be found in the repository's <a href="https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md">README</a>.</p>
 <h4 id="older-versions-and-offline-installer">Older Versions and Offline Installer</h4>
 <p>Older versions of the MSDK are available as an <strong><em>offline installer</em></strong> for each release tag.  They are available on the <a href="https://github.com/Analog-Devices-MSDK/msdk/releases">Releases page</a> of the MSDK Github and can be used to roll back to a specific MSDK release.</p>
+<h4 id="development-resources">Development Resources</h4>
+<p>Development copies of the MSDK resources can be obtained via <a href="https://github.com/Analog-Devices-MSDK/msdk">Github</a>.  Instructions on how to work from the development repository can be found in the repository's <a href="https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md">README</a>.</p>
 <h2 id="getting-started">Getting Started</h2>
 <p>The MSDK is designed for both evaluation and end-application development.  The typical <strong>evaluation</strong> cycle usually involves setting up the development environment, running demos, and exercising the peripheral driver API on an <em>evaluation platform</em>.  The typical <strong>development</strong> cycle typically involves building a prototype application on an <em>evaluation platform</em> first, then porting the application to a custom board.  This section describes how to get started with the MSDK focusing on the <em>evaluation</em> cycle.</p>
 <p><strong>First</strong>, review the <a href="#key-concepts">Key Concepts</a> below.  Then, proceed to the section for your preferred IDE.  Each of these sub-sections is written as a self-contained quick-start with links to additional documentation on important topics.</p>
@@ -760,7 +781,7 @@
 </li>
 <li>
 <p><strong>Board Support Package (BSP)</strong>:  The MSDK supports evaluation platforms for target microcontrollers via <em>Board Support Packages</em>.  For microcontrollers with multiple evaluation platforms, multiple BSPs are available.  These can be found in the <code>Libraries/Boards</code> folder of the MSDK installation.</p>
-<p>By default, most projects in the MSDK come pre-configured for the "EVKIT"-type BSP, which is generally the largest "traditional" evaluation platform for that device.  It's important to note that the active BSP may need to be reconfigured for a project, and this is done slightly differently for each development environment.  This is covered in more detail below.</p>
+<p>By default, most projects in the MSDK come pre-configured for the "EVKIT"-type BSP, which is generally the largest evaluation platform for that device with most (or all) pins broken out.  It's important to note that the active BSP may need to be reconfigured for a project, and this is done slightly differently for each development environment.  This is covered in more detail below.</p>
 </li>
 <li>
 <p><strong>System Environment</strong>:  Your system's <em>environment</em> is a broad term that encapsulates the programs and variables that are available to your system's shell on the command-line.  It's expected that the user has some basic familiarity with this concept.</p>
@@ -769,17 +790,17 @@
 <p><strong>System Path</strong>:  Your system's <em>Path</em> is a special environment variable that tells it where to search for program binaries.   It's also expected that the user has some familiarity with this concept, and how to modify the system Path if necessary.</p>
 </li>
 <li>
-<p><strong>Build Configuration vs Project Configuration</strong>: An MSDK project is primarily made up of two complementary systems:  The <em>Build System</em> and the <em>Project Management System</em>.  These systems each offer their own configuration interfaces, and it's important to note what each is used for.</p>
+<p><strong>Integrated Development Environment (IDE)</strong>:  An IDE offers a higher level user interface (typically with a GUI) that manages the tools for <strong>editing</strong> source code, <strong>building</strong> source code, <strong>flashing</strong> program binaries, and <strong>debugging</strong>.  The abbreviation is frequently used in this document, and the MSDK supports <em>multiple</em> IDEs that can be used depending on preference.  (See <a href="#supported-development-environments">"Supported Development Environments"</a>)</p>
+</li>
+<li>
+<p><strong>Build Configuration vs Project Configuration</strong>: An MSDK project is primarily made up of two complementary systems:  The <em>Build System</em> and the <em>Integrated Development Environment (IDE)</em>.  These systems each offer their own configuration interfaces, and it's important to note what each is used for.</p>
 <p>The <strong>Build System</strong> manages the compilation of source code into program binaries and offers a <strong>Command-Line Interface (CLI)</strong> for setting <strong>Build Configuration Variables</strong>.</p>
-<p>The <strong>Project Management System</strong> offers a higher level user interface (typically with a GUI) to manage the tools for <strong>editing</strong> source code, <strong>flashing</strong> program binaries, and <strong>debugging</strong> them on hardware.  The Project Management System sits <em>on top</em> of the build system's <em>CLI</em> and uses it to manage fundamental aspects of the build such as:</p>
+<p>The <strong>IDE</strong> offers a higher level user interface (typically with a GUI) for managing a project and sits <em>on top</em> of the build system's <em>CLI</em>.  Each IDE offers its own settings for managing fundamental aspects of the build such as:</p>
 <ul>
 <li>Setting the <em>Target Microcontroller</em></li>
 <li>Setting the <em>Board Support Package</em></li>
 <li>Configuring the <em>Environment</em> and <em>System Path</em> for use with the MSDK toolchain</li>
 </ul>
-</li>
-<li>
-<p><strong>Integrated Development Environment (IDE)</strong>:  An IDE combines the <em>Build System</em> and <em>Project Management</em> systems and typically features a Graphical User Interface (GUI) and other development features.  The abbreviation is used frequently in the document.</p>
 </li>
 </ul>
 <h3 id="getting-started-with-visual-studio-code">Getting Started with Visual Studio Code</h3>
@@ -801,8 +822,8 @@
 <p>Use <strong><code>CTRL + SHIFT + P</code></strong> (or <strong><code>COMMAND + SHIFT + P</code></strong> on MacOS) to open the developer prompt.</p>
 </li>
 <li>
-<p>Type "open settings json" and select the <strong>"Preferences: Open Settings (JSON)"</strong> option.</p>
-<p><img alt="Open Settings JSON Command" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg" /></p>
+<p>Type "open user settings" and select the <strong>"Preferences: Open User Settings (JSON)"</strong> option.</p>
+<p><img alt="Open Settings JSON Command" src="../res/Fig42.jpg" /></p>
 </li>
 <li>
 <p>Add the entries below into your user settings.json file.</p>
@@ -820,22 +841,18 @@
 <p>Save your changes to the file with <strong><code>CTRL + S</code></strong> and restart VS Code.</p>
 </li>
 </ol>
-<h4 id="opening-example-projects">Opening Example Projects</h4>
-<p>Visual Studio Code is built around a "working directory" paradigm.  The editor is always rooted in a working directory, and the main mechanism for changing that directory is <strong>File -&gt; Open Folder...</strong></p>
-<p><img alt="File -&gt; Open Folder" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG" /></p>
-<p>As a result, you'll notice that there is no "New Project" mechanism.  A "project" in VS Code is simply a folder.  It will look inside of the opened folder for a <code>.vscode</code> <em>sub</em>-folder to load project-specific settings from.</p>
-<p><img alt="Example Directory Contents" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/opening_projects_2.jpg" /></p>
-<p><em>(Note:  You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder).</em></p>
-<p>To open a project:</p>
+<h4 id="building-and-running-a-project-vs-code">Building and Running a Project (VS Code)</h4>
 <ol>
 <li>
 <p>Launch Visual Studio Code.</p>
 </li>
 <li>
 <p>Select <strong>File -&gt; Open Folder...</strong></p>
+<p><img alt="File -&gt; Open Folder" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG" /></p>
 </li>
 <li>
-<p>Navigate to an example project for the target microcontroller in the MSDK's <a href="Examples">Examples folder</a> and open it with <strong>Select Folder</strong>.</p>
+<p>Navigate to an example project for the target microcontroller in the MSDK's <code>Examples</code> folder and open it with <strong>Select Folder</strong>.</p>
+<p><img alt="Figure 43" src="../res/Fig43.jpg" /></p>
 </li>
 <li>
 <p>VS Code will prompt for trust the first time.  Select <em>Trust folder and enable all features</em></p>
@@ -858,11 +875,10 @@
 <p>VS Code can be conveniently re-loaded with the <strong>Reload Window</strong> developer command accessed with <strong><code>CTRL + SHIFT + P</code></strong> (or <strong><code>COMMAND + SHIFT + P</code></strong> on MacOS).</p>
 <p><img alt="Reload window" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG" /></p>
 </li>
-</ol>
-<h4 id="building-and-running-a-project">Building and Running a Project</h4>
-<p>Once a project is opened 4 available <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks">build tasks</a> will become available via <strong>Terminal &gt; Run Build task...</strong> or the shortcut <strong><code>Ctrl+Shift+B</code></strong>.  These are the primary interface to the build system.</p>
+<li>
+<p>Press the shortcut <strong><code>Ctrl+Shift+B</code></strong> to open the available <strong>Build Tasks</strong> (alternatively navigate to <em>Terminal -&gt; Run Build task...</em>).</p>
 <p><img alt="Build Tasks Image" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG" /></p>
-<ol>
+</li>
 <li>
 <p>Run the <strong>"build"</strong> task to compile the project for the configured <em>Target Microcontroller</em> and <em>BSP</em>.  Notice the <code>TARGET</code> and <code>BOARD</code> Build Configuration Variables being set on the command-line, and the program binary successfully compiled into the <code>.elf</code> program binary in the <strong>build</strong> sub-folder of the project.</p>
 <p><img alt="Figure 18" src="../res/Fig18.jpg" /></p>
@@ -895,12 +911,14 @@
 </ol>
 <hr />
 <h3 id="getting-started-with-eclipse">Getting Started with Eclipse</h3>
+<h4 id="setup-eclipse">Setup (Eclipse)</h4>
 <p>The only setup required to use Eclipse is to ensure that the “Eclipse” component has been selected during the <a href="#installation">MSDK installation</a>. If the MSDK is already installed the Eclipse can be retrieved using the <a href="#maintenance">Maintenance Tool</a>.  </p>
 <p>This section is an Eclipse "quick-start" that walks through creating, building, and running a project.  For full documentation, see the <a href="#eclipse">Eclipse</a> section of this User Guide.</p>
-<h4 id="creating-a-new-project">Creating a New Project</h4>
+<h4 id="building-and-running-a-project-eclipse">Building and Running a Project (Eclipse)</h4>
 <ol>
 <li>
-<p><a href="#running-eclipse">Launch</a> Eclipse.</p>
+<p>Launch Eclipse with its start menu shortcut.</p>
+<p><img alt="Figure 22" src="../res/Fig22.jpg" /></p>
 </li>
 <li>
 <p>Ensure that the Eclipse is set to the <strong>C/C++ perspective</strong> in the top right corner. Otherwise, the new project wizard will not show up.</p>
@@ -926,49 +944,16 @@
 <li>
 <p>Select <strong>Finish</strong> to create the new project.</p>
 </li>
-</ol>
-<h4 id="importing-examples">Importing Examples</h4>
-<ol>
-<li>
-<p><a href="#running-eclipse">Launch</a> Eclipse.</p>
-</li>
-<li>
-<p>Use <strong>File -&gt; Import</strong> to open the import wizard.</p>
-</li>
-<li>
-<p>Select <strong>General -&gt; Existing Projects into Workspace</strong> and hit <strong>Next</strong>.</p>
-<p><img alt="Figure 23" src="../res/Fig23.jpg" /></p>
-</li>
-<li>
-<p><strong>Browse</strong> to the <a href="Examples"><code>Examples</code></a> folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.</p>
-<p><img alt="Figure 24" src="../res/Fig24.jpg" /></p>
-</li>
-<li>
-<p>Ensure that <strong>Copy projects into workspace</strong> is selected. This will copy the projects out of the MSDK, and leave the originals unmodified.</p>
-</li>
-<li>
-<p>Select <strong>Finish</strong> to import the project(s).</p>
-</li>
-<li>
-<p>The projects should now show up in the Project Explorer.</p>
-<p><img alt="Figure 25" src="../res/Fig25.jpg" /></p>
-</li>
-</ol>
-<h4 id="building-and-running-examples">Building and Running Examples</h4>
-<ol>
-<li>
-<p>Ensure that the Eclipse is set to the <strong>C/C++ perspective</strong> (top right).  </p>
-</li>
-<li>
-<p>Select the correct project in the <strong>Launch Configuration</strong> dropdown and ensure it's set to <strong>Debug</strong> mode.</p>
-</li>
 <li>
 <p>Use the <strong>Build</strong> hammer button (top left) to build the project.</p>
 <p><img alt="Figure 27" src="../res/Fig27.jpg" /></p>
 </li>
 <li>
+<p>Select the correct project in the <strong>Launch Configuration</strong> dropdown and ensure it's set to <strong>Debug</strong> mode.</p>
+</li>
+<li>
 <p>Use the <strong>Debug</strong> button (top left) to flash the program binary and connect the debugger.</p>
-<p><img alt="Figure 28" src="../res/Fig28.jpg" /> </p>
+<p><img alt="Figure 28" src="../res/Fig28.jpg" /></p>
 </li>
 <li>
 <p>The Eclipse view will switch to debug mode, and the debugger will break on entry into main.</p>
@@ -1027,10 +1012,10 @@ export MAXIM_PATH=$HOME/MaximSDK
 <li><code>make -v</code></li>
 <li><code>openocd -v</code></li>
 </ul>
-<h4 id="building-and-running-an-example">Building and Running an Example</h4>
+<h4 id="building-and-running-an-example-command-line">Building and Running an Example (Command-Line)</h4>
 <ol>
 <li>
-<p>First, copy an <a href="Examples">example project</a> to an accessible directory outside of the SDK. It is strongly recommended to keep the MSDK examples unmodified in case they need to be referenced again later.</p>
+<p>First, copy an <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples">example project</a> to an accessible directory outside of the SDK. It is strongly recommended to keep the MSDK examples unmodified in case they need to be referenced again later.</p>
 </li>
 <li>
 <p>Launch your terminal.  On Windows, use the MinGW shortcut or <code>Tools/MSYS2/msys.bat</code> file to launch the MSYS2 terminal.</p>
@@ -1217,180 +1202,30 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p>In the terminal window running the OpenOCD <em>server</em>, press <code>CTRL + C</code> to issue the shutdown command and quit.</p>
 </li>
 </ol>
-<h2 id="development-guide">Development Guide</h2>
-<p>As discussed in <a href="#key-concepts">Key Concepts</a>, an MSDK project is primarily made up of two distinct systems:  The <strong><em>Build System</em></strong> and the <em><strong>Project Management System</strong></em>.  <a href="#getting-started">Getting Started</a> demonstrates the basic usage and configuration of these systems, while this section offers a more detailed reference.</p>
-<p>MSDK development primarily involves using the Project Management System, which offers a higher level user interface (typically with a GUI) that manages the tools for <strong>editing</strong> source code, <strong>flashing</strong> program binaries, and <strong>debugging</strong> for the MSDK's <a href="#supported-development-environments">supported IDEs</a>.  Additionally, the Project Management System sits <em>on top</em> of the <a href="#build-system">Build System</a>'s <em>CLI</em>, allowing it to manage fundamental build variables aspects of development such as:</p>
-<ul>
-<li>Setting the <em>Target Microcontroller</em>  (<code>TARGET</code> <em><a href="#build-configuration-variables-reference-table">Build Configuration Variable</a></em>)</li>
-<li>Setting the <em>Board Support Package</em> (<code>BOARD</code> <em><a href="#build-configuration-variables-reference-table">Build Configuration Variable</a></em>)</li>
-<li>Configuring the <em>Environment</em> and <em>System Path</em> for use with the MSDK toolchain (<code>MAXIM_PATH</code> <em><a href="#build-configuration-variables-reference-table">Build Configuration Variable</a></em>)</li>
-</ul>
-<h3 id="board-support-packages">Board Support Packages</h3>
-<p>The role of a Board Support Package (BSP) is to provide a hardware abstraction layer for board-level initialization code such as initializing and assigning UART instances, pushbuttons, LEDs, external peripheral devices, TFT displays, and other board-specific hardware.  The MSDK's available Board Support Packages (BSPs) can be found in the <code>Libraries/Boards</code> folder for each <em>Target Microcontroller</em>.</p>
-<p><img alt="Figure 34" src="../res/Fig34.jpg" /></p>
-<p>The name of the BSP is the name of the folder.  For example, the MAX78000 supports the <code>Aud01_RevA</code>, <code>EvKit_V1</code>, <code>FTHR_RevA</code>, and <code>MAXREFDES178</code> BSPs.  However, it is not always clear how these BSP names match the part numbers for different evaluation kits.  The table below can be used to match an external part number with an MSDK BSP.</p>
-<table>
-<thead>
-<tr>
-<th>External Part Number</th>
-<th><code>BOARD</code></th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32520-kit.html">MAX32520-KIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32520fthr.html">MAX32520FTHR</a></td>
-<td><code>MAX32520FTHR</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650-evkit.html">MAX32650-EVKIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650fthr.html">MAX32650FTHR</a></td>
-<td><code>FTHR_APPS_A</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655evkit.html">MAX32655EVKIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655fthr.html">MAX32655FTHR</a></td>
-<td><code>FTHR_Apps_P1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32660-evsys.html">MAX32660-EVSYS</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td>MAX32662EVKIT</td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666evkit.html">MAX32666EVKIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666fthr.html">MAX32666FTHR</a></td>
-<td><code>FTHR</code></td>
-</tr>
-<tr>
-<td>MAX32666FTHR2</td>
-<td><code>FTHR2</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32670evkit.html">MAX32670EVKIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672evkit.html">MAX32672EVKIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672fthr.html">MAX32672FTHR</a></td>
-<td><code>FTHR</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32675evkit.html">MAX32675EVKIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td>MAX32675FTHR</td>
-<td><code>FTHR_Apps_B</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32680evkit.html">MAX32680EVKIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td>MAX32690EVKIT</td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html">MAX78000EVKIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html">MAX78000FTHR</a></td>
-<td><code>FTHR_RevA</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html">MAXREFDES178</a></td>
-<td><code>MAXREFDES178</code></td>
-</tr>
-<tr>
-<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html">MAX78002EVKIT</a></td>
-<td><code>EvKit_V1</code></td>
-</tr>
-</tbody>
-</table>
-<p>To set the BSP for a project:</p>
-<ul>
-<li>In <strong>VS Code</strong>:  <a href="#how-to-set-the-bsp-vs-code">How to Set the BSP (VS Code)</a></li>
-<li>In <strong>Eclipse</strong>:  <a href="#how-to-set-the-bsp-eclipse">How to Set the BSP (Eclipse)</a></li>
-<li><strong>Command-Line</strong> Development:  <a href="#how-to-set-the-bsp-command-line">How to Set the BSP (Command-Line)</a></li>
-</ul>
+<h2 id="ides">IDEs</h2>
+<p>This section offers detailed usage info on the MSDK's supported Integrated Development Environments (IDEs) focusing on the typical <em>development</em> cycle.  It expands on the info presented in <a href="#getting-started">"Getting Started"</a> with more detailed usage info.</p>
 <h3 id="visual-studio-code">Visual Studio Code</h3>
-<p>Support for <a href="https://code.visualstudio.com/">Visual Studio Code</a> is maintained for the MSDK and developed on the <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim">VSCode-Maxim</a> Github repository.  This section augments the VSCode-Maxim <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim">README</a> with more detailed usage info and insight.</p>
-<h4 id="setup-vs-code_1">Setup (VS Code)</h4>
-<p>The setup below only needs to be done once per MSDK <a href="#installation">installation</a>.</p>
-<ol>
-<li>
-<p>Download &amp; install Visual Studio Code for your OS <a href="https://code.visualstudio.com/Download">here</a>.</p>
-</li>
-<li>
-<p>Launch Visual Studio Code.</p>
-</li>
-<li>
-<p>Install the Microsoft <a href="https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools">C/C++ extension</a>.</p>
-</li>
-<li>
-<p>Use <strong><code>CTRL + SHIFT + P</code></strong> (or <strong><code>COMMAND + SHIFT + P</code></strong> on MacOS) to open the developer prompt.</p>
-</li>
-<li>
-<p>Type "open settings json" and select the <strong>"Preferences: Open Settings (JSON)"</strong> option (<em>not</em> "Preferences: Open <em>Default</em> Settings (JSON)").  This will open your <strong>user</strong> settings.json file in VS Code's editor.</p>
-<p><img alt="Open Settings JSON Command" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/open_settings_json.jpg" /></p>
-</li>
-<li>
-<p>Add the entries below into your <strong><em>user settings.json</em></strong> file.</p>
-<pre class="codehilite"><code class="language-json">{
-    // There may be other settings up here...
-
-    &quot;MAXIM_PATH&quot;:&quot;C:/MaximSDK&quot;, // Set this to the installed location of the MaximSDK.  Only use forward slashes '/' when setting this path!
-    &quot;update.mode&quot;: &quot;manual&quot;,
-    &quot;extensions.autoUpdate&quot;: false,
-
-    // There may be other settings down here...
-}
-</code></pre>
-
-</li>
-<li>
-<p>Save your changes to the file with <strong><code>CTRL + S</code></strong> and restart VS Code.</p>
-</li>
-</ol>
-<h4 id="opening-example-projects_1">Opening Example Projects</h4>
+<p>Support for <a href="https://code.visualstudio.com/">Visual Studio Code</a> is maintained for the MSDK and developed on the <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim">VSCode-Maxim</a> Github repository.</p>
+<p>For setup/quick-start instructions, see <a href="#getting-started-with-visual-studio-code">"Getting Started with Visual Studio Code"</a> first.</p>
+<h4 id="opening-example-projects">Opening Example Projects</h4>
 <p>Visual Studio Code is built around a "working directory" paradigm.  The editor is always rooted in a working directory, and the main mechanism for changing that directory is <strong>File -&gt; Open Folder...</strong></p>
 <p><img alt="File -&gt; Open Folder" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG" /></p>
 <p>As a result, you'll notice that there is no "New Project" mechanism.  A "project" in VS Code is simply a folder.  It will look inside of the opened folder for a <code>.vscode</code> <em>sub</em>-folder to load project-specific settings from.</p>
 <p><img alt="Example Directory Contents" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/opening_projects_2.jpg" /></p>
 <p><em>(Note:  You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder).</em></p>
-<p>To open a project:</p>
+<p>To open a project:
+1. Launch Visual Studio Code.</p>
 <ol>
 <li>
-<p>Launch Visual Studio Code.</p>
-</li>
-<li>
 <p>Select <strong>File -&gt; Open Folder...</strong></p>
+<p><img alt="File -&gt; Open Folder" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG" /></p>
 </li>
 <li>
-<p>Navigate to an example project for the target microcontroller in the MSDK's <a href="Examples">Examples folder</a> and open it with <strong>Select Folder</strong>.</p>
+<p>Navigate to an example project for the target microcontroller in the MSDK's <code>Examples</code> folder and open it with <strong>Select Folder</strong>.</p>
+<p><img alt="Figure 43" src="../res/Fig43.jpg" /></p>
 </li>
 <li>
-<p>VS Code will prompt for trust the first time.  Select <em><strong>Trust folder and enable all features</strong></em>.</p>
+<p>VS Code will prompt for trust the first time.  Select <em>Trust folder and enable all features</em></p>
 <p><img alt="Trust Prompt" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/workspaceTrustPrompt.JPG" /></p>
 </li>
 <li>
@@ -1398,11 +1233,11 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p><img alt="Figure 16" src="../res/Fig16.jpg" /></p>
 </li>
 <li>
-<p>(Optional) Set the <strong>Board Support Package</strong> to match your evaluation platform if necessary.  Projects default to the <strong>"EVKIT"</strong> BSP for the target microcontroller.  See <a href="#how-to-set-the-bsp-vs-code">How to Set the BSP (VS Code)</a> below.</p>
+<p>Verify the <strong><em>Board Support Package</em></strong> for the project is set correctly.  See <a href="#how-to-set-the-bsp-vs-code">How to Set the BSP (VS Code)</a> below.</p>
 </li>
 </ol>
 <h4 id="how-to-set-the-bsp-vs-code">How to Set the BSP (VS Code)</h4>
-<p>To set the BSP for a project:</p>
+<p>To set the BSP for an opened project:</p>
 <ol>
 <li>
 <p>Set the <code>"board"</code> <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration">project configuration</a> option in <code>.vscode/settings.json</code>, which maps to the <code>BOARD</code> <em><a href="#build-configuration-variables-reference-table">Build Configuration Variable</a></em>.</p>
@@ -1410,19 +1245,21 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p><img alt="Figure 17" src="../res/Fig17.jpg" /></p>
 </li>
 <li>
-<p>Reload the VS Code window to re-index its Intellisense engine.</p>
+<p><strong>Reload the VS Code window</strong> to re-index its Intellisense engine.</p>
 <p>VS Code can be conveniently re-loaded with the <strong>Reload Window</strong> developer command accessed with <strong><code>CTRL + SHIFT + P</code></strong> (or <strong><code>COMMAND + SHIFT + P</code></strong> on MacOS).</p>
 <p><img alt="Reload window" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG" /></p>
 </li>
 </ol>
 <h4 id="building-a-project">Building a Project</h4>
-<p>Once a project is opened 4 available <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks">build tasks</a> will become available via <strong>Terminal &gt; Run Build task...</strong> or the shortcut <strong><code>Ctrl+Shift+B</code></strong>.</p>
+<p>An opened project will present 4 available <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks">build tasks</a> via <strong>Terminal &gt; Run Build task...</strong> or the shortcut <strong><code>Ctrl+Shift+B</code></strong>.</p>
 <p><img alt="Build Tasks Image" src="https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG" /></p>
 <p>Run the <strong>"build"</strong> task to compile the project for the configured <em>Target Microcontroller</em> and <em>BSP</em>.  Notice the <strong><code>TARGET</code></strong>, <strong><code>BOARD</code></strong> , and <strong><code>PROJECT</code></strong> Build Configuration Variables being set on the command-line, and the program binary successfully compiled into the <code>.elf</code> program binary in the <strong>build</strong> sub-folder of the project.</p>
 <p><img alt="Figure 18" src="../res/Fig18.jpg" /></p>
-<p>To <strong>clean</strong> a project, run the <strong>clean</strong> <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks">build task</a>.  This will wipe the contents of the build folder entirely.  Additionally, the <strong>clean-periph</strong> task can be used to clean the project <em>and</em> the peripheral drivers.</p>
+<h4 id="cleaning-a-project">Cleaning a Project</h4>
+<p>To <strong>clean</strong> a project, run the <em>clean</em> <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks">build task</a>.  This will delete the build folder and its contents.  The next time the project is built, it will be re-built from scratch.</p>
+<p>It should be noted that <em>clean</em> will only remove the <em>project's</em> build output.  The <strong>clean-periph</strong> task can be used to clean the project <em>and</em> the peripheral driver libraries.</p>
 <h4 id="flashing-and-debugging">Flashing and Debugging</h4>
-<p>This section assumes a debugger is connected between the host PC and the evaluation platform.  For more detailed instructions on this hardware setup refer to the evaluation platforms Datasheet and Quick-Start Guide, which are available on the evaluation platform's product page.</p>
+<p>This section assumes a debugger is connected between the host PC and the evaluation platform.  For more detailed instructions on this hardware setup refer to the evaluation platforms Datasheet and Quick-Start Guide, which are available on each evaluation platform's product page.</p>
 <h5 id="arm-core-debugging">Arm Core Debugging</h5>
 <ol>
 <li>
@@ -1514,7 +1351,7 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p><img alt="Figure 22" src="../res/Fig22.jpg" /></p>
 <p>When Eclipse is launched, it will prompt for a <strong><em>workspace</em></strong> location.  This is a local folder that Eclipse will copy its projects into.</p>
 <p><img alt="Figure 39" src="../res/Fig39.jpg" /></p>
-<h4 id="creating-a-new-project_1">Creating a New Project</h4>
+<h4 id="creating-a-new-project">Creating a New Project</h4>
 <ol>
 <li>
 <p><a href="#running-eclipse">Launch</a> Eclipse.</p>
@@ -1544,7 +1381,7 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p>Select <strong>Finish</strong> to create the new project.</p>
 </li>
 </ol>
-<h4 id="importing-examples_1">Importing Examples</h4>
+<h4 id="importing-examples">Importing Examples</h4>
 <ol>
 <li>
 <p><a href="#running-eclipse">Launch</a> Eclipse.</p>
@@ -1557,7 +1394,7 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p><img alt="Figure 23" src="../res/Fig23.jpg" /></p>
 </li>
 <li>
-<p><strong>Browse</strong> to the <a href="Examples"><code>Examples</code></a> folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.</p>
+<p><strong>Browse</strong> to the <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples"><code>Examples</code></a> folder in the MSDK installation for your target microcontroller and select the example projects to import into the workspace.</p>
 <p><img alt="Figure 24" src="../res/Fig24.jpg" /></p>
 </li>
 <li>
@@ -1623,68 +1460,29 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 </ol>
 <hr />
 <h3 id="command-line-development">Command-Line Development</h3>
-<h4 id="setup-command-line_1">Setup (Command-Line)</h4>
-<h5 id="windows_1">Windows</h5>
-<p>On Windows, the MinGW shortcut should be used to launch a MSYS2/MinGW terminal.  Alternatively, the <code>Tools/MSYS2/msys.bat</code> file can be launched directly.</p>
-<p><img alt="Figure 22" src="../res/Fig22.jpg" /></p>
-<h5 id="linuxmacos_1">Linux/MacOS</h5>
-<ol>
-<li>
-<p>On Linux and MacOS, copy the following contents into your shell's terminal profile/startup script.  Depending on your system and shell this could be <code>~/.profile</code>, <code>~/.zprofile</code>, <code>~/.bashrc</code>, <code>~/.zshrc</code>, etc.</p>
-<pre class="codehilite"><code># Set MAXIM_PATH to point to the MSDK
-export MAXIM_PATH=#changeme!
-
-# Add Arm Embedded GCC to path (v10.3)
-export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
-export PATH=$ARM_GCC_ROOT/bin:$PATH
-
-# Add xPack RISC-V GCC to path (v10.2)
-export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
-export PATH=$XPACK_GCC_ROOT/bin:$PATH
-
-# Add OpenOCD to path
-export OPENOCD_ROOT=$MAXIM_PATH/Tools/OpenOCD
-export PATH=$OPENOCD_ROOT:$PATH
-</code></pre>
-
-</li>
-<li>
-<p>Change <code>export MAXIM_PATH=#changeme!</code> to the installation location of the MSDK.  This will make the toolchain accessible from the command-line by adding it to your <em>system's path</em>.</p>
-<pre class="codehilite"><code># Set MAXIM_PATH environment variable
-export MAXIM_PATH=$HOME/MaximSDK
-</code></pre>
-
-</li>
-</ol>
-<h5 id="verification_1">Verification</h5>
-<p>The following commands can be used to verify that the toolchain is accessible.  They should display version numbers successfully.</p>
-<ul>
-<li><code>arm-none-eabi-gcc -v</code></li>
-<li><code>arm-none-eabi-gdb -v</code></li>
-<li><code>make -v</code></li>
-<li><code>openocd -v</code></li>
-</ul>
+<p>This section offers more detailed info on command-line development.</p>
+<p>For setup/quick-start see <a href="#getting-started-with-command-line-development">"Getting Started with Command-Line Development"</a></p>
 <h4 id="how-to-set-the-bsp-command-line">How to Set the BSP (Command-Line)</h4>
 <ul>
 <li>
-<p>Set the <strong><code>BOARD</code></strong> <em><a href="#build-configuration-variables-reference-table">Build Configuration Variable</a></em> in <strong>project.mk</strong></p>
+<p>To <em>persistently</em> the BSP, set the <strong><code>BOARD</code></strong> <em><a href="#build-configuration-variables-reference-table">Build Configuration Variable</a></em>. by editing the <strong>project.mk</strong> that can be found inside each project.</p>
 <pre class="codehilite"><code class="language-makefile"># This file can be used to set build configuration
 # variables.  These variables are defined in a file called 
 # &quot;Makefile&quot; that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/
 
 # **********************************************************
 
 # Add your config here!
 
-BOARD=FTHR_RevA # Set the BSP
+BOARD=FTHR_RevA # Set the BSP for the MAX78000FTHR
 </code></pre>
 
 </li>
 <li>
-<p>Alternatively, set <strong><code>BOARD</code></strong> on the command-line when building (ie. <code>make -r -j BOARD=FTHR_RevA</code>)</p>
+<p>Alternatively, set <strong><code>BOARD</code></strong> on the command-line when building (ie. <code>make -r -j BOARD=FTHR_RevA</code>) to set/override the BSP for a single build.</p>
 </li>
 </ul>
 <h4 id="building-on-the-command-line">Building on the Command-Line</h4>
@@ -2019,11 +1817,265 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 </tr>
 </tbody>
 </table>
+<h2 id="board-support-packages">Board Support Packages</h2>
+<p>The MSDK supports multiple parts and evaluation platforms (see <a href="#supported-parts">supported parts</a>) through <strong>"Board Support Packages" (BSPs)</strong>.  For microcontrollers with multiple evaluation platforms, multiple BSPs will be available.</p>
+<p>The role of a <em>BSP</em> is to provide a hardware abstraction layer for the initialization and management of board-level hardware such as serial interfaces, pushbuttons, LEDs, external peripheral devices, TFT displays, etc. which will vary between evaluation platforms.  The BSP abstraction layer also improves code portability to custom devices.  </p>
+<p>The first task when opening or creating any project is to ensure the BSP is set correctly.</p>
+<h3 id="how-to-set-the-bsp">How to Set the BSP</h3>
+<p>To set the BSP for a project:</p>
+<ul>
+<li>In <strong>VS Code</strong>:  <a href="#how-to-set-the-bsp-vs-code">How to Set the BSP (VS Code)</a></li>
+<li>In <strong>Eclipse</strong>:  <a href="#how-to-set-the-bsp-eclipse">How to Set the BSP (Eclipse)</a></li>
+<li><strong>Command-Line</strong> Development:  <a href="#how-to-set-the-bsp-command-line">How to Set the BSP (Command-Line)</a></li>
+</ul>
+<h3 id="bsp-table">BSP Table</h3>
+<p>Available BSPs are located in the <code>Libraries/Boards</code> folder for each <em>Target Microcontroller</em>.</p>
+<p><img alt="Figure 34" src="../res/Fig34.jpg" /></p>
+<p>The name of a BSP's folder is used with the <code>BOARD</code> <a href="#build-configuration-variables">build configuration variable</a> to build a project for a specific BSP.  The table below can be used to match the correct <code>BOARD</code> values to <em>external part numbers</em>.</p>
+<table>
+<thead>
+<tr>
+<th>External Part Number</th>
+<th><code>TARGET</code></th>
+<th><code>BOARD</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32520-kit.html">MAX32520-KIT</a></td>
+<td><code>MAX32520</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32520fthr.html">MAX32520FTHR</a></td>
+<td><code>MAX32520</code></td>
+<td><code>MAX32520FTHR</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650-evkit.html">MAX32650-EVKIT</a></td>
+<td><code>MAX32650</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32650fthr.html">MAX32650FTHR</a></td>
+<td><code>MAX32650</code></td>
+<td><code>FTHR_APPS_A</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655evkit.html">MAX32655EVKIT</a></td>
+<td><code>MAX32655</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655fthr.html">MAX32655FTHR</a></td>
+<td><code>MAX32655</code></td>
+<td><code>FTHR_Apps_P1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32660-evsys.html">MAX32660-EVSYS</a></td>
+<td><code>MAX32660</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td>MAX32662EVKIT</td>
+<td><code>MAX32662</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666evkit.html">MAX32666EVKIT</a></td>
+<td><code>MAX32665</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666fthr.html">MAX32666FTHR</a></td>
+<td><code>MAX32665</code></td>
+<td><code>FTHR</code></td>
+</tr>
+<tr>
+<td>MAX32666FTHR2</td>
+<td><code>MAX32665</code></td>
+<td><code>FTHR2</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32670evkit.html">MAX32670EVKIT</a></td>
+<td><code>MAX32670</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672evkit.html">MAX32672EVKIT</a></td>
+<td><code>MAX32672</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32672fthr.html">MAX32672FTHR</a></td>
+<td><code>MAX32672</code></td>
+<td><code>FTHR</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32675evkit.html">MAX32675EVKIT</a></td>
+<td><code>MAX32675</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td>MAX32675FTHR</td>
+<td><code>MAX32675</code></td>
+<td><code>FTHR_Apps_B</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32680evkit.html">MAX32680EVKIT</a></td>
+<td><code>MAX32680</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td>MAX32690EVKIT</td>
+<td><code>MAX32690</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html">MAX78000EVKIT</a></td>
+<td><code>MAX78000</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html">MAX78000FTHR</a></td>
+<td><code>MAX78000</code></td>
+<td><code>FTHR_RevA</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html">MAXREFDES178</a></td>
+<td><code>MAX78000</code></td>
+<td><code>MAXREFDES178</code></td>
+</tr>
+<tr>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78002evkit.html">MAX78002EVKIT</a></td>
+<td><code>MAX78002</code></td>
+<td><code>EvKit_V1</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="custom-bsps">Custom BSPs</h3>
+<p>For custom boards, additional BSPs can be easily created and added into the MSDK.  Inspecting the <code>Libraries/CMSIS/Device/Maxim/TARGET/Source/system_TARGET.c</code> for a target microcontroller shows how the BSP is integrated, and which startup functions can be implemented.</p>
+<p>For example, the MAX78000's <code>system_max78000.c</code> startup file shows that <code>PreInit</code> and <code>Board_Init</code> are weak functions that can be overridden.  They are called from the default <code>SystemInit</code> implementation, which can also be overridden.</p>
+<pre class="codehilite"><code class="language-c">/* This function is called before C runtime initialization and can be
+* implemented by the application for early initializations. If a value other
+* than '0' is returned, the C runtime initialization will be skipped.
+*
+* You may over-ride this function in your program by defining a custom 
+*  PreInit(), but care should be taken to reproduce the initialization steps
+*  or a non-functional system may result.
+*/
+__weak int PreInit(void)
+{
+    /* Do nothing */
+    return 0;
+}
+
+/* This function can be implemented by the application to initialize the board */
+__weak int Board_Init(void)
+{
+    /* Do nothing */
+    return 0;
+}
+
+/* This function is called just before control is transferred to main().
+*
+* You may over-ride this function in your program by defining a custom 
+*  SystemInit(), but care should be taken to reproduce the initialization
+*  steps or a non-functional system may result.
+*/
+__weak void SystemInit(void)
+{
+    /* Configure the interrupt controller to use the application vector table in */
+    /* the application space */
+#if defined(__CC_ARM) || defined(__GNUC__)
+    /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
+    SCB-&gt;VTOR = (uint32_t)__isr_vector;
+#endif /* __CC_ARM || __GNUC__ */
+
+    /* Enable instruction cache */
+    MXC_ICC_Enable(MXC_ICC0);
+
+    /* Enable FPU on Cortex-M4, which occupies coprocessor slots 10 &amp; 11 */
+    /* Grant full access, per &quot;Table B3-24 CPACR bit assignments&quot;. */
+    /* DDI0403D &quot;ARMv7-M Architecture Reference Manual&quot; */
+    SCB-&gt;CPACR |= SCB_CPACR_CP10_Msk | SCB_CPACR_CP11_Msk;
+    __DSB();
+    __ISB();
+
+    SystemCoreClockUpdate();
+
+    Board_Init();
+}
+</code></pre>
+
+<p>A custom BSP can implement one or all of the weak functions.  To do so, it's recommended to create a new directory inside the <code>Libraries/Boards</code> folder for the target microcontroller with the file structure below.  The name of the created directory will be string to use with the <code>BOARD</code> <a href="#build-configuration-variables">build configuration variable</a> to select the custom BSP.</p>
+<pre class="codehilite"><code class="language-bash">Libraries
+└─ Boards
+   └─ TARGET
+      └─ CustomBSP
+         ├─ Include
+         |  └─ board.h
+         ├─ Source
+         |  └─ board.c
+         └─ board.mk
+</code></pre>
+
+<p>The following contents can be used as a bare-bones starter template.</p>
+<ul>
+<li>
+<p><em>board.h</em></p>
+<pre class="codehilite"><code class="language-c">// board.h
+
+#define BOARD_CUSTOM
+// ^ This type of compiler definition is
+// sometimes useful.  It allows application code
+// to check if a specific BSP is being used.
+// Ex: #ifdef BOARD_CUSTOM
+//     ...
+//     #endif
+
+/**
+* \brief   Initialize the BSP and board interfaces.
+* \returns #E_NO_ERROR if everything is successful
+*/
+int Board_Init(void);
+</code></pre>
+
+</li>
+<li>
+<p><em>board.c</em></p>
+<pre class="codehilite"><code class="language-c">//board.c
+#include &quot;board.h&quot;
+#include &quot;mxc_error.h&quot;
+
+int Board_Init(void)
+{
+    // Implement me!
+    return E_NO_ERROR;
+}
+</code></pre>
+
+</li>
+<li>
+<p><em>board.mk</em></p>
+<pre class="codehilite"><code class="language-makefile">ifeq &quot;$(BOARD_DIR)&quot; &quot;&quot;
+# This Makefile will self-locate if BOARD_DIR is not specified.
+BOARD_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+endif
+
+SRCS += board.c
+VPATH += $(BOARD_DIR)/Source
+IPATH += $(BOARD_DIR)/Include
+</code></pre>
+
+</li>
+</ul>
+<h3 id="disabling-bsps">Disabling BSPs</h3>
+<p>It should also be noted that BSP integration can be disabled entirely by setting the <code>LIB_BOARD</code> <a href="#build-configuration-variables">build configuration variable</a> to 0.  This will skip the inclusion of the BSP's <code>board.mk</code> file entirely, and the default system initialization functions will be used.</p>
 <h2 id="build-system">Build System</h2>
-<p>As discussed in <a href="#key-concepts">Key Concepts</a>, an MSDK project is primarily made up of two distinct systems:  The <strong><em>Build System</em></strong> and the <em><strong>Project Management System</strong></em>.  <a href="#getting-started">Getting Started</a> demonstrates the basic usage and configuration of these systems, while this section offers a detailed reference into the build system's <strong>CLI</strong> and  additional documentation on advanced options and use-cases.</p>
 <h3 id="build-system-overview">Build System Overview</h3>
-<p>The <strong>Build System</strong> manages the compilation of source code into program binaries and offers a <strong>Command-Line Interface (CLI)</strong> for setting <strong>Build Configuration Variables</strong>.</p>
-<p>The Build System is managed by two files found in a project's root directory, one called <strong>Makefile</strong> and one called <strong>project.mk</strong>.  These files are used alongside the <a href="https://www.gnu.org/software/make/">GNU Make</a> program (which is a part of the MSDK toolchain) to locate and build a project's source code.</p>
+<p>The <strong>Build System</strong> manages the compilation of source code into program binaries and offers a <strong>Command-Line Interface (CLI)</strong> for setting <strong>Build Configuration Variables</strong>.  All IDEs interface with this system.</p>
+<p>The Build System is managed by two files found in a project's root directory, one called <strong>Makefile</strong> and one called <strong>project.mk</strong>.  These files are used by the <a href="https://www.gnu.org/software/make/">GNU Make</a> program (which is a part of the MSDK toolchain) to locate and build a project's source code.</p>
 <ul>
 <li><strong>Makefile</strong> is the "core" file, and should not be edited directly.  Instead, it exposes the <strong>CLI</strong> that can be accessed in the <em>project.mk</em> file, on the command-line, in your system's environment, or via your IDE.  It also comes with a default configuration that is suitable for most projects.</li>
 <li><strong>project.mk</strong> offers a convenient and stable access point for advanced build configuration, and this is the file that should be edited if necessary.</li>
@@ -2061,7 +2113,7 @@ VARIABLE+=VALUE2
 </code></pre>
 
 <h4 id="where-to-set-a-build-configuration-variable">Where to Set a Build Configuration Variable</h4>
-<p>For most variables, you should set them in the <strong>project.mk</strong> file (exceptions are documented in the <a href="#build-configuration-variables-reference-table">reference table</a> and IDE-specific sections). </p>
+<p>For most variables, you should set them in the <strong>project.mk</strong> file (exceptions are documented in the <a href="#build-configuration-variables-reference-table">reference table</a> and IDE-specific sections).</p>
 <p>For example, to enable hardware floating-point acceleration for a project, the <strong><code>MFLOAT_ABI</code></strong> configuration variable can be used with a value of <strong><code>hard</code></strong>.  The contents of <strong>project.mk</strong> might then look as follows:</p>
 <p>(<em>Inside project.mk</em>)</p>
 <pre class="codehilite"><code class="language-make"># This file can be used to set build configuration
@@ -2069,7 +2121,7 @@ VARIABLE+=VALUE2
 # &quot;Makefile&quot; that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/
 
 # **********************************************************
 
@@ -2296,10 +2348,47 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 </tbody>
 </table>
 <h2 id="peripheral-driver-api">Peripheral Driver API</h2>
-<h3 id="overview_1">Overview</h3>
 <p>A microcontroller is made up of a Central Processing Unit (CPU) that is surrounded by additional <em>peripheral</em> hardware blocks such as timers, memory controllers, UART controllers, ADCs, RTCs, audio interfaces, and many more.  The <strong>Peripheral Driver API</strong> is an important core library in the MSDK that allows the CPU to utilize the microcontroller's hardware blocks over a higher-level <strong><em>Application Programming Interface (API)</em></strong>.</p>
 <p><img alt="Figure 38" src="../res/Fig38.jpg" /></p>
-<p>A detailed API reference can be found in the <a href="Documentation">Documentation</a> folder of the MSDK installation for each microcontroller.  This documentation is auto-generated with DoxyGen from the API's source code, and is organized into <em>modules</em> matching each of the available hardware peripherals.  The MSDK will contain at <em>minimum</em> one example per module demonstrating its usage.</p>
+<p>The links below will open detailed API references for each microcontroller.  Offline copies of these API references can also be found in the <code>Documentation</code> folder of the MSDK <a href="#installation">installation</a>.</p>
+<ul>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32520/">MAX32520 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32650/">MAX32650 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32655/">MAX32655 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32660/">MAX32660 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32665/">MAX32665-MAX32666 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32670/">MAX32670 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32672/">MAX32672 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32675/">MAX32675 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32680/">MAX32680 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32690/">MAX32690 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX78000/">MAX78000 API</a></p>
+</li>
+<li>
+<p><a href="../Libraries/PeriphDrivers/Documentation/MAX78002/">MAX78002 API</a></p>
+</li>
+</ul>
 <h3 id="organization">Organization</h3>
 <p>The Peripheral Driver API's source code is organized as follows:</p>
 <ul>
@@ -2323,49 +2412,17 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 </ul>
 </li>
 </ul>
-<h3 id="api-reference-manuals">API Reference Manuals</h3>
-<p>A full Peripheral Driver API reference manual is available for each microcontroller below.</p>
-<ul>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32520/">MAX32520 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32650/">MAX32650 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32655/">MAX32655 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32660/">MAX32660 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32665/">MAX32665-MAX32668 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32670/">MAX32670 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32672/">MAX32672 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32675/">MAX32675 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX32680/">MAX32680 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX78000/">MAX78000 API</a></p>
-</li>
-<li>
-<p><a href="../Libraries/PeriphDrivers/Documentation/MAX78002/">MAX78002 API</a></p>
-</li>
-</ul>
+<h2 id="examples">Examples</h2>
+<p>The MSDK contains examples for each microcontroller that demonstrate the usage of its <a href="#peripheral-driver-api">Peripheral APIs</a>.  They can be found in the <code>Examples</code> folder of an MSDK installation.</p>
+<p><img alt="Figure 40" src="../res/Fig40.jpg" /></p>
+<p>Each example contains a <code>README.md</code> file describing what it does.  In general, there is at least one example per peripheral block and the example's name will indicate what it matches (ie. <code>DMA</code>, <code>ADC</code>, <code>SPI</code>).</p>
+<p><img alt="Figure 41" src="../res/Fig41.jpg" /></p>
 <h2 id="libraries">Libraries</h2>
-<p>The MSDK contains a large number of <strong>libraries</strong>, both third-party and in-house.  These libraries are an extension to the "core" SDK resources and contain drivers for miscellaneous <em><strong>external</strong></em> components such as TFT displays, cameras, accelerometers, audio codecs, and other devices.  The MSDK also contains libraries for more advanced <em><strong>internal</strong></em> hardware peripherals that provide an <em>additional</em> higher-level abstraction layer above the <a href="#peripheral-driver-api">Peripheral Driver API</a> such as USB, the SDHC interface, and the Cordio BLE stack.</p>
-<p>These libraries may also offer their <em>own</em> Build Configuration Variables in addition to those already available in the <a href="#build-system">Build System</a>.  These additional build options are enabled alongside the library itself via a convenient <em>toggle switch</em> (See the <strong>"Libraries"</strong> section of the <em><a href="#build-configuration-variables-reference-table">Build Configuration Variables</a></em>).</p>
+<p>The MSDK contains a large number of libraries, both third-party and in-house.  These libraries are an extension to the "core" SDK resources and contain drivers for various <em>external</em> components such as TFT displays, cameras, accelerometers, audio codecs, and other devices.  The MSDK also contains libraries for more advanced <em>internal</em> hardware peripherals that provide an additional abstraction layer over the <a href="#peripheral-driver-api">Peripheral Driver API</a> such as USB, the SDHC interface, and the Cordio BLE stack.</p>
+<p>These libraries may also offer their <em>own</em> Build Configuration Variables in addition to those already available in the core <a href="#build-system">Build System</a>.  These additional build options are enabled alongside the library itself via a convenient <em>toggle switch</em> (See the <strong>"Libraries"</strong> section of the <em><a href="#build-configuration-variables-reference-table">Build Configuration Variables</a></em>).</p>
 <p>Source code is located in the <a href="Libraries">Libraries</a> folder of the SDK and managed with the <code>Libraries/libs.mk</code> file, which comes pre-included in each example project.</p>
 <h3 id="cmsis-dsp">CMSIS-DSP</h3>
-<p>The CMSIS-DSP library provides a suite of common <strong>Digital Signal Processing <em>(DSP)</em></strong> functions that take advantage of hardware accelerated <em>Floating Point Unit (FPU)</em> available on microcontrollers with Arm Cortex-M cores.  This library is distributed in the MSDK as a pre-compiled static library file and the MSDK maintains a port of the official code examples in the <strong>ARM-DSP</strong> <a href="Examples">Examples</a> folder for each microcontroller.</p>
+<p>The CMSIS-DSP library provides a suite of common <strong>Digital Signal Processing <em>(DSP)</em></strong> functions that take advantage of hardware accelerated <em>Floating Point Unit (FPU)</em> available on microcontrollers with Arm Cortex-M cores.  This library is distributed in the MSDK as a pre-compiled static library file and the MSDK maintains a port of the official code examples in the <strong>ARM-DSP</strong> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples">Examples</a> folder for each microcontroller.</p>
 <p>Please refer to the <a href="https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html">CMSIS-DSP official documentation</a> for more detailed documentation on the library functions and usage.</p>
 <h4 id="cmsis-dsp-supported-parts">CMSIS-DSP Supported Parts</h4>
 <ul>
@@ -2374,6 +2431,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 <hr />
 <h3 id="cordio-bluetooth-low-energy">Cordio Bluetooth Low Energy</h3>
 <p>The Cordio Bluetooth Low Energy (BLE) library provides a full BLE stack for microcontrollers with an integrated BLE controller.</p>
+<p>The Cordio library warrants its own separate documentation.  See the <strong><a href="../Libraries/Cordio/docs/CORDIO_USERGUIDE/">Cordio BLE User Guide</a></strong>.</p>
 <h4 id="cordio-supported-parts">Cordio Supported Parts</h4>
 <ul>
 <li>MAX32655</li>
@@ -2411,7 +2469,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
         <a href=".." class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../CONTRIBUTING/" class="btn btn-neutral float-right" title="Contributing">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../Libraries/Cordio/docs/CORDIO_USERGUIDE/" class="btn btn-neutral float-right" title="Cordio BLE User Guide">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
   <hr/>
@@ -2442,7 +2500,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
       <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
-      <span><a href="../CONTRIBUTING/" style="color: #fcfcfc">Next &raquo;</a></span>
+      <span><a href="../Libraries/Cordio/docs/CORDIO_USERGUIDE/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>

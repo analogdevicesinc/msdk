@@ -1,0 +1,27 @@
+var group___s_k_b_d___c_t_r_l1 =
+[
+    [ "MXC_F_SKBD_CTRL1_AUTOEN", "group___s_k_b_d___c_t_r_l1.html#ga59b6e18431f38eef045b0a68bf9cd62a", null ],
+    [ "MXC_F_SKBD_CTRL1_AUTOEN_POS", "group___s_k_b_d___c_t_r_l1.html#ga1f44d91af6ff9f93d44d9833853f5ab8", null ],
+    [ "MXC_F_SKBD_CTRL1_CLEAR", "group___s_k_b_d___c_t_r_l1.html#gabccdfdd2b9b1bd04afdd1876335a69ce", null ],
+    [ "MXC_F_SKBD_CTRL1_CLEAR_POS", "group___s_k_b_d___c_t_r_l1.html#gadb72691964c01b0fd3f56e4d1ec09db1", null ],
+    [ "MXC_F_SKBD_CTRL1_DBTM", "group___s_k_b_d___c_t_r_l1.html#gac7fb3e1bea57fd8a5f56de5410b8e6c6", null ],
+    [ "MXC_F_SKBD_CTRL1_DBTM_POS", "group___s_k_b_d___c_t_r_l1.html#ga0e2ef58e437918287fefdd82e4f6725f", null ],
+    [ "MXC_F_SKBD_CTRL1_OUTNUM", "group___s_k_b_d___c_t_r_l1.html#ga03345832fce796ae17ee7d0001e6a050", null ],
+    [ "MXC_F_SKBD_CTRL1_OUTNUM_POS", "group___s_k_b_d___c_t_r_l1.html#ga37ca0c61d165ec7f569126a6db8aa452", null ],
+    [ "MXC_S_SKBD_CTRL1_DBTM_TIME10MS", "group___s_k_b_d___c_t_r_l1.html#gad8bda324d0a68d56fe629ecb4cfbb384", null ],
+    [ "MXC_S_SKBD_CTRL1_DBTM_TIME11MS", "group___s_k_b_d___c_t_r_l1.html#ga36f1d6bc176eb02c01a0e269f3132b06", null ],
+    [ "MXC_S_SKBD_CTRL1_DBTM_TIME12MS", "group___s_k_b_d___c_t_r_l1.html#ga907047eb1d2f4f43ddec0bbe28d1c0f9", null ],
+    [ "MXC_S_SKBD_CTRL1_DBTM_TIME4MS", "group___s_k_b_d___c_t_r_l1.html#gaf3ec7e4e50f84d28841be8dc3c53a8e0", null ],
+    [ "MXC_S_SKBD_CTRL1_DBTM_TIME5MS", "group___s_k_b_d___c_t_r_l1.html#gac9fa1db87afa72ebcb740429474b086b", null ],
+    [ "MXC_S_SKBD_CTRL1_DBTM_TIME6MS", "group___s_k_b_d___c_t_r_l1.html#gab0a3fe19713df66bfacd9641a27ed2d4", null ],
+    [ "MXC_S_SKBD_CTRL1_DBTM_TIME7MS", "group___s_k_b_d___c_t_r_l1.html#ga5ec7ea7b9051b3909ec64a41dd974040", null ],
+    [ "MXC_S_SKBD_CTRL1_DBTM_TIME8MS", "group___s_k_b_d___c_t_r_l1.html#ga19307ec39866f59d5a2d8bd9ea88dcf2", null ],
+    [ "MXC_V_SKBD_CTRL1_DBTM_TIME10MS", "group___s_k_b_d___c_t_r_l1.html#gaffefc75abfbf244fe5f0a6dd4162bad3", null ],
+    [ "MXC_V_SKBD_CTRL1_DBTM_TIME11MS", "group___s_k_b_d___c_t_r_l1.html#ga3d6e85e5eb38935c7cddb9fa4d1a1349", null ],
+    [ "MXC_V_SKBD_CTRL1_DBTM_TIME12MS", "group___s_k_b_d___c_t_r_l1.html#ga17351798c8e3d64006763f8aa6e3d065", null ],
+    [ "MXC_V_SKBD_CTRL1_DBTM_TIME4MS", "group___s_k_b_d___c_t_r_l1.html#ga61bc5b841ea07ee37e25240ed0d8269e", null ],
+    [ "MXC_V_SKBD_CTRL1_DBTM_TIME5MS", "group___s_k_b_d___c_t_r_l1.html#gad3b913e669730e760644b20033c9cda2", null ],
+    [ "MXC_V_SKBD_CTRL1_DBTM_TIME6MS", "group___s_k_b_d___c_t_r_l1.html#gacf06d849cc31cec70b9e3f74d14f4b59", null ],
+    [ "MXC_V_SKBD_CTRL1_DBTM_TIME7MS", "group___s_k_b_d___c_t_r_l1.html#ga55d8e356dfb777fe443e4c7faf298db1", null ],
+    [ "MXC_V_SKBD_CTRL1_DBTM_TIME8MS", "group___s_k_b_d___c_t_r_l1.html#ga33cce9af990712cee35237ec67de7861", null ]
+];

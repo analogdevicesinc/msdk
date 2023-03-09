@@ -1,0 +1,27 @@
+var group___s_d_m_a___register___offsets =
+[
+    [ "MXC_R_SDMA_A0", "group___s_d_m_a___register___offsets.html#ga4f9a9b423a5f68a687d38cf9d50709a7", null ],
+    [ "MXC_R_SDMA_A1", "group___s_d_m_a___register___offsets.html#ga8251795638abbda8212ad62ed86cdf2b", null ],
+    [ "MXC_R_SDMA_A2", "group___s_d_m_a___register___offsets.html#ga38a02b1a04d1789dc491de8866922913", null ],
+    [ "MXC_R_SDMA_A3", "group___s_d_m_a___register___offsets.html#ga74cf0e655995e45b993b37b3260dc4b6", null ],
+    [ "MXC_R_SDMA_BP", "group___s_d_m_a___register___offsets.html#ga332d05034d4a9175dc7a13c002b6b75b", null ],
+    [ "MXC_R_SDMA_CTRL", "group___s_d_m_a___register___offsets.html#ga32df9c9262dd100019a0f7bf2feb039c", null ],
+    [ "MXC_R_SDMA_DP0", "group___s_d_m_a___register___offsets.html#gadf17af49a752d53ea837b91778c4946a", null ],
+    [ "MXC_R_SDMA_DP1", "group___s_d_m_a___register___offsets.html#gab926ce1ce9b0a52474f06d18e04e0243", null ],
+    [ "MXC_R_SDMA_INT_IN_CTRL", "group___s_d_m_a___register___offsets.html#ga247d89fe2583fa11211928b40426b7f9", null ],
+    [ "MXC_R_SDMA_INT_IN_FLAG", "group___s_d_m_a___register___offsets.html#gab03c256406ed53877d8d457eb4be09d5", null ],
+    [ "MXC_R_SDMA_INT_IN_IE", "group___s_d_m_a___register___offsets.html#ga8a8f7f6cbb7290db854a792535838598", null ],
+    [ "MXC_R_SDMA_INT_MUX_CTRL0", "group___s_d_m_a___register___offsets.html#ga9cfd398e1bfd0cb37407d6f179a5e567", null ],
+    [ "MXC_R_SDMA_INT_MUX_CTRL1", "group___s_d_m_a___register___offsets.html#ga65ca944ed6addbc4a30240d7fbbbeb5c", null ],
+    [ "MXC_R_SDMA_INT_MUX_CTRL2", "group___s_d_m_a___register___offsets.html#ga30a3dffbb83177304615409f85062fb5", null ],
+    [ "MXC_R_SDMA_INT_MUX_CTRL3", "group___s_d_m_a___register___offsets.html#gab8231da1955038b0c233e39748cf8f03", null ],
+    [ "MXC_R_SDMA_IP", "group___s_d_m_a___register___offsets.html#ga8648a037304cbb006277a7527aa1b363", null ],
+    [ "MXC_R_SDMA_IP_ADDR", "group___s_d_m_a___register___offsets.html#gad59feedc804edc3a47be485a5c3d3813", null ],
+    [ "MXC_R_SDMA_IRQ_FLAG", "group___s_d_m_a___register___offsets.html#ga37a214d34780e6c8a7b4a8ff1e5fd544", null ],
+    [ "MXC_R_SDMA_IRQ_IE", "group___s_d_m_a___register___offsets.html#gaba0daba2c77cc20e780cf6ab3b460544", null ],
+    [ "MXC_R_SDMA_LC0", "group___s_d_m_a___register___offsets.html#ga2b37d2659acff1e5626ab5ee2c1ae7fb", null ],
+    [ "MXC_R_SDMA_LC1", "group___s_d_m_a___register___offsets.html#ga8d1e999243b9fc3f2fa1581479d703b7", null ],
+    [ "MXC_R_SDMA_OFFS", "group___s_d_m_a___register___offsets.html#ga8dfc962c9b98ec191cb794d31dac7f91", null ],
+    [ "MXC_R_SDMA_SP", "group___s_d_m_a___register___offsets.html#ga8bfec54f268906aca41dea8576579d4f", null ],
+    [ "MXC_R_SDMA_WDCN", "group___s_d_m_a___register___offsets.html#ga253f659e70aa6bc13e8e245898648edf", null ]
+];
