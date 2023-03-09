@@ -13,7 +13,7 @@ int g_tx_channel;
 int g_rx_channel;
 int g_fill_dummy_bytes = 0;
 int g_dummy_len = 0;
-uint8_t g_dummy_byte = 0x00;
+uint8_t g_dummy_byte = 0xFF;
 volatile int g_rx_repeated_start = 0;
 volatile bool g_rx_deassert = 0;
 
