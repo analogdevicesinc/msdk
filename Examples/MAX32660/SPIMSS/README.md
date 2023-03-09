@@ -5,6 +5,17 @@ MOSI (P0.5) pins.  Connect these two pins together.
 
 Multiple word sizes (2 through 16 bits) are demonstrated.  To switch to non-blocking (asynchronous) transactions, undefine the SYNC macro and define the ASYNC macro. 
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the USB connector.

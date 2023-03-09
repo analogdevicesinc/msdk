@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -14,3 +14,8 @@ SBT=0
 
 # Enable MAXUSB library
 LIB_MAXUSB = 1
+
+ifneq ($(BOARD),EvKit_V1)
+$(error This example requires an external flash IC that is only available for the MAX32665EVKIT)
+endif
+

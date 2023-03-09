@@ -8,6 +8,17 @@ To run write test you need to set WITH\_WRITE\_TEST flag in main.c file
 
 For more information please check the MAX32662 User Guide.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Install headers JP7(RX\_EN) and JP8(TX\_EN).

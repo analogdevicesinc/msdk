@@ -43,6 +43,17 @@ To help with syncronization, a "Ready Signal" is set up as an output from a GPIO
 
 ![image info](./EEPROM_OP_Diagrams/EEPROM_Force_WB.png)
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Setup
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
