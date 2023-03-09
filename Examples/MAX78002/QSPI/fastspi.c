@@ -14,6 +14,7 @@ int g_rx_channel;
 int g_fill_dummy_bytes = 0;
 int g_dummy_len = 0;
 uint8_t g_dummy_byte = 0xFF;
+bool g_use_dma = false;
 
 uint8_t *g_rx_buffer;
 uint8_t *g_tx_buffer;
@@ -59,15 +60,23 @@ void DMA_RX_IRQHandler()
 void processSPI()
 {
     // Unload any SPI data that has come in
-    while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL)) {
+    while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL) && g_rx_len > 0) {
         *g_rx_buffer++ = SPI->fifo8[0];
         g_rx_len--;
     }
 
+    if (g_rx_len <= 0) {
+        g_rx_done = 1;
+    }
+
     // Write any pending bytes out.
-    while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
+    while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH) && g_tx_len > 0) {
         SPI->fifo8[0] = *g_tx_buffer++;
         g_tx_len--;
+    }
+
+    if (g_tx_len <= 0) {
+        g_tx_done = 1;
     }
 }
 
@@ -82,27 +91,21 @@ void SPI_IRQHandler()
 
     if (status & MXC_F_SPI_INTFL_RX_THD) {
         SPI->intfl |= MXC_F_SPI_INTFL_RX_THD;
+        if (!g_use_dma) {
+            // RX threshold has been crossed, there's data to unload from the FIFO
+            processSPI();
+        }
     }
 
-    // Unload any SPI data that has come in
-    while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL)) {
-        *g_rx_buffer++ = SPI->fifo8[0];
-        g_rx_len--;
+    if (status & MXC_F_SPI_INTFL_TX_THD) {
+        SPI->intfl |= MXC_F_SPI_INTFL_TX_THD;
+        if (!g_use_dma) {
+            // TX threshold has been crossed, we need to refill the FIFO
+            processSPI();
+        }
     }
 
-    if (g_rx_len <= 0) {
-        g_rx_done = 1;
-    }
-
-    // Write any pending bytes out.
-    while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
-        SPI->fifo8[0] = *g_tx_buffer++;
-        g_tx_len--;
-    }
-
-    // if (g_tx_len <= 0) {
-    //     g_tx_done = 1;
-    // }
+    
 }
 
 int dma_init()
@@ -218,10 +221,11 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
                      (rxlen << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS);
     }
 
-    if (use_dma) {
-        SPI->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);  // Disable FIFOs before clearing as recommended by UG
-        SPI->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);  // Clear the FIFOs
+    SPI->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);  // Disable FIFOs before clearing as recommended by UG
+    SPI->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);  // Clear the FIFOs
 
+    if (use_dma) {
+        g_use_dma = true;
         // TX
         if (txlen > 1) {
             // Configure TX DMA channel to fill the SPI TX FIFO
@@ -256,42 +260,51 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
         }
 
     } else { // !use_dma
+        g_use_dma = false;
         g_rx_buffer = dest;
         g_tx_buffer = src;
         g_rx_len = rxlen;
         g_tx_len = txlen;
 
+        SPI->inten |= MXC_F_SPI_INTEN_MST_DONE;
+
         if (txlen > 0) {
-            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
+            // Enable TX FIFO & TX Threshold crossed interrupt 
+            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN);
+            SPI->inten |= MXC_F_SPI_INTEN_TX_THD;
         }
 
         if (rxlen > 0) {
-            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
+            // Enable RX FIFO & RX Threshold crossed interrupt
+            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN);
+            SPI->inten |= MXC_F_SPI_INTEN_RX_THD;
         }
 
-        SPI->inten |= MXC_F_SPI_INTEN_RX_THD | MXC_F_SPI_INTEN_MST_DONE;
-
-        // Unload any SPI data that has come in
-        while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL)) {
-            *g_rx_buffer++ = SPI->fifo8[0];
-            g_rx_len--;
-        }
-
-        // Write any pending bytes out.
-        while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
-            SPI->fifo8[0] = *g_tx_buffer++;
-            g_tx_len--;
-        }
+        /*
+        This processSPI call fills the TX FIFO as much as possible
+        before launching the transaction.  Subsequent FIFO management will
+        be handled from the SPI_IRQHandler. 
+        */
+        processSPI();
     }
 
     // Start the SPI transaction
     SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
 
-    if (deassert) {  // Peripheral select is deasserted at end of transmission
+    /*
+    Handle slave-select (SS) deassertion.  This must be done AFTER launching the transaction
+    to avoid a glitch on the SS line if:
+    - The SS line is asserted
+    - We want to deassert the line as part of this transaction
+
+    As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the SS pin based
+    on the value of CTRL->SS_CTRL, which causes the glitch.
+    */
+    if (deassert)
         SPI->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
-    } else {  // Peripheral select stays asserted at end of transmission
+    else
         SPI->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
-    }
+
 
     if (block)
         while(!((g_tx_done && g_master_done) && (src != NULL && txlen > 0)) && !(g_rx_done && (dest != NULL && rxlen > 0))) {}
