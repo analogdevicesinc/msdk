@@ -159,6 +159,7 @@ void palCfgLoadLlParams(uint8_t *pConfig)
   pCfg->maxBig                = 0;
   pCfg->maxBis                = 0;
 
+  pCfg->dtmRxSyncMs           = 1; /* fix WLP_V1 PER failure */
 #endif
 }
 
