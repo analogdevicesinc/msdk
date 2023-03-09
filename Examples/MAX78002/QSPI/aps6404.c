@@ -23,14 +23,10 @@ int _transmit_spi_header(uint8_t cmd, uint32_t address)
     int err = E_NO_ERROR;
     // SPI reads and writes will always start with 4 bytes.
     // A command byte, then a 24-bit address (MSB first)
-    // However, the MXC_SPI drivers don't seem to support
-    // standard half-duplex transactions, so breaking
-    // the transaction up is necessary.
-    // TODO: Support standard half-duplex in drivers
     uint8_t header[4];
     _parse_spi_header(cmd, address, header);
 
-    // Transmit header, but keep Chip Select asserted
+    // Transmit header, but keep Chip Select asserted.
     spi_transmit(header, 4, NULL, 0, false, true, true);
     return err;
 }
@@ -139,23 +135,12 @@ int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len)
 
     int err = E_NO_ERROR;
     uint8_t header[7];
-    memset(header, 0x13, 7);
+    memset(header, 0xFF, 7);
+    // ^ Sending dummy bytes with value 0x00 seems to break QSPI reads...  Sending 0xFF works
     _parse_spi_header(0xEB, address, header);
 
-#if 0
-    // TODO: Address QSPI hardware limitations preventing single transaction
-    err = spi_transmit(header, 7, out, len, true, true, true);
-#else
     err = spi_transmit(&header[0], 7, NULL, 0, false, true, true);
-    // mxc_gpio_cfg_t wtf = spi_pins;
-    // wtf.func = MXC_GPIO_FUNC_IN;
-    // wtf.pad = MXC_GPIO_PAD_NONE;
-    // wtf.mask = (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9);
-    // MXC_GPIO_Config(&wtf);
-
-    // MXC_GPIO_Config(&spi_pins);
     err = spi_transmit(NULL, 0, out, len, true, true, true);
-#endif
     return err;
 }
 
