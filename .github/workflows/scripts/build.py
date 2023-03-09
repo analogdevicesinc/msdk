@@ -6,6 +6,7 @@ import argparse
 blacklist = [
     "MAX32570",
     "MAX32572",
+    "MAXREFDES178",
     "BCB", 
     "ROM", 
     "Simulation", 
