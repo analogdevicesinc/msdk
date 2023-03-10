@@ -4,6 +4,17 @@ This script prepared to provide a way to manage SCP file in C code.
 The scripts will convert each .packet file to a C array, the name of array will be name of the file, 
 then each packet array will linked with a C structure.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Usage
 ```python scp_to_c_array.py [URL to packet.list file] <Target Board> <Image Name>```
 Param 2 and 3 is optional. If you do not pass them, it will be 'MAX32520KIT' 'fw'

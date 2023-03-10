@@ -6,6 +6,16 @@ A function to blink an LED (found in ramfunc.c) is copied to external memory and
 
 *** Note ***: On the MAX32690 EV Kit, the external memory type is HyperRAM and the chip select used is 0.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

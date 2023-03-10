@@ -51,7 +51,9 @@
 #include "icc.h"
 #include "uart.h"
 #include "led.h"
+#ifndef BOARD_AUD01_REVA
 #include "pb.h"
+#endif
 
 /***** Definitions *****/
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
@@ -244,10 +246,9 @@ int main(void)
     int err = 0;
 
     printf("\n\n***** Flash Control Example *****\n");
+#ifndef BOARD_AUD01_REVA
     printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
-
     PB_RegisterCallback(0, (pb_callback)button_handler);
-
     while (!button_pressed) {
         LED_On(LED1);
         MXC_Delay(MXC_DELAY_MSEC(500));
@@ -255,6 +256,10 @@ int main(void)
         MXC_Delay(MXC_DELAY_MSEC(500));
     }
     LED_Off(LED1);
+#else
+    printf("Starting in 3 seconds...\n");
+    MXC_Delay(MXC_DELAY_SEC(3));
+#endif
 
     setup_irqs(); // See notes in function definition
 

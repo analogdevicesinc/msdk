@@ -6,6 +6,17 @@ More specifically, in this example the EEPROM0 task attempts to read data from E
 
 You may change the configuration of each EEPROM's I2C transaction parameters (slave address, bus frequency, EEPROM read address, transaction interval, I2C timeout) by modifying their definitions at the top of main.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Setup
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Install headers JP7(RX\_EN) and JP8(TX\_EN).

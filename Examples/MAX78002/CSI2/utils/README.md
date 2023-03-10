@@ -1,6 +1,9 @@
 ## Description
 
-This folder contains Python scripts designed for use with the "ImgCapture" firmware.  These include a full-featured console application and image conversion utilites.
+This folder contains Python utilty scripts for image capturing and post-processing, including a serial console application and image conversion utilites.  The console application supports communication with the following example projects:
+
+* ImgCapture
+* CSI2
 
 ## Requirements
 
@@ -18,7 +21,7 @@ pip install -r requirements.txt
 
 ### Console (console.py)
 
-1. Ensure the latest ImgCapture-Serial is flashed to the host MCU and running.
+1. Ensure the latest firmware from a support example project is flashed to the host MCU and running.  Refer to the example's [README](../README.md) file for more details on this step.
 
 2. Verify that the LED on the host MCU is flashing.  This is the signal that the firmware is searching for the host.
 
@@ -28,7 +31,7 @@ pip install -r requirements.txt
     $ python console.py <COM port>
     ```
 
-    "<COM port>" should match the port presented by the host MCU.  On the MAX78000FTHR, that will be a single port presented by the integrated CMSIS-DAP debugger.  On the MAX78000EVKIT, that will match the port presented by CN1 (USB/PWR).
+    "<COM port>" should match the port presented by the MAX78002EVKIT on CN2.
 
     Alternatively, use `python console.py -h` to see a list of console start-up options.
 
@@ -44,52 +47,9 @@ pip install -r requirements.txt
     MCU: 'help' : Print this help string
     MCU: 'reset' : Issue a soft reset to the host MCU.
     MCU: 'capture' : Perform a standard blocking capture of a single image
-    MCU: 'imgres' <width> <height> : Set the image resolution of the camera to <width> x <height>
-    MCU: 'stream' : Performs a line-by-line streaming DMA capture of a single image, capable of higher resolutions
-    MCU: 'set-reg' <register> <value> : Write a value to a camera register.
-    MCU: 'get-reg' <register> : Prints the value in a camera register.
     MCU: -----
     MCU: Initializing DMA
     MCU: Initializing camera
-    MCU: Camera I2C slave address: 3c
-    MCU: Camera ID detected: 7fa2
-    MCU: Ready!
-    $
-    ```
-
-    If SD card functionality has been enabled in firmware, an extended command set will be loaded, and your startup sequence should look similar to the following:
-
-    ```shell
-    $ python console.py COM8
-    Started ImgCapture console and opened COM8
-    MCU: *SYNC*
-    MCU: Established communications with host!
-    MCU: Registered 18 total commands:
-    MCU: -----
-    MCU: 'help' : Print this help string
-    MCU: 'reset' : Issue a soft reset to the host MCU.
-    MCU: 'capture' : Perform a standard blocking capture of a single image
-    MCU: 'imgres' <width> <height> : Set the image resolution of the camera to <width> x <height>
-    MCU: 'stream' : Performs a line-by-line streaming DMA capture of a single image, capable of higher resolutions
-    MCU: 'set-reg' <register> <value> : Write a value to a camera register.
-    MCU: 'get-reg' <register> : Prints the value in a camera register.
-    MCU: 'mount' : Mount the SD card, enabling the commands below.  This will format the SD card if the MCU detects it's blank.
-    MCU: 'unmount' : Unmount the SD card.
-    MCU: 'cwd' : Print the current working directory (cwd).
-    MCU: 'cd' <dir> : Change the current working directory to <dir>.
-    MCU: 'ls' : List the contents of the current working directory.
-    MCU: 'mkdir' <dir> : Create a directory
-    MCU: 'rm' <item> : Remove a file or (empty) directory.
-    MCU: 'touch' <filename> : Create an empty file.
-    MCU: 'write' <filename> <string> : Write a string to a file.
-    MCU: 'cat' <filename> : Print the contents of a file.
-    MCU: 'snap' <filename> : Snap an image (using 'stream') and save it to the SD card.  <filename> is optional.  If none is specified, images will be saved to /raw.
-    MCU: -----
-    MCU: Mounting SD card...
-    MCU: SD card mounted.
-    MCU: Volume label: MAXIM-SD
-    MCU: Initializing DMA      
-    MCU: Initializing camera   
     MCU: Camera I2C slave address: 3c
     MCU: Camera ID detected: 7fa2
     MCU: Ready!
@@ -102,7 +62,7 @@ pip install -r requirements.txt
 
 This script is useful for converting a large set of images that have been saved to an SD card.  It will attempt to convert all of the images in the specified input directory to .png files in its output directory.
 
-Run `-h` for help: 
+Run `-h` for help:
 
 ```shell
 $ python batchconvert.py -h

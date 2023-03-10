@@ -37,7 +37,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Reserved LED IDs. */
-enum
+enum PalLedReserved_id
 {
   /* System signals. */
   PAL_LED_ID_CPU_ACTIVE     = 0x30,  /*!< CPU active LED ID. */
