@@ -14,7 +14,7 @@
 # Add your config here!
 
 ifeq ($(BOARD),FTHR_APPS_A)
-$(error This project requires an external flash IC, therefore it's not supported on the MAX32650FTHR)
+$(error ERR_NOTSUPPORTED: This project requires an external flash IC, therefore it's not supported on the MAX32650FTHR)
 endif
 
 # Override the default linkerfile

@@ -18,6 +18,6 @@ SBT=0
 LIB_LVGL = 1
 
 ifeq ($(BOARD),FTHR)
-$(error This example requires a TFT display, therefore it's not supported for the MAX32672FTHR)
+$(error ERR_NOTSUPPORTED: This example requires a TFT display, therefore it's not supported for the MAX32672FTHR)
 endif
 

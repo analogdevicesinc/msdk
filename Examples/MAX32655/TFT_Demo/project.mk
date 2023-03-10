@@ -12,5 +12,5 @@ IPATH += resources
 VPATH += resources
 
 ifeq ($(BOARD),FTHR_Apps_P1)
-$(error This example requires a TFT display, therefore it's not supported on the MAX32650FTHR)
+$(error ERR_NOTSUPPORTED: This example requires a TFT display, therefore it's not supported on the MAX32650FTHR)
 endif

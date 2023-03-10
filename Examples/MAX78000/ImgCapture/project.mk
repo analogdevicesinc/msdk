@@ -41,3 +41,7 @@ PROJ_CFLAGS += -DSD
 LIB_SDHC = 1
 VPATH += src/sd
 endif
+
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif

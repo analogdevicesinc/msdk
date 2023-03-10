@@ -30,3 +30,7 @@ endif
 MXC_OPTIMIZE_CFLAGS = -O2
 # Default optimization level for debugging purpose
 #MXC_OPTIMIZE_CFLAGS = -Og
+
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif

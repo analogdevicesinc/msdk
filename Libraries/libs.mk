@@ -178,12 +178,12 @@ LIB_NFC_PCD_RF_DRIVER_DIR ?= $(LIBS_DIR)/NFC/lib_nfc_pcd_rf_driver_$(TARGET_UC)
 
 ifeq ("$(wildcard $(LIB_NFC_PCD_PBM_DIR))","")
 $(warning Warning: Failed to locate $(LIB_NFC_PCD_PBM_DIR))
-$(error NFC libraries not found (Only available via NDA).  Please install the NFC package to $(LIBS_DIR)/NFC)
+$(error ERR_LIBNOTFOUND: NFC libraries not found (Only available via NDA).  Please install the NFC package to $(LIBS_DIR)/NFC)
 endif
 
 ifeq ("$(wildcard $(LIB_NFC_PCD_RF_DRIVER_DIR))","")
 $(warning Warning: Failed to locate $(LIB_NFC_PCD_RF_DRIVER_DIR))
-$(error NFC libraries not found (Only available via NDA).  Please install the NFC package to $(LIBS_DIR)/NFC)
+$(error ERR_LIBNOTFOUND: NFC libraries not found (Only available via NDA).  Please install the NFC package to $(LIBS_DIR)/NFC)
 endif
 
 ifneq ($(DEV_LIB_NFC),1)
@@ -219,7 +219,7 @@ ifeq ($(LIB_EMV), 1)
 EMV_DIR ?= $(LIBS_DIR)/EMV
 
 ifeq ("$(wildcard $(EMV_DIR))","")
-$(error EMV library not found (Only available via NDA). Please install the EMV package to $(EMV_DIR))
+$(error ERR_LIBNOTFOUND: EMV library not found (Only available via NDA). Please install the EMV package to $(EMV_DIR))
 endif
 
 include $(EMV_DIR)/emv.mk
@@ -234,7 +234,7 @@ ifeq ($(LIB_UCL), 1)
 
 UCL_DIR ?= $(LIBS_DIR)/UCL
 ifeq ("$(wildcard $(UCL_DIR))","")
-$(error UCL not found (Only available via NDA). Please install the UCL package to $(UCL_DIR))
+$(error ERR_LIBNOTFOUND: UCL not found (Only available via NDA). Please install the UCL package to $(UCL_DIR))
 endif
 
 include $(UCL_DIR)/ucl.mk

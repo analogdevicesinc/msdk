@@ -15,21 +15,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
-
-## Setup
-
-##### Building Firmware:
-
-Before building firmware you must select the correct value for _BOARD_  in Makefile.ARM and Makefile.RISCV, either "EvKit\_V1" or "FTHR\_Apps\_P1", depending on the EV kit you are using to run the example.
-
-After doing so, navigate to the directory where the example is located. Enter the following comand to build all of the files needed to run the example.
-
-```
-$ make
-```
-
-***** Note *****: Be sure to use the max32680-combined.elf executable in the _Build_ directory.
+* **This combined RISC-V project contains a unique set of split Makefiles without a project.mk file.**  However, the same build configuration variables are accessible from your IDE as a standard example (see the MSDK User Guide for more details), and the example should function as a standard example.
 
 ##### Required Connections:
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

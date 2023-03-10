@@ -58,4 +58,3 @@ fw_obj: $(FW_UPDATE_OBJ)
 
 ${FW_UPDATE_OBJ}: fw_update.S ${FW_UPDATE_BIN}
 	${CC} ${AFLAGS} -o ${@} -c fw_update.S
-

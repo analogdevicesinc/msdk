@@ -13,3 +13,7 @@ LIB_FREERTOS = 1
 # Tell make file where to find the I2C Manager source files
 VPATH += i2c_mngr
 IPATH += i2c_mngr
+
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif
