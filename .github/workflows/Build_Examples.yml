@@ -101,11 +101,13 @@ jobs:
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
 
       - name: Setup Python
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         uses: actions/setup-python@v4.5.0
         with:
           cache: pip
 
       - name: Install packages
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         run: pip install -r .github/workflows/scripts/requirements.txt
 
       # Runs a set of commands using the runners shell
