@@ -310,6 +310,8 @@ class BLE_hci:
         
         self.port.write(arr)
         
+        sleep(0.2) # for better sync of controller status change and master/slave sync
+
         sleep(delay)
             
         if(resp):

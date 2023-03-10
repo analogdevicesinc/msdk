@@ -261,12 +261,12 @@ static inline int MXC_SYS_In_Crit_Section(void)
     return _state.in_critical;
 }
 
+// clang-format off
 /**
  * @brief Macro for wrapping a section of code to make it critical.  Note: this macro
  * does not support nesting.
  */
-// clang-format off
-#define MXC_CRITICAL(code) { \
+#define MXC_CRITICAL(code) {\
     MXC_SYS_Crit_Enter();\
     code;\
     MXC_SYS_Crit_Exit();\

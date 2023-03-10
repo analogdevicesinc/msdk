@@ -67,20 +67,22 @@ void my_isr(void)
 
 int main(void)
 {
-    printf("********** Comparator Example **********\n");
-    printf("\nConnect the analog signal used as the positive comparator input to analog pin 7 "
-           "(P0.15)).\n");
-    printf("Connect the analog signal used as the negative comparator input to analog pin 3 "
-           "(P0.11).\n");
-    printf("\nThe device will be placed in Deep Sleep and requires an edge transition of\n");
-    printf("the comparator output to wakeup.\n\n");
+    printf("\n********** Comparator Example **********\n");
+
+    printf("\nConnect the positive comparator input to analog pin 7 (P0.15).\n");
+    printf("Connect the negative comparator input to analog pin 3 (P0.11).\n");
+
+    printf("\nThe device will repeatedly be placed in Deep Sleep and requires an edge\n");
+    printf("transition of the comparator output to wakeup.\n\n");
 
     printf("Press any user push button to begin.\n");
     while (!PB_IsPressedAny()) {}
 
+    // Configure Comparator as a low-power wakeup source
     MXC_LP_EnableComparatorWakeup(MXC_ADC_COMP_1);
     MXC_ADC_EnableComparator(MXC_ADC_COMP_1, MXC_ADC_CH_3, MXC_ADC_CH_7);
 
+    // Enable Comparator interrupt
     MXC_NVIC_SetVector(GPIOWAKE_IRQn, my_isr);
     NVIC_EnableIRQ(GPIOWAKE_IRQn);
     __enable_irq();
@@ -88,6 +90,8 @@ int main(void)
     while (1) {
         printf("\nEntering sleep mode.\n");
         while (MXC_UART_GetActive(ConsoleUart)) {}
+
+        // Go into Deep sleep and wait for comparator wakeup signal
         MXC_LP_EnterDeepSleepMode();
         printf("Waking up.\n");
     }

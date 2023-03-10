@@ -2,15 +2,15 @@
 
 echo
 echo "##############################################################################################"
-echo "# test_launcher.sh <target(lower case)> <DUT control port> <DUT DAP sn> <board type>         #"
+echo "# test_launcher.sh <target(lc)> <DUT control port> <DUT DAP sn> <test type> < optional board>         #"
 echo "##############################################################################################"
-echo 
+echo
 
 echo args: $@
-if [[ $# -eq 4 ]]; then
-    DUT_BOARD_TYPE=$4
+if [[ $# -eq 5 ]]; then
+    DUT_BOARD_TYPE=$5
 else
-    DUT_BOARD_TYPE=EvKit_V1        
+    DUT_BOARD_TYPE=EvKit_V1
 fi
 echo "DUT_BOARD_TYPE:" $DUT_BOARD_TYPE
 echo
@@ -18,7 +18,6 @@ cd ../ci-tests/Examples_tests/
 EXAMPLE_TEST_PATH=$(pwd)
 cd ../../../../
 MSDK_DIR=$(pwd)
-echo pwd=`pwd`
 failedTestList=" "
 numOfFailedTests=0
 
@@ -49,36 +48,28 @@ function initial_setup() {
         export OPENOCD=/home/btm-ci/Tools/openocd/src/openocd
         export ROBOT=/home/btm-ci/.local/bin/robot
 
-        MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`     
-        main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])"`
+        MAIN_DEVICE_ID=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])")
+        main_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])")
         MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
-        
+
         # Get the serial number of all daplink devices, this is used to erase them all.
-        DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
-        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
-       # DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A5']['DAP_sn'])"`
+
     elif [ $(hostname) == "yingcai-OptiPlex-790" ]; then
         echo "On machine yingcai-OptiPlex-790"
         echo
 
         FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-        
+
         export OPENOCD_TCL_PATH=/home/$USER/Tools/openocd/tcl
         export OPENOCD=/home/$USER/Tools/openocd/src/openocd
         export ROBOT=/home/$USER/.local/bin/robot
 
-        MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['daplink'])"`
-        main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['uart0'])"`
+        MAIN_DEVICE_ID=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['daplink'])")
+        main_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['uart0'])")
         MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
 
         # Get the serial number of all daplink devices, this is used to erase them all.
-        DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y1']['daplink'])"`
-        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board_y2']['daplink'])"`
-        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board_2']['daplink'])"`
-        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_3']['daplink'])"`
-        DEVICE5=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_A3']['DAP_sn'])"`
+
     else
         # Local- eddie desktop
         FILE=/home/$USER/boards_config.json
@@ -86,18 +77,15 @@ function initial_setup() {
         export OPENOCD_TCL_PATH=/home/eddie/workspace/openocd/tcl
         export OPENOCD=/home/eddie/workspace/openocd/src/openocd
         export ROBOT=/home/eddie/.local/bin/robot
-    
-        MAIN_DEVICE_ID=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`     
-        main_uart=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])"`
+
+        MAIN_DEVICE_ID=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])")
+        main_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['uart0'])")
         MAIN_DEVICE_SERIAL_PORT=/dev/"$(ls -la /dev/serial/by-id | grep -n $main_uart | rev | cut -d "/" -f1 | rev)"
 
         # Get the serial number of all daplink devices, this is used to erase them all.
-        DEVICE1=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board1']['daplink'])"`
-        DEVICE2=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])"`
-        DEVICE3=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])"`
-        DEVICE4=`/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32690_board_w1']['daplink'])"`
+
     fi
-    
+
     # "Main device" is the ME17 used as the cleint dudring connected tests
     MAIN_DEVICE_NAME_UPPER=MAX32655
     MAIN_DEVICE_NAME_LOWER=max32655
@@ -163,19 +151,11 @@ function flash_with_openocd() {
 function reset_board_by_openocd() {
     echo "function: ${FUNCNAME[0]} $@"
 
-    set +e
     $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg \
-             -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH \
-             -c "adapter serial $2" \
-             -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" \
-             -c "init; reset run" >/dev/null &
-
-    openocd_dapLink_pid=$!
-    sleep 0.5
-    if ps -p $openocd_dapLink_pid >/dev/null; then
-        kill -9 $openocd_dapLink_pid || true
-    fi
-    set -e
+        -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH \
+        -c "adapter serial $2" \
+        -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" \
+        -c "init; reset exit"
 }
 
 #****************************************************************************************************
@@ -227,13 +207,14 @@ function erase_with_openocd() {
 function run_notConntectedTest() {
 
     print_project_banner
-    echo "run_notConntectedTest"
-    echo
-    cd $PROJECT_NAME
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/$CURRENT_TEST
+    make clean
+    make libclean
+    make BOARD=$DUT_BOARD_TYPE -j
     set +x
-    echo "> Flashing $DUT_NAME_UPPER $PROJECT_NAME"
+    echo "> Flashing $DUT_NAME_UPPER $CURRENT_TEST"
     echo
-    # make -j8 projects are build in validation build step
+
     cd build/
     flash_with_openocd $DUT_NAME_LOWER $DUT_ID
     #place to store robotframework results
@@ -244,39 +225,36 @@ function run_notConntectedTest() {
     # do not let a single failed test stop the testing of the rest
     set +e
     #runs desired test
-    echo
-    echo "$ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/$PROJECT_NAME -v SERIAL_PORT_1:$DUT_SERIAL_PORT $PROJECT_NAME.robot"
-    echo
-    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/$PROJECT_NAME -v SERIAL_PORT_1:$DUT_SERIAL_PORT $PROJECT_NAME.robot
+    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/$CURRENT_TEST -v SERIAL_PORT_1:$DUT_SERIAL_PORT $CURRENT_TEST.robot
     let "testResult=$?"
     if [ "$testResult" -ne "0" ]; then
         # update failed test count
         let "numOfFailedTests+=$testResult"
-        failedTestList+="| $PROJECT_NAME ($DUT_NAME_UPPER) "
+        failedTestList+="| $CURRENT_TEST ($DUT_NAME_UPPER) "
 
         # save elf of failed test
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/$PROJECT_NAME/build
-        cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_"$PROJECT_NAME.elf
+
+        printf "\r\n Saving failed elfs to $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_"$CURRENT_TEST.elf \r\n "
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/$CURRENT_TEST/build
+        cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_"$CURRENT_TEST.elf
     fi
     set -e
 
     # get back to target directory
+    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
 }
+
 #****************************************************************************************************
 function flash_bootloader() {
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
     make clean
-
-    if [ $4 == "WLP_V1" ]; then
-        make -j8 BOARD=WLP_V1
-    else
-        make USE_INTERNAL_FLASH=$1 -j8
-    fi
+    make libclean
+    make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$1 -j
 
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader/build
-    printf ">>>>>>>   Flashing Bootloader on DUT\r\n\r\n"
-    
+    printf "\r\n>>>>>>>   Flashing Bootloader on DUT\r\n\r\n"
+
     #not using the flash_with_openocd function here because that causes the application code to be erased and only
     #bootloader to remain
     set +e
@@ -300,11 +278,10 @@ function flash_bootloader() {
 }
 #****************************************************************************************************
 function erase_all_devices() {
-    erase_with_openocd max32655 $DEVICE1
-    erase_with_openocd max32655 $DEVICE2
-    erase_with_openocd max32665 $DEVICE3
-    erase_with_openocd max32690 $DEVICE4
-    #erase_with_openocd max32690 $DEVICE5
+    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+    if [ $CURRENT_TEST == "dats" ] || [ $CURRENT_TEST == "ota" ]; then
+        erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+    fi
 
 }
 #****************************************************************************************************
@@ -359,184 +336,238 @@ function change_advertising_names_local() {
 }
 
 #****************************************************************************************************
-#***************************************** Start of test script *************************************
+# Function accepts 1 parameter :
+# param : test to run
+# eg : run_single_not_conencted_tests BLE_dats
+function run_single_not_conencted_tests() {
+    CURRENT_TEST=$1
+    case $CURRENT_TEST in
+
+    "BLE_datc")
+        run_notConntectedTest
+        ;;
+
+    "BLE_dats")
+        run_notConntectedTest
+        ;;
+
+    "BLE_mcs")
+        run_notConntectedTest
+        ;;
+
+    "BLE_fit")
+        if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
+            run_notConntectedTest
+        fi
+        ;;
+
+    "BLE_fcc")
+
+        #Nothing to do here, no test for fcc
+        ;;
+
+    "BLE_FreeRTOS")
+        if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
+            run_notConntectedTest
+        fi
+        ;;
+
+    "BLE_otac")
+        run_notConntectedTest
+        ;;
+
+    "BLE_otas")
+        # gets tested during conencted test below
+
+        ;;
+
+    "BLE_periph")
+        # No buttons implemented for this example so lets just make sure it builds, so we can ship it
+        ;;
+
+    *) ;;
+
+    esac
+}
 #****************************************************************************************************
+function run_all_not_conencted_tests() {
 
-# parameterizes all relavent device variables and makes directories to store robot framework log files
-# takes the three args given to the script: eg: max32655 , D3073ICQ , 0409000052fb0cd70000000000000000097969906
-initial_setup $1 $2 $3
-
-# does what it says
-erase_all_devices
-
-# change advertising names to avoid connection with office devices
-# and builds all examples named "BLE" in the directory of the device under test
-if [ $(hostname) == "wall-e" ]; then
-
-    change_advertising_names_walle
-    #build all examples
-    SUBDIRS=$(find . -type d -name "BLE*")
-    for dir in ${SUBDIRS}; do
-        echo "---------------------------------------"
-        echo " Validation build for ${dir}"
-        echo "---------------------------------------"
-        make -C ${dir} clean
-        make -C ${dir} libclean
-        make -C ${dir} -j8 BOARD=$DUT_BOARD_TYPE
-    done
-else
-    # Allows me to run this script on my local machine with no modifications
-    change_advertising_names_local
-    # build BLE examples
+    # enter  device directory
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
-    SUBDIRS=$(find . -type d -name "BLE_*")
-    for dir in ${SUBDIRS}; do
-        echo "---------------------------------------"
-        echo " Validation build for ${dir}"
-        echo "---------------------------------------"
-        make -C ${dir} clean
-        #make -C ${dir} libclean
-        make -C ${dir} -j8 BOARD=$DUT_BOARD_TYPE
-    done
-fi
 
-# enter  device directory
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
+    # Iterate through the BLE projects, flash and run robotframework tests
+    project_filter='BLE_'
+    for dir in ./*/; do
+        if [[ "$dir" == *"$project_filter"* ]]; then
+            export PROJECT_NAME=$(echo "$dir" | tr -d /.)
+            $PROJECT_NAME
+            run_single_not_conencted_tests $PROJECT_NAME
+        fi
 
-# Iterate through the BLE projects, flash and run robotframework tests
-project_filter='BLE_'
-for dir in ./*/; do
-    if [[ "$dir" == *"$project_filter"* ]]; then
-        export PROJECT_NAME=$(echo "$dir" | tr -d /.)
-        case $PROJECT_NAME in
+        let projIdx++
 
-        "BLE_datc")
-            run_notConntectedTest
-            ;;
+    done # end non connected tests
 
-        "BLE_dats")
-            run_notConntectedTest
-            ;;
+}
+#****************************************************************************************************
+function run_datcs_conencted_tests() {
+    echo
+    echo "****************************************************************************************************"
+    echo "*********************************** Start of Datc/s connected tests ********************************"
+    echo "****************************************************************************************************"
+    echo
+    erase_all_devices
 
-        "BLE_mcs")
-            run_notConntectedTest
-            ;;
+    # Flash MAIN_DEVICE with BLE_datc
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+    make clean
+    make libclean
+    make -j
 
-        "BLE_fit")
-            if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-                run_notConntectedTest
-            fi
-            ;;
+    # flash client first because it takes longer
+    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
+    printf "\r\n> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n"
+    #flash_with_openocd_fast $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
+    flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
 
-        "BLE_fcc")
+    # flash DUT with BLE_dats
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+    make clean
+    make libclean
+    make -j
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
+    printf "\r\n> Flashing BLE_dats on DUT $DUT_NAME_UPPER\r\n"
+    #flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
+    flash_with_openocd $DUT_NAME_LOWER $DUT_ID 2
 
-            #Nothing to do here, no test for fcc
-            ;;
+    # Reset the two boards
+    softreset_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+    softreset_with_openocd $DUT_NAME_LOWER $DUT_ID
 
-        "BLE_FreeRTOS")
-            if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-                run_notConntectedTest
-            fi
-            ;;
+    cd $EXAMPLE_TEST_PATH/tests
+    # runs desired test but do not exit on failure, save result to list for printing later
+    set +e
+    # Robot arguments are:
+    # directory to save log files
+    # serial port 1
+    # optional serial port 2
+    # robot test file
+    echo
+    echo "$ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_dat_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_dat_cs.robot"
+    echo
+    $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_dat_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_dat_cs.robot
+    let "testResult=$?"
+    if [ "$testResult" -ne "0" ]; then
+        # update failed test count
+        let "numOfFailedTests+=$testResult"
+        failedTestList+="| BLE_dat_cs ($DUT_NAME_UPPER) "
+        # test failed, save elfs datc/s
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
+        cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_BLE_datcs_client.elf"
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
+        cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_datcs_server.elf"
+    fi
+    set -e
 
-        "BLE_otac")
-            run_notConntectedTest
-            ;;
+    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+    erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
-        "BLE_otas")
-            # gets tested during conencted test below
+}
+#****************************************************************************************************
+function run_ota_test() {
+    echo
+    echo "****************************************************************************************************"
+    echo "*********************************** Start of OTAC/s (Ext FLASH )connected tests ********************************"
+    echo "****************************************************************************************************"
+    # ME18 evkit does not have external flash
+    if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
 
-            ;;
+        #make sure all files have correct settings
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        perl -i -pe "s/FW_VERSION_MAJOR 2/FW_VERSION_MAJOR 1/g" wdxs_file_ext.c
+        sed -i "s/USE_INTERNAL_FLASH ?=1/USE_INTERNAL_FLASH ?=0/g" project.mk
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
+        sed -i "s/USE_INTERNAL_FLASH ?=1/USE_INTERNAL_FLASH ?=0/g" project.mk
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+        #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
+        sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
+        sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
 
-        "BLE_periph")
-            # No buttons implemented for this example so lets just make sure it builds, so we can ship it
-            ;;
+        sleep 1
+        # Make OTAS V1 and flash
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        make clean
+        make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=0 -j
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
+        printf "\r\n\r\n>>>>>>>> Flashing BLE_otas V1 on DUT $DUT_NAME_UPP\r\n\r\n"
+        flash_with_openocd $DUT_NAME_LOWER $DUT_ID
 
-        *) ;;
+        # Flash bootloader : arg : USE_INTERNAL_FLASH=0
+        flash_bootloader 0
 
-        esac
+        # change OTAS firmware version and rebuild
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        # change firmware version to verify otas worked
+        perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_ext.c
+        make clean
+        make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=0 -j
 
+        # make OTAC
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+        # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
+        make clean
+        make BOARD=$DUT_BOARD_TYPE FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j
+
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+        printf ">>>>>>> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
+        flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
+        printf ">>>>>>> Flashing done"
+
+        #revert files back
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+        sed -i 's/TARGET='"$DUT_NAME_UPPER"'//' project.mk
+        sed -i 's/TARGET_UC='"$DUT_NAME_UPPER"'//' project.mk
+        sed -i 's/TARGET_LC='"$DUT_NAME_LOWER"'//' project.mk
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        perl -i -pe "s/FW_VERSION_MAJOR 2/FW_VERSION_MAJOR 1/g" wdxs_file_ext.c
+        # give time to connect
+        sleep 1
+
+        set +e
+        # runs desired test
+        cd $EXAMPLE_TEST_PATH/tests
+        $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot
+        let "testResult=$?"
+        if [ "$testResult" -ne "0" ]; then
+            # update failed test count
+            let "numOfFailedTests+=$testResult"
+            failedTestList+="| BLE_ota_cs_ext ($DUT_NAME_UPPER) "
+            # test failed, save elfs datc/s
+            cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+            cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_ext.elf"
+            cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
+            cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_ext.elf"
+        fi
+        set -e
+
+        # make sure to erase main device and current DUT to it does not store bonding info
+        erase_with_openocd $DUT_NAME_LOWER $DUT_ID
+        #   erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     fi
 
-    let projIdx++
+    echo
+    echo "****************************************************************************************************"
+    echo "*********************************** Start of OTAC/s (Int FLASH )connected tests ********************************"
+    echo "****************************************************************************************************"
 
-done # end non connected tests
-
-echo
-echo "****************************************************************************************************"
-echo "*********************************** Start of Datc/s connected tests ********************************"
-echo "****************************************************************************************************"
-echo
-
-erase_all_devices
-
-# Flash MAIN_DEVICE with BLE_datc
-cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
-echo pwd=`pwd`
-echo
-
-make -j8
-
-# flash client first because it takes longer
-cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
-printf "\r\n> Flashing BLE_datc on main device: $MAIN_DEVICE_NAME_UPPER\r\n"
-#flash_with_openocd_fast $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
-flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID 1
-
-# flash DUT with BLE_dats
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
-printf "\r\n> Flashing BLE_dats on DUT $DUT_NAME_UPPER\r\n"
-#flash_with_openocd_fast $DUT_NAME_LOWER $DUT_ID 2
-flash_with_openocd $DUT_NAME_LOWER $DUT_ID 2
-
-# Reset the two boards
-reset_board_by_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-reset_board_by_openocd $DUT_NAME_LOWER         $DUT_ID
-
-cd $EXAMPLE_TEST_PATH/tests
-# runs desired test but do not exit on failure, save result to list for printing later
-set +e
-# Robot arguments are:
-# directory to save log files
-# serial port 1
-# optional serial port 2
-# robot test file
-echo
-echo "$ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_dat_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_dat_cs.robot"
-echo
-$ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_dat_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_dat_cs.robot
-let "testResult=$?"
-if [ "$testResult" -ne "0" ]; then
-    # update failed test count
-    let "numOfFailedTests+=$testResult"
-    failedTestList+="| BLE_dat_cs ($DUT_NAME_UPPER) "
-    # test failed, save elfs datc/s
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc/build
-    cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_BLE_datcs_client.elf"
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats/build
-    cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_datcs_server.elf"
-fi
-set -e
-
-echo
-echo "Make sure to erase main device and current DUT to it does not store bonding info."
-echo
-erase_with_openocd $DUT_NAME_LOWER $DUT_ID
-erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-
-echo
-echo "****************************************************************************************************"
-echo "*********************************** Start of OTAC/s connected tests ********************************"
-echo "****************************************************************************************************"
-
-if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
+    erase_all_devices
 
     #make sure all files have correct settings
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-    perl -i -pe "s/FW_VERSION_MAJOR 2/FW_VERSION_MAJOR 1/g" wdxs_file_ext.c
-    sed -i "s/USE_INTERNAL_FLASH ?=1/USE_INTERNAL_FLASH ?=0/g" project.mk
+    perl -i -pe "s/FW_VERSION_MAJOR 2/FW_VERSION_MAJOR 1/g" wdxs_file_int.c
+    sed -i "s/USE_INTERNAL_FLASH ?=0/USE_INTERNAL_FLASH ?=1/g" project.mk
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
-    sed -i "s/USE_INTERNAL_FLASH ?=1/USE_INTERNAL_FLASH ?=0/g" project.mk
+    sed -i "s/USE_INTERNAL_FLASH ?=0/USE_INTERNAL_FLASH ?=1/g" project.mk
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
     #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
     sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
@@ -546,28 +577,35 @@ if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
     # Make OTAS V1 and flash
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
     make clean
-    make USE_INTERNAL_FLASH=0 -j8
+    make USE_INTERNAL_FLASH=1 -j8
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
-    printf ">>>>>>>> Flashing BLE_otas V1 on DUT $DUT_NAME_UPP\r\n\r\n"
+
+    printf "\r\n>>>>>>>> Flashing BLE_otas on DUT $DUT_NAME_UPP\r\n\r\n"
+
     flash_with_openocd $DUT_NAME_LOWER $DUT_ID
 
     # Flash bootloader also make sure it uses external flash version
-    flash_bootloader 0
+    flash_bootloader 1
 
-    # change OTAS firmware version and rebuild
+    printf "\r\nChange OTAS firmware version and rebuild.\r\n\r\n"
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
     # change firmware version to verify otas worked
-    perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_ext.c
+    perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file.c
+    perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_int.c
     make clean
-    make USE_INTERNAL_FLASH=0 -j8
+    if [ ${DUT_BOARD_TYPE} == "WLP_V1" ]; then
+        make -j BOARD=$DUT_BOARD_TYPE
+    else
+        make USE_INTERNAL_FLASH=1 -j8
+    fi
 
     # make OTAC
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-    # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
     make clean
-    make FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j8
+    make FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j8 BOARD=$DUT_BOARD_TYPE
 
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+
     printf ">>>>>>> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
     flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     printf ">>>>>>> Flashing done"
@@ -578,125 +616,69 @@ if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
     sed -i 's/TARGET_UC='"$DUT_NAME_UPPER"'//' project.mk
     sed -i 's/TARGET_LC='"$DUT_NAME_LOWER"'//' project.mk
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-    perl -i -pe "s/FW_VERSION_MAJOR 2/FW_VERSION_MAJOR 1/g" wdxs_file_ext.c
+    perl -i -pe "s/FW_VERSION_MAJOR 2/FW_VERSION_MAJOR 1/g" wdxs_file_int.c
+    sed -i "s/USE_INTERNAL_FLASH ?=1/USE_INTERNAL_FLASH ?=0/g" project.mk
+    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
+    sed -i "s/USE_INTERNAL_FLASH ?=1/USE_INTERNAL_FLASH ?=0/g" project.mk
+
     # give time to connect
     sleep 1
 
     set +e
     # runs desired test
     cd $EXAMPLE_TEST_PATH/tests
+    echo
+    echo "$ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot"
+    echo
     $ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot
     let "testResult=$?"
     if [ "$testResult" -ne "0" ]; then
         # update failed test count
         let "numOfFailedTests+=$testResult"
-        failedTestList+="| BLE_ota_cs_ext ($DUT_NAME_UPPER) "
+        failedTestList+="| BLE_ota_cs_int ($DUT_NAME_UPPER) "
         # test failed, save elfs datc/s
         cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
-        cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_ext.elf"
+        cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_int.elf"
         cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
-        cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_ext.elf"
+        cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_int.elf"
     fi
     set -e
 
-    # make sure to erase main device and current DUT to it does not store bonding info
-    erase_with_openocd $DUT_NAME_LOWER $DUT_ID
-    #   erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-fi
+    erase_all_devices
+}
 
 #****************************************************************************************************
-#*********************************** Start of OTAC/s connected tests (internal flash) ***************
+#***************************************** Start of test script *************************************
 #****************************************************************************************************
 
-erase_all_devices
+# parameterizes all relavent device variables and makes directories to store robot framework log files
+# takes the three args given to the script: eg: max32655 , D3073ICQ , 0409000052fb0cd70000000000000000097969906
+initial_setup $1 $2 $3
+CURRENT_TEST=$4
+change_advertising_names_walle
 
-#make sure all files have correct settings
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-perl -i -pe "s/FW_VERSION_MAJOR 2/FW_VERSION_MAJOR 1/g" wdxs_file_int.c
-sed -i "s/USE_INTERNAL_FLASH ?=0/USE_INTERNAL_FLASH ?=1/g" project.mk
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
-sed -i "s/USE_INTERNAL_FLASH ?=0/USE_INTERNAL_FLASH ?=1/g" project.mk
-cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-#appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
-sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
-sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
-
-sleep 1
-# Make OTAS V1 and flash
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-make clean
-make USE_INTERNAL_FLASH=1 -j8
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
-
-printf "\r\n>>>>>>>> Flashing BLE_otas on DUT $DUT_NAME_UPP\r\n\r\n"
-
-flash_with_openocd $DUT_NAME_LOWER $DUT_ID
-
-# Flash bootloader also make sure it uses external flash version
-flash_bootloader 1
-
-printf "\r\nChange OTAS firmware version and rebuild.\r\n\r\n"
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-# change firmware version to verify otas worked
-perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file.c
-perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_int.c
-make clean
-if [ ${DUT_BOARD_TYPE} == "WLP_V1" ]; then
-    make -j8 BOARD=$DUT_BOARD_TYPE
+if [ $CURRENT_TEST == "all" ]; then
+    echo
+    echo "Running all tests"
+    run_all_not_conencted_tests
+    run_datcs_conencted_tests
+    run_ota_test
+    echo
+elif [ $CURRENT_TEST == "dats" ]; then
+    echo
+    echo "Running Datc/s connected test"
+    run_datcs_conencted_tests
+    echo
+elif [ $CURRENT_TEST == "ota" ]; then
+    echo
+    echo "Running OTA test"
+    run_ota_test
+    echo
 else
-    make USE_INTERNAL_FLASH=1 -j8
+    echo
+    echo "Running single test"
+    run_single_not_conencted_tests $CURRENT_TEST
+    echo
 fi
 
-# make OTAC
-cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-make clean
-make FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j8 BOARD=$DUT_BOARD_TYPE
-
-cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
-
-printf ">>>>>>> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
-flash_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
-printf ">>>>>>> Flashing done"
-
-#revert files back
-cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-sed -i 's/TARGET='"$DUT_NAME_UPPER"'//' project.mk
-sed -i 's/TARGET_UC='"$DUT_NAME_UPPER"'//' project.mk
-sed -i 's/TARGET_LC='"$DUT_NAME_LOWER"'//' project.mk
-cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-perl -i -pe "s/FW_VERSION_MAJOR 2/FW_VERSION_MAJOR 1/g" wdxs_file_int.c
-# give time to connect
-sleep 1
-
-set +e
-# runs desired test
-cd $EXAMPLE_TEST_PATH/tests
-echo
-echo "$ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot"
-echo
-$ROBOT -d $EXAMPLE_TEST_PATH/results/$DUT_NAME_UPPER/BLE_ota_cs/ -v SERIAL_PORT_1:$MAIN_DEVICE_SERIAL_PORT -v SERIAL_PORT_2:$DUT_SERIAL_PORT BLE_ota_cs.robot
-let "testResult=$?"
-if [ "$testResult" -ne "0" ]; then
-    # update failed test count
-    let "numOfFailedTests+=$testResult"
-    failedTestList+="| BLE_ota_cs_int ($DUT_NAME_UPPER) "
-    # test failed, save elfs datc/s
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
-    cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_int.elf"
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
-    cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_int.elf"
-fi
-set -e
-
-erase_all_devices
-
-echo "=============================================================================="
-echo "=============================================================================="
-if [ "$numOfFailedTests" -ne "0" ]; then
-    printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-else
-    echo "Relax! ALL TESTS PASSED"
-fi
-echo "=============================================================================="
-echo "=============================================================================="
 exit $numOfFailedTests

@@ -48,9 +48,11 @@
 int flash_read(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, void *buffer,
                lfs_size_t size)
 {
-    uint32_t first_block = *(uint32_t *)c->context;
-    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off;
-    uint8_t *data = (uint8_t *)buffer;
+    uint32_t first_block = *(uint32_t *)c->context; // Starting page of LittleFS flash space
+    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off; // Start address of read
+    uint8_t *data = (uint8_t *)buffer; // Pointer to data buffer
+
+    // Copy Flash contents to data buffer
     for (uint8_t *ptr = (uint8_t *)startaddr; ptr < (uint8_t *)(startaddr + size); ptr++, data++) {
         *data = *ptr;
     }
@@ -61,9 +63,11 @@ int flash_read(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, voi
 int flash_write(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, const void *buffer,
                 lfs_size_t size)
 {
-    uint32_t first_block = *(uint32_t *)c->context;
-    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off;
-    uint32_t *data = (uint32_t *)buffer;
+    uint32_t first_block = *(uint32_t *)c->context; // Starting page of LittleFS flash space
+    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off; //Start address of write
+    uint32_t *data = (uint32_t *)buffer; // Pointer to data buffer
+
+    // Write 4 words to Flash
     return flash_write4(startaddr, size / c->prog_size, data, FALSE);
 }
 
@@ -71,9 +75,11 @@ int flash_write(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, co
 
 int flash_erase(const struct lfs_config *c, lfs_block_t block)
 {
-    uint32_t first_block = *(uint32_t *)c->context;
-    int addr = MXC_FLASH_PAGE_ADDR((first_block + block));
+    uint32_t first_block = *(uint32_t *)c->context; // Starting page of LittleFS flash space
+    int addr = MXC_FLASH_PAGE_ADDR((first_block + block)); // Address in flash page to erase
     LOGF("Erasing page at address %08x\n", addr);
+
+    // Erase flash page
     int error_status = MXC_FLC_PageErase(addr);
     if (error_status != E_NO_ERROR) {
         return error_status;
@@ -95,6 +101,7 @@ int flash_verify(uint32_t address, uint32_t length, uint8_t *data)
 {
     volatile uint8_t *ptr;
 
+    // Loop through Flash checking whether it matches data buffer
     for (ptr = (uint8_t *)address; ptr < (uint8_t *)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
@@ -112,6 +119,7 @@ int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 {
     uint32_t *ptr;
 
+    // Loop through Flash comparing what's currently stored to expected value
     for (ptr = (uint32_t *)startaddr; ptr < (uint32_t *)(startaddr + length); ptr++) {
         if (*ptr != data) {
             return 0;
@@ -135,8 +143,9 @@ int flash_write4(uint32_t startaddr, uint32_t length, uint32_t *data, bool verif
 
     MXC_ICC_Disable();
 
+    // Write data buffer to flash in 16-byte increments
     for (uint32_t testaddr = startaddr; i < length; testaddr += 16) {
-        // Write a word
+        // Write 16-bytes to flash
         int error_status = MXC_FLC_Write(testaddr, 16, &data[i]);
         if (error_status != E_NO_ERROR) {
             printf("Failure in writing a word : error %i addr: 0x%08x\n", error_status, testaddr);

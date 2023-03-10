@@ -2,9 +2,19 @@
 
 A demonstration of the windowed features of the watchdog timer.
 
-When the application begins, it initializes and starts the watchdog timer.  The application then begins to reset the watchdog within the allowed window.  Use SW3 on the evaluation kit to control if and when the application attempts to reset the timer.
+When the application begins, it initializes and starts the watchdog timer. The application then begins to reset the watchdog within the allowed window. 
 
--Watchdog timer is configured in Windowed mode. You can select between two tests: Timer Overflow and Underflow. Press button SW3 to create watchdog interrupt and reset
+When SW3 (P0.18) is pressed, the application will intentionally force a watchdog reset. If "UNDERFLOW" is defined at the top of *main*, the WDT count reset will occur before the window, causing a "too soon" WDT system reset. If "OVERFLOW" is defined at the top of *main*, then the device will wait in an infinite loop until the window passes, causing a "too late" WDT system reset.
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
 
 ## Required Connections
 
@@ -14,21 +24,47 @@ When the application begins, it initializes and starts the watchdog timer.  The 
 
 ## Expected Output
 
+LED0 will flash quickly several times after reset occurs, then will blink at a rate of 1Hz until SW3 is pressed. 
+
 The Console UART of the device will output these messages:
 
+If "OVERFLOW" is defined:
+
 ```
-************** Watchdog Timer Demo ****************
-Watchdog timer is configured in Windowed mode. You can
-select between two tests: Timer Overflow and Underflow.
+******************** Watchdog Timer Demo ********************
+This example demonstrates the WDT in windowed mode. With UNDERFLOW
+defined the WDT count reset will occur before the window, causing
+a "too soon" WDT system reset. With OVERFLOW defined the device
+will wait in an infinite loop until the window expires, causing a
+"too late" WDT system reset
 
-Press a button to create watchdog interrupt and reset:
-SW3 (P0.18)= timeout and reset program
+Press push button SW3 (P0.18) to trigger the WDT interrupt and system
+reset described above.
 
-
-Enabling Timeout Interrupt...
+Watchdog reset window configured.
+Starving the dog until reset window expires...
 
 TIMEOUT!
 
-Watchdog Reset occured too late (OVERFLOW)
+Watchdog Reset occurred too late (OVERFLOW)
+```
+
+If "UNDERFLOW" is defined:
+
+```
+******************** Watchdog Timer Demo ********************
+This example demonstrates the WDT in windowed mode. With UNDERFLOW
+defined the WDT count reset will occur before the window, causing
+a "too soon" WDT system reset. With OVERFLOW defined the device
+will wait in an infinite loop until the window expires, causing a
+"too late" WDT system reset
+
+Press push button SW3 (P0.18) to trigger the WDT interrupt and system
+reset described above.
+
+Watchdog reset window configured.
+Feeding the dog before entering reset window...
+
+Watchdog Reset occurred too soon (UNDERFLOW)
 ```
 
