@@ -17,5 +17,9 @@ CAMERA=HM0360_COLOR
 MXC_OPTIMIZE_CFLAGS = -O2
 
 ifeq ($(BOARD),FTHR_RevA)
-$(error This example is not supported on the MAX78000FTHR!)
+$(error ERR_NOTSUPPORTED: This example is not supported on the MAX78000FTHR!)
+endif
+
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
 endif

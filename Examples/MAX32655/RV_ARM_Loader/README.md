@@ -2,10 +2,7 @@
 
 A basic getting started program for the RISCV, run from the ARM core.
 
-RV_ARM_Loader runs on the ARM core to load the RISCV code space, setup the RISCV debugger pins, and start the RISCV core.
-
-The Hello_World example runs on the the RISCV core. 
-
+RV_ARM_Loader runs on the ARM core to load the RISCV code space, setup the RISCV debugger pins, and start the RISCV core with the specified application.
 
 ## Software
 
@@ -15,20 +12,11 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
-
-## Setup
-
-##### Linker File Selection
-Before building firmware you must select the correct linker file (line 111) in the "project.mk" to in the Hello_World example. The Hello_World example must be in the same workspace as the the RV_ARM_Loader example.
-
-```
-LINKER=$(TARGET_LC)_riscv.ld
-```
+* The application to load into the RISC-V core can be selected using the `RISCV_APP` option in [project.mk](project.mk).  By default, the `Hello_World` example is used.
 
 ## Expected Output
 
-The Console UART of the device will output these messages:
+The Console UART of the device will output whatever the expected output for the `RISCV_APP`-selected project is.  By default, that's the `Hello_World` output:
 
 ```
 Hello World!

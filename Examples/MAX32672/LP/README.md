@@ -16,17 +16,6 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 This example uses a special linkerfile (either lp-nonsecure.ld or lp-sla.ld depending on whether Secure Boot Tools are enabled) that limits the SRAM usage to SRAM0 and SRAM1. This prevents a hardfault that would otherwise occur when the other SRAMs are shutdown in the example.
 
-
-## Software
-
-### Project Usage
-
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
-
-### Project-Specific Build Notes
-
-(None - this project builds as a standard example)
-
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

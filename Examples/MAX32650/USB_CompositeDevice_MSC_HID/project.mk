@@ -22,5 +22,5 @@ SBT=0
 LIB_MAXUSB=1
 
 ifeq ($(BOARD),FTHR_APPS_A)
-$(error This example requires an an external flash IC, therefore it's not supported on the MAX32650FTHR)
+$(error ERR_NOTSUPPORTED: This example requires an an external flash IC, therefore it's not supported on the MAX32650FTHR)
 endif

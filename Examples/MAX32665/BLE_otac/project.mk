@@ -49,13 +49,11 @@ PROJ_OBJS = ${FW_UPDATE_OBJ}
 fw_bin: $(FW_UPDATE_BIN)
 
 ${FW_UPDATE_BIN}:
-	$(MAKE) -C ${FW_UPDATE_DIR} BUILD_DIR=$(FW_BUILD_DIR) PROJECT=fw_update
+	$(MAKE) -C ${FW_UPDATE_DIR} BUILD_DIR=$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update
 	$(MAKE) -C $(FW_UPDATE_DIR) BUILD_DIR=$(FW_BUILD_DIR) $(FW_UPDATE_BIN)
-
 # Target for creating the firmware update obj file
 .PHONY: fw_obj
 fw_obj: $(FW_UPDATE_OBJ)
 
 ${FW_UPDATE_OBJ}: fw_update.S ${FW_UPDATE_BIN}
 	${CC} ${AFLAGS} -o ${@} -c fw_update.S
-

@@ -154,7 +154,7 @@ if row > 1 or col > 1:
         fig.tight_layout()
         plt.subplots_adjust(bottom=0.1)
         '''
-        #title = f'packet len: {packetLen}\nphy: {phy_str[phy]}\ntxPower:{txPower}'
+
         title = f'packet len: {packetLen}, txPower: 0.7 dBm\nphy: {phy_str[phy]}'
         if axs.ndim == 1:
             axs[col].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
@@ -177,8 +177,8 @@ if row > 1 or col > 1:
             if p[i] > SPEC:
                 #print(f'{a[i]}, {p[i]}')
                 if axs.ndim == 1:
-                    axs[row].axvline(x=a[i], color='r', linestyle=':', linewidth=0.5)
-                    axs[row].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', horizontalalignment='left',
+                    axs[col].axvline(x=a[i], color='r', linestyle=':', linewidth=0.5)
+                    axs[col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', horizontalalignment='left',
                                   verticalalignment='center', fontsize=3)
                 else:
                     axs[row, col].axvline(x=a[i], color='r', linestyle=':', linewidth=0.5)
@@ -186,6 +186,15 @@ if row > 1 or col > 1:
                                        verticalalignment='center', fontsize=3)
                 break
 
+        # mark the last point
+        i = -1
+        if axs.ndim == 1:
+            axs[col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', horizontalalignment='left',
+                          verticalalignment='center', fontsize=3)
+        else:
+            axs[row, col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', horizontalalignment='left',
+                               verticalalignment='center', fontsize=3)
+        
         # note
         fig.text(.5, .01, f'Run on all data channels (no advertising channels).\n{args.desc}', ha='center',
                  fontdict={"fontsize": 5})
@@ -257,6 +266,11 @@ for packetLen, phy, txPower in itertools.product(lens, phys, txPowers):
                      verticalalignment='center', fontsize=8)
             break
 
+    # mark the last point
+    i = -1
+    plt.text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', horizontalalignment='left',
+                verticalalignment='center', fontsize=8)
+    
     # resize the figure to match the aspect ratio of the Axes
     fig.set_size_inches(7, 8, forward=True)
     #fig.text(.5, .10, args.desc, ha='center', fontdict={"fontsize": 12})

@@ -10,5 +10,5 @@
 # Add your config here!
 
 ifeq ($(BOARD),MAX32520FTHR)
-$(error This example requires a pushbutton, therefore it is not supported on the MAX32520FTHR)
+$(error ERR_NOTSUPPORTED: This example requires a pushbutton, therefore it is not supported on the MAX32520FTHR)
 endif

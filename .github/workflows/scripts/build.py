@@ -2,10 +2,14 @@ from pathlib import Path
 import os
 from subprocess import run
 import argparse
+from rich.progress import Progress
+from rich.console import Console
+import time
 
 blacklist = [
     "MAX32570",
     "MAX32572",
+    "MAXREFDES178",
     "BCB", 
     "ROM", 
     "Simulation", 
@@ -18,7 +22,12 @@ blacklist = [
     "WLP_DB",
     "TQFN_DB",
     "WLP_V1"
-    ]
+]
+
+known_errors = [
+    "ERR_NOTSUPPORTED",
+    "ERR_LIBNOTFOUND"
+]
 
 def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
     env = os.environ.copy()
@@ -28,6 +37,10 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
         print("MAXIM_PATH not set.")
         return
 
+    env["FORCE_COLOR"] = 1
+
+    console = Console(emoji=False)
+
     # Get list of target micros if none is specified
     if targets is None:
         targets = []
@@ -36,11 +49,11 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
             if dir.name not in blacklist:
                 targets.append(dir.name) # Append subdirectories of Examples to list of target micros
 
-        print(f"Detected target microcontrollers: {targets}")
+        console.print(f"Detected target microcontrollers: {targets}")
     
     else:
         assert(type(targets) is list)
-        print(f"Testing {targets}")
+        console.print(f"Testing {targets}")
 
     # Enforce alphabetical ordering
     targets = sorted(targets)
@@ -49,7 +62,9 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
     failed = []
     count = 0
 
-    for target in targets:
+    for target in sorted(targets):
+
+        target_fails = 0
 
         # Get list of supported boards for this target.
         if boards is None:
@@ -60,7 +75,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
 
         else:
             assert(type(boards) is list)
-            print(f"Testing {boards}")
+            console.print(f"Testing {boards}")
 
         boards = sorted(boards) # Enforce alphabetical ordering
                 
@@ -74,60 +89,71 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
         else:
             assert(type(projects) is list)
 
-        print("====================")
-        print(f"Testing {len(projects)} projects for {target}")
-        print(f"Detected boards: {boards}")
-        print("====================")
+        console.print("====================")
+        console.print(f"Found {len(projects)} projects for {target}")
+        console.print(f"Detected boards: {boards}")
 
         projects = sorted(projects) # Enforce alphabetical ordering
 
-        for project in projects:
-            project_name = project.name
+        with Progress(console=console) as progress:
+            task_build = progress.add_task(description=f"{target}: {projects[0].name}", total=(len(projects) * len(boards)))
 
-            for board in boards:
-                print(f"TARGET: {target}")
-                print(f"BOARD: {board}")
-                print(f"PROJECT: {project_name}")
+            for project in projects:
+                project_name = project.name
 
-                res = run("make clean", cwd=project, shell=True, capture_output=True, encoding="utf-8")
+                for board in boards:
+                    res = run("make clean", cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
-                # Test build (make all)
-                build_cmd = f"make -r -j 8 --output-sync=target --no-print-directory TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} FORCE_COLOR=1"
-                res = run(build_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
+                    # Test build (make all)
+                    build_cmd = f"make -r -j 8 --output-sync=target --no-print-directory TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board}"
+                    res = run(build_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
-                # Error check build command
-                if res.returncode != 0:
-                    print("Failed.")
-                    print(f"Build command: {build_cmd}")
-                    print("Error:")
-                    print(res.stderr)
-                    project_info = {
-                        "target":target,
-                        "project":project_name,
-                        "board":board,
-                        "path":project,
-                        "stdout":res.stdout,
-                        "stderr":res.stderr
-                    }
-                    if project_info not in failed:
-                        failed.append(project_info)
+                    # Error check build command
+                    if res.returncode != 0:
+                        fail = True
+                        for err in known_errors:
+                            if err in res.stderr:
+                                fail = False
+                                console.print(f"[yellow]{target} {project_name}: Known error for {board}[/yellow]")
+                                console.print(res.stderr, markup=False)
+                                print("--------------------")
+                                break
+                        if fail:
+                            console.print(f"[red]{target} {project_name}: Failed for {board}[/red]")
+                            print(f"Build command: {build_cmd}")
+                            print("Error:")
+                            console.print(res.stderr, markup=False)
+                            project_info = {
+                                "target":target,
+                                "project":project_name,
+                                "board":board,
+                                "path":project,
+                                "stdout":res.stdout,
+                                "stderr":res.stderr
+                            }
+                            console.print("--------------------")
+                            if project_info not in failed:
+                                failed.append(project_info)
+                                target_fails += 1
 
-                else:
-                    print("Success!")
+                    res = run("make clean", cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
-                print("------------------", flush=True)
-                res = run("make clean", cwd=project, shell=True, capture_output=True, encoding="utf-8")
+                    count += 1
+                    progress.update(task_build, advance=1, description=f"{target}: {project_name}", refresh=True)
 
-                count += 1
+            if target_fails == 0:
+                progress.update(task_build, description=f"{target}: [green]Pass.[/green]", refresh=True)
+            else:
+                progress.update(task_build, description=f"{target}: [red]Failed {target_fails}/{len(projects)} test cases.[/red]", refresh=True)
 
         boards = None # Reset boards list
         projects = None # Reset projects list
 
-    print(f"Tested {count} cases.  {count - len(failed)}/{count} succeeded.")
+    console.print(f"Tested {count} cases.  {count - len(failed)}/{count} succeeded.")
     if (len(failed) > 0):
         print("Failed projects:")
         for p in failed:
-            print(f"{p['target']}: {p['project']} failed for {p['board']}")
+            console.print(f"{p['target']}: {p['project']} failed for {p['board']}")
 
         return -1
     else:
