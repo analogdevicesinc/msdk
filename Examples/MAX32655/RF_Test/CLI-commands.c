@@ -137,11 +137,11 @@ const CLI_Command_Definition_t xCommandList[] = {
         .pxCommandInterpreter = cmd_clearScreen, /* The function to run. */
         .cExpectedNumberOfParameters = 0 /* No parameters are expected. */
     },
-    {
+    {// TODO revert to 2 parameters
         .pcCommand = "constTx", /* The command string to type. */
         .pcHelpString = "<channel>",
         .pxCommandInterpreter = cmd_ConstTx, /* The function to run. */
-        .cExpectedNumberOfParameters = 2 /* No parameters are expected. */
+        .cExpectedNumberOfParameters = 3 /* No parameters are expected. */
     },
     {
         .pcCommand = "e", /* The command string to type. */
@@ -457,7 +457,7 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
     static uint32_t channelNum = 0xFF;
     uint8_t phyVal = 0;
     BaseType_t lParameterStringLength;
-
+    uint8_t testVersion = 0;
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         snprintf(pcWriteBuffer, (size_t)MAX_OUTPUT_STRING_SIZE,
                  "> Another test is currently active\r\n");
@@ -469,6 +469,10 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
         channelNum = atoi(FreeRTOS_CLIGetParameter(
             pcCommandString, /* The command string itself. */
             1, /* Return the next parameter. */
+            &lParameterStringLength)); /* Store the parameter string length. */
+        testVersion = atoi(FreeRTOS_CLIGetParameter(
+            pcCommandString, /* The command string itself. */
+            3, /* Return the next parameter. */
             &lParameterStringLength)); /* Store the parameter string length. */
 
     } else {
@@ -491,15 +495,19 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
         llc_api_tx_ldo_setup();
 // TODO delete debug comments before merge
 //-------------------------- const tx stuff ----------------
-        PalBbBleEnablePrbs15(TRUE);
-        /* 0 num of packets for infinite*/
-        LlTxTest(channelNum , 255 ,LL_TEST_PKT_TYPE_PRBS15, 0);
-        // /* Enable constant TX */
-        // MXC_R_TX_CTRL = 0x1;
+        if(testVersion){
+            PalBbBleEnablePrbs15(TRUE);
+                /* 0 num of packets for infinite*/
+            LlTxTest(channelNum , 255 ,LL_TEST_PKT_TYPE_PRBS15, 0);
+                /* Enable constant TX */
+        }
+        else{
+            MXC_R_TX_CTRL = 0x1;
 
-        // /* Enable pattern generator, set PRBS-9 */
-        // MXC_R_CONST_OUPUT = 0x0;
-        // MXC_R_PATTERN_GEN = 0x4B;
+            /* Enable pattern generator, set PRBS-9 */
+            MXC_R_CONST_OUPUT = 0x0;
+            MXC_R_PATTERN_GEN = 0x4B;
+        }
         activeTest = BLE_CONST_TX;
 //----------------------------------------------------------
         //gives time for LL printing to happen before we start printing messages from here
