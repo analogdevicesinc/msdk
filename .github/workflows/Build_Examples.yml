@@ -102,6 +102,11 @@ jobs:
 
       - name: Setup Python
         uses: actions/setup-python@v4.5.0
+        with:
+          cache: pip
+
+      - name: Install packages
+        run: pip install -r .github/workflows/scripts/requirements.txt
 
       # Runs a set of commands using the runners shell
       - name: Build_Examples
