@@ -26,7 +26,7 @@ This example demonstrates read/write to OTP area inside device's internal memory
 ***** This example demonstrates how you can read/write OTP memory *****
 
 
-***** MAXIM AREA *****
+***** MANUFACTURER AREA *****
 
 0x10800000:    80028000 80f7e6d5    00800000 fb66d581
 0x10800010:    00570000 80000000    5a5aa5a5 5a5aa5a5
