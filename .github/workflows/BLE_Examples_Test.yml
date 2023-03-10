@@ -219,7 +219,7 @@ jobs:
           echo "LOCK_MAX32655_B2             : $LOCK_MAX32655_B2 "
           if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
-              ./new_test_launcher.sh max32655 $dut_uart $dut_serial "all"
+              ./test_launcher.sh max32655 $dut_uart $dut_serial "all"
           else
               if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
                   cd .github/workflows/scripts
@@ -228,7 +228,7 @@ jobs:
                       # launch single tests
                       echo "Running $example test on MAX32655"
                       set +e
-                      ./new_test_launcher.sh max32655 $dut_uart $dut_serial $example
+                      ./test_launcher.sh max32655 $dut_uart $dut_serial $example
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed test count
@@ -243,7 +243,7 @@ jobs:
                       #conencted test launcher
                       echo "Testing MAX32655_DATS_CONNECTED_TEST"
                       set +e
-                      ./new_test_launcher.sh max32655 $dut_uart $dut_serial "dats"
+                      ./test_launcher.sh max32655 $dut_uart $dut_serial "dats"
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed_test count
@@ -260,7 +260,7 @@ jobs:
                       set +e
                       #call test here
                       #***************** uncomment actual test here *************
-                      ./new_test_launcher.sh max32655 $dut_uart $dut_serial "ota"
+                      ./test_launcher.sh max32655 $dut_uart $dut_serial "ota"
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed test count
@@ -452,7 +452,7 @@ jobs:
           echo "LOCK_MAX32665_B1             : $LOCK_MAX32665_B1 "
           if [[ $MAX32665_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
-              ./new_test_launcher.sh max32665 $dut_uart $dut_serial "all"
+              ./test_launcher.sh max32665 $dut_uart $dut_serial "all"
           else
               if [[ $MAX32665_BLE_FILES_CHANGED == 'true' ]]; then
                   cd .github/workflows/scripts
@@ -461,7 +461,7 @@ jobs:
                       # launch single tests
                       echo "Running $example test on MAX32665"
                       set +e
-                      ./new_test_launcher.sh max32665 $dut_uart $dut_serial $example
+                      ./test_launcher.sh max32665 $dut_uart $dut_serial $example
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed test count
@@ -476,7 +476,7 @@ jobs:
                       #conencted test launcher
                       echo "Testing MAX32665_DATS_CONNECTED_TEST"
                       set +e
-                      ./new_test_launcher.sh max32665 $dut_uart $dut_serial "dats"
+                      ./test_launcher.sh max32665 $dut_uart $dut_serial "dats"
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed_test count
@@ -493,7 +493,7 @@ jobs:
                       set +e
                       #call test here
                       #***************** uncomment actual test here *************
-                      ./new_test_launcher.sh max32665 $dut_uart $dut_serial "ota"
+                      ./test_launcher.sh max32665 $dut_uart $dut_serial "ota"
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed test count
@@ -684,7 +684,7 @@ jobs:
           echo "LOCK_MAX32690_B1             : $LOCK_MAX32690_B1 "
           if [[ $MAX32609_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
-              ./new_test_launcher.sh max32690 $dut_uart $dut_serial "all"
+              ./test_launcher.sh max32690 $dut_uart $dut_serial "all"
           else
               if [[ $MAX32690_BLE_FILES_CHANGED == 'true' ]]; then
                   cd .github/workflows/scripts
@@ -693,7 +693,7 @@ jobs:
                       # launch single tests
                       echo "Running $example test on MAX32690"
                       set +e
-                      ./new_test_launcher.sh max32690 $dut_uart $dut_serial $example
+                      ./test_launcher.sh max32690 $dut_uart $dut_serial $example
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed test count
@@ -708,7 +708,7 @@ jobs:
                       #conencted test launcher
                       echo "Testing MAX32690_DATS_CONNECTED_TEST"
                       set +e
-                      ./new_test_launcher.sh max32690 $dut_uart $dut_serial "dats"
+                      ./test_launcher.sh max32690 $dut_uart $dut_serial "dats"
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed_test count
@@ -725,7 +725,7 @@ jobs:
                       set +e
                       #call test here
                       #***************** uncomment actual test here *************
-                      ./new_test_launcher.sh max32690 $dut_uart $dut_serial "ota"
+                      ./test_launcher.sh max32690 $dut_uart $dut_serial "ota"
                       let "testResult=$?"
                       if [ "$testResult" -ne "0" ]; then
                           # update failed test count
