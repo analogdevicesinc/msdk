@@ -1,0 +1,45 @@
+name: Build and Deploy Peripheral Driver Libraries
+
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "release" ]
+  workflow_dispatch:
+    
+jobs:
+    
+  Build_Periphs:
+    # The type of runner that the job will run on
+    runs-on:
+      - ubuntu-latest
+      
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+      
+      - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
+        uses: carlosperate/arm-none-eabi-gcc-action@v1
+        id: arm-none-eabi-gcc-action
+        with:
+          release: '10.3-2021.10' # <-- The compiler release to use
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4.5.0
+          
+      - name: Build Periph Drivers
+        run: |
+          # This environment variable is required for the SBTs.
+          # It must be set to the absolute path inside the Github repo.
+          export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
+
+          # Set MAXIM_PATH to limit warnings
+          export MAXIM_PATH=$(pwd)
+          
+          python .github/workflows/scripts/buildnstrip.py
+
+      - name: Push updated library files
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'Libraries/PeriphDrivers/bin/**/*.a'
+          message: '(Bot) Auto rebuild periph drivers.'
+          push: true

@@ -16,7 +16,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Expected Output
 
-The Console UART of the device will output these messages:
+The Console UART of the device will output whatever the expected output for the `RISCV_APP`-selected project is.  By default, that's the `Hello_World` output:
 
 ```
 Hello World!

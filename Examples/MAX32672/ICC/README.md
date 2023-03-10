@@ -14,17 +14,6 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 Do not modify the value of MXC_OPTIMIZE_CFLAGS in *project.mk*. Turning on compiler optimizations will change the behavior of the test functions resulting in behavior that doesn't demonstrate the effects of enabling the instruction cache.
 
-
-## Software
-
-### Project Usage
-
-Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
-
-### Project-Specific Build Notes
-
-(None - this project builds as a standard example)
-
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

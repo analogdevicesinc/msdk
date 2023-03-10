@@ -32,3 +32,6 @@ endif
 
 IPATH += TFT/evkit
 
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif

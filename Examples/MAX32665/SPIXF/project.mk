@@ -15,5 +15,5 @@
 SBT=0
 
 ifneq ($(BOARD),EvKit_V1)
-$(error This example requires an external flash IC that is only available for the MAX32665EVKIT)
+$(error ERR_NOTSUPPORTED: This example requires an external flash IC that is only available for the MAX32665EVKIT)
 endif

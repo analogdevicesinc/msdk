@@ -15,3 +15,6 @@
 
 LIB_FREERTOS = 1
 
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif
