@@ -24,7 +24,7 @@ on:
       - "**/*.pdf"
       # Any .yml file anywhere in the repository.
       # can comment this out when testing changes to THIS yml file
-      - "**/*.yml"
+      #- "**/*.yml"
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
