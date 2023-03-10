@@ -489,14 +489,19 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
         snprintf(pcWriteBuffer, (size_t)MAX_OUTPUT_STRING_SIZE, "> Starting constant TX\r\n");
         PalBbEnable();
         llc_api_tx_ldo_setup();
+// TODO delete debug comments before merge
+//-------------------------- const tx stuff ----------------
+        PalBbBleEnablePrbs15(TRUE);
+        /* 0 num of packets for infinite*/
+        LlTxTest(channelNum , 255 ,LL_TEST_PKT_TYPE_PRBS15, 0);
+        // /* Enable constant TX */
+        // MXC_R_TX_CTRL = 0x1;
 
-        /* Enable constant TX */
-        MXC_R_TX_CTRL = 0x1;
-
-        /* Enable pattern generator, set PRBS-9 */
-        MXC_R_CONST_OUPUT = 0x0;
-        MXC_R_PATTERN_GEN = 0x4B;
+        // /* Enable pattern generator, set PRBS-9 */
+        // MXC_R_CONST_OUPUT = 0x0;
+        // MXC_R_PATTERN_GEN = 0x4B;
         activeTest = BLE_CONST_TX;
+//----------------------------------------------------------
         //gives time for LL printing to happen before we start printing messages from here
         vTaskDelay(100);
     } else {
