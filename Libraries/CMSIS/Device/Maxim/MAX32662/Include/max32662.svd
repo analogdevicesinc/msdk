@@ -8444,7 +8444,7 @@ control comes from GPIO control module</description>
    </addressBlock>
    <registers>
     <register>
-     <name>LPCTRL</name>
+     <name>CTRL</name>
      <description>Low Power Control Register.</description>
      <addressOffset>0x00</addressOffset>
      <fields>
