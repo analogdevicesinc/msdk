@@ -81,37 +81,6 @@ extern "C" {
  * @details     Analog Front End HART Registers on Stacked Die via SPI
  */
 
-/**
- * @ingroup afe_hart_registers
- * Structure type to access the AFE_HART Registers.
- */
-typedef struct {
-    __R  uint8_t  rsv_0x0_0x1800002[25165827];
-    __IO uint32_t ctrl;                 /**< <tt>\b 0x01800003:</tt> AFE_HART CTRL Register */
-    __R  uint32_t rsv_0x1800007_0x1810002[16383];
-    __IO uint32_t rx_tx_ctl;            /**< <tt>\b 0x01810003:</tt> AFE_HART RX_TX_CTL Register */
-    __R  uint32_t rsv_0x1810007_0x1820002[16383];
-    __IO uint32_t rx_ctl_ext1;          /**< <tt>\b 0x01820003:</tt> AFE_HART RX_CTL_EXT1 Register */
-    __R  uint32_t rsv_0x1820007_0x1830002[16383];
-    __IO uint32_t rx_ctl_ext2;          /**< <tt>\b 0x01830003:</tt> AFE_HART RX_CTL_EXT2 Register */
-    __R  uint32_t rsv_0x1830007_0x1840002[16383];
-    __IO uint32_t rx_db_thrshld;        /**< <tt>\b 0x01840003:</tt> AFE_HART RX_DB_THRSHLD Register */
-    __R  uint32_t rsv_0x1840007_0x1850002[16383];
-    __IO uint32_t rx_crd_up_thrshld;    /**< <tt>\b 0x01850003:</tt> AFE_HART RX_CRD_UP_THRSHLD Register */
-    __R  uint32_t rsv_0x1850007_0x1860002[16383];
-    __IO uint32_t rx_crd_dn_thrshld;    /**< <tt>\b 0x01860003:</tt> AFE_HART RX_CRD_DN_THRSHLD Register */
-    __R  uint32_t rsv_0x1860007_0x1870002[16383];
-    __IO uint32_t rx_crd_dout_thrshld;  /**< <tt>\b 0x01870003:</tt> AFE_HART RX_CRD_DOUT_THRSHLD Register */
-    __R  uint32_t rsv_0x1870007_0x1880002[16383];
-    __IO uint32_t tx_markspace_cnt;     /**< <tt>\b 0x01880003:</tt> AFE_HART TX_MARKSPACE_CNT Register */
-    __R  uint32_t rsv_0x1880007_0x1890002[16383];
-    __IO uint32_t stat;                 /**< <tt>\b 0x01890003:</tt> AFE_HART STAT Register */
-    __R  uint32_t rsv_0x1890007_0x18a0002[16383];
-    __IO uint32_t trim;                 /**< <tt>\b 0x018A0003:</tt> AFE_HART TRIM Register */
-    __R  uint32_t rsv_0x18a0007_0x18b0002[16383];
-    __IO uint32_t tm;                   /**< <tt>\b 0x018B0003:</tt> AFE_HART TM Register */
-} mxc_afe_hart_regs_t;
-
 /* Register offsets for module AFE_HART */
 /**
  * @ingroup    afe_hart_registers

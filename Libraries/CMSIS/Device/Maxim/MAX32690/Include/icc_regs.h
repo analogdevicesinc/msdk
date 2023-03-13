@@ -87,7 +87,7 @@ extern "C" {
  */
 typedef struct {
     __I  uint32_t info;                 /**< <tt>\b 0x0000:</tt> ICC INFO Register */
-    __I  uint32_t size;                 /**< <tt>\b 0x0004:</tt> ICC SIZE Register */
+    __I  uint32_t sz;                   /**< <tt>\b 0x0004:</tt> ICC SZ Register */
     __R  uint32_t rsv_0x8_0xff[62];
     __IO uint32_t ctrl;                 /**< <tt>\b 0x0100:</tt> ICC CTRL Register */
     __R  uint32_t rsv_0x104_0x6ff[383];
@@ -102,7 +102,7 @@ typedef struct {
  * @{
  */
 #define MXC_R_ICC_INFO                     ((uint32_t)0x00000000UL) /**< Offset from ICC Base Address: <tt> 0x0000</tt> */
-#define MXC_R_ICC_SIZE                     ((uint32_t)0x00000004UL) /**< Offset from ICC Base Address: <tt> 0x0004</tt> */
+#define MXC_R_ICC_SZ                       ((uint32_t)0x00000004UL) /**< Offset from ICC Base Address: <tt> 0x0004</tt> */
 #define MXC_R_ICC_CTRL                     ((uint32_t)0x00000100UL) /**< Offset from ICC Base Address: <tt> 0x0100</tt> */
 #define MXC_R_ICC_INVALIDATE               ((uint32_t)0x00000700UL) /**< Offset from ICC Base Address: <tt> 0x0700</tt> */
 /**@} end of group icc_registers */
@@ -126,17 +126,17 @@ typedef struct {
 
 /**
  * @ingroup  icc_registers
- * @defgroup ICC_SIZE ICC_SIZE
+ * @defgroup ICC_SZ ICC_SZ
  * @brief    Memory Configuration Register.
  * @{
  */
-#define MXC_F_ICC_SIZE_CCH_POS                         0 /**< SIZE_CCH Position */
-#define MXC_F_ICC_SIZE_CCH                             ((uint32_t)(0xFFFFUL << MXC_F_ICC_SIZE_CCH_POS)) /**< SIZE_CCH Mask */
+#define MXC_F_ICC_SZ_CCH_POS                           0 /**< SZ_CCH Position */
+#define MXC_F_ICC_SZ_CCH                               ((uint32_t)(0xFFFFUL << MXC_F_ICC_SZ_CCH_POS)) /**< SZ_CCH Mask */
 
-#define MXC_F_ICC_SIZE_MEM_POS                         16 /**< SIZE_MEM Position */
-#define MXC_F_ICC_SIZE_MEM                             ((uint32_t)(0xFFFFUL << MXC_F_ICC_SIZE_MEM_POS)) /**< SIZE_MEM Mask */
+#define MXC_F_ICC_SZ_MEM_POS                           16 /**< SZ_MEM Position */
+#define MXC_F_ICC_SZ_MEM                               ((uint32_t)(0xFFFFUL << MXC_F_ICC_SZ_MEM_POS)) /**< SZ_MEM Mask */
 
-/**@} end of group ICC_SIZE_Register */
+/**@} end of group ICC_SZ_Register */
 
 /**
  * @ingroup  icc_registers

@@ -3833,18 +3833,6 @@
         </enumeratedValue>
        </enumeratedValues>
       </field>
-      <field deprecated="(2-6-2023)">
-       <name>LDOTXVSEL0</name>
-       <description>LDOTX Voltage Setting.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field deprecated="(2-6-2023)">
-       <name>LDOTXVSEL1</name>
-       <description>LDOTX Voltage Setting.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
       <field>
        <name>LDORXEN</name>
        <description>LDORX Enable.</description>
@@ -3884,18 +3872,6 @@
          <value>3</value>
         </enumeratedValue>
        </enumeratedValues>
-      </field>
-      <field deprecated="(2-6-2023)">
-       <name>LDORXVSEL0</name>
-       <description>LDORX Voltage Setting.</description>
-       <bitOffset>6</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field deprecated="(2-6-2023)">
-       <name>LDORXVSEL1</name>
-       <description>LDORX Voltage Setting.</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
       </field>
       <field>
        <name>LDORXBYP</name>
@@ -6589,7 +6565,7 @@
      </fields>
     </register>
     <register>
-     <name>SIZE</name>
+     <name>SZ</name>
      <description>Memory Configuration Register.</description>
      <addressOffset>0x0004</addressOffset>
      <access>read-only</access>
@@ -7570,7 +7546,7 @@
    <access>read-write</access>
    <addressBlock>
     <offset>0</offset>
-    <size>0x0018</size>
+    <size>0x0020</size>
     <usage>registers</usage>
    </addressBlock>
    <interrupt>
@@ -7652,8 +7628,8 @@
      </fields>
     </register>
     <register>
-     <name>STOP_INTFL</name>
-     <description>Pulse Train Stop Interrupt Flags</description>
+     <name>INTFL</name>
+     <description>Pulse Train Interrupt Flags</description>
      <addressOffset>0x0008</addressOffset>
      <access>read-write</access>
      <fields>
@@ -7688,8 +7664,8 @@
      </fields>
     </register>
     <register>
-     <name>STOP_INTEN</name>
-     <description>Pulse Train Stop Interrupt Enable/Disable</description>
+     <name>INTEN</name>
+     <description>Pulse Train Interrupt Enable/Disable</description>
      <addressOffset>0x000C</addressOffset>
      <access>read-write</access>
      <fields>
@@ -7784,78 +7760,6 @@
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>write-only</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>READY_INTFL</name>
-     <description>Pulse Train Ready Interrupt Flags</description>
-     <addressOffset>0x0018</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Pulse Train 0 Ready Interrupt Flag</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Pulse Train 1 Ready Interrupt Flag</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Pulse Train 2 Ready Interrupt Flag</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Pulse Train 3 Ready Interrupt Flag</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-     </fields>
-    </register>
-    <register>
-     <name>READY_INTEN</name>
-     <description>Pulse Train Ready Interrupt Enable/Disable</description>
-     <addressOffset>0x001C</addressOffset>
-     <access>read-write</access>
-     <fields>
-      <field>
-       <name>pt0</name>
-       <description>Pulse Train 0 Ready Interrupt Enable/Disable</description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt1</name>
-       <description>Pulse Train 1 Ready Interrupt Enable/Disable</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt2</name>
-       <description>Pulse Train 2 Ready Interrupt Enable/Disable</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>pt3</name>
-       <description>Pulse Train 3 Ready Interrupt Enable/Disable</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
       </field>
      </fields>
     </register>
@@ -11426,5 +11330,1451 @@
    </registers>
   </peripheral>
 <!--TRIMSIR Trim System Initilazation Registers-->
+  <peripheral>
+   <name>TRNG</name>
+   <description>Random Number Generator.</description>
+   <baseAddress>0x4004D000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x1000</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <interrupt>
+    <name>TRNG</name>
+    <description>TRNG interrupt.</description>
+    <value>4</value>
+   </interrupt>
+   <registers>
+    <register>
+     <name>CTRL</name>
+     <description>TRNG Control Register.</description>
+     <addressOffset>0x00</addressOffset>
+     <resetValue>0x00000003</resetValue>
+     <fields>
+      <field>
+       <name>RND_IE</name>
+       <description>To enable IRQ generation when a new 32-bit Random number is ready.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>disable</name>
+         <description>Disable</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>enable</name>
+         <description>Enable</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>KEYGEN</name>
+       <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>KEYWIPE</name>
+       <description>To wipe the Battery Backed key.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>STATUS</name>
+     <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
+     <addressOffset>0x04</addressOffset>
+     <fields>
+      <field>
+       <name>RDY</name>
+       <description>32-bit random data is ready to read from TRNG_DATA register. Reading TRNG_DATA when RND_RDY=0 will return all 0's. IRQ is generated when RND_RDY=1 if TRNG_CN.RND_IRQ_EN=1.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>Busy</name>
+         <description>TRNG Busy</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>Ready</name>
+         <description>32 bit random data is ready</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>DATA</name>
+     <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
+     <addressOffset>0x08</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>DATA</name>
+       <description>Data. The content of this register is valid only when RNG_IS =1. When TNRG is disabled, read returns 0x0000 0000.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--TRNG Random Number Generator.-->
+  <peripheral>
+   <name>UART</name>
+   <description>UART Low Power Registers</description>
+   <baseAddress>0x40042000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x1000</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>CTRL</name>
+     <description>Control register</description>
+     <addressOffset>0x0000</addressOffset>
+     <fields>
+      <field>
+       <name>RX_THD_VAL</name>
+       <description>This field specifies the depth of receive FIFO for interrupt generation (value 0 and &gt; 16 are ignored) </description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>PAR_EN</name>
+       <description>Parity Enable</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PAR_EO</name>
+       <description>when PAREN=1 selects odd or even parity odd is 1 even is 0</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PAR_MD</name>
+       <description>Selects parity based on 1s or 0s count (when PAREN=1) </description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CTS_DIS</name>
+       <description>CTS Sampling Disable </description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TX_FLUSH</name>
+       <description>Flushes the TX FIFO buffer. This bit is automatically cleared by hardware when flush is completed.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_FLUSH</name>
+       <description>Flushes the RX FIFO buffer. This bit is automatically cleared by hardware when flush is completed.</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CHAR_SIZE</name>
+       <description>Selects UART character size</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>5bits</name>
+         <description>5 bits</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>6bits</name>
+         <description>6 bits</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>7bits</name>
+         <description>7 bits</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>8bits</name>
+         <description>8 bits</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>STOPBITS</name>
+       <description>Selects the number of stop bits that will be generated</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HFC_EN</name>
+       <description>Enables/disables hardware flow control</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RTSDC</name>
+       <description>Hardware Flow Control RTS Mode</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>BCLKEN</name>
+       <description>Baud clock enable</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>BCLKSRC</name>
+       <description>To select the UART clock source for the UART engine (except APB registers). Secondary clock (used for baud rate generator) can be asynchronous from APB clock.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>Peripheral_Clock</name>
+         <description>apb clock</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>External_Clock</name>
+         <description>Clock 1</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>CLK2</name>
+         <description>Clock 2</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>CLK3</name>
+         <description>Clock 3</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>DPFE_EN</name>
+       <description>Data/Parity bit frame error detection enable</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>BCLKRDY</name>
+       <description>Baud clock Ready read only bit</description>
+       <bitOffset>19</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>UCAGM</name>
+       <description>UART Clock Auto Gating mode</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FDM</name>
+       <description>Fractional Division Mode</description>
+       <bitOffset>21</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DESM</name>
+       <description>RX Dual Edge Sampling Mode</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>STATUS</name>
+     <description>Status register</description>
+     <addressOffset>0x0004</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>TX_BUSY</name>
+       <description>Read-only flag indicating the UART transmit status</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_BUSY</name>
+       <description>Read-only flag indicating the UART receiver status</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_EM</name>
+       <description>Read-only flag indicating the RX FIFO state</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_FULL</name>
+       <description>Read-only flag indicating the RX FIFO state</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TX_EM</name>
+       <description>Read-only flag indicating the TX FIFO state</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TX_FULL</name>
+       <description>Read-only flag indicating the TX FIFO state</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_LVL</name>
+       <description>Indicates the number of bytes currently in the RX FIFO (0-RX FIFO_ELTS) </description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>TX_LVL</name>
+       <description>Indicates the number of bytes currently in the TX FIFO (0-TX FIFO_ELTS) </description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INT_EN</name>
+     <description>Interrupt Enable control register</description>
+     <addressOffset>0x0008</addressOffset>
+     <fields>
+      <field>
+       <name>RX_FERR</name>
+       <description>Enable Interrupt For RX Frame Error</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_PAR</name>
+       <description>Enable Interrupt For RX Parity Error</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CTS_EV</name>
+       <description>Enable Interrupt For CTS signal change Error</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_OV</name>
+       <description>Enable Interrupt For RX FIFO Overrun Error</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_THD</name>
+       <description>Enable Interrupt For RX FIFO reaches the number of bytes configured by RXTHD</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TX_HE</name>
+       <description>Enable Interrupt For TX FIFO has half empty</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INT_FL</name>
+     <description>Interrupt status flags Control register</description>
+     <addressOffset>0x000C</addressOffset>
+     <fields>
+      <field>
+       <name>RX_FERR</name>
+       <description>Flag for RX Frame Error Interrupt.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_PAR</name>
+       <description>Flag for RX Parity Error interrupt</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CTS_EV</name>
+       <description>Flag for CTS signal change interrupt (hardware flow control disabled) </description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_OV</name>
+       <description>Flag for RX FIFO Overrun interrupt</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_THD</name>
+       <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TX_HE</name>
+       <description>Flag for interrupt when TX FIFO is half empty</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>CLKDIV</name>
+     <description>Clock Divider register</description>
+     <addressOffset>0x0010</addressOffset>
+     <fields>
+      <field>
+       <name>CLKDIV</name>
+       <description>Baud rate divisor value</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>20</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>OSR</name>
+     <description>Over Sampling Rate register</description>
+     <addressOffset>0x0014</addressOffset>
+     <fields>
+      <field>
+       <name>OSR</name>
+       <description>OSR</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>3</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>TXPEEK</name>
+     <description>TX FIFO Output Peek register</description>
+     <addressOffset>0x0018</addressOffset>
+     <fields>
+      <field>
+       <name>DATA</name>
+       <description>Read TX FIFO next data. Reading from this field does not affect the contents of TX FIFO. Note that the parity bit is available from this field.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>PNR</name>
+     <description> Pin register</description>
+     <addressOffset>0x001C</addressOffset>
+     <fields>
+      <field>
+       <name>CTS</name>
+       <description>Current sampled value of CTS IO</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-only</access>
+      </field>
+      <field>
+       <name>RTS</name>
+       <description>This bit controls the value to apply on the RTS IO. If set to 1, the RTS IO is set to high level. If set to 0, the RTS IO is set to low level.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>FIFO</name>
+     <description>FIFO Read/Write register</description>
+     <addressOffset>0x0020</addressOffset>
+     <fields>
+      <field>
+       <name>DATA</name>
+       <description>Load/unload location for TX and RX FIFO buffers.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+      <field>
+       <name>RX_PAR</name>
+       <description>Parity error flag for next byte to be read from FIFO.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>DMA</name>
+     <description>DMA Configuration register</description>
+     <addressOffset>0x0030</addressOffset>
+     <fields>
+      <field>
+       <name>TX_THD_VAL</name>
+       <description>TX FIFO Level DMA Trigger If the TX FIFO level is less than this value, then the TX FIFO DMA interface will send a signal to system DMA to notify that TX FIFO is ready to receive data from memory.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>TX_EN</name>
+       <description>TX DMA channel enable</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_THD_VAL</name>
+       <description>Rx FIFO Level DMA Trigger If the RX FIFO level is greater than this value, then the RX FIFO DMA interface will send a signal to the system DMA to notify that RX FIFO has characters to transfer to memory.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>RX_EN</name>
+       <description>RX DMA channel enable</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>WKEN</name>
+     <description>Wake up enable Control register</description>
+     <addressOffset>0x0034</addressOffset>
+     <fields>
+      <field>
+       <name>RX_NE</name>
+       <description>Wake-Up Enable for RX FIFO Not Empty</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_FULL</name>
+       <description>Wake-Up Enable for RX FIFO Full</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_THD</name>
+       <description>Wake-Up Enable for RX FIFO Threshold Met</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>WKFL</name>
+     <description>Wake up Flags register</description>
+     <addressOffset>0x0038</addressOffset>
+     <fields>
+      <field>
+       <name>RX_NE</name>
+       <description>Wake-Up Flag for RX FIFO Not Empty</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_FULL</name>
+       <description>Wake-Up Flag for RX FIFO Full</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RX_THD</name>
+       <description>Wake-Up Flag for RX FIFO Threshold Met</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--UART UART Low Power Registers-->
+  <peripheral derivedFrom="UART">
+   <name>UART1</name>
+   <description>UART Low Power Registers 1</description>
+   <baseAddress>0x40043000</baseAddress>
+  </peripheral>
+<!--UART1 UART Low Power Registers 1-->
+  <peripheral derivedFrom="UART">
+   <name>UART2</name>
+   <description>UART Low Power Registers 2</description>
+   <baseAddress>0x40044000</baseAddress>
+  </peripheral>
+<!--UART2 UART Low Power Registers 2-->
+  <peripheral derivedFrom="UART">
+   <name>UART3</name>
+   <description>UART Low Power Registers 3</description>
+   <baseAddress>0x40081400</baseAddress>
+  </peripheral>
+<!--UART3 UART Low Power Registers 3-->
+  <peripheral>
+   <name>WDT</name>
+   <description>Windowed Watchdog Timer</description>
+   <baseAddress>0x40003000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x0400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <interrupt>
+    <name>WWDT</name>
+    <value>1</value>
+   </interrupt>
+   <registers>
+    <register>
+     <name>CTRL</name>
+     <description>Watchdog Timer Control Register.</description>
+     <addressOffset>0x00</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>INT_LATE_VAL</name>
+       <description>Windowed Watchdog Interrupt Upper Limit. Sets the number of WDTCLK cycles until a windowed watchdog timer interrupt is generated (if enabled) if the CPU does not write the windowed watchdog reset sequence to the WWDT_RST register before the watchdog timer has counted this time period since the last timer reset.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>4</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>wdt2pow31</name>
+         <description>2**31 clock cycles.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow30</name>
+         <description>2**30 clock cycles.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow29</name>
+         <description>2**29 clock cycles.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow28</name>
+         <description>2**28 clock cycles.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow27</name>
+         <description>2^27 clock cycles.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow26</name>
+         <description>2**26 clock cycles.</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow25</name>
+         <description>2**25 clock cycles.</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow24</name>
+         <description>2**24 clock cycles.</description>
+         <value>7</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow23</name>
+         <description>2**23 clock cycles.</description>
+         <value>8</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow22</name>
+         <description>2**22 clock cycles.</description>
+         <value>9</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow21</name>
+         <description>2**21 clock cycles.</description>
+         <value>10</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow20</name>
+         <description>2**20 clock cycles.</description>
+         <value>11</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow19</name>
+         <description>2**19 clock cycles.</description>
+         <value>12</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow18</name>
+         <description>2**18 clock cycles.</description>
+         <value>13</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow17</name>
+         <description>2**17 clock cycles.</description>
+         <value>14</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow16</name>
+         <description>2**16 clock cycles.</description>
+         <value>15</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>RST_LATE_VAL</name>
+       <description>Windowed Watchdog Reset Upper Limit. Sets the number of WDTCLK cycles until a system reset occurs (if enabled) if the CPU does not write the watchdog reset sequence to the WDT_RST register before the watchdog timer has counted this time period since the last timer reset.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>4</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>wdt2pow31</name>
+         <description>2**31 clock cycles.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow30</name>
+         <description>2**30 clock cycles.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow29</name>
+         <description>2**29 clock cycles.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow28</name>
+         <description>2**28 clock cycles.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow27</name>
+         <description>2^27 clock cycles.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow26</name>
+         <description>2**26 clock cycles.</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow25</name>
+         <description>2**25 clock cycles.</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow24</name>
+         <description>2**24 clock cycles.</description>
+         <value>7</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow23</name>
+         <description>2**23 clock cycles.</description>
+         <value>8</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow22</name>
+         <description>2**22 clock cycles.</description>
+         <value>9</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow21</name>
+         <description>2**21 clock cycles.</description>
+         <value>10</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow20</name>
+         <description>2**20 clock cycles.</description>
+         <value>11</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow19</name>
+         <description>2**19 clock cycles.</description>
+         <value>12</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow18</name>
+         <description>2**18 clock cycles.</description>
+         <value>13</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow17</name>
+         <description>2**17 clock cycles.</description>
+         <value>14</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow16</name>
+         <description>2**16 clock cycles.</description>
+         <value>15</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>EN</name>
+       <description>Windowed Watchdog Timer Enable.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>INT_LATE</name>
+       <description>Windowed Watchdog Timer Interrupt Flag Too Late.</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <usage>read-write</usage>
+        <enumeratedValue>
+         <name>inactive</name>
+         <description>No interrupt is pending.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>pending</name>
+         <description>An interrupt is pending.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>WDT_INT_EN</name>
+       <description>Windowed Watchdog Timer Interrupt Enable.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>WDT_RST_EN</name>
+       <description>Windowed Watchdog Timer Reset Enable.</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>INT_EARLY</name>
+       <description>Windowed Watchdog Timer Interrupt Flag Too Soon.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <usage>read-write</usage>
+        <enumeratedValue>
+         <name>inactive</name>
+         <description>No interrupt is pending.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>pending</name>
+         <description>An interrupt is pending.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>INT_EARLY_VAL</name>
+       <description>Windowed Watchdog Interrupt Lower Limit. Sets the number of WDTCLK cycles that establishes the lower boundary of the watchdog window. A windowed watchdog timer interrupt is generated (if enabled) if the CPU writes the windowed watchdog reset sequence to the WWDT_RST register before the watchdog timer has counted this time period since the last timer reset.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>4</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>wdt2pow31</name>
+         <description>2**31 clock cycles.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow30</name>
+         <description>2**30 clock cycles.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow29</name>
+         <description>2**29 clock cycles.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow28</name>
+         <description>2**28 clock cycles.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow27</name>
+         <description>2^27 clock cycles.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow26</name>
+         <description>2**26 clock cycles.</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow25</name>
+         <description>2**25 clock cycles.</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow24</name>
+         <description>2**24 clock cycles.</description>
+         <value>7</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow23</name>
+         <description>2**23 clock cycles.</description>
+         <value>8</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow22</name>
+         <description>2**22 clock cycles.</description>
+         <value>9</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow21</name>
+         <description>2**21 clock cycles.</description>
+         <value>10</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow20</name>
+         <description>2**20 clock cycles.</description>
+         <value>11</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow19</name>
+         <description>2**19 clock cycles.</description>
+         <value>12</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow18</name>
+         <description>2**18 clock cycles.</description>
+         <value>13</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow17</name>
+         <description>2**17 clock cycles.</description>
+         <value>14</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow16</name>
+         <description>2**16 clock cycles.</description>
+         <value>15</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>RST_EARLY_VAL</name>
+       <description>Windowed Watchdog Reset Lower Limit. Sets the number of WDTCLK cycles that establishes the lower boundary of the watchdog window. A system reset occurs (if enabled) if the CPU writes the windowed watchdog reset sequence to the WWDT_RST register before the watchdog timer has counted this time period since the last timer reset.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>4</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>wdt2pow31</name>
+         <description>2**31 clock cycles.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow30</name>
+         <description>2**30 clock cycles.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow29</name>
+         <description>2**29 clock cycles.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow28</name>
+         <description>2**28 clock cycles.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow27</name>
+         <description>2^27 clock cycles.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow26</name>
+         <description>2**26 clock cycles.</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow25</name>
+         <description>2**25 clock cycles.</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow24</name>
+         <description>2**24 clock cycles.</description>
+         <value>7</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow23</name>
+         <description>2**23 clock cycles.</description>
+         <value>8</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow22</name>
+         <description>2**22 clock cycles.</description>
+         <value>9</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow21</name>
+         <description>2**21 clock cycles.</description>
+         <value>10</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow20</name>
+         <description>2**20 clock cycles.</description>
+         <value>11</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow19</name>
+         <description>2**19 clock cycles.</description>
+         <value>12</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow18</name>
+         <description>2**18 clock cycles.</description>
+         <value>13</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow17</name>
+         <description>2**17 clock cycles.</description>
+         <value>14</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>wdt2pow16</name>
+         <description>2**16 clock cycles.</description>
+         <value>15</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>CLKRDY_IE</name>
+       <description>Switch Ready Interrupt Enable. Fires an interrupt when it is safe to swithc the clock.</description>
+       <bitOffset>27</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>CLKRDY</name>
+       <description>Clock Status.</description>
+       <bitOffset>28</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>WIN_EN</name>
+       <description>Enables the Windowed Watchdog Function.</description>
+       <bitOffset>29</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Windowed Mode Disabled (i.e. Compatibility Mode).</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Windowed Mode Enabled.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>RST_EARLY</name>
+       <description>Windowed Watchdog Timer Reset Flag Too Soon.</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <usage>read-write</usage>
+        <enumeratedValue>
+         <name>noEvent</name>
+         <description>The event has not occurred.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>occurred</name>
+         <description>The event has occurred.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>RST_LATE</name>
+       <description>Windowed Watchdog Timer Reset Flag Too Late.</description>
+       <bitOffset>31</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <usage>read-write</usage>
+        <enumeratedValue>
+         <name>noEvent</name>
+         <description>The event has not occurred.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>occurred</name>
+         <description>The event has occurred.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>RST</name>
+     <description>Windowed Watchdog Timer Reset Register.</description>
+     <addressOffset>0x04</addressOffset>
+     <access>write-only</access>
+     <fields>
+      <field>
+       <name>RESET</name>
+       <description>Writing the watchdog counter 'reset sequence' to this register resets the watchdog counter. If the watchdog count exceeds INT_PERIOD_UPPER_LIMIT then a watchdog interrupt will occur, if enabled. If the watchdog count exceeds RST_PERIOD_UPPER_LIMIT then a watchdog reset will occur, if enabled.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>seq0</name>
+         <description>The first value to be written to reset the WDT.</description>
+         <value>0x000000A5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>seq1</name>
+         <description>The second value to be written to reset the WDT.</description>
+         <value>0x0000005A</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>CLKSEL</name>
+     <description>Windowed Watchdog Timer Clock Select Register.</description>
+     <addressOffset>0x08</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>SOURCE</name>
+       <description>WWDT Clock Selection Register.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>3</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>CNT</name>
+     <description>Windowed Watchdog Timer Count Register.</description>
+     <addressOffset>0x0C</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>COUNT</name>
+       <description>Current Value of the Windowed Watchdog Timer Counter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--WDT Windowed Watchdog Timer-->
+  <peripheral derivedFrom="WDT">
+   <name>WDT1</name>
+   <description>Windowed Watchdog Timer 1</description>
+   <baseAddress>0x40080800</baseAddress>
+   <interrupt>
+    <name>WDT1</name>
+    <description>WDT1 IRQ</description>
+    <value>57</value>
+   </interrupt>
+  </peripheral>
+<!--WDT1 Windowed Watchdog Timer 1-->
+  <peripheral>
+   <name>WUT</name>
+   <description>32-bit reloadable timer that can be used for timing and wakeup.</description>
+   <baseAddress>0x40006400</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <interrupt>
+    <name>Wakeup_Timer</name>
+    <description>WUT IRQ</description>
+    <value>53</value>
+   </interrupt>
+   <registers>
+    <register>
+     <name>CNT</name>
+     <description>Count.  This register stores the current timer count.</description>
+     <addressOffset>0x00</addressOffset>
+     <resetValue>0x00000001</resetValue>
+     <fields>
+      <field>
+       <name>COUNT</name>
+       <description>Timer Count Value. </description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>CMP</name>
+     <description>Compare.  This register stores the compare value, which is used to set the maximum count value to initiate a reload of the timer to 0x0001.</description>
+     <addressOffset>0x04</addressOffset>
+     <resetValue>0x0000FFFF</resetValue>
+     <fields>
+      <field>
+       <name>COMPARE</name>
+       <description>Timer Compare Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>INTR</name>
+     <description>Clear Interrupt. Writing a value (0 or 1) to a bit in this register clears the associated interrupt.</description>
+     <addressOffset>0x0C</addressOffset>
+     <modifiedWriteValues>oneToClear</modifiedWriteValues>
+     <fields>
+      <field>
+       <name>IRQ_CLR</name>
+       <description>Clear Interrupt.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>CTRL</name>
+     <description>Timer Control Register.</description>
+     <addressOffset>0x10</addressOffset>
+     <fields>
+      <field>
+       <name>TMODE</name>
+       <description>Timer Mode.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>oneShot</name>
+         <description>One Shot Mode.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>continuous</name>
+         <description>Continuous Mode.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>counter</name>
+         <description>Counter Mode.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>capture</name>
+         <description>Capture Mode.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>compare</name>
+         <description>Compare Mode.</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>gated</name>
+         <description>Gated Mode.</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>captureCompare</name>
+         <description>Capture/Compare Mode.</description>
+         <value>7</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>PRES</name>
+       <description>Prescaler.  Set the Timer's prescaler value. The prescaler divides the PCLK input to the timer and sets the Timer's Count Clock, F_CNT_CLK = PCLK(HZ)/prescaler. The Timer's prescaler setting is a 4-bit value with pres3:pres[2:0].</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>div1</name>
+         <description>Divide by 1.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>div2</name>
+         <description>Divide by 2.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>div4</name>
+         <description>Divide by 4.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>div8</name>
+         <description>Divide by 8.</description>
+         <value>3</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>div16</name>
+         <description>Divide by 16.</description>
+         <value>4</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>div32</name>
+         <description>Divide by 32.</description>
+         <value>5</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>div64</name>
+         <description>Divide by 64.</description>
+         <value>6</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>div128</name>
+         <description>Divide by 128.</description>
+         <value>7</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>TPOL</name>
+       <description>Timer input/output polarity bit.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>activeHi</name>
+         <description>Active High.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>activeLo</name>
+         <description>Active Low.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>TEN</name>
+       <description>Timer Enable.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>dis</name>
+         <description>Disable.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>en</name>
+         <description>Enable.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>PRES3</name>
+       <description>MSB of prescaler value.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>NOLCMP</name>
+     <description>Timer Non-Overlapping Compare Register.</description>
+     <addressOffset>0x14</addressOffset>
+     <fields>
+      <field>
+       <name>NOLLCMP</name>
+       <description>Non-overlapping Low Compare.  The 8-bit timer count value of non-overlapping time between falling edge of PWM output 0A and next rising edge of PWM output 0A'.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+      <field>
+       <name>NOLHCMP</name>
+       <description>Non-overlapping High Compare.  The 8-bit timer count value of non-overlapping time between falling edge of PWM output 0A' and next rising edge of PWM output 0A.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>8</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>PRESET</name>
+     <description>Preset register.</description>
+     <addressOffset>0x18</addressOffset>
+     <fields>
+      <field>
+       <name>PRESET</name>
+       <description>Preset Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>RELOAD</name>
+     <description>Reload register.</description>
+     <addressOffset>0x1C</addressOffset>
+     <fields>
+      <field>
+       <name>RELOAD</name>
+       <description>Rerload Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SNAPSHOT</name>
+     <description>Snapshot register.</description>
+     <addressOffset>0x20</addressOffset>
+     <fields>
+      <field>
+       <name>SNAPSHOT</name>
+       <description>Snapshot Value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+   </registers>
+  </peripheral>
+<!--WUT 32-bit reloadable timer that can be used for timing and wakeup.-->
  </peripherals>
 </device>

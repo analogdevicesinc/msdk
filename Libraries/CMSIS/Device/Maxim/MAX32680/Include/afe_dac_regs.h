@@ -81,29 +81,6 @@ extern "C" {
  * @details     Analog Front End DAC on Stacked Die via SPI
  */
 
-/**
- * @ingroup afe_dac_registers
- * Structure type to access the AFE_DAC Registers.
- */
-typedef struct {
-    __R  uint32_t rsv_0x0_0x1000003[4194305];
-    __IO uint32_t ctrl;                 /**< <tt>\b 0x01000004:</tt> AFE_DAC CTRL Register */
-    __R  uint32_t rsv_0x1000008_0x1010003[16383];
-    __IO uint32_t rate;                 /**< <tt>\b 0x01010004:</tt> AFE_DAC RATE Register */
-    __R  uint32_t rsv_0x1010008_0x1020003[16383];
-    __IO uint32_t int;                  /**< <tt>\b 0x01020004:</tt> AFE_DAC INT Register */
-    __R  uint32_t rsv_0x1020008_0x1030003[16383];
-    __IO uint32_t reg;                  /**< <tt>\b 0x01030004:</tt> AFE_DAC REG Register */
-    __R  uint32_t rsv_0x1030008_0x1040003[16383];
-    __IO uint32_t trim;                 /**< <tt>\b 0x01040004:</tt> AFE_DAC TRIM Register */
-    __R  uint16_t rsv_0x1040008_0x1050001[32765];
-    __IO uint16_t vref_ctrl;            /**< <tt>\b 0x01050002:</tt> AFE_DAC VREF_CTRL Register */
-    __R  uint16_t rsv_0x1050004_0x1060001[32767];
-    __IO uint16_t fifo;                 /**< <tt>\b 0x01060002:</tt> AFE_DAC FIFO Register */
-    __R  uint16_t rsv_0x1060004_0x1070001[32767];
-    __IO uint16_t vref_trim;            /**< <tt>\b 0x01070002:</tt> AFE_DAC VREF_TRIM Register */
-} mxc_afe_dac_regs_t;
-
 /* Register offsets for module AFE_DAC */
 /**
  * @ingroup    afe_dac_registers

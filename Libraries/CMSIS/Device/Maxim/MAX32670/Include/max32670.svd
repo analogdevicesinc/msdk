@@ -5526,7 +5526,7 @@
      </fields>
     </register>
     <register>
-     <name>SIZE</name>
+     <name>SZ</name>
      <description>Memory Configuration Register.</description>
      <addressOffset>0x0004</addressOffset>
      <access>read-only</access>
