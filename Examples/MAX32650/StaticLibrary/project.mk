@@ -19,4 +19,4 @@
 SBT=0
 
 # Add your static library here
-EXTRA_LIBS += example_lib
+EXTRA_LIBS += test_lib

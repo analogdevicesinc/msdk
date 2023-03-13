@@ -1,6 +1,6 @@
 /**
  * @file    main.c
- * @brief   Static Library example
+ * @brief   Static library example
  * @details Shows how to build a static library and call its functions from
  * external code. The library in this example implements case conversion
  * functions that are continuously called inside the main loop.
@@ -44,7 +44,7 @@
 #include <stdint.h>
 #include "mxc_delay.h"
 
-#include "example_lib/example.h"
+#include "test_lib/testlib.h"
 
 /* ************************************************************************** */
 int main(void)
@@ -59,8 +59,8 @@ int main(void)
 
     while (1) {
         MXC_Delay(MXC_DELAY_MSEC(500));
-        printf("%s", example_uppercase("Hello World\n", buf));
+        printf("%s", test_uppercase("Hello World\n", buf));
         MXC_Delay(MXC_DELAY_MSEC(500));
-        printf("%s", example_lowercase(buf, buf));
+        printf("%s", test_lowercase(buf, buf));
     }
 }

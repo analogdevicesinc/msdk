@@ -1,5 +1,5 @@
 /**
- * @file    example.c
+ * @file    testlib
  * @brief   Example static library implementation.
  * @details libExample source.
  */
@@ -39,7 +39,7 @@
 
 #include <stdio.h>
 
-char *example_uppercase(const char *str, char *out)
+char *test_uppercase(const char *str, char *out)
 {
     char *p = out;
     while (*str) {
@@ -52,7 +52,7 @@ char *example_uppercase(const char *str, char *out)
     return out;
 }
 
-char *example_lowercase(const char *str, char *out)
+char *test_lowercase(const char *str, char *out)
 {
     char *p = out;
     while (*str) {

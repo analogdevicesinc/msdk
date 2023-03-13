@@ -1,5 +1,5 @@
 /**
- * @file    example.h
+ * @file    testlib.h
  * @brief   Example static library header.
  * @details This file is part of libExample.
  */
@@ -37,8 +37,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLE_LIB_EXAMPLE_H_
-#define EXAMPLE_LIB_EXAMPLE_H_
+#ifndef TEST_LIB_TESTLIB_H_
+#define TEST_LIB_TESTLIB_H_
 
 /**
  * @brief Converts letters in \a str to uppercase.
@@ -46,7 +46,7 @@
  * @param out Buffer to store the uppercase characters.
  * @return Pointer to the output buffer.
  */
-char *example_uppercase(const char *str, char *out);
+char *test_uppercase(const char *str, char *out);
 
 /**
  * @brief Converts letters in \a str to lowercase.
@@ -54,6 +54,6 @@ char *example_uppercase(const char *str, char *out);
  * @param out Buffer to store the lowercase characters.
  * @return Pointer to the output buffer.
  */
-char *example_lowercase(const char *str, char *out);
+char *test_lowercase(const char *str, char *out);
 
-#endif /* EXAMPLE_LIB_EXAMPLE_H_ */
+#endif /* TEST_LIB_TESTLIB_H_ */

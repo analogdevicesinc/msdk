@@ -76,8 +76,7 @@ endif
 
 CUSTOM_LIB_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 CUSTOM_LIB_INCLUDE_DIR = $(CUSTOM_LIB_DIR)
-CUSTOM_LIB_C_FILES += $(SRC_FILES)
-
+CUSTOM_LIB_C_FILES += $(shell find $(CUSTOM_LIB_DIR) -name "*.c")
 # # Where to find header files for this project
 IPATH += $(CUSTOM_LIB_INCLUDE_DIR)
 SRCS  += $(CUSTOM_LIB_C_FILES)
