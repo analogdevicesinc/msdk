@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
@@ -90,10 +90,12 @@ extern "C" {
 typedef struct {
     __IO uint32_t enable;               /**< <tt>\b 0x0000:</tt> PTG ENABLE Register */
     __IO uint32_t resync;               /**< <tt>\b 0x0004:</tt> PTG RESYNC Register */
-    __IO uint32_t intfl;                /**< <tt>\b 0x0008:</tt> PTG INTFL Register */
-    __IO uint32_t inten;                /**< <tt>\b 0x000C:</tt> PTG INTEN Register */
+    __IO uint32_t stop_intfl;           /**< <tt>\b 0x0008:</tt> PTG STOP_INTFL Register */
+    __IO uint32_t stop_inten;           /**< <tt>\b 0x000C:</tt> PTG STOP_INTEN Register */
     __O  uint32_t safe_en;              /**< <tt>\b 0x0010:</tt> PTG SAFE_EN Register */
     __O  uint32_t safe_dis;             /**< <tt>\b 0x0014:</tt> PTG SAFE_DIS Register */
+    __IO uint32_t ready_intfl;          /**< <tt>\b 0x0018:</tt> PTG READY_INTFL Register */
+    __IO uint32_t ready_inten;          /**< <tt>\b 0x001C:</tt> PTG READY_INTEN Register */
 } mxc_ptg_regs_t;
 
 /* Register offsets for module PTG */
@@ -105,10 +107,12 @@ typedef struct {
  */
 #define MXC_R_PTG_ENABLE                   ((uint32_t)0x00000000UL) /**< Offset from PTG Base Address: <tt> 0x0000</tt> */
 #define MXC_R_PTG_RESYNC                   ((uint32_t)0x00000004UL) /**< Offset from PTG Base Address: <tt> 0x0004</tt> */
-#define MXC_R_PTG_INTFL                    ((uint32_t)0x00000008UL) /**< Offset from PTG Base Address: <tt> 0x0008</tt> */
-#define MXC_R_PTG_INTEN                    ((uint32_t)0x0000000CUL) /**< Offset from PTG Base Address: <tt> 0x000C</tt> */
+#define MXC_R_PTG_STOP_INTFL               ((uint32_t)0x00000008UL) /**< Offset from PTG Base Address: <tt> 0x0008</tt> */
+#define MXC_R_PTG_STOP_INTEN               ((uint32_t)0x0000000CUL) /**< Offset from PTG Base Address: <tt> 0x000C</tt> */
 #define MXC_R_PTG_SAFE_EN                  ((uint32_t)0x00000010UL) /**< Offset from PTG Base Address: <tt> 0x0010</tt> */
 #define MXC_R_PTG_SAFE_DIS                 ((uint32_t)0x00000014UL) /**< Offset from PTG Base Address: <tt> 0x0014</tt> */
+#define MXC_R_PTG_READY_INTFL              ((uint32_t)0x00000018UL) /**< Offset from PTG Base Address: <tt> 0x0018</tt> */
+#define MXC_R_PTG_READY_INTEN              ((uint32_t)0x0000001CUL) /**< Offset from PTG Base Address: <tt> 0x001C</tt> */
 /**@} end of group ptg_registers */
 
 /**
@@ -177,67 +181,67 @@ typedef struct {
 
 /**
  * @ingroup  ptg_registers
- * @defgroup PTG_INTFL PTG_INTFL
- * @brief    Pulse Train Interrupt Flags
+ * @defgroup PTG_STOP_INTFL PTG_STOP_INTFL
+ * @brief    Pulse Train Stop Interrupt Flags
  * @{
  */
-#define MXC_F_PTG_INTFL_PT0_POS                        0 /**< INTFL_PT0 Position */
-#define MXC_F_PTG_INTFL_PT0                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT0_POS)) /**< INTFL_PT0 Mask */
+#define MXC_F_PTG_STOP_INTFL_PT0_POS                   0 /**< STOP_INTFL_PT0 Position */
+#define MXC_F_PTG_STOP_INTFL_PT0                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTFL_PT0_POS)) /**< STOP_INTFL_PT0 Mask */
 
-#define MXC_F_PTG_INTFL_PT1_POS                        1 /**< INTFL_PT1 Position */
-#define MXC_F_PTG_INTFL_PT1                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT1_POS)) /**< INTFL_PT1 Mask */
+#define MXC_F_PTG_STOP_INTFL_PT1_POS                   1 /**< STOP_INTFL_PT1 Position */
+#define MXC_F_PTG_STOP_INTFL_PT1                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTFL_PT1_POS)) /**< STOP_INTFL_PT1 Mask */
 
-#define MXC_F_PTG_INTFL_PT2_POS                        2 /**< INTFL_PT2 Position */
-#define MXC_F_PTG_INTFL_PT2                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT2_POS)) /**< INTFL_PT2 Mask */
+#define MXC_F_PTG_STOP_INTFL_PT2_POS                   2 /**< STOP_INTFL_PT2 Position */
+#define MXC_F_PTG_STOP_INTFL_PT2                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTFL_PT2_POS)) /**< STOP_INTFL_PT2 Mask */
 
-#define MXC_F_PTG_INTFL_PT3_POS                        3 /**< INTFL_PT3 Position */
-#define MXC_F_PTG_INTFL_PT3                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT3_POS)) /**< INTFL_PT3 Mask */
+#define MXC_F_PTG_STOP_INTFL_PT3_POS                   3 /**< STOP_INTFL_PT3 Position */
+#define MXC_F_PTG_STOP_INTFL_PT3                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTFL_PT3_POS)) /**< STOP_INTFL_PT3 Mask */
 
-#define MXC_F_PTG_INTFL_PT4_POS                        4 /**< INTFL_PT4 Position */
-#define MXC_F_PTG_INTFL_PT4                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT4_POS)) /**< INTFL_PT4 Mask */
+#define MXC_F_PTG_STOP_INTFL_PT4_POS                   4 /**< STOP_INTFL_PT4 Position */
+#define MXC_F_PTG_STOP_INTFL_PT4                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTFL_PT4_POS)) /**< STOP_INTFL_PT4 Mask */
 
-#define MXC_F_PTG_INTFL_PT5_POS                        5 /**< INTFL_PT5 Position */
-#define MXC_F_PTG_INTFL_PT5                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT5_POS)) /**< INTFL_PT5 Mask */
+#define MXC_F_PTG_STOP_INTFL_PT5_POS                   5 /**< STOP_INTFL_PT5 Position */
+#define MXC_F_PTG_STOP_INTFL_PT5                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTFL_PT5_POS)) /**< STOP_INTFL_PT5 Mask */
 
-#define MXC_F_PTG_INTFL_PT6_POS                        6 /**< INTFL_PT6 Position */
-#define MXC_F_PTG_INTFL_PT6                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT6_POS)) /**< INTFL_PT6 Mask */
+#define MXC_F_PTG_STOP_INTFL_PT6_POS                   6 /**< STOP_INTFL_PT6 Position */
+#define MXC_F_PTG_STOP_INTFL_PT6                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTFL_PT6_POS)) /**< STOP_INTFL_PT6 Mask */
 
-#define MXC_F_PTG_INTFL_PT7_POS                        7 /**< INTFL_PT7 Position */
-#define MXC_F_PTG_INTFL_PT7                            ((uint32_t)(0x1UL << MXC_F_PTG_INTFL_PT7_POS)) /**< INTFL_PT7 Mask */
+#define MXC_F_PTG_STOP_INTFL_PT7_POS                   7 /**< STOP_INTFL_PT7 Position */
+#define MXC_F_PTG_STOP_INTFL_PT7                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTFL_PT7_POS)) /**< STOP_INTFL_PT7 Mask */
 
-/**@} end of group PTG_INTFL_Register */
+/**@} end of group PTG_STOP_INTFL_Register */
 
 /**
  * @ingroup  ptg_registers
- * @defgroup PTG_INTEN PTG_INTEN
- * @brief    Pulse Train Interrupt Enable/Disable
+ * @defgroup PTG_STOP_INTEN PTG_STOP_INTEN
+ * @brief    Pulse Train Stop Interrupt Enable/Disable
  * @{
  */
-#define MXC_F_PTG_INTEN_PT0_POS                        0 /**< INTEN_PT0 Position */
-#define MXC_F_PTG_INTEN_PT0                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT0_POS)) /**< INTEN_PT0 Mask */
+#define MXC_F_PTG_STOP_INTEN_PT0_POS                   0 /**< STOP_INTEN_PT0 Position */
+#define MXC_F_PTG_STOP_INTEN_PT0                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTEN_PT0_POS)) /**< STOP_INTEN_PT0 Mask */
 
-#define MXC_F_PTG_INTEN_PT1_POS                        1 /**< INTEN_PT1 Position */
-#define MXC_F_PTG_INTEN_PT1                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT1_POS)) /**< INTEN_PT1 Mask */
+#define MXC_F_PTG_STOP_INTEN_PT1_POS                   1 /**< STOP_INTEN_PT1 Position */
+#define MXC_F_PTG_STOP_INTEN_PT1                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTEN_PT1_POS)) /**< STOP_INTEN_PT1 Mask */
 
-#define MXC_F_PTG_INTEN_PT2_POS                        2 /**< INTEN_PT2 Position */
-#define MXC_F_PTG_INTEN_PT2                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT2_POS)) /**< INTEN_PT2 Mask */
+#define MXC_F_PTG_STOP_INTEN_PT2_POS                   2 /**< STOP_INTEN_PT2 Position */
+#define MXC_F_PTG_STOP_INTEN_PT2                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTEN_PT2_POS)) /**< STOP_INTEN_PT2 Mask */
 
-#define MXC_F_PTG_INTEN_PT3_POS                        3 /**< INTEN_PT3 Position */
-#define MXC_F_PTG_INTEN_PT3                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT3_POS)) /**< INTEN_PT3 Mask */
+#define MXC_F_PTG_STOP_INTEN_PT3_POS                   3 /**< STOP_INTEN_PT3 Position */
+#define MXC_F_PTG_STOP_INTEN_PT3                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTEN_PT3_POS)) /**< STOP_INTEN_PT3 Mask */
 
-#define MXC_F_PTG_INTEN_PT4_POS                        4 /**< INTEN_PT4 Position */
-#define MXC_F_PTG_INTEN_PT4                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT4_POS)) /**< INTEN_PT4 Mask */
+#define MXC_F_PTG_STOP_INTEN_PT4_POS                   4 /**< STOP_INTEN_PT4 Position */
+#define MXC_F_PTG_STOP_INTEN_PT4                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTEN_PT4_POS)) /**< STOP_INTEN_PT4 Mask */
 
-#define MXC_F_PTG_INTEN_PT5_POS                        5 /**< INTEN_PT5 Position */
-#define MXC_F_PTG_INTEN_PT5                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT5_POS)) /**< INTEN_PT5 Mask */
+#define MXC_F_PTG_STOP_INTEN_PT5_POS                   5 /**< STOP_INTEN_PT5 Position */
+#define MXC_F_PTG_STOP_INTEN_PT5                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTEN_PT5_POS)) /**< STOP_INTEN_PT5 Mask */
 
-#define MXC_F_PTG_INTEN_PT6_POS                        6 /**< INTEN_PT6 Position */
-#define MXC_F_PTG_INTEN_PT6                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT6_POS)) /**< INTEN_PT6 Mask */
+#define MXC_F_PTG_STOP_INTEN_PT6_POS                   6 /**< STOP_INTEN_PT6 Position */
+#define MXC_F_PTG_STOP_INTEN_PT6                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTEN_PT6_POS)) /**< STOP_INTEN_PT6 Mask */
 
-#define MXC_F_PTG_INTEN_PT7_POS                        7 /**< INTEN_PT7 Position */
-#define MXC_F_PTG_INTEN_PT7                            ((uint32_t)(0x1UL << MXC_F_PTG_INTEN_PT7_POS)) /**< INTEN_PT7 Mask */
+#define MXC_F_PTG_STOP_INTEN_PT7_POS                   7 /**< STOP_INTEN_PT7 Position */
+#define MXC_F_PTG_STOP_INTEN_PT7                       ((uint32_t)(0x1UL << MXC_F_PTG_STOP_INTEN_PT7_POS)) /**< STOP_INTEN_PT7 Mask */
 
-/**@} end of group PTG_INTEN_Register */
+/**@} end of group PTG_STOP_INTEN_Register */
 
 /**
  * @ingroup  ptg_registers
@@ -302,6 +306,70 @@ typedef struct {
 #define MXC_F_PTG_SAFE_DIS_PT7                         ((uint32_t)(0x1UL << MXC_F_PTG_SAFE_DIS_PT7_POS)) /**< SAFE_DIS_PT7 Mask */
 
 /**@} end of group PTG_SAFE_DIS_Register */
+
+/**
+ * @ingroup  ptg_registers
+ * @defgroup PTG_READY_INTFL PTG_READY_INTFL
+ * @brief    Pulse Train Ready Interrupt Flags
+ * @{
+ */
+#define MXC_F_PTG_READY_INTFL_PT0_POS                  0 /**< READY_INTFL_PT0 Position */
+#define MXC_F_PTG_READY_INTFL_PT0                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTFL_PT0_POS)) /**< READY_INTFL_PT0 Mask */
+
+#define MXC_F_PTG_READY_INTFL_PT1_POS                  1 /**< READY_INTFL_PT1 Position */
+#define MXC_F_PTG_READY_INTFL_PT1                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTFL_PT1_POS)) /**< READY_INTFL_PT1 Mask */
+
+#define MXC_F_PTG_READY_INTFL_PT2_POS                  2 /**< READY_INTFL_PT2 Position */
+#define MXC_F_PTG_READY_INTFL_PT2                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTFL_PT2_POS)) /**< READY_INTFL_PT2 Mask */
+
+#define MXC_F_PTG_READY_INTFL_PT3_POS                  3 /**< READY_INTFL_PT3 Position */
+#define MXC_F_PTG_READY_INTFL_PT3                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTFL_PT3_POS)) /**< READY_INTFL_PT3 Mask */
+
+#define MXC_F_PTG_READY_INTFL_PT4_POS                  4 /**< READY_INTFL_PT4 Position */
+#define MXC_F_PTG_READY_INTFL_PT4                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTFL_PT4_POS)) /**< READY_INTFL_PT4 Mask */
+
+#define MXC_F_PTG_READY_INTFL_PT5_POS                  5 /**< READY_INTFL_PT5 Position */
+#define MXC_F_PTG_READY_INTFL_PT5                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTFL_PT5_POS)) /**< READY_INTFL_PT5 Mask */
+
+#define MXC_F_PTG_READY_INTFL_PT6_POS                  6 /**< READY_INTFL_PT6 Position */
+#define MXC_F_PTG_READY_INTFL_PT6                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTFL_PT6_POS)) /**< READY_INTFL_PT6 Mask */
+
+#define MXC_F_PTG_READY_INTFL_PT7_POS                  7 /**< READY_INTFL_PT7 Position */
+#define MXC_F_PTG_READY_INTFL_PT7                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTFL_PT7_POS)) /**< READY_INTFL_PT7 Mask */
+
+/**@} end of group PTG_READY_INTFL_Register */
+
+/**
+ * @ingroup  ptg_registers
+ * @defgroup PTG_READY_INTEN PTG_READY_INTEN
+ * @brief    Pulse Train Ready Interrupt Enable/Disable
+ * @{
+ */
+#define MXC_F_PTG_READY_INTEN_PT0_POS                  0 /**< READY_INTEN_PT0 Position */
+#define MXC_F_PTG_READY_INTEN_PT0                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTEN_PT0_POS)) /**< READY_INTEN_PT0 Mask */
+
+#define MXC_F_PTG_READY_INTEN_PT1_POS                  1 /**< READY_INTEN_PT1 Position */
+#define MXC_F_PTG_READY_INTEN_PT1                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTEN_PT1_POS)) /**< READY_INTEN_PT1 Mask */
+
+#define MXC_F_PTG_READY_INTEN_PT2_POS                  2 /**< READY_INTEN_PT2 Position */
+#define MXC_F_PTG_READY_INTEN_PT2                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTEN_PT2_POS)) /**< READY_INTEN_PT2 Mask */
+
+#define MXC_F_PTG_READY_INTEN_PT3_POS                  3 /**< READY_INTEN_PT3 Position */
+#define MXC_F_PTG_READY_INTEN_PT3                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTEN_PT3_POS)) /**< READY_INTEN_PT3 Mask */
+
+#define MXC_F_PTG_READY_INTEN_PT4_POS                  4 /**< READY_INTEN_PT4 Position */
+#define MXC_F_PTG_READY_INTEN_PT4                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTEN_PT4_POS)) /**< READY_INTEN_PT4 Mask */
+
+#define MXC_F_PTG_READY_INTEN_PT5_POS                  5 /**< READY_INTEN_PT5 Position */
+#define MXC_F_PTG_READY_INTEN_PT5                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTEN_PT5_POS)) /**< READY_INTEN_PT5 Mask */
+
+#define MXC_F_PTG_READY_INTEN_PT6_POS                  6 /**< READY_INTEN_PT6 Position */
+#define MXC_F_PTG_READY_INTEN_PT6                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTEN_PT6_POS)) /**< READY_INTEN_PT6 Mask */
+
+#define MXC_F_PTG_READY_INTEN_PT7_POS                  7 /**< READY_INTEN_PT7 Position */
+#define MXC_F_PTG_READY_INTEN_PT7                      ((uint32_t)(0x1UL << MXC_F_PTG_READY_INTEN_PT7_POS)) /**< READY_INTEN_PT7 Mask */
+
+/**@} end of group PTG_READY_INTEN_Register */
 
 #ifdef __cplusplus
 }

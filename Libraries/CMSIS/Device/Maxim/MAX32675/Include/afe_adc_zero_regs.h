@@ -81,6 +81,249 @@ extern "C" {
  * @details     Analog Front End ADC0 on Stacked Die via SPI
  */
 
+/**
+ * @ingroup afe_adc_zero_registers
+ * Structure type to access the AFE_ADC_ZERO Registers.
+ */
+typedef struct {
+    __R  uint8_t  rsv_0x0;
+    __IO uint8_t  pd;                   /**< <tt>\b 0x00000001:</tt> AFE_ADC_ZERO PD Register */
+    __R  uint8_t  rsv_0x2_0x10000[65535];
+    __IO uint8_t  conv_start;           /**< <tt>\b 0x00010001:</tt> AFE_ADC_ZERO CONV_START Register */
+    __R  uint8_t  rsv_0x10002_0x20000[65535];
+    __IO uint8_t  seq_start;            /**< <tt>\b 0x00020001:</tt> AFE_ADC_ZERO SEQ_START Register */
+    __R  uint8_t  rsv_0x20002_0x30000[65535];
+    __IO uint8_t  cal_start;            /**< <tt>\b 0x00030001:</tt> AFE_ADC_ZERO CAL_START Register */
+    __R  uint8_t  rsv_0x30002_0x40000[65535];
+    __IO uint8_t  gp0_ctrl;             /**< <tt>\b 0x00040001:</tt> AFE_ADC_ZERO GP0_CTRL Register */
+    __R  uint8_t  rsv_0x40002_0x50000[65535];
+    __IO uint8_t  gp1_ctrl;             /**< <tt>\b 0x00050001:</tt> AFE_ADC_ZERO GP1_CTRL Register */
+    __R  uint8_t  rsv_0x50002_0x60000[65535];
+    __IO uint8_t  gp_conv;              /**< <tt>\b 0x00060001:</tt> AFE_ADC_ZERO GP_CONV Register */
+    __R  uint8_t  rsv_0x60002_0x70000[65535];
+    __IO uint8_t  gp_seq_addr;          /**< <tt>\b 0x00070001:</tt> AFE_ADC_ZERO GP_SEQ_ADDR Register */
+    __R  uint8_t  rsv_0x70002_0x80000[65535];
+    __IO uint8_t  filter;               /**< <tt>\b 0x00080001:</tt> AFE_ADC_ZERO FILTER Register */
+    __R  uint8_t  rsv_0x80002_0x90000[65535];
+    __IO uint8_t  ctrl;                 /**< <tt>\b 0x00090001:</tt> AFE_ADC_ZERO CTRL Register */
+    __R  uint8_t  rsv_0x90002_0xa0000[65535];
+    __IO uint8_t  source;               /**< <tt>\b 0x000A0001:</tt> AFE_ADC_ZERO SOURCE Register */
+    __R  uint8_t  rsv_0xa0002_0xb0000[65535];
+    __IO uint8_t  mux_ctrl0;            /**< <tt>\b 0x000B0001:</tt> AFE_ADC_ZERO MUX_CTRL0 Register */
+    __R  uint8_t  rsv_0xb0002_0xc0000[65535];
+    __IO uint8_t  mux_ctrl1;            /**< <tt>\b 0x000C0001:</tt> AFE_ADC_ZERO MUX_CTRL1 Register */
+    __R  uint8_t  rsv_0xc0002_0xd0000[65535];
+    __IO uint8_t  mux_ctrl2;            /**< <tt>\b 0x000D0001:</tt> AFE_ADC_ZERO MUX_CTRL2 Register */
+    __R  uint8_t  rsv_0xd0002_0xe0000[65535];
+    __IO uint8_t  pga;                  /**< <tt>\b 0x000E0001:</tt> AFE_ADC_ZERO PGA Register */
+    __R  uint8_t  rsv_0xe0002_0xf0000[65535];
+    __IO uint8_t  wait_ext;             /**< <tt>\b 0x000F0001:</tt> AFE_ADC_ZERO WAIT_EXT Register */
+    __R  uint8_t  rsv_0xf0002_0x100000[65535];
+    __IO uint8_t  wait_start;           /**< <tt>\b 0x00100001:</tt> AFE_ADC_ZERO WAIT_START Register */
+    __R  uint8_t  rsv_0x100002_0x110002[65537];
+    __IO uint32_t part_id;              /**< <tt>\b 0x00110003:</tt> AFE_ADC_ZERO PART_ID Register */
+    __R  uint32_t rsv_0x110007_0x120002[16383];
+    __IO uint32_t sysc_sel;             /**< <tt>\b 0x00120003:</tt> AFE_ADC_ZERO SYSC_SEL Register */
+    __R  uint32_t rsv_0x120007_0x130002[16383];
+    __IO uint32_t sys_off_a;            /**< <tt>\b 0x00130003:</tt> AFE_ADC_ZERO SYS_OFF_A Register */
+    __R  uint32_t rsv_0x130007_0x140002[16383];
+    __IO uint32_t sys_off_b;            /**< <tt>\b 0x00140003:</tt> AFE_ADC_ZERO SYS_OFF_B Register */
+    __R  uint32_t rsv_0x140007_0x150002[16383];
+    __IO uint32_t sys_gain_a;           /**< <tt>\b 0x00150003:</tt> AFE_ADC_ZERO SYS_GAIN_A Register */
+    __R  uint32_t rsv_0x150007_0x160002[16383];
+    __IO uint32_t sys_gain_b;           /**< <tt>\b 0x00160003:</tt> AFE_ADC_ZERO SYS_GAIN_B Register */
+    __R  uint32_t rsv_0x160007_0x170002[16383];
+    __IO uint32_t self_off;             /**< <tt>\b 0x00170003:</tt> AFE_ADC_ZERO SELF_OFF Register */
+    __R  uint32_t rsv_0x170007_0x180002[16383];
+    __IO uint32_t self_gain_1;          /**< <tt>\b 0x00180003:</tt> AFE_ADC_ZERO SELF_GAIN_1 Register */
+    __R  uint32_t rsv_0x180007_0x190002[16383];
+    __IO uint32_t self_gain_2;          /**< <tt>\b 0x00190003:</tt> AFE_ADC_ZERO SELF_GAIN_2 Register */
+    __R  uint32_t rsv_0x190007_0x1a0002[16383];
+    __IO uint32_t self_gain_4;          /**< <tt>\b 0x001A0003:</tt> AFE_ADC_ZERO SELF_GAIN_4 Register */
+    __R  uint32_t rsv_0x1a0007_0x1b0002[16383];
+    __IO uint32_t self_gain_8;          /**< <tt>\b 0x001B0003:</tt> AFE_ADC_ZERO SELF_GAIN_8 Register */
+    __R  uint32_t rsv_0x1b0007_0x1c0002[16383];
+    __IO uint32_t self_gain_16;         /**< <tt>\b 0x001C0003:</tt> AFE_ADC_ZERO SELF_GAIN_16 Register */
+    __R  uint32_t rsv_0x1c0007_0x1d0002[16383];
+    __IO uint32_t self_gain_32;         /**< <tt>\b 0x001D0003:</tt> AFE_ADC_ZERO SELF_GAIN_32 Register */
+    __R  uint32_t rsv_0x1d0007_0x1e0002[16383];
+    __IO uint32_t self_gain_64;         /**< <tt>\b 0x001E0003:</tt> AFE_ADC_ZERO SELF_GAIN_64 Register */
+    __R  uint32_t rsv_0x1e0007_0x1f0002[16383];
+    __IO uint32_t self_gain_128;        /**< <tt>\b 0x001F0003:</tt> AFE_ADC_ZERO SELF_GAIN_128 Register */
+    __R  uint32_t rsv_0x1f0007_0x200002[16383];
+    __IO uint32_t lthresh0;             /**< <tt>\b 0x00200003:</tt> AFE_ADC_ZERO LTHRESH0 Register */
+    __R  uint32_t rsv_0x200007_0x210002[16383];
+    __IO uint32_t lthresh1;             /**< <tt>\b 0x00210003:</tt> AFE_ADC_ZERO LTHRESH1 Register */
+    __R  uint32_t rsv_0x210007_0x220002[16383];
+    __IO uint32_t lthresh2;             /**< <tt>\b 0x00220003:</tt> AFE_ADC_ZERO LTHRESH2 Register */
+    __R  uint32_t rsv_0x220007_0x230002[16383];
+    __IO uint32_t lthresh3;             /**< <tt>\b 0x00230003:</tt> AFE_ADC_ZERO LTHRESH3 Register */
+    __R  uint32_t rsv_0x230007_0x240002[16383];
+    __IO uint32_t lthresh4;             /**< <tt>\b 0x00240003:</tt> AFE_ADC_ZERO LTHRESH4 Register */
+    __R  uint32_t rsv_0x240007_0x250002[16383];
+    __IO uint32_t lthresh5;             /**< <tt>\b 0x00250003:</tt> AFE_ADC_ZERO LTHRESH5 Register */
+    __R  uint32_t rsv_0x250007_0x260002[16383];
+    __IO uint32_t lthresh6;             /**< <tt>\b 0x00260003:</tt> AFE_ADC_ZERO LTHRESH6 Register */
+    __R  uint32_t rsv_0x260007_0x270002[16383];
+    __IO uint32_t lthresh7;             /**< <tt>\b 0x00270003:</tt> AFE_ADC_ZERO LTHRESH7 Register */
+    __R  uint32_t rsv_0x270007_0x280002[16383];
+    __IO uint32_t uthresh0;             /**< <tt>\b 0x00280003:</tt> AFE_ADC_ZERO UTHRESH0 Register */
+    __R  uint32_t rsv_0x280007_0x290002[16383];
+    __IO uint32_t uthresh1;             /**< <tt>\b 0x00290003:</tt> AFE_ADC_ZERO UTHRESH1 Register */
+    __R  uint32_t rsv_0x290007_0x2a0002[16383];
+    __IO uint32_t uthresh2;             /**< <tt>\b 0x002A0003:</tt> AFE_ADC_ZERO UTHRESH2 Register */
+    __R  uint32_t rsv_0x2a0007_0x2b0002[16383];
+    __IO uint32_t uthresh3;             /**< <tt>\b 0x002B0003:</tt> AFE_ADC_ZERO UTHRESH3 Register */
+    __R  uint32_t rsv_0x2b0007_0x2c0002[16383];
+    __IO uint32_t uthresh4;             /**< <tt>\b 0x002C0003:</tt> AFE_ADC_ZERO UTHRESH4 Register */
+    __R  uint32_t rsv_0x2c0007_0x2d0002[16383];
+    __IO uint32_t uthresh5;             /**< <tt>\b 0x002D0003:</tt> AFE_ADC_ZERO UTHRESH5 Register */
+    __R  uint32_t rsv_0x2d0007_0x2e0002[16383];
+    __IO uint32_t uthresh6;             /**< <tt>\b 0x002E0003:</tt> AFE_ADC_ZERO UTHRESH6 Register */
+    __R  uint32_t rsv_0x2e0007_0x2f0002[16383];
+    __IO uint32_t uthresh7;             /**< <tt>\b 0x002F0003:</tt> AFE_ADC_ZERO UTHRESH7 Register */
+    __R  uint32_t rsv_0x2f0007_0x300002[16383];
+    __IO uint32_t data0;                /**< <tt>\b 0x00300003:</tt> AFE_ADC_ZERO DATA0 Register */
+    __R  uint32_t rsv_0x300007_0x310002[16383];
+    __IO uint32_t data1;                /**< <tt>\b 0x00310003:</tt> AFE_ADC_ZERO DATA1 Register */
+    __R  uint32_t rsv_0x310007_0x320002[16383];
+    __IO uint32_t data2;                /**< <tt>\b 0x00320003:</tt> AFE_ADC_ZERO DATA2 Register */
+    __R  uint32_t rsv_0x320007_0x330002[16383];
+    __IO uint32_t data3;                /**< <tt>\b 0x00330003:</tt> AFE_ADC_ZERO DATA3 Register */
+    __R  uint32_t rsv_0x330007_0x340002[16383];
+    __IO uint32_t data4;                /**< <tt>\b 0x00340003:</tt> AFE_ADC_ZERO DATA4 Register */
+    __R  uint32_t rsv_0x340007_0x350002[16383];
+    __IO uint32_t data5;                /**< <tt>\b 0x00350003:</tt> AFE_ADC_ZERO DATA5 Register */
+    __R  uint32_t rsv_0x350007_0x360002[16383];
+    __IO uint32_t data6;                /**< <tt>\b 0x00360003:</tt> AFE_ADC_ZERO DATA6 Register */
+    __R  uint32_t rsv_0x360007_0x370002[16383];
+    __IO uint32_t data7;                /**< <tt>\b 0x00370003:</tt> AFE_ADC_ZERO DATA7 Register */
+    __R  uint32_t rsv_0x370007_0x380002[16383];
+    __IO uint32_t status;               /**< <tt>\b 0x00380003:</tt> AFE_ADC_ZERO STATUS Register */
+    __R  uint32_t rsv_0x380007_0x390002[16383];
+    __IO uint32_t status_ie;            /**< <tt>\b 0x00390003:</tt> AFE_ADC_ZERO STATUS_IE Register */
+    __R  uint8_t  rsv_0x390007_0x3a0001[65531];
+    __IO uint16_t uc_0;                 /**< <tt>\b 0x003A0002:</tt> AFE_ADC_ZERO UC_0 Register */
+    __R  uint16_t rsv_0x3a0004_0x3b0001[32767];
+    __IO uint16_t uc_1;                 /**< <tt>\b 0x003B0002:</tt> AFE_ADC_ZERO UC_1 Register */
+    __R  uint16_t rsv_0x3b0004_0x3c0001[32767];
+    __IO uint16_t uc_2;                 /**< <tt>\b 0x003C0002:</tt> AFE_ADC_ZERO UC_2 Register */
+    __R  uint16_t rsv_0x3c0004_0x3d0001[32767];
+    __IO uint16_t uc_3;                 /**< <tt>\b 0x003D0002:</tt> AFE_ADC_ZERO UC_3 Register */
+    __R  uint16_t rsv_0x3d0004_0x3e0001[32767];
+    __IO uint16_t uc_4;                 /**< <tt>\b 0x003E0002:</tt> AFE_ADC_ZERO UC_4 Register */
+    __R  uint16_t rsv_0x3e0004_0x3f0001[32767];
+    __IO uint16_t uc_5;                 /**< <tt>\b 0x003F0002:</tt> AFE_ADC_ZERO UC_5 Register */
+    __R  uint16_t rsv_0x3f0004_0x400001[32767];
+    __IO uint16_t uc_6;                 /**< <tt>\b 0x00400002:</tt> AFE_ADC_ZERO UC_6 Register */
+    __R  uint16_t rsv_0x400004_0x410001[32767];
+    __IO uint16_t uc_7;                 /**< <tt>\b 0x00410002:</tt> AFE_ADC_ZERO UC_7 Register */
+    __R  uint16_t rsv_0x410004_0x420001[32767];
+    __IO uint16_t uc_8;                 /**< <tt>\b 0x00420002:</tt> AFE_ADC_ZERO UC_8 Register */
+    __R  uint16_t rsv_0x420004_0x430001[32767];
+    __IO uint16_t uc_9;                 /**< <tt>\b 0x00430002:</tt> AFE_ADC_ZERO UC_9 Register */
+    __R  uint16_t rsv_0x430004_0x440001[32767];
+    __IO uint16_t uc_10;                /**< <tt>\b 0x00440002:</tt> AFE_ADC_ZERO UC_10 Register */
+    __R  uint16_t rsv_0x440004_0x450001[32767];
+    __IO uint16_t uc_11;                /**< <tt>\b 0x00450002:</tt> AFE_ADC_ZERO UC_11 Register */
+    __R  uint16_t rsv_0x450004_0x460001[32767];
+    __IO uint16_t uc_12;                /**< <tt>\b 0x00460002:</tt> AFE_ADC_ZERO UC_12 Register */
+    __R  uint16_t rsv_0x460004_0x470001[32767];
+    __IO uint16_t uc_13;                /**< <tt>\b 0x00470002:</tt> AFE_ADC_ZERO UC_13 Register */
+    __R  uint16_t rsv_0x470004_0x480001[32767];
+    __IO uint16_t uc_14;                /**< <tt>\b 0x00480002:</tt> AFE_ADC_ZERO UC_14 Register */
+    __R  uint16_t rsv_0x480004_0x490001[32767];
+    __IO uint16_t uc_15;                /**< <tt>\b 0x00490002:</tt> AFE_ADC_ZERO UC_15 Register */
+    __R  uint16_t rsv_0x490004_0x4a0001[32767];
+    __IO uint16_t uc_16;                /**< <tt>\b 0x004A0002:</tt> AFE_ADC_ZERO UC_16 Register */
+    __R  uint16_t rsv_0x4a0004_0x4b0001[32767];
+    __IO uint16_t uc_17;                /**< <tt>\b 0x004B0002:</tt> AFE_ADC_ZERO UC_17 Register */
+    __R  uint16_t rsv_0x4b0004_0x4c0001[32767];
+    __IO uint16_t uc_18;                /**< <tt>\b 0x004C0002:</tt> AFE_ADC_ZERO UC_18 Register */
+    __R  uint16_t rsv_0x4c0004_0x4d0001[32767];
+    __IO uint16_t uc_19;                /**< <tt>\b 0x004D0002:</tt> AFE_ADC_ZERO UC_19 Register */
+    __R  uint16_t rsv_0x4d0004_0x4e0001[32767];
+    __IO uint16_t uc_20;                /**< <tt>\b 0x004E0002:</tt> AFE_ADC_ZERO UC_20 Register */
+    __R  uint16_t rsv_0x4e0004_0x4f0001[32767];
+    __IO uint16_t uc_21;                /**< <tt>\b 0x004F0002:</tt> AFE_ADC_ZERO UC_21 Register */
+    __R  uint16_t rsv_0x4f0004_0x500001[32767];
+    __IO uint16_t uc_22;                /**< <tt>\b 0x00500002:</tt> AFE_ADC_ZERO UC_22 Register */
+    __R  uint16_t rsv_0x500004_0x510001[32767];
+    __IO uint16_t uc_23;                /**< <tt>\b 0x00510002:</tt> AFE_ADC_ZERO UC_23 Register */
+    __R  uint16_t rsv_0x510004_0x520001[32767];
+    __IO uint16_t uc_24;                /**< <tt>\b 0x00520002:</tt> AFE_ADC_ZERO UC_24 Register */
+    __R  uint16_t rsv_0x520004_0x530001[32767];
+    __IO uint16_t uc_25;                /**< <tt>\b 0x00530002:</tt> AFE_ADC_ZERO UC_25 Register */
+    __R  uint16_t rsv_0x530004_0x540001[32767];
+    __IO uint16_t uc_26;                /**< <tt>\b 0x00540002:</tt> AFE_ADC_ZERO UC_26 Register */
+    __R  uint16_t rsv_0x540004_0x550001[32767];
+    __IO uint16_t uc_27;                /**< <tt>\b 0x00550002:</tt> AFE_ADC_ZERO UC_27 Register */
+    __R  uint16_t rsv_0x550004_0x560001[32767];
+    __IO uint16_t uc_28;                /**< <tt>\b 0x00560002:</tt> AFE_ADC_ZERO UC_28 Register */
+    __R  uint16_t rsv_0x560004_0x570001[32767];
+    __IO uint16_t uc_29;                /**< <tt>\b 0x00570002:</tt> AFE_ADC_ZERO UC_29 Register */
+    __R  uint16_t rsv_0x570004_0x580001[32767];
+    __IO uint16_t uc_30;                /**< <tt>\b 0x00580002:</tt> AFE_ADC_ZERO UC_30 Register */
+    __R  uint16_t rsv_0x580004_0x590001[32767];
+    __IO uint16_t uc_31;                /**< <tt>\b 0x00590002:</tt> AFE_ADC_ZERO UC_31 Register */
+    __R  uint16_t rsv_0x590004_0x5a0001[32767];
+    __IO uint16_t uc_32;                /**< <tt>\b 0x005A0002:</tt> AFE_ADC_ZERO UC_32 Register */
+    __R  uint16_t rsv_0x5a0004_0x5b0001[32767];
+    __IO uint16_t uc_33;                /**< <tt>\b 0x005B0002:</tt> AFE_ADC_ZERO UC_33 Register */
+    __R  uint16_t rsv_0x5b0004_0x5c0001[32767];
+    __IO uint16_t uc_34;                /**< <tt>\b 0x005C0002:</tt> AFE_ADC_ZERO UC_34 Register */
+    __R  uint16_t rsv_0x5c0004_0x5d0001[32767];
+    __IO uint16_t uc_35;                /**< <tt>\b 0x005D0002:</tt> AFE_ADC_ZERO UC_35 Register */
+    __R  uint16_t rsv_0x5d0004_0x5e0001[32767];
+    __IO uint16_t uc_36;                /**< <tt>\b 0x005E0002:</tt> AFE_ADC_ZERO UC_36 Register */
+    __R  uint16_t rsv_0x5e0004_0x5f0001[32767];
+    __IO uint16_t uc_37;                /**< <tt>\b 0x005F0002:</tt> AFE_ADC_ZERO UC_37 Register */
+    __R  uint16_t rsv_0x5f0004_0x600001[32767];
+    __IO uint16_t uc_38;                /**< <tt>\b 0x00600002:</tt> AFE_ADC_ZERO UC_38 Register */
+    __R  uint16_t rsv_0x600004_0x610001[32767];
+    __IO uint16_t uc_39;                /**< <tt>\b 0x00610002:</tt> AFE_ADC_ZERO UC_39 Register */
+    __R  uint16_t rsv_0x610004_0x620001[32767];
+    __IO uint16_t uc_40;                /**< <tt>\b 0x00620002:</tt> AFE_ADC_ZERO UC_40 Register */
+    __R  uint16_t rsv_0x620004_0x630001[32767];
+    __IO uint16_t uc_41;                /**< <tt>\b 0x00630002:</tt> AFE_ADC_ZERO UC_41 Register */
+    __R  uint16_t rsv_0x630004_0x640001[32767];
+    __IO uint16_t uc_42;                /**< <tt>\b 0x00640002:</tt> AFE_ADC_ZERO UC_42 Register */
+    __R  uint16_t rsv_0x640004_0x650001[32767];
+    __IO uint16_t uc_43;                /**< <tt>\b 0x00650002:</tt> AFE_ADC_ZERO UC_43 Register */
+    __R  uint16_t rsv_0x650004_0x660001[32767];
+    __IO uint16_t uc_44;                /**< <tt>\b 0x00660002:</tt> AFE_ADC_ZERO UC_44 Register */
+    __R  uint16_t rsv_0x660004_0x670001[32767];
+    __IO uint16_t uc_45;                /**< <tt>\b 0x00670002:</tt> AFE_ADC_ZERO UC_45 Register */
+    __R  uint16_t rsv_0x670004_0x680001[32767];
+    __IO uint16_t uc_46;                /**< <tt>\b 0x00680002:</tt> AFE_ADC_ZERO UC_46 Register */
+    __R  uint16_t rsv_0x680004_0x690001[32767];
+    __IO uint16_t uc_47;                /**< <tt>\b 0x00690002:</tt> AFE_ADC_ZERO UC_47 Register */
+    __R  uint16_t rsv_0x690004_0x6a0001[32767];
+    __IO uint16_t uc_48;                /**< <tt>\b 0x006A0002:</tt> AFE_ADC_ZERO UC_48 Register */
+    __R  uint16_t rsv_0x6a0004_0x6b0001[32767];
+    __IO uint16_t uc_49;                /**< <tt>\b 0x006B0002:</tt> AFE_ADC_ZERO UC_49 Register */
+    __R  uint16_t rsv_0x6b0004_0x6c0001[32767];
+    __IO uint16_t uc_50;                /**< <tt>\b 0x006C0002:</tt> AFE_ADC_ZERO UC_50 Register */
+    __R  uint16_t rsv_0x6c0004_0x6d0001[32767];
+    __IO uint16_t uc_51;                /**< <tt>\b 0x006D0002:</tt> AFE_ADC_ZERO UC_51 Register */
+    __R  uint16_t rsv_0x6d0004_0x6e0001[32767];
+    __IO uint16_t uc_52;                /**< <tt>\b 0x006E0002:</tt> AFE_ADC_ZERO UC_52 Register */
+    __R  uint8_t  rsv_0x6e0004_0x6f0000[65533];
+    __IO uint8_t  ucaddr;               /**< <tt>\b 0x006F0001:</tt> AFE_ADC_ZERO UCADDR Register */
+    __R  uint8_t  rsv_0x6f0002_0x700000[65535];
+    __IO uint8_t  ft_pword;             /**< <tt>\b 0x00700001:</tt> AFE_ADC_ZERO FT_PWORD Register */
+    __R  uint8_t  rsv_0x700002_0x770002[458753];
+    __IO uint32_t adc_trim0;            /**< <tt>\b 0x00770003:</tt> AFE_ADC_ZERO ADC_TRIM0 Register */
+    __R  uint8_t  rsv_0x770007_0x780001[65531];
+    __IO uint16_t adc_trim1;            /**< <tt>\b 0x00780002:</tt> AFE_ADC_ZERO ADC_TRIM1 Register */
+    __R  uint16_t rsv_0x780004_0x790001[32767];
+    __IO uint16_t ana_trim;             /**< <tt>\b 0x00790002:</tt> AFE_ADC_ZERO ANA_TRIM Register */
+    __R  uint8_t  rsv_0x790004_0x7a0000[65533];
+    __IO uint8_t  sys_ctrl;             /**< <tt>\b 0x007A0001:</tt> AFE_ADC_ZERO SYS_CTRL Register */
+    __R  uint8_t  rsv_0x7a0002_0x7c0000[131071];
+    __IO uint8_t  ts_ctrl;              /**< <tt>\b 0x007C0001:</tt> AFE_ADC_ZERO TS_CTRL Register */
+} mxc_afe_adc_zero_regs_t;
+
 /* Register offsets for module AFE_ADC_ZERO */
 /**
  * @ingroup    afe_adc_zero_registers

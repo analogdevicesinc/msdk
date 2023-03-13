@@ -10064,7 +10064,7 @@ memory.
      </fields>
     </register>
     <register>
-     <name>SZ</name>
+     <name>SIZE</name>
      <description>Memory Configuration Register.</description>
      <addressOffset>0x0004</addressOffset>
      <access>read-only</access>
@@ -13468,26 +13468,26 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      </fields>
     </register>
     <register>
-      <name>BTLE_LDO_TRIM</name>
-      <description>BTLE LDO Trim register.</description>
-      <addressOffset>0x28</addressOffset>
-      <access>read-write</access>
-      <fields>
-        <field>
-          <name>TX</name>
-          <description>TX LDO trim value.</description>
-          <bitOffset>0</bitOffset>
-          <bitWidth>5</bitWidth>
-          <access>read-write</access>
-        </field>
-        <field>
-          <name>RX</name>
-          <description>RX LDO trim value.</description>
-          <bitOffset>5</bitOffset>
-          <bitWidth>5</bitWidth>
-          <access>read-write</access>
-        </field>
-      </fields>
+     <name>BTLE_LDO_TRIM</name>
+     <description>BTLE LDO Trim register.</description>
+     <addressOffset>0x28</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>TX</name>
+       <description>TX LDO trim value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>RX</name>
+       <description>RX LDO trim value.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
     </register>
     <register>
      <name>FSTAT</name>

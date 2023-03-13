@@ -5,7 +5,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
@@ -119,7 +119,7 @@ typedef struct {
     __O  uint16_t force_cmd;            /**< <tt>\b 0x050:</tt> SDHC FORCE_CMD Register */
     __IO uint16_t force_event_int_stat; /**< <tt>\b 0x052:</tt> SDHC FORCE_EVENT_INT_STAT Register */
     __IO uint8_t  adma_er;              /**< <tt>\b 0x054:</tt> SDHC ADMA_ER Register */
-    __R  uint8_t rsv_0x55_0x57[3];
+    __R  uint8_t  rsv_0x55_0x57[3];
     __IO uint32_t adma_addr_0;          /**< <tt>\b 0x058:</tt> SDHC ADMA_ADDR_0 Register */
     __IO uint32_t adma_addr_1;          /**< <tt>\b 0x05C:</tt> SDHC ADMA_ADDR_1 Register */
     __I  uint16_t preset_0;             /**< <tt>\b 0x060:</tt> SDHC PRESET_0 Register */
