@@ -452,7 +452,7 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
     static uint32_t channelNum = 0xFF;
     uint8_t phyVal = 0;
     BaseType_t lParameterStringLength;
-    uint8_t testVersion = 0;
+
     if (xSemaphoreTake(rfTestMutex, 0) == pdFALSE) {
         snprintf(pcWriteBuffer, (size_t)MAX_OUTPUT_STRING_SIZE,
                  "> Another test is currently active\r\n");
@@ -481,7 +481,7 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
     if (err == E_NO_ERROR) {
         snprintf(pcWriteBuffer, (size_t)MAX_OUTPUT_STRING_SIZE, "> Starting constant TX\r\n");
         /* 0 num of packets for infinite*/
-        LlTxTest(channelNum, 255, LL_TEST_PKT_TYPE_PRBS15, 0);
+        LlEnhancedTxTest(channelNum, 255, LL_TEST_PKT_TYPE_PRBS15, phyVal, 0);
         activeTest = BLE_CONST_TX;
         //gives time for LL printing to happen before we start printing messages from here
         vTaskDelay(100);
