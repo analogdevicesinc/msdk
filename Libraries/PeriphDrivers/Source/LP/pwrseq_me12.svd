@@ -11,7 +11,7 @@
     </addressBlock>
     <registers>
       <register>
-        <name>CTRL</name>
+        <name>LPCTRL</name>
         <description>Low Power Control Register.</description>
         <addressOffset>0x00</addressOffset>
         <fields>
