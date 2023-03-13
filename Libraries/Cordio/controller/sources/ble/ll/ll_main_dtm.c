@@ -494,6 +494,31 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     llTestCb.state = LL_TEST_STATE_TX;
     llTestCb.tx.pktType = pktType;
 
+    PalBbBleChan_t chan;
+    chan.chanIdx          = llConvertRfChanToChanIdx(rfChan);
+    chan.txPower          = lmgrCb.advTxPwr;
+    
+    switch (phy)
+    {
+      case LL_TEST_PHY_LE_1M:
+        chan.txPhy = BB_PHY_BLE_1M;
+        chan.initTxPhyOptions = BB_PHY_OPTIONS_DEFAULT;
+        break;
+      case LL_TEST_PHY_LE_2M:
+        chan.txPhy = BB_PHY_BLE_2M;
+        chan.initTxPhyOptions = BB_PHY_OPTIONS_DEFAULT;
+        break;
+      case LL_TEST_PHY_LE_CODED_S2:
+        chan.txPhy = BB_PHY_BLE_CODED;
+        chan.initTxPhyOptions = BB_PHY_OPTIONS_BLE_S2;
+        break;
+      case LL_TEST_PHY_LE_CODED_S8:
+        chan.txPhy = BB_PHY_BLE_CODED;
+        chan.initTxPhyOptions = BB_PHY_OPTIONS_BLE_S8;
+        break;
+    }
+    PalBbBleSetChannelParam(&chan);
+
     BbStart(BB_PROT_PRBS15);
 
     lmgrCb.testEnabled = TRUE;
