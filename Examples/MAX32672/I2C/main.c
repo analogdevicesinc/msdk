@@ -201,14 +201,13 @@ int main()
     printf("\nYou will need to connect AIN10 (P0.18) to P0.6 (SCL) and\n");
     printf("AIN11 (P0.19) to P0.7 (SDA).\n");
 
-    printf("\nConnect the I2C Pull-Up Resisters by connecting jumpers\n");
+    printf("\nConnect the I2C Pull-Up Registers by connecting jumpers\n");
     printf("at JP4 and JP5.\n");
 
     int error, i = 0;
 
-    //Setup the I2CM
+    //Set up the I2C Master
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
-
     if (error != E_NO_ERROR) {
         printf("-->Failed master\n");
         return error;
@@ -216,9 +215,8 @@ int main()
         printf("\n-->I2C Master Initialization Complete");
     }
 
-    //Setup the I2CS
+    //Set up the I2C Slave
     error = MXC_I2C_Init(I2C_SLAVE, 0, I2C_SLAVE_ADDR);
-
     if (error != E_NO_ERROR) {
         printf("Failed slave\n");
         return error;
@@ -228,8 +226,8 @@ int main()
 
     NVIC_EnableIRQ(I2C2_IRQn);
 
+    // Set I2C frequency
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
-
     MXC_I2C_SetFrequency(I2C_SLAVE, I2C_FREQ);
 
     // Initialize test data
@@ -255,20 +253,19 @@ int main()
 
     printf("\n\n-->Writing data to slave, and reading the data back\n");
 
+    // Prepare I2C2 for Transaction
     if ((error = MXC_I2C_SlaveTransactionAsync(I2C_SLAVE, slaveHandler)) != 0) {
         printf("Error Starting Slave Transaction %d\n", error);
         return error;
     }
 
+    // Run I2C transaction with I2C0
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
         return error;
     }
 
-    while (I2C_FLAG == 1) {
-        {
-        }
-    }
+    while (I2C_FLAG == 1) {}
 
     printf("\n-->Result: \n");
 
@@ -276,7 +273,7 @@ int main()
 
     printf("\n");
 
-    if (verifyData()) {
+    if (verifyData() == E_NO_ERROR) {
         printf("\n-->I2C Transaction Successful\n");
     } else {
         printf("\n-->I2C Transaction Failed\n");

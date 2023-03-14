@@ -226,12 +226,13 @@ void vCmdLineTask(void *pvParameters)
                     putchar(0x07);
                     fflush(stdout);
                 }
-                uartReadLen = 1;
-                /* If more characters are ready, process them here */
 
                 if (ConsoleUART->status & MXC_F_UART_STATUS_RX_EM) { // Prevent dropping characters
                     MXC_Delay(500);
                 }
+
+                /* If another character is ready, process it here */
+                uartReadLen = 1;
             } while ((MXC_UART_GetRXFIFOAvailable(MXC_UART_GET_UART(CONSOLE_UART)) > 0) &&
                      (MXC_UART_Read(ConsoleUART, (uint8_t *)&tmp, &uartReadLen) == 0));
         }
@@ -243,6 +244,7 @@ int flash_verify(uint32_t address, uint32_t length, uint32_t *data)
 {
     volatile uint32_t *ptr;
 
+    // Verify each memory location matches the data buffer
     for (ptr = (uint32_t *)address; ptr < (uint32_t *)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
@@ -316,6 +318,7 @@ int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 {
     uint32_t *ptr;
 
+    // Verify each memory location matches the expected value
     for (ptr = (uint32_t *)startaddr; ptr < (uint32_t *)(startaddr + length); ptr++) {
         if (*ptr != data) {
             return 0;
@@ -343,6 +346,7 @@ void flash_init(void)
     MXC_FLC_ClearFlags(0x3);
 }
 
+//******************************************************************************
 int flash_uninit(void)
 {
     MXC_FLC_ClearFlags(MXC_F_FLC_INTR_DONE | MXC_F_FLC_INTR_AF);
@@ -353,17 +357,21 @@ int flash_uninit(void)
 uint32_t calculate_crc(uint32_t *array, uint32_t length)
 {
     int err;
+    uint8_t *flash_cpy;
 
-    uint8_t *flash_cpy = (uint8_t *)malloc(MXC_FLASH_PAGE_SIZE);
+    // Initialize CTB
+    MXC_CTB_Init(MXC_CTB_FEATURE_CRC);
+    MXC_CTB_CRC_SetPoly(POLY);
+
+    // Copy flash contents to dynamically allocated array
+    flash_cpy = (uint8_t *)malloc(MXC_FLASH_PAGE_SIZE);
     if (flash_cpy == NULL) {
         return E_INVALID;
     }
     memcpy(flash_cpy, array, MXC_FLASH_PAGE_SIZE);
 
+    // Compute CRC
     mxc_ctb_crc_req_t crc_req = { (uint8_t *)flash_cpy, MXC_FLASH_PAGE_SIZE, 0 };
-
-    MXC_CTB_Init(MXC_CTB_FEATURE_CRC);
-    MXC_CTB_CRC_SetPoly(POLY);
     if ((err = MXC_CTB_CRC_Compute(&crc_req)) != E_NO_ERROR) {
         return err;
     }

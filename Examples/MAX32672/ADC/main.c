@@ -50,15 +50,20 @@
 /***** Definitions *****/
 /* ADC can be used in "Polling", "Interrupt", and "DMA".*/
 /* Select one of below.*/
-//#define POLLING         // Uncomment to perform ADC conversions using blocking/polling method
-//#define INTERRUPT       // Uncomment to perform ADC conversions using interrupt driven method
+//#define POLLING // Uncomment to perform ADC conversions using blocking/polling method
+//#define INTERRUPT // Uncomment to perform ADC conversions using interrupt driven method
 #define DMA // Uncomment to perform ADC conversions using DMA driven method.
 
-/* Supported three ADC examples */
+/* Supported ADC examples */
 #define SINGLE_CH 1
 #define TEMP_SENSOR 2
 #define MULTI_CHS 3
-#define TEMP_SENSOR_READ_OUT 1
+
+// Temp Sensor Example defines
+#define TEMP_SENSOR_READ_OUT 1 // Index of the temp sensor reading
+#define MXC_ADC_CH_VDDA MXC_ADC_CH_12 // VDDA connected to ADC Channel 12
+#define MXC_ADC_CH_TEMP_SENSOR MXC_ADC_CH_13 // Temp Sensor connected to ADC channel 13
+#define MXC_ADC_CH_VCORE MXC_ADC_CH_14 // VCORE connected to ADC channel 14
 
 /***** Globals *****/
 #ifdef INTERRUPT
@@ -69,26 +74,10 @@ volatile unsigned int adc_done = 0;
 volatile unsigned int dma_done = 0;
 #endif
 
-/* CH0 and CH1 are shared with Console. */
-//#define CH0       MXC_ADC_CH_0
-//#define CH1       MXC_ADC_CH_1
-
-#define MXC_ADC_CH_VDDA MXC_ADC_CH_12 ///< Select Channel 12
-#define MXC_ADC_CH_TEMP_SENSOR MXC_ADC_CH_13 ///< Select Channel 13
-#define MXC_ADC_CH_VCORE MXC_ADC_CH_14 ///< Select Channel 14
-#define MXC_ADC_CH_VSS MXC_ADC_CH_15 ///< Select Channel 15
-
-/* Temperature Sensor firmware average*/
-#define SAMPLE_AVG 16
-float TEMP_SAMPLES[SAMPLE_AVG] = {};
-float sum = 0;
-unsigned int temp_samples = 0;
-
-unsigned int which_example = 0; //0 - Single, 1 - Temperature (3 slots) and 2 - Eight slot
-
-/* Single Channel */
+/* Single Channel ADC Request */
 mxc_adc_slot_req_t single_slot = { MXC_ADC_CH_3, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE };
 
+/* Temperature Sensor ADC Request */
 /* It is recommended to use below sequence if only user wants to measure only temperature measurement.*/
 mxc_adc_slot_req_t three_slots[3] = {
     { MXC_ADC_CH_VDDA, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
@@ -96,6 +85,13 @@ mxc_adc_slot_req_t three_slots[3] = {
     { MXC_ADC_CH_VCORE, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE }
 };
 
+// Temperature Sensor firmware average
+#define SAMPLE_AVG 16
+float TEMP_SAMPLES[SAMPLE_AVG] = {};
+float sum = 0;
+unsigned int temp_samples = 0;
+
+/* Multi-channel ADC request */
 mxc_adc_slot_req_t multi_slots[8] = { { MXC_ADC_CH_3, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
                                       { MXC_ADC_CH_4, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
                                       { MXC_ADC_CH_5, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
@@ -104,6 +100,9 @@ mxc_adc_slot_req_t multi_slots[8] = { { MXC_ADC_CH_3, MXC_ADC_DIV2_5K, MXC_ADC_P
                                       { MXC_ADC_CH_8, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
                                       { MXC_ADC_CH_9, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE },
                                       { MXC_ADC_CH_10, MXC_ADC_DIV2_5K, MXC_ADC_PY_DN_DISABLE } };
+
+// Used to cycle through supported ADC examples
+unsigned int which_example = 0;
 
 int adc_val[8];
 uint32_t adc_index = 0;
@@ -154,7 +153,7 @@ void DMA0_IRQHandler(void)
 }
 #endif
 
-/*ADC initialization*/
+/* ADC initialization */
 void adc_init(void)
 {
     mxc_adc_req_t adc_cfg;
@@ -173,91 +172,56 @@ void adc_init(void)
     }
 }
 
-/* Single channel */
+/* Single channel Example Function(s) */
 void adc_example1_configuration(void)
 {
     adc_conv.mode = MXC_ADC_ATOMIC_CONV;
     adc_conv.trig = MXC_ADC_TRIG_SOFTWARE;
-    //adc_conv.trig = MXC_ADC_TRIG_HARDWARE;
-    //adc_conv.hwTrig = MXC_ADC_TRIG_SEL_TEMP_SENS;
     adc_conv.avg_number = MXC_ADC_AVG_16;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
+    adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
+    adc_conv.num_slots = 0;
 #ifdef DMA
     adc_conv.fifo_threshold = 0;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
-    adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots = 0;
 
     MXC_ADC_Configuration(&adc_conv);
 
     MXC_ADC_SlotConfiguration(&single_slot, 0);
 }
 
-/* Temperature Sensor */
+/* Temperature Sensor Example Function(s) */
 void adc_example2_configuration(void)
 {
     adc_conv.mode = MXC_ADC_ATOMIC_CONV;
-    //adc_conv.trig = MXC_ADC_TRIG_SOFTWARE;
     adc_conv.trig = MXC_ADC_TRIG_HARDWARE;
     adc_conv.hwTrig = MXC_ADC_TRIG_SEL_TEMP_SENS;
     adc_conv.avg_number = MXC_ADC_AVG_8;
     adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
+    adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
+    adc_conv.num_slots = 2;
 #ifdef DMA
     adc_conv.fifo_threshold = 2;
 #else
     adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
 #endif
-    adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots = 2;
 
     MXC_ADC_Configuration(&adc_conv);
 
     MXC_ADC_SlotConfiguration(three_slots, 2);
 }
 
-/* Multi Channel Example */
-void adc_example3_configuration(void)
-{
-    adc_conv.mode = MXC_ADC_ATOMIC_CONV;
-    adc_conv.trig = MXC_ADC_TRIG_SOFTWARE;
-    //adc_conv.trig = MXC_ADC_TRIG_HARDWARE;
-    //adc_conv.hwTrig = MXC_ADC_TRIG_SEL_TEMP_SENS;
-    adc_conv.avg_number = MXC_ADC_AVG_1;
-    adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
-#ifdef DMA
-    adc_conv.fifo_threshold = 7;
-#else
-    adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
-#endif
-    //    adc_conv.fifo_threshold = 8;
-    adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
-    adc_conv.num_slots = 7;
-
-    MXC_ADC_Configuration(&adc_conv);
-
-    MXC_ADC_SlotConfiguration(multi_slots, 7);
-}
-
 void temperature_average(float temperature)
 {
-    unsigned int loop_counter = 0;
     float average;
     TEMP_SAMPLES[temp_samples++] = temperature;
     sum += temperature;
 
     if (temp_samples == SAMPLE_AVG) {
         average = sum / SAMPLE_AVG;
-        printf("Average = %0.2fC\n", average);
-
-        for (loop_counter = 0; loop_counter < SAMPLE_AVG; loop_counter++) {
-            printf("%0.2fC ", TEMP_SAMPLES[loop_counter]);
-            if (loop_counter == 15) {
-                printf("\n");
-            }
-        }
-        printf("\n");
+        printf("Average = %0.2fC\n\n", average);
 
         temp_samples = 0;
         sum = 0;
@@ -276,6 +240,26 @@ void printTemperature(void)
     temperature_average(temperature);
 }
 
+/* Multi Channel Example Function (s) */
+void adc_example3_configuration(void)
+{
+    adc_conv.mode = MXC_ADC_ATOMIC_CONV;
+    adc_conv.trig = MXC_ADC_TRIG_SOFTWARE;
+    adc_conv.avg_number = MXC_ADC_AVG_1;
+    adc_conv.fifo_format = MXC_ADC_DATA_STATUS;
+    adc_conv.lpmode_divder = MXC_ADC_DIV_2_5K_50K_ENABLE;
+    adc_conv.num_slots = 7;
+#ifdef DMA
+    adc_conv.fifo_threshold = 7;
+#else
+    adc_conv.fifo_threshold = MAX_ADC_FIFO_LEN >> 1;
+#endif
+
+    MXC_ADC_Configuration(&adc_conv);
+
+    MXC_ADC_SlotConfiguration(multi_slots, 7);
+}
+
 void WaitforConversionComplete(void)
 {
     unsigned int flags;
@@ -284,13 +268,11 @@ void WaitforConversionComplete(void)
 
         if (flags & MXC_F_ADC_INTFL_SEQ_DONE) {
             adc_index += MXC_ADC_GetData(&adc_val[adc_index]);
-            //printf("ADC Count2 = %X\n", adc_index);
             break;
         }
 
         if (flags & MXC_F_ADC_INTFL_FIFO_LVL) {
             adc_index += MXC_ADC_GetData(&adc_val[adc_index]);
-            //printf("ADC Count1 = %X\n", adc_index);
         }
     }
 }
@@ -312,6 +294,7 @@ void ShowAdcResult(void)
     } else {
         printf("Data\n");
     }
+
     for (loop_count = 0; loop_count < adc_index; loop_count++) {
         if (adc_conv.fifo_format == MXC_ADC_DATA_STATUS) {
             printf("%02X : %03X\n", (adc_val[loop_count] >> 16), (adc_val[loop_count] & 0x0FFF));
@@ -373,8 +356,10 @@ void run_examples(void)
 int main(void)
 {
     printf("********** ADC Example **********\n");
-    printf("\nThe voltage applied to analog pin continuously\n");
-    printf("measured and the result is printed to the terminal.\n");
+    printf("The example cycles trhough three typical ADC use cases:\n");
+    printf("a single channel conversion (on CH3), an internal temp\n");
+    printf("sensor reading and a multi-channel conversion (on CH3-CH10).\n");
+
     printf("\nThe example can be configured to take the measurements\n");
     printf("by polling, using interrupts, or using DMA.\n\n");
 
@@ -392,6 +377,7 @@ int main(void)
     MXC_DMA_Init();
     NVIC_EnableIRQ(DMA0_IRQn);
 #endif
+
     while (1) {
         /* Flash LED when starting ADC cycle */
         LED_On(0);

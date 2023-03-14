@@ -213,7 +213,7 @@ results.write("# attens        : "+str(attens)+"\n")
 results.write("# PER limit     : "+str(args.limit)+"\n")
 
 # Write the header line
-results.write("packetLen,phy,atten,txPower,perSlave\n")
+results.write("packetLen,phy,atten,txPower,perMaster,perSlave\n")
 
 assert(args.slaveSerial != args.masterSerial)
 
