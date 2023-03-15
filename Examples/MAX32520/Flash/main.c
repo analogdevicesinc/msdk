@@ -247,7 +247,7 @@ int main(void)
 #ifndef BOARD_MAX32520FTHR
     printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
     PB_RegisterCallback(0, (pb_callback)button_handler);
-
+    
     while (!button_pressed) {
         LED_On(LED1);
         MXC_Delay(MXC_DELAY_MSEC(500));
