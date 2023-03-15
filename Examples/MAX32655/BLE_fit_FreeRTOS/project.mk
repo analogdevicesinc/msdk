@@ -10,16 +10,12 @@
 # Enable FreeRTOS library
 LIB_FREERTOS = 1
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
-# This application only operates as a peripheral
+# Cordio library options
 RTOS = freertos
-
 INIT_PERIPHERAL = 1
 INIT_BROADCASTER = 0
 INIT_CENTRAL = 0
 INIT_OBSERVER = 0
-
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os

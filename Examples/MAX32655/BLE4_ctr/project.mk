@@ -7,13 +7,10 @@
 
 # **********************************************************
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
-# Set CORDIO library options
-TOKEN = 0
-BT_VER = 8
+# Cordio library options
+BLE_HOST = 0
 BLE_CONTROLLER = 1
-
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
+BT_VER = 8

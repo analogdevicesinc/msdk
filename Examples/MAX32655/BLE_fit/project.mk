@@ -7,13 +7,16 @@
 
 # **********************************************************
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
+# Cordio library options
+INIT_PERIPHERAL = 1
+INIT_BROADCASTER = 1
+INIT_CENTRAL = 0
+INIT_OBSERVER = 0
 
-USE_DUAL_CORE = 0
+USE_DUAL_CORE ?= 0
 ifeq "$(USE_DUAL_CORE)" "1"
 BLE_HOST = 1
 BLE_CONTROLLER = 0

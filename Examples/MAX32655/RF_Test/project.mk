@@ -7,12 +7,11 @@
 
 # **********************************************************
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
 # Enable the FreeRTOS library
 LIB_FREERTOS=1
-
 
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS = -Os

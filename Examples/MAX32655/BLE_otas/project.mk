@@ -7,7 +7,7 @@
 
 # **********************************************************
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
 # Cordio library options
@@ -16,16 +16,7 @@ INIT_BROADCASTER = 0
 INIT_CENTRAL = 0
 INIT_OBSERVER = 0
 
-TRACE = 1
-
-DEBUG = 1
-
-PAL_NVM_SIZE=0x2000
-
 BUILD_BOOTLOADER?=1
-
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
 
 AUTOSEARCH=0
 VPATH += .
