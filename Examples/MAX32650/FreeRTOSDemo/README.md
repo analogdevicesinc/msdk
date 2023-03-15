@@ -6,6 +6,17 @@ Task0 and Task1 operate using task delays and work with each other to blink an L
 
 vCmdLineTask takes command inputs from the terminal and executes the command (the list of available commands will be printed to the terminal by sending the command "help"). The task will wait to run until the UART interrupt handler is triggered by an incoming command. When the interrupt is triggered, the task will be notified and will process the characters received.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

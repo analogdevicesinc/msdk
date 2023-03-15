@@ -131,7 +131,7 @@ void palCfgLoadLlParams(uint8_t *pConfig)
   pCfg->cisSubEvtSpaceDelay   = 0;
   pCfg->maxBig                = 2;
   pCfg->maxBis                = 6;
-
+  pCfg->dtmRxSyncMs           = 1; /* effect PER */
 #else
   /* Minimum LL configuration, less features, conserves SRAM */
   const uint16_t advDataLen     = 256;
@@ -158,7 +158,7 @@ void palCfgLoadLlParams(uint8_t *pConfig)
   pCfg->cisSubEvtSpaceDelay   = 0;
   pCfg->maxBig                = 0;
   pCfg->maxBis                = 0;
-
+  pCfg->dtmRxSyncMs           = 1; /* effect PER */
 #endif
 }
 

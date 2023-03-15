@@ -10,7 +10,9 @@ The structure of resources directory shall be
 The tool **../Tools/BitmapConverter/maxim_bitmap_converter.exe** is used to convert bitmap and font files to maxim specific file format (.mpi maxim picture information)
 And **bitmap.h** file under resources/ directory will be created automatically.
 
-### bitmap.h file include bitmap definitions id. Like below:
+bitmap.h file include bitmap definitions id. Like below:
+
+```C
 #ifndef _BITMAP_H_
 #define _BITMAP_H_
 
@@ -21,59 +23,21 @@ And **bitmap.h** file under resources/ directory will be created automatically.
 ...
 
 ### #endif //_BITMAP_H_
+```
 
 Restriction: 
 
 bitmap files has to be encoded 8 bits (256 color bitmap).
 
-### Building firmware:
+## Software
 
-Navigate directory where TFT_demo software is located and build the project:
+### Project Usage
 
-```bash
-$ cd /Examples/MAX78000/TFT_demo
-$ make
-```
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+### Project-Specific Build Notes
 
-```bash
-$ make distclean
-```
-
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
-
-```Makefile
-BOARD=EvKit_V1
-```
-
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
-
-```Makefile
-BOARD=FTHR_RevA
-```
-
-### Load firmware image to MAX78000 EVKIT
-
-Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
-
-Connect PICO adapter to JH5 SWD header. 
-
-Load firmware image using Openocd.
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
-
-### Load firmware image to MAX78000 Feather
-
-Connect USB cable to CN1 USB connector.
-
-Load firmware image using Openocd.
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
 ### MAX78000 Feather operations
 
@@ -86,12 +50,6 @@ https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
 
 To compile code with enabled TFT feature use following setting in project.mk:
-
-```bash
-ifeq "$(BOARD)" "FTHR_RevA"
-PROJ_CFLAGS += -DENABLE_TFT
-endif
-```
 
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
 

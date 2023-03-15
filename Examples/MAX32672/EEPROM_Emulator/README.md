@@ -53,7 +53,15 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 (None - this project builds as a standard example)
 
+<<<<<<< HEAD
 ## Required Connections
+=======
+<<<<<<< HEAD
+## Setup
+=======
+## Required Connections
+>>>>>>> e2123137437ec80a567376776d46e55a3ca5a253
+>>>>>>> release
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Select RX0 and TX0 on Headers JP10 and JP11 (UART 0).

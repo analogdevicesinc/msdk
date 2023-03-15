@@ -12,6 +12,17 @@ To create LVGL compatible screens with drag & drop use [SquareLine GUI Builder](
 Note: This example only works on MAX32672EVKIT not on MAX32672FTHR board.
 
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

@@ -109,29 +109,26 @@ parser.add_argument('--brd1_reset', default="", help="script file to reset board
 parser.add_argument('--brd2_reset', default="", help="script file to reset board2")
 parser.add_argument('--retry_limit', default=3, help="limit of retry times after fail")
 parser.add_argument('--short', action='store_true', help="shorter test")
+parser.add_argument('--chip', default="", help="DUT chip")
+parser.add_argument('--min_pwrs', default="90,90,90,90", help="abs min power")
  
 args = parser.parse_args()
 
 print("--------------------------------------------------------------------------------------------")
 pprint(vars(args))
 
+# default minimum power
+min_pwrs = [90, 90, 90, 90]  # for PHY 1, 2, 3, 4
+
+temp = args.min_pwrs.replace(" ", "")
+pwrs = temp.split(",")
+if len(pwrs) == 4:
+    min_pwrs = [int(x) for x in pwrs]
+    print(f'abs min pwr for each PHY: {min_pwrs}')
+
 packetLengths    = args.pktlen.strip().split(",")
 phys             = args.phys.strip().split(",")
 txPowers         = args.txpows.strip().split(",")
-
-if args.attens is None:
-    if int(args.step) == 0 or int(args.step) == -1:
-        attens = [20, 70]
-    else:
-        attens = list(range(20, 90, int(args.step)))
-
-    # Add the max attenuation
-    if int(args.step) != -1:
-        attens.append(90)
-else:
-    temp = args.attens.replace(" ", "")
-    attens = temp.split(",")
-    attens = [float(x) for x in attens]
 
 print("slaveSerial   :", args.slaveSerial)
 print("masterSerial  :", args.masterSerial)
@@ -141,7 +138,6 @@ print("results       :", args.results)
 print("delay         :", args.delay)
 print("packetLengths :", packetLengths)
 print("phys          :", phys)
-print("attens        :", attens)
 print("txPowers      :", txPowers)
 print("PER limit     :", args.limit)
 
@@ -165,6 +161,23 @@ need_to_setup = True  # only do it at the beginning or after flash
 
 testing = 1
 for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
+
+    if args.attens is None:
+        if int(args.step) == 0 or int(args.step) == -1:
+            attens = [20, 70]
+        else:
+            attens = list(range(20, min_pwrs[int(phy)-1], int(args.step)))
+
+        # Add the max attenuation
+        if int(args.step) != -1:
+            attens.append(min_pwrs[int(phy)-1])
+    else:
+        temp = args.attens.replace(" ", "")
+        attens = temp.split(",")
+        attens = [float(x) for x in attens]
+
+    print(f'attens: {attens}')
+
     if args.short:
         for atten in attens:
             per_100 = 0
@@ -248,7 +261,7 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                 start_secs = time.time()
 
                 print('\n-----------------------------------------------------------------------------------------')
-                print(f'packetLen: {packetLen}, phy: {phy}, atten: {atten}, txPower: {txPower}, testing point: {testing}')
+                print(f'{args.chip} - packetLen: {packetLen}, phy: {phy}, atten: {atten}, txPower: {txPower}, testing point: {testing}')
                 print('-------------------------------------------------------------------------------------------')
 
                 print(f"\nSet the requested attenuation: {atten}.")
@@ -256,8 +269,7 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                     set_val = atten + float(args.loss)
                     mini_RCDAT = mini_RCDAT_USB(Namespace(atten=set_val))
                 
-                print("\nSleep 1 second")
-                sleep(1)
+                sleep(0.1)
 
                 print("\nReset the packet stats.")
                 hciSlave.cmdFunc(Namespace(cmd="0102FF00"), timeout=10.0)
@@ -265,7 +277,6 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
 
                 print("\nSlave listenFunc")
                 hciSlave.listenFunc(Namespace(time=1, stats="False"))
-                print(f'used {(time.time() - start_secs):.0f} secs.')
 
                 print("\nMaster listenFunc")
                 hciMaster.listenFunc(Namespace(time=1, stats="False"))
@@ -281,26 +292,27 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                 perMaster = hciMaster.connStatsFunc(None)
 
                 print("\nSlave collects results.")
-                perSlave = hciSlave.connStatsFunc(None)
-
-                print("\n\nperMaster  : ", perMaster)
-                print("perSlave   : ", perSlave)
+                perSlave = hciSlave.connStatsFunc(None)                
 
                 reset_master = False
                 if perMaster is None:
                     print("perMaster is None. Reset the master.")
                     reset_master = True
                 elif perMaster >= 99.99:
-                    print("perMaster invalid. Reset the master.")
+                    print(f"perMaster {perMaster}% invalid. Reset the master.")
                     reset_master = True
+                else:
+                    print(f"\n\nperMaster  : {perMaster:.2f} %")
                 
                 reset_slave = False
                 if perSlave is None:
                     print("perSlave is None. Flash the slave.")
                     reset_slave = True
                 elif perSlave >= 99.99:
-                    print("perSlave invalid. Flash the slave.")
+                    print(f"perSlave {perSlave}% invalid. Flash the slave.")
                     reset_slave = True
+                else:
+                    print(f"perSlave   : {perSlave:.2f} %")
                 
                 if reset_slave or reset_master:
                     run_script_reset_board(args.brd1_reset)
@@ -326,7 +338,7 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                     perMax = perMaster
                 if perSlave > perMax:
                     perMax = perSlave
-                print("\nperMax     : ", perMax)
+                print(f"\nperMax     : {perMax:.2f} %")
 
                 break  # no retry
 
@@ -342,13 +354,9 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
             # Save the results to file
             results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
             end_secs = time.time()
-            print(f'\nTotally used {(end_secs - start_secs):.0f} seconds for this point.')
+            print(f'\nTotally used time for this point (secs): {(end_secs - start_secs):.0f}')
 
-            if testing >= RESET_CNT:
-                testing = RESET_CNT
-                need_to_setup = True
-            else:
-                testing += 1
+            testing += 1
 
     else:  # original method
         for atten in attens:
