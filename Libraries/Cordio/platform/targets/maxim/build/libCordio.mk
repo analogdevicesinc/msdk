@@ -80,9 +80,6 @@ CMSIS_ROOT=../CMSIS
 endif
 
 include ${CMSIS_ROOT}/../Cordio/platform/targets/maxim/build/cordio.mk
-IPATH += ${CMSIS_ROOT}/../Boards/${TARGET_UC}/Include
-IPATH += ${CMSIS_ROOT}/../Boards/${TARGET_UC}/EvKit_V1/Include
-include ${CMSIS_ROOT}/../PeriphDrivers/periphdriver.mk
 
 # Convert Cordio definitions to Maxim BSP
 PROJ_CFLAGS     += $(addprefix -D,$(CFG_DEV))
@@ -90,6 +87,11 @@ PROJ_AFLAGS     += -DPAL_NVM_SIZE=$(PAL_NVM_SIZE)
 SRCS            += $(C_FILES)
 VPATH           += %.c $(sort $(dir $(C_FILES)))
 IPATH           += $(INC_DIRS)
+
+# Add dependencies in the Board library and the PeripheralDrivers
+IPATH += ${CMSIS_ROOT}/../Boards/${TARGET_UC}/Include
+IPATH += ${CMSIS_ROOT}/../Boards/${TARGET_UC}/EvKit_V1/Include
+include ${CMSIS_ROOT}/../PeriphDrivers/periphdriver.mk
 
 # Use absolute paths if building within eclipse environment.
 ifeq "$(ECLIPSE)" "1"

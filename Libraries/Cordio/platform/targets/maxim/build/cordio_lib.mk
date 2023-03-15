@@ -70,9 +70,11 @@ endif
 export TARGET
 export COMPILER
 
+# Get all of the necessary include paths
 include ${CORDIO_DIR}/platform/targets/maxim/build/cordio.mk
-IPATH += ${INC_DIRS}
+IPATH += ${INC_DIRS} # Variable from cordio.mk
 
+# Determine the library variant
 ifeq "$(LIBRARY_VARIANT)" ""
 CORDIO_LIB := cordio.a
 else
@@ -84,8 +86,9 @@ export CORDIO_BUILD_DIR
 
 # Add to library list
 LIBS += ${CORDIO_BUILD_DIR}/${CORDIO_LIB}
+
 # Add rule to build the Driver Library
-${CORDIO_BUILD_DIR}/${CORDIO_LIB}: ${C_FILES}
+${CORDIO_BUILD_DIR}/${CORDIO_LIB}: ${C_FILES} # Variable from cordio.mk
 	$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk lib PROJECT=${CORDIO_LIB} BUILD_DIR=${CORDIO_BUILD_DIR} MFLOAT_ABI=$(MFLOAT_ABI) DUAL_CORE=$(DUAL_CORE) RISCV_CORE=$(RISCV_CORE)
 
 clean.cordio:
