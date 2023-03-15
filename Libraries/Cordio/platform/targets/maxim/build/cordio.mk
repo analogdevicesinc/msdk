@@ -22,6 +22,35 @@
 #     Configuration
 #--------------------------------------------------------------------------------------------------
 
+# Cordio Library Options
+DEBUG           ?= 1
+TRACE           ?= 1
+BT_VER          ?= 9
+INIT_CENTRAL    ?= 1
+INIT_OBSERVER   ?= 1
+INIT_ENCRYPTED  ?= 1
+INIT_PERIPHERAL ?= 1
+INIT_BROADCASTER?= 1
+
+WSF_HEAP_SIZE ?= 0x10000
+CFG_DEV += WSF_HEAP_SIZE=$(WSF_HEAP_SIZE)
+
+# Select either option, or both for combined Host and Controller on single core
+BLE_HOST        ?= 1
+BLE_CONTROLLER  ?= 1
+
+ifneq "$(BLE_HOST)" ""
+ifneq "$(BLE_HOST)" "0"
+ifneq "$(BLE_CONTROLLER)" "1"
+RISCV_LOAD = 1
+RISCV_APP ?= ../BLE4_ctr
+endif
+endif
+endif
+
+# Disable these trace messages for the speed testing
+PROJ_CFLAGS += -DATT_TRACE_ENABLED=0 -DHCI_TRACE_ENABLED=0
+
 ROOT_DIR        ?= $(CORDIO_DIR)
 BSP_DIR         ?= $(LIBS_DIR)
 
@@ -88,10 +117,3 @@ endif
 endif
 
 include $(ROOT_DIR)/platform/targets/maxim/build/config_maxim.mk
-
-# Convert Cordio definitions to Maxim BSP
-PROJ_CFLAGS     += $(addprefix -D,$(CFG_DEV))
-PROJ_AFLAGS     += -DPAL_NVM_SIZE=$(PAL_NVM_SIZE)
-SRCS            += $(C_FILES)
-VPATH           += %.c $(sort $(dir $(C_FILES)))
-IPATH           += $(INC_DIRS)

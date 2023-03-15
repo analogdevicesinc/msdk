@@ -40,41 +40,16 @@ endif
 # ************************
 LIB_CORDIO ?= 0
 ifeq ($(LIB_CORDIO), 1)
-# Cordio Library Options
-DEBUG           ?= 1
-TRACE           ?= 1
-BT_VER          ?= 9
-INIT_CENTRAL    ?= 1
-INIT_OBSERVER   ?= 1
-INIT_ENCRYPTED  ?= 1
-INIT_PERIPHERAL ?= 1
-INIT_BROADCASTER?= 1
-
-WSF_HEAP_SIZE ?= 0x10000
-CFG_DEV += WSF_HEAP_SIZE=$(WSF_HEAP_SIZE)
-
-# Enter standby mode when idle
-STANDBY_ENABLED ?= 0
-
-# Select either option, or both for combined Host and Controller on single core
-BLE_HOST        ?= 1
-BLE_CONTROLLER  ?= 1
-
-ifneq "$(BLE_HOST)" ""
-ifneq "$(BLE_HOST)" "0"
-ifneq "$(BLE_CONTROLLER)" "1"
-RISCV_LOAD = 1
-RISCV_APP ?= ../BLE4_ctr
-endif
-endif
-endif
-
-# Disable these trace messages for the speed testing
-PROJ_CFLAGS += -DATT_TRACE_ENABLED=0 -DHCI_TRACE_ENABLED=0
-
 # Include the Cordio Library
 CORDIO_DIR ?= $(LIBS_DIR)/Cordio
-include $(CORDIO_DIR)/platform/targets/maxim/build/cordio.mk
+include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
+
+ifeq ($(RISCV_CORE),)
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
+else
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
+endif
+
 endif
 # ************************
 
