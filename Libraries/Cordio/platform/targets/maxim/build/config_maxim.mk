@@ -53,6 +53,3 @@ CFG_DEV         += LL_WW_RX_DEVIATION_USEC=0
 ifneq ($(RISCV_CORE),)
 CFG_DEV         += uECC_PLATFORM=uECC_arch_other
 endif
-
-# Board
-CFG_DEV         += BOARD=$(BOARD)
