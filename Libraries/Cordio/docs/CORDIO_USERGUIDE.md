@@ -1,11 +1,11 @@
-# Cordio BLE User Guide
+# Cordio Bluetooth LE User Guide
 
-This library implements the Bluetooth Low Energy stack , forked from [Packetcraft](https://github.com/packetcraft-inc/stacks). It depends on additional libraries within the msdk repository. All of the applications utilizing this library can be found in the `Examples` directory of an MSDK installation.
+This library implements the Bluetooth Low Energy stack, forked from [Packetcraft](https://github.com/packetcraft-inc/stacks). It depends on additional libraries within the msdk repository. All applications utilizing this library can be found in the `Examples` directory of an MSDK installation.
 
 ## Supported Features
 
 * **LE Dual Mode Topology:** Advertise/Scan while maintaining multiple adjacent connections.
-* **2M PHY:** High speed PHY with 2 Mbps symbol rate.
+* **2M PHY:** High-speed PHY with 2 Mbps symbol rate.
 * **Coded PHY:** Forward error correction, 125 kbps or 500 kbps symbol rate.
 * **Extended Advertising:** Enhanced advertising and scanning.
 * **Periodic Advertising:** Broadcasting and receiving periodic advertisements.
@@ -13,12 +13,12 @@ This library implements the Bluetooth Low Energy stack , forked from [Packetcraf
 * **LE Secure Connections:** LE Secure Connections is an enhanced security feature introduced in Bluetooth v4.2. It uses a Federal Information Processing Standards (FIPS) compliant algorithm called Elliptic Curve Diffie Hellman (ECDH) for key generation.
 * **Data Length Extension:** Extend the maximum data length supported in a connection.
 * **LE Power Control:** Dynamic TX power control.
-* **\*OTA firmware update:** Over-the-air firmware update is not a standard Bluetooth feature. We have a wireless data exchange service that can be used for OTA firmware updates. See the BLE_otac_otas examples, the ADI Attach smart phone app, and [BLE-PyDex](https://github.com/EdwinFairchild/BLE-PyDex) for details.
+* **\*OTA firmware update:** Over-the-air firmware update is not a standard Bluetooth feature. We have a wireless data exchange service that can be used for OTA firmware updates. See the BLE_otac_otas examples, the ADI Attach smartphone app, and [BLE-PyDex](https://github.com/EdwinFairchild/BLE-PyDex) for details.
 
 ### Features in Development
 
 * **Direction finding:** Detect the direction of the incoming signal. Also known as Angle of Arrival (AoA) and Angle of Departure (AoD). Hardware support on MAX32655 and MAX32690, unavailable on MAX32665, software in development.
-* **LE Audio:** Isochronous audio with Bluetooth LE. Hardare support on all platforms, software in development.
+* **LE Audio:** Isochronous audio with Bluetooth LE. Hardware support on all platforms, software in development.
 
 ## Platforms
 
@@ -30,7 +30,7 @@ This release was tested on the following platforms. Note: platforms listed may n
 
 ## Getting Started
 
-The best application to get started with is the [BLE_periph](../docs/Applications/BLE_periph.md) application. It is a simple periphal application that will allow you to advertise and connect with a central device such as a smart phone.
+The best application to get started with is the [BLE_periph](../docs/Applications/BLE_periph.md) application. It is a simple peripheral application that will allow you to advertise and connect with a central device such as a smartphone.
 
 Follow the MSDK [User Guide](../../../USERGUIDE.md) instructions to install the necessary tools and create a new project. Build and run the `BLE_periph` application for the appropriate target.
 
@@ -38,7 +38,7 @@ Follow the MSDK [User Guide](../../../USERGUIDE.md) instructions to install the 
 
 ### References
 
-The Bluetooth Special Interest Group (SIG) has documentation available on their [website](https://www.bluetooth.com/). Refer to the [documentation](https://www.bluetooth.com/specifications/specs/) page to see the latest core specification. This will be your best resource for learning the details of Bluetooth Low Energy.
+The Bluetooth Special Interest Group (SIG) has documentation available on its [website](https://www.bluetooth.com/). For the latest core specification, refer to the [documentation](https://www.bluetooth.com/specifications/specs/) page. This will be your best resource for learning the details of Bluetooth Low Energy.
 
 These books are also excellent references for developers.
 
@@ -51,10 +51,10 @@ The Bluetooth stack closely resembles the layers of the network stack. We have t
 
 ![Stack](res/Stack.PNG)
 
-The Host Conroller Interface (HCI) is the common point where devices are split. Typically this this interface is over an asynchronous protocol such as UART. Some devices will define proprietary interfaces between the application and host layers. Multi-core SOCs can also use the HCI or proprietay interfaces to split the stack between multiple CPUs.
+The Host Controller Interface (HCI) is the common point where devices are split. Typically this interface is over an asynchronous protocol such as UART. Some devices will define proprietary interfaces between the application and host layers. Multi-core SOCs can also use the HCI or proprietary interfaces to split the stack between multiple CPUs.
 
 
-When testing the Controller layers, test equipment will have a USB interface and act as a Host device. Devices under test will use a USB to UART adapter and act as Controller devices. 
+Test equipment will have a USB interface and act as a Host device when testing the Controller layers. Devices under test will use a USB to UART adapter and act as Controller devices. 
 
 ![HCI](res/HCI.PNG)
 
@@ -64,21 +64,21 @@ These are the common states used in Bluetooth LE communication. Typically device
 
 #### Advertising
 
-Devices in this state are broadcasting advertisement packets to scanning/initiating devices. This is an asychronous operation that has no synchronization with peer devices. Advertising devices are transmitting without any previous knowledge of peer devices. Advertising and scanning operations are done on channels 37, 38, and 39. The interval between advertising events is configurable between 20 ms and 10.24 s.
+Devices in this state are broadcasting advertisement packets to scanning/initiating devices. This is an asynchronous operation that has no synchronization with peer devices. Advertising devices transmit without any previous knowledge of peer devices. Advertising and scanning operations are done on channels 37, 38, and 39. The interval between advertising events is configurable between 20 ms and 10.24 s.
 
 ![ADV Scan](res/ADV_SCN.png)
 
 #### Scanning / Initiating
 
-Devices in the scanning state listen for advertising devcies and can send scan optionally requests for additional information. The scanning interval and window settings are configurable. 
+Devices in the scanning state listen for advertising devices and can send scan optionally requests for additional information. The scanning interval and window settings are configurable. 
 
-If a devices is scanning with the intent of connecting to a specific device, that is called the initiating state. The initiating devcies will send a connection indication to the desired advertising device to indicate it's desire to create a connection.
+If a device is scanning with the intent of connecting to a specific device, that is called the initiating state. The initiating devices will send a connection indication to the desired advertising device to indicate its desire to create a connection.
 
 #### Connected
 
-Once a initiating devices sends the connection requset and the advertising devices accepts the connection request, the two devices enter the connected state. This is a point to point connection allowing devcies to directly exchange information.
+Once an initiating device sends the connection request and the advertising device accepts the connection request, the two devices enter the connected state. This is a point-to-point connection allowing devices to exchange information directly.
 
-In order to minimize interference, devices in the connected state will hop between channels 0-36 in a pseudo random order. The channel hopping information is communicated in the connection indication.
+In order to minimize interference, devices in the connected state will hop between channels 0-36 in a pseudo-random order. The channel hopping information is communicated in the connection indication.
 
 Each connection event is separated by the connection interval. This interval is configurable from 7.5 ms to 4 s. The master will always transmit first and receive second. The Slave will always receive first and transmit second. Devices will typically always send and receive at least one packet in each interval, and they can optionally transmit and receive multiple packets in each interval.
 
@@ -86,7 +86,7 @@ Each connection event is separated by the connection interval. This interval is 
 
 ## Cordio Stack Architecture
 
-This document describes the Cordio software architecture. Refer to the Bluetooth specificaion Volume 1, Part A for additional information regarding the Bluetooth architecture.
+This document describes the Cordio software architecture. Refer to the Bluetooth specification Volume 1, Part A for additional information regarding the Bluetooth architecture.
 
 ![Software Stack](res/Software_Stack.jpg)
 
@@ -100,7 +100,7 @@ The App Framework performs many operations common to Bluetooth LE embedded appli
 
 ### Profiles and Services
 
-The GATT Profile specifies the structure in which profile data is exchanged. This structure defines basic elements such as services and characteristics, used in a profile. The top level of the hierarchy is a profile. A profile is composed of one or more services necessary to fulfill a use case. A service is composed of characteristics or references to other services. Each characteristic contains a value and may contain optional information about the value. The service and characteristic and the components of the characteristic (i.e., value and descriptors) contain the profile data and are all stored in Attributes on the server.
+The GATT Profile specifies the structure in which profile data is exchanged. This structure defines basic elements, such as services and characteristics, used in a profile. The top level of the hierarchy is a profile. A profile is composed of one or more services necessary to fulfill a use case. A service is composed of characteristics or references to other services. Each characteristic contains a value and may contain optional information about the value. The service and characteristic and the components of the characteristic (i.e., value and descriptors) contain the profile data and are all stored in Attributes on the server.
 
 ![Profiles](res/Profiles.PNG)
 
@@ -118,11 +118,11 @@ The Wireless Software Foundation (WSF) is a simple OS wrapper, porting layer, an
 
 #### Platform Adaption Layer
 
-The Platform Adaption Layer is the abstraction between the software stack and the hardware. It includes APIs for timers, UART, RTC, and various system level functions such as sleep and memory management. 
+The Platform Adaption Layer is the abstraction between the software stack and the hardware. It includes APIs for timers, UART, RTC, and various system-level functions such as sleep and memory management. 
 
 ### Attribute Protocol
 
-The ATT subsystem implements the attribute protocol and generic attribute profile (GATT). It contains two independent subsystems: The attribute protocol client (ATTC) and attribute protocol server (ATTS).
+The ATT subsystem implements the attribute protocol and generic attribute profile (GATT). It contains two independent subsystems: The attribute protocol client (ATTC) and the attribute protocol server (ATTS).
 
 ATTC implements all attribute protocol client features and is designed to meet the client requirements of the generic attribute profile. ATTC can support multiple simultaneous connections to different servers.
 
@@ -132,16 +132,16 @@ ATTS implements all attribute protocol server features and has support for multi
 
 The DM subsystem implements device management procedures required by the stack. These procedures are partitioned by procedure category and device role (master or slave). The following procedures are implemented in DM:
 
-* Advertising and device visibility: Enable/disable advertising, set advertising parameters and data, set connectability and discoverability.
-* Scanning and device discovery: Start/stop scanning, set scan parameters, advertising reports, name discovery.
-* Connection management: Create/accept/remove connections, set/update connection parameters, read RSSI.
+* Advertising and device visibility: Enable/disable advertising, set advertising parameters and data, and set connectivity and discoverability.
+* Scanning and device discovery: Start/stop scanning, set scan parameters, advertising reports, and name discovery.
+* Connection management: Create/accept/remove connections, set/update connection parameters, and read RSSI.
 * Security management: Bonding, storage of security parameters, authentication, encryption, authorization, random address management.
 * Local device management: Initialization and reset, set local parameters, vendor-specific commands.
 DM procedures support the Generic Access Profile (GAP) when applicable.
 
 ### Security Manager Protocol
 
-The Security Manager Protocol (SMP) is the peer-to-peer protocol used to generate encryption keys and identity keys. The protocol operates over a dedicated fixed L2CAP channel. The SMP block also manages storage of the encryption keys and identity keys and is responsible for generating random addresses and resolving random addresses to known device identities. The SMP block interfaces directly with the Controller to provide stored keys used for encryption and authentication during the encryption or pairing procedures.
+The Security Manager Protocol (SMP) is the peer-to-peer protocol used to generate encryption keys and identity keys. The protocol operates over a dedicated fixed L2CAP channel. The SMP block also manages the storage of the encryption keys and identity keys and is responsible for generating random addresses and resolving random addresses to known device identities. The SMP block interfaces directly with the Controller to provide stored keys used for encryption and authentication during the encryption or pairing procedures.
 
 The SMP subsystem implements the security manager protocol. It contains two independent subsystems:
 
@@ -152,19 +152,19 @@ SMP also implements the cryptographic toolbox, which uses AES. The interface to 
 
 ### Logical Link Control Adaptation Protocol
 
-The L2CAP (Logical Link Control Adaptation Protocol) resource manager block is responsible for managing the ordering of submission of PDU fragments to the baseband and some relative scheduling between channels to ensure that L2CAP channels with QoS commitments are not denied access to the physical channel due to Controller resource exhaustion. This is required because the architectural model does not assume that a Controller has limitless buffering, or that the HCI is a pipe of infinite bandwidth.
+The L2CAP (Logical Link Control Adaptation Protocol) resource manager block is responsible for managing the ordering of submission of PDU fragments to the baseband and some relative scheduling between channels to ensure that L2CAP channels with QoS commitments are not denied access to the physical channel due to Controller resource exhaustion. This is required because the architectural model does not assume that a Controller has limitless buffering or that the HCI is a pipe of infinite bandwidth.
 
-L2CAP Resource Managers may also carry out traffic conformance policing to ensure that applications are submitting L2CAP SDUs within the bounds of their negotiated QoS settings. The general Bluetooth data transport model assumes well-behaved applications, and does not define how an implementation is expected to deal with this problem.
+L2CAP Resource Managers may also carry out traffic conformance policing to ensure that applications are submitting L2CAP SDUs within the bounds of their negotiated QoS settings. The general Bluetooth data transport model assumes well-behaved applications and does not define how an implementation is expected to deal with this problem.
 
 ### Host Controller Interface
 
 The HCI subsystem implements the host-controller interface specification. This specification defines commands, events, and data packets sent between a Bluetooth LE protocol stack on a host and a link layer on a controller.
-The HCI API is optimized to be a thin interface layer for a single chip system. It is configurable for either a single chip system or traditional system with wired HCI.
-This configurability is accomplished through a layered implementation. A core layer can be configured for either a single chip system or wired HCI. A transport and driver layer below the core layer can be configured for different wired transports such as UART.
+The HCI API is optimized to be a thin interface layer for a single-chip system. It is configurable for either a single-chip system or a traditional system with wired HCI.
+This reconfigurability is accomplished through a layered implementation. A core layer can be configured for either a single-chip system or wired HCI. A transport and driver layer below the core layer can be configured for different wired transports such as UART.
 
 ### Link Layer
 
-The link layer is responsible for the creation, modification and release of logical links (and, if required, their associated logical transports), as well as the update of parameters related to physical links between devices. The link layer achieves this by communicating with the link layer in remote Bluetooth devices using the  Link Layer Protocol (LL) in LE. The LL protocol allows the creation of new logical links and logical transports between devices when required, as well as the general control of link and transport attributes such as the enabling of encryption on the logical transport, and the adapting of transmit power on the physical link.
+The link layer is responsible for the creation, modification, and release of logical links (and, if required, their associated logical transports), as well as the update of parameters related to physical links between devices. The link layer achieves this by communicating with the link layer in remote Bluetooth devices using the  Link Layer Protocol (LL) in LE. The LL protocol allows the creation of new logical links and logical transports between devices when required, as well as the general control of link and transport attributes such as the enabling of encryption on the logical transport and the adapting of transmit power on the physical link.
 
 ### Physical Layer
 
@@ -172,17 +172,17 @@ The PHY block is responsible for transmitting and receiving packets of informati
 
 ## ADI Attach
 
-ADI Attach is a smart phone application that can be used for Bluetooth debugging and development.
+ADI Attach is a smartphone application that can be used for Bluetooth debugging and development.
 
 * Scan for advertising peripherals.
-* Connect to devices and discover profiles, services.
-* Read and write charcteristics.
-* Subscribe to noficiations.
-* Perform over-the-air firmware updates with supporing devices.
+* Connect to devices and discover profiles and services.
+* Read and write characteristics.
+* Subscribe to notifications.
+* Perform over-the-air firmware updates with supporting devices.
 
 ## BLE-PyDex
 
-BLE-PyDex is a hardware agnostic Bluetooth device explorer designed to aid in the development and debugging of Bluetooth applications.
+BLE-PyDex is a hardware-agnostic Bluetooth device explorer designed to aid in the development and debugging of Bluetooth applications.
 
 [https://github.com/EdwinFairchild/BLE-PyDex](https://github.com/EdwinFairchild/BLE-PyDex)
 
@@ -193,7 +193,7 @@ BLE-PyDex is a hardware agnostic Bluetooth device explorer designed to aid in th
 Peripheral applications will have a static structure that contains all of the advertising parameters. If run-time changes are desired, you must call ```AppAdvStop()``` before changing the parameters and ```AppAdvStart()``` to resume.
 
 
-With this configuration, the device will advertise at a fast interval (300 * 0.625 = 187.5 ms) for 5 seconds. It will then advertise slowly (1600 * 0.625 = 1000 ms) indefinetly. 
+With this configuration, the device will advertise at a fast interval (300 * 0.625 = 187.5 ms) for 5 seconds. It will then advertise slowly (1600 * 0.625 = 1000 ms) indefinitely. 
 ``` c
 /*! configurable parameters for advertising */
 static const appAdvCfg_t datsAdvCfg = {
@@ -204,7 +204,7 @@ static const appAdvCfg_t datsAdvCfg = {
 
 ### How do I change the connection parameters?
 
-Only the master of the connection can change the connection parameters. Peripheral devices can request a change, but only the master can accept and set the connection parameters. Cell phones and mobile operatings systems have different restrictions on the connection parameters.
+Only the master of the connection can change the connection parameters. Peripheral devices can request a change, but only the master can accept and set the connection parameters. Cell phones and mobile operating systems have different restrictions on connection parameters.
 
 Peripheral applications have the following structure that is used to request connection parameter updates. 
 
@@ -251,17 +251,17 @@ The DmConnUpdate() function can also be used to request a connection parameter u
 void DmConnUpdate(dmConnId_t connId, hciConnSpec_t *pConnSpec);
 ```
 
-### How do I use the low power modes?
+### How do I use the low-power modes?
 
-All of the applications will enter sleep mode in idle when build with ```DEBUG=0```. The Wireless Stack Framework (WSF) operating system will call PalSysSleep() mode when idle. With ```DEBUG=1```, the CPU will stay in active mode to leave the debugger enabled.
+All of the applications will enter sleep mode in idle when built with ```DEBUG=0```. The Wireless Stack Framework (WSF) operating system will call PalSysSleep() mode when idle. With ```DEBUG=1```, the CPU will stay in active mode to leave the debugger enabled.
 
-To enter the lowest power states, refer to the BLE_FreeRTOS application. This will create FreeRTOS tasks for the Cordio stack and allow users to add additional tasks. Enable ```configUSE_TICKLESS_IDLE``` and the device will enter standby mode and deep sleep between events.
+To enter the lowest power states, refer to the BLE_FreeRTOS application. This will create FreeRTOS tasks for the Cordio stack and allow users to add additional tasks. Enable ```configUSE_TICKLESS_IDLE```, and the device will enter standby mode and deep sleep between events.
 
-**WARNING:** The CPU debugger is disabled in sleep modes. If your application enters sleep mode directly after reset, it will be difficult to debug and reporgram.
+**WARNING:** The CPU debugger is disabled in sleep modes. If your application enters sleep mode directly after reset, it will be difficult to debug and reprogram.
 
 ### How do I send unformatted data like a UART?
 
-Unfortunatly there is not a Bluetooth SIG defined standard for this protocol. This stack has a proprietary data transfer service that is used to transmit unformatted data between devices. Refer to the BLE_dats (BLE Data Server) for the peripheral application. You can connect to this device with the BLE_datc (BLE data client) application to see simple data transmission. Refer to the BLE_dats and BLE_dats [README](../docs/Applications/BLE_datc_dats.md) for more information.
+Unfortunately, there is no Bluetooth SIG-defined standard for this protocol. This stack has a proprietary data transfer service that is used to transmit unformatted data between devices. Refer to the BLE_dats (BLE Data Server) for the peripheral application. You can connect to this device with the BLE_datc (BLE data client) application to see simple data transmission. Refer to the BLE_dats and BLE_dats [README](../docs/Applications/BLE_datc_dats.md) for more information.
 
 ## Additional Documentation
 
@@ -282,7 +282,7 @@ Documentation for each of the supporting applications can be found below:
 
 ## Certification
 
-Bluetooth LE Mesh solution implementing of the Bluetooth Mesh Profile 1.0 and the Bluetooth Mesh Model 1.0 wireless technical specifications
+Bluetooth LE Mesh solution implementing the Bluetooth Mesh Profile 1.0 and the Bluetooth Mesh Model 1.0 wireless technical specifications
 
 * [QDID 116593](https://launchstudio.bluetooth.com/ListingDetails/66212)
 
