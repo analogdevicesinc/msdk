@@ -59,11 +59,11 @@ jobs:
 
     - name: clang-format-run
       run: |
-          set -e
+          set +e
           # Don't return right away
           bash -e .github/workflows/clang-format-run.sh
           RETVAL=$?
-          set +e
+          set -e
 
           if [[ $RETVAL -eq 0 ]]
             exit 0
