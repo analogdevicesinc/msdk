@@ -36,27 +36,16 @@
 # This is the name of the build output file
 PROJECT_NAME=cordio
 
-# Specify the project variant.
-ifeq "$(MFLOAT_ABI)" "hardfp"
-PROJECT_VARIANT=hardfp
-else
-ifeq "$(MFLOAT_ABI)" "hard"
-PROJECT_VARIANT=hardfp
-else
-PROJECT_VARIANT=softfp
-endif
-endif
-
 ifeq "$(CORDIO_DIR)" ""
 # If CORDIO_DIR is not specified, this Makefile will locate itself.
 CORDIO_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))../../../..
 endif
 
 # Use these to specify the project.
-ifeq "$(PROJECT_VARIANT)" ""
+ifeq "$(CORDIO_LIB_VAR)" ""
 override PROJECT=$(PROJECT_NAME)
 else
-override PROJECT=$(PROJECT_NAME)_$(PROJECT_VARIANT)
+override PROJECT=$(PROJECT_NAME)_$(CORDIO_LIB_VAR)
 endif
 
 ifeq "$(TARGET)" ""
@@ -90,7 +79,7 @@ IPATH           += $(INC_DIRS)
 
 # Add dependencies in the Board library and the PeripheralDrivers
 IPATH += ${CMSIS_ROOT}/../Boards/${TARGET_UC}/Include
-IPATH += ${CMSIS_ROOT}/../Boards/${TARGET_UC}/EvKit_V1/Include
+IPATH += ${CMSIS_ROOT}/../Boards/${TARGET_UC}/${BOARD}/Include
 include ${CMSIS_ROOT}/../PeriphDrivers/periphdriver.mk
 
 # Use absolute paths if building within eclipse environment.
