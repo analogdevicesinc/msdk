@@ -78,9 +78,11 @@ endif
 IPATH += ${INC_DIRS} # Variable from cordio.mk
 CORDIO_C_FILES=${C_FILES} # Variable from cordio.mk
 
+ifeq ($(BLE_CONTROLLER),1)
 # Rebuild these for each application. This will allow us to limit the code size
 APP_BUILD_SRCS += ${CORDIO_DIR}/controller/sources/ble/init/init_ctr.c
 APP_BUILD_SRCS += ${CORDIO_DIR}/controller/sources/ble/init/init.c
+endif
 
 VPATH += %.c $(sort $(dir $(APP_BUILD_SRCS)))
 SRCS += ${APP_BUILD_SRCS}
@@ -102,7 +104,9 @@ LIBS += ${CORDIO_BUILD_DIR}/${CORDIO_LIB}
 
 # Add rule to build the Driver Library
 ${CORDIO_BUILD_DIR}/${CORDIO_LIB}: ${CORDIO_C_FILES} # Variable from cordio.mk
-	$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk lib PROJECT=${CORDIO_LIB} CORDIO_LIB_VAR=${CORDIO_LIB_VAR} BUILD_DIR=${CORDIO_BUILD_DIR} MFLOAT_ABI=$(MFLOAT_ABI) DUAL_CORE=$(DUAL_CORE) RISCV_CORE=$(RISCV_CORE) BOARD=${BOARD}
+	$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk lib PROJECT=${CORDIO_LIB} \
+    CORDIO_LIB_VAR=${CORDIO_LIB_VAR} BUILD_DIR=${CORDIO_BUILD_DIR} MFLOAT_ABI=$(MFLOAT_ABI) \
+    DUAL_CORE=$(DUAL_CORE) RISCV_CORE=$(RISCV_CORE) BOARD=${BOARD}
 
 clean.cordio:
 	@rm -rf ${CORDIO_BUILD_DIR}/*
