@@ -663,7 +663,9 @@ if [ $CURRENT_TEST == "all" ]; then
     echo "Running all tests"
     erase_all_devices
     run_all_not_conencted_tests
+    CURRENT_TEST="all"
     run_datcs_conencted_tests
+    CURRENT_TEST="all"
     run_ota_test
     echo
 elif [ $CURRENT_TEST == "dats" ]; then
