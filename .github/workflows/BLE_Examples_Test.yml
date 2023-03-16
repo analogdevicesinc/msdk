@@ -338,7 +338,7 @@ jobs:
 
           # Other directories to watch
           declare -a watched_other=(
-              .github/workflows
+              #.github/workflows
               .github/workflows/ci-tests/Examples_tests
               Libraries/libs.mk
               Libraries/Cordio
