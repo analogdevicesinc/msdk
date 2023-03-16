@@ -26,7 +26,6 @@
 #include "pal_uart.h"
 #include "pal_bb.h"
 #include "mxc_device.h"
-#include "board.h"
 #include "mcr_regs.h"
 #include "gcr_regs.h"
 #include "lp.h"

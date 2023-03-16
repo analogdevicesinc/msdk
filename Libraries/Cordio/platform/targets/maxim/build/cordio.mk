@@ -91,8 +91,8 @@ endif
 
 # Host includes
 ifneq ($(BLE_HOST),0)
-include $(CORDIO_DIR)/ble-apps/build/common/gcc/config.mk
-include $(CORDIO_DIR)/ble-apps/build/common/gcc/sources.mk
+include $(ROOT_DIR)/ble-apps/build/common/gcc/config.mk
+include $(ROOT_DIR)/ble-apps/build/common/gcc/sources.mk
 endif
 
 # Controller only includes
@@ -117,3 +117,19 @@ endif
 endif
 
 include $(ROOT_DIR)/platform/targets/maxim/build/config_maxim.mk
+
+# APP_BUILD_C_FILES: Rebuild these for each application. This will allow us to limit the code size
+# based on the application configuration
+ifeq ($(BLE_CONTROLLER),1)
+APP_BUILD_C_FILES += ${ROOT_DIR}/controller/sources/ble/init/init_ctr.c
+APP_BUILD_C_FILES += ${ROOT_DIR}/controller/sources/ble/init/init.c
+endif
+
+# Remove these files from the library build, board level dependencies. Will have to be
+# re-built for each application
+BOARD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${TARGET_LC}/sources/pal_uart.c
+
+# $(filter-out pattern…,text)
+C_FILES := $(filter-out ${BOARD_C_FILES},${C_FILES})
+
+APP_BUILD_C_FILES += ${BOARD_C_FILES}

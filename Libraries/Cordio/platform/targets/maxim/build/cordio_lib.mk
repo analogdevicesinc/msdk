@@ -44,17 +44,6 @@ endif
 TARGET_UC ?= $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
 TARGET_LC ?= $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
-# Specify the library variant.
-ifeq "$(MFLOAT_ABI)" "hardfp"
-CORDIO_LIB_VAR=hardfp
-else
-ifeq "$(MFLOAT_ABI)" "hard"
-CORDIO_LIB_VAR=hardfp
-else
-CORDIO_LIB_VAR=softfp
-endif
-endif
-
 # Export other variables needed by the peripheral driver makefile
 export TARGET
 export COMPILER
@@ -62,10 +51,25 @@ export COMPILER
 # Get all of the necessary include paths
 include ${CORDIO_DIR}/platform/targets/maxim/build/cordio.mk
 
+# Build a library for each TARGET
+CORDIO_LIB_VAR:=${TARGET_LC}
+
+# Build for each RTOS
 CORDIO_LIB_VAR:=${CORDIO_LIB_VAR}_${RTOS}
 
 ifneq "$(RISCV_CORE)" ""
 CORDIO_LIB_VAR:=${CORDIO_LIB_VAR}_riscv
+endif
+
+# Specify the library variant.
+ifeq "$(MFLOAT_ABI)" "hardfp"
+CORDIO_LIB_VAR:=${CORDIO_LIB_VAR}_hardfp
+else
+ifeq "$(MFLOAT_ABI)" "hard"
+CORDIO_LIB_VAR:=${CORDIO_LIB_VAR}_hardfp
+else
+CORDIO_LIB_VAR:=${CORDIO_LIB_VAR}_softfp
+endif
 endif
 
 # Specify the build directory if not defined by the project
@@ -78,14 +82,9 @@ endif
 IPATH += ${INC_DIRS} # Variable from cordio.mk
 CORDIO_C_FILES=${C_FILES} # Variable from cordio.mk
 
-ifeq ($(BLE_CONTROLLER),1)
-# Rebuild these for each application. This will allow us to limit the code size
-APP_BUILD_SRCS += ${CORDIO_DIR}/controller/sources/ble/init/init_ctr.c
-APP_BUILD_SRCS += ${CORDIO_DIR}/controller/sources/ble/init/init.c
-endif
-
-VPATH += %.c $(sort $(dir $(APP_BUILD_SRCS)))
-SRCS += ${APP_BUILD_SRCS}
+# APP_BUILD_C_FILES from cordio.mk
+VPATH += %.c $(sort $(dir $(APP_BUILD_C_FILES)))
+SRCS += ${APP_BUILD_C_FILES}
 PROJ_CFLAGS += $(addprefix -D,$(CFG_DEV))
 PROJ_AFLAGS += -DPAL_NVM_SIZE=$(PAL_NVM_SIZE)
 
@@ -105,8 +104,8 @@ LIBS += ${CORDIO_BUILD_DIR}/${CORDIO_LIB}
 # Add rule to build the Driver Library
 ${CORDIO_BUILD_DIR}/${CORDIO_LIB}: ${CORDIO_C_FILES} # Variable from cordio.mk
 	$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk lib PROJECT=${CORDIO_LIB} \
-    CORDIO_LIB_VAR=${CORDIO_LIB_VAR} BUILD_DIR=${CORDIO_BUILD_DIR} MFLOAT_ABI=$(MFLOAT_ABI) \
-    DUAL_CORE=$(DUAL_CORE) RISCV_CORE=$(RISCV_CORE) BOARD=${BOARD}
+	CORDIO_LIB_VAR=${CORDIO_LIB_VAR} BUILD_DIR=${CORDIO_BUILD_DIR} MFLOAT_ABI=$(MFLOAT_ABI) \
+	DUAL_CORE=$(DUAL_CORE) RISCV_CORE=$(RISCV_CORE) BOARD=${BOARD}
 
 clean.cordio:
 	@rm -rf ${CORDIO_BUILD_DIR}/*
