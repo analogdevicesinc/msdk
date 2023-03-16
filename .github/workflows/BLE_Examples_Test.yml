@@ -709,7 +709,7 @@ jobs:
 
           cd .github/workflows/scripts
 
-          if [[ $MAX32609_RUN_ALL_TEST == 'true' ]]; then
+          if [[ $MAX32690_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
               set +e
               ./test_launcher.sh max32690 $dut_uart $dut_serial "all"
