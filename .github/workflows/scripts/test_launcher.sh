@@ -171,9 +171,15 @@ function flash_with_openocd_fast() {
 # Function accepts parameters: device, CMSIS-DAP serial #
 function softreset_with_openocd() {
     echo "> Restting board $1"
-    
-    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init;reset exit" 
-   
+    set +e
+    $OPENOCD -f $OPENOCD_TCL_PATH/interface/cmsis-dap.cfg -f $OPENOCD_TCL_PATH/target/$1.cfg -s $OPENOCD_TCL_PATH -c "cmsis_dap_serial  $2" -c "gdb_port 3333" -c "telnet_port 4444" -c "tcl_port 6666" -c "init;reset exit" >/dev/null &
+    openocd_dapLink_pid=$!
+    # wait for openocd to finish
+    while kill -0 $openocd_dapLink_pid; do
+        sleep 1
+        # we can add a timeout here if we want
+    done
+    set -e
 }
 #****************************************************************************************************
 # Function accepts parameters:device , CMSIS-DAP serial #
