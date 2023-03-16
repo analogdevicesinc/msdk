@@ -99,7 +99,7 @@ jobs:
           
           # Add riscv tools to path
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
-	  
+
       - name: Install ccache
         if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         run: |
