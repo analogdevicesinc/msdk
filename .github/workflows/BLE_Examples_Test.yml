@@ -226,7 +226,14 @@ jobs:
 
           if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
+              set +e
               ./test_launcher.sh max32655 $dut_uart $dut_serial "all"
+              let "testResult=$?"
+              if [ "$testResult" -ne "0" ]; then
+                    # update failed test count
+                    let "numOfFailedTests+=$testResult"
+              fi
+              set -e
           else
               if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
                   #------non connected tests---------
@@ -462,7 +469,14 @@ jobs:
 
           if [[ $MAX32665_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
-              ./test_launcher.sh max32665 $dut_uart $dut_serial "all"
+               set +e
+               ./test_launcher.sh max32665 $dut_uart $dut_serial "all"
+               let "testResult=$?"
+               if [ "$testResult" -ne "0" ]; then
+                    # update failed test count
+                    let "numOfFailedTests+=$testResult"
+                fi
+                set -e
           else
               if [[ $MAX32665_BLE_FILES_CHANGED == 'true' ]]; then
                   #------non connected tests---------
@@ -697,7 +711,14 @@ jobs:
 
           if [[ $MAX32609_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
+              set +e
               ./test_launcher.sh max32690 $dut_uart $dut_serial "all"
+              let "testResult=$?"
+              if [ "$testResult" -ne "0" ]; then
+                    # update failed test count
+                    let "numOfFailedTests+=$testResult"
+              fi
+              set -e
           else
               if [[ $MAX32690_BLE_FILES_CHANGED == 'true' ]]; then
                   #------non connected tests---------
