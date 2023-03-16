@@ -331,7 +331,8 @@ jobs:
 
           # Other directories to watch
           declare -a watched_other=(
-              #.github/workflows/ci-tests/Examples_tests
+              .github/workflows
+              .github/workflows/ci-tests/Examples_tests
               Libraries/libs.mk
               Libraries/Cordio
               Libraries/CMSIS/Device/Maxim/MAX32665
@@ -565,7 +566,8 @@ jobs:
 
           # Other directories to watch
           declare -a watched_other=(
-              #.github/workflows/ci-tests/Examples_tests
+              .github/workflows
+              .github/workflows/ci-tests/Examples_tests
               Libraries/libs.mk
               Libraries/Cordio
               Libraries/CMSIS/Device/Maxim/MAX32690
