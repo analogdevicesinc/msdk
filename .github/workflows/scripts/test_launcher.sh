@@ -247,13 +247,13 @@ function run_notConntectedTest() {
 
 #****************************************************************************************************
 function flash_bootloader() {
+    echo "Flashing bootloader on $DUT_BOARD_TYPE with USE_INTERNAL_FLASH=$1"
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
     make clean
     make libclean
     make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$1 -j
 
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader/build
-    printf "\r\n>>>>>>>   Flashing Bootloader on DUT\r\n\r\n"
 
     #not using the flash_with_openocd function here because that causes the application code to be erased and only
     #bootloader to remain
