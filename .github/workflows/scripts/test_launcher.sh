@@ -562,6 +562,9 @@ function run_ota_test() {
     echo "****************************************************************************************************"
 
     erase_all_devices
+    echo "************** start git diff 1 **********" 
+    git diff
+    echo "************** end git diff 1 **********" 
 
     #make sure all files have correct settings
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
@@ -573,6 +576,9 @@ function run_ota_test() {
     #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
     sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update/BUILD_DIR=\$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
     sed -i 's/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN)/BUILD_DIR=\$(FW_BUILD_DIR) \$(FW_UPDATE_BIN) TARGET='"$DUT_NAME_UPPER"' TARGET_UC='"$DUT_NAME_UPPER"' TARGET_LC='"$DUT_NAME_LOWER"'/g' project.mk
+    echo "************** git diff 2 **********" 
+    git diff
+    echo "************** end git diff 2 **********" 
 
     sleep 1
     # Make OTAS V1 and flash
@@ -591,8 +597,11 @@ function run_ota_test() {
     printf "\r\nChange OTAS firmware version and rebuild.\r\n\r\n"
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
     # change firmware version to verify otas worked
-    perl -i -pe "s/FW_VERSION 1/FW_VERSION 2/g" wdxs_file.c
     perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_int.c
+    echo "************** git diff 3 **********" 
+    git diff
+    echo "************** end git diff 3 **********" 
+
     make clean
     if [ ${DUT_BOARD_TYPE} == "WLP_V1" ]; then
         make -j BOARD=$DUT_BOARD_TYPE
