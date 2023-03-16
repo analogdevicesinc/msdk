@@ -66,7 +66,7 @@ PLATFORM        := maxim
 RTOS            ?= baremetal
 
 # Used for storing pairing/bonding information
-PAL_NVM_SIZE	?= 0x8000
+PAL_NVM_SIZE	?= 0x2000
 
 CFG_DEV         := BT_VER=$(BT_VER)
 CFG_DEV         += SCH_CHECK_LIST_INTEGRITY=1
