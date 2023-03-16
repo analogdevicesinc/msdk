@@ -12,13 +12,10 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
-
-# CORDIO library options
+# Cordio library options
 INIT_PERIPHERAL = 0
 INIT_BROADCASTER = 0
 INIT_CENTRAL = 1

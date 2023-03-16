@@ -12,18 +12,16 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
-# Set CORDIO library options
-TOKEN = 0
-BT_VER = 8
+# Cordio library options
+BLE_HOST = 0
 BLE_CONTROLLER = 1
+BT_VER = 8
 
 # TRACE option
-# Set to 1 to enable serial port trace messages
+# Set to 2 to enable serial port trace messages
 # Set to 0 to disable
-TRACE = 1
+TRACE = 2
 
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os

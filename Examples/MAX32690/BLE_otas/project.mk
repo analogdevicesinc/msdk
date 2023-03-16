@@ -12,20 +12,16 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
 # Cordio library options
-STANDBY_ENABLED = 0
 INIT_PERIPHERAL = 1
-INIT_BROADCASTER = 1
+INIT_BROADCASTER = 0
 INIT_CENTRAL = 0
 INIT_OBSERVER = 0
 
 BUILD_BOOTLOADER?=1
-
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
 
 # Use local linkerfile
 LINKERFILE = ota.ld

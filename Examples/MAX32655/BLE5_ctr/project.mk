@@ -17,4 +17,5 @@ BLE_CONTROLLER = 1
 # TRACE option
 # Set to 2 to enable serial port trace messages
 # Set to 0 to disable
-TRACE = 0
+TRACE = 2
+

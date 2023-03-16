@@ -57,5 +57,5 @@ ${BOOTLOADER_BIN}:
 bl_obj: $(BOOTLOADER_OBJ)
 
 ${BOOTLOADER_OBJ}: bl_build.S ${BOOTLOADER_BIN}
-	${CC} ${AFLAGS} -o ${@} -c bl_build.S 
+	${CC} ${AFLAGS} -o ${@} -c bl_build.S
 endif

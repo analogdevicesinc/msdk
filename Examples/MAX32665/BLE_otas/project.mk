@@ -12,13 +12,12 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
 # Cordio library options
-STANDBY_ENABLED = 0
 INIT_PERIPHERAL = 1
-INIT_BROADCASTER = 1
+INIT_BROADCASTER = 0
 INIT_CENTRAL = 0
 INIT_OBSERVER = 0
 
@@ -71,5 +70,5 @@ ${BOOTLOADER_BIN}:
 bl_obj: $(BOOTLOADER_OBJ)
 
 ${BOOTLOADER_OBJ}: bl_build.S ${BOOTLOADER_BIN}
-	${CC} ${AFLAGS} -o ${@} -c bl_build.S 
+	${CC} ${AFLAGS} -o ${@} -c bl_build.S
 endif

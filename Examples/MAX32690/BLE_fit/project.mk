@@ -12,15 +12,11 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
-
-# TODO debug why this is needed
-AUTOSEARCH = 0
-	
-SRCS += main.c
-SRCS += stack_fit.c
-SRCS += fit_main.c
+# Cordio library options
+INIT_PERIPHERAL = 1
+INIT_BROADCASTER = 1
+INIT_CENTRAL = 0
+INIT_OBSERVER = 0
