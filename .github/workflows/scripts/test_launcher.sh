@@ -399,8 +399,7 @@ function run_all_not_conencted_tests() {
     project_filter='BLE_'
     for dir in ./*/; do
         if [[ "$dir" == *"$project_filter"* ]]; then
-            export PROJECT_NAME=$(echo "$dir" | tr -d /.)
-            $PROJECT_NAME
+            PROJECT_NAME=$(echo "$dir" | tr -d /.)
             run_single_not_conencted_tests $PROJECT_NAME
         fi
 
