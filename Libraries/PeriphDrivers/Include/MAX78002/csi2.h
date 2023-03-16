@@ -41,6 +41,7 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_CSI2_H_
 
 /* **** Includes **** */
+#include <stdbool.h>
 #include "csi2_regs.h"
 
 #ifdef __cplusplus
@@ -369,7 +370,7 @@ int MXC_CSI2_Callback(mxc_csi2_req_t *req, int retVal);
  * @brief      Interrupt Handler Function.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_Handler(void);
+// int MXC_CSI2_Handler(void);
 
 /********************************/
 /* CSI2 RX Controller Functions */
@@ -592,6 +593,8 @@ int MXC_CSI2_PPI_Stop(void);
 /************************************/
 /* CSI2 DMA - Used for all features */
 /************************************/
+
+bool MXC_CSI2_DMA_Frame_Complete(void);
 
 /**
  * @brief      Clears the interrupt flags for PPI.

@@ -60,6 +60,16 @@ int mipi_camera_init(void)
     return ret;
 }
 
+int mipi_camera_write_reg(uint16_t reg_addr, uint8_t reg_data)
+{
+    return camera.write_reg(reg_addr, reg_data);
+}
+
+int mipi_camera_read_reg(uint16_t reg_addr, uint8_t *reg_data)
+{
+    return camera.read_reg(reg_addr, reg_data);
+}
+
 int mipi_camera_get_slave_address(void)
 {
     return camera.get_slave_address();

@@ -112,10 +112,10 @@ int MXC_CSI2_Callback(mxc_csi2_req_t *req, int retVal)
     return MXC_CSI2_RevA_Callback(req, retVal);
 }
 
-int MXC_CSI2_Handler(void)
-{
-    return MXC_CSI2_RevA_Handler((mxc_csi2_reva_regs_t *)MXC_CSI2);
-}
+// int MXC_CSI2_Handler(void)
+// {
+//     return MXC_CSI2_RevA_Handler((mxc_csi2_reva_regs_t *)MXC_CSI2);
+// }
 
 /********************************/
 /* CSI2 RX Controller Functions */
@@ -288,6 +288,11 @@ int MXC_CSI2_PPI_Stop(void)
 /************************************/
 /* CSI2 DMA - Used for all features */
 /************************************/
+
+bool MXC_CSI2_DMA_Frame_Complete(void)
+{
+    return MXC_CSI2_RevA_DMA_Frame_Complete();
+}
 
 int MXC_CSI2_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size)
 {

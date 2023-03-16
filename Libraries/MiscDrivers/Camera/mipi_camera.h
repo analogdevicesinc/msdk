@@ -95,6 +95,8 @@ typedef struct _mipi_camera {
 
 int mipi_camera_reset(void);
 int mipi_camera_init(void);
+int mipi_camera_write_reg(uint16_t reg_addr, uint8_t reg_data);
+int mipi_camera_read_reg(uint16_t reg_addr, uint8_t *reg_data);
 int mipi_camera_get_slave_address(void);
 int mipi_camera_get_product_id(int *id);
 int mipi_camera_get_manufacture_id(int *id);

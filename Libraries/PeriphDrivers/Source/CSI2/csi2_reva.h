@@ -53,6 +53,13 @@ typedef enum {
     MXC_CSI2_REVA_FF_TRIG_FULL = MXC_F_CSI2_REVA_RX_EINT_VFF_IF_FFULL, ///< FIFO Full
 } mxc_csi2_reva_fifo_trig_t;
 
+typedef struct {
+    unsigned int err_count;
+    uint32_t ctrl_err;
+    uint32_t ppi_err;
+    uint32_t vfifo_err;
+} mxc_csi2_reva_capture_stats_t;
+
 /******* Globals *******/
 
 /****** Functions ******/
@@ -80,7 +87,7 @@ void MXC_CSI2_RevA_GetImageDetails(uint8_t **img, uint32_t *imgLen, uint32_t *w,
 
 int MXC_CSI2_RevA_Callback(mxc_csi2_req_t *req, int retVal);
 
-int MXC_CSI2_RevA_Handler(mxc_csi2_reva_regs_t *csi2);
+void MXC_CSI2_RevA_Handler();
 
 /********************************/
 /* CSI2 RX Controller Functions */
@@ -163,6 +170,8 @@ int MXC_CSI2_RevA_PPI_Stop(void);
 /* CSI2 DMA - Used for all features */
 /************************************/
 
+bool MXC_CSI2_RevA_DMA_Frame_Complete(void);
+
 int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size);
 
 int MXC_CSI2_RevA_DMA_GetChannel(void);
@@ -171,6 +180,6 @@ int MXC_CSI2_RevA_DMA_GetCurrentLineCnt(void);
 
 int MXC_CSI2_RevA_DMA_GetCurrentFrameEndCnt(void);
 
-void MXC_CSI2_RevA_DMA_Callback(mxc_dma_reva_regs_t *dma, int a, int b);
+void MXC_CSI2_RevA_DMA_Callback();
 
 #endif // LIBRARIES_PERIPHDRIVERS_SOURCE_CSI2_CSI2_REVA_H_

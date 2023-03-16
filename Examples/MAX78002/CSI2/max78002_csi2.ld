@@ -34,7 +34,8 @@
 MEMORY {
     ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00010000 /* 64 kB ROM */
     FLASH (rx) : ORIGIN = 0x10000000, LENGTH = 0x00280000 /* 2.5 MB Flash */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00040000 /* 384 kB SRAM */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000 /* 384 kB SRAM */
+    CSI2_IMG (rwx) : ORIGIN = 0x20008000, LENGTH = 0x38000
     CSI2 (rwx) : ORIGIN = 0x20040000, LENGTH = 0x00010000 /* 16 kB CSI2 Buffer */
 }
 
@@ -93,6 +94,12 @@ SECTIONS {
         *(.sram_code_section)
         _esran_code = .;
     } > SRAM
+
+    .csi2_img_buff :
+    {
+        . = ALIGN(4);
+        *(.csi2_img_buff*)
+    } > CSI2_IMG
 
     .csi2_buff :
     {
