@@ -279,7 +279,7 @@ function flash_bootloader() {
 #****************************************************************************************************
 function erase_all_devices() {
     erase_with_openocd $DUT_NAME_LOWER $DUT_ID
-    if [ $CURRENT_TEST == "dats" ] || [ $CURRENT_TEST == "ota" ]; then
+    if [ $CURRENT_TEST == "dats" ] || [ $CURRENT_TEST == "ota" ] || [ $CURRENT_TEST == "all" ]; then
         erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
     fi
 
@@ -406,6 +406,8 @@ function run_all_not_conencted_tests() {
         let projIdx++
 
     done # end non connected tests
+
+
 
 }
 #****************************************************************************************************
@@ -659,6 +661,7 @@ change_advertising_names_walle
 if [ $CURRENT_TEST == "all" ]; then
     echo
     echo "Running all tests"
+    erase_all_devices
     run_all_not_conencted_tests
     run_datcs_conencted_tests
     run_ota_test
@@ -666,11 +669,13 @@ if [ $CURRENT_TEST == "all" ]; then
 elif [ $CURRENT_TEST == "dats" ]; then
     echo
     echo "Running Datc/s connected test"
+    erase_all_devices
     run_datcs_conencted_tests
     echo
 elif [ $CURRENT_TEST == "ota" ]; then
     echo
     echo "Running OTA test"
+    erase_all_devices
     run_ota_test
     echo
 else
