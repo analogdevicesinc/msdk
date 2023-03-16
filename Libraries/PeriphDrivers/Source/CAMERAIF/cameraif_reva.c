@@ -51,16 +51,6 @@
 
 int MXC_PCIF_RevA_Init(void)
 {
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_PCIF);
-    //MXC_GPIO_Config (&gpio_cfg_pcif_P0);
-    //MXC_GPIO_Config (&gpio_cfg_pcif_P1);
-    //MXC_GPIO_Config (&gpio_cfg_pcif_hsync);
-    //MXC_GPIO_Config (&gpio_cfg_pcif_vsync);
-    //MXC_GPIO_Config (&gpio_cfg_pcif_pclk);
-    //MXC_GPIO_Config (&gpio_cfg_pcif_pwrdwn);
-
-    //MXC_GPIO_OutClr (gpio_cfg_pcif_pwrdwn.port, gpio_cfg_pcif_pwrdwn.mask);
-
     return 0;
 }
 
