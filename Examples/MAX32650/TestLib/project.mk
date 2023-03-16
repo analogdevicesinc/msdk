@@ -18,5 +18,5 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Add your static library here
-EXTRA_LIBS += test_lib
+# Uncomment this line to generate a static library
+#override .DEFAULT_GOAL = lib

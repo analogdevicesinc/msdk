@@ -1,7 +1,7 @@
 /**
- * @file    testlib.h
- * @brief   Example static library header.
- * @details This file is part of libExample.
+ * @file    main.c
+ * @brief   GPIO library example.
+ * @details Small example that calls gpiolib functions.
  */
 
 /******************************************************************************
@@ -37,23 +37,33 @@
  *
  ******************************************************************************/
 
-#ifndef TEST_LIB_TESTLIB_H_
-#define TEST_LIB_TESTLIB_H_
+#include <stdio.h>
+#include "mxc_delay.h"
+#include "led.h"
+#include "pb.h"
 
-/**
- * @brief Converts letters in \a str to uppercase.
- * @param str Input string.
- * @param out Buffer to store the uppercase characters.
- * @return Pointer to the output buffer.
- */
-char *test_uppercase(const char *str, char *out);
+#include "gpiolib.h"
 
-/**
- * @brief Converts letters in \a str to lowercase.
- * @param str Input string.
- * @param out Buffer to store the lowercase characters.
- * @return Pointer to the output buffer.
- */
-char *test_lowercase(const char *str, char *out);
+int main(void)
+{
+    int i;
 
-#endif /* TEST_LIB_TESTLIB_H_ */
+    printf("\n\n****** GPIO Library Example ******\n\n");
+    printf("This example reads the state of SW1 and SW2 buttons then toggles\n");
+    printf("RED and GREEN LEDs according to the state of the push buttons.\n");
+    printf("This project can also be compiled as a static library that can be\n");
+    printf("linked to another application.\n");
+
+    while (1) {
+        for (i = 0; i < num_pbs && i < num_leds; i++) {
+            if (gpio_get(&pb_pin[i])) {
+                gpio_set(&led_pin[i]);
+            } else {
+                gpio_clear(&led_pin[i]);
+            }
+        }
+        MXC_Delay(1000);
+    }
+
+    return 0;
+}

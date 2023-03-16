@@ -1,7 +1,7 @@
 /**
- * @file    testlib
- * @brief   Example static library implementation.
- * @details libExample source.
+ * @file    main.c
+ * @brief   Static library example
+ * @details Calls static library functions to read and toggle GPIOs.
  */
 
 /******************************************************************************
@@ -37,30 +37,32 @@
  *
  ******************************************************************************/
 
+/* **** Includes **** */
 #include <stdio.h>
+#include <stdint.h>
+#include "mxc_delay.h"
+#include "led.h"
+#include "pb.h"
 
-char *test_uppercase(const char *str, char *out)
+#include "../TestLib/gpiolib.h"
+
+/* ************************************************************************** */
+int main(void)
 {
-    char *p = out;
-    while (*str) {
-        if (*str >= 'a' && *str <= 'z')
-            *p++ = *str++ - ('a' - 'A');
-        else
-            *p++ = *str++;
+    int i;
+
+    printf("\n\n*********************** Static Library Example **********************\n\n");
+    printf("This example uses static library functions to read the inputs SW1 and\n");
+    printf("SW2 then toggles the red and green LEDs according to the read values.\n");
+
+    while (1) {
+        for (i = 0; i < num_pbs && i < num_leds; i++) {
+            if (gpio_get(&pb_pin[i])) {
+                gpio_set(&led_pin[i]);
+            } else {
+                gpio_clear(&led_pin[i]);
+            }
+        }
+        MXC_Delay(1000);
     }
-
-    return out;
-}
-
-char *test_lowercase(const char *str, char *out)
-{
-    char *p = out;
-    while (*str) {
-        if (*str >= 'A' && *str <= 'Z')
-            *p++ = *str++ + ('a' - 'A');
-        else
-            *p++ = *str++;
-    }
-
-    return out;
 }

@@ -1,9 +1,7 @@
 /**
- * @file    main.c
- * @brief   Static library example
- * @details Shows how to build a static library and call its functions from
- * external code. The library in this example implements case conversion
- * functions that are continuously called inside the main loop.
+ * @file    gpiolib.h
+ * @brief   GPIO library header.
+ * @details Function prototypes for GPIO library.
  */
 
 /******************************************************************************
@@ -39,28 +37,28 @@
  *
  ******************************************************************************/
 
-/* **** Includes **** */
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc_delay.h"
+#ifndef GPIOLIB_H_
+#define GPIOLIB_H_
 
-#include "test_lib/testlib.h"
+#include "gpio.h"
 
-/* ************************************************************************** */
-int main(void)
-{
-    char buf[64];
+/**
+ * @brief Sets the given GPIO to high state.
+ * @param gpio GPIO to set.
+ */
+void gpio_set(const mxc_gpio_cfg_t *gpio);
 
-    printf("\n\n\n");
-    printf("******************Static Library Example****************\n\n");
-    printf("This example continuously does uppercase and lowercase\n");
-    printf("string conversions in a loop using static library calls.\n");
-    printf("The results are then printed to the console.\n\n\n\n");
+/**
+ * @brief Sets the given GPIO to low state.
+ * @param gpio GPIO to set.
+ */
+void gpio_clear(const mxc_gpio_cfg_t *gpio);
 
-    while (1) {
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        printf("%s", test_uppercase("Hello World\n", buf));
-        MXC_Delay(MXC_DELAY_MSEC(500));
-        printf("%s", test_lowercase(buf, buf));
-    }
-}
+/**
+ * @brief Returns the input state of the given GPIO.
+ * @param gpio GPIO to read.
+ * @return Current GPIO state.
+ */
+int gpio_get(const mxc_gpio_cfg_t *gpio);
+
+#endif /* GPIOLIB_H_ */

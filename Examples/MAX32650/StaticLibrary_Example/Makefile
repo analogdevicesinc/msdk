@@ -364,10 +364,6 @@ endif
 
 include $(LIBS_DIR)/libs.mk
 
-ifneq ($(EXTRA_LIBS),"")
-EXTRA_LIBS_MK := $(addsuffix /*.mk, $(EXTRA_LIBS))
-include $(EXTRA_LIBS_MK)
-endif
 
 # *******************************************************************************
 # Rules

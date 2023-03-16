@@ -2,8 +2,9 @@
 
 Simple program that demonstrates how to build and link static libraries.
 
-The demo application does uppercase and lowercase string conversion using functions provided by an
-example static library.
+The demo application reads the push button inputs and toggles the LEDs based on the input states. The GPIO
+functions are built into a static library that can be found under TestLib project. Refer to project.mk to
+see how to link your application to a static library.
 
 ## Required Connections
 
@@ -23,20 +24,12 @@ example static library.
 The Console UART of the device will output these messages:
 
 ```
-******************Static Library Example****************
+********************** Static Library Example **********************
 
-This example continuously does uppercase and lowercase
-string conversions in a loop using static library calls.
-The results are then printed to the console.
-
+This example uses static library functions to read the state of SW1 and
+SW2 buttons then toggles RED and GREEN LEDs according to the values read.
 
 
-HELLO WORLD
-hello world
-HELLO WORLD
-hello world
-HELLO WORLD
-hello world
 ...
 ```
 
