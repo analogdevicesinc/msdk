@@ -175,6 +175,9 @@ int MXC_CSI2_RevA_Init(mxc_csi2_reva_regs_t *csi2, mxc_csi2_req_t *req,
         return error;
     }
 
+    int channel = MXC_DMA_AcquireChannel();
+    csi2_state.dma_channel = channel;
+
     // Configure VFIFO
     csi2->vfifo_pixel_num = req->pixels_per_line;
     csi2->vfifo_line_num = req->lines_per_frame;
@@ -259,12 +262,12 @@ int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
     g_frame_complete = true;
 
     // Only release channel when DMA was used
-    if (csi2_state.vfifo_cfg->dma_mode != MXC_CSI2_DMA_NO_DMA) {
-        error = MXC_DMA_ReleaseChannel(csi2_state.dma_channel);
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-    }
+    // if (csi2_state.vfifo_cfg->dma_mode != MXC_CSI2_DMA_NO_DMA) {
+    //     error = MXC_DMA_ReleaseChannel(csi2_state.dma_channel);
+    //     if (error != E_NO_ERROR) {
+    //         return error;
+    //     }
+    // }
 
     MXC_CSI2_VFIFO_Disable();
 
@@ -468,14 +471,14 @@ void MXC_CSI2_RevA_Handler()
         // }
         if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_UNDERRUN)
         {
-            printf("|UNDERRUN|");
-            // MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+            printf("|UNDERRUN|\n");
+            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
 
         }
         if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OVERRUN)
         {
-            printf("|OVERRUN|");
-            // MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+            printf("|OVERRUN|\n");
+            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
         }
         // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC)
         // {
@@ -1070,22 +1073,19 @@ int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burs
     int error;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    mxc_dma_adv_config_t advConfig = { 0, 0, 0, 0, 0, 0 };
-
-    int channel = MXC_DMA_AcquireChannel();
-    csi2_state.dma_channel = channel;
+    mxc_dma_adv_config_t advConfig = { csi2_state.dma_channel, 0, 0, 0, 0, 0 };
 
     config.reqsel = MXC_DMA_REQUEST_CSI2RX;
-    config.ch = channel;
+    config.ch = csi2_state.dma_channel;
     config.srcwd = MXC_DMA_WIDTH_WORD;
     config.dstwd = MXC_DMA_WIDTH_WORD;
     config.srcinc_en = 0;
     config.dstinc_en = 1;
 
-    advConfig.ch = channel;
+    advConfig.ch = csi2_state.dma_channel;
     advConfig.burst_size = burst_size;
 
-    srcdst.ch = channel;
+    srcdst.ch = csi2_state.dma_channel;
     srcdst.source = MXC_CSI2_FIFO;
     srcdst.dest = dst_addr;
     srcdst.len = byte_cnt;
@@ -1100,7 +1100,7 @@ int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burs
     //     return error;
     // }
 
-    error = MXC_DMA_SetChannelInterruptEn(channel, false, true);
+    error = MXC_DMA_SetChannelInterruptEn(csi2_state.dma_channel, false, true);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -1110,13 +1110,13 @@ int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burs
         return error;
     }
 
-    error = MXC_DMA_EnableInt(channel);
+    error = MXC_DMA_EnableInt(csi2_state.dma_channel);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    MXC_NVIC_SetVector(GetIRQnForDMAChannel(channel), MXC_CSI2_RevA_DMA_Callback);
-    NVIC_EnableIRQ(GetIRQnForDMAChannel(channel));
+    MXC_NVIC_SetVector(GetIRQnForDMAChannel(csi2_state.dma_channel), MXC_CSI2_RevA_DMA_Callback);
+    NVIC_EnableIRQ(GetIRQnForDMAChannel(csi2_state.dma_channel));
 
     // error = MXC_DMA_Start(channel);
     // if (error != E_NO_ERROR) {

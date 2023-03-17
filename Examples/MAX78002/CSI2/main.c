@@ -61,11 +61,12 @@
 #include "gcr_regs.h"
 #include "mcr_regs.h"
 #include "console.h"
+#include "aps6404.h"
 
 /***** Definitions *****/
 
-#define IMAGE_WIDTH 160
-#define IMAGE_HEIGHT 120
+#define IMAGE_WIDTH 320
+#define IMAGE_HEIGHT 240
 
 // Check CSI-2 Standard and your color format for these values.
 #define BITS_PER_PIXEL_ODD 8 // e.g. RGB888
@@ -132,8 +133,6 @@
 
 /***** Globals *****/
 
-volatile int DMA_FLAG = 1;
-
 // RAW Line Buffers
 // These buffers are used by the CSI2 hardware for debayering.
 // The size of these is hard-coded to 2048 because there appears
@@ -148,16 +147,18 @@ unsigned int g_index = 0;
 
 /***** Functions *****/
 
-void DMA_Handler(void)
-{
-    MXC_DMA_Handler();
-}
+// void DMA_Handler(void)
+// {
+//     MXC_DMA_Handler();
+// }
 
 void CSI2_line_handler(volatile uint8_t* data, unsigned int len)
 {
-    for (unsigned int i = 0; i < len; i++) {
-        IMAGE[g_index++] = data[i];
-    }
+    // for (unsigned int i = 0; i < len; i++) {
+    //     IMAGE[g_index++] = data[i];
+    // }
+    ram_write_quad(g_index, data, len);
+    g_index += len;
 }
 
 // void CSI2_Handler(void)
@@ -182,7 +183,6 @@ void process_img(void)
 
     unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (Took %u us)\n", elapsed);
-    DMA_FLAG = 1;
 
     // Get the details of the image from the camera driver.
     MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
@@ -197,8 +197,14 @@ void process_img(void)
              "BAYER", imgLen, w, h);
     send_msg(g_serial_buffer);
 
-    clear_serial_buffer();
-    MXC_UART_WriteBytes(Con_Uart, raw, imgLen);
+    for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
+        // cnn_addr = read_bytes_from_cnn_sram((uint8_t *)g_serial_buffer, transfer_len, cnn_addr);
+        ram_read_quad(i, (uint8_t*)g_serial_buffer, SERIAL_BUFFER_SIZE);
+        MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
+    }
+
+    // clear_serial_buffer();
+    // MXC_UART_WriteBytes(Con_Uart, raw, imgLen);
 
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
@@ -257,6 +263,8 @@ int main(void)
     printf("\nGo into the pc_utility folder and run the script:\n");
     printf("python console.py [COM#]\n");
     printf("\nPress PB1 (SW4) or send the 'capture' command to trigger a frame capture.\n");
+
+    printf("Initializing SRAM...\n");
 
     // Initialize camera
     mipi_camera_init();
@@ -328,8 +336,26 @@ int main(void)
         while (1) {}
     }
 
-    csi2_dma_channel = MXC_CSI2_DMA_GetChannel();
-    MXC_NVIC_SetVector(DMA0_IRQn + csi2_dma_channel, DMA_Handler);
+    error = ram_init();
+    if (error) {
+        printf("Failed to initialize SRAM with error %i\n", error);
+        return error;
+    }
+
+    ram_id_t ram_id;
+    error = ram_read_id(&ram_id);
+    if (error) {
+        printf("Failed to read expected SRAM ID!\n");
+        return error;
+    }
+    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID, ram_id.KGD, ram_id.density, ram_id.EID);
+
+    uint8_t test[32];
+    memset(test, 0xFF, 32);
+    ram_write_quad(0, test, 32);
+
+    // csi2_dma_channel = MXC_CSI2_DMA_GetChannel();
+    // MXC_NVIC_SetVector(DMA0_IRQn + csi2_dma_channel, DMA_Handler);
     // MXC_NVIC_SetVector(CSI2_IRQn, CSI2_Handler);
 
     PB_RegisterCallback(0, (pb_callback)buttonHandler);

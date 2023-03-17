@@ -15,6 +15,9 @@
 
 CAMERA=OV5640
 
+VPATH += src/sram
+IPATH += src/sram
+
 # Set a higher optimization level.  The increased performance
 # is required for the Camera DMA code to work within the
 # timing requirements of the CSI2 interface.
