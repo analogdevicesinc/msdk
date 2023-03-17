@@ -99,50 +99,16 @@ jobs:
           
           # Add riscv tools to path
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
-          
-      - name: Install ccache
-        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
-        run: |
-          # Install ccache
-          sudo apt install -y ccache
 
-          # Prepend ccache into the PATH
-          echo "/usr/bin" >> $GITHUB_PATH
-          echo "/usr/lib/ccache" >> $GITHUB_PATH
-          
-          # Setup ccache links
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-addr2line
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ar
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-as
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-c
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-c++filt
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-cpp
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-elfedit
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-g
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-10.2.1
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-ar
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-nm
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-ranlib
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcov
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcov-dump
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcov-tool
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gdb-add-index
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gdb-add-index-py
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gdb-py
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gprof
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ld
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ld.bfd
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-lto-dump
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-nm
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-objcopy
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-objdump
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ranlib
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-readelf
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-size
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strings
-          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strip
-          sudo ln -s ../../bin/ccache /usr/bin/riscv-none-embed-gcc
+      - name: Setup Python
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        uses: actions/setup-python@v4.5.0
+        with:
+          python-version: '3.10'
+
+      - name: Install packages
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        run: pip install -r .github/workflows/scripts/requirements.txt
 
       # Runs a set of commands using the runners shell
       - name: Build_Examples
@@ -155,35 +121,4 @@ jobs:
           # Set MAXIM_PATH to limit warnings
           export MAXIM_PATH=$(pwd)
 
-          cd Examples
-          # Rebuild all of the peripheral drivers and build all of the Hello_World examples
-          # Exclude the MAX32572, currently in development
-          # Exclude the MAX32570, examples are located in another repo
-          SUBDIRS=$(find . -type d -not -path "./MAX3257*" -name "Hello_World")
-          for dir in ${SUBDIRS}
-          do
-            echo "Testing peripheral driver build from: ${dir}"
-            make -C ${dir} FORCE_COLOR=1 clean > /dev/null
-            make -C ${dir} FORCE_COLOR=1 libclean > /dev/null
-            make -C ${dir} -j8 --output-sync=target  --no-print-directory FORCE_COLOR=1 > /dev/null
-            echo "---"
-          done
-          
-          # Find all of the examples, 
-          # Exclude the MAX32572, currently in development
-          # Exclude the MAX32570, examples are located in another repo
-          SUBDIRS=$(find . -mindepth 3 -not \( -path "./MAX3257*" -o -path "./MAX*/UCL*" \) -name "?akefile" -printf '%h\n')
-
-          # Exclude some examples
-          SUBDIRS=${SUBDIRS//"./MAX32672/Display/lvgl-8.0.2/tests"/}
-          SUBDIRS=${SUBDIRS//"./MAX32572/MAX32572_Demo_FreeRTOS"/}
-          SUBDIRS=${SUBDIRS//"./MAX32572/MAX32572_Demo_BareMetal"/}
-          SUBDIRS=${SUBDIRS//"./MAX78000/CNN/mnist-streaming"/}
-
-          for dir in ${SUBDIRS}
-          do
-            echo "Building ${dir}"
-            make -C ${dir} clean FORCE_COLOR=1 > /dev/null
-            make -C ${dir} -j8 --output-sync=target --no-print-directory FORCE_COLOR=1 > /dev/null
-            echo "---"
-          done
+          python .github/workflows/scripts/build.py

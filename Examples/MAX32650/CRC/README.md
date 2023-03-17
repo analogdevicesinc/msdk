@@ -4,6 +4,17 @@ This example demonstrates the use of the CRC feature of the Trust Protection Uni
 
 To demonstrate, CRC values are calculated in software and using the TPU. The results of these are calculations are compared to verify the results. This process is repeated for both 16-bit and 32-bit polynomials. 
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

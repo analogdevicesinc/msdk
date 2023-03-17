@@ -13,6 +13,17 @@ Push PB1 to start the PWM and continuous timer and PB2 to start the oneshot time
 -    LED 1: P0.24/LED0
 -    LED 2: P0.25/LED1
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Setup
 
 ##### Required Connections

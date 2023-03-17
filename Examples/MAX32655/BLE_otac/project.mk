@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -44,7 +44,7 @@ PROJ_OBJS = ${FW_UPDATE_OBJ}
 fw_bin: $(FW_UPDATE_BIN)
 
 ${FW_UPDATE_BIN}:
-	$(MAKE) -C ${FW_UPDATE_DIR} BUILD_DIR=$(FW_BUILD_DIR) PROJECT=fw_update
+	$(MAKE) -C ${FW_UPDATE_DIR} BUILD_DIR=$(FW_BUILD_DIR) BUILD_BOOTLOADER=0 PROJECT=fw_update
 	$(MAKE) -C $(FW_UPDATE_DIR) BUILD_DIR=$(FW_BUILD_DIR) $(FW_UPDATE_BIN)
 
 # Target for creating the firmware update obj file

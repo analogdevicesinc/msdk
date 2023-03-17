@@ -4,6 +4,17 @@ This example demonstrates the performance benefits of using Instruction Cache Co
 
 A sample function which performs a multiplication operation repeatedly is loaded into the MX25 external flash chip. The function is then called twice, once with ICC1 enabled and once with ICC1 disabled. For each function call, the timer is used measure execution time and the results are compared after both tests have completed.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

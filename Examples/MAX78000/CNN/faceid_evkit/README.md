@@ -1,94 +1,50 @@
 # MAX78000 FaceID Demo
 
-
-
 ## Overview
+
 The FaceID Demo software demonstrates identification of a number of persons from their facial images using MAX78000 EVKIT.
 
 For this purpose, the CNN model generates a 512-length embedding for a given image, whose distance to whole embeddings stored for each subject is calculated. The image is identified as either one of these subjects or 'Unknown' depending on the embedding distances.
 
 The CNN model is trained with the VGGFace-2 dataset using MTCNN and FaceNet models for embedding generation.
 
-## FaceID Demo Software
+## Software
 
-### Building firmware
+### Project Usage
 
-Navigate directory where FaceID demo software is located and build the project:
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-```bash
-$ cd /Examples/MAX78000/CNN/faceid_demo
-$ make
-```
+### Project-Specific Build Notes
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
-```bash
-$ make distclean
-```
+* This project supports output to a TFT display.  When building for the MAX78000EVKIT, the display is **enabled** by default.
+    * To _disable_ the TFT display code, comment out `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
+        ```Makefile
+        ifeq "$(BOARD)" "EvKit_V1"
+        # PROJ_CFLAGS+=-DTFT_ENABLE
+        IPATH += TFT/evkit/
+        VPATH += TFT/evkit/
+        endif
+        ```
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
-```
+* When building for the MAX78000FTHR, the TFT display is **disabled** by default.  The compatible 2.4'' TFT FeatherWing is an optional display that does not come with the MAX7800FTHR.  It can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing)
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
+    * To _enable_ the TFT display code, uncomment `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
-BOARD=FTHR_RevA
-endif
-```
-
-**Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
-
-*right click project name > Properties > C/C++ Build > Environment > Board"*
-
-<img src="Resources/eclipse_board.png" style="zoom:33%;" />
-
-### Load firmware image to MAX78000 EVKIT
-
-Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1). Note the COM port (COM_PORT) of this connection from your system configuration.
-
-Connect PICO adapter to JH5 SWD header.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
-
-### Load firmware image to MAX78000 Feather
-
-Connect USB cable to CN1 USB connector.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
+        ```Makefile
+        ifeq "$(BOARD)" "FTHR_RevA"
+        # Only Enable if 2.4" TFT is connected to Feather
+        PROJ_CFLAGS+=-DTFT_ENABLE
+        IPATH += TFT/fthr
+        VPATH += TFT/fthr
+        endif
+        ```
 
 ### MAX78000 EVKIT operations
 
-After loading FaceID firmware press "**Start_DEMO**" button on TFT screen to capture a face image. Make sure that captured face image should be inside blue rectangle. 
+After loading FaceID firmware press "**Start_DEMO**" button on TFT screen to capture a face image. Make sure that captured face image should be inside blue rectangle.
 
 ![](Resources/evkit_tft.jpg)
 
@@ -99,16 +55,6 @@ The TFT display is optional and not supplied with the MAX78000 Feather board.
 The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered from here:
 
 https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
-
-This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
-
-To compile code with enabled TFT feature use following setting in project.mk:
-
-```bash
-ifeq "$(BOARD)" "FTHR_RevA"
-PROJ_CFLAGS+=-DTFT_ENABLE
-endif
-```
 
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
 

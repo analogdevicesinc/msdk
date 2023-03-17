@@ -6,19 +6,15 @@ The RISC-V core runs the same code as is found in the Hello_World example, with 
 
 The ARM core initializes the RISC-V core before relinquishing control of execution to it.
 
-## Setup
+## Software
 
-##### Building Firmware:
+### Project Usage
 
-Before building firmware you must select the correct value for _BOARD_  in project.mk.ARM and project.mk.RISCV, either "EvKit\_V1" or "FTHR\_Apps\_P1", depending on the EV kit you are using to run the example.
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-After doing so, navigate to the directory where the example is located. Enter the following comand to build all of the files needed to run the example.
+### Project-Specific Build Notes
 
-```
-$ make
-```
-
-***** Note *****: Be sure to use the max78000-combined.elf executable in the _Build_ directory.
+* **This combined RISC-V project contains a unique set of split Makefiles without a project.mk file.**  However, the same build configuration variables are accessible from your IDE as a standard example (see the MSDK User Guide for more details), and the example should function as a standard example.
 
 ##### Required Connections:
 

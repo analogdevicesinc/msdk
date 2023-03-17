@@ -112,7 +112,6 @@ parser.add_argument('--retry_limit', default=3, help="limit of retry times after
 parser.add_argument('--short', action='store_true', help="shorter test")
 parser.add_argument('--chip', default="", help="DUT chip")
 parser.add_argument('--min_pwrs', default="90,90,90,90", help="abs min power")
-parser.add_argument('--per_mask', default="0", help='use PER mask "0"/"1"')
  
 args = parser.parse_args()
 
