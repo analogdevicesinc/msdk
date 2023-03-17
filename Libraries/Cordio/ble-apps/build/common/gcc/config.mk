@@ -66,14 +66,6 @@ ifneq ($(DEBUG),0)
 CFG_DEV         += WSF_BUF_STATS=1
 CFG_DEV         += WSF_ASSERT_ENABLED=1
 endif
-ifeq ($(TRACE),1)
-CFG_DEV         += WSF_TRACE_ENABLED=1
-endif
-ifeq ($(TRACE),2)
-CFG_DEV         += WSF_TRACE_ENABLED=1
-CFG_DEV         += LL_TRACE_ENABLED=1
-CFG_DEV         += SMP_EXTRA_TRACE=1
-endif
 
 #--------------------------------------------------------------------------------------------------
 #     Compilation flags
