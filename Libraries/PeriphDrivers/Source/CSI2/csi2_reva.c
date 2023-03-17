@@ -1063,6 +1063,14 @@ int MXC_CSI2_RevA_PPI_Stop(void)
 /* CSI2 DMA - Used for all features */
 /************************************/
 
+mxc_gpio_cfg_t indicator = {
+    .func = MXC_GPIO_FUNC_OUT,
+    .port = MXC_GPIO1,
+    .mask = MXC_GPIO_PIN_11,
+    .vssel = MXC_GPIO_VSSEL_VDDIOH,
+    .pad = MXC_GPIO_PAD_NONE
+};
+
 bool MXC_CSI2_RevA_DMA_Frame_Complete(void)
 {
     return g_frame_complete;
@@ -1074,6 +1082,9 @@ int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burs
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
     mxc_dma_adv_config_t advConfig = { csi2_state.dma_channel, 0, 0, 0, 0, 0 };
+
+    MXC_GPIO_Config(&indicator);
+    MXC_GPIO_OutSet(indicator.port, indicator.mask);
 
     config.reqsel = MXC_DMA_REQUEST_CSI2RX;
     config.ch = csi2_state.dma_channel;
@@ -1148,34 +1159,37 @@ void MXC_CSI2_RevA_DMA_Callback()
     // uint32_t dma_whole_frame = csi2_state.vfifo_cfg->dma_whole_frame;
 
     // Clear CTZ Status Flag
-    MXC_DMA->ch[csi2_state.dma_channel].status |= MXC_F_DMA_STATUS_CTZ_IF;
+    if (MXC_DMA->ch[csi2_state.dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {
+        MXC_DMA->ch[csi2_state.dma_channel].status |= MXC_F_DMA_STATUS_CTZ_IF;
 
-    if (csi2_state.vfifo_cfg->dma_whole_frame != MXC_CSI2_DMA_WHOLE_FRAME) {
-        // line by line
-        line_cnt++;
-        if (line_cnt > csi2_state.req->lines_per_frame) {
-            line_cnt = 0;
-            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
-            MXC_DMA->ch[csi2_state.dma_channel].dst = NULL;
-        } else {
-            MXC_DMA->ch[csi2_state.dma_channel].cnt = odd_line_byte_num;
-            if (lb.sel == SELECT_A) {
-                MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.b;
-                lb.sel = SELECT_B;
+        if (csi2_state.vfifo_cfg->dma_whole_frame != MXC_CSI2_DMA_WHOLE_FRAME) {
+            // line by line
+            line_cnt++;
+            MXC_GPIO_OutToggle(indicator.port, indicator.mask);
+            if (line_cnt > csi2_state.req->lines_per_frame) {
+                line_cnt = 0;
+                MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+                MXC_DMA->ch[csi2_state.dma_channel].dst = NULL;
             } else {
-                MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.a;
-                lb.sel = SELECT_A;
-            }
-            MXC_DMA->ch[csi2_state.dma_channel].ctrl |= MXC_F_DMA_REVA_CTRL_EN;
+                MXC_DMA->ch[csi2_state.dma_channel].cnt = odd_line_byte_num;
+                if (lb.sel == SELECT_A) {
+                    MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.b;
+                    lb.sel = SELECT_B;
+                } else {
+                    MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.a;
+                    lb.sel = SELECT_A;
+                }
+                MXC_DMA->ch[csi2_state.dma_channel].ctrl |= MXC_F_DMA_REVA_CTRL_EN;
 
-            if (csi2_state.req->line_handler != NULL)
-            {
-                csi2_state.req->line_handler((lb.sel == SELECT_A) ? lb.b : lb.a, line_byte_num);
+                if (csi2_state.req->line_handler != NULL)
+                {
+                    csi2_state.req->line_handler((lb.sel == SELECT_A) ? lb.b : lb.a, line_byte_num);
+                }
             }
+        } else {
+            // whole frame
+            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
         }
-    } else {
-        // whole frame
-        MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
     }
 }
 
