@@ -38,8 +38,8 @@
 
 #include <stdio.h>
 
-#ifndef LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
-#define LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
+#ifndef LIBRARIES_BOARDS_MAX32662_FTHR_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32662_FTHR_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -47,10 +47,10 @@ extern "C" {
 
 /*
     Define board name:
-    Use as #if defined(BOARD_EVKIT_V1)
-    Not as #if BOARD_EVKIT_V1
+    Use as #if defined(BOARD_FTHR)
+    Not as #if BOARD_FTHR
 */
-#define BOARD_EVKIT_V1 1
+#define BOARD_FTHR 1
 
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
@@ -95,4 +95,4 @@ int Console_PrepForSleep(void);
 }
 #endif
 
-#endif // LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
+#endif // LIBRARIES_BOARDS_MAX32662_FTHR_INCLUDE_BOARD_H_
