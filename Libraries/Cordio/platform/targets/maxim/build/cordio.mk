@@ -48,9 +48,6 @@ endif
 endif
 endif
 
-# Disable these trace messages for the speed testing
-PROJ_CFLAGS += -DATT_TRACE_ENABLED=0 -DHCI_TRACE_ENABLED=0
-
 ROOT_DIR        ?= $(CORDIO_DIR)
 BSP_DIR         ?= $(LIBS_DIR)
 
@@ -109,10 +106,6 @@ else
 include $(ROOT_DIR)/controller/build/common/gcc/sources_ll_5.mk
 endif
 
-ifeq ($(TRACE),1)
-CFG_DEV         += LL_TRACE_ENABLED=1
-endif
-
 endif
 endif
 
@@ -127,9 +120,10 @@ endif
 
 # Remove these files from the library build, board level dependencies. Will have to be
 # re-built for each application
-BOARD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${TARGET_LC}/sources/pal_uart.c
+APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_uart.c
+
+# This will let us enable/disable trace messaging by application
+APP_BUILD_C_FILES += ${ROOT_DIR}/wsf/sources/targets/${RTOS}/wsf_trace.c
 
 # $(filter-out pattern…,text)
-C_FILES := $(filter-out ${BOARD_C_FILES},${C_FILES})
-
-APP_BUILD_C_FILES += ${BOARD_C_FILES}
+C_FILES := $(filter-out ${APP_BUILD_C_FILES},${C_FILES})
