@@ -26,11 +26,11 @@
 DEBUG           ?= 1
 TRACE           ?= 1
 BT_VER          ?= 9
-INIT_CENTRAL    ?= 1
-INIT_OBSERVER   ?= 1
-INIT_ENCRYPTED  ?= 1
 INIT_PERIPHERAL ?= 1
-INIT_BROADCASTER?= 1
+INIT_CENTRAL    ?= 1
+INIT_ENCRYPTED  ?= 1
+INIT_OBSERVER   ?= 0
+INIT_BROADCASTER?= 0
 
 WSF_HEAP_SIZE ?= 0x10000
 CFG_DEV += WSF_HEAP_SIZE=$(WSF_HEAP_SIZE)
@@ -121,6 +121,7 @@ endif
 # Remove these files from the library build, board level dependencies. Will have to be
 # re-built for each application
 APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_uart.c
+APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_sys.c
 
 # This will let us enable/disable trace messaging by application
 APP_BUILD_C_FILES += ${ROOT_DIR}/wsf/sources/targets/${RTOS}/wsf_trace.c

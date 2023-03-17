@@ -17,9 +17,16 @@ LIB_CORDIO = 1
 
 # Cordio library options
 INIT_PERIPHERAL = 0
-INIT_BROADCASTER = 0
 INIT_CENTRAL = 1
-INIT_OBSERVER = 1
+
+# TRACE option
+# Set to 0 to disable
+# Set to 1 to enable serial port trace messages
+# Set to 2 to enable verbose messages
+# 
+# Changes to this variable could require a rebuild of the Cordio library
+#    # make clean.cordio
+TRACE = 1
 
 # **********************************************************
 # Firmware builder

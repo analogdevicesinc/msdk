@@ -20,19 +20,53 @@ This library implements the Bluetooth Low Energy stack , forked from [Packetcraf
 * **Direction finding:** Detect the direction of the incoming signal. Also known as Angle of Arrival (AoA) and Angle of Departure (AoD). Hardware support on MAX32655 and MAX32690, unavailable on MAX32665, software in development.
 * **LE Audio:** Isochronous audio with Bluetooth LE. Hardare support on all platforms, software in development.
 
-## Platforms
-
-This release was tested on the following platforms. Note: platforms listed may not be available in this repository.
-
-* Nordic nRF52840 / PCA10056 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10056")
-* Nordic nRF52832 / PCA10040 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10040")
-* Laird BL654 / 451-00004 USB adapter / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=laird")
-
 ## Getting Started
 
 The best application to get started with is the [BLE_periph](../docs/Applications/BLE_periph.md) application. It is a simple periphal application that will allow you to advertise and connect with a central device such as a smart phone.
 
 Follow the MSDK [User Guide](../../../USERGUIDE.md) instructions to install the necessary tools and create a new project. Build and run the `BLE_periph` application for the appropriate target.
+
+## Building
+Most of the source code will be built in a library that can be shared between applications.
+
+Build options will differ between applications that could require a re-build. Update settings in **project.mk** at the application layer to update the build options.
+
+**TRACE** options could require a re-build between applications. If the library is built with **TRACE=0** it will be optimized for code size and remove all of the trace messaging. Adjacent applications will still build and link with **TRACE=1**, but the trace messages will not be printed until the library is re-built.
+
+If the library is built with **TRACE=2** and adjacent applications build with **TRACE=0**, the messages will not be printed, but the text will remain in the code space until the library is rebuilt with the appropriate option.
+
+``` bash
+
+# Cordio library options
+
+# This will include the Bluetooth Host portions of the stack in the build.
+BLE_HOST = 1
+
+# This will include the Bluetooth Controller portions of the stack in the build.
+BLE_CONTROLLER = 1
+
+# Typical system on chip devices will typically include both the Host and the Controller.
+# Applications for lower level testing will only include the Controller, and use an HCI
+# interface to communicate with an external Host.
+
+# Peripheral devices will be typical for micro controllers and mobile, battery powered devices
+# These devices will advertise and can be connected to central devices.
+INIT_PERIPHERAL = 1
+
+# Central devices are typically high power devices like a cell phone or a base station
+# Central devices will scan and initiate connections with peripherals.
+INIT_CENTRAL = 0
+
+# TRACE option
+# Set to 0 to disable
+# Set to 1 to enable serial port trace messages
+# Set to 2 to enable verbose messages
+#
+# Changes to this variable could require a rebuild of the Cordio library
+#    # make clean.cordio
+TRACE = 1
+
+```
 
 ## Bluetooth LE Basics
 

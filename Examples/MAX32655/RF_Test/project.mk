@@ -7,14 +7,22 @@
 
 # **********************************************************
 
-# Enable Cordio library
-LIB_CORDIO = 1
-
 # Enable the FreeRTOS library
 LIB_FREERTOS=1
 
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
+# Enable Cordio library
+LIB_CORDIO = 1
 
-# Enable low level trace
-TRACE = 2
+# Cordio library options
+RTOS = freertos
+INIT_PERIPHERAL = 1
+INIT_CENTRAL = 0
+
+# TRACE option
+# Set to 0 to disable
+# Set to 1 to enable serial port trace messages
+# Set to 2 to enable verbose messages
+# 
+# Changes to this variable could require a rebuild of the Cordio library
+#    # make clean.cordio
+TRACE = 1
