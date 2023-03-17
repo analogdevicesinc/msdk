@@ -553,12 +553,22 @@ function run_ota_test() {
     if [ "$testResult" -ne "0" ]; then
         # update failed test count
         let "numOfFailedTests+=$testResult"
-        failedTestList+="| BLE_ota_cs_ext ($DUT_NAME_UPPER) "
-        # test failed, save elfs datc/s
-        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
-        cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_ext.elf"
-        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
-        cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_ext.elf"
+        if [[ "$INTERNAL_FLASH_TEST" -ne "0" ]]; then
+            failedTestList+="| BLE_ota_cs_int ($DUT_NAME_UPPER) "
+             # test failed, save elfs datc/s
+            cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+            cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_int.elf"
+            cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
+            cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_int.elf"
+        else
+            failedTestList+="| BLE_ota_cs_ext ($DUT_NAME_UPPER) "
+             # test failed, save elfs datc/s
+            cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
+            cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_ext.elf"
+            cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
+            cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_ext.elf"    
+        fi
+
     fi
     set -e
 
@@ -584,6 +594,7 @@ change_advertising_names_walle
 if [ $CURRENT_TEST == "all" ]; then
     echo
     echo "Running all tests"
+    export failedTestList
     erase_all_devices
     run_all_not_conencted_tests
     CURRENT_TEST="all"
@@ -617,4 +628,19 @@ else
     echo
 fi
 
+
+# if [ $CURRENT_TEST == "all" ]; then
+#     echo "=============================================================================="
+#     echo "=============================================================================="
+
+#     if [[ $numOfFailedTests -ne 0 ]]; then
+#         printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+#     else
+#         echo "Relax! ALL TESTS PASSED"
+#     fi
+#     echo
+#     echo "=============================================================================="
+#     echo "=============================================================================="
+#     echo
+# fi
 exit $numOfFailedTests
