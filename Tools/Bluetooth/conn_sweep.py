@@ -338,17 +338,12 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
             hciSlave.cmdFunc(Namespace(cmd="0102FF00"), timeout=10.0)
             hciMaster.cmdFunc(Namespace(cmd="0102FF00"), timeout=10.0)
 
-            print("\nSlave listenFunc")
-            hciSlave.listenFunc(Namespace(time=1, stats="False"))
-
-            print("\nMaster listenFunc")
-            hciMaster.listenFunc(Namespace(time=1, stats="False"))
-
             print(f"\nsleep args.delay {args.delay} secs")
             sleep(int(args.delay))
 
-            print("\nRead any pending events. slave and master listenFunc")
+            print("\nslave read any pending events")
             hciSlave.listenFunc(Namespace(time=1, stats="False"))
+            print("\nmaster read any pending events")
             hciMaster.listenFunc(Namespace(time=1, stats="False"))
 
             print("\nMaster collects results.")
