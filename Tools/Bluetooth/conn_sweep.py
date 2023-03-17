@@ -47,6 +47,7 @@ import argparse
 from argparse import RawTextHelpFormatter
 from time import sleep
 import itertools
+import json
 from mini_RCDAT_USB import mini_RCDAT_USB
 from BLE_hci import BLE_hci
 from BLE_hci import Namespace
@@ -111,11 +112,71 @@ parser.add_argument('--retry_limit', default=3, help="limit of retry times after
 parser.add_argument('--short', action='store_true', help="shorter test")
 parser.add_argument('--chip', default="", help="DUT chip")
 parser.add_argument('--min_pwrs', default="90,90,90,90", help="abs min power")
+parser.add_argument('--per_mask', default="0", help='use PER mask "0"/"1"')
  
 args = parser.parse_args()
 
 print("--------------------------------------------------------------------------------------------")
 pprint(vars(args))
+
+# PER mask
+CONFIG_FILE=os.path.expanduser("~/Workspace/ci_config/RF-PHY-closed.json")
+obj = json.load(open(CONFIG_FILE))
+use_per_mask = obj['tests']["simple_per.yml"]["use_per_mask"]
+per_mask_margin = int(obj['tests']['per_mask']['per_mask_margin'])
+per_corr_dtm_to_cm = int(obj['tests']['per_mask']['per_corr_dtm_to_cm'])
+
+phy_str = [
+    "",
+    "1M",
+    "2M",
+    "S8",
+    "S2"
+]
+
+per_mask = {
+    "1M": [
+        [-20,                       per_mask_margin],
+        [-90,                       per_mask_margin],
+        [-93+per_corr_dtm_to_cm,    5+per_mask_margin],
+        [-96+per_corr_dtm_to_cm,    30+per_mask_margin],
+        [-99+per_corr_dtm_to_cm,    100],
+        [-114,                      100] 
+    ],
+
+    "2M": [
+        [-20,                       per_mask_margin],
+        [-87,                       per_mask_margin],
+        [-90+per_corr_dtm_to_cm,    5+per_mask_margin],
+        [-93+per_corr_dtm_to_cm,    30+per_mask_margin],
+        [-96+per_corr_dtm_to_cm,    100],
+        [-111,                      100] 
+    ],
+
+    "S2": [
+        [-20,                       per_mask_margin],
+        [-95,                       per_mask_margin],
+        [-98+per_corr_dtm_to_cm,    5+per_mask_margin],
+        [-101+per_corr_dtm_to_cm,   30+per_mask_margin],
+        [-104+per_corr_dtm_to_cm,   100],
+        [-119,                      100]
+    ],
+
+    "S8": [
+        [-20,                       per_mask_margin],
+        [-98,                       per_mask_margin],
+        [-101+per_corr_dtm_to_cm,   5+per_mask_margin],
+        [-104+per_corr_dtm_to_cm,   30+per_mask_margin],
+        [-107+per_corr_dtm_to_cm,   100],
+        [-122,                      100]
+    ]
+}
+
+print(f'      use_per_mask: {use_per_mask}')
+print(f'   per_mask_margin: {per_mask_margin}')
+print(f'per_corr_dtm_to_cm: {per_corr_dtm_to_cm}')
+print('per_mask:')
+pprint(per_mask)
 
 # default minimum power
 min_pwrs = [90, 90, 90, 90]  # for PHY 1, 2, 3, 4
@@ -175,6 +236,12 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
         temp = args.attens.replace(" ", "")
         attens = temp.split(",")
         attens = [float(x) for x in attens]
+    
+    # check if use PER mask
+    if use_per_mask == "1" and False:
+        attens = list()
+        for item in per_mask[phy_str[int(phy)]]:
+            attens.append(item[0]*(-1))
 
     print(f'attens: {attens}')
 
@@ -211,7 +278,6 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
                     print("\n----------------------------------")                
                     print("pre-test setup")
                     print("----------------------------------")
-
 
                     print("\nslave start advertising.")
                     hciSlave.advFunc(Namespace(interval="60", stats="False", connect="True", maintain=False, listen="False"))
@@ -356,8 +422,15 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
             end_secs = time.time()
             print(f'\nTotally used time for this point (secs): {(end_secs - start_secs):.0f}')
 
+            #if testing >= RESET_CNT:
+            #    testing = RESET_CNT
+            #
+            #    hciMaster.cmdFunc(Namespace(cmd="01060403000013"))  # close connection
+            #    need_to_setup = True
+            #else:
+            #    testing += 1
             testing += 1
-
+            
     else:  # original method
         for atten in attens:
             per_100 = 0
@@ -365,7 +438,7 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
             while per_100 < RETRY:
                 start_secs = time.time()
                 print(f'\n---------------------------------------------------------------------------------------')
-                print(f'packetLen: {packetLen}, phy: {phy}, atten: {atten}, txPower: {txPower}\n')
+                print(f'{args.chip} - packetLen: {packetLen}, phy: {phy}, atten: {atten}, txPower: {txPower}\n')
 
                 print("\nReset the devices.")
                 hciSlave.resetFunc(None)
