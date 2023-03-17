@@ -226,6 +226,11 @@ typedef enum {
  */
 typedef void (*mxc_csi2_complete_cb_t)(mxc_csi2_req_t *req, int result);
 
+// TODO: Doxygen
+typedef void (*mxc_csi2_line_handler_cb_t)(volatile uint8_t* data, unsigned int len);
+
+
+
 /**
  * @brief  Selects control source signals for data and clock lanes.
  */
@@ -277,6 +282,7 @@ struct _mxc_csi2_req_t {
     uint32_t bits_per_pixel_even; ///< Bits Per Pixel Even
     uint32_t frame_num; ///< Number of frames to capture
     mxc_csi2_complete_cb_t callback; ///< RX Callback for DMA requests
+    mxc_csi2_line_handler_cb_t line_handler;
 
     uint8_t process_raw_to_rgb; ///< Select if processing RAW data to RGB type
     mxc_csi2_rgb_type_t rgb_type; ///< Select final processed RGB type

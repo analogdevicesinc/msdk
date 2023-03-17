@@ -34,6 +34,7 @@
 /* **** Includes **** */
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_pins.h"
@@ -86,7 +87,31 @@ static volatile uint32_t even_line_byte_num;
 static volatile uint32_t line_byte_num;
 static volatile uint32_t frame_byte_num;
 static volatile bool g_frame_complete = false;
+static volatile uint8_t* g_img_addr;
 volatile mxc_csi2_reva_capture_stats_t g_capture_stats;
+
+typedef enum {
+    SELECT_A,
+    SELECT_B
+} lb_sel_t;
+
+struct line_buffer {
+    volatile uint8_t* a; // Line buffer A
+    volatile uint8_t* b; // Line buffer B
+    lb_sel_t sel;
+} lb;
+
+void _free_line_buffer(void)
+{
+    if (lb.a != NULL) {
+        free((uint8_t*)lb.a);
+        lb.a = NULL;
+    }
+    if (lb.b != NULL) {
+        free((uint8_t*)lb.b);
+        lb.b = NULL;
+    }
+}
 
 // Used for Non-DMA CSI2 Cases
 static volatile uint32_t bits_per_pixel;
@@ -250,6 +275,8 @@ int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
     csi2->cfg_clk_lane_en = 0;
     csi2->cfg_data_lane_en = 0;
 
+    _free_line_buffer();
+
     return E_NO_ERROR;
 }
 
@@ -278,18 +305,32 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
 
     // Select lower line byte number (Odd line)
     line_byte_num = odd_line_byte_num;
+    
+    g_img_addr = req->img_addr;
 
     // Use whole frame vs line by line
     if (vfifo->dma_whole_frame == MXC_CSI2_DMA_WHOLE_FRAME) {
         dma_byte_cnt = frame_byte_num;
+        error = MXC_CSI2_DMA_Config(req->img_addr, dma_byte_cnt, vfifo->rx_thd);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
     } else {
         // Smaller
         dma_byte_cnt = line_byte_num;
-    }
+        
+        _free_line_buffer();
 
-    error = MXC_CSI2_DMA_Config(req->img_addr, dma_byte_cnt, vfifo->rx_thd);
-    if (error != E_NO_ERROR) {
-        return error;
+        lb.a = (volatile uint8_t*)malloc(line_byte_num);
+        lb.b = (volatile uint8_t*)malloc(line_byte_num);
+        if (lb.a == NULL || lb.b == NULL)
+            return E_NULL_PTR;
+
+        lb.sel = SELECT_A;
+        error = MXC_CSI2_DMA_Config(lb.a, dma_byte_cnt, vfifo->rx_thd);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
     }
 
     // Enable Stop State interrupts for all used data lanes
@@ -1112,12 +1153,25 @@ void MXC_CSI2_RevA_DMA_Callback()
     if (csi2_state.vfifo_cfg->dma_whole_frame != MXC_CSI2_DMA_WHOLE_FRAME) {
         // line by line
         line_cnt++;
-        if (line_cnt >= csi2_state.req->lines_per_frame) {
+        if (line_cnt > csi2_state.req->lines_per_frame) {
             line_cnt = 0;
             MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+            MXC_DMA->ch[csi2_state.dma_channel].dst = NULL;
         } else {
             MXC_DMA->ch[csi2_state.dma_channel].cnt = odd_line_byte_num;
+            if (lb.sel == SELECT_A) {
+                MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.b;
+                lb.sel = SELECT_B;
+            } else {
+                MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.a;
+                lb.sel = SELECT_A;
+            }
             MXC_DMA->ch[csi2_state.dma_channel].ctrl |= MXC_F_DMA_REVA_CTRL_EN;
+
+            if (csi2_state.req->line_handler != NULL)
+            {
+                csi2_state.req->line_handler((lb.sel == SELECT_A) ? lb.b : lb.a, line_byte_num);
+            }
         }
     } else {
         // whole frame

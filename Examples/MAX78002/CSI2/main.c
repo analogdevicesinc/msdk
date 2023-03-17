@@ -64,8 +64,8 @@
 
 /***** Definitions *****/
 
-#define IMAGE_WIDTH 320
-#define IMAGE_HEIGHT 240
+#define IMAGE_WIDTH 160
+#define IMAGE_HEIGHT 120
 
 // Check CSI-2 Standard and your color format for these values.
 #define BITS_PER_PIXEL_ODD 8 // e.g. RGB888
@@ -144,12 +144,20 @@ __attribute__((section(".csi2_buff_raw1"))) uint32_t RAW_ADDR1[2048];
 
 // Buffer for processed image
 __attribute__((section(".csi2_img_buff"))) uint8_t IMAGE[IMAGE_SIZE] = { 0 };
+unsigned int g_index = 0;
 
 /***** Functions *****/
 
 void DMA_Handler(void)
 {
     MXC_DMA_Handler();
+}
+
+void CSI2_line_handler(volatile uint8_t* data, unsigned int len)
+{
+    for (unsigned int i = 0; i < len; i++) {
+        IMAGE[g_index++] = data[i];
+    }
 }
 
 // void CSI2_Handler(void)
@@ -166,10 +174,14 @@ void process_img(void)
 
     printf("Capturing image...\n");
 
+    g_index = 0;
+    MXC_TMR_SW_Start(MXC_TMR0);
     MXC_CSI2_CaptureFrameDMA(NUM_DATA_LANES);
 
     while (!MXC_CSI2_DMA_Frame_Complete()) {}
 
+    unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (Took %u us)\n", elapsed);
     DMA_FLAG = 1;
 
     // Get the details of the image from the camera driver.
@@ -188,7 +200,7 @@ void process_img(void)
     clear_serial_buffer();
     MXC_UART_WriteBytes(Con_Uart, raw, imgLen);
 
-    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
 }
 
@@ -294,6 +306,7 @@ int main(void)
     req.autoflush = MXC_CSI2_AUTOFLUSH_ENABLE;
     req.raw_buf0_addr = (uint32_t)RAW_ADDR0;
     req.raw_buf1_addr = (uint32_t)RAW_ADDR1;
+    req.line_handler = CSI2_line_handler;
     // req.callback = CSI2_Callback;
 
     // Configure VFIFO
