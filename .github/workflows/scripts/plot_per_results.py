@@ -262,15 +262,6 @@ if row > 1 or col > 1:
             else:
                 axs[row, col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', horizontalalignment='left',
                                    verticalalignment='center', fontsize=3)
-
-        # mark the last point
-        i = -1
-        if axs.ndim == 1:
-            axs[col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', horizontalalignment='left',
-                          verticalalignment='center', fontsize=3)
-        else:
-            axs[row, col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', horizontalalignment='left',
-                               verticalalignment='center', fontsize=3)
         
         # note
         fig.text(.5, .01, f'Run on all data channels (no advertising channels).\n{args.desc}', ha='center',
