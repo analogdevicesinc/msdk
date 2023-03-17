@@ -107,15 +107,13 @@ int console_init(void)
 
         int available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
         if (available > 0) {
-            char *buffer = (char *)malloc(available);
-            memset(buffer, '\0', SERIAL_BUFFER_SIZE);
-            MXC_UART_Read(Con_Uart, (uint8_t *)buffer, &available);
-            if (strcmp(buffer, sync) == 0) {
+            clear_serial_buffer();
+            MXC_UART_Read(Con_Uart, (uint8_t*)g_serial_buffer, &available);
+            if (strcmp(g_serial_buffer, sync) == 0) {
                 // Received sync string back, break the loop.
                 LED_On(LED1);
                 break;
             }
-            free(buffer);
         }
     }
 
