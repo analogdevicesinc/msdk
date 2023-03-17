@@ -285,20 +285,20 @@ jobs:
               else
                   echo "Skipping all tests"
               fi
+            echo "=============================================================================="
+            echo "=============================================================================="
+
+            if [[ $numOfFailedTests -ne 0 ]]; then
+                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+            else
+                echo "Relax! ALL TESTS PASSED"
+            fi
+            echo
+            echo "=============================================================================="
+            echo "=============================================================================="
+            echo
           fi
 
-          echo "=============================================================================="
-          echo "=============================================================================="
-
-          if [[ $numOfFailedTests -ne 0 ]]; then
-              printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-          else
-              echo "Relax! ALL TESTS PASSED"
-          fi
-          echo
-          echo "=============================================================================="
-          echo "=============================================================================="
-          echo
           exit $numOfFailedTests
 
       - name: Unlock MAX32655 B1
@@ -528,20 +528,19 @@ jobs:
               else
                   echo "Skipping all tests"
               fi
-          fi
+            echo "=============================================================================="
+            echo "=============================================================================="
 
-          echo "=============================================================================="
-          echo "=============================================================================="
-
-          if [[ $numOfFailedTests -ne 0 ]]; then
-              printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-          else
-              echo "Relax! ALL TESTS PASSED"
+            if [[ $numOfFailedTests -ne 0 ]]; then
+                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+            else
+                echo "Relax! ALL TESTS PASSED"
+            fi
+            echo
+            echo "=============================================================================="
+            echo "=============================================================================="
+            echo
           fi
-          echo
-          echo "=============================================================================="
-          echo "=============================================================================="
-          echo
           exit $numOfFailedTests
 
       - name: Unlock MAX32655 B1
@@ -770,20 +769,20 @@ jobs:
               else
                   echo "Skipping all tests"
               fi
+            echo "=============================================================================="
+            echo "=============================================================================="
+
+            if [[ $numOfFailedTests -ne 0 ]]; then
+                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+            else
+                echo "Relax! ALL TESTS PASSED"
+            fi
+            echo
+            echo "=============================================================================="
+            echo "=============================================================================="
+            echo
           fi
 
-          echo "=============================================================================="
-          echo "=============================================================================="
-
-          if [[ $numOfFailedTests -ne 0 ]]; then
-              printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-          else
-              echo "Relax! ALL TESTS PASSED"
-          fi
-          echo
-          echo "=============================================================================="
-          echo "=============================================================================="
-          echo
           exit $numOfFailedTests
 
       - name: Unlock MAX32655 B1

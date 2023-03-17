@@ -629,18 +629,18 @@ else
 fi
 
 
-# if [ $CURRENT_TEST == "all" ]; then
-#     echo "=============================================================================="
-#     echo "=============================================================================="
+if [ $CURRENT_TEST == "all" ]; then
+    echo "=============================================================================="
+    echo "=============================================================================="
 
-#     if [[ $numOfFailedTests -ne 0 ]]; then
-#         printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-#     else
-#         echo "Relax! ALL TESTS PASSED"
-#     fi
-#     echo
-#     echo "=============================================================================="
-#     echo "=============================================================================="
-#     echo
+    if [[ $numOfFailedTests -ne 0 ]]; then
+        printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+    else
+        echo "Relax! ALL TESTS PASSED"
+    fi
+    echo
+    echo "=============================================================================="
+    echo "=============================================================================="
+    echo
 # fi
 exit $numOfFailedTests
