@@ -439,12 +439,22 @@ void MXC_CSI2_RevA_Handler()
     MXC_CSI2_PPI_ClearFlags(ppi_flags);
     MXC_CSI2_VFIFO_ClearFlags(vfifo_flags);
 
+    bool stop = false;
+
+    if (ctrl_flags & (0b11111)) {
+        printf("|CTRL:0x%x|\n", ctrl_flags);
+        stop = true;
+    }
+
     if (!csi2_state.synced && ppi_flags != 0) {
         /*
         When these PPI flags have been signaled, the CSI2 interface
         has synced up with the sensor.  It's now safe to monitor the VFIFO.
         */
         csi2_state.synced = (bool)(ppi_flags & (MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP));
+    } else if (ppi_flags & ~(MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP)) {
+        printf("|PPI:0x%x|\n", ppi_flags);
+        stop = true;
     }
 
     if (vfifo_flags != 0) {
@@ -472,47 +482,57 @@ void MXC_CSI2_RevA_Handler()
         if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_UNDERRUN)
         {
             printf("|UNDERRUN|\n");
-            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
-
+            stop = true;
         }
         if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OVERRUN)
         {
             printf("|OVERRUN|\n");
-            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+            stop = true;
         }
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC)
-        // {
-        //     printf("|OUTSYNC");
-        // }
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC)
-        // {
-        //     printf("|FMTERR");
-        // }
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_AHBWTO)
-        // {
-        //     printf("|AHBWTO");
-        // }
+        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC)
+        {
+            printf("|OUTSYNC|\n");
+            stop = true;
+        }
+        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC)
+        {
+            printf("|FMTERR|\n");
+            stop = true;
+        }
+        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_AHBWTO)
+        {
+            printf("|AHBWTO|\n");
+            stop = true;
+        }
         if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_FE)
         {
-            // printf("|FE|\n");
+            printf("|FE|\n");
+            stop = true;
         }
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_LS)
-        // {
-        //     printf("|LS");
-        // }
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_LE)
-        // {
-        //     printf("|LE");
-        // }
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_RAW_OVR)
-        // {
-        //     printf("|RAW_OVR");
-        // }
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_RAW_AHBERR)
-        // {
-        //     printf("|RAW_AHBERR");
-        // }
+        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_LS)
+        {
+            printf("|LS|\n");
+            stop = true;
+        }
+        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_LE)
+        {
+            printf("|LE|\n");
+            stop = true;
+        }
+        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_RAW_OVR)
+        {
+            printf("|RAW_OVR|\n");
+            stop = true;
+        }
+        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_RAW_AHBERR)
+        {
+            printf("|RAW_AHBERR|\n");
+            stop = true;
+        }
     }
+
+    if (stop)
+        MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
 }
 
 /********************************/
