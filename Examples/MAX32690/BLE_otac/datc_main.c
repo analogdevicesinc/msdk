@@ -313,7 +313,7 @@ static void datcResetOTAState(void)
 /*!
  *  \brief  Application DM callback.
  *
- *  \param  pDmEvt  DM callback event
+ *  \param  pDmEvt  DM callback event 
  *
  *  \return None.
  */
