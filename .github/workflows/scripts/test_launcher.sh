@@ -521,14 +521,16 @@ function run_ota_test() {
     if [[ $INTERNAL_FLASH_TEST == 1 ]]; then
         echo "changing firmware version in wdxs_file_int.c"
         perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_int.c
+        cat wdxs_file_int.c
     else
         echo "changing firmware version in wdxs_file_ext.c"
         perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_ext.c
+        cat wdxs_file_ext.c
 
     fi
     make clean
     make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST -j
-
+    echo "BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST -j"
     # make OTAC
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
     # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
