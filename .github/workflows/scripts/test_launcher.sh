@@ -507,7 +507,7 @@ function run_ota_test() {
     # Make OTAS V1 and flash
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
     make clean
-    make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST -j
+    make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST BUILD_BOOTLOADER=0 -j
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
     printf "\r\n\r\n>>>>>>>> Flashing BLE_otas V1 on DUT $DUT_NAME_UPP\r\n\r\n"
     flash_with_openocd $DUT_NAME_LOWER $DUT_ID
@@ -529,7 +529,7 @@ function run_ota_test() {
 
     fi
     make clean
-    make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST -j
+    make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST BUILD_BOOTLOADER=0 -j
     echo "BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST -j"
     # make OTAC
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
