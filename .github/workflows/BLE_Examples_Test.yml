@@ -94,7 +94,8 @@ jobs:
 
           # Other directories to watch
           declare -a watched_other=(
-              #.github/workflows/ci-tests/Examples_tests
+              .github/workflows
+              .github/workflows/ci-tests/Examples_tests
               Libraries/libs.mk
               Libraries/Cordio
               Libraries/CMSIS/Device/Maxim/MAX32655
@@ -220,12 +221,21 @@ jobs:
           echo "MAX32655_OTAS_CONNECTED_TEST  : $MAX32655_OTAS_CONNECTED_TEST"
           echo "MAX32655_BLE_FILES_CHANGED   : $MAX32655_BLE_FILES_CHANGED "
           echo "LOCK_MAX32655_B2             : $LOCK_MAX32655_B2 "
+
+          cd .github/workflows/scripts
+
           if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
+              set +e
               ./test_launcher.sh max32655 $dut_uart $dut_serial "all"
+              let "testResult=$?"
+              if [ "$testResult" -ne "0" ]; then
+                    # update failed test count
+                    let "numOfFailedTests+=$testResult"
+              fi
+              set -e
           else
               if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
-                  cd .github/workflows/scripts
                   #------non connected tests---------
                   for example in "${examples_to_test[@]}"; do
                       # launch single tests
@@ -275,20 +285,20 @@ jobs:
               else
                   echo "Skipping all tests"
               fi
+            echo "=============================================================================="
+            echo "=============================================================================="
+
+            if [[ $numOfFailedTests -ne 0 ]]; then
+                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+            else
+                echo "Relax! ALL TESTS PASSED"
+            fi
+            echo
+            echo "=============================================================================="
+            echo "=============================================================================="
+            echo
           fi
 
-          echo "=============================================================================="
-          echo "=============================================================================="
-
-          if [[ $numOfFailedTests -ne 0 ]]; then
-              printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-          else
-              echo "Relax! ALL TESTS PASSED"
-          fi
-          echo
-          echo "=============================================================================="
-          echo "=============================================================================="
-          echo
           exit $numOfFailedTests
 
       - name: Unlock MAX32655 B1
@@ -328,7 +338,8 @@ jobs:
 
           # Other directories to watch
           declare -a watched_other=(
-              #.github/workflows/ci-tests/Examples_tests
+              .github/workflows
+              .github/workflows/ci-tests/Examples_tests
               Libraries/libs.mk
               Libraries/Cordio
               Libraries/CMSIS/Device/Maxim/MAX32665
@@ -453,12 +464,21 @@ jobs:
           echo "MAX32665_OTAS_CONNECTED_TEST  : $MAX32665_OTAS_CONNECTED_TEST"
           echo "MAX32665_BLE_FILES_CHANGED   : $MAX32665_BLE_FILES_CHANGED "
           echo "LOCK_MAX32665_B1             : $LOCK_MAX32665_B1 "
+
+          cd .github/workflows/scripts
+
           if [[ $MAX32665_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
-              ./test_launcher.sh max32665 $dut_uart $dut_serial "all"
+               set +e
+               ./test_launcher.sh max32665 $dut_uart $dut_serial "all"
+               let "testResult=$?"
+               if [ "$testResult" -ne "0" ]; then
+                    # update failed test count
+                    let "numOfFailedTests+=$testResult"
+                fi
+                set -e
           else
               if [[ $MAX32665_BLE_FILES_CHANGED == 'true' ]]; then
-                  cd .github/workflows/scripts
                   #------non connected tests---------
                   for example in "${examples_to_test[@]}"; do
                       # launch single tests
@@ -508,20 +528,19 @@ jobs:
               else
                   echo "Skipping all tests"
               fi
-          fi
+            echo "=============================================================================="
+            echo "=============================================================================="
 
-          echo "=============================================================================="
-          echo "=============================================================================="
-
-          if [[ $numOfFailedTests -ne 0 ]]; then
-              printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-          else
-              echo "Relax! ALL TESTS PASSED"
+            if [[ $numOfFailedTests -ne 0 ]]; then
+                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+            else
+                echo "Relax! ALL TESTS PASSED"
+            fi
+            echo
+            echo "=============================================================================="
+            echo "=============================================================================="
+            echo
           fi
-          echo
-          echo "=============================================================================="
-          echo "=============================================================================="
-          echo
           exit $numOfFailedTests
 
       - name: Unlock MAX32655 B1
@@ -560,7 +579,8 @@ jobs:
 
           # Other directories to watch
           declare -a watched_other=(
-              #.github/workflows/ci-tests/Examples_tests
+              .github/workflows
+              .github/workflows/ci-tests/Examples_tests
               Libraries/libs.mk
               Libraries/Cordio
               Libraries/CMSIS/Device/Maxim/MAX32690
@@ -685,12 +705,21 @@ jobs:
           echo "MAX32690_OTAS_CONNECTED_TEST  : $MAX32690_OTAS_CONNECTED_TEST"
           echo "MAX32690_BLE_FILES_CHANGED   : $MAX32690_BLE_FILES_CHANGED "
           echo "LOCK_MAX32690_B1             : $LOCK_MAX32690_B1 "
-          if [[ $MAX32609_RUN_ALL_TEST == 'true' ]]; then
+
+          cd .github/workflows/scripts
+
+          if [[ $MAX32690_RUN_ALL_TEST == 'true' ]]; then
               echo "Testing all examples"
+              set +e
               ./test_launcher.sh max32690 $dut_uart $dut_serial "all"
+              let "testResult=$?"
+              if [ "$testResult" -ne "0" ]; then
+                    # update failed test count
+                    let "numOfFailedTests+=$testResult"
+              fi
+              set -e
           else
               if [[ $MAX32690_BLE_FILES_CHANGED == 'true' ]]; then
-                  cd .github/workflows/scripts
                   #------non connected tests---------
                   for example in "${examples_to_test[@]}"; do
                       # launch single tests
@@ -740,20 +769,20 @@ jobs:
               else
                   echo "Skipping all tests"
               fi
+            echo "=============================================================================="
+            echo "=============================================================================="
+
+            if [[ $numOfFailedTests -ne 0 ]]; then
+                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+            else
+                echo "Relax! ALL TESTS PASSED"
+            fi
+            echo
+            echo "=============================================================================="
+            echo "=============================================================================="
+            echo
           fi
 
-          echo "=============================================================================="
-          echo "=============================================================================="
-
-          if [[ $numOfFailedTests -ne 0 ]]; then
-              printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-          else
-              echo "Relax! ALL TESTS PASSED"
-          fi
-          echo
-          echo "=============================================================================="
-          echo "=============================================================================="
-          echo
           exit $numOfFailedTests
 
       - name: Unlock MAX32655 B1
