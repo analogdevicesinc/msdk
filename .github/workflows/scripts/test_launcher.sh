@@ -535,7 +535,7 @@ function run_ota_test() {
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
     # flash MAIN_DEVICE with BLE_OTAC, it will use the OTAS bin with new firmware
     make clean
-    make BOARD=$DUT_BOARD_TYPE FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas -j
+    make BOARD=$DUT_BOARD_TYPE FW_UPDATE_DIR=../../$DUT_NAME_UPPER/BLE_otas USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST BUILD_BOOTLOADER=0 -j
 
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
     printf ">>>>>>> Flashing BLE_otac on main device: $MAIN_DEVICE_NAME_UPPER\r\n "
