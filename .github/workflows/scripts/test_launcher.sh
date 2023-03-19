@@ -518,7 +518,11 @@ function run_ota_test() {
     # change OTAS firmware version and rebuild
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
     # change firmware version to verify otas worked
-    perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_ext.c
+    if [[ $INTERNAL_FLASH_TEST == 1 ]]; then
+        perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_int.c
+    else
+        perl -i -pe "s/FW_VERSION_MAJOR 1/FW_VERSION_MAJOR 2/g" wdxs_file_ext.c
+    fi
     make clean
     make BOARD=$DUT_BOARD_TYPE USE_INTERNAL_FLASH=$INTERNAL_FLASH_TEST -j
 
