@@ -82,7 +82,7 @@ int MXC_PCIF_Init(mxc_pcif_gpio_datawidth_t gpioDataWidth)
 
     MXC_GPIO_OutClr(gpio_cfg_pcif_pwrdwn.port, gpio_cfg_pcif_pwrdwn.mask);
 
-    return MXC_PCIF_RevA_Init();
+    return E_NO_ERROR;
 }
 
 void MXC_PCIF_SetDatawidth(mxc_pcif_datawidth_t datawidth)
