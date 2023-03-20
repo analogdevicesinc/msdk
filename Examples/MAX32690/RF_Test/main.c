@@ -493,10 +493,10 @@ static void mainWsfInit(void)
     const uint16_t dataBufSize =
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
-    /* Use single pool for data buffers. */
-    #if (BT_VER > 9)
-        WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
-    #endif
+/* Use single pool for data buffers. */
+#if (BT_VER > 9)
+    WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
+#endif
     /* Ensure pool buffers are ordered correctly. */
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
@@ -900,7 +900,6 @@ int main(void)
     // help task
     xTaskCreate(helpTask, (const char *)"Help Task", 1024, NULL, tskIDLE_PRIORITY + 1,
                 &help_task_id);
-
 
     /* Start scheduler */
     APP_TRACE_INFO0(">> Starting scheduler.\r\n");
