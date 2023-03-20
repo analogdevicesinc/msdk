@@ -14,7 +14,6 @@ LIB_FREERTOS=1
 LIB_CORDIO = 1
 
 # Cordio library options
-RTOS = freertos
 INIT_PERIPHERAL = 1
 INIT_CENTRAL = 0
 
