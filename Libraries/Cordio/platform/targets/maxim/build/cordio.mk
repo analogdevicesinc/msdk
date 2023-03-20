@@ -126,5 +126,9 @@ APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_s
 # This will let us enable/disable trace messaging by application
 APP_BUILD_C_FILES += ${ROOT_DIR}/wsf/sources/targets/${RTOS}/wsf_trace.c
 
+ifeq ($(RTOS),freertos)
+APP_BUILD_C_FILES += $(sort $(wildcard $(ROOT_DIR)/wsf/sources/targets/freertos/*.c))
+endif
+
 # $(filter-out pattern…,text)
 C_FILES := $(filter-out ${APP_BUILD_C_FILES},${C_FILES})
