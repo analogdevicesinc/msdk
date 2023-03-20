@@ -85,7 +85,7 @@ CORDIO_C_FILES=${C_FILES} # Variable from cordio.mk
 # APP_BUILD_C_FILES from cordio.mk
 VPATH += %.c $(sort $(dir $(APP_BUILD_C_FILES)))
 SRCS += ${APP_BUILD_C_FILES}
-PROJ_CFLAGS += $(addprefix -D,$(CFG_DEV))
+PROJ_CFLAGS += $(addprefix -D,$(sort $(CFG_DEV))) # Remove duplicates
 PROJ_AFLAGS += -DPAL_NVM_SIZE=$(PAL_NVM_SIZE)
 
 # Determine the library variant

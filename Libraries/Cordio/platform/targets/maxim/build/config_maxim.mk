@@ -53,12 +53,3 @@ CFG_DEV         += LL_WW_RX_DEVIATION_USEC=0
 ifneq ($(RISCV_CORE),)
 CFG_DEV         += uECC_PLATFORM=uECC_arch_other
 endif
-
-ifeq ($(TRACE),1)
-CFG_DEV         += WSF_TRACE_ENABLED=1
-endif
-ifeq ($(TRACE),2)
-CFG_DEV         += WSF_TRACE_ENABLED=1
-CFG_DEV         += WSF_TRACE_ENABLED_VERBOSE=1
-CFG_DEV         += SMP_EXTRA_TRACE=1
-endif

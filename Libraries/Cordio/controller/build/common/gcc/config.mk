@@ -87,6 +87,10 @@ endif
 ifeq ($(TRACE),1)
 CFG_DEV         += WSF_TRACE_ENABLED=1
 endif
+ifeq ($(TRACE),2)
+CFG_DEV         += WSF_TRACE_ENABLED=1
+CFG_DEV         += WSF_TRACE_ENABLED_VERBOSE=1
+endif
 
 #--------------------------------------------------------------------------------------------------
 #     Compilation flags

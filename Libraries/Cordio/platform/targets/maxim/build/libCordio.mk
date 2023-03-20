@@ -71,7 +71,7 @@ endif
 include ${CMSIS_ROOT}/../Cordio/platform/targets/maxim/build/cordio.mk
 
 # Convert Cordio definitions to Maxim CMSIS definitions
-PROJ_CFLAGS     += $(addprefix -D,$(CFG_DEV))
+PROJ_CFLAGS     += $(addprefix -D,$(sort $(CFG_DEV))) # Remove duplicates
 PROJ_AFLAGS     += -DPAL_NVM_SIZE=$(PAL_NVM_SIZE)
 SRCS            += $(C_FILES)
 VPATH           += %.c $(sort $(dir $(C_FILES)))
