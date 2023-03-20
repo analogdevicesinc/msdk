@@ -2,13 +2,18 @@
 
 This application uses two serial ports to send and receive data.  One serial port transmits data while the other receives it.
 
-## Setup
+## Software
 
-##### Board Selection
-Before building firmware you must select the correct value for _BOARD_  in "[project.mk](project.mk)", either "EvKit\_V1" or "FTHR\_Apps\_P1", depending on the board version you are using to run the example.
+### Project Usage
 
-##### Required Connections
-If using the Standard EV Kit (EvKit_V1):
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
+## Required Connections
+
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install JP8(TX_EN) header.
 -   Remove JP7(RX_EN) header.

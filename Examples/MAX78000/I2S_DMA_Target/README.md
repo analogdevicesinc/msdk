@@ -2,11 +2,17 @@
 
 This application demonstrates simultaneous CODEC recording and playback using DMA.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+* This project comes pre-configured for the MAX78000FTHR.  It is only compatible with that board.
+
 ## Setup
-
-This application runs on the MAX78000 Feather platform.
-
-##### Required Connections:
 
 Using the MAX78000 Feather board:
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

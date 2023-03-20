@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -57,4 +57,3 @@ fw_obj: $(FW_UPDATE_OBJ)
 
 ${FW_UPDATE_OBJ}: fw_update.S ${FW_UPDATE_BIN}
 	${CC} ${AFLAGS} -o ${@} -c fw_update.S
-
