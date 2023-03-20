@@ -21,9 +21,7 @@ INIT_CENTRAL = 0
 # 
 # Changes to this variable could require a rebuild of the Cordio library
 #    # make clean.cordio
-TRACE = 0
-
-DEBUG = 0
+TRACE = 1
 
 # Add services directory to build
 IPATH += services
