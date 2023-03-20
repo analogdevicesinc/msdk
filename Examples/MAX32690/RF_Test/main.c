@@ -36,7 +36,6 @@
 /* Task IDs */
 TaskHandle_t cmd_task_id;
 TaskHandle_t tx_task_id;
-TaskHandle_t wfs_task_id;
 TaskHandle_t sweep_task_id;
 TaskHandle_t help_task_id;
 /* FreeRTOS+CLI */

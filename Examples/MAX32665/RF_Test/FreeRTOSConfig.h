@@ -31,13 +31,12 @@
  *
  ******************************************************************************/
 
-#ifndef FREERTOS_CONFIG_H
-#define FREERTOS_CONFIG_H
+#ifndef EXAMPLES_MAX32665_RF_TEST_FREERTOSCONFIG_H_
+#define EXAMPLES_MAX32665_RF_TEST_FREERTOSCONFIG_H_
 
+#include <stdint.h>
 #include "max32665.h"
 
-#define SLEEP_LED 1
-#define DEEPSLEEP_LED 0
 /*-----------------------------------------------------------
  * Application specific definitions.
  *
@@ -45,7 +44,7 @@
  * application requirements.
  *
  * THESE PARAMETERS ARE DESCRIBED WITHIN THE 'CONFIGURATION' SECTION OF THE
- * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE. 
+ * FreeRTOS API DOCUMENTATION AVAILABLE ON THE FreeRTOS.org WEB SITE.
  *
  * See http://www.freertos.org/a00110.html.
  *----------------------------------------------------------*/
@@ -53,16 +52,26 @@
 /* CMSIS keeps a global updated with current system clock in Hz */
 #define configCPU_CLOCK_HZ ((uint32_t)HIRC96_FREQ)
 
+#define SLEEP_LED 1
+#define DEEPSLEEP_LED 0
+
+/* Tick-less idle forces a 32768 Hz RTC-derived SysTick source, and a 256 Hz task tick */
 // #define configUSE_TICKLESS_IDLE     1
 
+/* Faster tick rate will result in more CPU interrupts while not in standby mode, but will
+increase the amount of time spent in standby mode, thus reducing average power consumption. */
+#ifdef configUSE_TICKLESS_IDLE
+#define configTICK_RATE_HZ ((portTickType)10000)
+#else
 #define configTICK_RATE_HZ ((portTickType)1000)
+#endif
+
 #define configRTC_TICK_RATE_HZ (32768)
 
-#define configTOTAL_HEAP_SIZE ((size_t)(26 * 1024))
+#define configTOTAL_HEAP_SIZE ((size_t)(256 * 1024))
 
-#define configMINIMAL_STACK_SIZE ((unsigned short)128)
+#define configMINIMAL_STACK_SIZE ((uint16_t)128)
 
-#define configMAX_PRIORITIES 5
 #define configUSE_PREEMPTION 1
 #define configUSE_IDLE_HOOK 0
 #define configUSE_TICK_HOOK 0
@@ -70,14 +79,14 @@
 #define configUSE_16_BIT_TICKS 0
 #define configUSE_MUTEXES 1
 
-/* Run time and task stats gathering related definitions. */
-#define configUSE_TRACE_FACILITY 1
-#define configUSE_STATS_FORMATTING_FUNCTIONS 1
-
 #define configUSE_TIMERS 1
 #define configTIMER_TASK_PRIORITY (configMAX_PRIORITIES - 3)
 #define configTIMER_QUEUE_LENGTH 8
 #define configTIMER_TASK_STACK_DEPTH configMINIMAL_STACK_SIZE
+
+/* Run time and task stats gathering related definitions. */
+#define configUSE_TRACE_FACILITY 1
+#define configUSE_STATS_FORMATTING_FUNCTIONS 1
 
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
@@ -91,8 +100,11 @@ to exclude the API function. */
 /* # of priority bits (configured in hardware) is provided by CMSIS */
 #define configPRIO_BITS __NVIC_PRIO_BITS
 
-/* Priority 7, or 255 as only the top three bits are implemented.  This is the lowest priority. */
-#define configKERNEL_INTERRUPT_PRIORITY ((unsigned char)7 << (8 - configPRIO_BITS))
+#define configMAX_PRIORITIES ((0x1 << configPRIO_BITS) - 1)
+
+/* Only the top three bits are implemented.  This is the lowest priority. */
+#define configKERNEL_INTERRUPT_PRIORITY \
+    ((unsigned char)configMAX_PRIORITIES << (8 - configPRIO_BITS))
 
 /* Priority 5, or 160 as only the top three bits are implemented. */
 #define configMAX_SYSCALL_INTERRUPT_PRIORITY ((unsigned char)5 << (8 - configPRIO_BITS))
@@ -104,8 +116,8 @@ to exclude the API function. */
 
 #ifdef configUSE_TICKLESS_IDLE
 /* Provide routines for tickless idle pre- and post- processing */
-void vPreSleepProcessing(unsigned long *);
-void vPostSleepProcessing(unsigned long);
+void vPreSleepProcessing(uint32_t *);
+void vPostSleepProcessing(uint32_t);
 #define configPRE_SLEEP_PROCESSING(idletime) vPreSleepProcessing(&idletime);
 #define configPOST_SLEEP_PROCESSING(idletime) vPostSleepProcessing(idletime);
 #endif
@@ -116,4 +128,4 @@ void vPostSleepProcessing(unsigned long);
 /* Overides FreeRTOS+CLI help command formatting*/
 #define configUSE_CUSTOM_HELP_COMMAND 1
 
-#endif /* FREERTOS_CONFIG_H */
+#endif // EXAMPLES_MAX32665_RF_TEST_FREERTOSCONFIG_H_

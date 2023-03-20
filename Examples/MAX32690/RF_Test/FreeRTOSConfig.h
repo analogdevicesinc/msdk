@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32690_BLE_FREERTOS_FREERTOSCONFIG_H_
-#define EXAMPLES_MAX32690_BLE_FREERTOS_FREERTOSCONFIG_H_
+#ifndef EXAMPLES_MAX32690_RF_TEST_FREERTOSCONFIG_H_
+#define EXAMPLES_MAX32690_RF_TEST_FREERTOSCONFIG_H_
 
 #include <stdint.h>
 #include "max32690.h"
@@ -128,4 +128,4 @@ void vPostSleepProcessing(uint32_t);
 /* Overides FreeRTOS+CLI help command formatting*/
 #define configUSE_CUSTOM_HELP_COMMAND 1
 
-#endif // EXAMPLES_MAX32690_BLE_FREERTOS_FREERTOSCONFIG_H_
+#endif // EXAMPLES_MAX32690_RF_TEST_FREERTOSCONFIG_H_
