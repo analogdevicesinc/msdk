@@ -397,12 +397,8 @@ static BaseType_t cmd_StopBleRFTest(char *pcWriteBuffer, size_t xWriteBufferLen,
     configASSERT(pcWriteBuffer);
     memset(pcWriteBuffer, 0x00, xWriteBufferLen);
     snprintf(pcWriteBuffer, (size_t)MAX_OUTPUT_STRING_SIZE, "> Active test ended\r\n");
-    if (activeTest == BLE_CONST_TX) {
-        /* Disable constant TX */
+    if (activeTest) {
         MXC_R_TX_CTRL = 0x2;
-        MXC_R_PATTERN_GEN = 0x48;
-        PalBbDisable();
-    } else if (activeTest) {
         LlEndTest(NULL);
         MXC_TMR_Stop(MXC_TMR2);
     } else {
@@ -484,18 +480,9 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
 
     /* start test */
     if (err == E_NO_ERROR) {
-        setPhy(phyVal);
-        dbb_seq_select_rf_channel(channelNum);
         snprintf(pcWriteBuffer, (size_t)MAX_OUTPUT_STRING_SIZE, "> Starting constant TX\r\n");
-        PalBbEnable();
-        llc_api_tx_ldo_setup();
-
-        /* Enable constant TX */
-        MXC_R_TX_CTRL = 0x1;
-
-        /* Enable pattern generator, set PRBS-9 */
-        MXC_R_CONST_OUPUT = 0x0;
-        MXC_R_PATTERN_GEN = 0x4B;
+        /* 0 num of packets for infinite*/
+        LlEnhancedTxTest(channelNum, 255, LL_TEST_PKT_TYPE_PRBS15, phyVal, 0);
         activeTest = BLE_CONST_TX;
         //gives time for LL printing to happen before we start printing messages from here
         vTaskDelay(100);
