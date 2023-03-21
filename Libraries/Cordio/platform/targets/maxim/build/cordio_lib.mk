@@ -103,7 +103,7 @@ LIBS += ${CORDIO_BUILD_DIR}/${CORDIO_LIB}
 
 # Add rule to build the Driver Library
 ${CORDIO_BUILD_DIR}/${CORDIO_LIB}: ${CORDIO_C_FILES} # Variable from cordio.mk
-	$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk lib PROJECT=${CORDIO_LIB} \
+	$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk lib MAXIM_PATH=${MAXIM_PATH} PROJECT=${CORDIO_LIB} \
 	CORDIO_LIB_VAR=${CORDIO_LIB_VAR} BUILD_DIR=${CORDIO_BUILD_DIR} MFLOAT_ABI=$(MFLOAT_ABI) \
 	DUAL_CORE=$(DUAL_CORE) RISCV_CORE=$(RISCV_CORE) TRACE=${TRACE} DEBUG=${DEBUG} RTOS=${RTOS} \
     

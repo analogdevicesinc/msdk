@@ -63,12 +63,11 @@ ifeq "$(BUILD_DIR)" ""
 BUILD_DIR=./Build
 endif
 
-# This is the path to the CMSIS root directory
-ifeq "$(CMSIS_ROOT)" ""
-CMSIS_ROOT=../CMSIS
+ifeq "${LIB_DIR}" ""
+LIB_DIR := ${MAXIM_PATH}/Libraries
 endif
 
-include ${CMSIS_ROOT}/../Cordio/platform/targets/maxim/build/cordio.mk
+include ${LIB_DIR}/Cordio/platform/targets/maxim/build/cordio.mk
 
 # Convert Cordio definitions to Maxim CMSIS definitions
 PROJ_CFLAGS     += $(addprefix -D,$(sort $(CFG_DEV))) # Remove duplicates
@@ -78,8 +77,8 @@ VPATH           += %.c $(sort $(dir $(C_FILES)))
 IPATH           += $(INC_DIRS)
 
 # Add dependencies in the Board library and the PeripheralDrivers
-IPATH += ${CMSIS_ROOT}/../Boards/${TARGET_UC}/Include
-include ${CMSIS_ROOT}/../PeriphDrivers/periphdriver.mk
+IPATH += ${LIB_DIR}/Boards/${TARGET_UC}/Include
+include ${LIB_DIR}/PeriphDrivers/periphdriver.mk
 
 # Use absolute paths if building within eclipse environment.
 ifeq "$(ECLIPSE)" "1"
@@ -90,4 +89,4 @@ endif
 MAKECMDGOALS=lib
 
 # Include the rules for building for this target
-include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
+include ${LIB_DIR}/CMSIS/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
