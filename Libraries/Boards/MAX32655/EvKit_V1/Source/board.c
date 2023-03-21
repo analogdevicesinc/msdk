@@ -58,14 +58,14 @@ const mxc_gpio_cfg_t pb_pin[] = {
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    { MXC_GPIO0, MXC_GPIO_PIN_24, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO0, MXC_GPIO_PIN_25, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_24, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO0, MXC_GPIO_PIN_25, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
     /* Logical LEDs for Bluetooth debug signals */
-    { MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO2, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO2, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO2, MXC_GPIO_PIN_4, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO }
+    { MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_4, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH }
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
@@ -459,17 +459,45 @@ void GPIO_PrepForSleep(void)
     lpGpio.mask = (0x3);
     lpGpio.func = MXC_GPIO_FUNC_OUT;
     lpGpio.pad = MXC_GPIO_PAD_NONE;
-    lpGpio.vssel = MXC_GPIO_VSSEL_VDDIO;
+    lpGpio.vssel = MXC_GPIO_VSSEL_VDDIOH;
     MXC_GPIO_Config(&lpGpio);
     MXC_GPIO_OutSet(MXC_GPIO3, 0x3);
 
+    /* Set UART, I2C, MCLK2 pins high on VDDIO */
     lpGpio.port = MXC_GPIO0;
-    lpGpio.mask = (0xE7F3FFF0);
+    lpGpio.mask = (0xC0034C0F);
     lpGpio.func = MXC_GPIO_FUNC_OUT;
     lpGpio.pad = MXC_GPIO_PAD_NONE;
     lpGpio.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&lpGpio);
-    MXC_GPIO_OutSet(MXC_GPIO0, 0xE7F3FFF0);
+    MXC_GPIO_OutSet(MXC_GPIO0, 0xC0034C0F);
+
+    /* Set QSPI0, LEDs, and TFT pins to VDDIOH */
+    lpGpio.port = MXC_GPIO0;
+    lpGpio.mask = (0x7F0B3F0);
+    lpGpio.func = MXC_GPIO_FUNC_OUT;
+    lpGpio.pad = MXC_GPIO_PAD_NONE;
+    lpGpio.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&lpGpio);
+    MXC_GPIO_OutSet(MXC_GPIO0, 0x7F0B3F0);
+
+    /* Set all GPIO1 high on VDDIO */
+    lpGpio.port = MXC_GPIO1;
+    lpGpio.mask = (0xFFFFFFFF);
+    lpGpio.func = MXC_GPIO_FUNC_OUT;
+    lpGpio.pad = MXC_GPIO_PAD_NONE;
+    lpGpio.vssel = MXC_GPIO_VSSEL_VDDIO;
+    MXC_GPIO_Config(&lpGpio);
+    MXC_GPIO_OutSet(MXC_GPIO1, 0xFFFFFFFF);
+
+    /* Set all GPIO2 high on VDDIO */
+    lpGpio.port = MXC_GPIO2;
+    lpGpio.mask = (0xFFFFFFFF);
+    lpGpio.func = MXC_GPIO_FUNC_OUT;
+    lpGpio.pad = MXC_GPIO_PAD_NONE;
+    lpGpio.vssel = MXC_GPIO_VSSEL_VDDIO;
+    MXC_GPIO_Config(&lpGpio);
+    MXC_GPIO_OutSet(MXC_GPIO2, 0xFFFFFFFF);
 }
 
 #ifdef __riscv
