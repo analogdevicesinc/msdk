@@ -149,14 +149,6 @@ __weak void SystemInit(void)
     __DSB();
     __ISB();
 
-    /* Setup the SIMO voltages */
-    MXC_SIMO_SetVregO_A(1750);
-    while (MXC_SIMO_GetOutReadyA() != E_NO_ERROR) {}
-    MXC_SIMO_SetVregO_B(1100);
-    while (MXC_SIMO_GetOutReadyB() != E_NO_ERROR) {}
-    MXC_SIMO_SetVregO_C(1100);
-    while (MXC_SIMO_GetOutReadyC() != E_NO_ERROR) {}
-
     /* Change system clock source to the main high-speed clock */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     MXC_SYS_SetClockDiv(MXC_SYS_CLOCK_DIV_1);
