@@ -488,8 +488,6 @@ void MXC_CSI2_RevA_Handler()
         if (vfifo_flags) {
             csi2_state.capture_stats.vfifo_err |= vfifo_flags;
         }
-
-        // TODO: Pass error flags to application
     }
 
     if (csi2_state.capture_stats.ctrl_err | csi2_state.capture_stats.ppi_err | csi2_state.capture_stats.vfifo_err) {

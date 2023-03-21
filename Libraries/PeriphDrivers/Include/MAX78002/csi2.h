@@ -219,6 +219,13 @@ typedef enum {
     MXC_CSI2_DMA_LINE_BY_LINE, ///< DMA line by line per frame
 } mxc_csi2_dma_frame_t;
 
+typedef struct {
+    bool error;
+    uint32_t ctrl_err;
+    uint32_t ppi_err;
+    uint32_t vfifo_err;
+} mxc_csi2_capture_stats_t;
+
 /**
  * @brief   The callback routine used to indicate to indicate transaction has terminated.
  * @param   req          The details of the image capture.
@@ -339,7 +346,7 @@ int MXC_CSI2_CaptureFrame(int num_data_lanes);
  * @param      num_data_lanes    Number of data lanes used.
  * @return     #E_NO_ERROR if everything is successful.
  */
-int MXC_CSI2_CaptureFrameDMA(int num_data_lanes);
+int MXC_CSI2_CaptureFrameDMA();
 
 /**
  * @brief      Select Lane Control Source for D0-D4 and C0.
@@ -601,6 +608,8 @@ int MXC_CSI2_PPI_Stop(void);
 /************************************/
 
 bool MXC_CSI2_DMA_Frame_Complete(void);
+
+mxc_csi2_capture_stats_t MXC_CSI2_GetCaptureStats();
 
 /**
  * @brief      Clears the interrupt flags for PPI.
