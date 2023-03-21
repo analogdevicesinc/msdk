@@ -27,13 +27,7 @@ The best application to get started with is the [BLE_periph](../docs/Application
 Follow the MSDK [User Guide](../../../USERGUIDE.md) instructions to install the necessary tools and create a new project. Build and run the `BLE_periph` application for the appropriate target.
 
 ## Building
-Most of the source code will be built in a library that can be shared between applications.
-
-Build options will differ between applications that could require a re-build. Update settings in **project.mk** at the application layer to update the build options.
-
-**TRACE** options could require a re-build between applications. If the library is built with **TRACE=0** it will be optimized for code size and remove all of the trace messaging. Adjacent applications will still build and link with **TRACE=1**, but the trace messages will not be printed until the library is re-built.
-
-If the library is built with **TRACE=2** and adjacent applications build with **TRACE=0**, the messages will not be printed, but the text will remain in the code space until the library is rebuilt with the appropriate option.
+Most of the source code will be built in a library that can be shared between applications. Different variants will be built based on settings in **project.mk**.
 
 ``` bash
 
@@ -61,9 +55,6 @@ INIT_CENTRAL = 0
 # Set to 0 to disable
 # Set to 1 to enable serial port trace messages
 # Set to 2 to enable verbose messages
-#
-# Changes to this variable could require a rebuild of the Cordio library
-#    # make clean.cordio
 TRACE = 1
 
 ```
