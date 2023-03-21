@@ -44,10 +44,6 @@ endif
 TARGET_UC ?= $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
 TARGET_LC ?= $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
-# Export other variables needed by the peripheral driver makefile
-export TARGET
-export COMPILER
-
 # Get all of the necessary include paths
 include ${CORDIO_DIR}/platform/targets/maxim/build/cordio.mk
 
