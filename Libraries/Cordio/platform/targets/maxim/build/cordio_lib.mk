@@ -55,7 +55,7 @@ include ${CORDIO_DIR}/platform/targets/maxim/build/cordio.mk
 CORDIO_LIB_VAR:=${TARGET_LC}
 
 # Build for each RTOS
-CORDIO_LIB_VAR:=${CORDIO_LIB_VAR}_${RTOS}
+CORDIO_LIB_VAR:=${CORDIO_LIB_VAR}_${RTOS}_T${TRACE}
 
 ifneq "$(RISCV_CORE)" ""
 CORDIO_LIB_VAR:=${CORDIO_LIB_VAR}_riscv
