@@ -58,7 +58,7 @@ def _print(msg: str):
     print(f"\r{msg}", end="\n\r$ ")
 
 class CameraIFConsole():
-    def __init__(self, port, baudrate=921600, timeout=5):
+    def __init__(self, port, baudrate=921600, timeout=15):
         self.thr_get_input = Thread(target=self.get_input)
         self.kill_get_input = False
         self.thr_serial = Thread(target=self.run_serial_interface)
@@ -234,7 +234,7 @@ class CameraIFConsole():
 parser = argparse.ArgumentParser()
 parser.add_argument("port", type=str, help="Serial port to connect to")
 parser.add_argument("--baudrate", type=int, default=921600, help="Baud rate (default 921600)")
-parser.add_argument("--timeout", type=int, default=5, help="Communication timeout in seconds (default 5)")
+parser.add_argument("--timeout", type=int, default=15, help="Communication timeout in seconds (default 5)")
 
 if __name__ == "__main__":
     args = parser.parse_args()

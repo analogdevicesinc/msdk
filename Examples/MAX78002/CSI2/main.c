@@ -197,6 +197,8 @@ void process_img(void)
              "*IMG* %s %i %i %i", // Format img info into a string
              "BAYER", imgLen, w, h);
 #else
+    imgLen -= (w * 2);
+    h -= 2;
     snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
              "*IMG* %s %i %i %i", // Format img info into a string
              mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
@@ -320,7 +322,11 @@ int main(void)
     // Image Data
     req.img_addr = NULL;
     req.pixels_per_line = IMAGE_WIDTH;
+#ifdef RAW
     req.lines_per_frame = IMAGE_HEIGHT;
+#else
+    req.lines_per_frame = IMAGE_HEIGHT + 2;
+#endif
     req.bits_per_pixel_odd = BITS_PER_PIXEL_ODD;
     req.bits_per_pixel_even = BITS_PER_PIXEL_EVEN;
     req.frame_num = 1;

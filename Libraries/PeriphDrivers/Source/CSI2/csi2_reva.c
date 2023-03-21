@@ -1052,6 +1052,42 @@ mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats()
     return csi2_state.capture_stats;
 }
 
+void MXC_CSI2_RevA_DMA_Handler()
+{
+    // Clear CTZ Status Flag
+    if (MXC_DMA->ch[csi2_state.dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {
+        MXC_DMA->ch[csi2_state.dma_channel].status |= MXC_F_DMA_STATUS_CTZ_IF;
+
+        if (csi2_state.vfifo_cfg->dma_whole_frame != MXC_CSI2_DMA_WHOLE_FRAME) {
+            // line by line
+            line_cnt++;
+            MXC_GPIO_OutToggle(indicator.port, indicator.mask);
+            if (line_cnt > csi2_state.req->lines_per_frame) {
+                line_cnt = 0;
+                MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+            } else {
+                MXC_DMA->ch[csi2_state.dma_channel].cnt = odd_line_byte_num;
+                if (lb.sel == SELECT_A) {
+                    MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.b;
+                    lb.sel = SELECT_B;
+                } else {
+                    MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.a;
+                    lb.sel = SELECT_A;
+                }
+                MXC_DMA->ch[csi2_state.dma_channel].ctrl |= MXC_F_DMA_REVA_CTRL_EN;
+
+                if (csi2_state.req->line_handler != NULL)
+                {
+                    csi2_state.req->line_handler((lb.sel == SELECT_A) ? lb.b : lb.a, line_byte_num);
+                }
+            }
+        } else {
+            // whole frame
+            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+        }
+    }
+}
+
 int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size)
 {
     int error;
@@ -1082,11 +1118,6 @@ int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burs
         return error;
     }
 
-    // error = MXC_DMA_SetCallback(channel, MXC_CSI2_DMA_Callback);
-    // if (error != E_NO_ERROR) {
-    //     return error;
-    // }
-
     error = MXC_DMA_SetChannelInterruptEn(csi2_state.dma_channel, false, true);
     if (error != E_NO_ERROR) {
         return error;
@@ -1102,13 +1133,8 @@ int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burs
         return error;
     }
 
-    MXC_NVIC_SetVector(GetIRQnForDMAChannel(csi2_state.dma_channel), MXC_CSI2_RevA_DMA_Callback);
+    MXC_NVIC_SetVector(GetIRQnForDMAChannel(csi2_state.dma_channel), MXC_CSI2_RevA_DMA_Handler);
     NVIC_EnableIRQ(GetIRQnForDMAChannel(csi2_state.dma_channel));
-
-    // error = MXC_DMA_Start(channel);
-    // if (error != E_NO_ERROR) {
-    //     return error;
-    // }
 
     return E_NO_ERROR;
 }
@@ -1126,43 +1152,6 @@ int MXC_CSI2_RevA_DMA_GetCurrentLineCnt(void)
 int MXC_CSI2_RevA_DMA_GetCurrentFrameEndCnt(void)
 {
     return frame_end_cnt;
-}
-
-void MXC_CSI2_RevA_DMA_Callback()
-{
-    // Clear CTZ Status Flag
-    if (MXC_DMA->ch[csi2_state.dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {
-        MXC_DMA->ch[csi2_state.dma_channel].status |= MXC_F_DMA_STATUS_CTZ_IF;
-
-        if (csi2_state.vfifo_cfg->dma_whole_frame != MXC_CSI2_DMA_WHOLE_FRAME) {
-            // line by line
-            line_cnt++;
-            MXC_GPIO_OutToggle(indicator.port, indicator.mask);
-            if (line_cnt > csi2_state.req->lines_per_frame) {
-                line_cnt = 0;
-                MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
-                // MXC_DMA->ch[csi2_state.dma_channel].dst = NULL;
-            } else {
-                MXC_DMA->ch[csi2_state.dma_channel].cnt = odd_line_byte_num;
-                if (lb.sel == SELECT_A) {
-                    MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.b;
-                    lb.sel = SELECT_B;
-                } else {
-                    MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.a;
-                    lb.sel = SELECT_A;
-                }
-                MXC_DMA->ch[csi2_state.dma_channel].ctrl |= MXC_F_DMA_REVA_CTRL_EN;
-
-                if (csi2_state.req->line_handler != NULL)
-                {
-                    csi2_state.req->line_handler((lb.sel == SELECT_A) ? lb.b : lb.a, line_byte_num);
-                }
-            }
-        } else {
-            // whole frame
-            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
-        }
-    }
 }
 
 /**@} end of group csi2 */
