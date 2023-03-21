@@ -43,7 +43,7 @@
 #define SERIAL_BUFFER_SIZE 256
 #define CON_BAUD 921600 // UART baudrate used for sending data to PC
 
-typedef enum { CMD_UNKNOWN = -1, CMD_HELP = 0, CMD_RESET, CMD_CAPTURE } cmd_t;
+typedef enum { CMD_NOT_READY = -2, CMD_UNKNOWN = -1, CMD_HELP = 0, CMD_RESET, CMD_CAPTURE, CMD_SETREG, CMD_GETREG } cmd_t;
 
 extern char *cmd_table[];
 extern char *help_table[];
@@ -52,6 +52,8 @@ static mxc_uart_regs_t *Con_Uart = MXC_UART_GET_UART(CONSOLE_UART);
 extern char g_serial_buffer[SERIAL_BUFFER_SIZE];
 extern int g_buffer_index;
 extern int g_num_commands;
+
+extern void service_console(cmd_t cmd);
 
 int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len);
 

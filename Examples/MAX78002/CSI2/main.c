@@ -65,14 +65,21 @@
 
 /***** Definitions *****/
 
-#define IMAGE_WIDTH 320
-#define IMAGE_HEIGHT 240
+#define IMAGE_WIDTH 640
+#define IMAGE_HEIGHT 480
+
+#define RAW
+
 
 // Check CSI-2 Standard and your color format for these values.
+#ifdef RAW
 #define BITS_PER_PIXEL_ODD 8 // e.g. RGB888
-#define BYTES_PER_PIXEL_ODD (BITS_PER_PIXEL_ODD >> 3)
 #define BITS_PER_PIXEL_EVEN 8
- // e.g. RGB888
+#else
+#define BITS_PER_PIXEL_ODD 24 // e.g. RGB888
+#define BITS_PER_PIXEL_EVEN 24
+#endif
+#define BYTES_PER_PIXEL_ODD (BITS_PER_PIXEL_ODD >> 3)
 #define BYTES_PER_PIXEL_EVEN (BITS_PER_PIXEL_EVEN >> 3)
 
 // CSI-2 Peripheral Configuration
@@ -96,7 +103,11 @@
 //    For example, the camera can processes RAW then converts to RGB888.
 // #define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB888
 //#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
+#ifdef RAW
 #define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RAW
+#else
+#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB888
+#endif
 
 // Select RGB Type and RAW Format for the CSI2 Peripheral.
 #define RGB_TYPE MXC_CSI2_TYPE_RGB888
@@ -142,15 +153,10 @@ __attribute__((section(".csi2_buff_raw0"))) uint32_t RAW_ADDR0[2048];
 __attribute__((section(".csi2_buff_raw1"))) uint32_t RAW_ADDR1[2048];
 
 // Buffer for processed image
-__attribute__((section(".csi2_img_buff"))) uint8_t IMAGE[IMAGE_SIZE] = { 0 };
+// __attribute__((section(".csi2_img_buff"))) uint8_t IMAGE[IMAGE_SIZE] = { 0 };
 unsigned int g_index = 0;
 
 /***** Functions *****/
-
-// void DMA_Handler(void)
-// {
-//     MXC_DMA_Handler();
-// }
 
 void CSI2_line_handler(volatile uint8_t* data, unsigned int len)
 {
@@ -160,12 +166,6 @@ void CSI2_line_handler(volatile uint8_t* data, unsigned int len)
     ram_write_quad(g_index, data, len);
     g_index += len;
 }
-
-// void CSI2_Handler(void)
-// {
-//     MXC_CSI2_Handler();
-// }
-volatile unsigned int count = 0;
 
 void process_img(void)
 {
@@ -177,24 +177,30 @@ void process_img(void)
 
     g_index = 0;
     MXC_TMR_SW_Start(MXC_TMR0);
-    MXC_CSI2_CaptureFrameDMA(NUM_DATA_LANES);
-
-    while (!MXC_CSI2_DMA_Frame_Complete()) {}
-
+    int error = MXC_CSI2_CaptureFrameDMA();
     unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Done! (Took %u us)\n", elapsed);
+    if(error) {
+        printf("Failed!\n");
+        mxc_csi2_capture_stats_t stats = MXC_CSI2_GetCaptureStats();
+        printf("CTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n", stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
+        return;
+    }
+    printf("Done! (took %i us)\n", elapsed);
 
     // Get the details of the image from the camera driver.
     MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
 
     MXC_TMR_SW_Start(MXC_TMR0);
     clear_serial_buffer();
-    // snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-    //          "*IMG* %s %i %i %i", // Format img info into a string
-    //          mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
+#ifdef RAW
     snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
              "*IMG* %s %i %i %i", // Format img info into a string
              "BAYER", imgLen, w, h);
+#else
+    snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
+             "*IMG* %s %i %i %i", // Format img info into a string
+             mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
+#endif
     send_msg(g_serial_buffer);
 
     for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
@@ -203,33 +209,41 @@ void process_img(void)
         MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
     }
 
-    // clear_serial_buffer();
-    // MXC_UART_WriteBytes(Con_Uart, raw, imgLen);
-
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
 }
 
-void service_console()
+void service_console(cmd_t cmd)
 {
-    // Check for any incoming serial commands
-    cmd_t cmd = CMD_UNKNOWN;
-    if (recv_cmd(&cmd)) {
-        // Process the received command...
+    // Process the received command...
+    if (cmd == CMD_UNKNOWN) {
+        printf("Uknown command '%s'\n", g_serial_buffer);
+    } else if (cmd == CMD_HELP) {
+        print_help();
+    } else if (cmd == CMD_RESET) {
+        // Issue a soft reset
+        MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
+    } else if (cmd == CMD_CAPTURE) {
+        process_img();
+    } else if (cmd == CMD_SETREG) {
+        // Set a camera register
+        unsigned int reg;
+        unsigned int val;
+        // ^ Declaring these as unsigned ints instead of uint8_t
+        // avoids some issues caused by type-casting inside of sscanf.
 
-        if (cmd == CMD_UNKNOWN) {
-            printf("Uknown command '%s'\n", g_serial_buffer);
-        } else if (cmd == CMD_HELP) {
-            print_help();
-        } else if (cmd == CMD_RESET) {
-            // Issue a soft reset
-            MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
-        } else if (cmd == CMD_CAPTURE) {
-            process_img();
-        }
+        sscanf(g_serial_buffer, "%s %u %u", cmd_table[cmd], &reg, &val);
+        printf("Writing 0x%x to camera reg 0x%x\n", val, reg);
+        mipi_camera_write_reg((uint16_t)reg, (uint16_t)val);
+    } else if (cmd == CMD_GETREG) {
+        // Read a camera register
+        unsigned int reg;
+        uint8_t val;
+        sscanf(g_serial_buffer, "%s %u", cmd_table[cmd], &reg);
+        mipi_camera_read_reg((uint16_t)reg, &val);
+        snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Camera reg 0x%x=0x%x", reg, val);
+        send_msg(g_serial_buffer);
     }
-
-    clear_serial_buffer();
 }
 
 volatile int buttonPressed = 0;
@@ -240,7 +254,6 @@ void buttonHandler()
 
 int main(void)
 {
-    int csi2_dma_channel;
     int error;
     int id;
     mxc_csi2_req_t req;
@@ -279,12 +292,18 @@ int main(void)
     }
 
     mipi_camera_setup(IMAGE_WIDTH, IMAGE_HEIGHT, PIXEL_FORMAT, OUT_SEQ, MUX_CTRL);
-    uint8_t sc_pll_ctrl0 = 0;
-    mipi_camera_read_reg(0x3034, &sc_pll_ctrl0);
-    printf("sc_pll_ctrl0: 0x%x\n", sc_pll_ctrl0);
-    mipi_camera_write_reg(0x3034, (sc_pll_ctrl0 & 0xF0) | 0x8);
-    mipi_camera_read_reg(0x3034, &sc_pll_ctrl0);
-    printf("sc_pll_ctrl0: 0x%x\n", sc_pll_ctrl0);
+    uint8_t reg = 0;
+    mipi_camera_read_reg(0x3034, &reg);
+    printf("sc_pll_ctrl0: 0x%x\n", reg);
+    mipi_camera_write_reg(0x3034, (reg & 0xF0) | 0x8);
+    mipi_camera_read_reg(0x3034, &reg);
+    printf("sc_pll_ctrl0: 0x%x\n", reg);
+
+    mipi_camera_read_reg(0x3035, &reg);
+    printf("sc_pll_ctrl1: 0x%x\n", reg);
+    // mipi_camera_write_reg(0x3035, 0x14);
+    // mipi_camera_read_reg(0x3035, &reg);
+    // printf("sc_pll_ctrl1: 0x%x\n", reg);
 
     // Configure RX Controller and PPI (D-PHY)
     ctrl_cfg.invert_ppi_clk = MXC_CSI2_PPI_NO_INVERT;
@@ -300,7 +319,7 @@ int main(void)
     ctrl_cfg.lane_src.c0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L4;
 
     // Image Data
-    req.img_addr = IMAGE;
+    req.img_addr = NULL;
     req.pixels_per_line = IMAGE_WIDTH;
     req.lines_per_frame = IMAGE_HEIGHT;
     req.bits_per_pixel_odd = BITS_PER_PIXEL_ODD;
@@ -308,7 +327,11 @@ int main(void)
     req.frame_num = 1;
 
     // Convert RAW to RGB
+#ifdef RAW
     req.process_raw_to_rgb = false;
+#else
+    req.process_raw_to_rgb = true;
+#endif
     req.rgb_type = RGB_TYPE;
     req.raw_format = RAW_FORMAT;
     req.autoflush = MXC_CSI2_AUTOFLUSH_ENABLE;
@@ -350,14 +373,6 @@ int main(void)
     }
     printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID, ram_id.KGD, ram_id.density, ram_id.EID);
 
-    uint8_t test[32];
-    memset(test, 0xFF, 32);
-    ram_write_quad(0, test, 32);
-
-    // csi2_dma_channel = MXC_CSI2_DMA_GetChannel();
-    // MXC_NVIC_SetVector(DMA0_IRQn + csi2_dma_channel, DMA_Handler);
-    // MXC_NVIC_SetVector(CSI2_IRQn, CSI2_Handler);
-
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
     buttonPressed = 0;
 
@@ -367,7 +382,7 @@ int main(void)
         MXC_Delay(MXC_DELAY_MSEC(100));
         // ^ Slow down main processing loop to work around some timing issues
         // with the console at extreme speeds.  1000 checks/sec is plenty
-        service_console();
+        // service_console();
 
         if (buttonPressed) {
             process_img();
