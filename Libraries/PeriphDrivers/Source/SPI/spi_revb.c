@@ -46,6 +46,521 @@
 
 /* **** Definitions **** */
 
+typedef struct {
+    // From Init Data
+    mxc_spi_init_t      init;
+    mxc_dma_reva_regs_t *dma;
+    mxc_gpio_cfg_t      cs_pins
+
+    // Transaction States.
+    uint16_t            *tx_buffer;
+    uint32_t            tx_len;
+    bool                tx_done;
+    uint16_t            *rx_buffer;
+    uint32_t            rx_len;
+    bool                rx_done;
+
+    // DMA
+    int                 tx_dma_ch;
+    int                 rx_dma_ch;
+    uint32_t            dma_rx_reqsel;
+    uint32_t            dma_tx_reqsel;
+
+    // Target Control Scheme
+    bool                controller_done; // Master
+    bool                target_done;     // Slave
+} mxc_spi_handle_data_t;
+
+static volatile mxc_spi_handle_data_t STATES[MXC_SPI_INSTANCES];
+
+/* **** Functions **** */
+
+void MXC_SPI_RevA_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+    uint32_t tx_channel;
+    uint32_t status;
+
+    spi_num = MXC_SPI_GET_IDX(spi);
+    MXC_ASSERT(spi_num >= 0);
+
+    tx_channel = STATES[spi_num].tx_dma_ch;
+    status = STATES[spi_num].dma->ch[tx_channel]->status;
+
+    // Count-to-Zero (DMA TX complete)
+    if (status & MXC_F_DMA_REVA_STATUS_CTZ_IF) { 
+        STATES[spi_num].dma->ch[tx_channel]->status |= MXC_F_DMA_REVA_STATUS_CTZ_IF;
+    }
+
+    // Bus Error
+    if (status & MXC_F_DMA_REVA_STATUS_BUS_ERR) {
+        STATES[spi_num].dma->ch[tx_channel]->status |= MXC_F_DMA_REVA_STATUS_BUS_ERR;
+    }
+}
+
+void MXC_SPI_Reva_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+    uint32_t rx_channel;
+    uint32_t status;
+
+    spi_num = MXC_SPI_GET_IDX(spi);
+    MXC_ASSERT(spi_num >= 0);
+
+    rx_channel = STATES[spi_num].rx_dma_ch;
+    status = STATES[spi_num].dma->ch[rx_channel]->status;
+
+    // Count-to-Zero (DMA RX complete)
+    if (status & MXC_F_DMA_REVA_STATUS_CTZ_IF) { 
+        STATES[spi_num].rx_done = 1;
+        STATES[spi_num].dma->ch[rx_channel]->status |= MXC_F_DMA_STATUS_CTZ_IF;
+    }
+
+    // Bus Error
+    if (status & MXC_F_DMA_REVA_STATUS_BUS_ERR) {
+        STATES[spi_num].dma->ch[rx_channel]->status |= MXC_F_DMA_STATUS_BUS_ERR;
+    }
+}
+
+void MXC_SPI_RevA_Handler(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+    uint32_t status = spi->intfl;
+
+    spi_num = MXC_SPI_GET_IDX(spi);
+    MXC_ASSERT(spi_num >= 0);
+
+    // Master done (TX complete)
+    if (status & MXC_F_SPI_REVA_INTFL_MST_DONE) { 
+        STATES[spi_num].controller_done = true;
+        SPI->intfl |= MXC_F_SPI_REVA_INTFL_MST_DONE; // Clear flag
+
+        // Toggle CS Pin if Driver is handling it.
+        if (STATES[spi_num].init.cscontrol == MXC_SPI_CSCONTROL_SW_DRV) {
+            STATES[spi_num].init.cs_pins.port->out ^= STATES[spi_num].init.cs_pins.mask;
+        }
+
+        // Callback if valid
+        if (STATES[spi_num].callback) {
+            STATES[spi_num].callback(STATES[spi_num].callback_data);
+        }
+    }
+
+    // Handle RX Threshold
+    if (status & MXC_F_SPI_REVA_INTFL_RX_THD) {
+        spi->intfl |= MXC_F_SPI_REVA_INTFL_RX_THD;
+        if (!(STATES[spi_num].use_dma)) {
+            // RX threshold has been crossed, there's data to unload from the FIFO
+            MXC_SPI_RevB_Process(spi);
+        }
+    }
+
+    // Handle TX Threshold
+    if (status & MXC_F_SPI_REVA_INTFL_TX_THD) {
+        spi->intfl |= MXC_F_SPI_REVA_INTFL_TX_THD;
+        if (!(STATES[spi_num].use_dma)) {
+            // TX threshold has been crossed, we need to refill the FIFO
+            MXC_SPI_RevB_process(spi);
+        }
+    }
+}
+
+// Private function in drivers will not have starting capital in name
+static void MXC_SPI_RevB_process(mxc_spi_reva_regs_t *spi)
+{
+    // Unload any SPI data that has come in
+    //  Dependent on 1) Valid RX Buffer, 2) RX Length not 0, and 3) RX FIFO Not Empty.
+    while(STATES[spi_num].rx_buffer && STATES[spi_num].rx_len > 0 && (spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL)) {
+        *(STATES[spi_num].rx_buffer)++ = spi->fifo32;
+        STATES[spi_num].rx_len--;
+    }
+
+    // Write any pending bytes out.
+    //  Dependent on 1) Valid TX Buffer, 2) TX Length not 0, and 3) TX FIFO Not Empty.
+    while(STATES[spi_num].tx_buffer && STATES[spi_num].tx_len > 0 && (((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
+        spi->fifo32 = *(STATES[spi_num].tx_buffer)++;
+        STATES[spi_num].tx_len--;
+    }
+}
+
+
+int MXC_SPI_RevA_Init(mxc_spi_init_t *init)
+{
+    int error, spi_num;
+
+    spi_num = MXC_SPI_GET_IDX(init->spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    if (init == NULL) {
+        return E_NULL_PTR;
+    }
+
+    // Save init data for transactions and handlers.
+    STATES[spi_num].init = *init;
+    STATES[spi_num].dma = NULL;
+    STATES[spi_num].cs_pins = init->cs_pins;
+
+    // Set up CS Control Scheme.
+    if (init->cs_control == MXC_SPI_CSCONTROL_HW_AUTO) {
+        // If hardware is handling CS pin, make sure the correct alternate function is chosen.
+        if (&(init->cs_pins) != NULL && init->cs_pins.func != MXC_GPIO_FUNC_OUT) {
+            error = MXC_GPIO_Config(&(init->cs_pins));
+            if (error != E_NO_ERROR) {
+                return error;
+            }
+
+            (init->spi)->ctrl0 |= (init->cs_index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
+        } else {
+            E_BAD_PARAM;
+        }
+
+    } else if (init->cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
+        // If SPI driver is handling CS pin, make sure the pin function is in OUT mode.
+        if (&(init->cs_pins) != NULL && init->cs_pins.func == MXC_GPIO_FUNC_OUT) {
+            error = MXC_GPIO_Config(&(init->cs_pins));
+            if (error != E_NO_ERROR) {
+                return error;
+            }
+        } else {
+            E_BAD_PARAM;
+        }
+
+    // Don't do anything if SW Application is handling CS pin.
+    } else if (init->cscontrol != MXC_SPI_CSCONTROL_SW_APP) {
+        // Not a valid CS Control option.
+        return E_BAD_PARAM;
+    }
+
+    // Enable SPI port.
+    (init->spi)->ctrl0 |= MXC_F_SPI_REVA_REVA_CTRL0_EN;
+
+    // Select Controller (L. Master) or Target (L. Slave) Mode.
+    if (init->type == MXC_SPI_TYPE_CONTROLLER) {
+        (init->spi)->ctrl0 |= MXC_F_SPI_REVA_REVA_CTRL0_MST_MODE;
+    } else {
+        (init->spi)->ctrl0 &= ~MXC_F_SPI_REVA_REVA_CTRL0_MST_MODE;
+    }
+
+//TODO: Can probably replace this with the SetDataSize Function.
+    // Set character size
+    if (init->dataSize <= 1 || init->dataSize > 16) {
+        return E_BAD_PARAM;
+    } else {
+        (init->spi)->ctrl2 |= (init->dataSize) << MXC_F_SPI_REVA_REVA_CTRL2_NUMBITS_POS;
+    }
+
+    // Remove any delay between SS and SCLK edges.
+    (init->spi)->sstime = (1 << MXC_F_SPI_REVA_REVA_SSTIME_PRE_POS) | (1 << MXC_F_SPI_REVA_REVA_SSTIME_POST_POS) | (1 << MXC_F_SPI_REVA_REVA_SSTIME_INACT_POS);
+
+    // Enable TX/RX FIFOs
+    (init->spi)->dma |= MXC_F_SPI_REVA_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_REVA_DMA_RX_FIFO_EN;
+    
+    // Set TX and RX Threshold to 31 and 0, respectively.
+    MXC_SETFIELD((init->spi)->dma, MXC_F_SPI_REVA_REVA_DMA_TX_THD_VAL, (31 << MXC_F_SPI_REVA_REVA_DMA_TX_THD_VAL_POS));
+    MXC_SETFIELD((init->spi)->dma, MXC_F_SPI_REVA_REVA_DMA_RX_THD_VAL, (0 << MXC_F_SPI_REVA_REVA_DMA_RX_THD_VAL_POS));
+
+    error = MXC_SPI_SetFrequency((init->spi), (init->freq));
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    // Clear any interrupt flags that may already be set.
+    (init->spi)->intfl = (init->spi)->intfl;
+
+    // Setup DMA features if used.
+    if (init->useDMA) {
+        STATES[spi_num].dma = (mxc_dma_reva_regs_t *)(init->dma);
+
+#if (MXC_DMA_INSTANCES == 1)
+        error = MXC_DMA_Init();
+#else
+        error = MXC_DMA_Init(init->dma);
+#endif
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+
+        // Acquire DMA Channels for SPI TX/RX
+        STATES[spi_num].tx_dma_ch = MXC_DMA_AcquireChannel();
+        STATES[spi_num].rx_dma_ch = MXC_DMA_AcquireChannel();
+
+        // Check if failed to acquire channel.
+        if (STATES[spi_num].tx_dma_ch < 0 || STATES[spi_num].rx_dma_ch < 0) {
+            return E_NONE_AVAIL;
+        }
+
+// TODO: Should the caller deal with enabling SetVector or should it be handled inside the driver?
+        MXC_NVIC_SetVector(MXC_DMA_GET_IRQ(STATES[spi_num].tx_dma_ch), SPI_DMA_TX_IRQHandler);
+        NVIC_EnableIRQ(MXC_DMA_GET_IRQ(STATES[spi_num].tx_dma_ch));
+
+        MXC_NVIC_SetVector(MXC_DMA_GET_IRQ(STATES[spi_num].rx_dma_ch), SPI_DMA_RX_IRQHandler);
+        NVIC_EnableIRQ(MXC_DMA_GET_IRQ(STATES[spi_num].rx_dma_ch));
+    }
+}
+
+int MXC_SPI_RevB_SetRegisterCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback, void *data)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX(spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    if (&(STATES[spi_num].init) == NULL) {
+        return E_BAD_STATE;
+    }
+
+    STATES[spi_num].init.callback = callback;
+    STATES[spi_num].init.callback_data = data;
+
+    return E_NO_ERROR;
+}
+
+int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint32_t deassert, uint32_t idx_mask)
+{
+    int spi_num, tx_dummy_len;
+
+    spi_num = MXC_SPI_GET_IDX(spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+// TODO: Check if initializing DMA affects non-DMA transactions
+    // Make sure DMA is not initialized.
+    if (STATES[spi_num].init.use_dma == true) {
+        return E_BAD_STATE;
+    }
+
+    // Initialize SPIn state to handle data.
+    STATES[spi_num].controller_done = false;
+
+    STATES[spi_num].tx_buffer = tx_buffer;
+    STATES[spi_num].tx_len = tx_len;
+    STATES[spi_num].tx_done = false;
+
+    STATES[spi_num].rx_buffer = rx_buffer;
+    STATES[spi_num].tx_len = tx_len;
+    STATES[spi_num].rx_done = false;
+
+    // Set the number of bytes to transmit/receive for the SPI transaction.
+    if (STATES[spi_num].width == MXC_SPI_WIDTH_STANDARD) {
+        if (rx_len > tx_len) {
+            // In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
+            // The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
+            // because the hardware always assume full duplex.  Therefore extra
+            // dummy bytes must be transmitted to support half duplex. 
+            tx_dummy_len = rx_len - tx_len;
+            spi->ctrl1 = ((tx_len + tx_dummy_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
+        } else {
+            spi->ctrl1 = tx_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS;
+        }
+    } else { // width != MXC_SPI_WIDTH_STANDARD
+        spi->ctrl1 = (tx_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) |
+                     (rx_len << MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS);
+    }
+
+    // Disable FIFOs before clearing as recommended by UG.
+    spi->dma &= ~(MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN | MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN);
+    spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FLUSH | MXC_F_SPI_REVA_DMA_RX_FLUSH);
+
+    // Enable Interrupts
+    spi->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
+
+    if (tx_len > 0) {
+        // Enable TX FIFO & TX Threshold crossed interrupt 
+        spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FIFO_EN);
+        spi->inten |= MXC_F_SPI_REVA_INTEN_TX_THD;
+    }
+
+    if (rx_len > 0) {
+        // Enable RX FIFO & RX Threshold crossed interrupt
+        spi->dma |= (MXC_F_SPI_REVA_DMA_RX_FIFO_EN);
+        spi->inten |= MXC_F_SPI_REVA_INTEN_RX_THD;
+    }
+
+    // This private function, MXC_SPI_RevB_process, call fills the TX FIFO as much as possible
+    //   before launching the transaction. Subsequent FIFO management will
+    //   be handled from the MXC_SPI_Handler which should be called in SPI_IRQHandler. 
+    MXC_SPI_RevB_process(spi);
+
+    // Toggle Target Select Pin if handled by the driver
+    if (STATES[spi_num].init.cscontrol == MXC_SPI_CSCONTROL_SW_DRV) {
+        // Make sure the selected Target Select (L. SS) pin is enabled as an output.
+        if (STATES[spi_num].init.cs_pins.port->outen |= idx_maske) {
+            return E_BAD_STATE;
+        }
+
+        STATES[spi_num].init.cs_pins.mask = idx_mask;
+        STATES[spi_num].init.cs_pins.port->out_set ^= idx_mask;
+    }
+
+    // Start the SPI transaction.
+    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
+
+    // Handle target-select (L. SS) deassertion if HW is selected as CS Control Scheme. This must be done 
+    //   AFTER launching the transaction to avoid a glitch on the SS line if:
+    //     - The SS line is asserted
+    //     - We want to deassert the line as part of this transaction
+    //
+    // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the CS pin based
+    //   on the value of CTRL->SS_CTRL, which causes the glitch.
+    if (STATES[spi_num].init.cscontrol == MXC_SPI_CSCONTROL_HW_AUTO) {
+        // Select Target Index
+        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, idx_mask << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
+
+        if (deassert) { 
+            spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        } else {
+            spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        }
+    }
+
+    return E_SUCCESS;
+}
+
+int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len)
+{
+    int error;
+
+    // This function fills in the STATES value for the flags that checks for blocking status.
+    error = MXC_SPI_RevB_MasterTransaction(spi, tx_buffer, tx_len, rx_buffer, rx_len);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    // Blocking
+    while(!((STATES[spi_num].rx_done && STATE[spi_num].controller_done) && (STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) && !(STATES[spi_num].rx_done && (STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
+
+    return E_SUCCESS;
+}
+
+
+int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert)
+{
+    int spi_num, tx_dummy_len;
+
+    spi_num = MXC_SPI_GET_IDX(spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    // Make sure DMA is initialized.
+    if (STATES[spi_num].use_dma == false) {
+        return E_BAD_STATE;
+    }
+
+    // Initialize SPIn state to handle data.
+    STATES[spi_num].use_dma = true;    
+    STATES[spi_num].controller_done = false;
+
+    STATES[spi_num].tx_buffer = tx_buffer;
+    STATES[spi_num].tx_len = tx_len;
+    STATES[spi_num].tx_done = false;
+
+    STATES[spi_num].rx_buffer = rx_buffer;
+    STATES[spi_num].tx_len = tx_len;
+    STATES[spi_num].rx_done = false;
+
+    // Set the number of bytes to transmit/receive for the SPI transaction
+    if (STATES[spi_num].width == SPI_WIDTH_STANDARD) {
+        if (rx_len > tx_len) {
+            // In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
+            // The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
+            // because the hardware always assume full duplex.  Therefore extra
+            // dummy bytes must be transmitted to support half duplex. 
+            tx_dummy_len = rx_len - tx_len;
+            spi->ctrl1 = ((tx_len + tx_dummy_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
+        } else {
+            spi->ctrl1 = tx_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS;
+        }
+    } else { // width != SPI_WIDTH_STANDARD
+        spi->ctrl1 = (tx_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) |
+                     (rx_len << MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS);
+    }
+
+    // Disable FIFOs before clearing as recommended by UG
+    spi->dma &= ~(MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN | MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN);
+    spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FLUSH | MXC_F_SPI_REVA_DMA_RX_FLUSH);
+
+    // Handle TX
+    if (tx_len > 1) {
+        // Configure TX DMA channel to fill the SPI TX FIFO
+        spi->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
+        // Hardware requires writing the first byte into the FIFO manually.
+        spi->fifo32 = tx_buffer[0];
+        STATES[spi_num].dma->ch[STATES[spi_num].tx_dma_ch].src = (uint32_t)(tx_buffer + 1);
+        STATES[spi_num].dma->ch[STATES[spi_num].tx_dma_ch].cnt = tx_len - 1;
+        STATES[spi_num].dma->ch[STATES[spi_num].tx_dma_ch].ctrl |= MXC_F_DMA_REVA_CTRL_SRCINC;
+        STATES[spi_num].dma->ch[STATES[spi_num].tx_dma_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
+    } else if (txlen == 1) {
+        // Single-length transactions does not trigger CTZ
+        SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
+        SPI->fifo32 = *tx_buffer; // Write first byte into FIFO
+        STATES[spi_num].tx_done = true;
+    } else if (txlen == 0 && STATES[spi_num].width == MXC_SPI_WIDTH_STANDARD) {
+        // Configure TX DMA channel to retransmit a dummy byte
+        spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN);
+        STATES[spi_num].dma->ch[STATES[spi_num].tx_dma_ch].src = (uint32_t)&(STATES[spi_num].tx_dummy_value);
+        STATES[spi_num].dma->ch[STATES[spi_num].tx_dma_ch].cnt = rx_len;
+        STATES[spi_num].dma->ch[STATES[spi_num].tx_dma_ch].ctrl &= ~MXC_F_DMA_REVA_CTRL_SRCINC;
+        STATES[spi_num].dma->ch[STATES[spi_num].tx_dma_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
+    }
+
+    // Handle RX
+    if (rxlen > 0) {
+        // Configure RX DMA channel to unload the SPI RX FIFO
+        SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
+        STATES[spi_num].dma->ch[STATES[spi_num].rx_dma_ch].dst = (uint32_t)rx_buffer;
+        STATES[spi_num].dma->ch[STATES[spi_num].rx_dma_ch].cnt = rx_len;
+        STATES[spi_num].dma->ch[STATES[spi_num].rx_dma_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
+    }
+
+    // Start the SPI transaction
+    SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+    // Handle slave-select (SS) deassertion.  This must be done AFTER launching the transaction
+    // to avoid a glitch on the SS line if:
+    // - The SS line is asserted
+    // - We want to deassert the line as part of this transaction
+
+    // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the SS pin based
+    // on the value of CTRL->SS_CTRL, which causes the glitch.
+    if (deassert) {
+        SPI->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
+    } else {
+        SPI->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
+    }
+
+    return E_SUCCESS;
+}
+
+int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert)
+{
+    int error;
+
+    // This function fills in the STATES value for the flags that checks for blocking status.
+    error = MXC_SPI_RevB_MasterTransactionDMA(spi, tx_buffer, tx_len, rx_buffer, rx_len);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    // Blocking
+    while(!((STATES[spi_num].rx_done && STATE[spi_num].controller_done) && (STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) && !(STATES[spi_num].rx_done && (STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
+
+    return E_SUCCESS;
+}
+
+
+
+
+
+
+
+
+
 static mxc_spi_callback_t spi_cb = NULL;
 static void* spi_cb_data = NULL;
 
