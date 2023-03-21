@@ -234,7 +234,7 @@ typedef struct {
 typedef void (*mxc_csi2_complete_cb_t)(mxc_csi2_req_t *req, int result);
 
 // TODO: Doxygen
-typedef void (*mxc_csi2_line_handler_cb_t)(volatile uint8_t* data, unsigned int len);
+typedef void (*mxc_csi2_line_handler_cb_t)(uint8_t* data, unsigned int len);
 
 
 

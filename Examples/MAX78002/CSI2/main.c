@@ -158,7 +158,7 @@ unsigned int g_index = 0;
 
 /***** Functions *****/
 
-void CSI2_line_handler(volatile uint8_t* data, unsigned int len)
+void CSI2_line_handler(uint8_t* data, unsigned int len)
 {
     // for (unsigned int i = 0; i < len; i++) {
     //     IMAGE[g_index++] = data[i];

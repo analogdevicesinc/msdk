@@ -77,7 +77,7 @@
 
 /* **** Globals **** */
 
-static volatile uint8_t *rx_data = NULL;
+static uint8_t *rx_data = NULL;
 static volatile uint32_t rx_data_index;
 static volatile uint32_t dphy_rdy;
 static volatile uint32_t frame_end_cnt;
@@ -87,8 +87,8 @@ static volatile uint32_t even_line_byte_num;
 static volatile uint32_t line_byte_num;
 static volatile uint32_t frame_byte_num;
 static volatile bool g_frame_complete = false;
-static volatile uint8_t* g_img_addr;
-volatile mxc_csi2_reva_capture_stats_t g_capture_stats;
+static uint8_t* g_img_addr;
+mxc_csi2_reva_capture_stats_t g_capture_stats;
 
 typedef enum {
     SELECT_A,
@@ -96,8 +96,8 @@ typedef enum {
 } lb_sel_t;
 
 struct line_buffer {
-    volatile uint8_t* a; // Line buffer A
-    volatile uint8_t* b; // Line buffer B
+    uint8_t* a; // Line buffer A
+    uint8_t* b; // Line buffer B
     lb_sel_t sel;
 } lb;
 
@@ -125,10 +125,10 @@ typedef struct {
     mxc_csi2_vfifo_cfg_t *vfifo_cfg;
     int dma_channel;
     bool synced;
-    volatile mxc_csi2_reva_capture_stats_t capture_stats;
+    mxc_csi2_reva_capture_stats_t capture_stats;
 } csi2_reva_req_state_t;
 
-csi2_reva_req_state_t csi2_state;
+volatile csi2_reva_req_state_t csi2_state;
 
 /* **** Functions **** */
 
@@ -259,16 +259,7 @@ int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t *csi2, int num_data_lanes)
 
 int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
 {
-    int error;
     g_frame_complete = true;
-
-    // Only release channel when DMA was used
-    // if (csi2_state.vfifo_cfg->dma_mode != MXC_CSI2_DMA_NO_DMA) {
-    //     error = MXC_DMA_ReleaseChannel(csi2_state.dma_channel);
-    //     if (error != E_NO_ERROR) {
-    //         return error;
-    //     }
-    // }
 
     MXC_CSI2_VFIFO_Disable();
 
@@ -325,8 +316,8 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
         
         _free_line_buffer();
 
-        lb.a = (volatile uint8_t*)malloc(line_byte_num);
-        lb.b = (volatile uint8_t*)malloc(line_byte_num);
+        lb.a = (uint8_t*)malloc(line_byte_num);
+        lb.b = (uint8_t*)malloc(line_byte_num);
         if (lb.a == NULL || lb.b == NULL)
             return E_NULL_PTR;
 
@@ -444,8 +435,6 @@ void MXC_CSI2_RevA_Handler()
     MXC_CSI2_PPI_ClearFlags(ppi_flags);
     MXC_CSI2_VFIFO_ClearFlags(vfifo_flags);
 
-    bool stop = false;
-
     // Mask out non-critical CTRL status flags
     ctrl_flags &= (0b11111);
     if (ctrl_flags) {
@@ -492,7 +481,6 @@ void MXC_CSI2_RevA_Handler()
 
     if (csi2_state.capture_stats.ctrl_err | csi2_state.capture_stats.ppi_err | csi2_state.capture_stats.vfifo_err) {
         csi2_state.capture_stats.error = true;
-        stop = true;
         MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
     }
         
@@ -1142,10 +1130,6 @@ int MXC_CSI2_RevA_DMA_GetCurrentFrameEndCnt(void)
 
 void MXC_CSI2_RevA_DMA_Callback()
 {
-    // mxc_csi2_req_t *req = csi2_state.req;
-    // uint32_t dma_channel = csi2_state.dma_channel;
-    // uint32_t dma_whole_frame = csi2_state.vfifo_cfg->dma_whole_frame;
-
     // Clear CTZ Status Flag
     if (MXC_DMA->ch[csi2_state.dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {
         MXC_DMA->ch[csi2_state.dma_channel].status |= MXC_F_DMA_STATUS_CTZ_IF;
@@ -1157,7 +1141,7 @@ void MXC_CSI2_RevA_DMA_Callback()
             if (line_cnt > csi2_state.req->lines_per_frame) {
                 line_cnt = 0;
                 MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
-                MXC_DMA->ch[csi2_state.dma_channel].dst = NULL;
+                // MXC_DMA->ch[csi2_state.dma_channel].dst = NULL;
             } else {
                 MXC_DMA->ch[csi2_state.dma_channel].cnt = odd_line_byte_num;
                 if (lb.sel == SELECT_A) {
