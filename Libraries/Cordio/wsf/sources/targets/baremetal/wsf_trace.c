@@ -232,7 +232,30 @@ void WsfTrace(const char *pStr, ...)
     }
   }
 }
-#endif
+
+#if WSF_TRACE_ENABLED_VERBOSE == TRUE
+void WsfTraceVerbose(const char *pStr, ...)
+{
+  WsfTrace(pStr);
+}
+#else
+void WsfTraceVerbose(const char *pStr, ...)
+{
+  (void)pStr;
+}
+#endif // WSF_TRACE_ENABLED_VERBOSE == TRUE
+
+#else // WSF_TRACE_ENABLED == TRUE
+
+void WsfTrace(const char *pStr, ...)
+{
+}
+
+void WsfTraceVerbose(const char *pStr, ...)
+{
+}
+
+#endif // WSF_TRACE_ENABLED == TRUE
 
 /*************************************************************************************************/
 /*!

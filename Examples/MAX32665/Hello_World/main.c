@@ -51,20 +51,10 @@
 /***** Globals *****/
 
 /***** Functions *****/
+volatile uint8_t testVar = 1;
 
 // *****************************************************************************
 int main(void)
 {
-    int count = 0;
-    printf("\n***********Hello World!***********\n");
-    printf("\nLED0 toggles every 500 ms\n");
-
-    while (1) {
-        LED_On(0);
-        MXC_Delay(500000);
-        LED_Off(0);
-        MXC_Delay(500000);
-
-        printf("\nCount = %d", count++);
-    }
+    testVar = 2;
 }

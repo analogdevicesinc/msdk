@@ -6,22 +6,22 @@
 #include "coremark.h"
 
 #if VALIDATION_RUN
-volatile ee_s32 seed1_volatile=0x3415;
-volatile ee_s32 seed2_volatile=0x3415;
-volatile ee_s32 seed3_volatile=0x66;
+volatile ee_s32 seed1_volatile = 0x3415;
+volatile ee_s32 seed2_volatile = 0x3415;
+volatile ee_s32 seed3_volatile = 0x66;
 #endif
 #if PERFORMANCE_RUN
-volatile ee_s32 seed1_volatile=0x0;
-volatile ee_s32 seed2_volatile=0x0;
-volatile ee_s32 seed3_volatile=0x66;
+volatile ee_s32 seed1_volatile = 0x0;
+volatile ee_s32 seed2_volatile = 0x0;
+volatile ee_s32 seed3_volatile = 0x66;
 #endif
 #if PROFILE_RUN
-volatile ee_s32 seed1_volatile=0x8;
-volatile ee_s32 seed2_volatile=0x8;
-volatile ee_s32 seed3_volatile=0x8;
+volatile ee_s32 seed1_volatile = 0x8;
+volatile ee_s32 seed2_volatile = 0x8;
+volatile ee_s32 seed3_volatile = 0x8;
 #endif
-volatile ee_s32 seed4_volatile=ITERATIONS;
-volatile ee_s32 seed5_volatile=0;
+volatile ee_s32 seed4_volatile = ITERATIONS;
+volatile ee_s32 seed5_volatile = 0;
 /* Porting : Timing functions
 	How to capture time and convert to seconds must be ported to whatever is supported by the platform.
 	e.g. Read value from on board RTC, read value from cpu clock cycles performance counter etc.
@@ -84,11 +84,11 @@ CORE_TICKS get_time(void)
 */
 secs_ret time_in_secs(CORE_TICKS ticks)
 {
-	// 'ticks' from stop_time is reported in microseconds.
+    // 'ticks' from stop_time is reported in microseconds.
     return ticks / 1000000.0;
 }
 
-ee_u32 default_num_contexts=1;
+ee_u32 default_num_contexts = 1;
 
 /* Function : portable_init
 	Target specific initialization code
@@ -106,14 +106,12 @@ void portable_init(core_portable *p, int *argc, char *argv[])
     // Make sure system clock is set to fastest clock.
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_HIRC96);
 
-    p->portable_id=1;
+    p->portable_id = 1;
 }
 /* Function : portable_fini
 	Target specific final code
 */
 void portable_fini(core_portable *p)
 {
-    p->portable_id=0;
+    p->portable_id = 0;
 }
-
-

@@ -100,6 +100,50 @@ jobs:
           # Add riscv tools to path
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
 
+      - name: Install ccache
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        run: |
+          # Install ccache
+          sudo apt install -y ccache
+
+          # Prepend ccache into the PATH
+          echo "/usr/bin" >> $GITHUB_PATH
+          echo "/usr/lib/ccache" >> $GITHUB_PATH
+          
+          # Setup ccache links
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-addr2line
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ar
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-as
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-c
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-c++filt
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-cpp
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-elfedit
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-g
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-10.2.1
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-ar
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-nm
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcc-ranlib
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcov
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcov-dump
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gcov-tool
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gdb-add-index
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gdb-add-index-py
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gdb-py
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-gprof
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ld
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ld.bfd
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-lto-dump
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-nm
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-objcopy
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-objdump
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-ranlib
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-readelf
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-size
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strings
+          sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strip
+          sudo ln -s ../../bin/ccache /usr/bin/riscv-none-embed-gcc
+
       - name: Setup Python
         if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         uses: actions/setup-python@v4.5.0
