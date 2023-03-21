@@ -24,9 +24,6 @@ INIT_CENTRAL = 0
 # Set to 0 to disable
 # Set to 1 to enable serial port trace messages
 # Set to 2 to enable verbose messages
-# 
-# Changes to this variable could require a rebuild of the Cordio library
-#    # make clean.cordio
 TRACE = 1
 
 # Add services directory to build

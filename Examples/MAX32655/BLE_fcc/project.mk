@@ -13,8 +13,4 @@ LIB_CORDIO = 1
 # TRACE option
 # Set to 0 to disable
 # Set to 2 to enable serial port trace messages
-# 
-# Changes to this variable could require a rebuild of the Cordio library
-#    # make clean.cordio
 TRACE = 2
-

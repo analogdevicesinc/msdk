@@ -18,9 +18,6 @@ INIT_CENTRAL = 1
 # Set to 0 to disable
 # Set to 1 to enable serial port trace messages
 # Set to 2 to enable verbose messages
-# 
-# Changes to this variable could require a rebuild of the Cordio library
-#    # make clean.cordio
 TRACE = 1
 
 # **********************************************************
@@ -57,4 +54,3 @@ fw_obj: $(FW_UPDATE_OBJ)
 
 ${FW_UPDATE_OBJ}: fw_update.S ${FW_UPDATE_BIN}
 	${CC} ${AFLAGS} -o ${@} -c fw_update.S
-
