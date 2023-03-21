@@ -54,7 +54,7 @@ typedef enum {
 } mxc_csi2_reva_fifo_trig_t;
 
 typedef struct {
-    unsigned int err_count;
+    bool error;
     uint32_t ctrl_err;
     uint32_t ppi_err;
     uint32_t vfifo_err;
@@ -77,7 +77,7 @@ int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t *csi2, int num_data_lanes);
 
 int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2);
 
-int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes);
+int MXC_CSI2_RevA_CaptureFrameDMA();
 
 int MXC_CSI2_RevA_SetLaneCtrlSource(mxc_csi2_reva_regs_t *csi2, mxc_csi2_lane_src_t *src);
 
@@ -169,6 +169,8 @@ int MXC_CSI2_RevA_PPI_Stop(void);
 /************************************/
 /* CSI2 DMA - Used for all features */
 /************************************/
+
+mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats();
 
 bool MXC_CSI2_RevA_DMA_Frame_Complete(void);
 

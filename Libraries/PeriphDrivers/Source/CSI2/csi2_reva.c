@@ -125,6 +125,7 @@ typedef struct {
     mxc_csi2_vfifo_cfg_t *vfifo_cfg;
     int dma_channel;
     bool synced;
+    volatile mxc_csi2_reva_capture_stats_t capture_stats;
 } csi2_reva_req_state_t;
 
 csi2_reva_req_state_t csi2_state;
@@ -283,17 +284,17 @@ int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
+int MXC_CSI2_RevA_CaptureFrameDMA()
 {
     int i;
     int error;
     int dma_byte_cnt;
     int dlane_stop_inten;
 
-    g_capture_stats.err_count = 0;
-    g_capture_stats.ctrl_err = 0;
-    g_capture_stats.ppi_err = 0;
-    g_capture_stats.vfifo_err = 0;
+    csi2_state.capture_stats.error = false;
+    csi2_state.capture_stats.ctrl_err = 0;
+    csi2_state.capture_stats.ppi_err = 0;
+    csi2_state.capture_stats.vfifo_err = 0;
     g_frame_complete = false;
 
     mxc_csi2_req_t *req = csi2_state.req;
@@ -338,7 +339,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
 
     // Enable Stop State interrupts for all used data lanes
     dlane_stop_inten = 0;
-    for (i = 0; i < num_data_lanes; i++) {
+    for (i = 0; i < csi2_state.ctrl_cfg->num_lanes; i++) {
         dlane_stop_inten |= (1 << i);
     }
 
@@ -353,7 +354,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
     MXC_CSI2->rx_eint_ppi_ie = 0xFFFFFFFF;
     MXC_CSI2->rx_eint_vff_ie = 0xFFFFFFFF;
 
-    error = MXC_CSI2_Start(num_data_lanes);
+    error = MXC_CSI2_Start(csi2_state.ctrl_cfg->num_lanes);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -368,7 +369,12 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
     interrupt handler.
     */
 
-    return E_NO_ERROR;
+    while(!g_frame_complete) {}
+
+    if (csi2_state.capture_stats.error)
+        return E_FAIL;
+    else
+        return E_NO_ERROR;
 }
 
 int MXC_CSI2_RevA_SetLaneCtrlSource(mxc_csi2_reva_regs_t *csi2, mxc_csi2_lane_src_t *src)
@@ -428,7 +434,6 @@ static volatile int count = 0;
 void MXC_CSI2_RevA_Handler()
 {
     uint32_t ctrl_flags, vfifo_flags, ppi_flags;
-    mxc_csi2_req_t *req = csi2_state.req;
 
     ctrl_flags = MXC_CSI2_CTRL_GetFlags();
     ppi_flags = MXC_CSI2_PPI_GetFlags();
@@ -441,9 +446,10 @@ void MXC_CSI2_RevA_Handler()
 
     bool stop = false;
 
-    if (ctrl_flags & (0b11111)) {
-        printf("|CTRL:0x%x|\n", ctrl_flags);
-        stop = true;
+    // Mask out non-critical CTRL status flags
+    ctrl_flags &= (0b11111);
+    if (ctrl_flags) {
+        csi2_state.capture_stats.ctrl_err |= ctrl_flags;
     }
 
     if (!csi2_state.synced && ppi_flags != 0) {
@@ -452,9 +458,13 @@ void MXC_CSI2_RevA_Handler()
         has synced up with the sensor.  It's now safe to monitor the VFIFO.
         */
         csi2_state.synced = (bool)(ppi_flags & (MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP));
-    } else if (ppi_flags & ~(MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP)) {
-        printf("|PPI:0x%x|\n", ppi_flags);
-        stop = true;
+    }
+    
+    // Mask out non-critical PPI status flags
+    ppi_flags &= ~(MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP);
+    
+    if (ppi_flags) {
+        csi2_state.capture_stats.ppi_err |= ppi_flags;
     }
 
     if (vfifo_flags != 0) {
@@ -464,75 +474,30 @@ void MXC_CSI2_RevA_Handler()
             MXC_DMA_Start(csi2_state.dma_channel);
         }
 
-        // TODO: Pass error flags to application
+        // Mask out non-critical VFIFO status flags
+        vfifo_flags &= (
+            MXC_F_CSI2_RX_EINT_VFF_IF_UNDERRUN |\
+            MXC_F_CSI2_RX_EINT_VFF_IF_OVERRUN |\
+            MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC |\
+            MXC_F_CSI2_RX_EINT_VFF_IF_FMTERR |\
+            MXC_F_CSI2_RX_EINT_VFF_IF_AHBWTO |\
+            MXC_F_CSI2_RX_EINT_VFF_IF_RAW_OVR |\
+            MXC_F_CSI2_RX_EINT_VFF_IF_RAW_AHBERR
+        );
+        
+        if (vfifo_flags) {
+            csi2_state.capture_stats.vfifo_err |= vfifo_flags;
+        }
 
-        // printf("VFF_IF=0x%x\t", vfifo_flags);
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_FNEMPTY)
-        // {
-        //     printf("|FNEMPTY");
-        // }
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_FTHD)
-        // {
-        //     printf("|FTHD");
-        // }
-        // if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_FFULL)
-        // {
-        //     printf("|FFULL");
-        // }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_UNDERRUN)
-        {
-            printf("|UNDERRUN|\n");
-            stop = true;
-        }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OVERRUN)
-        {
-            printf("|OVERRUN|\n");
-            stop = true;
-        }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC)
-        {
-            printf("|OUTSYNC|\n");
-            stop = true;
-        }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC)
-        {
-            printf("|FMTERR|\n");
-            stop = true;
-        }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_AHBWTO)
-        {
-            printf("|AHBWTO|\n");
-            stop = true;
-        }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_FE)
-        {
-            printf("|FE|\n");
-            stop = true;
-        }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_LS)
-        {
-            printf("|LS|\n");
-            stop = true;
-        }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_LE)
-        {
-            printf("|LE|\n");
-            stop = true;
-        }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_RAW_OVR)
-        {
-            printf("|RAW_OVR|\n");
-            stop = true;
-        }
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_RAW_AHBERR)
-        {
-            printf("|RAW_AHBERR|\n");
-            stop = true;
-        }
+        // TODO: Pass error flags to application
     }
 
-    if (stop)
+    if (csi2_state.capture_stats.ctrl_err | csi2_state.capture_stats.ppi_err | csi2_state.capture_stats.vfifo_err) {
+        csi2_state.capture_stats.error = true;
+        stop = true;
         MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+    }
+        
 }
 
 /********************************/
@@ -642,7 +607,7 @@ int MXC_CSI2_RevA_VFIFO_Config(mxc_csi2_reva_regs_t *csi2, mxc_csi2_vfifo_cfg_t 
     }
 
     // Enable Error Detection
-    if (cfg->err_det_en) {
+    if (cfg->err_det_en == MXC_CSI2_ERR_DETECT_ENABLE) {
         MXC_SETFIELD(csi2->vfifo_cfg0, MXC_F_CSI2_REVA_VFIFO_CFG0_ERRDE,
                      0x1 << MXC_F_CSI2_REVA_VFIFO_CFG0_ERRDE_POS);
     } else {
@@ -1094,6 +1059,11 @@ mxc_gpio_cfg_t indicator = {
 bool MXC_CSI2_RevA_DMA_Frame_Complete(void)
 {
     return g_frame_complete;
+}
+
+mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats()
+{
+    return csi2_state.capture_stats;
 }
 
 int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size)

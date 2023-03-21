@@ -87,9 +87,9 @@ int MXC_CSI2_CaptureFrame(int num_data_lanes)
     return MXC_CSI2_RevA_CaptureFrameDMA(num_data_lanes);
 }
 
-int MXC_CSI2_CaptureFrameDMA(int num_data_lanes)
+int MXC_CSI2_CaptureFrameDMA()
 {
-    return MXC_CSI2_RevA_CaptureFrameDMA(num_data_lanes);
+    return MXC_CSI2_RevA_CaptureFrameDMA();
 }
 
 int MXC_CSI2_SetLaneCtrlSource(mxc_csi2_lane_src_t *src)
@@ -292,6 +292,18 @@ int MXC_CSI2_PPI_Stop(void)
 bool MXC_CSI2_DMA_Frame_Complete(void)
 {
     return MXC_CSI2_RevA_DMA_Frame_Complete();
+}
+
+mxc_csi2_capture_stats_t MXC_CSI2_GetCaptureStats()
+{
+    mxc_csi2_reva_capture_stats_t stats = MXC_CSI2_RevA_DMA_GetCaptureStats();
+    mxc_csi2_capture_stats_t ret = {
+        .error = stats.error,
+        .ctrl_err = stats.ctrl_err,
+        .ppi_err = stats.ppi_err,
+        .vfifo_err = stats.vfifo_err
+    };
+    return ret;
 }
 
 int MXC_CSI2_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size)
