@@ -275,10 +275,9 @@ int main(void)
     printf("a .png image.\n");
     printf("\nGo into the pc_utility folder and run the script:\n");
     printf("python console.py [COM#]\n");
-    printf("\nPress PB1 (SW4) or send the 'capture' command to trigger a frame capture.\n");
+    printf("\nPress PB1 (SW4) or send the 'capture' command to trigger a frame capture.\n\n");
 
-    printf("Initializing SRAM...\n");
-
+    printf("Initializing camera...\n");
     // Initialize camera
     mipi_camera_init();
 
@@ -359,6 +358,7 @@ int main(void)
         while (1) {}
     }
 
+    printf("Initializing SRAM...\n");
     error = ram_init();
     if (error) {
         printf("Failed to initialize SRAM with error %i\n", error);
