@@ -16,6 +16,16 @@ Once complete, the example will prompt the user to reset or power cycle the boar
 
 The _second_ time the example is run the application will see the "magic" 32-bit sequence in flash.  When this happens, the application will verify that the test pattern has survived the power cycle first.  Then, it will _modify_ the "magic" sequence _without_ modifying the rest of the test pattern.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+
 ## Hardware Connections
 
 If using the MAX78000EVKIT:
@@ -24,16 +34,10 @@ If using the MAX78000EVKIT:
 - Connect pins 1 and 2 (P0_1) of the JH1 (UART 0 EN) header.
 - Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
-If using the Featherboard (FTHR_RevA):
+If using the MAX78000FTHR (FTHR_RevA)
 
 - Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 - Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
-
-## Building and Running
-
-**See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
-
-This example supports all available MAX78000 evaluation platforms but comes _pre-configured_ for the MAX78000EVKIT by default.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) for instructions on how to configure the project for a different board.
 
 ## Expected Output
 

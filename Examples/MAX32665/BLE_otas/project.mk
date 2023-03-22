@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -33,8 +33,14 @@ SRCS += stack_dats.c
 SRCS += dats_main.c
 SRCS += main.c
 
-USE_INTERNAL_FLASH ?=0
+ifeq ($(BOARD),EvKit_V1)
+USE_INTERNAL_FLASH ?= 0
+else
+USE_INTERNAL_FLASH ?= 1
+endif
+
 ifeq ($(USE_INTERNAL_FLASH), 1)
+PROJ_CFLAGS += -DOTA_INTERNAL=1
 LINKERFILE = ota_internal_mem.ld
 SRCS += wdxs_file_int.c
 else

@@ -50,6 +50,7 @@
 #include "nvic_table.h"
 #include "pb.h"
 #include "spi.h"
+#include "mxc_delay.h"
 
 /***** Definitions *****/
 #define DATA_LEN 1024 // Words
@@ -87,9 +88,13 @@ int main(void)
     printf("Each SPI peripheral sends 1024 bytes on the SPI bus. If the data received\n", DATA_LEN);
     printf("by each SPI instance matches the data sent by the other instance, the\n");
     printf("green LED will illuminate, otherwise the red LED will illuminate.\n\n");
-
+#ifndef BOARD_MAX32520FTHR
     printf("Press SW2 to begin transaction.\n\n");
     while (!PB_Get(0)) {}
+#else
+    printf("Beginning in 3 seconds...\n");
+    MXC_Delay(MXC_DELAY_SEC(3));
+#endif
 
     /***** Initialize data buffers *****/
     for (int i = 0; i < DATA_LEN; i++) {

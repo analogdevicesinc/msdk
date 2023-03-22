@@ -36,7 +36,6 @@
 /* Task IDs */
 TaskHandle_t cmd_task_id;
 TaskHandle_t tx_task_id;
-TaskHandle_t wfs_task_id;
 TaskHandle_t sweep_task_id;
 TaskHandle_t help_task_id;
 /* FreeRTOS+CLI */
@@ -524,35 +523,6 @@ static void mainWsfInit(void)
 #endif
 }
 /*************************************************************************************************/
-/*!
- *  \brief  Check and service tokens (Trace and sniffer).
- *
- *  \return TRUE if there is token pending.
- */
-/*************************************************************************************************/
-static bool_t mainCheckServiceTokens(void)
-{
-    bool_t eventPending = FALSE;
-
-#if (WSF_TOKEN_ENABLED == TRUE) || (BB_SNIFFER_ENABLED == TRUE)
-    eventPending = LhciIsEventPending();
-#endif
-
-#if WSF_TOKEN_ENABLED == TRUE
-    /* Allow only a single token to be processed at a time. */
-    if (!eventPending)
-        eventPending = WsfTokenService();
-#endif
-
-#if (BB_SNIFFER_ENABLED == TRUE)
-    /* Service one sniffer packet, if in the buffer. */
-    if (!eventPending)
-        eventPending = LhciSnifferHandler();
-#endif
-
-    return eventPending;
-}
-/*************************************************************************************************/
 void vCmdLineTask(void *pvParameters)
 {
     unsigned char tmp;
@@ -819,13 +789,6 @@ void helpTask(void *pvParameters)
     }
 }
 /*************************************************************************************************/
-void wfsLoop(void *pvParameters)
-{
-    while (1) {
-        WsfOsEnterMainLoop();
-    }
-}
-/*************************************************************************************************/
 void setPhy(uint8_t newPhy)
 {
     phy = newPhy;
@@ -904,8 +867,6 @@ int main(void)
     /* Coverity[uninit_use_in_call] */
     LlSetBdAddr((uint8_t *)&bdAddr);
 
-    WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
-    WsfOsRegisterSleepCheckFunc(ChciTrService);
     /* Register the UART RX request */
     WsfBufIoUartRegister(processConsoleRX);
 
@@ -931,9 +892,6 @@ int main(void)
     // help task
     xTaskCreate(helpTask, (const char *)"Help Task", 1024, NULL, tskIDLE_PRIORITY + 1,
                 &help_task_id);
-
-    //wsfLoop task
-    xTaskCreate(wfsLoop, (const char *)"WFS Task", 1024, NULL, tskIDLE_PRIORITY + 1, &wfs_task_id);
 
     /* Start scheduler */
     APP_TRACE_INFO0(">> Starting scheduler.\r\n");

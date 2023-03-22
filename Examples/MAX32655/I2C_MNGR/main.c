@@ -49,7 +49,7 @@
 #include "task.h"
 
 #ifdef BOARD_FTHR_APPS_P1
-#error This example is not compatible with the MAX32655FTHR.
+#error ERR_NOTSUPPORTED: This example is not compatible with the MAX32655FTHR.
 #endif
 
 /******************************************************************************/

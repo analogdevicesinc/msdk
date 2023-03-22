@@ -34,3 +34,15 @@ The LED0 (Green LED) will blink when an update image has successfully been appli
 The LED1 (Red LED) will blink in the error case.
 
 Plesae note that: depend on your LED0/LED1 pin connection on your board, you might see different color on success/fail situations.
+
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+

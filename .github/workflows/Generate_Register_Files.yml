@@ -68,7 +68,17 @@ jobs:
 
       - name: Checkout msdk internal repository
         run: |
-          git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
+          pwd
+          ls
+
+          # BTM-CI might already have the msdk-internal repo cloned.
+          if [[ -d ${{ env.MSDK-INTERNAL_DIR }} ]]; then
+            cd ${{ env.MSDK-INTERNAL_DIR }}
+            git pull
+            cd ..
+          else
+            git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
+          fi
 
       - name: Generating register files.
         run: |

@@ -2,7 +2,24 @@
 
 This example captures images using the camera (OV7692) and streams either to the on-board TFT display or to your PC through the COM port.
 
-Use the pc_utility/grab_image.py script to grab the camera data and create a png image of the captured image. More information can be found in pc_utility/README.md.
+Use the pc_utility/grab_image.py script to grab the camera data and create a png image of the captured image. More information can be found in [pc_utility/README.md](pc_utility/README.md).
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+This example supports the following cameras:
+
+* OV7962 (Default)
+* HM0360 (MONO), for color use the CameraIF_Debayer example
+* OV5640
+* HM01B0
+
+To change the camera drivers set the `CAMERA` build configuration variable in [project.mk](project.mk)
 
 ## Required Connections
 
@@ -13,17 +30,6 @@ Use the pc_utility/grab_image.py script to grab the camera data and create a png
 -   Close Jumper JP41 (DVP CAM PWR) to ON.
 -   Close Jumper JP45 (TFT_DC).
 -   Close Jumper JP46 (TFT_CS) to P0_3.
-
-## Build Configuration
-
-This example supports the following cameras:
-
-* OV7962 (Default)
-* HM0360 (MONO), for color use the CameraIF_Debayer example
-* OV5640
-* HM01B0
-
-To change the camera the project builds for, set the `CAMERA` build [configuration variable](.vscode/README.md#build-configuration) in [project.mk](project.mk)
 
 
 ## Expected Output
