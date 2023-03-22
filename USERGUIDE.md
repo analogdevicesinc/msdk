@@ -287,7 +287,7 @@ Older versions of the MSDK are available as an **_offline installer_** for each 
 
 #### Development Resources
 
-Users can obtain development copies of the MSDK resources from [Github](https://github.com/Analog-Devices-MSDK/msdk) following in the repository's [README](https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md).
+Users can obtain development copies of the MSDK resources from [Github](https://github.com/Analog-Devices-MSDK/msdk).  Setup instructions can be found in the repository's [README](https://github.com/Analog-Devices-MSDK/msdk/blob/main/README.md).
 
 ## Getting Started
 
@@ -335,7 +335,7 @@ This section walks through setup, opening, and running an example project with V
 
 #### Setup (VS Code)
 
-The setup below must only be done once per MSDK [installation](#installation).
+The setup below only needs to be done once per MSDK [installation](#installation).
 
 1. Download and install Visual Studio Code for your OS [here](https://code.visualstudio.com/Download).
 
@@ -345,7 +345,7 @@ The setup below must only be done once per MSDK [installation](#installation).
 
 4. Use **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS) to open the developer prompt.
 
-5. Type "open user settings" and select the **"Preferences: Open User Settings (JSON) "** option.
+5. Type "open user settings" and select the **"Preferences: Open User Settings (JSON)"** option.
 
     ![Open Settings JSON Command](res/Fig42.jpg)
 
