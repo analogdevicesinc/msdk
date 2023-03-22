@@ -110,12 +110,7 @@ jobs:
           ls
           cd ${{ env.MSDK_DIR }}
           PERIPH_SVD_FILE_LIST=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/PeriphDrivers/Source/*/*.svd')
-          pwd
-          ls
 
-          cd ..
-          pwd
-          ls
           # Save time if there weren't any peripheral SVD file changes.
           if [[ -n $PERIPH_SVD_FILE_LIST ]]; then
             # Keep track of all deleted SVD files.
