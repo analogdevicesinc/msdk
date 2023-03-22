@@ -54,5 +54,8 @@ void gpio_clear(const mxc_gpio_cfg_t *gpio)
 
 int gpio_get(const mxc_gpio_cfg_t *gpio)
 {
-    return MXC_GPIO_InGet(gpio->port, gpio->mask);
+    if (gpio->func == MXC_GPIO_FUNC_IN)
+        return MXC_GPIO_InGet(gpio->port, gpio->mask);
+
+    return MXC_GPIO_OutGet(gpio->port, gpio->mask);
 }

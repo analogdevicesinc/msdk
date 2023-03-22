@@ -18,9 +18,5 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Uncomment this line to generate a static library
+# Generate a static library by default
 override .DEFAULT_GOAL = lib
-
-ifeq "$(PROJECT)" ""
-PROJECT = Library_Generate
-endif

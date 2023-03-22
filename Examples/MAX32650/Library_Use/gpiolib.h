@@ -1,7 +1,7 @@
 /**
- * @file    main.c
- * @brief   Static library example
- * @details Calls static library functions to toggle an LED.
+ * @file    gpiolib.h
+ * @brief   GPIO library header.
+ * @details Function prototypes for GPIO library.
  */
 
 /******************************************************************************
@@ -37,28 +37,28 @@
  *
  ******************************************************************************/
 
-/* **** Includes **** */
-#include <stdio.h>
-#include <stdint.h>
-#include "mxc_delay.h"
-#include "led.h"
-#include "pb.h"
+#ifndef GPIOLIB_H_
+#define GPIOLIB_H_
 
-#include "gpiolib.h"
+#include "gpio.h"
 
-/* ************************************************************************** */
-int main(void)
-{
-    printf("\n\n*********************** Static Library Example **********************\n\n");
-    printf("This example calls static library functions to toggle an LED.\n");
+/**
+ * @brief Sets the given GPIO to high state.
+ * @param gpio GPIO to set.
+ */
+void gpio_set(const mxc_gpio_cfg_t *gpio);
 
-    gpio_clear(&led_pin[0]);
-    while (1) {
-        if (!gpio_get(&led_pin[0])) {
-            gpio_set(&led_pin[0]);
-        } else {
-            gpio_clear(&led_pin[0]);
-        }
-        MXC_Delay(500000);
-    }
-}
+/**
+ * @brief Sets the given GPIO to low state.
+ * @param gpio GPIO to set.
+ */
+void gpio_clear(const mxc_gpio_cfg_t *gpio);
+
+/**
+ * @brief Returns the input state of the given GPIO.
+ * @param gpio GPIO to read.
+ * @return Current GPIO state.
+ */
+int gpio_get(const mxc_gpio_cfg_t *gpio);
+
+#endif /* GPIOLIB_H_ */

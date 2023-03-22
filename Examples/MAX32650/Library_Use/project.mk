@@ -17,14 +17,6 @@ BOARD=FTHR_APPS_A
 # For more information on how the signing process works, see
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
-
-# Point to the location of the library
-LIB_LOCATION = ../Library_Generate
-# Add the location of the library to the list of include paths
-IPATH += $(LIB_LOCATION)
  
-# Add library to the list of dependencies
-LIB_NAME = Library_Generate
-LIB_BUILD_DIR = $(LIB_LOCATION)/build
-MYLIB = $(LIB_BUILD_DIR)/$(LIB_NAME).a
-LIBS += $(MYLIB)
+# Add static library to the list of dependencies
+LIBS += myLib.a
