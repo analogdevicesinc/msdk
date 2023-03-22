@@ -938,7 +938,12 @@ int main(void)
 
     return 0;
 }
-
+/*************************************************************************************************/
+/*!
+ *  \brief  Calculates frequency of given RF channel
+ *  \return Returns frequency of given RF channel
+ */
+/*************************************************************************************************/
 uint16_t getFreqFromRfChannel(uint8_t ch)
 {
            return 2402 +(ch * 2);
