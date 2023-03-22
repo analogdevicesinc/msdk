@@ -707,10 +707,10 @@ void txTestTask(void *pvParameters)
         testConfig.allData = notifVal;
 
         if (testConfig.testType == BLE_TX_TEST) {
-            sprintf(str, "Transmit RF channel %d : %d bytes/pkt : ", testConfig.channel, packetLen);
+            sprintf(str, "Transmit RF channel %d on Freq %dMHz bytes/pkt : ", testConfig.channel,getFreqFromRfChannel(testConfig.channel), packetLen);
             strcat(str, (const char *)getPacketTypeStr());
         } else {
-            sprintf(str, "Receive RF channel %d : ", testConfig.channel);
+            sprintf(str, "Receive RF channel %d Freq %dMHz: ", testConfig.channel,getFreqFromRfChannel(testConfig.channel));
         }
         strcat(str, " : ");
         strcat(str, (const char *)getPhyStr(phy));
@@ -739,14 +739,7 @@ void sweepTestTask(void *pvParameters)
 {
     uint32_t notifVal = 0;
     sweep_config_t sweepConfig;
-    /* channles in order of appreance in the spectrum */
-    uint8_t ble_channels_spectrum[40] = { 37, 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 38, 11,
-                                          12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25,
-                                          26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 39 };
-    // remap to find channel location in above list
-    uint8_t ble_channels_remap[40] = { 1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 13, 14, 15,
-                                       16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29,
-                                       30, 31, 32, 33, 34, 35, 36, 37, 38, 0,  12, 39 };
+
     while (1) {
         /* Wait for notification to initiate sweep */
         xTaskNotifyWait(0, 0xFFFFFFFF, &notifVal, portMAX_DELAY);
@@ -755,19 +748,14 @@ void sweepTestTask(void *pvParameters)
                         sweepConfig.start_channel, sweepConfig.end_channel,
                         sweepConfig.duration_per_ch_ms);
 
-        /* get index  */
-        uint8_t start_ch = ble_channels_remap[sweepConfig.start_channel];
-        uint8_t end_ch = ble_channels_remap[sweepConfig.end_channel];
         char str[6] = "";
 
         strcat(str, (const char *)getPhyStr(phy));
         /* sweep channels */
-        for (int i = start_ch; i <= end_ch; i++) {
-            APP_TRACE_INFO2("\r\n-----------------| channel %d %s |----------------------\r\n",
+        for (int i = sweepConfig.start_channel; i <=sweepConfig.end_channel; i++) {
+            APP_TRACE_INFO3("\r\n-----------------| RF channel %d %s Freq: %dMHz |----------------------\r\n",i, str, getFreqFromRfChannel(i));
 
-                            ble_channels_spectrum[i], str);
-
-            LlEnhancedTxTest(ble_channels_spectrum[i], packetLen, packetType, phy, 0);
+            LlEnhancedTxTest(i, packetLen, packetType, phy, 0);
             vTaskDelay(sweepConfig.duration_per_ch_ms);
             LlEndTest(NULL);
             xSemaphoreGive(rfTestMutex);
@@ -803,13 +791,13 @@ void helpTask(void *pvParameters)
     printf("│         │                                  │ (channel: 0-39 ) (phy: 1M 2M S2 S8)                   │\r\n");
     printf("│         │                                  │ (duaration in ms: 0 65535 )                           │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ sweep   │ <start_ch> <end_ch> <packet len> │ Sweeps TX tests through a range of channels given     │\r\n");
+    printf("│ sweep   │ <start_ch> <end_ch> <packet len> │ Sweeps TX tests through a range of RF channels given  │\r\n");
     printf("│         │ <packet_type> <phy> <ms/per_ch>  │ their order of appearance on the spectrum.            │\r\n");
     printf("│         │ ex: sweep 0 10 255 FF 2M 500     │ (channel: 0-39 ) (packet len: 0-255)                  │\r\n");
     printf("│         │                                  │ (packet type: PRBS9,PRBS15,00,FF,F0,0F,55,AA)         │\r\n");
     printf("│         │                                  │ (phy: 1M 2M S2 S8) (duaration in ms: 0 65535 )        │\r\n");
     printf("│         │                                  │                                                       │\r\n");
-    printf("│ tx      │ <channel> <packet_len>           │ TX test on given channel.                             │\r\n");
+    printf("│ tx      │ <channel> <packet_len>           │ TX test on given RF channel.                          │\r\n");
     printf("│         │ <packet_type> <phy> <duartion>   │ Duration of 0 is max duration until stopped           │\r\n");
     printf("│         │ ex: tx 0 255 FF 2M 1000          │ (channel: 0-39 ) (packet len: 0-255)                  │\r\n");
     printf("│         │                                  │ (packet type: PRBS9,PRBS15,00,FF,F0,0F,55,AA)         │\r\n");
@@ -949,4 +937,9 @@ int main(void)
     vTaskStartScheduler();
 
     return 0;
+}
+
+uint16_t getFreqFromRfChannel(uint8_t ch)
+{
+           return 2402 +(ch * 2);
 }
