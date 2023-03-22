@@ -44,15 +44,16 @@
 #include "nvic_table.h"
 #include "spi_fast.h"
 #include "spi_revb.h"
-#include "spi_reva.h"
 #include "dma_reva.h"
 
 /* **** Definitions **** */
 
 // clang-format off
 typedef struct {
-    // Saved Init Data from initialization.
+    // Info from initialization.
+    bool                initialized;
     mxc_spi_init_t      init;
+// TODO: Copy what you need
 
     // Transaction Data.
     uint16_t            *tx_buffer;
@@ -62,7 +63,7 @@ typedef struct {
     
     // Chip Select Info.
     bool                deassert; // CS Deasserted at the end of a transmission.
-    mxc_spi_target_t    current_cs_config;
+    mxc_spi_target_t    current_cs_cfg;
 
     // DMA Settings.
     mxc_dma_reva_regs_t *dma;
@@ -71,6 +72,7 @@ typedef struct {
 // TODO: Should the request select data be saved or should there be a function that
 //  sets the proper Request Selects bits in DMA registers and call that function in
 //  chip-specific level Init function
+// Make a function for these two
     int                 tx_dma_reqsel;
     int                 rx_dma_reqsel;
 
@@ -304,13 +306,16 @@ int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
             return E_NONE_AVAIL;
         }
 
-// TODO: Should the caller deal with enabling SetVector or should it be handled inside the driver?
+// TODO: Caller will deal with enabling SetVector
         // MXC_NVIC_SetVector(MXC_DMA_GET_IRQ(STATES[spi_num].tx_dma_ch), MXC_SPI_RevB_DMA_TX_Handler);
         // NVIC_EnableIRQ(MXC_DMA_GET_IRQ(STATES[spi_num].tx_dma_ch));
 
         // MXC_NVIC_SetVector(MXC_DMA_GET_IRQ(STATES[spi_num].rx_dma_ch), MXC_SPI_RevB_DMA_RX_Handler);
         // NVIC_EnableIRQ(MXC_DMA_GET_IRQ(STATES[spi_num].rx_dma_ch));
     }
+
+    // If successful, mark STATE of this SPI instance as initialized.
+    STATES[spi_num].initialized = true;
 
     return E_NO_ERROR;
 }
@@ -442,7 +447,7 @@ int MXC_SPI_RevB_GetFrequency(mxc_spi_reva_regs_t *spi)
 int MXC_SPI_RevB_SetDataSize(mxc_spi_reva_regs_t *spi, int data_size)
 {
     int spi_num;
-    int save_enable_state;
+    int saved_enable_state;
 
     // HW has problem with these two character sizes
     if (data_size == 1 || data_size > 16) {
@@ -466,7 +471,7 @@ int MXC_SPI_RevB_SetDataSize(mxc_spi_reva_regs_t *spi, int data_size)
         // Update data size from save Init function.
         STATES[spi_num].init.data_size = data_size;
 
-        if (dataSize < 16) {
+        if (data_size < 16) {
             MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
                          data_size << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
         } else {
@@ -663,7 +668,7 @@ int MXC_SPI_RevB_SetRegisterCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_
         return E_BAD_PARAM;
     }
 
-    if (&(STATES[spi_num].init) == NULL) {
+    if (STATES[spi_num].initialized == false) {
         return E_BAD_STATE;
     }
 
@@ -683,7 +688,7 @@ int MXC_SPI_RevB_GetActive(mxc_spi_reva_regs_t *spi)
 }
 
 /* ** Transaction Functions ** */
-
+// TODO: Request Object
 int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint32_t deassert, mxc_spi_target_t *cs_cfg)
 {
     int spi_num, tx_dummy_len;
@@ -697,6 +702,11 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
     // Ensure valid chip select option.  
     if (cs_cfg == NULL) {
         return E_NULL_PTR;
+    }
+
+    // Make sure SPI Instance was initialized.
+    if (STATES[spi_num].initialized == false) {
+        return E_BAD_STATE;
     }
 
 // TODO: Check if initializing DMA affects non-DMA transactions
@@ -800,6 +810,7 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
     return E_SUCCESS;
 }
 
+// TODO: Match Polling, Async, and DMA function names of chip-specific level
 int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint32_t deassert, mxc_spi_target_t *cs_cfg)
 {
     int error;
@@ -811,7 +822,7 @@ int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffe
     }
 
     // This function fills in the STATES value for the flags that checks for blocking status.
-    error = MXC_SPI_RevB_MasterTransaction(spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, idx_mask);
+    error = MXC_SPI_RevB_MasterTransaction(spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, cs_cfg);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -823,11 +834,11 @@ int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffe
 }
 
 
-int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len,  uint32_t deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert, mxc_spi_target_t *cs_cfg)
 {
     int spi_num, tx_dummy_len;
     // For readability purposes.
-    int rx_dma_ch, tx_dma_ch;
+    int rx_ch, tx_ch;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
@@ -836,6 +847,11 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
 
     // Make sure DMA is initialized.
     if (STATES[spi_num].init.use_dma == false) {
+        return E_BAD_STATE;
+    }
+
+    // Make sure SPI Instance was initialized.
+    if (STATES[spi_num].initialized == false) {
         return E_BAD_STATE;
     }
 
@@ -878,17 +894,17 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     // 1) For TX transmissions.
     if (tx_len > 1) {
         // For readability purposes.
-        tx_dma_ch = STATES[spi_num].tx_dma_ch;
+        tx_ch = STATES[spi_num].tx_dma_ch;
 
         // Configure TX DMA channel to fill the SPI TX FIFO
         spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN | (31 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
         
         // Hardware requires writing the first byte into the FIFO manually.
         spi->fifo32 = tx_buffer[0];
-        STATES[spi_num].dma->ch[tx_dma_ch].src = (uint32_t)(tx_buffer + 1);
-        STATES[spi_num].dma->ch[tx_dma_ch].cnt = tx_len - 1;
-        STATES[spi_num].dma->ch[tx_dma_ch].ctrl |= MXC_F_DMA_REVA_CTRL_SRCINC;
-        STATES[spi_num].dma->ch[tx_dma_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
+        STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + 1);
+        STATES[spi_num].dma->ch[tx_ch].cnt = tx_len - 1;
+        STATES[spi_num].dma->ch[tx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_SRCINC;
+        STATES[spi_num].dma->ch[tx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
 
     // 2) For single character transmissions.
     } else if (tx_len == 1) {
@@ -904,26 +920,26 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     //  AND receive is set by TX_NUM_CHAR, and the RX_NUM_CHAR field of ctrl1 is ignored.
     } else if (tx_len == 0 && STATES[spi_num].init.width == MXC_SPI_WIDTH_STANDARD) {
         // For readability purposes.
-        tx_dma_ch = STATES[spi_num].tx_dma_ch;
+        tx_ch = STATES[spi_num].tx_dma_ch;
 
         // Configure TX DMA channel to retransmit the dummy byte
         spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN);
-        STATES[spi_num].dma->ch[tx_dma_ch].src = (uint32_t)&(STATES[spi_num].init.tx_dummy_value);
-        STATES[spi_num].dma->ch[tx_dma_ch].cnt = rx_len;
-        STATES[spi_num].dma->ch[tx_dma_ch].ctrl &= ~MXC_F_DMA_REVA_CTRL_SRCINC;
-        STATES[spi_num].dma->ch[tx_dma_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
+        STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)&(STATES[spi_num].init.tx_dummy_value);
+        STATES[spi_num].dma->ch[tx_ch].cnt = rx_len;
+        STATES[spi_num].dma->ch[tx_ch].ctrl &= ~MXC_F_DMA_REVA_CTRL_SRCINC;
+        STATES[spi_num].dma->ch[tx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
     }
 
     // Set up DMA RX Transactions.
     if (rx_len > 0) {
         // For readability purposes.
-        rx_dma_ch = STATES[spi_num].rx_dma_ch;
+        rx_ch = STATES[spi_num].rx_dma_ch;
 
         // Configure RX DMA channel to unload the SPI RX FIFO
         spi->dma |= (MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN);
-        STATES[spi_num].dma->ch[rx_dma_ch].dst = (uint32_t)rx_buffer;
-        STATES[spi_num].dma->ch[rx_dma_ch].cnt = rx_len;
-        STATES[spi_num].dma->ch[rx_dma_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
+        STATES[spi_num].dma->ch[rx_ch].dst = (uint32_t)rx_buffer;
+        STATES[spi_num].dma->ch[rx_ch].cnt = rx_len;
+        STATES[spi_num].dma->ch[rx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
     }
 
     // Toggle Chip Select Pin if handled by the driver
@@ -966,7 +982,7 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint32_t deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert, mxc_spi_target_t *cs_cfg)
 {
     int error;
     int spi_num;
@@ -977,7 +993,7 @@ int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_bu
     }
 
     // This function fills in the STATES value for the flags that checks for blocking status.
-    error = MXC_SPI_RevB_MasterTransactionDMA(spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, idx_mask);
+    error = MXC_SPI_RevB_MasterTransactionDMA(spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, cs_cfg);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -1011,8 +1027,8 @@ void MXC_SPI_RevB_Handler(mxc_spi_reva_regs_t *spi)
         if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
             if (STATES[spi_num].deassert == true) {
                 // Readability for handling Chip Select.
-                cs_port = STATES[spi_num].current_cs_config.pins.port;
-                cs_mask = STATES[spi_num].current_cs_config.pins.mask;
+                cs_port = STATES[spi_num].current_cs_cfg.pins.port;
+                cs_mask = STATES[spi_num].current_cs_cfg.pins.mask;
             
                 cs_port->out ^= cs_mask;
             } // Don't deassert the CS pin if false for multiple repeated transactions.
@@ -1048,7 +1064,7 @@ void MXC_SPI_RevB_Handler(mxc_spi_reva_regs_t *spi)
 void MXC_SPI_RevB_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
 {
     int spi_num;
-    uint32_t tx_channel;
+    uint32_t tx_ch;
     uint32_t status;
 
     // Used later for readability purposes on handling Chip Select.
@@ -1058,19 +1074,19 @@ void MXC_SPI_RevB_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
 
-    tx_channel = STATES[spi_num].tx_dma_ch;
-    status = STATES[spi_num].dma->ch[tx_channel].status;
+    tx_ch = STATES[spi_num].tx_dma_ch;
+    status = STATES[spi_num].dma->ch[tx_ch].status;
 
     // Count-to-Zero (DMA TX complete)
     if (status & MXC_F_DMA_REVA_STATUS_CTZ_IF) { 
-        STATES[spi_num].dma->ch[tx_channel].status |= MXC_F_DMA_REVA_STATUS_CTZ_IF;
+        STATES[spi_num].dma->ch[tx_ch].status |= MXC_F_DMA_REVA_STATUS_CTZ_IF;
 
         // Toggle CS Pin if Driver is handling it.
         if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
             if (STATES[spi_num].deassert == true) {
                 // Readability for handling Chip Select.
-                cs_port = STATES[spi_num].current_cs_config.pins.port;
-                cs_mask = STATES[spi_num].current_cs_config.pins.mask;
+                cs_port = STATES[spi_num].current_cs_cfg.pins.port;
+                cs_mask = STATES[spi_num].current_cs_cfg.pins.mask;
             
                 cs_port->out ^= cs_mask;
             } // Don't deassert the CS pin if false for multiple repeated transactions.
@@ -1086,33 +1102,36 @@ void MXC_SPI_RevB_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
 
     // Bus Error
     if (status & MXC_F_DMA_REVA_STATUS_BUS_ERR) {
-        STATES[spi_num].dma->ch[tx_channel].status |= MXC_F_DMA_REVA_STATUS_BUS_ERR;
+        STATES[spi_num].dma->ch[tx_ch].status |= MXC_F_DMA_REVA_STATUS_BUS_ERR;
     }
 }
 
 void MXC_SPI_RevB_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
 {
     int spi_num;
-    uint32_t rx_channel;
+    uint32_t rx_ch;
     uint32_t status;
+    // Used later for readability purposes on handling Chip Select.
+    mxc_gpio_regs_t *cs_port;
+    uint32_t cs_mask;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
 
-    rx_channel = STATES[spi_num].rx_dma_ch;
-    status = STATES[spi_num].dma->ch[rx_channel].status;
+    rx_ch = STATES[spi_num].rx_dma_ch;
+    status = STATES[spi_num].dma->ch[rx_ch].status;
 
     // Count-to-Zero (DMA RX complete)
     if (status & MXC_F_DMA_REVA_STATUS_CTZ_IF) { 
         STATES[spi_num].rx_done = 1;
-        STATES[spi_num].dma->ch[rx_channel].status |= MXC_F_DMA_STATUS_CTZ_IF;
+        STATES[spi_num].dma->ch[rx_ch].status |= MXC_F_DMA_STATUS_CTZ_IF;
 
         // Toggle CS Pin if Driver is handling it.
         if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
             if (STATES[spi_num].deassert == true) {
                 // Readability for handling Chip Select.
-                cs_port = STATES[spi_num].current_cs_config.pins.port;
-                cs_mask = STATES[spi_num].current_cs_config.pins.mask;
+                cs_port = STATES[spi_num].current_cs_cfg.pins.port;
+                cs_mask = STATES[spi_num].current_cs_cfg.pins.mask;
             
                 cs_port->out ^= cs_mask;
             } // Don't deassert the CS pin if false for multiple repeated transactions.
@@ -1128,6 +1147,6 @@ void MXC_SPI_RevB_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
 
     // Bus Error
     if (status & MXC_F_DMA_REVA_STATUS_BUS_ERR) {
-        STATES[spi_num].dma->ch[rx_channel].status |= MXC_F_DMA_STATUS_BUS_ERR;
+        STATES[spi_num].dma->ch[rx_ch].status |= MXC_F_DMA_STATUS_BUS_ERR;
     }
 }
