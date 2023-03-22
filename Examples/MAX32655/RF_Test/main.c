@@ -601,7 +601,7 @@ void vCmdLineTask(void *pvParameters)
                         if (bufferIndex > 0) {
                             bufferIndex--;
                             memset(&inputBuffer[bufferIndex], 0x00, 1);
-                            WsfBufIoWrite((const uint8_t *)backspace, sizeof(backspace));
+                            printf("%s",backspace);
                         }
                         fflush(stdout);
                     } else if (tmp == 0x09)
