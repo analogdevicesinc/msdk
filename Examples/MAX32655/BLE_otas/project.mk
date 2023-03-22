@@ -7,25 +7,20 @@
 
 # **********************************************************
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
 # Cordio library options
 INIT_PERIPHERAL = 1
-INIT_BROADCASTER = 0
 INIT_CENTRAL = 0
-INIT_OBSERVER = 0
 
+# TRACE option
+# Set to 0 to disable
+# Set to 1 to enable serial port trace messages
+# Set to 2 to enable verbose messages
 TRACE = 1
 
-DEBUG = 1
-
-PAL_NVM_SIZE=0x2000
-
 BUILD_BOOTLOADER?=1
-
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
 
 AUTOSEARCH=0
 VPATH += .
@@ -66,5 +61,5 @@ ${BOOTLOADER_BIN}:
 bl_obj: $(BOOTLOADER_OBJ)
 
 ${BOOTLOADER_OBJ}: bl_build.S ${BOOTLOADER_BIN}
-	${CC} ${AFLAGS} -o ${@} -c bl_build.S 
+	${CC} ${AFLAGS} -o ${@} -c bl_build.S
 endif

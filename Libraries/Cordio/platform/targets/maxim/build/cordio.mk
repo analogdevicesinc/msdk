@@ -22,6 +22,32 @@
 #     Configuration
 #--------------------------------------------------------------------------------------------------
 
+# Cordio Library Options
+DEBUG           ?= 1
+TRACE           ?= 1
+BT_VER          ?= 9
+INIT_PERIPHERAL ?= 1
+INIT_CENTRAL    ?= 1
+INIT_ENCRYPTED  ?= 1
+INIT_OBSERVER   ?= 0
+INIT_BROADCASTER?= 0
+
+WSF_HEAP_SIZE ?= 0x10000
+CFG_DEV += WSF_HEAP_SIZE=$(WSF_HEAP_SIZE)
+
+# Select either option, or both for combined Host and Controller on single core
+BLE_HOST        ?= 1
+BLE_CONTROLLER  ?= 1
+
+ifneq "$(BLE_HOST)" ""
+ifneq "$(BLE_HOST)" "0"
+ifneq "$(BLE_CONTROLLER)" "1"
+RISCV_LOAD = 1
+RISCV_APP ?= ../BLE4_ctr
+endif
+endif
+endif
+
 ROOT_DIR        ?= $(CORDIO_DIR)
 BSP_DIR         ?= $(LIBS_DIR)
 
@@ -37,7 +63,7 @@ PLATFORM        := maxim
 RTOS            ?= baremetal
 
 # Used for storing pairing/bonding information
-PAL_NVM_SIZE	?= 0x8000
+PAL_NVM_SIZE	?= 0x2000
 
 CFG_DEV         := BT_VER=$(BT_VER)
 CFG_DEV         += SCH_CHECK_LIST_INTEGRITY=1
@@ -62,8 +88,8 @@ endif
 
 # Host includes
 ifneq ($(BLE_HOST),0)
-include $(CORDIO_DIR)/ble-apps/build/common/gcc/config.mk
-include $(CORDIO_DIR)/ble-apps/build/common/gcc/sources.mk
+include $(ROOT_DIR)/ble-apps/build/common/gcc/config.mk
+include $(ROOT_DIR)/ble-apps/build/common/gcc/sources.mk
 endif
 
 # Controller only includes
@@ -80,18 +106,29 @@ else
 include $(ROOT_DIR)/controller/build/common/gcc/sources_ll_5.mk
 endif
 
-ifeq ($(TRACE),1)
-CFG_DEV         += LL_TRACE_ENABLED=1
-endif
-
 endif
 endif
 
 include $(ROOT_DIR)/platform/targets/maxim/build/config_maxim.mk
 
-# Convert Cordio definitions to Maxim BSP
-PROJ_CFLAGS     += $(addprefix -D,$(CFG_DEV))
-PROJ_AFLAGS     += -DPAL_NVM_SIZE=$(PAL_NVM_SIZE)
-SRCS            += $(C_FILES)
-VPATH           += %.c $(sort $(dir $(C_FILES)))
-IPATH           += $(INC_DIRS)
+# APP_BUILD_C_FILES: Rebuild these for each application. This will allow us to limit the code size
+# based on the application configuration
+ifeq ($(BLE_CONTROLLER),1)
+APP_BUILD_C_FILES += ${ROOT_DIR}/controller/sources/ble/init/init_ctr.c
+APP_BUILD_C_FILES += ${ROOT_DIR}/controller/sources/ble/init/init.c
+endif
+
+# Remove these files from the library build, board level dependencies. Will have to be
+# re-built for each application
+APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_uart.c
+APP_BUILD_C_FILES += ${ROOT_DIR}/platform/targets/maxim/${CHIP_LC}/sources/pal_sys.c
+
+# This will let us enable/disable trace messaging by application
+APP_BUILD_C_FILES += ${ROOT_DIR}/wsf/sources/targets/${RTOS}/wsf_trace.c
+
+ifeq ($(RTOS),freertos)
+APP_BUILD_C_FILES += $(sort $(wildcard $(ROOT_DIR)/wsf/sources/targets/freertos/*.c))
+endif
+
+# $(filter-out pattern…,text)
+C_FILES := $(filter-out ${APP_BUILD_C_FILES},${C_FILES})

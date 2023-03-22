@@ -18,8 +18,6 @@
 /*************************************************************************************************/
 
 #include "pal_led.h"
-#include "led.h"
-#include "board.h"
 
 /**************************************************************************************************
   Macros
@@ -34,6 +32,12 @@
 #define PAL_BB_LED_RX_OK      0x84
 #define PAL_BB_LED_RX_TO      0x88
 #define PAL_BB_LED_RX_CRC     0x90
+
+/* BSP LED Driver */
+extern const unsigned int num_leds;
+extern int LED_Init(void);
+extern void LED_On(unsigned int idx);
+extern void LED_Off(unsigned int idx);
 
 /**************************************************************************************************
   Local Variables
