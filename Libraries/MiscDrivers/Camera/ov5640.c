@@ -68,7 +68,8 @@ static struct camera_reg default_regs[] = {
     {0x3018, 0x00},
 
     // SC PLL Control
-    {0x3034, 0x1a}, // MIPI 10-bit mode
+    // {0x3034, 0x1a}, // 10-bit RAW mode
+    {0x3034, 0x18}, // 8-bit RAW mode
     {0x3008, 0x02},
     {0x3035, 0x14},
     {0x3036, 0x38},
@@ -409,8 +410,6 @@ static struct camera_reg default_regs[] = {
     // PLL multiplier/divider
     {0x303d, 0x20},
     {0x303b, 0x1e},
-    {0x3034, 0x1a},
-    // {0x3035, 0x13},
     {0x501f, 0x01},
     // Format control (RGB Type)
     {0x4300, 0x00},

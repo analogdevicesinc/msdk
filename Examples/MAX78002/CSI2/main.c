@@ -293,18 +293,6 @@ int main(void)
     }
 
     mipi_camera_setup(IMAGE_WIDTH, IMAGE_HEIGHT, PIXEL_FORMAT, OUT_SEQ, MUX_CTRL);
-    uint8_t reg = 0;
-    mipi_camera_read_reg(0x3034, &reg);
-    printf("sc_pll_ctrl0: 0x%x\n", reg);
-    mipi_camera_write_reg(0x3034, (reg & 0xF0) | 0x8);
-    mipi_camera_read_reg(0x3034, &reg);
-    printf("sc_pll_ctrl0: 0x%x\n", reg);
-
-    mipi_camera_read_reg(0x3035, &reg);
-    printf("sc_pll_ctrl1: 0x%x\n", reg);
-    // mipi_camera_write_reg(0x3035, 0x14);
-    // mipi_camera_read_reg(0x3035, &reg);
-    // printf("sc_pll_ctrl1: 0x%x\n", reg);
 
     // Configure RX Controller and PPI (D-PHY)
     ctrl_cfg.invert_ppi_clk = MXC_CSI2_PPI_NO_INVERT;
