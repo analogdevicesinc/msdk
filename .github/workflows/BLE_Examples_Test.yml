@@ -307,6 +307,7 @@ jobs:
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
           # leave board in known state if workflow should end early
+          cd .github/workflows/scripts
           echo "Erasing Main MAX32655"
           ./mass_erase_board.sh max32655 max32655_b1
           echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
@@ -316,6 +317,7 @@ jobs:
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
           # leave board in known state if workflow should end early
+          cd .github/workflows/scripts
           echo "Erasing MAX32655"
           ./mass_erase_board.sh max32655 max32655_board2
 
@@ -556,6 +558,7 @@ jobs:
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
           echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
           # leave board in known state if workflow should end early
+          cd .github/workflows/scripts
           echo "Erasing Main MAX32655"
           ./mass_erase_board.sh max32655 max32655_b1
 
@@ -564,6 +567,7 @@ jobs:
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
           # leave board in known state if workflow should end early
+          cd .github/workflows/scripts
           echo "Erasing MAX32665"
           ./mass_erase_board.sh max32665 max32665_board1
 
@@ -803,7 +807,8 @@ jobs:
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
           echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
-           # leave board in known state if workflow should end early
+          # leave board in known state if workflow should end early
+          cd .github/workflows/scripts
           echo "Erasing Main MAX32655"
           ./mass_erase_board.sh max32655 max32655_b1
 
@@ -812,6 +817,7 @@ jobs:
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
           # leave board in known state if workflow should end early
+          cd .github/workflows/scripts
           echo "Erasing MAX32690"
           ./mass_erase_board.sh max32690 max32690_board_w1
 
