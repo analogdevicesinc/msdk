@@ -37,8 +37,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78000_INCLUDE_RTC_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78000_INCLUDE_RTC_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_RTC_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_RTC_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -253,4 +253,4 @@ typedef struct {
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78000_INCLUDE_RTC_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_RTC_REGS_H_
