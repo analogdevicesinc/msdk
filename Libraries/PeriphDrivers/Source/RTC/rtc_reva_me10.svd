@@ -311,40 +311,40 @@
         <resetMask>0x00000000</resetMask>
         <fields>
           <field>
+            <name>FILTER_EN</name>
+            <description>Enable analog deglitch filter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIAS_SEL</name>
+            <description>If IBIAS_EN is 1, selects 4x,2x mode.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>HYST_EN</name>
+            <description>Enables high current hysteresis buffer.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIAS_EN</name>
+            <description>Enables higher 4x,2x current modes.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>BYPASS</name>
             <description>RTC Crystal Bypass</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
           <field>
             <name>32KOUT</name>
             <description>RTC 32kHz Square Wave Output</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disabled.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enabled.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
           </field>
         </fields>
       </register>
