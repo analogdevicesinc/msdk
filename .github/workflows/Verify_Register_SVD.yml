@@ -117,6 +117,8 @@ jobs:
             for svd_file in $PERIPH_SVD_FILE_LIST
             do
               # Make sure deleted peripheral SVD file is a necessary for the register generation.
+              pwd
+              ls
               is_necessary_svd_files=$(find ../${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/*/$CHIP_PERIPH -exec grep -s "$svd_file" {} \;)
               if [[ -n $is_necessary_svd_files ]]; then
                 # Check for deletion
