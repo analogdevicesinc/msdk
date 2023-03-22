@@ -75,4 +75,5 @@ void setPacketLen(uint8_t len);
 void setPacketType(uint8_t type);
 void setTxPower(int8_t power);
 void printConfigs(void);
+uint16_t getFreqFromRfChannel(uint8_t ch);
 #endif

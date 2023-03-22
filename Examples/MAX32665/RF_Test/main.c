@@ -190,7 +190,6 @@ void TMR2_IRQHandler(void)
 
     /* Restart the timeout */
     MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
-    MXC_TMR_EnableInt(MXC_TMR2);
 }
 /*************************************************************************************************/
 /*!
@@ -842,7 +841,6 @@ void startFreqHopping(void)
 {
     NVIC_EnableIRQ(TMR2_IRQn);
     MXC_TMR_TO_Start(MXC_TMR2, FREQ_HOP_PERIOD_US);
-    MXC_TMR_EnableInt(MXC_TMR2);
 } /*************************************************************************************************/
 void setPacketLen(uint8_t len)
 {
