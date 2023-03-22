@@ -37,8 +37,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_RTC_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_RTC_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78000_INCLUDE_RTC_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78000_INCLUDE_RTC_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -229,6 +229,18 @@ typedef struct {
  * @brief    RTC Oscillator Control Register.
  * @{
  */
+#define MXC_F_RTC_OSCCTRL_FILTER_EN_POS                0 /**< OSCCTRL_FILTER_EN Position */
+#define MXC_F_RTC_OSCCTRL_FILTER_EN                    ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_FILTER_EN_POS)) /**< OSCCTRL_FILTER_EN Mask */
+
+#define MXC_F_RTC_OSCCTRL_IBIAS_SEL_POS                1 /**< OSCCTRL_IBIAS_SEL Position */
+#define MXC_F_RTC_OSCCTRL_IBIAS_SEL                    ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_IBIAS_SEL_POS)) /**< OSCCTRL_IBIAS_SEL Mask */
+
+#define MXC_F_RTC_OSCCTRL_HYST_EN_POS                  2 /**< OSCCTRL_HYST_EN Position */
+#define MXC_F_RTC_OSCCTRL_HYST_EN                      ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_HYST_EN_POS)) /**< OSCCTRL_HYST_EN Mask */
+
+#define MXC_F_RTC_OSCCTRL_IBIAS_EN_POS                 3 /**< OSCCTRL_IBIAS_EN Position */
+#define MXC_F_RTC_OSCCTRL_IBIAS_EN                     ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_IBIAS_EN_POS)) /**< OSCCTRL_IBIAS_EN Mask */
+
 #define MXC_F_RTC_OSCCTRL_BYPASS_POS                   4 /**< OSCCTRL_BYPASS Position */
 #define MXC_F_RTC_OSCCTRL_BYPASS                       ((uint32_t)(0x1UL << MXC_F_RTC_OSCCTRL_BYPASS_POS)) /**< OSCCTRL_BYPASS Mask */
 
@@ -241,4 +253,4 @@ typedef struct {
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_RTC_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78000_INCLUDE_RTC_REGS_H_
