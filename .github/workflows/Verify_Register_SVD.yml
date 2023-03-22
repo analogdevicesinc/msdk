@@ -51,6 +51,10 @@ jobs:
             rm -rf *
           fi
           set -e
+
+          cd ..
+          pwd
+          ls
           
       # Checks-out MSDK and MSDK-INTERNAL repositories under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout msdk repository
@@ -91,6 +95,8 @@ jobs:
           else
             echo "No register file changed."
           fi
+
+          cd ..
           
       # This step is just to indicate status of job in Actions' console if there are no
       # register file changes.
@@ -108,7 +114,7 @@ jobs:
           cd ..
           pwd
           ls
-          
+
           cd ${{ env.MSDK_DIR }}
           PERIPH_SVD_FILE_LIST=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/PeriphDrivers/Source/*/*.svd')
 
