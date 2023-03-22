@@ -707,10 +707,12 @@ void txTestTask(void *pvParameters)
         testConfig.allData = notifVal;
 
         if (testConfig.testType == BLE_TX_TEST) {
-            sprintf(str, "Transmit RF channel %d on Freq %dMHz bytes/pkt : ", testConfig.channel,getFreqFromRfChannel(testConfig.channel), packetLen);
+            sprintf(str, "Transmit RF channel %d on Freq %dMHz bytes/pkt : ", testConfig.channel,
+                    getFreqFromRfChannel(testConfig.channel), packetLen);
             strcat(str, (const char *)getPacketTypeStr());
         } else {
-            sprintf(str, "Receive RF channel %d Freq %dMHz: ", testConfig.channel,getFreqFromRfChannel(testConfig.channel));
+            sprintf(str, "Receive RF channel %d Freq %dMHz: ", testConfig.channel,
+                    getFreqFromRfChannel(testConfig.channel));
         }
         strcat(str, " : ");
         strcat(str, (const char *)getPhyStr(phy));
@@ -752,8 +754,10 @@ void sweepTestTask(void *pvParameters)
 
         strcat(str, (const char *)getPhyStr(phy));
         /* sweep channels */
-        for (int i = sweepConfig.start_channel; i <=sweepConfig.end_channel; i++) {
-            APP_TRACE_INFO3("\r\n-----------------| RF channel %d %s Freq: %dMHz |----------------------\r\n",i, str, getFreqFromRfChannel(i));
+        for (int i = sweepConfig.start_channel; i <= sweepConfig.end_channel; i++) {
+            APP_TRACE_INFO3(
+                "\r\n-----------------| RF channel %d %s Freq: %dMHz |----------------------\r\n",
+                i, str, getFreqFromRfChannel(i));
 
             LlEnhancedTxTest(i, packetLen, packetType, phy, 0);
             vTaskDelay(sweepConfig.duration_per_ch_ms);
@@ -946,5 +950,5 @@ int main(void)
 /*************************************************************************************************/
 uint16_t getFreqFromRfChannel(uint8_t ch)
 {
-           return 2402 +(ch * 2);
+    return 2402 + (ch * 2);
 }

@@ -479,7 +479,9 @@ static BaseType_t cmd_ConstTx(char *pcWriteBuffer, size_t xWriteBufferLen,
 
     /* start test */
     if (err == E_NO_ERROR) {
-        snprintf(pcWriteBuffer, (size_t)MAX_OUTPUT_STRING_SIZE, "> Starting constant: TX RF channel %d on Freq %dMHz\r\n",channelNum, getFreqFromRfChannel(channelNum));
+        snprintf(pcWriteBuffer, (size_t)MAX_OUTPUT_STRING_SIZE,
+                 "> Starting constant: TX RF channel %d on Freq %dMHz\r\n", channelNum,
+                 getFreqFromRfChannel(channelNum));
         /* 0 num of packets for infinite*/
         LlEnhancedTxTest(channelNum, 255, LL_TEST_PKT_TYPE_PRBS15, phyVal, 0);
         activeTest = BLE_CONST_TX;
