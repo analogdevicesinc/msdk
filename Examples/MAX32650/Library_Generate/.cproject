@@ -61,12 +61,12 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="StaticLibrary_Example.null.923778415" name="StaticLibrary_Example"/>
+		<project id="Library_Generate.null.923778415" name="Library_Generate"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/StaticLibrary_Example"/>
+			<resource resourceType="PROJECT" workspacePath="/Library_Generate"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>

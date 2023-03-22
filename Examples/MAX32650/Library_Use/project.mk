@@ -5,7 +5,7 @@
 # For instructions on how to use this system, see
 # https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
  
-#BOARD=FTHR_APPS_A
+BOARD=FTHR_APPS_A
 # ^ For example, you can uncomment this line to make the 
 # project build for the "FTHR_APPS_A" board.
 
@@ -18,5 +18,13 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Uncomment this line to generate a static library
-#override .DEFAULT_GOAL = lib
+# Point to the location of the library
+LIB_LOCATION = ../Library_Generate
+# Add the location of the library to the list of include paths
+IPATH += $(LIB_LOCATION)
+ 
+# Add library to the list of dependencies
+LIB_NAME = Library_Generate
+LIB_BUILD_DIR = $(LIB_LOCATION)/build
+MYLIB = $(LIB_BUILD_DIR)/$(LIB_NAME).a
+LIBS += $(MYLIB)

@@ -44,7 +44,7 @@
 #include "led.h"
 #include "pb.h"
 
-#include "../TestLib/gpiolib.h"
+#include "gpiolib.h"
 
 /* ************************************************************************** */
 int main(void)
@@ -52,16 +52,14 @@ int main(void)
     int i;
 
     printf("\n\n*********************** Static Library Example **********************\n\n");
-    printf("This example uses static library functions to read the inputs SW1 and\n");
-    printf("SW2 then toggles the red and green LEDs according to the read values.\n");
+    printf("This example uses static library functions to read the input S2/SW2 and\n");
+    printf("switch the red LED on as long as the push button is pressed.\n");
 
     while (1) {
-        for (i = 0; i < num_pbs && i < num_leds; i++) {
-            if (gpio_get(&pb_pin[i])) {
-                gpio_set(&led_pin[i]);
-            } else {
-                gpio_clear(&led_pin[i]);
-            }
+        if (gpio_get(&pb_pin[0])) {
+            gpio_set(&led_pin[0]);
+        } else {
+            gpio_clear(&led_pin[0]);
         }
         MXC_Delay(1000);
     }

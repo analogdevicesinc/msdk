@@ -18,18 +18,9 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Add your static library here
-BUILD_DIR = $(CURDIR)/build
-LIB_BUILD_DIR = $(BUILD_DIR)/mylib
+# Uncomment this line to generate a static library
+override .DEFAULT_GOAL = lib
 
-# Point to the location of the library
-LIB_LOCATION = ../TestLib
-
-# Add library to the build
-LIB_NAME = mylib
-MYLIB = $(LIB_BUILD_DIR)/$(LIB_NAME).a
-LIBS += $(MYLIB)
-
-# Add rule to build library with a recursive make call
-$(MYLIB):
-	make -C $(LIB_LOCATION) BUILD_DIR=$(LIB_BUILD_DIR) PROJECT=$(LIB_NAME) lib
+ifeq "$(PROJECT)" ""
+PROJECT = Library_Generate
+endif
