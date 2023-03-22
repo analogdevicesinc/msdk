@@ -37,8 +37,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_SDHC_REGS_H_
-#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_SDHC_REGS_H_
+#ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_SDHC_REGS_H_
+#define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_SDHC_REGS_H_
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -92,7 +92,7 @@ typedef struct {
     __IO uint32_t arg_1;                /**< <tt>\b 0x08:</tt> SDHC ARG_1 Register */
     __IO uint16_t trans;                /**< <tt>\b 0x0C:</tt> SDHC TRANS Register */
     __IO uint16_t cmd;                  /**< <tt>\b 0x0E:</tt> SDHC CMD Register */
-    __IO uint16_t resp[8];              /**< <tt>\b 0x010:</tt> SDHC RESP Register */
+    __IO uint32_t resp[4];              /**< <tt>\b 0x010:</tt> SDHC RESP Register */
     __IO uint32_t buffer;               /**< <tt>\b 0x20:</tt> SDHC BUFFER Register */
     __I  uint32_t present;              /**< <tt>\b 0x024:</tt> SDHC PRESENT Register */
     __IO uint8_t  host_cn_1;            /**< <tt>\b 0x028:</tt> SDHC HOST_CN_1 Register */
@@ -207,24 +207,8 @@ typedef struct {
 #define MXC_F_SDHC_BLK_SIZE_TRANS_POS                  0 /**< BLK_SIZE_TRANS Position */
 #define MXC_F_SDHC_BLK_SIZE_TRANS                      ((uint16_t)(0xFFFUL << MXC_F_SDHC_BLK_SIZE_TRANS_POS)) /**< BLK_SIZE_TRANS Mask */
 
-#define MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS               12 /**< BLK_SIZE_HOST_BUF Position */
-#define MXC_F_SDHC_BLK_SIZE_HOST_BUF                   ((uint16_t)(0x7UL << MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS)) /**< BLK_SIZE_HOST_BUF Mask */
-#define MXC_V_SDHC_BLK_SIZE_HOST_BUF_4KB               ((uint16_t)0x0UL) /**< BLK_SIZE_HOST_BUF_4KB Value */
-#define MXC_S_SDHC_BLK_SIZE_HOST_BUF_4KB               (MXC_V_SDHC_BLK_SIZE_HOST_BUF_4KB << MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS) /**< BLK_SIZE_HOST_BUF_4KB Setting */
-#define MXC_V_SDHC_BLK_SIZE_HOST_BUF_8KB               ((uint16_t)0x1UL) /**< BLK_SIZE_HOST_BUF_8KB Value */
-#define MXC_S_SDHC_BLK_SIZE_HOST_BUF_8KB               (MXC_V_SDHC_BLK_SIZE_HOST_BUF_8KB << MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS) /**< BLK_SIZE_HOST_BUF_8KB Setting */
-#define MXC_V_SDHC_BLK_SIZE_HOST_BUF_16KB              ((uint16_t)0x2UL) /**< BLK_SIZE_HOST_BUF_16KB Value */
-#define MXC_S_SDHC_BLK_SIZE_HOST_BUF_16KB              (MXC_V_SDHC_BLK_SIZE_HOST_BUF_16KB << MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS) /**< BLK_SIZE_HOST_BUF_16KB Setting */
-#define MXC_V_SDHC_BLK_SIZE_HOST_BUF_32KB              ((uint16_t)0x3UL) /**< BLK_SIZE_HOST_BUF_32KB Value */
-#define MXC_S_SDHC_BLK_SIZE_HOST_BUF_32KB              (MXC_V_SDHC_BLK_SIZE_HOST_BUF_32KB << MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS) /**< BLK_SIZE_HOST_BUF_32KB Setting */
-#define MXC_V_SDHC_BLK_SIZE_HOST_BUF_64KB              ((uint16_t)0x4UL) /**< BLK_SIZE_HOST_BUF_64KB Value */
-#define MXC_S_SDHC_BLK_SIZE_HOST_BUF_64KB              (MXC_V_SDHC_BLK_SIZE_HOST_BUF_64KB << MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS) /**< BLK_SIZE_HOST_BUF_64KB Setting */
-#define MXC_V_SDHC_BLK_SIZE_HOST_BUF_128KB             ((uint16_t)0x5UL) /**< BLK_SIZE_HOST_BUF_128KB Value */
-#define MXC_S_SDHC_BLK_SIZE_HOST_BUF_128KB             (MXC_V_SDHC_BLK_SIZE_HOST_BUF_128KB << MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS) /**< BLK_SIZE_HOST_BUF_128KB Setting */
-#define MXC_V_SDHC_BLK_SIZE_HOST_BUF_256KB             ((uint16_t)0x6UL) /**< BLK_SIZE_HOST_BUF_256KB Value */
-#define MXC_S_SDHC_BLK_SIZE_HOST_BUF_256KB             (MXC_V_SDHC_BLK_SIZE_HOST_BUF_256KB << MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS) /**< BLK_SIZE_HOST_BUF_256KB Setting */
-#define MXC_V_SDHC_BLK_SIZE_HOST_BUF_512KB             ((uint16_t)0x7UL) /**< BLK_SIZE_HOST_BUF_512KB Value */
-#define MXC_S_SDHC_BLK_SIZE_HOST_BUF_512KB             (MXC_V_SDHC_BLK_SIZE_HOST_BUF_512KB << MXC_F_SDHC_BLK_SIZE_HOST_BUF_POS) /**< BLK_SIZE_HOST_BUF_512KB Setting */
+#define MXC_F_SDHC_BLK_SIZE_HOST_BUFF_POS              12 /**< BLK_SIZE_HOST_BUFF Position */
+#define MXC_F_SDHC_BLK_SIZE_HOST_BUFF                  ((uint16_t)(0x7UL << MXC_F_SDHC_BLK_SIZE_HOST_BUFF_POS)) /**< BLK_SIZE_HOST_BUFF Mask */
 
 /**@} end of group SDHC_BLK_SIZE_Register */
 
@@ -258,17 +242,9 @@ typedef struct {
  */
 #define MXC_F_SDHC_TRANS_DMA_EN_POS                    0 /**< TRANS_DMA_EN Position */
 #define MXC_F_SDHC_TRANS_DMA_EN                        ((uint16_t)(0x1UL << MXC_F_SDHC_TRANS_DMA_EN_POS)) /**< TRANS_DMA_EN Mask */
-#define MXC_V_SDHC_TRANS_DMA_EN_DIS                    ((uint16_t)0x0UL) /**< TRANS_DMA_EN_DIS Value */
-#define MXC_S_SDHC_TRANS_DMA_EN_DIS                    (MXC_V_SDHC_TRANS_DMA_EN_DIS << MXC_F_SDHC_TRANS_DMA_EN_POS) /**< TRANS_DMA_EN_DIS Setting */
-#define MXC_V_SDHC_TRANS_DMA_EN_EN                     ((uint16_t)0x1UL) /**< TRANS_DMA_EN_EN Value */
-#define MXC_S_SDHC_TRANS_DMA_EN_EN                     (MXC_V_SDHC_TRANS_DMA_EN_EN << MXC_F_SDHC_TRANS_DMA_EN_POS) /**< TRANS_DMA_EN_EN Setting */
 
 #define MXC_F_SDHC_TRANS_BLK_CNT_EN_POS                1 /**< TRANS_BLK_CNT_EN Position */
 #define MXC_F_SDHC_TRANS_BLK_CNT_EN                    ((uint16_t)(0x1UL << MXC_F_SDHC_TRANS_BLK_CNT_EN_POS)) /**< TRANS_BLK_CNT_EN Mask */
-#define MXC_V_SDHC_TRANS_BLK_CNT_EN_DIS                ((uint16_t)0x0UL) /**< TRANS_BLK_CNT_EN_DIS Value */
-#define MXC_S_SDHC_TRANS_BLK_CNT_EN_DIS                (MXC_V_SDHC_TRANS_BLK_CNT_EN_DIS << MXC_F_SDHC_TRANS_BLK_CNT_EN_POS) /**< TRANS_BLK_CNT_EN_DIS Setting */
-#define MXC_V_SDHC_TRANS_BLK_CNT_EN_EN                 ((uint16_t)0x1UL) /**< TRANS_BLK_CNT_EN_EN Value */
-#define MXC_S_SDHC_TRANS_BLK_CNT_EN_EN                 (MXC_V_SDHC_TRANS_BLK_CNT_EN_EN << MXC_F_SDHC_TRANS_BLK_CNT_EN_POS) /**< TRANS_BLK_CNT_EN_EN Setting */
 
 #define MXC_F_SDHC_TRANS_AUTO_CMD_EN_POS               2 /**< TRANS_AUTO_CMD_EN Position */
 #define MXC_F_SDHC_TRANS_AUTO_CMD_EN                   ((uint16_t)(0x3UL << MXC_F_SDHC_TRANS_AUTO_CMD_EN_POS)) /**< TRANS_AUTO_CMD_EN Mask */
@@ -281,17 +257,9 @@ typedef struct {
 
 #define MXC_F_SDHC_TRANS_READ_WRITE_POS                4 /**< TRANS_READ_WRITE Position */
 #define MXC_F_SDHC_TRANS_READ_WRITE                    ((uint16_t)(0x1UL << MXC_F_SDHC_TRANS_READ_WRITE_POS)) /**< TRANS_READ_WRITE Mask */
-#define MXC_V_SDHC_TRANS_READ_WRITE_WRITE              ((uint16_t)0x0UL) /**< TRANS_READ_WRITE_WRITE Value */
-#define MXC_S_SDHC_TRANS_READ_WRITE_WRITE              (MXC_V_SDHC_TRANS_READ_WRITE_WRITE << MXC_F_SDHC_TRANS_READ_WRITE_POS) /**< TRANS_READ_WRITE_WRITE Setting */
-#define MXC_V_SDHC_TRANS_READ_WRITE_READ               ((uint16_t)0x1UL) /**< TRANS_READ_WRITE_READ Value */
-#define MXC_S_SDHC_TRANS_READ_WRITE_READ               (MXC_V_SDHC_TRANS_READ_WRITE_READ << MXC_F_SDHC_TRANS_READ_WRITE_POS) /**< TRANS_READ_WRITE_READ Setting */
 
 #define MXC_F_SDHC_TRANS_MULTI_POS                     5 /**< TRANS_MULTI Position */
 #define MXC_F_SDHC_TRANS_MULTI                         ((uint16_t)(0x1UL << MXC_F_SDHC_TRANS_MULTI_POS)) /**< TRANS_MULTI Mask */
-#define MXC_V_SDHC_TRANS_MULTI_MULTI                   ((uint16_t)0x1UL) /**< TRANS_MULTI_MULTI Value */
-#define MXC_S_SDHC_TRANS_MULTI_MULTI                   (MXC_V_SDHC_TRANS_MULTI_MULTI << MXC_F_SDHC_TRANS_MULTI_POS) /**< TRANS_MULTI_MULTI Setting */
-#define MXC_V_SDHC_TRANS_MULTI_SINGLE                  ((uint16_t)0x0UL) /**< TRANS_MULTI_SINGLE Value */
-#define MXC_S_SDHC_TRANS_MULTI_SINGLE                  (MXC_V_SDHC_TRANS_MULTI_SINGLE << MXC_F_SDHC_TRANS_MULTI_POS) /**< TRANS_MULTI_SINGLE Setting */
 
 /**@} end of group SDHC_TRANS_Register */
 
@@ -303,42 +271,18 @@ typedef struct {
  */
 #define MXC_F_SDHC_CMD_RESP_TYPE_POS                   0 /**< CMD_RESP_TYPE Position */
 #define MXC_F_SDHC_CMD_RESP_TYPE                       ((uint16_t)(0x3UL << MXC_F_SDHC_CMD_RESP_TYPE_POS)) /**< CMD_RESP_TYPE Mask */
-#define MXC_V_SDHC_CMD_RESP_TYPE_NONE                  ((uint16_t)0x0UL) /**< CMD_RESP_TYPE_NONE Value */
-#define MXC_S_SDHC_CMD_RESP_TYPE_NONE                  (MXC_V_SDHC_CMD_RESP_TYPE_NONE << MXC_F_SDHC_CMD_RESP_TYPE_POS) /**< CMD_RESP_TYPE_NONE Setting */
-#define MXC_V_SDHC_CMD_RESP_TYPE_RESP136               ((uint16_t)0x1UL) /**< CMD_RESP_TYPE_RESP136 Value */
-#define MXC_S_SDHC_CMD_RESP_TYPE_RESP136               (MXC_V_SDHC_CMD_RESP_TYPE_RESP136 << MXC_F_SDHC_CMD_RESP_TYPE_POS) /**< CMD_RESP_TYPE_RESP136 Setting */
-#define MXC_V_SDHC_CMD_RESP_TYPE_RESP48                ((uint16_t)0x2UL) /**< CMD_RESP_TYPE_RESP48 Value */
-#define MXC_S_SDHC_CMD_RESP_TYPE_RESP48                (MXC_V_SDHC_CMD_RESP_TYPE_RESP48 << MXC_F_SDHC_CMD_RESP_TYPE_POS) /**< CMD_RESP_TYPE_RESP48 Setting */
-#define MXC_V_SDHC_CMD_RESP_TYPE_RESP48_BUSY           ((uint16_t)0x3UL) /**< CMD_RESP_TYPE_RESP48_BUSY Value */
-#define MXC_S_SDHC_CMD_RESP_TYPE_RESP48_BUSY           (MXC_V_SDHC_CMD_RESP_TYPE_RESP48_BUSY << MXC_F_SDHC_CMD_RESP_TYPE_POS) /**< CMD_RESP_TYPE_RESP48_BUSY Setting */
 
 #define MXC_F_SDHC_CMD_CRC_CHK_EN_POS                  3 /**< CMD_CRC_CHK_EN Position */
 #define MXC_F_SDHC_CMD_CRC_CHK_EN                      ((uint16_t)(0x1UL << MXC_F_SDHC_CMD_CRC_CHK_EN_POS)) /**< CMD_CRC_CHK_EN Mask */
-#define MXC_V_SDHC_CMD_CRC_CHK_EN_EN                   ((uint16_t)0x1UL) /**< CMD_CRC_CHK_EN_EN Value */
-#define MXC_S_SDHC_CMD_CRC_CHK_EN_EN                   (MXC_V_SDHC_CMD_CRC_CHK_EN_EN << MXC_F_SDHC_CMD_CRC_CHK_EN_POS) /**< CMD_CRC_CHK_EN_EN Setting */
-#define MXC_V_SDHC_CMD_CRC_CHK_EN_DIS                  ((uint16_t)0x0UL) /**< CMD_CRC_CHK_EN_DIS Value */
-#define MXC_S_SDHC_CMD_CRC_CHK_EN_DIS                  (MXC_V_SDHC_CMD_CRC_CHK_EN_DIS << MXC_F_SDHC_CMD_CRC_CHK_EN_POS) /**< CMD_CRC_CHK_EN_DIS Setting */
 
 #define MXC_F_SDHC_CMD_IDX_CHK_EN_POS                  4 /**< CMD_IDX_CHK_EN Position */
 #define MXC_F_SDHC_CMD_IDX_CHK_EN                      ((uint16_t)(0x1UL << MXC_F_SDHC_CMD_IDX_CHK_EN_POS)) /**< CMD_IDX_CHK_EN Mask */
-#define MXC_V_SDHC_CMD_IDX_CHK_EN_EN                   ((uint16_t)0x1UL) /**< CMD_IDX_CHK_EN_EN Value */
-#define MXC_S_SDHC_CMD_IDX_CHK_EN_EN                   (MXC_V_SDHC_CMD_IDX_CHK_EN_EN << MXC_F_SDHC_CMD_IDX_CHK_EN_POS) /**< CMD_IDX_CHK_EN_EN Setting */
-#define MXC_V_SDHC_CMD_IDX_CHK_EN_DIS                  ((uint16_t)0x0UL) /**< CMD_IDX_CHK_EN_DIS Value */
-#define MXC_S_SDHC_CMD_IDX_CHK_EN_DIS                  (MXC_V_SDHC_CMD_IDX_CHK_EN_DIS << MXC_F_SDHC_CMD_IDX_CHK_EN_POS) /**< CMD_IDX_CHK_EN_DIS Setting */
 
 #define MXC_F_SDHC_CMD_DATA_PRES_SEL_POS               5 /**< CMD_DATA_PRES_SEL Position */
 #define MXC_F_SDHC_CMD_DATA_PRES_SEL                   ((uint16_t)(0x1UL << MXC_F_SDHC_CMD_DATA_PRES_SEL_POS)) /**< CMD_DATA_PRES_SEL Mask */
 
 #define MXC_F_SDHC_CMD_TYPE_POS                        6 /**< CMD_TYPE Position */
 #define MXC_F_SDHC_CMD_TYPE                            ((uint16_t)(0x3UL << MXC_F_SDHC_CMD_TYPE_POS)) /**< CMD_TYPE Mask */
-#define MXC_V_SDHC_CMD_TYPE_NORMAL                     ((uint16_t)0x0UL) /**< CMD_TYPE_NORMAL Value */
-#define MXC_S_SDHC_CMD_TYPE_NORMAL                     (MXC_V_SDHC_CMD_TYPE_NORMAL << MXC_F_SDHC_CMD_TYPE_POS) /**< CMD_TYPE_NORMAL Setting */
-#define MXC_V_SDHC_CMD_TYPE_SUSPEND                    ((uint16_t)0x1UL) /**< CMD_TYPE_SUSPEND Value */
-#define MXC_S_SDHC_CMD_TYPE_SUSPEND                    (MXC_V_SDHC_CMD_TYPE_SUSPEND << MXC_F_SDHC_CMD_TYPE_POS) /**< CMD_TYPE_SUSPEND Setting */
-#define MXC_V_SDHC_CMD_TYPE_RESUME                     ((uint16_t)0x2UL) /**< CMD_TYPE_RESUME Value */
-#define MXC_S_SDHC_CMD_TYPE_RESUME                     (MXC_V_SDHC_CMD_TYPE_RESUME << MXC_F_SDHC_CMD_TYPE_POS) /**< CMD_TYPE_RESUME Setting */
-#define MXC_V_SDHC_CMD_TYPE_ABORT                      ((uint16_t)0x3UL) /**< CMD_TYPE_ABORT Value */
-#define MXC_S_SDHC_CMD_TYPE_ABORT                      (MXC_V_SDHC_CMD_TYPE_ABORT << MXC_F_SDHC_CMD_TYPE_POS) /**< CMD_TYPE_ABORT Setting */
 
 #define MXC_F_SDHC_CMD_IDX_POS                         8 /**< CMD_IDX Position */
 #define MXC_F_SDHC_CMD_IDX                             ((uint16_t)(0x3FUL << MXC_F_SDHC_CMD_IDX_POS)) /**< CMD_IDX Mask */
@@ -352,7 +296,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SDHC_RESP_CMD_RESP_POS                   0 /**< RESP_CMD_RESP Position */
-#define MXC_F_SDHC_RESP_CMD_RESP                       ((uint16_t)(0xFFFFUL << MXC_F_SDHC_RESP_CMD_RESP_POS)) /**< RESP_CMD_RESP Mask */
+#define MXC_F_SDHC_RESP_CMD_RESP                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_SDHC_RESP_CMD_RESP_POS)) /**< RESP_CMD_RESP Mask */
 
 /**@} end of group SDHC_RESP_Register */
 
@@ -373,8 +317,8 @@ typedef struct {
  * @brief    Present State.
  * @{
  */
-#define MXC_F_SDHC_PRESENT_CMD_COMP_POS                0 /**< PRESENT_CMD_COMP Position */
-#define MXC_F_SDHC_PRESENT_CMD_COMP                    ((uint32_t)(0x1UL << MXC_F_SDHC_PRESENT_CMD_COMP_POS)) /**< PRESENT_CMD_COMP Mask */
+#define MXC_F_SDHC_PRESENT_CMD_POS                     0 /**< PRESENT_CMD Position */
+#define MXC_F_SDHC_PRESENT_CMD                         ((uint32_t)(0x1UL << MXC_F_SDHC_PRESENT_CMD_POS)) /**< PRESENT_CMD Mask */
 
 #define MXC_F_SDHC_PRESENT_DAT_POS                     1 /**< PRESENT_DAT Position */
 #define MXC_F_SDHC_PRESENT_DAT                         ((uint32_t)(0x1UL << MXC_F_SDHC_PRESENT_DAT_POS)) /**< PRESENT_DAT Mask */
@@ -457,12 +401,6 @@ typedef struct {
 
 #define MXC_F_SDHC_PWR_BUS_VOLT_SEL_POS                1 /**< PWR_BUS_VOLT_SEL Position */
 #define MXC_F_SDHC_PWR_BUS_VOLT_SEL                    ((uint8_t)(0x7UL << MXC_F_SDHC_PWR_BUS_VOLT_SEL_POS)) /**< PWR_BUS_VOLT_SEL Mask */
-#define MXC_V_SDHC_PWR_BUS_VOLT_SEL_1V8_TYP            ((uint8_t)0x5UL) /**< PWR_BUS_VOLT_SEL_1V8_TYP Value */
-#define MXC_S_SDHC_PWR_BUS_VOLT_SEL_1V8_TYP            (MXC_V_SDHC_PWR_BUS_VOLT_SEL_1V8_TYP << MXC_F_SDHC_PWR_BUS_VOLT_SEL_POS) /**< PWR_BUS_VOLT_SEL_1V8_TYP Setting */
-#define MXC_V_SDHC_PWR_BUS_VOLT_SEL_3V_TYP             ((uint8_t)0x6UL) /**< PWR_BUS_VOLT_SEL_3V_TYP Value */
-#define MXC_S_SDHC_PWR_BUS_VOLT_SEL_3V_TYP             (MXC_V_SDHC_PWR_BUS_VOLT_SEL_3V_TYP << MXC_F_SDHC_PWR_BUS_VOLT_SEL_POS) /**< PWR_BUS_VOLT_SEL_3V_TYP Setting */
-#define MXC_V_SDHC_PWR_BUS_VOLT_SEL_3V3_TYP            ((uint8_t)0x7UL) /**< PWR_BUS_VOLT_SEL_3V3_TYP Value */
-#define MXC_S_SDHC_PWR_BUS_VOLT_SEL_3V3_TYP            (MXC_V_SDHC_PWR_BUS_VOLT_SEL_3V3_TYP << MXC_F_SDHC_PWR_BUS_VOLT_SEL_POS) /**< PWR_BUS_VOLT_SEL_3V3_TYP Setting */
 
 /**@} end of group SDHC_PWR_Register */
 
@@ -536,37 +474,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS             0 /**< TO_DATA_COUNT_VALUE Position */
-#define MXC_F_SDHC_TO_DATA_COUNT_VALUE                 ((uint8_t)(0xFUL << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS)) /**< TO_DATA_COUNT_VALUE Mask */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW13          ((uint8_t)0x0UL) /**< TO_DATA_COUNT_VALUE_2POW13 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW13          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW13 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW13 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW14          ((uint8_t)0x1UL) /**< TO_DATA_COUNT_VALUE_2POW14 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW14          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW14 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW14 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW15          ((uint8_t)0x2UL) /**< TO_DATA_COUNT_VALUE_2POW15 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW15          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW15 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW15 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW16          ((uint8_t)0x3UL) /**< TO_DATA_COUNT_VALUE_2POW16 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW16          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW16 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW16 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW17          ((uint8_t)0x4UL) /**< TO_DATA_COUNT_VALUE_2POW17 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW17          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW17 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW17 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW18          ((uint8_t)0x5UL) /**< TO_DATA_COUNT_VALUE_2POW18 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW18          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW18 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW18 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW19          ((uint8_t)0x6UL) /**< TO_DATA_COUNT_VALUE_2POW19 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW19          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW19 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW19 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW20          ((uint8_t)0x7UL) /**< TO_DATA_COUNT_VALUE_2POW20 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW20          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW20 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW20 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW21          ((uint8_t)0x8UL) /**< TO_DATA_COUNT_VALUE_2POW21 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW21          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW21 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW21 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW22          ((uint8_t)0x9UL) /**< TO_DATA_COUNT_VALUE_2POW22 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW22          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW22 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW22 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW23          ((uint8_t)0xAUL) /**< TO_DATA_COUNT_VALUE_2POW23 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW23          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW23 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW23 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW24          ((uint8_t)0xBUL) /**< TO_DATA_COUNT_VALUE_2POW24 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW24          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW24 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW24 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW25          ((uint8_t)0xCUL) /**< TO_DATA_COUNT_VALUE_2POW25 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW25          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW25 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW25 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW26          ((uint8_t)0xDUL) /**< TO_DATA_COUNT_VALUE_2POW26 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW26          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW26 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW26 Setting */
-#define MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW27          ((uint8_t)0xEUL) /**< TO_DATA_COUNT_VALUE_2POW27 Value */
-#define MXC_S_SDHC_TO_DATA_COUNT_VALUE_2POW27          (MXC_V_SDHC_TO_DATA_COUNT_VALUE_2POW27 << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS) /**< TO_DATA_COUNT_VALUE_2POW27 Setting */
+#define MXC_F_SDHC_TO_DATA_COUNT_VALUE                 ((uint8_t)(0x7UL << MXC_F_SDHC_TO_DATA_COUNT_VALUE_POS)) /**< TO_DATA_COUNT_VALUE Mask */
 
 /**@} end of group SDHC_TO_Register */
 
@@ -734,8 +642,8 @@ typedef struct {
 #define MXC_F_SDHC_ER_INT_EN_DATA_END_BIT_POS          6 /**< ER_INT_EN_DATA_END_BIT Position */
 #define MXC_F_SDHC_ER_INT_EN_DATA_END_BIT              ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_EN_DATA_END_BIT_POS)) /**< ER_INT_EN_DATA_END_BIT Mask */
 
-#define MXC_F_SDHC_ER_INT_EN_AUTO_CMD_12_POS           8 /**< ER_INT_EN_AUTO_CMD_12 Position */
-#define MXC_F_SDHC_ER_INT_EN_AUTO_CMD_12               ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_EN_AUTO_CMD_12_POS)) /**< ER_INT_EN_AUTO_CMD_12 Mask */
+#define MXC_F_SDHC_ER_INT_EN_AUTO_CMD_POS              8 /**< ER_INT_EN_AUTO_CMD Position */
+#define MXC_F_SDHC_ER_INT_EN_AUTO_CMD                  ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_EN_AUTO_CMD_POS)) /**< ER_INT_EN_AUTO_CMD Mask */
 
 #define MXC_F_SDHC_ER_INT_EN_ADMA_POS                  9 /**< ER_INT_EN_ADMA Position */
 #define MXC_F_SDHC_ER_INT_EN_ADMA                      ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_EN_ADMA_POS)) /**< ER_INT_EN_ADMA Mask */
@@ -813,11 +721,11 @@ typedef struct {
 #define MXC_F_SDHC_ER_INT_SIGNAL_DATA_END_BIT_POS      6 /**< ER_INT_SIGNAL_DATA_END_BIT Position */
 #define MXC_F_SDHC_ER_INT_SIGNAL_DATA_END_BIT          ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_SIGNAL_DATA_END_BIT_POS)) /**< ER_INT_SIGNAL_DATA_END_BIT Mask */
 
-#define MXC_F_SDHC_ER_INT_SIGNAL_CURRENT_LIMIT_POS     7 /**< ER_INT_SIGNAL_CURRENT_LIMIT Position */
-#define MXC_F_SDHC_ER_INT_SIGNAL_CURRENT_LIMIT         ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_SIGNAL_CURRENT_LIMIT_POS)) /**< ER_INT_SIGNAL_CURRENT_LIMIT Mask */
+#define MXC_F_SDHC_ER_INT_SIGNAL_CURR_LIM_POS          7 /**< ER_INT_SIGNAL_CURR_LIM Position */
+#define MXC_F_SDHC_ER_INT_SIGNAL_CURR_LIM              ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_SIGNAL_CURR_LIM_POS)) /**< ER_INT_SIGNAL_CURR_LIM Mask */
 
-#define MXC_F_SDHC_ER_INT_SIGNAL_AUTO_CMD_12_POS       8 /**< ER_INT_SIGNAL_AUTO_CMD_12 Position */
-#define MXC_F_SDHC_ER_INT_SIGNAL_AUTO_CMD_12           ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_SIGNAL_AUTO_CMD_12_POS)) /**< ER_INT_SIGNAL_AUTO_CMD_12 Mask */
+#define MXC_F_SDHC_ER_INT_SIGNAL_AUTO_CMD_POS          8 /**< ER_INT_SIGNAL_AUTO_CMD Position */
+#define MXC_F_SDHC_ER_INT_SIGNAL_AUTO_CMD              ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_SIGNAL_AUTO_CMD_POS)) /**< ER_INT_SIGNAL_AUTO_CMD Mask */
 
 #define MXC_F_SDHC_ER_INT_SIGNAL_ADMA_POS              9 /**< ER_INT_SIGNAL_ADMA Position */
 #define MXC_F_SDHC_ER_INT_SIGNAL_ADMA                  ((uint16_t)(0x1UL << MXC_F_SDHC_ER_INT_SIGNAL_ADMA_POS)) /**< ER_INT_SIGNAL_ADMA Mask */
@@ -863,29 +771,13 @@ typedef struct {
  * @{
  */
 #define MXC_F_SDHC_HOST_CN_2_UHS_POS                   0 /**< HOST_CN_2_UHS Position */
-#define MXC_F_SDHC_HOST_CN_2_UHS                       ((uint16_t)(0x7UL << MXC_F_SDHC_HOST_CN_2_UHS_POS)) /**< HOST_CN_2_UHS Mask */
-#define MXC_V_SDHC_HOST_CN_2_UHS_SDR12                 ((uint16_t)0x0UL) /**< HOST_CN_2_UHS_SDR12 Value */
-#define MXC_S_SDHC_HOST_CN_2_UHS_SDR12                 (MXC_V_SDHC_HOST_CN_2_UHS_SDR12 << MXC_F_SDHC_HOST_CN_2_UHS_POS) /**< HOST_CN_2_UHS_SDR12 Setting */
-#define MXC_V_SDHC_HOST_CN_2_UHS_SDR25                 ((uint16_t)0x1UL) /**< HOST_CN_2_UHS_SDR25 Value */
-#define MXC_S_SDHC_HOST_CN_2_UHS_SDR25                 (MXC_V_SDHC_HOST_CN_2_UHS_SDR25 << MXC_F_SDHC_HOST_CN_2_UHS_POS) /**< HOST_CN_2_UHS_SDR25 Setting */
-#define MXC_V_SDHC_HOST_CN_2_UHS_SDR50                 ((uint16_t)0x2UL) /**< HOST_CN_2_UHS_SDR50 Value */
-#define MXC_S_SDHC_HOST_CN_2_UHS_SDR50                 (MXC_V_SDHC_HOST_CN_2_UHS_SDR50 << MXC_F_SDHC_HOST_CN_2_UHS_POS) /**< HOST_CN_2_UHS_SDR50 Setting */
-#define MXC_V_SDHC_HOST_CN_2_UHS_DDR50                 ((uint16_t)0x4UL) /**< HOST_CN_2_UHS_DDR50 Value */
-#define MXC_S_SDHC_HOST_CN_2_UHS_DDR50                 (MXC_V_SDHC_HOST_CN_2_UHS_DDR50 << MXC_F_SDHC_HOST_CN_2_UHS_POS) /**< HOST_CN_2_UHS_DDR50 Setting */
+#define MXC_F_SDHC_HOST_CN_2_UHS                       ((uint16_t)(0x3UL << MXC_F_SDHC_HOST_CN_2_UHS_POS)) /**< HOST_CN_2_UHS Mask */
 
-#define MXC_F_SDHC_HOST_CN_2_1_8V_SIGNAL_POS           3 /**< HOST_CN_2_1_8V_SIGNAL Position */
-#define MXC_F_SDHC_HOST_CN_2_1_8V_SIGNAL               ((uint16_t)(0x1UL << MXC_F_SDHC_HOST_CN_2_1_8V_SIGNAL_POS)) /**< HOST_CN_2_1_8V_SIGNAL Mask */
+#define MXC_F_SDHC_HOST_CN_2_SIGNAL_V1_8_POS           3 /**< HOST_CN_2_SIGNAL_V1_8 Position */
+#define MXC_F_SDHC_HOST_CN_2_SIGNAL_V1_8               ((uint16_t)(0x1UL << MXC_F_SDHC_HOST_CN_2_SIGNAL_V1_8_POS)) /**< HOST_CN_2_SIGNAL_V1_8 Mask */
 
 #define MXC_F_SDHC_HOST_CN_2_DRIVER_STRENGTH_POS       4 /**< HOST_CN_2_DRIVER_STRENGTH Position */
 #define MXC_F_SDHC_HOST_CN_2_DRIVER_STRENGTH           ((uint16_t)(0x3UL << MXC_F_SDHC_HOST_CN_2_DRIVER_STRENGTH_POS)) /**< HOST_CN_2_DRIVER_STRENGTH Mask */
-#define MXC_V_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPEB     ((uint16_t)0x0UL) /**< HOST_CN_2_DRIVER_STRENGTH_TYPEB Value */
-#define MXC_S_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPEB     (MXC_V_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPEB << MXC_F_SDHC_HOST_CN_2_DRIVER_STRENGTH_POS) /**< HOST_CN_2_DRIVER_STRENGTH_TYPEB Setting */
-#define MXC_V_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPEA     ((uint16_t)0x1UL) /**< HOST_CN_2_DRIVER_STRENGTH_TYPEA Value */
-#define MXC_S_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPEA     (MXC_V_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPEA << MXC_F_SDHC_HOST_CN_2_DRIVER_STRENGTH_POS) /**< HOST_CN_2_DRIVER_STRENGTH_TYPEA Setting */
-#define MXC_V_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPEC     ((uint16_t)0x2UL) /**< HOST_CN_2_DRIVER_STRENGTH_TYPEC Value */
-#define MXC_S_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPEC     (MXC_V_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPEC << MXC_F_SDHC_HOST_CN_2_DRIVER_STRENGTH_POS) /**< HOST_CN_2_DRIVER_STRENGTH_TYPEC Setting */
-#define MXC_V_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPRD     ((uint16_t)0x3UL) /**< HOST_CN_2_DRIVER_STRENGTH_TYPRD Value */
-#define MXC_S_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPRD     (MXC_V_SDHC_HOST_CN_2_DRIVER_STRENGTH_TYPRD << MXC_F_SDHC_HOST_CN_2_DRIVER_STRENGTH_POS) /**< HOST_CN_2_DRIVER_STRENGTH_TYPRD Setting */
 
 #define MXC_F_SDHC_HOST_CN_2_EXCUTE_POS                6 /**< HOST_CN_2_EXCUTE Position */
 #define MXC_F_SDHC_HOST_CN_2_EXCUTE                    ((uint16_t)(0x1UL << MXC_F_SDHC_HOST_CN_2_EXCUTE_POS)) /**< HOST_CN_2_EXCUTE Mask */
@@ -907,24 +799,20 @@ typedef struct {
  * @brief    Capabilities 0-31.
  * @{
  */
-#define MXC_F_SDHC_CFG_0_TO_FREQ_POS                   0 /**< CFG_0_TO_FREQ Position */
-#define MXC_F_SDHC_CFG_0_TO_FREQ                       ((uint32_t)(0x3FUL << MXC_F_SDHC_CFG_0_TO_FREQ_POS)) /**< CFG_0_TO_FREQ Mask */
-#define MXC_V_SDHC_CFG_0_TO_FREQ_1MHZ                  ((uint32_t)0x1UL) /**< CFG_0_TO_FREQ_1MHZ Value */
-#define MXC_S_SDHC_CFG_0_TO_FREQ_1MHZ                  (MXC_V_SDHC_CFG_0_TO_FREQ_1MHZ << MXC_F_SDHC_CFG_0_TO_FREQ_POS) /**< CFG_0_TO_FREQ_1MHZ Setting */
+#define MXC_F_SDHC_CFG_0_TO_CLK_FREQ_POS               0 /**< CFG_0_TO_CLK_FREQ Position */
+#define MXC_F_SDHC_CFG_0_TO_CLK_FREQ                   ((uint32_t)(0x3FUL << MXC_F_SDHC_CFG_0_TO_CLK_FREQ_POS)) /**< CFG_0_TO_CLK_FREQ Mask */
 
-#define MXC_F_SDHC_CFG_0_CLK_UNIT_POS                  7 /**< CFG_0_CLK_UNIT Position */
-#define MXC_F_SDHC_CFG_0_CLK_UNIT                      ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_CLK_UNIT_POS)) /**< CFG_0_CLK_UNIT Mask */
+#define MXC_F_SDHC_CFG_0_TO_CLK_UNIT_POS               7 /**< CFG_0_TO_CLK_UNIT Position */
+#define MXC_F_SDHC_CFG_0_TO_CLK_UNIT                   ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_TO_CLK_UNIT_POS)) /**< CFG_0_TO_CLK_UNIT Mask */
 
 #define MXC_F_SDHC_CFG_0_CLK_FREQ_POS                  8 /**< CFG_0_CLK_FREQ Position */
 #define MXC_F_SDHC_CFG_0_CLK_FREQ                      ((uint32_t)(0xFFUL << MXC_F_SDHC_CFG_0_CLK_FREQ_POS)) /**< CFG_0_CLK_FREQ Mask */
 
 #define MXC_F_SDHC_CFG_0_MAX_BLK_LEN_POS               16 /**< CFG_0_MAX_BLK_LEN Position */
 #define MXC_F_SDHC_CFG_0_MAX_BLK_LEN                   ((uint32_t)(0x3UL << MXC_F_SDHC_CFG_0_MAX_BLK_LEN_POS)) /**< CFG_0_MAX_BLK_LEN Mask */
-#define MXC_V_SDHC_CFG_0_MAX_BLK_LEN_2048_BYTES        ((uint32_t)0x2UL) /**< CFG_0_MAX_BLK_LEN_2048_BYTES Value */
-#define MXC_S_SDHC_CFG_0_MAX_BLK_LEN_2048_BYTES        (MXC_V_SDHC_CFG_0_MAX_BLK_LEN_2048_BYTES << MXC_F_SDHC_CFG_0_MAX_BLK_LEN_POS) /**< CFG_0_MAX_BLK_LEN_2048_BYTES Setting */
 
-#define MXC_F_SDHC_CFG_0_8_BIT_POS                     18 /**< CFG_0_8_BIT Position */
-#define MXC_F_SDHC_CFG_0_8_BIT                         ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_8_BIT_POS)) /**< CFG_0_8_BIT Mask */
+#define MXC_F_SDHC_CFG_0_BIT_8_POS                     18 /**< CFG_0_BIT_8 Position */
+#define MXC_F_SDHC_CFG_0_BIT_8                         ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_BIT_8_POS)) /**< CFG_0_BIT_8 Mask */
 
 #define MXC_F_SDHC_CFG_0_ADMA2_POS                     19 /**< CFG_0_ADMA2 Position */
 #define MXC_F_SDHC_CFG_0_ADMA2                         ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_ADMA2_POS)) /**< CFG_0_ADMA2 Mask */
@@ -938,17 +826,17 @@ typedef struct {
 #define MXC_F_SDHC_CFG_0_SUSPEND_POS                   23 /**< CFG_0_SUSPEND Position */
 #define MXC_F_SDHC_CFG_0_SUSPEND                       ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_SUSPEND_POS)) /**< CFG_0_SUSPEND Mask */
 
-#define MXC_F_SDHC_CFG_0_3_3V_POS                      24 /**< CFG_0_3_3V Position */
-#define MXC_F_SDHC_CFG_0_3_3V                          ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_3_3V_POS)) /**< CFG_0_3_3V Mask */
+#define MXC_F_SDHC_CFG_0_V3_3_POS                      24 /**< CFG_0_V3_3 Position */
+#define MXC_F_SDHC_CFG_0_V3_3                          ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_V3_3_POS)) /**< CFG_0_V3_3 Mask */
 
-#define MXC_F_SDHC_CFG_0_3_0V_POS                      25 /**< CFG_0_3_0V Position */
-#define MXC_F_SDHC_CFG_0_3_0V                          ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_3_0V_POS)) /**< CFG_0_3_0V Mask */
+#define MXC_F_SDHC_CFG_0_V3_0_POS                      25 /**< CFG_0_V3_0 Position */
+#define MXC_F_SDHC_CFG_0_V3_0                          ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_V3_0_POS)) /**< CFG_0_V3_0 Mask */
 
-#define MXC_F_SDHC_CFG_0_1_8V_POS                      26 /**< CFG_0_1_8V Position */
-#define MXC_F_SDHC_CFG_0_1_8V                          ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_1_8V_POS)) /**< CFG_0_1_8V Mask */
+#define MXC_F_SDHC_CFG_0_V1_8_POS                      26 /**< CFG_0_V1_8 Position */
+#define MXC_F_SDHC_CFG_0_V1_8                          ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_V1_8_POS)) /**< CFG_0_V1_8 Mask */
 
-#define MXC_F_SDHC_CFG_0_64_BIT_SYS_BUS_POS            28 /**< CFG_0_64_BIT_SYS_BUS Position */
-#define MXC_F_SDHC_CFG_0_64_BIT_SYS_BUS                ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_64_BIT_SYS_BUS_POS)) /**< CFG_0_64_BIT_SYS_BUS Mask */
+#define MXC_F_SDHC_CFG_0_BIT_64_SYS_BUS_POS            28 /**< CFG_0_BIT_64_SYS_BUS Position */
+#define MXC_F_SDHC_CFG_0_BIT_64_SYS_BUS                ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_BIT_64_SYS_BUS_POS)) /**< CFG_0_BIT_64_SYS_BUS Mask */
 
 #define MXC_F_SDHC_CFG_0_ASYNC_INT_POS                 29 /**< CFG_0_ASYNC_INT Position */
 #define MXC_F_SDHC_CFG_0_ASYNC_INT                     ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_0_ASYNC_INT_POS)) /**< CFG_0_ASYNC_INT Mask */
@@ -984,30 +872,6 @@ typedef struct {
 
 #define MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS          8 /**< CFG_1_TIMER_CNT_TUNING Position */
 #define MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING              ((uint32_t)(0xFUL << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS)) /**< CFG_1_TIMER_CNT_TUNING Mask */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_DIS          ((uint32_t)0x0UL) /**< CFG_1_TIMER_CNT_TUNING_DIS Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_DIS          (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_DIS << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_DIS Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_1SEC         ((uint32_t)0x1UL) /**< CFG_1_TIMER_CNT_TUNING_1SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_1SEC         (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_1SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_1SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_2SEC         ((uint32_t)0x2UL) /**< CFG_1_TIMER_CNT_TUNING_2SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_2SEC         (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_2SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_2SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_4SEC         ((uint32_t)0x3UL) /**< CFG_1_TIMER_CNT_TUNING_4SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_4SEC         (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_4SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_4SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_8SEC         ((uint32_t)0x4UL) /**< CFG_1_TIMER_CNT_TUNING_8SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_8SEC         (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_8SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_8SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_16SEC        ((uint32_t)0x5UL) /**< CFG_1_TIMER_CNT_TUNING_16SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_16SEC        (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_16SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_16SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_32SEC        ((uint32_t)0x6UL) /**< CFG_1_TIMER_CNT_TUNING_32SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_32SEC        (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_32SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_32SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_64SEC        ((uint32_t)0x7UL) /**< CFG_1_TIMER_CNT_TUNING_64SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_64SEC        (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_64SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_64SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_128SEC       ((uint32_t)0x8UL) /**< CFG_1_TIMER_CNT_TUNING_128SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_128SEC       (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_128SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_128SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_256SEC       ((uint32_t)0x9UL) /**< CFG_1_TIMER_CNT_TUNING_256SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_256SEC       (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_256SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_256SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_512SEC       ((uint32_t)0xAUL) /**< CFG_1_TIMER_CNT_TUNING_512SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_512SEC       (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_512SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_512SEC Setting */
-#define MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_1024SEC      ((uint32_t)0xBUL) /**< CFG_1_TIMER_CNT_TUNING_1024SEC Value */
-#define MXC_S_SDHC_CFG_1_TIMER_CNT_TUNING_1024SEC      (MXC_V_SDHC_CFG_1_TIMER_CNT_TUNING_1024SEC << MXC_F_SDHC_CFG_1_TIMER_CNT_TUNING_POS) /**< CFG_1_TIMER_CNT_TUNING_1024SEC Setting */
 
 #define MXC_F_SDHC_CFG_1_TUNING_SDR50_POS              13 /**< CFG_1_TUNING_SDR50 Position */
 #define MXC_F_SDHC_CFG_1_TUNING_SDR50                  ((uint32_t)(0x1UL << MXC_F_SDHC_CFG_1_TUNING_SDR50_POS)) /**< CFG_1_TUNING_SDR50 Mask */
@@ -1026,14 +890,14 @@ typedef struct {
  * @brief    Maximum Current Capabilities.
  * @{
  */
-#define MXC_F_SDHC_MAX_CURR_CFG_3_3V_POS               0 /**< MAX_CURR_CFG_3_3V Position */
-#define MXC_F_SDHC_MAX_CURR_CFG_3_3V                   ((uint32_t)(0xFFUL << MXC_F_SDHC_MAX_CURR_CFG_3_3V_POS)) /**< MAX_CURR_CFG_3_3V Mask */
+#define MXC_F_SDHC_MAX_CURR_CFG_V3_3_POS               0 /**< MAX_CURR_CFG_V3_3 Position */
+#define MXC_F_SDHC_MAX_CURR_CFG_V3_3                   ((uint32_t)(0xFFUL << MXC_F_SDHC_MAX_CURR_CFG_V3_3_POS)) /**< MAX_CURR_CFG_V3_3 Mask */
 
-#define MXC_F_SDHC_MAX_CURR_CFG_3_0V_POS               8 /**< MAX_CURR_CFG_3_0V Position */
-#define MXC_F_SDHC_MAX_CURR_CFG_3_0V                   ((uint32_t)(0xFFUL << MXC_F_SDHC_MAX_CURR_CFG_3_0V_POS)) /**< MAX_CURR_CFG_3_0V Mask */
+#define MXC_F_SDHC_MAX_CURR_CFG_V3_0_POS               8 /**< MAX_CURR_CFG_V3_0 Position */
+#define MXC_F_SDHC_MAX_CURR_CFG_V3_0                   ((uint32_t)(0xFFUL << MXC_F_SDHC_MAX_CURR_CFG_V3_0_POS)) /**< MAX_CURR_CFG_V3_0 Mask */
 
-#define MXC_F_SDHC_MAX_CURR_CFG_1_8V_POS               16 /**< MAX_CURR_CFG_1_8V Position */
-#define MXC_F_SDHC_MAX_CURR_CFG_1_8V                   ((uint32_t)(0xFFUL << MXC_F_SDHC_MAX_CURR_CFG_1_8V_POS)) /**< MAX_CURR_CFG_1_8V Mask */
+#define MXC_F_SDHC_MAX_CURR_CFG_V1_8_POS               16 /**< MAX_CURR_CFG_V1_8 Position */
+#define MXC_F_SDHC_MAX_CURR_CFG_V1_8                   ((uint32_t)(0xFFUL << MXC_F_SDHC_MAX_CURR_CFG_V1_8_POS)) /**< MAX_CURR_CFG_V1_8 Mask */
 
 /**@} end of group SDHC_MAX_CURR_CFG_Register */
 
@@ -1099,8 +963,8 @@ typedef struct {
 #define MXC_F_SDHC_FORCE_EVENT_INT_STAT_ADMA_POS       9 /**< FORCE_EVENT_INT_STAT_ADMA Position */
 #define MXC_F_SDHC_FORCE_EVENT_INT_STAT_ADMA           ((uint16_t)(0x1UL << MXC_F_SDHC_FORCE_EVENT_INT_STAT_ADMA_POS)) /**< FORCE_EVENT_INT_STAT_ADMA Mask */
 
-#define MXC_F_SDHC_FORCE_EVENT_INT_STAT_STAT_VENDOR_POS 12 /**< FORCE_EVENT_INT_STAT_STAT_VENDOR Position */
-#define MXC_F_SDHC_FORCE_EVENT_INT_STAT_STAT_VENDOR    ((uint16_t)(0xFUL << MXC_F_SDHC_FORCE_EVENT_INT_STAT_STAT_VENDOR_POS)) /**< FORCE_EVENT_INT_STAT_STAT_VENDOR Mask */
+#define MXC_F_SDHC_FORCE_EVENT_INT_STAT_VENDOR_POS     12 /**< FORCE_EVENT_INT_STAT_VENDOR Position */
+#define MXC_F_SDHC_FORCE_EVENT_INT_STAT_VENDOR         ((uint16_t)(0x7UL << MXC_F_SDHC_FORCE_EVENT_INT_STAT_VENDOR_POS)) /**< FORCE_EVENT_INT_STAT_VENDOR Mask */
 
 /**@} end of group SDHC_FORCE_EVENT_INT_STAT_Register */
 
@@ -1154,14 +1018,6 @@ typedef struct {
 
 #define MXC_F_SDHC_PRESET_0_DRIVER_STRENGTH_POS        14 /**< PRESET_0_DRIVER_STRENGTH Position */
 #define MXC_F_SDHC_PRESET_0_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_0_DRIVER_STRENGTH_POS)) /**< PRESET_0_DRIVER_STRENGTH Mask */
-#define MXC_V_SDHC_PRESET_0_DRIVER_STRENGTH_TYPEB      ((uint16_t)0x0UL) /**< PRESET_0_DRIVER_STRENGTH_TYPEB Value */
-#define MXC_S_SDHC_PRESET_0_DRIVER_STRENGTH_TYPEB      (MXC_V_SDHC_PRESET_0_DRIVER_STRENGTH_TYPEB << MXC_F_SDHC_PRESET_0_DRIVER_STRENGTH_POS) /**< PRESET_0_DRIVER_STRENGTH_TYPEB Setting */
-#define MXC_V_SDHC_PRESET_0_DRIVER_STRENGTH_TYPEA      ((uint16_t)0x1UL) /**< PRESET_0_DRIVER_STRENGTH_TYPEA Value */
-#define MXC_S_SDHC_PRESET_0_DRIVER_STRENGTH_TYPEA      (MXC_V_SDHC_PRESET_0_DRIVER_STRENGTH_TYPEA << MXC_F_SDHC_PRESET_0_DRIVER_STRENGTH_POS) /**< PRESET_0_DRIVER_STRENGTH_TYPEA Setting */
-#define MXC_V_SDHC_PRESET_0_DRIVER_STRENGTH_TYPEC      ((uint16_t)0x2UL) /**< PRESET_0_DRIVER_STRENGTH_TYPEC Value */
-#define MXC_S_SDHC_PRESET_0_DRIVER_STRENGTH_TYPEC      (MXC_V_SDHC_PRESET_0_DRIVER_STRENGTH_TYPEC << MXC_F_SDHC_PRESET_0_DRIVER_STRENGTH_POS) /**< PRESET_0_DRIVER_STRENGTH_TYPEC Setting */
-#define MXC_V_SDHC_PRESET_0_DRIVER_STRENGTH_TYPED      ((uint16_t)0x3UL) /**< PRESET_0_DRIVER_STRENGTH_TYPED Value */
-#define MXC_S_SDHC_PRESET_0_DRIVER_STRENGTH_TYPED      (MXC_V_SDHC_PRESET_0_DRIVER_STRENGTH_TYPED << MXC_F_SDHC_PRESET_0_DRIVER_STRENGTH_POS) /**< PRESET_0_DRIVER_STRENGTH_TYPED Setting */
 
 /**@} end of group SDHC_PRESET_0_Register */
 
@@ -1179,14 +1035,6 @@ typedef struct {
 
 #define MXC_F_SDHC_PRESET_1_DRIVER_STRENGTH_POS        14 /**< PRESET_1_DRIVER_STRENGTH Position */
 #define MXC_F_SDHC_PRESET_1_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_1_DRIVER_STRENGTH_POS)) /**< PRESET_1_DRIVER_STRENGTH Mask */
-#define MXC_V_SDHC_PRESET_1_DRIVER_STRENGTH_TYPEB      ((uint16_t)0x0UL) /**< PRESET_1_DRIVER_STRENGTH_TYPEB Value */
-#define MXC_S_SDHC_PRESET_1_DRIVER_STRENGTH_TYPEB      (MXC_V_SDHC_PRESET_1_DRIVER_STRENGTH_TYPEB << MXC_F_SDHC_PRESET_1_DRIVER_STRENGTH_POS) /**< PRESET_1_DRIVER_STRENGTH_TYPEB Setting */
-#define MXC_V_SDHC_PRESET_1_DRIVER_STRENGTH_TYPEA      ((uint16_t)0x1UL) /**< PRESET_1_DRIVER_STRENGTH_TYPEA Value */
-#define MXC_S_SDHC_PRESET_1_DRIVER_STRENGTH_TYPEA      (MXC_V_SDHC_PRESET_1_DRIVER_STRENGTH_TYPEA << MXC_F_SDHC_PRESET_1_DRIVER_STRENGTH_POS) /**< PRESET_1_DRIVER_STRENGTH_TYPEA Setting */
-#define MXC_V_SDHC_PRESET_1_DRIVER_STRENGTH_TYPEC      ((uint16_t)0x2UL) /**< PRESET_1_DRIVER_STRENGTH_TYPEC Value */
-#define MXC_S_SDHC_PRESET_1_DRIVER_STRENGTH_TYPEC      (MXC_V_SDHC_PRESET_1_DRIVER_STRENGTH_TYPEC << MXC_F_SDHC_PRESET_1_DRIVER_STRENGTH_POS) /**< PRESET_1_DRIVER_STRENGTH_TYPEC Setting */
-#define MXC_V_SDHC_PRESET_1_DRIVER_STRENGTH_TYPED      ((uint16_t)0x3UL) /**< PRESET_1_DRIVER_STRENGTH_TYPED Value */
-#define MXC_S_SDHC_PRESET_1_DRIVER_STRENGTH_TYPED      (MXC_V_SDHC_PRESET_1_DRIVER_STRENGTH_TYPED << MXC_F_SDHC_PRESET_1_DRIVER_STRENGTH_POS) /**< PRESET_1_DRIVER_STRENGTH_TYPED Setting */
 
 /**@} end of group SDHC_PRESET_1_Register */
 
@@ -1204,14 +1052,6 @@ typedef struct {
 
 #define MXC_F_SDHC_PRESET_2_DRIVER_STRENGTH_POS        14 /**< PRESET_2_DRIVER_STRENGTH Position */
 #define MXC_F_SDHC_PRESET_2_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_2_DRIVER_STRENGTH_POS)) /**< PRESET_2_DRIVER_STRENGTH Mask */
-#define MXC_V_SDHC_PRESET_2_DRIVER_STRENGTH_TYPEB      ((uint16_t)0x0UL) /**< PRESET_2_DRIVER_STRENGTH_TYPEB Value */
-#define MXC_S_SDHC_PRESET_2_DRIVER_STRENGTH_TYPEB      (MXC_V_SDHC_PRESET_2_DRIVER_STRENGTH_TYPEB << MXC_F_SDHC_PRESET_2_DRIVER_STRENGTH_POS) /**< PRESET_2_DRIVER_STRENGTH_TYPEB Setting */
-#define MXC_V_SDHC_PRESET_2_DRIVER_STRENGTH_TYPEA      ((uint16_t)0x1UL) /**< PRESET_2_DRIVER_STRENGTH_TYPEA Value */
-#define MXC_S_SDHC_PRESET_2_DRIVER_STRENGTH_TYPEA      (MXC_V_SDHC_PRESET_2_DRIVER_STRENGTH_TYPEA << MXC_F_SDHC_PRESET_2_DRIVER_STRENGTH_POS) /**< PRESET_2_DRIVER_STRENGTH_TYPEA Setting */
-#define MXC_V_SDHC_PRESET_2_DRIVER_STRENGTH_TYPEC      ((uint16_t)0x2UL) /**< PRESET_2_DRIVER_STRENGTH_TYPEC Value */
-#define MXC_S_SDHC_PRESET_2_DRIVER_STRENGTH_TYPEC      (MXC_V_SDHC_PRESET_2_DRIVER_STRENGTH_TYPEC << MXC_F_SDHC_PRESET_2_DRIVER_STRENGTH_POS) /**< PRESET_2_DRIVER_STRENGTH_TYPEC Setting */
-#define MXC_V_SDHC_PRESET_2_DRIVER_STRENGTH_TYPED      ((uint16_t)0x3UL) /**< PRESET_2_DRIVER_STRENGTH_TYPED Value */
-#define MXC_S_SDHC_PRESET_2_DRIVER_STRENGTH_TYPED      (MXC_V_SDHC_PRESET_2_DRIVER_STRENGTH_TYPED << MXC_F_SDHC_PRESET_2_DRIVER_STRENGTH_POS) /**< PRESET_2_DRIVER_STRENGTH_TYPED Setting */
 
 /**@} end of group SDHC_PRESET_2_Register */
 
@@ -1229,14 +1069,6 @@ typedef struct {
 
 #define MXC_F_SDHC_PRESET_3_DRIVER_STRENGTH_POS        14 /**< PRESET_3_DRIVER_STRENGTH Position */
 #define MXC_F_SDHC_PRESET_3_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_3_DRIVER_STRENGTH_POS)) /**< PRESET_3_DRIVER_STRENGTH Mask */
-#define MXC_V_SDHC_PRESET_3_DRIVER_STRENGTH_TYPEB      ((uint16_t)0x0UL) /**< PRESET_3_DRIVER_STRENGTH_TYPEB Value */
-#define MXC_S_SDHC_PRESET_3_DRIVER_STRENGTH_TYPEB      (MXC_V_SDHC_PRESET_3_DRIVER_STRENGTH_TYPEB << MXC_F_SDHC_PRESET_3_DRIVER_STRENGTH_POS) /**< PRESET_3_DRIVER_STRENGTH_TYPEB Setting */
-#define MXC_V_SDHC_PRESET_3_DRIVER_STRENGTH_TYPEA      ((uint16_t)0x1UL) /**< PRESET_3_DRIVER_STRENGTH_TYPEA Value */
-#define MXC_S_SDHC_PRESET_3_DRIVER_STRENGTH_TYPEA      (MXC_V_SDHC_PRESET_3_DRIVER_STRENGTH_TYPEA << MXC_F_SDHC_PRESET_3_DRIVER_STRENGTH_POS) /**< PRESET_3_DRIVER_STRENGTH_TYPEA Setting */
-#define MXC_V_SDHC_PRESET_3_DRIVER_STRENGTH_TYPEC      ((uint16_t)0x2UL) /**< PRESET_3_DRIVER_STRENGTH_TYPEC Value */
-#define MXC_S_SDHC_PRESET_3_DRIVER_STRENGTH_TYPEC      (MXC_V_SDHC_PRESET_3_DRIVER_STRENGTH_TYPEC << MXC_F_SDHC_PRESET_3_DRIVER_STRENGTH_POS) /**< PRESET_3_DRIVER_STRENGTH_TYPEC Setting */
-#define MXC_V_SDHC_PRESET_3_DRIVER_STRENGTH_TYPED      ((uint16_t)0x3UL) /**< PRESET_3_DRIVER_STRENGTH_TYPED Value */
-#define MXC_S_SDHC_PRESET_3_DRIVER_STRENGTH_TYPED      (MXC_V_SDHC_PRESET_3_DRIVER_STRENGTH_TYPED << MXC_F_SDHC_PRESET_3_DRIVER_STRENGTH_POS) /**< PRESET_3_DRIVER_STRENGTH_TYPED Setting */
 
 /**@} end of group SDHC_PRESET_3_Register */
 
@@ -1254,14 +1086,6 @@ typedef struct {
 
 #define MXC_F_SDHC_PRESET_4_DRIVER_STRENGTH_POS        14 /**< PRESET_4_DRIVER_STRENGTH Position */
 #define MXC_F_SDHC_PRESET_4_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_4_DRIVER_STRENGTH_POS)) /**< PRESET_4_DRIVER_STRENGTH Mask */
-#define MXC_V_SDHC_PRESET_4_DRIVER_STRENGTH_TYPEB      ((uint16_t)0x0UL) /**< PRESET_4_DRIVER_STRENGTH_TYPEB Value */
-#define MXC_S_SDHC_PRESET_4_DRIVER_STRENGTH_TYPEB      (MXC_V_SDHC_PRESET_4_DRIVER_STRENGTH_TYPEB << MXC_F_SDHC_PRESET_4_DRIVER_STRENGTH_POS) /**< PRESET_4_DRIVER_STRENGTH_TYPEB Setting */
-#define MXC_V_SDHC_PRESET_4_DRIVER_STRENGTH_TYPEA      ((uint16_t)0x1UL) /**< PRESET_4_DRIVER_STRENGTH_TYPEA Value */
-#define MXC_S_SDHC_PRESET_4_DRIVER_STRENGTH_TYPEA      (MXC_V_SDHC_PRESET_4_DRIVER_STRENGTH_TYPEA << MXC_F_SDHC_PRESET_4_DRIVER_STRENGTH_POS) /**< PRESET_4_DRIVER_STRENGTH_TYPEA Setting */
-#define MXC_V_SDHC_PRESET_4_DRIVER_STRENGTH_TYPEC      ((uint16_t)0x2UL) /**< PRESET_4_DRIVER_STRENGTH_TYPEC Value */
-#define MXC_S_SDHC_PRESET_4_DRIVER_STRENGTH_TYPEC      (MXC_V_SDHC_PRESET_4_DRIVER_STRENGTH_TYPEC << MXC_F_SDHC_PRESET_4_DRIVER_STRENGTH_POS) /**< PRESET_4_DRIVER_STRENGTH_TYPEC Setting */
-#define MXC_V_SDHC_PRESET_4_DRIVER_STRENGTH_TYPED      ((uint16_t)0x3UL) /**< PRESET_4_DRIVER_STRENGTH_TYPED Value */
-#define MXC_S_SDHC_PRESET_4_DRIVER_STRENGTH_TYPED      (MXC_V_SDHC_PRESET_4_DRIVER_STRENGTH_TYPED << MXC_F_SDHC_PRESET_4_DRIVER_STRENGTH_POS) /**< PRESET_4_DRIVER_STRENGTH_TYPED Setting */
 
 /**@} end of group SDHC_PRESET_4_Register */
 
@@ -1279,14 +1103,6 @@ typedef struct {
 
 #define MXC_F_SDHC_PRESET_5_DRIVER_STRENGTH_POS        14 /**< PRESET_5_DRIVER_STRENGTH Position */
 #define MXC_F_SDHC_PRESET_5_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_5_DRIVER_STRENGTH_POS)) /**< PRESET_5_DRIVER_STRENGTH Mask */
-#define MXC_V_SDHC_PRESET_5_DRIVER_STRENGTH_TYPEB      ((uint16_t)0x0UL) /**< PRESET_5_DRIVER_STRENGTH_TYPEB Value */
-#define MXC_S_SDHC_PRESET_5_DRIVER_STRENGTH_TYPEB      (MXC_V_SDHC_PRESET_5_DRIVER_STRENGTH_TYPEB << MXC_F_SDHC_PRESET_5_DRIVER_STRENGTH_POS) /**< PRESET_5_DRIVER_STRENGTH_TYPEB Setting */
-#define MXC_V_SDHC_PRESET_5_DRIVER_STRENGTH_TYPEA      ((uint16_t)0x1UL) /**< PRESET_5_DRIVER_STRENGTH_TYPEA Value */
-#define MXC_S_SDHC_PRESET_5_DRIVER_STRENGTH_TYPEA      (MXC_V_SDHC_PRESET_5_DRIVER_STRENGTH_TYPEA << MXC_F_SDHC_PRESET_5_DRIVER_STRENGTH_POS) /**< PRESET_5_DRIVER_STRENGTH_TYPEA Setting */
-#define MXC_V_SDHC_PRESET_5_DRIVER_STRENGTH_TYPEC      ((uint16_t)0x2UL) /**< PRESET_5_DRIVER_STRENGTH_TYPEC Value */
-#define MXC_S_SDHC_PRESET_5_DRIVER_STRENGTH_TYPEC      (MXC_V_SDHC_PRESET_5_DRIVER_STRENGTH_TYPEC << MXC_F_SDHC_PRESET_5_DRIVER_STRENGTH_POS) /**< PRESET_5_DRIVER_STRENGTH_TYPEC Setting */
-#define MXC_V_SDHC_PRESET_5_DRIVER_STRENGTH_TYPED      ((uint16_t)0x3UL) /**< PRESET_5_DRIVER_STRENGTH_TYPED Value */
-#define MXC_S_SDHC_PRESET_5_DRIVER_STRENGTH_TYPED      (MXC_V_SDHC_PRESET_5_DRIVER_STRENGTH_TYPED << MXC_F_SDHC_PRESET_5_DRIVER_STRENGTH_POS) /**< PRESET_5_DRIVER_STRENGTH_TYPED Setting */
 
 /**@} end of group SDHC_PRESET_5_Register */
 
@@ -1304,14 +1120,6 @@ typedef struct {
 
 #define MXC_F_SDHC_PRESET_6_DRIVER_STRENGTH_POS        14 /**< PRESET_6_DRIVER_STRENGTH Position */
 #define MXC_F_SDHC_PRESET_6_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_6_DRIVER_STRENGTH_POS)) /**< PRESET_6_DRIVER_STRENGTH Mask */
-#define MXC_V_SDHC_PRESET_6_DRIVER_STRENGTH_TYPEB      ((uint16_t)0x0UL) /**< PRESET_6_DRIVER_STRENGTH_TYPEB Value */
-#define MXC_S_SDHC_PRESET_6_DRIVER_STRENGTH_TYPEB      (MXC_V_SDHC_PRESET_6_DRIVER_STRENGTH_TYPEB << MXC_F_SDHC_PRESET_6_DRIVER_STRENGTH_POS) /**< PRESET_6_DRIVER_STRENGTH_TYPEB Setting */
-#define MXC_V_SDHC_PRESET_6_DRIVER_STRENGTH_TYPEA      ((uint16_t)0x1UL) /**< PRESET_6_DRIVER_STRENGTH_TYPEA Value */
-#define MXC_S_SDHC_PRESET_6_DRIVER_STRENGTH_TYPEA      (MXC_V_SDHC_PRESET_6_DRIVER_STRENGTH_TYPEA << MXC_F_SDHC_PRESET_6_DRIVER_STRENGTH_POS) /**< PRESET_6_DRIVER_STRENGTH_TYPEA Setting */
-#define MXC_V_SDHC_PRESET_6_DRIVER_STRENGTH_TYPEC      ((uint16_t)0x2UL) /**< PRESET_6_DRIVER_STRENGTH_TYPEC Value */
-#define MXC_S_SDHC_PRESET_6_DRIVER_STRENGTH_TYPEC      (MXC_V_SDHC_PRESET_6_DRIVER_STRENGTH_TYPEC << MXC_F_SDHC_PRESET_6_DRIVER_STRENGTH_POS) /**< PRESET_6_DRIVER_STRENGTH_TYPEC Setting */
-#define MXC_V_SDHC_PRESET_6_DRIVER_STRENGTH_TYPED      ((uint16_t)0x3UL) /**< PRESET_6_DRIVER_STRENGTH_TYPED Value */
-#define MXC_S_SDHC_PRESET_6_DRIVER_STRENGTH_TYPED      (MXC_V_SDHC_PRESET_6_DRIVER_STRENGTH_TYPED << MXC_F_SDHC_PRESET_6_DRIVER_STRENGTH_POS) /**< PRESET_6_DRIVER_STRENGTH_TYPED Setting */
 
 /**@} end of group SDHC_PRESET_6_Register */
 
@@ -1329,14 +1137,6 @@ typedef struct {
 
 #define MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH_POS        14 /**< PRESET_7_DRIVER_STRENGTH Position */
 #define MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH_POS)) /**< PRESET_7_DRIVER_STRENGTH Mask */
-#define MXC_V_SDHC_PRESET_7_DRIVER_STRENGTH_TYPEB      ((uint16_t)0x0UL) /**< PRESET_7_DRIVER_STRENGTH_TYPEB Value */
-#define MXC_S_SDHC_PRESET_7_DRIVER_STRENGTH_TYPEB      (MXC_V_SDHC_PRESET_7_DRIVER_STRENGTH_TYPEB << MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH_POS) /**< PRESET_7_DRIVER_STRENGTH_TYPEB Setting */
-#define MXC_V_SDHC_PRESET_7_DRIVER_STRENGTH_TYPEA      ((uint16_t)0x1UL) /**< PRESET_7_DRIVER_STRENGTH_TYPEA Value */
-#define MXC_S_SDHC_PRESET_7_DRIVER_STRENGTH_TYPEA      (MXC_V_SDHC_PRESET_7_DRIVER_STRENGTH_TYPEA << MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH_POS) /**< PRESET_7_DRIVER_STRENGTH_TYPEA Setting */
-#define MXC_V_SDHC_PRESET_7_DRIVER_STRENGTH_TYPEC      ((uint16_t)0x2UL) /**< PRESET_7_DRIVER_STRENGTH_TYPEC Value */
-#define MXC_S_SDHC_PRESET_7_DRIVER_STRENGTH_TYPEC      (MXC_V_SDHC_PRESET_7_DRIVER_STRENGTH_TYPEC << MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH_POS) /**< PRESET_7_DRIVER_STRENGTH_TYPEC Setting */
-#define MXC_V_SDHC_PRESET_7_DRIVER_STRENGTH_TYPED      ((uint16_t)0x3UL) /**< PRESET_7_DRIVER_STRENGTH_TYPED Value */
-#define MXC_S_SDHC_PRESET_7_DRIVER_STRENGTH_TYPED      (MXC_V_SDHC_PRESET_7_DRIVER_STRENGTH_TYPED << MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH_POS) /**< PRESET_7_DRIVER_STRENGTH_TYPED Setting */
 
 /**@} end of group SDHC_PRESET_7_Register */
 
@@ -1369,4 +1169,4 @@ typedef struct {
 }
 #endif
 
-#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_SDHC_REGS_H_
+#endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_SDHC_REGS_H_
