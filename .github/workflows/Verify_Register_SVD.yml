@@ -175,7 +175,7 @@ jobs:
           CHIP_TO_DIE_NAMES[MAX32650]=ME10
           CHIP_TO_DIE_NAMES[MAX32660]=ME11
           CHIP_TO_DIE_NAMES[MAX32662]=ME12
-          CHIP_TO_DIE_NAMES[MAX32570]=ME13
+          #CHIP_TO_DIE_NAMES[MAX32570]=ME13
           CHIP_TO_DIE_NAMES[MAX32665]=ME14
           CHIP_TO_DIE_NAMES[MAX32670]=ME15
           CHIP_TO_DIE_NAMES[MAX32675]=ME16
@@ -183,7 +183,7 @@ jobs:
           CHIP_TO_DIE_NAMES[MAX32690]=ME18
           CHIP_TO_DIE_NAMES[MAX32680]=ME20
           CHIP_TO_DIE_NAMES[MAX32672]=ME21
-          CHIP_TO_DIE_NAMES[MAX32572]=ME55
+          #CHIP_TO_DIE_NAMES[MAX32572]=ME55
           
           DIE_TO_CHIP_NAMES[AI85]=MAX78000
           DIE_TO_CHIP_NAMES[AI87]=MAX78000
@@ -191,7 +191,7 @@ jobs:
           DIE_TO_CHIP_NAMES[ME10]=MAX32650
           DIE_TO_CHIP_NAMES[ME11]=MAX32660
           DIE_TO_CHIP_NAMES[ME12]=MAX32662
-          DIE_TO_CHIP_NAMES[ME13]=MAX32570
+          #DIE_TO_CHIP_NAMES[ME13]=MAX32570
           DIE_TO_CHIP_NAMES[ME14]=MAX32665
           DIE_TO_CHIP_NAMES[ME15]=MAX32670
           DIE_TO_CHIP_NAMES[ME16]=MAX32675
@@ -199,7 +199,7 @@ jobs:
           DIE_TO_CHIP_NAMES[ME18]=MAX32690
           DIE_TO_CHIP_NAMES[ME20]=MAX32680
           DIE_TO_CHIP_NAMES[ME21]=MAX32672
-          DIE_TO_CHIP_NAMES[ME55]=MAX32572
+          #DIE_TO_CHIP_NAMES[ME55]=MAX32572
           
           # This set keeps tracks of all the parts (chip names) with updated register files. (No duplicates).
           # The path to the register files from top of MSDK repo requires chip name.
