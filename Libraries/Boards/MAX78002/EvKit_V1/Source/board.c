@@ -330,6 +330,7 @@ int Board_Init(void)
     ts_irq_pin.port->intmode |= ts_irq_pin.mask;
     ts_irq_pin.port->intpol &= ~(ts_irq_pin.mask);
     MXC_TS_AssignInterruptPin(ts_irq_pin);
+    MXC_TFT_Init(NULL, NULL);
 #endif
 
 // AI87-TODO: What's the reason for this deletion?
