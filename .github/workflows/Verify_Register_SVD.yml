@@ -104,10 +104,11 @@ jobs:
       - name: Verifying any deleted Peripheral SVD files.
         if: env.DIFF_FILES_FLAG == 'true'
         run: |
-          # Enter msdk repo.
+          # Workspace doesn't return to home after each step.
           cd ..
           pwd
           ls
+          
           cd ${{ env.MSDK_DIR }}
           PERIPH_SVD_FILE_LIST=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/PeriphDrivers/Source/*/*.svd')
 
@@ -322,6 +323,11 @@ jobs:
           echo -e "\e[0;33mScanning for any changes in register files"
           echo -e "\n\e[0;33m==================================================================\n"
           
+          # Workspace doesn't return to home after each step.
+          cd ..
+          pwd
+          ls
+
           # Find diff in MSDK repo
           cd ${{ env.MSDK_DIR }}
           CHANGED_REGISTER_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h')
