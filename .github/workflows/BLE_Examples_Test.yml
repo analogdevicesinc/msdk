@@ -305,21 +305,21 @@ jobs:
       - name: Unlock MAX32655 B1
         if: ${{ always() && steps.lock_max32655_b1_0.outcome == 'success'}}
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing Main MAX32655"
           ./mass_erase_board.sh max32655 max32655_b1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
           echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
 
       - name: Unlock MAX32655 B2
         if: ${{ always() && steps.lock_max32655_b2.outcome == 'success'}}
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing MAX32655"
           ./mass_erase_board.sh max32655 max32655_board2
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
 
 
  #----------------------------------------------------------------------------------------------
@@ -555,21 +555,21 @@ jobs:
       - name: Unlock MAX32655 B1
         if: ${{ always() && steps.lock_max32655_b1_1.outcome == 'success'}}
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
           echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing Main MAX32655"
           ./mass_erase_board.sh max32655 max32655_b1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
 
       - name: Unlock MAX32665 B1
         if: ${{ always() && steps.lock_max32665_b1.outcome == 'success'}}
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing MAX32665"
           ./mass_erase_board.sh max32665 max32665_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
 
  #----------------------------------------------------------------------------------------------
  #------------------------------| MAX32690 |----------------------------------------------------
@@ -805,21 +805,21 @@ jobs:
       - name: Unlock MAX32655 B1
         if: ${{ always() && steps.lock_max32655_b1_2.outcome == 'success'}}
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
           echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing Main MAX32655"
           ./mass_erase_board.sh max32655 max32655_b1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
 
       - name: Unlock MAX32690 B1
         if: ${{ always() && steps.lock_max32690_b1.outcome == 'success'}}
         run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing MAX32690"
           ./mass_erase_board.sh max32690 max32690_board_w1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
 
       # Save test reports
       - uses: actions/upload-artifact@v3
