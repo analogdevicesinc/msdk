@@ -129,9 +129,9 @@ int Console_PrepForSleep(void);
 int Debug_Init(void);
 
 /**
- * \brief   Initializes GPIO to conserve power in low power mode.
+ * \brief   Initializes GPIO pins to match VDDIO/VDDIOH
  */
-void GPIO_PrepForSleep(void);
+void GPIO_Init(void);
 
 #ifdef __cplusplus
 }

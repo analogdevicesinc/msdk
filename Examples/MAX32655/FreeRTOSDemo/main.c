@@ -419,8 +419,6 @@ int main(void)
     /* Initialize CPU Active LED */
     LED_On(1);
 
-    GPIO_PrepForSleep();
-
 #endif
 
     /* Print banner (RTOS scheduler not running) */

@@ -199,8 +199,6 @@ int main(void)
     MXC_LP_EnableRTCAlarmWakeup();
 #endif // USE_ALARM
 
-    GPIO_PrepForSleep();
-
     while (1) {
 #if DO_SLEEP
         PRINT("Entering SLEEP mode.\n");

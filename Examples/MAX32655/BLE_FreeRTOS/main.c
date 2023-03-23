@@ -124,8 +124,6 @@ int main(void)
     volatile int i;
     for (i = 0; i < 0x3FFFFF; i++) {}
 
-    GPIO_PrepForSleep();
-
     /* Start the BLE application */
     bleStartup();
 
