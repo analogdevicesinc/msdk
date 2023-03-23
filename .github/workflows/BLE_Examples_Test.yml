@@ -308,7 +308,7 @@ jobs:
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing Main MAX32655"
-          ./mass_erase_board.sh max32655 max32655_b1
+          ./mass_erase_board.sh max32655 max32655_board1
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
           echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
 
@@ -559,7 +559,7 @@ jobs:
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing Main MAX32655"
-          ./mass_erase_board.sh max32655 max32655_b1
+          ./mass_erase_board.sh max32655 max32655_board1
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
 
       - name: Unlock MAX32665 B1
@@ -809,7 +809,7 @@ jobs:
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing Main MAX32655"
-          ./mass_erase_board.sh max32655 max32655_b1
+          ./mass_erase_board.sh max32655 max32655_board1
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
 
       - name: Unlock MAX32690 B1
