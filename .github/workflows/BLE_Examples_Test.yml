@@ -647,7 +647,7 @@ jobs:
           exit $numOfFailedTests
       #----------------------------------------------------------------------------------------------
       - name: Test MAX32690 #name used for display purposes on github webpage
-        if: steps.lock_max32690_b1.outcome == 'success' && env.LOCK_MAX32690_B1 == 'true'
+        if: steps.lock_boards.outcome == 'success' && env.LOCK_MAX32690_B1 == 'true'
         id: Test_MAX32690 #id used to reference this step in other parts of the yml
         run: |
           FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
