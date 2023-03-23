@@ -194,137 +194,8 @@ jobs:
           fi
 
       #----------------------------------------------------------------------------------------------
-      - name: Lock MAX32655 B1
-        if: env.LOCK_MAX32655_B1 == 'true'
-        id: lock_max32655_b1_0
-        run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+      #------------------------------| MAX32665 |----------------------------------------------------
       #----------------------------------------------------------------------------------------------
-      - name: Lock MAX32655 B2
-        if: env.LOCK_MAX32655_B2 == 'true'
-        id: lock_max32655_b2
-        run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
-      #----------------------------------------------------------------------------------------------
-      - name: Test MAX32655 #name used for display purposes on github webpage
-        if: steps.lock_max32655_b2.outcome == 'success'
-        id: Test_MAX32655 #id used to reference this step in other parts of the yml
-        run: |
-          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-          dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])")
-          dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])")
-          examples_to_test=(${MAX32655_EXAMPLES_TO_TEST[@]})
-          echo
-          echo
-          echo "Examples to be tested : ${examples_to_test[@]}"
-          echo "MAX32655_RUN_ALL_TEST        : $MAX32655_RUN_ALL_TEST"
-          echo "MAX32655_DATS_CONNECTED_TEST : $MAX32655_DATS_CONNECTED_TEST "
-          echo "MAX32655_OTAS_CONNECTED_TEST  : $MAX32655_OTAS_CONNECTED_TEST"
-          echo "MAX32655_BLE_FILES_CHANGED   : $MAX32655_BLE_FILES_CHANGED "
-          echo "LOCK_MAX32655_B2             : $LOCK_MAX32655_B2 "
-
-          cd .github/workflows/scripts
-
-          if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
-              echo "Testing all examples"
-              set +e
-              ./test_launcher.sh max32655 $dut_uart $dut_serial "all"
-              let "testResult=$?"
-              if [ "$testResult" -ne "0" ]; then
-                    # update failed test count
-                    let "numOfFailedTests+=$testResult"
-              fi
-              set -e
-          else
-              if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
-                  #------non connected tests---------
-                  for example in "${examples_to_test[@]}"; do
-                      # launch single tests
-                      echo "Running $example test on MAX32655"
-                      set +e
-                      ./test_launcher.sh max32655 $dut_uart $dut_serial $example
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| $example"
-                      fi
-                      set -e
-                  done
-
-                  #------connected tests---------
-                  if [[ $MAX32655_DATS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32655_DATS_CONNECTED_TEST"
-                      set +e
-                      ./test_launcher.sh max32655 $dut_uart $dut_serial "dats"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed_test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32655 Dats/c"
-                      fi
-                      set -e
-
-                  fi
-                  #------connected tests---------
-                  if [[ $MAX32655_OTAS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32655_OTAS_CONNECTED_TEST"
-                      set +e
-                      #call test here
-                      #***************** uncomment actual test here *************
-                      ./test_launcher.sh max32655 $dut_uart $dut_serial "ota"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32655 OTAS/C"
-                      fi
-                      set -e
-                  fi
-              else
-                  echo "Skipping all tests"
-              fi
-            echo "=============================================================================="
-            echo "=============================================================================="
-
-            if [[ $numOfFailedTests -ne 0 ]]; then
-                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-            else
-                echo "Relax! ALL TESTS PASSED"
-            fi
-            echo
-            echo "=============================================================================="
-            echo "=============================================================================="
-            echo
-          fi
-
-          exit $numOfFailedTests
-
-      - name: Unlock MAX32655 B1
-        if: ${{ always() && steps.lock_max32655_b1_0.outcome == 'success'}}
-        run: |
-          # leave board in known state if workflow should end early
-          cd .github/workflows/scripts
-          echo "Erasing Main MAX32655"
-          ./mass_erase_board.sh max32655 max32655_board1
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
-          echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
-
-      - name: Unlock MAX32655 B2
-        if: ${{ always() && steps.lock_max32655_b2.outcome == 'success'}}
-        run: |
-          # leave board in known state if workflow should end early
-          cd .github/workflows/scripts
-          echo "Erasing MAX32655"
-          ./mass_erase_board.sh max32655 max32655_board2
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
-
-
- #----------------------------------------------------------------------------------------------
- #------------------------------| MAX32665 |----------------------------------------------------
- #----------------------------------------------------------------------------------------------
 
       # Checks if changes have been made to require a test on ME14
       - name: Check MAX32665
@@ -445,135 +316,8 @@ jobs:
           fi
 
       #----------------------------------------------------------------------------------------------
-      - name: Lock MAX32655 B1
-        if: env.LOCK_MAX32655_B1 == 'true'
-        id: lock_max32655_b1_1
-        run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+      #------------------------------| MAX32690 |----------------------------------------------------
       #----------------------------------------------------------------------------------------------
-      - name: Lock MAX32665 B1
-        if: env.LOCK_MAX32665_B1 == 'true'
-        id: lock_max32665_b1
-        run: |
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
-      #----------------------------------------------------------------------------------------------
-      - name: Test MAX32665 #name used for display purposes on github webpage
-        if: steps.lock_max32665_b1.outcome == 'success'
-        id: Test_MAX32665 #id used to reference this step in other parts of the yml
-        run: |
-          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
-          dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])")
-          dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])")
-          examples_to_test=(${MAX32665_EXAMPLES_TO_TEST[@]})
-          echo
-          echo
-          echo "Examples to be tested : ${examples_to_test[@]}"
-          echo "MAX32665_RUN_ALL_TEST        : $MAX32665_RUN_ALL_TEST"
-          echo "MAX32665_DATS_CONNECTED_TEST : $MAX32665_DATS_CONNECTED_TEST "
-          echo "MAX32665_OTAS_CONNECTED_TEST  : $MAX32665_OTAS_CONNECTED_TEST"
-          echo "MAX32665_BLE_FILES_CHANGED   : $MAX32665_BLE_FILES_CHANGED "
-          echo "LOCK_MAX32665_B1             : $LOCK_MAX32665_B1 "
-
-          cd .github/workflows/scripts
-
-          if [[ $MAX32665_RUN_ALL_TEST == 'true' ]]; then
-              echo "Testing all examples"
-               set +e
-               ./test_launcher.sh max32665 $dut_uart $dut_serial "all"
-               let "testResult=$?"
-               if [ "$testResult" -ne "0" ]; then
-                    # update failed test count
-                    let "numOfFailedTests+=$testResult"
-                fi
-                set -e
-          else
-              if [[ $MAX32665_BLE_FILES_CHANGED == 'true' ]]; then
-                  #------non connected tests---------
-                  for example in "${examples_to_test[@]}"; do
-                      # launch single tests
-                      echo "Running $example test on MAX32665"
-                      set +e
-                      ./test_launcher.sh max32665 $dut_uart $dut_serial $example
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| $example"
-                      fi
-                      set -e
-                  done
-
-                  #------connected tests---------
-                  if [[ $MAX32665_DATS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32665_DATS_CONNECTED_TEST"
-                      set +e
-                      ./test_launcher.sh max32665 $dut_uart $dut_serial "dats"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed_test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32665 Dats/c"
-                      fi
-                      set -e
-
-                  fi
-                  #------connected tests---------
-                  if [[ $MAX32665_OTAS_CONNECTED_TEST == 'true' ]]; then
-                      #conencted test launcher
-                      echo "Testing MAX32665_OTAS_CONNECTED_TEST"
-                      set +e
-                      #call test here
-                      #***************** uncomment actual test here *************
-                      ./test_launcher.sh max32665 $dut_uart $dut_serial "ota"
-                      let "testResult=$?"
-                      if [ "$testResult" -ne "0" ]; then
-                          # update failed test count
-                          let "numOfFailedTests+=$testResult"
-                          failedTestList+="| MAX32665 OTAS/C"
-                      fi
-                      set -e
-                  fi
-              else
-                  echo "Skipping all tests"
-              fi
-            echo "=============================================================================="
-            echo "=============================================================================="
-
-            if [[ $numOfFailedTests -ne 0 ]]; then
-                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
-            else
-                echo "Relax! ALL TESTS PASSED"
-            fi
-            echo
-            echo "=============================================================================="
-            echo "=============================================================================="
-            echo
-          fi
-          exit $numOfFailedTests
-
-      - name: Unlock MAX32655 B1
-        if: ${{ always() && steps.lock_max32655_b1_1.outcome == 'success'}}
-        run: |
-          echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
-          # leave board in known state if workflow should end early
-          cd .github/workflows/scripts
-          echo "Erasing Main MAX32655"
-          ./mass_erase_board.sh max32655 max32655_board1
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
-
-      - name: Unlock MAX32665 B1
-        if: ${{ always() && steps.lock_max32665_b1.outcome == 'success'}}
-        run: |
-          # leave board in known state if workflow should end early
-          cd .github/workflows/scripts
-          echo "Erasing MAX32665"
-          ./mass_erase_board.sh max32665 max32665_board1
-          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
-
- #----------------------------------------------------------------------------------------------
- #------------------------------| MAX32690 |----------------------------------------------------
- #----------------------------------------------------------------------------------------------
 
       # Checks if changes have been made to require a test on ME14
       - name: Check MAX32690
@@ -694,17 +438,225 @@ jobs:
           fi
 
       #----------------------------------------------------------------------------------------------
+      #------------------------------| Lock all required board at once |-----------------------------
+      #----------------------------------------------------------------------------------------------
       - name: Lock MAX32655 B1
         if: env.LOCK_MAX32655_B1 == 'true'
-        id: lock_max32655_b1_2
+        id: lock_max32655_b1
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board1
+      #----------------------------------------------------------------------------------------------
+      - name: Lock MAX32655 B2
+        if: env.LOCK_MAX32655_B2 == 'true'
+        id: lock_max32655_b2
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32655_board2
+      #----------------------------------------------------------------------------------------------
+      - name: Lock MAX32665 B1
+        if: env.LOCK_MAX32665_B1 == 'true'
+        id: lock_max32665_b1
+        run: |
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32665_board1
       #----------------------------------------------------------------------------------------------
       - name: Lock MAX32690 B1
         if: env.LOCK_MAX32690_B1 == 'true'
         id: lock_max32690_b1
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py -l -t 3600 max32690_board_w1
+      #----------------------------------------------------------------------------------------------
+      #----------------------------------------------------------------------------------------------
+      #------------------------------| Test all required board at once |-----------------------------
+      #----------------------------------------------------------------------------------------------
+      - name: Test MAX32665 #name used for display purposes on github webpage
+        if: steps.lock_max32665_b1.outcome == 'success'
+        id: Test_MAX32665 #id used to reference this step in other parts of the yml
+        run: |
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['uart1'])")
+          dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32665_board1']['daplink'])")
+          examples_to_test=(${MAX32665_EXAMPLES_TO_TEST[@]})
+          echo
+          echo
+          echo "Examples to be tested : ${examples_to_test[@]}"
+          echo "MAX32665_RUN_ALL_TEST        : $MAX32665_RUN_ALL_TEST"
+          echo "MAX32665_DATS_CONNECTED_TEST : $MAX32665_DATS_CONNECTED_TEST "
+          echo "MAX32665_OTAS_CONNECTED_TEST  : $MAX32665_OTAS_CONNECTED_TEST"
+          echo "MAX32665_BLE_FILES_CHANGED   : $MAX32665_BLE_FILES_CHANGED "
+          echo "LOCK_MAX32665_B1             : $LOCK_MAX32665_B1 "
+
+          cd .github/workflows/scripts
+
+          if [[ $MAX32665_RUN_ALL_TEST == 'true' ]]; then
+              echo "Testing all examples"
+               set +e
+               ./test_launcher.sh max32665 $dut_uart $dut_serial "all"
+               let "testResult=$?"
+               if [ "$testResult" -ne "0" ]; then
+                    # update failed test count
+                    let "numOfFailedTests+=$testResult"
+                fi
+                set -e
+          else
+              if [[ $MAX32665_BLE_FILES_CHANGED == 'true' ]]; then
+                  #------non connected tests---------
+                  for example in "${examples_to_test[@]}"; do
+                      # launch single tests
+                      echo "Running $example test on MAX32665"
+                      set +e
+                      ./test_launcher.sh max32665 $dut_uart $dut_serial $example
+                      let "testResult=$?"
+                      if [ "$testResult" -ne "0" ]; then
+                          # update failed test count
+                          let "numOfFailedTests+=$testResult"
+                          failedTestList+="| $example"
+                      fi
+                      set -e
+                  done
+
+                  #------connected tests---------
+                  if [[ $MAX32665_DATS_CONNECTED_TEST == 'true' ]]; then
+                      #conencted test launcher
+                      echo "Testing MAX32665_DATS_CONNECTED_TEST"
+                      set +e
+                      ./test_launcher.sh max32665 $dut_uart $dut_serial "dats"
+                      let "testResult=$?"
+                      if [ "$testResult" -ne "0" ]; then
+                          # update failed_test count
+                          let "numOfFailedTests+=$testResult"
+                          failedTestList+="| MAX32665 Dats/c"
+                      fi
+                      set -e
+
+                  fi
+                  #------connected tests---------
+                  if [[ $MAX32665_OTAS_CONNECTED_TEST == 'true' ]]; then
+                      #conencted test launcher
+                      echo "Testing MAX32665_OTAS_CONNECTED_TEST"
+                      set +e
+                      #call test here
+                      #***************** uncomment actual test here *************
+                      ./test_launcher.sh max32665 $dut_uart $dut_serial "ota"
+                      let "testResult=$?"
+                      if [ "$testResult" -ne "0" ]; then
+                          # update failed test count
+                          let "numOfFailedTests+=$testResult"
+                          failedTestList+="| MAX32665 OTAS/C"
+                      fi
+                      set -e
+                  fi
+              else
+                  echo "Skipping all tests"
+              fi
+            echo "=============================================================================="
+            echo "=============================================================================="
+
+            if [[ $numOfFailedTests -ne 0 ]]; then
+                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+            else
+                echo "Relax! ALL TESTS PASSED"
+            fi
+            echo
+            echo "=============================================================================="
+            echo "=============================================================================="
+            echo
+          fi
+          exit $numOfFailedTests
+      #----------------------------------------------------------------------------------------------
+      - name: Test MAX32655 #name used for display purposes on github webpage
+        if: steps.lock_max32655_b2.outcome == 'success'
+        id: Test_MAX32655 #id used to reference this step in other parts of the yml
+        run: |
+          FILE=/home/$USER/Workspace/Resource_Share/boards_config.json
+          dut_uart=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['uart0'])")
+          dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['max32655_board2']['daplink'])")
+          examples_to_test=(${MAX32655_EXAMPLES_TO_TEST[@]})
+          echo
+          echo
+          echo "Examples to be tested : ${examples_to_test[@]}"
+          echo "MAX32655_RUN_ALL_TEST        : $MAX32655_RUN_ALL_TEST"
+          echo "MAX32655_DATS_CONNECTED_TEST : $MAX32655_DATS_CONNECTED_TEST "
+          echo "MAX32655_OTAS_CONNECTED_TEST  : $MAX32655_OTAS_CONNECTED_TEST"
+          echo "MAX32655_BLE_FILES_CHANGED   : $MAX32655_BLE_FILES_CHANGED "
+          echo "LOCK_MAX32655_B2             : $LOCK_MAX32655_B2 "
+
+          cd .github/workflows/scripts
+
+          if [[ $MAX32655_RUN_ALL_TEST == 'true' ]]; then
+              echo "Testing all examples"
+              set +e
+              ./test_launcher.sh max32655 $dut_uart $dut_serial "all"
+              let "testResult=$?"
+              if [ "$testResult" -ne "0" ]; then
+                    # update failed test count
+                    let "numOfFailedTests+=$testResult"
+              fi
+              set -e
+          else
+              if [[ $MAX32655_BLE_FILES_CHANGED == 'true' ]]; then
+                  #------non connected tests---------
+                  for example in "${examples_to_test[@]}"; do
+                      # launch single tests
+                      echo "Running $example test on MAX32655"
+                      set +e
+                      ./test_launcher.sh max32655 $dut_uart $dut_serial $example
+                      let "testResult=$?"
+                      if [ "$testResult" -ne "0" ]; then
+                          # update failed test count
+                          let "numOfFailedTests+=$testResult"
+                          failedTestList+="| $example"
+                      fi
+                      set -e
+                  done
+
+                  #------connected tests---------
+                  if [[ $MAX32655_DATS_CONNECTED_TEST == 'true' ]]; then
+                      #conencted test launcher
+                      echo "Testing MAX32655_DATS_CONNECTED_TEST"
+                      set +e
+                      ./test_launcher.sh max32655 $dut_uart $dut_serial "dats"
+                      let "testResult=$?"
+                      if [ "$testResult" -ne "0" ]; then
+                          # update failed_test count
+                          let "numOfFailedTests+=$testResult"
+                          failedTestList+="| MAX32655 Dats/c"
+                      fi
+                      set -e
+
+                  fi
+                  #------connected tests---------
+                  if [[ $MAX32655_OTAS_CONNECTED_TEST == 'true' ]]; then
+                      #conencted test launcher
+                      echo "Testing MAX32655_OTAS_CONNECTED_TEST"
+                      set +e
+                      #call test here
+                      #***************** uncomment actual test here *************
+                      ./test_launcher.sh max32655 $dut_uart $dut_serial "ota"
+                      let "testResult=$?"
+                      if [ "$testResult" -ne "0" ]; then
+                          # update failed test count
+                          let "numOfFailedTests+=$testResult"
+                          failedTestList+="| MAX32655 OTAS/C"
+                      fi
+                      set -e
+                  fi
+              else
+                  echo "Skipping all tests"
+              fi
+            echo "=============================================================================="
+            echo "=============================================================================="
+
+            if [[ $numOfFailedTests -ne 0 ]]; then
+                printf "Test completed with $numOfFailedTests failed tests located in: \r\n $failedTestList"
+            else
+                echo "Relax! ALL TESTS PASSED"
+            fi
+            echo
+            echo "=============================================================================="
+            echo "=============================================================================="
+            echo
+          fi
+
+          exit $numOfFailedTests
       #----------------------------------------------------------------------------------------------
       - name: Test MAX32690 #name used for display purposes on github webpage
         if: steps.lock_max32690_b1.outcome == 'success'
@@ -801,9 +753,12 @@ jobs:
           fi
 
           exit $numOfFailedTests
-
+      #----------------------------------------------------------------------------------------------
+      #----------------------------------------------------------------------------------------------
+      #------------------------------| Unock all required board at once |-----------------------------
+      #----------------------------------------------------------------------------------------------
       - name: Unlock MAX32655 B1
-        if: ${{ always() && steps.lock_max32655_b1_2.outcome == 'success'}}
+        if: ${{ always() && steps.lock_max32655_b1.outcome == 'success'}}
         run: |
           echo "LOCK_MAX32655_B1=false" >>  $GITHUB_ENV
           # leave board in known state if workflow should end early
@@ -811,7 +766,25 @@ jobs:
           echo "Erasing Main MAX32655"
           ./mass_erase_board.sh max32655 max32655_board1
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board1
-
+      #----------------------------------------------------------------------------------------------
+      - name: Unlock MAX32655 B2
+        if: ${{ always() && steps.lock_max32655_b2.outcome == 'success'}}
+        run: |
+          # leave board in known state if workflow should end early
+          cd .github/workflows/scripts
+          echo "Erasing MAX32655"
+          ./mass_erase_board.sh max32655 max32655_board2
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32655_board2
+       #----------------------------------------------------------------------------------------------
+      - name: Unlock MAX32665 B1
+        if: ${{ always() && steps.lock_max32665_b1.outcome == 'success'}}
+        run: |
+          # leave board in known state if workflow should end early
+          cd .github/workflows/scripts
+          echo "Erasing MAX32665"
+          ./mass_erase_board.sh max32665 max32665_board1
+          python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32665_board1
+      #----------------------------------------------------------------------------------------------
       - name: Unlock MAX32690 B1
         if: ${{ always() && steps.lock_max32690_b1.outcome == 'success'}}
         run: |
@@ -820,7 +793,7 @@ jobs:
           echo "Erasing MAX32690"
           ./mass_erase_board.sh max32690 max32690_board_w1
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share.py max32690_board_w1
-
+      #----------------------------------------------------------------------------------------------
       # Save test reports
       - uses: actions/upload-artifact@v3
         if: failure()
