@@ -54,6 +54,8 @@ from termcolor import colored
 from json import JSONEncoder
 from DBB import DBB
 import sys
+from BLE_hci import BLE_hci
+from BLE_hci import Namespace
 
 TRACE_INFO = 2
 TRACE_WARNING = 1
@@ -96,6 +98,7 @@ parser = argparse.ArgumentParser(
     description=descText, formatter_class=RawTextHelpFormatter)
 
 parser.add_argument('dap_id', help='CMSIS DAP Serial Number')
+parser.add_argument('hci_id', help='HCI Serial Port')
 
 parser.add_argument('-b','--bin',help='Binary To Program Board with', default='')
 parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
@@ -129,12 +132,20 @@ with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000
     target.reset_and_halt()
     target.resume()
 
+
+    #reset the hci
+    hci = BLE_hci(Namespace(serialPort=args.hci_id,  monPort='', baud=115200, id=1))
+    hci.resetFunc(None)
+    target.halt()
+    
     time.sleep(1)
     # Read some registers.
-    target.halt()
 
 
     dbb = DBB(target)
+    
+    
+
     
     dbbReadout = dbb.getAll()
 
