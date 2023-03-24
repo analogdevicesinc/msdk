@@ -3,12 +3,8 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
  
-#BOARD=FTHR_APPS_A
-# ^ For example, you can uncomment this line to make the 
-# project build for the "FTHR_APPS_A" board.
-
 # **********************************************************
 
 # Add your config here!
