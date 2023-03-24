@@ -1,3 +1,4 @@
+
 #! /usr/bin/env python3
 
 ################################################################################
@@ -39,35 +40,28 @@
 #
 # Ensure that both targets are built with BT_VER := 9
 #
-
+from pyocd.core.helpers import ConnectHelper
+from pyocd.flash.file_programmer import FileProgrammer
+import logging
+import time
 import sys
 import argparse
 from argparse import RawTextHelpFormatter
 from time import sleep
-import itertools
-from mini_RCDAT_USB import mini_RCDAT_USB
-from BLE_hci import BLE_hci
-from BLE_hci import Namespace
-import socket
-import time
 import os.path
 import json
-import mxc_radio
 from termcolor import colored
-
-
 from json import JSONEncoder
+from DBB import DBB
+import sys
 
-if socket.gethostname() == "wall-e":
-    rf_switch = True
-else:
-    rf_switch = False
 TRACE_INFO = 2
 TRACE_WARNING = 1
 TRACE_ERROR = 0
 
 traceLevel = TRACE_INFO
 
+logging.basicConfig(level=logging.INFO)
 
 def printTrace(label, msg, callerLevel, color='white'):
     if callerLevel <= traceLevel:
@@ -85,8 +79,11 @@ def printInfo(msg):
 def printError(msg):
     printTrace('Error', msg, TRACE_ERROR, 'red')
 
-
-dbbFile = 'dbb_reference.json'
+def getMismatches(a, b):
+    if len(a) != len(b):
+        print('Lengths dont match')
+        return []
+    return [i for i in range(len(a)) if a[i] != b[i]]
 
 
 # Setup the command line description text
@@ -97,77 +94,69 @@ Run Calibration and Initialization Tests
 # Parse the command line arguments
 parser = argparse.ArgumentParser(
     description=descText, formatter_class=RawTextHelpFormatter)
-parser.add_argument('serialPort', help='Serial port for slave device')
-parser.add_argument('board',  help='Board to read Cal Values')
 
-# parser.add_argument('-r', '--results', default='',help='File to store results')
+parser.add_argument('dap_id', help='CMSIS DAP Serial Number')
+
+parser.add_argument('-b','--bin',help='Binary To Program Board with', default='')
 parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
 parser.add_argument('-ura', '--update-reference-afe', action='store_true')
 parser.add_argument('-vd', '--verify-dbb',  action='store_true')
 parser.add_argument('-p', '--print',  action='store_true')
-parser.add_argument('-f', '--file',  default=dbbFile)
+parser.add_argument('-f', '--file',  default='dbb_reference.json')
 
 
 args = parser.parse_args()
 print(args)
-
 print("--------------------------------------------------------------------------------------------")
-
-print("Serial Port   :", args.serialPort)
 dbbFile = args.file
 
+if not os.path.exists(args.bin):
+    print("bin does not exist!")
 
-# Open the results file, write the parameters
 
-# if args.results != '':
-#     results = open(args.results, "a")
-def getMismatches(a, b):
-    if len(a) != len(b):
-        print('Lengths dont match')
-        return []
-    return [i for i in range(len(a)) if a[i] != b[i]]
+with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000000000000000000097969906') as session:
 
-def printDiff(label, a, b):
+    board = session.board
+    target = board.target
+    flash = target.memory_map.get_boot_memory()
+
+    # Load firmware into device.
+
+    if args.bin != '' and os.path.exists(args.bin):
+        FileProgrammer(session).program(args.bin)
+
+    # Reset, run.
+    target.reset_and_halt()
+    target.resume()
+
+    time.sleep(1)
+    # Read some registers.
+    target.halt()
+
+
+    dbb = DBB(target)
     
-    print(f'Mismatches occured at {label}')
-    
-    
-    pass
-def main():
-    #Create the BLE_hci objects
-    hciInterface = BLE_hci(
-        Namespace(serialPort=args.serialPort,  monPort="", baud=115200, id=1))
+    dbbReadout = dbb.getAll()
 
-    board = args.board.lower()
-    dbb = mxc_radio.DBB(hciInterface=hciInterface, board=board)
-    dbbReadout = dbb.readAll()
     
     if args.update_reference_dbb:
         with open(dbbFile, 'w') as write:
-            json.dump(dbbReadout, write)
+                json.dump(dbbReadout, write)
 
     if args.print:
         print(colored(dbbReadout, 'green'))
-
     if args.verify_dbb:
         dbbRef = {}
         if (os.path.exists(dbbFile)):
             with open(dbbFile, 'r') as read:
                 dbbRef = json.load(read)
-            
             anyMismatches = False
-
             for region in dbbRef:
                 mismatches = getMismatches(dbbRef[region], dbbReadout[region])
                 if len(mismatches) != 0:
                     print(f'Mismatches found at region{region} and offsets {mismatches}')
-
             print('DBB Match', anyMismatches)
         else:
             print(f'{dbbFile} Does Not Exist!')
-
+    
     sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
