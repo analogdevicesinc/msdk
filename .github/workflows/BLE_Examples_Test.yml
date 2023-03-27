@@ -750,8 +750,14 @@ jobs:
         run: |
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
-          echo "Erasing Main MAX32655"
+          echo "Erasing Main MAX32655 B1"
           ./mass_erase_board.sh max32655 max32655_board1
+          echo "Erasing Main MAX32655 B2"
+          ./mass_erase_board.sh max32655 max32655_board2
+          echo "Erasing Main MAX32665 B1"
+          ./mass_erase_board.sh max32665 max32665_board1
+          echo "Erasing Main MAX32690"
+          ./mass_erase_board.sh max32690 max32690_board_w1
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share_multiboard.py -b max32655_board1 -b max32655_board2 -b max32665_board1 -b max32690_board_w1
       #----------------------------------------------------------------------------------------------
       # Save test reports
