@@ -174,16 +174,16 @@ class DBB:
             return self.read16(addr)
         elif size == self.RegSize32:
             return self.read32(addr)
-    def write(self,addr,value):
+
+    def write(self, addr, value):
 
         if value <= 255:
             self.write8(addr, value)
         elif value <= 65535:
-            self.write16(addr,value)
+            self.write16(addr, value)
         else:
-            self.write32(addr,value)
+            self.write32(addr, value)
 
-    
     def readRegions(self, baseAddr, offsetLut: dict):
         """
         Reads multiple regions give region map 
@@ -206,7 +206,7 @@ class DBB:
 
             readout = self.readRange8(
                 region_start, reserved_start - region_start)
-            
+
             # readout = [hex(i) for i in readout]
 
             if len(readout) != (regionLength):
@@ -219,8 +219,6 @@ class DBB:
             regions.extend([0x00] * reserved_len)
 
         return regions
-
-
 
     def spim_setup(self):
         cpha = 0
@@ -241,14 +239,13 @@ class DBB:
         self.write8(self.rffeAddr(RffeReg.rx_seq_spi), spi_setup)
         self.write8(self.rffeAddr(RffeReg.agc_spi_cfg), spi_setup)
 
-
     def spim_write(self, addr, value):
 
         self.enableRffePmu(True)
 
         while not (self.readCtrl(CtrlReg.gen_pmu_status, self.RegSize16) & (1 << 2)):
             pass
-        
+
         for i in range(0xf):
             # wait a little extra
             pass
@@ -259,13 +256,10 @@ class DBB:
         self.writeRffe(RffeReg.rffe_spim_data_out, (addr << 8) + value)
         self.writeRffe(RffeReg.rffe_spim_start_transaction, (1 << 0))
 
-        while not (self.readCtrl(CtrlReg.events_status) & (1 << 5),self.RegSize16):
+        while not (self.readCtrl(CtrlReg.events_status) & (1 << 5), self.RegSize16):
             pass
-        
 
         self.enableRffePmu(False)
-
-        
 
     def spim_read(self, addr):
         self.enableRffePmu(True)
@@ -276,19 +270,15 @@ class DBB:
         for i in range(0xf):
             # wait a little extra
             pass
-        
+
         addr &= ~(1 << 7)
-        
-        
+
         self.writeCtrl(CtrlReg.events_status, (1 << 5))
         self.writeRffe(RffeReg.rffe_spim_data_out, (addr << 8) + 0)
         self.writeRffe(RffeReg.rffe_spim_start_transaction, (1 << 0))
 
-        
-        
-        while not self.readCtrl(CtrlReg.events_status,self.RegSize16) & (1 << 5):
+        while not self.readCtrl(CtrlReg.events_status, self.RegSize16) & (1 << 5):
             pass
-      
 
         self.enableRffePmu(False)
 
@@ -314,15 +304,17 @@ class DBB:
 
         return (version_major, version_minor)
 
-    def readCtrl(self,register,size):
-        return self.read(self.ctrlAddr(register),size)
-    def writeCtrl(self,register,value):
-        self.write(self.ctrlAddr(register),value)
-    def readRffe(self, register,size):
-        return self.read(self.rffeAddr(register),size)
-    def writeRffe(self,register,value):
-        self.write(self.rffeAddr(register), value)
+    def readCtrl(self, register, size):
+        return self.read(self.ctrlAddr(register), size)
 
+    def writeCtrl(self, register, value):
+        self.write(self.ctrlAddr(register), value)
+
+    def readRffe(self, register, size):
+        return self.read(self.rffeAddr(register), size)
+
+    def writeRffe(self, register, value):
+        self.write(self.rffeAddr(register), value)
 
     def getCtrlAll(self):
         len0 = 0x96
@@ -406,7 +398,6 @@ class DBB:
         tx = self.getTxAll()
         rffe = self.getRffeAll()
 
-        
         return {
             'ctrl': ctrl,
             'rx': rx,
@@ -419,11 +410,15 @@ class DBB:
             self.write16(self.ctrlAddr(CtrlReg.rffe_pmu_ctrl), (1 << 1))
         else:
             self.write16(self.ctrlAddr(CtrlReg.rffe_pmu_ctrl), (1 << 2))
+
     def getPmuStatus(self):
         return self.readCtrl(CtrlReg.gen_pmu_status, self.RegSize32)
+
     def txPmuIsEnable(self):
         return bool(self.getPmuStatus() & 0x1)
+
     def rffePmuIsEnabled(self):
         return bool(self.getPmuStatus() & (1 << 1))
+
     def rxPmuIsEnabled(self):
         return bool(self.getPmuStatus() & (1 << 2))
