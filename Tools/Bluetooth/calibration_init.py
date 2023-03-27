@@ -41,6 +41,7 @@
 # Ensure that both targets are built with BT_VER := 9
 #
 from pyocd.core.helpers import ConnectHelper
+import pyocd.core.options as opts
 from pyocd.flash.file_programmer import FileProgrammer
 import logging
 import time
@@ -79,12 +80,15 @@ parser.add_argument('hci_id', help='HCI Serial Port')
 
 parser.add_argument(
     '-b', '--bin', help='Binary To Program Board with', default='')
+parser.add_argument('-c', '--chip', default='', help='Part number of chip')
 parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
 parser.add_argument('-ura', '--update-reference-afe', action='store_true')
 parser.add_argument('-vd', '--verify-dbb',  action='store_true')
 parser.add_argument('-p', '--print',  default='',
                     help='print the structure <ctrl|tx|rx|rffe|all>=<offset-hex>')
 parser.add_argument('-f', '--file',  default='dbb_reference.json')
+
+
 
 
 args = parser.parse_args()
@@ -195,9 +199,22 @@ def hciSetup(hciId):
 
 
 
-with ConnectHelper.session_with_chosen_probe(blocking=False,unique_id=args.dap_id) as session:
+
+session = ConnectHelper.session_with_chosen_probe(blocking=False,unique_id=args.dap_id)
+
+
+if args.chip != '':
+    session.options['target_override'] = 'max32690'
+
+
+
+
+with session:
+
+    printInfo(session.options['target_override'])
 
     board = session.board
+    
     target = board.target
     flash = target.memory_map.get_boot_memory()
 
@@ -219,9 +236,10 @@ with ConnectHelper.session_with_chosen_probe(blocking=False,unique_id=args.dap_i
     time.sleep(1)
     # Read some registers.
 
-    dbb = DBB(target)
-    dbbReadout = dbb.getAll()
+    dbb = DBB(target,args.chip)
 
+    
+    dbbReadout = dbb.getAll()
     if args.print:
         doPrint(dbbReadout, args.print)
 

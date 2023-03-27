@@ -117,6 +117,100 @@ class RffeReg:
     iq_data = 0x0168
 
 
+class OffsetLuts:
+
+    max32665 = {
+        'ctrl': [
+            (0x00, 0x96, 0xff - 0x96 + 1),
+            (0x100, 0x108, 4),
+            (0x10c, 0x110, 0x120 - 0x100)
+        ],
+        'tx': [
+            (0x00, 0x70, 0x180 - 0x70),
+            # any address offset past 0x18c causes a hardfault
+            (0x180, 0x18c, 0x194 + 76 - 0x18c)
+        ],
+
+        'rx': [(0x00,    0x76, 2),
+               (0x78,    0x13a, 2),
+               (0x13c,   0x2dc, 73*4),
+               (0x400,   0x404, 4),
+               (0x408,   0x40c, 4*5),
+               # The entire region with CTE values causes hardfaults
+               (0x420, 0x424, 0x586 - 0x424),
+               ],
+        'rffe': [(0x00, 0x11e, 2),
+                 (0x120, 0x146, 0x164 - 0x146),
+                 (0x164, 0x168 + 2, 0x168 + 2 - 0x164)
+                 ]}
+
+    max32655 = {
+        'ctrl': [
+            (0x00, 0x96, 0xff - 0x96 + 1),
+            (0x100, 0x108, 4),
+            (0x10c, 0x110, 0x120 - 0x100)
+        ],
+        'tx': [
+            (0x00, 0x70, 0x180 - 0x70),
+            # any address offset past 0x18c causes a hardfault
+            (0x180, 0x18c, 0x194 + 76 - 0x18c)
+        ],
+
+        'rx': [(0x00,    0x76, 2),
+               (0x78,    0x13a, 2),
+               (0x13c,   0x2dc, 73*4),
+               (0x400,   0x404, 4),
+               (0x408,   0x40c, 4*5),
+               # The entire region with CTE values causes hardfaults
+               (0x420, 0x424, 0x586 - 0x424),
+               ],
+        'rffe': [(0x00, 0x11e, 2),
+                 (0x120, 0x146, 0x164 - 0x146),
+                 (0x164, 0x168 + 2, 0x168 + 2 - 0x164)
+                 ]}
+
+
+    #event timing region skipped
+    max32690 = {
+        'ctrl': [
+            (0x00, 0x50, 0x84 - 0x50 + 1),
+            (0x84, 0x96, 0xff - 0x96 + 1),
+            (0x100, 0x108, 4),
+            (0x10c, 0x110, 0x120 - 0x100)
+        ],
+        'tx': [
+            (0x00, 0x70, 0x180 - 0x70),
+            # any address offset past 0x18c causes a hardfault
+            (0x180, 0x18c, 0x194 + 76 - 0x18c)
+        ],
+
+        'rx': [(0x00,    0x76, 2),
+               (0x78,    0x13a, 2),
+               (0x13c,   0x2dc, 73*4),
+               (0x400,   0x404, 4),
+               (0x408,   0x40c, 4*5),
+               # The entire region with CTE values causes hardfaults
+               (0x420, 0x424, 0x586 - 0x424),
+               ],
+        'rffe': [(0x00, 0x11e, 2),
+                 (0x120, 0x146, 0x164 - 0x146),
+                 (0x164, 0x168 + 2, 0x168 + 2 - 0x164)
+                 ]}
+
+    @staticmethod
+    def getOffsetLut(chip):
+        chip = chip.lower()
+        if chip == 'max32655':
+            return OffsetLuts.max32655
+        elif chip == 'max32665':
+            return OffsetLuts.max32665
+        elif chip == 'max32690':
+            return OffsetLuts.max32690
+        else:
+            msg = f'Chip {chip} is not valid'
+            raise Exception(msg)
+
+
 class DBB:
     DBBBaseAddr = 0x40050000
     CtrlAddrBase = DBBBaseAddr + RegisterOffsets.CTRL
@@ -128,8 +222,10 @@ class DBB:
     RegSize16 = 0x2
     RegSize32 = 0x3
 
-    def __init__(self, pyOcdTarget):
+    def __init__(self, pyOcdTarget, chip='max32655'):
         self.target = pyOcdTarget
+        self.chip = chip
+        self.offsetLuts = OffsetLuts.getOffsetLut(self.chip)
 
     def read8(self, addr):
         return self.target.read8(addr)
@@ -317,14 +413,9 @@ class DBB:
         self.write(self.rffeAddr(register), value)
 
     def getCtrlAll(self):
-        len0 = 0x96
-        LEN = 0x120 + 16
-        ctrl = self.readRange8(self.CtrlAddrBase, len0)
-        ctrl.extend([0x00] * (0xff - 0x96 + 1))
-        ctrl.extend(self.readRange8(self.CtrlAddrBase + 0x100, 0x108 - 0x100))
-        ctrl.extend([0x00] * 4)
-        ctrl.extend(self.readRange8(self.CtrlAddrBase + 0x10C, 0x110 - 0x10C))
-        ctrl.extend([0x00]*(0x120-0x100))
+
+        offsetLut = self.offsetLuts['ctrl']
+        ctrl = self.readRegions(self.CtrlAddrBase, offsetLut)
 
         return ctrl
 
@@ -336,11 +427,8 @@ class DBB:
 
         MXC_BASE_BTLE_DBB_TX = self.TxBaseAddr
 
-        offsetLut = [
-            (0x00, 0x70, 0x180 - 0x70),
-            # any address offset past 0x18c causes a hardfault
-            (0x180, 0x18c, 0x194 + 76 - 0x18c)
-        ]
+        
+        offsetLut = self.offsetLuts['tx']
 
         return self.readRegions(
             baseAddr=MXC_BASE_BTLE_DBB_TX, offsetLut=offsetLut)
@@ -352,17 +440,7 @@ class DBB:
         """
         MXC_BASE_BTLE_DBB_RX = self.RxBaseAddr
 
-        # Offset Lookup for RX registers
-        # There are a lot of traps and so some of these offsets were found by trial and error
-        # Start of region, Start of reserved region, reserved region len
-        offsetLut = [(0x00,    0x76, 2),
-                     (0x78,    0x13a, 2),
-                     (0x13c,   0x2dc, 73*4),
-                     (0x400,   0x404, 4),
-                     (0x408,   0x40c, 4*5),
-                     # The entire region with CTE values causes hardfaults
-                     (0x420, 0x424, 0x586 - 0x424),
-                     ]
+        offsetLut = self.offsetLuts['rx']
 
         return self.readRegions(MXC_BASE_BTLE_DBB_RX, offsetLut)
 
@@ -383,10 +461,8 @@ class DBB:
     def getRffeAll(self):
         MXC_BASE_BTLE_DBB_EXT_RFFE = self.RffeBaseAddr
 
-        offsetLut = [(0x00, 0x11e, 2),
-                     (0x120, 0x146, 0x164 - 0x146),
-                     (0x164, 0x168 + 2, 0x168 + 2 - 0x164)
-                     ]
+
+        offsetLut = self.offsetLuts['rffe']
 
         return self.readRegions(
             baseAddr=MXC_BASE_BTLE_DBB_EXT_RFFE, offsetLut=offsetLut)
