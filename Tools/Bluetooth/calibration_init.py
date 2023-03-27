@@ -116,13 +116,10 @@ print(args)
 print("--------------------------------------------------------------------------------------------")
 dbbFile = args.file
 
-if not os.path.exists(args.bin):
-    print("bin does not exist!")
 
 
-hci = BLE_hci(Namespace(serialPort=args.hci_id,  monPort='', baud=115200, id=0))
-    # sleep(0.1)
-hci.resetFunc(None)
+
+
 
 with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000000000000000000097969906') as session:
 
@@ -188,6 +185,7 @@ with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000
                 mismatches = getMismatches(dbbRef[region], dbbReadout[region])
                 if len(mismatches) != 0:
                     printWarning(f'Mismatches found at region {region} and offsets {mismatches}')
+                     
                     allMismatches[region] = mismatches    
             
             
@@ -202,6 +200,11 @@ with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000
         else:
             print(f'{dbbFile} Does Not Exist!')
     
+
+    
     target.reset()
+    target.resume()
+
+
     
     sys.exit(0)
