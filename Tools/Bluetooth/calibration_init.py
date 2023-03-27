@@ -181,11 +181,8 @@ def verifyDbb(dbbReadout):
 
 def hciSetup(hciId):
     hci = BLE_hci(Namespace(serialPort=hciId,  monPort='', baud=115200, id=0))
-    # sleep(0.1)
     hci.resetFunc(None)
-    # sleep(0.1)
     hci.txPowerFunc(Namespace(power=0, handle="0"))
-
     hci.txTestVSFunc(Namespace(channel=0, phy=1,
                      packetLength=0, numPackets=0, payload=3))
 
