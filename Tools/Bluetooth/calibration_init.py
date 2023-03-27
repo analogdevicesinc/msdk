@@ -1,3 +1,4 @@
+
 #! /usr/bin/env python3
 
 ################################################################################
@@ -33,40 +34,63 @@
 #
 ###############################################################################
 
-# dtm_sweep.py
+# calibration_init.py
 #
-# Sweep connection parameters.
+# tool to read/verify DBB for calibration purposes
 #
 # Ensure that both targets are built with BT_VER := 9
 #
-
+from pyocd.core.helpers import ConnectHelper
+from pyocd.flash.file_programmer import FileProgrammer
+import logging
+import time
 import sys
 import argparse
 from argparse import RawTextHelpFormatter
 from time import sleep
-import itertools
-from mini_RCDAT_USB import mini_RCDAT_USB
-from BLE_hci import BLE_hci
-from BLE_hci import Namespace
-import socket
-import time
 import os.path
 import json
-import mxc_radio
 from termcolor import colored
 
+from DBB import DBB
+import sys
+from BLE_hci import BLE_hci
+from BLE_hci import Namespace
 
-from json import JSONEncoder
-
-if socket.gethostname() == "wall-e":
-    rf_switch = True
-else:
-    rf_switch = False
 TRACE_INFO = 2
 TRACE_WARNING = 1
 TRACE_ERROR = 0
 
 traceLevel = TRACE_INFO
+
+logging.basicConfig(level=logging.INFO)
+
+# Setup the command line description text
+descText = """
+Run Calibration and Initialization Tests
+"""
+
+# Parse the command line arguments
+parser = argparse.ArgumentParser(
+    description=descText, formatter_class=RawTextHelpFormatter)
+
+parser.add_argument('dap_id', help='CMSIS DAP Serial Number')
+parser.add_argument('hci_id', help='HCI Serial Port')
+
+parser.add_argument(
+    '-b', '--bin', help='Binary To Program Board with', default='')
+parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
+parser.add_argument('-ura', '--update-reference-afe', action='store_true')
+parser.add_argument('-vd', '--verify-dbb',  action='store_true')
+parser.add_argument('-p', '--print',  default='',
+                    help='print the structure <ctrl|tx|rx|rffe|all>=<offset-hex>')
+parser.add_argument('-f', '--file',  default='dbb_reference.json')
+
+
+args = parser.parse_args()
+print(args)
+print("--------------------------------------------------------------------------------------------")
+dbbFile = args.file
 
 
 def printTrace(label, msg, callerLevel, color='white'):
@@ -86,88 +110,129 @@ def printError(msg):
     printTrace('Error', msg, TRACE_ERROR, 'red')
 
 
-dbbFile = 'dbb_reference.json'
-
-
-# Setup the command line description text
-descText = """
-Run Calibration and Initialization Tests
-"""
-
-# Parse the command line arguments
-parser = argparse.ArgumentParser(
-    description=descText, formatter_class=RawTextHelpFormatter)
-parser.add_argument('serialPort', help='Serial port for slave device')
-parser.add_argument('board',  help='Board to read Cal Values')
-
-# parser.add_argument('-r', '--results', default='',help='File to store results')
-parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
-parser.add_argument('-ura', '--update-reference-afe', action='store_true')
-parser.add_argument('-vd', '--verify-dbb',  action='store_true')
-parser.add_argument('-p', '--print',  action='store_true')
-parser.add_argument('-f', '--file',  default=dbbFile)
-
-
-args = parser.parse_args()
-print(args)
-
-print("--------------------------------------------------------------------------------------------")
-
-print("Serial Port   :", args.serialPort)
-dbbFile = args.file
-
-
-# Open the results file, write the parameters
-
-# if args.results != '':
-#     results = open(args.results, "a")
 def getMismatches(a, b):
+
     if len(a) != len(b):
-        print('Lengths dont match')
-        return []
-    return [i for i in range(len(a)) if a[i] != b[i]]
+        raise Exception('Lengths dont match')
 
-def printDiff(label, a, b):
-    
-    print(f'Mismatches occured at {label}')
-    
-    
-    pass
-def main():
-    #Create the BLE_hci objects
-    hciInterface = BLE_hci(
-        Namespace(serialPort=args.serialPort,  monPort="", baud=115200, id=1))
+    return [{f'offset {hex(i)}': {'ref': hex(a[i]), 'read': hex(b[i])}} for i in range(len(a)) if a[i] != b[i]]
 
-    board = args.board.lower()
-    dbb = mxc_radio.DBB(hciInterface=hciInterface, board=board)
-    dbbReadout = dbb.readAll()
-    
+
+def doPrint(dbbReadout, printArg):
+    locationInfo = printArg.split('=')
+    region = locationInfo[0].lower()
+
+    if region == 'all':
+        printInfo(dbbReadout)
+        return
+
+    if len(locationInfo) > 1:
+
+        offset = locationInfo[1]
+        if 'x' in offset:
+            offset = int(offset, 16)
+        else:
+            offset = int(offset)
+
+    else:
+        offset = -1
+
+    if region not in dbbReadout:
+        msg = f'Region {region} not in dbb'
+        raise Exception(msg)
+
+    if offset >= 0:
+        regionLen = len(dbbReadout[region])
+        if offset > regionLen - 1:
+            msg = f'Invalid offset {offset}, must be less than len of region {regionLen - 1}' 
+            raise Exception(msg)
+        
+        regionReadout = dbbReadout[region][offset]
+        printInfo(f'Region {region} offset {offset}: {regionReadout}')
+    else:
+        printInfo(f'Region {region}: {dbbReadout[region]}')
+
+
+def verifyDbb(dbbReadout):
+    dbbRef = {}
+    if (os.path.exists(dbbFile)):
+        with open(dbbFile, 'r') as read:
+            dbbRef = json.load(read)
+
+        anyMismatches = False
+        failureFilePath = dbbFile.split('.')
+        failureFilePath = f'{failureFilePath[0]}_failure.json'
+        failureFile = open(failureFilePath, 'w')
+        allMismatches = {}
+
+        for region in dbbRef:
+            mismatches = getMismatches(dbbRef[region], dbbReadout[region])
+            if len(mismatches) != 0:
+                printWarning(
+                    f'Mismatches found at region {region} and offsets {mismatches}')
+
+                allMismatches[region] = mismatches
+
+        if anyMismatches:
+            failureFile.close()
+            os.remove(failureFilePath)
+        else:
+            json.dump(allMismatches, failureFile)
+            failureFile.close()
+
+        print('DBB Match', anyMismatches)
+        return True
+    else:
+        print(f'{dbbFile} Does Not Exist!')
+        return False
+
+def hciSetup(hciId):
+    hci = BLE_hci(Namespace(serialPort=hciId,  monPort='', baud=115200, id=0))
+    hci.resetFunc(None)
+    hci.txPowerFunc(Namespace(power=0, handle="0"))
+    hci.txTestVSFunc(Namespace(channel=0, phy=1,
+                     packetLength=0, numPackets=0, payload=3))
+
+
+with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000000000000000000097969906') as session:
+
+    board = session.board
+    target = board.target
+    flash = target.memory_map.get_boot_memory()
+
+    # Load firmware into device.
+
+    if args.bin != '' and os.path.exists(args.bin):
+        FileProgrammer(session).program(args.bin)
+
+    # Reset, run.
+    target.reset_and_halt()
+    target.resume()
+
+    sleep(2)
+
+    # reset the hci
+    hciSetup(args.hci_id)
+    target.halt()
+
+    time.sleep(1)
+    # Read some registers.
+
+    dbb = DBB(target)
+    dbbReadout = dbb.getAll()
+
+    if args.print:
+        doPrint(dbbReadout, args.print)
+
     if args.update_reference_dbb:
         with open(dbbFile, 'w') as write:
             json.dump(dbbReadout, write)
 
-    if args.print:
-        print(colored(dbbReadout, 'green'))
-
     if args.verify_dbb:
-        dbbRef = {}
-        if (os.path.exists(dbbFile)):
-            with open(dbbFile, 'r') as read:
-                dbbRef = json.load(read)
-            
-            anyMismatches = False
+        verifyDbb(dbbReadout)
+        
 
-            for region in dbbRef:
-                mismatches = getMismatches(dbbRef[region], dbbReadout[region])
-                if len(mismatches) != 0:
-                    print(f'Mismatches found at region{region} and offsets {mismatches}')
-
-            print('DBB Match', anyMismatches)
-        else:
-            print(f'{dbbFile} Does Not Exist!')
+    target.reset()
+    target.resume()
 
     sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
