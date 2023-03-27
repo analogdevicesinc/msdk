@@ -122,6 +122,10 @@ def doPrint(dbbReadout, printArg):
     locationInfo = printArg.split('=')
     region = locationInfo[0].lower()
 
+    if region == 'all':
+        printInfo(dbbReadout)
+        return
+
     if len(locationInfo) > 1:
 
         offset = locationInfo[1]
@@ -134,13 +138,15 @@ def doPrint(dbbReadout, printArg):
         offset = -1
 
     if region not in dbbReadout:
-        raise Exception(f'Region {region} not in dbb')
+        msg = f'Region {region} not in dbb'
+        raise Exception(msg)
 
     if offset >= 0:
         regionLen = len(dbbReadout[region])
         if offset > regionLen - 1:
-            raise Exception(
-                f'Invalid offset {offset}, must be less than len of region {regionLen - 1}')
+            msg = f'Invalid offset {offset}, must be less than len of region {regionLen - 1}' 
+            raise Exception(msg)
+        
         regionReadout = dbbReadout[region][offset]
         printInfo(f'Region {region} offset {offset}: {regionReadout}')
     else:
@@ -175,9 +181,10 @@ def verifyDbb(dbbReadout):
             failureFile.close()
 
         print('DBB Match', anyMismatches)
+        return True
     else:
         print(f'{dbbFile} Does Not Exist!')
-
+        return False
 
 def hciSetup(hciId):
     hci = BLE_hci(Namespace(serialPort=hciId,  monPort='', baud=115200, id=0))
@@ -223,6 +230,7 @@ with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000
 
     if args.verify_dbb:
         verifyDbb(dbbReadout)
+        
 
     target.reset()
     target.resume()
