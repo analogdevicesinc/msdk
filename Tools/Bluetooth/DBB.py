@@ -406,7 +406,7 @@ class DBB:
         tx = self.getTxAll()
         rffe = self.getRffeAll()
 
-        print(type(ctrl))
+        
         return {
             'ctrl': ctrl,
             'rx': rx,
