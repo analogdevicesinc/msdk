@@ -206,6 +206,8 @@ class DBB:
 
             readout = self.readRange8(
                 region_start, reserved_start - region_start)
+            
+            # readout = [hex(i) for i in readout]
 
             if len(readout) != (regionLength):
                 print('Error occurred during readout.')
@@ -214,7 +216,7 @@ class DBB:
             regions.extend(readout)
 
             # add reserved region to the register read
-            regions.extend(['00'] * reserved_len)
+            regions.extend([0x00] * reserved_len)
 
         return regions
 
@@ -326,11 +328,11 @@ class DBB:
         len0 = 0x96
         LEN = 0x120 + 16
         ctrl = self.readRange8(self.CtrlAddrBase, len0)
-        ctrl.extend(['00'] * (0xff - 0x96 + 1))
+        ctrl.extend([0x00] * (0xff - 0x96 + 1))
         ctrl.extend(self.readRange8(self.CtrlAddrBase + 0x100, 0x108 - 0x100))
-        ctrl.extend(['00'] * 4)
+        ctrl.extend([0x00] * 4)
         ctrl.extend(self.readRange8(self.CtrlAddrBase + 0x10C, 0x110 - 0x10C))
-        ctrl.extend(['00']*(0x120-0x100))
+        ctrl.extend([0x00]*(0x120-0x100))
 
         return ctrl
 
@@ -404,6 +406,7 @@ class DBB:
         tx = self.getTxAll()
         rffe = self.getRffeAll()
 
+        print(type(ctrl))
         return {
             'ctrl': ctrl,
             'rx': rx,

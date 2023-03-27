@@ -82,10 +82,13 @@ def printError(msg):
     printTrace('Error', msg, TRACE_ERROR, 'red')
 
 def getMismatches(a, b):
+    
     if len(a) != len(b):
-        print('Lengths dont match')
-        return []
-    return [i for i in range(len(a)) if a[i] != b[i]]
+       raise Exception('Lengths dont match')
+    
+    return [{f'offset {hex(i)}': {'ref' :hex(a[i]), 'read' : hex(b[i])}} for i in range(len(a)) if a[i] != b[i]]
+
+    return [(hex(i),hex(a[i]),hex(b[i])) for i in range(len(a)) if a[i] != b[i]]
 
 
 # Setup the command line description text
@@ -104,7 +107,7 @@ parser.add_argument('-b','--bin',help='Binary To Program Board with', default=''
 parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
 parser.add_argument('-ura', '--update-reference-afe', action='store_true')
 parser.add_argument('-vd', '--verify-dbb',  action='store_true')
-parser.add_argument('-p', '--print',  action='store_true')
+parser.add_argument('-p', '--print',  default='',help='print the structure <ctrl|tx|rx|rffe|all> <offset-hex>')
 parser.add_argument('-f', '--file',  default='dbb_reference.json')
 
 
@@ -116,6 +119,10 @@ dbbFile = args.file
 if not os.path.exists(args.bin):
     print("bin does not exist!")
 
+
+hci = BLE_hci(Namespace(serialPort=args.hci_id,  monPort='', baud=115200, id=0))
+    # sleep(0.1)
+hci.resetFunc(None)
 
 with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000000000000000000097969906') as session:
 
@@ -132,10 +139,17 @@ with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000
     target.reset_and_halt()
     target.resume()
 
+    sleep(2)
 
     #reset the hci
-    hci = BLE_hci(Namespace(serialPort=args.hci_id,  monPort='', baud=115200, id=1))
+    print(args.hci_id)
+    hci = BLE_hci(Namespace(serialPort=args.hci_id,  monPort='', baud=115200, id=0))
+    # sleep(0.1)
     hci.resetFunc(None)
+    # sleep(0.1)
+    hci.txPowerFunc(Namespace(power=0, handle="0")) 
+     
+    hci.txTestVSFunc(Namespace(channel=0, phy=1, packetLength=0, numPackets=0,payload=3))
     target.halt()
     
     time.sleep(1)
@@ -148,6 +162,8 @@ with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000
 
     
     dbbReadout = dbb.getAll()
+    
+
 
     
     if args.update_reference_dbb:
@@ -161,13 +177,31 @@ with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000
         if (os.path.exists(dbbFile)):
             with open(dbbFile, 'r') as read:
                 dbbRef = json.load(read)
+            
             anyMismatches = False
+            failureFilePath = dbbFile.split('.')
+            failureFilePath = f'{failureFilePath[0]}_failure.json'
+            failureFile = open(failureFilePath, 'w')
+            allMismatches = {}
+
             for region in dbbRef:
                 mismatches = getMismatches(dbbRef[region], dbbReadout[region])
                 if len(mismatches) != 0:
-                    print(f'Mismatches found at region{region} and offsets {mismatches}')
+                    printWarning(f'Mismatches found at region {region} and offsets {mismatches}')
+                    allMismatches[region] = mismatches    
+            
+            
+            if anyMismatches:
+                failureFile.close()
+                os.remove(failureFilePath)
+            else:
+                json.dump(allMismatches, failureFile)
+                failureFile.close()
+
             print('DBB Match', anyMismatches)
         else:
             print(f'{dbbFile} Does Not Exist!')
+    
+    target.reset()
     
     sys.exit(0)
