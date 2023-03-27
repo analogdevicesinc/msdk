@@ -80,7 +80,7 @@ parser.add_argument('hci_id', help='HCI Serial Port')
 
 parser.add_argument(
     '-b', '--bin', help='Binary To Program Board with', default='')
-parser.add_argument('-c', '--chip', default='', help='Part number of chip')
+parser.add_argument('-c', '--chip', default='max32655', help='Part number of chip')
 parser.add_argument('-urd', '--update-reference-dbb', action='store_true')
 parser.add_argument('-ura', '--update-reference-afe', action='store_true')
 parser.add_argument('-vd', '--verify-dbb',  action='store_true')
