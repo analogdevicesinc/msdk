@@ -34,9 +34,9 @@
 #
 ###############################################################################
 
-# dtm_sweep.py
+# calibration_init.py
 #
-# Sweep connection parameters.
+# tool to read/verify DBB for calibration purposes
 #
 # Ensure that both targets are built with BT_VER := 9
 #
@@ -51,7 +51,7 @@ from time import sleep
 import os.path
 import json
 from termcolor import colored
-from json import JSONEncoder
+
 from DBB import DBB
 import sys
 from BLE_hci import BLE_hci
