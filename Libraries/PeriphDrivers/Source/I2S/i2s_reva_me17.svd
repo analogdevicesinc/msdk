@@ -156,6 +156,24 @@
       <access>read-write</access>
      </field>
      <field>
+      <name>EXTCLK_EN</name>
+      <description>Selects the clock source for master mode operations in the ME17B.</description>
+      <bitRange>[14:14]</bitRange>
+      <access>read-write</access>
+      <enumeratedValues>
+       <enumeratedValue>
+        <name>erfo</name>
+        <description>Use ERFO.</description>
+        <value>0</value>
+       </enumeratedValue>
+       <enumeratedValue>
+        <name>ext</name>
+        <description>Use External Clock.</description>
+        <value>1</value>
+       </enumeratedValue>
+      </enumeratedValues>
+     </field>
+     <field>
       <name>ADJUST</name>
       <description>LSB/MSB Justify.</description>
       <bitRange>[15:15]</bitRange>

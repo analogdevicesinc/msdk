@@ -281,6 +281,13 @@ static inline int MXC_SYS_In_Crit_Section(void)
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
 
 /**
+ * @brief Gets design revision of the chip.
+ * 
+ * @return Design revision.
+ */
+int MXC_SYS_GetRevision(void);
+
+/**
  * @brief Determines if the selected peripheral clock is enabled.
  * @param clock   Enumeration for desired clock.
  * @returns       0 is the clock is disabled, non 0 if the clock is enabled.
@@ -309,7 +316,25 @@ void MXC_SYS_RTCClockEnable(void);
  * @brief Disables the 32kHz oscillator
  * @returns         E_NO_ERROR if everything is successful
  */
-int MXC_SYS_RTCClockDisable();
+int MXC_SYS_RTCClockDisable(void);
+
+/**
+ * @brief Enables the 32kHz oscillator to be powered down when not in use.
+ *        Only available for ME17 Rev. B and older chips. This has no effect on ME17
+ *        Rev. A chips.
+ * 
+ * @returns  E_NO_ERROR if everything is successful
+ */
+void MXC_SYS_RTCClockPowerDownEn(void);
+
+/**
+ * @brief Disables the 32kHz oscillator from being powered down when not in use.
+ *        Only available for ME17 Rev. B and older chips. This has no effect on ME17
+ *        Rev. A chips.
+ * 
+ * @returns  E_NO_ERROR if everything is successful
+ */
+void MXC_SYS_RTCClockPowerDownDis(void);
 
 /**
  * @brief Enable System Clock Source without switching to it
