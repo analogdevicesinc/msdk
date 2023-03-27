@@ -194,7 +194,8 @@ def hciSetup(hciId):
                      packetLength=0, numPackets=0, payload=3))
 
 
-with ConnectHelper.session_with_chosen_probe(unique_id='040917027f63482900000000000000000000000097969906') as session:
+
+with ConnectHelper.session_with_chosen_probe(blocking=False,unique_id=args.dap_id) as session:
 
     board = session.board
     target = board.target
