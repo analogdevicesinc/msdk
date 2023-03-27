@@ -1,0 +1,22 @@
+{
+    "name":"zbar",
+    "ipaths":[
+        "include",
+        "src",
+        "src/decoder",
+        "src/qrcode",
+        "localcharset"
+    ],
+    "vpaths":[
+        "src",
+        "src/decoder",
+        "src/qrcode",
+        "localcharset"
+    ],
+    "whitelist":"True",
+    "targets":[
+        {
+            "name":"MAX32570"
+        }
+    ]
+}
