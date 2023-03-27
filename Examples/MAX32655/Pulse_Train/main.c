@@ -69,9 +69,9 @@
 // *****************************************************************************
 void PT_IRQHandler(void)
 {
-    printf("flags = 0x%08x\n", MXC_PT_GetFlags());
+    printf("flags = 0x%08x\n", MXC_PT_GetStopFlags());
 
-    MXC_PT_ClearFlags(ALL_PT);
+    MXC_PT_ClearStopFlags(ALL_PT);
 }
 
 // *****************************************************************************
@@ -116,7 +116,7 @@ int main(void)
     printf("PT%d (P0.%d) = Outputs 10Hz continuous square wave\n", SquareWave_PT, SquareWave_Pin);
 
     NVIC_EnableIRQ(PT_IRQn); //enabled default interrupt handler
-    MXC_PT_EnableInt(ALL_PT); //enabled interrupts for all PT
+    MXC_PT_EnableStopInt(ALL_PT); //enabled interrupts for all PT
     MXC_PT_Init(MXC_PT_CLK_DIV1); //initialize pulse trains
 
     //configure and start pulse trains

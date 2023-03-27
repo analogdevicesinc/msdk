@@ -148,7 +148,7 @@ static void mainWsfInit(void)
 /*************************************************************************************************/
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_Handler();
+    MXC_WUT_Handler(MXC_WUT0);
 }
 
 /*************************************************************************************************/
@@ -261,7 +261,7 @@ int main(void)
 
     /* Execute the trim procedure */
     wutTrimComplete = 0;
-    MXC_WUT_TrimCrystalAsync(wutTrimCb);
+    MXC_WUT_TrimCrystalAsync(MXC_WUT0, wutTrimCb);
     while (!wutTrimComplete) {}
 
     /* Stop here to measure the 32 kHz clock */

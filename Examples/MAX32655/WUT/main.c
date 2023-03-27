@@ -52,7 +52,7 @@
 
 void WUT_IRQHandler()
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_IntClear(MXC_WUT0);
 }
 
 // *****************************************************************************
@@ -68,17 +68,17 @@ int main(void)
            MILLISECONDS_WUT);
 
     // Get ticks based off of milliseconds
-    MXC_WUT_GetTicks(MILLISECONDS_WUT, MXC_WUT_UNIT_MILLISEC, &ticks);
+    MXC_WUT_GetTicks(MXC_WUT0, MILLISECONDS_WUT, MXC_WUT_UNIT_MILLISEC, &ticks);
 
     // config structure for one shot timer to trigger in a number of ticks
     cfg.mode = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks;
 
     // Init WUT
-    MXC_WUT_Init(MXC_WUT_PRES_1);
+    MXC_WUT_Init(MXC_WUT0, MXC_WUT_PRES_1);
 
     //Config WUT
-    MXC_WUT_Config(&cfg);
+    MXC_WUT_Config(MXC_WUT0, &cfg);
     MXC_LP_EnableWUTAlarmWakeup();
 
     NVIC_EnableIRQ(WUT_IRQn);
@@ -87,7 +87,7 @@ int main(void)
         if (PB_Get(0) == TRUE) {
             printf("Entering SLEEP mode.\n");
 
-            MXC_WUT_Enable();
+            MXC_WUT_Enable(MXC_WUT0);
 
             // wait until UART transmit
             while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
