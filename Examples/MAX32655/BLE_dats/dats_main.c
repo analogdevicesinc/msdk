@@ -423,7 +423,10 @@ uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, 
                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
     if (len < 64) {
+        // Terminate string
+        pValue[len] = '\0';
         /* print received data if not a speed test message */
+        pValue[len] = '\0';
         APP_TRACE_INFO0((const char *)pValue);
 
         /* send back some data */
