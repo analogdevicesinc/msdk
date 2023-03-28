@@ -50,14 +50,6 @@ export TOOL_DIR := ${abspath ${TOOL_DIR}}
 export CMSIS_ROOT := ${abspath ${CMSIS_ROOT}}
 export PERIPH_DRIVER_DIR := ${abspath ${PERIPH_DRIVER_DIR}}
 
-# Export other variables needed by the peripheral driver makefile
-export TARGET
-export COMPILER
-export TARGET_MAKEFILE
-export PROJ_CFLAGS
-export PROJ_LDFLAGS
-export MXC_OPTIMIZE_CFLAGS
-export BARCODE_DECODER_DIR
 
 # Add to library list
 LIBS += ${BARCODE_BUILD_DIR}/libbarcode_decoder.a
@@ -70,4 +62,4 @@ IPATH += ${BARCODE_DECODER_DIR}/src/qrcode
 
 # Add rule to build the Barcode decoder Library
 ${BARCODE_BUILD_DIR}/libbarcode_decoder.a: FORCE
-	$(MAKE) -C ${BARCODE_DECODER_DIR} lib BUILD_DIR=${BARCODE_BUILD_DIR}
+	$(MAKE) -C ${BARCODE_DECODER_DIR} lib BUILD_DIR="${BARCODE_BUILD_DIR}" TARGET="${TARGET}" COMPILER="${COMPILER}" PROJ_CFLAGS="${PROJ_CFLAGS} -Wno-parentheses" PROJ_LDFLAGS="${PROJ_LDFLAGS}" MXC_OPTIMIZE_CFLAGS="${MXC_OPTIMIZE_CFLAGS}" BARCODE_DECODER_DIR="${BARCODE_DECODER_DIR}"

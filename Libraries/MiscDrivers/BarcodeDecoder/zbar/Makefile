@@ -106,7 +106,6 @@ IPATH += ${BARCODE_DECODER_DIR}/localcharset
 
 # Open compile guard flag
 PROJ_CFLAGS+=-D__$(TARGET_UC)
-PROJ_CFLAGS:=$(filter-out -Wall, $(PROJ_CFLAGS))
 
 # Include the rules for building for this target
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
