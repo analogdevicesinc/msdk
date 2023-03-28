@@ -51,7 +51,7 @@ __attribute__ ((weak)) void WUT_IRQHandler(void)
 {
   PalLedOn(PAL_LED_ID_CPU_ACTIVE);
 #ifndef __riscv
-  MXC_WUT_IntClear(MXC_WUT0);
+  MXC_WUT_IntClear(MXC_WUT);
 #endif
 
   NVIC_ClearPendingIRQ(WUT_IRQn);
@@ -81,7 +81,7 @@ void PalRtcCompareSet(uint8_t channelId, uint32_t value)
 {
   PAL_SYS_ASSERT(channelId == 0);
 
-  MXC_WUT_SetCompare(MXC_WUT0, value);
+  MXC_WUT_SetCompare(MXC_WUT, value);
 }
 
 /*************************************************************************************************/
@@ -96,15 +96,15 @@ void PalRtcInit(void)
   cfg.mode = MXC_WUT_MODE_COMPARE;
   cfg.cmp_cnt = PAL_MAX_RTC_COUNTER_VAL;
 
-  MXC_WUT_Init(MXC_WUT0, MXC_WUT_PRES_1);
-  MXC_WUT_Config(MXC_WUT0, &cfg);
+  MXC_WUT_Init(MXC_WUT, MXC_WUT_PRES_1);
+  MXC_WUT_Config(MXC_WUT, &cfg);
   MXC_LP_EnableWUTAlarmWakeup();
 
   NVIC_ClearPendingIRQ(WUT_IRQn);
   NVIC_EnableIRQ(WUT_IRQn);
 
   /* Enable WUT */
-  MXC_WUT_Enable(MXC_WUT0);
+  MXC_WUT_Enable(MXC_WUT);
 
   palRtcCb.state = PAL_RTC_STATE_READY;
 }
@@ -121,7 +121,7 @@ void PalRtcInit(void)
 /*************************************************************************************************/
 uint32_t PalRtcCounterGet(void)
 {
-  uint32_t count = MXC_WUT_GetCount(MXC_WUT0);
+  uint32_t count = MXC_WUT_GetCount(MXC_WUT);
 
   return count;
 }

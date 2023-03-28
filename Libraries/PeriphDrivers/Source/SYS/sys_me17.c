@@ -174,6 +174,7 @@ int MXC_SYS_RTCClockDisable(void)
     }
 }
 
+#if TARGET_NUM == 32655
 /******************************************************************************/
 void MXC_SYS_RTCClockPowerDownEn(void)
 {
@@ -185,6 +186,7 @@ void MXC_SYS_RTCClockPowerDownDis(void)
 {
     MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_32KOSC_EN;
 }
+#endif //TARGET_NUM == 32655
 
 /******************************************************************************/
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
