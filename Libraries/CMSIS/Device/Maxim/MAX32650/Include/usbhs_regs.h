@@ -133,7 +133,7 @@ typedef struct {
     __IO uint8_t  epinfo;               /**< <tt>\b 0x78:</tt> USBHS EPINFO Register */
     __IO uint8_t  raminfo;              /**< <tt>\b 0x79:</tt> USBHS RAMINFO Register */
     __IO uint8_t  softreset;            /**< <tt>\b 0x7A:</tt> USBHS SOFTRESET Register */
-    __R  uint8_t rsv_0x7b_0x7f[5];
+    __R  uint8_t  rsv_0x7b_0x7f[5];
     __IO uint16_t ctuch;                /**< <tt>\b 0x80:</tt> USBHS CTUCH Register */
     __IO uint16_t cthsrtn;              /**< <tt>\b 0x82:</tt> USBHS CTHSRTN Register */
     __R  uint32_t rsv_0x84_0x3ff[223];
