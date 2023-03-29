@@ -198,7 +198,7 @@ The MSDK installer is available for supported Operating Systems from the downloa
 
 2. Click **Next** to proceed from the Welcome screen.
 
-3. Choose the installation location. By default, the MSDK will install to the `MaximSDK` folder off your filesystem's root.
+3. Choose the installation location.
 
     ![Figure 2](res/Fig2.jpg)
 
@@ -278,15 +278,17 @@ The i386 version of Homebrew can be installed in parallel with the arm64 version
 
 2. Close the terminal.
 
-3. Run a new terminal in Rosetta:
+3. Create a new Rosetta terminal:
 
-    1. Go to Finder > Applications and find your Terminal
+    1. Launch Finder.
 
-    2. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".
+    2. Navigate to Applications and find the "Terminal" application.
 
-    3. Rich-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
+    3. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".  This will be a new application shortcut to the Rosetta terminal.
 
-    4. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
+    4. Right-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
+
+    5. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
 
 4. From your Rosetta terminal, follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
 
@@ -412,16 +414,18 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
     ![Open Settings JSON Command](res/Fig42.jpg)
 
-6. Add the entries below to your user settings.json file.
+6. Add the entries below to your user settings.json file.  **Change the `MAXIM_PATH` option to point to the MSDK installation**.
 
         :::json
         // There may be other settings up here...        
 
-        "MAXIM_PATH": "C:/MaximSDK", // Set this to the installed location of the MaximSDK.  Only use forward slashes '/' when setting this path!
+        "MAXIM_PATH": "Change me!  Only use forward slashes (/) for this path",
         "update.mode": "manual",
         "extensions.autoUpdate": false,
         
         // There may be other settings down here...
+
+    For example, you might set `"MAXIM_PATH":"C:/MaximSDK"` on Windows, `"MAXIM_PATH":"/home/username/MaximSDK"` on Linux/MacOS, etc.
 
 7. Save your changes to the file with **`CTRL + S`** and restart VS Code.
 
@@ -1005,7 +1009,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 
 [Imported](#importing-examples) Eclipse projects files are configured for the **EVKIT**-type _BSP_ by default. To set the BSP:
 
-1. Open (right click) the **project properties** and navigate to **C/C++ Build -> Environment**.  
+1. Right click the project name and select _Properties_.  Navigate to **C/C++ Build -> Environment**.
 2. Set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ to match the target evaluation platform.
 
     See [Board Support Packages](#board-support-packages) for a table of possible values.
