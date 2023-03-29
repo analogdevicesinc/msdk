@@ -89,3 +89,6 @@ LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/MAX32665/Source/GCC
 
 # Include the rules and goals for building
 include $(CMSIS_ROOT)/Device/Maxim/MAX32665/Source/GCC/gcc.mk
+
+# Include rules for flashing
+include $(MAXIM_PATH)/Tools/Flash/flash.mk
