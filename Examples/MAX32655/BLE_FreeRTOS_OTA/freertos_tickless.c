@@ -54,14 +54,17 @@
 #include "pal_uart.h"
 #include "pal_bb.h"
 
-#define MAX_WUT_TICKS (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
-#define MIN_WUT_TICKS 100 /* Minimum deep sleep time, units of 32 kHz ticks */
-#define WAKEUP_US 750 /* Deep sleep recovery time, units of us */
+#define MAX_WUT_TICKS           (configRTC_TICK_RATE_HZ) /* Maximum deep sleep time, units of 32 kHz ticks */
+#define MIN_WUT_TICKS           100 /* Minimum deep sleep time, units of 32 kHz ticks */
+#define WAKEUP_US               750 /* Deep sleep recovery time, units of us */
+#define WAKEUP_IN_WUT_TICK      ((uint64_t)WAKEUP_US / (uint64_t)1000000 * (uint64_t)configRTC_TICK_RATE_HZ)
+#define RESTORE_OP_IN_WUT_TICK  65
+#define RESTORE_OP_IN_US        ((uint64_t)RESTORE_OP_IN_WUT_TICK / (uint64_t)configRTC_TICK_RATE_HZ * (uint64_t)1000000)
 
 /* Minimum ticks before SysTick interrupt, units of system clock ticks.
  * Convert CPU_CLOCK_HZ to units of ticks per us 
  */
-#define MIN_SYSTICK (configCPU_CLOCK_HZ / 1000000 /* ticks / us */ * 10 /* us */)
+#define MIN_SYSTICK             (configCPU_CLOCK_HZ / 1000000 /* ticks / us */ * 10 /* us */)
 
 /*
  * Sleep-check function
@@ -122,7 +125,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     }
 
     /* Check to see if we meet the minimum requirements for deep sleep */
-    if (idleTicks < (MIN_WUT_TICKS + WAKEUP_US)) {
+    if (idleTicks < (MIN_WUT_TICKS + RESTORE_OP_IN_WUT_TICK + WAKEUP_IN_WUT_TICK)) {
         return;
     }
 
@@ -178,13 +181,13 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
         schUsec = PalTimerGetExpTime();
 
         /* Adjust idleTicks for the time it takes to restart the BLE hardware */
-        idleTicks -= ((WAKEUP_US)*configRTC_TICK_RATE_HZ / 1000000);
+        idleTicks -= (WAKEUP_IN_WUT_TICK + RESTORE_OP_IN_WUT_TICK);
 
         /* Calculate the time to the next BLE scheduler event */
         if (schUsec < WAKEUP_US) {
             bleSleepTicks = 0;
         } else {
-            bleSleepTicks = ((uint64_t)schUsec - (uint64_t)WAKEUP_US) *
+            bleSleepTicks = ((uint64_t)schUsec - (uint64_t)WAKEUP_US - RESTORE_OP_IN_US) *
                             (uint64_t)configRTC_TICK_RATE_HZ / (uint64_t)BB_CLK_RATE_HZ;
         }
     } else {
