@@ -29,11 +29,13 @@ The runner will react with a 'rocket' emoji once it starts the job, with a 'hoor
 
 ### Updating the Peripheral SVD Files.
 
-The register files and SVD Schema for each part are located in **msdk/Libraries/CMSIS/Device/Maxim/{PART}/Include/**, and the peripheral SVD files are usually located in **msdk/Libraries/PeriphDrivers/Source/{PERIPHERAL}**. 
+The register files and SVD Schema for each part are located in **msdk/Libraries/CMSIS/Device/Maxim/{PART}/Include/**, and the peripheral SVD files are usually located in **msdk/Libraries/PeriphDrivers/Source/{PERIPHERAL}**.
+
+It's recommended to use an XML Editor to easily view and make changes in the SVD files. [XML Notepad](https://microsoft.github.io/XmlNotepad/#) by Microsoft is a good one.
 
 To update a certain register file, you will have to find the [SVD files in the msdk-internal repo](https://github.com/Analog-Devices-MSDK/msdk-internal/tree/main/SVD/Devices) and go into the parts' **chip_periph.txt** to find the register files' corresponding peripheral SVD file. You can follow the naming convention key below to help find the corrsponding files in **chip_periph.txt**.
 
-For example:
+Key:
 
     {periph}_regs.h   <-> {periph}_revX.svd or {periph}_revX_{part}.svd
     adc_regs.h        <-> adc_reva.svd or adc_reva_{part}.svd
@@ -44,3 +46,4 @@ For example:
 
 Note: The SYS Register Files are chip-specific, so each part will have their own SYS SVD file: `fcr_{part}.svd`, `gcr_{part}.svd`, `mcr_{part}.svd`, `sir_{part}.svd`, and `trimsir_{part}.svd` to name a few.
 
+Once you found the correct peripheral SVD file(s), push in your changes and run the workflow. You should be good to go.
