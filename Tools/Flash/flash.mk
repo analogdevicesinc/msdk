@@ -36,10 +36,10 @@
 # ADAPTER_SN is debugger serial number
 # This variable is optional, useful when multiple debuggers are connected
 # It can be defined as an environment variable or in the Makefiles
-# 
+#
 # Example for JLINK: 229002239
 # Example for CMSIS-DAP: 04090000068682d300000000000000000000000097969906
-# 
+#
 # ADAPTER_SN=229002239
 # ADAPTER_SN=04090000068682d300000000000000000000000097969906
 
@@ -47,7 +47,7 @@
 
 OPENOCD_SCRIPTS_DEFAULT = ${MAXIM_PATH}/Tools/OpenOCD/scripts
 ifeq ($(OPENOCD_SCRIPTS),)
-$(warning Warning: OPENOCD_SCRIPTS undefined, attempting to use ${OPENOCD_SCRIPTS_DEFAULT})    
+$(warning Warning: OPENOCD_SCRIPTS undefined, using ${OPENOCD_SCRIPTS_DEFAULT})
 endif
 OPENOCD_SCRIPTS ?= ${OPENOCD_SCRIPTS_DEFAULT}
 
@@ -56,18 +56,39 @@ OPENOCD_ADAPTER ?= cmsis-dap.cfg
 # OPENOCD_ADAPTER ?= jlink.cfg
 
 HEX_FILE        := ${BUILD_DIR}/${PROJECT}.hex
-
+HEX_FILE_PATH   := ${HEX_FILE}
 ifeq ($(OS),Windows_NT)
 JLINKEXE        := JLink.exe
 ECHO            := echo -e
 OPENOCDEXE      := openocd.exe
+
+# Determine if we can use cygpath to convert the path name
+CYGPATH_AVAILABLE := 0
+ifneq ($(findstring MSYS, $(UNAME)), )
+CYGPATH_AVAILABLE := 1
+endif
+
+ifneq ($(findstring MINGW, $(UNAME)), )
+CYGPATH_AVAILABLE := 1
+endif
+
+ifneq ($(findstring CYGWIN, $(UNAME)), )
+CYGPATH_AVAILABLE := 1
+endif
+
+# Use cygpath to convert the path name
+ifeq ($(CYGPATH_AVAILABLE),1)
 HEX_FILE_PATH   := $(shell cygpath -wa $(HEX_FILE))
 HEX_FILE_PATH   := $(subst \,/, $(HEX_FILE_PATH))
 else
+$(warning Warning: cygpath unavailable to convert path name to Windows format)
+endif
+
+else
+# Not Windows_NT
 JLINKEXE        := JLinkExe
 ECHO            := echo
 OPENOCDEXE      := openocd
-HEX_FILE_PATH   := ${HEX_FILE}
 endif
 
 JLINKEXE     += -if SWD -device ${TARGET_UC} -speed 10000
@@ -75,12 +96,12 @@ COMMAND_FILE := flash.jlinkexe
 
 PHONY: flash.jlink
 flash.jlink: mkbuildir ${HEX_FILE}
-	@$(ECHO) "$(if $(ADAPTER_SN), "SelectEmuBySN $(ADAPTER_SN)",)\nr\nhalt\nLoadFile \
-		${HEX_FILE_PATH},0\nr\ng\nexit\n" > ${COMMAND_FILE}
-	@$(JLINKEXE) -NoGui 1 -CommandFile ${COMMAND_FILE}
+    @$(ECHO) "$(if $(ADAPTER_SN), "SelectEmuBySN $(ADAPTER_SN)",)\nr\nhalt\nLoadFile \
+        ${HEX_FILE_PATH},0\nr\ng\nexit\n" > ${COMMAND_FILE}
+    @$(JLINKEXE) -NoGui 1 -CommandFile ${COMMAND_FILE}
 
 PHONY: flash.openocd
 flash.openocd: mkbuildir ${HEX_FILE}
-	@$(OPENOCDEXE) -s ${OPENOCD_SCRIPTS} -f interface/${OPENOCD_ADAPTER} -f target/${TARGET_LC}.cfg \
-		$(if $(ADAPTER_SN), "-c adapter serial $(ADAPTER_SN)",) \
-		-c "program ${HEX_FILE_PATH} verify reset exit"
+    @$(OPENOCDEXE) -s ${OPENOCD_SCRIPTS} -f interface/${OPENOCD_ADAPTER} -f target/${TARGET_LC}.cfg \
+        $(if $(ADAPTER_SN), "-c adapter serial $(ADAPTER_SN)",) \
+        -c "program ${HEX_FILE_PATH} verify reset exit"
