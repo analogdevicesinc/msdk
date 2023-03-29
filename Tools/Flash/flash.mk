@@ -44,7 +44,12 @@
 # ADAPTER_SN=04090000068682d300000000000000000000000097969906
 
 # Location of the OpenOCD install directory, tcl or scripts folder
-OPENOCD_SCRIPTS ?= ${MAXIM_PATH}/Tools/OpenOCD/scripts
+
+OPENOCD_SCRIPTS_DEFAULT = ${MAXIM_PATH}/Tools/OpenOCD/scripts
+ifeq ($(OPENOCD_SCRIPTS),)
+$(warning Warning: OPENOCD_SCRIPTS undefined, attempting to use ${OPENOCD_SCRIPTS_DEFAULT})    
+endif
+OPENOCD_SCRIPTS ?= ${OPENOCD_SCRIPTS_DEFAULT}
 
 # Update with the connected debugger
 OPENOCD_ADAPTER ?= cmsis-dap.cfg

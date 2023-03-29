@@ -406,6 +406,3 @@ clean:
 
 # The rule to clean out all the build products.
 distclean: clean libclean
-
-# Include rules for flashing
-include $(MAXIM_PATH)/Tools/Flash/flash.mk
