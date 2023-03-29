@@ -33,7 +33,7 @@ The register files and SVD Schema for each part are located in **msdk/Libraries/
 
 It's recommended to use an XML Editor to easily view and make changes in the SVD files. [XML Notepad](https://microsoft.github.io/XmlNotepad/#) by Microsoft is a good one.
 
-To update a certain register file, you will have to find the [SVD files in the msdk-internal repo](https://github.com/Analog-Devices-MSDK/msdk-internal/tree/main/SVD/Devices) and go into the parts' **chip_periph.txt** to find the register files' corresponding peripheral SVD file. You can follow the naming convention key below to help find the corrsponding files in **chip_periph.txt**.
+To update a certain register file, you will have to find the [SVD files in the msdk-internal repo](https://github.com/Analog-Devices-MSDK/msdk-internal/tree/main/SVD/Devices) and go into the parts' **chip_periph.txt** to find the register files' corresponding peripheral SVD file. Follow the naming convention key below to help you find the correct SVD file.
 
 Key:
 
