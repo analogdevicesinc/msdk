@@ -58,9 +58,9 @@ OPENOCD_ADAPTER ?= cmsis-dap.cfg
 HEX_FILE        := ${BUILD_DIR}/${PROJECT}.hex
 HEX_FILE_PATH   := ${HEX_FILE}
 ifeq ($(OS),Windows_NT)
-JLINKEXE        := JLink.exe
-ECHO            := echo -e
-OPENOCDEXE      := openocd.exe
+JLINKEXE        ?= JLink.exe
+ECHO            ?= echo -e
+OPENOCDEXE      ?= openocd.exe
 
 # Determine if we can use cygpath to convert the path name
 CYGPATH_AVAILABLE := 0
@@ -86,9 +86,9 @@ endif
 
 else
 # Not Windows_NT
-JLINKEXE        := JLinkExe
-ECHO            := echo
-OPENOCDEXE      := openocd
+JLINKEXE        ?= JLinkExe
+ECHO            ?= echo
+OPENOCDEXE      ?= openocd
 endif
 
 JLINKEXE     += -if SWD -device ${TARGET_UC} -speed 10000
@@ -96,12 +96,12 @@ COMMAND_FILE := flash.jlinkexe
 
 PHONY: flash.jlink
 flash.jlink: mkbuildir ${HEX_FILE}
-    @$(ECHO) "$(if $(ADAPTER_SN), "SelectEmuBySN $(ADAPTER_SN)",)\nr\nhalt\nLoadFile \
-        ${HEX_FILE_PATH},0\nr\ng\nexit\n" > ${COMMAND_FILE}
-    @$(JLINKEXE) -NoGui 1 -CommandFile ${COMMAND_FILE}
+	@$(ECHO) "$(if $(ADAPTER_SN), "SelectEmuBySN $(ADAPTER_SN)",)\nr\nhalt\nLoadFile \
+		${HEX_FILE_PATH},0\nr\ng\nexit\n" > ${COMMAND_FILE}
+	@$(JLINKEXE) -NoGui 1 -CommandFile ${COMMAND_FILE}
 
 PHONY: flash.openocd
 flash.openocd: mkbuildir ${HEX_FILE}
-    @$(OPENOCDEXE) -s ${OPENOCD_SCRIPTS} -f interface/${OPENOCD_ADAPTER} -f target/${TARGET_LC}.cfg \
-        $(if $(ADAPTER_SN), "-c adapter serial $(ADAPTER_SN)",) \
-        -c "program ${HEX_FILE_PATH} verify reset exit"
+	@$(OPENOCDEXE) -s ${OPENOCD_SCRIPTS} -f interface/${OPENOCD_ADAPTER} -f target/${TARGET_LC}.cfg \
+		$(if $(ADAPTER_SN), "-c adapter serial $(ADAPTER_SN)",) \
+		-c "program ${HEX_FILE_PATH} verify reset exit"
