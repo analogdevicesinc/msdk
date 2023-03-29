@@ -44,6 +44,3 @@ For example:
 
 Note: The SYS Register Files are chip-specific, so each part will have their own SYS SVD file: `fcr_{part}.svd`, `gcr_{part}.svd`, `mcr_{part}.svd`, `sir_{part}.svd`, and `trimsir_{part}.svd` to name a few.
 
-
-
-    
