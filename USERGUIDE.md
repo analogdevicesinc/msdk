@@ -233,6 +233,36 @@ On MacOS, some additional missing packages must be manually installed with[Homeb
 
         brew install make libusb-compat libftdi hidapi libusb
 
+3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+
+        :::shell
+        ==> make: stable 4.4.1 (bottled)
+        Utility for directing compilation
+        https://www.gnu.org/software/make/
+        /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
+        Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
+        From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
+        License: GPL-3.0-only
+        ==> Dependencies
+        Build: lzip, lzip
+        ==> Caveats
+        GNU "make" has been installed as "gmake".
+        If you need to use it as "make", you can add a "gnubin" directory
+        to your PATH from your bashrc like:
+
+            PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+        ==> Analytics
+        install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
+        install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
+        build-error: 0 (30 days)
+
+    Typically, this involves adding the following line to your shell's startup script (`~/.zshrc`, `~/.bashrc`, etc.)
+
+        :::bash
+        PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+
+4. Restart your shell and verify that `make --version` returns 4.x+.
+
 **For M1 platforms**:
 
 The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
@@ -273,6 +303,36 @@ The i386 version of Homebrew can be installed in parallel with the arm64 version
 
         :::shell
         /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
+
+7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+
+        :::shell
+        ==> make: stable 4.4.1 (bottled)
+        Utility for directing compilation
+        https://www.gnu.org/software/make/
+        /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
+        Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
+        From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
+        License: GPL-3.0-only
+        ==> Dependencies
+        Build: lzip, lzip
+        ==> Caveats
+        GNU "make" has been installed as "gmake".
+        If you need to use it as "make", you can add a "gnubin" directory
+        to your PATH from your bashrc like:
+
+            PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+        ==> Analytics
+        install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
+        install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
+        build-error: 0 (30 days)
+
+    Typically, this involves adding the following line to your shell's startup script (`~/.zshrc`, `~/.bashrc`, etc.)
+
+        :::bash
+        PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+
+8. Restart your shell and verify that `make --version` returns 4.x+.
 
 ### Maintenance
 
