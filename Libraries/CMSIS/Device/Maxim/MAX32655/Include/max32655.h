@@ -353,7 +353,8 @@ typedef enum {
 #define MXC_BASE_WUT1 ((uint32_t)0x40006600UL)
 #define MXC_WUT1 ((mxc_wut_regs_t *)MXC_BASE_WUT1)
 
-// Included to prevent build errors
+// Included for legacy compatability after changing WUT_IRQn -> WUT0_IRQn
+// in system startup files.
 #define WUT_IRQn WUT0_IRQn
 #define WUT_IRQHandler WUT0_IRQHandler
 
