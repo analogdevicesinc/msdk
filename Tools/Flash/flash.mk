@@ -44,14 +44,9 @@
 # ADAPTER_SN=04090000068682d300000000000000000000000097969906
 
 # Location of the OpenOCD install directory, tcl or scripts folder
+OPENOCD_SCRIPTS ?= ${MAXIM_PATH}/Tools/OpenOCD/scripts
 
-OPENOCD_SCRIPTS_DEFAULT = ${MAXIM_PATH}/Tools/OpenOCD/scripts
-ifeq ($(OPENOCD_SCRIPTS),)
-$(warning Warning: OPENOCD_SCRIPTS undefined, using ${OPENOCD_SCRIPTS_DEFAULT})
-endif
-OPENOCD_SCRIPTS ?= ${OPENOCD_SCRIPTS_DEFAULT}
-
-# Update with the connected debugger
+# Update with the connected adapter
 OPENOCD_ADAPTER ?= cmsis-dap.cfg
 # OPENOCD_ADAPTER ?= jlink.cfg
 
@@ -81,7 +76,7 @@ ifeq ($(CYGPATH_AVAILABLE),1)
 HEX_FILE_PATH   := $(shell cygpath -wa $(HEX_FILE))
 HEX_FILE_PATH   := $(subst \,/, $(HEX_FILE_PATH))
 else
-$(warning Warning: cygpath unavailable to convert path name to Windows format)
+# $(warning Warning: cygpath unavailable to convert path name to Windows format)
 endif
 
 else
