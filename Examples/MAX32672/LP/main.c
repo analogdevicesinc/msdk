@@ -204,7 +204,8 @@ void configure_gpios(void)
 
 int main(void)
 {
-    // Delay to prevent bricks
+    // Delay to provide the debugger with a window to connect.
+    // Low-power modes shut down SWD
     MXC_Delay(MXC_DELAY_SEC(2));
 
     PRINT("\n************ Low Power Mode Example ************\n\n");
