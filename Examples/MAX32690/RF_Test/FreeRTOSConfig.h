@@ -31,11 +31,11 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32655_RF_TEST_FREERTOSCONFIG_H_
-#define EXAMPLES_MAX32655_RF_TEST_FREERTOSCONFIG_H_
+#ifndef EXAMPLES_MAX32690_RF_TEST_FREERTOSCONFIG_H_
+#define EXAMPLES_MAX32690_RF_TEST_FREERTOSCONFIG_H_
 
 #include <stdint.h>
-#include "max32655.h"
+#include "max32690.h"
 
 /*-----------------------------------------------------------
  * Application specific definitions.
@@ -68,7 +68,7 @@ increase the amount of time spent in standby mode, thus reducing average power c
 
 #define configRTC_TICK_RATE_HZ (32768)
 
-#define configTOTAL_HEAP_SIZE ((size_t)(100 * 1024))
+#define configTOTAL_HEAP_SIZE ((size_t)(256 * 1024))
 
 #define configMINIMAL_STACK_SIZE ((uint16_t)128)
 
@@ -128,4 +128,4 @@ void vPostSleepProcessing(uint32_t);
 /* Overides FreeRTOS+CLI help command formatting*/
 #define configUSE_CUSTOM_HELP_COMMAND 1
 
-#endif // EXAMPLES_MAX32655_RF_TEST_FREERTOSCONFIG_H_
+#endif // EXAMPLES_MAX32690_RF_TEST_FREERTOSCONFIG_H_

@@ -493,11 +493,10 @@ static void mainWsfInit(void)
     const uint16_t dataBufSize =
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
 
-    /* Use single pool for data buffers. */
+/* Use single pool for data buffers. */
 #if (BT_VER > 9)
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
 #endif
-
     /* Ensure pool buffers are ordered correctly. */
     WSF_ASSERT(maxRptBufSize < dataBufSize);
 
@@ -602,7 +601,7 @@ void vCmdLineTask(void *pvParameters)
                         if (bufferIndex > 0) {
                             bufferIndex--;
                             memset(&inputBuffer[bufferIndex], 0x00, 1);
-                            printf("%s", backspace);
+                            WsfBufIoWrite((const uint8_t *)backspace, sizeof(backspace));
                         }
                         fflush(stdout);
                     } else if (tmp == 0x09)

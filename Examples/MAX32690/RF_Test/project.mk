@@ -3,27 +3,21 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
 
 # **********************************************************
+
+# Enable CORDIO library
+LIB_CORDIO = 1
 
 # Enable the FreeRTOS library
 LIB_FREERTOS=1
 
-
 # Enable Cordio use of FreeRTOS
 RTOS = freertos
 
-# Enable Cordio library
-LIB_CORDIO = 1
+# Optimize for size
+MXC_OPTIMIZE_CFLAGS = -Os
 
-
-# Cordio library options
-INIT_PERIPHERAL = 1
-INIT_CENTRAL = 0
-
-# TRACE option
-# Set to 0 to disable
-# Set to 1 to enable serial port trace messages
-# Set to 2 to enable verbose messages
-TRACE = 1
+# Enable low level trace
+TRACE = 2

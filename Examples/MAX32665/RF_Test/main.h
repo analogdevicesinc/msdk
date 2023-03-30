@@ -29,7 +29,7 @@
 #include "uart.h"
 #include "mxc_delay.h"
 #include "mxc_errors.h"
-
+#include "nvic_table.h"
 typedef enum uint8_t {
     NO_TEST,
     BLE_RX_TEST,
