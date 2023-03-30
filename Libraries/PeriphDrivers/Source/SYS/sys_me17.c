@@ -107,6 +107,12 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 }
 
 /* ************************************************************************** */
+int MXC_SYS_GetRevision(void)
+{
+    return MXC_GCR->revision;
+}
+
+/* ************************************************************************** */
 int MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock)
 {
     /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 and 64 for the perckcn1 register. */
@@ -167,6 +173,20 @@ int MXC_SYS_RTCClockDisable(void)
         return E_BAD_STATE;
     }
 }
+
+#if TARGET_NUM == 32655
+/******************************************************************************/
+void MXC_SYS_RTCClockPowerDownEn(void)
+{
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_32KOSC_EN;
+}
+
+/******************************************************************************/
+void MXC_SYS_RTCClockPowerDownDis(void)
+{
+    MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_32KOSC_EN;
+}
+#endif //TARGET_NUM == 32655
 
 /******************************************************************************/
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)

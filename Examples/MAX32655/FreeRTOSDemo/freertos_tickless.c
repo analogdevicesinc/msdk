@@ -81,7 +81,7 @@ __attribute__((weak)) int freertos_permit_tickless(void)
  */
 void wutHitSnooze(void)
 {
-    wutSnooze = MXC_WUT_GetCount() + MAX_WUT_SNOOZE;
+    wutSnooze = MXC_WUT_GetCount(MXC_WUT0) + MAX_WUT_SNOOZE;
     wutSnoozeValid = 1;
 }
 
@@ -122,7 +122,7 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     }
 
     /* Check the WUT snooze */
-    if (wutSnoozeValid && (MXC_WUT_GetCount() < wutSnooze)) {
+    if (wutSnoozeValid && (MXC_WUT_GetCount(MXC_WUT0) < wutSnooze)) {
         /* Finish out the rest of this tick with normal sleep */
         MXC_LP_EnterSleepMode();
         return;
@@ -148,16 +148,16 @@ void vPortSuppressTicksAndSleep(TickType_t xExpectedIdleTime)
     MXC_GPIO_OutSet(uart_rts.port, uart_rts.mask);
 
     /* Snapshot the current WUT value */
-    MXC_WUT_Edge();
-    pre_capture = MXC_WUT_GetCount();
-    MXC_WUT_SetCompare(pre_capture + wut_ticks);
-    MXC_WUT_Edge();
+    MXC_WUT_Edge(MXC_WUT0);
+    pre_capture = MXC_WUT_GetCount(MXC_WUT0);
+    MXC_WUT_SetCompare(MXC_WUT0, pre_capture + wut_ticks);
+    MXC_WUT_Edge(MXC_WUT0);
 
     LED_Off(1);
 
     MXC_LP_EnterStandbyMode();
 
-    post_capture = MXC_WUT_GetCount();
+    post_capture = MXC_WUT_GetCount(MXC_WUT0);
     actual_ticks = post_capture - pre_capture;
 
     LED_On(1);

@@ -135,7 +135,7 @@ static void mainWsfInit(void)
 /*************************************************************************************************/
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_Handler();
+    MXC_WUT_Handler(MXC_WUT);
 }
 
 /*************************************************************************************************/
@@ -251,7 +251,7 @@ int main(void)
 
     /* Execute the trim procedure */
     wutTrimComplete = 0;
-    MXC_WUT_TrimCrystalAsync(wutTrimCb);
+    MXC_WUT_TrimCrystalAsync(MXC_WUT, wutTrimCb);
     while (!wutTrimComplete) {}
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */

@@ -93,6 +93,8 @@ typedef struct {
     __IO uint32_t urvbootaddr;          /**< <tt>\b 0x10:</tt> FCR URVBOOTADDR Register */
     __IO uint32_t urvctrl;              /**< <tt>\b 0x14:</tt> FCR URVCTRL Register */
     __IO uint32_t erfoks;               /**< <tt>\b 0x18:</tt> FCR ERFOKS Register */
+    __IO uint32_t erfo_intfl;           /**< <tt>\b 0x1C:</tt> FCR ERFO_INTFL Register */
+    __IO uint32_t erfo_inten;           /**< <tt>\b 0x20:</tt> FCR ERFO_INTEN Register */
 } mxc_fcr_regs_t;
 
 /* Register offsets for module FCR */
@@ -109,6 +111,8 @@ typedef struct {
 #define MXC_R_FCR_URVBOOTADDR              ((uint32_t)0x00000010UL) /**< Offset from FCR Base Address: <tt> 0x0010</tt> */
 #define MXC_R_FCR_URVCTRL                  ((uint32_t)0x00000014UL) /**< Offset from FCR Base Address: <tt> 0x0014</tt> */
 #define MXC_R_FCR_ERFOKS                   ((uint32_t)0x00000018UL) /**< Offset from FCR Base Address: <tt> 0x0018</tt> */
+#define MXC_R_FCR_ERFO_INTFL               ((uint32_t)0x0000001CUL) /**< Offset from FCR Base Address: <tt> 0x001C</tt> */
+#define MXC_R_FCR_ERFO_INTEN               ((uint32_t)0x00000020UL) /**< Offset from FCR Base Address: <tt> 0x0020</tt> */
 /**@} end of group fcr_registers */
 
 /**
@@ -231,6 +235,28 @@ typedef struct {
 #define MXC_S_FCR_ERFOKS_KSCLKSEL_IPO                  (MXC_V_FCR_ERFOKS_KSCLKSEL_IPO << MXC_F_FCR_ERFOKS_KSCLKSEL_POS) /**< ERFOKS_KSCLKSEL_IPO Setting */
 
 /**@} end of group FCR_ERFOKS_Register */
+
+/**
+ * @ingroup  fcr_registers
+ * @defgroup FCR_ERFO_INTFL FCR_ERFO_INTFL
+ * @brief    ERFO Ready Interrupt Flag register.
+ * @{
+ */
+#define MXC_F_FCR_ERFO_INTFL_RDY_POS                   0 /**< ERFO_INTFL_RDY Position */
+#define MXC_F_FCR_ERFO_INTFL_RDY                       ((uint32_t)(0x1UL << MXC_F_FCR_ERFO_INTFL_RDY_POS)) /**< ERFO_INTFL_RDY Mask */
+
+/**@} end of group FCR_ERFO_INTFL_Register */
+
+/**
+ * @ingroup  fcr_registers
+ * @defgroup FCR_ERFO_INTEN FCR_ERFO_INTEN
+ * @brief    ERFO Ready Interrupt Enable register.
+ * @{
+ */
+#define MXC_F_FCR_ERFO_INTEN_RDY_POS                   0 /**< ERFO_INTEN_RDY Position */
+#define MXC_F_FCR_ERFO_INTEN_RDY                       ((uint32_t)(0x1UL << MXC_F_FCR_ERFO_INTEN_RDY_POS)) /**< ERFO_INTEN_RDY Mask */
+
+/**@} end of group FCR_ERFO_INTEN_Register */
 
 #ifdef __cplusplus
 }
