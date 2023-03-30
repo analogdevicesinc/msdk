@@ -167,45 +167,45 @@ void setTrigger(int waitForTrigger)
 
 void configure_gpios(void)
 {
-	mxc_gpio_cfg_t out_clr;
-	mxc_gpio_cfg_t out_set;
+    mxc_gpio_cfg_t out_clr;
+    mxc_gpio_cfg_t out_set;
 
-	// Create list of pins that are in use (the "do not modify" list)
-	uint32_t dnm = MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1 | MXC_GPIO_PIN_10;
+    // Create list of pins that are in use (the "do not modify" list)
+    uint32_t dnm = MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1 | MXC_GPIO_PIN_10;
 
-	// Add UART TX pin (P0.9) to do not modify list if the console is being used
-  #if USE_CONSOLE
-	dnm |= MXC_GPIO_PIN_9;
-  #endif // USE_CONSOLE
+    // Add UART TX pin (P0.9) to do not modify list if the console is being used
+#if USE_CONSOLE
+    dnm |= MXC_GPIO_PIN_9;
+#endif // USE_CONSOLE
 
-	// Add Push Button pin (P0.18) to the do not modify list if it's being used as the wakeup source
-  #if USE_BUTTON
-	dnm |= MXC_GPIO_PIN_18;
-  #endif // USE_BUTTON
+    // Add Push Button pin (P0.18) to the do not modify list if it's being used as the wakeup source
+#if USE_BUTTON
+    dnm |= MXC_GPIO_PIN_18;
+#endif // USE_BUTTON
 
-	// Set all GPIO pins low except for SWD (P0.0/P0.1), and P0.10 (and push button and UART pins if they're being used)
-	out_clr.port = MXC_GPIO0;
-	out_clr.mask = ~dnm;
-	out_clr.func = MXC_GPIO_FUNC_OUT;
-	out_clr.pad = MXC_GPIO_PAD_NONE;
-	out_clr.vssel = MXC_GPIO_VSSEL_VDDIOH;
-	MXC_GPIO_Config(&out_clr);
-	MXC_GPIO_OutClr(out_clr.port, out_clr.mask);
+    // Set all GPIO pins low except for SWD (P0.0/P0.1), and P0.10 (and push button and UART pins if they're being used)
+    out_clr.port = MXC_GPIO0;
+    out_clr.mask = ~dnm;
+    out_clr.func = MXC_GPIO_FUNC_OUT;
+    out_clr.pad = MXC_GPIO_PAD_NONE;
+    out_clr.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&out_clr);
+    MXC_GPIO_OutClr(out_clr.port, out_clr.mask);
 
-	// Set GPIO P0.10 high (it's connected to an external pullup resistor)
-	out_set.port = MXC_GPIO0;
-	out_set.mask = MXC_GPIO_PIN_10;
-	out_set.func = MXC_GPIO_FUNC_OUT;
-	out_set.pad = MXC_GPIO_PAD_NONE;
-	out_set.vssel = MXC_GPIO_VSSEL_VDDIOH;
-	MXC_GPIO_Config(&out_set);
-	MXC_GPIO_OutSet(out_set.port, out_set.mask);
+    // Set GPIO P0.10 high (it's connected to an external pullup resistor)
+    out_set.port = MXC_GPIO0;
+    out_set.mask = MXC_GPIO_PIN_10;
+    out_set.func = MXC_GPIO_FUNC_OUT;
+    out_set.pad = MXC_GPIO_PAD_NONE;
+    out_set.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    MXC_GPIO_Config(&out_set);
+    MXC_GPIO_OutSet(out_set.port, out_set.mask);
 }
 
 int main(void)
 {
-	// Delay to prevent bricks
-	MXC_Delay(MXC_DELAY_SEC(2));
+    // Delay to prevent bricks
+    MXC_Delay(MXC_DELAY_SEC(2));
 
     PRINT("\n************ Low Power Mode Example ************\n\n");
 
@@ -222,7 +222,7 @@ int main(void)
     PB_RegisterCallback(0, buttonHandler);
 #endif // USE_BUTTON
 
-	// Set GPIO pins to known state
+    // Set GPIO pins to known state
     configure_gpios();
 
     PRINT("Running in ACTIVE mode.\n");
