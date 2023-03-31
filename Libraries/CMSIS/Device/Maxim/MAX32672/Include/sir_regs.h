@@ -88,6 +88,9 @@ extern "C" {
 typedef struct {
     __I  uint32_t status;               /**< <tt>\b 0x00:</tt> SIR STATUS Register */
     __I  uint32_t addr;                 /**< <tt>\b 0x04:</tt> SIR ADDR Register */
+    __R  uint32_t rsv_0x8_0xff[62];
+    __I  uint32_t fstat;                /**< <tt>\b 0x100:</tt> SIR FSTAT Register */
+    __I  uint32_t sfstat;               /**< <tt>\b 0x104:</tt> SIR SFSTAT Register */
 } mxc_sir_regs_t;
 
 /* Register offsets for module SIR */
@@ -99,6 +102,8 @@ typedef struct {
  */
 #define MXC_R_SIR_STATUS                   ((uint32_t)0x00000000UL) /**< Offset from SIR Base Address: <tt> 0x0000</tt> */
 #define MXC_R_SIR_ADDR                     ((uint32_t)0x00000004UL) /**< Offset from SIR Base Address: <tt> 0x0004</tt> */
+#define MXC_R_SIR_FSTAT                    ((uint32_t)0x00000100UL) /**< Offset from SIR Base Address: <tt> 0x0100</tt> */
+#define MXC_R_SIR_SFSTAT                   ((uint32_t)0x00000104UL) /**< Offset from SIR Base Address: <tt> 0x0104</tt> */
 /**@} end of group sir_registers */
 
 /**
@@ -130,6 +135,34 @@ typedef struct {
 #define MXC_F_SIR_ADDR_ADDR                            ((uint32_t)(0xFFFFFFFFUL << MXC_F_SIR_ADDR_ADDR_POS)) /**< ADDR_ADDR Mask */
 
 /**@} end of group SIR_ADDR_Register */
+
+/**
+ * @ingroup  sir_registers
+ * @defgroup SIR_FSTAT SIR_FSTAT
+ * @brief    Function Status Register.
+ * @{
+ */
+#define MXC_F_SIR_FSTAT_FPU_POS                        0 /**< FSTAT_FPU Position */
+#define MXC_F_SIR_FSTAT_FPU                            ((uint32_t)(0x1UL << MXC_F_SIR_FSTAT_FPU_POS)) /**< FSTAT_FPU Mask */
+
+#define MXC_F_SIR_FSTAT_TRNG_POS                       14 /**< FSTAT_TRNG Position */
+#define MXC_F_SIR_FSTAT_TRNG                           ((uint32_t)(0x1UL << MXC_F_SIR_FSTAT_TRNG_POS)) /**< FSTAT_TRNG Mask */
+
+#define MXC_F_SIR_FSTAT_DS_ACK_POS                     15 /**< FSTAT_DS_ACK Position */
+#define MXC_F_SIR_FSTAT_DS_ACK                         ((uint32_t)(0x1UL << MXC_F_SIR_FSTAT_DS_ACK_POS)) /**< FSTAT_DS_ACK Mask */
+
+/**@} end of group SIR_FSTAT_Register */
+
+/**
+ * @ingroup  sir_registers
+ * @defgroup SIR_SFSTAT SIR_SFSTAT
+ * @brief    Security Function Status Register.
+ * @{
+ */
+#define MXC_F_SIR_SFSTAT_SECFUNC0_POS                  0 /**< SFSTAT_SECFUNC0 Position */
+#define MXC_F_SIR_SFSTAT_SECFUNC0                      ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_SECFUNC0_POS)) /**< SFSTAT_SECFUNC0 Mask */
+
+/**@} end of group SIR_SFSTAT_Register */
 
 #ifdef __cplusplus
 }

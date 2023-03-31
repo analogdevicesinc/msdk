@@ -2,8 +2,8 @@
 <device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
     <!-- AES Keys-->
-    <name>AESKEYS</name>
-    <description>AES Key Registers.</description>
+    <name>SYS_AESKEYS</name>
+    <description>System AES Key Registers.</description>
     <baseAddress>0x40205000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>

@@ -1077,9 +1077,38 @@
   </peripheral>
 <!--AES AES Keys.-->
   <peripheral>
-   <name>AESKEYS</name>
-   <description>AES Key Registers.</description>
+   <name>USR_AESKEYS</name>
+   <description>System AES Keys.</description>
    <baseAddress>0x40205000</baseAddress>
+   <addressBlock>
+    <offset>0x00</offset>
+    <size>0x400</size>
+    <usage>registers</usage>
+   </addressBlock>
+   <registers>
+    <register>
+     <name>SRAM_KEY</name>
+     <description>AES SRAM KEY</description>
+     <addressOffset>0x00</addressOffset>
+     <size>32</size>
+    </register>
+    <register>
+     <name>CODE_KEY</name>
+     <description>AES CODE Key </description>
+     <addressOffset>0x20</addressOffset>
+    </register>
+    <register>
+     <name>DATA_KEY</name>
+     <description>AES DATA KEY</description>
+     <addressOffset>0x40</addressOffset>
+    </register>
+   </registers>
+  </peripheral>
+<!--USR_AESKEYS System AES Keys.-->
+  <peripheral>
+   <name>SYS_AESKEYS</name>
+   <description>System AES Key Registers.</description>
+   <baseAddress>0x40005000</baseAddress>
    <addressBlock>
     <offset>0x00</offset>
     <size>0x400</size>
@@ -1136,7 +1165,7 @@
     </register>
    </registers>
   </peripheral>
-<!--AESKEYS AES Key Registers.-->
+<!--SYS_AESKEYS System AES Key Registers.-->
   <peripheral>
    <name>CTB</name>
    <description>The Cryptographic Toolbox is a combination of cryptographic engines and a secure cryptographic accelerator (SCA) used to provide advanced cryptographic security.</description>
@@ -3463,7 +3492,7 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>IDRV_IP25</name>
+       <name>IDRV_1P25</name>
        <description>Trimming code for reference buffer drive strength. 1.25V</description>
        <bitOffset>0</bitOffset>
        <bitWidth>4</bitWidth>
@@ -8396,6 +8425,49 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>ADC_CFG3</name>
+     <description>ADC Config Register3.</description>
+     <addressOffset>0x44</addressOffset>
+     <fields>
+      <field>
+       <name>VREFM</name>
+       <description>VREFM</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>7</bitWidth>
+      </field>
+      <field>
+       <name>VREFP</name>
+       <description>VREFP</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>7</bitWidth>
+      </field>
+      <field>
+       <name>IDRV</name>
+       <description>IDRV</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>4</bitWidth>
+      </field>
+      <field>
+       <name>VCM</name>
+       <description>VCM</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+      <field>
+       <name>ATB</name>
+       <description>ATB</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+      <field>
+       <name>D_IBOOST</name>
+       <description>D_IBOOST</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 <!--MCR Misc Control.-->
@@ -9722,7 +9794,7 @@
      <fields>
       <field>
        <name>FILTER_EN</name>
-       <description>Enable analog deglitch filter.</description>
+       <description>Enables analog deglitch filter.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -9811,6 +9883,46 @@
        <name>ADDR</name>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>FSTAT</name>
+     <description>Function Status Register.</description>
+     <addressOffset>0x100</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>FPU</name>
+       <description>FPU Function.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TRNG</name>
+       <description>TRNG Function.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>DS_ACK</name>
+       <description>DeepSleep Acknowledge.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>SFSTAT</name>
+     <description>Security Function Status Register.</description>
+     <addressOffset>0x104</addressOffset>
+     <access>read-only</access>
+     <fields>
+      <field>
+       <name>SECFUNC0</name>
+       <description>Secure Function 0 Status.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
       </field>
      </fields>
     </register>

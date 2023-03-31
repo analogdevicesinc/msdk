@@ -278,13 +278,18 @@ typedef enum {
 #define MXC_WDT1 ((mxc_wdt_regs_t *)MXC_BASE_WDT1)
 
 /******************************************************************************/
-/*                                                                   AES Keys */
-#define MXC_BASE_AESKEYS ((uint32_t)0x40205000UL)
-#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
+/*                                                   System and User AES Keys */
+#define MXC_BASE_SYS_AESKEYS ((uint32_t)0x40205000UL)
+#define MXC_SYS_AESKEYS ((mxc_sys_aeskeys_regs_t *)MXC_BASE_SYS_AESKEYS)
+
+#define MXC_BASE_USR_AESKEYS ((uint32_t)0x40005000UL)
+#define MXC_USR_AESKEYS ((mxc_usr_aeskeys_regs_t *)MXC_BASE_USR_AESKEYS)
 
 // DEPRECATED(1-10-2023): Scheduled for removal.
 #define MXC_BASE_AESKEY MXC_BASE_AESKEYS
 #define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
+#define MXC_BASE_AESKEYS MXC_BASE_SYS_AESKEYS
+#define MXC_AESKEYS MXC_SYS_AESKEYS
 
 /******************************************************************************/
 /*                                                            Real Time Clock */
