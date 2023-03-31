@@ -15,4 +15,6 @@
 SBT=0
  
 # Add static library to the list of dependencies
-LIBS += myLib.a
+IPATH += lib/include
+PROJ_LDFLAGS += -Llib
+PROJ_LIBS += myLib
