@@ -181,14 +181,22 @@ typedef enum {
 
 /** @brief Enumeration to select System Clock source */
 typedef enum {
-    MXC_SYS_CLOCK_IPO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO, /**< Select the Internal Primary Oscillator (IPO) */
-    MXC_SYS_CLOCK_IBRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO, /**< Select the Internal Baud Rate Oscillator (IBRO) */
-    MXC_SYS_CLOCK_ISO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO, /**< Select the Internal Secondary Oscillator (ISO) */
-    MXC_SYS_CLOCK_IPLL = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPLL, /**< Select the Internal Phase Lock Loop Oscillator (IPLL) */
-    MXC_SYS_CLOCK_EBO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EBO, /**< Select the IExternal Base Oscillator (EBO) */
-    MXC_SYS_CLOCK_INRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO, /**< Select the Internal Nanoring Oscillator (INRO) */
-    MXC_SYS_CLOCK_ERTCO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
-    MXC_SYS_CLOCK_EXTCLK = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
+    MXC_SYS_CLOCK_IPO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO, /**< Select the Internal Primary Oscillator (IPO) */
+    MXC_SYS_CLOCK_IBRO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO, /**< Select the Internal Baud Rate Oscillator (IBRO) */
+    MXC_SYS_CLOCK_ISO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO, /**< Select the Internal Secondary Oscillator (ISO) */
+    MXC_SYS_CLOCK_IPLL =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPLL, /**< Select the Internal Phase Lock Loop Oscillator (IPLL) */
+    MXC_SYS_CLOCK_EBO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EBO, /**< Select the IExternal Base Oscillator (EBO) */
+    MXC_SYS_CLOCK_INRO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO, /**< Select the Internal Nanoring Oscillator (INRO) */
+    MXC_SYS_CLOCK_ERTCO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
+    MXC_SYS_CLOCK_EXTCLK =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
 } mxc_sys_system_clock_t;
 
 #define MXC_SYS_USN_CHECKSUM_LEN 16

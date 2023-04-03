@@ -171,13 +171,20 @@ typedef enum {
 
 /** @brief Enumeration to select System Clock source */
 typedef enum {
-    MXC_SYS_CLOCK_ISO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO, /**< Select the Internal Secondary Oscillator (ISO) */
-    MXC_SYS_CLOCK_IPO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO, /**< Select the Internal Primary Oscillator (IPO) */
-    MXC_SYS_CLOCK_IBRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO, /**< Select the Internal Baud Rate Oscillator (IBRO) */
-    MXC_SYS_CLOCK_ERFO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO, /**< Select the External RF Crystal Oscillator */
-    MXC_SYS_CLOCK_INRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO, /**< Select the Internal Nanoring Oscillator (INRO) */ 
-    MXC_SYS_CLOCK_ERTCO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
-    MXC_SYS_CLOCK_EXTCLK = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
+    MXC_SYS_CLOCK_ISO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO, /**< Select the Internal Secondary Oscillator (ISO) */
+    MXC_SYS_CLOCK_IPO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO, /**< Select the Internal Primary Oscillator (IPO) */
+    MXC_SYS_CLOCK_IBRO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO, /**< Select the Internal Baud Rate Oscillator (IBRO) */
+    MXC_SYS_CLOCK_ERFO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO, /**< Select the External RF Crystal Oscillator */
+    MXC_SYS_CLOCK_INRO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO, /**< Select the Internal Nanoring Oscillator (INRO) */
+    MXC_SYS_CLOCK_ERTCO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
+    MXC_SYS_CLOCK_EXTCLK =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
 } mxc_sys_system_clock_t;
 
 typedef enum {
@@ -305,13 +312,6 @@ static inline int MXC_SYS_In_Crit_Section(void)
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
 
 /**
- * @brief Gets design revision of the chip.
- * 
- * @return Design revision.
- */
-int MXC_SYS_GetRevision(void);
-
-/**
  * @brief Determines if the selected peripheral clock is enabled.
  * @param clock   Enumeration for desired clock.
  * @returns       0 is the clock is disabled, non 0 if the clock is enabled.
@@ -340,25 +340,7 @@ void MXC_SYS_RTCClockEnable(void);
  * @brief Disables the 32kHz oscillator
  * @returns         E_NO_ERROR if everything is successful
  */
-int MXC_SYS_RTCClockDisable(void);
-
-/**
- * @brief Enables the 32kHz oscillator to be powered down when not in use.
- *        Only available for ME17 Rev. B and older chips. This has no effect on ME17
- *        Rev. A chips.
- * 
- * @returns  E_NO_ERROR if everything is successful
- */
-void MXC_SYS_RTCClockPowerDownEn(void);
-
-/**
- * @brief Disables the 32kHz oscillator from being powered down when not in use.
- *        Only available for ME17 Rev. B and older chips. This has no effect on ME17
- *        Rev. A chips.
- * 
- * @returns  E_NO_ERROR if everything is successful
- */
-void MXC_SYS_RTCClockPowerDownDis(void);
+int MXC_SYS_RTCClockDisable();
 
 /**
  * @brief Enable System Clock Source without switching to it
