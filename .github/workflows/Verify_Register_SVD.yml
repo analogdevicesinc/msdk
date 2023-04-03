@@ -62,6 +62,7 @@ jobs:
         with:
           # Update the submodules below, doing so here will convert ssh to https
           ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           submodules: false
           fetch-depth: 0
           path: ${{ env.MSDK_DIR }}
