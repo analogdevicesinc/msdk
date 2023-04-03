@@ -61,7 +61,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           # Update the submodules below, doing so here will convert ssh to https
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           submodules: false
           fetch-depth: 0
           path: ${{ env.MSDK_DIR }}
