@@ -1173,39 +1173,9 @@
   
 <!--AES AES Keys.--><peripheral>
     
-    <name>USR_AESKEYS</name>
-    <description>User AES Key Registers.</description>
-    <baseAddress>0x40205000</baseAddress>
-    <addressBlock>
-      <offset>0x00</offset>
-      <size>0x400</size>
-      <usage>registers</usage>
-    </addressBlock>
-    <registers>
-      <register>
-        <name>SRAM_KEY</name>
-        <description>AES SRAM KEY</description>
-        <addressOffset>0x00</addressOffset>
-        <size>32</size>
-      </register>
-      <register>
-        <name>CODE_KEY</name>
-        <description>AES CODE Key </description>
-        <addressOffset>0x20</addressOffset>
-      </register>
-      <register>
-        <name>DATA_KEY</name>
-        <description>AES DATA KEY</description>
-        <addressOffset>0x40</addressOffset>
-      </register>
-    </registers>
-  </peripheral>
-  
-<!--USR_AESKEYS User AES Key Registers.--><peripheral>
-    
     <name>SYS_AESKEYS</name>
     <description>System AES Key Registers.</description>
-    <baseAddress>0x40005000</baseAddress>
+    <baseAddress>0x40205000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
       <size>0x400</size>
@@ -1264,6 +1234,36 @@
   </peripheral>
   
 <!--SYS_AESKEYS System AES Key Registers.--><peripheral>
+    
+    <name>USR_AESKEYS</name>
+    <description>User AES Key Registers.</description>
+    <baseAddress>0x40005000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>SRAM_KEY</name>
+        <description>AES SRAM KEY</description>
+        <addressOffset>0x00</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CODE_KEY</name>
+        <description>AES CODE Key </description>
+        <addressOffset>0x20</addressOffset>
+      </register>
+      <register>
+        <name>DATA_KEY</name>
+        <description>AES DATA KEY</description>
+        <addressOffset>0x40</addressOffset>
+      </register>
+    </registers>
+  </peripheral>
+  
+<!--USR_AESKEYS User AES Key Registers.--><peripheral>
     <name>CTB</name>
     <description>The Cryptographic Toolbox is a combination of cryptographic engines and a secure cryptographic accelerator (SCA) used to provide advanced cryptographic security.</description>
     <baseAddress>0x40001000</baseAddress>
