@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
-    <!-- AES Keys-->
+    <!--System AES Keys-->
     <name>SYS_AESKEYS</name>
     <description>System AES Key Registers.</description>
     <baseAddress>0x40205000</baseAddress>
@@ -61,5 +61,5 @@
       </register>
     </registers>
   </peripheral>
-  <!-- AES Keys-->
+  <!--System AES Keys-->
 </device>

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
   <peripheral>
-    <!-- AES KEYS-->
+    <!--User AES Keys.-->
     <name>USR_AESKEYS</name>
-    <description>System AES Keys.</description>
+    <description>User AES Key Registers.</description>
     <baseAddress>0x40005000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
@@ -29,5 +29,5 @@
       </register>
     </registers>
   </peripheral>
-  <!-- AES Keys-->
+  <!-- User AES Keys-->
 </device>
