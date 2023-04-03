@@ -65,13 +65,13 @@ jobs:
           RETVAL=$?
           set -e
 
-          if [[ $RETVAL -eq 0 ]]
+          if [[ $RETVAL -eq 0 ]];
           then
             exit 0
           fi
 
           # Files changed, not an error in this case
-          if [[ $RETVAL -eq 1 ]]
+          if [[ $RETVAL -eq 1 ]];
           then
             exit 0
           fi
