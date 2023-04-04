@@ -3794,20 +3794,20 @@
      <addressOffset>0x74</addressOffset>
      <fields>
       <field>
-       <name>LDOTXEN</name>
-       <description>LDOTX Enable.</description>
+       <name>LDORFEN</name>
+       <description>LDORF Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDOTXPULLD</name>
-       <description>LDOTX Pull Down.</description>
+       <name>LDORFPULLD</name>
+       <description>LDORF Pull Down.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDOTXVSEL</name>
-       <description>LDOTX Voltage Setting.</description>
+       <name>LDORFVSEL</name>
+       <description>LDORF Voltage Setting.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>2</bitWidth>
        <enumeratedValues>
@@ -3834,20 +3834,20 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>LDORXEN</name>
-       <description>LDORX Enable.</description>
+       <name>LDOBBEN</name>
+       <description>LDOBB Enable.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDORXPULLD</name>
-       <description>LDOrX Pull Down.</description>
+       <name>LDOBBPULLD</name>
+       <description>LDOBB Pull Down.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDORXVSEL</name>
-       <description>LDORX Voltage Setting.</description>
+       <name>LDOBBVSEL</name>
+       <description>LDOBB Voltage Setting.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>2</bitWidth>
        <enumeratedValues>
@@ -3874,50 +3874,50 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>LDORXBYP</name>
-       <description>LDORX Bypass Enable.</description>
+       <name>LDOBBBYP</name>
+       <description>LDOBB Bypass Enable.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDORXDISCH</name>
-       <description>LDORX Discharge.</description>
+       <name>LDOBBDISCH</name>
+       <description>LDOBB Discharge.</description>
        <bitOffset>9</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDOTXBYP</name>
-       <description>LDOTX Bypass Enable.</description>
+       <name>LDORFBYP</name>
+       <description>LDORF Bypass Enable.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDOTXDISCH</name>
-       <description>LDOTX Discharge.</description>
+       <name>LDORFDISCH</name>
+       <description>LDORF Discharge.</description>
        <bitOffset>11</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDOTXENDLY</name>
-       <description>LDOTX Enable Delay.</description>
+       <name>LDORFENDLY</name>
+       <description>LDORF Enable Delay.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDORXENDLY</name>
-       <description>LDORX Enable Delay.</description>
+       <name>LDOBBENDLY</name>
+       <description>LDOBB Enable Delay.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDORXBYPENENDLY</name>
-       <description>LDORX Bypass Enable Delay.</description>
+       <name>LDOBBBYPENENDLY</name>
+       <description>LDOBB Bypass Enable Delay.</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDOTXBYPENENDLY</name>
-       <description>LDOTX Bypass Enable Delay.</description>
+       <name>LDORFBYPENENDLY</name>
+       <description>LDORF Bypass Enable Delay.</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -3935,14 +3935,14 @@
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>LDORXDLYCNT</name>
-       <description>LDORX Delay Count.</description>
+       <name>LDOBBDLYCNT</name>
+       <description>LDOBB Delay Count.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>9</bitWidth>
       </field>
       <field>
-       <name>LDOTXDLYCNT</name>
-       <description>LDOTX Delay Count.</description>
+       <name>LDORFDLYCNT</name>
+       <description>LDORF Delay Count.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>9</bitWidth>
       </field>
@@ -8450,7 +8450,7 @@
      <fields>
       <field>
        <name>FILTER_EN</name>
-       <description>Enable analog deglitch filter.</description>
+       <description>Enables analog deglitch filter.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
