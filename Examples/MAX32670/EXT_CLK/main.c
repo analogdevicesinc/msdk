@@ -93,7 +93,7 @@ int main(void)
         printf("count = %d\n", count++);
     }
 
-    // Switch back to the IPO.  This is done because leaving the 
+    // Switch back to the IPO.  This is done because leaving the
     // EVKIT running of the EXT_CLK could make SWD unreliable to reconnect/reflash.
     // RSTN is not driven by hardware, and the EXT_CLK signal could also be disconnected at any time
     printf("Success!  Example complete, switching back to IPO...\n");
