@@ -61,27 +61,44 @@ int main(void)
     MXC_Delay(MXC_DELAY_SEC(2)); // Provide a window for the debugger to connect
 
     printf("External Clock (EXT_CLK) example\n");
-    printf("Switching to external clock input in...\n");
+    printf("Switching to %i Hz external clock input in...\n", EXTCLK_FREQ);
     for (int i = 3; i > 0; i--) {
         printf("%i...\n", i);
         MXC_Delay(MXC_DELAY_SEC(1));
     }
 
+    // Switch to the EXT_CLK
     err = MXC_SYS_Clock_Select(MXC_SYS_CLOCK_EXTCLK);
-    if (err)
+    if (err) {
+        printf("Failed to switch to external clock with error %i\n", err);
+        LED_On(1);
         return err;
+    }
 
-    printf("Successfully switched to external clock (%i) Hz", EXTCLK_FREQ);
+    // Reinitialize the BSP.  This is necessary to recalculate clock divisors for
+    // UART, etc.
+    Board_Init();
+
+    printf("Successfully switched to external clock (%i Hz)\n", EXTCLK_FREQ);
     // ^ Note:  EXTCLK_FREQ default value comes from system header file.  It is
     // overridden by defining it at compile-time in the build system.  See project.mk
 
     printf("Hello World!\n");
 
-    while (1) {
+    while (count <= 10) {
         LED_On(0);
         MXC_Delay(500000);
         LED_Off(0);
         MXC_Delay(500000);
         printf("count = %d\n", count++);
     }
+
+    // Switch back to the IPO.  This is done because leaving the 
+    // EVKIT running of the EXT_CLK could make SWD unreliable to reconnect/reflash.
+    // RSTN is not driven by hardware, and the EXT_CLK signal could also be disconnected at any time
+    printf("Success!  Example complete, switching back to IPO...\n");
+    err = MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+    Board_Init(); // Reinit BSP again for IPO
+    printf("Back on IPO.  Done!\n");
+    return E_SUCCESS;
 }
