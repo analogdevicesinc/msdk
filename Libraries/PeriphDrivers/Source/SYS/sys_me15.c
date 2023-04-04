@@ -193,7 +193,6 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         if (err)
             return err;
         return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
         break;
 
     case MXC_SYS_CLOCK_INRO:
@@ -328,7 +327,7 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 
     case MXC_SYS_CLOCK_EXTCLK:
         // Enable clock if necessary
-        if (!MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY)) {
+        if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
             err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
             if (err)
                 return err;
