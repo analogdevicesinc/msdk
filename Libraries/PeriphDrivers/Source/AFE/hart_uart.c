@@ -62,11 +62,11 @@
 // Defines
 // #define HART_CLK_4MHZ_CHECK
 
-// #define DECREASE_HART_TX_SLEW_RATE
-#define HART_TX_SLEW_2_572_KVPS 3
-
 // 20 Preamble, 1 Delimiter, 5 address, 3 Expansion, 1 Command, 1 Byte Count, 255 Max Data, 1 Check Byte
 #define MAX_HART_UART_PACKET_LEN 286
+
+// Use 128 times oversampling of demodulated HART serial data for optimal bit decoding.
+#define UART_RX_BIT_OVERSAMPLING_128 0
 
 // Note, this is internally bonded, but is Y bonded to MAX32675 package as well, as pin: 51, aka P1.8
 #if (TARGET_NUM == 32675)
@@ -449,6 +449,7 @@ int hart_uart_disable(void)
 int hart_uart_setup(uint32_t test_mode)
 {
     int retval = 0;
+    uint32_t read_val = 0;
 
     retval = enable_hart_clock();
     if (retval != E_NO_ERROR) {
@@ -497,6 +498,12 @@ int hart_uart_setup(uint32_t test_mode)
             return retval;
         }
 
+        // IMPORTANT: by default the SDK uart driver uses only 4 samples per bit
+        //  This can cause issues for HART as the bit times are not always
+        //  perfectly sized at 833.3uS.  Up to 15% inaccuracy observed.
+        //  Increase oversampling to 128x to improve receiver accuracy
+        HART_UART_INSTANCE->osr = UART_RX_BIT_OVERSAMPLING_128;
+
         // NOTE: RTS is handled by software, so the gpio_cfg_uart2_flow structure in pins_me15.c
         // only describes the CTS pin.
         // OCD from HART modem is hooked up to CTS, But CD doesn't function like CTS, So this
@@ -518,20 +525,25 @@ int hart_uart_setup(uint32_t test_mode)
         NVIC_EnableIRQ(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(HART_UART_INSTANCE)));
     }
 
-#ifdef DECREASE_HART_TX_SLEW_RATE
-    // Decrease slew rate of HART TX, to compensate for its smaller output amplitude
-    retval = afe_read_register(MXC_R_AFE_HART_TRIM, &read_val);
+    //
+    // Any HART configuration modifications must be made before enabling HART.
+    //
+
+    //
+    // Utilize character based re-timing on received HART data.
+    //  Provides enhanced noise tolerance.
+    //
+    retval = afe_read_register(MXC_R_AFE_HART_RX_TX_CTL, &read_val);
     if (retval != E_NO_ERROR) {
         return retval;
     }
 
-    read_val |= (HART_TX_SLEW_2_572_KVPS << MXC_F_AFE_HART_TRIM_TRIM_TX_SR_POS) &
-                MXC_F_AFE_HART_TRIM_TRIM_TX_SR;
-    retval = afe_write_register(MXC_R_AFE_HART_TRIM, read_val);
+    read_val |= MXC_F_AFE_HART_RX_TX_CTL_RX_DOUT_UART_EN;
+
+    retval = afe_write_register(MXC_R_AFE_HART_RX_TX_CTL, read_val);
     if (retval != E_NO_ERROR) {
         return retval;
     }
-#endif
 
     return hart_uart_enable();
 }
