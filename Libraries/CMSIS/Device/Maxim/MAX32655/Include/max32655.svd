@@ -3840,18 +3840,18 @@
        <bitWidth>2</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
+         <name>0_7</name>
+         <description>0.7V</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
          <name>0_85</name>
          <description>0.85V</description>
-         <value>0</value>
+         <value>1</value>
         </enumeratedValue>
         <enumeratedValue>
          <name>0_9</name>
          <description>0.9V</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>1_0</name>
-         <description>1.0V</description>
          <value>2</value>
         </enumeratedValue>
         <enumeratedValue>
@@ -3880,18 +3880,18 @@
        <bitWidth>2</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
+         <name>0_7</name>
+         <description>0.7V</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
          <name>0_85</name>
          <description>0.85V</description>
-         <value>0</value>
+         <value>1</value>
         </enumeratedValue>
         <enumeratedValue>
          <name>0_9</name>
          <description>0.9V</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>1_0</name>
-         <description>1.0V</description>
          <value>2</value>
         </enumeratedValue>
         <enumeratedValue>
