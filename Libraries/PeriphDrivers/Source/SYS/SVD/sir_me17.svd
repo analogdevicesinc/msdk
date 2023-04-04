@@ -79,16 +79,16 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>TX</name>
-            <description>TX LDO trim value.</description>
-            <bitOffset>0</bitOffset>
+            <name>RF</name>
+            <description>RF LDO trim value.</description>
+            <bitOffset>16</bitOffset>
             <bitWidth>5</bitWidth>
             <access>read-write</access>
           </field>
           <field>
-            <name>RX</name>
-            <description>RX LDO trim value.</description>
-            <bitOffset>8</bitOffset>
+            <name>BB</name>
+            <description>BB LDO trim value.</description>
+            <bitOffset>24</bitOffset>
             <bitWidth>5</bitWidth>
             <access>read-write</access>
           </field>
