@@ -152,10 +152,10 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 ### Supported Development Environments
 
-- Visual Studio Code
-- Eclipse
-- IAR
-- Keil
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [Eclipse IDE](https://www.eclipseide.org/)
+- [IAR Embedded Workbench](https://www.iar.com/ewarm)
+- [Keil MDK](https://www2.keil.com/mdk5/)
 - Command-line Development
     - Supported shells (Windows):
         - [MSYS2](https://www.msys2.org/)
@@ -198,7 +198,7 @@ The MSDK installer is available for supported Operating Systems from the downloa
 
 2. Click **Next** to proceed from the Welcome screen.
 
-3. Choose the installation location. By default, the MSDK will install to the `MaximSDK` folder off your filesystem's root.
+3. Choose the installation location.
 
     ![Figure 2](res/Fig2.jpg)
 
@@ -231,29 +231,64 @@ On MacOS, some additional missing packages must be manually installed with[Homeb
 
 2. Then, open a terminal and run the command
 
-        brew install libusb-compat libftdi hidapi libusb
+        brew install make libusb-compat libftdi hidapi libusb
+
+3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+
+        :::shell
+        ==> make: stable 4.4.1 (bottled)
+        Utility for directing compilation
+        https://www.gnu.org/software/make/
+        /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
+        Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
+        From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
+        License: GPL-3.0-only
+        ==> Dependencies
+        Build: lzip, lzip
+        ==> Caveats
+        GNU "make" has been installed as "gmake".
+        If you need to use it as "make", you can add a "gnubin" directory
+        to your PATH from your bashrc like:
+
+            PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+        ==> Analytics
+        install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
+        install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
+        build-error: 0 (30 days)
+
+    Typically, this involves adding the following line to your shell's startup script (`~/.zshrc`, `~/.bashrc`, etc.)
+
+        :::bash
+        PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+
+4. Restart your shell and verify that `make --version` returns 4.x+.
 
 **For M1 platforms**:
 
 The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
 
+Additionally, the MSDK toolchain requires Make 4.x+, which must also be retrieved via Homebrew.
+
 The i386 version of Homebrew can be installed in parallel with the arm64 version and typically installs into a separate filesystem.
 
 1. Open a terminal and update Rosetta.
 
+        :::shell
         softwareupdate --install-rosetta --agree-to-license
 
 2. Close the terminal.
 
-3. Run a new terminal in Rosetta:
+3. Create a new Rosetta terminal:
 
-    1. Go to Finder > Applications and find your Terminal
+    1. Launch Finder.
 
-    2. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".
+    2. Navigate to Applications and find the "Terminal" application.
 
-    3. Rich-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
+    3. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".  This will be a new application shortcut to the Rosetta terminal.
 
-    4. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
+    4. Right-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
+
+    5. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
 
 4. From your Rosetta terminal, follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
 
@@ -263,17 +298,47 @@ The i386 version of Homebrew can be installed in parallel with the arm64 version
 
 6. Run the command
 
-        :::bash
-        brew install libusb-compat libftdi hidapi libusb
+        :::shell
+        brew install make libusb-compat libftdi hidapi libusb
 
     (or, if you need to use the absolute path)
 
         :::shell
-        /usr/local/homebrew/bin/brew install libusb-compat libftdi hidapi libusb
+        /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
+
+7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+
+        :::shell
+        ==> make: stable 4.4.1 (bottled)
+        Utility for directing compilation
+        https://www.gnu.org/software/make/
+        /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
+        Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
+        From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
+        License: GPL-3.0-only
+        ==> Dependencies
+        Build: lzip, lzip
+        ==> Caveats
+        GNU "make" has been installed as "gmake".
+        If you need to use it as "make", you can add a "gnubin" directory
+        to your PATH from your bashrc like:
+
+            PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+        ==> Analytics
+        install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
+        install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
+        build-error: 0 (30 days)
+
+    Typically, this involves adding the following line to your shell's startup script (`~/.zshrc`, `~/.bashrc`, etc.)
+
+        :::bash
+        PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+
+8. Restart your shell and verify that `make --version` returns 4.x+.
 
 ### Maintenance
 
-An MSDK installation contains a `MaintenanceTool` executable program in the root directory. Use the Maintenance Tool to retrieve updates, manage components, and uninstall the MSDK.
+An MSDK installation contains a `MaintenanceTool` executable program in its root directory. Use the Maintenance Tool to retrieve updates, manage components, and uninstall the MSDK.
 
 ![Figure 11](res/Fig11.jpg)
 
@@ -349,16 +414,18 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
     ![Open Settings JSON Command](res/Fig42.jpg)
 
-6. Add the entries below to your user settings.json file.
+6. Add the entries below to your user settings.json file.  **Change the `MAXIM_PATH` option to point to the MSDK installation**.
 
         :::json
         // There may be other settings up here...        
 
-        "MAXIM_PATH": "C:/MaximSDK", // Set this to the installed location of the MaximSDK.  Only use forward slashes '/' when setting this path!
+        "MAXIM_PATH": "Change me!  Only use forward slashes (/) for this path",
         "update.mode": "manual",
         "extensions.autoUpdate": false,
         
         // There may be other settings down here...
+
+    For example, you might set `"MAXIM_PATH":"C:/MaximSDK"` on Windows, `"MAXIM_PATH":"/home/username/MaximSDK"` on Linux/MacOS, etc.
 
 7. Save your changes to the file with **`CTRL + S`** and restart VS Code.
 
@@ -404,7 +471,7 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
     ![Figure 18](res/Fig18.jpg)
 
-11. Connect a debug adapter between the host PC and the evaluation platform. Detailed instructions on this hardware setup can be found in the evaluation platform's Datasheet and Quick-Start Guide, which are available on its [analog.com](analog.com) product page.
+11. Connect a debug adapter between the host PC and the evaluation platform. Detailed instructions on this hardware setup can be found in the evaluation platform's Datasheet and Quick-Start Guide, which are available on its [analog.com](https://analog.com) product page.
 
 12. Run the **`flash`**  build task.  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.
 
@@ -706,17 +773,13 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 16. In the terminal window running the OpenOCD _server_, press `CTRL + C` to issue the shutdown command and quit.
 
-## IDEs
-
-This section offers detailed usage info on the MSDK's supported Integrated Development Environments (IDEs), focusing on the typical _development_ cycle. It expands on the info presented in ["Getting Started"](#getting-started) with more detailed usage info.
-
-### Visual Studio Code
+## Visual Studio Code
 
 Support for [Visual Studio Code](https://code.visualstudio.com/) is maintained for the MSDK and developed on the [VSCode-Maxim](https://github.com/Analog-Devices-MSDK/VSCode-Maxim) GitHub repository.
 
-For setup/quick-start instructions, see ["Getting Started with Visual Studio Code"](#getting-started-with-visual-studio-code) first.
+For setup/quick-start instructions, see ["Getting Started with Visual Studio Code"](#getting-started-with-visual-studio-code) first.  This section offers detailed usage info focusing on the typical development cycle.
 
-#### Opening Example Projects
+### Opening Example Projects
 
 Visual Studio Code is built around a "working directory" paradigm. The editor is always rooted in a working directory, and the main mechanism for changing that directory is **File -> Open Folder...**
 
@@ -749,7 +812,7 @@ To open a project:
 
 6. Verify the **_Board Support Package_** for the project is set correctly.  See [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code) below.
 
-#### How to Set the BSP (VS Code)
+### How to Set the BSP (VS Code)
 
 To set the BSP for an open project:
 
@@ -765,7 +828,7 @@ To set the BSP for an open project:
 
     ![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
 
-#### Building a Project
+### Building a Project
 
 An open project will present four available [build tasks](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks) from **Terminal > Run Build task...** or the shortcut **`Ctrl+Shift+B`**.
 
@@ -775,17 +838,17 @@ Run the **"build"** task to compile the project for the configured _Target Micro
 
 ![Figure 18](res/Fig18.jpg)
 
-#### Cleaning a Project
+### Cleaning a Project
 
 To **clean** a project, run the _clean_ [build task](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks).  This will delete the build folder and its contents. The next time the project is built, it will be rebuilt from scratch.
 
 It should be noted that _clean_ will only remove the _project's_ build output. The **clean-periph** task can be used to clean the project _and_ the peripheral driver libraries.
 
-#### Flashing and Debugging
+### Flashing and Debugging
 
 This section assumes a debugger is connected between the host PC and the evaluation platform. For more detailed instructions on this hardware setup, refer to the evaluation platform's Datasheet and Quick-Start Guide, which are available on its [analog.com](https://analog.com) product page.
 
-##### Arm Core Debugging
+#### Arm Core Debugging
 
 1. Run the **`flash`**  [build task](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks).  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.  
 
@@ -807,7 +870,7 @@ This section assumes a debugger is connected between the host PC and the evaluat
 
         Continue | Step Over | Step Into | Step Out | Restart | Stop
 
-##### Breakpoints
+#### Breakpoints
 
 Breakpoints can be set by clicking next to a line number in VS Code's editor. They are removed by clicking on them again.
 
@@ -821,7 +884,7 @@ The condition and condition type can be modified with the dropdown. This is usef
 
 ![Figure 37](res/Fig37.jpg)
 
-##### Peripheral Browsing
+#### Peripheral Browsing
 
 A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug. Currently, VSCode-Maxim does not feature a true peripheral browser. Instead, *watch expressions* can be used to inspect peripherals at the register level.
 
@@ -838,7 +901,7 @@ Watch expressions can be set for all registers. (For example, the `sysctrl` regi
 
 It should be noted that the debugger's watch points are *contextual*, meaning that its symbol look-ups will depend on the active point in your program.
 
-##### Dual Core Debugging
+#### Dual Core Debugging
 
 For microcontrollers with _both_ an Arm M4 and a RISC-V core, the _GDB (RISC-V)_ launch profile is provided to enable RISC-V debugging. The RISC-V core requires setup and handoff from the Arm M4 core. As a result, this is an advanced configuration requiring a unique combination of the project's source code, Makefiles, and VSCode-Maxim project settings. Such projects are appended with the `-riscv` suffix in the project's folder name.
 
@@ -881,11 +944,11 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 
     ![image](https://user-images.githubusercontent.com/38844790/168399419-d0488a0e-2068-4cc7-9108-0a296fdc04b4.png)
 
----
+## Eclipse
 
-### Eclipse
+For setup/quick-start instructions, see ["Getting Started with Eclipse"](#getting-started-with-eclipse) first.  This section offers detailed usage info focusing on the typical development cycle.
 
-#### Running Eclipse
+### Running Eclipse
 
 Eclipse _must_ be launched with the **Eclipse MaximSDK** shortcut. The shortcut points to the `Tools/Eclipse/cdt/eclipse(.bat/.sh)` file, which configures Eclipse's system environment for use with the MSDK toolchain.
 
@@ -895,7 +958,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 
 ![Figure 39](res/Fig39.jpg)
 
-#### Creating a New Project
+### Creating a New Project
 
 1. [Launch](#running-eclipse) Eclipse.
 
@@ -920,7 +983,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 
 6. Select **Finish** to create the new project.
 
-#### Importing Examples
+### Importing Examples
 
 1. [Launch](#running-eclipse) Eclipse.
 
@@ -942,11 +1005,11 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 
     ![Figure 25](res/Fig25.jpg)
 
-#### How to Set the BSP (Eclipse)
+### How to Set the BSP (Eclipse)
 
 [Imported](#importing-examples) Eclipse projects files are configured for the **EVKIT**-type _BSP_ by default. To set the BSP:
 
-1. Open (right click) the **project properties** and navigate to **C/C++ Build -> Environment**.  
+1. Right click the project name and select _Properties_.  Navigate to **C/C++ Build -> Environment**.
 2. Set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ to match the target evaluation platform.
 
     See [Board Support Packages](#board-support-packages) for a table of possible values.
@@ -955,7 +1018,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 
 3. **clean** and rebuild the project.
 
-#### Building a Project
+### Building a Project
 
 1. Ensure that the Eclipse is set to the **C/C++ perspective** (top right).  
 
@@ -965,7 +1028,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 
     ![Figure 27](res/Fig27.jpg)
 
-#### Flashing and Debugging
+### Flashing and Debugging
 
 1. Connect a debug adapter between the host PC and the evaluation platform. For more detailed instructions on this hardware setup, refer to the evaluation platform's Datasheet and Quick-Start Guide, which are available on its [analog.com](https://analog.com) product page.
 
@@ -985,15 +1048,41 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 
 6. **Terminate** the debugger (**`CTRL+F2`**) when finished.
 
----
+#### Segger J-Link Setup Guide (Eclipse)
 
-### Command-Line Development
+Eclipse offers built-in support for Segger J-Link debuggers.  J-Link debugging can be enabled following the steps below:
+
+1. Download and install the latest Segger J-Link Software and Documentation from [**here**](https://www.segger.com/downloads/jlink/)
+
+2. Follow the instructions from the Segger J-Link Eclipse plugin [**here**](https://eclipse-embed-cdt.github.io/debug/jlink/) with the following modifications specific to the MSDK.  Other options an be left at their defaults.
+
+    1. Modify the Executable name under "GDB Client Setup" to `arm-none-eabi-gdb${cross_suffix}`
+
+        ![Figure 44](res/Fig44.jpg)
+
+    2. Modify the "Startup" options to issue a `monitor reset halt` under initialization commands and _uncheck_ `Pre-run/Restart reset`
+
+        ![Figure 45](res/Fig45.jpg)
+
+## Keil MDK
+
+The [Keil MDK Microcontroller Development Kit](https://www2.keil.com/mdk5) is developed and maintained by Arm.  ADI maintains CMSIS Pack files supporting this environment.
+
+Supporting documentation is maintained by Arm, and can be found on the [**MDK5 page**](https://www2.keil.com/mdk5).  The latest pack files can be found under the "Maxim" section of the [device list](https://www.keil.com/dd2/).
+
+## IAR Embedded Workbench
+
+IAR Embedded Workbench is a third-party IDE that requires a software license.  ADI maintains support files for this IDE in the form of CMSIS Pack files.
+
+Supporting documentation is maintained by IAR, and can be found on the [**Embedded Workbench Product Page**](https://www.iar.com/products/architectures/arm/iar-embedded-workbench-for-arm/) under "User Guides and documentation".
+
+## Command-Line Development
 
 This section offers more detailed info on command-line development.
 
-For setup/quick-start, see ["Getting Started with Command-Line Development"](#getting-started-with-command-line-development)
+For setup/quick-start, see ["Getting Started with Command-Line Development"](#getting-started-with-command-line-development).
 
-#### How to Set the BSP (Command-Line)
+### How to Set the BSP (Command-Line)
 
 - To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_. by editing the **project.mk** that can be found inside each project.
 
@@ -1013,11 +1102,11 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 - Alternatively, set **`BOARD`** on the command line when building (i.e., `make -r -j BOARD=FTHR_RevA`) to set/override the BSP for a single build.
 
-#### Building on the Command-Line
+### Building on the Command-Line
 
 1. `cd` into the project folder.
 
-2. Run `make` 
+2. Run `make`
 
    - **Parallel Build** (fastest build, but console message formatting may be mangled):
 
@@ -1029,14 +1118,14 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 3. Take note of the output filename and location, which by default is the lowercase name of the _Target microcontroller_ and created in the `build` folder.
 
-#### Cleaning on the Command-Line
+### Cleaning on the Command-Line
 
 1. `cd` into the project folder.
 2. Run `make clean`
    - **Project clean**: `make clean` deletes the project `build` folder and all of its contents.
    - **Library clean**: `make distclean` can be used to clean out _all_ build products, including the project `build` folder and all [peripheral driver](#peripheral-driver-api) libraries.
 
-#### Flashing on the Command-Line
+### Flashing on the Command-Line
 
 1. [Build](#building-on-the-command-line) the project.  
 
@@ -1122,7 +1211,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
             Info : Listening on port 4444 for telnet connections
             # Note: OpenOCD is now waiting for a GDB client connection
 
-#### Debugging on the Command-Line
+### Debugging on the Command-Line
 
 1. [Flash](#flashing-on-the-command-line) the program using the **Flash and Hold** command.
 
@@ -1221,7 +1310,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 11. Quit OpenOCD. In the terminal window running the OpenOCD _server_, press `CTRL + C` to issue the shutdown command.
 
-#### Common GDB Commands
+### Common GDB Commands
 
 | **Command**                     | **Short Command** | **Description**                                              |
 | ------------------------------- | ----------------- | ------------------------------------------------------------ |
@@ -1670,3 +1759,20 @@ The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level inte
 - MAX32570
 - MAX32665-MAX32666
 - MAX78002
+
+---
+
+### FreeRTOS
+
+[FreeRTOS](https://www.freertos.org/index.html) is a Real-Time Operating System (RTOS), which offers basic abstractions for multi-tasking and an OS layer specifically targeted at embedded systems with real-time requirements.  The MSDK maintains an official support layer for the FreeRTOS kernel.  Official documentation can be found on the [FreeRTOS website](https://www.freertos.org/index.html).
+
+#### FreeRTOS Supported Parts
+
+FreeRTOS is supported by all parts in the MSDK.  See the `FreeRTOSDemo` example application.
+
+#### FreeRTOS-Plus
+
+[FreeRTOS-Plus](https://www.freertos.org/FreeRTOS-Plus/index.html) is an additional library that implements addon functionality for the FreeRTOS kernel.  The MSDK maintains support for some, but not all, available addons.
+
+- [FreeRTOS-Plus-CLI](https://www.freertos.org/FreeRTOS-Plus/index.html): **Supported**
+- [FreeRTOS-Plus-TCP](https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/index.html): **Not supported** (Contributions welcome!)

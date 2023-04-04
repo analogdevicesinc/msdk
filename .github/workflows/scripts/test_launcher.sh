@@ -291,48 +291,48 @@ function print_project_banner() {
     printf "> Start of testing $DUT_NAME_LOWER ($DUT_NAME_UPPER) \r\n> ID:$DUT_ID \r\n> Port:$DUT_SERIAL_PORT \r\n\r\n"
 }
 #****************************************************************************************************
-function change_advertising_names_walle() {
-    # change advertising name for projects under test to avoid
-    # connections with office devices
-    printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
-    perl -i -pe "s/\'D\'/\'X\'/g" dats_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
-    perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
-    perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-    perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
-    perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
-    # change advertising name to scan for on the main device client apps
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
-    perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-    perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
-    # build BLE examples
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
-}
-#****************************************************************************************************
-function change_advertising_names_local() {
-    # change advertising name for projects under test to avoid
-    # connections with office devices
-    printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
-    perl -i -pe "s/\'D\'/\'Z\'/g" dats_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
-    perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
-    perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-    perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
-    perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
-    # change advertising name to scan for on the main device client apps
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
-    perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-    perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
+function change_advertising_names() {
+    if [ $(hostname) == "wall-e" ]; then
+        # change advertising name for projects under test to avoid
+        # connections with office devices
+        printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+        perl -i -pe "s/\'D\'/\'X\'/g" dats_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
+        perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
+        perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
+        perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
+        # change advertising name to scan for on the main device client apps
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+        perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+        perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
+        # build BLE examples
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
+    else
+        # change advertising name for projects under test to avoid
+        # connections with office devices
+        printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+        perl -i -pe "s/\'D\'/\'Z\'/g" dats_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
+        perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
+        perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
+        perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
+        # change advertising name to scan for on the main device client apps
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+        perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+        perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
+    fi
 }
 
 #****************************************************************************************************
