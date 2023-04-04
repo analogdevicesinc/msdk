@@ -235,7 +235,7 @@ int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t *csi2, int num_data_lanes)
     MXC_CSI2_PPI_ClearFlags(0xFFFFFFFF);
 
     // Enable VFIFO
-    MXC_CSI2_VFIFO_Enable();
+    csi2->vfifo_ctrl |= MXC_F_CSI2_REVA_VFIFO_CTRL_FIFOEN;
 
     // Release DPHY reset
     csi2->dphy_rst_n |= 0x01;

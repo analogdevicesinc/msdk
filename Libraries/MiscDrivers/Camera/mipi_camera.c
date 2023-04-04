@@ -90,6 +90,10 @@ int mipi_camera_reset(void)
     return camera.reset();
 }
 
+int mipi_camera_sleep(int sleep) {
+    return camera.sleep(sleep);
+}
+
 int mipi_camera_setup(int xres, int yres, mipi_pixformat_t pixformat, int out_seq, int mux_ctrl)
 {
     g_pixel_format = pixformat;

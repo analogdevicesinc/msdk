@@ -101,6 +101,7 @@ int mipi_camera_get_slave_address(void);
 int mipi_camera_get_product_id(int *id);
 int mipi_camera_get_manufacture_id(int *id);
 int mipi_camera_setup(int xres, int yres, mipi_pixformat_t pixformat, int out_seq, int mux_ctrl);
+int mipi_camera_sleep(int sleep);
 uint8_t *mipi_camera_get_pixel_format(mipi_pixformat_t pix_format);
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_MIPI_CAMERA_H_
