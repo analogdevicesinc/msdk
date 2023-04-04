@@ -11,4 +11,6 @@
 
 # Add your config here!
 
-PROJ_CFLAGS += -DEXTCLK_FREQ=20000000
+# Define the EXT_CLK frequency.  This overrides the default 12.5Mhz
+# value set in the system header file.
+PROJ_CFLAGS += -DEXTCLK_FREQ=2000000
