@@ -1,17 +1,9 @@
 var group___w_u_t___c_t_r_l =
 [
-    [ "MXC_F_WUT_CTRL_NOLHPOL", "group___w_u_t___c_t_r_l.html#gaa5333de7f0c200903eda5b9ae8c8026e", null ],
-    [ "MXC_F_WUT_CTRL_NOLHPOL_POS", "group___w_u_t___c_t_r_l.html#gae633328b6c7cf4bd1d76d7b0f5149c73", null ],
-    [ "MXC_F_WUT_CTRL_NOLLPOL", "group___w_u_t___c_t_r_l.html#ga3846029f7bd4ad44496a5a3814d64cda", null ],
-    [ "MXC_F_WUT_CTRL_NOLLPOL_POS", "group___w_u_t___c_t_r_l.html#gad85d1e835518254a27c9ae74df4fc41f", null ],
     [ "MXC_F_WUT_CTRL_PRES", "group___w_u_t___c_t_r_l.html#gacac05c89dc71d2f56cdb60d62895a523", null ],
     [ "MXC_F_WUT_CTRL_PRES3", "group___w_u_t___c_t_r_l.html#ga7ec0401e49a9b74cd85e72e29ac7724b", null ],
     [ "MXC_F_WUT_CTRL_PRES3_POS", "group___w_u_t___c_t_r_l.html#gaa1f8e63160307d598609aafcdca87fdc", null ],
     [ "MXC_F_WUT_CTRL_PRES_POS", "group___w_u_t___c_t_r_l.html#gae61d42911aa2b94548c8180221ae7c75", null ],
-    [ "MXC_F_WUT_CTRL_PWMCKBD", "group___w_u_t___c_t_r_l.html#ga62712bcc9642039adc575e88c2031a70", null ],
-    [ "MXC_F_WUT_CTRL_PWMCKBD_POS", "group___w_u_t___c_t_r_l.html#ga8966fa3d775a79b8b837db714afe2426", null ],
-    [ "MXC_F_WUT_CTRL_PWMSYNC", "group___w_u_t___c_t_r_l.html#gace1aa5e6d9df50180d36f765d0306e69", null ],
-    [ "MXC_F_WUT_CTRL_PWMSYNC_POS", "group___w_u_t___c_t_r_l.html#ga1ad2370ac085ac0853cf3f07bb4ab0b7", null ],
     [ "MXC_F_WUT_CTRL_TEN", "group___w_u_t___c_t_r_l.html#gade9edcf843b3c7c17598af0a7ce5bdff", null ],
     [ "MXC_F_WUT_CTRL_TEN_POS", "group___w_u_t___c_t_r_l.html#ga4c207e2c406080b168c3a75fa3592195", null ],
     [ "MXC_F_WUT_CTRL_TMODE", "group___w_u_t___c_t_r_l.html#ga0fc2101d72a35443807038f90300457d", null ],

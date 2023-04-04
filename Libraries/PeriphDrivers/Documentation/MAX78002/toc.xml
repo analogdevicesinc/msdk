@@ -3736,6 +3736,14 @@
         <topic label="RTC_OSCCTRL" href="group___r_t_c___o_s_c_c_t_r_l.html">
           <topic label="MXC_F_RTC_OSCCTRL_BYPASS" href="group___r_t_c___o_s_c_c_t_r_l.html#ga4583f89840c39829a25caaa601b6b318"/>
           <topic label="MXC_F_RTC_OSCCTRL_BYPASS_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#gabdfa13739f8e7dffd1833c8e1ebf7492"/>
+          <topic label="MXC_F_RTC_OSCCTRL_FILTER_EN" href="group___r_t_c___o_s_c_c_t_r_l.html#ga35d9c7cabeecb6cbd17da6dc92e5e104"/>
+          <topic label="MXC_F_RTC_OSCCTRL_FILTER_EN_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#gab90f59e2f772ccf97e9aa00b76e2dd0b"/>
+          <topic label="MXC_F_RTC_OSCCTRL_HYST_EN" href="group___r_t_c___o_s_c_c_t_r_l.html#ga098602778a702042e0382fbc12ad2169"/>
+          <topic label="MXC_F_RTC_OSCCTRL_HYST_EN_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#ga6f28dc9b67831f9d5be92f82ca92c549"/>
+          <topic label="MXC_F_RTC_OSCCTRL_IBIAS_EN" href="group___r_t_c___o_s_c_c_t_r_l.html#ga034a87a474d3e22a607b143073f185a4"/>
+          <topic label="MXC_F_RTC_OSCCTRL_IBIAS_EN_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#gaa86c524cdfae970ac9e2ce2fb429a2bb"/>
+          <topic label="MXC_F_RTC_OSCCTRL_IBIAS_SEL" href="group___r_t_c___o_s_c_c_t_r_l.html#ga5b7170691c36aacabffc09095b6d4c71"/>
+          <topic label="MXC_F_RTC_OSCCTRL_IBIAS_SEL_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#ga897faa6d3748b63af85075bf9ce05fd7"/>
           <topic label="MXC_F_RTC_OSCCTRL_SQW_32K" href="group___r_t_c___o_s_c_c_t_r_l.html#ga6b18134e8971503c704430bcdef0ecb6"/>
           <topic label="MXC_F_RTC_OSCCTRL_SQW_32K_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#ga05272271d1106a13996f8d516e0845c0"/>
         </topic>
@@ -5666,7 +5674,6 @@
           <topic label="MXC_R_WUT_INTFL" href="group___w_u_t___register___offsets.html#ga87de1575bccc5eb722dfa200f75bf7cb"/>
           <topic label="MXC_R_WUT_NOLCMP" href="group___w_u_t___register___offsets.html#gae75cce4d1b23e4b22ae8c6a32e3a01ea"/>
           <topic label="MXC_R_WUT_PRESET" href="group___w_u_t___register___offsets.html#ga38b1495e596810b834707b1a58c89536"/>
-          <topic label="MXC_R_WUT_PWM" href="group___w_u_t___register___offsets.html#ga6b2a10786fc4f8b4f27f991fcdc4f18f"/>
           <topic label="MXC_R_WUT_RELOAD" href="group___w_u_t___register___offsets.html#ga16fef9f6b2a025797f41f3485a5636ab"/>
           <topic label="MXC_R_WUT_SNAPSHOT" href="group___w_u_t___register___offsets.html#ga8277392ad64e48952e5f41380c7780a5"/>
         </topic>
@@ -5678,27 +5685,15 @@
           <topic label="MXC_F_WUT_CMP_COMPARE" href="group___w_u_t___c_m_p.html#ga516d56aa1dd6ecc93966d19b93d11529"/>
           <topic label="MXC_F_WUT_CMP_COMPARE_POS" href="group___w_u_t___c_m_p.html#ga90e1bd9ad7ff7c56e541b2f12de61c25"/>
         </topic>
-        <topic label="WUT_PWM" href="group___w_u_t___p_w_m.html">
-          <topic label="MXC_F_WUT_PWM_PWM" href="group___w_u_t___p_w_m.html#ga9a08339974c97254ebfe849f0c89f0ee"/>
-          <topic label="MXC_F_WUT_PWM_PWM_POS" href="group___w_u_t___p_w_m.html#ga458a64cfffc04ad7110349f428acb6c3"/>
-        </topic>
         <topic label="WUT_INTFL" href="group___w_u_t___i_n_t_f_l.html">
           <topic label="MXC_F_WUT_INTFL_IRQ_CLR" href="group___w_u_t___i_n_t_f_l.html#ga8a621583405d79177c3c1785f3744e50"/>
           <topic label="MXC_F_WUT_INTFL_IRQ_CLR_POS" href="group___w_u_t___i_n_t_f_l.html#ga9cd246d4b6b1177841448f5f37378ced"/>
         </topic>
         <topic label="WUT_CTRL" href="group___w_u_t___c_t_r_l.html">
-          <topic label="MXC_F_WUT_CTRL_NOLHPOL" href="group___w_u_t___c_t_r_l.html#gaa5333de7f0c200903eda5b9ae8c8026e"/>
-          <topic label="MXC_F_WUT_CTRL_NOLHPOL_POS" href="group___w_u_t___c_t_r_l.html#gae633328b6c7cf4bd1d76d7b0f5149c73"/>
-          <topic label="MXC_F_WUT_CTRL_NOLLPOL" href="group___w_u_t___c_t_r_l.html#ga3846029f7bd4ad44496a5a3814d64cda"/>
-          <topic label="MXC_F_WUT_CTRL_NOLLPOL_POS" href="group___w_u_t___c_t_r_l.html#gad85d1e835518254a27c9ae74df4fc41f"/>
           <topic label="MXC_F_WUT_CTRL_PRES" href="group___w_u_t___c_t_r_l.html#gacac05c89dc71d2f56cdb60d62895a523"/>
           <topic label="MXC_F_WUT_CTRL_PRES3" href="group___w_u_t___c_t_r_l.html#ga7ec0401e49a9b74cd85e72e29ac7724b"/>
           <topic label="MXC_F_WUT_CTRL_PRES3_POS" href="group___w_u_t___c_t_r_l.html#gaa1f8e63160307d598609aafcdca87fdc"/>
           <topic label="MXC_F_WUT_CTRL_PRES_POS" href="group___w_u_t___c_t_r_l.html#gae61d42911aa2b94548c8180221ae7c75"/>
-          <topic label="MXC_F_WUT_CTRL_PWMCKBD" href="group___w_u_t___c_t_r_l.html#ga62712bcc9642039adc575e88c2031a70"/>
-          <topic label="MXC_F_WUT_CTRL_PWMCKBD_POS" href="group___w_u_t___c_t_r_l.html#ga8966fa3d775a79b8b837db714afe2426"/>
-          <topic label="MXC_F_WUT_CTRL_PWMSYNC" href="group___w_u_t___c_t_r_l.html#gace1aa5e6d9df50180d36f765d0306e69"/>
-          <topic label="MXC_F_WUT_CTRL_PWMSYNC_POS" href="group___w_u_t___c_t_r_l.html#ga1ad2370ac085ac0853cf3f07bb4ab0b7"/>
           <topic label="MXC_F_WUT_CTRL_TEN" href="group___w_u_t___c_t_r_l.html#gade9edcf843b3c7c17598af0a7ce5bdff"/>
           <topic label="MXC_F_WUT_CTRL_TEN_POS" href="group___w_u_t___c_t_r_l.html#ga4c207e2c406080b168c3a75fa3592195"/>
           <topic label="MXC_F_WUT_CTRL_TMODE" href="group___w_u_t___c_t_r_l.html#ga0fc2101d72a35443807038f90300457d"/>
@@ -5754,6 +5749,18 @@
           <topic label="MXC_F_WUT_NOLCMP_NOLLCMP" href="group___w_u_t___n_o_l_c_m_p.html#ga369754e6c02796c7211043f4395af824"/>
           <topic label="MXC_F_WUT_NOLCMP_NOLLCMP_POS" href="group___w_u_t___n_o_l_c_m_p.html#gae6538401a8aa6a41544c78aba5d7dce9"/>
         </topic>
+        <topic label="WUT_PRESET" href="group___w_u_t___p_r_e_s_e_t.html">
+          <topic label="MXC_F_WUT_PRESET_PRESET" href="group___w_u_t___p_r_e_s_e_t.html#gaf43b35e8553727e23ed1035cc940dad7"/>
+          <topic label="MXC_F_WUT_PRESET_PRESET_POS" href="group___w_u_t___p_r_e_s_e_t.html#gaafd5ea0dd1e4158a8d331f0e1ebbebcb"/>
+        </topic>
+        <topic label="WUT_RELOAD" href="group___w_u_t___r_e_l_o_a_d.html">
+          <topic label="MXC_F_WUT_RELOAD_RELOAD" href="group___w_u_t___r_e_l_o_a_d.html#ga109a0b88b771ff543196590df2e1db91"/>
+          <topic label="MXC_F_WUT_RELOAD_RELOAD_POS" href="group___w_u_t___r_e_l_o_a_d.html#ga6bb61c6d1577b221a57471ee7b829bad"/>
+        </topic>
+        <topic label="WUT_SNAPSHOT" href="group___w_u_t___s_n_a_p_s_h_o_t.html">
+          <topic label="MXC_F_WUT_SNAPSHOT_SNAPSHOT" href="group___w_u_t___s_n_a_p_s_h_o_t.html#ga156500939c2fcbeb8c770fd582633118"/>
+          <topic label="MXC_F_WUT_SNAPSHOT_SNAPSHOT_POS" href="group___w_u_t___s_n_a_p_s_h_o_t.html#ga8f39e464f62a78fde53a3e009a832222"/>
+        </topic>
         <topic label="mxc_wut_regs_t" href="group__wut__registers.html#structmxc__wut__regs__t">
           <topic label="cmp" href="group__wut__registers.html#aaef723fce280474468bb54f8caaf9782"/>
           <topic label="cnt" href="group__wut__registers.html#a79669bb18d8e3f917f9a9ed84c0828fb"/>
@@ -5761,7 +5768,6 @@
           <topic label="intfl" href="group__wut__registers.html#a4043deaf58b8c69a3d760825df5d9074"/>
           <topic label="nolcmp" href="group__wut__registers.html#a79022a0bcd2d28e1ce44db00b05edd11"/>
           <topic label="preset" href="group__wut__registers.html#a7685bb716d1f212d33a78a78fd778665"/>
-          <topic label="pwm" href="group__wut__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd"/>
           <topic label="reload" href="group__wut__registers.html#ae7b291bdf41c8f597fdc59f9ef87c4a0"/>
           <topic label="snapshot" href="group__wut__registers.html#ae991811ce95dc2ea8be1f59848562bcd"/>
         </topic>
@@ -7276,7 +7282,6 @@
         <topic label="MXC_R_USBHS_CSR0" href="group___u_s_b_h_s___register___offsets.html#ga91b7fe78802f609e603c839458d75bf0"/>
         <topic label="MXC_R_USBHS_CTHSRTN" href="group___u_s_b_h_s___register___offsets.html#ga2cbb5aaf7932e5814c6fefe5eea26c8b"/>
         <topic label="MXC_R_USBHS_CTUCH" href="group___u_s_b_h_s___register___offsets.html#ga3df14e2991eb9049f0919b1d60c667cb"/>
-        <topic label="MXC_R_USBHS_EARLYDMA" href="group___u_s_b_h_s___register___offsets.html#gaebd144b354b5148a730bb0780e3558f5"/>
         <topic label="MXC_R_USBHS_EPINFO" href="group___u_s_b_h_s___register___offsets.html#ga75938cfc389b42e1d52d40211a4c0a8b"/>
         <topic label="MXC_R_USBHS_FADDR" href="group___u_s_b_h_s___register___offsets.html#gafc9b7f4e8e20c8d6bf40862bab2cb8e4"/>
         <topic label="MXC_R_USBHS_FIFO0" href="group___u_s_b_h_s___register___offsets.html#ga316e18dcf6378f01e03d5df9df083c00"/>
@@ -7600,10 +7605,6 @@
       <topic label="USBHS_INCSRU" href="group___u_s_b_h_s___i_n_c_s_r_u.html">
         <topic label="MXC_F_USBHS_INCSRU_AUTOSET" href="group___u_s_b_h_s___i_n_c_s_r_u.html#ga44cd23d6d5c63eaed90134ec7eaf1f39"/>
         <topic label="MXC_F_USBHS_INCSRU_AUTOSET_POS" href="group___u_s_b_h_s___i_n_c_s_r_u.html#ga64d9aa9fecd598f15881d228fa8fc2cb"/>
-        <topic label="MXC_F_USBHS_INCSRU_DMAREQEN" href="group___u_s_b_h_s___i_n_c_s_r_u.html#gae7c8eb4cbcd75c0009514e813b67cb7b"/>
-        <topic label="MXC_F_USBHS_INCSRU_DMAREQEN_POS" href="group___u_s_b_h_s___i_n_c_s_r_u.html#ga4d606f7669263bef4e2f83b9c7235dd7"/>
-        <topic label="MXC_F_USBHS_INCSRU_DMAREQMODE" href="group___u_s_b_h_s___i_n_c_s_r_u.html#gab26a7dc4ea2c0ca1051e8ea8a2834308"/>
-        <topic label="MXC_F_USBHS_INCSRU_DMAREQMODE_POS" href="group___u_s_b_h_s___i_n_c_s_r_u.html#ga7d610dbd6c15e45aa27607ef094fb83e"/>
         <topic label="MXC_F_USBHS_INCSRU_DPKTBUFDIS" href="group___u_s_b_h_s___i_n_c_s_r_u.html#ga3332c14d8bb4ebe6908673302f24e2dc"/>
         <topic label="MXC_F_USBHS_INCSRU_DPKTBUFDIS_POS" href="group___u_s_b_h_s___i_n_c_s_r_u.html#ga847baa35447368dfc1a1fd19cfdfb35b"/>
         <topic label="MXC_F_USBHS_INCSRU_FRCDATATOG" href="group___u_s_b_h_s___i_n_c_s_r_u.html#gaa6016f7ab38d9ee5f237b32b26199f56"/>
@@ -7642,10 +7643,6 @@
         <topic label="MXC_F_USBHS_OUTCSRU_AUTOCLEAR_POS" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#gad4287966d2256c7d169165c0bb4e6b4a"/>
         <topic label="MXC_F_USBHS_OUTCSRU_DISNYET" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#ga2ae3b1e46cc36784eac093cc1a2d4f51"/>
         <topic label="MXC_F_USBHS_OUTCSRU_DISNYET_POS" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#gac45b3199f73772a8f64f40f00816564d"/>
-        <topic label="MXC_F_USBHS_OUTCSRU_DMAREQEN" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#ga90ab982d39bd0eb22d3cf0c78310d421"/>
-        <topic label="MXC_F_USBHS_OUTCSRU_DMAREQEN_POS" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#ga8f8cc4f8886c12cd84d9c278551dc5e5"/>
-        <topic label="MXC_F_USBHS_OUTCSRU_DMAREQMODE" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#ga624289f6991d8f0129f6f7fac410545b"/>
-        <topic label="MXC_F_USBHS_OUTCSRU_DMAREQMODE_POS" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#gac930aa2eeff9bdc0e844ecbd42b3ee4b"/>
         <topic label="MXC_F_USBHS_OUTCSRU_DPKTBUFDIS" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#ga970e08552d32a005eedaf117403d438e"/>
         <topic label="MXC_F_USBHS_OUTCSRU_DPKTBUFDIS_POS" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#ga1d32b4ec141fba48c2b03e6314fe7e95"/>
         <topic label="MXC_F_USBHS_OUTCSRU_INCOMPRX" href="group___u_s_b_h_s___o_u_t_c_s_r_u.html#gaebadf61948e2f709a44671a2767956ee"/>
@@ -7736,8 +7733,6 @@
         <topic label="MXC_F_USBHS_EPINFO_OUTENDPOINTS_POS" href="group___u_s_b_h_s___e_p_i_n_f_o.html#ga89fcd9b02d75e65c1b197b7f55a5842a"/>
       </topic>
       <topic label="USBHS_RAMINFO" href="group___u_s_b_h_s___r_a_m_i_n_f_o.html">
-        <topic label="MXC_F_USBHS_RAMINFO_DMACHANS" href="group___u_s_b_h_s___r_a_m_i_n_f_o.html#ga39ddaadb5581169c8272a228ba4bc94d"/>
-        <topic label="MXC_F_USBHS_RAMINFO_DMACHANS_POS" href="group___u_s_b_h_s___r_a_m_i_n_f_o.html#gae4359202474259b413c3cbf4a40c32c4"/>
         <topic label="MXC_F_USBHS_RAMINFO_RAMBITS" href="group___u_s_b_h_s___r_a_m_i_n_f_o.html#ga135d86af75ab8650c6bd4ecf33d3bce8"/>
         <topic label="MXC_F_USBHS_RAMINFO_RAMBITS_POS" href="group___u_s_b_h_s___r_a_m_i_n_f_o.html#ga655a879b6c12100c948a6a8a25a233e9"/>
       </topic>
@@ -7746,12 +7741,6 @@
         <topic label="MXC_F_USBHS_SOFTRESET_RSTS_POS" href="group___u_s_b_h_s___s_o_f_t_r_e_s_e_t.html#ga74033ded8d97c81699c94873575d9d13"/>
         <topic label="MXC_F_USBHS_SOFTRESET_RSTXS" href="group___u_s_b_h_s___s_o_f_t_r_e_s_e_t.html#ga1f50770ea614dc8574da0eabfb9a5271"/>
         <topic label="MXC_F_USBHS_SOFTRESET_RSTXS_POS" href="group___u_s_b_h_s___s_o_f_t_r_e_s_e_t.html#gab8e7ed31b8754dcdf099190b29b1c508"/>
-      </topic>
-      <topic label="USBHS_EARLYDMA" href="group___u_s_b_h_s___e_a_r_l_y_d_m_a.html">
-        <topic label="MXC_F_USBHS_EARLYDMA_EDMAIN" href="group___u_s_b_h_s___e_a_r_l_y_d_m_a.html#gab07668dfd536a364db69201bf7d3103e"/>
-        <topic label="MXC_F_USBHS_EARLYDMA_EDMAIN_POS" href="group___u_s_b_h_s___e_a_r_l_y_d_m_a.html#gaba88af392b50c016ded25d3c8395abeb"/>
-        <topic label="MXC_F_USBHS_EARLYDMA_EDMAOUT" href="group___u_s_b_h_s___e_a_r_l_y_d_m_a.html#ga95823bcc2883acfbe0ddd07e76e19923"/>
-        <topic label="MXC_F_USBHS_EARLYDMA_EDMAOUT_POS" href="group___u_s_b_h_s___e_a_r_l_y_d_m_a.html#ga3654ba2aadff348c01769f2dbffbe8f3"/>
       </topic>
       <topic label="USBHS_CTUCH" href="group___u_s_b_h_s___c_t_u_c_h.html">
         <topic label="MXC_F_USBHS_CTUCH_C_T_UCH" href="group___u_s_b_h_s___c_t_u_c_h.html#ga2c7ef151bb91ba3a1875ace0c4c563f7"/>
@@ -7778,8 +7767,6 @@
         <topic label="MXC_F_USBHS_MXM_SUSPEND_SEL_POS" href="group___u_s_b_h_s___m_x_m___s_u_s_p_e_n_d.html#ga81902d1b7653fe193f577dcbf6253f06"/>
       </topic>
       <topic label="USBHS_MXM_REG_A4" href="group___u_s_b_h_s___m_x_m___r_e_g___a4.html">
-        <topic label="MXC_F_USBHS_MXM_REG_A4_DMA_INT" href="group___u_s_b_h_s___m_x_m___r_e_g___a4.html#gab61618675ffe7d35d8c45a51da8a1db3"/>
-        <topic label="MXC_F_USBHS_MXM_REG_A4_DMA_INT_POS" href="group___u_s_b_h_s___m_x_m___r_e_g___a4.html#ga51b4272bca0f9c8bd0cd5465475a9f21"/>
         <topic label="MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A" href="group___u_s_b_h_s___m_x_m___r_e_g___a4.html#ga6cff53705956437bc615dc231b70cef0"/>
         <topic label="MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A_POS" href="group___u_s_b_h_s___m_x_m___r_e_g___a4.html#ga90c853ba752f14f115f3617b4111ded7"/>
       </topic>
@@ -7788,7 +7775,6 @@
         <topic label="csr0" href="group__usbhs__registers.html#adc0a0364ff9df767e4c4866d5e0dafee"/>
         <topic label="cthsrtn" href="group__usbhs__registers.html#ac867c11e33423ee5e414f002c39ccaf6"/>
         <topic label="ctuch" href="group__usbhs__registers.html#a9b520433b48d213bb4c87efcbf94af86"/>
-        <topic label="earlydma" href="group__usbhs__registers.html#a7351b42936897dd5644f6125147abedf"/>
         <topic label="epinfo" href="group__usbhs__registers.html#ae28a9f94717b2808e6cc6ee6ef4e98a3"/>
         <topic label="faddr" href="group__usbhs__registers.html#a122f19d064c435f4b93b03c3f254ee1a"/>
         <topic label="fifo0" href="group__usbhs__registers.html#a02a5a57804e03525e58ac5c3b6811b9c"/>
@@ -8579,7 +8565,6 @@
         <topic label="csr0" href="group__usbhs__registers.html#adc0a0364ff9df767e4c4866d5e0dafee"/>
         <topic label="cthsrtn" href="group__usbhs__registers.html#ac867c11e33423ee5e414f002c39ccaf6"/>
         <topic label="ctuch" href="group__usbhs__registers.html#a9b520433b48d213bb4c87efcbf94af86"/>
-        <topic label="earlydma" href="group__usbhs__registers.html#a7351b42936897dd5644f6125147abedf"/>
         <topic label="epinfo" href="group__usbhs__registers.html#ae28a9f94717b2808e6cc6ee6ef4e98a3"/>
         <topic label="faddr" href="group__usbhs__registers.html#a122f19d064c435f4b93b03c3f254ee1a"/>
         <topic label="fifo0" href="group__usbhs__registers.html#a02a5a57804e03525e58ac5c3b6811b9c"/>
@@ -8683,7 +8668,6 @@
         <topic label="intfl" href="group__wut__registers.html#a4043deaf58b8c69a3d760825df5d9074"/>
         <topic label="nolcmp" href="group__wut__registers.html#a79022a0bcd2d28e1ce44db00b05edd11"/>
         <topic label="preset" href="group__wut__registers.html#a7685bb716d1f212d33a78a78fd778665"/>
-        <topic label="pwm" href="group__wut__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd"/>
         <topic label="reload" href="group__wut__registers.html#ae7b291bdf41c8f597fdc59f9ef87c4a0"/>
         <topic label="snapshot" href="group__wut__registers.html#ae991811ce95dc2ea8be1f59848562bcd"/>
       </topic>

@@ -339,40 +339,46 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
 <div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span> </div>
 <div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span><span class="keywordtype">int</span> MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);</div>
 <div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span> </div>
-<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keywordtype">int</span> MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span><span class="keywordtype">int</span> MXC_SYS_GetRevision(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span> </div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span><span class="keywordtype">void</span> MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock);</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span> </div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span><span class="keywordtype">void</span> MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock);</div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span> </div>
-<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span><span class="keywordtype">void</span> MXC_SYS_RTCClockEnable(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span> </div>
-<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span><span class="keywordtype">int</span> MXC_SYS_RTCClockDisable();</div>
-<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span> </div>
-<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span><span class="keywordtype">int</span> MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span> </div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><span class="keywordtype">void</span> MXC_SYS_ClockDisable(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span><span class="keywordtype">void</span> MXC_SYS_ClockEnable(mxc_sys_periph_clock_t clock);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span><span class="keywordtype">void</span> MXC_SYS_RTCClockEnable(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span><span class="keywordtype">int</span> MXC_SYS_RTCClockDisable(<span class="keywordtype">void</span>);</div>
 <div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span> </div>
-<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);</div>
-<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span> </div>
-<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span><span class="keywordtype">int</span> MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);</div>
-<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span> </div>
-<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span><span class="keywordtype">void</span> MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);</div>
-<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span> </div>
-<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span> </div>
-<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span><span class="keywordtype">int</span> MXC_SYS_Clock_Timeout(uint32_t ready);</div>
-<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span><span class="keywordtype">void</span> MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);</div>
-<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> </div>
-<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span><span class="keywordtype">void</span> MXC_SYS_RISCVRun(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
-<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span><span class="keywordtype">void</span> MXC_SYS_RISCVShutdown(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
-<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>uint32_t MXC_SYS_RiscVClockRate(<span class="keywordtype">void</span>);</div>
-<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
-<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span><span class="preprocessor">#ifdef __cplusplus</span></div>
-<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>}</div>
-<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span> </div>
-<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_MXC_SYS_H_</span></div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span><span class="keywordtype">void</span> MXC_SYS_RTCClockPowerDownEn(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span> </div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span><span class="keywordtype">void</span> MXC_SYS_RTCClockPowerDownDis(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span> </div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span> </div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span><span class="keywordtype">int</span> MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span> </div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span><span class="keywordtype">int</span> MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);</div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span> </div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span><span class="keywordtype">void</span> MXC_SYS_SetClockDiv(mxc_sys_system_clock_div_t div);</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span> </div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>mxc_sys_system_clock_div_t MXC_SYS_GetClockDiv(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span> </div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span><span class="keywordtype">int</span> MXC_SYS_Clock_Timeout(uint32_t ready);</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span><span class="keywordtype">void</span> MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span> </div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span><span class="keywordtype">void</span> MXC_SYS_RISCVRun(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span> </div>
+<div class="line"><a id="l00392" name="l00392"></a><span class="lineno">  392</span><span class="keywordtype">void</span> MXC_SYS_RISCVShutdown(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00393" name="l00393"></a><span class="lineno">  393</span> </div>
+<div class="line"><a id="l00397" name="l00397"></a><span class="lineno">  397</span>uint32_t MXC_SYS_RiscVClockRate(<span class="keywordtype">void</span>);</div>
+<div class="line"><a id="l00398" name="l00398"></a><span class="lineno">  398</span> </div>
+<div class="line"><a id="l00399" name="l00399"></a><span class="lineno">  399</span><span class="preprocessor">#ifdef __cplusplus</span></div>
+<div class="line"><a id="l00400" name="l00400"></a><span class="lineno">  400</span>}</div>
+<div class="line"><a id="l00401" name="l00401"></a><span class="lineno">  401</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00402" name="l00402"></a><span class="lineno">  402</span> </div>
+<div class="line"><a id="l00403" name="l00403"></a><span class="lineno">  403</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_MXC_SYS_H_</span></div>
 <div class="ttc" id="agroup___g_c_r___c_l_k_c_t_r_l_html_ga1ffe8cf9bd1d6d082c21fb5ab18c832a"><div class="ttname"><a href="group___g_c_r___c_l_k_c_t_r_l.html#ga1ffe8cf9bd1d6d082c21fb5ab18c832a">MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV64</a></div><div class="ttdeci">#define MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV64</div><div class="ttdef"><b>Definition:</b> gcr_regs.h:271</div></div>
 <div class="ttc" id="agroup___g_c_r___c_l_k_c_t_r_l_html_ga44b3ca77fd6d6e2fc8cd8db32435fd22"><div class="ttname"><a href="group___g_c_r___c_l_k_c_t_r_l.html#ga44b3ca77fd6d6e2fc8cd8db32435fd22">MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK</a></div><div class="ttdeci">#define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK</div><div class="ttdef"><b>Definition:</b> gcr_regs.h:289</div></div>
 <div class="ttc" id="agroup___g_c_r___c_l_k_c_t_r_l_html_ga50e6e597d4bcec03ec5d47e113303b3c"><div class="ttname"><a href="group___g_c_r___c_l_k_c_t_r_l.html#ga50e6e597d4bcec03ec5d47e113303b3c">MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO</a></div><div class="ttdeci">#define MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO</div><div class="ttdef"><b>Definition:</b> gcr_regs.h:285</div></div>
@@ -465,7 +471,7 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_e2429de0318695764783c01d82635fe8.html">MAX32655</a></li><li class="navelem"><b>mxc_sys.h</b></li>
-    <li class="footer">Generated on Wed Mar 22 2023 19:01:54 for MAX32655 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Apr 4 2023 15:34:12 for MAX32655 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

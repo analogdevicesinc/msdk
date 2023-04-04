@@ -56,7 +56,7 @@ var searchData=
   ['ptg_5fsafe_5fen_53',['PTG_SAFE_EN',['../group___p_t_g___s_a_f_e___e_n.html',1,'']]],
   ['ptlength_54',['ptLength',['../group__pulsetrain.html#a1356ccca2af07f1445d1b6b38279727b',1,'mxc_pt_cfg_t']]],
   ['pulse_20train_20engine_55',['Pulse Train Engine',['../group__pulsetrain.html',1,'']]],
-  ['pwm_56',['pwm',['../group__wut__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_wut_regs_t::pwm()'],['../group__tmr__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_tmr_regs_t::pwm()']]],
+  ['pwm_56',['pwm',['../group__tmr__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_tmr_regs_t']]],
   ['pwr_57',['pwr',['../group__sdhc__registers.html#abd801edb642553c657934732e39e837d',1,'mxc_sdhc_regs_t']]],
   ['pwrseq_5flpcn_58',['PWRSEQ_LPCN',['../group___p_w_r_s_e_q___l_p_c_n.html',1,'']]],
   ['pwrseq_5flppwen_59',['PWRSEQ_LPPWEN',['../group___p_w_r_s_e_q___l_p_p_w_e_n.html',1,'']]],

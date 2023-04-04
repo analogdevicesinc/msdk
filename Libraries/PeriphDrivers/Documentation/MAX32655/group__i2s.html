@@ -113,6 +113,8 @@ Enumerations</h2></td></tr>
 <tr class="separator:gaa8cffbae538bd8de2c5a4e87b3cce352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga476163c23e244a12d09fab68892308bc"><td class="memItemLeft" align="right" valign="top"><a id="ga476163c23e244a12d09fab68892308bc" name="ga476163c23e244a12d09fab68892308bc"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2s.html#ga476163c23e244a12d09fab68892308bc">mxc_i2s_justify_t</a> </td></tr>
 <tr class="separator:ga476163c23e244a12d09fab68892308bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf63b61dacb52302ea0e23d6b9f022eee"><td class="memItemLeft" align="right" valign="top"><a id="gaf63b61dacb52302ea0e23d6b9f022eee" name="gaf63b61dacb52302ea0e23d6b9f022eee"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2s.html#gaf63b61dacb52302ea0e23d6b9f022eee">mxc_i2s_clksrc_t</a> </td></tr>
+<tr class="separator:gaf63b61dacb52302ea0e23d6b9f022eee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga69ac34ac897436c1b47ada8fb1dd0582"><td class="memItemLeft" align="right" valign="top"><a id="ga69ac34ac897436c1b47ada8fb1dd0582" name="ga69ac34ac897436c1b47ada8fb1dd0582"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2s.html#ga69ac34ac897436c1b47ada8fb1dd0582">mxc_i2s_wsize_t</a> </td></tr>
 <tr class="separator:ga69ac34ac897436c1b47ada8fb1dd0582"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga59260f21077f9264f0ca0441daff8019"><td class="memItemLeft" align="right" valign="top"><a id="ga59260f21077f9264f0ca0441daff8019" name="ga59260f21077f9264f0ca0441daff8019"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2s.html#ga59260f21077f9264f0ca0441daff8019">mxc_i2s_samplesize_t</a> </td></tr>
@@ -128,6 +130,8 @@ Functions</h2></td></tr>
 <tr class="separator:gaf3ba4cd6ad295ad1d7eb02f2a282c595"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5981df9127d06340164cf5f5c2bd68fd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2s.html#ga5981df9127d06340164cf5f5c2bd68fd">MXC_I2S_ConfigData</a> (<a class="el" href="group__i2s.html#structmxc__i2s__req__t">mxc_i2s_req_t</a> *req)</td></tr>
 <tr class="separator:ga5981df9127d06340164cf5f5c2bd68fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga63b96f1e69e175ac2127b2cff68bf690"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2s.html#ga63b96f1e69e175ac2127b2cff68bf690">MXC_I2S_SelectClockSource</a> (<a class="el" href="group__i2s.html#gaf63b61dacb52302ea0e23d6b9f022eee">mxc_i2s_clksrc_t</a> clk_src, uint32_t freq_ext)</td></tr>
+<tr class="separator:ga63b96f1e69e175ac2127b2cff68bf690"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa5d86a8f40d40994193f966e0e668f12"><td class="memItemLeft" align="right" valign="top"><a id="gaa5d86a8f40d40994193f966e0e668f12" name="gaa5d86a8f40d40994193f966e0e668f12"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_I2S_TXEnable</b> (void)</td></tr>
 <tr class="separator:gaa5d86a8f40d40994193f966e0e668f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -607,6 +611,45 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_I2S_Handler</b> (
 
 </div>
 </div>
+<a id="ga63b96f1e69e175ac2127b2cff68bf690" name="ga63b96f1e69e175ac2127b2cff68bf690"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga63b96f1e69e175ac2127b2cff68bf690">&#9670;&nbsp;</a></span>MXC_I2S_SelectClockSource()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_I2S_SelectClockSource </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__i2s.html#gaf63b61dacb52302ea0e23d6b9f022eee">mxc_i2s_clksrc_t</a>&#160;</td>
+          <td class="paramname"><em>clk_src</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>freq_ext</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function enables and selects the source clock for I2S master mode. By default the driver assumes the ERFO will be used so this function only needs to be called if switching to/from the external clock is required for the application. </p>
+<dl class="section warning"><dt>Warning</dt><dd>This function should be called before MXC_I2S_SetSampleRate, MXC_I2S_GetSampleRate, and MXC_I2S_CalculateClockDiv to ensure they operate correctly.</dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">clk_src</td><td>Selects which clock source to use. </td></tr>
+    <tr><td class="paramname">freq_ext</td><td>Frequency of the clock source. This param only required if MXC_I2S_CLKSRC_EXT selected for clk_src.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
 <a id="gaa90e3cfbfbf7257248bc24278f24cf6a" name="gaa90e3cfbfbf7257248bc24278f24cf6a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaa90e3cfbfbf7257248bc24278f24cf6a">&#9670;&nbsp;</a></span>MXC_I2S_SetFrequency()</h2>
 
@@ -830,7 +873,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MXC_I2S_Handler</b> (
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Mar 22 2023 19:01:55 for MAX32655 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Apr 4 2023 15:34:12 for MAX32655 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

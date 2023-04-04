@@ -1,15 +1,5 @@
 var NAVTREEINDEX25 =
 {
-"group__rpu__registers.html#a3d7da5a6cf77b3dfcc47af4b5b16e151":[1,14,0,70,23],
-"group__rpu__registers.html#a51f608dd2fd8dcf6704cad53dfb33afa":[1,14,0,70,55],
-"group__rpu__registers.html#a54385d3c6cb71b0ac47aaaf1dc2e82d4":[1,14,0,70,12],
-"group__rpu__registers.html#a548c93d50beda4b83e143ff8aa5fabc2":[1,14,0,70,20],
-"group__rpu__registers.html#a54b7bd16c5935b7735af55ffb9dc2668":[1,14,0,70,7],
-"group__rpu__registers.html#a55fa90d3b96d211fb554c3c48a146cfa":[1,14,0,70,53],
-"group__rpu__registers.html#a5ebc2c651a7fb873eed081f4f6c4fa45":[1,14,0,70,66],
-"group__rpu__registers.html#a5f0ae97b1ebb6a227b232a607fab4002":[1,14,0,70,49],
-"group__rpu__registers.html#a691cd1360ae81793b0ed614d395b1b13":[1,14,0,70,52],
-"group__rpu__registers.html#a6b1d6af7d97c929a0c8067de6327b1be":[1,14,0,70,24],
 "group__rpu__registers.html#a6c3c7d362167aef4b51172612acb8194":[1,14,0,70,17],
 "group__rpu__registers.html#a707112725c957ec3ef5e567280249d2b":[1,14,0,70,0],
 "group__rpu__registers.html#a715c54dfeeb0da36cc134b5e786df231":[1,14,0,70,19],
@@ -249,5 +239,15 @@ var NAVTREEINDEX25 =
 "group__smon__registers.html#a5a468a533c81ddc5998e426a1c9cdc49":[1,38,9,2],
 "group__smon__registers.html#a9e3cac9f744050c11ef0042e8b2dc108":[1,38,9,0],
 "group__smon__registers.html#aabd33fcaa588759c79aab55d6ddee5d2":[1,38,9,7],
-"group__smon__registers.html#adad40a2e19f2103976c4b5a00ade8d63":[1,38,9,6]
+"group__smon__registers.html#adad40a2e19f2103976c4b5a00ade8d63":[1,38,9,6],
+"group__smon__registers.html#af4117b5a4951eef149c8e937c12530a2":[1,38,9,1],
+"group__smon__registers.html#aff65fc2c0786bf363ee4212ff522707c":[1,38,9,3],
+"group__smon__registers.html#structmxc__smon__regs__t":[1,38,9],
+"group__spi.html":[1,18],
+"group__spi.html#a03c054bb486fb65133eb9f6849266fb1":[1,18,1,8],
+"group__spi.html#a043f0f3e53b8233dca0b9446b9c36ccd":[1,18,1,3],
+"group__spi.html#a1bf34bc0d63b8e4a68fa9fb295b03f34":[1,18,1,1],
+"group__spi.html#a265582641e03d3e8aab76429d632d7bd":[1,18,1,6],
+"group__spi.html#a43bd328124d967686e9583453c3ac8e9":[1,18,1,4],
+"group__spi.html#a9dbc802d61ebc798f973339cc603ded7":[1,18,1,0]
 };

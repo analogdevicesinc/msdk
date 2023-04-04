@@ -8,7 +8,6 @@ var annotated_dup =
     [ "mxc_aes_regs_t", "group__aes__registers.html#structmxc__aes__regs__t", "group__aes__registers_structmxc__aes__regs__t" ],
     [ "mxc_aes_req_t", "group__aes.html#structmxc__aes__req__t", "group__aes_structmxc__aes__req__t" ],
     [ "mxc_aeskeys_regs_t", "group__aeskeys__registers.html#structmxc__aeskeys__regs__t", "group__aeskeys__registers_structmxc__aeskeys__regs__t" ],
-    [ "mxc_crc_req_t", "group__crc.html#structmxc__crc__req__t", "group__crc_structmxc__crc__req__t" ],
     [ "mxc_ctb_cipher_req_t", "group__ctb.html#structmxc__ctb__cipher__req__t", null ],
     [ "mxc_ctb_crc_req_t", "group__ctb.html#structmxc__ctb__crc__req__t", null ],
     [ "mxc_ctb_dma_req_t", "group__ctb.html#structmxc__ctb__dma__req__t", "group__ctb_structmxc__ctb__dma__req__t" ],

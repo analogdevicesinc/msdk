@@ -400,7 +400,7 @@ var searchData=
   ['mxc_5fpcif_5fdisableint_397',['MXC_PCIF_DisableInt',['../group__cameraif.html#gaa84adffe1c18046ac0872fc1dba54b0e',1,'cameraif.h']]],
   ['mxc_5fpcif_5fenableint_398',['MXC_PCIF_EnableInt',['../group__cameraif.html#gadc5485862ee4ebb2aacd1ae296a2303e',1,'cameraif.h']]],
   ['mxc_5fpcif_5fgetdata_399',['MXC_PCIF_GetData',['../group__cameraif.html#ga2f1660afd57ae940d92abe5b348cf95c',1,'cameraif.h']]],
-  ['mxc_5fpcif_5finit_400',['MXC_PCIF_Init',['../group__cameraif.html#ga5565be43c565f825a9a542b8e703f8e1',1,'cameraif.h']]],
+  ['mxc_5fpcif_5finit_400',['MXC_PCIF_Init',['../group__cameraif.html#ga7dfa061fcfa72ca56eaf8b0cc7069fcf',1,'cameraif.h']]],
   ['mxc_5fpcif_5fsetdatawidth_401',['MXC_PCIF_SetDatawidth',['../group__cameraif.html#gae5c336c209dff5ebdbbf0be78be702a1',1,'cameraif.h']]],
   ['mxc_5fpcif_5fsetthreshold_402',['MXC_PCIF_SetThreshold',['../group__cameraif.html#ga170228900bcb40fbac26464545a98f80',1,'cameraif.h']]],
   ['mxc_5fpcif_5fsettimingsel_403',['MXC_PCIF_SetTimingSel',['../group__cameraif.html#gaeffa5ab3cbeeaed2fc978c3846abb7ea',1,'cameraif.h']]],

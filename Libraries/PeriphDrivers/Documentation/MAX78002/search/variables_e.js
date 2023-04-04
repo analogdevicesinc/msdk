@@ -41,6 +41,6 @@ var searchData=
   ['ps_38',['ps',['../group__gpio__registers.html#a5a1d26602cf5c5fa9f23c0fcfa2ccb12',1,'mxc_gpio_regs_t']]],
   ['pssel_39',['pssel',['../group__dma.html#acb6885039c6762ab023729939db525f5',1,'mxc_dma_adv_config_t']]],
   ['ptlength_40',['ptLength',['../group__pulsetrain.html#a1356ccca2af07f1445d1b6b38279727b',1,'mxc_pt_cfg_t']]],
-  ['pwm_41',['pwm',['../group__tmr__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_tmr_regs_t::pwm()'],['../group__wut__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_wut_regs_t::pwm()']]],
+  ['pwm_41',['pwm',['../group__tmr__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_tmr_regs_t']]],
   ['pwr_42',['pwr',['../group__sdhc__registers.html#abd801edb642553c657934732e39e837d',1,'mxc_sdhc_regs_t']]]
 ];

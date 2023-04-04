@@ -523,27 +523,6 @@
       <topic label="MXC_AES_Start" href="group__aes.html#gab1efac8d53816c242aec7201dfe47bce"/>
       <topic label="MXC_AES_TXDMAConfig" href="group__aes.html#ga82527e25c18652851ba6c63f36ba171b"/>
     </topic>
-    <topic label="CRC" href="group__crc.html">
-      <topic label="mxc_crc_req_t" href="group__crc.html#structmxc__crc__req__t">
-        <topic label="dataBuffer" href="group__crc.html#a282286b72323deb59713927b3d08ce8e"/>
-        <topic label="dataLen" href="group__crc.html#ac67e8c57ed1a79895c9afd41a561ec73"/>
-        <topic label="resultCRC" href="group__crc.html#ac0d061d6e4e6c97098bfae8a29d934fd"/>
-      </topic>
-      <topic label="mxc_crc_bitorder_t" href="group__crc.html#ga4f2eb8d96831a8d5a216b79be5b4012f">
-      </topic>
-      <topic label="MXC_CRC_Compute" href="group__crc.html#gaa612be2173edc4b198eb524d260af02b"/>
-      <topic label="MXC_CRC_ComputeAsync" href="group__crc.html#ga6f996524f7d0c604ea86726f2b1ae50a"/>
-      <topic label="MXC_CRC_GetDirection" href="group__crc.html#ga0adc9cf3bde4290f972ce94d91fbaf8e"/>
-      <topic label="MXC_CRC_GetPoly" href="group__crc.html#ga99ffa24c86df3c8c8e9e20f7e6a9f437"/>
-      <topic label="MXC_CRC_GetResult" href="group__crc.html#ga1a8f5f296e4c256e0f9eef792310555a"/>
-      <topic label="MXC_CRC_Handler" href="group__crc.html#ga7fc61680594af2cd9a44ac703f4ad1cb"/>
-      <topic label="MXC_CRC_Init" href="group__crc.html#ga6da82cb789435ed9eecbbb546176284c"/>
-      <topic label="MXC_CRC_SetDirection" href="group__crc.html#ga4821e71ea0cdabf6a07678bdd3469312"/>
-      <topic label="MXC_CRC_SetPoly" href="group__crc.html#gab0b9837f0f9283c54f131ab09a4b6c5d"/>
-      <topic label="MXC_CRC_Shutdown" href="group__crc.html#ga40d92f729d5015b3b7ef870a95d27254"/>
-      <topic label="MXC_CRC_SwapDataIn" href="group__crc.html#ga984cb6876d39f2522702b7576a768041"/>
-      <topic label="MXC_CRC_SwapDataOut" href="group__crc.html#ga736092f327c09ff96f9e092735ba7b0e"/>
-    </topic>
     <topic label="CTB" href="group__ctb.html">
       <topic label="CTB_Registers" href="group__ctb__registers.html">
         <topic label="Register Offsets" href="group___c_t_b___register___offsets.html">
@@ -2955,6 +2934,14 @@
         <topic label="RTC_OSCCTRL" href="group___r_t_c___o_s_c_c_t_r_l.html">
           <topic label="MXC_F_RTC_OSCCTRL_BYPASS" href="group___r_t_c___o_s_c_c_t_r_l.html#ga4583f89840c39829a25caaa601b6b318"/>
           <topic label="MXC_F_RTC_OSCCTRL_BYPASS_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#gabdfa13739f8e7dffd1833c8e1ebf7492"/>
+          <topic label="MXC_F_RTC_OSCCTRL_FILTER_EN" href="group___r_t_c___o_s_c_c_t_r_l.html#ga35d9c7cabeecb6cbd17da6dc92e5e104"/>
+          <topic label="MXC_F_RTC_OSCCTRL_FILTER_EN_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#gab90f59e2f772ccf97e9aa00b76e2dd0b"/>
+          <topic label="MXC_F_RTC_OSCCTRL_HYST_EN" href="group___r_t_c___o_s_c_c_t_r_l.html#ga098602778a702042e0382fbc12ad2169"/>
+          <topic label="MXC_F_RTC_OSCCTRL_HYST_EN_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#ga6f28dc9b67831f9d5be92f82ca92c549"/>
+          <topic label="MXC_F_RTC_OSCCTRL_IBIAS_EN" href="group___r_t_c___o_s_c_c_t_r_l.html#ga034a87a474d3e22a607b143073f185a4"/>
+          <topic label="MXC_F_RTC_OSCCTRL_IBIAS_EN_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#gaa86c524cdfae970ac9e2ce2fb429a2bb"/>
+          <topic label="MXC_F_RTC_OSCCTRL_IBIAS_SEL" href="group___r_t_c___o_s_c_c_t_r_l.html#ga5b7170691c36aacabffc09095b6d4c71"/>
+          <topic label="MXC_F_RTC_OSCCTRL_IBIAS_SEL_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#ga897faa6d3748b63af85075bf9ce05fd7"/>
           <topic label="MXC_F_RTC_OSCCTRL_SQW_32K" href="group___r_t_c___o_s_c_c_t_r_l.html#ga6b18134e8971503c704430bcdef0ecb6"/>
           <topic label="MXC_F_RTC_OSCCTRL_SQW_32K_POS" href="group___r_t_c___o_s_c_c_t_r_l.html#ga05272271d1106a13996f8d516e0845c0"/>
         </topic>
@@ -5044,11 +5031,6 @@
         <topic label="key5" href="group__aeskeys__registers.html#a53d08d3b64295a0866a3d60ecedee5af"/>
         <topic label="key6" href="group__aeskeys__registers.html#a488415ca480e184122a8882f1dfb0cba"/>
         <topic label="key7" href="group__aeskeys__registers.html#a634594d584c655a62da4d1d6f3daf3f9"/>
-      </topic>
-      <topic label="mxc_crc_req_t" href="group__crc.html#structmxc__crc__req__t">
-        <topic label="dataBuffer" href="group__crc.html#a282286b72323deb59713927b3d08ce8e"/>
-        <topic label="dataLen" href="group__crc.html#ac67e8c57ed1a79895c9afd41a561ec73"/>
-        <topic label="resultCRC" href="group__crc.html#ac0d061d6e4e6c97098bfae8a29d934fd"/>
       </topic>
       <topic label="mxc_ctb_cipher_req_t" href="group__ctb.html#structmxc__ctb__cipher__req__t">
       </topic>

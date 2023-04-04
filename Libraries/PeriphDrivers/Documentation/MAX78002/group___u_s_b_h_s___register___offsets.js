@@ -4,7 +4,6 @@ var group___u_s_b_h_s___register___offsets =
     [ "MXC_R_USBHS_CSR0", "group___u_s_b_h_s___register___offsets.html#ga91b7fe78802f609e603c839458d75bf0", null ],
     [ "MXC_R_USBHS_CTHSRTN", "group___u_s_b_h_s___register___offsets.html#ga2cbb5aaf7932e5814c6fefe5eea26c8b", null ],
     [ "MXC_R_USBHS_CTUCH", "group___u_s_b_h_s___register___offsets.html#ga3df14e2991eb9049f0919b1d60c667cb", null ],
-    [ "MXC_R_USBHS_EARLYDMA", "group___u_s_b_h_s___register___offsets.html#gaebd144b354b5148a730bb0780e3558f5", null ],
     [ "MXC_R_USBHS_EPINFO", "group___u_s_b_h_s___register___offsets.html#ga75938cfc389b42e1d52d40211a4c0a8b", null ],
     [ "MXC_R_USBHS_FADDR", "group___u_s_b_h_s___register___offsets.html#gafc9b7f4e8e20c8d6bf40862bab2cb8e4", null ],
     [ "MXC_R_USBHS_FIFO0", "group___u_s_b_h_s___register___offsets.html#ga316e18dcf6378f01e03d5df9df083c00", null ],

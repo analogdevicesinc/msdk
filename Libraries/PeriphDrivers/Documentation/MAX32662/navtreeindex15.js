@@ -1,5 +1,13 @@
 var NAVTREEINDEX15 =
 {
+"group__gpio.html#gga20f1f6c8da57f1612d4b5d9ce65dc92da535231117d3ec7e60b9c7e36200ee7bd":[1,6,6,4],
+"group__gpio.html#gga20f1f6c8da57f1612d4b5d9ce65dc92da88b490b37cb88c6978edccab6145366d":[1,6,6,2],
+"group__gpio.html#gga20f1f6c8da57f1612d4b5d9ce65dc92da8b83f7ea8bc0e51e4c9717c36cd907df":[1,6,6,3],
+"group__gpio.html#gga20f1f6c8da57f1612d4b5d9ce65dc92dab05cddabc3f612dd5027fe971475ca05":[1,6,6,1],
+"group__gpio.html#gga20f1f6c8da57f1612d4b5d9ce65dc92dad01b2bd876349d4585ae4896022a0a1a":[1,6,6,0],
+"group__gpio.html#gga230f0630427af37d07ebacf3a1340120a4cac88e396fc06845689f0825f80a757":[1,6,5,0],
+"group__gpio.html#gga230f0630427af37d07ebacf3a1340120ab0ef434ad01b1ca06073e222aee08cfd":[1,6,5,1],
+"group__gpio.html#gga61baee17171940ad183cabe62297e891a0d567af6f0aafeeed9adbd1d634170f1":[1,6,4,4],
 "group__gpio.html#gga61baee17171940ad183cabe62297e891a84a4fa624bcb7ac3b50e437cedcb6d57":[1,6,4,1],
 "group__gpio.html#gga61baee17171940ad183cabe62297e891a88c5fd58868c4882fb3b6effccf63cf5":[1,6,4,5],
 "group__gpio.html#gga61baee17171940ad183cabe62297e891a9b264aa824b91b5513eb7b6f99c3ef6d":[1,6,4,6],
@@ -241,13 +249,5 @@ var NAVTREEINDEX15 =
 "group__icc__registers.html#a4d6b29337a6769bf23915e8600d5adb8":[1,9,0,5,1],
 "group__icc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3":[1,9,0,5,0],
 "group__icc__registers.html#af614ad0651176983fbfa1a1b34a74932":[1,9,0,5,2],
-"group__icc__registers.html#structmxc__icc__regs__t":[1,9,0,5],
-"group__mcr__registers.html":[1,26],
-"group__mcr__registers.html#a1f1a1a126050db081f95eaa80bd041a9":[1,26,10,4],
-"group__mcr__registers.html#a25fa75aaffd19fd9aa944167c10f7f75":[1,26,10,7],
-"group__mcr__registers.html#a3535ad6c82cd66c50cc9fb859292ba7f":[1,26,10,6],
-"group__mcr__registers.html#a4181d1fea674eddcc34acfe81a79e5e4":[1,26,10,0],
-"group__mcr__registers.html#a5614e3d3d61a7b8e1e1c753d4442f209":[1,26,10,5],
-"group__mcr__registers.html#a6b354f86847ea7baeb4e7b6b35070422":[1,26,10,8],
-"group__mcr__registers.html#a6c425a9dbc533b7972a2d992f63f73cb":[1,26,10,3]
+"group__icc__registers.html#structmxc__icc__regs__t":[1,9,0,5]
 };

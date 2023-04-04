@@ -54,8 +54,8 @@ var searchData=
   ['slave_5fmulti_51',['slave_multi',['../group__i2c__registers.html#a8a4098941bae29da63294b592836de7a',1,'mxc_i2c_regs_t']]],
   ['snapshot_52',['snapshot',['../group__wut__registers.html#ae991811ce95dc2ea8be1f59848562bcd',1,'mxc_wut_regs_t']]],
   ['source_53',['source',['../group__dma.html#a9c4d24b378766662986e428f67363a9a',1,'mxc_dma_srcdst_t']]],
-  ['spi_54',['spi',['../group__spi.html#a43bd328124d967686e9583453c3ac8e9',1,'_mxc_spi_req_t']]],
-  ['spi_55',['SPI',['../group__spi.html',1,'']]],
+  ['spi_54',['SPI',['../group__spi.html',1,'']]],
+  ['spi_55',['spi',['../group__spi.html#a43bd328124d967686e9583453c3ac8e9',1,'_mxc_spi_req_t']]],
   ['spi_5fclkctrl_56',['SPI_CLKCTRL',['../group___s_p_i___c_l_k_c_t_r_l.html',1,'']]],
   ['spi_5fcomplete_5fcb_5ft_57',['spi_complete_cb_t',['../group__spi.html#gaf0559c6b177fe18d021f00ceca2b0f5b',1,'spi.h']]],
   ['spi_5fctrl0_58',['SPI_CTRL0',['../group___s_p_i___c_t_r_l0.html',1,'']]],
@@ -95,8 +95,10 @@ var searchData=
   ['sstime_92',['sstime',['../group__spi__registers.html#a53352010f5744128e401d3c2581745a0',1,'mxc_spi_regs_t']]],
   ['stat_93',['stat',['../group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7',1,'mxc_spi_regs_t::stat()'],['../group__dvs__registers.html#aa0708e7b79dc84bf8216aacafae5155e',1,'mxc_dvs_regs_t::stat()']]],
   ['status_94',['status',['../group__uart__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9',1,'mxc_uart_regs_t::status()'],['../group__adc__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_adc_regs_t::status()'],['../group__aes__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_aes_regs_t::status()'],['../group__dma__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_dma_ch_regs_t::status()'],['../group__i2c__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_i2c_regs_t::status()'],['../group__sema__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_sema_regs_t::status()'],['../group__trng__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_trng_regs_t::status()']]],
-  ['sysctrl_95',['sysctrl',['../group__gcr__registers.html#a407cda1ef910d9af256661910946b14e',1,'mxc_gcr_regs_t']]],
-  ['sysie_96',['sysie',['../group__gcr__registers.html#a8f7a0b2eff9f55ace2c79ddea2e4a8f2',1,'mxc_gcr_regs_t']]],
-  ['sysst_97',['sysst',['../group__gcr__registers.html#a6e139ffb1b218877f74b83aaddd17439',1,'mxc_gcr_regs_t']]],
-  ['sz_98',['sz',['../group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902',1,'mxc_icc_regs_t']]]
+  ['stop_5finten_95',['stop_inten',['../group__ptg__registers.html#add3dc7d9ea1760c9bb1dc29b94a49021',1,'mxc_ptg_regs_t']]],
+  ['stop_5fintfl_96',['stop_intfl',['../group__ptg__registers.html#aca888f81d0fa4736c92004fa8d0c06b8',1,'mxc_ptg_regs_t']]],
+  ['sysctrl_97',['sysctrl',['../group__gcr__registers.html#a407cda1ef910d9af256661910946b14e',1,'mxc_gcr_regs_t']]],
+  ['sysie_98',['sysie',['../group__gcr__registers.html#a8f7a0b2eff9f55ace2c79ddea2e4a8f2',1,'mxc_gcr_regs_t']]],
+  ['sysst_99',['sysst',['../group__gcr__registers.html#a6e139ffb1b218877f74b83aaddd17439',1,'mxc_gcr_regs_t']]],
+  ['sz_100',['sz',['../group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902',1,'mxc_icc_regs_t']]]
 ];

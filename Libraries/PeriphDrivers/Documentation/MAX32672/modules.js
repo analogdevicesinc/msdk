@@ -2,7 +2,6 @@ var modules =
 [
     [ "ADC", "group__adc.html", "group__adc" ],
     [ "AES", "group__aes.html", "group__aes" ],
-    [ "CRC", "group__crc.html", "group__crc" ],
     [ "CTB", "group__ctb.html", "group__ctb" ],
     [ "Direct Memory Access (DMA)", "group__dma.html", "group__dma" ],
     [ "Flash Controller  (FLC)", "group__flc.html", "group__flc" ],

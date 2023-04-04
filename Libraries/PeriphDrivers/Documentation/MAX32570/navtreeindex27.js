@@ -1,5 +1,6 @@
 var NAVTREEINDEX27 =
 {
+"group__pt.html#gafd2dda25e9e81748bf0eb1dca4db287d":[0,17,17],
 "group__pt.html#structmxc__pt__cfg__t":[0,17,1],
 "group__pt__registers.html":[0,17,0],
 "group__pt__registers.html#a2949fe4a3abbab17d8f16ea7449c81cd":[0,17,0,4,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX27 =
 "group__sdhc__registers.html#ad7e2c6f4cd6e6f4990c6f87ef0407109":[0,20,0,43,27],
 "group__sdhc__registers.html#adaa495f4291b6e08227224caa83130f1":[0,20,0,43,26],
 "group__sdhc__registers.html#ae03346a400cd6e537100fc8f024fda83":[0,20,0,43,28],
-"group__sdhc__registers.html#ae0f2be736e906c905e819487bc5f3255":[0,20,0,43,35],
-"group__sdhc__registers.html#ae1d4c530533ef90bb860985c90915050":[0,20,0,43,39]
+"group__sdhc__registers.html#ae0f2be736e906c905e819487bc5f3255":[0,20,0,43,35]
 };

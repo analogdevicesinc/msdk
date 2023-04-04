@@ -294,6 +294,8 @@
       </topic>
       <topic label="mxc_pcif_datawidth_t" href="group__cameraif.html#gaf455adaa073ecce715c37e1a625b8635">
       </topic>
+      <topic label="mxc_pcif_gpio_datawidth_t" href="group__cameraif.html#ga9e24c9060b94fa32e0d0177b47e91cfe">
+      </topic>
       <topic label="mxc_pcif_readmode_t" href="group__cameraif.html#ga1d958043d91b2355bbd222013629d4fc">
       </topic>
       <topic label="mxc_pcif_timingsel_t" href="group__cameraif.html#ga5f7a09a4eba8771337846303d517ccc7">
@@ -301,7 +303,7 @@
       <topic label="MXC_PCIF_DisableInt" href="group__cameraif.html#gaa84adffe1c18046ac0872fc1dba54b0e"/>
       <topic label="MXC_PCIF_EnableInt" href="group__cameraif.html#gadc5485862ee4ebb2aacd1ae296a2303e"/>
       <topic label="MXC_PCIF_GetData" href="group__cameraif.html#ga2f1660afd57ae940d92abe5b348cf95c"/>
-      <topic label="MXC_PCIF_Init" href="group__cameraif.html#ga5565be43c565f825a9a542b8e703f8e1"/>
+      <topic label="MXC_PCIF_Init" href="group__cameraif.html#ga7dfa061fcfa72ca56eaf8b0cc7069fcf"/>
       <topic label="MXC_PCIF_SetDatawidth" href="group__cameraif.html#gae5c336c209dff5ebdbbf0be78be702a1"/>
       <topic label="MXC_PCIF_SetThreshold" href="group__cameraif.html#ga170228900bcb40fbac26464545a98f80"/>
       <topic label="MXC_PCIF_SetTimingSel" href="group__cameraif.html#gaeffa5ab3cbeeaed2fc978c3846abb7ea"/>
