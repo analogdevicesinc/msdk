@@ -1230,7 +1230,7 @@
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <fieldBBiption>
+          <field>
             <bitOffset>2</bitOffset>
             <bitWidth>2</bitWidth>
             <enumeratedValues>
