@@ -1231,6 +1231,8 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>LDOBBVSEL</name>
+            <description>LDOBB Voltage Setting.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>2</bitWidth>
             <enumeratedValues>
