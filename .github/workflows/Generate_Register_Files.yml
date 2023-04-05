@@ -66,7 +66,19 @@ jobs:
           fetch-depth: 0
           path: ${{ env.MSDK_DIR }}
 
-      - name: Checkout msdk internal repository
+      - name: Pull latest msdk changes if checkout action missed it.
+        run: |
+          pwd
+          ls
+
+          # GitHub's checkout action doesn't always pull the latest changes.
+          if [[ -d ${{ env.MSDK_DIR }} ]]; then
+            cd ${{ env.MSDK_DIR }}
+            git pull origin HEAD
+            cd ..
+          fi
+
+      - name: Checkout msdk internal repository.
         run: |
           pwd
           ls
