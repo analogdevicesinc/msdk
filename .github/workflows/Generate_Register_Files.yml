@@ -74,7 +74,7 @@ jobs:
           # GitHub's checkout action doesn't always pull the latest changes.
           if [[ -d ${{ env.MSDK_DIR }} ]]; then
             cd ${{ env.MSDK_DIR }}
-            git pull origin HEAD
+            git pull
             cd ..
           fi
 
@@ -86,7 +86,7 @@ jobs:
           # BTM-CI might already have the msdk-internal repo cloned.
           if [[ -d ${{ env.MSDK-INTERNAL_DIR }} ]]; then
             cd ${{ env.MSDK-INTERNAL_DIR }}
-            git pull origin HEAD
+            git pull
             cd ..
           else
             git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
