@@ -66,6 +66,16 @@ jobs:
           submodules: false
           fetch-depth: 0
           path: ${{ env.MSDK_DIR }}
+
+      - name: Checkout msdk repository
+        uses: actions/checkout@v3
+        with:
+          # Update the submodules below, doing so here will convert ssh to https
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          submodules: false
+          fetch-depth: 0
+          path: ${{ env.MSDK_DIR }}
       
       - name: Checkout msdk internal repository
         run: |
@@ -83,6 +93,18 @@ jobs:
             pwd
             git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
             ls
+          fi
+
+      - name: Pull latest msdk changes if checkout action missed it.
+        run: |
+          pwd
+          ls
+
+          # GitHub's checkout action doesn't always pull the latest changes.
+          if [[ -d ${{ env.MSDK_DIR }} ]]; then
+            cd ${{ env.MSDK_DIR }}
+            git pull
+            cd ..
           fi
           
       # Use these next steps to verify if register files were updated.
