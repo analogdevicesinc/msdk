@@ -74,7 +74,7 @@ jobs:
           # BTM-CI might already have the msdk-internal repo cloned.
           if [[ -d ${{ env.MSDK-INTERNAL_DIR }} ]]; then
             cd ${{ env.MSDK-INTERNAL_DIR }}
-            git pull
+            git pull origin HEAD
             cd ..
           else
             git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
@@ -144,6 +144,12 @@ jobs:
             if [[ ! (-d ./chip_test) ]]; then
               chmod u+x makeRegs.sh
               makeregs_log=$(./makeRegs.sh ubuntu)
+              if [[ "$?" -ne 0 ]]; then
+                echo -e "\n\n\n[\e[0;31mERROR\e[0m] Issue generating register files. Find the culprit.\n"
+                echo "$makeregs_log"
+                echo -e "\n\n"
+                exit 1
+              fi
             fi
 
             echo "Copying generated files to msdk/Libraries/CMSIS/Device/Maxim/${part_chip_name}/Include/"
