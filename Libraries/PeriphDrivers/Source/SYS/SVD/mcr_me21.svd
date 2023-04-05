@@ -48,6 +48,12 @@
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
+          <field derivedFrom="LPTMR0">
+            <name>RTC</name>
+            <description>RTC Reset.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>

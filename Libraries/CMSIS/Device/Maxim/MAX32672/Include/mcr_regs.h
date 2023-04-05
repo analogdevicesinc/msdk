@@ -135,6 +135,9 @@ typedef struct {
 #define MXC_F_MCR_RST_LPUART0_POS                      2 /**< RST_LPUART0 Position */
 #define MXC_F_MCR_RST_LPUART0                          ((uint32_t)(0x1UL << MXC_F_MCR_RST_LPUART0_POS)) /**< RST_LPUART0 Mask */
 
+#define MXC_F_MCR_RST_RTC_POS                          3 /**< RST_RTC Position */
+#define MXC_F_MCR_RST_RTC                              ((uint32_t)(0x1UL << MXC_F_MCR_RST_RTC_POS)) /**< RST_RTC Mask */
+
 /**@} end of group MCR_RST_Register */
 
 /**

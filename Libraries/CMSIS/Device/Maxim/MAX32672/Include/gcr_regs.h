@@ -218,9 +218,6 @@ typedef struct {
 #define MXC_F_GCR_RST0_I2C0_POS                        16 /**< RST0_I2C0 Position */
 #define MXC_F_GCR_RST0_I2C0                            ((uint32_t)(0x1UL << MXC_F_GCR_RST0_I2C0_POS)) /**< RST0_I2C0 Mask */
 
-#define MXC_F_GCR_RST0_RTC_POS                         17 /**< RST0_RTC Position */
-#define MXC_F_GCR_RST0_RTC                             ((uint32_t)(0x1UL << MXC_F_GCR_RST0_RTC_POS)) /**< RST0_RTC Mask */
-
 #define MXC_F_GCR_RST0_CTB_POS                         18 /**< RST0_CTB Position */
 #define MXC_F_GCR_RST0_CTB                             ((uint32_t)(0x1UL << MXC_F_GCR_RST0_CTB_POS)) /**< RST0_CTB Mask */
 
