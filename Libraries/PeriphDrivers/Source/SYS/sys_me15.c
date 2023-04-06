@@ -238,7 +238,13 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // TODO:  Re-initialize GPIO?
+        /*
+        There's not a great way to disable the external clock.
+        Deinitializing the GPIO here may have unintended consequences
+        for application code.
+        Selecting a different system clock source is sufficient
+        to "disable" the EXT_CLK source.
+        */
         break;
 
     case MXC_SYS_CLOCK_INRO:
