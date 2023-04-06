@@ -21,7 +21,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED2 EN).
--   Provide an external clock signal (square wave 50% duty cycle) on P0.12 with the frequency defined by `EXTCLK_FREQ` in [project.mk](project.mk).  At higher clock frequencies be careful to preserve the signal integrity when routing the signal to P0.12.  Otherwise, operation be unreliable if the EXT_CLK signal is degraded.
+-   Provide an external clock signal (square wave 50% duty cycle) on P0.12 with the frequency defined by `EXTCLK_FREQ` in [project.mk](project.mk).  At higher clock frequencies be careful to preserve the signal integrity when routing the signal to P0.12.  Otherwise, operation could become unreliable.
 
 ## Expected Output
 
