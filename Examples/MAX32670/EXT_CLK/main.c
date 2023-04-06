@@ -61,7 +61,7 @@ int main(void)
 
     MXC_Delay(MXC_DELAY_SEC(2)); // Provide a window for the debugger to connect
 
-    // Print a 3,2,1... countdown before switching.  This validates that 
+    // Print a 3,2,1... countdown before switching.  This validates that
     // the system is working normally off of the default system clock.
     printf("External Clock (EXT_CLK) example\n");
     printf("Switching to %i Hz external clock input in...\n", EXTCLK_FREQ);
