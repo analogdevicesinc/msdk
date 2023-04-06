@@ -33,8 +33,9 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   External Clock 
+ * @details This example demonstrates how to switch the system clock to the external
+ *          clock input using the @ref mxc_sys drivers.
  */
 
 /***** Includes *****/
@@ -60,6 +61,8 @@ int main(void)
 
     MXC_Delay(MXC_DELAY_SEC(2)); // Provide a window for the debugger to connect
 
+    // Print a 3,2,1... countdown before switching.  This validates that 
+    // the system is working normally off of the default system clock.
     printf("External Clock (EXT_CLK) example\n");
     printf("Switching to %i Hz external clock input in...\n", EXTCLK_FREQ);
     for (int i = 3; i > 0; i--) {
@@ -67,7 +70,6 @@ int main(void)
         MXC_Delay(MXC_DELAY_SEC(1));
     }
 
-    // Switch to the EXT_CLK
     err = MXC_SYS_Clock_Select(MXC_SYS_CLOCK_EXTCLK);
     if (err) {
         printf("Failed to switch to external clock with error %i\n", err);
@@ -76,7 +78,7 @@ int main(void)
     }
 
     // Reinitialize the BSP.  This is necessary to recalculate clock divisors for
-    // UART, etc.
+    // UART, etc. after switching to the external clock source.
     Board_Init();
 
     printf("Successfully switched to external clock (%i Hz)\n", EXTCLK_FREQ);

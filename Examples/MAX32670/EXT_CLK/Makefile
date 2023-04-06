@@ -337,10 +337,6 @@ ifneq ($(MAKE_TERMOUT),)
 PROJ_CFLAGS += -fdiagnostics-color=always
 endif
 
-ifneq ($(FORCE_COLOR),)
-PROJ_CFLAGS += -fdiagnostics-color=always
-endif
-
 # *******************************************************************************
 # Include SBT config.  We need to do this here because it needs to know
 # the current MAKECMDGOAL.
