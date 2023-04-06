@@ -80,8 +80,8 @@ void button_handler()
 //******************************************************************************
 void sfe_init(void)
 {
-	MXC_SFE_Init();
-	MXC_SFE_SetFlashAddress(TEST_ADDRESS, TEST_ADDRESS + MXC_FLASH_PAGE_SIZE);
+    MXC_SFE_Init();
+    MXC_SFE_SetFlashAddress(TEST_ADDRESS, TEST_ADDRESS + MXC_FLASH_PAGE_SIZE);
 }
 
 //******************************************************************************
