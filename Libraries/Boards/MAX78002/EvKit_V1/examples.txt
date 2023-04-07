@@ -47,6 +47,8 @@ I2S
 I2S_DMA
 ICC
 ImgCapture
+Library_Generate
+Library_Use
 LP
 LPCMP
 Pulse_Train
