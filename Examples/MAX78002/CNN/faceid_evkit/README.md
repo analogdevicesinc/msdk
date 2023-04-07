@@ -1,7 +1,5 @@
 # MAX78002 FaceID Demo
 
-
-
 ## Overview
 The FaceID Demo software demonstrates the identification of a number of persons from their facial images using MAX78002 EVKIT.
 
@@ -11,7 +9,11 @@ The CNN model is trained with the VGGFace-2 dataset using MTCNN and FaceNet mode
 
 ## FaceID Demo Software
 
-### Build Notes
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
 
 See ["Build System"](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system) in the MSDK User Guide for detailed documentation.  The section below contains additional notes on options that are specific to this project.
 
@@ -23,23 +25,9 @@ Additionally, this project also offers the option to switch the display drivers 
 
 * Uncomment `TFT = ADAFRUIT` in [project.mk](project.mk) to use drivers for the legacy [Adafruit 3315](https://www.adafruit.com/product/3315).  Otherwise, the default drivers for the [NewHaven NHD-2.4-240320CF](https://newhavendisplay.com/2-4-inch-premium-spi-resistive-tft-display/) will be used.
 
-### Load firmware image to MAX78002 EVKIT
+### MAX78002 EVKIT operations
 
-Connect the USB cable to CN1 (USB/PWR) and turn ON the power switch (SW1). 
-
-Connect the PICO adapter to the JH5 SWD header.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/MAX78002.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78002.cfg -c "program build/MAX78002.elf verify reset exit"
-```
+After loading FaceID firmware demo starts. Make sure that captured face images are inside the blue rectangle.
 
 ### Using Debug Terminal
 
