@@ -42,7 +42,8 @@
 
 /***** Includes *****/
 #include "aes_regs.h"
-#include "aeskeys_regs.h"
+#include "sys_aeskeys_regs.h"
+#include "usr_aeskeys_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
