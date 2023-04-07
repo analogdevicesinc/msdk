@@ -1,6 +1,7 @@
 /**
  * @file    aes.h
  * @brief   Advanced Encryption Standard driver.
+ * @ingroup aes
  */
 
 /******************************************************************************

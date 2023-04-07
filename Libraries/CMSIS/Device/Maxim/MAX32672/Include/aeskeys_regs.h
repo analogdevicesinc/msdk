@@ -1,7 +1,7 @@
 /**
  * @file    aeskeys_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AESKEYS Peripheral Module.
- * @note    This file is @deprecated.
+ * @deprecated aeskeys_regs has been deprecated in favor of @ref sys_aeskeys_registers and @ref usr_aeskeys_registers
  */
 
 /******************************************************************************
