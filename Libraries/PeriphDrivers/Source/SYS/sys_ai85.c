@@ -385,8 +385,9 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
     case MXC_SYS_CLOCK_EXTCLK:
         // No EXT_CLK "RDY" bit for AI85 so we enable every time
         err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
-        if (err)
+        if (err) {
             return err;
+        }
 
         MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
                      MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
