@@ -32,16 +32,19 @@
  ******************************************************************************/
 
 #include <stdio.h>
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "mxc_sys.h"
 #include "mxc_errors.h"
 #include "mxc_assert.h"
+#include "mxc_pins.h"
 #include "board.h"
 #include "uart.h"
 #include "gpio.h"
-#include "mxc_pins.h"
+#include "spi.h"
 #include "led.h"
 #include "pb.h"
+#include "tft_st7735s.h"
 
 /***** Global Variables *****/
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
@@ -108,6 +111,70 @@ int Console_Shutdown(void)
 
     return E_NO_ERROR;
 }
+
+/******************************************************************************/
+void TFT_SPI_Init(void)
+{
+    int spi_speed = 4 * 1000 * 1000; // x*MHz
+    int error;
+    mxc_spi_pins_t tft_pins;
+
+    tft_pins.clock = true;
+    tft_pins.ss0 = true;
+    tft_pins.miso = true;
+    tft_pins.mosi = true;
+    tft_pins.vssel = true;
+    tft_pins.map_a = true;
+
+    error = MXC_SPI_Init(MXC_SPI1, 1, 0, 1, 0, spi_speed, tft_pins);
+    MXC_ASSERT(error == E_NO_ERROR);
+
+    error = MXC_SPI_SetDataSize(MXC_SPI1, 9);
+    MXC_ASSERT(error == E_NO_ERROR);
+
+    error = MXC_SPI_SetWidth(MXC_SPI1, SPI_WIDTH_STANDARD);
+    MXC_ASSERT(error == E_NO_ERROR);
+}
+
+/******************************************************************************/
+void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data)
+{
+    mxc_spi_req_t req;
+    uint8_t spibuf[(1 + LINEBUF_SIZE) * 2], *bptr;
+    unsigned int txlen;
+    int error;
+
+    MXC_ASSERT(!((count > 0) && (datain == NULL)) || (count > (1 + LINEBUF_SIZE)));
+
+    bptr = spibuf;
+    txlen = 0;
+
+    /* The txlen++ is _not_ an error. Since the data is 9 bits, it is held in two bytes */
+    while (count--) {
+        *bptr++ = *datain++;
+        if (data) {
+            *bptr++ = 1; /* DATA */
+        } else {
+            *bptr++ = 0; /* CMD */
+        }
+        txlen++;
+    }
+
+    req.spi = MXC_SPI1;
+    req.txData = (uint8_t *)spibuf;
+    req.rxData = NULL;
+    req.txLen = txlen;
+    req.rxLen = 0;
+    req.ssIdx = 0;
+    req.ssDeassert = 1;
+    req.txCnt = 0;
+    req.rxCnt = 0;
+    req.completeCB = NULL;
+
+    error = MXC_SPI_MasterTransaction(&req);
+    MXC_ASSERT(error == E_NO_ERROR);
+}
+
 /******************************************************************************/
 void NMI_Handler(void)
 {

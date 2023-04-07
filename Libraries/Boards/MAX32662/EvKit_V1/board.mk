@@ -41,12 +41,16 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
 SRCS += rom_stub.c
+SRCS += tft_st7735s.c
 
+MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
 VPATH += $(BOARD_DIR)/../Source
+VPATH += $(MISC_DRIVERS_DIR)/Display
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
 IPATH += $(BOARD_DIR)/../Include
+IPATH += $(MISC_DRIVERS_DIR)/Display
