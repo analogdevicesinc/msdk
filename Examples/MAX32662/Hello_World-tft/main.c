@@ -79,12 +79,12 @@ int main(void)
     MXC_TFT_ConfigPrintf(&printf_area);
 
     while (1) {
+        MXC_TFT_Printf("cnt: %d\n", count);
+        
         LED_On(0);
         MXC_Delay(500000);
         LED_Off(0);
         MXC_Delay(500000);
-
-        MXC_TFT_Printf("cnt: %d\n", count);
 
         printf("count = %d\n", count++);
     }

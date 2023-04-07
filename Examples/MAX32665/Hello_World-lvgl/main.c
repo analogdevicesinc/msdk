@@ -185,18 +185,19 @@ int main(void)
 
     // Print count
     label2 = lv_label_create(lv_scr_act());
+    lv_label_set_text(label2, "");
     lv_obj_set_style_text_align(label2, LV_TEXT_ALIGN_LEFT, 0);
     lv_obj_align(label2, LV_ALIGN_LEFT_MID, 0, -10);
 
     LV_Tick_Timer_Init();
 
     while (1) {
+        lv_label_set_text_fmt(label2, "count = %d\n", count);
+        
         LED_On(0);
         MXC_Delay(500000);
         LED_Off(0);
         MXC_Delay(500000);
-
-        lv_label_set_text_fmt(label2, "count = %d\n", count);
 
         printf("count = %d\n", count++);
     }
