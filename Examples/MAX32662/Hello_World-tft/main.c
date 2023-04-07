@@ -48,6 +48,10 @@
 #include "bitmap.h"
 #include "tft_st7735s.h"
 
+#ifdef BOARD_FTHR_REVA
+#warning "This example is not supported by the MAX32662 FTHR_RevA."
+#endif
+
 /***** Definitions *****/
 
 /***** Globals *****/

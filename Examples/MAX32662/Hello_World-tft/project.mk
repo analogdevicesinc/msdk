@@ -14,5 +14,8 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
+override BOARD=EvKit_V1
+$(warning Warning: This project is forced to compile for the EvKit_V1 board only!)
+
 IPATH += resources
 VPATH += resources/tft_demo
