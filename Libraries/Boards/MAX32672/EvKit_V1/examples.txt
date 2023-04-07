@@ -25,6 +25,7 @@ Flash_CLI
 FreeRTOSDemo
 GPIO
 Hello_World
+Hello_World-tft
 I2C
 I2C_MNGR
 I2C_SCAN

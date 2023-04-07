@@ -39,6 +39,7 @@ FreeRTOSDemo
 GPIO
 Hash
 Hello_World
+Hello_World-lvgl
 HTMR
 I2C
 I2C_MNGR
