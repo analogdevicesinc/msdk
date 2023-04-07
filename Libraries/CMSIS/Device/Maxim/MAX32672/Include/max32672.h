@@ -285,10 +285,24 @@ typedef enum {
 #define MXC_BASE_USR_AESKEYS ((uint32_t)0x40005000UL)
 #define MXC_USR_AESKEYS ((mxc_usr_aeskeys_regs_t *)MXC_BASE_USR_AESKEYS)
 
-// DEPRECATED(1-10-2023): Scheduled for removal.
-#define MXC_BASE_AESKEY MXC_BASE_AESKEYS
-#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
+/*
+ * @deprecated (1-10-2023): Scheduled for removal. Use MXC_BASE_SYS_AESKEYS instead.
+ */
+#define MXC_BASE_AESKEY MXC_BASE_SYS_AESKEYS
+
+/*
+ * @deprecated (1-10-2023): Scheduled for removal. Use MXC_SYS_AESKEYS instead.
+ */
+#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_SYS_AESKEY)
+
+/*
+ * @deprecated (4-7-2023): Scheduled for removal. Use MXC_BASE_SYS_AESKEYS instead.
+ */
 #define MXC_BASE_AESKEYS MXC_BASE_SYS_AESKEYS
+
+/*
+ * @deprecated (4-7-2023): Scheduled for removal. Use MXC_SYS_AESKEYS instead.
+ */
 #define MXC_AESKEYS MXC_SYS_AESKEYS
 
 /******************************************************************************/
