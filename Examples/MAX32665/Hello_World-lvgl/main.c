@@ -193,7 +193,7 @@ int main(void)
 
     while (1) {
         lv_label_set_text_fmt(label2, "count = %d\n", count);
-        
+
         LED_On(0);
         MXC_Delay(500000);
         LED_Off(0);

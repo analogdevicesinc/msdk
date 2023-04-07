@@ -80,7 +80,7 @@ int main(void)
 
     while (1) {
         MXC_TFT_Printf("cnt: %d\n", count);
-        
+
         LED_On(0);
         MXC_Delay(500000);
         LED_Off(0);

@@ -18,18 +18,16 @@
 #ifndef _LOCALCHARSET_H
 #define _LOCALCHARSET_H
 
-
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 
 /* Determine the current locale's character encoding, and canonicalize it
    into one of the canonical names listed below.
    The result must not be freed; it is statically allocated.
    If the canonical name cannot be determined, the result is a non-canonical
    name.  */
-extern const char * locale_charset (void);
+extern const char *locale_charset(void);
 
 /* About GNU canonical names for character encodings:
 
@@ -125,10 +123,8 @@ extern const char * locale_charset (void);
    must understand both names and treat them as equivalent.
  */
 
-
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif /* _LOCALCHARSET_H */

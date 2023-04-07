@@ -85,9 +85,11 @@ static tft_cmd_seq_t cfaf128128b1_init[] = {
     /* VCOM Control 1; VCOMH = +4.525V, VCOML = -0.575V */
     { ST7735S_VMCTR1, 0, 2, (uint8_t *)"\x51\x4d" },
     /* Gamma correction (negative) */
-    { ST7735S_GAMCTRP1, 0, 16, (uint8_t *)"\x0a\x1c\x0c\x14\x33\x2b\x24\x28\x27\x25\x2c\x39\x00\x05\x03\x0d" },
+    { ST7735S_GAMCTRP1, 0, 16,
+      (uint8_t *)"\x0a\x1c\x0c\x14\x33\x2b\x24\x28\x27\x25\x2c\x39\x00\x05\x03\x0d" },
     /* Gamma correction (positive) */
-    { ST7735S_GAMCTRN1, 0, 16, (uint8_t *)"\x0a\x1c\x0c\x14\x33\x2b\x24\x28\x27\x25\x2d\x3a\x00\x05\x03\x0d" },
+    { ST7735S_GAMCTRN1, 0, 16,
+      (uint8_t *)"\x0a\x1c\x0c\x14\x33\x2b\x24\x28\x27\x25\x2d\x3a\x00\x05\x03\x0d" },
     /* Color format; 18-bit/pixel */
     { ST7735S_COLMOD, 0, 1, (uint8_t *)"\x05" },
     /* Display ON */
@@ -742,7 +744,7 @@ void MXC_TFT_Printf(const char *format, ...)
             if (char_y >= pf_area.h - g_font[2]) {
                 char_y = pf_area.y;
             }
-            
+
         } else {
             tft_printf_character(char_x, char_y, value);
         }
