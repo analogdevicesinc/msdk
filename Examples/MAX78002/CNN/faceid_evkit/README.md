@@ -53,6 +53,12 @@ This section describes how to add new pictures to the database.
 
 #### Prerequisites:
 
+The following pre-requisites are required to generate new FaceID embeddings.  These can be installed with the provided [db_gen/requirements.txt](db_gen/requirements.txt) file.
+
+```bash
+pip install -r db_gen/requirements.txt
+```
+
 - Python 3.6.9 or higher (tested for 3.7.7 and 3.8.1)
 - numpy (>=1.19)
 - scipy (>=1.4)
