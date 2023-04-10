@@ -41,6 +41,7 @@
 #define LIBRARIES_MISCDRIVERS_DISPLAY_TFT_ST7735S_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "st7735s.h"
 
 /************************************ DEFINES *********************************/
