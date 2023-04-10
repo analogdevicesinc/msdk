@@ -30,7 +30,9 @@ jobs:
           # Update the submodules below, doing so here will convert ssh to https
           submodules: false
           fetch-depth: 0
-          
+          ref: '${{ github.event.pull_request.head.ref }}'
+          repository: '${{ github.event.pull_request.head.repo.full_name }}'
+
       - name: Check watch files
         id: check_watch 
         run: |
