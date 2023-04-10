@@ -292,7 +292,7 @@ def generate_image(img, box, count):
             width = new_img.shape[1]
         else:
             break
-    new_box = np.round(new_box).astype(np.int)
+    new_box = np.round(new_box).astype(int)
     new_box_height = new_box[3] - new_box[1]
     new_box_width = new_box[2] - new_box[0]
 
@@ -302,7 +302,7 @@ def generate_image(img, box, count):
         if ind < scale_list.size:
             new_img = scipy.ndimage.zoom(img, [scale_list[ind], scale_list[ind], 1], order=1)
             new_box = box * scale_list[ind]
-            new_box = np.round(new_box).astype(np.int)
+            new_box = np.round(new_box).astype(int)
             new_box_height = new_box[3] - new_box[1]
             new_box_width = new_box[2] - new_box[0]
             ind += 1
