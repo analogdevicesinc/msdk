@@ -102,10 +102,14 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                 project_name = project.name
 
                 for board in boards:
-                    res = run("make clean", cwd=project, shell=True, capture_output=True, encoding="utf-8")
+                    if project_name == "Hello_World":
+                        # Perform a full library rebuild for Hello_World only to save build time.
+                        res = run("make distclean", cwd=project, shell=True, capture_output=True, encoding="utf-8")
+                    else:
+                        res = run("make clean", cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
-                    # Test build (make all)
-                    build_cmd = f"make -r -j 8 --output-sync=target --no-print-directory TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board}"
+                    # Test build
+                    build_cmd = f"make -r -j 8 --output-sync=target --no-print-directory TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} FORCE_COLOR=1"
                     res = run(build_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
                     # Error check build command
@@ -114,11 +118,9 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                         for err in known_errors:
                             if err in res.stderr:
                                 fail = False
-                                console.print(f"[yellow]{target} {project_name}: Known error for {board}[/yellow]")
-                                console.print(res.stderr, markup=False)
-                                print("--------------------")
-                                break
+
                         if fail:
+                            console.print("[red]----------------------------------------[/red]")
                             console.print(f"[red]{target} {project_name}: Failed for {board}[/red]")
                             print(f"Build command: {build_cmd}")
                             print("Error:")
@@ -131,7 +133,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                                 "stdout":res.stdout,
                                 "stderr":res.stderr
                             }
-                            console.print("--------------------")
+                            console.print("[red]----------------------------------------[/red]")
                             if project_info not in failed:
                                 failed.append(project_info)
                                 target_fails += 1
