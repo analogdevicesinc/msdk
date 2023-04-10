@@ -28,6 +28,8 @@ HTMR
 I2C
 I2C_SCAN
 ICC
+Library_Generate
+Library_Use
 LP
 lwIP_Ping
 lwIP_TCP
