@@ -29,7 +29,7 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- ###############################################################################
+###############################################################################
 
 # ** Readme! **
 # Don't edit this file! This is the core Makefile for a MaximSDK 
@@ -37,7 +37,7 @@
 # in "project.mk", on the command-line, or with system environment 
 # variables.
 
-# See https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration 
+# See https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 # for more detailed instructions on how to use this system.
 
 # The detailed instructions mentioned above are easier to read than 
@@ -231,12 +231,10 @@ ifeq ($(DEBUG),1)
 # Optimizes for debugging as recommended
 # by GNU for code-edit-debug cycles
 # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
-
-# Default level if not building for release or explicitly for debug
 MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
-# Set default optimization level -O2 to maximize performance for CNN code
+# Default level if not building for release or explicitly for debug
 MXC_OPTIMIZE_CFLAGS ?= -O2
 
 # Set compiler flags
@@ -331,6 +329,16 @@ endif
 # It's also necessary to explicitly set MAKECMDGOALS...
 ifeq "$(MAKECMDGOALS)" ""
 MAKECMDGOALS:=$(.DEFAULT_GOAL)
+endif
+
+# Enable colors when --sync-output is used.
+# See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
+ifneq ($(MAKE_TERMOUT),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+ifneq ($(FORCE_COLOR),)
+PROJ_CFLAGS += -fdiagnostics-color=always
 endif
 
 # *******************************************************************************

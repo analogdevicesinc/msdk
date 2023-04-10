@@ -23,7 +23,7 @@
 <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.openocd.otherInitCommands" value=""/>
 <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.openocd.otherRunCommands" value=""/>
 <stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.openocd.secondResetType" value=""/>
-<stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.svdPath" value="${MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/MAX78000/Include/max78002.svd"/>
+<stringAttribute key="ilg.gnumcueclipse.debug.gdbjtag.svdPath" value="${MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/MAX78002/Include/max78002.svd"/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageFileName" value=""/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageOffset" value=""/>
 <stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.ipAddress" value="localhost"/>
