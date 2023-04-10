@@ -25,9 +25,20 @@ Additionally, this project also offers the option to switch the display drivers 
 
 * Uncomment `TFT = ADAFRUIT` in [project.mk](project.mk) to use drivers for the legacy [Adafruit 3315](https://www.adafruit.com/product/3315).  Otherwise, the default drivers for the [NewHaven NHD-2.4-240320CF](https://newhavendisplay.com/2-4-inch-premium-spi-resistive-tft-display/) will be used.
 
-### MAX78002 EVKIT operations
+## MAX78002 EVKIT operations
 
-After loading FaceID firmware demo starts. Make sure that captured face images are inside the blue rectangle.
+### Required Connections
+
+- Ensure the OV7692 camera module is installed into the DVP camera connector and adapter (JH7).
+- Connect JP38 (DVP CAM PWR) to the ON position.
+- Ensure the CSI2 camera is **not** installed.
+- Validate that the I2C bus is properly pulled up.  The DVP Camera adapter board has built-in pull-ups, so uninstall the EVKIT pull-up jumpers.
+    - Ensure JP41 (CSI2 CAM I2C EN) is **not** connected.
+    - Ensure JP16 (I2C1 SDA) and JP17 (I2C1 SCL) are **not** connected.
+
+### Operation
+
+After loading the FaceID firmware, the demo starts. With the TFT display enabled, a blue rectangle will be printed to the screen overlaid on the camera's viewport.  Point the camera module at a subject to detect faces, and ensure the subject is well lit and centered within the blue rectangle.
 
 ### Using Debug Terminal
 
