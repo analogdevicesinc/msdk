@@ -155,7 +155,7 @@ int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32
 {
     //This is required for new devices going forward.
     port->inen |= mask;
-    
+
     //Switch to I/O mode first
     port->en0_set = mask;
 
