@@ -121,6 +121,8 @@ static struct camera_reg default_regs[] = {
     {0x3820, 0x06},
     {0x3821, 0x00},
 
+    // Active pixel array is 2592x1944
+
     // TIMING HS, X_ADDR_ST, X address start [11:8]
     {0x3800, 0x01},
     // TIMING HS, X_ADDR_ST, X address start [7:0]
@@ -160,9 +162,9 @@ static struct camera_reg default_regs[] = {
     {0x380f, 0xd8},
 
     {0x3810, 0x00},
-    {0x3811, 0x00},
+    {0x3811, 0x04},
     {0x3812, 0x00},
-    {0x3813, 0x00},
+    {0x3813, 0x04},
 
     {0x3618, 0x00},
     {0x3612, 0x29},
