@@ -51,8 +51,8 @@ SRCS += led.c
 # SRCS += mx25.c
 SRCS += pb.c
 SRCS += rom_stub.c
-SRCS += touchscreen.c
-SRCS += tft.c
+# SRCS += touchscreen.c
+# SRCS += tft.c
 #SRCS += LPM012A260A.c
 #SRCS += mx25_stub.c
 
