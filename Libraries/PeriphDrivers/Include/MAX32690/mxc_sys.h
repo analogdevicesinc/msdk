@@ -376,8 +376,8 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 
 /**
  * @brief Select the system clock.
- * @param clock     Enumeration for desired clock.
- * @param tmr       Optional tmr pointer for timeout. NULL if undesired.
+ * @param clock     Enumeration for desired clock.  Note:  If using the external clock input be sure to define EXTCLK_FREQ correctly.
+ *                  The default EXTCLK_FREQ value is defined in the system_max78002.h file and can be overridden at compile time.
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);

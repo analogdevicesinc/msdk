@@ -33,6 +33,7 @@
 
 /**
  * @file    mxc_sys.h
+ * @ingroup mxc_sys
  * @brief   System level header file.
  */
 
@@ -196,7 +197,7 @@ typedef enum {
     MXC_SYS_CLOCK_ERTCO =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
     MXC_SYS_CLOCK_EXTCLK =
-        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input. */
 } mxc_sys_system_clock_t;
 
 #define MXC_SYS_USN_CHECKSUM_LEN 16
@@ -359,8 +360,8 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 
 /**
  * @brief Select the system clock.
- * @param clock     Enumeration for desired clock.
- * @param tmr       Optional tmr pointer for timeout. NULL if undesired.
+ * @param clock     Enumeration for desired clock.  Note:  If using the external clock input be sure to define EXTCLK_FREQ correctly.
+ *                  The default EXTCLK_FREQ value is defined in the system_max32690.h file and can be overridden at compile time.
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);

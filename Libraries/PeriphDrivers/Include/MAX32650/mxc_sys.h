@@ -396,7 +396,6 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 /**
  * @brief      Select the system clock.
  * @param      clock     Enumeration for desired clock.
- * @param      unused       NULL (deprecated parameter)
  * @returns    #E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
