@@ -134,7 +134,7 @@ void LV_Tick_Timer_Init()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
-    // 200Hz
+    // 200Hz (Can be between 1ms to 10ms)
     uint32_t periodTicks = PeripheralClock / 200;
 
     /*
@@ -190,11 +190,11 @@ int main(void)
     lv_obj_set_style_text_align(label2, LV_TEXT_ALIGN_LEFT, 0);
     lv_obj_align(label2, LV_ALIGN_LEFT_MID, 0, -10);
 
-    // lv_tick needed to refresh display
+    // lv_tick needed to refresh display at ~200Hz or ~5ms.
     LV_Tick_Timer_Init();
 
     while (1) {
-        lv_label_set_text_fmt(label2, "count = %d\n", count);
+        lv_label_set_text_fmt(label2, "count = %d", count);
 
         LED_On(0);
         MXC_Delay(500000);
