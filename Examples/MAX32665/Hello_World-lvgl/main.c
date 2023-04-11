@@ -134,10 +134,11 @@ void LV_Tick_Timer_Init()
 {
     // Declare variables
     mxc_tmr_cfg_t tmr;
+    // 200Hz
     uint32_t periodTicks = PeripheralClock / 200;
 
     /*
-    Steps for configuring a timer for PWM mode:
+    Steps for configuring a timer for Continuous mode:
     1. Disable the timer
     2. Set the prescale value
     3  Configure the timer for continuous mode
@@ -149,7 +150,7 @@ void LV_Tick_Timer_Init()
 
     tmr.pres = TMR_PRES_4;
     tmr.mode = TMR_MODE_CONTINUOUS;
-    tmr.cmp_cnt = periodTicks; //SystemCoreClock*(1/interval_time);
+    tmr.cmp_cnt = periodTicks;
     tmr.pol = 0;
 
     MXC_TMR_Init(TICK_TIMER, &tmr);
@@ -183,12 +184,13 @@ int main(void)
     lv_obj_set_style_text_align(label1, LV_TEXT_ALIGN_CENTER, 0);
     lv_obj_align(label1, LV_ALIGN_CENTER, 18, -45);
 
-    // Print count
+    // Set up label to print count
     label2 = lv_label_create(lv_scr_act());
     lv_label_set_text(label2, "");
     lv_obj_set_style_text_align(label2, LV_TEXT_ALIGN_LEFT, 0);
     lv_obj_align(label2, LV_ALIGN_LEFT_MID, 0, -10);
 
+    // lv_tick needed to refresh display
     LV_Tick_Timer_Init();
 
     while (1) {
