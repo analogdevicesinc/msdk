@@ -535,7 +535,7 @@
        <access>read-write</access>
       </field>
       <field>
-       <name>RX_DMA_EN</name>
+       <name>RX_DMA</name>
        <description>DMA Enable.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
@@ -589,7 +589,7 @@
      </fields>
     </register>
     <register>
-     <name>INTEN</name>
+     <name>INT_EN</name>
      <description>Interupt Enable Register.</description>
      <addressOffset>0x000C</addressOffset>
      <access>read-write</access>
@@ -625,7 +625,7 @@
      </fields>
     </register>
     <register>
-     <name>INTFL</name>
+     <name>INT_FL</name>
      <description>Interupt Flag Register.</description>
      <addressOffset>0x0010</addressOffset>
      <access>read-write</access>
@@ -5383,22 +5383,30 @@
      </fields>
     </register>
     <register>
-     <name>FCTRL4</name>
-     <description>Register 4.</description>
+     <name>URV0BOOTADDR</name>
+     <description>RISCV0 Bootup Address Register.</description>
      <addressOffset>0x10</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>TRIM_MSR_R1</name>
-       <description>Trim MSR R1.</description>
-       <bitOffset>16</bitOffset>
-       <bitWidth>2</bitWidth>
+       <name>BADDR</name>
+       <description>Bootup address for CPU1, RISCV0</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
       </field>
+     </fields>
+    </register>
+    <register>
+     <name>URV1BOOTADDR</name>
+     <description>RISCV1 Bootup Address Register.</description>
+     <addressOffset>0x14</addressOffset>
+     <access>read-write</access>
+     <fields>
       <field>
-       <name>TRIM_MSR_R2</name>
-       <description>Trim MSR R2.</description>
-       <bitOffset>18</bitOffset>
-       <bitWidth>3</bitWidth>
+       <name>BADDR</name>
+       <description>Bootup address for CPU2, RISCV1</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>32</bitWidth>
       </field>
      </fields>
     </register>
@@ -5413,6 +5421,40 @@
        <description>General Purpose.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>MSRTRIM</name>
+     <description>MSR Trim Register.</description>
+     <addressOffset>0x20</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>TRIM_MSR_R1</name>
+       <description>MSR Trim R1.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+      <field>
+       <name>TRIM_MSR_R2</name>
+       <description>MSR Trim R2.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>3</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ERFOKS</name>
+     <description>ERFO Kick Start Control Register.</description>
+     <addressOffset>0x24</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>CTRL</name>
+       <description>Kickstart Control.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>16</bitWidth>
       </field>
      </fields>
     </register>
