@@ -120,6 +120,8 @@ uint8_t *mipi_camera_get_pixel_format(mipi_pixformat_t pix_format)
         return (uint8_t *)"RGB888";
     } else if (pix_format == MIPI_PIXFORMAT_YUV422) {
         return (uint8_t *)"YUV422";
+    } else if (pix_format == MIPI_PIXFORMAT_RAW) {
+        return (uint8_t *)"BAYER";
     }
 
     return (uint8_t *)"INVALID";

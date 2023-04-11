@@ -66,9 +66,9 @@
 /***** Definitions *****/
 
 #define IMAGE_WIDTH 320
-#define IMAGE_HEIGHT 240
+#define IMAGE_HEIGHT 320
 
-// #define RAW
+#define RAW
 
 
 // Check CSI-2 Standard and your color format for these values.
@@ -198,15 +198,9 @@ void process_img(void)
 
     MXC_TMR_SW_Start(MXC_TMR0);
     clear_serial_buffer();
-#ifdef RAW
-    snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-             "*IMG* %s %i %i %i", // Format img info into a string
-             "BAYER", imgLen, w, h);
-#else
     snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
              "*IMG* %s %i %i %i", // Format img info into a string
              mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
-#endif
     send_msg(g_serial_buffer);
 
     for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
