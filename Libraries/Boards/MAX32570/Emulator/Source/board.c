@@ -77,7 +77,7 @@ int Board_Init(void)
 {
     int err;
 
-    SYS_Clock_Select(SYS_CLOCK_HIRC96, MXC_TMR0);
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 
     /*
         if ((err = MX25_BoardInit()) != E_NO_ERROR) {
@@ -110,7 +110,7 @@ int Console_Init(void)
 {
     int err;
 
-    if (UART_Init(ConsoleUart, 0, CONSOLE_BAUD) < 0) {
+    if (MXC_UART_Init(ConsoleUart, CONSOLE_BAUD) < 0) {
         return err;
     }
 
