@@ -1,0 +1,658 @@
+This is the technical specification of the little filesystem. This document covers the technical details of how the littlefs is stored on disk for introspection and tooling. This document assumes you are familiar with the design of the littlefs, for more info on how littlefs works check out \mbox{\hyperlink{md__d_e_s_i_g_n}{D\+E\+S\+I\+GN.md}}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{   | | |     .-\/-\/-\/.\_\_\_\_\_}
+\DoxyCodeLine{  .-\/-\/-\/-\/-\/.   |          |}
+\DoxyCodeLine{-\/-\/|o    |-\/-\/-\/| littlefs |}
+\DoxyCodeLine{-\/-\/|     |-\/-\/-\/|          |}
+\DoxyCodeLine{  '-\/-\/-\/-\/-\/'   '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{   | | |}
+\end{DoxyCode}
+\hypertarget{md__s_p_e_c_autotoc_md31}{}\doxysection{Some quick notes}\label{md__s_p_e_c_autotoc_md31}
+
+\begin{DoxyItemize}
+\item littlefs is a block-\/based filesystem. The disk is divided into an array of evenly sized blocks that are used as the logical unit of storage.
+\item Block pointers are stored in 32 bits, with the special value {\ttfamily 0xffffffff} representing a null block address.
+\item In addition to the logical block size (which usually matches the erase block size), littlefs also uses a program block size and read block size. These determine the alignment of block device operations, but don\textquotesingle{}t need to be consistent for portability.
+\item By default, all values in littlefs are stored in little-\/endian byte order.
+\end{DoxyItemize}\hypertarget{md__s_p_e_c_autotoc_md32}{}\doxysection{Directories / Metadata pairs}\label{md__s_p_e_c_autotoc_md32}
+Metadata pairs form the backbone of littlefs and provide a system for distributed atomic updates. Even the superblock is stored in a metadata pair.
+
+As their name suggests, a metadata pair is stored in two blocks, with one block providing a backup during erase cycles in case power is lost. These two blocks are not necessarily sequential and may be anywhere on disk, so a \char`\"{}pointer\char`\"{} to a metadata pair is stored as two block pointers.
+
+On top of this, each metadata block behaves as an appendable log, containing a variable number of commits. Commits can be appended to the metadata log in order to update the metadata without requiring an erase cycles. Note that successive commits may supersede the metadata in previous commits. Only the most recent metadata should be considered valid.
+
+The high-\/level layout of a metadata block is fairly simple\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{  .-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{.-\/|  revision count   |      entries      |  \(\backslash\)}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+                   |  |}
+\DoxyCodeLine{| |                                       |  |}
+\DoxyCodeLine{| |                                       |  +-\/-\/ 1st commit}
+\DoxyCodeLine{| |                                       |  |}
+\DoxyCodeLine{| |                   +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|  |}
+\DoxyCodeLine{| |                   |        CRC        |  /}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|}
+\DoxyCodeLine{| |                entries                |  \(\backslash\)}
+\DoxyCodeLine{| |                                       |  |}
+\DoxyCodeLine{| |                                       |  +-\/-\/ 2nd commit}
+\DoxyCodeLine{| |    +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|  |}
+\DoxyCodeLine{| |    |        CRC        |    padding   |  /}
+\DoxyCodeLine{| |-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|}
+\DoxyCodeLine{| |                entries                |  \(\backslash\)}
+\DoxyCodeLine{| |                                       |  |}
+\DoxyCodeLine{| |                                       |  +-\/-\/ 3rd commit}
+\DoxyCodeLine{| |         +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/|  |}
+\DoxyCodeLine{| |         |        CRC        |         |  /}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+         |}
+\DoxyCodeLine{| |           unwritten storage           |  more commits}
+\DoxyCodeLine{| |                                       |       |}
+\DoxyCodeLine{| |                                       |       v}
+\DoxyCodeLine{| |                                       |}
+\DoxyCodeLine{| |                                       |}
+\DoxyCodeLine{| '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{'-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'}
+\end{DoxyCode}
+
+
+Each metadata block contains a 32-\/bit revision count followed by a number of commits. Each commit contains a variable number of metadata entries followed by a 32-\/bit C\+RC.
+
+Note also that entries aren\textquotesingle{}t necessarily word-\/aligned. This allows us to store metadata more compactly, however we can only write to addresses that are aligned to our program block size. This means each commit may have padding for alignment.
+
+Metadata block fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Revision count (32-\/bits)}} -\/ Incremented every erase cycle. If both blocks contain valid commits, only the block with the most recent revision count should be used. Sequence comparison must be used to avoid issues with integer overflow.
+\item {\bfseries{C\+RC (32-\/bits)}} -\/ Detects corruption from power-\/loss or other write issues. Uses a C\+R\+C-\/32 with a polynomial of {\ttfamily 0x04c11db7} initialized with {\ttfamily 0xffffffff}.
+\end{DoxyEnumerate}
+
+Entries themselves are stored as a 32-\/bit tag followed by a variable length blob of data. But exactly how these tags are stored is a little bit tricky.
+
+Metadata blocks support both forward and backward iteration. In order to do this without duplicating the space for each tag, neighboring entries have their tags X\+O\+Red together, starting with {\ttfamily 0xffffffff}.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ Forward iteration                        Backward iteration}
+\DoxyCodeLine{}
+\DoxyCodeLine{.-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/.  0xffffffff        .-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{|  revision count   |      |             |  revision count   |}
+\DoxyCodeLine{|-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      v             |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|}
+\DoxyCodeLine{|      tag \string~A       |-\/-\/-\/> xor -\/> tag A   |      tag \string~A       |-\/-\/-\/> xor -\/> 0xffffffff}
+\DoxyCodeLine{|-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      |             |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      \string^}
+\DoxyCodeLine{|       data A      |      |             |       data A      |      |}
+\DoxyCodeLine{|                   |      |             |                   |      |}
+\DoxyCodeLine{|                   |      |             |                   |      |}
+\DoxyCodeLine{|-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      v             |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      |}
+\DoxyCodeLine{|      tag AxB      |-\/-\/-\/> xor -\/> tag B   |      tag AxB      |-\/-\/-\/> xor -\/> tag A}
+\DoxyCodeLine{|-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      |             |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      \string^}
+\DoxyCodeLine{|       data B      |      |             |       data B      |      |}
+\DoxyCodeLine{|                   |      |             |                   |      |}
+\DoxyCodeLine{|                   |      |             |                   |      |}
+\DoxyCodeLine{|-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      v             |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      |}
+\DoxyCodeLine{|      tag BxC      |-\/-\/-\/> xor -\/> tag C   |      tag BxC      |-\/-\/-\/> xor -\/> tag B}
+\DoxyCodeLine{|-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|                    |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|      \string^}
+\DoxyCodeLine{|       data C      |                    |       data C      |      |}
+\DoxyCodeLine{|                   |                    |                   |    tag C}
+\DoxyCodeLine{|                   |                    |                   |}
+\DoxyCodeLine{|                   |                    |                   |}
+\DoxyCodeLine{'-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'                    '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'}
+\end{DoxyCode}
+
+
+One last thing to note before we get into the details around tag encoding. Each tag contains a valid bit used to indicate if the tag and containing commit is valid. This valid bit is the first bit found in the tag and the commit and can be used to tell if we\textquotesingle{}ve attempted to write to the remaining space in the block.
+
+Here\textquotesingle{}s a more complete example of metadata block containing 4 entries\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{  .-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{.-\/|  revision count   |      tag \string~A       |        \(\backslash\)}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|        |}
+\DoxyCodeLine{| |                 data A                |        |}
+\DoxyCodeLine{| |                                       |        |}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|        |}
+\DoxyCodeLine{| |      tag AxB      |       data B      | <-\/-\/.   |}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+                   |    |   |}
+\DoxyCodeLine{| |                                       |    |   +-\/-\/ 1st commit}
+\DoxyCodeLine{| |         +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/|    |   |}
+\DoxyCodeLine{| |         |      tag BxC      |         | <-\/.|   |}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+         |   ||   |}
+\DoxyCodeLine{| |                 data C                |   ||   |}
+\DoxyCodeLine{| |                                       |   ||   |}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|   ||   |}
+\DoxyCodeLine{| |     tag CxCRC     |        CRC        |   ||   /}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|   ||}
+\DoxyCodeLine{| |     tag CRCxA'    |      data A'      |   ||   \(\backslash\)}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+                   |   ||   |}
+\DoxyCodeLine{| |                                       |   ||   |}
+\DoxyCodeLine{| |              +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/|   ||   +-\/-\/ 2nd commit}
+\DoxyCodeLine{| |              |     tag CRCxA'    |    |   ||   |}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/|   ||   |}
+\DoxyCodeLine{| | CRC          |        padding         |   ||   /}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/|   ||}
+\DoxyCodeLine{| |     tag CRCxA''   |      data A''     | <-\/-\/-\/.  \(\backslash\)}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+                   |   |||  |}
+\DoxyCodeLine{| |                                       |   |||  |}
+\DoxyCodeLine{| |         +-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/|   |||  |}
+\DoxyCodeLine{| |         |     tag A''xD     |         | < |||  |}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+         |  ||||  +-\/-\/ 3rd commit}
+\DoxyCodeLine{| |                data D                 |  ||||  |}
+\DoxyCodeLine{| |                             +-\/-\/-\/-\/-\/-\/-\/-\/-\/|  ||||  |}
+\DoxyCodeLine{| |                             |   tag Dx|  ||||  |}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/|  ||||  |}
+\DoxyCodeLine{| |CRC      |        CRC        |         |  ||||  /}
+\DoxyCodeLine{| |-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+         |  ||||}
+\DoxyCodeLine{| |           unwritten storage           |  ||||  more commits}
+\DoxyCodeLine{| |                                       |  ||||       |}
+\DoxyCodeLine{| |                                       |  ||||       v}
+\DoxyCodeLine{| |                                       |  ||||}
+\DoxyCodeLine{| |                                       |  ||||}
+\DoxyCodeLine{| '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'  ||||}
+\DoxyCodeLine{'-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/'    |||'-\/ most recent A}
+\DoxyCodeLine{                                             ||'-\/-\/ most recent B}
+\DoxyCodeLine{                                             |'-\/-\/-\/ most recent C}
+\DoxyCodeLine{                                             '-\/-\/-\/-\/ most recent D}
+\end{DoxyCode}
+\hypertarget{md__s_p_e_c_autotoc_md33}{}\doxysection{Metadata tags}\label{md__s_p_e_c_autotoc_md33}
+So in littlefs, 32-\/bit tags describe every type of metadata. And this means {\itshape every} type of metadata, including file entries, directory fields, and global state. Even the C\+R\+Cs used to mark the end of commits get their own tag.
+
+Because of this, the tag format contains some densely packed information. Note that there are multiple levels of types which break down into more info\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{[-\/-\/-\/-\/            32             -\/-\/-\/-\/]}
+\DoxyCodeLine{[1|-\/-\/  11   -\/-\/|-\/-\/  10  -\/-\/|-\/-\/  10  -\/-\/]}
+\DoxyCodeLine{ \string^.     \string^     .     \string^          \string^-\/ length}
+\DoxyCodeLine{ |.     |     .     '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ id}
+\DoxyCodeLine{ |.     '-\/-\/-\/-\/-\/.-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type (type3)}
+\DoxyCodeLine{ '.-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/.-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\DoxyCodeLine{  [-\/3-\/|-\/-\/ 8 -\/-\/]}
+\DoxyCodeLine{    \string^     \string^-\/ chunk}
+\DoxyCodeLine{    '-\/-\/-\/-\/-\/-\/-\/ type (type1)}
+\end{DoxyCode}
+
+
+Before we go further, there\textquotesingle{}s one important thing to note. These tags are {\bfseries{not}} stored in little-\/endian. Tags stored in commits are actually stored in big-\/endian (and is the only thing in littlefs stored in big-\/endian). This little bit of craziness comes from the fact that the valid bit must be the first bit in a commit, and when converted to little-\/endian, the valid bit finds itself in byte 4. We could restructure the tag to store the valid bit lower, but, because none of the fields are byte-\/aligned, this would be more complicated than just storing the tag in big-\/endian.
+
+Another thing to note is that both the tags {\ttfamily 0x00000000} and {\ttfamily 0xffffffff} are invalid and can be used for null values.
+
+Metadata tag fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Valid bit (1-\/bit)}} -\/ Indicates if the tag is valid.
+\item {\bfseries{Type3 (11-\/bits)}} -\/ Type of the tag. This field is broken down further into a 3-\/bit abstract type and an 8-\/bit chunk field. Note that the value {\ttfamily 0x000} is invalid and not assigned a type.
+\begin{DoxyEnumerate}
+\item {\bfseries{Type1 (3-\/bits)}} -\/ Abstract type of the tag. Groups the tags into 8 categories that facilitate bitmasked lookups.
+\item {\bfseries{Chunk (8-\/bits)}} -\/ Chunk field used for various purposes by the different abstract types. type1+chunk+id form a unique identifier for each tag in the metadata block.
+\end{DoxyEnumerate}
+\item {\bfseries{Id (10-\/bits)}} -\/ File id associated with the tag. Each file in a metadata block gets a unique id which is used to associate tags with that file. The special value {\ttfamily 0x3ff} is used for any tags that are not associated with a file, such as directory and global metadata.
+\item {\bfseries{Length (10-\/bits)}} -\/ Length of the data in bytes. The special value {\ttfamily 0x3ff} indicates that this tag has been deleted.
+\end{DoxyEnumerate}\hypertarget{md__s_p_e_c_autotoc_md34}{}\doxysection{Metadata types}\label{md__s_p_e_c_autotoc_md34}
+What follows is an exhaustive list of metadata in littlefs.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md36}{}\doxysubsubsection{$<$tt$>$0x401$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+C\+R\+E\+A\+TE}\label{md__s_p_e_c_autotoc_md36}
+Creates a new file with this id. Note that files in a metadata block don\textquotesingle{}t necessarily need a create tag. All a create does is move over any files using this id. In this sense a create is similar to insertion into an imaginary array of files.
+
+The create and delete tags allow littlefs to keep files in a directory ordered alphabetically by filename.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md38}{}\doxysubsubsection{$<$tt$>$0x4ff$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+D\+E\+L\+E\+TE}\label{md__s_p_e_c_autotoc_md38}
+Deletes the file with this id. An inverse to create, this tag moves over any files neighboring this id similar to a deletion from an imaginary array of files.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md40}{}\doxysubsubsection{$<$tt$>$0x0xx$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+N\+A\+ME}\label{md__s_p_e_c_autotoc_md40}
+Associates the id with a file name and file type.
+
+The data contains the file name stored as an A\+S\+C\+II string (may be expanded to U\+T\+F8 in the future).
+
+The chunk field in this tag indicates an 8-\/bit file type which can be one of the following.
+
+Currently, the name tag must precede any other tags associated with the id and can not be reassigned without deleting the file.
+
+Layout of the name tag\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        tag                          data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/-\/        variable length        -\/-\/-\/]}
+\DoxyCodeLine{[1| 3| 8 | 10 | 10 ][-\/-\/-\/          (size * 8)           -\/-\/-\/]}
+\DoxyCodeLine{ \string^  \string^  \string^    \string^    \string^-\/ size                   \string^-\/ file name}
+\DoxyCodeLine{ |  |  |    '-\/-\/-\/-\/-\/-\/ id}
+\DoxyCodeLine{ |  |  '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ file type}
+\DoxyCodeLine{ |  '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type1 (0x0)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\end{DoxyCode}
+
+
+Name fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{file type (8-\/bits)}} -\/ Type of the file.
+\item {\bfseries{file name}} -\/ File name stored as an A\+S\+C\+II string.
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md42}{}\doxysubsubsection{$<$tt$>$0x001$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+R\+EG}\label{md__s_p_e_c_autotoc_md42}
+Initializes the id + name as a regular file.
+
+How each file is stored depends on its struct tag, which is described below.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md44}{}\doxysubsubsection{$<$tt$>$0x002$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+D\+IR}\label{md__s_p_e_c_autotoc_md44}
+Initializes the id + name as a directory.
+
+Directories in littlefs are stored on disk as a linked-\/list of metadata pairs, each pair containing any number of files in alphabetical order. A pointer to the directory is stored in the struct tag, which is described below.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md46}{}\doxysubsubsection{$<$tt$>$0x0ff$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+S\+U\+P\+E\+R\+B\+L\+O\+CK}\label{md__s_p_e_c_autotoc_md46}
+Initializes the id as a superblock entry.
+
+The superblock entry is a special entry used to store format-\/time configuration and identify the filesystem.
+
+The name is a bit of a misnomer. While the superblock entry serves the same purpose as a superblock found in other filesystems, in littlefs the superblock does not get a dedicated block. Instead, the superblock entry is duplicated across a linked-\/list of metadata pairs rooted on the blocks 0 and 1. The last metadata pair doubles as the root directory of the filesystem.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{.| super  |-\/>| super  |-\/>| super  |-\/>| super  |-\/>| file B |}
+\DoxyCodeLine{|| block  | || block  | || block  | || block  | || file C |}
+\DoxyCodeLine{||        | ||        | ||        | || file A | || file D |}
+\DoxyCodeLine{|'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{'-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{}
+\DoxyCodeLine{\(\backslash\)-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\// \(\backslash\)-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/+-\/-\/-\/-\/-\/-\/-\/-\/-\/-\//}
+\DoxyCodeLine{          superblock pairs               root directory}
+\end{DoxyCode}
+
+
+The filesystem starts with only the root directory. The superblock metadata pairs grow every time the root pair is compacted in order to prolong the life of the device exponentially.
+
+The contents of the superblock entry are stored in a name tag with the superblock type and an inline-\/struct tag. The name tag contains the magic string \char`\"{}littlefs\char`\"{}, while the inline-\/struct tag contains version and configuration information.
+
+Layout of the superblock name tag and inline-\/struct tag\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        tag                          data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{[1|-\/ 11 -\/| 10 | 10 ][-\/-\/-\/              64               -\/-\/-\/]}
+\DoxyCodeLine{ \string^    \string^     \string^    \string^-\/ size (8)           \string^-\/ magic string ("{}littlefs"{})}
+\DoxyCodeLine{ |    |     '-\/-\/-\/-\/-\/-\/ id (0)}
+\DoxyCodeLine{ |    '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type (0x0ff)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\DoxyCodeLine{}
+\DoxyCodeLine{        tag                          data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{[1|-\/ 11 -\/| 10 | 10 ][-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{ \string^    \string^     \string^    \string^            \string^-\/ version         \string^-\/ block size      \string^-\/ block count}
+\DoxyCodeLine{ |    |     |    |  [-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{ |    |     |    |  [-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{ |    |     |    |            \string^-\/ name max        \string^-\/ file max        \string^-\/ attr max}
+\DoxyCodeLine{ |    |     |    '-\/ size (24)}
+\DoxyCodeLine{ |    |     '-\/-\/-\/-\/-\/-\/ id (0)}
+\DoxyCodeLine{ |    '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type (0x201)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\end{DoxyCode}
+
+
+Superblock fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Magic string (8-\/bytes)}} -\/ Magic string indicating the presence of littlefs on the device. Must be the string \char`\"{}littlefs\char`\"{}.
+\item {\bfseries{Version (32-\/bits)}} -\/ The version of littlefs at format time. The version is encoded in a 32-\/bit value with the upper 16-\/bits containing the major version, and the lower 16-\/bits containing the minor version.
+
+This specification describes version 2.\+0 ({\ttfamily 0x00020000}).
+\item {\bfseries{Block size (32-\/bits)}} -\/ Size of the logical block size used by the filesystem in bytes.
+\item {\bfseries{Block count (32-\/bits)}} -\/ Number of blocks in the filesystem.
+\item {\bfseries{Name max (32-\/bits)}} -\/ Maximum size of file names in bytes.
+\item {\bfseries{File max (32-\/bits)}} -\/ Maximum size of files in bytes.
+\item {\bfseries{Attr max (32-\/bits)}} -\/ Maximum size of file attributes in bytes.
+\end{DoxyEnumerate}
+
+The superblock must always be the first entry (id 0) in a metadata pair as well as be the first entry written to the block. This means that the superblock entry can be read from a device using offsets alone.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md48}{}\doxysubsubsection{$<$tt$>$0x2xx$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+S\+T\+R\+U\+CT}\label{md__s_p_e_c_autotoc_md48}
+Associates the id with an on-\/disk data structure.
+
+The exact layout of the data depends on the data structure type stored in the chunk field and can be one of the following.
+
+Any type of struct supersedes all other structs associated with the id. For example, appending a ctz-\/struct replaces an inline-\/struct on the same file.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md50}{}\doxysubsubsection{$<$tt$>$0x200$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+D\+I\+R\+S\+T\+R\+U\+CT}\label{md__s_p_e_c_autotoc_md50}
+Gives the id a directory data structure.
+
+Directories in littlefs are stored on disk as a linked-\/list of metadata pairs, each pair containing any number of files in alphabetical order.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{     |}
+\DoxyCodeLine{     v}
+\DoxyCodeLine{ .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{.| file A |-\/>| file D |-\/>| file G |-\/>| file I |-\/>| file J |-\/>| file M |}
+\DoxyCodeLine{|| file B | || file E | || file H | ||        | || file K | || file N |}
+\DoxyCodeLine{|| file C | || file F | ||        | ||        | || file L | ||        |}
+\DoxyCodeLine{|'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{'-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'}
+\end{DoxyCode}
+
+
+The dir-\/struct tag contains only the pointer to the first metadata-\/pair in the directory. The directory size is not known without traversing the directory.
+
+The pointer to the next metadata-\/pair in the directory is stored in a tail tag, which is described below.
+
+Layout of the dir-\/struct tag\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        tag                          data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{[1|-\/ 11 -\/| 10 | 10 ][-\/-\/-\/              64               -\/-\/-\/]}
+\DoxyCodeLine{ \string^    \string^     \string^    \string^-\/ size (8)           \string^-\/ metadata pair}
+\DoxyCodeLine{ |    |     '-\/-\/-\/-\/-\/-\/ id}
+\DoxyCodeLine{ |    '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type (0x200)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\end{DoxyCode}
+
+
+Dir-\/struct fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Metadata pair (8-\/bytes)}} -\/ Pointer to the first metadata-\/pair in the directory.
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md52}{}\doxysubsubsection{$<$tt$>$0x201$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+I\+N\+L\+I\+N\+E\+S\+T\+R\+U\+CT}\label{md__s_p_e_c_autotoc_md52}
+Gives the id an inline data structure.
+
+Inline structs store small files that can fit in the metadata pair. In this case, the file data is stored directly in the tag\textquotesingle{}s data area.
+
+Layout of the inline-\/struct tag\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        tag                          data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/-\/        variable length        -\/-\/-\/]}
+\DoxyCodeLine{[1|-\/ 11 -\/| 10 | 10 ][-\/-\/-\/           (size * 8)          -\/-\/-\/]}
+\DoxyCodeLine{ \string^    \string^     \string^    \string^-\/ size                    \string^-\/ inline data}
+\DoxyCodeLine{ |    |     '-\/-\/-\/-\/-\/-\/ id}
+\DoxyCodeLine{ |    '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type (0x201)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\end{DoxyCode}
+
+
+Inline-\/struct fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Inline data}} -\/ File data stored directly in the metadata-\/pair.
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md54}{}\doxysubsubsection{$<$tt$>$0x202$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+C\+T\+Z\+S\+T\+R\+U\+CT}\label{md__s_p_e_c_autotoc_md54}
+Gives the id a C\+TZ skip-\/list data structure.
+
+C\+TZ skip-\/lists store files that can not fit in the metadata pair. These files are stored in a skip-\/list in reverse, with a pointer to the head of the skip-\/list. Note that the head of the skip-\/list and the file size is enough information to read the file.
+
+How exactly C\+TZ skip-\/lists work is a bit complicated. A full explanation can be found in the \href{DESIGN.md\#ctz-skip-lists}{\texttt{ D\+E\+S\+I\+G\+N.\+md}}.
+
+A quick summary\+: For every {\itshape n}th block where {\itshape n} is divisible by 2{\itshape \&\#739;}, that block contains a pointer to block {\itshape n}-\/2{\itshape \&\#739;}. These pointers are stored in increasing order of {\itshape x} in each block of the file before the actual data.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{                                                               |}
+\DoxyCodeLine{                                                               v}
+\DoxyCodeLine{.-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{| A      |<-\/| D      |<-\/| G      |<-\/| J      |<-\/| M      |<-\/| P      |}
+\DoxyCodeLine{| B      |<-\/| E      |-\/-\/| H      |<-\/| K      |-\/-\/| N      |  | Q      |}
+\DoxyCodeLine{| C      |<-\/| F      |-\/-\/| I      |-\/-\/| L      |-\/-\/| O      |  |        |}
+\DoxyCodeLine{'-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{  block 0     block 1     block 2     block 3     block 4     block 5}
+\DoxyCodeLine{              1 skip      2 skips     1 skip      3 skips     1 skip}
+\end{DoxyCode}
+
+
+Note that the maximum number of pointers in a block is bounded by the maximum file size divided by the block size. With 32 bits for file size, this results in a minimum block size of 104 bytes.
+
+Layout of the C\+T\+Z-\/struct tag\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        tag                          data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{[1|-\/ 11 -\/| 10 | 10 ][-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{ \string^    \string^     \string^    \string^            \string^                  \string^-\/ file size}
+\DoxyCodeLine{ |    |     |    |            '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ file head}
+\DoxyCodeLine{ |    |     |    '-\/ size (8)}
+\DoxyCodeLine{ |    |     '-\/-\/-\/-\/-\/-\/ id}
+\DoxyCodeLine{ |    '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type (0x202)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\end{DoxyCode}
+
+
+C\+T\+Z-\/struct fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{File head (32-\/bits)}} -\/ Pointer to the block that is the head of the file\textquotesingle{}s C\+TZ skip-\/list.
+\item {\bfseries{File size (32-\/bits)}} -\/ Size of the file in bytes.
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md56}{}\doxysubsubsection{$<$tt$>$0x3xx$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+U\+S\+E\+R\+A\+T\+TR}\label{md__s_p_e_c_autotoc_md56}
+Attaches a user attribute to an id.
+
+littlefs has a concept of \char`\"{}user attributes\char`\"{}. These are small user-\/provided attributes that can be used to store things like timestamps, hashes, permissions, etc.
+
+Each user attribute is uniquely identified by an 8-\/bit type which is stored in the chunk field, and the user attribute itself can be found in the tag\textquotesingle{}s data.
+
+There are currently no standard user attributes and a portable littlefs implementation should work with any user attributes missing.
+
+Layout of the user-\/attr tag\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        tag                          data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/-\/        variable length        -\/-\/-\/]}
+\DoxyCodeLine{[1| 3| 8 | 10 | 10 ][-\/-\/-\/           (size * 8)          -\/-\/-\/]}
+\DoxyCodeLine{ \string^  \string^  \string^    \string^    \string^-\/ size                    \string^-\/ attr data}
+\DoxyCodeLine{ |  |  |    '-\/-\/-\/-\/-\/-\/ id}
+\DoxyCodeLine{ |  |  '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ attr type}
+\DoxyCodeLine{ |  '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type1 (0x3)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\end{DoxyCode}
+
+
+User-\/attr fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Attr type (8-\/bits)}} -\/ Type of the user attributes.
+\item {\bfseries{Attr data}} -\/ The data associated with the user attribute.
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md58}{}\doxysubsubsection{$<$tt$>$0x6xx$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+T\+A\+IL}\label{md__s_p_e_c_autotoc_md58}
+Provides the tail pointer for the metadata pair itself.
+
+The metadata pair\textquotesingle{}s tail pointer is used in littlefs for a linked-\/list containing all metadata pairs. The chunk field contains the type of the tail, which indicates if the following metadata pair is a part of the directory (hard-\/tail) or only used to traverse the filesystem (soft-\/tail).
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{         .-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{        .| dir A  |-\/.}
+\DoxyCodeLine{        ||softtail| |}
+\DoxyCodeLine{.-\/-\/-\/-\/-\/-\/-\/-\/|        |-\/'}
+\DoxyCodeLine{|       |'-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{|       '-\/-\/-\/|-\/-\/|-\/'}
+\DoxyCodeLine{|        .-\/'    '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{|       v                      v}
+\DoxyCodeLine{|  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{'-\/>| dir B  |-\/>| dir B  |-\/>| dir C  |}
+\DoxyCodeLine{  ||hardtail| ||softtail| ||        |}
+\DoxyCodeLine{  ||        | ||        | ||        |}
+\DoxyCodeLine{  |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'}
+\end{DoxyCode}
+
+
+Currently any type supersedes any other preceding tails in the metadata pair, but this may change if additional metadata pair state is added.
+
+A note about the metadata pair linked-\/list\+: Normally, this linked-\/list contains every metadata pair in the filesystem. However, there are some operations that can cause this linked-\/list to become out of sync if a power-\/loss were to occur. When this happens, littlefs sets the \char`\"{}sync\char`\"{} flag in the global state. How exactly this flag is stored is described below.
+
+When the sync flag is set\+:
+
+
+\begin{DoxyEnumerate}
+\item The linked-\/list may contain an orphaned directory that has been removed in the filesystem.
+\item The linked-\/list may contain a metadata pair with a bad block that has been replaced in the filesystem.
+\end{DoxyEnumerate}
+
+If the sync flag is set, the threaded linked-\/list must be checked for these errors before it can be used reliably. Note that the threaded linked-\/list can be ignored if littlefs is mounted read-\/only.
+
+Layout of the tail tag\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        tag                          data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{[1| 3| 8 | 10 | 10 ][-\/-\/-\/              64               -\/-\/-\/]}
+\DoxyCodeLine{ \string^  \string^  \string^   \string^    \string^-\/ size (8)            \string^-\/ metadata pair}
+\DoxyCodeLine{ |  |  |   '-\/-\/-\/-\/-\/-\/ id}
+\DoxyCodeLine{ |  |  '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ tail type}
+\DoxyCodeLine{ |  '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type1 (0x6)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\end{DoxyCode}
+
+
+Tail fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Tail type (8-\/bits)}} -\/ Type of the tail pointer.
+\item {\bfseries{Metadata pair (8-\/bytes)}} -\/ Pointer to the next metadata-\/pair.
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md60}{}\doxysubsubsection{$<$tt$>$0x600$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+S\+O\+F\+T\+T\+A\+IL}\label{md__s_p_e_c_autotoc_md60}
+Provides a tail pointer that points to the next metadata pair in the filesystem.
+
+In this case, the next metadata pair is not a part of our current directory and should only be followed when traversing the entire filesystem.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md62}{}\doxysubsubsection{$<$tt$>$0x601$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+H\+A\+R\+D\+T\+A\+IL}\label{md__s_p_e_c_autotoc_md62}
+Provides a tail pointer that points to the next metadata pair in the directory.
+
+In this case, the next metadata pair belongs to the current directory. Note that because directories in littlefs are sorted alphabetically, the next metadata pair should only contain filenames greater than any filename in the current pair.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md64}{}\doxysubsubsection{$<$tt$>$0x7xx$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+G\+S\+T\+A\+TE}\label{md__s_p_e_c_autotoc_md64}
+Provides delta bits for global state entries.
+
+littlefs has a concept of \char`\"{}global state\char`\"{}. This is a small set of state that can be updated by a commit to {\itshape any} metadata pair in the filesystem.
+
+The way this works is that the global state is stored as a set of deltas distributed across the filesystem such that the global state can be found by the xor-\/sum of these deltas.
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{ .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.  .-\/-\/-\/-\/-\/-\/-\/-\/.}
+\DoxyCodeLine{.|        |-\/>| gdelta |-\/>|        |-\/>| gdelta |-\/>| gdelta |}
+\DoxyCodeLine{||        | || 0x23   | ||        | || 0xff   | || 0xce   |}
+\DoxyCodeLine{||        | ||        | ||        | ||        | ||        |}
+\DoxyCodeLine{|'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/' |'-\/-\/-\/-\/-\/-\/-\/-\/'}
+\DoxyCodeLine{'-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/|-\/-\/-\/'  '-\/-\/-\/-\/-\/-\/-\/-\/'  '-\/-\/-\/-\/|-\/-\/-\/'  '-\/-\/-\/-\/|-\/-\/-\/'}
+\DoxyCodeLine{                 v                       v           v}
+\DoxyCodeLine{       0x00 -\/-\/> xor -\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/> xor -\/-\/-\/-\/-\/-\/> xor -\/-\/> gstate = 0x12}
+\end{DoxyCode}
+
+
+Note that storing globals this way is very expensive in terms of storage usage, so any global state should be kept very small.
+
+The size and format of each piece of global state depends on the type, which is stored in the chunk field. Currently, the only global state is move state, which is outlined below.
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md66}{}\doxysubsubsection{$<$tt$>$0x7ff$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+M\+O\+V\+E\+S\+T\+A\+TE}\label{md__s_p_e_c_autotoc_md66}
+Provides delta bits for the global move state.
+
+The move state in littlefs is used to store info about operations that could cause to filesystem to go out of sync if the power is lost. The operations where this could occur is moves of files between metadata pairs and any operation that changes metadata pairs on the threaded linked-\/list.
+
+In the case of moves, the move state contains a tag + metadata pair describing the source of the ongoing move. If this tag is non-\/zero, that means that power was lost during a move, and the file exists in two different locations. If this happens, the source of the move should be considered deleted, and the move should be completed (the source should be deleted) before any other write operations to the filesystem.
+
+In the case of operations to the threaded linked-\/list, a single \char`\"{}sync\char`\"{} bit is used to indicate that a modification is ongoing. If this sync flag is set, the threaded linked-\/list will need to be checked for errors before it can be used reliably. The exact cases to check for are described above in the tail tag.
+
+Layout of the move state\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        tag                                    data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/|-\/-\/      32      -\/-\/]}
+\DoxyCodeLine{[1|-\/ 11 -\/| 10 | 10 ][1|-\/ 11 -\/| 10 | 10 |-\/-\/-\/              64               -\/-\/-\/]}
+\DoxyCodeLine{ \string^    \string^     \string^    \string^   \string^    \string^     \string^    \string^-\/ padding (0)       \string^-\/ metadata pair}
+\DoxyCodeLine{ |    |     |    |   |    |     '-\/-\/-\/-\/-\/-\/ move id}
+\DoxyCodeLine{ |    |     |    |   |    '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ move type}
+\DoxyCodeLine{ |    |     |    |   '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ sync bit}
+\DoxyCodeLine{ |    |     |    |}
+\DoxyCodeLine{ |    |     |    '-\/ size (12)}
+\DoxyCodeLine{ |    |     '-\/-\/-\/-\/-\/-\/ id (0x3ff)}
+\DoxyCodeLine{ |    '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type (0x7ff)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\end{DoxyCode}
+
+
+Move state fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Sync bit (1-\/bit)}} -\/ Indicates if the metadata pair threaded linked-\/list is in-\/sync. If set, the threaded linked-\/list should be checked for errors.
+\item {\bfseries{Move type (11-\/bits)}} -\/ Type of move being performed. Must be either {\ttfamily 0x000}, indicating no move, or {\ttfamily 0x4ff} indicating the source file should be deleted.
+\item {\bfseries{Move id (10-\/bits)}} -\/ The file id being moved.
+\item {\bfseries{Metadata pair (8-\/bytes)}} -\/ Pointer to the metadata-\/pair containing the move.
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ \hypertarget{md__s_p_e_c_autotoc_md68}{}\doxysubsubsection{$<$tt$>$0x5xx$<$/tt$>$ L\+F\+S\+\_\+\+T\+Y\+P\+E\+\_\+\+C\+RC}\label{md__s_p_e_c_autotoc_md68}
+Last but not least, the C\+RC tag marks the end of a commit and provides a checksum for any commits to the metadata block.
+
+The first 32-\/bits of the data contain a C\+R\+C-\/32 with a polynomial of {\ttfamily 0x04c11db7} initialized with {\ttfamily 0xffffffff}. This C\+RC provides a checksum for all metadata since the previous C\+RC tag, including the C\+RC tag itself. For the first commit, this includes the revision count for the metadata block.
+
+However, the size of the data is not limited to 32-\/bits. The data field may larger to pad the commit to the next program-\/aligned boundary.
+
+In addition, the C\+RC tag\textquotesingle{}s chunk field contains a set of flags which can change the behaviour of commits. Currently the only flag in use is the lowest bit, which determines the expected state of the valid bit for any following tags. This is used to guarantee that unwritten storage in a metadata block will be detected as invalid.
+
+Layout of the C\+RC tag\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{        tag                                    data}
+\DoxyCodeLine{[-\/-\/      32      -\/-\/][-\/-\/      32      -\/-\/|-\/-\/-\/        variable length        -\/-\/-\/]}
+\DoxyCodeLine{[1| 3| 8 | 10 | 10 ][-\/-\/      32      -\/-\/|-\/-\/-\/        (size * 8 -\/ 32)        -\/-\/-\/]}
+\DoxyCodeLine{ \string^  \string^  \string^    \string^    \string^            \string^-\/ crc                             \string^-\/ padding}
+\DoxyCodeLine{ |  |  |    |    '-\/ size}
+\DoxyCodeLine{ |  |  |    '-\/-\/-\/-\/-\/-\/ id (0x3ff)}
+\DoxyCodeLine{ |  |  '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid state}
+\DoxyCodeLine{ |  '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ type1 (0x5)}
+\DoxyCodeLine{ '-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/-\/ valid bit}
+\end{DoxyCode}
+
+
+C\+RC fields\+:
+
+
+\begin{DoxyEnumerate}
+\item {\bfseries{Valid state (1-\/bit)}} -\/ Indicates the expected value of the valid bit for any tags in the next commit.
+\item {\bfseries{C\+RC (32-\/bits)}} -\/ C\+R\+C-\/32 with a polynomial of {\ttfamily 0x04c11db7} initialized with {\ttfamily 0xffffffff}.
+\item {\bfseries{Padding}} -\/ Padding to the next program-\/aligned boundary. No guarantees are made about the contents.
+\end{DoxyEnumerate}
+
+\DoxyHorRuler{0}
+ 

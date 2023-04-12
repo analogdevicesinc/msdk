@@ -1,5 +1,5 @@
-\hypertarget{lfs_8c}{}\doxysection{littlefs/lfs.c File Reference}
-\label{lfs_8c}\index{littlefs/lfs.c@{littlefs/lfs.c}}
+\hypertarget{lfs_8c}{}\doxysection{lfs.\+c File Reference}
+\label{lfs_8c}\index{lfs.c@{lfs.c}}
 {\ttfamily \#include \char`\"{}lfs.\+h\char`\"{}}\newline
 {\ttfamily \#include \char`\"{}lfs\+\_\+util.\+h\char`\"{}}\newline
 \doxysubsection*{Data Structures}
@@ -8,6 +8,8 @@
 struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}}
 \item 
 struct \mbox{\hyperlink{structlfs__diskoff}{lfs\+\_\+diskoff}}
+\item 
+struct \mbox{\hyperlink{structlfs__dir__traverse}{lfs\+\_\+dir\+\_\+traverse}}
 \item 
 struct \mbox{\hyperlink{structlfs__dir__find__match}{lfs\+\_\+dir\+\_\+find\+\_\+match}}
 \item 
@@ -32,9 +34,11 @@ struct \mbox{\hyperlink{structlfs__fs__parent__match}{lfs\+\_\+fs\+\_\+parent\+\
 \item 
 \#define \mbox{\hyperlink{lfs_8c_aadb40d661cb60366401539d40dd8e5d2}{L\+F\+S\+\_\+\+M\+K\+A\+T\+T\+RS}}(...)
 \item 
-\#define \mbox{\hyperlink{lfs_8c_a6d743a3a56cdc11137b3250dceb967de}{L\+F\+S\+\_\+\+L\+O\+CK}}(\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})~((void)\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}}, 0)
+\#define \mbox{\hyperlink{lfs_8c_a6546050ce8efca81f0d755ef453053ce}{L\+F\+S\+\_\+\+D\+I\+R\+\_\+\+T\+R\+A\+V\+E\+R\+S\+E\+\_\+\+D\+E\+P\+TH}}~3
+\item 
+\#define \mbox{\hyperlink{lfs_8c_a6d743a3a56cdc11137b3250dceb967de}{L\+F\+S\+\_\+\+L\+O\+CK}}(cfg)~((void)cfg, 0)
 \begin{DoxyCompactList}\small\item\em Public A\+PI wrappers ///. \end{DoxyCompactList}\item 
-\#define \mbox{\hyperlink{lfs_8c_a2faa9cb654a66a163f9e9ba13ff38e6a}{L\+F\+S\+\_\+\+U\+N\+L\+O\+CK}}(\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})~((void)\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})
+\#define \mbox{\hyperlink{lfs_8c_a2faa9cb654a66a163f9e9ba13ff38e6a}{L\+F\+S\+\_\+\+U\+N\+L\+O\+CK}}(cfg)~((void)cfg)
 \end{DoxyCompactItemize}
 \doxysubsection*{Typedefs}
 \begin{DoxyCompactItemize}
@@ -46,9 +50,14 @@ typedef int32\+\_\+t \mbox{\hyperlink{lfs_8c_a033befd80d96af6860e1cdb86107f04a}{
 \doxysubsection*{Enumerations}
 \begin{DoxyCompactItemize}
 \item 
-enum \{ \mbox{\hyperlink{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55bae5fc1000087439d6b0abf42bc77845ae}{L\+F\+S\+\_\+\+C\+M\+P\+\_\+\+EQ}} = 0, 
-\mbox{\hyperlink{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55ba1444bca891d8d9797328ac29fc3ba206}{L\+F\+S\+\_\+\+C\+M\+P\+\_\+\+LT}} = 1, 
-\mbox{\hyperlink{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55ba3fb663e7f20f244b41bedf0aa61f44b1}{L\+F\+S\+\_\+\+C\+M\+P\+\_\+\+GT}} = 2
+enum \{ \mbox{\hyperlink{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55baf1fced2afcf5604926d6eba74d0208b6}{L\+F\+S\+\_\+\+O\+K\+\_\+\+R\+E\+L\+O\+C\+A\+T\+ED}} = 1, 
+\mbox{\hyperlink{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55ba6c4a7ccb8a821333fb7ea13db28b1d2e}{L\+F\+S\+\_\+\+O\+K\+\_\+\+D\+R\+O\+P\+P\+ED}} = 2, 
+\mbox{\hyperlink{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55bac2365bd017426ce493cd58aa88b7eb26}{L\+F\+S\+\_\+\+O\+K\+\_\+\+O\+R\+P\+H\+A\+N\+ED}} = 3
+ \}
+\item 
+enum \{ \mbox{\hyperlink{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7ae5fc1000087439d6b0abf42bc77845ae}{L\+F\+S\+\_\+\+C\+M\+P\+\_\+\+EQ}} = 0, 
+\mbox{\hyperlink{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7a1444bca891d8d9797328ac29fc3ba206}{L\+F\+S\+\_\+\+C\+M\+P\+\_\+\+LT}} = 1, 
+\mbox{\hyperlink{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7a3fb663e7f20f244b41bedf0aa61f44b1}{L\+F\+S\+\_\+\+C\+M\+P\+\_\+\+GT}} = 2
  \}
 \end{DoxyCompactItemize}
 \doxysubsection*{Functions}
@@ -134,6 +143,8 @@ static int \mbox{\hyperlink{lfs_8c_af78645d9b58b26761464ef2e892516b0}{lfs\+\_\+d
 \begin{DoxyCompactList}\small\item\em Internal operations predeclared here ///. \end{DoxyCompactList}\item 
 static int \mbox{\hyperlink{lfs_8c_a11e03100ed9be836351110b0cf78ac6a}{lfs\+\_\+dir\+\_\+compact}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$dir, const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$attrs, int attrcount, \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$source, uint16\+\_\+t begin, uint16\+\_\+t end)
 \item 
+static \mbox{\hyperlink{lfs_8h_a2df609f304fdf817b92bd7f25a5bc012}{lfs\+\_\+ssize\+\_\+t}} \mbox{\hyperlink{lfs_8c_a74ea955f04467b3fb6877f7797ff5290}{lfs\+\_\+file\+\_\+flushedwrite}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, const void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)
+\item 
 static \mbox{\hyperlink{lfs_8h_a2df609f304fdf817b92bd7f25a5bc012}{lfs\+\_\+ssize\+\_\+t}} \mbox{\hyperlink{lfs_8c_af527c3e38baf58c066b71d48775e7029}{lfs\+\_\+file\+\_\+rawwrite}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, const void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)
 \item 
 static int \mbox{\hyperlink{lfs_8c_a5a78fcdc2d8701f15d9bddde764dac6c}{lfs\+\_\+file\+\_\+rawsync}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file)
@@ -141,6 +152,8 @@ static int \mbox{\hyperlink{lfs_8c_a5a78fcdc2d8701f15d9bddde764dac6c}{lfs\+\_\+f
 static int \mbox{\hyperlink{lfs_8c_ae1bd491f7c048adf4b838f745589ad68}{lfs\+\_\+file\+\_\+outline}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file)
 \item 
 static int \mbox{\hyperlink{lfs_8c_ac43db7a505f104fbcdb589de700715bc}{lfs\+\_\+file\+\_\+flush}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file)
+\item 
+static int \mbox{\hyperlink{lfs_8c_abcc4b5d45aafcd5b5e6dd00dc87f8f5b}{lfs\+\_\+fs\+\_\+deorphan}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, bool powerloss)
 \item 
 static int \mbox{\hyperlink{lfs_8c_a0523a0c96d17e62457d3c80134b06c08}{lfs\+\_\+fs\+\_\+preporphans}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, int8\+\_\+t orphans)
 \item 
@@ -150,11 +163,11 @@ static int \mbox{\hyperlink{lfs_8c_a177e4e0aec6360fa88eccbbf0aeb8a61}{lfs\+\_\+f
 \item 
 static \mbox{\hyperlink{lfs_8c_a033befd80d96af6860e1cdb86107f04a}{lfs\+\_\+stag\+\_\+t}} \mbox{\hyperlink{lfs_8c_a039cb0f44a50fc76f8fca4b8c8fe6742}{lfs\+\_\+fs\+\_\+parent}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} dir\mbox{[}2\mbox{]}, \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$parent)
 \item 
-static int \mbox{\hyperlink{lfs_8c_abf0f867988c445b4cf96d0678b3d3957}{lfs\+\_\+fs\+\_\+relocate}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} oldpair\mbox{[}2\mbox{]}, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} newpair\mbox{[}2\mbox{]})
-\item 
 static int \mbox{\hyperlink{lfs_8c_a651bb8d9b7afba50f815c3a7a43abc6c}{lfs\+\_\+fs\+\_\+forceconsistency}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}})
 \item 
 static int \mbox{\hyperlink{lfs_8c_a505b032e712a05a4de14b9b682b6a0d8}{lfs\+\_\+dir\+\_\+rawrewind}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a8f379adb61389e305ab5cac87d30732d}{lfs\+\_\+dir\+\_\+t}} $\ast$dir)
+\item 
+static \mbox{\hyperlink{lfs_8h_a2df609f304fdf817b92bd7f25a5bc012}{lfs\+\_\+ssize\+\_\+t}} \mbox{\hyperlink{lfs_8c_af5f4a97778cea2d3d9be8eba3d7dc5ac}{lfs\+\_\+file\+\_\+flushedread}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)
 \item 
 static \mbox{\hyperlink{lfs_8h_a2df609f304fdf817b92bd7f25a5bc012}{lfs\+\_\+ssize\+\_\+t}} \mbox{\hyperlink{lfs_8c_a1bdf6b4608cd412d5a7fab9cb54b9108}{lfs\+\_\+file\+\_\+rawread}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, void $\ast$buffer, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size)
 \item 
@@ -216,6 +229,14 @@ static int \mbox{\hyperlink{lfs_8c_a8a860cb608960cebf0d61e8aa6f5d915}{lfs\+\_\+d
 \item 
 static int \mbox{\hyperlink{lfs_8c_a90866a1f1b678acfb5f14a90d4148366}{lfs\+\_\+dir\+\_\+commit\+\_\+commit}} (void $\ast$p, \mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}} tag, const void $\ast$buffer)
 \item 
+static bool \mbox{\hyperlink{lfs_8c_a4849e32f7a81857273ce5967fa7d6f7a}{lfs\+\_\+dir\+\_\+needsrelocation}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$dir)
+\item 
+static int \mbox{\hyperlink{lfs_8c_aca065793653bbf24954a2021df8c4ddc}{lfs\+\_\+dir\+\_\+splittingcompact}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$dir, const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$attrs, int attrcount, \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$source, uint16\+\_\+t begin, uint16\+\_\+t end)
+\item 
+static int \mbox{\hyperlink{lfs_8c_accc87d67472f901b97d79959f478a2ab}{lfs\+\_\+dir\+\_\+relocatingcommit}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$dir, const \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} pair\mbox{[}2\mbox{]}, const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$attrs, int attrcount, \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$pdir)
+\item 
+static int \mbox{\hyperlink{lfs_8c_a64eaa825b262bc79780df365771461cd}{lfs\+\_\+dir\+\_\+orphaningcommit}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$dir, const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$attrs, int attrcount)
+\item 
 static int \mbox{\hyperlink{lfs_8c_a770d8b293ed71d8e7f228e269b16dc9f}{lfs\+\_\+rawmkdir}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const char $\ast$path)
 \begin{DoxyCompactList}\small\item\em Top level directory operations ///. \end{DoxyCompactList}\item 
 static int \mbox{\hyperlink{lfs_8c_a3bddf85b98e05e00969a9fc17c155e87}{lfs\+\_\+dir\+\_\+rawopen}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a8f379adb61389e305ab5cac87d30732d}{lfs\+\_\+dir\+\_\+t}} $\ast$dir, const char $\ast$path)
@@ -236,7 +257,7 @@ static int \mbox{\hyperlink{lfs_8c_aa955fb63e4981243fe53a18cfab16689}{lfs\+\_\+c
 \item 
 static int \mbox{\hyperlink{lfs_8c_a708a0d0aa2324bf34bf23caf84c3a3ca}{lfs\+\_\+ctz\+\_\+traverse}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const \mbox{\hyperlink{lfs_8h_a4f695f23e18d8e40704ae1ae5cb99324}{lfs\+\_\+cache\+\_\+t}} $\ast$pcache, \mbox{\hyperlink{lfs_8h_a4f695f23e18d8e40704ae1ae5cb99324}{lfs\+\_\+cache\+\_\+t}} $\ast$rcache, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} head, \mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}} size, int($\ast$cb)(void $\ast$, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}}), void $\ast$data)
 \item 
-static int \mbox{\hyperlink{lfs_8c_a617845a6628afa762eccf700ed57990f}{lfs\+\_\+file\+\_\+rawopencfg}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, const char $\ast$path, int flags, const struct \mbox{\hyperlink{structlfs__file__config}{lfs\+\_\+file\+\_\+config}} $\ast$\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})
+static int \mbox{\hyperlink{lfs_8c_a617845a6628afa762eccf700ed57990f}{lfs\+\_\+file\+\_\+rawopencfg}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, const char $\ast$path, int flags, const struct \mbox{\hyperlink{structlfs__file__config}{lfs\+\_\+file\+\_\+config}} $\ast$cfg)
 \begin{DoxyCompactList}\small\item\em Top level file operations ///. \end{DoxyCompactList}\item 
 static int \mbox{\hyperlink{lfs_8c_a7d322feaa42b630d373cf0118e31efb6}{lfs\+\_\+file\+\_\+rawopen}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, const char $\ast$path, int flags)
 \item 
@@ -264,23 +285,21 @@ static int \mbox{\hyperlink{lfs_8c_ac7ef64aa3c4219eaeae5d6dc5c5e5d9b}{lfs\+\_\+r
 \item 
 static int \mbox{\hyperlink{lfs_8c_a28bc8674535c0546c1a258a7c4dc727e}{lfs\+\_\+rawremoveattr}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const char $\ast$path, uint8\+\_\+t type)
 \item 
-static int \mbox{\hyperlink{lfs_8c_a4219b606a1b9cb27f194bea14383be0f}{lfs\+\_\+init}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})
+static int \mbox{\hyperlink{lfs_8c_a4219b606a1b9cb27f194bea14383be0f}{lfs\+\_\+init}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$cfg)
 \begin{DoxyCompactList}\small\item\em Filesystem operations ///. \end{DoxyCompactList}\item 
-static int \mbox{\hyperlink{lfs_8c_a8154d62924ec637a1b21e51adedf2f6f}{lfs\+\_\+rawformat}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})
+static int \mbox{\hyperlink{lfs_8c_a8154d62924ec637a1b21e51adedf2f6f}{lfs\+\_\+rawformat}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$cfg)
 \item 
-static int \mbox{\hyperlink{lfs_8c_a8b217c0fb483a8242c426e54b0d8dca0}{lfs\+\_\+rawmount}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})
+static int \mbox{\hyperlink{lfs_8c_a8b217c0fb483a8242c426e54b0d8dca0}{lfs\+\_\+rawmount}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$cfg)
 \item 
 static int \mbox{\hyperlink{lfs_8c_af120f7e5a641d470dc2c25f8ba73061f}{lfs\+\_\+fs\+\_\+parent\+\_\+match}} (void $\ast$data, \mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}} tag, const void $\ast$buffer)
 \item 
 static int \mbox{\hyperlink{lfs_8c_a445d5ee772e25ab7db5429cb54a20bd2}{lfs\+\_\+fs\+\_\+demove}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}})
 \item 
-static int \mbox{\hyperlink{lfs_8c_aaa892c2a41467b6689fd82ced4fab825}{lfs\+\_\+fs\+\_\+deorphan}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}})
-\item 
 static int \mbox{\hyperlink{lfs_8c_a4784628835794c38043b2bfc88793d96}{lfs\+\_\+fs\+\_\+size\+\_\+count}} (void $\ast$p, \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}} block)
 \item 
-int \mbox{\hyperlink{lfs_8c_a4c06f8b947d320a2859bae5c02db8291}{lfs\+\_\+format}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})
+int \mbox{\hyperlink{lfs_8c_a4c06f8b947d320a2859bae5c02db8291}{lfs\+\_\+format}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$cfg)
 \begin{DoxyCompactList}\small\item\em Filesystem functions ///. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{lfs_8c_a45a6b0f28a1b441a3f68a63e38bcbf1e}{lfs\+\_\+mount}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})
+int \mbox{\hyperlink{lfs_8c_a45a6b0f28a1b441a3f68a63e38bcbf1e}{lfs\+\_\+mount}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, const struct \mbox{\hyperlink{structlfs__config}{lfs\+\_\+config}} $\ast$cfg)
 \item 
 int \mbox{\hyperlink{lfs_8c_a1ba0c128036f028697ee5bce04c40749}{lfs\+\_\+unmount}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}})
 \item 
@@ -298,7 +317,7 @@ int \mbox{\hyperlink{lfs_8c_a2540a6206f8a4fc6e87bb5240d31d53d}{lfs\+\_\+removeat
 \item 
 int \mbox{\hyperlink{lfs_8c_a02f1f1f3a196afa8f182a738f6e457ab}{lfs\+\_\+file\+\_\+open}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, const char $\ast$path, int flags)
 \begin{DoxyCompactList}\small\item\em File operations ///. \end{DoxyCompactList}\item 
-int \mbox{\hyperlink{lfs_8c_a27b9877d2df6b72e9ac883a408d0d34c}{lfs\+\_\+file\+\_\+opencfg}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, const char $\ast$path, int flags, const struct \mbox{\hyperlink{structlfs__file__config}{lfs\+\_\+file\+\_\+config}} $\ast$\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})
+int \mbox{\hyperlink{lfs_8c_a27b9877d2df6b72e9ac883a408d0d34c}{lfs\+\_\+file\+\_\+opencfg}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file, const char $\ast$path, int flags, const struct \mbox{\hyperlink{structlfs__file__config}{lfs\+\_\+file\+\_\+config}} $\ast$cfg)
 \item 
 int \mbox{\hyperlink{lfs_8c_aa7eb46b610f8507869aa62759cfd224e}{lfs\+\_\+file\+\_\+close}} (\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$\mbox{\hyperlink{structlfs}{lfs}}, \mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$file)
 \item 
@@ -351,11 +370,17 @@ int \mbox{\hyperlink{lfs_8c_abf6e027694796ee6a79d66706f06b134}{lfs\+\_\+fs\+\_\+
 \doxysubsubsection{\texorpdfstring{LFS\_BLOCK\_NULL}{LFS\_BLOCK\_NULL}}
 {\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+B\+L\+O\+C\+K\+\_\+\+N\+U\+LL~((\mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}})-\/1)}
 
+\mbox{\Hypertarget{lfs_8c_a6546050ce8efca81f0d755ef453053ce}\label{lfs_8c_a6546050ce8efca81f0d755ef453053ce}} 
+\index{lfs.c@{lfs.c}!LFS\_DIR\_TRAVERSE\_DEPTH@{LFS\_DIR\_TRAVERSE\_DEPTH}}
+\index{LFS\_DIR\_TRAVERSE\_DEPTH@{LFS\_DIR\_TRAVERSE\_DEPTH}!lfs.c@{lfs.c}}
+\doxysubsubsection{\texorpdfstring{LFS\_DIR\_TRAVERSE\_DEPTH}{LFS\_DIR\_TRAVERSE\_DEPTH}}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+D\+I\+R\+\_\+\+T\+R\+A\+V\+E\+R\+S\+E\+\_\+\+D\+E\+P\+TH~3}
+
 \mbox{\Hypertarget{lfs_8c_a6d743a3a56cdc11137b3250dceb967de}\label{lfs_8c_a6d743a3a56cdc11137b3250dceb967de}} 
 \index{lfs.c@{lfs.c}!LFS\_LOCK@{LFS\_LOCK}}
 \index{LFS\_LOCK@{LFS\_LOCK}!lfs.c@{lfs.c}}
 \doxysubsubsection{\texorpdfstring{LFS\_LOCK}{LFS\_LOCK}}
-{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+L\+O\+CK(\begin{DoxyParamCaption}\item[{}]{\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}} }\end{DoxyParamCaption})~((void)\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}}, 0)}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+L\+O\+CK(\begin{DoxyParamCaption}\item[{}]{cfg }\end{DoxyParamCaption})~((void)cfg, 0)}
 
 
 
@@ -395,7 +420,7 @@ Public A\+PI wrappers ///.
 \index{lfs.c@{lfs.c}!LFS\_UNLOCK@{LFS\_UNLOCK}}
 \index{LFS\_UNLOCK@{LFS\_UNLOCK}!lfs.c@{lfs.c}}
 \doxysubsubsection{\texorpdfstring{LFS\_UNLOCK}{LFS\_UNLOCK}}
-{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+U\+N\+L\+O\+CK(\begin{DoxyParamCaption}\item[{}]{\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}} }\end{DoxyParamCaption})~((void)\mbox{\hyperlink{main_8c_a348e36dd85059f1482103a006e8fa686}{cfg}})}
+{\footnotesize\ttfamily \#define L\+F\+S\+\_\+\+U\+N\+L\+O\+CK(\begin{DoxyParamCaption}\item[{}]{cfg }\end{DoxyParamCaption})~((void)cfg)}
 
 
 
@@ -420,15 +445,33 @@ Public A\+PI wrappers ///.
 {\footnotesize\ttfamily anonymous enum}
 
 \begin{DoxyEnumFields}{Enumerator}
-\raisebox{\heightof{T}}[0pt][0pt]{\index{LFS\_CMP\_EQ@{LFS\_CMP\_EQ}!lfs.c@{lfs.c}}\index{lfs.c@{lfs.c}!LFS\_CMP\_EQ@{LFS\_CMP\_EQ}}}\mbox{\Hypertarget{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55bae5fc1000087439d6b0abf42bc77845ae}\label{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55bae5fc1000087439d6b0abf42bc77845ae}} 
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LFS\_OK\_RELOCATED@{LFS\_OK\_RELOCATED}!lfs.c@{lfs.c}}\index{lfs.c@{lfs.c}!LFS\_OK\_RELOCATED@{LFS\_OK\_RELOCATED}}}\mbox{\Hypertarget{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55baf1fced2afcf5604926d6eba74d0208b6}\label{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55baf1fced2afcf5604926d6eba74d0208b6}} 
+L\+F\+S\+\_\+\+O\+K\+\_\+\+R\+E\+L\+O\+C\+A\+T\+ED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LFS\_OK\_DROPPED@{LFS\_OK\_DROPPED}!lfs.c@{lfs.c}}\index{lfs.c@{lfs.c}!LFS\_OK\_DROPPED@{LFS\_OK\_DROPPED}}}\mbox{\Hypertarget{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55ba6c4a7ccb8a821333fb7ea13db28b1d2e}\label{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55ba6c4a7ccb8a821333fb7ea13db28b1d2e}} 
+L\+F\+S\+\_\+\+O\+K\+\_\+\+D\+R\+O\+P\+P\+ED&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LFS\_OK\_ORPHANED@{LFS\_OK\_ORPHANED}!lfs.c@{lfs.c}}\index{lfs.c@{lfs.c}!LFS\_OK\_ORPHANED@{LFS\_OK\_ORPHANED}}}\mbox{\Hypertarget{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55bac2365bd017426ce493cd58aa88b7eb26}\label{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55bac2365bd017426ce493cd58aa88b7eb26}} 
+L\+F\+S\+\_\+\+O\+K\+\_\+\+O\+R\+P\+H\+A\+N\+ED&\\
+\hline
+
+\end{DoxyEnumFields}
+\mbox{\Hypertarget{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7}\label{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7}} 
+\doxysubsubsection{\texorpdfstring{anonymous enum}{anonymous enum}}
+{\footnotesize\ttfamily anonymous enum}
+
+\begin{DoxyEnumFields}{Enumerator}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LFS\_CMP\_EQ@{LFS\_CMP\_EQ}!lfs.c@{lfs.c}}\index{lfs.c@{lfs.c}!LFS\_CMP\_EQ@{LFS\_CMP\_EQ}}}\mbox{\Hypertarget{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7ae5fc1000087439d6b0abf42bc77845ae}\label{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7ae5fc1000087439d6b0abf42bc77845ae}} 
 L\+F\+S\+\_\+\+C\+M\+P\+\_\+\+EQ&\\
 \hline
 
-\raisebox{\heightof{T}}[0pt][0pt]{\index{LFS\_CMP\_LT@{LFS\_CMP\_LT}!lfs.c@{lfs.c}}\index{lfs.c@{lfs.c}!LFS\_CMP\_LT@{LFS\_CMP\_LT}}}\mbox{\Hypertarget{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55ba1444bca891d8d9797328ac29fc3ba206}\label{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55ba1444bca891d8d9797328ac29fc3ba206}} 
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LFS\_CMP\_LT@{LFS\_CMP\_LT}!lfs.c@{lfs.c}}\index{lfs.c@{lfs.c}!LFS\_CMP\_LT@{LFS\_CMP\_LT}}}\mbox{\Hypertarget{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7a1444bca891d8d9797328ac29fc3ba206}\label{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7a1444bca891d8d9797328ac29fc3ba206}} 
 L\+F\+S\+\_\+\+C\+M\+P\+\_\+\+LT&\\
 \hline
 
-\raisebox{\heightof{T}}[0pt][0pt]{\index{LFS\_CMP\_GT@{LFS\_CMP\_GT}!lfs.c@{lfs.c}}\index{lfs.c@{lfs.c}!LFS\_CMP\_GT@{LFS\_CMP\_GT}}}\mbox{\Hypertarget{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55ba3fb663e7f20f244b41bedf0aa61f44b1}\label{lfs_8c_a06fc87d81c62e9abb8790b6e5713c55ba3fb663e7f20f244b41bedf0aa61f44b1}} 
+\raisebox{\heightof{T}}[0pt][0pt]{\index{LFS\_CMP\_GT@{LFS\_CMP\_GT}!lfs.c@{lfs.c}}\index{lfs.c@{lfs.c}!LFS\_CMP\_GT@{LFS\_CMP\_GT}}}\mbox{\Hypertarget{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7a3fb663e7f20f244b41bedf0aa61f44b1}\label{lfs_8c_adf764cbdea00d65edcd07bb9953ad2b7a3fb663e7f20f244b41bedf0aa61f44b1}} 
 L\+F\+S\+\_\+\+C\+M\+P\+\_\+\+GT&\\
 \hline
 
@@ -690,11 +733,23 @@ Internal operations predeclared here ///.
 
 Metadata pair and directory operations ///. 
 
+\mbox{\Hypertarget{lfs_8c_a4849e32f7a81857273ce5967fa7d6f7a}\label{lfs_8c_a4849e32f7a81857273ce5967fa7d6f7a}} 
+\index{lfs.c@{lfs.c}!lfs\_dir\_needsrelocation@{lfs\_dir\_needsrelocation}}
+\index{lfs\_dir\_needsrelocation@{lfs\_dir\_needsrelocation}!lfs.c@{lfs.c}}
+\doxysubsubsection{\texorpdfstring{lfs\_dir\_needsrelocation()}{lfs\_dir\_needsrelocation()}}
+{\footnotesize\ttfamily static bool lfs\+\_\+dir\+\_\+needsrelocation (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{dir }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
 \mbox{\Hypertarget{lfs_8c_a869a49f96b54b09866c15914d6ee3552}\label{lfs_8c_a869a49f96b54b09866c15914d6ee3552}} 
 \index{lfs.c@{lfs.c}!lfs\_dir\_open@{lfs\_dir\_open}}
 \index{lfs\_dir\_open@{lfs\_dir\_open}!lfs.c@{lfs.c}}
 \doxysubsubsection{\texorpdfstring{lfs\_dir\_open()}{lfs\_dir\_open()}}
 {\footnotesize\ttfamily int lfs\+\_\+dir\+\_\+open (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a8f379adb61389e305ab5cac87d30732d}{lfs\+\_\+dir\+\_\+t}} $\ast$}]{dir,  }\item[{const char $\ast$}]{path }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{lfs_8c_a64eaa825b262bc79780df365771461cd}\label{lfs_8c_a64eaa825b262bc79780df365771461cd}} 
+\index{lfs.c@{lfs.c}!lfs\_dir\_orphaningcommit@{lfs\_dir\_orphaningcommit}}
+\index{lfs\_dir\_orphaningcommit@{lfs\_dir\_orphaningcommit}!lfs.c@{lfs.c}}
+\doxysubsubsection{\texorpdfstring{lfs\_dir\_orphaningcommit()}{lfs\_dir\_orphaningcommit()}}
+{\footnotesize\ttfamily static int lfs\+\_\+dir\+\_\+orphaningcommit (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{dir,  }\item[{const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$}]{attrs,  }\item[{int}]{attrcount }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 \mbox{\Hypertarget{lfs_8c_ada9f8480608b022b088640ea8566669b}\label{lfs_8c_ada9f8480608b022b088640ea8566669b}} 
 \index{lfs.c@{lfs.c}!lfs\_dir\_rawclose@{lfs\_dir\_rawclose}}
@@ -738,6 +793,12 @@ Metadata pair and directory operations ///.
 \doxysubsubsection{\texorpdfstring{lfs\_dir\_read()}{lfs\_dir\_read()}}
 {\footnotesize\ttfamily int lfs\+\_\+dir\+\_\+read (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a8f379adb61389e305ab5cac87d30732d}{lfs\+\_\+dir\+\_\+t}} $\ast$}]{dir,  }\item[{struct \mbox{\hyperlink{structlfs__info}{lfs\+\_\+info}} $\ast$}]{info }\end{DoxyParamCaption})}
 
+\mbox{\Hypertarget{lfs_8c_accc87d67472f901b97d79959f478a2ab}\label{lfs_8c_accc87d67472f901b97d79959f478a2ab}} 
+\index{lfs.c@{lfs.c}!lfs\_dir\_relocatingcommit@{lfs\_dir\_relocatingcommit}}
+\index{lfs\_dir\_relocatingcommit@{lfs\_dir\_relocatingcommit}!lfs.c@{lfs.c}}
+\doxysubsubsection{\texorpdfstring{lfs\_dir\_relocatingcommit()}{lfs\_dir\_relocatingcommit()}}
+{\footnotesize\ttfamily static int lfs\+\_\+dir\+\_\+relocatingcommit (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{dir,  }\item[{const \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}}}]{pair\mbox{[}2\mbox{]},  }\item[{const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$}]{attrs,  }\item[{int}]{attrcount,  }\item[{\mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{pdir }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
 \mbox{\Hypertarget{lfs_8c_a6366164db8709beaf833fcf306e84b19}\label{lfs_8c_a6366164db8709beaf833fcf306e84b19}} 
 \index{lfs.c@{lfs.c}!lfs\_dir\_rewind@{lfs\_dir\_rewind}}
 \index{lfs\_dir\_rewind@{lfs\_dir\_rewind}!lfs.c@{lfs.c}}
@@ -756,6 +817,12 @@ Metadata pair and directory operations ///.
 \doxysubsubsection{\texorpdfstring{lfs\_dir\_split()}{lfs\_dir\_split()}}
 {\footnotesize\ttfamily static int lfs\+\_\+dir\+\_\+split (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{dir,  }\item[{const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$}]{attrs,  }\item[{int}]{attrcount,  }\item[{\mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{source,  }\item[{uint16\+\_\+t}]{split,  }\item[{uint16\+\_\+t}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
+\mbox{\Hypertarget{lfs_8c_aca065793653bbf24954a2021df8c4ddc}\label{lfs_8c_aca065793653bbf24954a2021df8c4ddc}} 
+\index{lfs.c@{lfs.c}!lfs\_dir\_splittingcompact@{lfs\_dir\_splittingcompact}}
+\index{lfs\_dir\_splittingcompact@{lfs\_dir\_splittingcompact}!lfs.c@{lfs.c}}
+\doxysubsubsection{\texorpdfstring{lfs\_dir\_splittingcompact()}{lfs\_dir\_splittingcompact()}}
+{\footnotesize\ttfamily static int lfs\+\_\+dir\+\_\+splittingcompact (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{dir,  }\item[{const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$}]{attrs,  }\item[{int}]{attrcount,  }\item[{\mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{source,  }\item[{uint16\+\_\+t}]{begin,  }\item[{uint16\+\_\+t}]{end }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
 \mbox{\Hypertarget{lfs_8c_a6017209fc606aa1ec1cd442b6afab392}\label{lfs_8c_a6017209fc606aa1ec1cd442b6afab392}} 
 \index{lfs.c@{lfs.c}!lfs\_dir\_tell@{lfs\_dir\_tell}}
 \index{lfs\_dir\_tell@{lfs\_dir\_tell}!lfs.c@{lfs.c}}
@@ -766,7 +833,7 @@ Metadata pair and directory operations ///.
 \index{lfs.c@{lfs.c}!lfs\_dir\_traverse@{lfs\_dir\_traverse}}
 \index{lfs\_dir\_traverse@{lfs\_dir\_traverse}!lfs.c@{lfs.c}}
 \doxysubsubsection{\texorpdfstring{lfs\_dir\_traverse()}{lfs\_dir\_traverse()}}
-{\footnotesize\ttfamily static int lfs\+\_\+dir\+\_\+traverse (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{const \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{dir,  }\item[{\mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}}}]{off,  }\item[{\mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}}}]{ptag,  }\item[{const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$}]{attrs,  }\item[{int}]{attrcount,  }\item[{\mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}}}]{tmask,  }\item[{\mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}}}]{ttag,  }\item[{uint16\+\_\+t}]{begin,  }\item[{uint16\+\_\+t}]{end,  }\item[{int16\+\_\+t}]{diff,  }\item[{int($\ast$)(void $\ast$data, \mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}} tag, const void $\ast$buffer)}]{cb,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily static int \mbox{\hyperlink{structlfs__dir__traverse}{lfs\+\_\+dir\+\_\+traverse}} (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{const \mbox{\hyperlink{lfs_8h_a2c7f80de78f724be0982817d85fedc69}{lfs\+\_\+mdir\+\_\+t}} $\ast$}]{dir,  }\item[{\mbox{\hyperlink{lfs_8h_af51a07597d88f1cc376abf5b2abfe23f}{lfs\+\_\+off\+\_\+t}}}]{off,  }\item[{\mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}}}]{ptag,  }\item[{const struct \mbox{\hyperlink{structlfs__mattr}{lfs\+\_\+mattr}} $\ast$}]{attrs,  }\item[{int}]{attrcount,  }\item[{\mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}}}]{tmask,  }\item[{\mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}}}]{ttag,  }\item[{uint16\+\_\+t}]{begin,  }\item[{uint16\+\_\+t}]{end,  }\item[{int16\+\_\+t}]{diff,  }\item[{int($\ast$)(void $\ast$data, \mbox{\hyperlink{lfs_8c_a53b9c14b82ac669a34e371580459f18f}{lfs\+\_\+tag\+\_\+t}} tag, const void $\ast$buffer)}]{cb,  }\item[{void $\ast$}]{data }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 \mbox{\Hypertarget{lfs_8c_a6b1c3b53c96e00f054acfac900aa6578}\label{lfs_8c_a6b1c3b53c96e00f054acfac900aa6578}} 
 \index{lfs.c@{lfs.c}!lfs\_dir\_traverse\_filter@{lfs\_dir\_traverse\_filter}}
@@ -785,6 +852,18 @@ Metadata pair and directory operations ///.
 \index{lfs\_file\_flush@{lfs\_file\_flush}!lfs.c@{lfs.c}}
 \doxysubsubsection{\texorpdfstring{lfs\_file\_flush()}{lfs\_file\_flush()}}
 {\footnotesize\ttfamily static int lfs\+\_\+file\+\_\+flush (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$}]{file }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs_8c_af5f4a97778cea2d3d9be8eba3d7dc5ac}\label{lfs_8c_af5f4a97778cea2d3d9be8eba3d7dc5ac}} 
+\index{lfs.c@{lfs.c}!lfs\_file\_flushedread@{lfs\_file\_flushedread}}
+\index{lfs\_file\_flushedread@{lfs\_file\_flushedread}!lfs.c@{lfs.c}}
+\doxysubsubsection{\texorpdfstring{lfs\_file\_flushedread()}{lfs\_file\_flushedread()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{lfs_8h_a2df609f304fdf817b92bd7f25a5bc012}{lfs\+\_\+ssize\+\_\+t}} lfs\+\_\+file\+\_\+flushedread (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$}]{file,  }\item[{void $\ast$}]{buffer,  }\item[{\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}}}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{lfs_8c_a74ea955f04467b3fb6877f7797ff5290}\label{lfs_8c_a74ea955f04467b3fb6877f7797ff5290}} 
+\index{lfs.c@{lfs.c}!lfs\_file\_flushedwrite@{lfs\_file\_flushedwrite}}
+\index{lfs\_file\_flushedwrite@{lfs\_file\_flushedwrite}!lfs.c@{lfs.c}}
+\doxysubsubsection{\texorpdfstring{lfs\_file\_flushedwrite()}{lfs\_file\_flushedwrite()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{lfs_8h_a2df609f304fdf817b92bd7f25a5bc012}{lfs\+\_\+ssize\+\_\+t}} lfs\+\_\+file\+\_\+flushedwrite (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{\mbox{\hyperlink{lfs_8h_a3afd9fba3166c11cdbeb6ff66bf59ce9}{lfs\+\_\+file\+\_\+t}} $\ast$}]{file,  }\item[{const void $\ast$}]{buffer,  }\item[{\mbox{\hyperlink{lfs_8h_afaa466451ecbf7eab934f5ad8e908134}{lfs\+\_\+size\+\_\+t}}}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 \mbox{\Hypertarget{lfs_8c_a02f1f1f3a196afa8f182a738f6e457ab}\label{lfs_8c_a02f1f1f3a196afa8f182a738f6e457ab}} 
 \index{lfs.c@{lfs.c}!lfs\_file\_open@{lfs\_file\_open}}
@@ -948,11 +1027,11 @@ Filesystem functions ///.
 \doxysubsubsection{\texorpdfstring{lfs\_fs\_demove()}{lfs\_fs\_demove()}}
 {\footnotesize\ttfamily static int lfs\+\_\+fs\+\_\+demove (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
-\mbox{\Hypertarget{lfs_8c_aaa892c2a41467b6689fd82ced4fab825}\label{lfs_8c_aaa892c2a41467b6689fd82ced4fab825}} 
+\mbox{\Hypertarget{lfs_8c_abcc4b5d45aafcd5b5e6dd00dc87f8f5b}\label{lfs_8c_abcc4b5d45aafcd5b5e6dd00dc87f8f5b}} 
 \index{lfs.c@{lfs.c}!lfs\_fs\_deorphan@{lfs\_fs\_deorphan}}
 \index{lfs\_fs\_deorphan@{lfs\_fs\_deorphan}!lfs.c@{lfs.c}}
 \doxysubsubsection{\texorpdfstring{lfs\_fs\_deorphan()}{lfs\_fs\_deorphan()}}
-{\footnotesize\ttfamily static int lfs\+\_\+fs\+\_\+deorphan (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+{\footnotesize\ttfamily static int lfs\+\_\+fs\+\_\+deorphan (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{bool}]{powerloss }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 \mbox{\Hypertarget{lfs_8c_a651bb8d9b7afba50f815c3a7a43abc6c}\label{lfs_8c_a651bb8d9b7afba50f815c3a7a43abc6c}} 
 \index{lfs.c@{lfs.c}!lfs\_fs\_forceconsistency@{lfs\_fs\_forceconsistency}}
@@ -1005,12 +1084,6 @@ Filesystem functions ///.
 
 
 Filesystem filesystem operations ///. 
-
-\mbox{\Hypertarget{lfs_8c_abf0f867988c445b4cf96d0678b3d3957}\label{lfs_8c_abf0f867988c445b4cf96d0678b3d3957}} 
-\index{lfs.c@{lfs.c}!lfs\_fs\_relocate@{lfs\_fs\_relocate}}
-\index{lfs\_fs\_relocate@{lfs\_fs\_relocate}!lfs.c@{lfs.c}}
-\doxysubsubsection{\texorpdfstring{lfs\_fs\_relocate()}{lfs\_fs\_relocate()}}
-{\footnotesize\ttfamily static int lfs\+\_\+fs\+\_\+relocate (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{lfs_8h_a78971bd2089c58446f09a15b79fe2d74}{lfs\+\_\+t}} $\ast$}]{lfs,  }\item[{const \mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}}}]{oldpair\mbox{[}2\mbox{]},  }\item[{\mbox{\hyperlink{lfs_8h_a1af3fde2dd52d98a44eaaaa53e3441bb}{lfs\+\_\+block\+\_\+t}}}]{newpair\mbox{[}2\mbox{]} }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
 
 \mbox{\Hypertarget{lfs_8c_a1bcbabf2dfe0a35931ab797540771483}\label{lfs_8c_a1bcbabf2dfe0a35931ab797540771483}} 
 \index{lfs.c@{lfs.c}!lfs\_fs\_size@{lfs\_fs\_size}}

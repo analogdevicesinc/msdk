@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m_597',['m',['../structlfs__dir.html#a9cde2fbbdac46f542ef300bbea2d08b2',1,'lfs_dir::m()'],['../structlfs__file.html#ac83a0e2ea5916e074f167ceab56992a6',1,'lfs_file::m()'],['../structlfs_1_1lfs__mlist.html#a5129be50edf636115e1304cbc94aca7f',1,'lfs::lfs_mlist::m()']]],
-  ['metadata_5fmax_598',['metadata_max',['../structlfs__config.html#acee64f494548f3e836328c49fc3dad76',1,'lfs_config']]],
-  ['mlist_599',['mlist',['../structlfs.html#ad21bfdb4ce25c3ffbe6989d1278d6f63',1,'lfs']]]
+  ['lfs_585',['lfs',['../structlfs__dir__find__match.html#a6ed76ccab3487d4e517d9199302ce64b',1,'lfs_dir_find_match::lfs()'],['../structlfs__dir__commit__commit.html#a7c36e57a33f2d4cf5c81767c1f92fbd8',1,'lfs_dir_commit_commit::lfs()'],['../structlfs__fs__parent__match.html#a43ba4e124bc68468b076e5cc2cd408b6',1,'lfs_fs_parent_match::lfs()']]],
+  ['lookahead_5fbuffer_586',['lookahead_buffer',['../structlfs__config.html#afee66de317d0f778157eae576744847c',1,'lfs_config']]],
+  ['lookahead_5fsize_587',['lookahead_size',['../structlfs__config.html#a010570f77b49932004eb24fc3d8feb6f',1,'lfs_config']]]
 ];

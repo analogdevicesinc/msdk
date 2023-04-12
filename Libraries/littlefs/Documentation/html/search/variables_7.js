@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['i_592',['i',['../structlfs_1_1lfs__free.html#a58b9950311a585e8a47bb519fef38773',1,'lfs::lfs_free']]],
-  ['id_593',['id',['../structlfs__dir.html#ae70ad1bea93d3d0e291a887519315baf',1,'lfs_dir::id()'],['../structlfs__file.html#af5b7ea3db84fa0d590c7bb06c9786f29',1,'lfs_file::id()'],['../structlfs_1_1lfs__mlist.html#ad9e9856ffc58a06ee13051318dffbdce',1,'lfs::lfs_mlist::id()']]]
+  ['head_582',['head',['../structlfs__dir.html#a086e8d93663f5528fcc7c2ff7802883d',1,'lfs_dir::head()'],['../structlfs__file_1_1lfs__ctz.html#aff9613735c2288e388bf3000a66f4720',1,'lfs_file::lfs_ctz::head()']]]
 ];
