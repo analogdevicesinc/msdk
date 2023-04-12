@@ -38,16 +38,32 @@
 #include "spi.h"
 #include "afe.h"
 #include "mxc_sys.h"
+#include "mxc_delay.h"
+#include "hart_uart.h"
+#include "gcr_regs.h"
 
 #include "afe_gpio.h"
 #include "gpio.h"
 #include "gpio_reva.h"
 #include "gpio_common.h"
 
+// Known Device revision defines
+#define MXC_REVISION_MASK (0x00FF)
+#define MXC_MAX32675_REV_B2 (0x00B2)
+#define MXC_MAX32675_REV_B3 (0x00B3)
+#define MXC_MAX32675_REV_B4 (0x00B4)
+
+#define MXC_MAX32680_REV_A1 (0x00A1)
+#define MXC_MAX32680_REV_B1 (0x00B1)
+
+#define MXC_AFE_VERSION_ORIGINAL 0
+#define MXC_AFE_VERSION_PRE_RESET 1
+#define MXC_AFE_VERSION_POST_RESET 2
+
 // AFE SPI Port Configuration
-#if (TARGET != MAX32675 || TARGET_NUM == 32675)
+#if (TARGET_NUM == 32675)
 #define AFE_SPI_PORT MXC_SPI0
-#elif (TARGET != MAX32680 || TARGET_NUM == 32680)
+#elif (TARGET_NUM == 32680)
 #define AFE_SPI_PORT MXC_SPI1
 #endif
 
@@ -59,13 +75,66 @@
 // AFE Trim Storage Defines
 //#define DUMP_TRIM_DATA
 
-#if (TARGET != MAX32675 || TARGET_NUM == 32675)
+//
+// This timeout prevents infinite loop if AFE is not responsive via SPI
+//
+//  Each read from AFE is 8 bits, unless CRC is enabled.
+//  maximum of 4 reads.
+//      1/AFE_SPI_BAUD * 4 * 8 should be a reasonable timeout for this.
+//      1/100000 = 10us * 4 * 8 = 320us round up for safety: 400us
+//
+//  Since this is just for catastrophic lockup, lets double it.
+//
+#if ( AFE_SPI_BAUD != 100000 )
+    #warning "Recalculate MXC_AFE_SPI_READ_TIMEOUT, since baud rate was modified.\n"
+#endif
+
+#define MXC_AFE_SPI_READ_TIMEOUT USEC(800)
+
+//
+// Initial AFE RESET time, up to 10 milliseconds
+//
+#define MXC_AFE_SPI_RESET_TIMEOUT MSEC(10)
+
+#if (TARGET_NUM == 32675)
 #define AFE_TRIM_OTP_OFFSET_LOW 0x280
 #define AFE_TRIM_OTP_OFFSET_HIGH 0x288
-#elif (TARGET != MAX32680 || TARGET_NUM == 32680)
+
+#define AFE_SPI_MISO_GPIO_PORT MXC_GPIO0
+#define AFE_SPI_MISO_GPIO_PIN MXC_GPIO_PIN_2
+
+#define AFE_SPI_MOSI_GPIO_PORT MXC_GPIO0
+#define AFE_SPI_MOSI_GPIO_PIN MXC_GPIO_PIN_3
+
+#define AFE_SPI_SCK_GPIO_PORT MXC_GPIO0
+#define AFE_SPI_SCK_GPIO_PIN MXC_GPIO_PIN_4
+
+#define AFE_SPI_SSEL_GPIO_PORT MXC_GPIO0
+#define AFE_SPI_SSEL_GPIO_PIN MXC_GPIO_PIN_5
+
+#elif (TARGET_NUM == 32680)
 #define AFE_TRIM_OTP_OFFSET_LOW 0x0E10
 #define AFE_TRIM_OTP_OFFSET_HIGH 0x0E18
+
+#define AFE_SPI_MISO_GPIO_PORT MXC_GPIO0
+#define AFE_SPI_MISO_GPIO_PIN MXC_GPIO_PIN_20
+
+#define AFE_SPI_MOSI_GPIO_PORT MXC_GPIO0
+#define AFE_SPI_MOSI_GPIO_PIN MXC_GPIO_PIN_21
+
+#define AFE_SPI_SCK_GPIO_PORT MXC_GPIO0
+#define AFE_SPI_SCK_GPIO_PIN MXC_GPIO_PIN_22
+
+#define AFE_SPI_SSEL_GPIO_PORT MXC_GPIO0
+#define AFE_SPI_SSEL_GPIO_PIN MXC_GPIO_PIN_23
 #endif
+
+
+//
+// Register defines for new AFE reset on ME16A-0D
+//
+#define MXC_F_GCR_RST1_AFE_POS                        25 /**< RST1_AFE Position */
+#define MXC_F_GCR_RST1_AFE                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_AFE_POS)) /**< RST1_AFE Mask */
 
 #define AFE_TRIM0_ADC0_MASK 0x7FFFF
 #define AFE_TRIM0_ADC0_BIT_WIDTH 19
@@ -100,6 +169,21 @@
 // Largest Possible AFE SPI transaction (BYTES): Address 1, Max Data 4, CRC 2
 #define AFE_SPI_MAX_DATA_LEN 7
 
+//
+// Masks and values used for validation of AFE SPI out of reset
+//  Uses entire bottom nibble match, AND por_flag
+//
+// Revisions AFTER Reset added to AFE
+#define ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_MASK     ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL | MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC5 | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS | MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG )
+#define ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_VALUE    ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS | MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG )
+#define ME16_AFE_POST_RST_SYS_CTRL_RESET_VALUE       ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS )
+
+// Revisions BEFORE Reset added to AFE
+#define ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_MASK     ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL | MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC5 | MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG )
+#define ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_VALUE    ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG )
+#define ME16_AFE_PRE_RST_SYS_CTRL_RESET_VALUE       ( 0 )
+
+
 /***** Globals *****/
 uint8_t afe_data[AFE_SPI_MAX_DATA_LEN];
 mxc_spi_regs_t *pSPIm = AFE_SPI_PORT;
@@ -122,13 +206,17 @@ trim_data_t trim_data;
 uint32_t current_register_bank = 0;
 uint32_t adc0_conversion_active = 0;
 uint32_t adc1_conversion_active = 0;
+uint32_t device_version = 0;
 
-#if (TARGET != MAX32675 || TARGET_NUM == 32675)
+#if (TARGET_NUM == 32675)
+
 static mxc_gpio_cfg_t gpio_cfg_spi0 = {
     MXC_GPIO0, (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5),
     MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE
 };
-#elif (TARGET != MAX32680 || TARGET_NUM == 32680)
+
+#elif (TARGET_NUM == 32680)
+
 static mxc_gpio_cfg_t gpio_cfg_spi1 = {
     MXC_GPIO0, (MXC_GPIO_PIN_20 | MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23),
     MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE
@@ -140,29 +228,109 @@ static int raw_afe_write_register(uint8_t reg_address, uint32_t value, uint8_t r
 static int raw_afe_read_register(uint8_t reg_address, uint32_t *value, uint8_t reg_length);
 
 /***** Functions *****/
+
+
+// Probe and determine silicon version of AFE micro
+static int afe_micro_version_probe(void)
+{
+    // Due to changes in the latest AFE revision, different initialization procedures are required.
+
+    uint32_t rev = MXC_GCR->revision;
+
+    // Mask off metal option details, only care about revision here
+    rev &= MXC_REVISION_MASK;
+
+    //
+    // Decode AFE version from micro version
+    //
+#if (TARGET_NUM == 32675)
+    switch (rev) {
+        // Known and supported versions
+        case MXC_MAX32675_REV_B2:
+        case MXC_MAX32675_REV_B3:
+            device_version = MXC_AFE_VERSION_PRE_RESET;
+            return E_NO_ERROR;
+
+        case MXC_MAX32675_REV_B4:
+            device_version = MXC_AFE_VERSION_POST_RESET;
+            return E_NO_ERROR;
+
+        default:
+        // Unknown or unsupported version
+            return E_INVALID;
+    }
+#elif (TARGET_NUM == 32680)
+    switch (rev) {
+        // Known and supported versions
+        case MXC_MAX32680_REV_A1:
+            device_version = MXC_AFE_VERSION_PRE_RESET;
+            return E_NO_ERROR;
+
+        case MXC_MAX32680_REV_B1:
+            // TODO ADI: Validate this revision is correct when updated MAX32680 is released
+            device_version = MXC_AFE_VERSION_POST_RESET;
+            return E_NO_ERROR;
+
+        default:
+        // Unknown or unsupported version
+            return E_INVALID;
+    }
+#else
+    #error "Selected TARGET is not known to have an AFE\n"
+#endif
+
+    return E_NO_ERROR;
+}
+
+
+// Puts the SPI interface to the AFE into controlled inactive state
+static void afe_spi_idle_interface(void)
+{
+    // Make sure SSEL is inactive first
+    // SSEL should output 1 (inactive)
+    AFE_SPI_SSEL_GPIO_PORT->out_set = AFE_SPI_SSEL_GPIO_PIN;
+    AFE_SPI_SSEL_GPIO_PORT->outen_set = AFE_SPI_SSEL_GPIO_PIN;
+    AFE_SPI_SSEL_GPIO_PORT->en0_set = AFE_SPI_SSEL_GPIO_PIN;
+
+    // SCK output 0
+    AFE_SPI_SCK_GPIO_PORT->out_clr = AFE_SPI_SCK_GPIO_PIN;
+    AFE_SPI_SCK_GPIO_PORT->outen_set = AFE_SPI_SCK_GPIO_PIN;
+    AFE_SPI_SCK_GPIO_PORT->en0_set = AFE_SPI_SCK_GPIO_PIN;
+
+    // MISO will always be strong driven from AFE.
+    //  Therefore, put in tristate input mode
+    AFE_SPI_MISO_GPIO_PORT->outen_clr = AFE_SPI_MISO_GPIO_PIN;
+    AFE_SPI_MISO_GPIO_PORT->padctrl0 &= ~AFE_SPI_MISO_GPIO_PIN;
+    AFE_SPI_MISO_GPIO_PORT->padctrl1 &= ~AFE_SPI_MISO_GPIO_PIN;
+
+    // Only setting en0 here, to avoid any chance of glitch when set to AF mode later
+    AFE_SPI_MISO_GPIO_PORT->en0_set = AFE_SPI_MISO_GPIO_PIN;
+
+    // MOSI output 0
+    AFE_SPI_MOSI_GPIO_PORT->out_clr = AFE_SPI_MOSI_GPIO_PIN;
+    AFE_SPI_MOSI_GPIO_PORT->outen_set = AFE_SPI_MOSI_GPIO_PIN;
+    AFE_SPI_MOSI_GPIO_PORT->en0_set = AFE_SPI_MOSI_GPIO_PIN;
+
+    return;
+}
+
+
 static int afe_spi_setup(void)
 {
     int retval = 0;
 
     // Enable SPI Periph clock, and reset it
-#if (TARGET != MAX32675 || TARGET_NUM == 32675)
+#if (TARGET_NUM == 32675)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI0);
 
-    retval = MXC_AFE_GPIO_Config(&gpio_cfg_spi0);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
-
-#elif (TARGET != MAX32680 || TARGET_NUM == 32680)
+#elif (TARGET_NUM == 32680)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
-
-    retval = MXC_AFE_GPIO_Config(&gpio_cfg_spi1);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
 #endif
+
+    // Initialize global check for previous SPI transaction finished
+    check_done = 0;
 
     // NOTE: AFE uses SPI Mode 0, which is reset default
 
@@ -181,34 +349,106 @@ static int afe_spi_setup(void)
     pSPIm->sstime = ((1 << MXC_F_SPI_SSTIME_PRE_POS) | (1 << MXC_F_SPI_SSTIME_POST_POS) |
                      (1 << MXC_F_SPI_SSTIME_INACT_POS));
 
-    pSPIm->ctrl0 |= (MXC_F_SPI_CTRL0_EN | MXC_F_SPI_CTRL0_MST_MODE);
-
     pSPIm->dma = (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
 
     // FIFO Threshold reset defaults are fine
     pSPIm->dma |= MXC_F_SPI_DMA_TX_FIFO_EN;
     pSPIm->dma |= MXC_F_SPI_DMA_RX_FIFO_EN;
 
+    // Don't enable the SPI block until the FIFOs are enabled, to avoid floating any of the SPI interface pins.
+    pSPIm->ctrl0 |= (MXC_F_SPI_CTRL0_EN | MXC_F_SPI_CTRL0_MST_MODE);
+
     // Clear any existing interrupt status
     pSPIm->intfl = pSPIm->intfl;
+
+    //
+    // Now that the ME15 side of SPI is setup, configure gpio pads.
+    //  Doing this after turning on the SPI periph to avoid floating AFE inputs.
+    //
+#if (TARGET_NUM == 32675)
+    retval = MXC_AFE_GPIO_Config(&gpio_cfg_spi0);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+#elif (TARGET_NUM == 32680)
+    retval = MXC_AFE_GPIO_Config(&gpio_cfg_spi1);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+#endif
+
+    if (device_version < MXC_AFE_VERSION_POST_RESET) {
+        //
+        // MISO needs a pull down when SPI interface is idle, (this is changed on new silicon)
+        //
+        AFE_SPI_MISO_GPIO_PORT->padctrl0 |= AFE_SPI_MISO_GPIO_PIN;
+
+        // Ensure the second pull enable is disabled, so we only have to write one register later
+        AFE_SPI_MISO_GPIO_PORT->padctrl1 &= ~AFE_SPI_MISO_GPIO_PIN;
+
+        // Pull down
+        AFE_SPI_MISO_GPIO_PORT->ps &= ~AFE_SPI_MISO_GPIO_PIN;
+    }
 
     return E_NO_ERROR;
 }
 
-// This function block until transceive is completed
-// TODO(ADI): Consider checking for timeout
+// This function block until transceive is completed, or times out
 static int afe_spi_transceive(uint8_t *data, int byte_length)
 {
+    int status = E_NO_ERROR;
     int i = 0;
 
     if (byte_length > AFE_SPI_MAX_DATA_LEN) {
         return E_OVERFLOW;
     }
 
-    while (pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) {}
+    //
+    // Ensure transmit FIFO is finished
+    // NOTE: if the AFE was reset during transaction this may not finish, so using a timeout
+    //
 
+    // Start timeout, wait for SPI TX to complete
+    MXC_DelayAsync(MXC_AFE_SPI_READ_TIMEOUT, NULL);
+
+    do {
+        status = MXC_DelayCheck();
+
+        if ( (pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) == 0 ) {
+            // TX completed
+            MXC_DelayAbort();
+            break;
+        }
+
+    } while ( status == E_BUSY );
+
+    if (status != E_BUSY) {
+        return E_TIME_OUT;
+    }
+
+    //
+    // If a transaction has been started, verify it completed before continuing
+    //
     if (check_done) {
-        while (!(pSPIm->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
+
+        // Start timeout, wait for SPI MST DONE to set
+        MXC_DelayAsync(MXC_AFE_SPI_READ_TIMEOUT, NULL);
+
+        do {
+            status = MXC_DelayCheck();
+
+            if (pSPIm->intfl & MXC_F_SPI_INTFL_MST_DONE) {
+                // MST Done
+                MXC_DelayAbort();
+                break;
+            }
+
+        } while ( status == E_BUSY );
+
+        if (status != E_BUSY) {
+            return E_TIME_OUT;
+        }
     }
 
     check_done = 1;
@@ -221,7 +461,17 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
     pSPIm->ctrl1 = ((((byte_length) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS)) |
                     (byte_length << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS));
 
+
+    if (device_version < MXC_AFE_VERSION_POST_RESET) {
+        //
+        // Legacy: Disable pull down on MISO while transmitting.
+        //
+        AFE_SPI_MISO_GPIO_PORT->padctrl0 |= AFE_SPI_MISO_GPIO_PIN;
+    }
+
     pSPIm->ctrl0 |= MXC_F_SPI_CTRL0_START;
+
+    // NOTE: At most we will read 32 bits before returning to processing, no streaming data
 
     //
     // Transmit the data
@@ -233,30 +483,248 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
     //
     // Receive the data
     //
-    for (i = 0; i < byte_length; i++) {
-        // Wait for data to be available
-        while (!(pSPIm->dma & MXC_F_SPI_DMA_RX_LVL)) {}
 
-        data[i] = pSPIm->fifo8[0];
+    // Reset byte counter
+    i = 0;
+
+    // Start timeout, wait for SPI receive to complete
+    MXC_DelayAsync(MXC_AFE_SPI_READ_TIMEOUT, NULL);
+
+    do {
+        status = MXC_DelayCheck();
+
+        if ((pSPIm->dma & MXC_F_SPI_DMA_RX_LVL)) {
+            data[i] = pSPIm->fifo8[0];
+            i++;
+        }
+
+    } while ( (i < byte_length) && (status == E_BUSY) );
+
+    MXC_DelayAbort();
+
+    if (device_version < MXC_AFE_VERSION_POST_RESET) {
+        //
+        // Legacy: Enable pull down on MISO while idle.
+        //
+        AFE_SPI_MISO_GPIO_PORT->padctrl0 |= AFE_SPI_MISO_GPIO_PIN;
     }
 
+    if ( (i < byte_length) || (status != E_BUSY) ) {
+        return E_TIME_OUT;
+    }
+
+    // Got all bytes, and we did NOT timeout
     return E_NO_ERROR;
 }
 
-int afe_setup(void)
+
+static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
 {
+    int retval = E_NO_ERROR;
+    int delay_status = E_NO_ERROR;
+    uint32_t read_val = 0;
+
+    //
+    // New for ME16A-0D, Validate that SPI interface on AFE is responding
+    //  AFE will not correctly respond after a reset for up to 10ms.
+    //
+    // It is ASSUMED that during the time wih the SPI on AFE is in reset the read output will be 0xFF or 0x00.
+    //
+    // The sys_ctrl register is modified on this revision so that the following is true:
+    //  On a true POR: por_flag (bit 6) and st_dis (bit 3) will BOTH be set to 1, all other bits will be 0
+    //      That is 0x48 == POR
+    //
+    //  Any other reset: por_flag (bit 6) will NOT be set ASSUMING user code has already cleared it to 0
+    //    st_dis (bit 3) will be set, and hart_en (bit 4) maybe set or not. Other bits will be 0.
+    //
+
+    // Start timeout for reset initialization
+    MXC_DelayAsync(MXC_AFE_SPI_RESET_TIMEOUT, NULL);
+
+    do {
+        delay_status = MXC_DelayCheck();
+
+        retval = raw_afe_read_register(
+            (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, &read_val,
+            (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS);
+
+        // NOTE: Remember that reading sys_ctrl also SETS the SPI_ABORT_DIS bit
+
+        if (retval != E_NO_ERROR) {
+            return retval;
+        }
+
+        // Test mask for TRUE POR
+        read_val &= ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_MASK;
+
+        // Check for True POR
+        if ( read_val == ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_VALUE ) {
+            // This appears to be a true POR
+            MXC_DelayAbort();
+            *true_por = 1;
+            break;
+        }
+
+        // Check for a normal reset
+        if ( read_val == ME16_AFE_POST_RST_SYS_CTRL_RESET_VALUE ) {
+            // This appears to be a normal reset
+            MXC_DelayAbort();
+            *true_por = 0;
+            break;
+        }
+
+    } while ( retval == E_BUSY );
+
+    if (delay_status != E_BUSY) {
+        // Failed to initiate communications with AFE within time limit
+        return E_TIME_OUT;
+    }
+
+    return E_NO_ERROR;
+
+}
+
+
+static int afe_spi_poll_for_ready_pre_reset_change(uint32_t *true_por)
+{
+    int retval = E_NO_ERROR;
+    int delay_status = E_NO_ERROR;
+    uint32_t read_val = 0;
+
+    // Legacy initialization method
+
+    // Start timeout for reset initialization
+    MXC_DelayAsync(MXC_AFE_SPI_RESET_TIMEOUT, NULL);
+
+    do {
+        delay_status = MXC_DelayCheck();
+
+        retval = raw_afe_read_register(
+            (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, &read_val,
+            (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS);
+
+        // NOTE: Remember that reading sys_ctrl also SETS the SPI_ABORT_DIS bit
+
+        if (retval != E_NO_ERROR) {
+            return retval;
+        }
+
+        // Test mask for TRUE POR
+        read_val &= ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_MASK;
+
+        // Check for True POR
+        if ( read_val == ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_VALUE ) {
+            // This appears to be a true POR
+            MXC_DelayAbort();
+            *true_por = 1;
+            break;
+        }
+
+        // Check for a normal reset
+        if ( read_val == ME16_AFE_PRE_RST_SYS_CTRL_RESET_VALUE ) {
+            // This appears to be a normal reset
+            MXC_DelayAbort();
+            *true_por = 0;
+            break;
+        }
+
+    } while ( retval == E_BUSY );
+
+    if (delay_status != E_BUSY) {
+        // Failed to initiate communications with AFE within time limit
+        return E_TIME_OUT;
+    }
+
+    return E_NO_ERROR;
+
+}
+
+
+static int afe_spi_poll_for_ready(uint32_t *true_por)
+{
+    if (device_version >= MXC_AFE_VERSION_POST_RESET) {
+        return afe_spi_poll_for_ready_post_reset_change(true_por);
+    }
+    else {
+        // Treat all earlier revs the same
+        return afe_spi_poll_for_ready_pre_reset_change(true_por);
+    }
+}
+
+
+static int afe_setup_true_por(void)
+{
+    //
+    // If this is a true POR, then set state as expected
+    //  Clear por_flag, st_dis, hart_en, crc_en
+    //  Also sets crc_inv to normal aka non-inverted
+    //   and forces selection of ADC0 register bank
+    //
+    // SYS_CTRL should be 0
+    //
     int retval = 0;
     uint32_t read_val = 0;
 
-    retval = afe_spi_setup();
+    retval = raw_afe_write_register(
+        (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, read_val,
+        (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS);
+
+    // NOTE: Remember that reading sys_ctrl also SETS the SPI_ABORT_DIS bit
+
     if (retval != E_NO_ERROR) {
         return retval;
     }
 
-    // Disable CRC for all reads, and Ensure bank is ADC0
-    // NOTE: CRC works, but takes extra time which is in short supply at 2Mhz.
-    // TODO(ADI): Add optional support for CRC5 of register reads.
-    read_val = MXC_S_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL_ADC0_BANK;
+    // Read it back as an additional validation of proper SPI operation
+    retval = raw_afe_read_register(
+        (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, &read_val,
+        (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS);
+
+    // NOTE: Remember that reading sys_ctrl also SETS the SPI_ABORT_DIS bit
+
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // Mask SPI_ABORT_DIS bit to 0 for the following expected value comparison
+    read_val &= ~MXC_F_AFE_ADC_ZERO_SYS_CTRL_SPI_ABORT_DIS;
+
+    if (read_val != 0) {
+        // Response does NOT matches written and expected value
+        return E_COMM_ERR;
+    }
+
+    return retval;
+}
+
+
+static int afe_setup_non_por(void)
+{
+    //
+    // This is a non POR reset
+    // Do NOT clear st_dis, or hart_en bits.
+    //  Clear por_flag, crc_en
+    //  Also sets crc_inv to normal aka non-inverted
+    //   and forces selection of ADC0 register bank
+    //
+    // st_dis and hart_en must remain on to avoid disabling HART pin biases once enabled
+
+    int retval = 0;
+    uint32_t read_val = 0;
+
+    // Doing a read modify write
+    retval = raw_afe_read_register(
+        (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, &read_val,
+        (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS);
+
+    // NOTE: Remember that reading sys_ctrl also SETS the SPI_ABORT_DIS bit
+
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // mask all bits but st_dis, or hart_en bits.
+    read_val &= ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS );
 
     retval = raw_afe_write_register(
         (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, read_val,
@@ -266,9 +734,101 @@ int afe_setup(void)
         return retval;
     }
 
-    retval = afe_read_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, &read_val);
+    // Read it back as an additional validation of proper SPI operation
+    retval = raw_afe_read_register(
+        (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, &read_val,
+        (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS);
+
+    // NOTE: Remember that reading sys_ctrl also SETS the SPI_ABORT_DIS bit
+
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    // mask all bits but st_dis, or hart_en bits.
+    read_val &= ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS );
+
+    if (device_version >= MXC_MAX32675_REV_B4) {
+        // ST_DIS MUST be set, and HART_EN MAY be set
+        if ( (read_val != (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) &&
+            (read_val != (MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) ) {
+        // Response does NOT matches written and expected value
+            return E_COMM_ERR;
+        }
+    }
+    else {
+        // LEGACY silicon mode, the ST_DIS bit CANNOT be set as is doesn't exist, so look for 0
+        // However, HART_EN could be set, since we cannot reset the ME19
+        if ( (read_val != 0) && (read_val != MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN) ) {
+            // Response does NOT matches written and expected value
+            return E_COMM_ERR;
+        }
+    }
+
+    // Finally before continuing, we disable the HART clock, to avoid any unexpected behaviors.
+    // Should already be disabled by System Reset, or afe_reset, so this is just for safety.
+
+    disable_hart_clock();
 
     return retval;
+}
+
+
+int afe_setup(void)
+{
+    int retval = 0;
+    uint32_t true_por = 0;
+
+    // Probe for Version to determine initialization procedure
+    retval = afe_micro_version_probe();
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    //
+    // NEW on ME16-0D, ensure reset is released for the AFE via GRC
+    //  Reset could be active due to SW error recovery.
+    //
+    if (device_version >= MXC_MAX32675_REV_B4) {
+        MXC_GCR->rst1 &= ~MXC_F_GCR_RST1_AFE;
+    }
+
+    retval = afe_spi_setup();
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    retval = afe_spi_poll_for_ready(&true_por);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    if (true_por) {
+        return afe_setup_true_por();
+    }
+    else {
+        return afe_setup_non_por();
+    }
+}
+
+
+void afe_reset(void)
+{
+    //
+    // Before resetting AFE, insure SPI pins are in known good state
+    //
+    afe_spi_idle_interface();
+
+    //
+    // Software controlled reset of the AFE is controlled via GCR
+    //  Note, after calling this function afe_load_trims should be called to restore AFE functionality
+    //
+    MXC_GCR->rst1 |= MXC_F_GCR_RST1_AFE;
+
+    //
+    // Disable HART clock to avoid any unexpected behaviors by the HART block when reset is released
+    //
+    disable_hart_clock();
 }
 
 static int raw_afe_write_register(uint8_t reg_address, uint32_t value, uint8_t reg_length)
@@ -468,7 +1028,29 @@ int afe_load_trims(void)
 #endif
 
     // setup the interface before we begin
-    afe_setup();
+    retval = afe_setup();
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    //
+    // Before Trimming, reset AFE to known state
+    //
+
+    //
+    // SYS_CTRL will be in a known state after a successful call to afe_setup()
+    //
+
+    // Reset ADCs, as the MAX32675 Reset has no effect on them
+    // After restoring POR defaults, ADCS enter Standby mode
+    retval = afe_write_register(MXC_R_AFE_ADC_ZERO_PD, MXC_S_AFE_ADC_ZERO_PD_PD_RESET);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+    retval = afe_write_register(MXC_R_AFE_ADC_ONE_PD, MXC_S_AFE_ADC_ONE_PD_PD_RESET);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
 
     //
     // Read in AFE Trims
@@ -546,28 +1128,6 @@ int afe_load_trims(void)
     printf("ANA ADC1 trim: %08X\n", trim_data.ana_trim_adc1);
     printf("VREF trim: %08X\n", trim_data.vref_trim);
 #endif
-
-    //
-    // Before Trimming, reset AFE to known state
-    //
-
-    // NOTE: SYS_CTRL is a global register, avaliable from all banks
-    // NOTE: POR Flag can only be written to 1, this indicates NO POR has occured since setting to 1
-    retval = afe_write_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
-
-    // Reset ADCs, as the MAX32675 Reset has no effect on them
-    // After restoring POR defaults, ADCS enter Standby mode
-    retval = afe_write_register(MXC_R_AFE_ADC_ZERO_PD, MXC_S_AFE_ADC_ZERO_PD_PD_RESET);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
-    retval = afe_write_register(MXC_R_AFE_ADC_ONE_PD, MXC_S_AFE_ADC_ONE_PD_PD_RESET);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
 
     //
     // Write Trims

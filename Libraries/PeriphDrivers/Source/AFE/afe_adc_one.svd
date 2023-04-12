@@ -2751,6 +2751,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>ST_DIS</name>
+            <description>Description not included</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>HART_EN</name>
             <description>Description not included</description>
             <bitOffset>4</bitOffset>

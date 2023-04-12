@@ -64,15 +64,18 @@ int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     switch (cfg->pad) {
     case MXC_GPIO_PAD_NONE:
         gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_UP:
         gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
         gpio->ps |= cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_DOWN:
         gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
         gpio->ps &= ~cfg->mask;
         break;
 

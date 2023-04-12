@@ -74,6 +74,13 @@ extern "C" {
  */
 int afe_setup(void);
 
+
+/**
+ * @brief  Puts the AFE into a RESET state to recover from errors, or reduce power consumption
+ * @note   Must call afe_load_trims to restore AFE functionality after a reset.
+ */
+void afe_reset(void);
+
 /**
  * @brief   Writes data to AFE register.
  *

@@ -81,6 +81,9 @@
 #define HART_IN_GPIO_PORT MXC_GPIO0
 #define HART_IN_GPIO_PIN MXC_GPIO_PIN_15
 
+#define HART_OUT_GPIO_PORT MXC_GPIO0
+#define HART_OUT_GPIO_PIN MXC_GPIO_PIN_14
+
 #define HART_CLK_GPIO_PORT MXC_GPIO0
 #define HART_CLK_GPIO_PIN MXC_GPIO_PIN_10
 
@@ -128,7 +131,7 @@ void hart_cd_isr(void *cbdata);
 // Private Functions
 static int hart_uart_init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
 {
-    int retval;
+    int retval = E_NO_ERROR;
 
     retval = MXC_UART_Shutdown(uart);
     if (retval) {
@@ -195,7 +198,7 @@ int hart_uart_setflowctrl(mxc_uart_regs_t *uart, mxc_uart_flow_t flowCtrl, int r
 // Functions
 static int setup_rts_pin(void)
 {
-    int retval = 0;
+    int retval = E_NO_ERROR;
     mxc_gpio_cfg_t hart_rts;
 
     hart_rts.port = HART_RTS_GPIO_PORT;
@@ -214,9 +217,28 @@ static int setup_rts_pin(void)
     return retval;
 }
 
-static int setup_cd_pin(void)
+static int idle_rts_pin(void)
 {
     int retval = 0;
+    mxc_gpio_cfg_t hart_rts;
+
+    hart_rts.port  = HART_RTS_GPIO_PORT;
+    hart_rts.mask  = HART_RTS_GPIO_PIN;
+    hart_rts.pad   = MXC_GPIO_PAD_PULL_DOWN;
+    hart_rts.func  = MXC_GPIO_FUNC_OUT;
+    hart_rts.vssel = MXC_GPIO_VSSEL_VDDIOH;
+
+    retval = MXC_AFE_GPIO_Config(&hart_rts);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    return retval;
+}
+
+static int setup_cd_pin(void)
+{
+    int retval = E_NO_ERROR;
     mxc_gpio_cfg_t hart_cd;
 
     hart_cd.port = HART_CD_GPIO_PORT;
@@ -243,6 +265,25 @@ static int setup_cd_pin(void)
     return retval;
 }
 
+static int idle_cd_pin(void)
+{
+    int retval = E_NO_ERROR;
+    mxc_gpio_cfg_t hart_cd;
+
+    hart_cd.port  = HART_CD_GPIO_PORT;
+    hart_cd.mask  = HART_CD_GPIO_PIN;
+    hart_cd.pad   = MXC_GPIO_PAD_PULL_DOWN;
+    hart_cd.func  = MXC_GPIO_FUNC_IN;
+    hart_cd.vssel = MXC_GPIO_VSSEL_VDDIOH;
+
+    retval = MXC_AFE_GPIO_Config(&hart_cd);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    return retval;
+}
+
 static uint32_t get_hart_cd_state(void)
 {
     return MXC_GPIO_InGet(HART_CD_GPIO_PORT, HART_CD_GPIO_PIN);
@@ -250,7 +291,7 @@ static uint32_t get_hart_cd_state(void)
 
 static int setup_hart_in_pin(void)
 {
-    int retval = 0;
+    int retval = E_NO_ERROR;
     mxc_gpio_cfg_t hart_in;
 
     hart_in.port = HART_IN_GPIO_PORT;
@@ -270,22 +311,114 @@ static int setup_hart_in_pin(void)
     return retval;
 }
 
-static void hart_rts_transmit_mode(void)
+static int idle_hart_in_pin(void)
+{
+    int retval = E_NO_ERROR;
+    mxc_gpio_cfg_t hart_in;
+
+    hart_in.port  = HART_IN_GPIO_PORT;
+    hart_in.mask  = HART_IN_GPIO_PIN;
+    hart_in.pad   = MXC_GPIO_PAD_PULL_DOWN;
+    hart_in.func  = MXC_GPIO_FUNC_OUT;
+    hart_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
+
+    retval = MXC_AFE_GPIO_Config(&hart_in);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    return retval;
+}
+
+static int setup_hart_out_pin(void)
+{
+    int retval = E_NO_ERROR;
+    mxc_gpio_cfg_t hart_out;
+
+    hart_out.port  = HART_OUT_GPIO_PORT;
+    hart_out.mask  = HART_OUT_GPIO_PIN;
+    hart_out.pad   = MXC_GPIO_PAD_NONE;
+    hart_out.func  = MXC_GPIO_FUNC_IN;
+    hart_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
+
+    retval = MXC_AFE_GPIO_Config(&hart_out);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    return retval;
+}
+
+static int idle_hart_out_pin(void)
+{
+    int retval = E_NO_ERROR;
+    mxc_gpio_cfg_t hart_out;
+
+    hart_out.port  = HART_OUT_GPIO_PORT;
+    hart_out.mask  = HART_OUT_GPIO_PIN;
+    hart_out.pad   = MXC_GPIO_PAD_PULL_DOWN;
+    hart_out.func  = MXC_GPIO_FUNC_OUT;
+    hart_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
+
+    retval = MXC_AFE_GPIO_Config(&hart_out);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    return retval;
+}
+
+static int hart_uart_pins_idle_mode(void)
+{
+    // To avoid floating inputs, when HART is NOT enabled, pull the HART UART pins low
+    // NOTE: this only handles the HART uart pins, not the HART clock output
+    int retval = E_NO_ERROR;
+
+    retval = idle_hart_in_pin();
+
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    retval = idle_rts_pin();
+
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    retval = idle_cd_pin();
+
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    retval = idle_hart_out_pin();
+
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    return retval;
+}
+
+
+void hart_rts_transmit_mode(void)
 {
     MXC_GPIO_OutClr(HART_RTS_GPIO_PORT, HART_RTS_GPIO_PIN);
 }
 
-static void hart_rts_receive_mode(void)
+
+void hart_rts_receive_mode(void)
 {
     MXC_GPIO_OutSet(HART_RTS_GPIO_PORT, HART_RTS_GPIO_PIN);
 }
 
-static int enable_hart_clock(void)
+
+int enable_hart_clock(void)
 {
-    int retval = 0;
+    int retval = E_NO_ERROR;
 
 #if (TARGET_NUM == 32675)
-    mxc_gpio_cfg_t hart_clk_output;
 
     // ERFO Crystal is required for the HART device in the AFE
     retval = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
@@ -294,17 +427,24 @@ static int enable_hart_clock(void)
         return retval;
     }
 
-    // Put output pin in correct mode
-    hart_clk_output.port = HART_CLK_GPIO_PORT;
-    hart_clk_output.mask = HART_CLK_GPIO_PIN;
-    hart_clk_output.pad = MXC_GPIO_PAD_NONE;
-    hart_clk_output.func = MXC_GPIO_FUNC_ALT4;
-    hart_clk_output.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    //
+    // Put clock output pin in correct mode
+    //
 
-    retval = MXC_AFE_GPIO_Config(&hart_clk_output);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
+    // To avoid any glitches on the clock output first configure the in I/O mode
+    HART_CLK_GPIO_PORT->en0_set = HART_CLK_GPIO_PIN;
+    HART_CLK_GPIO_PORT->out_clr = HART_CLK_GPIO_PIN;
+    HART_CLK_GPIO_PORT->outen_set = HART_CLK_GPIO_PIN;
+
+    // Transition to requested alternate function clearing en0 last
+    HART_CLK_GPIO_PORT->en2_set = HART_CLK_GPIO_PIN;
+    HART_CLK_GPIO_PORT->en1_set = HART_CLK_GPIO_PIN;
+    HART_CLK_GPIO_PORT->en0_clr = HART_CLK_GPIO_PIN;
+
+    // Leave GPIO pad pull down enabled, pulls are overridden in IO and alternate function modes.
+    //  But will take over if clock is later disabled.
+    HART_CLK_GPIO_PORT->padctrl0 |= HART_CLK_GPIO_PIN;
+    HART_CLK_GPIO_PORT->ps &= ~HART_CLK_GPIO_PIN;
 
     // Since we have 16Mhz External RF Oscillator (ERFO)
     // We need to divide it by 4 to get desired 4Mhz output (DIV_CLK_OUT_CTRL of 2)
@@ -312,6 +452,7 @@ static int enable_hart_clock(void)
     MXC_GCR->pclkdiv |= ((PCLKDIV_DIV_BY_4 << MXC_F_GCR_PCLKDIV_DIV_CLK_OUT_CTRL_POS) &
                          MXC_F_GCR_PCLKDIV_DIV_CLK_OUT_CTRL);
     MXC_GCR->pclkdiv |= MXC_F_GCR_PCLKDIV_DIV_CLK_OUT_EN;
+
 #elif (TARGET_NUM == 32680)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_PT);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_PT);
@@ -400,21 +541,58 @@ static int enable_hart_clock(void)
     if (retval != E_NO_ERROR) {
         return retval;
     }
-#endif
 
     pPTG->enable |= MXC_F_PTG_ENABLE_PT0 | MXC_F_PTG_ENABLE_PT2;
+#else
+    pPTG->enable |= MXC_F_PTG_ENABLE_PT0;
+#endif // End of HART_CLK_4MHZ_CHECK
 
     //wait for PT to start
     while ((pPTG->enable & (MXC_F_PTG_ENABLE_PT0)) != MXC_F_PTG_ENABLE_PT0) {}
 
-#endif
+#endif // End of (TARGET_NUM == 32680)
 
     return retval;
 }
 
+
+static void idle_hart_clock_pin(void)
+{
+    // To avoid potential glitches when changing from Alternate functions
+    //  First return to IO mode before clearing AF selections
+    HART_CLK_GPIO_PORT->en0_set = HART_CLK_GPIO_PIN;
+    HART_CLK_GPIO_PORT->out_clr = HART_CLK_GPIO_PIN;
+    HART_CLK_GPIO_PORT->outen_set = HART_CLK_GPIO_PIN;
+
+    HART_CLK_GPIO_PORT->en1_clr = HART_CLK_GPIO_PIN;
+    HART_CLK_GPIO_PORT->en2_clr = HART_CLK_GPIO_PIN;
+
+    // GPIO pad pull down enabled
+    HART_CLK_GPIO_PORT->padctrl0 |= HART_CLK_GPIO_PIN;
+    HART_CLK_GPIO_PORT->ps &= ~HART_CLK_GPIO_PIN;
+
+    return;
+}
+
+
+void disable_hart_clock(void)
+{
+#if (TARGET_NUM == 32675)
+    MXC_GCR->pclkdiv &= ~MXC_F_GCR_PCLKDIV_DIV_CLK_OUT_EN;
+#elif (TARGET_NUM == 32680)
+    pPTG->enable &= ~MXC_F_PTG_ENABLE_PT0;
+#endif // End of (TARGET_NUM == 32675)
+
+    // Before disabling the HART clock output, configure pin pull-down
+    idle_hart_clock_pin();
+
+    return;
+}
+
+
 int hart_uart_enable(void)
 {
-    int retval = 0;
+    int retval = E_NO_ERROR;
     uint32_t read_val = 0;
 
     retval = afe_read_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, &read_val);
@@ -429,9 +607,10 @@ int hart_uart_enable(void)
     return retval;
 }
 
+
 int hart_uart_disable(void)
 {
-    int retval = 0;
+    int retval = E_NO_ERROR;
     uint32_t read_val = 0;
 
     retval = afe_read_register(MXC_R_AFE_ADC_ZERO_SYS_CTRL, &read_val);
@@ -446,12 +625,83 @@ int hart_uart_disable(void)
     return retval;
 }
 
+
+int hart_uart_takedown(void)
+{
+    int retval = E_NO_ERROR;
+
+    // Set the HART uart pins in correct mode for idling
+    retval = hart_uart_pins_idle_mode();
+
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    retval = hart_uart_disable();
+
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    disable_hart_clock();
+
+    return retval;
+}
+
+
 int hart_uart_setup(uint32_t test_mode)
 {
-    int retval = 0;
+    int retval = E_NO_ERROR;
     uint32_t read_val = 0;
 
-    retval = enable_hart_clock();
+    //
+    // NOTE: enable HART Clock output last to avoid any unexpected behaviors by
+    //  HART state machine.
+    //
+
+    //
+    // Any HART configuration modifications must be made before enabling HART.
+    //
+
+    //
+    // Utilize character based re-timing on received HART data.
+    //  Provides enhanced noise tolerance.
+    //
+    retval = afe_read_register(MXC_R_AFE_HART_RX_TX_CTL, &read_val);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    read_val |= MXC_F_AFE_HART_RX_TX_CTL_RX_DOUT_UART_EN;
+
+    retval = afe_write_register(MXC_R_AFE_HART_RX_TX_CTL, read_val);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    //
+    // Enable HART mode on ME19/AFE.
+    //  Puts AFE gpios 2-5 into UART mode
+    //
+
+    retval = hart_uart_enable();
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
+
+    //
+    // HART UART gpio configuration
+    //
+    //  Note, all four UART pins on the ME19/AFE are just floating inputs
+    //  until HART_EN in SYS_CTRL is enabled.
+    //
+    // Seems safer to enable the ME19 HART UART side first, and endure
+    //  contention until the ME15 side is configured.  This means a small
+    //  known current drawn between the ME19 HART OUT high and the ME15 HART OUT
+    //  pin pull down. Better than floating inputs on the 19 that may consume mAs.
+
+    // The HART OUT pin will have contention, configure it first to minimize current.
+    retval = setup_hart_out_pin();
     if (retval != E_NO_ERROR) {
         return retval;
     }
@@ -460,6 +710,7 @@ int hart_uart_setup(uint32_t test_mode)
     if (retval != E_NO_ERROR) {
         return retval;
     }
+
     retval = setup_cd_pin();
     if (retval != E_NO_ERROR) {
         return retval;
@@ -526,27 +777,16 @@ int hart_uart_setup(uint32_t test_mode)
     }
 
     //
-    // Any HART configuration modifications must be made before enabling HART.
+    // Finally turn on HART 4Mhz Clock
     //
-
-    //
-    // Utilize character based re-timing on received HART data.
-    //  Provides enhanced noise tolerance.
-    //
-    retval = afe_read_register(MXC_R_AFE_HART_RX_TX_CTL, &read_val);
+    retval = enable_hart_clock();
     if (retval != E_NO_ERROR) {
         return retval;
     }
 
-    read_val |= MXC_F_AFE_HART_RX_TX_CTL_RX_DOUT_UART_EN;
-
-    retval = afe_write_register(MXC_R_AFE_HART_RX_TX_CTL, read_val);
-    if (retval != E_NO_ERROR) {
-        return retval;
-    }
-
-    return hart_uart_enable();
+    return retval;
 }
+
 
 void hart_uart_test_transmit_1200(void)
 {
@@ -562,7 +802,7 @@ void hart_uart_test_transmit_2200(void)
 
 int hart_uart_send(uint8_t *data, uint32_t length)
 {
-    int retval = 0;
+    int retval = E_NO_ERROR;
     int i = 0;
 
     // Ensure the line is quiet before beginning transmission
@@ -572,9 +812,6 @@ int hart_uart_send(uint8_t *data, uint32_t length)
 
     // NOTE: we are not forcing preamble
     hart_rts_transmit_mode();
-
-    // TODO(ADI): remove this slight delay when in real use with preamble etc.
-    MXC_Delay(MXC_DELAY_USEC(750));
 
     for (i = 0; i < length; i++) {
         retval = MXC_UART_WriteCharacter(HART_UART_INSTANCE, data[i]);
@@ -592,9 +829,6 @@ int hart_uart_send(uint8_t *data, uint32_t length)
 
     while (MXC_UART_GetStatus(HART_UART_INSTANCE) & MXC_F_UART_STATUS_TX_BUSY) {}
 
-    // TODO(ADI): remove this slight delay when in real use with preamble etc.
-    MXC_Delay(MXC_DELAY_USEC(750));
-
     hart_rts_receive_mode();
 
     return retval;
@@ -603,7 +837,7 @@ int hart_uart_send(uint8_t *data, uint32_t length)
 void UART2_IRQHandler()
 {
     unsigned int uart_flags = MXC_UART_GetFlags(HART_UART_INSTANCE);
-    int retval = 0;
+    int retval = E_NO_ERROR;
 
     // Clear any flags
     MXC_UART_ClearFlags(HART_UART_INSTANCE, uart_flags);

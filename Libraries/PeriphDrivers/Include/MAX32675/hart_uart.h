@@ -123,6 +123,29 @@ int hart_uart_get_received_packet(uint8_t *buffer, uint32_t *packet_length);
  */
 void hart_uart_handler(void);
 
+/**
+ * @brief   Set HART RTS pin to receive mode, usually for testing purposes.
+ *
+ */
+void hart_rts_receive_mode(void);
+
+/**
+ * @brief   Set HART RTS pin to transmit mode, usually for testing purposes.
+ *
+ */
+void hart_rts_transmit_mode(void);
+
+/**
+ * @brief   Enables the 4Mhz clock that drives HART state machine
+ *
+ */
+int enable_hart_clock(void);
+
+/**
+ * @brief   Disables the 4Mhz clock that drives HART state machine
+ *
+ */
+void disable_hart_clock(void);
 /**@} end of group hart_uart */
 
 #ifdef __cplusplus
