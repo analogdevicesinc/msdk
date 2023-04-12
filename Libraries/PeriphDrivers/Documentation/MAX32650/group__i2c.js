@@ -26,6 +26,7 @@ var group__i2c =
     ] ],
     [ "MXC_I2C_AbortAsync", "group__i2c.html#ga92648a55c0b2b94b99e81fc1b2fb4f48", null ],
     [ "MXC_I2C_AsyncHandler", "group__i2c.html#gaf3fc7633faccfdc8bfd2e662155d4190", null ],
+    [ "MXC_I2C_AsyncStop", "group__i2c.html#gadb51adbf4b889de2aa48892aa525dfc5", null ],
     [ "MXC_I2C_ClearFlags", "group__i2c.html#ga15ad14f32660186f7ba6cf1b4bdd3068", null ],
     [ "MXC_I2C_ClearRXFIFO", "group__i2c.html#ga4e05ef461feb962f032ff7a4b2a35456", null ],
     [ "MXC_I2C_ClearTXFIFO", "group__i2c.html#ga5ac5558ec91a3d434f13b67596cd9864", null ],

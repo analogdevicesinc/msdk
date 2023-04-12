@@ -27,7 +27,7 @@ var searchData=
   ['sca_5frdsa_5faddr_24',['sca_rdsa_addr',['../group__ctb__registers.html#a84c3b5bd3485361e08510a7fbd781663',1,'mxc_ctb_regs_t']]],
   ['sca_5fres_5faddr_25',['sca_res_addr',['../group__ctb__registers.html#ac156c4ed504e078805d1a09f4d4cf1c3',1,'mxc_ctb_regs_t']]],
   ['sca_5fstat_26',['sca_stat',['../group__ctb__registers.html#a8a081112da880f56bbbd7efa0dc38595',1,'mxc_ctb_regs_t']]],
-  ['scale_27',['scale',['../group__adc.html#a9a5f45aeb1473e9a4ecf741aa2d3be91',1,'mxc_adc_monitor_req_t::scale()'],['../group__adc.html#a9a5f45aeb1473e9a4ecf741aa2d3be91',1,'mxc_adc_conversion_req_t::scale()']]],
+  ['scale_27',['scale',['../group__adc.html#a9a5f45aeb1473e9a4ecf741aa2d3be91',1,'mxc_adc_conversion_req_t::scale()'],['../group__adc.html#a9a5f45aeb1473e9a4ecf741aa2d3be91',1,'mxc_adc_monitor_req_t::scale()']]],
   ['scclkctrl_28',['scclkctrl',['../group__gcr__registers.html#ab8cde5b4c93e49c96d91e4ce09483dc5',1,'mxc_gcr_regs_t']]],
   ['scn_5fccr_29',['SCN_CCR',['../group___s_c_n___c_c_r.html',1,'']]],
   ['scn_5fcr_30',['SCN_CR',['../group___s_c_n___c_r.html',1,'']]],
@@ -55,7 +55,7 @@ var searchData=
   ['sdma_5firq_5fflag_52',['SDMA_IRQ_FLAG',['../group___s_d_m_a___i_r_q___f_l_a_g.html',1,'']]],
   ['sdma_5firq_5fie_53',['SDMA_IRQ_IE',['../group___s_d_m_a___i_r_q___i_e.html',1,'']]],
   ['sdma_5fregisters_54',['SDMA_Registers',['../group__sdma__registers.html',1,'']]],
-  ['sec_55',['sec',['../group__rtc__registers.html#a42840f18466e61b7fe0bde5d005a6a66',1,'mxc_rtc_regs_t::sec()'],['../group__htmr__registers.html#a42840f18466e61b7fe0bde5d005a6a66',1,'mxc_htmr_regs_t::sec()']]],
+  ['sec_55',['sec',['../group__htmr__registers.html#a42840f18466e61b7fe0bde5d005a6a66',1,'mxc_htmr_regs_t::sec()'],['../group__rtc__registers.html#a42840f18466e61b7fe0bde5d005a6a66',1,'mxc_rtc_regs_t::sec()']]],
   ['secalm_56',['secalm',['../group__smon__registers.html#a216bf1e34db3077f372daf01a772618d',1,'mxc_smon_regs_t']]],
   ['secdiag_57',['secdiag',['../group__smon__registers.html#a6e6447734ff039d45793e9702463ff3b',1,'mxc_smon_regs_t']]],
   ['secst_58',['secst',['../group__smon__registers.html#aabd33fcaa588759c79aab55d6ddee5d2',1,'mxc_smon_regs_t']]],
@@ -187,11 +187,12 @@ var searchData=
   ['sstime_184',['sstime',['../group__spi__registers.html#a53352010f5744128e401d3c2581745a0',1,'mxc_spi_regs_t']]],
   ['stat_185',['stat',['../group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7',1,'mxc_spi_regs_t']]],
   ['state_186',['state',['../group__skbd.html#ad82f33df0bce18be97a14693ac68f13b',1,'mxc_skbd_req_t']]],
-  ['status_187',['status',['../group__uart__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9',1,'mxc_uart_regs_t::status()'],['../group__trng__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_trng_regs_t::status()'],['../group__skbd__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9',1,'mxc_skbd_regs_t::status()'],['../group__sema__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_sema_regs_t::status()'],['../group__otp__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_otp_regs_t::status()'],['../group__i2c__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_i2c_regs_t::status()'],['../group__dma__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_dma_ch_regs_t::status()'],['../group__adc__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_adc_regs_t::status()']]],
+  ['status_187',['status',['../group__sema__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_sema_regs_t::status()'],['../group__uart__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9',1,'mxc_uart_regs_t::status()'],['../group__trng__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_trng_regs_t::status()'],['../group__adc__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_adc_regs_t::status()'],['../group__dma__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_dma_ch_regs_t::status()'],['../group__i2c__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_i2c_regs_t::status()'],['../group__otp__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_otp_regs_t::status()'],['../group__skbd__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9',1,'mxc_skbd_regs_t::status()']]],
   ['stop_5finten_188',['stop_inten',['../group__ptg__registers.html#add3dc7d9ea1760c9bb1dc29b94a49021',1,'mxc_ptg_regs_t']]],
   ['stop_5fintfl_189',['stop_intfl',['../group__ptg__registers.html#aca888f81d0fa4736c92004fa8d0c06b8',1,'mxc_ptg_regs_t']]],
   ['sysctrl_190',['sysctrl',['../group__gcr__registers.html#a407cda1ef910d9af256661910946b14e',1,'mxc_gcr_regs_t']]],
   ['sysie_191',['sysie',['../group__gcr__registers.html#a8f7a0b2eff9f55ace2c79ddea2e4a8f2',1,'mxc_gcr_regs_t']]],
   ['sysst_192',['sysst',['../group__gcr__registers.html#a6e139ffb1b218877f74b83aaddd17439',1,'mxc_gcr_regs_t']]],
-  ['sz_193',['sz',['../group__sfcc__registers.html#a0dfb0826afc4f581891cf5cc970c4902',1,'mxc_sfcc_regs_t']]]
+  ['system_20configuration_20_28mxc_5fsys_29_193',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]],
+  ['sz_194',['sz',['../group__sfcc__registers.html#a0dfb0826afc4f581891cf5cc970c4902',1,'mxc_sfcc_regs_t']]]
 ];

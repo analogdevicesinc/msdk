@@ -13,6 +13,7 @@ var modules =
     [ "Delay Utility Functions", "group___m_x_c__delay.html", "group___m_x_c__delay" ],
     [ "Error Codes", "group___m_x_c___error___codes.html", "group___m_x_c___error___codes" ],
     [ "Exclusive Access Locks", "group__mxc__lock__utilities.html", "group__mxc__lock__utilities" ],
+    [ "System Configuration (MXC_SYS)", "group__mxc__sys.html", "group__mxc__sys" ],
     [ "Real Time Clock (RTC)", "group__rtc.html", "group__rtc" ],
     [ "SPI", "group__spi.html", "group__spi" ],
     [ "Timer (TMR)", "group__tmr.html", "group__tmr" ],

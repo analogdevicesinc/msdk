@@ -187,5 +187,5 @@ var searchData=
   ['sw_5freset_184',['sw_reset',['../group__sdhc__registers.html#a723e9f1de3cbc95987aa21569f2e7c68',1,'mxc_sdhc_regs_t']]],
   ['sys_5fstat_185',['sys_stat',['../group__gcr__registers.html#ae1b4175765059418079435bdeb905542',1,'mxc_gcr_regs_t']]],
   ['sys_5fstat_5fie_186',['sys_stat_ie',['../group__gcr__registers.html#a8fc2deabbb742a1a4a2713655a6b2e0c',1,'mxc_gcr_regs_t']]],
-  ['system_20functions_187',['System functions',['../group__mxc__sys.html',1,'']]]
+  ['system_20configuration_20_28mxc_5fsys_29_187',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]]
 ];

@@ -25,5 +25,6 @@ var searchData=
   ['spimss_5fi2s_5fctrl_22',['SPIMSS_I2S_CTRL',['../group___s_p_i_m_s_s___i2_s___c_t_r_l.html',1,'']]],
   ['spimss_5fint_5ffl_23',['SPIMSS_INT_FL',['../group___s_p_i_m_s_s___i_n_t___f_l.html',1,'']]],
   ['spimss_5fmode_24',['SPIMSS_MODE',['../group___s_p_i_m_s_s___m_o_d_e.html',1,'']]],
-  ['spimss_5fregisters_25',['SPIMSS_Registers',['../group__spimss__registers.html',1,'']]]
+  ['spimss_5fregisters_25',['SPIMSS_Registers',['../group__spimss__registers.html',1,'']]],
+  ['system_20configuration_20_28mxc_5fsys_29_26',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]]
 ];

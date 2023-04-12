@@ -65,5 +65,6 @@ var searchData=
   ['sysctrl_62',['sysctrl',['../group__gcr__registers.html#a407cda1ef910d9af256661910946b14e',1,'mxc_gcr_regs_t']]],
   ['sysie_63',['sysie',['../group__gcr__registers.html#a8f7a0b2eff9f55ace2c79ddea2e4a8f2',1,'mxc_gcr_regs_t']]],
   ['sysst_64',['sysst',['../group__gcr__registers.html#a6e139ffb1b218877f74b83aaddd17439',1,'mxc_gcr_regs_t']]],
-  ['sz_65',['sz',['../group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902',1,'mxc_icc_regs_t']]]
+  ['system_20configuration_20_28mxc_5fsys_29_65',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]],
+  ['sz_66',['sz',['../group__icc__registers.html#a0dfb0826afc4f581891cf5cc970c4902',1,'mxc_icc_regs_t']]]
 ];

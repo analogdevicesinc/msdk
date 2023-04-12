@@ -38,5 +38,6 @@ var searchData=
   ['spi_5fstatic_5fconfig_35',['SPI_STATIC_CONFIG',['../group___s_p_i___s_t_a_t_i_c___c_o_n_f_i_g.html',1,'']]],
   ['spi_5ftrnmt_5fsize_36',['SPI_TRNMT_SIZE',['../group___s_p_i___t_r_n_m_t___s_i_z_e.html',1,'']]],
   ['spi_5fwake_5fen_37',['SPI_WAKE_EN',['../group___s_p_i___w_a_k_e___e_n.html',1,'']]],
-  ['spi_5fwake_5ffl_38',['SPI_WAKE_FL',['../group___s_p_i___w_a_k_e___f_l.html',1,'']]]
+  ['spi_5fwake_5ffl_38',['SPI_WAKE_FL',['../group___s_p_i___w_a_k_e___f_l.html',1,'']]],
+  ['system_20configuration_20_28mxc_5fsys_29_39',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]]
 ];

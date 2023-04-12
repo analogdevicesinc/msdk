@@ -73,11 +73,14 @@ var searchData=
   ['mxc_5fspixr_5fmode_5ft_70',['mxc_spixr_mode_t',['../group__spixr.html#ga2eb030466a5c6d46d7ebc358b6b2e192',1,'spixr.h']]],
   ['mxc_5fspixr_5fwidth_5ft_71',['mxc_spixr_width_t',['../group__spixr.html#ga8af78f93f070a44095c7c491317e6666',1,'spixr.h']]],
   ['mxc_5fsrcc_5fcache_5fid_5ft_72',['mxc_srcc_cache_id_t',['../group__srcc.html#gac4000a744171f6f2209eef7359e1274f',1,'srcc.h']]],
-  ['mxc_5ftmr_5fmode_5ft_73',['mxc_tmr_mode_t',['../group__tmr.html#gaa4b41159cb2e0fc8fcfb3c258f2972da',1,'tmr.h']]],
-  ['mxc_5ftmr_5fpres_5ft_74',['mxc_tmr_pres_t',['../group__tmr.html#gaa8ad001ef87dfd27884960ac2769fdd3',1,'tmr.h']]],
-  ['mxc_5ftmr_5funit_5ft_75',['mxc_tmr_unit_t',['../group__tmr.html#gaa0d647d7ed191977d06968a0594b9eeb',1,'tmr.h']]],
-  ['mxc_5fuart_5fflow_5ft_76',['mxc_uart_flow_t',['../group__uart.html#gab136978025cdaf5f7f65c0e9ecc0950c',1,'uart.h']]],
-  ['mxc_5fuart_5fparity_5ft_77',['mxc_uart_parity_t',['../group__uart.html#ga7bea3ce501d2c4b9841ee2292f4cb350',1,'uart.h']]],
-  ['mxc_5fuart_5fstop_5ft_78',['mxc_uart_stop_t',['../group__uart.html#ga9ef512c6d921959fa4aa91c24bf60edb',1,'uart.h']]],
-  ['mxc_5fwdt_5fperiod_5ft_79',['mxc_wdt_period_t',['../group__wdt.html#ga402e160fed5337127134084c4042c598',1,'wdt.h']]]
+  ['mxc_5fsys_5fperiph_5fclock_5ft_73',['mxc_sys_periph_clock_t',['../group__mxc__sys.html#ga6b3ca6c369c2018baa508a4f52526095',1,'mxc_sys.h']]],
+  ['mxc_5fsys_5freset_5ft_74',['mxc_sys_reset_t',['../group__mxc__sys.html#gac071c2b6609556ddac3ebfe47f5f47ba',1,'mxc_sys.h']]],
+  ['mxc_5fsys_5fsystem_5fclock_5ft_75',['mxc_sys_system_clock_t',['../group__mxc__sys.html#gadf14ad3a77c60331855f811d1f004870',1,'mxc_sys.h']]],
+  ['mxc_5ftmr_5fmode_5ft_76',['mxc_tmr_mode_t',['../group__tmr.html#gaa4b41159cb2e0fc8fcfb3c258f2972da',1,'tmr.h']]],
+  ['mxc_5ftmr_5fpres_5ft_77',['mxc_tmr_pres_t',['../group__tmr.html#gaa8ad001ef87dfd27884960ac2769fdd3',1,'tmr.h']]],
+  ['mxc_5ftmr_5funit_5ft_78',['mxc_tmr_unit_t',['../group__tmr.html#gaa0d647d7ed191977d06968a0594b9eeb',1,'tmr.h']]],
+  ['mxc_5fuart_5fflow_5ft_79',['mxc_uart_flow_t',['../group__uart.html#gab136978025cdaf5f7f65c0e9ecc0950c',1,'uart.h']]],
+  ['mxc_5fuart_5fparity_5ft_80',['mxc_uart_parity_t',['../group__uart.html#ga7bea3ce501d2c4b9841ee2292f4cb350',1,'uart.h']]],
+  ['mxc_5fuart_5fstop_5ft_81',['mxc_uart_stop_t',['../group__uart.html#ga9ef512c6d921959fa4aa91c24bf60edb',1,'uart.h']]],
+  ['mxc_5fwdt_5fperiod_5ft_82',['mxc_wdt_period_t',['../group__wdt.html#ga402e160fed5337127134084c4042c598',1,'wdt.h']]]
 ];

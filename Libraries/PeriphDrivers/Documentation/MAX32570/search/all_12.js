@@ -23,7 +23,7 @@ var searchData=
   ['sca_5frdsa_5faddr_20',['sca_rdsa_addr',['../group__ctb__registers.html#a84c3b5bd3485361e08510a7fbd781663',1,'mxc_ctb_regs_t']]],
   ['sca_5fres_5faddr_21',['sca_res_addr',['../group__ctb__registers.html#ac156c4ed504e078805d1a09f4d4cf1c3',1,'mxc_ctb_regs_t']]],
   ['sca_5fstat_22',['sca_stat',['../group__ctb__registers.html#a8a081112da880f56bbbd7efa0dc38595',1,'mxc_ctb_regs_t']]],
-  ['scale_23',['scale',['../group__adc.html#a9a5f45aeb1473e9a4ecf741aa2d3be91',1,'mxc_adc_conversion_req_t::scale()'],['../group__adc.html#a9a5f45aeb1473e9a4ecf741aa2d3be91',1,'mxc_adc_monitor_req_t::scale()']]],
+  ['scale_23',['scale',['../group__adc.html#a9a5f45aeb1473e9a4ecf741aa2d3be91',1,'mxc_adc_monitor_req_t::scale()'],['../group__adc.html#a9a5f45aeb1473e9a4ecf741aa2d3be91',1,'mxc_adc_conversion_req_t::scale()']]],
   ['scck_24',['scck',['../group__gcr__registers.html#a4129a55dd4a298631cf203b7af6cf611',1,'mxc_gcr_regs_t']]],
   ['scf_25',['scf',['../group__emac__registers.html#af57d83c5d3c8fb7159996c76309cc5bf',1,'mxc_emac_regs_t']]],
   ['scn_5fccr_26',['SCN_CCR',['../group___s_c_n___c_c_r.html',1,'']]],
@@ -84,7 +84,7 @@ var searchData=
   ['sdhc_5fto_81',['SDHC_TO',['../group___s_d_h_c___t_o.html',1,'']]],
   ['sdhc_5ftrans_82',['SDHC_TRANS',['../group___s_d_h_c___t_r_a_n_s.html',1,'']]],
   ['sdhc_5fwakeup_83',['SDHC_WAKEUP',['../group___s_d_h_c___w_a_k_e_u_p.html',1,'']]],
-  ['sdma_84',['sdma',['../group__sdhc.html#a352ebdd4ca1858d68fd5fe33d86cca1a',1,'mxc_sdhc_cmd_cfg_t::sdma()'],['../group__sdhc__registers.html#aeed89c0a5ae6d433ed9adf6260f6bdd5',1,'mxc_sdhc_regs_t::sdma()']]],
+  ['sdma_84',['sdma',['../group__sdhc__registers.html#aeed89c0a5ae6d433ed9adf6260f6bdd5',1,'mxc_sdhc_regs_t::sdma()'],['../group__sdhc.html#a352ebdd4ca1858d68fd5fe33d86cca1a',1,'mxc_sdhc_cmd_cfg_t::sdma()']]],
   ['sdma_5fctrl_85',['SDMA_CTRL',['../group___s_d_m_a___c_t_r_l.html',1,'']]],
   ['sdma_5fint_5fin_5fctrl_86',['SDMA_INT_IN_CTRL',['../group___s_d_m_a___i_n_t___i_n___c_t_r_l.html',1,'']]],
   ['sdma_5fint_5fin_5fflag_87',['SDMA_INT_IN_FLAG',['../group___s_d_m_a___i_n_t___i_n___f_l_a_g.html',1,'']]],
@@ -244,11 +244,12 @@ var searchData=
   ['ssel_5fpol_241',['ssel_pol',['../group__spixf.html#a9ebaa216b8897db9be95f2300fe36673',1,'mxc_spixf_cfg_t']]],
   ['ssidx_242',['ssIdx',['../group__spi.html#a265582641e03d3e8aab76429d632d7bd',1,'_mxc_spi_req_t']]],
   ['st_243',['st',['../group__dma__registers.html#ad6a57716ee15290a71889c2a0f5f21bb',1,'mxc_dma_ch_regs_t::st()'],['../group__trng__registers.html#ac667b3b0eae4081dc5667115fbbcd52a',1,'mxc_trng_regs_t::st()']]],
-  ['stat_244',['stat',['../group__adc9__registers.html#aa0708e7b79dc84bf8216aacafae5155e',1,'mxc_adc9_regs_t::stat()'],['../group__spixr__registers.html#a165ffa7e0db53fbc622c375b63a436d7',1,'mxc_spixr_regs_t::stat()'],['../group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7',1,'mxc_spi_regs_t::stat()'],['../group__clcd__registers.html#aa0708e7b79dc84bf8216aacafae5155e',1,'mxc_clcd_regs_t::stat()']]],
+  ['stat_244',['stat',['../group__adc9__registers.html#aa0708e7b79dc84bf8216aacafae5155e',1,'mxc_adc9_regs_t::stat()'],['../group__clcd__registers.html#aa0708e7b79dc84bf8216aacafae5155e',1,'mxc_clcd_regs_t::stat()'],['../group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7',1,'mxc_spi_regs_t::stat()'],['../group__spixr__registers.html#a165ffa7e0db53fbc622c375b63a436d7',1,'mxc_spixr_regs_t::stat()']]],
   ['state_245',['state',['../group__skbd.html#ad82f33df0bce18be97a14693ac68f13b',1,'mxc_skbd_req_t']]],
   ['status_246',['status',['../group__adc__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_adc_regs_t::status()'],['../group__emac__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9',1,'mxc_emac_regs_t::status()'],['../group__i2c__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_i2c_regs_t::status()'],['../group__sema__registers.html#af65ae05bcce5786d892c6a2bd1141292',1,'mxc_sema_regs_t::status()'],['../group__uart__registers.html#a4b79764f6dc9cf227c2ddd91219e8ac9',1,'mxc_uart_regs_t::status()']]],
   ['sw_5freset_247',['sw_reset',['../group__sdhc__registers.html#a723e9f1de3cbc95987aa21569f2e7c68',1,'mxc_sdhc_regs_t']]],
   ['sysctrl_248',['sysctrl',['../group__gcr__registers.html#a407cda1ef910d9af256661910946b14e',1,'mxc_gcr_regs_t']]],
   ['sysie_249',['sysie',['../group__gcr__registers.html#a8f7a0b2eff9f55ace2c79ddea2e4a8f2',1,'mxc_gcr_regs_t']]],
-  ['sysst_250',['sysst',['../group__gcr__registers.html#a6e139ffb1b218877f74b83aaddd17439',1,'mxc_gcr_regs_t']]]
+  ['sysst_250',['sysst',['../group__gcr__registers.html#a6e139ffb1b218877f74b83aaddd17439',1,'mxc_gcr_regs_t']]],
+  ['system_20configuration_20_28mxc_5fsys_29_251',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]]
 ];

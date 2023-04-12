@@ -210,6 +210,8 @@ Functions</h2></td></tr>
 <tr class="separator:gacbb55e2af2b42c66e9da1d12c71f8d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga96ea0864b386ee1d975d358ea909595a"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#ga96ea0864b386ee1d975d358ea909595a">MXC_I2C_GetTXThreshold</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c)</td></tr>
 <tr class="separator:ga96ea0864b386ee1d975d358ea909595a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gadb51adbf4b889de2aa48892aa525dfc5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#gadb51adbf4b889de2aa48892aa525dfc5">MXC_I2C_AsyncStop</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c)</td></tr>
+<tr class="separator:gadb51adbf4b889de2aa48892aa525dfc5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga92648a55c0b2b94b99e81fc1b2fb4f48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#ga92648a55c0b2b94b99e81fc1b2fb4f48">MXC_I2C_AbortAsync</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c)</td></tr>
 <tr class="separator:ga92648a55c0b2b94b99e81fc1b2fb4f48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf3fc7633faccfdc8bfd2e662155d4190"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#gaf3fc7633faccfdc8bfd2e662155d4190">MXC_I2C_AsyncHandler</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c)</td></tr>
@@ -518,6 +520,33 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
 
 <p>The processing function for asynchronous transactions. </p>
 <p >When using the asynchronous functions, the application must call this function periodically. This can be done from within the I2C interrupt handler or periodically by the application if I2C interrupts are disabled.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used.) </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gadb51adbf4b889de2aa48892aa525dfc5" name="gadb51adbf4b889de2aa48892aa525dfc5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gadb51adbf4b889de2aa48892aa525dfc5">&#9670;&nbsp;</a></span>MXC_I2C_AsyncStop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_I2C_AsyncStop </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Stop any asynchronous requests in progress. </p>
+<p >Stop any asynchronous requests in progress. Any callbacks associated with the active transaction will be NOT executed.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used.) </td></tr>
@@ -2200,7 +2229,7 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Apr 4 2023 15:34:35 for MAX32675 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Apr 12 2023 16:48:29 for MAX32675 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

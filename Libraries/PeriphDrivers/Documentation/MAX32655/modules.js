@@ -14,6 +14,7 @@ var modules =
     [ "Delay Utility Functions", "group___m_x_c__delay.html", "group___m_x_c__delay" ],
     [ "Error Codes", "group___m_x_c___error___codes.html", "group___m_x_c___error___codes" ],
     [ "Exclusive Access Locks", "group__mxc__lock__utilities.html", "group__mxc__lock__utilities" ],
+    [ "System Configuration (MXC_SYS)", "group__mxc__sys.html", "group__mxc__sys" ],
     [ "1-Wire Master (OWM)", "group__owm.html", "group__owm" ],
     [ "Pulse Train Engine", "group__pulsetrain.html", "group__pulsetrain" ],
     [ "Real Time Clock (RTC)", "group__rtc.html", "group__rtc" ],

@@ -78,5 +78,6 @@ var searchData=
   ['spixr_5fstat_75',['SPIXR_STAT',['../group___s_p_i_x_r___s_t_a_t.html',1,'']]],
   ['spixr_5fwken_76',['SPIXR_WKEN',['../group___s_p_i_x_r___w_k_e_n.html',1,'']]],
   ['spixr_5fwkfl_77',['SPIXR_WKFL',['../group___s_p_i_x_r___w_k_f_l.html',1,'']]],
-  ['spixr_5fxmemctrl_78',['SPIXR_XMEMCTRL',['../group___s_p_i_x_r___x_m_e_m_c_t_r_l.html',1,'']]]
+  ['spixr_5fxmemctrl_78',['SPIXR_XMEMCTRL',['../group___s_p_i_x_r___x_m_e_m_c_t_r_l.html',1,'']]],
+  ['system_20configuration_20_28mxc_5fsys_29_79',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]]
 ];

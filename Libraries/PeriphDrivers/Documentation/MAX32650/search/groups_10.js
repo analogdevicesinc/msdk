@@ -133,5 +133,5 @@ var searchData=
   ['spixr_5fwake_5fen_130',['SPIXR_WAKE_EN',['../group___s_p_i_x_r___w_a_k_e___e_n.html',1,'']]],
   ['spixr_5fwake_5ffl_131',['SPIXR_WAKE_FL',['../group___s_p_i_x_r___w_a_k_e___f_l.html',1,'']]],
   ['spixr_5fxmem_5fctrl_132',['SPIXR_XMEM_CTRL',['../group___s_p_i_x_r___x_m_e_m___c_t_r_l.html',1,'']]],
-  ['system_20functions_133',['System functions',['../group__mxc__sys.html',1,'']]]
+  ['system_20configuration_20_28mxc_5fsys_29_133',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]]
 ];

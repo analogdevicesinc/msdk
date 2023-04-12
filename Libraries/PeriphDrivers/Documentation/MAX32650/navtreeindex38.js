@@ -1,5 +1,9 @@
 var NAVTREEINDEX38 =
 {
+"group__uart.html#gga7bea3ce501d2c4b9841ee2292f4cb350af89cda43708f43409a333004e08983ef":[1,29,5,0],
+"group__uart.html#gga9ef512c6d921959fa4aa91c24bf60edba6b7f5177a03a1dd02990e0cfa04c94f1":[1,29,6,0],
+"group__uart.html#gga9ef512c6d921959fa4aa91c24bf60edba9d6b138c738e9acc03b9aaf1dc4f1850":[1,29,6,1],
+"group__uart.html#ggab136978025cdaf5f7f65c0e9ecc0950ca35bb982090077f1770f2b0a02fa9630a":[1,29,4,1],
 "group__uart.html#ggab136978025cdaf5f7f65c0e9ecc0950ca8f0dfb5e2a08764b3e13e2c39e051deb":[1,29,4,0],
 "group__uart.html#ggab136978025cdaf5f7f65c0e9ecc0950cad173ae1836f13e5bdb9d49e5fc3dde02":[1,29,4,2],
 "group__uart.html#struct__mxc__uart__req__t":[1,29,1],

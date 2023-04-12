@@ -155,5 +155,6 @@ var searchData=
   ['srcc_5fcache_5fid_152',['SRCC_CACHE_ID',['../group___s_r_c_c___c_a_c_h_e___i_d.html',1,'']]],
   ['srcc_5finvalidate_153',['SRCC_INVALIDATE',['../group___s_r_c_c___i_n_v_a_l_i_d_a_t_e.html',1,'']]],
   ['srcc_5fmemcfg_154',['SRCC_MEMCFG',['../group___s_r_c_c___m_e_m_c_f_g.html',1,'']]],
-  ['srcc_5fregisters_155',['SRCC_Registers',['../group__srcc__registers.html',1,'']]]
+  ['srcc_5fregisters_155',['SRCC_Registers',['../group__srcc__registers.html',1,'']]],
+  ['system_20configuration_20_28mxc_5fsys_29_156',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]]
 ];

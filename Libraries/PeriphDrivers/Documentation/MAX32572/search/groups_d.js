@@ -104,5 +104,6 @@ var searchData=
   ['spixfm_5fmemsecctrl_101',['SPIXFM_MEMSECCTRL',['../group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l.html',1,'']]],
   ['spixfm_5fmodectrl_102',['SPIXFM_MODECTRL',['../group___s_p_i_x_f_m___m_o_d_e_c_t_r_l.html',1,'']]],
   ['spixfm_5fmodedata_103',['SPIXFM_MODEDATA',['../group___s_p_i_x_f_m___m_o_d_e_d_a_t_a.html',1,'']]],
-  ['spixfm_5fregisters_104',['SPIXFM_Registers',['../group__spixfm__registers.html',1,'']]]
+  ['spixfm_5fregisters_104',['SPIXFM_Registers',['../group__spixfm__registers.html',1,'']]],
+  ['system_20configuration_20_28mxc_5fsys_29_105',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]]
 ];

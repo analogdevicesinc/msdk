@@ -18,5 +18,6 @@ var searchData=
   ['spi_5fsstime_15',['SPI_SSTIME',['../group___s_p_i___s_s_t_i_m_e.html',1,'']]],
   ['spi_5fstat_16',['SPI_STAT',['../group___s_p_i___s_t_a_t.html',1,'']]],
   ['spi_5fwken_17',['SPI_WKEN',['../group___s_p_i___w_k_e_n.html',1,'']]],
-  ['spi_5fwkfl_18',['SPI_WKFL',['../group___s_p_i___w_k_f_l.html',1,'']]]
+  ['spi_5fwkfl_18',['SPI_WKFL',['../group___s_p_i___w_k_f_l.html',1,'']]],
+  ['system_20configuration_20_28mxc_5fsys_29_19',['System Configuration (MXC_SYS)',['../group__mxc__sys.html',1,'']]]
 ];

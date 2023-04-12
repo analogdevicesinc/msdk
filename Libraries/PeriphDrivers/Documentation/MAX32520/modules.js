@@ -11,6 +11,7 @@ var modules =
     [ "Delay Utility Functions", "group___m_x_c__delay.html", "group___m_x_c__delay" ],
     [ "Error Codes", "group___m_x_c___error___codes.html", "group___m_x_c___error___codes" ],
     [ "Exclusive Access Locks", "group__mxc__lock__utilities.html", "group__mxc__lock__utilities" ],
+    [ "System Configuration (MXC_SYS)", "group__mxc__sys.html", "group__mxc__sys" ],
     [ "Serial Flash Emulator (SFE)", "group__sfe.html", "group__sfe" ],
     [ "Security Monitor(SMON)", "group__smon.html", "group__smon" ],
     [ "SPI", "group__spi.html", "group__spi" ],
