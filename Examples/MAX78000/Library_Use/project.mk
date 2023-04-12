@@ -13,3 +13,7 @@
 IPATH += lib/include
 PROJ_LDFLAGS += -Llib
 PROJ_LIBS += myLib
+
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif
