@@ -108,14 +108,6 @@ extern "C" {
 /**@} end of gpio_port_pin group */
 
 /**
- * @brief      Inaccessible pins definition
- */
-#define MXC_GPIO_INACCESSIBLE                                                                  \
-    (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5 | MXC_GPIO_PIN_12 |     \
-     MXC_GPIO_PIN_20 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_24 | MXC_GPIO_PIN_25 | \
-     MXC_GPIO_PIN_26 | MXC_GPIO_PIN_27 | MXC_GPIO_PIN_28 | MXC_GPIO_PIN_29 | MXC_GPIO_PIN_30)
-
-/**
  * @brief      Type alias for a GPIO callback function with prototype:
  * @code
     void callback_fn(void *cbdata);

@@ -41,7 +41,6 @@
 #include "mxc_sys.h"
 
 /* **** Definitions **** */
-#define MXC_GPIO_HART_UART (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16 | MXC_GPIO_PIN_17)
 
 /* **** Functions **** */
 
@@ -88,20 +87,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 {
     int error;
     mxc_gpio_regs_t *gpio = cfg->port;
-
-    // Don't use inaccessible pins
-    if ((gpio == MXC_GPIO0) && (cfg->mask & MXC_GPIO_INACCESSIBLE)) {
-        return E_NOT_SUPPORTED;
-    }
-
-    // Make sure UART2 pins aren't used by the HART Modem
-    if ((gpio == MXC_GPIO0) && (cfg->mask & MXC_GPIO_HART_UART) &&
-        (cfg->func == MXC_GPIO_FUNC_ALT2)) {
-        if ((gpio->en0 & MXC_GPIO_HART_UART) == 0 && (gpio->en1 & MXC_GPIO_HART_UART) &&
-            (gpio->en2 & MXC_GPIO_HART_UART) == 0) {
-            return E_BAD_STATE;
-        }
-    }
 
     // Configure alternate function
     error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
