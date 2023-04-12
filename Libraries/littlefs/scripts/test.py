@@ -93,7 +93,7 @@ PROLOGUE = """
     __attribute__((unused)) lfs_dir_t dir;
     __attribute__((unused)) struct lfs_info info;
     __attribute__((unused)) char path[1024];
-    __attribute__((unused)) uint8_t buffer[1024];
+    __attribute__((unused)) uint8_t buffer[(1024 > LFS_BLOCK_SIZE * 4) ? (1024) : (LFS_BLOCK_SIZE * 4)];
     __attribute__((unused)) lfs_size_t size;
     __attribute__((unused)) int err;
     
@@ -292,6 +292,8 @@ class TestCase:
                     if e.errno == errno.EIO:
                         break
                     raise
+                if not line:
+                    break;
                 stdout.append(line)
                 if args.get('verbose'):
                     sys.stdout.write(line)
@@ -563,7 +565,7 @@ class TestSuite:
                     path=self.path))
                 mk.write('\n')
 
-            # add truely global defines globally
+            # add truly global defines globally
             for k, v in sorted(self.defines.items()):
                 mk.write('%s.test: override CFLAGS += -D%s=%r\n'
                     % (self.path, k, v))
@@ -654,7 +656,7 @@ def main(**args):
         for path in glob.glob(testpath):
             suites.append(TestSuite(path, classes, defines, filter, **args))
 
-    # sort for reproducability
+    # sort for reproducibility
     suites = sorted(suites)
 
     # generate permutations
@@ -687,6 +689,8 @@ def main(**args):
             if e.errno == errno.EIO:
                 break
             raise
+        if not line:
+            break;
         stdout.append(line)
         if args.get('verbose'):
             sys.stdout.write(line)
@@ -780,10 +784,13 @@ def main(**args):
             stdout=sp.PIPE if not args.get('verbose') else None,
             stderr=sp.STDOUT if not args.get('verbose') else None,
             universal_newlines=True)
+        stdout = []
+        for line in proc.stdout:
+            stdout.append(line)
         proc.wait()
         if proc.returncode != 0:
             if not args.get('verbose'):
-                for line in proc.stdout:
+                for line in stdout:
                     sys.stdout.write(line)
             sys.exit(-1)
 
@@ -799,9 +806,9 @@ def main(**args):
             failure.case.test(failure=failure, **args)
             sys.exit(0)
 
-    print('tests passed %d/%d (%.2f%%)' % (passed, total,
+    print('tests passed %d/%d (%.1f%%)' % (passed, total,
         100*(passed/total if total else 1.0)))
-    print('tests failed %d/%d (%.2f%%)' % (failed, total,
+    print('tests failed %d/%d (%.1f%%)' % (failed, total,
         100*(failed/total if total else 1.0)))
     return 1 if failed > 0 else 0
 
