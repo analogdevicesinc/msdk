@@ -222,10 +222,10 @@ static int idle_rts_pin(void)
     int retval = 0;
     mxc_gpio_cfg_t hart_rts;
 
-    hart_rts.port  = HART_RTS_GPIO_PORT;
-    hart_rts.mask  = HART_RTS_GPIO_PIN;
-    hart_rts.pad   = MXC_GPIO_PAD_PULL_DOWN;
-    hart_rts.func  = MXC_GPIO_FUNC_OUT;
+    hart_rts.port = HART_RTS_GPIO_PORT;
+    hart_rts.mask = HART_RTS_GPIO_PIN;
+    hart_rts.pad = MXC_GPIO_PAD_PULL_DOWN;
+    hart_rts.func = MXC_GPIO_FUNC_OUT;
     hart_rts.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     retval = MXC_AFE_GPIO_Config(&hart_rts);
@@ -270,10 +270,10 @@ static int idle_cd_pin(void)
     int retval = E_NO_ERROR;
     mxc_gpio_cfg_t hart_cd;
 
-    hart_cd.port  = HART_CD_GPIO_PORT;
-    hart_cd.mask  = HART_CD_GPIO_PIN;
-    hart_cd.pad   = MXC_GPIO_PAD_PULL_DOWN;
-    hart_cd.func  = MXC_GPIO_FUNC_IN;
+    hart_cd.port = HART_CD_GPIO_PORT;
+    hart_cd.mask = HART_CD_GPIO_PIN;
+    hart_cd.pad = MXC_GPIO_PAD_PULL_DOWN;
+    hart_cd.func = MXC_GPIO_FUNC_IN;
     hart_cd.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     retval = MXC_AFE_GPIO_Config(&hart_cd);
@@ -316,10 +316,10 @@ static int idle_hart_in_pin(void)
     int retval = E_NO_ERROR;
     mxc_gpio_cfg_t hart_in;
 
-    hart_in.port  = HART_IN_GPIO_PORT;
-    hart_in.mask  = HART_IN_GPIO_PIN;
-    hart_in.pad   = MXC_GPIO_PAD_PULL_DOWN;
-    hart_in.func  = MXC_GPIO_FUNC_OUT;
+    hart_in.port = HART_IN_GPIO_PORT;
+    hart_in.mask = HART_IN_GPIO_PIN;
+    hart_in.pad = MXC_GPIO_PAD_PULL_DOWN;
+    hart_in.func = MXC_GPIO_FUNC_OUT;
     hart_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     retval = MXC_AFE_GPIO_Config(&hart_in);
@@ -335,10 +335,10 @@ static int setup_hart_out_pin(void)
     int retval = E_NO_ERROR;
     mxc_gpio_cfg_t hart_out;
 
-    hart_out.port  = HART_OUT_GPIO_PORT;
-    hart_out.mask  = HART_OUT_GPIO_PIN;
-    hart_out.pad   = MXC_GPIO_PAD_NONE;
-    hart_out.func  = MXC_GPIO_FUNC_IN;
+    hart_out.port = HART_OUT_GPIO_PORT;
+    hart_out.mask = HART_OUT_GPIO_PIN;
+    hart_out.pad = MXC_GPIO_PAD_NONE;
+    hart_out.func = MXC_GPIO_FUNC_IN;
     hart_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     retval = MXC_AFE_GPIO_Config(&hart_out);
@@ -354,10 +354,10 @@ static int idle_hart_out_pin(void)
     int retval = E_NO_ERROR;
     mxc_gpio_cfg_t hart_out;
 
-    hart_out.port  = HART_OUT_GPIO_PORT;
-    hart_out.mask  = HART_OUT_GPIO_PIN;
-    hart_out.pad   = MXC_GPIO_PAD_PULL_DOWN;
-    hart_out.func  = MXC_GPIO_FUNC_OUT;
+    hart_out.port = HART_OUT_GPIO_PORT;
+    hart_out.mask = HART_OUT_GPIO_PIN;
+    hart_out.pad = MXC_GPIO_PAD_PULL_DOWN;
+    hart_out.func = MXC_GPIO_FUNC_OUT;
     hart_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
 
     retval = MXC_AFE_GPIO_Config(&hart_out);
@@ -401,18 +401,15 @@ static int hart_uart_pins_idle_mode(void)
     return retval;
 }
 
-
 void hart_rts_transmit_mode(void)
 {
     MXC_GPIO_OutClr(HART_RTS_GPIO_PORT, HART_RTS_GPIO_PIN);
 }
 
-
 void hart_rts_receive_mode(void)
 {
     MXC_GPIO_OutSet(HART_RTS_GPIO_PORT, HART_RTS_GPIO_PIN);
 }
-
 
 int enable_hart_clock(void)
 {
@@ -555,7 +552,6 @@ int enable_hart_clock(void)
     return retval;
 }
 
-
 static void idle_hart_clock_pin(void)
 {
     // To avoid potential glitches when changing from Alternate functions
@@ -574,7 +570,6 @@ static void idle_hart_clock_pin(void)
     return;
 }
 
-
 void disable_hart_clock(void)
 {
 #if (TARGET_NUM == 32675)
@@ -588,7 +583,6 @@ void disable_hart_clock(void)
 
     return;
 }
-
 
 int hart_uart_enable(void)
 {
@@ -607,7 +601,6 @@ int hart_uart_enable(void)
     return retval;
 }
 
-
 int hart_uart_disable(void)
 {
     int retval = E_NO_ERROR;
@@ -624,7 +617,6 @@ int hart_uart_disable(void)
 
     return retval;
 }
-
 
 int hart_uart_takedown(void)
 {
@@ -647,7 +639,6 @@ int hart_uart_takedown(void)
 
     return retval;
 }
-
 
 int hart_uart_setup(uint32_t test_mode)
 {
@@ -786,7 +777,6 @@ int hart_uart_setup(uint32_t test_mode)
 
     return retval;
 }
-
 
 void hart_uart_test_transmit_1200(void)
 {

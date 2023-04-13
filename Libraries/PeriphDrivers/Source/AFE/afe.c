@@ -85,8 +85,8 @@
 //
 //  Since this is just for catastrophic lockup, lets double it.
 //
-#if ( AFE_SPI_BAUD != 100000 )
-    #warning "Recalculate MXC_AFE_SPI_READ_TIMEOUT, since baud rate was modified.\n"
+#if (AFE_SPI_BAUD != 100000)
+#warning "Recalculate MXC_AFE_SPI_READ_TIMEOUT, since baud rate was modified.\n"
 #endif
 
 #define MXC_AFE_SPI_READ_TIMEOUT USEC(800)
@@ -129,12 +129,11 @@
 #define AFE_SPI_SSEL_GPIO_PIN MXC_GPIO_PIN_23
 #endif
 
-
 //
 // Register defines for new AFE reset on ME16A-0D
 //
-#define MXC_F_GCR_RST1_AFE_POS                        25 /**< RST1_AFE Position */
-#define MXC_F_GCR_RST1_AFE                            ((uint32_t)(0x1UL << MXC_F_GCR_RST1_AFE_POS)) /**< RST1_AFE Mask */
+#define MXC_F_GCR_RST1_AFE_POS 25 /**< RST1_AFE Position */
+#define MXC_F_GCR_RST1_AFE ((uint32_t)(0x1UL << MXC_F_GCR_RST1_AFE_POS)) /**< RST1_AFE Mask */
 
 #define AFE_TRIM0_ADC0_MASK 0x7FFFF
 #define AFE_TRIM0_ADC0_BIT_WIDTH 19
@@ -174,15 +173,19 @@
 //  Uses entire bottom nibble match, AND por_flag
 //
 // Revisions AFTER Reset added to AFE
-#define ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_MASK     ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL | MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC5 | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS | MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG )
-#define ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_VALUE    ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS | MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG )
-#define ME16_AFE_POST_RST_SYS_CTRL_RESET_VALUE       ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS )
+#define ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_MASK                                  \
+    (MXC_F_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL | MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC5 | \
+     MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS | MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG)
+#define ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_VALUE \
+    (MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS | MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG)
+#define ME16_AFE_POST_RST_SYS_CTRL_RESET_VALUE (MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)
 
 // Revisions BEFORE Reset added to AFE
-#define ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_MASK     ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL | MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC5 | MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG )
-#define ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_VALUE    ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG )
-#define ME16_AFE_PRE_RST_SYS_CTRL_RESET_VALUE       ( 0 )
-
+#define ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_MASK                                   \
+    (MXC_F_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL | MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC5 | \
+     MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG)
+#define ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_VALUE (MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG)
+#define ME16_AFE_PRE_RST_SYS_CTRL_RESET_VALUE (0)
 
 /***** Globals *****/
 uint8_t afe_data[AFE_SPI_MAX_DATA_LEN];
@@ -229,7 +232,6 @@ static int raw_afe_read_register(uint8_t reg_address, uint32_t *value, uint8_t r
 
 /***** Functions *****/
 
-
 // Probe and determine silicon version of AFE micro
 static int afe_micro_version_probe(void)
 {
@@ -245,43 +247,42 @@ static int afe_micro_version_probe(void)
     //
 #if (TARGET_NUM == 32675)
     switch (rev) {
-        // Known and supported versions
-        case MXC_MAX32675_REV_B2:
-        case MXC_MAX32675_REV_B3:
-            device_version = MXC_AFE_VERSION_PRE_RESET;
-            return E_NO_ERROR;
+    // Known and supported versions
+    case MXC_MAX32675_REV_B2:
+    case MXC_MAX32675_REV_B3:
+        device_version = MXC_AFE_VERSION_PRE_RESET;
+        return E_NO_ERROR;
 
-        case MXC_MAX32675_REV_B4:
-            device_version = MXC_AFE_VERSION_POST_RESET;
-            return E_NO_ERROR;
+    case MXC_MAX32675_REV_B4:
+        device_version = MXC_AFE_VERSION_POST_RESET;
+        return E_NO_ERROR;
 
-        default:
+    default:
         // Unknown or unsupported version
-            return E_INVALID;
+        return E_INVALID;
     }
 #elif (TARGET_NUM == 32680)
     switch (rev) {
-        // Known and supported versions
-        case MXC_MAX32680_REV_A1:
-            device_version = MXC_AFE_VERSION_PRE_RESET;
-            return E_NO_ERROR;
+    // Known and supported versions
+    case MXC_MAX32680_REV_A1:
+        device_version = MXC_AFE_VERSION_PRE_RESET;
+        return E_NO_ERROR;
 
-        case MXC_MAX32680_REV_B1:
-            // TODO ADI: Validate this revision is correct when updated MAX32680 is released
-            device_version = MXC_AFE_VERSION_POST_RESET;
-            return E_NO_ERROR;
+    case MXC_MAX32680_REV_B1:
+        // TODO ADI: Validate this revision is correct when updated MAX32680 is released
+        device_version = MXC_AFE_VERSION_POST_RESET;
+        return E_NO_ERROR;
 
-        default:
+    default:
         // Unknown or unsupported version
-            return E_INVALID;
+        return E_INVALID;
     }
 #else
-    #error "Selected TARGET is not known to have an AFE\n"
+#error "Selected TARGET is not known to have an AFE\n"
 #endif
 
     return E_NO_ERROR;
 }
-
 
 // Puts the SPI interface to the AFE into controlled inactive state
 static void afe_spi_idle_interface(void)
@@ -313,7 +314,6 @@ static void afe_spi_idle_interface(void)
 
     return;
 }
-
 
 static int afe_spi_setup(void)
 {
@@ -415,13 +415,13 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
     do {
         status = MXC_DelayCheck();
 
-        if ( (pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) == 0 ) {
+        if ((pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) == 0) {
             // TX completed
             MXC_DelayAbort();
             break;
         }
 
-    } while ( status == E_BUSY );
+    } while (status == E_BUSY);
 
     if (status != E_BUSY) {
         return E_TIME_OUT;
@@ -431,7 +431,6 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
     // If a transaction has been started, verify it completed before continuing
     //
     if (check_done) {
-
         // Start timeout, wait for SPI MST DONE to set
         MXC_DelayAsync(MXC_AFE_SPI_READ_TIMEOUT, NULL);
 
@@ -444,7 +443,7 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
                 break;
             }
 
-        } while ( status == E_BUSY );
+        } while (status == E_BUSY);
 
         if (status != E_BUSY) {
             return E_TIME_OUT;
@@ -460,7 +459,6 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
 
     pSPIm->ctrl1 = ((((byte_length) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS)) |
                     (byte_length << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS));
-
 
     if (device_version < MXC_AFE_VERSION_POST_RESET) {
         //
@@ -498,7 +496,7 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
             i++;
         }
 
-    } while ( (i < byte_length) && (status == E_BUSY) );
+    } while ((i < byte_length) && (status == E_BUSY));
 
     MXC_DelayAbort();
 
@@ -509,14 +507,13 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
         AFE_SPI_MISO_GPIO_PORT->padctrl0 |= AFE_SPI_MISO_GPIO_PIN;
     }
 
-    if ( (i < byte_length) || (status != E_BUSY) ) {
+    if ((i < byte_length) || (status != E_BUSY)) {
         return E_TIME_OUT;
     }
 
     // Got all bytes, and we did NOT timeout
     return E_NO_ERROR;
 }
-
 
 static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
 {
@@ -558,7 +555,7 @@ static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
         read_val &= ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_MASK;
 
         // Check for True POR
-        if ( read_val == ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_VALUE ) {
+        if (read_val == ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_VALUE) {
             // This appears to be a true POR
             MXC_DelayAbort();
             *true_por = 1;
@@ -566,14 +563,14 @@ static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
         }
 
         // Check for a normal reset
-        if ( read_val == ME16_AFE_POST_RST_SYS_CTRL_RESET_VALUE ) {
+        if (read_val == ME16_AFE_POST_RST_SYS_CTRL_RESET_VALUE) {
             // This appears to be a normal reset
             MXC_DelayAbort();
             *true_por = 0;
             break;
         }
 
-    } while ( retval == E_BUSY );
+    } while (retval == E_BUSY);
 
     if (delay_status != E_BUSY) {
         // Failed to initiate communications with AFE within time limit
@@ -581,9 +578,7 @@ static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
     }
 
     return E_NO_ERROR;
-
 }
-
 
 static int afe_spi_poll_for_ready_pre_reset_change(uint32_t *true_por)
 {
@@ -613,7 +608,7 @@ static int afe_spi_poll_for_ready_pre_reset_change(uint32_t *true_por)
         read_val &= ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_MASK;
 
         // Check for True POR
-        if ( read_val == ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_VALUE ) {
+        if (read_val == ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_VALUE) {
             // This appears to be a true POR
             MXC_DelayAbort();
             *true_por = 1;
@@ -621,14 +616,14 @@ static int afe_spi_poll_for_ready_pre_reset_change(uint32_t *true_por)
         }
 
         // Check for a normal reset
-        if ( read_val == ME16_AFE_PRE_RST_SYS_CTRL_RESET_VALUE ) {
+        if (read_val == ME16_AFE_PRE_RST_SYS_CTRL_RESET_VALUE) {
             // This appears to be a normal reset
             MXC_DelayAbort();
             *true_por = 0;
             break;
         }
 
-    } while ( retval == E_BUSY );
+    } while (retval == E_BUSY);
 
     if (delay_status != E_BUSY) {
         // Failed to initiate communications with AFE within time limit
@@ -636,21 +631,17 @@ static int afe_spi_poll_for_ready_pre_reset_change(uint32_t *true_por)
     }
 
     return E_NO_ERROR;
-
 }
-
 
 static int afe_spi_poll_for_ready(uint32_t *true_por)
 {
     if (device_version >= MXC_AFE_VERSION_POST_RESET) {
         return afe_spi_poll_for_ready_post_reset_change(true_por);
-    }
-    else {
+    } else {
         // Treat all earlier revs the same
         return afe_spi_poll_for_ready_pre_reset_change(true_por);
     }
 }
-
 
 static int afe_setup_true_por(void)
 {
@@ -697,7 +688,6 @@ static int afe_setup_true_por(void)
     return retval;
 }
 
-
 static int afe_setup_non_por(void)
 {
     //
@@ -724,7 +714,7 @@ static int afe_setup_non_por(void)
     }
 
     // mask all bits but st_dis, or hart_en bits.
-    read_val &= ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS );
+    read_val &= (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS);
 
     retval = raw_afe_write_register(
         (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, read_val,
@@ -746,20 +736,20 @@ static int afe_setup_non_por(void)
     }
 
     // mask all bits but st_dis, or hart_en bits.
-    read_val &= ( MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS );
+    read_val &= (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS);
 
     if (device_version >= MXC_MAX32675_REV_B4) {
         // ST_DIS MUST be set, and HART_EN MAY be set
-        if ( (read_val != (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) &&
-            (read_val != (MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) ) {
-        // Response does NOT matches written and expected value
+        if ((read_val !=
+             (MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN | MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)) &&
+            (read_val != (MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS))) {
+            // Response does NOT matches written and expected value
             return E_COMM_ERR;
         }
-    }
-    else {
+    } else {
         // LEGACY silicon mode, the ST_DIS bit CANNOT be set as is doesn't exist, so look for 0
         // However, HART_EN could be set, since we cannot reset the ME19
-        if ( (read_val != 0) && (read_val != MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN) ) {
+        if ((read_val != 0) && (read_val != MXC_F_AFE_ADC_ZERO_SYS_CTRL_HART_EN)) {
             // Response does NOT matches written and expected value
             return E_COMM_ERR;
         }
@@ -772,7 +762,6 @@ static int afe_setup_non_por(void)
 
     return retval;
 }
-
 
 int afe_setup(void)
 {
@@ -805,12 +794,10 @@ int afe_setup(void)
 
     if (true_por) {
         return afe_setup_true_por();
-    }
-    else {
+    } else {
         return afe_setup_non_por();
     }
 }
-
 
 void afe_reset(void)
 {
