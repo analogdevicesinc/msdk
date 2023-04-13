@@ -26,7 +26,9 @@
 #include "gcr_regs.h"
 #include "mxc_device.h"
 #include "wsf_trace.h"
-
+#include "wut.h"
+#include "wut_regs.h"
+#include "wsf_cs.h"
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
@@ -49,26 +51,17 @@
 
 #endif
 
-#ifndef PAL_TMR_IDX
-#define PAL_TMR_IDX 0
-#endif
-
 #ifndef PAL_SLEEP_TMR_IDX
 #define PAL_SLEEP_TMR_IDX 1
 #endif
 
-#if (PAL_TMR_IDX == PAL_SLEEP_TMR_IDX)
-#error "Must use a different timer for sleep"
-#endif
-
-#define PAL_TMR MXC_TMR_GET_TMR(PAL_TMR_IDX)
-#define PAL_TMR_IRQn MXC_TMR_GET_IRQ(PAL_TMR_IDX)
+#define PAL_TMR_IRQn (WUT_IRQn)
 
 #define PAL_SLEEP_TMR MXC_TMR_GET_TMR(PAL_SLEEP_TMR_IDX)
 #define PAL_SLEEP_TMR_IRQn MXC_TMR_GET_IRQ(PAL_SLEEP_TMR_IDX)
 
 #define PAL_TMR_CALIB_TIME 100000
-
+#define PAL_TMR_SETUP_TICKS     9
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
@@ -91,34 +84,25 @@ static struct {
  *  \return     None.
  */
 /*************************************************************************************************/
-#if (PAL_TMR_IDX == 5)
-void TMR5_IRQHandler(void)
-#elif (PAL_TMR_IDX == 4)
-void TMR4_IRQHandler(void)
-#elif (PAL_TMR_IDX == 3)
-void TMR3_IRQHandler(void)
-#elif (PAL_TMR_IDX == 2)
-void TMR2_IRQHandler(void)
-#elif (PAL_TMR_IDX == 1)
-void TMR1_IRQHandler(void)
-#else
-void TMR0_IRQHandler(void)
-#endif
+void WUT_IRQHandler(void)
 {
+    MXC_WUT_Handler();
+   
+    
     PalLedOn(PAL_LED_ID_CPU_ACTIVE);
 
     /* Check hardware status */
-    PAL_TIMER_CHECK(palTimerCb.state == PAL_TIMER_STATE_BUSY);
+    if(palTimerCb.state == PAL_TIMER_STATE_BUSY){
 
-    /* Disable and clear PAL_TMR interrupt */
-    NVIC_DisableIRQ(PAL_TMR_IRQn);
-    MXC_TMR_ClearFlags(PAL_TMR);
+        PalSysSetIdle();
+        palTimerCb.state = PAL_TIMER_STATE_READY;
 
-    palTimerCb.state = PAL_TIMER_STATE_READY;
-
-    if (palTimerCb.expCback) {
-        palTimerCb.expCback();
+        if (palTimerCb.expCback) {
+            palTimerCb.expCback();
+        }
     }
+    NVIC_ClearPendingIRQ(WUT_IRQn);
+    
 }
 
 /*************************************************************************************************/
@@ -158,23 +142,29 @@ void TMR0_IRQHandler(void)
 /*************************************************************************************************/
 void PalTimerInit(PalTimerCompCback_t expCback)
 {
-    mxc_tmr_cfg_t tmr_cfg;
     bool_t palBbState;
     uint32_t tickStart, tickEnd;
 
     PAL_TIMER_CHECK(palTimerCb.state == PAL_TIMER_STATE_UNINIT);
     PAL_TIMER_CHECK(expCback != NULL);
+    if(!PalSharedTimerIsInit())
+    {
+        /* Init WUT */
+        mxc_wut_cfg_t cfg;
+        cfg.mode = MXC_WUT_MODE_COMPARE;
+        cfg.cmp_cnt = 0;
+        MXC_WUT_Init(MXC_WUT_PRES_1);
+        MXC_WUT_Config(&cfg);
+        
+        NVIC_ClearPendingIRQ(WUT_IRQn);
+        NVIC_SetPriority(WUT_IRQn, 0);
+        NVIC_EnableIRQ(WUT_IRQn);
 
-    tmr_cfg.pres = TMR_PRES_1;
-    tmr_cfg.mode = TMR_MODE_ONESHOT;
-    tmr_cfg.pol = 0;
-
-    NVIC_ClearPendingIRQ(PAL_TMR_IRQn);
-    NVIC_DisableIRQ(PAL_TMR_IRQn);
-    MXC_TMR_ClearFlags(PAL_TMR);
-
-    MXC_TMR_Stop(PAL_TMR);
-    MXC_TMR_Init(PAL_TMR, &tmr_cfg);
+        /* Enable WUT */
+        MXC_WUT_Enable();
+        MXC_LP_EnableWUTAlarmWakeup();
+        PalSharedTimerInitState(TRUE);
+    }
 
     /* Make sure the BB clock is running */
     if (PalBbGetCurrentTime() == 0) {
@@ -189,7 +179,8 @@ void PalTimerInit(PalTimerCompCback_t expCback)
 
     /* Save the ticks for PAL_TMR_CALIB_TIME usec */
     tickStart = PalBbGetCurrentTime();
-    MXC_TMR_Delay(PAL_TMR, PAL_TMR_CALIB_TIME);
+    MXC_WUT_Delay_MS(100);
+    
     tickEnd = PalBbGetCurrentTime();
 
     /* Save the difference */
@@ -230,9 +221,7 @@ void PalTimerRestore(uint32_t expUsec)
 void PalTimerDeInit(void)
 {
     NVIC_DisableIRQ(PAL_TMR_IRQn);
-
-    MXC_TMR_Shutdown(PAL_TMR);
-
+    MXC_WUT_Disable();
     palTimerCb.state = PAL_TIMER_STATE_UNINIT;
 }
 
@@ -276,9 +265,10 @@ PalTimerState_t PalTimerGetState(void)
 /*************************************************************************************************/
 void PalTimerStart(uint32_t expUsec)
 {
+    PalSysSetBusy();
     PAL_TIMER_CHECK(palTimerCb.state == PAL_TIMER_STATE_READY);
     PAL_TIMER_CHECK(expUsec != 0);
-
+    uint64_t volatile  compareValue;
     /* Make sure we don't wrap the timeout */
     if (expUsec == 0) {
         expUsec = 1;
@@ -286,19 +276,50 @@ void PalTimerStart(uint32_t expUsec)
 
     /* Convert the time based on our calibration */
     expUsec += (expUsec / PAL_TMR_CALIB_TIME) * palTimerCb.usecDiff;
+    uint32_t ticks;
 
+    MXC_WUT_GetTicks(1, MXC_WUT_UNIT_SEC, &ticks);
+      /* Calculate the compare value */
+    compareValue = ((uint64_t)expUsec * (uint64_t)32768) / (uint64_t)1000000;
+
+   
+    /* Account for setup time */
+    // if (compareValue > PAL_TMR_SETUP_TICKS) {
+    //     compareValue -= PAL_TMR_SETUP_TICKS;
+    // } else {
+    //     compareValue = 1;
+    // }
+    
+
+  
     /* Convert the start time to ticks */
-    MXC_TMR_SetCount(PAL_TMR, 0);
-    MXC_TMR_SetCompare(PAL_TMR, PeripheralClock / 1000000 * expUsec);
+    uint32_t volatile count = MXC_WUT_GetCount();
+    compareValue += ((uint32_t)MXC_WUT_GetCount()) ;
+    
+    // TODO : check if wrap around
+    // if(count > compareValue)
+    // {
+    //     newCompare = count - compareValue;
+    //     MXC_WUT_SetCompare( compareValue);
+    // }
+    // else{
+    //     MXC_WUT_SetCompare( count + compareValue);
+    // }
 
+   
+    MXC_WUT_SetCompare(compareValue);
+   
     /* Clear and enable interrupts */
-    MXC_TMR_ClearFlags(PAL_TMR);
-    NVIC_ClearPendingIRQ(PAL_TMR_IRQn);
-    NVIC_EnableIRQ(PAL_TMR_IRQn);
+    NVIC_ClearPendingIRQ(WUT_IRQn);
+    NVIC_EnableIRQ(WUT_IRQn);
+
 
     palTimerCb.state = PAL_TIMER_STATE_BUSY;
-
-    MXC_TMR_Start(PAL_TMR);
+    /* Enable WUT */
+    WsfCsEnter();
+    MXC_LP_EnableWUTAlarmWakeup();
+    WsfCsExit();
+    
 }
 
 /*************************************************************************************************/
@@ -310,11 +331,10 @@ void PalTimerStart(uint32_t expUsec)
 /*************************************************************************************************/
 void PalTimerStop(void)
 {
-    MXC_TMR_Stop(PAL_TMR);
-
+    //MXC_WUT_Disable();
     /* Disable this interrupt */
-    NVIC_DisableIRQ(PAL_TMR_IRQn);
-    MXC_TMR_ClearFlags(PAL_TMR);
+    NVIC_DisableIRQ(WUT_IRQn);
+    NVIC_ClearPendingIRQ(WUT_IRQn);
 
     palTimerCb.state = PAL_TIMER_STATE_READY;
 }
@@ -380,7 +400,8 @@ uint32_t PalTimerGetExpTime(void)
         return 0;
     }
 
-    time = MXC_TMR_GetCompare(PAL_TMR) - MXC_TMR_GetCount(PAL_TMR);
+    time = MXC_WUT_GetCompare() - MXC_WUT_GetCount();
+    // TODO : should this PeriphralClock be 32768?
     time /= (PeripheralClock / 1000000);
 
     /* Adjust time based on the calibrated value */
@@ -400,5 +421,5 @@ uint32_t PalTimerGetExpTime(void)
 /*************************************************************************************************/
 void PalTimerSetIRQPriority(uint32_t priority)
 {
-    NVIC_SetPriority(PAL_TMR_IRQn, priority);
+    NVIC_SetPriority(WUT_IRQn, priority);
 }
