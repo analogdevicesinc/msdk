@@ -269,7 +269,7 @@ static int afe_micro_version_probe(void)
         return E_NO_ERROR;
 
     case MXC_MAX32680_REV_B1:
-        // TODO ADI: Validate this revision is correct when updated MAX32680 is released
+        // TODO(ADI): Validate this revision is correct when updated MAX32680 is released
         device_version = MXC_AFE_VERSION_POST_RESET;
         return E_NO_ERROR;
 
@@ -420,7 +420,6 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
             MXC_DelayAbort();
             break;
         }
-
     } while (status == E_BUSY);
 
     if (status != E_BUSY) {
@@ -442,7 +441,6 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
                 MXC_DelayAbort();
                 break;
             }
-
         } while (status == E_BUSY);
 
         if (status != E_BUSY) {
@@ -495,7 +493,6 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
             data[i] = pSPIm->fifo8[0];
             i++;
         }
-
     } while ((i < byte_length) && (status == E_BUSY));
 
     MXC_DelayAbort();
@@ -569,7 +566,6 @@ static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
             *true_por = 0;
             break;
         }
-
     } while (retval == E_BUSY);
 
     if (delay_status != E_BUSY) {
@@ -622,7 +618,6 @@ static int afe_spi_poll_for_ready_pre_reset_change(uint32_t *true_por)
             *true_por = 0;
             break;
         }
-
     } while (retval == E_BUSY);
 
     if (delay_status != E_BUSY) {
