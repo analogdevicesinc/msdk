@@ -495,7 +495,7 @@ function run_ota_test() {
     git restore .
 
     # change advertising names
-    change_advertising_names_walle
+    change_advertising_names
     
     # change the target the OTAC embedded firmware in the client is built for
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
@@ -546,7 +546,7 @@ function run_ota_test() {
     # give time to connect
 
     # resotre everything except advertising names
-    change_advertising_names_walle
+    change_advertising_names
     sleep 1
 
     set +e
@@ -593,7 +593,7 @@ function run_ota_test() {
 # takes the three args given to the script: eg: max32655 , D3073ICQ , 0409000052fb0cd70000000000000000097969906
 initial_setup $1 $2 $3
 CURRENT_TEST=$4
-change_advertising_names_walle
+change_advertising_names
 
 if [ $CURRENT_TEST == "all" ]; then
     echo

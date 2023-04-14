@@ -29,6 +29,8 @@ I2C_Sensor
 I2S
 ICC
 Info_Block_Usecase
+Library_Generate
+Library_Use
 LP
 RTC
 RTC_Backup

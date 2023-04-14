@@ -44,6 +44,10 @@
 /***** Global Variables *****/
 // Predefined GPIO Configurations
 extern const mxc_gpio_cfg_t gpio_cfg_extclk;
+#define gpio_cfg_hfextclk gpio_cfg_extclk
+/* ^ Defined for driver compatability that references
+    gpio_cfg_hfextclk instead of gpio_cfg_extclk
+*/
 extern const mxc_gpio_cfg_t gpio_cfg_i2c0;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2;
