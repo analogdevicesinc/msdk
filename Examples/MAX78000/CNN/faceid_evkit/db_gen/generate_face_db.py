@@ -36,12 +36,14 @@ Script to generate Face Id embeddings
 """
 import argparse
 import os.path as path
+import numpy as np
+import torch
 from mtcnn.mtcnn import MTCNN
 from ai85.ai85_adapter import AI85SimulatorAdapter
 from utils import append_db_file_from_path, save_embedding_db, create_embeddings_include_file
 
 CURRENT_DIR = path.abspath(path.dirname(path.abspath(__file__)))
-MODEL_PATH = path.join(CURRENT_DIR, 'model', 'ai85-streaming_seqfaceid_nobias_x6.pth.tar')
+MODEL_PATH = path.join(CURRENT_DIR, 'model', 'ai85-faceid-qat8-q.pth.tar')
 
 
 def create_db_from_folder(args):
@@ -87,6 +89,10 @@ def main():
     Entry point of the script to parse command line arguments and run the function to generate
     embeddings.
     """
+    # make deterministic
+    torch.manual_seed(0)
+    np.random.seed(0)
+
     args = parse_arguments()
     create_db_from_folder(args)
 
