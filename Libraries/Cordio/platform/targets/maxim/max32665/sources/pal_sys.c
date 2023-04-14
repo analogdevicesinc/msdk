@@ -54,6 +54,7 @@ static volatile bool_t PalSysAssertTrapEnable;
 /*! \brief      Busy client count. */
 static uint32_t palSysBusyCount;
 
+static bool_t   palSharedWutTimerIsInit;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
@@ -270,4 +271,14 @@ bool_t PalSysIsBusy(void)
   sysIsBusy = ((palSysBusyCount == 0) ? FALSE : TRUE);
   PalExitCs();
   return sysIsBusy;
+}
+
+bool_t PalSharedTimerIsInit(void)
+{
+  return palSharedWutTimerIsInit;
+}
+
+void PalSharedTimerInitState(bool_t state)
+{
+  palSharedWutTimerIsInit = state;
 }

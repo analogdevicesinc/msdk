@@ -71,6 +71,7 @@ uint32_t PalTimerGetExpTime(void);
 void PalTimerSleep(uint32_t expUsec);
 void PalTimerRestore(uint32_t schTime);
 void PalTimerSetIRQPriority(uint32_t priority);
+void PalTimerIRQCallBack(void);
 /*! \} */    /* PAL_TIMER */
 
 #ifdef __cplusplus

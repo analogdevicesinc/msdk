@@ -84,11 +84,16 @@ static struct {
  *  \return     None.
  */
 /*************************************************************************************************/
-void WUT_IRQHandler(void)
+__attribute__ ((weak)) void WUT_IRQHandler(void)
 {
     MXC_WUT_Handler();
-   
-    
+    PalTimerIRQCallBack();
+    NVIC_ClearPendingIRQ(WUT_IRQn);
+
+}
+
+void PalTimerIRQCallBack(void)
+{
     PalLedOn(PAL_LED_ID_CPU_ACTIVE);
 
     /* Check hardware status */
@@ -100,9 +105,7 @@ void WUT_IRQHandler(void)
         if (palTimerCb.expCback) {
             palTimerCb.expCback();
         }
-    }
-    NVIC_ClearPendingIRQ(WUT_IRQn);
-    
+    }   
 }
 
 /*************************************************************************************************/
