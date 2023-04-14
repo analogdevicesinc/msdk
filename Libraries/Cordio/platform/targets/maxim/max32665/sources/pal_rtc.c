@@ -135,6 +135,7 @@ uint32_t PalRtcCounterGet(void)
 void PalRtcEnableCompareIrq(uint8_t channelId)
 {
   PAL_SYS_ASSERT(channelId == 0);
+  NVIC_EnableIRQ(WUT_IRQn);
 }
 
 /*************************************************************************************************/

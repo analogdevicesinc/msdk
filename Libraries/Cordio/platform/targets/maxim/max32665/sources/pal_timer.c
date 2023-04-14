@@ -60,7 +60,7 @@
 #define PAL_SLEEP_TMR MXC_TMR_GET_TMR(PAL_SLEEP_TMR_IDX)
 #define PAL_SLEEP_TMR_IRQn MXC_TMR_GET_IRQ(PAL_SLEEP_TMR_IDX)
 
-#define PAL_TMR_CALIB_TIME 100000
+#define PAL_TMR_CALIB_TIME_US 100000
 #define PAL_TMR_SETUP_TICKS     9
 /**************************************************************************************************
   Global Variables
@@ -187,7 +187,7 @@ void PalTimerInit(PalTimerCompCback_t expCback)
     tickEnd = PalBbGetCurrentTime();
 
     /* Save the difference */
-    palTimerCb.usecDiff = PAL_TMR_CALIB_TIME - (tickEnd - tickStart);
+    palTimerCb.usecDiff = PAL_TMR_CALIB_TIME_US - (tickEnd - tickStart);
 
     /* Restore the BB state */
     if (!palBbState) {
@@ -278,7 +278,7 @@ void PalTimerStart(uint32_t expUsec)
     }
 
     /* Convert the time based on our calibration */
-    expUsec += (expUsec / PAL_TMR_CALIB_TIME) * palTimerCb.usecDiff;
+    expUsec += (expUsec / PAL_TMR_CALIB_TIME_US) * palTimerCb.usecDiff;
     uint32_t ticks;
 
     MXC_WUT_GetTicks(1, MXC_WUT_UNIT_SEC, &ticks);
@@ -408,7 +408,7 @@ uint32_t PalTimerGetExpTime(void)
     time /= (PeripheralClock / 1000000);
 
     /* Adjust time based on the calibrated value */
-    time = time - ((time / PAL_TMR_CALIB_TIME) * palTimerCb.usecDiff);
+    time = time - ((time / PAL_TMR_CALIB_TIME_US) * palTimerCb.usecDiff);
 
     return time;
 }
