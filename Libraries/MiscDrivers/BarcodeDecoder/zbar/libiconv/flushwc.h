@@ -20,17 +20,16 @@
 #ifndef _FLUSHWC_H
 #define _FLUSHWC_H
 
-static int
-normal_flushwc (conv_t conv, ucs4_t *pwc)
+static int normal_flushwc(conv_t conv, ucs4_t *pwc)
 {
-  ucs4_t last_wc = conv->istate;
-  if (last_wc) {
-    /* Output the buffered character. */
-    conv->istate = 0;
-    *pwc = (ucs4_t) last_wc;
-    return 1;
-  } else
-    return 0;
+    ucs4_t last_wc = conv->istate;
+    if (last_wc) {
+        /* Output the buffered character. */
+        conv->istate = 0;
+        *pwc = (ucs4_t)last_wc;
+        return 1;
+    } else
+        return 0;
 }
 
 #endif /* _FLUSHWC_H */

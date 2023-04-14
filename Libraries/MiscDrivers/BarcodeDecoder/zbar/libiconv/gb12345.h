@@ -31,36 +31,34 @@
 
 #include "gb12345ext.h"
 
-static int
-gb12345_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
+static int gb12345_mbtowc(conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
 {
-  int ret;
+    int ret;
 
-  /* The gb12345ext table overrides some entries in the gb2312 table. */
-  /* Try the GB12345 extensions -> Unicode table. */
-  ret = gb12345ext_mbtowc(conv,pwc,s,n);
-  if (ret != RET_ILSEQ)
+    /* The gb12345ext table overrides some entries in the gb2312 table. */
+    /* Try the GB12345 extensions -> Unicode table. */
+    ret = gb12345ext_mbtowc(conv, pwc, s, n);
+    if (ret != RET_ILSEQ)
+        return ret;
+    /* Try the GB2312 -> Unicode table. */
+    ret = gb2312_mbtowc(conv, pwc, s, n);
     return ret;
-  /* Try the GB2312 -> Unicode table. */
-  ret = gb2312_mbtowc(conv,pwc,s,n);
-  return ret;
 }
 
-static int
-gb12345_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
+static int gb12345_wctomb(conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
 {
-  int ret;
+    int ret;
 
-  /* The gb12345ext table overrides some entries in the gb2312 table. */
-  /* Try the Unicode -> GB12345 extensions table. */
-  ret = gb12345ext_wctomb(conv,r,wc,n);
-  if (ret != RET_ILUNI)
-    return ret;
-  /* Try the Unicode -> GB2312 table, and check that the resulting GB2312
+    /* The gb12345ext table overrides some entries in the gb2312 table. */
+    /* Try the Unicode -> GB12345 extensions table. */
+    ret = gb12345ext_wctomb(conv, r, wc, n);
+    if (ret != RET_ILUNI)
+        return ret;
+    /* Try the Unicode -> GB2312 table, and check that the resulting GB2312
      byte sequence is not overridden by the GB12345 extensions table. */
-  ret = gb2312_wctomb(conv,r,wc,n);
-  if (ret == 2 && gb12345ext_mbtowc(conv,&wc,r,2) == 2)
-    return RET_ILUNI;
-  else
-    return ret;
+    ret = gb2312_wctomb(conv, r, wc, n);
+    if (ret == 2 && gb12345ext_mbtowc(conv, &wc, r, 2) == 2)
+        return RET_ILUNI;
+    else
+        return ret;
 }
