@@ -57,6 +57,8 @@
 #include "wsf_trace.h"
 #include "wsf_types.h"
 #include "pal_led.h"
+#include "pal_timer.h"
+#include "pal_sys.h"
 
 #include "FreeRTOSConfig.h"
 
@@ -199,6 +201,7 @@ void WUT_IRQHandler(void)
     MXC_WUT_IntClear();
     NVIC_ClearPendingIRQ(WUT_IRQn);
     MXC_WUT_Handler();
+    PalTimerIRQCallBack();
 }
 
 /*************************************************************************************************/
@@ -306,9 +309,8 @@ void trim32k(void)
 
     /* Execute the trim procedure */
     wutTrimComplete = 0;
-    if (MXC_WUT_TrimCrystalAsync(wutTrimCb) != E_NO_ERROR) {
-        APP_TRACE_INFO0("Error with 32k trim");
-    } else {
+    if (PalSharedTimerIsInit()) {
+        MXC_WUT_TrimCrystalAsync(wutTrimCb);
         while (!wutTrimComplete) {}
     }
 
