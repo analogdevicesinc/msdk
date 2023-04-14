@@ -21,18 +21,20 @@
  * ISO-8859-1
  */
 
-static int iso8859_1_mbtowc(conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
+static int
+iso8859_1_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
 {
-    unsigned char c = *s;
-    *pwc = (ucs4_t)c;
-    return 1;
+  unsigned char c = *s;
+  *pwc = (ucs4_t) c;
+  return 1;
 }
 
-static int iso8859_1_wctomb(conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
+static int
+iso8859_1_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
 {
-    if (wc < 0x0100) {
-        *r = wc;
-        return 1;
-    }
-    return RET_ILUNI;
+  if (wc < 0x0100) {
+    *r = wc;
+    return 1;
+  }
+  return RET_ILUNI;
 }
