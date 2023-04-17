@@ -368,6 +368,16 @@ int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t *i2c)
     return MXC_I2C_RevA_GetTXThreshold((mxc_i2c_reva_regs_t *)i2c);
 }
 
+void MXC_I2C_AsyncStop(mxc_i2c_regs_t *i2c)
+{
+    MXC_I2C_RevA_AsyncStop((mxc_i2c_reva_regs_t *)i2c);
+}
+
+void MXC_I2C_AbortAsync(mxc_i2c_regs_t *i2c)
+{
+    MXC_I2C_RevA_AbortAsync((mxc_i2c_reva_regs_t *)i2c);
+}
+
 void MXC_I2C_AsyncHandler(mxc_i2c_regs_t *i2c)
 {
     MXC_I2C_RevA_AsyncHandler((mxc_i2c_reva_regs_t *)i2c, interruptCheck);

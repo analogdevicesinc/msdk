@@ -38,6 +38,8 @@ Hello_World
 I2C_SCAN
 I2S
 ICC
+Library_Generate
+Library_Use
 LP
 LPCMP
 Pulse_Train

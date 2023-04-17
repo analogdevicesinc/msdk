@@ -181,9 +181,8 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_NANORING:
-        // MXC_GCR->clk_ctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
+        // 80khz nanoring is always enabled
+        return E_NO_ERROR;
         break;
 
     default:
@@ -214,7 +213,7 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_NANORING:
-        // MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        // 80khz nanoring is always enabled
         return E_BAD_PARAM;
 
     default:
@@ -284,18 +283,10 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_NANORING:
-        // Enable HIRC clock
-        // if(!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLKCTRL_EXTCLK_EN)) {
-        //     MXC_GCR->clk_ctrl |=MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_LIRC8K_RDY) != E_NO_ERROR) {
+            return E_TIME_OUT;
+        }
 
-        //     // Check if HIRC clock is ready
-        //     if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
-        //         return E_TIME_OUT;
-        //     }
-        // }
-
-        // Set HIRC clock as System Clock
-        // MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
         MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_CLKSEL,
                      MXC_S_GCR_CLK_CTRL_CLKSEL_NANORING);
 

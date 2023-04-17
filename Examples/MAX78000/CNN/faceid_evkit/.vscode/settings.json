@@ -76,6 +76,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
