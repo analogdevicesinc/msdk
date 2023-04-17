@@ -61,7 +61,6 @@
 #define PAL_SLEEP_TMR_IRQn MXC_TMR_GET_IRQ(PAL_SLEEP_TMR_IDX)
 
 #define PAL_TMR_CALIB_TIME_US 100000
-#define PAL_TMR_SETUP_TICKS     9
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
@@ -282,40 +281,20 @@ void PalTimerStart(uint32_t expUsec)
     uint32_t ticks;
 
     MXC_WUT_GetTicks(1, MXC_WUT_UNIT_SEC, &ticks);
-      /* Calculate the compare value */
-    compareValue = ((uint64_t)expUsec * (uint64_t)32768) / (uint64_t)1000000;
-
-   
-    /* Account for setup time */
-    // if (compareValue > PAL_TMR_SETUP_TICKS) {
-    //     compareValue -= PAL_TMR_SETUP_TICKS;
-    // } else {
-    //     compareValue = 1;
-    // }
-    
-
-  
-    /* Convert the start time to ticks */
-    uint32_t volatile count = MXC_WUT_GetCount();
-    compareValue += ((uint32_t)MXC_WUT_GetCount()) ;
-    
-    // TODO : check if wrap around
-    // if(count > compareValue)
-    // {
-    //     newCompare = count - compareValue;
-    //     MXC_WUT_SetCompare( compareValue);
-    // }
-    // else{
-    //     MXC_WUT_SetCompare( count + compareValue);
-    // }
-
-   
-    MXC_WUT_SetCompare(compareValue);
+    /* Calculate the compare value */
+    compareValue = (((uint64_t)expUsec * (uint64_t)32768) / (uint64_t)1000000);
+    /* handle wrap around */
+    uint32_t adjustedcompareValue = ((MXC_WUT_GetCount() + compareValue) % (0xFFFFFFFF));
+    if (adjustedcompareValue < compareValue) {
+        /* if wrapped around add 1 */
+        adjustedcompareValue++;
+    }
+ 
+    MXC_WUT_SetCompare(adjustedcompareValue);
    
     /* Clear and enable interrupts */
     NVIC_ClearPendingIRQ(WUT_IRQn);
     NVIC_EnableIRQ(WUT_IRQn);
-
 
     palTimerCb.state = PAL_TIMER_STATE_BUSY;
     /* Enable WUT */
@@ -405,7 +384,7 @@ uint32_t PalTimerGetExpTime(void)
 
     time = MXC_WUT_GetCompare() - MXC_WUT_GetCount();
     // TODO : should this PeriphralClock be 32768?
-    time /= (PeripheralClock / 1000000);
+    time /= (32768 / 1000000);
 
     /* Adjust time based on the calibrated value */
     time = time - ((time / PAL_TMR_CALIB_TIME_US) * palTimerCb.usecDiff);
