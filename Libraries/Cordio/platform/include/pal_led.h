@@ -55,6 +55,8 @@ void PalLedDeInit(void);
 /* Control and Status */
 void PalLedOn(uint8_t id);
 void PalLedOff(uint8_t id);
+void PalLedFastOn(uint8_t id);
+void PalLedFastOff(uint8_t id);
 
 /*! \} */    /* PAL_LED */
 
