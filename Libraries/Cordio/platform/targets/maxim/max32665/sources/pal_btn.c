@@ -14,7 +14,7 @@
  * Agreement do not use this file and delete all copies in your possession or control;
  * if you do not have a copy of the Agreement, you must contact Packetcraft, Inc. prior
  * to any use, copying or further distribution of this software.
- */
+ *  /
 /*************************************************************************************************/
 
 #include "pal_btn.h"
