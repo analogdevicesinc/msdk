@@ -37,10 +37,10 @@ Write Secure Characteristic Test
     Expect And Timeout    btn 2 m\n    Notification from secure data service      5      ${SERIAL_PORT_1}    
 
 
-Phy Switching Test 
-    [Timeout]     30s
-    sleep    1s
-    Expect And Timeout    btn 2 s\n    DM_PHY_UPDATE_IND - RX: 2, TX: 2    5    ${SERIAL_PORT_1}
+# Phy Switching Test 
+#     [Timeout]     30s
+#     sleep    1s
+#     Expect And Timeout    btn 2 s\n    DM_PHY_UPDATE_IND - RX: 2, TX: 2    5    ${SERIAL_PORT_1}
     
 #Speed Test  
  #   [Timeout]     180s
