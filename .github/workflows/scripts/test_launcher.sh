@@ -596,14 +596,16 @@ CURRENT_TEST=$4
 change_advertising_names
 
 # Temporary fix until RF Closed is merged into RF Phy
-cd $MSDK_DIR/Libraries
-git clone git@github.com:Analog-Devices-MSDK/RF-PHY-closed.git
-cd $MSDK_DIR/Libraries/RF-PHY-closed
-git checkout ME17B1-new
-cd $DUT_NAME_UPPER/build/gcc
-make clean
-make -j
-
+# check if DUT_NAME_UPPER is MAX32655
+if [[ $DUT_NAME_UPPER == "MAX32655" ]]; then
+    cd $MSDK_DIR/Libraries
+    git clone git@github.com:Analog-Devices-MSDK/RF-PHY-closed.git
+    cd $MSDK_DIR/Libraries/RF-PHY-closed
+    git checkout ME17B1-new
+    cd $DUT_NAME_UPPER/build/gcc
+    make clean
+    make -j
+fi
 
 if [ $CURRENT_TEST == "all" ]; then
     echo
