@@ -943,8 +943,9 @@ int afe_write_register(uint32_t target_reg, uint32_t value)
     //
 
     // Top 2 bytes of address encodes the register address
-    // Address Bits 23&24 are MSB address bits, which must be written into ana_src_sel[1:0] as bank select
-    // Bottom byte of address encodes the register width in bytes 1 - 4 (8bits to 32bits)
+    // Address Bits 23&24 are MSB address bits, which must be written into
+    // ana_src_sel[1:0] as bank select. Bottom byte of address encodes the
+    // register width in bytes 1 - 4 (8bits to 32bits)
 
     reg_length = (target_reg & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS;
     reg_bank = (target_reg & AFE_REG_ADDR_BANK) >> AFE_REG_ADDR_BANK_POS;
@@ -956,13 +957,34 @@ int afe_write_register(uint32_t target_reg, uint32_t value)
         return retval;
     }
 
-    retval = raw_afe_write_register(reg_address, value, reg_length);
+    return raw_afe_write_register(reg_address, value, reg_length);
+}
+
+int afe_bank_write_register(uint32_t target_reg, uint8_t reg_bank, uint32_t value)
+{
+    uint8_t reg_address = 0;
+    uint8_t reg_length = 0;
+    int retval = 0;
+
+    //
+    // Parse register parameters from register offset
+    //
+
+    // Top 2 bytes of address encodes the register address
+    // Address Bits 23&24 are MSB address bits, which must be written into
+    // ana_src_sel[1:0] as bank select. Bottom byte of address encodes the
+    // register width in bytes 1 - 4 (8bits to 32bits)
+
+    reg_length = (target_reg & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS;
+    reg_address = (target_reg & AFE_REG_ADDR) >> AFE_REG_ADDR_POS;
+
+    retval = afe_bank_select(reg_bank);
 
     if (retval != E_NO_ERROR) {
         return retval;
     }
 
-    return retval;
+    return raw_afe_write_register(reg_address, value, reg_length);
 }
 
 int afe_read_register(uint32_t target_reg, uint32_t *value)
@@ -977,8 +999,9 @@ int afe_read_register(uint32_t target_reg, uint32_t *value)
     //
 
     // Top 2 bytes of address encodes the register address
-    // Address Bits 23&24 are MSB address bits, which must be written into ana_src_sel[1:0] as bank select
-    // Bottom byte of address encodes the register width in bytes 1 - 4 (8bits to 32bits)
+    // Address Bits 23&24 are MSB address bits, which must be written into
+    // ana_src_sel[1:0] as bank select. Bottom byte of address encodes the
+    // register width in bytes 1 - 4 (8bits to 32bits)
 
     reg_length = (target_reg & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS;
     reg_bank = (target_reg & AFE_REG_ADDR_BANK) >> AFE_REG_ADDR_BANK_POS;
@@ -990,13 +1013,34 @@ int afe_read_register(uint32_t target_reg, uint32_t *value)
         return retval;
     }
 
-    retval = raw_afe_read_register(reg_address, value, reg_length);
+    return raw_afe_read_register(reg_address, value, reg_length);
+}
+
+int afe_bank_read_register(uint32_t target_reg, uint8_t reg_bank, uint32_t *value)
+{
+    uint8_t reg_address = 0;
+    uint8_t reg_length = 0;
+    int retval = 0;
+
+    //
+    // Parse register parameters from register offset
+    //
+
+    // Top 2 bytes of address encodes the register address
+    // Address Bits 23&24 are MSB address bits, which must be written into
+    // ana_src_sel[1:0] as bank select. Bottom byte of address encodes the
+    // register width in bytes 1 - 4 (8bits to 32bits)
+
+    reg_length = (target_reg & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS;
+    reg_address = (target_reg & AFE_REG_ADDR) >> AFE_REG_ADDR_POS;
+
+    retval = afe_bank_select(reg_bank);
 
     if (retval != E_NO_ERROR) {
         return retval;
     }
 
-    return retval;
+    return raw_afe_read_register(reg_address, value, reg_length);
 }
 
 int afe_load_trims(void)

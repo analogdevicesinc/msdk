@@ -91,14 +91,36 @@ void afe_reset(void);
 int afe_write_register(uint32_t target_reg, uint32_t value);
 
 /**
+ * @brief   Writes data to AFE register in the specified bank.
+ *
+ * @param   target_reg  The register to write the data into
+ * @param   reg_bank    register bank
+ * @param   value       The data to write
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+int afe_bank_write_register(uint32_t target_reg, uint8_t reg_bank, uint32_t value);
+
+/**
  * @brief   Read data from AFE register.
  *
  * @param   target_reg  The register to read the data from
- * @param   value       Buffer to store data in 
+ * @param   value       Buffer to store data in
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
 int afe_read_register(uint32_t target_reg, uint32_t *value);
+
+/**
+ * @brief   Read data from AFE register in the specified bank.
+ *
+ * @param   target_reg  The register to read the data from
+ * @param   reg_bank    register bank
+ * @param   value       Buffer to store data in
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+int afe_bank_read_register(uint32_t target_reg, uint8_t reg_bank, uint32_t *value);
 
 /**
  * @brief   Load AFE Trims.
