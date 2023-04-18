@@ -195,9 +195,7 @@ void PalTimerInit(PalTimerCompCback_t expCback)
 
     PAL_TIMER_CHECK(palTimerCb.state == PAL_TIMER_STATE_UNINIT);
     PAL_TIMER_CHECK(expCback != NULL);
-#ifndef USE_SHARED_WUT
-#error "USE_SHARED_WUT must be defined"
-#endif
+
 #if defined(USE_SHARED_WUT)
     APP_TRACE_INFO0("\r\n\r\n>>>>> USING SHARED WUT TIMER <<<<<\r\n\r\n ");
     if (!PalSharedTimerIsInit()) {
@@ -218,7 +216,7 @@ void PalTimerInit(PalTimerCompCback_t expCback)
         PalSharedTimerInitState(TRUE);
     }
 #else
-APP_TRACE_INFO0("\r\n\r\n>>>>> USING PAL TIMER <<<<<\r\n\r\n ");
+    APP_TRACE_INFO0("\r\n\r\n>>>>> USING PAL TIMER <<<<<\r\n\r\n ");
     mxc_tmr_cfg_t tmr_cfg;
     tmr_cfg.pres = TMR_PRES_1;
     tmr_cfg.mode = TMR_MODE_ONESHOT;
