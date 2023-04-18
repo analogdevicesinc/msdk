@@ -90,13 +90,17 @@ extern "C" {
  */
 typedef struct {
     __IO uint32_t ver;                  /**< <tt>\b 0x0000:</tt> CAMERAIF VER Register */
-    __IO uint32_t fifo_size;            /**< <tt>\b 0x0004:</tt> CAMERAIF FIFO_SIZE Register */
+    __IO uint32_t fifodep;              /**< <tt>\b 0x0004:</tt> CAMERAIF FIFODEP Register */
     __IO uint32_t ctrl;                 /**< <tt>\b 0x0008:</tt> CAMERAIF CTRL Register */
-    __IO uint32_t int_en;               /**< <tt>\b 0x000C:</tt> CAMERAIF INT_EN Register */
-    __IO uint32_t int_fl;               /**< <tt>\b 0x0010:</tt> CAMERAIF INT_FL Register */
-    __IO uint32_t ds_timing_codes;      /**< <tt>\b 0x0014:</tt> CAMERAIF DS_TIMING_CODES Register */
+    __IO uint32_t inten;                /**< <tt>\b 0x000C:</tt> CAMERAIF INTEN Register */
+    __IO uint32_t intfl;                /**< <tt>\b 0x0010:</tt> CAMERAIF INTFL Register */
+    __IO uint32_t dscodes;              /**< <tt>\b 0x0014:</tt> CAMERAIF DSCODES Register */
+    union {
     __R  uint32_t rsv_0x18_0x2f[6];
-    __IO uint32_t fifo_data;            /**< <tt>\b 0x0030:</tt> CAMERAIF FIFO_DATA Register */
+        __IO uint32_t fifo32;           /**< <tt>\b 0x0030:</tt> CAMERAIF FIFO32 Register */
+        __IO uint16_t fifo16[2];        /**< <tt>\b 0x0030:</tt> CAMERAIF FIFO16 Register */
+        __IO uint8_t  fifo8[4];         /**< <tt>\b 0x0030:</tt> CAMERAIF FIFO8 Register */
+    };
 } mxc_cameraif_regs_t;
 
 /* Register offsets for module CAMERAIF */
@@ -107,12 +111,14 @@ typedef struct {
  * @{
  */
 #define MXC_R_CAMERAIF_VER                 ((uint32_t)0x00000000UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0000</tt> */
-#define MXC_R_CAMERAIF_FIFO_SIZE           ((uint32_t)0x00000004UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0004</tt> */
+#define MXC_R_CAMERAIF_FIFODEP             ((uint32_t)0x00000004UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0004</tt> */
 #define MXC_R_CAMERAIF_CTRL                ((uint32_t)0x00000008UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0008</tt> */
-#define MXC_R_CAMERAIF_INT_EN              ((uint32_t)0x0000000CUL) /**< Offset from CAMERAIF Base Address: <tt> 0x000C</tt> */
-#define MXC_R_CAMERAIF_INT_FL              ((uint32_t)0x00000010UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0010</tt> */
-#define MXC_R_CAMERAIF_DS_TIMING_CODES     ((uint32_t)0x00000014UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0014</tt> */
-#define MXC_R_CAMERAIF_FIFO_DATA           ((uint32_t)0x00000030UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0030</tt> */
+#define MXC_R_CAMERAIF_INTEN               ((uint32_t)0x0000000CUL) /**< Offset from CAMERAIF Base Address: <tt> 0x000C</tt> */
+#define MXC_R_CAMERAIF_INTFL               ((uint32_t)0x00000010UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0010</tt> */
+#define MXC_R_CAMERAIF_DSCODES             ((uint32_t)0x00000014UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0014</tt> */
+#define MXC_R_CAMERAIF_FIFO32              ((uint32_t)0x00000030UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0030</tt> */
+#define MXC_R_CAMERAIF_FIFO16              ((uint32_t)0x00000030UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0030</tt> */
+#define MXC_R_CAMERAIF_FIFO8               ((uint32_t)0x00000030UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0030</tt> */
 /**@} end of group cameraif_registers */
 
 /**
@@ -131,14 +137,14 @@ typedef struct {
 
 /**
  * @ingroup  cameraif_registers
- * @defgroup CAMERAIF_FIFO_SIZE CAMERAIF_FIFO_SIZE
+ * @defgroup CAMERAIF_FIFODEP CAMERAIF_FIFODEP
  * @brief    FIFO Depth.
  * @{
  */
-#define MXC_F_CAMERAIF_FIFO_SIZE_FIFO_SIZE_POS         0 /**< FIFO_SIZE_FIFO_SIZE Position */
-#define MXC_F_CAMERAIF_FIFO_SIZE_FIFO_SIZE             ((uint32_t)(0xFFUL << MXC_F_CAMERAIF_FIFO_SIZE_FIFO_SIZE_POS)) /**< FIFO_SIZE_FIFO_SIZE Mask */
+#define MXC_F_CAMERAIF_FIFODEP_DEPTH_POS               0 /**< FIFODEP_DEPTH Position */
+#define MXC_F_CAMERAIF_FIFODEP_DEPTH                   ((uint32_t)(0xFFUL << MXC_F_CAMERAIF_FIFODEP_DEPTH_POS)) /**< FIFODEP_DEPTH Mask */
 
-/**@} end of group CAMERAIF_FIFO_SIZE_Register */
+/**@} end of group CAMERAIF_FIFODEP_Register */
 
 /**
  * @ingroup  cameraif_registers
@@ -167,87 +173,103 @@ typedef struct {
 #define MXC_F_CAMERAIF_CTRL_DS_TIMING_EN_POS           4 /**< CTRL_DS_TIMING_EN Position */
 #define MXC_F_CAMERAIF_CTRL_DS_TIMING_EN               ((uint32_t)(0x1UL << MXC_F_CAMERAIF_CTRL_DS_TIMING_EN_POS)) /**< CTRL_DS_TIMING_EN Mask */
 
-#define MXC_F_CAMERAIF_CTRL_FIFO_THRSH_POS             5 /**< CTRL_FIFO_THRSH Position */
-#define MXC_F_CAMERAIF_CTRL_FIFO_THRSH                 ((uint32_t)(0x1FUL << MXC_F_CAMERAIF_CTRL_FIFO_THRSH_POS)) /**< CTRL_FIFO_THRSH Mask */
+#define MXC_F_CAMERAIF_CTRL_FIFO_THD_POS               5 /**< CTRL_FIFO_THD Position */
+#define MXC_F_CAMERAIF_CTRL_FIFO_THD                   ((uint32_t)(0x1FUL << MXC_F_CAMERAIF_CTRL_FIFO_THD_POS)) /**< CTRL_FIFO_THD Mask */
 
-#define MXC_F_CAMERAIF_CTRL_RX_DMA_POS                 16 /**< CTRL_RX_DMA Position */
-#define MXC_F_CAMERAIF_CTRL_RX_DMA                     ((uint32_t)(0x1UL << MXC_F_CAMERAIF_CTRL_RX_DMA_POS)) /**< CTRL_RX_DMA Mask */
+#define MXC_F_CAMERAIF_CTRL_RX_DMA_EN_POS              16 /**< CTRL_RX_DMA_EN Position */
+#define MXC_F_CAMERAIF_CTRL_RX_DMA_EN                  ((uint32_t)(0x1UL << MXC_F_CAMERAIF_CTRL_RX_DMA_EN_POS)) /**< CTRL_RX_DMA_EN Mask */
 
-#define MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS           17 /**< CTRL_RX_DMA_THRSH Position */
-#define MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH               ((uint32_t)(0xFUL << MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS)) /**< CTRL_RX_DMA_THRSH Mask */
-
-#define MXC_F_CAMERAIF_CTRL_THREE_CH_EN_POS            30 /**< CTRL_THREE_CH_EN Position */
-#define MXC_F_CAMERAIF_CTRL_THREE_CH_EN                ((uint32_t)(0x1UL << MXC_F_CAMERAIF_CTRL_THREE_CH_EN_POS)) /**< CTRL_THREE_CH_EN Mask */
-
-#define MXC_F_CAMERAIF_CTRL_PCIF_SYS_POS               31 /**< CTRL_PCIF_SYS Position */
-#define MXC_F_CAMERAIF_CTRL_PCIF_SYS                   ((uint32_t)(0x1UL << MXC_F_CAMERAIF_CTRL_PCIF_SYS_POS)) /**< CTRL_PCIF_SYS Mask */
+#define MXC_F_CAMERAIF_CTRL_RX_DMA_THD_POS             17 /**< CTRL_RX_DMA_THD Position */
+#define MXC_F_CAMERAIF_CTRL_RX_DMA_THD                 ((uint32_t)(0xFUL << MXC_F_CAMERAIF_CTRL_RX_DMA_THD_POS)) /**< CTRL_RX_DMA_THD Mask */
 
 /**@} end of group CAMERAIF_CTRL_Register */
 
 /**
  * @ingroup  cameraif_registers
- * @defgroup CAMERAIF_INT_EN CAMERAIF_INT_EN
+ * @defgroup CAMERAIF_INTEN CAMERAIF_INTEN
  * @brief    Interupt Enable Register.
  * @{
  */
-#define MXC_F_CAMERAIF_INT_EN_IMG_DONE_POS             0 /**< INT_EN_IMG_DONE Position */
-#define MXC_F_CAMERAIF_INT_EN_IMG_DONE                 ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INT_EN_IMG_DONE_POS)) /**< INT_EN_IMG_DONE Mask */
+#define MXC_F_CAMERAIF_INTEN_IMG_DONE_POS              0 /**< INTEN_IMG_DONE Position */
+#define MXC_F_CAMERAIF_INTEN_IMG_DONE                  ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INTEN_IMG_DONE_POS)) /**< INTEN_IMG_DONE Mask */
 
-#define MXC_F_CAMERAIF_INT_EN_FIFO_FULL_POS            1 /**< INT_EN_FIFO_FULL Position */
-#define MXC_F_CAMERAIF_INT_EN_FIFO_FULL                ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INT_EN_FIFO_FULL_POS)) /**< INT_EN_FIFO_FULL Mask */
+#define MXC_F_CAMERAIF_INTEN_FIFO_FULL_POS             1 /**< INTEN_FIFO_FULL Position */
+#define MXC_F_CAMERAIF_INTEN_FIFO_FULL                 ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INTEN_FIFO_FULL_POS)) /**< INTEN_FIFO_FULL Mask */
 
-#define MXC_F_CAMERAIF_INT_EN_FIFO_THRESH_POS          2 /**< INT_EN_FIFO_THRESH Position */
-#define MXC_F_CAMERAIF_INT_EN_FIFO_THRESH              ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INT_EN_FIFO_THRESH_POS)) /**< INT_EN_FIFO_THRESH Mask */
+#define MXC_F_CAMERAIF_INTEN_FIFO_THD_POS              2 /**< INTEN_FIFO_THD Position */
+#define MXC_F_CAMERAIF_INTEN_FIFO_THD                  ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INTEN_FIFO_THD_POS)) /**< INTEN_FIFO_THD Mask */
 
-#define MXC_F_CAMERAIF_INT_EN_FIFO_NOT_EMPTY_POS       3 /**< INT_EN_FIFO_NOT_EMPTY Position */
-#define MXC_F_CAMERAIF_INT_EN_FIFO_NOT_EMPTY           ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INT_EN_FIFO_NOT_EMPTY_POS)) /**< INT_EN_FIFO_NOT_EMPTY Mask */
+#define MXC_F_CAMERAIF_INTEN_FIFO_NEM_POS              3 /**< INTEN_FIFO_NEM Position */
+#define MXC_F_CAMERAIF_INTEN_FIFO_NEM                  ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INTEN_FIFO_NEM_POS)) /**< INTEN_FIFO_NEM Mask */
 
-/**@} end of group CAMERAIF_INT_EN_Register */
+/**@} end of group CAMERAIF_INTEN_Register */
 
 /**
  * @ingroup  cameraif_registers
- * @defgroup CAMERAIF_INT_FL CAMERAIF_INT_FL
+ * @defgroup CAMERAIF_INTFL CAMERAIF_INTFL
  * @brief    Interupt Flag Register.
  * @{
  */
-#define MXC_F_CAMERAIF_INT_FL_IMG_DONE_POS             0 /**< INT_FL_IMG_DONE Position */
-#define MXC_F_CAMERAIF_INT_FL_IMG_DONE                 ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INT_FL_IMG_DONE_POS)) /**< INT_FL_IMG_DONE Mask */
+#define MXC_F_CAMERAIF_INTFL_IMG_DONE_POS              0 /**< INTFL_IMG_DONE Position */
+#define MXC_F_CAMERAIF_INTFL_IMG_DONE                  ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INTFL_IMG_DONE_POS)) /**< INTFL_IMG_DONE Mask */
 
-#define MXC_F_CAMERAIF_INT_FL_FIFO_FULL_POS            1 /**< INT_FL_FIFO_FULL Position */
-#define MXC_F_CAMERAIF_INT_FL_FIFO_FULL                ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INT_FL_FIFO_FULL_POS)) /**< INT_FL_FIFO_FULL Mask */
+#define MXC_F_CAMERAIF_INTFL_FIFO_FULL_POS             1 /**< INTFL_FIFO_FULL Position */
+#define MXC_F_CAMERAIF_INTFL_FIFO_FULL                 ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INTFL_FIFO_FULL_POS)) /**< INTFL_FIFO_FULL Mask */
 
-#define MXC_F_CAMERAIF_INT_FL_FIFO_THRESH_POS          2 /**< INT_FL_FIFO_THRESH Position */
-#define MXC_F_CAMERAIF_INT_FL_FIFO_THRESH              ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INT_FL_FIFO_THRESH_POS)) /**< INT_FL_FIFO_THRESH Mask */
+#define MXC_F_CAMERAIF_INTFL_FIFO_THD_POS              2 /**< INTFL_FIFO_THD Position */
+#define MXC_F_CAMERAIF_INTFL_FIFO_THD                  ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INTFL_FIFO_THD_POS)) /**< INTFL_FIFO_THD Mask */
 
-#define MXC_F_CAMERAIF_INT_FL_FIFO_NOT_EMPTY_POS       3 /**< INT_FL_FIFO_NOT_EMPTY Position */
-#define MXC_F_CAMERAIF_INT_FL_FIFO_NOT_EMPTY           ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INT_FL_FIFO_NOT_EMPTY_POS)) /**< INT_FL_FIFO_NOT_EMPTY Mask */
+#define MXC_F_CAMERAIF_INTFL_FIFO_NEM_POS              3 /**< INTFL_FIFO_NEM Position */
+#define MXC_F_CAMERAIF_INTFL_FIFO_NEM                  ((uint32_t)(0x1UL << MXC_F_CAMERAIF_INTFL_FIFO_NEM_POS)) /**< INTFL_FIFO_NEM Mask */
 
-/**@} end of group CAMERAIF_INT_FL_Register */
+/**@} end of group CAMERAIF_INTFL_Register */
 
 /**
  * @ingroup  cameraif_registers
- * @defgroup CAMERAIF_DS_TIMING_CODES CAMERAIF_DS_TIMING_CODES
+ * @defgroup CAMERAIF_DSCODES CAMERAIF_DSCODES
  * @brief    DS Timing Code Register.
  * @{
  */
-#define MXC_F_CAMERAIF_DS_TIMING_CODES_SAV_POS         0 /**< DS_TIMING_CODES_SAV Position */
-#define MXC_F_CAMERAIF_DS_TIMING_CODES_SAV             ((uint32_t)(0xFFUL << MXC_F_CAMERAIF_DS_TIMING_CODES_SAV_POS)) /**< DS_TIMING_CODES_SAV Mask */
+#define MXC_F_CAMERAIF_DSCODES_SAV_POS                 0 /**< DSCODES_SAV Position */
+#define MXC_F_CAMERAIF_DSCODES_SAV                     ((uint32_t)(0xFFUL << MXC_F_CAMERAIF_DSCODES_SAV_POS)) /**< DSCODES_SAV Mask */
 
-#define MXC_F_CAMERAIF_DS_TIMING_CODES_EAV_POS         8 /**< DS_TIMING_CODES_EAV Position */
-#define MXC_F_CAMERAIF_DS_TIMING_CODES_EAV             ((uint32_t)(0xFFUL << MXC_F_CAMERAIF_DS_TIMING_CODES_EAV_POS)) /**< DS_TIMING_CODES_EAV Mask */
+#define MXC_F_CAMERAIF_DSCODES_EAV_POS                 8 /**< DSCODES_EAV Position */
+#define MXC_F_CAMERAIF_DSCODES_EAV                     ((uint32_t)(0xFFUL << MXC_F_CAMERAIF_DSCODES_EAV_POS)) /**< DSCODES_EAV Mask */
 
-/**@} end of group CAMERAIF_DS_TIMING_CODES_Register */
+/**@} end of group CAMERAIF_DSCODES_Register */
 
 /**
  * @ingroup  cameraif_registers
- * @defgroup CAMERAIF_FIFO_DATA CAMERAIF_FIFO_DATA
+ * @defgroup CAMERAIF_FIFO32 CAMERAIF_FIFO32
  * @brief    FIFO DATA Register.
  * @{
  */
-#define MXC_F_CAMERAIF_FIFO_DATA_DATA_POS              0 /**< FIFO_DATA_DATA Position */
-#define MXC_F_CAMERAIF_FIFO_DATA_DATA                  ((uint32_t)(0xFFFFFFFFUL << MXC_F_CAMERAIF_FIFO_DATA_DATA_POS)) /**< FIFO_DATA_DATA Mask */
+#define MXC_F_CAMERAIF_FIFO32_DATA_POS                 0 /**< FIFO32_DATA Position */
+#define MXC_F_CAMERAIF_FIFO32_DATA                     ((uint32_t)(0xFFFFFFFFUL << MXC_F_CAMERAIF_FIFO32_DATA_POS)) /**< FIFO32_DATA Mask */
 
-/**@} end of group CAMERAIF_FIFO_DATA_Register */
+/**@} end of group CAMERAIF_FIFO32_Register */
+
+/**
+ * @ingroup  cameraif_registers
+ * @defgroup CAMERAIF_FIFO16 CAMERAIF_FIFO16
+ * @brief    FIFO DATA Register.
+ * @{
+ */
+#define MXC_F_CAMERAIF_FIFO16_DATA_POS                 0 /**< FIFO16_DATA Position */
+#define MXC_F_CAMERAIF_FIFO16_DATA                     ((uint16_t)(0xFFFFUL << MXC_F_CAMERAIF_FIFO16_DATA_POS)) /**< FIFO16_DATA Mask */
+
+/**@} end of group CAMERAIF_FIFO16_Register */
+
+/**
+ * @ingroup  cameraif_registers
+ * @defgroup CAMERAIF_FIFO8 CAMERAIF_FIFO8
+ * @brief    FIFO DATA Register.
+ * @{
+ */
+#define MXC_F_CAMERAIF_FIFO8_DATA_POS                  0 /**< FIFO8_DATA Position */
+#define MXC_F_CAMERAIF_FIFO8_DATA                      ((uint8_t)(0xFFUL << MXC_F_CAMERAIF_FIFO8_DATA_POS)) /**< FIFO8_DATA Mask */
+
+/**@} end of group CAMERAIF_FIFO8_Register */
 
 #ifdef __cplusplus
 }

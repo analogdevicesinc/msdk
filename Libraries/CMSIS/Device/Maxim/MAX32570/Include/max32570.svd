@@ -441,13 +441,13 @@
      </fields>
     </register>
     <register>
-     <name>FIFO_SIZE</name>
+     <name>FIFODEP</name>
      <description>FIFO Depth.</description>
      <addressOffset>0x0004</addressOffset>
      <access>read-write</access>
      <fields>
       <field>
-       <name>fifo_size</name>
+       <name>depth</name>
        <description>FIFO size.</description>
        <bitRange>[7:0]</bitRange>
        <access>read-write</access>
@@ -528,14 +528,14 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>FIFO_THRSH</name>
+       <name>FIFO_THD</name>
        <description>Data FIFO Threshold.</description>
        <bitOffset>5</bitOffset>
        <bitWidth>5</bitWidth>
        <access>read-write</access>
       </field>
       <field>
-       <name>RX_DMA</name>
+       <name>RX_DMA_EN</name>
        <description>DMA Enable.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
@@ -554,42 +554,16 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>RX_DMA_THRSH</name>
+       <name>RX_DMA_THD</name>
        <description>DMA Threshold.</description>
        <bitOffset>17</bitOffset>
        <bitWidth>4</bitWidth>
        <access>read-write</access>
       </field>
-      <field>
-       <name>THREE_CH_EN</name>
-       <description>Three-channel mode enable.</description>
-       <bitOffset>30</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-      </field>
-      <field>
-       <name>PCIF_SYS</name>
-       <description>PCIF Control.</description>
-       <bitOffset>31</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-write</access>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>PCIF disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>PCIF enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
      </fields>
     </register>
     <register>
-     <name>INT_EN</name>
+     <name>INTEN</name>
      <description>Interupt Enable Register.</description>
      <addressOffset>0x000C</addressOffset>
      <access>read-write</access>
@@ -609,14 +583,14 @@
        <access>read-write</access>
       </field>
       <field>
-       <name>FIFO_THRESH</name>
+       <name>FIFO_THD</name>
        <description>FIFO Threshold Level Met.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
-       <name>FIFO_NOT_EMPTY</name>
+       <name>FIFO_NEM</name>
        <description>FIFO Not Empty.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
@@ -625,7 +599,7 @@
      </fields>
     </register>
     <register>
-     <name>INT_FL</name>
+     <name>INTFL</name>
      <description>Interupt Flag Register.</description>
      <addressOffset>0x0010</addressOffset>
      <access>read-write</access>
@@ -645,14 +619,14 @@
        <access>read-write</access>
       </field>
       <field>
-       <name>FIFO_THRESH</name>
+       <name>FIFO_THD</name>
        <description>FIFO Threshold Level Met.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-write</access>
       </field>
       <field>
-       <name>FIFO_NOT_EMPTY</name>
+       <name>FIFO_NEM</name>
        <description>FIFO Not Empty.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
@@ -661,7 +635,7 @@
      </fields>
     </register>
     <register>
-     <name>DS_TIMING_CODES</name>
+     <name>DSCODES</name>
      <description>DS Timing Code Register.</description>
      <addressOffset>0x0014</addressOffset>
      <access>read-write</access>
@@ -681,7 +655,7 @@
      </fields>
     </register>
     <register>
-     <name>FIFO_DATA</name>
+     <name>FIFO32</name>
      <description>FIFO DATA Register.</description>
      <addressOffset>0x0030</addressOffset>
      <access>read-write</access>
@@ -691,6 +665,42 @@
        <description>Data from FIFO to be read by DMA.</description>
        <bitRange>[31:0]</bitRange>
        <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <dim>2</dim>
+     <dimIncrement>2</dimIncrement>
+     <name>FIFO16[%s]</name>
+     <description>FIFO DATA Register.</description>
+     <alternateRegister>FIFO32</alternateRegister>
+     <addressOffset>0x0030</addressOffset>
+     <size>16</size>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>DATA</name>
+       <description>Read to pull from RX FIFO, write to put into TX FIFO.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>16</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <dim>4</dim>
+     <dimIncrement>1</dimIncrement>
+     <name>FIFO8[%s]</name>
+     <description>FIFO DATA Register.</description>
+     <alternateRegister>FIFO32</alternateRegister>
+     <addressOffset>0x0030</addressOffset>
+     <size>8</size>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>DATA</name>
+       <description>Read to pull from RX FIFO, write to put into TX FIFO.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>8</bitWidth>
       </field>
      </fields>
     </register>
