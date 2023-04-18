@@ -37,7 +37,7 @@
   Global Variables
 **************************************************************************************************/
 static struct {
-  PalRtcState_t state;
+    PalRtcState_t state;
 } palRtcCb;
 
 /*************************************************************************************************/
@@ -47,11 +47,11 @@ static struct {
  *  \return None.
  */
 /*************************************************************************************************/
-__attribute__ ((weak)) void WUT_IRQHandler(void)
+__attribute__((weak)) void WUT_IRQHandler(void)
 {
-  PalLedOn(PAL_LED_ID_CPU_ACTIVE);
-  MXC_WUT_IntClear();
-  NVIC_ClearPendingIRQ(WUT_IRQn);
+    PalLedOn(PAL_LED_ID_CPU_ACTIVE);
+    MXC_WUT_IntClear();
+    NVIC_ClearPendingIRQ(WUT_IRQn);
 }
 
 /*************************************************************************************************/
@@ -63,7 +63,7 @@ __attribute__ ((weak)) void WUT_IRQHandler(void)
 /*************************************************************************************************/
 PalRtcState_t PalRtcGetState(void)
 {
-  return palRtcCb.state;
+    return palRtcCb.state;
 }
 
 /*************************************************************************************************/
@@ -76,9 +76,9 @@ PalRtcState_t PalRtcGetState(void)
 /*************************************************************************************************/
 void PalRtcCompareSet(uint8_t channelId, uint32_t value)
 {
-  PAL_SYS_ASSERT(channelId == 0);
+    PAL_SYS_ASSERT(channelId == 0);
 
-  MXC_WUT_SetCompare(value);
+    MXC_WUT_SetCompare(value);
 }
 
 /*************************************************************************************************/
@@ -88,24 +88,32 @@ void PalRtcCompareSet(uint8_t channelId, uint32_t value)
 /*************************************************************************************************/
 void PalRtcInit(void)
 {
-  if(!PalSharedTimerIsInit()){
-    /* Init WUT */
-    mxc_wut_cfg_t cfg;
-    cfg.mode = MXC_WUT_MODE_COMPARE;
-    cfg.cmp_cnt = 0;
-    MXC_WUT_Init(MXC_WUT_PRES_1);
-    MXC_WUT_Config(&cfg);
+#if defined(USE_SHARED_WUT)
+    if (!PalSharedTimerIsInit()) {
+#endif
+        /* Init WUT */
+        mxc_wut_cfg_t cfg;
+        cfg.mode = MXC_WUT_MODE_COMPARE;
+#if defined(USE_SHARED_WUT)
+        cfg.cmp_cnt = 0;
+#else
+    cfg.cmp_cnt = PAL_MAX_RTC_COUNTER_VAL;
+#endif
+        MXC_WUT_Init(MXC_WUT_PRES_1);
+        MXC_WUT_Config(&cfg);
 
-    NVIC_ClearPendingIRQ(WUT_IRQn);
-    NVIC_SetPriority(WUT_IRQn, 0);
-    NVIC_EnableIRQ(WUT_IRQn);
+        NVIC_ClearPendingIRQ(WUT_IRQn);
+        NVIC_SetPriority(WUT_IRQn, 0);
+        NVIC_EnableIRQ(WUT_IRQn);
 
-    /* Enable WUT */
-    MXC_WUT_Enable();
-    MXC_LP_EnableWUTAlarmWakeup();
-    PalSharedTimerInitState(TRUE);
-   }
-  palRtcCb.state = PAL_RTC_STATE_READY;
+        /* Enable WUT */
+        MXC_WUT_Enable();
+        MXC_LP_EnableWUTAlarmWakeup();
+#if defined(USE_SHARED_WUT)
+        PalSharedTimerInitState(TRUE);
+    }
+#endif
+    palRtcCb.state = PAL_RTC_STATE_READY;
 }
 
 /*************************************************************************************************/
@@ -120,9 +128,9 @@ void PalRtcInit(void)
 /*************************************************************************************************/
 uint32_t PalRtcCounterGet(void)
 {
-  uint32_t count = MXC_WUT_GetCount();
+    uint32_t count = MXC_WUT_GetCount();
 
-  return count;
+    return count;
 }
 
 /*************************************************************************************************/
@@ -134,8 +142,8 @@ uint32_t PalRtcCounterGet(void)
 /*************************************************************************************************/
 void PalRtcEnableCompareIrq(uint8_t channelId)
 {
-  PAL_SYS_ASSERT(channelId == 0);
-  NVIC_EnableIRQ(WUT_IRQn);
+    PAL_SYS_ASSERT(channelId == 0);
+    NVIC_EnableIRQ(WUT_IRQn);
 }
 
 /*************************************************************************************************/
@@ -147,6 +155,8 @@ void PalRtcEnableCompareIrq(uint8_t channelId)
 /*************************************************************************************************/
 void PalRtcDisableCompareIrq(uint8_t channelId)
 {
-  PAL_SYS_ASSERT(channelId == 0);
-  
+    PAL_SYS_ASSERT(channelId == 0);
+#if !defined(USE_SHARED_WUT)
+    NVIC_DisableIRQ(WUT_IRQn);
+#endif
 }

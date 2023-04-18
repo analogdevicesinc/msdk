@@ -31,6 +31,7 @@ INIT_CENTRAL    ?= 1
 INIT_ENCRYPTED  ?= 1
 INIT_OBSERVER   ?= 0
 INIT_BROADCASTER?= 0
+USE_SHARED_WUT ?= 0
 
 WSF_HEAP_SIZE ?= 0x10000
 CFG_DEV += WSF_HEAP_SIZE=$(WSF_HEAP_SIZE)
@@ -67,6 +68,9 @@ PAL_NVM_SIZE	?= 0x2000
 
 CFG_DEV         := BT_VER=$(BT_VER)
 CFG_DEV         += SCH_CHECK_LIST_INTEGRITY=1
+ifeq ($(USE_SHARED_WUT),1)
+CFG_DEV         += USE_SHARED_WUT=1
+endif
 
 # 2 = uECC_asm_fast, optimized for speed
 CFG_DEV         += uECC_ASM=2

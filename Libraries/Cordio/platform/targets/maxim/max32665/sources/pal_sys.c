@@ -273,11 +273,26 @@ bool_t PalSysIsBusy(void)
   return sysIsBusy;
 }
 
+/*************************************************************************************************/
+/*!
+ *  \brief      Check if Pal shared timer is init.
+ *
+ *  \return     TRUE if timer is initialized.
+ */
+/*************************************************************************************************/
+
 bool_t PalSharedTimerIsInit(void)
 {
   return palSharedWutTimerIsInit;
 }
 
+/*************************************************************************************************/
+/*!
+ *  \brief      Set timer initalized state.
+ *
+ *  \return     None.
+ */
+/*************************************************************************************************/
 void PalSharedTimerInitState(bool_t state)
 {
   palSharedWutTimerIsInit = state;
