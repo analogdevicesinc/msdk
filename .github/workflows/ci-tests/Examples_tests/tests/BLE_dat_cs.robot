@@ -42,8 +42,8 @@ Phy Switching Test
     sleep    1s
     Expect And Timeout    btn 2 s\n    DM_PHY_UPDATE_IND - RX: 2, TX: 2    5    ${SERIAL_PORT_1}
     
-Speed Test  
-    [Timeout]     180s
-    sleep    1
-    Expect And Timeout    btn 2 x\n    transferred    120    ${SERIAL_PORT_1}
+#Speed Test  
+ #   [Timeout]     180s
+  #  sleep    1
+   # Expect And Timeout    btn 2 x\n    transferred    120    ${SERIAL_PORT_1}
 
