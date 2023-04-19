@@ -124,10 +124,6 @@ int MXC_I2C_Reset(mxc_i2c_regs_t *i2c)
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz)
 {
-    if (hz > MXC_I2C_HIGH_SPEED) {
-        return E_NOT_SUPPORTED;
-    }
-
     return MXC_I2C_RevA_SetFrequency((mxc_i2c_reva_regs_t *)i2c, hz);
 }
 
