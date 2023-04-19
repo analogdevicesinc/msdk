@@ -18,22 +18,22 @@
  */
 
 #ifdef USE_AIX
-#if defined _AIX
-#include "aliases_aix_sysaix.h"
-#else
-#include "aliases_aix.h"
-#endif
+# if defined _AIX
+#  include "aliases_aix_sysaix.h"
+# else
+#  include "aliases_aix.h"
+# endif
 #endif
 #ifdef USE_OSF1
-#if defined __osf__
-#include "aliases_osf1_sysosf1.h"
-#else
-#include "aliases_osf1.h"
-#endif
+# if defined __osf__
+#  include "aliases_osf1_sysosf1.h"
+# else
+#  include "aliases_osf1.h"
+# endif
 #endif
 #ifdef USE_DOS
-#include "aliases_dos.h"
+# include "aliases_dos.h"
 #endif
 #ifdef USE_EXTRA
-#include "aliases_extra.h"
+# include "aliases_extra.h"
 #endif

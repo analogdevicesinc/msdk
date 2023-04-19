@@ -448,7 +448,8 @@
 /* #undef uintptr_t */
 
 #ifndef X_DISPLAY_MISSING
-#define HAVE_X
+# define HAVE_X
 #endif
 
-#define NO_STATS 1
+#define NO_STATS	1
+
