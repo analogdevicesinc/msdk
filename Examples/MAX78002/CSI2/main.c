@@ -62,13 +62,15 @@
 #include "mcr_regs.h"
 #include "console.h"
 #include "aps6404.h"
+#include "tft_st7789v.h"
+#include "fastspi.h"
 
 /***** Definitions *****/
 
 #define IMAGE_WIDTH 320
-#define IMAGE_HEIGHT 320
+#define IMAGE_HEIGHT 256
 
-#define RAW
+// #define RAW
 
 
 // Check CSI-2 Standard and your color format for these values.
@@ -158,12 +160,14 @@
 // The size of these is hard-coded to 2048 because there appears
 // to be some instability in the CSI2 hardware if they are scaled
 // based on the image dimensions
-__attribute__((section(".csi2_buff_raw0"))) uint32_t RAW_ADDR0[2048];
-__attribute__((section(".csi2_buff_raw1"))) uint32_t RAW_ADDR1[2048];
+// __attribute__((section(".csi2_buff_raw0"))) uint32_t RAW_ADDR0[2048];
+// __attribute__((section(".csi2_buff_raw1"))) uint32_t RAW_ADDR1[2048];
 
 // Buffer for processed image
 // __attribute__((section(".csi2_img_buff"))) uint8_t IMAGE[IMAGE_SIZE] = { 0 };
 unsigned int g_index = 0;
+
+uint8_t img_buffer[IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL_EVEN];
 
 /***** Functions *****/
 
@@ -180,6 +184,8 @@ void process_img(void)
     uint32_t w, h;
 
     printf("Capturing image...\n");
+    spi_init();
+    ram_enter_quadmode();
 
     g_index = 0;
     MXC_TMR_SW_Start(MXC_TMR0);
@@ -207,10 +213,42 @@ void process_img(void)
         // cnn_addr = read_bytes_from_cnn_sram((uint8_t *)g_serial_buffer, transfer_len, cnn_addr);
         ram_read_quad(i, (uint8_t*)g_serial_buffer, SERIAL_BUFFER_SIZE);
         MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
+        memcpy(&img_buffer[i], (uint8_t*)g_serial_buffer, SERIAL_BUFFER_SIZE);
     }
-
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
+
+    // clear_serial_buffer();
+    // snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
+    //          "*IMG* %s %i %i %i", // Format img info into a string
+    //          mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
+    // send_msg(g_serial_buffer);
+
+    // for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
+    //     memcpy((uint8_t*)g_serial_buffer, &img_buffer[i], SERIAL_BUFFER_SIZE);
+    //     MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
+    // }
+    // elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    // printf("Done! (serial transmission took %i us)\n", elapsed);
+
+    printf("Writing to TFT Display...\n");
+    MXC_TMR_SW_Start(MXC_TMR0);
+    TFT_SPI_Init();
+    // MXC_TFT_WriteBufferRGB565(0, 0, img_buffer, IMAGE_WIDTH, IMAGE_HEIGHT);
+
+    uint8_t tft_buffer[IMAGE_WIDTH*2];
+    unsigned int address = 0;
+    for (int y = 0; y < 240; y++) {
+        spi_init();
+        ram_enter_quadmode();
+        ram_read_quad(address, tft_buffer, IMAGE_WIDTH*2);
+        TFT_SPI_Init();
+        // MXC_TFT_WriteBufferRGB565(0, y, &img_buffer[(y * IMAGE_WIDTH)*2], IMAGE_WIDTH, 1);
+        MXC_TFT_WriteBufferRGB565(0, y, tft_buffer, IMAGE_WIDTH, 1);
+        address += IMAGE_WIDTH*2;
+    }
+    // elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (took %i us)\n", elapsed);
 }
 
 void service_console(cmd_t cmd)
@@ -278,6 +316,12 @@ int main(void)
     printf("\nPress PB1 (SW4) or send the 'capture' command to trigger a frame capture.\n\n");
 
     printf("Initializing camera...\n");
+
+    MXC_TMR_SW_Start(MXC_TMR0);
+    TFT_SPI_Init();
+    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("TFT SPI Initialization took %i us\n", elapsed);
+
     // Initialize camera
     mipi_camera_init();
 
@@ -318,8 +362,8 @@ int main(void)
     req.rgb_type = RGB_TYPE;
     req.raw_format = RAW_FORMAT;
     req.autoflush = MXC_CSI2_AUTOFLUSH_ENABLE;
-    req.raw_buf0_addr = (uint32_t)RAW_ADDR0;
-    req.raw_buf1_addr = (uint32_t)RAW_ADDR1;
+    // req.raw_buf0_addr = (uint32_t)RAW_ADDR0;
+    // req.raw_buf1_addr = (uint32_t)RAW_ADDR1;
     req.line_handler = CSI2_line_handler;
     // req.callback = CSI2_Callback;
 
@@ -337,7 +381,7 @@ int main(void)
 
     error = MXC_CSI2_Init(&req, &ctrl_cfg, &vfifo_cfg);
     if (error != E_NO_ERROR) {
-        printf("Error Initializating.\n\n");
+        printf("Error Initializing.\n\n");
         while (1) {}
     }
 
@@ -348,6 +392,11 @@ int main(void)
         return error;
     }
 
+    MXC_TMR_SW_Start(MXC_TMR0);
+    spi_init();
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("RAM SPI Initialization took %i us\n", elapsed);
+
     ram_id_t ram_id;
     error = ram_read_id(&ram_id);
     if (error) {
@@ -355,6 +404,8 @@ int main(void)
         return error;
     }
     printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID, ram_id.KGD, ram_id.density, ram_id.EID);
+
+    MXC_TFT_SetRotation(ROTATE_270);
 
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
     buttonPressed = 0;
