@@ -430,13 +430,13 @@ int MXC_LP_BandgapIsOn(void)
 void MXC_LP_EnableUSBWakeup(void)
 {
     MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_USBSWEN_N;
-	MXC_PWRSEQ->lppwen |= MXC_F_PWRSEQ_LPPWEN_USBVBUSWKEN;
+    MXC_PWRSEQ->lppwen |= MXC_F_PWRSEQ_LPPWEN_USBVBUSWKEN;
 }
 
 void MXC_LP_DisableUSBWakeup(void)
 {
     MXC_MCR->ctrl |= MXC_F_MCR_CTRL_USBSWEN_N;
-	MXC_PWRSEQ->lppwen &= ~MXC_F_PWRSEQ_LPPWEN_USBVBUSWKEN;
+    MXC_PWRSEQ->lppwen &= ~MXC_F_PWRSEQ_LPPWEN_USBVBUSWKEN;
 }
 
 int MXC_LP_FastWakeupIsEnabled(void)

@@ -441,8 +441,8 @@ int MXC_SPI_RevA_SetMode(mxc_spi_reva_regs_t *spi, mxc_spi_reva_mode_t spiMode)
         spi->ctrl2 &= ~MXC_F_SPI_REVA_CTRL2_CLKPHA;
         spi->ctrl2 &= ~MXC_F_SPI_REVA_CTRL2_CLKPOL;
         break;
-	
-	case SPI_REVA_MODE_1:
+
+    case SPI_REVA_MODE_1:
         spi->ctrl2 |= MXC_F_SPI_REVA_CTRL2_CLKPHA;
         spi->ctrl2 &= ~MXC_F_SPI_REVA_CTRL2_CLKPOL;
         break;
