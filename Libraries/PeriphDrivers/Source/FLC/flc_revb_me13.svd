@@ -3,6 +3,7 @@
   <peripheral>
     <name>FLC</name>
     <description>Flash Memory Control.</description>
+    <prependToName>FLSH_</prependToName>
     <baseAddress>0x40029000</baseAddress>
     <addressBlock>
       <offset>0x00</offset>
@@ -35,7 +36,7 @@
         <resetValue>0x00000064</resetValue>
         <fields>
           <field>
-            <name>DIV</name>
+            <name>CLKDIV</name>
             <description>Flash Clock Divide. The clock is divided by this value to generate a 1MHz clock for flash controller.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
@@ -120,6 +121,12 @@
             </enumeratedValues>
           </field>
           <field>
+            <name>LVE</name>
+            <description>Low Voltage enable.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>UNLOCK</name>
             <description>Flash Unlock.  The correct unlock code must be written to these four bits before any Flash write or erase operation is allowed.</description>
             <bitOffset>28</bitOffset>
@@ -142,10 +149,10 @@
       <register>
         <name>INTR</name>
         <description>Flash Interrupt Register.</description>
-        <addressOffset>0x24</addressOffset>
+        <addressOffset>0x024</addressOffset>
         <fields>
           <field>
-            <name>DONE_IF</name>
+            <name>DONE</name>
             <description>Flash Done Interrupt.  This bit is set to 1 upon Flash write or erase completion.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -163,7 +170,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>AF_IF</name>
+            <name>AF</name>
             <description>Flash Access Fail.  This bit is set when an attempt is made to write the flash while the flash is busy or the flash is locked. This bit can only be set to 1 by hardware.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -181,7 +188,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>DONE_IE</name>
+            <name>DONEIE</name>
             <description>Flash Done Interrupt Enable.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
@@ -198,9 +205,8 @@
               </enumeratedValue>
             </enumeratedValues>
           </field>
-          <field derivedFrom="DONE_IE">
-            <name>AF_IE</name>
-            <description>Flash Access Fail Interrupt Enable.</description>
+          <field derivedFrom="DONEIE">
+            <name>AFIE</name>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -235,6 +241,75 @@
           <field>
             <name>DATA</name>
             <description>Data next operation.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ACTRL</name>
+        <description>Access Control Register. Writing the ACTRL register with the following values in the order shown, allows read and write access to the system and user Information block:
+    pflc-actrl = 0x3a7f5ca3;
+    pflc-actrl = 0xa1e34f20;
+    pflc-actrl = 0x9608b2c1. When unlocked, a write of any word will disable access to system and user information block. Readback of this register is always zero.</description>
+        <addressOffset>0x40</addressOffset>
+        <access>write-only</access>
+        <fields>
+          <field>
+            <name>ACTRL</name>
+            <description>Access control.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WELR0</name>
+        <description>WELR0</description>
+        <addressOffset>0x80</addressOffset>
+        <fields>
+          <field>
+            <name>WELR0</name>
+            <description>Access control.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>WELR1</name>
+        <description>WELR1</description>
+        <addressOffset>0x88</addressOffset>
+        <fields>
+          <field>
+            <name>WELR1</name>
+            <description>Access control.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RLR0</name>
+        <description>RLR0</description>
+        <addressOffset>0x90</addressOffset>
+        <fields>
+          <field>
+            <name>RLR0</name>
+            <description>Access control.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>RLR1</name>
+        <description>RLR1</description>
+        <addressOffset>0x98</addressOffset>
+        <fields>
+          <field>
+            <name>RLR1</name>
+            <description>Access control.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
           </field>
