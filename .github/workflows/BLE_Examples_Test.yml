@@ -37,7 +37,7 @@ env:
 jobs:
   BLE_Tests:
     # The type of runner that the job will run on
-    runs-on: [self-hosted, btm-ci]
+    runs-on: self-hosted
     if: github.event.pull_request.draft == false
 
     #----------------------------------------------------------------------------------------------
@@ -165,8 +165,6 @@ jobs:
               Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h
               Libraries/PeriphDrivers/Source/WUT/wut_reva.c
               Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h )
-
-
           # Directories to ignore
           declare -a ignored=(
               Libraries/Cordio/docs
@@ -281,15 +279,71 @@ jobs:
               #.github/workflows/
               .github/workflows/ci-tests/Examples_tests
               Libraries/libs.mk
+              # Bluetooth
+              Libraries/BlePhy/MAX32665
               Libraries/Cordio
+              # Board specific
+              Libraries/Boards/MAX32665
+              # Libraries
               Libraries/CMSIS/Device/Maxim/MAX32665
               Libraries/PeriphDrivers/libPeriphDriver.mk
               Libraries/PeriphDrivers/periphdriver.mk
               Libraries/PeriphDrivers/max32665_files.mk
-              Libraries/PeriphDrivers/Source
-              Libraries/PeriphDrivers/Include/MAX32665
-              Libraries/BlePhy/MAX32665
-              Libraries/Boards/MAX32665)
+              # Flash controller
+              Libraries/PeriphDrivers/Source/FLC/flc_common.c
+              Libraries/PeriphDrivers/Source/FLC/flc_common.h
+              Libraries/PeriphDrivers/Source/FLC/flc_me14.c
+              Libraries/PeriphDrivers/Source/FLC/flc_reva.c
+              Libraries/PeriphDrivers/Source/FLC/flc_reva.h
+              # GPIO
+              Libraries/PeriphDrivers/Source/GPIO/gpio_common.c
+              Libraries/PeriphDrivers/Source/GPIO/gpio_common.h
+              Libraries/PeriphDrivers/Source/GPIO/gpio_me14.c
+              Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c
+              Libraries/PeriphDrivers/Source/GPIO/gpio_reva.h
+              # LowPower
+              Libraries/PeriphDrivers/Source/LP/lp_me14.c
+              # Simo
+              Libraries/PeriphDrivers/Source/SIMO/simo_me14.c
+              Libraries/PeriphDrivers/Source/SIMO/simo_reva_regs.h
+              Libraries/PeriphDrivers/Source/SIMO/simo_.c
+              Libraries/PeriphDrivers/Source/SIMO/simo_.h
+              # System
+              Libraries/PeriphDrivers/Source/SYS/mxc_assert.c
+              Libraries/PeriphDrivers/Source/SYS/mxc_delay.c
+              Libraries/PeriphDrivers/Source/SYS/mxc_lock.c
+              Libraries/PeriphDrivers/Source/SYS/mxc_table.c
+              Libraries/PeriphDrivers/Source/SYS/pins_me14.c
+              Libraries/PeriphDrivers/Source/SYS/sys_me14.c
+              # Timer
+              Libraries/PeriphDrivers/Source/TMR/tmr_common.c
+              Libraries/PeriphDrivers/Source/TMR/tmr_common.h
+              Libraries/PeriphDrivers/Source/TMR/tmr_me14.c
+              Libraries/PeriphDrivers/Source/TMR/tmr_reva_regs.h
+              Libraries/PeriphDrivers/Source/TMR/tmr_reva.c
+              Libraries/PeriphDrivers/Source/TMR/tmr_reva.h
+              # TPU
+              Libraries/PeriphDrivers/Source/TPU/tpu_me14.c 
+              Libraries/PeriphDrivers/Source/TPU/tpu_reva_regs.h
+              Libraries/PeriphDrivers/Source/TPU/tpu_reva.c
+              Libraries/PeriphDrivers/Source/TPU/tpu_reva.h
+              # True Random Number Generator
+              Libraries/PeriphDrivers/Source/TRNG/trng_me14.c
+              Libraries/PeriphDrivers/Source/TRNG/trng_revb_regs.h
+              Libraries/PeriphDrivers/Source/TRNG/trng_revb.c
+              Libraries/PeriphDrivers/Source/TRNG/trng_revb.h
+              # UART 
+              Libraries/PeriphDrivers/Source/UART/uart_common.c
+              Libraries/PeriphDrivers/Source/UART/uart_common.h
+              Libraries/PeriphDrivers/Source/UART/uart_me14.c
+              Libraries/PeriphDrivers/Source/UART/uart_reva_regs.h
+              Libraries/PeriphDrivers/Source/UART/uart_reva.c
+              Libraries/PeriphDrivers/Source/UART/uart_reva.h
+              # WakeUp Timer
+              Libraries/PeriphDrivers/Source/WUT/wut_me14.c
+              Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h
+              Libraries/PeriphDrivers/Source/WUT/wut_reva.c
+              Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h )
 
           # Directories to ignore
           declare -a ignored=(
@@ -404,15 +458,70 @@ jobs:
               #.github/workflows/
               .github/workflows/ci-tests/Examples_tests
               Libraries/libs.mk
+              # Bluetooth
+              Libraries/BlePhy/MAX32690
               Libraries/Cordio
+              # Board specific
+              Libraries/Boards/MAX32690
+              # Libraries
               Libraries/CMSIS/Device/Maxim/MAX32690
               Libraries/PeriphDrivers/libPeriphDriver.mk
               Libraries/PeriphDrivers/periphdriver.mk
               Libraries/PeriphDrivers/max32690_files.mk
-              Libraries/PeriphDrivers/Source
-              Libraries/PeriphDrivers/Include/MAX32690
-              Libraries/BlePhy/MAX32690
-              Libraries/Boards/MAX32690)
+              # AES
+              Libraries/PeriphDrivers/Source/AES/aes_me18.c
+              Libraries/PeriphDrivers/Source/AES/aes_revb_regs.h
+              Libraries/PeriphDrivers/Source/AES/aes_revb.c
+              Libraries/PeriphDrivers/Source/AES/aes_revb.h
+              Libraries/PeriphDrivers/Source/AES/aeskeys_revb_regs.h
+              # Flash controller
+              Libraries/PeriphDrivers/Source/FLC/flc_common.c
+              Libraries/PeriphDrivers/Source/FLC/flc_common.h
+              Libraries/PeriphDrivers/Source/FLC/flc_me18.c
+              Libraries/PeriphDrivers/Source/FLC/flc_reva.c
+              Libraries/PeriphDrivers/Source/FLC/flc_reva.h
+              # GPIO
+              Libraries/PeriphDrivers/Source/GPIO/gpio_common.c
+              Libraries/PeriphDrivers/Source/GPIO/gpio_common.h
+              Libraries/PeriphDrivers/Source/GPIO/gpio_me18.c
+              Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c
+              Libraries/PeriphDrivers/Source/GPIO/gpio_reva.h
+              # LowPower
+              Libraries/PeriphDrivers/Source/LP/lp_me18.c
+              # System
+              Libraries/PeriphDrivers/Source/SYS/mxc_assert.c
+              Libraries/PeriphDrivers/Source/SYS/mxc_delay.c
+              Libraries/PeriphDrivers/Source/SYS/mxc_lock.c
+              Libraries/PeriphDrivers/Source/SYS/mxc_table.c
+              Libraries/PeriphDrivers/Source/SYS/pins_me18.c
+              Libraries/PeriphDrivers/Source/SYS/sys_me18.c
+              # Timer
+              Libraries/PeriphDrivers/Source/TMR/tmr_common.c
+              Libraries/PeriphDrivers/Source/TMR/tmr_common.h
+              Libraries/PeriphDrivers/Source/TMR/tmr_me18.c
+              Libraries/PeriphDrivers/Source/TMR/tmr_revb_regs.h
+              Libraries/PeriphDrivers/Source/TMR/tmr_revb.c
+              Libraries/PeriphDrivers/Source/TMR/tmr_revb.h
+              # True Random Number Generator
+              Libraries/PeriphDrivers/Source/CTB/ctb_common.c
+              Libraries/PeriphDrivers/Source/CTB/ctb_common.h
+              Libraries/PeriphDrivers/Source/CTB/ctb_me18.c
+              Libraries/PeriphDrivers/Source/CTB/ctb_reva_regs.h
+              Libraries/PeriphDrivers/Source/CTB/ctb_reva.c
+              Libraries/PeriphDrivers/Source/CTB/ctb_reva.h
+              Libraries/PeriphDrivers/Source/CTB/trng_reva_regs.h
+              # UART 
+              Libraries/PeriphDrivers/Source/UART/uart_common.c
+              Libraries/PeriphDrivers/Source/UART/uart_common.h
+              Libraries/PeriphDrivers/Source/UART/uart_me18.c
+              Libraries/PeriphDrivers/Source/UART/uart_revb_regs.h
+              Libraries/PeriphDrivers/Source/UART/uart_revb.c
+              Libraries/PeriphDrivers/Source/UART/uart_revb.h
+              # WakeUp Timer
+              Libraries/PeriphDrivers/Source/WUT/wut_me18.c
+              Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h
+              Libraries/PeriphDrivers/Source/WUT/wut_reva.c
+              Libraries/PeriphDrivers/Source/WUT/wut_reva_regs.h )
 
           # Directories to ignore
           declare -a ignored=(
@@ -506,6 +615,14 @@ jobs:
         id: lock_boards
         run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share_multiboard.py -l -t 3600 -b max32655_board1 -b max32655_board2 -b max32665_board1 -b max32690_board_w1
+     
+      #----------------------------------------------------------------------------------------------
+      #------------------------------| Erase all required boards at once |-----------------------------
+      #----------------------------------------------------------------------------------------------
+      - name: Erase Boards
+        if: steps.lock_boards.outcome == 'success'
+        id: erase_boards
+        run: |
           # start with boards in known state
           cd .github/workflows/scripts
           echo "Erasing Main MAX32655 B1"
