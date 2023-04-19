@@ -800,6 +800,7 @@ int MXC_USB_IrqEnable(maxusb_event_t event)
 
         case MAXUSB_EVENT_SUSP:
             /* Suspend */
+            MXC_USBHS->power |= MXC_F_USBHS_POWER_EN_SUSPENDM;
             MXC_USBHS->intrusben |= MXC_F_USBHS_INTRUSBEN_SUSPEND_INT_EN;
             break;
 
@@ -846,6 +847,7 @@ int MXC_USB_IrqDisable(maxusb_event_t event)
         case MAXUSB_EVENT_SUSP:
             /* Suspend */
             MXC_USBHS->intrusben &= ~MXC_F_USBHS_INTRUSBEN_SUSPEND_INT_EN;
+            MXC_USBHS->power &= ~MXC_F_USBHS_POWER_EN_SUSPENDM;
             break;
 
         case MAXUSB_EVENT_SUDAV:
