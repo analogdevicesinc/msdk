@@ -169,16 +169,13 @@ typedef struct {
 #define MXC_F_CAMERAIF_CTRL_FIFO_THRSH_POS             5 /**< CTRL_FIFO_THRSH Position */
 #define MXC_F_CAMERAIF_CTRL_FIFO_THRSH                 ((uint32_t)(0x1FUL << MXC_F_CAMERAIF_CTRL_FIFO_THRSH_POS)) /**< CTRL_FIFO_THRSH Mask */
 
-#define MXC_F_CAMERAIF_CTRL_RX_DMA_POS                 16 /**< CTRL_RX_DMA Position */
+#define MXC_F_CAMERAIF_CTRL_RX_DMA_POS                 10 /**< CTRL_RX_DMA Position */
 #define MXC_F_CAMERAIF_CTRL_RX_DMA                     ((uint32_t)(0x1UL << MXC_F_CAMERAIF_CTRL_RX_DMA_POS)) /**< CTRL_RX_DMA Mask */
 
-#define MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS           17 /**< CTRL_RX_DMA_THRSH Position */
+#define MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS           11 /**< CTRL_RX_DMA_THRSH Position */
 #define MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH               ((uint32_t)(0xFUL << MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS)) /**< CTRL_RX_DMA_THRSH Mask */
 
-#define MXC_F_CAMERAIF_CTRL_THREE_CH_EN_POS            30 /**< CTRL_THREE_CH_EN Position */
-#define MXC_F_CAMERAIF_CTRL_THREE_CH_EN                ((uint32_t)(0x1UL << MXC_F_CAMERAIF_CTRL_THREE_CH_EN_POS)) /**< CTRL_THREE_CH_EN Mask */
-
-#define MXC_F_CAMERAIF_CTRL_PCIF_SYS_POS               31 /**< CTRL_PCIF_SYS Position */
+#define MXC_F_CAMERAIF_CTRL_PCIF_SYS_POS               15 /**< CTRL_PCIF_SYS Position */
 #define MXC_F_CAMERAIF_CTRL_PCIF_SYS                   ((uint32_t)(0x1UL << MXC_F_CAMERAIF_CTRL_PCIF_SYS_POS)) /**< CTRL_PCIF_SYS Mask */
 
 /**@} end of group CAMERAIF_CTRL_Register */
