@@ -524,6 +524,30 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int width, in
     __enable_irq();
 }
 
+/* This function writes an image data line by line, required by most UI libraries like LVGL */
+void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height)
+{
+    unsigned int x, y;
+
+    if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180) {
+        window(x0, y0, height, width);
+    } else {
+        window(x0, y0, width, height);
+    }
+
+    write_command(0x2C); // send pixel
+
+    for (y = 0; y < width * height; y += width) { //height
+        for (x = 0; x < width; x++) { //width
+            //Byteswap, 16 bit transfer */            
+            write_data(*(image + ((x + y) * 2)));
+            write_data(*(image + ((x + y) * 2) + 1));
+        }
+    }
+
+    window_max();
+}
+
 void MXC_TFT_PrintPalette(void)
 {
     area_t area = { 10, 10, 2, 25 };
