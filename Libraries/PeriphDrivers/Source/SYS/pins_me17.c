@@ -119,6 +119,9 @@ const mxc_gpio_cfg_t gpio_cfg_i2s0 = {
     MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO
 };
 
+const mxc_gpio_cfg_t gpio_cfg_i2s0_clkext = { MXC_GPIO0, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_ALT2,
+                                              MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+
 const mxc_gpio_cfg_t gpio_cfg_rtcsqw = { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_ALT1,
                                          MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
 

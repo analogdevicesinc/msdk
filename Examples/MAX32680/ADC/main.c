@@ -85,7 +85,7 @@ int main(void)
     }
 
     /* Set up LIMIT0 to monitor high and low trip points */
-    MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_0, MXC_ADC_CH_0);
+    MXC_ADC_SetMonitorChannel(MXC_ADC_MONITOR_0, MXC_ADC_CH_4);
     MXC_ADC_SetMonitorHighThreshold(MXC_ADC_MONITOR_0, 0x300);
     MXC_ADC_SetMonitorLowThreshold(MXC_ADC_MONITOR_0, 0x25);
     MXC_ADC_EnableMonitor(MXC_ADC_MONITOR_0);
@@ -103,20 +103,20 @@ int main(void)
         /* Convert channel 0 */
 #ifdef USE_INTERRUPTS
         adc_done = 0;
-        MXC_ADC_StartConversionAsync(MXC_ADC_CH_0, adc_complete_cb);
+        MXC_ADC_StartConversionAsync(MXC_ADC_CH_4, adc_complete_cb);
 
         while (!adc_done) {}
 #else
-        adc_val = MXC_ADC_StartConversion(MXC_ADC_CH_0);
+        adc_val = MXC_ADC_StartConversion(MXC_ADC_CH_4);
         overflow = (adc_val == E_OVERFLOW ? 1 : 0);
 #endif
 
         /* Display results on OLED display, display asterisk if overflow */
-        printf("0: 0x%04x%s\n\n", adc_val, overflow ? "*" : " ");
+        printf("4: 0x%04x%s\n\n", adc_val, overflow ? "*" : " ");
 
-        /* Determine if programmable limits on AIN0 were exceeded */
+        /* Determine if programmable limits on AIN12 were exceeded */
         if (MXC_ADC_GetFlags() & (MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF)) {
-            printf(" %s Limit on AIN0 ",
+            printf(" %s Limit on AIN12 ",
                    (MXC_ADC_GetFlags() & MXC_F_ADC_INTR_LO_LIMIT_IF) ? "Low" : "High");
             MXC_ADC_ClearFlags(MXC_F_ADC_INTR_LO_LIMIT_IF | MXC_F_ADC_INTR_HI_LIMIT_IF);
         } else {

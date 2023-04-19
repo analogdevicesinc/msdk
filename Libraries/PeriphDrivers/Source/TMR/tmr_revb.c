@@ -33,6 +33,7 @@
 
 /* **** Includes **** */
 #include <stddef.h>
+#include <stdbool.h>
 #include "mxc_assert.h"
 #include "tmr.h"
 #include "tmr_revb.h"
@@ -43,6 +44,13 @@
 /* **** Definitions **** */
 #define TIMER_16A_OFFSET 0
 #define TIMER_16B_OFFSET 16
+
+typedef struct {
+    bool configured;
+    uint32_t freq;
+} mxc_tmr_revb_clksrc_freq_t;
+
+static mxc_tmr_revb_clksrc_freq_t tmr_clksrc[MXC_CFG_TMR_INSTANCES];
 
 /* **** Functions **** */
 int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_src)
@@ -129,11 +137,35 @@ int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_
         if (cfg->bitMode == TMR_BIT_MODE_16B) {
             return E_NOT_SUPPORTED;
         }
+
         MXC_TMR_RevB_ConfigGeneric((mxc_tmr_revb_regs_t *)tmr, cfg);
         break;
     }
 
     return E_NO_ERROR;
+}
+
+void MXC_TMR_RevB_SetClockSourceFreq(mxc_tmr_revb_regs_t *tmr, int clksrc_freq)
+{
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
+    (void)tmr_id;
+    MXC_ASSERT(tmr_id >= 0);
+
+    tmr_clksrc[tmr_id].configured = true;
+    tmr_clksrc[tmr_id].freq = clksrc_freq;
+}
+
+int MXC_TMR_RevB_GetClockSourceFreq(mxc_tmr_revb_regs_t *tmr)
+{
+    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
+    (void)tmr_id;
+    MXC_ASSERT(tmr_id >= 0);
+
+    if (tmr_clksrc[tmr_id].configured == false) {
+        return E_BAD_STATE;
+    }
+
+    return tmr_clksrc[tmr_id].freq;
 }
 
 void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg)
@@ -187,6 +219,7 @@ void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr)
     // Disable timer and clear settings
     tmr->ctrl0 = 0;
     while (tmr->ctrl1 & MXC_F_TMR_REVB_CTRL1_CLKRDY_A) {}
+    tmr_clksrc[tmr_id].configured = false;
 }
 
 void MXC_TMR_RevB_Start(mxc_tmr_revb_regs_t *tmr)
@@ -407,9 +440,15 @@ int MXC_TMR_RevB_GetTime(mxc_tmr_revb_regs_t *tmr, uint32_t ticks, uint32_t *tim
     MXC_ASSERT(tmr_id >= 0);
 
     uint64_t temp_time = 0;
-    uint32_t timerClock = PeripheralClock;
     uint32_t prescale = (tmr->ctrl0 & MXC_F_TMR_REVB_CTRL0_CLKDIV_A) >>
                         MXC_F_TMR_REVB_CTRL0_CLKDIV_A_POS;
+
+    int timerClock = MXC_TMR_RevB_GetClockSourceFreq(tmr);
+
+    // Confirm clock is configured by checking for error return.
+    if (timerClock < 0) {
+        return timerClock;
+    }
 
     temp_time = (uint64_t)ticks * 1000 * (1 << (prescale & 0xF)) / (timerClock / 1000000);
 

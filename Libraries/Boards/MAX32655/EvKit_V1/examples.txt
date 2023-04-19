@@ -26,6 +26,7 @@ BLE_otac
 BLE_otas
 BLE_periph
 Bootloader
+Coremark
 CRC
 DMA
 Dual_core_sync/Dual_core_sync_arm
@@ -46,6 +47,8 @@ I2C_Sensor
 I2S
 I2S_Playback
 ICC
+Library_Generate
+Library_Use
 LP
 LPCMP
 Pulse_Train

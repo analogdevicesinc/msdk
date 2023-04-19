@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <name>MCR</name>
+    <description>Misc Control.</description>
+    <baseAddress>0x40006C00</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>ECCEN</name>
+        <description>ECC Enable Register</description>
+        <addressOffset>0x00</addressOffset>
+        <fields>
+          <field>
+            <name>RAM0</name>
+            <description>ECC System RAM0 Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>disabled.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>enabled.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>IPO_MTRIM</name>
+        <description>IPO Manual Register</description>
+        <addressOffset>0x04</addressOffset>
+        <fields>
+          <field>
+            <name>MTRIM</name>
+            <description>Manual Trim Value.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>TRIM_RANGE</name>
+            <description>Trim Range Select.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>OUTEN</name>
+        <description>Output Enable Register</description>
+        <addressOffset>0x08</addressOffset>
+        <fields>
+          <field>
+            <name>SQWOUT_EN</name>
+            <description>Square Wave Output Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PDOWN_OUT_EN</name>
+            <description>Power Down Output Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CMP_CTRL</name>
+        <description>Comparator Control Register.</description>
+        <addressOffset>0x0C</addressOffset>
+        <fields>
+          <field>
+            <name>EN</name>
+            <description>Comparator Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>POL</name>
+            <description>Polarity Select</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>INT_EN</name>
+            <description>IRQ Enable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>OUT</name>
+            <description>Comparator Output State.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>INT_FL</name>
+            <description>IRQ Flag</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>CTRL</name>
+        <description>Miscellaneous Control Register.</description>
+        <addressOffset>0x10</addressOffset>
+        <fields>
+          <field>
+            <name>INRO_EN</name>
+            <description>INRO Enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ERTCO_EN</name>
+            <description>ERTCO Enable.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SIMO_CLKSCL_EN</name>
+            <description>SIMO Clock Scaling Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SIMO_RSTD</name>
+            <description>SIMO System Reset Disable.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>GPIO3_CTRL</name>
+        <description>GPIO3 Pin Control Register.</description>
+        <addressOffset>0x20</addressOffset>
+        <fields>
+          <field>
+            <name>P30_DO</name>
+            <description>GPIO3 Pin 0 Data Output.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>P30_OE</name>
+            <description>GPIO3 Pin 0 Output Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>P30_PE</name>
+            <description>GPIO3 Pin 0 Pull-up Enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>P30_IN</name>
+            <description>GPIO3 Pin 0 Input Status.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>P31_DO</name>
+            <description>GPIO3 Pin 1 Data Output.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>P31_OE</name>
+            <description>GPIO3 Pin 1 Output Enable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>P31_PE</name>
+            <description>GPIO3 Pin 1 Pull-up Enable.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>P31_IN</name>
+            <description>GPIO3 Pin 1 Input Status.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+</device>

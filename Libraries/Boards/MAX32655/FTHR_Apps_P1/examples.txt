@@ -25,6 +25,7 @@ BLE_otac
 BLE_otas
 BLE_periph
 Bootloader
+Coremark
 CRC
 DMA
 External_Flash
@@ -37,6 +38,8 @@ Hello_World
 I2C_SCAN
 I2S
 ICC
+Library_Generate
+Library_Use
 LP
 LPCMP
 Pulse_Train

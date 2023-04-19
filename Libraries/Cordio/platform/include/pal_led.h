@@ -37,7 +37,7 @@ extern "C" {
 **************************************************************************************************/
 
 /*! \brief      Reserved LED IDs. */
-enum
+enum PalLedReserved_id
 {
   /* System signals. */
   PAL_LED_ID_CPU_ACTIVE     = 0x30,  /*!< CPU active LED ID. */
@@ -55,6 +55,8 @@ void PalLedDeInit(void);
 /* Control and Status */
 void PalLedOn(uint8_t id);
 void PalLedOff(uint8_t id);
+void PalLedFastOn(uint8_t id);
+void PalLedFastOff(uint8_t id);
 
 /*! \} */    /* PAL_LED */
 

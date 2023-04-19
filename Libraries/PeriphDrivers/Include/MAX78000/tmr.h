@@ -125,6 +125,7 @@ typedef enum {
     MXC_TMR_32K_CLK,
     /*8K and EXT clocks can only be used for Timers 4 and 5*/
     MXC_TMR_8K_CLK,
+    MXC_TMR_8M_DIV8_CLK
 } mxc_tmr_clock_t;
 
 /**

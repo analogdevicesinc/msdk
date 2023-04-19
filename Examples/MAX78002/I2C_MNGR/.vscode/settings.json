@@ -89,7 +89,10 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers"
     ],
     "C_Cpp.default.defines": [
-        "${config:board}"
+        "${config:board}",
+        "TARGET=${config:target}",
+        "TARGET_REV=0x4131",
+        "__GNUC__"
     ]
 }
 

@@ -16,6 +16,7 @@ AES
 AFE_ADC
 BLE4_ctr
 BLE_dats
+Coremark
 CRC
 DMA
 EEPROM_Emulator
@@ -32,6 +33,8 @@ I2C_SCAN
 I2C_Sensor
 I2S
 ICC
+Library_Generate
+Library_Use
 LP
 Pulse_Train
 RV_ARM_Loader

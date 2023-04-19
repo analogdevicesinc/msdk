@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 #BOARD=FTHR_RevA
 # ^ For example, you can uncomment this line to make the 
@@ -18,5 +18,15 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Use the local linker file
-LINKERFILE=lp.ld
+# This Low-Power example shuts down some SRAM instances.
+# To ensure application code does not use the SRAMs that will
+# be shut down, the available SRAM size is reduced with a
+# custom linkerfile.  The section below selects the
+# appropriate file depending on whether the SBTs are used or not.
+ifeq ($(SBT),1)
+# This linkerfile contains extra sections for compatibility with the Secure Boot Tools (SBT).
+override LINKERFILE = lp-sla.ld
+else
+# This linkerfile is for use with standard non-secure applications.
+override LINKERFILE = lp-nonsecure.ld
+endif # SBT

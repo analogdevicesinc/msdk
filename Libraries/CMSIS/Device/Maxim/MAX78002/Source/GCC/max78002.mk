@@ -104,3 +104,6 @@ include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc.mk
 else
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc_riscv.mk
 endif
+
+# Include rules for flashing
+include $(CMSIS_ROOT)/../../Tools/Flash/flash.mk

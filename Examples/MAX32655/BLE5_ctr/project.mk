@@ -3,21 +3,18 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
-# Set CORDIO library options
-TOKEN = 0
+# Cordio library options
+BLE_HOST = 0
 BLE_CONTROLLER = 1
 
 # TRACE option
-# Set to 2 to enable serial port trace messages
 # Set to 0 to disable
-TRACE = 0
-
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
+# Set to 2 to enable serial port trace messages
+TRACE = 2

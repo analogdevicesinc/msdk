@@ -17,6 +17,17 @@ Please check:
 - [MAX32670-EVKIT board schematic](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX32670EVKIT.pdf)
 - [MAX32520-KIT schematic](https://www.analog.com/media/en/technical-documentation/data-sheets/MAX32520-KIT.pdf)
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 - Connect a USB cable between the PC and MAX32670 EVKit board.

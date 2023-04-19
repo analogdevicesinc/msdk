@@ -24,13 +24,73 @@ jobs:
       - ubuntu-latest
 
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+        with:
+          # Update the submodules below, doing so here will convert ssh to https
+          submodules: false
+          fetch-depth: 0
+          ref: '${{ github.event.pull_request.head.ref }}'
+          repository: '${{ github.event.pull_request.head.repo.full_name }}'
+
+      - name: Check watch files
+        id: check_watch 
+        run: |
+          # Determine if we need to run the test
+          RUN_TEST=0
+
+          # Always run test if a workflow_dispatch
+          if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]]; then
+            RUN_TEST=1
+          fi
+
+          # Check for changes made to these files
+          WATCH_FILES="\
+            Build_Examples.yml \
+            .c \
+            .cpp \
+            .S \
+            .s \
+            .h \
+            .a \
+            .mk \
+            makefile \
+            Makefile"
+
+          # Get the diff from main
+          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
+
+          echo "Watching these locations and files"
+          echo $WATCH_FILES
+
+          echo "Checking the following changes"
+          echo $CHANGE_FILES
+
+          # Assume we want to actually run the workflow if no files changed
+          for watch_file in $WATCH_FILES; do 
+            if [[ "$CHANGE_FILES" == *"$watch_file" ]]; then
+              RUN_TEST=1
+            fi
+          done
+
+          # End the test early if there wasn't a significant change
+          if [[ $RUN_TEST -eq 0 ]]; then
+            echo "Skipping Build"
+          else
+            echo "Running Build"
+          fi
+          
+          echo "RUN_TEST=$RUN_TEST" >> $GITHUB_OUTPUT
+          
       - name: Install ARM GCC Toolchain (arm-none-eabi-gcc)
         uses: carlosperate/arm-none-eabi-gcc-action@v1
         id: arm-none-eabi-gcc-action
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         with:
-          release: '11.2-2022.02' # <-- The compiler release to use
+          release: '10.3-2021.10' # <-- The compiler release to use
           
       - name: Install RISCV GCC Toolchain (riscv-none-embed-gcc)
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         run: |
           # Install RISCV tools
           npm install --global xpm@latest
@@ -41,8 +101,9 @@ jobs:
           
           # Add riscv tools to path
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
-          
+
       - name: Install ccache
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         run: |
           # Install ccache
           sudo apt install -y ccache
@@ -85,70 +146,20 @@ jobs:
           sudo ln -s ../../bin/ccache /usr/bin/arm-none-eabi-strip
           sudo ln -s ../../bin/ccache /usr/bin/riscv-none-embed-gcc
 
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Setup Python
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        uses: actions/setup-python@v4.5.0
         with:
-          # Update the submodules below, doing so here will convert ssh to https
-          submodules: false
-          fetch-depth: 0
+          python-version: '3.10'
+
+      - name: Install packages
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        run: pip install -r .github/workflows/scripts/requirements.txt
 
       # Runs a set of commands using the runners shell
       - name: Build_Examples
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         run: |
-          # Test paths
-          echo $GITHUB_PATH
-          echo $PATH
-          
-          # Test the links
-          arm-none-eabi-gcc --version
-          riscv-none-embed-gcc --version
-          which arm-none-eabi-gcc
-          which riscv-none-embed-gcc
-          ls -la $(which arm-none-eabi-gcc)
-          ls -la $(which riscv-none-embed-gcc)
-          
-          # Determine if we need to run the test
-          RUN_TEST=0
-          
-          # Check for changes made to these files
-          WATCH_FILES="\
-            Build_Example.yml \
-            .c \
-            .cpp \
-            .S \
-            .s \
-            .h \
-            .a \
-            .mk \
-            makefile \
-            Makefile"
-          
-          # Get the diff from main
-          CHANGE_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main)
-          
-          echo "Watching these locations and files"
-          echo $WATCH_FILES
-          
-          echo "Checking the following changes"
-          echo $CHANGE_FILES
-          
-          # Assume we want to actually run the workflow if no files changed
-          if [[ "$CHANGE_FILES" != "" ]]; then
-            for watch_file in $WATCH_FILES; do 
-              if [[ "$CHANGE_FILES" == *"$watch_file"* ]]; then
-                RUN_TEST=1
-              fi
-            done
-          else 
-          # Assume we want to actually run the workflow if no files changed
-            RUN_TEST=1
-          fi
-          
-          # End the test early if there wasn't a significant change
-          if [[ $RUN_TEST -eq 0 ]]; then
-            exit 0
-          fi
-          
           # This environment variable is required for the SBTs.
           # It must be set to the absolute path inside the Github repo.
           export MAXIM_SBT_DIR=$(pwd)/Tools/SBT
@@ -156,31 +167,4 @@ jobs:
           # Set MAXIM_PATH to limit warnings
           export MAXIM_PATH=$(pwd)
 
-          cd Examples
-          # Rebuild all of the peripheral drivers and build all of the Hello_World examples
-          # Exclude the MAX32572, currently in development
-          # Exclude the MAX32570, examples are located in another repo
-          SUBDIRS=$(find . -type d -not -path "./MAX3257*" -name "Hello_World")
-          for dir in ${SUBDIRS}
-          do
-            make -C ${dir} clean
-            make -C ${dir} libclean
-            make -C ${dir} -j8 > /dev/null
-          done
-          
-          # Find all of the examples, 
-          # Exclude the MAX32572, currently in development
-          # Exclude the MAX32570, examples are located in another repo
-          SUBDIRS=$(find . -mindepth 3 -not \( -path "./MAX3257*" -o -path "./MAX*/UCL*" \) -name "?akefile" -printf '%h\n')
-
-          # Exclude some examples
-          SUBDIRS=${SUBDIRS//"./MAX32672/Display/lvgl-8.0.2/tests"/}
-          SUBDIRS=${SUBDIRS//"./MAX32572/MAX32572_Demo_FreeRTOS"/}
-          SUBDIRS=${SUBDIRS//"./MAX32572/MAX32572_Demo_BareMetal"/}
-          SUBDIRS=${SUBDIRS//"./MAX78000/CNN/mnist-streaming"/}
-
-          for dir in ${SUBDIRS}
-          do
-            make -C ${dir} clean
-            make -C ${dir} -j8  > /dev/null
-          done
+          python .github/workflows/scripts/build.py

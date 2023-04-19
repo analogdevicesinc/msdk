@@ -12,6 +12,7 @@ ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
 Bootloader_Host
+Coremark
 DMA
 EEPROM_Emulator
 Flash
@@ -26,6 +27,8 @@ I2C_Sensor
 I2S
 ICC
 Info_Block_Usecase
+Library_Generate
+Library_Use
 LP
 RTC
 RTC_Backup

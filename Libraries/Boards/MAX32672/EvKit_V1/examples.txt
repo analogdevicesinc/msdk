@@ -14,6 +14,7 @@ ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
 Comparator
+Coremark
 CRC
 CTB_AES
 DMA
@@ -30,6 +31,8 @@ I2C_SCAN
 I2C_Sensor
 I2S
 ICC
+Library_Generate
+Library_Use
 LP
 QDEC
 RTC

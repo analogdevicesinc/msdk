@@ -39,8 +39,11 @@ Hello_World
 HTMR
 I2C_SCAN
 ICC
+Library_Generate
+Library_Use
 LP
 MAA
+OTP_Dump
 OWM
 RPU
 RTC

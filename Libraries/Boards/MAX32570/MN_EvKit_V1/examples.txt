@@ -15,6 +15,7 @@ ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
 Barcode_Decoder
 CameraIF
+Coremark
 CRC
 DES
 DMA
@@ -29,6 +30,8 @@ HTMR
 I2C
 I2C_SCAN
 ICC
+Library_Generate
+Library_Use
 LP
 lwIP_Ping
 lwIP_TCP

@@ -41,6 +41,7 @@
 
 #include "max32662.h"
 #include "mxc_errors.h"
+#include "mxc_pins.h"
 
 #ifndef TARGET
 #error TARGET NOT DEFINED

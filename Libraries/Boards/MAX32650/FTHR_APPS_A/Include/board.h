@@ -58,6 +58,11 @@ extern "C" {
 #define LED_OFF 1 /// Inactive state of LEDs
 #define LED_ON 0 /// Active state of LEDs
 
+#define LED1 0
+#define LED_RED LED1
+#define LED2 1
+#define LED_GREEN LED2
+
 /**
  * @brief   Initialize the BSP and board interfaces.
  * @return  #E_NO_ERROR if everything is successful

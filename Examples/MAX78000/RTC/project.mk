@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 #MXC_OPTIMIZE_CFLAGS = -Og
 # ^ For example, you can uncomment this line to 
@@ -13,5 +13,7 @@
 
 # Add your config here!
 
-
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif
 

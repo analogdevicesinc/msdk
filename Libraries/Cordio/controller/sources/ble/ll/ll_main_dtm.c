@@ -109,7 +109,7 @@ static struct
  *  \return     Packet length in microseconds.
  */
 /*************************************************************************************************/
-static uint32_t llCalcPacketInterval(uint8_t len, uint8_t phy, uint8_t phyOptions)
+uint32_t llCalcPacketTime(uint8_t len, uint8_t phy, uint8_t phyOptions)
 {
   unsigned int totalTime;
 
@@ -136,6 +136,24 @@ static uint32_t llCalcPacketInterval(uint8_t len, uint8_t phy, uint8_t phyOption
       totalTime = (LL_PREAMBLE_LEN_1M + LL_AA_LEN + LL_DTM_HDR_LEN + len + LL_CRC_LEN) * LL_BLE_US_PER_BYTE_1M;
       break;
   }
+
+  return totalTime;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Calculate packet interval.
+ *
+ *  \param      len         Packet length.
+ *  \param      phy         PHY.
+ *  \param      phyOptions  PHY options.
+ *
+ *  \return     Interval between packets in microseconds.
+ */
+/*************************************************************************************************/
+uint32_t llCalcPacketInterval(uint8_t len, uint8_t phy, uint8_t phyOptions)
+{
+  unsigned int totalTime = llCalcPacketTime(len, phy, phyOptions);
 
   /* ceil((L + 249) / 625) * 625 */
   return LL_MATH_DIV_625(totalTime + 249 + 624) * 625;
@@ -412,6 +430,7 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
   WSF_CS_INIT();
 
   LL_TRACE_INFO3("### LlApi ###  LlTxTest, rfChan=%u, len=%u, pktType=%u", rfChan, len, pktType);
+  LL_TRACE_INFO1("  numPkt=%u", numPkt);
 
   if ((LL_API_PARAM_CHECK == 1) &&
       (!((llTestCb.state == LL_TEST_STATE_IDLE) || (llTestCb.state == LL_TEST_STATE_TX)) ||
@@ -469,19 +488,44 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     memset(&llTestCb.rpt, 0, sizeof(llTestCb.rpt));
   }
 
-  /* Handle non-packet test mode. */
-  if (pktType == LL_TEST_PKT_TYPE_PRBS15)
-  {
-    llTestCb.state = LL_TEST_STATE_TX;
-    llTestCb.tx.pktType = pktType;
+    /* Handle non-packet test mode. */
+    if (pktType == LL_TEST_PKT_TYPE_PRBS15)
+    {
+      llTestCb.state = LL_TEST_STATE_TX;
+      llTestCb.tx.pktType = pktType;
 
-    BbStart(BB_PROT_PRBS15);
+      PalBbBleChan_t chan;
+      chan.chanIdx          = llConvertRfChanToChanIdx(rfChan);
+      chan.txPower          = lmgrCb.advTxPwr;
+      
+      switch (phy)
+      {
+        case LL_TEST_PHY_LE_1M:
+          chan.txPhy = BB_PHY_BLE_1M;
+          chan.initTxPhyOptions = BB_PHY_OPTIONS_DEFAULT;
+          break;
+        case LL_TEST_PHY_LE_2M:
+          chan.txPhy = BB_PHY_BLE_2M;
+          chan.initTxPhyOptions = BB_PHY_OPTIONS_DEFAULT;
+          break;
+        case LL_TEST_PHY_LE_CODED_S2:
+          chan.txPhy = BB_PHY_BLE_CODED;
+          chan.initTxPhyOptions = BB_PHY_OPTIONS_BLE_S2;
+          break;
+        case LL_TEST_PHY_LE_CODED_S8:
+          chan.txPhy = BB_PHY_BLE_CODED;
+          chan.initTxPhyOptions = BB_PHY_OPTIONS_BLE_S8;
+          break;
+      }
+      PalBbBleSetChannelParam(&chan);
 
-    lmgrCb.testEnabled = TRUE;
-    LmgrIncResetRefCount();
+      BbStart(BB_PROT_PRBS15);
 
-    return LL_SUCCESS;
-  }
+      lmgrCb.testEnabled = TRUE;
+      LmgrIncResetRefCount();
+
+      return LL_SUCCESS;
+    }
 
   BbOpDesc_t *pOp;
   BbBleData_t *pBle;
@@ -777,7 +821,7 @@ static bool_t llTestRxComplete(BbOpDesc_t *pBod, uint8_t status)
 /*************************************************************************************************/
 uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t numPkt)
 {
-  LL_TRACE_INFO1("### LlApi ###  LlRxTest, rfChan=%u", rfChan);
+  LL_TRACE_INFO2("### LlApi ###  LlRxTest, rfChan=%u phy=%u", rfChan, phy);
 
   if ((LL_API_PARAM_CHECK == 1) &&
       ((llTestCb.state != LL_TEST_STATE_IDLE) ||

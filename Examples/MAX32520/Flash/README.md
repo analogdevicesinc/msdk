@@ -16,6 +16,17 @@ Once complete, the example will prompt the user to reset or power cycle the boar
 
 The _second_ time the example is run the application will see the "magic" 32-bit sequence in flash.  When this happens, the application will verify that the test pattern has survived the power cycle first.  Then, it will _modify_ the "magic" sequence _without_ modifying the rest of the test pattern.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Hardware Connections
 
 If using the MAX32520-KIT:
@@ -41,29 +52,29 @@ After flashing and launching the example, an LED on the board will blink once ev
 
 ```
 ***** Flash Control Example *****
-Press Push Button 1 (PB1/SW1) to continue...
+Press SW2 to continue...
 
 ---(Critical)---
-Successfully erased page 64 of flash (addr 0x1007e000)
-Writing magic value 0xfeedbeef to address 0x1007e000...
-Done!
+Erasing page 64 of flash (addr 0x101fc000)...
+Writing magic value 0xfeedbeef to address 0x101fc000...
 Writing test pattern...
 Done!
 ----------------
  -> Interrupt! (Flash operation done)
 
+Verifying test pattern...
+Successfully verified test pattern!
 
 Now reset or power cycle the board...
-
 ```
 
 At this point, the "magic" and test pattern values have been written to flash.  Press SW5 to reset the board, after which the application will restart.  Push PB1 to continue the application again, which will print out the following contents:
 
 ```
 ***** Flash Control Example *****
-Press Push Button 1 (PB1/SW1) to continue...
+Press SW2 to continue...
 
-** Magic value 0xfeedbeef found at address 0x1007e000! **
+** Magic value 0xfeedbeef found at address 0x101fc000! **
 
 (Flash modifications have survived a reset and/or power cycle.)
 
@@ -71,17 +82,16 @@ Verifying test pattern...
 Successfully verified test pattern!
 
 ---(Critical)---
-Erasing magic...
 Buffering page...
 Erasing page...
+Erasing magic in buffer...
 Re-writing from buffer...
-New magic value: 0xabcd1234
+New magic value: 0x4428fad1
 ----------------
  -> Interrupt! (Flash operation done)
 
-Verifying test pattern...
-Successfully verified test pattern!
+Verifying test pattern erase...
+Successfully erased test pattern!
 
 Flash example successfully completed.
-
 ```

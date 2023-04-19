@@ -146,6 +146,11 @@ void buttonHandler(void *pb)
     buttonPressed = 1;
 }
 
+void GPIO4_Handler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO4));
+}
+
 void setTrigger(int waitForTrigger)
 {
     int tmp;
@@ -185,6 +190,7 @@ int main(void)
 #if USE_BUTTON
     PRINT("This code cycles through the MAX32690 power modes. Use push button (SW2)\nto exit from "
           "each power mode and enter the next.\n\n");
+    MXC_NVIC_SetVector(GPIOWAKE_IRQn, GPIO4_Handler);
     PB_RegisterCallback(0, buttonHandler);
     PB_IntEnable(0);
 #endif // USE_BUTTON

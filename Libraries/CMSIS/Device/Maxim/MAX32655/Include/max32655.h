@@ -132,7 +132,7 @@ typedef enum {
     BTLE_RX_AES_IRQn, /* 0x42  0x0108  66: BTLE RX AES Done */
     BTLE_INV_APB_ADDR_IRQn, /* 0x43  0x010C  67: BTLE Invalid APB Address*/
     BTLE_IQ_DATA_VALID_IRQn, /* 0x44  0x0110  68: BTLE IQ Data Valid */
-    WUT_IRQn, /* 0x45  0x0114  69: Wakeup Timer */
+    WUT0_IRQn, /* 0x45  0x0114  69: Wakeup Timer 0 */
     GPIOWAKE_IRQn, /* 0x46  0x0118  70: GPIO and AIN Wakeup */
     RSV55_IRQn, /* 0x47  0x011C  71: Reserved */
     SPI0_IRQn, /* 0x48  0x0120  72: SPI0 */
@@ -183,6 +183,12 @@ typedef enum {
     CNN_IRQn, /* 0x75  0x01D4 117: CNN */
     RSV102_IRQn, /* 0x76  0x01D8 118: Reserved */
     LPCMP_IRQn, /* 0x77  0x01Dc 119: LP Comparator */
+    RSV120_IRQn, /* 0x78  0x01E0 120: Reserved */
+    RSV121_IRQn, /* 0x79  0x01E4 121: Reserved */
+    RSV122_IRQn, /* 0x7A  0x01E8 122: Reserved */
+    RSV123_IRQn, /* 0x7B  0x01EC 123: Reserved */
+    RSV124_IRQn, /* 0x7C  0x01F0 124: Reserved */
+    WUT1_IRQn, /* 0x7D  0x01F4 125: ERFO Ready/WUT 1 */
 #else // __riscv
     PF_IRQn = 4, /* 0x04,4 PFW | SYSFAULT | CM4 */
     WDT0_IRQn, /* 0x05,5 Watchdog 0 */
@@ -197,14 +203,14 @@ typedef enum {
     TMR5_IRQn, /* 0x0D,13 Timer 5 (LP) */
     I2C0_IRQn, /* 0x0E,14 I2C0 */
     UART0_IRQn, /* 0x0F,15 UART 0 */
-    RSV16_IRQn, /* 0x10,16 Reserved */
+    CM4_IRQn, /* 0x10,16 CM4 */
     I2C1_IRQn, /* 0x11,17 I2C1 */
     UART1_IRQn, /* 0x12,18 UART 1 */
     UART2_IRQn, /* 0x13,19 UART 2 */
     I2C2_IRQn, /* 0x14,20 I2C2 */
     UART3_IRQn, /* 0x15,21 LPUART */
     SPI1_IRQn, /* 0x16,22 SPI1 */
-    WUT_IRQn, /* 0x17,23 WUT */
+    WUT0_IRQn, /* 0x17,23 WUT0 */
     FLC0_IRQn, /* 0x18,24 Flash Controller */
     GPIO0_IRQn, /* 0x19,25 GPIO0 */
     GPIO1_IRQn, /* 0x1A,26 GPIO1 */
@@ -232,7 +238,7 @@ typedef enum {
     WDT1_IRQn, /* 0x30,48 Watchdog 1 (LP) */
     DVS_IRQn, /* 0x31,49 DVS Controller */
     SIMO_IRQn, /* 0x32,50 SIMO Controller */
-    RSV51_IRQn, /* 0x33,51 CRC  */
+    WUT1_IRQn, /* 0x33,51 ERFO Ready/WUT1  */
     PT_IRQn, /* 0x34,52 Pulse train */
     ADC_IRQn, /* 0x35,53 ADC */
     OWM_IRQn, /* 0x36,54 One Wire Master */
@@ -339,8 +345,18 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                        Wake-Up Timer (WUT) */
-#define MXC_BASE_WUT ((uint32_t)0x40006400UL)
-#define MXC_WUT ((mxc_wut_regs_t *)MXC_BASE_WUT)
+#define MXC_CFG_WUT_INSTANCES (2)
+
+#define MXC_BASE_WUT0 ((uint32_t)0x40006400UL)
+#define MXC_WUT0 ((mxc_wut_regs_t *)MXC_BASE_WUT0)
+#define MXC_WUT MXC_WUT0
+#define MXC_BASE_WUT1 ((uint32_t)0x40006600UL)
+#define MXC_WUT1 ((mxc_wut_regs_t *)MXC_BASE_WUT1)
+
+// Included for legacy compatability after changing WUT_IRQn -> WUT0_IRQn
+// in system startup files.
+#define WUT_IRQn WUT0_IRQn
+#define WUT_IRQHandler WUT0_IRQHandler
 
 /******************************************************************************/
 /*                                                            Power Sequencer */
@@ -550,12 +566,12 @@ typedef enum {
 #define MXC_BASE_UART3 ((uint32_t)0x40081400UL)
 #define MXC_UART3 ((mxc_uart_regs_t *)MXC_BASE_UART3)
 
-#define MXC_UART_GET_IRQ(i)             \
-    (IRQn_Type)((i) == 0 ? UART0_IRQn : \
-                (i) == 1 ? UART1_IRQn : \
-                (i) == 2 ? UART2_IRQn : \
-                (i) == 3 ? UART3_IRQn : \
-                           0)
+#define MXC_UART_GET_IRQ(i)                        \
+    (IRQn_Type)((i) == 0            ? UART0_IRQn : \
+                (IRQn_Type)(i) == 1 ? UART1_IRQn : \
+                (IRQn_Type)(i) == 2 ? UART2_IRQn : \
+                (IRQn_Type)(i) == 3 ? UART3_IRQn : \
+                                      0)
 
 #define MXC_UART_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_UART0 : \

@@ -21,6 +21,9 @@ FreeRTOSDemo
 Hello_World
 I2C_SCAN
 ICC
+OTP_Dump
+Library_Generate
+Library_Use
 SCPA_OTP_Dump
 SFE_Host
 SMON

@@ -12,6 +12,7 @@ ARM-DSP/arm_signal_converge_example
 ARM-DSP/arm_sin_cos_example
 ARM-DSP/arm_svm_example
 ARM-DSP/arm_variance_example
+Coremark
 CRC
 DMA
 ECDSA
@@ -25,8 +26,11 @@ I2C_MNGR
 I2C_SCAN
 I2C_Sensor
 ICC
+Library_Generate
+Library_Use
 LockDebug
 LP
+OTP_Dump
 SCPA_OTP_Dump
 SFE
 SFE_Host

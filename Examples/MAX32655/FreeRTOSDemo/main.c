@@ -366,7 +366,7 @@ int freertos_permit_tickless(void)
  */
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_IntClear(MXC_WUT0);
     NVIC_ClearPendingIRQ(WUT_IRQn);
 }
 
@@ -393,7 +393,7 @@ int main(void)
 #if configUSE_TICKLESS_IDLE
 
     /* Initialize Wakeup timer */
-    MXC_WUT_Init(MXC_WUT_PRES_1);
+    MXC_WUT_Init(MXC_WUT0, MXC_WUT_PRES_1);
     mxc_wut_cfg_t wut_cfg;
     wut_cfg.mode = MXC_WUT_MODE_COMPARE;
     wut_cfg.cmp_cnt = 0xFFFFFFFF;
@@ -405,8 +405,8 @@ int main(void)
     NVIC_EnableIRQ(WUT_IRQn);
 
     /* Configure and start the WUT */
-    MXC_WUT_Config(&wut_cfg);
-    MXC_WUT_Enable();
+    MXC_WUT_Config(MXC_WUT0, &wut_cfg);
+    MXC_WUT_Enable(MXC_WUT0);
 
     /* Setup CTS interrupt */
     MXC_GPIO_IntConfig(&uart_cts, MXC_GPIO_INT_FALLING);

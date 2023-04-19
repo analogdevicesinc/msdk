@@ -54,10 +54,15 @@ CHCI_TR			?= CHCI_TR_UART=1
 
 # Controller
 ifeq ($(INIT_CENTRAL),1)
-CFG_DEV         += INIT_BROADCASTER INIT_PERIPHERAL INIT_OBSERVER INIT_CENTRAL
-else ifeq ($(INIT_PERIPHERAL),1)
-CFG_DEV         += INIT_BROADCASTER INIT_PERIPHERAL
-else ifeq ($(INIT_BROADCASTER),1)
+CFG_DEV         += INIT_CENTRAL
+endif
+ifeq ($(INIT_PERIPHERAL),1)
+CFG_DEV         += INIT_PERIPHERAL
+endif
+ifeq ($(INIT_OBSERVER),1)
+CFG_DEV         += INIT_OBSERVER
+endif
+ifeq ($(INIT_BROADCASTER),1)
 CFG_DEV         += INIT_BROADCASTER
 endif
 ifeq ($(INIT_ENCRYPTED),1)
@@ -81,6 +86,10 @@ CFG_DEV         += WSF_TOKEN_ENABLED=1
 endif
 ifeq ($(TRACE),1)
 CFG_DEV         += WSF_TRACE_ENABLED=1
+endif
+ifeq ($(TRACE),2)
+CFG_DEV         += WSF_TRACE_ENABLED=1
+CFG_DEV         += WSF_TRACE_ENABLED_VERBOSE=1
 endif
 
 #--------------------------------------------------------------------------------------------------

@@ -166,6 +166,7 @@ echo ""
 
 echo "Prepare the script file to flash/reset the boards."
 SH_RESET_BRD1=$TMP_PATH/${CURR_TIME}_brd1_reset.sh
+RESET_BRD1_LOG=$TMP_PATH/${CURR_TIME}_brd1_reset.log
 echo $SH_RESET_BRD1
 echo "#!/usr/bin/env bash" > $SH_RESET_BRD1
 echo "nrfjprog --family nrf52 -s ${BRD1_DAP_SN} --debugreset" >> $SH_RESET_BRD1
@@ -174,30 +175,23 @@ cat $SH_RESET_BRD1
 echo ""
 
 SH_RESET_BRD2=$TMP_PATH/${CURR_TIME}_brd2_reset.sh
+RESET_BRD2_LOG=$TMP_PATH/${CURR_TIME}_brd2_reset.log
 echo $SH_RESET_BRD2
 echo "#!/usr/bin/env bash" > $SH_RESET_BRD2
-#echo "bash -ex $MSDK/.github/workflows/scripts/hard_reset.sh ${BRD2_CHIP_LC}.cfg ${BRD2_DAP_SN} $(realpath ${MSDK}/Examples/${BRD2_CHIP_UC}/BLE5_ctr/build/${BRD2_CHIP_LC}.elf) 2>&1 | tee test.log" >> $SH_RESET_BRD2
-echo "bash -e $MSDK/.github/workflows/scripts/build_flash.sh ${MSDK} /home/$USER/Tools/openocd ${BRD2_CHIP_UC} ${BRD2_TYPE} BLE5_ctr ${BRD2_DAP_SN} False True 2>&1 | tee ${TMP_PATH}/test.log" >> $SH_RESET_BRD2
+echo "bash -e $MSDK/.github/workflows/scripts/build_flash.sh ${MSDK} /home/$USER/Tools/openocd ${BRD2_CHIP_UC} ${BRD2_TYPE} BLE5_ctr ${BRD2_DAP_SN} False True 2>&1 | tee ${TMP_PATH}/${RESET_BRD2_LOG}" >> $SH_RESET_BRD2
 echo "sleep 10" >> $SH_RESET_BRD2
 chmod u+x $SH_RESET_BRD2
 cat $SH_RESET_BRD2
 
-SH_RESET_BRD1=$TMP_PATH/${CURR_TIME}_brd1_reset.sh
-echo $SH_RESET_BRD1
-echo "#!/usr/bin/env bash" > $SH_RESET_BRD1
-echo "nrfjprog --family nrf52 -s ${BRD1_DAP_SN} --debugreset" >> $SH_RESET_BRD1
-chmod u+x $SH_RESET_BRD1
-cat $SH_RESET_BRD1
-echo ""
-
-SH_RESET_BRD2=$TMP_PATH/${CURR_TIME}_brd2_reset.sh
-echo $SH_RESET_BRD2
-echo "#!/usr/bin/env bash" > $SH_RESET_BRD2
-#echo "bash -ex $MSDK/.github/workflows/scripts/hard_reset.sh ${BRD2_CHIP_LC}.cfg ${BRD2_DAP_SN} $(realpath ${MSDK}/Examples/${BRD2_CHIP_UC}/BLE5_ctr/build/${BRD2_CHIP_LC}.elf) 2>&1 | tee test.log" >> $SH_RESET_BRD2
-echo "bash -e $MSDK/.github/workflows/scripts/build_flash.sh ${MSDK} /home/$USER/Tools/openocd ${BRD2_CHIP_UC} ${BRD2_TYPE} BLE5_ctr ${BRD2_DAP_SN} False True 2>&1 | tee ${TMP_PATH}/test.log" >> $SH_RESET_BRD2
-echo "sleep 10" >> $SH_RESET_BRD2
-chmod u+x $SH_RESET_BRD2
-cat $SH_RESET_BRD2
+echo "----------------------------------------------------------------------------------------------------------------"
+echo "Check which version the conn_sweep.py is."
+if $(python3 $MSDK/Tools/Bluetooth/conn_sweep.py -h) | grep -q "short"; then
+    echo "With --short"
+    SHORT_VERSION=--short
+else
+    echo "Without --short"
+    SHORT_VERSION=
+fi
 
 for pkt_len in ${PKG_RA}
 do
@@ -250,11 +244,13 @@ do
         if [ "x${ATTENS}" == "x" ]; then
             unbuffer python3 $MSDK/Tools/Bluetooth/conn_sweep.py ${slv_ser} ${mst_ser} ${res_files[i]} \
                 --stp ${BRD2_CON} --pktlen ${pkt_len} --phys ${phy} --step ${step} --loss -15.7 \
-                --brd1_reset $SH_RESET_BRD1 --brd2_reset $SH_RESET_BRD2 --retry_limit ${RETRY}
+                --brd1_reset $SH_RESET_BRD1 --brd2_reset $SH_RESET_BRD2 --retry_limit ${RETRY} \
+                ${SHORT_VERSION}
         else
             unbuffer python3 $MSDK/Tools/Bluetooth/conn_sweep.py ${slv_ser} ${mst_ser} ${res_files[i]} \
                 --stp ${BRD2_CON} --pktlen ${pkt_len} --phys ${phy} --attens ${ATTENS} --loss -15.7 \
-                --brd1_reset $SH_RESET_BRD1 --brd2_reset $SH_RESET_BRD2 --retry_limit ${RETRY}
+                --brd1_reset $SH_RESET_BRD1 --brd2_reset $SH_RESET_BRD2 --retry_limit ${RETRY} \
+                ${SHORT_VERSION}
         fi
         set +x
 

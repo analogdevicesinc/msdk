@@ -77,7 +77,7 @@ int MXC_GPIO_RevA_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
 
     switch (pol) {
     case MXC_GPIO_INT_HIGH:
-        gpio->intpol &= ~cfg->mask;
+        gpio->intpol |= cfg->mask;
         gpio->dualedge &= ~cfg->mask;
         gpio->intmode &= ~cfg->mask;
         break;
@@ -89,7 +89,7 @@ int MXC_GPIO_RevA_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
         break;
 
     case MXC_GPIO_INT_LOW: /* MXC_GPIO_INT_LOW */
-        gpio->intpol |= cfg->mask;
+        gpio->intpol &= ~cfg->mask;
         gpio->dualedge &= ~cfg->mask;
         gpio->intmode &= ~cfg->mask;
         break;
@@ -156,6 +156,9 @@ int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32
     //This is required for new devices going forward.
     port->inen |= mask;
 
+    //Switch to I/O mode first
+    port->en0_set = mask;
+
     switch (func) {
     case MXC_GPIO_FUNC_IN:
         port->outen_clr = mask;
@@ -174,40 +177,40 @@ int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32
         break;
 
     case MXC_GPIO_FUNC_ALT1:
+        port->en3_clr = mask;
         port->en2_clr = mask;
         port->en1_clr = mask;
         port->en0_clr = mask;
-        port->en3_clr = mask;
         break;
 
     case MXC_GPIO_FUNC_ALT2:
+        port->en3_clr = mask;
         port->en2_clr = mask;
         port->en1_set = mask;
         port->en0_clr = mask;
-        port->en3_clr = mask;
         break;
 
 #if TARGET_NUM != 32650
     case MXC_GPIO_FUNC_ALT3:
+        port->en3_clr = mask;
         port->en2_set = mask;
         port->en1_clr = mask;
         port->en0_clr = mask;
-        port->en3_clr = mask;
         break;
 
     case MXC_GPIO_FUNC_ALT4:
+        port->en3_clr = mask;
         port->en2_set = mask;
         port->en1_set = mask;
         port->en0_clr = mask;
-        port->en3_clr = mask;
         break;
 
 #if TARGET_NUM == 32662
     case MXC_GPIO_FUNC_ALT5:
-        port->en0_clr = mask;
-        port->en1_clr = mask;
-        port->en2_clr = mask;
         port->en3_set = mask;
+        port->en2_clr = mask;
+        port->en1_clr = mask;
+        port->en0_clr = mask;
         break;
 #endif
 #endif
@@ -216,4 +219,19 @@ int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32
     }
 
     return E_NO_ERROR;
+}
+
+void MXC_GPIO_RevA_SetWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask)
+{
+    port->wken_set = mask;
+}
+
+void MXC_GPIO_RevA_ClearWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask)
+{
+    port->wken_clr = mask;
+}
+
+uint32_t MXC_GPIO_RevA_GetWakeEn(mxc_gpio_reva_regs_t *port)
+{
+    return port->wken;
 }

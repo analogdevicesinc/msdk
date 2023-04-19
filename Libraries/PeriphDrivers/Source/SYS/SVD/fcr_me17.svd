@@ -333,6 +333,34 @@
       </enumeratedValues>      
      </field>                
     </fields>
+   </register>
+   <register>
+    <name>ERFO_INTFL</name>
+    <description>ERFO Ready Interrupt Flag register.</description>
+    <addressOffset>0x1C</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>rdy</name>
+      <description>Ready interrupt flag.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>                
+    </fields>
+   </register>
+   <register>
+    <name>ERFO_INTEN</name>
+    <description>ERFO Ready Interrupt Enable register.</description>
+    <addressOffset>0x20</addressOffset>
+    <access>read-write</access>
+    <fields>
+     <field>
+      <name>rdy</name>
+      <description>Ready interrupt enable.</description>
+      <bitOffset>0</bitOffset>
+      <bitWidth>1</bitWidth>
+     </field>                
+    </fields>
    </register>   
   </registers>
  </peripheral>

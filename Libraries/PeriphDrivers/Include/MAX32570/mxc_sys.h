@@ -46,6 +46,13 @@
 extern "C" {
 #endif
 
+/**
+ * @defgroup mxc_sys System Configuration (MXC_SYS)
+ * @ingroup syscfg
+ * @details API for system configuration including clock source selection and entering critical sections of code.
+ * @{
+ */
+
 /** @brief System reset0 and reset1 enumeration. Used in MXC_SYS_PeriphReset0 function */
 typedef enum {
     MXC_SYS_RESET0_DMA = MXC_F_GCR_RST0_DMA_POS, /**< Reset DMA */
@@ -215,12 +222,18 @@ typedef enum {
 
 /** @brief Enumeration to select System Clock source */
 typedef enum {
-    MXC_SYS_CLOCK_IPO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO,
-    MXC_SYS_CLOCK_IBRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO,
-    MXC_SYS_CLOCK_ISO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO,
-    MXC_SYS_CLOCK_ERFO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO,
-    MXC_SYS_CLOCK_INRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO,
-    MXC_SYS_CLOCK_ERTCO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO,
+    MXC_SYS_CLOCK_IPO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO, /**< Select the Internal Primary Oscillator (IPO) */
+    MXC_SYS_CLOCK_IBRO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO, /**< Select the Internal Baud Rate Oscillator (IBRO) */
+    MXC_SYS_CLOCK_ISO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO, /**< Select the Internal Secondary Oscillator (ISO) */
+    MXC_SYS_CLOCK_ERFO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO, /**< Select the External RF Crystal Oscillator */
+    MXC_SYS_CLOCK_INRO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO, /**< Select the Internal Nanoring Oscillator (INRO) */
+    MXC_SYS_CLOCK_ERTCO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
 } mxc_sys_system_clock_t;
 
 #define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
@@ -237,7 +250,7 @@ static mxc_crit_state_t _state = { .ie_status = 0xFFFFFFFF, .in_critical = 0 };
 
 static inline void _mxc_crit_get_state()
 {
-#ifdef __CORTEX_M
+#ifndef __riscv
     /*
         On ARM M the 0th bit of the Priority Mask register indicates
         whether interrupts are enabled or not.
@@ -247,8 +260,7 @@ static inline void _mxc_crit_get_state()
     */
     uint32_t primask = __get_PRIMASK();
     _state.ie_status = (primask == 0);
-#endif
-#ifdef __riscv
+#else
     /*
         On RISC-V bit position 3 (Machine Interrupt Enable) of the
         mstatus register indicates whether interrupts are enabled.
@@ -262,7 +274,15 @@ static inline void _mxc_crit_get_state()
 }
 
 /**
- * @brief Enter a critical section of code that cannot be interrupted.
+ * @brief Enter a critical section of code that cannot be interrupted.  Call @ref MXC_SYS_Crit_Exit to exit the critical section.
+ * @details Ex:
+ * @code
+ * MXC_SYS_Crit_Enter();
+ * printf("Hello critical section!\n");
+ * MXC_SYS_Crit_Exit();
+ * @endcode
+ * The @ref MXC_CRITICAL macro is also provided as a convencience macro for wrapping a code section in this way.
+ * @returns None
  */
 static inline void MXC_SYS_Crit_Enter(void)
 {
@@ -273,8 +293,8 @@ static inline void MXC_SYS_Crit_Enter(void)
 }
 
 /**
- * @brief Exit a critical section of code, re-enabling interrupts if they
- *        were previously.
+ * @brief Exit a critical section of code from @ref MXC_SYS_Crit_Enter
+ * @returns None
  */
 static inline void MXC_SYS_Crit_Exit(void)
 {
@@ -301,12 +321,21 @@ static inline int MXC_SYS_In_Crit_Section(void)
     return _state.in_critical;
 }
 
-/**
- * @brief Macro for wrapping a section of code to make it critical.  Note: this macro
- * does not support nesting.
- */
 // clang-format off
-#define MXC_CRITICAL(code) { \
+/**
+ * @brief Macro for wrapping a section of code to make it critical (interrupts disabled).  Note: this macro
+ * does not support nesting.
+ * @details
+ * Ex:
+ * \code
+ * MXC_CRITICAL(
+ *      printf("Hello critical section!\n");
+ * )
+ * \endcode
+ * This macro places a call to @ref MXC_SYS_Crit_Enter before the code, and a call to @ref MXC_SYS_Crit_Exit after.
+ * @param code The code section to wrap.
+ */
+#define MXC_CRITICAL(code) {\
     MXC_SYS_Crit_Enter();\
     code;\
     MXC_SYS_Crit_Exit();\
@@ -361,7 +390,6 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 /**
  * @brief Select the system clock.
  * @param clock     Enumeration for desired clock.
- * @param tmr       Optional tmr pointer for timeout. NULL if undesired.
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);

@@ -3220,7 +3220,7 @@
        <name>ADCFRQ</name>
        <description>ADC clock Frequency. These bits define the ADC clock frequency. fADC = fPCLK / (ADCFRQ)</description>
        <bitOffset>10</bitOffset>
-       <bitWidth>3</bitWidth>
+       <bitWidth>4</bitWidth>
       </field>
       <field>
        <name>CNNCLKDIV</name>
@@ -7152,7 +7152,7 @@
       <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[7:7]</bitRange>
+       <bitRange>[5:5]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -7546,7 +7546,7 @@
    <access>read-write</access>
    <addressBlock>
     <offset>0</offset>
-    <size>0x0020</size>
+    <size>0x0018</size>
     <usage>registers</usage>
    </addressBlock>
    <interrupt>
@@ -7628,8 +7628,8 @@
      </fields>
     </register>
     <register>
-     <name>INTFL</name>
-     <description>Pulse Train Interrupt Flags</description>
+     <name>STOP_INTFL</name>
+     <description>Pulse Train Stop Interrupt Flags</description>
      <addressOffset>0x0008</addressOffset>
      <access>read-write</access>
      <fields>
@@ -7664,8 +7664,8 @@
      </fields>
     </register>
     <register>
-     <name>INTEN</name>
-     <description>Pulse Train Interrupt Enable/Disable</description>
+     <name>STOP_INTEN</name>
+     <description>Pulse Train Stop Interrupt Enable/Disable</description>
      <addressOffset>0x000C</addressOffset>
      <access>read-write</access>
      <fields>
@@ -7760,6 +7760,78 @@
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>write-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTFL</name>
+     <description>Pulse Train Ready Interrupt Flags</description>
+     <addressOffset>0x0018</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Flag</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Flag</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Flag</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Flag</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTEN</name>
+     <description>Pulse Train Ready Interrupt Enable/Disable</description>
+     <addressOffset>0x001C</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Enable/Disable</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Enable/Disable</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Enable/Disable</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Enable/Disable</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
       </field>
      </fields>
     </register>
@@ -8448,6 +8520,30 @@
      <addressOffset>0x18</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
+      <field>
+       <name>FILTER_EN</name>
+       <description>Enable analog deglitch filter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_SEL</name>
+       <description>If IBIAS_EN is 1, selects 4x,2x mode.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HYST_EN</name>
+       <description>Enables high current hysteresis buffer.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_EN</name>
+       <description>Enables higher 4x,2x current modes.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
       <field>
        <name>BYPASS</name>
        <description>RTC Crystal Bypass</description>
@@ -11352,6 +11448,12 @@
      <resetValue>0x00000003</resetValue>
      <fields>
       <field>
+       <name>ODHT</name>
+       <description>Start On-Demand health test.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>RND_IE</name>
        <description>To enable IRQ generation when a new 32-bit Random number is ready.</description>
        <bitOffset>1</bitOffset>
@@ -11370,9 +11472,21 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>KEYGEN</name>
+       <name>HEALTH_EN</name>
+       <description>Enable IRQ generation when a health test fails.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AESKG_USR</name>
        <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
        <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AESKG_SYS</name>
+       <description>AESKG_SYS.</description>
+       <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -11405,6 +11519,36 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
+      </field>
+      <field>
+       <name>ODHT</name>
+       <description>On-Demand health test status.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HT</name>
+       <description>Health test status.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>SRCFAIL</name>
+       <description>Entropy source has failed.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AESKGD</name>
+       <description>AESKGD.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>LD_CNT</name>
+       <description>LD_CNT.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>8</bitWidth>
       </field>
      </fields>
     </register>

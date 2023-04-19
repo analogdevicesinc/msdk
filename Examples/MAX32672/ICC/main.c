@@ -49,11 +49,12 @@
 
 /***** Functions *****/
 
-//Test function to do simple calculations
+/*** Volatile Test Function ***/
 void example_func1(void)
 {
     volatile int i, j, k;
 
+    // Do 2.5M dummy multiplication operations
     for (i = 0; i < 5000; i++) {
         for (j = 0; j < 500; j++) {
             k = i * j;
@@ -64,15 +65,15 @@ void example_func1(void)
         }
     }
 
-    printf("\n");
-
     return;
 }
 
+/*** Non-Volatile Test Function ***/
 void example_func2(void)
 {
     int i, j, k;
 
+    // Do 25M dummy multiplication operations
     for (i = 1; i <= 5000; i++) {
         for (j = 1; j <= 5000; j++) {
             k = i * j;
@@ -83,19 +84,17 @@ void example_func2(void)
         }
     }
 
-    printf("\n");
-
     return;
 }
 
-//Start timer before test function
+// Start timer before test function
 void start_timer(void)
 {
     MXC_TMR_SW_Start(MXC_TMR0);
     return;
 }
 
-//Stop current timer and print elapsed time
+// Stop current timer and print elapsed time
 int stop_timer(void)
 {
     int time_elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
@@ -110,53 +109,57 @@ int stop_timer(void)
 int main(void)
 {
     int fail = 0;
-    int time_elapsed1 = 0;
-    int time_elapsed2 = 0;
+    int icc_en_time = 0;
+    int icc_dis_time = 0;
 
-    printf("\n******** ICC Example ********\n");
+    printf("\n*************** ICC Example ***************\n");
 
-    printf("\n***** Volatile  Example *****\n");
+    printf("\n***** 2.5M Operations w/ Volatile Variables Test *****\n");
 
     printf("\nWith instruction cache enabled:\n");
     MXC_ICC_Enable();
     start_timer();
-    example_func1(); //waste time
-    time_elapsed1 = stop_timer();
+    example_func1(); // Run test function #1
+    icc_en_time = stop_timer();
 
-    printf("\n\nWith instruction cache disabled:\n");
+    printf("\nWith instruction cache disabled:\n");
     MXC_ICC_Disable();
     start_timer();
-    example_func1(); //waste time
-    time_elapsed2 = stop_timer();
+    example_func1(); // Run test function #1
+    icc_dis_time = stop_timer();
 
-    if (time_elapsed2 <= time_elapsed1) {
+    // Check results of 1st test function
+    if (icc_dis_time <= icc_en_time) {
         fail += 1;
     }
 
     MXC_ICC_Flush();
-    printf("\n\n***** Non-volatile Example *****\n");
+    printf("\n\n***** 25M Operations w/ Non-volatile Variables Test *****\n");
 
     printf("\nWith instruction cache enabled:\n");
     MXC_ICC_Enable();
     start_timer();
-    example_func2(); //waste time
-    time_elapsed1 = stop_timer();
+    example_func2(); // Run test function #2
+    icc_en_time = stop_timer();
 
-    printf("\n\nWith instruction cache disabled:\n");
+    printf("\nWith instruction cache disabled:\n");
     MXC_ICC_Disable();
     start_timer();
-    example_func2(); //waste time
-    time_elapsed2 = stop_timer();
+    example_func2(); // Run test function #2
+    icc_dis_time = stop_timer();
 
-    if (time_elapsed2 <= time_elapsed1) {
+    // Check results of 2nd Test Function
+    if (icc_dis_time <= icc_en_time) {
         fail += 1;
     }
 
+    // Print result
     if (fail != 0) {
         printf("\nExample Failed\n");
         return E_FAIL;
     }
 
     printf("\nExample Succeeded\n");
+
     return E_NO_ERROR;
 }

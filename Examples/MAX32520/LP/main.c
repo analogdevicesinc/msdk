@@ -61,6 +61,7 @@
 #include "icc.h"
 #include "uart.h"
 #include "nvic_table.h"
+#include "mxc_delay.h"
 
 #define USE_CONSOLE 1
 
@@ -83,8 +84,8 @@ void buttonHandler(void *pb)
 
 void setTrigger(int waitForTrigger)
 {
+#ifndef BOARD_MAX32520FTHR
     int tmp;
-
     buttonPressed = 0;
 
     if (waitForTrigger) {
@@ -95,6 +96,9 @@ void setTrigger(int waitForTrigger)
     for (tmp = 0; tmp < 0x800000; tmp++) {
         __NOP();
     }
+#else
+    MXC_Delay(MXC_DELAY_SEC(2));
+#endif
 
     // Wait for serial transactions to complete.
 #if USE_CONSOLE
@@ -107,8 +111,14 @@ int main(void)
     PRINT("****Low Power Mode Example****\n\n");
 
     PRINT("This code cycles through the MAX32520 power modes, "
+#ifndef BOARD_MAX32520FTHR
           "using a push button (SW2) to exit from each mode and enter the next.\n\n");
     PB_RegisterCallback(0, buttonHandler);
+    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
+#else
+          "with a 2 second delay before entering the next mode.\n\n");
+#endif
 
     PRINT("Running in ACTIVE mode.\n");
 #if !USE_CONSOLE
@@ -118,9 +128,9 @@ int main(void)
 
     MXC_LP_ROMLightSleepEnable();
     MXC_LP_ICache0LightSleepEnable();
-    MXC_LP_SysRam4LightSleepDisable();
-    MXC_LP_SysRam3LightSleepDisable();
-    MXC_LP_SysRam2LightSleepDisable();
+    MXC_LP_SysRam4LightSleepEnable();
+    MXC_LP_SysRam3LightSleepEnable();
+    MXC_LP_SysRam2LightSleepEnable();
 
     MXC_LP_SysRam1LightSleepDisable();
     MXC_LP_SysRam0LightSleepDisable(); // Global variables are in RAM0 and RAM1
@@ -133,8 +143,6 @@ int main(void)
 
     PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
-
-    MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
 
     while (1) {
 #if DO_SLEEP

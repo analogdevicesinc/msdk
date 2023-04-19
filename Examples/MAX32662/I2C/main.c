@@ -53,6 +53,7 @@
 #include "nvic_table.h"
 #include "i2c.h"
 #include "dma.h"
+#include "board.h"
 
 /***** Definitions *****/
 //#define MASTERDMA     //Comment this line out if standard I2C transaction is required
@@ -199,9 +200,17 @@ int main()
     printf("read and write to another I2C which acts as a slave.\n");
 
     printf("\nYou will need to connect P0.12->P0.6 (SCL) and\n");
-    printf("P0.13->P0.9 (SDA). As well jumper JP1 (VREF) needs\n");
+    printf("P0.13->P0.9 (SDA).");
+#if defined(BOARD_EVKIT_V1)
+    printf("As well jumper JP1 (VREF) needs\n");
     printf("to be removed.\n");
+#else
+    printf("\nTo have pull up resistor\n");
+    printf("Either connect SLAVE_SCL to P0.12 and SLAVE_SDA to P0.13\n");
+    printf("Or use breadboard and connect P0.12 to 3.3V with 4.7k \n");
+    printf("and P0.13 to 3.3V with 4.7k\n");
 
+#endif
     int error, i = 0;
 
     //Setup the I2CM
@@ -277,7 +286,7 @@ int main()
     printf("\n-->Result: \n");
     printData();
     printf("\n");
-    if (verifyData()) {
+    if (!verifyData()) {
         printf("\n-->I2C Transaction Successful\n");
     } else {
         printf("\n-->I2C Transaction Failed\n");

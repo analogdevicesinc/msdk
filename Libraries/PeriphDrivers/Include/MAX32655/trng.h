@@ -126,14 +126,11 @@ int MXC_TRNG_Random(uint8_t *data, uint32_t len);
 void MXC_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_trng_complete_t callback);
 
 /**
- * @brief   Generate an AES key and transfer to the AES block
- */
-void MXC_TRNG_GenerateKey(void);
-
-/**
  * @brief   Perform health test of the TRNG entropy source
  * 
- * @return  E_NOT_SUPPORTED (-17)
+ * @return  If test fails the function will return E_BAD_STATE (-7), otherwise it will return E_NO_ERROR.
+ * 
+ * @warning MAX32655 with Rev. A Silicon does not support health tests. (Check MXC_GCR->revision to see which revision your chip is.)
  */
 int MXC_TRNG_HealthTest(void);
 

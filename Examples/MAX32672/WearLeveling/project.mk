@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -13,3 +13,15 @@
 SBT=0
 
 LIB_LITTLEFS = 1
+
+# This example attempts to mount a Little FS filesystem on half of the
+# device's Flash space. To ensure application code does not use any of
+# the Flash space that Little FS will attempt to use, the available 
+# Flash size is reduced with one of the custom linkerfiles below.
+ifeq ($(SBT),1)
+# This linkerfile contains extra sections for compatibility with the Secure Boot Tools (SBT).
+override LINKERFILE = wearlevel-sla.ld
+else
+# This linkerfile is for use with standard non-secure applications.
+override LINKERFILE = wearlevel.ld
+endif # SBT

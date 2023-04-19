@@ -189,6 +189,10 @@ int camera_set_frame_info(int width, int height, pixformat_t pixformat);
 int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode,
                  dmamode_t dma_mode, int dma_channel);
 
+// Setup the camera resolution, pixel format, expand bits option, fifo byte mode and dma option and stream to TFT
+int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode,
+                     dmamode_t dma_mode, int dma_channel);
+
 // Set the sensor contrast level (from -2 to +2).
 int camera_set_contrast(int level);
 
@@ -214,10 +218,13 @@ int camera_set_vflip(int enable);
 // start to capture image
 int camera_start_capture_image(void);
 
+// start to capture image
+int camera_start_capture_image_tft(void);
+
 // check whether all image data rcv or not
 int camera_is_image_rcv(void);
 
-// Retreive the camera pixel format of the camera.
+// Retrieve the camera pixel format of the camera.
 uint8_t *camera_get_pixel_format(void);
 
 // Get a pointer to the camera frame buffer, also get the image length and resolution.

@@ -196,9 +196,9 @@ static void mainWsfInit(void)
 /*************************************************************************************************/
 void WUT_IRQHandler(void)
 {
-    MXC_WUT_IntClear();
+    MXC_WUT_IntClear(MXC_WUT0);
     NVIC_ClearPendingIRQ(WUT_IRQn);
-    MXC_WUT_Handler();
+    MXC_WUT_Handler(MXC_WUT0);
 }
 
 /*************************************************************************************************/
@@ -291,7 +291,7 @@ void trim32k(void)
 
     /* Execute the trim procedure */
     wutTrimComplete = 0;
-    if (MXC_WUT_TrimCrystalAsync(wutTrimCb) != E_NO_ERROR) {
+    if (MXC_WUT_TrimCrystalAsync(MXC_WUT0, wutTrimCb) != E_NO_ERROR) {
         APP_TRACE_INFO0("Error with 32k trim");
     } else {
         while (!wutTrimComplete) {}
