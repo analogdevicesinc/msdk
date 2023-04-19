@@ -59,7 +59,6 @@
 #include "pal_timer.h"
 #include "pal_sys.h"
 
-
 #include "datc_api.h"
 #include "app_ui.h"
 
@@ -143,7 +142,6 @@ void WUT_IRQHandler(void)
 {
     MXC_WUT_Handler();
     PalTimerIRQCallBack();
-    
 }
 
 /*************************************************************************************************/

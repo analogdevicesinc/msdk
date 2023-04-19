@@ -46,80 +46,78 @@
  * point, they are useful for some people in practice.
  */
 
-static int
-cp936_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
+static int cp936_mbtowc(conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
 {
-  /* Try GBK first. */
-  {
-    int ret = ces_gbk_mbtowc(conv,pwc,s,n);
-    if (ret != RET_ILSEQ)
-      return ret;
-  }
-  /* Then handle the additional mappings. */
-  {
-    unsigned char c = *s;
-    if (c == 0x80) {
-      *pwc = 0x20ac;
-      return 1;
+    /* Try GBK first. */
+    {
+        int ret = ces_gbk_mbtowc(conv, pwc, s, n);
+        if (ret != RET_ILSEQ)
+            return ret;
     }
-    /* User-defined characters */
-    if (c >= 0xa1 && c <= 0xa2) {
-      if (n < 2)
-        return RET_TOOFEW(0);
-      {
-        unsigned char c2 = s[1];
-        if ((c2 >= 0x40 && c2 < 0x7f) || (c2 >= 0x80 && c2 < 0xa1)) {
-          *pwc = 0xe4c6 + 96 * (c - 0xa1) + (c2 - (c2 >= 0x80 ? 0x41 : 0x40));
-          return 2;
+    /* Then handle the additional mappings. */
+    {
+        unsigned char c = *s;
+        if (c == 0x80) {
+            *pwc = 0x20ac;
+            return 1;
         }
-      }
-    } else if ((c >= 0xaa && c < 0xb0) || (c >= 0xf8 && c < 0xff)) {
-      if (n < 2)
-        return RET_TOOFEW(0);
-      {
-        unsigned char c2 = s[1];
-        if (c2 >= 0xa1 && c2 < 0xff) {
-          *pwc = 0xe000 + 94 * (c - (c >= 0xf8 ? 0xf2 : 0xaa)) + (c2 - 0xa1);
-          return 2;
+        /* User-defined characters */
+        if (c >= 0xa1 && c <= 0xa2) {
+            if (n < 2)
+                return RET_TOOFEW(0);
+            {
+                unsigned char c2 = s[1];
+                if ((c2 >= 0x40 && c2 < 0x7f) || (c2 >= 0x80 && c2 < 0xa1)) {
+                    *pwc = 0xe4c6 + 96 * (c - 0xa1) + (c2 - (c2 >= 0x80 ? 0x41 : 0x40));
+                    return 2;
+                }
+            }
+        } else if ((c >= 0xaa && c < 0xb0) || (c >= 0xf8 && c < 0xff)) {
+            if (n < 2)
+                return RET_TOOFEW(0);
+            {
+                unsigned char c2 = s[1];
+                if (c2 >= 0xa1 && c2 < 0xff) {
+                    *pwc = 0xe000 + 94 * (c - (c >= 0xf8 ? 0xf2 : 0xaa)) + (c2 - 0xa1);
+                    return 2;
+                }
+            }
         }
-      }
     }
-  }
-  return RET_ILSEQ;
+    return RET_ILSEQ;
 }
 
-static int
-cp936_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
+static int cp936_wctomb(conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
 {
-  /* Try GBK first. */
-  {
-    int ret = ces_gbk_wctomb(conv,r,wc,n);
-    if (ret != RET_ILUNI)
-      return ret;
-  }
-  /* Then handle the additional mappings. */
-  if (wc >= 0xe000 && wc < 0xe586) {
-    /* User-defined characters */
-    if (n < 2)
-      return RET_TOOFEW(0);
-    if (wc < 0xe4c6) {
-      unsigned int i = wc - 0xe000;
-      unsigned int c1 = i / 94;
-      unsigned int c2 = i % 94;
-      r[0] = c1 + (c1 < 6 ? 0xaa : 0xf2);
-      r[1] = c2 + 0xa1;
-      return 2;
-    } else {
-      unsigned int i = wc - 0xe4c6;
-      unsigned int c1 = i / 96;
-      unsigned int c2 = i % 96;
-      r[0] = c1 + 0xa1;
-      r[1] = c2 + (c2 < 0x3f ? 0x40 : 0x41);
-      return 2;
+    /* Try GBK first. */
+    {
+        int ret = ces_gbk_wctomb(conv, r, wc, n);
+        if (ret != RET_ILUNI)
+            return ret;
     }
-  } else if (wc == 0x20ac) {
-    r[0] = 0x80;
-    return 1;
-  }
-  return RET_ILUNI;
+    /* Then handle the additional mappings. */
+    if (wc >= 0xe000 && wc < 0xe586) {
+        /* User-defined characters */
+        if (n < 2)
+            return RET_TOOFEW(0);
+        if (wc < 0xe4c6) {
+            unsigned int i = wc - 0xe000;
+            unsigned int c1 = i / 94;
+            unsigned int c2 = i % 94;
+            r[0] = c1 + (c1 < 6 ? 0xaa : 0xf2);
+            r[1] = c2 + 0xa1;
+            return 2;
+        } else {
+            unsigned int i = wc - 0xe4c6;
+            unsigned int c1 = i / 96;
+            unsigned int c2 = i % 96;
+            r[0] = c1 + 0xa1;
+            r[1] = c2 + (c2 < 0x3f ? 0x40 : 0x41);
+            return 2;
+        }
+    } else if (wc == 0x20ac) {
+        r[0] = 0x80;
+        return 1;
+    }
+    return RET_ILUNI;
 }
