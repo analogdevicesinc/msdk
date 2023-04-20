@@ -38,5 +38,8 @@ else
     export OPENOCD=/home/eddie/workspace/openocd/src/openocd
 fi
 dut_serial=$(/usr/bin/python3 -c "import sys, json; print(json.load(open('$FILE'))['$2']['daplink'])")
-erase_with_openocd $1 $dut_serial
 
+#  flash device with an application to mass erase external flash
+
+# mass erase internal flash
+erase_with_openocd $1 $dut_serial
