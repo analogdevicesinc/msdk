@@ -595,6 +595,17 @@ initial_setup $1 $2 $3
 CURRENT_TEST=$4
 change_advertising_names
 
+# Temporary fix until RF Closed is merged into RF Phy
+# Build a specific RF-PHY-closed branch
+cd $MSDK_DIR/Libraries
+git clone git@github.com:Analog-Devices-MSDK/RF-PHY-closed.git
+cd $MSDK_DIR/Libraries/RF-PHY-closed
+git checkout ME17B1-new
+cd MAX32655/build/gcc
+make clean
+make -j
+
+
 if [ $CURRENT_TEST == "all" ]; then
     echo
     echo "Running all tests"
