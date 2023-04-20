@@ -16,6 +16,8 @@ int g_dummy_len = 0;
 uint8_t g_dummy_byte = 0xFF;
 bool g_use_dma = false;
 
+bool g_dma_initialized = false;
+
 uint8_t *g_rx_buffer;
 uint8_t *g_tx_buffer;
 uint32_t g_rx_len;
@@ -110,6 +112,8 @@ void SPI_IRQHandler()
 
 int dma_init()
 {
+    if (g_dma_initialized) return E_NO_ERROR;
+
     int err = MXC_DMA_Init();
     // If we get a bad state error here it means DMA has already been
     // initialized.  The drivers do a good job of handling this case,
@@ -142,6 +146,8 @@ int dma_init()
     MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_rx_channel), DMA_RX_IRQHandler);
     NVIC_EnableIRQ(GetIRQnForDMAChannel(g_rx_channel));
     NVIC_SetPriority(GetIRQnForDMAChannel(g_tx_channel), 0);
+
+    g_dma_initialized = true;
 
     return E_NO_ERROR;
 }

@@ -8,7 +8,7 @@ mxc_csi2_req_t req;
 mxc_csi2_ctrl_cfg_t ctrl_cfg;
 mxc_csi2_vfifo_cfg_t vfifo_cfg;
 
-void CSI2_line_handler(uint8_t* data, unsigned int len)
+void CSI2_line_handler(uint8_t *data, unsigned int len)
 {
     ram_write_quad(g_index, data, len);
     g_index += len;
@@ -21,15 +21,18 @@ void process_img(void)
     uint32_t w, h;
 
     printf("Capturing image...\n");
+    spi_init();
+    ram_enter_quadmode();
 
     g_index = 0;
     MXC_TMR_SW_Start(MXC_TMR0);
     int error = MXC_CSI2_CaptureFrameDMA();
     unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    if(error) {
+    if (error) {
         printf("Failed!\n");
         mxc_csi2_capture_stats_t stats = MXC_CSI2_GetCaptureStats();
-        printf("CTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n", stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
+        printf("CTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n",
+               stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
         return;
     }
     printf("Done! (took %i us)\n", elapsed);
@@ -37,21 +40,38 @@ void process_img(void)
     // Get the details of the image from the camera driver.
     MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
 
-    // MXC_TMR_SW_Start(MXC_TMR0);
-    // clear_serial_buffer();
-    // snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-    //          "*IMG* %s %i %i %i", // Format img info into a string
-    //          mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
-    // send_msg(g_serial_buffer);
+#ifdef CONSOLE
+    MXC_TMR_SW_Start(MXC_TMR0);
+    clear_serial_buffer();
+    snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
+             "*IMG* %s %i %i %i", // Format img info into a string
+             mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
+    send_msg(g_serial_buffer);
 
-    // for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
-    //     // cnn_addr = read_bytes_from_cnn_sram((uint8_t *)g_serial_buffer, transfer_len, cnn_addr);
-    //     ram_read_quad(i, (uint8_t*)g_serial_buffer, SERIAL_BUFFER_SIZE);
-    //     MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
-    // }
+    for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
+        // cnn_addr = read_bytes_from_cnn_sram((uint8_t *)g_serial_buffer, transfer_len, cnn_addr);
+        ram_read_quad(i, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
+        MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
+    }
 
-    // elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    // printf("Done! (serial transmission took %i us)\n", elapsed);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (serial transmission took %i us)\n", elapsed);
+#endif
+
+    printf("Writing to TFT Display...\n");
+    MXC_TMR_SW_Start(MXC_TMR0);
+    uint8_t tft_buffer[IMAGE_WIDTH * 2];
+    unsigned int address = 0;
+    for (int y = 0; y < 240; y++) {
+        spi_init();
+        ram_enter_quadmode();
+        ram_read_quad(address, tft_buffer, IMAGE_WIDTH * 2);
+        TFT_SPI_Init();
+        MXC_TFT_WriteBufferRGB565(0, y, tft_buffer, IMAGE_WIDTH, 1);
+        address += IMAGE_WIDTH * 2;
+    }
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Done! (took %i us)\n", elapsed);
 }
 
 #ifdef CONSOLE
@@ -89,7 +109,8 @@ void service_console(cmd_t cmd)
 }
 #endif
 
-bool camera_init() {
+bool camera_init()
+{
     mipi_camera_init();
     // Confirm correct camera is connected
     mipi_camera_get_product_id(&id);
@@ -162,5 +183,6 @@ bool camera_init() {
         printf("Failed to read expected SRAM ID!\n");
         return error;
     }
-    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID, ram_id.KGD, ram_id.density, ram_id.EID);
+    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID,
+           ram_id.KGD, ram_id.density, ram_id.EID);
 }
