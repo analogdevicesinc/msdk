@@ -45,7 +45,13 @@ import argparse
 from argparse import RawTextHelpFormatter
 from time import sleep
 import itertools
+
+
+## mc_rcdat_6000 can be found in msdk-test-and measurenent
+## mini_rcdat_usb.py can be used to sub this
 from mc_rcdat_6000 import McRcdat9000
+
+
 
 from BLE_hci import BLE_hci
 from BLE_hci import Namespace
