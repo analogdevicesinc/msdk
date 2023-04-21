@@ -52,6 +52,8 @@ jobs:
 
           # Attempt to clean the repo
           git scorch
+          git clean -ffdx
+          git reset --hard
           retval=$?
 
           # Remove everything if this fails
@@ -933,6 +935,8 @@ jobs:
       - name: Clean up
         if: ${{ always() && steps.lock_boards.outcome == 'success'}}
         run: |
+          git clean -ffdx
+          git reset --hard
           # leave board in known state if workflow should end early
           cd .github/workflows/scripts
           echo "Erasing Main MAX32655 B1"
