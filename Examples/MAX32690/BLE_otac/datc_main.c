@@ -575,7 +575,7 @@ static void datcRestoreResolvingList(dmEvt_t *pMsg)
     datcCb.resListRestoreHdl = AppAddNextDevToResList(APP_DB_HDL_NONE);
 
     if (datcCb.resListRestoreHdl == APP_DB_HDL_NONE) {
-        /* No device to restore. Setup application. */
+        /* No device to restore.  Setup application. */
         datcSetup(pMsg);
     } else {
         datcCb.restoringResList = TRUE;

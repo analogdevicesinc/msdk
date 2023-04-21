@@ -629,11 +629,12 @@ elif [ $CURRENT_TEST == "dats" ]; then
 elif [ $CURRENT_TEST == "ota" ]; then
     echo
     echo "Running OTA test"
-    erase_all_devices
-    run_ota_test 1 # arg 1 = internal flash
-    if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-        run_ota_test 0 # arg 0= external flash
-    fi
+    # temp diasble datc/s and otas tests until new RF PHY is debugged with ME17B
+    # erase_all_devices
+    # run_ota_test 1 # arg 1 = internal flash
+    # if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
+    # run_ota_test 0 # arg 0= external flash
+    #fi
     echo
 else
     echo
