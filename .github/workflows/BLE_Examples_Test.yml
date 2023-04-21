@@ -928,9 +928,9 @@ jobs:
           exit $numOfFailedTests
       #----------------------------------------------------------------------------------------------
       #----------------------------------------------------------------------------------------------
-      #------------------------------| Unlock all required boards at once |-----------------------------
+      #------------------------------| Erase & Unlock all required boards at once |-----------------------------
       #----------------------------------------------------------------------------------------------
-      - name: Unlock Boards
+      - name: Clean up
         if: ${{ always() && steps.lock_boards.outcome == 'success'}}
         run: |
           # leave board in known state if workflow should end early
@@ -943,6 +943,11 @@ jobs:
           ./mass_erase_board.sh max32665 max32665_board1
           echo "Erasing Main MAX32690"
           ./mass_erase_board.sh max32690 max32690_board_w1
+
+
+      - name: Unlock Boards
+        if: ${{ always() && steps.lock_boards.outcome == 'success'}}
+        run: |
           python3 /home/$USER/Workspace/Resource_Share/Resource_Share_multiboard.py -b max32655_board1 -b max32655_board2 -b max32665_board1 -b max32690_board_w1
       #----------------------------------------------------------------------------------------------
       # Save test reports
