@@ -538,11 +538,7 @@ void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int he
     write_command(0x2C); // send pixel
 
     for (y = 0; y < width * height; y += width) { //height
-        for (x = 0; x < width; x++) { //width
-            //Byteswap, 16 bit transfer */            
-            write_data(*(image + ((x + y) * 2)));
-            write_data(*(image + ((x + y) * 2) + 1));
-        }
+        TFT_SPI_Transmit(&image[y * 2], width * 2);
     }
 
     window_max();

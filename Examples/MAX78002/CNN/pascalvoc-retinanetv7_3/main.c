@@ -46,6 +46,10 @@
 #include "sampledata.h"
 #include "camera.h"
 #include "tft_st7789v.h"
+#include "fastspi.h"
+#include "labels.h"
+
+int font = (int)&SansSerif16x16[0];
 
 volatile uint32_t cnn_time; // Stopwatch
 
@@ -70,9 +74,6 @@ void load_input(void)
     uint32_t w = 0;
     uint32_t h = 0;
     MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
-    printf("Image length: %i bytes\tImage width: %i pixels\tImage height: %i pixels\n", imgLen, w,
-           h);
-    int count = 0;
     uint32_t word = 0;
     uint8_t r5 = 0;
     uint8_t r = 0;
@@ -80,8 +81,6 @@ void load_input(void)
     uint8_t g = 0;
     uint8_t b5 = 0;
     uint8_t b = 0;
-
-    int y = 0;
 
     printf("Loading CNN...\n");
     spi_init();
@@ -155,14 +154,6 @@ uint8_t nms_removed[NUM_CLASSES - 1][MAX_PRIORS] = { 0 };
 int num_nms_priors[NUM_CLASSES - 1] = { 0 };
 
 void reset_arrays(void) {
-#if 0
-    memset(prior_locs, 0, LOC_DIM * NUM_PRIORS);
-    memset(prior_cls_softmax, 0, NUM_CLASSES * NUM_PRIORS);
-    memset(nms_scores, 0, (NUM_CLASSES - 1) * MAX_PRIORS);
-    memset(nms_indices, 0, (NUM_CLASSES - 1) * MAX_PRIORS);
-    memset(nms_removed, 0, (NUM_CLASSES - 1) * MAX_PRIORS);
-    memset(num_nms_priors, 0, NUM_CLASSES - 1);
-#else
     for (int i = 0; i < LOC_DIM * NUM_PRIORS; i++) {
         prior_locs[i] = 0;
     }
@@ -177,8 +168,6 @@ void reset_arrays(void) {
             nms_removed[x][y] = 0;
         }
     }
-
-#endif
 }
 
 uint32_t utils_get_time_ms(void)
@@ -257,37 +246,19 @@ int8_t check_for_validity(int32_t *cl_addr)
     return validity;
 }
 
-//void calc_softmax(int8_t* prior_cls_vals, int prior_idx){
 void calc_softmax(int32_t *prior_cls_vals, int prior_idx)
 {
     int ch;
-    //double min_val, max_val;
     double sum = 0.;
     double fp_scale = 16384.; //16384.;//4. * 65536.;//16777216.;//
 
     for (ch = 0; ch < NUM_CLASSES; ++ch) {
-        // if (ch == 0){
-        //   min_val = prior_cls_vals[ch] / fp_scale;
-        //   max_val = prior_cls_vals[ch] / fp_scale;
-        // } else {
-        //   if (prior_cls_vals[ch] / fp_scale < min_val)
-        //     min_val = prior_cls_vals[ch] / fp_scale;
-        //   else if (prior_cls_vals[ch] / fp_scale > max_val)
-        //     max_val = prior_cls_vals[ch] / fp_scale;
-        // }
         sum += exp(prior_cls_vals[ch] / fp_scale);
     }
 
     for (ch = 0; ch < (NUM_CLASSES); ++ch) {
-        //prior_cls_softmax[prior_idx*NUM_CLASSES+ch] = (uint16_t)(65536. * exp(prior_cls_vals[ch] / 128.) / sum);
-        //printf("Prior Idx: %d, Exp Result: %.3f, Sum: %.3f\n", prior_idx,(256. * exp(prior_cls_vals[ch] / fp_scale) / sum), sum);
         prior_cls_softmax[prior_idx * NUM_CLASSES + ch] =
             (uint8_t)(256. * exp(prior_cls_vals[ch] / fp_scale) / sum);
-        /*
-	if(prior_idx == 3000 || prior_idx == 4345 || prior_idx == 6000 || prior_idx == 6144 || prior_idx == 7000 || prior_idx == 7700 || prior_idx == 8090){
-        printf("Prior Idx: %d, prior_cls_softmax[%d]: %.d\n", prior_idx, prior_idx*NUM_CLASSES+ch, prior_cls_softmax[prior_idx*NUM_CLASSES+ch]);
-    }
-  */
     }
 }
 
@@ -342,8 +313,6 @@ void get_prior_cls(void)
         pixel_addr = cl_addr_list[scale_idx];
         prior_count = dims_x[scale_idx] * dims_y[scale_idx];
 
-        // printf("Prior Count fo scale %d: %d\n", scale_idx, prior_count);
-
         for (rel_idx = 0; rel_idx < prior_count; ++rel_idx) {
             cl_addr = pixel_addr;
 
@@ -353,29 +322,8 @@ void get_prior_cls(void)
                     for (cl_idx = 0; cl_idx < NUM_CLASSES; cl_idx += 1) {
                         memcpy(&temp_prior_cls[cl_idx], cl_addr, 4);
 
-                        // if ((prior_idx == 3716) || (prior_idx == 3758) || (prior_idx == 1184) ||
-                        //     (prior_idx == 3187) || (prior_idx == 3921) || (prior_idx == 4403) ||
-                        //     (prior_idx == 6459) || (prior_idx == 6782)) {
-                        //     printf(
-                        //         "\tScale Idx: %d, Rel Idx: %d, AR Idx: %d, OS Idx: %d, cl_idx: %d -> Prior Index: %d\n",
-                        //         scale_idx, rel_idx, ar_idx, os_idx, cl_idx, prior_idx);
-                        //     printf("\t\tData Mem Addr: 0x%x, read values: %d,\n", cl_addr,
-                        //            temp_prior_cls[cl_idx]);
-                        // }
-
-                        // if ((rel_idx == 555)){
-                        //    printf("\tScale Idx: %d, Rel Idx: %d, AR Idx: %d, OS Idx: %d, cl_idx: %d -> Prior Index: %d\n", scale_idx, rel_idx, ar_idx, os_idx, cl_idx, prior_idx);
-                        //    printf("\t\tData Mem Addr: 0x%x, Addr Value: %d, read value: %d,\n", cl_addr, *cl_addr, temp_prior_cls[cl_idx]);
-                        // }
-
                         next_ch = ar_idx * NUM_OBJ_SCALES * NUM_CLASSES + os_idx * NUM_CLASSES +
                                   cl_idx + 1;
-                        /*
-            if(prior_idx < 10 || prior_idx == 1279){
-              printf("Prior Idx: %d -> SCALE_idx: %d, REL_idx: %d, AR_idx: %d, OS_idx: %d, CL_idx: %d, next_ch: %d, CL_ADDR: %08X \n", prior_idx, scale_idx, rel_idx, ar_idx, os_idx, cl_idx, next_ch, cl_addr);
-              printf("Prior Idx: %d -> Class Address: %08X, Read Class Value: %d \n\n", prior_idx, cl_addr, temp_prior_cls[cl_idx]);
-            }
-            */
                         cl_addr++;
 
                         if (next_ch == num_processors) {
@@ -384,12 +332,6 @@ void get_prior_cls(void)
                             cl_addr = (int32_t *)get_next_ch_block((int8_t *)cl_addr, 1);
                             cl_addr -= 4;
                         }
-                        /*
-            if(prior_idx == 0 || prior_idx == 3000 || prior_idx == 6000 || prior_idx == 6144 || prior_idx == 7000 || prior_idx == 7700 || prior_idx == 8090){
-            printf("Prior Idx: %d -> SCALE_idx: %d, REL_idx: %d, AR_idx: %d, OS_idx: %d, CL_idx: %d, NEXT_CL_ADDR: %08X \n\n\n", prior_idx, scale_idx, rel_idx, ar_idx, os_idx, cl_idx, cl_addr);
-            }
-		
-*/
                     }
 
                     if (check_for_validity(temp_prior_cls)) {
@@ -402,7 +344,6 @@ void get_prior_cls(void)
             pixel_addr += 8; // 4 ch 2 pass!
         }
     }
-    printf("Number of valid priors: %d\n", num_valid_pixels);
 }
 
 void get_prior_locs(void)
@@ -412,40 +353,14 @@ void get_prior_locs(void)
     int ar_idx, scale_idx, rel_idx, prior_idx, prior_count, os_idx;
 
     for (ar_idx = 0; ar_idx < NUM_ARS; ++ar_idx) {
-        //printf("Prior Loc Addr: %x, Length: %d\n", loc_addr, NUM_PRIORS_PER_AR);
         for (os_idx = 0; os_idx < NUM_OBJ_SCALES; ++os_idx) {
             int8_t *loc_addr_temp = loc_addr;
 
             for (scale_idx = 0; scale_idx < NUM_SCALES; ++scale_idx) {
-                //prior_count = SQUARE(dims[scale_idx]);
                 prior_count = dims_x[scale_idx] * dims_y[scale_idx];
                 for (rel_idx = 0; rel_idx < prior_count; ++rel_idx) {
                     prior_idx = get_prior_idx(os_idx, ar_idx, scale_idx, rel_idx);
-
-                    //printf("\tAspect Ratio: %d, Scale: %d, Idx: %d -> Prior Index: %d, Prior Count:%d\n", ar_idx, scale_idx, rel_idx, prior_idx, 1);
                     memcpy(&prior_locs[LOC_DIM * prior_idx], loc_addr_temp, LOC_DIM);
-
-                    // if (rel_idx == 0){
-                    // //   printf("LOC\n");
-                    //   printf("\tAspect Ratio: %d, Object Scale: %d, Scale: %d, Idx: %d -> Prior Index: %d\n", ar_idx, os_idx, scale_idx, rel_idx, prior_idx);
-                    //   printf("\t\tData Mem Addr: 0x%x, read values: %d, %d, %d, %d,\n", loc_addr_temp, prior_locs[LOC_DIM*prior_idx],
-                    //   prior_locs[LOC_DIM*prior_idx + 1], prior_locs[LOC_DIM*prior_idx + 2], prior_locs[LOC_DIM*prior_idx + 3]);
-                    // }
-
-                    // if ((prior_idx == 3716) || (prior_idx == 3758) || (prior_idx == 1184) ||
-                    //     (prior_idx == 3187) || (prior_idx == 3921) || (prior_idx == 4403) ||
-                    //     (prior_idx == 6459) || (prior_idx == 6782)) {
-                    //     printf(
-                    //         "\tScale Idx: %d, Rel Idx: %d, AR Idx: %d, OS Idx: %d -> Prior Index: %d\n",
-                    //         scale_idx, rel_idx, ar_idx, os_idx, prior_idx);
-                    //     printf("\t\tData Mem Addr: 0x%x, read values: %d, %d, %d, %d\n",
-                    //            loc_addr_temp, prior_locs[LOC_DIM * prior_idx],
-                    //            prior_locs[LOC_DIM * prior_idx + 1],
-                    //            prior_locs[LOC_DIM * prior_idx + 2],
-                    //            prior_locs[LOC_DIM * prior_idx + 3]);
-                    // }
-
-                    //prior_locs[LOC_DIM*prior_idx] /= 128
                     loc_addr_temp += LOC_DIM;
                 }
             }
@@ -458,8 +373,6 @@ void get_prior_locs(void)
 void get_priors(void)
 {
     uint32_t *address = (uint32_t *)0x51800000;
-    //printf("** \nChannel 0: %d, Channel 1: %d \n ** \n", *address, *(address + 1));
-
     get_prior_locs();
     get_prior_cls();
 }
@@ -491,12 +404,8 @@ void get_cxcy(float *cxcy, int prior_idx)
 
     get_indices(&os_idx, &ar_idx, &scale_idx, &rel_idx, prior_idx);
 
-    //cy = rel_idx / dims[scale_idx];
-    //cx = rel_idx % dims[scale_idx];
-    cy = rel_idx / dims_y[scale_idx];
+    cy = rel_idx / dims_x[scale_idx];
     cx = rel_idx % dims_x[scale_idx];
-    // cxcy[0] = (float)((float)(cx+0.5)/dims[scale_idx]);
-    // cxcy[1] = (float)((float)(cy+0.5)/dims[scale_idx]);
     cxcy[0] = (float)((float)(cx + 0.5) / dims_x[scale_idx]);
     cxcy[1] = (float)((float)(cy + 0.5) / dims_y[scale_idx]);
     cxcy[2] = obj_scales[os_idx] * scales[scale_idx] * sqrt(ars[ar_idx]);
@@ -527,15 +436,6 @@ void cxcy_to_xy(float *xy, float *cxcy)
     xy[1] = cxcy[1] - cxcy[3] / 2;
     xy[2] = cxcy[0] + cxcy[2] / 2;
     xy[3] = cxcy[1] + cxcy[3] / 2;
-
-    //int i;
-    // for(i=0; i<4; ++i){
-    //   if (xy[i] < 0.0){
-    //     xy[i] = 0.0;
-    //   } else if(xy[i] > 1.0){
-    //     xy[i] = 1.0;
-    //   }
-    // }
 }
 
 void insert_val(uint16_t val, uint16_t *arr, int arr_len, int idx)
@@ -578,7 +478,6 @@ void insert_nms_prior(uint16_t val, int idx, uint16_t *val_arr, int *idx_arr, in
     }
 
     *arr_len = MIN((*arr_len + 1), MAX_PRIORS);
-    //return MIN(arr_len + 1, MAX_PRIORS);
 }
 
 void nms(void)
@@ -601,7 +500,6 @@ void nms(void)
                 continue;
             }
 
-            //num_nms_priors[class_idx] = insert_nms_prior(cls_prob, prior_idx, nms_scores[class_idx], nms_indices[class_idx], num_nms_priors[class_idx]);
             insert_nms_prior(cls_prob, prior_idx, nms_scores[class_idx], nms_indices[class_idx],
                              &num_nms_priors[class_idx]);
         }
@@ -628,13 +526,19 @@ void nms(void)
                     float iou = calculate_IOU(xy1, xy2);
 
                     if (iou > MAX_ALLOWED_OVERLAP) {
-                        //printf("NMS REMOVED: %d, %d, %.2f\n", class_idx, nms_idx2, iou);
                         nms_removed[class_idx][nms_idx2] = 1;
                     }
                 }
             }
         }
     }
+}
+
+void TFT_Print(char *str, int x, int y, int font, int length)
+{
+    text_t text = { .data = str, .len = length };
+
+    MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
 
 void draw_obj_rect(float* xy, int class_idx) {
@@ -668,14 +572,20 @@ void draw_obj_rect(float* xy, int class_idx) {
         default: color = RED; break;
     }
 
-    printf("Box: (%u, %u),(%u, %u)\n", x1, y1, x2, y2);
-
     TFT_SPI_Init();
 
-    MXC_TFT_Line(x1, y1, x2, y1, color); // Top left -> Top right
-    MXC_TFT_Line(x2, y1, x2, y2, color); // Top right - > Bottom right
-    MXC_TFT_Line(x2, y2, x1, y2, color); // Bottom right -> Bottom left
-    MXC_TFT_Line(x1, y2, x1, y1, color); // Bottom left -> Top left
+    int scale = 2;
+    for (int x = x1; x < x2; x++) {
+        MXC_TFT_WritePixel(x, y1, scale, scale, color);
+        MXC_TFT_WritePixel(x, y2, scale, scale, color);
+    }
+
+    for (int y = y1; y < y2; ++y) {
+        MXC_TFT_WritePixel(x1, y, scale, scale, color);
+        MXC_TFT_WritePixel(x2, y, scale, scale, color);
+    }
+
+    TFT_Print(voc_labels[class_idx], x1, y1 + 4, font, strlen(voc_labels[class_idx]));
 }
 
 void localize_objects(void)
@@ -685,32 +595,19 @@ void localize_objects(void)
     float xy[4];
     int class_idx, prior_idx, global_prior_idx;
 
-    //printf("\n BEFORE NMS \n");
     nms();
-    //printf("\n AFTER NMS \n");
 
     for (class_idx = 0; class_idx < (NUM_CLASSES - 1); ++class_idx) {
         for (prior_idx = 0; prior_idx < num_nms_priors[class_idx]; ++prior_idx) {
             if (nms_removed[class_idx][prior_idx] != 1) {
-                //printf("class_idx: %d HEREEEEEEEEE \n", class_idx);
-
                 global_prior_idx = nms_indices[class_idx][prior_idx];
                 get_cxcy(prior_cxcy, global_prior_idx);
                 gcxgcy_to_cxcy(cxcy, global_prior_idx, prior_cxcy);
                 cxcy_to_xy(xy, cxcy);
-
-                printf(
-                    "class: %d, prior_idx: %d, prior: %d, class_prob: %d, x1: %.2f, y1: %.2f, x2: %.2f, y2: %.2f \n",
-                    class_idx + 1, prior_idx, global_prior_idx,
-                    prior_cls_softmax[NUM_CLASSES * global_prior_idx + class_idx + 1], xy[0], xy[1],
-                    xy[2], xy[3]);
-
-                draw_obj_rect(xy, class_idx);
+                draw_obj_rect(xy, class_idx + 1);
             }
         }
     }
-
-    //printf("\n LOCALIZATION DONE \n");
 }
 
 int main(void)
@@ -733,6 +630,7 @@ int main(void)
 
     camera_init();
     MXC_TFT_SetRotation(ROTATE_270);
+    MXC_TFT_SetFont((int)&SansSerif16x16[0]);
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: PLL (200 MHz) div 4
@@ -746,8 +644,6 @@ int main(void)
 
     while (1) {
         // MXC_Delay(MXC_DELAY_SEC(2));
-        printf("Running inference...\n");
-        
         cnn_configure(); // Configure state machine
         // CNN clock: PLL (200 MHz) div 1
         MXC_GCR->pclkdiv =
@@ -756,11 +652,21 @@ int main(void)
         cnn_start(); // Start CNN processing
         load_input(); // Load data input via FIFO
 
-        MXC_TMR_SW_Start(MXC_TMR1);
-        while (cnn_time == 0); 
+        // Write to TFT
+        printf("Displaying image on TFT...\n");
+        uint8_t tft_buffer[IMAGE_WIDTH * 2];
+        unsigned int address = 0;
+        for (int y = 0; y < 240; y++) {
+            spi_init();
+            ram_enter_quadmode();
+            ram_read_quad(address, tft_buffer, IMAGE_WIDTH * 2);
+            TFT_SPI_Init();
+            MXC_TFT_WriteBufferRGB565(0, y, tft_buffer, IMAGE_WIDTH, 1);
+            address += IMAGE_WIDTH * 2;
+        }
+
+        while (cnn_time == 0);
             //MXC_LP_EnterSleepMode(); // Wait for CNN
-        int elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
-        printf("Inference complete! (took %i us)\n", elapsed);
 
         // Switch CNN clock to PLL (200 MHz) div 4
 
@@ -775,10 +681,12 @@ int main(void)
 #endif
 
         printf("Starting NMS... \n");
-
+        MXC_TMR_SW_Start(MXC_TMR0);
         reset_arrays();
         get_priors();
         localize_objects();
+        int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+        printf("Done!  (Took %i us)\n", elapsed);
     }
     cnn_disable(); // Shut down CNN clock, disable peripheral
 

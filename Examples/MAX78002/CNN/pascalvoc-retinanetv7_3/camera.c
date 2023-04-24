@@ -1,4 +1,6 @@
 #include "camera.h"
+#include "fastspi.h"
+#include "tft_st7789v.h"
 
 unsigned int g_index = 0;
 
@@ -57,21 +59,6 @@ void process_img(void)
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
 #endif
-
-    printf("Writing to TFT Display...\n");
-    MXC_TMR_SW_Start(MXC_TMR0);
-    uint8_t tft_buffer[IMAGE_WIDTH * 2];
-    unsigned int address = 0;
-    for (int y = 0; y < 240; y++) {
-        spi_init();
-        ram_enter_quadmode();
-        ram_read_quad(address, tft_buffer, IMAGE_WIDTH * 2);
-        TFT_SPI_Init();
-        MXC_TFT_WriteBufferRGB565(0, y, tft_buffer, IMAGE_WIDTH, 1);
-        address += IMAGE_WIDTH * 2;
-    }
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Done! (took %i us)\n", elapsed);
 }
 
 #ifdef CONSOLE
