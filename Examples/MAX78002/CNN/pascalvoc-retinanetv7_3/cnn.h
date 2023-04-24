@@ -6,7 +6,7 @@
 **************************************************************************************************/
 
 /*
- * This header file was automatically @generated for the pascalvoc-retinanetv7_3 network from a template.
+ * This header file was automatically @generated for the pascalvoc_fpndetector network from a template.
  * Please do not edit; instead, edit the template and regenerate.
  */
 
@@ -148,6 +148,9 @@ typedef int16_t q15_t;
 
 /* Number of outputs for this network */
 #define CNN_NUM_OUTPUTS 480
+
+/* Use this timer to time the inference */
+#define CNN_INFERENCE_TIMER MXC_TMR0
 
 /* Port pin actions used to signal that processing is active */
 

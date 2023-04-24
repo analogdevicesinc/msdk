@@ -27,9 +27,9 @@ void process_img(void)
     ram_enter_quadmode();
 
     g_index = 0;
-    MXC_TMR_SW_Start(MXC_TMR0);
+    MXC_TMR_SW_Start(MXC_TMR1);
     int error = MXC_CSI2_CaptureFrameDMA();
-    unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
     if (error) {
         printf("Failed!\n");
         mxc_csi2_capture_stats_t stats = MXC_CSI2_GetCaptureStats();
@@ -43,7 +43,7 @@ void process_img(void)
     MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
 
 #ifdef CONSOLE
-    MXC_TMR_SW_Start(MXC_TMR0);
+    MXC_TMR_SW_Start(MXC_TMR1);
     clear_serial_buffer();
     snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
              "*IMG* %s %i %i %i", // Format img info into a string
@@ -56,7 +56,7 @@ void process_img(void)
         MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
     }
 
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
     printf("Done! (serial transmission took %i us)\n", elapsed);
 #endif
 }

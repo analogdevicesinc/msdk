@@ -130,7 +130,7 @@ void load_input(void)
 #define NUM_PRIORS_PER_AR_PER_OS 1700 // CHANGE USING dims_x/y!
 #define NUM_PRIORS NUM_PRIORS_PER_AR_PER_OS *NUM_ARS *NUM_OBJ_SCALES
 
-#define MAX_PRIORS 100
+#define MAX_PRIORS 50
 //#define MIN_CLASS_SCORE 26215 // ~0.4*65536
 #define MIN_CLASS_SCORE 120 // ~0.4*256
 #define MAX_ALLOWED_OVERLAP 0.3 //170
@@ -604,7 +604,7 @@ void localize_objects(void)
                 get_cxcy(prior_cxcy, global_prior_idx);
                 gcxgcy_to_cxcy(cxcy, global_prior_idx, prior_cxcy);
                 cxcy_to_xy(xy, cxcy);
-                draw_obj_rect(xy, class_idx + 1);
+                // draw_obj_rect(xy, class_idx + 1);
             }
         }
     }
@@ -636,7 +636,7 @@ int main(void)
     // CNN clock: PLL (200 MHz) div 4
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4);
 
-    printf("\n*** CNN Inference Test pascalvoc-retinanetv7_3 ***\n");
+    printf("\n*** CNN Inference Test pascalvoc-fpndetector ***\n");
 
     cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
@@ -665,8 +665,8 @@ int main(void)
             address += IMAGE_WIDTH * 2;
         }
 
-        while (cnn_time == 0);
-            //MXC_LP_EnterSleepMode(); // Wait for CNN
+        while (cnn_time == 0)
+            MXC_LP_EnterSleepMode(); // Wait for CNN
 
         // Switch CNN clock to PLL (200 MHz) div 4
 
@@ -681,11 +681,11 @@ int main(void)
 #endif
 
         printf("Starting NMS... \n");
-        MXC_TMR_SW_Start(MXC_TMR0);
+        MXC_TMR_SW_Start(MXC_TMR1);
         reset_arrays();
         get_priors();
         localize_objects();
-        int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+        int elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
         printf("Done!  (Took %i us)\n", elapsed);
     }
     cnn_disable(); // Shut down CNN clock, disable peripheral
