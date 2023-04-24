@@ -26,10 +26,10 @@ numOfFailedTests=0
 function script_clean_up() {
     # check if some runoff opeocd instance is running
     set +e
-    if ps -p $openocd_dapLink_pid >/dev/null; then
-        kill -9 $openocd_dapLink_pid || true
-    fi
-
+    # if ps -p $openocd_dapLink_pid >/dev/null; then
+    #     kill -9 $openocd_dapLink_pid || true
+    # fi
+    echo "End of first test script"
     set -e
 }
 #used to kill any openocd instances should the script exit prematurely
