@@ -43,6 +43,7 @@
 #include "mxc_delay.h"
 #include "mxc_sys.h"
 #include "mxc_device.h"
+#include "nvic_table.h"
 
 #include "afe_gpio.h"
 #include "gpio.h"
@@ -127,6 +128,7 @@ mxc_pt_regs_t *pPT2 = MXC_PT2;
 
 // Prototypes
 void hart_cd_isr(void *cbdata);
+void hart_uart_irq_handler(void);
 
 // Private Functions
 static int hart_uart_init(mxc_uart_regs_t *uart, unsigned int baud, mxc_uart_clock_t clock)
@@ -764,6 +766,8 @@ int hart_uart_setup(uint32_t test_mode)
             return retval;
         }
 
+        // Overwrite default UART IRQ Vector with ours
+        MXC_NVIC_SetVector(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(HART_UART_INSTANCE)), hart_uart_irq_handler);
         NVIC_EnableIRQ(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(HART_UART_INSTANCE)));
     }
 
@@ -824,7 +828,8 @@ int hart_uart_send(uint8_t *data, uint32_t length)
     return retval;
 }
 
-void UART2_IRQHandler()
+
+void hart_uart_irq_handler(void)
 {
     unsigned int uart_flags = MXC_UART_GetFlags(HART_UART_INSTANCE);
     int retval = E_NO_ERROR;
