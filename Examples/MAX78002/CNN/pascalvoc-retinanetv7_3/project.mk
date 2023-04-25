@@ -16,6 +16,12 @@ CAMERA=OV5640
 VPATH += src/sram
 IPATH += src/sram
 
+VPATH += src/tft
+IPATH += src/tft
+
+VPATH += src/camera
+IPATH += src/camera
+
 ifeq ($(CONSOLE),1)
 PROJ_CFLAGS += -DCONSOLE
 VPATH += src/console

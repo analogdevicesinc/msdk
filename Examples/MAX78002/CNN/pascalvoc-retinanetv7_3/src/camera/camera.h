@@ -1,31 +1,15 @@
-#include <stdio.h>
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <string.h>
-#include "mxc.h"
-#include "mxc_device.h"
-#include "mxc_sys.h"
+#ifndef CAMERA_H
+#define CAMERA_H
+
 #include "mxc_delay.h"
 #include "mxc_errors.h"
 #include "csi2.h"
 #include "csi2_regs.h"
-#include "dma.h"
-#include "icc.h"
-#include "pb.h"
-#include "led.h"
-#include "board.h"
-#include "nvic_table.h"
 #include "mipi_camera.h"
-#include "gcr_regs.h"
-#include "mcr_regs.h"
 #ifdef CONSOLE
 #include "console.h"
 #endif
 #include "aps6404.h"
-
-#ifndef CAMERA_H
-#define CAMERA_H
 
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 256
@@ -128,7 +112,7 @@
 
 /***** Functions *****/
 
-void process_img(void);
+void camera_capture(void);
 
 #ifdef CONSOLE
 void service_console(cmd_t cmd);

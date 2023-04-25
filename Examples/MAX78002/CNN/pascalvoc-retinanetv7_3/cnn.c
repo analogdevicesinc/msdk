@@ -177,7 +177,6 @@ void CNN_ISR(void)
   CNN_COMPLETE; // Signal that processing is complete
 #ifdef CNN_INFERENCE_TIMER
   cnn_time = MXC_TMR_SW_Stop(CNN_INFERENCE_TIMER);
-  printf("cnn time: %i us\n", cnn_time);
 #else
   cnn_time = 1;
 #endif

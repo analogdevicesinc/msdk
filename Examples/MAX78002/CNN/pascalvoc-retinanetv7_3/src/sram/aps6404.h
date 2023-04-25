@@ -1,3 +1,6 @@
+#ifndef APS6404_H
+#define APS6404_H
+
 #include <stdint.h>
 
 #define MFID_EXPECTED 0x0D
@@ -30,3 +33,5 @@ int ram_write(uint32_t address, uint8_t * data, unsigned int len);
 int ram_write_quad(uint32_t address, uint8_t * data, unsigned int len);
 
 int benchmark_dma_overhead(unsigned int *out);
+
+#endif

@@ -1,6 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "led.h"
 #include "camera.h"
 #include "fastspi.h"
 #include "tft_st7789v.h"
+#include "tmr.h"
 
 unsigned int g_index = 0;
 
@@ -16,7 +20,7 @@ void CSI2_line_handler(uint8_t *data, unsigned int len)
     g_index += len;
 }
 
-void process_img(void)
+void camera_capture(void)
 {
     uint8_t *raw;
     uint32_t imgLen;
@@ -73,7 +77,7 @@ void service_console(cmd_t cmd)
         // Issue a soft reset
         MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
     } else if (cmd == CMD_CAPTURE) {
-        process_img();
+        camera_capture();
     } else if (cmd == CMD_SETREG) {
         // Set a camera register
         unsigned int reg;
@@ -153,23 +157,25 @@ bool camera_init()
 
     error = MXC_CSI2_Init(&req, &ctrl_cfg, &vfifo_cfg);
     if (error != E_NO_ERROR) {
-        printf("Error Initializating.\n\n");
-        while (1) {}
+        printf("Error Initializating CSI2.\n\n");
+        return false;
     }
 
     printf("Initializing SRAM...\n");
     error = ram_init();
     if (error) {
         printf("Failed to initialize SRAM with error %i\n", error);
-        return error;
+        return false;
     }
 
     ram_id_t ram_id;
     error = ram_read_id(&ram_id);
     if (error) {
         printf("Failed to read expected SRAM ID!\n");
-        return error;
+        return false;
     }
     printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID,
            ram_id.KGD, ram_id.density, ram_id.EID);
+    
+    return true;
 }
