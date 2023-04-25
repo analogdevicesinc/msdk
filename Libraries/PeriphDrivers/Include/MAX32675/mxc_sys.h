@@ -140,11 +140,9 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_I2S_POS + 32), /**< Disable MXC_F_GCR_PCLKDIS1_I2S clock */
     /* LPGCR PCLKDIS Below this line we add 64 to seperate GCR and LPGCR registers */
     MXC_SYS_PERIPH_CLOCK_TMR4 =
-        (MXC_F_MCR_CLKDIS_LPTMR0 + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_TMR4 clock */
-    MXC_SYS_PERIPH_CLOCK_TMR5 =
-        (MXC_F_MCR_CLKDIS_LPTMR1 + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_TMR5 clock */
+        (MXC_F_MCR_CLKDIS_LPTMR0_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_TMR4 clock */
     MXC_SYS_PERIPH_CLOCK_UART3 =
-        (MXC_F_MCR_CLKDIS_LPUART0 + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_UART3 clock */
+        (MXC_F_MCR_CLKDIS_LPUART0_POS + 64), /**< Disable MXC_F_LPGCR_PCLKDIS_UART3 clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
