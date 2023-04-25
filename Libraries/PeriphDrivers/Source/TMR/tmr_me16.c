@@ -163,7 +163,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
         break;
 
-    case 5:  //ME16 does not support Timer 5
+    case 5:
         return E_NOT_SUPPORTED;
         break;
     }
