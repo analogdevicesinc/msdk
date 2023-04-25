@@ -2,6 +2,7 @@
  * @file    smon_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SMON Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup smon_registers
  */
 
 /******************************************************************************
@@ -206,6 +207,9 @@ typedef struct {
 
 #define MXC_F_SMON_INTSCTRL_DFD_NMI_EN_POS             4 /**< INTSCTRL_DFD_NMI_EN Position */
 #define MXC_F_SMON_INTSCTRL_DFD_NMI_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_DFD_NMI_EN_POS)) /**< INTSCTRL_DFD_NMI_EN Mask */
+
+#define MXC_F_SMON_INTSCTRL_TAMPOUT_EN_POS             7 /**< INTSCTRL_TAMPOUT_EN Position */
+#define MXC_F_SMON_INTSCTRL_TAMPOUT_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_TAMPOUT_EN_POS)) /**< INTSCTRL_TAMPOUT_EN Mask */
 
 #define MXC_F_SMON_INTSCTRL_LOTEMP_SEL_POS             16 /**< INTSCTRL_LOTEMP_SEL Position */
 #define MXC_F_SMON_INTSCTRL_LOTEMP_SEL                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_LOTEMP_SEL_POS)) /**< INTSCTRL_LOTEMP_SEL Mask */

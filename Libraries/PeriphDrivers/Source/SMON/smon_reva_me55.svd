@@ -334,6 +334,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>TAMPOUT_EN</name>
+            <description>Tamper Output Enable.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>LOTEMP_SEL</name>
             <description>Low Temperature Detection Select.</description>
             <bitOffset>16</bitOffset>
