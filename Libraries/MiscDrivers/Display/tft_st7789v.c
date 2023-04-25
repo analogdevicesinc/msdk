@@ -527,8 +527,6 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int width, in
 /* This function writes an image data line by line, required by most UI libraries like LVGL */
 void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height)
 {
-    unsigned int x, y;
-
     if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180) {
         window(x0, y0, height, width);
     } else {
@@ -537,7 +535,7 @@ void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int he
 
     write_command(0x2C); // send pixel
 
-    for (y = 0; y < width * height; y += width) { //height
+    for (unsigned int y = 0; y < width * height; y += width) { //height
         TFT_SPI_Transmit(&image[y * 2], width * 2);
     }
 
