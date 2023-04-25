@@ -89,10 +89,9 @@ const mxc_gpio_cfg_t gpio_cfg_i2s0 = {
     MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE
 };
 
-const mxc_gpio_cfg_t gpio_cfg_spi0 = {
-    MXC_GPIO0, (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5),
-    MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE
-};
+const mxc_gpio_cfg_t gpio_cfg_spi0 = { MXC_GPIO0,
+                                       (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4),
+                                       MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE };
 
 //SPI chip selected defined separately below
 const mxc_gpio_cfg_t gpio_cfg_spi0_ss0 = { MXC_GPIO0, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_ALT1,
