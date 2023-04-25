@@ -37,7 +37,7 @@
           </field>
         </fields>
       </register>
-      <!-- FIFOSIZE: Size of FIFO -->
+      <!-- FIFOLVL: FIFO Depth Register.-->
       <register>
         <name>FIFODEP</name>
         <description>FIFO Depth.</description>
@@ -235,7 +235,7 @@
           </field>
         </fields>
       </register>
-      <!-- DS_TIMING_CODES: DS_TIMING_CODES Register -->
+      <!--DSCODES: DS_TIMING_CODES Register -->
       <register>
         <name>DSCODES</name>
         <description>DS Timing Code Register.</description>
@@ -256,7 +256,7 @@
           </field>
         </fields>
       </register>
-      <!-- FIFO_DATA: FIFO_DATA Register -->
+      <!-- FIFO: FIFO Register -->
       <register>
         <name>FIFO32</name>
         <description>FIFO DATA Register.</description>
