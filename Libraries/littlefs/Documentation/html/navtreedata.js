@@ -24,39 +24,35 @@
 */
 var NAVTREE =
 [
-  [ "MAX3267X LittleFS demo", "index.html", [
-    [ "Description", "md__r_e_a_d_m_e.html", [
-      [ "Required Connections", "md__r_e_a_d_m_e.html#autotoc_md1", null ],
-      [ "Expected Output", "md__r_e_a_d_m_e.html#autotoc_md2", null ]
+  [ "LittleFS", "index.html", [
+    [ "The design of littlefs", "md__d_e_s_i_g_n.html", [
+      [ "The problem", "md__d_e_s_i_g_n.html#autotoc_md1", null ],
+      [ "Existing designs?", "md__d_e_s_i_g_n.html#autotoc_md2", null ],
+      [ "littlefs", "md__d_e_s_i_g_n.html#autotoc_md3", null ],
+      [ "Metadata pairs", "md__d_e_s_i_g_n.html#autotoc_md4", null ],
+      [ "CTZ skip-lists", "md__d_e_s_i_g_n.html#autotoc_md6", null ],
+      [ "The block allocator", "md__d_e_s_i_g_n.html#autotoc_md9", null ],
+      [ "Wear leveling", "md__d_e_s_i_g_n.html#autotoc_md11", null ],
+      [ "Files", "md__d_e_s_i_g_n.html#autotoc_md16", null ],
+      [ "Directories", "md__d_e_s_i_g_n.html#autotoc_md17", null ],
+      [ "The move problem", "md__d_e_s_i_g_n.html#autotoc_md18", null ],
+      [ "Conclusion", "md__d_e_s_i_g_n.html#autotoc_md21", null ]
     ] ],
-    [ "The design of littlefs", "md_littlefs__d_e_s_i_g_n.html", [
-      [ "The problem", "md_littlefs__d_e_s_i_g_n.html#autotoc_md4", null ],
-      [ "Existing designs?", "md_littlefs__d_e_s_i_g_n.html#autotoc_md5", null ],
-      [ "littlefs", "md_littlefs__d_e_s_i_g_n.html#autotoc_md6", null ],
-      [ "Metadata pairs", "md_littlefs__d_e_s_i_g_n.html#autotoc_md7", null ],
-      [ "CTZ skip-lists", "md_littlefs__d_e_s_i_g_n.html#autotoc_md9", null ],
-      [ "The block allocator", "md_littlefs__d_e_s_i_g_n.html#autotoc_md12", null ],
-      [ "Wear leveling", "md_littlefs__d_e_s_i_g_n.html#autotoc_md14", null ],
-      [ "Files", "md_littlefs__d_e_s_i_g_n.html#autotoc_md19", null ],
-      [ "Directories", "md_littlefs__d_e_s_i_g_n.html#autotoc_md20", null ],
-      [ "The move problem", "md_littlefs__d_e_s_i_g_n.html#autotoc_md21", null ],
-      [ "Conclusion", "md_littlefs__d_e_s_i_g_n.html#autotoc_md24", null ]
+    [ "LICENSE", "md__l_i_c_e_n_s_e.html", null ],
+    [ "littlefs", "md__r_e_a_d_m_e.html", [
+      [ "Example", "md__r_e_a_d_m_e.html#autotoc_md23", null ],
+      [ "Usage", "md__r_e_a_d_m_e.html#autotoc_md24", null ],
+      [ "Other notes", "md__r_e_a_d_m_e.html#autotoc_md25", null ],
+      [ "Design", "md__r_e_a_d_m_e.html#autotoc_md26", null ],
+      [ "Testing", "md__r_e_a_d_m_e.html#autotoc_md27", null ],
+      [ "License", "md__r_e_a_d_m_e.html#autotoc_md28", null ],
+      [ "Related projects", "md__r_e_a_d_m_e.html#autotoc_md29", null ]
     ] ],
-    [ "LICENSE", "md_littlefs__l_i_c_e_n_s_e.html", null ],
-    [ "littlefs", "md_littlefs__r_e_a_d_m_e.html", [
-      [ "Example", "md_littlefs__r_e_a_d_m_e.html#autotoc_md26", null ],
-      [ "Usage", "md_littlefs__r_e_a_d_m_e.html#autotoc_md27", null ],
-      [ "Other notes", "md_littlefs__r_e_a_d_m_e.html#autotoc_md28", null ],
-      [ "Design", "md_littlefs__r_e_a_d_m_e.html#autotoc_md29", null ],
-      [ "Testing", "md_littlefs__r_e_a_d_m_e.html#autotoc_md30", null ],
-      [ "License", "md_littlefs__r_e_a_d_m_e.html#autotoc_md31", null ],
-      [ "Related projects", "md_littlefs__r_e_a_d_m_e.html#autotoc_md32", null ]
-    ] ],
-    [ "littlefs technical specification", "md_littlefs__s_p_e_c.html", [
-      [ "Some quick notes", "md_littlefs__s_p_e_c.html#autotoc_md34", null ],
-      [ "Directories / Metadata pairs", "md_littlefs__s_p_e_c.html#autotoc_md35", null ],
-      [ "Metadata tags", "md_littlefs__s_p_e_c.html#autotoc_md36", null ],
-      [ "Metadata types", "md_littlefs__s_p_e_c.html#autotoc_md37", null ]
+    [ "littlefs technical specification", "md__s_p_e_c.html", [
+      [ "Some quick notes", "md__s_p_e_c.html#autotoc_md31", null ],
+      [ "Directories / Metadata pairs", "md__s_p_e_c.html#autotoc_md32", null ],
+      [ "Metadata tags", "md__s_p_e_c.html#autotoc_md33", null ],
+      [ "Metadata types", "md__s_p_e_c.html#autotoc_md34", null ]
     ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
@@ -70,8 +66,7 @@ var NAVTREE =
       [ "File List", "files.html", "files_dup" ],
       [ "Globals", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
-        [ "Functions", "globals_func.html", "globals_func" ],
-        [ "Variables", "globals_vars.html", null ],
+        [ "Functions", "globals_func.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Enumerator", "globals_eval.html", null ],
@@ -84,8 +79,7 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"lfs_8h.html#a4f695f23e18d8e40704ae1ae5cb99324",
-"structlfs__gstate.html#ad25e72d0bb3a3be75d853dc5041b32b4"
+"lfs_8h.html#a7c78ea6e6b81c1b9b8b897573ab64c3aac4e6920fe252d94c113e5692427a63f7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
