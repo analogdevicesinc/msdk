@@ -767,7 +767,8 @@ int hart_uart_setup(uint32_t test_mode)
         }
 
         // Overwrite default UART IRQ Vector with ours
-        MXC_NVIC_SetVector(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(HART_UART_INSTANCE)), hart_uart_irq_handler);
+        MXC_NVIC_SetVector(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(HART_UART_INSTANCE)),
+                           hart_uart_irq_handler);
         NVIC_EnableIRQ(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(HART_UART_INSTANCE)));
     }
 
@@ -827,7 +828,6 @@ int hart_uart_send(uint8_t *data, uint32_t length)
 
     return retval;
 }
-
 
 void hart_uart_irq_handler(void)
 {
