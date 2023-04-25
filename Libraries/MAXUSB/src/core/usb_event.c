@@ -30,7 +30,7 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
+
 #include <string.h>
 #include "usb.h"
 #include "usb_event.h"

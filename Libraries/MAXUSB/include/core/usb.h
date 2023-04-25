@@ -30,9 +30,9 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
-#ifndef _USB_H_
-#define _USB_H_
+
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_USB_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_USB_H_
 
 #include "usb_hwopt.h"
 #include "usb_protocol.h"
@@ -40,7 +40,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
 /**
  * @file usb.h
  * @brief Defines the API used to abstract USB hardware away from upper layers.
@@ -108,14 +108,16 @@ typedef struct {
  * USB Request Type
  */
 typedef enum {
-  MAXUSB_TYPE_TRANS = 0,  /* The request will complete once the requested amount
-                           * of data has been received, or when a packet is
-                           * received containing less than max packet.
-                           */
-  MAXUSB_TYPE_PKT         /* The request will complete each time a packet is
-                           * received. The caller is responsible for zero-packet
-                           * handling
-                           */
+  MAXUSB_TYPE_TRANS = 0,
+  /* The request will complete once the requested amount
+   * of data has been received, or when a packet is
+   * received containing less than max packet.
+   */
+  MAXUSB_TYPE_PKT
+  /* The request will complete each time a packet is
+   * received. The caller is responsible for zero-packet
+   * handling
+   */
 } maxusb_req_type_t;
 
 /*
@@ -411,4 +413,4 @@ int MXC_USB_TestMode(unsigned int value);
 }
 #endif
 
-#endif /* _USB_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_USB_H_

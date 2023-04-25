@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _LOGGER_H_
-#define _LOGGER_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_DBG_LOG_DBG_LOG_H_
+#define LIBRARIES_MAXUSB_INCLUDE_DBG_LOG_DBG_LOG_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -84,4 +84,4 @@ void dbg_log_print(int num);
 }
 #endif
 
-#endif
+#endif //LIBRARIES_MAXUSB_INCLUDE_DBG_LOG_DBG_LOG_H_

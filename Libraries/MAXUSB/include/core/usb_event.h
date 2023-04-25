@@ -30,7 +30,7 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
+
 /*
  * Low-layer API calls
  *
@@ -40,8 +40,8 @@
  * 
  */
 
-#ifndef _USB_EVENT_H_
-#define _USB_EVENT_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_USB_EVENT_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_USB_EVENT_H_
 
 #include "usb.h"
 
@@ -95,4 +95,4 @@ void MXC_USB_EventHandler(void);
 }
 #endif
 
-#endif /* _USB_EVENT_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_USB_EVENT_H_

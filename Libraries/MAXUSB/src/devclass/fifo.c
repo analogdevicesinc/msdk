@@ -30,7 +30,7 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
+
 #include <stdint.h>
 #include "fifo.h"
 #include "usb_hwopt.h"
@@ -77,7 +77,7 @@ int fifo_put8(fifo_t * fifo, uint8_t element)
   }
 
   MAXUSB_EXIT_CRITICAL();
-    
+
   return 0;
 }
 
@@ -91,7 +91,7 @@ int fifo_get8(fifo_t * fifo, uint8_t * element)
   // atomic FIFO access
   MAXUSB_ENTER_CRITICAL();
 
-   // Get data from FIFO
+  //Get data from FIFO
   *element = ((uint8_t*)(fifo->data))[fifo->rindex];
 
   // Increment pointer
@@ -127,7 +127,7 @@ int fifo_put16(fifo_t * fifo, uint16_t element)
   }
 
   MAXUSB_EXIT_CRITICAL();
-    
+
   return 0;
 }
 
@@ -151,7 +151,7 @@ int fifo_get16(fifo_t * fifo, uint16_t * element)
   }
 
   MAXUSB_EXIT_CRITICAL();
-    
+
   return 0;
 }
 

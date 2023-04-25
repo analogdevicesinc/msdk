@@ -31,18 +31,18 @@
  *
  ******************************************************************************/
 
-#ifndef _USB_PROTOCOL_H_
-#define _USB_PROTOCOL_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_USB_PROTOCOL_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_USB_PROTOCOL_H_
 
 #include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
 /* SETUP message byte offsets */
 #define SETUP_bmRequestType   0
-#define	SETUP_bRequest        1
+#define SETUP_bRequest        1
 #define SETUP_wValueL         2
 #define SETUP_wValueH         3
 #define SETUP_wIndexL         4
@@ -212,4 +212,4 @@ typedef __packed struct {
 }
 #endif
 
-#endif
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_USB_PROTOCOL_H_

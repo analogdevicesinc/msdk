@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _USBIO_HWOPT_H_
-#define _USBIO_HWOPT_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USB_HWOPT_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USB_HWOPT_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,4 +53,4 @@ typedef void maxusb_cfg_options_t;
 }
 #endif
 
-#endif /* _USBIO_HWOPT_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USB_HWOPT_H_

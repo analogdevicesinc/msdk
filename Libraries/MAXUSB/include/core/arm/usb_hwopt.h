@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _USBIO_HWOPT_H_
-#define _USBIO_HWOPT_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_ARM_USB_HWOPT_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_ARM_USB_HWOPT_H_
 
 #include "mxc_device.h"
 #include "usb_regs.h"
@@ -75,4 +75,4 @@ static inline void MXC_USB_RemoteWakeup(void)
 }
 #endif
 
-#endif /* _USBIO_HWOPT_H_ */
+#endif // LIBRARIES_MAXUSB_INCLUDE_CORE_ARM_USB_HWOPT_H_

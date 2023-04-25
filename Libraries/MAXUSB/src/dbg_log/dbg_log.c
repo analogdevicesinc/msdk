@@ -38,39 +38,39 @@
 #include "dbg_log.h"
 
 char *dbg_evt_type_map[DBG_EVT_MAX_EVT] = { "START",
-					    "RESET",
-					    "SETUP",
-					    "READ",
-					    "WRITE",
-					    "USB_INT_START",
-					    "USB_INT_END",
-					    "IN",
-					    "IN_SPUR",
-					    "OUT",
-					    "OUT_SPUR",
-					    "OUT_DMA",
-					    "OUT_DMA_END",
-					    "DMA_INT_START",
-					    "DMA_INT_SPUR",
-					    "DMA_INT_IN",
-					    "DMA_INT_OUT",
-					    "DMA_INT_END",
-					    "REQ_LODGE",
-					    "REQ_LODGE_DMA",
-					    "REQ_REMOVE",
-					    "REQ_REMOVE_DMA",
-					    "CLR_OUTPKTRDY",
-					    "OUTCOUNT",
-					    "REQLEN",
-					    "ACTLEN",
-					    "SETUP_IDLE",
-					    "SETUP_NODATA",
-					    "SETUP_DATA_OUT",
-					    "SETUP_DATA_IN",
-					    "SETUP_END",
-					    "SENT_STALL",
-					    "ACKSTAT",
-					    "TRIGGER" };
+                        "RESET",
+                        "SETUP",
+                        "READ",
+                        "WRITE",
+                        "USB_INT_START",
+                        "USB_INT_END",
+                        "IN",
+                        "IN_SPUR",
+                        "OUT",
+                        "OUT_SPUR",
+                        "OUT_DMA",
+                        "OUT_DMA_END",
+                        "DMA_INT_START",
+                        "DMA_INT_SPUR",
+                        "DMA_INT_IN",
+                        "DMA_INT_OUT",
+                        "DMA_INT_END",
+                        "REQ_LODGE",
+                        "REQ_LODGE_DMA",
+                        "REQ_REMOVE",
+                        "REQ_REMOVE_DMA",
+                        "CLR_OUTPKTRDY",
+                        "OUTCOUNT",
+                        "REQLEN",
+                        "ACTLEN",
+                        "SETUP_IDLE",
+                        "SETUP_NODATA",
+                        "SETUP_DATA_OUT",
+                        "SETUP_DATA_IN",
+                        "SETUP_END",
+                        "SENT_STALL",
+                        "ACKSTAT",
+                        "TRIGGER" };
 
 
 
@@ -99,7 +99,6 @@ int dbg_log_init(void)
 
 int dbg_log_add(uint32_t t, dbg_evt_type_t e, uint32_t e_p, char *txt)
 {
-
   if (e >= DBG_EVT_MAX_EVT) {
     return -1;
   }
@@ -126,7 +125,7 @@ int dbg_log_add(uint32_t t, dbg_evt_type_t e, uint32_t e_p, char *txt)
       dbg_head = (dbg_tail+1) % LOGSIZE;
     }
   }
-    
+
   return 0;
 }
 
@@ -144,9 +143,9 @@ void dbg_log_print(int num)
       memcpy(y, dbg_log[x].text, 32);
       y[32] = 0;
       printf("Seq %04u (@ %04u) Event=%16s Data=0x%08x Text=[ %s ]\n",
-	     dbg_log[x].seqno, dbg_log[x].time,
-	     dbg_evt_type_map[dbg_log[x].evt],
-	     dbg_log[x].data_ptr, y);
+         dbg_log[x].seqno, dbg_log[x].time,
+         dbg_evt_type_map[dbg_log[x].evt],
+         dbg_log[x].data_ptr, y);
     }
   }
   printf("-----------------------------------------------\n");

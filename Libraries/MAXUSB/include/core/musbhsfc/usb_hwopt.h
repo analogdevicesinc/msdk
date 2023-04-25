@@ -30,9 +30,9 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
-#ifndef _USBIO_HWOPT_H_
-#define _USBIO_HWOPT_H_
+
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_MUSBHSFC_USB_HWOPT_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_MUSBHSFC_USB_HWOPT_H_
 
 #include "mxc_device.h"
 #include "usbhs_regs.h"
@@ -78,4 +78,4 @@ void MXC_USB_DmaIsr(void);
 }
 #endif
 
-#endif /* _USBIO_HWOPT_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_MUSBHSFC_USB_HWOPT_H_

@@ -30,9 +30,9 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
-#ifndef _ENUMERATE_H_
-#define _ENUMERATE_H_
+
+#ifndef LIBRARIES_MAXUSB_INCLUDE_ENUMERATE_ENUMERATE_H_
+#define LIBRARIES_MAXUSB_INCLUDE_ENUMERATE_ENUMERATE_H_
 
 /**
  * @file  enumerate.h
@@ -139,4 +139,4 @@ void enum_clearconfig(void);
 }
 #endif
 
-#endif
+#endif //LIBRARIES_MAXUSB_INCLUDE_ENUMERATE_ENUMERATE_H_
