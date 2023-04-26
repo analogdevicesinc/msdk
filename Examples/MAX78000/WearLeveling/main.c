@@ -49,7 +49,6 @@
 #include "main.h"
 #include "mxc_device.h"
 
-
 /***** Globals *****/
 uint32_t start_block = LFS_START_PAGE;
 
@@ -79,9 +78,9 @@ const struct lfs_config cfg = {
  */
 int main(void)
 {
-	lfs_t lfs; // File system instance
-	char cmd_buf[CMD_MAX_SIZE];
-	int cmd_len, err;
+    lfs_t lfs; // File system instance
+    char cmd_buf[CMD_MAX_SIZE];
+    int cmd_len, err;
 
     printf("\n\n********** Wear Leveling Example **********\n");
 
@@ -100,17 +99,17 @@ int main(void)
     if (!err) {
         printf("Filesystem is mounted! Ready for commands.\n");
     } else {
-    	printf("Unable to initialize file system!\n");
-    	return E_BAD_STATE;
+        printf("Unable to initialize file system!\n");
+        return E_BAD_STATE;
     }
 
     // Continue to receive and process commands until 'stop' command received
-    while(err != E_SHUTDOWN) {
-    	printf("\ncmd> ");
-    	fflush(stdout);
+    while (err != E_SHUTDOWN) {
+        printf("\ncmd> ");
+        fflush(stdout);
 
-    	cmd_len = cmd_get(cmd_buf, CMD_MAX_SIZE);
-    	err = cmd_process(&lfs, cmd_buf, cmd_len);
+        cmd_len = cmd_get(cmd_buf, CMD_MAX_SIZE);
+        err = cmd_process(&lfs, cmd_buf, cmd_len);
     }
 
     // release any resources we were using

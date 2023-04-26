@@ -135,7 +135,7 @@ int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 //******************************************************************************
 int check_erased(uint32_t startaddr, uint32_t length)
 {
-	// Scan through section of flash to see if it matches the erased value (0xFFFFFFFF)
+    // Scan through section of flash to see if it matches the erased value (0xFFFFFFFF)
     return check_mem(startaddr, length, 0xFFFFFFFF);
 }
 

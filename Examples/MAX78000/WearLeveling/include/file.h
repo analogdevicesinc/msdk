@@ -6,7 +6,7 @@
 #include "lfs.h"
 
 /***** Macros *****/
-#define MAX_FILE_READ_SIZE 	1024
+#define MAX_FILE_READ_SIZE 1024
 
 /*
  * @brief Write data to a file.
@@ -22,7 +22,8 @@
  *
  * @return The number of bytes written to flash if successful, otherwise an error code.
  */
-int file_write(lfs_t *filesys, lfs_file_t* file, const char *filename, char *write_buf, uint32_t len, uint32_t pos, bool create);
+int file_write(lfs_t *filesys, lfs_file_t *file, const char *filename, char *write_buf,
+               uint32_t len, uint32_t pos, bool create);
 
 /*
  * @brief Read data from a file.
@@ -36,6 +37,7 @@ int file_write(lfs_t *filesys, lfs_file_t* file, const char *filename, char *wri
  *
  * @return The number of bytes read if successful, otherwise an error code.
  */
-int file_read(lfs_t *filesys, lfs_file_t* file, const char *filename, char *read_buf, uint32_t len, uint32_t pos);
+int file_read(lfs_t *filesys, lfs_file_t *file, const char *filename, char *read_buf, uint32_t len,
+              uint32_t pos);
 
 #endif // FILE_H_
