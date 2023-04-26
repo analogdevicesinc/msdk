@@ -118,7 +118,7 @@ static const appSecCfg_t datsSecCfg = {
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
-    TRUE /*! TRUE to initiate security upon connection */
+    FALSE /*! TRUE to initiate security upon connection */
 };
 
 /* OOB UART parameters */
