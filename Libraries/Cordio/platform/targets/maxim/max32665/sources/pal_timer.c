@@ -197,6 +197,7 @@ void PalTimerInit(PalTimerCompCback_t expCback)
     PAL_TIMER_CHECK(expCback != NULL);
 
 #if defined(USE_SHARED_WUT)
+    APP_TRACE_INFO0("PalTimerInit: Use shared WUT");
     if (!PalSharedTimerIsInit()) {
         /* Init WUT */
         mxc_wut_cfg_t cfg;
