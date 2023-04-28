@@ -354,9 +354,10 @@ int MXC_RTC_RevA_GetTime(mxc_rtc_reva_regs_t *rtc, uint32_t *sec, uint32_t *subs
 int MXC_RTC_RevA_TrimCrystal(mxc_rtc_reva_regs_t *rtc, mxc_tmr_regs_t *tmr)
 {
     int err, ppm = 0;
-    uint32_t sec = 0, ssec = 0, ctrl = 0;
-    uint32_t sec_sample[MXC_RTC_REVA_TRIM_PERIODS + 1] = { 0 };
-    uint32_t ssec_sample[MXC_RTC_REVA_TRIM_PERIODS + 1] = { 0 };
+    int sec = 0, ssec = 0;
+    uint32_t ctrl = 0;
+    int sec_sample[MXC_RTC_REVA_TRIM_PERIODS + 1] = { 0 };
+    int ssec_sample[MXC_RTC_REVA_TRIM_PERIODS + 1] = { 0 };
     bool rtc_en = true;
 
     if (!(rtc->ctrl & MXC_F_RTC_REVA_CTRL_EN)) { // If RTC not enable, initialize it
@@ -403,8 +404,8 @@ int MXC_RTC_RevA_TrimCrystal(mxc_rtc_reva_regs_t *rtc, mxc_tmr_regs_t *tmr)
         rtc->ctrl = ctrl;
     }
 
-    for (int i = 0; i < MXC_RTC_REVA_TRIM_PERIODS;
-         i++) { // Get total error in RTC ticks over MXC_RTC_REVA_TRIM_PERIODS number of sample periods
+    // Get total error in RTC ticks over MXC_RTC_REVA_TRIM_PERIODS number of sample periods
+    for (int i = 0; i < MXC_RTC_REVA_TRIM_PERIODS; i++) {
         if (sec_sample[i] < sec_sample[i + 1]) {
             ppm += MXC_RTC_REVA_TICKS_PER_PERIOD -
                    ((MXC_RTC_MAX_SSEC - ssec_sample[i]) + ssec_sample[i + 1]);
