@@ -74,7 +74,9 @@ SRCS += diskio.c
 SRCS += ff.c
 SRCS += ffsystem.c
 SRCS += ffunicode.c
-
+ifdef FLASH
+PROJ_CFLAGS += -DFLASH
+endif
 ifdef USE_NATIVE_SDHC
 PROJ_CFLAGS += -DNATIVE_SDHC
 endif

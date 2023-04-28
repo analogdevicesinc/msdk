@@ -14,9 +14,11 @@ extern "C" {
 #ifdef NATIVE_SDHC
 #include "sdhc_lib.h"
 #endif
-
+#ifdef FLASH
+#include "mscmem.h"
+#endif
 #include "rtc.h"
-
+#include "integer.h"
 /* Status of Disk Functions */
 typedef BYTE	DSTATUS;
 
@@ -40,7 +42,7 @@ DRESULT disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);
 DRESULT disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);
 DRESULT disk_ioctl (BYTE pdrv, BYTE cmd, void* buff);
 DWORD get_fattime(void);
-
+void disk_flash(uint32_t isFlash);
 /* Disk Status Bits (DSTATUS) */
 
 #define STA_NOINIT		0x01	/* Drive not initialized */
