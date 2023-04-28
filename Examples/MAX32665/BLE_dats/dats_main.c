@@ -211,7 +211,7 @@ static const uint8_t datsAdvDataDisc[] = {
 };
 
 /*! scan data, discoverable mode */
-static const uint8_t datsScanDataDisc[] = {
+static uint8_t datsScanDataDisc[] = {
     /*! device name */
     5, /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
@@ -781,15 +781,15 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
 /*************************************************************************************************/
 static void datsBtnCback(uint8_t btn)
 {
-#if (BT_VER > 8)
+    static bool_t advOn = TRUE;
+    dmEvt_t pMsg = {0};
+    static char letter = 'A';
+
     dmConnId_t connId;
     if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE)
-#else
-    if (AppConnIsOpen() != DM_CONN_ID_NONE)
-#endif /* BT_VER */
     {
         switch (btn) {
-#if (BT_VER > 8)
+
         case APP_UI_BTN_2_SHORT: {
             static uint32_t coded_phy_cnt = 0;
             /* Toggle PHY Test Mode */
@@ -822,7 +822,7 @@ static void datsBtnCback(uint8_t btn)
             }
             break;
         }
-#endif /* BT_VER */
+
 
         default:
             APP_TRACE_INFO0(" - No action assigned");
@@ -832,7 +832,12 @@ static void datsBtnCback(uint8_t btn)
         switch (btn) {
         case APP_UI_BTN_1_SHORT:
             /* start advertising */
-            AppAdvStart(APP_MODE_AUTO_INIT);
+            advOn = !advOn;
+            if (advOn)
+                AppAdvStart(APP_MODE_AUTO_INIT);
+            else
+                AppAdvStop();
+            
             break;
 
         case APP_UI_BTN_1_MED:
@@ -854,7 +859,14 @@ static void datsBtnCback(uint8_t btn)
 
         case APP_UI_BTN_2_SHORT:
             /* stop advertising */
-            AppAdvStop();
+           // AppAdvStop();
+           // stop advertising
+           AppAdvStop();
+           datsScanDataDisc[3] = letter;
+           datsSetup( &pMsg );
+           AppAdvStart(APP_MODE_AUTO_INIT);
+
+           letter++;
             break;
 
         default:

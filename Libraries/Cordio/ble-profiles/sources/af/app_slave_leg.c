@@ -239,6 +239,7 @@ void AppAdvSetData(uint8_t location, uint8_t len, uint8_t *pData)
     /* maximum advertising data length supported by Controller is 31 bytes */
     appAdvSetData(DM_ADV_HANDLE_DEFAULT, location, len, pData, HCI_ADV_DATA_LEN, HCI_ADV_DATA_LEN);
   }
+  // TODO : implement extended advertising
 }
 
 /*************************************************************************************************/
