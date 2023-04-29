@@ -51,7 +51,7 @@
 #include "tft_st7735s.h"
 
 #ifdef BOARD_FTHR_REVA
-#error "ERR_NOTSUPPORTED: This example is not supported by the MAX32662 FTHR_RevA."
+#error "ERR_NOTSUPPORTED: This example is not supported by the MAX32672 FTHR_RevA."
 #endif
 
 /***** Definitions *****/
@@ -75,6 +75,8 @@ int main(void)
     uint8_t usn[MXC_SYS_USN_LEN];
     area_t printf_area;
 
+    printf("Hello World!\n");
+
     MXC_SYS_GetUSN(usn, NULL);
 
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
@@ -85,8 +87,6 @@ int main(void)
     MXC_Delay(MXC_DELAY_SEC(2));
 
     MXC_TFT_SetBackGroundColor(WHITE);
-
-    printf("Hello World!\n");
 
     MXC_TFT_SetFont((int)&SansSerif16x16[0]);
 
