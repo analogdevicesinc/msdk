@@ -114,7 +114,7 @@ int main(void)
             printf("\nRev: %x\n", MXC_GCR->revision);
             printf("USN: ");
             for (i = 0; i < MXC_SYS_USN_LEN; i++) {
-                printf("%02x");
+                printf("%02x", usn[i]);
             }
             printf("\n\n");
 
