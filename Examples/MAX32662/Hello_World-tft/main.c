@@ -42,6 +42,8 @@
 #include <stdint.h>
 #include <string.h>
 #include "mxc_device.h"
+#include "mxc_sys.h"
+#include "pb.h"
 #include "led.h"
 #include "board.h"
 #include "mxc_delay.h"
@@ -58,11 +60,24 @@
 
 /***** Functions *****/
 
+volatile int buttonPressedCount = 0;
+void buttonHandler(void *pb)
+{
+    buttonPressedCount++;
+}
+
 // *****************************************************************************
 int main(void)
 {
+    int i;
     int count = 0;
+    int pb_state = 0;
+    uint8_t usn[MXC_SYS_USN_LEN];
     area_t printf_area;
+
+    MXC_SYS_GetUSN(usn, NULL);
+
+    PB_RegisterCallback(0, (pb_callback)buttonHandler);
 
     MXC_TFT_Init();
     MXC_TFT_ShowImage(2, 3, (int)&logo_rgb565[0]);
@@ -84,12 +99,60 @@ int main(void)
 
     while (1) {
         MXC_TFT_Printf("cnt: %d\n", count);
-        
-        LED_On(0);
-        MXC_Delay(500000);
-        LED_Off(0);
-        MXC_Delay(500000);
 
+        if (buttonPressedCount > 4) {
+            buttonPressedCount = 0;
+
+            // Printf USN on bottom of screen.
+            MXC_TFT_SetBackGroundColor(WHITE);
+            MXC_TFT_ConfigPrintf(&printf_area);
+
+            // Print revision and USN.
+            MXC_TFT_Printf("Rev: %x\n", MXC_GCR->revision);
+            MXC_TFT_Printf("USN:\n  %02x%02x%02x%02x%02x\n   -%02x%02x%02x%02x\n   -%02x%02x%02x%02x\n", usn[0], usn[1], usn[2], usn[3], usn[4], usn[5], usn[6], usn[7], usn[8], usn[9], usn[10], usn[11], usn[12]);
+
+            printf("\nRev: %x\n", MXC_GCR->revision);
+            printf("USN: ");
+            for (i = 0; i < MXC_SYS_USN_LEN; i++) {
+                printf("%02x");
+            }
+            printf("\n\n");
+
+            MXC_TFT_Printf("\nContinue in\n");
+            for (i = 3; i > 0; i--) {
+                MXC_TFT_Printf("%ds...", i);
+                MXC_Delay(1000000);
+            }
+
+            // Clear screen and continue count.
+            MXC_TFT_ConfigPrintf(&printf_area);
+            MXC_TFT_SetBackGroundColor(WHITE);
+        }
+        
+        pb_state = PB_Get(0);
+
+        LED_Toggle(0);
+        MXC_Delay(250000);
+
+        // Toggle LED0 at 250ms (instead of 500ms) when PB0 is pressed.
+        if (pb_state) {
+            LED_Toggle(0);
+        }
+
+        MXC_Delay(250000);
+
+        LED_Toggle(0);
+
+        MXC_Delay(250000);
+
+        // Toggle LED0 at 250ms (instead of 500ms) when PB0 is pressed.
+        if (pb_state) {
+            LED_Toggle(0);
+        }
+
+        MXC_Delay(250000);
+
+        // Print count every second.
         printf("count = %d\n", count++);
     }
 }

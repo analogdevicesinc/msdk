@@ -80,16 +80,7 @@ lv_obj_t *img1;
 // Tick Timer Parameters
 #define TICK_TIMER MXC_TMR0 // Can be MXC_TMR0 through MXC_TMR5
 #define TICK_TIMER_IRQn TMR0_IRQn
-
-// LED Timer Parameters
-#define LED0_TIMER MXC_TMR1 // Can be MXC_TMR0 through MXC_TMR5
-#define LED0_TIMER_IRQn TMR1_IRQn
-#define LED1_TIMER MXC_TMR2 // Can be MXC_TMR0 through MXC_TMR5
-#define LED1_TIMER_IRQn TMR2_IRQn
-
 mxc_tmr_cfg_t lvgl_tmr;
-mxc_tmr_cfg_t led0_tmr;
-mxc_tmr_cfg_t led1_tmr;
 
 //============================================================================
 static void set_px_cb(struct _lv_disp_drv_t *disp_drv, uint8_t *buf, lv_coord_t buf_w, lv_coord_t x,
@@ -170,101 +161,10 @@ void LV_Tick_Timer_Init()
     MXC_TMR_Start(TICK_TIMER);
 }
 
-// Toggles LED0 when continuous timer repeats
-void LED0_TimerHandler()
-{
-    // Clear interrupt
-    MXC_TMR_ClearFlags(LED0_TIMER);
-    LED_Toggle(1);
-}
-
-void LED0_Timer_Init()
-{
-    // Starting 2Hz (Full LED Toggle at 1Hz)
-    uint32_t periodTicks = PeripheralClock / 20;
-
-    /*
-    Steps for configuring a timer for Continuous mode:
-    1. Disable the timer
-    2. Set the prescale value
-    3  Configure the timer for continuous mode
-    4. Set polarity, timer parameters
-    5. Enable Timer
-    */
-
-    MXC_TMR_Shutdown(LED0_TIMER);
-
-    led0_tmr.pres = TMR_PRES_4;
-    led0_tmr.mode = TMR_MODE_CONTINUOUS;
-    led0_tmr.cmp_cnt = periodTicks;
-    led0_tmr.pol = 0;
-
-    MXC_TMR_Init(LED0_TIMER, &led0_tmr);
-
-    MXC_NVIC_SetVector(LED0_TIMER_IRQn, LED0_TimerHandler);
-    NVIC_EnableIRQ(LED0_TIMER_IRQn);
-
-    MXC_TMR_Start(LED0_TIMER);
-}
-
-// Toggles LED1 when continuous timer repeats
-void LED1_TimerHandler()
-{
-    // Clear interrupt
-    MXC_TMR_ClearFlags(LED1_TIMER);
-    LED_Toggle(0);
-}
-
-void LED1_Timer_Init()
-{
-    // Starting 2Hz (Full LED Toggle at 1Hz)
-    uint32_t periodTicks = PeripheralClock / 20;
-
-    /*
-    Steps for configuring a timer for Continuous mode:
-    1. Disable the timer
-    2. Set the prescale value
-    3  Configure the timer for continuous mode
-    4. Set polarity, timer parameters
-    5. Enable Timer
-    */
-
-    MXC_TMR_Shutdown(LED1_TIMER);
-
-    led1_tmr.pres = TMR_PRES_4;
-    led1_tmr.mode = TMR_MODE_CONTINUOUS;
-    led1_tmr.cmp_cnt = periodTicks;
-    led1_tmr.pol = 0;
-
-    MXC_TMR_Init(LED1_TIMER, &led1_tmr);
-
-    MXC_NVIC_SetVector(LED1_TIMER_IRQn, LED1_TimerHandler);
-    NVIC_EnableIRQ(LED1_TIMER_IRQn);
-
-    MXC_TMR_Start(LED1_TIMER);
-}
-
-void PB0_Handler(void *pb)
-{
-    if (LED0_TIMER->cnt == (PeripheralClock / 2)) {
-        MXC_TMR_SetCount(LED0_TIMER, (PeripheralClock / 4));
-    } else {
-        MXC_TMR_SetCount(LED0_TIMER, (PeripheralClock / 2));
-    }
-}
-
-void PB1_Handler(void *pb)
-{
-    if (LED1_TIMER->cnt == (PeripheralClock / 2)) {
-        MXC_TMR_SetCount(LED1_TIMER, (PeripheralClock / 4));
-    } else {
-        MXC_TMR_SetCount(LED1_TIMER, (PeripheralClock / 2));
-    }
-}
-
 //============================================================================
 int main(void)
 {
+    int i;
     int count = 0;
     int pb_state = 0;
     uint8_t usn[MXC_SYS_USN_LEN];
@@ -325,8 +225,9 @@ int main(void)
 
             lv_label_set_text_fmt(label4, "USN: %02x%02x%02x%02x%02x\n      -%02x%02x%02x%02x\n      -%02x%02x%02x%02x", usn[0], usn[1], usn[2], usn[3], usn[4], usn[5], usn[6], usn[7], usn[8], usn[9], usn[10], usn[11], usn[12]);
 
-            printf("\nUSN: ");
-            for (int i = 0; i < MXC_SYS_USN_LEN; i++) {
+            printf("\nRev: %x\n", MXC_GCR->revision);
+            printf("USN: ");
+            for (i = 0; i < MXC_SYS_USN_LEN; i++) {
                 printf("%02x", usn[i]);
             }
             printf("\n\n");
