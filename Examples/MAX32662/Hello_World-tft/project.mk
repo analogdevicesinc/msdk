@@ -14,8 +14,8 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-override BOARD=EvKit_V1
-$(warning Warning: This project is forced to compile for the EvKit_V1 board only!)
-
+ifneq ($(BOARD),EvKit_V1)
+$(error ERR_NOTSUPPORTED: This example requires a TFT display, therefore it's not supported only supported by the MAX32662VKIT)
+endif
 IPATH += resources
 VPATH += resources/tft_demo
