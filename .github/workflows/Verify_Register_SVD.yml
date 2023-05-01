@@ -341,7 +341,7 @@ jobs:
           echo -e "\n\e[0;33m==================================================================\n"
           echo -e "\e[0;33mScanning for any changes in register files"
           echo -e "\n\e[0;33m==================================================================\n"
-          
+
           # Workspace doesn't return to home after each step.
           cd ..
 
@@ -456,7 +456,8 @@ jobs:
             echo -e "[\e[1;31mERROR\e[0m]: Please verify the part relating to the affected register file(s) is valid and defined in the workflow dictionary."
             echo -e "[\e[1;31mERROR\e[0m]: Contact ADI developers for more assistance.\n"            
             
-            exit 1
+            # TODO(5-1-2023): Uncomment this when MAX32572 and MAX32570 are released.
+            # exit 1
           fi
            
           # Exit out of msdk directory.
