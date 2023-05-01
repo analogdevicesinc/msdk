@@ -37,8 +37,7 @@ import numpy as np
 import torch
 
 from .AI85FaceIDNetNoBias import AI85FaceIDNetNoBias #pylint: disable=relative-beyond-top-level
-from .ai8x import set_device #pylint: disable=relative-beyond-top-level
-
+from ai85 import ai8x
 
 class Simulator:
     """
@@ -49,10 +48,12 @@ class Simulator:
     def __init__(self, checkpoint_path):
         self.device = self.__get_device()
         #load model
-        set_device(85, True, True)
-        self.model = AI85FaceIDNetNoBias().to(self.device)
+        ai8x.set_device(85, True, False)
+        self.model = AI85FaceIDNetNoBias(bias=False, quantize_activation=True,
+                                         weight_bits=8, bias_bits=8).to(self.device)
+
         checkpoint = torch.load(checkpoint_path, map_location=self.device)
-        self.model.load_state_dict(checkpoint['state_dict'])
+        self.model.load_state_dict(checkpoint['state_dict'], strict=False)
 
     def __get_device(self): #pylint: disable=no-self-use
         device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
