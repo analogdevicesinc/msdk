@@ -55,10 +55,6 @@ jobs:
           cd ..
           pwd
           ls
-
-          if [[ -d "msdk" ]]; then
-            rm -rf msdk
-          fi
           
       # Checks-out MSDK and MSDK-INTERNAL repositories under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout msdk repository
