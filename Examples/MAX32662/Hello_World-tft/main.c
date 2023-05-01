@@ -109,7 +109,10 @@ int main(void)
 
             // Print revision and USN.
             MXC_TFT_Printf("Rev: %x\n", MXC_GCR->revision);
-            MXC_TFT_Printf("USN:\n  %02x%02x%02x%02x%02x\n   -%02x%02x%02x%02x\n   -%02x%02x%02x%02x\n", usn[0], usn[1], usn[2], usn[3], usn[4], usn[5], usn[6], usn[7], usn[8], usn[9], usn[10], usn[11], usn[12]);
+            MXC_TFT_Printf(
+                "USN:\n  %02x%02x%02x%02x%02x\n   -%02x%02x%02x%02x\n   -%02x%02x%02x%02x\n",
+                usn[0], usn[1], usn[2], usn[3], usn[4], usn[5], usn[6], usn[7], usn[8], usn[9],
+                usn[10], usn[11], usn[12]);
 
             printf("\nRev: %x\n", MXC_GCR->revision);
             printf("USN: ");
@@ -128,7 +131,7 @@ int main(void)
             MXC_TFT_ConfigPrintf(&printf_area);
             MXC_TFT_SetBackGroundColor(WHITE);
         }
-        
+
         pb_state = PB_Get(0);
 
         LED_Toggle(0);

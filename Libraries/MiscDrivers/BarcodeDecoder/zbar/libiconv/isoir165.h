@@ -79,80 +79,81 @@
 
 #include "isoir165ext.h"
 
-static int
-isoir165_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
+static int isoir165_mbtowc(conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
 {
-  int ret;
+    int ret;
 
-  /* Map full-width pinyin (row 0x28) like half-width pinyin (row 0x2B). */
-  if (s[0] == 0x28) {
-    if (n >= 2) {
-      unsigned char c2 = s[1];
-      if (c2 >= 0x21 && c2 <= 0x40) {
-        unsigned char buf[2];
-        buf[0] = 0x2b;
-        buf[1] = c2;
-        ret = isoir165ext_mbtowc(conv,pwc,buf,2);
-        if (ret != RET_ILSEQ)
-          return ret;
-      }
+    /* Map full-width pinyin (row 0x28) like half-width pinyin (row 0x2B). */
+    if (s[0] == 0x28) {
+        if (n >= 2) {
+            unsigned char c2 = s[1];
+            if (c2 >= 0x21 && c2 <= 0x40) {
+                unsigned char buf[2];
+                buf[0] = 0x2b;
+                buf[1] = c2;
+                ret = isoir165ext_mbtowc(conv, pwc, buf, 2);
+                if (ret != RET_ILSEQ)
+                    return ret;
+            }
+        }
     }
-  }
-  /* Try the GB2312 -> Unicode table. */
-  ret = gb2312_mbtowc(conv,pwc,s,n);
-  if (ret != RET_ILSEQ)
+    /* Try the GB2312 -> Unicode table. */
+    ret = gb2312_mbtowc(conv, pwc, s, n);
+    if (ret != RET_ILSEQ)
+        return ret;
+    /* Row 0x2A is GB_1988-80. */
+    if (s[0] == 0x2a) {
+        if (n >= 2) {
+            unsigned char c2 = s[1];
+            if (c2 >= 0x21 && c2 < 0x7f) {
+                ret = iso646_cn_mbtowc(conv, pwc, s + 1, 1);
+                if (ret != 1)
+                    abort();
+                return 2;
+            }
+            return RET_ILSEQ;
+        }
+        return RET_TOOFEW(0);
+    }
+    /* Try the ISO-IR-165 extensions -> Unicode table. */
+    ret = isoir165ext_mbtowc(conv, pwc, s, n);
     return ret;
-  /* Row 0x2A is GB_1988-80. */
-  if (s[0] == 0x2a) {
-    if (n >= 2) {
-      unsigned char c2 = s[1];
-      if (c2 >= 0x21 && c2 < 0x7f) {
-        ret = iso646_cn_mbtowc(conv,pwc,s+1,1);
-        if (ret != 1) abort();
-        return 2;
-      }
-      return RET_ILSEQ;
-    }
-    return RET_TOOFEW(0);
-  }
-  /* Try the ISO-IR-165 extensions -> Unicode table. */
-  ret = isoir165ext_mbtowc(conv,pwc,s,n);
-  return ret;
 }
 
-static int
-isoir165_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
+static int isoir165_wctomb(conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
 {
-  unsigned char buf[2];
-  int ret;
+    unsigned char buf[2];
+    int ret;
 
-  /* Try the Unicode -> GB2312 table. */
-  ret = gb2312_wctomb(conv,buf,wc,2);
-  if (ret != RET_ILUNI) {
-    if (ret != 2) abort();
-    if (!(buf[0] == 0x28 && buf[1] >= 0x21 && buf[1] <= 0x40)) {
-      if (n >= 2) {
-        r[0] = buf[0];
-        r[1] = buf[1];
-        return 2;
-      }
-      return RET_TOOSMALL;
+    /* Try the Unicode -> GB2312 table. */
+    ret = gb2312_wctomb(conv, buf, wc, 2);
+    if (ret != RET_ILUNI) {
+        if (ret != 2)
+            abort();
+        if (!(buf[0] == 0x28 && buf[1] >= 0x21 && buf[1] <= 0x40)) {
+            if (n >= 2) {
+                r[0] = buf[0];
+                r[1] = buf[1];
+                return 2;
+            }
+            return RET_TOOSMALL;
+        }
     }
-  }
-  /* Row 0x2A is GB_1988-80. */
-  ret = iso646_cn_wctomb(conv,buf,wc,1);
-  if (ret != RET_ILUNI) {
-    if (ret != 1) abort();
-    if (buf[0] >= 0x21 && buf[0] < 0x7f) {
-      if (n >= 2) {
-        r[0] = 0x2a;
-        r[1] = buf[0];
-        return 2;
-      }
-      return RET_TOOSMALL;
+    /* Row 0x2A is GB_1988-80. */
+    ret = iso646_cn_wctomb(conv, buf, wc, 1);
+    if (ret != RET_ILUNI) {
+        if (ret != 1)
+            abort();
+        if (buf[0] >= 0x21 && buf[0] < 0x7f) {
+            if (n >= 2) {
+                r[0] = 0x2a;
+                r[1] = buf[0];
+                return 2;
+            }
+            return RET_TOOSMALL;
+        }
     }
-  }
-  /* Try the Unicode -> ISO-IR-165 extensions table. */
-  ret = isoir165ext_wctomb(conv,r,wc,n);
-  return ret;
+    /* Try the Unicode -> ISO-IR-165 extensions table. */
+    ret = isoir165ext_wctomb(conv, r, wc, n);
+    return ret;
 }

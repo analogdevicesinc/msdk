@@ -227,7 +227,11 @@ int main(void)
         if ((pb_state == 0b011)) {
             lv_label_set_text_fmt(label3, "Rev: %x", MXC_GCR->revision);
 
-            lv_label_set_text_fmt(label4, "USN: %02x%02x%02x%02x%02x\n      -%02x%02x%02x%02x\n      -%02x%02x%02x%02x", usn[0], usn[1], usn[2], usn[3], usn[4], usn[5], usn[6], usn[7], usn[8], usn[9], usn[10], usn[11], usn[12]);
+            lv_label_set_text_fmt(
+                label4,
+                "USN: %02x%02x%02x%02x%02x\n      -%02x%02x%02x%02x\n      -%02x%02x%02x%02x",
+                usn[0], usn[1], usn[2], usn[3], usn[4], usn[5], usn[6], usn[7], usn[8], usn[9],
+                usn[10], usn[11], usn[12]);
 
             printf("\nRev: %x\n", MXC_GCR->revision);
             printf("USN: ");
@@ -236,7 +240,7 @@ int main(void)
             }
             printf("\n\n");
         }
-    
+
         LED_Toggle(0);
         LED_Toggle(1);
 
