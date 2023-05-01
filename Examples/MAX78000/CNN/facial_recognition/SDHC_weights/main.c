@@ -62,30 +62,30 @@
 /***** Definitions *****/
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 #define MAXLEN 256
 
 /***** Globals *****/
-FATFS* fs; //FFat Filesystem Object
+FATFS *fs; //FFat Filesystem Object
 FATFS fs_obj;
-FIL file;    //FFat File Object
+FIL file; //FFat File Object
 FRESULT err; //FFat Result (Struct)
 FILINFO fno; //FFat File Information Object
-DIR dir;     //FFat Directory Object
+DIR dir; //FFat Directory Object
 TCHAR message[MAXLEN], directory[MAXLEN], cwd[MAXLEN], filename[MAXLEN], volume_label[24],
     volume = '0';
-TCHAR* FF_ERRORS[20];
+TCHAR *FF_ERRORS[20];
 DWORD clusters_free = 0, sectors_free = 0, sectors_total = 0, volume_sn = 0;
 UINT bytes_written = 0, bytes_read = 0, mounted = 0;
 uint32_t total_bytes = 0;
 BYTE work[4096];
 static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-#'?!";
-mxc_gpio_cfg_t SDPowerEnablePin = {MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                   MXC_GPIO_VSSEL_VDDIO};
+mxc_gpio_cfg_t SDPowerEnablePin = { MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT,
+                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 // Kernels:
-static const uint32_t kernels[]  = KERNELS;
+static const uint32_t kernels[] = KERNELS;
 
 /***** FUNCTIONS *****/
 void generateMessage(unsigned length)
@@ -169,7 +169,7 @@ int getSize()
     }
 
     sectors_total = (fs->n_fatent - 2) * fs->csize;
-    sectors_free  = clusters_free * fs->csize;
+    sectors_free = clusters_free * fs->csize;
 
     printf("Disk Size: %u bytes\n", sectors_total / 2);
     printf("Available: %u bytes\n", sectors_free / 2);
@@ -233,7 +233,7 @@ int createFile()
 
     printf("Creating file %s with length %d\n", filename, length);
 
-    if ((err = f_open(&file, (const TCHAR*)filename, FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
+    if ((err = f_open(&file, (const TCHAR *)filename, FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
         printf("Error opening file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
         return err;
@@ -274,8 +274,8 @@ int appendFile()
     printf("Enter length of random data to append: (%d max)\n", MAXLEN);
     scanf("%d", &length);
 
-    if ((err = f_stat((const TCHAR*)filename, &fno)) == FR_NO_FILE) {
-        printf("File %s doesn't exist!\n", (const TCHAR*)filename);
+    if ((err = f_stat((const TCHAR *)filename, &fno)) == FR_NO_FILE) {
+        printf("File %s doesn't exist!\n", (const TCHAR *)filename);
         return err;
     }
 
@@ -284,7 +284,7 @@ int appendFile()
         return FR_INVALID_PARAMETER;
     }
 
-    if ((err = f_open(&file, (const TCHAR*)filename, FA_OPEN_APPEND | FA_WRITE)) != FR_OK) {
+    if ((err = f_open(&file, (const TCHAR *)filename, FA_OPEN_APPEND | FA_WRITE)) != FR_OK) {
         printf("Error opening file %s\n", FF_ERRORS[err]);
         return err;
     }
@@ -318,12 +318,12 @@ int mkdir()
     printf("Enter directory name: \n");
     scanf("%255s", directory);
 
-    err = f_stat((const TCHAR*)directory, &fno);
+    err = f_stat((const TCHAR *)directory, &fno);
 
     if (err == FR_NO_FILE) {
         printf("Creating directory...\n");
 
-        if ((err = f_mkdir((const TCHAR*)directory)) != FR_OK) {
+        if ((err = f_mkdir((const TCHAR *)directory)) != FR_OK) {
             printf("Error creating directory: %s\n", FF_ERRORS[err]);
             f_mount(NULL, "", 0);
             return err;
@@ -347,12 +347,12 @@ int cd()
     printf("Directory to change into: \n");
     scanf("%255s", directory);
 
-    if ((err = f_stat((const TCHAR*)directory, &fno)) == FR_NO_FILE) {
+    if ((err = f_stat((const TCHAR *)directory, &fno)) == FR_NO_FILE) {
         printf("Directory doesn't exist (Did you mean mkdir?)\n");
         return err;
     }
 
-    if ((err = f_chdir((const TCHAR*)directory)) != FR_OK) {
+    if ((err = f_chdir((const TCHAR *)directory)) != FR_OK) {
         printf("Error in chdir: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
         return err;
@@ -373,7 +373,7 @@ int delete ()
     printf("File or directory to delete (always recursive!)\n");
     scanf("%255s", filename);
 
-    if ((err = f_stat((const TCHAR*)filename, &fno)) == FR_NO_FILE) {
+    if ((err = f_stat((const TCHAR *)filename, &fno)) == FR_NO_FILE) {
         printf("File or directory doesn't exist\n");
         return err;
     }
@@ -547,20 +547,20 @@ void waitCardInserted()
 /******************************************************************************/
 int main(void)
 {
-int i;
-int write_size = 3000; // in bytes
-uint8_t* wr_ptr;
- 
-    FF_ERRORS[0]  = "FR_OK";
-    FF_ERRORS[1]  = "FR_DISK_ERR";
-    FF_ERRORS[2]  = "FR_INT_ERR";
-    FF_ERRORS[3]  = "FR_NOT_READY";
-    FF_ERRORS[4]  = "FR_NO_FILE";
-    FF_ERRORS[5]  = "FR_NO_PATH";
-    FF_ERRORS[6]  = "FR_INVLAID_NAME";
-    FF_ERRORS[7]  = "FR_DENIED";
-    FF_ERRORS[8]  = "FR_EXIST";
-    FF_ERRORS[9]  = "FR_INVALID_OBJECT";
+    int i;
+    int write_size = 3000; // in bytes
+    uint8_t *wr_ptr;
+
+    FF_ERRORS[0] = "FR_OK";
+    FF_ERRORS[1] = "FR_DISK_ERR";
+    FF_ERRORS[2] = "FR_INT_ERR";
+    FF_ERRORS[3] = "FR_NOT_READY";
+    FF_ERRORS[4] = "FR_NO_FILE";
+    FF_ERRORS[5] = "FR_NO_PATH";
+    FF_ERRORS[6] = "FR_INVLAID_NAME";
+    FF_ERRORS[7] = "FR_DENIED";
+    FF_ERRORS[8] = "FR_EXIST";
+    FF_ERRORS[9] = "FR_INVALID_OBJECT";
     FF_ERRORS[10] = "FR_WRITE_PROTECTED";
     FF_ERRORS[11] = "FR_INVALID_DRIVE";
     FF_ERRORS[12] = "FR_NOT_ENABLED";
@@ -579,9 +579,9 @@ uint8_t* wr_ptr;
     printf("Card inserted\n");
 
     f_getcwd(cwd, sizeof(cwd));
- 
+
     err = 0;
-	
+
     if ((err = mount()) != FR_OK) {
         printf("Error opening SD Card: %s\n", FF_ERRORS[err]);
         return err;
@@ -589,51 +589,54 @@ uint8_t* wr_ptr;
 
     printf("SD Card Opened\n");
 
-	if ((err = f_open(&file, "weights_2.bin", FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
-	    printf("ERROR opening file: %s\n", FF_ERRORS[err]);
+    if ((err = f_open(&file, "weights_2.bin", FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
+        printf("ERROR opening file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
-        while(1);
+        while (1)
+            ;
     }
 
     printf("Opened file 'weights_2.bin'\n");
 
-	wr_ptr = (uint8_t*)kernels;
-	// Get size of weights
-	i = sizeof(kernels);
-	printf("%d total bytes to write\n", i);
-	
-	while(i > 0)
-	{
-		if ((err = f_write(&file, wr_ptr, write_size, &bytes_written)) != FR_OK) {
-			printf("ERROR writing file %d: %s\n", i, FF_ERRORS[err]);
-			f_mount(NULL, "", 0);
-			while(1);
-		}
-		
-		// Calculate residual bytes
-		i -= write_size;
-		
-		if(i < write_size)
-			write_size = i;
-		
-		wr_ptr += bytes_written;
-		total_bytes += bytes_written;
+    wr_ptr = (uint8_t *)kernels;
+    // Get size of weights
+    i = sizeof(kernels);
+    printf("%d total bytes to write\n", i);
+
+    while (i > 0) {
+        if ((err = f_write(&file, wr_ptr, write_size, &bytes_written)) != FR_OK) {
+            printf("ERROR writing file %d: %s\n", i, FF_ERRORS[err]);
+            f_mount(NULL, "", 0);
+            while (1)
+                ;
+        }
+
+        // Calculate residual bytes
+        i -= write_size;
+
+        if (i < write_size)
+            write_size = i;
+
+        wr_ptr += bytes_written;
+        total_bytes += bytes_written;
         printf("%d bytes written to file\n", bytes_written);
-	}
+    }
 
     printf("%d total bytes written to file\n", total_bytes);
 
     if ((err = f_close(&file)) != FR_OK) {
         printf("ERROR closing file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
-        while(1);
+        while (1)
+            ;
     }
 
     printf("File Closed\n");
 
     if ((err = f_mount(NULL, "", 0)) != FR_OK) {
         printf("ERROR unmounting volume: %s\n", FF_ERRORS[err]);
-        while(1);
+        while (1)
+            ;
     }
 
     printf("SD Unmonted\n");

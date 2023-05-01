@@ -62,14 +62,14 @@
 #include "faceID.h"
 #include "embedding_process.h"
 
-#define CONSOLE_BAUD  115200
+#define CONSOLE_BAUD 115200
 
 extern void SD_Init(void);
 extern volatile uint8_t face_detected;
 
-mxc_uart_regs_t* CommUart;
+mxc_uart_regs_t *CommUart;
 #ifdef TFT_ENABLE
-area_t area = {50, 290, 180, 30};
+area_t area = { 50, 290, 180, 30 };
 #endif
 // *****************************************************************************
 void WUT_IRQHandler()
@@ -87,12 +87,12 @@ int main(void)
     int slaveAddress;
     int id;
     int dma_channel;
-	mxc_uart_regs_t* ConsoleUart;
+    mxc_uart_regs_t *ConsoleUart;
 
 #ifdef BOARD_FTHR_REVA
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
     MXC_Delay(200000);
-	/* Enable camera power */
+    /* Enable camera power */
     Camera_Power(POWER_ON);
 #endif
     /* Enable cache */
@@ -106,13 +106,13 @@ int main(void)
 
     if ((ret = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         PR_ERR("UART1 Init Error: %d\n", ret);
-		return ret;
+        return ret;
     }
 
     PR_DEBUG("\n\nMAX78000 Feather Facial Recognition Demo\n");
 
-    // Initialize FaceID embeddings database 
-	if (init_database() < 0) {
+    // Initialize FaceID embeddings database
+    if (init_database() < 0) {
         PR_ERR("Could not initialize the database");
         return -1;
     }
@@ -162,9 +162,9 @@ int main(void)
     }
 
 #ifdef ROTATE_FEATHER_BOARD
-	camera_set_hmirror(0);
+    camera_set_hmirror(0);
 #else
-	camera_set_vflip(0);
+    camera_set_vflip(0);
 #endif
 
 #ifdef TFT_ENABLE
@@ -172,7 +172,7 @@ int main(void)
     /* Initialize TFT display */
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
 #ifdef ROTATE_FEATHER_BOARD
-	MXC_TFT_SetRotation(ROTATE_0);
+    MXC_TFT_SetRotation(ROTATE_0);
 #else
     MXC_TFT_SetRotation(ROTATE_180);
 #endif
@@ -186,7 +186,7 @@ int main(void)
     MXC_WUT_GetTicks(500, MXC_WUT_UNIT_MILLISEC, &ticks_1);
     MXC_WUT_GetTicks(100, MXC_WUT_UNIT_MILLISEC, &ticks_2);
     /* Configure structure for one shot timer to trigger in a number of ticks */
-    cfg.mode    = MXC_WUT_MODE_ONESHOT;
+    cfg.mode = MXC_WUT_MODE_ONESHOT;
     cfg.cmp_cnt = ticks_1;
     /* Init WakeUp Timer */
     MXC_WUT_Init(MXC_WUT_PRES_1);
@@ -198,25 +198,23 @@ int main(void)
     NVIC_EnableIRQ(WUT_IRQn);
 #endif
 
-	/* Initilize SD card */
-	SD_Init();
+    /* Initilize SD card */
+    SD_Init();
 
     while (1) {
-		
-		face_detection();
-		
-		if(face_detected)
-		{
-			face_id();
-			face_detected = 0;
-		}
-		#if 0
+        face_detection();
+
+        if (face_detected) {
+            face_id();
+            face_detected = 0;
+        }
+#if 0
 		//#ifdef TFT_ENABLE
 		else
 		{
             MXC_TFT_ClearArea(&area, 4);
         }
-		#endif
+#endif
     }
 
     return 0;

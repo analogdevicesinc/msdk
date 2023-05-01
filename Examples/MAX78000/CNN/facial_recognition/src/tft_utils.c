@@ -38,7 +38,7 @@
 #include "tft_utils.h"
 #include "facedetection.h"
 
-void draw_obj_rect(float* xy, uint32_t w, uint32_t h)
+void draw_obj_rect(float *xy, uint32_t w, uint32_t h)
 {
 #ifdef TFT_ENABLE
     int x1 = w * xy[0] + X_START;
@@ -46,7 +46,7 @@ void draw_obj_rect(float* xy, uint32_t w, uint32_t h)
     int x2 = w * xy[2] + X_START - 1;
     int y2 = h * xy[3] + Y_START - 1;
 
-	// Draw rectangle around detected face
-	MXC_TFT_Rectangle(x1, y1, x2, y2, FRAME_BLUE);
+    // Draw rectangle around detected face
+    MXC_TFT_Rectangle(x1, y1, x2, y2, FRAME_ORANGE);
 #endif
 }

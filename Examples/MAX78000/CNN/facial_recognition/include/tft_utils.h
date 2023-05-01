@@ -32,4 +32,4 @@
  * ownership rights.
  *******************************************************************************/
 
-void draw_obj_rect(float* xy, uint32_t w, uint32_t h);
+void draw_obj_rect(float *xy, uint32_t w, uint32_t h);

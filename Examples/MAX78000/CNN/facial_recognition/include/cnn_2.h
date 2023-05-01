@@ -52,5 +52,4 @@ int cnn_2_load_bias(void);
 /* Unload results from accelerator */
 int cnn_2_unload(uint32_t *out_buf);
 
-
 #endif // __CNN_2_H__

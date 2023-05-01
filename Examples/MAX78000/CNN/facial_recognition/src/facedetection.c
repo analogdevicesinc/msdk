@@ -66,75 +66,75 @@ static void ARM_low_power(int lp_mode);
 
 int face_detection(void)
 {
-        // Capture the image
-		camera_start_capture_image();
-		/* Sleep until camera interrupt */
-		MXC_LP_EnterSleepMode();
+    // Capture the image
+    camera_start_capture_image();
+    /* Sleep until camera interrupt */
+    MXC_LP_EnterSleepMode();
 
 #define PRINT_TIME 1
 #if (PRINT_TIME == 1)
     /* Get current time */
     uint32_t process_time = utils_get_time_ms();
-    uint32_t total_time   = utils_get_time_ms();
+    uint32_t total_time = utils_get_time_ms();
 #endif
 
-        /* Check for received image */
-        if (camera_is_image_rcv()) {
+    /* Check for received image */
+    if (camera_is_image_rcv()) {
 #if (PRINT_TIME == 1)
-            process_time = utils_get_time_ms();
+        process_time = utils_get_time_ms();
 #endif
 
 #ifdef IMAGE_TO_UART
-            break;
+        break;
 #endif
 
-			// Enable CNN peripheral, enable CNN interrupt, turn on CNN clock
-			// CNN clock: 50 MHz div 1
-			cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-			/* Configure CNN 1 to detect a face */
-			cnn_1_init();         // Bring CNN state machine into consistent state
-			cnn_1_load_weights(); // Load CNN kernels
-			cnn_1_load_bias();    // Load CNN bias
-			cnn_1_configure();    // Configure CNN state machine
+        // Enable CNN peripheral, enable CNN interrupt, turn on CNN clock
+        // CNN clock: 50 MHz div 1
+        cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+        /* Configure CNN 1 to detect a face */
+        cnn_1_init(); // Bring CNN state machine into consistent state
+        cnn_1_load_weights(); // Load CNN kernels
+        cnn_1_load_bias(); // Load CNN bias
+        cnn_1_configure(); // Configure CNN state machine
 
-            /* Run CNN on time on original and shifted images */
-            run_cnn_1(0, 0);
+        /* Run CNN on time on original and shifted images */
+        run_cnn_1(0, 0);
 
 #if (PRINT_TIME == 1)
-            PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
+        PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
 #endif
 
 #ifdef LP_MODE_ENABLE
-            cfg.cmp_cnt = ticks_1;
+        cfg.cmp_cnt = ticks_1;
+        /* Config WakeUp Timer */
+        MXC_WUT_Config(&cfg);
+        //Enable WUT
+        MXC_WUT_Enable();
+
+        LED_On(0); // green LED on
+        /* Configure low power mode */
+        ARM_low_power(LP_MODE);
+        LED_Off(0); // green LED off
+
+        // Camera startup delay (~100ms) after resuming XVCLK clock generated
+        // by Pulse Train which is off during UPM/Standby mode
+        if (LP_MODE > 2) {
+            cfg.cmp_cnt = ticks_2;
             /* Config WakeUp Timer */
             MXC_WUT_Config(&cfg);
             //Enable WUT
             MXC_WUT_Enable();
-
-            LED_On(0); // green LED on
-            /* Configure low power mode */
-            ARM_low_power(LP_MODE);
-            LED_Off(0); // green LED off
-
-            // Camera startup delay (~100ms) after resuming XVCLK clock generated
-            // by Pulse Train which is off during UPM/Standby mode
-            if (LP_MODE > 2) {
-                cfg.cmp_cnt = ticks_2;
-                /* Config WakeUp Timer */
-                MXC_WUT_Config(&cfg);
-                //Enable WUT
-                MXC_WUT_Enable();
-                MXC_LP_EnterLowPowerMode();
-            }
+            MXC_LP_EnterLowPowerMode();
+        }
 
 #endif
 
 #if (PRINT_TIME == 1)
-            PR_INFO("Capture Time : %dms", process_time - total_time);
-            PR_INFO("Total Time : %dms", utils_get_time_ms() - total_time);
-            total_time = utils_get_time_ms();
+        PR_INFO("Capture Time : %dms", process_time - total_time);
+        PR_INFO("Total Time : %dms", utils_get_time_ms() - total_time);
+        total_time = utils_get_time_ms();
 #endif
-        }
+    }
 
     return 0;
 }
@@ -145,25 +145,24 @@ static void run_cnn_1(int x_offset, int y_offset)
     uint32_t w, h;
     /* Get current time */
     uint32_t pass_time = 0;
-    uint8_t* raw;
+    uint8_t *raw;
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
-    #ifdef TFT_ENABLE
-        #ifdef BOARD_FTHR_REVA
-            MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
-        #endif
-    #endif
+#ifdef TFT_ENABLE
+#ifdef BOARD_FTHR_REVA
+    MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
+#endif
+#endif
 
     cnn_start();
 
     //PR_INFO("CNN initialization time : %d", utils_get_time_ms() - pass_time);
 
-    uint8_t* data = raw;
+    uint8_t *data = raw;
 
     pass_time = utils_get_time_ms();
 
     for (int i = y_offset; i < HEIGHT_DET + y_offset; i++) {
-
         data = raw + ((IMAGE_H - (WIDTH_DET)) / 2) * IMAGE_W * BYTE_PER_PIXEL;
         data += (((IMAGE_W - (HEIGHT_DET)) / 2) + i) * BYTE_PER_PIXEL;
         for (int j = x_offset; j < WIDTH_DET + x_offset; j++) {
@@ -180,18 +179,17 @@ static void run_cnn_1(int x_offset, int y_offset)
             r = ur - 128;
 
             // Loading data into the CNN fifo
-            while (((*((volatile uint32_t*)0x50000004) & 1)) != 0)
+            while (((*((volatile uint32_t *)0x50000004) & 1)) != 0)
                 ; // Wait for FIFO 0
 
             number = 0x00FFFFFF & ((((uint8_t)b) << 16) | (((uint8_t)g) << 8) | ((uint8_t)r));
 
-            *((volatile uint32_t*)0x50000008) = number; // Write FIFO 0
-            
+            *((volatile uint32_t *)0x50000008) = number; // Write FIFO 0
         }
     }
 
     //LED_Off(1);
-    
+
     int cnn_load_time = utils_get_time_ms() - pass_time;
     PR_DEBUG("CNN load data time : %dms", cnn_load_time);
 
@@ -206,66 +204,65 @@ static void run_cnn_1(int x_offset, int y_offset)
     }
 
     PR_DEBUG("CNN wait time : %dms", utils_get_time_ms() - pass_time);
-    
+
     get_priors();
     localize_objects();
-	// Power off CNN after unloading result to clear all CNN registers.
-	// It's needed to load and run other CNN model
-	cnn_disable();
-
+    // Power off CNN after unloading result to clear all CNN registers.
+    // It's needed to load and run other CNN model
+    cnn_disable();
 }
 
 #ifdef LP_MODE_ENABLE
 static void ARM_low_power(int lp_mode)
 {
     switch (lp_mode) {
-        case 0:
-            PR_DEBUG("Active\n");
-            break;
+    case 0:
+        PR_DEBUG("Active\n");
+        break;
 
-        case 1:
-            PR_DEBUG("Enter SLEEP\n");
-            MXC_LP_EnterSleepMode();
-            PR_DEBUG("Exit SLEEP\n");
-            break;
+    case 1:
+        PR_DEBUG("Enter SLEEP\n");
+        MXC_LP_EnterSleepMode();
+        PR_DEBUG("Exit SLEEP\n");
+        break;
 
-        case 2:
-            PR_DEBUG("Enter LPM\n");
-            MXC_LP_EnterLowPowerMode();
-            PR_DEBUG("Exit LPM\n");
-            break;
+    case 2:
+        PR_DEBUG("Enter LPM\n");
+        MXC_LP_EnterLowPowerMode();
+        PR_DEBUG("Exit LPM\n");
+        break;
 
-        case 3:
-            PR_DEBUG("Enter UPM\n");
-            MXC_LP_EnterMicroPowerMode();
-            PR_DEBUG("Exit UPM\n");
-            break;
+    case 3:
+        PR_DEBUG("Enter UPM\n");
+        MXC_LP_EnterMicroPowerMode();
+        PR_DEBUG("Exit UPM\n");
+        break;
 
-        case 4:
-            PR_DEBUG("Enter STANDBY\n");
-            MXC_LP_EnterStandbyMode();
-            PR_DEBUG("Exit STANDBY\n");
-            break;
+    case 4:
+        PR_DEBUG("Enter STANDBY\n");
+        MXC_LP_EnterStandbyMode();
+        PR_DEBUG("Exit STANDBY\n");
+        break;
 
-        case 5:
-            PR_DEBUG("Enter BACKUP\n");
-            MXC_LP_EnterBackupMode();
-            PR_DEBUG("Exit BACKUP\n");
-            break;
+    case 5:
+        PR_DEBUG("Enter BACKUP\n");
+        MXC_LP_EnterBackupMode();
+        PR_DEBUG("Exit BACKUP\n");
+        break;
 
-        case 6:
-            PR_DEBUG("Enter POWERDOWN, disable WUT\n");
-            MXC_WUT_Disable();
-            MXC_Delay(SEC(2));
-            MXC_LP_EnterPowerDownMode();
-            PR_DEBUG("Exit SHUTDOWN\n");
-            break;
+    case 6:
+        PR_DEBUG("Enter POWERDOWN, disable WUT\n");
+        MXC_WUT_Disable();
+        MXC_Delay(SEC(2));
+        MXC_LP_EnterPowerDownMode();
+        PR_DEBUG("Exit SHUTDOWN\n");
+        break;
 
-        default:
-            PR_DEBUG("Enter SLEEP\n");
-            MXC_LP_EnterSleepMode();
-            PR_DEBUG("Exit SLEEP\n");
-            break;
+    default:
+        PR_DEBUG("Enter SLEEP\n");
+        MXC_LP_EnterSleepMode();
+        PR_DEBUG("Exit SLEEP\n");
+        break;
     }
 }
 #endif

@@ -51,6 +51,14 @@ If using Linux, perform this step:
 ./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
 ```
 
+
+
+### Write FaceID model weights to SD Card
+
+Use **facial_recognition\SDHC_weights** project and it will create **weights_2.bin** file in binary format.
+
+
+
 ### MAX78000 Feather operations
 
 The TFT display is optional and not supplied with the MAX78000 Feather board.

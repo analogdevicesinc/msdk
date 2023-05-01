@@ -41,7 +41,7 @@
 //#define LP_MODE_ENABLE
 #define LP_MODE 4 // 0:NO SLEEP, 1:SLEEP, 2:LPM, 3:UPM, 4:STANDBY, 5:BACKUP, 6:POWERDOWN
 
-#define TFT_WIDTH  320
+#define TFT_WIDTH 320
 #define TFT_HEIGHT 240
 #define IMAGE_XRES 224
 #define IMAGE_YRES 168
@@ -49,15 +49,16 @@
 #define IMAGE_SIZE_X 168
 #define IMAGE_SIZE_Y 224
 
-#define HEIGHT_DET     224
-#define WIDTH_DET      168
+#define HEIGHT_DET 224
+#define WIDTH_DET 168
 
-#define IMAGE_H     168
-#define IMAGE_W     224
+#define IMAGE_H 168
+#define IMAGE_W 224
 
-#define X_START (TFT_HEIGHT - IMAGE_YRES)/2
+#define X_START (TFT_HEIGHT - IMAGE_YRES) / 2
 #define Y_START 30
 
+#define FRAME_ORANGE 0xFD20
 #define FRAME_BLUE 0x001F
 
 #define BYTE_PER_PIXEL 2

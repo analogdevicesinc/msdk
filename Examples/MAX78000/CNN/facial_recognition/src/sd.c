@@ -52,28 +52,28 @@
 /***** Definitions *****/
 
 #define STRINGIFY(x) #x
-#define TOSTRING(x)  STRINGIFY(x)
+#define TOSTRING(x) STRINGIFY(x)
 
 #define MAXLEN 256
 
 /***** Globals *****/
-FATFS* fs; //FFat Filesystem Object
+FATFS *fs; //FFat Filesystem Object
 FATFS fs_obj;
-FIL file;    //FFat File Object
+FIL file; //FFat File Object
 FRESULT err; //FFat Result (Struct)
 FILINFO fno; //FFat File Information Object
-DIR dir;     //FFat Directory Object
+DIR dir; //FFat Directory Object
 TCHAR message[MAXLEN], directory[MAXLEN], cwd[MAXLEN], filename[MAXLEN], volume_label[24],
     volume = '0';
-TCHAR* FF_ERRORS[20];
+TCHAR *FF_ERRORS[20];
 DWORD clusters_free = 0, sectors_free = 0, sectors_total = 0, volume_sn = 0;
 UINT bytes_written = 0, bytes_read = 0, mounted = 0;
 uint32_t total_bytes;
 uint32_t kernel_buffer[1000];
 BYTE work[4096];
 static char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.-#'?!";
-mxc_gpio_cfg_t SDPowerEnablePin = {MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                   MXC_GPIO_VSSEL_VDDIO};
+mxc_gpio_cfg_t SDPowerEnablePin = { MXC_GPIO1, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT,
+                                    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 /***** FUNCTIONS *****/
 
@@ -158,7 +158,7 @@ int getSize()
     }
 
     sectors_total = (fs->n_fatent - 2) * fs->csize;
-    sectors_free  = clusters_free * fs->csize;
+    sectors_free = clusters_free * fs->csize;
 
     printf("Disk Size: %u bytes\n", sectors_total / 2);
     printf("Available: %u bytes\n", sectors_free / 2);
@@ -222,7 +222,7 @@ int createFile()
 
     printf("Creating file %s with length %d\n", filename, length);
 
-    if ((err = f_open(&file, (const TCHAR*)filename, FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
+    if ((err = f_open(&file, (const TCHAR *)filename, FA_CREATE_ALWAYS | FA_WRITE)) != FR_OK) {
         printf("Error opening file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
         return err;
@@ -263,8 +263,8 @@ int appendFile()
     printf("Enter length of random data to append: (%d max)\n", MAXLEN);
     scanf("%d", &length);
 
-    if ((err = f_stat((const TCHAR*)filename, &fno)) == FR_NO_FILE) {
-        printf("File %s doesn't exist!\n", (const TCHAR*)filename);
+    if ((err = f_stat((const TCHAR *)filename, &fno)) == FR_NO_FILE) {
+        printf("File %s doesn't exist!\n", (const TCHAR *)filename);
         return err;
     }
 
@@ -273,7 +273,7 @@ int appendFile()
         return FR_INVALID_PARAMETER;
     }
 
-    if ((err = f_open(&file, (const TCHAR*)filename, FA_OPEN_APPEND | FA_WRITE)) != FR_OK) {
+    if ((err = f_open(&file, (const TCHAR *)filename, FA_OPEN_APPEND | FA_WRITE)) != FR_OK) {
         printf("Error opening file %s\n", FF_ERRORS[err]);
         return err;
     }
@@ -307,12 +307,12 @@ int mkdir()
     printf("Enter directory name: \n");
     scanf("%255s", directory);
 
-    err = f_stat((const TCHAR*)directory, &fno);
+    err = f_stat((const TCHAR *)directory, &fno);
 
     if (err == FR_NO_FILE) {
         printf("Creating directory...\n");
 
-        if ((err = f_mkdir((const TCHAR*)directory)) != FR_OK) {
+        if ((err = f_mkdir((const TCHAR *)directory)) != FR_OK) {
             printf("Error creating directory: %s\n", FF_ERRORS[err]);
             f_mount(NULL, "", 0);
             return err;
@@ -336,12 +336,12 @@ int cd()
     printf("Directory to change into: \n");
     scanf("%255s", directory);
 
-    if ((err = f_stat((const TCHAR*)directory, &fno)) == FR_NO_FILE) {
+    if ((err = f_stat((const TCHAR *)directory, &fno)) == FR_NO_FILE) {
         printf("Directory doesn't exist (Did you mean mkdir?)\n");
         return err;
     }
 
-    if ((err = f_chdir((const TCHAR*)directory)) != FR_OK) {
+    if ((err = f_chdir((const TCHAR *)directory)) != FR_OK) {
         printf("Error in chdir: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
         return err;
@@ -362,7 +362,7 @@ int delete ()
     printf("File or directory to delete (always recursive!)\n");
     scanf("%255s", filename);
 
-    if ((err = f_stat((const TCHAR*)filename, &fno)) == FR_NO_FILE) {
+    if ((err = f_stat((const TCHAR *)filename, &fno)) == FR_NO_FILE) {
         printf("File or directory doesn't exist\n");
         return err;
     }
@@ -536,16 +536,16 @@ void waitCardInserted()
 /******************************************************************************/
 void SD_Init(void)
 {
-    FF_ERRORS[0]  = "FR_OK";
-    FF_ERRORS[1]  = "FR_DISK_ERR";
-    FF_ERRORS[2]  = "FR_INT_ERR";
-    FF_ERRORS[3]  = "FR_NOT_READY";
-    FF_ERRORS[4]  = "FR_NO_FILE";
-    FF_ERRORS[5]  = "FR_NO_PATH";
-    FF_ERRORS[6]  = "FR_INVLAID_NAME";
-    FF_ERRORS[7]  = "FR_DENIED";
-    FF_ERRORS[8]  = "FR_EXIST";
-    FF_ERRORS[9]  = "FR_INVALID_OBJECT";
+    FF_ERRORS[0] = "FR_OK";
+    FF_ERRORS[1] = "FR_DISK_ERR";
+    FF_ERRORS[2] = "FR_INT_ERR";
+    FF_ERRORS[3] = "FR_NOT_READY";
+    FF_ERRORS[4] = "FR_NO_FILE";
+    FF_ERRORS[5] = "FR_NO_PATH";
+    FF_ERRORS[6] = "FR_INVLAID_NAME";
+    FF_ERRORS[7] = "FR_DENIED";
+    FF_ERRORS[8] = "FR_EXIST";
+    FF_ERRORS[9] = "FR_INVALID_OBJECT";
     FF_ERRORS[10] = "FR_WRITE_PROTECTED";
     FF_ERRORS[11] = "FR_INVALID_DRIVE";
     FF_ERRORS[12] = "FR_NOT_ENABLED";
@@ -564,111 +564,110 @@ void SD_Init(void)
     printf("Card inserted\n");
 
     f_getcwd(cwd, sizeof(cwd));
- 
+
     err = 0;
-	
+
     if ((err = mount()) != FR_OK) {
         printf("Error opening SD Card: %s\n", FF_ERRORS[err]);
-        while(1);
+        while (1)
+            ;
     }
 
     printf("SD Card Opened\n");
 }
 
-uint32_t* read_weights_from_SD(void)
+uint32_t *read_weights_from_SD(void)
 {
-	// Read from SD file
-    if ((err = f_read(&file, (uint8_t*)kernel_buffer, sizeof(kernel_buffer), &bytes_read)) != FR_OK) {
+    // Read from SD file
+    if ((err = f_read(&file, (uint8_t *)kernel_buffer, sizeof(kernel_buffer), &bytes_read)) !=
+        FR_OK) {
         printf("ERROR reading file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
-        while(1);
+        while (1)
+            ;
     }
-	
-	total_bytes += bytes_read;
+
+    total_bytes += bytes_read;
     // Adjust position in file
-	f_lseek(&file, total_bytes);
-	//printf("%d bytes read\n", bytes_read);
-	
-	return &kernel_buffer[0];
+    f_lseek(&file, total_bytes);
+    //printf("%d bytes read\n", bytes_read);
+
+    return &kernel_buffer[0];
 }
 
 int cnn_2_load_weights_from_SD(void)
 {
-int i;
-int buffer_size;
-uint32_t len;
-volatile uint32_t *addr;
-const uint32_t *ptr;
+    int i;
+    int buffer_size;
+    uint32_t len;
+    volatile uint32_t *addr;
+    const uint32_t *ptr;
 
     if ((err = f_open(&file, "weights_2.bin", FA_READ)) != FR_OK) {
-	    printf("ERROR opening file: %s\n", FF_ERRORS[err]);
+        printf("ERROR opening file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
-        while(1);
+        while (1)
+            ;
     }
 
     //printf("Opened file 'weights_2.bin'\n");
-	
-	total_bytes = 0;
-	buffer_size = sizeof(kernel_buffer);
+
+    total_bytes = 0;
+    buffer_size = sizeof(kernel_buffer);
     //printf("Size of kernel buffer: %d\n", buffer_size);
     buffer_size >>= 2; // size in words
     // Set beginning of the file
-	f_lseek(&file, 0);
- 	// Copy weights from SD file to intermediate kernel buffer in SRAM
-	ptr = read_weights_from_SD();
-	i = buffer_size;
-    
-	while ((addr = (volatile uint32_t *) *ptr++) != 0) {
-		
-		*((volatile uint8_t *) ((uint32_t) addr | 1)) = 0x01; // Set CNN address
-		i--;
-		
-		// Check if end of the kernel buffer is reached
-		if(i == 0)
-		{
-		  // Copy more weights from SD file to buffer
-		  ptr = read_weights_from_SD();
-		  i = buffer_size;
-		}
-		
-		// Get number of weights
-		len = *ptr++;
-		i--;
-		
-		// Check if end of the kernel buffer is reached
-		if(i == 0)
-		{
-		  // Copy more weights from SD file to buffer
-		  ptr = read_weights_from_SD();
-		  i = buffer_size;
-		}
-		
-		while (len-- > 0)
-		{
-			// Load weights to CNN
-			*addr++ = *ptr++;
-			i--;
-			
-			// Check if end of the kernel buffer is reached
-			if(i == 0)
-			{
-				// Copy more weights from SD file to buffer
-				ptr = read_weights_from_SD();
-				i = buffer_size;
-			}
-		}
-	}
+    f_lseek(&file, 0);
+    // Copy weights from SD file to intermediate kernel buffer in SRAM
+    ptr = read_weights_from_SD();
+    i = buffer_size;
+
+    while ((addr = (volatile uint32_t *)*ptr++) != 0) {
+        *((volatile uint8_t *)((uint32_t)addr | 1)) = 0x01; // Set CNN address
+        i--;
+
+        // Check if end of the kernel buffer is reached
+        if (i == 0) {
+            // Copy more weights from SD file to buffer
+            ptr = read_weights_from_SD();
+            i = buffer_size;
+        }
+
+        // Get number of weights
+        len = *ptr++;
+        i--;
+
+        // Check if end of the kernel buffer is reached
+        if (i == 0) {
+            // Copy more weights from SD file to buffer
+            ptr = read_weights_from_SD();
+            i = buffer_size;
+        }
+
+        while (len-- > 0) {
+            // Load weights to CNN
+            *addr++ = *ptr++;
+            i--;
+
+            // Check if end of the kernel buffer is reached
+            if (i == 0) {
+                // Copy more weights from SD file to buffer
+                ptr = read_weights_from_SD();
+                i = buffer_size;
+            }
+        }
+    }
 
     //printf("%d total bytes read\n", total_bytes);
-	
-	if ((err = f_close(&file)) != FR_OK) {
+
+    if ((err = f_close(&file)) != FR_OK) {
         printf("ERROR closing file: %s\n", FF_ERRORS[err]);
         f_mount(NULL, "", 0);
-        while(1);
+        while (1)
+            ;
     }
 
     //printf("File Closed\n");
 
     return CNN_OK;
 }
-
