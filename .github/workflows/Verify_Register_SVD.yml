@@ -212,7 +212,7 @@ jobs:
           CHIP_TO_DIE_NAMES[MAX32650]=ME10
           CHIP_TO_DIE_NAMES[MAX32660]=ME11
           CHIP_TO_DIE_NAMES[MAX32662]=ME12
-          CHIP_TO_DIE_NAMES[MAX32570]=ME13
+          # CHIP_TO_DIE_NAMES[MAX32570]=ME13
           CHIP_TO_DIE_NAMES[MAX32665]=ME14
           CHIP_TO_DIE_NAMES[MAX32670]=ME15
           CHIP_TO_DIE_NAMES[MAX32675]=ME16
@@ -228,7 +228,7 @@ jobs:
           DIE_TO_CHIP_NAMES[ME10]=MAX32650
           DIE_TO_CHIP_NAMES[ME11]=MAX32660
           DIE_TO_CHIP_NAMES[ME12]=MAX32662
-          DIE_TO_CHIP_NAMES[ME13]=MAX32570
+          # DIE_TO_CHIP_NAMES[ME13]=MAX32570
           DIE_TO_CHIP_NAMES[ME14]=MAX32665
           DIE_TO_CHIP_NAMES[ME15]=MAX32670
           DIE_TO_CHIP_NAMES[ME16]=MAX32675
@@ -344,8 +344,6 @@ jobs:
           
           # Workspace doesn't return to home after each step.
           cd ..
-          pwd
-          ls
 
           # Find diff in MSDK repo
           cd ${{ env.MSDK_DIR }}
