@@ -89,6 +89,9 @@ jobs:
       # Easier to read in Actions' console window if separated by steps.
       - name: Checking if register files or peripheral SVD files were updated.
         run: |
+          pwd
+          ls
+
           cd ${{ env.MSDK_DIR }}
           CHANGED_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h' './Libraries/PeriphDrivers/Source/*/*.svd')
 
