@@ -79,6 +79,7 @@ jobs:
             pwd
             git pull
             cd ..
+            pwd
           else
             pwd
             git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
@@ -92,7 +93,12 @@ jobs:
           pwd
           ls
 
-          cd ${{ env.MSDK_DIR }}
+          enter_msdk=0
+          if [[ -d ${{ env.MSDK_DIR }} ]]; then
+            cd ${{ env.MSDK_DIR }}
+            enter_msdk=1
+          fi
+          
           CHANGED_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h' './Libraries/PeriphDrivers/Source/*/*.svd')
 
           if [[ -n ${CHANGED_FILES} ]]; then
@@ -101,7 +107,9 @@ jobs:
             echo "No register file changed."
           fi
 
-          cd ..
+          if [[ $enter_msdk == 1 ]]; then
+            cd ..
+          fi
           
       # This step is just to indicate status of job in Actions' console if there are no
       # register file changes.
