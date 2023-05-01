@@ -86,7 +86,7 @@ enum {
 /**************************************************************************************************
   Configurable Parameters
 **************************************************************************************************/
-
+bool_t restartAdvert = FALSE;
 /*! configurable parameters for advertising */
 static const appAdvCfg_t datsAdvCfg = {
     { 0, 0, 0 }, /*! Advertising durations in ms */
@@ -195,7 +195,12 @@ static uint8_t localIrk[] = { 0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93,
 /**************************************************************************************************
   Advertising Data
 **************************************************************************************************/
+static const uint8_t appAdvDataFlags[] =
+{
+  DM_FLAG_LE_GENERAL_DISC |
+        DM_FLAG_LE_BREDR_NOT_SUP
 
+};
 /*! advertising data, discoverable mode */
 static uint8_t datsAdvDataDisc[] = {
     /*! flags */
@@ -205,7 +210,7 @@ static uint8_t datsAdvDataDisc[] = {
         DM_FLAG_LE_BREDR_NOT_SUP,
 
     /*! manufacturer specific data */
-    25, /*! length */
+    27, /*! length */
     DM_ADV_TYPE_MANUFACTURER, /*! AD type */
     UINT16_TO_BYTES(HCI_ID_ANALOG), /*! company ID */
     '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
@@ -563,7 +568,7 @@ static void datsRestoreResolvingList(dmEvt_t *pMsg)
 
     if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
         /* No device to restore.  Setup application. */
-        datsSetup(pMsg, 25);
+        datsSetup(pMsg, 31);
     } else {
         datsCb.restoringResList = TRUE;
     }
@@ -590,7 +595,7 @@ static void datsPrivAddDevToResListInd(dmEvt_t *pMsg)
 
         if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
             /* No additional device to restore. Setup application. */
-            datsSetup(pMsg, 25);
+            datsSetup(pMsg, 31);
         }
     } else {
         datsPrivAddDevToResList(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
@@ -609,7 +614,10 @@ static void datsPrivAddDevToResListInd(dmEvt_t *pMsg)
 static void datsProcMsg(dmEvt_t *pMsg)
 {
     uint8_t uiEvent = APP_UI_NONE;
-
+if (restartAdvert == TRUE) {
+        AppAdvStart(APP_MODE_AUTO_INIT);
+        restartAdvert = FALSE;
+    }
     switch (pMsg->hdr.event) {
     case DM_RESET_CMPL_IND:
         AttsCalculateDbHash();
@@ -729,10 +737,18 @@ static void datsProcMsg(dmEvt_t *pMsg)
         trimStart();
         WsfTimerStartMs(&trimTimer, TRIM_TIMER_PERIOD_MS);
         break;
+    case DM_VENDOR_SPEC_IND:
+        APP_TRACE_INFO0(">>>>  DM_VENDOR_SPEC_IND <<< ");
+        AppAdvStart(APP_MODE_AUTO_INIT);
 
     default:
         break;
     }
+
+    // if (restartAdvert == TRUE) {
+    //     AppAdvStart(APP_MODE_AUTO_INIT);
+    //     restartAdvert = FALSE;
+    // }
 
     if (uiEvent != APP_UI_NONE) {
         AppUiAction(uiEvent);
@@ -787,6 +803,7 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
 static void datsBtnCback(uint8_t btn)
 {
     static bool_t advOn = TRUE;
+    static volatile uint32_t count = 0;
     dmEvt_t pMsg = { 0 };
     static char letter = 'A';
 
@@ -860,18 +877,11 @@ static void datsBtnCback(uint8_t btn)
         } break;
 
         case APP_UI_BTN_2_SHORT:
-            /* stop advertising */
-            // AppAdvStop();
-            // stop advertising
             letter++;
             AppAdvStop();
-            // datsScanDataDisc[3] = letter;
             datsAdvDataDisc[8] = letter;
-            datsAdvDataDisc[3] = datsAdvDataDisc[3] + 1;
-            APP_TRACE_INFO2("Data size: %d:%d", datsAdvDataDisc[3], HciGetMaxAdvDataLen());
-            datsSetup(&pMsg, sizeof(datsAdvDataDisc));
-            AppAdvStart(APP_MODE_AUTO_INIT);
-            advOn = !advOn;
+            
+            restartAdvert = TRUE;
 
             break;
 

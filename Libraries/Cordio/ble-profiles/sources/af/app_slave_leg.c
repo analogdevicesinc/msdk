@@ -364,3 +364,9 @@ dmConnId_t AppConnAccept(uint8_t advType, uint8_t addrType, uint8_t *pAddr, appD
 
     return connId;
 }
+
+
+void AppAdvRestart(dmEvt_t *pMsg)
+{
+    appSlaveLegAdvRestart(pMsg);
+}

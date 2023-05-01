@@ -597,6 +597,7 @@ void AppPerAdvStop(uint8_t advHandle);
 /*************************************************************************************************/
 bool_t AppPerAdvSetAdValue(uint8_t advHandle, uint8_t adType, uint8_t len, uint8_t *pValue);
 
+bool_t AppSlaveIsAdvertising(void);
 /**@}*/
 
 /** \name App Scan Functions
