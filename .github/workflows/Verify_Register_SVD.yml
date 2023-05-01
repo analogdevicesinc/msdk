@@ -65,7 +65,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
           submodules: false
           fetch-depth: 0
-          path: .
+          # path: ${{ env.MSDK_DIR }}
       
       - name: Checkout msdk internal repository
         run: |
