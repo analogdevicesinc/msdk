@@ -197,7 +197,7 @@ static uint8_t localIrk[] = { 0x95, 0xC8, 0xEE, 0x6F, 0xC5, 0x0D, 0xEF, 0x93,
 **************************************************************************************************/
 
 /*! advertising data, discoverable mode */
-static const uint8_t datsAdvDataDisc[] = {
+static uint8_t datsAdvDataDisc[] = {
     /*! flags */
     2, /*! length */
     DM_ADV_TYPE_FLAGS, /*! AD type */
@@ -205,20 +205,25 @@ static const uint8_t datsAdvDataDisc[] = {
         DM_FLAG_LE_BREDR_NOT_SUP,
 
     /*! manufacturer specific data */
-    3, /*! length */
+    25, /*! length */
     DM_ADV_TYPE_MANUFACTURER, /*! AD type */
-    UINT16_TO_BYTES(HCI_ID_ANALOG) /*! company ID */
+    UINT16_TO_BYTES(HCI_ID_ANALOG), /*! company ID */
+    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    '0', '1', '2', '3', '4'
+
 };
 
 /*! scan data, discoverable mode */
 static uint8_t datsScanDataDisc[] = {
     /*! device name */
-    5, /*! length */
+    6, /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
-    'D',
-    'A',
-    'T',
-    'S'
+    'E',
+    'd',
+    'd',
+    'i',
+    'e'
+
 };
 
 /**************************************************************************************************
@@ -524,18 +529,18 @@ void datsDisplayStackVersion(const char *pVersion)
  *  \return None.
  */
 /*************************************************************************************************/
-static void datsSetup(dmEvt_t *pMsg)
+static void datsSetup(dmEvt_t *pMsg, uint8_t data_size)
 {
     /* Initialize control information */
     datsCb.restoringResList = FALSE;
 
     /* set advertising and scan response data for discoverable mode */
-    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(datsAdvDataDisc), (uint8_t *)datsAdvDataDisc);
+    AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, data_size, (uint8_t *)datsAdvDataDisc);
     AppAdvSetData(APP_SCAN_DATA_DISCOVERABLE, sizeof(datsScanDataDisc),
                   (uint8_t *)datsScanDataDisc);
 
     /* set advertising and scan response data for connectable mode */
-    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, sizeof(datsAdvDataDisc), (uint8_t *)datsAdvDataDisc);
+    AppAdvSetData(APP_ADV_DATA_CONNECTABLE, data_size, (uint8_t *)datsAdvDataDisc);
     AppAdvSetData(APP_SCAN_DATA_CONNECTABLE, sizeof(datsScanDataDisc), (uint8_t *)datsScanDataDisc);
 
     /* start advertising; automatically set connectable/discoverable mode and bondable mode */
@@ -558,7 +563,7 @@ static void datsRestoreResolvingList(dmEvt_t *pMsg)
 
     if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
         /* No device to restore.  Setup application. */
-        datsSetup(pMsg);
+        datsSetup(pMsg, 25);
     } else {
         datsCb.restoringResList = TRUE;
     }
@@ -585,7 +590,7 @@ static void datsPrivAddDevToResListInd(dmEvt_t *pMsg)
 
         if (datsCb.resListRestoreHdl == APP_DB_HDL_NONE) {
             /* No additional device to restore. Setup application. */
-            datsSetup(pMsg);
+            datsSetup(pMsg, 25);
         }
     } else {
         datsPrivAddDevToResList(AppDbGetHdl((dmConnId_t)pMsg->hdr.param));
@@ -782,14 +787,12 @@ void DatsHandlerInit(wsfHandlerId_t handlerId)
 static void datsBtnCback(uint8_t btn)
 {
     static bool_t advOn = TRUE;
-    dmEvt_t pMsg = {0};
+    dmEvt_t pMsg = { 0 };
     static char letter = 'A';
 
     dmConnId_t connId;
-    if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE)
-    {
+    if ((connId = AppConnIsOpen()) != DM_CONN_ID_NONE) {
         switch (btn) {
-
         case APP_UI_BTN_2_SHORT: {
             static uint32_t coded_phy_cnt = 0;
             /* Toggle PHY Test Mode */
@@ -823,7 +826,6 @@ static void datsBtnCback(uint8_t btn)
             break;
         }
 
-
         default:
             APP_TRACE_INFO0(" - No action assigned");
             break;
@@ -837,7 +839,7 @@ static void datsBtnCback(uint8_t btn)
                 AppAdvStart(APP_MODE_AUTO_INIT);
             else
                 AppAdvStop();
-            
+
             break;
 
         case APP_UI_BTN_1_MED:
@@ -859,14 +861,18 @@ static void datsBtnCback(uint8_t btn)
 
         case APP_UI_BTN_2_SHORT:
             /* stop advertising */
-           // AppAdvStop();
-           // stop advertising
-           AppAdvStop();
-           datsScanDataDisc[3] = letter;
-           datsSetup( &pMsg );
-           AppAdvStart(APP_MODE_AUTO_INIT);
+            // AppAdvStop();
+            // stop advertising
+            letter++;
+            AppAdvStop();
+            // datsScanDataDisc[3] = letter;
+            datsAdvDataDisc[8] = letter;
+            datsAdvDataDisc[3] = datsAdvDataDisc[3] + 1;
+            APP_TRACE_INFO2("Data size: %d:%d", datsAdvDataDisc[3], HciGetMaxAdvDataLen());
+            datsSetup(&pMsg, sizeof(datsAdvDataDisc));
+            AppAdvStart(APP_MODE_AUTO_INIT);
+            advOn = !advOn;
 
-           letter++;
             break;
 
         default:
