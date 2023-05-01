@@ -136,7 +136,7 @@
      <field>
       <name>RX_DMA</name>
       <description>DMA Enable.</description>
-      <bitOffset>16</bitOffset>
+      <bitOffset>10</bitOffset>
       <bitWidth>1</bitWidth>
       <access>read-write</access>
       <enumeratedValues>
@@ -155,21 +155,14 @@
      <field>
       <name>RX_DMA_THRSH</name>
       <description>DMA Threshold.</description>
-      <bitOffset>17</bitOffset>
+      <bitOffset>11</bitOffset>
       <bitWidth>4</bitWidth>
-      <access>read-write</access>
-     </field>
-     <field>
-      <name>THREE_CH_EN</name>
-      <description>Three-channel mode enable.</description>
-      <bitOffset>30</bitOffset>
-      <bitWidth>1</bitWidth>
       <access>read-write</access>
      </field>
      <field>
       <name>PCIF_SYS</name>
       <description>PCIF Control.</description>
-      <bitOffset>31</bitOffset>
+      <bitOffset>15</bitOffset>
       <bitWidth>1</bitWidth>
       <access>read-write</access>
       <enumeratedValues>
