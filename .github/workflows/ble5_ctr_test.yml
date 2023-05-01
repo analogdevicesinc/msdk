@@ -1,0 +1,183 @@
+name: verify BLT5_ctr projects
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  ble5_ctr_lock_build_flash_test:
+    runs-on: [self-hosted, btm-ci]
+    steps:
+      - uses: actions/checkout@v3  # under $GITHUB_WORKSPACE
+        with:
+          # Update the submodules below, doing so here will convert ssh to https
+          submodules: false
+          repository: Analog-Devices-MSDK/msdk
+          ref: main
+      
+      #------------------------------------------------------------------------
+      - name: watch_file_changes
+        id: check_fiel_changes
+        continue-on-error: true
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+        
+        run: |
+          MSDK=${GITHUB_WORKSPACE}
+          echo "::set-env name=MSDK::${MSDK}"
+          echo "       MSDK:" ${MSDK}
+
+          declare -A DUTs
+          DUT_num=4
+          DUTs[0,0]=MAX32655
+          DUTs[0,1]=EvKit_V1
+          DUTs[1,0]=MAX32665
+          DUTs[1,1]=EvKit_V1
+          DUTs[2,0]=MAX32690
+          DUTs[2,1]=EvKit_V1
+          DUTs[3,0]=MAX32690
+          DUTs[3,1]=WLP_V1
+
+          CONFIG_FILE=~/Workspace/ci_config/ble5_ctr_test.json
+          CI_TEST=ble5_ctr_test.yml
+          printf "\ncat ${CONFIG_FILE}"
+          cat ${CONFIG_FILE}
+
+          HOST_NAME=`hostname`
+          # skip file change check (FCC) or not
+          SKIP_FCC=`python3 -c "import json; import os; obj=json.load(open('${CONFIG_FILE}')); print(obj['${CI_TEST}']['${HOST_NAME}']['SKIP_FCC'])"`
+          printf "\n\nSKIP_FCC: ${SKIP_FCC}"
+
+          RUN_TEST=0
+          for ((i=0; i<DUT_num; i++)); do
+            CHIP_UC=${DUTs[$i,0]}
+            BRD_TYPE=${DUTs[$i,1]}
+
+            echo "#----------------------------------------------------------------------------------------------------"
+            echo "# Check ${CHIP_UC} ${BRD_TYPE}"
+            echo "#----------------------------------------------------------------------------------------------------"
+            echo
+            set +e
+            bash $MSDK/.github/workflows/scripts/ble5_ctr_test_file_change_check.sh \
+              $SKIP_FCC \
+              $MSDK     \
+              $CHIP_UC  \
+              $BRD_TYPE
+            
+            RETVAL=$?
+            set -e
+
+            if [[ $RETVAL -eq 0 ]]; then
+                RUN_TEST=1
+                echo "Test is required."
+                break
+            fi
+
+            # Always run this test if a workflow_dispatch
+            if [[ $GITHUB_EVENT_NAME == "workflow_dispatch" ]]; then
+                RUN_TEST=1
+                echo "run this test because of workflow_dispatch"
+                break
+            fi
+
+          done
+          
+          echo "RUN_TEST=$RUN_TEST" >> $GITHUB_OUTPUT
+
+          if [ ${RUN_TEST} -eq 0 ]; then
+            echo "No test is required."
+            exit 0
+          fi
+
+      #--------------------------------------------------------------------------------------------
+      - name: run_ble5_ctr_test_on_required_boards
+        id: run_ble5_ctr_tests
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+        run: |
+          printf "\nMSDK: $MSDK\n"
+          RES_FOLDER=/tmp/ci_test/ble5_ctr
+          mkdir -p ${RES_FOLDER}
+          echo "::set-env name=RES_FOLDER::${RES_FOLDER}"
+          echo
+
+          # the test time will be used as the related file names
+          # ${RES_FOLDER}/YYYY-MM-DD_HH-MM-SS.lock will save the locked file names. 
+          # During this job, any locked resource info will be saved in that file.
+          # After the job (pass/fail/cancel) the resources will be released according to that file.
+          TEST_TIME=`date +%Y-%m-%d_%H-%M-%S`
+          echo "::set-env name=TEST_TIME::${TEST_TIME}"
+          echo
+
+          source ~/anaconda3/etc/profile.d/conda.sh
+          conda activate py3_10
+          echo
+
+          declare -A DUTs
+          DUT_num=4
+          DUTs[0,0]=MAX32655
+          DUTs[0,1]=EvKit_V1
+          DUTs[1,0]=MAX32665
+          DUTs[1,1]=EvKit_V1
+          DUTs[2,0]=MAX32690
+          DUTs[2,1]=EvKit_V1
+          DUTs[3,0]=MAX32690
+          DUTs[3,1]=WLP_V1
+
+          for ((i=0; i<DUT_num; i++)); do
+            CHIP_UC=${DUTs[$i,0]}
+            BRD_TYPE=${DUTs[$i,1]}
+
+            set -x
+            bash -c $GITHUB_WORKSPACE/scripts/ble5_ctr_test.sh \
+              ${MSDK}       \
+              ${CHIP_UC}    \
+              $BRD_TYPE     \
+              ${TEST_TIME}
+            RES=$?
+            set +x
+          done
+          
+      - name: post_test_process
+        env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+        run: |
+          source ~/anaconda3/etc/profile.d/conda.sh && conda activate py3_10
+          python3 -c "import sys; print(sys.version)"
+          echo
+
+          echo "#------------------------------------------------------------------------------------------------------"
+          echo "# release the locked resources in file ${RES_FOLDER}/${TEST_TIME}.lock"
+          echo "#------------------------------------------------------------------------------------------------------"
+          echo          
+          if [ -f ${RES_FOLDER}/${TEST_TIME}.lock ]; then
+            echo "Locked resources in ${RES_FOLDER}/${TEST_TIME}.lock:" 2>&1 | tee -a ${RES_FOLDER}/${TEST_TIME}.log
+            cat ${JOB_INFO} 2>&1 | tee -a ${RES_FOLDER}/${TEST_TIME}.log
+            echo
+
+            while IFS= read -r line; do
+              if [ "x${line}" != "x" ]; then
+                echo "${line}"
+                set -x
+                bash -c "${line}"
+                set +x
+              fi
+            done <${RES_FOLDER}/${TEST_TIME}.lock
+          fi
+
+          printf "\n\n------ DONE! ------\n\n"
+
+  
