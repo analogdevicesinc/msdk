@@ -33,9 +33,10 @@
 
 /**
  * @file    main.c
- * @brief   Flash Control Mass Erase & Write 32-bit enabled mode Example
- * @details This example shows how to mass erase the flash using the library
- *          and also how to Write and Verify 4 Words to the flash.
+ * @brief   LittleFS and wear leveling example.
+ * @details This example shows the basic functionality of the LittleFS
+ *          file system, including it's ability to distibute wear across
+ *          the flash memory.
  */
 
 /***** Includes *****/
