@@ -344,8 +344,6 @@ jobs:
           
           # Workspace doesn't return to home after each step.
           cd ..
-          pwd
-          ls
 
           # Find diff in MSDK repo
           cd ${{ env.MSDK_DIR }}
