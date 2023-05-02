@@ -69,69 +69,16 @@
 
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 256
-
 // #define RAW
 
-
-// Check CSI-2 Standard and your color format for these values.
-#ifdef RAW
-#define BITS_PER_PIXEL_ODD 8 // e.g. RAW8
-#define BITS_PER_PIXEL_EVEN 8
+#ifndef RAW
+#define PIXEL_FORMAT PIXEL_FORMAT_RGB565
+#define PIXEL_ORDER PIXEL_ORDER_RGB565_RGB
+#define BYTES_PER_PIXEL 2
 #else
-#define BITS_PER_PIXEL_ODD 16 // e.g. RGB565
-#define BITS_PER_PIXEL_EVEN 16
-#endif
-#define BYTES_PER_PIXEL_ODD (BITS_PER_PIXEL_ODD >> 3)
-#define BYTES_PER_PIXEL_EVEN (BITS_PER_PIXEL_EVEN >> 3)
-
-// CSI-2 Peripheral Configuration
-#define NUM_DATA_LANES 2
-#define FLUSH_COUNT 3
-#define VIRTUAL_CHANNEL 0x00
-#define RX_THRESHOLD 0x10
-#define WAIT_CYCLE 0x2000
-
-#define FLOW_CTRL                                                                  \
-    (MXC_F_CSI2_VFIFO_CFG1_WAIT_FIRST_FS | MXC_F_CSI2_VFIFO_CFG1_ACCU_FRAME_CTRL | \
-    MXC_F_CSI2_VFIFO_CFG1_ACCU_LINE_CNT | MXC_F_CSI2_VFIFO_CFG1_ACCU_PIXEL_CNT)
-
-// Select corresponding pixel format and output sequence for camera settings.
-//    Check OV5640 (or selected camera's) Datasheet for more information.
-#ifdef RAW
-#define PIXEL_FORMAT MIPI_PIXFORMAT_RAW
-#define OUT_SEQ 0x0 // BGBG GRGR
-#else
-#define PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
-#define OUT_SEQ 0x1
-// RGB565 ({r[4:0]g[5:3]},{g[2:0],b[4:0]})
-#endif
-#define MUX_CTRL 1 // ISP RGB
-
-// Streaming pixel format may not match pixel format the camera originally processed.
-//    For example, the camera can processes RAW then converts to RGB888.
-// #define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB888
-//#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
-#ifdef RAW
-#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RAW
-#else
-#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
-#endif
-
-// Select RGB Type and RAW Format for the CSI2 Peripheral.
-#define RGB_TYPE MXC_CSI2_TYPE_RGB888
-#define RAW_FORMAT MXC_CSI2_FORMAT_RGRG_GBGB
-
-// Select corresponding Payload data. Only one type can be selected across payload 0 and 1.
-#ifdef RAW
-#define PAYLOAD0_DATA_TYPE MXC_CSI2_PL0_RAW8
-#else
-#define PAYLOAD0_DATA_TYPE MXC_CSI2_PL0_RGB565
-#endif
-#define PAYLOAD1_DATA_TYPE MXC_CSI2_PL1_DISABLE_ALL
-
-#if (PAYLOAD0_DATA_TYPE != MXC_CSI2_PL0_DISABLE_ALL || \
-     PAYLOAD1_DATA_TYPE != MXC_CSI2_PL1_DISABLE_ALL)
-#error Invalid Payload Data Configuration.
+#define PIXEL_FORMAT PIXEL_FORMAT_RAW8
+#define PIXEL_ORDER PIXEL_ORDER_RAW_BGGR
+#define BYTES_PER_PIXEL 1
 #endif
 
 // Size of Image Buffer
@@ -167,14 +114,15 @@
 // __attribute__((section(".csi2_img_buff"))) uint8_t IMAGE[IMAGE_SIZE] = { 0 };
 unsigned int g_index = 0;
 
-uint8_t img_buffer[IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL_EVEN];
+// uint8_t img_buffer[IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL];
 
 /***** Functions *****/
 
-void CSI2_line_handler(uint8_t* data, unsigned int len)
+int CSI2_line_handler(uint8_t* data, unsigned int len)
 {
     ram_write_quad(g_index, data, len);
     g_index += len;
+    return E_NO_ERROR;
 }
 
 void process_img(void)
@@ -189,7 +137,7 @@ void process_img(void)
 
     g_index = 0;
     MXC_TMR_SW_Start(MXC_TMR0);
-    int error = MXC_CSI2_CaptureFrameDMA();
+    int error = mipi_camera_capture();
     unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     if(error) {
         printf("Failed!\n");
@@ -203,51 +151,34 @@ void process_img(void)
     MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
 
     MXC_TMR_SW_Start(MXC_TMR0);
+    // Send image header
     clear_serial_buffer();
-    snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-             "*IMG* %s %i %i %i", // Format img info into a string
-             mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
-    send_msg(g_serial_buffer);
+    send_msg(mipi_camera_get_image_header());
 
+    // Send image data
     for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
         // cnn_addr = read_bytes_from_cnn_sram((uint8_t *)g_serial_buffer, transfer_len, cnn_addr);
         ram_read_quad(i, (uint8_t*)g_serial_buffer, SERIAL_BUFFER_SIZE);
         MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
-        memcpy(&img_buffer[i], (uint8_t*)g_serial_buffer, SERIAL_BUFFER_SIZE);
     }
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
 
-    // clear_serial_buffer();
-    // snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-    //          "*IMG* %s %i %i %i", // Format img info into a string
-    //          mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
-    // send_msg(g_serial_buffer);
-
-    // for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
-    //     memcpy((uint8_t*)g_serial_buffer, &img_buffer[i], SERIAL_BUFFER_SIZE);
-    //     MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
-    // }
-    // elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    // printf("Done! (serial transmission took %i us)\n", elapsed);
-
     printf("Writing to TFT Display...\n");
     MXC_TMR_SW_Start(MXC_TMR0);
     TFT_SPI_Init();
-    // MXC_TFT_WriteBufferRGB565(0, 0, img_buffer, IMAGE_WIDTH, IMAGE_HEIGHT);
 
-    uint8_t tft_buffer[IMAGE_WIDTH*2];
+    uint8_t tft_buffer[IMAGE_WIDTH*BYTES_PER_PIXEL];
     unsigned int address = 0;
     for (int y = 0; y < 240; y++) {
         spi_init();
         ram_enter_quadmode();
         ram_read_quad(address, tft_buffer, IMAGE_WIDTH*2);
         TFT_SPI_Init();
-        // MXC_TFT_WriteBufferRGB565(0, y, &img_buffer[(y * IMAGE_WIDTH)*2], IMAGE_WIDTH, 1);
         MXC_TFT_WriteBufferRGB565(0, y, tft_buffer, IMAGE_WIDTH, 1);
         address += IMAGE_WIDTH*2;
     }
-    // elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (took %i us)\n", elapsed);
 }
 
@@ -294,9 +225,6 @@ int main(void)
 {
     int error;
     int id;
-    mxc_csi2_req_t req;
-    mxc_csi2_ctrl_cfg_t ctrl_cfg;
-    mxc_csi2_vfifo_cfg_t vfifo_cfg;
 
     console_init();
 
@@ -323,7 +251,17 @@ int main(void)
     printf("TFT SPI Initialization took %i us\n", elapsed);
 
     // Initialize camera
-    mipi_camera_init();
+    mipi_camera_settings_t settings = {
+        .width = IMAGE_WIDTH,
+        .height = IMAGE_HEIGHT,
+        .camera_format = {
+            .pixel_format = PIXEL_FORMAT,
+            .pixel_order = PIXEL_ORDER
+        },
+        .line_handler = CSI2_line_handler,
+    };
+
+    mipi_camera_init(settings);
 
     // Confirm correct camera is connected
     mipi_camera_get_product_id(&id);
@@ -331,57 +269,6 @@ int main(void)
     if (id != CAMERA_ID) {
         printf("Incorrect camera.\n");
         LED_On(1);
-        while (1) {}
-    }
-
-    mipi_camera_setup(IMAGE_WIDTH, IMAGE_HEIGHT, PIXEL_FORMAT, OUT_SEQ, MUX_CTRL);
-
-    // Configure RX Controller and PPI (D-PHY)
-    ctrl_cfg.invert_ppi_clk = MXC_CSI2_PPI_NO_INVERT;
-    ctrl_cfg.num_lanes = NUM_DATA_LANES;
-    ctrl_cfg.payload0 = PAYLOAD0_DATA_TYPE;
-    ctrl_cfg.payload1 = PAYLOAD1_DATA_TYPE;
-    ctrl_cfg.flush_cnt = FLUSH_COUNT;
-
-    ctrl_cfg.lane_src.d0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L0;
-    ctrl_cfg.lane_src.d1_swap_sel = MXC_CSI2_PAD_CDRX_PN_L1;
-    ctrl_cfg.lane_src.d2_swap_sel = MXC_CSI2_PAD_CDRX_PN_L2;
-    ctrl_cfg.lane_src.d3_swap_sel = MXC_CSI2_PAD_CDRX_PN_L3;
-    ctrl_cfg.lane_src.c0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L4;
-
-    // Image Data
-    req.img_addr = NULL;
-    req.pixels_per_line = IMAGE_WIDTH;
-    req.lines_per_frame = IMAGE_HEIGHT;
-    req.bits_per_pixel_odd = BITS_PER_PIXEL_ODD;
-    req.bits_per_pixel_even = BITS_PER_PIXEL_EVEN;
-    req.frame_num = 1;
-
-    // Convert RAW to RGB
-    req.process_raw_to_rgb = false;
-    req.rgb_type = RGB_TYPE;
-    req.raw_format = RAW_FORMAT;
-    req.autoflush = MXC_CSI2_AUTOFLUSH_ENABLE;
-    // req.raw_buf0_addr = (uint32_t)RAW_ADDR0;
-    // req.raw_buf1_addr = (uint32_t)RAW_ADDR1;
-    req.line_handler = CSI2_line_handler;
-    // req.callback = CSI2_Callback;
-
-    // Configure VFIFO
-    vfifo_cfg.virtual_channel = VIRTUAL_CHANNEL;
-    vfifo_cfg.rx_thd = RX_THRESHOLD;
-    vfifo_cfg.wait_cyc = WAIT_CYCLE;
-    vfifo_cfg.flow_ctrl = FLOW_CTRL;
-    vfifo_cfg.err_det_en = MXC_CSI2_ERR_DETECT_DISABLE;
-    vfifo_cfg.fifo_rd_mode = MXC_CSI2_READ_ONE_BY_ONE;
-    vfifo_cfg.dma_whole_frame = MXC_CSI2_DMA_LINE_BY_LINE;
-    vfifo_cfg.dma_mode = MXC_CSI2_DMA_FIFO_ABV_THD;
-    vfifo_cfg.bandwidth_mode = MXC_CSI2_NORMAL_BW;
-    vfifo_cfg.wait_en = MXC_CSI2_AHBWAIT_ENABLE;
-
-    error = MXC_CSI2_Init(&req, &ctrl_cfg, &vfifo_cfg);
-    if (error != E_NO_ERROR) {
-        printf("Error Initializing.\n\n");
         while (1) {}
     }
 

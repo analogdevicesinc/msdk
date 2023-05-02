@@ -219,8 +219,8 @@ typedef enum {
     MXC_CSI2_DMA_LINE_BY_LINE, ///< DMA line by line per frame
 } mxc_csi2_dma_frame_t;
 
-typedef struct {
-    bool error;
+typedef struct _mxc_csi2_capture_stats_t {
+    bool success;
     uint32_t ctrl_err;
     uint32_t ppi_err;
     uint32_t vfifo_err;
@@ -233,10 +233,16 @@ typedef struct {
  */
 typedef void (*mxc_csi2_complete_cb_t)(mxc_csi2_req_t *req, int result);
 
-// TODO: Doxygen
-typedef void (*mxc_csi2_line_handler_cb_t)(uint8_t* data, unsigned int len);
-
-
+/**
+ * @brief   The callback routine used to handle incoming image data from the camera sensor.
+ *          It is triggered once per row. Application code should implement this
+ *          and ensure that the callback is fast enough to keep up with the incoming data.
+ * @param[in] data  Pointer to the received bytes in memory.
+ * @param[in] len   The number of bytes received.
+ * 
+ * @return  0 on success.  If non-zero, the CSI-2 controller will stop capturing data.
+ */
+typedef int (*mxc_csi2_line_handler_cb_t)(uint8_t* data, unsigned int len);
 
 /**
  * @brief  Selects control source signals for data and clock lanes.
@@ -288,8 +294,8 @@ struct _mxc_csi2_req_t {
     uint32_t bits_per_pixel_odd; ///< Bits Per Pixel Odd
     uint32_t bits_per_pixel_even; ///< Bits Per Pixel Even
     uint32_t frame_num; ///< Number of frames to capture
-    mxc_csi2_complete_cb_t callback; ///< RX Callback for DMA requests
-    mxc_csi2_line_handler_cb_t line_handler;
+    mxc_csi2_complete_cb_t callback; ///< Callback triggered for each complete image frame
+    mxc_csi2_line_handler_cb_t line_handler; ///< Callback triggered for each image row
 
     uint8_t process_raw_to_rgb; ///< Select if processing RAW data to RGB type
     mxc_csi2_rgb_type_t rgb_type; ///< Select final processed RGB type

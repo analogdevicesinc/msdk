@@ -88,7 +88,6 @@ static volatile uint32_t line_byte_num;
 static volatile uint32_t frame_byte_num;
 static volatile bool g_frame_complete = false;
 static uint8_t* g_img_addr;
-mxc_csi2_reva_capture_stats_t g_capture_stats;
 
 typedef enum {
     SELECT_A,
@@ -282,7 +281,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
     int dma_byte_cnt;
     int dlane_stop_inten;
 
-    csi2_state.capture_stats.error = false;
+    csi2_state.capture_stats.success = false;
     csi2_state.capture_stats.ctrl_err = 0;
     csi2_state.capture_stats.ppi_err = 0;
     csi2_state.capture_stats.vfifo_err = 0;
@@ -357,12 +356,12 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
     pipeline.
 
     Register polling is too slow to do that here, so it's implemented in the 
-    interrupt handler.
+    interrupt handler. (MXC_CSI2_RevA_Handler)
     */
 
     while(!g_frame_complete) {}
 
-    if (csi2_state.capture_stats.error)
+    if (!csi2_state.capture_stats.success)
         return E_FAIL;
     else
         return E_NO_ERROR;
@@ -443,7 +442,7 @@ void MXC_CSI2_RevA_Handler()
 
     if (!csi2_state.synced && ppi_flags != 0) {
         /*
-        When these PPI flags have been signaled, the CSI2 interface
+        When the PPI flags below have been signaled, the CSI2 interface
         has synced up with the sensor.  It's now safe to monitor the VFIFO.
         */
         csi2_state.synced = (bool)(ppi_flags & (MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP));
@@ -480,7 +479,7 @@ void MXC_CSI2_RevA_Handler()
     }
 
     if (csi2_state.capture_stats.ctrl_err | csi2_state.capture_stats.ppi_err | csi2_state.capture_stats.vfifo_err) {
-        csi2_state.capture_stats.error = true;
+        csi2_state.capture_stats.success = false;
         MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
     }
         
@@ -1065,6 +1064,7 @@ void MXC_CSI2_RevA_DMA_Handler()
             if (line_cnt > csi2_state.req->lines_per_frame) {
                 line_cnt = 0;
                 MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+                csi2_state.capture_stats.success = true;
             } else {
                 MXC_DMA->ch[csi2_state.dma_channel].cnt = odd_line_byte_num;
                 if (lb.sel == SELECT_A) {
@@ -1078,7 +1078,10 @@ void MXC_CSI2_RevA_DMA_Handler()
 
                 if (csi2_state.req->line_handler != NULL)
                 {
-                    csi2_state.req->line_handler((lb.sel == SELECT_A) ? lb.b : lb.a, line_byte_num);
+                    // Call line handler
+                    int error = csi2_state.req->line_handler((lb.sel == SELECT_A) ? lb.b : lb.a, line_byte_num);
+                    if (error)
+                        MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
                 }
             }
         } else {

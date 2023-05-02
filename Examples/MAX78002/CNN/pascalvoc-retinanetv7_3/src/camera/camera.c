@@ -10,14 +10,12 @@ unsigned int g_index = 0;
 
 int error;
 int id;
-mxc_csi2_req_t req;
-mxc_csi2_ctrl_cfg_t ctrl_cfg;
-mxc_csi2_vfifo_cfg_t vfifo_cfg;
 
-void CSI2_line_handler(uint8_t *data, unsigned int len)
+int CSI2_line_handler(uint8_t *data, unsigned int len)
 {
     ram_write_quad(g_index, data, len);
     g_index += len;
+    return E_NO_ERROR;
 }
 
 void camera_capture(void)
@@ -32,11 +30,11 @@ void camera_capture(void)
 
     g_index = 0;
     MXC_TMR_SW_Start(MXC_TMR1);
-    int error = MXC_CSI2_CaptureFrameDMA();
+    int error = mipi_camera_capture();
     unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
     if (error) {
-        printf("Failed!\n");
         mxc_csi2_capture_stats_t stats = MXC_CSI2_GetCaptureStats();
+        printf("Failed!\n");
         printf("CTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n",
                stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
         return;
@@ -102,62 +100,23 @@ void service_console(cmd_t cmd)
 
 bool camera_init()
 {
-    mipi_camera_init();
-    // Confirm correct camera is connected
+    mipi_camera_settings_t camera_settings = {
+        .width = IMAGE_WIDTH,
+        .height = IMAGE_HEIGHT,
+        .camera_format = {
+            .pixel_format = PIXEL_FORMAT,
+            .pixel_order = PIXEL_ORDER
+        },
+        .line_handler = CSI2_line_handler
+    };
+
+    mipi_camera_init(camera_settings);
+
     mipi_camera_get_product_id(&id);
     printf("Camera ID = %x\n", id);
     if (id != CAMERA_ID) {
         printf("Incorrect camera.\n");
         LED_On(1);
-        return false;
-    }
-
-    mipi_camera_setup(IMAGE_WIDTH, IMAGE_HEIGHT, PIXEL_FORMAT, OUT_SEQ, MUX_CTRL);
-
-    // Configure RX Controller and PPI (D-PHY)
-    ctrl_cfg.invert_ppi_clk = MXC_CSI2_PPI_NO_INVERT;
-    ctrl_cfg.num_lanes = NUM_DATA_LANES;
-    ctrl_cfg.payload0 = PAYLOAD0_DATA_TYPE;
-    ctrl_cfg.payload1 = PAYLOAD1_DATA_TYPE;
-    ctrl_cfg.flush_cnt = FLUSH_COUNT;
-
-    ctrl_cfg.lane_src.d0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L0;
-    ctrl_cfg.lane_src.d1_swap_sel = MXC_CSI2_PAD_CDRX_PN_L1;
-    ctrl_cfg.lane_src.d2_swap_sel = MXC_CSI2_PAD_CDRX_PN_L2;
-    ctrl_cfg.lane_src.d3_swap_sel = MXC_CSI2_PAD_CDRX_PN_L3;
-    ctrl_cfg.lane_src.c0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L4;
-
-    // Image Data
-    req.img_addr = NULL;
-    req.pixels_per_line = IMAGE_WIDTH;
-    req.lines_per_frame = IMAGE_HEIGHT;
-    req.bits_per_pixel_odd = BITS_PER_PIXEL_ODD;
-    req.bits_per_pixel_even = BITS_PER_PIXEL_EVEN;
-    req.frame_num = 1;
-
-    // Convert RAW to RGB
-    req.process_raw_to_rgb = false;
-    req.rgb_type = RGB_TYPE;
-    req.raw_format = RAW_FORMAT;
-    req.autoflush = MXC_CSI2_AUTOFLUSH_ENABLE;
-    req.line_handler = CSI2_line_handler;
-    // req.callback = CSI2_Callback;
-
-    // Configure VFIFO
-    vfifo_cfg.virtual_channel = VIRTUAL_CHANNEL;
-    vfifo_cfg.rx_thd = RX_THRESHOLD;
-    vfifo_cfg.wait_cyc = WAIT_CYCLE;
-    vfifo_cfg.flow_ctrl = FLOW_CTRL;
-    vfifo_cfg.err_det_en = MXC_CSI2_ERR_DETECT_DISABLE;
-    vfifo_cfg.fifo_rd_mode = MXC_CSI2_READ_ONE_BY_ONE;
-    vfifo_cfg.dma_whole_frame = MXC_CSI2_DMA_LINE_BY_LINE;
-    vfifo_cfg.dma_mode = MXC_CSI2_DMA_FIFO_ABV_THD;
-    vfifo_cfg.bandwidth_mode = MXC_CSI2_NORMAL_BW;
-    vfifo_cfg.wait_en = MXC_CSI2_AHBWAIT_ENABLE;
-
-    error = MXC_CSI2_Init(&req, &ctrl_cfg, &vfifo_cfg);
-    if (error != E_NO_ERROR) {
-        printf("Error Initializating CSI2.\n\n");
         return false;
     }
 

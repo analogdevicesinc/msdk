@@ -42,23 +42,13 @@
 // Select corresponding pixel format and output sequence for camera settings.
 //    Check OV5640 (or selected camera's) Datasheet for more information.
 #ifdef RAW
-#define PIXEL_FORMAT MIPI_PIXFORMAT_RAW
-#define OUT_SEQ 0x0 // BGBG GRGR
+#define PIXEL_FORMAT PIXEL_FORMAT_RAW8
+#define PIXEL_ORDER PIXEL_ORDER_RAW_BGGR
+// BGBG GRGR
 #else
-#define PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
-#define OUT_SEQ 0x1
+#define PIXEL_FORMAT PIXEL_FORMAT_RGB565
+#define PIXEL_ORDER PIXEL_ORDER_RGB565_RGB
 // RGB565 ({r[4:0]g[5:3]},{g[2:0],b[4:0]})
-#endif
-#define MUX_CTRL 1 // ISP RGB
-
-// Streaming pixel format may not match pixel format the camera originally processed.
-//    For example, the camera can processes RAW then converts to RGB888.
-// #define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB888
-//#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
-#ifdef RAW
-#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RAW
-#else
-#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
 #endif
 
 // Select RGB Type and RAW Format for the CSI2 Peripheral.

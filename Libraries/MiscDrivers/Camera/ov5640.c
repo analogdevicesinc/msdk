@@ -453,8 +453,13 @@ static struct camera_reg default_regs[] = {
 //clang-format on
 
 static int g_slv_addr;
-// Default
-static mipi_pixformat_t g_pixelformat = MIPI_PIXFORMAT_RGB888;
+
+static mipi_camera_settings_t g_camera_settings = {
+    .camera_format = {
+        .pixel_format = PIXEL_FORMAT_RGB565,
+        .pixel_order = PIXEL_ORDER_RAW_BGGR
+    }
+};
 
 /******************************** Static Functions ***************************/
 static int init(void)
@@ -546,76 +551,99 @@ static int write_reg(uint16_t reg_addr, uint8_t reg_data)
     return cambus_write(reg_addr, reg_data);
 }
 
-static int set_pixformat(mipi_pixformat_t pixformat, uint32_t out_seq, int mux_ctrl)
+// Convert the given format to the correct output sequence value
+// to write to the FORMAT_CTRL register
+static uint8_t _camera_format_to_out_seq(pixel_order_t pixel_order)
+{
+    switch(pixel_order){
+        default:
+        return 0;
+        case PIXEL_ORDER_RAW_BGGR:
+        return 0x0;
+        case PIXEL_ORDER_RAW_GBRG:
+        return 0x1;
+        case PIXEL_ORDER_RAW_GRBG:
+        return 0x2;
+        case PIXEL_ORDER_RAW_RGGB:
+        return 0x3;
+        case PIXEL_ORDER_RGB565_BGR:
+        return 0x0;
+        case PIXEL_ORDER_RGB565_RGB:
+        return 0x1;
+        case PIXEL_ORDER_RGB565_GRB:
+        return 0x2;
+        case PIXEL_ORDER_RGB565_BRG:
+        return 0x3;
+        case PIXEL_ORDER_RGB565_GBR:
+        return 0x4;
+        case PIXEL_ORDER_RGB565_RBG:
+        return 0x5;
+    }
+}
+
+static int set_pixformat(mipi_camera_format_t camera_format)
 {
     int ret = 0;
+    uint8_t current_pll_ctrl = 0; // A field in SC_PLL_CTRL is used to set RAW8/RAW10
 
-    g_pixelformat = pixformat;
+    g_camera_settings.camera_format = camera_format;
 
-    ret |= cambus_write(FORMAT_MUX_CTRL, mux_ctrl);
+    ret |= cambus_write(FORMAT_MUX_CTRL, 1); // Enable ISP RGB
 
-    switch (pixformat) {
-    case MIPI_PIXFORMAT_RAW:
+    uint8_t out_seq = _camera_format_to_out_seq(camera_format.pixel_order);
+
+    switch (camera_format.pixel_format) {
+    case PIXEL_FORMAT_RAW8:
+        ret |= cambus_read(SC_PLL_CTRL0, &current_pll_ctrl);
+        ret |= cambus_write(SC_PLL_CTRL0, (current_pll_ctrl & (~0xF)) | 0x8); // 8-bit mode
+        ret |= cambus_write(FORMAT_CTRL00h, (0x00 << 4) | out_seq);
+        break;
+    case PIXEL_FORMAT_RAW10:
+        ret |= cambus_read(SC_PLL_CTRL0, &current_pll_ctrl);
+        ret |= cambus_write(SC_PLL_CTRL0, (current_pll_ctrl & (~0xF)) | 0xA); // 10-bit mode
         ret |= cambus_write(FORMAT_CTRL00h, (0x00 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_Y8:
-        ret |= cambus_write(FORMAT_CTRL00h, (0x01 << 4) | out_seq);
-        break;
-
-    case MIPI_PIXFORMAT_YUV422:
+    case PIXEL_FORMAT_YUV422:
         ret |= cambus_write(FORMAT_CTRL00h, (0x03 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_YUV420:
+    case PIXEL_FORMAT_YUV420:
         ret |= cambus_write(FORMAT_CTRL00h, (0x04 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_YUV420M:
-        ret |= cambus_write(FORMAT_CTRL00h, (0x05 << 4) | out_seq);
-        break;
-
-    case MIPI_PIXFORMAT_RGB444_1:
+    case PIXEL_FORMAT_RGB444: // Assume RGB444 format 1
         ret |= cambus_write(FORMAT_CTRL00h, (0x09 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_RGB444_2:
-        ret |= cambus_write(FORMAT_CTRL00h, (0x0a << 4) | out_seq);
-        break;
-
-    case MIPI_PIXFORMAT_RGB555_1:
+    case PIXEL_FORMAT_RGB555: // Assume RGB555 format 1
         ret |= cambus_write(FORMAT_CTRL00h, (0x07 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_RGB555_2:
-        ret |= cambus_write(FORMAT_CTRL00h, (0x08 << 4) | out_seq);
-        break;
-
-    case MIPI_PIXFORMAT_RGB565:
+    case PIXEL_FORMAT_RGB565:
         ret |= cambus_write(FORMAT_CTRL00h, (0x06 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_RGB888:
+    case PIXEL_FORMAT_RGB888:
         ret |= cambus_write(FORMAT_CTRL00h, (0x02 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_BYPASS:
+    case PIXEL_FORMAT_BYPASS:
         ret |= cambus_write(FORMAT_CTRL00h, (0x0f << 4) | out_seq);
         break;
 
     default:
-        ret = -1;
+        ret = E_NOT_SUPPORTED;
         break;
     }
 
     return ret;
 }
 
-static int get_pixformat(mipi_pixformat_t* pixformat)
+static int get_pixformat(mipi_camera_format_t* camera_format)
 {
-    int ret = 0;
-    *pixformat = g_pixelformat;
-    return ret;
+    *camera_format = g_camera_settings.camera_format;
+    return E_NO_ERROR;
 }
 
 static int set_framesize(int width, int height)

@@ -54,7 +54,7 @@ typedef enum {
 } mxc_csi2_reva_fifo_trig_t;
 
 typedef struct {
-    bool error;
+    bool success;
     uint32_t ctrl_err;
     uint32_t ppi_err;
     uint32_t vfifo_err;

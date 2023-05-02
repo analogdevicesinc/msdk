@@ -35,21 +35,72 @@
 #define LIBRARIES_MISCDRIVERS_CAMERA_MIPI_CAMERA_H_
 
 #include <stdint.h>
+#include "csi2.h"
 
+/*
+Public Functions:
+init
+reset
+write_reg
+read_reg
+setup(xres, yres, pixformat, line_handler)
+capture()
+
+Camera implements:
+
+*/
+
+/**
+ * @brief Pixel format enumerations.
+*/
 typedef enum {
-    MIPI_PIXFORMAT_RAW = 0x0,
-    MIPI_PIXFORMAT_Y8 = 0x1,
-    MIPI_PIXFORMAT_RGB888 = 0x2, // or YUV444
-    MIPI_PIXFORMAT_YUV422 = 0x3,
-    MIPI_PIXFORMAT_YUV420 = 0x4,
-    MIPI_PIXFORMAT_YUV420M = 0x5, // MIPI only
-    MIPI_PIXFORMAT_RGB565 = 0x6,
-    MIPI_PIXFORMAT_RGB555_1 = 0x7, // Format 1
-    MIPI_PIXFORMAT_RGB555_2 = 0x8, // Format 2
-    MIPI_PIXFORMAT_RGB444_1 = 0x9, // Format 1
-    MIPI_PIXFORMAT_RGB444_2 = 0xa, // Format 2
-    MIPI_PIXFORMAT_BYPASS = 0xf,
-} mipi_pixformat_t;
+    PIXEL_FORMAT_BYPASS,    
+    PIXEL_FORMAT_YUV420,
+    PIXEL_FORMAT_YUV422,
+    PIXEL_FORMAT_RGB444,
+    PIXEL_FORMAT_RGB555,   
+    PIXEL_FORMAT_RGB565,
+    PIXEL_FORMAT_RGB666,
+    PIXEL_FORMAT_RGB888,
+    PIXEL_FORMAT_RAW6,
+    PIXEL_FORMAT_RAW7,
+    PIXEL_FORMAT_RAW8,
+    PIXEL_FORMAT_RAW10,
+    PIXEL_FORMAT_RAW12,
+    PIXEL_FORMAT_RAW14,
+    PIXEL_FORMAT_RAW16,
+    PIXEL_FORMAT_RAW20
+} pixel_format_t;
+
+/**
+ * @brief Pixel format bit order enumerations
+*/
+typedef enum {
+    PIXEL_ORDER_DEFAULT,
+    PIXEL_ORDER_RAW_BGGR, /**< Default for RAW8, RAW10 */
+    PIXEL_ORDER_RAW_GBRG,
+    PIXEL_ORDER_RAW_GRBG,
+    PIXEL_ORDER_RAW_RGGB,
+    PIXEL_ORDER_RGB565_BGR,
+    PIXEL_ORDER_RGB565_RGB, /**< Default for RGB565 */
+    PIXEL_ORDER_RGB565_GRB,
+    PIXEL_ORDER_RGB565_BRG,
+    PIXEL_ORDER_RGB565_GBR,
+    PIXEL_ORDER_RGB565_RBG,
+    // TODO: Support other pixel orders
+} pixel_order_t;
+
+typedef struct _mipi_camera_format {
+    pixel_format_t pixel_format;
+    pixel_order_t pixel_order;
+} mipi_camera_format_t;
+
+typedef struct _mipi_camera_settings_t {
+    unsigned int width, height;
+    mipi_camera_format_t camera_format;
+    mxc_csi2_line_handler_cb_t line_handler;
+} mipi_camera_settings_t;
+
 
 typedef enum {
     MIPI_GAINCEILING_2X,
@@ -77,8 +128,8 @@ typedef struct _mipi_camera {
     int (*sleep)(int enable);
     int (*read_reg)(uint16_t reg_addr, uint8_t *reg_data);
     int (*write_reg)(uint16_t reg_addr, uint8_t reg_data);
-    int (*set_pixformat)(mipi_pixformat_t pixformat, uint32_t out_seq, int mux_ctrl);
-    int (*get_pixformat)(mipi_pixformat_t *pixformat);
+    int (*set_pixformat)(mipi_camera_format_t camera_format);
+    int (*get_pixformat)(mipi_camera_format_t *camera_format);
     int (*set_framesize)(int width, int height);
     int (*set_windowing)(int width, int height, int start_x, int start_y, int hsize, int vsize);
     int (*set_contrast)(int level);
@@ -93,15 +144,15 @@ typedef struct _mipi_camera {
     int (*get_luminance)(int *lum);
 } mipi_camera_t;
 
-int mipi_camera_reset(void);
-int mipi_camera_init(void);
+int mipi_camera_init(mipi_camera_settings_t camera_settings);
 int mipi_camera_write_reg(uint16_t reg_addr, uint8_t reg_data);
 int mipi_camera_read_reg(uint16_t reg_addr, uint8_t *reg_data);
 int mipi_camera_get_slave_address(void);
 int mipi_camera_get_product_id(int *id);
 int mipi_camera_get_manufacture_id(int *id);
-int mipi_camera_setup(int xres, int yres, mipi_pixformat_t pixformat, int out_seq, int mux_ctrl);
 int mipi_camera_sleep(int sleep);
-uint8_t *mipi_camera_get_pixel_format(mipi_pixformat_t pix_format);
+mipi_camera_format_t mipi_camera_get_camera_format(void);
+char* mipi_camera_get_image_header(void);
+int mipi_camera_capture();
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_MIPI_CAMERA_H_
