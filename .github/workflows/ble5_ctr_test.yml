@@ -27,6 +27,13 @@ jobs:
           submodules: false
           repository: Analog-Devices-MSDK/msdk
           ref: main
+
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          repository: yc-adi/ble_auto_testing
+          ref: main
+          path: ble_auto_testing
       
       #------------------------------------------------------------------------
       - name: watch_file_changes
@@ -71,7 +78,7 @@ jobs:
             echo "#----------------------------------------------------------------------------------------------------"
             echo
             set +e
-            bash $MSDK/.github/workflows/scripts/ble5_ctr_test_file_change_check.sh \
+            bash $MSDK/ble_auto_testing/scripts/ble5_ctr_test_file_change_check.sh \
               $SKIP_FCC \
               $MSDK     \
               $CHIP_UC  \
@@ -142,7 +149,7 @@ jobs:
             BRD_TYPE=${DUTs[$i,1]}
 
             set -x
-            bash -c $GITHUB_WORKSPACE/scripts/ble5_ctr_test.sh \
+            bash -c $GITHUB_WORKSPACE/ble_auto_testing/scripts/ble5_ctr_test.sh \
               ${MSDK}       \
               ${CHIP_UC}    \
               $BRD_TYPE     \

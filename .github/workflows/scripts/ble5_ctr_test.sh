@@ -182,7 +182,7 @@ else
 fi
 
 set -x
-unbuffer python3 $MSDK/.github/workflows/scripts/ble5_ctr_test.py \
+unbuffer python3 $MSDK/ble_auto_testing/scripts/ble5_ctr_test.py \
     --msdk $MSDK        \
     --chip $CHIP_UC     \
     --type $BRD2_TYPE   \
