@@ -50,19 +50,10 @@
 #include "lp.h"
 
 #define S_MODULE_NAME "facedetection"
-
-extern uint32_t ticks_1;
-extern uint32_t ticks_2;
-extern mxc_wut_cfg_t cfg;
-
 /************************************ VARIABLES ******************************/
 volatile uint32_t cnn_time; // Stopwatch
 
 static void run_cnn_1(int x_offset, int y_offset);
-
-#ifdef LP_MODE_ENABLE
-static void ARM_low_power(int lp_mode);
-#endif
 
 int face_detection(void)
 {
@@ -102,31 +93,6 @@ int face_detection(void)
 
 #if (PRINT_TIME == 1)
         PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
-#endif
-
-#ifdef LP_MODE_ENABLE
-        cfg.cmp_cnt = ticks_1;
-        /* Config WakeUp Timer */
-        MXC_WUT_Config(&cfg);
-        //Enable WUT
-        MXC_WUT_Enable();
-
-        LED_On(0); // green LED on
-        /* Configure low power mode */
-        ARM_low_power(LP_MODE);
-        LED_Off(0); // green LED off
-
-        // Camera startup delay (~100ms) after resuming XVCLK clock generated
-        // by Pulse Train which is off during UPM/Standby mode
-        if (LP_MODE > 2) {
-            cfg.cmp_cnt = ticks_2;
-            /* Config WakeUp Timer */
-            MXC_WUT_Config(&cfg);
-            //Enable WUT
-            MXC_WUT_Enable();
-            MXC_LP_EnterLowPowerMode();
-        }
-
 #endif
 
 #if (PRINT_TIME == 1)
@@ -188,8 +154,6 @@ static void run_cnn_1(int x_offset, int y_offset)
         }
     }
 
-    //LED_Off(1);
-
     int cnn_load_time = utils_get_time_ms() - pass_time;
     PR_DEBUG("CNN load data time : %dms", cnn_load_time);
 
@@ -211,58 +175,3 @@ static void run_cnn_1(int x_offset, int y_offset)
     // It's needed to load and run other CNN model
     cnn_disable();
 }
-
-#ifdef LP_MODE_ENABLE
-static void ARM_low_power(int lp_mode)
-{
-    switch (lp_mode) {
-    case 0:
-        PR_DEBUG("Active\n");
-        break;
-
-    case 1:
-        PR_DEBUG("Enter SLEEP\n");
-        MXC_LP_EnterSleepMode();
-        PR_DEBUG("Exit SLEEP\n");
-        break;
-
-    case 2:
-        PR_DEBUG("Enter LPM\n");
-        MXC_LP_EnterLowPowerMode();
-        PR_DEBUG("Exit LPM\n");
-        break;
-
-    case 3:
-        PR_DEBUG("Enter UPM\n");
-        MXC_LP_EnterMicroPowerMode();
-        PR_DEBUG("Exit UPM\n");
-        break;
-
-    case 4:
-        PR_DEBUG("Enter STANDBY\n");
-        MXC_LP_EnterStandbyMode();
-        PR_DEBUG("Exit STANDBY\n");
-        break;
-
-    case 5:
-        PR_DEBUG("Enter BACKUP\n");
-        MXC_LP_EnterBackupMode();
-        PR_DEBUG("Exit BACKUP\n");
-        break;
-
-    case 6:
-        PR_DEBUG("Enter POWERDOWN, disable WUT\n");
-        MXC_WUT_Disable();
-        MXC_Delay(SEC(2));
-        MXC_LP_EnterPowerDownMode();
-        PR_DEBUG("Exit SHUTDOWN\n");
-        break;
-
-    default:
-        PR_DEBUG("Enter SLEEP\n");
-        MXC_LP_EnterSleepMode();
-        PR_DEBUG("Exit SLEEP\n");
-        break;
-    }
-}
-#endif

@@ -37,7 +37,6 @@
 #define RED_LED 0
 #define GREEN_LED 1
 #define BLUE_LED 2
-#define USE_BOX_ONLY
 
 #define CAPTURE_X 50
 #define CAPTURE_Y 290
@@ -45,9 +44,6 @@
 #define HEIGHT_ID 160
 #define WIDTH_ID 120
 #define THICKNESS 1 //4
-
-#define FRAME_ORANGE 0xFD20
-#define FRAME_BLUE 0x001F
 
 #define MAX_X_OFFSET 23 //(IMAGE_H - WIDTH)/2 // 24 pixels
 #define MAX_Y_OFFSET 31 //(IMAGE_W - HEIGHT)/2 // 32 pixels

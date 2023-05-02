@@ -51,7 +51,6 @@
 #include "camera.h"
 #include "icc.h"
 #include "rtc.h"
-#include "lp.h"
 #include "cnn_1.h"
 #ifdef BOARD_FTHR_REVA
 #include "tft_ili9341.h"
@@ -72,15 +71,6 @@ mxc_uart_regs_t *CommUart;
 area_t area = { 50, 290, 180, 30 };
 #endif
 // *****************************************************************************
-void WUT_IRQHandler()
-{
-    MXC_WUT_IntClear();
-}
-
-uint32_t ticks_1;
-uint32_t ticks_2;
-mxc_wut_cfg_t cfg;
-
 int main(void)
 {
     int ret = 0;
@@ -179,23 +169,6 @@ int main(void)
     MXC_TFT_SetBackGroundColor(4);
     MXC_TFT_SetForeGroundColor(WHITE); // set font color to white
 #endif
-#endif
-
-#ifdef LP_MODE_ENABLE
-    /* Get ticks based on milliseconds */
-    MXC_WUT_GetTicks(500, MXC_WUT_UNIT_MILLISEC, &ticks_1);
-    MXC_WUT_GetTicks(100, MXC_WUT_UNIT_MILLISEC, &ticks_2);
-    /* Configure structure for one shot timer to trigger in a number of ticks */
-    cfg.mode = MXC_WUT_MODE_ONESHOT;
-    cfg.cmp_cnt = ticks_1;
-    /* Init WakeUp Timer */
-    MXC_WUT_Init(MXC_WUT_PRES_1);
-    /* Config WakeUp Timer */
-    MXC_WUT_Config(&cfg);
-    /* Enable Alarm wakeup by WUT */
-    MXC_LP_EnableWUTAlarmWakeup();
-    /* Enable WakeUp Timer interrupt */
-    NVIC_EnableIRQ(WUT_IRQn);
 #endif
 
     /* Initilize SD card */

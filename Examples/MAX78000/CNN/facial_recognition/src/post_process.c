@@ -41,7 +41,7 @@
 
 #define S_MODULE_NAME "post_proc"
 
-extern uint8_t box[4]; // x1, y1, x2, y2
+uint8_t box[4]; // x1, y1, x2, y2
 
 const int dims[NUM_SCALES][2] = { { 28, 21 }, { 7, 5 } };
 // NUM_PRIORS_PER_AR = SQUARE(dims[0]) + SQUARE(dims[1]) + SQUARE(dims[2]) + SQUARE(dims[3])

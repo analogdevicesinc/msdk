@@ -38,8 +38,6 @@
 //#define ROTATE_FEATHER_BOARD	// rotate 180 degree, camera at the bottom
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
-//#define LP_MODE_ENABLE
-#define LP_MODE 4 // 0:NO SLEEP, 1:SLEEP, 2:LPM, 3:UPM, 4:STANDBY, 5:BACKUP, 6:POWERDOWN
 
 #define TFT_WIDTH 320
 #define TFT_HEIGHT 240

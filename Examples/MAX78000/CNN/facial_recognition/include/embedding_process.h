@@ -38,8 +38,8 @@
 
 /*****************************     MACROS    *********************************/
 
-#define thresh_for_unknown_subject 13000 //9993
-#define closest_sub_buffer_size 3 //3 * 7
+#define thresh_for_unknown_subject 13000
+#define closest_sub_buffer_size 3
 
 /*****************************     VARIABLES *********************************/
 
