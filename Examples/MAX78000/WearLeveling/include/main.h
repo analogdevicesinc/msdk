@@ -31,57 +31,12 @@
  *
  ******************************************************************************/
 
-/* **** Includes **** */
-#include <stddef.h>
-#include "mxc_sys.h"
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_pins.h"
-#include "gpio.h"
-#include "gpio_reva.h"
-#include "gpio_common.h"
-#include "uart.h"
-#include "uart_revb.h"
-#include "uart_common.h"
-#include "mcr_regs.h"
-#include "dma.h"
+#ifndef MAIN_H_
+#define MAIN_H_
 
-/* **** Functions **** */
+/***** Definitions *****/
+#define LFS_START_PAGE 48 // First flash memory block used by LFS
+#define LFS_PAGE_CNT 16 // Number of flash memory blocks reserved for LFS
+#define CMD_MAX_SIZE 256 // Size of the command buffer
 
-int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t *cfg)
-{
-    int error;
-    mxc_gpio_regs_t *gpio = cfg->port;
-
-    // Configure alternate function
-    error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
-
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    // Configure the pad
-    switch (cfg->pad) {
-    case MXC_GPIO_PAD_NONE:
-        gpio->padctrl0 &= ~cfg->mask;
-        gpio->padctrl1 &= ~cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_PULL_UP:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps |= cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_PULL_DOWN:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps &= ~cfg->mask;
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
-
-    return E_NO_ERROR;
-}
+#endif // MAIN_H_
