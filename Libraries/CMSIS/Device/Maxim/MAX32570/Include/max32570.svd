@@ -6318,6 +6318,12 @@
        </enumeratedValues>
       </field>
       <field>
+       <name>CRYPTOCLK_DIV</name>
+       <description>Cryptographic Clock Divide.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>SYSCLK_RDY</name>
        <description>Clock Ready. This read only bit reflects whether the currently selected system clock source is running.</description>
        <bitOffset>13</bitOffset>
@@ -6337,21 +6343,30 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>CRYPTOCLK_DIV</name>
-       <description>Cryptographic clock divider</description>
-       <bitOffset>15</bitOffset>
-       <bitWidth>1</bitWidth>
-       <access>read-only</access>
+       <name>IPO_DIV</name>
+       <description>IPO clock divider</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>2</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>non_div</name>
-         <description>The cryptographic accelerator clock is running in non-divided mode.</description>
+         <name>DIV1</name>
+         <description>Divide 1.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>div</name>
-         <description>The cryptographic accelerator clock is running in divided mode.</description>
+         <name>DIV2</name>
+         <description>Divide 2.</description>
          <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>DIV4</name>
+         <description>Divide 4.</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>DIV8</name>
+         <description>Divide 8.</description>
+         <value>3</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
