@@ -259,13 +259,13 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>LOAD</name>
+            <name>LOAD_TRIM</name>
             <description>Load Trim.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>INV_GAIN</name>
+            <name>GAIN_INV</name>
             <description>Invert Gain.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
@@ -439,13 +439,13 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>TRIM_MSR_R1</name>
+            <name>R1</name>
             <description>MSR Trim R1.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>2</bitWidth>
           </field>
           <field>
-            <name>TRIM_MSR_R2</name>
+            <name>R2</name>
             <description>MSR Trim R2.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>3</bitWidth>

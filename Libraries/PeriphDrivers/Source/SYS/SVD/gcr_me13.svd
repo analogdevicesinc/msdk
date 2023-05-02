@@ -17,7 +17,7 @@
         <resetMask>0xFFFFFFFE</resetMask>
         <fields>
           <field>
-            <name>BSTAPEN</name>
+            <name>BSTAP_EN</name>
             <description>Boundary Scan TAP enable. When enabled, the JTAG port is connected to the Boundary Scan TAP. Otherwise, the port is connected to the ARM ICE function. This bit is reset by the POR. Reset value and access depend on the part number.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -149,8 +149,44 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CCHK</name>
-            <description>Compute ROM Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
+            <name>CHKRES1</name>
+            <description>ROM1 Checksum Result. This bit is only valid when the checksum is done and CCHK1 bit is cleared..</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CCHK1</name>
+            <description>Compute ROM1 Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>complete</name>
+                <description>No operation/complete.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>start</name>
+                <description>Start operation.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CCHK0</name>
+            <description>Compute ROM0 Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
             <bitOffset>13</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -167,8 +203,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CHKRES</name>
-            <description>ROM Checksum Result. This bit is only valid when CHKRD=1.</description>
+            <name>CHKRES0</name>
+            <description>ROM0 Checksum Result. This bit is only valid when the checksum is done and CCHK0 bit is cleared..</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -294,12 +330,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="DMA">
-            <name>RTC</name>
-            <description>Real Time Clock Reset.</description>
-            <bitOffset>17</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="DMA">
             <name>CRYPTO</name>
             <description>Cryptographic Reset. Setting this bit to 1 resets the AES block, the SHA block and the DES block.</description>
             <bitOffset>18</bitOffset>
@@ -331,7 +361,7 @@
           </field>
           <field derivedFrom="DMA">
             <name>TRNG</name>
-            <description>TRNG Reset. Setting this bit resets the TRNG block.</description>
+            <description>TODO(5-2-2023): Remove this bit before release. TRNG Reset. Setting this bit resets the TRNG block.</description>
             <bitOffset>24</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -675,18 +705,6 @@
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
-          <field derivedFrom="GPIO_WE">
-            <name>SDMA0_WE</name>
-            <description>SDMA0 Wake Up Enable. This bit enables SDMA0 acrtivity as wakeup source.</description>
-            <bitOffset>7</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="GPIO_WE">
-            <name>SDMA1_WE</name>
-            <description>SDMA1 Wake Up Enable. This bit enables SDMA1 acrtivity as wakeup source.</description>
-            <bitOffset>9</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
           <field>
             <name>ERFO_PD</name>
             <description>Radio Frequency oscilator Crystal Power Down. This bit selects the power state in DEEPSLEEP mode. </description>
@@ -836,35 +854,17 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SKBDFRQ_WEN</name>
-            <description>SKBDFRQ Write Enable. This bit allows the SKBDFREQ Register bits to be updated by Software.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>blocked</name>
-                <description>Writes to PCF are blocked.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>allowed</name>
-                <description>Writes to PCF are allowed</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
             <name>SDHCFRQ</name>
             <description>SDHC Clock Frequency. This bits defines the clock frequency of SDHC.</description>
             <bitOffset>7</bitOffset>
-            <bitWidth>1</bitWidth>
+            <bitWidth>2</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>48MHz</name>
+                <name>DIV2</name>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>24MHz</name>
+                <name>DIV4</name>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
@@ -882,22 +882,22 @@
             <bitWidth>2</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>div_4</name>
+                <name>DIV4</name>
                 <description>PCLK divide by 4.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>div_8</name>
+                <name>DIV8</name>
                 <description>PCLK divide by 8.</description>
                 <value>1</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>div_16</name>
+                <name>DIV16</name>
                 <description>PCLK divide by 16.</description>
                 <value>2</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>div_32</name>
+                <name>DIV32</name>
                 <description>PCLK divide by 32.</description>
                 <value>3</value>
               </enumeratedValue>
@@ -1350,22 +1350,28 @@
             <bitOffset>13</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
+          <field derivedFrom="RAM0">
+            <name>MAARAM</name>
+            <description>MAA RAM Zeroization.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>
-        <name>SCCK</name>
+        <name>SCCLKCTRL</name>
         <description>Smart Card Clock Control.</description>
         <addressOffset>0x34</addressOffset>
         <resetValue>0x00000000</resetValue>
         <fields>
           <field>
-            <name>SC0CD</name>
+            <name>SC0CLK_DIV</name>
             <description>Smart Card0 Clock Divider</description>
             <bitOffset>0</bitOffset>
             <bitWidth>6</bitWidth>
           </field>
           <field>
-            <name>SC1CD</name>
+            <name>SC1CLK_DIV</name>
             <description>Smart Card1 Clock Divider</description>
             <bitOffset>8</bitOffset>
             <bitWidth>6</bitWidth>
@@ -1396,8 +1402,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>CODEINTERR</name>
-            <description>Code Integrity Error Flag. This bit indicates a code integrity error has occured in XiP interface. </description>
+            <name>CODEAUTHERR</name>
+            <description>Code Authentication Error Flag. This bit indicates a code authentication error has occured in XiP interface. </description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -1414,8 +1420,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>DATAINTERR</name>
-            <description>Data Integrity Error Flag. This bit indicates a data integrity error has occured in XiP interface. </description>
+            <name>DATAAUTHERR</name>
+            <description>Data Authentication Error Flag. This bit indicates a data authentication error has occured in XiP interface. </description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -1704,12 +1710,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
-            <name>I2S</name>
-            <description>I2S Clock Disable.</description>
-            <bitOffset>15</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="UART2">
             <name>SPIXIPD</name>
             <description>SPI-XIP Data Clock Disable</description>
             <bitOffset>20</bitOffset>
@@ -1823,7 +1823,7 @@
         </fields>
       </register>
       <register>
-        <name>SYSIE</name>
+        <name>SYSINTEN</name>
         <description>System Status Interrupt Enable Register.</description>
         <addressOffset>0x54</addressOffset>
         <fields>
@@ -1914,13 +1914,13 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>ICC0</name>
+            <name>ICC</name>
             <description>ECC Icache0 Error Flag. Write 1 to clear.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>ICSPIXF</name>
+            <name>ICCXIP</name>
             <description>ECC SFCC Instruction Cache Error Flag. Write 1 to clear.</description>
             <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1981,13 +1981,13 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>ICC0</name>
+            <name>ICC</name>
             <description>ECC Icache0 Not Double Error Detect. Write 1 to clear.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>ICSPIXF</name>
+            <name>ICCXIP</name>
             <description>ECC IcacheXIP Not Double Error Detect. Write 1 to clear.</description>
             <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
@@ -2007,8 +2007,8 @@
         </fields>
       </register>
       <register>
-        <name>ECCIE</name>
-        <description>ECC IRQ Enable Register</description>
+        <name>ECCINTEN</name>
+        <description>ECC Interrupt Enable Register</description>
         <addressOffset>0x6C</addressOffset>
         <fields>
           <field>
@@ -2048,13 +2048,13 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>ICC0</name>
+            <name>ICC</name>
             <description>ECC Icache0 Interrupt Enable.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>ICSPIXF</name>
+            <name>ICCXIP</name>
             <description>ECC IcacheXIP Interrupt Enable.</description>
             <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
@@ -2128,7 +2128,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>PULLD</name>
+            <name>PD_EN</name>
             <description>Enabled the dedicated NFC LDO pin pulldown</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
@@ -2140,7 +2140,7 @@
             <bitWidth>2</bitWidth>
           </field>
           <field>
-            <name>BYPEN</name>
+            <name>BP_EN</name>
             <description>Bypass enable</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
@@ -2158,7 +2158,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>BYP_EN_DLY</name>
+            <name>BP_EN_DLY</name>
             <description>TBD</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
@@ -2171,13 +2171,13 @@
         <addressOffset>0x78</addressOffset>
         <fields>
           <field>
-            <name>BYPCNT</name>
+            <name>BP_CNT</name>
             <description>TBD</description>
             <bitOffset>0</bitOffset>
             <bitWidth>8</bitWidth>
           </field>
           <field>
-            <name>ENCNT</name>
+            <name>EN_CNT</name>
             <description>TBD</description>
             <bitOffset>8</bitOffset>
             <bitWidth>8</bitWidth>

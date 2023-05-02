@@ -441,7 +441,7 @@
      </fields>
     </register>
     <register>
-     <name>FIFODEP</name>
+     <name>FIFOLVL</name>
      <description>FIFO Depth.</description>
      <addressOffset>0x0004</addressOffset>
      <access>read-write</access>
@@ -5261,13 +5261,13 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>LOAD</name>
+       <name>LOAD_TRIM</name>
        <description>Load Trim.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>INV_GAIN</name>
+       <name>GAIN_INV</name>
        <description>Invert Gain.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
@@ -5441,13 +5441,13 @@
      <access>read-write</access>
      <fields>
       <field>
-       <name>TRIM_MSR_R1</name>
+       <name>R1</name>
        <description>MSR Trim R1.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>2</bitWidth>
       </field>
       <field>
-       <name>TRIM_MSR_R2</name>
+       <name>R2</name>
        <description>MSR Trim R2.</description>
        <bitOffset>2</bitOffset>
        <bitWidth>3</bitWidth>
@@ -5817,7 +5817,7 @@
      <resetMask>0xFFFFFFFE</resetMask>
      <fields>
       <field>
-       <name>BSTAPEN</name>
+       <name>BSTAP_EN</name>
        <description>Boundary Scan TAP enable. When enabled, the JTAG port is connected to the Boundary Scan TAP. Otherwise, the port is connected to the ARM ICE function. This bit is reset by the POR. Reset value and access depend on the part number.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
@@ -5949,8 +5949,44 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>CCHK</name>
-       <description>Compute ROM Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
+       <name>CHKRES1</name>
+       <description>ROM1 Checksum Result. This bit is only valid when the checksum is done and CCHK1 bit is cleared..</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>complete</name>
+         <description>No operation/complete.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>start</name>
+         <description>Start operation.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>CCHK1</name>
+       <description>Compute ROM1 Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>complete</name>
+         <description>No operation/complete.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>start</name>
+         <description>Start operation.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>CCHK0</name>
+       <description>Compute ROM0 Checksum. This bit is self-cleared when calculation is completed. Once set, software clearing this bit is ignored and the bit will remain set until the operation is completed.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -5967,8 +6003,8 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>CHKRES</name>
-       <description>ROM Checksum Result. This bit is only valid when CHKRD=1.</description>
+       <name>CHKRES0</name>
+       <description>ROM0 Checksum Result. This bit is only valid when the checksum is done and CCHK0 bit is cleared..</description>
        <bitOffset>15</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -6094,12 +6130,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="DMA">
-       <name>RTC</name>
-       <description>Real Time Clock Reset.</description>
-       <bitOffset>17</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="DMA">
        <name>CRYPTO</name>
        <description>Cryptographic Reset. Setting this bit to 1 resets the AES block, the SHA block and the DES block.</description>
        <bitOffset>18</bitOffset>
@@ -6131,7 +6161,7 @@
       </field>
       <field derivedFrom="DMA">
        <name>TRNG</name>
-       <description>TRNG Reset. Setting this bit resets the TRNG block.</description>
+       <description>TODO(5-2-2023): Remove this bit before release. TRNG Reset. Setting this bit resets the TRNG block.</description>
        <bitOffset>24</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
@@ -6475,18 +6505,6 @@
        <bitOffset>6</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field derivedFrom="GPIO_WE">
-       <name>SDMA0_WE</name>
-       <description>SDMA0 Wake Up Enable. This bit enables SDMA0 acrtivity as wakeup source.</description>
-       <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="GPIO_WE">
-       <name>SDMA1_WE</name>
-       <description>SDMA1 Wake Up Enable. This bit enables SDMA1 acrtivity as wakeup source.</description>
-       <bitOffset>9</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
       <field>
        <name>ERFO_PD</name>
        <description>Radio Frequency oscilator Crystal Power Down. This bit selects the power state in DEEPSLEEP mode. </description>
@@ -6636,35 +6654,17 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>SKBDFRQ_WEN</name>
-       <description>SKBDFRQ Write Enable. This bit allows the SKBDFREQ Register bits to be updated by Software.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>blocked</name>
-         <description>Writes to PCF are blocked.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>allowed</name>
-         <description>Writes to PCF are allowed</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>SDHCFRQ</name>
        <description>SDHC Clock Frequency. This bits defines the clock frequency of SDHC.</description>
        <bitOffset>7</bitOffset>
-       <bitWidth>1</bitWidth>
+       <bitWidth>2</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>48MHz</name>
+         <name>DIV2</name>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>24MHz</name>
+         <name>DIV4</name>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -6682,22 +6682,22 @@
        <bitWidth>2</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
-         <name>div_4</name>
+         <name>DIV4</name>
          <description>PCLK divide by 4.</description>
          <value>0</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>div_8</name>
+         <name>DIV8</name>
          <description>PCLK divide by 8.</description>
          <value>1</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>div_16</name>
+         <name>DIV16</name>
          <description>PCLK divide by 16.</description>
          <value>2</value>
         </enumeratedValue>
         <enumeratedValue>
-         <name>div_32</name>
+         <name>DIV32</name>
          <description>PCLK divide by 32.</description>
          <value>3</value>
         </enumeratedValue>
@@ -7150,22 +7150,28 @@
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
+      <field derivedFrom="RAM0">
+       <name>MAARAM</name>
+       <description>MAA RAM Zeroization.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
      </fields>
     </register>
     <register>
-     <name>SCCK</name>
+     <name>SCCLKCTRL</name>
      <description>Smart Card Clock Control.</description>
      <addressOffset>0x34</addressOffset>
      <resetValue>0x00000000</resetValue>
      <fields>
       <field>
-       <name>SC0CD</name>
+       <name>SC0CLK_DIV</name>
        <description>Smart Card0 Clock Divider</description>
        <bitOffset>0</bitOffset>
        <bitWidth>6</bitWidth>
       </field>
       <field>
-       <name>SC1CD</name>
+       <name>SC1CLK_DIV</name>
        <description>Smart Card1 Clock Divider</description>
        <bitOffset>8</bitOffset>
        <bitWidth>6</bitWidth>
@@ -7196,8 +7202,8 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>CODEINTERR</name>
-       <description>Code Integrity Error Flag. This bit indicates a code integrity error has occured in XiP interface. </description>
+       <name>CODEAUTHERR</name>
+       <description>Code Authentication Error Flag. This bit indicates a code authentication error has occured in XiP interface. </description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -7214,8 +7220,8 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>DATAINTERR</name>
-       <description>Data Integrity Error Flag. This bit indicates a data integrity error has occured in XiP interface. </description>
+       <name>DATAAUTHERR</name>
+       <description>Data Authentication Error Flag. This bit indicates a data authentication error has occured in XiP interface. </description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -7504,12 +7510,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="UART2">
-       <name>I2S</name>
-       <description>I2S Clock Disable.</description>
-       <bitOffset>15</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field derivedFrom="UART2">
        <name>SPIXIPD</name>
        <description>SPI-XIP Data Clock Disable</description>
        <bitOffset>20</bitOffset>
@@ -7623,7 +7623,7 @@
      </fields>
     </register>
     <register>
-     <name>SYSIE</name>
+     <name>SYSINTEN</name>
      <description>System Status Interrupt Enable Register.</description>
      <addressOffset>0x54</addressOffset>
      <fields>
@@ -7714,13 +7714,13 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ICC0</name>
+       <name>ICC</name>
        <description>ECC Icache0 Error Flag. Write 1 to clear.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ICSPIXF</name>
+       <name>ICCXIP</name>
        <description>ECC SFCC Instruction Cache Error Flag. Write 1 to clear.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
@@ -7781,13 +7781,13 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ICC0</name>
+       <name>ICC</name>
        <description>ECC Icache0 Not Double Error Detect. Write 1 to clear.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ICSPIXF</name>
+       <name>ICCXIP</name>
        <description>ECC IcacheXIP Not Double Error Detect. Write 1 to clear.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
@@ -7807,8 +7807,8 @@
      </fields>
     </register>
     <register>
-     <name>ECCIE</name>
-     <description>ECC IRQ Enable Register</description>
+     <name>ECCINTEN</name>
+     <description>ECC Interrupt Enable Register</description>
      <addressOffset>0x6C</addressOffset>
      <fields>
       <field>
@@ -7848,13 +7848,13 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ICC0</name>
+       <name>ICC</name>
        <description>ECC Icache0 Interrupt Enable.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>ICSPIXF</name>
+       <name>ICCXIP</name>
        <description>ECC IcacheXIP Interrupt Enable.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
@@ -7928,7 +7928,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>PULLD</name>
+       <name>PD_EN</name>
        <description>Enabled the dedicated NFC LDO pin pulldown</description>
        <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
@@ -7940,7 +7940,7 @@
        <bitWidth>2</bitWidth>
       </field>
       <field>
-       <name>BYPEN</name>
+       <name>BP_EN</name>
        <description>Bypass enable</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>
@@ -7958,7 +7958,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>BYP_EN_DLY</name>
+       <name>BP_EN_DLY</name>
        <description>TBD</description>
        <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
@@ -7971,13 +7971,13 @@
      <addressOffset>0x78</addressOffset>
      <fields>
       <field>
-       <name>BYPCNT</name>
+       <name>BP_CNT</name>
        <description>TBD</description>
        <bitOffset>0</bitOffset>
        <bitWidth>8</bitWidth>
       </field>
       <field>
-       <name>ENCNT</name>
+       <name>EN_CNT</name>
        <description>TBD</description>
        <bitOffset>8</bitOffset>
        <bitWidth>8</bitWidth>
@@ -10713,7 +10713,7 @@
        <bitWidth>2</bitWidth>
       </field>
       <field>
-       <name>VSSEL</name>
+       <name>VSEL</name>
        <description>PDOWN Voltage Select</description>
        <bitOffset>2</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10762,7 +10762,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>VDDIOHSEL_RST</name>
+       <name>PADVDDIOHSEL_RST</name>
        <description>Reset VIDDIOH Select.</description>
        <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
@@ -10790,7 +10790,7 @@
     </register>
     <register>
      <name>RTCRST</name>
-     <description>Reset Registter.</description>
+     <description>Reset Register.</description>
      <addressOffset>0x18</addressOffset>
      <fields>
       <field>
@@ -10807,13 +10807,13 @@
      <addressOffset>0x1C</addressOffset>
      <fields>
       <field>
-       <name>TRIM_X1</name>
+       <name>X1</name>
        <description>RTC Trim X1.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>5</bitWidth>
       </field>
       <field>
-       <name>TRIM_X2</name>
+       <name>X2</name>
        <description>RTC Trim X2.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>5</bitWidth>
@@ -10826,9 +10826,118 @@
      <addressOffset>0x60</addressOffset>
      <fields>
       <field>
-       <name>LDO0P9_EN</name>
+       <name>0P9V_EN</name>
        <description>LDO 0.9V Enable.</description>
        <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>PWRMONST</name>
+     <description>LDO Control Register.</description>
+     <addressOffset>0x64</addressOffset>
+     <fields>
+      <field>
+       <name>PORZ_VLOSS</name>
+       <description>Sticky bit indicating power-on status of core power domains of VDDIO, VDDIOH, VCOR</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PORZ_VBAT</name>
+       <description>Sticky bit indicating power-on status of the battery.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PORZ_VRTC</name>
+       <description>Sticky bit indicating power-on status of the RTC.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PORZ_VDDC</name>
+       <description>Sticky bit indicating power-on status of VCORE supply.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PORZ_VDDA</name>
+       <description>Sticky bit indicating power-on status of VDDA (for analog) supply.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>PORZ_VDDB</name>
+       <description>Sticky bit indicating power-on status of VDDB (for USB) supply.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VDDC</name>
+       <description>Sticky bit indicating reset condition on VCORE supply.</description>
+       <bitOffset>9</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VDDA</name>
+       <description>Sticky bit indicating reset condition on VDDA (analog) supply.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VDDB</name>
+       <description>Sticky bit indicating reset condition on VDDB (USB) supply.</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VDDIO</name>
+       <description>Sticky bit indicating reset condition on VDDIO supply.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VDDIOH</name>
+       <description>Sticky bit indicating reset condition on VDDIOH supply.</description>
+       <bitOffset>13</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VRTC</name>
+       <description>Sticky bit indicating reset condition on RTC supply.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_LDO0P9V</name>
+       <description>Non-Sticky bit indicating reset condition on 0.9V USB supply.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VDDCA</name>
+       <description>Non-Sticky bit indicating reset condition on VCORE in Analog supply.</description>
+       <bitOffset>17</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VCOREHV</name>
+       <description>Non-Sticky bit indicating high voltage reset condition on VCORE supply.</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VDDIOHV</name>
+       <description>Non-Sticky bit indicating high voltage reset condition on VDDIO supply.</description>
+       <bitOffset>19</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RSTZ_VDDIOHHV</name>
+       <description>Non-Sticky bit indicating high voltage reset condition on VDDIOH supply.</description>
+       <bitOffset>20</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
@@ -12287,35 +12396,6 @@
      <addressOffset>0x00</addressOffset>
      <fields>
       <field>
-       <name>RAMRET_EN</name>
-       <description>System RAM retention in BACKUP mode. These two bits are used in conjuction with RREGEN bit. </description>
-       <bitOffset>0</bitOffset>
-       <bitWidth>2</bitWidth>
-      </field>
-      <field>
-       <name>OVR</name>
-       <description>Operating Voltage Range</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>2</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>0_9V</name>
-         <description>0.9V 24MHz</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>1_0V</name>
-         <description>1.0V 48MHz</description>
-         <value>1</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>1_1V</name>
-         <description>1.1V 96MHz</description>
-         <value>2</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
        <name>RETREG_EN</name>
        <description>Retention Regulator Enable. This bit controls the retention regulator in BACKUP mode. </description>
        <bitOffset>8</bitOffset>
@@ -12370,32 +12450,32 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>VCOREPOR_DIS</name>
-       <description>VCore Power-On Reset Monitor Disable. This bit controls the Power-On Reset monitor on VDDC supply in DeepSleep and BACKUP mode.</description>
+       <name>PORVDDCMON_DIS</name>
+       <description>VDDC (VCore) Power-On Reset Monitor Disable. This bit controls the Power-On Reset monitor on VDDC supply in DeepSleep and BACKUP mode.</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disabled.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enabled.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
       </field>
       <field>
-       <name>LDO_DIS</name>
-       <description>Disable Main LDO</description>
-       <bitOffset>16</bitOffset>
+       <name>VDDIOHHVMON_DIS</name>
+       <description>VDDIOH High Voltage Monitor Disable. This bit controls the power monitor on VDDIOH supply in all operating modes.</description>
+       <bitOffset>17</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>VCOREMON_DIS</name>
-       <description>Vcore Monitor Disable. This bit controls the power monitor on the VCore supply in all operating modes.</description>
+       <name>VDDIOHVMON_DIS</name>
+       <description>VDDIO High Voltage Monitor Disable. This bit controls the power monitor on VDDIO supply in all operating modes.</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>VCOREHVMON_DIS</name>
+       <description>VCORE High Voltage Monitor Disable. This bit controls the power monitor on VCORE supply in all operating modes.</description>
+       <bitOffset>19</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>VDDCMON_DIS</name>
+       <description>VDDC (Vcore) Monitor Disable. This bit controls the power monitor on the VCore supply in all operating modes.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -12467,7 +12547,7 @@
       </field>
       <field>
        <name>VDDIOHMON_DIS</name>
-       <description>VFDDIOH Monitor Disable. This bit controls the power monitor of the Analog Supply in all operating modes.</description>
+       <description>VDDIOH Monitor Disable. This bit controls the power monitor of the Analog Supply in all operating modes.</description>
        <bitOffset>24</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -12577,27 +12657,21 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>SDMA0</name>
-       <description>Smart DMA 0 Detect Wakeup Flag.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>BACKUP</name>
        <description>Battery Back Wakeup Flag (write one to clear). This bit will be set when exiting Battery Backup Mode.</description>
        <bitOffset>16</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>RESET</name>
+       <name>RSTDET</name>
        <description>Reset Detect Wakeup Flag (write one to clear). This bit will be set when the external reset causes wakeup</description>
        <bitOffset>17</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>SDMA1</name>
-       <description>Smart DMA 1 Detect Wakeup Flag.</description>
-       <bitOffset>18</bitOffset>
+       <name>DRSEVT</name>
+       <description>DRS Event Wakeup Flag.</description>
+       <bitOffset>19</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
@@ -12617,18 +12691,6 @@
        <name>USBVBUS</name>
        <description>USB VBUS Detect Wakeup Enable. This bit allows wakeup from the USB power supply on or off status.</description>
        <bitOffset>2</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>SDMA0</name>
-       <description>Smart DMA 0 Wakep Enable.</description>
-       <bitOffset>3</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>SDMA1</name>
-       <description>Smart DMA 1 Wakep Enable.</description>
-       <bitOffset>18</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
      </fields>
@@ -12801,9 +12863,9 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MEU</name>
-       <description>MEU MEM Shut Down.</description>
-       <bitOffset>11</bitOffset>
+       <name>CRYPTO</name>
+       <description>Crypto Memory (MAA) Shut Down.</description>
+       <bitOffset>10</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -12821,6 +12883,24 @@
       <field>
        <name>USBFIFO</name>
        <description>USB FIFO Shut Down.</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>normal</name>
+         <description>Normal Operating Mode.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>shutdown</name>
+         <description>Shutdown Mode.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>ROM0</name>
+       <description>ROM0 Shut Down. (CPU0 ROM)</description>
        <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -12837,8 +12917,8 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>ROM</name>
-       <description>ROM Shut Down.</description>
+       <name>MEU</name>
+       <description>MEU MEM Shut Down.</description>
        <bitOffset>13</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -12855,9 +12935,9 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>MAA</name>
-       <description>MAA Shut Down.</description>
-       <bitOffset>15</bitOffset>
+       <name>ROM1</name>
+       <description>ROM1 Shut Down.</description>
+       <bitOffset>14</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -12888,6 +12968,2447 @@
      <name>GP1</name>
      <description>General Purpose Register 1</description>
      <addressOffset>0x4C</addressOffset>
+    </register>
+    <register>
+     <name>LPWKPOL0A</name>
+     <description>Low Power Wakeup Polarity Select for GPIO0.</description>
+     <addressOffset>0x50</addressOffset>
+     <fields>
+      <field>
+       <name>0</name>
+       <description>Polarity Select for Wakeup Events for Pin 0.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>1</name>
+       <description>Polarity Select for Wakeup Events for Pin 1.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>2</name>
+       <description>Polarity Select for Wakeup Events for Pin 2.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>3</name>
+       <description>Polarity Select for Wakeup Events for Pin 3.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>4</name>
+       <description>Polarity Select for Wakeup Events for Pin 4.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>5</name>
+       <description>Polarity Select for Wakeup Events for Pin 5.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>6</name>
+       <description>Polarity Select for Wakeup Events for Pin 6.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>7</name>
+       <description>Polarity Select for Wakeup Events for Pin 7.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>8</name>
+       <description>Polarity Select for Wakeup Events for Pin 8.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>9</name>
+       <description>Polarity Select for Wakeup Events for Pin 9.</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>10</name>
+       <description>Polarity Select for Wakeup Events for Pin 10.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>11</name>
+       <description>Polarity Select for Wakeup Events for Pin 11.</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>12</name>
+       <description>Polarity Select for Wakeup Events for Pin 12.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>13</name>
+       <description>Polarity Select for Wakeup Events for Pin 13.</description>
+       <bitOffset>26</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>14</name>
+       <description>Polarity Select for Wakeup Events for Pin 14.</description>
+       <bitOffset>28</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>15</name>
+       <description>Polarity Select for Wakeup Events for Pin 15.</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>LPWKPOL0B</name>
+     <description>Low Power Wakeup Polarity Select for GPIO0.</description>
+     <addressOffset>0x54</addressOffset>
+     <fields>
+      <field>
+       <name>16</name>
+       <description>Polarity Select for Wakeup Events for Pin 16.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>17</name>
+       <description>Polarity Select for Wakeup Events for Pin 17.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>18</name>
+       <description>Polarity Select for Wakeup Events for Pin 18.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>19</name>
+       <description>Polarity Select for Wakeup Events for Pin 19.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>20</name>
+       <description>Polarity Select for Wakeup Events for Pin 20.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>21</name>
+       <description>Polarity Select for Wakeup Events for Pin 21.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>22</name>
+       <description>Polarity Select for Wakeup Events for Pin 22.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>23</name>
+       <description>Polarity Select for Wakeup Events for Pin 23.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>24</name>
+       <description>Polarity Select for Wakeup Events for Pin 24.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>25</name>
+       <description>Polarity Select for Wakeup Events for Pin 25.</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>26</name>
+       <description>Polarity Select for Wakeup Events for Pin 26.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>27</name>
+       <description>Polarity Select for Wakeup Events for Pin 27.</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>28</name>
+       <description>Polarity Select for Wakeup Events for Pin 28.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>29</name>
+       <description>Polarity Select for Wakeup Events for Pin 29.</description>
+       <bitOffset>26</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>30</name>
+       <description>Polarity Select for Wakeup Events for Pin 30.</description>
+       <bitOffset>28</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>31</name>
+       <description>Polarity Select for Wakeup Events for Pin 31.</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>LPWKPOL1A</name>
+     <description>Low Power Wakeup Polarity Select for GPIO1.</description>
+     <addressOffset>0x58</addressOffset>
+     <fields>
+      <field>
+       <name>0</name>
+       <description>Polarity Select for Wakeup Events for Pin 0.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>1</name>
+       <description>Polarity Select for Wakeup Events for Pin 1.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>2</name>
+       <description>Polarity Select for Wakeup Events for Pin 2.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>3</name>
+       <description>Polarity Select for Wakeup Events for Pin 3.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>4</name>
+       <description>Polarity Select for Wakeup Events for Pin 4.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>5</name>
+       <description>Polarity Select for Wakeup Events for Pin 5.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>6</name>
+       <description>Polarity Select for Wakeup Events for Pin 6.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>7</name>
+       <description>Polarity Select for Wakeup Events for Pin 7.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>8</name>
+       <description>Polarity Select for Wakeup Events for Pin 8.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>9</name>
+       <description>Polarity Select for Wakeup Events for Pin 9.</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>10</name>
+       <description>Polarity Select for Wakeup Events for Pin 10.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>11</name>
+       <description>Polarity Select for Wakeup Events for Pin 11.</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>12</name>
+       <description>Polarity Select for Wakeup Events for Pin 12.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>13</name>
+       <description>Polarity Select for Wakeup Events for Pin 13.</description>
+       <bitOffset>26</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>14</name>
+       <description>Polarity Select for Wakeup Events for Pin 14.</description>
+       <bitOffset>28</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>15</name>
+       <description>Polarity Select for Wakeup Events for Pin 15.</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>LPWKPOL1B</name>
+     <description>Low Power Wakeup Polarity Select for GPIO1.</description>
+     <addressOffset>0x5C</addressOffset>
+     <fields>
+      <field>
+       <name>16</name>
+       <description>Polarity Select for Wakeup Events for Pin 16.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>17</name>
+       <description>Polarity Select for Wakeup Events for Pin 17.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>18</name>
+       <description>Polarity Select for Wakeup Events for Pin 18.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>19</name>
+       <description>Polarity Select for Wakeup Events for Pin 19.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>20</name>
+       <description>Polarity Select for Wakeup Events for Pin 20.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>21</name>
+       <description>Polarity Select for Wakeup Events for Pin 21.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>22</name>
+       <description>Polarity Select for Wakeup Events for Pin 22.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>23</name>
+       <description>Polarity Select for Wakeup Events for Pin 23.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>24</name>
+       <description>Polarity Select for Wakeup Events for Pin 24.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>25</name>
+       <description>Polarity Select for Wakeup Events for Pin 25.</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>26</name>
+       <description>Polarity Select for Wakeup Events for Pin 26.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>27</name>
+       <description>Polarity Select for Wakeup Events for Pin 27.</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>28</name>
+       <description>Polarity Select for Wakeup Events for Pin 28.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>29</name>
+       <description>Polarity Select for Wakeup Events for Pin 29.</description>
+       <bitOffset>26</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>30</name>
+       <description>Polarity Select for Wakeup Events for Pin 30.</description>
+       <bitOffset>28</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>31</name>
+       <description>Polarity Select for Wakeup Events for Pin 31.</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>LPWKPOL2A</name>
+     <description>Low Power Wakeup Polarity Select for GPIO2.</description>
+     <addressOffset>0x60</addressOffset>
+     <fields>
+      <field>
+       <name>0</name>
+       <description>Polarity Select for Wakeup Events for Pin 0.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>1</name>
+       <description>Polarity Select for Wakeup Events for Pin 1.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>2</name>
+       <description>Polarity Select for Wakeup Events for Pin 2.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>3</name>
+       <description>Polarity Select for Wakeup Events for Pin 3.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>4</name>
+       <description>Polarity Select for Wakeup Events for Pin 4.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>5</name>
+       <description>Polarity Select for Wakeup Events for Pin 5.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>6</name>
+       <description>Polarity Select for Wakeup Events for Pin 6.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>7</name>
+       <description>Polarity Select for Wakeup Events for Pin 7.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>8</name>
+       <description>Polarity Select for Wakeup Events for Pin 8.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>9</name>
+       <description>Polarity Select for Wakeup Events for Pin 9.</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>10</name>
+       <description>Polarity Select for Wakeup Events for Pin 10.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>11</name>
+       <description>Polarity Select for Wakeup Events for Pin 11.</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>12</name>
+       <description>Polarity Select for Wakeup Events for Pin 12.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>13</name>
+       <description>Polarity Select for Wakeup Events for Pin 13.</description>
+       <bitOffset>26</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>14</name>
+       <description>Polarity Select for Wakeup Events for Pin 14.</description>
+       <bitOffset>28</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>15</name>
+       <description>Polarity Select for Wakeup Events for Pin 15.</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>LPWKPOL2B</name>
+     <description>Low Power Wakeup Polarity Select for GPIO2.</description>
+     <addressOffset>0x64</addressOffset>
+     <fields>
+      <field>
+       <name>16</name>
+       <description>Polarity Select for Wakeup Events for Pin 16.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>17</name>
+       <description>Polarity Select for Wakeup Events for Pin 17.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>18</name>
+       <description>Polarity Select for Wakeup Events for Pin 18.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>19</name>
+       <description>Polarity Select for Wakeup Events for Pin 19.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>20</name>
+       <description>Polarity Select for Wakeup Events for Pin 20.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>21</name>
+       <description>Polarity Select for Wakeup Events for Pin 21.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>22</name>
+       <description>Polarity Select for Wakeup Events for Pin 22.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>23</name>
+       <description>Polarity Select for Wakeup Events for Pin 23.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>24</name>
+       <description>Polarity Select for Wakeup Events for Pin 24.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>25</name>
+       <description>Polarity Select for Wakeup Events for Pin 25.</description>
+       <bitOffset>18</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>26</name>
+       <description>Polarity Select for Wakeup Events for Pin 26.</description>
+       <bitOffset>20</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>27</name>
+       <description>Polarity Select for Wakeup Events for Pin 27.</description>
+       <bitOffset>22</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>28</name>
+       <description>Polarity Select for Wakeup Events for Pin 28.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>29</name>
+       <description>Polarity Select for Wakeup Events for Pin 29.</description>
+       <bitOffset>26</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>30</name>
+       <description>Polarity Select for Wakeup Events for Pin 30.</description>
+       <bitOffset>28</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>31</name>
+       <description>Polarity Select for Wakeup Events for Pin 31.</description>
+       <bitOffset>30</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>LPWKPOL3</name>
+     <description>Low Power Wakeup Polarity Select for GPIO3.</description>
+     <addressOffset>0x68</addressOffset>
+     <fields>
+      <field>
+       <name>0</name>
+       <description>Polarity Select for Wakeup Events for Pin 0.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>1</name>
+       <description>Polarity Select for Wakeup Events for Pin 1.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>2</name>
+       <description>Polarity Select for Wakeup Events for Pin 2.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>3</name>
+       <description>Polarity Select for Wakeup Events for Pin 3.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>4</name>
+       <description>Polarity Select for Wakeup Events for Pin 4.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>5</name>
+       <description>Polarity Select for Wakeup Events for Pin 5.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>6</name>
+       <description>Polarity Select for Wakeup Events for Pin 6.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>7</name>
+       <description>Polarity Select for Wakeup Events for Pin 7.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>BOTH_EDGES</name>
+         <description>Both Edges.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RISING</name>
+         <description>Rising Edge.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>FALLING</name>
+         <description>Falling Edge.</description>
+         <value>2</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
     </register>
    </registers>
   </peripheral>
@@ -16062,7 +18583,7 @@
      </fields>
     </register>
     <register>
-     <name>SFSTAT</name>
+     <name>SFDIS</name>
      <description>Security Function Status Register.</description>
      <addressOffset>0x104</addressOffset>
      <access>read-only</access>
@@ -22449,12 +24970,68 @@
      <description>System Init. Configuration Register 2.</description>
      <addressOffset>0x08</addressOffset>
      <access>read-only</access>
-    </register>
-    <register>
-     <name>BB_SIR3</name>
-     <description>System Init. Configuration Register 3.</description>
-     <addressOffset>0x0C</addressOffset>
-     <access>read-only</access>
+     <fields>
+      <field>
+       <name>RAM0ECCEN</name>
+       <description>ECC System RAM0 Enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM1ECCEN</name>
+       <description>ECC System RAM1 Enable.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM2ECCEN</name>
+       <description>ECC System RAM2 Enable.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM3ECCEN</name>
+       <description>ECC System RAM2 Enable.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM4ECCEN</name>
+       <description>ECC System RAM2 Enable.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>RAM5ECCEN</name>
+       <description>ECC System RAM2 Enable.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ICCECCEN</name>
+       <description>ECC ICC Enable.</description>
+       <bitOffset>8</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ICCXIPECCEN</name>
+       <description>ECC ICC XIP Enable.</description>
+       <bitOffset>10</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FL0ECCEN</name>
+       <description>Flash 0 ECC Enable.</description>
+       <bitOffset>11</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>FL1ECCEN</name>
+       <description>Flash 1 ECC Enable.</description>
+       <bitOffset>12</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
     </register>
    </registers>
   </peripheral>

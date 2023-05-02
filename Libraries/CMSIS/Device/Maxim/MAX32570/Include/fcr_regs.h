@@ -172,11 +172,11 @@ typedef struct {
 #define MXC_F_FCR_FCTRL1_AC_RUN_POS                    1 /**< FCTRL1_AC_RUN Position */
 #define MXC_F_FCR_FCTRL1_AC_RUN                        ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_AC_RUN_POS)) /**< FCTRL1_AC_RUN Mask */
 
-#define MXC_F_FCR_FCTRL1_LOAD_POS                      2 /**< FCTRL1_LOAD Position */
-#define MXC_F_FCR_FCTRL1_LOAD                          ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_LOAD_POS)) /**< FCTRL1_LOAD Mask */
+#define MXC_F_FCR_FCTRL1_LOAD_TRIM_POS                 2 /**< FCTRL1_LOAD_TRIM Position */
+#define MXC_F_FCR_FCTRL1_LOAD_TRIM                     ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_LOAD_TRIM_POS)) /**< FCTRL1_LOAD_TRIM Mask */
 
-#define MXC_F_FCR_FCTRL1_INV_GAIN_POS                  3 /**< FCTRL1_INV_GAIN Position */
-#define MXC_F_FCR_FCTRL1_INV_GAIN                      ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_INV_GAIN_POS)) /**< FCTRL1_INV_GAIN Mask */
+#define MXC_F_FCR_FCTRL1_GAIN_INV_POS                  3 /**< FCTRL1_GAIN_INV Position */
+#define MXC_F_FCR_FCTRL1_GAIN_INV                      ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_GAIN_INV_POS)) /**< FCTRL1_GAIN_INV Mask */
 
 #define MXC_F_FCR_FCTRL1_ATOMIC_POS                    4 /**< FCTRL1_ATOMIC Position */
 #define MXC_F_FCR_FCTRL1_ATOMIC                        ((uint32_t)(0x1UL << MXC_F_FCR_FCTRL1_ATOMIC_POS)) /**< FCTRL1_ATOMIC Mask */
@@ -274,11 +274,11 @@ typedef struct {
  * @brief    MSR Trim Register.
  * @{
  */
-#define MXC_F_FCR_MSRTRIM_TRIM_MSR_R1_POS              0 /**< MSRTRIM_TRIM_MSR_R1 Position */
-#define MXC_F_FCR_MSRTRIM_TRIM_MSR_R1                  ((uint32_t)(0x3UL << MXC_F_FCR_MSRTRIM_TRIM_MSR_R1_POS)) /**< MSRTRIM_TRIM_MSR_R1 Mask */
+#define MXC_F_FCR_MSRTRIM_R1_POS                       0 /**< MSRTRIM_R1 Position */
+#define MXC_F_FCR_MSRTRIM_R1                           ((uint32_t)(0x3UL << MXC_F_FCR_MSRTRIM_R1_POS)) /**< MSRTRIM_R1 Mask */
 
-#define MXC_F_FCR_MSRTRIM_TRIM_MSR_R2_POS              2 /**< MSRTRIM_TRIM_MSR_R2 Position */
-#define MXC_F_FCR_MSRTRIM_TRIM_MSR_R2                  ((uint32_t)(0x7UL << MXC_F_FCR_MSRTRIM_TRIM_MSR_R2_POS)) /**< MSRTRIM_TRIM_MSR_R2 Mask */
+#define MXC_F_FCR_MSRTRIM_R2_POS                       2 /**< MSRTRIM_R2 Position */
+#define MXC_F_FCR_MSRTRIM_R2                           ((uint32_t)(0x7UL << MXC_F_FCR_MSRTRIM_R2_POS)) /**< MSRTRIM_R2 Mask */
 
 /**@} end of group FCR_MSRTRIM_Register */
 

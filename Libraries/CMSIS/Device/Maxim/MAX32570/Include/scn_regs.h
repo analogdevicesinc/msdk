@@ -2,6 +2,7 @@
  * @file    scn_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SCN Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup scn_registers
  */
 
 /******************************************************************************

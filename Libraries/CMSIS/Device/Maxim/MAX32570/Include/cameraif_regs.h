@@ -90,7 +90,7 @@ extern "C" {
  */
 typedef struct {
     __IO uint32_t ver;                  /**< <tt>\b 0x0000:</tt> CAMERAIF VER Register */
-    __IO uint32_t fifodep;              /**< <tt>\b 0x0004:</tt> CAMERAIF FIFODEP Register */
+    __IO uint32_t fifolvl;              /**< <tt>\b 0x0004:</tt> CAMERAIF FIFOLVL Register */
     __IO uint32_t ctrl;                 /**< <tt>\b 0x0008:</tt> CAMERAIF CTRL Register */
     __IO uint32_t inten;                /**< <tt>\b 0x000C:</tt> CAMERAIF INTEN Register */
     __IO uint32_t intfl;                /**< <tt>\b 0x0010:</tt> CAMERAIF INTFL Register */
@@ -111,7 +111,7 @@ typedef struct {
  * @{
  */
 #define MXC_R_CAMERAIF_VER                 ((uint32_t)0x00000000UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0000</tt> */
-#define MXC_R_CAMERAIF_FIFODEP             ((uint32_t)0x00000004UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0004</tt> */
+#define MXC_R_CAMERAIF_FIFOLVL             ((uint32_t)0x00000004UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0004</tt> */
 #define MXC_R_CAMERAIF_CTRL                ((uint32_t)0x00000008UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0008</tt> */
 #define MXC_R_CAMERAIF_INTEN               ((uint32_t)0x0000000CUL) /**< Offset from CAMERAIF Base Address: <tt> 0x000C</tt> */
 #define MXC_R_CAMERAIF_INTFL               ((uint32_t)0x00000010UL) /**< Offset from CAMERAIF Base Address: <tt> 0x0010</tt> */
@@ -137,14 +137,14 @@ typedef struct {
 
 /**
  * @ingroup  cameraif_registers
- * @defgroup CAMERAIF_FIFODEP CAMERAIF_FIFODEP
+ * @defgroup CAMERAIF_FIFOLVL CAMERAIF_FIFOLVL
  * @brief    FIFO Depth.
  * @{
  */
-#define MXC_F_CAMERAIF_FIFODEP_DEPTH_POS               0 /**< FIFODEP_DEPTH Position */
-#define MXC_F_CAMERAIF_FIFODEP_DEPTH                   ((uint32_t)(0xFFUL << MXC_F_CAMERAIF_FIFODEP_DEPTH_POS)) /**< FIFODEP_DEPTH Mask */
+#define MXC_F_CAMERAIF_FIFOLVL_DEPTH_POS               0 /**< FIFOLVL_DEPTH Position */
+#define MXC_F_CAMERAIF_FIFOLVL_DEPTH                   ((uint32_t)(0xFFUL << MXC_F_CAMERAIF_FIFOLVL_DEPTH_POS)) /**< FIFOLVL_DEPTH Mask */
 
-/**@} end of group CAMERAIF_FIFODEP_Register */
+/**@} end of group CAMERAIF_FIFOLVL_Register */
 
 /**
  * @ingroup  cameraif_registers

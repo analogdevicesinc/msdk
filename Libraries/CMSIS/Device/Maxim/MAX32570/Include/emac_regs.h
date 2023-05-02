@@ -2,6 +2,7 @@
  * @file    emac_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the EMAC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup emac_registers
  */
 
 /******************************************************************************

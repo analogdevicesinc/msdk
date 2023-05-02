@@ -2,6 +2,7 @@
  * @file    sir_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SIR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup sir_registers
  */
 
 /******************************************************************************
@@ -92,7 +93,7 @@ typedef struct {
     __I  uint32_t siaddr;               /**< <tt>\b 0x004:</tt> SIR SIADDR Register */
     __R  uint32_t rsv_0x8_0xff[62];
     __I  uint32_t fstat;                /**< <tt>\b 0x100:</tt> SIR FSTAT Register */
-    __I  uint32_t sfstat;               /**< <tt>\b 0x104:</tt> SIR SFSTAT Register */
+    __I  uint32_t sfdis;                /**< <tt>\b 0x104:</tt> SIR SFDIS Register */
 } mxc_sir_regs_t;
 
 /* Register offsets for module SIR */
@@ -105,7 +106,7 @@ typedef struct {
 #define MXC_R_SIR_SISTAT                   ((uint32_t)0x00000000UL) /**< Offset from SIR Base Address: <tt> 0x0000</tt> */
 #define MXC_R_SIR_SIADDR                   ((uint32_t)0x00000004UL) /**< Offset from SIR Base Address: <tt> 0x0004</tt> */
 #define MXC_R_SIR_FSTAT                    ((uint32_t)0x00000100UL) /**< Offset from SIR Base Address: <tt> 0x0100</tt> */
-#define MXC_R_SIR_SFSTAT                   ((uint32_t)0x00000104UL) /**< Offset from SIR Base Address: <tt> 0x0104</tt> */
+#define MXC_R_SIR_SFDIS                    ((uint32_t)0x00000104UL) /**< Offset from SIR Base Address: <tt> 0x0104</tt> */
 /**@} end of group sir_registers */
 
 /**
@@ -176,32 +177,32 @@ typedef struct {
 
 /**
  * @ingroup  sir_registers
- * @defgroup SIR_SFSTAT SIR_SFSTAT
+ * @defgroup SIR_SFDIS SIR_SFDIS
  * @brief    Security Function Status Register.
  * @{
  */
-#define MXC_F_SIR_SFSTAT_SECBOOT_POS                   0 /**< SFSTAT_SECBOOT Position */
-#define MXC_F_SIR_SFSTAT_SECBOOT                       ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_SECBOOT_POS)) /**< SFSTAT_SECBOOT Mask */
+#define MXC_F_SIR_SFDIS_SECBOOT_POS                    0 /**< SFDIS_SECBOOT Position */
+#define MXC_F_SIR_SFDIS_SECBOOT                        ((uint32_t)(0x1UL << MXC_F_SIR_SFDIS_SECBOOT_POS)) /**< SFDIS_SECBOOT Mask */
 
-#define MXC_F_SIR_SFSTAT_SERLOAD_POS                   1 /**< SFSTAT_SERLOAD Position */
-#define MXC_F_SIR_SFSTAT_SERLOAD                       ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_SERLOAD_POS)) /**< SFSTAT_SERLOAD Mask */
+#define MXC_F_SIR_SFDIS_SERLOAD_POS                    1 /**< SFDIS_SERLOAD Position */
+#define MXC_F_SIR_SFDIS_SERLOAD                        ((uint32_t)(0x1UL << MXC_F_SIR_SFDIS_SERLOAD_POS)) /**< SFDIS_SERLOAD Mask */
 
-#define MXC_F_SIR_SFSTAT_TRNG_POS                      2 /**< SFSTAT_TRNG Position */
-#define MXC_F_SIR_SFSTAT_TRNG                          ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_TRNG_POS)) /**< SFSTAT_TRNG Mask */
+#define MXC_F_SIR_SFDIS_TRNG_POS                       2 /**< SFDIS_TRNG Position */
+#define MXC_F_SIR_SFDIS_TRNG                           ((uint32_t)(0x1UL << MXC_F_SIR_SFDIS_TRNG_POS)) /**< SFDIS_TRNG Mask */
 
-#define MXC_F_SIR_SFSTAT_AES_POS                       3 /**< SFSTAT_AES Position */
-#define MXC_F_SIR_SFSTAT_AES                           ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_AES_POS)) /**< SFSTAT_AES Mask */
+#define MXC_F_SIR_SFDIS_AES_POS                        3 /**< SFDIS_AES Position */
+#define MXC_F_SIR_SFDIS_AES                            ((uint32_t)(0x1UL << MXC_F_SIR_SFDIS_AES_POS)) /**< SFDIS_AES Mask */
 
-#define MXC_F_SIR_SFSTAT_SHA_POS                       4 /**< SFSTAT_SHA Position */
-#define MXC_F_SIR_SFSTAT_SHA                           ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_SHA_POS)) /**< SFSTAT_SHA Mask */
+#define MXC_F_SIR_SFDIS_SHA_POS                        4 /**< SFDIS_SHA Position */
+#define MXC_F_SIR_SFDIS_SHA                            ((uint32_t)(0x1UL << MXC_F_SIR_SFDIS_SHA_POS)) /**< SFDIS_SHA Mask */
 
-#define MXC_F_SIR_SFSTAT_MAA_POS                       5 /**< SFSTAT_MAA Position */
-#define MXC_F_SIR_SFSTAT_MAA                           ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_MAA_POS)) /**< SFSTAT_MAA Mask */
+#define MXC_F_SIR_SFDIS_MAA_POS                        5 /**< SFDIS_MAA Position */
+#define MXC_F_SIR_SFDIS_MAA                            ((uint32_t)(0x1UL << MXC_F_SIR_SFDIS_MAA_POS)) /**< SFDIS_MAA Mask */
 
-#define MXC_F_SIR_SFSTAT_SECMODE_POS                   7 /**< SFSTAT_SECMODE Position */
-#define MXC_F_SIR_SFSTAT_SECMODE                       ((uint32_t)(0x1UL << MXC_F_SIR_SFSTAT_SECMODE_POS)) /**< SFSTAT_SECMODE Mask */
+#define MXC_F_SIR_SFDIS_SECMODE_POS                    7 /**< SFDIS_SECMODE Position */
+#define MXC_F_SIR_SFDIS_SECMODE                        ((uint32_t)(0x1UL << MXC_F_SIR_SFDIS_SECMODE_POS)) /**< SFDIS_SECMODE Mask */
 
-/**@} end of group SIR_SFSTAT_Register */
+/**@} end of group SIR_SFDIS_Register */
 
 #ifdef __cplusplus
 }

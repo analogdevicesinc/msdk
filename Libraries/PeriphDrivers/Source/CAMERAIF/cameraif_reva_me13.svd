@@ -39,7 +39,7 @@
       </register>
       <!-- FIFOLVL: FIFO Depth Register.-->
       <register>
-        <name>FIFODEP</name>
+        <name>FIFOLVL</name>
         <description>FIFO Depth.</description>
         <addressOffset>0x0004</addressOffset>
         <access>read-write</access>
@@ -235,7 +235,7 @@
           </field>
         </fields>
       </register>
-      <!--DSCODES: DS_TIMING_CODES Register -->
+      <!--DSCODES: DS TIMING CODES Register -->
       <register>
         <name>DSCODES</name>
         <description>DS Timing Code Register.</description>

@@ -22,7 +22,7 @@
             <bitWidth>2</bitWidth>
           </field>
           <field>
-            <name>VSSEL</name>
+            <name>VSEL</name>
             <description>PDOWN Voltage Select</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -71,7 +71,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>VDDIOHSEL_RST</name>
+            <name>PADVDDIOHSEL_RST</name>
             <description>Reset VIDDIOH Select.</description>
             <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
@@ -99,7 +99,7 @@
       </register>
       <register>
         <name>RTCRST</name>
-        <description>Reset Registter.</description>
+        <description>Reset Register.</description>
         <addressOffset>0x18</addressOffset>
         <fields>
           <field>
@@ -116,13 +116,13 @@
         <addressOffset>0x1C</addressOffset>
         <fields>
           <field>
-            <name>TRIM_X1</name>
+            <name>X1</name>
             <description>RTC Trim X1.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>5</bitWidth>
           </field>
           <field>
-            <name>TRIM_X2</name>
+            <name>X2</name>
             <description>RTC Trim X2.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>5</bitWidth>
@@ -135,14 +135,123 @@
         <addressOffset>0x60</addressOffset>
         <fields>
           <field>
-            <name>LDO0P9_EN</name>
+            <name>0P9V_EN</name>
             <description>LDO 0.9V Enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>
       </register>
+      <register>
+        <name>PWRMONST</name>
+        <description>LDO Control Register.</description>
+        <addressOffset>0x64</addressOffset>
+        <fields>
+          <field>
+            <name>PORZ_VLOSS</name>
+            <description>Sticky bit indicating power-on status of core power domains of VDDIO, VDDIOH, VCOR</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VBAT</name>
+            <description>Sticky bit indicating power-on status of the battery.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VRTC</name>
+            <description>Sticky bit indicating power-on status of the RTC.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VDDC</name>
+            <description>Sticky bit indicating power-on status of VCORE supply.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VDDA</name>
+            <description>Sticky bit indicating power-on status of VDDA (for analog) supply.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VDDB</name>
+            <description>Sticky bit indicating power-on status of VDDB (for USB) supply.</description>
+            <bitOffset>7</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDC</name>
+            <description>Sticky bit indicating reset condition on VCORE supply.</description>
+            <bitOffset>9</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDA</name>
+            <description>Sticky bit indicating reset condition on VDDA (analog) supply.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDB</name>
+            <description>Sticky bit indicating reset condition on VDDB (USB) supply.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDIO</name>
+            <description>Sticky bit indicating reset condition on VDDIO supply.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDIOH</name>
+            <description>Sticky bit indicating reset condition on VDDIOH supply.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VRTC</name>
+            <description>Sticky bit indicating reset condition on RTC supply.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_LDO0P9V</name>
+            <description>Non-Sticky bit indicating reset condition on 0.9V USB supply.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDCA</name>
+            <description>Non-Sticky bit indicating reset condition on VCORE in Analog supply.</description>
+            <bitOffset>17</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VCOREHV</name>
+            <description>Non-Sticky bit indicating high voltage reset condition on VCORE supply.</description>
+            <bitOffset>18</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDIOHV</name>
+            <description>Non-Sticky bit indicating high voltage reset condition on VDDIO supply.</description>
+            <bitOffset>19</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VDDIOHHV</name>
+            <description>Non-Sticky bit indicating high voltage reset condition on VDDIOH supply.</description>
+            <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
     </registers>
   </peripheral>
-  <!-- MCR: Misc control regs-->
+  <!-- MCR: Misc Control Registers.-->
 </device>

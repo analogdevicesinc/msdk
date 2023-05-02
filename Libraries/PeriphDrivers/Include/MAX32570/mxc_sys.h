@@ -43,6 +43,7 @@
 
 #include "mxc_device.h"
 #include "gcr_regs.h"
+#include "mcr_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -69,7 +70,6 @@ typedef enum {
     MXC_SYS_RESET0_SPI1 = MXC_F_GCR_RST0_SPI1_POS, /**< Reset SPI1 */
     MXC_SYS_RESET0_SPI2 = MXC_F_GCR_RST0_SPI2_POS, /**< Reset SPI2 */
     MXC_SYS_RESET0_I2C0 = MXC_F_GCR_RST0_I2C0_POS, /**< Reset I2C0 */
-    MXC_SYS_RESET0_RTC = MXC_F_GCR_RST0_RTC_POS, /**< Reset RTC */
     MXC_SYS_RESET0_CTB = MXC_F_GCR_RST0_CRYPTO_POS, /**< Reset CRYPTO */
     MXC_SYS_RESET0_USB = MXC_F_GCR_RST0_USB_POS, /**< Reset USB */
     MXC_SYS_RESET0_ADC = MXC_F_GCR_RST0_ADC_POS, /**< Reset ADC */
@@ -101,6 +101,8 @@ typedef enum {
     MXC_SYS_RESET1_HTMR0 = (MXC_F_GCR_RST1_HTMR0_POS + 32), /**< Reset HTMR0*/
     MXC_SYS_RESET1_HTMR1 = (MXC_F_GCR_RST1_HTMR1_POS + 32), /**< Reset HTMR1*/
     MXC_SYS_RESET1_AC = (MXC_F_GCR_RST1_AC_POS + 32), /**< Reset AC*/
+    /* RESET Below this line are from miscellaneous registers. */
+    MXC_SYS_RESET_RTC = MXC_F_MCR_RTCRST_RTC, /**< Reset RTC */
 } mxc_sys_reset_t;
 
 /** @brief System clock disable enumeration. Used in MXC_SYS_ClockDisable and MXC_SYS_ClockEnable functions */

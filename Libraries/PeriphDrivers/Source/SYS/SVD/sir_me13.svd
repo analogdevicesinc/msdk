@@ -257,7 +257,7 @@
         </fields>
       </register>
       <register>
-        <name>SFSTAT</name>
+        <name>SFDIS</name>
         <description>Security Function Status Register.</description>
         <addressOffset>0x104</addressOffset>
         <access>read-only</access>

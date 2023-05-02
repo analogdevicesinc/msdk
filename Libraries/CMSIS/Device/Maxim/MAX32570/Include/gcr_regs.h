@@ -2,6 +2,7 @@
  * @file    gcr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GCR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup gcr_registers
  */
 
 /******************************************************************************
@@ -99,19 +100,19 @@ typedef struct {
     __IO uint32_t memctrl;              /**< <tt>\b 0x28:</tt> GCR MEMCTRL Register */
     __IO uint32_t memz;                 /**< <tt>\b 0x2C:</tt> GCR MEMZ Register */
     __R  uint32_t rsv_0x30;
-    __IO uint32_t scck;                 /**< <tt>\b 0x34:</tt> GCR SCCK Register */
+    __IO uint32_t scclkctrl;            /**< <tt>\b 0x34:</tt> GCR SCCLKCTRL Register */
     __R  uint32_t rsv_0x38_0x3f[2];
     __IO uint32_t sysst;                /**< <tt>\b 0x40:</tt> GCR SYSST Register */
     __IO uint32_t rst1;                 /**< <tt>\b 0x44:</tt> GCR RST1 Register */
     __IO uint32_t pclkdis1;             /**< <tt>\b 0x48:</tt> GCR PCLKDIS1 Register */
     __IO uint32_t eventen;              /**< <tt>\b 0x4C:</tt> GCR EVENTEN Register */
     __I  uint32_t revision;             /**< <tt>\b 0x50:</tt> GCR REVISION Register */
-    __IO uint32_t sysie;                /**< <tt>\b 0x54:</tt> GCR SYSIE Register */
+    __IO uint32_t sysinten;             /**< <tt>\b 0x54:</tt> GCR SYSINTEN Register */
     __IO uint32_t ipocnt;               /**< <tt>\b 0x58:</tt> GCR IPOCNT Register */
     __R  uint32_t rsv_0x5c_0x63[2];
     __IO uint32_t eccerr;               /**< <tt>\b 0x64:</tt> GCR ECCERR Register */
     __IO uint32_t eccced;               /**< <tt>\b 0x68:</tt> GCR ECCCED Register */
-    __IO uint32_t eccie;                /**< <tt>\b 0x6C:</tt> GCR ECCIE Register */
+    __IO uint32_t eccinten;             /**< <tt>\b 0x6C:</tt> GCR ECCINTEN Register */
     __IO uint32_t eccaddr;              /**< <tt>\b 0x70:</tt> GCR ECCADDR Register */
     __IO uint32_t nfcldoctrl;           /**< <tt>\b 0x74:</tt> GCR NFCLDOCTRL Register */
     __IO uint32_t nfcldodly;            /**< <tt>\b 0x78:</tt> GCR NFCLDODLY Register */
@@ -132,17 +133,17 @@ typedef struct {
 #define MXC_R_GCR_PCLKDIS0                 ((uint32_t)0x00000024UL) /**< Offset from GCR Base Address: <tt> 0x0024</tt> */
 #define MXC_R_GCR_MEMCTRL                  ((uint32_t)0x00000028UL) /**< Offset from GCR Base Address: <tt> 0x0028</tt> */
 #define MXC_R_GCR_MEMZ                     ((uint32_t)0x0000002CUL) /**< Offset from GCR Base Address: <tt> 0x002C</tt> */
-#define MXC_R_GCR_SCCK                     ((uint32_t)0x00000034UL) /**< Offset from GCR Base Address: <tt> 0x0034</tt> */
+#define MXC_R_GCR_SCCLKCTRL                ((uint32_t)0x00000034UL) /**< Offset from GCR Base Address: <tt> 0x0034</tt> */
 #define MXC_R_GCR_SYSST                    ((uint32_t)0x00000040UL) /**< Offset from GCR Base Address: <tt> 0x0040</tt> */
 #define MXC_R_GCR_RST1                     ((uint32_t)0x00000044UL) /**< Offset from GCR Base Address: <tt> 0x0044</tt> */
 #define MXC_R_GCR_PCLKDIS1                 ((uint32_t)0x00000048UL) /**< Offset from GCR Base Address: <tt> 0x0048</tt> */
 #define MXC_R_GCR_EVENTEN                  ((uint32_t)0x0000004CUL) /**< Offset from GCR Base Address: <tt> 0x004C</tt> */
 #define MXC_R_GCR_REVISION                 ((uint32_t)0x00000050UL) /**< Offset from GCR Base Address: <tt> 0x0050</tt> */
-#define MXC_R_GCR_SYSIE                    ((uint32_t)0x00000054UL) /**< Offset from GCR Base Address: <tt> 0x0054</tt> */
+#define MXC_R_GCR_SYSINTEN                 ((uint32_t)0x00000054UL) /**< Offset from GCR Base Address: <tt> 0x0054</tt> */
 #define MXC_R_GCR_IPOCNT                   ((uint32_t)0x00000058UL) /**< Offset from GCR Base Address: <tt> 0x0058</tt> */
 #define MXC_R_GCR_ECCERR                   ((uint32_t)0x00000064UL) /**< Offset from GCR Base Address: <tt> 0x0064</tt> */
 #define MXC_R_GCR_ECCCED                   ((uint32_t)0x00000068UL) /**< Offset from GCR Base Address: <tt> 0x0068</tt> */
-#define MXC_R_GCR_ECCIE                    ((uint32_t)0x0000006CUL) /**< Offset from GCR Base Address: <tt> 0x006C</tt> */
+#define MXC_R_GCR_ECCINTEN                 ((uint32_t)0x0000006CUL) /**< Offset from GCR Base Address: <tt> 0x006C</tt> */
 #define MXC_R_GCR_ECCADDR                  ((uint32_t)0x00000070UL) /**< Offset from GCR Base Address: <tt> 0x0070</tt> */
 #define MXC_R_GCR_NFCLDOCTRL               ((uint32_t)0x00000074UL) /**< Offset from GCR Base Address: <tt> 0x0074</tt> */
 #define MXC_R_GCR_NFCLDODLY                ((uint32_t)0x00000078UL) /**< Offset from GCR Base Address: <tt> 0x0078</tt> */
@@ -154,8 +155,8 @@ typedef struct {
  * @brief    System Control.
  * @{
  */
-#define MXC_F_GCR_SYSCTRL_BSTAPEN_POS                  0 /**< SYSCTRL_BSTAPEN Position */
-#define MXC_F_GCR_SYSCTRL_BSTAPEN                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_BSTAPEN_POS)) /**< SYSCTRL_BSTAPEN Mask */
+#define MXC_F_GCR_SYSCTRL_BSTAP_EN_POS                 0 /**< SYSCTRL_BSTAP_EN Position */
+#define MXC_F_GCR_SYSCTRL_BSTAP_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_BSTAP_EN_POS)) /**< SYSCTRL_BSTAP_EN Mask */
 
 #define MXC_F_GCR_SYSCTRL_SBUSARB_POS                  1 /**< SYSCTRL_SBUSARB Position */
 #define MXC_F_GCR_SYSCTRL_SBUSARB                      ((uint32_t)(0x3UL << MXC_F_GCR_SYSCTRL_SBUSARB_POS)) /**< SYSCTRL_SBUSARB Mask */
@@ -182,11 +183,17 @@ typedef struct {
 #define MXC_F_GCR_SYSCTRL_SRCC_DIS_POS                 9 /**< SYSCTRL_SRCC_DIS Position */
 #define MXC_F_GCR_SYSCTRL_SRCC_DIS                     ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_SRCC_DIS_POS)) /**< SYSCTRL_SRCC_DIS Mask */
 
-#define MXC_F_GCR_SYSCTRL_CCHK_POS                     13 /**< SYSCTRL_CCHK Position */
-#define MXC_F_GCR_SYSCTRL_CCHK                         ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CCHK_POS)) /**< SYSCTRL_CCHK Mask */
+#define MXC_F_GCR_SYSCTRL_CHKRES1_POS                  11 /**< SYSCTRL_CHKRES1 Position */
+#define MXC_F_GCR_SYSCTRL_CHKRES1                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CHKRES1_POS)) /**< SYSCTRL_CHKRES1 Mask */
 
-#define MXC_F_GCR_SYSCTRL_CHKRES_POS                   15 /**< SYSCTRL_CHKRES Position */
-#define MXC_F_GCR_SYSCTRL_CHKRES                       ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CHKRES_POS)) /**< SYSCTRL_CHKRES Mask */
+#define MXC_F_GCR_SYSCTRL_CCHK1_POS                    12 /**< SYSCTRL_CCHK1 Position */
+#define MXC_F_GCR_SYSCTRL_CCHK1                        ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CCHK1_POS)) /**< SYSCTRL_CCHK1 Mask */
+
+#define MXC_F_GCR_SYSCTRL_CCHK0_POS                    13 /**< SYSCTRL_CCHK0 Position */
+#define MXC_F_GCR_SYSCTRL_CCHK0                        ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CCHK0_POS)) /**< SYSCTRL_CCHK0 Mask */
+
+#define MXC_F_GCR_SYSCTRL_CHKRES0_POS                  15 /**< SYSCTRL_CHKRES0 Position */
+#define MXC_F_GCR_SYSCTRL_CHKRES0                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSCTRL_CHKRES0_POS)) /**< SYSCTRL_CHKRES0 Mask */
 
 /**@} end of group GCR_SYSCTRL_Register */
 
@@ -246,9 +253,6 @@ typedef struct {
 
 #define MXC_F_GCR_RST0_I2C0_POS                        16 /**< RST0_I2C0 Position */
 #define MXC_F_GCR_RST0_I2C0                            ((uint32_t)(0x1UL << MXC_F_GCR_RST0_I2C0_POS)) /**< RST0_I2C0 Mask */
-
-#define MXC_F_GCR_RST0_RTC_POS                         17 /**< RST0_RTC Position */
-#define MXC_F_GCR_RST0_RTC                             ((uint32_t)(0x1UL << MXC_F_GCR_RST0_RTC_POS)) /**< RST0_RTC Mask */
 
 #define MXC_F_GCR_RST0_CRYPTO_POS                      18 /**< RST0_CRYPTO Position */
 #define MXC_F_GCR_RST0_CRYPTO                          ((uint32_t)(0x1UL << MXC_F_GCR_RST0_CRYPTO_POS)) /**< RST0_CRYPTO Mask */
@@ -406,12 +410,6 @@ typedef struct {
 #define MXC_F_GCR_PM_USB_WE_POS                        6 /**< PM_USB_WE Position */
 #define MXC_F_GCR_PM_USB_WE                            ((uint32_t)(0x1UL << MXC_F_GCR_PM_USB_WE_POS)) /**< PM_USB_WE Mask */
 
-#define MXC_F_GCR_PM_SDMA0_WE_POS                      7 /**< PM_SDMA0_WE Position */
-#define MXC_F_GCR_PM_SDMA0_WE                          ((uint32_t)(0x1UL << MXC_F_GCR_PM_SDMA0_WE_POS)) /**< PM_SDMA0_WE Mask */
-
-#define MXC_F_GCR_PM_SDMA1_WE_POS                      9 /**< PM_SDMA1_WE Position */
-#define MXC_F_GCR_PM_SDMA1_WE                          ((uint32_t)(0x1UL << MXC_F_GCR_PM_SDMA1_WE_POS)) /**< PM_SDMA1_WE Mask */
-
 #define MXC_F_GCR_PM_ERFO_PD_POS                       12 /**< PM_ERFO_PD Position */
 #define MXC_F_GCR_PM_ERFO_PD                           ((uint32_t)(0x1UL << MXC_F_GCR_PM_ERFO_PD_POS)) /**< PM_ERFO_PD Mask */
 
@@ -453,25 +451,26 @@ typedef struct {
 #define MXC_V_GCR_PCLKDIV_SKBDFRQ_3MHZ                 ((uint32_t)0x7UL) /**< PCLKDIV_SKBDFRQ_3MHZ Value */
 #define MXC_S_GCR_PCLKDIV_SKBDFRQ_3MHZ                 (MXC_V_GCR_PCLKDIV_SKBDFRQ_3MHZ << MXC_F_GCR_PCLKDIV_SKBDFRQ_POS) /**< PCLKDIV_SKBDFRQ_3MHZ Setting */
 
-#define MXC_F_GCR_PCLKDIV_SKBDFRQ_WEN_POS              3 /**< PCLKDIV_SKBDFRQ_WEN Position */
-#define MXC_F_GCR_PCLKDIV_SKBDFRQ_WEN                  ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIV_SKBDFRQ_WEN_POS)) /**< PCLKDIV_SKBDFRQ_WEN Mask */
-
 #define MXC_F_GCR_PCLKDIV_SDHCFRQ_POS                  7 /**< PCLKDIV_SDHCFRQ Position */
-#define MXC_F_GCR_PCLKDIV_SDHCFRQ                      ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIV_SDHCFRQ_POS)) /**< PCLKDIV_SDHCFRQ Mask */
+#define MXC_F_GCR_PCLKDIV_SDHCFRQ                      ((uint32_t)(0x3UL << MXC_F_GCR_PCLKDIV_SDHCFRQ_POS)) /**< PCLKDIV_SDHCFRQ Mask */
+#define MXC_V_GCR_PCLKDIV_SDHCFRQ_DIV2                 ((uint32_t)0x0UL) /**< PCLKDIV_SDHCFRQ_DIV2 Value */
+#define MXC_S_GCR_PCLKDIV_SDHCFRQ_DIV2                 (MXC_V_GCR_PCLKDIV_SDHCFRQ_DIV2 << MXC_F_GCR_PCLKDIV_SDHCFRQ_POS) /**< PCLKDIV_SDHCFRQ_DIV2 Setting */
+#define MXC_V_GCR_PCLKDIV_SDHCFRQ_DIV4                 ((uint32_t)0x1UL) /**< PCLKDIV_SDHCFRQ_DIV4 Value */
+#define MXC_S_GCR_PCLKDIV_SDHCFRQ_DIV4                 (MXC_V_GCR_PCLKDIV_SDHCFRQ_DIV4 << MXC_F_GCR_PCLKDIV_SDHCFRQ_POS) /**< PCLKDIV_SDHCFRQ_DIV4 Setting */
 
 #define MXC_F_GCR_PCLKDIV_ADCFRQ_POS                   10 /**< PCLKDIV_ADCFRQ Position */
 #define MXC_F_GCR_PCLKDIV_ADCFRQ                       ((uint32_t)(0xFUL << MXC_F_GCR_PCLKDIV_ADCFRQ_POS)) /**< PCLKDIV_ADCFRQ Mask */
 
 #define MXC_F_GCR_PCLKDIV_AONCLKDIV_POS                14 /**< PCLKDIV_AONCLKDIV Position */
 #define MXC_F_GCR_PCLKDIV_AONCLKDIV                    ((uint32_t)(0x3UL << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS)) /**< PCLKDIV_AONCLKDIV Mask */
-#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV_4              ((uint32_t)0x0UL) /**< PCLKDIV_AONCLKDIV_DIV_4 Value */
-#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV_4              (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV_4 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV_4 Setting */
-#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV_8              ((uint32_t)0x1UL) /**< PCLKDIV_AONCLKDIV_DIV_8 Value */
-#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV_8              (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV_8 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV_8 Setting */
-#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV_16             ((uint32_t)0x2UL) /**< PCLKDIV_AONCLKDIV_DIV_16 Value */
-#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV_16             (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV_16 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV_16 Setting */
-#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV_32             ((uint32_t)0x3UL) /**< PCLKDIV_AONCLKDIV_DIV_32 Value */
-#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV_32             (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV_32 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV_32 Setting */
+#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV4               ((uint32_t)0x0UL) /**< PCLKDIV_AONCLKDIV_DIV4 Value */
+#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV4               (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV4 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV4 Setting */
+#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV8               ((uint32_t)0x1UL) /**< PCLKDIV_AONCLKDIV_DIV8 Value */
+#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV8               (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV8 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV8 Setting */
+#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV16              ((uint32_t)0x2UL) /**< PCLKDIV_AONCLKDIV_DIV16 Value */
+#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV16              (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV16 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV16 Setting */
+#define MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV32              ((uint32_t)0x3UL) /**< PCLKDIV_AONCLKDIV_DIV32 Value */
+#define MXC_S_GCR_PCLKDIV_AONCLKDIV_DIV32              (MXC_V_GCR_PCLKDIV_AONCLKDIV_DIV32 << MXC_F_GCR_PCLKDIV_AONCLKDIV_POS) /**< PCLKDIV_AONCLKDIV_DIV32 Setting */
 
 /**@} end of group GCR_PCLKDIV_Register */
 
@@ -692,21 +691,24 @@ typedef struct {
 #define MXC_F_GCR_MEMZ_USBFIFO_POS                     13 /**< MEMZ_USBFIFO Position */
 #define MXC_F_GCR_MEMZ_USBFIFO                         ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_USBFIFO_POS)) /**< MEMZ_USBFIFO Mask */
 
+#define MXC_F_GCR_MEMZ_MAARAM_POS                      14 /**< MEMZ_MAARAM Position */
+#define MXC_F_GCR_MEMZ_MAARAM                          ((uint32_t)(0x1UL << MXC_F_GCR_MEMZ_MAARAM_POS)) /**< MEMZ_MAARAM Mask */
+
 /**@} end of group GCR_MEMZ_Register */
 
 /**
  * @ingroup  gcr_registers
- * @defgroup GCR_SCCK GCR_SCCK
+ * @defgroup GCR_SCCLKCTRL GCR_SCCLKCTRL
  * @brief    Smart Card Clock Control.
  * @{
  */
-#define MXC_F_GCR_SCCK_SC0CD_POS                       0 /**< SCCK_SC0CD Position */
-#define MXC_F_GCR_SCCK_SC0CD                           ((uint32_t)(0x3FUL << MXC_F_GCR_SCCK_SC0CD_POS)) /**< SCCK_SC0CD Mask */
+#define MXC_F_GCR_SCCLKCTRL_SC0CLK_DIV_POS             0 /**< SCCLKCTRL_SC0CLK_DIV Position */
+#define MXC_F_GCR_SCCLKCTRL_SC0CLK_DIV                 ((uint32_t)(0x3FUL << MXC_F_GCR_SCCLKCTRL_SC0CLK_DIV_POS)) /**< SCCLKCTRL_SC0CLK_DIV Mask */
 
-#define MXC_F_GCR_SCCK_SC1CD_POS                       8 /**< SCCK_SC1CD Position */
-#define MXC_F_GCR_SCCK_SC1CD                           ((uint32_t)(0x3FUL << MXC_F_GCR_SCCK_SC1CD_POS)) /**< SCCK_SC1CD Mask */
+#define MXC_F_GCR_SCCLKCTRL_SC1CLK_DIV_POS             8 /**< SCCLKCTRL_SC1CLK_DIV Position */
+#define MXC_F_GCR_SCCLKCTRL_SC1CLK_DIV                 ((uint32_t)(0x3FUL << MXC_F_GCR_SCCLKCTRL_SC1CLK_DIV_POS)) /**< SCCLKCTRL_SC1CLK_DIV Mask */
 
-/**@} end of group GCR_SCCK_Register */
+/**@} end of group GCR_SCCLKCTRL_Register */
 
 /**
  * @ingroup  gcr_registers
@@ -717,11 +719,11 @@ typedef struct {
 #define MXC_F_GCR_SYSST_ICELOCK_POS                    0 /**< SYSST_ICELOCK Position */
 #define MXC_F_GCR_SYSST_ICELOCK                        ((uint32_t)(0x1UL << MXC_F_GCR_SYSST_ICELOCK_POS)) /**< SYSST_ICELOCK Mask */
 
-#define MXC_F_GCR_SYSST_CODEINTERR_POS                 1 /**< SYSST_CODEINTERR Position */
-#define MXC_F_GCR_SYSST_CODEINTERR                     ((uint32_t)(0x1UL << MXC_F_GCR_SYSST_CODEINTERR_POS)) /**< SYSST_CODEINTERR Mask */
+#define MXC_F_GCR_SYSST_CODEAUTHERR_POS                1 /**< SYSST_CODEAUTHERR Position */
+#define MXC_F_GCR_SYSST_CODEAUTHERR                    ((uint32_t)(0x1UL << MXC_F_GCR_SYSST_CODEAUTHERR_POS)) /**< SYSST_CODEAUTHERR Mask */
 
-#define MXC_F_GCR_SYSST_DATAINTERR_POS                 2 /**< SYSST_DATAINTERR Position */
-#define MXC_F_GCR_SYSST_DATAINTERR                     ((uint32_t)(0x1UL << MXC_F_GCR_SYSST_DATAINTERR_POS)) /**< SYSST_DATAINTERR Mask */
+#define MXC_F_GCR_SYSST_DATAAUTHERR_POS                2 /**< SYSST_DATAAUTHERR Position */
+#define MXC_F_GCR_SYSST_DATAAUTHERR                    ((uint32_t)(0x1UL << MXC_F_GCR_SYSST_DATAAUTHERR_POS)) /**< SYSST_DATAAUTHERR Mask */
 
 #define MXC_F_GCR_SYSST_SCMEMF_POS                     5 /**< SYSST_SCMEMF Position */
 #define MXC_F_GCR_SYSST_SCMEMF                         ((uint32_t)(0x1UL << MXC_F_GCR_SYSST_SCMEMF_POS)) /**< SYSST_SCMEMF Mask */
@@ -856,9 +858,6 @@ typedef struct {
 #define MXC_F_GCR_PCLKDIS1_SPI3_POS                    14 /**< PCLKDIS1_SPI3 Position */
 #define MXC_F_GCR_PCLKDIS1_SPI3                        ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SPI3_POS)) /**< PCLKDIS1_SPI3 Mask */
 
-#define MXC_F_GCR_PCLKDIS1_I2S_POS                     15 /**< PCLKDIS1_I2S Position */
-#define MXC_F_GCR_PCLKDIS1_I2S                         ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_I2S_POS)) /**< PCLKDIS1_I2S Mask */
-
 #define MXC_F_GCR_PCLKDIS1_SPIXIPD_POS                 20 /**< PCLKDIS1_SPIXIPD Position */
 #define MXC_F_GCR_PCLKDIS1_SPIXIPD                     ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS1_SPIXIPD_POS)) /**< PCLKDIS1_SPIXIPD Mask */
 
@@ -927,20 +926,20 @@ typedef struct {
 
 /**
  * @ingroup  gcr_registers
- * @defgroup GCR_SYSIE GCR_SYSIE
+ * @defgroup GCR_SYSINTEN GCR_SYSINTEN
  * @brief    System Status Interrupt Enable Register.
  * @{
  */
-#define MXC_F_GCR_SYSIE_ICEUNLOCK_POS                  0 /**< SYSIE_ICEUNLOCK Position */
-#define MXC_F_GCR_SYSIE_ICEUNLOCK                      ((uint32_t)(0x1UL << MXC_F_GCR_SYSIE_ICEUNLOCK_POS)) /**< SYSIE_ICEUNLOCK Mask */
+#define MXC_F_GCR_SYSINTEN_ICEUNLOCK_POS               0 /**< SYSINTEN_ICEUNLOCK Position */
+#define MXC_F_GCR_SYSINTEN_ICEUNLOCK                   ((uint32_t)(0x1UL << MXC_F_GCR_SYSINTEN_ICEUNLOCK_POS)) /**< SYSINTEN_ICEUNLOCK Mask */
 
-#define MXC_F_GCR_SYSIE_CIE_POS                        1 /**< SYSIE_CIE Position */
-#define MXC_F_GCR_SYSIE_CIE                            ((uint32_t)(0x1UL << MXC_F_GCR_SYSIE_CIE_POS)) /**< SYSIE_CIE Mask */
+#define MXC_F_GCR_SYSINTEN_CIE_POS                     1 /**< SYSINTEN_CIE Position */
+#define MXC_F_GCR_SYSINTEN_CIE                         ((uint32_t)(0x1UL << MXC_F_GCR_SYSINTEN_CIE_POS)) /**< SYSINTEN_CIE Mask */
 
-#define MXC_F_GCR_SYSIE_SCMF_POS                       5 /**< SYSIE_SCMF Position */
-#define MXC_F_GCR_SYSIE_SCMF                           ((uint32_t)(0x1UL << MXC_F_GCR_SYSIE_SCMF_POS)) /**< SYSIE_SCMF Mask */
+#define MXC_F_GCR_SYSINTEN_SCMF_POS                    5 /**< SYSINTEN_SCMF Position */
+#define MXC_F_GCR_SYSINTEN_SCMF                        ((uint32_t)(0x1UL << MXC_F_GCR_SYSINTEN_SCMF_POS)) /**< SYSINTEN_SCMF Mask */
 
-/**@} end of group GCR_SYSIE_Register */
+/**@} end of group GCR_SYSINTEN_Register */
 
 /**
  * @ingroup  gcr_registers
@@ -977,11 +976,11 @@ typedef struct {
 #define MXC_F_GCR_ECCERR_RAM5_POS                      5 /**< ECCERR_RAM5 Position */
 #define MXC_F_GCR_ECCERR_RAM5                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_RAM5_POS)) /**< ECCERR_RAM5 Mask */
 
-#define MXC_F_GCR_ECCERR_ICC0_POS                      8 /**< ECCERR_ICC0 Position */
-#define MXC_F_GCR_ECCERR_ICC0                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_ICC0_POS)) /**< ECCERR_ICC0 Mask */
+#define MXC_F_GCR_ECCERR_ICC_POS                       8 /**< ECCERR_ICC Position */
+#define MXC_F_GCR_ECCERR_ICC                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_ICC_POS)) /**< ECCERR_ICC Mask */
 
-#define MXC_F_GCR_ECCERR_ICSPIXF_POS                   10 /**< ECCERR_ICSPIXF Position */
-#define MXC_F_GCR_ECCERR_ICSPIXF                       ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_ICSPIXF_POS)) /**< ECCERR_ICSPIXF Mask */
+#define MXC_F_GCR_ECCERR_ICCXIP_POS                    10 /**< ECCERR_ICCXIP Position */
+#define MXC_F_GCR_ECCERR_ICCXIP                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_ICCXIP_POS)) /**< ECCERR_ICCXIP Mask */
 
 #define MXC_F_GCR_ECCERR_FLASH0_POS                    11 /**< ECCERR_FLASH0 Position */
 #define MXC_F_GCR_ECCERR_FLASH0                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCERR_FLASH0_POS)) /**< ECCERR_FLASH0 Mask */
@@ -1015,11 +1014,11 @@ typedef struct {
 #define MXC_F_GCR_ECCCED_RAM5_POS                      5 /**< ECCCED_RAM5 Position */
 #define MXC_F_GCR_ECCCED_RAM5                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_RAM5_POS)) /**< ECCCED_RAM5 Mask */
 
-#define MXC_F_GCR_ECCCED_ICC0_POS                      8 /**< ECCCED_ICC0 Position */
-#define MXC_F_GCR_ECCCED_ICC0                          ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_ICC0_POS)) /**< ECCCED_ICC0 Mask */
+#define MXC_F_GCR_ECCCED_ICC_POS                       8 /**< ECCCED_ICC Position */
+#define MXC_F_GCR_ECCCED_ICC                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_ICC_POS)) /**< ECCCED_ICC Mask */
 
-#define MXC_F_GCR_ECCCED_ICSPIXF_POS                   10 /**< ECCCED_ICSPIXF Position */
-#define MXC_F_GCR_ECCCED_ICSPIXF                       ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_ICSPIXF_POS)) /**< ECCCED_ICSPIXF Mask */
+#define MXC_F_GCR_ECCCED_ICCXIP_POS                    10 /**< ECCCED_ICCXIP Position */
+#define MXC_F_GCR_ECCCED_ICCXIP                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_ICCXIP_POS)) /**< ECCCED_ICCXIP Mask */
 
 #define MXC_F_GCR_ECCCED_FLASH0_POS                    11 /**< ECCCED_FLASH0 Position */
 #define MXC_F_GCR_ECCCED_FLASH0                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCCED_FLASH0_POS)) /**< ECCCED_FLASH0 Mask */
@@ -1031,41 +1030,41 @@ typedef struct {
 
 /**
  * @ingroup  gcr_registers
- * @defgroup GCR_ECCIE GCR_ECCIE
- * @brief    ECC IRQ Enable Register
+ * @defgroup GCR_ECCINTEN GCR_ECCINTEN
+ * @brief    ECC Interrupt Enable Register
  * @{
  */
-#define MXC_F_GCR_ECCIE_RAM0_POS                       0 /**< ECCIE_RAM0 Position */
-#define MXC_F_GCR_ECCIE_RAM0                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM0_POS)) /**< ECCIE_RAM0 Mask */
+#define MXC_F_GCR_ECCINTEN_RAM0_POS                    0 /**< ECCINTEN_RAM0 Position */
+#define MXC_F_GCR_ECCINTEN_RAM0                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_RAM0_POS)) /**< ECCINTEN_RAM0 Mask */
 
-#define MXC_F_GCR_ECCIE_RAM1_POS                       1 /**< ECCIE_RAM1 Position */
-#define MXC_F_GCR_ECCIE_RAM1                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM1_POS)) /**< ECCIE_RAM1 Mask */
+#define MXC_F_GCR_ECCINTEN_RAM1_POS                    1 /**< ECCINTEN_RAM1 Position */
+#define MXC_F_GCR_ECCINTEN_RAM1                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_RAM1_POS)) /**< ECCINTEN_RAM1 Mask */
 
-#define MXC_F_GCR_ECCIE_RAM2_POS                       2 /**< ECCIE_RAM2 Position */
-#define MXC_F_GCR_ECCIE_RAM2                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM2_POS)) /**< ECCIE_RAM2 Mask */
+#define MXC_F_GCR_ECCINTEN_RAM2_POS                    2 /**< ECCINTEN_RAM2 Position */
+#define MXC_F_GCR_ECCINTEN_RAM2                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_RAM2_POS)) /**< ECCINTEN_RAM2 Mask */
 
-#define MXC_F_GCR_ECCIE_RAM3_POS                       3 /**< ECCIE_RAM3 Position */
-#define MXC_F_GCR_ECCIE_RAM3                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM3_POS)) /**< ECCIE_RAM3 Mask */
+#define MXC_F_GCR_ECCINTEN_RAM3_POS                    3 /**< ECCINTEN_RAM3 Position */
+#define MXC_F_GCR_ECCINTEN_RAM3                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_RAM3_POS)) /**< ECCINTEN_RAM3 Mask */
 
-#define MXC_F_GCR_ECCIE_RAM4_POS                       4 /**< ECCIE_RAM4 Position */
-#define MXC_F_GCR_ECCIE_RAM4                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM4_POS)) /**< ECCIE_RAM4 Mask */
+#define MXC_F_GCR_ECCINTEN_RAM4_POS                    4 /**< ECCINTEN_RAM4 Position */
+#define MXC_F_GCR_ECCINTEN_RAM4                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_RAM4_POS)) /**< ECCINTEN_RAM4 Mask */
 
-#define MXC_F_GCR_ECCIE_RAM5_POS                       5 /**< ECCIE_RAM5 Position */
-#define MXC_F_GCR_ECCIE_RAM5                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_RAM5_POS)) /**< ECCIE_RAM5 Mask */
+#define MXC_F_GCR_ECCINTEN_RAM5_POS                    5 /**< ECCINTEN_RAM5 Position */
+#define MXC_F_GCR_ECCINTEN_RAM5                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_RAM5_POS)) /**< ECCINTEN_RAM5 Mask */
 
-#define MXC_F_GCR_ECCIE_ICC0_POS                       8 /**< ECCIE_ICC0 Position */
-#define MXC_F_GCR_ECCIE_ICC0                           ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_ICC0_POS)) /**< ECCIE_ICC0 Mask */
+#define MXC_F_GCR_ECCINTEN_ICC_POS                     8 /**< ECCINTEN_ICC Position */
+#define MXC_F_GCR_ECCINTEN_ICC                         ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_ICC_POS)) /**< ECCINTEN_ICC Mask */
 
-#define MXC_F_GCR_ECCIE_ICSPIXF_POS                    10 /**< ECCIE_ICSPIXF Position */
-#define MXC_F_GCR_ECCIE_ICSPIXF                        ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_ICSPIXF_POS)) /**< ECCIE_ICSPIXF Mask */
+#define MXC_F_GCR_ECCINTEN_ICCXIP_POS                  10 /**< ECCINTEN_ICCXIP Position */
+#define MXC_F_GCR_ECCINTEN_ICCXIP                      ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_ICCXIP_POS)) /**< ECCINTEN_ICCXIP Mask */
 
-#define MXC_F_GCR_ECCIE_FLASH0_POS                     11 /**< ECCIE_FLASH0 Position */
-#define MXC_F_GCR_ECCIE_FLASH0                         ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_FLASH0_POS)) /**< ECCIE_FLASH0 Mask */
+#define MXC_F_GCR_ECCINTEN_FLASH0_POS                  11 /**< ECCINTEN_FLASH0 Position */
+#define MXC_F_GCR_ECCINTEN_FLASH0                      ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_FLASH0_POS)) /**< ECCINTEN_FLASH0 Mask */
 
-#define MXC_F_GCR_ECCIE_FLASH1_POS                     12 /**< ECCIE_FLASH1 Position */
-#define MXC_F_GCR_ECCIE_FLASH1                         ((uint32_t)(0x1UL << MXC_F_GCR_ECCIE_FLASH1_POS)) /**< ECCIE_FLASH1 Mask */
+#define MXC_F_GCR_ECCINTEN_FLASH1_POS                  12 /**< ECCINTEN_FLASH1 Position */
+#define MXC_F_GCR_ECCINTEN_FLASH1                      ((uint32_t)(0x1UL << MXC_F_GCR_ECCINTEN_FLASH1_POS)) /**< ECCINTEN_FLASH1 Mask */
 
-/**@} end of group GCR_ECCIE_Register */
+/**@} end of group GCR_ECCINTEN_Register */
 
 /**
  * @ingroup  gcr_registers
@@ -1102,14 +1101,14 @@ typedef struct {
 #define MXC_F_GCR_NFCLDOCTRL_EN_POS                    4 /**< NFCLDOCTRL_EN Position */
 #define MXC_F_GCR_NFCLDOCTRL_EN                        ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_EN_POS)) /**< NFCLDOCTRL_EN Mask */
 
-#define MXC_F_GCR_NFCLDOCTRL_PULLD_POS                 5 /**< NFCLDOCTRL_PULLD Position */
-#define MXC_F_GCR_NFCLDOCTRL_PULLD                     ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_PULLD_POS)) /**< NFCLDOCTRL_PULLD Mask */
+#define MXC_F_GCR_NFCLDOCTRL_PD_EN_POS                 5 /**< NFCLDOCTRL_PD_EN Position */
+#define MXC_F_GCR_NFCLDOCTRL_PD_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_PD_EN_POS)) /**< NFCLDOCTRL_PD_EN Mask */
 
 #define MXC_F_GCR_NFCLDOCTRL_VSEL_POS                  6 /**< NFCLDOCTRL_VSEL Position */
 #define MXC_F_GCR_NFCLDOCTRL_VSEL                      ((uint32_t)(0x3UL << MXC_F_GCR_NFCLDOCTRL_VSEL_POS)) /**< NFCLDOCTRL_VSEL Mask */
 
-#define MXC_F_GCR_NFCLDOCTRL_BYPEN_POS                 8 /**< NFCLDOCTRL_BYPEN Position */
-#define MXC_F_GCR_NFCLDOCTRL_BYPEN                     ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_BYPEN_POS)) /**< NFCLDOCTRL_BYPEN Mask */
+#define MXC_F_GCR_NFCLDOCTRL_BP_EN_POS                 8 /**< NFCLDOCTRL_BP_EN Position */
+#define MXC_F_GCR_NFCLDOCTRL_BP_EN                     ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_BP_EN_POS)) /**< NFCLDOCTRL_BP_EN Mask */
 
 #define MXC_F_GCR_NFCLDOCTRL_DISCH_POS                 9 /**< NFCLDOCTRL_DISCH Position */
 #define MXC_F_GCR_NFCLDOCTRL_DISCH                     ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_DISCH_POS)) /**< NFCLDOCTRL_DISCH Mask */
@@ -1117,8 +1116,8 @@ typedef struct {
 #define MXC_F_GCR_NFCLDOCTRL_EN_DLY_POS                13 /**< NFCLDOCTRL_EN_DLY Position */
 #define MXC_F_GCR_NFCLDOCTRL_EN_DLY                    ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_EN_DLY_POS)) /**< NFCLDOCTRL_EN_DLY Mask */
 
-#define MXC_F_GCR_NFCLDOCTRL_BYP_EN_DLY_POS            14 /**< NFCLDOCTRL_BYP_EN_DLY Position */
-#define MXC_F_GCR_NFCLDOCTRL_BYP_EN_DLY                ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_BYP_EN_DLY_POS)) /**< NFCLDOCTRL_BYP_EN_DLY Mask */
+#define MXC_F_GCR_NFCLDOCTRL_BP_EN_DLY_POS             14 /**< NFCLDOCTRL_BP_EN_DLY Position */
+#define MXC_F_GCR_NFCLDOCTRL_BP_EN_DLY                 ((uint32_t)(0x1UL << MXC_F_GCR_NFCLDOCTRL_BP_EN_DLY_POS)) /**< NFCLDOCTRL_BP_EN_DLY Mask */
 
 /**@} end of group GCR_NFCLDOCTRL_Register */
 
@@ -1128,11 +1127,11 @@ typedef struct {
  * @brief    NFC LDO Delay Register
  * @{
  */
-#define MXC_F_GCR_NFCLDODLY_BYPCNT_POS                 0 /**< NFCLDODLY_BYPCNT Position */
-#define MXC_F_GCR_NFCLDODLY_BYPCNT                     ((uint32_t)(0xFFUL << MXC_F_GCR_NFCLDODLY_BYPCNT_POS)) /**< NFCLDODLY_BYPCNT Mask */
+#define MXC_F_GCR_NFCLDODLY_BP_CNT_POS                 0 /**< NFCLDODLY_BP_CNT Position */
+#define MXC_F_GCR_NFCLDODLY_BP_CNT                     ((uint32_t)(0xFFUL << MXC_F_GCR_NFCLDODLY_BP_CNT_POS)) /**< NFCLDODLY_BP_CNT Mask */
 
-#define MXC_F_GCR_NFCLDODLY_ENCNT_POS                  8 /**< NFCLDODLY_ENCNT Position */
-#define MXC_F_GCR_NFCLDODLY_ENCNT                      ((uint32_t)(0xFFUL << MXC_F_GCR_NFCLDODLY_ENCNT_POS)) /**< NFCLDODLY_ENCNT Mask */
+#define MXC_F_GCR_NFCLDODLY_EN_CNT_POS                 8 /**< NFCLDODLY_EN_CNT Position */
+#define MXC_F_GCR_NFCLDODLY_EN_CNT                     ((uint32_t)(0xFFUL << MXC_F_GCR_NFCLDODLY_EN_CNT_POS)) /**< NFCLDODLY_EN_CNT Mask */
 
 /**@} end of group GCR_NFCLDODLY_Register */
 

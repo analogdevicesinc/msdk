@@ -2,6 +2,7 @@
  * @file    msradc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the MSRADC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup msradc_registers
  */
 
 /******************************************************************************

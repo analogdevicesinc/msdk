@@ -2,6 +2,7 @@
  * @file    srcc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SRCC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup srcc_registers
  */
 
 /******************************************************************************

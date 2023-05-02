@@ -2,6 +2,7 @@
  * @file    spixr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SPIXR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup spixr_registers
  */
 
 /******************************************************************************

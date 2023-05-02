@@ -118,32 +118,32 @@ int MXC_LP_BandgapIsOn(void)
 
 void MXC_LP_PORVCOREoreMonitorEnable(void)
 {
-    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS;
+    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_PORVDDCMON_DIS;
 }
 
 void MXC_LP_PORVCOREoreMonitorDisable(void)
 {
-    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS;
+    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_PORVDDCMON_DIS;
 }
 
 int MXC_LP_PORVCOREoreMonitorIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_VCOREPOR_DIS);
+    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_PORVDDCMON_DIS);
 }
 
 void MXC_LP_LDOEnable(void)
 {
-    MXC_PWRSEQ->lpctrl &= ~MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
+    return; // NOT SUPPORTED.
 }
 
 void MXC_LP_LDODisable(void)
 {
-    MXC_PWRSEQ->lpctrl |= MXC_F_PWRSEQ_LPCTRL_LDO_DIS;
+    return; // NOT SUPPORTED.
 }
 
 int MXC_LP_LDOIsEnabled(void)
 {
-    return (MXC_PWRSEQ->lpctrl & MXC_F_PWRSEQ_LPCTRL_LDO_DIS);
+    return E_NOT_SUPPORTED; // NOT SUPPORTED.
 }
 
 void MXC_LP_FastWakeupEnable(void)
@@ -179,7 +179,6 @@ void MXC_LP_EnableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
     case MXC_GPIO_PORT_0:
         MXC_PWRSEQ->lpwken0 |= wu_pins->mask;
         break;
-
     case MXC_GPIO_PORT_1:
         MXC_PWRSEQ->lpwken1 |= wu_pins->mask;
         break;
@@ -198,7 +197,6 @@ void MXC_LP_DisableGPIOWakeup(mxc_gpio_cfg_t *wu_pins)
     case MXC_GPIO_PORT_0:
         MXC_PWRSEQ->lpwken0 &= ~wu_pins->mask;
         break;
-
     case MXC_GPIO_PORT_1:
         MXC_PWRSEQ->lpwken1 &= ~wu_pins->mask;
         break;
@@ -494,10 +492,10 @@ void MXC_LP_USBFIFOPowerUp(void)
 
 void MXC_LP_ROMShutdown(void)
 {
-    MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ROM;
+    MXC_PWRSEQ->lpmemsd |= (MXC_F_PWRSEQ_LPMEMSD_ROM0 | MXC_F_PWRSEQ_LPMEMSD_ROM1);
 }
 
 void MXC_LP_ROMPowerUp(void)
 {
-    MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ROM;
+    MXC_PWRSEQ->lpmemsd &= ~(MXC_F_PWRSEQ_LPMEMSD_ROM0 | MXC_F_PWRSEQ_LPMEMSD_ROM1);
 }
