@@ -36,8 +36,8 @@
  * @brief   Flash read/write/erase functions declaration
  */
 
-#ifndef EXAMPLES_MAX32660_WEARLEVELING_FLASH_H_
-#define EXAMPLES_MAX32660_WEARLEVELING_FLASH_H_
+#ifndef EXAMPLES_MAX78000_WEARLEVELING_FLASH_H_
+#define EXAMPLES_MAX78000_WEARLEVELING_FLASH_H_
 
 // Flash operations log
 //#define FLASH_DEBUG
@@ -53,82 +53,57 @@
 #include "lfs.h"
 
 /**
- * @brief Reads flash memory
+ * @brief Copies contents of flash into a data buffer.
+ *
  * @note LittleFS callback method
- * @param c LittleFS config
- * @param block Flash memory block number
- * @param off Data offset in the block
- * @param buffer Data buffer
- * @param size Data size
- * @return Error code
+ *
+ * @param c 		LittleFS config
+ * @param block 	Flash memory block number
+ * @param off 		Data offset in the block
+ * @param buffer 	Buffer to copy flash data into
+ * @param size 		Number of bytes to read
+ *
+ * @return LFS_ERR_OK if successful otherwise and error code.
  */
 int flash_read(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, void *buffer,
                lfs_size_t size);
 
 /**
- * @brief Writes flash memory
+ * @brief Writes data to flash memory.
+ *
  * @note LittleFS callback method
- * @param c LittleFS config
- * @param block Flash memory block number
- * @param off Data offset in the block
- * @param buffer Data buffer
- * @param size Data size
- * @return Error code
+ *
+ * @param c 		LittleFS config
+ * @param block 	Flash memory block number
+ * @param off		Data offset in the block
+ * @param buffer 	Buffer containing data to write to flash.
+ * @param size 		Number of bytes to write to flash.
+ *
+ * @return LFS_ERR_OK if successful otherwise and error code.
  */
 int flash_write(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, const void *buffer,
                 lfs_size_t size);
 
 /**
- * @brief Erases flash memory block
+ * @brief Erases a flash memory block.
+ *
  * @note LittleFS callback method
- * @param c LittleFS config
- * @param block Flash memory block number
- * @return Error code
+ *
+ * @param c 		LittleFS config
+ * @param block 	Number of the flash memory block to erase
+ *
+ * @return LFS_ERR_OK if successful otherwise and error code.
  */
 int flash_erase(const struct lfs_config *c, lfs_block_t block);
 
 /**
  * @brief Performs pending flash operations
- * @note LittleFS callback method. Not supported by Maxim SDK
- * @param c LittleFS config
- * @return Error code
+ * @note LittleFS callback method. Not supported by Maxim SDK.
+ *
+ * @param c 	LittleFS config
+ *
+ * @return LFS_ERR_OK if successful otherwise and error code.
  */
 int flash_sync(const struct lfs_config *c);
 
-/**
- * @brief Verifies data in flash
- * @param address Flash memory address
- * @param length Data size
- * @param data Data buffer
- * @return Error code
- */
-int flash_verify(uint32_t address, uint32_t length, uint8_t *data);
-
-/**
- * @brief Compares data in flash with value specified
- * @param startaddr Flash memory address
- * @param length Data size
- * @param data The value to compare to
- * @return Error code
- */
-int check_mem(uint32_t startaddr, uint32_t length, uint32_t data);
-
-/**
- * @brief Checks whether flash memory is erased
- * @param startaddr Flash memory address
- * @param length Memory block size
- * @return Error code
- */
-int check_erased(uint32_t startaddr, uint32_t length);
-
-/**
- * @brief Writes 32bit data words to flash
- * @param startaddr Flash memory address
- * @param length Data size
- * @param data Data buffer
- * @param verify Whether to verify written data
- * @return Error code
- */
-int flash_write4(uint32_t startaddr, uint32_t length, uint32_t *data, bool verify);
-
-#endif // EXAMPLES_MAX32660_WEARLEVELING_FLASH_H_
+#endif // EXAMPLES_MAX78000_WEARLEVELING_FLASH_H_
