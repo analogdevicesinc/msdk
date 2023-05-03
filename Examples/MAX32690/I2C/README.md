@@ -2,7 +2,18 @@
 
 This example uses the I2C Master to read/write from/to the I2C Slave. 
 
-## Setup
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
+## Required Connections
+
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install JP7(RX_EN) and JP8(TX_EN) headers.
 -   Install headers JP9 and JP10 to SDA and SCL respectively.

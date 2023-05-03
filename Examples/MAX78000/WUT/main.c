@@ -41,6 +41,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "mxc.h"
+#include "pb.h"
 
 /***** Definitions *****/
 //#define SLEEP_MODE           // Select between SLEEP_MODE and LPM_MODE

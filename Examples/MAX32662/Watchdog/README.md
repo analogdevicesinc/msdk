@@ -9,6 +9,17 @@ After pressing SW2:
 - If "UNDERFLOW" is defined, two consecutive watchdog feeds are executed. Performing two consecutive feeds guarantees that one of the feeds will occur before the watchdog window. If the watchdiog count is not within the window when the first feed is executed this will cause the watchdog reset, otherwise the watchdog count will simply reset. If execution reaches the second feed, the watchdog count is guaranteed to be outside the window since the watchdog was just fed immediately prior to that point thus the watchdog reset will be triggered.
 
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Install headers JP7(RX\_EN) and JP8(TX\_EN).

@@ -57,7 +57,9 @@
 #include "tmr.h"
 #include "dma.h"
 #include "led.h"
+#ifndef BOARD_AUD01_REVA
 #include "pb.h"
+#endif
 #include "cnn.h"
 #ifdef BOARD_FTHR_REVA
 #include "tft_ili9341.h"
@@ -885,11 +887,13 @@ int main(void)
         }
 
         /* Stop demo if PB1 is pushed */
+#ifndef BOARD_AUD01_REVA
         if (PB_Get(0)) {
             PR_INFO("Stop! \r\n");
             procState = STOP;
             break;
         }
+#endif
     }
 
     /* Turn off LED2 (Red) */

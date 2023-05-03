@@ -4,6 +4,17 @@ This example showcases the various settings which can be configured to put the d
 
 The wakeup source can be configured to be either the RTC clock or the push button based on the selection of the "USE_BUTTON" and "USE_ALARM" macros. Additionally, sleep modes which are cycled through can be enabled and disabled with the "DO_SLEEP", "DO_DEEPSLEEP", "DO_BACKGROUND" and "DO_BACKUP" macros.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

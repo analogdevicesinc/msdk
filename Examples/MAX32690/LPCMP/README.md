@@ -4,9 +4,18 @@ This example demonstrates the use of the Analog Comparator to wake up the device
 
 The example is configured to use analog channels 0 and 1 as the negative and positive comparator inputs respectively. A wakeup event is triggered when the comparator output transitions from low to high (analog 1 needs to transition from a voltage lower than analog 0 to voltage higher than analog 0).
 
-## Setup
+## Software
 
-##### Required Connections
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
+## Required Connections
+
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install headers JP7(RX\_EN) and JP8(TX\_EN).
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.

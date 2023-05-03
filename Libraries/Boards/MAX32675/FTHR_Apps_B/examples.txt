@@ -22,6 +22,8 @@ GPIO
 Hello_World
 I2C_SCAN
 ICC
+Library_Generate
+Library_Use
 LP
 SPI
 TMR

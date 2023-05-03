@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 #MXC_OPTIMIZE_CFLAGS = -Og
 # ^ For example, you can uncomment this line to 
@@ -13,10 +13,6 @@
 
 # Add your config here!
 
-# Set the camera drivers.  Select a line to match the
-# connected camera.  These are some common values.  
-# For a full list of options for the 'CAMERA' variable, 
-# see the documentation.
 CAMERA=OV5640
 
 # Set a higher optimization level.  The increased performance

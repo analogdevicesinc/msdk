@@ -418,3 +418,15 @@ If a new network is developed and synthesized, the new weight file and related A
 
 [2] [MaximAI_Documentation/README.md at master · MaximIntegratedAI/MaximAI_Documentation (github.com)](https://github.com/MaximIntegratedAI/MaximAI_Documentation/blob/master/MAX78000_Evaluation_Kit/README.md)
 
+
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+

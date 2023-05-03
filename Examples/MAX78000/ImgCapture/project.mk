@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -40,4 +40,8 @@ ifeq ($(SD),1)
 PROJ_CFLAGS += -DSD
 LIB_SDHC = 1
 VPATH += src/sd
+endif
+
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
 endif

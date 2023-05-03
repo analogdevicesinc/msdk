@@ -54,7 +54,9 @@
 #include "tmr.h"
 #include "dma.h"
 #include "led.h"
+#ifndef BOARD_AUD01_REVA
 #include "pb.h"
+#endif
 #include "cnn.h"
 #include "mxc.h"
 #include "sema_regs.h"
@@ -453,6 +455,7 @@ int main(void)
         }
 
         /* Stop demo if PB1 is pushed */
+#ifndef BOARD_AUD01_REVA
         if (PB_Get(0)) {
             printf("Stop! \r\n");
 
@@ -460,6 +463,7 @@ int main(void)
 
             break;
         }
+#endif
     }
 
     /* Turn off LED2 (Red) */

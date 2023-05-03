@@ -4,6 +4,17 @@ This example uses I2C to cycle through the 8 colors of the RGB LED connected to 
 
 *** NOTE ***: This example is only intended to be run on the MAX32655 Featherboard.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Setup
 
 ##### Required Connections

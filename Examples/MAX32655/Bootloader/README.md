@@ -29,3 +29,15 @@ is stored in the internal update flash space, see `ota_internal_mem.ld` `FLASH_U
 The green LED will blink when an update image has successfully been applied to the main image space.
 
 The red LED will blink in the error case.
+
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+

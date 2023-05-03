@@ -46,12 +46,17 @@ MEMORY {
 }
 
 SECTIONS {
+    .bootloader :
+    {
+	KEEP(*bootloader.o)
+    } > BOOT
 
     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))
         EXCLUDE_FILE (*riscv.o) *(.text*)    /* program code, exclude RISCV code */
+        EXCLUDE_FILE (*bootloader.o) *(.text*)    /* program code, exclude bootloader code */
         *(.rodata*)  /* read-only data: "const" */
 
         KEEP(*(.init))

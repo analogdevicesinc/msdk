@@ -9,93 +9,41 @@ This demo shows a tiny SSD network, trained to localize and recognize digits in 
 
 The image input size is 74x74 pixels RGB which is 74x74x3 in HWC format.
 
+## Software
 
-Before building the firmware, please make sure to enable intended mode of operation by comment/uncomment the following in `example_config.h`:
+### Project Usage
 
-```c
-//#define USE_SAMPLEDATA        // shows the sample data
-```
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-### Building Firmware:
+### Project-Specific Build Notes
 
-Navigate directory where digit detection demo software is located and build the project:
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
-```bash
-$ cd /Examples/MAX78000/CNN/digit-detection-demo
-$ make -r
-```
+* By default, this project is configured for [camera mode](#camera-mode).  It can be configured for [offline mode](#offline-mode) in [example_config.h](example_config.h) by defining `USE_SAMPLE_DATA`.
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project:
+    ```C
+    #define USE_SAMPLEDATA
+    // ^ Uncomment this to use static sample data.
+    // ^ Comment this out to use live camera data.
+    ```
 
-```bash
-$ make -r distclean
-```
+* This project supports output to a TFT display.  This feature can be toggled via the `TFT_ENABLE` option defined in [example_config.h](example_config.h)
 
-By default, the code is compiled for MAX78000 EVKIT.  To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
+    * For the MAX78000EVKIT, the TFT display is **enabled** by default.  To _disable_ it, undefine `TFT_ENABLE`.
 
-```bash
-$ make -r BOARD=FTHR_RevA
-```
+        ```C
+        #ifdef BOARD_EVKIT_V1
+        //#define TFT_ENABLE
+        #endif
+        ```
 
-**Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
+    * For the MAX78000FTHR, the TFT display is **disabled** by default.  The TFT display is not supplied with the MAX78000 Feather board. The compatible 2.4'' TFT FeatherWing display can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing).  To _enable_ the display code, uncomment `#define ENABLE_TFT` in [example_config.h](example_config.h)
 
-*Right click project name > Properties > C/C++ Build > Environment > Board"*
-
-<img src="./Resources/eclipse_board.png" style="zoom:33%;" />
-
-### Load firmware image to MAX78000 EVKIT
-
-- Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
-
-- Connect PICO adapter to JH5 SWD header.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/max78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/max78000.elf verify reset exit"
-```
-
-### Load firmware image to MAX78000 Feather
-
-Connect USB cable to CN1 USB connector.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/max78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/max78000.elf verify reset exit"
-```
-
-### MAX78000 Feather operations
-
-The TFT display is optional and not supplied with the MAX78000 Feather board.
-The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered here:
-
-https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
-
-This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
-
-To compile code with enabled TFT feature use the following setting in `example_config.h`:
-
-```c
-#ifdef BOARD_FTHR_REVA
-// Disable TFT by default on FTHR
-#define TFT_ENABLE
-#endif
-```
-
-While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
+        ```C
+        #ifdef BOARD_FTHR_REVA
+        #define TFT_ENABLE
+        #endif
+        ```
 
 ### Offline Mode
 
@@ -117,7 +65,7 @@ To create your own header file follow these steps:
 
 5. Use this header file in your main.c
 
-### Camera Mode 
+### Camera Mode
 
 To operate in this mode, comment out "#define USE\_SAMPLEDATA", defined in main.c.
 

@@ -2,6 +2,17 @@
 
 This example demonstrates the various uses of the Flash Memory Controller. Initially the flash memory is cleared using the mass erase feature. Then several pages are initialized with random data. And finally one of the pages that was initialized is erased using the page erase feature. After each of these steps the flash memory is read and the previous operation is verified. 
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

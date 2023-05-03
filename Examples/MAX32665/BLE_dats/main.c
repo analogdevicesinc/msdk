@@ -49,6 +49,8 @@
 #include "wut.h"
 #include "rtc.h"
 #include "trimsir_regs.h"
+#include "pal_timer.h"
+#include "pal_sys.h"
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 #include "ll_init_api.h"
@@ -131,7 +133,7 @@ static void mainWsfInit(void)
 /*!
 *  \fn     WUT_IRQHandler
 *
-*  \brief  WUY interrupt handler.
+*  \brief  WUT interrupt handler.
 *
 *  \return None.
 */
@@ -139,6 +141,8 @@ static void mainWsfInit(void)
 void WUT_IRQHandler(void)
 {
     MXC_WUT_Handler();
+    PalTimerIRQCallBack();
+    NVIC_ClearPendingIRQ(WUT_IRQn);
 }
 
 /*************************************************************************************************/
@@ -257,8 +261,10 @@ int main(void)
 
     /* Execute the trim procedure */
     wutTrimComplete = 0;
-    MXC_WUT_TrimCrystalAsync(wutTrimCb);
-    while (!wutTrimComplete) {}
+    if (PalSharedTimerIsInit()) {
+        MXC_WUT_TrimCrystalAsync(wutTrimCb);
+        while (!wutTrimComplete) {}
+    }
 
     /* Shutdown the 32 MHz crystal and the BLE DBB */
     PalBbDisable();

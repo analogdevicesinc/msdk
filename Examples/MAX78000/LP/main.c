@@ -62,7 +62,6 @@
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "nvic_table.h"
-#include "pb.h"
 #include "rtc.h"
 #include "uart.h"
 
@@ -71,6 +70,10 @@
 
 #define USE_BUTTON 1
 #define USE_ALARM 0
+
+#ifdef USE_BUTTON
+#include "pb.h"
+#endif
 
 #define DISABLE_GPIO 0 //it configures all GPIOs as input to save power
 

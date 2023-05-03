@@ -12,12 +12,17 @@ __0x10000000__: Bootloader
 __0x10004000__: Main flash space  
 __0x10300000__: Update flash space
 
-## Setup
+## Software
 
-This Bootloader application needs to be loaded to the first two flash pages. The main application
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+This Bootloader application needs to be loaded to the first two flash pages. This is accomplished with the [bootloader.ld](bootloader.ld) linker file.  The main application
 will run on top of this application. The linker file for the main application must coincide 
-with the memory sections defined in this application. The main application is responsible 
-for updating the update flash space.
+with the memory sections defined in this application (see the `BLE_otas` for an example of an application that does this). The main application is responsible for updating the update flash space.
 
  
 ## Expected Output

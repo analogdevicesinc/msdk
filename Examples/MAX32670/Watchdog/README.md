@@ -6,6 +6,17 @@ When the application begins, it initializes and starts the watchdog timer.  The 
 
 -Watchdog timer is configured in Windowed mode. You can select between two tests: Timer Overflow and Underflow. Press button SW1 to create watchdog interrupt and reset
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

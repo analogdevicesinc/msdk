@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -22,7 +22,13 @@ SRCS += boot_lower.S
 LINKERFILE = bootloader.ld
 
 AUTOSEARCH=0
-USE_INTERNAL_FLASH ?=0
+
+ifeq ($(BOARD),EvKit_V1)
+USE_INTERNAL_FLASH ?= 0
+else
+USE_INTERNAL_FLASH ?= 1
+endif
+
 ifeq ($(USE_INTERNAL_FLASH), 1)
 SRCS += main_int.c
 else

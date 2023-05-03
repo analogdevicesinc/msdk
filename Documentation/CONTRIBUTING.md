@@ -219,16 +219,16 @@ Static resources such as images should be placed in the `res` folder.
 The `Documentation/build.py` script can be used to build the MSDK User Guide and supporting documentation locally.  This script:
 
 - Builds all the Peripheral API references using Doxygen and copies them into `Documentation`
-- Copies any markdown files in the root of the repo into the `Documentation` folder.
-- Copies the `res` (resources) folder into `Documentation`
-- Builds the MSDK User Guide using [Mkdocs](https://www.mkdocs.org/), which packages everything in `Documentation` into a static HTML/CSS/JavaScript site.
+- Copies any markdown (.md) files from the root of the repo into `Documentation`
+- Builds the MSDK User Guide using [Mkdocs](https://www.mkdocs.org/), which packages everything in `Documentation` into a static HTML/CSS/JavaScript site in the `docs` folder.
 
 To **build** the docs:
 
-1. Install Python 3
-2. `pip install -r Documentation/requirements.txt`
-3. `python Documentation/build.py`
-4. The site will be built in the `docs` folder of the repo.
+1. Install [doxygen](https://www.doxygen.nl/download.html)
+2. Install Python 3
+3. `pip install -r Documentation/requirements.txt`
+4. `python Documentation/build.py`
+5. The site will be built in the `docs` folder of the repo.
 
 To **preview** the generated site:
 

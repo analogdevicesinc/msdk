@@ -1,10 +1,21 @@
 ## Description
 
-This is a SPI loopback demonstration. Data is sent between the MOSI and MISO pins of the same SPI instance and after each transaction the data sent is compared to the data received. This test is performed several times with a different wordsize for each test. 
+This is a SPI loopback demonstration. Data is sent between the MOSI and MISO pins of the same SPI instance and after each transaction the data sent is compared to the data received. This test is performed several times with a different word size for each test.
 
 By default, the example performs a blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, undefine the MASTERSYNC macro and define the MASTERASYNC macro.  To use DMA transactions, define the MASTERDMA macro instead.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
+
 ## Setup
+
 If using the MAX78000EVKIT (EvKit_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.

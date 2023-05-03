@@ -19,19 +19,17 @@ It supports the following output destinations:
 
 * Save image to SD card.
 
-## Building, Flashing, & Debugging
+## Software
 
-For instructions on how to build, flash, and debug this example see [.vscode/readme.md](.vscode/readme.md).
+### Project Usage
 
-## Console Interface & Utilites
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-For more details on running the serial console, converting images, and excercising the example, see [utils/README.md](utils/README.md)
+### Project-Specific Build Notes
 
-## Build Notes
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
-Full documentation on the build system can be found in the "Build Configuration" section of [.vscode/README.md](.vscode/README.md#build-configuration).  The following notes contain important quick-start info.
-
-### Enabling Firmware Features
+#### Enabling Firmware Features
 
 Firmware features can be toggled in [src/example_config.h](src/example_config.h).
 
@@ -41,24 +39,13 @@ Firmware features can be toggled in [src/example_config.h](src/example_config.h)
 
 After making any changes, fully clean the project and then rebuild.
 
-### Setting BOARD Correctly
+#### Setting CAMERA
 
-Before you build, ensure you've set the `BOARD` value to match your evaluation platform.
+The `CAMERA` variable in [project.mk](project.mk) is used to select the correct drivers for the attached camera.  When this variable is changed, you should also ensure the `CAMERA_xxx` compiler definitions in [.vscode/settings.json](.vscode/settings.json) is also changed to match.  The project settings cannot automatically changes in the compiler definitions to match the camera.
 
-For the MAX78000EVKIT, use `EvKit_V1`.
-For the MAX78000FTHR, use `FTHR_RevA`.
+## Console Interface & Utilities
 
-**Where exactly you set `BOARD` will depend on your development environment.**
-
-* If you're developing on the command-line, set this value in [project.mk](project.mk) or on the command-line (`make BOARD=FTHR_RevA all`)
-
-* If you're developing with Visual Studio Code, set `"board"` in [.vscode/settings.json](.vscode/settings.json).  See the VSCode-Maxim [readme](.vscode/readme.md) for more details.
-
-* If you're developing with Eclipse, set the `"BOARD"` environment variable.  Right click project -> Properties -> C/C++ Build -> Environment -> `"BOARD"`.  Apply, clean, and rebuild.
-
-### Setting CAMERA
-
-The `CAMERA` variable in [project.mk](project.mk) is used to select the correct drivers for the attached camera.  When this variable is changed, you should also ensure the `CAMERA_xxx` compiler definitions in [.vscode/settings.json](.vscode/settings.json) is also changed to match.  The project settings cannot automatically changes in the compiler definitons to match the camera.
+For more details on running the serial console, converting images, and exercising the example, see [utils/README.md](utils/README.md)
 
 ## OVM7692 Quick-Start
 
@@ -324,6 +311,8 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     ```
 
     The 'malvarcutler' setting is the most accurate, but most computationally expensive.  'bilinear' is computationally inexpensive but inaccurate.  'passthrough' shows the received Bayer pattern on the image sensor.
+
+    TODO: Recapture images
 
     * `malvarcutler`:
         * ![HM0360_MalvarCutler_320_240](res/HM0360_MalvarCutler_160_120.png)

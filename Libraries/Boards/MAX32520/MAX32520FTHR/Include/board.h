@@ -59,6 +59,8 @@ extern "C" {
 #define LED1 0
 #define LED2 1
 
+#define BOARD_MAX32520FTHR
+
 /**
  * \brief   Initialize the BSP and board interfaces.
  * \returns #E_NO_ERROR if everything is successful

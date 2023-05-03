@@ -185,3 +185,15 @@ __extra long__ press is greater than 1000 ms
 
 ### When connected
 1. Button 2 short press: Change PHY (1M-2M-Coded_S2-Coded_S8)
+
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+

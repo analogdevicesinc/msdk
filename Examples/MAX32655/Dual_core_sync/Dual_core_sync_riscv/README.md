@@ -6,6 +6,17 @@ This project demonstrates the synchronization between the ARM core (CM4) and the
 
 README file of project MAX32655/Dual_core_sync_arm will present more details on the dual core synchronization.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Setup
 
 ##### Board Selection

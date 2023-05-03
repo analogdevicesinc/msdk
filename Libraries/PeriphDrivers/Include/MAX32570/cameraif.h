@@ -67,6 +67,16 @@ typedef enum {
 } mxc_pcif_datawidth_t;
 
 /**
+ * @brief   The list of Camera GPIO Datawidth options supported
+ *
+ */
+typedef enum {
+    MXC_PCIF_GPIO_DATAWIDTH_8_BIT = 0, ///<
+    MXC_PCIF_GPIO_DATAWIDTH_10_BIT, ///<
+    MXC_PCIF_GPIO_DATAWIDTH_12_BIT, ///<
+} mxc_pcif_gpio_datawidth_t;
+
+/**
  * @brief   The list of Camera Interface ReadMode options supported
  *
  */
@@ -87,11 +97,13 @@ typedef enum {
 /* **** Function Prototypes **** */
 
 /**
- * @brief   Initialize camera interface, set clock, configure gpios
+ * @brief Initialize the Parallel Camera Interface.
  *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ * @param gpioDataWidth   Desired datawidth for the camera interface (8, 10 or 12 bits).
+ *
+ * @return E_NO_ERROR if successful, otherwise E_BAD_PARAM.
  */
-int MXC_PCIF_Init(void);
+int MXC_PCIF_Init(mxc_pcif_gpio_datawidth_t gpioDataWidth);
 
 /**
  * @brief   Initialize camera interface, set clock, configure gpios

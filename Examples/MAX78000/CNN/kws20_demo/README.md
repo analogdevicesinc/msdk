@@ -6,8 +6,6 @@
 
 The Keyword Spotting Demo software demonstrates recognition of a number of keywords using MAX78000 EVKIT.  
 
-A new option `-DSEND_MIC_OUT_SDCARD` has been added to [`project.mk`](project.mk) to enable saving the detected sound snippets to SD card interface of the MAX78000 Feather board. This feature is not available for MAX7800 EVKIT.
-
 The KWS20 demo software utilizes 2nd version of the Google speech commands dataset which consists of 35 keywords and more than 100K utterances:
 
 https://storage.cloud.google.com/download.tensorflow.org/data/speech_commands_v0.02.tar.gz
@@ -20,68 +18,84 @@ The rest of the keywords and unrecognized words fall into the "**Unknown**" cate
 
 To improve the unknown detection, the model in version 3.2 is trained with an additional speech dataset from LibriSpeech (http://us.openslr.org/resources/12/dev-clean.tar.gz), segmented to 1-sec audio data and labeled as unknown.
 
-## Keyword Spotting Demo Software
+## Software
 
-### Building firmware
+### Project Usage
 
-Navigate the directory where the KWS20 demo software is located and build the project:
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-```bash
-$ cd /Examples/MAX78000/CNN/kws20_demo
-$ make
-```
+### Project-Specific Build Notes
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+Note:  fully clean and re-build this project after changing any of the config options below.
 
-```bash
-$ make distclean
-```
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in [`project.mk`](project.mk):
+* This project supports output to a TFT display.  When building for the MAX78000EVKIT, the display is **enabled** by default.
+    * To _disable_ the TFT display code, comment out `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
-```
+        ```Makefile
+        ifeq "$(BOARD)" "EvKit_V1"
+        # PROJ_CFLAGS+=-DTFT_ENABLE
+        IPATH += TFT/evkit/
+        VPATH += TFT/evkit/
+        endif
+        ```
 
-To compile code for the MAX78000 Feather board enable **BOARD=FTHR_RevA** in [`project.mk`](project.mk):
+* When building for the MAX78000FTHR, the TFT display is **disabled** by default.  The compatible 2.4'' TFT FeatherWing is an optional display that does not come with the MAX7800FTHR.  It can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing)
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
-BOARD=FTHR_RevA
-endif
-```
+    * To _enable_ the TFT display code, uncomment `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
 
-**Note: If you are using Eclipse, please also make sure to change the value of the `BOARD` environment variable to `FTHR_RevA` by right-clicking on *"[project name] > Properties > C/C++ Build > Environment > BOARD"***
+        ```Makefile
+        ifeq "$(BOARD)" "FTHR_RevA"
+        # Only Enable if 2.4" TFT is connected to Feather
+        PROJ_CFLAGS+=-DTFT_ENABLE
+        IPATH += TFT/fthr
+        VPATH += TFT/fthr
+        endif
+        ```
 
-<img src="Resources/eclipse_board.png" style="zoom:33%;" />
+* This project can operate in [microphone mode](#microphone-mode) or [offline mode](#offline-mode).
 
+    * To operate in [microphone mode](#microphone-mode), define `ENABLE_MIC_PROCESSING` in [main.c](main.c)
 
+        ```C
+        #define ENABLE_MIC_PROCESSING // enables capturing Mic, otherwise a header file Test vector is used as sample data
+        ```
 
-### Load firmware image to MAX78000 EVKIT
+    * To operate in [offline mode](#offline-mode), undefine `ENABLE_MIC_PROCESSING` in [main.c](main.c)
 
-Connect the USB cable to CN1 (USB/PWR) and turn ON the power switch (SW1).
+        ```C
+        // #define ENABLE_MIC_PROCESSING // enables capturing Mic, otherwise a header file Test vector is used as sample data
+        ```
 
-Connect the PICO adapter to the JH5 SWD header.
+* (MAX78000FTHR only) A new option `SEND_MIC_OUT_SDCARD` has been added to enable saving the detected sound snippets to SD card interface of the MAX78000FTHR board in [CODEC mode](#codec-mode). This feature is not available for MAX78000EVKIT.
 
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
+    * To _enable_ saving to an SD card, define `ENABLE_CODEC_MIC` in [project.mk](project.mk)
 
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
+        ```Makefile
+        # If enabled, it saves out the Mic samples used for inference to SDCARD
+        # Note that if both SDCARD and TFT are enabled, the TFT will be disabled to avoid SPI driver conflict.
+        PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
+        ```
 
-If using Linux, perform this step:
+* (MAX78000FTHR only) A new option `ENABLE_CODEC_MIC` has been added to sample the board's _line input_ instead of the on-board digital microphone.
 
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
+    * To _enable_ line input, define `ENABLE_CODEC_MIC` in [project.mk](project.mk)
 
-**Make sure to remove the PICO adapter once the firmware is loaded.**
+        ```Makefile
+        # If enabled, it captures audio from line input of MAX9867 audio codec instead of the on-board mic.
+        # Note that SEND_MIC_OUT_SDCARD should be disabled in this mode
+        PROJ_CFLAGS+=-DENABLE_CODEC_MIC
+        ```
+
+* This project supports outputting microphone raw data over a serial port with the `SEND_MIC_OUT_SERIAL` option.  This is **disabled** by default.
+
+    * To enable this option, define `SEND_MIC_OUT_SERIAL` in [project.mk](project.mk)
+
+        ```Makefile
+        # If enabled, it sends out the Mic samples used for inference to the serial port
+        PROJ_CFLAGS+=-DSEND_MIC_OUT_SERIAL
+        ```
 
 ### MAX78000 EVKIT jumper setting
 
@@ -99,8 +113,6 @@ The TFT display shows that it is ready. Press PB1 to start:
 
 <img src="Resources/20200604_142849.jpg" style="zoom: 25%;" />
 
-
-
 Once RED LED2 turns on, the initialization is complete and it is ready to accept keywords. If the PICO adapter is still connected to SWD, disconnect it and power cycle.
 
 The following words can be detected:
@@ -116,23 +128,6 @@ The microphone (U15) is located between JH4 and JH5 headers on EVKIT, (MK1) betw
 <img src="Resources/20200604_142536_1.jpg" style="zoom:25%;" />
 
 
-
-### Load firmware image to MAX78000 Feather
-
-Connect the USB cable to the CN1 USB connector.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
-
 ### MAX78000 Feather operations
 
 The KWS20 demo starts automatically after power-up or pressing the reset button (SW4).
@@ -144,14 +139,6 @@ The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered her
 https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
 
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
-
-To compile code with the enabled TFT feature use the following setting in [`project.mk`](project.mk):
-
-```bash
-ifeq "$(BOARD)" "FTHR_RevA"
-PROJ_CFLAGS += -DENABLE_TFT
-endif
-```
 
 ***Note: If the SD card option is enabled, the TFT support will automatically be disabled regardless of the above setting.***
 
@@ -319,29 +306,17 @@ The **kws20_v3** bare-bone C code is partially used in KWS20 Demo. In particular
 
 KWS20 demo works in two modes:  Using a microphone (real-time), or offline processing:
 
-```c
-#define ENABLE_MIC_PROCESSING
-```
-
 ### Microphone Mode
 
-In this mode, EVKIT I2S Mic is initialized to operate at 16KHz 32-bit samples.  In the main loop, the I2S buffer is checked and samples are stored in  **pChunkBuffonboard** buffer.  
-
-### CODEC Mode
-
-In this mode, the left channel (tip of the J5 3.5mm audio jack) of the line-in of MAX9867 audio CODEC (is used as the audio input source.
-
- To enable using CODEC as the audio input source, make sure the `PROJ_CFLAGS` line is uncommented. This mode can only be enabled for the  Feather board.
-
-```make
-# If enabled, it captures audio from line input of MAX9867 audio codec instead of the on-board mic.
-# Note that SEND_MIC_OUT_SDCARD should be disabled in this mode
-PROJ_CFLAGS+=-DENABLE_CODEC_MIC
-```
+If `ENABLE_MIC_PROCESSING` is defined, the EVKIT I2S Mic is initialized to operate at 16KHz 32-bit samples.  In the main loop, the I2S buffer is checked and samples are stored in  **pChunkBuffonboard** buffer.  See the [build notes](#project-specific-build-notes) for instructions on setting this mode.
 
 ### Offline Mode
 
-if **ENABLE_MIC_PROCESSING** is not defined, a header file containing the 16-bit samples (e.g. **kws_five.h**) should be included in the project to be used as the input . To create a header file from a wav file, use included utilities to record a wav file and convert it to the header file. 
+if **ENABLE_MIC_PROCESSING** is not defined, a header file containing the 16-bit samples (e.g. **kws_five.h**) should be included in the project to be used as the input . To create a header file from a wav file, use included utilities to record a wav file and convert it to the header file.  See the [build notes](#project-specific-build-notes) for instructions on setting this mode.
+
+### CODEC Mode
+
+In this mode, the left channel (tip of the J5 3.5mm audio jack) of the line-in of MAX9867 audio CODEC (is used as the audio input source).  This mode is only supported on the MAX78000FTHR.  See the [build notes](#project-specific-build-notes) for instructions on enabling this feature.
 
 ```bash
 # record 1sec of 16-bit 16KHz sampled wav file 
@@ -352,14 +327,8 @@ $ python RealtimeAudio.py -i voicefile.wav -o voicefile.h
 
 ### Saving Sound Snippets to SD Card
 
-The following option has been added to [`project.mk`](project.mk). To enable saving the detected sound snippets to the SD card make sure the `PROJ_CFLAGS" line is uncommented.
+If `SEND_MIC_OUT_SDCARD` is defined, a new sequential directory is created on the SD card on every power-up or reset.  This is only supported on the MAX78000FTHR.  See [build notes](#project-specific-build-notes) for instructions on enabling this feature.
 
-```make
-# If enabled, it saves out the Mic samples used for inference to SDCARD
-PROJ_CFLAGS+=-DSEND_MIC_OUT_SDCARD
-```
-
-When this mode is enabled, a new sequential directory is created on the SD card on every power-up or reset.
 ![directory](Resources/SDcard_files.PNG)
 
 After a few moments, the green LED lights up and upon detecting a new word, the LED blinks and a file is created with 8-bit sample recorded audio. The file name includes an index and the detected word. If the detection has low confidence, the file name will have a "_L" suffix. (for example `0003_RIGHT_L`)
@@ -400,12 +369,7 @@ When option `-a` is used, each file is converted to a .wav file once and subsequ
 
 ### Sending Sound Snippets to serial
 
-To send the snippets to the serial port in binary format, uncomment the following line in [`project.mk`](project.mk). 
-
-```make
-# If enabled, it sends out the Mic samples used for inference to the serial port
-PROJ_CFLAGS+=-DSEND_MIC_OUT_SERIAL
-```
+If `SEND_MIC_OUT_SERIAL` is defined the example will send audio snippets to the serial port in binary format.  See [build notes](#project-specific-build-notes) for instructions on enabling this feature.
 
 A utility (`capture_serial_bin.py`) is provided in the `/Utility` folder to capture the serial snippets and save them as  .wav files:
 

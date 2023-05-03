@@ -95,8 +95,13 @@ endif
 # auto-generated dependencies. Also if this is Cygwin, file paths for ARM GCC
 # will be converted from /cygdrive/c to C:.
 ################################################################################
-ifneq ($(findstring CYGWIN, ${shell uname -s}), )
+UNAME := $(shell uname -s)
+ifneq ($(findstring CYGWIN, $(UNAME)), )
 CYGWIN=True
+endif
+
+ifneq ($(findstring MSYS, $(UNAME)), )
+MSYS=True
 endif
 
 # Get the prefix for the tools to use.
@@ -276,7 +281,17 @@ endif
 AFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 CFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 CXXFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
+ifneq ($(MSYS),)
+# 2-27-2023:  This workaround was added to resolve a linker bug introduced
+# when we started using ln_args.txt.  The GCC linker expects C:/-like paths
+# on Windows if arguments are passed in from a text file.  However, ln_args
+# is parsed through a regex that misses the edge case -L/C/Path/... because
+# of the leading "-L".  We use cygpath here to handle that edge case before
+# parsing ln_args.txt.
+LDFLAGS+=${patsubst %,-L%,$(shell cygpath -m $(LIBPATH))}
+else
 LDFLAGS+=${patsubst %,-L%,$(call fixpath,$(LIBPATH))}
+endif
 
 ################################################################################
 # The rule for building the object file from each C source file.

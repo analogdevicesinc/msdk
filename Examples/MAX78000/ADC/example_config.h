@@ -39,6 +39,8 @@
 #define ADC_CHANNEL MXC_ADC_CH_0
 #elif defined(BOARD_FTHR_REVA)
 #define ADC_CHANNEL MXC_ADC_CH_3
+#else
+#error ERR_NOTSUPPORTED: Unsupported board!
 #endif
 
 /* Change to #undef USE_INTERRUPTS for polling mode */

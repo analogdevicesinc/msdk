@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MAX3267X LittleFS demo: Data Fields - Variables</title>
+<title>LittleFS: Data Fields - Variables</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -25,7 +25,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">MAX3267X LittleFS demo
+   <div id="projectname">LittleFS
    </div>
   </td>
  </tr>
@@ -95,8 +95,12 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 , <a class="el" href="structlfs__config.html#a7066a4cd3c8fc8fad07a0fdadfe8754d">lfs_config</a>
 , <a class="el" href="structlfs__superblock.html#a0e83ec964dc7e0ab1c0957606283279f">lfs_superblock</a>
 </li>
+<li>attrcount
+: <a class="el" href="structlfs__dir__traverse.html#a1862563ef7c174523d65e4bc5bd73680">lfs_dir_traverse</a>
+</li>
 <li>attrs
-: <a class="el" href="structlfs__file__config.html#a52f2507239750225b63df0fc421d8418">lfs_file_config</a>
+: <a class="el" href="structlfs__dir__traverse.html#aa4ee6208dce18724a5578db643d966b4">lfs_dir_traverse</a>
+, <a class="el" href="structlfs__file__config.html#a52f2507239750225b63df0fc421d8418">lfs_file_config</a>
 </li>
 </ul>
 
@@ -104,6 +108,7 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 <h3><a id="index_b"></a>- b -</h3><ul>
 <li>begin
 : <a class="el" href="structlfs__commit.html#a19f7062a2210efa0b1a08b0b2e40946a">lfs_commit</a>
+, <a class="el" href="structlfs__dir__traverse.html#a07798a0ee23e576070aa72241c04e081">lfs_dir_traverse</a>
 </li>
 <li>block
 : <a class="el" href="structlfs__cache.html#afa697dc693f3eaa7e4cc517b0f23f655">lfs_cache</a>
@@ -126,6 +131,7 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 : <a class="el" href="structlfs_1_1lfs__free.html#a357d10d6af54f941db7965e2479ca0c6">lfs::lfs_free</a>
 , <a class="el" href="structlfs__attr.html#a269eed5206de4ec328127b24e4386b36">lfs_attr</a>
 , <a class="el" href="structlfs__cache.html#a31320964affcbd8da9e07259c9e32ac6">lfs_cache</a>
+, <a class="el" href="structlfs__dir__traverse.html#a81ab301365fc47717c02b088f5faa1f1">lfs_dir_traverse</a>
 , <a class="el" href="structlfs__file__config.html#ad739f5251707a1359b2dc6d31be009e1">lfs_file_config</a>
 , <a class="el" href="structlfs__mattr.html#acbbf5fedf84e71a9c2b7be762b844928">lfs_mattr</a>
 </li>
@@ -138,6 +144,9 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 </li>
 <li>cache_size
 : <a class="el" href="structlfs__config.html#ab4fe03018abaabc4d089754919a4a4a6">lfs_config</a>
+</li>
+<li>cb
+: <a class="el" href="structlfs__dir__traverse.html#a6f06f5a1ddd8c97fc2402bb9189c43d1">lfs_dir_traverse</a>
 </li>
 <li>cfg
 : <a class="el" href="structlfs.html#a468336eba84fb6251531f89ec2cc615c">lfs</a>
@@ -161,9 +170,26 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 </ul>
 
 
+<h3><a id="index_d"></a>- d -</h3><ul>
+<li>data
+: <a class="el" href="structlfs__dir__traverse.html#a3a29943616205a3bb147e68974d367c5">lfs_dir_traverse</a>
+</li>
+<li>diff
+: <a class="el" href="structlfs__dir__traverse.html#ac9e5f6c88484603ea9a4b4a520c94b9d">lfs_dir_traverse</a>
+</li>
+<li>dir
+: <a class="el" href="structlfs__dir__traverse.html#a5ce237ce00481f751b5246c653749182">lfs_dir_traverse</a>
+</li>
+<li>disk
+: <a class="el" href="structlfs__dir__traverse.html#a8a1dcab0f825e921ca1309b8b4ac10ae">lfs_dir_traverse</a>
+</li>
+</ul>
+
+
 <h3><a id="index_e"></a>- e -</h3><ul>
 <li>end
 : <a class="el" href="structlfs__commit.html#a8784bf44c1a7a7c9f2b780022407914e">lfs_commit</a>
+, <a class="el" href="structlfs__dir__traverse.html#a900da149f00b21cccd184a5b0fb798ec">lfs_dir_traverse</a>
 </li>
 <li>erase
 : <a class="el" href="structlfs__config.html#ae26d6c31cc28aa8bb3d6af86a4b67a2b">lfs_config</a>
@@ -278,6 +304,7 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 : <a class="el" href="structlfs_1_1lfs__free.html#aab6cefd97731afc0232c4fcad30d7580">lfs::lfs_free</a>
 , <a class="el" href="structlfs__cache.html#abe5ab0fab244206df988c59a978a81db">lfs_cache</a>
 , <a class="el" href="structlfs__commit.html#a13915f540b1d8f3898c4ebf763dc2e25">lfs_commit</a>
+, <a class="el" href="structlfs__dir__traverse.html#a86a396638ef419284ab52c4d9fda0a4d">lfs_dir_traverse</a>
 , <a class="el" href="structlfs__diskoff.html#aaa6beca0b814d7023129ab12f269c1aa">lfs_diskoff</a>
 , <a class="el" href="structlfs__file.html#a7f1e0f6f54208efb96008e1f6bf3f02e">lfs_file</a>
 , <a class="el" href="structlfs__mdir.html#ac91d3ff9be3b5f1798e30dc7572d09e0">lfs_mdir</a>
@@ -309,6 +336,7 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 </li>
 <li>ptag
 : <a class="el" href="structlfs__commit.html#a99930b9579a13b93b3165e5ed195c9eb">lfs_commit</a>
+, <a class="el" href="structlfs__dir__traverse.html#a5b5f3a68d6efc4b69f3ea16bb6f46dd9">lfs_dir_traverse</a>
 </li>
 </ul>
 
@@ -358,11 +386,18 @@ $(document).ready(function(){initNavTree('functions_vars.html',''); initResizabl
 
 <h3><a id="index_t"></a>- t -</h3><ul>
 <li>tag
-: <a class="el" href="structlfs__gstate.html#a3a87f0db44469c6c81b1e5aee181aade">lfs_gstate</a>
+: <a class="el" href="structlfs__dir__traverse.html#a3a1eb3e336f77fb2a45cd30fb7b8b428">lfs_dir_traverse</a>
+, <a class="el" href="structlfs__gstate.html#a3a87f0db44469c6c81b1e5aee181aade">lfs_gstate</a>
 , <a class="el" href="structlfs__mattr.html#aa765f2dd713b5e08d8215ea17c3529ca">lfs_mattr</a>
 </li>
 <li>tail
 : <a class="el" href="structlfs__mdir.html#ad353a78a9b3309233139d5e00c8b8660">lfs_mdir</a>
+</li>
+<li>tmask
+: <a class="el" href="structlfs__dir__traverse.html#aad87f1365fb51c601b83d36978de7832">lfs_dir_traverse</a>
+</li>
+<li>ttag
+: <a class="el" href="structlfs__dir__traverse.html#a50a96d24a5614a6e6bb0db1a52e55ad8">lfs_dir_traverse</a>
 </li>
 <li>type
 : <a class="el" href="structlfs_1_1lfs__mlist.html#adb9140cc712a3b93d1edb743c720ed34">lfs::lfs_mlist</a>

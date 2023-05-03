@@ -178,11 +178,20 @@ typedef struct {
  * @brief    Miscellaneous Control Register.
  * @{
  */
+#define MXC_F_MCR_CTRL_CMPHYST_POS                     0 /**< CTRL_CMPHYST Position */
+#define MXC_F_MCR_CTRL_CMPHYST                         ((uint32_t)(0x3UL << MXC_F_MCR_CTRL_CMPHYST_POS)) /**< CTRL_CMPHYST Mask */
+
 #define MXC_F_MCR_CTRL_INRO_EN_POS                     2 /**< CTRL_INRO_EN Position */
 #define MXC_F_MCR_CTRL_INRO_EN                         ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_INRO_EN_POS)) /**< CTRL_INRO_EN Mask */
 
 #define MXC_F_MCR_CTRL_ERTCO_EN_POS                    3 /**< CTRL_ERTCO_EN Position */
 #define MXC_F_MCR_CTRL_ERTCO_EN                        ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_ERTCO_EN_POS)) /**< CTRL_ERTCO_EN Mask */
+
+#define MXC_F_MCR_CTRL_IBRO_EN_POS                     4 /**< CTRL_IBRO_EN Position */
+#define MXC_F_MCR_CTRL_IBRO_EN                         ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_IBRO_EN_POS)) /**< CTRL_IBRO_EN Mask */
+
+#define MXC_F_MCR_CTRL_32KOSC_EN_POS                   5 /**< CTRL_32KOSC_EN Position */
+#define MXC_F_MCR_CTRL_32KOSC_EN                       ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_32KOSC_EN_POS)) /**< CTRL_32KOSC_EN Mask */
 
 #define MXC_F_MCR_CTRL_SIMO_CLKSCL_EN_POS              8 /**< CTRL_SIMO_CLKSCL_EN Position */
 #define MXC_F_MCR_CTRL_SIMO_CLKSCL_EN                  ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_SIMO_CLKSCL_EN_POS)) /**< CTRL_SIMO_CLKSCL_EN Mask */

@@ -13233,6 +13233,30 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
+       <name>FILTER_EN</name>
+       <description>Enable analog deglitch filter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_SEL</name>
+       <description>If IBIAS_EN is 1, selects 4x,2x mode.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HYST_EN</name>
+       <description>Enables high current hysteresis buffer.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_EN</name>
+       <description>Enables higher 4x,2x current modes.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>BYPASS</name>
        <description>RTC Crystal Bypass</description>
        <bitOffset>4</bitOffset>
@@ -13468,26 +13492,26 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      </fields>
     </register>
     <register>
-      <name>BTLE_LDO_TRIM</name>
-      <description>BTLE LDO Trim register.</description>
-      <addressOffset>0x28</addressOffset>
-      <access>read-write</access>
-      <fields>
-        <field>
-          <name>TX</name>
-          <description>TX LDO trim value.</description>
-          <bitOffset>0</bitOffset>
-          <bitWidth>5</bitWidth>
-          <access>read-write</access>
-        </field>
-        <field>
-          <name>RX</name>
-          <description>RX LDO trim value.</description>
-          <bitOffset>5</bitOffset>
-          <bitWidth>5</bitWidth>
-          <access>read-write</access>
-        </field>
-      </fields>
+     <name>BTLE_LDO_TRIM</name>
+     <description>BTLE LDO Trim register.</description>
+     <addressOffset>0x28</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>TX</name>
+       <description>TX LDO trim value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>RX</name>
+       <description>RX LDO trim value.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
     </register>
     <register>
      <name>FSTAT</name>

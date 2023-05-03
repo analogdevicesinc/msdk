@@ -101,13 +101,9 @@ bayer_function_t g_bayer_function = BAYER_FUNCTION_BILINEAR;
 #include "tft_ssd2119.h"
 #endif
 
-#ifdef BOARD_FTHR_REVA
-#include "tft_ili9341.h"
 #endif
 
-#endif
-
-static uint8_t *bayer_data;
+static uint8_t *image_data;
 
 void process_img(void)
 {
@@ -118,18 +114,18 @@ void process_img(void)
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
 
-    if (bayer_data) {
+    if (image_data) {
         switch (g_bayer_function) {
         case (BAYER_FUNCTION_PASSTHROUGH):
-            bayer_passthrough(raw, w, h, (uint16_t *)bayer_data);
+            bayer_passthrough(raw, w, h, (uint16_t *)image_data);
             break;
         case (BAYER_FUNCTION_BILINEAR):
-            bayer_bilinear_demosaicing(raw, w, h, (uint16_t *)bayer_data);
+            bayer_bilinear_demosaicing(raw, w, h, (uint16_t *)image_data);
             break;
         }
 
 #ifdef ENABLE_TFT
-        MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, bayer_data, w, h);
+        MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, image_data, w, h);
 #else
         /*
         * Stream image data to PC.
@@ -137,12 +133,12 @@ void process_img(void)
         * are modified here since the raw
         * data has been converted to RGB565.
         */
-        utils_stream_img_to_pc_init(bayer_data, imgLen * 2, w, h, (uint8_t *)"RGB565");
+        utils_stream_img_to_pc_init(image_data, imgLen * 2, w, h, (uint8_t *)"RGB565");
 
         // Get image line by line
         for (int i = 0; i < h; i++) {
             // Send one line to PC
-            utils_stream_image_row_to_pc(bayer_data + (i * w * 2), w * 2);
+            utils_stream_image_row_to_pc(image_data + (i * w * 2), w * 2);
         }
 #endif
     }
@@ -210,9 +206,7 @@ int main(void)
 #ifdef ENABLE_TFT
     printf("Init TFT\n");
     /* Initialize TFT display */
-#ifdef BOARD_EVKIT_V1
     MXC_TFT_Init();
-#endif
     MXC_TFT_SetBackGroundColor(4);
 #endif
 
@@ -224,21 +218,26 @@ int main(void)
         return -1;
     }
 
-    bayer_data = (uint8_t *)malloc(2 * IMAGE_XRES * IMAGE_YRES);
+    /*
+    Allocate the memory to buffer the raw bayer image
+    data received from the camera.
+    */
+    image_data = (uint8_t *)malloc(2 * IMAGE_XRES * IMAGE_YRES);
 
     MXC_Delay(SEC(1));
 
-    // Start capturing a first camera image frame.
+    // Start capturing the first image.
     printf("Starting\n");
     camera_start_capture_image();
 
     while (1) {
-        // Check if image is acquired.
 #ifndef STREAM_ENABLE
         if (camera_is_image_rcv())
 #endif
         {
-            // Process the image, send it through the UART console.
+            // Post-process the received image.
+            // See the implementation of this function
+            // for debayering.
             process_img();
 
             // Prepare for another frame capture.

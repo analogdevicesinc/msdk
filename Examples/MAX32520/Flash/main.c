@@ -52,6 +52,7 @@
 #include "uart.h"
 #include "led.h"
 #include "pb.h"
+#include "sfe.h"
 
 /***** Definitions *****/
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
@@ -70,11 +71,17 @@ volatile uint32_t isr_flags;
 /***** Functions *****/
 
 //******************************************************************************
-
 int button_pressed = 0;
 void button_handler()
 {
     button_pressed = 1;
+}
+
+//******************************************************************************
+void sfe_init(void)
+{
+    MXC_SFE_Init();
+    MXC_SFE_SetFlashAddress(TEST_ADDRESS, TEST_ADDRESS + MXC_FLASH_PAGE_SIZE);
 }
 
 //******************************************************************************
@@ -195,6 +202,24 @@ int validate_test_pattern()
     return err;
 }
 
+int validate_test_pattern_erase()
+{
+    int err = 0;
+
+    printf("Verifying test pattern erase...\n");
+    uint32_t readval = 0;
+    for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
+        MXC_FLC_Read(addr, &readval, 4);
+        if (readval == TEST_VALUE) {
+            printf("Failed to verify erase at address 0x%x with error code %i!", addr, err);
+            return E_ABORT;
+        }
+    }
+
+    printf("Successfully erased test pattern!\n\n");
+    return err;
+}
+
 int erase_magic()
 {
     /*
@@ -243,9 +268,11 @@ int main(void)
 {
     int err = 0;
 
-    printf("\n\n***** Flash Control Example *****\n");
-    printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
+    sfe_init();
 
+    printf("\n\n***** Flash Control Example *****\n");
+#ifndef BOARD_MAX32520FTHR
+    printf("Press SW2 to continue...\n\n");
     PB_RegisterCallback(0, (pb_callback)button_handler);
 
     while (!button_pressed) {
@@ -255,6 +282,10 @@ int main(void)
         MXC_Delay(MXC_DELAY_MSEC(500));
     }
     LED_Off(LED1);
+#else
+    printf("Starting in 3 seconds...\n");
+    MXC_Delay(MXC_DELAY_SEC(3));
+#endif
 
     setup_irqs(); // See notes in function definition
 
@@ -303,7 +334,7 @@ int main(void)
         if (err)
             return err;
 
-        err = validate_test_pattern();
+        err = validate_test_pattern_erase();
         if (err)
             return err;
 

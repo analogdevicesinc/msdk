@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 #BOARD=FTHR_RevA
 # ^ For example, you can uncomment this line to make the 
@@ -20,3 +20,7 @@ SBT=0
 
 # Enable MAXUSB library
 LIB_MAXUSB=1
+
+ifeq ($(BOARD),FTHR_APPS_A)
+$(error ERR_NOTSUPPORTED: This example requires an external flash IC, therefore it's not supported on the MAX32650FTHR)
+endif

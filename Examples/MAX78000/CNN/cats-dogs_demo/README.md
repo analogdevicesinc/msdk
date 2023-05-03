@@ -9,68 +9,45 @@ The model trained in this demo is used to classify images of cats and dogs. 2500
 
 The code uses a sampledata header (sampledata.h) file to test a pre-defined input sample. The example also supports live capture from camera module and displays the image on the TFT LCD.
 
-### Building firmware:
+## Software
 
-Navigate directory where **cats-dogs_demo** software is located and build the project:
+### Project Usage
 
-```bash
-$ cd /Examples/MAX78000/CNN/cats-dogs_demo
-$ make
-```
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+### Project-Specific Build Notes
 
-```bash
-$ make distclean
-```
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
+* This project supports output to a TFT display.  When building for the MAX78000EVKIT, the display is **enabled** by default.
+    * To _disable_ the TFT display code, comment out `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
-```
+        ```Makefile
+        ifeq "$(BOARD)" "EvKit_V1"
+        # PROJ_CFLAGS+=-DTFT_ENABLE
+        IPATH += TFT/evkit/
+        VPATH += TFT/evkit/
+        endif
+        ```
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
+* When building for the MAX78000FTHR, the TFT display is **disabled** by default.  The compatible 2.4'' TFT FeatherWing is an optional display that does not come with the MAX7800FTHR.  It can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing)
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
-BOARD=FTHR_RevA
-endif
-```
+    * To _enable_ the TFT display code, uncomment `PROJ_CFLAGS += -DTFT_ENABLE` in [project.mk](project.mk)
 
-**Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
+        ```Makefile
+        ifeq "$(BOARD)" "FTHR_RevA"
+        # Only Enable if 2.4" TFT is connected to Feather
+        PROJ_CFLAGS+=-DTFT_ENABLE
+        IPATH += TFT/fthr
+        VPATH += TFT/fthr
+        endif
+        ```
 
-*Right click project name > Properties > C/C++ Build > Environment > Board"*
+* By default, this project builds for ["offline" mode](#offline-mode), which uses a static "known answer" input.  To enable real-time captures in ["camera" mode](#camera-mode), comment out `#define USE_SAMPLEDATA` defined in [main.c](main.c).
 
-<img src="Resources/eclipse_board.png" style="zoom:33%;" />
+## Hardware
 
-
-
-### Load firmware image to MAX78000 EVKIT
-
-Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
-
-Connect PICO adapter to JH5 SWD header.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
-
-### MAX78000 EVKIT operations
+### MAX78000EVKIT operations
 
 *   If using camera and TFT LCD, connect OVM7692 camera board directly (without 90 degree adapter) to 'J4 Camera' header facing out and place TFT display on the display header.
 *   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
@@ -81,40 +58,11 @@ This demo is operated in two modes: Real-time data using Camera module or using 
 
 In either mode, pushbutton trigger PB1(SW2) is used to capture and load an image into CNN engine. User is prompted to press PB1 to load an image
 
-### Load firmware image to MAX78000 Feather
+### MAX78000FTHR operations
 
-Connect USB cable to CN1 USB connector.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
-
-### MAX78000 Feather operations
-
-The TFT display is optional and not supplied with the MAX78000 Feather board.
 User should use PC terminal program to observe **cats-dogs_demo** result as described in "Terminal output" section with help of the ascii art representation of the captured image.
 
-The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered here:
-
-https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
-
 This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into.
-
-To compile code with enabled TFT feature use following setting in project.mk:
-
-```bash
-ifeq "$(BOARD)" "FTHR_RevA"
-PROJ_CFLAGS += -DENABLE_TFT
-endif
-```
 
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset.
 Press PB1 (SW1) button to start demo.
@@ -125,15 +73,9 @@ The PB1 (SW1) button is located as shown in picture bellow:
 
 <img src="Resources/pb1_button.jpg" alt="pb1_button" style="zoom:67%;" />
 
-
-
-### Camera Mode�
-
-To operate in this mode, comment out "#define USE\_SAMPLEDATA", defined in main.c.
+### Camera Mode
 
 This mode uses OVM7692 camera module to capture an image in RGB888 format. Since the model is trained using 64x64 pixel image, the PCIF peripheral captures 64x64 pixel image and displays it on LCD.
-
-The data received from camera interface is an unsigned data and should be converted to signed data before feeding to the CNN network.
 
 ### Offline Mode
 

@@ -8,6 +8,17 @@ Three timers are used to demonstrate three different modes of the general purpos
 
 3. Timer 4 is used in one shot mode to illuminate LED1 after 3 sec.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

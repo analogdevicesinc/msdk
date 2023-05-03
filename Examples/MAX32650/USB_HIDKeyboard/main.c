@@ -52,6 +52,8 @@
 #include "enumerate.h"
 #include "hid_kbd.h"
 #include "descriptors.h"
+#include "gcr_regs.h"
+#include "mxc_sys.h"
 
 /***** Definitions *****/
 #define EVENT_ENUM_COMP MAXUSB_NUM_EVENTS

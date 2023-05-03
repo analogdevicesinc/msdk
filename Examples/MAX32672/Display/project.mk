@@ -16,3 +16,8 @@ SBT=0
 
 # Enable LVGL library
 LIB_LVGL = 1
+
+ifeq ($(BOARD),FTHR)
+$(error ERR_NOTSUPPORTED: This example requires a TFT display, therefore it's not supported for the MAX32672FTHR)
+endif
+

@@ -6,6 +6,17 @@ The first, PT0, is set to generate a repeating bit pattern of 0x10110 (lsb first
 
 The second, PT1, is set to generate a 10Hz square wave.  If you make the connections described below, you can observe the square wave on LED2.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

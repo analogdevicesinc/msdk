@@ -2,6 +2,17 @@
 
 This example demonstrates an I2S transmission. The I2S signals can be viewed on pins P1.2 (SCK), P1.3 (WS), P1.4 (SDI), and P1.5(SDO). DMA callback functionality can be enabled by defining DMA_CALLBACK.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

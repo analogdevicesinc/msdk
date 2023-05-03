@@ -51,6 +51,8 @@ I2S_DMA
 I2S_DMA_Target
 ICC
 ImgCapture
+Library_Generate
+Library_Use
 LP
 Pulse_Train
 RTC
