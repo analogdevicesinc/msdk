@@ -67,7 +67,7 @@ import cv2
 def detect_face(imgs, minsize, pnet, rnet, onet, threshold, factor, device):
     # pylint: disable=missing-function-docstring,invalid-name,too-many-locals,too-many-arguments,too-many-branches,too-many-statements
     if isinstance(imgs, (np.ndarray, torch.Tensor)):
-        imgs = torch.as_tensor(imgs, device=device) # pylint: disable=no-member
+        imgs = torch.as_tensor(imgs.copy(), device=device) # pylint: disable=no-member
         if len(imgs.shape) == 3:
             imgs = imgs.unsqueeze(0)
     else:

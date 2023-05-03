@@ -532,8 +532,8 @@ def create_embeddings_include_file(db_folder, db_filename, include_folder):
 
     db_h_path = os.path.join(include_folder, db_filename + '.h')
     with open(db_h_path, 'w') as h_file:
-        h_file.write('#define EMBEDDINGS { \\\n  ')
+        h_file.write('#define EMBEDDINGS \\\n{ \\\n  ')
         h_file.write(data)
-        h_file.write(' \\\n}')
+        h_file.write(' \\\n}\n')
 
     print(f'Embedding file is saved to {db_h_path}')

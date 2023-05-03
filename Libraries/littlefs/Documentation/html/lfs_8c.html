@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.20"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>MAX3267X LittleFS demo: littlefs/lfs.c File Reference</title>
+<title>LittleFS: lfs.c File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -25,7 +25,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">MAX3267X LittleFS demo
+   <div id="projectname">LittleFS
    </div>
   </td>
  </tr>
@@ -100,6 +100,8 @@ Data Structures</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlfs__diskoff.html">lfs_diskoff</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlfs__dir__traverse.html">lfs_dir_traverse</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlfs__dir__find__match.html">lfs_dir_find_match</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structlfs__commit.html">lfs_commit</a></td></tr>
@@ -123,10 +125,12 @@ Macros</h2></td></tr>
 <tr class="separator:a88b8c37937481f398e1ceb9ed0723e90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadb40d661cb60366401539d40dd8e5d2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#aadb40d661cb60366401539d40dd8e5d2">LFS_MKATTRS</a>(...)</td></tr>
 <tr class="separator:aadb40d661cb60366401539d40dd8e5d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d743a3a56cdc11137b3250dceb967de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a6d743a3a56cdc11137b3250dceb967de">LFS_LOCK</a>(<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)&#160;&#160;&#160;((void)<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>, 0)</td></tr>
+<tr class="memitem:a6546050ce8efca81f0d755ef453053ce"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a6546050ce8efca81f0d755ef453053ce">LFS_DIR_TRAVERSE_DEPTH</a>&#160;&#160;&#160;3</td></tr>
+<tr class="separator:a6546050ce8efca81f0d755ef453053ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d743a3a56cdc11137b3250dceb967de"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a6d743a3a56cdc11137b3250dceb967de">LFS_LOCK</a>(cfg)&#160;&#160;&#160;((void)cfg, 0)</td></tr>
 <tr class="memdesc:a6d743a3a56cdc11137b3250dceb967de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public API wrappers ///.  <a href="lfs_8c.html#a6d743a3a56cdc11137b3250dceb967de">More...</a><br /></td></tr>
 <tr class="separator:a6d743a3a56cdc11137b3250dceb967de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2faa9cb654a66a163f9e9ba13ff38e6a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a2faa9cb654a66a163f9e9ba13ff38e6a">LFS_UNLOCK</a>(<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)&#160;&#160;&#160;((void)<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)</td></tr>
+<tr class="memitem:a2faa9cb654a66a163f9e9ba13ff38e6a"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a2faa9cb654a66a163f9e9ba13ff38e6a">LFS_UNLOCK</a>(cfg)&#160;&#160;&#160;((void)cfg)</td></tr>
 <tr class="separator:a2faa9cb654a66a163f9e9ba13ff38e6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -138,11 +142,16 @@ Typedefs</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="lfs_8c.html#a06fc87d81c62e9abb8790b6e5713c55bae5fc1000087439d6b0abf42bc77845ae">LFS_CMP_EQ</a> = 0, 
-<a class="el" href="lfs_8c.html#a06fc87d81c62e9abb8790b6e5713c55ba1444bca891d8d9797328ac29fc3ba206">LFS_CMP_LT</a> = 1, 
-<a class="el" href="lfs_8c.html#a06fc87d81c62e9abb8790b6e5713c55ba3fb663e7f20f244b41bedf0aa61f44b1">LFS_CMP_GT</a> = 2
+<tr class="memitem:a06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="lfs_8c.html#a06fc87d81c62e9abb8790b6e5713c55baf1fced2afcf5604926d6eba74d0208b6">LFS_OK_RELOCATED</a> = 1, 
+<a class="el" href="lfs_8c.html#a06fc87d81c62e9abb8790b6e5713c55ba6c4a7ccb8a821333fb7ea13db28b1d2e">LFS_OK_DROPPED</a> = 2, 
+<a class="el" href="lfs_8c.html#a06fc87d81c62e9abb8790b6e5713c55bac2365bd017426ce493cd58aa88b7eb26">LFS_OK_ORPHANED</a> = 3
  }</td></tr>
 <tr class="separator:a06fc87d81c62e9abb8790b6e5713c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf764cbdea00d65edcd07bb9953ad2b7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="lfs_8c.html#adf764cbdea00d65edcd07bb9953ad2b7ae5fc1000087439d6b0abf42bc77845ae">LFS_CMP_EQ</a> = 0, 
+<a class="el" href="lfs_8c.html#adf764cbdea00d65edcd07bb9953ad2b7a1444bca891d8d9797328ac29fc3ba206">LFS_CMP_LT</a> = 1, 
+<a class="el" href="lfs_8c.html#adf764cbdea00d65edcd07bb9953ad2b7a3fb663e7f20f244b41bedf0aa61f44b1">LFS_CMP_GT</a> = 2
+ }</td></tr>
+<tr class="separator:adf764cbdea00d65edcd07bb9953ad2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
@@ -229,6 +238,8 @@ Functions</h2></td></tr>
 <tr class="separator:af78645d9b58b26761464ef2e892516b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11e03100ed9be836351110b0cf78ac6a"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a11e03100ed9be836351110b0cf78ac6a">lfs_dir_compact</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *dir, const struct <a class="el" href="structlfs__mattr.html">lfs_mattr</a> *attrs, int attrcount, <a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *source, uint16_t begin, uint16_t end)</td></tr>
 <tr class="separator:a11e03100ed9be836351110b0cf78ac6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74ea955f04467b3fb6877f7797ff5290"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="lfs_8h.html#a2df609f304fdf817b92bd7f25a5bc012">lfs_ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a74ea955f04467b3fb6877f7797ff5290">lfs_file_flushedwrite</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, const void *buffer, <a class="el" href="lfs_8h.html#afaa466451ecbf7eab934f5ad8e908134">lfs_size_t</a> size)</td></tr>
+<tr class="separator:a74ea955f04467b3fb6877f7797ff5290"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af527c3e38baf58c066b71d48775e7029"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="lfs_8h.html#a2df609f304fdf817b92bd7f25a5bc012">lfs_ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#af527c3e38baf58c066b71d48775e7029">lfs_file_rawwrite</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, const void *buffer, <a class="el" href="lfs_8h.html#afaa466451ecbf7eab934f5ad8e908134">lfs_size_t</a> size)</td></tr>
 <tr class="separator:af527c3e38baf58c066b71d48775e7029"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a78fcdc2d8701f15d9bddde764dac6c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a5a78fcdc2d8701f15d9bddde764dac6c">lfs_file_rawsync</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file)</td></tr>
@@ -237,6 +248,8 @@ Functions</h2></td></tr>
 <tr class="separator:ae1bd491f7c048adf4b838f745589ad68"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac43db7a505f104fbcdb589de700715bc"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#ac43db7a505f104fbcdb589de700715bc">lfs_file_flush</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file)</td></tr>
 <tr class="separator:ac43db7a505f104fbcdb589de700715bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcc4b5d45aafcd5b5e6dd00dc87f8f5b"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#abcc4b5d45aafcd5b5e6dd00dc87f8f5b">lfs_fs_deorphan</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, bool powerloss)</td></tr>
+<tr class="separator:abcc4b5d45aafcd5b5e6dd00dc87f8f5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0523a0c96d17e62457d3c80134b06c08"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a0523a0c96d17e62457d3c80134b06c08">lfs_fs_preporphans</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, int8_t orphans)</td></tr>
 <tr class="separator:a0523a0c96d17e62457d3c80134b06c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7e905848a3f4236e756ae94915acd6eb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a7e905848a3f4236e756ae94915acd6eb">lfs_fs_prepmove</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, uint16_t id, const <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a> pair[2])</td></tr>
@@ -245,12 +258,12 @@ Functions</h2></td></tr>
 <tr class="separator:a177e4e0aec6360fa88eccbbf0aeb8a61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a039cb0f44a50fc76f8fca4b8c8fe6742"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="lfs_8c.html#a033befd80d96af6860e1cdb86107f04a">lfs_stag_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a039cb0f44a50fc76f8fca4b8c8fe6742">lfs_fs_parent</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a> dir[2], <a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *parent)</td></tr>
 <tr class="separator:a039cb0f44a50fc76f8fca4b8c8fe6742"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf0f867988c445b4cf96d0678b3d3957"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#abf0f867988c445b4cf96d0678b3d3957">lfs_fs_relocate</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a> oldpair[2], <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a> newpair[2])</td></tr>
-<tr class="separator:abf0f867988c445b4cf96d0678b3d3957"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a651bb8d9b7afba50f815c3a7a43abc6c"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a651bb8d9b7afba50f815c3a7a43abc6c">lfs_fs_forceconsistency</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>)</td></tr>
 <tr class="separator:a651bb8d9b7afba50f815c3a7a43abc6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a505b032e712a05a4de14b9b682b6a0d8"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a505b032e712a05a4de14b9b682b6a0d8">lfs_dir_rawrewind</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a8f379adb61389e305ab5cac87d30732d">lfs_dir_t</a> *dir)</td></tr>
 <tr class="separator:a505b032e712a05a4de14b9b682b6a0d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5f4a97778cea2d3d9be8eba3d7dc5ac"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="lfs_8h.html#a2df609f304fdf817b92bd7f25a5bc012">lfs_ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#af5f4a97778cea2d3d9be8eba3d7dc5ac">lfs_file_flushedread</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, void *buffer, <a class="el" href="lfs_8h.html#afaa466451ecbf7eab934f5ad8e908134">lfs_size_t</a> size)</td></tr>
+<tr class="separator:af5f4a97778cea2d3d9be8eba3d7dc5ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1bdf6b4608cd412d5a7fab9cb54b9108"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="lfs_8h.html#a2df609f304fdf817b92bd7f25a5bc012">lfs_ssize_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a1bdf6b4608cd412d5a7fab9cb54b9108">lfs_file_rawread</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, void *buffer, <a class="el" href="lfs_8h.html#afaa466451ecbf7eab934f5ad8e908134">lfs_size_t</a> size)</td></tr>
 <tr class="separator:a1bdf6b4608cd412d5a7fab9cb54b9108"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a031140a176179d1e9ce810b99dc1477e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a031140a176179d1e9ce810b99dc1477e">lfs_file_rawclose</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file)</td></tr>
@@ -314,6 +327,14 @@ Functions</h2></td></tr>
 <tr class="separator:a8a860cb608960cebf0d61e8aa6f5d915"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90866a1f1b678acfb5f14a90d4148366"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a90866a1f1b678acfb5f14a90d4148366">lfs_dir_commit_commit</a> (void *p, <a class="el" href="lfs_8c.html#a53b9c14b82ac669a34e371580459f18f">lfs_tag_t</a> tag, const void *buffer)</td></tr>
 <tr class="separator:a90866a1f1b678acfb5f14a90d4148366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4849e32f7a81857273ce5967fa7d6f7a"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a4849e32f7a81857273ce5967fa7d6f7a">lfs_dir_needsrelocation</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *dir)</td></tr>
+<tr class="separator:a4849e32f7a81857273ce5967fa7d6f7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aca065793653bbf24954a2021df8c4ddc"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#aca065793653bbf24954a2021df8c4ddc">lfs_dir_splittingcompact</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *dir, const struct <a class="el" href="structlfs__mattr.html">lfs_mattr</a> *attrs, int attrcount, <a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *source, uint16_t begin, uint16_t end)</td></tr>
+<tr class="separator:aca065793653bbf24954a2021df8c4ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accc87d67472f901b97d79959f478a2ab"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#accc87d67472f901b97d79959f478a2ab">lfs_dir_relocatingcommit</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *dir, const <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a> pair[2], const struct <a class="el" href="structlfs__mattr.html">lfs_mattr</a> *attrs, int attrcount, <a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *pdir)</td></tr>
+<tr class="separator:accc87d67472f901b97d79959f478a2ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64eaa825b262bc79780df365771461cd"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a64eaa825b262bc79780df365771461cd">lfs_dir_orphaningcommit</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *dir, const struct <a class="el" href="structlfs__mattr.html">lfs_mattr</a> *attrs, int attrcount)</td></tr>
+<tr class="separator:a64eaa825b262bc79780df365771461cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a770d8b293ed71d8e7f228e269b16dc9f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a770d8b293ed71d8e7f228e269b16dc9f">lfs_rawmkdir</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const char *path)</td></tr>
 <tr class="memdesc:a770d8b293ed71d8e7f228e269b16dc9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Top level directory operations ///.  <a href="lfs_8c.html#a770d8b293ed71d8e7f228e269b16dc9f">More...</a><br /></td></tr>
 <tr class="separator:a770d8b293ed71d8e7f228e269b16dc9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -336,7 +357,7 @@ Functions</h2></td></tr>
 <tr class="separator:aa955fb63e4981243fe53a18cfab16689"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a708a0d0aa2324bf34bf23caf84c3a3ca"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a708a0d0aa2324bf34bf23caf84c3a3ca">lfs_ctz_traverse</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const <a class="el" href="lfs_8h.html#a4f695f23e18d8e40704ae1ae5cb99324">lfs_cache_t</a> *pcache, <a class="el" href="lfs_8h.html#a4f695f23e18d8e40704ae1ae5cb99324">lfs_cache_t</a> *rcache, <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a> head, <a class="el" href="lfs_8h.html#afaa466451ecbf7eab934f5ad8e908134">lfs_size_t</a> size, int(*cb)(void *, <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a>), void *data)</td></tr>
 <tr class="separator:a708a0d0aa2324bf34bf23caf84c3a3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a617845a6628afa762eccf700ed57990f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a617845a6628afa762eccf700ed57990f">lfs_file_rawopencfg</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, const char *path, int flags, const struct <a class="el" href="structlfs__file__config.html">lfs_file_config</a> *<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)</td></tr>
+<tr class="memitem:a617845a6628afa762eccf700ed57990f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a617845a6628afa762eccf700ed57990f">lfs_file_rawopencfg</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, const char *path, int flags, const struct <a class="el" href="structlfs__file__config.html">lfs_file_config</a> *cfg)</td></tr>
 <tr class="memdesc:a617845a6628afa762eccf700ed57990f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Top level file operations ///.  <a href="lfs_8c.html#a617845a6628afa762eccf700ed57990f">More...</a><br /></td></tr>
 <tr class="separator:a617845a6628afa762eccf700ed57990f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7d322feaa42b630d373cf0118e31efb6"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a7d322feaa42b630d373cf0118e31efb6">lfs_file_rawopen</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, const char *path, int flags)</td></tr>
@@ -366,25 +387,23 @@ Functions</h2></td></tr>
 <tr class="separator:ac7ef64aa3c4219eaeae5d6dc5c5e5d9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28bc8674535c0546c1a258a7c4dc727e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a28bc8674535c0546c1a258a7c4dc727e">lfs_rawremoveattr</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const char *path, uint8_t type)</td></tr>
 <tr class="separator:a28bc8674535c0546c1a258a7c4dc727e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4219b606a1b9cb27f194bea14383be0f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a4219b606a1b9cb27f194bea14383be0f">lfs_init</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)</td></tr>
+<tr class="memitem:a4219b606a1b9cb27f194bea14383be0f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a4219b606a1b9cb27f194bea14383be0f">lfs_init</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *cfg)</td></tr>
 <tr class="memdesc:a4219b606a1b9cb27f194bea14383be0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filesystem operations ///.  <a href="lfs_8c.html#a4219b606a1b9cb27f194bea14383be0f">More...</a><br /></td></tr>
 <tr class="separator:a4219b606a1b9cb27f194bea14383be0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8154d62924ec637a1b21e51adedf2f6f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a8154d62924ec637a1b21e51adedf2f6f">lfs_rawformat</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)</td></tr>
+<tr class="memitem:a8154d62924ec637a1b21e51adedf2f6f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a8154d62924ec637a1b21e51adedf2f6f">lfs_rawformat</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *cfg)</td></tr>
 <tr class="separator:a8154d62924ec637a1b21e51adedf2f6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b217c0fb483a8242c426e54b0d8dca0"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a8b217c0fb483a8242c426e54b0d8dca0">lfs_rawmount</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)</td></tr>
+<tr class="memitem:a8b217c0fb483a8242c426e54b0d8dca0"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a8b217c0fb483a8242c426e54b0d8dca0">lfs_rawmount</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *cfg)</td></tr>
 <tr class="separator:a8b217c0fb483a8242c426e54b0d8dca0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af120f7e5a641d470dc2c25f8ba73061f"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#af120f7e5a641d470dc2c25f8ba73061f">lfs_fs_parent_match</a> (void *data, <a class="el" href="lfs_8c.html#a53b9c14b82ac669a34e371580459f18f">lfs_tag_t</a> tag, const void *buffer)</td></tr>
 <tr class="separator:af120f7e5a641d470dc2c25f8ba73061f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a445d5ee772e25ab7db5429cb54a20bd2"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a445d5ee772e25ab7db5429cb54a20bd2">lfs_fs_demove</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>)</td></tr>
 <tr class="separator:a445d5ee772e25ab7db5429cb54a20bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa892c2a41467b6689fd82ced4fab825"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#aaa892c2a41467b6689fd82ced4fab825">lfs_fs_deorphan</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>)</td></tr>
-<tr class="separator:aaa892c2a41467b6689fd82ced4fab825"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4784628835794c38043b2bfc88793d96"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a4784628835794c38043b2bfc88793d96">lfs_fs_size_count</a> (void *p, <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a> block)</td></tr>
 <tr class="separator:a4784628835794c38043b2bfc88793d96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c06f8b947d320a2859bae5c02db8291"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a4c06f8b947d320a2859bae5c02db8291">lfs_format</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)</td></tr>
+<tr class="memitem:a4c06f8b947d320a2859bae5c02db8291"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a4c06f8b947d320a2859bae5c02db8291">lfs_format</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *cfg)</td></tr>
 <tr class="memdesc:a4c06f8b947d320a2859bae5c02db8291"><td class="mdescLeft">&#160;</td><td class="mdescRight">Filesystem functions ///.  <a href="lfs_8c.html#a4c06f8b947d320a2859bae5c02db8291">More...</a><br /></td></tr>
 <tr class="separator:a4c06f8b947d320a2859bae5c02db8291"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45a6b0f28a1b441a3f68a63e38bcbf1e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a45a6b0f28a1b441a3f68a63e38bcbf1e">lfs_mount</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)</td></tr>
+<tr class="memitem:a45a6b0f28a1b441a3f68a63e38bcbf1e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a45a6b0f28a1b441a3f68a63e38bcbf1e">lfs_mount</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, const struct <a class="el" href="structlfs__config.html">lfs_config</a> *cfg)</td></tr>
 <tr class="separator:a45a6b0f28a1b441a3f68a63e38bcbf1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ba0c128036f028697ee5bce04c40749"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a1ba0c128036f028697ee5bce04c40749">lfs_unmount</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>)</td></tr>
 <tr class="separator:a1ba0c128036f028697ee5bce04c40749"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -404,7 +423,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a02f1f1f3a196afa8f182a738f6e457ab"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a02f1f1f3a196afa8f182a738f6e457ab">lfs_file_open</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, const char *path, int flags)</td></tr>
 <tr class="memdesc:a02f1f1f3a196afa8f182a738f6e457ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">File operations ///.  <a href="lfs_8c.html#a02f1f1f3a196afa8f182a738f6e457ab">More...</a><br /></td></tr>
 <tr class="separator:a02f1f1f3a196afa8f182a738f6e457ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27b9877d2df6b72e9ac883a408d0d34c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a27b9877d2df6b72e9ac883a408d0d34c">lfs_file_opencfg</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, const char *path, int flags, const struct <a class="el" href="structlfs__file__config.html">lfs_file_config</a> *<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)</td></tr>
+<tr class="memitem:a27b9877d2df6b72e9ac883a408d0d34c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#a27b9877d2df6b72e9ac883a408d0d34c">lfs_file_opencfg</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file, const char *path, int flags, const struct <a class="el" href="structlfs__file__config.html">lfs_file_config</a> *cfg)</td></tr>
 <tr class="separator:a27b9877d2df6b72e9ac883a408d0d34c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7eb46b610f8507869aa62759cfd224e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="lfs_8c.html#aa7eb46b610f8507869aa62759cfd224e">lfs_file_close</a> (<a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *<a class="el" href="structlfs.html">lfs</a>, <a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *file)</td></tr>
 <tr class="separator:aa7eb46b610f8507869aa62759cfd224e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -474,6 +493,20 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a6546050ce8efca81f0d755ef453053ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6546050ce8efca81f0d755ef453053ce">&#9670;&nbsp;</a></span>LFS_DIR_TRAVERSE_DEPTH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LFS_DIR_TRAVERSE_DEPTH&#160;&#160;&#160;3</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a6d743a3a56cdc11137b3250dceb967de"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6d743a3a56cdc11137b3250dceb967de">&#9670;&nbsp;</a></span>LFS_LOCK</h2>
 
@@ -484,8 +517,8 @@ Functions</h2></td></tr>
           <td class="memname">#define LFS_LOCK</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a></td><td>)</td>
-          <td>&#160;&#160;&#160;((void)<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>, 0)</td>
+          <td class="paramname">cfg</td><td>)</td>
+          <td>&#160;&#160;&#160;((void)cfg, 0)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -656,8 +689,8 @@ Functions</h2></td></tr>
           <td class="memname">#define LFS_UNLOCK</td>
           <td>(</td>
           <td class="paramtype">&#160;</td>
-          <td class="paramname"><a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a></td><td>)</td>
-          <td>&#160;&#160;&#160;((void)<a class="el" href="main_8c.html#a348e36dd85059f1482103a006e8fa686">cfg</a>)</td>
+          <td class="paramname">cfg</td><td>)</td>
+          <td>&#160;&#160;&#160;((void)cfg)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -706,9 +739,28 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a06fc87d81c62e9abb8790b6e5713c55bae5fc1000087439d6b0abf42bc77845ae"></a>LFS_CMP_EQ&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a06fc87d81c62e9abb8790b6e5713c55ba1444bca891d8d9797328ac29fc3ba206"></a>LFS_CMP_LT&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a06fc87d81c62e9abb8790b6e5713c55ba3fb663e7f20f244b41bedf0aa61f44b1"></a>LFS_CMP_GT&#160;</td><td class="fielddoc"></td></tr>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a06fc87d81c62e9abb8790b6e5713c55baf1fced2afcf5604926d6eba74d0208b6"></a>LFS_OK_RELOCATED&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a06fc87d81c62e9abb8790b6e5713c55ba6c4a7ccb8a821333fb7ea13db28b1d2e"></a>LFS_OK_DROPPED&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a06fc87d81c62e9abb8790b6e5713c55bac2365bd017426ce493cd58aa88b7eb26"></a>LFS_OK_ORPHANED&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="adf764cbdea00d65edcd07bb9953ad2b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adf764cbdea00d65edcd07bb9953ad2b7">&#9670;&nbsp;</a></span>anonymous enum</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">anonymous enum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="adf764cbdea00d65edcd07bb9953ad2b7ae5fc1000087439d6b0abf42bc77845ae"></a>LFS_CMP_EQ&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adf764cbdea00d65edcd07bb9953ad2b7a1444bca891d8d9797328ac29fc3ba206"></a>LFS_CMP_LT&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="adf764cbdea00d65edcd07bb9953ad2b7a3fb663e7f20f244b41bedf0aa61f44b1"></a>LFS_CMP_GT&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -2574,6 +2626,42 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a4849e32f7a81857273ce5967fa7d6f7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4849e32f7a81857273ce5967fa7d6f7a">&#9670;&nbsp;</a></span>lfs_dir_needsrelocation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool lfs_dir_needsrelocation </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *&#160;</td>
+          <td class="paramname"><em>lfs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *&#160;</td>
+          <td class="paramname"><em>dir</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a869a49f96b54b09866c15914d6ee3552"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a869a49f96b54b09866c15914d6ee3552">&#9670;&nbsp;</a></span>lfs_dir_open()</h2>
 
@@ -2604,6 +2692,54 @@ Functions</h2></td></tr>
           <td></td><td></td>
         </tr>
       </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a64eaa825b262bc79780df365771461cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64eaa825b262bc79780df365771461cd">&#9670;&nbsp;</a></span>lfs_dir_orphaningcommit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int lfs_dir_orphaningcommit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *&#160;</td>
+          <td class="paramname"><em>lfs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structlfs__mattr.html">lfs_mattr</a> *&#160;</td>
+          <td class="paramname"><em>attrs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>attrcount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 </div>
@@ -2876,6 +3012,66 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="accc87d67472f901b97d79959f478a2ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#accc87d67472f901b97d79959f478a2ab">&#9670;&nbsp;</a></span>lfs_dir_relocatingcommit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int lfs_dir_relocatingcommit </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *&#160;</td>
+          <td class="paramname"><em>lfs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a>&#160;</td>
+          <td class="paramname"><em>pair</em>[2], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structlfs__mattr.html">lfs_mattr</a> *&#160;</td>
+          <td class="paramname"><em>attrs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>attrcount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *&#160;</td>
+          <td class="paramname"><em>pdir</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a6366164db8709beaf833fcf306e84b19"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6366164db8709beaf833fcf306e84b19">&#9670;&nbsp;</a></span>lfs_dir_rewind()</h2>
 
@@ -3004,6 +3200,72 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="aca065793653bbf24954a2021df8c4ddc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aca065793653bbf24954a2021df8c4ddc">&#9670;&nbsp;</a></span>lfs_dir_splittingcompact()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static int lfs_dir_splittingcompact </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *&#160;</td>
+          <td class="paramname"><em>lfs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *&#160;</td>
+          <td class="paramname"><em>dir</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const struct <a class="el" href="structlfs__mattr.html">lfs_mattr</a> *&#160;</td>
+          <td class="paramname"><em>attrs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>attrcount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a2c7f80de78f724be0982817d85fedc69">lfs_mdir_t</a> *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>begin</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint16_t&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a6017209fc606aa1ec1cd442b6afab392"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6017209fc606aa1ec1cd442b6afab392">&#9670;&nbsp;</a></span>lfs_dir_tell()</h2>
 
@@ -3042,7 +3304,7 @@ Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static int lfs_dir_traverse </td>
+          <td class="memname">static int <a class="el" href="structlfs__dir__traverse.html">lfs_dir_traverse</a> </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *&#160;</td>
           <td class="paramname"><em>lfs</em>, </td>
@@ -3224,6 +3486,102 @@ Functions</h2></td></tr>
           <td></td>
           <td class="paramtype"><a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *&#160;</td>
           <td class="paramname"><em>file</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af5f4a97778cea2d3d9be8eba3d7dc5ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5f4a97778cea2d3d9be8eba3d7dc5ac">&#9670;&nbsp;</a></span>lfs_file_flushedread()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="lfs_8h.html#a2df609f304fdf817b92bd7f25a5bc012">lfs_ssize_t</a> lfs_file_flushedread </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *&#160;</td>
+          <td class="paramname"><em>lfs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#afaa466451ecbf7eab934f5ad8e908134">lfs_size_t</a>&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a74ea955f04467b3fb6877f7797ff5290"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74ea955f04467b3fb6877f7797ff5290">&#9670;&nbsp;</a></span>lfs_file_flushedwrite()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="lfs_8h.html#a2df609f304fdf817b92bd7f25a5bc012">lfs_ssize_t</a> lfs_file_flushedwrite </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *&#160;</td>
+          <td class="paramname"><em>lfs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#a3afd9fba3166c11cdbeb6ff66bf59ce9">lfs_file_t</a> *&#160;</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>buffer</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="lfs_8h.html#afaa466451ecbf7eab934f5ad8e908134">lfs_size_t</a>&#160;</td>
+          <td class="paramname"><em>size</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -4192,8 +4550,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aaa892c2a41467b6689fd82ced4fab825"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa892c2a41467b6689fd82ced4fab825">&#9670;&nbsp;</a></span>lfs_fs_deorphan()</h2>
+<a id="abcc4b5d45aafcd5b5e6dd00dc87f8f5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcc4b5d45aafcd5b5e6dd00dc87f8f5b">&#9670;&nbsp;</a></span>lfs_fs_deorphan()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -4205,8 +4563,18 @@ Functions</h2></td></tr>
           <td class="memname">static int lfs_fs_deorphan </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *&#160;</td>
-          <td class="paramname"><em>lfs</em></td><td>)</td>
+          <td class="paramname"><em>lfs</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>powerloss</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -4521,48 +4889,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Filesystem filesystem operations ///. </p>
-
-</div>
-</div>
-<a id="abf0f867988c445b4cf96d0678b3d3957"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf0f867988c445b4cf96d0678b3d3957">&#9670;&nbsp;</a></span>lfs_fs_relocate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static int lfs_fs_relocate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="lfs_8h.html#a78971bd2089c58446f09a15b79fe2d74">lfs_t</a> *&#160;</td>
-          <td class="paramname"><em>lfs</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a>&#160;</td>
-          <td class="paramname"><em>oldpair</em>[2], </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="lfs_8h.html#a1af3fde2dd52d98a44eaaaa53e3441bb">lfs_block_t</a>&#160;</td>
-          <td class="paramname"><em>newpair</em>[2]&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -6204,11 +6530,11 @@ Functions</h2></td></tr>
 </div>
 </div><!-- contents -->
 </div><!-- doc-content -->
-<div class="ttc" id="astructlfs__mattr_html"><div class="ttname"><a href="structlfs__mattr.html">lfs_mattr</a></div><div class="ttdef"><b>Definition:</b> lfs.c:338</div></div>
+<div class="ttc" id="astructlfs__mattr_html"><div class="ttname"><a href="structlfs__mattr.html">lfs_mattr</a></div><div class="ttdef"><b>Definition:</b> lfs.c:353</div></div>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_96ce14023a43a209c7bfec1e20d89520.html">littlefs</a></li><li class="navelem"><a class="el" href="lfs_8c.html">lfs.c</a></li>
+    <li class="navelem"><a class="el" href="lfs_8c.html">lfs.c</a></li>
     <li class="footer">Generated by <a href="http://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.8.20 </li>
   </ul>
 </div>
