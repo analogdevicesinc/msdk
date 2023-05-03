@@ -95,8 +95,8 @@ typedef struct {
     __IO uint32_t inten;                /**< <tt>\b 0x000C:</tt> CAMERAIF INTEN Register */
     __IO uint32_t intfl;                /**< <tt>\b 0x0010:</tt> CAMERAIF INTFL Register */
     __IO uint32_t dscodes;              /**< <tt>\b 0x0014:</tt> CAMERAIF DSCODES Register */
-    union {
     __R  uint32_t rsv_0x18_0x2f[6];
+    union {
         __IO uint32_t fifo32;           /**< <tt>\b 0x0030:</tt> CAMERAIF FIFO32 Register */
         __IO uint16_t fifo16[2];        /**< <tt>\b 0x0030:</tt> CAMERAIF FIFO16 Register */
         __IO uint8_t  fifo8[4];         /**< <tt>\b 0x0030:</tt> CAMERAIF FIFO8 Register */
