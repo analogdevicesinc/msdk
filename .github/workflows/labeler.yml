@@ -23,7 +23,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Labeling.
+      - name: Labeling
         uses: actions/labeler@v4
         with:
           sync-labels: true
