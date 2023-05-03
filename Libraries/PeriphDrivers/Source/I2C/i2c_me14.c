@@ -45,12 +45,6 @@
 #include "i2c.h"
 #include "i2c_reva.h"
 
-/* **** Definitions **** */
-#define MXC_I2C_STD_MODE 100000
-#define MXC_I2C_FAST_SPEED 400000
-#define MXC_I2C_FASTPLUS_SPEED 1000000
-#define MXC_I2C_HIGH_SPEED 3400000
-
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INT_FL0_RD_ADDR_MATCH | MXC_F_I2C_INT_FL0_WR_ADDR_MATCH |
                           MXC_F_I2C_INT_FL0_DO_NOT_RESP_ER;
