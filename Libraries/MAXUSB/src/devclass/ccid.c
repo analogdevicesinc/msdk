@@ -159,7 +159,7 @@ static int ccid_lodge_out(void *cbdata)
     pr_req.reqlen = sizeof(xfer_buf);
     pr_req.callback = ccid_dispatcher;
     pr_req.cbdata = NULL; /* Callback uses global data */
-    pr_req.type = MAXUSB_TYPE_TRANS;
+    pr_req.type = MAXUSB_TYPE_PKT;
     return MXC_USB_ReadEndpoint(&pr_req);
 }
 
