@@ -44,42 +44,48 @@
 #include "gcr_regs.h"
 
 /***** Functions *****/
+static int flash_write4(uint32_t startaddr, uint32_t length, uint32_t *data, bool verify);
 
+//******************************************************************************
 int flash_read(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, void *buffer,
                lfs_size_t size)
 {
-    uint32_t first_block = *(uint32_t *)c->context; // Starting page of LittleFS flash space
-    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off; // Start address of read
-    uint8_t *data = (uint8_t *)buffer; // Pointer to data buffer
+    uint32_t first_block = *(uint32_t *)c->context;
+    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off;
+    uint8_t *data = (uint8_t *)buffer;
 
-    // Copy Flash contents to data buffer
+    // Copy data from flash into the data buffer
     for (uint8_t *ptr = (uint8_t *)startaddr; ptr < (uint8_t *)(startaddr + size); ptr++, data++) {
         *data = *ptr;
     }
+
     return LFS_ERR_OK;
 }
-//******************************************************************************
 
+//******************************************************************************
 int flash_write(const struct lfs_config *c, lfs_block_t block, lfs_off_t off, const void *buffer,
                 lfs_size_t size)
 {
-    uint32_t first_block = *(uint32_t *)c->context; // Starting page of LittleFS flash space
-    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off; //Start address of write
-    uint32_t *data = (uint32_t *)buffer; // Pointer to data buffer
+    uint32_t first_block = *(uint32_t *)c->context;
 
-    // Write 4 words to Flash
+    // Get starting address of the write
+    uint32_t startaddr = MXC_FLASH_PAGE_ADDR((first_block + block)) + off;
+    uint32_t *data = (uint32_t *)buffer;
+
+    // Write data to flash 4 bytes at a time
     return flash_write4(startaddr, size / c->prog_size, data, FALSE);
 }
 
 //******************************************************************************
-
 int flash_erase(const struct lfs_config *c, lfs_block_t block)
 {
-    uint32_t first_block = *(uint32_t *)c->context; // Starting page of LittleFS flash space
-    int addr = MXC_FLASH_PAGE_ADDR((first_block + block)); // Address in flash page to erase
+    uint32_t first_block = *(uint32_t *)c->context;
+
+    // Get address of filesystem block
+    int addr = MXC_FLASH_PAGE_ADDR((first_block + block));
     LOGF("Erasing page at address %08x\n", addr);
 
-    // Erase flash page
+    // Erase filesystem block
     int error_status = MXC_FLC_PageErase(addr);
     if (error_status != E_NO_ERROR) {
         return error_status;
@@ -88,7 +94,6 @@ int flash_erase(const struct lfs_config *c, lfs_block_t block)
 }
 
 //******************************************************************************
-
 int flash_sync(const struct lfs_config *c)
 {
     // Not provided by the SDK
@@ -96,12 +101,11 @@ int flash_sync(const struct lfs_config *c)
 }
 
 //******************************************************************************
-
 int flash_verify(uint32_t address, uint32_t length, uint8_t *data)
 {
     volatile uint8_t *ptr;
 
-    // Loop through Flash checking whether it matches data buffer
+    // Scan through section of flash and check if it matches the data buffer
     for (ptr = (uint8_t *)address; ptr < (uint8_t *)(address + length); ptr++, data++) {
         if (*ptr != *data) {
             printf("Verify failed at 0x%x (0x%x != 0x%x)\n", (unsigned int)ptr, (unsigned int)*ptr,
@@ -114,12 +118,11 @@ int flash_verify(uint32_t address, uint32_t length, uint8_t *data)
 }
 
 //******************************************************************************
-
 int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 {
     uint32_t *ptr;
 
-    // Loop through Flash comparing what's currently stored to expected value
+    // Scan section of flash to see if it matches the expected value
     for (ptr = (uint32_t *)startaddr; ptr < (uint32_t *)(startaddr + length); ptr++) {
         if (*ptr != data) {
             return 0;
@@ -130,9 +133,9 @@ int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 }
 
 //******************************************************************************
-
 int check_erased(uint32_t startaddr, uint32_t length)
 {
+    // Scan through section of flash to see if it matches the erased value (0xFFFFFFFF)
     return check_mem(startaddr, length, 0xFFFFFFFF);
 }
 
