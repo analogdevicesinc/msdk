@@ -31,57 +31,30 @@
  *
  ******************************************************************************/
 
-/* **** Includes **** */
-#include <stddef.h>
-#include "mxc_sys.h"
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_pins.h"
-#include "gpio.h"
-#include "gpio_reva.h"
-#include "gpio_common.h"
-#include "uart.h"
-#include "uart_revb.h"
-#include "uart_common.h"
-#include "mcr_regs.h"
-#include "dma.h"
+#ifndef CLI_H_
+#define CLI_H_
 
-/* **** Functions **** */
+#include "lfs.h"
 
-int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t *cfg)
-{
-    int error;
-    mxc_gpio_regs_t *gpio = cfg->port;
+/*
+ * @brief Function to receive next command from the command line.
+ *
+ * @param cmd 	Buffer to store command into.
+ * @param size 	Size of the command buffer.
+ *
+ * @return The size of the command if successful, otherwise an error code.
+ */
+int cmd_get(char *cmd, size_t size);
 
-    // Configure alternate function
-    error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
+/*
+ * @brief Function to process command and call appropriate command handler.
+ *
+ * @param lfs 	Pointer to mounted filesystem instance
+ * @param cmd 	Buffer containing characters read from the command line.
+ * @param size 	Number of characters in the command buffer.
+ *
+ * @return E_NO_ERROR if command processed successfully, otherwise an error code.
+ */
+int cmd_process(lfs_t *lfs, char *cmd, size_t size);
 
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    // Configure the pad
-    switch (cfg->pad) {
-    case MXC_GPIO_PAD_NONE:
-        gpio->padctrl0 &= ~cfg->mask;
-        gpio->padctrl1 &= ~cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_PULL_UP:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps |= cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_PULL_DOWN:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps &= ~cfg->mask;
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
-
-    return E_NO_ERROR;
-}
+#endif // CLI_H_

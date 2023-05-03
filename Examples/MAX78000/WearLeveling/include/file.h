@@ -31,57 +31,46 @@
  *
  ******************************************************************************/
 
-/* **** Includes **** */
-#include <stddef.h>
-#include "mxc_sys.h"
-#include "mxc_device.h"
-#include "mxc_assert.h"
-#include "mxc_pins.h"
-#include "gpio.h"
-#include "gpio_reva.h"
-#include "gpio_common.h"
-#include "uart.h"
-#include "uart_revb.h"
-#include "uart_common.h"
-#include "mcr_regs.h"
-#include "dma.h"
+#ifndef FILE_H_
+#define FILE_H_
 
-/* **** Functions **** */
+#include <stdbool.h>
+#include <stdint.h>
+#include "lfs.h"
 
-int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t *cfg)
-{
-    int error;
-    mxc_gpio_regs_t *gpio = cfg->port;
+/***** Macros *****/
+#define MAX_FILE_READ_SIZE 1024
 
-    // Configure alternate function
-    error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
+/*
+ * @brief Write data to a file.
+ *
+ * @param filesys 		Pointer to the LittleFS file system instance.
+ * @param file 			Pointer to a LittleFS file instance.
+ * @param filename 	 	Name of the file to write to.
+ * @param write_buf 	Buffer containing the data to write to the file
+ * @param len			Number of bytes to write to the file.
+ * @param pos			Position within the file to start writing data at.
+ * @param create 		Determines behavior if file doesn't already exist, "true" will create the
+ * 						file and complete the write, and "false" will return an error.
+ *
+ * @return The number of bytes written to flash if successful, otherwise an error code.
+ */
+int file_write(lfs_t *filesys, lfs_file_t *file, const char *filename, char *write_buf,
+               uint32_t len, uint32_t pos, bool create);
 
-    if (error != E_NO_ERROR) {
-        return error;
-    }
+/*
+ * @brief Read data from a file.
+ *
+ * @param filesys 		Pointer to the LittleFS file system instance.
+ * @param file 			Pointer to a LittleFS file instance.
+ * @param filename 		Name of the file to read from.
+ * @param read_buf		Buffer to store data from the file.
+ * @param len 			Number of bytes to read from the file.
+ * @param pos			Position within the file to start reading data from.
+ *
+ * @return The number of bytes read if successful, otherwise an error code.
+ */
+int file_read(lfs_t *filesys, lfs_file_t *file, const char *filename, char *read_buf, uint32_t len,
+              uint32_t pos);
 
-    // Configure the pad
-    switch (cfg->pad) {
-    case MXC_GPIO_PAD_NONE:
-        gpio->padctrl0 &= ~cfg->mask;
-        gpio->padctrl1 &= ~cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_PULL_UP:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps |= cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_PULL_DOWN:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps &= ~cfg->mask;
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
-
-    return E_NO_ERROR;
-}
+#endif // FILE_H_
