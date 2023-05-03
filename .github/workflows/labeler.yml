@@ -1,4 +1,4 @@
-name: Pull Request Labeler.
+name: Pull Request Labeler
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,7 +20,7 @@ jobs:
 
     permissions:
       contents: read
-      pull_requests: write
+      pull_request: write
 
     steps:
       - name: Labeling.
