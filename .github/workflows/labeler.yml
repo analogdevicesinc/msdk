@@ -6,7 +6,7 @@ concurrency:
 
 # Controls when the workflow will run
 on:
-  pull_requests:
+  pull_request:
 
 env:
   MSDK_DIR: msdk
