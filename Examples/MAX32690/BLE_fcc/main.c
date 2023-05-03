@@ -419,7 +419,7 @@ static void mainWsfInit(void)
     /* +12 for message headroom, +ISO Data Load, +4 for header. */
     const uint16_t dataBufSize =
         12 + HCI_ISO_DL_MAX_LEN + mainLlRtCfg.maxAclLen + 4 + BB_DATA_PDU_TAILROOM;
-#if (BT_VER > 9)
+
     /* Use single pool for data buffers. */
 #if (BT_VER > 9)
     WSF_ASSERT(mainLlRtCfg.maxAclLen == mainLlRtCfg.maxIsoSduLen);
