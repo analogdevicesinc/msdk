@@ -69,7 +69,7 @@ jobs:
           for watch_file in $WATCH_FILES; do 
               for change_file in $CHANGE_FILES; do 
                   if [[ "${change_file,,}" == *"${watch_file,,}" ]]; then
-                      echo "MATCH CI Iterate. Watch type: $watch_file, File: $change_file"
+                      echo "Match found. Watch type: $watch_file, File: $change_file"
                       RUN_TEST=1
                   fi
               done
