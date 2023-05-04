@@ -266,7 +266,7 @@ static void run_cnn_2(void)
                 noface_count++;
 
                 if (noface_count > 10) {
-                    name = "No face";
+                    name = "No subject";
                     decision = -4;
                     noface_count--;
                     PR_INFO("Detection: %s: %d", name, counter[id]);

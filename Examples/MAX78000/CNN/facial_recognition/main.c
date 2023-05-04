@@ -77,6 +77,7 @@ int main(void)
     int slaveAddress;
     int id;
     int dma_channel;
+    int undetect_count = 0;
     mxc_uart_regs_t *ConsoleUart;
 
 #ifdef BOARD_FTHR_REVA
@@ -180,12 +181,14 @@ int main(void)
         if (face_detected) {
             face_id();
             face_detected = 0;
-        }
-#if 0
-		//#ifdef TFT_ENABLE
-		else
-		{
+            undetect_count = 0;
+        } else
+            undetect_count++;
+
+#ifdef TFT_ENABLE
+        if (undetect_count > 5) {
             MXC_TFT_ClearArea(&area, 4);
+            undetect_count = 0;
         }
 #endif
     }
