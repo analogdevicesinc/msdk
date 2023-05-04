@@ -233,7 +233,6 @@ void prepForBackup(void)
     MXC_ICC_Disable();
     MXC_LP_ICache0Shutdown();
 
-
     /* Shutdown unused power domains */
     MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
 
