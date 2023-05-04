@@ -95,11 +95,13 @@ static int read_CmdHandler(lfs_t *lfs, char *args)
         return E_NULL_PTR;
     }
 
+    char *save_ptr = args;
+
     // Parse arguments sting
-    strtok(args, " ");
-    char *filename = strtok(NULL, " ");
-    char *str_num_bytes = strtok(NULL, " ");
-    char *str_pos = strtok(NULL, "\r");
+    strtok_r(args, " ", &save_ptr);
+    char *filename = strtok_r(NULL, " ", &save_ptr);
+    char *str_num_bytes = strtok_r(NULL, " ", &save_ptr);
+    char *str_pos = strtok_r(NULL, "\r\n", &save_ptr);
     char data[MAX_FILE_READ_SIZE];
     lfs_file_t file;
 
@@ -147,24 +149,25 @@ static int write_CmdHandler(lfs_t *lfs, char *args)
     char *str_pos;
     int pos, err;
     bool create;
+    char *save_ptr = args;
 
     // Parse arguments
-    strtok(args, " ");
-    create_fl = strtok(NULL, " ");
+    strtok_r(args, " ", &save_ptr);
+    create_fl = strtok_r(NULL, " ", &save_ptr);
 
     // Parse remainder of the arguments based on whether not create flag was passed
     if (memcmp(create_fl, "--create", sizeof("--create") - 1) == 0) {
         // Create flag passed, next argument is filename
         create = true;
-        filename = strtok(NULL, " ");
-        data = strtok(NULL, " ");
-        str_pos = strtok(NULL, "\r");
+        filename = strtok_r(NULL, " ", &save_ptr);
+        data = strtok_r(NULL, " ", &save_ptr);
+        str_pos = strtok_r(NULL, "\r\n", &save_ptr);
     } else {
         // create flag not passed, last argument parsed was file name
         create = false;
         filename = create_fl;
-        data = strtok(NULL, " ");
-        str_pos = strtok(NULL, "\r");
+        data = strtok_r(NULL, " ", &save_ptr);
+        str_pos = strtok_r(NULL, "\r\n", &save_ptr);
     }
 
     // Convert position to an integer value
@@ -192,13 +195,14 @@ static int swl_CmdHandler(lfs_t *lfs, char *args)
         return E_INVALID;
     }
 
+    char *save_ptr = args;
     char *str_num_writes;
     int num_writes, err;
     int hit_count[LFS_PAGE_CNT] = { 0 };
 
     // Parse argument string
-    strtok(args, " ");
-    str_num_writes = strtok(NULL, " ");
+    strtok_r(args, " ", &save_ptr);
+    str_num_writes = strtok_r(NULL, "\r\n", &save_ptr);
     num_writes = atoi(str_num_writes);
 
     //Set up dummy arguments
