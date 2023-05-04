@@ -211,7 +211,7 @@ void prepForDeepSleep(void)
     /* SIMO softstart workaround: clock 30KHz/8 for DEEPSLEEP, 30KHz/1 in ACTIVE */
     *(volatile int *)0x40005434 = 1;
     *(volatile int *)0x40005440 = (*(volatile int *)0x40005440 & (~(0x3 << 24))) | (0x2 << 24);
-    *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6)))  | (0x2 << 6);
+    *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6))) | (0x2 << 6);
 
     switchToHIRCD4();
 
@@ -284,7 +284,8 @@ void recoverFromDeepSleep(void)
         while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
     } else {
         /* Move VCORE switch to VCOREA */
-        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x3 << MXC_F_MCR_CTRL_VDDCSW_POS);
+        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) |
+                        (0x3 << MXC_F_MCR_CTRL_VDDCSW_POS);
     }
 
     MXC_LP_ICache0PowerUp();
