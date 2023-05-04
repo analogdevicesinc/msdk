@@ -222,8 +222,12 @@ void prepForDeepSleep(void)
     MXC_SIMO_SetVregO_B(900);
 
     /* Move VCORE switch to VCOREB (< VCOREA) */
+<<<<<<< HEAD
     MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | 
                     (0x2 << MXC_F_MCR_CTRL_VDDCSW_POS);
+=======
+    MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x2 << MXC_F_MCR_CTRL_VDDCSW_POS);
+>>>>>>> c6e1462e5 (adding SIMO softstart workaround for MAX32665/LP example)
 
     /* Wait for VCOREA ready.  Should be ready already */
     while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {}
@@ -259,8 +263,12 @@ void prepForBackup(void)
     MXC_LP_SIMOVregDPowerDown();
 
     /* Move VCORE switch to VCOREB (< VCOREA) */
+<<<<<<< HEAD
     MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | 
                     (0x2 << MXC_F_MCR_CTRL_VDDCSW_POS);
+=======
+    MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x2 << MXC_F_MCR_CTRL_VDDCSW_POS);
+>>>>>>> c6e1462e5 (adding SIMO softstart workaround for MAX32665/LP example)
 
     /* Lower VCOREA to save power */
     MXC_SIMO_SetVregO_C(850);
@@ -286,8 +294,12 @@ void recoverFromDeepSleep(void)
         while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
     } else {
         /* Move VCORE switch to VCOREA */
+<<<<<<< HEAD
         MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | 
                         (0x3 << MXC_F_MCR_CTRL_VDDCSW_POS);
+=======
+        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x3 << MXC_F_MCR_CTRL_VDDCSW_POS);
+>>>>>>> c6e1462e5 (adding SIMO softstart workaround for MAX32665/LP example)
     }
 
     MXC_LP_ICache0PowerUp();
