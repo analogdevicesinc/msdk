@@ -246,7 +246,7 @@ void prepForBackup(void)
     /* SIMO softstart workaround: clock 8KHz/16 for BACKUP, 30KHz/1 in ACTIVE */
     *(volatile int *)0x40005434 = 3;
     *(volatile int *)0x40005440 = (*(volatile int *)0x40005440 & (~(0x3 << 24))) | (0x2 << 24);
-    *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6)))  | (0x0 << 6);
+    *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6))) | (0x0 << 6);
 
     switchToHIRCD4();
 
