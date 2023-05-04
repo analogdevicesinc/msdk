@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['lfs_594',['lfs',['../structlfs__dir__find__match.html#a6ed76ccab3487d4e517d9199302ce64b',1,'lfs_dir_find_match::lfs()'],['../structlfs__dir__commit__commit.html#a7c36e57a33f2d4cf5c81767c1f92fbd8',1,'lfs_dir_commit_commit::lfs()'],['../structlfs__fs__parent__match.html#a43ba4e124bc68468b076e5cc2cd408b6',1,'lfs_fs_parent_match::lfs()'],['../main_8c.html#a11e58d59232e490f0bb0781c309abdb2',1,'lfs():&#160;main.c']]],
-  ['lookahead_5fbuffer_595',['lookahead_buffer',['../structlfs__config.html#afee66de317d0f778157eae576744847c',1,'lfs_config']]],
-  ['lookahead_5fsize_596',['lookahead_size',['../structlfs__config.html#a010570f77b49932004eb24fc3d8feb6f',1,'lfs_config']]]
+  ['i_583',['i',['../structlfs_1_1lfs__free.html#a58b9950311a585e8a47bb519fef38773',1,'lfs::lfs_free']]],
+  ['id_584',['id',['../structlfs__dir.html#ae70ad1bea93d3d0e291a887519315baf',1,'lfs_dir::id()'],['../structlfs__file.html#af5b7ea3db84fa0d590c7bb06c9786f29',1,'lfs_file::id()'],['../structlfs_1_1lfs__mlist.html#ad9e9856ffc58a06ee13051318dffbdce',1,'lfs::lfs_mlist::id()']]]
 ];

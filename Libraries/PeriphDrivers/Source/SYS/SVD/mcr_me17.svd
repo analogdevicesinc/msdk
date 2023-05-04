@@ -116,6 +116,12 @@
         <addressOffset>0x10</addressOffset>
         <fields>
           <field>
+            <name>CMPHYST</name>
+            <description>Comparator hysteresis control.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
             <name>INRO_EN</name>
             <description>INRO Enable.</description>
             <bitOffset>2</bitOffset>
@@ -125,6 +131,18 @@
             <name>ERTCO_EN</name>
             <description>ERTCO Enable.</description>
             <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBRO_EN</name>
+            <description>IBRO Enable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>32KOSC_EN</name>
+            <description>Enable 32K Oscillator input.</description>
+            <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>

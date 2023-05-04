@@ -26,6 +26,8 @@ I2C_MNGR
 I2C_SCAN
 I2C_Sensor
 ICC
+Library_Generate
+Library_Use
 LockDebug
 LP
 OTP_Dump

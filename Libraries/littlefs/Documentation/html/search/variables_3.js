@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['end_581',['end',['../structlfs__commit.html#a8784bf44c1a7a7c9f2b780022407914e',1,'lfs_commit']]],
-  ['erase_582',['erase',['../structlfs__config.html#ae26d6c31cc28aa8bb3d6af86a4b67a2b',1,'lfs_config']]],
-  ['erased_583',['erased',['../structlfs__mdir.html#a90788f1d7c3e99dfecb2dfa293d5e71f',1,'lfs_mdir']]],
-  ['etag_584',['etag',['../structlfs__mdir.html#a1169f749e9b0ad1c18ff8045a3a6770f',1,'lfs_mdir']]]
+  ['data_568',['data',['../structlfs__dir__traverse.html#a3a29943616205a3bb147e68974d367c5',1,'lfs_dir_traverse']]],
+  ['diff_569',['diff',['../structlfs__dir__traverse.html#ac9e5f6c88484603ea9a4b4a520c94b9d',1,'lfs_dir_traverse']]],
+  ['dir_570',['dir',['../structlfs__dir__traverse.html#a5ce237ce00481f751b5246c653749182',1,'lfs_dir_traverse']]],
+  ['disk_571',['disk',['../structlfs__dir__traverse.html#a8a1dcab0f825e921ca1309b8b4ac10ae',1,'lfs_dir_traverse']]]
 ];

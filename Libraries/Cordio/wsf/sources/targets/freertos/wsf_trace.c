@@ -221,7 +221,7 @@ void WsfTrace(const char *pStr, ...)
 #if WSF_TRACE_ENABLED_VERBOSE == TRUE
 void WsfTraceVerbose(const char *pStr, ...)
 {
-  WsfTrace(pStr)
+  WsfTrace(pStr);
 }
 #else
 void WsfTraceVerbose(const char *pStr, ...)

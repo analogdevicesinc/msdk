@@ -26,10 +26,10 @@ numOfFailedTests=0
 function script_clean_up() {
     # check if some runoff opeocd instance is running
     set +e
-    if ps -p $openocd_dapLink_pid >/dev/null; then
-        kill -9 $openocd_dapLink_pid || true
-    fi
-
+    # if ps -p $openocd_dapLink_pid >/dev/null; then
+    #     kill -9 $openocd_dapLink_pid || true
+    # fi
+    echo "End of first test script"
     set -e
 }
 #used to kill any openocd instances should the script exit prematurely
@@ -291,48 +291,48 @@ function print_project_banner() {
     printf "> Start of testing $DUT_NAME_LOWER ($DUT_NAME_UPPER) \r\n> ID:$DUT_ID \r\n> Port:$DUT_SERIAL_PORT \r\n\r\n"
 }
 #****************************************************************************************************
-function change_advertising_names_walle() {
-    # change advertising name for projects under test to avoid
-    # connections with office devices
-    printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
-    perl -i -pe "s/\'D\'/\'X\'/g" dats_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
-    perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
-    perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-    perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
-    perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
-    # change advertising name to scan for on the main device client apps
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
-    perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-    perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
-    # build BLE examples
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
-}
-#****************************************************************************************************
-function change_advertising_names_local() {
-    # change advertising name for projects under test to avoid
-    # connections with office devices
-    printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
-    perl -i -pe "s/\'D\'/\'Z\'/g" dats_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
-    perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
-    perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
-    perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
-    cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
-    perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
-    # change advertising name to scan for on the main device client apps
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
-    perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
-    cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
-    perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
+function change_advertising_names() {
+    if [ $(hostname) == "wall-e" ]; then
+        # change advertising name for projects under test to avoid
+        # connections with office devices
+        printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+        perl -i -pe "s/\'D\'/\'X\'/g" dats_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
+        perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
+        perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
+        perl -i -pe "s/\'S\'/\'X\'/g" dats_main.c
+        # change advertising name to scan for on the main device client apps
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+        perl -i -pe "s/\'D\'/\'X\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+        perl -i -pe "s/\'S\'/\'X\'/g" datc_main.c
+        # build BLE examples
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER
+    else
+        # change advertising name for projects under test to avoid
+        # connections with office devices
+        printf "> changing advertising names : $MSDK_DIR/Examples/$DUT_NAME_UPPER\r\n\r\n"
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_dats
+        perl -i -pe "s/\'D\'/\'Z\'/g" dats_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_datc
+        perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otac
+        perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
+        perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
+        cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_FreeRTOS
+        perl -i -pe "s/\'S\'/\'Z\'/g" dats_main.c
+        # change advertising name to scan for on the main device client apps
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_datc
+        perl -i -pe "s/\'D\'/\'Z\'/g" datc_main.c
+        cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
+        perl -i -pe "s/\'S\'/\'Z\'/g" datc_main.c
+    fi
 }
 
 #****************************************************************************************************
@@ -407,9 +407,8 @@ function run_all_not_conencted_tests() {
 
     done # end non connected tests
 
-
-
 }
+
 #****************************************************************************************************
 function run_datcs_conencted_tests() {
     echo
@@ -486,17 +485,17 @@ function run_ota_test() {
     fi
     echo "****************************************************************************************************"
     # ME18 evkit does not have external flash
-    
+
     # #make sure all files have correct settings
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas
     git restore .
-    
+
     cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/Bootloader
     git restore .
 
     # change advertising names
-    change_advertising_names_walle
-    
+    change_advertising_names
+
     # change the target the OTAC embedded firmware in the client is built for
     cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac
     #appends TARGET , TARGET_UC and TARGET_LC to the make commands and sets them to $DUT_NAME_UPPER and $DUT_NAME_LOWER
@@ -546,7 +545,7 @@ function run_ota_test() {
     # give time to connect
 
     # resotre everything except advertising names
-    change_advertising_names_walle
+    change_advertising_names
     sleep 1
 
     set +e
@@ -559,18 +558,18 @@ function run_ota_test() {
         let "numOfFailedTests+=$testResult"
         if [[ "$INTERNAL_FLASH_TEST" -ne "0" ]]; then
             failedTestList+="| BLE_ota_cs_int ($DUT_NAME_UPPER) "
-             # test failed, save elfs datc/s
+            # test failed, save elfs datc/s
             cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
             cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_int.elf"
             cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
             cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_int.elf"
         else
             failedTestList+="| BLE_ota_cs_ext ($DUT_NAME_UPPER) "
-             # test failed, save elfs datc/s
+            # test failed, save elfs datc/s
             cd $MSDK_DIR/Examples/$MAIN_DEVICE_NAME_UPPER/BLE_otac/build
             cp $MAIN_DEVICE_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$MAIN_DEVICE_NAME_LOWER"_"$DUT_NAME_LOWER"_BLE_otacs_client_ext.elf"
             cd $MSDK_DIR/Examples/$DUT_NAME_UPPER/BLE_otas/build
-            cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_ext.elf"    
+            cp $DUT_NAME_LOWER.elf $EXAMPLE_TEST_PATH/results/failed_elfs/$DUT_NAME_LOWER"_BLE_otacs_server_ext.elf"
         fi
 
     fi
@@ -580,9 +579,8 @@ function run_ota_test() {
     erase_with_openocd $DUT_NAME_LOWER $DUT_ID
     #   erase_with_openocd $MAIN_DEVICE_NAME_LOWER $MAIN_DEVICE_ID
 
-
     erase_all_devices
-   
+
 }
 
 #****************************************************************************************************
@@ -593,7 +591,17 @@ function run_ota_test() {
 # takes the three args given to the script: eg: max32655 , D3073ICQ , 0409000052fb0cd70000000000000000097969906
 initial_setup $1 $2 $3
 CURRENT_TEST=$4
-change_advertising_names_walle
+change_advertising_names
+
+# Temporary fix until RF Closed is merged into RF Phy
+# Build a specific RF-PHY-closed branch
+cd $MSDK_DIR/Libraries
+git clone git@github.com:Analog-Devices-MSDK/RF-PHY-closed.git
+cd $MSDK_DIR/Libraries/RF-PHY-closed
+git checkout ME17B1-new
+cd MAX32655/build/gcc
+make clean
+make -j
 
 if [ $CURRENT_TEST == "all" ]; then
     echo
@@ -602,28 +610,31 @@ if [ $CURRENT_TEST == "all" ]; then
     erase_all_devices
     run_all_not_conencted_tests
     CURRENT_TEST="all"
-    run_datcs_conencted_tests
-    CURRENT_TEST="all"
-    run_ota_test 1 # arg 1= internal flash
-    if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-        run_ota_test 0 # arg 0 = external flash
-    fi
+    # temp diasble datc/s and otas tests until new RF PHY is debugged with ME17B
+    # run_datcs_conencted_tests
+    # CURRENT_TEST="all"
+    # run_ota_test 1 # arg 1= internal flash
+    # if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
+    #     run_ota_test 0 # arg 0 = external flash
+    # fi
 
     echo
 elif [ $CURRENT_TEST == "dats" ]; then
     echo
     echo "Running Datc/s connected test"
     erase_all_devices
-    run_datcs_conencted_tests
+    # temp diasble datc/s and otas tests until new RF PHY is debugged with ME17B
+    #run_datcs_conencted_tests
     echo
 elif [ $CURRENT_TEST == "ota" ]; then
     echo
     echo "Running OTA test"
-    erase_all_devices
-    run_ota_test 1 # arg 1 = internal flash
-    if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-    run_ota_test 0 # arg 0= external flash
-    fi
+    # temp diasble datc/s and otas tests until new RF PHY is debugged with ME17B
+    # erase_all_devices
+    # run_ota_test 1 # arg 1 = internal flash
+    # if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
+    # run_ota_test 0 # arg 0= external flash
+    #fi
     echo
 else
     echo
@@ -631,7 +642,6 @@ else
     run_single_not_conencted_tests $CURRENT_TEST
     echo
 fi
-
 
 if [ $CURRENT_TEST == "all" ]; then
     echo "=============================================================================="
@@ -648,5 +658,3 @@ if [ $CURRENT_TEST == "all" ]; then
     echo
 fi
 exit $numOfFailedTests
-
-

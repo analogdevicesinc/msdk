@@ -10,8 +10,13 @@
 # Enable the FreeRTOS library
 LIB_FREERTOS=1
 
+
+# Enable Cordio use of FreeRTOS
+RTOS = freertos
+
 # Enable Cordio library
 LIB_CORDIO = 1
+
 
 # Cordio library options
 INIT_PERIPHERAL = 1

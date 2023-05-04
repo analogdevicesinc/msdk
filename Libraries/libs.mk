@@ -216,3 +216,12 @@ include $(UCL_DIR)/ucl.mk
 
 endif
 # ************************
+
+# Barcode Decoder (Disabled by default)
+# ************************
+LIB_BARCODE_DECODER ?= 0
+ifeq ($(LIB_BARCODE_DECODER), 1)
+BARCODE_DECODER_DIR ?= $(LIBS_DIR)/MiscDrivers/BarcodeDecoder/zbar
+include $(BARCODE_DECODER_DIR)/barcode_decoder.mk
+endif
+# ************************

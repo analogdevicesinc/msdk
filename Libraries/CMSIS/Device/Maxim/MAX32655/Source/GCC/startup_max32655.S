@@ -195,7 +195,7 @@ __isr_vector:
     .long BTLE_RX_AES_IRQHandler       /* 0x42  0x0108  66: BTLE RX AES Done */
     .long BTLE_INV_APB_ADDR_IRQHandler /* 0x43  0x010C  67: BTLE Invalid APB Address*/
     .long BTLE_IQ_DATA_VALID_IRQHandler/* 0x44  0x0110  68: BTLE IQ Data Valid */
-    .long WUT_IRQHandler               /* 0x45  0x0114  69: Wake up timer */
+    .long WUT0_IRQHandler               /* 0x45  0x0114  69: Wakeup Timer 0 */
     .long GPIOWAKE_IRQHandler          /* 0x46  0x0118  70: GPIO Wakeup */
     .long RSV55_IRQHandler             /* 0x47  0x011C  71: Reserved */
     .long SPI0_IRQHandler              /* 0x48  0x0120  72: SPI0 */
@@ -241,7 +241,17 @@ __isr_vector:
     .long RSV96_IRQHandler             /* 0x70  0x01C0  112: Reserved */
     .long AES_IRQHandler               /* 0x71  0x01C4  113: AES */
     .long CRC_IRQHandler               /* 0x72  0x01C8  114: CRC */
-    .long I2S_IRQHandler               /* 0x73  0x01CC  115: I2S */    
+    .long I2S_IRQHandler               /* 0x73  0x01CC  115: I2S */
+    .long RSV116_IRQHandler            /* 0x74  0x01D0  116: Reserved */
+    .long RSV117_IRQHandler            /* 0x75  0x01D4  117: Reserved */
+    .long RSV118_IRQHandler            /* 0x76  0x01D8  118: Reserved */
+    .long LPCMP_IRQHandler             /* 0x77  0x01Dc  119: LP Comparator */
+    .long RSV120_IRQHandler            /* 0x78  0x01E0  120: Reserved */
+    .long RSV121_IRQHandler            /* 0x79  0x01E4  121: Reserved */
+    .long RSV122_IRQHandler            /* 0x7A  0x01E8  122: Reserved */
+    .long RSV123_IRQHandler            /* 0x7B  0x01EC  123: Reserved */
+    .long RSV124_IRQHandler            /* 0x7C  0x01F0  124: Reserved */
+    .long WUT1_IRQHandler              /* 0x7D  0x01F4  125: Wakeup Timer 1 */    
     .text   
     .thumb
     .thumb_func
@@ -403,7 +413,7 @@ Reset_Handler:
     def_irq_handler BTLE_RX_AES_IRQHandler       /* 0x42  0x0108  66: BTLE RX AES Done */
     def_irq_handler BTLE_INV_APB_ADDR_IRQHandler /* 0x43  0x010C  67: BTLE Invalid APB Address*/
     def_irq_handler BTLE_IQ_DATA_VALID_IRQHandler/* 0x44  0x0110  68: BTLE IQ Data Valid */
-    def_irq_handler WUT_IRQHandler               /* 0x45  0x0114  69: Wake up timer */
+    def_irq_handler WUT0_IRQHandler              /* 0x45  0x0114  69: Wake up timer */
     def_irq_handler GPIOWAKE_IRQHandler          /* 0x46  0x0118  70: GPIO Wakeup */
     def_irq_handler RSV55_IRQHandler             /* 0x47  0x011C  71: Reserved */
     def_irq_handler SPI0_IRQHandler              /* 0x48  0x0120  72: SPI0 */
@@ -449,5 +459,15 @@ Reset_Handler:
     def_irq_handler RSV96_IRQHandler             /* 0x70  0x01C0  112: Reserved */
     def_irq_handler AES_IRQHandler               /* 0x71  0x01C4  113: AES */
     def_irq_handler CRC_IRQHandler               /* 0x72  0x01C8  114: CRC */
-    def_irq_handler I2S_IRQHandler               /* 0x73  0x01CC  115: I2S */    
+    def_irq_handler I2S_IRQHandler               /* 0x73  0x01CC  115: I2S */
+    def_irq_handler RSV116_IRQHandler            /* 0x74  0x01D0  116: Reserved */
+    def_irq_handler RSV117_IRQHandler            /* 0x75  0x01D4  117: Reserved */
+    def_irq_handler RSV118_IRQHandler            /* 0x76  0x01D8  118: Reserved */
+    def_irq_handler LPCMP_IRQHandler             /* 0x77  0x01DC  119: LP Comparator */
+    def_irq_handler RSV120_IRQHandler            /* 0x78  0x01E0  120: Reserved */
+    def_irq_handler RSV121_IRQHandler            /* 0x79  0x01E4  121: Reserved */
+    def_irq_handler RSV122_IRQHandler            /* 0x7A  0x01E8  122: Reserved */
+    def_irq_handler RSV123_IRQHandler            /* 0x7B  0x01EC  123: Reserved */
+    def_irq_handler RSV124_IRQHandler            /* 0x7C  0x01F0  124: Reserved */
+    def_irq_handler WUT1_IRQHandler              /* 0x7D  0x01F4  125: Wakeup Timer 1 */  
     .end

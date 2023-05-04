@@ -324,6 +324,18 @@ ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
 endif
 
+# The rule for creating an object library.
+${BUILD_DIR}/%.a:
+	@echo -cr $(call fixpath,${@}) $(call fixpath,${^})                          \
+	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
+	@if [ 'x${VERBOSE}' = x ];                                                   \
+	 then                                                                        \
+	     echo "  AR    ${@}";                                                    \
+	 else                                                                        \
+	     echo ${AR} -cr $(call fixpath,${@}) $(call fixpath,${^});               \
+	 fi
+	@${AR} @${BUILD_DIR}/ar_args.txt
+
 # The rule for building the object file from binary source file.
 # Resulting object will have the following symbols
 # _binary_<file_name>_bin_start
@@ -344,36 +356,6 @@ ${BUILD_DIR}/%.o: %.bin
 	.data=.text $(call fixpath,${<}) $(call fixpath,${@})
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
-endif
-
-# The rule for creating an object library.
-${BUILD_DIR}/%.a:
-	@if [ 'x${VERBOSE}' = x ];                                                  \
-	 then                                                                       \
-	    echo "  AR    ${@}";                                                    \
-	elif [ 'x${QUIET}' != x ];                                                  \
-	then	 																	\
-		:;																		\
-	else 																		\
-	    echo ${AR} -cr $(call fixpath,${@}) $(call fixpath,${^});               \
-	fi
-	@${AR} -cr $(call fixpath,${@}) $(call fixpath,${^})
-ifneq ($(gcc_strip_libraries),)
-ifneq ($(STRIP),)
-	@if [ 'x${ECLIPSE}' != x ];                                                 \
-	 then                                                                       \
-	    echo ${STRIP} $(call fixpath,${@}) | sed 's/-I\/\(.\)\//-I\1:\//g' ;    \
-	elif [ 'x${VERBOSE}' != x ];                                                \
-	then                                                                        \
-	    echo ${STRIP} --strip-unneeded $(call fixpath,${@});                    \
-	elif [ 'x${QUIET}' != x ];                                                  \
-	then                                                                        \
-	    :;                                                                      \
-	else                                                                        \
-	    echo "  STRIP ${@}";                                                    \
-	fi
-	@${STRIP} --strip-unneeded $(call fixpath,${@})
-endif
 endif
 
 # The rule for linking the application.

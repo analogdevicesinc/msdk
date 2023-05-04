@@ -62,120 +62,120 @@ static mxc_wut_complete_cb_t cb_async;
 /* **** Functions **** */
 
 /* ************************************************************************** */
-void MXC_WUT_Init(mxc_wut_pres_t pres)
+void MXC_WUT_Init(mxc_wut_regs_t *wut, mxc_wut_pres_t pres)
 {
     MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERTCO);
-    MXC_WUT_RevA_Init((mxc_wut_reva_regs_t *)MXC_WUT, pres);
+    MXC_WUT_RevA_Init((mxc_wut_reva_regs_t *)wut, pres);
 }
 
-void MXC_WUT_Shutdown(void)
+void MXC_WUT_Shutdown(mxc_wut_regs_t *wut)
 {
-    MXC_WUT_RevA_Shutdown((mxc_wut_reva_regs_t *)MXC_WUT);
-}
-
-/* ************************************************************************** */
-void MXC_WUT_Enable(void)
-{
-    MXC_WUT_RevA_Enable((mxc_wut_reva_regs_t *)MXC_WUT);
+    MXC_WUT_RevA_Shutdown((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************** */
-void MXC_WUT_Disable(void)
+void MXC_WUT_Enable(mxc_wut_regs_t *wut)
 {
-    MXC_WUT_RevA_Disable((mxc_wut_reva_regs_t *)MXC_WUT);
+    MXC_WUT_RevA_Enable((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************** */
-void MXC_WUT_Config(const mxc_wut_cfg_t *cfg)
+void MXC_WUT_Disable(mxc_wut_regs_t *wut)
 {
-    MXC_WUT_RevA_Config((mxc_wut_reva_regs_t *)MXC_WUT, (mxc_wut_reva_cfg_t *)cfg);
+    MXC_WUT_RevA_Disable((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************** */
-uint32_t MXC_WUT_GetCompare(void)
+void MXC_WUT_Config(mxc_wut_regs_t *wut, const mxc_wut_cfg_t *cfg)
 {
-    return MXC_WUT_RevA_GetCompare((mxc_wut_reva_regs_t *)MXC_WUT);
+    MXC_WUT_RevA_Config((mxc_wut_reva_regs_t *)wut, (mxc_wut_reva_cfg_t *)cfg);
+}
+
+/* ************************************************************************** */
+uint32_t MXC_WUT_GetCompare(mxc_wut_regs_t *wut)
+{
+    return MXC_WUT_RevA_GetCompare((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************* */
-uint32_t MXC_WUT_GetCount(void)
+uint32_t MXC_WUT_GetCount(mxc_wut_regs_t *wut)
 {
-    return MXC_WUT_RevA_GetCount((mxc_wut_reva_regs_t *)MXC_WUT);
+    return MXC_WUT_RevA_GetCount((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************* */
-void MXC_WUT_IntClear(void)
+void MXC_WUT_IntClear(mxc_wut_regs_t *wut)
 {
-    MXC_WUT_RevA_IntClear((mxc_wut_reva_regs_t *)MXC_WUT);
+    MXC_WUT_RevA_IntClear((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************* */
-uint32_t MXC_WUT_IntStatus(void)
+uint32_t MXC_WUT_IntStatus(mxc_wut_regs_t *wut)
 {
-    return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t *)MXC_WUT);
+    return MXC_WUT_RevA_IntStatus((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************* */
-void MXC_WUT_SetCompare(uint32_t cmp_cnt)
+void MXC_WUT_SetCompare(mxc_wut_regs_t *wut, uint32_t cmp_cnt)
 {
-    MXC_WUT_RevA_SetCompare((mxc_wut_reva_regs_t *)MXC_WUT, cmp_cnt);
+    MXC_WUT_RevA_SetCompare((mxc_wut_reva_regs_t *)wut, cmp_cnt);
 }
 
 /* ************************************************************************* */
-void MXC_WUT_SetCount(uint32_t cnt)
+void MXC_WUT_SetCount(mxc_wut_regs_t *wut, uint32_t cnt)
 {
-    MXC_WUT_RevA_SetCount((mxc_wut_reva_regs_t *)MXC_WUT, cnt);
+    MXC_WUT_RevA_SetCount((mxc_wut_reva_regs_t *)wut, cnt);
 }
 
 /* ************************************************************************* */
-int MXC_WUT_GetTicks(uint32_t time, mxc_wut_unit_t units, uint32_t *ticks)
+int MXC_WUT_GetTicks(mxc_wut_regs_t *wut, uint32_t time, mxc_wut_unit_t units, uint32_t *ticks)
 {
-    return MXC_WUT_RevA_GetTicks((mxc_wut_reva_regs_t *)MXC_WUT, ERTCO_FREQ, time, units, ticks);
+    return MXC_WUT_RevA_GetTicks((mxc_wut_reva_regs_t *)wut, ERTCO_FREQ, time, units, ticks);
 }
 
 /* ************************************************************************* */
-int MXC_WUT_GetTime(uint32_t ticks, uint32_t *time, mxc_wut_unit_t *units)
+int MXC_WUT_GetTime(mxc_wut_regs_t *wut, uint32_t ticks, uint32_t *time, mxc_wut_unit_t *units)
 {
-    return MXC_WUT_RevA_GetTime((mxc_wut_reva_regs_t *)MXC_WUT, ERTCO_FREQ, ticks, time,
+    return MXC_WUT_RevA_GetTime((mxc_wut_reva_regs_t *)wut, ERTCO_FREQ, ticks, time,
                                 (mxc_wut_reva_unit_t *)units);
 }
 
 /* ************************************************************************** */
-void MXC_WUT_Edge(void)
+void MXC_WUT_Edge(mxc_wut_regs_t *wut)
 {
-    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)MXC_WUT);
+    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************** */
-void MXC_WUT_Store(void)
+void MXC_WUT_Store(mxc_wut_regs_t *wut)
 {
-    MXC_WUT_RevA_Store((mxc_wut_reva_regs_t *)MXC_WUT);
+    MXC_WUT_RevA_Store((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************** */
-void MXC_WUT_RestoreBBClock(uint32_t dbbFreq)
+void MXC_WUT_RestoreBBClock(mxc_wut_regs_t *wut, uint32_t dbbFreq)
 {
-    MXC_WUT_RevA_RestoreBBClock((mxc_wut_reva_regs_t *)MXC_WUT, dbbFreq, ERTCO_FREQ);
+    MXC_WUT_RevA_RestoreBBClock((mxc_wut_reva_regs_t *)wut, dbbFreq, ERTCO_FREQ);
 }
 
 /* ************************************************************************** */
-uint32_t MXC_WUT_GetSleepTicks(void)
+uint32_t MXC_WUT_GetSleepTicks(mxc_wut_regs_t *wut)
 {
-    return MXC_WUT_RevA_GetSleepTicks((mxc_wut_reva_regs_t *)MXC_WUT);
+    return MXC_WUT_RevA_GetSleepTicks((mxc_wut_reva_regs_t *)wut);
 }
 
 /* ************************************************************************** */
-void MXC_WUT_Delay_MS(uint32_t waitMs)
+void MXC_WUT_Delay_MS(mxc_wut_regs_t *wut, uint32_t waitMs)
 {
-    MXC_WUT_RevA_Delay_MS((mxc_wut_reva_regs_t *)MXC_WUT, waitMs, ERTCO_FREQ);
+    MXC_WUT_RevA_Delay_MS((mxc_wut_reva_regs_t *)wut, waitMs, ERTCO_FREQ);
 }
 
 /* ************************************************************************** */
-static void MXC_WUT_GetWUTSync(uint32_t *wutCnt, uint32_t *snapshot)
+static void MXC_WUT_GetWUTSync(mxc_wut_regs_t *wut, uint32_t *wutCnt, uint32_t *snapshot)
 {
-    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)MXC_WUT);
-    *wutCnt = MXC_WUT->cnt;
-    *snapshot = MXC_WUT->snapshot;
+    MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)wut);
+    *wutCnt = wut->cnt;
+    *snapshot = wut->snapshot;
 }
 
 /* ************************************************************************** */
@@ -188,20 +188,20 @@ static void MXC_WUT_SetTrim(uint32_t trimValue)
 }
 
 /* ************************************************************************** */
-static int MXC_WUT_StarTrim(void)
+static int MXC_WUT_StartTrim(mxc_wut_regs_t *wut)
 {
     uint32_t wutCnt0, wutCnt1;
     uint32_t snapshot0, snapshot1;
     uint32_t trimValue;
 
     /* Make sure the WUT is running in compare mode */
-    if (!(MXC_WUT->ctrl & MXC_F_WUT_REVA_CTRL_TEN)) {
+    if (!(wut->ctrl & MXC_F_WUT_REVA_CTRL_TEN)) {
         return E_UNINITIALIZED;
     }
 
     /* Make sure that DBB counter is running */
-    MXC_WUT_GetWUTSync(&wutCnt0, &snapshot0);
-    MXC_WUT_GetWUTSync(&wutCnt1, &snapshot1);
+    MXC_WUT_GetWUTSync(wut, &wutCnt0, &snapshot0);
+    MXC_WUT_GetWUTSync(wut, &wutCnt1, &snapshot1);
     if (snapshot0 == snapshot1) {
         return E_UNINITIALIZED;
     }
@@ -215,7 +215,7 @@ static int MXC_WUT_StarTrim(void)
     bestDiff_async = 0xFFFF;
 
     /* Get the initial snapshot */
-    MXC_WUT_GetWUTSync(&wutCnt0_async, &snapshot0_async);
+    MXC_WUT_GetWUTSync(wut, &wutCnt0_async, &snapshot0_async);
 
     trimPending = 1;
 
@@ -223,7 +223,7 @@ static int MXC_WUT_StarTrim(void)
 }
 
 /* ************************************************************************** */
-int MXC_WUT_Handler(void)
+int MXC_WUT_Handler(mxc_wut_regs_t *wut)
 {
     uint32_t wutCnt1;
     uint32_t snapshot1;
@@ -234,14 +234,14 @@ int MXC_WUT_Handler(void)
     mxc_wut_complete_cb_t cbTemp;
 
     /* Clear the interrupt flags */
-    MXC_WUT_IntClear();
+    MXC_WUT_IntClear(wut);
 
     if (!trimPending) {
         return E_NO_ERROR;
     }
 
     /* Store the snapshot */
-    MXC_WUT_GetWUTSync(&wutCnt1, &snapshot1);
+    MXC_WUT_GetWUTSync(wut, &wutCnt1, &snapshot1);
     snapTicks = snapshot1 - snapshot0_async;
     wutTicks = wutCnt1 - wutCnt0_async;
 
@@ -315,11 +315,11 @@ int MXC_WUT_Handler(void)
 
     /* Start the next step */
     MXC_WUT_SetTrim(trimValue);
-    MXC_WUT_GetWUTSync(&wutCnt0_async, &snapshot0_async);
+    MXC_WUT_GetWUTSync(wut, &wutCnt0_async, &snapshot0_async);
 
     if (cb_async != NULL) {
         /* Prime the compare interrupt */
-        MXC_WUT->cmp = MXC_WUT->cnt + WUT_TRIM_TICKS - 1;
+        wut->cmp = wut->cnt + WUT_TRIM_TICKS - 1;
     }
 
     /* Return E_BUSY to indicate the trim procedure is still running */
@@ -327,7 +327,7 @@ int MXC_WUT_Handler(void)
 }
 
 /* ************************************************************************** */
-int MXC_WUT_TrimCrystal(void)
+int MXC_WUT_TrimCrystal(mxc_wut_regs_t *wut)
 {
     int err, i;
 
@@ -335,21 +335,21 @@ int MXC_WUT_TrimCrystal(void)
     cb_async = NULL;
 
     /* Start the trim procedure */
-    err = MXC_WUT_StarTrim();
+    err = MXC_WUT_StartTrim(wut);
     if (err != E_NO_ERROR) {
         return err;
     }
     do {
         for (i = 0; i < (WUT_TRIM_TICKS - 1); i++) {
-            MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)MXC_WUT);
+            MXC_WUT_RevA_Edge((mxc_wut_reva_regs_t *)wut);
         }
-    } while (MXC_WUT_Handler() != E_NO_ERROR);
+    } while (MXC_WUT_Handler(wut) != E_NO_ERROR);
 
     return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
-int MXC_WUT_TrimCrystalAsync(mxc_wut_complete_cb_t cb)
+int MXC_WUT_TrimCrystalAsync(mxc_wut_regs_t *wut, mxc_wut_complete_cb_t cb)
 {
     int err;
 
@@ -361,19 +361,19 @@ int MXC_WUT_TrimCrystalAsync(mxc_wut_complete_cb_t cb)
     cb_async = cb;
 
     /* Start the trim procedure */
-    err = MXC_WUT_StarTrim();
+    err = MXC_WUT_StartTrim(wut);
     if (err != E_NO_ERROR) {
         return err;
     }
 
     /* Prime the compare interrupt */
-    MXC_WUT->cmp = MXC_WUT->cnt + WUT_TRIM_TICKS - 1;
+    wut->cmp = wut->cnt + WUT_TRIM_TICKS - 1;
 
     return E_NO_ERROR;
 }
 
 /* ************************************************************************** */
-int MXC_WUT_TrimPending(void)
+int MXC_WUT_TrimPending(mxc_wut_regs_t *wut)
 {
     if (trimPending) {
         return E_BUSY;

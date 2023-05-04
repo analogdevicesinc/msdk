@@ -59,14 +59,14 @@ void __attribute__((weak)) TMR4_IRQHandler(void) {}
 void __attribute__((weak)) TMR5_IRQHandler(void) {}
 void __attribute__((weak)) I2C0_IRQHandler(void) {}
 void __attribute__((weak)) UART0_IRQHandler(void) {}
-void __attribute__((weak)) RSV16_IRQHandler(void) {}
+void __attribute__((weak)) CM4_IRQHandler(void) {}
 void __attribute__((weak)) I2C1_IRQHandler(void) {}
 void __attribute__((weak)) UART1_IRQHandler(void) {}
 void __attribute__((weak)) UART2_IRQHandler(void) {}
 void __attribute__((weak)) I2C2_IRQHandler(void) {}
 void __attribute__((weak)) UART3_IRQHandler(void) {}
 void __attribute__((weak)) SPI1_IRQHandler(void) {}
-void __attribute__((weak)) WUT_IRQHandler(void) {}
+void __attribute__((weak)) WUT0_IRQHandler(void) {}
 void __attribute__((weak)) FLC0_IRQHandler(void) {}
 void __attribute__((weak)) GPIO0_IRQHandler(void) {}
 void __attribute__((weak)) GPIO1_IRQHandler(void) {}
@@ -94,7 +94,7 @@ void __attribute__((weak)) TRNG_IRQHandler(void) {}
 void __attribute__((weak)) WDT1_IRQHandler(void) {}
 void __attribute__((weak)) DVS_IRQHandler(void) {}
 void __attribute__((weak)) SIMO_IRQHandler(void) {}
-void __attribute__((weak)) RSV51_IRQHandler(void) {}
+void __attribute__((weak)) WUT1_IRQHandler(void) {}
 void __attribute__((weak)) PT_IRQHandler(void) {}
 void __attribute__((weak)) ADC_IRQHandler(void) {}
 void __attribute__((weak)) OWM_IRQHandler(void) {}
@@ -224,14 +224,14 @@ void __attribute__((interrupt("machine"))) UART0_IRQHandlerWrap(void)
     NVIC_EnableIRQ(UART0_IRQn);
     intContext = 0;
 }
-void __attribute__((interrupt("machine"))) RSV16_IRQHandlerWrap(void)
+void __attribute__((interrupt("machine"))) CM4_IRQHandlerWrap(void)
 {
     intContext = 1;
 
-    NVIC_DisableIRQ(RSV16_IRQn);
-    NVIC_ClearPendingIRQ(RSV16_IRQn);
-    RSV16_IRQHandler();
-    NVIC_EnableIRQ(RSV16_IRQn);
+    NVIC_DisableIRQ(CM4_IRQn);
+    NVIC_ClearPendingIRQ(CM4_IRQn);
+    CM4_IRQHandler();
+    NVIC_EnableIRQ(CM4_IRQn);
     intContext = 0;
 }
 void __attribute__((interrupt("machine"))) I2C1_IRQHandlerWrap(void)
@@ -294,14 +294,14 @@ void __attribute__((interrupt("machine"))) SPI1_IRQHandlerWrap(void)
     NVIC_EnableIRQ(SPI1_IRQn);
     intContext = 0;
 }
-void __attribute__((interrupt("machine"))) WUT_IRQHandlerWrap(void)
+void __attribute__((interrupt("machine"))) WUT0_IRQHandlerWrap(void)
 {
     intContext = 1;
 
-    NVIC_DisableIRQ(WUT_IRQn);
-    NVIC_ClearPendingIRQ(WUT_IRQn);
-    WUT_IRQHandler();
-    NVIC_EnableIRQ(WUT_IRQn);
+    NVIC_DisableIRQ(WUT0_IRQn);
+    NVIC_ClearPendingIRQ(WUT0_IRQn);
+    WUT0_IRQHandler();
+    NVIC_EnableIRQ(WUT0_IRQn);
     intContext = 0;
 }
 void __attribute__((interrupt("machine"))) FLC0_IRQHandlerWrap(void)
@@ -574,14 +574,14 @@ void __attribute__((interrupt("machine"))) SIMO_IRQHandlerWrap(void)
     NVIC_EnableIRQ(SIMO_IRQn);
     intContext = 0;
 }
-void __attribute__((interrupt("machine"))) RSV51_IRQHandlerWrap(void)
+void __attribute__((interrupt("machine"))) WUT1_IRQHandlerWrap(void)
 {
     intContext = 1;
 
-    NVIC_DisableIRQ(RSV51_IRQn);
-    NVIC_ClearPendingIRQ(RSV51_IRQn);
-    RSV51_IRQHandler();
-    NVIC_EnableIRQ(RSV51_IRQn);
+    NVIC_DisableIRQ(WUT1_IRQn);
+    NVIC_ClearPendingIRQ(WUT1_IRQn);
+    WUT1_IRQHandler();
+    NVIC_EnableIRQ(WUT1_IRQn);
     intContext = 0;
 }
 void __attribute__((interrupt("machine"))) PT_IRQHandlerWrap(void)

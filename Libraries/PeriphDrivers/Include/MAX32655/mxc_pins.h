@@ -76,6 +76,7 @@ extern const mxc_gpio_cfg_t gpio_cfg_tmr2b;
 extern const mxc_gpio_cfg_t gpio_cfg_tmr3b;
 
 extern const mxc_gpio_cfg_t gpio_cfg_i2s0;
+extern const mxc_gpio_cfg_t gpio_cfg_i2s0_clkext;
 
 extern const mxc_gpio_cfg_t gpio_cfg_owm;
 extern const mxc_gpio_cfg_t gpio_cfg_owmb;

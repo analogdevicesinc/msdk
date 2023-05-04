@@ -8,6 +8,7 @@ var annotated_dup =
     [ "lfs_dir", "structlfs__dir.html", "structlfs__dir" ],
     [ "lfs_dir_commit_commit", "structlfs__dir__commit__commit.html", "structlfs__dir__commit__commit" ],
     [ "lfs_dir_find_match", "structlfs__dir__find__match.html", "structlfs__dir__find__match" ],
+    [ "lfs_dir_traverse", "structlfs__dir__traverse.html", "structlfs__dir__traverse" ],
     [ "lfs_diskoff", "structlfs__diskoff.html", "structlfs__diskoff" ],
     [ "lfs_file", "structlfs__file.html", "structlfs__file" ],
     [ "lfs_file_config", "structlfs__file__config.html", "structlfs__file__config" ],
