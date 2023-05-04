@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef FILE_H_
-#define FILE_H_
+#ifndef EXAMPLES_MAX32650_WEARLEVELING_INCLUDE_FILE_H_
+#define EXAMPLES_MAX32650_WEARLEVELING_INCLUDE_FILE_H_
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -73,4 +73,4 @@ int file_write(lfs_t *filesys, lfs_file_t *file, const char *filename, char *wri
 int file_read(lfs_t *filesys, lfs_file_t *file, const char *filename, char *read_buf, uint32_t len,
               uint32_t pos);
 
-#endif // FILE_H_
+#endif // EXAMPLES_MAX32650_WEARLEVELING_INCLUDE_FILE_H_

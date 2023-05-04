@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef CLI_H_
-#define CLI_H_
+#ifndef EXAMPLES_MAX32650_WEARLEVELING_INCLUDE_CLI_H_
+#define EXAMPLES_MAX32650_WEARLEVELING_INCLUDE_CLI_H_
 
 #include "lfs.h"
 
@@ -57,4 +57,4 @@ int cmd_get(char *cmd, size_t size);
  */
 int cmd_process(lfs_t *lfs, char *cmd, size_t size);
 
-#endif // CLI_H_
+#endif // EXAMPLES_MAX32650_WEARLEVELING_INCLUDE_CLI_H_

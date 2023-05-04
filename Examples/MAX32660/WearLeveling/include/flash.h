@@ -36,8 +36,8 @@
  * @brief   Flash read/write/erase functions declaration
  */
 
-#ifndef EXAMPLES_MAX78000_WEARLEVELING_FLASH_H_
-#define EXAMPLES_MAX78000_WEARLEVELING_FLASH_H_
+#ifndef EXAMPLES_MAX32660_WEARLEVELING_INCLUDE_FLASH_H_
+#define EXAMPLES_MAX32660_WEARLEVELING_INCLUDE_FLASH_H_
 
 // Flash operations log
 //#define FLASH_DEBUG
@@ -106,4 +106,4 @@ int flash_erase(const struct lfs_config *c, lfs_block_t block);
  */
 int flash_sync(const struct lfs_config *c);
 
-#endif // EXAMPLES_MAX78000_WEARLEVELING_FLASH_H_
+#endif // EXAMPLES_MAX32660_WEARLEVELING_INCLUDE_FLASH_H_
