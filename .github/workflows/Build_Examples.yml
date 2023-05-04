@@ -66,11 +66,13 @@ jobs:
           echo "Checking the following changes"
           echo $CHANGE_FILES
 
-          # Assume we want to actually run the workflow if no files changed
           for watch_file in $WATCH_FILES; do 
-            if [[ "$CHANGE_FILES" == *"$watch_file" ]]; then
-              RUN_TEST=1
-            fi
+              for change_file in $CHANGE_FILES; do 
+                  if [[ "${change_file,,}" == *"${watch_file,,}" ]]; then
+                      echo "MATCH CI Iterate. Watch type: $watch_file, File: $change_file"
+                      RUN_TEST=1
+                  fi
+              done
           done
 
           # End the test early if there wasn't a significant change
