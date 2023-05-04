@@ -70,7 +70,7 @@ void *WsfMsgAlloc(uint16_t len)
   wsfMsg_t  *pMsg;
 
   pMsg = WsfBufAlloc(len + sizeof(wsfMsg_t));
-
+  memset(pMsg, '\0', len + sizeof(wsfMsg_t));
   /* hide header */
   if (pMsg != NULL)
   {
