@@ -4,8 +4,6 @@
  * @note    This file is @generated.
  */
 
-// Testing 1 2 3
-
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
