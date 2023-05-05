@@ -78,8 +78,9 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 ---
 
-* **MAX32662** **(Not Yet Publicly Available)**
-    - MAX32662EVKIT **(Not Yet Publicly Available)**
+* [**MAX32662**](https://www.analog.com/en/products/max32662.html)
+
+    - [MAX32662EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32662EVKIT.html)
 
 
 ---
@@ -127,7 +128,7 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 * [**MAX32690**](https://www.analog.com/en/products/max32690.html):  Arm Cortex-M4 with FPU Microcontroller and Bluetooth LE 5 for Industrial and Wearables
 
-    - MAX32690EVKIT (Product Page Not Yet Available)
+    - [MAX32690EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32690EVKIT.html)
 
 
 ---
@@ -1364,7 +1365,7 @@ The name of a BSP's folder is used with the `BOARD` [build configuration variabl
 | [MAX32655EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655evkit.html)     | `MAX32655`     | `EvKit_V1`     |
 | [MAX32655FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655fthr.html)      | `MAX32655`     | `FTHR_Apps_P1` |
 | [MAX32660-EVSYS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32660-evsys.html)    | `MAX32660`     | `EvKit_V1`     |
-| MAX32662EVKIT                                | `MAX32662`     | `EvKit_V1`     |
+| [MAX32662EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32662EVKIT.html)                                | `MAX32662`     | `EvKit_V1`     |
 | [MAX32666EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666evkit.html)     | `MAX32665`     | `EvKit_V1`     |
 | [MAX32666FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666fthr.html)      | `MAX32665`     | `FTHR`         |
 | MAX32666FTHR2                                | `MAX32665`     | `FTHR2`        |
@@ -1374,7 +1375,7 @@ The name of a BSP's folder is used with the `BOARD` [build configuration variabl
 | [MAX32675EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32675evkit.html)     | `MAX32675`     | `EvKit_V1`     |
 | MAX32675FTHR                                 | `MAX32675`     | `FTHR_Apps_B`  |
 | [MAX32680EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32680evkit.html)     | `MAX32680`     | `EvKit_V1`     |
-| MAX32690EVKIT                                | `MAX32690`     | `EvKit_V1`     |
+| [MAX32690EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32690EVKIT.html)                                | `MAX32690`     | `EvKit_V1`     |
 | [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html)     | `MAX78000`     | `EvKit_V1`     |
 | [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html)      | `MAX78000`     | `FTHR_RevA`    |
 | [MAXREFDES178](https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html)                                          | `MAX78000`     |  `MAXREFDES178` |
