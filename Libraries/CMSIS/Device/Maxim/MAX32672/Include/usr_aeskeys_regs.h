@@ -77,6 +77,7 @@ extern "C" {
 
 /**
  * @ingroup     usr_aeskeys
+ * @ingroup     aes
  * @defgroup    usr_aeskeys_registers USR_AESKEYS_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the USR_AESKEYS Peripheral Module.
  * @details     User AES Key Registers.
