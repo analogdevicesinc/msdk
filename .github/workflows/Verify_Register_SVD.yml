@@ -358,16 +358,15 @@ jobs:
             # Find SVD files and their corresponding register files.
             for changed_svd_file in $CHANGED_PERIPH_SVD_FILES
             do
-              # Isolate to file name.
-              periph=${changed_svd_file##*/}
-
-              # Adding '/' to differentiate between trimsir and sir.
-              periph="/${periph%*.svd}"
+              # Isolate to file name. (Do not remove '/' before register name for TRIMSIR vs SIR)
+              periph=${changed_svd_file##*Source}
               
               # Check if "Peripheral Rev#" SVD File or "SYS/SVD" (e.g. gcr_me14.svd) SVD File.
               if [[ "$periph" =~ "_rev" ]]; then
                 periph="${periph%_rev*}"
               else
+                periph="${periph##*SYS}"
+
                 # Remove attached die type name (Usually SYS register SVD files like gcr_me14.svd and fcr_me18.svd)
                 for die_name in ${!DIE_TO_CHIP_NAMES[@]}
                 do
