@@ -176,20 +176,24 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 - Administrator rights
 - (On MacOS) - [Homebrew](https://brew.sh/)
+- (On Ubuntu) the following packages are required to run the installer:
+
+        :::shell
+        libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
 
 ### Download
 
 The MSDK installer is available for supported Operating Systems from the download links below.
 
-- [Windows 10](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=sfw0010820a)
+- [Windows 10](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820B)
 
-- [Linux (Ubuntu)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=sfw0018720a)
+- [Linux (Ubuntu)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720B)
 
     - This file must be made executable before running (`chmod +x MaximMicrosSDK_linux.run`). Alternatively, set `Allow executing as program" in the Ubuntu GUI.  
 
         ![Figure 1](res/Fig1.jpg)
 
-- [MacOS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=sfw0018610a)
+- [MacOS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610B)
 
     - On MacOS, the installer is distributed inside a .dmg disk image file. Double-click the downloaded file to mount it. Afterward, the installer executable will be made available inside the mounted drive.
 
