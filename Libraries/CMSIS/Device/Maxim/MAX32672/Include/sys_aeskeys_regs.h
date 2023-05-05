@@ -77,7 +77,6 @@ extern "C" {
 
 /**
  * @ingroup     sys_aeskeys
- * @ingroup     aes
  * @defgroup    sys_aeskeys_registers SYS_AESKEYS_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the SYS_AESKEYS Peripheral Module.
  * @details     System AES Key Registers.
