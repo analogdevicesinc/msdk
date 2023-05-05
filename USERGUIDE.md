@@ -899,7 +899,7 @@ As of the [v1.6.0](https://www.analog.com/en/design-center/evaluation-hardware-a
 
 ![Figure 47](res/Fig47.jpg)
 
-Alternatively, *watch expressions* can be used.  These can be set for registers and varaibles. (For example, the `sysctrl` register below).
+Alternatively, *watch expressions* can be used.  These can be set for registers and variables. (For example, the `sysctrl` register below).
 
 ![image](https://user-images.githubusercontent.com/38844790/177819247-ccf90782-e1e6-44f2-8605-c39fc15c09a6.png)
 
