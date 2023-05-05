@@ -861,9 +861,11 @@ This section assumes a debugger is connected between the host PC and the evaluat
 
     ![Figure 19](res/Fig19.jpg)
 
-2. Open the **Run and Debug** window (**`CTRL+SHIFT+D`**) and launch the debugger (**`F5`**).  Use the **_Arm M4_** profile.
+2. Open the **Run and Debug** window (**`CTRL+SHIFT+D`**) and select the `Debug Arm (Cortex-debug)` profile.
 
     ![Figure 20](res/Fig20.jpg)
+
+    ![Figure 46](res/Fig46.jpg)
 
 3. Verify the program counter enters `main` successfully.
 
@@ -891,11 +893,13 @@ The condition and condition type can be modified with the dropdown. This is usef
 
 #### Peripheral Browsing
 
-A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug. Currently, VSCode-Maxim does not feature a true peripheral browser. Instead, *watch expressions* can be used to inspect peripherals at the register level.
+A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug.
 
-![image](https://user-images.githubusercontent.com/38844790/177819220-b9524b70-b279-4b16-bdb0-da37e1a1f556.png)
+As of the [v1.6.0](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610B) VSCode-Maxim project files, pre-made [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug) launch profiles are included in each project.  These profiles enable peripheral browsing via an embedded "Cortex Peripherals"window.
 
-Watch expressions can be set for all registers. (For example, the `sysctrl` register below).
+![Figure 47](res/Fig47.jpg)
+
+Alternatively, *watch expressions* can be used.  These can be set for registers and varaibles. (For example, the `sysctrl` register below).
 
 ![image](https://user-images.githubusercontent.com/38844790/177819247-ccf90782-e1e6-44f2-8605-c39fc15c09a6.png)
 
@@ -918,26 +922,24 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 
 2. Make sure your Olimex debugger drivers are installed correctly. Sometimes they need to be updated using the "zadig" tool. See Section 3.3.3 of the [Olimex User Manual](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf), and use the [Zadig](https://zadig.akeo.ie/) tool to install WinUSB drivers.
 
-3. Download the [max78000_riscv.cfg](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/files/9587266/max78000_riscv.zip) file and place it inside the `Tools/OpenOCD/scripts/target` folder of your MSDKinstallation.
+3. [Open](#opening-example-projects) the project in VS Code.
 
-4. [Open](#opening-example-projects) the project in VS Code.
-
-5. Run the "Flash" task.
+4. Run the "Flash" task.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398354-2ac2961b-6d45-4f84-8805-0ab5339a4b98.png)
 
-6. Launch the debugger using the **GDB (Arm M4)** profile **first**:
+5. Launch the debugger using the **Debug Arm (Cortex-Debug)** or **GDB (Arm M4)** profile **first**:
 
-    ![image](https://user-images.githubusercontent.com/38844790/168398415-147a3a96-1a7d-4057-8a32-0dfaf2d378c1.png)
+    ![Figure 46](res/Fig46.jpg)
 
     ... which should hit the breakpoint in `main.c`...
     ![image](https://user-images.githubusercontent.com/38844790/168398503-0f2ae9c1-f535-4d41-aed9-9d9e19b16303.png)
 
-7. **Continue** the debugger.  The code in `main.c` will boot up the RISC-V core. You can optionally set a breakpoint on `WakeISR` to see when the RISC-V core has signaled it's ready.
+6. **Continue** the debugger.  The code in `main.c` will boot up the RISC-V core. You can optionally set a breakpoint on `WakeISR` to see when the RISC-V core has signaled it's ready.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398665-9486e1b6-73bd-481e-a4b5-15dd44c7d7b9.png)
 
-8. Now, switch the debugger profile to the **GDB (RISC-V) profile** and launch it. This will launch an additional instance on a separate port and connect to the Olimex adapter.
+7. Now, switch the debugger profile to the **GDB (RISC-V) profile** and launch it. This will launch an additional instance on a separate port and connect to the Olimex adapter.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398707-b6771bf3-b6bf-47a2-b963-b0b9fc003ca4.png)
 
@@ -945,7 +947,7 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 
     ![image](https://user-images.githubusercontent.com/38844790/168399130-95fe7539-fb46-4c06-a268-6b720403b539.png)
 
-9. From here, the debugger should be fully functional. The Arm vs. RISC-V debugger instance can be selected with the dropdown on the debugger control bar.
+8. From here, the debugger should be fully functional. The Arm vs. RISC-V debugger instance can be selected with the dropdown on the debugger control bar.
 
     ![image](https://user-images.githubusercontent.com/38844790/168399419-d0488a0e-2068-4cc7-9108-0a296fdc04b4.png)
 
