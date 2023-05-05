@@ -320,7 +320,7 @@ jobs:
                   fi
 
                   if [[ -n $check_linked_reg_diffs || -n $check_orig_reg_diffs ]]; then
-                    # periph="${periph##*/}"
+                    periph="${periph##*/}"
                     echo "Libraries/CMSIS/Device/Maxim/${DIE_TO_CHIP_NAMES[$part]}/Include/${periph}_regs.h"
                   fi
                 fi
