@@ -320,6 +320,7 @@ jobs:
                   fi
 
                   if [[ -n $check_linked_reg_diffs || -n $check_orig_reg_diffs ]]; then
+                    periph="${periph##*/}"
                     echo "Libraries/CMSIS/Device/Maxim/${DIE_TO_CHIP_NAMES[$part]}/Include/${periph}_regs.h"
                   fi
                 fi
@@ -358,14 +359,15 @@ jobs:
             # Find SVD files and their corresponding register files.
             for changed_svd_file in $CHANGED_PERIPH_SVD_FILES
             do
-              # Isolate to file name. (Do not remove '/' before register name for TRIMSIR vs SIR)
+              # Isolate to file name.
               periph=${changed_svd_file##*Source}
               
               # Check if "Peripheral Rev#" SVD File or "SYS/SVD" (e.g. gcr_me14.svd) SVD File.
               if [[ "$periph" =~ "_rev" ]]; then
                 periph="${periph%_rev*}"
+                periph="${periph##*/}"
               else
-                periph="${periph##*SYS}"
+                periph="${periph##*svd}"
 
                 # Remove attached die type name (Usually SYS register SVD files like gcr_me14.svd and fcr_me18.svd)
                 for die_name in ${!DIE_TO_CHIP_NAMES[@]}
