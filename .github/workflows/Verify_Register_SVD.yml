@@ -275,8 +275,6 @@ jobs:
               chip_name=no_chip_name
             fi
             
-            pwd
-            ls
             cd ./${workspace_path}/${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
             
             # Equivalent to SVD_DEVICES=$(ls), but will need to parse SVD_DEVICES
@@ -386,6 +384,9 @@ jobs:
               if [[ -n $reg_files_linked_to_changed_svd_files ]]; then
                 reg_files_linked_to_changed_svd_files+=" "
               fi
+
+              pwd
+              ls
               reg_files_linked_to_changed_svd_files+=$(find_linked_register_files $changed_svd_file $periph "" ../)
             done
             
