@@ -69,7 +69,7 @@ int ss_interval = SUBSECOND_MSEC_0;
 /***** Functions *****/
 void RTC_IRQHandler(void)
 {
-    int time;
+    uint32_t time;
     int flags = MXC_RTC_GetFlags();
 
     /* Check sub-second alarm flag. */
@@ -87,7 +87,7 @@ void RTC_IRQHandler(void)
         }
 
         /* Set a new alarm TIME_OF_DAY_SEC seconds from current time. */
-        time = MXC_RTC_GetSecond();
+        MXC_RTC_GetSeconds(&time);
 
         if (MXC_RTC_SetTimeofdayAlarm(time + TIME_OF_DAY_SEC) != E_NO_ERROR) {
             /* Handle Error */
@@ -120,11 +120,19 @@ void buttonHandler()
 
 void printTime()
 {
-    int day, hr, min, sec;
+    int day, hr, min, err;
+    uint32_t sec, rtc_readout;
     double subsec;
 
-    subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec = MXC_RTC_GetSecond();
+    do {
+        err = MXC_RTC_GetSubSeconds(&rtc_readout);
+    } while (err != E_NO_ERROR);
+    subsec = rtc_readout / 4096.0;
+
+    do {
+        err = MXC_RTC_GetSeconds(&rtc_readout);
+    } while (err != E_NO_ERROR);
+    sec = rtc_readout;
 
     day = sec / SECS_PER_DAY;
     sec -= day * SECS_PER_DAY;
