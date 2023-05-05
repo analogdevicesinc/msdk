@@ -385,6 +385,8 @@ jobs:
                 reg_files_linked_to_changed_svd_files+=" "
               fi
 
+              echo $changed_svd_file
+              echo $periph
               reg_files_linked_to_changed_svd_files+=$(find_linked_register_files $changed_svd_file $periph "" ../)
             done
             
