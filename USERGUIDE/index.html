@@ -34,7 +34,7 @@
           <a href=".." class="icon icon-home"> Analog Devices MSDK Documentation
         </a><div role="search">
   <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
-      <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
   </form>
 </div>
       </div>
@@ -283,7 +283,7 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" alt="Docs"></a> &raquo;</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
       <li>MSDK User Guide</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/USERGUIDE.md" class="icon icon-github"> Edit on GitHub</a>
@@ -534,8 +534,10 @@
 </ul>
 <hr />
 <ul>
-<li><strong>MAX32662</strong> <strong>(Not Yet Publicly Available)</strong><ul>
-<li>MAX32662EVKIT <strong>(Not Yet Publicly Available)</strong></li>
+<li>
+<p><a href="https://www.analog.com/en/products/max32662.html"><strong>MAX32662</strong></a></p>
+<ul>
+<li><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32662EVKIT.html">MAX32662EVKIT</a></li>
 </ul>
 </li>
 </ul>
@@ -602,7 +604,7 @@
 <li>
 <p><a href="https://www.analog.com/en/products/max32690.html"><strong>MAX32690</strong></a>:  Arm Cortex-M4 with FPU Microcontroller and Bluetooth LE 5 for Industrial and Wearables</p>
 <ul>
-<li>MAX32690EVKIT (Product Page Not Yet Available)</li>
+<li><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32690EVKIT.html">MAX32690EVKIT</a></li>
 </ul>
 </li>
 </ul>
@@ -668,15 +670,19 @@
 <ul>
 <li>Administrator rights</li>
 <li>(On MacOS) - <a href="https://brew.sh/">Homebrew</a></li>
+<li>(On Ubuntu) the following packages are required to run the installer:<pre class="codehilite"><code class="language-shell">libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
+</code></pre>
+
+</li>
 </ul>
 <h3 id="download">Download</h3>
 <p>The MSDK installer is available for supported Operating Systems from the download links below.</p>
 <ul>
 <li>
-<p><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=sfw0010820a">Windows 10</a></p>
+<p><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820B">Windows 10</a></p>
 </li>
 <li>
-<p><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=sfw0018720a">Linux (Ubuntu)</a></p>
+<p><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720B">Linux (Ubuntu)</a></p>
 <ul>
 <li>
 <p>This file must be made executable before running (<code>chmod +x MaximMicrosSDK_linux.run</code>). Alternatively, set `Allow executing as program" in the Ubuntu GUI.  </p>
@@ -685,7 +691,7 @@
 </ul>
 </li>
 <li>
-<p><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=sfw0018610a">MacOS</a></p>
+<p><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610B">MacOS</a></p>
 <ul>
 <li>On MacOS, the installer is distributed inside a .dmg disk image file. Double-click the downloaded file to mount it. Afterward, the installer executable will be made available inside the mounted drive.</li>
 </ul>
@@ -1363,8 +1369,9 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p><img alt="Figure 19" src="../res/Fig19.jpg" /></p>
 </li>
 <li>
-<p>Open the <strong>Run and Debug</strong> window (<strong><code>CTRL+SHIFT+D</code></strong>) and launch the debugger (<strong><code>F5</code></strong>).  Use the <strong><em>Arm M4</em></strong> profile.</p>
+<p>Open the <strong>Run and Debug</strong> window (<strong><code>CTRL+SHIFT+D</code></strong>) and select the <code>Debug Arm (Cortex-debug)</code> profile.</p>
 <p><img alt="Figure 20" src="../res/Fig20.jpg" /></p>
+<p><img alt="Figure 46" src="../res/Fig46.jpg" /></p>
 </li>
 <li>
 <p>Verify the program counter enters <code>main</code> successfully.</p>
@@ -1386,9 +1393,10 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p>The condition and condition type can be modified with the dropdown. This is useful for setting a breakpoint on a certain value in a <code>for</code> loop iterator or when a specific bit in a register is set, for example.</p>
 <p><img alt="Figure 37" src="../res/Fig37.jpg" /></p>
 <h4 id="peripheral-browsing">Peripheral Browsing</h4>
-<p>A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug. Currently, VSCode-Maxim does not feature a true peripheral browser. Instead, <em>watch expressions</em> can be used to inspect peripherals at the register level.</p>
-<p><img alt="image" src="https://user-images.githubusercontent.com/38844790/177819220-b9524b70-b279-4b16-bdb0-da37e1a1f556.png" /></p>
-<p>Watch expressions can be set for all registers. (For example, the <code>sysctrl</code> register below).</p>
+<p>A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug.</p>
+<p>As of the <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases/tag/v1.6.0">v1.6.0</a> VSCode-Maxim project files, pre-made <a href="https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug">Cortex-Debug</a> launch profiles are included in each project.  These profiles enable peripheral browsing via an embedded "Cortex Peripherals"window.</p>
+<p><img alt="Figure 47" src="../res/Fig47.jpg" /></p>
+<p>Alternatively, <em>watch expressions</em> can be used.  These can be set for registers and variables. (For example, the <code>sysctrl</code> register below).</p>
 <p><img alt="image" src="https://user-images.githubusercontent.com/38844790/177819247-ccf90782-e1e6-44f2-8605-c39fc15c09a6.png" /></p>
 <ul>
 <li>Adding <strong><code>,b</code></strong> lets you print out the value in <strong>binary</strong></li>
@@ -1409,9 +1417,6 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p>Make sure your Olimex debugger drivers are installed correctly. Sometimes they need to be updated using the "zadig" tool. See Section 3.3.3 of the <a href="https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf">Olimex User Manual</a>, and use the <a href="https://zadig.akeo.ie/">Zadig</a> tool to install WinUSB drivers.</p>
 </li>
 <li>
-<p>Download the <a href="https://github.com/Analog-Devices-MSDK/VSCode-Maxim/files/9587266/max78000_riscv.zip">max78000_riscv.cfg</a> file and place it inside the <code>Tools/OpenOCD/scripts/target</code> folder of your MSDKinstallation.</p>
-</li>
-<li>
 <p><a href="#opening-example-projects">Open</a> the project in VS Code.</p>
 </li>
 <li>
@@ -1419,8 +1424,8 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <p><img alt="image" src="https://user-images.githubusercontent.com/38844790/168398354-2ac2961b-6d45-4f84-8805-0ab5339a4b98.png" /></p>
 </li>
 <li>
-<p>Launch the debugger using the <strong>GDB (Arm M4)</strong> profile <strong>first</strong>:</p>
-<p><img alt="image" src="https://user-images.githubusercontent.com/38844790/168398415-147a3a96-1a7d-4057-8a32-0dfaf2d378c1.png" /></p>
+<p>Launch the debugger using the <strong>Debug Arm (Cortex-Debug)</strong> or <strong>GDB (Arm M4)</strong> profile <strong>first</strong>:</p>
+<p><img alt="Figure 46" src="../res/Fig46.jpg" /></p>
 <p>... which should hit the breakpoint in <code>main.c</code>...
 <img alt="image" src="https://user-images.githubusercontent.com/38844790/168398503-0f2ae9c1-f535-4d41-aed9-9d9e19b16303.png" /></p>
 </li>
@@ -1997,7 +2002,7 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <td><code>EvKit_V1</code></td>
 </tr>
 <tr>
-<td>MAX32662EVKIT</td>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32662EVKIT.html">MAX32662EVKIT</a></td>
 <td><code>MAX32662</code></td>
 <td><code>EvKit_V1</code></td>
 </tr>
@@ -2047,7 +2052,7 @@ Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, 
 <td><code>EvKit_V1</code></td>
 </tr>
 <tr>
-<td>MAX32690EVKIT</td>
+<td><a href="https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32690EVKIT.html">MAX32690EVKIT</a></td>
 <td><code>MAX32690</code></td>
 <td><code>EvKit_V1</code></td>
 </tr>

@@ -1,7 +1,5 @@
 var NAVTREEINDEX11 =
 {
-"group___m_x_c___error___codes.html#ga97fcdfde06438bcf94181400389bd7b9":[0,14,12],
-"group___m_x_c___error___codes.html#ga9b082eeb1f1f2b42716c266d8e5cfcf5":[0,14,18],
 "group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4":[0,14,8],
 "group___m_x_c___error___codes.html#gab45a288b4079b16ffce3f406a18e8675":[0,14,14],
 "group___m_x_c___error___codes.html#gabcb1b1463f4ea8746d13eafa58048a9c":[0,14,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX11 =
 "group___p_t_g___register___offsets.html#ga643e98fd29506c441dbfbe0439929993":[0,39,0,1],
 "group___p_t_g___register___offsets.html#ga76823b13896b6edd019b82c1cada6069":[0,39,0,3],
 "group___p_t_g___register___offsets.html#gab75fdd1efe588c2257ae8a0100550f9e":[0,39,0,4],
-"group___p_t_g___register___offsets.html#gab9cee9113615191b5bf691e8d2726cd0":[0,39,0,0]
+"group___p_t_g___register___offsets.html#gab9cee9113615191b5bf691e8d2726cd0":[0,39,0,0],
+"group___p_t_g___register___offsets.html#gac706b65682a47d92f80fb51a6cc1865e":[0,39,0,5],
+"group___p_t_g___s_a_f_e___d_i_s.html":[0,39,6]
 };

@@ -9,7 +9,6 @@ var group__gpio =
       [ "port", "group__gpio.html#af03be28119632a3dbe3ae6eae59ea72c", null ],
       [ "vssel", "group__gpio.html#a717b92819b1b33b48303b9f819510eb7", null ]
     ] ],
-    [ "MXC_GPIO_INACCESSIBLE", "group__gpio.html#ga6c23454ee41f43f36cc09e097c6da5b0", null ],
     [ "mxc_gpio_callback_fn", "group__gpio.html#gacf8ba5a444349caba7cdbe2861ca06b0", null ],
     [ "mxc_gpio_func_t", "group__gpio.html#ga61baee17171940ad183cabe62297e891", [
       [ "MXC_GPIO_FUNC_IN", "group__gpio.html#gga61baee17171940ad183cabe62297e891ad883cc21c3c163837666be25f5415827", null ],

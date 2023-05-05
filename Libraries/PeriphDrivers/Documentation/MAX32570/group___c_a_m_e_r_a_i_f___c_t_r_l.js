@@ -14,8 +14,6 @@ var group___c_a_m_e_r_a_i_f___c_t_r_l =
     [ "MXC_F_CAMERAIF_CTRL_RX_DMA_POS", "group___c_a_m_e_r_a_i_f___c_t_r_l.html#gaaca45f38982c9bac290ad74dda20e73a", null ],
     [ "MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH", "group___c_a_m_e_r_a_i_f___c_t_r_l.html#gacb2b5ae9690697271339692e9d23efbe", null ],
     [ "MXC_F_CAMERAIF_CTRL_RX_DMA_THRSH_POS", "group___c_a_m_e_r_a_i_f___c_t_r_l.html#ga4a3dac68f7264b7ef1a5aedea7a8e173", null ],
-    [ "MXC_F_CAMERAIF_CTRL_THREE_CH_EN", "group___c_a_m_e_r_a_i_f___c_t_r_l.html#gae71efbc6cf1c737ec92599c3a4ecfaf6", null ],
-    [ "MXC_F_CAMERAIF_CTRL_THREE_CH_EN_POS", "group___c_a_m_e_r_a_i_f___c_t_r_l.html#ga99dcba8dcbfe8178bd350d2c5687ad9c", null ],
     [ "MXC_S_CAMERAIF_CTRL_DATA_WIDTH_10BIT", "group___c_a_m_e_r_a_i_f___c_t_r_l.html#ga283f582b2be757b2623a889a671c4ecb", null ],
     [ "MXC_S_CAMERAIF_CTRL_DATA_WIDTH_12BIT", "group___c_a_m_e_r_a_i_f___c_t_r_l.html#ga30ef1c03d31e1358e4e4f8dbdee23ffd", null ],
     [ "MXC_S_CAMERAIF_CTRL_DATA_WIDTH_8BIT", "group___c_a_m_e_r_a_i_f___c_t_r_l.html#ga44168e48bd15b24c30a4dcf5327e14ba", null ],

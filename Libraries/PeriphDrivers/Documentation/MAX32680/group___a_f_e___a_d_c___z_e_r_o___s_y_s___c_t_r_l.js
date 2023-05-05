@@ -12,6 +12,8 @@ var group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l =
     [ "MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG_POS", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l.html#ga8ed3c3b366ee68a2c86b8e4ff4927c64", null ],
     [ "MXC_F_AFE_ADC_ZERO_SYS_CTRL_SPI_ABORT_DIS", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l.html#gab81b8f5e7a7274f16d8a649ab147dfee", null ],
     [ "MXC_F_AFE_ADC_ZERO_SYS_CTRL_SPI_ABORT_DIS_POS", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l.html#ga886c0aaf0dcee1b62da1f85b64278ed4", null ],
+    [ "MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l.html#gade321ace2dff9d2d5713951a3b13795d", null ],
+    [ "MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS_POS", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l.html#ga2c3affecafa7313d795e1ef22e043781", null ],
     [ "MXC_S_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL_ADC0_BANK", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l.html#gaad9535a64cafb1afe2eccf73f2679ee3", null ],
     [ "MXC_S_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL_ADC1_BANK", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l.html#ga93f0592ee495a348c2685a9f3d2e00f0", null ],
     [ "MXC_S_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL_DAC12_BANK", "group___a_f_e___a_d_c___z_e_r_o___s_y_s___c_t_r_l.html#ga06a53ddae38f80727d3159fe74e6a92e", null ],
