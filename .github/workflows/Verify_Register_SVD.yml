@@ -275,6 +275,8 @@ jobs:
               chip_name=no_chip_name
             fi
             
+            pwd
+            ls
             cd ./${workspace_path}/${{ env.MSDK-INTERNAL_DIR }}/SVD/Devices/
             
             # Equivalent to SVD_DEVICES=$(ls), but will need to parse SVD_DEVICES
@@ -320,7 +322,7 @@ jobs:
                   fi
 
                   if [[ -n $check_linked_reg_diffs || -n $check_orig_reg_diffs ]]; then
-                    periph="${periph##*/}"
+                    # periph="${periph##*/}"
                     echo "Libraries/CMSIS/Device/Maxim/${DIE_TO_CHIP_NAMES[$part]}/Include/${periph}_regs.h"
                   fi
                 fi
