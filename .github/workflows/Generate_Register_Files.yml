@@ -143,7 +143,7 @@ jobs:
             
             if [[ ! (-d ./chip_test) ]]; then
               chmod u+x makeRegs.sh
-              makeregs_log=$(./makeRegs.sh ubuntu)
+              makeregs_log=$(bash makeRegs.sh ubuntu)
             fi
 
             echo "Copying generated files to msdk/Libraries/CMSIS/Device/Maxim/${part_chip_name}/Include/"
