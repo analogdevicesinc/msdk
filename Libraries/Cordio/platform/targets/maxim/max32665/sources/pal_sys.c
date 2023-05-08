@@ -32,7 +32,6 @@
 #include "wut.h"
 #include "uart.h"
 #include "dma.h"
-#include "board.h"
 
 /**************************************************************************************************
   Macros
@@ -55,6 +54,7 @@ static volatile bool_t PalSysAssertTrapEnable;
 /*! \brief      Busy client count. */
 static uint32_t palSysBusyCount;
 
+static bool_t   palSharedWutTimerIsInit;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
@@ -271,4 +271,29 @@ bool_t PalSysIsBusy(void)
   sysIsBusy = ((palSysBusyCount == 0) ? FALSE : TRUE);
   PalExitCs();
   return sysIsBusy;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Check if Pal shared timer is init.
+ *
+ *  \return     TRUE if timer is initialized.
+ */
+/*************************************************************************************************/
+
+bool_t PalSharedTimerIsInit(void)
+{
+  return palSharedWutTimerIsInit;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Set timer initalized state.
+ *
+ *  \return     None.
+ */
+/*************************************************************************************************/
+void PalSharedTimerInitState(bool_t state)
+{
+  palSharedWutTimerIsInit = state;
 }

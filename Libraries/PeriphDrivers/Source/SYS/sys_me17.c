@@ -107,6 +107,12 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 }
 
 /* ************************************************************************** */
+int MXC_SYS_GetRevision(void)
+{
+    return MXC_GCR->revision;
+}
+
+/* ************************************************************************** */
 int MXC_SYS_IsClockEnabled(mxc_sys_periph_clock_t clock)
 {
     /* The mxc_sys_periph_clock_t enum uses enum values that are the offset by 32 and 64 for the perckcn1 register. */
@@ -168,6 +174,20 @@ int MXC_SYS_RTCClockDisable(void)
     }
 }
 
+#if TARGET_NUM == 32655
+/******************************************************************************/
+void MXC_SYS_RTCClockPowerDownEn(void)
+{
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_32KOSC_EN;
+}
+
+/******************************************************************************/
+void MXC_SYS_RTCClockPowerDownDis(void)
+{
+    MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_32KOSC_EN;
+}
+#endif //TARGET_NUM == 32655
+
 /******************************************************************************/
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
 {
@@ -183,9 +203,8 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
+        // No "RDY" bit to monitor, so just configure the GPIO
+        return MXC_GPIO_Config(&gpio_cfg_extclk);
         break;
 
     case MXC_SYS_CLOCK_INRO:
@@ -247,7 +266,13 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        /*
+        There's not a great way to disable the external clock.
+        Deinitializing the GPIO here may have unintended consequences
+        for application code.
+        Selecting a different system clock source is sufficient
+        to "disable" the EXT_CLK source.
+        */
         break;
 
     case MXC_SYS_CLOCK_INRO:
@@ -296,6 +321,7 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 {
     uint32_t current_clock;
+    int err = E_NO_ERROR;
 
     // Save the current system clock
     current_clock = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL;
@@ -355,6 +381,13 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
+        /*
+        There's not "EXT_CLK RDY" bit for the ME17, so we'll
+        blindly enable (configure GPIO) the external clock every time.
+        */
+        err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        if (err)
+            return err;
 
         // Set EXT clock as System Clock
         MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,

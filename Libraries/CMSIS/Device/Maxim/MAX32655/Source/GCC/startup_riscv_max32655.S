@@ -112,14 +112,14 @@ __isr_vector:
   jal x0, TMR5_IRQHandlerWrap
   jal x0, I2C0_IRQHandlerWrap
   jal x0, UART0_IRQHandlerWrap
-  jal x0, RSV16_IRQHandlerWrap
+  jal x0, CM4_IRQHandlerWrap
   jal x0, I2C1_IRQHandlerWrap
   jal x0, UART1_IRQHandlerWrap
   jal x0, UART2_IRQHandlerWrap
   jal x0, I2C2_IRQHandlerWrap
   jal x0, UART3_IRQHandlerWrap
   jal x0, SPI1_IRQHandlerWrap
-  jal x0, WUT_IRQHandlerWrap
+  jal x0, WUT0_IRQHandlerWrap
   jal x0, FLC0_IRQHandlerWrap
   jal x0, GPIO0_IRQHandlerWrap
   jal x0, GPIO1_IRQHandlerWrap
@@ -147,7 +147,7 @@ __isr_vector:
   jal x0, WDT1_IRQHandlerWrap
   jal x0, DVS_IRQHandlerWrap
   jal x0, SIMO_IRQHandlerWrap
-  jal x0, RSV51_IRQHandlerWrap
+  jal x0, WUT1_IRQHandlerWrap
   jal x0, PT_IRQHandlerWrap
   jal x0, ADC_IRQHandlerWrap
   jal x0, OWM_IRQHandlerWrap
@@ -290,7 +290,7 @@ main_entry:
   def_irq_handler TMR5_IRQHandlerWrap
   def_irq_handler I2C0_IRQHandlerWrap
   def_irq_handler UART0_IRQHandlerWrap
-  def_irq_handler RSV16_IRQHandlerWrap
+  def_irq_handler CM4_IRQHandlerWrap
   def_irq_handler I2C1_IRQHandlerWrap
   def_irq_handler UART1_IRQHandlerWrap
   def_irq_handler UART2_IRQHandlerWrap
@@ -325,7 +325,7 @@ main_entry:
   def_irq_handler WDT1_IRQHandlerWrap
   def_irq_handler DVS_IRQHandlerWrap
   def_irq_handler SIMO_IRQHandlerWrap
-  def_irq_handler RSV51_IRQHandlerWrap
+  def_irq_handler WUT1_IRQHandlerWrap
   def_irq_handler PT_IRQHandlerWrap
   def_irq_handler ADC_IRQHandlerWrap
   def_irq_handler OWM_IRQHandlerWrap

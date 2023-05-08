@@ -168,7 +168,7 @@ const mxc_gpio_cfg_t gpio_cfg_pt3 = { MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_
                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_pt4 = { MXC_GPIO0, MXC_GPIO_PIN_13, MXC_GPIO_FUNC_ALT4,
                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
-const mxc_gpio_cfg_t gpio_cfg_pt5 = { MXC_GPIO0, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_ALT4,
+const mxc_gpio_cfg_t gpio_cfg_pt5 = { MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_ALT3,
                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_pt6 = { MXC_GPIO1, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_ALT3,
                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
@@ -245,12 +245,19 @@ const mxc_gpio_cfg_t gpio_cfg_kbd_P2 = { MXC_GPIO2, 0x000003FC, MXC_GPIO_FUNC_AL
                                          MXC_GPIO_PAD_PULL_UP };
 
 // Note that both P0 and P1 must be configured for proper operation
-const mxc_gpio_cfg_t gpio_cfg_pcif_P0 = { MXC_GPIO0, 0x00007FC0, MXC_GPIO_FUNC_ALT2,
-                                          MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
-const mxc_gpio_cfg_t gpio_cfg_pcif_P1 = { MXC_GPIO1,
-                                          (MXC_GPIO_PIN_1 | MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15),
-                                          MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE,
-                                          MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_0_7 = {
+    MXC_GPIO0,
+    (MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9 | MXC_GPIO_PIN_10 |
+     MXC_GPIO_PIN_11 | MXC_GPIO_PIN_12 | MXC_GPIO_PIN_13),
+    MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH
+};
+const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_8 = { MXC_GPIO0, (MXC_GPIO_PIN_14), MXC_GPIO_FUNC_ALT2,
+                                                 MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t gpio_cfg_pcif_P1_BITS_9 = { MXC_GPIO1, (MXC_GPIO_PIN_14), MXC_GPIO_FUNC_ALT2,
+                                                 MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t gpio_cfg_pcif_P1_BITS_10_11 = { MXC_GPIO1, (MXC_GPIO_PIN_1 | MXC_GPIO_PIN_15),
+                                                     MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE,
+                                                     MXC_GPIO_VSSEL_VDDIOH };
 const mxc_gpio_cfg_t gpio_cfg_pcif_hsync = { MXC_GPIO1, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_ALT2,
                                              MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
 const mxc_gpio_cfg_t gpio_cfg_pcif_vsync = { MXC_GPIO1, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_ALT4,

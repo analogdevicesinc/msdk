@@ -168,6 +168,8 @@ int MXC_SYS_RTCClockDisable(void)
 /******************************************************************************/
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
 {
+    int err = E_NO_ERROR;
+
     switch (clock) {
     case MXC_SYS_CLOCK_IPO:
         MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_IPO_EN;
@@ -185,9 +187,13 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
+        // No EXT_CLK "RDY" bit for AI87 so we enable every time
+        err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        if (err)
+            return err;
+
+        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
         break;
 
     case MXC_SYS_CLOCK_INRO:
@@ -214,6 +220,8 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         return E_BAD_PARAM;
         break;
     }
+
+    return err;
 }
 
 /******************************************************************************/
@@ -303,6 +311,7 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 {
     uint32_t current_clock;
+    int err = E_NO_ERROR;
 
     // Save the current system clock
     current_clock = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL;
@@ -396,18 +405,13 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // Enable HIRC clock
-        // if(!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_EXTCLK_EN)) {
-        //     MXC_GCR->clkctrl |=MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        // No EXT_CLK "RDY" bit for AI85 so we enable every time
+        err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        if (err)
+            return err;
 
-        //     // Check if HIRC clock is ready
-        //     if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
-        //         return E_TIME_OUT;
-        //     }
-        // }
-
-        // Set HIRC clock as System Clock
-        // MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
 
         break;
 

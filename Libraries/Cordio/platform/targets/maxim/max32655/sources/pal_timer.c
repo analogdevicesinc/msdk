@@ -414,5 +414,7 @@ uint32_t PalTimerGetExpTime(void)
 /*************************************************************************************************/
 void PalTimerSetIRQPriority(uint32_t priority)
 {
+#ifndef __riscv
   NVIC_SetPriority(PAL_TMR_IRQn, priority);
+#endif
 }

@@ -29,6 +29,15 @@ This release includes the following completed requirements for r20.05:
     FW-3820 Protect against SweynTooth vulnerability
 
 
+Platforms
+------------
+
+This release was tested on the following platforms. Note: platforms listed may not be available in this repository.
+
+* Nordic nRF52840 / PCA10056 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10056")
+* Nordic nRF52832 / PCA10040 development kit / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=nordic BOARD=PCA10040")
+* Laird BL654 / 451-00004 USB adapter / Nordic nRF5 SDK 16.0.0 (make configuration: "PLATFORM=laird")
+
 Certification
 -------------
 

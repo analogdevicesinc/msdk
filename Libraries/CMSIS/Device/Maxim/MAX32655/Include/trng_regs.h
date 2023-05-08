@@ -109,8 +109,14 @@ typedef struct {
  * @brief    TRNG Control Register.
  * @{
  */
+#define MXC_F_TRNG_CTRL_ODHT_POS                       0 /**< CTRL_ODHT Position */
+#define MXC_F_TRNG_CTRL_ODHT                           ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_ODHT_POS)) /**< CTRL_ODHT Mask */
+
 #define MXC_F_TRNG_CTRL_RND_IE_POS                     1 /**< CTRL_RND_IE Position */
 #define MXC_F_TRNG_CTRL_RND_IE                         ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_RND_IE_POS)) /**< CTRL_RND_IE Mask */
+
+#define MXC_F_TRNG_CTRL_HEALTH_EN_POS                  2 /**< CTRL_HEALTH_EN Position */
+#define MXC_F_TRNG_CTRL_HEALTH_EN                      ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_HEALTH_EN_POS)) /**< CTRL_HEALTH_EN Mask */
 
 #define MXC_F_TRNG_CTRL_KEYGEN_POS                     3 /**< CTRL_KEYGEN Position */
 #define MXC_F_TRNG_CTRL_KEYGEN                         ((uint32_t)(0x1UL << MXC_F_TRNG_CTRL_KEYGEN_POS)) /**< CTRL_KEYGEN Mask */
@@ -129,6 +135,21 @@ typedef struct {
  */
 #define MXC_F_TRNG_STATUS_RDY_POS                      0 /**< STATUS_RDY Position */
 #define MXC_F_TRNG_STATUS_RDY                          ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_RDY_POS)) /**< STATUS_RDY Mask */
+
+#define MXC_F_TRNG_STATUS_ODHT_POS                     1 /**< STATUS_ODHT Position */
+#define MXC_F_TRNG_STATUS_ODHT                         ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_ODHT_POS)) /**< STATUS_ODHT Mask */
+
+#define MXC_F_TRNG_STATUS_HT_POS                       2 /**< STATUS_HT Position */
+#define MXC_F_TRNG_STATUS_HT                           ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_HT_POS)) /**< STATUS_HT Mask */
+
+#define MXC_F_TRNG_STATUS_SRCFAIL_POS                  3 /**< STATUS_SRCFAIL Position */
+#define MXC_F_TRNG_STATUS_SRCFAIL                      ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_SRCFAIL_POS)) /**< STATUS_SRCFAIL Mask */
+
+#define MXC_F_TRNG_STATUS_AESKGD_POS                   4 /**< STATUS_AESKGD Position */
+#define MXC_F_TRNG_STATUS_AESKGD                       ((uint32_t)(0x1UL << MXC_F_TRNG_STATUS_AESKGD_POS)) /**< STATUS_AESKGD Mask */
+
+#define MXC_F_TRNG_STATUS_LD_CNT_POS                   24 /**< STATUS_LD_CNT Position */
+#define MXC_F_TRNG_STATUS_LD_CNT                       ((uint32_t)(0xFFUL << MXC_F_TRNG_STATUS_LD_CNT_POS)) /**< STATUS_LD_CNT Mask */
 
 /**@} end of group TRNG_STATUS_Register */
 

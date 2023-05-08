@@ -834,6 +834,16 @@ int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t *i2c, unsigned int numBytes);
 int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t *i2c);
 
 /**
+ * @brief   Stop any asynchronous requests in progress.
+ *
+ * Stop any asynchronous requests in progress. Any callbacks associated with
+ * the active transaction will be NOT executed.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
+ */
+void MXC_I2C_AsyncStop(mxc_i2c_regs_t *i2c);
+
+/**
  * @brief   Abort any asynchronous requests in progress.
  *
  * Abort any asynchronous requests in progress. Any callbacks associated with
