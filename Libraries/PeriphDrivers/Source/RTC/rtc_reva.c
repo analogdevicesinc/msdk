@@ -308,7 +308,7 @@ int MXC_RTC_RevA_GetSecond(mxc_rtc_reva_regs_t *rtc)
     return rtc->sec;
 }
 
-int MXC_RTC_RevA_GetSubSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t* ssec)
+int MXC_RTC_RevA_GetSubSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t *ssec)
 {
     if (MXC_RTC_RevA_GetBusyFlag(rtc)) {
         return E_BUSY;
@@ -323,7 +323,7 @@ int MXC_RTC_RevA_GetSubSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t* ssec)
     } else {
         sub_sec = rtc->ssec;
     }
-    
+
     *ssec = sub_sec;
 #else
     *ssec = rtc->ssec;
@@ -332,7 +332,7 @@ int MXC_RTC_RevA_GetSubSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t* ssec)
     return E_NO_ERROR;
 }
 
-int MXC_RTC_RevA_GetSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t* sec)
+int MXC_RTC_RevA_GetSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t *sec)
 {
     if (MXC_RTC_RevA_GetBusyFlag(rtc)) {
         return E_BUSY;

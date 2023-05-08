@@ -120,9 +120,8 @@ void buttonHandler()
 
 void printTime()
 {
-    int day, hr, min, sec;
-    int err;
-	uint32_t rtc_readout;
+    int day, hr, min, sec, err;
+    uint32_t rtc_readout;
     double subsec;
 
     do {

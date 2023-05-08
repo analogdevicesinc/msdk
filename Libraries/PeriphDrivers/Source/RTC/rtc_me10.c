@@ -130,7 +130,7 @@ int MXC_RTC_GetSecond(void)
 }
 
 // *****************************************************************************
-int MXC_RTC_GetSubSeconds(uint32_t* ssec)
+int MXC_RTC_GetSubSeconds(uint32_t *ssec)
 {
     // Ensure valid data is in SSEC register
     MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_READY;
@@ -140,7 +140,7 @@ int MXC_RTC_GetSubSeconds(uint32_t* ssec)
 }
 
 // *****************************************************************************
-int MXC_RTC_GetSeconds(uint32_t* sec)
+int MXC_RTC_GetSeconds(uint32_t *sec)
 {
     // Ensure valid data is in SEC register
     MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_READY;

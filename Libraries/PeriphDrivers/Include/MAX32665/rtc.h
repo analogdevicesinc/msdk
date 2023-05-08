@@ -187,7 +187,7 @@ int MXC_RTC_GetSubSecond(void) __attribute__((deprecated("Use MXC_RTC_GetSubSeco
  * @param     ssec   Pointer to the variable to store the current sub-seconds value.
  * @retval    E_NO_ERROR if successful, otherwise an error code (see /ref MXC_ERROR_CODES).
  */
-int MXC_RTC_GetSubSeconds(uint32_t* ssec);
+int MXC_RTC_GetSubSeconds(uint32_t *ssec);
 
 /**
  * @brief     Get Second or E_BUSY, see /ref MXC_ERROR_CODES
@@ -201,7 +201,7 @@ int MXC_RTC_GetSecond(void) __attribute__((deprecated("Use MXC_RTC_GetSeconds() 
  * @param     sec   Pointer to the variable to store the current seconds value.
  * @retval    E_NO_ERROR if successful, otherwise an error code (see /ref MXC_ERROR_CODES).
  */
-int MXC_RTC_GetSeconds(uint32_t* sec);
+int MXC_RTC_GetSeconds(uint32_t *sec);
 
 /**
  * @brief     Get the current second and sub-second counts
