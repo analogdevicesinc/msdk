@@ -301,7 +301,7 @@ jobs:
                   # Need to generate register files for part if it wasn't already generated.
                   if [[ ! (-d ./chip_test) ]]; then
                     chmod u+x makeRegs.sh
-                    make=$(./makeRegs.sh ubuntu)
+                    make=$(bash makeRegs.sh ubuntu)
                   fi
 
                   # Currently in msdk-internal/SVD/Device/{PART}/
@@ -484,7 +484,7 @@ jobs:
           
               if [[ ! (-d ./chip_test) ]]; then
                 chmod u+x makeRegs.sh
-                makeregs_log=$(./makeRegs.sh ubuntu)
+                makeregs_log=$(bash makeRegs.sh ubuntu)
               fi
               
               # This list keeps track of all the affected register files for each part.
