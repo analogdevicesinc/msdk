@@ -119,17 +119,11 @@ int MXC_RTC_ClearFlags(int flags)
 
 int MXC_RTC_GetSubSecond(void)
 {
-    MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_RDY; // Ensure valid data is in SSEC register
-    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) {}
-
-    return MXC_RTC_RevA_GetSubSecond((mxc_rtc_reva_regs_t *)MXC_RTC);
+   return MXC_RTC_RevA_GetSubSecond((mxc_rtc_reva_regs_t *)MXC_RTC);
 }
 
 int MXC_RTC_GetSecond(void)
 {
-    MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_RDY; // Ensure valid data is in SEC register
-    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) {}
-
     return MXC_RTC_RevA_GetSecond((mxc_rtc_reva_regs_t *)MXC_RTC);
 }
 
