@@ -385,8 +385,6 @@ jobs:
                 reg_files_linked_to_changed_svd_files+=" "
               fi
 
-              echo $changed_svd_file
-              echo $periph
               reg_files_linked_to_changed_svd_files+=$(find_linked_register_files $changed_svd_file $periph "" ../)
             done
             
@@ -617,6 +615,9 @@ jobs:
               if [[ -n $check_for_at_deprecated ]]; then
                 # Exception for deprecated register files.
                 echo -e "[\e[0;31mERROR\e[0m] DO NOT UPDATE. This file is deprecated. Please contact ADI developers for more support.\n\n"
+
+                # Changing Deprecated Files doesn't matter.
+                CHECK_FAIL=0
               else
                 # Exception for entirely new register files.
                 if [[ -n ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} ]]; then
