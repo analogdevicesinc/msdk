@@ -86,4 +86,4 @@
 #define urw_gothic_13_grey_bg_white 2
 #define urw_gothic_13_white_bg_grey 3
 
-#endif // EXAMPLES_MAX32662_DEMO_RESOURCES_BITMAP_H_
+#endif // EXAMPLES_MAX32662_TFT_DEMO_RESOURCES_BITMAP_H_
