@@ -11,8 +11,6 @@
 
 CAMERA = OV5640
 
-MXC_OPTIMIZE_CFLAGS = -O2
-
 VPATH += src/sram
 IPATH += src/sram
 
