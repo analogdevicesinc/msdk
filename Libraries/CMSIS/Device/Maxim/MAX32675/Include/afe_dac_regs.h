@@ -2,6 +2,7 @@
  * @file    afe_dac_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AFE_DAC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup afe_dac_registers
  */
 
 /******************************************************************************
