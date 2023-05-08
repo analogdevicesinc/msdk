@@ -2,6 +2,7 @@
  * @file    wdt_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the WDT Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup wdt_registers
  */
 
 /******************************************************************************
