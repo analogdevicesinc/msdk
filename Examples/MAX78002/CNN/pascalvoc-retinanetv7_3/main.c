@@ -77,6 +77,7 @@ void load_input(void)
 
 int main(void)
 {
+    printf("\n*** Object Detection Demo (pascalvoc-retinanetv7_3) ***\n");
     MXC_ICC_Enable(MXC_ICC0); // Enable cache
 
     // Switch to 120 MHz clock
@@ -102,8 +103,6 @@ int main(void)
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: PLL (200 MHz) div 4
     cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4);
-
-    printf("\n*** CNN Inference Test pascalvoc-fpndetector ***\n");
 
     cnn_init(); // Bring state machine into consistent state
     cnn_load_weights(); // Load kernels
@@ -132,7 +131,7 @@ int main(void)
             MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
 
 #ifdef CNN_INFERENCE_TIMER
-        printf("Approximate data loading and inference time: %u us\n\n", cnn_time);
+        printf("Inference complete!  Approximate data loading and inference time: %u us\n", cnn_time);
 #endif
 
         // MODIFICATION: Run Non-Maximal Suppression (NMS) to filter and display results
@@ -147,6 +146,8 @@ int main(void)
         // overhead is TFT communication
         nms_draw_boxes();
         // -- MODS END
+
+        printf("\n");
     }
     cnn_disable(); // Shut down CNN clock, disable peripheral
 

@@ -140,8 +140,6 @@ void camera_display_last_image(void)
     bus settings and control schemes.  Therefore SPI is reinitialized on the fly so that both 
     can be operated simultaneously.
     */
-    printf("Displaying image on TFT...\n");
-    MXC_TMR_SW_Start(MXC_TMR1);
     uint8_t tft_buffer[IMAGE_WIDTH * 2];
     unsigned int address = SRAM_ADDRESS;
     for (int y = 0; y < DISPLAY_HEIGHT; y++) {
@@ -152,8 +150,6 @@ void camera_display_last_image(void)
         MXC_TFT_WriteBufferRGB565(0, y, tft_buffer, IMAGE_WIDTH, 1);
         address += IMAGE_WIDTH * 2;
     }
-    int elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
-    printf("Done!  (Took %i us)\n", elapsed);
 }
 
 bool camera_init()
