@@ -53,6 +53,7 @@
 #include "tmr.h"
 #include "led.h"
 #include "pb.h"
+#include "rtc.h"
 
 #ifdef BOARD_FTHR_REVA
 #error "ERR_NOTSUPPORTED: This example is not supported by the MAX32665 FTHR_RevA."
@@ -85,6 +86,11 @@ lv_obj_t *img1;
 #define TICK_TIMER MXC_TMR0 // Can be MXC_TMR0 through MXC_TMR5
 #define TICK_TIMER_IRQn TMR0_IRQn
 mxc_tmr_cfg_t lvgl_tmr;
+
+// RTC Definitions
+#define SECS_PER_MIN 60
+#define SECS_PER_HR (60 * SECS_PER_MIN)
+#define SECS_PER_DAY (24 * SECS_PER_HR)
 
 //============================================================================
 static void set_px_cb(struct _lv_disp_drv_t *disp_drv, uint8_t *buf, lv_coord_t buf_w, lv_coord_t x,
@@ -169,13 +175,16 @@ void LV_Tick_Timer_Init()
 int main(void)
 {
     int i;
-    int count = 0;
     int pb_state = 0;
+    int prev_pb_state = 0;
+    uint32_t usn_timeout = 0;
+    int usn_toggle = 0; 
     uint8_t usn[MXC_SYS_USN_LEN];
     uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN];
     int error;
+    int day, hr, min, sec, rtc_readout;
 
-    printf("Hello World!\n");
+    printf("**** MAX32665 EV Kit Demo ****\n");
 
     error = MXC_SYS_GetUSN(usn, checksum);
     if (error != E_NO_ERROR) {
@@ -219,26 +228,76 @@ int main(void)
     // lv_tick needed to refresh display at ~200Hz or ~5ms.
     LV_Tick_Timer_Init();
 
+    error = MXC_RTC_Init(0, 0);
+    if (error != E_NO_ERROR) {
+        printf("Failed RTC Initialization\n");
+        return error;
+    }
+
+    error = MXC_RTC_Start();
+    if (error != E_NO_ERROR) {
+        printf("Failed RTC_Start\n");
+        return error;
+    }
+
     while (1) {
-        lv_label_set_text_fmt(label2, "count = %d", count);
+        do {
+            rtc_readout = MXC_RTC_GetSecond();
+        } while (rtc_readout == E_BUSY);
+        sec = rtc_readout;
+
+        day = sec / SECS_PER_DAY;
+        sec -= day * SECS_PER_DAY;
+
+        hr = sec / SECS_PER_HR;
+        sec -= hr * SECS_PER_HR;
+
+        min = sec / SECS_PER_MIN;
+        sec -= min * SECS_PER_MIN;
+
+        printf("\n(ddd:hh:mm:ss): %03d:%02d:%02d:%02d\n\n", day, hr, min, sec);
+        lv_label_set_text_fmt(label2, " (ddd:hh:mm:ss)\n  %03d:%02d:%02d:%02d", day, hr, min, sec);
 
         // Print USN
         pb_state = (PB_Get(1) << 1) | (PB_Get(0));
-        if ((pb_state == 0b011)) {
-            lv_label_set_text_fmt(label3, "Rev: %x", MXC_GCR->revision);
+        // Checking previous button state checks whether the buttons were de-pressed.
+        if ((pb_state == 0b011) && prev_pb_state != 0b011) {
+            // This flag lets the user clear the USN/Rev info if the two buttons
+            // are pressed again before the 5 second timeout ends.
+            usn_toggle ^= 1;
 
-            lv_label_set_text_fmt(
-                label4,
-                "USN: %02x%02x%02x%02x%02x\n      -%02x%02x%02x%02x\n      -%02x%02x%02x%02x",
-                usn[0], usn[1], usn[2], usn[3], usn[4], usn[5], usn[6], usn[7], usn[8], usn[9],
-                usn[10], usn[11], usn[12]);
+            if (usn_toggle) {
+                usn_timeout = sec + 5;
 
-            printf("\nRev: %x\n", MXC_GCR->revision);
-            printf("USN: ");
-            for (i = 0; i < MXC_SYS_USN_LEN; i++) {
-                printf("%02x", usn[i]);
+                lv_label_set_text_fmt(label3, "Rev: %x", MXC_GCR->revision);
+
+                lv_label_set_text_fmt(
+                    label4,
+                    "USN: %02x%02x%02x%02x%02x\n      -%02x%02x%02x%02x\n      -%02x%02x%02x%02x",
+                    usn[0], usn[1], usn[2], usn[3], usn[4], usn[5], usn[6], usn[7], usn[8], usn[9],
+                    usn[10], usn[11], usn[12]);
+
+                printf("\nRev: %x\n", MXC_GCR->revision);
+                printf("USN: ");
+                for (i = 0; i < MXC_SYS_USN_LEN; i++) {
+                    printf("%02x", usn[i]);
+                }
+                printf("\n\n");
+            } else {
+                // Clear the USN/Rev if the two buttons are pressed before the timeout.
+                lv_label_set_text(label3, "");
+                lv_label_set_text(label4, "");
+                usn_timeout = 0;
             }
-            printf("\n\n");
+        }
+
+        // Automatically clear the USN/Rev info if the timeout ends.
+        if (sec >= usn_timeout && usn_timeout != 0) {
+            lv_label_set_text(label3, "");
+            lv_label_set_text(label4, "");
+            usn_timeout = 0;
+            // Reset the toggle flag to prepare for next time the two buttons are pressed.
+            usn_toggle = 0;
         }
 
         LED_Toggle(0);
@@ -275,6 +334,7 @@ int main(void)
 
         MXC_Delay(250000);
 
-        printf("count = %d\n", count++);
+        // Keeps track of previous button state to check if buttons were de-pressed.
+        prev_pb_state = pb_state;
     }
 }
