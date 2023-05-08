@@ -54,12 +54,10 @@
 #include "mxc_device.h"
 #include "nvic_table.h"
 #include "rtc.h"
-#include "simo_regs.h"
-#include "trimsir_regs.h"
 #include "uart.h"
 
 /***** Definitions *****/
-#define LED_TODA LED_GREEN
+#define LED_TODA 0
 #define TIME_OF_DAY_SEC 7
 
 #define MSEC_TO_RSSA(x) \
@@ -81,12 +79,12 @@ void rescheduleAlarm()
     uint32_t time;
     int flags = MXC_RTC_GetFlags();
 
-    if (flags & MXC_F_RTC_CTRL_TOD_ALARM) { // Check for TOD alarm flag
-        MXC_RTC_ClearFlags(MXC_F_RTC_CTRL_TOD_ALARM);
+    if (flags & MXC_F_RTC_CTRL_TOD_ALARM_FL) { // Check for TOD alarm flag
+        MXC_RTC_ClearFlags(MXC_F_RTC_CTRL_TOD_ALARM_FL);
 
         MXC_RTC_GetSeconds(&time); // Get Current time (s)
 
-        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
+        while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_EN) == E_BUSY) {}
         // Disable interrupt while re-arming RTC alarm
 
         if (MXC_RTC_SetTimeofdayAlarm(time + TIME_OF_DAY_SEC) !=
@@ -94,7 +92,7 @@ void rescheduleAlarm()
             /* Handle Error */
         }
 
-        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
+        while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_EN) == E_BUSY) {}
         // Re-enable TOD alarm interrupt
     }
 
@@ -125,28 +123,6 @@ void printTime()
 // *****************************************************************************
 int configureRTC()
 {
-    int rtcTrim;
-    volatile int i;
-
-    for (i = 0; i < 0xFFFFFF; i++) {}
-    // Prevent bricks
-
-    if (!(MXC_GCR->clkctrl &
-          MXC_F_GCR_CLKCTRL_ERFO_RDY)) { // Enable 32Mhz clock if not already enabled
-        MXC_SIMO->vrego_d = (0x3c << MXC_F_SIMO_VREGO_D_VSETD_POS); // Power VREGO_D
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
-
-        MXC_GCR->btleldoctrl = 0x3055; // Restore btleldoctrl setting
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
-
-        MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN; // Enable 32Mhz oscillator
-        while (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {}
-    }
-
-    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_ERFO); // Set 32MHz clock as system clock
-    MXC_SYS_SetClockDiv(MXC_SYS_CLOCK_DIV_1);
-    SystemCoreClockUpdate();
-
     printf("\n\n***************** RTC Wake from Backup Example *****************\n\n");
     printf("The time-of-day alarm is set to wake the device every %d seconds.\n", TIME_OF_DAY_SEC);
     printf("When the alarm goes off it will print the current time to the console.\n\n");
@@ -165,27 +141,13 @@ int configureRTC()
 
     printf("RTC started\n");
 
-    NVIC_DisableIRQ(RTC_IRQn);
-    rtcTrim = MXC_RTC_TrimCrystal(); // Trim RTC
-    if (rtcTrim < 0) {
-        printf("Error trimming RTC %d\n", rtcTrim);
-    } else {
-        printf("RTC Trimmed to %d Hz\n", rtcTrim);
-        printf("MXC_TRIMSIR->rtc = 0x%x\n", MXC_TRIMSIR->rtc);
-    }
-
-    MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE | // Reset interrupt state
-                       MXC_F_RTC_CTRL_SSEC_ALARM_IE | MXC_F_RTC_CTRL_RDY_IE);
-    MXC_RTC_ClearFlags(MXC_RTC_GetFlags());
-    NVIC_EnableIRQ(RTC_IRQn);
-
     if (MXC_RTC_SetTimeofdayAlarm(TIME_OF_DAY_SEC) != E_NO_ERROR) { // Arm TOD alarm
         printf("Failed RTC_SetTimeofdayAlarm\n");
         printf("Example Failed\n");
         while (1) {}
     }
 
-    if (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) { // Enable TOD interrupt
+    if (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_EN) == E_BUSY) { // Enable TOD interrupt
         return E_BUSY;
     }
 
@@ -201,8 +163,8 @@ int configureRTC()
 // *****************************************************************************
 int main(void)
 {
-    if (MXC_PWRSEQ->lppwst !=
-        MXC_F_PWRSEQ_LPPWST_BACKUP) { // Check whether the wakeup source is RTC
+    if (!(MXC_RTC_GetFlags() &
+          MXC_F_RTC_CTRL_TOD_ALARM_FL)) { // Check whether the wakeup source is RTC
         if (configureRTC() != E_NO_ERROR) { // System start/restart
             printf("Example Failed\n");
             while (1) {}
@@ -213,8 +175,8 @@ int main(void)
     }
 
     rescheduleAlarm(); // Re-arm RTC TOD alarm
+    MXC_Delay(MXC_DELAY_SEC(1)); // Prevent bricks
 
-    MXC_Delay(MXC_DELAY_SEC(1));
     LED_Off(LED_TODA);
 
     while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}
