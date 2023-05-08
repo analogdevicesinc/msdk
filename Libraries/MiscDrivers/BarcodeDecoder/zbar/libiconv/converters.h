@@ -19,6 +19,7 @@
 
 /* This file defines all the converters. */
 
+
 /* Our own notion of wide character, as UCS-4, according to ISO-10646-1. */
 typedef unsigned int ucs4_t;
 
@@ -26,14 +27,14 @@ typedef unsigned int ucs4_t;
 typedef unsigned int state_t;
 
 /* iconv_t is an opaque type. This is the real iconv_t type. */
-typedef struct conv_struct *conv_t;
+typedef struct conv_struct * conv_t;
 
 /*
  * Data type for conversion multibyte -> unicode
  */
 struct mbtowc_funcs {
-    int (*xxx_mbtowc)(conv_t conv, ucs4_t *pwc, unsigned char const *s, size_t n);
-    /*
+  int (*xxx_mbtowc) (conv_t conv, ucs4_t *pwc, unsigned char const *s, size_t n);
+  /*
    * int xxx_mbtowc (conv_t conv, ucs4_t *pwc, unsigned char const *s, size_t n)
    * converts the byte sequence starting at s to a wide character. Up to n bytes
    * are available at s. n is >= 1.
@@ -43,8 +44,8 @@ struct mbtowc_funcs {
    * sequence was read,
    * or RET_TOOFEW(number of bytes consumed) if only a shift sequence was read.
    */
-    int (*xxx_flushwc)(conv_t conv, ucs4_t *pwc);
-    /*
+  int (*xxx_flushwc) (conv_t conv, ucs4_t *pwc);
+  /*
    * int xxx_flushwc (conv_t conv, ucs4_t *pwc)
    * returns to the initial state and stores the pending wide character, if any.
    * Result is 1 (if a wide character was read) or 0 if none was pending.
@@ -53,30 +54,30 @@ struct mbtowc_funcs {
 
 /* Return code if invalid input after a shift sequence of n bytes was read.
    (xxx_mbtowc) */
-#define RET_SHIFT_ILSEQ(n) (-1 - 2 * (n))
+#define RET_SHIFT_ILSEQ(n)  (-1-2*(n))
 /* Return code if invalid. (xxx_mbtowc) */
-#define RET_ILSEQ RET_SHIFT_ILSEQ(0)
+#define RET_ILSEQ           RET_SHIFT_ILSEQ(0)
 /* Return code if only a shift sequence of n bytes was read. (xxx_mbtowc) */
-#define RET_TOOFEW(n) (-2 - 2 * (n))
+#define RET_TOOFEW(n)       (-2-2*(n))
 /* Retrieve the n from the encoded RET_... value. */
-#define DECODE_SHIFT_ILSEQ(r) ((unsigned int)(RET_SHIFT_ILSEQ(0) - (r)) / 2)
-#define DECODE_TOOFEW(r) ((unsigned int)(RET_TOOFEW(0) - (r)) / 2)
+#define DECODE_SHIFT_ILSEQ(r)  ((unsigned int)(RET_SHIFT_ILSEQ(0) - (r)) / 2)
+#define DECODE_TOOFEW(r)       ((unsigned int)(RET_TOOFEW(0) - (r)) / 2)
 /* Maximum value of n that may be used as argument to RET_SHIFT_ILSEQ or RET_TOOFEW. */
-#define RET_COUNT_MAX ((INT_MAX / 2) - 1)
+#define RET_COUNT_MAX       ((INT_MAX / 2) - 1)
 
 /*
  * Data type for conversion unicode -> multibyte
  */
 struct wctomb_funcs {
-    int (*xxx_wctomb)(conv_t conv, unsigned char *r, ucs4_t wc, size_t n);
-    /*
+  int (*xxx_wctomb) (conv_t conv, unsigned char *r, ucs4_t wc, size_t n);
+  /*
    * int xxx_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
    * converts the wide character wc to the character set xxx, and stores the
    * result beginning at r. Up to n bytes may be written at r. n is >= 1.
    * Result is number of bytes written, or -1 if invalid, or -2 if n too small.
    */
-    int (*xxx_reset)(conv_t conv, unsigned char *r, size_t n);
-    /*
+  int (*xxx_reset) (conv_t conv, unsigned char *r, size_t n);
+  /*
    * int xxx_reset (conv_t conv, unsigned char *r, size_t n)
    * stores a shift sequences returning to the initial state beginning at r.
    * Up to n bytes may be written at r. n is >= 0.
@@ -85,31 +86,31 @@ struct wctomb_funcs {
 };
 
 /* Return code if invalid. (xxx_wctomb) */
-#define RET_ILUNI -1
+#define RET_ILUNI      -1
 /* Return code if output buffer is too small. (xxx_wctomb, xxx_reset) */
-#define RET_TOOSMALL -2
+#define RET_TOOSMALL   -2
 
 /*
  * Contents of a conversion descriptor.
  */
 struct conv_struct {
-    struct loop_funcs lfuncs;
-    /* Input (conversion multibyte -> unicode) */
-    int iindex;
-    struct mbtowc_funcs ifuncs;
-    state_t istate;
-    /* Output (conversion unicode -> multibyte) */
-    int oindex;
-    struct wctomb_funcs ofuncs;
-    int oflags;
-    state_t ostate;
-    /* Operation flags */
-    int transliterate;
-    int discard_ilseq;
-#ifndef LIBICONV_PLUG
-    struct iconv_fallbacks fallbacks;
-    struct iconv_hooks hooks;
-#endif
+  struct loop_funcs lfuncs;
+  /* Input (conversion multibyte -> unicode) */
+  int iindex;
+  struct mbtowc_funcs ifuncs;
+  state_t istate;
+  /* Output (conversion unicode -> multibyte) */
+  int oindex;
+  struct wctomb_funcs ofuncs;
+  int oflags;
+  state_t ostate;
+  /* Operation flags */
+  int transliterate;
+  int discard_ilseq;
+  #ifndef LIBICONV_PLUG
+  struct iconv_fallbacks fallbacks;
+  struct iconv_hooks hooks;
+  #endif
 };
 
 /*
@@ -202,8 +203,8 @@ struct conv_struct {
 /* CJK character sets [CCS = coded character set] [CJKV.INF chapter 3] */
 
 typedef struct {
-    unsigned short indx; /* index into big table */
-    unsigned short used; /* bitmask of used entries */
+  unsigned short indx; /* index into big table */
+  unsigned short used; /* bitmask of used entries */
 } Summary16;
 
 //#include "iso646_jp.h"
@@ -232,6 +233,7 @@ typedef struct {
 //#include "iso2022_jp2.h"
 //#include "iso2022_jpms.h"
 
+
 //#include "euc_cn.h"
 //#include "ces_gbk.h"
 //#include "cp936.h"
@@ -247,10 +249,12 @@ typedef struct {
 //#include "big5hkscs2004.h"
 //#include "big5hkscs2008.h"
 
+
 //#include "euc_kr.h"
 //#include "cp949.h"
 //#include "johab.h"
 //#include "iso2022_kr.h"
+
 
 /* Encodings used by system dependent locales. */
 
@@ -298,3 +302,4 @@ typedef struct {
 #include "atarist.h"
 #include "riscos1.h"
 #endif
+
