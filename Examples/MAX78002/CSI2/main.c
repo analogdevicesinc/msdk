@@ -126,7 +126,6 @@ void process_img(void)
 
     // Send image data
     for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
-        // cnn_addr = read_bytes_from_cnn_sram((uint8_t *)g_serial_buffer, transfer_len, cnn_addr);
         ram_read_quad(i, (uint8_t*)g_serial_buffer, SERIAL_BUFFER_SIZE);
         MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
     }
