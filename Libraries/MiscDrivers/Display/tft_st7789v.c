@@ -365,6 +365,9 @@ int MXC_TFT_Init(mxc_gpio_cfg_t *reset_ctrl, mxc_gpio_cfg_t *bl_ctrl)
 
     MXC_TFT_Backlight(1);
 
+    // This TFT is a vertical display.  Rotate it to horizontal to match a typical expected oritentation.
+    MXC_TFT_SetRotation(ROTATE_270);
+
     return E_NO_ERROR;
 }
 
