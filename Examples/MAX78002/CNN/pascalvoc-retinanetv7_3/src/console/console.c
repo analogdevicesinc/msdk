@@ -35,9 +35,10 @@
 * @brief Serial console implementation file
 *****************************************************************************/
 
-#include "console.h"
 #include <string.h>
 #include <stdlib.h>
+#include "console.h"
+#include "camera.h"
 #include "mxc_delay.h"
 #include "led.h"
 #include "nvic_table.h"
@@ -246,17 +247,35 @@ void print_help(void)
     printf("-----\n");
 }
 
-#ifdef SD
-// Utility function for streaming data out of a file into the UART TX FIFO
-UINT out_stream(const BYTE *p, UINT btf)
+void service_console(cmd_t cmd)
 {
-    // If btf > 0, btf is the number of bytes to send.
-    // If btf == 0, sense call querying if the stream is available.
+    // Process the received command...
+    if (cmd == CMD_UNKNOWN) {
+        printf("Uknown command '%s'\n", g_serial_buffer);
+    } else if (cmd == CMD_HELP) {
+        print_help();
+    } else if (cmd == CMD_RESET) {
+        // Issue a soft reset
+        MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
+    } else if (cmd == CMD_CAPTURE) {
+        camera_capture();
+    } else if (cmd == CMD_SETREG) {
+        // Set a camera register
+        unsigned int reg;
+        unsigned int val;
+        // ^ Declaring these as unsigned ints instead of uint8_t
+        // avoids some issues caused by type-casting inside of sscanf.
 
-    if (btf == 0) { // Sense call, this function should return the stream status.
-        return MXC_UART_GetTXFIFOAvailable(Con_Uart);
-    } else {
-        return MXC_UART_WriteTXFIFO(Con_Uart, (const unsigned char *)p, (unsigned int)btf);
+        sscanf(g_serial_buffer, "%s %u %u", cmd_table[cmd], &reg, &val);
+        printf("Writing 0x%x to camera reg 0x%x\n", val, reg);
+        mipi_camera_write_reg((uint16_t)reg, (uint16_t)val);
+    } else if (cmd == CMD_GETREG) {
+        // Read a camera register
+        unsigned int reg;
+        uint8_t val;
+        sscanf(g_serial_buffer, "%s %u", cmd_table[cmd], &reg);
+        mipi_camera_read_reg((uint16_t)reg, &val);
+        snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Camera reg 0x%x=0x%x", reg, val);
+        send_msg(g_serial_buffer);
     }
 }
-#endif

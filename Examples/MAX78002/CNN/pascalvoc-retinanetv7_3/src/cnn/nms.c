@@ -417,13 +417,16 @@ void nms(void)
 
 void nms_localize_objects(void)
 {
+    get_priors();
+    nms();
+}
+
+void nms_draw_boxes(void)
+{
     float prior_cxcy[4];
     float cxcy[4];
     float xy[4];
     int class_idx, prior_idx, global_prior_idx;
-
-    get_priors();
-    nms();
 
     for (class_idx = 0; class_idx < (NUM_CLASSES - 1); ++class_idx) {
         for (prior_idx = 0; prior_idx < num_nms_priors[class_idx]; ++prior_idx) {

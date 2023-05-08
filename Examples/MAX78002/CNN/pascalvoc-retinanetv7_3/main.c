@@ -50,9 +50,9 @@
 #include <math.h>
 #include "mxc.h"
 #include "cnn.h"
+#include "sampledata.h"
 // MODIFICATION: Add project includes
 // ---
-// #include "sampledata.h"
 #include "src/sram/fastspi.h"
 #include "src/tft/tft_utils.h"
 #include "src/camera/camera.h"
@@ -69,67 +69,12 @@ void fail(void)
 }
 
 // MODIFICATION: Implement load_input for OV5640 CSI2 camera
-// --- MODS START
-#define INPUT_BUFFER_SIZE (IMAGE_WIDTH * 2)
-
 // Data input: HWC 3x256x320 (245760 bytes total / 81920 bytes per channel):
 // static const uint32_t input_0[] = SAMPLE_INPUT_0;
 void load_input(void)
 {
-     // Capture image and buffer into external QSPI SRAM
-    camera_capture();
-
-    uint8_t *raw; // Unused, since we have captured into external SRAM
-    uint32_t imgLen = 0, w = 0, h = 0;
-    MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
-
-    /*
-    The CNN model needs RGB888, but the camera outputs RGB565.  Additionally,
-    the camera data is buffered in the external QSPI SRAM.  So we require an
-    intermediate buffer to perform the RGB565 -> RGB888 conversion before passing
-    to the CNN FIFO.
-    */
-    uint8_t rgb565_buffer[INPUT_BUFFER_SIZE];
-    uint8_t r5 = 0, g6 = 0, b5 = 0;
-    uint8_t r = 0, g = 0, b = 0;
-    uint32_t packed = 0;
-
-    printf("Loading CNN...\n");
-    MXC_TMR_SW_Start(MXC_TMR1);
-    /* 
-    The QSPI SRAM shares the same bus as the TFT display, but requires different
-    bus settings and control schemes.  SPI is reinitialized on the fly so that both 
-    can be operated simultaneously.
-    */
-    spi_init();
-    ram_enter_quadmode();
-    for (int i = 0; i < imgLen; i += INPUT_BUFFER_SIZE) { // for every SRAM chunk
-        ram_read_quad(i, rgb565_buffer, INPUT_BUFFER_SIZE);
-        // Model needs RGB888
-        for (int j = 0; j < INPUT_BUFFER_SIZE; j += 2) { // for each RGB565 byte pair
-            // Decode RGB565
-            r5 = (rgb565_buffer[j] & 0b11111000) >> 3;
-            g6 = ((rgb565_buffer[j] & 0b111) << 3) | ((rgb565_buffer[j + 1] & 0b11100000) >> 5);
-            b5 = ((rgb565_buffer[j + 1]) & 0b11111);
-
-            // RGB565 -> RGB888.  Here we're just dropping the lower bits
-            r = r5 << 3;
-            g = g6 << 2;
-            b = b5 << 3;
-
-            // Pack into 32-bit word (0x00BBGGRR)
-            packed = r | (g << 8) | (b << 16);
-            
-            // Remove the following line if there is no risk that the source would overrun the FIFO:
-            while (((*((volatile uint32_t *)0x50000004) & 1)) != 0)
-                ; // Wait for FIFO 0
-            *((volatile uint32_t *)0x50000008) = packed; // Write FIFO 0
-        }
-    }
-    int elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
-    printf("Done! (took %i us)\n", elapsed);
+    camera_capture_and_load_cnn();
 }
-// --- MODS END
 
 int main(void)
 {
@@ -151,8 +96,10 @@ int main(void)
     console_init();
 #endif
 
-    camera_init();
-    MXC_TFT_SetRotation(ROTATE_270);
+    if (!camera_init()) {
+        printf("Camera initialization failed!\n");
+        return E_FAIL;
+    }
     MXC_TFT_SetFont((int)&SansSerif16x16[0]);
     // --- MODS END
 
@@ -177,22 +124,7 @@ int main(void)
         load_input(); // Load data input via FIFO
 
         // MODIFICATION: Display captured image on TFT
-        // --- MODS START
-        printf("Displaying image on TFT...\n");
-        MXC_TMR_SW_Start(MXC_TMR1);
-        uint8_t tft_buffer[IMAGE_WIDTH * 2];
-        unsigned int address = 0;
-        for (int y = 0; y < 240; y++) {
-            spi_init();
-            ram_enter_quadmode();
-            ram_read_quad(address, tft_buffer, IMAGE_WIDTH * 2);
-            TFT_SPI_Init();
-            MXC_TFT_WriteBufferRGB565(0, y, tft_buffer, IMAGE_WIDTH, 1);
-            address += IMAGE_WIDTH * 2;
-        }
-        int elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
-        printf("Done!  (Took %i us)\n", elapsed);
-        // --- MODS END
+        camera_display_last_image();
 
         while (cnn_time == 0)
             MXC_LP_EnterSleepMode(); // Wait for CNN
@@ -212,8 +144,12 @@ int main(void)
         printf("Starting NMS... \n");
         MXC_TMR_SW_Start(MXC_TMR1);
         nms_localize_objects();
-        elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
+        unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
         printf("Done!  (Took %i us)\n", elapsed);
+
+        // Drawing bounding boxes is excluded from NMS calculation because all of the
+        // overhead is TFT communication
+        nms_draw_boxes();
         // -- MODS END
     }
     cnn_disable(); // Shut down CNN clock, disable peripheral

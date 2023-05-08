@@ -22,6 +22,9 @@ IPATH += src/tft
 VPATH += src/camera
 IPATH += src/camera
 
+VPATH += src/cnn
+IPATH += src/cnn
+
 ifeq ($(CONSOLE),1)
 PROJ_CFLAGS += -DCONSOLE
 VPATH += src/console

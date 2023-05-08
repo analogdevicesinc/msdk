@@ -106,8 +106,6 @@ void SPI_IRQHandler()
             processSPI();
         }
     }
-
-    
 }
 
 int dma_init()
