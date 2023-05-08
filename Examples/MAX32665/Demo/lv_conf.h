@@ -37,8 +37,8 @@
 /* clang-format off */
 #if 1 /*Set it to "1" to enable content*/
 
-#ifndef EXAMPLES_MAX32665_DEMO_LV_CONF_H_
-#define EXAMPLES_MAX32665_DEMO_LV_CONF_H_
+#ifndef LV_CONF_H
+#define LV_CONF_H
 
 #include <stdint.h>
 
@@ -777,6 +777,6 @@
 
 /*--END OF LV_CONF_H--*/
 
-#endif // EXAMPLES_MAX32665_DEMO_LV_CONF_H_
+#endif // LV_CONF_H
 
 #endif /*End of "Content enable"*/
