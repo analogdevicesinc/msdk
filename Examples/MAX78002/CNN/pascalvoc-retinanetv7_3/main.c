@@ -91,9 +91,6 @@ int main(void)
 
     // MODIFICATION: console, camera, and TFT initialization
     // --- MODS START
-#ifdef CONSOLE
-    console_init();
-#endif
 
     if (!camera_init()) {
         printf("Camera initialization failed!\n");

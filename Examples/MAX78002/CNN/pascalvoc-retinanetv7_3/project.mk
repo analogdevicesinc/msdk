@@ -9,9 +9,9 @@
 
 # Add your config here!
 
-CONSOLE = 0
+CAMERA = OV5640
 
-CAMERA=OV5640
+MXC_OPTIMIZE_CFLAGS = -O2
 
 VPATH += src/sram
 IPATH += src/sram
@@ -24,17 +24,3 @@ IPATH += src/camera
 
 VPATH += src/cnn
 IPATH += src/cnn
-
-ifeq ($(CONSOLE),1)
-PROJ_CFLAGS += -DCONSOLE
-VPATH += src/console
-IPATH += src/console
-endif
-
-MXC_OPTIMIZE_CFLAGS = -O2
-
-# Set the CSI2 linkerfile, which reserves an SRAM instance required
-# for the CSI2 hardware buffers
-# LINKERFILE=max78002_csi2.ld
-
-# MXC_OPTIMIZE_CFLAGS = -Os
