@@ -37,19 +37,6 @@
 #include <stdint.h>
 #include "csi2.h"
 
-/*
-Public Functions:
-init
-reset
-write_reg
-read_reg
-setup(xres, yres, pixformat, line_handler)
-capture()
-
-Camera implements:
-
-*/
-
 /**
  * @brief Pixel format enumerations.
 */

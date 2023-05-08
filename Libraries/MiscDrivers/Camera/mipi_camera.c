@@ -218,12 +218,10 @@ int mipi_camera_init(mipi_camera_settings_t camera_settings)
     if (error)
         return error;
 
-    // Note: There are some register mismatches that are causing the
+    // Note: There are some register writes that are causing the
     // reset to return an error. We will ignore the error for now.
     camera.reset();
 
-    // out_seq 1
-    // mux_ctrl 1
     error = camera.set_pixformat(camera_settings.camera_format);
     if (error)
         return error;

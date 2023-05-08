@@ -516,10 +516,15 @@ static int reset(void)
             MXC_Delay(MSEC(default_regs[i].val));
         } else {
             ret |= cambus_write(default_regs[i].addr, (uint8_t)default_regs[i].val);
+#if 0
+            // Read back and check for value mismatches.  Used for troubleshooting
+
             ret |= cambus_read(default_regs[i].addr, &value);
+
             if (value != default_regs[i].val && default_regs[i].addr != 0x3102 && default_regs[i].addr != 0x3008) { // Skip validation of reset registers
                 printf("Mismatch at 0x%x!  Expected 0x%x but read 0x%x\n", default_regs[i].addr, default_regs[i].val, value);
             }
+#endif
         }
     }
 
