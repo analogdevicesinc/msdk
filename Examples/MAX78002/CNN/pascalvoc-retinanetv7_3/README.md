@@ -25,6 +25,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Expected Output
 
+Connecting to the serial port presented by CN2 (USB/UART) at a baud rate of 115200 (8-N-1) and running the example will show the following output:
+
 ```
 *** Object Detection Demo (pascalvoc-retinanetv7_3) ***
 Waiting...

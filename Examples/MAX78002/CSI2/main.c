@@ -68,30 +68,11 @@
 /***** Definitions *****/
 
 #define IMAGE_WIDTH 320
-#define IMAGE_HEIGHT 256
-// #define RAW
+#define IMAGE_HEIGHT 240
 
-#ifndef RAW
 #define PIXEL_FORMAT PIXEL_FORMAT_RGB565
 #define PIXEL_ORDER PIXEL_ORDER_RGB565_RGB
 #define BYTES_PER_PIXEL 2
-#else
-#define PIXEL_FORMAT PIXEL_FORMAT_RAW8
-#define PIXEL_ORDER PIXEL_ORDER_RAW_BGGR
-#define BYTES_PER_PIXEL 1
-#endif
-
-// Size of Image Buffer
-// This buffer will hold the full output image after the CSI2 has converted it
-// to color.
-// #define IMAGE_SIZE ((BITS_PER_PIXEL_ODD + BITS_PER_PIXEL_EVEN) * IMAGE_WIDTH * IMAGE_HEIGHT) >> 4
-#define IMAGE_SIZE \
-    (IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL_EVEN) + (IMAGE_WIDTH * BYTES_PER_PIXEL_EVEN)
-// ^ The addition of the extra row above is a workaround to another CSI2 hardware and/or driver issue.
-// When writing to the output image buffer the CSI2 block will overflow beyond the bounds of the array
-// by a variable amount and cause a hard fault.  At 160x120 it overflows by exactly 5 bytes.  At 320x240
-// It overflows by somewhere between 64 and 96 bytes (Exact # TBD by sheer trial and error).
-// Extending the output array by this extra row seems to be a reliable workaround to this issue.
 
 // Update for future cameras
 #if defined(CAMERA_OV5640)
@@ -101,25 +82,13 @@
 #endif
 
 /***** Globals *****/
-
-// RAW Line Buffers
-// These buffers are used by the CSI2 hardware for debayering.
-// The size of these is hard-coded to 2048 because there appears
-// to be some instability in the CSI2 hardware if they are scaled
-// based on the image dimensions
-// __attribute__((section(".csi2_buff_raw0"))) uint32_t RAW_ADDR0[2048];
-// __attribute__((section(".csi2_buff_raw1"))) uint32_t RAW_ADDR1[2048];
-
-// Buffer for processed image
-// __attribute__((section(".csi2_img_buff"))) uint8_t IMAGE[IMAGE_SIZE] = { 0 };
 unsigned int g_index = 0;
-
-// uint8_t img_buffer[IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL];
 
 /***** Functions *****/
 
 int CSI2_line_handler(uint8_t* data, unsigned int len)
 {
+    // Write received image rows to external QSPI SRAM
     ram_write_quad(g_index, data, len);
     g_index += len;
     return E_NO_ERROR;
@@ -163,23 +132,6 @@ void process_img(void)
     }
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
-
-    printf("Writing to TFT Display...\n");
-    MXC_TMR_SW_Start(MXC_TMR0);
-    TFT_SPI_Init();
-
-    uint8_t tft_buffer[IMAGE_WIDTH*BYTES_PER_PIXEL];
-    unsigned int address = 0;
-    for (int y = 0; y < 240; y++) {
-        spi_init();
-        ram_enter_quadmode();
-        ram_read_quad(address, tft_buffer, IMAGE_WIDTH*2);
-        TFT_SPI_Init();
-        MXC_TFT_WriteBufferRGB565(0, y, tft_buffer, IMAGE_WIDTH, 1);
-        address += IMAGE_WIDTH*2;
-    }
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Done! (took %i us)\n", elapsed);
 }
 
 void service_console(cmd_t cmd)
@@ -269,46 +221,32 @@ int main(void)
     if (id != CAMERA_ID) {
         printf("Incorrect camera.\n");
         LED_On(1);
-        while (1) {}
+        return E_NO_DEVICE;
     }
 
     printf("Initializing SRAM...\n");
     error = ram_init();
     if (error) {
         printf("Failed to initialize SRAM with error %i\n", error);
+        LED_On(1);
         return error;
     }
-
-    MXC_TMR_SW_Start(MXC_TMR0);
-    spi_init();
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("RAM SPI Initialization took %i us\n", elapsed);
 
     ram_id_t ram_id;
     error = ram_read_id(&ram_id);
     if (error) {
         printf("Failed to read expected SRAM ID!\n");
+        LED_On(1);
         return error;
     }
     printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID, ram_id.KGD, ram_id.density, ram_id.EID);
-
-    MXC_TFT_SetRotation(ROTATE_270);
 
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
     buttonPressed = 0;
 
     while (1) {
-        LED_On(0);
-
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        // ^ Slow down main processing loop to work around some timing issues
-        // with the console at extreme speeds.  1000 checks/sec is plenty
-        // service_console();
-
         if (buttonPressed) {
             process_img();
-            LED_Off(0);
-
             buttonPressed = 0;
         }
     }
