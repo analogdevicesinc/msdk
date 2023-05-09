@@ -40,7 +40,7 @@
 /**
  * @brief Pixel format enumerations.
 */
-typedef enum {
+typedef enum pixel_format {
     PIXEL_FORMAT_BYPASS,    
     PIXEL_FORMAT_YUV420,
     PIXEL_FORMAT_YUV422,
@@ -62,14 +62,14 @@ typedef enum {
 /**
  * @brief Pixel format bit order enumerations
 */
-typedef enum {
+typedef enum pixel_order {
     PIXEL_ORDER_DEFAULT,
-    PIXEL_ORDER_RAW_BGGR, /**< Default for RAW8, RAW10 */
+    PIXEL_ORDER_RAW_BGGR,
     PIXEL_ORDER_RAW_GBRG,
     PIXEL_ORDER_RAW_GRBG,
     PIXEL_ORDER_RAW_RGGB,
     PIXEL_ORDER_RGB565_BGR,
-    PIXEL_ORDER_RGB565_RGB, /**< Default for RGB565 */
+    PIXEL_ORDER_RGB565_RGB,
     PIXEL_ORDER_RGB565_GRB,
     PIXEL_ORDER_RGB565_BRG,
     PIXEL_ORDER_RGB565_GBR,

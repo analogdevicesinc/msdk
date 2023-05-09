@@ -454,12 +454,7 @@ static struct camera_reg default_regs[] = {
 
 static int g_slv_addr;
 
-static mipi_camera_settings_t g_camera_settings = {
-    .camera_format = {
-        .pixel_format = PIXEL_FORMAT_RGB565,
-        .pixel_order = PIXEL_ORDER_RAW_BGGR
-    }
-};
+static mipi_camera_settings_t g_camera_settings;
 
 /******************************** Static Functions ***************************/
 static int init(void)
@@ -665,6 +660,18 @@ static int set_framesize(int width, int height)
     ret |= cambus_write(TIMING_DVPHO_1, (width >> 0) & 0xff);
     ret |= cambus_write(TIMING_DVPVO_0, (height >> 8) & 0xff);
     ret |= cambus_write(TIMING_DVPVO_1, (height >> 0) & 0xff);
+
+    if ((width * height) > (320 * 320)) {
+        /*
+        Divide PLL Clk for higher resolutions.  This reduces framerate,
+        but increases the bandwith we have to process the incoming data.
+        TODO: There has to be some way to modify the horizontal/vertical
+        blanking to preserve framerate, but the documentation on the HTS/VTS
+        registers is non-existent...  The drivers may also need to discard
+        the dummy pixels (?)
+        */
+        ret |= write_reg(0x3035, 0x44);
+    }
 
     // Software power up
     ret |= cambus_write(SYS_CTRL0, 0x02);
