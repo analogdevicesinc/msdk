@@ -2,6 +2,7 @@
  * @file    lpcmp_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the LPCMP Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup lpcmp_registers
  */
 
 /******************************************************************************

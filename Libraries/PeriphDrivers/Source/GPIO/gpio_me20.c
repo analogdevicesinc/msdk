@@ -43,7 +43,6 @@
 #include "mcr_regs.h"
 
 /* **** Definitions **** */
-#define MXC_GPIO_HART_UART (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1 | MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3)
 
 /* **** Globals **** */
 
@@ -93,21 +92,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     mxc_gpio_regs_t *gpio = cfg->port;
 
     port = MXC_GPIO_GET_IDX(cfg->port);
-
-    // TODO(jake.carter): Find restricted pins
-    // // Don't use inaccessible pins
-    // if((gpio == MXC_GPIO0) && (cfg->mask & MXC_GPIO_INACCESSIBLE)) {
-    //     return E_NOT_SUPPORTED;
-    // }
-
-    // Make sure UART2 pins aren't used by the HART Modem
-    if ((gpio == MXC_GPIO0) && (cfg->mask & MXC_GPIO_HART_UART) &&
-        (cfg->func == MXC_GPIO_FUNC_ALT2)) {
-        if ((gpio->en0 & MXC_GPIO_HART_UART) == 0 && (gpio->en1 & MXC_GPIO_HART_UART) &&
-            (gpio->en2 & MXC_GPIO_HART_UART) == 0) {
-            return E_BAD_STATE;
-        }
-    }
 
     if (cfg->port == MXC_GPIO3) {
         if (cfg->mask & MXC_GPIO_PIN_0) {

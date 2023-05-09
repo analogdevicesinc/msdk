@@ -2,6 +2,7 @@
  * @file    uart_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the UART Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup uart_registers
  */
 
 /******************************************************************************

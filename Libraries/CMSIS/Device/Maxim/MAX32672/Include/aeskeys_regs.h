@@ -1,7 +1,7 @@
 /**
  * @file    aeskeys_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AESKEYS Peripheral Module.
- * @note    This file is @generated.
+ * @deprecated aeskeys_regs has been deprecated in favor of @ref sys_aeskeys_registers and @ref usr_aeskeys_registers
  */
 
 /******************************************************************************
@@ -39,6 +39,8 @@
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_AESKEYS_REGS_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32672_INCLUDE_AESKEYS_REGS_H_
+
+#warning "DEPRECATED(1-10-2023): aeskeys_regs.h - Scheduled for removal. Please use sys_aeskeys_regs.h."
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -84,7 +86,11 @@ extern "C" {
 /**
  * @ingroup aeskeys_registers
  * Structure type to access the AESKEYS Registers.
- */
+ */#if defined(__GNUC__)
+__attribute__((deprecated("mxc_aeskeys_regs_t struct and aeskeys_regs.h no longer supported. Use sys_aeskeys_regs.h and MXC_SYS_AESKEYS (mxc_sys_aeskeys_regs_t) for AES Key Access. 3-31-2023")))
+#else
+#warning "mxc_aeskeys_regs_t struct and aeskeys_regs.h no longer supported. Use sys_aeskeys_regs.h and MXC_AESKEYS (mxc_sys_aeskeys_regs_t) for AES Key Access. 3-31-2023"
+#endif
 typedef struct {
     __IO uint32_t key0;                 /**< <tt>\b 0x00:</tt> AESKEYS KEY0 Register */
     __IO uint32_t key1;                 /**< <tt>\b 0x04:</tt> AESKEYS KEY1 Register */
