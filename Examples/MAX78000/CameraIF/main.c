@@ -408,8 +408,7 @@ int main(void)
     }
 #else
     camera_start_capture_image_tft();
-    while (1)
-        ;
+    while (1) {}
 #endif
 
     return ret;
