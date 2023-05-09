@@ -2,6 +2,7 @@
  * @file    clcd_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the CLCD Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup clcd_registers
  */
 
 /******************************************************************************

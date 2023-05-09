@@ -5,7 +5,13 @@
 # For instructions on how to use this system, see
 # https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
+#MXC_OPTIMIZE_CFLAGS = -Og
+# ^ For example, you can uncomment this line to 
+# optimize the project for debugging
+
 # **********************************************************
+
+# Add your config here!
 
 # If you have secure version of MCU, set SBT=1 to generate signed binary
 # For more information on how sing process works, see
@@ -13,15 +19,3 @@
 SBT=0
 
 LIB_LITTLEFS = 1
-
-# This example attempts to mount a Little FS filesystem on half of the
-# device's Flash space. To ensure application code does not use any of
-# the Flash space that Little FS will attempt to use, the available 
-# Flash size is reduced with one of the custom linkerfiles below.
-ifeq ($(SBT),1)
-# This linkerfile contains extra sections for compatibility with the Secure Boot Tools (SBT).
-override LINKERFILE = wearlevel-sla.ld
-else
-# This linkerfile is for use with standard non-secure applications.
-override LINKERFILE = wearlevel.ld
-endif # SBT

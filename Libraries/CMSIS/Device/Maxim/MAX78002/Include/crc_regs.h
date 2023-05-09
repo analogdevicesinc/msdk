@@ -2,6 +2,7 @@
  * @file    crc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the CRC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup crc_registers
  */
 
 /******************************************************************************

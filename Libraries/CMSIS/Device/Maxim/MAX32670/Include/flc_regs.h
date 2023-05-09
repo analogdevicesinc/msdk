@@ -2,6 +2,7 @@
  * @file    flc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the FLC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup flc_registers
  */
 
 /******************************************************************************

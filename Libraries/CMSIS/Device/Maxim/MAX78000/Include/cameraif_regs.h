@@ -2,6 +2,7 @@
  * @file    cameraif_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the CAMERAIF Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup cameraif_registers
  */
 
 /******************************************************************************

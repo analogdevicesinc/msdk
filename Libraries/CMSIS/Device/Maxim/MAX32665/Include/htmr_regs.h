@@ -2,6 +2,7 @@
  * @file    htmr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the HTMR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup htmr_registers
  */
 
 /******************************************************************************
