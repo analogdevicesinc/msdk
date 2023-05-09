@@ -69,13 +69,13 @@ void MXC_FLC_ME13_Flash_Operation(void)
     */
 
     /* Flush all instruction caches if cache is enabled */
-	if (MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN) {
-		MXC_ICC_Flush();
-	}
+    if (MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN) {
+        MXC_ICC_Flush();
+    }
 
-	if (MXC_SFCC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN) {
-		MXC_SFCC_Enable();
-	}
+    if (MXC_SFCC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN) {
+        MXC_SFCC_Enable();
+    }
 
     // Clear the line fill buffer by reading 2 pages from flash
     volatile uint32_t *line_addr;
