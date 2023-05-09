@@ -3,7 +3,7 @@
 
 
 ## Overview
-This demo includes **FaceDetection** and **FaceID** CNN models and runs them sequentially on MAX78000 Feather board only. The **FaceID** CNN model weight binary file (Include/weigths_2.bin) needs to be programmed to SD card.
+This demo includes **FaceDetection** and **FaceID** CNN models and runs them sequentially on MAX78000 Feather board only. The **FaceID** CNN model weight binary file (Include/weigths_2.bin) needs to be programmed to SD card using the "SDHC_weights" project which converts the FaceID weights (weights_2.h) into binary file (weights_2.bin) and writes it to the SD card.
 The **FaceDetection** CNN model detects a face and application draws a box around the face.
 
 The **FaceID** CNN model demonstrates identification of a number of persons from their facial images.
@@ -12,7 +12,18 @@ For this purpose, the **FaceID** CNN model generates a 512-length embedding for 
 
 ## Facial Recognition Demo Software
 
-### Building firmware
+### Building FaceID weights writer firmware
+
+Use **facial_recognition/SDHC_weights** project and it will create **weights_2.bin** file in binary format. Make sure to have a formatted SD card inserted into the Feather board.
+
+```bash
+$ cd /Examples/MAX78000/CNN/facial_recognition/SDHC_weights
+$ make
+```
+
+Next, load this firmware image to MAX78000 Feather as described in the following section to write the binary FaceID weights to the SD card.
+
+### Building Facial Recognition firmware
 
 Navigate directory where Facial Recognition demo software is located and build the project:
 
@@ -50,14 +61,6 @@ If using Linux, perform this step:
 ```bash
 ./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
 ```
-
-
-
-### Write FaceID model weights to SD Card
-
-Use **facial_recognition\SDHC_weights** project and it will create **weights_2.bin** file in binary format.
-
-
 
 ### MAX78000 Feather operations
 
@@ -192,17 +195,15 @@ The main approach in the literature is composed of three steps:
 - Face Alignment: The rotation angles (in 3D) of the face in the image is find to compensate its effect by affine transformation.
 - Face Identification: The extracted sub-image is used to identify the person.
 
-In this project, the aim is to run all those steps in a single AI-85 chip so the approach is to identify the faces with a single from uncropped portraits, each contains 1 face only.
+In this project, the aim is to run all those steps in a single MAX78000 chip so the approach is to identify the faces with a single from uncropped portraits, each contains 1 face only.
 
-Then, the embeddings (Face ID) are created by FaceNet [2] model as seen below and used these embeddings as our target. There is no need to deal with center loss, triplet loss etc, since those are assumed to be covered by FaceNet model. The loss used in the model development will be Mean Square Error (MSE) between the target and predicted embeddings.
+Then, the embeddings (Face ID) are created by FaceNet [1] model as seen below and used these embeddings as our target. There is no need to deal with center loss, triplet loss, since those are assumed to be covered by FaceNet model. The loss used in the model development will be Mean Square Error (MSE) between the target and predicted embeddings.
 
 ### CNN Model
 The CNN model synthesized for MAX78000 is 9 layer sequential [model](db_gen/ai85/AI85FaceIDNetNoBias.py). It takes 160x120 RGB image from the input and gives out 512 length embedding corresponds to the image.
 
 
 ## References
-[1] MTCNN: https://arxiv.org/ftp/arxiv/papers/1604/1604.02878.pdf
+[1] FaceNet: https://arxiv.org/pdf/1503.03832.pdf
 
-[2] FaceNet: https://arxiv.org/pdf/1503.03832.pdf
-
-[3] https://github.com/MaximIntegratedAI/MaximAI_Documentation
+[2] https://github.com/MaximIntegratedAI/MaximAI_Documentation
