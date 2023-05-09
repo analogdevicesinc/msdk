@@ -9138,7 +9138,7 @@ domain.</description>
      <fields>
       <field>
        <name>FILTER_EN</name>
-       <description>Enable analog deglitch filter.</description>
+       <description>Enables analog deglitch filter.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>

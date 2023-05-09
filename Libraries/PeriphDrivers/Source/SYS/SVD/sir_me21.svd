@@ -55,6 +55,48 @@
           </field>
         </fields>
       </register>
+      <register>
+        <!--FSTAT-->
+        <name>FSTAT</name>
+        <description>Function Status Register.</description>
+        <addressOffset>0x100</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>FPU</name>
+            <description>FPU Function.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TRNG</name>
+            <description>TRNG Function.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DS_ACK</name>
+            <description>DeepSleep Acknowledge.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <!--SFSTAT-->
+        <name>SFSTAT</name>
+        <description>Security Function Status Register.</description>
+        <addressOffset>0x104</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>SECFUNC0</name>
+            <description>Secure Function 0 Status.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
     </registers>
   </peripheral>
   <!-- SIR: System Initialization Registers     -->

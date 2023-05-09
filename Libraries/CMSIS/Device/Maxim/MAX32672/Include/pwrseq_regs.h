@@ -2,6 +2,7 @@
  * @file    pwrseq_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the PWRSEQ Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup pwrseq_registers
  */
 
 /******************************************************************************
