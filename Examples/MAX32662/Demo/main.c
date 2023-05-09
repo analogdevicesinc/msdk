@@ -33,22 +33,25 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Demo
+ * @details This example displays the uptime to the TFT Display and Terminal,
+ *          toggles the LED at 1-2Hz depending on pushbutton press, and shows
+ *          the chip information if the pushbutton is pressed 5 times.
  */
 
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include "mxc_delay.h"
 #include "mxc_device.h"
 #include "mxc_sys.h"
 #include "pb.h"
 #include "led.h"
 #include "board.h"
-#include "mxc_delay.h"
+#include "rtc.h"
 #include "bitmap.h"
-#include "tft_st7735s.h"
+#include "tft_st7735.h"
 
 #ifdef BOARD_FTHR_REVA
 #error "ERR_NOTSUPPORTED: This example is not supported by the MAX32662 FTHR_RevA."
@@ -56,26 +59,49 @@
 
 /***** Definitions *****/
 
+#define SECS_PER_MIN 60
+#define SECS_PER_HR (60 * SECS_PER_MIN)
+
 /***** Globals *****/
+
+int buttonPressedCount = 0;
 
 /***** Functions *****/
 
-volatile int buttonPressedCount = 0;
+volatile int buttonPressed = 0;
 void buttonHandler(void *pb)
 {
-    buttonPressedCount++;
+    buttonPressed = 1;
+}
+
+// This function runs at every 250ms to account for debouncing.
+void checkForButtonRelease(void)
+{
+    if (buttonPressed && !PB_Get(0)) {
+        buttonPressedCount++;
+        buttonPressed = 0;
+    }
 }
 
 // *****************************************************************************
 int main(void)
 {
     int i;
-    int count = 0;
     int pb_state = 0;
     uint8_t usn[MXC_SYS_USN_LEN];
-    area_t printf_area;
+    area_t usn_printf_area;
+    area_t units_printf_area;
+    area_t uptime_printf_area;
+    int hr, min, sec, rtc_readout;
+    int error;
 
-    printf("Hello World!\n");
+    printf("**** MAX32662 EV Kit Demo ****\n");
+
+    // Predefine Printf Area for displaying USN on TFT.
+    usn_printf_area.x = 2;
+    usn_printf_area.y = 3;
+    usn_printf_area.w = 128;
+    usn_printf_area.h = 128;
 
     MXC_SYS_GetUSN(usn, NULL);
 
@@ -91,21 +117,53 @@ int main(void)
     MXC_TFT_SetFont((int)&SansSerif16x16[0]);
 
     // Set print area
-    printf_area.x = 2;
-    printf_area.y = 3;
-    printf_area.w = 128;
-    printf_area.h = 128;
-    MXC_TFT_ConfigPrintf(&printf_area);
+    units_printf_area.x = 24;
+    units_printf_area.y = 25;
+    units_printf_area.w = 128;
+    units_printf_area.h = 30;
+    MXC_TFT_ConfigPrintf(&units_printf_area);
+    MXC_TFT_Printf("hh:mm:ss");
+
+    uptime_printf_area.x = 22;
+    uptime_printf_area.y = 58;
+    uptime_printf_area.w = 128;
+    uptime_printf_area.h = 30;
+    MXC_TFT_ConfigPrintf(&uptime_printf_area);
+
+    error = MXC_RTC_Init(0, 0);
+    if (error != E_NO_ERROR) {
+        printf("Failed RTC Initialization\n");
+        return error;
+    }
+
+    error = MXC_RTC_Start();
+    if (error != E_NO_ERROR) {
+        printf("Failed RTC_Start\n");
+        return error;
+    }
 
     while (1) {
-        MXC_TFT_Printf("cnt: %d\n", count);
+        do {
+            rtc_readout = MXC_RTC_GetSecond();
+        } while (rtc_readout == E_BUSY);
+        sec = rtc_readout;
+
+        hr = sec / SECS_PER_HR;
+        sec -= hr * SECS_PER_HR;
+
+        min = sec / SECS_PER_MIN;
+        sec -= min * SECS_PER_MIN;
+
+        printf("\n(hhh:mm:ss): %03d:%02d:%02d\n\n", hr, min, sec);
+        MXC_TFT_Printf("%03d:%02d:%02d\n", hr, min, sec);
 
         if (buttonPressedCount > 4) {
             buttonPressedCount = 0;
 
             // Printf USN on bottom of screen.
             MXC_TFT_SetBackGroundColor(WHITE);
-            MXC_TFT_ConfigPrintf(&printf_area);
+
+            MXC_TFT_ConfigPrintf(&usn_printf_area);
 
             // Print revision and USN.
             MXC_TFT_Printf("Rev: %x\n", MXC_GCR->revision);
@@ -124,27 +182,37 @@ int main(void)
             MXC_TFT_Printf("\nContinue in\n");
             for (i = 3; i > 0; i--) {
                 MXC_TFT_Printf("%ds...", i);
-                MXC_Delay(1000000);
+                MXC_Delay(MXC_DELAY_SEC(1));
             }
 
-            // Clear screen and continue count.
-            MXC_TFT_ConfigPrintf(&printf_area);
+            // Clear screen and continue uptime.
             MXC_TFT_SetBackGroundColor(WHITE);
+
+            MXC_TFT_ConfigPrintf(&units_printf_area);
+            MXC_TFT_Printf("hh:mm:ss");
+
+            MXC_TFT_ConfigPrintf(&uptime_printf_area);
+            MXC_TFT_Printf("%03d:%02d:%02d\n", hr, min, sec);
         }
 
         pb_state = PB_Get(0);
 
         LED_Toggle(0);
+        checkForButtonRelease();
+
         MXC_Delay(250000);
 
         // Toggle LED0 at 250ms (instead of 500ms) when PB0 is pressed.
         if (pb_state) {
             LED_Toggle(0);
         }
+
+        checkForButtonRelease();
 
         MXC_Delay(250000);
 
         LED_Toggle(0);
+        checkForButtonRelease();
 
         MXC_Delay(250000);
 
@@ -152,10 +220,11 @@ int main(void)
         if (pb_state) {
             LED_Toggle(0);
         }
+        
+        checkForButtonRelease();
 
-        MXC_Delay(250000);
-
-        // Print count every second.
-        printf("count = %d\n", count++);
+        // Set as 50000 (50ms) instead of 250000 (250ms) because logic at beginning of while
+        //  loop takes around ~200ms.
+        MXC_Delay(50000);
     }
 }

@@ -1,8 +1,12 @@
 ## Description
 
-A basic getting started program.
+This example demonstrates the use of the TFT Display, UART Terminal, RTC, Pushbuttons, and LEDs on the MAX32662EVKIT.
 
-This version of Hello_World prints an incrementing count to the console UART and toggles a GPIO (P0.22 - LED1) once every 500 ms.
+Features:
+	1. Displays the Analog Devices Logo when the example starts.
+	2. Displays the uptime of the board in the format: (hhh:mm:ss).
+	3. LED Toggles at 1Hz by default, or 2Hz if the pushbutton is held down.
+	4. Displays the chip info for 3 seconds if the pushbutton is pressed 5 times.
 
 ## Software
 
@@ -12,26 +16,35 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+Only builds on EV Kits.
 
 ## Required Connections
-
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Select RX0 and TX0 on Headers JP10 and JP11 (UART 0).
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
+## Expected Display Output
+
+The display will show the Analog Devices logo for several seconds before displaying the uptime of the board in the format: (hhh:mm:ss) for (Hours:Minutes:Seconds).
+
+Pressing the button 5 or more times will wipe the screen and display the chip information (USN and Revision) for 3 seconds before the uptime is dsplayed up again.
 
 ## Expected Output
 
 The Console UART of the device will output these messages:
 
 ```
-Hello World!
-count = 0
-count = 1
-count = 2
-count = 3
-count = 4
-...
-```
+**** MAX32662 EV Kit Demo ****
 
-You will also observe LED0 blinking at a rate of 1Hz.
+(hhh:mm:ss): 000:00:00
+
+
+(hhh:mm:ss): 000:00:01
+
+
+(hhh:mm:ss): 000:00:02
+
+
+(hhh:mm:ss): 000:00:03
+
+```

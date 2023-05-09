@@ -28,8 +28,9 @@ Bootloader
 Bootloader_Host
 Coremark
 CRC
-Display
+Demo
 DES
+Display
 DMA
 ECC
 EEPROM_Emulator
@@ -39,7 +40,6 @@ FreeRTOSDemo
 GPIO
 Hash
 Hello_World
-Hello_World-lvgl
 HTMR
 I2C
 I2C_MNGR

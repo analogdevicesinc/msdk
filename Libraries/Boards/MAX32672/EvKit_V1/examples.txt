@@ -17,6 +17,7 @@ Comparator
 Coremark
 CRC
 CTB_AES
+Demo
 DMA
 Display
 EEPROM_Emulator
@@ -25,7 +26,6 @@ Flash_CLI
 FreeRTOSDemo
 GPIO
 Hello_World
-Hello_World-tft
 I2C
 I2C_MNGR
 I2C_SCAN

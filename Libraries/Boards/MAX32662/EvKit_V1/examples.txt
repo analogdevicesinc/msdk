@@ -15,13 +15,13 @@ ARM-DSP/arm_variance_example
 Bootloader_Host
 CAN
 Coremark
+Demo
 DMA
 EEPROM_Emulator
 Flash
 Flash_CLI
 GPIO
 Hello_World
-Hello_World-tft
 I2C
 I2C_MNGR
 I2C_SCAN

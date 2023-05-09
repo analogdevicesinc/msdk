@@ -44,7 +44,9 @@
 #include "spi.h"
 #include "led.h"
 #include "pb.h"
-#include "tft_st7735s.h"
+#include "tft_st7735.h"
+
+/***** Definitions *****/
 
 /***** Global Variables *****/
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
