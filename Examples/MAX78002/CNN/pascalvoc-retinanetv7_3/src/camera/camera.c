@@ -68,9 +68,8 @@ void camera_capture(void)
 
     if (error) {
         printf("Failed!\n");
-        mxc_csi2_capture_stats_t stats = MXC_CSI2_GetCaptureStats();
-        printf("CTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n",
-               stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
+        mxc_csi2_capture_stats_t stats = mipi_camera_get_capture_stats();
+        printf("Failed (%u/%u bytes received)!\nCTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n", stats.bytes_captured, stats.frame_size, stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
         return;
     }
 
@@ -80,10 +79,7 @@ void camera_capture(void)
 void camera_capture_and_load_cnn(void) 
 {
     camera_capture();
-
-    uint8_t *raw; // Unused, since we have captured into external SRAM
-    uint32_t imgLen = 0, w = 0, h = 0;
-    MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
+    mxc_csi2_capture_stats_t stats = mipi_camera_get_capture_stats();
 
     /*
     The CNN model needs RGB888, but the camera outputs RGB565.  Additionally,
@@ -105,9 +101,8 @@ void camera_capture_and_load_cnn(void)
     spi_init();
     ram_enter_quadmode();
 
-    for (int i = 0; i < imgLen; i += CONVERSION_BUFFER_SIZE) { // for every SRAM chunk
+    for (int i = SRAM_ADDRESS; i < stats.frame_size; i += CONVERSION_BUFFER_SIZE) { // for every SRAM chunk
         ram_read_quad(i, rgb565_buffer, CONVERSION_BUFFER_SIZE);
-        // Model needs RGB888
         for (int j = 0; j < CONVERSION_BUFFER_SIZE; j += 2) { // for each RGB565 byte pair
             // Decode RGB565
             r5 = (rgb565_buffer[j] & 0b11111000) >> 3;

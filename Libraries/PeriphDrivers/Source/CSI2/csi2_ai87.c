@@ -102,9 +102,9 @@ int MXC_CSI2_GetLaneCtrlSource(mxc_csi2_lane_src_t *src)
     return MXC_CSI2_RevA_GetLaneCtrlSource((mxc_csi2_reva_regs_t *)MXC_CSI2, src);
 }
 
-void MXC_CSI2_GetImageDetails(uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h)
+void MXC_CSI2_GetImageDetails(uint32_t *imgLen, uint32_t *w, uint32_t *h)
 {
-    MXC_CSI2_RevA_GetImageDetails(img, imgLen, w, h);
+    MXC_CSI2_RevA_GetImageDetails(imgLen, w, h);
 }
 
 int MXC_CSI2_Callback(mxc_csi2_req_t *req, int retVal)
@@ -301,7 +301,9 @@ mxc_csi2_capture_stats_t MXC_CSI2_GetCaptureStats()
         .success = stats.success,
         .ctrl_err = stats.ctrl_err,
         .ppi_err = stats.ppi_err,
-        .vfifo_err = stats.vfifo_err
+        .vfifo_err = stats.vfifo_err,
+        .frame_size = stats.frame_size,
+        .bytes_captured = stats.bytes_captured
     };
     return ret;
 }

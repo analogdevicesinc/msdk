@@ -58,6 +58,8 @@ typedef struct {
     uint32_t ctrl_err;
     uint32_t ppi_err;
     uint32_t vfifo_err;
+    size_t frame_size;
+    size_t bytes_captured;
 } mxc_csi2_reva_capture_stats_t;
 
 /******* Globals *******/
@@ -83,7 +85,7 @@ int MXC_CSI2_RevA_SetLaneCtrlSource(mxc_csi2_reva_regs_t *csi2, mxc_csi2_lane_sr
 
 int MXC_CSI2_RevA_GetLaneCtrlSource(mxc_csi2_reva_regs_t *csi2, mxc_csi2_lane_src_t *src);
 
-void MXC_CSI2_RevA_GetImageDetails(uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h);
+void MXC_CSI2_RevA_GetImageDetails(uint32_t *imgLen, uint32_t *w, uint32_t *h);
 
 int MXC_CSI2_RevA_Callback(mxc_csi2_req_t *req, int retVal);
 

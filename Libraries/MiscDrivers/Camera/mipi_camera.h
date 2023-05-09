@@ -219,10 +219,25 @@ int mipi_camera_get_manufacture_id(int *id);
 int mipi_camera_sleep(int sleep);
 
 /**
- * @brief Get the current format of the MIPI camera output
- * @return The current format of the camera
+ * @brief Capture an image from the MIPI camera.  This function will block
+ * until the frame is complete or an error is received.  During the capture,
+ * the line handler function passed to @ref mipi_camera_init is expected to unload
+ * the received data in time for each new row.
+ * @return 0 (E_NO_ERROR) on a successful capture of a full frame, non-zero @ref MXC_Error_Codes on failure.
  */
-mipi_camera_format_t mipi_camera_get_camera_format(void);
+int mipi_camera_capture();
+
+/**
+ * @brief Retrieve the current camera settings
+ * @return The current camera settings
+ */
+mipi_camera_settings_t mipi_camera_get_camera_settings(void);
+
+/**
+ * @brief Get detailed statistics about the last image capture and any errors that occurred.
+ * @return A @ref mxc_csi2_capture_stats_t struct
+ */
+mxc_csi2_capture_stats_t mipi_camera_get_capture_stats(void);
 
 /**
  * @brief Parse a string containing information about the last captured image.
@@ -235,10 +250,6 @@ mipi_camera_format_t mipi_camera_get_camera_format(void);
  */
 char* mipi_camera_get_image_header(void);
 
-/**
- * @brief Capture an image from the MIPI camera
- * @return 0 on success, non-zero on failure
- */
-int mipi_camera_capture();
+
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_MIPI_CAMERA_H_

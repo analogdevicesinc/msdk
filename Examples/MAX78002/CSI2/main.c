@@ -67,12 +67,17 @@
 
 /***** Definitions *****/
 
+// Max resolution is 320x320 for RGB565.  Beyond this, OV5640 timing issues
+// interrupt data transfers to external SRAM, resulting in image artifacts.
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 240
 
 #define PIXEL_FORMAT PIXEL_FORMAT_RGB565
 #define PIXEL_ORDER PIXEL_ORDER_RGB565_RGB
 #define BYTES_PER_PIXEL 2
+
+#define SRAM_STORAGE_ADDRESS 0x0
+// ^ This is the base address in external SRAM where the image will be stored.
 
 // Update for future cameras
 #if defined(CAMERA_OV5640)
@@ -82,50 +87,45 @@
 #endif
 
 /***** Globals *****/
-unsigned int g_index = 0;
+unsigned int g_sram_address = SRAM_STORAGE_ADDRESS;
 
 /***** Functions *****/
 
-int CSI2_line_handler(uint8_t* data, unsigned int len)
+int line_handler(uint8_t* data, unsigned int len)
 {
     // Write received image rows to external QSPI SRAM
-    ram_write_quad(g_index, data, len);
-    g_index += len;
+    ram_write_quad(g_sram_address, data, len);
+    g_sram_address += len;
     return E_NO_ERROR;
 }
 
 void process_img(void)
 {
-    uint8_t *raw;
-    uint32_t imgLen;
-    uint32_t w, h;
-
     printf("Capturing image...\n");
     spi_init();
     ram_enter_quadmode();
 
-    g_index = 0;
+    g_sram_address = SRAM_STORAGE_ADDRESS;
     MXC_TMR_SW_Start(MXC_TMR0);
     int error = mipi_camera_capture();
+    mxc_csi2_capture_stats_t stats = mipi_camera_get_capture_stats();
     unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+
     if(error) {
-        printf("Failed!\n");
-        mxc_csi2_capture_stats_t stats = MXC_CSI2_GetCaptureStats();
-        printf("CTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n", stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
+        printf("Failed (%u/%u bytes received)!\nCTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n", stats.bytes_captured, stats.frame_size, stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
         return;
     }
     printf("Done! (took %i us)\n", elapsed);
 
-    // Get the details of the image from the camera driver.
-    MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
-
+    printf("Sending image over serial port...\n");
     MXC_TMR_SW_Start(MXC_TMR0);
+
     // Send image header
     clear_serial_buffer();
     send_msg(mipi_camera_get_image_header());
 
-    // Send image data
-    for (int i = 0; i < imgLen; i += SERIAL_BUFFER_SIZE) {
+    // Read image out from SRAM and send over the serial port
+    for (int i = SRAM_STORAGE_ADDRESS; i < stats.frame_size; i += SERIAL_BUFFER_SIZE) {
         ram_read_quad(i, (uint8_t*)g_serial_buffer, SERIAL_BUFFER_SIZE);
         MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
     }
@@ -195,12 +195,6 @@ int main(void)
     printf("\nPress PB1 (SW4) or send the 'capture' command to trigger a frame capture.\n\n");
 
     printf("Initializing camera...\n");
-
-    MXC_TMR_SW_Start(MXC_TMR0);
-    TFT_SPI_Init();
-    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("TFT SPI Initialization took %i us\n", elapsed);
-
     // Initialize camera
     mipi_camera_settings_t settings = {
         .width = IMAGE_WIDTH,
@@ -209,7 +203,7 @@ int main(void)
             .pixel_format = PIXEL_FORMAT,
             .pixel_order = PIXEL_ORDER
         },
-        .line_handler = CSI2_line_handler,
+        .line_handler = line_handler,
     };
 
     mipi_camera_init(settings);
