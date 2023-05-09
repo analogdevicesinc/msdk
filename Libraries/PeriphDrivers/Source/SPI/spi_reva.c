@@ -879,7 +879,7 @@ uint32_t MXC_SPI_RevA_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t 
     // Write the FIFO //starting here
     if (remain) {
         if (remain >= MXC_SPI_FIFO_DEPTH) {
-            MXC_SPI_SetTXThreshold((mxc_spi_regs_t *)spi, MXC_SPI_FIFO_DEPTH-1);
+            MXC_SPI_SetTXThreshold((mxc_spi_regs_t *)spi, MXC_SPI_FIFO_DEPTH - 1);
         } else {
             MXC_SPI_SetTXThreshold((mxc_spi_regs_t *)spi, remain);
         }
