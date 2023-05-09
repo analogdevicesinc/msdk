@@ -361,9 +361,9 @@ int MXC_RTC_RevA_TrimCrystal(mxc_rtc_reva_regs_t *rtc, mxc_tmr_regs_t *tmr)
 
     if (!(rtc->ctrl & MXC_F_RTC_REVA_CTRL_EN)) { // If RTC not enable, initialize it
         rtc_en = false;
-        while ((sec = MXC_RTC_RevA_GetSecond(rtc)) < 0) {}
+
         // Save state
-        while ((ssec = MXC_RTC_RevA_GetSubSecond(rtc)) < 0) {}
+        while (MXC_RTC_RevA_GetTime(rtc, &sec, &ssec) < 0) {}
         while (rtc->ctrl & MXC_F_RTC_CTRL_BUSY) {}
         ctrl = rtc->ctrl;
 
@@ -375,16 +375,14 @@ int MXC_RTC_RevA_TrimCrystal(mxc_rtc_reva_regs_t *rtc, mxc_tmr_regs_t *tmr)
 
     MXC_TMR_ClearFlags(tmr);
     MXC_TMR_Start(tmr); // Sample the RTC ticks in MXC_RTC_REVA_TRIM_PERIODS number of periods
-    while ((sec_sample[0] = MXC_RTC_RevA_GetSecond(rtc)) < 0) {}
-    while ((ssec_sample[0] = MXC_RTC_RevA_GetSubSecond(rtc)) < 0) {}
+    while (MXC_RTC_RevA_GetTime(rtc, &sec_sample[0], &ssec_sample[0]) < 0) {}
 
     for (int i = 1; i < (MXC_RTC_REVA_TRIM_PERIODS + 1); i++) {
-        while (!(MXC_TMR_GetFlags(tmr) & MXC_RTC_TRIM_TMR_IRQ)) {}
         // Wait for time trim period to elapse
+        while (!(MXC_TMR_GetFlags(tmr) & MXC_RTC_TRIM_TMR_IRQ)) {}
 
-        while ((sec_sample[i] = MXC_RTC_RevA_GetSecond(rtc)) < 0) {}
         // Take time sample
-        while ((ssec_sample[i] = MXC_RTC_RevA_GetSubSecond(rtc)) < 0) {}
+        while (MXC_RTC_RevA_GetTime(rtc, &sec_sample[i], &ssec_sample[i]) < 0) {}
 
         MXC_TMR_ClearFlags(tmr);
     }
