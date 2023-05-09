@@ -2,6 +2,7 @@
  * @file    sema_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SEMA Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup sema_registers
  */
 
 /******************************************************************************

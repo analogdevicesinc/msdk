@@ -2,6 +2,7 @@
  * @file    gcfr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GCFR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup gcfr_registers
  */
 
 /******************************************************************************

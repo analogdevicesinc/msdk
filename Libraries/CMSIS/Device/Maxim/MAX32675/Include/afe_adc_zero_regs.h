@@ -2,6 +2,7 @@
  * @file    afe_adc_zero_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AFE_ADC_ZERO Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup afe_adc_zero_registers
  */
 
 /******************************************************************************

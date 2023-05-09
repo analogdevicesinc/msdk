@@ -315,7 +315,7 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>IDRV_IP25</name>
+            <name>IDRV_1P25</name>
             <description>Trimming code for reference buffer drive strength. 1.25V</description>
             <bitOffset>0</bitOffset>
             <bitWidth>4</bitWidth>

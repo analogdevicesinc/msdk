@@ -2,6 +2,7 @@
  * @file    ctb_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the CTB Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup ctb_registers
  */
 
 /******************************************************************************

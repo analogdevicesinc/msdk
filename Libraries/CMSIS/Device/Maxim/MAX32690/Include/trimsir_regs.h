@@ -2,6 +2,7 @@
  * @file    trimsir_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the TRIMSIR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup trimsir_registers
  */
 
 /******************************************************************************

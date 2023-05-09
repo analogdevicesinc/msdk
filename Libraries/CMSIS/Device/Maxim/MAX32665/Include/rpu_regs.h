@@ -2,6 +2,7 @@
  * @file    rpu_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the RPU Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup rpu_registers
  */
 
 /******************************************************************************
