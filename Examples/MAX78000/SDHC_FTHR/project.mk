@@ -13,6 +13,8 @@
 
 # Add your config here!
 
+BOARD = FTHR_RevA
+
 ifneq ($(BOARD),FTHR_RevA)
 $(error ERR_NOTSUPPORTED: This project requires an SD card slot and is only supported for the MAX78000FTHR)
 endif
