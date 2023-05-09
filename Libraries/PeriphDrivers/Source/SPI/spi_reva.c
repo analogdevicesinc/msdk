@@ -671,7 +671,7 @@ int MXC_SPI_RevA_SetRXThreshold(mxc_spi_reva_regs_t *spi, unsigned int numBytes)
 {
     MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
 
-    if (numBytes > 32) {
+    if (numBytes > 30) {
         return E_BAD_PARAM;
     }
 
@@ -691,7 +691,8 @@ int MXC_SPI_RevA_SetTXThreshold(mxc_spi_reva_regs_t *spi, unsigned int numBytes)
 {
     MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
 
-    if (numBytes > 32) {
+    // Valid values for the threshold are 0x1 to 0x1F
+    if (numBytes > 31 || numBytes == 0) {
         return E_BAD_PARAM;
     }
 
@@ -877,8 +878,8 @@ uint32_t MXC_SPI_RevA_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t 
     // Set the TX interrupts
     // Write the FIFO //starting here
     if (remain) {
-        if (remain > MXC_SPI_FIFO_DEPTH) {
-            MXC_SPI_SetTXThreshold((mxc_spi_regs_t *)spi, MXC_SPI_FIFO_DEPTH);
+        if (remain >= MXC_SPI_FIFO_DEPTH) {
+            MXC_SPI_SetTXThreshold((mxc_spi_regs_t *)spi, MXC_SPI_FIFO_DEPTH - 1);
         } else {
             MXC_SPI_SetTXThreshold((mxc_spi_regs_t *)spi, remain);
         }
@@ -905,7 +906,7 @@ uint32_t MXC_SPI_RevA_TransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t 
         remain = rx_length - req->rxCnt;
 
         if (remain) {
-            if (remain > MXC_SPI_FIFO_DEPTH) {
+            if (remain >= MXC_SPI_FIFO_DEPTH) {
                 MXC_SPI_SetRXThreshold((mxc_spi_regs_t *)spi, 2);
             } else {
                 MXC_SPI_SetRXThreshold((mxc_spi_regs_t *)spi, remain - 1);
