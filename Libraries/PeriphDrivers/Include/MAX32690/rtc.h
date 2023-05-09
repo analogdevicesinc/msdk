@@ -181,7 +181,10 @@ int MXC_RTC_ClearFlags(int flags);
  * @brief     Get SubSecond or E_BUSY, see /ref MXC_ERROR_CODES
  * @retval    Returns subsecond value
  */
-int MXC_RTC_GetSubSecond(void) __attribute__((deprecated("Use MXC_RTC_GetSubSeconds() instead.")));
+#ifdef __GNUC__
+__attribute__((deprecated("Use MXC_RTC_GetSubSeconds() instead.")))
+#endif
+int MXC_RTC_GetSubSecond(void);
 
 /**
  * @brief     This function stores the current value of the sub-seconds counter into a
@@ -195,7 +198,10 @@ int MXC_RTC_GetSubSeconds(uint32_t *ssec);
  * @brief     Get Second or E_BUSY, see /ref MXC_ERROR_CODES
  * @retval    returns second value
  */
-int MXC_RTC_GetSecond(void) __attribute__((deprecated("Use MXC_RTC_GetSeconds() instead.")));
+#ifdef __GNUC__
+__attribute__((deprecated("Use MXC_RTC_GetSeconds() instead.")))
+#endif
+int MXC_RTC_GetSecond(void);
 
 /**
  * @brief     This function stores the current value of the seconds counter into a
