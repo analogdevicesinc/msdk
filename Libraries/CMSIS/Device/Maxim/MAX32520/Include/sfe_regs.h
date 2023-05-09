@@ -2,6 +2,7 @@
  * @file    sfe_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SFE Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup sfe_registers
  */
 
 /******************************************************************************

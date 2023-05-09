@@ -13234,7 +13234,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <fields>
       <field>
        <name>FILTER_EN</name>
-       <description>Enable analog deglitch filter.</description>
+       <description>Enables analog deglitch filter.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>

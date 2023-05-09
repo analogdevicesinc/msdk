@@ -2,6 +2,7 @@
  * @file    sir_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SIR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup sir_registers
  */
 
 /******************************************************************************

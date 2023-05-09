@@ -251,12 +251,6 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="DMA">
-            <name>RTC</name>
-            <description>Real Time Clock Reset.</description>
-            <bitOffset>17</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field derivedFrom="DMA">
             <name>CTB</name>
             <description>Crypto Toolbox Reset.</description>
             <bitOffset>18</bitOffset>

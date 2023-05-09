@@ -2,6 +2,7 @@
  * @file    mcr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the MCR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup mcr_registers
  */
 
 /******************************************************************************

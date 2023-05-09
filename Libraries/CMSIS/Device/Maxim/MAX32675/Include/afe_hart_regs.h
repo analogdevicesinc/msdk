@@ -2,6 +2,7 @@
  * @file    afe_hart_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AFE_HART Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup afe_hart_registers
  */
 
 /******************************************************************************
