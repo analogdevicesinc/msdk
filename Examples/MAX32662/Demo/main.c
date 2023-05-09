@@ -220,7 +220,7 @@ int main(void)
         if (pb_state) {
             LED_Toggle(0);
         }
-        
+
         checkForButtonRelease();
 
         // Set as 50000 (50ms) instead of 250000 (250ms) because logic at beginning of while
