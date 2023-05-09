@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<device xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" schemaVersion="1.1" xs:noNamespaceSchemaLocation="svd_schema.xsd">
+  <peripheral>
+    <!--User AES Keys.-->
+    <name>USR_AESKEYS</name>
+    <description>User AES Key Registers.</description>
+    <baseAddress>0x40005000</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>SRAM_KEY</name>
+        <description>AES SRAM KEY</description>
+        <addressOffset>0x00</addressOffset>
+        <size>32</size>
+      </register>
+      <register>
+        <name>CODE_KEY</name>
+        <description>AES CODE Key </description>
+        <addressOffset>0x20</addressOffset>
+      </register>
+      <register>
+        <name>DATA_KEY</name>
+        <description>AES DATA KEY</description>
+        <addressOffset>0x40</addressOffset>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- User AES Keys-->
+</device>

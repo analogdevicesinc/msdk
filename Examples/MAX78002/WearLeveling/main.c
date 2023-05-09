@@ -33,53 +33,26 @@
 
 /**
  * @file    main.c
- * @brief   Flash Control Mass Erase & Write 32-bit enabled mode Example
- * @details This example shows how to mass erase the flash using the library
- *          and also how to Write and Verify 4 Words to the flash.
+ * @brief   LittleFS and wear leveling example.
+ * @details This example shows the basic functionality of the LittleFS
+ *          file system, including it's ability to distibute wear across
+ *          the flash memory.
  */
 
 /***** Includes *****/
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
-#include "mxc_assert.h"
-#include "mxc_device.h"
-#include "flc.h"
-
+#include "cli.h"
 #include "flash.h"
+#include "file.h"
 #include "lfs.h"
-
-/***** Definitions *****/
-#define APP_PAGE_CNT 8 ///< Flash memory blocks reserved for the app code
-#define APP_SIZE (MXC_FLASH_PAGE_SIZE * APP_PAGE_CNT) ///< The app code flash memory area size
-#define TESTSIZE (MXC_FLASH_PAGE_SIZE * 8 / 4) ///< 8 pages of 32 bit samples
-#define TOTAL_FLASH_PAGES \
-    (MXC_FLASH_MEM_SIZE / \
-     MXC_FLASH_PAGE_SIZE) ///< Flash memory blocks reserved for internal storage
-#define FLASH_STORAGE_START_PAGE 8 ///< Internal storage first flash memory block
-#define FLASH_STORAGE_PAGE_CNT 8 ///< Flash memory blocks reserved for the internal storage
-#define FLASH_STORAGE_START_ADDR \
-    MXC_FLASH_PAGE_ADDR(FLASH_STORAGE_START_PAGE) ///< Internal storage start address
-#define FLASH_STORAGE_SIZE FLASH_STORAGE_PAGE_CNT *MXC_FLASH_PAGE_SIZE ///< Internal storage size
-
-// When set to 1 performs full storage erase and test data write
-#ifndef FULL_WRITE_TEST
-#define FULL_WRITE_TEST 0
-#endif
-
-// When set to 1 performs full storage test data read. Passes only if FULL_WRITE_TEST was performed before
-#ifndef FULL_READ_TEST
-#define FULL_READ_TEST 0
-#endif
+#include "main.h"
+#include "mxc_device.h"
 
 /***** Globals *****/
-uint32_t testdata[TESTSIZE]; ///< Test data buffer
+uint32_t start_block = LFS_START_PAGE;
 
-// variables used by the filesystem
-lfs_t lfs; ///< File system instance
-uint32_t start_block =
-    FLASH_STORAGE_START_PAGE; ///< Internal memory start block to be passed to flash functions by littlefs
-// configuration of the filesystem is provided by this struct
 const struct lfs_config cfg = {
     .context = &start_block,
     // block device operations
@@ -92,7 +65,7 @@ const struct lfs_config cfg = {
     .read_size = 1,
     .prog_size = 4,
     .block_size = MXC_FLASH_PAGE_SIZE,
-    .block_count = FLASH_STORAGE_PAGE_CNT,
+    .block_count = LFS_PAGE_CNT,
     .cache_size = 16,
     .lookahead_size = 16,
     .block_cycles = 500,
@@ -105,87 +78,44 @@ const struct lfs_config cfg = {
  */
 int main(void)
 {
-    int error_status = E_NO_ERROR;
+    lfs_t lfs; // File system instance
+    char cmd_buf[CMD_MAX_SIZE];
+    int cmd_len, err;
 
-    printf("\n\n***** MAX78002 Wear Leveling *****\n");
+    printf("\n\n********** Wear Leveling Example **********\n");
 
-#if (FULL_WRITE_TEST == 1) || (FULL_READ_TEST == 1)
-    // Initializing Test Data
-    for (int i = 0; i < TESTSIZE; i++) {
-        testdata[i] = i;
-    }
-#endif
-#if FULL_WRITE_TEST == 1
-    //Erase page-by-page
-    for (int i = 0; i < FLASH_STORAGE_PAGE_CNT; i++) {
-        error_status = flash_erase(&cfg, i);
-        if (error_status != E_NO_ERROR) {
-            printf("Flash erase failed with error %i\n", error_status);
-            return 1;
-        }
-    }
-
-    // Check flash's content
-    if (check_erased(FLASH_STORAGE_START_ADDR, FLASH_STORAGE_SIZE)) {
-        printf("Flash erase is verified.\n");
-    } else {
-        printf("Flash erase failed.\n");
-    }
-
-    printf("Writing %d 32-bit words to flash\n", TESTSIZE);
-    printf("Size of testdata : %d\n", sizeof(testdata));
-
-    error_status = flash_write4(FLASH_STORAGE_START_ADDR, TESTSIZE, testdata, TRUE);
-
-#endif
-#if FULL_READ_TEST == 1
-    printf("Verifying %d 32-bit words in flash\n", TESTSIZE);
-    printf("Size of testdata : %d\n", sizeof(testdata));
-    error_status = flash_verify(FLASH_STORAGE_START_ADDR, TESTSIZE, (uint8_t *)testdata);
-#endif
-
-#if (FULL_WRITE_TEST == 0) && (FULL_READ_TEST == 0)
-    lfs_file_t file;
     // mount the filesystem
-    error_status = lfs_mount(&lfs, &cfg);
+    printf("Mounting the filesystem...\n");
+    err = lfs_mount(&lfs, &cfg);
 
     // reformat if we can't mount the filesystem
     // this should only happen on the first boot
-    if (error_status) {
+    if (err) {
         printf("Filesystem is invalid, formatting...\n");
         lfs_format(&lfs, &cfg);
-        error_status = lfs_mount(&lfs, &cfg);
+        err = lfs_mount(&lfs, &cfg);
     }
 
-    if (!error_status) {
-        printf("Filesystem is mounted\n");
+    if (!err) {
+        printf("Filesystem is mounted! Ready for commands.\n");
+    } else {
+        printf("Unable to initialize file system!\n");
+        return E_BAD_STATE;
     }
 
-    // read current count
-    uint32_t boot_count = 0;
-    lfs_file_open(&lfs, &file, "boot_count", LFS_O_RDWR | LFS_O_CREAT);
-    lfs_file_read(&lfs, &file, &boot_count, sizeof(boot_count));
+    // Continue to receive and process commands until 'stop' command received
+    while (err != E_SHUTDOWN) {
+        printf("\ncmd> ");
+        fflush(stdout);
 
-    // update boot count
-    boot_count += 1;
-    lfs_file_rewind(&lfs, &file);
-    lfs_file_write(&lfs, &file, &boot_count, sizeof(boot_count));
-
-    // remember the storage is not updated until the file is closed successfully
-    lfs_file_close(&lfs, &file);
+        cmd_len = cmd_get(cmd_buf, CMD_MAX_SIZE);
+        err = cmd_process(&lfs, cmd_buf, cmd_len);
+    }
 
     // release any resources we were using
     lfs_unmount(&lfs);
+    printf("\nFilesystem resources released.\n");
 
-    // print the boot count
-    printf("boot_count: %d\n", boot_count);
-#endif
-
-    if (error_status != E_NO_ERROR) {
-        printf("\nExample Failed\n");
-        return E_FAIL;
-    }
-
-    printf("\nExample Succeeded\n");
+    printf("Example complete!\n");
     return E_NO_ERROR;
 }

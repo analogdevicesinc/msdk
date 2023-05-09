@@ -5,12 +5,17 @@
 # For instructions on how to use this system, see
 # https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
+#MXC_OPTIMIZE_CFLAGS = -Og
+# ^ For example, you can uncomment this line to 
+# optimize the project for debugging
+
 # **********************************************************
+
+# Add your config here!
 
 # If you have secure version of MCU, set SBT=1 to generate signed binary
 # For more information on how sing process works, see
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Enable the littleFS library
 LIB_LITTLEFS = 1
