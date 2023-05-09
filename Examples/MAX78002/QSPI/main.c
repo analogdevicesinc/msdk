@@ -106,14 +106,6 @@ int main(void)
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
     printf("(Benchmark) Wrote %i bytes to internal SRAM in %ius\n", TEST_SIZE, elapsed);
 
-    // Measure DMA transaction overhead
-    // if (benchmark_dma_overhead(&elapsed) == E_NO_ERROR){
-    //     elapsed -= sw_overhead;
-    //     printf("DMA overhead: %ius\n", elapsed);
-    // } else {
-    //     printf("DMA overhead timed out...\n");
-    // }
-
     // Benchmark standard-width SPI write to external SRAM
     printf("Test 1: Standard SPI write...\n");
     MXC_TMR_SW_Start(MXC_TMR0);
@@ -220,7 +212,6 @@ int main(void)
         for (int j = 0; j < TEST_SIZE; j++) {
             if (rx_buffer[j] != tx_buffer[j]) {
                 fail_count++;
-                // printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + j, tx_buffer[j], rx_buffer[j]);
             }
         }
         address += TEST_SIZE;
@@ -241,7 +232,6 @@ int main(void)
         for (int j = 0; j < TEST_SIZE; j++) {
             if (rx_buffer[j] != tx_buffer[j]) {
                 fail_count++;
-                // printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + j, tx_buffer[j], rx_buffer[j]);
             }
         }
         address += TEST_SIZE;
@@ -252,22 +242,6 @@ int main(void)
     } else {
         printf("\tSuccess\n");
     }
-
-    // Prototype memory inspector...
-    // uint8_t row[1024];
-    // address = 0;
-    // printf("0x%.3x: ", address);
-    // for (int i = 0; i < 4; i++) {
-    //     ram_read_quad(address, row, 1024);
-    //     for (int j = 0; j < 1024; j++) {
-    //         printf("%.2x ", row[j]);
-    //         if ((j+1) % 16 == 0) {
-    //             printf("\n");
-    //             printf("0x%.3x: ", address + j);
-    //         }
-    //     }
-    //     address += 1024;
-    // }
 
     if (fail_count > 0) {
         printf("\nFailed with %i mismatches (%.2f%%)!\n", fail_count, 100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT)));
