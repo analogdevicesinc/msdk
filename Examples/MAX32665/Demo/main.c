@@ -178,7 +178,7 @@ int main(void)
     int pb_state = 0;
     int prev_pb_state = 0;
     uint32_t usn_timeout = 0;
-    int usn_toggle = 0; 
+    int usn_toggle = 0;
     uint8_t usn[MXC_SYS_USN_LEN];
     uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN];
     int error;
