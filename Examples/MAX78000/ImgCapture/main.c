@@ -462,33 +462,125 @@ void service_console()
                                               g_app_settings.pixel_format, g_app_settings.dma_mode,
                                               g_app_settings.dma_channel);
 
-#ifdef CAMERA_BAYER
-            uint8_t *bayer_data = (uint8_t *)malloc(img_data.w * img_data.h * 2);
-            if (bayer_data != NULL) {
-                MXC_TMR_SW_Start(MXC_TMR0);
-                if (g_app_settings.bayer_function == BAYER_FUNCTION_PASSTHROUGH) {
-                    bayer_passthrough(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
-                } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
-                    bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h,
-                                               (uint16_t *)bayer_data);
+            clear_serial_buffer();
+            snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
+                    "*IMG* %s %i %i %i", // Format img info into a string
+                    (uint8_t *)"RGB565", 224*168*2, 224, 168);
+            send_msg(g_serial_buffer);
+            clear_serial_buffer();
+
+            // Color correct
+            color_correct(img_data.raw, img_data.w, img_data.h);
+
+            // Crop to 224 x 168
+            uint8_t (*pointer)[240][320] = (uint8_t (*)[240][320])img_data.raw;
+            unsigned int start_x = (320 - 224) >> 1;
+            unsigned int start_y = (240 - 168) >> 1;
+            int len = 224;
+
+            unsigned int r = 0, g = 0, b = 0;
+            unsigned int w = img_data.w;
+            unsigned int h = img_data.h;
+            unsigned int i = 0;
+
+            uint16_t rgb565_buffer[224];
+
+            for (unsigned int y = start_y; y < start_y + 168; y++) {
+                i = 0;
+                for (int x = start_x; x < start_x + 224;) {
+                    if (!(y & 1)) { // Even row (B G B G B G)
+                        r = (img_data.raw[_i(x - 1, y + 1, w, h)] + // Top left
+                            img_data.raw[_i(x + 1, y + 1, w, h)] + // Top right
+                            img_data.raw[_i(x - 1, y - 1, w, h)] + // Bottom left
+                            img_data.raw[_i(x + 1, y - 1, w, h)]); // Bottom right
+                        r = r >> 2; // Divide by 4
+                        g = (img_data.raw[_i(x - 1, y, w, h)] + // Left
+                            img_data.raw[_i(x + 1, y, w, h)] + // Right
+                            img_data.raw[_i(x, y + 1, w, h)] + // Up
+                            img_data.raw[_i(x, y - 1, w, h)]); // Down
+                        g = g >> 2; // Divide by 4
+                        b = img_data.raw[_i(x, y, w, h)]; // We're at blue pixel
+
+                        rgb565_buffer[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
+                        x++;
+
+                        r = (img_data.raw[_i(x, y + 1, w, h)] + // Up
+                            img_data.raw[_i(x, y - 1, w, h)]); // Down
+                        r = r >> 1; // Divide by 2
+                        g = img_data.raw[_i(x, y, w, h)]; // We're at green pixel
+                        b = (img_data.raw[_i(x - 1, y, w, h)] + // Left
+                            img_data.raw[_i(x + 1, y, w, h)]); // Right
+                        b = b >> 1; // Divide by 2
+
+                        rgb565_buffer[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
+                        x++;
+                    } else { // Odd row (G R G R G R)
+                        r = (img_data.raw[_i(x - 1, y, w, h)] + // Left
+                            img_data.raw[_i(x + 1, y, w, h)]); // Right
+                        r = r >> 1; // Divide by 2
+                        g = img_data.raw[_i(x, y, w, h)]; // We're at green pixel
+                        b = (img_data.raw[_i(x, y + 1, w, h)] + // Up
+                            img_data.raw[_i(x, y - 1, w, h)]); // Down
+                        b = b >> 1; // Divide by 2
+
+                        rgb565_buffer[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
+                        x++;
+
+                        r = img_data.raw[_i(x, y, w, h)]; // We're at red pixel
+                        g = (img_data.raw[_i(x - 1, y, w, h)] + // Left
+                            img_data.raw[_i(x + 1, y, w, h)] + // Right
+                            img_data.raw[_i(x, y + 1, w, h)] + // Up
+                            img_data.raw[_i(x, y - 1, w, h)]); // Down
+                        g = g >> 2; // Divide by 4
+                        b = (img_data.raw[_i(x - 1, y + 1, w, h)] + // Top left
+                            img_data.raw[_i(x + 1, y + 1, w, h)] + // Top right
+                            img_data.raw[_i(x - 1, y - 1, w, h)] + // Bottom left
+                            img_data.raw[_i(x + 1, y - 1, w, h)]); // Bottom right
+                        b = b >> 2; // Divide by 4
+
+                        rgb565_buffer[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
+                        x++;
+                    }
                 }
-
-                img_data.raw = bayer_data;
-                img_data.imglen *= 2;
-                img_data.pixel_format = (uint8_t *)"RGB565";
-                unsigned int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
-                printf("Debayering complete. (Took %u us)\n", elapsed_us);
-            } else {
-                printf("Failed to allocate memory for debayering!\n");
-                return;
+                MXC_UART_WriteBytes(Con_Uart, (uint8_t*)rgb565_buffer, len*2);
             }
-#endif
 
-            transmit_capture_uart(img_data);
+            // for (int y = start_y; y < start_y + 168; y++) {
+            //     MXC_UART_Write()
+            // }
 
-#ifdef CAMERA_BAYER
-            free(bayer_data);
-#endif
+            // MXC_UART_WriteBytes(Con_Uart, img_data.raw, img_data.imglen);
+
+            int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+            printf("Done! (serial transmission took %i us)\n", elapsed);
+
+// #ifdef CAMERA_BAYER
+//             uint8_t *bayer_data = (uint8_t *)malloc(img_data.w * img_data.h * 2);
+//             if (bayer_data != NULL) {
+//                 MXC_TMR_SW_Start(MXC_TMR0);
+//                 if (g_app_settings.bayer_function == BAYER_FUNCTION_PASSTHROUGH) {
+//                     bayer_passthrough(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
+//                 } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
+//                     bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h,
+//                                                (uint16_t *)bayer_data);
+//                 }
+
+//                 img_data.raw = bayer_data;
+//                 img_data.imglen *= 2;
+//                 img_data.pixel_format = (uint8_t *)"RGB565";
+//                 unsigned int elapsed_us = MXC_TMR_SW_Stop(MXC_TMR0);
+//                 printf("Debayering complete. (Took %u us)\n", elapsed_us);
+//             } else {
+//                 printf("Failed to allocate memory for debayering!\n");
+//                 return;
+//             }
+// #endif
+
+            // transmit_capture_uart(img_data);
+
+// #ifdef CAMERA_BAYER
+//             free(bayer_data);
+// #endif
         } else if (cmd == CMD_STREAM) {
             // Perform a streaming image capture with the current camera settings.
             cnn_img_data_t img_data = stream_img(g_app_settings.imgres_w, g_app_settings.imgres_h,
@@ -669,6 +761,10 @@ int main(void)
     defined(CAMERA_OV5642)
     camera_set_hmirror(0);
     camera_set_vflip(0);
+#endif
+
+#if defined(CAMERA_HM0360_COLOR)
+    camera_write_reg(0x3024, 0x0);
 #endif
 
     // *********************************END CLEANME*************************************
