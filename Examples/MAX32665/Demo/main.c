@@ -182,7 +182,8 @@ int main(void)
     uint8_t usn[MXC_SYS_USN_LEN];
     uint8_t checksum[MXC_SYS_USN_CHECKSUM_LEN];
     int error;
-    int day, hr, min, sec, rtc_readout;
+    int day, hr, min;
+    uint32_t sec, rtc_readout;
 
     printf("**** MAX32665 EV Kit Demo ****\n");
 
@@ -242,8 +243,8 @@ int main(void)
 
     while (1) {
         do {
-            rtc_readout = MXC_RTC_GetSecond();
-        } while (rtc_readout == E_BUSY);
+            error = MXC_RTC_GetSeconds(&rtc_readout);
+        } while (error != E_NO_ERROR);
         sec = rtc_readout;
 
         day = sec / SECS_PER_DAY;
