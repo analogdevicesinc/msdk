@@ -199,7 +199,7 @@ int dma_init()
 
 int spi_init()
 {
-    // TODO: Add software-controlled slave select functionality
+    // TODO(Jake): Add software-controlled slave select functionality
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
 
@@ -215,8 +215,8 @@ int spi_init()
     spi_pins.port->ds0 |= spi_pins.mask;
     spi_pins.port->ds1 |= spi_pins.mask;
 
-    // TODO: Expose some of the config options below
-    // TODO: Move QSPI-SRAM specific options into aps6404.c
+    // TODO(Jake): Expose some of the config options below
+    // TODO(Jake): Move QSPI-SRAM specific options into aps6404.c
 
     SPI->ctrl0 = (1 << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) | // Set SSEL = SS0
                  MXC_F_SPI_CTRL0_MST_MODE | // Select controller mode
@@ -362,7 +362,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     else
         SPI->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
 
-    if (block)
+    if (block) {
         while (!((g_tx_done && g_master_done) && (src != NULL && txlen > 0)) &&
                !(g_rx_done && (dest != NULL && rxlen > 0))) {
             /*
@@ -379,6 +379,7 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
                 MXC_DMA->ch[g_rx_channel].status & MXC_F_DMA_STATUS_CTZ_IF)
                 g_rx_done = 1;
         }
+    }
 
     return E_SUCCESS;
 }

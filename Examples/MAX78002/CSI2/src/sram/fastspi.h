@@ -30,6 +30,8 @@
  * ownership rights.
  *
  ******************************************************************************/
+#ifndef EXAMPLES_MAX78002_CSI2_SRC_SRAM_FASTSPI_H_
+#define EXAMPLES_MAX78002_CSI2_SRC_SRAM_FASTSPI_H_
 
 #include "fastspi_config.h"
 
@@ -49,7 +51,9 @@ static const mxc_gpio_cfg_t spi_pins = { .port = SPI_PINS_PORT,
                                          .pad = MXC_GPIO_PAD_NONE,
                                          .vssel = MXC_GPIO_VSSEL_VDDIOH };
 
-// TODO:  Generalize to multiple SPI instances
+// TODO(Jake):  Generalize to multiple SPI instances
 int spi_init();
 int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert,
                  bool use_dma, bool block);
+
+#endif // EXAMPLES_MAX78002_CSI2_SRC_SRAM_FASTSPI_H_
