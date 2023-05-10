@@ -265,7 +265,7 @@ int MXC_USB_ConfigEp(unsigned int ep, maxusb_ep_type_t type, unsigned int size)
     MXC_USB_ResetEp(ep);
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     /* Select register index for endpoint */
     MXC_USBHS->index = ep;
@@ -288,11 +288,11 @@ int MXC_USB_ConfigEp(unsigned int ep, maxusb_ep_type_t type, unsigned int size)
             MXC_USBHS->intrinen |= (1 << ep);
             break;
         default:
-            MAXUSB_EXIT_CRITICAL();
+            MXC_SYS_Crit_Exit();
             return -1;
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -311,7 +311,7 @@ int MXC_USB_Stall(unsigned int ep)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     MXC_USBHS->index = ep;
 
@@ -340,7 +340,7 @@ int MXC_USB_Stall(unsigned int ep)
         }
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -352,7 +352,7 @@ int MXC_USB_Unstall(unsigned int ep)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     MXC_USBHS->index = ep;
 
@@ -376,7 +376,7 @@ int MXC_USB_Unstall(unsigned int ep)
         }
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -411,7 +411,7 @@ int MXC_USB_ResetEp(unsigned int ep)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     /* clear pending requests */
     req = MXC_USB_Request[ep];
@@ -445,7 +445,7 @@ int MXC_USB_ResetEp(unsigned int ep)
         MXC_USBHS->outcsru = MXC_F_USBHS_OUTCSRU_DPKTBUFDIS;
         MXC_USBHS->outmaxp = 0;
 
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
 
         /* We specifically do not complete SETUP callbacks, as this causes undesired SETUP status-stage STALLs */
         if (req) {
@@ -456,7 +456,7 @@ int MXC_USB_ResetEp(unsigned int ep)
             }
         }
     } else {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
     }
 
     return 0;
@@ -472,7 +472,7 @@ int MXC_USB_Ackstat(unsigned int ep)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     saved_index = MXC_USBHS->index;
     MXC_USBHS->index = 0;
@@ -486,7 +486,7 @@ int MXC_USB_Ackstat(unsigned int ep)
 
     MXC_USBHS->index = saved_index;
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
 
     return 0;
 }
@@ -885,7 +885,7 @@ int MXC_USB_GetSetup(MXC_USB_SetupPkt *sud)
     MXC_USBHS->index = 0;
 
     if ((sud == NULL) || !(MXC_USBHS->csr0 & MXC_F_USBHS_CSR0_OUTPKTRDY)) {
-         MAXUSB_EXIT_CRITICAL();
+         MXC_SYS_Crit_Exit();
         return -1;
     }
 
@@ -913,7 +913,7 @@ int MXC_USB_GetSetup(MXC_USB_SetupPkt *sud)
         setup_phase = SETUP_NODATA;
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -977,7 +977,7 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
 
     /* if pending request; error */
     if (MXC_USB_Request[ep] || (MXC_USBHS->incsrl & MXC_F_USBHS_INCSRL_INPKTRDY)) {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
         return -1;
     }
 
@@ -1015,7 +1015,7 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
         }
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -1030,22 +1030,22 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     /* EP must be enabled (configured) and not stalled */
     if (!MXC_USB_IsConfigured(ep)) {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
         return -1;
     }
 
     if (MXC_USB_IsStalled(ep)) {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
         return -1;
     }
 
     /* if pending request; error */
     if (MXC_USB_Request[ep]) {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
         return -1;
     }
 
@@ -1083,7 +1083,7 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
                 MXC_USBHS->outcsrl &= ~MXC_F_USBHS_OUTCSRL_OUTPKTRDY;
                 if ((req->type == MAXUSB_TYPE_PKT) || (req->actlen == req->reqlen)) {
                  /* Done with request, callback fires if configured */
-                    MAXUSB_EXIT_CRITICAL();
+                    MXC_SYS_Crit_Exit();
                     MXC_USB_Request[ep] = NULL;
 
                     if (req->callback) {
@@ -1101,7 +1101,7 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
         }
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
