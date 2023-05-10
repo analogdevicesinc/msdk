@@ -473,83 +473,16 @@ void service_console()
             color_correct(img_data.raw, img_data.w, img_data.h);
 
             // Crop to 224 x 168
-            uint8_t (*pointer)[240][320] = (uint8_t (*)[240][320])img_data.raw;
-            unsigned int start_x = (320 - 224) >> 1;
-            unsigned int start_y = (240 - 168) >> 1;
-            int len = 224;
+            unsigned int crop_x = 224, crop_y = 168;
+            unsigned int start_x = (320 - crop_x) >> 1;
+            unsigned int start_y = (240 - crop_y) >> 1;
 
-            unsigned int r = 0, g = 0, b = 0;
-            unsigned int w = img_data.w;
-            unsigned int h = img_data.h;
-            unsigned int i = 0;
-
-            uint16_t rgb565_buffer[224];
+            uint16_t rgb565_buffer[crop_x];
 
             for (unsigned int y = start_y; y < start_y + 168; y++) {
-                i = 0;
-                for (int x = start_x; x < start_x + 224;) {
-                    if (!(y & 1)) { // Even row (B G B G B G)
-                        r = (img_data.raw[_i(x - 1, y + 1, w, h)] + // Top left
-                            img_data.raw[_i(x + 1, y + 1, w, h)] + // Top right
-                            img_data.raw[_i(x - 1, y - 1, w, h)] + // Bottom left
-                            img_data.raw[_i(x + 1, y - 1, w, h)]); // Bottom right
-                        r = r >> 2; // Divide by 4
-                        g = (img_data.raw[_i(x - 1, y, w, h)] + // Left
-                            img_data.raw[_i(x + 1, y, w, h)] + // Right
-                            img_data.raw[_i(x, y + 1, w, h)] + // Up
-                            img_data.raw[_i(x, y - 1, w, h)]); // Down
-                        g = g >> 2; // Divide by 4
-                        b = img_data.raw[_i(x, y, w, h)]; // We're at blue pixel
-
-                        rgb565_buffer[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
-                        x++;
-
-                        r = (img_data.raw[_i(x, y + 1, w, h)] + // Up
-                            img_data.raw[_i(x, y - 1, w, h)]); // Down
-                        r = r >> 1; // Divide by 2
-                        g = img_data.raw[_i(x, y, w, h)]; // We're at green pixel
-                        b = (img_data.raw[_i(x - 1, y, w, h)] + // Left
-                            img_data.raw[_i(x + 1, y, w, h)]); // Right
-                        b = b >> 1; // Divide by 2
-
-                        rgb565_buffer[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
-                        x++;
-                    } else { // Odd row (G R G R G R)
-                        r = (img_data.raw[_i(x - 1, y, w, h)] + // Left
-                            img_data.raw[_i(x + 1, y, w, h)]); // Right
-                        r = r >> 1; // Divide by 2
-                        g = img_data.raw[_i(x, y, w, h)]; // We're at green pixel
-                        b = (img_data.raw[_i(x, y + 1, w, h)] + // Up
-                            img_data.raw[_i(x, y - 1, w, h)]); // Down
-                        b = b >> 1; // Divide by 2
-
-                        rgb565_buffer[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
-                        x++;
-
-                        r = img_data.raw[_i(x, y, w, h)]; // We're at red pixel
-                        g = (img_data.raw[_i(x - 1, y, w, h)] + // Left
-                            img_data.raw[_i(x + 1, y, w, h)] + // Right
-                            img_data.raw[_i(x, y + 1, w, h)] + // Up
-                            img_data.raw[_i(x, y - 1, w, h)]); // Down
-                        g = g >> 2; // Divide by 4
-                        b = (img_data.raw[_i(x - 1, y + 1, w, h)] + // Top left
-                            img_data.raw[_i(x + 1, y + 1, w, h)] + // Top right
-                            img_data.raw[_i(x - 1, y - 1, w, h)] + // Bottom left
-                            img_data.raw[_i(x + 1, y - 1, w, h)]); // Bottom right
-                        b = b >> 2; // Divide by 4
-
-                        rgb565_buffer[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
-                        x++;
-                    }
-                }
-                MXC_UART_WriteBytes(Con_Uart, (uint8_t*)rgb565_buffer, len*2);
+                bayer_bilinear_demosaicing_crop(img_data.raw, 320, start_x, 240, y, rgb565_buffer, crop_x, 1);
+                MXC_UART_WriteBytes(Con_Uart, (uint8_t*)rgb565_buffer, sizeof(rgb565_buffer));
             }
-
-            // for (int y = start_y; y < start_y + 168; y++) {
-            //     MXC_UART_Write()
-            // }
-
-            // MXC_UART_WriteBytes(Con_Uart, img_data.raw, img_data.imglen);
 
             int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
             printf("Done! (serial transmission took %i us)\n", elapsed);
