@@ -49,11 +49,6 @@ typedef struct {
   int (*shutdown_callback)(void); /* User-supplied function for shutting down the USB block */
 } maxusb_cfg_options_t;
 
-#if !defined(MAXUSB_ENTER_CRITICAL) && !defined(MAXUSB_EXIT_CRITICAL)
-#define MAXUSB_ENTER_CRITICAL() __disable_irq()
-#define MAXUSB_EXIT_CRITICAL() __enable_irq()
-#endif
-
 /** 
  * @brief Put the transceiver into a low power state.
  */
