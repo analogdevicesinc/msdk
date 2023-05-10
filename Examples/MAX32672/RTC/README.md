@@ -3,9 +3,9 @@
 This example demonstrates the use of the Real Time Clock (RTC) and its alarm functionality.
 
 The RTC is enabled and the sub-second alarm set to trigger every 250 ms.
-LED D1 is toggled each time the sub-second alarm triggers.  The time-of-day alarm is set to 10 seconds.  When the time-of-day alarm triggers, the rate of the sub-second alarm is switched to 500 ms.
+LED D1 is toggled each time the sub-second alarm triggers.  The time-of-day alarm is set to 5 seconds.  When the time-of-day alarm triggers, the rate of the sub-second alarm is switched to 1000 ms.
 
-LED D2 is toggled each time the time-of-day alarm triggers. The time-of-day alarm is then rearmed for another 10 sec.
+LED D2 is toggled each time the time-of-day alarm triggers. The time-of-day alarm is then rearmed for another 5 sec.
 
 Pressing SW3 will output the current value of the RTC to the console UART.
 
@@ -33,18 +33,20 @@ Universal instructions on building, flashing, and debugging this project can be 
 The RTC is enabled and the sub-second alarm set to trigger every 250 ms.
 LED D1 is toggled each time the sub-second alarm triggers.
 
-The time-of-day alarm is set to 10 seconds.  When the time-of-day alarm
-triggers, the rate of the sub-second alarm is switched to 500 ms.
+The time-of-day alarm is set to 5 seconds.  When the time-of-day alarm
+triggers, the rate of the sub-second alarm is switched to 1000 ms.
 
 LED D2 is toggled each time the time-of-day alarm triggers.
 
-The time-of-day alarm is then rearmed for another 10 sec.  Pressing SW3
+The time-of-day alarm is then rearmed for another 5 sec.  Pressing SW3
 will output the current value of the RTC to the console UART.
 
 RTC started
 
 Current Time (dd:hh:mm:ss): 00:00:00:00.00
+
 Current Time (dd:hh:mm:ss): 00:00:00:13.83
+
 Current Time (dd:hh:mm:ss): 00:00:00:16.49
 ```
 
