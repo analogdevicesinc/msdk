@@ -244,7 +244,7 @@ typedef void (*mxc_csi2_frame_handler_cb_t)(mxc_csi2_req_t *req, int result);
  * 
  * @return  This function should return 0 on success.  If non-zero, the CSI-2 controller will end the frame capture
  */
-typedef int (*mxc_csi2_line_handler_cb_t)(uint8_t* data, unsigned int len);
+typedef int (*mxc_csi2_line_handler_cb_t)(uint8_t *data, unsigned int len);
 
 /**
  * @brief  Selects control source signals for data and clock lanes.
@@ -295,7 +295,8 @@ struct _mxc_csi2_req_t {
     uint32_t bits_per_pixel_odd; ///< Bits Per Pixel Odd
     uint32_t bits_per_pixel_even; ///< Bits Per Pixel Even
     uint32_t frame_num; ///< Number of frames to capture
-    mxc_csi2_line_handler_cb_t line_handler; ///< Callback triggered for each image row.  Application code must implement this to offload data.
+    mxc_csi2_line_handler_cb_t
+        line_handler; ///< Callback triggered for each image row.  Application code must implement this to offload data.
 
     uint8_t process_raw_to_rgb; ///< Select if processing RAW data to RGB type
     mxc_csi2_rgb_type_t rgb_type; ///< Select final processed RGB type
