@@ -1078,7 +1078,7 @@ void MXC_CSI2_RevA_DMA_Handler()
                 line_cnt = 0;
                 MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
                 csi2_state.capture_stats.success = true;
-                // TODO: Call frame complete handler here when multi-frame exposures are implemented.
+                // TODO(Jake): Call frame complete handler here when multi-frame exposures are implemented.
             } else {
                 // There is a line to process
                 // Swap line buffers and reload DMA

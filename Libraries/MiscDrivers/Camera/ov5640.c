@@ -440,7 +440,7 @@ static struct camera_reg default_regs[] = {
     {0x3708, 0x64},
     {0x3709, 0x52},
     {0x370c, 0x03},
-    
+
 
     {0x3008, 0x02},
 
