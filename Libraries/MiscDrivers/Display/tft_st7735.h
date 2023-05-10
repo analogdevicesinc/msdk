@@ -47,7 +47,10 @@
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH 128
 #define DISPLAY_HEIGHT 128
+
+#ifndef LINEBUF_SIZE
 #define LINEBUF_SIZE (3 * DISPLAY_WIDTH)
+#endif
 
 /************************************************************************************/
 typedef struct {

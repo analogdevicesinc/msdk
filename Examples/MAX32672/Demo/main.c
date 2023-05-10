@@ -51,7 +51,7 @@
 #include "board.h"
 #include "rtc.h"
 #include "bitmap.h"
-#include "tft_st7735s.h"
+#include "tft_st7735.h"
 
 #ifdef BOARD_FTHR_REVA
 #error "ERR_NOTSUPPORTED: This example is not supported by the MAX32672 FTHR_RevA."
@@ -116,6 +116,18 @@ int main(void)
 
     MXC_TFT_SetFont((int)&SansSerif16x16[0]);
 
+    error = MXC_RTC_Init(0, 0);
+    if (error != E_NO_ERROR) {
+        printf("Failed RTC Initialization\n");
+        return error;
+    }
+
+    error = MXC_RTC_Start();
+    if (error != E_NO_ERROR) {
+        printf("Failed RTC_Start\n");
+        return error;
+    }
+
     // Set print area
     units_printf_area.x = 24;
     units_printf_area.y = 25;
@@ -130,19 +142,8 @@ int main(void)
     uptime_printf_area.h = 30;
     MXC_TFT_ConfigPrintf(&uptime_printf_area);
 
-    error = MXC_RTC_Init(0, 0);
-    if (error != E_NO_ERROR) {
-        printf("Failed RTC Initialization\n");
-        return error;
-    }
-
-    error = MXC_RTC_Start();
-    if (error != E_NO_ERROR) {
-        printf("Failed RTC_Start\n");
-        return error;
-    }
-
     while (1) {
+        // This entire routine until first LED Toggles takes around ~180ms.
         do {
             rtc_readout = MXC_RTC_GetSecond();
         } while (rtc_readout == E_BUSY);
@@ -197,34 +198,40 @@ int main(void)
 
         pb_state = PB_Get(0);
 
-        LED_Toggle(0);
+        LED_On(0);
         checkForButtonRelease();
 
-        MXC_Delay(250000);
-
-        // Toggle LED0 at 250ms (instead of 500ms) when PB0 is pressed.
+        // Invert LED1 if PB0 is pressed.
         if (pb_state) {
-            LED_Toggle(0);
+            LED_Off(1);
+        } else {
+            LED_On(1);
         }
 
-        checkForButtonRelease();
-
+        // Delay for 500ms
         MXC_Delay(250000);
 
-        LED_Toggle(0);
+        // Debouncing purposes
         checkForButtonRelease();
-
         MXC_Delay(250000);
 
-        // Toggle LED0 at 250ms (instead of 500ms) when PB0 is pressed.
+        LED_Off(0);
+        checkForButtonRelease();
+
+        // Invert LED1 if PB0 is pressed.
         if (pb_state) {
-            LED_Toggle(0);
+            LED_On(1);
+        } else {
+            LED_Off(1);
         }
-        
+
+        // Delay for 500ms
+        MXC_Delay(250000);
+        // Debouncing purposes for displaying chip info.
         checkForButtonRelease();
 
-        // Set as 50000 (50ms) instead of 250000 (250ms) because logic at beginning of while
-        //  loop takes around ~200ms.
-        MXC_Delay(50000);
+        // Set as 70000 (70ms) instead of 250000 (250ms) because logic at beginning of while
+        //  loop takes around ~180ms.
+        MXC_Delay(70000);
     }
 }
