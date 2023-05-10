@@ -77,7 +77,8 @@ uint8_t nms_removed[NUM_CLASSES - 1][MAX_PRIORS] = { 0 };
 int num_nms_priors[NUM_CLASSES - 1] = { 0 };
 
 // NMS array must be reset in between each inference
-void reset_arrays(void) {
+void reset_arrays(void)
+{
     memset(prior_locs, 0, sizeof(prior_locs));
     memset(prior_cls_softmax, 0, sizeof(prior_cls_softmax));
     memset(num_nms_priors, 0, sizeof(num_nms_priors));
