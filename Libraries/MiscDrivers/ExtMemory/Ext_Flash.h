@@ -94,6 +94,23 @@ extern "C" {
 #define EXT_FLASH_CMD_DREAD 0xBB /**< Dual SPI Read                  */
 #define EXT_FLASH_CMD_QREAD 0xEB /**< Quad SPI Read                  */
 
+#elif defined(EXT_FLASH_MX25_64MB)
+
+#define EXT_FLASH_NAME "MX25_64MB"
+
+#define EXT_FLASH_Read_DUMMY \
+    8 /**< Dummy byte sent on a standard read command per the MX25 datasheet.         */
+#define EXT_FLASH_DREAD_DUMMY \
+    4 /**< Dummy data sent on a fast-read (Dual) read command per the MX25 datasheet. */
+#define EXT_FLASH_QREAD_DUMMY \
+    10 /**< Dummy data sent on a fast-read (Quad) read command per the MX25 datasheet. */
+
+#define EXT_FLASH_EXP_ID 0x00c2953a
+
+#define EXT_FLASH_CMD_READ 0x0B /**< Read                           */
+#define EXT_FLASH_CMD_DREAD 0xBB /**< Dual SPI Read                  */
+#define EXT_FLASH_CMD_QREAD 0xEB /**< Quad SPI Read                  */
+
 #endif
 
 /**

@@ -57,6 +57,7 @@ SDHC_DRIVER_BUILD_DIR := ${abspath ${SDHC_DRIVER_BUILD_DIR}}
 export TOOL_DIR := ${abspath ${TOOL_DIR}}
 export CMSIS_ROOT := ${abspath ${CMSIS_ROOT}}
 export PERIPH_DRIVER_DIR := ${abspath ${PERIPH_DRIVER_DIR}}
+export MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 
 # Export other variables needed by the peripheral driver makefile
 export TARGET
@@ -67,7 +68,7 @@ export PROJ_LDFLAGS
 export MXC_OPTIMIZE_CFLAGS
 export BOARD_DIR
 export USE_NATIVE_SDHC
-export FLASH
+export EXTERNAL_FLASH
 # Add to library list
 LIBS += ${SDHC_DRIVER_BUILD_DIR}/sdhc.a
 

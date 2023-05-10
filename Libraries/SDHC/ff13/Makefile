@@ -74,15 +74,22 @@ SRCS += diskio.c
 SRCS += ff.c
 SRCS += ffsystem.c
 SRCS += ffunicode.c
-ifdef FLASH
-PROJ_CFLAGS += -DFLASH
+ifdef EXTERNAL_FLASH
+SRCS += mscmem.c
+SRCS += mx25_64MB.c
 endif
+
+ifdef EXTERNAL_FLASH
+PROJ_CFLAGS += -DEXTERNAL_FLASH
+endif
+
 ifdef USE_NATIVE_SDHC
 PROJ_CFLAGS += -DNATIVE_SDHC
 endif
 
 # Where to find source files for this project
 VPATH  = Source
+VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 
 # Where to find header files for this project
 IPATH  = Source
@@ -91,6 +98,7 @@ IPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET)/Include
 IPATH += $(CMSIS_ROOT)/Include
 IPATH += $(PERIPH_DRIVER_DIR)/Include/$(TARGET_UC)
 IPATH += $(BOARD_DIR)/Include
+IPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 
 # Include the rules for building for this target
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk

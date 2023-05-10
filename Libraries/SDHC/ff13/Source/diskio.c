@@ -10,20 +10,21 @@
 #include "ff.h"			/* Obtains integer types */
 #include "diskio.h"		/* Declarations of disk functions */
 #include "mxc_errors.h"
-#ifdef FLASH
+#ifdef EXTERNAL_FLASH
 #include "mscmem.h"
 #endif
 /* Definitions of physical drive number for each drive */
 #define DEV_SD      0   /* Example: Map MMC/SD card to physical drive 1 */
+#define DEV_EXTERNAL_FLASH 1
 #define SPI_SPEED 10000000
 
 #ifdef NATIVE_SDHC
-#define MX25_EXP_ID 			0x00c2953a
+
 /* # of times to check for a card, should be > 1 to detect both SD and MMC */
 #define INIT_CARD_RETRIES 10  
 
 /* Prototypes for module-only functions */
-static DRESULT ctrl_sync(void *buff);
+static DRESULT ctrl_sync(void *buff,BYTE pdrv);
 static DRESULT get_sector_count(void *buff);
 static DRESULT get_block_size(void *buff);
 static DRESULT mmc_get_csd(void *buff);
@@ -33,43 +34,37 @@ static unsigned int init_done = 0;
 
 /*local vaiables*/
 static uint8_t rtc_en;
-uint8_t flash = 0;
 /*-----------------------------------------------------------------------*/
 /* Get Drive Status                                                      */
 /*-----------------------------------------------------------------------*/
-void disk_flash(uint32_t isFlash){
-	flash = isFlash;
-}
+
 DSTATUS disk_status (
     BYTE pdrv       /* Physical drive nmuber to identify the drive */
 )
 {
-	if(!flash){
-    	DSTATUS status = 0;
-
+	DSTATUS status = 0;
+	switch(pdrv){
+		case DEV_SD:
+	
     	if (!MXC_SDHC_Card_Inserted()) {
 			init_done = 0;
 			status = STA_NOINIT | STA_NODISK;
     	}
 
     	return status;
-	}
-#ifdef FLASH
-	else{
-		    DSTATUS status = 0;
+	
+#ifdef EXTERNAL_FLASH
+		case DEV_EXTERNAL_FLASH:
 
+    	if (!mscmem_ID()) {
+    		init_done = 0;
+    		status = STA_NOINIT | STA_NODISK;
+    	}
 
-    if (mscmem_ID() == MX25_EXP_ID) {
-    	status = 0;
-    }
-    else{
-    	init_done = 0;
-    	status = STA_NOINIT | STA_NODISK;
-    }
-
-    return status;
-	}
+    	return status;
+	
 #endif
+	}
 	return 0;
 }
 
@@ -83,72 +78,60 @@ DSTATUS disk_initialize (
     BYTE pdrv               /* Physical drive nmuber to identify the drive */
 )
 {
-	if(!flash){
-    	DSTATUS status;
-	
-	    rtc_en = 0;
-#if (FF_FS_NORTC == 0)
-	    //Initialize RTC
-	    if (MXC_RTC->cn & MXC_F_RTC_CN_WE) {
-		rtc_en = 1;
-	    } else {
-		start_time_sec = (FF_NORTC_YEAR-1980)*SEC_IN_YEAR_AVG;
-		start_time_sec += FF_NORTC_MON*SEC_IN_MONTH_AVG; 
-		start_time_sec += FF_NORTC_MDAY*SEC_IN_DAY;
-		if(RTC_init(MXC_RTC, start_time_sec, 0) == E_NO_ERROR) {
-		    rtc_en = 1; 
-		}
-	    }
-#endif
-	    if (MXC_SDHC_Card_Inserted() && (MXC_SDHC_Lib_InitCard(INIT_CARD_RETRIES) == E_NO_ERROR)) {
-			/* Card initialized and ready for work */
-			init_done = 1;
-			status = 0;
-	    } else {
-			status = STA_NOINIT;
-	    }
+	DSTATUS status;
+	switch(pdrv) {
+		case DEV_SD:
 
-	    return status;
-	}
-#ifdef FLASH
-	else{
-		    DSTATUS status;
+	    	rtc_en = 0;
+#if (FF_FS_NORTC == 0)
+	    	//Initialize RTC
+	    	if (MXC_RTC->cn & MXC_F_RTC_CN_WE) {
+				rtc_en = 1;
+	    	} else {
+				start_time_sec = (FF_NORTC_YEAR-1980)*SEC_IN_YEAR_AVG;
+				start_time_sec += FF_NORTC_MON*SEC_IN_MONTH_AVG; 
+				start_time_sec += FF_NORTC_MDAY*SEC_IN_DAY;
+				if(RTC_init(MXC_RTC, start_time_sec, 0) == E_NO_ERROR) {
+			    	rtc_en = 1; 
+				}
+	   		 }
+#endif
+	    	if (MXC_SDHC_Card_Inserted() && (MXC_SDHC_Lib_InitCard(INIT_CARD_RETRIES) == E_NO_ERROR)) {
+				/* Card initialized and ready for work */
+				init_done = 1;
+				status = 0;
+	    	} else {
+				status = STA_NOINIT;
+	    	}
+
+	   	 	return status;
+#ifdef EXTERNAL_FLASH
+	case DEV_EXTERNAL_FLASH:
     
-    rtc_en = 0;
+    	rtc_en = 0;
 #if (FF_FS_NORTC == 0)
     //Initialize RTC
-    if (MXC_RTC->cn & MXC_F_RTC_CN_WE) {
-	rtc_en = 1;
-    } else {
-	start_time_sec = (FF_NORTC_YEAR-1980)*SEC_IN_YEAR_AVG;
-	start_time_sec += FF_NORTC_MON*SEC_IN_MONTH_AVG; 
-	start_time_sec += FF_NORTC_MDAY*SEC_IN_DAY;
-	if(RTC_init(MXC_RTC, start_time_sec, 0) == E_NO_ERROR) {
-	    rtc_en = 1; 
-	}
-    }
+    	if (MXC_RTC->cn & MXC_F_RTC_CN_WE) {
+			rtc_en = 1;
+    	} else {
+			dstart_time_sec = (FF_NORTC_YEAR-1980)*SEC_IN_YEAR_AVG;
+			start_time_sec += FF_NORTC_MON*SEC_IN_MONTH_AVG; 
+			start_time_sec += FF_NORTC_MDAY*SEC_IN_DAY;
+			if(RTC_init(MXC_RTC, start_time_sec, 0) == E_NO_ERROR) {
+	    		rtc_en = 1; 
+			}
+    	}
 #endif
-
-#if FF_MAX_SS == 4096
-    if ((Ext_Flash_Init() == E_NO_ERROR) && (Ext_Flash_Quad(1) == E_NO_ERROR)) {
+    	mscmem_Init();
     	init_done = 1;
-    	status = 0;
-    }
-    else{
-    	status = STA_NOINIT;
-    }
+    	status = 0;   
+    	return status;
+	
 #endif
-
-#if FF_MAX_SS == 512
-    mscmem_Init();
-    init_done = 1;
-    status = 0;
-#endif
-	    
-    return status;
 	}
-#endif
-	return 0;
+	return 0;			
+	
+
 }
 
 
@@ -165,8 +148,11 @@ DRESULT disk_read (
 	UINT count		/* Number of sectors to read */
 )
 {
-	if(!flash){
-    	DRESULT status;
+	DRESULT status;
+	//int index;
+	switch(pdrv){
+		case DEV_SD:
+
 
     	if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
 			status = RES_ERROR;
@@ -175,43 +161,21 @@ DRESULT disk_read (
     	}
 
     	return status;
+	
+
+#ifdef EXTERNAL_FLASH
+		case DEV_EXTERNAL_FLASH:
+    		status = RES_OK;
+    		for(int index = 0; index < count; index++){
+    			mscmem_Read(sector, buff);
+    			sector++;
+    			buff+=512;
+    		}
+
+    	return status;
+	
+#endif
 	}
-#ifdef FLASH
-	else{
-		    DRESULT status;
-
-    int index = 0;
-
-    status = RES_OK;
-
-#if FF_MAX_SS == 4096
-
-    for(index = 0; index < count; index++){
-    	if(MX25_Read_Sector(sector, buff) == E_NO_ERROR){
-    		sector++;
-    		buff += MX25_SECTOR_SIZE;
-    	}
-    	else{
-    		status = RES_ERROR;
-    		break;
-    	}
-    }
-#endif
-
-#if FF_MAX_SS == 512
-
-    for(index = 0; index < count; index++){
-    	mscmem_Read(sector, buff);
-    	sector++;
-    	buff+=512;
-    }
-
-
-#endif
-
-    return status;
-	}
-#endif
 	return 0;
 }
 
@@ -227,8 +191,11 @@ DRESULT disk_write (
 	UINT count			/* Number of sectors to write */
 )
 {
-	if(!flash){
-    	DRESULT status;
+	    	DRESULT status;
+			//int index;
+	switch(pdrv){
+		case DEV_SD:
+
 
     	if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
 			status = RES_ERROR;
@@ -237,54 +204,21 @@ DRESULT disk_write (
     	}
 
     	return status; 
+	
+#ifdef EXTERNAL_FLASH
+	case DEV_EXTERNAL_FLASH:
+
+    	status = RES_OK;
+    	for(int index = 0; index < count; index++){
+    		/*mscmem_write function does not manipulate buff variable*/
+        	mscmem_Write(sector, (uint8_t *)buff);
+    		sector++;
+    		buff+=512;
+    	}
+    	return status;   
+	
+#endif
 	}
-#ifdef FLASH
-	else{
-		    DRESULT status;
-
-
-    int index = 0;
-    status = RES_OK;
-
-#if FF_MAX_SS == 4096
-
-
-    for(index = 0; index < count; index++){
-    	if(MX25_Erase_Sector(sector) == E_NO_ERROR){
-    		if(MX25_Write_Sector(sector, (uint8_t *)buff) == E_NO_ERROR){
-    			sector++;
-    			buff += MX25_SECTOR_SIZE;
-    		}
-    		else{
-    			status = RES_ERROR;
-    			break;
-    		}
-    	}
-    	else{
-    		status = RES_ERROR;
-    		break;
-    	}
-    }
-
-#endif
-
-#if FF_MAX_SS == 512
-
-    for(index = 0; index < count; index++){
-    	/*mscmem_write function does not manipulate buff variable*/
-        mscmem_Write(sector, (uint8_t *)buff);
-    	sector++;
-    	buff+=512;
-    }
-
-#endif
-
-
-
-
-    return status;   
-	} 
-#endif
 	return 0;
 }	
 
@@ -300,15 +234,15 @@ DRESULT disk_ioctl (
 	void *buff		/* Buffer to send/receive control data */
 )
 {
-	if(!flash){
+	    	DRESULT status;
+	switch(pdrv){
+		case DEV_SD:	
 
-		
-    	DRESULT status;
 
     	switch(cmd) {
     	    case CTRL_SYNC:
 			    /* Mandatory */
-		    	status = ctrl_sync(buff);
+		    	status = ctrl_sync(buff,pdrv);
 		    	break;
     	    case GET_SECTOR_COUNT:
 			    /* Mandatory */
@@ -328,69 +262,37 @@ DRESULT disk_ioctl (
     	}
 	
     	return status;
-	}
-#ifdef FLASH
-	else{
-		    DRESULT status;
+	
+#ifdef EXTERNAL_FLASH
+		case DEV_EXTERNAL_FLASH:
+    	status = RES_OK;
 
-
-    status = RES_OK;
-#if FF_MAX_SS == 4096
-    switch(cmd) {
-        case CTRL_SYNC:
-			/* Mandatory */
-			status = ctrl_sync(buff);
-	    break;
-        case GET_SECTOR_COUNT:
-        	/* Mandatory */
-        	*(DWORD*)buff = MX25_NUM_SECTORS;
-	    break;
-        case GET_BLOCK_SIZE:
-        	/* Mandatory */
-        	*(DWORD*)buff = MX25_BLOCK_SIZE;
-	    break;
-		case GET_SECTOR_SIZE:
-			*(DWORD*)buff = MX25_SECTOR_SIZE;
-		break;
-	default:
-	    status = RES_PARERR;
-	    break;
-    }
-#endif
-
-
-#if FF_MAX_SS == 512
-
-    switch(cmd) {
-        case CTRL_SYNC:
-			/* Mandatory */
-			status = ctrl_sync(buff);
-	    break;
-        case GET_SECTOR_COUNT:
-        	/* Mandatory */
-        	*(DWORD*)buff = MX25_NUM_SECTORS * (MX25_SECTOR_SIZE / 512);
-	    break;
-        case GET_BLOCK_SIZE:
-        	/* Mandatory */
-        	*(DWORD*)buff = 1;
-	    break;
-		case GET_SECTOR_SIZE:
-			*(DWORD*)buff = MX25_SECTOR_SIZE;
-		break;
-	default:
-	    status = RES_PARERR;
-	    break;
-    }
-
-#endif
-
-
+    	switch(cmd) {
+        	case CTRL_SYNC:
+				/* Mandatory */
+				status = ctrl_sync(buff,pdrv);
+	    		break;
+        	case GET_SECTOR_COUNT:
+        		/* Mandatory */
+        		*(DWORD*)buff = EXT_FLASH_NUM_SECTORS * (EXT_FLASH_SECTOR_SIZE / 512);
+	    		break;
+        	case GET_BLOCK_SIZE:
+        		/* Mandatory */
+        		*(DWORD*)buff = 1;
+	    		break;
+			case GET_SECTOR_SIZE:
+				*(DWORD*)buff = EXT_FLASH_SECTOR_SIZE;
+				break;
+			default:
+	    		status = RES_PARERR;
+	    		break;
+    	
     return status;
 	}
 #endif
-return 0;
+	}
+	return 0;
 }
-
 
 DWORD get_fattime(void) {
     if(rtc_en) {
@@ -434,18 +336,20 @@ DWORD get_fattime(void) {
     }
 }
 
-static DRESULT ctrl_sync(void *buff)
+static DRESULT ctrl_sync(void *buff,BYTE pdrv)
 {
-	if(!flash){
-    	return RES_OK;
-	}
-#ifdef FLASH
-	else{
+	switch(pdrv){
+		case DEV_SD:
+		    return RES_OK;
+#ifdef EXTERNAL_FLASH
+		case DEV_EXTERNAL_FLASH:
 		mscmem_write_dirty_sector();
     	return RES_OK;
-	}
+	
 #endif
-return 0;
+	}
+
+	return 0;
 }
 
 static DRESULT get_sector_count(void *buff)
