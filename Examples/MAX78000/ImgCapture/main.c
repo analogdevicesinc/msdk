@@ -462,27 +462,40 @@ void service_console()
                                               g_app_settings.pixel_format, g_app_settings.dma_mode,
                                               g_app_settings.dma_channel);
 
+            // Crop to 224 x 168
+            unsigned int crop_x = 224, crop_y = 168;
+            unsigned int start_x = (320 - crop_x) >> 1;
+            unsigned int start_y = (240 - crop_y) >> 1;
+
+#ifdef CAMERA_BAYER
             clear_serial_buffer();
             snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
                     "*IMG* %s %i %i %i", // Format img info into a string
-                    (uint8_t *)"RGB565", 224*168*2, 224, 168);
+                    (uint8_t *)"RGB565", crop_x * crop_y * 2, crop_x, crop_y);
             send_msg(g_serial_buffer);
             clear_serial_buffer();
 
             // Color correct
             color_correct(img_data.raw, img_data.w, img_data.h);
 
-            // Crop to 224 x 168
-            unsigned int crop_x = 224, crop_y = 168;
-            unsigned int start_x = (320 - crop_x) >> 1;
-            unsigned int start_y = (240 - crop_y) >> 1;
-
             uint16_t rgb565_buffer[crop_x];
 
-            for (unsigned int y = start_y; y < start_y + 168; y++) {
-                bayer_bilinear_demosaicing_crop(img_data.raw, 320, start_x, 240, y, rgb565_buffer, crop_x, 1);
+            for (unsigned int y = start_y; y < start_y + crop_y; y++) {
+                bayer_bilinear_demosaicing_crop(img_data.raw, img_data.w, start_x, img_data.h, y, rgb565_buffer, crop_x, 1);
                 MXC_UART_WriteBytes(Con_Uart, (uint8_t*)rgb565_buffer, sizeof(rgb565_buffer));
             }
+#else
+            clear_serial_buffer();
+            snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
+                    "*IMG* %s %i %i %i", // Format img info into a string
+                    img_data.pixel_format, crop_x * crop_y, crop_x, crop_y);
+            send_msg(g_serial_buffer);
+            clear_serial_buffer();
+
+            for (unsigned int y = start_y; y < start_y + crop_y; y++) {
+                MXC_UART_WriteBytes(Con_Uart, &img_data.raw[_i(start_x, y, img_data.w, img_data.h)], crop_x);
+            }
+#endif
 
             int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
             printf("Done! (serial transmission took %i us)\n", elapsed);

@@ -52,9 +52,7 @@
 #include "pag7920_regs.h"
 #endif
 
-#ifdef CAMERA_BAYER
 #include "debayering.h"
-#endif
 
 #include "tmr_regs.h"
 
