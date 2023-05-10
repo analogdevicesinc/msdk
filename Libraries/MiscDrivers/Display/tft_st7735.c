@@ -90,14 +90,6 @@ static void write_data(unsigned char data)
     TFT_SPI_Write(&data, 1, true);
 }
 
-void MXC_TFT_WriteCommand(unsigned char command) {
-    write_command(command);
-}
-
-void MXC_TFT_WriteData(unsigned char data) {
-    write_data(data);
-}
-
 static void window(unsigned int x, unsigned int y, unsigned int w, unsigned int h)
 {
     write_command(0x2A);
