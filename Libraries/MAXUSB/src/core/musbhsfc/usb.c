@@ -879,7 +879,7 @@ int MXC_USB_GetSetup(MXC_USB_SetupPkt *sud)
     volatile uint8_t *fifoptr = (uint8_t *)&MXC_USBHS->fifo0;
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+     MXC_SYS_Crit_Enter();
 
     /* Select endpoint 0 */
     MXC_USBHS->index = 0;
@@ -971,7 +971,7 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     MXC_USBHS->index = ep;
 

@@ -67,16 +67,22 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         MXC_GPIO_Config(&gpio_cfg_spi0);
 
         //ME21 SPI0 supports ss0-ss3 ship select
-        if (numSlaves & 0x01) {
+        if (numSlaves == 1) {
             MXC_GPIO_Config(&gpio_cfg_spi0_ss0);
         }
-        if (numSlaves & 0x02) {
+        if (numSlaves == 2) {
+            MXC_GPIO_Config(&gpio_cfg_spi0_ss0);
             MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
         }
-        if (numSlaves & 0x04) {
+        if (numSlaves == 3) {
+            MXC_GPIO_Config(&gpio_cfg_spi0_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
             MXC_GPIO_Config(&gpio_cfg_spi0_ss2);
         }
-        if (numSlaves & 0x08) {
+        if (numSlaves == 4) {
+            MXC_GPIO_Config(&gpio_cfg_spi0_ss0);
+            MXC_GPIO_Config(&gpio_cfg_spi0_ss1);
+            MXC_GPIO_Config(&gpio_cfg_spi0_ss2);
             MXC_GPIO_Config(&gpio_cfg_spi0_ss3);
         }
     } else if (spi == MXC_SPI1) {
