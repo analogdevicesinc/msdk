@@ -2,6 +2,7 @@
  * @file    afe_adc_one_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AFE_ADC_ONE Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup afe_adc_one_registers
  */
 
 /******************************************************************************
@@ -2018,6 +2019,9 @@ extern "C" {
 
 #define MXC_F_AFE_ADC_ONE_SYS_CTRL_CRC5_POS            2 /**< SYS_CTRL_CRC5 Position */
 #define MXC_F_AFE_ADC_ONE_SYS_CTRL_CRC5                ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ONE_SYS_CTRL_CRC5_POS)) /**< SYS_CTRL_CRC5 Mask */
+
+#define MXC_F_AFE_ADC_ONE_SYS_CTRL_ST_DIS_POS          3 /**< SYS_CTRL_ST_DIS Position */
+#define MXC_F_AFE_ADC_ONE_SYS_CTRL_ST_DIS              ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ONE_SYS_CTRL_ST_DIS_POS)) /**< SYS_CTRL_ST_DIS Mask */
 
 #define MXC_F_AFE_ADC_ONE_SYS_CTRL_HART_EN_POS         4 /**< SYS_CTRL_HART_EN Position */
 #define MXC_F_AFE_ADC_ONE_SYS_CTRL_HART_EN             ((uint8_t)(0x1UL << MXC_F_AFE_ADC_ONE_SYS_CTRL_HART_EN_POS)) /**< SYS_CTRL_HART_EN Mask */

@@ -2,6 +2,7 @@
  * @file    mcr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the MCR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup mcr_registers
  */
 
 /******************************************************************************
@@ -98,6 +99,7 @@ typedef struct {
     __IO uint32_t adc_cfg0;             /**< <tt>\b 0x38:</tt> MCR ADC_CFG0 Register */
     __IO uint32_t adc_cfg1;             /**< <tt>\b 0x3C:</tt> MCR ADC_CFG1 Register */
     __IO uint32_t adc_cfg2;             /**< <tt>\b 0x40:</tt> MCR ADC_CFG2 Register */
+    __IO uint32_t adc_cfg3;             /**< <tt>\b 0x44:</tt> MCR ADC_CFG3 Register */
 } mxc_mcr_regs_t;
 
 /* Register offsets for module MCR */
@@ -116,6 +118,7 @@ typedef struct {
 #define MXC_R_MCR_ADC_CFG0                 ((uint32_t)0x00000038UL) /**< Offset from MCR Base Address: <tt> 0x0038</tt> */
 #define MXC_R_MCR_ADC_CFG1                 ((uint32_t)0x0000003CUL) /**< Offset from MCR Base Address: <tt> 0x003C</tt> */
 #define MXC_R_MCR_ADC_CFG2                 ((uint32_t)0x00000040UL) /**< Offset from MCR Base Address: <tt> 0x0040</tt> */
+#define MXC_R_MCR_ADC_CFG3                 ((uint32_t)0x00000044UL) /**< Offset from MCR Base Address: <tt> 0x0044</tt> */
 /**@} end of group mcr_registers */
 
 /**
@@ -132,6 +135,9 @@ typedef struct {
 
 #define MXC_F_MCR_RST_LPUART0_POS                      2 /**< RST_LPUART0 Position */
 #define MXC_F_MCR_RST_LPUART0                          ((uint32_t)(0x1UL << MXC_F_MCR_RST_LPUART0_POS)) /**< RST_LPUART0 Mask */
+
+#define MXC_F_MCR_RST_RTC_POS                          3 /**< RST_RTC Position */
+#define MXC_F_MCR_RST_RTC                              ((uint32_t)(0x1UL << MXC_F_MCR_RST_RTC_POS)) /**< RST_RTC Mask */
 
 /**@} end of group MCR_RST_Register */
 
@@ -354,6 +360,32 @@ typedef struct {
 #define MXC_F_MCR_ADC_CFG2_CH12                        ((uint32_t)(0x3UL << MXC_F_MCR_ADC_CFG2_CH12_POS)) /**< ADC_CFG2_CH12 Mask */
 
 /**@} end of group MCR_ADC_CFG2_Register */
+
+/**
+ * @ingroup  mcr_registers
+ * @defgroup MCR_ADC_CFG3 MCR_ADC_CFG3
+ * @brief    ADC Config Register3.
+ * @{
+ */
+#define MXC_F_MCR_ADC_CFG3_VREFM_POS                   0 /**< ADC_CFG3_VREFM Position */
+#define MXC_F_MCR_ADC_CFG3_VREFM                       ((uint32_t)(0x7FUL << MXC_F_MCR_ADC_CFG3_VREFM_POS)) /**< ADC_CFG3_VREFM Mask */
+
+#define MXC_F_MCR_ADC_CFG3_VREFP_POS                   8 /**< ADC_CFG3_VREFP Position */
+#define MXC_F_MCR_ADC_CFG3_VREFP                       ((uint32_t)(0x7FUL << MXC_F_MCR_ADC_CFG3_VREFP_POS)) /**< ADC_CFG3_VREFP Mask */
+
+#define MXC_F_MCR_ADC_CFG3_IDRV_POS                    16 /**< ADC_CFG3_IDRV Position */
+#define MXC_F_MCR_ADC_CFG3_IDRV                        ((uint32_t)(0xFUL << MXC_F_MCR_ADC_CFG3_IDRV_POS)) /**< ADC_CFG3_IDRV Mask */
+
+#define MXC_F_MCR_ADC_CFG3_VCM_POS                     20 /**< ADC_CFG3_VCM Position */
+#define MXC_F_MCR_ADC_CFG3_VCM                         ((uint32_t)(0x3UL << MXC_F_MCR_ADC_CFG3_VCM_POS)) /**< ADC_CFG3_VCM Mask */
+
+#define MXC_F_MCR_ADC_CFG3_ATB_POS                     22 /**< ADC_CFG3_ATB Position */
+#define MXC_F_MCR_ADC_CFG3_ATB                         ((uint32_t)(0x3UL << MXC_F_MCR_ADC_CFG3_ATB_POS)) /**< ADC_CFG3_ATB Mask */
+
+#define MXC_F_MCR_ADC_CFG3_D_IBOOST_POS                24 /**< ADC_CFG3_D_IBOOST Position */
+#define MXC_F_MCR_ADC_CFG3_D_IBOOST                    ((uint32_t)(0x1UL << MXC_F_MCR_ADC_CFG3_D_IBOOST_POS)) /**< ADC_CFG3_D_IBOOST Mask */
+
+/**@} end of group MCR_ADC_CFG3_Register */
 
 #ifdef __cplusplus
 }

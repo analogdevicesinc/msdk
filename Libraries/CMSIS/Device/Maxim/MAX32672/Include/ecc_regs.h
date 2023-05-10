@@ -1,7 +1,7 @@
 /**
  * @file    ecc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the ECC Peripheral Module.
- *          This file is @deprecated.
+ * @deprecated         This file is deprecated in favor of @ref trimsir_registers.
  */
 
 /******************************************************************************

@@ -2,6 +2,7 @@
  * @file    aeskeys_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AESKEYS Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup aeskeys_registers
  */
 
 /******************************************************************************
@@ -76,6 +77,7 @@ extern "C" {
 
 /**
  * @ingroup     aeskeys
+ * @ingroup     aes
  * @defgroup    aeskeys_registers AESKEYS_Registers
  * @brief       Registers, Bit Masks and Bit Positions for the AESKEYS Peripheral Module.
  * @details     AES Keys.
