@@ -25,8 +25,8 @@
 
 /* Prototypes for module-only functions */
 static DRESULT ctrl_sync(void *buff,BYTE pdrv);
-static DRESULT get_sector_count(void *buff);
-static DRESULT get_block_size(void *buff);
+static DRESULT get_sector_count(void *buff, BYTE pdrv);
+static DRESULT get_block_size(void *buff, BYTE pdrv);
 static DRESULT mmc_get_csd(void *buff);
 
 /* Globals */
@@ -46,26 +46,25 @@ DSTATUS disk_status (
 	switch(pdrv){
 		case DEV_SD:
 	
-    	if (!MXC_SDHC_Card_Inserted()) {
-			init_done = 0;
-			status = STA_NOINIT | STA_NODISK;
-    	}
+    		if (!MXC_SDHC_Card_Inserted()) {
+				init_done = 0;
+				status = STA_NOINIT | STA_NODISK;
+    		}
+			break;
 
-    	return status;
-	
+
 #ifdef EXTERNAL_FLASH
 		case DEV_EXTERNAL_FLASH:
 
-    	if (!mscmem_ID()) {
-    		init_done = 0;
-    		status = STA_NOINIT | STA_NODISK;
-    	}
-
-    	return status;
+    		if (!mscmem_ID()) {
+    			init_done = 0;
+    			status = STA_NOINIT | STA_NODISK;
+    		}
+			break;
 	
 #endif
 	}
-	return 0;
+	return status;
 }
 
 
@@ -130,8 +129,6 @@ DSTATUS disk_initialize (
 #endif
 	}
 	return 0;			
-	
-
 }
 
 
@@ -149,18 +146,16 @@ DRESULT disk_read (
 )
 {
 	DRESULT status;
-	//int index;
 	switch(pdrv){
 		case DEV_SD:
 
+    		if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+				status = RES_ERROR;
+    		} else {
+				status = RES_OK;
+    		}
 
-    	if (MXC_SDHC_Lib_Read(buff, sector, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
-			status = RES_ERROR;
-    	} else {
-			status = RES_OK;
-    	}
-
-    	return status;
+    		return status;
 	
 
 #ifdef EXTERNAL_FLASH
@@ -171,8 +166,7 @@ DRESULT disk_read (
     			sector++;
     			buff+=512;
     		}
-
-    	return status;
+    		return status;
 	
 #endif
 	}
@@ -191,19 +185,17 @@ DRESULT disk_write (
 	UINT count			/* Number of sectors to write */
 )
 {
-	    	DRESULT status;
-			//int index;
+	DRESULT status;
 	switch(pdrv){
 		case DEV_SD:
 
+    		if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
+				status = RES_ERROR;
+    		} else {
+				status = RES_OK;
+    		}
 
-    	if (MXC_SDHC_Lib_Write(sector, (void *)buff, count, MXC_SDHC_LIB_SINGLE_DATA) != E_NO_ERROR) {
-			status = RES_ERROR;
-    	} else {
-			status = RES_OK;
-    	}
-
-    	return status; 
+    		return status; 
 	
 #ifdef EXTERNAL_FLASH
 	case DEV_EXTERNAL_FLASH:
@@ -234,64 +226,35 @@ DRESULT disk_ioctl (
 	void *buff		/* Buffer to send/receive control data */
 )
 {
-	    	DRESULT status;
-	switch(pdrv){
-		case DEV_SD:	
-
-
-    	switch(cmd) {
-    	    case CTRL_SYNC:
-			    /* Mandatory */
-		    	status = ctrl_sync(buff,pdrv);
-		    	break;
-    	    case GET_SECTOR_COUNT:
-			    /* Mandatory */
-			    status = get_sector_count(buff);
-			    break;
-    	    case GET_BLOCK_SIZE:
-			    /* Mandatory */
-			    status = get_block_size(buff);
-			    break;
-    	    case MMC_GET_CSD:
-			    /* Optional */
-			    status = mmc_get_csd(buff);
-			    break;
-			default:
-			    status = RES_PARERR;
-			    break;
-    	}
-	
-    	return status;
-	
+	DRESULT status = RES_ERROR;
+    switch(cmd) {
+        case CTRL_SYNC:
+		    /* Mandatory */
+	    	status = ctrl_sync(buff,pdrv);
+	    	break;
+        case GET_SECTOR_COUNT:
+		    /* Mandatory */
+		    status = get_sector_count(buff,pdrv);
+		    break;
+        case GET_BLOCK_SIZE:
+		    /* Mandatory */
+		    status = get_block_size(buff,pdrv);
+		    break;
+        case MMC_GET_CSD:
+		    /* Optional */
+		    status = mmc_get_csd(buff);
+		    break;
 #ifdef EXTERNAL_FLASH
-		case DEV_EXTERNAL_FLASH:
-    	status = RES_OK;
-
-    	switch(cmd) {
-        	case CTRL_SYNC:
-				/* Mandatory */
-				status = ctrl_sync(buff,pdrv);
-	    		break;
-        	case GET_SECTOR_COUNT:
-        		/* Mandatory */
-        		*(DWORD*)buff = EXT_FLASH_NUM_SECTORS * (EXT_FLASH_SECTOR_SIZE / 512);
-	    		break;
-        	case GET_BLOCK_SIZE:
-        		/* Mandatory */
-        		*(DWORD*)buff = 1;
-	    		break;
-			case GET_SECTOR_SIZE:
-				*(DWORD*)buff = EXT_FLASH_SECTOR_SIZE;
-				break;
-			default:
-	    		status = RES_PARERR;
-	    		break;
-    	
-    return status;
-	}
+		case GET_SECTOR_SIZE:
+			*(DWORD*)buff = EXT_FLASH_SECTOR_SIZE;
+			break;
 #endif
-	}
-	return 0;
+		default:
+		    status = RES_PARERR;
+		    break;
+    }
+
+    return status;
 }
 
 DWORD get_fattime(void) {
@@ -343,8 +306,8 @@ static DRESULT ctrl_sync(void *buff,BYTE pdrv)
 		    return RES_OK;
 #ifdef EXTERNAL_FLASH
 		case DEV_EXTERNAL_FLASH:
-		mscmem_write_dirty_sector();
-    	return RES_OK;
+			mscmem_write_dirty_sector();
+    		return RES_OK;
 	
 #endif
 	}
@@ -352,38 +315,61 @@ static DRESULT ctrl_sync(void *buff,BYTE pdrv)
 	return 0;
 }
 
-static DRESULT get_sector_count(void *buff)
+static DRESULT get_sector_count(void *buff , BYTE pdrv)
 {
-    mxc_sdhc_csd_regs_t csd;
-    DRESULT status = RES_ERROR;
+	DRESULT status = RES_ERROR;
+	mxc_sdhc_csd_regs_t csd;
 
-    if (init_done) {
-    	if (MXC_SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
-	    	*((DWORD *)buff) = MXC_SDHC_Lib_GetCapacity(&csd) / FF_MIN_SS;
-	    	status = RES_OK;
-		}
-    } else {
-		status = RES_NOTRDY;
-    }
-    
+	switch(pdrv){
+		case DEV_SD:
+
+    		if (init_done) {
+    			if (MXC_SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
+			    	*((DWORD *)buff) = MXC_SDHC_Lib_GetCapacity(&csd) / FF_MIN_SS;
+			    	status = RES_OK;
+				}
+    		} else {
+				status = RES_NOTRDY;
+    		}
+			break;
+	
+#ifdef EXTERNAL_FLASH
+		case DEV_EXTERNAL_FLASH:
+    		*(DWORD*)buff = EXT_FLASH_NUM_SECTORS * (EXT_FLASH_SECTOR_SIZE / 512);
+			status = RES_OK;
+			break;
+#endif
+	}
     return status;
 }
 
-static DRESULT get_block_size(void *buff)
+static DRESULT get_block_size(void *buff, BYTE pdrv)
 {
-    mxc_sdhc_csd_regs_t csd;
-    DRESULT status = RES_ERROR;
-    
-    if (init_done) {
-    	if (MXC_SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
-	    	*((DWORD *)buff) = MXC_SDHC_Lib_GetBlockSize(&csd);
-	    	status = RES_OK;
-		}
-    } else {
-		status = RES_NOTRDY;
-    }
-    
-    return status;
+	DRESULT status = RES_ERROR;
+	mxc_sdhc_csd_regs_t csd;
+
+	switch(pdrv){
+		case DEV_SD:
+
+    		if (init_done) {
+    			if (MXC_SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
+			    	*((DWORD *)buff) = MXC_SDHC_Lib_GetBlockSize(&csd);
+			    	status = RES_OK;
+				}
+    		} else {
+				status = RES_NOTRDY;
+    		}
+			break;
+#ifdef EXTERNAL_FLASH
+		case DEV_EXTERNAL_FLASH:
+
+			*(DWORD*)buff = 1;
+			status = RES_OK;
+			break;
+#endif
+	}
+	return status;
+
 }
 
 static DRESULT mmc_get_csd(void *buff)
