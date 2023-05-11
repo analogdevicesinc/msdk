@@ -130,6 +130,26 @@ int MXC_RTC_GetSecond(void)
 }
 
 // *****************************************************************************
+int MXC_RTC_GetSubSeconds(uint32_t *ssec)
+{
+    // Ensure valid data is in SSEC register
+    MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_READY;
+    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_READY)) {}
+
+    return MXC_RTC_RevA_GetSubSeconds((mxc_rtc_reva_regs_t *)MXC_RTC, ssec);
+}
+
+// *****************************************************************************
+int MXC_RTC_GetSeconds(uint32_t *sec)
+{
+    // Ensure valid data is in SEC register
+    MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_READY;
+    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_READY)) {}
+
+    return MXC_RTC_RevA_GetSeconds((mxc_rtc_reva_regs_t *)MXC_RTC, sec);
+}
+
+// *****************************************************************************
 int MXC_RTC_GetTime(uint32_t *sec, uint32_t *subsec)
 {
     return MXC_RTC_RevA_GetTime((mxc_rtc_reva_regs_t *)MXC_RTC, sec, subsec);

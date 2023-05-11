@@ -177,19 +177,41 @@ int MXC_RTC_GetFlags(void);
 int MXC_RTC_ClearFlags(int flags);
 
 /**
- * @brief     Get SubSecond
- * @retval    Returns subsecond value or E_BUSY, see /ref MXC_ERROR_CODES
+ * @brief     Get SubSecond or E_BUSY, see /ref MXC_ERROR_CODES
+ * @retval    Returns subsecond value
  */
+#ifdef __GNUC__
+__attribute__((deprecated("Use MXC_RTC_GetSubSeconds() instead.")))
+#endif
 int MXC_RTC_GetSubSecond(void);
 
 /**
- * @brief     Get Second
- * @retval    returns second value or E_BUSY, see /ref MXC_ERROR_CODES
+ * @brief     This function stores the current value of the sub-seconds counter into a
+ *            pointer if the RTC is not busy. If the RTC is busy, an error is returned.
+ * @param     ssec   Pointer to the variable to store the current sub-seconds value.
+ * @retval    E_NO_ERROR if successful, otherwise an error code (see /ref MXC_ERROR_CODES).
  */
+int MXC_RTC_GetSubSeconds(uint32_t *ssec);
+
+/**
+ * @brief     Get Second or E_BUSY, see /ref MXC_ERROR_CODES
+ * @retval    returns second value
+ */
+#ifdef __GNUC__
+__attribute__((deprecated("Use MXC_RTC_GetSeconds() instead.")))
+#endif
 int MXC_RTC_GetSecond(void);
 
 /**
- * @brief     Get the time using nuclear fusion. Or atomically. Something like that.
+ * @brief     This function stores the current value of the seconds counter into a
+ *            pointer if the RTC is not busy. If the RTC is busy, an error is returned.
+ * @param     sec   Pointer to the variable to store the current seconds value.
+ * @retval    E_NO_ERROR if successful, otherwise an error code (see /ref MXC_ERROR_CODES).
+ */
+int MXC_RTC_GetSeconds(uint32_t *sec);
+
+/**
+ * @brief     Get the current second and sub-second counts
  * @param     sec pointer to store seconds value
  * @param     subsec pointer to store subseconds value
  * @retval    returns Success or Fail, see \ref MXC_Error_Codes
