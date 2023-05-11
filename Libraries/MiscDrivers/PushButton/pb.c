@@ -32,6 +32,7 @@
  ******************************************************************************/
 
 #include <stddef.h>
+#include "board.h"
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "pb.h"
@@ -72,20 +73,6 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
     }
 
     return E_NO_ERROR;
-}
-
-//******************************************************************************
-void GPIO0_IRQHandler(void)
-{
-    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
-}
-void GPIO1_IRQHandler(void)
-{
-    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
-}
-void GPIO2_IRQHandler(void)
-{
-    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
 }
 
 //******************************************************************************
