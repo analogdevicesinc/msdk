@@ -75,7 +75,7 @@ int ss_interval = SUBSECOND_MSEC_0;
 /***** Functions *****/
 void RTC_IRQHandler(void)
 {
-    int time;
+    uint32_t time;
     int flags = MXC_RTC_GetFlags();
     /* Check sub-second alarm flag. */
     if (flags & MXC_RTC_INT_FL_SHORT) {
@@ -91,7 +91,7 @@ void RTC_IRQHandler(void)
 
         /* Set a new alarm TIME_OF_DAY_SEC seconds from current time. */
         /* Don't need to check busy here as it was checked in MXC_RTC_DisableInt() */
-        time = MXC_RTC_GetSecond();
+        MXC_RTC_GetSeconds(&time);
 
         if (MXC_RTC_SetTimeofdayAlarm(time + TIME_OF_DAY_SEC) != E_NO_ERROR) {
             /* Handle Error */
@@ -126,17 +126,18 @@ void buttonHandler()
 
 void printTime()
 {
-    int day, hr, min, sec, rtc_readout;
+    int day, hr, min, err;
+    uint32_t sec, rtc_readout;
     double subsec;
 
     do {
-        rtc_readout = MXC_RTC_GetSubSecond();
-    } while (rtc_readout == E_BUSY);
+        err = MXC_RTC_GetSubSeconds(&rtc_readout);
+    } while (err != E_NO_ERROR);
     subsec = rtc_readout / 4096.0;
 
     do {
-        rtc_readout = MXC_RTC_GetSecond();
-    } while (rtc_readout == E_BUSY);
+        err = MXC_RTC_GetSeconds(&rtc_readout);
+    } while (err != E_NO_ERROR);
     sec = rtc_readout;
 
     day = sec / SECS_PER_DAY;
@@ -150,7 +151,7 @@ void printTime()
 
     subsec += sec;
 
-    printf("Current Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f\n", day, hr, min, subsec);
+    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f\n", day, hr, min, subsec);
 }
 
 // *****************************************************************************
@@ -181,9 +182,6 @@ int main(void)
         printf("Example Failed\n");
         while (1) {}
     }
-
-    printf("RTC started\n");
-    printTime();
 
     if (MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {
         return E_BUSY;
@@ -222,6 +220,9 @@ int main(void)
         printf("Example Failed\n");
         while (1) {}
     }
+
+    printf("RTC started\n");
+    printTime();
 
     while (1) {
         if (buttonPressed) {
