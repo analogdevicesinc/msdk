@@ -305,3 +305,67 @@ void bayer_bilinear_demosaicing_crop(uint8_t *srcimg, uint32_t src_width, uint32
         }
     }
 }
+
+void bayer_bilinear_demosaicing_crop_vertical(uint8_t *srcimg, uint32_t src_width, uint32_t w_offset, uint32_t src_height, uint32_t h_offset, uint16_t *dstimg, uint32_t dst_width, uint32_t dst_height)
+{
+    unsigned int r, g, b = 0;
+    int i = 0;
+
+    for (int x = w_offset; x < w_offset + dst_width; x++) {
+        for (int y = h_offset; y < h_offset + dst_height;) {
+            if (!(x & 1)) { // Even column (B G B G B G)
+                r = (srcimg[_i(x - 1, y + 1, src_width, src_height)] + // Top left
+                     srcimg[_i(x + 1, y + 1, src_width, src_height)] + // Top right
+                     srcimg[_i(x - 1, y - 1, src_width, src_height)] + // Bottom left
+                     srcimg[_i(x + 1, y - 1, src_width, src_height)]); // Bottom right
+                r = r >> 2; // Divide by 4
+                g = (srcimg[_i(x - 1, y, src_width, src_height)] + // Left
+                     srcimg[_i(x + 1, y, src_width, src_height)] + // Right
+                     srcimg[_i(x, y + 1, src_width, src_height)] + // Up
+                     srcimg[_i(x, y - 1, src_width, src_height)]); // Down
+                g = g >> 2; // Divide by 4
+                b = srcimg[_i(x, y, src_width, src_height)]; // We're at blue pixel
+
+                dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
+                y++;
+
+                r = (srcimg[_i(x - 1, y, src_width, src_height)] + // Left
+                     srcimg[_i(x + 1, y, src_width, src_height)]); // Right
+                r = r >> 1; // Divide by 2
+                g = srcimg[_i(x, y, src_width, src_height)]; // We're at green pixel
+                b = (srcimg[_i(x, y - 1, src_width, src_height)] + // Up
+                     srcimg[_i(x, y + 1, src_width, src_height)]); // Down
+                b = b >> 1; // Divide by 2
+
+                dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
+                y++;
+            } else { // Odd row (G R G R G R)
+                r = (srcimg[_i(x, y - 1, src_width, src_height)] + // Up
+                     srcimg[_i(x, y + 1, src_width, src_height)]); // Down
+                r = r >> 1; // Divide by 2
+                g = srcimg[_i(x, y, src_width, src_height)]; // We're at green pixel
+                b = (srcimg[_i(x - 1, y, src_width, src_height)] + // Left
+                     srcimg[_i(x + 1, y, src_width, src_height)]); // Right
+                b = b >> 1; // Divide by 2
+
+                dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
+                y++;
+
+                r = srcimg[_i(x, y, src_width, src_height)]; // We're at red pixel
+                g = (srcimg[_i(x - 1, y, src_width, src_height)] + // Left
+                     srcimg[_i(x + 1, y, src_width, src_height)] + // Right
+                     srcimg[_i(x, y + 1, src_width, src_height)] + // Up
+                     srcimg[_i(x, y - 1, src_width, src_height)]); // Down
+                g = g >> 2; // Divide by 4
+                b = (srcimg[_i(x - 1, y + 1, src_width, src_height)] + // Top left
+                     srcimg[_i(x + 1, y + 1, src_width, src_height)] + // Top right
+                     srcimg[_i(x - 1, y - 1, src_width, src_height)] + // Bottom left
+                     srcimg[_i(x + 1, y - 1, src_width, src_height)]); // Bottom right
+                b = b >> 2; // Divide by 4
+
+                dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
+                y++;
+            }
+        }
+    }
+}

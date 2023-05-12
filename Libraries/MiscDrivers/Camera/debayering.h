@@ -48,3 +48,5 @@ void bayer_bilinear_demosaicing(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_
 * @param[out] dstimg Output pointer for converted RGB565 image.
 ****************************************************************************/
 void bayer_bilinear_demosaicing_crop(uint8_t *srcimg, uint32_t src_width, uint32_t w_offset, uint32_t src_height, uint32_t h_offset, uint16_t *dstimg, uint32_t dst_width, uint32_t dst_height);
+
+void bayer_bilinear_demosaicing_crop_vertical(uint8_t *srcimg, uint32_t src_width, uint32_t w_offset, uint32_t src_height, uint32_t h_offset, uint16_t *dstimg, uint32_t dst_width, uint32_t dst_height);
