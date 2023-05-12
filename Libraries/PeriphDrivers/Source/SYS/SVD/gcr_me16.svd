@@ -964,6 +964,12 @@
             <bitOffset>23</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
+          <field derivedFrom="I2C1">
+            <name>AFE</name>
+            <description>AFE Reset.</description>
+            <bitOffset>25</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
         </fields>
       </register>
       <register>
