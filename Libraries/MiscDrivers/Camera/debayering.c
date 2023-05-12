@@ -369,3 +369,249 @@ void bayer_bilinear_demosaicing_crop_vertical(uint8_t *srcimg, uint32_t src_widt
         }
     }
 }
+
+// https://www.researchgate.net/publication/270045976_Malvar-He-Cutler_Linear_Image_Demosaicking
+void bayer_malvarcutler_demosaicing(uint8_t* srcimg, uint32_t w,  uint32_t h, uint16_t* dstimg) {
+    int r,g,b = 0;
+    int i = 0;
+
+    for (int y = 0; y < h; y++) {
+        for (int x = 0; x < w;) {
+            if (!(y & 1)) { // Even row (B G B G B G)
+                r = ( // R at blue location
+                    12*srcimg[_i(x,y,w,h)] +
+                    4*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                    4*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                    4*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                    4*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                    (-3)*srcimg[_i(x-2,y,w,h)] + // Far left
+                    (-3)*srcimg[_i(x+2,y,w,h)] + // Far right
+                    (-3)*srcimg[_i(x,y+2,w,h)] + // Far up
+                    (-3)*srcimg[_i(x,y-2,w,h)]  // Far down
+                ) >> 4;
+                g = ( // G at blue location
+                    8*srcimg[_i(x,y,w,h)]   + // Center
+                    4*srcimg[_i(x-1,y,w,h)] + // Left
+                    4*srcimg[_i(x+1,y,w,h)] + // Right
+                    4*srcimg[_i(x,y+1,w,h)] + // Up
+                    4*srcimg[_i(x,y-1,w,h)] + // Down
+                    (-2)*srcimg[_i(x-2,y,w,h)] + // Far left
+                    (-2)*srcimg[_i(x+2,y,w,h)] + // Far right
+                    (-2)*srcimg[_i(x,y+2,w,h)] + // Far up
+                    (-2)*srcimg[_i(x,y-2,w,h)]   // Far down
+                ) >> 4;
+                b = srcimg[_i(x,y,w,h)]; // We're at blue pixel...
+                dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r),clamp_i_u8(g),clamp_i_u8(b));
+                x++;
+                r = ( // R at green location in blue row
+                    10*srcimg[_i(x,y,w,h)] + // Center
+                    8*srcimg[_i(x,y+1,w,h)] + // Up
+                    8*srcimg[_i(x,y-1,w,h)] + // Down
+                    (-2)*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                    (-2)*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                    (-2)*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                    (-2)*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                    srcimg[_i(x-2,y,w,h)] + // Far left
+                    srcimg[_i(x+2,y,w,h)] + // Far right
+                    (-2)*srcimg[_i(x,y+2,w,h)] + // Far up
+                    (-2)*srcimg[_i(x,y-2,w,h)]  // Far down
+                ) >> 4;
+                g = srcimg[_i(x,y,w,h)]; // We're at green pixel
+                b = ( // B at green location in blue row
+                    10*srcimg[_i(x,y,w,h)] + // Center
+                    8*srcimg[_i(x,y+1,w,h)] + // Up
+                    8*srcimg[_i(x,y-1,w,h)] + // Down
+                    (-2)*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                    (-2)*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                    (-2)*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                    (-2)*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                    srcimg[_i(x-2,y,w,h)] + // Far left
+                    srcimg[_i(x+2,y,w,h)] + // Far right
+                    (-2)*srcimg[_i(x,y+2,w,h)] + // Far up
+                    (-2)*srcimg[_i(x,y-2,w,h)]  // Far down
+                ) >> 4;
+                dstimg[i++] = rgb_to_rgb565(clamp_f_u8(r),clamp_f_u8(g),clamp_f_u8(b));
+                x++;
+            } else { // Odd row (G R G R G R)
+                r = ( // R at green location in red row
+                    10*srcimg[_i(x,y,w,h)] + // Center
+                    8*srcimg[_i(x-1,y,w,h)] + // Left
+                    8*srcimg[_i(x+1,y,w,h)] + // Right
+                    (-2)*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                    (-2)*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                    (-2)*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                    (-2)*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                    (-2)*srcimg[_i(x-2,y,w,h)] + // Far left
+                    (-2)*srcimg[_i(x+2,y,w,h)] + // Far right
+                    srcimg[_i(x,y+2,w,h)] + // Far up
+                    srcimg[_i(x,y-2,w,h)]  // Far down
+                ) >> 4;
+                g = srcimg[_i(x,y,w,h)]; // We're at green pixel
+                b = ( // B at green location in red row
+                    10*srcimg[_i(x,y,w,h)] + // Center
+                    8*srcimg[_i(x-1,y,w,h)] + // Left
+                    8*srcimg[_i(x+1,y,w,h)] + // Right
+                    (-2)*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                    (-2)*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                    (-2)*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                    (-2)*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                    (-2)*srcimg[_i(x-2,y,w,h)] + // Far left
+                    (-2)*srcimg[_i(x+2,y,w,h)] + // Far right
+                    srcimg[_i(x,y+2,w,h)] + // Far up
+                    srcimg[_i(x,y-2,w,h)]  // Far down
+                ) >> 4;
+                dstimg[i++] = rgb_to_rgb565(clamp_f_u8(r),clamp_f_u8(g),clamp_f_u8(b));
+                x++;
+                r = srcimg[_i(x,y,w,h)]; // We're at red pixel
+                g = ( // G at red location
+                    8*srcimg[_i(x,y,w,h)]   + // Center
+                    4*srcimg[_i(x-1,y,w,h)] + // Left
+                    4*srcimg[_i(x+1,y,w,h)] + // Right
+                    4*srcimg[_i(x,y+1,w,h)] + // Up
+                    4*srcimg[_i(x,y-1,w,h)] + // Down
+                    (-2)*srcimg[_i(x-2,y,w,h)] + // Far left
+                    (-2)*srcimg[_i(x+2,y,w,h)] + // Far right
+                    (-2)*srcimg[_i(x,y+2,w,h)] + // Far up
+                    (-2)*srcimg[_i(x,y-2,w,h)]   // Far down
+                ) >> 4;
+                b = ( // B at red location
+                    12*srcimg[_i(x,y,w,h)] +     // Center
+                    4*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                    4*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                    4*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                    4*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                    (-3)*srcimg[_i(x-2,y,w,h)] + // Far left
+                    (-3)*srcimg[_i(x+2,y,w,h)] + // Far right
+                    (-3)*srcimg[_i(x,y+2,w,h)] + // Far up
+                    (-3)*srcimg[_i(x,y-2,w,h)]  // Far down
+                ) >> 4;
+                dstimg[i++] = rgb_to_rgb565(clamp_f_u8(r),clamp_f_u8(g),clamp_f_u8(b));
+                x++;
+            }
+        }
+    }
+}
+
+void bayer_malvarhe_demosaicing_crop_vertical(uint8_t *srcimg, uint32_t w, uint32_t w_offset, uint32_t h, uint32_t h_offset, uint16_t *dstimg, uint32_t dst_width, uint32_t dst_height)
+{
+    int r,g,b = 0;
+    int i = 0;
+
+    for (int x = w_offset; x < w_offset + dst_width; x++) {
+        for (int y = h_offset; y < h_offset + dst_height; y++) {
+            if (!(y & 1)) { // Even row
+                if (!(x & 1)) { // Even column
+                    r = ( // R at blue location
+                        12*srcimg[_i(x,y,w,h)] +
+                        4*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                        4*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                        4*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                        4*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                        (-3)*srcimg[_i(x-2,y,w,h)] + // Far left
+                        (-3)*srcimg[_i(x+2,y,w,h)] + // Far right
+                        (-3)*srcimg[_i(x,y+2,w,h)] + // Far up
+                        (-3)*srcimg[_i(x,y-2,w,h)]  // Far down
+                    ) >> 4;
+                    g = ( // G at blue location
+                        8*srcimg[_i(x,y,w,h)]   + // Center
+                        4*srcimg[_i(x-1,y,w,h)] + // Left
+                        4*srcimg[_i(x+1,y,w,h)] + // Right
+                        4*srcimg[_i(x,y+1,w,h)] + // Up
+                        4*srcimg[_i(x,y-1,w,h)] + // Down
+                        (-2)*srcimg[_i(x-2,y,w,h)] + // Far left
+                        (-2)*srcimg[_i(x+2,y,w,h)] + // Far right
+                        (-2)*srcimg[_i(x,y+2,w,h)] + // Far up
+                        (-2)*srcimg[_i(x,y-2,w,h)]   // Far down
+                    ) >> 4;
+                    b = srcimg[_i(x,y,w,h)]; // We're at blue pixel...
+                    dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r),clamp_i_u8(g),clamp_i_u8(b));
+                } else { // Odd column
+                    r = ( // R at green in B row, R column
+                        10*srcimg[_i(x,y,w,h)] + // Center
+                        8*srcimg[_i(x,y+1,w,h)] + // Up
+                        8*srcimg[_i(x,y-1,w,h)] + // Down
+                        (-2)*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                        (-2)*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                        (-2)*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                        (-2)*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                        srcimg[_i(x-2,y,w,h)] + // Far left
+                        srcimg[_i(x+2,y,w,h)] + // Far right
+                        (-2)*srcimg[_i(x,y+2,w,h)] + // Far up
+                        (-2)*srcimg[_i(x,y-2,w,h)]  // Far down
+                    ) >> 4;
+                    g = srcimg[_i(x,y,w,h)]; // We're at green pixel...
+                    b = ( // B at green in B row, R column
+                        10*srcimg[_i(x,y,w,h)] + // Center
+                        8*srcimg[_i(x-1,y,w,h)] + // Left
+                        8*srcimg[_i(x+1,y,w,h)] + // Right
+                        (-2)*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                        (-2)*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                        (-2)*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                        (-2)*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                        (-2)*srcimg[_i(x-2,y,w,h)] + // Far left
+                        (-2)*srcimg[_i(x+2,y,w,h)] + // Far right
+                        srcimg[_i(x,y+2,w,h)] + // Far up
+                        srcimg[_i(x,y-2,w,h)]  // Far down
+                    ) >> 4;
+                    dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r),clamp_i_u8(g),clamp_i_u8(b));
+                }
+            } else { // Odd row
+                if (!(x & 1)) { // Even column
+                    r = ( // R at green in R row, B column
+                        10*srcimg[_i(x,y,w,h)] + // Center
+                        8*srcimg[_i(x-1,y,w,h)] + // Left
+                        8*srcimg[_i(x+1,y,w,h)] + // Right
+                        (-2)*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                        (-2)*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                        (-2)*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                        (-2)*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                        (-2)*srcimg[_i(x-2,y,w,h)] + // Far left
+                        (-2)*srcimg[_i(x+2,y,w,h)] + // Far right
+                        srcimg[_i(x,y+2,w,h)] + // Far up
+                        srcimg[_i(x,y-2,w,h)]  // Far down
+                    ) >> 4;
+                    g = srcimg[_i(x,y,w,h)]; // We're at green pixel...
+                    b = ( // B at green in R row, B column
+                        10*srcimg[_i(x,y,w,h)] + // Center
+                        8*srcimg[_i(x,y+1,w,h)] + // Up
+                        8*srcimg[_i(x,y-1,w,h)] + // Down
+                        (-2)*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                        (-2)*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                        (-2)*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                        (-2)*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                        srcimg[_i(x-2,y,w,h)] + // Far left
+                        srcimg[_i(x+2,y,w,h)] + // Far right
+                        (-2)*srcimg[_i(x,y+2,w,h)] + // Far up
+                        (-2)*srcimg[_i(x,y-2,w,h)]  // Far down
+                    ) >> 4;
+                    dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r),clamp_i_u8(g),clamp_i_u8(b));
+                } else { // Odd column
+                    r = srcimg[_i(x,y,w,h)]; // We're at red pixel...
+                    g = ( // G at red location
+                        8*srcimg[_i(x,y,w,h)]   + // Center
+                        4*srcimg[_i(x-1,y,w,h)] + // Left
+                        4*srcimg[_i(x+1,y,w,h)] + // Right
+                        4*srcimg[_i(x,y+1,w,h)] + // Up
+                        4*srcimg[_i(x,y-1,w,h)] + // Down
+                        (-2)*srcimg[_i(x-2,y,w,h)] + // Far left
+                        (-2)*srcimg[_i(x+2,y,w,h)] + // Far right
+                        (-2)*srcimg[_i(x,y+2,w,h)] + // Far up
+                        (-2)*srcimg[_i(x,y-2,w,h)]   // Far down
+                    ) >> 4;
+                    b = ( // B at red location
+                        12*srcimg[_i(x,y,w,h)] +     // Center
+                        4*srcimg[_i(x-1,y+1,w,h)] + // Top left
+                        4*srcimg[_i(x+1,y+1,w,h)] + // Top right
+                        4*srcimg[_i(x-1,y-1,w,h)] + // Bottom left
+                        4*srcimg[_i(x+1,y-1,w,h)] + // Bottom right
+                        (-3)*srcimg[_i(x-2,y,w,h)] + // Far left
+                        (-3)*srcimg[_i(x+2,y,w,h)] + // Far right
+                        (-3)*srcimg[_i(x,y+2,w,h)] + // Far up
+                        (-3)*srcimg[_i(x,y-2,w,h)]  // Far down
+                    ) >> 4;
+                    dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r),clamp_i_u8(g),clamp_i_u8(b));
+                }
+            }
+        }
+    }
+}

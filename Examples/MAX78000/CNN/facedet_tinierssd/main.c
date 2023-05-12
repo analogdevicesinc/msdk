@@ -87,8 +87,9 @@ void load_input(void)
     uint8_t *pointer = (uint8_t *)rgb565_buffer;
 
     for (unsigned int x = start_x; x < start_x + crop_x; x++) {
-        bayer_bilinear_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
-        // MXC_TFT_ShowImageCameraRGB565(0, x - start_x, (uint8_t*)rgb565_buffer, crop_y, 1);
+        // bayer_bilinear_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
+        bayer_malvarhe_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
+
 
         for (unsigned int y = 0; y < crop_y; y++) {
             // Decode RGB565 to RGB888
