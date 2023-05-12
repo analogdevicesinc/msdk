@@ -1706,8 +1706,8 @@ The _**implementation**_ files are further organized based on _**die type**_ and
       | MAX32690 | ME18 |
       | MAX78000 | AI85 |
       | MAX78002 | AI87 |
-      
-- The **_hardware** revision_ files follow the **`_revX`** naming convention.  
+
+- The **_hardware revision_** files follow the **`_revX`** naming convention.  
     - These files contain the _pure_ driver implementation for a peripheral block and typically interact with the hardware almost entirely at the register level.
 
 ## Examples
