@@ -39,7 +39,6 @@
  */
 
 #include <stdio.h>
-#include "spixc.h"
 
 #ifndef _BOARD_H
 #define _BOARD_H

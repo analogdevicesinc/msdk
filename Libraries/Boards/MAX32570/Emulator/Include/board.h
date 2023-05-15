@@ -39,7 +39,6 @@
  */
 
 #include <stdio.h>
-// #include "spixfc.h"
 
 #ifndef _BOARD_H
 #define _BOARD_H
@@ -62,8 +61,6 @@ extern "C" {
 #define MX25_SPI MXC_SPIXFC
 #define MX25_SSEL 0
 // #define SPI_CHAR_BITS               8
-
-// const spixfc_cfg_t mx25_spim_cfg;
 
 /**
  * \brief   Initialize the BSP and board interfaces.
