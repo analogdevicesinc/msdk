@@ -112,10 +112,10 @@ void camera_capture_and_load_cnn(void)
             g6 = ((rgb565_buffer[j] & 0b111) << 3) | ((rgb565_buffer[j + 1] & 0b11100000) >> 5);
             b5 = ((rgb565_buffer[j + 1]) & 0b11111);
 
-            // RGB565 -> RGB888.  Here we're just dropping the lower bits
-            r = r5 << 3;
-            g = g6 << 2;
-            b = b5 << 3;
+            // RGB565 -> RGB888 (signed)
+            r = (r5 << 3) - 128;
+            g = (g6 << 2) - 128;
+            b = (b5 << 3) - 128;
 
             // Pack into 32-bit word (0x00BBGGRR)
             packed = r | (g << 8) | (b << 16);
