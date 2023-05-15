@@ -42,6 +42,7 @@
 #include "dma.h"
 #include "dma_reva.h"
 #include "mcr_regs.h"
+#include "nvic_table.h"
 
 /* **** Definitions **** */
 
@@ -56,13 +57,30 @@
 int MXC_CSI2_Init(mxc_csi2_req_t *req, mxc_csi2_ctrl_cfg_t *ctrl_cfg,
                   mxc_csi2_vfifo_cfg_t *vfifo_cfg)
 {
-    MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPLL);
+    int error = E_NO_ERROR;
+#ifdef __riscv
+    #warning "RISC-V Core does not have access to CSI2 IRQ.  Drivers are not supported on RISC-V"
+    return E_NOT_SUPPORTED;
+#else
+    error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPLL);
+    if (error)
+        return error;
+
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CSI2);
+    if (error)
+        return error;
 
     // Turn on LDO2P5
     MXC_MCR->ldoctrl |= MXC_F_MCR_LDOCTRL_2P5EN;
 
-    return MXC_CSI2_RevA_Init((mxc_csi2_reva_regs_t *)MXC_CSI2, req, ctrl_cfg, vfifo_cfg);
+    error = MXC_CSI2_RevA_Init((mxc_csi2_reva_regs_t *)MXC_CSI2, req, ctrl_cfg, vfifo_cfg);
+    if (error)
+        return error;
+
+    MXC_NVIC_SetVector(CSI2_IRQn, MXC_CSI2_RevA_Handler);
+    NVIC_EnableIRQ(CSI2_IRQn);
+#endif
+    return error;
 }
 
 int MXC_CSI2_Shutdown(void)

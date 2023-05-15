@@ -31,6 +31,10 @@
  *
  ******************************************************************************/
 
+#ifdef __riscv
+#warning "CSI2 drivers not supported on RISC-V"
+#else
+
 /* **** Includes **** */
 #include <string.h>
 #include <stdio.h>
@@ -205,9 +209,6 @@ int MXC_CSI2_RevA_Init(mxc_csi2_reva_regs_t *csi2, mxc_csi2_req_t *req,
     if (error != E_NO_ERROR) {
         return error;
     }
-
-    MXC_NVIC_SetVector(CSI2_IRQn, MXC_CSI2_RevA_Handler);
-    NVIC_EnableIRQ(CSI2_IRQn);
 
     return E_NO_ERROR;
 }
@@ -1169,5 +1170,7 @@ int MXC_CSI2_RevA_DMA_GetCurrentFrameEndCnt(void)
 {
     return frame_end_cnt;
 }
+
+#endif
 
 /**@} end of group csi2 */
