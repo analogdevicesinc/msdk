@@ -59,7 +59,7 @@ int MXC_CSI2_Init(mxc_csi2_req_t *req, mxc_csi2_ctrl_cfg_t *ctrl_cfg,
 {
     int error = E_NO_ERROR;
 #ifdef __riscv
-    #warning "RISC-V Core does not have access to CSI2 IRQ.  Drivers are not supported on RISC-V"
+#warning "RISC-V Core does not have access to CSI2 IRQ.  Drivers are not supported on RISC-V"
     return E_NOT_SUPPORTED;
 #else
     error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPLL);
