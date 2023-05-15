@@ -63,7 +63,7 @@
 #include "cnn.h"
 #include <math.h>
 
-#define VERSION "3.2.0 (02/13/23)" // trained with background noise and more unknown keywords
+#define VERSION "3.2.3 (5/05/23)" // trained with background noise and more unknown keywords
 
 /* **** Definitions **** */
 #define CLOCK_SOURCE 0 // 0: IPO,  1: ISO, 2: IBRO
@@ -691,7 +691,7 @@ int main(void)
 
                 PR_DEBUG("----------------------------------------- \n");
                 /* Treat low confidence detections as unknown*/
-                if (!ret || out_class == 20) {
+                if (!ret || out_class == NUM_OUTPUTS - 1) {
                     PR_DEBUG("Detected word: %s", "Unknown");
                 } else {
                     PR_DEBUG("Detected word: %s (%0.1f%%)", keywords[out_class], probability);
@@ -871,7 +871,7 @@ uint8_t check_inference(q15_t *ml_soft, int32_t *ml_data, int16_t *out_class, do
 #else
             MXC_TFT_ClearScreen();
             memset(buff, 32, TFT_BUFF_SIZE);
-            if (max_index == 20 || *out_prob <= INFERENCE_THRESHOLD)
+            if (max_index == NUM_OUTPUTS - 1 || *out_prob <= INFERENCE_THRESHOLD)
                 TFT_Print(buff, 20, 30, font_2, snprintf(buff, sizeof(buff), "Unknown"));
             else
                 TFT_Print(buff, 20, 30, font_2,
