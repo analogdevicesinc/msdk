@@ -58,9 +58,11 @@ static uint8_t out_ep;
 static uint8_t in_ep;
 static uint8_t notify_ep;
 
+static int received = 0;
+
 /***** Function Prototypes *****/
 static int class_req(MXC_USB_SetupPkt *sud, void *cbdata);
-static void ccid_dispatcher(void *cbdata);
+static void ccid_received(void *cbdata);
 static int ccid_lodge_out(void *);
 
 /******************************************************************************/
@@ -153,11 +155,13 @@ int ccid_deconfigure(void)
 /******************************************************************************/
 static int ccid_lodge_out(void *cbdata)
 {
+	received = 0;
+
     memset(&pr_req, 0, sizeof(MXC_USB_Req_t));
     pr_req.ep = out_ep;
     pr_req.data = xfer_buf;
     pr_req.reqlen = sizeof(xfer_buf);
-    pr_req.callback = ccid_dispatcher;
+    pr_req.callback = ccid_received;//ccid_dispatcher;
     pr_req.cbdata = NULL; /* Callback uses global data */
     pr_req.type = MAXUSB_TYPE_PKT;
     return MXC_USB_ReadEndpoint(&pr_req);
@@ -209,7 +213,15 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
 }
 
 /******************************************************************************/
-static void ccid_dispatcher(void *cbdata)
+static void ccid_received(void *cbdata) {
+	received = 1;
+}
+
+int ccid_is_received() {
+	return received;
+}
+
+void ccid_dispatcher(void *cbdata)
 {
   int result = -1;
 
@@ -316,6 +328,8 @@ static void ccid_dispatcher(void *cbdata)
     memset(xfer_buf+7, 0, 3);
     ccid_rdr_to_pc(xfer_buf, CCID_CMD_HDR_LEN);
   }
+
+  received = 0;
 }
 
 /******************************************************************************/

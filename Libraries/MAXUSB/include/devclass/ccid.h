@@ -362,6 +362,19 @@ int ccid_configure(const ccid_cfg_t *cfg);
  *  \return   Zero (0) for success, non-zero for failure
  */
 int ccid_deconfigure(void);
+
+/**
+ *  \brief    Checks if ccid message received
+ *  \details  Set variable if a message received
+ *  \return   One(1) if received, Zero(0) if not
+ */
+int ccid_is_received();
+
+/**
+ *  \brief    Dispatch the callbacks
+ *  \details  Dispatch according to last received message
+ */
+void ccid_dispatcher(void *cbdata);
  
 /**
  *  \brief    Register a callback to be called upon the specified event.
