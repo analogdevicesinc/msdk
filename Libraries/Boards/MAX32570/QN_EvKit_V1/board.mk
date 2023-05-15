@@ -43,7 +43,6 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += mx25.c
 SRCS += pb.c
-SRCS += rom_stub.c
 SRCS += tft_ssd2119.c
 SRCS += tsc2046.c
 
