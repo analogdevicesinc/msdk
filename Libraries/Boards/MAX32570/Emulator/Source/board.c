@@ -94,12 +94,11 @@ int Board_Init(void)
         return err;
     }
 
-
     if ((err = PB_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     if ((err = LED_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;

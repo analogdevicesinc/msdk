@@ -151,7 +151,7 @@ int Board_Init(void)
         MXC_ASSERT_FAIL();
         return err;
     }
-    
+
     if ((err = LED_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;

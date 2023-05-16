@@ -176,13 +176,13 @@ int __write(int file, const unsigned char *ptr, size_t len)
         for (n = 0; n < len; n++) {
             if (*ptr == '\n') {
                 // Wait until there's room in the FIFO
-                while(MXC_UART_GetTXFIFOAvailable(MXC_UARTn) == 0) {}
+                while (MXC_UART_GetTXFIFOAvailable(MXC_UARTn) == 0) {}
 
                 MXC_UART_WriteCharacter(MXC_UARTn, '\r');
             }
 
             // Wait until there's room in the FIFO
-            while(MXC_UART_GetTXFIFOAvailable(MXC_UARTn) == 0) {}               
+            while (MXC_UART_GetTXFIFOAvailable(MXC_UARTn) == 0) {}
 
             MXC_UART_WriteCharacter(MXC_UARTn, *ptr++);
         }
