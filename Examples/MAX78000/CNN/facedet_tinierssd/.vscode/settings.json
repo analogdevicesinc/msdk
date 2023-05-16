@@ -15,8 +15,8 @@
     },
     
     "target":"MAX78000",
-    // "board":"EvKit_V1",
-    "board":"CAM01_RevA",
+    "board":"EvKit_V1",
+    // "board":"CAM01_RevA",
 
     "project_name":"${workspaceFolderBasename}",
 
