@@ -393,7 +393,7 @@ typedef enum {
 
 // This definition is included to prevent build errors for RISCV when calling MXC_GPIO_GET_IRQ.
 #ifdef __riscv
-#define GPIOWAKE_IRQn   GPIOWake_IRQn
+#define GPIOWAKE_IRQn GPIOWake_IRQn
 #endif
 
 #define MXC_GPIO_GET_IRQ(i)     \
