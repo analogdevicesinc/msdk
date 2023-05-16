@@ -87,8 +87,8 @@ void load_input(void)
     uint8_t *pointer = (uint8_t *)rgb565_buffer;
 
     for (unsigned int x = start_x; x < start_x + crop_x; x++) {
-        // bayer_bilinear_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
-        bayer_malvarhe_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
+        bayer_bilinear_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
+        // bayer_malvarhe_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
 
 
         for (unsigned int y = 0; y < crop_y; y++) {
@@ -215,6 +215,8 @@ int main(void)
         } else {
             LED_On(0);
         }
+
+        MXC_Delay(MXC_DELAY_MSEC(25)); // Slight delay to allow LED to be seen
 
         // cnn_unload((uint32_t *)ml_data32);
 
