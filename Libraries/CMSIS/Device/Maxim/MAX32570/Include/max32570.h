@@ -177,6 +177,11 @@ typedef enum {
     RSV92_IRQn, /* 0x6C  0x01B0  108: Reserved */
     HTMR0_IRQn, /* 0x6D  0x01B4  109: HTimer0 */
     HTMR1_IRQn, /* 0x6E  0x01B8  110: HTimer1 */
+    RSV95_IRQn, /* 0x6F  0x01BC  111: Reserved */
+    RSV96_IRQn, /* 0x70  0x01C0  112: Reserved */
+    RSV97_IRQn, /* 0x71  0x01C4  113: Reserved */
+    RSV98_IRQn, /* 0x72  0x01C8  114: Reserved */
+    I2S_IRQn, /* 0x72  0x01CC  115: I2S */
 #else // RISCV
 #ifdef __riscv0
     HardFault_IRQn = 3, /* 0x03,3 HardFault */

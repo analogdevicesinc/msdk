@@ -1532,6 +1532,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="I2C1">
+            <name>I2S</name>
+            <description>I2S Reset.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="I2C1">
             <name>AC</name>
             <description>AC Reset.</description>
             <bitOffset>14</bitOffset>
@@ -1722,6 +1728,12 @@
             <name>SPI3</name>
             <description>SPI3 Clock Disable.</description>
             <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field derivedFrom="UART2">
+            <name>I2S</name>
+            <description>I2S Clock Disable.</description>
+            <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field derivedFrom="UART2">
