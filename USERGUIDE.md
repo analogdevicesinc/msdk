@@ -1698,6 +1698,7 @@ The _**implementation**_ files are further organized based on _**die type**_ and
       | MAX32650 | ME10 |
       | MAX32655 | ME17 |
       | MAX32660 | ME11 |
+      | MAX32662 | ME12 |
       | MAX32665 | ME14 |
       | MAX32670 | ME15 |
       | MAX32672 | ME21 |
