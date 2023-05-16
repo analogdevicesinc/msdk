@@ -391,6 +391,10 @@ typedef enum {
 #define MXC_GPIO_GET_GPIO(i) \
     ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : (i) == 2 ? MXC_GPIO2 : (i) == 3 ? MXC_GPIO3 : 0)
 
+#ifdef __riscv
+#define GPIOWAKE_IRQn   GPIOWake_IRQn
+#endif
+
 #define MXC_GPIO_GET_IRQ(i)     \
     ((i) == 0 ? GPIO0_IRQn :    \
      (i) == 1 ? GPIO1_IRQn :    \
