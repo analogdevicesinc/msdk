@@ -39,9 +39,10 @@
 
 int font = (int)&SansSerif16x16[0];
 
-void TFT_Print(char *str, int x, int y, int font, int length)
+void TFT_Print(char *str, int x, int y)
 {
-    text_t text = { .data = str, .len = length };
+    int len = strlen(str);
+    text_t text = { .data = str, .len = len };
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
 }
 
@@ -135,5 +136,5 @@ void draw_obj_rect(float *xy, int class_idx)
         MXC_TFT_WritePixel(x2, y, LINE_WIDTH, LINE_WIDTH, color);
     }
 
-    TFT_Print(voc_labels[class_idx], x1, y1 + 4, font, strlen(voc_labels[class_idx]));
+    TFT_Print(voc_labels[class_idx], x1, y1 + 4);
 }
