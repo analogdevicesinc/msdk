@@ -203,7 +203,8 @@ int main(void)
         cnn_start(); // Start CNN processing
         load_input(); // Load data input via FIFO
 
-        while (cnn_time == 0) LED_On(1); // Wait for CNN
+        LED_On(1);
+        while (cnn_time == 0) MXC_LP_EnterSleepMode(); // Wait for CNN
         LED_Off(1);
 
         get_priors();
