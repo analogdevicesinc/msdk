@@ -65,10 +65,12 @@ void load_input(void)
 {
     uint8_t *raw;
     uint32_t imglen, w, h;
+    camera_sleep(0);
     camera_start_capture_image();
     // 3. Wait until the image is fully received.
     while (!camera_is_image_rcv()) {}
     camera_get_image(&raw, &imglen, &w, &h);
+    camera_sleep(1);
 
     color_correct(raw, w, h);
 
@@ -84,7 +86,6 @@ void load_input(void)
 
     uint16_t rgb565_buffer[crop_y];
     uint16_t rgb565;
-    uint8_t *pointer = (uint8_t *)rgb565_buffer;
 
     for (unsigned int x = start_x; x < start_x + crop_x; x++) {
         bayer_bilinear_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
@@ -187,28 +188,32 @@ int main(void)
         return ret;
     }
 
-    // Enable peripheral, enable CNN interrupt, turn on CNN clock
-    // CNN clock: APB (50 MHz) div 1
-    cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-
     printf("\n*** CNN Inference Test facedet_tinierssd ***\n");
-
-    cnn_init(); // Bring state machine into consistent state
-    cnn_load_weights(); // Load kernels
-    cnn_load_bias();
 
     while (1) {
         face_detected = 0;
+        LED_On(1);
+
+        // Switch to high power fast IPO clock
+        MXC_SYS_ClockEnable(MXC_SYS_CLOCK_IPO);
+        MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+
+        // Enable peripheral, enable CNN interrupt, turn on CNN clock
+        // CNN clock: APB (50 MHz) div 1
+        cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+        cnn_init(); // Bring state machine into consistent state
+        cnn_load_weights(); // Load kernels
+        cnn_load_bias();
         cnn_configure(); // Configure state machine
         cnn_start(); // Start CNN processing
         load_input(); // Load data input via FIFO
 
-        LED_On(1);
         while (cnn_time == 0) MXC_LP_EnterSleepMode(); // Wait for CNN
-        LED_Off(1);
 
+        // Run Non-Maximal Suppression (NMS) on bounding boxes
         get_priors();
         localize_objects();
+        LED_Off(1);
 
         if (!face_detected) {
             LED_Off(0);
@@ -216,7 +221,14 @@ int main(void)
             LED_On(0);
         }
 
-        MXC_Delay(MXC_DELAY_MSEC(25)); // Slight delay to allow LED to be seen
+        cnn_disable(); // Shut down CNN clock, disable peripheral
+
+        // Switch to low power IBRO clock
+        MXC_SYS_ClockEnable(MXC_SYS_CLOCK_IBRO);
+        MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IBRO);
+        MXC_SYS_ClockDisable(MXC_SYS_CLOCK_IPO);
+
+        MXC_Delay(MXC_DELAY_MSEC(150)); // Slight delay to allow LED to be seen
 
         // cnn_unload((uint32_t *)ml_data32);
 
