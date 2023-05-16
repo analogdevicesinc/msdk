@@ -130,17 +130,17 @@ int main(void)
             MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
 
 #ifdef CNN_INFERENCE_TIMER
-        // printf("Inference complete!  Approximate data loading and inference time: %u us\n",
-            //    cnn_time);
+        printf("Inference complete!  Approximate data loading and inference time: %u us\n",
+               cnn_time);
 #endif
 
         // MODIFICATION: Run Non-Maximal Suppression (NMS) to filter and display results
         // --- MODS START
-        // printf("Starting NMS... \n");
+        printf("Starting NMS... \n");
         MXC_TMR_SW_Start(MXC_TMR1);
         nms_localize_objects();
         unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR1);
-        // printf("Done!  (Took %i us)\n", elapsed);
+        printf("Done!  (Took %i us)\n", elapsed);
 
         // Drawing bounding boxes is excluded from NMS calculation because all of the
         // overhead is TFT communication
