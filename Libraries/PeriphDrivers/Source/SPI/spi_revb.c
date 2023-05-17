@@ -63,18 +63,12 @@ typedef struct {
     
     // Chip Select Info.
     bool                deassert; // CS Deasserted at the end of a transmission.
-    mxc_spi_target_t    current_cs_cfg;
+    mxc_spi_target_t    current_target;
 
     // DMA Settings.
     mxc_dma_reva_regs_t *dma;
     int                 tx_dma_ch;
     int                 rx_dma_ch;
-// TODO: Should the request select data be saved or should there be a function that
-//  sets the proper Request Selects bits in DMA registers and call that function in
-//  chip-specific level Init function
-// Make a function for these two
-    int                 tx_dma_reqsel;
-    int                 rx_dma_reqsel;
 
     // Status Fields.
     bool                controller_done; // Master
@@ -694,7 +688,7 @@ int MXC_SPI_RevB_GetActive(mxc_spi_reva_regs_t *spi)
 
 /* ** Transaction Functions ** */
 // TODO: Request Object
-int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
     int spi_num, tx_dummy_len;
 
@@ -705,7 +699,7 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
     }
 
     // Ensure valid chip select option.  
-    if (cs_cfg == NULL) {
+    if (target == NULL) {
         return E_NULL_PTR;
     }
 
@@ -732,7 +726,7 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
     STATES[spi_num].rx_done = false;
 
     STATES[spi_num].deassert = deassert;
-    STATES[spi_num].current_cs_cfg = *cs_cfg;
+    STATES[spi_num].current_target = *target;
 
     // Set the number of bytes to transmit/receive for the SPI transaction.
     if (STATES[spi_num].init.width == MXC_SPI_WIDTH_STANDARD) {
@@ -778,16 +772,16 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
     // Toggle Chip Select Pin if handled by the driver
     if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
         // Make sure the selected Target Select (L. SS) pin is enabled as an output.
-        if (cs_cfg->pins.func != MXC_GPIO_FUNC_OUT) {
+        if (target->pins.func != MXC_GPIO_FUNC_OUT) {
             return E_BAD_STATE;
         }
 
         // Active HIGH (1).
-        if (cs_cfg->active_polarity == 1) {
-            cs_cfg->pins.port->out_set |= cs_cfg->pins.mask;
+        if (target->active_polarity == 1) {
+            target->pins.port->out_set |= target->pins.mask;
         // Active LOW (0).
         } else {
-            cs_cfg->pins.port->out_clr |= cs_cfg->pins.mask;
+            target->pins.port->out_clr |= target->pins.mask;
         }
     }
 
@@ -802,8 +796,8 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
     // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the CS pin based
     //   on the value of CTRL->SS_CTRL, which causes the glitch.
     if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_HW_AUTO) {
-        // In HW Auto Scheme, only use the cs_cfg index member.
-        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, cs_cfg->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
+        // In HW Auto Scheme, only use the target index member.
+        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
 
         if (deassert) { 
             spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
@@ -816,7 +810,7 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
 }
 
 // TODO: Match Polling, Async, and DMA function names of chip-specific level
-int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint32_t deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint32_t deassert, mxc_spi_target_t *target)
 {
     int error;
     int spi_num;
@@ -827,7 +821,7 @@ int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffe
     }
 
     // This function fills in the STATES value for the flags that checks for blocking status.
-    error = MXC_SPI_RevB_MasterTransaction(spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, cs_cfg);
+    error = MXC_SPI_RevB_MasterTransaction(spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -839,7 +833,7 @@ int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffe
 }
 
 
-int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert, mxc_spi_target_t *target)
 {
     int spi_num, tx_dummy_len;
     // For readability purposes.
@@ -872,7 +866,7 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     STATES[spi_num].rx_done = false;
 
     STATES[spi_num].deassert = deassert;
-    STATES[spi_num].current_cs_cfg = *cs_cfg;
+    STATES[spi_num].current_target = *target;
 
     // Set the number of bytes to transmit/receive for the SPI transaction
     if (STATES[spi_num].init.width == MXC_SPI_WIDTH_STANDARD) {
@@ -950,16 +944,16 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     // Toggle Chip Select Pin if handled by the driver
     if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
         // Make sure the selected Target Select (L. SS) pin is enabled as an output.
-        if (cs_cfg->pins.func != MXC_GPIO_FUNC_OUT) {
+        if (target->pins.func != MXC_GPIO_FUNC_OUT) {
             return E_BAD_STATE;
         }
 
         // Active HIGH (1).
-        if (cs_cfg->active_polarity == 1) {
-            cs_cfg->pins.port->out_set |= cs_cfg->pins.mask;
+        if (target->active_polarity == 1) {
+            target->pins.port->out_set |= target->pins.mask;
         // Active LOW (0).
         } else {
-            cs_cfg->pins.port->out_clr |= cs_cfg->pins.mask;
+            target->pins.port->out_clr |= target->pins.mask;
         }
     }
 
@@ -974,8 +968,8 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the SS pin based
     // on the value of CTRL->SS_CTRL, which causes the glitch.
     if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_HW_AUTO) {
-        // In HW Auto Scheme, only use the cs_cfg index member.
-        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, cs_cfg->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
+        // In HW Auto Scheme, only use the target index member.
+        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
 
         if (deassert) { 
             spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
@@ -987,7 +981,7 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert, mxc_spi_target_t *target)
 {
     int error;
     int spi_num;
@@ -998,7 +992,7 @@ int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_bu
     }
 
     // This function fills in the STATES value for the flags that checks for blocking status.
-    error = MXC_SPI_RevB_MasterTransactionDMA(spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, cs_cfg);
+    error = MXC_SPI_RevB_MasterTransactionDMA(spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -1032,10 +1026,10 @@ void MXC_SPI_RevB_Handler(mxc_spi_reva_regs_t *spi)
         if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
             if (STATES[spi_num].deassert == true) {
                 // Readability for handling Chip Select.
-                cs_port = STATES[spi_num].current_cs_cfg.pins.port;
-                cs_mask = STATES[spi_num].current_cs_cfg.pins.mask;
+                target_port = STATES[spi_num].current_target.pins.port;
+                target_mask = STATES[spi_num].current_target.pins.mask;
             
-                cs_port->out ^= cs_mask;
+                target_port->out ^= target_mask;
             } // Don't deassert the CS pin if false for multiple repeated transactions.
         }
 
@@ -1090,10 +1084,10 @@ void MXC_SPI_RevB_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
         if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
             if (STATES[spi_num].deassert == true) {
                 // Readability for handling Chip Select.
-                cs_port = STATES[spi_num].current_cs_cfg.pins.port;
-                cs_mask = STATES[spi_num].current_cs_cfg.pins.mask;
+                target_port = STATES[spi_num].current_target.pins.port;
+                target_mask = STATES[spi_num].current_target.pins.mask;
             
-                cs_port->out ^= cs_mask;
+                target_port->out ^= target_mask;
             } // Don't deassert the CS pin if false for multiple repeated transactions.
         }
 
@@ -1135,10 +1129,10 @@ void MXC_SPI_RevB_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
         if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
             if (STATES[spi_num].deassert == true) {
                 // Readability for handling Chip Select.
-                cs_port = STATES[spi_num].current_cs_cfg.pins.port;
-                cs_mask = STATES[spi_num].current_cs_cfg.pins.mask;
+                target_port = STATES[spi_num].current_target.pins.port;
+                target_mask = STATES[spi_num].current_target.pins.mask;
             
-                cs_port->out ^= cs_mask;
+                target_port->out ^= target_mask;
             } // Don't deassert the CS pin if false for multiple repeated transactions.
         }
 
