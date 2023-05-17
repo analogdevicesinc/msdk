@@ -118,8 +118,8 @@ static int MXC_SPI_RevB_resetStateStruct(int spi_num)
     }
 
     // Init Data
-    STATES[spi_num].init = NULL;
-    STATES[spi_num].cs_pins = NULL;
+    STATES[spi_num].initialized = false;
+    STATES[spi_num].init = (const mxc_spi_init_t) { 0 };
 
     // Transaction Members
     STATES[spi_num].tx_buffer = NULL;
@@ -167,7 +167,8 @@ static int MXC_SPI_RevB_resetAllStateStructs(int spi_num)
 int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
 {
     int error, spi_num;
-    mxc_spi_target_t *cs_cfg;
+    mxc_spi_target_t *target;
+    mxc_gpio_regs_t *target_port;
 
     if (init == NULL) {
         return E_NULL_PTR;
@@ -180,8 +181,8 @@ int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
     }
 
     // For code readability.
-    cs_cfg = &(init->cs_config);
-    if (cs_cfg == NULL) {
+    target = &(init->target);
+    if (target == NULL) {
         return E_NULL_PTR;
     }
 
@@ -194,24 +195,24 @@ int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
     // Save init data for transactions and handlers.
     STATES[spi_num].init = *init;
     STATES[spi_num].dma = NULL;
-    STATES[spi_num].cs_pins = init->cs_pins;
+    STATES[spi_num].cs_pins = target->pins;
 
     // Set up CS Control Scheme.
     if (init->cs_control == MXC_SPI_CSCONTROL_HW_AUTO) {
         // If hardware is handling CS pin, make sure the correct alternate function is chosen.
-        if ((cs_cfg->pins != NULL) && (cs_cfg->pins.func != MXC_GPIO_FUNC_OUT)) {
+        if ((target->pins != NULL) && (target->pins.func != MXC_GPIO_FUNC_OUT)) {
             error = MXC_GPIO_Config(&(init->cs_pins));
             if (error != E_NO_ERROR) {
                 return error;
             }
 
-            (init->spi)->ctrl0 |= (cs_cfg->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
+            (init->spi)->ctrl0 |= (target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
 
             // Set CS Polarity (Default, active low (0))
-            if (cs_cfg->active_polarity == 0) {
-                (init->spi)->ctrl2 &= ~(cs_cfg->index << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
+            if (target->active_polarity == 0) {
+                (init->spi)->ctrl2 &= ~(target->index << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
             } else {
-                (init->spi)->ctrl2 |= (cs_cfg->index << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
+                (init->spi)->ctrl2 |= (target->index << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
             }
 
         } else {
@@ -219,27 +220,31 @@ int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
         }
 
     } else if (init->cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
-        // If SPI driver is handling CS pin, make sure the pin function is in OUT mode.
-        if ((cs_cfg->pins != NULL) && (cs_cfg->pins.func == MXC_GPIO_FUNC_OUT)) {
-            error = MXC_GPIO_Config(&(cs_cfg->pins));
+        // Readbility for register access
+        target_port = target->pins.port;
+
+        // If SPI driver is handling CS pin, make sure the pin function is set as an output (AF: IO).
+        if ((target->pins != NULL) && (target->pins.func == MXC_GPIO_FUNC_OUT)) {
+            error = MXC_GPIO_Config(&(target->pins));
             if (error != E_NO_ERROR) {
                 return error;
             }
 
             // Set CS Polarity 
-            if (cs_cfg->active_polarity == 0) {
+            if (target->active_polarity == 0) {
                 // Active LOW (0), Set CS Idle State to HIGH (1)
-                cs_cfg->pins.port->out_set |= cs_cfg->pins.mask;
+                target_port->out_set |= target->pins.mask;
             } else {
                 // Active HIGH (1), Set CS Idle State to LOW (0)
-                cs_cfg->pins.port->out_clr |= cs_cfg->pins.mask;
+                target_port->out_clr |= target->pins.mask;
             }
 
         } else {
             return E_BAD_PARAM;
         }
 
-    // Don't do anything if SW Application is handling CS pin.
+    // Don't do anything if SW Application is handling CS pin
+    // while still checking for proper cs_control parameter.
     } else if (init->cs_control != MXC_SPI_CSCONTROL_SW_APP) {
         // Not a valid CS Control option.
         return E_BAD_PARAM;
