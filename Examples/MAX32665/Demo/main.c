@@ -55,10 +55,6 @@
 #include "pb.h"
 #include "rtc.h"
 
-#ifdef BOARD_FTHR_REVA
-#error "ERR_NOTSUPPORTED: This example is not supported by the MAX32665 FTHR_RevA."
-#endif
-
 /***** Definitions *****/
 #define DISPLAY_HOR_RES (128)
 #define DISPLAY_VER_RES (128)

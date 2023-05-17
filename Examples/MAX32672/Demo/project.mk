@@ -15,7 +15,7 @@
 SBT=0
 
 ifneq ($(BOARD),EvKit_V1)
-$(error ERR_NOTSUPPORTED: This example requires a TFT display, therefore it's not supported only supported by the MAX32672VKIT)
+$(error ERR_NOTSUPPORTED: This example requires a TFT display, therefore it's only supported by the MAX32672EVKIT)
 endif
 
 IPATH += resources

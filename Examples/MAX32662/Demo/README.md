@@ -16,7 +16,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-Only builds on EV Kits.
+This project is only supported on the MAX32662EVKIT.
 
 ## Required Connections
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
@@ -27,7 +27,7 @@ Only builds on EV Kits.
 
 The display will show the Analog Devices logo for several seconds before displaying the uptime of the board in the format: (hhh:mm:ss) for (Hours:Minutes:Seconds).
 
-Pressing the button 5 or more times will wipe the screen and display the chip information (USN and Revision) for 3 seconds before the uptime is dsplayed up again.
+Pressing the button 5 or more times will wipe the screen and display the chip information (USN and Revision) for 3 seconds before the uptime is displayed up again.
 
 ## Expected Output
 

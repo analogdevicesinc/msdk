@@ -53,10 +53,6 @@
 #include "bitmap.h"
 #include "tft_st7735.h"
 
-#ifdef BOARD_FTHR_REVA
-#error "ERR_NOTSUPPORTED: This example is not supported by the MAX32662 FTHR_RevA."
-#endif
-
 /***** Definitions *****/
 
 #define SECS_PER_MIN 60

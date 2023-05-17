@@ -1,9 +1,9 @@
 ## Description
 
-A basic Hello_World program that use [LVGL Graphics Library](https://lvgl.io/).
+A starting Demo using the Display, RTC, LED, Push Buttons, and the [LVGL Graphics Library](https://lvgl.io/).
 
 This example
--   Works in EvKit-V1 Board that has [LS013B7DH03 Monochrome LCD Display](https://www.sharpsde.com/products/displays/model/ls013b7dh03/).
+-   Is intended for the EV Kit with the [LS013B7DH03 Monochrome LCD Display](https://www.sharpsde.com/products/displays/model/ls013b7dh03/).
 -   Uses LVGL graphic library to generate ADI Logo and prints the count.
 
 To create LVGL compatible fonts and images use [Font Converter](https://lvgl.io/tools/fontconverter) and [Bitmap Converter](https://lvgl.io/tools/imageconverter)
@@ -20,7 +20,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+This project is only supported on the MAX32665EVKIT.
 
 ## Required Connections
 
@@ -32,10 +32,12 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-***********Hello World!***********
+**** MAX32665 EV Kit Demo ****
 
-Count = 0
-Count = 1
-Count = 2
-Count = 3
+(ddd:hh:mm:ss): 000:00:00:00
+
+
+(ddd:hh:mm:ss): 000:00:00:01
+
+
 ```
