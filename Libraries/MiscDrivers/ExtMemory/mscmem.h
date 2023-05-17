@@ -45,7 +45,7 @@
 #define EXT_FLASH_SECTOR_SIZE_SHIFT \
     12 /* The shift value used to convert between addresses and block numbers */
 #define EXT_FLASH_NUM_SECTORS 16384 /* Total number of sectors in the external flash */
-#define MX25_BLOCK_SIZE				65536
+#define MX25_BLOCK_SIZE 65536
 /* **** Definitions **** */
 #define ERASE_MEMORY_ON_INIT \
     1 /* Configuration option to clear the memory (to 0s) on initialization. */
