@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['head_591',['head',['../structlfs__dir.html#a086e8d93663f5528fcc7c2ff7802883d',1,'lfs_dir::head()'],['../structlfs__file_1_1lfs__ctz.html#aff9613735c2288e388bf3000a66f4720',1,'lfs_file::lfs_ctz::head()']]]
+  ['gdelta_579',['gdelta',['../structlfs.html#ad86b15c4341e284e84a5bc29665c57eb',1,'lfs']]],
+  ['gdisk_580',['gdisk',['../structlfs.html#ae1a9bfda1a1a09e52d9d3913a243af22',1,'lfs']]],
+  ['gstate_581',['gstate',['../structlfs.html#ab4c94fb3aff01d5d1ae031b13245729d',1,'lfs']]]
 ];
