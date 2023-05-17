@@ -318,15 +318,24 @@ typedef enum {
 /* ================      Processor and Core Peripheral Section     ================ */
 /* ================================================================================ */
 
-/* ----------------------  Configuration of the Cortex-M Processor and Core Peripherals  ---------------------- */
-#define __CM4_REV 0x0100 /*!< Cortex-M4 Core Revision                                */
+#if !(defined(__riscv0) || defined(__riscv1)) // ARM
+
+/* --------  Configuration of the Cortex-M Processor and Core Peripherals  -------- */
+#define __CM4_REV 0x0100 /*!< Cortex-M4 Core Revision                               */
 #define __MPU_PRESENT 1 /*!< MPU present or not                                     */
-#define __NVIC_PRIO_BITS 3 /*!< Number of Bits used for Priority Levels                */
-#define __Vendor_SysTickConfig 0 /*!< Set to 1 if different SysTick Config is used           */
+#define __NVIC_PRIO_BITS 3 /*!< Number of Bits used for Priority Levels             */
+#define __Vendor_SysTickConfig 0 /*!< Set to 1 if different SysTick Config is used  */
 #define __FPU_PRESENT 1 /*!< FPU present or not                                     */
 
-#include <core_cm4.h> /*!< Cortex-M4 processor and core peripherals               */
-#include "system_max32570.h" /*!< System Header                                          */
+#include <core_cm4.h> /*!< Cortex-M4 processor and core peripherals                 */
+
+#else // RISCV
+
+#include <core_rv32.h>
+
+#endif
+
+#include "system_max32570.h" /*!< System Header                                     */
 
 /* ================================================================================ */
 /* ==================       Device Specific Memory Section       ================== */
