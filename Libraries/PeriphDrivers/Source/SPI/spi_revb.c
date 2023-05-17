@@ -516,7 +516,7 @@ int MXC_SPI_RevB_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_datawidth_t width)
     int spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCESs) {
         return E_BAD_PARAM;
     }
 
@@ -694,7 +694,7 @@ int MXC_SPI_RevB_GetActive(mxc_spi_reva_regs_t *spi)
 
 /* ** Transaction Functions ** */
 // TODO: Request Object
-int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint32_t deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg)
 {
     int spi_num, tx_dummy_len;
 
