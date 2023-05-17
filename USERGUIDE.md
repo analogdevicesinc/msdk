@@ -1687,9 +1687,28 @@ The Peripheral Driver API's source code is organized as follows:
 
 The _**implementation**_ files are further organized based on _**die type**_ and **_hardware revision_**. This is worth noting when browsing or debugging through the drivers.  
 
-- The **_die type_** files follow the **`_MEXX`** or **`_AIXX`** naming convention
+- The **_die type_** files follow the **`_ESXX`** , **`_MEXX`** , or **`_AIXX`** naming convention.
     - These files' responsibility is to manage microcontroller-specific implementation details that may interact with other peripheral APIs _before_ ultimately calling the revision-specific files.
-- The **_hardware** revision_ files follow the **`_revX`** naming convention.  
+    - This table shows which part numbers correspond to each die type:
+
+      | Part Number | Die Type
+      | -------- | ----------- |
+      | MAX32520 | ES17 |
+      | MAX32570 | ME13 |
+      | MAX32650 | ME10 |
+      | MAX32655 | ME17 |
+      | MAX32660 | ME11 |
+      | MAX32662 | ME12 |
+      | MAX32665 | ME14 |
+      | MAX32670 | ME15 |
+      | MAX32672 | ME21 |
+      | MAX32675 | ME16 |
+      | MAX32680 | ME20 |
+      | MAX32690 | ME18 |
+      | MAX78000 | AI85 |
+      | MAX78002 | AI87 |
+
+- The **_hardware revision_** files follow the **`_revX`** naming convention.  
     - These files contain the _pure_ driver implementation for a peripheral block and typically interact with the hardware almost entirely at the register level.
 
 ## Examples
