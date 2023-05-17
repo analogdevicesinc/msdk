@@ -20,6 +20,7 @@ var group__gcr__registers =
     [ "GCR_ECCCED", "group___g_c_r___e_c_c_c_e_d.html", "group___g_c_r___e_c_c_c_e_d" ],
     [ "GCR_ECCIE", "group___g_c_r___e_c_c_i_e.html", "group___g_c_r___e_c_c_i_e" ],
     [ "GCR_ECCADDR", "group___g_c_r___e_c_c_a_d_d_r.html", "group___g_c_r___e_c_c_a_d_d_r" ],
+    [ "gcr_regs.h", "gcr__regs_8h.html", null ],
     [ "mxc_gcr_regs_t", "group__gcr__registers.html#structmxc__gcr__regs__t", [
       [ "clkctrl", "group__gcr__registers.html#a5614e3d3d61a7b8e1e1c753d4442f209", null ],
       [ "eccaddr", "group__gcr__registers.html#a86a9c8da4c98f1feec252973106f11bc", null ],

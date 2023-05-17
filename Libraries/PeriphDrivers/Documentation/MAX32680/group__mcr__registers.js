@@ -7,6 +7,7 @@ var group__mcr__registers =
     [ "MCR_CMP_CTRL", "group___m_c_r___c_m_p___c_t_r_l.html", "group___m_c_r___c_m_p___c_t_r_l" ],
     [ "MCR_CTRL", "group___m_c_r___c_t_r_l.html", "group___m_c_r___c_t_r_l" ],
     [ "MCR_GPIO3_CTRL", "group___m_c_r___g_p_i_o3___c_t_r_l.html", "group___m_c_r___g_p_i_o3___c_t_r_l" ],
+    [ "mcr_regs.h", "mcr__regs_8h.html", null ],
     [ "mxc_mcr_regs_t", "group__mcr__registers.html#structmxc__mcr__regs__t", [
       [ "cmp_ctrl", "group__mcr__registers.html#ab00d7b6a6d15c2e78df1e26737548e3c", null ],
       [ "ctrl", "group__mcr__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],

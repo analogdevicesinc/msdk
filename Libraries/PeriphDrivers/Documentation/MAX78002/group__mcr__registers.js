@@ -13,6 +13,7 @@ var group__mcr__registers =
     [ "MCR_ADCCFG1", "group___m_c_r___a_d_c_c_f_g1.html", "group___m_c_r___a_d_c_c_f_g1" ],
     [ "MCR_ADCCFG2", "group___m_c_r___a_d_c_c_f_g2.html", "group___m_c_r___a_d_c_c_f_g2" ],
     [ "MCR_LDOCTRL", "group___m_c_r___l_d_o_c_t_r_l.html", "group___m_c_r___l_d_o_c_t_r_l" ],
+    [ "mcr_regs.h", "mcr__regs_8h.html", null ],
     [ "mxc_mcr_regs_t", "group__mcr__registers.html#structmxc__mcr__regs__t", [
       [ "adccfg0", "group__mcr__registers.html#a4181d1fea674eddcc34acfe81a79e5e4", null ],
       [ "adccfg1", "group__mcr__registers.html#af4bb524b361c503dc4bfc7d95d43c804", null ],

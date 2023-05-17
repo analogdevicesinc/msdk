@@ -127,8 +127,8 @@ $(document).ready(function(){initNavTree('adc_8h_source.html',''); initResizable
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">/* **** Includes **** */</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;adc_regs.h&quot;</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#include &quot;mcr_regs.h&quot;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;<a class="code" href="adc__regs_8h.html">adc_regs.h</a>&quot;</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="preprocessor">#include &quot;<a class="code" href="mcr__regs_8h.html">mcr_regs.h</a>&quot;</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
@@ -306,6 +306,7 @@ $(document).ready(function(){initNavTree('adc_8h_source.html',''); initResizable
 <div class="line"><a id="l00444" name="l00444"></a><span class="lineno">  444</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00445" name="l00445"></a><span class="lineno">  445</span> </div>
 <div class="line"><a id="l00446" name="l00446"></a><span class="lineno">  446</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_ADC_H_</span></div>
+<div class="ttc" id="aadc__regs_8h_html"><div class="ttname"><a href="adc__regs_8h.html">adc_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the ADC Peripheral Module.</div></div>
 <div class="ttc" id="agroup__adc_html_ga006292edcdc51092e321a37a4aedb485"><div class="ttname"><a href="group__adc.html#ga006292edcdc51092e321a37a4aedb485">MXC_ADC_GetMonitorHighThreshold</a></div><div class="ttdeci">int MXC_ADC_GetMonitorHighThreshold(mxc_adc_monitor_t monitor)</div><div class="ttdoc">Set the high limit for a specific monitor.</div></div>
 <div class="ttc" id="agroup__adc_html_ga09c4099862f88a1a27c2473c1d38f397"><div class="ttname"><a href="group__adc.html#ga09c4099862f88a1a27c2473c1d38f397">MXC_ADC_ClearFlags</a></div><div class="ttdeci">void MXC_ADC_ClearFlags(uint32_t flags)</div><div class="ttdoc">Performs the ADC startup procedure.</div></div>
 <div class="ttc" id="agroup__adc_html_ga0bf789826dc750730468833195f10f7d"><div class="ttname"><a href="group__adc.html#ga0bf789826dc750730468833195f10f7d">mxc_adc_monitor_t</a></div><div class="ttdeci">mxc_adc_monitor_t</div><div class="ttdef"><b>Definition:</b> adc.h:123</div></div>
@@ -342,13 +343,14 @@ $(document).ready(function(){initNavTree('adc_8h_source.html',''); initResizable
 <div class="ttc" id="agroup__adc_html_gaf70d7d33806dbd71f148a0f2f786e7fc"><div class="ttname"><a href="group__adc.html#gaf70d7d33806dbd71f148a0f2f786e7fc">MXC_ADC_DisableInt</a></div><div class="ttdeci">void MXC_ADC_DisableInt(uint32_t flags)</div><div class="ttdoc">Disable specific ADC interrupts.</div></div>
 <div class="ttc" id="agroup__adc_html_gaf97462c39d097cc9dcd6663fe6de2b10"><div class="ttname"><a href="group__adc.html#gaf97462c39d097cc9dcd6663fe6de2b10">MXC_ADC_SetMonitorLowThreshold</a></div><div class="ttdeci">void MXC_ADC_SetMonitorLowThreshold(mxc_adc_monitor_t monitor, uint32_t threshold)</div><div class="ttdoc">Set the low limit for a specific monitor.</div></div>
 <div class="ttc" id="agroup__adc_html_gafb7f2e91520a063ee70e6b8512b6ab19"><div class="ttname"><a href="group__adc.html#gafb7f2e91520a063ee70e6b8512b6ab19">MXC_ADC_Shutdown</a></div><div class="ttdeci">int MXC_ADC_Shutdown(void)</div><div class="ttdoc">Shuts down the ADC.</div></div>
+<div class="ttc" id="amcr__regs_8h_html"><div class="ttname"><a href="mcr__regs_8h.html">mcr_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the MCR Peripheral Module.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_e2429de0318695764783c01d82635fe8.html">MAX32655</a></li><li class="navelem"><b>adc.h</b></li>
-    <li class="footer">Generated on Fri May 5 2023 22:55:24 for MAX32655 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed May 17 2023 20:29:58 for MAX32655 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

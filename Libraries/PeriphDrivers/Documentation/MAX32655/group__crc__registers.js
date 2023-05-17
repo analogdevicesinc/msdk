@@ -7,6 +7,7 @@ var group__crc__registers =
     [ "CRC_DATAIN8", "group___c_r_c___d_a_t_a_i_n8.html", "group___c_r_c___d_a_t_a_i_n8" ],
     [ "CRC_POLY", "group___c_r_c___p_o_l_y.html", "group___c_r_c___p_o_l_y" ],
     [ "CRC_VAL", "group___c_r_c___v_a_l.html", "group___c_r_c___v_a_l" ],
+    [ "crc_regs.h", "crc__regs_8h.html", null ],
     [ "mxc_crc_regs_t", "group__crc__registers.html#structmxc__crc__regs__t", [
       [ "ctrl", "group__crc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],
       [ "datain16", "group__crc__registers.html#aba6e98bf1df68fcd0631ee268d1a824b", null ],

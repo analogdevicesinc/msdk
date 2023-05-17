@@ -9,6 +9,7 @@ var group__spixfm__registers =
     [ "SPIXFM_IOCTRL", "group___s_p_i_x_f_m___i_o_c_t_r_l.html", "group___s_p_i_x_f_m___i_o_c_t_r_l" ],
     [ "SPIXFM_MEMSECCTRL", "group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l.html", "group___s_p_i_x_f_m___m_e_m_s_e_c_c_t_r_l" ],
     [ "SPIXFM_BUSIDLE", "group___s_p_i_x_f_m___b_u_s_i_d_l_e.html", "group___s_p_i_x_f_m___b_u_s_i_d_l_e" ],
+    [ "spixfm_regs.h", "spixfm__regs_8h.html", null ],
     [ "mxc_spixfm_regs_t", "group__spixfm__registers.html#structmxc__spixfm__regs__t", [
       [ "authoffset", "group__spixfm__registers.html#ad94dc28c2150c1e77a75ea3676f4cb2b", null ],
       [ "busidle", "group__spixfm__registers.html#a7a9000f89ccb4165b43d895250b6217d", null ],

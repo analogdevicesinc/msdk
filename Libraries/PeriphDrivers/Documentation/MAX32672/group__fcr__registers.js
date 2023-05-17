@@ -11,6 +11,7 @@ var group__fcr__registers =
     [ "FCR_ADCREFTRIM1", "group___f_c_r___a_d_c_r_e_f_t_r_i_m1.html", "group___f_c_r___a_d_c_r_e_f_t_r_i_m1" ],
     [ "FCR_ADCREFTRIM2", "group___f_c_r___a_d_c_r_e_f_t_r_i_m2.html", "group___f_c_r___a_d_c_r_e_f_t_r_i_m2" ],
     [ "FCR_ERFOKS", "group___f_c_r___e_r_f_o_k_s.html", "group___f_c_r___e_r_f_o_k_s" ],
+    [ "fcr_regs.h", "fcr__regs_8h.html", null ],
     [ "mxc_fcr_regs_t", "group__fcr__registers.html#structmxc__fcr__regs__t", [
       [ "adcreftrim0", "group__fcr__registers.html#ab62d451d29d5513f7694c78fe6ec076d", null ],
       [ "adcreftrim1", "group__fcr__registers.html#a6fea4d8c3a223824e6c5aa61310ef174", null ],

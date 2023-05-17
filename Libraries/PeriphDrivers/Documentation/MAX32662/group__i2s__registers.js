@@ -11,6 +11,7 @@ var group__i2s__registers =
     [ "I2S_EXTSETUP", "group___i2_s___e_x_t_s_e_t_u_p.html", "group___i2_s___e_x_t_s_e_t_u_p" ],
     [ "I2S_WKEN", "group___i2_s___w_k_e_n.html", "group___i2_s___w_k_e_n" ],
     [ "I2S_WKFL", "group___i2_s___w_k_f_l.html", "group___i2_s___w_k_f_l" ],
+    [ "i2s_regs.h", "i2s__regs_8h.html", null ],
     [ "mxc_i2s_regs_t", "group__i2s__registers.html#structmxc__i2s__regs__t", [
       [ "ctrl0ch0", "group__i2s__registers.html#a020ac83c0370aeaed24062eb081713f8", null ],
       [ "ctrl1ch0", "group__i2s__registers.html#ab8f15c6492a468155dc5b96a360cd2ea", null ],

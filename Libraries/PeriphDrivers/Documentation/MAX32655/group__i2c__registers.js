@@ -20,6 +20,7 @@ var group__i2c__registers =
     [ "I2C_TIMEOUT", "group___i2_c___t_i_m_e_o_u_t.html", "group___i2_c___t_i_m_e_o_u_t" ],
     [ "I2C_DMA", "group___i2_c___d_m_a.html", "group___i2_c___d_m_a" ],
     [ "I2C_SLAVE_MULTI", "group___i2_c___s_l_a_v_e___m_u_l_t_i.html", "group___i2_c___s_l_a_v_e___m_u_l_t_i" ],
+    [ "i2c_regs.h", "i2c__regs_8h.html", null ],
     [ "mxc_i2c_regs_t", "group__i2c__registers.html#structmxc__i2c__regs__t", [
       [ "clkhi", "group__i2c__registers.html#a71309ae35d3321922f46079a0e95db08", null ],
       [ "clklo", "group__i2c__registers.html#a358c5e5b660ba0371d9f4f358891f362", null ],

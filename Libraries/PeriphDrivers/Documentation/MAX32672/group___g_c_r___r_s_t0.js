@@ -14,8 +14,6 @@ var group___g_c_r___r_s_t0 =
     [ "MXC_F_GCR_RST0_I2C0_POS", "group___g_c_r___r_s_t0.html#ga6bee3502f2912369ffef9de1ec4eca0b", null ],
     [ "MXC_F_GCR_RST0_PERIPH", "group___g_c_r___r_s_t0.html#ga43868014aa39582928ba9e93fedc6d12", null ],
     [ "MXC_F_GCR_RST0_PERIPH_POS", "group___g_c_r___r_s_t0.html#gad85831f291134d99b68e87f70eb4982b", null ],
-    [ "MXC_F_GCR_RST0_RTC", "group___g_c_r___r_s_t0.html#gad34dcfc51fe7565caf5e7ba9863a007a", null ],
-    [ "MXC_F_GCR_RST0_RTC_POS", "group___g_c_r___r_s_t0.html#gac8c989d56d304b5baa6b9c868fa042f3", null ],
     [ "MXC_F_GCR_RST0_SOFT", "group___g_c_r___r_s_t0.html#gafbc42d405bf68fd4281a65dce01342a3", null ],
     [ "MXC_F_GCR_RST0_SOFT_POS", "group___g_c_r___r_s_t0.html#ga47e706ac0ed472d851ecbb032bb98d87", null ],
     [ "MXC_F_GCR_RST0_SPI0", "group___g_c_r___r_s_t0.html#ga9c9018030f49a6a368456652d55eab1a", null ],

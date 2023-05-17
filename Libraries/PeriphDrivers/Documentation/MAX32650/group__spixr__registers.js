@@ -16,6 +16,7 @@ var group__spixr__registers =
     [ "SPIXR_WAKE_EN", "group___s_p_i_x_r___w_a_k_e___e_n.html", "group___s_p_i_x_r___w_a_k_e___e_n" ],
     [ "SPIXR_STAT", "group___s_p_i_x_r___s_t_a_t.html", "group___s_p_i_x_r___s_t_a_t" ],
     [ "SPIXR_XMEM_CTRL", "group___s_p_i_x_r___x_m_e_m___c_t_r_l.html", "group___s_p_i_x_r___x_m_e_m___c_t_r_l" ],
+    [ "spixr_regs.h", "spixr__regs_8h.html", null ],
     [ "mxc_spixr_regs_t", "group__spixr__registers.html#structmxc__spixr__regs__t", [
       [ "brg_ctrl", "group__spixr__registers.html#a240de718f8032e2ea5f09f3c6d5dda8e", null ],
       [ "ctrl1", "group__spixr__registers.html#adef50da3520f7ff420a0ef7fdaa17256", null ],

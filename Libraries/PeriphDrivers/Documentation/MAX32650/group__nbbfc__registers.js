@@ -5,6 +5,7 @@ var group__nbbfc__registers =
     [ "NBBFC_REG1", "group___n_b_b_f_c___r_e_g1.html", "group___n_b_b_f_c___r_e_g1" ],
     [ "NBBFC_REG2", "group___n_b_b_f_c___r_e_g2.html", "group___n_b_b_f_c___r_e_g2" ],
     [ "NBBFC_REG3", "group___n_b_b_f_c___r_e_g3.html", "group___n_b_b_f_c___r_e_g3" ],
+    [ "nbbfc_regs.h", "nbbfc__regs_8h.html", null ],
     [ "mxc_nbbfc_regs_t", "group__nbbfc__registers.html#structmxc__nbbfc__regs__t", [
       [ "reg0", "group__nbbfc__registers.html#afed8309a1f14d36a15a5bd4130493921", null ],
       [ "reg1", "group__nbbfc__registers.html#af66ab9280dafe8770dedc060ebfc073e", null ],

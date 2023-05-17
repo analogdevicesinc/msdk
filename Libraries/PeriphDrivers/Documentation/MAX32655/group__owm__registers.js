@@ -7,6 +7,7 @@ var group__owm__registers =
     [ "OWM_DATA", "group___o_w_m___d_a_t_a.html", "group___o_w_m___d_a_t_a" ],
     [ "OWM_INTFL", "group___o_w_m___i_n_t_f_l.html", "group___o_w_m___i_n_t_f_l" ],
     [ "OWM_INTEN", "group___o_w_m___i_n_t_e_n.html", "group___o_w_m___i_n_t_e_n" ],
+    [ "owm_regs.h", "owm__regs_8h.html", null ],
     [ "mxc_owm_regs_t", "group__owm__registers.html#structmxc__owm__regs__t", [
       [ "cfg", "group__owm__registers.html#a4453916c4f7486c75d155d8992ea4c08", null ],
       [ "clk_div_1us", "group__owm__registers.html#aa7b605f1ea192fc201ac18d7bf42a783", null ],

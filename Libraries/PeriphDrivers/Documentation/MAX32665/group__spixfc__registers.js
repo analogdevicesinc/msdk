@@ -8,6 +8,7 @@ var group__spixfc__registers =
     [ "SPIXFC_SPCTRL", "group___s_p_i_x_f_c___s_p_c_t_r_l.html", "group___s_p_i_x_f_c___s_p_c_t_r_l" ],
     [ "SPIXFC_INTFL", "group___s_p_i_x_f_c___i_n_t_f_l.html", "group___s_p_i_x_f_c___i_n_t_f_l" ],
     [ "SPIXFC_INTEN", "group___s_p_i_x_f_c___i_n_t_e_n.html", "group___s_p_i_x_f_c___i_n_t_e_n" ],
+    [ "spixfc_regs.h", "spixfc__regs_8h.html", null ],
     [ "mxc_spixfc_regs_t", "group__spixfc__registers.html#structmxc__spixfc__regs__t", [
       [ "config", "group__spixfc__registers.html#acf9a99c1e18b9ab98fbb6bb418b3bc17", null ],
       [ "fifo_ctrl", "group__spixfc__registers.html#a9f8757a7d2b1945b64daf3ee6f391b1a", null ],

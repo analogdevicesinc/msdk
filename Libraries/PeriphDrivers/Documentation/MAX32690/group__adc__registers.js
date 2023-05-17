@@ -22,6 +22,7 @@ var group__adc__registers =
     [ "ADC_SFRWRDATA", "group___a_d_c___s_f_r_w_r_d_a_t_a.html", "group___a_d_c___s_f_r_w_r_d_a_t_a" ],
     [ "ADC_SFRRDDATA", "group___a_d_c___s_f_r_r_d_d_a_t_a.html", "group___a_d_c___s_f_r_r_d_d_a_t_a" ],
     [ "ADC_SFRSTATUS", "group___a_d_c___s_f_r_s_t_a_t_u_s.html", "group___a_d_c___s_f_r_s_t_a_t_u_s" ],
+    [ "adc_regs.h", "adc__regs_8h.html", null ],
     [ "mxc_adc_regs_t", "group__adc__registers.html#structmxc__adc__regs__t", [
       [ "chsel0", "group__adc__registers.html#a5dbaffa0fa6a75a6015b0fa61807b73d", null ],
       [ "chsel1", "group__adc__registers.html#a1808a22f971c08e2584001e08c65a6a3", null ],

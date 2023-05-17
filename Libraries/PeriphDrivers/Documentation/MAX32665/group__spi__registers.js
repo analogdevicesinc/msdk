@@ -15,6 +15,7 @@ var group__spi__registers =
     [ "SPI_WAKE_FL", "group___s_p_i___w_a_k_e___f_l.html", "group___s_p_i___w_a_k_e___f_l" ],
     [ "SPI_WAKE_EN", "group___s_p_i___w_a_k_e___e_n.html", "group___s_p_i___w_a_k_e___e_n" ],
     [ "SPI_STAT", "group___s_p_i___s_t_a_t.html", "group___s_p_i___s_t_a_t" ],
+    [ "spi_regs.h", "spi__regs_8h.html", null ],
     [ "mxc_spi_regs_t", "group__spi__registers.html#structmxc__spi__regs__t", [
       [ "clk_cfg", "group__spi__registers.html#ae27e4f404d38ab2c3785c0ae3c30578a", null ],
       [ "ctrl0", "group__spi__registers.html#a01beaa79871f6d4fa5ac69f6e29ab45d", null ],

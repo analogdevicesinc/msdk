@@ -5,6 +5,7 @@ var group__sir__registers =
     [ "SIR_ADDR", "group___s_i_r___a_d_d_r.html", "group___s_i_r___a_d_d_r" ],
     [ "SIR_FSTAT", "group___s_i_r___f_s_t_a_t.html", "group___s_i_r___f_s_t_a_t" ],
     [ "SIR_SFSTAT", "group___s_i_r___s_f_s_t_a_t.html", "group___s_i_r___s_f_s_t_a_t" ],
+    [ "sir_regs.h", "sir__regs_8h.html", null ],
     [ "mxc_sir_regs_t", "group__sir__registers.html#structmxc__sir__regs__t", [
       [ "addr", "group__sir__registers.html#a309c3eacd2476b4f6d8b6c1c831b2ca5", null ],
       [ "fstat", "group__sir__registers.html#a3561f2c3ee0e429c1dca85d580154cc9", null ],

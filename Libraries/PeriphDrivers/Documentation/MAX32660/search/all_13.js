@@ -7,6 +7,7 @@ var searchData=
   ['watchdog_20timer_20_28wdt_29_4',['Watchdog Timer (WDT)',['../group__wdt.html',1,'']]],
   ['wdt_5fctrl_5',['WDT_CTRL',['../group___w_d_t___c_t_r_l.html',1,'']]],
   ['wdt_5fregisters_6',['WDT_Registers',['../group__wdt__registers.html',1,'']]],
-  ['wdt_5frst_7',['WDT_RST',['../group___w_d_t___r_s_t.html',1,'']]],
-  ['width_8',['width',['../group__spimss.html#a71b78c5e1be8cc81fcf5b5cced428243',1,'mxc_spimss_req']]]
+  ['wdt_5fregs_2eh_7',['wdt_regs.h',['../wdt__regs_8h.html',1,'']]],
+  ['wdt_5frst_8',['WDT_RST',['../group___w_d_t___r_s_t.html',1,'']]],
+  ['width_9',['width',['../group__spimss.html#a71b78c5e1be8cc81fcf5b5cced428243',1,'mxc_spimss_req']]]
 ];

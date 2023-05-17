@@ -52,6 +52,7 @@ var group__csi2__registers =
     [ "CSI2_RX_EINT_CTRL_IF", "group___c_s_i2___r_x___e_i_n_t___c_t_r_l___i_f.html", "group___c_s_i2___r_x___e_i_n_t___c_t_r_l___i_f" ],
     [ "CSI2_PPI_STOPSTATE", "group___c_s_i2___p_p_i___s_t_o_p_s_t_a_t_e.html", "group___c_s_i2___p_p_i___s_t_o_p_s_t_a_t_e" ],
     [ "CSI2_PPI_TURNAROUND_CFG", "group___c_s_i2___p_p_i___t_u_r_n_a_r_o_u_n_d___c_f_g.html", "group___c_s_i2___p_p_i___t_u_r_n_a_r_o_u_n_d___c_f_g" ],
+    [ "csi2_regs.h", "csi2__regs_8h.html", null ],
     [ "mxc_csi2_regs_t", "group__csi2__registers.html#structmxc__csi2__regs__t", [
       [ "aon_power_ready_n", "group__csi2__registers.html#a00b0243431d188ce97ac0b9f09c9d058", null ],
       [ "cfg_bit_err", "group__csi2__registers.html#adf1ee158fd1db77b5b3b270866ef0dc3", null ],

@@ -11,6 +11,7 @@ var group__dma__registers =
     [ "DMA_SRC_RLD", "group___d_m_a___s_r_c___r_l_d.html", "group___d_m_a___s_r_c___r_l_d" ],
     [ "DMA_DST_RLD", "group___d_m_a___d_s_t___r_l_d.html", "group___d_m_a___d_s_t___r_l_d" ],
     [ "DMA_CNT_RLD", "group___d_m_a___c_n_t___r_l_d.html", "group___d_m_a___c_n_t___r_l_d" ],
+    [ "dma_regs.h", "dma__regs_8h.html", null ],
     [ "mxc_dma_ch_regs_t", "group__dma__registers.html#structmxc__dma__ch__regs__t", [
       [ "cfg", "group__dma__registers.html#a4453916c4f7486c75d155d8992ea4c08", null ],
       [ "cnt", "group__dma__registers.html#a79669bb18d8e3f917f9a9ed84c0828fb", null ],

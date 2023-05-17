@@ -9,6 +9,7 @@ var group__fcr__registers =
     [ "FCR_ERFOKS", "group___f_c_r___e_r_f_o_k_s.html", "group___f_c_r___e_r_f_o_k_s" ],
     [ "FCR_ERFO_INTFL", "group___f_c_r___e_r_f_o___i_n_t_f_l.html", "group___f_c_r___e_r_f_o___i_n_t_f_l" ],
     [ "FCR_ERFO_INTEN", "group___f_c_r___e_r_f_o___i_n_t_e_n.html", "group___f_c_r___e_r_f_o___i_n_t_e_n" ],
+    [ "fcr_regs.h", "fcr__regs_8h.html", null ],
     [ "mxc_fcr_regs_t", "group__fcr__registers.html#structmxc__fcr__regs__t", [
       [ "autocal0", "group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26", null ],
       [ "autocal1", "group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba", null ],

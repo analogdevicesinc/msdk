@@ -36,12 +36,14 @@ var annotated_dup =
     [ "mxc_sir_regs_t", "group__sir__registers.html#structmxc__sir__regs__t", "group__sir__registers_structmxc__sir__regs__t" ],
     [ "mxc_spi_regs_t", "group__spi__registers.html#structmxc__spi__regs__t", "group__spi__registers_structmxc__spi__regs__t" ],
     [ "mxc_spi_req_t", "group__spi.html#struct__mxc__spi__req__t", "group__spi_struct__mxc__spi__req__t" ],
+    [ "mxc_sys_aeskeys_regs_t", "group__sys__aeskeys__registers.html#structmxc__sys__aeskeys__regs__t", "group__sys__aeskeys__registers_structmxc__sys__aeskeys__regs__t" ],
     [ "mxc_tmr_cfg_t", "group__tmr.html#structmxc__tmr__cfg__t", "group__tmr_structmxc__tmr__cfg__t" ],
     [ "mxc_tmr_regs_t", "group__tmr__registers.html#structmxc__tmr__regs__t", "group__tmr__registers_structmxc__tmr__regs__t" ],
     [ "mxc_trimsir_regs_t", "group__trimsir__registers.html#structmxc__trimsir__regs__t", "group__trimsir__registers_structmxc__trimsir__regs__t" ],
     [ "mxc_trng_regs_t", "group__trng__registers.html#structmxc__trng__regs__t", "group__trng__registers_structmxc__trng__regs__t" ],
     [ "mxc_uart_regs_t", "group__uart__registers.html#structmxc__uart__regs__t", "group__uart__registers_structmxc__uart__regs__t" ],
     [ "mxc_uart_req_t", "group__uart.html#struct__mxc__uart__req__t", "group__uart_struct__mxc__uart__req__t" ],
+    [ "mxc_usr_aeskeys_regs_t", "group__usr__aeskeys__registers.html#structmxc__usr__aeskeys__regs__t", "group__usr__aeskeys__registers_structmxc__usr__aeskeys__regs__t" ],
     [ "mxc_wdt_cfg_t", "group__wdt.html#structmxc__wdt__cfg__t", "group__wdt_structmxc__wdt__cfg__t" ],
     [ "mxc_wdt_regs_t", "group__wdt__registers.html#structmxc__wdt__regs__t", "group__wdt__registers_structmxc__wdt__regs__t" ]
 ];

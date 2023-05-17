@@ -9,6 +9,7 @@ var group__ptg__registers =
     [ "PTG_SAFE_DIS", "group___p_t_g___s_a_f_e___d_i_s.html", "group___p_t_g___s_a_f_e___d_i_s" ],
     [ "PTG_READY_INTFL", "group___p_t_g___r_e_a_d_y___i_n_t_f_l.html", "group___p_t_g___r_e_a_d_y___i_n_t_f_l" ],
     [ "PTG_READY_INTEN", "group___p_t_g___r_e_a_d_y___i_n_t_e_n.html", "group___p_t_g___r_e_a_d_y___i_n_t_e_n" ],
+    [ "ptg_regs.h", "ptg__regs_8h.html", null ],
     [ "mxc_ptg_regs_t", "group__ptg__registers.html#structmxc__ptg__regs__t", [
       [ "enable", "group__ptg__registers.html#afef784a65cdafc597b144a87a2609aa5", null ],
       [ "ready_inten", "group__ptg__registers.html#a40ef5252a3f0063afba3c0487e22f731", null ],

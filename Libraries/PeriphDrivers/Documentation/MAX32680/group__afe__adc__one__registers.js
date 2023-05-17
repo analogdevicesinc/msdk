@@ -117,5 +117,6 @@ var group__afe__adc__one__registers =
     [ "AFE_ADC_ONE_ADC_TRIM1", "group___a_f_e___a_d_c___o_n_e___a_d_c___t_r_i_m1.html", "group___a_f_e___a_d_c___o_n_e___a_d_c___t_r_i_m1" ],
     [ "AFE_ADC_ONE_ANA_TRIM", "group___a_f_e___a_d_c___o_n_e___a_n_a___t_r_i_m.html", "group___a_f_e___a_d_c___o_n_e___a_n_a___t_r_i_m" ],
     [ "AFE_ADC_ONE_SYS_CTRL", "group___a_f_e___a_d_c___o_n_e___s_y_s___c_t_r_l.html", "group___a_f_e___a_d_c___o_n_e___s_y_s___c_t_r_l" ],
-    [ "AFE_ADC_ONE_TS_CTRL", "group___a_f_e___a_d_c___o_n_e___t_s___c_t_r_l.html", "group___a_f_e___a_d_c___o_n_e___t_s___c_t_r_l" ]
+    [ "AFE_ADC_ONE_TS_CTRL", "group___a_f_e___a_d_c___o_n_e___t_s___c_t_r_l.html", "group___a_f_e___a_d_c___o_n_e___t_s___c_t_r_l" ],
+    [ "afe_adc_one_regs.h", "afe__adc__one__regs_8h.html", null ]
 ];

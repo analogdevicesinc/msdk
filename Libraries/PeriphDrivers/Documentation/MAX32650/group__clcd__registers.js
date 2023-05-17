@@ -10,6 +10,7 @@ var group__clcd__registers =
     [ "CLCD_INT_EN", "group___c_l_c_d___i_n_t___e_n.html", "group___c_l_c_d___i_n_t___e_n" ],
     [ "CLCD_INT_STAT", "group___c_l_c_d___i_n_t___s_t_a_t.html", "group___c_l_c_d___i_n_t___s_t_a_t" ],
     [ "CLCD_PALETTE_RAM", "group___c_l_c_d___p_a_l_e_t_t_e___r_a_m.html", "group___c_l_c_d___p_a_l_e_t_t_e___r_a_m" ],
+    [ "clcd_regs.h", "clcd__regs_8h.html", null ],
     [ "mxc_clcd_regs_t", "group__clcd__registers.html#structmxc__clcd__regs__t", [
       [ "clk_ctrl", "group__clcd__registers.html#ab279e5304ce5d97badf8ad3e201f65ae", null ],
       [ "ctrl", "group__clcd__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],

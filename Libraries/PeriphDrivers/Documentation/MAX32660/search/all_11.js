@@ -11,6 +11,7 @@ var searchData=
   ['uart_5fint_5fen_8',['UART_INT_EN',['../group___u_a_r_t___i_n_t___e_n.html',1,'']]],
   ['uart_5fint_5ffl_9',['UART_INT_FL',['../group___u_a_r_t___i_n_t___f_l.html',1,'']]],
   ['uart_5fregisters_10',['UART_Registers',['../group__uart__registers.html',1,'']]],
-  ['uart_5fstat_11',['UART_STAT',['../group___u_a_r_t___s_t_a_t.html',1,'']]],
-  ['uart_5ftxfifo_12',['UART_TXFIFO',['../group___u_a_r_t___t_x_f_i_f_o.html',1,'']]]
+  ['uart_5fregs_2eh_11',['uart_regs.h',['../uart__regs_8h.html',1,'']]],
+  ['uart_5fstat_12',['UART_STAT',['../group___u_a_r_t___s_t_a_t.html',1,'']]],
+  ['uart_5ftxfifo_13',['UART_TXFIFO',['../group___u_a_r_t___t_x_f_i_f_o.html',1,'']]]
 ];

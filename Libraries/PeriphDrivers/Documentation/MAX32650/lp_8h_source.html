@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('lp_8h_source.html',''); initResizable(
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">/* **** Includes **** */</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;gpio.h&quot;</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;pwrseq_regs.h&quot;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;<a class="code" href="pwrseq__regs_8h.html">pwrseq_regs.h</a>&quot;</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="preprocessor">#ifdef __cplusplus</span></div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">extern</span> <span class="stringliteral">&quot;C&quot;</span> {</div>
@@ -267,8 +267,8 @@ $(document).ready(function(){initNavTree('lp_8h_source.html',''); initResizable(
 <div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span> </div>
 <div class="line"><a id="l00390" name="l00390"></a><span class="lineno">  390</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_LP_H_</span></div>
-<div class="ttc" id="agroup___p_w_r_s_e_q___u_s_b___w_k___e_n_html_ga2a1df9b9e00b10789bdfb2ae6e569263"><div class="ttname"><a href="group___p_w_r_s_e_q___u_s_b___w_k___e_n.html#ga2a1df9b9e00b10789bdfb2ae6e569263">MXC_F_PWRSEQ_USB_WK_EN_USBLSWKEN</a></div><div class="ttdeci">#define MXC_F_PWRSEQ_USB_WK_EN_USBLSWKEN</div><div class="ttdef"><b>Definition:</b> pwrseq_regs.h:361</div></div>
-<div class="ttc" id="agroup___p_w_r_s_e_q___u_s_b___w_k___e_n_html_gaaf733541e2f11c02d8dd5331619af38d"><div class="ttname"><a href="group___p_w_r_s_e_q___u_s_b___w_k___e_n.html#gaaf733541e2f11c02d8dd5331619af38d">MXC_F_PWRSEQ_USB_WK_EN_USBVBUSWKEN</a></div><div class="ttdeci">#define MXC_F_PWRSEQ_USB_WK_EN_USBVBUSWKEN</div><div class="ttdef"><b>Definition:</b> pwrseq_regs.h:368</div></div>
+<div class="ttc" id="agroup___p_w_r_s_e_q___u_s_b___w_k___e_n_html_ga2a1df9b9e00b10789bdfb2ae6e569263"><div class="ttname"><a href="group___p_w_r_s_e_q___u_s_b___w_k___e_n.html#ga2a1df9b9e00b10789bdfb2ae6e569263">MXC_F_PWRSEQ_USB_WK_EN_USBLSWKEN</a></div><div class="ttdeci">#define MXC_F_PWRSEQ_USB_WK_EN_USBLSWKEN</div><div class="ttdef"><b>Definition:</b> pwrseq_regs.h:362</div></div>
+<div class="ttc" id="agroup___p_w_r_s_e_q___u_s_b___w_k___e_n_html_gaaf733541e2f11c02d8dd5331619af38d"><div class="ttname"><a href="group___p_w_r_s_e_q___u_s_b___w_k___e_n.html#gaaf733541e2f11c02d8dd5331619af38d">MXC_F_PWRSEQ_USB_WK_EN_USBVBUSWKEN</a></div><div class="ttdeci">#define MXC_F_PWRSEQ_USB_WK_EN_USBVBUSWKEN</div><div class="ttdef"><b>Definition:</b> pwrseq_regs.h:369</div></div>
 <div class="ttc" id="agroup__gpio_html_structmxc__gpio__cfg__t"><div class="ttname"><a href="group__gpio.html#structmxc__gpio__cfg__t">mxc_gpio_cfg_t</a></div><div class="ttdef"><b>Definition:</b> gpio.h:144</div></div>
 <div class="ttc" id="agroup__pwrseq_html_ga01b6866fb8a0f80f3d40b45d43b7f1f9"><div class="ttname"><a href="group__pwrseq.html#ga01b6866fb8a0f80f3d40b45d43b7f1f9">MXC_LP_EnableSysRAM5LightSleep</a></div><div class="ttdeci">void MXC_LP_EnableSysRAM5LightSleep(void)</div><div class="ttdoc">Places addresses 0x20080000 to 0x200BFFFF of the RAM in light sleep mode. Data will be unavailable fo...</div></div>
 <div class="ttc" id="agroup__pwrseq_html_ga02ada70179c1759ff530b0a4eba6c3ce"><div class="ttname"><a href="group__pwrseq.html#ga02ada70179c1759ff530b0a4eba6c3ce">MXC_LP_DisableSysRAM2LightSleep</a></div><div class="ttdeci">void MXC_LP_DisableSysRAM2LightSleep(void)</div><div class="ttdoc">Places addresses 0x20018000 to 0x2001FFFF of the RAM in active mode.</div></div>
@@ -332,13 +332,14 @@ $(document).ready(function(){initNavTree('lp_8h_source.html',''); initResizable(
 <div class="ttc" id="agroup__pwrseq_html_gaf438ae9021e7dbfda1e32f7eafeaf566"><div class="ttname"><a href="group__pwrseq.html#gaf438ae9021e7dbfda1e32f7eafeaf566">MXC_LP_EnableROMLightSleep</a></div><div class="ttdeci">void MXC_LP_EnableROMLightSleep(void)</div><div class="ttdoc">Places the ROM in light sleep mode. Data will be unavailable while in light sleep mode.</div></div>
 <div class="ttc" id="agroup__pwrseq_html_gaf64f837963812ec5778d50920ad8ce49"><div class="ttname"><a href="group__pwrseq.html#gaf64f837963812ec5778d50920ad8ce49">MXC_LP_EnableSysRAM0LightSleep</a></div><div class="ttdeci">void MXC_LP_EnableSysRAM0LightSleep(void)</div><div class="ttdoc">Places addresses 0x20000000 to 0x20007FFF of the RAM in light sleep mode. Data will be unavailable fo...</div></div>
 <div class="ttc" id="agroup__pwrseq_html_gafa5273be9a6e180bdcbfabca20a540f6"><div class="ttname"><a href="group__pwrseq.html#gafa5273be9a6e180bdcbfabca20a540f6">MXC_LP_DisableCryptoRAM</a></div><div class="ttdeci">void MXC_LP_DisableCryptoRAM(void)</div><div class="ttdoc">Disables power to the Crypto MAA RAM. The contents of the RAM are destroyed.</div></div>
+<div class="ttc" id="apwrseq__regs_8h_html"><div class="ttname"><a href="pwrseq__regs_8h.html">pwrseq_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the PWRSEQ Peripheral Module.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_7e706e2ddc2451d8dedddaedfab11dd4.html">MAX32650</a></li><li class="navelem"><b>lp.h</b></li>
-    <li class="footer">Generated on Fri May 5 2023 22:55:18 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed May 17 2023 20:29:54 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

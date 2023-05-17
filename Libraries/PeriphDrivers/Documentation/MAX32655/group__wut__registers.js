@@ -9,6 +9,7 @@ var group__wut__registers =
     [ "WUT_PRESET", "group___w_u_t___p_r_e_s_e_t.html", "group___w_u_t___p_r_e_s_e_t" ],
     [ "WUT_RELOAD", "group___w_u_t___r_e_l_o_a_d.html", "group___w_u_t___r_e_l_o_a_d" ],
     [ "WUT_SNAPSHOT", "group___w_u_t___s_n_a_p_s_h_o_t.html", "group___w_u_t___s_n_a_p_s_h_o_t" ],
+    [ "wut_regs.h", "wut__regs_8h.html", null ],
     [ "mxc_wut_regs_t", "group__wut__registers.html#structmxc__wut__regs__t", [
       [ "cmp", "group__wut__registers.html#aaef723fce280474468bb54f8caaf9782", null ],
       [ "cnt", "group__wut__registers.html#a79669bb18d8e3f917f9a9ed84c0828fb", null ],

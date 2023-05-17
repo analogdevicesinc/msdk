@@ -6,6 +6,7 @@ var group__adc__registers =
     [ "ADC_DATA", "group___a_d_c___d_a_t_a.html", "group___a_d_c___d_a_t_a" ],
     [ "ADC_INTR", "group___a_d_c___i_n_t_r.html", "group___a_d_c___i_n_t_r" ],
     [ "ADC_LIMIT", "group___a_d_c___l_i_m_i_t.html", "group___a_d_c___l_i_m_i_t" ],
+    [ "adc_regs.h", "adc__regs_8h.html", null ],
     [ "mxc_adc_regs_t", "group__adc__registers.html#structmxc__adc__regs__t", [
       [ "ctrl", "group__adc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],
       [ "data", "group__adc__registers.html#a11743546f5166381c1b12da20dc283b7", null ],

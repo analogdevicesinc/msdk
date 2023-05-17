@@ -16,5 +16,6 @@ var searchData=
   ['owm_5fdata_13',['OWM_DATA',['../group___o_w_m___d_a_t_a.html',1,'']]],
   ['owm_5finten_14',['OWM_INTEN',['../group___o_w_m___i_n_t_e_n.html',1,'']]],
   ['owm_5fintfl_15',['OWM_INTFL',['../group___o_w_m___i_n_t_f_l.html',1,'']]],
-  ['owm_5fregisters_16',['OWM_Registers',['../group__owm__registers.html',1,'']]]
+  ['owm_5fregisters_16',['OWM_Registers',['../group__owm__registers.html',1,'']]],
+  ['owm_5fregs_2eh_17',['owm_regs.h',['../owm__regs_8h.html',1,'']]]
 ];

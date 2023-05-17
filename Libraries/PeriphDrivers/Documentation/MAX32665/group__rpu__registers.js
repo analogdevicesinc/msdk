@@ -70,6 +70,7 @@ var group__rpu__registers =
     [ "RPU_I2C1_BUS1", "group___r_p_u___i2_c1___b_u_s1.html", "group___r_p_u___i2_c1___b_u_s1" ],
     [ "RPU_I2C2_BUS1", "group___r_p_u___i2_c2___b_u_s1.html", "group___r_p_u___i2_c2___b_u_s1" ],
     [ "RPU_PTG_BUS1", "group___r_p_u___p_t_g___b_u_s1.html", "group___r_p_u___p_t_g___b_u_s1" ],
+    [ "rpu_regs.h", "rpu__regs_8h.html", null ],
     [ "mxc_rpu_regs_t", "group__rpu__registers.html#structmxc__rpu__regs__t", [
       [ "adc", "group__rpu__registers.html#a707112725c957ec3ef5e567280249d2b", null ],
       [ "aes", "group__rpu__registers.html#a37f328e278c89c279ff3672e41327795", null ],

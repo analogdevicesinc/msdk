@@ -34,11 +34,13 @@ var searchData=
   ['mxc_5frtc_5fregs_5ft_31',['mxc_rtc_regs_t',['../group__rtc__registers.html#structmxc__rtc__regs__t',1,'']]],
   ['mxc_5fsir_5fregs_5ft_32',['mxc_sir_regs_t',['../group__sir__registers.html#structmxc__sir__regs__t',1,'']]],
   ['mxc_5fspi_5fregs_5ft_33',['mxc_spi_regs_t',['../group__spi__registers.html#structmxc__spi__regs__t',1,'']]],
-  ['mxc_5ftmr_5fcfg_5ft_34',['mxc_tmr_cfg_t',['../group__tmr.html#structmxc__tmr__cfg__t',1,'']]],
-  ['mxc_5ftmr_5fregs_5ft_35',['mxc_tmr_regs_t',['../group__tmr__registers.html#structmxc__tmr__regs__t',1,'']]],
-  ['mxc_5ftrimsir_5fregs_5ft_36',['mxc_trimsir_regs_t',['../group__trimsir__registers.html#structmxc__trimsir__regs__t',1,'']]],
-  ['mxc_5ftrng_5fregs_5ft_37',['mxc_trng_regs_t',['../group__trng__registers.html#structmxc__trng__regs__t',1,'']]],
-  ['mxc_5fuart_5fregs_5ft_38',['mxc_uart_regs_t',['../group__uart__registers.html#structmxc__uart__regs__t',1,'']]],
-  ['mxc_5fwdt_5fcfg_5ft_39',['mxc_wdt_cfg_t',['../group__wdt.html#structmxc__wdt__cfg__t',1,'']]],
-  ['mxc_5fwdt_5fregs_5ft_40',['mxc_wdt_regs_t',['../group__wdt__registers.html#structmxc__wdt__regs__t',1,'']]]
+  ['mxc_5fsys_5faeskeys_5fregs_5ft_34',['mxc_sys_aeskeys_regs_t',['../group__sys__aeskeys__registers.html#structmxc__sys__aeskeys__regs__t',1,'']]],
+  ['mxc_5ftmr_5fcfg_5ft_35',['mxc_tmr_cfg_t',['../group__tmr.html#structmxc__tmr__cfg__t',1,'']]],
+  ['mxc_5ftmr_5fregs_5ft_36',['mxc_tmr_regs_t',['../group__tmr__registers.html#structmxc__tmr__regs__t',1,'']]],
+  ['mxc_5ftrimsir_5fregs_5ft_37',['mxc_trimsir_regs_t',['../group__trimsir__registers.html#structmxc__trimsir__regs__t',1,'']]],
+  ['mxc_5ftrng_5fregs_5ft_38',['mxc_trng_regs_t',['../group__trng__registers.html#structmxc__trng__regs__t',1,'']]],
+  ['mxc_5fuart_5fregs_5ft_39',['mxc_uart_regs_t',['../group__uart__registers.html#structmxc__uart__regs__t',1,'']]],
+  ['mxc_5fusr_5faeskeys_5fregs_5ft_40',['mxc_usr_aeskeys_regs_t',['../group__usr__aeskeys__registers.html#structmxc__usr__aeskeys__regs__t',1,'']]],
+  ['mxc_5fwdt_5fcfg_5ft_41',['mxc_wdt_cfg_t',['../group__wdt.html#structmxc__wdt__cfg__t',1,'']]],
+  ['mxc_5fwdt_5fregs_5ft_42',['mxc_wdt_regs_t',['../group__wdt__registers.html#structmxc__wdt__regs__t',1,'']]]
 ];

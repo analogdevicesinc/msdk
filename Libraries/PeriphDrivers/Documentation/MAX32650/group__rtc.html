@@ -132,8 +132,12 @@ Functions</h2></td></tr>
 <tr class="separator:gaa9beed7f411d0ba98290cbe6de19fc44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa0c3ee434b206af0469de43ba32133f1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rtc.html#gaa0c3ee434b206af0469de43ba32133f1">MXC_RTC_GetSubSecond</a> (void)</td></tr>
 <tr class="separator:gaa0c3ee434b206af0469de43ba32133f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga1c716dfdcd677507a2cca3004efd97ae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rtc.html#ga1c716dfdcd677507a2cca3004efd97ae">MXC_RTC_GetSubSeconds</a> (uint32_t *ssec)</td></tr>
+<tr class="separator:ga1c716dfdcd677507a2cca3004efd97ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3e2aa5c188abff60e6ead9726ef272cf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rtc.html#ga3e2aa5c188abff60e6ead9726ef272cf">MXC_RTC_GetSecond</a> (void)</td></tr>
 <tr class="separator:ga3e2aa5c188abff60e6ead9726ef272cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad5f7d2a4aa48b42ee5ea6bf3dea6221d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rtc.html#gad5f7d2a4aa48b42ee5ea6bf3dea6221d">MXC_RTC_GetSeconds</a> (uint32_t *sec)</td></tr>
+<tr class="separator:gad5f7d2a4aa48b42ee5ea6bf3dea6221d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaba6f82b7e4b7aa86906af65074412673"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rtc.html#gaba6f82b7e4b7aa86906af65074412673">MXC_RTC_GetTime</a> (uint32_t *sec, uint32_t *subsec)</td></tr>
 <tr class="separator:gaba6f82b7e4b7aa86906af65074412673"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga208d3d95aac1f0ffe30d27759a1c4657"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__rtc.html#ga208d3d95aac1f0ffe30d27759a1c4657">MXC_RTC_GetBusyFlag</a> (void)</td></tr>
@@ -378,8 +382,45 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get Second. </p>
-<dl class="section return"><dt>Returns</dt><dd>Returns second value or E_BUSY, see /ref MXC_ERROR_CODES </dd></dl>
+<p>Get Second or E_BUSY, see /ref MXC_ERROR_CODES. </p>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">returns</td><td>second value </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="gad5f7d2a4aa48b42ee5ea6bf3dea6221d" name="gad5f7d2a4aa48b42ee5ea6bf3dea6221d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad5f7d2a4aa48b42ee5ea6bf3dea6221d">&#9670;&nbsp;</a></span>MXC_RTC_GetSeconds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_RTC_GetSeconds </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>sec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function stores the current value of the seconds counter into a pointer if the RTC is not busy. If the RTC is busy, an error is returned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sec</td><td>Pointer to the variable to store the current seconds value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">E_NO_ERROR</td><td>if successful, otherwise an error code (see /ref MXC_ERROR_CODES). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -399,8 +440,45 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get SubSecond. </p>
-<dl class="section return"><dt>Returns</dt><dd>Returns subsecond value or E_BUSY, see /ref MXC_ERROR_CODES </dd></dl>
+<p>Get SubSecond or E_BUSY, see /ref MXC_ERROR_CODES. </p>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">Returns</td><td>subsecond value </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ga1c716dfdcd677507a2cca3004efd97ae" name="ga1c716dfdcd677507a2cca3004efd97ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga1c716dfdcd677507a2cca3004efd97ae">&#9670;&nbsp;</a></span>MXC_RTC_GetSubSeconds()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_RTC_GetSubSeconds </td>
+          <td>(</td>
+          <td class="paramtype">uint32_t *&#160;</td>
+          <td class="paramname"><em>ssec</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This function stores the current value of the sub-seconds counter into a pointer if the RTC is not busy. If the RTC is busy, an error is returned. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ssec</td><td>Pointer to the variable to store the current sub-seconds value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="retval"><dt>Return values</dt><dd>
+  <table class="retval">
+    <tr><td class="paramname">E_NO_ERROR</td><td>if successful, otherwise an error code (see /ref MXC_ERROR_CODES). </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -430,7 +508,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Get the time using nuclear fusion. Or atomically. Something like that. </p>
+<p>Get the current second and sub-second counts. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sec</td><td>pointer to store seconds value </td></tr>
@@ -669,7 +747,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 5 2023 22:55:18 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed May 17 2023 20:29:54 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -6,5 +6,6 @@ var group__afe__dac__registers =
     [ "AFE_DAC_INT", "group___a_f_e___d_a_c___i_n_t.html", "group___a_f_e___d_a_c___i_n_t" ],
     [ "AFE_DAC_VREF_CTRL", "group___a_f_e___d_a_c___v_r_e_f___c_t_r_l.html", "group___a_f_e___d_a_c___v_r_e_f___c_t_r_l" ],
     [ "AFE_DAC_FIFO", "group___a_f_e___d_a_c___f_i_f_o.html", "group___a_f_e___d_a_c___f_i_f_o" ],
-    [ "AFE_DAC_VREF_TRIM", "group___a_f_e___d_a_c___v_r_e_f___t_r_i_m.html", "group___a_f_e___d_a_c___v_r_e_f___t_r_i_m" ]
+    [ "AFE_DAC_VREF_TRIM", "group___a_f_e___d_a_c___v_r_e_f___t_r_i_m.html", "group___a_f_e___d_a_c___v_r_e_f___t_r_i_m" ],
+    [ "afe_dac_regs.h", "afe__dac__regs_8h.html", null ]
 ];

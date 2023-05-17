@@ -8,6 +8,7 @@ var group__spimss__registers =
     [ "SPIMSS_BRG", "group___s_p_i_m_s_s___b_r_g.html", "group___s_p_i_m_s_s___b_r_g" ],
     [ "SPIMSS_DMA", "group___s_p_i_m_s_s___d_m_a.html", "group___s_p_i_m_s_s___d_m_a" ],
     [ "SPIMSS_I2S_CTRL", "group___s_p_i_m_s_s___i2_s___c_t_r_l.html", "group___s_p_i_m_s_s___i2_s___c_t_r_l" ],
+    [ "spimss_regs.h", "spimss__regs_8h.html", null ],
     [ "mxc_spimss_regs_t", "group__spimss__registers.html#structmxc__spimss__regs__t", [
       [ "brg", "group__spimss__registers.html#a2fcbe5243281a9a47f8264ee5427f879", null ],
       [ "ctrl", "group__spimss__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],

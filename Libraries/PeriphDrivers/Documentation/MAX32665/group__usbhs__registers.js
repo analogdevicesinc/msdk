@@ -47,6 +47,7 @@ var group__usbhs__registers =
     [ "USBHS_MXM_INT_EN", "group___u_s_b_h_s___m_x_m___i_n_t___e_n.html", "group___u_s_b_h_s___m_x_m___i_n_t___e_n" ],
     [ "USBHS_MXM_SUSPEND", "group___u_s_b_h_s___m_x_m___s_u_s_p_e_n_d.html", "group___u_s_b_h_s___m_x_m___s_u_s_p_e_n_d" ],
     [ "USBHS_MXM_REG_A4", "group___u_s_b_h_s___m_x_m___r_e_g___a4.html", "group___u_s_b_h_s___m_x_m___r_e_g___a4" ],
+    [ "usbhs_regs.h", "usbhs__regs_8h.html", null ],
     [ "mxc_usbhs_regs_t", "group__usbhs__registers.html#structmxc__usbhs__regs__t", [
       [ "count0", "group__usbhs__registers.html#a49de868f974108db2e5c22dda6c8ffd2", null ],
       [ "csr0", "group__usbhs__registers.html#adc0a0364ff9df767e4c4866d5e0dafee", null ],

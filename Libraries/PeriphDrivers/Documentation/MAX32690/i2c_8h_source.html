@@ -127,7 +127,7 @@ $(document).ready(function(){initNavTree('i2c_8h_source.html',''); initResizable
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="preprocessor">#include &lt;stdint.h&gt;</span></div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span><span class="preprocessor">#include &quot;mxc_sys.h&quot;</span></div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;i2c_regs.h&quot;</span></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="preprocessor">#include &quot;<a class="code" href="i2c__regs_8h.html">i2c_regs.h</a>&quot;</span></div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">/***** Definitions *****/</span></div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="preprocessor">#ifdef __cplusplus</span></div>
@@ -282,7 +282,7 @@ $(document).ready(function(){initNavTree('i2c_8h_source.html',''); initResizable
 <div class="line"><a id="l00879" name="l00879"></a><span class="lineno">  879</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00880" name="l00880"></a><span class="lineno">  880</span> </div>
 <div class="line"><a id="l00881" name="l00881"></a><span class="lineno">  881</span><span class="preprocessor">#endif </span><span class="comment">// LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32690_I2C_H_</span></div>
-<div class="ttc" id="agroup__i2c__registers_html_structmxc__i2c__regs__t"><div class="ttname"><a href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a></div><div class="ttdef"><b>Definition:</b> i2c_regs.h:88</div></div>
+<div class="ttc" id="agroup__i2c__registers_html_structmxc__i2c__regs__t"><div class="ttname"><a href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a></div><div class="ttdef"><b>Definition:</b> i2c_regs.h:89</div></div>
 <div class="ttc" id="agroup__i2c_html_a5c7f97913840e84de65f992fb6828a24"><div class="ttname"><a href="group__i2c.html#a5c7f97913840e84de65f992fb6828a24">_i2c_req_t::callback</a></div><div class="ttdeci">mxc_i2c_complete_cb_t callback</div><div class="ttdef"><b>Definition:</b> i2c.h:118</div></div>
 <div class="ttc" id="agroup__i2c_html_a62d96b3e83f506af2c4c5c1ddfd3c785"><div class="ttname"><a href="group__i2c.html#a62d96b3e83f506af2c4c5c1ddfd3c785">_i2c_req_t::rx_buf</a></div><div class="ttdeci">unsigned char * rx_buf</div><div class="ttdoc">The buffer to read the data into.</div><div class="ttdef"><b>Definition:</b> i2c.h:110</div></div>
 <div class="ttc" id="agroup__i2c_html_a7d1a4ab0355b90b84277c05f75119f55"><div class="ttname"><a href="group__i2c.html#a7d1a4ab0355b90b84277c05f75119f55">_i2c_req_t::rx_len</a></div><div class="ttdeci">unsigned int rx_len</div><div class="ttdef"><b>Definition:</b> i2c.h:111</div></div>
@@ -352,13 +352,14 @@ $(document).ready(function(){initNavTree('i2c_8h_source.html',''); initResizable
 <div class="ttc" id="agroup__i2c_html_gga77a60c635f64412b0e4adb5d0337f5a1adb561921ad40ff68190266e861fed728"><div class="ttname"><a href="group__i2c.html#gga77a60c635f64412b0e4adb5d0337f5a1adb561921ad40ff68190266e861fed728">MXC_I2C_EVT_MASTER_WR</a></div><div class="ttdeci">@ MXC_I2C_EVT_MASTER_WR</div><div class="ttdoc">requesting a write to the slave.</div><div class="ttdef"><b>Definition:</b> i2c.h:137</div></div>
 <div class="ttc" id="agroup__i2c_html_gga77a60c635f64412b0e4adb5d0337f5a1adc39f393922b5da97ce6ece57f052245"><div class="ttname"><a href="group__i2c.html#gga77a60c635f64412b0e4adb5d0337f5a1adc39f393922b5da97ce6ece57f052245">MXC_I2C_EVT_MASTER_RD</a></div><div class="ttdeci">@ MXC_I2C_EVT_MASTER_RD</div><div class="ttdoc">requesting a read from the slave.</div><div class="ttdef"><b>Definition:</b> i2c.h:139</div></div>
 <div class="ttc" id="agroup__i2c_html_struct__i2c__req__t"><div class="ttname"><a href="group__i2c.html#struct__i2c__req__t">_i2c_req_t</a></div><div class="ttdoc">The information required to perform a complete I2C transaction as the bus master.</div><div class="ttdef"><b>Definition:</b> i2c.h:102</div></div>
+<div class="ttc" id="ai2c__regs_8h_html"><div class="ttname"><a href="i2c__regs_8h.html">i2c_regs.h</a></div><div class="ttdoc">Registers, Bit Masks and Bit Positions for the I2C Peripheral Module.</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_8c378bd5eca1ad67039def4231d14917.html">MAX32690</a></li><li class="navelem"><b>i2c.h</b></li>
-    <li class="footer">Generated on Fri May 5 2023 22:56:04 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed May 17 2023 20:30:30 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -11,5 +11,6 @@ var group__afe__hart__registers =
     [ "AFE_HART_RX_CRD_DOUT_THRSHLD", "group___a_f_e___h_a_r_t___r_x___c_r_d___d_o_u_t___t_h_r_s_h_l_d.html", "group___a_f_e___h_a_r_t___r_x___c_r_d___d_o_u_t___t_h_r_s_h_l_d" ],
     [ "AFE_HART_TX_MARKSPACE_CNT", "group___a_f_e___h_a_r_t___t_x___m_a_r_k_s_p_a_c_e___c_n_t.html", "group___a_f_e___h_a_r_t___t_x___m_a_r_k_s_p_a_c_e___c_n_t" ],
     [ "AFE_HART_TRIM", "group___a_f_e___h_a_r_t___t_r_i_m.html", "group___a_f_e___h_a_r_t___t_r_i_m" ],
-    [ "AFE_HART_TM", "group___a_f_e___h_a_r_t___t_m.html", "group___a_f_e___h_a_r_t___t_m" ]
+    [ "AFE_HART_TM", "group___a_f_e___h_a_r_t___t_m.html", "group___a_f_e___h_a_r_t___t_m" ],
+    [ "afe_hart_regs.h", "afe__hart__regs_8h.html", null ]
 ];

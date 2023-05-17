@@ -9,6 +9,7 @@ var group__spixf__registers =
     [ "SPIXF_IO_CTRL", "group___s_p_i_x_f___i_o___c_t_r_l.html", "group___s_p_i_x_f___i_o___c_t_r_l" ],
     [ "SPIXF_SEC_CTRL", "group___s_p_i_x_f___s_e_c___c_t_r_l.html", "group___s_p_i_x_f___s_e_c___c_t_r_l" ],
     [ "SPIXF_BUS_IDLE", "group___s_p_i_x_f___b_u_s___i_d_l_e.html", "group___s_p_i_x_f___b_u_s___i_d_l_e" ],
+    [ "spixf_regs.h", "spixf__regs_8h.html", null ],
     [ "mxc_spixf_regs_t", "group__spixf__registers.html#structmxc__spixf__regs__t", [
       [ "bus_idle", "group__spixf__registers.html#addd4f770cdd0e3965fca5327890a02d4", null ],
       [ "cfg", "group__spixf__registers.html#a4453916c4f7486c75d155d8992ea4c08", null ],

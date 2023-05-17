@@ -12,6 +12,7 @@ var group__pwrseq__registers =
     [ "PWRSEQ_LPVDDPD", "group___p_w_r_s_e_q___l_p_v_d_d_p_d.html", "group___p_w_r_s_e_q___l_p_v_d_d_p_d" ],
     [ "PWRSEQ_BURETVEC", "group___p_w_r_s_e_q___b_u_r_e_t_v_e_c.html", "group___p_w_r_s_e_q___b_u_r_e_t_v_e_c" ],
     [ "PWRSEQ_BUAOD", "group___p_w_r_s_e_q___b_u_a_o_d.html", "group___p_w_r_s_e_q___b_u_a_o_d" ],
+    [ "pwrseq_regs.h", "pwrseq__regs_8h.html", null ],
     [ "mxc_pwrseq_regs_t", "group__pwrseq__registers.html#structmxc__pwrseq__regs__t", [
       [ "buaod", "group__pwrseq__registers.html#a2c0c030881fbd2b028d335266631e848", null ],
       [ "buretvec", "group__pwrseq__registers.html#aad4bb03c392e29b04036866d1d4f1135", null ],

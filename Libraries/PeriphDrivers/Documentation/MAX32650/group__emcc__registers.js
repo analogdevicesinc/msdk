@@ -5,6 +5,7 @@ var group__emcc__registers =
     [ "EMCC_MEM_SIZE", "group___e_m_c_c___m_e_m___s_i_z_e.html", "group___e_m_c_c___m_e_m___s_i_z_e" ],
     [ "EMCC_CACHE_CTRL", "group___e_m_c_c___c_a_c_h_e___c_t_r_l.html", "group___e_m_c_c___c_a_c_h_e___c_t_r_l" ],
     [ "EMCC_INVALIDATE", "group___e_m_c_c___i_n_v_a_l_i_d_a_t_e.html", "group___e_m_c_c___i_n_v_a_l_i_d_a_t_e" ],
+    [ "emcc_regs.h", "emcc__regs_8h.html", null ],
     [ "mxc_emcc_regs_t", "group__emcc__registers.html#structmxc__emcc__regs__t", [
       [ "cache_ctrl", "group__emcc__registers.html#a002089fa9372858285691a4ac39edfe4", null ],
       [ "cache_id", "group__emcc__registers.html#a04e51ce9b7e70a026222b62533472228", null ],

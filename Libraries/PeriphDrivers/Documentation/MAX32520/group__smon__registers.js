@@ -7,6 +7,7 @@ var group__smon__registers =
     [ "SMON_SECDIAG", "group___s_m_o_n___s_e_c_d_i_a_g.html", "group___s_m_o_n___s_e_c_d_i_a_g" ],
     [ "SMON_SECST", "group___s_m_o_n___s_e_c_s_t.html", "group___s_m_o_n___s_e_c_s_t" ],
     [ "SMON_SDBE", "group___s_m_o_n___s_d_b_e.html", "group___s_m_o_n___s_d_b_e" ],
+    [ "smon_regs.h", "smon__regs_8h.html", null ],
     [ "mxc_smon_regs_t", "group__smon__registers.html#structmxc__smon__regs__t", [
       [ "extscn", "group__smon__registers.html#af4117b5a4951eef149c8e937c12530a2", null ],
       [ "intscn", "group__smon__registers.html#a5a468a533c81ddc5998e426a1c9cdc49", null ],

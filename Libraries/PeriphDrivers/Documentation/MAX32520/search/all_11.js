@@ -10,5 +10,6 @@ var searchData=
   ['uart_5fint_5fen_7',['UART_INT_EN',['../group___u_a_r_t___i_n_t___e_n.html',1,'']]],
   ['uart_5fint_5fstat_8',['UART_INT_STAT',['../group___u_a_r_t___i_n_t___s_t_a_t.html',1,'']]],
   ['uart_5fregisters_9',['UART_Registers',['../group__uart__registers.html',1,'']]],
-  ['uart_5fstat_10',['UART_STAT',['../group___u_a_r_t___s_t_a_t.html',1,'']]]
+  ['uart_5fregs_2eh_10',['uart_regs.h',['../uart__regs_8h.html',1,'']]],
+  ['uart_5fstat_11',['UART_STAT',['../group___u_a_r_t___s_t_a_t.html',1,'']]]
 ];

@@ -20,6 +20,7 @@ var group__tpu__registers =
     [ "TPU_HASH_DIGEST", "group___t_p_u___h_a_s_h___d_i_g_e_s_t.html", "group___t_p_u___h_a_s_h___d_i_g_e_s_t" ],
     [ "TPU_HASH_MSG_SZ", "group___t_p_u___h_a_s_h___m_s_g___s_z.html", "group___t_p_u___h_a_s_h___m_s_g___s_z" ],
     [ "TPU_MAA_MAWS", "group___t_p_u___m_a_a___m_a_w_s.html", "group___t_p_u___m_a_a___m_a_w_s" ],
+    [ "tpu_regs.h", "tpu__regs_8h.html", null ],
     [ "mxc_tpu_regs_t", "group__tpu__registers.html#structmxc__tpu__regs__t", [
       [ "cipher_ctrl", "group__tpu__registers.html#ac2afd62d12a270c7db8a7090f7f783ac", null ],
       [ "cipher_init", "group__tpu__registers.html#ab0a9cd31e9876264786d25a2fdf69c41", null ],

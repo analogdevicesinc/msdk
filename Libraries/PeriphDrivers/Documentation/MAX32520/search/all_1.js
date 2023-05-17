@@ -9,5 +9,6 @@ var searchData=
   ['aes_5fregisters_6',['AES_Registers',['../group__aes__registers.html',1,'']]],
   ['aes_5fsram_5fkey_7',['aes_sram_key',['../group__aes__registers.html#a5235a9f49def5921d1442b24963f45d1',1,'mxc_aes_regs_t']]],
   ['aeskeys_5fregisters_8',['AESKEYS_Registers',['../group__aeskeys__registers.html',1,'']]],
-  ['assertion_20checks_20for_20debugging_9',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]]
+  ['aeskeys_5fregs_2eh_9',['aeskeys_regs.h',['../aeskeys__regs_8h.html',1,'']]],
+  ['assertion_20checks_20for_20debugging_10',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]]
 ];

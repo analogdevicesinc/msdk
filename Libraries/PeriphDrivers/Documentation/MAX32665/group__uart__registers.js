@@ -11,6 +11,7 @@ var group__uart__registers =
     [ "UART_FIFO", "group___u_a_r_t___f_i_f_o.html", "group___u_a_r_t___f_i_f_o" ],
     [ "UART_DMA", "group___u_a_r_t___d_m_a.html", "group___u_a_r_t___d_m_a" ],
     [ "UART_TX_FIFO", "group___u_a_r_t___t_x___f_i_f_o.html", "group___u_a_r_t___t_x___f_i_f_o" ],
+    [ "uart_regs.h", "uart__regs_8h.html", null ],
     [ "mxc_uart_regs_t", "group__uart__registers.html#structmxc__uart__regs__t", [
       [ "baud0", "group__uart__registers.html#a5a575d2571d830db6f729bef12cbe338", null ],
       [ "baud1", "group__uart__registers.html#aae8533a28d52f808a14ca7fe2a4e6052", null ],

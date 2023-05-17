@@ -7,6 +7,7 @@ var group__flc__registers =
     [ "FLC_INTR", "group___f_l_c___i_n_t_r.html", "group___f_l_c___i_n_t_r" ],
     [ "FLC_DATA", "group___f_l_c___d_a_t_a.html", "group___f_l_c___d_a_t_a" ],
     [ "FLC_ACTRL", "group___f_l_c___a_c_t_r_l.html", "group___f_l_c___a_c_t_r_l" ],
+    [ "flc_regs.h", "flc__regs_8h.html", null ],
     [ "mxc_flc_regs_t", "group__flc__registers.html#structmxc__flc__regs__t", [
       [ "actrl", "group__flc__registers.html#a2098c800d0dae87337e965be99fbbda5", null ],
       [ "addr", "group__flc__registers.html#a87bb0a6e89a1714dbecd29f53d0e7045", null ],

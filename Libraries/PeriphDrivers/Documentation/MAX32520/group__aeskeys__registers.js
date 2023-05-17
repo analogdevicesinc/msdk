@@ -1,6 +1,7 @@
 var group__aeskeys__registers =
 [
     [ "Register Offsets", "group___a_e_s_k_e_y_s___register___offsets.html", "group___a_e_s_k_e_y_s___register___offsets" ],
+    [ "aeskeys_regs.h", "aeskeys__regs_8h.html", null ],
     [ "mxc_aeskeys_regs_t", "group__aeskeys__registers.html#structmxc__aeskeys__regs__t", [
       [ "code_key", "group__aeskeys__registers.html#aaebbdb666f013cbf8f39aaab3b8aa260", null ],
       [ "data_key", "group__aeskeys__registers.html#a55ad6ffb375d9444641d66fadb67d2fd", null ],

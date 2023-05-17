@@ -9,6 +9,7 @@ var group__dvs__registers =
     [ "DVS_ADJ_DWN", "group___d_v_s___a_d_j___d_w_n.html", "group___d_v_s___a_d_j___d_w_n" ],
     [ "DVS_THRES_CMP", "group___d_v_s___t_h_r_e_s___c_m_p.html", "group___d_v_s___t_h_r_e_s___c_m_p" ],
     [ "DVS_TAP_SEL", "group___d_v_s___t_a_p___s_e_l.html", "group___d_v_s___t_a_p___s_e_l" ],
+    [ "dvs_regs.h", "dvs__regs_8h.html", null ],
     [ "mxc_dvs_regs_t", "group__dvs__registers.html#structmxc__dvs__regs__t", [
       [ "adj_dwn", "group__dvs__registers.html#a5eac2d950b841761b2b73569999fc8b1", null ],
       [ "adj_up", "group__dvs__registers.html#a6be90a96a2e5deb856deef08eded7ab9", null ],

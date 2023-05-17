@@ -39,6 +39,7 @@ var group__gpio__registers =
     [ "GPIO_DS1", "group___g_p_i_o___d_s1.html", "group___g_p_i_o___d_s1" ],
     [ "GPIO_PS", "group___g_p_i_o___p_s.html", "group___g_p_i_o___p_s" ],
     [ "GPIO_VSSEL", "group___g_p_i_o___v_s_s_e_l.html", "group___g_p_i_o___v_s_s_e_l" ],
+    [ "gpio_regs.h", "gpio__regs_8h.html", null ],
     [ "mxc_gpio_regs_t", "group__gpio__registers.html#structmxc__gpio__regs__t", [
       [ "ds0", "group__gpio__registers.html#af3fd471fbfb5eddfdcd5067069138b32", null ],
       [ "ds1", "group__gpio__registers.html#aded1d97628851ac331d217c8f8d08e33", null ],

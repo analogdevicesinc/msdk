@@ -6,6 +6,7 @@ var group__sir__registers =
     [ "SIR_BTLE_LDO_TRIM", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m.html", "group___s_i_r___b_t_l_e___l_d_o___t_r_i_m" ],
     [ "SIR_FSTAT", "group___s_i_r___f_s_t_a_t.html", "group___s_i_r___f_s_t_a_t" ],
     [ "SIR_SFSTAT", "group___s_i_r___s_f_s_t_a_t.html", "group___s_i_r___s_f_s_t_a_t" ],
+    [ "sir_regs.h", "sir__regs_8h.html", null ],
     [ "mxc_sir_regs_t", "group__sir__registers.html#structmxc__sir__regs__t", [
       [ "btle_ldo_trim", "group__sir__registers.html#aeebe6e28196f7b4ac7240f7484b5553f", null ],
       [ "fstat", "group__sir__registers.html#a3561f2c3ee0e429c1dca85d580154cc9", null ],

@@ -6,6 +6,7 @@ var group__htmr__registers =
     [ "HTMR_RAS", "group___h_t_m_r___r_a_s.html", "group___h_t_m_r___r_a_s" ],
     [ "HTMR_RSSA", "group___h_t_m_r___r_s_s_a.html", "group___h_t_m_r___r_s_s_a" ],
     [ "HTMR_CTRL", "group___h_t_m_r___c_t_r_l.html", "group___h_t_m_r___c_t_r_l" ],
+    [ "htmr_regs.h", "htmr__regs_8h.html", null ],
     [ "mxc_htmr_regs_t", "group__htmr__registers.html#structmxc__htmr__regs__t", [
       [ "ctrl", "group__htmr__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],
       [ "ras", "group__htmr__registers.html#a1e8c3499c412ff58016b9199ead5b065", null ],

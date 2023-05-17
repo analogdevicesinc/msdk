@@ -43,6 +43,7 @@ var group__sdhc__registers =
     [ "SDHC_PRESET_7", "group___s_d_h_c___p_r_e_s_e_t__7.html", "group___s_d_h_c___p_r_e_s_e_t__7" ],
     [ "SDHC_SLOT_INT", "group___s_d_h_c___s_l_o_t___i_n_t.html", "group___s_d_h_c___s_l_o_t___i_n_t" ],
     [ "SDHC_HOST_CN_VER", "group___s_d_h_c___h_o_s_t___c_n___v_e_r.html", "group___s_d_h_c___h_o_s_t___c_n___v_e_r" ],
+    [ "sdhc_regs.h", "sdhc__regs_8h.html", null ],
     [ "mxc_sdhc_regs_t", "group__sdhc__registers.html#structmxc__sdhc__regs__t", [
       [ "adma_addr_0", "group__sdhc__registers.html#a79a249bce1c145986774a185795cdab6", null ],
       [ "adma_addr_1", "group__sdhc__registers.html#a629e4d9ecaf4ca360f77132218df32a4", null ],

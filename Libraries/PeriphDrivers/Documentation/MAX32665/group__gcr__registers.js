@@ -23,6 +23,7 @@ var group__gcr__registers =
     [ "GCR_BTLE_LDODCR", "group___g_c_r___b_t_l_e___l_d_o_d_c_r.html", "group___g_c_r___b_t_l_e___l_d_o_d_c_r" ],
     [ "GCR_GP0", "group___g_c_r___g_p0.html", "group___g_c_r___g_p0" ],
     [ "GCR_APB_ASYNC", "group___g_c_r___a_p_b___a_s_y_n_c.html", "group___g_c_r___a_p_b___a_s_y_n_c" ],
+    [ "gcr_regs.h", "gcr__regs_8h.html", null ],
     [ "mxc_gcr_regs_t", "group__gcr__registers.html#structmxc__gcr__regs__t", [
       [ "apb_async", "group__gcr__registers.html#a6e1ff66da9e7f6caa395e59a775b6ac1", null ],
       [ "btle_ldocr", "group__gcr__registers.html#a7427d9acfaff29878c03e9bc7e5c0bd8", null ],

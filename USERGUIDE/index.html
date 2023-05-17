@@ -2528,11 +2528,82 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 </ul>
 <p>The <em><strong>implementation</strong></em> files are further organized based on <em><strong>die type</strong></em> and <strong><em>hardware revision</em></strong>. This is worth noting when browsing or debugging through the drivers.  </p>
 <ul>
-<li>The <strong><em>die type</em></strong> files follow the <strong><code>_MEXX</code></strong> or <strong><code>_AIXX</code></strong> naming convention<ul>
+<li>
+<p>The <strong><em>die type</em></strong> files follow the <strong><code>_ESXX</code></strong> , <strong><code>_MEXX</code></strong> , or <strong><code>_AIXX</code></strong> naming convention.</p>
+<ul>
 <li>These files' responsibility is to manage microcontroller-specific implementation details that may interact with other peripheral APIs <em>before</em> ultimately calling the revision-specific files.</li>
+<li>This table shows which part numbers correspond to each die type:</li>
 </ul>
+<table>
+<thead>
+<tr>
+<th>Part Number</th>
+<th>Die Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MAX32520</td>
+<td>ES17</td>
+</tr>
+<tr>
+<td>MAX32570</td>
+<td>ME13</td>
+</tr>
+<tr>
+<td>MAX32650</td>
+<td>ME10</td>
+</tr>
+<tr>
+<td>MAX32655</td>
+<td>ME17</td>
+</tr>
+<tr>
+<td>MAX32660</td>
+<td>ME11</td>
+</tr>
+<tr>
+<td>MAX32662</td>
+<td>ME12</td>
+</tr>
+<tr>
+<td>MAX32665</td>
+<td>ME14</td>
+</tr>
+<tr>
+<td>MAX32670</td>
+<td>ME15</td>
+</tr>
+<tr>
+<td>MAX32672</td>
+<td>ME21</td>
+</tr>
+<tr>
+<td>MAX32675</td>
+<td>ME16</td>
+</tr>
+<tr>
+<td>MAX32680</td>
+<td>ME20</td>
+</tr>
+<tr>
+<td>MAX32690</td>
+<td>ME18</td>
+</tr>
+<tr>
+<td>MAX78000</td>
+<td>AI85</td>
+</tr>
+<tr>
+<td>MAX78002</td>
+<td>AI87</td>
+</tr>
+</tbody>
+</table>
 </li>
-<li>The <strong>_hardware</strong> revision_ files follow the <strong><code>_revX</code></strong> naming convention.  <ul>
+<li>
+<p>The <strong><em>hardware revision</em></strong> files follow the <strong><code>_revX</code></strong> naming convention.  </p>
+<ul>
 <li>These files contain the <em>pure</em> driver implementation for a peripheral block and typically interact with the hardware almost entirely at the register level.</li>
 </ul>
 </li>

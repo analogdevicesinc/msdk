@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('group__sir__registers.html',''); initR
 <div class="header">
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
+<a href="#files">Files</a> &#124;
 <a href="#nested-classes">Data Structures</a>  </div>
   <div class="headertitle"><div class="title">SIR_Registers</div></div>
 </div><!--header-->
@@ -98,6 +99,15 @@ Modules</h2></td></tr>
 <tr class="memitem:group___s_i_r___s_t_a_t_u_s"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_i_r___s_t_a_t_u_s.html">SIR_STATUS</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:group___s_i_r___a_d_d_r"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_i_r___a_d_d_r.html">SIR_ADDR</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group___s_i_r___f_s_t_a_t"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_i_r___f_s_t_a_t.html">SIR_FSTAT</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:group___s_i_r___s_f_s_t_a_t"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___s_i_r___s_f_s_t_a_t.html">SIR_SFSTAT</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="files" name="files"></a>
+Files</h2></td></tr>
+<tr class="memitem:sir__regs_8h"><td class="memItemLeft" align="right" valign="top">file &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="sir__regs_8h.html">sir_regs.h</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -127,6 +137,10 @@ Data Structures</h2></td></tr>
 <tr class="separator:a4b79764f6dc9cf227c2ddd91219e8ac9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a309c3eacd2476b4f6d8b6c1c831b2ca5"><td class="memItemLeft" align="right" valign="top">__I uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sir__registers.html#a309c3eacd2476b4f6d8b6c1c831b2ca5">addr</a></td></tr>
 <tr class="separator:a309c3eacd2476b4f6d8b6c1c831b2ca5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3561f2c3ee0e429c1dca85d580154cc9"><td class="memItemLeft" align="right" valign="top">__I uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sir__registers.html#a3561f2c3ee0e429c1dca85d580154cc9">fstat</a></td></tr>
+<tr class="separator:a3561f2c3ee0e429c1dca85d580154cc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb4e4c85254e79d1f530180853f5154d"><td class="memItemLeft" align="right" valign="top">__I uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__sir__registers.html#adb4e4c85254e79d1f530180853f5154d">sfstat</a></td></tr>
+<tr class="separator:adb4e4c85254e79d1f530180853f5154d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h4 class="groupheader">Field Documentation</h4>
 <a id="a309c3eacd2476b4f6d8b6c1c831b2ca5" name="a309c3eacd2476b4f6d8b6c1c831b2ca5"></a>
@@ -141,6 +155,36 @@ Data Structures</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <p ><code><b>0x04:</code></b> SIR ADDR Register </p>
+
+</div>
+</div>
+<a id="a3561f2c3ee0e429c1dca85d580154cc9" name="a3561f2c3ee0e429c1dca85d580154cc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3561f2c3ee0e429c1dca85d580154cc9">&#9670;&nbsp;</a></span>fstat</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__I uint32_t fstat</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p ><code><b>0x100:</code></b> SIR FSTAT Register </p>
+
+</div>
+</div>
+<a id="adb4e4c85254e79d1f530180853f5154d" name="adb4e4c85254e79d1f530180853f5154d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb4e4c85254e79d1f530180853f5154d">&#9670;&nbsp;</a></span>sfstat</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">__I uint32_t sfstat</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p ><code><b>0x104:</code></b> SIR SFSTAT Register </p>
 
 </div>
 </div>
@@ -167,7 +211,7 @@ Data Structures</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 5 2023 22:55:48 for MAX32672 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed May 17 2023 20:30:19 for MAX32672 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

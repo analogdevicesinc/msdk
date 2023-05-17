@@ -19,6 +19,7 @@ var group__i2c__registers =
     [ "I2C_TIMEOUT", "group___i2_c___t_i_m_e_o_u_t.html", "group___i2_c___t_i_m_e_o_u_t" ],
     [ "I2C_SLV_ADDR", "group___i2_c___s_l_v___a_d_d_r.html", "group___i2_c___s_l_v___a_d_d_r" ],
     [ "I2C_DMA", "group___i2_c___d_m_a.html", "group___i2_c___d_m_a" ],
+    [ "i2c_regs.h", "i2c__regs_8h.html", null ],
     [ "mxc_i2c_regs_t", "group__i2c__registers.html#structmxc__i2c__regs__t", [
       [ "clk_hi", "group__i2c__registers.html#af32356b3618b17d8ac54da6fb8f2fbc6", null ],
       [ "clk_lo", "group__i2c__registers.html#a1769cdaba434a337b25274a95df9076d", null ],

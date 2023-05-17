@@ -7,6 +7,7 @@ var group__sema__registers =
     [ "SEMA_IRQ1", "group___s_e_m_a___i_r_q1.html", "group___s_e_m_a___i_r_q1" ],
     [ "SEMA_MAIL1", "group___s_e_m_a___m_a_i_l1.html", "group___s_e_m_a___m_a_i_l1" ],
     [ "SEMA_STATUS", "group___s_e_m_a___s_t_a_t_u_s.html", "group___s_e_m_a___s_t_a_t_u_s" ],
+    [ "sema_regs.h", "sema__regs_8h.html", null ],
     [ "mxc_sema_regs_t", "group__sema__registers.html#structmxc__sema__regs__t", [
       [ "irq0", "group__sema__registers.html#aa2c2c5b4388c245574217f71c9d24d0a", null ],
       [ "irq1", "group__sema__registers.html#a776f8c49bdca9e061b5427c36b815624", null ],

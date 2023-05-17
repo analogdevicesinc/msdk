@@ -22,6 +22,7 @@ var group__ctb__registers =
     [ "CTB_AAD_LENGTH", "group___c_t_b___a_a_d___l_e_n_g_t_h.html", "group___c_t_b___a_a_d___l_e_n_g_t_h" ],
     [ "CTB_PLD_LENGTH", "group___c_t_b___p_l_d___l_e_n_g_t_h.html", "group___c_t_b___p_l_d___l_e_n_g_t_h" ],
     [ "CTB_TAGMIC", "group___c_t_b___t_a_g_m_i_c.html", "group___c_t_b___t_a_g_m_i_c" ],
+    [ "ctb_regs.h", "ctb__regs_8h.html", null ],
     [ "mxc_ctb_regs_t", "group__ctb__registers.html#structmxc__ctb__regs__t", [
       [ "aad_length", "group__ctb__registers.html#ad8e1e6bef68139a50614df6c82c9be04", null ],
       [ "cipher_ctrl", "group__ctb__registers.html#ac2afd62d12a270c7db8a7090f7f783ac", null ],

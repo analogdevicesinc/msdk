@@ -4,6 +4,7 @@ var group__tmr__registers =
     [ "TMR_INTR", "group___t_m_r___i_n_t_r.html", "group___t_m_r___i_n_t_r" ],
     [ "TMR_CN", "group___t_m_r___c_n.html", "group___t_m_r___c_n" ],
     [ "TMR_NOLCMP", "group___t_m_r___n_o_l_c_m_p.html", "group___t_m_r___n_o_l_c_m_p" ],
+    [ "tmr_regs.h", "tmr__regs_8h.html", null ],
     [ "mxc_tmr_regs_t", "group__tmr__registers.html#structmxc__tmr__regs__t", [
       [ "cmp", "group__tmr__registers.html#aaef723fce280474468bb54f8caaf9782", null ],
       [ "cn", "group__tmr__registers.html#a15a466a054c956c4aff9b4d5ae90b4c2", null ],

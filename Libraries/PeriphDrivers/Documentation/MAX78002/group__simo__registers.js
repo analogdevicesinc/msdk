@@ -21,6 +21,7 @@ var group__simo__registers =
     [ "SIMO_ZERO_CROSS_CAL_B", "group___s_i_m_o___z_e_r_o___c_r_o_s_s___c_a_l___b.html", "group___s_i_m_o___z_e_r_o___c_r_o_s_s___c_a_l___b" ],
     [ "SIMO_ZERO_CROSS_CAL_C", "group___s_i_m_o___z_e_r_o___c_r_o_s_s___c_a_l___c.html", "group___s_i_m_o___z_e_r_o___c_r_o_s_s___c_a_l___c" ],
     [ "SIMO_ZERO_CROSS_CAL_D", "group___s_i_m_o___z_e_r_o___c_r_o_s_s___c_a_l___d.html", "group___s_i_m_o___z_e_r_o___c_r_o_s_s___c_a_l___d" ],
+    [ "simo_regs.h", "simo__regs_8h.html", null ],
     [ "mxc_simo_regs_t", "group__simo__registers.html#structmxc__simo__regs__t", [
       [ "buck_alert_thr_a", "group__simo__registers.html#a88fd56309cae950a98d14097de7769a6", null ],
       [ "buck_alert_thr_b", "group__simo__registers.html#a275e507f45261a18723011f3864a7b61", null ],

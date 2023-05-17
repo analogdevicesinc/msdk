@@ -13,6 +13,7 @@ var group__pwrseq__registers =
     [ "PWRSEQ_USB_WK_FL", "group___p_w_r_s_e_q___u_s_b___w_k___f_l.html", "group___p_w_r_s_e_q___u_s_b___w_k___f_l" ],
     [ "PWRSEQ_USB_WK_EN", "group___p_w_r_s_e_q___u_s_b___w_k___e_n.html", "group___p_w_r_s_e_q___u_s_b___w_k___e_n" ],
     [ "PWRSEQ_MEM_PWR", "group___p_w_r_s_e_q___m_e_m___p_w_r.html", "group___p_w_r_s_e_q___m_e_m___p_w_r" ],
+    [ "pwrseq_regs.h", "pwrseq__regs_8h.html", null ],
     [ "mxc_pwrseq_regs_t", "group__pwrseq__registers.html#structmxc__pwrseq__regs__t", [
       [ "ctrl", "group__pwrseq__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],
       [ "gpio0_wk_en", "group__pwrseq__registers.html#a2d7d52f47995af19d75e000fc03bb18e", null ],

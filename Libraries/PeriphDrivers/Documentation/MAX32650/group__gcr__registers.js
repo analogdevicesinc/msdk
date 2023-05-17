@@ -15,6 +15,7 @@ var group__gcr__registers =
     [ "GCR_EVENT_EN", "group___g_c_r___e_v_e_n_t___e_n.html", "group___g_c_r___e_v_e_n_t___e_n" ],
     [ "GCR_REV", "group___g_c_r___r_e_v.html", "group___g_c_r___r_e_v" ],
     [ "GCR_SYS_STAT_IE", "group___g_c_r___s_y_s___s_t_a_t___i_e.html", "group___g_c_r___s_y_s___s_t_a_t___i_e" ],
+    [ "gcr_regs.h", "gcr__regs_8h.html", null ],
     [ "mxc_gcr_regs_t", "group__gcr__registers.html#structmxc__gcr__regs__t", [
       [ "clk_ctrl", "group__gcr__registers.html#ab279e5304ce5d97badf8ad3e201f65ae", null ],
       [ "event_en", "group__gcr__registers.html#a0992c1de5c5cdb5bf8a0945c9492fff8", null ],

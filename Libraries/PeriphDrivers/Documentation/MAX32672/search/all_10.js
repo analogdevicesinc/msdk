@@ -12,5 +12,6 @@ var searchData=
   ['qdec_5fmaxcnt_9',['QDEC_MAXCNT',['../group___q_d_e_c___m_a_x_c_n_t.html',1,'']]],
   ['qdec_5fposition_10',['QDEC_POSITION',['../group___q_d_e_c___p_o_s_i_t_i_o_n.html',1,'']]],
   ['qdec_5fregisters_11',['QDEC_Registers',['../group__qdec__registers.html',1,'']]],
-  ['qdec_5fstatus_12',['QDEC_STATUS',['../group___q_d_e_c___s_t_a_t_u_s.html',1,'']]]
+  ['qdec_5fregs_2eh_12',['qdec_regs.h',['../qdec__regs_8h.html',1,'']]],
+  ['qdec_5fstatus_13',['QDEC_STATUS',['../group___q_d_e_c___s_t_a_t_u_s.html',1,'']]]
 ];

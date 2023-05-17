@@ -344,6 +344,7 @@
           <topic label="MXC_F_CTB_SCA_MODDATA_MODDATA" href="group___c_t_b___s_c_a___m_o_d_d_a_t_a.html#gad659177b4b304e77e3c384a18e474e22"/>
           <topic label="MXC_F_CTB_SCA_MODDATA_MODDATA_POS" href="group___c_t_b___s_c_a___m_o_d_d_a_t_a.html#gad5f3d5502dee8fdf15f88b5b77da2a33"/>
         </topic>
+        <topic label="ctb_regs.h" href="ctb__regs_8h.html"/>
         <topic label="mxc_ctb_regs_t" href="group__ctb__registers.html#structmxc__ctb__regs__t">
           <topic label="a_length_0" href="group__ctb__registers.html#aa1d44b46ada8c1234be97e67d16bab99"/>
           <topic label="a_length_1" href="group__ctb__registers.html#aca41fc63f1d8042a1bc9e151d0ff4c54"/>
@@ -661,6 +662,7 @@
           <topic label="MXC_F_DMA_CNT_RLD_RLDEN" href="group___d_m_a___c_n_t___r_l_d.html#ga2b2627df47054c575889174515d15ed8"/>
           <topic label="MXC_F_DMA_CNT_RLD_RLDEN_POS" href="group___d_m_a___c_n_t___r_l_d.html#ga06f8c3679bafd7e0d7d7c8ba4d7de153"/>
         </topic>
+        <topic label="dma_regs.h" href="dma__regs_8h.html"/>
         <topic label="mxc_dma_ch_regs_t" href="group__dma__registers.html#structmxc__dma__ch__regs__t">
           <topic label="cfg" href="group__dma__registers.html#a4453916c4f7486c75d155d8992ea4c08"/>
           <topic label="cnt" href="group__dma__registers.html#a79669bb18d8e3f917f9a9ed84c0828fb"/>
@@ -818,6 +820,7 @@
           <topic label="MXC_F_FLC_ACNTL_ADATA" href="group___f_l_c___a_c_n_t_l.html#ga22a56d36bf3ac70fa99366d6e91e4e28"/>
           <topic label="MXC_F_FLC_ACNTL_ADATA_POS" href="group___f_l_c___a_c_n_t_l.html#ga495eded0c1990e4023b5fb47194062e3"/>
         </topic>
+        <topic label="flc_regs.h" href="flc__regs_8h.html"/>
         <topic label="mxc_flc_regs_t" href="group__flc__registers.html#structmxc__flc__regs__t">
           <topic label="acntl" href="group__flc__registers.html#a337ffbcd07ca8f0068a3662acd670ea2"/>
           <topic label="flsh_addr" href="group__flc__registers.html#aed9932c32c97ab95f47e995d1c8846c4"/>
@@ -1113,6 +1116,7 @@
           <topic label="MXC_F_GPIO_PSSEL_PSSEL" href="group___g_p_i_o___p_s_s_e_l.html#ga4a372795221161b243e9ffdea735c23d"/>
           <topic label="MXC_F_GPIO_PSSEL_PSSEL_POS" href="group___g_p_i_o___p_s_s_e_l.html#ga73f39f1ae3f040c5d178da4c598d9ad6"/>
         </topic>
+        <topic label="gpio_regs.h" href="gpio__regs_8h.html"/>
         <topic label="mxc_gpio_regs_t" href="group__gpio__registers.html#structmxc__gpio__regs__t">
           <topic label="ds_sel0" href="group__gpio__registers.html#a590910eea9dafa0e3e5200ce8d51db70"/>
           <topic label="ds_sel1" href="group__gpio__registers.html#a9ef859a4a5b896deddec879d56f41ea8"/>
@@ -1436,6 +1440,7 @@
           <topic label="MXC_V_I2C_SLA_SLA_DIS" href="group___i2_c___s_l_a.html#ga17db3327f52febf0d84ca0479c007a44"/>
           <topic label="MXC_V_I2C_SLA_SLA_EN" href="group___i2_c___s_l_a.html#ga06b4560cf5434e44180cd0bd393af184"/>
         </topic>
+        <topic label="i2c_regs.h" href="i2c__regs_8h.html"/>
         <topic label="mxc_i2c_regs_t" href="group__i2c__registers.html#structmxc__i2c__regs__t">
           <topic label="ckh" href="group__i2c__registers.html#a433150c4b5fc73d30da967fa9587ef43"/>
           <topic label="ckl" href="group__i2c__registers.html#a1d76bb8e71742dba05b08a5396f3b1ae"/>
@@ -1561,6 +1566,7 @@
           <topic label="MXC_F_ICC_INVALIDATE_IA" href="group___i_c_c___i_n_v_a_l_i_d_a_t_e.html#gaceccaa2496191d35322b9eff3e3786d6"/>
           <topic label="MXC_F_ICC_INVALIDATE_IA_POS" href="group___i_c_c___i_n_v_a_l_i_d_a_t_e.html#ga72f86f578b76c7615601063c11a0fd00"/>
         </topic>
+        <topic label="icc_regs.h" href="icc__regs_8h.html"/>
         <topic label="mxc_icc_regs_t" href="group__icc__registers.html#structmxc__icc__regs__t">
           <topic label="cache_ctrl" href="group__icc__registers.html#a002089fa9372858285691a4ac39edfe4"/>
           <topic label="cache_id" href="group__icc__registers.html#a04e51ce9b7e70a026222b62533472228"/>
@@ -1643,6 +1649,7 @@
           <topic label="MXC_F_PWRSEQ_LPMEMSD_ROM" href="group___p_w_r_s_e_q___l_p_m_e_m_s_d.html#gadc8704f20b21a4780ea81d8a1f65e245"/>
           <topic label="MXC_F_PWRSEQ_LPMEMSD_ROM_POS" href="group___p_w_r_s_e_q___l_p_m_e_m_s_d.html#ga6f4514807b28a13229193dcf17b60e8f"/>
         </topic>
+        <topic label="pwrseq_regs.h" href="pwrseq__regs_8h.html"/>
         <topic label="mxc_pwrseq_regs_t" href="group__pwrseq__registers.html#structmxc__pwrseq__regs__t">
           <topic label="gp0" href="group__pwrseq__registers.html#a5f63f9fd8fbf27b12bb557d118c99826"/>
           <topic label="gp1" href="group__pwrseq__registers.html#aaa427340367c41c7ebfe1256fa3acdd8"/>
@@ -1885,6 +1892,7 @@
           <topic label="MXC_F_SFE_RAM_STA_RAM_STA" href="group___s_f_e___r_a_m___s_t_a.html#gadf1f2ecd63d9c6e12d5aa98cbf18ab3f"/>
           <topic label="MXC_F_SFE_RAM_STA_RAM_STA_POS" href="group___s_f_e___r_a_m___s_t_a.html#gabe3217e827881ac09195b6374c1cef3b"/>
         </topic>
+        <topic label="sfe_regs.h" href="sfe__regs_8h.html"/>
         <topic label="mxc_sfe_regs_t" href="group__sfe__registers.html#structmxc__sfe__regs__t">
           <topic label="cfg" href="group__sfe__registers.html#a4453916c4f7486c75d155d8992ea4c08"/>
           <topic label="flash_sba" href="group__sfe__registers.html#a79dd05fb3864994581a642fc965fb847"/>
@@ -2094,6 +2102,7 @@
           <topic label="MXC_F_SMON_SDBE_SBDEN" href="group___s_m_o_n___s_d_b_e.html#ga96bc2b39546dbba6e35d11654cee083f"/>
           <topic label="MXC_F_SMON_SDBE_SBDEN_POS" href="group___s_m_o_n___s_d_b_e.html#gaacf22f6b81f400b5ae63a1e1f42f510e"/>
         </topic>
+        <topic label="smon_regs.h" href="smon__regs_8h.html"/>
         <topic label="mxc_smon_regs_t" href="group__smon__registers.html#structmxc__smon__regs__t">
           <topic label="extscn" href="group__smon__registers.html#af4117b5a4951eef149c8e937c12530a2"/>
           <topic label="intscn" href="group__smon__registers.html#a5a468a533c81ddc5998e426a1c9cdc49"/>
@@ -2362,6 +2371,7 @@
           <topic label="MXC_F_SPI_STAT_BUSY" href="group___s_p_i___s_t_a_t.html#ga3db3abbf9ff337378e5efa30301efb3e"/>
           <topic label="MXC_F_SPI_STAT_BUSY_POS" href="group___s_p_i___s_t_a_t.html#gaaeab1eab3c309f7662452a57db4f19eb"/>
         </topic>
+        <topic label="spi_regs.h" href="spi__regs_8h.html"/>
         <topic label="mxc_spi_regs_t" href="group__spi__registers.html#structmxc__spi__regs__t">
           <topic label="clk_config" href="group__spi__registers.html#a6a9e511e2bdcb191bc05a5fea3434753"/>
           <topic label="data16" href="group__spi__registers.html#ae11b73e624e946ab2645f23538ec2083"/>
@@ -2510,6 +2520,7 @@
           <topic label="MXC_V_TMR_CN_TMODE_ONESHOT" href="group___t_m_r___c_n.html#gaabb5ec0508f8d011a85290fe7711b058"/>
           <topic label="MXC_V_TMR_CN_TMODE_PWM" href="group___t_m_r___c_n.html#gab7f1939d09f657584c5dc4358418cb7c"/>
         </topic>
+        <topic label="tmr_regs.h" href="tmr__regs_8h.html"/>
         <topic label="mxc_tmr_regs_t" href="group__tmr__registers.html#structmxc__tmr__regs__t">
           <topic label="cmp" href="group__tmr__registers.html#aaef723fce280474468bb54f8caaf9782"/>
           <topic label="cn" href="group__tmr__registers.html#a15a466a054c956c4aff9b4d5ae90b4c2"/>
@@ -2688,6 +2699,7 @@
           <topic label="MXC_F_UART_DMA_TXEN" href="group___u_a_r_t___d_m_a.html#ga7f99e54710f4b6b6be384e438e6131b1"/>
           <topic label="MXC_F_UART_DMA_TXEN_POS" href="group___u_a_r_t___d_m_a.html#gaabe78d307cb07538cdde5020f090d228"/>
         </topic>
+        <topic label="uart_regs.h" href="uart__regs_8h.html"/>
         <topic label="mxc_uart_regs_t" href="group__uart__registers.html#structmxc__uart__regs__t">
           <topic label="baud0" href="group__uart__registers.html#a5a575d2571d830db6f729bef12cbe338"/>
           <topic label="baud1" href="group__uart__registers.html#aae8533a28d52f808a14ca7fe2a4e6052"/>
@@ -2865,6 +2877,7 @@
           <topic label="MXC_V_WDT_RST_WDT_RST_SEQ0" href="group___w_d_t___r_s_t.html#ga65051d07c451413f886198dde6f86a69"/>
           <topic label="MXC_V_WDT_RST_WDT_RST_SEQ1" href="group___w_d_t___r_s_t.html#ga9dbb6f31dcd67453e6549e1406cfac8f"/>
         </topic>
+        <topic label="wdt_regs.h" href="wdt__regs_8h.html"/>
         <topic label="mxc_wdt_regs_t" href="group__wdt__registers.html#structmxc__wdt__regs__t">
           <topic label="ctrl" href="group__wdt__registers.html#a5f3ab705a4a67b17dcc04560cef193f3"/>
           <topic label="rst" href="group__wdt__registers.html#a5e60cc2ae13ed2a525bbee7118ac69cd"/>
@@ -2922,6 +2935,7 @@
         <topic label="MXC_R_AESKEYS_DATA_KEY" href="group___a_e_s_k_e_y_s___register___offsets.html#gac41db2be74b9439e8bc8edf4f7e49460"/>
         <topic label="MXC_R_AESKEYS_SRAM_KEY" href="group___a_e_s_k_e_y_s___register___offsets.html#ga734fac2115e4b3bb31f8409a616be23a"/>
       </topic>
+      <topic label="aeskeys_regs.h" href="aeskeys__regs_8h.html"/>
       <topic label="mxc_aeskeys_regs_t" href="group__aeskeys__registers.html#structmxc__aeskeys__regs__t">
         <topic label="code_key" href="group__aeskeys__registers.html#aaebbdb666f013cbf8f39aaab3b8aa260"/>
         <topic label="data_key" href="group__aeskeys__registers.html#a55ad6ffb375d9444641d66fadb67d2fd"/>
@@ -2938,6 +2952,7 @@
         <topic label="MXC_F_FCR_FCTRL0_I2C0_SDA_FILTER_EN" href="group___f_c_r___f_c_t_r_l0.html#ga90b1487ed8df5ad7425c4e313b5b3ede"/>
         <topic label="MXC_F_FCR_FCTRL0_I2C0_SDA_FILTER_EN_POS" href="group___f_c_r___f_c_t_r_l0.html#ga5452fa514bc02889c8e2256690754ede"/>
       </topic>
+      <topic label="fcr_regs.h" href="fcr__regs_8h.html"/>
       <topic label="mxc_fcr_regs_t" href="group__fcr__registers.html#structmxc__fcr__regs__t">
         <topic label="fctrl0" href="group__fcr__registers.html#ac8284d716d273ab4c7b42d3f978f1b62"/>
       </topic>
@@ -3247,6 +3262,7 @@
         <topic label="MXC_F_GCR_ECCADDR_TAGRAMERR" href="group___g_c_r___e_c_c_a_d_d_r.html#ga22afd05629cc1328eeba3bcd651688a9"/>
         <topic label="MXC_F_GCR_ECCADDR_TAGRAMERR_POS" href="group___g_c_r___e_c_c_a_d_d_r.html#ga4d3a4bc78474cd4d8a96b17b68692c23"/>
       </topic>
+      <topic label="gcr_regs.h" href="gcr__regs_8h.html"/>
       <topic label="mxc_gcr_regs_t" href="group__gcr__registers.html#structmxc__gcr__regs__t">
         <topic label="clkctrl" href="group__gcr__registers.html#a5614e3d3d61a7b8e1e1c753d4442f209"/>
         <topic label="eccaddr" href="group__gcr__registers.html#a86a9c8da4c98f1feec252973106f11bc"/>
@@ -3288,6 +3304,7 @@
         <topic label="MXC_F_MCR_ECCEN_SYSRAM4ECCEN" href="group___m_c_r___e_c_c_e_n.html#ga7dd657dbb3c6a45bc019a1aa0f8fe132"/>
         <topic label="MXC_F_MCR_ECCEN_SYSRAM4ECCEN_POS" href="group___m_c_r___e_c_c_e_n.html#ga146fe9670080350d5a08c5f0979dc38e"/>
       </topic>
+      <topic label="mcr_regs.h" href="mcr__regs_8h.html"/>
       <topic label="mxc_mcr_regs_t" href="group__mcr__registers.html#structmxc__mcr__regs__t">
         <topic label="eccen" href="group__mcr__registers.html#ada5375eed4f0ed0f2fd3fc285651e51c"/>
       </topic>
@@ -3325,6 +3342,7 @@
         <topic label="MXC_F_SIR_SFSTAT_TRNG" href="group___s_i_r___s_f_s_t_a_t.html#ga44d39834e42487d0ecd1e9fce326e5e5"/>
         <topic label="MXC_F_SIR_SFSTAT_TRNG_POS" href="group___s_i_r___s_f_s_t_a_t.html#ga52791897b178942f9eb2760e952afda1"/>
       </topic>
+      <topic label="sir_regs.h" href="sir__regs_8h.html"/>
       <topic label="mxc_sir_regs_t" href="group__sir__registers.html#structmxc__sir__regs__t">
         <topic label="erraddr" href="group__sir__registers.html#a69323cba70aecacfbbcf0070b677e702"/>
         <topic label="fstat" href="group__sir__registers.html#a3561f2c3ee0e429c1dca85d580154cc9"/>
@@ -3354,6 +3372,7 @@
         <topic label="MXC_F_TRNG_DATA_DATA" href="group___t_r_n_g___d_a_t_a.html#ga2b95ab681860946f5d210d67a8742490"/>
         <topic label="MXC_F_TRNG_DATA_DATA_POS" href="group___t_r_n_g___d_a_t_a.html#gac8bfc1089ce8b740a0319db9e58730ce"/>
       </topic>
+      <topic label="trng_regs.h" href="trng__regs_8h.html"/>
       <topic label="mxc_trng_regs_t" href="group__trng__registers.html#structmxc__trng__regs__t">
         <topic label="cn" href="group__trng__registers.html#a15a466a054c956c4aff9b4d5ae90b4c2"/>
         <topic label="data" href="group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84"/>
@@ -3717,6 +3736,14 @@
         <topic label="v" href="functions_vars_v.html"/>
         <topic label="w" href="functions_vars_w.html"/>
       </topic>
+    </topic>
+  </topic>
+  <topic label="Globals" href="globals.html">
+    <topic label="All" href="globals.html">
+      <topic label="m" href="globals.html"/>
+    </topic>
+    <topic label="Macros" href="globals_defs.html">
+      <topic label="m" href="globals_defs.html"/>
     </topic>
   </topic>
 </toc>

@@ -6,6 +6,7 @@ var group__fcr__registers =
     [ "FCR_AUTOCAL1", "group___f_c_r___a_u_t_o_c_a_l1.html", "group___f_c_r___a_u_t_o_c_a_l1" ],
     [ "FCR_AUTOCAL2", "group___f_c_r___a_u_t_o_c_a_l2.html", "group___f_c_r___a_u_t_o_c_a_l2" ],
     [ "FCR_URVCTRL", "group___f_c_r___u_r_v_c_t_r_l.html", "group___f_c_r___u_r_v_c_t_r_l" ],
+    [ "fcr_regs.h", "fcr__regs_8h.html", null ],
     [ "mxc_fcr_regs_t", "group__fcr__registers.html#structmxc__fcr__regs__t", [
       [ "autocal0", "group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26", null ],
       [ "autocal1", "group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba", null ],

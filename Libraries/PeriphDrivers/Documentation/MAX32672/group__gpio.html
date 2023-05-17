@@ -160,8 +160,6 @@ Functions</h2></td></tr>
 <tr class="separator:ga3265819f3bee4f107d6f02716b4394d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae3606e5c2b0e93254e117e3c3dac4b9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#gae3606e5c2b0e93254e117e3c3dac4b9e">MXC_GPIO_Handler</a> (unsigned int port)</td></tr>
 <tr class="separator:gae3606e5c2b0e93254e117e3c3dac4b9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga53687f1fd275708a6404f9d64b6e0549"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549">MXC_GPIO_SetVSSEL</a> (<a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *port, <a class="el" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">mxc_gpio_vssel_t</a> vssel, uint32_t mask)</td></tr>
-<tr class="separator:ga53687f1fd275708a6404f9d64b6e0549"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gae3e2023e6c3b8783aaaa2f68aa4d9b2f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f">MXC_GPIO_SetWakeEn</a> (<a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *port, uint32_t mask)</td></tr>
 <tr class="separator:gae3e2023e6c3b8783aaaa2f68aa4d9b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7893e171ce9cb1008acb7c587e140e2e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga7893e171ce9cb1008acb7c587e140e2e">MXC_GPIO_ClearWakeEn</a> (<a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *port, uint32_t mask)</td></tr>
@@ -329,9 +327,9 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>mask</b></td></tr
 </td></tr>
 <tr><td class="fieldname"><a id="gga7547d2cdf42ac3ed10586c8d3d44cdcfacb557da7b4c0b0c00debd10385565719" name="gga7547d2cdf42ac3ed10586c8d3d44cdcfacb557da7b4c0b0c00debd10385565719"></a>MXC_GPIO_PAD_PULL_DOWN&#160;</td><td class="fielddoc"><p >Set pad to strong pull-down </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga7547d2cdf42ac3ed10586c8d3d44cdcfac7544f29392b5a2dc8f07abbfccd37e3" name="gga7547d2cdf42ac3ed10586c8d3d44cdcfac7544f29392b5a2dc8f07abbfccd37e3"></a>MXC_GPIO_PAD_WEAK_PULL_UP&#160;</td><td class="fielddoc"><p >Set pad to weak pull-up </p>
+<tr><td class="fieldname"><a id="gga7547d2cdf42ac3ed10586c8d3d44cdcfac7544f29392b5a2dc8f07abbfccd37e3" name="gga7547d2cdf42ac3ed10586c8d3d44cdcfac7544f29392b5a2dc8f07abbfccd37e3"></a>MXC_GPIO_PAD_WEAK_PULL_UP&#160;</td><td class="fielddoc"><p >Reserved for future use. Included here to prevent build errors. </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga7547d2cdf42ac3ed10586c8d3d44cdcfab87a23f56994d4d35ffd710fcb081f05" name="gga7547d2cdf42ac3ed10586c8d3d44cdcfab87a23f56994d4d35ffd710fcb081f05"></a>MXC_GPIO_PAD_WEAK_PULL_DOWN&#160;</td><td class="fielddoc"><p >Set pad to weak pull-down </p>
+<tr><td class="fieldname"><a id="gga7547d2cdf42ac3ed10586c8d3d44cdcfab87a23f56994d4d35ffd710fcb081f05" name="gga7547d2cdf42ac3ed10586c8d3d44cdcfab87a23f56994d4d35ffd710fcb081f05"></a>MXC_GPIO_PAD_WEAK_PULL_DOWN&#160;</td><td class="fielddoc"><p >Reserved for future use. Included here to prevent build errors. </p>
 </td></tr>
 </table>
 
@@ -983,51 +981,6 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>mask</b></td></tr
 
 </div>
 </div>
-<a id="ga53687f1fd275708a6404f9d64b6e0549" name="ga53687f1fd275708a6404f9d64b6e0549"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga53687f1fd275708a6404f9d64b6e0549">&#9670;&nbsp;</a></span>MXC_GPIO_SetVSSEL()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int MXC_GPIO_SetVSSEL </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">mxc_gpio_vssel_t</a>&#160;</td>
-          <td class="paramname"><em>vssel</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>mask</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set Voltage select for pins to VDDIO or VDDIOH. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramdir"></td><td class="paramname">port</td><td>The GPIO port </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">vssel</td><td>VDDIO or VDDIOH to set the voltatge to </td></tr>
-    <tr><td class="paramdir">[in]</td><td class="paramname">mask</td><td>Pins in the GPIO port that will be set to the voltage.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if everything is successful. See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for the list of error codes. </dd></dl>
-
-</div>
-</div>
 <a id="gae3e2023e6c3b8783aaaa2f68aa4d9b2f" name="gae3e2023e6c3b8783aaaa2f68aa4d9b2f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gae3e2023e6c3b8783aaaa2f68aa4d9b2f">&#9670;&nbsp;</a></span>MXC_GPIO_SetWakeEn()</h2>
 
@@ -1097,7 +1050,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>mask</b></td></tr
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri May 5 2023 22:55:47 for MAX32672 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed May 17 2023 20:30:18 for MAX32672 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -9,6 +9,7 @@ var group__sfe__registers =
     [ "SFE_FLASH_STA", "group___s_f_e___f_l_a_s_h___s_t_a.html", "group___s_f_e___f_l_a_s_h___s_t_a" ],
     [ "SFE_RAM_SBA", "group___s_f_e___r_a_m___s_b_a.html", "group___s_f_e___r_a_m___s_b_a" ],
     [ "SFE_RAM_STA", "group___s_f_e___r_a_m___s_t_a.html", "group___s_f_e___r_a_m___s_t_a" ],
+    [ "sfe_regs.h", "sfe__regs_8h.html", null ],
     [ "mxc_sfe_regs_t", "group__sfe__registers.html#structmxc__sfe__regs__t", [
       [ "cfg", "group__sfe__registers.html#a4453916c4f7486c75d155d8992ea4c08", null ],
       [ "flash_sba", "group__sfe__registers.html#a79dd05fb3864994581a642fc965fb847", null ],

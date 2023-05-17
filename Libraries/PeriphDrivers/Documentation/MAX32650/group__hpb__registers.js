@@ -7,6 +7,7 @@ var group__hpb__registers =
     [ "HPB_MBR", "group___h_p_b___m_b_r.html", "group___h_p_b___m_b_r" ],
     [ "HPB_MCR", "group___h_p_b___m_c_r.html", "group___h_p_b___m_c_r" ],
     [ "HPB_MTR", "group___h_p_b___m_t_r.html", "group___h_p_b___m_t_r" ],
+    [ "hpb_regs.h", "hpb__regs_8h.html", null ],
     [ "mxc_hpb_regs_t", "group__hpb__registers.html#structmxc__hpb__regs__t", [
       [ "inten", "group__hpb__registers.html#ac739c97e3dfed1c05d96249bc00d2578", null ],
       [ "intfl", "group__hpb__registers.html#a4043deaf58b8c69a3d760825df5d9074", null ],

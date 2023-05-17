@@ -8,6 +8,7 @@ var group__cameraif__registers =
     [ "CAMERAIF_INT_FL", "group___c_a_m_e_r_a_i_f___i_n_t___f_l.html", "group___c_a_m_e_r_a_i_f___i_n_t___f_l" ],
     [ "CAMERAIF_DS_TIMING_CODES", "group___c_a_m_e_r_a_i_f___d_s___t_i_m_i_n_g___c_o_d_e_s.html", "group___c_a_m_e_r_a_i_f___d_s___t_i_m_i_n_g___c_o_d_e_s" ],
     [ "CAMERAIF_FIFO_DATA", "group___c_a_m_e_r_a_i_f___f_i_f_o___d_a_t_a.html", "group___c_a_m_e_r_a_i_f___f_i_f_o___d_a_t_a" ],
+    [ "cameraif_regs.h", "cameraif__regs_8h.html", null ],
     [ "mxc_cameraif_regs_t", "group__cameraif__registers.html#structmxc__cameraif__regs__t", [
       [ "ctrl", "group__cameraif__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],
       [ "ds_timing_codes", "group__cameraif__registers.html#a1f4b3d3764d38bf4c03258ef04b7757c", null ],

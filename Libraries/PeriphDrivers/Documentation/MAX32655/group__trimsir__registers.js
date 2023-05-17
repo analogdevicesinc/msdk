@@ -6,6 +6,7 @@ var group__trimsir__registers =
     [ "TRIMSIR_IPOLO", "group___t_r_i_m_s_i_r___i_p_o_l_o.html", "group___t_r_i_m_s_i_r___i_p_o_l_o" ],
     [ "TRIMSIR_CTRL", "group___t_r_i_m_s_i_r___c_t_r_l.html", "group___t_r_i_m_s_i_r___c_t_r_l" ],
     [ "TRIMSIR_INRO", "group___t_r_i_m_s_i_r___i_n_r_o.html", "group___t_r_i_m_s_i_r___i_n_r_o" ],
+    [ "trimsir_regs.h", "trimsir__regs_8h.html", null ],
     [ "mxc_trimsir_regs_t", "group__trimsir__registers.html#structmxc__trimsir__regs__t", [
       [ "ctrl", "group__trimsir__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],
       [ "inro", "group__trimsir__registers.html#ae41f404c8794e1cb27170ed5ed44fdbe", null ],

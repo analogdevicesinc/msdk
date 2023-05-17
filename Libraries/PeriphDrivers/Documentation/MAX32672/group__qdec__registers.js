@@ -12,6 +12,7 @@ var group__qdec__registers =
     [ "QDEC_STATUS", "group___q_d_e_c___s_t_a_t_u_s.html", "group___q_d_e_c___s_t_a_t_u_s" ],
     [ "QDEC_POSITION", "group___q_d_e_c___p_o_s_i_t_i_o_n.html", "group___q_d_e_c___p_o_s_i_t_i_o_n" ],
     [ "QDEC_CAPDLY", "group___q_d_e_c___c_a_p_d_l_y.html", "group___q_d_e_c___c_a_p_d_l_y" ],
+    [ "qdec_regs.h", "qdec__regs_8h.html", null ],
     [ "mxc_qdec_regs_t", "group__qdec__registers.html#structmxc__qdec__regs__t", [
       [ "capdly", "group__qdec__registers.html#a349787b7968aef636b8666ef7a03ce9a", null ],
       [ "capture", "group__qdec__registers.html#a35622bab3302e81c175dfe7e96ca15b3", null ],

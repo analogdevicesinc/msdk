@@ -7,6 +7,7 @@ var group__rtc__registers =
     [ "RTC_SSECA", "group___r_t_c___s_s_e_c_a.html", "group___r_t_c___s_s_e_c_a" ],
     [ "RTC_CTRL", "group___r_t_c___c_t_r_l.html", "group___r_t_c___c_t_r_l" ],
     [ "RTC_OSCCTRL", "group___r_t_c___o_s_c_c_t_r_l.html", "group___r_t_c___o_s_c_c_t_r_l" ],
+    [ "rtc_regs.h", "rtc__regs_8h.html", null ],
     [ "mxc_rtc_regs_t", "group__rtc__registers.html#structmxc__rtc__regs__t", [
       [ "ctrl", "group__rtc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],
       [ "oscctrl", "group__rtc__registers.html#a88982a5a39dfc897f8e4d4c0803e01b4", null ],

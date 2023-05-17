@@ -21,6 +21,7 @@ var group__gcr__registers =
     [ "GCR_ECCADDR", "group___g_c_r___e_c_c_a_d_d_r.html", "group___g_c_r___e_c_c_a_d_d_r" ],
     [ "GCR_BTLELDOCTRL", "group___g_c_r___b_t_l_e_l_d_o_c_t_r_l.html", "group___g_c_r___b_t_l_e_l_d_o_c_t_r_l" ],
     [ "GCR_BTLELDODLY", "group___g_c_r___b_t_l_e_l_d_o_d_l_y.html", "group___g_c_r___b_t_l_e_l_d_o_d_l_y" ],
+    [ "gcr_regs.h", "gcr__regs_8h.html", null ],
     [ "mxc_gcr_regs_t", "group__gcr__registers.html#structmxc__gcr__regs__t", [
       [ "btleldoctrl", "group__gcr__registers.html#a3e06b324623434ebdf034c623f969be1", null ],
       [ "btleldodly", "group__gcr__registers.html#ad8d1a11cea7528e1fff8b27ac268c31b", null ],

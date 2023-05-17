@@ -33,6 +33,7 @@ var group__ctb__registers =
     [ "CTB_SCA_RES_ADDR", "group___c_t_b___s_c_a___r_e_s___a_d_d_r.html", "group___c_t_b___s_c_a___r_e_s___a_d_d_r" ],
     [ "CTB_SCA_OP_BUFF_ADDR", "group___c_t_b___s_c_a___o_p___b_u_f_f___a_d_d_r.html", "group___c_t_b___s_c_a___o_p___b_u_f_f___a_d_d_r" ],
     [ "CTB_SCA_MODDATA", "group___c_t_b___s_c_a___m_o_d_d_a_t_a.html", "group___c_t_b___s_c_a___m_o_d_d_a_t_a" ],
+    [ "ctb_regs.h", "ctb__regs_8h.html", null ],
     [ "mxc_ctb_regs_t", "group__ctb__registers.html#structmxc__ctb__regs__t", [
       [ "aad_length", "group__ctb__registers.html#ad8e1e6bef68139a50614df6c82c9be04", null ],
       [ "cipher_ctrl", "group__ctb__registers.html#ac2afd62d12a270c7db8a7090f7f783ac", null ],

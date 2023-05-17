@@ -41,6 +41,7 @@ var group__can__registers =
     [ "CAN_EINTFL", "group___c_a_n___e_i_n_t_f_l.html", "group___c_a_n___e_i_n_t_f_l" ],
     [ "CAN_EINTEN", "group___c_a_n___e_i_n_t_e_n.html", "group___c_a_n___e_i_n_t_e_n" ],
     [ "CAN_RXTO", "group___c_a_n___r_x_t_o.html", "group___c_a_n___r_x_t_o" ],
+    [ "can_regs.h", "can__regs_8h.html", null ],
     [ "mxc_can_regs_t", "group__can__registers.html#structmxc__can__regs__t", [
       [ "acr16", "group__can__registers.html#acc648ac234aeb614df7d69b76eab05b4", null ],
       [ "acr32", "group__can__registers.html#aed146097c73c4c9379ea3b3d5e03ef15", null ],

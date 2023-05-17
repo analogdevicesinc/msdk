@@ -6,6 +6,7 @@ var group__pwrseq__registers =
     [ "PWRSEQ_LPWKEN0", "group___p_w_r_s_e_q___l_p_w_k_e_n0.html", "group___p_w_r_s_e_q___l_p_w_k_e_n0" ],
     [ "PWRSEQ_LPPWST", "group___p_w_r_s_e_q___l_p_p_w_s_t.html", "group___p_w_r_s_e_q___l_p_p_w_s_t" ],
     [ "PWRSEQ_LPPWEN", "group___p_w_r_s_e_q___l_p_p_w_e_n.html", "group___p_w_r_s_e_q___l_p_p_w_e_n" ],
+    [ "pwrseq_regs.h", "pwrseq__regs_8h.html", null ],
     [ "mxc_pwrseq_regs_t", "group__pwrseq__registers.html#structmxc__pwrseq__regs__t", [
       [ "gp0", "group__pwrseq__registers.html#a5f63f9fd8fbf27b12bb557d118c99826", null ],
       [ "gp1", "group__pwrseq__registers.html#aaa427340367c41c7ebfe1256fa3acdd8", null ],

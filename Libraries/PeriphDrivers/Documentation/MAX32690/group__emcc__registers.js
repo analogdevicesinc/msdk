@@ -5,6 +5,7 @@ var group__emcc__registers =
     [ "EMCC_SZ", "group___e_m_c_c___s_z.html", "group___e_m_c_c___s_z" ],
     [ "EMCC_CTRL", "group___e_m_c_c___c_t_r_l.html", "group___e_m_c_c___c_t_r_l" ],
     [ "EMCC_INVALIDATE", "group___e_m_c_c___i_n_v_a_l_i_d_a_t_e.html", "group___e_m_c_c___i_n_v_a_l_i_d_a_t_e" ],
+    [ "emcc_regs.h", "emcc__regs_8h.html", null ],
     [ "mxc_emcc_regs_t", "group__emcc__registers.html#structmxc__emcc__regs__t", [
       [ "ctrl", "group__emcc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3", null ],
       [ "info", "group__emcc__registers.html#a4d6b29337a6769bf23915e8600d5adb8", null ],

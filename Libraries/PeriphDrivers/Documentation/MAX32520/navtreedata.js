@@ -34,25 +34,29 @@ var NAVTREE =
         [ "All", "functions.html", "functions_dup" ],
         [ "Variables", "functions_vars.html", "functions_vars" ]
       ] ]
+    ] ],
+    [ "Globals", "globals.html", [
+      [ "All", "globals.html", "globals_dup" ],
+      [ "Macros", "globals_defs.html", "globals_defs" ]
     ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"annotated.html",
-"group___c_t_b___register___offsets.html#ga72e5b7aeb4eccc0d7ff1d7df08cc027a",
-"group___d_m_a___s_t.html#gabec7a3b5aa15482766edc29249552e5a",
-"group___g_c_r___p_c_l_k_d_i_v.html#gad2aeef12eceab06bf80fafd62574a451",
-"group___g_p_i_o___register___offsets.html#ga1cabc6e94d9c034f093e99e2b52e4ad8",
-"group___i2_c___t_x_c_f_g.html#gaf7112b754f0439a35f223ef46f32a055",
-"group___s_m_o_n___e_x_t_s_c_n.html#gaf47d9366e7528b13b02fafc7dff45d85",
-"group___s_p_i___register___offsets.html#ga4d4f56b1d44e3f0c41a6380c06151c53",
-"group___w_d_t___c_t_r_l.html#ga0058bded6b8dab1053cf204f66d80e20",
-"group__dma.html#acb6885039c6762ab023729939db525f5",
-"group__i2c.html#a62d96b3e83f506af2c4c5c1ddfd3c785",
-"group__pwrseq__registers.html#af888e712772d38e0435de7296365e579",
-"group__uart.html#ga707af12ae69509a55967aa9e002664a5"
+"aeskeys__regs_8h.html",
+"group___c_t_b___register___offsets.html#ga2c8a0ed8f5528c7ae4a8ce7ca2fa5066",
+"group___d_m_a___s_r_c.html#ga2b3792fe8d08d848fccb448972fc0604",
+"group___g_c_r___p_c_l_k_d_i_v.html#ga934d72f9e7426353b59703b2e2df2c28",
+"group___g_p_i_o___p_d_p_u___s_e_l1.html#ga39f8c25d988805723f3905ee3e6ff3e5",
+"group___i2_c___t_x.html#ga6f2b66f5f4f8a7b267af08975a098a8a",
+"group___s_m_o_n___e_x_t_s_c_n.html#gab16cab658110dfa0f408634350912523",
+"group___s_p_i___m_s_t_r___c_n_t_l.html#gacb7513ff0007dec1ca9154a2a24e4f65",
+"group___u_a_r_t___s_t_a_t.html#ga78b9732d0636fc930dbcf71a154007d9",
+"group__dma.html#a30df446d01f80e4211b2fcef8f754436",
+"group__gpio__registers.html#ac62ea7024ef7188e6d2a325df28a4244",
+"group__pwrseq.html#gae243ac487366fe75cd9ac6028031e615",
+"group__uart.html#ga48d266430dbc2da08edffcbc7419464a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

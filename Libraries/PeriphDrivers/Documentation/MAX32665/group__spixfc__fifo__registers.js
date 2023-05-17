@@ -1,6 +1,7 @@
 var group__spixfc__fifo__registers =
 [
     [ "Register Offsets", "group___s_p_i_x_f_c___f_i_f_o___register___offsets.html", "group___s_p_i_x_f_c___f_i_f_o___register___offsets" ],
+    [ "spixfc_fifo_regs.h", "spixfc__fifo__regs_8h.html", null ],
     [ "mxc_spixfc_fifo_regs_t", "group__spixfc__fifo__registers.html#structmxc__spixfc__fifo__regs__t", [
       [ "rx_16", "group__spixfc__fifo__registers.html#a1460c966d69174cbed64ed36f87a8f7b", null ],
       [ "rx_32", "group__spixfc__fifo__registers.html#a466dd110e3a361b8c2e51ab16ebb1dfb", null ],

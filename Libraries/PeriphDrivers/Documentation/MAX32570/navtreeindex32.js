@@ -1,5 +1,7 @@
 var NAVTREEINDEX32 =
 {
+"group__usbhs__registers.html#ad9d614f02e163636302e800ba18e791a":[0,44,48,75],
+"group__usbhs__registers.html#adc0a0364ff9df767e4c4866d5e0dafee":[0,44,48,1],
 "group__usbhs__registers.html#adc581b962b8bcf30cfbf5ffb703b3d14":[0,44,48,66],
 "group__usbhs__registers.html#add225589b4499d9271d3a25bf0feb716":[0,44,48,11],
 "group__usbhs__registers.html#ae0d5f1bc617b2e5888202e3afaee4902":[0,44,48,71],
