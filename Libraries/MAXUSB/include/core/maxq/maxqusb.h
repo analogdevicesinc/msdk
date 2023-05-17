@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,22 +29,21 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
 
-#ifndef _MAXQUSB_H_
-#define _MAXQUSB_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_MAXQUSB_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_MAXQUSB_H_
 #include <stdint.h>
 
-#if (__TARGET_PROCESSOR==MAXQ1010) || (__TARGET_PROCESSOR==MAXQ1050)
-#define MXC_USB_NUM_EP      	(6)
+#if (__TARGET_PROCESSOR == MAXQ1010) || (__TARGET_PROCESSOR == MAXQ1050)
+#define MXC_USB_NUM_EP          (6)
 #else
-#define MXC_USB_NUM_EP      	(4)
+#define MXC_USB_NUM_EP          (4)
 #endif
 
-#define MXC_USB_INSTANCES   	(1)
-#define MXC_USB_MAX_PACKET  	(64)
-#define MXC_USB_MAXQ_EP_SIZE	(64)
+#define MXC_USB_INSTANCES       (1)
+#define MXC_USB_MAX_PACKET      (64)
+#define MXC_USB_MAXQ_EP_SIZE    (64)
 
-#endif /* _MAXQUSB_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_MAXQUSB_H_
 
