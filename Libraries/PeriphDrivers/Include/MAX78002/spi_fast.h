@@ -219,8 +219,7 @@ struct _mxc_spi_reva2_req_t {
     uint16_t tx_dummy_value;    // Value of dummy bytes to be sent
 
     // Chip Select Options
-    mxc_gpio_cfg_t cs_pins;       // Contains index, pins, and polarity mode
-    uint8_t active_polarity;
+    mxc_spi_target_t *target_pins;       // Contains index, pins, and polarity mode
 
     union {
         uint32_t index;
@@ -234,33 +233,6 @@ struct _mxc_spi_reva2_req_t {
     };
     void                 *callback_data;
 };
-
-// struct _mxc_spi_reva2_req_t {
-//     mxc_spi_regs_t *spi;    ///< Pointer to SPI registers
-//     int ssDeassert;         ///< 1 - Deassert SS at end of transaction, 0 - leave SS asserted
-//     uint8_t *tx_buffer;     ///< Buffer containing transmit data. For character sizes
-//                             ///< < 8 bits, pad the MSB of each byte with zeros. For
-//                             ///< character sizes > 8 bits, use two bytes per character
-//                             ///< and pad the MSB of the upper byte with zeros
-//     uint8_t *rx_buffer;     ///< Buffer to store received data For character sizes
-//                             ///< < 8 bits, pad the MSB of each byte with zeros. For
-//                             ///< character sizes > 8 bits, use two bytes per character
-//                             ///< and pad the MSB of the upper byte with zeros
-//     uint32_t tx_len;        ///< Number of bytes to be sent from txData
-//     uint32_t rx_len;        ///< Number of bytes to be stored in rxData
-//     uint32_t tx_cnt;        ///< Number of bytes actually transmitted from txData
-//     uint32_t rx_cnt;        ///< Number of bytes stored in rxData
-//     uint16_t             tx_dummy_value;  // Value of dummy bytes to be sent
-
-//     // Chip Select Options
-//     mxc_gpio_cfg_t     *cs_pins;       // Contains index, pins, and polarity mode
-//     uint8_t active_polarity;
-//     uint32_t index;                     
-
-//     // Callback
-//     mxc_spi_callback_t   callback;
-//     void                 *callback_data;
-// };
 
 /* ************************************************************************* */
 /* Control/Configuration functions                                           */
