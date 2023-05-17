@@ -248,44 +248,246 @@ struct _mxc_spi_reva2_req_t {
  *
  * These parameters can be modified after initialization using low level functions
  *
- * @param   Init             Pointer to SPI registers (selects the SPI block used.)         
+ * @param   Init    Pointer to SPI registers (selects the SPI block used.)         
  *
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
 // int MXC_SPI_Init_New(mxc_spi_init_t *init);
+
+/**
+ * @brief   Initialize and enable SPI peripheral.
+ *
+ * This function initializes everything necessary to call a SPI transaction function.
+ * Some parameters are set to defaults as follows:
+ * SPI Mode - 0
+ * SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)
+ *
+ * These parameters can be modified after initialization using low level functions
+ *
+ * @param   spi             Pointer to SPI instance's registers.
+ * @param   masterMode      Whether to put the device in master or slave mode. Use
+ *                          non-zero for master mode, and zero for slave mode.
+ * @param   quadModeUsed    Whether to obtain control of the SDIO2/3 pins. Use
+ *                          non-zero if the pins are needed (if Quad Mode will
+ *                          be used), and zero if they are not needed (quad mode
+ *                          will never be used).
+ * @param   numSlaves       The number of slaves used, if in master mode. This
+ *                          is used to obtain control of the necessary SS pins.
+ *                          In slave mode this is ignored and SS1 is used.
+ * @param   ssPolarity      This field sets the SS active polarity for each
+ *                          slave, each bit position corresponds to each SS line.
+ * @param   hz              The requested clock frequency. The actual clock frequency
+ *                          will be returned by the function if successful. Used in
+ *                          master mode only.
+ * @param   pins            SPI pin structure. Pins selected as true will be initialized 
+ *                          for the requested SPI block.            
+ *
+ * @return  If successful, the actual clock frequency is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
                  unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins);
 
+/**
+ * @brief   Disable and shutdown the SPI instance.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   Retreive the DMA TX Channel associated with SPI instance.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  If successful, the DMA TX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_DMA_GetTXChannel(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   Retreive the DMA RX Channel associated with SPI instance.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  If successful, the DMA RX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   Set the frequency of the SPI interface.
+ *
+ * This function is applicable in Master mode only
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   freq        The desired frequency in Hertz.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, uint32_t freq);
 
+/**
+ * @brief   Get the frequency of the SPI interface.
+ *
+ * This function is applicable in Master mode only
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  If successful, the SPI instance's set frequency value is returned. 
+ *          Otherwise, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_GetFrequency(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   Sets the number of bits per character
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   data_size   The number of bits per character.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_SetDataSize(mxc_spi_regs_t *spi, int data_size);
 
+/**
+ * @brief   Gets the number of bits per character
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  If successful, the SPI instance's set data size is returned. 
+ *          Otherwise, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_GetDataSize(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   Sets the SPI data line width used for transmissions.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   width       SPI width (3-Wire, Standard, Dual SPI, Quad SPI).
+ *                      See \ref mxc_spi_datawidth_t
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_datawidth_t width);
 
+/**
+ * @brief   Gets the SPI data line width used for transmissions.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  The selected SPI instance's data line width. See \ref mxc_spi_datawidth_t.
+ */
 mxc_spi_datawidth_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   Sets the SPI clock mode (clock polarity and clock phase).
+ * 
+ * @param spi           Pointer to SPI instance's registers.
+ * @param clk_mode      SPI clock mode. See \ref mxc_spi_clkmode_t.
+ *  
+ * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes. 
+ */
 int MXC_SPI_SetClkMode(mxc_spi_regs_t *spi, mxc_spi_clkmode_t clk_mode);
 
+/**
+ * @brief   Gets the SPI clock mode (clock polarity and clock phase).
+ * 
+ * @param spi           Pointer to SPI instance's registers.
+ * @param clk_mode      SPI clock mode. See \ref mxc_spi_clkmode_t
+ *  
+ * @return The selected SPI instance's clock mode. See \ref mxc_spi_clkwidth_t.
+ */
 mxc_spi_clkmode_t MXC_SPI_GetClkMode(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   Sets the SPI instance's DMA TX/RX request select.
+ * 
+ * @param   req         Pointer to details of the transaction.
+ *  
+ * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_DMA_SetRequestSelect(mxc_spi_req_t *req);
 
+/**
+ * @brief   Sets the SPI instance's callback function.
+ * 
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   callback    Pointer to callback function called when transaction is complete.
+ * @param   data        Pointer for data to pass through callback funciton.
+ *  
+ * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_SetRegisterCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data);
 
+/**
+ * @brief   Checks the SPI instance for an ongoing transmission
+ *
+ * This function is applicable in Controller mode only.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  Active/Inactive, see \ref MXC_Error_Codes for a list of return codes.
+ */
 int MXC_SPI_GetActive(mxc_spi_regs_t *spi);
 
 /* ** Transaction Functions ** */
+
+/**
+ * @brief   Performs a blocking SPI transaction.
+ *
+ * Performs a blocking SPI transaction.
+ * These actions will be performed in Master Mode:
+ * 1. Assert the specified SS
+ * 2. In Full Duplex Modes, send TX data while receiving RX Data
+ *      if rxLen > txLen, pad txData with DefaultTXData
+ *      if txLen > rxLen, discard rxData where rxCnt > rxLen
+ * 3. In Half Duplex Modes, send TX Data, then receive RX Data
+ * 4. Deassert the specified SS
+ *
+ * These actions will be performed in Slave Mode:
+ * 1. Fill FIFO with txData
+ * 2. Wait for SS Assert
+ * 3. If needed, pad txData with DefaultTXData
+ * 4. Unload RX FIFO as needed
+ * 5. On SS Deassert, return
+ *
+ * @param   req         Pointer to details of the transaction
+ *
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
+ */
+int MXC_SPI_MasterTransaction(mxc_spi_req_t *req);
+
+/**
+ * @brief   Setup an interrupt-driven SPI transaction
+ *
+ * The TX FIFO will be filled with txData, padded with DefaultTXData if necessary
+ * Relevant interrupts will be enabled, and relevant registers set (SS, Width, etc)
+ *
+ * @param   req         Pointer to details of the transaction
+ *
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
+ */
+int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req);
+
+/**
+ * @brief   Setup a DMA driven SPI transaction
+ *
+ * The TX FIFO will be filled with txData, padded with DefaultTXData if necessary
+ * Relevant interrupts will be enabled, and relevant registers set (SS, Width, etc)
+ *
+ * The lowest-indexed unused DMA channel will be acquired (using the DMA API) and
+ * set up to load/unload the FIFOs with as few interrupt-based events as
+ * possible. The channel will be reset and returned to the system at the end of
+ * the transaction.
+ *
+ * @param   req             Pointer to details of the transaction
+ *
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
+ */
+int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req);
 
 int MXC_SPI_MTransaction(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg);
 
