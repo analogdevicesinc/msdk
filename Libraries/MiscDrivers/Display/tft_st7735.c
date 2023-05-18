@@ -77,6 +77,7 @@ static tft_rotation_t tft_rotation = ROTATE_0;
 static unsigned int g_foreground_color;
 static unsigned int g_background_color;
 static unsigned char *g_font;
+static area_t pf_area;
 
 /********************************* Static Functions **************************/
 static void write_command(unsigned char command)
@@ -248,6 +249,56 @@ void tft_character(int x, int y, int c)
     }
 
     WindowMax();
+
+    if ((w + 2) < hor) { // x offset to next char
+        char_x += w + 2;
+    } else {
+        char_x += hor;
+    }
+}
+
+// Does not position cursor
+void tft_printf_character(int x, int y, int c)
+{
+    unsigned int hor, vert, offset, bpl, j, i, b;
+    unsigned char *sym;
+    unsigned char z, w;
+
+    if ((c < 31) || (c > 127)) {
+        return; // test char range
+    }
+
+    // Just clip end off if at end of print area
+    if ((char_x + g_font[1]) > pf_area.w) {
+        return;
+    }
+
+    // read font parameter from start of array
+    offset = g_font[0]; // bytes / char
+    hor = g_font[1]; // get hor size of font
+    vert = g_font[2]; // get vert size of font
+    bpl = g_font[3]; // bytes per line
+
+    window(char_x, char_y, hor, vert); // char box
+    write_command(0x2C); // send pixel
+
+    sym = &g_font[((c - 32) * offset) + 4]; // start of char bitmap
+    w = sym[0]; // width of actual char
+    for (j = 0; j < vert; j++) { //  vertical line
+        for (i = 0; i < hor; i++) { //  horizontal line
+            z = sym[bpl * i + ((j & 0xF8) >> 3) + 1];
+            b = 1 << (j & 0x07);
+            if ((z & b) == 0x00) {
+                write_data(g_background_color >> 8);
+                write_data(g_background_color & 0xff);
+            } else {
+                write_data(g_foreground_color >> 8);
+                write_data(g_foreground_color & 0xff);
+            }
+        }
+    }
+
+    window(pf_area.x, pf_area.y, pf_area.w, pf_area.h);
 
     if ((w + 2) < hor) { // x offset to next char
         char_x += w + 2;
@@ -637,7 +688,8 @@ void MXC_TFT_Rectangle(int x0, int y0, int x1, int y1, int color)
  ***************************************************************/
 void MXC_TFT_ResetCursor(void)
 {
-    return;
+    char_x = pf_area.x;
+    char_y = pf_area.y;
 }
 
 void MXC_TFT_SetFont(int font_id)
@@ -648,12 +700,41 @@ void MXC_TFT_SetFont(int font_id)
 
 void MXC_TFT_Printf(const char *format, ...)
 {
-    return;
+    char str[100];
+    char value;
+    int i;
+
+    snprintf(str, sizeof(str), format, *((&format) + 1), *((&format) + 2), *((&format) + 3));
+
+    for (i = 0; i < sizeof(str); i++) {
+        value = str[i];
+
+        // Null-terminated string
+        if (value == 0) {
+            break;
+        }
+
+        if (value == '\n') { // new line
+            char_x = pf_area.x;
+            char_y = char_y + g_font[2];
+            if (char_y >= pf_area.h - g_font[2]) {
+                char_y = pf_area.y;
+            }
+
+        } else {
+            tft_printf_character(char_x, char_y, value);
+        }
+    }
 }
 
 void MXC_TFT_ConfigPrintf(area_t *area)
 {
-    return;
+    pf_area.x = area->x;
+    pf_area.y = area->y;
+    pf_area.w = area->w;
+    pf_area.h = area->h;
+
+    locate(area->x, area->y);
 }
 
 void MXC_TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area)

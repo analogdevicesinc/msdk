@@ -144,6 +144,7 @@ typedef enum {
 } mxc_sys_system_clock_t;
 
 #define MXC_SYS_USN_CHECKSUM_LEN 16
+#define MXC_SYS_USN_LEN 13
 
 /***** Function Prototypes *****/
 

@@ -213,7 +213,7 @@ typedef enum {
 #define MXC_SYS_CTB_CLK 1 // Enable CTB CLK
 
 #define MXC_SYS_USN_CHECKSUM_LEN 16
-#define MXC_SYS_USN_LEN 16
+#define MXC_SYS_USN_LEN 13
 
 /***** Function Prototypes *****/
 
