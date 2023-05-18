@@ -28,8 +28,9 @@ Bootloader
 Bootloader_Host
 Coremark
 CRC
-Display
+Demo
 DES
+Display
 DMA
 ECC
 EEPROM_Emulator

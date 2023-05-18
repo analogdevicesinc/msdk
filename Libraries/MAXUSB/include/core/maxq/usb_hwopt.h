@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,11 +29,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
 
-#ifndef _USBIO_HWOPT_H_
-#define _USBIO_HWOPT_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USB_HWOPT_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USB_HWOPT_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -54,4 +53,4 @@ typedef void maxusb_cfg_options_t;
 }
 #endif
 
-#endif /* _USBIO_HWOPT_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USB_HWOPT_H_

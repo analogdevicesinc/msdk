@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -84,12 +84,12 @@ int hidkbd_init(const MXC_USB_interface_descriptor_t *if_desc, const hid_descrip
 
   /* Pull any existing class-specific callback, in case of multi-class devices */
   enum_query_getdescriptor(&chained_getdesc_func);
-  
+
   /* This callback handles class-specific GET_DESCRIPTOR requests */
   enum_register_getdescriptor(getdescriptor);
 
   /* Pull any existing class-specific callback, in case of multi-class devices */
-  enum_query_callback(ENUM_CLASS_REQ, &chained_func, &chained_cbdata); 
+  enum_query_callback(ENUM_CLASS_REQ, &chained_func, &chained_cbdata);
 
   /* Handle class-specific SETUP requests */
   enum_register_callback(ENUM_CLASS_REQ, class_req, NULL);
@@ -307,11 +307,11 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         ep0req.callback = NULL;
         ep0req.cbdata = NULL;
         result = MXC_USB_WriteEndpoint(&ep0req);
-      	
+
         if (!result) {
           /* Success, with data stage */
-	        result = 1;
-	      }
+            result = 1;
+          }
         break;
 
       case HID_GET_IDLE:
@@ -323,11 +323,11 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
           ep0req.callback = NULL;
           ep0req.cbdata = NULL;
           result = MXC_USB_WriteEndpoint(&ep0req);
-	        if (!result) {
+            if (!result) {
             /* Success, with data stage */
-	          result = 1;
-	        }
-        }       
+              result = 1;
+            }
+        }
         break;
       case HID_GET_PROTOCOL:
         /* Stall */
@@ -360,7 +360,7 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
     /* Not for this class, send to chained classes (if any) */
     if (chained_func != NULL) {
       result = chained_func(sud, chained_cbdata);
-    } 
+    }
   }
   return result;
 }
@@ -378,14 +378,13 @@ static void getdescriptor(MXC_USB_SetupPkt *sud, const uint8_t **desc, uint16_t 
 #else
   static hid_descriptor_t hid_descriptor;
 #endif
-  
+
   if (sud->wIndex != if_num) {
     /* Pass this to the chained class that came before us (if any) */
     if (chained_getdesc_func != NULL) {
       chained_getdesc_func(sud, desc, desclen);
     }
-  } 
-  else {
+  } else {
     /* Belongs to our interface, so attempt to process it */
     *desc = NULL;
     *desclen = 0;
