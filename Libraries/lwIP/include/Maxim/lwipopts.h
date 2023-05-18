@@ -37,11 +37,11 @@
 #define NO_SYS                             1
 #endif // NO_SYS
 
-#define LWIP_SOCKET                        (NO_SYS==0)
-#define LWIP_NETCONN                       (NO_SYS==0)
-#define LWIP_NETIF_API                     (NO_SYS==0)
-#define SYS_LIGHTWEIGHT_PROT               (NO_SYS==0)
-#define LWIP_SO_RCVTIMEO                   (NO_SYS==0)
+#define LWIP_SOCKET                        (NO_SYS == 0)
+#define LWIP_NETCONN                       (NO_SYS == 0)
+#define LWIP_NETIF_API                     (NO_SYS == 0)
+#define SYS_LIGHTWEIGHT_PROT               (NO_SYS == 0)
+#define LWIP_SO_RCVTIMEO                   (NO_SYS == 0)
 
 /**
  * DEFAULT_THREAD_STACKSIZE: The stack size used by any other lwIP thread.
