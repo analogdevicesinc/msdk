@@ -315,14 +315,12 @@ bool MXC_CSI2_DMA_Frame_Complete(void)
 mxc_csi2_capture_stats_t MXC_CSI2_GetCaptureStats()
 {
     mxc_csi2_reva_capture_stats_t stats = MXC_CSI2_RevA_DMA_GetCaptureStats();
-    mxc_csi2_capture_stats_t ret = {
-        .success = stats.success,
-        .ctrl_err = stats.ctrl_err,
-        .ppi_err = stats.ppi_err,
-        .vfifo_err = stats.vfifo_err,
-        .frame_size = stats.frame_size,
-        .bytes_captured = stats.bytes_captured
-    };
+    mxc_csi2_capture_stats_t ret = { .success = stats.success,
+                                     .ctrl_err = stats.ctrl_err,
+                                     .ppi_err = stats.ppi_err,
+                                     .vfifo_err = stats.vfifo_err,
+                                     .frame_size = stats.frame_size,
+                                     .bytes_captured = stats.bytes_captured };
     return ret;
 }
 

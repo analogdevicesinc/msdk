@@ -90,7 +90,8 @@ int main(void)
         printf("Failed to read expected SRAM ID!\n");
         return err;
     }
-    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", id.MFID, id.KGD, id.density, id.EID);
+    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", id.MFID,
+           id.KGD, id.density, id.EID);
 
     // Time the measurement overhead of our measurement functions
     MXC_TMR_SW_Start(MXC_TMR0);
@@ -123,7 +124,8 @@ int main(void)
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i,
+                   tx_buffer[i], rx_buffer[i]);
         }
     }
     printf("\tDone\n");
@@ -137,11 +139,11 @@ int main(void)
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i,
+                   tx_buffer[i], rx_buffer[i]);
         }
     }
     printf("\tDone\n");
-
 
     // Invert test pattern - this ensures every bit has to be updated in the next write
     memset(tx_buffer, ~(TEST_VALUE), TEST_SIZE);
@@ -165,7 +167,8 @@ int main(void)
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i,
+                   tx_buffer[i], rx_buffer[i]);
         }
     }
     printf("\tDone\n");
@@ -182,7 +185,8 @@ int main(void)
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i,
+                   tx_buffer[i], rx_buffer[i]);
         }
     }
     printf("\tDone\n");
@@ -244,10 +248,11 @@ int main(void)
     }
 
     if (fail_count > 0) {
-        printf("\nFailed with %i mismatches (%.2f%%)!\n", fail_count, 100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT)));
+        printf("\nFailed with %i mismatches (%.2f%%)!\n", fail_count,
+               100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT)));
         return E_FAIL;
     }
-    
+
     printf("Success!\n");
     return err;
 }
