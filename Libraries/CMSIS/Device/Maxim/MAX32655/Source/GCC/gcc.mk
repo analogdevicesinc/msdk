@@ -280,7 +280,7 @@ endif
 
 ################################################################################
 # The rule for building the object file from each C source file.
-${BUILD_DIR}/%.o: %.c
+${BUILD_DIR}/%.o: %.c $(PROJECTMK)
 	@if [ 'x${ECLIPSE}' != x ]; 																			\
 	then 																									\
 		echo ${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g' ; \
@@ -296,7 +296,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule to build an object file from a C++ source file
-${BUILD_DIR}/%.o: %.cpp
+${BUILD_DIR}/%.o: %.cpp $(PROJECTMK)
 	@if [ 'x${ECLIPSE}' != x ]; 																			\
 	then 																									\
 		echo ${CXX} ${CXXFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g' ; \
@@ -312,7 +312,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for building the object file from each assembly source file.
-${BUILD_DIR}/%.o: %.S
+${BUILD_DIR}/%.o: %.S $(PROJECTMK)
 	@if [ 'x${VERBOSE}' = x ];                                                   \
 	 then                                                                        \
 	     echo "  AS    ${<}";                                                    \
@@ -325,7 +325,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for creating an object library.
-${BUILD_DIR}/%.a:
+${BUILD_DIR}/%.a: $(PROJECTMK)
 	@echo -cr $(call fixpath,${@}) $(call fixpath,${^})                          \
 	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
 	@if [ 'x${VERBOSE}' = x ];                                                   \
@@ -341,7 +341,7 @@ ${BUILD_DIR}/%.a:
 # _binary_<file_name>_bin_start
 # _binary_<file_name>_bin_end
 # _binary_<file_name>_bin_size
-${BUILD_DIR}/%.o: %.bin
+${BUILD_DIR}/%.o: %.bin $(PROJECTMK)
 	@if [ 'x${VERBOSE}' = x ];                                                  \
 	then                                                                        \
 	    echo "  CP    ${<}";                                                    \
@@ -359,7 +359,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for linking the application.
-${BUILD_DIR}/%.elf:
+${BUILD_DIR}/%.elf: $(PROJECTMK)
 	@echo -T $(call fixpath,${LINKERFILE})                                 \
 	      --entry ${ENTRY}                                                       \
 	      $(call fixpath,${LDFLAGS})                                             \

@@ -102,9 +102,10 @@ endif
 # this as early as possible in the Makefile so that it can append to or override
 # the variables below.
 
-
-include ./project.mk
+PROJECTMK ?= $(abspath ./project.mk)
+include $(PROJECTMK)
 $(info Loaded project.mk)
+export PROJECTMK
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
