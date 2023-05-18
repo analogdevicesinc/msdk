@@ -63,7 +63,8 @@ volatile uint32_t cnn_time; // Stopwatch
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
-    while (1) {}
+    while (1)
+        ;
 }
 
 // MODIFICATION: Implement load_input for OV5640 CSI2 camera
@@ -121,7 +122,8 @@ int main(void)
         // MODIFICATION: Display captured image on TFT
         camera_display_last_image();
 
-        while (cnn_time == 0) MXC_LP_EnterSleepMode(); // Wait for CNN
+        while (cnn_time == 0)
+            MXC_LP_EnterSleepMode(); // Wait for CNN
 
         // Switch CNN clock to PLL (200 MHz) div 4
 
@@ -130,8 +132,7 @@ int main(void)
             MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV4 | MXC_S_GCR_PCLKDIV_CNNCLKSEL_IPLL;
 
 #ifdef CNN_INFERENCE_TIMER
-        printf("Inference complete!  Approximate data loading and inference time: %u us\n",
-               cnn_time);
+        printf("Inference complete!  Approximate data loading and inference time: %u us\n", cnn_time);
 #endif
 
         // MODIFICATION: Run Non-Maximal Suppression (NMS) to filter and display results

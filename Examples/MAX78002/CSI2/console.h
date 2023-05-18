@@ -43,15 +43,7 @@
 #define SERIAL_BUFFER_SIZE 256
 #define CON_BAUD 921600 // UART baudrate used for sending data to PC
 
-typedef enum {
-    CMD_NOT_READY = -2,
-    CMD_UNKNOWN = -1,
-    CMD_HELP = 0,
-    CMD_RESET,
-    CMD_CAPTURE,
-    CMD_SETREG,
-    CMD_GETREG
-} cmd_t;
+typedef enum { CMD_NOT_READY = -2, CMD_UNKNOWN = -1, CMD_HELP = 0, CMD_RESET, CMD_CAPTURE, CMD_SETREG, CMD_GETREG } cmd_t;
 
 extern char *cmd_table[];
 extern char *help_table[];

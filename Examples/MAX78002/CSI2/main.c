@@ -113,7 +113,7 @@ unsigned int g_sram_address = SRAM_STORAGE_ADDRESS;
 
 /***** Functions *****/
 
-int line_handler(uint8_t *data, unsigned int len)
+int line_handler(uint8_t* data, unsigned int len)
 {
     /*
     This is the only function that needs to be implemented by the application code.
@@ -135,10 +135,8 @@ void process_img(void)
     mxc_csi2_capture_stats_t stats = mipi_camera_get_capture_stats();
     unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
 
-    if (error) {
-        printf(
-            "Failed (%u/%u bytes received)!\nCTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n",
-            stats.bytes_captured, stats.frame_size, stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
+    if(error) {
+        printf("Failed (%u/%u bytes received)!\nCTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n", stats.bytes_captured, stats.frame_size, stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
         return;
     }
     printf("Done! (took %i us)\n", elapsed);
@@ -152,7 +150,7 @@ void process_img(void)
 
     // Read image out from SRAM and send over the serial port
     for (int i = SRAM_STORAGE_ADDRESS; i < stats.frame_size; i += SERIAL_BUFFER_SIZE) {
-        ram_read_quad(i, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
+        ram_read_quad(i, (uint8_t*)g_serial_buffer, SERIAL_BUFFER_SIZE);
         MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
     }
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
@@ -224,7 +222,10 @@ int main(void)
     mipi_camera_settings_t settings = {
         .width = IMAGE_WIDTH,
         .height = IMAGE_HEIGHT,
-        .camera_format = { .pixel_format = PIXEL_FORMAT, .pixel_order = PIXEL_ORDER },
+        .camera_format = {
+            .pixel_format = PIXEL_FORMAT,
+            .pixel_order = PIXEL_ORDER
+        },
         .line_handler = line_handler,
     };
 
@@ -254,8 +255,7 @@ int main(void)
         LED_On(1);
         return error;
     }
-    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID,
-           ram_id.KGD, ram_id.density, ram_id.EID);
+    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID, ram_id.KGD, ram_id.density, ram_id.EID);
 
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
     buttonPressed = 0;
