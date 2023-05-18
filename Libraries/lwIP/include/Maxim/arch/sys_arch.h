@@ -42,8 +42,11 @@
 #define SYS_SEM_NULL    NULL
 
 typedef void *sys_prot_t;
+typedef void *sys_mutex_t;
 typedef void *sys_sem_t;
 typedef void *sys_mbox_t;
 typedef void *sys_thread_t;
+
+#define sys_arch_mbox_tryfetch(mbox, msg) sys_arch_mbox_fetch(mbox, msg, 1)
 
 #endif /* _MXC_SYS_ARCH_H_ */

@@ -129,7 +129,11 @@ int MXC_ETH_Init(mxc_eth_config_t *config)
 
 	memcpy(&mxc_eth_config, config, sizeof(mxc_eth_config_t));
 
+#if NO_SYS
 	lwip_init();
+#else
+	tcpip_init(config->init_done_callback, config->init_done_arg);
+#endif
 
 #if USE_DHCP
 	ip4_addr_set_zero(&ipaddr);

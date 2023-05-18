@@ -33,11 +33,58 @@
 #define LWIP_LWIPOPTS_H
 
 /* NO_SYS==1: Use lwIP without OS-awareness (no thread and etc.) */
+#ifndef NO_SYS
 #define NO_SYS                     		1
+#endif
 #define LWIP_SOCKET                		(NO_SYS==0)
 #define LWIP_NETCONN               		(NO_SYS==0)
 #define LWIP_NETIF_API             		(NO_SYS==0)
 #define SYS_LIGHTWEIGHT_PROT    		(NO_SYS==0)
+#define LWIP_SO_RCVTIMEO           		(NO_SYS==0)
+
+/**
+ * DEFAULT_THREAD_STACKSIZE: The stack size used by any other lwIP thread.
+ */
+#define DEFAULT_THREAD_STACKSIZE     4096
+
+/**
+ * TCPIP_MBOX_SIZE: The mailbox size for the tcpip thread messages.
+ */
+#define TCPIP_MBOX_SIZE              32
+
+/**
+ * TCPIP_THREAD_STACKSIZE: The stack size used by the main tcpip thread.
+ */
+#define TCPIP_THREAD_STACKSIZE       4096
+
+/**
+ * TCPIP_THREAD_PRIO: The priority assigned to the main tcpip thread.
+ */
+#define TCPIP_THREAD_PRIO            4
+
+/**
+ * DEFAULT_RAW_RECVMBOX_SIZE: The mailbox size for the incoming packets on a
+ * NETCONN_RAW.
+ */
+#define DEFAULT_RAW_RECVMBOX_SIZE    12
+
+/**
+ * DEFAULT_UDP_RECVMBOX_SIZE: The mailbox size for the incoming packets on a
+ * NETCONN_UDP.
+ */
+#define DEFAULT_UDP_RECVMBOX_SIZE    12
+
+/**
+ * DEFAULT_TCP_RECVMBOX_SIZE: The mailbox size for the incoming packets on a
+ * NETCONN_TCP.
+ */
+#define DEFAULT_TCP_RECVMBOX_SIZE    12
+
+/**
+ * DEFAULT_ACCEPTMBOX_SIZE: The mailbox size for the incoming connections.
+ */
+#define DEFAULT_ACCEPTMBOX_SIZE      12
+
 
 /* LWIP_NETIF_LINK_CALLBACK==1: Support a callback function from an
    interface whenever the link changes (i.e., link down) */

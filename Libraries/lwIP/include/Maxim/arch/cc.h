@@ -69,6 +69,11 @@ typedef uintptr_t   mem_ptr_t;
 #define PACK_STRUCT_BEGIN
 #define PACK_STRUCT_END
 
+#if !NO_SYS
+#define LWIP_ERRNO_INCLUDE  <sys/errno.h>
+#define LWIP_TIMEVAL_PRIVATE 0
+#endif
+
 /* Platform specific diagnostic output */
 #define LWIP_PLATFORM_DIAG(x)   do {                		\
         printf x;                   						\
