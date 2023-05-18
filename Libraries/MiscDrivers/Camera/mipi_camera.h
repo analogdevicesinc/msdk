@@ -41,11 +41,11 @@
  * @brief Pixel format enumerations.
 */
 typedef enum pixel_format {
-    PIXEL_FORMAT_BYPASS,    
+    PIXEL_FORMAT_BYPASS,
     PIXEL_FORMAT_YUV420,
     PIXEL_FORMAT_YUV422,
     PIXEL_FORMAT_RGB444,
-    PIXEL_FORMAT_RGB555,   
+    PIXEL_FORMAT_RGB555,
     PIXEL_FORMAT_RGB565,
     PIXEL_FORMAT_RGB666,
     PIXEL_FORMAT_RGB888,
@@ -90,10 +90,11 @@ typedef struct _mipi_camera_format {
  * encapsulating all camera settings.  Pass this in to the @ref mipi_camera_init function.
 */
 typedef struct _mipi_camera_settings_t {
-    unsigned int width;  /**< Image width in pixels */
-    unsigned int height;  /**< Image height in pixels */
-    mipi_camera_format_t camera_format;  /**< Image format */
-    mxc_csi2_line_handler_cb_t line_handler;  /**< Line handler provided by application to process incoming camera data */
+    unsigned int width; /**< Image width in pixels */
+    unsigned int height; /**< Image height in pixels */
+    mipi_camera_format_t camera_format; /**< Image format */
+    mxc_csi2_line_handler_cb_t
+        line_handler; /**< Line handler provided by application to process incoming camera data */
 } mipi_camera_settings_t;
 
 typedef enum {
@@ -248,8 +249,6 @@ mxc_csi2_capture_stats_t mipi_camera_get_capture_stats(void);
  * 
  * @return The image header of the last captured image
  */
-char* mipi_camera_get_image_header(void);
-
-
+char *mipi_camera_get_image_header(void);
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_MIPI_CAMERA_H_

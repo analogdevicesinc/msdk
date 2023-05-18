@@ -74,10 +74,11 @@
      MXC_F_CSI2_REVA_RX_EINT_VFF_IE_FFUL_MD)
 
 // A macro to convert a DMA channel number to an IRQn number
-#define GetIRQnForDMAChannel(x) ((IRQn_Type)(((x) == 0 ) ? DMA0_IRQn  : \
-                                             ((x) == 1 ) ? DMA1_IRQn  : \
-                                             ((x) == 2 ) ? DMA2_IRQn  : \
-                                                           DMA3_IRQn))
+#define GetIRQnForDMAChannel(x)           \
+    ((IRQn_Type)(((x) == 0) ? DMA0_IRQn : \
+                 ((x) == 1) ? DMA1_IRQn : \
+                 ((x) == 2) ? DMA2_IRQn : \
+                              DMA3_IRQn))
 
 /* **** Globals **** */
 
@@ -96,26 +97,23 @@ static volatile uint32_t fifo_burst_size;
 static volatile mxc_csi2_reva_fifo_trig_t fifo_int_trig;
 static volatile mxc_csi2_ahbwait_t ahbwait_en;
 
-typedef enum {
-    SELECT_A,
-    SELECT_B
-} lb_sel_t;
+typedef enum { SELECT_A, SELECT_B } lb_sel_t;
 
 struct line_buffer {
-    uint8_t* a; // Line buffer A
-    uint8_t* b; // Line buffer B
-    uint8_t* active; // Pointer to the active line buffer (volatile!)
-    uint8_t* inactive; // Pointer to the inactive line buffer (safe to read)
+    uint8_t *a; // Line buffer A
+    uint8_t *b; // Line buffer B
+    uint8_t *active; // Pointer to the active line buffer (volatile!)
+    uint8_t *inactive; // Pointer to the inactive line buffer (safe to read)
 } lb;
 
 void _free_line_buffer(void)
 {
     if (lb.a != NULL) {
-        free((uint8_t*)lb.a);
+        free((uint8_t *)lb.a);
         lb.a = NULL;
     }
     if (lb.b != NULL) {
-        free((uint8_t*)lb.b);
+        free((uint8_t *)lb.b);
         lb.b = NULL;
     }
 }
@@ -124,8 +122,8 @@ int _init_line_buffer()
 {
     _free_line_buffer();
 
-    lb.a = (uint8_t*)malloc(line_byte_num);
-    lb.b = (uint8_t*)malloc(line_byte_num);
+    lb.a = (uint8_t *)malloc(line_byte_num);
+    lb.b = (uint8_t *)malloc(line_byte_num);
     if (lb.a == NULL || lb.b == NULL)
         return E_NULL_PTR;
 
@@ -136,9 +134,9 @@ int _init_line_buffer()
 
 void _swap_line_buffer()
 {
-    uint8_t* temp = lb.active;
+    uint8_t *temp = lb.active;
     lb.active = lb.inactive;
-    lb.inactive = temp; 
+    lb.inactive = temp;
 }
 
 typedef struct {
@@ -326,7 +324,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
         // if (error != E_NO_ERROR) {
         //     return error;
         // }
-        
+
         /*
         Whole frame captures have been defeatured in favor of application-defined line handlers.
         We won't entirely burn this bridge now, so we'll leave the framework intact and return not supported.
@@ -335,7 +333,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
     } else {
         // Line by line
         dma_byte_cnt = line_byte_num;
-        
+
         error = _init_line_buffer();
         if (error)
             return error;
@@ -378,7 +376,7 @@ int MXC_CSI2_RevA_CaptureFrameDMA()
     interrupt handler. (MXC_CSI2_RevA_Handler)
     */
 
-    while(!g_frame_complete) {}
+    while (!g_frame_complete) {}
 
     if (!csi2_state.capture_stats.success)
         return E_FAIL;
@@ -447,19 +445,21 @@ void MXC_CSI2_RevA_Handler()
         When the PPI flags below have been signaled, the CSI2 interface
         has synced up with the sensor.  It's now safe to monitor the VFIFO.
         */
-        csi2_state.synced = (bool)(ppi_flags & (MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP));
+        csi2_state.synced = (bool)(ppi_flags & (MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP |
+                                                MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP |
+                                                MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP));
     }
-    
+
     // Mask out non-critical PPI status flags
-    ppi_flags &= ~(MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP);
-    
+    ppi_flags &= ~(MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP |
+                   MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP);
+
     if (ppi_flags) {
         csi2_state.capture_stats.ppi_err |= ppi_flags;
     }
 
     if (vfifo_flags != 0) {
-        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_FS && csi2_state.synced)
-        {
+        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_FS && csi2_state.synced) {
             /*
             "Frame Start" has been received.  Enable the DMA channel.
             MXC_CSI2_RevA_DMA_Handler does the heavy lifting from here.
@@ -468,26 +468,21 @@ void MXC_CSI2_RevA_Handler()
         }
 
         // Mask out non-critical VFIFO status flags
-        vfifo_flags &= (
-            MXC_F_CSI2_RX_EINT_VFF_IF_UNDERRUN |\
-            MXC_F_CSI2_RX_EINT_VFF_IF_OVERRUN |\
-            MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC |\
-            MXC_F_CSI2_RX_EINT_VFF_IF_FMTERR |\
-            MXC_F_CSI2_RX_EINT_VFF_IF_AHBWTO |\
-            MXC_F_CSI2_RX_EINT_VFF_IF_RAW_OVR |\
-            MXC_F_CSI2_RX_EINT_VFF_IF_RAW_AHBERR
-        );
-        
+        vfifo_flags &= (MXC_F_CSI2_RX_EINT_VFF_IF_UNDERRUN | MXC_F_CSI2_RX_EINT_VFF_IF_OVERRUN |
+                        MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC | MXC_F_CSI2_RX_EINT_VFF_IF_FMTERR |
+                        MXC_F_CSI2_RX_EINT_VFF_IF_AHBWTO | MXC_F_CSI2_RX_EINT_VFF_IF_RAW_OVR |
+                        MXC_F_CSI2_RX_EINT_VFF_IF_RAW_AHBERR);
+
         if (vfifo_flags) {
             csi2_state.capture_stats.vfifo_err |= vfifo_flags;
         }
     }
 
-    if (csi2_state.capture_stats.ctrl_err | csi2_state.capture_stats.ppi_err | csi2_state.capture_stats.vfifo_err) {
+    if (csi2_state.capture_stats.ctrl_err | csi2_state.capture_stats.ppi_err |
+        csi2_state.capture_stats.vfifo_err) {
         csi2_state.capture_stats.success = false;
         MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
     }
-        
 }
 
 /********************************/
@@ -1050,13 +1045,11 @@ debugging timing issues.
 #ifdef GPIO_INDICATOR
 #define GPIO_INDICATOR_PORT MXC_GPIO1
 #define GPIO_INDICATOR_PIN MXC_GPIO_PIN_11
-mxc_gpio_cfg_t indicator = {
-    .func = MXC_GPIO_FUNC_OUT,
-    .port = GPIO_INDICATOR_PORT,
-    .mask = GPIO_INDICATOR_PIN,
-    .vssel = MXC_GPIO_VSSEL_VDDIOH,
-    .pad = MXC_GPIO_PAD_NONE
-};
+mxc_gpio_cfg_t indicator = { .func = MXC_GPIO_FUNC_OUT,
+                             .port = GPIO_INDICATOR_PORT,
+                             .mask = GPIO_INDICATOR_PIN,
+                             .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                             .pad = MXC_GPIO_PAD_NONE };
 #endif
 
 bool MXC_CSI2_RevA_DMA_Frame_Complete(void)
@@ -1092,12 +1085,11 @@ void MXC_CSI2_RevA_DMA_Handler()
                 // Swap line buffers and reload DMA
                 csi2_state.capture_stats.bytes_captured += line_byte_num;
                 _swap_line_buffer();
-                MXC_DMA->ch[csi2_state.dma_channel].cnt = line_byte_num;                
+                MXC_DMA->ch[csi2_state.dma_channel].cnt = line_byte_num;
                 MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.active;
                 MXC_DMA->ch[csi2_state.dma_channel].ctrl |= MXC_F_DMA_REVA_CTRL_EN;
 
-                if (csi2_state.req->line_handler != NULL)
-                {
+                if (csi2_state.req->line_handler != NULL) {
                     // Call line handler with a pointer to the inactive line buffer
                     int error = csi2_state.req->line_handler(lb.inactive, line_byte_num);
                     if (error)

@@ -69,14 +69,16 @@ void camera_capture(void)
     if (error) {
         printf("Failed!\n");
         mxc_csi2_capture_stats_t stats = mipi_camera_get_capture_stats();
-        printf("Failed (%u/%u bytes received)!\nCTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n", stats.bytes_captured, stats.frame_size, stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
+        printf(
+            "Failed (%u/%u bytes received)!\nCTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n",
+            stats.bytes_captured, stats.frame_size, stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
         return;
     }
 
     printf("Done! (took %i us)\n", elapsed);
 }
 
-void camera_capture_and_load_cnn(void) 
+void camera_capture_and_load_cnn(void)
 {
     camera_capture();
     mxc_csi2_capture_stats_t stats = mipi_camera_get_capture_stats();
@@ -101,7 +103,8 @@ void camera_capture_and_load_cnn(void)
     spi_init();
     ram_enter_quadmode();
 
-    for (int i = SRAM_ADDRESS; i < stats.frame_size; i += CONVERSION_BUFFER_SIZE) { // for every SRAM chunk
+    for (int i = SRAM_ADDRESS; i < stats.frame_size;
+         i += CONVERSION_BUFFER_SIZE) { // for every SRAM chunk
         ram_read_quad(i, rgb565_buffer, CONVERSION_BUFFER_SIZE);
         for (int j = 0; j < CONVERSION_BUFFER_SIZE; j += 2) { // for each RGB565 byte pair
             // Decode RGB565
@@ -116,10 +119,10 @@ void camera_capture_and_load_cnn(void)
 
             // Pack into 32-bit word (0x00BBGGRR)
             packed = r | (g << 8) | (b << 16);
-            
+
             // Remove the following line if there is no risk that the source would overrun the FIFO:
-            while (((*((volatile uint32_t *)0x50000004) & 1)) != 0)
-                ; // Wait for FIFO 0
+            while (((*((volatile uint32_t *)0x50000004) & 1)) != 0) {}
+            // Wait for FIFO 0
             *((volatile uint32_t *)0x50000008) = packed; // Write FIFO 0
         }
     }
@@ -149,15 +152,11 @@ void camera_display_last_image(void)
 
 bool camera_init()
 {
-    mipi_camera_settings_t camera_settings = {
-        .width = IMAGE_WIDTH,
-        .height = IMAGE_HEIGHT,
-        .camera_format = {
-            .pixel_format = PIXEL_FORMAT,
-            .pixel_order = PIXEL_ORDER
-        },
-        .line_handler = CSI2_line_handler
-    };
+    mipi_camera_settings_t camera_settings = { .width = IMAGE_WIDTH,
+                                               .height = IMAGE_HEIGHT,
+                                               .camera_format = { .pixel_format = PIXEL_FORMAT,
+                                                                  .pixel_order = PIXEL_ORDER },
+                                               .line_handler = CSI2_line_handler };
 
     mipi_camera_init(camera_settings);
 
@@ -184,6 +183,6 @@ bool camera_init()
     }
     printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID,
            ram_id.KGD, ram_id.density, ram_id.EID);
-    
+
     return true;
 }
