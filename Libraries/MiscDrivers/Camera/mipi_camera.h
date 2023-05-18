@@ -74,7 +74,7 @@ typedef enum pixel_order {
     PIXEL_ORDER_RGB565_BRG,
     PIXEL_ORDER_RGB565_GBR,
     PIXEL_ORDER_RGB565_RBG,
-    // TODO: Support other pixel orders
+    // TODO(Jake): Support other pixel orders
 } pixel_order_t;
 
 /**

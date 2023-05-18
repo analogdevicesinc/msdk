@@ -555,7 +555,7 @@ static int write_reg(uint16_t reg_addr, uint8_t reg_data)
 // to write to the FORMAT_CTRL register
 static uint8_t _camera_format_to_out_seq(pixel_order_t pixel_order)
 {
-    switch(pixel_order){
+    switch (pixel_order){
         default:
         return 0;
         case PIXEL_ORDER_RAW_BGGR:
