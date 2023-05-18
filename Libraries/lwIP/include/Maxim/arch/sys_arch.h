@@ -35,8 +35,8 @@
  * ownership rights.
  ******************************************************************************
  */
-#ifndef _MXC_SYS_ARCH_H_
-#define _MXC_SYS_ARCH_H_
+#ifndef LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_SYS_ARCH_H_
+#define LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_SYS_ARCH_H_
 
 #define SYS_MBOX_NULL   NULL
 #define SYS_SEM_NULL    NULL
@@ -49,4 +49,4 @@ typedef void *sys_thread_t;
 
 #define sys_arch_mbox_tryfetch(mbox, msg) sys_arch_mbox_fetch(mbox, msg, 1)
 
-#endif /* _MXC_SYS_ARCH_H_ */
+#endif // LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_SYS_ARCH_H_
