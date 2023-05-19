@@ -36,8 +36,9 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef LIBRARIES_MISCDRIVERS_EXTMEMORY_MSCMEM_H
-#define LIBRARIES_MISCDRIVERS_EXTMEMORY_MSCMEM_H
+
+#ifndef LIBRARIES_MISCDRIVERS_EXTMEMORY_MSCMEM_H_
+#define LIBRARIES_MISCDRIVERS_EXTMEMORY_MSCMEM_H_
 
 /* **** Include Files **** */
 
@@ -105,4 +106,4 @@ int mscmem_Ready(void);
 int mscmem_write_dirty_sector();
 uint32_t mscmem_ID();
 
-#endif // LIBRARIES_MISCDRIVERS_EXTMEMORY_MSCMEM_H
+#endif // LIBRARIES_MISCDRIVERS_EXTMEMORY_MSCMEM_H_
