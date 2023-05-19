@@ -67,8 +67,7 @@ static int running = 0;
 #undef EXT_FLASH_BAUD
 #define EXT_FLASH_BAUD 5000000 /* SPI clock rate to communicate with the external flash */
 
-
-#define MXC_SPIXF_WIDTH Ext_Flash_DataLine_Quad/*Number of data lines*/
+#define MXC_SPIXF_WIDTH Ext_Flash_DataLine_Quad /*Number of data lines*/
 
 #define LBA_PER_SECTOR (EXT_FLASH_SECTOR_SIZE >> LBA_SIZE_SHIFT)
 #define INVALID_SECTOR \
@@ -239,11 +238,12 @@ int mscmem_Ready()
 }
 int mscmem_write_dirty_sector()
 {
-    if(sectorDirty) {
+    if (sectorDirty) {
         /* Erase the old data. */
         Ext_Flash_Erase(sectorNum << EXT_FLASH_SECTOR_SIZE_SHIFT, Ext_Flash_Erase_4K);
         /* Write the new */
-        Ext_Flash_Program_Page(sectorNum << EXT_FLASH_SECTOR_SIZE_SHIFT, sector, EXT_FLASH_SECTOR_SIZE, MXC_SPIXF_WIDTH_4);
+        Ext_Flash_Program_Page(sectorNum << EXT_FLASH_SECTOR_SIZE_SHIFT, sector,
+                               EXT_FLASH_SECTOR_SIZE, MXC_SPIXF_WIDTH_4);
         /* Mark data as clean */
         sectorDirty = 0;
     }
@@ -251,9 +251,9 @@ int mscmem_write_dirty_sector()
 }
 uint32_t mscmem_ID()
 {
-    if(Ext_Flash_ID() == EXT_FLASH_EXP_ID){
+    if (Ext_Flash_ID() == EXT_FLASH_EXP_ID) {
         return 1;
-    } else{
+    } else {
         return 0;
     }
 }

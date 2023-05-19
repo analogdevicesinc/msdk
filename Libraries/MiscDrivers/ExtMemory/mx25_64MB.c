@@ -297,7 +297,7 @@ int Ext_Flash_Read(uint32_t address, uint8_t *rx_buf, uint32_t rx_len, Ext_Flash
 
     cmd[1] = (address >> 24) & 0xFF;
     cmd[2] = (address >> 16) & 0xFF;
-    cmd[3] = (address >>  8) & 0xFF;
+    cmd[3] = (address >> 8) & 0xFF;
     cmd[4] = address & 0xFF;
 
     // Select approriate command for the desired read mode
@@ -341,10 +341,10 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
     int timeout = 0;
     uint8_t cmd[5] = { 0 };
     uint32_t len = 0;
-   // uint32_t next_page = 0;
+    // uint32_t next_page = 0;
     //uint8_t *pWrite_Data = NULL;
 
-        int tx_cnt = 0;
+    int tx_cnt = 0;
     if (tx_buf == NULL) {
         return EF_E_BAD_PARAM;
     }
@@ -354,7 +354,7 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
         return EF_E_BAD_PARAM; // attempt to write outside flash memory size
     }
 
-   // pWrite_Data = tx_buf; // note our starting source data address
+    // pWrite_Data = tx_buf; // note our starting source data address
 
     if (flash_busy()) {
         return EF_E_BUSY;
@@ -372,7 +372,7 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
 
         cmd[1] = (address >> 24) & 0xFF;
         cmd[2] = (address >> 16) & 0xFF;
-        cmd[3] = (address >>  8) & 0xFF;
+        cmd[3] = (address >> 8) & 0xFF;
         cmd[4] = address & 0xFF;
 
         if (d_line == Ext_Flash_DataLine_Quad) {
@@ -390,24 +390,23 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
             return err;
         }
 
-        if(tx_len >= 256) {
-            len     = 256;
+        if (tx_len >= 256) {
+            len = 256;
         } else {
-            len     = tx_len;
+            len = tx_len;
         }
 
-        if((err = g_cfg.write((&tx_buf[tx_cnt*256]), len, 1, d_line)) != EF_E_SUCCESS) {
+        if ((err = g_cfg.write((&tx_buf[tx_cnt * 256]), len, 1, d_line)) != EF_E_SUCCESS) {
             return err;
         }
 
-        if(tx_len >= 256) {
-            tx_len -= 256;            
+        if (tx_len >= 256) {
+            tx_len -= 256;
         } else {
             tx_len = 0;
         }
         address += 256;
         tx_cnt++;
-
 
         timeout = 0;
         while (flash_busy()) {
@@ -457,7 +456,7 @@ int Ext_Flash_Erase(uint32_t address, Ext_Flash_Erase_t size)
 {
     int err = EF_E_SUCCESS;
     uint8_t cmd[5] = { 0 };
-    
+
     uint8_t delay_ms = 0;
     int timeout = 0;
 
@@ -473,21 +472,21 @@ int Ext_Flash_Erase(uint32_t address, Ext_Flash_Erase_t size)
     case Ext_Flash_Erase_4K:
     default:
         cmd[0] = MX25_CMD_4K_ERASE;
-                	delay_ms = 25;
+        delay_ms = 25;
         break;
     case Ext_Flash_Erase_32K:
         cmd[0] = MX25_CMD_32K_ERASE;
-                	delay_ms = 150;
+        delay_ms = 150;
         break;
     case Ext_Flash_Erase_64K:
         cmd[0] = MX25_CMD_64K_ERASE;
-                	delay_ms = 220;
+        delay_ms = 220;
         break;
     }
 
     cmd[1] = (address >> 24) & 0xFF;
     cmd[2] = (address >> 16) & 0xFF;
-    cmd[3] = (address >>  8) & 0xFF;
+    cmd[3] = (address >> 8) & 0xFF;
     cmd[4] = address & 0xFF;
 
     // Send the command and the address
@@ -495,14 +494,13 @@ int Ext_Flash_Erase(uint32_t address, Ext_Flash_Erase_t size)
         return err;
     }
 
-
     if ((err = g_cfg.write(&cmd[1], 4, 1, Ext_Flash_DataLine_Single)) != EF_E_SUCCESS) {
         return err;
     }
 
     // Send starting address of the read
     //if ((err = g_cfg.write(&cmd[1], 3, 1, Ext_Flash_DataLine_Single)) != EF_E_SUCCESS) {
-   //     return err;
+    //     return err;
     //}
 
     while (flash_busy()) {
@@ -555,6 +553,5 @@ Ext_Flash_Unblk_t Ext_Flash_GetAvailableFlash(void)
     Ext_Flash_Unblk_t temp = { .start_addr = err, .end_addr = err };
     return temp;
 }
-
 
 /**@} end of ingroup mx25 */
