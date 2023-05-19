@@ -36,11 +36,15 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef EXAMPLES_MAX32665_USB_MASSSTORAGE_MSCMEM_H_
-#define EXAMPLES_MAX32665_USB_MASSSTORAGE_MSCMEM_H_
+#ifndef LIBRARIES_MISCDRIVERS_EXTMEMORY_MSCMEM_H
+#define LIBRARIES_MISCDRIVERS_EXTMEMORY_MSCMEM_H
 
 /* **** Include Files **** */
+
 #include <stdint.h>
+
+/* **** Definitions **** */
+
 #define EXT_FLASH_SECTOR_SIZE 4096 /* Number of bytes in one sector of the external flash */
 #define EXT_FLASH_SECTOR_SIZE_SHIFT \
     12 /* The shift value used to convert between addresses and block numbers */
@@ -50,6 +54,7 @@
 #define ERASE_MEMORY_ON_INIT \
     1 /* Configuration option to clear the memory (to 0s) on initialization. */
 /* Use 1 to clear or 0 to leave untouched. */
+
 /**
  * @brief   Perform any initialization necessary to prepare the memory for reading/writing data.
  * @returns 0 if initialization is successful, non-zero if an error occurred.
@@ -99,4 +104,5 @@ int mscmem_Write(uint32_t lba, uint8_t *buffer);
 int mscmem_Ready(void);
 int mscmem_write_dirty_sector();
 uint32_t mscmem_ID();
-#endif // EXAMPLES_MAX32665_USB_MASSSTORAGE_MSCMEM_H_
+
+#endif // LIBRARIES_MISCDRIVERS_EXTMEMORY_MSCMEM_H
