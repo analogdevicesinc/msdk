@@ -1,5 +1,5 @@
 /**
- * @file    mx25.c
+ * @file    mx25_64MB.c
  * @brief   Board layer Driver for the Micron MX25 Serial Multi-I/O Flash Memory.
  */
 
