@@ -47,9 +47,26 @@ ifeq "$(STARTUPFILE)" ""
 STARTUPFILE=startup_$(TARGET_LC).S
 endif
 
-ifeq "$(LINKERFILE)" ""
-LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
-endif
+ifeq "$(RISCV_CORE)" "" # RISCV
+# Default linkerfile is only specified for standard Arm-core projects.
+# Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
+LINKERFILE ?= $(TARGET_LC).ld
+LINKERPATH ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+
+ifeq ("$(wildcard $(LINKERFILE))","") # Check if linkerfile exists
+# Doesn't exist...
+
+ifneq ("$(wildcard $(LINKERPATH)/$(LINKERFILE))","") # Search GCC folder
+$(info Auto-located linkerfile: $(LINKERPATH)/$(LINKERFILE))
+# Form full path to linkerfile.  Works around MSYS2 edge case from (see MSDK-903).
+LINKERFILE := $(LINKERPATH)/$(LINKERFILE)
+else
+$(warning Failed to locate linkerfile: $(LINKERFILE))
+endif # End search GCC folder
+
+endif # End check if linkerfile exists
+
+endif # End RISCV
 
 ifeq "$(ENTRY)" ""
 ENTRY=Reset_Handler
