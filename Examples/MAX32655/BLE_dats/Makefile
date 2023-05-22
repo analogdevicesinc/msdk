@@ -102,10 +102,11 @@ endif
 # this as early as possible in the Makefile so that it can append to or override
 # the variables below.
 
+
 PROJECTMK ?= $(abspath ./project.mk)
 include $(PROJECTMK)
 $(info Loaded project.mk)
-export PROJECTMK
+# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
