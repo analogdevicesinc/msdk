@@ -511,7 +511,7 @@ static int reset(void)
             MXC_Delay(MSEC(default_regs[i].val));
         } else {
             ret |= cambus_write(default_regs[i].addr, (uint8_t)default_regs[i].val);
-#if 0
+#ifdef VERIFY_STARTUP_SETTINGS
             // Read back and check for value mismatches.  Used for troubleshooting
 
             ret |= cambus_read(default_regs[i].addr, &value);
