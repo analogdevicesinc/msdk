@@ -143,36 +143,6 @@ typedef struct _mipi_camera {
  * @brief Initialize the MIPI camera with the specified settings.
  * @param[in] camera_settings Camera settings to use.
  * @return E_NO_ERROR (0) on success, non-zero @ref MXC_Error_Codes on failure
-*/
-int mipi_camera_init(mipi_camera_settings_t camera_settings);
-
-/**
- * @brief Write a value to a MIPI camera register
- * @param[in] reg_addr Register to write to
- * @param[in] reg_data Value to write
- * @return 0 on success, non-zero on failure
-*/
-int mipi_camera_write_reg(uint16_t reg_addr, uint8_t reg_data);
-
-/**
- * @brief Read a value from a MIPI camera register
- * @param[in] reg_addr Register to read from
- * @param[out] reg_data Output location for the read data
- * @return 0 on success, non-zero on failure
-*/
-int mipi_camera_read_reg(uint16_t reg_addr, uint8_t *reg_data);
-
-/**
- * @brief Read a value from a MIPI camera register
- * @param[in] reg_addr Register to read from
- * @param[out] reg_data Output location for the read data
- * @return 0 on success, non-zero on failure
-*/
-
-/**
- * @brief Initialize the MIPI camera with the specified settings.
- * @param[in] camera_settings Camera settings to use.
- * @return E_NO_ERROR (0) on success, non-zero @ref MXC_Error_Codes on failure
  */
 int mipi_camera_init(mipi_camera_settings_t camera_settings);
 
