@@ -104,6 +104,33 @@ typedef struct {
 #define PC_to_RDR_XfrBlock_wLevelParameter_OFFSET   8
 #define PC_to_RDR_XfrBlock_abData_OFFSET           10
 
+#define PC_to_RDR_Parameters_T0_T1_bMessageType_OFFSET     0
+#define PC_to_RDR_Parameters_T0_T1_dwLength_OFFSET         1
+#define PC_to_RDR_Parameters_T0_T1_bSlot_OFFSET            5
+#define PC_to_RDR_Parameters_T0_T1_bSeq_OFFSET             6
+#define PC_to_RDR_Parameters_T0_T1_bProtocolNum_OFFSET     7
+#define PC_to_RDR_Parameters_T0_T1_abRFU_OFFSET        	   8
+#define PC_to_RDR_Parameters_T0_bmFindexDindex_OFFSET      10
+#define PC_to_RDR_Parameters_T0_bmTCCKST0_OFFSET           11
+#define PC_to_RDR_Parameters_T0_bmGuardTimeT0_OFFSET       12
+#define PC_to_RDR_Parameters_T0_bWaitingIntegerT0_OFFSET   13
+#define PC_to_RDR_Parameters_T0_bClockStop_OFFSET          14
+#define PC_to_RDR_Parameters_T1_bmFindexDindex_OFFSET      10
+#define PC_to_RDR_Parameters_T1_bmTCCKST1_OFFSET           11
+#define PC_to_RDR_Parameters_T1_bmGuardTimeT1_OFFSET       12
+#define PC_to_RDR_Parameters_T1_bWaitingIntegerT1_OFFSET   13
+#define PC_to_RDR_Parameters_T1_bClockStop_OFFSET          14
+#define PC_to_RDR_Parameters_T1_bIFSC_OFFSET          	   15
+#define PC_to_RDR_Parameters_T1_bNadValue_OFFSET           16
+
+#define PC_to_RDR_SetDataRateAndClockFrequency_bMessageType_OFFSET      0
+#define PC_to_RDR_SetDataRateAndClockFrequency_dwLength_OFFSET          1
+#define PC_to_RDR_SetDataRateAndClockFrequency_bSlot_OFFSET             5
+#define PC_to_RDR_SetDataRateAndClockFrequency_bSeq_OFFSET         	    6
+#define PC_to_RDR_SetDataRateAndClockFrequency_abRFU_OFFSET             7
+#define PC_to_RDR_SetDataRateAndClockFrequency_dwClockFrequency_OFFSET  10
+#define PC_to_RDR_SetDataRateAndClockFrequency_dwDataRate_OFFSET        14
+
 #if defined(__GNUC__)
 typedef struct __attribute__((packed)) {
 #else
@@ -194,6 +221,46 @@ typedef __packed struct {
 #define RDR_to_PC_Parameters_T0_Len                        RDR_to_PC_Parameters_T0_bClockStop_OFFSET + 1
 #define RDR_to_PC_Parameters_Protocol_Num_T0               0x00
 #define RDR_to_PC_Parameters_T0_CLOCK_STOP_NOT_ALLOWED     0x00
+
+#if defined(__GNUC__)
+typedef struct __attribute__((packed)) {
+#else
+typedef __packed struct {
+#endif
+    uint8_t     bMessageType;
+    uint32_t    dwLength;
+    uint8_t     bSlot;
+    uint8_t     bSeq;
+    uint8_t     bStatus;
+    uint8_t     bError;
+    uint8_t     bProtocolNum;
+    uint8_t     bmFindexDindex;
+    uint8_t     bmTCCKST1;
+    uint8_t     bGuardTimeT1;
+    uint8_t     bWaitingIntegerT1;
+    uint8_t     bClockStop;
+    uint8_t     bIFSC;
+    uint8_t     bNadValue;
+} RDR_to_PC_Parameters_T1_t;
+
+#define RDR_to_PC_Parameters_T1_bMessageType_OFFSET        0
+#define RDR_to_PC_Parameters_T1_dwLength_OFFSET            1
+#define RDR_to_PC_Parameters_T1_bSlot_OFFSET               5
+#define RDR_to_PC_Parameters_T1_bSeq_OFFSET                6
+#define RDR_to_PC_Parameters_T1_bStatus_OFFSET             7
+#define RDR_to_PC_Parameters_T1_bError_OFFSET              8
+#define RDR_to_PC_Parameters_T1_bProtocolNum_OFFSET        9
+#define RDR_to_PC_Parameters_T1_bmFindexDindex_OFFSET      10
+#define RDR_to_PC_Parameters_T1_bmTCCKST1_OFFSET           11
+#define RDR_to_PC_Parameters_T1_bmGuardTimeT1_OFFSET       12
+#define RDR_to_PC_Parameters_T1_bWaitingIntegerT1_OFFSET   13
+#define RDR_to_PC_Parameters_T1_bClockStop_OFFSET          14
+#define RDR_to_PC_Parameters_T1_bIFSC_OFFSET          	   15
+#define RDR_to_PC_Parameters_T1_bNadValue_OFFSET           16
+
+#define RDR_to_PC_Parameters_T1_Len                        RDR_to_PC_Parameters_T1_bNadValue_OFFSET + 1
+#define RDR_to_PC_Parameters_Protocol_Num_T1               0x01
+#define RDR_to_PC_Parameters_T1_CLOCK_STOP_NOT_ALLOWED     0x00
 
 #if defined(__GNUC__)
 typedef struct __attribute__((packed)) {
