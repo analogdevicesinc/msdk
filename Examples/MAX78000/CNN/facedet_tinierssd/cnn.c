@@ -73,7 +73,7 @@ void CNN_ISR(void)
   *((volatile uint32_t *) 0x50900000) &= ~((1<<12) | (1<<14) | 1);
   *((volatile uint32_t *) 0x50d00000) &= ~((1<<12) | (1<<14) | 1);
 
-  CNN_COMPLETE; // Signal that processing is complete
+//   CNN_COMPLETE; // Signal that processing is complete
 #ifdef CNN_INFERENCE_TIMER
   cnn_time = MXC_TMR_SW_Stop(CNN_INFERENCE_TIMER);
 #else
@@ -1042,7 +1042,7 @@ int cnn_start(void)
   MXC_TMR_SW_Start(CNN_INFERENCE_TIMER);
 #endif
 
-  CNN_START; // Allow capture of processing time
+//   CNN_START; // Allow capture of processing time
   *((volatile uint32_t *) 0x50100000) = 0x0018c809; // Master enable quadrant 0
 
   return CNN_OK;

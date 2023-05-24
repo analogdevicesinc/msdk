@@ -214,8 +214,9 @@ int main(void)
         MXC_Delay(MXC_DELAY_MSEC(500));
 
         CNN_START;
-        MXC_Delay(MXC_DELAY_MSEC(20));
+        MXC_Delay(MXC_DELAY_MSEC(500));
         CNN_COMPLETE;
+        MXC_Delay(MXC_DELAY_MSEC(500));
 
         CNN_START;
         for (int i = 0; i < 100; i++) {            
@@ -246,7 +247,8 @@ int main(void)
         MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IBRO);
         MXC_SYS_ClockDisable(MXC_SYS_CLOCK_IPO);
 
-        MXC_Delay(MXC_DELAY_MSEC(150)); // Slight delay to allow LED to be seen        
+        MXC_Delay(MXC_DELAY_MSEC(150)); // Slight delay to allow LED to be seen
+        MXC_Delay(MXC_DELAY_SEC(1));    
         // cnn_unload((uint32_t *)ml_data32);
 
     #ifdef CNN_INFERENCE_TIMER
