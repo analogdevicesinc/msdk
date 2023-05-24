@@ -305,7 +305,7 @@ void MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val)
     if (port == MXC_GPIO4) {
         uint32_t gpio4_cp = MXC_MCR->gpio4_ctrl;
 
-        MXC_MCR->gpio4_ctrl = (gpio4_cp & ~mask) | GPIO4_DATAOUT_MASK((mask & val));
+        MXC_MCR->gpio4_ctrl = (gpio4_cp & ~GPIO4_DATAOUT_MASK(mask)) | GPIO4_DATAOUT_MASK((mask & val));
         return;
     }
 
