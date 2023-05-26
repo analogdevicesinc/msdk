@@ -45,18 +45,28 @@
 
 /* **** Definitions **** */
 // Pin 3.0 Definitions
-#define P30_DATA_OUT(pin_mask) ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_DO : 0 )
-#define P30_OUT_EN(pin_mask) ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_OE : 0 )
-#define P30_PULL_DIS(pin_mask) ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_PE : 0 )
-#define P30_DATA_IN(pin_mask) ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_IN : 0 )
-#define PDOWN_OUT_EN(pin_mask) ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_OUTEN_PDOWN_OUT_EN : 0 )
+#define P30_DATA_OUT(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_DO : 0)
+#define P30_OUT_EN(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_OE : 0)
+#define P30_PULL_DIS(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_PE : 0)
+#define P30_DATA_IN(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_IN : 0)
+#define PDOWN_OUT_EN(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_OUTEN_PDOWN_OUT_EN : 0)
 
 // Pin 3.1 Definitions
-#define P31_DATA_OUT(pin_mask) ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_DO : 0 )
-#define P31_OUT_EN(pin_mask) ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_OE : 0 )
-#define P31_PULL_DIS(pin_mask) ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_PE : 0 )
-#define P31_DATA_IN(pin_mask) ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_IN : 0 )
-#define SQWAVE_OUT_EN(pin_mask) ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_OUTEN_SQWOUT_EN : 0 )
+#define P31_DATA_OUT(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_DO : 0)
+#define P31_OUT_EN(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_OE : 0)
+#define P31_PULL_DIS(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_PE : 0)
+#define P31_DATA_IN(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_IN : 0)
+#define SQWAVE_OUT_EN(pin_mask) \
+    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_OUTEN_SQWOUT_EN : 0)
 
 /* **** Globals **** */
 
@@ -134,7 +144,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
             break;
 
         case MXC_GPIO_FUNC_ALT1:
-        	MXC_MCR->gpio3_ctrl |= P30_OUT_EN(cfg->mask) | P31_OUT_EN(cfg->mask);
+            MXC_MCR->gpio3_ctrl |= P30_OUT_EN(cfg->mask) | P31_OUT_EN(cfg->mask);
             MXC_MCR->outen |= SQWAVE_OUT_EN(cfg->mask) | PDOWN_OUT_EN(cfg->mask);
             break;
 
@@ -213,9 +223,9 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     uint32_t in;
-    
+
     if (port == MXC_GPIO3) {
-        if(MXC_MCR->gpio3_ctrl & P30_DATA_IN(mask)) {
+        if (MXC_MCR->gpio3_ctrl & P30_DATA_IN(mask)) {
             in |= MXC_GPIO_PIN_0;
         }
 
@@ -257,7 +267,7 @@ uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
     uint32_t out = 0;
 
     if (port == MXC_GPIO3) {
-        if(MXC_MCR->gpio3_ctrl & P30_DATA_OUT(mask)) {
+        if (MXC_MCR->gpio3_ctrl & P30_DATA_OUT(mask)) {
             out |= MXC_GPIO_PIN_0;
         }
 
@@ -298,8 +308,8 @@ void MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 int MXC_GPIO_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
 {
-    if(cfg->port == MXC_GPIO3) {
-        if(pol != MXC_GPIO_INT_BOTH) {
+    if (cfg->port == MXC_GPIO3) {
+        if (pol != MXC_GPIO_INT_BOTH) {
             return E_NOT_SUPPORTED;
         }
 
@@ -312,7 +322,7 @@ int MXC_GPIO_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol)
 /* ************************************************************************** */
 void MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if(port == MXC_GPIO3) {
+    if (port == MXC_GPIO3) {
         MXC_PWRSEQ->lpwken3 |= mask;
         return;
     }
@@ -323,7 +333,7 @@ void MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 void MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if(port == MXC_GPIO3) {
+    if (port == MXC_GPIO3) {
         MXC_PWRSEQ->lpwken3 &= ~mask;
         return;
     }
@@ -346,7 +356,7 @@ void MXC_GPIO_Handler(unsigned int port)
 /* ************************************************************************** */
 void MXC_GPIO_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags)
 {
-    if(port == MXC_GPIO3) {
+    if (port == MXC_GPIO3) {
         MXC_PWRSEQ->lpwkst3 = flags;
         return;
     }
@@ -357,7 +367,7 @@ void MXC_GPIO_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 {
-    if(port == MXC_GPIO3) {
+    if (port == MXC_GPIO3) {
         return MXC_PWRSEQ->lpwkst3;
     }
 
@@ -367,21 +377,21 @@ uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 /* ************************************************************************** */
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
-    if(port == MXC_GPIO3) {
-        if(vssel == MXC_GPIO_VSSEL_VDDIO) {
+    if (port == MXC_GPIO3) {
+        if (vssel == MXC_GPIO_VSSEL_VDDIO) {
             return E_NOT_SUPPORTED;
         }
 
         return E_NO_ERROR;
     }
-    
+
     return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
 }
 
 /* ************************************************************************** */
 void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if(port == MXC_GPIO3) {
+    if (port == MXC_GPIO3) {
         MXC_PWRSEQ->lpwken3 |= mask;
         return;
     }
@@ -392,7 +402,7 @@ void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    if(port == MXC_GPIO3) {
+    if (port == MXC_GPIO3) {
         MXC_PWRSEQ->lpwken3 &= ~mask;
         return;
     }
@@ -403,7 +413,7 @@ void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
 {
-    if(port == MXC_GPIO3) {
+    if (port == MXC_GPIO3) {
         return MXC_PWRSEQ->lpwken3;
     }
 
