@@ -46,11 +46,11 @@
 /* **** Definitions **** */
 // Pin 3.0 Definitions
 #define P30_DATA_OUT(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_DO : 0)
+    ((1 & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_DO : 0)
 #define P30_OUT_EN(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_OE : 0)
-#define P30_PULL_DIS(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_PE : 0)
+    ((pin_mask & 1) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_OE : 0)
+#define P30_PULL_DIS(PIN_MASK) \
+    ((PIN_MASK & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_PE : 0)
 #define P30_DATA_IN(pin_mask) \
     ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_IN : 0)
 #define PDOWN_OUT_EN(pin_mask) \
