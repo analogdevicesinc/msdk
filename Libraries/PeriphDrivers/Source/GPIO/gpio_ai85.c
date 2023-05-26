@@ -212,8 +212,18 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
+    uint32_t in;
+    
     if (port == MXC_GPIO3) {
-        return MXC_MCR->gpio3_ctrl & (P30_DATA_IN(mask) | P31_DATA_IN(mask));
+        if(MXC_MCR->gpio3_ctrl & P30_DATA_IN(mask)) {
+            in |= MXC_GPIO_PIN_0;
+        }
+
+        if (MXC_MCR->gpio3_ctrl & P31_DATA_IN(mask)) {
+            in |= MXC_GPIO_PIN_1;
+        }
+
+        return in;
     }
 
     return MXC_GPIO_RevA_InGet((mxc_gpio_reva_regs_t *)port, mask);
@@ -245,7 +255,7 @@ void MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
 uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
     uint32_t out = 0;
-    
+
     if (port == MXC_GPIO3) {
     	if(MXC_MCR->gpio3_ctrl & P30_DATA_OUT(mask)) {
     		out |= MXC_GPIO_PIN_0;
