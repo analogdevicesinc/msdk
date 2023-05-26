@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef _CCID_H_
-#define _CCID_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_CCID_H_
+#define LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_CCID_H_
 
 /* CCID Class-specific requests */
 #define CCID_CONTROL_ABORT                  0x01
@@ -110,7 +110,7 @@ typedef struct {
 #define PC_to_RDR_Parameters_T0_T1_bSlot_OFFSET            5
 #define PC_to_RDR_Parameters_T0_T1_bSeq_OFFSET             6
 #define PC_to_RDR_Parameters_T0_T1_bProtocolNum_OFFSET     7
-#define PC_to_RDR_Parameters_T0_T1_abRFU_OFFSET        	   8
+#define PC_to_RDR_Parameters_T0_T1_abRFU_OFFSET            8
 #define PC_to_RDR_Parameters_T0_bmFindexDindex_OFFSET      10
 #define PC_to_RDR_Parameters_T0_bmTCCKST0_OFFSET           11
 #define PC_to_RDR_Parameters_T0_bmGuardTimeT0_OFFSET       12
@@ -121,13 +121,13 @@ typedef struct {
 #define PC_to_RDR_Parameters_T1_bmGuardTimeT1_OFFSET       12
 #define PC_to_RDR_Parameters_T1_bWaitingIntegerT1_OFFSET   13
 #define PC_to_RDR_Parameters_T1_bClockStop_OFFSET          14
-#define PC_to_RDR_Parameters_T1_bIFSC_OFFSET          	   15
+#define PC_to_RDR_Parameters_T1_bIFSC_OFFSET               15
 #define PC_to_RDR_Parameters_T1_bNadValue_OFFSET           16
 
 #define PC_to_RDR_SetDataRateAndClockFrequency_bMessageType_OFFSET      0
 #define PC_to_RDR_SetDataRateAndClockFrequency_dwLength_OFFSET          1
 #define PC_to_RDR_SetDataRateAndClockFrequency_bSlot_OFFSET             5
-#define PC_to_RDR_SetDataRateAndClockFrequency_bSeq_OFFSET         	    6
+#define PC_to_RDR_SetDataRateAndClockFrequency_bSeq_OFFSET              6
 #define PC_to_RDR_SetDataRateAndClockFrequency_abRFU_OFFSET             7
 #define PC_to_RDR_SetDataRateAndClockFrequency_dwClockFrequency_OFFSET  10
 #define PC_to_RDR_SetDataRateAndClockFrequency_dwDataRate_OFFSET        14
@@ -161,7 +161,7 @@ typedef __packed struct {
 #define bmCommandStatus_Failed_MASK                 0x40
 #define bmICCStatus_ICC_pres_and_active_MASK        0x00
 #define bmICCStatus_ICC_pres_and_inactive_MASK      0x01
-#define bmICCStatus_ICC_not_pres_MASK               0x02 
+#define bmICCStatus_ICC_not_pres_MASK               0x02
 
 #if defined(__GNUC__)
 typedef struct __attribute__((packed)) {
@@ -256,7 +256,7 @@ typedef __packed struct {
 #define RDR_to_PC_Parameters_T1_bmGuardTimeT1_OFFSET       12
 #define RDR_to_PC_Parameters_T1_bWaitingIntegerT1_OFFSET   13
 #define RDR_to_PC_Parameters_T1_bClockStop_OFFSET          14
-#define RDR_to_PC_Parameters_T1_bIFSC_OFFSET          	   15
+#define RDR_to_PC_Parameters_T1_bIFSC_OFFSET               15
 #define RDR_to_PC_Parameters_T1_bNadValue_OFFSET           16
 
 #define RDR_to_PC_Parameters_T1_Len                        RDR_to_PC_Parameters_T1_bNadValue_OFFSET + 1
@@ -376,7 +376,7 @@ typedef __packed struct {
   uint8_t   bClassEnvelope;
   uint16_t  wLcdLayout;
   uint8_t   bPINSupport;
-  uint8_t   bMaxCCIDBusySlots; 
+  uint8_t   bMaxCCIDBusySlots;
 } ccid_descriptor_t;
 
 /* CCID callback events, PC_to_RDR recieved on OUT EP */
@@ -414,7 +414,7 @@ int ccid_init(unsigned int interface);
  *            callback, call this function with a NULL parameter.
  */
 void ccid_chain_class_req(int (*func)(MXC_USB_SetupPkt *, void *), void *cbdata);
- 
+
 /**
  *  \brief    Set the specified configuration
  *  \details  Configures the class and endpoints and starts operation. This function should be
@@ -443,7 +443,7 @@ int ccid_is_received();
  *  \details  Dispatch according to last received message
  */
 void ccid_dispatcher(void *cbdata);
- 
+
 /**
  *  \brief    Register a callback to be called upon the specified event.
  *  \details  Register a callback to be called upon the specified event. To disable the
@@ -470,5 +470,5 @@ int ccid_rdr_to_pc(uint8_t *buffer, unsigned int len);
  *
  */
 int ccid_notify(uint8_t *buffer, unsigned int len);
- 
-#endif /* _CCID_H_ */
+
+#endif // LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_CCID_H_
