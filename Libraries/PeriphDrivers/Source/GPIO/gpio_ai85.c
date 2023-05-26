@@ -45,28 +45,18 @@
 
 /* **** Definitions **** */
 // Pin 3.0 Definitions
-#define P30_DATA_OUT(pin_mask) \
-    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_DO : 0)
-#define P30_OUT_EN(pin_mask) \
-    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_OE : 0)
-#define P30_PULL_DIS(pin_mask) \
-    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_PE : 0)
-#define P30_DATA_IN(pin_mask) \
-    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_IN : 0)
-#define PDOWN_OUT_EN(pin_mask) \
-    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_OUTEN_PDOWN_OUT_EN : 0)
+#define P30_DATA_OUT(pin_mask) ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_DO : 0)
+#define P30_OUT_EN(pin_mask) ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_OE : 0)
+#define P30_PULL_DIS(pin_mask) ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_PE : 0)
+#define P30_DATA_IN(pin_mask) ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_IN : 0)
+#define PDOWN_OUT_EN(pin_mask) ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_OUTEN_PDOWN_OUT_EN : 0)
 
 // Pin 3.1 Definitions
-#define P31_DATA_OUT(pin_mask) \
-    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_DO : 0)
-#define P31_OUT_EN(pin_mask) \
-    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_OE : 0)
-#define P31_PULL_DIS(pin_mask) \
-    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_PE : 0)
-#define P31_DATA_IN(pin_mask) \
-    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_IN : 0)
-#define SQWAVE_OUT_EN(pin_mask) \
-    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_OUTEN_SQWOUT_EN : 0)
+#define P31_DATA_OUT(pin_mask) ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_DO : 0)
+#define P31_OUT_EN(pin_mask) ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_OE : 0)
+#define P31_PULL_DIS(pin_mask) ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_PE : 0)
+#define P31_DATA_IN(pin_mask) ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_IN : 0)
+#define SQWAVE_OUT_EN(pin_mask) ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_OUTEN_SQWOUT_EN : 0)
 
 /* **** Globals **** */
 
@@ -222,7 +212,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
-    uint32_t in;
+    uint32_t in = 0;
 
     if (port == MXC_GPIO3) {
         if (MXC_MCR->gpio3_ctrl & P30_DATA_IN(mask)) {
