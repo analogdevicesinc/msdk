@@ -46,27 +46,27 @@
 /* **** Definitions **** */
 // Pin 3.0 Definitions
 #define P30_DATA_OUT(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_DO : 0)
+    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_DO : 0)
 #define P30_OUT_EN(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_OE : 0)
+    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_OE : 0)
 #define P30_PULL_DIS(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_PE : 0)
+    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_PE : 0)
 #define P30_DATA_IN(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_GPIO3_CTRL_P30_IN : 0)
+    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_GPIO3_CTRL_P30_IN : 0)
 #define PDOWN_OUT_EN(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_0) == MXC_GPIO_PIN_0 ? MXC_F_MCR_OUTEN_PDOWN_OUT_EN : 0)
+    ((pin_mask & (1 << 0)) == (1 << 0) ? MXC_F_MCR_OUTEN_PDOWN_OUT_EN : 0)
 
 // Pin 3.1 Definitions
 #define P31_DATA_OUT(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_DO : 0)
+    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_DO : 0)
 #define P31_OUT_EN(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_OE : 0)
+    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_OE : 0)
 #define P31_PULL_DIS(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_PE : 0)
+    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_PE : 0)
 #define P31_DATA_IN(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_GPIO3_CTRL_P31_IN : 0)
+    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_GPIO3_CTRL_P31_IN : 0)
 #define SQWAVE_OUT_EN(pin_mask) \
-    ((pin_mask & MXC_GPIO_PIN_1) == MXC_GPIO_PIN_1 ? MXC_F_MCR_OUTEN_SQWOUT_EN : 0)
+    ((pin_mask & (1 << 1)) == (1 << 1) ? MXC_F_MCR_OUTEN_SQWOUT_EN : 0)
 
 /* **** Globals **** */
 
