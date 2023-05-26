@@ -114,11 +114,12 @@ int MXC_GPIO_Reset(uint32_t portmask)
 
 int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 {
-    int port;
-    int error = E_NO_ERROR;
+    int port, error;
     mxc_gpio_regs_t *gpio = cfg->port;
 
     port = MXC_GPIO_GET_IDX(cfg->port);
+
+    MXC_GPIO_Init(1 << port);
 
     if (cfg->port == MXC_GPIO3) {
         switch (cfg->func) {
@@ -162,8 +163,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
             return E_NOT_SUPPORTED;
         }
     } else {
-        MXC_GPIO_Init(1 << port);
-
         // Configure alternate function
         error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
         if (error != E_NO_ERROR) {
@@ -204,12 +203,10 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         default:
             return E_BAD_PARAM;
         }
-
-        error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
     }
 
     // Configure the vssel
-    return error;
+    return MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
 }
 
 /* ************************************************************************** */
@@ -247,8 +244,18 @@ void MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask)
 /* ************************************************************************** */
 uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask)
 {
+    uint32_t out = 0;
+
     if (port == MXC_GPIO3) {
-        return MXC_MCR->gpio3_ctrl & (P30_DATA_OUT(mask) | P31_DATA_OUT(mask));
+        if(MXC_MCR->gpio3_ctrl & P30_DATA_OUT(mask)) {
+            out |= MXC_GPIO_PIN_0;
+        }
+
+        if (MXC_MCR->gpio3_ctrl & P31_DATA_OUT(mask)) {
+            out |= MXC_GPIO_PIN_1;
+        }
+
+        return out;
     }
 
     return MXC_GPIO_RevA_OutGet((mxc_gpio_reva_regs_t *)port, mask);
@@ -261,6 +268,7 @@ void MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val)
         uint32_t gpio3_cp = MXC_MCR->gpio3_ctrl & ~(P30_DATA_OUT(mask) | P31_DATA_OUT(mask));
 
         MXC_MCR->gpio3_ctrl = gpio3_cp | P30_DATA_OUT((mask & val)) | P31_DATA_OUT((mask & val));
+        return;
     }
 
     MXC_GPIO_RevA_OutPut((mxc_gpio_reva_regs_t *)port, mask, val);
@@ -356,6 +364,7 @@ int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t ma
 
         return E_NO_ERROR;
     }
+    
     return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
 }
 
