@@ -6,7 +6,7 @@ concurrency:
 
 # Controls when the workflow will run
 on:
-  pull_request:
+  pull_request_target:
     types: [opened, edited, synchronize, reopened]
 
 env:
@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checking PR Title
         uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           types: |
             fix
