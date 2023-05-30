@@ -103,8 +103,10 @@ endif
 # the variables below.
 
 
-include ./project.mk
+PROJECTMK ?= $(abspath ./project.mk)
+include $(PROJECTMK)
 $(info Loaded project.mk)
+# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
@@ -290,7 +292,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 #					However, if there are multiple secure part #s for the target
 #					microcontroller this variable may need to be changed.
 
-SBT ?= 0
+SBT ?= 1
 ifeq ($(SBT), 1)
 MAXIM_SBT_DIR ?= $(MAXIM_PATH)/Tools/SBT
 MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
@@ -334,6 +336,10 @@ endif
 # Enable colors when --sync-output is used.
 # See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
 ifneq ($(MAKE_TERMOUT),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+ifneq ($(FORCE_COLOR),)
 PROJ_CFLAGS += -fdiagnostics-color=always
 endif
 
