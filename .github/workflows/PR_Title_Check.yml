@@ -57,38 +57,4 @@ jobs:
             The subject "{subject}" found in the pull request title "{title}"
             didn't match the configured pattern. Please ensure that the subject
             starts with an uppercase character.
-
-        run: |
-          pr_title=${{ github.event.pull_request.title }}
-
-          echo "PR Title: ${pr_title}"
-
-          python3 pr_title_check.py ${pr_title}
-
-      - uses: actions/github-script@v6
-        id: get-pr-info
-        with:
-          script: |
-            const request = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.issue.number
-            }
-
-            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
-
-            const acknowledge = {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: context.payload.comment.id,
-              content: 'rocket'
-            }
-
-            try {
-              github.rest.reactions.createForIssueComment(acknowledge)
-              const result = await github.rest.pulls.get(request)
-              return result.data
-            } catch (err) {
-              core.setFailed(`Request failed with error ${err}`)
-            }
         
