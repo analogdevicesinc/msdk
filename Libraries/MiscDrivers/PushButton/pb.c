@@ -56,7 +56,9 @@ int PB_Init(void)
 /******************************************************************************/
 int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 {
-    MXC_ASSERT(pb < num_pbs);
+    if (pb >= num_pbs) {
+        return E_BAD_PARAM; 
+    }
 
     if (callback) {
         // Register callback
@@ -78,7 +80,9 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 /******************************************************************************/
 int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
 {
-    MXC_ASSERT(pb < num_pbs);
+    if (pb >= num_pbs) {
+        return E_BAD_PARAM; 
+    }
 
     if (callback) {
         // Register callback
