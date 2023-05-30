@@ -1,4 +1,4 @@
-name: Pull Request Title Checker.
+name: Pull Request Title Checker
 
 concurrency: 
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -6,14 +6,8 @@ concurrency:
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    types: [opened, edited, synchronize, reopened]
 
 env:
   MSDK_DIR: msdk
@@ -26,4 +20,89 @@ jobs:
     runs-on: [ ubuntu-latest ]
 
     steps:
-      
+      - name: Checking PR Title
+        uses: amannn/action-semantic-pull-request@v5
+        with:
+          types: |
+            fix
+            feat
+            chore
+            refactor
+            docs
+            style
+            test
+            perf
+            ci
+            build
+            revert
+
+          scopes: |
+            BLE
+            MAX32520
+            MAX32570
+            MAX32572
+            MAX32650
+            MAX32655
+            MAX32660
+            MAX32662
+            MAX32665
+            MAX32670
+            MAX32672
+            MAX32675
+            MAX32680
+            MAX32690
+            MAX78000
+            MAX78002
+            Register
+            Tools
+            Workflow
+            MSDK-\d+
+            Ticket-\d+
+            VSCode
+            Installer
+            IAR
+            Keil
+
+          requireScope: true
+          disallowScopes: |
+            release
+
+          subjectPattern: ^(?=[A-Z]).+$
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            starts with an uppercase character.
+
+        run: |
+          pr_title=${{ github.event.pull_request.title }}
+
+          echo "PR Title: ${pr_title}"
+
+          python3 pr_title_check.py ${pr_title}
+
+      - uses: actions/github-script@v6
+        id: get-pr-info
+        with:
+          script: |
+            const request = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number
+            }
+
+            core.info(`Getting PR #${request.pull_number} from ${request.owner}/${request.repo}`)
+
+            const acknowledge = {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: context.payload.comment.id,
+              content: 'rocket'
+            }
+
+            try {
+              github.rest.reactions.createForIssueComment(acknowledge)
+              const result = await github.rest.pulls.get(request)
+              return result.data
+            } catch (err) {
+              core.setFailed(`Request failed with error ${err}`)
+            }
+        
