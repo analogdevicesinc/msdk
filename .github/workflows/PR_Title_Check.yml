@@ -37,33 +37,6 @@ jobs:
             revert
 
           scopes: |
-            BLE
-            MAX32520
-            MAX32570
-            MAX32572
-            MAX32650
-            MAX32655
-            MAX32660
-            MAX32662
-            MAX32665
-            MAX32670
-            MAX32672
-            MAX32675
-            MAX32680
-            MAX32690
-            MAX78000
-            MAX78002
-            Register
-            Tools
-            Workflow
-            MSDK-\d+
-            Ticket-\d+
-            VSCode
-            Installer
-            IAR
-            Keil
-
-
             Documentation
             Examples
             Tools
@@ -73,6 +46,8 @@ jobs:
             MiscDrivers
             PeriphDrivers
             Third-Party
+            ignore
+            workflow
 
           requireScope: true
           disallowScopes: |
