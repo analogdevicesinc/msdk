@@ -40,6 +40,7 @@ SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
+SRCS += tft_st7735.c
 
 MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 
@@ -48,9 +49,11 @@ VPATH += $(BOARD_DIR)/Source
 VPATH += $(MISC_DRIVERS_DIR)
 VPATH += $(MISC_DRIVERS_DIR)/LED
 VPATH += $(MISC_DRIVERS_DIR)/PushButton
+VPATH += $(MISC_DRIVERS_DIR)/Display
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
 IPATH += $(MISC_DRIVERS_DIR)
 IPATH += $(MISC_DRIVERS_DIR)/LED
 IPATH += $(MISC_DRIVERS_DIR)/PushButton
+IPATH += $(MISC_DRIVERS_DIR)/Display

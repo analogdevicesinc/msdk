@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -149,7 +149,7 @@ int MXC_USB_Init(maxusb_cfg_options_t *options)
     MXC_USBHS->mxm_suspend = 0;
 
     /* Configure PHY */
-#if 0	
+#if 0
     MXC_USBHS->xcfgi0 = (0x1 << 3) | (0x1 << 11);
     MXC_USBHS->xcfgi1 = 0;
     MXC_USBHS->xcfgi2 = 0x1 << (72-64);
@@ -159,7 +159,7 @@ int MXC_USB_Init(maxusb_cfg_options_t *options)
     MXC_USBHS->m31_phy_xcfgi_63_32 = 0;
     MXC_USBHS->m31_phy_xcfgi_95_64 = 0x1 << (72-64);
     MXC_USBHS->m31_phy_xcfgi_127_96 = 0;
-	
+
 
 #ifdef USBHS_M31_CLOCK_RECOVERY
     MXC_USBHS->m31_phy_noncry_rstb = 1;
@@ -243,12 +243,12 @@ unsigned int MXC_USB_GetStatus(void)
 
     /* VBUS */
     if (MXC_USBHS->mxm_reg_a4 & MXC_F_USBHS_MXM_REG_A4_VRST_VDDB_N_A) {
-	status |= MAXUSB_STATUS_VBUS_ON;
+        status |= MAXUSB_STATUS_VBUS_ON;
     }
-    
+
     /* High-speed state */
     if (MXC_USBHS->power & MXC_F_USBHS_POWER_HS_MODE) {
-	status |= MAXUSB_STATUS_HIGH_SPEED;
+        status |= MAXUSB_STATUS_HIGH_SPEED;
     }
 
     return status;
@@ -265,7 +265,7 @@ int MXC_USB_ConfigEp(unsigned int ep, maxusb_ep_type_t type, unsigned int size)
     MXC_USB_ResetEp(ep);
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     /* Select register index for endpoint */
     MXC_USBHS->index = ep;
@@ -288,11 +288,11 @@ int MXC_USB_ConfigEp(unsigned int ep, maxusb_ep_type_t type, unsigned int size)
             MXC_USBHS->intrinen |= (1 << ep);
             break;
         default:
-            MAXUSB_EXIT_CRITICAL();
+            MXC_SYS_Crit_Exit();
             return -1;
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -311,7 +311,7 @@ int MXC_USB_Stall(unsigned int ep)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     MXC_USBHS->index = ep;
 
@@ -340,7 +340,7 @@ int MXC_USB_Stall(unsigned int ep)
         }
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -352,7 +352,7 @@ int MXC_USB_Unstall(unsigned int ep)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     MXC_USBHS->index = ep;
 
@@ -376,7 +376,7 @@ int MXC_USB_Unstall(unsigned int ep)
         }
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -411,7 +411,7 @@ int MXC_USB_ResetEp(unsigned int ep)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     /* clear pending requests */
     req = MXC_USB_Request[ep];
@@ -445,7 +445,7 @@ int MXC_USB_ResetEp(unsigned int ep)
         MXC_USBHS->outcsru = MXC_F_USBHS_OUTCSRU_DPKTBUFDIS;
         MXC_USBHS->outmaxp = 0;
 
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
 
         /* We specifically do not complete SETUP callbacks, as this causes undesired SETUP status-stage STALLs */
         if (req) {
@@ -456,7 +456,7 @@ int MXC_USB_ResetEp(unsigned int ep)
             }
         }
     } else {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
     }
 
     return 0;
@@ -472,7 +472,7 @@ int MXC_USB_Ackstat(unsigned int ep)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     saved_index = MXC_USBHS->index;
     MXC_USBHS->index = 0;
@@ -486,7 +486,7 @@ int MXC_USB_Ackstat(unsigned int ep)
 
     MXC_USBHS->index = saved_index;
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
 
     return 0;
 }
@@ -505,7 +505,6 @@ static void event_in_data(uint32_t irqs)
 
     /* Loop for each data endpoint */
     for (ep = 0; ep < MXC_USBHS_NUM_EP; ep++) {
-
         buffer_bit = (1 << ep);
         if ((irqs & buffer_bit) == 0) { /* Not set, next Endpoint */
             continue;
@@ -525,7 +524,6 @@ static void event_in_data(uint32_t irqs)
 
         /* Check for more data left to transmit */
         if (data_left) {
-
             if (data_left >= ep_size[ep]) {
                 len = ep_size[ep];
             } else {
@@ -547,7 +545,7 @@ static void event_in_data(uint32_t irqs)
 
                     /* set done return value */
                     if (req->callback) {
-			req->callback(req->cbdata);
+                        req->callback(req->cbdata);
                     }
                 } else {
                     MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY;
@@ -579,12 +577,10 @@ static void event_out_data(uint32_t irqs)
 
     /* Loop for each data endpoint */
     for (ep = 0; ep < MXC_USBHS_NUM_EP; ep++) {
-	
         buffer_bit = (1 << ep);
         if ((irqs & buffer_bit) == 0) {
             continue;
         }
-
         /* If an interrupt was received, but no request on this EP, ignore. */
         if (!MXC_USB_Request[ep]) {
             continue;
@@ -681,7 +677,6 @@ static void event_out_data(uint32_t irqs)
                 if (req->callback) {
                     req->callback(req->cbdata);
                 }
-
             }
         }
     }
@@ -778,7 +773,6 @@ void MXC_USB_IrqHandler(maxusb_usbio_events_t *evt)
 
     /* Restore register index before exiting ISR */
     MXC_USBHS->index = saved_index;
-
 }
 
 int MXC_USB_IrqEnable(maxusb_event_t event)
@@ -800,6 +794,7 @@ int MXC_USB_IrqEnable(maxusb_event_t event)
 
         case MAXUSB_EVENT_SUSP:
             /* Suspend */
+            MXC_USBHS->power |= MXC_F_USBHS_POWER_EN_SUSPENDM;
             MXC_USBHS->intrusben |= MXC_F_USBHS_INTRUSBEN_SUSPEND_INT_EN;
             break;
 
@@ -846,6 +841,7 @@ int MXC_USB_IrqDisable(maxusb_event_t event)
         case MAXUSB_EVENT_SUSP:
             /* Suspend */
             MXC_USBHS->intrusben &= ~MXC_F_USBHS_INTRUSBEN_SUSPEND_INT_EN;
+            MXC_USBHS->power &= ~MXC_F_USBHS_POWER_EN_SUSPENDM;
             break;
 
         case MAXUSB_EVENT_SUDAV:
@@ -883,13 +879,13 @@ int MXC_USB_GetSetup(MXC_USB_SetupPkt *sud)
     volatile uint8_t *fifoptr = (uint8_t *)&MXC_USBHS->fifo0;
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+     MXC_SYS_Crit_Enter();
 
     /* Select endpoint 0 */
     MXC_USBHS->index = 0;
 
     if ((sud == NULL) || !(MXC_USBHS->csr0 & MXC_F_USBHS_CSR0_OUTPKTRDY)) {
-	    MAXUSB_EXIT_CRITICAL();						
+         MXC_SYS_Crit_Exit();
         return -1;
     }
 
@@ -917,7 +913,7 @@ int MXC_USB_GetSetup(MXC_USB_SetupPkt *sud)
         setup_phase = SETUP_NODATA;
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -975,13 +971,13 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     MXC_USBHS->index = ep;
 
     /* if pending request; error */
     if (MXC_USB_Request[ep] || (MXC_USBHS->incsrl & MXC_F_USBHS_INCSRL_INPKTRDY)) {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
         return -1;
     }
 
@@ -1019,7 +1015,7 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
         }
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -1034,22 +1030,22 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
     }
 
     /* Interrupts must be disabled while banked registers are accessed */
-    MAXUSB_ENTER_CRITICAL();
+    MXC_SYS_Crit_Enter();
 
     /* EP must be enabled (configured) and not stalled */
     if (!MXC_USB_IsConfigured(ep)) {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
         return -1;
     }
 
     if (MXC_USB_IsStalled(ep)) {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
         return -1;
     }
 
     /* if pending request; error */
     if (MXC_USB_Request[ep]) {
-        MAXUSB_EXIT_CRITICAL();
+        MXC_SYS_Crit_Exit();
         return -1;
     }
 
@@ -1067,36 +1063,35 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
 
     /* Since the OUT interrupt for EP 0 doesn't really exist, only do this logic for other endpoints */
     if (ep) {
+        armed = 0;
 
-		armed = 0;
-        
         if (!armed) {
             /* EP0 or no free DMA channel found, fall back to PIO */
-            
+
             /* See if data already in FIFO for this EP */
             if (MXC_USBHS->outcsrl & MXC_F_USBHS_OUTCSRL_OUTPKTRDY) {
                 reqsize = MXC_USBHS->outcount;
                 if (reqsize > (req->reqlen - req->actlen)) {
                     reqsize = (req->reqlen - req->actlen);
                 }
-            
+
                 unload_fifo(&req->data[req->actlen], get_fifo_ptr(ep), reqsize);
 
                 req->actlen += reqsize;
-            
+
                 /* Signal to H/W that FIFO has been read */
                 MXC_USBHS->outcsrl &= ~MXC_F_USBHS_OUTCSRL_OUTPKTRDY;
                 if ((req->type == MAXUSB_TYPE_PKT) || (req->actlen == req->reqlen)) {
                  /* Done with request, callback fires if configured */
-                    MAXUSB_EXIT_CRITICAL();
+                    MXC_SYS_Crit_Exit();
                     MXC_USB_Request[ep] = NULL;
-                  
+
                     if (req->callback) {
                         req->callback(req->cbdata);
                     }
                     return 0;
                 } else {
-		            /* Not done, more data requested */
+                    /* Not done, more data requested */
                     MXC_USBHS->introuten |= (1 << ep);
                 }
             } else {
@@ -1106,7 +1101,7 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
         }
     }
 
-    MAXUSB_EXIT_CRITICAL();
+    MXC_SYS_Crit_Exit();
     return 0;
 }
 
@@ -1122,37 +1117,37 @@ void MXC_USB_RemoteWakeup(void)
 int MXC_USB_TestMode(unsigned int value)
 {
     const uint8_t test_packet[] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
-				   0x00, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA,
-				   0xAA, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE,
-				   0xEE, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
-				   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xBF, 0xDF,
-				   0xEF, 0xF7, 0xFB, 0xFD, 0xFC, 0x7E, 0xBF, 0xDF,
-				   0xEF, 0xF7, 0xFB, 0xFD, 0x7E};
-	
+                   0x00, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA, 0xAA,
+                   0xAA, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE, 0xEE,
+                   0xEE, 0xFE, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
+                   0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x7F, 0xBF, 0xDF,
+                   0xEF, 0xF7, 0xFB, 0xFD, 0xFC, 0x7E, 0xBF, 0xDF,
+                   0xEF, 0xF7, 0xFB, 0xFD, 0x7E};
+
     switch (value) {
-	case 0x01:
-	    /* Test_J */
-	    MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_J;
-	    break;
-	case 0x02:
-	    /* Test_K */
-	    MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_K;
-	    break;
-	case 0x03:
-	    /* Test_SE0_NAK */
-	    MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_SE0_NAK;
-	    break;
-	case 0x04:
-	    /* Test_Packet */
-	    /* Load EP 0 with data provided by section 11.4 of musbhsfc_pg.pdf */
-	    /* sizeof() considered safe, since we use uint8_t explicitly */
-	    load_fifo(get_fifo_ptr(0), (uint8_t*)test_packet, sizeof(test_packet));
-	    MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY;
-	    MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_PKT;
-	    break;
-	default:
-	    /* Unsupported */
-	    return -1;
+    case 0x01:
+        /* Test_J */
+        MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_J;
+        break;
+    case 0x02:
+        /* Test_K */
+        MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_K;
+        break;
+    case 0x03:
+        /* Test_SE0_NAK */
+        MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_SE0_NAK;
+        break;
+    case 0x04:
+        /* Test_Packet */
+        /* Load EP 0 with data provided by section 11.4 of musbhsfc_pg.pdf */
+        /* sizeof() considered safe, since we use uint8_t explicitly */
+        load_fifo(get_fifo_ptr(0), (uint8_t*)test_packet, sizeof(test_packet));
+        MXC_USBHS->csr0 |= MXC_F_USBHS_CSR0_INPKTRDY;
+        MXC_USBHS->testmode = MXC_F_USBHS_TESTMODE_TEST_PKT;
+        break;
+    default:
+        /* Unsupported */
+        return -1;
     }
 
     return 0;

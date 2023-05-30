@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,10 +30,11 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
+
 #include <stdint.h>
 #include "fifo.h"
 #include "usb_hwopt.h"
+#include "mxc_sys.h"
 
 #if defined ( __ICCARM__ ) || defined( __GNUC__ ) || defined ( __CC_ARM )
 #include <mxc_device.h>
@@ -45,14 +46,14 @@
 void fifo_init(fifo_t * fifo, void * mem, unsigned int length)
 {
   // atomic FIFO access
-  MAXUSB_ENTER_CRITICAL();
+  MXC_SYS_Crit_Enter();
 
   fifo->rindex = 0;
   fifo->windex = 0;
   fifo->data = mem;
   fifo->length = length;
 
-  MAXUSB_EXIT_CRITICAL();
+  MXC_SYS_Crit_Exit();
 }
 
 /****************************************************************************/
@@ -65,7 +66,7 @@ int fifo_put8(fifo_t * fifo, uint8_t element)
   }
 
   // atomic FIFO access
-  MAXUSB_ENTER_CRITICAL();
+  MXC_SYS_Crit_Enter();
 
   // Put data into FIFO
   ((uint8_t*)(fifo->data))[fifo->windex] = element;
@@ -76,8 +77,8 @@ int fifo_put8(fifo_t * fifo, uint8_t element)
     fifo->windex = 0;
   }
 
-  MAXUSB_EXIT_CRITICAL();
-    
+  MXC_SYS_Crit_Exit();
+
   return 0;
 }
 
@@ -89,9 +90,9 @@ int fifo_get8(fifo_t * fifo, uint8_t * element)
     return -1;
 
   // atomic FIFO access
-  MAXUSB_ENTER_CRITICAL();
+  MXC_SYS_Crit_Enter();
 
-   // Get data from FIFO
+  //Get data from FIFO
   *element = ((uint8_t*)(fifo->data))[fifo->rindex];
 
   // Increment pointer
@@ -100,7 +101,7 @@ int fifo_get8(fifo_t * fifo, uint8_t * element)
     fifo->rindex = 0;
   }
 
-  MAXUSB_EXIT_CRITICAL();
+  MXC_SYS_Crit_Exit();
 
   return 0;
 }
@@ -115,7 +116,7 @@ int fifo_put16(fifo_t * fifo, uint16_t element)
   }
 
   // atomic FIFO access
-  MAXUSB_ENTER_CRITICAL();
+  MXC_SYS_Crit_Enter();
 
   // Put data into FIFO
   ((uint16_t*)(fifo->data))[fifo->windex] = element;
@@ -126,8 +127,8 @@ int fifo_put16(fifo_t * fifo, uint16_t element)
     fifo->windex = 0;
   }
 
-  MAXUSB_EXIT_CRITICAL();
-    
+  MXC_SYS_Crit_Exit();
+
   return 0;
 }
 
@@ -139,7 +140,7 @@ int fifo_get16(fifo_t * fifo, uint16_t * element)
     return -1;
 
   // atomic FIFO access
-  MAXUSB_ENTER_CRITICAL();
+  MXC_SYS_Crit_Enter();
 
   // Get data from FIFO
   *element = ((uint16_t*)(fifo->data))[fifo->rindex];
@@ -150,8 +151,8 @@ int fifo_get16(fifo_t * fifo, uint16_t * element)
     fifo->rindex = 0;
   }
 
-  MAXUSB_EXIT_CRITICAL();
-    
+  MXC_SYS_Crit_Exit();
+
   return 0;
 }
 
@@ -159,12 +160,12 @@ int fifo_get16(fifo_t * fifo, uint16_t * element)
 void fifo_clear(fifo_t * fifo)
 {
   // atomic FIFO access
-  MAXUSB_ENTER_CRITICAL();
+  MXC_SYS_Crit_Enter();
 
   fifo->rindex = 0;
   fifo->windex = 0;
 
-  MAXUSB_EXIT_CRITICAL();
+  MXC_SYS_Crit_Exit();
 }
 
 /****************************************************************************/
@@ -179,11 +180,11 @@ int fifo_full(fifo_t * fifo)
   int retval;
 
   // atomic FIFO access
-  MAXUSB_ENTER_CRITICAL();
+  MXC_SYS_Crit_Enter();
 
   retval = ( (fifo->windex == (fifo->rindex - 1)) || ((fifo->rindex == 0) && (fifo->windex == (fifo->length - 1))) );
 
-  MAXUSB_EXIT_CRITICAL();
+  MXC_SYS_Crit_Exit();
 
   return retval;
 }
@@ -194,7 +195,7 @@ unsigned int fifo_level(fifo_t * fifo)
   uint16_t value;
 
   // atomic FIFO access
-  MAXUSB_ENTER_CRITICAL();
+  MXC_SYS_Crit_Enter();
 
   if (fifo->windex >= fifo->rindex) {
     value = fifo->windex - fifo->rindex;
@@ -202,7 +203,7 @@ unsigned int fifo_level(fifo_t * fifo)
     value = fifo->length - fifo->rindex + fifo->windex;
   }
 
-  MAXUSB_EXIT_CRITICAL();
+  MXC_SYS_Crit_Exit();
 
   return value;
 }
@@ -213,7 +214,7 @@ unsigned int fifo_remaining(fifo_t * fifo)
   uint16_t value;
 
   // atomic FIFO access
-  MAXUSB_ENTER_CRITICAL();
+  MXC_SYS_Crit_Enter();
 
   if (fifo->rindex > fifo->windex) {
     value = fifo->rindex - fifo->windex - 1;
@@ -221,7 +222,7 @@ unsigned int fifo_remaining(fifo_t * fifo)
     value = fifo->length - fifo->windex + fifo->rindex - 1;
   }
 
-  MAXUSB_EXIT_CRITICAL();
+  MXC_SYS_Crit_Exit();
 
   return value;
 }

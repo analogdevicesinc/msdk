@@ -64,7 +64,7 @@
 // Configuration options
 // ------------------------
 #define ENABLE_TFT // Comment out to disable TFT and send image to serial port instead.
-// #define STREAM_ENABLE
+//#define STREAM_ENABLE
 /* If enabled, camera is setup in streaming mode to send the image
 line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
 image first and then sends to TFT or serial port.
@@ -310,7 +310,7 @@ int main(void)
 
 #ifdef BOARD_FTHR_REVA
     MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL);
-#ifdef FEATHER_FAST_STREAM
+#ifdef STREAM_ENABLE
     /* Set the screen rotation */
     MXC_TFT_SetRotation(ROTATE_270);
 #endif
@@ -408,8 +408,7 @@ int main(void)
     }
 #else
     camera_start_capture_image_tft();
-    while (1)
-        ;
+    while (1) {}
 #endif
 
     return ret;

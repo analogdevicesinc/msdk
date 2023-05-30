@@ -73,14 +73,14 @@ void RTC_IRQHandler(void) {}
 // *****************************************************************************
 void rescheduleAlarm()
 {
-    int time;
+    uint32_t time;
     int flags = MXC_RTC_GetFlags();
 
     // Check for TOD alarm flag
     if (flags & MXC_F_RTC_CTRL_TOD_ALARM) {
         MXC_RTC_ClearFlags(MXC_F_RTC_CTRL_TOD_ALARM);
 
-        time = MXC_RTC_GetSecond(); // Get Current time (s)
+        MXC_RTC_GetSeconds(&time); // Get Current time (s)
 
         // Disable interrupt while re-arming RTC alarm
         while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
@@ -102,10 +102,9 @@ void rescheduleAlarm()
 void printTime()
 {
     uint32_t day, hr, min, sec;
-    uint32_t dummy;
 
     // Get current time (don't care about Sub-second count here)
-    while (MXC_RTC_GetTime(&sec, &dummy) != E_NO_ERROR) {}
+    while (MXC_RTC_GetSeconds(&sec) != E_NO_ERROR) {}
 
     day = sec / SECS_PER_DAY;
     sec -= day * SECS_PER_DAY;
