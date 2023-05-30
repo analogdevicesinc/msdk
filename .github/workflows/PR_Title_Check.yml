@@ -62,6 +62,8 @@ jobs:
             release
 
           subjectPattern: ^[A-Z][\w\s]+(?![?.!,])$
+
+          subjectPatternError: |
             The subject "{subject}" found in the pull request title "{title}"
             didn't match the configured pattern. Please ensure that the subject
             starts with an uppercase character and does not end with any
