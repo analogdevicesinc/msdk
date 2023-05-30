@@ -57,7 +57,7 @@ int PB_Init(void)
 int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 {
     if (pb >= num_pbs) {
-        return E_BAD_PARAM; 
+        return E_BAD_PARAM;
     }
 
     if (callback) {
@@ -81,7 +81,7 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
 {
     if (pb >= num_pbs) {
-        return E_BAD_PARAM; 
+        return E_BAD_PARAM;
     }
 
     if (callback) {
