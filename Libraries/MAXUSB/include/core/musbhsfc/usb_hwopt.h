@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,11 +29,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
- 
-#ifndef _USBIO_HWOPT_H_
-#define _USBIO_HWOPT_H_
+
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_MUSBHSFC_USB_HWOPT_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_MUSBHSFC_USB_HWOPT_H_
 
 #include "mxc_device.h"
 #include "usbhs_regs.h"
@@ -49,11 +48,6 @@ typedef struct {
   int (*init_callback)(void); /* User-supplied function for initializing the USB block */
   int (*shutdown_callback)(void); /* User-supplied function for shutting down the USB block */
 } maxusb_cfg_options_t;
-
-#if !defined(MAXUSB_ENTER_CRITICAL) && !defined(MAXUSB_EXIT_CRITICAL)
-#define MAXUSB_ENTER_CRITICAL() __disable_irq()
-#define MAXUSB_EXIT_CRITICAL() __enable_irq()
-#endif
 
 /** 
  * @brief Put the transceiver into a low power state.
@@ -79,4 +73,4 @@ void MXC_USB_DmaIsr(void);
 }
 #endif
 
-#endif /* _USBIO_HWOPT_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_MUSBHSFC_USB_HWOPT_H_

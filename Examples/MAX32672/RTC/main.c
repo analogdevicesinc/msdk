@@ -57,9 +57,9 @@
 #define LED_ALARM 0
 #define LED_TODA 1
 
-#define TIME_OF_DAY_SEC 10
+#define TIME_OF_DAY_SEC 5
 #define SUBSECOND_MSEC_0 250
-#define SUBSECOND_MSEC_1 500
+#define SUBSECOND_MSEC_1 1000
 
 #define MSEC_TO_RSSA(x) \
     (0 - ((x * 4096) /  \
@@ -75,7 +75,7 @@ int ss_interval = SUBSECOND_MSEC_0;
 /***** Functions *****/
 void RTC_IRQHandler(void)
 {
-    int time;
+    uint32_t time;
     int flags = MXC_RTC_GetFlags();
 
     // Check sub-second alarm flag.
@@ -93,7 +93,7 @@ void RTC_IRQHandler(void)
         while (MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {}
 
         // Re-arm RTC Time of Day alarm
-        time = MXC_RTC_GetSecond(); // busy already checked in MXC_RTC_DisableInt
+        MXC_RTC_GetSeconds(&time); // busy already checked in MXC_RTC_DisableInt
         if (MXC_RTC_SetTimeofdayAlarm(time + TIME_OF_DAY_SEC) != E_NO_ERROR) {
             /* Handle Error */
         }
@@ -128,17 +128,18 @@ void buttonHandler()
 
 void printTime()
 {
-    int day, hr, min, sec, rtc_readout;
+    int day, hr, min, err;
+    uint32_t sec, rtc_readout;
     double subsec;
 
     do {
-        rtc_readout = MXC_RTC_GetSubSecond();
-    } while (rtc_readout == E_BUSY);
+        err = MXC_RTC_GetSubSeconds(&rtc_readout);
+    } while (err != E_NO_ERROR);
     subsec = rtc_readout / 4096.0;
 
     do {
-        rtc_readout = MXC_RTC_GetSecond();
-    } while (rtc_readout == E_BUSY);
+        err = MXC_RTC_GetSeconds(&rtc_readout);
+    } while (err != E_NO_ERROR);
     sec = rtc_readout;
 
     day = sec / SECS_PER_DAY;
@@ -152,7 +153,7 @@ void printTime()
 
     subsec += sec;
 
-    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f", day, hr, min, subsec);
+    printf("\nCurrent Time (dd:hh:mm:ss): %02d:%02d:%02d:%05.2f\n", day, hr, min, subsec);
 }
 
 // *****************************************************************************
@@ -187,9 +188,6 @@ int main(void)
 
         while (1) {}
     }
-
-    printf("RTC started\n");
-    printTime();
 
     // Set Time of Day Alarm
     if (MXC_RTC_DisableInt(MXC_RTC_INT_EN_LONG) == E_BUSY) {
@@ -227,6 +225,9 @@ int main(void)
 
         while (1) {}
     }
+
+    printf("RTC started\n");
+    printTime();
 
     while (1) {
         if (buttonPressed) {

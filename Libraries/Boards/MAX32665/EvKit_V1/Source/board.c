@@ -92,10 +92,7 @@ static int display_comm_init(void)
 
     err = MXC_SPI_Init(DISPLAY_SPI, 1, 0, 1, 0, DISPLAY_SPI_SPEED, MAP_A);
     if (err != E_NO_ERROR) {
-        printf("-->Failed master\n");
         return err;
-    } else {
-        printf("\n-->SPI Master Initialization Complete");
     }
 
     MXC_SPI_SetDataSize(DISPLAY_SPI, 8);
@@ -140,7 +137,6 @@ static int display_comm_write(uint8_t *data, uint32_t data_len)
                           .rxCnt = 0,
                           .completeCB = NULL };
     if ((error = MXC_SPI_MasterTransaction(&req)) != 0) {
-        printf("Error writing: %d\n", error);
         return error;
     }
     SPI_CS(0);

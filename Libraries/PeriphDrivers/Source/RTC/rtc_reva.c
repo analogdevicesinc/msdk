@@ -308,6 +308,43 @@ int MXC_RTC_RevA_GetSecond(mxc_rtc_reva_regs_t *rtc)
     return rtc->sec;
 }
 
+int MXC_RTC_RevA_GetSubSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t *ssec)
+{
+    if (MXC_RTC_RevA_GetBusyFlag(rtc)) {
+        return E_BUSY;
+    } else if (ssec == NULL) {
+        return E_NULL_PTR;
+    }
+
+#if TARGET_NUM == 32650
+    uint32_t sub_sec;
+    if (ChipRevision > 0xA1) {
+        sub_sec = ((MXC_PWRSEQ->ctrl >> 12) & 0xF00) | (rtc->ssec & 0xFF);
+    } else {
+        sub_sec = rtc->ssec;
+    }
+
+    *ssec = sub_sec;
+#else
+    *ssec = rtc->ssec;
+#endif
+
+    return E_NO_ERROR;
+}
+
+int MXC_RTC_RevA_GetSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t *sec)
+{
+    if (MXC_RTC_RevA_GetBusyFlag(rtc)) {
+        return E_BUSY;
+    } else if (sec == NULL) {
+        return E_NULL_PTR;
+    }
+
+    *sec = rtc->sec;
+
+    return E_NO_ERROR;
+}
+
 int MXC_RTC_RevA_GetTime(mxc_rtc_reva_regs_t *rtc, uint32_t *sec, uint32_t *subsec)
 {
     uint32_t temp_sec = 0;

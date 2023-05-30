@@ -41,6 +41,7 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
 SRCS += st7735s.c
+SRCS += tft_st7735.c
 
 MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 
