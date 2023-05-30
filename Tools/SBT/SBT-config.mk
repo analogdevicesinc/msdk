@@ -51,7 +51,7 @@ PROJ_CFLAGS += -D__SLA_FWK__
 LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_sla.ld
 endif
 
-ifeq ($(MAKECMDGOALS), scpa)
+ifeq ($(MAKECMDGOALS),scpa)
 SCPA_MEM_BASE_ADDR ?= 0xC0000000
 SCPA_MEM_SIZE ?= 1024
 
