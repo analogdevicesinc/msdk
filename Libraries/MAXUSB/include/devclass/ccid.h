@@ -105,6 +105,8 @@ typedef struct {
 #define PC_to_RDR_XfrBlock_wLevelParameter_OFFSET   8
 #define PC_to_RDR_XfrBlock_abData_OFFSET           10
 
+#define PC_to_RDR_XfrBlock_T0_T1_abData_MAX_LEN     261
+
 #define PC_to_RDR_Parameters_T0_T1_bMessageType_OFFSET     0
 #define PC_to_RDR_Parameters_T0_T1_dwLength_OFFSET         1
 #define PC_to_RDR_Parameters_T0_T1_bSlot_OFFSET            5
@@ -348,6 +350,8 @@ typedef __packed struct {
 #define RDR_to_PC_HardwareError_bHardwareErrorCode_OFFSET   3
 
 #define RDR_to_PC_HardwareError_Len                         RDR_to_PC_HardwareError_bHardwareErrorCode_OFFSET + 1
+
+#define RDR_to_PC_MAX_Message_Len                           (PC_to_RDR_XfrBlock_abData_OFFSET + PC_to_RDR_XfrBlock_T0_T1_abData_MAX_LEN)
 
 
 #if defined(__GNUC__)
