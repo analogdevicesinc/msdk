@@ -14,4 +14,3 @@
 # Add your config here!
 
 LIB_LITTLEFS = 1
-

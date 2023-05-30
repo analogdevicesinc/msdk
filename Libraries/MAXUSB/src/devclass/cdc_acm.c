@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -149,7 +149,7 @@ int acm_init(const MXC_USB_interface_descriptor_t *if_desc)
   memset(callback, 0, sizeof(callback));
 
   /* Pull any existing class-specific callback, in case of multi-class devices */
-  enum_query_callback(ENUM_CLASS_REQ, &chained_func, &chained_cbdata); 
+  enum_query_callback(ENUM_CLASS_REQ, &chained_func, &chained_cbdata);
 
   /* Store interface number */
   if_num = if_desc->bInterfaceNumber;
@@ -235,7 +235,7 @@ int acm_configure(const acm_cfg_t *cfg)
   rreq.data = repbuf;
   MXC_USB_ReadEndpoint(&rreq);
 #endif
-  
+
   return 0;
 }
 
@@ -243,7 +243,7 @@ int acm_configure(const acm_cfg_t *cfg)
 int acm_deconfigure(void)
 {
   MXC_USB_RemoveRequest(&rreq);
-  
+
   /* deconfigure EPs */
   if (out_ep != 0) {
     MXC_USB_ResetEp(out_ep);
@@ -300,7 +300,6 @@ int acm_read(uint8_t *buf, unsigned int len)
 
   for (i = 0; i < len; i++) {
     while (fifo_get8(&rfifo, &byte) != 0) {
-
       /* Check for Break in loop */
       if (BREAK_signal) {
         return -2;
@@ -336,7 +335,7 @@ int acm_write(uint8_t *buf, unsigned int len)
     } else {
       /* Buffer full -- see if some characters can be sent to host */
       if (wreq.reqlen == 0) {
-	svc_in_to_host(&wreq);
+        svc_in_to_host(&wreq);
       }
     }
   }
@@ -345,7 +344,7 @@ int acm_write(uint8_t *buf, unsigned int len)
   if (wreq.reqlen == 0) {
     svc_in_to_host(&wreq);
   }
-  
+
   return i;
 }
 
@@ -358,7 +357,7 @@ static void svc_out_from_host(void)
     // Copy as much data into the local buffer as possible
     for (; rreq.actlen > 0; rreq.actlen--) {
       if (fifo_put8(&rfifo, *rreq.data) != 0) {
-	break;
+          break;
       }
       newdata = 1;
       rreq.data++;
@@ -367,7 +366,7 @@ static void svc_out_from_host(void)
     /* After all of the data has been consumed, register the next request if
      * still configured and connected to the DTE
      */
-    
+
     if (!rreq.actlen && (out_ep > 0) && DTE_present) {
       rreq_complete = 0;
       rreq.error_code = 0;
@@ -427,18 +426,18 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
     /* Directed to our interface */
     switch (sud->bRequest) {
       case ACM_SET_LINE_CODING:
-	      result = set_line_coding();
-	      if (!result) {
+          result = set_line_coding();
+          if (!result) {
           /* Success, no data stage, but used to defer ACK/STALL to application */
-	        result = 1;
+             result = 1;
         }
         break;
       case ACM_GET_LINE_CODING:
         result = get_line_coding();
-      	if (!result) {
+        if (!result) {
           /* Success, with data stage */
-	        result = 1;
-	      }
+            result = 1;
+        }
         break;
       case ACM_SET_CONTROL_LINE_STATE:
 #ifndef MAXUSB_IGNORE_DTE
@@ -459,9 +458,9 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
             callback[ACM_CB_CONNECTED]();
           }
         } else {
-	        DTE_present = 0;
+            DTE_present = 0;
           /* DTE disappeared */
-	        MXC_USB_RemoveRequest(&rreq);
+            MXC_USB_RemoveRequest(&rreq);
           if (callback[ACM_CB_DISCONNECTED]) {
             callback[ACM_CB_DISCONNECTED]();
           }
@@ -483,12 +482,10 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         /* Unexpected message received -- stall */
         break;
     }
-  }
-  else
-  {
+  } else {
     /* Not for this class, send to chained classes (if any) */
     if (chained_func != NULL) {
-      result = chained_func(sud, chained_cbdata);    
+      result = chained_func(sud, chained_cbdata);
     }
   }
 
@@ -506,7 +503,7 @@ static void set_line_coding_callback(void *cbdata)
       /* Application can reject this change from the host, if desired */
       result = callback[ACM_CB_SET_LINE_CODING]();
     }
-    
+
     if (result == -1) {
       MXC_USB_Stall(0);
     } else {
@@ -521,7 +518,6 @@ static void set_line_coding_callback(void *cbdata)
 /******************************************************************************/
 static int set_line_coding(void)
 {
-  
   memset(&creq, 0, sizeof(MXC_USB_Req_t));
   creq.ep = 0;
   creq.data = (uint8_t*)&line_coding;
@@ -548,7 +544,6 @@ static void get_line_coding_callback(void *cbdata)
 /******************************************************************************/
 static int get_line_coding(void)
 {
-
   memset(&creq, 0, sizeof(MXC_USB_Req_t));
   creq.ep = 0;
   creq.data = (uint8_t*)&line_coding;

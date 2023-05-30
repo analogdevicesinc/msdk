@@ -2,6 +2,7 @@
  * @file    rtc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the RTC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup rtc_registers
  */
 
 /******************************************************************************

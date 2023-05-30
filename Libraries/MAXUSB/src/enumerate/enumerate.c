@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -69,7 +69,7 @@ __attribute__((aligned(4)))
 static uint8_t enum_data[2];
 static MXC_USB_Req_t enum_req;
 
-/* Holds descriptor pointers */ 
+/* Holds descriptor pointers */
 const uint8_t *enum_desc_table[ENUM_DESC_SIZE];
 
 /***** Function Prototypes *****/
@@ -125,7 +125,7 @@ static void status_stage_callback(void *cbdata)
     /* STALL the Status stage */
     MXC_USB_Stall(0);
   }
-  
+
   /* Clear the request to indicate completion */
   memset(req, 0, sizeof(MXC_USB_Req_t));
 }
@@ -184,14 +184,14 @@ int enum_query_getdescriptor(void (**func)(MXC_USB_SetupPkt *, const uint8_t **d
 {
   /* Get the registered callback */
   *func = callback_getdescriptor;
-  
+
   return 0;
 }
 
 /******************************************************************************/
 int enum_register_descriptor(enum_descriptor_t type, const uint8_t *desc, uint8_t index)
 {
-  if ((type >= ENUM_NUM_DESCRIPTORS) || (index >= ENUM_NUM_STRINGS)) { 
+  if ((type >= ENUM_NUM_DESCRIPTORS) || (index >= ENUM_NUM_STRINGS)) {
     return -1;
   }
 
@@ -225,38 +225,37 @@ static int setup(maxusb_event_t event, void *cbdata)
     /* ERROR: overlapping SETUP packets */
     result = -1;
   } else {
-
     /* Decode device requests into standard / class / vendor */
     switch (sud.bmRequestType & RT_TYPE_MASK) {
       case RT_TYPE_STD:
-	       /* Standard */
-	       result = std(&sud);
-	    break;
-	
+           /* Standard */
+           result = std(&sud);
+        break;
+
       case RT_TYPE_CLASS:
-        	/* Class */
-        	if (callback[ENUM_CLASS_REQ].fnaddr != NULL) {
-        	  result = callback[ENUM_CLASS_REQ].fnaddr(&sud, callback[ENUM_CLASS_REQ].cbdata);
-        	} else {
-        	  /* Default class request handler (stall) */
-        	  result = -1;
-        	}
-	     break;
-	
+            /* Class */
+            if (callback[ENUM_CLASS_REQ].fnaddr != NULL) {
+              result = callback[ENUM_CLASS_REQ].fnaddr(&sud, callback[ENUM_CLASS_REQ].cbdata);
+            } else {
+              /* Default class request handler (stall) */
+              result = -1;
+            }
+         break;
+
       case RT_TYPE_VENDOR:
-        	/* Vendor */
-        	if (callback[ENUM_VENDOR_REQ].fnaddr != NULL) {
-        	  result = callback[ENUM_VENDOR_REQ].fnaddr(&sud, callback[ENUM_VENDOR_REQ].cbdata);
-        	} else {
-        	  /* Default vendor request handler (stall) */
-        	  result = -1;
-        	}
-	     break;
-	
+            /* Vendor */
+            if (callback[ENUM_VENDOR_REQ].fnaddr != NULL) {
+              result = callback[ENUM_VENDOR_REQ].fnaddr(&sud, callback[ENUM_VENDOR_REQ].cbdata);
+            } else {
+              /* Default vendor request handler (stall) */
+              result = -1;
+            }
+         break;
+
       default:
-        	/* Reserved */
-        	result = -1;
-	     break;
+            /* Reserved */
+            result = -1;
+         break;
     }
   }
 
@@ -269,7 +268,7 @@ static int setup(maxusb_event_t event, void *cbdata)
       MXC_USB_Stall(0);
     }
   }
-  
+
   return result;
 }
 
@@ -280,7 +279,7 @@ static int std(MXC_USB_SetupPkt *sud)
 
   switch (sud->bRequest) {
     case SDR_GET_STATUS:
-      result = getstatus(sud); 
+      result = getstatus(sud);
       break;
     case SDR_CLEAR_FEATURE:
       result = clearfeature(sud);
@@ -328,14 +327,13 @@ static int getstatus(MXC_USB_SetupPkt *sud)
   int result;
 
   /* If any values are out of range (per USB 2.0 spec), stall */
-  if ((sud->wValue != 0) || (sud->wLength != 2) || 
+  if ((sud->wValue != 0) || (sud->wLength != 2) ||
       (((sud->bmRequestType & RT_RECIP_MASK) == RT_RECIP_DEVICE) && (sud->wIndex != 0))) {
     return -1;
   }
- 
+
   /* Device and Interfaces always return a 16-bit zero value in the data phase */
   if ((sud->bmRequestType & RT_RECIP_MASK) == RT_RECIP_ENDP) {
-
     /* Interface halt status taken directly from USB SIE registers */
     result = MXC_USB_IsStalled(sud->wIndex & 0x0f);
     if (result < 0) {
@@ -362,7 +360,7 @@ static int getstatus(MXC_USB_SetupPkt *sud)
     /* Cause the status stage to be delayed */
     result = 1;
   }
-  
+
   return result;
 }
 
@@ -372,11 +370,10 @@ static int clearfeature(MXC_USB_SetupPkt *sud)
   int result;
 
   /* If any values are out of range (per USB 2.0 spec), stall */
-  if ((sud->bmRequestType & RT_DEV_TO_HOST) || 
+  if ((sud->bmRequestType & RT_DEV_TO_HOST) ||
       (sud->wLength != 0) ||
       ((sud->wValue == FEAT_ENDPOINT_HALT) && ((sud->bmRequestType & RT_RECIP_MASK) != RT_RECIP_ENDP)) ||
       ((sud->wValue == FEAT_REMOTE_WAKE) && ((sud->bmRequestType & RT_RECIP_MASK) != RT_RECIP_DEVICE))) {
-      
       return -1;
   }
 
@@ -408,7 +405,7 @@ static int clearfeature(MXC_USB_SetupPkt *sud)
       return -1;
     }
   } else {
-    /* Unsupported */ 
+    /* Unsupported */
     return -1;
   }
 
@@ -456,10 +453,10 @@ static int setfeature(MXC_USB_SetupPkt *sud)
       return -1;
     }
   } else {
-    /* Unsupported */ 
+    /* Unsupported */
     return -1;
   }
-  
+
   return 0;
 }
 
@@ -531,7 +528,7 @@ static int getdescriptor(MXC_USB_SetupPkt *sud)
           dsclen = 0;
         } else {
           //dsclen = (dsc[3] << 8) + dsc[2];
-		  dsclen = dsc[0];
+          dsclen = dsc[0];
         }
       }
       break;
@@ -580,7 +577,7 @@ static int getdescriptor(MXC_USB_SetupPkt *sud)
     enum_req.reqlen = dsclen;
     result = MXC_USB_WriteEndpoint(&enum_req);
   }
-  
+
   if (!result) {
     /* Cause the status stage to be delayed */
     result = 1;
@@ -609,7 +606,7 @@ static int getconfig(MXC_USB_SetupPkt *sud)
     /* Cause the status stage to be delayed */
     result = 1;
   }
-  
+
   return result;
 }
 
@@ -620,7 +617,7 @@ static int setconfig(MXC_USB_SetupPkt *sud)
   if ((sud->wIndex != 0) || (sud->wLength != 0)) {
     return -1;
   }
-  
+
   /* If the callback is set for a configuration value validator, use it */
   /* Otherwise, assume any wValue is acceptable and ACK the Status stage */
   if (callback[ENUM_SETCONFIG].fnaddr != NULL) {
@@ -657,7 +654,7 @@ static int getinterface(MXC_USB_SetupPkt *sud)
   } else {
     enum_data[0] = 0;
   }
-  
+
   /* If the default handler is used, wIndex is ignored, and 0x00 is returned */
   /*  during the Data phase */
   memcpy(&enum_req, &enum_req_init, sizeof(MXC_USB_Req_t));
@@ -669,7 +666,7 @@ static int getinterface(MXC_USB_SetupPkt *sud)
     /* Cause the status stage to be delayed */
     result = 1;
   }
-  
+
   return result;
 }
 

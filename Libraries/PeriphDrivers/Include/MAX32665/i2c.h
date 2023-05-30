@@ -55,6 +55,12 @@ extern "C" {
  * @{
  */
 
+/***** Definitions *****/
+#define MXC_I2C_STD_MODE 100000
+#define MXC_I2C_FAST_SPEED 400000
+#define MXC_I2C_FASTPLUS_SPEED 1000000
+#define MXC_I2C_HIGH_SPEED 3400000
+
 typedef struct _i2c_req_t mxc_i2c_req_t;
 
 /**

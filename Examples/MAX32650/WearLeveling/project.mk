@@ -5,9 +5,9 @@
 # For instructions on how to use this system, see
 # https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
-#BOARD=FTHR_RevA
-# ^ For example, you can uncomment this line to make the 
-# project build for the "FTHR_RevA" board.
+#MXC_OPTIMIZE_CFLAGS = -Og
+# ^ For example, you can uncomment this line to 
+# optimize the project for debugging
 
 # **********************************************************
 
@@ -18,5 +18,4 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Enable the littleFS library
-LIB_LITTLEFS=1
+LIB_LITTLEFS = 1

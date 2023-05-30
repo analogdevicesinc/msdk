@@ -73,13 +73,13 @@
 // *****************************************************************************
 void rescheduleAlarm()
 {
-    int time;
+    uint32_t time;
     int flags = MXC_RTC_GetFlags();
 
     if (flags & MXC_F_RTC_CTRL_ALDF) { // Check for TOD alarm flag
         MXC_RTC_ClearFlags(MXC_F_RTC_CTRL_ALDF);
 
-        time = MXC_RTC_GetSecond(); // Get Current time (s)
+        MXC_RTC_GetSeconds(&time); // Get Current time (s)
 
         while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY) {}
         // Disable interrupt while re-arming RTC alarm
@@ -99,9 +99,10 @@ void rescheduleAlarm()
 // *****************************************************************************
 void printTime()
 {
-    int day, hr, min, sec;
+    int day, hr, min;
+    uint32_t sec;
 
-    sec = MXC_RTC_GetSecond(); // Get current time
+    MXC_RTC_GetSeconds(&sec); // Get current time
 
     day = sec / SECS_PER_DAY;
     sec -= day * SECS_PER_DAY;

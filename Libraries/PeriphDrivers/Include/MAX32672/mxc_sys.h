@@ -70,7 +70,7 @@ typedef enum {
     MXC_SYS_RESET0_SPI1 = MXC_F_GCR_RST0_SPI1_POS, /**< Reset SPI1 */
     MXC_SYS_RESET0_SPI2 = MXC_F_GCR_RST0_SPI2_POS, /**< Reset SPI2 */
     MXC_SYS_RESET0_I2C0 = MXC_F_GCR_RST0_I2C0_POS, /**< Reset I2C0 */
-    MXC_SYS_RESET0_RTC = MXC_F_GCR_RST0_RTC_POS, /**< Reset RTC */
+    MXC_SYS_RESET0_RTC = MXC_F_MCR_RST_RTC_POS, /**< Reset RTC */
     MXC_SYS_RESET0_CTB = MXC_F_GCR_RST0_CTB_POS, /**< Reset CTB */
     MXC_SYS_RESET0_TRNG = MXC_F_GCR_RST0_TRNG_POS, /**< Reset TRNG */
     MXC_SYS_RESET0_ADC = MXC_F_GCR_RST0_ADC_POS, /**< Reset ADC */
@@ -170,6 +170,7 @@ typedef enum {
 } mxc_sys_system_clock_t;
 
 #define MXC_SYS_USN_CHECKSUM_LEN 16
+#define MXC_SYS_USN_LEN 13
 
 /***** Function Prototypes *****/
 
