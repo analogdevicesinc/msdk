@@ -63,6 +63,17 @@ jobs:
             IAR
             Keil
 
+
+            Documentation
+            Examples
+            Tools
+            BLE
+            Boards
+            CMSIS
+            MiscDrivers
+            PeriphDrivers
+            Third-Party
+
           requireScope: true
           disallowScopes: |
             release
