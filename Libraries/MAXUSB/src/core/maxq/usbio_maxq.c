@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -44,16 +44,17 @@ unsigned int param_tmo = 32;
 int usbio_writereg(unsigned int reg, uint16_t data)
 {
   unsigned int tmo = param_tmo;
-  
+
   UADDR = reg;
   UDATA = data;
 
-  while ((UADDR & 0x40) && --tmo);
+  while ((UADDR & 0x40) && --tmo) {
+  }
 
   if (!tmo) {
     /* Timeout waiting for busy to clear */
     return -1;
-  }  
+  }
 
   return 0;
 }
@@ -72,14 +73,15 @@ void usbio_blind_writereg(unsigned int reg, uint16_t data)
 int usbio_readreg(unsigned int reg, uint16_t *data)
 {
   unsigned int tmo = param_tmo;
- 
+
   UADDR = 0x80 | reg;
-  while ((UADDR & 0x40) && --tmo);
+  while ((UADDR & 0x40) && --tmo) {
+  }
   if (!tmo) {
     /* Timeout waiting for busy to clear */
     return -1;
   }
-  
+
   *data = UDATA;
 
   return 0;
@@ -92,7 +94,8 @@ int usbio_readfifo(unsigned int reg, uint8_t *data, unsigned int num)
   int ret;
   unsigned int tmo = param_tmo;
 
-  while ((UADDR & 0x40) && --tmo);
+  while ((UADDR & 0x40) && --tmo) {
+  }
   if (!tmo) {
     /* Timeout waiting for busy to clear */
     return -1;
@@ -100,7 +103,8 @@ int usbio_readfifo(unsigned int reg, uint8_t *data, unsigned int num)
 
   UADDR = 0x80 | reg;
   while (num--) {
-    while ((UADDR & 0x40) && --tmo);
+    while ((UADDR & 0x40) && --tmo) {
+    }
     if (!tmo) {
       /* Timeout waiting for busy to clear */
       return -1;
@@ -121,17 +125,20 @@ int usbio_writefifo(unsigned int reg, uint8_t *data, unsigned int num)
   int ret;
   unsigned int tmo = param_tmo;
 
-  while ((UADDR & 0x40) && --tmo);
+  while ((UADDR & 0x40) && --tmo) {
+  }
   if (!tmo) {
     /* Timeout waiting for busy to clear */
     return -1;
   }
-  
+
   UADDR = reg;
   while (num--) {
     UDATA = *data;
     data++;
-    while ((UADDR & 0x40) && --tmo);
+    while ((UADDR & 0x40) && --tmo) {
+    }
+
     if (!tmo) {
       /* Timeout waiting for busy to clear */
       return -1;

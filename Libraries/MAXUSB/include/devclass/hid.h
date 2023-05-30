@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -31,20 +31,20 @@
  *
  ******************************************************************************/
 
-#ifndef _HID_H_
-#define _HID_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_HID_H_
+#define LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_HID_H_
 
 #include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
 /**
  * @file  hid.h
  * @brief Human Interface Device Class
  */
-#define HID_MAX_PACKET 	  64
+#define HID_MAX_PACKET    64
 
 /// USB HID class requests
 #define HID_GET_REPORT    0x01
@@ -77,4 +77,4 @@ typedef __packed struct {
 }
 #endif
 
-#endif /* _HID_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_HID_H_

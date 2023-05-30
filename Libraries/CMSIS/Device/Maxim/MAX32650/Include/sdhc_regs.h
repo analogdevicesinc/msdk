@@ -2,6 +2,7 @@
  * @file    sdhc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SDHC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup sdhc_registers
  */
 
 /******************************************************************************

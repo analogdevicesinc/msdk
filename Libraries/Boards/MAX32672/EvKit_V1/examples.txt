@@ -17,6 +17,7 @@ Comparator
 Coremark
 CRC
 CTB_AES
+Demo
 DMA
 Display
 EEPROM_Emulator

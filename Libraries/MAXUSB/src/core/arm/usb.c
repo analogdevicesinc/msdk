@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -58,7 +58,7 @@ typedef struct {
 #ifdef __IAR_SYSTEMS_ICC__
 #pragma data_alignment = 512
 #else
-__attribute__ ((aligned (512)))
+__attribute__((aligned(512)))
 #endif
 ep_buffer_descriptor_t ep_buffer_descriptor;
 
@@ -183,21 +183,21 @@ int MXC_USB_Unstall(unsigned int ep)
 
     /* The host may try to unstall us, even if we are not stalled */
     if (MXC_USB->ep[ep] & MXC_F_USB_EP_STALL) {
-	MXC_USB->ep[ep] |= MXC_F_USB_EP_DT;
+    MXC_USB->ep[ep] |= MXC_F_USB_EP_DT;
 
-	/* clear pending requests */
-	req = usb_request[ep];
-	usb_request[ep] = NULL;
-	
-	MXC_USB->ep[ep] &= ~MXC_F_USB_EP_STALL;
-	
-	/* complete pending request with error */
-	if (req) {
-	    req->error_code = -1;
-	    if (req->callback) {
-		req->callback(req->cbdata);
-	    }
-	}
+    /* clear pending requests */
+    req = usb_request[ep];
+    usb_request[ep] = NULL;
+
+    MXC_USB->ep[ep] &= ~MXC_F_USB_EP_STALL;
+
+    /* complete pending request with error */
+    if (req) {
+        req->error_code = -1;
+        if (req->callback) {
+        req->callback(req->cbdata);
+        }
+    }
     }
 
     return 0;
@@ -252,7 +252,6 @@ static void event_in_data(uint32_t irqs)
 
     /* Loop for each data endpoint */
     for (epnum = 0; epnum < MXC_USB_NUM_EP; epnum++) {
-
         buffer_bit = (1 << epnum);
         if ((irqs & buffer_bit) == 0) { /* Not set, next Endpoint */
             continue;
@@ -297,15 +296,13 @@ static void event_in_data(uint32_t irqs)
 
             /* start the DMA to send it */
             MXC_USB->in_owner = buffer_bit;
-        }
-        else {
+        } else {
             /* all done sending data, either send ZLP or done here */
             if ((req->reqlen & (ep_size[epnum]-1)) == 0) {
                 /* send ZLP per spec, last packet was full sized and nothing left to send */
                 buf_desc->buf0_desc = 0;
                 MXC_USB->in_owner = buffer_bit;
-            }
-            else {
+            } else {
                 /* free request */
                 usb_request[epnum] = NULL;
 
@@ -327,7 +324,6 @@ static void event_out_data(uint32_t irqs)
 
     /* Loop for each data endpoint */
     for (epnum = 0; epnum < MXC_USB_NUM_EP; epnum++) {
-
         buffer_bit = (1 << epnum);
         if ((irqs & buffer_bit) == 0) {
             continue;
@@ -371,8 +367,7 @@ static void event_out_data(uint32_t irqs)
             if (req->callback) {
                 req->callback(req->cbdata);
             }
-        }
-        else {
+        } else {
             /* not done yet, push pointers, update descriptor */
             buf_desc->buf0_address += ep_size[epnum];
 
@@ -500,11 +495,11 @@ MXC_USB_Req_t *MXC_USB_GetRequest(unsigned int ep)
 int MXC_USB_RemoveRequest(MXC_USB_Req_t *req)
 {
     if (req->ep >= MXC_USB_NUM_EP) {
-	return -1;
+    return -1;
     }
 
     if (usb_request[req->ep] != req) {
-	return -1;
+    return -1;
     }
 
     /* Reset data toggle and ownership bits */
@@ -512,11 +507,11 @@ int MXC_USB_RemoveRequest(MXC_USB_Req_t *req)
 
     /* free request */
     usb_request[req->ep] = NULL;
-    
+
     /* complete pending request with error */
     req->error_code = -1;
     if (req->callback) {
-	req->callback(req->cbdata);
+    req->callback(req->cbdata);
     }
 
     return 0;
@@ -565,8 +560,7 @@ int MXC_USB_WriteEndpoint(MXC_USB_Req_t *req)
     if (len > ep_size[ep]) {
         buf_desc->buf0_desc = ep_size[ep];
         usb_request[ep]->actlen = ep_size[ep];
-    }
-    else {
+    } else {
         buf_desc->buf0_desc = len;
         usb_request[ep]->actlen = len;
     }
@@ -610,7 +604,7 @@ int MXC_USB_ReadEndpoint(MXC_USB_Req_t *req)
     if (usb_request[ep] || (MXC_USB->out_owner & buffer_bit)) {
         return -1;
     }
-    
+
     /* assign the req object */
     usb_request[ep] = req;
 

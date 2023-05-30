@@ -2,6 +2,7 @@
  * @file    wut_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the WUT Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup wut_registers
  */
 
 /******************************************************************************

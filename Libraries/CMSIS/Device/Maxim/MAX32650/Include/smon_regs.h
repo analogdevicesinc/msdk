@@ -2,6 +2,7 @@
  * @file    smon_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SMON Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup smon_registers
  */
 
 /******************************************************************************

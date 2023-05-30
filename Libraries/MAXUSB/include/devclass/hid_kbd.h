@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,18 +30,18 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
-#ifndef _HID_KBD_H_
-#define _HID_KBD_H_
+
+#ifndef LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_HID_KBD_H_
+#define LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_HID_KBD_H_
 
 /**
  * @file  hid_kbd.h
  * @brief Human Interface Device Class (Keyboard) over USB
  */
 
+#include <stdint.h>
 #include "hid.h"
 #include "usb_protocol.h"
-#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -95,4 +95,4 @@ int hidkbd_encode_report(uint8_t *rpt, uint8_t *ascii, int num);
 }
 #endif
 
-#endif /* _HID_KBD_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_HID_KBD_H_

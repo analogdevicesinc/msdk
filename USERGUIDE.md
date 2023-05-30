@@ -78,8 +78,9 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 ---
 
-* **MAX32662** **(Not Yet Publicly Available)**
-    - MAX32662EVKIT **(Not Yet Publicly Available)**
+* [**MAX32662**](https://www.analog.com/en/products/max32662.html)
+
+    - [MAX32662EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32662EVKIT.html)
 
 
 ---
@@ -127,7 +128,7 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 * [**MAX32690**](https://www.analog.com/en/products/max32690.html):  Arm Cortex-M4 with FPU Microcontroller and Bluetooth LE 5 for Industrial and Wearables
 
-    - MAX32690EVKIT (Product Page Not Yet Available)
+    - [MAX32690EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32690EVKIT.html)
 
 
 ---
@@ -175,20 +176,24 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 - Administrator rights
 - (On MacOS) - [Homebrew](https://brew.sh/)
+- (On Ubuntu) the following packages are required to run the installer:
+
+        :::shell
+        libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
 
 ### Download
 
 The MSDK installer is available for supported Operating Systems from the download links below.
 
-- [Windows 10](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=sfw0010820a)
+- [Windows 10](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820B)
 
-- [Linux (Ubuntu)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=sfw0018720a)
+- [Linux (Ubuntu)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720B)
 
     - This file must be made executable before running (`chmod +x MaximMicrosSDK_linux.run`). Alternatively, set `Allow executing as program" in the Ubuntu GUI.  
 
         ![Figure 1](res/Fig1.jpg)
 
-- [MacOS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=sfw0018610a)
+- [MacOS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610B)
 
     - On MacOS, the installer is distributed inside a .dmg disk image file. Double-click the downloaded file to mount it. Afterward, the installer executable will be made available inside the mounted drive.
 
@@ -856,9 +861,11 @@ This section assumes a debugger is connected between the host PC and the evaluat
 
     ![Figure 19](res/Fig19.jpg)
 
-2. Open the **Run and Debug** window (**`CTRL+SHIFT+D`**) and launch the debugger (**`F5`**).  Use the **_Arm M4_** profile.
+2. Open the **Run and Debug** window (**`CTRL+SHIFT+D`**) and select the `Debug Arm (Cortex-debug)` profile.
 
     ![Figure 20](res/Fig20.jpg)
+
+    ![Figure 46](res/Fig46.jpg)
 
 3. Verify the program counter enters `main` successfully.
 
@@ -886,11 +893,13 @@ The condition and condition type can be modified with the dropdown. This is usef
 
 #### Peripheral Browsing
 
-A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug. Currently, VSCode-Maxim does not feature a true peripheral browser. Instead, *watch expressions* can be used to inspect peripherals at the register level.
+A peripheral browser lets you quickly view the formatted register-level contents of the peripheral blocks on a target microcontroller under debug.
 
-![image](https://user-images.githubusercontent.com/38844790/177819220-b9524b70-b279-4b16-bdb0-da37e1a1f556.png)
+As of the [v1.6.0](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases/tag/v1.6.0) VSCode-Maxim project files, pre-made [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug) launch profiles are included in each project.  These profiles enable peripheral browsing via an embedded "Cortex Peripherals"window.
 
-Watch expressions can be set for all registers. (For example, the `sysctrl` register below).
+![Figure 47](res/Fig47.jpg)
+
+Alternatively, *watch expressions* can be used.  These can be set for registers and variables. (For example, the `sysctrl` register below).
 
 ![image](https://user-images.githubusercontent.com/38844790/177819247-ccf90782-e1e6-44f2-8605-c39fc15c09a6.png)
 
@@ -913,26 +922,24 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 
 2. Make sure your Olimex debugger drivers are installed correctly. Sometimes they need to be updated using the "zadig" tool. See Section 3.3.3 of the [Olimex User Manual](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf), and use the [Zadig](https://zadig.akeo.ie/) tool to install WinUSB drivers.
 
-3. Download the [max78000_riscv.cfg](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/files/9587266/max78000_riscv.zip) file and place it inside the `Tools/OpenOCD/scripts/target` folder of your MSDKinstallation.
+3. [Open](#opening-example-projects) the project in VS Code.
 
-4. [Open](#opening-example-projects) the project in VS Code.
-
-5. Run the "Flash" task.
+4. Run the "Flash" task.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398354-2ac2961b-6d45-4f84-8805-0ab5339a4b98.png)
 
-6. Launch the debugger using the **GDB (Arm M4)** profile **first**:
+5. Launch the debugger using the **Debug Arm (Cortex-Debug)** or **GDB (Arm M4)** profile **first**:
 
-    ![image](https://user-images.githubusercontent.com/38844790/168398415-147a3a96-1a7d-4057-8a32-0dfaf2d378c1.png)
+    ![Figure 46](res/Fig46.jpg)
 
     ... which should hit the breakpoint in `main.c`...
     ![image](https://user-images.githubusercontent.com/38844790/168398503-0f2ae9c1-f535-4d41-aed9-9d9e19b16303.png)
 
-7. **Continue** the debugger.  The code in `main.c` will boot up the RISC-V core. You can optionally set a breakpoint on `WakeISR` to see when the RISC-V core has signaled it's ready.
+6. **Continue** the debugger.  The code in `main.c` will boot up the RISC-V core. You can optionally set a breakpoint on `WakeISR` to see when the RISC-V core has signaled it's ready.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398665-9486e1b6-73bd-481e-a4b5-15dd44c7d7b9.png)
 
-8. Now, switch the debugger profile to the **GDB (RISC-V) profile** and launch it. This will launch an additional instance on a separate port and connect to the Olimex adapter.
+7. Now, switch the debugger profile to the **GDB (RISC-V) profile** and launch it. This will launch an additional instance on a separate port and connect to the Olimex adapter.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398707-b6771bf3-b6bf-47a2-b963-b0b9fc003ca4.png)
 
@@ -940,7 +947,7 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 
     ![image](https://user-images.githubusercontent.com/38844790/168399130-95fe7539-fb46-4c06-a268-6b720403b539.png)
 
-9. From here, the debugger should be fully functional. The Arm vs. RISC-V debugger instance can be selected with the dropdown on the debugger control bar.
+8. From here, the debugger should be fully functional. The Arm vs. RISC-V debugger instance can be selected with the dropdown on the debugger control bar.
 
     ![image](https://user-images.githubusercontent.com/38844790/168399419-d0488a0e-2068-4cc7-9108-0a296fdc04b4.png)
 
@@ -1364,7 +1371,7 @@ The name of a BSP's folder is used with the `BOARD` [build configuration variabl
 | [MAX32655EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655evkit.html)     | `MAX32655`     | `EvKit_V1`     |
 | [MAX32655FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32655fthr.html)      | `MAX32655`     | `FTHR_Apps_P1` |
 | [MAX32660-EVSYS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32660-evsys.html)    | `MAX32660`     | `EvKit_V1`     |
-| MAX32662EVKIT                                | `MAX32662`     | `EvKit_V1`     |
+| [MAX32662EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32662EVKIT.html)                                | `MAX32662`     | `EvKit_V1`     |
 | [MAX32666EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666evkit.html)     | `MAX32665`     | `EvKit_V1`     |
 | [MAX32666FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32666fthr.html)      | `MAX32665`     | `FTHR`         |
 | MAX32666FTHR2                                | `MAX32665`     | `FTHR2`        |
@@ -1374,7 +1381,7 @@ The name of a BSP's folder is used with the `BOARD` [build configuration variabl
 | [MAX32675EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32675evkit.html)     | `MAX32675`     | `EvKit_V1`     |
 | MAX32675FTHR                                 | `MAX32675`     | `FTHR_Apps_B`  |
 | [MAX32680EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max32680evkit.html)     | `MAX32680`     | `EvKit_V1`     |
-| MAX32690EVKIT                                | `MAX32690`     | `EvKit_V1`     |
+| [MAX32690EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32690EVKIT.html)                                | `MAX32690`     | `EvKit_V1`     |
 | [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html)     | `MAX78000`     | `EvKit_V1`     |
 | [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html)      | `MAX78000`     | `FTHR_RevA`    |
 | [MAXREFDES178](https://www.analog.com/en/design-center/reference-designs/maxrefdes178.html)                                          | `MAX78000`     |  `MAXREFDES178` |
@@ -1680,9 +1687,28 @@ The Peripheral Driver API's source code is organized as follows:
 
 The _**implementation**_ files are further organized based on _**die type**_ and **_hardware revision_**. This is worth noting when browsing or debugging through the drivers.  
 
-- The **_die type_** files follow the **`_MEXX`** or **`_AIXX`** naming convention
+- The **_die type_** files follow the **`_ESXX`** , **`_MEXX`** , or **`_AIXX`** naming convention.
     - These files' responsibility is to manage microcontroller-specific implementation details that may interact with other peripheral APIs _before_ ultimately calling the revision-specific files.
-- The **_hardware** revision_ files follow the **`_revX`** naming convention.  
+    - This table shows which part numbers correspond to each die type:
+
+      | Part Number | Die Type
+      | -------- | ----------- |
+      | MAX32520 | ES17 |
+      | MAX32570 | ME13 |
+      | MAX32650 | ME10 |
+      | MAX32655 | ME17 |
+      | MAX32660 | ME11 |
+      | MAX32662 | ME12 |
+      | MAX32665 | ME14 |
+      | MAX32670 | ME15 |
+      | MAX32672 | ME21 |
+      | MAX32675 | ME16 |
+      | MAX32680 | ME20 |
+      | MAX32690 | ME18 |
+      | MAX78000 | AI85 |
+      | MAX78002 | AI87 |
+
+- The **_hardware revision_** files follow the **`_revX`** naming convention.  
     - These files contain the _pure_ driver implementation for a peripheral block and typically interact with the hardware almost entirely at the register level.
 
 ## Examples

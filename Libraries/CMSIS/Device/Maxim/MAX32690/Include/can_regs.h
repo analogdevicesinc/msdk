@@ -2,6 +2,7 @@
  * @file    can_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the CAN Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup can_registers
  */
 
 /******************************************************************************

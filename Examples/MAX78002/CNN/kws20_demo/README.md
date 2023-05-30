@@ -246,7 +246,7 @@ The following figure shows the processing in KWS20 Demo firmware:
 
 ![](Resources/KWS_Demo_flowchart.png)
 
-Collected samples from mic/file are 18/16 bit signed and are converted to 8 bit signed to feed into CNN. If Microphone mode, a high pass filter is used to filter out the DC level in captured samples. Scaled samples are stored in a circular buffer in chunks of 128 samples (bytes). 
+Collected samples from mic/file are 18/16 bit signed and are converted to 8-bit signed to feed into CNN. In Microphone mode, a high pass filter filters out the DC level in captured samples. Scaled samples are stored in a circular buffer in 128 sample (bytes) chunks. 
 
 The following parameters in the firmware can be tuned:
 
@@ -261,7 +261,7 @@ The following parameters in the firmware can be tuned:
 
 (defined in [main.c](main.c))
 
-When the average absolute values of samples during the last 128 samples go above a threshold, the beginning of a word is marked.
+The beginning of an utterance is marked when the average absolute values of samples during the last 128 samples go above a threshold.
 
 The end of a word is signaled when the **SILENCE_COUNTER_THRESHOLD** back-to-back chunks of samples with an average absolute threshold lower than **THRESHOLD_LOW** are observed.
 
@@ -271,6 +271,13 @@ The CNN-related API functions are in **cnn.c**. They are used to load weights an
 
 If a new network is developed and synthesized, the new weight file and related API functions are needed to be ported from the automatically generated kws20 example project. Furthermore, if the input layer or organization of 128x128 sample sets in the trained network is changed, **AddTranspose()** function should be changed to reflect the new sample data arrangement in CNN memory.
 
+## Customizing KWS
+
+To add your own keywords and customize the KWS, please refer to [2] for step-by-step instructions.
+
 ### References
 
-https://github.com/MaximIntegratedAI/MaximAI_Documentation
+[1] https://github.com/MaximIntegratedAI/MaximAI_Documentation
+
+[2] https://github.com/MaximIntegratedAI/MaximAI_Documentation/blob/master/Guides/Making%20Your%20Own%20Audio%20and%20Image%20Classification%20Application%20Using%20Keyword%20Spotting%20and%20Cats-vs-Dogs.md#modifying-kws-to-create-your-own-keyword-spotter
+

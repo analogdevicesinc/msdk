@@ -31,3 +31,4 @@ Libraries/RF-PHY
 node_modules
 package-lock.json
 package.json
+Libraries/PeriphDrivers/bin/**/softfp/ar_args.txt

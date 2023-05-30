@@ -14,5 +14,6 @@ nav:
 theme:
   name: readthedocs
 markdown_extensions:
+  tables: {}
   codehilite:
     use_pygments: False
