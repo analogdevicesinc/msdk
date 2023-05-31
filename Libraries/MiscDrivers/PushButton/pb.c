@@ -32,6 +32,7 @@
  ******************************************************************************/
 
 #include <stddef.h>
+#include "board.h"
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "pb.h"
@@ -55,7 +56,9 @@ int PB_Init(void)
 /******************************************************************************/
 int PB_RegisterCallback(unsigned int pb, pb_callback callback)
 {
-    MXC_ASSERT(pb < num_pbs);
+    if (pb >= num_pbs) {
+        return E_BAD_PARAM;
+    }
 
     if (callback) {
         // Register callback
@@ -74,18 +77,28 @@ int PB_RegisterCallback(unsigned int pb, pb_callback callback)
     return E_NO_ERROR;
 }
 
-//******************************************************************************
-void GPIO0_IRQHandler(void)
+/******************************************************************************/
+int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback)
 {
-    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
-}
-void GPIO1_IRQHandler(void)
-{
-    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
-}
-void GPIO2_IRQHandler(void)
-{
-    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
+    if (pb >= num_pbs) {
+        return E_BAD_PARAM;
+    }
+
+    if (callback) {
+        // Register callback
+        MXC_GPIO_RegisterCallback(&pb_pin[pb], callback, (void *)&pb_pin[pb]);
+
+        // Configure and enable interrupt
+        MXC_GPIO_IntConfig(&pb_pin[pb], MXC_GPIO_INT_BOTH);
+        MXC_GPIO_EnableInt(pb_pin[pb].port, pb_pin[pb].mask);
+        NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(pb_pin[pb].port)));
+    } else {
+        // Disable interrupt and clear callback
+        MXC_GPIO_DisableInt(pb_pin[pb].port, pb_pin[pb].mask);
+        MXC_GPIO_RegisterCallback(&pb_pin[pb], NULL, NULL);
+    }
+
+    return E_NO_ERROR;
 }
 
 //******************************************************************************
@@ -114,4 +127,18 @@ int PB_Get(unsigned int pb)
 {
     MXC_ASSERT(pb < num_pbs);
     return !MXC_GPIO_InGet(pb_pin[pb].port, pb_pin[pb].mask);
+}
+
+//******************************************************************************
+int PB_IsPressedAny(void)
+{
+    int i = 0;
+
+    for (i = 0; i < num_pbs; i++) {
+        if (PB_Get(i)) {
+            return 1;
+        }
+    }
+
+    return 0;
 }

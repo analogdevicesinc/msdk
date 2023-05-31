@@ -103,8 +103,10 @@ endif
 # the variables below.
 
 
-include ./project.mk
+PROJECTMK ?= $(abspath ./project.mk)
+include $(PROJECTMK)
 $(info Loaded project.mk)
+# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.

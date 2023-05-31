@@ -39,7 +39,6 @@
  */
 
 #include <stdio.h>
-#include "spixc.h"
 
 #ifndef _BOARD_H
 #define _BOARD_H
@@ -59,11 +58,7 @@ extern "C" {
 #define LED_OFF 0 /// Inactive state of LEDs
 #define LED_ON 1 /// Active state of LEDs
 
-#define MX25_SPI MXC_SPIXC
-#define MX25_SSEL 0
-// #define SPI_CHAR_BITS               8
-
-const spixc_cfg_t mx25_spim_cfg;
+#define EXT_FLASH_BAUD 1000000
 
 /**
  * \brief   Initialize the BSP and board interfaces.
