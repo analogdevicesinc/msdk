@@ -47,7 +47,9 @@
 #include "flc.h"
 #include "flc_reva.h"
 #include "flc_common.h"
+#include "icc.h"
 #include "mcr_regs.h" // For ECCEN registers.
+#include "sfcc.h"
 
 //******************************************************************************
 void MXC_FLC_ME13_Flash_Operation(void)
@@ -66,11 +68,14 @@ void MXC_FLC_ME13_Flash_Operation(void)
     It's flushed by reading 2 pages of flash.
     */
 
-    /* Flush all instruction caches */
-    MXC_GCR->sysctrl |= MXC_F_GCR_SYSCTRL_ICC0_FLUSH;
+    /* Flush all instruction caches if cache is enabled */
+    if (MXC_ICC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN) {
+        MXC_ICC_Flush();
+    }
 
-    /* Wait for flush to complete */
-    while (MXC_GCR->sysctrl & MXC_F_GCR_SYSCTRL_ICC0_FLUSH) {}
+    if (MXC_SFCC->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN) {
+        MXC_SFCC_Enable();
+    }
 
     // Clear the line fill buffer by reading 2 pages from flash
     volatile uint32_t *line_addr;
