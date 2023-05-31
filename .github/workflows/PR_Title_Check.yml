@@ -61,6 +61,8 @@ jobs:
           disallowScopes: |
             release
 
+          # Check that first character of the subject is capitalized and
+          # the subject doesn't terminate with any punctuation.
           subjectPattern: ^[A-Z][\w\s]+(?![?.!,])$
 
           subjectPatternError: |
