@@ -53,16 +53,19 @@ typedef struct {
     // Info from initialization.
     bool                initialized;
     mxc_spi_init_t      init;
-// TODO: Copy what you need
 
     // Transaction Data.
     uint16_t            *tx_buffer;
     uint32_t            tx_len;
     uint16_t            *rx_buffer;
     uint32_t            rx_len;
+    uint16_t            tx_dummy_value;
+
+    mxc_spi_callback_t  callback;
+    void                *callback_data;
     
     // Chip Select Info.
-    bool                deassert; // CS Deasserted at the end of a transmission.
+    bool                deassert; // Target Select (TS) Deasserted at the end of a transmission.
     mxc_spi_target_t    current_target;
 
     // DMA Settings.
@@ -120,14 +123,12 @@ static int MXC_SPI_RevB_resetStateStruct(int spi_num)
     STATES[spi_num].tx_len = 0;
     STATES[spi_num].rx_buffer = NULL;
     STATES[spi_num].rx_len = 0;
-    STATES[spi_num].deassert = true;    // Default state is CS will be deasserted at the end of a transmission.
+    STATES[spi_num].deassert = true;    // Default state is TS will be deasserted at the end of a transmission.
 
     // DMA
     STATES[spi_num].dma = NULL;
     STATES[spi_num].tx_dma_ch = -1;
     STATES[spi_num].rx_dma_ch = -1;
-    STATES[spi_num].tx_dma_reqsel = -1;
-    STATES[spi_num].rx_dma_reqsel = -1;
 
     // Status Members
     STATES[spi_num].controller_done = false;
@@ -137,26 +138,6 @@ static int MXC_SPI_RevB_resetStateStruct(int spi_num)
 
     return E_NO_ERROR;
 }
-
-static int MXC_SPI_RevB_resetAllStateStructs(int spi_num)
-{
-    int i;
-    int error;
-
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
-    for (i = 0; i < MXC_SPI_INSTANCES; i++) {
-        error = MXC_SPI_RevB_resetStateStruct(i);
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-    }
-
-    return E_NO_ERROR;
-}
-
 
 int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
 {
@@ -189,58 +170,83 @@ int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
     // Save init data for transactions and handlers.
     STATES[spi_num].init = *init;
     STATES[spi_num].dma = NULL;
-    STATES[spi_num].cs_pins = target->pins;
+    STATES[spi_num].current_target = *target;
 
-    // Set up CS Control Scheme.
-    if (init->cs_control == MXC_SPI_CSCONTROL_HW_AUTO) {
-        // If hardware is handling CS pin, make sure the correct alternate function is chosen.
-        if ((target->pins != NULL) && (target->pins.func != MXC_GPIO_FUNC_OUT)) {
-            error = MXC_GPIO_Config(&(init->cs_pins));
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-            (init->spi)->ctrl0 |= (target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
-
-            // Set CS Polarity (Default, active low (0))
-            if (target->active_polarity == 0) {
-                (init->spi)->ctrl2 &= ~(target->index << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
-            } else {
-                (init->spi)->ctrl2 |= (target->index << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
-            }
-
-        } else {
-            return E_BAD_PARAM;
-        }
-
-    } else if (init->cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
-        // Readbility for register access
-        target_port = target->pins.port;
-
-        // If SPI driver is handling CS pin, make sure the pin function is set as an output (AF: IO).
-        if ((target->pins != NULL) && (target->pins.func == MXC_GPIO_FUNC_OUT)) {
+    // Set up Target Select Control Scheme.
+    //  Hardware (Automatic) Controlled.
+    if (init->ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
+        // User configured target pins
+        if ((target->pins.port != NULL) && (target->pins.func != MXC_GPIO_FUNC_OUT)) {
             error = MXC_GPIO_Config(&(target->pins));
             if (error != E_NO_ERROR) {
                 return error;
             }
 
-            // Set CS Polarity 
-            if (target->active_polarity == 0) {
-                // Active LOW (0), Set CS Idle State to HIGH (1)
-                target_port->out_set |= target->pins.mask;
-            } else {
-                // Active HIGH (1), Set CS Idle State to LOW (0)
+            // Ensure VDDIO/VDDIOH Selection
+            error = MXC_GPIO_SetVSSEL(target->pins.port, init->vssel, target->pins.mask);
+            if (error != E_NO_ERROR) {
+                return error;
+            }
+
+        // If no target pins are selected, use the preconfigured, default target pins
+        } else {
+            error = MXC_SPI_ConfigTargetSelect(init->spi, target->index);
+            if (error != E_NO_ERROR) {
+                return error;
+            }
+
+            // Ensure VDDIO/VDDIOH Selection
+            error = MXC_GPIO_SetVSSEL(target->pins.port, init->vssel, target->pins.mask);
+            if (error != E_NO_ERROR) {
+                return error;
+            }
+        }
+
+        (init->spi)->ctrl0 |= (target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
+
+        // Set TS Polarity (Default - active low (0))
+        if (target->active_polarity) {
+            (init->spi)->ctrl2 |= (target->index << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
+        } else {
+            (init->spi)->ctrl2 &= ~(target->index << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
+        }
+
+    //  Software Driver Controlled.
+    } else if (init->ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
+        // Readbility for register access
+        target_port = target->pins.port;
+
+        // If SPI driver is handling target, make sure the pin function is set as an output (AF: IO).
+        if ((target->pins.port != NULL) && (target->pins.func == MXC_GPIO_FUNC_OUT)) {
+            error = MXC_GPIO_Config(&(target->pins));
+            if (error != E_NO_ERROR) {
+                return error;
+            }
+
+            // Ensure VDDIO/VDDIOH Selection
+            error = MXC_GPIO_SetVSSEL(target->pins.port, init->vssel, target->pins.mask);
+            if (error != E_NO_ERROR) {
+                return error;
+            }            
+
+            // Set TS Polarity (Default - active low (0))
+            if (target->active_polarity) {
+                // Active HIGH (1), Set TS Idle State to LOW (0)
                 target_port->out_clr |= target->pins.mask;
+            } else {
+                // Active LOW (0), Set TS Idle State to HIGH (1)
+                target_port->out_set |= target->pins.mask;
             }
 
         } else {
             return E_BAD_PARAM;
         }
 
-    // Don't do anything if SW Application is handling CS pin
-    // while still checking for proper cs_control parameter.
-    } else if (init->cs_control != MXC_SPI_CSCONTROL_SW_APP) {
-        // Not a valid CS Control option.
+    // Don't do anything if SW Application is handling Target Select (TS) pin
+    // while still checking for proper ts_control parameter.
+    //  Software Application Controlled.
+    } else if (init->ts_control != MXC_SPI_TSCONTROL_SW_APP) {
+        // Not a valid Target Select (TS) Control option.
         return E_BAD_PARAM;
     }
 
@@ -254,7 +260,6 @@ int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
         (init->spi)->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_MST_MODE;
     }
 
-//TODO: Can probably replace this with the SetDataSize Function.
     // Set character size
     if (init->data_size <= 1 || init->data_size > 16) {
         return E_BAD_PARAM;
@@ -262,7 +267,7 @@ int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
         (init->spi)->ctrl2 |= (init->data_size) << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS;
     }
 
-    // Remove any delay between SS and SCLK edges.
+    // Remove any delay between TS (L. SS) and SCLK edges.
     (init->spi)->sstime = (1 << MXC_F_SPI_REVA_SSTIME_PRE_POS) | (1 << MXC_F_SPI_REVA_SSTIME_POST_POS) | (1 << MXC_F_SPI_REVA_SSTIME_INACT_POS);
 
     // Enable TX/RX FIFOs
@@ -510,7 +515,7 @@ int MXC_SPI_RevB_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_datawidth_t width)
     int spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCESs) {
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
 
@@ -634,25 +639,32 @@ mxc_spi_clkmode_t MXC_SPI_RevB_GetClkMode(mxc_spi_reva_regs_t *spi)
     return MXC_SPI_CLKMODE_0;
 }
 
-int MXC_SPI_RevB_DMA_SetRequestSelect(mxc_spi_reva_regs_t *spi, uint32_t spi_tx_reqsel, uint32_t spi_rx_reqsel)
+int MXC_SPI_RevB_DMA_SetRequestSelect(mxc_spi_reva_regs_t *spi, uint32_t tx_reqsel, uint32_t rx_reqsel)
 {
     int spi_num;
+    uint32_t tx_ch;
+    uint32_t rx_ch;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
 
-    // This function will overwrite the current DMA TX/RX Request Selects.
-    STATES[spi_num].tx_dma_reqsel = -1;
-    STATES[spi_num].rx_dma_reqsel = -1;
-
-    if (spi_tx_reqsel != -1) {
-        STATES[spi_num].tx_dma_reqsel = spi_tx_reqsel;
+    // Ensure DMA was configured before setting DMA Request Selects.
+    if (STATES[spi_num].dma == NULL) {
+        return E_BAD_STATE;
     }
 
-    if (spi_rx_reqsel != -1) {
-        STATES[spi_num].rx_dma_reqsel = spi_rx_reqsel;
+    tx_ch = STATES[spi_num].tx_dma_ch;
+    rx_ch = STATES[spi_num].rx_dma_ch;
+
+    // This function will overwrite the current DMA TX/RX Request Selects.
+    if (tx_reqsel != -1) {
+        STATES[spi_num].dma->ch[tx_ch].ctrl |= tx_reqsel;
+    }
+
+    if (rx_reqsel != -1) {
+        STATES[spi_num].dma->ch[rx_ch].ctrl |= rx_reqsel;
     }
 
     return E_NO_ERROR;
@@ -671,8 +683,8 @@ int MXC_SPI_RevB_SetRegisterCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_
         return E_BAD_STATE;
     }
 
-    STATES[spi_num].init.callback = callback;
-    STATES[spi_num].init.callback_data = data;
+    STATES[spi_num].callback = callback;
+    STATES[spi_num].callback_data = data;
 
     return E_NO_ERROR;
 }
@@ -770,7 +782,7 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
     MXC_SPI_RevB_process(spi);
 
     // Toggle Chip Select Pin if handled by the driver
-    if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
+    if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
         // Make sure the selected Target Select (L. SS) pin is enabled as an output.
         if (target->pins.func != MXC_GPIO_FUNC_OUT) {
             return E_BAD_STATE;
@@ -788,14 +800,14 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
-    // Handle target-select (L. SS) deassertion if HW is selected as CS Control Scheme. This must be done 
-    //   AFTER launching the transaction to avoid a glitch on the SS line if:
-    //     - The SS line is asserted
+    // Handle target-select (L. SS) deassertion if HW is selected as Target Select (TS) Control Scheme. This must be done 
+    //   AFTER launching the transaction to avoid a glitch on the TS line if:
+    //     - The TS line is asserted
     //     - We want to deassert the line as part of this transaction
     //
-    // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the CS pin based
+    // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the Target Select (TS) pin based
     //   on the value of CTRL->SS_CTRL, which causes the glitch.
-    if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_HW_AUTO) {
+    if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
         // In HW Auto Scheme, only use the target index member.
         MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
 
@@ -810,7 +822,7 @@ int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer
 }
 
 // TODO: Match Polling, Async, and DMA function names of chip-specific level
-int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint32_t deassert, mxc_spi_target_t *target)
+int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
     int error;
     int spi_num;
@@ -833,7 +845,7 @@ int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffe
 }
 
 
-int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert, mxc_spi_target_t *target)
+int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
     int spi_num, tx_dummy_len;
     // For readability purposes.
@@ -923,7 +935,7 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
 
         // Configure TX DMA channel to retransmit the dummy byte
         spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN);
-        STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)&(STATES[spi_num].init.tx_dummy_value);
+        STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)&(STATES[spi_num].tx_dummy_value);
         STATES[spi_num].dma->ch[tx_ch].cnt = rx_len;
         STATES[spi_num].dma->ch[tx_ch].ctrl &= ~MXC_F_DMA_REVA_CTRL_SRCINC;
         STATES[spi_num].dma->ch[tx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN;  // Start the DMA
@@ -942,7 +954,7 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     }
 
     // Toggle Chip Select Pin if handled by the driver
-    if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
+    if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
         // Make sure the selected Target Select (L. SS) pin is enabled as an output.
         if (target->pins.func != MXC_GPIO_FUNC_OUT) {
             return E_BAD_STATE;
@@ -960,14 +972,14 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     // Start the SPI transaction
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
-    // Handle slave-select (SS) deassertion.  This must be done AFTER launching the transaction
-    // to avoid a glitch on the SS line if:
-    // - The SS line is asserted
+    // Handle target-select (L. SS) deassertion.  This must be done AFTER launching the transaction
+    // to avoid a glitch on the TS line if:
+    // - The TS line is asserted
     // - We want to deassert the line as part of this transaction
     //
-    // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the SS pin based
+    // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the TS pin based
     // on the value of CTRL->SS_CTRL, which causes the glitch.
-    if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_HW_AUTO) {
+    if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
         // In HW Auto Scheme, only use the target index member.
         MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
 
@@ -981,7 +993,7 @@ int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buf
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, bool deassert, mxc_spi_target_t *target)
+int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
     int error;
     int spi_num;
@@ -1011,8 +1023,8 @@ void MXC_SPI_RevB_Handler(mxc_spi_reva_regs_t *spi)
     uint32_t status = spi->intfl;
 
     // Used later for readability purposes on handling Chip Select.
-    mxc_gpio_regs_t *cs_port;
-    uint32_t cs_mask;
+    mxc_gpio_regs_t *target_port;
+    uint32_t target_mask;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
@@ -1022,22 +1034,22 @@ void MXC_SPI_RevB_Handler(mxc_spi_reva_regs_t *spi)
         STATES[spi_num].controller_done = true;
         spi->intfl |= MXC_F_SPI_REVA_INTFL_MST_DONE; // Clear flag
 
-        // Toggle CS Pin if Driver is handling it.
-        if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
+        // Toggle Target Select (TS) Pin if Driver is handling it.
+        if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
             if (STATES[spi_num].deassert == true) {
                 // Readability for handling Chip Select.
                 target_port = STATES[spi_num].current_target.pins.port;
                 target_mask = STATES[spi_num].current_target.pins.mask;
             
                 target_port->out ^= target_mask;
-            } // Don't deassert the CS pin if false for multiple repeated transactions.
+            } // Don't deassert the Target Select (TS) pin if false for multiple repeated transactions.
         }
 
         // Callback if valid.
-        // Note: If CS Control Scheme is set in SW_App mode, then the caller needs to ensure the
-        //   CS pin is asserted or deasserted in their application.
-        if (STATES[spi_num].init.callback) {
-            STATES[spi_num].init.callback(STATES[spi_num].init.callback_data);
+        // Note: If Target Select (TS) Control Scheme is set in SW_App mode, then the caller needs to ensure the
+        //   Target Select (TS) pin is asserted or deasserted in their application.
+        if (STATES[spi_num].callback) {
+            STATES[spi_num].callback(STATES[spi_num].callback_data);
         }
     }
 
@@ -1067,8 +1079,8 @@ void MXC_SPI_RevB_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
     uint32_t status;
 
     // Used later for readability purposes on handling Chip Select.
-    mxc_gpio_regs_t *cs_port;
-    uint32_t cs_mask;
+    mxc_gpio_regs_t *target_port;
+    uint32_t target_mask;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
@@ -1080,22 +1092,22 @@ void MXC_SPI_RevB_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
     if (status & MXC_F_DMA_REVA_STATUS_CTZ_IF) { 
         STATES[spi_num].dma->ch[tx_ch].status |= MXC_F_DMA_REVA_STATUS_CTZ_IF;
 
-        // Toggle CS Pin if Driver is handling it.
-        if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
+        // Toggle Target Select (TS) Pin if Driver is handling it.
+        if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
             if (STATES[spi_num].deassert == true) {
                 // Readability for handling Chip Select.
                 target_port = STATES[spi_num].current_target.pins.port;
                 target_mask = STATES[spi_num].current_target.pins.mask;
             
                 target_port->out ^= target_mask;
-            } // Don't deassert the CS pin if false for multiple repeated transactions.
+            } // Don't deassert the Target Select (TS) pin if false for multiple repeated transactions.
         }
 
         // Callback if valid.
-        // Note: If CS Control Scheme is set in SW_App mode, then the caller needs to ensure the
-        //   CS pin is asserted or deasserted in their application.
-        if (STATES[spi_num].init.callback) {
-            STATES[spi_num].init.callback(STATES[spi_num].init.callback_data);
+        // Note: If Target Select (TS) Control Scheme is set in SW_App mode, then the caller needs to ensure the
+        //   Target Select (TS) pin is asserted or deasserted in their application.
+        if (STATES[spi_num].callback) {
+            STATES[spi_num].callback(STATES[spi_num].callback_data);
         }
     }
 
@@ -1111,8 +1123,8 @@ void MXC_SPI_RevB_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
     uint32_t rx_ch;
     uint32_t status;
     // Used later for readability purposes on handling Chip Select.
-    mxc_gpio_regs_t *cs_port;
-    uint32_t cs_mask;
+    mxc_gpio_regs_t *target_port;
+    uint32_t target_mask;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
@@ -1125,22 +1137,22 @@ void MXC_SPI_RevB_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
         STATES[spi_num].rx_done = 1;
         STATES[spi_num].dma->ch[rx_ch].status |= MXC_F_DMA_STATUS_CTZ_IF;
 
-        // Toggle CS Pin if Driver is handling it.
-        if (STATES[spi_num].init.cs_control == MXC_SPI_CSCONTROL_SW_DRV) {
+        // Toggle Target Select (TS) Pin if Driver is handling it.
+        if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
             if (STATES[spi_num].deassert == true) {
                 // Readability for handling Chip Select.
                 target_port = STATES[spi_num].current_target.pins.port;
                 target_mask = STATES[spi_num].current_target.pins.mask;
             
                 target_port->out ^= target_mask;
-            } // Don't deassert the CS pin if false for multiple repeated transactions.
+            } // Don't deassert the Target Select (TS) pin if false for multiple repeated transactions.
         }
 
         // Callback if valid.
-        // Note: If CS Control Scheme is set in SW_App mode, then the caller needs to ensure the
-        //   CS pin is asserted or deasserted in their application.
-        if (STATES[spi_num].init.callback) {
-            STATES[spi_num].init.callback(STATES[spi_num].init.callback_data);
+        // Note: If Target Select (TS) Control Scheme is set in SW_App mode, then the caller needs to ensure the
+        //   Target Select (TS) pin is asserted or deasserted in their application.
+        if (STATES[spi_num].callback) {
+            STATES[spi_num].callback(STATES[spi_num].callback_data);
         }
     }
 

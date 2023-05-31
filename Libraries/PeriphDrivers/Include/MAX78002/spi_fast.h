@@ -72,12 +72,12 @@ typedef enum {
     MXC_SPI_TYPE_TARGET = 1
 } mxc_spi_type_t;
 
-// SS Control Scheme
+// Target Select (TS) Control Scheme
 typedef enum {
-    MXC_SPI_CSCONTROL_HW_AUTO = 0,  // Automatically by hardware
-    MXC_SPI_CSCONTROL_SW_DRV = 1,   // Through software by the driver
-    MXC_SPI_CSCONTROL_SW_APP = 2    // Through software in the application
-} mxc_spi_cscontrol_t;
+    MXC_SPI_TSCONTROL_HW_AUTO = 0,  // Automatically by hardware
+    MXC_SPI_TSCONTROL_SW_DRV = 1,   // Through software by the driver
+    MXC_SPI_TSCONTROL_SW_APP = 2    // Through software in the application
+} mxc_spi_tscontrol_t;
 
 typedef enum {
     MXC_SPI_STATE_READY = 0, // Ready for transaction
@@ -109,9 +109,9 @@ typedef enum {
 // TODO: Check if DATAWIDTH is the best name for this
 typedef enum {
     MXC_SPI_WIDTH_3WIRE = 0,
-    MXC_SPI_WIDTH_STANDARD = 0, 
-    MXC_SPI_WIDTH_DUAL = 1,
-    MXC_SPI_WIDTH_QUAD = 2
+    MXC_SPI_WIDTH_STANDARD = 1, 
+    MXC_SPI_WIDTH_DUAL = 2,
+    MXC_SPI_WIDTH_QUAD = 3
 } mxc_spi_datawidth_t;
 
 /**
@@ -171,8 +171,9 @@ typedef struct {
     mxc_spi_clkmode_t    clk_mode;
     uint8_t              data_size;       // Number of bits per character sent
     mxc_spi_datawidth_t  width;           // 3-wire, standard, dual, and quad modes
-    mxc_spi_cscontrol_t  cs_control;      // CS Control Scheme (auto HW, driver, or app controlled)
-    mxc_spi_target_t     target;
+    mxc_spi_tscontrol_t  ts_control;      // Target Select Control Scheme (auto HW, driver, or app controlled)
+    mxc_spi_target_t     target;          // Target Settings (index, pins, active_polarity)
+    mxc_gpio_vssel_t     vssel;           // Ensures selected VDDIO/VDDIOH setting
 
     // DMA
     bool                 use_dma;
@@ -297,6 +298,25 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Returns the frequency of the clock used as the bit rate generator for a given SPI instance.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  Frequency of the clock used as the bit rate generator
+ */
+int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Configures the Pre-defined SPI Target Select pins for a specific instance.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   index       Target Select Index (TS0, TS1, TS2, ...).
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index);
 
 /**
  * @brief   Retreive the DMA TX Channel associated with SPI instance.
@@ -489,15 +509,17 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req);
  */
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req);
 
-int MXC_SPI_MTransaction(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg);
+int MXC_SPI_MTransaction(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_MTransactionB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg);
+int MXC_SPI_MTransactionB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_MTransactionDMA(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg);
+int MXC_SPI_MTransactionDMA(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_MTransactionDMAB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg);
+int MXC_SPI_MTransactionDMAB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
 /* ** Handler Functions ** */
+
+void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi);
 
 void MXC_SPI_Handler(mxc_spi_regs_t *spi);
 

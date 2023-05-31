@@ -52,24 +52,16 @@
 // TODO: MXC_SPI_Init will be used once, the original RevA prototype is deprecated and removed.
 // int MXC_SPI_Init_New(mxc_spi_init_t *init)
 
-int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
+// Private helper function to set up Init struct from legacy implementation.
+// Returns Success/Error Codes.
+static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
                  unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
 {
-    int error, spi_num;
-
-    // TODO(5-15-2023): Remove this section when the Init function is updated to
-    //      int MXC_SPI_Init(mxc_spi_init_t *init)
-    // This section is for backwards compatibility, before fully updating to new
-    //   implementation.
-//>>> 
-    mxc_spi_init_t spi_init;
-    mxc_spi_init_t *init = &spi_init;
-
     // Set up init struct.
     init->spi = spi;
 
     if (masterMode) {
-        init->type = MXC_SPI_TYPE_CONTROLLER;  // L. Master
+        init->type = MXC_SPI_TYPE_CONTROLLER; // L. Master
     } else {
         init->type = MXC_SPI_TYPE_TARGET; // L. Slave
     }
@@ -85,12 +77,69 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     // New SPI drivers will not use "mxc_spi_pins_t pins" anymore.
     init->spi_pins = NULL;
 
-    // Due to different implementation, any Slave configuration is not done in the Init function.
-    // ssPolarity and numSlaves not used.
-//<<<
+    // Set up SPI pins like the legacy implementation.
+    init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO;
+    init->target.pins = (const mxc_gpio_cfg_t) { 0 };
+    init->target.active_polarity = ssPolarity;
+
+    // Set VSSEL level
+    if (pins.vddioh) {
+        init->vssel = MXC_GPIO_VSSEL_VDDIOH;
+    } else {
+        init->vssel = MXC_GPIO_VSSEL_VDDIO;
+    }
+
+    // Only one pin select can be used.
+    if (pins.ss0 ^ pins.ss1 ^ pins.ss2) {
+        return E_BAD_STATE;
+    }
+
+    // Set up Target Select pins.
+    if (pins.ss0) {
+        init->target.index = 0;
+
+    } else if (pins.ss1) {
+        init->target.index = 1;
+
+    } else if (pins.ss2) {
+        init->target.index = 2;
+
+    } else {
+        return E_BAD_PARAM;
+    }
+
+    if (pins.sdio2 || pins.sdio3) {
+        // Ensure QUAD mode is enabled if SDIO2/SDIO3 are true.
+        if (quadModeUsed == 0) {
+            return E_BAD_PARAM;
+        }
+    }
+
+    return E_NO_ERROR;
+}
+
+
+int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
+                 unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
+{
+    int error, spi_num;
+
+    // TODO(5-15-2023): Remove this section when the Init function is updated to
+    //      int MXC_SPI_Init(mxc_spi_init_t *init)
+    // This function is for backwards compatibility, before fully updating to new
+    //   implementation.
+    mxc_spi_init_t spi_init;
+    mxc_spi_init_t *init = &spi_init;
+
+    error = MXC_SPI_legacy_setupInit(init, spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz, pins);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
 
     spi_num = MXC_SPI_GET_IDX(init->spi);
-    MXC_ASSERT(spi_num >= 0);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
 
     // Check if frequency is too high
     if ((spi_num == 0) && (init->freq > PeripheralClock)) {
@@ -179,9 +228,11 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 {
     int spi_num;
+
     spi_num = MXC_SPI_GET_IDX(spi);
-    MXC_ASSERT(spi_num >= 0);
-    (void)spi_num;
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
 
     MXC_SPI_RevB_Shutdown((mxc_spi_reva_regs_t *)spi);
 
@@ -193,6 +244,119 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 #endif
     } else {
         return E_NO_DEVICE;
+    }
+
+    return E_NO_ERROR;
+}
+
+int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
+{
+    int retval;
+
+    if (spi == MXC_SPI1) {
+        retval = PeripheralClock;
+#ifdef MXC_SPI0 // SPI0 is not accessible from the RISC core.
+    } else if (spi == MXC_SPI0) {
+        int sys_clk = (MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL) >>
+                      MXC_F_GCR_CLKCTRL_SYSCLK_SEL_POS;
+        switch (sys_clk) {
+        case MXC_SYS_CLOCK_IPO:
+            retval = IPO_FREQ;
+            break;
+        case MXC_SYS_CLOCK_IBRO:
+            retval = IBRO_FREQ;
+            break;
+        case MXC_SYS_CLOCK_ISO:
+            retval = ISO_FREQ;
+            break;
+        case MXC_SYS_CLOCK_INRO:
+            retval = INRO_FREQ;
+            break;
+        case MXC_SYS_CLOCK_ERTCO:
+            retval = ERTCO_FREQ;
+            break;
+        case MXC_SYS_CLOCK_EXTCLK:
+            retval = EXTCLK_FREQ;
+            break;
+        default:
+            return E_BAD_STATE;
+        }
+#endif // MXC_SPI0
+    } else {
+        return E_BAD_PARAM;
+    }
+
+    retval /= 2;
+
+    return retval;
+}
+
+int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index)
+{
+    int error, spi_num;
+
+    spi_num = MXC_SPI_GET_IDX(spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    if (spi == MXC_SPI1) {
+        if (index > MXC_SPI1_TS_INSTANCES) {
+            return E_BAD_PARAM;
+        }
+
+        switch (index) {
+            // Target Select 0 - TS0 (L. SS0 pin)
+            case 0:
+                error = MXC_GPIO_Config(&gpio_cfg_spi1_ts0);
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
+
+                break;
+
+            default:
+                return E_BAD_PARAM;
+        }
+
+#ifdef MXC_SPI0
+    } else if (spi == MXC_SPI0) {
+        if (index > MXC_SPI1_TS_INSTANCES) {
+            return E_BAD_PARAM;
+        }
+
+        switch (index) {
+            // Target Select 0 - TS0 (L. SS0 pin)
+            case 0:
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_ts0);
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
+
+                break;
+
+            // Target Select 1 - TS1 (L. SS1 pin)
+            case 1:
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_ts1);
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
+
+                break;
+
+            // Target Select 2 (TS2 - L. SS2 pin)
+            case 2:
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_ts2);
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
+
+                break;
+
+            default:
+                return E_BAD_PARAM;
+        }
+#endif
     }
 
     return E_NO_ERROR;
@@ -319,27 +483,32 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
     return MXC_SPI_RevB_MasterTransactionDMA((mxc_spi_reva_regs_t*)(req->spi), req->tx_buffer, req->tx_len, req->rx_buffer, req->rx_len, req->deassert, NULL);
 }
 
-int MXC_SPI_MTransaction(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_MTransaction(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
-    return MXC_SPI_RevB_MasterTransaction((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, cs_cfg);;
+    return MXC_SPI_RevB_MasterTransaction((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);;
 }
 
-int MXC_SPI_MTransactionB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_MTransactionB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
-    return MXC_SPI_RevB_MasterTransactionB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, cs_cfg);
+    return MXC_SPI_RevB_MasterTransactionB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);
 }
 
-int MXC_SPI_MTransactionDMA(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_MTransactionDMA(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
-    return MXC_SPI_RevB_MasterTransactionDMA((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, cs_cfg);;
+    return MXC_SPI_RevB_MasterTransactionDMA((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);;
 }
 
-int MXC_SPI_MTransactionDMAB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *cs_cfg)
+int MXC_SPI_MTransactionDMAB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
-    return MXC_SPI_RevB_MasterTransactionDMAB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, cs_cfg);;
+    return MXC_SPI_RevB_MasterTransactionDMAB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);;
 }
 
 /* ** Handler Functions ** */
+
+void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi)
+{
+    MXC_SPI_RevB_Handler((mxc_spi_reva_regs_t *)spi);
+}
 
 void MXC_SPI_Handler(mxc_spi_regs_t *spi)
 {
