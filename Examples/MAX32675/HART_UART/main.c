@@ -173,6 +173,17 @@ void hart_sap_error_indicate_callback(uint8_t status, uint8_t data)
     // Just dropping any error bytes for now
 }
 
+// Strong definitions of GPIO irq handlers to ensure proper vector installation
+void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
+void GPIO1_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
+}
+
 // *****************************************************************************
 int main(void)
 {
