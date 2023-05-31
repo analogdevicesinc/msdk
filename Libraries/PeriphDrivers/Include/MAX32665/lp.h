@@ -576,6 +576,27 @@ void MXC_LP_ICache0LightSleepEnable(void);
  */
 void MXC_LP_ICache1LightSleepEnable(void);
 
+
+/**
+ * @brief      Sets SIMO clock, VDDCSW, and VregO_B voltage for DeepSleep
+ *
+ * @param[in]  voltage  VregO_B voltage, mV
+ */
+void MXC_LP_SIMOprepForDeepSleep(uint32_t voltage);
+
+/**
+ * @brief      Sets SIMO clock, VDDCSW, and VregO_C voltage for Backup
+ *
+ * @param[in]  voltage  VregO_C voltage, mV
+ */
+void MXC_LP_SIMOprepForBackup(uint32_t voltage);
+
+/**
+ * @brief      Performs SIMO soft start workaround at wakeup from DeepSleep and Backup
+ */
+void MXC_LP_recoverFromDeepSleep(void);
+
+
 #ifdef __cplusplus
 }
 #endif
