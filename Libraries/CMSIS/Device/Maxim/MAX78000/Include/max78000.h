@@ -399,9 +399,12 @@ typedef enum {
 #define MXC_GPIO_GET_GPIO(i) \
     ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : (i) == 2 ? MXC_GPIO2 : (i) == 3 ? MXC_GPIO3 : 0)
 
-#define MXC_GPIO_GET_IRQ(i) \
-    ((i) == 0 ? GPIO0_IRQn : (i) == 1 ? GPIO1_IRQn : (i) == 2 ? GPIO2_IRQn : 0)
-// GPIO3 does not have an interrupt
+#define MXC_GPIO_GET_IRQ(i)     \
+    ((i) == 0 ? GPIO0_IRQn :    \
+     (i) == 1 ? GPIO1_IRQn :    \
+     (i) == 2 ? GPIO2_IRQn :    \
+     (i) == 3 ? GPIOWAKE_IRQn : \
+                0)
 
 #define GPIOWake_IRQn GPIOWAKE_IRQn
 #define GPIOWake_IRQHandler GPIOWAKE_IRQHandler

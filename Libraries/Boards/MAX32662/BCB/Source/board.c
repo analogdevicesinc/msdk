@@ -67,6 +67,16 @@ void mxc_assert(const char *expr, const char *file, int line)
 }
 
 /******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
+/******************************************************************************/
 int Board_Init(void)
 {
     int err;
@@ -93,7 +103,7 @@ int Console_Init(void)
 {
     int err;
 
-    if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
+    if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_APB_CLK, MAP_A)) != E_NO_ERROR) {
         return err;
     }
 
