@@ -58,7 +58,7 @@ These are the rules for the `Subject`.
         * You can be more descriptive in the body or footer of the commit by running:
         `git commit -m “Title contents” -m “Body contents” -m “Footer contents”` 
     * No simple titles like “Add small SPI change”
-3.  If any, the Subject should include what parts are affected. Only the parts’ CHIP NAME should be used in the Subject. No die names are allowed.
+3.  The Subject should include what parts are affected, if any. Only the parts’ CHIP NAME should be used in the Subject. No die names are allowed.
     * For the most readability, append the affected parts list at the end of the Subject, so the important, beginning part of the commit message is visible when traversing through the MSDK repo on GitHub.
     * The list of chip names should be in ascending numerical order in the Subject.
     * Examples:
