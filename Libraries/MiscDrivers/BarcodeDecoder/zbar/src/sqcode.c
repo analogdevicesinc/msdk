@@ -11,12 +11,7 @@
 #include "image.h"
 #include "img_scanner.h"
 
-typedef enum {
-    SHAPE_DOT,
-    SHAPE_CORNER,
-    SHAPE_OTHER,
-    SHAPE_VOID
-} shape_t;
+typedef enum { SHAPE_DOT, SHAPE_CORNER, SHAPE_OTHER, SHAPE_VOID } shape_t;
 
 typedef struct {
     float x;
@@ -58,64 +53,61 @@ void _zbar_sq_destroy(sq_reader *reader)
 }
 
 /* reset finder state between scans */
-void _zbar_sq_reset (sq_reader *reader)
+void _zbar_sq_reset(sq_reader *reader)
 {
     reader->enabled = true;
 }
 
-int _zbar_sq_new_config(sq_reader *reader,
-                        unsigned config)
+int _zbar_sq_new_config(sq_reader *reader, unsigned config)
 {
     reader->enabled = config;
     return 0;
 }
 
-static const char base64_table[] = {
-	'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N',
-	'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b',
-	'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p',
-	'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3',
-	'4', '5', '6', '7', '8', '9', '+', '/'
-};
+static const char base64_table[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+                                     'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
+                                     'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
+                                     'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r',
+                                     's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2',
+                                     '3', '4', '5', '6', '7', '8', '9', '+', '/' };
 
-static char *base64_encode_buffer(const char *s, size_t size) {
-	size_t encoded_size = (size + 2) / 3 * 4 + 1;
-	char *encoded = malloc(encoded_size);
-	if (!encoded)
-		return NULL;
-	char *e = encoded;
-	for (;;) {
-		unsigned char c = (*s >> 2) & 0x3f;
-		*e++ = base64_table[c];
-		c = (*s++ << 4) & 0x30;
-		if (!--size) {
-			*e++ = base64_table[c];
-			*e++ = '=';
-			*e++ = '=';
-			break;
-		}
-		c |= (*s >> 4) & 0x0f;
-		*e++ = base64_table[c];
-		c = (*s++ << 2) & 0x3c;
-		if (!--size) {
-			*e++ = base64_table[c];
-			*e++ = '=';
-			break;
-		}
-		c |= (*s >> 6) & 0x03;
-		*e++ = base64_table[c];
-		c = *s++ & 0x3f;
-		*e++ = base64_table[c];
-		if (!--size)
-			break;
-	}
-	*e = '\0';
-	return encoded;
+static char *base64_encode_buffer(const char *s, size_t size)
+{
+    size_t encoded_size = (size + 2) / 3 * 4 + 1;
+    char *encoded = malloc(encoded_size);
+    if (!encoded)
+        return NULL;
+    char *e = encoded;
+    for (;;) {
+        unsigned char c = (*s >> 2) & 0x3f;
+        *e++ = base64_table[c];
+        c = (*s++ << 4) & 0x30;
+        if (!--size) {
+            *e++ = base64_table[c];
+            *e++ = '=';
+            *e++ = '=';
+            break;
+        }
+        c |= (*s >> 4) & 0x0f;
+        *e++ = base64_table[c];
+        c = (*s++ << 2) & 0x3c;
+        if (!--size) {
+            *e++ = base64_table[c];
+            *e++ = '=';
+            break;
+        }
+        c |= (*s >> 6) & 0x03;
+        *e++ = base64_table[c];
+        c = *s++ & 0x3f;
+        *e++ = base64_table[c];
+        if (!--size)
+            break;
+    }
+    *e = '\0';
+    return encoded;
 }
 
-static bool sq_extract_text(zbar_image_scanner_t *iscn,
-                            const char *buf,
-                            size_t len)
+static bool sq_extract_text(zbar_image_scanner_t *iscn, const char *buf, size_t len)
 {
     zbar_symbol_t *sym = _zbar_image_scanner_alloc_sym(iscn, ZBAR_SQCODE, 0);
     sym->data = base64_encode_buffer(buf, len);
@@ -137,8 +129,7 @@ static bool is_black_color(const unsigned char c)
 
 static bool is_black(zbar_image_t *img, int x, int y)
 {
-    if (x < 0 || (unsigned) x >= img->width || y < 0
-        || (unsigned) y >= img->height)
+    if (x < 0 || (unsigned)x >= img->width || y < 0 || (unsigned)y >= img->height)
         return false;
     const unsigned char *data = img->data;
     return is_black_color(data[y * img->width + x]);
@@ -150,8 +141,7 @@ static void set_dot_center(sq_dot *dot, float x, float y)
     dot->center.y = y;
 }
 
-static void sq_scan_shape(zbar_image_t *img, sq_dot *dot, int start_x,
-    int start_y)
+static void sq_scan_shape(zbar_image_t *img, sq_dot *dot, int start_x, int start_y)
 {
     if (!is_black(img, start_x, start_y)) {
         dot->type = SHAPE_VOID;
@@ -169,7 +159,7 @@ static void sq_scan_shape(zbar_image_t *img, sq_dot *dot, int start_x,
     unsigned height = 1;
 
 new_point:
-    for (int x = x0 - 1; x < (int) (x0 + width + 1); x++) {
+    for (int x = x0 - 1; x < (int)(x0 + width + 1); x++) {
         if (is_black(img, x, y0 - 1)) {
             y0 = y0 - 1;
             height++;
@@ -180,7 +170,7 @@ new_point:
             goto new_point;
         }
     }
-    for (int y = y0; y < (int) (y0 + height); y++) {
+    for (int y = y0; y < (int)(y0 + height); y++) {
         if (is_black(img, x0 - 1, y)) {
             x0 = x0 - 1;
             width++;
@@ -198,10 +188,10 @@ new_point:
     dot->height = height;
 
     /* Is it a corner? */
-    if (is_black(img, x0 + 0.25 * width, y0 + 0.25 * height)
-        && !is_black(img, x0 + 0.75 * width, y0 + 0.25 * height)
-        && !is_black(img, x0 + 0.25 * width, y0 + 0.75 * height)
-        && is_black(img, x0 + 0.75 * width, y0 + 0.75 * height)) {
+    if (is_black(img, x0 + 0.25 * width, y0 + 0.25 * height) &&
+        !is_black(img, x0 + 0.75 * width, y0 + 0.25 * height) &&
+        !is_black(img, x0 + 0.25 * width, y0 + 0.75 * height) &&
+        is_black(img, x0 + 0.75 * width, y0 + 0.75 * height)) {
         dot->type = SHAPE_CORNER;
         set_dot_center(dot, x0 + 0.5 * width, y0 + 0.5 * height);
         return;
@@ -212,8 +202,8 @@ new_point:
     unsigned x_sum = 0;
     unsigned y_sum = 0;
     unsigned total_weight = 0;
-    for (int y = y0; y < (int) (y0 + height); y++) {
-        for (int x = x0; x < (int) (x0 + width); x++) {
+    for (int y = y0; y < (int)(y0 + height); y++) {
+        for (int x = x0; x < (int)(x0 + width); x++) {
             if (!is_black(img, x, y))
                 continue;
             unsigned char weight = 0xff - data[y * img->width + x];
@@ -223,24 +213,21 @@ new_point:
         }
     }
     dot->type = SHAPE_DOT;
-    set_dot_center(dot, x_sum / (float) total_weight + 0.5,
-        y_sum / (float) total_weight + 0.5);
+    set_dot_center(dot, x_sum / (float)total_weight + 0.5, y_sum / (float)total_weight + 0.5);
 
     /* TODO: Is it other shape? White hole? Really a dot? */
 }
 
-static void set_middle_point(sq_point *middle, const sq_point *start,
-    const sq_point *end)
+static void set_middle_point(sq_point *middle, const sq_point *start, const sq_point *end)
 {
     middle->x = (start->x + end->x) / 2;
     middle->y = (start->y + end->y) / 2;
 }
 
-bool find_left_dot(zbar_image_t *img, sq_dot *dot, unsigned *found_x,
-    unsigned *found_y)
+bool find_left_dot(zbar_image_t *img, sq_dot *dot, unsigned *found_x, unsigned *found_y)
 {
-    for (int y = dot->y0; y < (int) (dot->y0 + dot->height); y++) {
-        for (int x = dot->x0 - 1; x >= (int) (dot->x0 - 2 * dot->width); x--) {
+    for (int y = dot->y0; y < (int)(dot->y0 + dot->height); y++) {
+        for (int x = dot->x0 - 1; x >= (int)(dot->x0 - 2 * dot->width); x--) {
             if (is_black(img, x, y)) {
                 *found_x = x;
                 *found_y = y;
@@ -251,12 +238,10 @@ bool find_left_dot(zbar_image_t *img, sq_dot *dot, unsigned *found_x,
     return false;
 }
 
-bool find_right_dot(zbar_image_t *img, sq_dot *dot, unsigned *found_x,
-    unsigned *found_y)
+bool find_right_dot(zbar_image_t *img, sq_dot *dot, unsigned *found_x, unsigned *found_y)
 {
-    for (int y = dot->y0; y < (int) (dot->y0 + dot->height); y++) {
-        for (int x = dot->x0 + dot->width; x < (int) (dot->x0 + 3 * dot->width);
-             x++) {
+    for (int y = dot->y0; y < (int)(dot->y0 + dot->height); y++) {
+        for (int x = dot->x0 + dot->width; x < (int)(dot->x0 + 3 * dot->width); x++) {
             if (is_black(img, x, y)) {
                 *found_x = x;
                 *found_y = y;
@@ -267,12 +252,10 @@ bool find_right_dot(zbar_image_t *img, sq_dot *dot, unsigned *found_x,
     return false;
 }
 
-bool find_bottom_dot(zbar_image_t *img, sq_dot *dot, unsigned *found_x,
-    unsigned *found_y)
+bool find_bottom_dot(zbar_image_t *img, sq_dot *dot, unsigned *found_x, unsigned *found_y)
 {
-    for (int x = dot->x0 + dot->width - 1; x >= (int) dot->x0; x--) {
-        for (int y = dot->y0 + dot->height;
-             y < (int) (dot->y0 + 3 * dot->height); y++) {
+    for (int x = dot->x0 + dot->width - 1; x >= (int)dot->x0; x--) {
+        for (int y = dot->y0 + dot->height; y < (int)(dot->y0 + 3 * dot->height); y++) {
             if (is_black(img, x, y)) {
                 *found_x = x;
                 *found_y = y;
@@ -283,14 +266,12 @@ bool find_bottom_dot(zbar_image_t *img, sq_dot *dot, unsigned *found_x,
     return false;
 }
 
-int _zbar_sq_decode (sq_reader *reader,
-                     zbar_image_scanner_t *iscn,
-                     zbar_image_t *img)
+int _zbar_sq_decode(sq_reader *reader, zbar_image_scanner_t *iscn, zbar_image_t *img)
 {
     if (!reader->enabled)
         return 0;
 
-    if (img->format != fourcc('Y','8','0','0')) {
+    if (img->format != fourcc('Y', '8', '0', '0')) {
         fputs("Unexpected image format\n", stderr);
         return 1;
     }
@@ -306,7 +287,7 @@ int _zbar_sq_decode (sq_reader *reader,
     }
     return 1;
 
-found_start: ;
+found_start:;
     /* Starting dot */
     sq_dot start_dot;
     sq_scan_shape(img, &start_dot, scan_x, scan_y);
@@ -323,8 +304,7 @@ found_start: ;
     size_t border_len;
     if (start_corner) {
         border_len = 0;
-    }
-    else {
+    } else {
         border_len = 1;
         top_border = malloc(sizeof(sq_point));
         if (!top_border)
@@ -343,12 +323,10 @@ found_start: ;
             if (!ptr)
                 goto free_borders;
             top_border = ptr;
-            for (size_t i = border_len - 1; i >= 2; i--)
-                top_border[i] = top_border[i - 2];
+            for (size_t i = border_len - 1; i >= 2; i--) top_border[i] = top_border[i - 2];
             top_border[0] = top_left_dot.center;
             set_middle_point(&top_border[1], &top_border[0], &top_border[2]);
-        }
-        else {
+        } else {
             border_len = 1;
             top_border = malloc(sizeof(sq_point));
             if (!top_border)
@@ -373,9 +351,8 @@ found_start: ;
                 goto free_borders;
             top_border = ptr;
             top_border[border_len - 1] = top_right_dot.center;
-            set_middle_point(&top_border[border_len - 2],
-                &top_border[border_len - 3],
-                &top_border[border_len - 1]);
+            set_middle_point(&top_border[border_len - 2], &top_border[border_len - 3],
+                             &top_border[border_len - 1]);
         }
     }
     if (border_len < 3)
@@ -411,9 +388,8 @@ found_start: ;
         if (cur_len > border_len)
             goto free_borders;
         left_border[cur_len - 1] = bottom_left_dot.center;
-        set_middle_point(&left_border[cur_len - 2],
-            &left_border[cur_len - 3],
-            &left_border[cur_len - 1]);
+        set_middle_point(&left_border[cur_len - 2], &left_border[cur_len - 3],
+                         &left_border[cur_len - 1]);
     }
     if (cur_len != border_len - 3 || bottom_left_dot.type != SHAPE_CORNER)
         goto free_borders;
@@ -441,15 +417,13 @@ found_start: ;
             if (cur_len > border_len)
                 goto free_borders;
             right_border[cur_len - 1] = bottom_right_dot.center;
-        }
-        else {
+        } else {
             cur_len += 2;
             if (cur_len > border_len)
                 goto free_borders;
             right_border[cur_len - 1] = bottom_right_dot.center;
-            set_middle_point(&right_border[cur_len - 2],
-                &right_border[cur_len - 3],
-                &right_border[cur_len - 1]);
+            set_middle_point(&right_border[cur_len - 2], &right_border[cur_len - 3],
+                             &right_border[cur_len - 1]);
         }
     }
     if (cur_len != border_len || border_len < 6)
@@ -480,9 +454,8 @@ found_start: ;
             goto free_borders;
         offset -= 2;
         bottom_border[offset] = bottom_left2_dot.center;
-        set_middle_point(&bottom_border[offset + 1],
-            &bottom_border[offset],
-            &bottom_border[offset + 2]);
+        set_middle_point(&bottom_border[offset + 1], &bottom_border[offset],
+                         &bottom_border[offset + 2]);
     }
     if (offset != 3 || bottom_left2_dot.type != SHAPE_CORNER)
         goto free_borders;
@@ -511,34 +484,32 @@ found_start: ;
     size_t idx = 0;
     for (unsigned y = 3; y <= border_len - 4; y++) {
         for (unsigned x = 3; x <= border_len - 4; x++) {
-            float bottom_weight = y / (float) (border_len - 1);
+            float bottom_weight = y / (float)(border_len - 1);
             float top_weight = 1 - bottom_weight;
-            float right_weight = x / (float) (border_len - 1);;
+            float right_weight = x / (float)(border_len - 1);
+            {
+            }
             float left_weight = 1 - right_weight;
 
-            sq_point top_left_source =
-                {top_border[x].x + left_border[y].x - left_border[0].x,
-                top_border[x].y + left_border[y].y - left_border[0].y};
+            sq_point top_left_source = { top_border[x].x + left_border[y].x - left_border[0].x,
+                                         top_border[x].y + left_border[y].y - left_border[0].y };
 
-            sq_point bottom_right_source =
-                {bottom_border[x].x + right_border[y].x
-                - right_border[border_len - 1].x,
-                bottom_border[x].y + right_border[y].y
-                - right_border[border_len - 1].y};
+            sq_point bottom_right_source = {
+                bottom_border[x].x + right_border[y].x - right_border[border_len - 1].x,
+                bottom_border[x].y + right_border[y].y - right_border[border_len - 1].y
+            };
 
             const unsigned char *data = img->data;
             unsigned sample_x = top_left_source.x;
             unsigned sample_y = top_left_source.y;
-            unsigned char top_left_color =
-                data[sample_y * img->width + sample_x];
+            unsigned char top_left_color = data[sample_y * img->width + sample_x];
             sample_x = bottom_right_source.x;
             sample_y = bottom_right_source.y;
-            unsigned char bottom_right_color =
-                data[sample_y * img->width + sample_x];
+            unsigned char bottom_right_color = data[sample_y * img->width + sample_x];
 
-            unsigned char mixed_color =
-                ((top_weight + left_weight) * top_left_color
-                + (bottom_weight + right_weight) * bottom_right_color) / 2;
+            unsigned char mixed_color = ((top_weight + left_weight) * top_left_color +
+                                         (bottom_weight + right_weight) * bottom_right_color) /
+                                        2;
 
             if (is_black_color(mixed_color))
                 buf[(idx / 8)] |= (1 << 7) - (idx % 8);
@@ -553,5 +524,5 @@ free_borders:
     free(left_border);
     free(right_border);
     free(bottom_border);
-    return error? 1: 0;
+    return error ? 1 : 0;
 }

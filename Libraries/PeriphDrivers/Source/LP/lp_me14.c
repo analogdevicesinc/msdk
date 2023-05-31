@@ -574,11 +574,10 @@ void MXC_LP_SIMOprepForDeepSleep(uint32_t voltage)
 
     /* SIMO clock setup for deep sleep */
     *(volatile int *)0x40005434 = 1; /* SIMOCLKDIV [1:0] : 0=div1; 1=div8; 2=div1 3=div16 */
-        /* BUCK_CLKSEL [25:24] : 0=8K; 1=16K; 2=30K; 3=RFU */
+    /* BUCK_CLKSEL [25:24] : 0=8K; 1=16K; 2=30K; 3=RFU */
     *(volatile int *)0x40005440 = (*(volatile int *)0x40005440 & (~(0x3 << 24))) | (0x2 << 24);
-        /* BUCK_CLKSEL_LP [7:6] : 0=8K; 1=16K; 2=30K; 3=RFU */
+    /* BUCK_CLKSEL_LP [7:6] : 0=8K; 1=16K; 2=30K; 3=RFU */
     *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6))) | (0x2 << 6);
-
 
     /* Wait for VCOREB to be ready */
     while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
@@ -602,10 +601,10 @@ void MXC_LP_SIMOprepForBackup(uint32_t voltage)
     MXC_MCR->ctrl |= MXC_F_MCR_CTRL_VDDCSWEN;
 
     /* SIMO softstart workaround: clock 8KHz/16 for BACKUP, 30KHz/1 in ACTIVE */
-    *(volatile int *)0x40005434 = 3;  /* SIMOCLKDIV [1:0] : 0=div1; 1=div8; 2=div1 3=div16 */
-        /* BUCK_CLKSEL [25:24] : 0=8K; 1=16K; 2=30K; 3=RFU */
+    *(volatile int *)0x40005434 = 3; /* SIMOCLKDIV [1:0] : 0=div1; 1=div8; 2=div1 3=div16 */
+    /* BUCK_CLKSEL [25:24] : 0=8K; 1=16K; 2=30K; 3=RFU */
     *(volatile int *)0x40005440 = (*(volatile int *)0x40005440 & (~(0x3 << 24))) | (0x2 << 24);
-        /* BUCK_CLKSEL_LP [7:6] : 0=8K; 1=16K; 2=30K; 3=RFU */
+    /* BUCK_CLKSEL_LP [7:6] : 0=8K; 1=16K; 2=30K; 3=RFU */
     *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6))) | (0x0 << 6);
 
     /* Move VCORE switch to VCOREB (< VCOREA) */
@@ -622,7 +621,6 @@ void MXC_LP_recoverFromDeepSleep(void)
 {
     /* Check to see if VCOREA is ready on  */
     if (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
-
         /* Wait for VCOREB to be ready */
         while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
 
@@ -635,7 +633,7 @@ void MXC_LP_recoverFromDeepSleep(void)
         MXC_SIMO_SetVregO_B(1000);
         while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
     } else {
-        if ( (MXC_MCR->ctrl & MXC_F_MCR_CTRL_VDDCSW) == (1 << MXC_F_MCR_CTRL_VDDCSW_POS)){
+        if ((MXC_MCR->ctrl & MXC_F_MCR_CTRL_VDDCSW) == (1 << MXC_F_MCR_CTRL_VDDCSW_POS)) {
             /* Raise the VCORE_B voltage */
             while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
             MXC_SIMO_SetVregO_B(1000);

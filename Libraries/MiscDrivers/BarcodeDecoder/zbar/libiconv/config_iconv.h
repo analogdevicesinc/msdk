@@ -16,7 +16,6 @@
    License along with the GNU LIBICONV Library; see the file COPYING.LIB.
    If not, see <https://www.gnu.org/licenses/>.  */
 
-
 #define LIBICONV_PLUG 1
 
 /* Define to 1 to enable a few rarely used encodings. */
@@ -32,7 +31,7 @@
    iconv_open, iconv, iconv_close functions. */
 #define HAVE_ICONV 1
 /* Define as const if the declaration of iconv() needs const. */
-#define ICONV_CONST 
+#define ICONV_CONST
 
 /* Define to 1 if you have the getc_unlocked() function. */
 #define HAVE_GETC_UNLOCKED 1
