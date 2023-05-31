@@ -35,8 +35,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_SPI_H_
-#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_SPI_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_SPI_FAST_H_
+#define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_SPI_FAST_H_
 
 /***** includes *******/
 #include <stdbool.h>
@@ -174,6 +174,10 @@ typedef struct {
     mxc_spi_tscontrol_t  ts_control;      // Target Select Control Scheme (auto HW, driver, or app controlled)
     mxc_spi_target_t     target;          // Target Settings (index, pins, active_polarity)
     mxc_gpio_vssel_t     vssel;           // Ensures selected VDDIO/VDDIOH setting
+    uint8_t              ts_mask;         // Target Select Mask to initialize GPIO pins.
+                                          //    ts_mask[0] = Target Select Pin 0
+                                          //    ts_mask[1] = Target Select Pin 1
+                                          //    ts_mask[n] = Target Select Pin n
 
     // DMA
     bool                 use_dma;
@@ -313,10 +317,11 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi);
  *
  * @param   spi         Pointer to SPI instance's registers.
  * @param   index       Target Select Index (TS0, TS1, TS2, ...).
+ * @param   vssel       Voltage Setting for TS pins (\ref mxc_gpio_vssel_t).
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index);
+int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vssel_t vssel);
 
 /**
  * @brief   Retreive the DMA TX Channel associated with SPI instance.

@@ -141,7 +141,7 @@ static int MXC_SPI_RevB_resetStateStruct(int spi_num)
 
 int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
 {
-    int error, spi_num;
+    int error, spi_num, i;
     mxc_spi_target_t *target;
     mxc_gpio_regs_t *target_port;
 
@@ -174,35 +174,38 @@ int MXC_SPI_RevB_Init(mxc_spi_init_t *init)
 
     // Set up Target Select Control Scheme.
     //  Hardware (Automatic) Controlled.
-    if (init->ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
-        // User configured target pins
-        if ((target->pins.port != NULL) && (target->pins.func != MXC_GPIO_FUNC_OUT)) {
-            error = MXC_GPIO_Config(&(target->pins));
-            if (error != E_NO_ERROR) {
-                return error;
+    if (init->ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {       
+        // Set up preconfigured TSn Pins
+        if (init->ts_mask) {
+            // Get total number of TSn instances for this SPI instance
+            for (i = 0; i < MXC_SPI_GET_TOTAL_TS(init->spi); i++) {
+                // Note: The [] represents the bit location of ts_mask
+                //       ts_mask[0] <= Target Select 0 (TS0)
+                //       ts_mask[1] <= Target Select 1 (TS1)
+                //       ts_mask[n] <= Target Select n (TSn)
+                if (init->ts_mask & (1<<i)) {
+                    error = MXC_SPI_ConfigTargetSelect(init->spi, i, init->vssel);
+                    if (error != E_NO_ERROR) {
+                        return error;
+                    }
+                }
             }
 
-            // Ensure VDDIO/VDDIOH Selection
-            error = MXC_GPIO_SetVSSEL(target->pins.port, init->vssel, target->pins.mask);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-        // If no target pins are selected, use the preconfigured, default target pins
+            MXC_SETFIELD((init->spi)->ctrl0, MXC_F_SPI_CTRL0_SS_ACTIVE, ((uint32_t)(init->ts_mask) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+        
+        // If ts_mask was not used, read the target settings and initalize the selected index
         } else {
-            error = MXC_SPI_ConfigTargetSelect(init->spi, target->index);
-            if (error != E_NO_ERROR) {
-                return error;
+            if (target->index >= MXC_SPI_GET_TOTAL_TS(init->spi)) {
+                return E_BAD_PARAM;
             }
 
-            // Ensure VDDIO/VDDIOH Selection
-            error = MXC_GPIO_SetVSSEL(target->pins.port, init->vssel, target->pins.mask);
+            error = MXC_SPI_ConfigTargetSelect(init->spi, target->index, init->vssel);
             if (error != E_NO_ERROR) {
                 return error;
             }
+            
+            (init->spi)->ctrl0 |= (target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
         }
-
-        (init->spi)->ctrl0 |= (target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
 
         // Set TS Polarity (Default - active low (0))
         if (target->active_polarity) {
@@ -454,7 +457,7 @@ int MXC_SPI_RevB_SetDataSize(mxc_spi_reva_regs_t *spi, int data_size)
     int saved_enable_state;
 
     // HW has problem with these two character sizes
-    if (data_size == 1 || data_size > 16) {
+    if (data_size <= 1 || data_size > 16) {
         return E_BAD_PARAM;
     }
 

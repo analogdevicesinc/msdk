@@ -52,6 +52,11 @@
 // TODO: MXC_SPI_Init will be used once, the original RevA prototype is deprecated and removed.
 // int MXC_SPI_Init_New(mxc_spi_init_t *init)
 
+// Max 3 Possible Target Select Options per SPI instance
+#define MXC_SPI_TS0_MASK_POS (0)
+#define MXC_SPI_TS1_MASK_POS (1)
+#define MXC_SPI_TS2_MASK_POS (2)
+
 // Private helper function to set up Init struct from legacy implementation.
 // Returns Success/Error Codes.
 static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
@@ -82,6 +87,8 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
     init->target.pins = (const mxc_gpio_cfg_t) { 0 };
     init->target.active_polarity = ssPolarity;
 
+    // init->vssel = 0;
+
     // Set VSSEL level
     if (pins.vddioh) {
         init->vssel = MXC_GPIO_VSSEL_VDDIOH;
@@ -89,23 +96,19 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
         init->vssel = MXC_GPIO_VSSEL_VDDIO;
     }
 
-    // Only one pin select can be used.
-    if (pins.ss0 ^ pins.ss1 ^ pins.ss2) {
-        return E_BAD_STATE;
-    }
-
     // Set up Target Select pins.
+    // init->ts_mask = 0;
+
     if (pins.ss0) {
-        init->target.index = 0;
-
-    } else if (pins.ss1) {
-        init->target.index = 1;
-
-    } else if (pins.ss2) {
-        init->target.index = 2;
-
-    } else {
-        return E_BAD_PARAM;
+        init->ts_mask |= (1 << MXC_SPI_TS0_MASK_POS); // Bit position 0
+    } 
+    
+    if (pins.ss1) {
+        init->ts_mask |= (1 << MXC_SPI_TS1_MASK_POS); // Bit position 1
+    }
+    
+    if (pins.ss2) {
+        init->ts_mask |= (1 << MXC_SPI_TS2_MASK_POS); // Bit position 2
     }
 
     if (pins.sdio2 || pins.sdio3) {
@@ -114,6 +117,11 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
             return E_BAD_PARAM;
         }
     }
+
+    // In the previous implementation, the MXC_SPI_Init function does not
+    //  set the message size until later by calling MXC_SPI_SetData.
+    // By default for the new implementation, the data_size will be set to 8 bits.
+    init->data_size = 8;
 
     return E_NO_ERROR;
 }
@@ -128,7 +136,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     //      int MXC_SPI_Init(mxc_spi_init_t *init)
     // This function is for backwards compatibility, before fully updating to new
     //   implementation.
-    mxc_spi_init_t spi_init;
+    mxc_spi_init_t spi_init = (const mxc_spi_init_t) { 0 };;
     mxc_spi_init_t *init = &spi_init;
 
     error = MXC_SPI_legacy_setupInit(init, spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz, pins);
@@ -291,7 +299,7 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
     return retval;
 }
 
-int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index)
+int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vssel_t vssel)
 {
     int error, spi_num;
 
@@ -312,7 +320,12 @@ int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index)
                 if (error != E_NO_ERROR) {
                     return error;
                 }
-
+                
+                error = MXC_GPIO_SetVSSEL(gpio_cfg_spi1_ts0.port, vssel, gpio_cfg_spi1_ts0.mask);
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
+                
                 break;
 
             default:
@@ -333,6 +346,11 @@ int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index)
                     return error;
                 }
 
+                error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts0.port, vssel, gpio_cfg_spi0_ts0.mask);
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
+
                 break;
 
             // Target Select 1 - TS1 (L. SS1 pin)
@@ -342,11 +360,21 @@ int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index)
                     return error;
                 }
 
+                error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts1.port, vssel, gpio_cfg_spi0_ts1.mask);
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
+
                 break;
 
             // Target Select 2 (TS2 - L. SS2 pin)
             case 2:
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_ts2);
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
+
+                error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts2.port, vssel, gpio_cfg_spi0_ts2.mask);
                 if (error != E_NO_ERROR) {
                     return error;
                 }
