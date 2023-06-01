@@ -374,7 +374,7 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
                            Ext_Flash_DataLine_t d_line)
 {
     int err = EF_E_SUCCESS;
-    int timeout = 0;
+    volatile int timeout = 0;
     uint8_t cmd[4] = { 0 };
     uint32_t len = 0;
     uint32_t next_page = 0;
@@ -470,7 +470,7 @@ int Ext_Flash_Bulk_Erase(void)
 {
     int err = EF_E_SUCCESS;
     uint8_t cmd = W25_CMD_BULK_ERASE;
-    int timeout = 0;
+    volatile int timeout = 0;
 
     if (flash_busy()) {
         return EF_E_BUSY;
@@ -500,7 +500,7 @@ int Ext_Flash_Erase(uint32_t address, Ext_Flash_Erase_t size)
 {
     int err = EF_E_SUCCESS;
     uint8_t cmd[4] = { 0 };
-    int timeout = 0;
+    volatile int timeout = 0;
 
     if (flash_busy()) {
         return EF_E_BUSY;
