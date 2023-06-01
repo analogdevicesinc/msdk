@@ -49,12 +49,16 @@ MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
-VPATH += $(BOARD_DIR)/../Source
+VPATH += $(MISC_DRIVERS_DIR)
+VPATH += $(MISC_DRIVERS_DIR)/LED
+VPATH += $(MISC_DRIVERS_DIR)/PushButton
 VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 VPATH += $(MISC_DRIVERS_DIR)/Display
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
-IPATH += $(BOARD_DIR)/../Include
+IPATH += $(MISC_DRIVERS_DIR)
+IPATH += $(MISC_DRIVERS_DIR)/LED
+IPATH += $(MISC_DRIVERS_DIR)/PushButton
 IPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 IPATH += $(MISC_DRIVERS_DIR)/Display

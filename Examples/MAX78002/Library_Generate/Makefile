@@ -103,8 +103,10 @@ endif
 # the variables below.
 
 
-include ./project.mk
+PROJECTMK ?= $(abspath ./project.mk)
+include $(PROJECTMK)
 $(info Loaded project.mk)
+# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
@@ -235,7 +237,7 @@ MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
 # Default level if not building for release or explicitly for debug
-MXC_OPTIMIZE_CFLAGS ?= -Og
+MXC_OPTIMIZE_CFLAGS ?= -O2
 
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
@@ -334,6 +336,10 @@ endif
 # Enable colors when --sync-output is used.
 # See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
 ifneq ($(MAKE_TERMOUT),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+ifneq ($(FORCE_COLOR),)
 PROJ_CFLAGS += -fdiagnostics-color=always
 endif
 

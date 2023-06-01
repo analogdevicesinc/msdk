@@ -37,7 +37,6 @@
  */
 
 #include <stdio.h>
-#include "spixf.h"
 
 #ifndef _BOARD_H
 #define _BOARD_H
@@ -84,49 +83,6 @@ int Console_Init(void);
  * \returns #E_NO_ERROR if ready to sleep, #E_BUSY if not ready for sleep.
  */
 int Console_PrepForSleep(void);
-
-/**
- * \brief   Initialize the PMIC to output correct voltages
-  * \returns #E_NO_ERROR if everything is successful
- */
-// int MAX77650_Init(void);
-
-/**
- * \brief   Initialize the SPI peripheral to use for MX25
-  * \returns #E_NO_ERROR if everything is successful
- */
-int MX25_Board_Init(void);
-
-/**
- * \brief   Translation function to implement SPI Read transaction
- * @param   read        Pointer to where master will store data.
- * @param   len         Number of characters to send.
- * @param   deassert    Deassert slave select at the end of the transaction.
- * @param   width       spi_width_t for how many data lines to use
- * \returns #E_NO_ERROR if successful, !=0 otherwise
- */
-
-int MX25_Board_Read(uint8_t *read, unsigned len, unsigned deassert, mxc_spixf_width_t width);
-/**
- * \brief   Translation function to implement SPI Write transaction
- * @param   write       Pointer to data master will write.
- * @param   len         Number of characters to send.
- * @param   deassert    Deassert slave select at the end of the transaction.
- * @param   width       spi_width_t for how many data lines to use
- * \returns #E_NO_ERROR if successful, !=0 otherwise
- */
-
-int MX25_Board_Write(const uint8_t *write, unsigned len, unsigned deassert,
-                     mxc_spixf_width_t width);
-
-/**
- * \brief   Send clocks on SCLK.
- * @param   len         Number of characters to send.
- * @param   deassert    Deassert slave select at the end of the transaction.
- * \returns #E_NO_ERROR if successful, !=0 otherwise
- */
-int MX25_Clock(unsigned len, unsigned deassert);
-;
 
 #ifdef __cplusplus
 }
