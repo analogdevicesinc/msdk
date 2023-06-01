@@ -202,6 +202,8 @@ print("PER limit     :", args.limit)
 
 # Open the results file, write the parameters
 results = open(args.results, "a")
+rssi_file_name = args.results.replace(".csv", "_rssi.csv")
+rssi_results = open(rssi_file_name, "a")
 
 print("\nReset the attenuation to 30.")
 if rf_switch:
@@ -346,6 +348,18 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
             print("\nmaster read any pending events")
             hciMaster.listenFunc(Namespace(time=1, stats="False"))
 
+            print("\nMaster: read RSSI")
+            #hciMaster.cmdFunc(Namespace(cmd="010514020000"))
+            mst_rssi = hciMaster.rssiFunc(None)
+            print(f'master rssi: {mst_rssi}')
+            sleep(0.2)
+
+            print("\nSlave: read RSSI")
+            #hciSlave.cmdFunc(Namespace(cmd="010514020000"))
+            slv_rssi = hciSlave.rssiFunc(None)
+            print(f'slave rssi: {slv_rssi}')
+            sleep(0.2)
+
             print("\nMaster collects results.")
             perMaster = hciMaster.connStatsFunc(None)
 
@@ -406,11 +420,15 @@ for packetLen, phy, txPower in itertools.product(packetLengths, phys, txPowers):
             perSlave = 100
             perMax = 100
             
-            ABORTED = True
+            if not use_per_mask:
+                ABORTED = True
+            
             break
 
-        # Save the results to file
-        results.write(str(packetLen)+","+str(phy)+",-"+str(atten)+","+str(txPower)+","+str(perMaster)+","+str(perSlave)+"\n")
+        # Save the results to file        
+        results.write(f'{packetLen},{phy},{atten},{txPower},{perMaster},{perSlave},{mst_rssi},{slv_rssi}\n')
+        rssi_results.write(f'{packetLen},{phy},{atten},{txPower},{perMaster},{perSlave},{mst_rssi},{slv_rssi}\n')
+
         end_secs = time.time()
         print(f'\nTotally used time for this point (secs): {(end_secs - start_secs):.0f}')
 
@@ -432,6 +450,7 @@ sleep(0.1)
 
 results.write("\n")
 results.close()
+rssi_results.close()
 
 print("perMax: ", perMax)
 
