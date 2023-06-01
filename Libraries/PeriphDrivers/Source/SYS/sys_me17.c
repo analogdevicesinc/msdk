@@ -321,9 +321,6 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 #endif
 
 #endif // __riscv
-
-
-
 }
 /* ************************************************************************** */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
