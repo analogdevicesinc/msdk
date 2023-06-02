@@ -11,7 +11,7 @@ module.exports = {
      * Any rules defined here will override rules from @commitlint/config-conventional
      */
     rules: {
-        "scope-enum": [2, "always", ["Documentation", "Examples", "Tools", "BLE", "Boards", "CMSIS", "MiscDrivers", "PeriphDrivers", "Third-Party", "ignore", "workflow"]],
+        "scope-enum": [2, "always", ["Documentation", "Examples", "Tools", "BLE", "Board-Files", "CMSIS", "MiscDrivers", "PeriphDrivers", "Third-Party", "ignore", "workflow", "Other"]],
         "scope-empty": [2, "never"],        
         "type-enum": [2, "always", ["build", "chore", "ci", "docs", "feat", "fix", "perf", "refactor", "revert", "style", "test"]],
         "subject-case": [2, "always", ["sentence-case", "start-case", "pascal-case", "upper-case"]],

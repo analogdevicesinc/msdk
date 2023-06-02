@@ -56,6 +56,7 @@ jobs:
             Third-Party
             ignore
             workflow
+            Other
 
           requireScope: true
           disallowScopes: |
