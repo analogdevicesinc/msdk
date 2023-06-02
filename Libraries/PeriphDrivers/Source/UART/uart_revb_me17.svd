@@ -262,7 +262,11 @@
           </field>
           <field>
             <name>TX_OB</name>
+<<<<<<< Updated upstream
             <description>Enable Interrupt For TX FIFO when only one byte is remaining.</description>
+=======
+            <description>Enable Interrupt For TX FIFO has one byte remaining</description>
+>>>>>>> Stashed changes
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -311,7 +315,11 @@
           </field>
           <field>
             <name>TX_OB</name>
+<<<<<<< Updated upstream
             <description>Flag for interrupt when TX FIFO has only one byte remaining.</description>
+=======
+            <description>Flag for interrupt when TX FIFO has one byte remaining</description>
+>>>>>>> Stashed changes
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
