@@ -42,7 +42,7 @@
 #include "mxc_lock.h"
 #include "mxc_sys.h"
 #include "mxc_delay.h"
-#include "spi_revb.h"
+#include "spi_reva2.h"
 #include "spi_fast.h"
 #include "dma.h"
 
@@ -158,7 +158,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         return E_BAD_PARAM;
     }
 
-    // Note: Target Select (L. SS) Pins will be configured in MXC_SPI_RevB_Init.
+    // Note: Target Select (L. SS) Pins will be configured in MXC_SPI_RevA2_Init.
     // Configure GPIO for spi
     if (init->spi == MXC_SPI1) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
@@ -230,7 +230,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         return E_NO_DEVICE;
     }
 
-    return MXC_SPI_RevB_Init(init);
+    return MXC_SPI_RevA2_Init(init);
 }
 
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
@@ -242,7 +242,7 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
         return E_BAD_PARAM;
     }
 
-    MXC_SPI_RevB_Shutdown((mxc_spi_reva_regs_t *)spi);
+    MXC_SPI_RevA2_Shutdown((mxc_spi_reva_regs_t *)spi);
 
     if (spi == MXC_SPI1) {
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_SPI1);
@@ -392,52 +392,52 @@ int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vss
 
 int MXC_SPI_DMA_GetTXChannel(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevB_DMA_GetTXChannel((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_DMA_GetTXChannel((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevB_DMA_GetRXChannel((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_DMA_GetRXChannel((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, uint32_t freq)
 {
-    return MXC_SPI_RevB_SetFrequency((mxc_spi_reva_regs_t *)spi, freq);
+    return MXC_SPI_RevA2_SetFrequency((mxc_spi_reva_regs_t *)spi, freq);
 }
 
 int MXC_SPI_GetFrequency(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevB_GetFrequency((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_GetFrequency((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_SetDataSize(mxc_spi_regs_t *spi, int data_size)
 {
-    return MXC_SPI_RevB_SetDataSize((mxc_spi_reva_regs_t *)spi, data_size);
+    return MXC_SPI_RevA2_SetDataSize((mxc_spi_reva_regs_t *)spi, data_size);
 }
 
 int MXC_SPI_GetDataSize(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevB_GetDataSize((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_GetDataSize((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_datawidth_t width)
 {
-    return MXC_SPI_RevB_SetWidth((mxc_spi_reva_regs_t *)spi, width);
+    return MXC_SPI_RevA2_SetWidth((mxc_spi_reva_regs_t *)spi, width);
 }
 
 mxc_spi_datawidth_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevB_GetWidth((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_GetWidth((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_SetClkMode(mxc_spi_regs_t *spi, mxc_spi_clkmode_t clk_mode)
 {
-    return MXC_SPI_RevB_SetClkMode((mxc_spi_reva_regs_t *)spi, clk_mode);
+    return MXC_SPI_RevA2_SetClkMode((mxc_spi_reva_regs_t *)spi, clk_mode);
 }
 
 mxc_spi_clkmode_t MXC_SPI_GetClkMode(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevB_GetClkMode((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_GetClkMode((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_DMA_SetRequestSelect(mxc_spi_req_t *req)
@@ -481,74 +481,80 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_req_t *req)
         }
     }
 
-    return MXC_SPI_RevB_DMA_SetRequestSelect((mxc_spi_reva_regs_t *)(req->spi), tx_reqsel, rx_reqsel);
+    return MXC_SPI_RevA2_DMA_SetRequestSelect((mxc_spi_reva_regs_t *)(req->spi), tx_reqsel, rx_reqsel);
 }
 
 int MXC_SPI_SetRegisterCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data)
 {
-    return MXC_SPI_RevB_SetRegisterCallback((mxc_spi_reva_regs_t *)spi, callback, data);
+    return MXC_SPI_RevA2_SetRegisterCallback((mxc_spi_reva_regs_t *)spi, callback, data);
 }
 
 int MXC_SPI_GetActive(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevB_GetActive((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_GetActive((mxc_spi_reva_regs_t *)spi);
 }
 
 /* ** Transaction Functions ** */
 
 int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevB_MasterTransactionB((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_len, req->rx_buffer, req->rx_len, req->deassert, NULL);
+    mxc_spi_target_t target;
+    target.index = req->ssIdx;
+
+    return MXC_SPI_RevA2_MasterTransactionB((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_len, req->rx_buffer, req->rx_len, req->deassert, &target);
 }
 
 int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevB_MasterTransaction((mxc_spi_reva_regs_t*)(req->spi), req->tx_buffer, req->tx_len, req->rx_buffer, req->rx_len, req->deassert, NULL);
+    mxc_spi_target_t target;
+    target.index = req->ssIdx;
+
+    return MXC_SPI_RevA2_MasterTransaction((mxc_spi_reva_regs_t*)(req->spi), req->tx_buffer, req->tx_len, req->rx_buffer, req->rx_len, req->deassert, &target);
 }
 
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevB_MasterTransactionDMA((mxc_spi_reva_regs_t*)(req->spi), req->tx_buffer, req->tx_len, req->rx_buffer, req->rx_len, req->deassert, NULL);
+    return MXC_SPI_RevA2_MasterTransactionDMA((mxc_spi_reva_regs_t*)(req->spi), req->tx_buffer, req->tx_len, req->rx_buffer, req->rx_len, req->deassert, NULL);
 }
 
 int MXC_SPI_MTransaction(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
-    return MXC_SPI_RevB_MasterTransaction((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);;
+    return MXC_SPI_RevA2_MasterTransaction((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);;
 }
 
 int MXC_SPI_MTransactionB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
-    return MXC_SPI_RevB_MasterTransactionB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);
+    return MXC_SPI_RevA2_MasterTransactionB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);
 }
 
 int MXC_SPI_MTransactionDMA(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
-    return MXC_SPI_RevB_MasterTransactionDMA((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);;
+    return MXC_SPI_RevA2_MasterTransactionDMA((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);;
 }
 
 int MXC_SPI_MTransactionDMAB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target)
 {
-    return MXC_SPI_RevB_MasterTransactionDMAB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);;
+    return MXC_SPI_RevA2_MasterTransactionDMAB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_len, rx_buffer, rx_len, deassert, target);;
 }
 
 /* ** Handler Functions ** */
 
 void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi)
 {
-    MXC_SPI_RevB_Handler((mxc_spi_reva_regs_t *)spi);
+    MXC_SPI_RevA2_Handler((mxc_spi_reva_regs_t *)spi);
 }
 
 void MXC_SPI_Handler(mxc_spi_regs_t *spi)
 {
-    MXC_SPI_RevB_Handler((mxc_spi_reva_regs_t *)spi);
+    MXC_SPI_RevA2_Handler((mxc_spi_reva_regs_t *)spi);
 }
 
 void MXC_SPI_DMA_TX_Handler(mxc_spi_regs_t *spi)
 {
-    MXC_SPI_RevB_DMA_TX_Handler((mxc_spi_reva_regs_t *)spi);
+    MXC_SPI_RevA2_DMA_TX_Handler((mxc_spi_reva_regs_t *)spi);
 }
 
 void MXC_SPI_DMA_RX_Handler(mxc_spi_regs_t *spi)
 {
-    MXC_SPI_RevB_DMA_RX_Handler((mxc_spi_reva_regs_t *)spi);
+    MXC_SPI_RevA2_DMA_RX_Handler((mxc_spi_reva_regs_t *)spi);
 }

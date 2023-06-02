@@ -54,53 +54,53 @@ extern "C" {
 
 /* **** Functions **** */
 
-int MXC_SPI_RevB_Init(mxc_spi_init_t *init);
+int MXC_SPI_RevA2_Init(mxc_spi_init_t *init);
 
-int MXC_SPI_RevB_Shutdown(mxc_spi_reva_regs_t *spi);
+int MXC_SPI_RevA2_Shutdown(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevB_DMA_GetTXChannel(mxc_spi_reva_regs_t *spi);
+int MXC_SPI_RevA2_DMA_GetTXChannel(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevB_DMA_GetRXChannel(mxc_spi_reva_regs_t *spi);
+int MXC_SPI_RevA2_DMA_GetRXChannel(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevB_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq);
+int MXC_SPI_RevA2_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq);
 
-int MXC_SPI_RevB_GetFrequency(mxc_spi_reva_regs_t *spi);
+int MXC_SPI_RevA2_GetFrequency(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevB_SetDataSize(mxc_spi_reva_regs_t *spi, int data_size);
+int MXC_SPI_RevA2_SetDataSize(mxc_spi_reva_regs_t *spi, int data_size);
 
-int MXC_SPI_RevB_GetDataSize(mxc_spi_reva_regs_t *spi);
+int MXC_SPI_RevA2_GetDataSize(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevB_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_datawidth_t width);
+int MXC_SPI_RevA2_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_datawidth_t width);
 
-mxc_spi_datawidth_t MXC_SPI_RevB_GetWidth(mxc_spi_reva_regs_t *spi);
+mxc_spi_datawidth_t MXC_SPI_RevA2_GetWidth(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevB_SetClkMode(mxc_spi_reva_regs_t *spi, mxc_spi_clkmode_t clk_mode);
+int MXC_SPI_RevA2_SetClkMode(mxc_spi_reva_regs_t *spi, mxc_spi_clkmode_t clk_mode);
 
-mxc_spi_clkmode_t MXC_SPI_RevB_GetClkMode(mxc_spi_reva_regs_t *spi);
+mxc_spi_clkmode_t MXC_SPI_RevA2_GetClkMode(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevB_DMA_SetRequestSelect(mxc_spi_reva_regs_t *spi, uint32_t tx_reqsel, uint32_t rx_reqsel);
+int MXC_SPI_RevA2_DMA_SetRequestSelect(mxc_spi_reva_regs_t *spi, uint32_t tx_reqsel, uint32_t rx_reqsel);
 
-int MXC_SPI_RevB_SetRegisterCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback, void *data);
+int MXC_SPI_RevA2_SetRegisterCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback, void *data);
 
-int MXC_SPI_RevB_GetActive(mxc_spi_reva_regs_t *spi);
+int MXC_SPI_RevA2_GetActive(mxc_spi_reva_regs_t *spi);
 
 /* ** Transaction Functions ** */
 
-int MXC_SPI_RevB_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_RevA2_MasterTransaction(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_RevB_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_RevA2_MasterTransactionB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_RevB_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_RevA2_MasterTransactionDMA(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_RevB_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_RevA2_MasterTransactionDMAB(mxc_spi_reva_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
 /* ** Handler Functions ** */
 
-void MXC_SPI_RevB_Handler(mxc_spi_reva_regs_t *spi);
+void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi);
 
-void MXC_SPI_RevB_DMA_TX_Handler(mxc_spi_reva_regs_t *spi);
+void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi);
 
-void MXC_SPI_RevB_DMA_RX_Handler(mxc_spi_reva_regs_t *spi);
+void MXC_SPI_RevA2_DMA_RX_Handler(mxc_spi_reva_regs_t *spi);
 
 
 #ifdef __cplusplus
