@@ -44,7 +44,7 @@
 #include "mxc_delay.h"
 #include "spi_regs.h"
 #include "spi_reva_regs.h"
-#include "spi_fast.h"
+#include "spi.h"
 #include "dma.h"
 #include "dma_reva_regs.h"
 

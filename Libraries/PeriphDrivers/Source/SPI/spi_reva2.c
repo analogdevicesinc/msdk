@@ -42,7 +42,7 @@
 #include "mxc_sys.h"
 #include "mxc_delay.h"
 #include "nvic_table.h"
-#include "spi_fast.h"
+#include "spi.h"
 #include "spi_reva2.h"
 #include "dma_reva.h"
 

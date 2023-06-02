@@ -43,7 +43,7 @@
 #include "mxc_sys.h"
 #include "mxc_delay.h"
 #include "spi_reva2.h"
-#include "spi_fast.h"
+#include "spi.h"
 #include "dma.h"
 
 /* **** Definitions **** */
