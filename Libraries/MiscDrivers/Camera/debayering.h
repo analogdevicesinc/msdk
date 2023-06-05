@@ -20,6 +20,15 @@ uint8_t clamp_f_u8(float val);
 // Clamp an int to uint8_t
 uint8_t clamp_i_u8(int val);
 
+/**
+* @brief Apply color correction to a RAW8 bayer pattern image using the "gray world" assumption. (E. Y. Lam,
+* “Combining gray world and retinex theory for automatic
+* white balance in digital photography,” in Proc. 9th IEEE Intl. Symposium
+* on Comsumer Electronics, 2005, pp. 134–139.).  Call this function before debayering to improve color accuracy.
+* @param srcimg Pointer to the RAW8 bayer pattern.  The image will be modified in-place.
+* @param[in] w Width of the bayer pattern (in pixels)
+* @param[in] h Height of the bayer pattern (in pixels)
+****************************************************************************/
 void color_correct(uint8_t *srcimg, unsigned int w, unsigned int h);
 
 /**
@@ -32,7 +41,7 @@ void color_correct(uint8_t *srcimg, unsigned int w, unsigned int h);
 void bayer_passthrough(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_t *dstimg);
 
 /**
-* @brief Color-correct and demosaic a raw HM0360 bayer-patterned image array and convert to RGB565.
+* @brief Debayer a RAW8 bayer-patterned image array and convert to RGB565.
 * @param[in] srcimg Pointer to the raw bayer pattern
 * @param[in] w Width of the bayer pattern (in pixels)
 * @param[in] h Height of the bayer pattern (in pixels)
@@ -41,14 +50,17 @@ void bayer_passthrough(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_t *dstimg
 void bayer_bilinear_demosaicing(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_t *dstimg);
 
 /**
-* @brief Color-correct and demosaic a raw HM0360 bayer-patterned image array and convert to RGB565.
-* @param[in] srcimg Pointer to the raw bayer pattern
-* @param[in] w Width of the bayer pattern (in pixels)
-* @param[in] h Height of the bayer pattern (in pixels)
-* @param[out] dstimg Output pointer for converted RGB565 image.
-****************************************************************************/
-void bayer_bilinear_demosaicing_crop(uint8_t *srcimg, uint32_t src_width, uint32_t w_offset, uint32_t src_height, uint32_t h_offset, uint16_t *dstimg, uint32_t dst_width, uint32_t dst_height);
+ * @brief Color-correct and debayer a sub-section of a RAW8 bayer-patterned source image.
+ *        This function is used to crop images on the fly.
+ *
+ * @param[in] srcimg     Pointer to the raw bayer pattern.
+ * @param[in] src_width  Width of the entire source image (in pixels).
+ * @param[in] src_height Height of the entire source image (in pixels).
+ * @param[in] w_offset   Horizontal offset of the sub-section within the source image (in pixels).
+ * @param[in] h_offset   Vertical offset of the sub-section within the source image (in pixels).
+ * @param[out] dstimg     Output pointer for the converted RGB565 image.
+ * @param[in] dst_width  Width of the output image (in pixels).
+ * @param[in] dst_height Height of the output image (in pixels).
+ ****************************************************************************/
+void bayer_bilinear_demosaicing_crop(uint8_t *srcimg, uint32_t src_width, uint32_t src_height, uint32_t w_offset, uint32_t h_offset, uint16_t *dstimg, uint32_t dst_width, uint32_t dst_height);
 
-void bayer_bilinear_demosaicing_crop_vertical(uint8_t *srcimg, uint32_t src_width, uint32_t w_offset, uint32_t src_height, uint32_t h_offset, uint16_t *dstimg, uint32_t dst_width, uint32_t dst_height);
-
-void bayer_malvarhe_demosaicing_crop_vertical(uint8_t *srcimg, uint32_t w, uint32_t w_offset, uint32_t h, uint32_t h_offset, uint16_t *dstimg, uint32_t dst_width, uint32_t dst_height);
