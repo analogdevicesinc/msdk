@@ -65,17 +65,17 @@ void load_input(void)
 {
     uint8_t *raw;
     uint32_t imglen, w, h;
-    camera_sleep(0);
+    camera_sleep(0); // Wake up camera
     camera_start_capture_image();
-    // 3. Wait until the image is fully received.
     while (!camera_is_image_rcv()) {}
-    camera_get_image(&raw, &imglen, &w, &h);
-    camera_sleep(1);
+    camera_sleep(1); // Sleep camera to preserve power
 
+    camera_get_image(&raw, &imglen, &w, &h);
     color_correct(raw, w, h);
 
-    // MXC_TFT_ShowImageCameraMono(0, 0, raw, w, h);
-
+    // The model needs 168x224.  The HM0360 give us 320x240.
+    // We will achieve this by debayering "on the fly" to crop to
+    // 224x168 while feeding the CNN column-wise instead of row-wise.
     unsigned int crop_x = 224, crop_y = 168;
     unsigned int start_x = (320 - crop_x) >> 1;
     unsigned int start_y = (240 - crop_y) >> 1;
@@ -88,11 +88,15 @@ void load_input(void)
     uint16_t rgb565;
 
     for (unsigned int x = start_x; x < start_x + crop_x; x++) {
-        bayer_bilinear_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
-        // bayer_malvarhe_demosaicing_crop_vertical(raw, w, x, h, start_y, rgb565_buffer, 1, crop_y);
+        bayer_bilinear_demosaicing_crop(raw, w, h, x, start_y, rgb565_buffer, 1, crop_y);
+        /* ^ The crop is achieved here by offsetting where we start
+        iterating across the source image.  The rotation is achieved
+        by iterating across the image in the vertical (h) direction
+        down a single column.  Then, we feed the column into the CNN...
+        */
 
-
-        for (unsigned int y = 0; y < crop_y; y++) {
+        for (unsigned int y = 0; y < crop_y; y++) { // ... here.
+            // Since the CNN expects
             // Decode RGB565 to RGB888
             rgb565 = rgb565_buffer[y];
             ur = (rgb565 & 0xF8);
@@ -100,9 +104,12 @@ void load_input(void)
             ug |= (rgb565 & 0xe000) >> 11;
             ub = (rgb565 & 0x1f00) >> 5;
 
+            // Normalize from [0, 255] -> [-128, 127]
             r = ur - 128;
             g = ug - 128;
             b = ub - 128;
+
+            // Pack to RGB888 (0x00BBGGRR)
             rgb888 = r | (g << 8) | (b << 16);
 
             // Loading data into the CNN fifo
@@ -174,7 +181,7 @@ int main(void)
 
     camera_set_hmirror(0);
     camera_set_vflip(0);
-    camera_write_reg(0x3024, 0x0);
+    camera_write_reg(0x3024, 0x0); // Set context A (320x240)
 
     ret = camera_setup(320, // width
                        240, // height
