@@ -303,6 +303,7 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     while (!(MXC_GCR->clkctrl & ready)) {}
     return E_NO_ERROR;
 #else
+#ifndef BOARD_ME17_TESTER
     // Start timeout, wait for ready
     MXC_DelayAsync(MXC_SYS_CLOCK_TIMEOUT, NULL);
 
@@ -314,9 +315,13 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     } while (MXC_DelayCheck() == E_BUSY);
 
     return E_TIME_OUT;
+#else
+
+    return E_NO_ERROR;
+#endif
+
 #endif // __riscv
 }
-
 /* ************************************************************************** */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 {

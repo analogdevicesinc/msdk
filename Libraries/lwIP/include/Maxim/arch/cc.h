@@ -35,8 +35,8 @@
  * ownership rights.
  ******************************************************************************
  */
-#ifndef _MXC_CC_H_
-#define _MXC_CC_H_
+#ifndef LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_CC_H_
+#define LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_CC_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,19 +65,24 @@ typedef uintptr_t   mem_ptr_t;
 
 /* Compiler hints for packing structures */
 #define PACK_STRUCT_FIELD(x)    x
-#define PACK_STRUCT_STRUCT  	__attribute__((packed))
+#define PACK_STRUCT_STRUCT      __attribute__((packed))
 #define PACK_STRUCT_BEGIN
 #define PACK_STRUCT_END
 
+#if !NO_SYS
+#define LWIP_ERRNO_INCLUDE  <sys/errno.h>
+#define LWIP_TIMEVAL_PRIVATE 0
+#endif
+
 /* Platform specific diagnostic output */
-#define LWIP_PLATFORM_DIAG(x)   do {                		\
-        printf x;                   						\
+#define LWIP_PLATFORM_DIAG(x)   do {                        \
+        printf x;                                           \
     } while (0)
 
-#define LWIP_PLATFORM_ASSERT(x) do {                		\
+#define LWIP_PLATFORM_ASSERT(x) do {                        \
         printf("Assert \"%s\" failed at line %d in %s\n",   \
-                x, __LINE__, __FILE__);             		\
-        while (1);                        					\
+                x, __LINE__, __FILE__);                     \
+        while (1) {}                                        \
     } while (0)
 
-#endif /* _MXC_CC_H_ */
+#endif // LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_CC_H_
