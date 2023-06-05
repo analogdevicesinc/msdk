@@ -890,7 +890,7 @@ int MXC_UART_RevA_TransactionAsync(mxc_uart_reva_req_t *req)
 
         // Enable TX Threshold interrupt
         MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVA_INT_EN_TX_FIFO_THRESH);
-        
+
         numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
         req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart), &req->txData[req->txCnt],
