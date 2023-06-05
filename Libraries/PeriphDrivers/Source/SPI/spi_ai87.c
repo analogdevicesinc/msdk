@@ -254,12 +254,12 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
     return retval;
 }
 
-int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, unsigned int hz)
+int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, uint32_t freq)
 {
-    return MXC_SPI_RevA1_SetFrequency((mxc_spi_reva_regs_t *)spi, hz);
+    return MXC_SPI_RevA1_SetFrequency((mxc_spi_reva_regs_t *)spi, freq);
 }
 
-unsigned int MXC_SPI_GetFrequency(mxc_spi_regs_t *spi)
+int MXC_SPI_GetFrequency(mxc_spi_regs_t *spi)
 {
     return MXC_SPI_RevA1_GetFrequency((mxc_spi_reva_regs_t *)spi);
 }
@@ -284,12 +284,12 @@ int MXC_SPI_GetSlave(mxc_spi_regs_t *spi)
     return MXC_SPI_RevA1_GetSlave((mxc_spi_reva_regs_t *)spi);
 }
 
-int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth)
+int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_datawidth_t spiWidth)
 {
     return MXC_SPI_RevA1_SetWidth((mxc_spi_reva_regs_t *)spi, spiWidth);
 }
 
-mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
+mxc_spi_datawidth_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
 {
     return MXC_SPI_RevA1_GetWidth((mxc_spi_reva_regs_t *)spi);
 }

@@ -96,14 +96,14 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
     // Unload any SPI data that has come in
     //  Dependent on 1) Valid RX Buffer, 2) RX Length not 0, and 3) RX FIFO Not Empty.
     while(STATES[spi_num].rx_buffer && STATES[spi_num].rx_len > 0 && (spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL)) {
-        *(STATES[spi_num].rx_buffer)++ = spi->fifo32;
+        *(STATES[spi_num].rx_buffer)++ = spi->fifo16[0];
         STATES[spi_num].rx_len--;
     }
 
     // Write any pending bytes out.
     //  Dependent on 1) Valid TX Buffer, 2) TX Length not 0, and 3) TX FIFO Not Empty.
     while(STATES[spi_num].tx_buffer && STATES[spi_num].tx_len > 0 && (((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
-        spi->fifo32 = *(STATES[spi_num].tx_buffer)++;
+        spi->fifo16[0] = *(STATES[spi_num].tx_buffer)++;
         STATES[spi_num].tx_len--;
     }
 }
@@ -1059,7 +1059,7 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
     // Handle RX Threshold
     if (status & MXC_F_SPI_REVA_INTFL_RX_THD) {
         spi->intfl |= MXC_F_SPI_REVA_INTFL_RX_THD;
-        if (!(STATES[spi_num].init.use_dma)) {
+        if (STATES[spi_num].init.use_dma == false) {
             // RX threshold has been crossed, there's data to unload from the FIFO
             MXC_SPI_RevA2_process(spi);
         }
@@ -1068,11 +1068,14 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
     // Handle TX Threshold
     if (status & MXC_F_SPI_REVA_INTFL_TX_THD) {
         spi->intfl |= MXC_F_SPI_REVA_INTFL_TX_THD;
-        if (!(STATES[spi_num].init.use_dma)) {
+        if (STATES[spi_num].init.use_dma == false) {
             // TX threshold has been crossed, we need to refill the FIFO
             MXC_SPI_RevA2_process(spi);
         }
     }
+
+    // Start the SPI transaction.
+    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 }
 
 void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)

@@ -86,24 +86,7 @@ typedef enum {
 } mxc_spi_state_t;
 
 /**
- * @brief   The list of SPI Widths supported
- *
- * The SPI Width can be set on a per-transaction basis.
- * An example use case of SPI_WIDTH_STANDARD_HALFDUPLEX is
- * given.
- *
- * Using a MAX31865 RTD-to-SPI IC, read back the temperature
- * The IC requires a SPI Read to be executed as
- * 1. Assert SS
- * 2. Write an 8bit register address
- * 3. Read back the 8 bit register
- * 4. Deassert SS
- * This can be accomplished with the STANDARD_HALFDUPLEX width
- * 1. set txData to the address, txLen=1
- * 2. set rxData to a buffer of 1 byte, rxLen=1
- * 3. The driver will transmit the txData, and after completion of
- *    txData begin to recieve data, padding MOSI with DefaultTXData
- *
+ * @brief   The list of SPI Widths supported.
  */
 // TODO: Check if DATAWIDTH is the best name for this
 typedef enum {
@@ -116,7 +99,7 @@ typedef enum {
 /**
  * @brief The list of SPI modes
  * 
- * SPI supports four combinations of clock and phase polarity
+ * SPI supports four combinations of clock and phase polarity.
  * 
  * Clock polarity is controlled using the bit SPIn_CTRL2.cpol 
  * and determines if the clock is active high or active low
@@ -238,12 +221,12 @@ struct _mxc_spi_reva2_req_t {
     
     union {
         uint16_t *tx_buffer;
-        uint16_t *txData;        // txData - deprecated name     
+        uint16_t *txData;       // txData - deprecated name     
     };
 
     union {                       
         uint16_t *rx_buffer;
-        uint16_t *rxData;        // rxData - deprecated name  
+        uint16_t *rxData;       // rxData - deprecated name  
     };
 
     union {
@@ -262,7 +245,7 @@ struct _mxc_spi_reva2_req_t {
     };
 
     union {
-        uint32_t rx_cnt;            ///< Number of bytes stored in rxData
+        uint32_t rx_cnt;        ///< Number of bytes stored in rxData
         uint32_t rxCnt;
     };
 
