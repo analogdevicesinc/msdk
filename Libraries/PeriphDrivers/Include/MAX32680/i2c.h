@@ -55,6 +55,12 @@ extern "C" {
  * @{
  */
 
+/***** Definitions *****/
+#define MXC_I2C_STD_MODE 100000
+#define MXC_I2C_FAST_SPEED 400000
+#define MXC_I2C_FASTPLUS_SPEED 1000000
+#define MXC_I2C_HIGH_SPEED 3400000
+
 typedef struct _i2c_req_t mxc_i2c_req_t;
 /**
  * @brief   The callback used by the MXC_I2C_ReadByteInteractive() function.
@@ -828,6 +834,16 @@ int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t *i2c, unsigned int numBytes);
  * @return  The transmit threshold value (in bytes).
  */
 int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Stop any asynchronous requests in progress.
+ *
+ * Stop any asynchronous requests in progress. Any callbacks associated with
+ * the active transaction will be NOT executed.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
+ */
+void MXC_I2C_AsyncStop(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Abort any asynchronous requests in progress.

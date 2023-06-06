@@ -34,8 +34,7 @@
 /**
  * @file    main.c
  * @brief   Hello World!
- *
- * @details This example uses the UART to print to a terminal and flashes an LED(P1.14).
+ * @details This example uses the UART to print to a terminal and flashes an LED.
  */
 
 /***** Includes *****/
@@ -56,15 +55,14 @@
 int main(void)
 {
     int count = 0;
-    printf("\n***********Hello World!***********\n");
-    printf("\nLED0 toggles every 500 ms\n");
+
+    printf("Hello World!\n");
 
     while (1) {
         LED_On(0);
         MXC_Delay(500000);
         LED_Off(0);
         MXC_Delay(500000);
-
-        printf("\nCount = %d", count++);
+        printf("count = %d\n", count++);
     }
 }

@@ -90,7 +90,8 @@ int main(void)
         printf("Failed to read expected SRAM ID!\n");
         return err;
     }
-    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", id.MFID, id.KGD, id.density, id.EID);
+    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", id.MFID,
+           id.KGD, id.density, id.EID);
 
     // Time the measurement overhead of our measurement functions
     MXC_TMR_SW_Start(MXC_TMR0);
@@ -105,14 +106,6 @@ int main(void)
     memset(tx_buffer, TEST_VALUE, TEST_SIZE);
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
     printf("(Benchmark) Wrote %i bytes to internal SRAM in %ius\n", TEST_SIZE, elapsed);
-
-    // Measure DMA transaction overhead
-    // if (benchmark_dma_overhead(&elapsed) == E_NO_ERROR){
-    //     elapsed -= sw_overhead;
-    //     printf("DMA overhead: %ius\n", elapsed);
-    // } else {
-    //     printf("DMA overhead timed out...\n");
-    // }
 
     // Benchmark standard-width SPI write to external SRAM
     printf("Test 1: Standard SPI write...\n");
@@ -131,7 +124,8 @@ int main(void)
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i,
+                   tx_buffer[i], rx_buffer[i]);
         }
     }
     printf("\tDone\n");
@@ -145,11 +139,11 @@ int main(void)
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i,
+                   tx_buffer[i], rx_buffer[i]);
         }
     }
     printf("\tDone\n");
-
 
     // Invert test pattern - this ensures every bit has to be updated in the next write
     memset(tx_buffer, ~(TEST_VALUE), TEST_SIZE);
@@ -173,7 +167,8 @@ int main(void)
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i,
+                   tx_buffer[i], rx_buffer[i]);
         }
     }
     printf("\tDone\n");
@@ -190,7 +185,8 @@ int main(void)
     for (int i = 0; i < TEST_SIZE; i++) {
         if (rx_buffer[i] != tx_buffer[i]) {
             fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i, tx_buffer[i], rx_buffer[i]);
+            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", TEST_ADDR + i,
+                   tx_buffer[i], rx_buffer[i]);
         }
     }
     printf("\tDone\n");
@@ -220,7 +216,6 @@ int main(void)
         for (int j = 0; j < TEST_SIZE; j++) {
             if (rx_buffer[j] != tx_buffer[j]) {
                 fail_count++;
-                // printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + j, tx_buffer[j], rx_buffer[j]);
             }
         }
         address += TEST_SIZE;
@@ -241,7 +236,6 @@ int main(void)
         for (int j = 0; j < TEST_SIZE; j++) {
             if (rx_buffer[j] != tx_buffer[j]) {
                 fail_count++;
-                // printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + j, tx_buffer[j], rx_buffer[j]);
             }
         }
         address += TEST_SIZE;
@@ -253,27 +247,12 @@ int main(void)
         printf("\tSuccess\n");
     }
 
-    // Prototype memory inspector...
-    // uint8_t row[1024];
-    // address = 0;
-    // printf("0x%.3x: ", address);
-    // for (int i = 0; i < 4; i++) {
-    //     ram_read_quad(address, row, 1024);
-    //     for (int j = 0; j < 1024; j++) {
-    //         printf("%.2x ", row[j]);
-    //         if ((j+1) % 16 == 0) {
-    //             printf("\n");
-    //             printf("0x%.3x: ", address + j);
-    //         }
-    //     }
-    //     address += 1024;
-    // }
-
     if (fail_count > 0) {
-        printf("\nFailed with %i mismatches (%.2f%%)!\n", fail_count, 100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT)));
+        printf("\nFailed with %i mismatches (%.2f%%)!\n", fail_count,
+               100 * (((float)fail_count) / (TEST_SIZE * TEST_COUNT)));
         return E_FAIL;
     }
-    
+
     printf("Success!\n");
     return err;
 }

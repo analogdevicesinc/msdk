@@ -245,13 +245,12 @@ int mipi_camera_init(mipi_camera_settings_t camera_settings)
     g_ctrl_cfg.lane_src.c0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L4;
 
     // Configure CSI2 request options
-    g_req.img_addr = NULL;
     g_req.pixels_per_line = camera_settings.width;
     g_req.lines_per_frame = camera_settings.height;
     unsigned int bits_per_pixel = _bits_per_pixel(camera_settings.camera_format.pixel_format);
     g_req.bits_per_pixel_odd = bits_per_pixel;
-    g_req.bits_per_pixel_even = bits_per_pixel; // TODO: Support uneven bit lengths
-    g_req.frame_num = 1; // TODO: Support multi-frame exposures
+    g_req.bits_per_pixel_even = bits_per_pixel; // TODO(Jake): Support uneven bit lengths
+    g_req.frame_num = 1; // TODO(Jake): Support multi-frame exposures
 
     // Disable RAW to RGB conversions.  AI87 RevA hardware has major issues with its built-in debayering hardware.
     g_req.process_raw_to_rgb = false;
@@ -325,19 +324,23 @@ int mipi_camera_capture()
     return MXC_CSI2_CaptureFrameDMA();
 }
 
-mipi_camera_format_t mipi_camera_get_camera_format()
+mipi_camera_settings_t mipi_camera_get_camera_settings()
 {
-    return g_camera_settings.camera_format;
+    return g_camera_settings;
+}
+
+mxc_csi2_capture_stats_t mipi_camera_get_capture_stats(void)
+{
+    return MXC_CSI2_GetCaptureStats();
 }
 
 // *IMG* [PIXEL_FORMAT] [LENGTH (in bytes)] [WIDTH (in pixels)] [HEIGHT (in pixels)]
 char *mipi_camera_get_image_header(void)
 {
     memset(g_image_header, '\0', sizeof(g_image_header));
-    uint8_t *raw_data;
     uint32_t img_len, width, height;
 
-    MXC_CSI2_GetImageDetails(&raw_data, &img_len, &width, &height);
+    MXC_CSI2_GetImageDetails(&img_len, &width, &height);
 
     char *format_str;
     pixel_format_t pixel_format = g_camera_settings.camera_format.pixel_format;
@@ -361,8 +364,7 @@ char *mipi_camera_get_image_header(void)
              format_str, // PIXEL_FORMAT
              img_len, // LENGTH (in bytes)
              width, // WIDTH (in pixels)
-             height // HEIGHT (in pixels)
-    );
+             height); // HEIGHT (in pixels)
 
     return g_image_header;
 }

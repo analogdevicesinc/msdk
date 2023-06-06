@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,21 +29,20 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
 
-#ifndef _USB_PROTOCOL_H_
-#define _USB_PROTOCOL_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_USB_PROTOCOL_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_USB_PROTOCOL_H_
 
 #include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
 /* SETUP message byte offsets */
 #define SETUP_bmRequestType   0
-#define	SETUP_bRequest        1
+#define SETUP_bRequest        1
 #define SETUP_wValueL         2
 #define SETUP_wValueH         3
 #define SETUP_wIndexL         4
@@ -213,4 +212,4 @@ typedef __packed struct {
 }
 #endif
 
-#endif
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_USB_PROTOCOL_H_

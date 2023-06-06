@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -38,8 +38,8 @@
 *         This file defines the driver API including all types and function prototypes.
 */
 
-#ifndef _FIFO_H_
-#define _FIFO_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_FIFO_H_
+#define LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_FIFO_H_
 
 #include <stdint.h>
 
@@ -147,4 +147,4 @@ unsigned int fifo_remaining(fifo_t * fifo);
 }
 #endif
 
-#endif /* _FIFO_H_ */
+#endif //LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_FIFO_H_

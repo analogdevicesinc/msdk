@@ -40,7 +40,7 @@
 /**
  * @brief Pixel format enumerations.
 */
-typedef enum {
+typedef enum pixel_format {
     PIXEL_FORMAT_BYPASS,
     PIXEL_FORMAT_YUV420,
     PIXEL_FORMAT_YUV422,
@@ -62,30 +62,39 @@ typedef enum {
 /**
  * @brief Pixel format bit order enumerations
 */
-typedef enum {
+typedef enum pixel_order {
     PIXEL_ORDER_DEFAULT,
-    PIXEL_ORDER_RAW_BGGR, /**< Default for RAW8, RAW10 */
+    PIXEL_ORDER_RAW_BGGR,
     PIXEL_ORDER_RAW_GBRG,
     PIXEL_ORDER_RAW_GRBG,
     PIXEL_ORDER_RAW_RGGB,
     PIXEL_ORDER_RGB565_BGR,
-    PIXEL_ORDER_RGB565_RGB, /**< Default for RGB565 */
+    PIXEL_ORDER_RGB565_RGB,
     PIXEL_ORDER_RGB565_GRB,
     PIXEL_ORDER_RGB565_BRG,
     PIXEL_ORDER_RGB565_GBR,
     PIXEL_ORDER_RGB565_RBG,
-    // TODO: Support other pixel orders
+    // TODO(Jake): Support other pixel orders
 } pixel_order_t;
 
+/**
+ * @brief Camera format struct describing the desired pixel format and ordering
+*/
 typedef struct _mipi_camera_format {
     pixel_format_t pixel_format;
     pixel_order_t pixel_order;
 } mipi_camera_format_t;
 
+/**
+ * @brief Camera settings struct.  This is the "top-level" configuration struct
+ * encapsulating all camera settings.  Pass this in to the @ref mipi_camera_init function.
+*/
 typedef struct _mipi_camera_settings_t {
-    unsigned int width, height;
-    mipi_camera_format_t camera_format;
-    mxc_csi2_line_handler_cb_t line_handler;
+    unsigned int width; /**< Image width in pixels */
+    unsigned int height; /**< Image height in pixels */
+    mipi_camera_format_t camera_format; /**< Image format */
+    mxc_csi2_line_handler_cb_t
+        line_handler; /**< Line handler provided by application to process incoming camera data */
 } mipi_camera_settings_t;
 
 typedef enum {
@@ -130,15 +139,86 @@ typedef struct _mipi_camera {
     int (*get_luminance)(int *lum);
 } mipi_camera_t;
 
+/**
+ * @brief Initialize the MIPI camera with the specified settings.
+ * @param[in] camera_settings Camera settings to use.
+ * @return E_NO_ERROR (0) on success, non-zero @ref MXC_Error_Codes on failure
+ */
 int mipi_camera_init(mipi_camera_settings_t camera_settings);
+
+/**
+ * @brief Write a value to a MIPI camera register
+ * @param[in] reg_addr Register to write to
+ * @param[in] reg_data Value to write
+ * @return 0 on success, non-zero on failure
+ */
 int mipi_camera_write_reg(uint16_t reg_addr, uint8_t reg_data);
+
+/**
+ * @brief Read a value from a MIPI camera register
+ * @param[in] reg_addr Register to read from
+ * @param[out] reg_data Output location for the read data
+ * @return 0 on success, non-zero on failure
+ */
 int mipi_camera_read_reg(uint16_t reg_addr, uint8_t *reg_data);
+
+/**
+ * @brief Get the slave address of the MIPI camera
+ * @return The slave address of the camera
+ */
 int mipi_camera_get_slave_address(void);
+
+/**
+ * @brief Get the product ID of the MIPI camera.
+ * @param[out] id Output location for the product ID
+ * @return E_NO_ERROR (0) on success, non-zero @ref MXC_Error_Codes on failure
+ */
 int mipi_camera_get_product_id(int *id);
+
+/**
+ * @brief Get the manufacture ID of the MIPI camera
+ * @param[out] id Output location for the manufacture ID
+ * @return E_NO_ERROR (0) on success, non-zero @ref MXC_Error_Codes on failure
+ */
 int mipi_camera_get_manufacture_id(int *id);
+
+/**
+ * @brief Put the MIPI camera to sleep or wake it up
+ * @param[in] sleep 1 to sleep, 0 to wake up
+ * @return E_NO_ERROR (0) on success, non-zero @ref MXC_Error_Codes on failure
+ */
 int mipi_camera_sleep(int sleep);
-mipi_camera_format_t mipi_camera_get_camera_format(void);
-char *mipi_camera_get_image_header(void);
+
+/**
+ * @brief Capture an image from the MIPI camera.  This function will block
+ * until the frame is complete or an error is received.  During the capture,
+ * the line handler function passed to @ref mipi_camera_init is expected to unload
+ * the received data in time for each new row.
+ * @return 0 (E_NO_ERROR) on a successful capture of a full frame, non-zero @ref MXC_Error_Codes on failure.
+ */
 int mipi_camera_capture();
+
+/**
+ * @brief Retrieve the current camera settings
+ * @return The current camera settings
+ */
+mipi_camera_settings_t mipi_camera_get_camera_settings(void);
+
+/**
+ * @brief Get detailed statistics about the last image capture and any errors that occurred.
+ * @return A @ref mxc_csi2_capture_stats_t struct
+ */
+mxc_csi2_capture_stats_t mipi_camera_get_capture_stats(void);
+
+/**
+ * @brief Parse a string containing information about the last captured image.
+ * This is used with console.py utilities.
+ * @details The string will have the following format (ignore quotes ""):
+ * 
+ * "*IMG* [PIXEL_FORMAT] [LENGTH (in bytes)] [WIDTH (in pixels)] [HEIGHT (in pixels)]"
+ * 
+ * @return The image header of the last captured image
+ */
+char *mipi_camera_get_image_header(void);
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_MIPI_CAMERA_H_

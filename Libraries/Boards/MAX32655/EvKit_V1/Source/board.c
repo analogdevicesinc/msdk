@@ -69,6 +69,16 @@ const mxc_gpio_cfg_t led_pin[] = {
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
+/******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
 #ifndef __riscv /* RISCV does not have access to MXC_SPI0 */
 
 /******************************************************************************/

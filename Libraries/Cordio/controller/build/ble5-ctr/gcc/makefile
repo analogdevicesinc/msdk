@@ -53,9 +53,6 @@ endif
 ifeq ($(INIT_ENCRYPTED),1)
 CFG_DEV         += INIT_ENCRYPTED
 endif
-ifeq ($(TOKEN),1)
-CFG_DEV         += LL_TRACE_ENABLED=1
-endif
 CFG_DEV         += SCH_CHECK_LIST_INTEGRITY=1
 CFG_DEV         += BB_LED_ENA=$(BB_LED_ENA)
 

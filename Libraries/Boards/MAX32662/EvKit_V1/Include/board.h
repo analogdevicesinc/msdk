@@ -37,6 +37,7 @@
  */
 
 #include <stdio.h>
+#include <stdbool.h>
 
 #ifndef LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX32662_EVKIT_V1_INCLUDE_BOARD_H_
@@ -44,6 +45,13 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+/*
+    Define board name:
+    Use as #if defined(BOARD_EVKIT_V1)
+    Not as #if BOARD_EVKIT_V1
+*/
+#define BOARD_EVKIT_V1 1
 
 #ifndef CONSOLE_UART
 #define CONSOLE_UART 0 /// UART instance to use for console
@@ -83,6 +91,21 @@ int Console_Shutdown(void);
  * \returns #E_NO_ERROR if ready to sleep, #E_BUSY if not ready for sleep.
  */
 int Console_PrepForSleep(void);
+
+/*
+ * @brief Initialize the SPI interface used to communicate with the TFT Controller
+ */
+void TFT_SPI_Init(void);
+
+/*
+ * @brief Send command or parameter information to TFT controller
+ *
+ * @param datain    Buffer containing data to send to TFT controller
+ * @param count     Number of bytes to send
+ * @param data      True - data in datain are data/parameter bytes, False - data in datain
+ *                         is a command
+ */
+void TFT_SPI_Write(uint8_t *datain, uint32_t count, bool data);
 
 #ifdef __cplusplus
 }

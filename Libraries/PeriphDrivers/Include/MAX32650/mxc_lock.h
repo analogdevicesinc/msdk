@@ -41,7 +41,7 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MXC_LOCK_H_
 
 /* **** Includes **** */
-#include "mxc_errors.h"
+#include "mxc_device.h"
 
 #ifdef __cplusplus
 extern "C" {

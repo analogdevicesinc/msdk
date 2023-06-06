@@ -2,6 +2,7 @@
  * @file    owm_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the OWM Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup owm_registers
  */
 
 /******************************************************************************
@@ -173,7 +174,7 @@ typedef struct {
 #define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS           4 /**< CTRL_STAT_OD_SPEC_MODE Position */
 #define MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE               ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_OD_SPEC_MODE_POS)) /**< CTRL_STAT_OD_SPEC_MODE Mask */
 
-#define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS        7 /**< CTRL_STAT_PRESENCE_DETECT Position */
+#define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS        5 /**< CTRL_STAT_PRESENCE_DETECT Position */
 #define MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT            ((uint32_t)(0x1UL << MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT_POS)) /**< CTRL_STAT_PRESENCE_DETECT Mask */
 
 /**@} end of group OWM_CTRL_STAT_Register */

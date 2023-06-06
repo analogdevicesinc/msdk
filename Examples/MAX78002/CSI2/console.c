@@ -49,11 +49,10 @@ int g_num_commands = 0;
 int g_num_commands; // Calculated in 'console_init' as part of initialization
 char *cmd_table[] = { "help", "reset", "capture", "set-reg", "get-reg" };
 
-char *help_table[] = {  ": Print this help string",
-                        ": Issue a soft reset to the host MCU.",
-                        ": Perform a standard blocking capture of a single image",
-                        "<register> <value> : Write a value to a camera register.",
-                        "<register> : Prints the value in a camera register." };
+char *help_table[] = { ": Print this help string", ": Issue a soft reset to the host MCU.",
+                       ": Perform a standard blocking capture of a single image",
+                       "<register> <value> : Write a value to a camera register.",
+                       "<register> : Prints the value in a camera register." };
 
 int starts_with(char *a, char *b)
 {
@@ -122,7 +121,7 @@ int console_init(void)
         int available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
         if (available > 0) {
             clear_serial_buffer();
-            MXC_UART_Read(Con_Uart, (uint8_t*)g_serial_buffer, &available);
+            MXC_UART_Read(Con_Uart, (uint8_t *)g_serial_buffer, &available);
             if (strcmp(g_serial_buffer, sync) == 0) {
                 // Received sync string back, break the loop.
                 LED_On(LED1);

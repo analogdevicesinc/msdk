@@ -43,9 +43,6 @@ BT_VER          := 8
 #--------------------------------------------------------------------------------------------------
 
 CFG_DEV         := BT_VER=$(BT_VER)
-ifeq ($(TOKEN),1)
-CFG_DEV         += LL_TRACE_ENABLED=1
-endif
 CFG_DEV         += SCH_CHECK_LIST_INTEGRITY=1
 CFG_DEV         += uECC_ASM=2
 CFG_DEV         += BB_LED_ENA=$(BB_LED_ENA)

@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,8 +29,9 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USBIO_MAXQ_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USBIO_MAXQ_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,4 +45,5 @@ int usbio_writefifo(unsigned int reg, uint8_t *data, unsigned int num);
 
 #ifdef __cplusplus
 }
-#endif
+
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USBIO_MAXQ_H_

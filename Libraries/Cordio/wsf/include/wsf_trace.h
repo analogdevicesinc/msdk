@@ -49,29 +49,9 @@ extern "C" {
 #define WSF_TOKEN_ENABLED         FALSE
 #endif
 
-#ifndef LL_TRACE_ENABLED
-/*! \brief     Trace enabled for controller */
-#define LL_TRACE_ENABLED          FALSE
-#endif
-
-#ifndef AUD_TRACE_ENABLED
-/*! \brief     Trace enabled for audio subsystem */
-#define AUD_TRACE_ENABLED         FALSE
-#endif
-
-#ifndef ATT_TRACE_ENABLED
-/*! \brief     Trace enabled for attribute layer subsystem */
-#define ATT_TRACE_ENABLED         TRUE
-#endif
-
-#ifndef HCI_TRACE_ENABLED
-/*! \brief     Trace enabled for HCI layer subsystem */
-#define HCI_TRACE_ENABLED         TRUE
-#endif
-
-#ifndef L2C_TRACE_ENABLED
-/*! \brief     Trace enabled for L2C layer subsystem */
-#define L2C_TRACE_ENABLED         TRUE
+#ifndef WSF_TRACE_ENABLED_VERBOSE
+  /*! \brief      Trace Verbose enable flag (default is disabled, override with compile-time directive). */
+#define WSF_TRACE_ENABLED_VERBOSE FALSE
 #endif
 
 /**************************************************************************************************
@@ -116,6 +96,7 @@ void WsfTraceEnable(bool_t enable);
  */
 /*************************************************************************************************/
 void WsfTrace(const char *pStr, ...);
+void WsfTraceVerbose(const char *pStr, ...);
 
 /*************************************************************************************************/
 /*!
@@ -183,7 +164,6 @@ bool_t WsfTokenService(void);
 /**@}*/
 
 #elif WSF_TRACE_ENABLED == TRUE
-
 /** \name Trace macros
  *
  */
@@ -210,14 +190,46 @@ bool_t WsfTokenService(void);
   WsfTrace(msg, var1, var2, var3, var4, var5, var6, var7, var8, var9)
 #define WSF_TRACE12(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12) \
   WsfTrace(msg, var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12)
-/**@}*/
 
-#else
+#if WSF_TRACE_ENABLED_VERBOSE == TRUE
+#define WSF_TRACE0V(subsys, stat, msg)                   \
+  WsfTraceVerbose(msg)
+#define WSF_TRACE1V(subsys, stat, msg, var1)             \
+  WsfTraceVerbose(msg, var1)
+#define WSF_TRACE2V(subsys, stat, msg, var1, var2)       \
+  WsfTraceVerbose(msg, var1, var2)
+#define WSF_TRACE3V(subsys, stat, msg, var1, var2, var3) \
+  WsfTraceVerbose(msg, var1, var2, var3)
+#define WSF_TRACE4V(subsys, stat, msg, var1, var2, var3, var4) \
+  WsfTraceVerbose(msg, var1, var2, var3, var4)
+#define WSF_TRACE5V(subsys, stat, msg, var1, var2, var3, var4, var5) \
+  WsfTraceVerbose(msg, var1, var2, var3, var4, var5)
+#define WSF_TRACE6V(subsys, stat, msg, var1, var2, var3, var4, var5, var6) \
+  WsfTraceVerbose(msg, var1, var2, var3, var4, var5, var6)
+#define WSF_TRACE7V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7) \
+  WsfTraceVerbose(msg, var1, var2, var3, var4, var5, var6, var7)
+#define WSF_TRACE8V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8) \
+  WsfTraceVerbose(msg, var1, var2, var3, var4, var5, var6, var7, var8)
+#define WSF_TRACE9V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8, var9) \
+  WsfTraceVerbose(msg, var1, var2, var3, var4, var5, var6, var7, var8, var9)
+#define WSF_TRACE12V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12) \
+  WsfTraceVerbose(msg, var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12)
 
-/** \name Trace macros
- *
- */
-/**@{*/
+#else // WSF_TRACE_ENABLED_VERBOSE
+#define WSF_TRACE0V(subsys, stat, msg)
+#define WSF_TRACE1V(subsys, stat, msg, var1)
+#define WSF_TRACE2V(subsys, stat, msg, var1, var2)
+#define WSF_TRACE3V(subsys, stat, msg, var1, var2, var3)
+#define WSF_TRACE4V(subsys, stat, msg, var1, var2, var3, var4)
+#define WSF_TRACE5V(subsys, stat, msg, var1, var2, var3, var4, var5)
+#define WSF_TRACE6V(subsys, stat, msg, var1, var2, var3, var4, var5, var6)
+#define WSF_TRACE7V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7)
+#define WSF_TRACE8V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8)
+#define WSF_TRACE9V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8, var9)
+#define WSF_TRACE12V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12)
+#endif // WSF_TRACE_ENABLED_VERBOSE
+
+#else // WSF_TRACE_ENABLED
 #define WSF_TRACE0(subsys, stat, msg)
 #define WSF_TRACE1(subsys, stat, msg, var1)
 #define WSF_TRACE2(subsys, stat, msg, var1, var2)
@@ -229,8 +241,19 @@ bool_t WsfTokenService(void);
 #define WSF_TRACE8(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8)
 #define WSF_TRACE9(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8, var9)
 #define WSF_TRACE12(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12)
+#define WSF_TRACE0V(subsys, stat, msg)
+#define WSF_TRACE1V(subsys, stat, msg, var1)
+#define WSF_TRACE2V(subsys, stat, msg, var1, var2)
+#define WSF_TRACE3V(subsys, stat, msg, var1, var2, var3)
+#define WSF_TRACE4V(subsys, stat, msg, var1, var2, var3, var4)
+#define WSF_TRACE5V(subsys, stat, msg, var1, var2, var3, var4, var5)
+#define WSF_TRACE6V(subsys, stat, msg, var1, var2, var3, var4, var5, var6)
+#define WSF_TRACE7V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7)
+#define WSF_TRACE8V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8)
+#define WSF_TRACE9V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8, var9)
+#define WSF_TRACE12V(subsys, stat, msg, var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11, var12)
 /**@}*/
-#endif
+#endif// WSF_TRACE_ENABLED
 
 /*! \brief 0 argument WSF info trace. */
 #define WSF_TRACE_INFO0(msg)
@@ -281,57 +304,30 @@ bool_t WsfTokenService(void);
 /*! \brief 3 argument WSF message trace. */
 #define WSF_TRACE_MSG3(msg, var1, var2, var3)
 
-#if (HCI_TRACE_ENABLED == TRUE)
 /*! \brief 0 argument HCI info trace. */
-#define HCI_TRACE_INFO0(msg)                        WSF_TRACE0("HCI", "INFO", msg)
+#define HCI_TRACE_INFO0(msg)                        WSF_TRACE0V("HCI", "INFO", msg)
 /*! \brief 1 argument HCI info trace. */
-#define HCI_TRACE_INFO1(msg, var1)                  WSF_TRACE1("HCI", "INFO", msg, var1)
+#define HCI_TRACE_INFO1(msg, var1)                  WSF_TRACE1V("HCI", "INFO", msg, var1)
 /*! \brief 2 argument HCI info trace. */
-#define HCI_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2("HCI", "INFO", msg, var1, var2)
+#define HCI_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2V("HCI", "INFO", msg, var1, var2)
 /*! \brief 3 argument HCI info trace. */
-#define HCI_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3("HCI", "INFO", msg, var1, var2, var3)
+#define HCI_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3V("HCI", "INFO", msg, var1, var2, var3)
 /*! \brief 0 argument HCI warning trace. */
-#define HCI_TRACE_WARN0(msg)                        WSF_TRACE0("HCI", "WARN", msg)
+#define HCI_TRACE_WARN0(msg)                        WSF_TRACE0V("HCI", "WARN", msg)
 /*! \brief 1 argument HCI warning trace. */
-#define HCI_TRACE_WARN1(msg, var1)                  WSF_TRACE1("HCI", "WARN", msg, var1)
+#define HCI_TRACE_WARN1(msg, var1)                  WSF_TRACE1V("HCI", "WARN", msg, var1)
 /*! \brief 2 argument HCI warning trace. */
-#define HCI_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2("HCI", "WARN", msg, var1, var2)
+#define HCI_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2V("HCI", "WARN", msg, var1, var2)
 /*! \brief 3 argument HCI warning trace. */
-#define HCI_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3("HCI", "WARN", msg, var1, var2, var3)
+#define HCI_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3V("HCI", "WARN", msg, var1, var2, var3)
 /*! \brief 0 argument HCI error trace. */
-#define HCI_TRACE_ERR0(msg)                         WSF_TRACE0("HCI", "ERR",  msg)
+#define HCI_TRACE_ERR0(msg)                         WSF_TRACE0V("HCI", "ERR",  msg)
 /*! \brief 1 argument HCI error trace. */
-#define HCI_TRACE_ERR1(msg, var1)                   WSF_TRACE1("HCI", "ERR",  msg, var1)
+#define HCI_TRACE_ERR1(msg, var1)                   WSF_TRACE1V("HCI", "ERR",  msg, var1)
 /*! \brief 2 argument HCI error trace. */
-#define HCI_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2("HCI", "ERR",  msg, var1, var2)
+#define HCI_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2V("HCI", "ERR",  msg, var1, var2)
 /*! \brief 3 argument HCI error trace. */
-#define HCI_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3("HCI", "ERR",  msg, var1, var2, var3)
-#else /* HCI_TRACE_ENABLED */
-/*! \brief 0 argument HCI info trace. */
-#define HCI_TRACE_INFO0(msg)
-/*! \brief 1 argument HCI info trace. */
-#define HCI_TRACE_INFO1(msg, var1)
-/*! \brief 2 argument HCI info trace. */
-#define HCI_TRACE_INFO2(msg, var1, var2)
-/*! \brief 3 argument HCI info trace. */
-#define HCI_TRACE_INFO3(msg, var1, var2, var3)
-/*! \brief 0 argument HCI warning trace. */
-#define HCI_TRACE_WARN0(msg)
-/*! \brief 1 argument HCI warning trace. */
-#define HCI_TRACE_WARN1(msg, var1)
-/*! \brief 2 argument HCI warning trace. */
-#define HCI_TRACE_WARN2(msg, var1, var2)
-/*! \brief 3 argument HCI warning trace. */
-#define HCI_TRACE_WARN3(msg, var1, var2, var3)
-/*! \brief 0 argument HCI error trace. */
-#define HCI_TRACE_ERR0(msg)
-/*! \brief 1 argument HCI error trace. */
-#define HCI_TRACE_ERR1(msg, var1)
-/*! \brief 2 argument HCI error trace. */
-#define HCI_TRACE_ERR2(msg, var1, var2)
-/*! \brief 3 argument HCI error trace. */
-#define HCI_TRACE_ERR3(msg, var1, var2, var3)
-#endif /* HCI_TRACE_ENABLED */
+#define HCI_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3V("HCI", "ERR",  msg, var1, var2, var3)
 
 /*! \brief HCI PDUMP on command. */
 #define HCI_PDUMP_CMD(len, pBuf)
@@ -388,109 +384,55 @@ bool_t WsfTokenService(void);
 /*! \brief 3 argument DM buffer free trace. */
 #define DM_TRACE_FREE3(msg, var1, var2, var3)       WSF_TRACE3("DM", "FREE", msg, var1, var2, var3)
 
-#if (L2C_TRACE_ENABLED == TRUE)
 /*! \brief 0 argument L2C info trace. */
-#define L2C_TRACE_INFO0(msg)                        WSF_TRACE0("L2C", "INFO", msg)
+#define L2C_TRACE_INFO0(msg)                        WSF_TRACE0V("L2C", "INFO", msg)
 /*! \brief 1 argument L2C info trace. */
-#define L2C_TRACE_INFO1(msg, var1)                  WSF_TRACE1("L2C", "INFO", msg, var1)
+#define L2C_TRACE_INFO1(msg, var1)                  WSF_TRACE1V("L2C", "INFO", msg, var1)
 /*! \brief 2 argument L2C info trace. */
-#define L2C_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2("L2C", "INFO", msg, var1, var2)
+#define L2C_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2V("L2C", "INFO", msg, var1, var2)
 /*! \brief 3 argument L2C info trace. */
-#define L2C_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3("L2C", "INFO", msg, var1, var2, var3)
+#define L2C_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3V("L2C", "INFO", msg, var1, var2, var3)
 /*! \brief 0 argument L2C warning trace. */
-#define L2C_TRACE_WARN0(msg)                        WSF_TRACE0("L2C", "WARN", msg)
+#define L2C_TRACE_WARN0(msg)                        WSF_TRACE0V("L2C", "WARN", msg)
 /*! \brief 1 argument L2C warning trace. */
-#define L2C_TRACE_WARN1(msg, var1)                  WSF_TRACE1("L2C", "WARN", msg, var1)
+#define L2C_TRACE_WARN1(msg, var1)                  WSF_TRACE1V("L2C", "WARN", msg, var1)
 /*! \brief 2 argument L2C warning trace. */
-#define L2C_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2("L2C", "WARN", msg, var1, var2)
+#define L2C_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2V("L2C", "WARN", msg, var1, var2)
 /*! \brief 3 argument L2C warning trace. */
-#define L2C_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3("L2C", "WARN", msg, var1, var2, var3)
+#define L2C_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3V("L2C", "WARN", msg, var1, var2, var3)
 /*! \brief 0 argument L2C error trace. */
-#define L2C_TRACE_ERR0(msg)                         WSF_TRACE0("L2C", "ERR",  msg)
+#define L2C_TRACE_ERR0(msg)                         WSF_TRACE0V("L2C", "ERR",  msg)
 /*! \brief 1 argument L2C error trace. */
-#define L2C_TRACE_ERR1(msg, var1)                   WSF_TRACE1("L2C", "ERR",  msg, var1)
+#define L2C_TRACE_ERR1(msg, var1)                   WSF_TRACE1V("L2C", "ERR",  msg, var1)
 /*! \brief 2 argument L2C error trace. */
-#define L2C_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2("L2C", "ERR",  msg, var1, var2)
+#define L2C_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2V("L2C", "ERR",  msg, var1, var2)
 /*! \brief 3 argument L2C error trace. */
-#define L2C_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3("L2C", "ERR",  msg, var1, var2, var3)
-#else /* L2C_TRACE_ENABLED */
-/*! \brief 0 argument L2C info trace. */
-#define L2C_TRACE_INFO0(msg)
-/*! \brief 1 argument L2C info trace. */
-#define L2C_TRACE_INFO1(msg, var1)
-/*! \brief 2 argument L2C info trace. */
-#define L2C_TRACE_INFO2(msg, var1, var2)
-/*! \brief 3 argument L2C info trace. */
-#define L2C_TRACE_INFO3(msg, var1, var2, var3)
-/*! \brief 0 argument L2C warning trace. */
-#define L2C_TRACE_WARN0(msg)
-/*! \brief 1 argument L2C warning trace. */
-#define L2C_TRACE_WARN1(msg, var1)
-/*! \brief 2 argument L2C warning trace. */
-#define L2C_TRACE_WARN2(msg, var1, var2)
-/*! \brief 3 argument L2C warning trace. */
-#define L2C_TRACE_WARN3(msg, var1, var2, var3)
-/*! \brief 0 argument L2C error trace. */
-#define L2C_TRACE_ERR0(msg)
-/*! \brief 1 argument L2C error trace. */
-#define L2C_TRACE_ERR1(msg, var1)
-/*! \brief 2 argument L2C error trace. */
-#define L2C_TRACE_ERR2(msg, var1, var2)
-/*! \brief 3 argument L2C error trace. */
-#define L2C_TRACE_ERR3(msg, var1, var2, var3)
-#endif /* L2C_TRACE_ENABLED */
+#define L2C_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3V("L2C", "ERR",  msg, var1, var2, var3)
 
-#if (ATT_TRACE_ENABLED == TRUE)
 /*! \brief 0 argument ATT info trace. */
-#define ATT_TRACE_INFO0(msg)                        WSF_TRACE0("ATT", "INFO", msg)
+#define ATT_TRACE_INFO0(msg)                        WSF_TRACE0V("ATT", "INFO", msg)
 /*! \brief 1 argument ATT info trace. */
-#define ATT_TRACE_INFO1(msg, var1)                  WSF_TRACE1("ATT", "INFO", msg, var1)
+#define ATT_TRACE_INFO1(msg, var1)                  WSF_TRACE1V("ATT", "INFO", msg, var1)
 /*! \brief 2 argument ATT info trace. */
-#define ATT_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2("ATT", "INFO", msg, var1, var2)
+#define ATT_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2V("ATT", "INFO", msg, var1, var2)
 /*! \brief 3 argument ATT info trace. */
-#define ATT_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3("ATT", "INFO", msg, var1, var2, var3)
+#define ATT_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3V("ATT", "INFO", msg, var1, var2, var3)
 /*! \brief 0 argument ATT warning trace. */
-#define ATT_TRACE_WARN0(msg)                        WSF_TRACE0("ATT", "WARN", msg)
+#define ATT_TRACE_WARN0(msg)                        WSF_TRACE0V("ATT", "WARN", msg)
 /*! \brief 1 argument ATT warning trace. */
-#define ATT_TRACE_WARN1(msg, var1)                  WSF_TRACE1("ATT", "WARN", msg, var1)
+#define ATT_TRACE_WARN1(msg, var1)                  WSF_TRACE1V("ATT", "WARN", msg, var1)
 /*! \brief 2 argument ATT warning trace. */
-#define ATT_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2("ATT", "WARN", msg, var1, var2)
+#define ATT_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2V("ATT", "WARN", msg, var1, var2)
 /*! \brief 3 argument ATT warning trace. */
-#define ATT_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3("ATT", "WARN", msg, var1, var2, var3)
+#define ATT_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3V("ATT", "WARN", msg, var1, var2, var3)
 /*! \brief 0 argument ATT error trace. */
-#define ATT_TRACE_ERR0(msg)                         WSF_TRACE0("ATT", "ERR",  msg)
+#define ATT_TRACE_ERR0(msg)                         WSF_TRACE0V("ATT", "ERR",  msg)
 /*! \brief 1 argument ATT error trace. */
-#define ATT_TRACE_ERR1(msg, var1)                   WSF_TRACE1("ATT", "ERR",  msg, var1)
+#define ATT_TRACE_ERR1(msg, var1)                   WSF_TRACE1V("ATT", "ERR",  msg, var1)
 /*! \brief 2 argument ATT error trace. */
-#define ATT_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2("ATT", "ERR",  msg, var1, var2)
+#define ATT_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2V("ATT", "ERR",  msg, var1, var2)
 /*! \brief 3 argument ATT error trace. */
-#define ATT_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3("ATT", "ERR",  msg, var1, var2, var3)
-#else /* ATT_TRACE_ENABLED */
-/*! \brief 0 argument ATT info trace. */
-#define ATT_TRACE_INFO0(msg)
-/*! \brief 1 argument ATT info trace. */
-#define ATT_TRACE_INFO1(msg, var1)
-/*! \brief 2 argument ATT info trace. */
-#define ATT_TRACE_INFO2(msg, var1, var2)
-/*! \brief 3 argument ATT info trace. */
-#define ATT_TRACE_INFO3(msg, var1, var2, var3)
-/*! \brief 0 argument ATT warning trace. */
-#define ATT_TRACE_WARN0(msg)
-/*! \brief 1 argument ATT warning trace. */
-#define ATT_TRACE_WARN1(msg, var1)
-/*! \brief 2 argument ATT warning trace. */
-#define ATT_TRACE_WARN2(msg, var1, var2)
-/*! \brief 3 argument ATT warning trace. */
-#define ATT_TRACE_WARN3(msg, var1, var2, var3)
-/*! \brief 0 argument ATT error trace. */
-#define ATT_TRACE_ERR0(msg)
-/*! \brief 1 argument ATT error trace. */
-#define ATT_TRACE_ERR1(msg, var1)
-/*! \brief 2 argument ATT error trace. */
-#define ATT_TRACE_ERR2(msg, var1, var2)
-/*! \brief 3 argument ATT error trace. */
-#define ATT_TRACE_ERR3(msg, var1, var2, var3)
-#endif /* ATT_TRACE_ENABLED */
+#define ATT_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3V("ATT", "ERR",  msg, var1, var2, var3)
 
 /*! \brief 0 argument EATT info trace. */
 #define EATT_TRACE_INFO0(msg)                       WSF_TRACE0("EATT", "INFO", msg)
@@ -588,158 +530,78 @@ bool_t WsfTokenService(void);
 /*! \brief 3 argument App error trace. */
 #define APP_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3("APP", "ERR",   msg, var1, var2, var3)
 
-/*! \brief 0 argument LL info trace. */
-#if (LL_TRACE_ENABLED == TRUE)
-#define LL_TRACE_INFO0(msg)                         WSF_TRACE0("LL", "INFO", msg)
+#define LL_TRACE_INFO0(msg)                         WSF_TRACE0V("LL", "INFO", msg)
 /*! \brief 1 argument LL info trace. */
-#define LL_TRACE_INFO1(msg, var1)                   WSF_TRACE1("LL", "INFO", msg, var1)
+#define LL_TRACE_INFO1(msg, var1)                   WSF_TRACE1V("LL", "INFO", msg, var1)
 /*! \brief 2 argument LL info trace. */
-#define LL_TRACE_INFO2(msg, var1, var2)             WSF_TRACE2("LL", "INFO", msg, var1, var2)
+#define LL_TRACE_INFO2(msg, var1, var2)             WSF_TRACE2V("LL", "INFO", msg, var1, var2)
 /*! \brief 3 argument LL info trace. */
-#define LL_TRACE_INFO3(msg, var1, var2, var3)       WSF_TRACE3("LL", "INFO", msg, var1, var2, var3)
+#define LL_TRACE_INFO3(msg, var1, var2, var3)       WSF_TRACE3V("LL", "INFO", msg, var1, var2, var3)
 /*! \brief 0 argument LL warning trace. */
-#define LL_TRACE_WARN0(msg)                         WSF_TRACE0("LL", "WARN", msg)
+#define LL_TRACE_WARN0(msg)                         WSF_TRACE0V("LL", "WARN", msg)
 /*! \brief 1 argument LL warning trace. */
-#define LL_TRACE_WARN1(msg, var1)                   WSF_TRACE1("LL", "WARN", msg, var1)
+#define LL_TRACE_WARN1(msg, var1)                   WSF_TRACE1V("LL", "WARN", msg, var1)
 /*! \brief 2 argument LL warning trace. */
-#define LL_TRACE_WARN2(msg, var1, var2)             WSF_TRACE2("LL", "WARN", msg, var1, var2)
+#define LL_TRACE_WARN2(msg, var1, var2)             WSF_TRACE2V("LL", "WARN", msg, var1, var2)
 /*! \brief 3 argument LL warning trace. */
-#define LL_TRACE_WARN3(msg, var1, var2, var3)       WSF_TRACE3("LL", "WARN", msg, var1, var2, var3)
+#define LL_TRACE_WARN3(msg, var1, var2, var3)       WSF_TRACE3V("LL", "WARN", msg, var1, var2, var3)
 /*! \brief 0 argument LL error trace. */
-#define LL_TRACE_ERR0(msg)                          WSF_TRACE0("LL", "ERR",  msg)
+#define LL_TRACE_ERR0(msg)                          WSF_TRACE0V("LL", "ERR",  msg)
 /*! \brief 1 argument LL error trace. */
-#define LL_TRACE_ERR1(msg, var1)                    WSF_TRACE1("LL", "ERR",  msg, var1)
+#define LL_TRACE_ERR1(msg, var1)                    WSF_TRACE1V("LL", "ERR",  msg, var1)
 /*! \brief 2 argument LL error trace. */
-#define LL_TRACE_ERR2(msg, var1, var2)              WSF_TRACE2("LL", "ERR",  msg, var1, var2)
+#define LL_TRACE_ERR2(msg, var1, var2)              WSF_TRACE2V("LL", "ERR",  msg, var1, var2)
 /*! \brief 3 argument LL error trace. */
-#define LL_TRACE_ERR3(msg, var1, var2, var3)        WSF_TRACE3("LL", "ERR",  msg, var1, var2, var3)
+#define LL_TRACE_ERR3(msg, var1, var2, var3)        WSF_TRACE3V("LL", "ERR",  msg, var1, var2, var3)
 
 /*! \brief 0 argument BBP warning trace. */
-#define BBP_TRACE_INFO0(msg)                        WSF_TRACE0("BBP", "INFO", msg)
+#define BBP_TRACE_INFO0(msg)                        WSF_TRACE0V("BBP", "INFO", msg)
 /*! \brief 1 argument BBP warning trace. */
-#define BBP_TRACE_INFO1(msg, var1)                  WSF_TRACE1("BBP", "INFO", msg, var1)
+#define BBP_TRACE_INFO1(msg, var1)                  WSF_TRACE1V("BBP", "INFO", msg, var1)
 /*! \brief 2 argument BBP warning trace. */
-#define BBP_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2("BBP", "INFO", msg, var1, var2)
+#define BBP_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2V("BBP", "INFO", msg, var1, var2)
 /*! \brief 3 argument BBP info trace. */
-#define BBP_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3("BBP", "INFO", msg, var1, var2, var3)
+#define BBP_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3V("BBP", "INFO", msg, var1, var2, var3)
 /*! \brief 0 argument BBP warning trace. */
-#define BBP_TRACE_WARN0(msg)                        WSF_TRACE0("BBP", "WARN", msg)
+#define BBP_TRACE_WARN0(msg)                        WSF_TRACE0V("BBP", "WARN", msg)
 /*! \brief 1 argument BBP warning trace. */
-#define BBP_TRACE_WARN1(msg, var1)                  WSF_TRACE1("BBP", "WARN", msg, var1)
+#define BBP_TRACE_WARN1(msg, var1)                  WSF_TRACE1V("BBP", "WARN", msg, var1)
 /*! \brief 2 argument BBP warning trace. */
-#define BBP_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2("BBP", "WARN", msg, var1, var2)
+#define BBP_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2V("BBP", "WARN", msg, var1, var2)
 /*! \brief 3 argument BBP warning trace. */
-#define BBP_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3("BBP", "WARN", msg, var1, var2, var3)
+#define BBP_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3V("BBP", "WARN", msg, var1, var2, var3)
 /*! \brief 0 argument BBP error trace. */
-#define BBP_TRACE_ERR0(msg)                         WSF_TRACE0("BBP", "ERR",  msg)
+#define BBP_TRACE_ERR0(msg)                         WSF_TRACE0V("BBP", "ERR",  msg)
 /*! \brief 1 argument BBP error trace. */
-#define BBP_TRACE_ERR1(msg, var1)                   WSF_TRACE1("BBP", "ERR",  msg, var1)
+#define BBP_TRACE_ERR1(msg, var1)                   WSF_TRACE1V("BBP", "ERR",  msg, var1)
 /*! \brief 2 argument BBP error trace. */
-#define BBP_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2("BBP", "ERR",  msg, var1, var2)
+#define BBP_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2V("BBP", "ERR",  msg, var1, var2)
 /*! \brief 3 argument BBP error trace. */
-#define BBP_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3("BBP", "ERR",  msg, var1, var2, var3)
-#else   /* LL_TRACE_ENABLED */
-#define LL_TRACE_INFO0(msg)
-/*! \brief 1 argument LL info trace. */
-#define LL_TRACE_INFO1(msg, var1)
-/*! \brief 2 argument LL info trace. */
-#define LL_TRACE_INFO2(msg, var1, var2)
-/*! \brief 3 argument LL info trace. */
-#define LL_TRACE_INFO3(msg, var1, var2, var3)
-/*! \brief 0 argument LL warning trace. */
-#define LL_TRACE_WARN0(msg)
-/*! \brief 1 argument LL warning trace. */
-#define LL_TRACE_WARN1(msg, var1)
-/*! \brief 2 argument LL warning trace. */
-#define LL_TRACE_WARN2(msg, var1, var2)
-/*! \brief 3 argument LL warning trace. */
-#define LL_TRACE_WARN3(msg, var1, var2, var3)
-/*! \brief 0 argument LL error trace. */
-#define LL_TRACE_ERR0(msg)
-/*! \brief 1 argument LL error trace. */
-#define LL_TRACE_ERR1(msg, var1)
-/*! \brief 2 argument LL error trace. */
-#define LL_TRACE_ERR2(msg, var1, var2)
-/*! \brief 3 argument LL error trace. */
-#define LL_TRACE_ERR3(msg, var1, var2, var3)
+#define BBP_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3V("BBP", "ERR",  msg, var1, var2, var3)
 
-/*! \brief 0 argument BBP warning trace. */
-#define BBP_TRACE_INFO0(msg)
-/*! \brief 1 argument BBP warning trace. */
-#define BBP_TRACE_INFO1(msg, var1)
-/*! \brief 2 argument BBP warning trace. */
-#define BBP_TRACE_INFO2(msg, var1, var2)
-/*! \brief 3 argument BBP info trace. */
-#define BBP_TRACE_INFO3(msg, var1, var2, var3)
-/*! \brief 0 argument BBP warning trace. */
-#define BBP_TRACE_WARN0(msg)
-/*! \brief 1 argument BBP warning trace. */
-#define BBP_TRACE_WARN1(msg, var1)
-/*! \brief 2 argument BBP warning trace. */
-#define BBP_TRACE_WARN2(msg, var1, var2)
-/*! \brief 3 argument BBP warning trace. */
-#define BBP_TRACE_WARN3(msg, var1, var2, var3)
-/*! \brief 0 argument BBP error trace. */
-#define BBP_TRACE_ERR0(msg)
-/*! \brief 1 argument BBP error trace. */
-#define BBP_TRACE_ERR1(msg, var1)
-/*! \brief 2 argument BBP error trace. */
-#define BBP_TRACE_ERR2(msg, var1, var2)
-/*! \brief 3 argument BBP error trace. */
-#define BBP_TRACE_ERR3(msg, var1, var2, var3)
-#endif  /* LL_TRACE_ENABLED */
-
-#if (AUD_TRACE_ENABLED == TRUE)
-/*! \brief 0 argument AUD info trace. */
-#define AUD_TRACE_INFO0(msg)                        WSF_TRACE0("AUD", "INFO", msg)
+#define AUD_TRACE_INFO0(msg)                        WSF_TRACE0V("AUD", "INFO", msg)
 /*! \brief 1 argument AUD info trace. */
-#define AUD_TRACE_INFO1(msg, var1)                  WSF_TRACE1("AUD", "INFO", msg, var1)
+#define AUD_TRACE_INFO1(msg, var1)                  WSF_TRACE1V("AUD", "INFO", msg, var1)
 /*! \brief 2 argument AUD info trace. */
-#define AUD_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2("AUD", "INFO", msg, var1, var2)
+#define AUD_TRACE_INFO2(msg, var1, var2)            WSF_TRACE2V("AUD", "INFO", msg, var1, var2)
 /*! \brief 3 argument AUD info trace. */
-#define AUD_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3("AUD", "INFO", msg, var1, var2, var3)
+#define AUD_TRACE_INFO3(msg, var1, var2, var3)      WSF_TRACE3V("AUD", "INFO", msg, var1, var2, var3)
 /*! \brief 0 argument AUD warning trace. */
-#define AUD_TRACE_WARN0(msg)                        WSF_TRACE0("AUD", "WARN", msg)
+#define AUD_TRACE_WARN0(msg)                        WSF_TRACE0V("AUD", "WARN", msg)
 /*! \brief 1 argument AUD warning trace. */
-#define AUD_TRACE_WARN1(msg, var1)                  WSF_TRACE1("AUD", "WARN", msg, var1)
+#define AUD_TRACE_WARN1(msg, var1)                  WSF_TRACE1V("AUD", "WARN", msg, var1)
 /*! \brief 2 argument AUD warning trace. */
-#define AUD_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2("AUD", "WARN", msg, var1, var2)
+#define AUD_TRACE_WARN2(msg, var1, var2)            WSF_TRACE2V("AUD", "WARN", msg, var1, var2)
 /*! \brief 3 argument AUD warning trace. */
-#define AUD_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3("AUD", "WARN", msg, var1, var2, var3)
+#define AUD_TRACE_WARN3(msg, var1, var2, var3)      WSF_TRACE3V("AUD", "WARN", msg, var1, var2, var3)
 /*! \brief 0 argument AUD error trace. */
-#define AUD_TRACE_ERR0(msg)                         WSF_TRACE0("AUD", "ERR",  msg)
+#define AUD_TRACE_ERR0(msg)                         WSF_TRACE0V("AUD", "ERR",  msg)
 /*! \brief 1 argument AUD error trace. */
-#define AUD_TRACE_ERR1(msg, var1)                   WSF_TRACE1("AUD", "ERR",  msg, var1)
+#define AUD_TRACE_ERR1(msg, var1)                   WSF_TRACE1V("AUD", "ERR",  msg, var1)
 /*! \brief 2 argument AUD error trace. */
-#define AUD_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2("AUD", "ERR",  msg, var1, var2)
+#define AUD_TRACE_ERR2(msg, var1, var2)             WSF_TRACE2V("AUD", "ERR",  msg, var1, var2)
 /*! \brief 3 argument AUD error trace. */
-#define AUD_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3("AUD", "ERR",  msg, var1, var2, var3)
-#else   /* AUD_TRACE_ENABLED */
-/*! \brief 0 argument AUD info trace. */
-#define AUD_TRACE_INFO0(msg)
-/*! \brief 1 argument AUD info trace. */
-#define AUD_TRACE_INFO1(msg, var1)
-/*! \brief 2 argument AUD info trace. */
-#define AUD_TRACE_INFO2(msg, var1, var2)
-/*! \brief 3 argument AUD info trace. */
-#define AUD_TRACE_INFO3(msg, var1, var2, var3)
-/*! \brief 0 argument AUD warning trace. */
-#define AUD_TRACE_WARN0(msg)
-/*! \brief 1 argument AUD warning trace. */
-#define AUD_TRACE_WARN1(msg, var1)
-/*! \brief 2 argument AUD warning trace. */
-#define AUD_TRACE_WARN2(msg, var1, var2)
-/*! \brief 3 argument AUD warning trace. */
-#define AUD_TRACE_WARN3(msg, var1, var2, var3)
-/*! \brief 0 argument AUD error trace. */
-#define AUD_TRACE_ERR0(msg)
-/*! \brief 1 argument AUD error trace. */
-#define AUD_TRACE_ERR1(msg, var1)
-/*! \brief 2 argument AUD error trace. */
-#define AUD_TRACE_ERR2(msg, var1, var2)
-/*! \brief 3 argument AUD error trace. */
-#define AUD_TRACE_ERR3(msg, var1, var2, var3)
-#endif  /* AUD_TRACE_ENABLED */
+#define AUD_TRACE_ERR3(msg, var1, var2, var3)       WSF_TRACE3V("AUD", "ERR",  msg, var1, var2, var3)
 
 /*! \brief 0 argument MESH info trace. */
 #define MESH_TRACE_INFO0(msg)                       WSF_TRACE0("MESH", "INFO", msg)

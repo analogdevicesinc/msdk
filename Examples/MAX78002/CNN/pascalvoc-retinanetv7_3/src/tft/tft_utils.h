@@ -40,7 +40,7 @@
 #define DISPLAY_HEIGHT 240
 #define LINE_WIDTH 2
 
-void TFT_Print(char *str, int x, int y, int font, int length);
-void draw_obj_rect(float* xy, int class_idx);
+void TFT_Print(char *str, int x, int y);
+void draw_obj_rect(float *xy, int class_idx);
 
 #endif

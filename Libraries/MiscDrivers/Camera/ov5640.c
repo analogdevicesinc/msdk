@@ -440,7 +440,7 @@ static struct camera_reg default_regs[] = {
     {0x3708, 0x64},
     {0x3709, 0x52},
     {0x370c, 0x03},
-    
+
 
     {0x3008, 0x02},
 
@@ -454,12 +454,7 @@ static struct camera_reg default_regs[] = {
 
 static int g_slv_addr;
 
-static mipi_camera_settings_t g_camera_settings = {
-    .camera_format = {
-        .pixel_format = PIXEL_FORMAT_RGB565,
-        .pixel_order = PIXEL_ORDER_RAW_BGGR
-    }
-};
+static mipi_camera_settings_t g_camera_settings;
 
 /******************************** Static Functions ***************************/
 static int init(void)
@@ -516,7 +511,7 @@ static int reset(void)
             MXC_Delay(MSEC(default_regs[i].val));
         } else {
             ret |= cambus_write(default_regs[i].addr, (uint8_t)default_regs[i].val);
-#if 0
+#ifdef VERIFY_STARTUP_SETTINGS
             // Read back and check for value mismatches.  Used for troubleshooting
 
             ret |= cambus_read(default_regs[i].addr, &value);
@@ -560,7 +555,7 @@ static int write_reg(uint16_t reg_addr, uint8_t reg_data)
 // to write to the FORMAT_CTRL register
 static uint8_t _camera_format_to_out_seq(pixel_order_t pixel_order)
 {
-    switch(pixel_order){
+    switch (pixel_order){
         default:
         return 0;
         case PIXEL_ORDER_RAW_BGGR:
@@ -665,6 +660,18 @@ static int set_framesize(int width, int height)
     ret |= cambus_write(TIMING_DVPHO_1, (width >> 0) & 0xff);
     ret |= cambus_write(TIMING_DVPVO_0, (height >> 8) & 0xff);
     ret |= cambus_write(TIMING_DVPVO_1, (height >> 0) & 0xff);
+
+    if ((width * height) > (320 * 320)) {
+        /*
+        Divide PLL Clk for higher resolutions.  This reduces framerate,
+        but increases the bandwith we have to process the incoming data.
+        TODO: There has to be some way to modify the horizontal/vertical
+        blanking to preserve framerate, but the documentation on the HTS/VTS
+        registers is non-existent...  The drivers may also need to discard
+        the dummy pixels (?)
+        */
+        ret |= write_reg(0x3035, 0x44);
+    }
 
     // Software power up
     ret |= cambus_write(SYS_CTRL0, 0x02);

@@ -44,9 +44,6 @@
 #include "i2c.h"
 #include "i2c_reva.h"
 
-/* **** Definitions **** */
-#define MXC_I2C_FASTPLUS_SPEED 1000000
-
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INTFL0_RD_ADDR_MATCH | MXC_F_I2C_INTFL0_WR_ADDR_MATCH |
                           MXC_F_I2C_INTFL0_DNR_ERR;
@@ -112,11 +109,6 @@ int MXC_I2C_Reset(mxc_i2c_regs_t *i2c)
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz)
 {
-    // ME55 doesn't support high speed more
-    if (hz > MXC_I2C_FASTPLUS_SPEED) {
-        return E_NOT_SUPPORTED;
-    }
-
     return MXC_I2C_RevA_SetFrequency((mxc_i2c_reva_regs_t *)i2c, hz);
 }
 
@@ -354,6 +346,16 @@ int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t *i2c, unsigned int numBytes)
 unsigned int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t *i2c)
 {
     return MXC_I2C_RevA_GetTXThreshold((mxc_i2c_reva_regs_t *)i2c);
+}
+
+void MXC_I2C_AsyncStop(mxc_i2c_regs_t *i2c)
+{
+    MXC_I2C_RevA_AsyncStop((mxc_i2c_reva_regs_t *)i2c);
+}
+
+void MXC_I2C_AbortAsync(mxc_i2c_regs_t *i2c)
+{
+    MXC_I2C_RevA_AbortAsync((mxc_i2c_reva_regs_t *)i2c);
 }
 
 void MXC_I2C_AsyncHandler(mxc_i2c_regs_t *i2c)

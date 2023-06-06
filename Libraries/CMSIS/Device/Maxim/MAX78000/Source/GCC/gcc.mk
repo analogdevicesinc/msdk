@@ -323,13 +323,15 @@ endif
 
 # The rule for creating an object library.
 ${BUILD_DIR}/%.a:
+	@echo -cr $(call fixpath,${@}) $(call fixpath,${^})                          \
+	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
 	@if [ 'x${VERBOSE}' = x ];                                                   \
 	 then                                                                        \
 	     echo "  AR    ${@}";                                                    \
 	 else                                                                        \
 	     echo ${AR} -cr $(call fixpath,${@}) $(call fixpath,${^});               \
 	 fi
-	@${AR} -cr $(call fixpath,${@}) $(call fixpath,${^})
+	@${AR} @${BUILD_DIR}/ar_args.txt
 
 # The rule for linking the application.
 ${BUILD_DIR}/%.elf:

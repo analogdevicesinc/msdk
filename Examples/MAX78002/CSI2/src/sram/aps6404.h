@@ -30,6 +30,8 @@
  * ownership rights.
  *
  ******************************************************************************/
+#ifndef EXAMPLES_MAX78002_CSI2_SRC_SRAM_APS6404_H_
+#define EXAMPLES_MAX78002_CSI2_SRC_SRAM_APS6404_H_
 
 #include <stdint.h>
 
@@ -58,8 +60,10 @@ int ram_read_slow(uint32_t address, uint8_t *out, unsigned int len);
 
 int ram_read_quad(uint32_t address, uint8_t *out, unsigned int len);
 
-int ram_write(uint32_t address, uint8_t * data, unsigned int len);
+int ram_write(uint32_t address, uint8_t *data, unsigned int len);
 
-int ram_write_quad(uint32_t address, uint8_t * data, unsigned int len);
+int ram_write_quad(uint32_t address, uint8_t *data, unsigned int len);
 
 int benchmark_dma_overhead(unsigned int *out);
+
+#endif // EXAMPLES_MAX78002_CSI2_SRC_SRAM_APS6404_H_

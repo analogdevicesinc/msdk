@@ -75,6 +75,10 @@ void PalSysSetIdle(void);
 void PalEnterCs(void);
 void PalExitCs(void);
 
+/* Shared WUT timer */
+bool_t PalSharedTimerIsInit(void);
+void PalSharedTimerInitState(bool_t state);
+
 /*! \} */    /* PAL_SYS */
 
 #ifdef __cplusplus
