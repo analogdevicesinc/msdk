@@ -56,6 +56,7 @@ These are the rules for the `Subject`.
         2. `fix(PeriphDrivers): Ticket-321: Fix SPI hanging on 9-bit wide messages for all parts (#646)`
         3. `feat(Examples): Add console output in Hello_World READMEs for all parts (#342)`
         4. `fix(Examples,PeriphDrivers): Deprecate MXC\_RTC\_GetSecond and MXC\_RTC\_GetSubSecond for all parts except for MAX32520 (#248)`
+5.  Please ensure all actions have passed or successfully completed before merging a PR into `main`. MSDK maintainers have permissions to merge approved PRs even with a failing action.
 
 ## PR Format Rules (Workflow Enforced)
 1.  The type is capital-sensitive and must be one of the listed types.
