@@ -61,63 +61,45 @@
 #include "gcr_regs.h"
 #include "mcr_regs.h"
 #include "console.h"
+#include "aps6404.h"
+#include "tft_st7789v.h"
+#include "fastspi.h"
 
 /***** Definitions *****/
 
 #define IMAGE_WIDTH 320
 #define IMAGE_HEIGHT 240
+/*
+Tested Formats & Resolutions:
+- RGB565:
+    - 160x120 (QQVGA)
+    - 320x240 (QVGA)
+    - 320x320
+    - 640x480 (VGA) (reduced framerate)
+    - Timing issues beyond this...  Switch to RAW8 if needed.
 
-// Check CSI-2 Standard and your color format for these values.
-#define BITS_PER_PIXEL_ODD 24 // e.g. RGB888
-#define BYTES_PER_PIXEL_ODD (BITS_PER_PIXEL_ODD >> 3)
-#define BITS_PER_PIXEL_EVEN 24 // e.g. RGB888
-#define BYTES_PER_PIXEL_EVEN (BITS_PER_PIXEL_EVEN >> 3)
+- RAW8:
+    - Same resolutions as RGB565 above
+    - 800x600 (SVGA)    (reduced framerate)
+    - 928x728           (reduced framerate)
+    - Unsupported beyond this... (timing issues)
 
-// CSI-2 Peripheral Configuration
-#define NUM_DATA_LANES 2
-#define FLUSH_COUNT 3
-#define VIRTUAL_CHANNEL 0x00
-#define RX_THRESHOLD 0x30
-#define WAIT_CYCLE 0x2000
-#define FLOW_CTRL                                                                  \
-    (MXC_F_CSI2_VFIFO_CFG1_WAIT_FIRST_FS | MXC_F_CSI2_VFIFO_CFG1_ACCU_FRAME_CTRL | \
-     MXC_F_CSI2_VFIFO_CFG1_ACCU_LINE_CNT | MXC_F_CSI2_VFIFO_CFG1_ACCU_PIXEL_CNT)
+Empirically it seems that resolutions that are even multiples of 32 pixels work best.
+*/
 
-// Select corresponding pixel format and output sequence for camera settings.
-//    Check OV5640 (or selected camera's) Datasheet for more information.
-#define PIXEL_FORMAT MIPI_PIXFORMAT_RAW
-#define OUT_SEQ 0x0 // BGBG GRGR
-#define MUX_CTRL 1 // ISP RGB
+// #define RAW
+// ^ Uncomment this to capture RAW8 images instead of RGB565.
 
-// Streaming pixel format may not match pixel format the camera originally processed.
-//    For example, the camera can processes RAW then converts to RGB888.
-#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB888
-//#define STREAM_PIXEL_FORMAT MIPI_PIXFORMAT_RGB565
-
-// Select RGB Type and RAW Format for the CSI2 Peripheral.
-#define RGB_TYPE MXC_CSI2_TYPE_RGB888
-#define RAW_FORMAT MXC_CSI2_FORMAT_RGRG_GBGB
-
-// Select corresponding Payload data. Only one type can be selected across payload 0 and 1.
-#define PAYLOAD0_DATA_TYPE MXC_CSI2_PL0_RAW10
-#define PAYLOAD1_DATA_TYPE MXC_CSI2_PL1_DISABLE_ALL
-
-#if (PAYLOAD0_DATA_TYPE != MXC_CSI2_PL0_DISABLE_ALL || \
-     PAYLOAD1_DATA_TYPE != MXC_CSI2_PL1_DISABLE_ALL)
-#error Invalid Payload Data Configuration.
+#ifndef RAW
+#define PIXEL_FORMAT PIXEL_FORMAT_RGB565
+#define PIXEL_ORDER PIXEL_ORDER_RGB565_RGB
+#else
+#define PIXEL_FORMAT PIXEL_FORMAT_RAW8
+#define PIXEL_ORDER PIXEL_ORDER_RAW_BGGR
 #endif
 
-// Size of Image Buffer
-// This buffer will hold the full output image after the CSI2 has converted it
-// to color.
-// #define IMAGE_SIZE ((BITS_PER_PIXEL_ODD + BITS_PER_PIXEL_EVEN) * IMAGE_WIDTH * IMAGE_HEIGHT) >> 4
-#define IMAGE_SIZE \
-    (IMAGE_WIDTH * IMAGE_HEIGHT * BYTES_PER_PIXEL_EVEN) + (IMAGE_WIDTH * BYTES_PER_PIXEL_EVEN)
-// ^ The addition of the extra row above is a workaround to another CSI2 hardware and/or driver issue.
-// When writing to the output image buffer the CSI2 block will overflow beyond the bounds of the array
-// by a variable amount and cause a hard fault.  At 160x120 it overflows by exactly 5 bytes.  At 320x240
-// It overflows by somewhere between 64 and 96 bytes (Exact # TBD by sheer trial and error).
-// Extending the output array by this extra row seems to be a reliable workaround to this issue.
+#define SRAM_STORAGE_ADDRESS 0x0
+// ^ This is the base address in external SRAM where the image will be stored.
 
 // Update for future cameras
 #if defined(CAMERA_OV5640)
@@ -127,87 +109,87 @@
 #endif
 
 /***** Globals *****/
-
-volatile int DMA_FLAG = 1;
-
-// RAW Line Buffers
-// These buffers are used by the CSI2 hardware for debayering.
-// The size of these is hard-coded to 2048 because there appears
-// to be some instability in the CSI2 hardware if they are scaled
-// based on the image dimensions
-__attribute__((section(".csi2_buff_raw0"))) uint32_t RAW_ADDR0[2048];
-__attribute__((section(".csi2_buff_raw1"))) uint32_t RAW_ADDR1[2048];
-
-// Buffer for processed image
-uint8_t IMAGE[IMAGE_SIZE];
+unsigned int g_sram_address = SRAM_STORAGE_ADDRESS;
 
 /***** Functions *****/
 
-void DMA_Handler(void)
+int line_handler(uint8_t *data, unsigned int len)
 {
-    MXC_DMA_Handler();
-
-    DMA_FLAG = 0;
-}
-
-void CSI2_Handler(void)
-{
-    MXC_CSI2_Handler();
+    /*
+    This is the only function that needs to be implemented by the application code.
+    It is responsible for offloading the received image data row by row.
+    In this case, we are writing the data to the external APS6404 QSPI SRAM.
+    */
+    ram_write_quad(g_sram_address, data, len);
+    g_sram_address += len;
+    return E_NO_ERROR;
 }
 
 void process_img(void)
 {
-    uint8_t *raw;
-    uint32_t imgLen;
-    uint32_t w, h;
-
     printf("Capturing image...\n");
 
-    MXC_CSI2_CaptureFrameDMA(NUM_DATA_LANES);
-
-    while (DMA_FLAG) {}
-
-    MXC_CSI2_Stop();
-
-    DMA_FLAG = 1;
-
-    // Get the details of the image from the camera driver.
-    MXC_CSI2_GetImageDetails(&raw, &imgLen, &w, &h);
-
+    g_sram_address = SRAM_STORAGE_ADDRESS;
     MXC_TMR_SW_Start(MXC_TMR0);
-    clear_serial_buffer();
-    snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE,
-             "*IMG* %s %i %i %i", // Format img info into a string
-             mipi_camera_get_pixel_format(STREAM_PIXEL_FORMAT), imgLen, w, h);
-    send_msg(g_serial_buffer);
+    int error = mipi_camera_capture();
+    mxc_csi2_capture_stats_t stats = mipi_camera_get_capture_stats();
+    unsigned int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
 
-    clear_serial_buffer();
-    MXC_UART_WriteBytes(Con_Uart, raw, imgLen);
+    if (error) {
+        printf(
+            "Failed (%u/%u bytes received)!\nCTRL Error flags: 0x%x\tPPI Error flags: 0x%x\tVFIFO Error flags: 0x%x\n",
+            stats.bytes_captured, stats.frame_size, stats.ctrl_err, stats.ppi_err, stats.vfifo_err);
+        return;
+    }
+    printf("Done! (took %i us)\n", elapsed);
 
-    int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
+    printf("Sending image over serial port...\n");
+    MXC_TMR_SW_Start(MXC_TMR0);
+
+    // Send image header
+    clear_serial_buffer();
+    send_msg(mipi_camera_get_image_header());
+
+    // Read image out from SRAM and send over the serial port
+    for (int i = SRAM_STORAGE_ADDRESS; i < stats.frame_size; i += SERIAL_BUFFER_SIZE) {
+        ram_read_quad(i, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
+        MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, SERIAL_BUFFER_SIZE);
+    }
+    elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
     printf("Done! (serial transmission took %i us)\n", elapsed);
 }
 
-void service_console()
+void service_console(cmd_t cmd)
 {
-    // Check for any incoming serial commands
-    cmd_t cmd = CMD_UNKNOWN;
-    if (recv_cmd(&cmd)) {
-        // Process the received command...
+    // Process the received command...
+    if (cmd == CMD_UNKNOWN) {
+        printf("Uknown command '%s'\n", g_serial_buffer);
+    } else if (cmd == CMD_HELP) {
+        print_help();
+    } else if (cmd == CMD_RESET) {
+        // Issue a soft reset
+        MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
+    } else if (cmd == CMD_CAPTURE) {
+        process_img();
+    } else if (cmd == CMD_SETREG) {
+        // Set a camera register
+        unsigned int reg;
+        unsigned int val;
+        // ^ Declaring these as unsigned ints instead of uint8_t
+        // avoids some issues caused by type-casting inside of sscanf.
 
-        if (cmd == CMD_UNKNOWN) {
-            printf("Uknown command '%s'\n", g_serial_buffer);
-        } else if (cmd == CMD_HELP) {
-            print_help();
-        } else if (cmd == CMD_RESET) {
-            // Issue a soft reset
-            MXC_GCR->rst0 |= MXC_F_GCR_RST0_SYS;
-        } else if (cmd == CMD_CAPTURE) {
-            process_img();
-        }
+        sscanf(g_serial_buffer, "%s %u %u", cmd_table[cmd], &reg, &val);
+        printf("Writing 0x%x to camera reg 0x%x\n", val, reg);
+        mipi_camera_write_reg((uint16_t)reg, (uint16_t)val);
+    } else if (cmd == CMD_GETREG) {
+        // Read a camera register
+        unsigned int reg;
+        uint8_t val;
+        sscanf(g_serial_buffer, "%s %u", cmd_table[cmd], &reg);
+        mipi_camera_read_reg((uint16_t)reg, &val);
+        snprintf(g_serial_buffer, SERIAL_BUFFER_SIZE, "Camera reg 0x%x=0x%x", reg, val);
+        send_msg(g_serial_buffer);
     }
-
-    clear_serial_buffer();
 }
 
 volatile int buttonPressed = 0;
@@ -218,12 +200,8 @@ void buttonHandler()
 
 int main(void)
 {
-    int csi2_dma_channel;
     int error;
     int id;
-    mxc_csi2_req_t req;
-    mxc_csi2_ctrl_cfg_t ctrl_cfg;
-    mxc_csi2_vfifo_cfg_t vfifo_cfg;
 
     console_init();
 
@@ -240,10 +218,17 @@ int main(void)
     printf("a .png image.\n");
     printf("\nGo into the pc_utility folder and run the script:\n");
     printf("python console.py [COM#]\n");
-    printf("\nPress PB1 (SW4) or send the 'capture' command to trigger a frame capture.\n");
+    printf("\nPress PB1 (SW4) or send the 'capture' command to trigger a frame capture.\n\n");
 
-    // Initialize camera
-    mipi_camera_init();
+    printf("Initializing camera...\n");
+    mipi_camera_settings_t settings = {
+        .width = IMAGE_WIDTH,
+        .height = IMAGE_HEIGHT,
+        .camera_format = { .pixel_format = PIXEL_FORMAT, .pixel_order = PIXEL_ORDER },
+        .line_handler = line_handler,
+    };
+
+    mipi_camera_init(settings);
 
     // Confirm correct camera is connected
     mipi_camera_get_product_id(&id);
@@ -251,77 +236,33 @@ int main(void)
     if (id != CAMERA_ID) {
         printf("Incorrect camera.\n");
         LED_On(1);
-        while (1) {}
+        return E_NO_DEVICE;
     }
 
-    mipi_camera_setup(IMAGE_WIDTH, IMAGE_HEIGHT, PIXEL_FORMAT, OUT_SEQ, MUX_CTRL);
-
-    // Configure RX Controller and PPI (D-PHY)
-    ctrl_cfg.invert_ppi_clk = MXC_CSI2_PPI_NO_INVERT;
-    ctrl_cfg.num_lanes = NUM_DATA_LANES;
-    ctrl_cfg.payload0 = PAYLOAD0_DATA_TYPE;
-    ctrl_cfg.payload1 = PAYLOAD1_DATA_TYPE;
-    ctrl_cfg.flush_cnt = FLUSH_COUNT;
-
-    ctrl_cfg.lane_src.d0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L0;
-    ctrl_cfg.lane_src.d1_swap_sel = MXC_CSI2_PAD_CDRX_PN_L1;
-    ctrl_cfg.lane_src.d2_swap_sel = MXC_CSI2_PAD_CDRX_PN_L2;
-    ctrl_cfg.lane_src.d3_swap_sel = MXC_CSI2_PAD_CDRX_PN_L3;
-    ctrl_cfg.lane_src.c0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L4;
-
-    // Image Data
-    req.img_addr = IMAGE;
-    req.pixels_per_line = IMAGE_WIDTH;
-    req.lines_per_frame = IMAGE_HEIGHT;
-    req.bits_per_pixel_odd = BITS_PER_PIXEL_ODD;
-    req.bits_per_pixel_even = BITS_PER_PIXEL_EVEN;
-    req.frame_num = 1;
-
-    // Convert RAW to RGB
-    req.process_raw_to_rgb = true;
-    req.rgb_type = RGB_TYPE;
-    req.raw_format = RAW_FORMAT;
-    req.autoflush = MXC_CSI2_AUTOFLUSH_ENABLE;
-    req.raw_buf0_addr = (uint32_t)RAW_ADDR0;
-    req.raw_buf1_addr = (uint32_t)RAW_ADDR1;
-
-    // Configure VFIFO
-    vfifo_cfg.virtual_channel = VIRTUAL_CHANNEL;
-    vfifo_cfg.rx_thd = RX_THRESHOLD;
-    vfifo_cfg.wait_cyc = WAIT_CYCLE;
-    vfifo_cfg.flow_ctrl = FLOW_CTRL;
-    vfifo_cfg.err_det_en = MXC_CSI2_ERR_DETECT_DISABLE;
-    vfifo_cfg.fifo_rd_mode = MXC_CSI2_READ_ONE_BY_ONE;
-    vfifo_cfg.dma_whole_frame = MXC_CSI2_DMA_WHOLE_FRAME;
-    vfifo_cfg.dma_mode = MXC_CSI2_DMA_FIFO_ABV_THD;
-    vfifo_cfg.bandwidth_mode = MXC_CSI2_NORMAL_BW;
-    vfifo_cfg.wait_en = MXC_CSI2_AHBWAIT_DISABLE;
-
-    error = MXC_CSI2_Init(&req, &ctrl_cfg, &vfifo_cfg);
-    if (error != E_NO_ERROR) {
-        printf("Error Initializating.\n\n");
-        while (1) {}
+    printf("Initializing SRAM...\n");
+    error = ram_init();
+    if (error) {
+        printf("Failed to initialize SRAM with error %i\n", error);
+        LED_On(1);
+        return error;
     }
 
-    csi2_dma_channel = MXC_CSI2_DMA_GetChannel();
-    MXC_NVIC_SetVector(DMA0_IRQn + csi2_dma_channel, DMA_Handler);
-    MXC_NVIC_SetVector(CSI2_IRQn, CSI2_Handler);
+    ram_id_t ram_id;
+    error = ram_read_id(&ram_id);
+    if (error) {
+        printf("Failed to read expected SRAM ID!\n");
+        LED_On(1);
+        return error;
+    }
+    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", ram_id.MFID,
+           ram_id.KGD, ram_id.density, ram_id.EID);
 
     PB_RegisterCallback(0, (pb_callback)buttonHandler);
     buttonPressed = 0;
 
     while (1) {
-        LED_On(0);
-
-        MXC_Delay(MXC_DELAY_MSEC(100));
-        // ^ Slow down main processing loop to work around some timing issues
-        // with the console at extreme speeds.  1000 checks/sec is plenty
-        service_console();
-
         if (buttonPressed) {
             process_img();
-            LED_Off(0);
-
             buttonPressed = 0;
         }
     }
