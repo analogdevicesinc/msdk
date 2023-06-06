@@ -97,8 +97,6 @@ static volatile uint32_t fifo_burst_size;
 static volatile mxc_csi2_reva_fifo_trig_t fifo_int_trig;
 static volatile mxc_csi2_ahbwait_t ahbwait_en;
 
-typedef enum { SELECT_A, SELECT_B } lb_sel_t;
-
 struct line_buffer {
     uint8_t *a; // Line buffer A
     uint8_t *b; // Line buffer B
