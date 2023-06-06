@@ -41,8 +41,6 @@
 #include <stdio.h>
 #include "mxc.h"
 #include "cnn.h"
-#include "sampledata.h"
-#include "sampleoutput.h"
 #include "mxc_errors.h"
 #include "camera.h"
 #include "post_process.h"
@@ -60,7 +58,6 @@ void fail(void)
 }
 
 // Data input: HWC 3x224x168 (112896 bytes total / 37632 bytes per channel):
-static const uint32_t input_0[] = SAMPLE_INPUT_0;
 void load_input(void)
 {
     uint8_t *raw;
@@ -73,7 +70,8 @@ void load_input(void)
     camera_get_image(&raw, &imglen, &w, &h);
     color_correct(raw, w, h);
 
-    // The model needs 168x224.  The HM0360 give us 320x240.
+    // The model needs 168x224.
+    // The HM0360 give us 320x240.
     // We will achieve this by debayering "on the fly" to crop to
     // 224x168 while feeding the CNN column-wise instead of row-wise.
     unsigned int crop_x = 224, crop_y = 168;
@@ -119,32 +117,6 @@ void load_input(void)
         }
     }
 }
-
-// Expected output of layer 12, 13, 14, 15 for facedet_tinierssd given the sample input (known-answer test)
-// Delete this function for production code
-static const uint32_t sample_output[] = SAMPLE_OUTPUT;
-int check_output(void)
-{
-    int i;
-    uint32_t mask, len;
-    volatile uint32_t *addr;
-    const uint32_t *ptr = sample_output;
-
-    while ((addr = (volatile uint32_t *)*ptr++) != 0) {
-        mask = *ptr++;
-        len = *ptr++;
-        for (i = 0; i < len; i++)
-            if ((*addr++ & mask) != *ptr++) {
-                printf("Data mismatch (%d/%d) at address 0x%08x: Expected 0x%08x, read 0x%08x.\n",
-                       i + 1, len, addr - 1, *(ptr - 1), *(addr - 1) & mask);
-                return CNN_FAIL;
-            }
-    }
-
-    return CNN_OK;
-}
-
-static int32_t ml_data32[(CNN_NUM_OUTPUTS + 3) / 4];
 
 int main(void)
 {
@@ -237,14 +209,10 @@ int main(void)
 
         MXC_Delay(MXC_DELAY_MSEC(150)); // Slight delay to allow LED to be seen
 
-        // cnn_unload((uint32_t *)ml_data32);
-
     #ifdef CNN_INFERENCE_TIMER
         printf("Approximate data loading and inference time: %u us\n\n", cnn_time);
     #endif
     }
-
-    cnn_disable(); // Shut down CNN clock, disable peripheral
 
     return 0;
 }
