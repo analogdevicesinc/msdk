@@ -1,8 +1,7 @@
 # MAX78000 Facial Recognition Demo
 
-
-
 ## Overview
+
 This demo includes **FaceDetection** and **FaceID** CNN models and runs them sequentially on MAX78000 Feather board only. The **FaceID** CNN model weight binary file (Include/weigths_2.bin) needs to be programmed to SD card using the "SDHC_weights" project which converts the FaceID weights (weights_2.h) into binary file (weights_2.bin) and writes it to the SD card.
 The **FaceDetection** CNN model detects a face and application draws a box around the face.
 
@@ -12,55 +11,26 @@ For this purpose, the **FaceID** CNN model generates a 512-length embedding for 
 
 ## Facial Recognition Demo Software
 
-### Building FaceID weights writer firmware
+### Loading Weights to SD Card
 
-Use **facial_recognition/SDHC_weights** project and it will create **weights_2.bin** file in binary format. Make sure to have a formatted SD card inserted into the Feather board.
+This project loads weights for the CNN model from an SD card.  The required file is `weights_2.bin`, and can be found in the [SDHC_weights](SDHC_weights) sub-folder.  Load this file into the root directory of a FAT32 formatted SD card before running this project.
 
-```bash
-$ cd /Examples/MAX78000/CNN/facial_recognition/SDHC_weights
-$ make
-```
+Alternatively, the [SDHC_weights](SDHC_weights) sub-project can be used to load the weights onto the SD card.  See [SDHC_weights/README.md](SDHC_weights/README.md) for more details.
 
-Next, load this firmware image to MAX78000 Feather as described in the following section to write the binary FaceID weights to the SD card.
+### Project Usage
 
-### Building Facial Recognition firmware
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-Navigate directory where Facial Recognition demo software is located and build the project:
+### Project-Specific Build Notes
 
-```bash
-$ cd /Examples/MAX78000/CNN/facial_recognition
-$ make
-```
+* This project is supported on the MAX78000FTHR board only.
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+## Required Connections
 
-```bash
-$ make distclean
-```
+Before running this project:
 
-**Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
-
-*right click project name > Properties > C/C++ Build > Environment > Board"*
-
-<img src="Resources/eclipse_board.png" style="zoom:33%;" />
-
-
-
-### Load firmware image to MAX78000 Feather
-
-Connect USB cable to CN1 USB connector.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
+* Load the CNN model's weights into the SD card (see [Loading Weights to SD Card](#loading-weights-to-sd-card)) and insert the SD card into the FTHR boards SD slot.
+* Insert a micro-USB cable into CN1 of the FTHR board.
 
 ### MAX78000 Feather operations
 
@@ -102,11 +72,11 @@ Following message will appear in terminal window:
 
 
 
-### Face Database Generation
+## Face Database Generation
 
 This section describes how to add new pictures to the data base.
 
-#### Prerequisites:
+### Prerequisites:
 
 - Python 3.6.9 or higher (tested for 3.7.7 and 3.8.1)
 - numpy (>=1.19)
@@ -117,7 +87,7 @@ This section describes how to add new pictures to the data base.
 - torch (>=1.4.0)
 - torchvision (>=0.5.0)
 
-#### Taking Face Pictures
+### Taking Face Pictures
 
 In order to achieve best identification, following steps are recommended:
 
@@ -144,7 +114,7 @@ In order to achieve best identification, following steps are recommended:
 
 7. Save pictures in .jpg format with arbitrary names.
 
-#### Populate Face Images
+### Populate Face Images
 
 Navigate to 'db' folder and create a folder for each subject in your database and copy each subject's photos into these folders. The name of the folder will be used as the detected subject's name. These photos must contain subject's face directed to the camera but do not need to be consisting only the face. The structure of the directory should be as the following. 
 
@@ -167,7 +137,7 @@ Navigate to 'db' folder and create a folder for each subject in your database an
 
 Having at least 5 images per subject is recommended. There must be no other person in the images besides the subject. For the both the images in the database and in the operation time, the face should be well and evenly illuminated.
 
-#### Generate DB
+### Generate DB
 
 Run the python script by:
 

@@ -16,10 +16,11 @@
 $(info Note: This project is designed and tested for the OV7692 only.)
 override CAMERA=OV7692
 
-# This example is only compatible with the FTHR board,
-# so we override the BOARD value to hard-set it.
-override BOARD=FTHR_RevA
-$(warning Warning: This project is forced to compile for the FTHR board only!)
+# This example is only compatible with the FTHR board
+BOARD = FTHR_RevA
+ifneq ($(BOARD),FTHR_RevA)
+$(error ERR_NOTSUPPORTED: This project is only supported on the MAX78000FTHR.  (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages))
+endif
 
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
@@ -29,6 +30,7 @@ IPATH += TFT/fthr
 VPATH += TFT/fthr
 endif
 
+# Enable the SDHC library
 LIB_SDHC = 1
 
 
