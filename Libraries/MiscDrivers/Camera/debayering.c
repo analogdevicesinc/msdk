@@ -113,7 +113,7 @@ void calc_correction_simple(uint8_t *bayer_pattern, unsigned int w, unsigned int
     // PRINT("R correction: %.2f\tB correction: %.2f\n", *out_coeff_r, *out_coeff_b);
 }
 
-void color_correct(uint8_t *srcimg, unsigned int w, unsigned int h) 
+void color_correct(uint8_t *srcimg, unsigned int w, unsigned int h)
 {
     float coeff_r = 0, coeff_b = 0;
     calc_correction_simple(srcimg, w, h, &coeff_r, &coeff_b);
@@ -176,25 +176,25 @@ void bayer_bilinear_demosaicing(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_
             if (!(y & 1)) { // Even row (B G B G B G)
                 if (!(x & 1)) { // Odd row (B)
                     r = (srcimg[_i(x - 1, y + 1, w, h)] + // Top left
-                        srcimg[_i(x + 1, y + 1, w, h)] + // Top right
-                        srcimg[_i(x - 1, y - 1, w, h)] + // Bottom left
-                        srcimg[_i(x + 1, y - 1, w, h)]); // Bottom right
+                         srcimg[_i(x + 1, y + 1, w, h)] + // Top right
+                         srcimg[_i(x - 1, y - 1, w, h)] + // Bottom left
+                         srcimg[_i(x + 1, y - 1, w, h)]); // Bottom right
                     r = r >> 2; // Divide by 4
                     g = (srcimg[_i(x - 1, y, w, h)] + // Left
-                        srcimg[_i(x + 1, y, w, h)] + // Right
-                        srcimg[_i(x, y + 1, w, h)] + // Up
-                        srcimg[_i(x, y - 1, w, h)]); // Down
+                         srcimg[_i(x + 1, y, w, h)] + // Right
+                         srcimg[_i(x, y + 1, w, h)] + // Up
+                         srcimg[_i(x, y - 1, w, h)]); // Down
                     g = g >> 2; // Divide by 4
                     b = srcimg[_i(x, y, w, h)]; // We're at blue pixel
 
                     dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
                 } else { // Odd column (G)
                     r = (srcimg[_i(x, y + 1, w, h)] + // Up
-                        srcimg[_i(x, y - 1, w, h)]); // Down
+                         srcimg[_i(x, y - 1, w, h)]); // Down
                     r = r >> 1; // Divide by 2
                     g = srcimg[_i(x, y, w, h)]; // We're at green pixel
                     b = (srcimg[_i(x - 1, y, w, h)] + // Left
-                        srcimg[_i(x + 1, y, w, h)]); // Right
+                         srcimg[_i(x + 1, y, w, h)]); // Right
                     b = b >> 1; // Divide by 2
 
                     dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
@@ -202,25 +202,25 @@ void bayer_bilinear_demosaicing(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_
             } else { // Odd row (G R G R G R)
                 if (!(x & 1)) { // Even column (G)
                     r = (srcimg[_i(x - 1, y, w, h)] + // Left
-                        srcimg[_i(x + 1, y, w, h)]); // Right
+                         srcimg[_i(x + 1, y, w, h)]); // Right
                     r = r >> 1; // Divide by 2
                     g = srcimg[_i(x, y, w, h)]; // We're at green pixel
                     b = (srcimg[_i(x, y + 1, w, h)] + // Up
-                        srcimg[_i(x, y - 1, w, h)]); // Down
+                         srcimg[_i(x, y - 1, w, h)]); // Down
                     b = b >> 1; // Divide by 2
 
                     dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
                 } else { // Odd column (R)
                     r = srcimg[_i(x, y, w, h)]; // We're at red pixel
                     g = (srcimg[_i(x - 1, y, w, h)] + // Left
-                        srcimg[_i(x + 1, y, w, h)] + // Right
-                        srcimg[_i(x, y + 1, w, h)] + // Up
-                        srcimg[_i(x, y - 1, w, h)]); // Down
+                         srcimg[_i(x + 1, y, w, h)] + // Right
+                         srcimg[_i(x, y + 1, w, h)] + // Up
+                         srcimg[_i(x, y - 1, w, h)]); // Down
                     g = g >> 2; // Divide by 4
                     b = (srcimg[_i(x - 1, y + 1, w, h)] + // Top left
-                        srcimg[_i(x + 1, y + 1, w, h)] + // Top right
-                        srcimg[_i(x - 1, y - 1, w, h)] + // Bottom left
-                        srcimg[_i(x + 1, y - 1, w, h)]); // Bottom right
+                         srcimg[_i(x + 1, y + 1, w, h)] + // Top right
+                         srcimg[_i(x - 1, y - 1, w, h)] + // Bottom left
+                         srcimg[_i(x + 1, y - 1, w, h)]); // Bottom right
                     b = b >> 2; // Divide by 4
 
                     dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
@@ -230,7 +230,9 @@ void bayer_bilinear_demosaicing(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_
     }
 }
 
-void bayer_bilinear_demosaicing_crop(uint8_t *srcimg, uint32_t src_width, uint32_t src_height, uint32_t w_offset, uint32_t h_offset, uint16_t *dstimg, uint32_t dst_width, uint32_t dst_height)
+void bayer_bilinear_demosaicing_crop(uint8_t *srcimg, uint32_t src_width, uint32_t src_height,
+                                     uint32_t w_offset, uint32_t h_offset, uint16_t *dstimg,
+                                     uint32_t dst_width, uint32_t dst_height)
 {
     unsigned int r, g, b = 0;
     int i = 0;
@@ -240,25 +242,25 @@ void bayer_bilinear_demosaicing_crop(uint8_t *srcimg, uint32_t src_width, uint32
             if (!(y & 1)) { // Even row (B G B G B G)
                 if (!(x & 1)) { // Even column (B)
                     r = (srcimg[_i(x - 1, y + 1, src_width, src_height)] + // Top left
-                        srcimg[_i(x + 1, y + 1, src_width, src_height)] + // Top right
-                        srcimg[_i(x - 1, y - 1, src_width, src_height)] + // Bottom left
-                        srcimg[_i(x + 1, y - 1, src_width, src_height)]); // Bottom right
+                         srcimg[_i(x + 1, y + 1, src_width, src_height)] + // Top right
+                         srcimg[_i(x - 1, y - 1, src_width, src_height)] + // Bottom left
+                         srcimg[_i(x + 1, y - 1, src_width, src_height)]); // Bottom right
                     r = r >> 2; // Divide by 4
                     g = (srcimg[_i(x - 1, y, src_width, src_height)] + // Left
-                        srcimg[_i(x + 1, y, src_width, src_height)] + // Right
-                        srcimg[_i(x, y + 1, src_width, src_height)] + // Up
-                        srcimg[_i(x, y - 1, src_width, src_height)]); // Down
+                         srcimg[_i(x + 1, y, src_width, src_height)] + // Right
+                         srcimg[_i(x, y + 1, src_width, src_height)] + // Up
+                         srcimg[_i(x, y - 1, src_width, src_height)]); // Down
                     g = g >> 2; // Divide by 4
                     b = srcimg[_i(x, y, src_width, src_height)]; // We're at blue pixel
 
                     dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
                 } else { // Odd column (G)
                     r = (srcimg[_i(x, y + 1, src_width, src_height)] + // Up
-                        srcimg[_i(x, y - 1, src_width, src_height)]); // Down
+                         srcimg[_i(x, y - 1, src_width, src_height)]); // Down
                     r = r >> 1; // Divide by 2
                     g = srcimg[_i(x, y, src_width, src_height)]; // We're at green pixel
                     b = (srcimg[_i(x - 1, y, src_width, src_height)] + // Left
-                        srcimg[_i(x + 1, y, src_width, src_height)]); // Right
+                         srcimg[_i(x + 1, y, src_width, src_height)]); // Right
                     b = b >> 1; // Divide by 2
 
                     dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
@@ -266,25 +268,25 @@ void bayer_bilinear_demosaicing_crop(uint8_t *srcimg, uint32_t src_width, uint32
             } else { // Odd row (G R G R G R)
                 if (!(x & 1)) { // Even column (G)
                     r = (srcimg[_i(x - 1, y, src_width, src_height)] + // Left
-                        srcimg[_i(x + 1, y, src_width, src_height)]); // Right
+                         srcimg[_i(x + 1, y, src_width, src_height)]); // Right
                     r = r >> 1; // Divide by 2
                     g = srcimg[_i(x, y, src_width, src_height)]; // We're at green pixel
                     b = (srcimg[_i(x, y + 1, src_width, src_height)] + // Up
-                        srcimg[_i(x, y - 1, src_width, src_height)]); // Down
+                         srcimg[_i(x, y - 1, src_width, src_height)]); // Down
                     b = b >> 1; // Divide by 2
 
                     dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));
                 } else { // Odd column (R)
                     r = srcimg[_i(x, y, src_width, src_height)]; // We're at red pixel
                     g = (srcimg[_i(x - 1, y, src_width, src_height)] + // Left
-                        srcimg[_i(x + 1, y, src_width, src_height)] + // Right
-                        srcimg[_i(x, y + 1, src_width, src_height)] + // Up
-                        srcimg[_i(x, y - 1, src_width, src_height)]); // Down
+                         srcimg[_i(x + 1, y, src_width, src_height)] + // Right
+                         srcimg[_i(x, y + 1, src_width, src_height)] + // Up
+                         srcimg[_i(x, y - 1, src_width, src_height)]); // Down
                     g = g >> 2; // Divide by 4
                     b = (srcimg[_i(x - 1, y + 1, src_width, src_height)] + // Top left
-                        srcimg[_i(x + 1, y + 1, src_width, src_height)] + // Top right
-                        srcimg[_i(x - 1, y - 1, src_width, src_height)] + // Bottom left
-                        srcimg[_i(x + 1, y - 1, src_width, src_height)]); // Bottom right
+                         srcimg[_i(x + 1, y + 1, src_width, src_height)] + // Top right
+                         srcimg[_i(x - 1, y - 1, src_width, src_height)] + // Bottom left
+                         srcimg[_i(x + 1, y - 1, src_width, src_height)]); // Bottom right
                     b = b >> 2; // Divide by 4
 
                     dstimg[i++] = rgb_to_rgb565(clamp_i_u8(r), clamp_i_u8(g), clamp_i_u8(b));

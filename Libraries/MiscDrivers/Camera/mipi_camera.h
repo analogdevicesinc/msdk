@@ -41,11 +41,11 @@
  * @brief Pixel format enumerations.
 */
 typedef enum {
-    PIXEL_FORMAT_BYPASS,    
+    PIXEL_FORMAT_BYPASS,
     PIXEL_FORMAT_YUV420,
     PIXEL_FORMAT_YUV422,
     PIXEL_FORMAT_RGB444,
-    PIXEL_FORMAT_RGB555,   
+    PIXEL_FORMAT_RGB555,
     PIXEL_FORMAT_RGB565,
     PIXEL_FORMAT_RGB666,
     PIXEL_FORMAT_RGB888,
@@ -87,7 +87,6 @@ typedef struct _mipi_camera_settings_t {
     mipi_camera_format_t camera_format;
     mxc_csi2_line_handler_cb_t line_handler;
 } mipi_camera_settings_t;
-
 
 typedef enum {
     MIPI_GAINCEILING_2X,
@@ -139,7 +138,7 @@ int mipi_camera_get_product_id(int *id);
 int mipi_camera_get_manufacture_id(int *id);
 int mipi_camera_sleep(int sleep);
 mipi_camera_format_t mipi_camera_get_camera_format(void);
-char* mipi_camera_get_image_header(void);
+char *mipi_camera_get_image_header(void);
 int mipi_camera_capture();
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_MIPI_CAMERA_H_

@@ -52,7 +52,7 @@
 #define WAIT_CYCLE 0x2000
 #define FLOW_CTRL                                                                  \
     (MXC_F_CSI2_VFIFO_CFG1_WAIT_FIRST_FS | MXC_F_CSI2_VFIFO_CFG1_ACCU_FRAME_CTRL | \
-    MXC_F_CSI2_VFIFO_CFG1_ACCU_LINE_CNT | MXC_F_CSI2_VFIFO_CFG1_ACCU_PIXEL_CNT)
+     MXC_F_CSI2_VFIFO_CFG1_ACCU_LINE_CNT | MXC_F_CSI2_VFIFO_CFG1_ACCU_PIXEL_CNT)
 
 // Size of Image Buffer
 // This buffer will hold the full output image after the CSI2 has converted it
@@ -93,64 +93,65 @@ static char g_image_header[256];
  *              the additional logic should be handled in this function.
  * @return     #E_NO_ERROR if everything is successful.
  */
-inline int _pixel_format_to_payload(pixel_format_t pixel_format, mxc_csi2_payload0_t *payload0, mxc_csi2_payload1_t *payload1) {
-    
+inline int _pixel_format_to_payload(pixel_format_t pixel_format, mxc_csi2_payload0_t *payload0,
+                                    mxc_csi2_payload1_t *payload1)
+{
     // payload1 enables user-defined payload types.  If these are enabled,
-    // payload0 should be disabled.  PL0 and PL1 can not be active simultaneously. 
+    // payload0 should be disabled.  PL0 and PL1 can not be active simultaneously.
     *payload1 = MXC_CSI2_PL1_DISABLE_ALL;
-    
-    switch(pixel_format) {
-        case PIXEL_FORMAT_YUV420:
+
+    switch (pixel_format) {
+    case PIXEL_FORMAT_YUV420:
         *payload0 = MXC_CSI2_PL0_YUV420_8BIT;
         break;
-        case PIXEL_FORMAT_YUV422:
+    case PIXEL_FORMAT_YUV422:
         *payload0 = MXC_CSI2_PL0_YUV420_8BIT;
         break;
-        case PIXEL_FORMAT_RGB444:
+    case PIXEL_FORMAT_RGB444:
         *payload0 = MXC_CSI2_PL0_RGB444;
         break;
-        case PIXEL_FORMAT_RGB555:
+    case PIXEL_FORMAT_RGB555:
         *payload0 = MXC_CSI2_PL0_RGB555;
         break;
-        case PIXEL_FORMAT_RGB565:
+    case PIXEL_FORMAT_RGB565:
         *payload0 = MXC_CSI2_PL0_RGB565;
         break;
-        case PIXEL_FORMAT_RGB666:
+    case PIXEL_FORMAT_RGB666:
         *payload0 = MXC_CSI2_PL0_RGB666;
         break;
-        case PIXEL_FORMAT_RGB888:
+    case PIXEL_FORMAT_RGB888:
         *payload0 = MXC_CSI2_PL0_RGB888;
         break;
-        case PIXEL_FORMAT_RAW6:
+    case PIXEL_FORMAT_RAW6:
         *payload0 = MXC_CSI2_PL0_RAW6;
         break;
-        case PIXEL_FORMAT_RAW7:
+    case PIXEL_FORMAT_RAW7:
         *payload0 = MXC_CSI2_PL0_RAW7;
         break;
-        case PIXEL_FORMAT_RAW8:
+    case PIXEL_FORMAT_RAW8:
         *payload0 = MXC_CSI2_PL0_RAW8;
         break;
-        case PIXEL_FORMAT_RAW10:
+    case PIXEL_FORMAT_RAW10:
         *payload0 = MXC_CSI2_PL0_RAW10;
         break;
-        case PIXEL_FORMAT_RAW12:
+    case PIXEL_FORMAT_RAW12:
         *payload0 = MXC_CSI2_PL0_RAW12;
         break;
-        case PIXEL_FORMAT_RAW14:
+    case PIXEL_FORMAT_RAW14:
         *payload0 = MXC_CSI2_PL0_RAW14;
         break;
-        case PIXEL_FORMAT_RAW16:
+    case PIXEL_FORMAT_RAW16:
         *payload0 = MXC_CSI2_PL0_RAW16;
         break;
-        case PIXEL_FORMAT_RAW20:
+    case PIXEL_FORMAT_RAW20:
         *payload0 = MXC_CSI2_PL0_RAW20;
         break;
-        case PIXEL_FORMAT_BYPASS:
+    case PIXEL_FORMAT_BYPASS:
         // For bypass mode, we will select a null payload type.
         // See section 5.10.6.1 of our CSI2 IP spec for more details.
         *payload0 = MXC_CSI2_PL0_NULL;
         break;
-        default:
+    default:
         return E_NOT_SUPPORTED;
     }
 
@@ -159,42 +160,42 @@ inline int _pixel_format_to_payload(pixel_format_t pixel_format, mxc_csi2_payloa
 
 inline unsigned int _bits_per_pixel(pixel_format_t pixel_format)
 {
-    switch(pixel_format) {        
-        case PIXEL_FORMAT_YUV420:
+    switch (pixel_format) {
+    case PIXEL_FORMAT_YUV420:
         return 12;
-        case PIXEL_FORMAT_YUV422:
+    case PIXEL_FORMAT_YUV422:
         return 16;
-        case PIXEL_FORMAT_RGB444:
+    case PIXEL_FORMAT_RGB444:
         return 12;
-        case PIXEL_FORMAT_RGB555:
+    case PIXEL_FORMAT_RGB555:
         return 15;
-        case PIXEL_FORMAT_RGB565:
+    case PIXEL_FORMAT_RGB565:
         return 16;
-        case PIXEL_FORMAT_RGB666:
+    case PIXEL_FORMAT_RGB666:
         return 18;
-        case PIXEL_FORMAT_RGB888:
+    case PIXEL_FORMAT_RGB888:
         return 24;
-        case PIXEL_FORMAT_RAW6:
+    case PIXEL_FORMAT_RAW6:
         return 6;
-        case PIXEL_FORMAT_RAW7:
+    case PIXEL_FORMAT_RAW7:
         return 7;
-        case PIXEL_FORMAT_RAW8:
+    case PIXEL_FORMAT_RAW8:
         return 8;
-        case PIXEL_FORMAT_RAW10:
+    case PIXEL_FORMAT_RAW10:
         return 10;
-        case PIXEL_FORMAT_RAW12:
+    case PIXEL_FORMAT_RAW12:
         return 12;
-        case PIXEL_FORMAT_RAW14:
+    case PIXEL_FORMAT_RAW14:
         return 14;
-        case PIXEL_FORMAT_RAW16:
+    case PIXEL_FORMAT_RAW16:
         return 16;
-        case PIXEL_FORMAT_RAW20:
+    case PIXEL_FORMAT_RAW20:
         return 20;
-        case PIXEL_FORMAT_BYPASS:
+    case PIXEL_FORMAT_BYPASS:
         // Section 5.10.6.1 of our CSI2 IP spec says that general/arbitrary
         // data types are all byte data types.
         return 8;
-        default:
+    default:
         return 8;
     }
 }
@@ -234,7 +235,8 @@ int mipi_camera_init(mipi_camera_settings_t camera_settings)
     g_ctrl_cfg.invert_ppi_clk = MXC_CSI2_PPI_NO_INVERT;
     g_ctrl_cfg.num_lanes = NUM_DATA_LANES;
     g_ctrl_cfg.flush_cnt = FLUSH_COUNT;
-    _pixel_format_to_payload(camera_settings.camera_format.pixel_format, &g_ctrl_cfg.payload0, &g_ctrl_cfg.payload1);
+    _pixel_format_to_payload(camera_settings.camera_format.pixel_format, &g_ctrl_cfg.payload0,
+                             &g_ctrl_cfg.payload1);
 
     g_ctrl_cfg.lane_src.d0_swap_sel = MXC_CSI2_PAD_CDRX_PN_L0;
     g_ctrl_cfg.lane_src.d1_swap_sel = MXC_CSI2_PAD_CDRX_PN_L1;
@@ -313,11 +315,13 @@ int mipi_camera_reset(void)
     return camera.reset();
 }
 
-int mipi_camera_sleep(int sleep) {
+int mipi_camera_sleep(int sleep)
+{
     return camera.sleep(sleep);
 }
 
-int mipi_camera_capture() {
+int mipi_camera_capture()
+{
     return MXC_CSI2_CaptureFrameDMA();
 }
 
@@ -327,7 +331,7 @@ mipi_camera_format_t mipi_camera_get_camera_format()
 }
 
 // *IMG* [PIXEL_FORMAT] [LENGTH (in bytes)] [WIDTH (in pixels)] [HEIGHT (in pixels)]
-char* mipi_camera_get_image_header(void) 
+char *mipi_camera_get_image_header(void)
 {
     memset(g_image_header, '\0', sizeof(g_image_header));
     uint8_t *raw_data;
@@ -335,7 +339,7 @@ char* mipi_camera_get_image_header(void)
 
     MXC_CSI2_GetImageDetails(&raw_data, &img_len, &width, &height);
 
-    char* format_str;
+    char *format_str;
     pixel_format_t pixel_format = g_camera_settings.camera_format.pixel_format;
     if (pixel_format == PIXEL_FORMAT_RGB444) {
         format_str = "RGB444";
@@ -353,12 +357,11 @@ char* mipi_camera_get_image_header(void)
         format_str = "INVALID";
     }
 
-    snprintf(g_image_header, sizeof(g_image_header), 
-            "*IMG* %s %i %i %i",
-            format_str, // PIXEL_FORMAT
-            img_len,    // LENGTH (in bytes)
-            width,      // WIDTH (in pixels)
-            height      // HEIGHT (in pixels)
+    snprintf(g_image_header, sizeof(g_image_header), "*IMG* %s %i %i %i",
+             format_str, // PIXEL_FORMAT
+             img_len, // LENGTH (in bytes)
+             width, // WIDTH (in pixels)
+             height // HEIGHT (in pixels)
     );
 
     return g_image_header;
