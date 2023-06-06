@@ -53,7 +53,9 @@ jobs:
             CMSIS
             MiscDrivers
             PeriphDrivers
-            Third-Party
+            ThirdParty
+            MAXUSB
+            SDHC
             ignore
             workflow
             Other

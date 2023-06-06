@@ -49,7 +49,9 @@ The scopes are dependent on the changes based on their location in the MSDK. Thi
 6.  **CMSIS** – Any CMSIS/Register file changes
 7.  **MiscDrivers** – Any MiscDrivers changes (e.g. TFT Display, PB, LED, External Flash Drivers)
 8.  **PeriphDrivers** – Any changes in msdk/Libraries/PeriphDrivers
-9.  **Third-Party** – All third-party libraries (e.g. FreeRTOS, LVGL, lwIP)
+9.  **ThirdParty** – All third-party libraries (e.g. FreeRTOS, LVGL, lwIP)
+9.  **MAXUSB** – Any MAXUSB changes
+9.  **SDHC** – Any SDHC changes
 10. **ignore** – Small and quick miscellaneous fixes (should not be used often)
 11. **workflow** – Any GitHub workflow related changes
 
