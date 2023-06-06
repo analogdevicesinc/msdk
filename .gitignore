@@ -30,3 +30,7 @@ Libraries/RF-PHY
 .cortex-debug.peripherals.state.json
 .cortex-debug.registers.state.json
 ar_args.txt
+.husky/_/
+node_modules
+package-lock.json
+package.json

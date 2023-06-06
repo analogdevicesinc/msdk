@@ -160,7 +160,7 @@ echo "#-------------------------------------------------------------------------
 echo "Test in different packet length, PHY, attenuation, and txPower"
 
 i=0
-echo "packetLen,phy,atten,txPower,perMaster,perSlave" > "${all_in_one}"
+echo "packetLen,phy,atten,txPower,perMaster,perSlave,mst_rssi,slv_rssi" > "${all_in_one}"
 step=${STEP}
 echo ""
 

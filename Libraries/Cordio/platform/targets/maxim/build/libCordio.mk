@@ -77,7 +77,7 @@ VPATH           += %.c $(sort $(dir $(C_FILES)))
 IPATH           += $(INC_DIRS)
 
 # Add dependencies in the Board library and the PeripheralDrivers
-IPATH += ${LIB_DIR}/Boards/${TARGET_UC}/Include
+IPATH += ${LIB_DIR}/MiscDrivers/PushButton
 include ${LIB_DIR}/PeriphDrivers/periphdriver.mk
 
 # Use absolute paths if building within eclipse environment.

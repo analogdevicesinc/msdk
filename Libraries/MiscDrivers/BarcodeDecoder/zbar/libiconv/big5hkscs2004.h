@@ -47,184 +47,186 @@
 #include "hkscs2004.h"
 #include "flushwc.h"
 
-static int
-big5hkscs2004_mbtowc (conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
+static int big5hkscs2004_mbtowc(conv_t conv, ucs4_t *pwc, const unsigned char *s, size_t n)
 {
-  ucs4_t last_wc = conv->istate;
-  if (last_wc) {
-    /* Output the buffered character. */
-    conv->istate = 0;
-    *pwc = last_wc;
-    return 0; /* Don't advance the input pointer. */
-  } else {
-    unsigned char c = *s;
-    /* Code set 0 (ASCII) */
-    if (c < 0x80)
-      return ascii_mbtowc(conv,pwc,s,n);
-    /* Code set 1 (BIG5 extended) */
-    if (c >= 0xa1 && c < 0xff) {
-      if (n < 2)
-        return RET_TOOFEW(0);
-      {
-        unsigned char c2 = s[1];
-        if ((c2 >= 0x40 && c2 < 0x7f) || (c2 >= 0xa1 && c2 < 0xff)) {
-          if (!((c == 0xc6 && c2 >= 0xa1) || c == 0xc7)) {
-            int ret = big5_mbtowc(conv,pwc,s,2);
+    ucs4_t last_wc = conv->istate;
+    if (last_wc) {
+        /* Output the buffered character. */
+        conv->istate = 0;
+        *pwc = last_wc;
+        return 0; /* Don't advance the input pointer. */
+    } else {
+        unsigned char c = *s;
+        /* Code set 0 (ASCII) */
+        if (c < 0x80)
+            return ascii_mbtowc(conv, pwc, s, n);
+        /* Code set 1 (BIG5 extended) */
+        if (c >= 0xa1 && c < 0xff) {
+            if (n < 2)
+                return RET_TOOFEW(0);
+            {
+                unsigned char c2 = s[1];
+                if ((c2 >= 0x40 && c2 < 0x7f) || (c2 >= 0xa1 && c2 < 0xff)) {
+                    if (!((c == 0xc6 && c2 >= 0xa1) || c == 0xc7)) {
+                        int ret = big5_mbtowc(conv, pwc, s, 2);
+                        if (ret != RET_ILSEQ)
+                            return ret;
+                    }
+                }
+            }
+        }
+        {
+            int ret = hkscs1999_mbtowc(conv, pwc, s, n);
             if (ret != RET_ILSEQ)
-              return ret;
-          }
+                return ret;
         }
-      }
-    }
-    {
-      int ret = hkscs1999_mbtowc(conv,pwc,s,n);
-      if (ret != RET_ILSEQ)
-        return ret;
-    }
-    {
-      int ret = hkscs2001_mbtowc(conv,pwc,s,n);
-      if (ret != RET_ILSEQ)
-        return ret;
-    }
-    {
-      int ret = hkscs2004_mbtowc(conv,pwc,s,n);
-      if (ret != RET_ILSEQ)
-        return ret;
-    }
-    if (c == 0x88) {
-      if (n < 2)
-        return RET_TOOFEW(0);
-      {
-        unsigned char c2 = s[1];
-        if (c2 == 0x62 || c2 == 0x64 || c2 == 0xa3 || c2 == 0xa5) {
-          /* It's a composed character. */
-          ucs4_t wc1 = ((c2 >> 3) << 2) + 0x009a; /* = 0x00ca or 0x00ea */
-          ucs4_t wc2 = ((c2 & 6) << 2) + 0x02fc; /* = 0x0304 or 0x030c */
-          /* We cannot output two Unicode characters at once. So,
+        {
+            int ret = hkscs2001_mbtowc(conv, pwc, s, n);
+            if (ret != RET_ILSEQ)
+                return ret;
+        }
+        {
+            int ret = hkscs2004_mbtowc(conv, pwc, s, n);
+            if (ret != RET_ILSEQ)
+                return ret;
+        }
+        if (c == 0x88) {
+            if (n < 2)
+                return RET_TOOFEW(0);
+            {
+                unsigned char c2 = s[1];
+                if (c2 == 0x62 || c2 == 0x64 || c2 == 0xa3 || c2 == 0xa5) {
+                    /* It's a composed character. */
+                    ucs4_t wc1 = ((c2 >> 3) << 2) + 0x009a; /* = 0x00ca or 0x00ea */
+                    ucs4_t wc2 = ((c2 & 6) << 2) + 0x02fc; /* = 0x0304 or 0x030c */
+                    /* We cannot output two Unicode characters at once. So,
              output the first character and buffer the second one. */
-          *pwc = wc1;
-          conv->istate = wc2;
-          return 2;
+                    *pwc = wc1;
+                    conv->istate = wc2;
+                    return 2;
+                }
+            }
         }
-      }
+        return RET_ILSEQ;
     }
-    return RET_ILSEQ;
-  }
 }
 
 #define big5hkscs2004_flushwc normal_flushwc
 
-static int
-big5hkscs2004_wctomb (conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
+static int big5hkscs2004_wctomb(conv_t conv, unsigned char *r, ucs4_t wc, size_t n)
 {
-  int count = 0;
-  unsigned char last = conv->ostate;
+    int count = 0;
+    unsigned char last = conv->ostate;
 
-  if (last) {
-    /* last is = 0x66 or = 0xa7. */
-    if (wc == 0x0304 || wc == 0x030c) {
-      /* Output the combined character. */
-      if (n >= 2) {
+    if (last) {
+        /* last is = 0x66 or = 0xa7. */
+        if (wc == 0x0304 || wc == 0x030c) {
+            /* Output the combined character. */
+            if (n >= 2) {
+                r[0] = 0x88;
+                r[1] = last + ((wc & 24) >> 2) - 4; /* = 0x62 or 0x64 or 0xa3 or 0xa5 */
+                conv->ostate = 0;
+                return 2;
+            } else
+                return RET_TOOSMALL;
+        }
+
+        /* Output the buffered character. */
+        if (n < 2)
+            return RET_TOOSMALL;
         r[0] = 0x88;
-        r[1] = last + ((wc & 24) >> 2) - 4; /* = 0x62 or 0x64 or 0xa3 or 0xa5 */
-        conv->ostate = 0;
-        return 2;
-      } else
-        return RET_TOOSMALL;
+        r[1] = last;
+        r += 2;
+        count = 2;
     }
 
-    /* Output the buffered character. */
-    if (n < 2)
-      return RET_TOOSMALL;
-    r[0] = 0x88;
-    r[1] = last;
-    r += 2;
-    count = 2;
-  }
-
-  /* Code set 0 (ASCII) */
-  if (wc < 0x0080) {
-    /* Plain ASCII character. */
-    if (n > count) {
-      r[0] = (unsigned char) wc;
-      conv->ostate = 0;
-      return count+1;
-    } else
-      return RET_TOOSMALL;
-  } else {
-    unsigned char buf[2];
-    int ret;
-
-    /* Code set 1 (BIG5 extended) */
-    ret = big5_wctomb(conv,buf,wc,2);
-    if (ret != RET_ILUNI) {
-      if (ret != 2) abort();
-      if (!((buf[0] == 0xc6 && buf[1] >= 0xa1) || buf[0] == 0xc7)) {
-        if (n >= count+2) {
-          r[0] = buf[0];
-          r[1] = buf[1];
-          conv->ostate = 0;
-          return count+2;
+    /* Code set 0 (ASCII) */
+    if (wc < 0x0080) {
+        /* Plain ASCII character. */
+        if (n > count) {
+            r[0] = (unsigned char)wc;
+            conv->ostate = 0;
+            return count + 1;
         } else
-          return RET_TOOSMALL;
-      }
-    }
-    ret = hkscs1999_wctomb(conv,buf,wc,2);
-    if (ret != RET_ILUNI) {
-      if (ret != 2) abort();
-      if ((wc & ~0x0020) == 0x00ca) {
-        /* A possible first character of a multi-character sequence. We have to
+            return RET_TOOSMALL;
+    } else {
+        unsigned char buf[2];
+        int ret;
+
+        /* Code set 1 (BIG5 extended) */
+        ret = big5_wctomb(conv, buf, wc, 2);
+        if (ret != RET_ILUNI) {
+            if (ret != 2)
+                abort();
+            if (!((buf[0] == 0xc6 && buf[1] >= 0xa1) || buf[0] == 0xc7)) {
+                if (n >= count + 2) {
+                    r[0] = buf[0];
+                    r[1] = buf[1];
+                    conv->ostate = 0;
+                    return count + 2;
+                } else
+                    return RET_TOOSMALL;
+            }
+        }
+        ret = hkscs1999_wctomb(conv, buf, wc, 2);
+        if (ret != RET_ILUNI) {
+            if (ret != 2)
+                abort();
+            if ((wc & ~0x0020) == 0x00ca) {
+                /* A possible first character of a multi-character sequence. We have to
            buffer it. */
-        if (!(buf[0] == 0x88 && (buf[1] == 0x66 || buf[1] == 0xa7))) abort();
-        conv->ostate = buf[1]; /* = 0x66 or = 0xa7 */
-        return count+0;
-      }
-      if (n >= count+2) {
-        r[0] = buf[0];
-        r[1] = buf[1];
-        conv->ostate = 0;
-        return count+2;
-      } else
-        return RET_TOOSMALL;
+                if (!(buf[0] == 0x88 && (buf[1] == 0x66 || buf[1] == 0xa7)))
+                    abort();
+                conv->ostate = buf[1]; /* = 0x66 or = 0xa7 */
+                return count + 0;
+            }
+            if (n >= count + 2) {
+                r[0] = buf[0];
+                r[1] = buf[1];
+                conv->ostate = 0;
+                return count + 2;
+            } else
+                return RET_TOOSMALL;
+        }
+        ret = hkscs2001_wctomb(conv, buf, wc, 2);
+        if (ret != RET_ILUNI) {
+            if (ret != 2)
+                abort();
+            if (n >= count + 2) {
+                r[0] = buf[0];
+                r[1] = buf[1];
+                conv->ostate = 0;
+                return count + 2;
+            } else
+                return RET_TOOSMALL;
+        }
+        ret = hkscs2004_wctomb(conv, buf, wc, 2);
+        if (ret != RET_ILUNI) {
+            if (ret != 2)
+                abort();
+            if (n >= count + 2) {
+                r[0] = buf[0];
+                r[1] = buf[1];
+                conv->ostate = 0;
+                return count + 2;
+            } else
+                return RET_TOOSMALL;
+        }
+        return RET_ILUNI;
     }
-    ret = hkscs2001_wctomb(conv,buf,wc,2);
-    if (ret != RET_ILUNI) {
-      if (ret != 2) abort();
-      if (n >= count+2) {
-        r[0] = buf[0];
-        r[1] = buf[1];
-        conv->ostate = 0;
-        return count+2;
-      } else
-        return RET_TOOSMALL;
-    }
-    ret = hkscs2004_wctomb(conv,buf,wc,2);
-    if (ret != RET_ILUNI) {
-      if (ret != 2) abort();
-      if (n >= count+2) {
-        r[0] = buf[0];
-        r[1] = buf[1];
-        conv->ostate = 0;
-        return count+2;
-      } else
-        return RET_TOOSMALL;
-    }
-    return RET_ILUNI;
-  }
 }
 
-static int
-big5hkscs2004_reset (conv_t conv, unsigned char *r, size_t n)
+static int big5hkscs2004_reset(conv_t conv, unsigned char *r, size_t n)
 {
-  unsigned char last = conv->ostate;
+    unsigned char last = conv->ostate;
 
-  if (last) {
-    if (n < 2)
-      return RET_TOOSMALL;
-    r[0] = 0x88;
-    r[1] = last;
-    /* conv->ostate = 0; will be done by the caller */
-    return 2;
-  } else
-    return 0;
+    if (last) {
+        if (n < 2)
+            return RET_TOOSMALL;
+        r[0] = 0x88;
+        r[1] = last;
+        /* conv->ostate = 0; will be done by the caller */
+        return 2;
+    } else
+        return 0;
 }

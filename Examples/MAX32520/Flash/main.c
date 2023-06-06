@@ -51,8 +51,11 @@
 #include "icc.h"
 #include "uart.h"
 #include "led.h"
-#include "pb.h"
 #include "sfe.h"
+
+#ifndef BOARD_MAX32520FTHR
+#include "pb.h"
+#endif //BOARD_MAX32520FTHR
 
 /***** Definitions *****/
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)

@@ -62,13 +62,24 @@ void mxc_assert(const char *expr, const char *file, int line)
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
     while (1) {}
 }
+
+/******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
 /******************************************************************************/
 /* This function overrides the one in system_max32670.c                       */
 /******************************************************************************/
 void SystemCoreClockUpdate(void)
 {
     /* The emulator always runs at HIRC_FREQ. */
-    SystemCoreClock = IPO_FREQ;
+    SystemCoreClock = HIRC_FREQ;
 }
 
 /******************************************************************************/
@@ -76,7 +87,7 @@ int Board_Init(void)
 {
     int err;
 
-    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_HIRC);
 
     if ((err = Console_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();

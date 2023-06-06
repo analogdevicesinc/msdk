@@ -71,6 +71,16 @@ const mxc_spixf_cfg_t mx25_spixc_cfg = {
 /* **** Functions **** */
 
 /******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO2_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
+}
+
+/******************************************************************************/
 static int ext_flash_board_init(void)
 {
     return MXC_SPIXF_Init(0, EXT_FLASH_BAUD);

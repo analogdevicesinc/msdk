@@ -120,8 +120,7 @@ void MXC_TMR_RevA_Init(mxc_tmr_reva_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 
 void MXC_TMR_RevA_Shutdown(mxc_tmr_reva_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     // Disable timer and clear settings
     tmr->cn = 0;
@@ -129,24 +128,21 @@ void MXC_TMR_RevA_Shutdown(mxc_tmr_reva_regs_t *tmr)
 
 void MXC_TMR_RevA_Start(mxc_tmr_reva_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     tmr->cn |= MXC_F_TMR_REVA_CN_TEN;
 }
 
 void MXC_TMR_RevA_Stop(mxc_tmr_reva_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     tmr->cn &= ~MXC_F_TMR_REVA_CN_TEN;
 }
 
 int MXC_TMR_RevA_SetPWM(mxc_tmr_reva_regs_t *tmr, uint32_t pwm)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     if (pwm > (tmr->cmp)) {
         return E_BAD_PARAM;
@@ -159,56 +155,49 @@ int MXC_TMR_RevA_SetPWM(mxc_tmr_reva_regs_t *tmr, uint32_t pwm)
 
 uint32_t MXC_TMR_RevA_GetCompare(mxc_tmr_reva_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     return tmr->cmp;
 }
 
 uint32_t MXC_TMR_RevA_GetCapture(mxc_tmr_reva_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     return tmr->pwm; //check this
 }
 
 uint32_t MXC_TMR_RevA_GetCount(mxc_tmr_reva_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     return tmr->cnt;
 }
 
 void MXC_TMR_RevA_ClearFlags(mxc_tmr_reva_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     tmr->intr = MXC_F_TMR_REVA_INTR_IRQ;
 }
 
 uint32_t MXC_TMR_RevA_GetFlags(mxc_tmr_reva_regs_t *tmr)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     return tmr->intr;
 }
 
 void MXC_TMR_RevA_SetCompare(mxc_tmr_reva_regs_t *tmr, uint32_t cmp_cnt)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     tmr->cmp = cmp_cnt;
 }
 
 void MXC_TMR_RevA_SetCount(mxc_tmr_reva_regs_t *tmr, uint32_t cnt)
 {
-    int tmr_id = MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr);
-    MXC_ASSERT(tmr_id >= 0);
+    MXC_ASSERT(MXC_TMR_GET_IDX((mxc_tmr_regs_t *)tmr) >= 0);
 
     tmr->cnt = cnt;
 }
