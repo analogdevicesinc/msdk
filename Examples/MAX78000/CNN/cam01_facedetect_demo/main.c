@@ -209,9 +209,9 @@ int main(void)
 
         MXC_Delay(MXC_DELAY_MSEC(150)); // Slight delay to allow LED to be seen
 
-    #ifdef CNN_INFERENCE_TIMER
+#ifdef CNN_INFERENCE_TIMER
         printf("Approximate data loading and inference time: %u us\n\n", cnn_time);
-    #endif
+#endif
     }
 
     return 0;
