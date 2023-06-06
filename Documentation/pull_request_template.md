@@ -15,7 +15,7 @@ Please include a summary of the changes and related issue. Please also include r
 
 The MSDK repo follows a custom rule-set based on the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard. The pull request titles will follow this format:
 
-`type(scope): Subject`
+`type<!>(scope): Subject`
 
 #### Types
 
@@ -33,15 +33,15 @@ The list of possible types are:
 10. **build** – changes that affect build system, tool chain, or any other external dependencies
 11. **revert** – reverts a commit
 
-Appending an `!` at the end of the type signifies the PR is a breaking or major change.
+Appending an `!` at the end of the type signifies the PR is a breaking or major change. The <!> is optional in the PR format.
 
 NOTE: The type is case sensitive and must match one of the listed types.
 
 #### Scopes
 
-The scopes are dependent on the changes based on their location in the MSDK. This list of possible scopes are:
+The scopes are dependent on the changes based on their location in the MSDK. The list of possible scopes are:
 
-1.  **BLE** – Any bluetooth related changes (e.g. Cordio)
+1.  **BLE** – Any bluetooth related changes (i.e. Cordio)
 2.  **Documentation** – Any changes in msdk/Documentation folder
 3.  **Examples** – Any changes in msdk/Examples
 4.  **Tools** – Any changes in msdk/Tools
@@ -49,11 +49,12 @@ The scopes are dependent on the changes based on their location in the MSDK. Thi
 6.  **CMSIS** – Any CMSIS/Register file changes
 7.  **MiscDrivers** – Any MiscDrivers changes (e.g. TFT Display, PB, LED, External Flash Drivers)
 8.  **PeriphDrivers** – Any changes in msdk/Libraries/PeriphDrivers
-9.  **ThirdParty** – All third-party libraries (e.g. FreeRTOS, LVGL, lwIP)
-9.  **MAXUSB** – Any MAXUSB changes
-9.  **SDHC** – Any SDHC changes
-10. **ignore** – Small and quick miscellaneous fixes (should not be used often)
-11. **workflow** – Any GitHub workflow related changes
+9.  **ThirdParty** – Any third-party library changes (e.g. FreeRTOS, LVGL, lwIP)
+10. **MAXUSB** – Any MAXUSB changes
+11. **SDHC** – Any SDHC changes
+12. **ignore** – Small and quick miscellaneous fixes (should not be used often)
+13. **workflow** – Any GitHub workflow related changes
+14. **Other** – Any changes that may not fit in the other scopes
 
 NOTE: The scope is case sensitive and must match one of the listed scopes.
 

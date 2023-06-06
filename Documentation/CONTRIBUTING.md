@@ -19,24 +19,27 @@ If a direct branch on the mainline MSDK repo is made, the following branch namin
 - Generic development branch: `dev/branchname`
 - New and/or modified example branch: `example/branchname`
 
-## PR Title Responsibilites for Reviewers/Mergers/PR Owners
+## PR Title - Subject Responsibilites for Reviewers/Mergers/PR Owners
 
 Format: 
-`type(scope): Subject`
+`type<!>(scope): Subject`
+
+For more information of the format, please review the [pull_request_template.md](https://github.com/Analog-Devices-MSDK/msdk/blob/main/Documentation/pull_request_template.md).
 
 These are the rules for the `Subject`.
 
-1.  Use imperative mood in the Subjects - meaning the tone of the Subject should be like giving an order or request.
+1.  The first character is capitalized and the subject must not end with any punctuation (!,.?) 
+2.  Use imperative mood in the Subjects - meaning the tone of the Subject should be like giving an order or request.
     * “Add” instead of “Added” or “Adding”.
     * “Fix” instead of “Fixed” or “Fixing”.
     * “Update” instead of “Updated” or “Updating”.
     * “Delete” instead of “Deleted” or “Deleting”.
-2.  The Subject contents should have useful and concise wording.
+3.  The Subject contents should have useful and concise wording.
     * No long descriptive subjects - not concise if it gets too descriptive. 
         * You can be more descriptive in the body or footer of the commit by running:
         `git commit -m “Title contents” -m “Body contents” -m “Footer contents”` 
     * No simple titles like “Add small SPI change”
-3.  The Subject should include what parts are affected, if any. Only the parts’ CHIP NAME should be used in the Subject. No die names are allowed.
+4.  The Subject should include what parts are affected, if any. Only the parts’ CHIP NAME should be used in the Subject. No die names are allowed.
     * For the most readability, append the affected parts list at the end of the Subject, so the important, beginning part of the commit message is visible when traversing through the MSDK repo on GitHub.
     * The list of chip names should be in ascending numerical order in the Subject.
     * Examples:
@@ -46,21 +49,23 @@ These are the rules for the `Subject`.
         4. `fix(Examples,PeriphDrivers): Deprecate MXC\_RTC\_GetSecond and MXC\_RTC\_GetSubSecond for all parts except for MAX32520`
             * Use this type of wording if all but a few parts were affected to shorten the Subject.
     * **TIP**: The auto-labeler workflow adds part labels to a PR depending on what specific files were updated. Use the list of labels to figure out what parts were affected by the PR's changes.
-4.  If the PR title is related to a Jira ticket or an issue, the Subject should begin with the ticket designation.
+5.  If the PR title is related to a Jira ticket or an issue, the Subject should begin with the ticket designation.
     * Examples:
         1. `fix(CMSIS): MSDK-123: Add missing I2C Target registers for MAX32670, MAX32672, and MAX32675` 
         2. `fix(PeriphDrivers): Ticket-321: Fix SPI hanging on 9-bit wide messages for all parts` 
-5.  When a merger “Squash and Merges” an approved PR to main, do not delete the PR number that is automatically appended to the title. Ideally, the PR title should be following our rules before approval, so the merger just needs to press the “Squash and Merge” button.
+        3. `fix(Documentation): Issue #123: Revise steps for MSDK installation in the user guides`
+6.  When a merger “Squash and Merges” an approved PR to main, do not delete the PR number that is automatically appended to the title. Ideally, the PR title should be following our rules before approval, so the merger just needs to press the “Squash and Merge” button.
     * Using previous examples from rule 4, this is what the commit should look like in the main branch:
         1. `fix(CMSIS): MSDK-123: Add missing I2C Target registers for all parts (#412)`
         2. `fix(PeriphDrivers): Ticket-321: Fix SPI hanging on 9-bit wide messages for all parts (#646)`
         3. `feat(Examples): Add console output in Hello_World READMEs for all parts (#342)`
         4. `fix(Examples,PeriphDrivers): Deprecate MXC\_RTC\_GetSecond and MXC\_RTC\_GetSubSecond for all parts except for MAX32520 (#248)`
-5.  Please ensure all actions have passed or successfully completed before merging a PR into `main`. MSDK maintainers have permissions to merge approved PRs even with a failing action.
+
+Please ensure all actions have passed or successfully completed before merging a PR into `main`. MSDK maintainers have permissions to merge approved PRs even with a failing action.
 
 ## PR Format Rules (Workflow Enforced)
-1.  The type is capital-sensitive and must be one of the listed types.
-2.  The scope is capital-sensitive and must be one of the listed scopes.
+1.  The type is case-sensitive and must be one of the listed types.
+2.  The scope is case-sensitive and must be one of the listed scopes.
 3.  The first word of the Subject must be capitalized.
 4.  The Subject must not end with any punctuation (periods, commas, exclamation marks).
 
