@@ -467,9 +467,9 @@ void localize_objects(void)
         class_idx = 0;
 
         printf("class: %d, prior_idx: %d, prior: %d, x1: %.2f, y1: %.2f, x2: %.2f, y2: "
-                 "%.2f \n",
-                 class_idx + 1, prior_idx, global_prior_idx, max_xy[0], max_xy[1], max_xy[2],
-                 max_xy[3]);
+               "%.2f \n",
+               class_idx + 1, prior_idx, global_prior_idx, max_xy[0], max_xy[1], max_xy[2],
+               max_xy[3]);
 
         box[0] = (uint8_t)(IMAGE_SIZE_X * max_xy[0]);
         box[1] = (uint8_t)(IMAGE_SIZE_Y * max_xy[1]);

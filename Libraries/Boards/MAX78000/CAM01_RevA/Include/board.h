@@ -130,4 +130,3 @@ int Camera_Sleep(int sleep);
 #endif
 
 #endif /* LIBRARIES_BOARDS_MAX78000_CAM01_REVA_INCLUDE_BOARD_H_ */
-
