@@ -12,7 +12,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* This project only supports the MAX78000EVKIT.
+* This project only supports the MAX78000EVKIT or MAX78000CAM01 board.
 * This project supports displaying the captured image on the TFT display.  To enable this functionality, define `ENABLE_TFT` in [main.c](main.c)
 
 ## Required Connections
