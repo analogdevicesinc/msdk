@@ -47,7 +47,7 @@
 #include "camera.h"
 
 /***** Global Variables *****/
-mxc_uart_regs_t* ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
+mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 /* GPIO Information
@@ -80,36 +80,42 @@ extern uint32_t SystemCoreClock;
  *		1 : External CNN regulator switch is on
  */
 
-const mxc_gpio_cfg_t cnn_boost_en_pin = {MXC_GPIO2, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-const mxc_gpio_cfg_t cnn_boost_sw_en_pin = {MXC_GPIO2, MXC_GPIO_PIN_4, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+const mxc_gpio_cfg_t cnn_boost_en_pin = { MXC_GPIO2, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT,
+                                          MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t cnn_boost_sw_en_pin = { MXC_GPIO2, MXC_GPIO_PIN_4, MXC_GPIO_FUNC_OUT,
+                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
 
-const mxc_gpio_cfg_t cam_2v8_en_pin = {MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-const mxc_gpio_cfg_t cam_1v8_en_pin = {MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
-const mxc_gpio_cfg_t cam_1v2_en_pin = {MXC_GPIO0, MXC_GPIO_PIN_4, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH};
+const mxc_gpio_cfg_t cam_2v8_en_pin = { MXC_GPIO0, MXC_GPIO_PIN_2, MXC_GPIO_FUNC_OUT,
+                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t cam_1v8_en_pin = { MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT,
+                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t cam_1v2_en_pin = { MXC_GPIO0, MXC_GPIO_PIN_4, MXC_GPIO_FUNC_OUT,
+                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
 
+const mxc_gpio_cfg_t cam_strobe_pin = { MXC_GPIO0, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN,
+                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
-const mxc_gpio_cfg_t cam_strobe_pin = {MXC_GPIO0, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
+const mxc_gpio_cfg_t cam_xsleep_pin = { MXC_GPIO0, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_OUT,
+                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t cam_xshutdown_pin = { MXC_GPIO0, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_OUT,
+                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t cam_meter_pin = { MXC_GPIO0, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_OUT,
+                                       MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t cam_clksel_pin = { MXC_GPIO0, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_OUT,
+                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
-const mxc_gpio_cfg_t cam_xsleep_pin = {MXC_GPIO0, MXC_GPIO_PIN_3, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-const mxc_gpio_cfg_t cam_xshutdown_pin = {MXC_GPIO0, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-const mxc_gpio_cfg_t cam_meter_pin = {MXC_GPIO0, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-const mxc_gpio_cfg_t cam_clksel_pin = {MXC_GPIO0, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-
-const mxc_gpio_cfg_t cam_trig_pin = {MXC_GPIO0, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO};
-
-
+const mxc_gpio_cfg_t cam_trig_pin = { MXC_GPIO0, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_OUT,
+                                      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    {MXC_GPIO2, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO2, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH},
+    { MXC_GPIO2, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
-
-
 const mxc_gpio_cfg_t led_pin[] = {
-    {MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
-    {MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH},
+    { MXC_GPIO2, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
 };
 
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
@@ -135,11 +141,12 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 // };
 
 /******************************************************************************/
-void mxc_assert(const char* expr, const char* file, int line)
+void mxc_assert(const char *expr, const char *file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
-    
-    while (1);
+
+    while (1)
+        ;
 }
 
 /******************************************************************************/
@@ -147,10 +154,10 @@ int Board_Init(void)
 {
 #ifndef __riscv
     int err;
-    
+
     // Set SWDCLK and SWDIO pads to 3.3V
     // MXC_GPIO0->vssel |= (3 << 28);
-    
+
     MXC_SIMO->vrego_c = 0x43; // Set CNN voltage
 
     // Enable GPIO
@@ -158,9 +165,8 @@ int Board_Init(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO2);
 
-
     // Initialize console
-    if ((err = Console_Init()) < E_NO_ERROR) {        
+    if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
     }
 
@@ -172,7 +178,7 @@ int Board_Init(void)
 
     LED_On(0);
     LED_On(1);
-    
+
     // Image sensor power supply control signals
     // 2V8
     if (MXC_GPIO_Config(&cam_2v8_en_pin) != E_NO_ERROR) {
@@ -194,7 +200,6 @@ int Board_Init(void)
         return err;
     }
     MXC_GPIO_OutClr(cam_1v2_en_pin.port, cam_1v2_en_pin.mask);
-
 
     // External CNN power supply control
     if (MXC_GPIO_Config(&cnn_boost_en_pin) != E_NO_ERROR) {
@@ -230,7 +235,7 @@ int Board_Init(void)
     Camera_Sleep(0);
 
 #endif // __riscv
-    
+
     return E_NO_ERROR;
 }
 
@@ -238,11 +243,11 @@ int Board_Init(void)
 int Console_Init(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD, MXC_UART_IBRO_CLK)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -250,11 +255,11 @@ int Console_Init(void)
 int Console_Shutdown(void)
 {
     int err;
-    
+
     if ((err = MXC_UART_Shutdown(ConsoleUart)) != E_NO_ERROR) {
         return err;
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -272,7 +277,7 @@ int Debug_Init(void)
     MXC_GPIO1->en0_clr = 0x0f;
     MXC_GPIO1->en1_set = 0x0f;
     MXC_GPIO1->en2_clr = 0x0f;
-    
+
     return E_NO_ERROR;
 }
 #endif // __riscv
@@ -281,19 +286,16 @@ int Debug_Init(void)
 int Camera_Power(int on)
 {
     if (on) {
-
         MXC_GPIO_OutSet(cam_2v8_en_pin.port, cam_2v8_en_pin.mask);
         MXC_GPIO_OutSet(cam_1v8_en_pin.port, cam_1v8_en_pin.mask);
         MXC_GPIO_OutSet(cam_1v2_en_pin.port, cam_1v2_en_pin.mask);
 
     } else {
-
         MXC_GPIO_OutClr(cam_2v8_en_pin.port, cam_2v8_en_pin.mask);
         MXC_GPIO_OutClr(cam_1v8_en_pin.port, cam_1v8_en_pin.mask);
         MXC_GPIO_OutClr(cam_1v2_en_pin.port, cam_1v2_en_pin.mask);
-
     }
-    
+
     return E_NO_ERROR;
 }
 
@@ -304,9 +306,7 @@ int Camera_Sleep(int sleep)
 
     } else {
         MXC_GPIO_OutSet(cam_xsleep_pin.port, cam_xsleep_pin.mask);
-
     }
-    
-    return E_NO_ERROR;
 
+    return E_NO_ERROR;
 }
