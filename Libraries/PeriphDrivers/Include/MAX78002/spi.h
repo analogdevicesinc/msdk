@@ -175,7 +175,7 @@ typedef struct _mxc_spi_reva2_req_t mxc_spi_req_t;
  * @param   req         The details of the transaction.
  * @param   result      See \ref MXC_Error_Codes for the list of error codes.
  */
-typedef void (*mxc_spi_callback_t)(void*);
+typedef void (*mxc_spi_callback_t)(void *, int result);
 typedef void (*spi_complete_cb_t)(void *req, int result);
 
 typedef struct _mxc_spi_pins_t mxc_spi_pins_t;
@@ -220,13 +220,13 @@ struct _mxc_spi_reva2_req_t {
     };
     
     union {
-        uint16_t *tx_buffer;
-        uint16_t *txData;       // txData - deprecated name     
+        uint8_t *tx_buffer;
+        uint8_t *txData;       // txData - deprecated name     
     };
 
     union {                       
-        uint16_t *rx_buffer;
-        uint16_t *rxData;       // rxData - deprecated name  
+        uint8_t *rx_buffer;
+        uint8_t *rxData;       // rxData - deprecated name  
     };
 
     union {
@@ -722,13 +722,13 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req);
  */
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req);
 
-int MXC_SPI_MTransaction(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_len, uint8_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_MTransactionB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_ControllerTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_len, uint8_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_MTransactionDMA(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_ControllerTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_len, uint8_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_MTransactionDMAB(mxc_spi_regs_t *spi, uint16_t *tx_buffer, uint32_t tx_len, uint16_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_len, uint8_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
 
 /**
  * @brief   Performs a blocking SPI transaction.
