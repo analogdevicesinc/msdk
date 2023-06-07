@@ -58,6 +58,7 @@ TFT_Demo
 TMR
 TRNG
 UART
+USB_CCID
 USB_CDCACM
 USB_CompositeDevice_MSC_CDC
 USB_CompositeDevice_MSC_HID
