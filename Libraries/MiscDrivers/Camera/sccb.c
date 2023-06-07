@@ -179,8 +179,8 @@ int sccb_init(void)
 {
     int ret = 0;
 
-    MXC_GPIO_Config(&gpio_cfg_scl);
-    MXC_GPIO_Config(&gpio_cfg_sda);
+    ret |= MXC_GPIO_Config(&gpio_cfg_scl);
+    ret |= MXC_GPIO_Config(&gpio_cfg_sda);
 
     SDA_HIGH();
     SCL_HIGH();

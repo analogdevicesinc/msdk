@@ -40,16 +40,19 @@
 #include <stdlib.h>
 #include "mxc_delay.h"
 #include "led.h"
+#include "nvic_table.h"
 
 char g_serial_buffer[SERIAL_BUFFER_SIZE];
 int g_buffer_index = 0;
 int g_num_commands = 0;
 
 int g_num_commands; // Calculated in 'console_init' as part of initialization
-char *cmd_table[] = { "help", "reset", "capture" };
+char *cmd_table[] = { "help", "reset", "capture", "set-reg", "get-reg" };
 
 char *help_table[] = { ": Print this help string", ": Issue a soft reset to the host MCU.",
-                       ": Perform a standard blocking capture of a single image" };
+                       ": Perform a standard blocking capture of a single image",
+                       "<register> <value> : Write a value to a camera register.",
+                       "<register> : Prints the value in a camera register." };
 
 int starts_with(char *a, char *b)
 {
@@ -83,6 +86,16 @@ int MXC_UART_WriteBytes(mxc_uart_regs_t *uart, const uint8_t *bytes, int len)
     return E_NO_ERROR;
 }
 
+void UART_Handler(void)
+{
+    cmd_t cmd;
+    if (recv_cmd(&cmd)) {
+        service_console(cmd);
+        clear_serial_buffer();
+    }
+    MXC_UART_ClearFlags(Con_Uart, MXC_F_UART_INT_FL_RX_THD);
+}
+
 // Initialize the serial console and transmits the "*SYNC*" string out of the UART port.
 // This function will block until the host sends the "*SYNC*" string back in response.
 int console_init(void)
@@ -107,21 +120,31 @@ int console_init(void)
 
         int available = MXC_UART_GetRXFIFOAvailable(Con_Uart);
         if (available > 0) {
-            char *buffer = (char *)malloc(available);
-            memset(buffer, '\0', SERIAL_BUFFER_SIZE);
-            MXC_UART_Read(Con_Uart, (uint8_t *)buffer, &available);
-            if (strcmp(buffer, sync) == 0) {
+            clear_serial_buffer();
+            MXC_UART_Read(Con_Uart, (uint8_t *)g_serial_buffer, &available);
+            if (strcmp(g_serial_buffer, sync) == 0) {
                 // Received sync string back, break the loop.
                 LED_On(LED1);
                 break;
             }
-            free(buffer);
         }
     }
 
     printf("Established communications with host!\n");
     print_help();
     clear_serial_buffer();
+
+    /*
+    Enable UART RX IRQs to service incoming commands.
+    The UART IRQ is enabled at a lower priority so that nested IRQs work
+    properly from the application-defined service_console().  Any IRQs on the
+    exact same priority as the UART RX IRQ will be queued instead of nested.
+    */
+    MXC_UART_SetRXThreshold(Con_Uart, 1);
+    MXC_UART_EnableInt(Con_Uart, MXC_F_UART_INT_EN_RX_THD);
+    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(Con_Uart)), UART_Handler);
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(Con_Uart)));
+    NVIC_SetPriority(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(Con_Uart)), 0xFF);
 
     return ret;
 }
