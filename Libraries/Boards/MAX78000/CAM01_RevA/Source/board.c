@@ -40,7 +40,6 @@
 #include "gpio.h"
 #include "mxc_pins.h"
 #include "led.h"
-#include "mxc_sys.h"
 #include "lpgcr_regs.h"
 #include "simo_regs.h"
 #include "mxc_delay.h"
@@ -145,8 +144,7 @@ void mxc_assert(const char *expr, const char *file, int line)
 {
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
-    while (1)
-        ;
+    while (1) {}
 }
 
 /******************************************************************************/
