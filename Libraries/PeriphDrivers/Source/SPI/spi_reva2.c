@@ -174,6 +174,7 @@ static int MXC_SPI_RevA2_resetStateStruct(int spi_num)
 int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
 {
     int error, spi_num, i;
+    int tx_ch, rx_ch;
     mxc_spi_target_t *target;
     mxc_gpio_regs_t *target_port;
 
@@ -218,6 +219,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
                 if (init->ts_mask & (1<<i)) {
                     error = MXC_SPI_ConfigTargetSelect(init->spi, i, init->vssel);
                     if (error != E_NO_ERROR) {
+                        while(1);
                         return error;
                     }
                 }
@@ -333,6 +335,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
         error = MXC_DMA_Init(init->dma);
 #endif
         if (error != E_NO_ERROR) {
+            while(1);
             return error;
         }
 
@@ -340,10 +343,21 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
         STATES[spi_num].tx_dma_ch = MXC_DMA_AcquireChannel();
         STATES[spi_num].rx_dma_ch = MXC_DMA_AcquireChannel();
 
+        tx_ch = STATES[spi_num].tx_dma_ch;
+        rx_ch = STATES[spi_num].rx_dma_ch;
+
         // Check if failed to acquire channel.
         if (STATES[spi_num].tx_dma_ch < 0 || STATES[spi_num].rx_dma_ch < 0) {
             return E_NONE_AVAIL;
         }
+
+        // TX Channel
+        STATES[spi_num].dma->ch[tx_ch].ctrl |= (MXC_F_DMA_REVA_CTRL_CTZ_IE | MXC_F_DMA_REVA_CTRL_DIS_IE);
+        STATES[spi_num].dma->inten |= (1 << tx_ch);
+
+        // RX Channel
+        STATES[spi_num].dma->ch[rx_ch].ctrl |= (MXC_F_DMA_REVA_CTRL_CTZ_IE | MXC_F_DMA_REVA_CTRL_DIS_IE);
+        STATES[spi_num].dma->inten |= (1 << rx_ch);
 
 // TODO: Caller will deal with enabling SetVector
         // MXC_NVIC_SetVector(MXC_DMA_GET_IRQ(STATES[spi_num].tx_dma_ch), MXC_SPI_RevA2_DMA_TX_Handler);
@@ -388,8 +402,12 @@ int MXC_SPI_RevA2_Shutdown(mxc_spi_reva_regs_t *spi)
         STATES[spi_num].tx_dma_ch = E_NO_DEVICE;
     }
     if (STATES[spi_num].rx_dma_ch >= 0) {
-        MXC_DMA_ReleaseChannel(STATES[spi_num].tx_dma_ch);
+        MXC_DMA_ReleaseChannel(STATES[spi_num].rx_dma_ch);
         STATES[spi_num].rx_dma_ch = E_NO_DEVICE;
+    }
+
+    if (STATES[spi_num].init.use_dma) {
+        MXC_DMA_DeInit();
     }
 
     // Reset the SPI instance's STATE when shutting down.
