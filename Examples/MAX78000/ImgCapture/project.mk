@@ -16,16 +16,16 @@ SD = 0
 # connected camera.  These are some common values.  
 # For a full list of options for the 'CAMERA' variable, 
 # see the documentation.
-# CAMERA=OV7692
+CAMERA=OV7692
 # CAMERA=OV5642
 # CAMERA=HM0360_MONO
-CAMERA=HM0360_COLOR
+# CAMERA=HM0360_COLOR
 # CAMERA=HM01B0
 
 # Set a higher optimization level.  The increased performance
 # is required for the CameraIF DMA code to work within the
 # timing requirements of the Parallel Camera Interface.
-MXC_OPTIMIZE_CFLAGS=-Og
+MXC_OPTIMIZE_CFLAGS=-O2
 
 ifeq ($(CONSOLE),1)
 # If CONSOLE enabled, add "CONSOLE"

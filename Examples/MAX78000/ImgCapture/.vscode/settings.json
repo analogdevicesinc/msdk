@@ -15,7 +15,7 @@
     },
     
     "target":"MAX78000",
-    "board":"CAM01_RevA-Gokhan",
+    "board":"EvKit_V1",
 
     "project_name":"${workspaceFolderBasename}",
 
@@ -86,9 +86,7 @@
         "${config:board}",
         "TARGET=${config:target}",
         "TARGET_REV=0x4131",
-        "__GNUC__",
-        "CONSOLE",
-        "CAMERA_BAYER"
+        "__GNUC__"
     ]
 }
 
