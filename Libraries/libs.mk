@@ -15,6 +15,7 @@ LIB_BOARD ?= 1
 ifeq ($(LIB_BOARD), 1)
 BSP_SEARCH_DIR ?= $(LIBS_DIR)/Boards/$(TARGET_UC)
 BOARD_DIR := $(BSP_SEARCH_DIR)/$(BOARD)
+PROJ_CFLAGS += -DLIB_BOARD
 include $(BOARD_DIR)/board.mk
 endif
 # ************************

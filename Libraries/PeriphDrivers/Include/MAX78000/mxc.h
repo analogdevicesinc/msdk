@@ -42,6 +42,7 @@
 #include "mxc_pins.h"
 #include "mxc_sys.h"
 #include "nvic_table.h"
+#ifdef LIB_BOARD
 #include "board.h"
 #include "led.h"
 #ifndef BOARD_AUD01_REVA
@@ -55,6 +56,7 @@
 #ifdef BOARD_EVKIT_V1
 #include "tft_ssd2119.h"
 #include "tsc2046.h"
+#endif
 #endif
 
 /*
