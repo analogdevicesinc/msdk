@@ -64,7 +64,6 @@ extern "C" {
 #define SCCB_SDA_PORT MXC_GPIO0 /// SCCB data port
 #define SCCB_SDA_PIN MXC_GPIO_PIN_17 /// SCCB data pin
 
-
 /**
  *  References to LEDs on the board.
  *  Can be used with the LED_On, LED_Off, and LED_Toggle functions.
