@@ -13,7 +13,8 @@ LIBS_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 # ************************
 LIB_BOARD ?= 1
 ifeq ($(LIB_BOARD), 1)
-BOARD_DIR := $(LIBS_DIR)/Boards/$(TARGET_UC)/$(BOARD)
+BSP_SEARCH_DIR ?= $(LIBS_DIR)/Boards/$(TARGET_UC)
+BOARD_DIR := $(BSP_SEARCH_DIR)/$(BOARD)
 include $(BOARD_DIR)/board.mk
 endif
 # ************************
