@@ -181,9 +181,6 @@ typedef struct {
 #define MXC_V_SMON_EXTSCTRL_CLKDIV_DIV64               ((uint32_t)0x6UL) /**< EXTSCTRL_CLKDIV_DIV64 Value */
 #define MXC_S_SMON_EXTSCTRL_CLKDIV_DIV64               (MXC_V_SMON_EXTSCTRL_CLKDIV_DIV64 << MXC_F_SMON_EXTSCTRL_CLKDIV_POS) /**< EXTSCTRL_CLKDIV_DIV64 Setting */
 
-#define MXC_F_SMON_EXTSCTRL_BUSY_POS                   30 /**< EXTSCTRL_BUSY Position */
-#define MXC_F_SMON_EXTSCTRL_BUSY                       ((uint32_t)(0x1UL << MXC_F_SMON_EXTSCTRL_BUSY_POS)) /**< EXTSCTRL_BUSY Mask */
-
 #define MXC_F_SMON_EXTSCTRL_LOCK_POS                   31 /**< EXTSCTRL_LOCK Position */
 #define MXC_F_SMON_EXTSCTRL_LOCK                       ((uint32_t)(0x1UL << MXC_F_SMON_EXTSCTRL_LOCK_POS)) /**< EXTSCTRL_LOCK Mask */
 
@@ -209,6 +206,12 @@ typedef struct {
 
 #define MXC_F_SMON_INTSCTRL_DFD_NMI_EN_POS             4 /**< INTSCTRL_DFD_NMI_EN Position */
 #define MXC_F_SMON_INTSCTRL_DFD_NMI_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_DFD_NMI_EN_POS)) /**< INTSCTRL_DFD_NMI_EN Mask */
+
+#define MXC_F_SMON_INTSCTRL_DRST_BEH_POS               6 /**< INTSCTRL_DRST_BEH Position */
+#define MXC_F_SMON_INTSCTRL_DRST_BEH                   ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_DRST_BEH_POS)) /**< INTSCTRL_DRST_BEH Mask */
+
+#define MXC_F_SMON_INTSCTRL_TAMPER_OUT_EN_POS          7 /**< INTSCTRL_TAMPER_OUT_EN Position */
+#define MXC_F_SMON_INTSCTRL_TAMPER_OUT_EN              ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_TAMPER_OUT_EN_POS)) /**< INTSCTRL_TAMPER_OUT_EN Mask */
 
 #define MXC_F_SMON_INTSCTRL_DFD_STDBY_EN_POS           8 /**< INTSCTRL_DFD_STDBY_EN Position */
 #define MXC_F_SMON_INTSCTRL_DFD_STDBY_EN               ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_DFD_STDBY_EN_POS)) /**< INTSCTRL_DFD_STDBY_EN Mask */
@@ -245,8 +248,8 @@ typedef struct {
  * @brief    Security Alarm Register.
  * @{
  */
-#define MXC_F_SMON_SECALM_DRS_POS                      0 /**< SECALM_DRS Position */
-#define MXC_F_SMON_SECALM_DRS                          ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_DRS_POS)) /**< SECALM_DRS Mask */
+#define MXC_F_SMON_SECALM_DRST_POS                     0 /**< SECALM_DRST Position */
+#define MXC_F_SMON_SECALM_DRST                         ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_DRST_POS)) /**< SECALM_DRST Mask */
 
 #define MXC_F_SMON_SECALM_KEYWIPE_POS                  1 /**< SECALM_KEYWIPE Position */
 #define MXC_F_SMON_SECALM_KEYWIPE                      ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_KEYWIPE_POS)) /**< SECALM_KEYWIPE Mask */
@@ -272,8 +275,8 @@ typedef struct {
 #define MXC_F_SMON_SECALM_VDDLO_FL_POS                 8 /**< SECALM_VDDLO_FL Position */
 #define MXC_F_SMON_SECALM_VDDLO_FL                     ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VDDLO_FL_POS)) /**< SECALM_VDDLO_FL Mask */
 
-#define MXC_F_SMON_SECALM_VCORELO_FL_POS               9 /**< SECALM_VCORELO_FL Position */
-#define MXC_F_SMON_SECALM_VCORELO_FL                   ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VCORELO_FL_POS)) /**< SECALM_VCORELO_FL Mask */
+#define MXC_F_SMON_SECALM_VLOSSPF_FL_POS               9 /**< SECALM_VLOSSPF_FL Position */
+#define MXC_F_SMON_SECALM_VLOSSPF_FL                   ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VLOSSPF_FL_POS)) /**< SECALM_VLOSSPF_FL Mask */
 
 #define MXC_F_SMON_SECALM_VCOREHI_FL_POS               10 /**< SECALM_VCOREHI_FL Position */
 #define MXC_F_SMON_SECALM_VCOREHI_FL                   ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VCOREHI_FL_POS)) /**< SECALM_VCOREHI_FL Mask */
@@ -354,6 +357,24 @@ typedef struct {
 
 #define MXC_F_SMON_SECDIAG_AESKT_MEMPROT_XIP_POS       9 /**< SECDIAG_AESKT_MEMPROT_XIP Position */
 #define MXC_F_SMON_SECDIAG_AESKT_MEMPROT_XIP           ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_AESKT_MEMPROT_XIP_POS)) /**< SECDIAG_AESKT_MEMPROT_XIP Mask */
+
+#define MXC_F_SMON_SECDIAG_MEU_KEY_CLR_POS             10 /**< SECDIAG_MEU_KEY_CLR Position */
+#define MXC_F_SMON_SECDIAG_MEU_KEY_CLR                 ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_MEU_KEY_CLR_POS)) /**< SECDIAG_MEU_KEY_CLR Mask */
+
+#define MXC_F_SMON_SECDIAG_MEMPROT_XIP_KEY_CLR_POS     11 /**< SECDIAG_MEMPROT_XIP_KEY_CLR Position */
+#define MXC_F_SMON_SECDIAG_MEMPROT_XIP_KEY_CLR         ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_MEMPROT_XIP_KEY_CLR_POS)) /**< SECDIAG_MEMPROT_XIP_KEY_CLR Mask */
+
+#define MXC_F_SMON_SECDIAG_MEMPROT_DIP_KEY_CLR_POS     12 /**< SECDIAG_MEMPROT_DIP_KEY_CLR Position */
+#define MXC_F_SMON_SECDIAG_MEMPROT_DIP_KEY_CLR         ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_MEMPROT_DIP_KEY_CLR_POS)) /**< SECDIAG_MEMPROT_DIP_KEY_CLR Mask */
+
+#define MXC_F_SMON_SECDIAG_SW_DRST_POS                 13 /**< SECDIAG_SW_DRST Position */
+#define MXC_F_SMON_SECDIAG_SW_DRST                     ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_SW_DRST_POS)) /**< SECDIAG_SW_DRST Mask */
+
+#define MXC_F_SMON_SECDIAG_AESKT_MEMPROT_DIP_POS       14 /**< SECDIAG_AESKT_MEMPROT_DIP Position */
+#define MXC_F_SMON_SECDIAG_AESKT_MEMPROT_DIP           ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_AESKT_MEMPROT_DIP_POS)) /**< SECDIAG_AESKT_MEMPROT_DIP Mask */
+
+#define MXC_F_SMON_SECDIAG_DFD_FL_POS                  15 /**< SECDIAG_DFD_FL Position */
+#define MXC_F_SMON_SECDIAG_DFD_FL                      ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_DFD_FL_POS)) /**< SECDIAG_DFD_FL Mask */
 
 #define MXC_F_SMON_SECDIAG_EXTS0_FL_POS                16 /**< SECDIAG_EXTS0_FL Position */
 #define MXC_F_SMON_SECDIAG_EXTS0_FL                    ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_EXTS0_FL_POS)) /**< SECDIAG_EXTS0_FL Mask */

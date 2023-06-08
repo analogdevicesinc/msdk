@@ -223,25 +223,6 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>BUSY</name>
-            <description>Busy. This bit is set to 1 by hardware after EXTSCN register is written to. This bit is automatically cleared to 0 after this register information has been transferred to the security monitor domain.</description>
-            <bitOffset>30</bitOffset>
-            <bitWidth>1</bitWidth>
-            <access>read-only</access>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>idle</name>
-                <description>Idle.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>busy</name>
-                <description>Update in Progress.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
             <name>LOCK</name>
             <description>Lock Register. Once locked, the EXTSCN register can no longer be modified.  Only a battery disconnect will clear this bit. VBAT powers this register.</description>
             <bitOffset>31</bitOffset>
@@ -331,6 +312,18 @@
             <name>DFD_NMI_EN</name>
             <description>Digital Fault NMI Enable</description>
             <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DRST_BEH</name>
+            <description>DRST Behavior</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TAMPER_OUT_EN</name>
+            <description>Enable DRS_EVENT signal to drive TAMPER_OUT pin.</description>
+            <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
@@ -493,7 +486,7 @@
         <resetMask>0x00000000</resetMask>
         <fields>
           <field>
-            <name>DRS</name>
+            <name>DRST</name>
             <description>Destructive Reset Trigger. Setting this bit will generate a DRS. This bit is self-cleared by hardware.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -655,7 +648,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>VCORELO_FL</name>
+            <name>VLOSSPF_FL</name>
             <description>VMAIN Power Fail Flag.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
@@ -1113,6 +1106,42 @@
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
+          </field>
+          <field>
+            <name>MEU_KEY_CLR</name>
+            <description>Battery backed Key 0 is cleared.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MEMPROT_XIP_KEY_CLR</name>
+            <description>Battery backed Key 1 is cleared.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>MEMPROT_DIP_KEY_CLR</name>
+            <description>Battery backed Key 2 is cleared.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SW_DRST</name>
+            <description>Software triggered DRS.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>AESKT_MEMPROT_DIP</name>
+            <description>AES MEMPROT Key Transfer. This bit is set to 1 when AES MEMPROT Key has been transferred from the TRNG to the battery backed AES key register. This bit can be reset by a BOR, DRS, KEYWIPE or DRS bit in SECAL</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>DFD_FL</name>
+            <description>Digital Fault Detector Flag.</description>
+            <bitOffset>15</bitOffset>
+            <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>EXTS0_FL</name>

@@ -142,10 +142,10 @@ typedef enum {
     WDT1_IRQn, /* 0x49  0x0124  73: Watchdog 1 */
     GPIO3_IRQn, /* 0x4A  0x0128  74: GPIO3 */
     PT_IRQn, /* 0x4B  0x012C  75: Pulse train */
-    HA0_IRQn, /* 0x4C  0x0130  76: Hardware Accelerator 0 */
+    RISCV0_IRQn, /* 0x4C  0x0130  76: RISCV 0 */
     RSV61_IRQn, /* 0x4D  0x0134  77: Reserved */
     I2C2_IRQn, /* 0x4E  0x0138  78: I2C 2 */
-    HA1_IRQn, /* 0x4F  0x013C  79: Hardware Accelerator 1 */
+    RISCV1_IRQn, /* 0x4F  0x013C  79: RISCV 1 */
     EMAC_IRQn, /* 0x50  0x0140  80: Ethernet MAC */
     RSV65_IRQn, /* 0x51  0x0144  81: Reserved */
     SDHC_IRQn, /* 0x52  0x0148  82: SDIO/SDHC */
