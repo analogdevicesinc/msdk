@@ -213,29 +213,8 @@ typedef struct {
 #define MXC_F_SMON_INTSCTRL_TAMPER_OUT_EN_POS          7 /**< INTSCTRL_TAMPER_OUT_EN Position */
 #define MXC_F_SMON_INTSCTRL_TAMPER_OUT_EN              ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_TAMPER_OUT_EN_POS)) /**< INTSCTRL_TAMPER_OUT_EN Mask */
 
-#define MXC_F_SMON_INTSCTRL_DFD_STDBY_EN_POS           8 /**< INTSCTRL_DFD_STDBY_EN Position */
-#define MXC_F_SMON_INTSCTRL_DFD_STDBY_EN               ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_DFD_STDBY_EN_POS)) /**< INTSCTRL_DFD_STDBY_EN Mask */
-
 #define MXC_F_SMON_INTSCTRL_LOTEMP_SEL_POS             16 /**< INTSCTRL_LOTEMP_SEL Position */
 #define MXC_F_SMON_INTSCTRL_LOTEMP_SEL                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_LOTEMP_SEL_POS)) /**< INTSCTRL_LOTEMP_SEL Mask */
-
-#define MXC_F_SMON_INTSCTRL_HITEMP_SEL_POS             17 /**< INTSCTRL_HITEMP_SEL Position */
-#define MXC_F_SMON_INTSCTRL_HITEMP_SEL                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_HITEMP_SEL_POS)) /**< INTSCTRL_HITEMP_SEL Mask */
-
-#define MXC_F_SMON_INTSCTRL_VCORELO_EN_POS             18 /**< INTSCTRL_VCORELO_EN Position */
-#define MXC_F_SMON_INTSCTRL_VCORELO_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_VCORELO_EN_POS)) /**< INTSCTRL_VCORELO_EN Mask */
-
-#define MXC_F_SMON_INTSCTRL_VCOREHI_EN_POS             19 /**< INTSCTRL_VCOREHI_EN Position */
-#define MXC_F_SMON_INTSCTRL_VCOREHI_EN                 ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_VCOREHI_EN_POS)) /**< INTSCTRL_VCOREHI_EN Mask */
-
-#define MXC_F_SMON_INTSCTRL_VDDLO_EN_POS               20 /**< INTSCTRL_VDDLO_EN Position */
-#define MXC_F_SMON_INTSCTRL_VDDLO_EN                   ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_VDDLO_EN_POS)) /**< INTSCTRL_VDDLO_EN Mask */
-
-#define MXC_F_SMON_INTSCTRL_VDDHI_EN_POS               21 /**< INTSCTRL_VDDHI_EN Position */
-#define MXC_F_SMON_INTSCTRL_VDDHI_EN                   ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_VDDHI_EN_POS)) /**< INTSCTRL_VDDHI_EN Mask */
-
-#define MXC_F_SMON_INTSCTRL_VGL_EN_POS                 22 /**< INTSCTRL_VGL_EN Position */
-#define MXC_F_SMON_INTSCTRL_VGL_EN                     ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_VGL_EN_POS)) /**< INTSCTRL_VGL_EN Mask */
 
 #define MXC_F_SMON_INTSCTRL_LOCK_POS                   31 /**< INTSCTRL_LOCK Position */
 #define MXC_F_SMON_INTSCTRL_LOCK                       ((uint32_t)(0x1UL << MXC_F_SMON_INTSCTRL_LOCK_POS)) /**< INTSCTRL_LOCK Mask */
@@ -250,9 +229,6 @@ typedef struct {
  */
 #define MXC_F_SMON_SECALM_DRST_POS                     0 /**< SECALM_DRST Position */
 #define MXC_F_SMON_SECALM_DRST                         ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_DRST_POS)) /**< SECALM_DRST Mask */
-
-#define MXC_F_SMON_SECALM_KEYWIPE_POS                  1 /**< SECALM_KEYWIPE Position */
-#define MXC_F_SMON_SECALM_KEYWIPE                      ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_KEYWIPE_POS)) /**< SECALM_KEYWIPE Mask */
 
 #define MXC_F_SMON_SECALM_SHIELD_FL_POS                2 /**< SECALM_SHIELD_FL Position */
 #define MXC_F_SMON_SECALM_SHIELD_FL                    ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_SHIELD_FL_POS)) /**< SECALM_SHIELD_FL Mask */
@@ -277,15 +253,6 @@ typedef struct {
 
 #define MXC_F_SMON_SECALM_VLOSSPF_FL_POS               9 /**< SECALM_VLOSSPF_FL Position */
 #define MXC_F_SMON_SECALM_VLOSSPF_FL                   ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VLOSSPF_FL_POS)) /**< SECALM_VLOSSPF_FL Mask */
-
-#define MXC_F_SMON_SECALM_VCOREHI_FL_POS               10 /**< SECALM_VCOREHI_FL Position */
-#define MXC_F_SMON_SECALM_VCOREHI_FL                   ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VCOREHI_FL_POS)) /**< SECALM_VCOREHI_FL Mask */
-
-#define MXC_F_SMON_SECALM_VDDHI_FL_POS                 11 /**< SECALM_VDDHI_FL Position */
-#define MXC_F_SMON_SECALM_VDDHI_FL                     ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VDDHI_FL_POS)) /**< SECALM_VDDHI_FL Mask */
-
-#define MXC_F_SMON_SECALM_VGL_FL_POS                   12 /**< SECALM_VGL_FL Position */
-#define MXC_F_SMON_SECALM_VGL_FL                       ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VGL_FL_POS)) /**< SECALM_VGL_FL Mask */
 
 #define MXC_F_SMON_SECALM_EXTS0_FL_POS                 16 /**< SECALM_EXTS0_FL Position */
 #define MXC_F_SMON_SECALM_EXTS0_FL                     ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_EXTS0_FL_POS)) /**< SECALM_EXTS0_FL Mask */

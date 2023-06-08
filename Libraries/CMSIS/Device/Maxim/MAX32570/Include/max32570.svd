@@ -19762,12 +19762,6 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>DFD_STDBY_EN</name>
-       <description>Digital Fault Detector Stand by Enable</description>
-       <bitOffset>8</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>LOTEMP_SEL</name>
        <description>Low Temperature Detection Select.</description>
        <bitOffset>16</bitOffset>
@@ -19781,114 +19775,6 @@
         <enumeratedValue>
          <name>neg30C</name>
          <description>-30 degrees C.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>HITEMP_SEL</name>
-       <description>High Temperature Detection Select.</description>
-       <bitOffset>17</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>neg50C</name>
-         <description>-50 degrees C.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>neg30C</name>
-         <description>-30 degrees C.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VCORELO_EN</name>
-       <description>VCORE Undervoltage Detect Enable.</description>
-       <bitOffset>18</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VCOREHI_EN</name>
-       <description>VCORE Overvoltage Detect Enable.</description>
-       <bitOffset>19</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VDDLO_EN</name>
-       <description>VDD Undervoltage Detect Enable.</description>
-       <bitOffset>20</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VDDHI_EN</name>
-       <description>VDD Overvoltage Detect Enable.</description>
-       <bitOffset>21</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VGL_EN</name>
-       <description>Voltage Glitch Detection Enable.</description>
-       <bitOffset>22</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>dis</name>
-         <description>Disable.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>en</name>
-         <description>Enable.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -19924,24 +19810,6 @@
        <name>DRST</name>
        <description>Destructive Reset Trigger. Setting this bit will generate a DRS. This bit is self-cleared by hardware.</description>
        <bitOffset>0</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>complete</name>
-         <description>No operation/complete.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>start</name>
-         <description>Start operation.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>KEYWIPE</name>
-       <description>Key Wipe Trigger. Set to 1 to initiate a wipe of the AES key register. It does not reset the part, or log a timestamp. AES and DES registers are not affected by this bit. This bit is automatically cleared to 0 after the keys have been wiped.</description>
-       <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
@@ -20086,60 +19954,6 @@
        <name>VLOSSPF_FL</name>
        <description>VMAIN Power Fail Flag.</description>
        <bitOffset>9</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>noEvent</name>
-         <description>The event has not occurred.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>occurred</name>
-         <description>The event has occurred.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VCOREHI_FL</name>
-       <description>VCORE Overvoltage Detect Flag.</description>
-       <bitOffset>10</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>noEvent</name>
-         <description>The event has not occurred.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>occurred</name>
-         <description>The event has occurred.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VDDHI_FL</name>
-       <description>VDD Overvoltage Flag.</description>
-       <bitOffset>11</bitOffset>
-       <bitWidth>1</bitWidth>
-       <enumeratedValues>
-        <enumeratedValue>
-         <name>noEvent</name>
-         <description>The event has not occurred.</description>
-         <value>0</value>
-        </enumeratedValue>
-        <enumeratedValue>
-         <name>occurred</name>
-         <description>The event has occurred.</description>
-         <value>1</value>
-        </enumeratedValue>
-       </enumeratedValues>
-      </field>
-      <field>
-       <name>VGL_FL</name>
-       <description>Voltage Glitch Detection Flag.</description>
-       <bitOffset>12</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
         <enumeratedValue>
