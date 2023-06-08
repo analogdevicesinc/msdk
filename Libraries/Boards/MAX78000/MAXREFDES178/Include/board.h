@@ -36,14 +36,14 @@
  * @brief   Board support package API.
  */
 
+#ifndef LIBRARIES_BOARDS_MAX78000_MAXREFDES178_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX78000_MAXREFDES178_INCLUDE_BOARD_H_
+
 #include <stdio.h>
 #define LED_OFF 1 /// Override inactive state of LEDs
 #define LED_ON 0 /// Override active state of LEDs
 #include "led.h"
 #include "pb.h"
-
-#ifndef LIBRARIES_BOARDS_MAX78000_MAXREFDES178_INCLUDE_BOARD_H_
-#define LIBRARIES_BOARDS_MAX78000_MAXREFDES178_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {

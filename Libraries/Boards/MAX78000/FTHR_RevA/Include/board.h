@@ -39,10 +39,6 @@
 #ifndef LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_BOARD_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdio.h>
 #include <spi_regs.h>
 #include <gpio_regs.h>
@@ -52,6 +48,10 @@ extern "C" {
 #define LED_ON 0 /// Override active state of LEDs
 #include "led.h"
 #include "pb.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define BOARD_FTHR_REVA
 
