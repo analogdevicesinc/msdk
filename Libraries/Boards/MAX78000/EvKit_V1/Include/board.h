@@ -36,10 +36,17 @@
  * @brief   Board support package API.
  */
 
-#include <stdio.h>
 
 #ifndef LIBRARIES_BOARDS_MAX78000_EVKIT_V1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX78000_EVKIT_V1_INCLUDE_BOARD_H_
+
+#include <stdio.h>
+#include "tft_ssd2119.h"
+#include "tsc2046.h"
+#define LED_OFF 1 /// Override inactive state of LEDs
+#define LED_ON 0 /// Override active state of LEDs
+#include "led.h"
+#include "pb.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -59,9 +66,6 @@ extern "C" {
 #define SCCB_SCL_PIN MXC_GPIO_PIN_30 /// SCCB clock pin
 #define SCCB_SDA_PORT MXC_GPIO0 /// SCCB data port
 #define SCCB_SDA_PIN MXC_GPIO_PIN_31 /// SCCB data pin
-
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
 
 #ifndef __riscv // RISC-V does not have access to SPI0
 #define TFT_SPI MXC_SPI0 // SPI port to use for TFT display

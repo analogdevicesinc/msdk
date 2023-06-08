@@ -36,11 +36,13 @@
  * @brief   Board support package API.
  */
 
-#include <stdio.h>
-#include "spi.h"
-
 #ifndef LIBRARIES_BOARDS_MAX32655_EVKIT_V1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX32655_EVKIT_V1_INCLUDE_BOARD_H_
+
+#include <stdio.h>
+#include "spi.h"
+#include "led.h"
+#include "pb.h"
 
 #ifdef __cplusplus
 extern "C" {

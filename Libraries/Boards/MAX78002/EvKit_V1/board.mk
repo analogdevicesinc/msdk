@@ -99,6 +99,7 @@ PROJ_CFLAGS+=-DCAMERA_OV7692
 endif
 SRCS += sccb.c
 
+LIBS_DIR ?= $(MAXIM_PATH)/Libraries
 MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 
 # Where to find BSP source files

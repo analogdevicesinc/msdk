@@ -38,11 +38,15 @@
  * @brief   Board support package API.
  */
 
-#include <stdio.h>
-#include "spi.h"
-
 #ifndef LIBRARIES_BOARDS_MAX32570_QN_EVKIT_V1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX32570_QN_EVKIT_V1_INCLUDE_BOARD_H_
+
+#include <stdio.h>
+#include "spi.h"
+#define LED_OFF 1 /// Override inactive state of LEDs
+#define LED_ON 0 /// Override active state of LEDs
+#include "led.h"
+#include "pb.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,9 +61,6 @@ extern "C" {
 #ifndef CONSOLE_BAUD
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
-
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
 
 #define LED1 0
 #define LED2 1

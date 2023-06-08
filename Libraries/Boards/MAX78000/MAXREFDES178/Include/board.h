@@ -37,6 +37,10 @@
  */
 
 #include <stdio.h>
+#define LED_OFF 1 /// Override inactive state of LEDs
+#define LED_ON 0 /// Override active state of LEDs
+#include "led.h"
+#include "pb.h"
 
 #ifndef LIBRARIES_BOARDS_MAX78000_MAXREFDES178_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX78000_MAXREFDES178_INCLUDE_BOARD_H_
@@ -60,8 +64,6 @@ extern "C" {
 #define SCCB_SDA_PORT MXC_GPIO0 /// SCCB data port
 #define SCCB_SDA_PIN MXC_GPIO_PIN_17 /// SCCB data pin
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
 
 /**
  *  References to LEDs on the board.

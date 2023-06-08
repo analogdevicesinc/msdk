@@ -46,6 +46,12 @@ extern "C" {
 #include <stdio.h>
 #include <spi_regs.h>
 #include <gpio_regs.h>
+#include "tft_ili9341.h"
+#include "tsc2046.h"
+#define LED_OFF 1 /// Override inactive state of LEDs
+#define LED_ON 0 /// Override active state of LEDs
+#include "led.h"
+#include "pb.h"
 
 #define BOARD_FTHR_REVA
 
@@ -61,9 +67,6 @@ extern "C" {
 #define SCCB_SCL_PIN MXC_GPIO_PIN_30 /// SCCB clock pin
 #define SCCB_SDA_PORT MXC_GPIO0 /// SCCB data port
 #define SCCB_SDA_PIN MXC_GPIO_PIN_31 /// SCCB data pin
-
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.

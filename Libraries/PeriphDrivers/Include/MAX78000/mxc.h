@@ -44,19 +44,6 @@
 #include "nvic_table.h"
 #ifdef LIB_BOARD
 #include "board.h"
-#include "led.h"
-#ifndef BOARD_AUD01_REVA
-#include "pb.h"
-#endif
-
-#ifdef BOARD_FTHR_REVA
-#include "tft_ili9341.h"
-#include "tsc2046.h"
-#endif
-#ifdef BOARD_EVKIT_V1
-#include "tft_ssd2119.h"
-#include "tsc2046.h"
-#endif
 #endif
 
 /*
