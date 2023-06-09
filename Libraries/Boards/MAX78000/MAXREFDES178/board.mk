@@ -45,7 +45,7 @@ SRCS += ov7692.c
 #SRCS += sccb_i2c.c
 SRCS += sccb.c
 
-MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
