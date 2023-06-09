@@ -41,6 +41,7 @@ SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
 
+LIBS_DIR ?= $(MAXIM_PATH)/Libraries
 MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 
 # Where to find BSP source files
