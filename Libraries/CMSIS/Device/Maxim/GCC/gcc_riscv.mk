@@ -149,6 +149,7 @@ CFLAGS+= \
 	     -MD                                                                     \
 	     -Wall                                                                   \
 	     -Wno-format                                                             \
+	     $(MXC_OPTIMIZE_CFLAGS)                                                  \
 	     -c
 
 # On GCC version > 4.8.0 use the -fno-isolate-erroneous-paths-dereference flag
@@ -195,7 +196,7 @@ LDFLAGS+=$(PROJ_LDFLAGS)
 STD_LIBS=-lc_nano -lm
 
 # Determine if any C++ files are in the project sources, and add libraries as appropriate
-ifneq "$(findstring cpp, ${SRCS})" ""
+ifneq "$(findstring .cpp, ${SRCS})" ""
 STD_LIBS+=-lsupc++ -lstdc++
 endif
 
@@ -219,9 +220,14 @@ AFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 CFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 LDFLAGS+=${patsubst %,-L%,$(call fixpath,$(LIBPATH))}
 
+# Add an option for stripping unneeded symbols from archive files
+STRIP_LIBRARIES ?= 0
+# The command for stripping objects.
+STRIP = $(PREFIX)-strip
+
 ################################################################################
 # The rule for building the object file from each C source file.
-${BUILD_DIR}/%.o: %.c
+${BUILD_DIR}/%.o: %.c $(PROJECTMK)
 	@if [ '${ECLIPSE}' != '' ]; 																			\
 	then 																									\
 		echo ${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g' ; \
@@ -231,46 +237,14 @@ ${BUILD_DIR}/%.o: %.c
 	else                                                                       								\
 	    echo "  CC    ${<}";                                                   								\
 	fi
-#	@echo CYGWIN = ${CYGWIN}
-#	@echo
-#	@echo BUILD_DIR = ${BUILD_DIR}
-#	@echo
-#	@echo SRCS = ${SRCS}
-#	@echo
-#	@echo SRCS_NOPATH = ${SRCS_NOPATH}
-#	@echo
-#	@echo CC = ${CC}
-#	@echo
-#	@echo AS = ${AS}
-#	@echo
-#	@echo LD = ${LD}
-#	@echo
-#	@echo MXC_OPTIMIZE_CFLAGS = ${MXC_OPTIMIZE_CFLAGS}
-#	@echo
-#	@echo PROJ_CFLAGS = ${PROJ_CFLAGS}
-#	@echo
-#	@echo CFLAGS = ${CFLAGS}
-#	@echo
-#	@echo AFLAGS = ${AFLAGS}
-#	@echo
-#	@echo LFLAGS = ${LFLAGS}
-#	@echo
-#	@echo OBJS_NOPATH = ${OBJS_NOPATH}
-#	@echo
-#	@echo OBJS = ${OBJS}
-#	@echo
-#	@echo LIBS = ${LIBS}
-#	@echo
-#	@echo VPATH = ${VPATH}
-#	@echo
-#	@echo IPATH = ${IPATH}
+
 	@${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<})
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
 endif
 
 # The rule to build an object file from a C++ source file
-${BUILD_DIR}/%.o: %.cpp
+${BUILD_DIR}/%.o: %.cpp $(PROJECTMK)
 	@if [ '${ECLIPSE}' != '' ]; 																			\
 	then 																									\
 		echo ${CPP} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g' ; \
@@ -280,42 +254,14 @@ ${BUILD_DIR}/%.o: %.cpp
 	else                                                                       								\
 	    echo "  CC    ${<}";                                                   								\
 	fi
-	@echo CYGWIN = ${CYGWIN}
-	@echo
-	@echo BUILD_DIR = ${BUILD_DIR} x
-	@echo
-	@echo SRCS = ${SRCS}
-	@echo
-	@echo SRCS_NOPATH = ${SRCS_NOPATH}
-	@echo
-	@echo CC = ${CC}
-	@echo
-	@echo AS = ${AS}
-	@echo
-	@echo LD = ${LD}
-	@echo
-	@echo CFLAGS = ${CFLAGS}
-	@echo
-	@echo AFLAGS = ${AFLAGS}
-	@echo
-	@echo LFLAGS = ${LFLAGS}
-	@echo
-	@echo OBJS_NOPATH = ${OBJS_NOPATH}
-	@echo
-	@echo OBJS = ${OBJS}
-	@echo
-	@echo LIBS = ${LIBS}
-	@echo
-	@echo VPATH = ${VPATH}
-	@echo
-	@echo IPATH = ${IPATH}
+	
 	@${CPP} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<})
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
 endif
 
 # The rule for building the object file from each assembly source file.
-${BUILD_DIR}/%.o: %.S
+${BUILD_DIR}/%.o: %.S $(PROJECTMK)
 	@if [ '${VERBOSE}' = '' ];                                                   \
 	 then                                                                        \
 	     echo "  AS    ${<}";                                                    \
@@ -328,7 +274,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for creating an object library.
-${BUILD_DIR}/%.a:
+${BUILD_DIR}/%.a: $(PROJECTMK)
 	@if [ '${VERBOSE}' = '' ];                                                   \
 	 then                                                                        \
 	     echo "  AR    ${@}";                                                    \
@@ -336,9 +282,24 @@ ${BUILD_DIR}/%.a:
 	     echo ${AR} -cr $(call fixpath,${@}) $(call fixpath,${^});               \
 	 fi
 	@${AR} -cr $(call fixpath,${@}) $(call fixpath,${^})
+ifeq ($(STRIP_LIBRARIES),1)
+	@if [ 'x${ECLIPSE}' != x ];                                                 \
+	 then                                                                       \
+	    echo ${STRIP} $(call fixpath,${@}) | sed 's/-I\/\(.\)\//-I\1:\//g' ;    \
+	elif [ 'x${VERBOSE}' != x ];                                                \
+	then                                                                        \
+	    echo ${STRIP} --strip-unneeded $(call fixpath,${@});                    \
+	elif [ 'x${QUIET}' != x ];                                                  \
+	then                                                                        \
+	    :;                                                                      \
+	else                                                                        \
+	    echo "  STRIP ${@}";                                                    \
+	fi
+	@${STRIP} --strip-unneeded $(call fixpath,${@})
+endif
 
 # The rule for linking the application.
-${BUILD_DIR}/%.elf:
+${BUILD_DIR}/%.elf: $(PROJECTMK)
 	@if [ '${VERBOSE}' = '' ];                                                   \
 	 then                                                                        \
 	     echo "  LD    ${@} ${LNK_SCP}";                                         \

@@ -38,8 +38,11 @@ endif
 
 # Create output object file names
 SRCS_NOPATH := $(foreach NAME,$(SRCS),$(basename $(notdir $(NAME))).c)
+BINS_NOPATH := $(foreach NAME,$(BINS),$(basename $(notdir $(NAME))).bin)
 OBJS_NOPATH := $(SRCS_NOPATH:.c=.o)
+OBJS_NOPATH += $(BINS_NOPATH:.bin=.o)
 OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
+OBJS        += $(PROJ_OBJS)
 
 ################################################################################
 # Goals
@@ -132,6 +135,9 @@ endif
 ifneq "$(STACK_SIZE)" ""
 AFLAGS+=-D__STACK_SIZE=$(STACK_SIZE)
 endif
+ifneq "$(SRAM_SIZE)" ""
+AFLAGS+=-D__SRAM_SIZE=$(SRAM_SIZE)
+endif
 AFLAGS+=$(PROJ_AFLAGS)
 
 ifeq "$(MXC_OPTIMIZE_CFLAGS)" ""
@@ -161,40 +167,41 @@ $(warning MFLOAT_FLAGS has been deprecated!  Please use MFLOAT_ABI instead.)
 MFLOAT_ABI = $(MFLOAT_FLAGS) # Copy over to new option for backwards compatability
 endif
 
+# Option for setting the FPU to use
+MFPU ?= fpv4-sp-d16
+
+# (deprecated) MFPU_FLAGS
+# The old option implied multiple values could be set, so it was renamed to MFPU
+ifneq "$(MFPU_FLAGS)" ""
+$(warning MFPU_FLAGS has been deprecated!  Used MFPU instead.)
+MFPU := $(MFPU_FLAGS) # Copy over to the new option for backwards compatability
+endif
+
 # The flags passed to the compiler.
 # fno-isolate-erroneous-paths-dereference disables the check for pointers with the value of 0
 #  add this below when arm-none-eabi-gcc version is past 4.8 -fno-isolate-erroneous-paths-dereference                                \
 
+# Universal optimization flags added to all builds
+DEFAULT_OPTIMIZE_FLAGS ?= -ffunction-sections -fdata-sections -fsingle-precision-constant
+DEFAULT_WARNING_FLAGS ?= -Wall -Wno-format -Wdouble-promotion
+
 CFLAGS=-mthumb                                                                 \
        -mcpu=cortex-m4                                                         \
-       -mfloat-abi=$(MFLOAT_ABI)                                                      \
-       -mfpu=fpv4-sp-d16                                                       \
+       -mfloat-abi=$(MFLOAT_ABI)                                               \
+       -mfpu=$(MFPU)                                                           \
        -Wa,-mimplicit-it=thumb                                                 \
        $(MXC_OPTIMIZE_CFLAGS)   											   \
-       -ffunction-sections                                                     \
-       -fdata-sections                                                         \
+       $(DEFAULT_OPTIMIZE_FLAGS)   										       \
+       $(DEFAULT_WARNING_FLAGS)   										       \
        -MD                                                                     \
-       -Wall                                                                   \
-       -Wno-format                                                             \
        -c
 
 # The flags passed to the C++ compiler.
-CXXFLAGS= \
-	-mthumb					\
-	-mcpu=cortex-m4				\
-	-mfloat-abi=$(MFLOAT_ABI)			\
-	-mfpu=fpv4-sp-d16			\
-	-Wa,-mimplicit-it=thumb			\
-	$(MXC_OPTIMIZE_CFLAGS)			\
-	-ffunction-sections			\
-	-fdata-sections				\
-	-MD					\
-	-Wall					\
-	-Wno-format				\
+CXXFLAGS := $(CFLAGS)
+CXXFLAGS += \
 	-fno-rtti				\
 	-fno-exceptions				\
 	-std=c++11				\
-	-c
 
 # On GCC version > 4.8.0 use the -fno-isolate-erroneous-paths-dereference flag
 ifeq "$(GCCVERSIONGTEQ4)" "1"
@@ -203,24 +210,21 @@ endif
 
 ifneq "$(TARGET)" ""
 CFLAGS+=-DTARGET=$(TARGET)
-CXXFLAGS+=-DTARGET=$(TARGET)
 endif
 
 ifneq "$(TARGET_REV)" ""
 CFLAGS+=-DTARGET_REV=$(TARGET_REV)
-CXXFLAGS+=-DTARGET_REV=$(TARGET_REV)
 endif
 
 # Exclude debug for 'release' builds
 ifneq (${MAKECMDGOALS},release)
 ifneq (${DEBUG},0)
 CFLAGS+=-g3 -ggdb -DDEBUG
-CXX_FLAGS+=-g3 -ggdb -DDEBUG
 endif
 endif
 
 CFLAGS+=$(PROJ_CFLAGS)
-CXXFLAGS+=$(PROJ_CFLAGS)
+CXXFLAGS+=$(CFLAGS)
 
 # The command for calling the library archiver.
 AR=${PREFIX}-ar
@@ -231,8 +235,8 @@ LD=${PREFIX}-gcc
 # The flags passed to the linker.
 LDFLAGS=-mthumb                                                                \
         -mcpu=cortex-m4                                                        \
-        -mfloat-abi=$(MFLOAT_ABI)                                                     \
-        -mfpu=fpv4-sp-d16                                                      \
+        -mfloat-abi=$(MFLOAT_ABI)                                              \
+        -mfpu=$(MFPU)                                                          \
         -Xlinker --gc-sections                                                 \
 	-Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
 LDFLAGS+=$(PROJ_LDFLAGS)
@@ -241,7 +245,7 @@ LDFLAGS+=$(PROJ_LDFLAGS)
 STD_LIBS=-lc -lm
 
 # Determine if any C++ files are in the project sources, and add libraries as appropriate
-ifneq "$(findstring cpp, ${SRCS})" ""
+ifneq "$(findstring .cpp, ${SRCS})" ""
 STD_LIBS+=-lsupc++ -lstdc++
 endif
 
@@ -276,9 +280,14 @@ else
 LDFLAGS+=${patsubst %,-L%,$(call fixpath,$(LIBPATH))}
 endif
 
+# Add an option for stripping unneeded symbols from archive files
+STRIP_LIBRARIES ?= 0
+# The command for stripping objects.
+STRIP = $(PREFIX)-strip
+
 ################################################################################
 # The rule for building the object file from each C source file.
-${BUILD_DIR}/%.o: %.c
+${BUILD_DIR}/%.o: %.c $(PROJECTMK)
 	@if [ 'x${ECLIPSE}' != x ]; 																			\
 	then 																									\
 		echo ${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g' ; \
@@ -294,7 +303,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule to build an object file from a C++ source file
-${BUILD_DIR}/%.o: %.cpp
+${BUILD_DIR}/%.o: %.cpp $(PROJECTMK)
 	@if [ 'x${ECLIPSE}' != x ]; 																			\
 	then 																									\
 		echo ${CXX} ${CXXFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g' ; \
@@ -310,7 +319,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for building the object file from each assembly source file.
-${BUILD_DIR}/%.o: %.S
+${BUILD_DIR}/%.o: %.S $(PROJECTMK)
 	@if [ 'x${VERBOSE}' = x ];                                                   \
 	 then                                                                        \
 	     echo "  AS    ${<}";                                                    \
@@ -323,7 +332,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for creating an object library.
-${BUILD_DIR}/%.a:
+${BUILD_DIR}/%.a: $(PROJECTMK)
 	@echo -cr $(call fixpath,${@}) $(call fixpath,${^})                          \
 	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
 	@if [ 'x${VERBOSE}' = x ];                                                   \
@@ -333,25 +342,47 @@ ${BUILD_DIR}/%.a:
 	     echo ${AR} -cr $(call fixpath,${@}) $(call fixpath,${^});               \
 	 fi
 	@${AR} @${BUILD_DIR}/ar_args.txt
+ifeq ($(STRIP_LIBRARIES),1)
+	@if [ 'x${ECLIPSE}' != x ];                                                 \
+	 then                                                                       \
+	    echo ${STRIP} $(call fixpath,${@}) | sed 's/-I\/\(.\)\//-I\1:\//g' ;    \
+	elif [ 'x${VERBOSE}' != x ];                                                \
+	then                                                                        \
+	    echo ${STRIP} --strip-unneeded $(call fixpath,${@});                    \
+	elif [ 'x${QUIET}' != x ];                                                  \
+	then                                                                        \
+	    :;                                                                      \
+	else                                                                        \
+	    echo "  STRIP ${@}";                                                    \
+	fi
+	@${STRIP} --strip-unneeded $(call fixpath,${@})
+endif
+
+# The rule for building the object file from binary source file.
+# Resulting object will have the following symbols
+# _binary_<file_name>_bin_start
+# _binary_<file_name>_bin_end
+# _binary_<file_name>_bin_size
+${BUILD_DIR}/%.o: %.bin $(PROJECTMK)
+	@if [ 'x${VERBOSE}' = x ];                                                  \
+	then                                                                        \
+	    echo "  CP    ${<}";                                                    \
+	elif [ 'x${QUIET}' != x ];                                                  \
+	then 																		\
+		:;																		\
+	else 																		\
+	    echo ${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section    \
+	    .data=.text $(call fixpath,${<}) $(call fixpath,${@});                  \
+	fi
+	@${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section            \
+	.data=.text $(call fixpath,${<}) $(call fixpath,${@})
+ifeq "$(CYGWIN)" "True"
+	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
+endif
 
 # The rule for linking the application.
-${BUILD_DIR}/%.elf:
-	@if [ 'x${VERBOSE}' = x ];                                                   \
-	 then                                                                        \
-	     echo "  LD    ${@} ${LNK_SCP}";                                         \
-	 else                                                                        \
-	     echo ${LD} -T $(call fixpath,${LINKERFILE})                             \
-	          --entry ${ENTRY}                                                   \
-	          $(call fixpath,${LDFLAGS})                                         \
-	          -o $(call fixpath,${@})                                            \
-	          $(call fixpath,$(filter %.o, ${^}))                                \
-	          -Xlinker --start-group                                             \
-	          $(call fixpath,$(filter %.a, ${^}))                                \
-	          ${PROJ_LIBS}                                                       \
-	          ${STD_LIBS}                                                        \
-	          -Xlinker --end-group;                                              \
-	 fi;                                                                         \
-	${LD} -T $(call fixpath,${LINKERFILE})                                       \
+${BUILD_DIR}/%.elf: $(PROJECTMK)
+	@echo -T $(call fixpath,${LINKERFILE})                                       \
 	      --entry ${ENTRY}                                                       \
 	      $(call fixpath,${LDFLAGS})                                             \
 	      -o $(call fixpath,${@})                                                \
@@ -360,7 +391,25 @@ ${BUILD_DIR}/%.elf:
 	      $(call fixpath,$(filter %.a, ${^}))                                    \
 	      ${PROJ_LIBS}                                                           \
 	      ${STD_LIBS}                                                            \
-	      -Xlinker --end-group
+	      -Xlinker --end-group                                                   \
+	      | sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ln_args.txt	
+	@if [ 'x${VERBOSE}' = x ];                                                   \
+	then                                                                         \
+	    echo "  LD    ${@} ${LNK_SCP}";                                      \
+	else                                                                         \
+	    echo ${LD} -T $(call fixpath,${LINKERFILE})                          \
+	        --entry ${ENTRY}                                             \
+	        $(call fixpath,${LDFLAGS})                                   \
+	        -o $(call fixpath,${@})                                      \
+	        $(call fixpath,$(filter %.o, ${^}))                          \
+	        -Xlinker --start-group                                       \
+	        $(call fixpath,$(filter %.a, ${^}))                          \
+	        ${PROJ_LIBS}                                                 \
+	        ${STD_LIBS}                                                  \
+	        -Xlinker --end-group;                                        \
+	    echo ${LD} @${BUILD_DIR}/ln_args.txt;                                \
+	fi
+	@${LD} @${BUILD_DIR}/ln_args.txt
 
 # Create S-Record output file
 %.srec: %.elf
