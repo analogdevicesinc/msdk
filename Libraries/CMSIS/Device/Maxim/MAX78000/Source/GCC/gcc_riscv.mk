@@ -168,6 +168,7 @@ endif
 ifneq (${MAKECMDGOALS},release)
 ifneq (${DEBUG},0)
 CFLAGS+=-g3 -ggdb -DDEBUG
+CXX_FLAGS+=-g3 -ggdb -DDEBUG
 endif
 endif
 
