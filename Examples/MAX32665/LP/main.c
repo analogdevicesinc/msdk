@@ -160,85 +160,7 @@ void setTrigger(int waitForTrigger)
 }
 #endif // USE_BUTTON
 
-/*
- *  Switch the system clock to the HIRC / 4
- *
- *  Enable the HIRC, set the divide ration to /4, and disable the 96 MHz oscillator.
- */
-void switchToHIRCD4(void)
-{
-    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_PSC, MXC_S_GCR_CLKCN_PSC_DIV4);
-    MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC_EN;
-    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC);
-    /* Disable unused clocks */
-    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)) {}
-    /* Wait for the switch to occur */
-    MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC96M_EN);
-    SystemCoreClockUpdate();
-}
 
-/*
- *  Switch the system clock to the HIRC96
- *
- *  Enable the HIRC, set the divide ration to /1, and disable the 60 MHz oscillator.
- */
-void switchToHIRC96(void)
-{
-    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_PSC, MXC_S_GCR_CLKCN_PSC_DIV1);
-    MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC96M_EN;
-    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC96);
-    /* Disable unused clocks */
-    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)) {}
-    /* Wait for the switch to occur */
-    MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC_EN);
-    SystemCoreClockUpdate();
-}
-
-void prepForDeepSleep(void)
-{
-    MXC_ICC_Disable();
-    MXC_LP_ICache0Shutdown();
-
-    /* Shutdown unused power domains */
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
-
-    switchToHIRCD4();
-
-    /* Set SIMO clock, VDDCSW, VregO_B voltage for DeepSleep */
-    MXC_LP_SIMOprepForDeepSleep(900);
-}
-
-void prepForBackup(void)
-{
-    MXC_ICC_Disable();
-    MXC_LP_ICache0Shutdown();
-
-    /* Shutdown unused power domains */
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
-
-    switchToHIRCD4();
-
-    /* No RAM retention in BACKUP */
-    MXC_LP_SetRAMRetention(MXC_S_PWRSEQ_LPCN_RAMRET_DIS);
-
-    /* Disable VregB, VregD in BACKUP */
-    MXC_LP_SIMOVregBPowerDown();
-    MXC_LP_SIMOVregDPowerDown();
-
-    /* Set SIMO clock, VDDCSW, VregO_C voltage for Backup */
-    MXC_LP_SIMOprepForBackup(850);
-}
-
-void recoverFromDeepSleep(void)
-{
-    /* SIMO soft start workaround on wakeup */
-    MXC_LP_recoverFromDeepSleep();
-
-    MXC_LP_ICache0PowerUp();
-    MXC_ICC_Enable();
-
-    switchToHIRC96();
-}
 
 int main(void)
 {
@@ -320,18 +242,14 @@ int main(void)
 #if DO_DEEPSLEEP
         PRINT("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
-        prepForDeepSleep();
         MXC_LP_EnterDeepSleepMode();
-        recoverFromDeepSleep();
         PRINT("Waking up from DEEPSLEEP mode.\n");
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
         PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
-        prepForBackup();
         MXC_LP_EnterBackupMode(NULL);
-        recoverFromDeepSleep();
 #endif // DO_BACKUP
     }
 }
