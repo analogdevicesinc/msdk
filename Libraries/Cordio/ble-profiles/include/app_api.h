@@ -1197,6 +1197,17 @@ void AppHandlerInit(wsfHandlerId_t handlerId);
 /*************************************************************************************************/
 void AppHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 
+/*************************************************************************************************/
+/*!
+ *  \brief      Get Bluetooth device address currently used by LL 
+ *              or all zeros if address is not set.
+ *
+ *  \param      pBdAddr  Pointer where address will be stored.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void AppGetBdAddr(uint8_t *pBdAddr);
 /**@}*/
 
 /*! \} */    /* STACK_EVENT */
