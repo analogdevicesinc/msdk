@@ -365,7 +365,6 @@ void MXC_LP_EnterSleepMode(void)
     __WFI();
 }
 
-
 void MXC_LP_EnterBackgroundMode(void)
 {
     MXC_LP_ClearWakeStatus();
@@ -377,7 +376,6 @@ void MXC_LP_EnterBackgroundMode(void)
     /* Go into Background mode and wait for an interrupt to wake the processor */
     __WFI();
 }
-
 
 void MXC_LP_EnterShutdownMode(void)
 {
@@ -540,8 +538,6 @@ void MXC_LP_ICacheXIPLightSleepEnable(void)
     MXC_GCR->memckcn |= MXC_F_GCR_MEMCKCN_ICACHEXIPLS;
 }
 
-
-
 /*
  *  Switch the system clock to the HIRC / 4
  *
@@ -559,21 +555,25 @@ void switchToHIRCD4(void)
     SystemCoreClockUpdate();
 }
 
-static void  save_preDeepSleep_state(void)
+static void save_preDeepSleep_state(void)
 {
     /* Save ICC state */
     icc0_state = 0;
-    if (MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN)      icc0_state |= (1 << CTRL_POS);
-    if (MXC_PWRSEQ->lpmemsd & MXC_F_PWRSEQ_LPMEMSD_ICACHESD) icc0_state |= (1 << ICSD_POS);
+    if (MXC_ICC0->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN)
+        icc0_state |= (1 << CTRL_POS);
+    if (MXC_PWRSEQ->lpmemsd & MXC_F_PWRSEQ_LPMEMSD_ICACHESD)
+        icc0_state |= (1 << ICSD_POS);
     icc1_state = 0;
-    if (MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN)   icc1_state |= (1 << CTRL_POS);
-    if (MXC_PWRSEQ->lpmemsd & MXC_F_PWRSEQ_LPMEMSD_IC1SD) icc1_state |= (1 << ICSD_POS);
+    if (MXC_ICC1->cache_ctrl & MXC_F_ICC_CACHE_CTRL_EN)
+        icc1_state |= (1 << CTRL_POS);
+    if (MXC_PWRSEQ->lpmemsd & MXC_F_PWRSEQ_LPMEMSD_IC1SD)
+        icc1_state |= (1 << ICSD_POS);
 
     /* Save CLKCN state */
     clkcn_state = MXC_GCR->clkcn;
 }
 
-static void  restore_preDeepSleep_state(void)
+static void restore_preDeepSleep_state(void)
 {
     /* Restore CLKCN state */
     MXC_GCR->clkcn = clkcn_state;
@@ -585,8 +585,7 @@ static void  restore_preDeepSleep_state(void)
     if (icc1_state & (1 << ICSD_POS)) {
         /* ICC power down. Do not restore Enable state. */
         MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_IC1SD;
-    }
-    else {
+    } else {
         /* ICC power up */
         MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_IC1SD;
         /* Enable */
@@ -598,60 +597,60 @@ static void  restore_preDeepSleep_state(void)
     if (icc0_state & (1 << ICSD_POS)) {
         /* ICC power down. Do not restore Enable state. */
         MXC_PWRSEQ->lpmemsd |= MXC_F_PWRSEQ_LPMEMSD_ICACHESD;
-    }
-    else {
+    } else {
         /* ICC power up */
         MXC_PWRSEQ->lpmemsd &= ~MXC_F_PWRSEQ_LPMEMSD_ICACHESD;
         /* Enable */
         if (icc0_state & (1 << CTRL_POS))
             MXC_ICC_RevA_Enable((mxc_icc_reva_regs_t *)MXC_ICC0);
     }
-
 }
 
 void MXC_LP_EnterDeepSleepMode(void)
 {
-
     save_preDeepSleep_state();
 
     /*void prepForDeepSleep(void)*/
     {
-    MXC_ICC_Disable();
-    MXC_LP_ICache0Shutdown();
+        MXC_ICC_Disable();
+        MXC_LP_ICache0Shutdown();
 
-    /* Shutdown unused power domains */
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
+        /* Shutdown unused power domains */
+        MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
 
-    switchToHIRCD4();
+        switchToHIRCD4();
 
-    /* Set SIMO clock, VDDCSW, VregO_B voltage for DeepSleep */
-    /*void MXC_LP_SIMOprepForDeepSleep(uint32_t voltage)*/
-    {
-        /* Prevent SIMO soft start on wakeup */
-        MXC_LP_FastWakeupDisable();
+        /* Set SIMO clock, VDDCSW, VregO_B voltage for DeepSleep */
+        /*void MXC_LP_SIMOprepForDeepSleep(uint32_t voltage)*/
+        {
+            /* Prevent SIMO soft start on wakeup */
+            MXC_LP_FastWakeupDisable();
 
-        /* Enable VDDCSWEN=1 prior to enter DEEPSLEEP */
-        MXC_MCR->ctrl |= MXC_F_MCR_CTRL_VDDCSWEN;
+            /* Enable VDDCSWEN=1 prior to enter DEEPSLEEP */
+            MXC_MCR->ctrl |= MXC_F_MCR_CTRL_VDDCSWEN;
 
-        /* SIMO clock setup for deep sleep */
-        *(volatile int *)0x40005434 = 1; /* SIMOCLKDIV [1:0] : 0=div1; 1=div8; 2=div1 3=div16 */
-        /* BUCK_CLKSEL [25:24] : 0=8K; 1=16K; 2=30K; 3=RFU */
-        *(volatile int *)0x40005440 = (*(volatile int *)0x40005440 & (~(0x3 << 24))) | (0x2 << 24);
-        /* BUCK_CLKSEL_LP [7:6] : 0=8K; 1=16K; 2=30K; 3=RFU */
-        *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6))) | (0x2 << 6);
+            /* SIMO clock setup for deep sleep */
+            *(volatile int *)0x40005434 = 1; /* SIMOCLKDIV [1:0] : 0=div1; 1=div8; 2=div1 3=div16 */
+            /* BUCK_CLKSEL [25:24] : 0=8K; 1=16K; 2=30K; 3=RFU */
+            *(volatile int *)0x40005440 = (*(volatile int *)0x40005440 & (~(0x3 << 24))) |
+                                          (0x2 << 24);
+            /* BUCK_CLKSEL_LP [7:6] : 0=8K; 1=16K; 2=30K; 3=RFU */
+            *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6))) |
+                                          (0x2 << 6);
 
-        /* Wait for VCOREB to be ready */
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+            /* Wait for VCOREB to be ready */
+            while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
 
-        /* Lower VregB to reduce power consumption */
-        MXC_SIMO_SetVregO_B(900);
+            /* Lower VregB to reduce power consumption */
+            MXC_SIMO_SetVregO_B(900);
 
-        /* Move VCORE switch to VCOREB (< VCOREA) */
-        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x2 << MXC_F_MCR_CTRL_VDDCSW_POS);
+            /* Move VCORE switch to VCOREB (< VCOREA) */
+            MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) |
+                            (0x2 << MXC_F_MCR_CTRL_VDDCSW_POS);
 
-        /* Wait for VCOREA ready.  Should be ready already */
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {}
-    }
+            /* Wait for VCOREA ready.  Should be ready already */
+            while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {}
+        }
     }
 
     MXC_LP_ClearWakeStatus();
@@ -665,80 +664,82 @@ void MXC_LP_EnterDeepSleepMode(void)
 
     /*void recoverFromDeepSleep(void)*/
     {
-    /* SIMO soft start workaround on wakeup */
-    /*void MXC_LP_recoverFromDeepSleep(void)*/
-    {
-        /* Check to see if VCOREA is ready on  */
-        if (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
-            /* Wait for VCOREB to be ready */
-            while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+        /* SIMO soft start workaround on wakeup */
+        /*void MXC_LP_recoverFromDeepSleep(void)*/
+        {
+            /* Check to see if VCOREA is ready on  */
+            if (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
+                /* Wait for VCOREB to be ready */
+                while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
 
-            /* Move VCORE switch back to VCOREB */
-            MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) |
-                            (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
+                /* Move VCORE switch back to VCOREB */
+                MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) |
+                                (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
 
-            /* Raise the VCORE_B voltage */
-            while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
-            MXC_SIMO_SetVregO_B(1000);
-            while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
-        } else {
-            if ((MXC_MCR->ctrl & MXC_F_MCR_CTRL_VDDCSW) == (1 << MXC_F_MCR_CTRL_VDDCSW_POS)) {
                 /* Raise the VCORE_B voltage */
                 while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
                 MXC_SIMO_SetVregO_B(1000);
                 while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+            } else {
+                if ((MXC_MCR->ctrl & MXC_F_MCR_CTRL_VDDCSW) == (1 << MXC_F_MCR_CTRL_VDDCSW_POS)) {
+                    /* Raise the VCORE_B voltage */
+                    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+                    MXC_SIMO_SetVregO_B(1000);
+                    while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
+                }
             }
         }
     }
-    }
     restore_preDeepSleep_state();
 }
-
 
 void MXC_LP_EnterBackupMode(void *func(void))
 {
     /*void prepForBackup(void)*/
     {
-    MXC_ICC_Disable();
-    MXC_LP_ICache0Shutdown();
+        MXC_ICC_Disable();
+        MXC_LP_ICache0Shutdown();
 
-    /* Shutdown unused power domains */
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
+        /* Shutdown unused power domains */
+        MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
 
-    switchToHIRCD4();
+        switchToHIRCD4();
 
-    /* No RAM retention in BACKUP */
-    MXC_LP_SetRAMRetention(MXC_S_PWRSEQ_LPCN_RAMRET_DIS);
+        /* No RAM retention in BACKUP */
+        MXC_LP_SetRAMRetention(MXC_S_PWRSEQ_LPCN_RAMRET_DIS);
 
-    /* Disable VregB, VregD in BACKUP */
-    MXC_LP_SIMOVregBPowerDown();
-    MXC_LP_SIMOVregDPowerDown();
+        /* Disable VregB, VregD in BACKUP */
+        MXC_LP_SIMOVregBPowerDown();
+        MXC_LP_SIMOVregDPowerDown();
 
-    /* Set SIMO clock, VDDCSW, VregO_C voltage for Backup */
-    /*void MXC_LP_SIMOprepForBackup(uint32_t voltage)*/
-    {
-        /* Prevent SIMO soft start on wakeup */
-        MXC_LP_FastWakeupDisable();
+        /* Set SIMO clock, VDDCSW, VregO_C voltage for Backup */
+        /*void MXC_LP_SIMOprepForBackup(uint32_t voltage)*/
+        {
+            /* Prevent SIMO soft start on wakeup */
+            MXC_LP_FastWakeupDisable();
 
-        /* Enable VDDCSWEN=1 prior to enter BACKUP */
-        MXC_MCR->ctrl |= MXC_F_MCR_CTRL_VDDCSWEN;
+            /* Enable VDDCSWEN=1 prior to enter BACKUP */
+            MXC_MCR->ctrl |= MXC_F_MCR_CTRL_VDDCSWEN;
 
-        /* SIMO softstart workaround: clock 8KHz/16 for BACKUP, 30KHz/1 in ACTIVE */
-        *(volatile int *)0x40005434 = 3; /* SIMOCLKDIV [1:0] : 0=div1; 1=div8; 2=div1 3=div16 */
-        /* BUCK_CLKSEL [25:24] : 0=8K; 1=16K; 2=30K; 3=RFU */
-        *(volatile int *)0x40005440 = (*(volatile int *)0x40005440 & (~(0x3 << 24))) | (0x2 << 24);
-        /* BUCK_CLKSEL_LP [7:6] : 0=8K; 1=16K; 2=30K; 3=RFU */
-        *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6))) | (0x0 << 6);
+            /* SIMO softstart workaround: clock 8KHz/16 for BACKUP, 30KHz/1 in ACTIVE */
+            *(volatile int *)0x40005434 = 3; /* SIMOCLKDIV [1:0] : 0=div1; 1=div8; 2=div1 3=div16 */
+            /* BUCK_CLKSEL [25:24] : 0=8K; 1=16K; 2=30K; 3=RFU */
+            *(volatile int *)0x40005440 = (*(volatile int *)0x40005440 & (~(0x3 << 24))) |
+                                          (0x2 << 24);
+            /* BUCK_CLKSEL_LP [7:6] : 0=8K; 1=16K; 2=30K; 3=RFU */
+            *(volatile int *)0x40005444 = (*(volatile int *)0x40005444 & (~(0x3 << 6))) |
+                                          (0x0 << 6);
 
-        /* Move VCORE switch to VCOREB (< VCOREA) */
-        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) | (0x2 << MXC_F_MCR_CTRL_VDDCSW_POS);
+            /* Move VCORE switch to VCOREB (< VCOREA) */
+            MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) |
+                            (0x2 << MXC_F_MCR_CTRL_VDDCSW_POS);
 
-        /* Lower VCOREA to save power */
-        MXC_SIMO_SetVregO_C(850);
+            /* Lower VCOREA to save power */
+            MXC_SIMO_SetVregO_C(850);
 
-        /* Wait for VCOREA ready. */
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {}
-    }
+            /* Wait for VCOREA ready. */
+            while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {}
+        }
     }
 
     MXC_LP_ClearWakeStatus();

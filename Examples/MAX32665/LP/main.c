@@ -160,8 +160,6 @@ void setTrigger(int waitForTrigger)
 }
 #endif // USE_BUTTON
 
-
-
 int main(void)
 {
     PRINT("\n\n****Low Power Mode Example****\n\n");
