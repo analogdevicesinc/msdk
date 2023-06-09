@@ -159,10 +159,10 @@ __isr_vector:
     .long WDT1_IRQHandler           /* 0x49  0x0124  73: Watchdog 1 */
     .long GPIO3_IRQHandler          /* 0x4A  0x0128  74: GPIO 3 */
     .long PT_IRQHandler             /* 0x4B  0x012C  75: Pulse train */
-    .long RISCV0_IRQHandler         /* 0x4C  0x0130  76: RISCV 0 */
+    .long RISCV1_IRQHandler         /* 0x4C  0x0130  76: RISCV 1 */
     .long RSV61_IRQHandler          /* 0x4D  0x0134  77: Reserved */
     .long I2C2_IRQHandler           /* 0x4E  0x0138  78: I2C 2 */
-    .long RISCV1_IRQHandler         /* 0x4F  0x013C  79: RISCV 1 */
+    .long RISCV0_IRQHandler         /* 0x4F  0x013C  79: RISCV 0 */
     .long EMAC_IRQHandler           /* 0x50  0x0140  80: Ethernet MAC */
     .long RSV65_IRQHandler          /* 0x51  0x0144  81: Reserved */
     .long SDHC_IRQHandler           /* 0x52  0x0148  82: SDIO/SDHC */
@@ -397,10 +397,10 @@ Reset_Handler:
     def_irq_handler    WDT1_IRQHandler           /* 0x49  0x0124  73: Watchdog 1 */
     def_irq_handler    GPIO3_IRQHandler          /* 0x4A  0x0128  74: GPIO3 */
     def_irq_handler    PT_IRQHandler             /* 0x4B  0x012C  75: Pulse train */
-    def_irq_handler    RISCV0_IRQHandler            /* 0x4C  0x0130  76: RISCV 0 */
+    def_irq_handler    RISCV1_IRQHandler         /* 0x4C  0x0130  76: RISCV 1 */
     def_irq_handler    RSV61_IRQHandler          /* 0x4D  0x0134  77: Reserved */
     def_irq_handler    I2C2_IRQHandler           /* 0x4E  0x0138  78: I2C 2 */
-    def_irq_handler    RSICV1_IRQHandler         /* 0x4F  0x013C  79: RISCV 1 */
+    def_irq_handler    RSICV0_IRQHandler         /* 0x4F  0x013C  79: RISCV 0 */
     def_irq_handler    EMAC_IRQHandler           /* 0x50  0x0140  80: Ethernet MAC */
     def_irq_handler    RSV65_IRQHandler          /* 0x51  0x0144  81: Reserved */
     def_irq_handler    SDHC_IRQHandler           /* 0x52  0x0148  82: SDIO/SDHC */
