@@ -1221,8 +1221,6 @@ void DatcHandlerInit(wsfHandlerId_t handlerId)
     AppGetBdAddr(addr);
     APP_TRACE_INFO6("MAC Addr: %02x:%02x:%02x:%02x:%02x:%02x", addr[5], addr[4], addr[3], addr[2], addr[1], addr[0]);
 
-
-
     /* store handler ID */
     datcCb.handlerId = handlerId;
 

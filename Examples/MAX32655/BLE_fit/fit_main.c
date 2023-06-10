@@ -704,7 +704,6 @@ void FitHandlerInit(wsfHandlerId_t handlerId)
     APP_TRACE_INFO6("MAC Addr: %02x:%02x:%02x:%02x:%02x:%02x", addr[5], addr[4], addr[3], addr[2], addr[1], addr[0]);
     APP_TRACE_INFO1("Adv local name: %s", &fitScanDataDisc[2]);
 
-
     /* store handler ID */
     fitHandlerId = handlerId;
 
