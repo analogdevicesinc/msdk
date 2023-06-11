@@ -323,6 +323,19 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
                  unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins);
 
 /**
+ * @brief   This function sets the drivers to initialize DMA for SPI DMA transactions.
+ * 
+ * This function DOES NOT initialize DMA for SPI. This is a helper function 
+ * for the new SPI implementation to be compatible with the legacy SPI API.
+ * 
+ * This function MUST be called before calling MXC_SPI_Init(...) when using any DMA
+ * SPI functions.
+ *
+ * @param   use             True(1)/False(0) Condition to use DMA or not.        
+ */
+void MXC_SPI_UseDMA(int use);
+
+/**
  * @brief   Disable and shutdown the SPI instance.
  *
  * @param   spi         Pointer to SPI instance's registers.
