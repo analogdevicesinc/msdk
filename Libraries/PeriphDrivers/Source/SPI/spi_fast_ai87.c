@@ -123,12 +123,17 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
     // By default for the new implementation, the data_size will be set to 8 bits.
     init->data_size = 8;
 
+    // init->use_dma = false;
     init->use_dma = true;
     init->dma = MXC_DMA;
 
     return E_NO_ERROR;
 }
 
+static void MXC_SPI_legacy_setupInitDMA(mxc_spi_init_t *init)
+{
+
+}
 
 int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
                  unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
