@@ -92,7 +92,6 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
 {
     int spi_num;
     int remain;
-    uint32_t inten;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
@@ -886,7 +885,7 @@ uint32_t MXC_SPI_RevA2_WriteTXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *buffer, 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
 
-    if (buffer != NULL || len == 0) {
+    if (buffer == NULL || len == 0) {
         return 0;
     }
 
@@ -930,7 +929,7 @@ uint32_t MXC_SPI_RevA2_ReadRXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *buffer, u
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
 
-    if (buffer != NULL || len != 0) {
+    if (buffer == NULL || len == 0) {
         return 0;
     }
 
