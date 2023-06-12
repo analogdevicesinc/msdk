@@ -54,19 +54,24 @@
 
 class HelloClass {
 public:
-    HelloClass() {
+    HelloClass()
+    {
         printf("Hello class!\n");
         count = 0;
     }
-    void hello_method() {
+    void hello_method()
+    {
         printf("Hello method!\n");
     }
-    void increment_count() {
+    void increment_count()
+    {
         this->count++;
     }
-    int get_count() {
+    int get_count()
+    {
         return this->count;
     }
+
 protected:
 private:
     int count;
@@ -74,7 +79,7 @@ private:
 
 // *****************************************************************************
 int main()
-{ 
+{
     HelloClass my_class = HelloClass();
     my_class.hello_method();
 
