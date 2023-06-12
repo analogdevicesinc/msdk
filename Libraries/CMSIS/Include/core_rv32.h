@@ -332,7 +332,7 @@ typedef struct {
 /*@} end of group CMSIS_NVIC */
   
 /* For MCUs with extra RISCV core (RISCV1) */
-#ifdef (__riscv1)
+#ifdef __riscv1
 #define MXC_BASE_INTR   ((uint32_t)0xE5170000UL)
 #define MXC_BASE_EVENT  ((uint32_t)0xE5170020UL)
 #define MXC_BASE_SLEEP  ((uint32_t)0xE5170040UL)
