@@ -92,6 +92,12 @@ int MXC_SPI_RevA2_DMA_GetRXChannel(mxc_spi_reva_regs_t *spi);
 
 int MXC_SPI_RevA2_DMA_SetRequestSelect(mxc_spi_reva_regs_t *spi, uint32_t tx_reqsel, uint32_t rx_reqsel);
 
+/* ** Lower-Level Functions ** */
+
+uint32_t MXC_SPI_RevA2_WriteTXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *buffer, uint32_t len);
+
+uint32_t MXC_SPI_RevA2_ReadRXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *buffer, uint32_t len);
+
 /* ** Transaction Functions ** */
 
 int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_len, uint8_t *rx_buffer, uint32_t rx_len, uint8_t deassert, mxc_spi_target_t *target);
