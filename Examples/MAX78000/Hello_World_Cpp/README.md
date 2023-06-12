@@ -43,4 +43,4 @@ count : 2
 count : 3
 ```
 
-You will also observe the LED (LED1 for EvKit_V1 or D1 for the Featherboard) blinking at a rate of 2Hz.
+You will also observe LED1 blinking at a rate of 1Hz.
