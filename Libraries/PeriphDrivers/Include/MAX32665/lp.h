@@ -576,7 +576,6 @@ void MXC_LP_ICache0LightSleepEnable(void);
  */
 void MXC_LP_ICache1LightSleepEnable(void);
 
-
 #ifdef __cplusplus
 }
 #endif
