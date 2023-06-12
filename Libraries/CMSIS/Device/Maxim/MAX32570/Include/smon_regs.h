@@ -230,6 +230,9 @@ typedef struct {
 #define MXC_F_SMON_SECALM_DRST_POS                     0 /**< SECALM_DRST Position */
 #define MXC_F_SMON_SECALM_DRST                         ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_DRST_POS)) /**< SECALM_DRST Mask */
 
+#define MXC_F_SMON_SECALM_KEYWIPE_POS                  1 /**< SECALM_KEYWIPE Position */
+#define MXC_F_SMON_SECALM_KEYWIPE                      ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_KEYWIPE_POS)) /**< SECALM_KEYWIPE Mask */
+
 #define MXC_F_SMON_SECALM_SHIELD_FL_POS                2 /**< SECALM_SHIELD_FL Position */
 #define MXC_F_SMON_SECALM_SHIELD_FL                    ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_SHIELD_FL_POS)) /**< SECALM_SHIELD_FL Mask */
 

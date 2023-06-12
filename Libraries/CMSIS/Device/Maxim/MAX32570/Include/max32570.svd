@@ -19825,6 +19825,12 @@
        </enumeratedValues>
       </field>
       <field>
+       <name>KEYWIPE</name>
+       <description>Clears the battery-backed keys.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>SHIELD_FL</name>
        <description>Die Shield Flag.</description>
        <bitOffset>2</bitOffset>
