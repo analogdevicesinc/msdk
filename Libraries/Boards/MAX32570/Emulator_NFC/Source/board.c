@@ -43,50 +43,28 @@
 #include "mxc_pins.h"
 #include "led.h"
 #include "pb.h"
-#include "spixc.h"
+#include "spixf.h"
+#include "Ext_Flash.h"
 
 /***** Global Variables *****/
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 const mxc_gpio_cfg_t pb_pin[] = {
-    { MXC_GPIO_PORT_2, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO_PORT_2, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO_PORT_2, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_15, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    { MXC_GPIO_PORT_2, MXC_GPIO_PIN_27, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-      MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO_PORT_2, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-      MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO_PORT_2, MXC_GPIO_PIN_29, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-      MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_27, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_28, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO2, MXC_GPIO_PIN_29, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /***** File Scope Variables *****/
-static const uart_cfg_t uart_cfg = { .parity = UART_PARITY_DISABLE,
-                                     .size = UART_DATA_SIZE_8_BITS,
-                                     .stop = UART_STOP_1,
-                                     .flow = UART_FLOW_CTRL_DIS,
-                                     .pol = UART_FLOW_POL_DIS,
-                                     .baud = CONSOLE_BAUD,
-                                     .clksel = UART_CLKSEL_SYSTEM };
-
-const sys_cfg_uart_t uart_sys_cfg = {
-    MAP_A, Disable
-}; // There is no special system configuration parameters for UART on MAX32650
-
-const sys_cfg_spixc_t spixc_sys_cfg =
-    NULL; // There is no special system configuration parameters for SPIXC on MAX32650
-
-const spixc_cfg_t mx25_spixc_cfg = {
-    0, //mode
-    0, //ssel_pol
-    1000000 //baud
-};
 
 /******************************************************************************/
 void mxc_assert(const char *expr, const char *file, int line)
@@ -97,9 +75,55 @@ void mxc_assert(const char *expr, const char *file, int line)
 }
 
 /******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO2_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
+}
+
+/******************************************************************************/
+static int ext_flash_board_init(void)
+{
+    return MXC_SPIXF_Init(0, EXT_FLASH_BAUD);
+}
+
+/******************************************************************************/
+static int ext_flash_board_read(uint8_t *read, unsigned len, unsigned deassert,
+                                Ext_Flash_DataLine_t width)
+{
+    mxc_spixf_req_t req = { deassert, 0, NULL, read, (mxc_spixf_width_t)width, len, 0, 0, NULL };
+
+    if (MXC_SPIXF_Transaction(&req) != len) {
+        return E_COMM_ERR;
+    }
+    return E_NO_ERROR;
+}
+
+/******************************************************************************/
+static int ext_flash_board_write(const uint8_t *write, unsigned len, unsigned deassert,
+                                 Ext_Flash_DataLine_t width)
+{
+    mxc_spixf_req_t req = { deassert, 0, write, NULL, (mxc_spixf_width_t)width, len, 0, 0, NULL };
+
+    if (MXC_SPIXF_Transaction(&req) != len) {
+        return E_COMM_ERR;
+    }
+    return E_NO_ERROR;
+}
+
+/******************************************************************************/
+static int ext_flash_clock(unsigned len, unsigned deassert)
+{
+    return MXC_SPIXF_Clocks(len, deassert);
+}
+
+/******************************************************************************/
 void SystemCoreClockUpdate(void)
 {
-    SystemCoreClock = CRYPTO_FREQ;
+    SystemCoreClock = ISO_FREQ;
 }
 
 /******************************************************************************/
@@ -107,26 +131,27 @@ int Board_Init(void)
 {
     int err;
 
-    SYS_Clock_Select(SYS_CLOCK_HIRC96, MXC_TMR0);
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 
-    /*
-        if ((err = MX25_BoardInit()) != E_NO_ERROR) {
-            MXC_ASSERT_FAIL();
-            return err;
-        }
-    */
+    Ext_Flash_Config_t exf_cfg = { .init = ext_flash_board_init,
+                                   .read = ext_flash_board_read,
+                                   .write = ext_flash_board_write,
+                                   .clock = ext_flash_clock };
+
+    if ((err = Ext_Flash_Configure(&exf_cfg)) != E_NO_ERROR) {
+        return err;
+    }
+
     if ((err = Console_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
 
-    /*
-        if ((err = PB_Init()) != E_NO_ERROR) {
-            MXC_ASSERT_FAIL();
-            return err;
-        }
-    
-    */
+    if ((err = PB_Init()) != E_NO_ERROR) {
+        MXC_ASSERT_FAIL();
+        return err;
+    }
+
     if ((err = LED_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
@@ -140,7 +165,7 @@ int Console_Init(void)
 {
     int err;
 
-    if ((err = UART_Init(ConsoleUart, &uart_cfg, &uart_sys_cfg)) != E_NO_ERROR) {
+    if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD)) != E_NO_ERROR) {
         return err;
     }
 
@@ -151,32 +176,4 @@ int Console_Init(void)
 void NMI_Handler(void)
 {
     __NOP();
-}
-
-/******************************************************************************/
-int MX25_BoardInit(void)
-{
-    return SPIXC_Init(MX25_SPI, &mx25_spixc_cfg, &spixc_sys_cfg);
-}
-
-/******************************************************************************/
-int MX25_Board_Read(uint8_t *read, unsigned len, unsigned deassert, spixc_width_t width)
-{
-    spixc_req_t req = { MX25_SSEL, deassert, 0, NULL, read, width, len, 0, 0, NULL };
-
-    return SPIXC_Trans(MX25_SPI, &req);
-}
-
-/******************************************************************************/
-int MX25_Board_Write(const uint8_t *write, unsigned len, unsigned deassert, spixc_width_t width)
-{
-    spixc_req_t req = { MX25_SSEL, deassert, 0, write, NULL, width, len, 0, 0, NULL };
-
-    return SPIXC_Trans(MX25_SPI, &req);
-}
-
-/******************************************************************************/
-int MX25_Clock(unsigned len, unsigned deassert)
-{
-    return SPIXC_Clocks(MX25_SPI, len, MX25_SSEL, deassert);
 }

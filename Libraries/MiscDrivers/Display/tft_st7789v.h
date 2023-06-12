@@ -248,6 +248,8 @@ void MXC_TFT_ShowImageCameraMono(int x0, int y0, uint8_t *image, int width, int 
  */
 void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, int iHeight);
 
+void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height);
+
 /**
  * @brief      Fills screen with one color
  *

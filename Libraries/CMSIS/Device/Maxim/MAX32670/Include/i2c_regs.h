@@ -2,6 +2,7 @@
  * @file    i2c_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the I2C Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup i2c_registers
  */
 
 /******************************************************************************

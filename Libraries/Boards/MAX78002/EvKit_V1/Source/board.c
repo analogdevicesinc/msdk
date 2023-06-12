@@ -109,6 +109,16 @@ void mxc_assert(const char *expr, const char *file, int line)
     while (1) {}
 }
 
+/******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO2_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
+}
+
 #ifdef TFT_NEWHAVEN
 void TFT_SPI_Init(void)
 {
@@ -330,6 +340,7 @@ int Board_Init(void)
     ts_irq_pin.port->intmode |= ts_irq_pin.mask;
     ts_irq_pin.port->intpol &= ~(ts_irq_pin.mask);
     MXC_TS_AssignInterruptPin(ts_irq_pin);
+    MXC_TFT_Init(NULL, NULL);
 #endif
 
 // AI87-TODO: What's the reason for this deletion?

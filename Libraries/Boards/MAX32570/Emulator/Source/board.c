@@ -73,30 +73,32 @@ void mxc_assert(const char *expr, const char *file, int line)
 }
 
 /******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO2_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
+}
+
+/******************************************************************************/
 int Board_Init(void)
 {
     int err;
 
-    SYS_Clock_Select(SYS_CLOCK_HIRC96, MXC_TMR0);
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 
-    /*
-        if ((err = MX25_BoardInit()) != E_NO_ERROR) {
-            MXC_ASSERT_FAIL();
-            return err;
-        }
-    */
     if ((err = Console_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
     }
 
-    /*
-        if ((err = PB_Init()) != E_NO_ERROR) {
-            MXC_ASSERT_FAIL();
-            return err;
-        }
-    
-    */
+    if ((err = PB_Init()) != E_NO_ERROR) {
+        MXC_ASSERT_FAIL();
+        return err;
+    }
+
     if ((err = LED_Init()) != E_NO_ERROR) {
         MXC_ASSERT_FAIL();
         return err;
@@ -110,7 +112,7 @@ int Console_Init(void)
 {
     int err;
 
-    if (UART_Init(ConsoleUart, 0, CONSOLE_BAUD) < 0) {
+    if (MXC_UART_Init(ConsoleUart, CONSOLE_BAUD) < 0) {
         return err;
     }
 
@@ -122,34 +124,3 @@ void NMI_Handler(void)
 {
     __NOP();
 }
-
-// /******************************************************************************/
-// int MX25_Board_Init(void)
-// {
-//     return SPIXFC_Init(MX25_SPI, &mx25_spixfc_cfg, &spixfc_sys_cfg);
-
-// }
-
-// /******************************************************************************/
-// int MX25_Board_Read(uint8_t* read, unsigned len, unsigned deassert, spixfc_width_t width)
-// {
-
-//     // spixfc_req_t req = {MX25_SSEL,deassert,0,NULL,read, width,len,0,0,NULL};
-
-//     // return SPIXFC_Trans(MX25_SPI, &req);
-// }
-
-// ****************************************************************************
-// int MX25_Board_Write(const uint8_t* write, unsigned len, unsigned deassert, spixfc_width_t width)
-// {
-
-//     // spixfc_req_t req = {MX25_SSEL,deassert,0,write,NULL, width,len,0,0,NULL};
-
-//     // return SPIXFC_Trans(MX25_SPI, &req);
-// }
-
-// /******************************************************************************/
-// int MX25_Clock(unsigned len, unsigned deassert)
-// {
-//     return SPIXFC_Clocks(MX25_SPI, len, MX25_SSEL, deassert);
-// }

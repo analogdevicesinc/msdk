@@ -77,7 +77,7 @@ int PB_Init(void);
 typedef void (*pb_callback)(void *pb);
 
 /**
- * @brief      Register or Unregister a callback handler for events on the @p pb push button.
+ * @brief      Register or Unregister a callback handler for falling edge events on the @p pb push button.
  * @details
  * - Calling this function with a pointer to a function @p callback, configures the pushbutton @p pb and enables the
  * interrupt to handle the push button events.
@@ -91,6 +91,22 @@ typedef void (*pb_callback)(void *pb);
  * @retval     "Error Code" @ref MXC_Error_Codes "Error Code" if unsuccessful.
  */
 int PB_RegisterCallback(unsigned int pb, pb_callback callback);
+
+/**
+ * @brief      Register or Unregister a callback handler for BOTH RISING AND FALLING edges events on the @p pb push button.
+ * @details
+ * - Calling this function with a pointer to a function @p callback, configures the pushbutton @p pb and enables the
+ * interrupt to handle the push button events.
+ * - Calling this function with a <tt>NULL</tt> pointer will disable the interrupt and unregister the
+ * callback function.
+ * @p pb must be a value between 0 and #num_pbs.
+ *
+ * @param      pb        push button index to receive event callbacks.
+ * @param      callback  Callback function pointer of type @c pb_callback
+ * @retval     #E_NO_ERROR if configured and callback registered successfully.
+ * @retval     "Error Code" @ref MXC_Error_Codes "Error Code" if unsuccessful.
+ */
+int PB_RegisterCallbackRiseFall(unsigned int pb, pb_callback callback);
 
 /**
  * @brief   Enable a callback interrupt.
@@ -118,6 +134,13 @@ void PB_IntClear(unsigned int pb);
  * @retval     FALSE  The button is not pressed.
  */
 int PB_Get(unsigned int pb);
+
+/**
+ * @brief      Check if any buttons are pressed
+ * @retval     TRUE   At least one of the buttons on the board is pressed.
+ * @retval     FALSE  None of the buttons on the board are pressed.
+ */
+int PB_IsPressedAny(void);
 /**@}*/
 #ifdef __cplusplus
 }

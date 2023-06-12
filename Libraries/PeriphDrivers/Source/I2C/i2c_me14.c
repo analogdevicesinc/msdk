@@ -45,9 +45,6 @@
 #include "i2c.h"
 #include "i2c_reva.h"
 
-/* **** Definitions **** */
-#define MXC_I2C_FASTPLUS_SPEED 1000000
-
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INT_FL0_RD_ADDR_MATCH | MXC_F_I2C_INT_FL0_WR_ADDR_MATCH |
                           MXC_F_I2C_INT_FL0_DO_NOT_RESP_ER;
@@ -124,11 +121,6 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t *i2c)
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz)
 {
-    // ME13 doesn't support high speed more
-    if (hz > MXC_I2C_FASTPLUS_SPEED) {
-        return E_NOT_SUPPORTED;
-    }
-
     return MXC_I2C_RevA_SetFrequency((mxc_i2c_reva_regs_t *)i2c, hz);
 }
 

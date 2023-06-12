@@ -77,7 +77,7 @@ typedef enum {
     MXC_SYS_RESET0_CAN1 = MXC_F_GCR_RST0_CAN1_POS, /**< Reset CAN1 */
     MXC_SYS_RESET0_HPB = MXC_F_GCR_RST0_HPB_POS, /**< Reset HPB */
     MXC_SYS_RESET0_SMPHR = MXC_F_GCR_RST0_SMPHR_POS, /**< Reset SMPHR */
-    MXC_SYS_RESET0_USB = MXC_F_GCR_RST0_USB, /**< Reset USB */
+    MXC_SYS_RESET0_USB = MXC_F_GCR_RST0_USB_POS, /**< Reset USB */
     MXC_SYS_RESET0_TRNG = MXC_F_GCR_RST0_TRNG_POS, /**< Reset TRNG */
     MXC_SYS_RESET0_ADC = MXC_F_GCR_RST0_ADC_POS, /**< Reset ADC */
     MXC_SYS_RESET0_UART2 = MXC_F_GCR_RST0_UART2_POS, /**< Reset UART2 */
@@ -225,7 +225,7 @@ typedef struct {
     int in_critical;
 } mxc_crit_state_t;
 
-static mxc_crit_state_t _state = { .ie_status = 0xFFFFFFFF, .in_critical = 0 };
+static mxc_crit_state_t _state = { .ie_status = (int)0xFFFFFFFF, .in_critical = 0 };
 
 static inline void _mxc_crit_get_state()
 {

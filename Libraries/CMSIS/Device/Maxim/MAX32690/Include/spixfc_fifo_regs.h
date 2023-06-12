@@ -2,6 +2,7 @@
  * @file    spixfc_fifo_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SPIXFC_FIFO Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup spixfc_fifo_registers
  */
 
 /******************************************************************************

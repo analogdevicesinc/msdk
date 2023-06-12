@@ -2,6 +2,7 @@
  * @file    bbfc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the BBFC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup bbfc_registers
  */
 
 /******************************************************************************

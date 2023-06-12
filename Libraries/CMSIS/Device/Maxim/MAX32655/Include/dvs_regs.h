@@ -2,6 +2,7 @@
  * @file    dvs_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the DVS Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup dvs_registers
  */
 
 /******************************************************************************

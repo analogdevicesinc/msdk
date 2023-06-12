@@ -2,6 +2,7 @@
  * @file    usbhs_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the USBHS Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup usbhs_registers
  */
 
 /******************************************************************************

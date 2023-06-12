@@ -103,8 +103,10 @@ endif
 # the variables below.
 
 
-include ./project.mk
+PROJECTMK ?= $(abspath ./project.mk)
+include $(PROJECTMK)
 $(info Loaded project.mk)
+# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
@@ -250,22 +252,6 @@ MFLOAT_ABI ?= softfp
 # MFLOAT_ABI must be exported to other Makefiles
 export MFLOAT_ABI
 
-ifeq "$(RISCV_CORE)" ""
-# Default linkerfile is only specified for standard Arm-core projects.
-# Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
-LINKERFILE ?= $(TARGET_LC).ld
-LINKERPATH ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
-
-# Check if linkerfile exists
-ifeq ("$(wildcard $(LINKERPATH)/$(LINKERFILE))","")
-# Doesn't exists, attempt to use root project folder.
-LINKERPATH:=.
-endif
-
-# Form full path to linkerfile.  Works around MSYS2 edge case from (see MSDK-903).
-LINKERFILE:=$(LINKERPATH)/$(LINKERFILE)
-endif
-
 # This path contains system-level intialization files for the target micro.  Add to the build.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 
@@ -334,6 +320,10 @@ endif
 # Enable colors when --sync-output is used.
 # See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
 ifneq ($(MAKE_TERMOUT),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+ifneq ($(FORCE_COLOR),)
 PROJ_CFLAGS += -fdiagnostics-color=always
 endif
 

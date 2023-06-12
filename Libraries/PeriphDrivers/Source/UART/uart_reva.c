@@ -230,7 +230,7 @@ int MXC_UART_RevA_GetFrequency(mxc_uart_reva_regs_t *uart)
         decimalDiv += 3;
     }
 
-    uartDiv += decimalDiv / 128.0;
+    uartDiv += decimalDiv / (float)128;
     uartDiv *= (1 << (7 - (uart->baud0 & MXC_F_UART_REVA_BAUD0_FACTOR)));
 
     return (int)((float)periphClock / uartDiv);
@@ -886,13 +886,15 @@ int MXC_UART_RevA_TransactionAsync(mxc_uart_reva_req_t *req)
         }
 
         req->txCnt = 0;
+        TxAsyncRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
 
+        // Enable TX Threshold interrupt
         MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVA_INT_EN_TX_FIFO_THRESH);
+
         numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
         req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart), &req->txData[req->txCnt],
                                            numToWrite);
-        TxAsyncRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
     }
 
     if (req->rxLen) {
@@ -902,17 +904,19 @@ int MXC_UART_RevA_TransactionAsync(mxc_uart_reva_req_t *req)
         }
 
         req->rxCnt = 0;
+        RxAsyncRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
 
         // All error interrupts are related to RX
         MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_UART_REVA_ERRINT_EN);
 
+        // Enable RX Threshold interrupt
         MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVA_INT_EN_RX_FIFO_THRESH);
+
         numToRead = MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
         numToRead = numToRead > (req->rxLen - req->rxCnt) ? req->rxLen - req->rxCnt : numToRead;
         req->rxCnt += MXC_UART_ReadRXFIFO((mxc_uart_regs_t *)(req->uart), &req->rxData[req->rxCnt],
                                           numToRead);
         MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVA_INT_FL_RX_FIFO_THRESH);
-        RxAsyncRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
     }
 
     return E_NO_ERROR;

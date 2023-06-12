@@ -54,7 +54,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case MXC_TMR_32K_CLK:
-        if (tmr_id < 5) { // Timers 0-4 do not support this clock source
+        if (tmr_id < 4) { // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
 
@@ -64,7 +64,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case MXC_TMR_80K_CLK:
-        if (tmr_id < 5) { // Timers 0-4 do not support this clock source
+        if (tmr_id < 4) { // Timers 0-3 do not support this clock source
             return E_NOT_SUPPORTED;
         }
 
@@ -74,7 +74,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case MXC_TMR_8M_CLK:
-        if (tmr_id > 4) { // Timers 5-6 do not support this clock source
+        if (tmr_id > 3) { // Timer 4 do not support this clock source
             return E_NOT_SUPPORTED;
         }
 
@@ -84,7 +84,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case MXC_TMR_32M_CLK:
-        if (tmr_id > 4) { // Timers 5-6 do not support this clock source
+        if (tmr_id > 3) { // Timer 4 do not support this clock source
             return E_NOT_SUPPORTED;
         }
 
@@ -164,18 +164,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
 
     case 5:
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET_TMR5);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_TMR5);
-
-        if (init_pins) {
-            if (cfg->bitMode != TMR_BIT_MODE_16B) {
-                MXC_GPIO_Config(&gpio_cfg_tmr5);
-            } else {
-                return E_NOT_SUPPORTED;
-                break;
-            }
-        }
-
+        return E_NOT_SUPPORTED;
         break;
     }
 
@@ -210,10 +199,6 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
 
     case 4:
         MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR4);
-        break;
-
-    case 5:
-        MXC_SYS_ClockDisable(MXC_SYS_PERIPH_CLOCK_TMR5);
         break;
     }
 }

@@ -35,19 +35,24 @@
  * ownership rights.
  ******************************************************************************
  */
-#ifndef _MXC_ETH_H_
-#define _MXC_ETH_H_
+#ifndef LIBRARIES_LWIP_INCLUDE_MAXIM_MXC_ETH_H_
+#define LIBRARIES_LWIP_INCLUDE_MAXIM_MXC_ETH_H_
 
 #include "lwip/netif.h"
+#include "lwip/tcpip.h"
 
-#define MXC_ETH_INTERNAL_BUFF_SIZE			2048
-#define MXC_NETIF_MTU_SIZE					1500
-#define MXC_ETH_MAX_DATA_SIZE				(MXC_NETIF_MTU_SIZE + 14)
+#define MXC_ETH_INTERNAL_BUFF_SIZE 2048
+#define MXC_NETIF_MTU_SIZE 1500
+#define MXC_ETH_MAX_DATA_SIZE (MXC_NETIF_MTU_SIZE + 14)
 
 typedef struct {
-	char						name[2];
-	netif_status_callback_fn	link_callback;
-	unsigned int				(*sys_get_ms)(void);
+    char name[2];
+    netif_status_callback_fn    link_callback;
+#if !NO_SYS
+    tcpip_init_done_fn          init_done_callback;
+    void                        *init_done_arg;
+#endif
+    unsigned int                (*sys_get_ms)(void);
 } mxc_eth_config_t;
 
 /**
@@ -74,5 +79,4 @@ void MXC_ETH_RecvIrq(void);
  */
 int MXC_ETH_Tick(void);
 
-#endif /* _MXC_ETH_H_ */
-
+#endif // LIBRARIES_LWIP_INCLUDE_MAXIM_MXC_ETH_H_

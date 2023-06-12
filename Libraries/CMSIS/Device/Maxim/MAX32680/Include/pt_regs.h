@@ -2,6 +2,7 @@
  * @file    pt_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the PT Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup pt_registers
  */
 
 /******************************************************************************

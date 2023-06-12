@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-10-17 15:36:13 -0500 (Tue, 17 Oct 2017) $ 
- * $Revision: 31422 $
- *
  ******************************************************************************/
 
 #include <string.h>
@@ -54,7 +51,7 @@
 #define CBW_LEN                         31
 #define CSW_LEN                         13
 #define ATARESPONE_LEN                  8
-#define LOG_SENSE_LEN	                9
+#define LOG_SENSE_LEN                    9
 #define REQSENSE_LEN                    18
 #define MODESENSE_LEN                   4
 #define INQUIRY_LEN                     36
@@ -79,7 +76,7 @@
 #define CMD_MODE_SENSE_10               0x5A
 #define CMD_READ_CAPACITY_16            0x9E
 #define CMD_ATA_PASS_THROUGH            0x85
-#define CMD_NOT_SUPPORTED				0xFF
+#define CMD_NOT_SUPPORTED               0xFF
 
 #define REQSENSE_OK                     0
 #define REQSENSE_CHECK_CONDITION        2
@@ -152,25 +149,25 @@ static void msc_sendATAsense(void);
 int msc_init(const MXC_USB_interface_descriptor_t *if_desc, const msc_idstrings_t* ids, const msc_mem_t* funcs)
 {
     int err;
-    
+
     ep_from_host = 0;
     ep_to_host = 0;
-    
+
     memcpy(&id_strings, ids, sizeof(msc_idstrings_t));
     memcpy(&mem, funcs, sizeof(msc_mem_t));
-    
+
     /* Prep "disk" memory */
     err = mem.init();
 
     if (!err) {
-	/* Pull any existing class-specific callback, in case of multi-class devices */
-	enum_query_callback(ENUM_CLASS_REQ, &chained_func, &chained_cbdata); 
-      
-	/* Handle class-specific SETUP requests */
-	err = enum_register_callback(ENUM_CLASS_REQ, msc_classReq, NULL);
+    /* Pull any existing class-specific callback, in case of multi-class devices */
+    enum_query_callback(ENUM_CLASS_REQ, &chained_func, &chained_cbdata);
 
-	/* Store interface number */
-	if_num = if_desc->bInterfaceNumber;
+    /* Handle class-specific SETUP requests */
+    err = enum_register_callback(ENUM_CLASS_REQ, msc_classReq, NULL);
+
+    /* Store interface number */
+    if_num = if_desc->bInterfaceNumber;
     }
 
     /* Return zero for success or non-zero for error. */
@@ -182,12 +179,12 @@ int msc_init(const MXC_USB_interface_descriptor_t *if_desc, const msc_idstrings_
 int msc_configure(const msc_cfg_t *cfg)
 {
     int err;
-    
+
     /* This driver is limited to handling blocks no bigger than MAX_PACKET_SIZE. */
     if ((cfg->out_maxpacket > MAX_PACKET_SIZE) || (cfg->in_maxpacket > MAX_PACKET_SIZE))
-	{
-	    return 1;
-	}
+    {
+        return 1;
+    }
 
     /* Setup endpoint used to receive communication from the host. */
     ep_from_host = cfg->out_ep;
@@ -202,7 +199,7 @@ int msc_configure(const msc_cfg_t *cfg)
         msc_deconfigure();
         return err;
     }
-    
+
     /* Device has been configured, prep the memory for transactions. */
     return mem.start();
 }
@@ -213,12 +210,12 @@ int msc_deconfigure()
 {
     /* Release endpoints if they have been configured */
     if (ep_from_host != 0) {
-    	MXC_USB_ResetEp(ep_from_host);
+        MXC_USB_ResetEp(ep_from_host);
         ep_from_host = 0;
     }
 
     if (ep_to_host != 0) {
-    	MXC_USB_ResetEp(ep_to_host);
+        MXC_USB_ResetEp(ep_to_host);
         ep_to_host = 0;
     }
 
@@ -230,37 +227,37 @@ int msc_deconfigure()
 static int msc_classReq(MXC_USB_SetupPkt *sud, void *cbdata)
 {
     int result = -1; /* Default response is to STALL */
-    
+
     if ((sud->bmRequestType & RT_RECIP_IFACE) && (sud->wIndex == if_num)) {
-	/* Directed to our interface */
-	switch (sud->bRequest) {
-	    case MSC_GET_MAX_LUN:
-		if (sud->bmRequestType & RT_DEV_TO_HOST) {
-		    /* Get Max LUN */
-		    req_data[0] = 0;
-		    msc_write(EP_CONTROL, 1, (void *)msc_waitForCBW);
-		    /* Success, with data stage */
-		    result = 1;
-		}
-		break;
-	    case MSC_MASS_STORAGE_RESET:
-		/* Reset the control endpoint */
-		/* Abort any in-progress USB request */
-	    	MXC_USB_RemoveRequest(&req);
-		/* Prepare for new CBW */
-		msc_waitForCBW();
-		/* Success, no data stage */
-		result = 0;
-		break;
-	    default:
-		/* Unexpected message received -- stall */
-		break;
-	}
+    /* Directed to our interface */
+    switch (sud->bRequest) {
+        case MSC_GET_MAX_LUN:
+        if (sud->bmRequestType & RT_DEV_TO_HOST) {
+            /* Get Max LUN */
+            req_data[0] = 0;
+            msc_write(EP_CONTROL, 1, (void *)msc_waitForCBW);
+            /* Success, with data stage */
+            result = 1;
+        }
+        break;
+        case MSC_MASS_STORAGE_RESET:
+        /* Reset the control endpoint */
+        /* Abort any in-progress USB request */
+            MXC_USB_RemoveRequest(&req);
+        /* Prepare for new CBW */
+        msc_waitForCBW();
+        /* Success, no data stage */
+        result = 0;
+        break;
+        default:
+        /* Unexpected message received -- stall */
+        break;
+    }
     } else {
-	/* Not for this class, send to chained classes (if any) */
-	if (chained_func != NULL) {
-	    result = chained_func(sud, chained_cbdata);
-	} 
+    /* Not for this class, send to chained classes (if any) */
+    if (chained_func != NULL) {
+        result = chained_func(sud, chained_cbdata);
+    }
     }
 
     return result;
@@ -288,19 +285,19 @@ static void msc_writeComplete(void* cbdata)
 {
     /* A write to the host has completed.  Check if the correct number of bytes were transferred. */
     if ((!req.error_code) && (req.reqlen == req.actlen)) {
-	if (!req.ep) {
-	    /* ACK the status stage, only for Control EP */
-		MXC_USB_Ackstat(req.ep);
-	}
+    if (!req.ep) {
+        /* ACK the status stage, only for Control EP */
+        MXC_USB_Ackstat(req.ep);
+    }
         /* Call the requested function (if any) */
         if (cbdata) {
             ((callbackFunc*)cbdata)();
         }
     } else {
-	if (!req.ep) {
-	    /* Stall on error, only for Control EP */
-		MXC_USB_Stall(req.ep);
-	}
+    if (!req.ep) {
+        /* Stall on error, only for Control EP */
+        MXC_USB_Stall(req.ep);
+    }
     }
 }
 
@@ -336,21 +333,19 @@ static void msc_sendError(void)
 {
     unsigned int length;
     length = req_data[CBW_DATA_TRANSFER_LENGTH_IDX];
-	
-	if(length < CSW_LEN) {
-		if(length != 0) {
-			//Setup dummy reply
-			memset(req_data,0,length);
-			msc_write(ep_to_host, length, (void *)msc_sendCSW);
-		}
-		else {
-			msc_sendCSW();
-		}
-	}
-	else {
-		memcpy(req_data, csw_data, CSW_LEN);
-		msc_write(ep_to_host, CSW_LEN, (void *)msc_sendCSW);
-	}
+
+    if ( length < CSW_LEN ) {
+        if ( length != 0 ) {
+            //Setup dummy reply
+            memset(req_data, 0, length);
+            msc_write(ep_to_host, length, (void *)msc_sendCSW);
+        } else {
+            msc_sendCSW();
+        }
+    } else {
+        memcpy(req_data, csw_data, CSW_LEN);
+        msc_write(ep_to_host, CSW_LEN, (void *)msc_sendCSW);
+    }
 }
 
 /******************************************************************************/
@@ -359,8 +354,8 @@ static void msc_cbwReceived(void* cbdata)
 {
     /* Verify this is a valid CBW */
     if ((!req.error_code) &&
-	(req.actlen == CBW_LEN) &&
-	(strncmp((const char *)(req_data + CBW_SIGNATURE_IDX), "USBC", 4) == 0)) {
+    (req.actlen == CBW_LEN) &&
+    (strncmp((const char *)(req_data + CBW_SIGNATURE_IDX), "USBC", 4) == 0)) {
         /* Construct the response CSW */
         memset(csw_data, 0, CSW_LEN);
         memcpy(csw_data + CSW_SIGNATURE_IDX, "USBS", 4);
@@ -379,8 +374,8 @@ static void msc_cbwReceived(void* cbdata)
            data has been transmitted, a CSW must be sent.  Those commands that
            have no data can send the CSW immediately.  Others will need to rely
            on callbacks to send the CSW after the data is transmitted. */
-        if( previousCmd == CMD_NOT_SUPPORTED ) {
-            if(req_data[CBW_CB_IDX] != CMD_REQUEST_SENSE ) {
+        if ( previousCmd == CMD_NOT_SUPPORTED ) {
+            if ( req_data[CBW_CB_IDX] != CMD_REQUEST_SENSE ) {
                 previousCmd = 0;
             }
         }
@@ -393,11 +388,10 @@ static void msc_cbwReceived(void* cbdata)
                 msc_sendCSW();
                 break;
             case CMD_REQUEST_SENSE:
-                if(previousCmd == CMD_ATA_PASS_THROUGH) {
+                if ( previousCmd == CMD_ATA_PASS_THROUGH ) {
                     previousCmd = CMD_REQUEST_SENSE;
                     msc_sendATAsense();
-                }
-                else {
+                } else {
                     msc_sendRequestSense();
                 }
                 break;
@@ -455,21 +449,22 @@ static void msc_cbwReceived(void* cbdata)
             case CMD_ATA_PASS_THROUGH:
                 previousCmd = CMD_ATA_PASS_THROUGH;
                 csw_data[CSW_STATUS_IDX] = CSW_FAILED;
-            	memcpy(req_data, csw_data, CSW_LEN);
-            	msc_write(ep_to_host, CSW_LEN, (void *)msc_sendCSW);
-                break;/*
+                memcpy(req_data, csw_data, CSW_LEN);
+                msc_write(ep_to_host, CSW_LEN, (void *)msc_sendCSW);
+                break;
+                /*
             case CMD_LOG_SENSE:
                 csw_data[CSW_STATUS_IDX] = CSW_FAILED;
-            	memcpy(req_data, csw_data, CSW_LEN);
-            	msc_write(ep_to_host, LOG_SENSE_LEN, (void *)msc_sendCSW);
+                memcpy(req_data, csw_data, CSW_LEN);
+                msc_write(ep_to_host, LOG_SENSE_LEN, (void *)msc_sendCSW);
                 break;*/
 
             default:
                 /* This command wasn't recognized.  Send an error CSW. */
                 csw_data[CSW_STATUS_IDX] = CSW_FAILED;
-                //msc_sendCSW(); 				
+                //msc_sendCSW();
                 msc_sendError();
-				previousCmd = CMD_NOT_SUPPORTED;
+                previousCmd = CMD_NOT_SUPPORTED;
                 break;
         }
     } else {
@@ -482,17 +477,17 @@ static void msc_cbwReceived(void* cbdata)
 
 static void msc_sendATAsense()
 {
-	/* Prep the response data */
-	req_data[0] = 0x72;                /* response dode */
-	req_data[1] = 0x05;                /* sense key - illegal request*/
-	req_data[2] = 0x20;                /* sense code - invalid command operation code*/
-	req_data[3] = 0x00;                /* sense code qualifier */
-	req_data[4] = 0x00;                /* reserved */
-	req_data[5] = 0x00;                /* reserved */
-	req_data[6] = 0x00;                /* reserved */
-	req_data[7] = 0x00;                /* additional length */
+    /* Prep the response data */
+    req_data[0] = 0x72;                /* response dode */
+    req_data[1] = 0x05;                /* sense key - illegal request*/
+    req_data[2] = 0x20;                /* sense code - invalid command operation code*/
+    req_data[3] = 0x00;                /* sense code qualifier */
+    req_data[4] = 0x00;                /* reserved */
+    req_data[5] = 0x00;                /* reserved */
+    req_data[6] = 0x00;                /* reserved */
+    req_data[7] = 0x00;                /* additional length */
 
-	msc_write(ep_to_host, ATARESPONE_LEN, (void *)msc_sendCSW);
+    msc_write(ep_to_host, ATARESPONE_LEN, (void *)msc_sendCSW);
 }
 
 /******************************************************************************/
@@ -502,29 +497,27 @@ static void msc_sendRequestSense()
     /* Prep the response data */
     req_data[0]  = 0x70;     /* Error Code */
     req_data[1]  = 0x00;     /* Segment Number */
-    if(previousCmd != CMD_NOT_SUPPORTED) {
-    	req_data[2]  = mem.ready() ? REQSENSE_OK : REQSENSE_CHECK_CONDITION; /* Sense Key */
-    }
-    else {
-    	req_data[2] = 0x05;	//Illegal command
-    	previousCmd = 0;
+    if ( previousCmd != CMD_NOT_SUPPORTED ) {
+        req_data[2]  = mem.ready() ? REQSENSE_OK : REQSENSE_CHECK_CONDITION; /* Sense Key */
+    } else {
+        req_data[2] = 0x05;    //Illegal command
+        previousCmd = 0;
     }
     req_data[3]  = 0x00;     /* Info - 4 Bytes */
-    req_data[4]  = 0x00;     
-    req_data[5]  = 0x00;     
-    req_data[6]  = 0x00;     
+    req_data[4]  = 0x00;
+    req_data[5]  = 0x00;
+    req_data[6]  = 0x00;
     req_data[7]  = 0x0A;     /* Additional Sense Length */
     req_data[8]  = 0x00;     /* Command Specific Info - 4 Bytes */
-    req_data[9]  = 0x00;     
-    req_data[10] = 0x00;     
-    req_data[11] = 0x00;     
+    req_data[9]  = 0x00;
+    req_data[10] = 0x00;
+    req_data[11] = 0x00;
     req_data[12] = 0x3A;     /* Additional Sense Code */
     req_data[13] = 0x00;     /* Additional Send Qualifier */
     req_data[14] = 0x00;     /* Reserved - 4 Bytes */
-    req_data[15] = 0x00;     
-    req_data[16] = 0x00;     
-    req_data[17] = 0x00;     
-
+    req_data[15] = 0x00;
+    req_data[16] = 0x00;
+    req_data[17] = 0x00;
     /* Send the data to the host and have the USB stack call
        send CSW once complete. */
     msc_write(ep_to_host, REQSENSE_LEN, (void *)msc_sendCSW);
@@ -662,7 +655,7 @@ static void msc_readMem()
         /* Read from the "disk" and place the results in the outgoing buffer. */
         /* Log any errors in the appropriate location of the CSW response. */
         csw_data[CSW_STATUS_IDX] |= mem.read(blockAddr, req_data);
-        blockAddr++; 
+        blockAddr++;
         numBlocks--;
         /* Send the data to the host and have the USB stack call the function
            again once the data has been sent. */
@@ -682,8 +675,7 @@ static void msc_writeMem()
         /* Setup the read from host transaction and have the USB stack call
            writeMemBlock once all of the data has been received. */
         msc_read(ep_from_host, MAX_PACKET_SIZE, msc_writeMemBlock);
-    }
-    else {
+    } else {
         /* All the requested data has been received, it is time to send the CSW. */
         msc_sendCSW();
     }
@@ -694,16 +686,16 @@ static void msc_writeMem()
 static void msc_writeMemBlock(void* cbdata)
 {
     if (!req.error_code) {
-	/* Write the received data to the "disk". */
-	csw_data[CSW_STATUS_IDX] |= mem.write(blockAddr, req_data);
-	blockAddr++;
-	numBlocks--;
-	
-	/* Go receive the next block of data (in any) */
-	msc_writeMem();
+    /* Write the received data to the "disk". */
+    csw_data[CSW_STATUS_IDX] |= mem.write(blockAddr, req_data);
+    blockAddr++;
+    numBlocks--;
+
+    /* Go receive the next block of data (in any) */
+    msc_writeMem();
     } else {
-	/* USB error occurred while writing. Fail the command. */
-	csw_data[CSW_STATUS_IDX] = CSW_FAILED;
-	msc_sendCSW();
+    /* USB error occurred while writing. Fail the command. */
+    csw_data[CSW_STATUS_IDX] = CSW_FAILED;
+    msc_sendCSW();
     }
 }

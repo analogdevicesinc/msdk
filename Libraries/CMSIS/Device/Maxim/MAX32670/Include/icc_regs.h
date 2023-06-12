@@ -2,6 +2,7 @@
  * @file    icc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the ICC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup icc_registers
  */
 
 /******************************************************************************

@@ -17,7 +17,7 @@ It supports the following output destinations:
 
 * Transmit image to a host PC.
 
-* Save image to SD card.
+* Save image to SD card (MAX78000FTHR only)
 
 ## Software
 
@@ -31,11 +31,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 #### Enabling Firmware Features
 
-Firmware features can be toggled in [src/example_config.h](src/example_config.h).
+* The console is enabled by default.  It will wait for a valid connection from [utils/console.py](utils/console.py) on startup.  This feature can be toggled with the `CONSOLE` build variable in [project.mk](project.mk)
 
-* The console is enabled by default.  It will wait for a valid connection from [utils/console.py](utils/console.py) on startup.
-
-* SD card functionality is disabled by default.  It will attempt to mount the SD card on startup using the FAT32 format.  If it detects a blank card has been inserted (the drive name is empty) then it will attempt to format the card to FAT32.
+* SD card functionality is disabled by default.  It will attempt to mount the SD card on startup using the FAT32 format.  If it detects a blank card has been inserted (the drive name is empty) then it will attempt to format the card to FAT32.   This feature can be toggled with the `SD` build variable in [project.mk](project.mk)
 
 After making any changes, fully clean the project and then rebuild.
 
@@ -273,50 +271,45 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     $
     ```
 
-7. Run a standard `capture` with default settings (Malvar-He-Cutler debayering).
+7. Run a standard `capture` with default settings.
 
     ```shell
     $ capture
 
     MCU: Configuring camera
-    MCU: Capturing image
-    MCU: Done! (Took 98776 us)
-    MCU: Captured 160x120 BAYER image to buffer location 0x20001b98 (19200 bytes)
-    MCU: Debayering complete. (Took 32186 us)
+    MCU: Capturing image   
+    MCU: Done! (Took 43964 us)
+    MCU: Captured 160x120 BAYER image to buffer location 0x20001bc8 (19200 bytes)
+    MCU: R average: 77      G average: 103  B average: 70
+    MCU: R correction: 1.34 B correction: 1.47
+    MCU: Debayering complete. (Took 20807 us)
     MCU: *IMG* RGB565 38400 160 120
-    Collecting 38400 bytes...
-    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
-    MCU: Done! (serial transmission took 413863 us)
+    Collecting 38400 bytes...      
+    Saved image to 'C:\MaximSDK\Examples\MAX78000\ImgCapture\Image.png'
+    MCU: Done! (serial transmission took 413829 us)
     ```
 
-    ![HM0360_MalvarCutler_320_240](res/HM0360_MalvarCutler_160_120.png)
+    ![HM0360_Bilinear_160_120](res/HM0360_Bilinear_160_120.png)
 
-8. Change the debayering function using `set-debayer` and recapture.
+8. Change the debayering function to `passthrough` using the `set-debayer` command and recapture.
 
     ```shell
-    $ set-debayer bilinear
+    $ set-debayer passthrough
 
-    MCU: Set bilinear
+    MCU: Set passthrough
     $ capture
 
     MCU: Configuring camera
     MCU: Capturing image
-    MCU: Done! (Took 89870 us)
-    MCU: Captured 160x120 BAYER image to buffer location 0x20001b98 (19200 bytes)
-    MCU: Debayering complete. (Took 11196 us)
+    MCU: Done! (Took 28417 us)
+    MCU: Captured 160x120 BAYER image to buffer location 0x20001bc8 (19200 bytes)
+    MCU: Debayering complete. (Took 2882 us)
     MCU: *IMG* RGB565 38400 160 120
     Collecting 38400 bytes...
-    Saved image to 'C:\Users\User\repos\msdk\Examples\MAX78000\ImgCapture\utils\Image.png'
-    MCU: Done! (serial transmission took 413747 us)
+    Saved image to 'C:\MaximSDK\Examples\MAX78000\ImgCapture\Image.png'
+    MCU: Done! (serial transmission took 413617 us)
     ```
 
-    The 'malvarcutler' setting is the most accurate, but most computationally expensive.  'bilinear' is computationally inexpensive but inaccurate.  'passthrough' shows the received Bayer pattern on the image sensor.
+    `passthrough` shows the received Bayer pattern on the image sensor.
 
-    TODO: Recapture images
-
-    * `malvarcutler`:
-        * ![HM0360_MalvarCutler_320_240](res/HM0360_MalvarCutler_160_120.png)
-    * `bilinear`:
-        * ![HM0360_Bilinear_160_120](res/HM0360_Bilinear_160_120.png)
-    * `passthrough`:
-        * ![HM0360_Passthrough_160_120](res/HM0360_Passthrough_160_120.png)
+    ![HM0360_Passthrough_160_120](res/HM0360_Passthrough_160_120.png)
