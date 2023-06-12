@@ -760,8 +760,8 @@
         <resetMask>0xFFC0FE02</resetMask>
         <fields>
           <field>
-            <name>POR_FL</name>
-            <description>Power-On-Reset Flag. This bit is set once the power supply is conneted.</description>
+            <name>BOR_FL</name>
+            <description>Battery-On-Reset Flag. This bit is set once the battery is conneted.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>

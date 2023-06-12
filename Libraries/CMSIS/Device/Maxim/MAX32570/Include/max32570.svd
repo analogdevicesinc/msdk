@@ -20195,8 +20195,8 @@
      <resetMask>0xFFC0FE02</resetMask>
      <fields>
       <field>
-       <name>POR_FL</name>
-       <description>Power-On-Reset Flag. This bit is set once the power supply is conneted.</description>
+       <name>BOR_FL</name>
+       <description>Battery-On-Reset Flag. This bit is set once the battery is conneted.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <enumeratedValues>
@@ -20504,14 +20504,14 @@
     </register>
     <register>
      <name>DLRTC</name>
-     <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occurred.</description>
+     <description>DRST Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occurred.</description>
      <addressOffset>0x10</addressOffset>
      <access>read-only</access>
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
        <name>DLRTC</name>
-       <description>DRS Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occured.</description>
+       <description>DRST Log RTC Value. This register contains the 32 bit value in the RTC second register when the last DRS event occured.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
       </field>

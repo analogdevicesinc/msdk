@@ -298,8 +298,8 @@ typedef struct {
  * @brief    Security Diagnostic Register.
  * @{
  */
-#define MXC_F_SMON_SECDIAG_POR_FL_POS                  0 /**< SECDIAG_POR_FL Position */
-#define MXC_F_SMON_SECDIAG_POR_FL                      ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_POR_FL_POS)) /**< SECDIAG_POR_FL Mask */
+#define MXC_F_SMON_SECDIAG_BOR_FL_POS                  0 /**< SECDIAG_BOR_FL Position */
+#define MXC_F_SMON_SECDIAG_BOR_FL                      ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_BOR_FL_POS)) /**< SECDIAG_BOR_FL Mask */
 
 #define MXC_F_SMON_SECDIAG_SHIELD_FL_POS               2 /**< SECDIAG_SHIELD_FL Position */
 #define MXC_F_SMON_SECDIAG_SHIELD_FL                   ((uint32_t)(0x1UL << MXC_F_SMON_SECDIAG_SHIELD_FL_POS)) /**< SECDIAG_SHIELD_FL Mask */
@@ -366,7 +366,7 @@ typedef struct {
 /**
  * @ingroup  smon_registers
  * @defgroup SMON_DLRTC SMON_DLRTC
- * @brief    DRS Log RTC Value. This register contains the 32 bit value in the RTC second
+ * @brief    DRST Log RTC Value. This register contains the 32 bit value in the RTC second
  *           register when the last DRS event occurred.
  * @{
  */
