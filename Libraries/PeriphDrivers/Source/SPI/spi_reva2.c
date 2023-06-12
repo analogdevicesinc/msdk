@@ -85,9 +85,131 @@ typedef struct {
 
 static volatile mxc_spi_handle_data_t STATES[MXC_SPI_INSTANCES];
 
-/* **** Functions **** */
+/* **** Private Functions **** */
 
-// Private function in drivers will not have starting capital in name
+// The unique title for Private functions will not be capitalized.
+
+/** Private Function: writeTXFIFO16
+ * Writes 2 bytes to the TX FIFO for 9-16 bit frame lengths.
+ * This function helps package the frame when the STATES[n] fields
+ * are all in terms of bytes.
+ * 
+ * @param   spi     Pointer to SPI instance.
+ * @param   buffer  Pointer to buffer of messages to transmit.
+ * @param   len     Number of messages in buffer to transmit.
+ * 
+ * @return  cnt     The number of frames written to the TX FIFO.
+ */
+static uint32_t MXC_SPI_RevA2_writeTXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *buffer, uint32_t len)
+{
+    uint32_t tx_avail;
+    int spi_num;
+    uint32_t cnt = 0;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    MXC_ASSERT(spi_num >= 0);
+
+    if (buffer == NULL || len == 0) {
+        return 0;
+    }
+
+    tx_avail = MXC_SPI_FIFO_DEPTH -
+               ((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS);
+
+    // Do not write more than the available FIFO size
+    if (len > tx_avail) {
+        len = tx_avail;
+    }
+
+    // Ensure even lengths for halfword frame lengths.
+    // Note: Len is in terms of bytes, so sending 9-16bit transactions means sending
+    //          2 bytes per frame.
+    len &= ~0x01;
+
+    while (len) {
+        if (len > 3) {
+            memcpy((void *)(&spi->fifo32), (uint8_t *)(&buffer[cnt]), 4);
+
+            len -= 4;
+            cnt += 4;
+
+        } else if (len > 1) {
+            memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&buffer[cnt]), 2);
+
+            len -= 2;
+            cnt += 2;
+        }
+    }
+
+    return cnt;
+}
+
+/** Private Function: readRXFIFO16
+ * Reads 2 bytes from the RX FIFO for 9-16 bit frame lengths.
+ * This function helps package the frame when the STATES[n] fields
+ * are all in terms of bytes.
+ * 
+ * @param   spi     Pointer to SPI instance.
+ * @param   buffer  Pointer to buffer to store read messages.
+ * @param   len     Number of messages to store in receive buffer.
+ * 
+ * @return  cnt     The number of frames read from the RX FIFO
+ */
+static uint32_t MXC_SPI_RevA2_readRXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *buffer, uint32_t len)
+{
+    uint32_t rx_avail;
+    int spi_num;
+    uint32_t cnt = 0;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    MXC_ASSERT(spi_num >= 0);
+
+    if (buffer == NULL || len == 0) {
+        return 0;
+    }
+
+    rx_avail = (spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL) >> MXC_F_SPI_REVA_DMA_RX_LVL_POS;
+
+    // Do not read more than available frames in RX FIFO.
+    if (len > rx_avail) {
+        len = rx_avail;
+    }
+
+    // Ensure even lengths for halfword frame lengths.
+    // Note: Len is in terms of bytes, so reading 9-16bit wide messages means reading
+    //          2 bytes per frame.
+    len &= ~0x01;
+
+    if (len >= 2) {
+        // Read from the FIFO
+        while (len) {
+            if (len > 3) {
+                memcpy((uint8_t *)(&buffer[cnt]), (void *)(&spi->fifo32), 4);
+                len -= 4;
+                cnt += 4;
+
+            } else if (len > 1) {
+                memcpy((uint8_t *)(&buffer[cnt]), (void *)(&spi->fifo16[0]), 2);
+                len -= 2;
+                cnt += 2;
+            }
+
+            // Ensures read of less than 2 bytes aren't read.
+            // Code should never get to this point.
+            if (len == 1) {
+                break;
+            }
+        }
+    }
+
+    return cnt;
+}
+
+/** Private Function: process
+ * This function handles the reads and writes to the SPI RX/TX FIFO.
+ * 
+ * @param   spi     Pointer to SPI instance.
+ */
 static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
 {
     int spi_num;
@@ -108,7 +230,7 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
 
         // Write to the FIFO for halfword size transactions (message sizes for 9 bits or greater)    
         } else {
-            STATES[spi_num].tx_cnt += MXC_SPI_RevA2_WriteTXFIFO16(spi, &(STATES[spi_num].tx_buffer[STATES[spi_num].tx_cnt]), STATES[spi_num].tx_len - STATES[spi_num].tx_cnt);
+            STATES[spi_num].tx_cnt += MXC_SPI_RevA2_writeTXFIFO16(spi, &(STATES[spi_num].tx_buffer[STATES[spi_num].tx_cnt]), STATES[spi_num].tx_len - STATES[spi_num].tx_cnt);
 
             remain = STATES[spi_num].tx_len - STATES[spi_num].tx_cnt;
 
@@ -138,7 +260,7 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
 
         // Read the FIFO for halfword size transactions (message sizes for 9 bits or greater)
         } else {
-            STATES[spi_num].rx_cnt += MXC_SPI_RevA2_ReadRXFIFO16(spi, &(STATES[spi_num].rx_buffer[STATES[spi_num].rx_cnt]), STATES[spi_num].rx_len - STATES[spi_num].rx_cnt);
+            STATES[spi_num].rx_cnt += MXC_SPI_RevA2_readRXFIFO16(spi, &(STATES[spi_num].rx_buffer[STATES[spi_num].rx_cnt]), STATES[spi_num].rx_len - STATES[spi_num].rx_cnt);
 
             remain = STATES[spi_num].rx_len - STATES[spi_num].rx_cnt;
 
@@ -157,6 +279,13 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
     }
 }
 
+/** Private Function: resetStateStruct
+ * This functions resets the STATE of an SPI instance.
+ * 
+ * @param   spi_num     Index number of SPI instance.
+ * 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
 static int MXC_SPI_RevA2_resetStateStruct(int spi_num)
 {
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
@@ -174,8 +303,7 @@ static int MXC_SPI_RevA2_resetStateStruct(int spi_num)
     STATES[spi_num].rx_buffer = NULL;
     STATES[spi_num].rx_len = 0;
     STATES[spi_num].rx_cnt = 0;
-    STATES[spi_num].deassert =
-        true; // Default state is TS will be deasserted at the end of a transmission.
+    STATES[spi_num].deassert = true; // Default state is TS will be deasserted at the end of a transmission.
 
     // DMA
     STATES[spi_num].dma = NULL;
@@ -190,6 +318,8 @@ static int MXC_SPI_RevA2_resetStateStruct(int spi_num)
 
     return E_NO_ERROR;
 }
+
+/* **** Public Functions **** */
 
 int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
 {
@@ -872,102 +1002,6 @@ int MXC_SPI_RevA2_DMA_SetRequestSelect(mxc_spi_reva_regs_t *spi, uint32_t tx_req
     }
 
     return E_NO_ERROR;
-}
-
-/* ** Low-Level Write/Read Functions ** */
-
-uint32_t MXC_SPI_RevA2_WriteTXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *buffer, uint32_t len)
-{
-    uint32_t tx_avail;
-    int spi_num;
-    uint32_t cnt = 0;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-
-    if (buffer == NULL || len == 0) {
-        return 0;
-    }
-
-    tx_avail = MXC_SPI_FIFO_DEPTH -
-               ((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS);
-
-    // Do not write more than the available FIFO size
-    if (len > tx_avail) {
-        len = tx_avail;
-    }
-
-    // Ensure even lengths for halfword frame lengths.
-    // Note: Len is in terms of bytes, so sending 9-16bit transactions means sending
-    //          2 bytes per frame.
-    len &= ~0x01;
-
-    while (len) {
-        if (len > 3) {
-            memcpy((void *)(&spi->fifo32), (uint8_t *)(&buffer[cnt]), 4);
-
-            len -= 4;
-            cnt += 4;
-
-        } else if (len > 1) {
-            memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&buffer[cnt]), 2);
-
-            len -= 2;
-            cnt += 2;
-        }
-    }
-
-    return cnt;
-}
-
-uint32_t MXC_SPI_RevA2_ReadRXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *buffer, uint32_t len)
-{
-    uint32_t rx_avail;
-    int spi_num;
-    uint32_t cnt = 0;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-
-    if (buffer == NULL || len == 0) {
-        return 0;
-    }
-
-    rx_avail = (spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL) >> MXC_F_SPI_REVA_DMA_RX_LVL_POS;
-
-    // Do not read more than available frames in RX FIFO.
-    if (len > rx_avail) {
-        len = rx_avail;
-    }
-
-    // Ensure even lengths for halfword frame lengths.
-    // Note: Len is in terms of bytes, so reading 9-16bit wide messages means reading
-    //          2 bytes per frame.
-    len &= ~0x01;
-
-    if (len >= 2) {
-        // Read from the FIFO
-        while (len) {
-            if (len > 3) {
-                memcpy((uint8_t *)(&buffer[cnt]), (void *)(&spi->fifo32), 4);
-                len -= 4;
-                cnt += 4;
-
-            } else if (len > 1) {
-                memcpy((uint8_t *)(&buffer[cnt]), (void *)(&spi->fifo16[0]), 2);
-                len -= 2;
-                cnt += 2;
-            }
-
-            // Ensures read of less than 2 bytes aren't read.
-            // Code should never get to this point.
-            if (len == 1) {
-                break;
-            }
-        }
-    }
-
-    return cnt;
 }
 
 /* ** Transaction Functions ** */
