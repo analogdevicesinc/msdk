@@ -19939,7 +19939,7 @@
        </enumeratedValues>
       </field>
       <field>
-       <name>VDDLO_FL</name>
+       <name>DFD_FL</name>
        <description>Digital Fault Detector.</description>
        <bitOffset>8</bitOffset>
        <bitWidth>1</bitWidth>

@@ -251,8 +251,8 @@ typedef struct {
 #define MXC_F_SMON_SECALM_EXTS_FL_POS                  7 /**< SECALM_EXTS_FL Position */
 #define MXC_F_SMON_SECALM_EXTS_FL                      ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_EXTS_FL_POS)) /**< SECALM_EXTS_FL Mask */
 
-#define MXC_F_SMON_SECALM_VDDLO_FL_POS                 8 /**< SECALM_VDDLO_FL Position */
-#define MXC_F_SMON_SECALM_VDDLO_FL                     ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VDDLO_FL_POS)) /**< SECALM_VDDLO_FL Mask */
+#define MXC_F_SMON_SECALM_DFD_FL_POS                   8 /**< SECALM_DFD_FL Position */
+#define MXC_F_SMON_SECALM_DFD_FL                       ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_DFD_FL_POS)) /**< SECALM_DFD_FL Mask */
 
 #define MXC_F_SMON_SECALM_VLOSSPF_FL_POS               9 /**< SECALM_VLOSSPF_FL Position */
 #define MXC_F_SMON_SECALM_VLOSSPF_FL                   ((uint32_t)(0x1UL << MXC_F_SMON_SECALM_VLOSSPF_FL_POS)) /**< SECALM_VLOSSPF_FL Mask */
