@@ -46,8 +46,6 @@ extern "C" {
 #include <stdio.h>
 #include <spi_regs.h>
 #include <gpio_regs.h>
-#define LED_OFF 1 /// Override inactive state of LEDs
-#define LED_ON 0 /// Override active state of LEDs
 #include "led.h"
 
 #define BOARD_AUD01_REVA
@@ -59,6 +57,16 @@ extern "C" {
 #ifndef CONSOLE_BAUD
 #define CONSOLE_BAUD 19200 /// Console baud rate
 #endif
+
+#ifdef LED_OFF
+#undef LED_OFF
+#endif
+#define LED_OFF 1 /// Override inactive state of LEDs
+
+#ifdef LED_ON
+#undef LED_ON
+#endif
+#define LED_ON 0 /// Override active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.

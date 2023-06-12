@@ -43,8 +43,6 @@
 
 #include <stdio.h>
 #include "spi.h"
-#define LED_OFF 1 /// Override inactive state of LEDs
-#define LED_ON 0 /// Override active state of LEDs
 #include "led.h"
 #include "pb.h"
 
@@ -61,6 +59,16 @@ extern "C" {
 #ifndef CONSOLE_BAUD
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
+
+#ifdef LED_OFF
+#undef LED_OFF
+#endif
+#define LED_OFF 1 /// Override inactive state of LEDs
+
+#ifdef LED_ON
+#undef LED_ON
+#endif
+#define LED_ON 0 /// Override active state of LEDs
 
 #define LED1 0
 #define LED2 1

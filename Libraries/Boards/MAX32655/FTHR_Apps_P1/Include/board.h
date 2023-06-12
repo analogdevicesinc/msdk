@@ -40,8 +40,6 @@
 #define LIBRARIES_BOARDS_MAX32655_FTHR_APPS_P1_INCLUDE_BOARD_H_
 
 #include <stdio.h>
-#define LED_OFF 1 /// Override inactive state of LEDs
-#define LED_ON 0 /// Override active state of LEDs
 #include "led.h"
 #include "pb.h"
 
@@ -79,6 +77,16 @@ extern "C" {
 #ifndef EXT_FLASH_BAUD
 #define EXT_FLASH_BAUD 5000000
 #endif
+
+#ifdef LED_OFF
+#undef LED_OFF
+#endif
+#define LED_OFF 1 /// Override inactive state of LEDs
+
+#ifdef LED_ON
+#undef LED_ON
+#endif
+#define LED_ON 0 /// Override active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.

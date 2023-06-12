@@ -42,8 +42,6 @@
 #include <stdio.h>
 #include "tft_ssd2119.h"
 #include "tsc2046.h"
-#define LED_OFF 1 /// Override inactive state of LEDs
-#define LED_ON 0 /// Override active state of LEDs
 #include "led.h"
 #include "pb.h"
 
@@ -79,6 +77,16 @@ extern "C" {
 #define TS_SPI MXC_SPI0
 #define TS_SPI_FREQ 1000000
 #endif // __riscv
+
+#ifdef LED_OFF
+#undef LED_OFF
+#endif
+#define LED_OFF 1 /// Override inactive state of LEDs
+
+#ifdef LED_ON
+#undef LED_ON
+#endif
+#define LED_ON 0 /// Override active state of LEDs
 
 /**
  *  A reference to LED1 of the board.
