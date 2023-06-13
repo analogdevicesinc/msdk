@@ -555,7 +555,7 @@ void MXC_LP_ICacheXIPLightSleepEnable(void)
  *
  *  Enable the HIRC, set the divide ration to /4, and disable the 96 MHz oscillator.
  */
-void switchToHIRCD4(void)
+static void switchToHIRCD4(void)
 {
     MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_PSC, MXC_S_GCR_CLKCN_PSC_DIV4);
     MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC_EN;
