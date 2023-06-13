@@ -287,6 +287,9 @@ static void lightMeshCback(meshEvt_t *pEvt)
 /*************************************************************************************************/
 static void lightMeshPrvSrCback(meshPrvSrEvt_t *pEvt)
 {
+
+  APP_TRACE_INFO0("Provisioning server callback");
+
   meshPrvSrEvt_t *pMsg;
   uint16_t len;
 
@@ -1032,7 +1035,7 @@ static void lightSetup(void)
 
     /* Enable bearer slot. */
     /* TODO Enable Proxy Bearer */
-    AppBearerEnableSlot(BR_GATT_SLOT);
+    AppBearerEnableSlot(BR_GATT_SLOT); 
 
     /* Bind the interface. */
     MeshAddAdvIf(LIGHT_ADV_IF_ID);
@@ -1195,9 +1198,9 @@ void LightStart(void)
   /* Register callback for application bearer events. */
   AppBearerRegister(lightBearerCback);
 
-  
+  /* TODO Schedule GATT bearer. */
   AppBearerScheduleSlot(BR_GATT_SLOT, GattBearerSrStart, GattBearerSrStop, GattBearerSrProcDmMsg,
-                          5000); */
+                          5000); 
 
   /* Register ADV Bearer callback. */
   MeshRegisterAdvIfPduSendCback(AdvBearerSendPacket);
