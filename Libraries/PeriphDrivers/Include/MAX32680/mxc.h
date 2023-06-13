@@ -43,7 +43,6 @@
 #include "mxc_sys.h"
 #include "nvic_table.h"
 
-
 /*
  *  Peripheral Driver Includes
  */
