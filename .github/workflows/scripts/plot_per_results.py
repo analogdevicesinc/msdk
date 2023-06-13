@@ -196,21 +196,14 @@ if row > 1 or col > 1:
         plt.subplots_adjust(top=0.83, hspace=0.5)
     else:
         fig.tight_layout()
-        plt.subplots_adjust(top=0.80, bottom=0.1, hspace=0.5)
+        plt.subplots_adjust(top=0.80, bottom=0.1, hspace=0.6)
 
     case = 0
     for packetLen, phy, txPower in itertools.product(lens, phys, txPowers):
-        # print(f'CASE: {case + 1}')
         col = case % len(phys)
         row = int(case / len(phys))
-        # print(f'row: {row}, col: {col}')
 
-        # Create line plot with atten to perSlave
-        # print("len     :", packetLen)
-        # print("phy     :", phy)
-        # print("txPower :", txPower)
-        tempDf = df.loc[(df['packetLen'] == packetLen) & (
-                df['phy'] == phy) & (df['txPower'] == txPower)]
+        tempDf = df.loc[(df['packetLen'] == packetLen) & (df['phy'] == phy) & (df['txPower'] == txPower)]
 
         # generate per mask profile
         if use_per_mask == "1":
@@ -226,74 +219,122 @@ if row > 1 or col > 1:
             # Interpolate the y values for the new x values
             yy = f(xx)
 
-        title = f'packet len: {packetLen}, txPower: 0.7 dBm\nphy: {phy_str[phy]}'
+        x = list(xx)
+        y = list(yy)
+        a = list(tempDf['atten'])
+        p = list(tempDf['perSlave'])
+
+        title = f'PHY: {phy_str[phy]}\nPacket Length: {packetLen}\nTX Power: 0.7 dBm\n'
+
+        colors = []
+        shapes = []
+        for i in range(len(a)):
+            if a[i] > 0:
+                a[i] = -a[i]
+            if a[i] in x:
+                index = x.index(a[i])
+                if p[i] > y[index]:
+                    colors.append('r')
+                    shapes.append("x")
+                else:
+                    colors.append('g')
+                    shapes.append(".")
+
         if axs.ndim == 1:
-            axs[col].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
+            axs[col].set_title(title, fontdict={'fontsize': 4, 'fontweight': 'medium', 'horizontalalignment': 'left'})
             axs[col].set_xlabel('Rx Power (dBm)', fontdict={"fontsize": 5})
             axs[col].set_ylabel('PER (%)', fontdict={"fontsize": 5})
-            axs[col].tick_params(axis='both', which='major', labelsize=4)
-            axs[col].plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=0.25, ms=0.5)
+            axs[col].tick_params(axis='both', which='major', labelsize=4)            
 
+            for i in range(len(a)):
+                axs[col].scatter(a[i], p[i], marker=shapes[i], s=1, c=colors[i])
+            
+            axs[col].plot(a, p, marker="", linewidth=0.1, c='black')
+            
             axs[col].axhline(y=SPEC, color='r', linestyle=':', linewidth=0.1)
 
             if use_per_mask == "1":
                 axs[col].plot(xx, yy, "r-", linewidth=0.1, ms=0.1)
-                axs[col].text(0.40, 0.99, f'PER mask margin: {per_mask_margin} dBm', ha='left', va='top', 
+                axs[col].text(0.40, 0.99, f'PER mask margin={per_mask_margin}%\nRX power correction={per_corr_dtm_to_cm} dB', ha='left', va='top', 
                               fontsize=3, transform=axs[col].transAxes)
         else:
             axs[row, col].set_title(title, fontdict={'fontsize': 6, 'fontweight': 'medium'})
             axs[row, col].set_xlabel('Rx Power (dBm)', fontdict={"fontsize": 4})
             axs[row, col].set_ylabel('PER (%)', fontdict={"fontsize": 4})
             axs[row, col].tick_params(axis='both', which='major', labelsize=4)
-            axs[row, col].plot(tempDf["atten"], tempDf["perSlave"], "-x", linewidth=0.25, ms=0.5)
+            
+            for i in range(len(a)):
+                axs[row, col].scatter(a[i], p[i], marker=shapes[i], s=1, c=colors[i])
+            
+            axs[row, col].plot(a, p, marker="", linewidth=0.1, c='black')
 
             axs[row, col].axhline(y=SPEC, color='r', linestyle=':', linewidth=0.1)
 
             if use_per_mask == "1":
                 axs[row, col].plot(xx, yy, "r-", linewidth=0.1, ms=0.1)
-                axs[row, col].text(0.40, 0.99, f'PER mask margin: {per_mask_margin} dBm', ha='left', va='top', fontsize=3,
+                axs[row, col].text(0.40, 0.99, f'PER mask margin={per_mask_margin}%\nRX power correction={per_corr_dtm_to_cm} dB', ha='left', va='top', fontsize=3,
                                    transform=axs[row, col].transAxes)
 
-        a = list(tempDf['atten'])
-        p = list(tempDf['perSlave'])
+        # highlight the failed points
+        """
+        for i in range(len(a)):
+            if a[i] in x:
+                index = x.index(a[i])
+
+                if p[i] > yy[index]:
+                    if axs.ndim == 1:
+                        axs[col].scatter(a[i], p[i], marker="x", c='red', s=1)
+                    else:
+                        axs[row, col].scatter(a[i], p[i], marker="x", c='red', s=1)
+        """
+
         failed = False
         failed_index = 0
+        # annontate the first failed point
         for i in range(len(a)):
-            if p[i] > SPEC:
-                # print(f'{a[i]}, {p[i]}')
-                failed = True
-                failed_index = i
-                if axs.ndim == 1:
-                    #axs[col].plot((a[i], a[i]), [0, p[i]], color='r', linestyle=':', linewidth=0.1)
-                    axs[col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', ha='left',
-                                    va='center', fontsize=3, color='red')
-                    axs[col].text(0.6, 0.75, 'FAIL', fontsize=6, color='red', transform=axs[col].transAxes)
-                else:
-                    #axs[row, col].plot((a[i], a[i]), [0, p[i]], color='r', linestyle=':', linewidth=0.5)
-                    axs[row, col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', ha='left',
+            if a[i] in x:
+                index = x.index(a[i])
+
+                if p[i] > yy[index]:
+                    failed = True
+                    failed_index = i
+                    if axs.ndim == 1:
+                        axs[col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', ha='left',
                                         va='center', fontsize=3, color='red')
-                    axs[row, col].text(0.6, 0.75, 'FAIL', fontsize=6, color='red', transform=axs[row, col].transAxes)
-                break
+                        axs[col].text(0.6, 0.75, 'FAIL', fontsize=6, color='red', transform=axs[col].transAxes)
+                    else:
+                        axs[row, col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', ha='left',
+                                            va='center', fontsize=3, color='red')
+                        axs[row, col].text(0.6, 0.75, 'FAIL', fontsize=6, color='red', transform=axs[row, col].transAxes)
+                    break
 
-        # mark the last point
+        # annotate the last point
         i = -1
-        if not failed:
+        if a[i] in x and a[failed_index] != a[i]:
+            index = x.index(a[i])
+            if p[i] > yy[index]:
+                color = 'red'
+            else:
+                color = 'black'
+            
             if axs.ndim == 1:
                 axs[col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', ha='left',
-                            va='center', fontsize=3, color='black')
-                axs[col].text(0.6, 0.75, 'PASS', fontsize=6, color='green', transform=axs[col].transAxes)
+                              va='center', fontsize=3, color=color)
             else:
                 axs[row, col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', ha='left',
-                                va='center', fontsize=3, color='black')
-                axs[row, col].text(0.6, 0.75, 'PASS', fontsize=6, color='green', transform=axs[row, col].transAxes)
-
-        if failed and a[failed_index] != a[i]:
-            if axs.ndim == 1:
-                axs[col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', ha='left',
-                            va='center', fontsize=3, color='red')
-            else:
-                axs[row, col].text(a[i], p[i], f'  {p[i]}% @ {a[i]} dBm', ha='left',
-                                va='center', fontsize=3, color='red')
+                                   va='center', fontsize=3, color=color)
+                
+        # annotate pass or fail
+        color = 'green'
+        note = 'PASS'
+        if failed:
+            color = 'red'
+            note = 'FAIL'
+          
+        if axs.ndim == 1:
+            axs[col].text(0.6, 0.75, note, fontsize=6, color=color, transform=axs[col].transAxes)
+        else:
+            axs[row, col].text(0.6, 0.75, note, fontsize=6, color=color, transform=axs[row, col].transAxes)
         
         # note
         fig.text(.5, .01, f'Run on all data channels (no advertising channels).\n{args.desc}', ha='center',

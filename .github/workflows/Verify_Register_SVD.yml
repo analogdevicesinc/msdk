@@ -99,7 +99,8 @@ jobs:
             enter_msdk=1
           fi
           
-          CHANGED_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h' './Libraries/PeriphDrivers/Source/*/*.svd')
+          git fetch
+          CHANGED_FILES=$(git diff --ignore-submodules --name-only @ remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h' './Libraries/PeriphDrivers/Source/*/*.svd')
 
           if [[ -n ${CHANGED_FILES} ]]; then
             echo "DIFF_FILES_FLAG=true" >> $GITHUB_ENV

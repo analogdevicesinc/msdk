@@ -48,16 +48,14 @@ SRCS += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/header_$(TARGET_UC).c
 # definitions and files.  Additionally, the linkerfile may need to be changed.
 ifeq ($(MAKECMDGOALS),sla)
 PROJ_CFLAGS += -D__SLA_FWK__
-LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_sla.ld
-$(info Overriding LINKERFILE to $(LINKERFILE))
+LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_sla.ld
 endif
 
-ifeq ($(MAKECMDGOALS), scpa)
+ifeq ($(MAKECMDGOALS),scpa)
 SCPA_MEM_BASE_ADDR ?= 0xC0000000
 SCPA_MEM_SIZE ?= 1024
 
 PROJ_CFLAGS += -D__SCPA_FWK__
 PROJ_CFLAGS += -DSCPA_MEM_BASE_ADDR=$(SCPA_MEM_BASE_ADDR) -DSCPA_MEM_SIZE=$(SCPA_MEM_SIZE)
-LINKERFILE = $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_scpa.ld
-$(info Overriding LINKERFILE to $(LINKERFILE))
+LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_scpa.ld
 endif

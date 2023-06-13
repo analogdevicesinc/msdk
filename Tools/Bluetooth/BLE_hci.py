@@ -46,9 +46,12 @@ import argparse
 from argparse import RawTextHelpFormatter
 from time import sleep
 import datetime
+import struct
 import threading
 from termcolor import colored
 import readline
+
+
 # Setup the default serial port settings
 defaultBaud=115200
 defaultSP="/dev/ttyUSB0"
@@ -296,7 +299,7 @@ class BLE_hci:
      # and print an HCI event by default.
     ################################################################################
 
-    def send_command(self, packet, resp = True, delay = 0.01, print_cmd = True, timeout=6):
+    def send_command(self, packet, resp=True, delay=0.01, print_cmd=True, timeout=6):
         # Send the command and data
         if(print_cmd):
             if self.id == "-":
@@ -304,8 +307,6 @@ class BLE_hci:
             else:
                 print(str(datetime.datetime.now()) + f" {self.id}>", packet)
 
-
-        
         arr = bytearray.fromhex(packet)
         
         self.port.write(arr)
@@ -314,7 +315,7 @@ class BLE_hci:
 
         sleep(delay)
             
-        if(resp):
+        if resp:
             return self.wait_event(timeout=timeout)
 
 
@@ -1134,7 +1135,29 @@ class BLE_hci:
 
         self.send_command("0100FF"+totalLen+writeLen+addrBytes+data)
 
-    
+    ## Read RSSI function.
+     #
+     # Sends HCI command to read RSSI.
+    ################################################################################
+    def rssiFunc(self, args, timeout=None):
+        if timeout is None:
+            self.send_command("010514020000", resp=False)
+            timeout = 0.1
+        else:
+            self.send_command("010514020000", resp=False, timeout=timeout)
+
+        rssi = 0       
+        evt = self.wait_event(timeout=timeout)
+        if evt is not None:
+            rssi_hex_str = evt[-2:]
+            byte_data = bytes.fromhex(rssi_hex_str)
+            rssi = struct.unpack('>b', byte_data)[0]
+
+        if rssi is None:
+            rssi = 0
+        
+        return rssi
+
 ## Help function.
  #
  # Prints the help text.
@@ -1379,6 +1402,12 @@ if __name__ == '__main__':
     readWrite_parser.add_argument('addr', help="Address to write, 32-bit hex value\nex: \"0x20000000\"")
     readWrite_parser.add_argument('value', help="Data to write, 8,16, or 32 bit hex value,\nex: \"0x12\"")
     readWrite_parser.set_defaults(func=ble_hci.writeRegFunc)
+
+    rssi_parser = subparsers.add_parser('rssi', formatter_class=RawTextHelpFormatter, 
+        help="read rssi")
+    rssi_parser.add_argument('-t', '--timeout', default="0.1", 
+        help="read RSSI timeout in seconds, default 0.1 secs.")
+    rssi_parser.set_defaults(func=ble_hci.rssiFunc)
 
     # Exit function defined above
     exit_parser = subparsers.add_parser('exit', aliases=['quit'], help="Exit the program")
