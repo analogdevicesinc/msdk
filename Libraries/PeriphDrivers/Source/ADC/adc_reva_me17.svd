@@ -325,19 +325,19 @@
           <field>
             <name>ch_sel</name>
             <description>ADC Channel Select</description>
-            <bitRange>[28:24]</bitRange>
+            <bitRange>[27:24]</bitRange>
             <access>read-write</access>
           </field>
           <field>
             <name>ch_lo_limit_en</name>
             <description>Low Limit Monitoring Enable</description>
-            <bitRange>[29:29]</bitRange>
+            <bitRange>[28:28]</bitRange>
             <access>read-write</access>
           </field>
           <field>
             <name>ch_hi_limit_en</name>
             <description>High Limit Monitoring Enable</description>
-            <bitRange>[30:30]</bitRange>
+            <bitRange>[29:29]</bitRange>
             <access>read-write</access>
           </field>
         </fields>
