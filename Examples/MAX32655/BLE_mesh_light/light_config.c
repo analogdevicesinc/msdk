@@ -95,7 +95,8 @@ static meshMemoryConfig_t lightMeshMemConfig = {
 /*! Mesh Provisioning Server Capabilities */
 static const meshPrvCapabilities_t lightPrvSrCapabilities = { LIGHT_ELEMENT_COUNT,
                                                               MESH_PRV_ALGO_FIPS_P256_ELLIPTIC_CURVE,
-                                                              MESH_PRV_PUB_KEY_OOB,
+                                                              0,
+                                                              // MESH_PRV_PUB_KEY_OOB,
                                                               MESH_PRV_STATIC_OOB_INFO_AVAILABLE,
                                                               MESH_PRV_OUTPUT_OOB_NOT_SUPPORTED,
                                                               MESH_PRV_OUTPUT_OOB_ACTION_BLINK,
@@ -441,12 +442,12 @@ meshPrvSrUnprovisionedDeviceInfo_t lightPrvSrUpdInfo = {
     MESH_PRV_OOB_INFO_OTHER,
     lightPrvSrStaticOobData,
     MESH_PRV_URI_DATA_LEN,
-    lightPrvSrUriData,
+  //   lightPrvSrUriData,
     
-    .pAppOobEccKeys = { EccKeysX, EccKeysY, EccKeysPriv
+  //   .pAppOobEccKeys = { EccKeysX, EccKeysY, EccKeysPriv
 
-    },
-    // NULL
+  // },
+    NULL
 };
 
 /*! Mesh Stack configuration structure */

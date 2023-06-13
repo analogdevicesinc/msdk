@@ -179,6 +179,7 @@ static uint8_t lightTerminalLightHandler(uint32_t argc, char **argv)
 
       return TERMINAL_ERROR_EXEC;
     }
+    
   }
 
   MmdlGenOnOffSrSetState(led - 1, cmd ? MMDL_GEN_ONOFF_STATE_ON : MMDL_GEN_ONOFF_STATE_OFF);

@@ -30,7 +30,7 @@ TRACE = 2
 IPATH += common
 VPATH += common
 
-VPATH += $(shell find ../../../Libraries/Cordio/ble-mesh-apps/ -type d)
+# VPATH += $(shell find ../../../Libraries/Cordio/ble-mesh-apps/ -type d)
 IPATH += $(shell find ../../../Libraries/Cordio/ble-mesh-apps/ -type d)
 
 VPATH += $(shell find ../../../Libraries/Cordio/ble-mesh-model/ -type d)
