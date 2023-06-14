@@ -611,12 +611,12 @@ if [ $CURRENT_TEST == "all" ]; then
     run_all_not_conencted_tests
     CURRENT_TEST="all"
     # temp diasble datc/s and otas tests until new RF PHY is debugged with ME17B
-    # run_datcs_conencted_tests
-    # CURRENT_TEST="all"
-    # run_ota_test 1 # arg 1= internal flash
-    # if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-    #     run_ota_test 0 # arg 0 = external flash
-    # fi
+    run_datcs_conencted_tests
+    CURRENT_TEST="all"
+    run_ota_test 1 # arg 1= internal flash
+    if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
+        run_ota_test 0 # arg 0 = external flash
+    fi
 
     echo
 elif [ $CURRENT_TEST == "dats" ]; then
@@ -624,17 +624,17 @@ elif [ $CURRENT_TEST == "dats" ]; then
     echo "Running Datc/s connected test"
     erase_all_devices
     # temp diasble datc/s and otas tests until new RF PHY is debugged with ME17B
-    #run_datcs_conencted_tests
+    run_datcs_conencted_tests
     echo
 elif [ $CURRENT_TEST == "ota" ]; then
     echo
     echo "Running OTA test"
     # temp diasble datc/s and otas tests until new RF PHY is debugged with ME17B
-    # erase_all_devices
-    # run_ota_test 1 # arg 1 = internal flash
-    # if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
-    # run_ota_test 0 # arg 0= external flash
-    #fi
+    erase_all_devices
+    run_ota_test 1 # arg 1 = internal flash
+    if [[ $DUT_NAME_UPPER != "MAX32690" ]]; then
+    run_ota_test 0 # arg 0= external flash
+    fi
     echo
 else
     echo

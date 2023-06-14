@@ -25,7 +25,6 @@ flash.log
 Libraries/NFC
 Libraries/EMV
 Libraries/RF-PHY-closed
-Libraries/RF-PHY
 .github/workflows/ci-tests/Examples_tests/results/
 .cortex-debug.peripherals.state.json
 .cortex-debug.registers.state.json
