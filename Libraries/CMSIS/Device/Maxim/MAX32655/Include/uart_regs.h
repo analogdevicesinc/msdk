@@ -254,6 +254,9 @@ typedef struct {
 #define MXC_F_UART_INT_EN_RX_THD_POS                   4 /**< INT_EN_RX_THD Position */
 #define MXC_F_UART_INT_EN_RX_THD                       ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_RX_THD_POS)) /**< INT_EN_RX_THD Mask */
 
+#define MXC_F_UART_INT_EN_TX_OB_POS                    5 /**< INT_EN_TX_OB Position */
+#define MXC_F_UART_INT_EN_TX_OB                        ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_TX_OB_POS)) /**< INT_EN_TX_OB Mask */
+
 #define MXC_F_UART_INT_EN_TX_HE_POS                    6 /**< INT_EN_TX_HE Position */
 #define MXC_F_UART_INT_EN_TX_HE                        ((uint32_t)(0x1UL << MXC_F_UART_INT_EN_TX_HE_POS)) /**< INT_EN_TX_HE Mask */
 
@@ -279,6 +282,9 @@ typedef struct {
 
 #define MXC_F_UART_INT_FL_RX_THD_POS                   4 /**< INT_FL_RX_THD Position */
 #define MXC_F_UART_INT_FL_RX_THD                       ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_RX_THD_POS)) /**< INT_FL_RX_THD Mask */
+
+#define MXC_F_UART_INT_FL_TX_OB_POS                    5 /**< INT_FL_TX_OB Position */
+#define MXC_F_UART_INT_FL_TX_OB                        ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_TX_OB_POS)) /**< INT_FL_TX_OB Mask */
 
 #define MXC_F_UART_INT_FL_TX_HE_POS                    6 /**< INT_FL_TX_HE Position */
 #define MXC_F_UART_INT_FL_TX_HE                        ((uint32_t)(0x1UL << MXC_F_UART_INT_FL_TX_HE_POS)) /**< INT_FL_TX_HE Mask */

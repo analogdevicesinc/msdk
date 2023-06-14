@@ -95,9 +95,10 @@
 /     0 - Include all code pages above and configured by f_setcp()
 */
 
-
+#define FF_LBA64		1
 #define FF_USE_LFN		2
 #define FF_MAX_LFN		255
+#define FF_MIN_GPT		0x10000000
 /* The FF_USE_LFN switches the support for LFN (long file name).
 /
 /   0: Disable LFN. FF_MAX_LFN has no effect.
@@ -132,6 +133,8 @@
 /   2: UTF-16BE
 /   3: UTF-8
 */
+#define FF_LFN_BUF		255
+#define FF_SFN_BUF		12
 
 
 #define FF_FS_RPATH		2
@@ -147,7 +150,7 @@
 / Drive/Volume Configurations
 /---------------------------------------------------------------------------*/
 
-#define FF_VOLUMES		1
+#define FF_VOLUMES		2
 /* Number of volumes (logical drives) to be used. (1-10) */
 
 

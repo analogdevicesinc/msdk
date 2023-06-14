@@ -46,6 +46,7 @@
 #include "app_api.h"
 #include "hci_core.h"
 #include "app_terminal.h"
+#include "wut.h"
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 #include "ll_init_api.h"

@@ -92,10 +92,7 @@ static int display_comm_init(void)
 
     err = MXC_SPI_Init(DISPLAY_SPI, 1, 0, 1, 0, DISPLAY_SPI_SPEED, MAP_A);
     if (err != E_NO_ERROR) {
-        printf("-->Failed master\n");
         return err;
-    } else {
-        printf("\n-->SPI Master Initialization Complete");
     }
 
     MXC_SPI_SetDataSize(DISPLAY_SPI, 8);
@@ -140,13 +137,22 @@ static int display_comm_write(uint8_t *data, uint32_t data_len)
                           .rxCnt = 0,
                           .completeCB = NULL };
     if ((error = MXC_SPI_MasterTransaction(&req)) != 0) {
-        printf("Error writing: %d\n", error);
         return error;
     }
     SPI_CS(0);
     return error;
 }
 #endif // ENABLE_DISPLAY
+
+/******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO1_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
+}
 
 /******************************************************************************/
 static int ext_flash_board_init(void)

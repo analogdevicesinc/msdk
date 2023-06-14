@@ -65,7 +65,12 @@ extern const mxc_gpio_cfg_t gpio_cfg_uart3;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow;
 extern const mxc_gpio_cfg_t gpio_cfg_uart3_flow_disable;
 
-extern const mxc_gpio_cfg_t gpio_cfg_spi0;
+//extern const mxc_gpio_cfg_t gpio_cfg_spi0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ss0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ss1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ss2;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ss3;
+
 // NOTE: SPI1 definied here with SS1 only, SS0 is on port0 by itself.
 extern const mxc_gpio_cfg_t gpio_cfg_spi1;
 // NOTE: SPI2 defined here with SS0 only, and NOT SS1 and SS2

@@ -15,6 +15,7 @@ ARM-DSP/arm_variance_example
 Bootloader_Host
 CAN
 Coremark
+Demo
 DMA
 EEPROM_Emulator
 Flash

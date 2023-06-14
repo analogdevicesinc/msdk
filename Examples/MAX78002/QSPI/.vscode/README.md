@@ -23,7 +23,12 @@ The following features are supported:
 ## Dependencies
 
 * [Visual Studio Code](https://code.visualstudio.com/)
+<<<<<<< HEAD
 * [C/C++ VSCode Extension](https://github.com/microsoft/vscode-cpptools)
+=======
+  * [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
+  * [Cortex-Debug Extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
+>>>>>>> main
 * [Analog Devices MSDK](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820A)
 
 ## Installation
@@ -47,6 +52,7 @@ The steps below are also available in video form in "Understanding Artificial In
 
 6. Install the Microsoft [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
+<<<<<<< HEAD
 7. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.
 
 8. Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
@@ -54,6 +60,17 @@ The steps below are also available in video form in "Understanding Artificial In
     ![Open Settings JSON Command](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/open_settings_json.jpg)
 
 9. Add the entries below into your user settings.json file.
+=======
+7. Install the [Cortex-Debug Extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
+
+8. Use `CTRL + SHIFT + P` (or `COMMAND + SHIFT + P` on MacOS) to open the developer prompt.
+
+9. Type "open settings json" and select the "Preferences: Open Settings (JSON)" option (_not_ the "Preferences: Open _Default_ Settings (JSON)").  This will open your user settings.json file in VS Code's editor.
+
+    ![Open Settings JSON Command](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/open_settings_json.jpg)
+
+10. Add the entries below into your user settings.json file.
+>>>>>>> main
 
     ```json
     {
@@ -67,9 +84,15 @@ The steps below are also available in video form in "Understanding Artificial In
     }
     ```
 
+<<<<<<< HEAD
 10. Save your changes to the file with `CTRL + S` and restart VS Code.
 
 11. That's it! You're ready to start using Visual Studio Code to develop with Analog Devices MAX-series Microcontrollers. The MSDK examples come pre-populated with .vscode project folders, and the `Tools/VSCode-Maxim` folder of the MSDK contains documentation and templates.  See [Usage](#usage) below for more details.
+=======
+11. Save your changes to the file with `CTRL + S` and restart VS Code.
+
+12. That's it! You're ready to start using Visual Studio Code to develop with Analog Devices MAX-series Microcontrollers. The MSDK examples come pre-populated with .vscode project folders, and the `Tools/VSCode-Maxim` folder of the MSDK contains documentation and templates.  See [Usage](#usage) below for more details.
+>>>>>>> main
 
 ## Usage
 
@@ -360,6 +383,7 @@ make
 
 ... is run, the program `make` will load settings from these two files.  Then, it will use them to build the project's source code.  VSCode-Maxim is a "wrapper" around this Makefile system.
 
+<<<<<<< HEAD
 The file named `Makefile` is the "core" file for the project.  It should not be edited directly.  Instead, it offers a number of configuration variables that can be overridden in the `project.mk` file, on the command-line, in your system's environment, or via your IDE.  It also comes with a default configuration that is suitable for most projects.
 
 ### Default Build Behavior
@@ -492,6 +516,9 @@ The following configuration variables are available.
 | `TARGET_SEC` | Secure part number to use | `TARGET_SEC=MAX32651` | Some secure microcontrollers have multiple secure variants, and this option can be used to specify the variant to use with the SBTs.  Defaults are intelligently selected, and can be found in `$(MAXIM_SBT_DIR)/SBT-config.mk`
 | `SCP_PACKETS` | Where to build the scp_packets folder | | Defaults to `build/scp_packets` |
 | `TEST_KEY` | Which test key to sign applications with | | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the test key that can be used for development.
+=======
+**See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system) for full documentation on how to configure the build system.**
+>>>>>>> main
 
 ## Project Creation
 
@@ -513,6 +540,7 @@ The release package for this project (Located at Tools/VSCode-Maxim in the Analo
 
 6. That's it!  The existing project is ready to build, debug, and modify.
 
+<<<<<<< HEAD
 ### Option 2 - Creating a Project from Scratch
 
 If you want to start from scratch, take this option.
@@ -525,6 +553,21 @@ If you want to start from scratch, take this option.
     C:\Users\Jake.Carter\workspace\MyNewProject
     +-- \.vscode
     +-- Makefile
+=======
+### Option 2 - Injecting
+
+VSCode-Maxim releases provide the `Inject` folder for "injecting" into an existing folder.  If you want to start from scratch or use the project files with existing source code, take this option.
+
+1. Create your project folder if necessary.  For example, I might create a new project in a workspace folder with the path: `C:\Users\Jake.Carter\workspace\MyNewProject`.
+
+2. Copy the **contents** of the `Inject` folder into the project folder from step 1.  The contents to copy include a `.vscode` folder, a `Makefile`, and a `project.mk` file.  For this example, the contents of the 'MyProject' folder would be the following:
+
+    ```shell
+    C:\Users\Jake.Carter\workspace\MyNewProject
+    |- .vscode
+    |- Makefile
+    |- project.mk
+>>>>>>> main
     ```
 
 3. Open the project in VS Code (`File -> Open Folder...`)
@@ -533,7 +576,13 @@ If you want to start from scratch, take this option.
 
 5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
 
+<<<<<<< HEAD
 6. Fundamentally, that's it.  Your new empty project can now be opened with `File > Open Folder` from within VS Code.
+=======
+6. Configure the [build system](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system) for use with any pre-existing source code.
+
+7. That's it!  Your new empty project can now be opened with `File > Open Folder` from within VS Code.
+>>>>>>> main
 
 ## Issue Tracker
 
@@ -544,4 +593,8 @@ New issues should contain _at minimum_ the following information:
 * Visual Studio Code version #s (see `Help -> About`)
 * C/C++ Extension version #
 * Target microcontroller and evaluation platform
+<<<<<<< HEAD
 * The projects `.vscode` folder and `Makefile` (where applicable).  Standard compression formats such as `.zip`, `.rar`, `.tar.gz`, etc. are all acceptable.
+=======
+* The projects `.vscode` folder and `Makefile` (where applicable).  Standard compression formats such as `.zip`, `.rar`, `.tar.gz`, etc. are all acceptable.
+>>>>>>> main

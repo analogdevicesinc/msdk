@@ -48,9 +48,12 @@
 #include "mxc_device.h"
 #include "mxc_pins.h"
 #include "nvic_table.h"
-#include "pb.h"
 #include "spi.h"
 #include "mxc_delay.h"
+
+#ifndef BOARD_MAX32520FTHR
+#include "pb.h"
+#endif //BOARD_MAX32520FTHR
 
 /***** Definitions *****/
 #define DATA_LEN 1024 // Words

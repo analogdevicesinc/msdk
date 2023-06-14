@@ -331,6 +331,19 @@ ifeq "$(MAKECMDGOALS)" ""
 MAKECMDGOALS:=$(.DEFAULT_GOAL)
 endif
 
+<<<<<<< HEAD
+=======
+# Enable colors when --sync-output is used.
+# See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
+ifneq ($(MAKE_TERMOUT),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+ifneq ($(FORCE_COLOR),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+>>>>>>> main
 # *******************************************************************************
 # Include SBT config.  We need to do this here because it needs to know
 # the current MAKECMDGOAL.

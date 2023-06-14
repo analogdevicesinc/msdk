@@ -37,7 +37,6 @@
 #include "max32675.h"
 #include "gcr_regs.h"
 #include "mxc_sys.h"
-#include "afe.h"
 
 extern void (*const __vector_table[])(void);
 
@@ -144,8 +143,6 @@ __weak void SystemInit(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
 
     Board_Init();
-
-    afe_load_trims();
 }
 
 #if defined(__CC_ARM)
