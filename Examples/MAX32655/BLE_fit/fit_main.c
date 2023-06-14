@@ -698,7 +698,7 @@ static void btnPressHandler(uint8_t btnId, PalBtnPos_t state)
 /*************************************************************************************************/
 void FitHandlerInit(wsfHandlerId_t handlerId)
 {
-    uint8_t addr[8] = { 0 };
+    uint8_t addr[6] = { 0 };
     APP_TRACE_INFO0("FitHandlerInit");
     AppGetBdAddr(addr);
     APP_TRACE_INFO6("MAC Addr: %02x:%02x:%02x:%02x:%02x:%02x", addr[5], addr[4], addr[3], addr[2],
