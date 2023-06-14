@@ -83,12 +83,27 @@ typedef enum { COPY_FILE_OP, CALC_CRC32_OP } externFileOp_t;
 /* Defined in boot_lower.S */
 extern void Boot_Lower(void);
 
+void led_On(unsigned int idx)
+{
+    MXC_GPIO_OutClr(led_pin[idx].port, led_pin[idx].mask);
+}
+
+void led_Off(unsigned int idx)
+{
+    MXC_GPIO_OutSet(led_pin[idx].port, led_pin[idx].mask);
+}
+
+void led_Toggle(unsigned int idx)
+{
+    MXC_GPIO_OutToggle(led_pin[idx].port, led_pin[idx].mask);
+}
+
 void ledSuccessPattern(void)
 {
     /* Green LED blinks */
     volatile int i, j;
     for (j = 0; j < 10; j++) {
-        LED_Toggle(1);
+        led_Toggle(1);
         DELAY(0xFFFFF);
     }
 }
@@ -97,7 +112,7 @@ void ledFailPattern(void)
     /* Red LED blinks */
     volatile int i, j;
     for (j = 0; j < 10; j++) {
-        LED_Toggle(0);
+        led_Toggle(0);
         DELAY(0xFFFFF);
     }
 }
@@ -267,9 +282,9 @@ int main(void)
 
     LED_Init();
     for (int led = 0; led < numLedsBlink; led++) {
-        LED_On(led);
+        led_On(led);
         DELAY(0x1FFFFF);
-        LED_Off(led);
+        led_Off(led);
         DELAY(0x1FFFFF);
     }
 

@@ -39,7 +39,6 @@
 #include "mxc_sys.h"
 #include "flc_regs.h"
 #include "icc.h"
-#include "afe.h"
 
 extern void (*const __isr_vector[])(void);
 
@@ -145,8 +144,6 @@ __weak void SystemInit(void)
     Board_Init();
 
     PalSysInit();
-
-    afe_load_trims();
 }
 
 #if defined(__CC_ARM)
