@@ -80,9 +80,9 @@ int MXC_I2C_RevA_Init(mxc_i2c_reva_regs_t *i2c, int masterMode, unsigned int sla
         return E_NULL_PTR;
     }
 
-    if ((err = MXC_I2C_Recover((mxc_i2c_regs_t *)i2c, 16)) != E_NO_ERROR) {
-        return err;
-    }
+    // if ((err = MXC_I2C_Recover((mxc_i2c_regs_t *)i2c, 16)) != E_NO_ERROR) {
+    //     return err;
+    // }
 
     i2c->ctrl |= MXC_F_I2C_REVA_CTRL_EN;
 
