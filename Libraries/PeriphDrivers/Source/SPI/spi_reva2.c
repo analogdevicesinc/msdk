@@ -598,7 +598,7 @@ void MXC_SPI_RevA2_ClearFlags(mxc_spi_reva_regs_t *spi)
     spi->intfl = spi->intfl;
 }
 
-void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t intEn)
+void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en)
 {
     int spi_num;
 
@@ -606,10 +606,10 @@ void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t intEn)
 
     MXC_ASSERT(spi_num >= 0);
 
-    spi->inten |= intEn;
+    spi->inten |= en;
 }
 
-void MXC_SPI_RevA1_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t intDis)
+void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis)
 {
     int spi_num;
 
@@ -617,7 +617,7 @@ void MXC_SPI_RevA1_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t intDis)
 
     MXC_ASSERT(spi_num >= 0);
 
-    spi->inten &= ~(intDis);
+    spi->inten &= ~(dis);
 }
 
 int MXC_SPI_RevA2_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq)

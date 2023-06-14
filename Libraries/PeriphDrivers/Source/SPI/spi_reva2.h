@@ -64,7 +64,7 @@ void MXC_SPI_RevA2_ClearFlags(mxc_spi_reva_regs_t *spi);
 
 void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en);
 
-void MXC_SPI_RevA1_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis)
+void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis);
 
 int MXC_SPI_RevA2_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq);
 

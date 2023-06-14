@@ -49,8 +49,6 @@
 /* **** Definitions **** */
 
 /* ************************************************************************** */
-// TODO: MXC_SPI_Init will be used once, the original RevA prototype is deprecated and removed.
-// int MXC_SPI_Init_New(mxc_spi_init_t *init)
 
 // Max 3 Possible Target Select Options per SPI instance
 #define MXC_SPI_TS0_MASK_POS (0)
@@ -248,7 +246,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     return MXC_SPI_RevA2_Init(init);
 }
 
-int MXC_SPI_Init_New(mxc_spi_init_t init)
+int MXC_SPI_Init_New(mxc_spi_init_t *init)
 {
     int error, spi_num;
 
@@ -365,9 +363,9 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
     return E_NO_ERROR;
 }
 
-uint32_t MXC_SPI_GetFlags(mxc_spi_regs_t *spi)
+unsigned int MXC_SPI_GetFlags(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevA2_GetFlags((mxc_spi_reva_regs_t *)spi);
+    return (unsigned int)MXC_SPI_RevA2_GetFlags((mxc_spi_reva_regs_t *)spi);
 }
 
 void MXC_SPI_ClearFlags(mxc_spi_regs_t *spi)
@@ -377,12 +375,12 @@ void MXC_SPI_ClearFlags(mxc_spi_regs_t *spi)
 
 void MXC_SPI_EnableInt(mxc_spi_regs_t *spi, unsigned int intEn)
 {
-    MXC_SPI_RevA2_EnableInt((mxc_spi_reva_regs_t *)spi, intEn);
+    MXC_SPI_RevA2_EnableInt((mxc_spi_reva_regs_t *)spi, (uint32_t)intEn);
 }
 
 void MXC_SPI_DisableInt(mxc_spi_regs_t *spi, unsigned int intDis)
 {
-    MXC_SPI_RevA2_DisableInt((mxc_spi_reva_regs_t *)spi, intDis);
+    MXC_SPI_RevA2_DisableInt((mxc_spi_reva_regs_t *)spi, (uint32_t)intDis);
 }
 
 int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
