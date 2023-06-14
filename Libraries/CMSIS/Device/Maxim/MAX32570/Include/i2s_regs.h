@@ -202,6 +202,9 @@ typedef struct {
 #define MXC_F_I2S_CTRL1CH0_SMP_SIZE_POS                9 /**< CTRL1CH0_SMP_SIZE Position */
 #define MXC_F_I2S_CTRL1CH0_SMP_SIZE                    ((uint32_t)(0x1FUL << MXC_F_I2S_CTRL1CH0_SMP_SIZE_POS)) /**< CTRL1CH0_SMP_SIZE Mask */
 
+#define MXC_F_I2S_CTRL1CH0_CLKSEL_POS                  14 /**< CTRL1CH0_CLKSEL Position */
+#define MXC_F_I2S_CTRL1CH0_CLKSEL                      ((uint32_t)(0x1UL << MXC_F_I2S_CTRL1CH0_CLKSEL_POS)) /**< CTRL1CH0_CLKSEL Mask */
+
 #define MXC_F_I2S_CTRL1CH0_ADJUST_POS                  15 /**< CTRL1CH0_ADJUST Position */
 #define MXC_F_I2S_CTRL1CH0_ADJUST                      ((uint32_t)(0x1UL << MXC_F_I2S_CTRL1CH0_ADJUST_POS)) /**< CTRL1CH0_ADJUST Mask */
 

@@ -10756,6 +10756,12 @@
        <access>read-write</access>
       </field>
       <field>
+       <name>CLKSEL</name>
+       <description>Select source clock for internal SCK mode.</description>
+       <bitRange>[14:14]</bitRange>
+       <access>read-write</access>
+      </field>
+      <field>
        <name>ADJUST</name>
        <description>LSB/MSB Justify.</description>
        <bitRange>[15:15]</bitRange>
