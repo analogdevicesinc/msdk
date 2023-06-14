@@ -34,6 +34,17 @@
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_H_
 
+#ifdef __riscv
+// TODO(JC): This is a somewhat ugly hack added to avoid
+// implicit function warnings on RISC-V projects
+// when LIB_BOARD was added to libs.mk.  When the
+// RISC-V build system is improved to use libs.mk
+// this should be removed.
+#ifndef LIB_BOARD
+#define LIB_BOARD
+#endif
+#endif
+
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "mxc_assert.h"
