@@ -90,6 +90,16 @@ void mxc_assert(const char *expr, const char *file, int line)
 }
 
 /******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO2_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
+}
+
+/******************************************************************************/
 
 void SystemCoreClockUpdate(void)
 {
@@ -102,8 +112,8 @@ int Board_Init(void)
 #ifndef __riscv
     int err;
 
-    MXC_GCR->perckcn0 = 0; // enable all clocks
-    MXC_GCR->perckcn1 = (1 << 31); // except CPU1
+    MXC_GCR->pclkdis0 = 0; // enable all clocks
+    MXC_GCR->pclkdis1 = (1 << 31); // except CPU1
 
     MXC_GCR->clkctrl = 0x001F0800; // en all clocks
     // sel HIRC96

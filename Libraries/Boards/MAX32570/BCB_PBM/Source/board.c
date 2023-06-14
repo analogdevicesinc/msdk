@@ -41,7 +41,6 @@
 #include "uart.h"
 #include "gpio.h"
 #include "mxc_pins.h"
-#include "pb.h"
 #include "mxc_sys.h"
 
 /***** Global Variables *****/
@@ -49,12 +48,6 @@ mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
 /***** File Scope Variables *****/
-const uart_cfg_t uart_cfg = { UART_PARITY_DISABLE, UART_DATA_SIZE_8_BITS, UART_STOP_1,
-                              UART_FLOW_CTRL_DIS,  UART_FLOW_POL_DIS,     CONSOLE_BAUD };
-
-const sys_cfg_t uart_sys_cfg = {
-    MAP_A, Enable
-}; // There is no special system configuration parameters for UART on MAX32650
 
 /******************************************************************************/
 void mxc_assert(const char *expr, const char *file, int line)
@@ -82,7 +75,7 @@ int Console_Init(void)
 {
     int err;
 
-    if ((err = UART_Init(ConsoleUart, &uart_cfg, &uart_sys_cfg)) != E_NO_ERROR) {
+    if ((err = MXC_UART_Init(ConsoleUart, CONSOLE_BAUD)) != E_NO_ERROR) {
         return err;
     }
 

@@ -48,6 +48,7 @@
 #include "afe.h"
 
 /***** Definitions *****/
+#define AFE_TIMER_INSTANCE MXC_TMR1
 
 /***** Globals *****/
 
@@ -85,7 +86,14 @@ static void dump_dac_regs(void)
 // *****************************************************************************
 int main(void)
 {
+    int status = E_NO_ERROR;
     uint32_t read_val = 0;
+
+    status = afe_load_trims(AFE_TIMER_INSTANCE);
+    if (status != E_NO_ERROR) {
+        printf("Error during afe load trims: %d\n", status);
+        while (1) {}
+    }
 
     printf("\n\n\n\n\nMAX32675 AFE DAC Example\n\n");
     printf("This example configures the AFE's DAC to output a static 1.0V\n");

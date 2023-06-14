@@ -75,6 +75,16 @@ const mxc_gpio_cfg_t ts_busy_pin = { MXC_GPIO0, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_IN
                                      MXC_GPIO_VSSEL_VDDIOH };
 
 /******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO3_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO3));
+}
+
+/******************************************************************************/
 static int ext_flash_board_init(void)
 {
     int err;

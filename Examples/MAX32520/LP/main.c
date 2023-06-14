@@ -55,13 +55,16 @@
 #include <stdint.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
-#include "pb.h"
 #include "led.h"
 #include "lp.h"
 #include "icc.h"
 #include "uart.h"
 #include "nvic_table.h"
 #include "mxc_delay.h"
+
+#ifndef BOARD_MAX32520FTHR
+#include "pb.h"
+#endif //BOARD_MAX32520FTHR
 
 #define USE_CONSOLE 1
 
