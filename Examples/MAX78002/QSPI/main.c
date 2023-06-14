@@ -55,14 +55,9 @@
 
 /***** Definitions *****/
 #define TEST_SIZE 640
-<<<<<<< HEAD
-#define TEST_VALUE 0x42
-#define TEST_COUNT 480
-=======
 #define TEST_COUNT 480
 #define TEST_VALUE 0x00
 #define TEST_ADDR 0x000
->>>>>>> main
 
 /***** Globals *****/
 
@@ -72,24 +67,11 @@
 int main(void)
 {
     int err = E_NO_ERROR;
-<<<<<<< HEAD
-    int elapsed = 0;
-=======
     unsigned int elapsed = 0;
->>>>>>> main
     int fail_count = 0;
 
     MXC_Delay(MXC_DELAY_SEC(2));
 
-<<<<<<< HEAD
-    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-
-    ram_init();
-
-    MXC_TMR_SW_Start(MXC_TMR0);
-    int sw_overhead = MXC_TMR_SW_Stop(MXC_TMR0);
-    printf("Stopwatch overhead: %ius\n", sw_overhead);
-=======
     // Set the Internal Primary Oscillator for the fastest system clock speed
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 
@@ -100,7 +82,6 @@ int main(void)
     printf("\tTest speed: %i Hz\n", SPI_SPEED);
 
     ram_init();
->>>>>>> main
 
     printf("Reading ID...\n");
     ram_id_t id;
@@ -109,16 +90,12 @@ int main(void)
         printf("Failed to read expected SRAM ID!\n");
         return err;
     }
-<<<<<<< HEAD
-    printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", id.MFID, id.KGD, id.density, id.EID);
-=======
     printf("RAM ID:\n\tMFID: 0x%.2x\n\tKGD: 0x%.2x\n\tDensity: 0x%.2x\n\tEID: 0x%x\n", id.MFID,
            id.KGD, id.density, id.EID);
 
     // Time the measurement overhead of our measurement functions
     MXC_TMR_SW_Start(MXC_TMR0);
     int sw_overhead = MXC_TMR_SW_Stop(MXC_TMR0);
->>>>>>> main
 
     uint8_t tx_buffer[TEST_SIZE];
     uint8_t rx_buffer[TEST_SIZE];
@@ -130,59 +107,6 @@ int main(void)
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
     printf("(Benchmark) Wrote %i bytes to internal SRAM in %ius\n", TEST_SIZE, elapsed);
 
-<<<<<<< HEAD
-    // Measure DMA transaction overhead
-    if (benchmark_dma_overhead(&elapsed) == E_NO_ERROR){
-        elapsed -= sw_overhead;
-        printf("(Benchmark) DMA overhead: %ius\n", elapsed);
-    } else {
-        printf("(Benchmark) DMA overhead timed out...\n");
-    }
-
-    // Benchmark standard-width SPI write to external SRAM
-    MXC_TMR_SW_Start(MXC_TMR0);
-    int address = 0;
-    ram_write(address, tx_buffer, TEST_SIZE);
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
-    printf("Wrote %i bytes in %ius\n", TEST_SIZE, elapsed);
-
-    // Validate test pattern
-    MXC_TMR_SW_Start(MXC_TMR0);
-    ram_read_slow(address, rx_buffer, TEST_SIZE);
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
-    printf("Read %i bytes QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
-    for (int i = 0; i < TEST_SIZE; i++) {
-        if (rx_buffer[i] != tx_buffer[i]) {
-            fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", i, tx_buffer[i], rx_buffer[i]);
-        }
-    }
-
-    // Invert test pattern
-    memset(tx_buffer, ~(0x5A), TEST_SIZE);
-    memset(rx_buffer, 0, TEST_SIZE);
-
-    // Benchmark QSPI write to external SRAM
-    err = ram_enter_quadmode();
-    MXC_TMR_SW_Start(MXC_TMR0);
-    err = ram_write_quad(address, tx_buffer, TEST_SIZE);
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
-    printf("Wrote %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
-
-    // Validate
-    MXC_TMR_SW_Start(MXC_TMR0);
-    ram_read_quad(address, rx_buffer, TEST_SIZE);
-    elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
-    printf("Read %i bytes w/ QSPI in %ius\n", TEST_SIZE, elapsed - sw_overhead);
-    for (int i = 0; i < TEST_SIZE; i++) {
-        if (rx_buffer[i] != tx_buffer[i]) {
-            fail_count++;
-            printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + i, tx_buffer[i], rx_buffer[i]);
-        }
-    }
-
-    memset(tx_buffer, 0xAB, TEST_SIZE);
-=======
     // Benchmark standard-width SPI write to external SRAM
     printf("Test 1: Standard SPI write...\n");
     MXC_TMR_SW_Start(MXC_TMR0);
@@ -268,30 +192,19 @@ int main(void)
     printf("\tDone\n");
 
     // Generate a new more interesting test pattern
->>>>>>> main
     for (int i = 0; i < TEST_SIZE; i++) {
         tx_buffer[i] = i % 256;
     }
     memset(rx_buffer, 0, TEST_SIZE);
-<<<<<<< HEAD
-    address = 0;
-    printf("Writing across page boundaries...\n");
-=======
 
     // Benchmark writing across multiple pages boundaries.
     int address = TEST_ADDR;
     printf("Test 7: QSPI Writing across page boundaries...\n", TEST_SIZE, TEST_COUNT);
     MXC_TMR_SW_Start(MXC_TMR0);
->>>>>>> main
     for (int i = 0; i < TEST_COUNT; i++) {
         ram_write_quad(address, tx_buffer, TEST_SIZE);
         address += TEST_SIZE;
     }
-<<<<<<< HEAD
-    printf("Done!\n");
-
-    address = 0;
-=======
     elapsed = MXC_TMR_SW_Stop(MXC_TMR0) - sw_overhead;
     printf("\tWrote %i bytes in %ius\n", TEST_SIZE * TEST_COUNT, elapsed);
 
@@ -318,29 +231,16 @@ int main(void)
     printf("Test 9: Validating with QSPI...\n");
     address = TEST_ADDR;
     temp = fail_count;
->>>>>>> main
     for (int i = 0; i < TEST_COUNT; i++) {
         ram_read_quad(address, rx_buffer, TEST_SIZE);
         for (int j = 0; j < TEST_SIZE; j++) {
             if (rx_buffer[j] != tx_buffer[j]) {
                 fail_count++;
-<<<<<<< HEAD
-                printf("Value mismatch at addr %i, expected 0x%x but got 0x%x\n", address + j, tx_buffer[j], rx_buffer[j]);
-=======
->>>>>>> main
             }
         }
         address += TEST_SIZE;
         memset(rx_buffer, 0, TEST_SIZE);
     }
-<<<<<<< HEAD
-
-    if (fail_count > 0) {
-        printf("Failed with %i mismatches!\n", fail_count);
-        return E_FAIL;
-    }
-    
-=======
     if (fail_count != temp) {
         printf("\tFailed (%i) mismatches\n", fail_count - temp);
     } else {
@@ -353,7 +253,6 @@ int main(void)
         return E_FAIL;
     }
 
->>>>>>> main
     printf("Success!\n");
     return err;
 }
