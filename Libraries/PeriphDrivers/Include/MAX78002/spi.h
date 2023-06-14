@@ -85,15 +85,14 @@ typedef enum {
 } mxc_spi_state_t;
 
 /**
- * @brief   The list of SPI Widths supported.
+ * @brief   The list of supported SPI Interface Modes.
  */
-// TODO: Check if DATAWIDTH is the best name for this
 typedef enum {
-    MXC_SPI_WIDTH_3WIRE = 0,
-    MXC_SPI_WIDTH_STANDARD = 1, 
-    MXC_SPI_WIDTH_DUAL = 2,
-    MXC_SPI_WIDTH_QUAD = 3
-} mxc_spi_datawidth_t;
+    MXC_SPI_INTERFACE_3WIRE = 0,
+    MXC_SPI_INTERFACE_STANDARD = 1, 
+    MXC_SPI_INTERFACE_DUAL = 2,
+    MXC_SPI_INTERFACE_QUAD = 3
+} mxc_spi_interface_t;
 
 /**
  * @brief The list of SPI modes
@@ -122,23 +121,8 @@ typedef struct {
 ///>>> @deprecated
 /**
  * @brief   The list of SPI Widths supported
- *
- * The SPI Width can be set on a per-transaction basis.
- * An example use case of SPI_WIDTH_STANDARD_HALFDUPLEX is
- * given.
- *
- * Using a MAX31865 RTD-to-SPI IC, read back the temperature
- * The IC requires a SPI Read to be executed as
- * 1. Assert SS
- * 2. Write an 8bit register address
- * 3. Read back the 8 bit register
- * 4. Deassert SS
- * This can be accomplished with the STANDARD_HALFDUPLEX width
- * 1. set txData to the address, txLen=1
- * 2. set rxData to a buffer of 1 byte, rxLen=1
- * 3. The driver will transmit the txData, and after completion of
- *    txData begin to recieve data, padding MOSI with DefaultTXData
- *
+ * 
+ * @deprecated.
  */
 typedef enum {
     SPI_WIDTH_3WIRE, ///< 1 Data line, half duplex
@@ -197,7 +181,7 @@ typedef struct {
     uint32_t             freq;            // Clock Frequency
     mxc_spi_clkmode_t    clk_mode;
     uint8_t              data_size;       // Number of bits per character sent
-    mxc_spi_datawidth_t  width;           // 3-wire, standard, dual, and quad modes
+    mxc_spi_interface_t  mode;            // 3-wire, standard, dual, and quad modes
     mxc_spi_tscontrol_t  ts_control;      // Target Select Control Scheme (auto HW, driver, or app controlled)
     mxc_spi_target_t     target;          // Target Settings (index, pins, active_polarity)
     mxc_gpio_vssel_t     vssel;           // Ensures selected VDDIO/VDDIOH setting
@@ -414,11 +398,11 @@ int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vss
  * This function is applicable in Master mode only
  *
  * @param   spi         Pointer to SPI instance's registers.
- * @param   freq        The desired frequency in Hertz.
+ * @param   hz          The desired frequency in Hertz.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, uint32_t freq);
+int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, unsigned int hz);
 
 /**
  * @brief   Get the frequency of the SPI interface.
@@ -430,47 +414,51 @@ int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, uint32_t freq);
  * @return  If successful, the SPI instance's set frequency value is returned. 
  *          Otherwise, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_GetFrequency(mxc_spi_regs_t *spi);
+unsigned int MXC_SPI_GetFrequency(mxc_spi_regs_t *spi);
 
 /**
- * @brief   Sets the number of bits per character
+ * @brief   Sets the number of bits per frame.
  *
  * @param   spi         Pointer to SPI instance's registers.
- * @param   data_size   The number of bits per character.
+ * @param   data_size   The number of bits per frame.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetDataSize(mxc_spi_regs_t *spi, int data_size);
+int MXC_SPI_SetFrameSize(mxc_spi_regs_t *spi, int size);
 
 /**
- * @brief   Gets the number of bits per character
+ * @brief   Gets the number of bits per frame.
  *
  * @param   spi         Pointer to SPI instance's registers.
  *
  * @return  If successful, the SPI instance's set data size is returned. 
  *          Otherwise, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_GetDataSize(mxc_spi_regs_t *spi);
+int MXC_SPI_GetFrameSize(mxc_spi_regs_t *spi);
 
 /**
- * @brief   Sets the SPI data line width used for transmissions.
- *
+ * @brief   Sets the SPI interface mode used for transmissions.
+ * 
+ * 3-Wire, Standard (4-Wire), Quad, Dual Modes
+ * 
  * @param   spi         Pointer to SPI instance's registers.
- * @param   width       SPI width (3-Wire, Standard, Dual SPI, Quad SPI).
+ * @param   mode        SPI interface mode (3-Wire, Standard, Dual SPI, Quad SPI).
  *                      See \ref mxc_spi_datawidth_t
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_datawidth_t width);
+int MXC_SPI_SetModeIF(mxc_spi_regs_t *spi, mxc_spi_interface_t mode);
 
 /**
- * @brief   Gets the SPI data line width used for transmissions.
+ * @brief   Gets the SPI interface mode used for transmissions.
+ * 
+ * 3-Wire, Standard (4-Wire), Quad, Dual Modes
  *
  * @param   spi         Pointer to SPI instance's registers.
  *
  * @return  The selected SPI instance's data line width. See \ref mxc_spi_datawidth_t.
  */
-mxc_spi_datawidth_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi);
+mxc_spi_interface_t MXC_SPI_GetModeIF(mxc_spi_regs_t *spi);
 
 /**
  * @brief   Sets the SPI clock mode (clock polarity and clock phase).
@@ -524,6 +512,45 @@ int MXC_SPI_SetRegisterCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback
 int MXC_SPI_GetActive(mxc_spi_regs_t *spi);
 
 ///>>> Previous Implementation
+
+/**
+ * @brief   Sets the number of bits per character
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ * @param   dataSize    The number of bits per character
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_SetDataSize(mxc_spi_regs_t *spi, int dataSize);
+
+/**
+ * @brief   Gets the number of bits per character
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_GetDataSize(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Sets the SPI width used for transmissions
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ * @param   spiWidth    SPI Width (3-Wire, Standard, Dual SPI, Quad SPI)
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth);
+
+/**
+ * @brief   Gets the SPI width used for transmissions
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ *
+ * @return  Spi Width
+ */
+mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi);
+
 /**
  * @brief   Sets the slave select (SS) line used for transmissions
  *

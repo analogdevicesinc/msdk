@@ -740,7 +740,7 @@ int MXC_SPI_RevA2_GetDataSize(mxc_spi_reva_regs_t *spi)
     }
 }
 
-int MXC_SPI_RevA2_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_datawidth_t width)
+int MXC_SPI_RevA2_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode)
 {
     int spi_num;
 
@@ -752,20 +752,20 @@ int MXC_SPI_RevA2_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_datawidth_t width)
     // Clear before setting
     spi->ctrl2 &= ~(MXC_F_SPI_REVA_CTRL2_THREE_WIRE | MXC_F_SPI_REVA_CTRL2_DATA_WIDTH);
 
-    switch (width) {
-    case MXC_SPI_WIDTH_3WIRE:
+    switch (mode) {
+    case MXC_SPI_INTERFACE_3WIRE:
         spi->ctrl2 |= MXC_F_SPI_REVA_CTRL2_THREE_WIRE;
         break;
 
-    case MXC_SPI_WIDTH_STANDARD:
+    case MXC_SPI_INTERFACE_STANDARD:
         spi->ctrl2 |= MXC_S_SPI_REVA_CTRL2_DATA_WIDTH_MONO;
         break;
 
-    case MXC_SPI_WIDTH_DUAL:
+    case MXC_SPI_INTERFACE_DUAL:
         spi->ctrl2 |= MXC_S_SPI_REVA_CTRL2_DATA_WIDTH_DUAL;
         break;
 
-    case MXC_SPI_WIDTH_QUAD:
+    case MXC_SPI_INTERFACE_QUAD:
         spi->ctrl2 |= MXC_S_SPI_REVA_CTRL2_DATA_WIDTH_QUAD;
         break;
 
@@ -775,8 +775,8 @@ int MXC_SPI_RevA2_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_datawidth_t width)
         break;
     }
 
-    // Save state of new width.
-    STATES[spi_num].init.width = width;
+    // Save state of new mode
+    STATES[spi_num].init.mode = mode;
 
     return E_NO_ERROR;
 }
@@ -1115,7 +1115,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     STATES[spi_num].current_target = *target;
 
     // Set the number of messages to transmit/receive for the SPI transaction.
-    if (STATES[spi_num].init.width == MXC_SPI_WIDTH_STANDARD) {
+    if (STATES[spi_num].init.mode == MXC_SPI_WIDTH_STANDARD) {
         if (rx_fr_len > tx_fr_len) {
             // In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
             // The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
@@ -1269,7 +1269,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     STATES[spi_num].current_target = *target;
 
     // Set the number of bytes to transmit/receive for the SPI transaction.
-    if (STATES[spi_num].init.width == MXC_SPI_WIDTH_STANDARD) {
+    if (STATES[spi_num].init.mode == MXC_SPI_WIDTH_STANDARD) {
         if (rx_fr_len > tx_fr_len) {
             // In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
             //  The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
@@ -1361,7 +1361,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     //      the hardware always assume full duplex. Therefore dummy bytes
     //      must be transmitted to support half duplex. The number of bytes to transmit
     //      AND receive is set by TX_NUM_CHAR, and the RX_NUM_CHAR field of ctrl1 is ignored.
-    } else if (tx_fr_len == 0 && STATES[spi_num].init.width == MXC_SPI_WIDTH_STANDARD) {
+    } else if (tx_fr_len == 0 && STATES[spi_num].init.mode == MXC_SPI_WIDTH_STANDARD) {
         // For readability purposes.
         tx_ch = STATES[spi_num].tx_dma_ch;
 

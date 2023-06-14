@@ -75,9 +75,9 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
     init->freq = hz;
 
     if (quadModeUsed) {
-        init->width = MXC_SPI_WIDTH_QUAD;
+        init->mode = MXC_SPI_INTERFACE_QUAD;
     } else {
-        init->width = MXC_SPI_WIDTH_STANDARD;
+        init->mode = MXC_SPI_INTERFACE_STANDARD;
     }
 
     // New SPI drivers will not use "mxc_spi_pins_t pins" anymore.
@@ -180,16 +180,16 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->width == MXC_SPI_WIDTH_3WIRE) {
+            if (init->mode == MXC_SPI_INTERFACE_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_3wire);
 
-            } else if (init->width == MXC_SPI_WIDTH_STANDARD) {
+            } else if (init->mode == MXC_SPI_INTERFACE_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
 
-            } else if (init->width == MXC_SPI_WIDTH_DUAL) {
+            } else if (init->mode == MXC_SPI_INTERFACE_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_dual);
 
-            } else if (init->width == MXC_SPI_WIDTH_QUAD) {
+            } else if (init->mode == MXC_SPI_INTERFACE_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_quad);
 
             } else {
@@ -213,16 +213,16 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->width == MXC_SPI_WIDTH_3WIRE) {
+            if (init->mode == MXC_SPI_INTERFACE_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
 
-            } else if (init->width == MXC_SPI_WIDTH_STANDARD) {
+            } else if (init->mode == MXC_SPI_INTERFACE_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
 
-            } else if (init->width == MXC_SPI_WIDTH_DUAL) {
+            } else if (init->mode == MXC_SPI_INTERFACE_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_dual);
 
-            } else if (init->width == MXC_SPI_WIDTH_QUAD) {
+            } else if (init->mode == MXC_SPI_INTERFACE_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_quad);
 
             } else {
@@ -272,16 +272,16 @@ int MXC_SPI_Init_New(mxc_spi_init_t *init)
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->width == MXC_SPI_WIDTH_3WIRE) {
+            if (init->mode == MXC_SPI_WIDTH_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_3wire);
 
-            } else if (init->width == MXC_SPI_WIDTH_STANDARD) {
+            } else if (init->mode == MXC_SPI_WIDTH_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
 
-            } else if (init->width == MXC_SPI_WIDTH_DUAL) {
+            } else if (init->mode == MXC_SPI_WIDTH_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_dual);
 
-            } else if (init->width == MXC_SPI_WIDTH_QUAD) {
+            } else if (init->mode == MXC_SPI_WIDTH_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_quad);
 
             } else {
@@ -305,16 +305,16 @@ int MXC_SPI_Init_New(mxc_spi_init_t *init)
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->width == MXC_SPI_WIDTH_3WIRE) {
+            if (init->mode == MXC_SPI_WIDTH_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
 
-            } else if (init->width == MXC_SPI_WIDTH_STANDARD) {
+            } else if (init->mode == MXC_SPI_WIDTH_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
 
-            } else if (init->width == MXC_SPI_WIDTH_DUAL) {
+            } else if (init->mode == MXC_SPI_WIDTH_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_dual);
 
-            } else if (init->width == MXC_SPI_WIDTH_QUAD) {
+            } else if (init->mode == MXC_SPI_WIDTH_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_quad);
 
             } else {
@@ -723,6 +723,11 @@ void MXC_SPI_DMA_RX_Handler(mxc_spi_regs_t *spi)
 }
 
 /* ** Unsupported-Legacy Functions from Previous Implementation ** */
+
+int MXC_SPI_ReadyForSleep(mxc_spi_reva_regs_t *spi)
+{
+    return E_NOT_SUPPORTED
+}
 
 int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData)
 {
