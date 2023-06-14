@@ -1389,9 +1389,9 @@ The name of a BSP's folder is used with the `BOARD` [build configuration variabl
 
 ### Custom BSPs
 
-For custom boards, additional BSPs can be easily created and added to the MSDK. Inspecting the `Libraries/CMSIS/Device/Maxim/TARGET/Source/system_TARGET.c` for a target microcontroller shows how the BSP is integrated and which startup functions can be implemented.
+For custom boards, additional BSPs can be easily created and added to the MSDK. Inspecting the `Libraries/CMSIS/Device/Maxim/TARGET/Source/system_TARGET.c` for a target microcontroller shows how the BSP is integrated into the microcontroller's startup code.
 
-For example, the MAX78000's `system_max78000.c` startup file shows that `PreInit` and `Board_Init` are weak functions that can be overridden. They are called from the default `SystemInit` implementation, which can also be overridden.
+For example, the MAX78000's `system_max78000.c` startup file shows that `Board_Init` is a weak function that can be overridden. `Board_Init` is called from the default `SystemInit` implementation, which can also be overridden.
 
     :::C
     /* This function is called before C runtime initialization and can be
@@ -1445,20 +1445,32 @@ For example, the MAX78000's `system_max78000.c` startup file shows that `PreInit
         Board_Init();
     }
 
-A custom BSP can implement one or all of the weak functions. To do so, it's recommended to create a new directory inside the `Libraries/Boards` folder for the target microcontroller with the file structure below. The name of the created directory will be the string to use with the `BOARD` [build configuration variable](#build-configuration-variables) to select the custom BSP.
+A custom BSP can implement one or all of the weak functions. The file structure for a typical BSP can be found below.  **The board.mk file is required**, while the rest of the project structure is a recommendation.
 
     :::bash
-    Libraries
-    └─ Boards
-       └─ TARGET
-          └─ CustomBSP
-             ├─ Include
-             |  └─ board.h
-             ├─ Source
-             |  └─ board.c
-             └─ board.mk
+        CustomBSP (defines BOARD value)
+         ├─ board.mk (required file!)
+         ├─ Include
+         |  └─ board.h
+         └─ Source
+            └─ board.c
 
-The following contents can be used as a bare-bones starter template.
+The name of the BSP's root folder will be the string used with the `BOARD` [build configuration variable](#build-configuration-variables) to select it for a project.  In the example above, one would use `BOARD = CustomBSP` to select it as the active BSP.
+
+#### BSP Search Directory
+
+By default, the MSDK searches for BSPs in the `Libraries/Boards` folder for each microcontroller.  This can be changed using the `BSP_SEARCH_DIR` [build configuration variable](#build-configuration-variables), which allows users to load a BSP from a directory outside of the MSDK.  The MSDK also uses the `BOARD` variable in its search path.  For example, the configuration...
+
+    :::Makefile
+    // project.mk
+    BSP_SEARCH_DIR = /home/username/mybsps # "root" of the BSP search path
+    BOARD = CustomBSP # "stem" of the BSP search path
+
+... will attempt to load the `/home/username/msbsps/CustomBSP/board.mk` file.
+
+#### Custom BSP Template
+
+The following contents can be used as a bare-bones starter template for a custom BSP.
 
 * _board.h_
 
@@ -1507,6 +1519,22 @@ The following contents can be used as a bare-bones starter template.
 ### Disabling BSPs
 
 It should also be noted that BSP integration can be disabled entirely by setting the `LIB_BOARD` [build configuration variable](#build-configuration-variables) to 0. This will skip the inclusion of the BSP's `board.mk` file entirely, and the default system initialization functions will be used.
+
+This option can also be used to implement a custom BSP inside of a project's application code.  For example, a user could implement `Board_Init` inside of a project's `main.c` file without having to create a separate BSP folder with `LIB_BOARD = 0`.
+
+    :::C
+    // main.c
+    int Board_Init(void)
+    {
+        // Implement me!
+        return E_NO_ERROR;
+    }
+
+    int main(void)
+    {
+        Board_Init();
+        // ...
+    }
 
 ## Build System
 
@@ -1608,6 +1636,7 @@ If a value is set in an IDE _and_ project.mk, the IDE's value will take preceden
 |                        |                                                            |                                                              |
 | `TARGET`               | Set the _Target Microcontroller_                           | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk** |
 | `BOARD`                | Set the _Board Support Package (BSP)_                      | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk.**  See [Board Support Packages](#board-support-packages) for more details.  When you change this option, it's usually a good idea to fully clean your project, then rebuild. |
+| `BSP_SEARCH_DIR`       | Set the directory to search for the _Board Support Package (BSP)_                      | By default, the `Libraries/Boards` folder of the MSDK is searched for the `TARGET` microcontroller.  This setting is useful for loading custom BSPs from outside of the MSDK.  When `LIB_BOARD=1`, the build system looks for the file path at `$(BSP_SEARCH_DIR)/$(BOARD)/board.mk`. |
 |                        |                                                            |                                                              |
 | `MAXIM_PATH`           | (Optional) Specify the location of the MSDK                | This optional variable can be used to change where the Makefile looks for the MSDK installation. By default, the build system will attempt to locate the MSDK with a relative path. If a project is moved _outside_ of the SDK, this variable must be set to the absolute path of the MSDK installation. |
 | `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |

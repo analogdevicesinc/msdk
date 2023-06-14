@@ -50,7 +50,7 @@ SRCS += max9867.c
 
 PROJ_CFLAGS+=-DCAMERA_OV7692
 
-MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source

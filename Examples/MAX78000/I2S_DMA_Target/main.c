@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "mxc.h"
+#include "board.h"
 #include "max9867.h"
 
 #undef USE_I2S_INTERRUPTS

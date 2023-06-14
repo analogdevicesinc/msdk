@@ -28,10 +28,11 @@ blacklist = [
 
 known_errors = [
     "ERR_NOTSUPPORTED",
-    "ERR_LIBNOTFOUND"
+    "ERR_LIBNOTFOUND",
+    "[WARNING] - This tool does not handle keys in a PCI-PTS compliant way, only for test"
 ]
 
-def build_project(project:Path, target, board, maxim_path:Path, distclean=False) -> Tuple[bool, tuple]:
+def build_project(project:Path, target, board, maxim_path:Path, distclean=False) -> Tuple[int, tuple]:
     clean_cmd = "make clean" if not distclean else "make distclean"
     res = run(clean_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
@@ -51,15 +52,34 @@ def build_project(project:Path, target, board, maxim_path:Path, distclean=False)
 
     # Error check build command
     fail = (res.returncode != 0)
-    if fail:
+    warning = False
+    known_error = False
+    if res.stderr != None:
         for err in known_errors:
             if err in res.stderr:
-                fail = False
+                known_error = True
+            elif err in res.stdout:
+                # This case catches the output of the SBTs, which will print a warning
+                # to stdout.  For these warnings, stderr is non-null but empty
+                if res.stderr == '':
+                    known_error = True
+                    
+
+    if fail and known_error: # build error
+        fail = False
+    elif res.stderr != None and res.stderr != '' and not known_error: # Build passed but with warnings
+        warning = True
 
     # Clean before returning
     run("make clean", cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
-    return (not fail, project_info)
+    return_code = 0
+    if fail:
+        return_code = 1
+    elif warning:
+        return_code = 2
+
+    return (return_code, project_info)
 
 
 def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
@@ -93,11 +113,13 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
 
     # Track failed projects for end summary
     failed = []
+    warnings = []
     count = 0
 
     for target in sorted(targets):
 
         target_fails = 0
+        target_warnings = 0
 
         # Get list of supported boards for this target.
         if boards is None:
@@ -121,6 +143,12 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
 
         else:
             assert(type(projects) is list)
+            for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
+                dirpath = Path(dirpath)
+                if dirpath.name in projects:
+                    projects.remove(dirpath.name)
+                    projects.append(dirpath)
+
 
         console.print("====================")
         console.print(f"Found {len(projects)} projects for [bold cyan]{target}[/bold cyan]")
@@ -140,37 +168,44 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                 if p.name == "Hello_World":
                     hello_world = p
             
-            if p is None:
-                print(f"[red]Failed to locate Hello_World for {target}[/red]")
-                periph_success = False
-                break
+            if hello_world is None:
+                console.print(f"[red]Failed to locate Hello_World for {target}[/red]")
+            else:
+                for board in boards:
+                    progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan] ({board}) PeriphDriver", refresh=True)
+                    (return_code, project_info) = build_project(hello_world, target, board, maxim_path, distclean=True)
+                    count += 1
 
-            for board in boards:
-                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan] ({board}) PeriphDriver", refresh=True)
-                (success, project_info) = build_project(hello_world, target, board, maxim_path, distclean=True)
-                count += 1
+                    # Error check build command
+                    if return_code == 0:
+                        progress.update(task_build, advance=1, description=f"[bold cyan]{target}[/bold cyan] ({board}): [green]PeriphDriver build pass.[/green]", refresh=True)
+                    elif return_code == 1:
+                        console.print(f"\n[red]{target} ({board}): PeriphDriver build failed.[/red]")
+                        print(f"Build command: {project_info['build_cmd']}")
+                        console.print("[bold]Errors:[/bold]")
+                        console.print("[red]----------------------------------------[/red]")
+                        console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                        console.print("[red]----------------------------------------[/red]\n")
 
-                # Error check build command
-                if not success:                            
-                    console.print(f"\n[red]{target} ({board}): PeriphDriver build failed.[/red]")
-                    print(f"Build command: {project_info['build_cmd']}")
-                    console.print("[bold]Build output:[/bold]")
-                    console.print("[red]----------------------------------------[/red]")
-                    console.print(Text.from_ansi(project_info['stderr']), markup=False)
-                    console.print("[red]----------------------------------------[/red]\n")
+                        if project_info not in failed:
+                            failed.append(project_info)
+                            target_fails += 1
 
-                    if project_info not in failed:
-                        failed.append(project_info)
-                        target_fails += 1
+                        periph_success = False
+                        progress.update(task_build, advance=1, description=f"[bold cyan]{target}[/bold cyan] ({board}): [red]PeriphDriver build fail.[/red]", refresh=True)
+                    elif return_code == 2:
+                        console.print(f"\n[yellow]{target} ({board}): PeriphDriver built with warnings.[/yellow]")
+                        print(f"Build command: {project_info['build_cmd']}")
+                        console.print("[bold]Warnings:[/bold]")
+                        console.print("[yellow]----------------------------------------[/yellow]")
+                        console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                        console.print("[yellow]----------------------------------------[/yellow]\n")
 
-                    periph_success = False
-                    progress.update(task_build, advance=1, description=f"[bold cyan]{target}[/bold cyan] ({board}): [red]PeriphDriver build fail.[/red]", refresh=True)
-
-                else:
-                    progress.update(task_build, advance=1, description=f"[bold cyan]{target}[/bold cyan] ({board}): [green]PeriphDriver build pass.[/green]", refresh=True)
+                        if project_info not in warnings:
+                            warnings.append(project_info)
+                            target_warnings += 1
 
             if periph_success:
-
                 # Iteratively across and test example projects
                 for project in projects:
                     project_name = project.name
@@ -178,13 +213,13 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                     for board in boards:
                         progress.update(task_build, advance=1, description=f"{target} ({board}): {project_name}", refresh=True)
 
-                        (success, project_info) = build_project(project, target, board, maxim_path, distclean=False)
+                        (return_code, project_info) = build_project(project, target, board, maxim_path, distclean=False)
 
                         # Error check build command
-                        if not success:                            
+                        if return_code == 1:                            
                             console.print(f"\n[red]{target} ({board}): {project_name} failed.[/red]")
                             print(f"Build command: {project_info['build_cmd']}")
-                            console.print("[bold]Build output:[/bold]")
+                            console.print("[bold]Errors:[/bold]")
                             console.print("[red]----------------------------------------[/red]")
                             console.print(Text.from_ansi(project_info['stderr']), markup=False)
                             console.print("[red]----------------------------------------[/red]\n")
@@ -193,19 +228,39 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                                 failed.append(project_info)
                                 target_fails += 1
 
+                        elif return_code == 2:
+                            console.print(f"\n[yellow]{target} ({board}): {project_name} built with warnings.[/yellow]")
+                            print(f"Build command: {project_info['build_cmd']}")
+                            console.print("[bold]Warnings:[/bold]")
+                            console.print("[yellow]----------------------------------------[/yellow]")
+                            console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                            console.print("[yellow]----------------------------------------[/yellow]\n")
+
+                            if project_info not in warnings:
+                                warnings.append(project_info)
+                                target_warnings += 1
+
                         count += 1
+
+            if target_warnings != 0:
+                console.print(f"[bold cyan]{target}[/bold cyan]: [yellow]{target_warnings} projects built with warnings.[/yellow]")
 
             if target_fails == 0:
                 progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [green]Pass.[/green]", refresh=True)
             elif not periph_success:
                 progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]PeriphDriver build failed.[/red]", refresh=True)
             else:
-                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]Failed for {target_fails}/{len(projects)} projects[/red]", refresh=True)
+                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]Failed for {target_fails}/{len(projects)} projects[/red]", refresh=True)            
 
         boards = None # Reset boards list
         projects = None # Reset projects list
 
     console.print(f"Tested {count} cases.  {count - len(failed)}/{count} succeeded.")
+    if (len(warnings) > 0):
+        print(f"{len(warnings)} projects with warnings:")
+        for p in warnings:
+            console.print(f"[bold cyan]{p['target']}[/bold cyan]: [bold]{p['project']}[/bold] [yellow]warnings[/yellow] for [yellow]{p['board']}[/yellow]")
+    
     if (len(failed) > 0):
         print("Failed projects:")
         for p in failed:
@@ -213,6 +268,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
 
         return -1
     else:
+        console.print("[bold][green]Test pass.[/bold][/green]")
         return 0
 
 parser = argparse.ArgumentParser("MSDK Build Test Script")

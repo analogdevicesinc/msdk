@@ -39,13 +39,17 @@
 #ifndef LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX78000_FTHR_REVA_INCLUDE_BOARD_H_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include <stdio.h>
 #include <spi_regs.h>
 #include <gpio_regs.h>
+#include "tft_ili9341.h"
+#include "tsc2046.h"
+#include "led.h"
+#include "pb.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #define BOARD_FTHR_REVA
 
@@ -62,8 +66,15 @@ extern "C" {
 #define SCCB_SDA_PORT MXC_GPIO0 /// SCCB data port
 #define SCCB_SDA_PIN MXC_GPIO_PIN_31 /// SCCB data pin
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
+#ifdef LED_OFF
+#undef LED_OFF
+#endif
+#define LED_OFF 1 /// Override inactive state of LEDs
+
+#ifdef LED_ON
+#undef LED_ON
+#endif
+#define LED_ON 0 /// Override active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.

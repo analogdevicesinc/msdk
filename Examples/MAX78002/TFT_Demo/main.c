@@ -37,6 +37,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mxc.h"
+#include "board.h"
 
 #define TS_X_MIN 254
 #define TS_X_MAX 3680
