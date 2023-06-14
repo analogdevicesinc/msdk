@@ -108,7 +108,7 @@ void spixf_cfg_setup()
         MXC_SPIXF_SetCmdWidth(MXC_SPIXF_SINGLE_SDIO);
         MXC_SPIXF_SetAddrWidth(MXC_SPIXF_SINGLE_SDIO);
         MXC_SPIXF_SetDataWidth(MXC_SPIXF_WIDTH_1);
-        MXC_SPIXF_SetModeClk(EXT_FLASH_Read_DUMMY);
+        MXC_SPIXF_SetModeClk(EXT_FLASH_READ_DUMMY);
     } else {
         MXC_SPIXF_SetCmdValue(EXT_FLASH_CMD_QREAD);
         MXC_SPIXF_SetCmdWidth(MXC_SPIXF_SINGLE_SDIO);

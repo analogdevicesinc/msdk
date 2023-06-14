@@ -64,7 +64,7 @@ extern "C" {
 
 #define EXT_FLASH_NAME "MX25"
 
-#define EXT_FLASH_Read_DUMMY \
+#define EXT_FLASH_READ_DUMMY \
     8 /**< Dummy byte sent on a standard read command per the MX25 datasheet.         */
 #define EXT_FLASH_DREAD_DUMMY \
     4 /**< Dummy data sent on a fast-read (Dual) read command per the MX25 datasheet. */
@@ -81,7 +81,7 @@ extern "C" {
 
 #define EXT_FLASH_NAME "W25"
 
-#define EXT_FLASH_Read_DUMMY \
+#define EXT_FLASH_READ_DUMMY \
     8 /**< Dummy byte sent on a standard read command per the W25 datasheet.         */
 #define EXT_FLASH_DREAD_DUMMY \
     4 /**< Dummy data sent on a fast-read (Dual) read command per the W25 datasheet. */
@@ -98,7 +98,7 @@ extern "C" {
 
 #define EXT_FLASH_NAME "MX25_64MB"
 
-#define EXT_FLASH_Read_DUMMY \
+#define EXT_FLASH_READ_DUMMY \
     8 /**< Dummy byte sent on a standard read command per the MX25 datasheet.         */
 #define EXT_FLASH_DREAD_DUMMY \
     4 /**< Dummy data sent on a fast-read (Dual) read command per the MX25 datasheet. */
