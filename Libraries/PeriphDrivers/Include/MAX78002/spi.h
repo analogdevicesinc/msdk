@@ -47,7 +47,6 @@
 #include "mxc_pins.h"
 #include "mxc_sys.h"
 #include "gpio.h"
-#include "spi.h"
 #include "spi_regs.h"
 #include "dma_regs.h"
 
@@ -281,23 +280,6 @@ struct _mxc_spi_reva2_req_t {
  *
  * These parameters can be modified after initialization using low level functions
  *
- * @param   Init    Pointer to SPI registers (selects the SPI block used.)         
- *
- * @return  If successful, the actual clock frequency is returned. Otherwise, see
- *          \ref MXC_Error_Codes for a list of return codes.
- */
-// int MXC_SPI_Init_New(mxc_spi_init_t *init);
-
-/**
- * @brief   Initialize and enable SPI peripheral.
- *
- * This function initializes everything necessary to call a SPI transaction function.
- * Some parameters are set to defaults as follows:
- * SPI Mode - 0
- * SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)
- *
- * These parameters can be modified after initialization using low level functions
- *
  * @param   spi             Pointer to SPI instance's registers.
  * @param   masterMode      Whether to put the device in master or slave mode. Use
  *                          non-zero for master mode, and zero for slave mode.
@@ -336,6 +318,23 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
 void MXC_SPI_UseDMA(int use);
 
 /**
+ * @brief   Initialize and enable SPI peripheral.
+ *
+ * This function initializes everything necessary to call a SPI transaction function.
+ * Some parameters are set to defaults as follows:
+ * SPI Mode - 0
+ * SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)
+ *
+ * These parameters can be modified after initialization using low level functions
+ *
+ * @param   Init    Pointer to SPI registers (selects the SPI block used.)         
+ *
+ * @return  If successful, the actual clock frequency is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_Init_New(mxc_spi_init_t *init);
+
+/**
  * @brief   Disable and shutdown the SPI instance.
  *
  * @param   spi         Pointer to SPI instance's registers.
@@ -343,6 +342,51 @@ void MXC_SPI_UseDMA(int use);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Gets the interrupt flags that are currently set
+ *
+ * These functions should not be used while using non-blocking Transaction Level
+ * functions (Async or DMA)
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ *
+ * @return The interrupt flags
+ */
+unsigned int MXC_SPI_GetFlags(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Clears the interrupt flags that are currently set
+ *
+ * These functions should not be used while using non-blocking Transaction Level
+ * functions (Async or DMA)
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ *
+ */
+void MXC_SPI_ClearFlags(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Enables specific interrupts
+ *
+ * These functions should not be used while using non-blocking Transaction Level
+ * functions (Async or DMA)
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ * @param   intEn       The interrupts to be enabled
+ */
+void MXC_SPI_EnableInt(mxc_spi_regs_t *spi, unsigned int intEn);
+
+/**
+ * @brief   Disables specific interrupts
+ *
+ * These functions should not be used while using non-blocking Transaction Level
+ * functions (Async or DMA)
+ *
+ * @param   spi         Pointer to SPI registers (selects the SPI block used.)
+ * @param   intDis      The interrupts to be disabled
+ */
+void MXC_SPI_DisableInt(mxc_spi_regs_t *spi, unsigned int intDis);
 
 /**
  * @brief   Returns the frequency of the clock used as the bit rate generator for a given SPI instance.
@@ -363,26 +407,6 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vssel_t vssel);
-
-/**
- * @brief   Retreive the DMA TX Channel associated with SPI instance.
- *
- * @param   spi         Pointer to SPI instance's registers.
- *
- * @return  If successful, the DMA TX Channel number is returned. Otherwise, see
- *          \ref MXC_Error_Codes for a list of return codes.
- */
-int MXC_SPI_DMA_GetTXChannel(mxc_spi_regs_t *spi);
-
-/**
- * @brief   Retreive the DMA RX Channel associated with SPI instance.
- *
- * @param   spi         Pointer to SPI instance's registers.
- *
- * @return  If successful, the DMA RX Channel number is returned. Otherwise, see
- *          \ref MXC_Error_Codes for a list of return codes.
- */
-int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi);
 
 /**
  * @brief   Set the frequency of the SPI interface.
@@ -499,7 +523,7 @@ int MXC_SPI_SetRegisterCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback
  */
 int MXC_SPI_GetActive(mxc_spi_regs_t *spi);
 
-///>>> Unused
+///>>> Previous Implementation
 /**
  * @brief   Sets the slave select (SS) line used for transmissions
  *
@@ -677,7 +701,29 @@ int MXC_SPI_SetTXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes);
  */
 unsigned int MXC_SPI_GetTXThreshold(mxc_spi_regs_t *spi);
 
-///<<< Unused
+///<<< Previous Implementation
+
+/* ** DMA Functions ** */
+
+/**
+ * @brief   Retreive the DMA TX Channel associated with SPI instance.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  If successful, the DMA TX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_DMA_GetTXChannel(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Retreive the DMA RX Channel associated with SPI instance.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  If successful, the DMA RX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi);
 
 /* ** Transaction Functions ** */
 
@@ -735,12 +781,64 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req);
  */
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req);
 
+/**
+ * @brief   Set up a non-blocking, interrupt-driven SPI controller transaction.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
+ * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   rx_fr_len   Number of frames to store in recieve buffer.
+ * @param   deassert    True(1)/False(0) whether to deassert target select at end of transactions.
+ * @param   target      Pointer to select target for SPI transaction.
+ *
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
+ */
 int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target);
 
+/**
+ * @brief   Set up a blocking, interrupt-driven SPI controller transaction.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
+ * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   rx_fr_len   Number of frames to store in recieve buffer.
+ * @param   deassert    True(1)/False(0) whether to deassert target select at end of transactions.
+ * @param   target      Pointer to select target for SPI transaction.
+ *
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
+ */
 int MXC_SPI_ControllerTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target);
 
+/**
+ * @brief   Set up a non-blocking, DMA-driven SPI controller transaction.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
+ * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   rx_fr_len   Number of frames to store in recieve buffer.
+ * @param   deassert    True(1)/False(0) whether to deassert target select at end of transactions.
+ * @param   target      Pointer to select target for SPI transaction.
+ *
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
+ */
 int MXC_SPI_ControllerTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target);
 
+/**
+ * @brief   Set up a blocking, DMA-driven SPI controller transaction.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
+ * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   rx_fr_len   Number of frames to store in recieve buffer.
+ * @param   deassert    True(1)/False(0) whether to deassert target select at end of transactions.
+ * @param   target      Pointer to select target for SPI transaction.
+ *
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
+ */
 int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target);
 
 /**
@@ -826,10 +924,33 @@ void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi);
  */
 void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   The processing function for asynchronous transactions.
+ *
+ * When using the asynchronous functions, the application must call this
+ * function periodically. This can be done from within the SPI interrupt
+ * handler or periodically by the application if SPI interrupts are disabled.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ */
 void MXC_SPI_Handler(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   The processing function for DMA TX transactions.
+ * 
+ * This function calls the callback function if only TX transaction was made.
+ * 
+ * @param   spi         Pointer to SPI instance's registers.
+ */
 void MXC_SPI_DMA_TX_Handler(mxc_spi_regs_t *spi);
 
+/**
+ * @brief   The processing function for DMA RX transactions.
+ * 
+ *  This function calls the callback function at the end of a TX/RX transaction.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ */
 void MXC_SPI_DMA_RX_Handler(mxc_spi_regs_t *spi);
 
 /**@} end of group spi */

@@ -58,6 +58,14 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init);
 
 int MXC_SPI_RevA2_Shutdown(mxc_spi_reva_regs_t *spi);
 
+uint32_t MXC_SPI_RevA2_GetFlags(mxc_spi_reva_regs_t *spi);
+
+void MXC_SPI_RevA2_ClearFlags(mxc_spi_reva_regs_t *spi);
+
+void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en);
+
+void MXC_SPI_RevA1_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis)
+
 int MXC_SPI_RevA2_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq);
 
 int MXC_SPI_RevA2_GetFrequency(mxc_spi_reva_regs_t *spi);

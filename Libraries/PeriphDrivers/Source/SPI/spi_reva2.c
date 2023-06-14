@@ -576,6 +576,50 @@ int MXC_SPI_RevA2_Shutdown(mxc_spi_reva_regs_t *spi)
     return E_NO_ERROR;
 }
 
+uint32_t MXC_SPI_RevA2_GetFlags(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+
+    MXC_ASSERT(spi_num >= 0);
+
+    return spi->intfl;
+}
+
+void MXC_SPI_RevA2_ClearFlags(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+
+    MXC_ASSERT(spi_num >= 0);
+
+    spi->intfl = spi->intfl;
+}
+
+void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t intEn)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+
+    MXC_ASSERT(spi_num >= 0);
+
+    spi->inten |= intEn;
+}
+
+void MXC_SPI_RevA1_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t intDis)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+
+    MXC_ASSERT(spi_num >= 0);
+
+    spi->inten &= ~(intDis);
+}
+
 int MXC_SPI_RevA2_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq)
 {
     int hi_clk, lo_clk, scale;
@@ -936,13 +980,11 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
     }
 
     // TX Channel
-    STATES[spi_num].dma->ch[tx_ch].ctrl |=
-        (MXC_F_DMA_REVA_CTRL_CTZ_IE); // | MXC_F_DMA_REVA_CTRL_DIS_IE);
+    STATES[spi_num].dma->ch[tx_ch].ctrl |= (MXC_F_DMA_REVA_CTRL_CTZ_IE);
     STATES[spi_num].dma->inten |= (1 << tx_ch);
 
     // RX Channel
-    STATES[spi_num].dma->ch[rx_ch].ctrl |=
-        (MXC_F_DMA_REVA_CTRL_CTZ_IE); // | MXC_F_DMA_REVA_CTRL_DIS_IE);
+    STATES[spi_num].dma->ch[rx_ch].ctrl |= (MXC_F_DMA_REVA_CTRL_CTZ_IE);
     STATES[spi_num].dma->inten |= (1 << rx_ch);
 
     return E_NO_ERROR;

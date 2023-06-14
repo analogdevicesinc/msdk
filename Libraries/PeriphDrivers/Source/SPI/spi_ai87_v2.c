@@ -219,7 +219,6 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
 
             } else if (init->width == MXC_SPI_WIDTH_STANDARD) {
-// TODO: Standard vs Mono?
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
 
             } else if (init->width == MXC_SPI_WIDTH_DUAL) {
@@ -249,6 +248,99 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     return MXC_SPI_RevA2_Init(init);
 }
 
+int MXC_SPI_Init_New(mxc_spi_init_t init)
+{
+    int error, spi_num;
+
+    spi_num = MXC_SPI_GET_IDX(init->spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    // Check if frequency is too high
+    if ((spi_num == 0) && (init->freq > MXC_SPI_GetPeripheralClock(init->spi))) {
+        return E_BAD_PARAM;
+    }
+
+    if ((spi_num == 1) && (init->freq > SystemCoreClock)) {
+        return E_BAD_PARAM;
+    }
+
+    // Note: Target Select (L. SS) Pins will be configured in MXC_SPI_RevA2_Init.
+    // Configure GPIO for spi
+    if (init->spi == MXC_SPI1) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
+
+        // Configure SPI to default pins if not provided.
+        if (init->spi_pins == NULL) {
+            if (init->width == MXC_SPI_WIDTH_3WIRE) {
+                error = MXC_GPIO_Config(&gpio_cfg_spi1_3wire);
+
+            } else if (init->width == MXC_SPI_WIDTH_STANDARD) {
+                error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
+
+            } else if (init->width == MXC_SPI_WIDTH_DUAL) {
+                error = MXC_GPIO_Config(&gpio_cfg_spi1_dual);
+
+            } else if (init->width == MXC_SPI_WIDTH_QUAD) {
+                error = MXC_GPIO_Config(&gpio_cfg_spi1_quad);
+
+            } else {
+                return E_BAD_PARAM;
+            }
+
+        } else {
+            error = MXC_GPIO_Config(init->spi_pins);
+        }
+
+        // Ensure SPI GPIO pins were properly configured.
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+
+// Handles RISCV SPI Numbering.
+#ifdef MXC_SPI0
+    } else if (init->spi == MXC_SPI0) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
+
+        // Configure SPI to default pins if not provided.
+        if (init->spi_pins == NULL) {
+            if (init->width == MXC_SPI_WIDTH_3WIRE) {
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
+
+            } else if (init->width == MXC_SPI_WIDTH_STANDARD) {
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
+
+            } else if (init->width == MXC_SPI_WIDTH_DUAL) {
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_dual);
+
+            } else if (init->width == MXC_SPI_WIDTH_QUAD) {
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_quad);
+
+            } else {
+                return E_BAD_PARAM;
+            }
+
+        } else {
+            error = MXC_GPIO_Config(init->spi_pins);
+        }
+
+        // Ensure SPI GPIO pins were properly configured.
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+#endif
+
+    } else {
+        return E_NO_DEVICE;
+    }
+
+    return MXC_SPI_RevA2_Init(init);
+}
+
+
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 {
     int spi_num;
@@ -271,6 +363,26 @@ int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
     }
 
     return E_NO_ERROR;
+}
+
+uint32_t MXC_SPI_GetFlags(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_GetFlags((mxc_spi_reva_regs_t *)spi);
+}
+
+void MXC_SPI_ClearFlags(mxc_spi_regs_t *spi)
+{
+    MXC_SPI_RevA2_ClearFlags((mxc_spi_reva_regs_t *)spi);
+}
+
+void MXC_SPI_EnableInt(mxc_spi_regs_t *spi, unsigned int intEn)
+{
+    MXC_SPI_RevA2_EnableInt((mxc_spi_reva_regs_t *)spi, intEn);
+}
+
+void MXC_SPI_DisableInt(mxc_spi_regs_t *spi, unsigned int intDis)
+{
+    MXC_SPI_RevA2_DisableInt((mxc_spi_reva_regs_t *)spi, intDis);
 }
 
 int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
@@ -575,6 +687,21 @@ int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, u
     return MXC_SPI_RevA2_ControllerTransactionDMAB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, deassert, target);;
 }
 
+int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
+{
+    return E_NOT_SUPPORTED;
+}
+
 /* ** Handler Functions ** */
 
 void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi)
@@ -595,4 +722,96 @@ void MXC_SPI_DMA_TX_Handler(mxc_spi_regs_t *spi)
 void MXC_SPI_DMA_RX_Handler(mxc_spi_regs_t *spi)
 {
     MXC_SPI_RevA2_DMA_RX_Handler((mxc_spi_reva_regs_t *)spi);
+}
+
+/* ** Unsupported-Legacy Functions from Previous Implementation ** */
+
+int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData)
+{
+    return E_NOT_SUPPORTED;
+}
+
+void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi)
+{
+    return;
+}
+
+int MXC_SPI_SetSlave(mxc_spi_regs_t *spi, int ssIdx)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_GetSlave(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetMode(mxc_spi_regs_t *spi, mxc_spi_mode_t spiMode)
+{
+    return E_NOT_SUPPORTED;
+}
+
+mxc_spi_mode_t MXC_SPI_GetMode(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_StartTransmission(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_AbortTransmission(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+unsigned int MXC_SPI_ReadRXFIFO(mxc_spi_regs_t *spi, unsigned char *bytes, unsigned int len)
+{
+    return E_NOT_SUPPORTED;
+}
+
+unsigned int MXC_SPI_GetRXFIFOAvailable(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+unsigned int MXC_SPI_WriteTXFIFO(mxc_spi_regs_t *spi, unsigned char *bytes, unsigned int len)
+{
+    return E_NOT_SUPPORTED;
+}
+
+unsigned int MXC_SPI_GetTXFIFOAvailable(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+void MXC_SPI_ClearRXFIFO(mxc_spi_regs_t *spi)
+{
+    return;
+}
+
+void MXC_SPI_ClearTXFIFO(mxc_spi_regs_t *spi)
+{
+    return;
+}
+
+int MXC_SPI_SetRXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes)
+{
+    return E_NOT_SUPPORTED;
+}
+
+unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t *spi)
+{
+    return 0;
+}
+
+int MXC_SPI_SetTXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes)
+{
+    return E_NOT_SUPPORTED;
+}
+
+unsigned int MXC_SPI_GetTXThreshold(mxc_spi_regs_t *spi)
+{
+    return 0xFFFFFFFF;
 }
