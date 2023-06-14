@@ -168,15 +168,16 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
     }
 
-    return MXC_TMR_RevB_Init(tmr, cfg, clockSource);
+    return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
 }
 
 void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
 {
-    uint8_t tmr_id;
-    MXC_ASSERT((tmr_id = MXC_TMR_GET_IDX(tmr)) >= 0);
+    int tmr_id = MXC_TMR_GET_IDX(tmr);
 
-    MXC_TMR_RevB_Shutdown(tmr);
+    MXC_ASSERT(tmr_id >= 0);
+
+    MXC_TMR_RevB_Shutdown((mxc_tmr_revb_regs_t *)tmr);
 
     // System settigns
     //diasble peripheral clock
@@ -205,34 +206,34 @@ void MXC_TMR_Shutdown(mxc_tmr_regs_t *tmr)
 
 void MXC_TMR_Start(mxc_tmr_regs_t *tmr)
 {
-    MXC_TMR_RevB_Start(tmr);
+    MXC_TMR_RevB_Start((mxc_tmr_revb_regs_t *)tmr);
 }
 
 void MXC_TMR_Stop(mxc_tmr_regs_t *tmr)
 {
-    MXC_TMR_RevB_Stop(tmr);
+    MXC_TMR_RevB_Stop((mxc_tmr_revb_regs_t *)tmr);
 }
 
 int MXC_TMR_SetPWM(mxc_tmr_regs_t *tmr, uint32_t pwm)
 {
-    return MXC_TMR_RevB_SetPWM(tmr, pwm);
+    return MXC_TMR_RevB_SetPWM((mxc_tmr_revb_regs_t *)tmr, pwm);
 }
 
 uint32_t MXC_TMR_GetCompare(mxc_tmr_regs_t *tmr)
 {
-    return MXC_TMR_RevB_GetCompare(tmr);
+    return MXC_TMR_RevB_GetCompare((mxc_tmr_revb_regs_t *)tmr);
 }
 
 uint32_t MXC_TMR_GetCapture(mxc_tmr_regs_t *tmr)
 {
-    return MXC_TMR_RevB_GetCapture(tmr);
+    return MXC_TMR_RevB_GetCompare((mxc_tmr_revb_regs_t *)tmr);
 }
 
 uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t prescalar,
                            uint32_t frequency)
 {
     uint32_t clockFrequency = PeripheralClock;
-    uint8_t tmr_id = MXC_TMR_GET_IDX(tmr);
+    int tmr_id = MXC_TMR_GET_IDX(tmr);
 
     MXC_ASSERT(tmr_id >= 0);
 
@@ -272,52 +273,52 @@ uint32_t MXC_TMR_GetPeriod(mxc_tmr_regs_t *tmr, mxc_tmr_clock_t clock, uint32_t 
         }
     }
 
-    return MXC_TMR_RevB_GetPeriod(tmr, clockFrequency, prescalar, frequency);
+    return MXC_TMR_RevB_GetPeriod((mxc_tmr_revb_regs_t *)tmr, clockFrequency, prescalar, frequency);
 }
 
 uint32_t MXC_TMR_GetCount(mxc_tmr_regs_t *tmr)
 {
-    return MXC_TMR_RevB_GetCount(tmr);
+    return MXC_TMR_RevB_GetCount((mxc_tmr_revb_regs_t *)tmr);
 }
 
 void MXC_TMR_ClearFlags(mxc_tmr_regs_t *tmr)
 {
-    MXC_TMR_RevB_ClearFlags(tmr);
+    MXC_TMR_RevB_ClearFlags((mxc_tmr_revb_regs_t *)tmr);
 }
 
 uint32_t MXC_TMR_GetFlags(mxc_tmr_regs_t *tmr)
 {
-    return MXC_TMR_RevB_GetFlags(tmr);
+    return MXC_TMR_RevB_GetFlags((mxc_tmr_revb_regs_t *)tmr);
 }
 
 void MXC_TMR_EnableInt(mxc_tmr_regs_t *tmr)
 {
-    MXC_TMR_RevB_EnableInt(tmr);
+    MXC_TMR_RevB_EnableInt((mxc_tmr_revb_regs_t *)tmr);
 }
 
 void MXC_TMR_DisableInt(mxc_tmr_regs_t *tmr)
 {
-    MXC_TMR_RevB_DisableInt(tmr);
+    MXC_TMR_RevB_DisableInt((mxc_tmr_revb_regs_t *)tmr);
 }
 
 void MXC_TMR_EnableWakeup(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 {
-    MXC_TMR_RevB_EnableWakeup(tmr, cfg);
+    MXC_TMR_RevB_EnableWakeup((mxc_tmr_revb_regs_t *)tmr, cfg);
 }
 
 void MXC_TMR_DisableWakeup(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 {
-    MXC_TMR_RevB_DisableWakeup(tmr, cfg);
+    MXC_TMR_RevB_DisableWakeup((mxc_tmr_revb_regs_t *)tmr, cfg);
 }
 
 void MXC_TMR_SetCompare(mxc_tmr_regs_t *tmr, uint32_t cmp_cnt)
 {
-    MXC_TMR_RevB_SetCompare(tmr, cmp_cnt);
+    MXC_TMR_RevB_SetCompare((mxc_tmr_revb_regs_t *)tmr, cmp_cnt);
 }
 
 void MXC_TMR_SetCount(mxc_tmr_regs_t *tmr, uint32_t cnt)
 {
-    MXC_TMR_RevB_SetCount(tmr, cnt);
+    MXC_TMR_RevB_SetCount((mxc_tmr_revb_regs_t *)tmr, cnt);
 }
 
 void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, uint32_t us)
@@ -327,7 +328,7 @@ void MXC_TMR_Delay(mxc_tmr_regs_t *tmr, uint32_t us)
 
 void MXC_TMR_TO_Start(mxc_tmr_regs_t *tmr, uint32_t us)
 {
-    MXC_TMR_RevB_TO_Start(tmr, us);
+    MXC_TMR_RevB_TO_Start((mxc_tmr_revb_regs_t *)tmr, us);
 }
 
 int MXC_TMR_TO_Check(mxc_tmr_regs_t *tmr)
@@ -357,7 +358,7 @@ unsigned int MXC_TMR_TO_Remaining(mxc_tmr_regs_t *tmr)
 
 void MXC_TMR_SW_Start(mxc_tmr_regs_t *tmr)
 {
-    return MXC_TMR_Common_SW_Start(tmr);
+    MXC_TMR_Common_SW_Start(tmr);
 }
 
 unsigned int MXC_TMR_SW_Stop(mxc_tmr_regs_t *tmr)
@@ -367,5 +368,5 @@ unsigned int MXC_TMR_SW_Stop(mxc_tmr_regs_t *tmr)
 
 int MXC_TMR_GetTime(mxc_tmr_regs_t *tmr, uint32_t ticks, uint32_t *time, mxc_tmr_unit_t *units)
 {
-    return MXC_TMR_RevB_GetTime(tmr, ticks, time, units);
+    return MXC_TMR_RevB_GetTime((mxc_tmr_revb_regs_t *)tmr, ticks, time, units);
 }
