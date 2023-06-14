@@ -38,6 +38,9 @@ jobs:
 
           stale-pr-message: 'This pull request is stale because it has been open for 30 days with no activity. Remove stale label, commit, or comment or this will be closed in 7 days.'
 
-          close-pr-message: 'This pull request was closed because it has been stalled for 7 dys with no activity.'
+          close-pr-message: 'This pull request was closed because it has been stalled for 7 days with no activity.'
 
           exempt-pr-labels: 'WIP'
+
+          # False is default option, but adding to be explicit.
+          delete-branch: false
