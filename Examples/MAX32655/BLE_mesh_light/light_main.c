@@ -183,7 +183,7 @@ static lightCb_t lightCb;
 /*************************************************************************************************/
 static void lightBtnCback(uint8_t btnId, PalBtnPos_t state)
 {
-    APP_TRACE_INFO0("BTN Pressed");
+    // APP_TRACE_INFO0("BTN Pressed");
     /* Only alert application of button press and not release. */
     if ((btnId < LIGHT_BUTTON_MAX) && (state == PAL_BTN_POS_DOWN)) {
         lightCb.newBtnStates |= 1 << btnId;
@@ -206,7 +206,7 @@ static void lightDmCback(dmEvt_t *pDmEvt)
     dmEvt_t *pMsg;
     uint16_t len;
 
-    APP_TRACE_INFO0("Light DM CBACK");
+    // APP_TRACE_INFO0("Light DM CBACK");
 
     len = DmSizeOfEvt(pDmEvt);
 
@@ -230,7 +230,7 @@ static void lightCccCback(attsCccEvt_t *pEvt)
     attsCccEvt_t *pMsg;
     appDbHdl_t dbHdl;
 
-    APP_TRACE_INFO0("ATTS CBACK");
+    // APP_TRACE_INFO0("ATTS CBACK");
 
     /* If CCC not set from initialization and there's a device record. */
     if ((pEvt->handle != ATT_HANDLE_NONE) &&
@@ -259,7 +259,7 @@ static void lightMeshCback(meshEvt_t *pEvt)
     meshEvt_t *pMsg;
     uint16_t len;
 
-    APP_TRACE_INFO0("MESH CBACK");
+    // APP_TRACE_INFO0("MESH CBACK");
     len = MeshSizeOfEvt(pEvt);
 
     if ((pMsg = WsfMsgAlloc(len)) != NULL) {
@@ -279,7 +279,7 @@ static void lightMeshCback(meshEvt_t *pEvt)
 /*************************************************************************************************/
 static void lightMeshPrvSrCback(meshPrvSrEvt_t *pEvt)
 {
-    APP_TRACE_INFO0("Provisioning server callback");
+    // APP_TRACE_INFO0("Provisioning server callback");
 
     meshPrvSrEvt_t *pMsg;
     uint16_t len;
@@ -306,7 +306,7 @@ static void lightMeshCfgMdlSrCback(const meshCfgMdlSrEvt_t *pEvt)
     meshCfgMdlSrEvt_t *pMsg;
     uint16_t len;
 
-    APP_TRACE_INFO0("CFG SERVER CBACK");
+    // APP_TRACE_INFO0("CFG SERVER CBACK");
 
     len = MeshCfgSizeOfEvt((wsfMsgHdr_t *)pEvt);
 
@@ -401,6 +401,7 @@ static void lightProcMeshPrvSrMsg(const meshPrvSrEvt_t *pMsg)
 
         /* Start Node. */
         MeshStartNode();
+        
 
         if (MeshIsGattProxyEnabled()) {
             APP_TRACE_INFO0("Gatt Proxy Enabled Still!");
@@ -935,20 +936,8 @@ static void lightSetup(void)
         /* Configure GATT server for Mesh Proxy. */
         MprxsSetCccIdx(LIGHT_DOUT_CCC_IDX);
 
-       /* Register Mesh Proxy Service CCC*/
-        AttsCccRegister(LIGHT_NUM_CCC_IDX, (attsCccSet_t *)lightPrxCccSet, lightCccCback);
-
-        /* Configure GATT server for Mesh Proxy. */
-        MprxsSetCccIdx(LIGHT_DOUT_CCC_IDX);
-
-
         /* Register GATT Bearer callback */
         MeshRegisterGattProxyPduSendCback(MprxsSendDataOut);
-
- 
-        /* Start advertising with node identity on the primary subnet. */
-        MeshProxySrGetServiceData(lightCb.netKeyIndexAdv, MESH_PROXY_NODE_IDENTITY_TYPE);
-        MeshAddAdvIf(LIGHT_ADV_IF_ID);
         if (MeshIsGattProxyEnabled()) {
             lightCb.netKeyIndexAdv = 0xFFFF;
             lightCb.proxyFeatEnabled = TRUE;
@@ -992,8 +981,6 @@ static void lightSetup(void)
 
         /* Bind the interface. */
         MeshAddAdvIf(LIGHT_ADV_IF_ID);
-
-
 
         if (MeshIsGattProxyEnabled()) {
             APP_TRACE_INFO0("Gatt Proxy Enabled Still!");
@@ -1067,7 +1054,7 @@ static void lightProcMsg(dmEvt_t *pMsg)
         break;
 
     default:
-        APP_TRACE_INFO1("%d", pMsg->hdr.event);
+        // APP_TRACE_INFO1("%d", pMsg->hdr.event);
 
         break;
     }
