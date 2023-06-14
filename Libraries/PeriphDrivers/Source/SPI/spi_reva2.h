@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SPI_SPI_REVB_H_
-#define LIBRARIES_PERIPHDRIVERS_SOURCE_SPI_SPI_REVB_H_
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_SPI_SPI_REVA2_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_SPI_SPI_REVA2_H_
 
 #include <stdio.h>
 #include <stddef.h>
@@ -92,6 +92,8 @@ int MXC_SPI_RevA2_DMA_GetRXChannel(mxc_spi_reva_regs_t *spi);
 
 int MXC_SPI_RevA2_DMA_SetRequestSelect(mxc_spi_reva_regs_t *spi, uint32_t tx_reqsel, uint32_t rx_reqsel);
 
+void MXC_SPI_RevA2_DMA_SwapByte(uint8_t *buffer, uint32_t len_bytes);
+
 /* ** Transaction Functions ** */
 
 int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target);
@@ -110,9 +112,8 @@ void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi);
 
 void MXC_SPI_RevA2_DMA_RX_Handler(mxc_spi_reva_regs_t *spi);
 
-
 #ifdef __cplusplus
 }
 #endif
 
-#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SPI_SPI_REVB_H_
+#endif // LIBRARIES_PERIPHDRIVERS_SOURCE_SPI_SPI_REVA2_H_
