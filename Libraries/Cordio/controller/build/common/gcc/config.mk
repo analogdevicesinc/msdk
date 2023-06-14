@@ -47,12 +47,20 @@ USE_LTO         := 0
 
 # Suggest UART transport for controller; platform may select alternate
 CHCI_TR			?= CHCI_TR_UART=1
-
+PAL_BB_CFG_MBAN ?= 0
 #--------------------------------------------------------------------------------------------------
 #     Configuration
 #--------------------------------------------------------------------------------------------------
 
 # Controller
+ifeq ($(PAL_BB_CFG_MBAN),1)
+CFG_DEV         += PAL_BB_CFG_MBAN=1
+else
+CFG_DEV         += PAL_BB_CFG_MBAN=0
+endif
+ifeq ($(PAL_BB_CFG_MBAN),1)
+CFG_DEV         += INIT_CENTRAL
+endif
 ifeq ($(INIT_CENTRAL),1)
 CFG_DEV         += INIT_CENTRAL
 endif

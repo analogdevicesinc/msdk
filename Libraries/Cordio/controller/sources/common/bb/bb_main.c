@@ -231,6 +231,7 @@ void BbExecuteBod(BbOpDesc_t *pBod)
 
   if (bbCb.termBod)
   {
+    
     bbCb.pOpInProgress = NULL;
   }
 }
@@ -240,7 +241,7 @@ void BbExecuteBod(BbOpDesc_t *pBod)
  *  \brief      Cancel current executing BOD.
  */
 /*************************************************************************************************/
-void BbCancelBod(void)
+bool_t BbCancelBod(void)
 {
   if (bbCb.pOpInProgress)
   {
@@ -253,6 +254,11 @@ void BbCancelBod(void)
     }
 
     bbCb.pOpInProgress = NULL;
+    return TRUE;
+  }
+  else
+  {
+    return FALSE;
   }
 }
 

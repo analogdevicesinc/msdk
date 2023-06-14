@@ -199,6 +199,13 @@ bool_t lhciCommonVsStdDecodeCmdPkt(LhciHdr_t *pHdr, uint8_t *pBuf)
         status = LlEnhancedTxTest(pBuf[0], pBuf[1], pBuf[2], pBuf[3], numPackets);
         break;
     }
+    case LHCI_OPCODE_VS_RX_TEST: {
+        uint8_t modIdx = pBuf[2];
+        uint16_t numPackets = pBuf[3] | (pBuf[4] << 8);
+
+        status = LlEnhancedRxTest(pBuf[0], pBuf[1], modIdx, numPackets);
+        break;
+    }
     case LHCI_OPCODE_VS_END_TEST: {
         status = LlEndTest(&rpt);
         evtParamLen += sizeof(LlTestReport_t);

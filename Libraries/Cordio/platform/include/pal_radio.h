@@ -128,6 +128,17 @@ void PalRadioReadRfPathComp(int16_t *pTxPathComp, int16_t *pRxPathComp);
 /*************************************************************************************************/
 int8_t PalRadioGetRxRfPathComp(void);
 
+/*************************************************************************************************/
+/*!
+ *  \brief      Get the closest TX power level (expressed in 1dBm units).
+ *
+ *  \param      txPwr           Tx power provided by the host (expressed in 1dBm units).
+ *
+ *  \return     Closest available Tx power (expressed in 1dBm units), rounded down.
+ */
+/*************************************************************************************************/
+int8_t PalRadioGetClosestTxPower(int8_t txPwr);
+
 /*! \} */    /* PAL_RADIO */
 
 #ifdef __cplusplus

@@ -256,6 +256,7 @@ static void appMasterScanReport(dmEvt_t *pMsg)
 /*************************************************************************************************/
 static void appMasterConnOpen(dmEvt_t *pMsg, appConnCb_t *pCb)
 {
+  (void)pCb; // suppress unused parameter warning
   DmReadRemoteFeatures((dmConnId_t) pMsg->hdr.param);
 }
 
@@ -271,6 +272,7 @@ static void appMasterConnOpen(dmEvt_t *pMsg, appConnCb_t *pCb)
 /*************************************************************************************************/
 static void appMasterConnClose(dmEvt_t *pMsg, appConnCb_t *pCb)
 {
+  (void)pMsg; // suppress unused parameter warning
   /* update privacy mode for peer device */
   AppUpdatePrivacyMode(pCb->dbHdl);
 
@@ -315,6 +317,7 @@ static void appMasterSecConnOpen(dmEvt_t *pMsg, appConnCb_t *pCb)
 /*************************************************************************************************/
 static void appMasterSecConnClose(dmEvt_t *pMsg, appConnCb_t *pCb)
 {
+  (void)pMsg; // suppress unused parameter warning
   /* if a device record was created check if it is valid */
   if (pCb->dbHdl != APP_DB_HDL_NONE)
   {
@@ -472,6 +475,7 @@ static void appMasterSecPairCmpl(dmEvt_t *pMsg, appConnCb_t *pCb)
 /*************************************************************************************************/
 static void appMasterSecPairFailed(dmEvt_t *pMsg, appConnCb_t *pCb)
 {
+  (void)pMsg; // suppress unused parameter warning
   pCb->initiatingSec = FALSE;
   return;
 }

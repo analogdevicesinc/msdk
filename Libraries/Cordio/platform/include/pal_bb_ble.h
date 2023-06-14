@@ -219,6 +219,20 @@ void PalBbBleSetOpParams(const PalBbBleOpParam_t *pOpParam);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Enable or disable header CRC.
+ *
+ *  \param      enable       Flag to indicate header CRC.
+ *
+ *  \return     None.
+ *
+ *  Sets an internal variable that indicates if header CRC is enabled or
+ *  not.
+ */
+/*************************************************************************************************/
+void PalBbBleEnableHeaderCRC(bool_t enable);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Transmit a packet.
  *
  *  \param      descs       Array of transmit buffer descriptors.

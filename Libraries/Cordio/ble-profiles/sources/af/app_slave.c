@@ -482,6 +482,7 @@ static void appSlaveProcConnClose(dmEvt_t *pMsg, appConnCb_t *pCb)
 {
   uint8_t i;
 
+   (void)pMsg; // suppress unused parameter warning 
   /* stop connection update timer */
   appConnUpdateTimerStop(pCb);
 

@@ -455,7 +455,20 @@ enum
 #define LL_DTM_CRC_INIT               UINT32_C(0x555555)      /*!< Direct Test Mode CRC initial value. */
 #define LL_DTM_MAX_INT_US             12500   /*!< Maximum time interval between packets in microseconds. */
 #define LL_DTM_PDU_ABS_MAX_LEN        255     /*!< Absolute maximum DTM PDU length. */
-#define LL_DTM_MAX_CHAN_IDX           39      /*!< Maximum channel index. */
+// #define PAL_BB_CFG_MBAN 0
+// #define LL_DTM_MAX_CHAN_IDX 52
+
+#ifdef LL_DTM_MAX_CHAN_IDX
+#undef LL_DTM_MAX_CHAN_IDX
+#endif
+
+#if PAL_BB_CFG_MBAN == 1
+#define LL_DTM_MAX_CHAN_IDX 52
+#else
+#define LL_DTM_MAX_CHAN_IDX 40               /*!< Maximum channel index. */
+#endif
+
+
 
 /*** Baseband ***/
 
