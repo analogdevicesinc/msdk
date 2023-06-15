@@ -71,14 +71,14 @@ int MXC_SYS_GetUSN(uint8_t *usn, int len, int part)
 
     uint32_t infoblock[6];
 
-    MXC_FLC_UnlockInfoBlock(0x0000);
+    MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
     infoblock[0] = *(uint32_t *)MXC_INFO_MEM_BASE;
     infoblock[1] = *(uint32_t *)(MXC_INFO_MEM_BASE + 4);
     infoblock[2] = *(uint32_t *)(MXC_INFO_MEM_BASE + 8);
     infoblock[3] = *(uint32_t *)(MXC_INFO_MEM_BASE + 12);
     infoblock[4] = *(uint32_t *)(MXC_INFO_MEM_BASE + 16);
     infoblock[5] = *(uint32_t *)(MXC_INFO_MEM_BASE + 20);
-    MXC_FLC_LockInfoBlock(0x0000);
+    MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
 
     if (part == 0) {
         usn[0] = (infoblock[0] & 0x000000FF);
