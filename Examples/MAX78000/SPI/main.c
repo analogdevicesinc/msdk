@@ -54,9 +54,9 @@
 #include "uart.h"
 
 /***** Preprocessors *****/
-#define MASTERSYNC 0
+#define MASTERSYNC 1
 #define MASTERASYNC 0
-#define MASTERDMA 1
+#define MASTERDMA 0
 
 #if (!(MASTERSYNC || MASTERASYNC || MASTERDMA))
 #error "You must set either MASTERSYNC or MASTERASYNC or MASTERDMA to 1."

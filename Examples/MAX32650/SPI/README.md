@@ -4,7 +4,7 @@ This example configures the SPI to send data between the MISO (1.28) and MOSI (P
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
-The example can be configured to perform blocking (synchronous), non-blocking (asynchronus), or DMA transactions by defining/selecting the MASTERSYNC, MASTERASYNC, or MASTERDMA macro respectively.
+The example can be configured to perform blocking (synchronous), non-blocking (asynchronus), or DMA transactions by setting the MASTERSYNC, MASTERASYNC, or MASTERDMA macro respectively.
 
 
 ## Software

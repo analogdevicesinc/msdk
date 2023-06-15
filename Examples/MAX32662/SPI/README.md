@@ -5,7 +5,7 @@ MOSI (P0.3) pins.  Connect these two pins together.
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
-This example can demonstrate blocking, non-blocking, and DMA transactions methods controlled by the definitiona at the top of main. For blocking transactions define MASTERSYNC, for non-blocking transactions define MASTERASYNC, and for DMA transactions define MASTERDMA; define only one of these at a time. By default MASTERSYNC is defined.
+This example can demonstrate blocking, non-blocking, and DMA transactions methods controlled by the definitiona at the top of main. For blocking transactions define MASTERSYNC, for non-blocking transactions define MASTERASYNC, and for DMA transactions define MASTERDMA; set only one of these at a time. By default MASTERSYNC is set to 1.
 
 
 ## Software
