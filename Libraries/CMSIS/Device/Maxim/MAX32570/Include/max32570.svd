@@ -25289,14 +25289,20 @@
       </field>
       <field>
        <name>AESKG_MEU</name>
-       <description>AES Key Generate MEU. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
+       <description>Generate and transfer 256 bit MEU key to AES Key storage.</description>
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>AESKG_MEMPROT</name>
-       <description>AES Key Generate Mem Prot. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
+       <name>AESKG_MEMPROT_XIP</name>
+       <description>Generate and transfer 128 bit MEMPROT_XIP key to AES key storage.</description>
        <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AESKG_MEMPROT_DIP</name>
+       <description>Generate and transfer 128 bit MEMPROT_DIP key to AES key storage.</description>
+       <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -25367,6 +25373,29 @@
          <name>RO_2</name>
          <description>Ring Oscillator 2.</description>
          <value>4</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
+       <name>ROMON_DIV2</name>
+       <description>Divide ring by 2.</description>
+       <bitOffset>28</bitOffset>
+       <bitWidth>3</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>RO_0</name>
+         <description>Ring Oscillator 0.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RO_1</name>
+         <description>Ring Oscillator 1.</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>RO_2</name>
+         <description>Ring Oscillator 2.</description>
+         <value>2</value>
         </enumeratedValue>
        </enumeratedValues>
       </field>
