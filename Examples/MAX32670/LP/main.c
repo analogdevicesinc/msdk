@@ -65,7 +65,7 @@
 #include "ecc_regs.h"
 
 #define DELAY_IN_SEC 2
-#define USE_CONSOLE 0
+#define USE_CONSOLE 1
 
 #define USE_BUTTON 1
 #define USE_ALARM 0
