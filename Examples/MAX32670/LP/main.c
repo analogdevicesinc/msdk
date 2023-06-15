@@ -170,24 +170,24 @@ void setTrigger(int waitForTrigger)
 
 void configure_gpio(void)
 {
-#if USE_CONSOLE	
-	// Set all of port 0 except UART, PB0, and I2C ports to input pull-down.
-	// Set I2C ports as high-z.
-	// Set PB to input pull-up.
+#if USE_CONSOLE
+    // Set all of port 0 except UART, PB0, and I2C ports to input pull-down.
+    // Set I2C ports as high-z.
+    // Set PB to input pull-up.
     MXC_GPIO0->en0 = 0xFFFFFCFFUL;
     MXC_GPIO0->inen = 0xFFFFFFFFUL;
     MXC_GPIO0->padctrl0 = 0xFFF3FC3FUL;
     MXC_GPIO0->ps = 0x00200000UL;
 
- #else
-	// Set all of port 0 except PB0 and I2C ports to input pull-down.
-	// Set I2C ports as high-z.
-	// Set PB to input pull-up.
+#else
+    // Set all of port 0 except PB0 and I2C ports to input pull-down.
+    // Set I2C ports as high-z.
+    // Set PB to input pull-up.
     MXC_GPIO0->en0 = 0xFFFFFFFFUL;
     MXC_GPIO0->inen = 0xFFFFFFFFUL;
     MXC_GPIO0->padctrl0 = 0xFFF3FF3FUL;
     MXC_GPIO0->ps = 0x00200000UL;
- #endif
+#endif
 
     // Set all of port 1 in input pull-down mode.
     MXC_GPIO1->en0 = 0xFFFFFFFFUL;
