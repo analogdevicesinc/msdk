@@ -12,7 +12,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-TODO
+(None - this project builds as a standard example)
 
 ## Expected Output
 
