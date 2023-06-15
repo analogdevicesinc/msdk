@@ -65,6 +65,8 @@ int MXC_SYS_GetUSN(uint8_t *usn, int len, int part)
 {
     if (len != MXC_SYS_USN_LEN) {
         return E_BAD_PARAM;
+    } else if (usn == NULL) {
+        return E_NULL_PTR;
     }
 
     uint32_t infoblock[6];
@@ -83,7 +85,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, int len, int part)
         usn[1] = (infoblock[0] & 0x0000FF00) >> 8;
         usn[2] = (infoblock[0] & 0x00FF0000) >> 16;
         usn[3] = (infoblock[0] & 0x3F000000) >> 24;
-        usn[3] |= (infoblock[1] & 0x00000003) << 30;
+        usn[3] |= (infoblock[1] & 0x00000003) << 6;
         usn[4] = (infoblock[1] & 0x000003FC) >> 2;
         usn[5] = (infoblock[1] & 0x0003FC00) >> 10;
         usn[6] = (infoblock[1] & 0x03FC0000) >> 18;
