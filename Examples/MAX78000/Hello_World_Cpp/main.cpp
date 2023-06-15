@@ -52,45 +52,50 @@
 
 /***** Functions *****/
 
-class HelloClass {
+class LED {
 public:
-    HelloClass()
+    LED(int index)
     {
-        printf("Hello class!\n");
-        count = 0;
+        idx = index;
+        blink_count = 0;
     }
-    void hello_method()
+    void on()
     {
-        printf("Hello method!\n");
+        LED_On(idx);
+        ++blink_count;
     }
-    void increment_count()
+    void off()
     {
-        this->count++;
+        LED_Off(idx);
     }
-    int get_count()
+    void print_blink_count()
     {
-        return this->count;
+        printf("Number of blinks: %i\n", blink_count);
     }
 
-protected:
 private:
-    int count;
+    int idx;
+    int blink_count;
 };
 
-// *****************************************************************************
 int main()
 {
-    HelloClass my_class = HelloClass();
-    my_class.hello_method();
+    LED led = LED(0);
 
-    printf("Hello World!\n");
+    printf("C++ Hello World Example\n");
+    /*
+        Note: Use printf instead of std::cout.
+        iostream consumes an extreme amount of code space.  Our printf
+        function is better optimized for microcontrollers with limited flash
+    */
 
     while (1) {
-        LED_On(LED1);
+        led.on();
         MXC_Delay(500000);
-        LED_Off(LED1);
+        led.off();
         MXC_Delay(500000);
-        printf("count : %d\n", my_class.get_count());
-        my_class.increment_count();
+        led.print_blink_count();
     }
+
+    return 0;
 }

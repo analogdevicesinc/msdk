@@ -34,13 +34,11 @@ If using the MAX78000FTHR (FTHR_RevA)
 The Console UART of the device will output these messages:
 
 ```
-Hello class!
-Hello method!
-Hello World!
-count : 0
-count : 1
-count : 2
-count : 3
+C++ Hello World Example
+Number of blinks: 0
+Number of blinks: 1
+Number of blinks: 2
+Number of blinks: 3
 ```
 
 You will also observe LED1 blinking at a rate of 1Hz.
