@@ -54,7 +54,7 @@
 
 class LED {
 public:
-    LED(int index)
+    explicit LED(int index)
     {
         idx = index;
         blink_count = 0;
