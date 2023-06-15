@@ -222,7 +222,7 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
     //  Dependent on 1) Valid TX Buffer, 2) TX Length not 0, and 3) TX FIFO Not Empty.
     if (STATES[spi_num].tx_buffer && STATES[spi_num].tx_len > 0) {
         // Write to the FIFO for byte size transactions (message sizes for 8 bits or less)
-        if (STATES[spi_num].init.data_size <= 8) {
+        if (STATES[spi_num].init.frame_size <= 8) {
             while (((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS) < (MXC_SPI_FIFO_DEPTH)) {
                 spi->fifo8[0] = STATES[spi_num].tx_buffer[STATES[spi_num].tx_cnt];
                 STATES[spi_num].tx_cnt += 1;
@@ -252,7 +252,7 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
     //  Dependent on 1) Valid RX Buffer, 2) RX Length not 0, and 3) RX FIFO Not Empty.
     if (STATES[spi_num].rx_buffer && STATES[spi_num].rx_len > 0) {
         // Read the FIFO for byte size transactions (message sizes for 8 bits or less)
-        if (STATES[spi_num].init.data_size <= 8) {
+        if (STATES[spi_num].init.frame_size <= 8) {
             while ((spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL)) {
                     STATES[spi_num].rx_buffer[STATES[spi_num].rx_cnt] = spi->fifo8[0];
                     STATES[spi_num].rx_cnt += 1;
@@ -447,11 +447,11 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
         (init->spi)->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_MST_MODE;
     }
 
-    // Set character size
-    if (init->data_size <= 1 || init->data_size > 16) {
+    // Set frame size.
+    if (init->frame_size <= 1 || init->frame_size > 16) {
         return E_BAD_PARAM;
     } else {
-        (init->spi)->ctrl2 |= (init->data_size) << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS;
+        (init->spi)->ctrl2 |= (init->frame_size) << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS;
     }
 
     // Remove any delay between TS (L. SS) and SCLK edges.
@@ -678,13 +678,13 @@ int MXC_SPI_RevA2_GetFrequency(mxc_spi_reva_regs_t *spi)
     return (PeripheralClock / (1 << scale)) / (lo_clk + hi_clk);
 }
 
-int MXC_SPI_RevA2_SetDataSize(mxc_spi_reva_regs_t *spi, int data_size)
+int MXC_SPI_RevA2_SetFrameSize(mxc_spi_reva_regs_t *spi, int frame_size)
 {
     int spi_num;
     int saved_enable_state;
 
     // HW has problem with these two character sizes
-    if (data_size <= 1 || data_size > 16) {
+    if (frame_size <= 1 || frame_size > 16) {
         return E_BAD_PARAM;
     }
 
@@ -703,11 +703,11 @@ int MXC_SPI_RevA2_SetDataSize(mxc_spi_reva_regs_t *spi, int data_size)
         }
 
         // Update data size from save Init function.
-        STATES[spi_num].init.data_size = data_size;
+        STATES[spi_num].init.frame_size = frame_size;
 
-        if (data_size < 16) {
+        if (frame_size < 16) {
             MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
-                         data_size << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
+                         frame_size << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
         } else {
             // Set to 16 bits per character as default.
             MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
@@ -723,7 +723,7 @@ int MXC_SPI_RevA2_SetDataSize(mxc_spi_reva_regs_t *spi, int data_size)
     return E_NO_ERROR;
 }
 
-int MXC_SPI_RevA2_GetDataSize(mxc_spi_reva_regs_t *spi)
+int MXC_SPI_RevA2_GetFrameSize(mxc_spi_reva_regs_t *spi)
 {
     int spi_num;
 
@@ -740,7 +740,7 @@ int MXC_SPI_RevA2_GetDataSize(mxc_spi_reva_regs_t *spi)
     }
 }
 
-int MXC_SPI_RevA2_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode)
+int MXC_SPI_RevA2_SetModeIF(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode)
 {
     int spi_num;
 
@@ -781,21 +781,21 @@ int MXC_SPI_RevA2_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode)
     return E_NO_ERROR;
 }
 
-mxc_spi_datawidth_t MXC_SPI_RevA2_GetWidth(mxc_spi_reva_regs_t *spi)
+mxc_spi_interface_t MXC_SPI_RevA2_GetModeIF(mxc_spi_reva_regs_t *spi)
 {
     if (spi->ctrl2 & MXC_F_SPI_REVA_CTRL2_THREE_WIRE) {
-        return MXC_SPI_WIDTH_3WIRE;
+        return MXC_SPI_INTERFACE_3WIRE;
     }
 
     if (spi->ctrl2 & MXC_S_SPI_REVA_CTRL2_DATA_WIDTH_DUAL) {
-        return MXC_SPI_WIDTH_DUAL;
+        return MXC_SPI_INTERFACE_DUAL;
     }
 
     if (spi->ctrl2 & MXC_S_SPI_REVA_CTRL2_DATA_WIDTH_QUAD) {
-        return MXC_SPI_WIDTH_QUAD;
+        return MXC_SPI_INTERFACE_QUAD;
     }
 
-    return MXC_SPI_WIDTH_STANDARD;
+    return MXC_SPI_INTERFACE_STANDARD;
 }
 
 int MXC_SPI_RevA2_SetClkMode(mxc_spi_reva_regs_t *spi, mxc_spi_clkmode_t clk_mode)
@@ -1103,7 +1103,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     STATES[spi_num].rx_done = false;
 
     // STATES[n] TX/RX Length Fields are in terms of number of bytes to send/receive.
-    if (STATES[spi_num].init.data_size <= 8) {
+    if (STATES[spi_num].init.frame_size <= 8) {
         STATES[spi_num].tx_len = tx_fr_len;
         STATES[spi_num].rx_len = rx_fr_len;
     } else {
@@ -1115,7 +1115,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     STATES[spi_num].current_target = *target;
 
     // Set the number of messages to transmit/receive for the SPI transaction.
-    if (STATES[spi_num].init.mode == MXC_SPI_WIDTH_STANDARD) {
+    if (STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
         if (rx_fr_len > tx_fr_len) {
             // In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
             // The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
@@ -1126,7 +1126,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
         } else {
             spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) | (rx_fr_len << MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS);
         }
-    } else { // width != MXC_SPI_WIDTH_STANDARD
+    } else { // mode != MXC_SPI_INTERFACE_STANDARD
         spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) |
                      (rx_fr_len << MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS);
     }
@@ -1257,7 +1257,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     STATES[spi_num].rx_done = false;
 
     // STATES[n] TX/RX Length Fields are in terms of number of bytes to send/receive.
-    if (STATES[spi_num].init.data_size <= 8) {
+    if (STATES[spi_num].init.frame_size <= 8) {
         STATES[spi_num].tx_len = tx_fr_len;
         STATES[spi_num].rx_len = rx_fr_len;
     } else {
@@ -1269,7 +1269,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     STATES[spi_num].current_target = *target;
 
     // Set the number of bytes to transmit/receive for the SPI transaction.
-    if (STATES[spi_num].init.mode == MXC_SPI_WIDTH_STANDARD) {
+    if (STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
         if (rx_fr_len > tx_fr_len) {
             // In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
             //  The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
@@ -1280,7 +1280,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
         } else {
             spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         }
-    } else { // width != MXC_SPI_WIDTH_STANDARD
+    } else { // mode != MXC_SPI_INTE_STANDARD
         spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) |
                      (rx_fr_len << MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS);
     }
@@ -1305,7 +1305,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
         // Configure DMA TX depending on frame width.
         // 2-8 bit wide frames.
-        if (STATES[spi_num].init.data_size <= 8) {
+        if (STATES[spi_num].init.frame_size <= 8) {
             // Hardware requires writing the first byte into the FIFO manually.
             spi->fifo8[0] = tx_buffer[0];
 
@@ -1348,7 +1348,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     //    NOTE: Single-length transactions does not trigger CTZ.
     } else if (tx_fr_len == 1) {
         // Write first frame into FIFO.
-        if (STATES[spi_num].init.data_size <= 8) {
+        if (STATES[spi_num].init.frame_size <= 8) {
             spi->fifo8[0] = tx_buffer[0];
         } else {
             MXC_SPI_RevA2_writeTXFIFO16(spi, (uint8_t *)(STATES[spi_num].tx_buffer), 2);
@@ -1361,7 +1361,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     //      the hardware always assume full duplex. Therefore dummy bytes
     //      must be transmitted to support half duplex. The number of bytes to transmit
     //      AND receive is set by TX_NUM_CHAR, and the RX_NUM_CHAR field of ctrl1 is ignored.
-    } else if (tx_fr_len == 0 && STATES[spi_num].init.mode == MXC_SPI_WIDTH_STANDARD) {
+    } else if (tx_fr_len == 0 && STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
         // For readability purposes.
         tx_ch = STATES[spi_num].tx_dma_ch;
 
@@ -1390,7 +1390,231 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
         MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE, (0 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
 
         // Match frame size (in terms of bytes) in DMA ctrl settings.
-        if (STATES[spi_num].init.data_size <= 8) {
+        if (STATES[spi_num].init.frame_size <= 8) {
+            // Set source and destination width to one byte
+            MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD, MXC_S_DMA_REVA_CTRL_SRCWD_BYTE);
+            MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD, MXC_S_DMA_REVA_CTRL_DSTWD_BYTE);
+        } else {
+            // Set source destination width to 2 bytes
+            MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD, MXC_S_DMA_REVA_CTRL_SRCWD_HALFWORD);
+            MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD, MXC_S_DMA_REVA_CTRL_DSTWD_HALFWORD);
+        }
+
+        STATES[spi_num].dma->ch[rx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_DSTINC;
+        STATES[spi_num].dma->ch[rx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN; // Start the DMA
+
+        // Enable SPI RX DMA after configuring.
+        spi->dma |= (MXC_F_SPI_REVA_DMA_DMA_RX_EN);
+    }
+
+    // Toggle Chip Select Pin if handled by the driver
+    if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
+        // Make sure the selected Target Select (L. SS) pin is enabled as an output.
+        if (target->pins.func != MXC_GPIO_FUNC_OUT) {
+            return E_BAD_STATE;
+        }
+
+        // Active HIGH (1).
+        if (target->active_polarity) {
+            target->pins.port->out_set |= target->pins.mask;
+            // Active LOW (0).
+        } else {
+            target->pins.port->out_clr |= target->pins.mask;
+        }
+    }
+
+    // Start the SPI transaction.
+    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
+
+    // Handle target-select (L. SS) deassertion.  This must be done AFTER launching the transaction
+    // to avoid a glitch on the TS line if:
+    // - The TS line is asserted
+    // - We want to deassert the line as part of this transaction
+    //
+    // As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the TS pin based
+    // on the value of CTRL->SS_CTRL, which causes the glitch.
+    if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
+        // In HW Auto Scheme, only use the target index member.
+        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
+                     ((1 << target->index) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+
+        if (deassert) {
+            spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        } else {
+            spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        }
+    }
+
+    return E_SUCCESS;
+}
+
+int MXC_SPI_RevA2_ControllerTransmitDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                           uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
+                                           uint8_t deassert, mxc_spi_target_t *target)
+{
+    int spi_num, tx_dummy_fr_len;
+    // For readability purposes.
+    int rx_ch, tx_ch;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    // Make sure DMA is initialized.
+    if (STATES[spi_num].init.use_dma == false) {
+        return E_BAD_STATE;
+    }
+
+    // Make sure SPI Instance was initialized.
+    if (STATES[spi_num].initialized == false) {
+        return E_BAD_STATE;
+    }
+
+    // Initialize SPIn state to handle DMA transactions.
+    STATES[spi_num].controller_done = false;
+
+    STATES[spi_num].tx_buffer = tx_buffer;
+    STATES[spi_num].tx_done = false;
+
+    STATES[spi_num].rx_buffer = rx_buffer;
+    STATES[spi_num].rx_done = false;
+
+    // STATES[n] TX/RX Length Fields are in terms of number of bytes to send/receive.
+    if (STATES[spi_num].init.frame_size <= 8) {
+        STATES[spi_num].tx_len = tx_fr_len;
+        STATES[spi_num].rx_len = rx_fr_len;
+    } else {
+        STATES[spi_num].tx_len = tx_fr_len * 2;
+        STATES[spi_num].rx_len = rx_fr_len * 2;
+    }
+
+    STATES[spi_num].deassert = deassert;
+    STATES[spi_num].current_target = *target;
+
+    // Set the number of bytes to transmit/receive for the SPI transaction.
+    if (STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
+        if (rx_fr_len > tx_fr_len) {
+            // In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
+            //  The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
+            //  because the hardware always assume full duplex. Therefore extra
+            //  dummy bytes must be transmitted to support half duplex.
+            tx_dummy_fr_len = rx_fr_len - tx_fr_len;
+            spi->ctrl1 = ((tx_fr_len + tx_dummy_fr_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
+        } else {
+            spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
+        }
+    } else { // mode != MXC_SPI_INTERFACE_STANDARD
+        spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) |
+                     (rx_fr_len << MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS);
+    }
+
+    // Disable FIFOs before clearing as recommended by UG.
+    spi->dma &= ~(MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN |
+                  MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN);
+    spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FLUSH | MXC_F_SPI_REVA_DMA_RX_FLUSH);
+
+    // Enable TX FIFO before configuring.
+    spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FIFO_EN);
+
+    // Set TX and RX Thresholds before loading FIFO.
+    MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL, ((MXC_SPI_FIFO_DEPTH - 1) << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+    MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL, (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
+
+    // Set up DMA TX Transactions.
+    // 1) For TX transmissions.
+    if (tx_fr_len > 1) {
+        // For readability purposes.
+        tx_ch = STATES[spi_num].tx_dma_ch;
+
+        // Configure DMA TX depending on frame width.
+        // 2-8 bit wide frames.
+        if (STATES[spi_num].init.frame_size <= 8) {
+            // Hardware requires writing the first byte into the FIFO manually.
+            spi->fifo8[0] = tx_buffer[0];
+
+            // Threshold set to 1 frame (1 byte) after pre-loading first byte for DMA.
+            MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL, (1 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+
+            STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + 1); // 1 Byte offset
+            STATES[spi_num].dma->ch[tx_ch].cnt = (tx_fr_len - 1);
+
+            // Set to one byte burst size.
+            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE, (0 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
+
+            // Set source and destination width to one byte.
+            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD, MXC_S_DMA_REVA_CTRL_SRCWD_BYTE);
+            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD, MXC_S_DMA_REVA_CTRL_DSTWD_BYTE);
+
+        // 9-16 bit wide frames.
+        } else {
+            // Hardware requires writing the first bytes into the FIFO manually.
+            STATES[spi_num].tx_cnt += MXC_SPI_RevA2_writeTXFIFO16(spi, (uint8_t *)(STATES[spi_num].tx_buffer), STATES[spi_num].tx_len);
+
+            // Threshold set to 1 frame (2 bytes) after pre-loading FIFO for DMA.
+            MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL, (2 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+
+            STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + STATES[spi_num].tx_cnt);
+            STATES[spi_num].dma->ch[tx_ch].cnt = (STATES[spi_num].tx_len - STATES[spi_num].tx_cnt);
+
+            // Set to two byte burst size.
+            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE, (1 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
+
+            // Set source and destination width to two bytes.
+            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD, MXC_S_DMA_REVA_CTRL_SRCWD_HALFWORD);
+            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD, MXC_S_DMA_REVA_CTRL_DSTWD_HALFWORD);
+        }
+
+        STATES[spi_num].dma->ch[tx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_SRCINC;
+        STATES[spi_num].dma->ch[tx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN; // Start the DMA
+
+    // 2) For single character transmissions.
+    //    NOTE: Single-length transactions does not trigger CTZ.
+    } else if (tx_fr_len == 1) {
+        // Write first frame into FIFO.
+        if (STATES[spi_num].init.frame_size <= 8) {
+            spi->fifo8[0] = tx_buffer[0];
+        } else {
+            MXC_SPI_RevA2_writeTXFIFO16(spi, (uint8_t *)(STATES[spi_num].tx_buffer), 2);
+        }
+
+        STATES[spi_num].tx_done = true;
+
+    // 3) Set up DMA TX for RX only transactions.
+    //    Note: Even if you are not transmitting anything in standard 4-wire mode,
+    //      the hardware always assume full duplex. Therefore dummy bytes
+    //      must be transmitted to support half duplex. The number of bytes to transmit
+    //      AND receive is set by TX_NUM_CHAR, and the RX_NUM_CHAR field of ctrl1 is ignored.
+    } else if (tx_fr_len == 0 && STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
+        // For readability purposes.
+        tx_ch = STATES[spi_num].tx_dma_ch;
+
+        // Configure TX DMA channel to retransmit the dummy byte.
+        STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(&(STATES[spi_num].tx_dummy_value));
+        STATES[spi_num].dma->ch[tx_ch].cnt = STATES[spi_num].rx_len; // Only receiving
+        STATES[spi_num].dma->ch[tx_ch].ctrl &= ~MXC_F_DMA_REVA_CTRL_SRCINC;
+        STATES[spi_num].dma->ch[tx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_EN; // Start the DMA
+    }
+
+    // Enable SPI TX DMA after configuring.
+    spi->dma |= (MXC_F_SPI_REVA_DMA_DMA_TX_EN);
+
+    // Set up DMA RX Transactions.
+    if (rx_fr_len > 0 && rx_buffer != NULL) {
+        // For readability purposes.
+        rx_ch = STATES[spi_num].rx_dma_ch;
+
+        // Enable RX DMA channel before configuring.
+        spi->dma |= (MXC_F_SPI_REVA_DMA_RX_FIFO_EN);
+
+        STATES[spi_num].dma->ch[rx_ch].dst = (uint32_t)rx_buffer;
+        STATES[spi_num].dma->ch[rx_ch].cnt = STATES[spi_num].rx_len;
+
+        // Set to one byte burst size.
+        MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE, (0 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
+
+        // Match frame size (in terms of bytes) in DMA ctrl settings.
+        if (STATES[spi_num].init.frame_size <= 8) {
             // Set source and destination width to one byte
             MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD, MXC_S_DMA_REVA_CTRL_SRCWD_BYTE);
             MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD, MXC_S_DMA_REVA_CTRL_DSTWD_BYTE);
@@ -1604,7 +1828,7 @@ void MXC_SPI_RevA2_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
         // HW Bug: For 2-byte wide frame transactions, RX DMA swaps the 
         //      LSB and MSB.
         // Example: TX: 0x1234 => RX: 0x3412
-        if (STATES[spi_num].init.data_size > 8) {
+        if (STATES[spi_num].init.frame_size > 8) {
             MXC_SPI_RevA2_DMA_SwapByte(STATES[spi_num].rx_buffer, STATES[spi_num].rx_len);
         }
 

@@ -70,13 +70,13 @@ int MXC_SPI_RevA2_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq);
 
 int MXC_SPI_RevA2_GetFrequency(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevA2_SetDataSize(mxc_spi_reva_regs_t *spi, int data_size);
+int MXC_SPI_RevA2_SetFrameSize(mxc_spi_reva_regs_t *spi, int frame_size);
 
-int MXC_SPI_RevA2_GetDataSize(mxc_spi_reva_regs_t *spi);
+int MXC_SPI_RevA2_GetFrameSize(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevA2_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_datawidth_t width);
+int MXC_SPI_RevA2_SetModeIF(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode);
 
-mxc_spi_datawidth_t MXC_SPI_RevA2_GetWidth(mxc_spi_reva_regs_t *spi);
+mxc_spi_interface_t MXC_SPI_RevA2_GetModeIF(mxc_spi_reva_regs_t *spi);
 
 int MXC_SPI_RevA2_SetClkMode(mxc_spi_reva_regs_t *spi, mxc_spi_clkmode_t clk_mode);
 

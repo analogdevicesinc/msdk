@@ -121,8 +121,8 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
 
     // In the previous implementation, the MXC_SPI_Init function does not
     //  set the message size until later by calling MXC_SPI_SetData.
-    // By default for the new implementation, the data_size will be set to 8 bits.
-    init->data_size = 8;
+    // By default for the new implementation, the frame_size will be set to 8 bits.
+    init->frame_size = 8;
 
     // By default, DMA will be initalized for API function
     if (useDMA) {
@@ -272,16 +272,16 @@ int MXC_SPI_Init_New(mxc_spi_init_t *init)
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->mode == MXC_SPI_WIDTH_3WIRE) {
+            if (init->mode == MXC_SPI_INTERFACE_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_3wire);
 
-            } else if (init->mode == MXC_SPI_WIDTH_STANDARD) {
+            } else if (init->mode == MXC_SPI_INTERFACE_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
 
-            } else if (init->mode == MXC_SPI_WIDTH_DUAL) {
+            } else if (init->mode == MXC_SPI_INTERFACE_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_dual);
 
-            } else if (init->mode == MXC_SPI_WIDTH_QUAD) {
+            } else if (init->mode == MXC_SPI_INTERFACE_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_quad);
 
             } else {
@@ -305,16 +305,16 @@ int MXC_SPI_Init_New(mxc_spi_init_t *init)
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->mode == MXC_SPI_WIDTH_3WIRE) {
+            if (init->mode == MXC_SPI_INTERFACE_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
 
-            } else if (init->mode == MXC_SPI_WIDTH_STANDARD) {
+            } else if (init->mode == MXC_SPI_INTERFACE_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
 
-            } else if (init->mode == MXC_SPI_WIDTH_DUAL) {
+            } else if (init->mode == MXC_SPI_INTERFACE_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_dual);
 
-            } else if (init->mode == MXC_SPI_WIDTH_QUAD) {
+            } else if (init->mode == MXC_SPI_INTERFACE_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_quad);
 
             } else {
@@ -526,34 +526,34 @@ int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi)
     return MXC_SPI_RevA2_DMA_GetRXChannel((mxc_spi_reva_regs_t *)spi);
 }
 
-int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, uint32_t freq)
+int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, unsigned int hz)
 {
-    return MXC_SPI_RevA2_SetFrequency((mxc_spi_reva_regs_t *)spi, freq);
+    return MXC_SPI_RevA2_SetFrequency((mxc_spi_reva_regs_t *)spi, hz);
 }
 
-int MXC_SPI_GetFrequency(mxc_spi_regs_t *spi)
+unsigned int MXC_SPI_GetFrequency(mxc_spi_regs_t *spi)
 {
     return MXC_SPI_RevA2_GetFrequency((mxc_spi_reva_regs_t *)spi);
 }
 
-int MXC_SPI_SetDataSize(mxc_spi_regs_t *spi, int data_size)
+int MXC_SPI_SetFrameSize(mxc_spi_regs_t *spi, int frame_size)
 {
-    return MXC_SPI_RevA2_SetDataSize((mxc_spi_reva_regs_t *)spi, data_size);
+    return MXC_SPI_RevA2_SetFrameSize((mxc_spi_reva_regs_t *)spi, frame_size);
 }
 
-int MXC_SPI_GetDataSize(mxc_spi_regs_t *spi)
+int MXC_SPI_GetFrameSize(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevA2_GetDataSize((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_GetFrameSize((mxc_spi_reva_regs_t *)spi);
 }
 
-int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_datawidth_t width)
+int MXC_SPI_SetModeIF(mxc_spi_regs_t *spi, mxc_spi_interface_t mode)
 {
-    return MXC_SPI_RevA2_SetWidth((mxc_spi_reva_regs_t *)spi, width);
+    return MXC_SPI_RevA2_SetModeIF((mxc_spi_reva_regs_t *)spi, mode);
 }
 
-mxc_spi_datawidth_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
+mxc_spi_interface_t MXC_SPI_GetModeIF(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevA2_GetWidth((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_GetModeIF((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_SetClkMode(mxc_spi_regs_t *spi, mxc_spi_clkmode_t clk_mode)
@@ -724,9 +724,29 @@ void MXC_SPI_DMA_RX_Handler(mxc_spi_regs_t *spi)
 
 /* ** Unsupported-Legacy Functions from Previous Implementation ** */
 
+int MXC_SPI_SetDataSize(mxc_spi_regs_t *spi, int dataSize)
+{
+    return MXC_SPI_RevA2_SetFrameSize((mxc_spi_reva_regs_t *)spi, dataSize);
+}
+
+int MXC_SPI_GetDataSize(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_GetFrameSize((mxc_spi_reva_regs_t *)spi);
+}
+
+int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth)
+{
+    return E_NOT_SUPPORTED;
+}
+
+mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
 int MXC_SPI_ReadyForSleep(mxc_spi_reva_regs_t *spi)
 {
-    return E_NOT_SUPPORTED
+    return E_NOT_SUPPORTED;
 }
 
 int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData)

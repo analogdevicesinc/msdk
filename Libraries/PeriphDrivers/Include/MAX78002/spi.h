@@ -95,7 +95,7 @@ typedef enum {
 } mxc_spi_interface_t;
 
 /**
- * @brief The list of SPI modes
+ * @brief The list of SPI clock modes
  * 
  * SPI supports four combinations of clock and phase polarity.
  * 
@@ -103,7 +103,6 @@ typedef enum {
  * and determines if the clock is active high or active low
  * 
  * Clock phase determines when the data must be stable for sampling
- *  
  */
 typedef enum {
     MXC_SPI_CLKMODE_0 = 0,  // CPOL: 0    CPHA: 0
@@ -180,7 +179,7 @@ typedef struct {
     mxc_spi_type_t       type;            // Controller (L. Master) vs Target (L. Slave)
     uint32_t             freq;            // Clock Frequency
     mxc_spi_clkmode_t    clk_mode;
-    uint8_t              data_size;       // Number of bits per character sent
+    uint8_t              frame_size;      // Number of bits per character sent
     mxc_spi_interface_t  mode;            // 3-wire, standard, dual, and quad modes
     mxc_spi_tscontrol_t  ts_control;      // Target Select Control Scheme (auto HW, driver, or app controlled)
     mxc_spi_target_t     target;          // Target Settings (index, pins, active_polarity)
@@ -420,11 +419,11 @@ unsigned int MXC_SPI_GetFrequency(mxc_spi_regs_t *spi);
  * @brief   Sets the number of bits per frame.
  *
  * @param   spi         Pointer to SPI instance's registers.
- * @param   data_size   The number of bits per frame.
+ * @param   frame_size  The number of bits per frame.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetFrameSize(mxc_spi_regs_t *spi, int size);
+int MXC_SPI_SetFrameSize(mxc_spi_regs_t *spi, int frame_size);
 
 /**
  * @brief   Gets the number of bits per frame.
