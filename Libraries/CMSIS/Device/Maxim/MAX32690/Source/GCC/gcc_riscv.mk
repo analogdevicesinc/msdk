@@ -31,10 +31,12 @@
  #
  ###############################################################################
 
+OLD_GCC_RISCV_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
 # File has moved to a central location.  The section below preserves legacy projects.
-ifneq ($(MAXIM_PATH),)
-include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/gcc_riscv.mk
+ifeq "$(MAXIM_PATH)" ""
+include $(OLD_GCC_RISCV_DIR )/../../../GCC/gcc_riscv.mk
 else
-include ../../../GCC/gcc_riscv.mk
+include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/gcc_riscv.mk
 endif
 

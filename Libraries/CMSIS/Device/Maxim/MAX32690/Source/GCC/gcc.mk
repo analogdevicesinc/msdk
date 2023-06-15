@@ -31,10 +31,12 @@
  #
  ###############################################################################
 
+OLD_GCC_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
 # File has moved to a central location.  The section below preserves legacy projects.
-ifneq ($(MAXIM_PATH),)
-include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/gcc.mk
+ifeq "$(MAXIM_PATH)" ""
+include $(OLD_GCC_DIR)/../../../GCC/gcc.mk
 else
-include ../../../GCC/gcc.mk
+include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/gcc.mk
 endif
 
