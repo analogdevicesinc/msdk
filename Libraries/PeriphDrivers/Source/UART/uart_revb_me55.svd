@@ -262,7 +262,7 @@
           </field>
           <field>
             <name>TX_OB</name>
-            <description>Enable Interrupt For TX FIFO when only one byte is remaining.</description>
+            <description>Enable Interrupt For TX FIFO has only one byte remaining.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -311,7 +311,7 @@
           </field>
           <field>
             <name>TX_OB</name>
-            <description>Flag for interrupt when TX FIFO has only one byte is remaining.</description>
+            <description>Flag for interrupt when TX FIFO has only one byte remaining.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>

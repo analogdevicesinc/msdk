@@ -41,6 +41,8 @@
 
 #include <stdio.h>
 #include "spi.h"
+#include "led.h"
+#include "pb.h"
 
 #ifdef TFT_ADAFRUIT
 #include "adafruit_3315_tft.h"

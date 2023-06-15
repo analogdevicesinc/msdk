@@ -42,9 +42,9 @@
 #include "mxc_pins.h"
 #include "mxc_sys.h"
 #include "nvic_table.h"
+#ifdef LIB_BOARD
 #include "board.h"
-#include "led.h"
-#include "pb.h"
+#endif
 
 /*
  *  Peripheral Driver Includes

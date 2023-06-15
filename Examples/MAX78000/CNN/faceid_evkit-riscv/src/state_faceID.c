@@ -31,9 +31,9 @@
  *
  ******************************************************************************/
 #include <string.h>
+#include "board.h"
 #include "utils.h"
 #include "camera.h"
-#include "utils.h"
 #include "embedding_process.h"
 #include "MAXCAM_Debug.h"
 #include "faceID.h"
@@ -44,11 +44,6 @@
 #include "mxc_delay.h"
 
 #define S_MODULE_NAME "state_faceid"
-
-typedef struct {
-    char *data;
-    int len;
-} text_t;
 
 /* **** Globals **** */
 volatile uint32_t cnn_time; // Stopwatch

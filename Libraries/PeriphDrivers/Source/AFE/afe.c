@@ -1,6 +1,6 @@
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
- * 
+ *
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -38,17 +38,20 @@
 #include "spi.h"
 #include "afe.h"
 #include "mxc_sys.h"
-#include "mxc_delay.h"
 #include "hart_uart.h"
 #include "gcr_regs.h"
 
 #include "afe_gpio.h"
+#include "afe_timer.h"
 #include "gpio.h"
 #include "gpio_reva.h"
 #include "gpio_common.h"
 
 // Known Device revision defines
 #define MXC_REVISION_MASK (0x00FF)
+#define MXC_MAX32675_REV_A1 (0x00A1)
+#define MXC_MAX32675_REV_A2 (0x00A2)
+#define MXC_MAX32675_REV_A3 (0x00A3)
 #define MXC_MAX32675_REV_B2 (0x00B2)
 #define MXC_MAX32675_REV_B3 (0x00B3)
 #define MXC_MAX32675_REV_B4 (0x00B4)
@@ -81,20 +84,23 @@
 //  Each read from AFE is 8 bits, unless CRC is enabled.
 //  maximum of 4 reads.
 //      1/AFE_SPI_BAUD * 4 * 8 should be a reasonable timeout for this.
-//      1/100000 = 10us * 4 * 8 = 320us round up for safety: 400us
+//      1/100000 = 10us * 4 * 8 = 320us
 //
-//  Since this is just for catastrophic lockup, lets double it.
+//  Since this is just for catastrophic lockup, lets round it up to 1000
+//      this will also be a even multiple for MXC_AFE_SPI_RESET_TIMEOUT_ITERATES
 //
 #if (AFE_SPI_BAUD != 100000)
 #warning "Recalculate MXC_AFE_SPI_READ_TIMEOUT, since baud rate was modified.\n"
 #endif
 
-#define MXC_AFE_SPI_READ_TIMEOUT USEC(800)
+#define MXC_AFE_SPI_READ_TIMEOUT USEC(1000)
 
 //
 // Initial AFE RESET time, up to 10 milliseconds
+//  Due to nature of AFE_TIMER, it cannot support nested Timeouts
+//  Therefore, count a number of read timeouts instead.
 //
-#define MXC_AFE_SPI_RESET_TIMEOUT MSEC(10)
+#define MXC_AFE_SPI_RESET_TIMEOUT_ITERATES (MSEC(10) / MXC_AFE_SPI_READ_TIMEOUT)
 
 #if (TARGET_NUM == 32675)
 #define AFE_TRIM_OTP_OFFSET_LOW 0x280
@@ -127,13 +133,15 @@
 
 #define AFE_SPI_SSEL_GPIO_PORT MXC_GPIO0
 #define AFE_SPI_SSEL_GPIO_PIN MXC_GPIO_PIN_23
-#endif
 
 //
-// Register defines for new AFE reset on ME16A-0D
+// Register defines for new AFE reset.
+// TODO(ADI): This bit does not yet exist for MAX32680.
+//  This is just a placeholder for now to prevent compilation errors.
 //
-#define MXC_F_GCR_RST1_AFE_POS 25 /**< RST1_AFE Position */
+#define MXC_F_GCR_RST1_AFE_POS 26 /**< RST1_AFE Position */
 #define MXC_F_GCR_RST1_AFE ((uint32_t)(0x1UL << MXC_F_GCR_RST1_AFE_POS)) /**< RST1_AFE Mask */
+#endif
 
 #define AFE_TRIM0_ADC0_MASK 0x7FFFF
 #define AFE_TRIM0_ADC0_BIT_WIDTH 19
@@ -181,9 +189,7 @@
 #define ME16_AFE_POST_RST_SYS_CTRL_RESET_VALUE (MXC_F_AFE_ADC_ZERO_SYS_CTRL_ST_DIS)
 
 // Revisions BEFORE Reset added to AFE
-#define ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_MASK                                   \
-    (MXC_F_AFE_ADC_ZERO_SYS_CTRL_ANA_SRC_SEL | MXC_F_AFE_ADC_ZERO_SYS_CTRL_CRC5 | \
-     MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG)
+#define ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_MASK (MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG)
 #define ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_VALUE (MXC_F_AFE_ADC_ZERO_SYS_CTRL_POR_FLAG)
 #define ME16_AFE_PRE_RST_SYS_CTRL_RESET_VALUE (0)
 
@@ -248,6 +254,9 @@ static int afe_micro_version_probe(void)
 #if (TARGET_NUM == 32675)
     switch (rev) {
     // Known and supported versions
+    case MXC_MAX32675_REV_A1:
+    case MXC_MAX32675_REV_A2:
+    case MXC_MAX32675_REV_A3:
     case MXC_MAX32675_REV_B2:
     case MXC_MAX32675_REV_B3:
         device_version = MXC_AFE_VERSION_PRE_RESET;
@@ -410,14 +419,14 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
     //
 
     // Start timeout, wait for SPI TX to complete
-    MXC_DelayAsync(MXC_AFE_SPI_READ_TIMEOUT, NULL);
+    afe_timer_delay_async(AFE_SPI_TIMER, MXC_AFE_SPI_READ_TIMEOUT, NULL);
 
     do {
-        status = MXC_DelayCheck();
+        status = afe_timer_delay_check(AFE_SPI_TIMER);
 
         if ((pSPIm->dma & MXC_F_SPI_DMA_TX_LVL) == 0) {
             // TX completed
-            MXC_DelayAbort();
+            afe_timer_delay_abort(AFE_SPI_TIMER);
             break;
         }
     } while (status == E_BUSY);
@@ -431,14 +440,14 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
     //
     if (check_done) {
         // Start timeout, wait for SPI MST DONE to set
-        MXC_DelayAsync(MXC_AFE_SPI_READ_TIMEOUT, NULL);
+        afe_timer_delay_async(AFE_SPI_TIMER, MXC_AFE_SPI_READ_TIMEOUT, NULL);
 
         do {
-            status = MXC_DelayCheck();
+            status = afe_timer_delay_check(AFE_SPI_TIMER);
 
             if (pSPIm->intfl & MXC_F_SPI_INTFL_MST_DONE) {
                 // MST Done
-                MXC_DelayAbort();
+                afe_timer_delay_abort(AFE_SPI_TIMER);
                 break;
             }
         } while (status == E_BUSY);
@@ -484,10 +493,10 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
     i = 0;
 
     // Start timeout, wait for SPI receive to complete
-    MXC_DelayAsync(MXC_AFE_SPI_READ_TIMEOUT, NULL);
+    afe_timer_delay_async(AFE_SPI_TIMER, MXC_AFE_SPI_READ_TIMEOUT, NULL);
 
     do {
-        status = MXC_DelayCheck();
+        status = afe_timer_delay_check(AFE_SPI_TIMER);
 
         if ((pSPIm->dma & MXC_F_SPI_DMA_RX_LVL)) {
             data[i] = pSPIm->fifo8[0];
@@ -495,7 +504,7 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
         }
     } while ((i < byte_length) && (status == E_BUSY));
 
-    MXC_DelayAbort();
+    afe_timer_delay_abort(AFE_SPI_TIMER);
 
     if (device_version < MXC_AFE_VERSION_POST_RESET) {
         //
@@ -515,7 +524,7 @@ static int afe_spi_transceive(uint8_t *data, int byte_length)
 static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
 {
     int retval = E_NO_ERROR;
-    int delay_status = E_NO_ERROR;
+    int read_timeout_count = 0;
     uint32_t read_val = 0;
 
     //
@@ -532,17 +541,21 @@ static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
     //    st_dis (bit 3) will be set, and hart_en (bit 4) maybe set or not. Other bits will be 0.
     //
 
-    // Start timeout for reset initialization
-    MXC_DelayAsync(MXC_AFE_SPI_RESET_TIMEOUT, NULL);
-
+    // NOTE: Only allow 10ms for reset init.  raw_afe_read_register calls afe_spi_transceive
+    //  which uses afe_timer, so we cannot also use it here. So we count calls to read_reg
+    //  instead.
     do {
-        delay_status = MXC_DelayCheck();
-
         retval = raw_afe_read_register(
             (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, &read_val,
             (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS);
 
         // NOTE: Remember that reading sys_ctrl also SETS the SPI_ABORT_DIS bit
+
+        if (retval == E_TIME_OUT) {
+            // The low level read timed out. We are counting these if it happens
+            //  to many times, will error out and return
+            continue;
+        }
 
         if (retval != E_NO_ERROR) {
             return retval;
@@ -554,7 +567,6 @@ static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
         // Check for True POR
         if (read_val == ME16_AFE_POST_RST_SYS_CTRL_TRUE_POR_VALUE) {
             // This appears to be a true POR
-            MXC_DelayAbort();
             *true_por = 1;
             break;
         }
@@ -562,13 +574,13 @@ static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
         // Check for a normal reset
         if (read_val == ME16_AFE_POST_RST_SYS_CTRL_RESET_VALUE) {
             // This appears to be a normal reset
-            MXC_DelayAbort();
             *true_por = 0;
             break;
         }
-    } while (retval == E_BUSY);
+        // Keep counting timeouts, if we get too many, bail out
+    } while (read_timeout_count++ < MXC_AFE_SPI_RESET_TIMEOUT_ITERATES);
 
-    if (delay_status != E_BUSY) {
+    if (read_timeout_count >= MXC_AFE_SPI_RESET_TIMEOUT_ITERATES) {
         // Failed to initiate communications with AFE within time limit
         return E_TIME_OUT;
     }
@@ -579,22 +591,27 @@ static int afe_spi_poll_for_ready_post_reset_change(uint32_t *true_por)
 static int afe_spi_poll_for_ready_pre_reset_change(uint32_t *true_por)
 {
     int retval = E_NO_ERROR;
-    int delay_status = E_NO_ERROR;
+    int read_timeout_count = 0;
     uint32_t read_val = 0;
 
-    // Legacy initialization method
+    // Legacy initialization method, in this case we can only detect true POR.
+    //  Reset has no effect, we can only look at bit6 POR_FLAG
 
-    // Start timeout for reset initialization
-    MXC_DelayAsync(MXC_AFE_SPI_RESET_TIMEOUT, NULL);
-
+    // NOTE: Only allow 10ms for reset init.  raw_afe_read_register calls afe_spi_transceive
+    //  which uses afe_timer, so we cannot also use it here. So we count calls to read_reg
+    //  instead.
     do {
-        delay_status = MXC_DelayCheck();
-
         retval = raw_afe_read_register(
             (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR) >> AFE_REG_ADDR_POS, &read_val,
             (MXC_R_AFE_ADC_ZERO_SYS_CTRL & AFE_REG_ADDR_LEN) >> AFE_REG_ADDR_LEN_POS);
 
         // NOTE: Remember that reading sys_ctrl also SETS the SPI_ABORT_DIS bit
+
+        if (retval == E_TIME_OUT) {
+            // The low level read timed out. We are counting these if it happens
+            //  to many times, will error out and return
+            continue;
+        }
 
         if (retval != E_NO_ERROR) {
             return retval;
@@ -606,7 +623,6 @@ static int afe_spi_poll_for_ready_pre_reset_change(uint32_t *true_por)
         // Check for True POR
         if (read_val == ME16_AFE_PRE_RST_SYS_CTRL_TRUE_POR_VALUE) {
             // This appears to be a true POR
-            MXC_DelayAbort();
             *true_por = 1;
             break;
         }
@@ -614,13 +630,12 @@ static int afe_spi_poll_for_ready_pre_reset_change(uint32_t *true_por)
         // Check for a normal reset
         if (read_val == ME16_AFE_PRE_RST_SYS_CTRL_RESET_VALUE) {
             // This appears to be a normal reset
-            MXC_DelayAbort();
             *true_por = 0;
             break;
         }
-    } while (retval == E_BUSY);
+    } while (read_timeout_count++ < MXC_AFE_SPI_RESET_TIMEOUT_ITERATES);
 
-    if (delay_status != E_BUSY) {
+    if (read_timeout_count >= MXC_AFE_SPI_RESET_TIMEOUT_ITERATES) {
         // Failed to initiate communications with AFE within time limit
         return E_TIME_OUT;
     }
@@ -753,15 +768,21 @@ static int afe_setup_non_por(void)
     // Finally before continuing, we disable the HART clock, to avoid any unexpected behaviors.
     // Should already be disabled by System Reset, or afe_reset, so this is just for safety.
 
-    disable_hart_clock();
+    hart_clock_disable();
 
     return retval;
 }
 
-int afe_setup(void)
+int afe_setup(mxc_tmr_regs_t *tmr)
 {
     int retval = 0;
     uint32_t true_por = 0;
+
+    // First setup the AFE
+    retval = afe_timer_config(tmr);
+    if (retval != E_NO_ERROR) {
+        return retval;
+    }
 
     // Probe for Version to determine initialization procedure
     retval = afe_micro_version_probe();
@@ -810,7 +831,7 @@ void afe_reset(void)
     //
     // Disable HART clock to avoid any unexpected behaviors by the HART block when reset is released
     //
-    disable_hart_clock();
+    hart_clock_disable();
 }
 
 static int raw_afe_write_register(uint8_t reg_address, uint32_t value, uint8_t reg_length)
@@ -1043,7 +1064,7 @@ int afe_bank_read_register(uint32_t target_reg, uint8_t reg_bank, uint32_t *valu
     return raw_afe_read_register(reg_address, value, reg_length);
 }
 
-int afe_load_trims(void)
+int afe_load_trims(mxc_tmr_regs_t *tmr)
 {
     int retval = 0;
     uint8_t info_buf[INFOBLOCK_LINE_SIZE];
@@ -1054,7 +1075,7 @@ int afe_load_trims(void)
 #endif
 
     // setup the interface before we begin
-    retval = afe_setup();
+    retval = afe_setup(tmr);
     if (retval != E_NO_ERROR) {
         return retval;
     }

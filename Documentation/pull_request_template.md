@@ -15,7 +15,7 @@ Please include a summary of the changes and related issue. Please also include r
 
 The MSDK repo follows a custom rule-set based on the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) standard. The pull request titles will follow this format:
 
-`type<!>(scope): Subject`
+`type(scope)<!>: Subject`
 
 #### Types
 
@@ -33,7 +33,7 @@ The list of possible types are:
 10. **build** – changes that affect build system, tool chain, or any other external dependencies
 11. **revert** – reverts a commit
 
-Appending an `!` at the end of the type signifies the PR is a breaking or major change. The <!> is optional in the PR format.
+Appending an `!` at the end of the title prefix signifies the PR is a breaking or major change. The <!> is optional in the PR format.
 
 NOTE: The type is case sensitive and must match one of the listed types.
 
