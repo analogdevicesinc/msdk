@@ -65,7 +65,7 @@
 #include "ecc_regs.h"
 
 #define DELAY_IN_SEC 2
-#define USE_CONSOLE 1
+#define USE_CONSOLE 0
 
 #define USE_BUTTON 1
 #define USE_ALARM 0
@@ -73,7 +73,7 @@
 #define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
 #define DO_BACKUP 0
-#define DO_STORAGE 0
+#define DO_STORAGE 1
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
@@ -101,12 +101,12 @@ void alarmHandler(void)
     int flags = MXC_RTC->ctrl;
     alarmed = 1;
 
-    if ((flags & MXC_F_RTC_CTRL_ALSF) >> MXC_F_RTC_CTRL_ALSF_POS) {
-        MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_ALSF);
+    if ((flags & MXC_F_RTC_CTRL_SSEC_ALARM) >> MXC_F_RTC_CTRL_SSEC_ALARM_POS) {
+        MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_SSEC_ALARM);
     }
 
-    if ((flags & MXC_F_RTC_CTRL_ALDF) >> MXC_F_RTC_CTRL_ALDF_POS) {
-        MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_ALDF);
+    if ((flags & MXC_F_RTC_CTRL_TOD_ALARM) >> MXC_F_RTC_CTRL_TOD_ALARM_POS) {
+        MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_TOD_ALARM);
     }
 }
 
@@ -116,11 +116,11 @@ void setTrigger(int waitForTrigger)
 
     while (MXC_RTC_Init(0, 0) == E_BUSY) {}
 
-    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY) {}
+    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
     while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY) {}
 
-    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY) {}
+    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
     while (MXC_RTC_Start() == E_BUSY) {}
 
@@ -168,24 +168,36 @@ void setTrigger(int waitForTrigger)
 }
 #endif // USE_BUTTON
 
+#define UART 		((1 << 8) | (1 << 9))
+#define PB      	(1 << 21)
+#define I2C_PU  	((1 << 6) | (1 << 7) | (1 << 18) | (1 << 19))
+
 void configure_gpio(void)
 {
-    //Set GPIOs to output mode except PB0 and UART0 pins
-    MXC_GPIO0->en0 |= 0xFFDFFCFFUL;
-    MXC_GPIO0->outen |= 0xFFDFFCFFUL;
+#if USE_CONSOLE	
+	// Set all of port 0 except UART, PB0, and I2C ports to input pull-down.
+	// Set I2C ports as high-z.
+	// Set PB to input pull-up.
+    MXC_GPIO0->en0 = 0xFFFFFCFFUL;
+    MXC_GPIO0->inen = 0xFFFFFFFFUL;
+    MXC_GPIO0->padctrl0 = 0xFFF3FC3FUL;
+    MXC_GPIO0->ps = 0x00200000UL;
 
-    MXC_GPIO1->en0 |= 0xFFFFFFFFUL;
-    MXC_GPIO1->outen |= 0xFFFFFFFFUL;
+ #else
+	// Set all of port 0 except PB0 and I2C ports to input pull-down.
+	// Set I2C ports as high-z.
+	// Set PB to input pull-up.
+    MXC_GPIO0->en0 = 0xFFFFFFFFUL;
+    MXC_GPIO0->inen = 0xFFFFFFFFUL;
+    MXC_GPIO0->padctrl0 = 0xFFF3FF3FUL;
+    MXC_GPIO0->ps = 0x00200000UL;
+ #endif
 
-    // Pull down all the GPIO pins except PB0 and UART0
-    MXC_GPIO0->padctrl0 |= 0xFFDFFCFFUL;
-    MXC_GPIO0->ps &= ~0xFFDFFCFFUL;
-    MXC_GPIO1->padctrl0 |= 0xFFFFFFFFUL;
-    MXC_GPIO1->ps &= ~0xFFFFFFFFUL;
-
-    //Set output low
-    // MXC_GPIO0->out      &= ~0xFFDFFCFFUL;
-    // MXC_GPIO1->out      &= ~0xFFFFFFFFUL;
+    // Set all of port 1 in input pull-down mode.
+    MXC_GPIO1->en0 = 0xFFFFFFFFUL;
+    MXC_GPIO1->inen = 0xFFFFFFFFUL;
+    MXC_GPIO1->padctrl0 = 0xFFFFFFFFUL;
+    MXC_GPIO1->ps = 0x00000000UL;
 }
 
 int main(void)
