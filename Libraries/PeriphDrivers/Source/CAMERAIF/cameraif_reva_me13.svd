@@ -136,7 +136,7 @@
           <field>
             <name>RX_DMA_EN</name>
             <description>DMA Enable.</description>
-            <bitOffset>16</bitOffset>
+            <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
             <access>read-write</access>
             <enumeratedValues>
@@ -155,7 +155,7 @@
           <field>
             <name>RX_DMA_THD</name>
             <description>DMA Threshold.</description>
-            <bitOffset>17</bitOffset>
+            <bitOffset>11</bitOffset>
             <bitWidth>4</bitWidth>
             <access>read-write</access>
           </field>

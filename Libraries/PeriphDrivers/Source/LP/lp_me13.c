@@ -41,8 +41,10 @@ void MXC_LP_EnterSleepMode(void)
 {
     MXC_LP_ClearWakeStatus();
 
+#ifndef __riscv
     // Clear SLEEPDEEP bit
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
+#endif
 
     // Go into Sleep mode and wait for an interrupt to wake the processor
     __WFI();
@@ -55,7 +57,10 @@ void MXC_LP_EnterDeepSleepMode(void)
     // Set SLEEPDEEP bit
     MXC_GCR->pm &= ~MXC_F_GCR_PM_MODE;
     MXC_GCR->pm |= MXC_S_GCR_PM_MODE_DEEPSLEEP;
+
+#ifndef __riscv
     SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+#endif
 
     // Go into Deepsleep mode and wait for an interrupt to wake the processor
     __WFI();

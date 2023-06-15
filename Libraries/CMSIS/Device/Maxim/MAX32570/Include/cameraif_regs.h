@@ -176,10 +176,10 @@ typedef struct {
 #define MXC_F_CAMERAIF_CTRL_FIFO_THD_POS               5 /**< CTRL_FIFO_THD Position */
 #define MXC_F_CAMERAIF_CTRL_FIFO_THD                   ((uint32_t)(0x1FUL << MXC_F_CAMERAIF_CTRL_FIFO_THD_POS)) /**< CTRL_FIFO_THD Mask */
 
-#define MXC_F_CAMERAIF_CTRL_RX_DMA_EN_POS              16 /**< CTRL_RX_DMA_EN Position */
+#define MXC_F_CAMERAIF_CTRL_RX_DMA_EN_POS              10 /**< CTRL_RX_DMA_EN Position */
 #define MXC_F_CAMERAIF_CTRL_RX_DMA_EN                  ((uint32_t)(0x1UL << MXC_F_CAMERAIF_CTRL_RX_DMA_EN_POS)) /**< CTRL_RX_DMA_EN Mask */
 
-#define MXC_F_CAMERAIF_CTRL_RX_DMA_THD_POS             17 /**< CTRL_RX_DMA_THD Position */
+#define MXC_F_CAMERAIF_CTRL_RX_DMA_THD_POS             11 /**< CTRL_RX_DMA_THD Position */
 #define MXC_F_CAMERAIF_CTRL_RX_DMA_THD                 ((uint32_t)(0xFUL << MXC_F_CAMERAIF_CTRL_RX_DMA_THD_POS)) /**< CTRL_RX_DMA_THD Mask */
 
 /**@} end of group CAMERAIF_CTRL_Register */

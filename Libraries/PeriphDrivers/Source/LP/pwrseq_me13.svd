@@ -557,7 +557,7 @@
           <field>
             <name>ROM1</name>
             <description>ROM1 Shut Down.</description>
-            <bitOffset>14</bitOffset>
+            <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>

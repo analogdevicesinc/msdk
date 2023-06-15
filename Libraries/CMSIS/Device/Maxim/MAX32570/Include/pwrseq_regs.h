@@ -299,7 +299,7 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPMEMSD_MEU_POS                   13 /**< LPMEMSD_MEU Position */
 #define MXC_F_PWRSEQ_LPMEMSD_MEU                       ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_MEU_POS)) /**< LPMEMSD_MEU Mask */
 
-#define MXC_F_PWRSEQ_LPMEMSD_ROM1_POS                  14 /**< LPMEMSD_ROM1 Position */
+#define MXC_F_PWRSEQ_LPMEMSD_ROM1_POS                  15 /**< LPMEMSD_ROM1 Position */
 #define MXC_F_PWRSEQ_LPMEMSD_ROM1                      ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPMEMSD_ROM1_POS)) /**< LPMEMSD_ROM1 Mask */
 
 /**@} end of group PWRSEQ_LPMEMSD_Register */
