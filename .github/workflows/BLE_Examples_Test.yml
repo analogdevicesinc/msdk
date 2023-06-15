@@ -87,9 +87,7 @@ jobs:
           MAX32655_OTAS_CONNECTED_TEST: false
 
         run: |
-	  echo ">>>>>>>>>>>>>>>> testing <<<<<<<<<<<"
-	  cd Libraries/CMSIS/Device/Maxim
-	  ls -la	
+
           # BLE examples to watch
           declare -a watched_examples=(
               # underscore in filter to ignore the BLE5_ctr examples
