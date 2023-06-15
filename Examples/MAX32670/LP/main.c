@@ -73,7 +73,7 @@
 #define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
 #define DO_BACKUP 0
-#define DO_STORAGE 1
+#define DO_STORAGE 0
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
@@ -167,10 +167,6 @@ void setTrigger(int waitForTrigger)
 #endif // USE_CONSOLE
 }
 #endif // USE_BUTTON
-
-#define UART 		((1 << 8) | (1 << 9))
-#define PB      	(1 << 21)
-#define I2C_PU  	((1 << 6) | (1 << 7) | (1 << 18) | (1 << 19))
 
 void configure_gpio(void)
 {
