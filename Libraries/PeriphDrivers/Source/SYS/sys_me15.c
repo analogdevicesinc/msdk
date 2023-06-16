@@ -109,7 +109,6 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
         checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
 
-
         err = MXC_AES_Init();
         if (err) {
             MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
