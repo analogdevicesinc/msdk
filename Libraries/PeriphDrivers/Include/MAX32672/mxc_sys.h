@@ -169,8 +169,8 @@ typedef enum {
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
 } mxc_sys_system_clock_t;
 
-#define MXC_SYS_USN_CHECKSUM_LEN 16
-#define MXC_SYS_USN_LEN 13
+#define MXC_SYS_USN_CHECKSUM_LEN 2
+#define MXC_SYS_USN_LEN 16
 
 /***** Function Prototypes *****/
 
