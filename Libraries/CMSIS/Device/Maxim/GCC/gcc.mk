@@ -104,11 +104,17 @@ ifneq ($(findstring MSYS, $(UNAME)), )
 MSYS=True
 endif
 
-# Get the prefix for the tools to use.
-ifeq "$(TOOL_DIR)" ""
-PREFIX=arm-none-eabi
+# Set the toolchain prefix.  Top-level makefiles can specify ARM_PREFIX or
+# PREFIX directly.  ARM_PREFIX is given to improve dual-core projects
+ifeq "$(ARM_PREFIX)" ""
+PREFIX ?= arm-none-eabi
 else
-PREFIX=$(TOOL_DIR)/arm-none-eabi
+PREFIX ?= $(ARM_PREFIX)
+endif
+
+# Set absolute path to tools if TOOL_DIR is specified
+ifneq "$(TOOL_DIR)" ""
+PREFIX=$(TOOL_DIR)/$(PREFIX)
 endif
 
 # The command for calling the compiler.
