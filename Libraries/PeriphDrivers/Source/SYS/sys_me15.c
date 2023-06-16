@@ -113,7 +113,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         err = MXC_AES_Init();
         if (err) {
             MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
-            return E_BAD_STATE;
+            return err;
         }
 
         // Set NULL Key
@@ -131,7 +131,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         err = MXC_AES_Generic(&aes_req);
         if (err) {
             MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
-            return E_BAD_STATE;
+            return err;
         }
 
         MXC_AES_Shutdown();
