@@ -72,10 +72,14 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     int err = E_NO_ERROR;
     uint32_t *infoblock = (uint32_t *)MXC_INFO0_MEM_BASE;
 
+    if (usn == NULL) {
+        return E_NULL_PTR;
+    }
+
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    memset(usn, 0, MXC_SYS_USN_LEN);
+    memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
 
     usn[0] = (infoblock[0] & 0x007F8000) >> 15;
     usn[1] = (infoblock[0] & 0x7F800000) >> 23;
@@ -92,8 +96,8 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     usn[10] = (infoblock[3] & 0x007F8000) >> 15;
 
     if (checksum != NULL) {
-        uint8_t check_csum[MXC_SYS_USN_LEN];
-        uint8_t aes_key[MXC_SYS_USN_LEN] = { 0 }; // NULL Key (per checksum spec)
+        uint8_t check_csum[MXC_SYS_USN_CHECKSUM_LEN];
+        uint8_t aes_key[MXC_SYS_USN_CHECKSUM_LEN] = { 0 }; // NULL Key (per checksum spec)
 
         // Read Checksum from the infoblock
         checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
@@ -110,7 +114,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
         // Compute Checksum
         mxc_aes_req_t aes_req;
-        aes_req.length = MXC_SYS_USN_LEN / 4;
+        aes_req.length = MXC_SYS_USN_CHECKSUM_LEN / 4;
         aes_req.inputData = (uint32_t *)usn;
         aes_req.resultData = (uint32_t *)check_csum;
         aes_req.keySize = MXC_AES_128BITS;

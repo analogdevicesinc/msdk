@@ -79,7 +79,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    memset(usn, 0, MXC_SYS_USN_LEN);
+    memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
 
     usn[0] = (infoblock[0] & 0x007F8000) >> 15;
     usn[1] = (infoblock[0] & 0x7F800000) >> 23;
@@ -100,16 +100,16 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         uint32_t key[4];
         uint32_t pt32[4];
         uint32_t check_csum32[4];
-        uint8_t check_csum[MXC_SYS_USN_LEN];
+        uint8_t check_csum[MXC_SYS_USN_CHECKSUM_LEN];
 
         /* Initialize key and plaintext */
-        memset(key, 0, MXC_SYS_USN_LEN);
-        memset(pt32, 0, MXC_SYS_USN_LEN);
-        memcpy(pt32, usn, MXC_SYS_USN_LEN);
+        memset(key, 0, MXC_SYS_USN_CHECKSUM_LEN);
+        memset(pt32, 0, MXC_SYS_USN_CHECKSUM_LEN);
+        memcpy(pt32, usn, MXC_SYS_USN_CHECKSUM_LEN);
 
         /* Read the checksum from the info block */
-        checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
-        checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
+        checksum[1] = ((infoblock[3] & 0x7F800000) >> 23);
+        checksum[0] = ((infoblock[4] & 0x007F8000) >> 15);
 
         MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER);
 
@@ -153,10 +153,10 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         check_csum32[2] = MXC_CTB->dout[2];
         check_csum32[3] = MXC_CTB->dout[3];
 
-        memcpy(check_csum, check_csum32, MXC_SYS_USN_LEN);
+        memcpy(check_csum, check_csum32, MXC_SYS_USN_CHECKSUM_LEN);
 
         /* Verify the checksum */
-        if ((checksum[1] != check_csum[0]) || (checksum[0] != check_csum[1])) {
+        if ((checksum[0] != check_csum[0]) || (checksum[1] != check_csum[1])) {
             MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
             return E_UNKNOWN;
         }

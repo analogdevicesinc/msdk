@@ -212,8 +212,9 @@ typedef enum {
 #define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
 #define MXC_SYS_CTB_CLK 1 // Enable CTB CLK
 
-#define MXC_SYS_USN_CHECKSUM_LEN 2
-#define MXC_SYS_USN_LEN 16
+#define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
+#define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
+#define MXC_SYS_USN_LEN 13 // Size of the USN including the checksum
 
 /***** Function Prototypes *****/
 

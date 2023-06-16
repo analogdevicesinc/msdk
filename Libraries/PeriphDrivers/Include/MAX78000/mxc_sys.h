@@ -198,8 +198,9 @@ typedef enum {
     MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
 } mxc_sys_system_clock_div_t;
 
-#define MXC_SYS_USN_CHECKSUM_LEN 2
-#define MXC_SYS_USN_LEN 16
+#define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
+#define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
+#define MXC_SYS_USN_LEN 13 // Size of the USN including the checksum
 
 /***** Function Prototypes *****/
 

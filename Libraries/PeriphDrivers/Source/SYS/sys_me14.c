@@ -73,7 +73,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    memset(usn, 0, MXC_SYS_USN_LEN);
+    memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
 
     usn[0] = (infoblock[0] & 0x007F8000) >> 15;
     usn[1] = (infoblock[0] & 0x7F800000) >> 23;
@@ -91,16 +91,16 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     // Compute the checksum
     if (checksum != NULL) {
-        uint8_t check_csum[MXC_SYS_USN_LEN];
-        uint8_t key[MXC_SYS_USN_LEN];
+        uint8_t check_csum[MXC_SYS_USN_CHECKSUM_LEN];
+        uint8_t key[MXC_SYS_USN_CHECKSUM_LEN];
 
         /* Initialize the remainder of the USN and key */
-        memset(key, 0, MXC_SYS_USN_LEN);
-        memset(checksum, 0, MXC_SYS_USN_CHECKSUM_LEN);
+        memset(key, 0, MXC_SYS_USN_CHECKSUM_LEN);
+        memset(checksum, 0, MXC_SYS_USN_CSUM_FIELD_LEN);
 
         /* Read the checksum from the info block */
-        checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
-        checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
+        checksum[1] = ((infoblock[3] & 0x7F800000) >> 23);
+        checksum[0] = ((infoblock[4] & 0x007F8000) >> 15);
 
         MXC_TPU_Cipher_Config(MXC_TPU_MODE_ECB, MXC_TPU_CIPHER_AES128);
         MXC_TPU_Cipher_AES_Encrypt((const char *)usn, NULL, (const char *)key,
@@ -108,7 +108,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
                                    (char *)check_csum);
 
         /* Verify the checksum */
-        if ((checksum[1] != check_csum[0]) || (checksum[0] != check_csum[1])) {
+        if ((checksum[0] != check_csum[0]) || (checksum[1] != check_csum[1])) {
             MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
             return E_UNKNOWN;
         }
@@ -399,7 +399,7 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 /* ************************************************************************** */
 uint8_t MXC_SYS_GetRev(void)
 {
-    uint8_t serialNumber[MXC_SYS_USN_LEN];
+    uint8_t serialNumber[MXC_SYS_USN_CHECKSUM_LEN];
     MXC_SYS_GetUSN(serialNumber, NULL);
 
     if ((serialNumber[0] < 0x9F) | ((serialNumber[0] & 0x0F) > 0x09)) {
