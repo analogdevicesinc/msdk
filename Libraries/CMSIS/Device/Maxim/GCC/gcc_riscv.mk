@@ -154,7 +154,7 @@ ifeq "$(PREFIX)" "riscv-none-elf"
 # BASE = RV32I
 # EXTENSION = M
 # EXTRAS = _zicsr_zifencei as recommended above
-MARCH ?= rv32imc_zicsr_zifencei
+MARCH ?= rv32im_zicsr_zifencei
 endif
 
 # Default option (riscv-none-embed)
