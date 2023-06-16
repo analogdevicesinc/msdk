@@ -138,7 +138,8 @@ void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
  * 
  * =============================================================
  */
-void checkLeadingSpaces(char *buffer, unsigned int *index){
+void checkLeadingSpaces(char *buffer, unsigned int *index)
+{
     unsigned int leadingZerosCount = 0;
     for (leadingZerosCount = 0; leadingZerosCount < (*index); leadingZerosCount++) {
         if (buffer[leadingZerosCount] != SPACE_BAR)
