@@ -2,7 +2,7 @@
 
 This is a SPI loopback demonstration. Data is sent between the MOSI and MISO pins of the same SPI instance and after each transaction the data sent is compared to the data received. This test is performed several times with a different word size for each test.
 
-By default, the example performs a blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, undefine the MASTERSYNC macro and define the MASTERASYNC macro.  To use DMA transactions, define the MASTERDMA macro instead.
+By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the MASTERSYNC macro to 0 and set the MASTERASYNC macro to 1.  To use DMA transactions, set the MASTERDMA macro to 1 instead.
 
 ## Software
 
