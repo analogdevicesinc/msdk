@@ -73,8 +73,8 @@ TaskHandle_t cmd_task_id;
 #define STRING_(x) #x
 
 /* ASCII macros */
-#define BACK_SPACE       0x08
-#define SPACE_BAR        0x20
+#define BACK_SPACE 0x08
+#define SPACE_BAR 0x20
 #define NULL_TERMINATION 0x00
 
 /* Console ISR selection */
@@ -138,14 +138,14 @@ void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
  * 
  * =============================================================
  */
-void checkLeadingSpaces(char* buffer, unsigned int* index){
+void checkLeadingSpaces(char *buffer, unsigned int *index){
     unsigned int leadingZerosCount = 0;
     for (leadingZerosCount = 0; leadingZerosCount < (*index); leadingZerosCount++) {
         if (buffer[leadingZerosCount] != SPACE_BAR)
             break;
     }
     if (leadingZerosCount > 0) {
-        memcpy(buffer, buffer+leadingZerosCount, (*index)-leadingZerosCount);
+        memcpy(buffer, buffer + leadingZerosCount, (*index) - leadingZerosCount);
         *index = *index - leadingZerosCount;
         buffer[*index] = NULL_TERMINATION;
         ++(*index);
@@ -233,14 +233,15 @@ void vCmdLineTask(void *pvParameters)
                     buffer[index] = NULL_TERMINATION;
                     checkLeadingSpaces(buffer, &index);
                     /* Evaluate */
-                    if (index != 0){
+                    if (index != 0) {
                         do {
                             xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
                             /* If xMore == pdTRUE, then output buffer contains no null
 						    * termination, so we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can
 						    * use strlen.
 						    */
-                            for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output)); x++) {
+                            for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output));
+                                 x++) {
                                 putchar(*(output + x));
                             }
                         } while (xMore != pdFALSE);
