@@ -72,6 +72,11 @@ TaskHandle_t cmd_task_id;
 #define STRING(x) STRING_(x)
 #define STRING_(x) #x
 
+/* ASCII macros */
+#define BACK_SPACE       0x08
+#define SPACE_BAR        0x20
+#define NULL_TERMINATION 0x00
+
 /* Console ISR selection */
 #if (CONSOLE_UART == 0)
 #define UARTx_IRQHandler UART0_IRQHandler
@@ -120,6 +125,31 @@ void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
     xHigherPriorityTaskWoken = pdFALSE;
     vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+}
+
+/* =| checkLeadingSpaces |======================================
+ *
+ * Function to check for the leading spaces in the 
+ *  input command.
+ *
+ * If any Leading spaces are present, the function would remove 
+ *  those spaces and returns a valid Null terminated command 
+ *  in the same input buffer.
+ * 
+ * =============================================================
+ */
+void checkLeadingSpaces(char* buffer, unsigned int* index){
+    unsigned int leadingZerosCount = 0;
+    for(leadingZerosCount=0; leadingZerosCount < (*index); leadingZerosCount++){
+        if (buffer[leadingZerosCount] != SPACE_BAR)
+            break;
+    }
+    if (leadingZerosCount > 0){
+        memcpy(buffer, buffer+leadingZerosCount, (*index)-leadingZerosCount);
+        *index = *index - leadingZerosCount;
+        buffer[*index] = NULL_TERMINATION;
+        ++(*index);
+    }
 }
 
 /* =| vCmdLineTask |======================================
@@ -184,11 +214,11 @@ void vCmdLineTask(void *pvParameters)
         if (async_read_req.rxCnt > 0) {
             /* Process character */
             do {
-                if (tmp == 0x08) {
+                if (tmp == BACK_SPACE) {
                     /* Backspace */
                     if (index > 0) {
                         index--;
-                        printf("\x08 \x08");
+                        printf("%c %c", BACK_SPACE, BACK_SPACE);
                     }
                     fflush(stdout);
                 } else if (tmp == 0x03) {
@@ -200,18 +230,21 @@ void vCmdLineTask(void *pvParameters)
                 } else if ((tmp == '\r') || (tmp == '\n')) {
                     printf("\r\n");
                     /* Null terminate for safety */
-                    buffer[index] = 0x00;
+                    buffer[index] = NULL_TERMINATION;
+                    checkLeadingSpaces(buffer, &index);
                     /* Evaluate */
-                    do {
-                        xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
-                        /* If xMore == pdTRUE, then output buffer contains no null
-						 * termination, so we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can
-						 * use strlen.
-						 */
-                        for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output)); x++) {
-                            putchar(*(output + x));
-                        }
-                    } while (xMore != pdFALSE);
+                    if (index != 0){
+                        do {
+                            xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
+                            /* If xMore == pdTRUE, then output buffer contains no null
+						    * termination, so we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can
+						    * use strlen.
+						    */
+                            for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output)); x++) {
+                                putchar(*(output + x));
+                            }
+                        } while (xMore != pdFALSE);
+                    }
                     /* New prompt */
                     index = 0;
                     printf("\ncmd> ");
