@@ -73,7 +73,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     if (usn == NULL) {
         return E_NULL_PTR;
     }
-    
+
     uint32_t *infoblock = (uint32_t *)MXC_INFO0_MEM_BASE;
 
     /* Read the USN from the info block */

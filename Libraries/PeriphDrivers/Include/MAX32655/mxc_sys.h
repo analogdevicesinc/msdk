@@ -198,7 +198,7 @@ typedef enum {
     MXC_SYS_CLOCK_DIV_128 = MXC_S_GCR_CLKCTRL_SYSCLK_DIV_DIV128
 } mxc_sys_system_clock_div_t;
 
-#define MXC_SYS_USN_LEN 16    
+#define MXC_SYS_USN_LEN 16
 #define MXC_SYS_USN_CHECKSUM_LEN 2
 
 /***** Function Prototypes *****/
