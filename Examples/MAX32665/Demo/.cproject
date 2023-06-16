@@ -32,7 +32,10 @@
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/PeriphDrivers/Include/${TARGET}/&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Boards/${TARGET}/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Boards/${TARGET}/${BOARD}/Include&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Camera&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/LVGL/lvgl&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/LVGL/lvgl/src&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/LVGL/lvgl/src/**&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Camera&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Display&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/LED&quot;"/>
