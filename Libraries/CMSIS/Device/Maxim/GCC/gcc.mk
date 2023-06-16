@@ -462,6 +462,16 @@ ${BUILD_DIR}/%.elf: $(PROJECTMK)
 debug:
 	@echo CYGWIN = ${CYGWIN}
 	@echo
+	@echo CC = ${CC}
+	@echo
+	@echo AS = ${AS}
+	@echo
+	@echo LD = ${LD}
+	@echo
+	@echo TARGET = ${TARGET}
+	@echo
+	@echo BOARD = ${BOARD}
+	@echo
 	@echo BUILD_DIR = ${BUILD_DIR}
 	@echo
 	@echo SRCS = ${SRCS}
@@ -477,4 +487,10 @@ debug:
 	@echo VPATH = ${VPATH}
 	@echo
 	@echo IPATH = ${IPATH}
+	@echo
+	@echo CFLAGS = ${CFLAGS}
+	@echo
+	@echo AFLAGS = ${AFLAGS}
+	@echo
+	@echo LDFLAGS = ${LDFLAGS}
 

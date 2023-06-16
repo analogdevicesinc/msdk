@@ -419,23 +419,21 @@ ${BUILD_DIR}/%.elf: $(PROJECTMK)
 debug:
 	@echo CYGWIN = ${CYGWIN}
 	@echo
-	@echo BUILD_DIR = ${BUILD_DIR}
-	@echo
-	@echo SRCS = ${SRCS}
-	@echo
-	@echo SRCS_NOPATH = ${SRCS_NOPATH}
-	@echo
 	@echo CC = ${CC}
 	@echo
 	@echo AS = ${AS}
 	@echo
 	@echo LD = ${LD}
 	@echo
-	@echo CFLAGS = ${CFLAGS}
+	@echo TARGET = ${TARGET}
 	@echo
-	@echo AFLAGS = ${AFLAGS}
+	@echo BOARD = ${BOARD}
 	@echo
-	@echo LFLAGS = ${LFLAGS}
+	@echo BUILD_DIR = ${BUILD_DIR}
+	@echo
+	@echo SRCS = ${SRCS}
+	@echo
+	@echo SRCS_NOPATH = ${SRCS_NOPATH}
 	@echo
 	@echo OBJS_NOPATH = ${OBJS_NOPATH}
 	@echo
@@ -446,4 +444,10 @@ debug:
 	@echo VPATH = ${VPATH}
 	@echo
 	@echo IPATH = ${IPATH}
+	@echo
+	@echo CFLAGS = ${CFLAGS}
+	@echo
+	@echo AFLAGS = ${AFLAGS}
+	@echo
+	@echo LDFLAGS = ${LDFLAGS}
 
