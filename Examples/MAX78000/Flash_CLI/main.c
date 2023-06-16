@@ -140,11 +140,11 @@ void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
  */
 void checkLeadingSpaces(char* buffer, unsigned int* index){
     unsigned int leadingZerosCount = 0;
-    for(leadingZerosCount=0; leadingZerosCount < (*index); leadingZerosCount++){
+    for (leadingZerosCount = 0; leadingZerosCount < (*index); leadingZerosCount++) {
         if (buffer[leadingZerosCount] != SPACE_BAR)
             break;
     }
-    if (leadingZerosCount > 0){
+    if (leadingZerosCount > 0) {
         memcpy(buffer, buffer+leadingZerosCount, (*index)-leadingZerosCount);
         *index = *index - leadingZerosCount;
         buffer[*index] = NULL_TERMINATION;
