@@ -41,6 +41,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include "mxc.h"
+#include "board.h"
 #include "pb.h"
 
 /***** Definitions *****/

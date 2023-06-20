@@ -5,7 +5,7 @@ MOSI (P0.3) pins.  Connect these two pins together.
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
-This example can demonstrate blocking, non-blocking, and DMA transactions methods controlled by the definitiona at the top of main. For blocking transactions define MASTERSYNC, for non-blocking transactions define MASTERASYNC, and for DMA transactions define MASTERDMA; define only one of these at a time. By default MASTERSYNC is defined.
+By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the MASTERSYNC macro to 0 and set the MASTERASYNC macro to 1.  To use DMA transactions, set the MASTERDMA macro to 1 instead.
 
 
 ## Software

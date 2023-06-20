@@ -36,11 +36,13 @@
  * @brief   Board support package API.
  */
 
-#include <stdio.h>
-#include "spi.h"
-
 #ifndef LIBRARIES_BOARDS_MAX32655_EVKIT_V1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX32655_EVKIT_V1_INCLUDE_BOARD_H_
+
+#include <stdio.h>
+#include "spi.h"
+#include "led.h"
+#include "pb.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -73,8 +75,15 @@ extern "C" {
 #define USER_UART 1
 #endif
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
+#ifdef LED_OFF
+#undef LED_OFF
+#endif
+#define LED_OFF 1 /// Override inactive state of LEDs
+
+#ifdef LED_ON
+#undef LED_ON
+#endif
+#define LED_ON 0 /// Override active state of LEDs
 
 #ifndef EXT_FLASH_BAUD
 #define EXT_FLASH_BAUD 5000000
