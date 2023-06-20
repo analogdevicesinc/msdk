@@ -125,11 +125,13 @@ const mxc_gpio_cfg_t gpio_cfg_chrg_lc2 = { MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_
                                            MXC_GPIO_PAD_NONE };
 
 // SPI v2 Pin Definitions
-const mxc_gpio_cfg_t gpio_cfg_spi1_standard = { MXC_GPIO0, (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15 |
-                                                MXC_GPIO_PIN_16), MXC_GPIO_FUNC_ALT1,
-                                                MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
-const mxc_gpio_cfg_t gpio_cfg_spi1_3wire = { MXC_GPIO0, (MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16), MXC_GPIO_FUNC_ALT1,
-                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_spi1_standard = {
+    MXC_GPIO0, (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16), MXC_GPIO_FUNC_ALT1,
+    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO
+};
+const mxc_gpio_cfg_t gpio_cfg_spi1_3wire = { MXC_GPIO0, (MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16),
+                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
+                                             MXC_GPIO_VSSEL_VDDIO };
 // MXC_SPI1 does not support Dual or Quad modes.
 
 // SPI v2 Target Selects Pin Definitions

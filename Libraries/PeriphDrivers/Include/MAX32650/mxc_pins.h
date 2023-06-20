@@ -160,7 +160,6 @@ extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts1;
 extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts2;
 extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts3;
 
-
 #ifdef __cplusplus
 }
 #endif
