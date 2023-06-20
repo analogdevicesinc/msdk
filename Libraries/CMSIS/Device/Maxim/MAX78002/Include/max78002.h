@@ -637,7 +637,8 @@ typedef enum {
 
 #define MXC_SPI_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SPI1_IRQn : (i) == 1 ? SPI0_IRQn : 0)
 
-#define MXC_SPI_GET_TOTAL_TS(p) ((p) == MXC_SPI1 ? MXC_SPI1_TS_INSTANCES: (p) == MXC_SPI0 ? MXC_SPI0_TS_INSTANCES : 0)
+#define MXC_SPI_GET_TOTAL_TS(p) \
+    ((p) == MXC_SPI1 ? MXC_SPI1_TS_INSTANCES : (p) == MXC_SPI0 ? MXC_SPI0_TS_INSTANCES : 0)
 #else // __riscv
 
 #define MXC_SPI_GET_IDX(p) ((p) == MXC_SPI1 ? 0 : -1)

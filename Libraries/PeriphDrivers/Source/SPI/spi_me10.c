@@ -92,7 +92,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     }
 
     return MXC_SPI_RevA1_Init((mxc_spi_reva_regs_t *)spi, masterMode, quadModeUsed, numSlaves,
-                             ssPolarity, hz);
+                              ssPolarity, hz);
 }
 
 /* ************************************************************************ */
@@ -377,20 +377,20 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
 
     switch (MXC_SPI_GET_IDX(req->spi)) {
     case 0:
-        retVal = MXC_SPI_RevA1_SlaveTransactionDMA((mxc_spi_reva_req_t *)req, MXC_DMA_REQUEST_SPI0TX,
-                                                  MXC_DMA_REQUEST_SPI0RX, MXC_DMA);
+        retVal = MXC_SPI_RevA1_SlaveTransactionDMA(
+            (mxc_spi_reva_req_t *)req, MXC_DMA_REQUEST_SPI0TX, MXC_DMA_REQUEST_SPI0RX, MXC_DMA);
         break;
     case 1:
-        retVal = MXC_SPI_RevA1_SlaveTransactionDMA((mxc_spi_reva_req_t *)req, MXC_DMA_REQUEST_SPI1TX,
-                                                  MXC_DMA_REQUEST_SPI1RX, MXC_DMA);
+        retVal = MXC_SPI_RevA1_SlaveTransactionDMA(
+            (mxc_spi_reva_req_t *)req, MXC_DMA_REQUEST_SPI1TX, MXC_DMA_REQUEST_SPI1RX, MXC_DMA);
         break;
     case 2:
-        retVal = MXC_SPI_RevA1_SlaveTransactionDMA((mxc_spi_reva_req_t *)req, MXC_DMA_REQUEST_SPI2TX,
-                                                  MXC_DMA_REQUEST_SPI2RX, MXC_DMA);
+        retVal = MXC_SPI_RevA1_SlaveTransactionDMA(
+            (mxc_spi_reva_req_t *)req, MXC_DMA_REQUEST_SPI2TX, MXC_DMA_REQUEST_SPI2RX, MXC_DMA);
         break;
     case 3:
-        retVal = MXC_SPI_RevA1_SlaveTransactionDMA((mxc_spi_reva_req_t *)req, MXC_DMA_REQUEST_SPI3TX,
-                                                  MXC_DMA_REQUEST_SPI3RX, MXC_DMA);
+        retVal = MXC_SPI_RevA1_SlaveTransactionDMA(
+            (mxc_spi_reva_req_t *)req, MXC_DMA_REQUEST_SPI3TX, MXC_DMA_REQUEST_SPI3RX, MXC_DMA);
         break;
     default:
         return E_BAD_PARAM;

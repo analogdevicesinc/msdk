@@ -74,14 +74,14 @@ typedef enum {
 
 // Target Select (TS) Control Scheme
 typedef enum {
-    MXC_SPI_TSCONTROL_HW_AUTO = 0,  // Automatically by hardware
-    MXC_SPI_TSCONTROL_SW_DRV = 1,   // Through software by the driver
-    MXC_SPI_TSCONTROL_SW_APP = 2    // Through software in the application
+    MXC_SPI_TSCONTROL_HW_AUTO = 0, // Automatically by hardware
+    MXC_SPI_TSCONTROL_SW_DRV = 1, // Through software by the driver
+    MXC_SPI_TSCONTROL_SW_APP = 2 // Through software in the application
 } mxc_spi_tscontrol_t;
 
 typedef enum {
     MXC_SPI_STATE_READY = 0, // Ready for transaction
-    MXC_SPI_STATE_BUSY = 1   // Busy transferring
+    MXC_SPI_STATE_BUSY = 1 // Busy transferring
 } mxc_spi_state_t;
 
 /**
@@ -89,7 +89,7 @@ typedef enum {
  */
 typedef enum {
     MXC_SPI_INTERFACE_3WIRE = 0,
-    MXC_SPI_INTERFACE_STANDARD = 1, 
+    MXC_SPI_INTERFACE_STANDARD = 1,
     MXC_SPI_INTERFACE_DUAL = 2,
     MXC_SPI_INTERFACE_QUAD = 3
 } mxc_spi_interface_t;
@@ -105,15 +105,15 @@ typedef enum {
  * Clock phase determines when the data must be stable for sampling
  */
 typedef enum {
-    MXC_SPI_CLKMODE_0 = 0,  // CPOL: 0    CPHA: 0
-    MXC_SPI_CLKMODE_1 = 1,  // CPOL: 0    CPHA: 1
-    MXC_SPI_CLKMODE_2 = 2,  // CPOL: 1    CPHA: 0
-    MXC_SPI_CLKMODE_3 = 3   // CPOL: 1    CPHA: 1
+    MXC_SPI_CLKMODE_0 = 0, // CPOL: 0    CPHA: 0
+    MXC_SPI_CLKMODE_1 = 1, // CPOL: 0    CPHA: 1
+    MXC_SPI_CLKMODE_2 = 2, // CPOL: 1    CPHA: 0
+    MXC_SPI_CLKMODE_3 = 3 // CPOL: 1    CPHA: 1
 } mxc_spi_clkmode_t;
 
 typedef struct {
     uint32_t index;
-    mxc_gpio_cfg_t pins;   
+    mxc_gpio_cfg_t pins;
     uint8_t active_polarity; // Active High (1) or Low (0)
 } mxc_spi_target_t;
 
@@ -174,79 +174,80 @@ struct _mxc_spi_pins_t {
 };
 
 typedef struct {
-    mxc_spi_regs_t       *spi;            // Selected SPI Instance
-    mxc_gpio_cfg_t       *spi_pins;       // Main SPI pins (i.e. MOSI, MISO, CLK)
-    mxc_spi_type_t       type;            // Controller (L. Master) vs Target (L. Slave)
-    uint32_t             freq;            // Clock Frequency
-    mxc_spi_clkmode_t    clk_mode;
-    uint8_t              frame_size;      // Number of bits per character sent
-    mxc_spi_interface_t  mode;            // 3-wire, standard, dual, and quad modes
-    mxc_spi_tscontrol_t  ts_control;      // Target Select Control Scheme (auto HW, driver, or app controlled)
-    mxc_spi_target_t     target;          // Target Settings (index, pins, active_polarity)
-    mxc_gpio_vssel_t     vssel;           // Ensures selected VDDIO/VDDIOH setting
-    uint8_t              ts_mask;         // Target Select Mask to initialize GPIO pins.
-                                          //    ts_mask[0] = Target Select Pin 0
-                                          //    ts_mask[1] = Target Select Pin 1
-                                          //    ts_mask[n] = Target Select Pin n
+    mxc_spi_regs_t *spi; // Selected SPI Instance
+    mxc_gpio_cfg_t *spi_pins; // Main SPI pins (i.e. MOSI, MISO, CLK)
+    mxc_spi_type_t type; // Controller (L. Master) vs Target (L. Slave)
+    uint32_t freq; // Clock Frequency
+    mxc_spi_clkmode_t clk_mode;
+    uint8_t frame_size; // Number of bits per character sent
+    mxc_spi_interface_t mode; // 3-wire, standard, dual, and quad modes
+    mxc_spi_tscontrol_t
+        ts_control; // Target Select Control Scheme (auto HW, driver, or app controlled)
+    mxc_spi_target_t target; // Target Settings (index, pins, active_polarity)
+    mxc_gpio_vssel_t vssel; // Ensures selected VDDIO/VDDIOH setting
+    uint8_t ts_mask; // Target Select Mask to initialize GPIO pins.
+        //    ts_mask[0] = Target Select Pin 0
+        //    ts_mask[1] = Target Select Pin 1
+        //    ts_mask[n] = Target Select Pin n
 
     // DMA
-    bool                 use_dma;
-    mxc_dma_regs_t       *dma;
+    bool use_dma;
+    mxc_dma_regs_t *dma;
 } mxc_spi_init_t;
 
 struct _mxc_spi_reva2_req_t {
-    mxc_spi_regs_t *spi;        // Pointer to SPI registers
+    mxc_spi_regs_t *spi; // Pointer to SPI registers
     union {
         int deassert;
-        int ssDeassert;         // ssDeassert - deprecated name
+        int ssDeassert; // ssDeassert - deprecated name
     };
-    
+
     union {
         uint8_t *tx_buffer;
-        uint8_t *txData;       // txData - deprecated name     
+        uint8_t *txData; // txData - deprecated name
     };
 
-    union {                       
+    union {
         uint8_t *rx_buffer;
-        uint8_t *rxData;       // rxData - deprecated name  
+        uint8_t *rxData; // rxData - deprecated name
     };
 
     union {
-        uint32_t tx_len;        ///< Number of bytes to be sent from txData
-        uint32_t txLen;         // txLen - deprecated name
+        uint32_t tx_len; ///< Number of bytes to be sent from txData
+        uint32_t txLen; // txLen - deprecated name
     };
 
     union {
-        uint32_t rx_len;        ///< Number of bytes to be stored in rxData
-        uint32_t rxLen;         // rxLen - deprecated name
+        uint32_t rx_len; ///< Number of bytes to be stored in rxData
+        uint32_t rxLen; // rxLen - deprecated name
     };
 
     union {
-        uint32_t tx_cnt;        ///< Number of bytes actually transmitted from txData
-        uint32_t txCnt;         // txCnt - deprecated name
+        uint32_t tx_cnt; ///< Number of bytes actually transmitted from txData
+        uint32_t txCnt; // txCnt - deprecated name
     };
 
     union {
-        uint32_t rx_cnt;        ///< Number of bytes stored in rxData
+        uint32_t rx_cnt; ///< Number of bytes stored in rxData
         uint32_t rxCnt;
     };
 
-    uint16_t tx_dummy_value;    // Value of dummy bytes to be sent
+    uint16_t tx_dummy_value; // Value of dummy bytes to be sent
 
     // Chip Select Options
-    mxc_spi_target_t *target_pins;       // Contains index, pins, and polarity mode
+    mxc_spi_target_t *target_pins; // Contains index, pins, and polarity mode
 
     union {
         uint32_t index;
-        int ssIdx;             // Deprecated name
+        int ssIdx; // Deprecated name
     };
 
     // Callback
     union {
-        mxc_spi_callback_t   callback;
-        spi_complete_cb_t    completeCB;    // Deprecated
+        mxc_spi_callback_t callback;
+        spi_complete_cb_t completeCB; // Deprecated
     };
-    void                 *callback_data;
+    void *callback_data;
 };
 
 /* ************************************************************************* */
@@ -820,7 +821,9 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req);
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                                  uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
+                                  mxc_spi_target_t *target);
 
 /**
  * @brief   Set up a blocking, interrupt-driven SPI controller transaction.
@@ -835,7 +838,9 @@ int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint3
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_ControllerTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_ControllerTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                                   uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
+                                   mxc_spi_target_t *target);
 
 /**
  * @brief   Set up a non-blocking, DMA-driven SPI controller transaction.
@@ -850,7 +855,9 @@ int MXC_SPI_ControllerTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_ControllerTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_ControllerTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                                     uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
+                                     mxc_spi_target_t *target);
 
 /**
  * @brief   Set up a blocking, DMA-driven SPI controller transaction.
@@ -865,7 +872,9 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, ui
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target);
+int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                                      uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
+                                      mxc_spi_target_t *target);
 
 /**
  * @brief   Performs a blocking SPI transaction.

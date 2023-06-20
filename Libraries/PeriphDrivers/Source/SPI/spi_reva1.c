@@ -69,7 +69,7 @@ static void MXC_SPI_RevA1_SwapByte(uint8_t *arr, size_t length);
 static int MXC_SPI_RevA1_TransSetup(mxc_spi_reva_req_t *req);
 
 int MXC_SPI_RevA1_Init(mxc_spi_reva_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
-                      unsigned ssPolarity, unsigned int hz)
+                       unsigned ssPolarity, unsigned int hz)
 {
     int spi_num;
 
@@ -549,7 +549,7 @@ int MXC_SPI_RevA1_AbortTransmission(mxc_spi_reva_regs_t *spi)
 }
 
 unsigned int MXC_SPI_RevA1_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *bytes,
-                                     unsigned int len)
+                                      unsigned int len)
 {
     unsigned rx_avail, bits;
     MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
@@ -604,7 +604,7 @@ unsigned int MXC_SPI_RevA1_GetRXFIFOAvailable(mxc_spi_reva_regs_t *spi)
 }
 
 unsigned int MXC_SPI_RevA1_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *bytes,
-                                      unsigned int len)
+                                       unsigned int len)
 {
     unsigned tx_avail, bits;
     MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
@@ -976,7 +976,7 @@ int MXC_SPI_RevA1_MasterTransactionAsync(mxc_spi_reva_req_t *req)
 }
 
 int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int reqselRx,
-                                      mxc_dma_regs_t *dma)
+                                       mxc_dma_regs_t *dma)
 {
     int spi_num;
     uint8_t error, bits;
@@ -1156,7 +1156,7 @@ int MXC_SPI_RevA1_SlaveTransactionAsync(mxc_spi_reva_req_t *req)
 }
 
 int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int reqselRx,
-                                     mxc_dma_regs_t *dma)
+                                      mxc_dma_regs_t *dma)
 {
     int spi_num;
     uint8_t error, bits;
