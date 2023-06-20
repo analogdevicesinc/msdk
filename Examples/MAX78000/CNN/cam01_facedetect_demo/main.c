@@ -153,7 +153,6 @@ int main(void)
 
     camera_set_hmirror(0);
     camera_set_vflip(0);
-    camera_write_reg(0x3024, 0x0); // Set context A (320x240)
 
     ret = camera_setup(320, // width
                        240, // height
