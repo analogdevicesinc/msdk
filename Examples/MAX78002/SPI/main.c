@@ -159,9 +159,11 @@ int main(void)
 #if defined(MXC_SPI_V2)
 #ifdef MASTERDMA
         // Helper function for new SPI drivers for DMA transactions.
+        // Must be called before MXC_SPI_Init if using SPI DMA.
         MXC_SPI_UseDMA(1); // Use DMA (1)
 #else
-        MXC_SPI_UseDMA(0); // Don'e use DMA (0)
+        // Not necessary when not using SPI DMA.
+        MXC_SPI_UseDMA(0); // Don't use DMA (0).
 #endif
 #endif
 
