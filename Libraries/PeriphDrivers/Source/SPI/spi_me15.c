@@ -39,7 +39,7 @@
 #include "mxc_lock.h"
 #include "mxc_sys.h"
 #include "mxc_delay.h"
-#include "spi_reva.h"
+#include "spi_reva1.h"
 #include "dma.h"
 
 /* **** Functions **** */

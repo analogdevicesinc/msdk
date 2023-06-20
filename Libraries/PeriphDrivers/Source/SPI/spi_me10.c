@@ -40,7 +40,7 @@
 /* **** Includes **** */
 #include <string.h>
 #include "spi.h"
-#include "spi_reva.h"
+#include "spi_reva1.h"
 #include "mxc_sys.h"
 #include "mxc_errors.h"
 
