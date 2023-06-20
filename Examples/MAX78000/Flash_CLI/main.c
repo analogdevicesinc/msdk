@@ -83,6 +83,7 @@ TaskHandle_t cmd_task_id;
 #define ARROW_KEY_CODE_RIGHT 0x43
 #define ARROW_KEY_CODE_UP 0x41
 #define ARROW_KEY_CODE_DOWN 0x42
+#define TAB_SPACE 0x09
 
 /* Console ISR selection */
 #if (CONSOLE_UART == 0)
@@ -251,6 +252,9 @@ void vCmdLineTask(void *pvParameters)
                         buffer[index] = NULL_TERMINATION;
                     }
                     fflush(stdout);
+                } else if (tmp == TAB_SPACE) {
+                    /* Ignore Tab Space input */
+                    continue;
                 } else if (tmp == END_OF_TEXT) {
                     /* ^C abort */
                     index = 0;
@@ -285,16 +289,16 @@ void vCmdLineTask(void *pvParameters)
                     bool arrowKey = false;
                     if (index >= 3) {
                         arrowKey = checkArrowKeys(buffer + index - 3);
+                        if (arrowKey) {
+                            /* Remove the arrow key from the buffer */
+                            buffer[index - 3] = NULL_TERMINATION;
+                            index -= 3;
+                        }
                     }
-                    if (!arrowKey) {
+                    if ((!arrowKey) && (tmp != ARROW_KEY_CODE_1) && (tmp != ARROW_KEY_CODE_2)) {
                         /* Echo out if not an arrow key */
-                        if ((tmp != ARROW_KEY_CODE_1) && (tmp != ARROW_KEY_CODE_2))
-                            putchar(tmp);
+                        putchar(tmp);
                         fflush(stdout);
-                    } else {
-                        /* Remove the arrow key from the buffer */
-                        buffer[index - 3] = NULL_TERMINATION;
-                        index -= 3;
                     }
                 } else {
                     /* Throw away data and beep terminal */
