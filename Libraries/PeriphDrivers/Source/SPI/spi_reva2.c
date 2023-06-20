@@ -479,7 +479,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
 
     // Set TX and RX Threshold to 31 and 0, respectively.
     MXC_SETFIELD((init->spi)->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
-                 (31 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+                 ((MXC_SPI_FIFO_DEPTH - 1) << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
     MXC_SETFIELD((init->spi)->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
                  (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
 
@@ -1063,6 +1063,7 @@ int MXC_SPI_RevA2_DMA_SetRequestSelect(mxc_spi_reva_regs_t *spi, uint32_t tx_req
 // HW Bug: For 2-byte wide frame transactions, RX DMA swaps the
 //      LSB and MSB.
 // Example: TX: 0x1234 => RX: 0x3412
+// Note: Use __REV assembly instruction for quicker Swap implementation.
 void MXC_SPI_RevA2_DMA_SwapByte(uint8_t *buffer, uint32_t len_bytes)
 {
     int i;
@@ -1235,7 +1236,6 @@ int MXC_SPI_RevA2_ControllerTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
     }
 
     // Blocking
-    // while (STATES[spi_num].controller_done == false) {}
     while (((STATES[spi_num].controller_done == false && STATES[spi_num].tx_done == false) &&
             !(STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
            (STATES[spi_num].rx_done == false &&
@@ -1748,121 +1748,6 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
     //          (STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
     //        !(STATES[spi_num].rx_done &&
     //          (STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
-
-    while (((STATES[spi_num].controller_done == false && STATES[spi_num].tx_done == false) &&
-            !(STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
-           (STATES[spi_num].rx_done == false &&
-            !(STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
-
-    return E_SUCCESS;
-}
-
-int MXC_SPI_RevA2_CTransmitB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                             uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
-                             mxc_spi_target_t *target)
-{
-    // int error;
-    int spi_num;
-    mxc_spi_interface_t mode;
-    int tx_ch, rx_ch;
-    int dummy_len, dummy_byte;
-    dummy_byte = 0xFF;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
-    STATES[spi_num].tx_done = false;
-    STATES[spi_num].rx_done = false;
-    STATES[spi_num].controller_done = false;
-    STATES[spi_num].tx_buffer = tx_buffer;
-    STATES[spi_num].tx_len = tx_fr_len;
-    STATES[spi_num].rx_buffer = rx_buffer;
-    STATES[spi_num].rx_len = rx_fr_len;
-
-    mode = STATES[spi_num].init.mode;
-    // mxc_spi_width_t width = MXC_SPI_GetWidth(SPI);
-
-    tx_ch = MXC_SPI_RevA2_DMA_GetTXChannel(spi);
-    rx_ch = MXC_SPI_RevA2_DMA_GetRXChannel(spi);
-
-    // Set the number of bytes to transmit/receive for the SPI transaction
-    if (mode == MXC_SPI_INTERFACE_STANDARD) {
-        if (rx_fr_len > tx_fr_len) {
-            /*
-            In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
-            The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
-            because the hardware always assume full duplex.  Therefore extra
-            dummy bytes must be transmitted to support half duplex. 
-            */
-            dummy_len = rx_fr_len - tx_fr_len;
-            spi->ctrl1 = ((tx_fr_len + dummy_len) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
-        } else {
-            spi->ctrl1 = tx_fr_len << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
-        }
-    } else { // width != SPI_WIDTH_STANDARD
-        spi->ctrl1 = (tx_fr_len << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS) |
-                     (rx_fr_len << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS);
-    }
-
-    spi->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN |
-                  MXC_F_SPI_DMA_DMA_RX_EN); // Disable FIFOs before clearing as recommended by UG
-    spi->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH); // Clear the FIFOs
-
-    // TX
-    if (tx_fr_len > 1) {
-        // Configure TX DMA channel to fill the SPI TX FIFO
-        spi->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN |
-                     (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
-        spi->fifo8[0] = tx_buffer[0];
-        // ^ Hardware requires writing the first byte into the FIFO manually.
-        MXC_DMA->ch[tx_ch].src = (uint32_t)(tx_buffer + 1);
-        MXC_DMA->ch[tx_ch].cnt = tx_fr_len - 1;
-        MXC_DMA->ch[tx_ch].ctrl |= MXC_F_DMA_CTRL_SRCINC;
-        MXC_DMA->ch[tx_ch].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
-    } else if (tx_fr_len == 1) {
-        // Workaround for single-length transactions not triggering CTZ
-        spi->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
-        spi->fifo8[0] = tx_buffer[0]; // Write first byte into FIFO
-        STATES[spi_num].tx_done = 1;
-    } else if (tx_fr_len == 0 && mode == MXC_SPI_INTERFACE_STANDARD) {
-        // Configure TX DMA channel to retransmit a dummy byte
-        spi->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
-        MXC_DMA->ch[tx_ch].src = (uint32_t)&dummy_byte;
-        MXC_DMA->ch[tx_ch].cnt = rx_fr_len;
-        MXC_DMA->ch[tx_ch].ctrl &= ~MXC_F_DMA_CTRL_SRCINC;
-        MXC_DMA->ch[tx_ch].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
-    }
-
-    // RX
-    if (rx_fr_len > 0) {
-        // Configure RX DMA channel to unload the SPI RX FIFO
-        spi->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
-        MXC_DMA->ch[rx_ch].dst = (uint32_t)rx_buffer;
-        MXC_DMA->ch[rx_ch].cnt = rx_fr_len;
-        MXC_DMA->ch[rx_ch].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
-    }
-
-    // Start the SPI transaction
-    spi->ctrl0 |= MXC_F_SPI_CTRL0_START;
-
-    /*
-    Handle slave-select (SS) deassertion.  This must be done AFTER launching the transaction
-    to avoid a glitch on the SS line if:
-    - The SS line is asserted
-    - We want to deassert the line as part of this transaction
-
-    As soon as the SPI hardware receives CTRL0->START it seems to reinitialize the SS pin based
-    on the value of CTRL->SS_CTRL, which causes the glitch.
-    */
-    if (deassert)
-        spi->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
-    else
-        spi->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
-
-    // while (!((g_tx_done && g_master_done) && (src != NULL && txlen > 0)) &&
-    //            !(g_rx_done && (dest != NULL && rxlen > 0))) {}
 
     while (((STATES[spi_num].controller_done == false && STATES[spi_num].tx_done == false) &&
             !(STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&

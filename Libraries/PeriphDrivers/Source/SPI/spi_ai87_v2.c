@@ -89,8 +89,6 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
     init->target.pins = (const mxc_gpio_cfg_t){ 0 };
     init->target.active_polarity = ssPolarity;
 
-    // init->vssel = 0;
-
     // Set VSSEL level
     if (pins.vddioh) {
         init->vssel = MXC_GPIO_VSSEL_VDDIOH;
@@ -99,8 +97,6 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
     }
 
     // Set up Target Select pins.
-    // init->ts_mask = 0;
-
     if (pins.ss0) {
         init->ts_mask |= (1 << MXC_SPI_TS0_MASK_POS); // Bit position 0
     }
@@ -679,8 +675,6 @@ int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint3
 {
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
                                                rx_buffer, rx_fr_len, deassert, target);
-    {
-    }
 }
 
 int MXC_SPI_ControllerTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
@@ -697,8 +691,6 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, ui
 {
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
                                                   rx_buffer, rx_fr_len, deassert, target);
-    {
-    }
 }
 
 int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
@@ -707,8 +699,6 @@ int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, u
 {
     return MXC_SPI_RevA2_ControllerTransactionDMAB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
                                                    rx_buffer, rx_fr_len, deassert, target);
-    {
-    }
 }
 
 int MXC_SPI_CTransmitB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
