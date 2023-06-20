@@ -189,7 +189,7 @@ const mxc_gpio_cfg_t gpio_cfg_spi0_dual = { MXC_GPIO0,
                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
                                             MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_spi0_quad = { MXC_GPIO0, (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 |
-                                            MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9), MXC_GPIO_FUNC_ALT1, 
+                                            MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9), MXC_GPIO_FUNC_ALT1,
                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t gpio_cfg_spi1_standard = { MXC_GPIO0, (MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 |
@@ -202,7 +202,7 @@ const mxc_gpio_cfg_t gpio_cfg_spi1_dual = { MXC_GPIO0,
                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
                                             MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_spi1_quad = { MXC_GPIO0, (MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 |
-                                            MXC_GPIO_PIN_24 | MXC_GPIO_PIN_25), MXC_GPIO_FUNC_ALT1, 
+                                            MXC_GPIO_PIN_24 | MXC_GPIO_PIN_25), MXC_GPIO_FUNC_ALT1,
                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 // SPI v2 Target Selects Pin Definitions

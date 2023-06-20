@@ -313,7 +313,7 @@ const mxc_gpio_cfg_t gpio_cfg_spi0_dual = { MXC_GPIO2,
                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
                                             MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_spi0_quad = { MXC_GPIO2, (MXC_GPIO_PIN_27 | MXC_GPIO_PIN_28 | MXC_GPIO_PIN_29 |
-                                            MXC_GPIO_PIN_30 | MXC_GPIO_PIN_31), MXC_GPIO_FUNC_ALT2, 
+                                            MXC_GPIO_PIN_30 | MXC_GPIO_PIN_31), MXC_GPIO_FUNC_ALT2,
                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t gpio_cfg_spi1_standard = { MXC_GPIO1,
@@ -328,7 +328,7 @@ const mxc_gpio_cfg_t gpio_cfg_spi1_dual = { MXC_GPIO1,
                                             MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_spi1_quad_0 = { MXC_GPIO1, (MXC_GPIO_PIN_26 | MXC_GPIO_PIN_28 | MXC_GPIO_PIN_29),
                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
-const mxc_gpio_cfg_t gpio_cfg_spi1_quad_1 = { MXC_GPIO1, (MXC_GPIO_PIN_30 | MXC_GPIO_PIN_11), MXC_GPIO_FUNC_ALT2, 
+const mxc_gpio_cfg_t gpio_cfg_spi1_quad_1 = { MXC_GPIO1, (MXC_GPIO_PIN_30 | MXC_GPIO_PIN_11), MXC_GPIO_FUNC_ALT2,
                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t gpio_cfg_spi2_standard = { MXC_GPIO2,
@@ -343,7 +343,7 @@ const mxc_gpio_cfg_t gpio_cfg_spi2_dual = { MXC_GPIO2,
                                             MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_spi2_quad_0 = { MXC_GPIO0, (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4),
                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
-const mxc_gpio_cfg_t gpio_cfg_spi2_quad_1 = { MXC_GPIO0, (MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7), MXC_GPIO_FUNC_ALT2, 
+const mxc_gpio_cfg_t gpio_cfg_spi2_quad_1 = { MXC_GPIO0, (MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7), MXC_GPIO_FUNC_ALT2,
                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t gpio_cfg_spi3_standard = { MXC_GPIO0, (MXC_GPIO_PIN_16 | MXC_GPIO_PIN_20 |
@@ -356,7 +356,7 @@ const mxc_gpio_cfg_t gpio_cfg_spi3_dual = { MXC_GPIO0,
                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
                                             MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_spi3_quad = { MXC_GPIO0, (MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16 | MXC_GPIO_PIN_17 |
-                                            MXC_GPIO_PIN_20 | MXC_GPIO_PIN_21), MXC_GPIO_FUNC_ALT1, 
+                                            MXC_GPIO_PIN_20 | MXC_GPIO_PIN_21), MXC_GPIO_FUNC_ALT1,
                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 const mxc_gpio_cfg_t gpio_cfg_spi4_standard = { MXC_GPIO1, (MXC_GPIO_PIN_1 | MXC_GPIO_PIN_2 |
@@ -369,12 +369,12 @@ const mxc_gpio_cfg_t gpio_cfg_spi4_dual = { MXC_GPIO1,
                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
                                             MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_spi4_quad = { MXC_GPIO1, (MXC_GPIO_PIN_1 | MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 |
-                                            MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5), MXC_GPIO_FUNC_ALT1, 
+                                            MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5), MXC_GPIO_FUNC_ALT1,
                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
 // SPI v2 Target Selects Pin Definitions
 const mxc_gpio_cfg_t gpio_cfg_spi0_ts0 = { MXC_GPIO0, MXC_GPIO_PIN_22, MXC_GPIO_FUNC_ALT1,
-                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };                                         
+                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 const mxc_gpio_cfg_t gpio_cfg_spi0_ts1 = { MXC_GPIO2, MXC_GPIO_PIN_26, MXC_GPIO_FUNC_ALT2,
                                            MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
 
