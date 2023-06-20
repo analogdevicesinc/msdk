@@ -5,7 +5,7 @@ MOSI (P0.21) pins.  Connect these two pins together.
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
-By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, undefine the MASTERSYNC macro and define the MASTERASYNC macro.  To use DMA transactions, define the MASTERDMA macro instead.
+By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the MASTERSYNC macro to 0 and set the MASTERASYNC macro to 1.  To use DMA transactions, set the MASTERDMA macro to 1 instead.
 
 This example also demonstrates the new SPI v2 API.  To use the new implementation, assign `MXC_SPI_V2` define to `1` in project.mk, then rebuild the project.
 

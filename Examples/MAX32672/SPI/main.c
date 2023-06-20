@@ -51,9 +51,16 @@
 #include "dma.h"
 
 /***** Preprocessors *****/
-#define MASTERSYNC // 1. MASTERSYNC
-// 2. MASTERASYNC
-// 3. MASTERDMA
+#define MASTERSYNC 1
+#define MASTERASYNC 0
+#define MASTERDMA 0
+
+#if (!(MASTERSYNC || MASTERASYNC || MASTERDMA))
+#error "You must set either MASTERSYNC or MASTERASYNC or MASTERDMA to 1."
+#endif
+#if ((MASTERSYNC && MASTERASYNC) || (MASTERASYNC && MASTERDMA) || (MASTERDMA && MASTERSYNC))
+#error "You must select either MASTERSYNC or MASTERASYNC or MASTERDMA, not all 3."
+#endif
 
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
@@ -71,14 +78,14 @@ volatile int SPI_FLAG;
 volatile uint8_t DMA0_FLAG, DMA1_FLAG;
 
 /***** Functions *****/
-#ifdef MASTERASYNC
+#if MASTERASYNC
 void SPI_IRQHandler(void)
 {
     MXC_SPI_AsyncHandler(SPI);
 }
 #endif // MASTERASYNC
 
-#ifdef MASTERDMA
+#if MASTERDMA
 void DMA0_IRQHandler(void)
 {
     MXC_DMA_Handler();
@@ -152,11 +159,11 @@ int main(void)
         req.completeCB = (spi_complete_cb_t)SPI_Callback;
         SPI_FLAG = 1;
 
-#ifdef MASTERSYNC
+#if MASTERSYNC
         MXC_SPI_MasterTransaction(&req);
 #endif
 
-#ifdef MASTERASYNC
+#if MASTERASYNC
         MXC_NVIC_SetVector(SPI_IRQ, SPI_IRQHandler);
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
@@ -165,7 +172,7 @@ int main(void)
 
 #endif
 
-#ifdef MASTERDMA
+#if MASTERDMA
         MXC_DMA_ReleaseChannel(0);
         MXC_DMA_ReleaseChannel(1);
 

@@ -79,12 +79,12 @@ enum
 **************************************************************************************************/
 
 /*! \brief      Test mode control block. */
-static struct
+static volatile struct
 {
   uint8_t        state;         /*!< Test mode enable state. */
   uint16_t       numPkt;        /*!< Number of packet operations for auto-termination of tests. */
   LlTestReport_t rpt;           /*!< Test report. */
-
+  bool_t packetsFreed;
   struct
   {
     uint8_t  pduLen;            /*!< Transmit PDU buffer length. */
@@ -98,6 +98,7 @@ static struct
   } tx;                         /*!< Transmit parameters. */
 } llTestCb;
 
+static void llTestResetHandler(void);
 /*************************************************************************************************/
 /*!
  *  \brief      Calculate packet interval.
@@ -273,7 +274,21 @@ static void llBuildTxPkt(uint8_t len, uint8_t pktType, uint8_t *pBuf)
       break;
   }
 }
+static void llTestTxAbortCback(BbOpDesc_t *pOp)
+{
+    BbBleData_t *const pBle = pOp->prot.pBle;
+    BbBleTestTx_t *const pTx = &pBle->op.testTx;
 
+    if (llTestCb.state == LL_TEST_STATE_TX) {
+
+        SchInsertNextAvailable(pOp);
+
+    } else {
+        WsfBufFree(pTx->pTxBuf);
+        WsfBufFree(pBle);
+        WsfBufFree(pOp);
+    }
+}
 /*************************************************************************************************/
 /*!
  *  \brief  Tx operation end callback.
@@ -589,6 +604,7 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
   llTestCb.numPkt = numPkt;
   pOp->protId = BB_PROT_BLE_DTM;
   pOp->endCback = llTestTxOpEndCback;
+  pOp->abortCback = llTestTxAbortCback;
 
   /*** BLE General Setup ***/
 
@@ -755,7 +771,20 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
     }
   }
 }
+static void llTestRxAbortCback(BbOpDesc_t *pOp)
+{
+    BbBleData_t *const pBle = pOp->prot.pBle;
+    BbBleTestRx_t *const pRx = &pBle->op.testRx;
 
+    if (llTestCb.state == LL_TEST_STATE_RX) {
+        SchInsertNextAvailable(pOp);
+    } else {
+        WsfBufFree(pBle);
+        WsfBufFree(pRx->pRxBuf);
+        WsfBufFree(pOp);
+        llTestCb.packetsFreed = TRUE;
+    }
+}
 /*************************************************************************************************/
 /*!
  *  \brief      Complete a receive.
@@ -884,6 +913,7 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
   llTestCb.numPkt = numPkt;
   pOp->protId = BB_PROT_BLE_DTM;
   pOp->endCback = llTestRxOpEndCback;
+  pOp->abortCback = llTestRxAbortCback;
 
   /*** BLE General Setup ***/
 

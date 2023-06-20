@@ -22,7 +22,7 @@ If a direct branch on the mainline MSDK repo is made, the following branch namin
 ## PR Title - Subject Responsibilites for Reviewers/Mergers/PR Owners
 
 Format: 
-`type<!>(scope): Subject`
+`type(scope)<!>: Subject`
 
 For more information of the format, please review the [pull_request_template.md](https://github.com/Analog-Devices-MSDK/msdk/blob/main/Documentation/pull_request_template.md).
 

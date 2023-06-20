@@ -36,10 +36,12 @@
  * @brief   Board support package API.
  */
 
-#include <stdio.h>
-
 #ifndef LIBRARIES_BOARDS_MAX32655_FTHR_APPS_P1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX32655_FTHR_APPS_P1_INCLUDE_BOARD_H_
+
+#include <stdio.h>
+#include "led.h"
+#include "pb.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -76,8 +78,15 @@ extern "C" {
 #define EXT_FLASH_BAUD 5000000
 #endif
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
+#ifdef LED_OFF
+#undef LED_OFF
+#endif
+#define LED_OFF 1 /// Override inactive state of LEDs
+
+#ifdef LED_ON
+#undef LED_ON
+#endif
+#define LED_ON 0 /// Override active state of LEDs
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.

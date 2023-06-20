@@ -34,6 +34,17 @@
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_MXC_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_MXC_H_
 
+#ifdef __riscv
+// TODO(JC): This is a somewhat ugly hack added to avoid
+// implicit function warnings on RISC-V projects
+// when LIB_BOARD was added to libs.mk.  When the
+// RISC-V build system is improved to use libs.mk
+// this should be removed.
+#ifndef LIB_BOARD
+#define LIB_BOARD
+#endif
+#endif
+
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "mxc_assert.h"
@@ -42,9 +53,9 @@
 #include "mxc_pins.h"
 #include "mxc_sys.h"
 #include "nvic_table.h"
+#ifdef LIB_BOARD
 #include "board.h"
-#include "led.h"
-#include "pb.h"
+#endif
 
 /*
  *  Peripheral Driver Includes

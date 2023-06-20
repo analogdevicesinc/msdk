@@ -43,6 +43,7 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "mxc.h"
+#include "board.h"
 
 /***** Definitions *****/
 #define SLEEP_MODE // Select between SLEEP_MODE and DEEPSLEEP_MODE
