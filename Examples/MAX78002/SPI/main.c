@@ -156,6 +156,15 @@ int main(void)
             tx_data[j] = DATA_VALUE;
         }
 
+#if defined(MXC_SPI_V2)
+#ifdef MASTERDMA
+        // Helper function for new SPI drivers for DMA transactions.
+        MXC_SPI_UseDMA(1); // Use DMA (1)
+#else
+        MXC_SPI_UseDMA(0); // Don'e use DMA (0)
+#endif
+#endif
+
         // Configure the peripheral
         retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins);
         if (retVal != E_NO_ERROR) {
