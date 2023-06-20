@@ -1343,16 +1343,14 @@ static int get_pixformat(pixformat_t *pixformat)
 
 static int set_framesize(int width, int height)
 {
-    int ret = 0;
-#if 0
-    // Image typically outputs one line short, add a line to account.
-    //height = height + 1;
-    // Apply passed in resolution as output resolution.
-    ret |= cambus_write(FRAME_LENGTH_H, (width >> 8) & 0xff);
-    ret |= cambus_write(FRAME_LENGTH_L, (width >> 0) & 0xff);
-    ret |= cambus_write(LINE_LENGTH_H, (height >> 8) & 0xff);
-    ret |= cambus_write(LINE_LENGTH_L, (height >> 0) & 0xff);
-#endif
+    int ret = E_NO_ERROR;
+    if (width == 160 && height == 120) {
+        write_reg(0x3024, 1); // Set context B (160x120)
+    } else if (width == 320 && height == 240) {
+        write_reg(0x3024, 0); // Set context A (320x240)
+    } else {
+        ret = E_NOT_SUPPORTED;
+    }
 
     return ret;
 }
