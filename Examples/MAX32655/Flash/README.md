@@ -25,9 +25,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
-## Hardware Connections
+## Required Connections
 
 If using the MAX32655EVKIT:
 
@@ -39,12 +39,6 @@ If using the MAX32655FTHR:
 
 - Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 - Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
-
-## Building and Running
-
-**See the [MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)** for detailed instructions on building and running example projects from supported development environments.
-
-This example supports all available MAX32655 evaluation platforms but comes _pre-configured_ for the MAX32655EVKIT by default.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) for instructions on how to configure the project for a different board.
 
 ## Expected Output
 
