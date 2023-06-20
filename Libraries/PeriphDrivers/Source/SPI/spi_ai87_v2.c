@@ -713,6 +713,11 @@ int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, u
     }
 }
 
+int MXC_SPI_CTransmitB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target)
+{
+    return MXC_SPI_RevA2_CTransmitB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, deassert, target);
+}
+
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
 {
     return E_NOT_SUPPORTED;
@@ -764,12 +769,47 @@ int MXC_SPI_GetDataSize(mxc_spi_regs_t *spi)
 
 int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth)
 {
-    return E_NOT_SUPPORTED;
+    switch (spiWidth) {
+        case SPI_WIDTH_3WIRE:
+            return MXC_SPI_SetModeIF(spi, MXC_SPI_INTERFACE_3WIRE);
+
+        case SPI_WIDTH_STANDARD:
+            return MXC_SPI_SetModeIF(spi, MXC_SPI_INTERFACE_STANDARD);
+
+        case SPI_WIDTH_DUAL:
+            return MXC_SPI_SetModeIF(spi, MXC_SPI_INTERFACE_DUAL);
+            break;
+
+        case SPI_WIDTH_QUAD:
+            return MXC_SPI_SetModeIF(spi, MXC_SPI_INTERFACE_QUAD);
+
+        default:
+            return E_BAD_PARAM;
+    }
 }
 
 mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
 {
-    return E_NOT_SUPPORTED;
+    mxc_spi_interface_t mode;
+
+    mode = MXC_SPI_GetModeIF(spi);
+
+    switch(mode) {
+        case MXC_SPI_INTERFACE_STANDARD:
+            return SPI_WIDTH_STANDARD;
+
+        case MXC_SPI_INTERFACE_QUAD:
+            return SPI_WIDTH_QUAD;
+
+        case MXC_SPI_INTERFACE_DUAL:
+            return SPI_WIDTH_DUAL;
+
+        case MXC_SPI_INTERFACE_3WIRE:
+            return SPI_WIDTH_3WIRE;
+
+        default:
+            return SPI_WIDTH_STANDARD;
+    }
 }
 
 int MXC_SPI_ReadyForSleep(mxc_spi_reva_regs_t *spi)
