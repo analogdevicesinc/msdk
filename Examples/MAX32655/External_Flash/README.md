@@ -1,7 +1,10 @@
 ## Description
 
-This example communicates with the W25 flash on the EvKit. It loads "Analog Devices" array onto it and then reads it back.
+This example demonstrates how to use the External_Flash library to communicate with the W25 external flash chip on the EvKit.
 
+In this example, a portion of the external flash memory is erased (and verified), then the string "Analog Devices" is loaded into the flash and then the data string is read back to verify the write was successful.
+
+The user may select between Quad and Single SPI interface modes by setting the value of the EXT_FLASH_SPIXFC_WIDTH definition at the top of main.c to either Ext_Flash_DataLine_Quad or Ext_Flash_DataLine_Single. 
 
 ## Software
 
@@ -11,7 +14,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+* NOTE: This example is only supported by the MAX32655EVKIT.
 
 ## Required Connections
 
