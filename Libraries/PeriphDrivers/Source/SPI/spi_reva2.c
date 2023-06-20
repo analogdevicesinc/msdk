@@ -231,7 +231,7 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
                 STATES[spi_num].tx_cnt += 1;
             }
 
-        // Write to the FIFO for halfword size transactions (message sizes for 9 bits or greater)
+            // Write to the FIFO for halfword size transactions (message sizes for 9 bits or greater)
         } else {
             STATES[spi_num].tx_cnt += MXC_SPI_RevA2_writeTXFIFO16(
                 spi, &(STATES[spi_num].tx_buffer[STATES[spi_num].tx_cnt]),
@@ -401,7 +401,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
             }
 
             (init->spi)->ctrl0 |= (target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
-            
+
             // Set TS Polarity (Default - active low (0))
             if (target->active_polarity) {
                 (init->spi)->ctrl2 |= ((1 << target->index) << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
@@ -455,7 +455,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     // Select Controller (L. Master) or Target (L. Slave) Mode.
     if (init->type == MXC_SPI_TYPE_CONTROLLER) {
         (init->spi)->ctrl0 |= MXC_F_SPI_REVA_CTRL0_MST_MODE;
-        
+
         // Enable Controller Done Interrupt.
         (init->spi)->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
     } else {
@@ -1750,14 +1750,16 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
     //          (STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
 
     while (((STATES[spi_num].controller_done == false && STATES[spi_num].tx_done == false) &&
-        !(STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
-        (STATES[spi_num].rx_done == false &&
-        !(STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
+            !(STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
+           (STATES[spi_num].rx_done == false &&
+            !(STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
 
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_CTransmitB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, mxc_spi_target_t *target)
+int MXC_SPI_RevA2_CTransmitB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                             uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
+                             mxc_spi_target_t *target)
 {
     // int error;
     int spi_num;
@@ -1812,7 +1814,7 @@ int MXC_SPI_RevA2_CTransmitB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint3
     if (tx_fr_len > 1) {
         // Configure TX DMA channel to fill the SPI TX FIFO
         spi->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN |
-                        (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
+                     (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS));
         spi->fifo8[0] = tx_buffer[0];
         // ^ Hardware requires writing the first byte into the FIFO manually.
         MXC_DMA->ch[tx_ch].src = (uint32_t)(tx_buffer + 1);
@@ -1863,9 +1865,9 @@ int MXC_SPI_RevA2_CTransmitB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint3
     //            !(g_rx_done && (dest != NULL && rxlen > 0))) {}
 
     while (((STATES[spi_num].controller_done == false && STATES[spi_num].tx_done == false) &&
-        !(STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
-        (STATES[spi_num].rx_done == false &&
-        !(STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
+            !(STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
+           (STATES[spi_num].rx_done == false &&
+            !(STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
 
     return E_SUCCESS;
 }
