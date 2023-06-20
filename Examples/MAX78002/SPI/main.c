@@ -96,7 +96,7 @@ void SPI1_IRQHandler(void)
 
 void DMA0_IRQHandler(void)
 {
-#ifdef MXC_SPI_V2
+#if defined(MXC_SPI_V2)
     MXC_SPI_DMA_TX_Handler(SPI);
 #else
     MXC_DMA_Handler();
@@ -105,7 +105,7 @@ void DMA0_IRQHandler(void)
 
 void DMA1_IRQHandler(void)
 {
-#ifdef MXC_SPI_V2
+#if defined(MXC_SPI_V2)
     MXC_SPI_DMA_RX_Handler(SPI);
 #else
     MXC_DMA_Handler();
