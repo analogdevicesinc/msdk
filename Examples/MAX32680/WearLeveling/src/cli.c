@@ -259,7 +259,7 @@ int cmd_get(char *cmd, size_t size)
     while (!eoc) {
         // Read character from RX FIFO, wait here until 1 is available
         while ((next_ch = MXC_UART_ReadCharacter(MXC_UART_GET_UART(CONSOLE_UART))) < E_NO_ERROR) {}
-
+        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), next_ch); //Echo
         if (next_ch == 0x08) { // backspace
             if (num_recv != 0) {
                 num_recv--;
