@@ -12,6 +12,8 @@
 # **********************************************************
 
 # Add your config here!
+MXC_SPI_V2=1
+export MXC_SPI_V2
 
-
+# MXC_OPTIMIZE_CFLAGS=-O0
 
