@@ -152,8 +152,6 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     // This function is for backwards compatibility, before fully updating to new
     //   implementation.
     mxc_spi_init_t spi_init = (const mxc_spi_init_t){ 0 };
-    {
-    }
     mxc_spi_init_t *init = &spi_init;
 
     error = MXC_SPI_legacy_setupInit(init, spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz,
