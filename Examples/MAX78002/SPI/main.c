@@ -89,13 +89,21 @@ void SPI1_IRQHandler(void)
 
 void DMA0_IRQHandler(void)
 {
+#ifdef MXC_SPI_V2
+    MXC_SPI_DMA_TX_Handler(SPI);
+#else
     MXC_DMA_Handler();
+#endif
 }
 
 void DMA1_IRQHandler(void)
 {
+#ifdef MXC_SPI_V2
+    MXC_SPI_DMA_RX_Handler(SPI);
+#else
     MXC_DMA_Handler();
     DMA_FLAG = 1;
+#endif
 }
 
 void SPI_Callback(mxc_spi_req_t *req, int error)
@@ -178,6 +186,10 @@ int main(void)
         }
 
 #ifdef MASTERSYNC
+#if defined(MXC_SPI_V2)
+        // New SPI Implementation is Interrupt driven, even for the blocking function.
+        NVIC_EnableIRQ(SPI_IRQ);
+#endif
         MXC_SPI_MasterTransaction(&req);
 #endif
 
@@ -197,9 +209,13 @@ int main(void)
         NVIC_EnableIRQ(DMA1_IRQn);
         MXC_SPI_MasterTransactionDMA(&req);
 
+#if defined(MXC_SPI_V2)
+        while (SPI_FLAG == 1) {}
+#else
         while (DMA_FLAG == 0) {}
 
         DMA_FLAG = 0;
+#endif
 #endif
 
         uint8_t bits = MXC_SPI_GetDataSize(SPI);
