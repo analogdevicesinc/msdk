@@ -27,8 +27,6 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-Hello class!
-Hello method!
 Hello World!
 count : 0
 count : 1
