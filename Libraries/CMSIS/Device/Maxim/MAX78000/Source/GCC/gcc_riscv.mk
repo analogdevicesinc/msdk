@@ -31,11 +31,11 @@
  #
  ###############################################################################
 
-HERE := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+OLD_GCC_RISCV_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 # File has moved to a central location.  The section below preserves legacy projects.
 ifeq "$(MAXIM_PATH)" ""
-include $(HERE)/../../../GCC/gcc_riscv.mk
+include $(OLD_GCC_RISCV_DIR )/../../../GCC/gcc_riscv.mk
 else
 include $(MAXIM_PATH)/Libraries/CMSIS/Device/Maxim/GCC/gcc_riscv.mk
 endif
