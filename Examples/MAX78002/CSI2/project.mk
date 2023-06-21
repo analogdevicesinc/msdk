@@ -13,7 +13,12 @@
 
 # Add your config here!
 
+# Set OV5640 camera drivers for use with the Pcam 5C.
+# These are the only drivers tested with this example.
 CAMERA=OV5640
 
+# Add drivers for the APS6404 SRAM that is on-board the
+# MAX78002EVKIT.  We use this to buffer the incoming image
+# data.
 VPATH += src/sram
 IPATH += src/sram
