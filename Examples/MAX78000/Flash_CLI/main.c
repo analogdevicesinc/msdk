@@ -154,7 +154,7 @@ void checkLeadingSpaces(char *buffer, unsigned int *index)
             break;
     }
     if (leadingZerosCount > 0) {
-        memcpy(buffer, buffer + leadingZerosCount, (*index) - leadingZerosCount);
+        memmove(buffer, buffer + leadingZerosCount, (*index) - leadingZerosCount);
         *index = *index - leadingZerosCount;
         buffer[*index] = NULL_TERMINATION;
         ++(*index);
