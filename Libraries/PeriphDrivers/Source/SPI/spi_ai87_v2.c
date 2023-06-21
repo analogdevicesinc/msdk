@@ -244,7 +244,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     return MXC_SPI_RevA2_Init(init);
 }
 
-int MXC_SPI_Init_New(mxc_spi_init_t *init)
+int MXC_SPI_Init_v2(mxc_spi_init_t *init)
 {
     int error, spi_num;
 

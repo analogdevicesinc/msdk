@@ -193,7 +193,7 @@ typedef struct {
     mxc_dma_regs_t *dma;
 } mxc_spi_init_t;
 
-// Suppport new names and old names.
+// Suppport names for backwards compatibility.
 struct _mxc_spi_reva2_req_t {
     mxc_spi_regs_t *spi;     // Pointer to SPI registers
     union {
@@ -292,7 +292,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
  * @brief   This function sets the drivers to initialize DMA for SPI DMA transactions.
  * 
  * This function DOES NOT initialize DMA for SPI. This is a helper function 
- * for the new SPI implementation to be compatible with the legacy SPI API.
+ * for the SPI implementation to be compatible with the legacy SPI API.
  * 
  * This function MUST be called before calling MXC_SPI_Init(...) when using any DMA
  * SPI functions.
@@ -316,7 +316,7 @@ void MXC_SPI_UseDMA(int use);
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_Init_New(mxc_spi_init_t *init);
+int MXC_SPI_Init_v2(mxc_spi_init_t *init);
 
 /**
  * @brief   Disable and shutdown the SPI instance.
