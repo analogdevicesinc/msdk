@@ -528,13 +528,6 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
         STATES[spi_num].dma->ch[rx_ch].ctrl |=
             (MXC_F_DMA_REVA_CTRL_CTZ_IE); // | MXC_F_DMA_REVA_CTRL_DIS_IE);
         STATES[spi_num].dma->inten |= (1 << rx_ch);
-
-        // TODO(6-20-2023): Caller will deal with enabling SetVector
-        // MXC_NVIC_SetVector(MXC_DMA_GET_IRQ(STATES[spi_num].tx_dma_ch), MXC_SPI_RevA2_DMA_TX_Handler);
-        // NVIC_EnableIRQ(MXC_DMA_GET_IRQ(STATES[spi_num].tx_dma_ch));
-
-        // MXC_NVIC_SetVector(MXC_DMA_GET_IRQ(STATES[spi_num].rx_dma_ch), MXC_SPI_RevA2_DMA_RX_Handler);
-        // NVIC_EnableIRQ(MXC_DMA_GET_IRQ(STATES[spi_num].rx_dma_ch));
     }
 
     // If successful, mark STATE of this SPI instance as initialized.
