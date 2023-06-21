@@ -701,14 +701,6 @@ int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, u
                                                    rx_buffer, rx_fr_len, deassert, target);
 }
 
-int MXC_SPI_CTransmitB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                       uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
-                       mxc_spi_target_t *target)
-{
-    return MXC_SPI_RevA2_CTransmitB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len, rx_buffer,
-                                    rx_fr_len, deassert, target);
-}
-
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
 {
     return E_NOT_SUPPORTED;
