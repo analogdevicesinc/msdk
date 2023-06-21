@@ -97,9 +97,6 @@
         "TARGET=${config:target}",
         "TARGET_REV=0x4131",
         "__GNUC__"
-    ],
-    "C_Cpp.default.forcedInclude": [
-        "${workspaceFolder}/build/project_defines.h"
     ]
 }
 
