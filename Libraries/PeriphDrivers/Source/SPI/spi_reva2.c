@@ -563,7 +563,6 @@ int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init)
     init->use_dma = false; // DMA not used
     init->dma = NULL;
 
-
     return E_SUCCESS;
 }
 
