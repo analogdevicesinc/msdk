@@ -68,10 +68,6 @@
 
 #define MAXLEN 256
 
-
-
-
-
 /******************************************************************************/
 int main(void)
 {
@@ -104,7 +100,7 @@ int main(void)
 
     printf("Card inserted.\n");
 
-    while(1){
+    while (1) {
         uint8_t character = getchar();
         line_accumlator(character);
     }
