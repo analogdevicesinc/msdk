@@ -367,6 +367,11 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     STATES[spi_num].dma = NULL;
     STATES[spi_num].current_target = *target;
 
+    // Abort any current transactions.
+    (init->spi)->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
+    (init->spi)->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
+    (init->spi)->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_EN;
+
     // Set up Target Select Control Scheme.
     //  Hardware (Automatic) Controlled.
     if (init->ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
@@ -455,9 +460,6 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     // Select Controller (L. Master) or Target (L. Slave) Mode.
     if (init->type == MXC_SPI_TYPE_CONTROLLER) {
         (init->spi)->ctrl0 |= MXC_F_SPI_REVA_CTRL0_MST_MODE;
-
-        // Enable Controller Done Interrupt.
-        (init->spi)->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
     } else {
         (init->spi)->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_MST_MODE;
     }
@@ -477,7 +479,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     // Enable TX/RX FIFOs
     (init->spi)->dma |= MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_RX_FIFO_EN;
 
-    // Set TX and RX Threshold to 31 and 0, respectively.
+    // Set TX and RX Threshold to (FIFO_DEPTH - 1) and (0), respectively.
     MXC_SETFIELD((init->spi)->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
                  ((MXC_SPI_FIFO_DEPTH - 1) << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
     MXC_SETFIELD((init->spi)->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
@@ -490,6 +492,12 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
 
     // Clear any interrupt flags that may already be set.
     (init->spi)->intfl = (init->spi)->intfl;
+    (init->spi)->inten = 0;
+
+    if (init->use_dma == false) {
+        // Enable Controller Done Interrupt.
+        (init->spi)->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
+    }
 
     // Setup DMA features if used.
     if (init->use_dma) {
@@ -1131,11 +1139,10 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
             // because the hardware always assume full duplex. Therefore extra
             // dummy bytes must be transmitted to support half duplex.
             tx_dummy_fr_len = rx_fr_len - tx_fr_len;
-            spi->ctrl1 |= (((tx_fr_len + tx_dummy_fr_len) & MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR)
-                           << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
+            spi->ctrl1 |= (((tx_fr_len + tx_dummy_fr_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)
+                           && MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR);
         } else {
-            spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) |
-                         (rx_fr_len << MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS);
+            spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         }
     } else { // mode != MXC_SPI_INTERFACE_STANDARD
         spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) |
@@ -1147,19 +1154,22 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
                   MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN);
     spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FLUSH | MXC_F_SPI_REVA_DMA_RX_FLUSH);
 
-    // Enable Interrupts.
-    spi->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
-
     if (tx_fr_len > 0) {
         // Enable TX FIFO & TX Threshold crossed interrupt.
         spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FIFO_EN);
         spi->inten |= MXC_F_SPI_REVA_INTEN_TX_THD;
+
+        // Set TX Threshold to minimum value after re-enabling TX FIFO.
+        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL, (1 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
     }
 
     if (rx_fr_len > 0) {
         // Enable RX FIFO & RX Threshold crossed interrupt.
         spi->dma |= (MXC_F_SPI_REVA_DMA_RX_FIFO_EN);
         spi->inten |= MXC_F_SPI_REVA_INTEN_RX_THD;
+
+        // Set RX Threshold to minimum value after re-enabling RX FIFO.
+        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL, (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
     }
 
     // This private function, MXC_SPI_RevA2_process, call fills the TX FIFO as much as possible
@@ -1498,11 +1508,6 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
     }
 
     // Blocking
-    // while (!((STATES[spi_num].tx_done && STATES[spi_num].controller_done) &&
-    //          (STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
-    //        !(STATES[spi_num].rx_done &&
-    //          (STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
-
     while (((STATES[spi_num].controller_done == false && STATES[spi_num].tx_done == false) &&
             !(STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
            (STATES[spi_num].rx_done == false &&

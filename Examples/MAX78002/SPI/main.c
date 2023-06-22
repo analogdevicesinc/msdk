@@ -52,8 +52,8 @@
 #include "dma.h"
 
 /***** Preprocessors *****/
-#define MASTERSYNC 1
-#define MASTERASYNC 0
+#define MASTERSYNC 0
+#define MASTERASYNC 1
 #define MASTERDMA 0
 
 #if (!(MASTERSYNC || MASTERASYNC || MASTERDMA))
@@ -65,9 +65,9 @@
 
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
-#define DATA_VALUE 0xA5A5 // This is for master mode only...
+#define DATA_VALUE 0xA5B7 // This is for master mode only...
 #define VALUE 0xFFFF
-#define SPI_SPEED 100000 // Bit Rate
+#define SPI_SPEED 1000000 // Bit Rate
 
 #define SPI_INSTANCE_NUM 1
 
@@ -130,6 +130,10 @@ int main(void)
     printf("MOSI (P0.21) pins.  Connect these two pins together.  \n\n");
     printf("Multiple word sizes (2 through 16 bits) are demonstrated.\n\n");
 
+#if defined(MXC_SPI_V2)
+    printf("Using SPI v2\n\n");
+#endif
+
     spi_pins.clock = TRUE;
     spi_pins.miso = TRUE;
     spi_pins.mosi = TRUE;
@@ -157,7 +161,7 @@ int main(void)
         }
 
 #if defined(MXC_SPI_V2)
-#ifdef MASTERDMA
+#if MASTERDMA
         // Helper function for new SPI drivers for DMA transactions.
         // Must be called before MXC_SPI_Init if using SPI DMA.
         MXC_SPI_UseDMA(1); // Use DMA (1)
@@ -166,7 +170,6 @@ int main(void)
         MXC_SPI_UseDMA(0); // Don't use DMA (0).
 #endif
 #endif
-
         // Configure the peripheral
         retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins);
         if (retVal != E_NO_ERROR) {
@@ -203,9 +206,9 @@ int main(void)
             return retVal;
         }
 
-#ifdef MASTERSYNC
+#if MASTERSYNC
 #if defined(MXC_SPI_V2)
-        // New SPI Implementation is Interrupt driven, even for the blocking function.
+        // Blocking SPI Implementation is Interrupt driven, even for the blocking function.
         NVIC_EnableIRQ(SPI_IRQ);
 #endif
         MXC_SPI_MasterTransaction(&req);
@@ -220,9 +223,6 @@ int main(void)
 #endif
 
 #if MASTERDMA
-        MXC_DMA_ReleaseChannel(0);
-        MXC_DMA_ReleaseChannel(1);
-
         NVIC_EnableIRQ(DMA0_IRQn);
         NVIC_EnableIRQ(DMA1_IRQn);
         MXC_SPI_MasterTransactionDMA(&req);
