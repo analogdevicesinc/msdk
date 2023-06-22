@@ -19,7 +19,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ##### Board Selection
 
-Before building firmware you must select the correct value for _BOARD_  in "[project.mk](project.mk)", either `EvKit_V1` or `FTHR_Apps_P1`, depending on the EV kit you are using to run the example.
+Before building firmware you must select the correct value for _BOARD_  in "settings.json", either `EvKit_V1` or `FTHR_Apps_P1`, depending on the EV kit you are using to run the example.
 
 ##### Required Connections
 If using the Standard EV Kit (EvKit\_V1):
