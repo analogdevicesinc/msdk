@@ -65,7 +65,7 @@
 
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
-#define DATA_VALUE 0xA5AB // This is for master mode only...
+#define DATA_VALUE 0xA5B7 // This is for master mode only...
 #define VALUE 0xFFFF
 #define SPI_SPEED 100000 // Bit Rate
 
@@ -75,7 +75,6 @@
 uint16_t rx_data[DATA_LEN];
 uint16_t tx_data[DATA_LEN];
 volatile int SPI_FLAG;
-volatile uint8_t DMA_FLAG = 0;
 
 /***** Functions *****/
 #if (SPI_INSTANCE_NUM == 0)
@@ -96,21 +95,12 @@ void SPI1_IRQHandler(void)
 
 void DMA0_IRQHandler(void)
 {
-#if defined(MXC_SPI_V2)
     MXC_SPI_DMA_TX_Handler(SPI);
-#else
-    MXC_DMA_Handler();
-#endif
 }
 
 void DMA1_IRQHandler(void)
 {
-#if defined(MXC_SPI_V2)
     MXC_SPI_DMA_RX_Handler(SPI);
-#else
-    MXC_DMA_Handler();
-    DMA_FLAG = 1;
-#endif
 }
 
 void SPI_Callback(mxc_spi_req_t *req, int error)
@@ -123,25 +113,12 @@ int main(void)
     int i, j, retVal;
     uint16_t temp;
     mxc_spi_req_t req;
-    mxc_spi_pins_t spi_pins;
+    mxc_spi_init_t init;
 
-    printf("\n**************************** SPI MASTER TEST *************************\n");
+    printf("\n**************************** SPI Controller TEST *************************\n");
     printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
     printf("MOSI (P0.21) pins.  Connect these two pins together.  \n\n");
     printf("Multiple word sizes (2 through 16 bits) are demonstrated.\n\n");
-
-#if defined(MXC_SPI_V2)
-    printf("Using SPI v2\n\n");
-#endif
-
-    spi_pins.clock = TRUE;
-    spi_pins.miso = TRUE;
-    spi_pins.mosi = TRUE;
-    spi_pins.sdio2 = FALSE;
-    spi_pins.sdio3 = FALSE;
-    spi_pins.ss0 = TRUE;
-    spi_pins.ss1 = FALSE;
-    spi_pins.ss2 = FALSE;
 
 #if MASTERSYNC
     printf("Performing blocking (synchronous) transactions...\n");
@@ -153,25 +130,34 @@ int main(void)
     printf("Performing transactions with DMA...\n");
 #endif
 
-    for (i = 2; i < 17; i++) {
+    for (i = 2; i < 16; i++) {
         // Sending out 2 to 16 bits
-
         for (j = 0; j < DATA_LEN; j++) {
             tx_data[j] = DATA_VALUE;
         }
 
-#if defined(MXC_SPI_V2)
+        init.spi = SPI;
+        init.spi_pins = NULL; // Use default, predefined pins
+        init.type = MXC_SPI_TYPE_CONTROLLER;
+        init.freq = SPI_SPEED;
+        init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
+        init.frame_size = i;
+        init.mode = MXC_SPI_INTERFACE_STANDARD;// Standard 4-wire mode
+        init.ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // use HW TS pins
+        init.target.active_polarity = 0; // ACTIVE = LOW (0), IDLE = HIGH (1);
+        init.ts_mask = 0x01;// Note: The [] represents the bit location of ts_mask
+                            //       ts_mask[0] <= Target Select 0 (TS0)
+                            //       ts_mask[1] <= Target Select 1 (TS1)
+                            //       ts_mask[n] <= Target Select n (TSn)
 #if MASTERDMA
-        // Helper function for SPI v2 drivers for DMA transactions.
-        // Must be called before MXC_SPI_Init if using SPI DMA.
-        MXC_SPI_UseDMA(1); // Use DMA (1)
+        init.use_dma = true;
+        init.dma = MXC_DMA;
 #else
-        // Not necessary when not using SPI DMA.
-        MXC_SPI_UseDMA(0); // Don't use DMA (0).
+        init.use_dma = false;
+        init.dma = NULL;
 #endif
-#endif
-        // Configure the peripheral
-        retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins);
+
+        retVal = MXC_SPI_Init_v2(&init);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
             return retVal;
@@ -181,62 +167,38 @@ int main(void)
 
         //SPI Request
         req.spi = SPI;
-        req.txData = (uint8_t *)tx_data;
-        req.rxData = (uint8_t *)rx_data;
-        req.txLen = DATA_LEN;
-        req.rxLen = DATA_LEN;
-        req.ssIdx = 0;
-        req.ssDeassert = 1;
-        req.txCnt = 0;
-        req.rxCnt = 0;
-        req.completeCB = (spi_complete_cb_t)SPI_Callback;
+        req.tx_buffer = (uint8_t *)tx_data;
+        req.rx_buffer = (uint8_t *)rx_data;
+        req.tx_len = DATA_LEN;
+        req.rx_len = DATA_LEN;
+        req.index = 0;
+        req.deassert = 1;
+        req.tx_cnt = 0;
+        req.rx_cnt = 0;
+        req.callback = (mxc_spi_callback_t)SPI_Callback;
         SPI_FLAG = 1;
 
-        retVal = MXC_SPI_SetDataSize(SPI, i);
-
-        if (retVal != E_NO_ERROR) {
-            printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
-            return retVal;
-        }
-
-        retVal = MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
-
-        if (retVal != E_NO_ERROR) {
-            printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
-            return retVal;
-        }
-
 #if MASTERSYNC
-#if defined(MXC_SPI_V2)
         // Blocking SPI v2 Implementation is Interrupt driven, even for the blocking function.
         NVIC_EnableIRQ(SPI_IRQ);
-#endif
         MXC_SPI_MasterTransaction(&req);
 #endif
 
 #if MASTERASYNC
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
-
         while (SPI_FLAG == 1) {}
-
 #endif
 
 #if MASTERDMA
         NVIC_EnableIRQ(DMA0_IRQn);
         NVIC_EnableIRQ(DMA1_IRQn);
+
         MXC_SPI_MasterTransactionDMA(&req);
-
-#if defined(MXC_SPI_V2)
         while (SPI_FLAG == 1) {}
-#else
-        while (DMA_FLAG == 0) {}
-
-        DMA_FLAG = 0;
-#endif
 #endif
 
-        uint8_t bits = MXC_SPI_GetDataSize(SPI);
+        uint8_t bits = MXC_SPI_GetFrameSize(SPI);
 
         for (j = 0; j < DATA_LEN; j++) {
             if (bits <= 8) {

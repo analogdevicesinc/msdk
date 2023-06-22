@@ -546,7 +546,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
 
 int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init)
 {
-    if (init == NULL || target == NULL) {
+    if (init == NULL) {
         return E_BAD_PARAM;
     }
 
@@ -568,7 +568,7 @@ int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init)
 
 int MXC_SPI_RevA2_InitStruct_DMA(mxc_spi_init_t *init)
 {
-    if (init == NULL || target == NULL) {
+    if (init == NULL) {
         return E_BAD_PARAM;
     }
 
@@ -1513,7 +1513,6 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     }
 
     // Start the SPI transaction.
-    LED_Toggle(0);
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     // Handle target-select (L. SS) deassertion.  This must be done AFTER launching the transaction
