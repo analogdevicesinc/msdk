@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -33,10 +35,18 @@
 #ifndef EXAMPLES_MAX78002_QSPI_FASTSPI_H_
 #define EXAMPLES_MAX78002_QSPI_FASTSPI_H_
 
+>>>>>>> main
 #include "fastspi_config.h"
 
 static volatile bool g_tx_done = 0;
 static volatile bool g_rx_done = 0;
+<<<<<<< HEAD
+
+
+// TODO:  Generalize to multiple SPI instances
+int spi_init();
+int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert, bool use_dma, bool block);
+=======
 static volatile bool g_master_done = 0;
 
 static const mxc_gpio_cfg_t spi_ss_pin = { .port = SPI_SS_PORT,
@@ -57,3 +67,4 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
                  bool use_dma, bool block);
 
 #endif // EXAMPLES_MAX78002_QSPI_FASTSPI_H_
+>>>>>>> main
