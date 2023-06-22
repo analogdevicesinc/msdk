@@ -336,6 +336,16 @@ int MXC_SPI_Init_v2(mxc_spi_init_t *init)
     return MXC_SPI_RevA2_Init(init);
 }
 
+int MXC_SPI_InitStruct(mxc_spi_init_t *init)
+{
+    return MXC_SPI_InitStruct(init);
+}
+
+int MXC_SPI_InitStruct_DMA(mxc_spi_init_t *init)
+{
+    return MXC_SPI_InitStruct_DMA(init);
+}
+
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 {
     int spi_num;

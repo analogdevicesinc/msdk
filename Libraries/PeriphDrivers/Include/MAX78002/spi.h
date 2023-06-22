@@ -184,7 +184,7 @@ typedef struct {
     mxc_spi_tscontrol_t ts_control; // Target Select Control Scheme (auto HW, driver, or app controlled)
     mxc_spi_target_t target;        // Target Settings (index, pins, active_polarity)
     mxc_gpio_vssel_t vssel;         // Ensures selected VDDIO/VDDIOH setting
-    uint8_t ts_mask;                // Target Select Mask to initialize GPIO pins.
+    uint8_t ts_mask;                // Target Select Mask to initialize default target pins.
                                     //    ts_mask[0] = Target Select Pin 0
                                     //    ts_mask[1] = Target Select Pin 1
                                     //    ts_mask[n] = Target Select Pin n
@@ -317,6 +317,58 @@ void MXC_SPI_UseDMA(int use);
  *          \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_Init_v2(mxc_spi_init_t *init);
+
+/**
+ * @brief   Overwrites an init struct with default, example values (non-DMA).
+ * 
+ * Note: This function overwrites an mxc_spi_init_t init struct with
+ *      arbitrary, default values. The mxc_spi_target target must be supplied
+ *      by the caller.
+ *
+ * Settings:
+ *      SPI0 instance
+ *      Default, predefined SPI pins at VDDIO
+ *      Controller Mode
+ *      Standard 4-wire mode
+ *      100KHz speed
+ *      CPOL: 0, CPHA: 0
+ *      Automatic Hardware mode for TS Control
+ *      TS0 pin
+ *      Target active polarity is LOW (0)
+ *
+ * @param   Init    Pointer to SPI registers (selects the SPI block used.)
+ * @param   Target  Pointer to Target Pin.
+ *
+ * @return  If successful, the actual clock frequency is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_InitStruct(mxc_spi_init_t *init, mxc_spi_target_t *target);
+
+/**
+ * @brief   Overwrites an init struct with default, example values (DMA).
+ * 
+ * Note: This function overwrites an mxc_spi_init_t init struct with
+ *      arbitrary, default values. The mxc_spi_target target must be supplied
+ *      by the caller.
+ *
+ * Settings:
+ *      SPI0 instance (MXC_SPI0)
+ *      Default, predefined SPI pins at VDDIO
+ *      Controller Mode
+ *      Standard 4-wire mode
+ *      100KHz speed
+ *      CPOL: 0, CPHA: 0
+ *      Automatic Hardware mode for TS Control
+ *      TS0 pin
+ *      Target active polarity is LOW (0)
+ *      DMA0 instance (MXC_DMA)
+ *
+ * @param   Init    Pointer to SPI registers (selects the SPI block used.)         
+ *
+ * @return  If successful, the actual clock frequency is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_InitStruct_DMA(mxc_spi_init_t *init, mxc_spi_target_t *target);
 
 /**
  * @brief   Disable and shutdown the SPI instance.
