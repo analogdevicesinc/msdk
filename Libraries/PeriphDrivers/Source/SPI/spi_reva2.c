@@ -1239,10 +1239,7 @@ int MXC_SPI_RevA2_ControllerTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
     }
 
     // Blocking
-    while (((STATES[spi_num].controller_done == false && STATES[spi_num].tx_done == false) &&
-            !(STATES[spi_num].tx_buffer != NULL && STATES[spi_num].tx_len > 0)) &&
-           (STATES[spi_num].rx_done == false &&
-            !(STATES[spi_num].rx_buffer != NULL && STATES[spi_num].rx_len > 0))) {}
+    while (STATES[spi_num].controller_done == false) {}
 
     return E_SUCCESS;
 }
@@ -1532,7 +1529,6 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
 
     // Master done (TX complete)
     if (status & MXC_F_SPI_REVA_INTFL_MST_DONE) {
-        STATES[spi_num].controller_done = true;
         spi->intfl |= MXC_F_SPI_REVA_INTFL_MST_DONE; // Clear flag
 
         // Toggle Target Select (TS) Pin if Driver is handling it.
@@ -1552,6 +1548,9 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
         if (STATES[spi_num].callback) {
             STATES[spi_num].callback(STATES[spi_num].callback_data, E_NO_ERROR);
         }
+
+        // Controller is done after callback (if valid) is handled.
+        STATES[spi_num].controller_done = true;
     }
 
     // Handle RX Threshold
