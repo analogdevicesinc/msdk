@@ -49,6 +49,7 @@ OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
 .PHONY: all
 all: mkbuildir
 all: ${BUILD_DIR}/${PROJECT}.elf
+all: project_defines
 
 # Goal to build for release without debug
 .PHONY: release
@@ -96,30 +97,89 @@ ifneq ($(findstring CYGWIN, ${shell uname -s}), )
 CYGWIN=True
 endif
 
-# Get the prefix for the tools to use.
-ifeq "$(TOOL_DIR)" ""
-PREFIX=riscv-none-embed
+# Set the toolchain prefix.  Top-level makefiles can specify RISCV_PREFIX or
+# PREFIX directly.  RISCV_PREFIX is given to improve dual-core projects
+ifeq "$(RISCV_PREFIX)" ""
+PREFIX ?= riscv-none-elf
 else
-PREFIX=$(TOOL_DIR)/riscv-none-embed
+PREFIX ?= $(RISCV_PREFIX)
 endif
 
+# Set absolute path to tools if TOOL_DIR is specified
+ifneq "$(TOOL_DIR)" ""
+PREFIX=$(TOOL_DIR)/$(PREFIX)
+endif
+
+# The command for calling the assembler
+AS=${PREFIX}-as
+# The command for calling the library archiver.
+AR=${PREFIX}-ar
+# The command for calling the linker.
+LD=${PREFIX}-gcc
 # The command for calling the compiler.
 CC=${PREFIX}-gcc
 CPP=${PREFIX}-g++
+# The command for extracting images from the linked executables.
+OBJCOPY=${PREFIX}-objcopy
+OBJDUMP=${PREFIX}-objdump
 
 # Discover if we are using GCC > 4.8.0
-GCCVERSIONGTEQ4 := $(shell expr `gcc -dumpversion | cut -f1 -d.` \> 4)
+GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \> 4)
 ifeq "$(GCCVERSIONGTEQ4)" "0"
-GCCVERSIONGTEQ4 := $(shell expr `gcc -dumpversion | cut -f1 -d.` \>= 4)
+GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \>= 4)
 	
 ifeq "$(GCCVERSIONGTEQ4)" "1"
-GCCVERSIONGTEQ4 := $(shell expr `gcc -dumpversion | cut -f2 -d.` \>= 8)
+GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f2 -d.` \>= 8)
 endif
 
+endif
+
+# Set -march, which defines the instruction set the compiler is allowed to use
+# -march=[BASE][EXTENSION][EXTRAS]
+# Options for the [BASE] of the -march string are:
+# - RV32I: A load-store ISA with 32 (32-bit) general purpose integer registers
+# - RV32E: RV32 "embedded" with 16 (32-bit) integer registers
+# - RV64I: 64-bit version of RV32I with 32 (64-bit) general purpose integer registers
+# Options for EXTENSIONS can be one or all (combined in order):
+# - M: Integer multiplication and division
+# - A: Atomic instructions
+# - F: Single precision floating-point
+# - D: Double precision floating point
+# - C: Compressed instructions
+# EXTRAS are additional options available per the compiler.  I'm not sure if there is a
+# comprehensive list of these anywhere.  Try "gcc -dumpspecs" *******************************************************************************
+ifeq "$(PREFIX)" "riscv-none-elf"
+# With the upgrade to riscv-none-elf came a new ISA spec
+# See https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/aE1ZeHHCYf4
+# BASE = RV32I
+# EXTENSION = M
+# EXTRAS = _zicsr_zifencei as recommended above
+MARCH ?= rv32im_zicsr_zifencei
+endif
+
+# Default option (riscv-none-embed)
+ifeq "$(RISCV_NOT_COMPRESSED)" ""
+# The RISCV_NOT_COMPRESSED option is a legacy option that I'm not even sure anyone uses...
+# but it has existed since the beginning to make the default builds use the compressed
+# instruction set.
+MARCH ?= rv32imc
+else
+MARCH ?= rv32im
+endif
+# *******************************************************************************
+# Set -mabi, which defines the instruction set the linker is allowed to link
+# against, calling convention, and layout of data in memory
+MABI ?= ilp32
+
+# *******************************************************************************
+# Set default optimization flags
+ifeq "$(MXC_OPTIMIZE_CFLAGS)" ""
+# Default is optimize for size
+MXC_OPTIMIZE_CFLAGS = -Os
 endif
 
 # The flags passed to the assembler.
-#AFLAGS+=-v
+AFLAGS += -march=$(MARCH)
 ifneq "$(HEAP_SIZE)" ""
 AFLAGS+=-D__HEAP_SIZE=$(HEAP_SIZE)
 endif
@@ -128,31 +188,20 @@ AFLAGS+=-D__STACK_SIZE=$(STACK_SIZE)
 endif
 AFLAGS+=$(PROJ_AFLAGS)
 
-ifeq "$(MXC_OPTIMIZE_CFLAGS)" ""
-# Default is optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
-endif
-
 # The flags passed to the compiler.
-# fno-isolate-erroneous-paths-dereference disables the check for pointers with the value of 0
-#  add this below when riscv-none-embed version is past 4.8 -fno-isolate-erroneous-paths-dereference  \
-
-ifeq "$(RISCV_NOT_COMPRESSED)" ""
-CFLAGS = -march=rv32imc                                                     
-else
-CFLAGS = -march=rv32im                                                     
-endif
 CFLAGS+= \
-	     -mabi=ilp32                                                             \
-	     -ffunction-sections                                                     \
-	     -fdata-sections                                                         \
-	     -MD                                                                     \
-	     -Wall                                                                   \
-	     -Wno-format                                                             \
-	     $(MXC_OPTIMIZE_CFLAGS)                                                  \
+         -march=$(MARCH)		 \
+	     -mabi=$(MABI)           \
+	     -ffunction-sections     \
+	     -fdata-sections         \
+	     -MD                     \
+	     -Wall                   \
+	     -Wno-format             \
+	     $(MXC_OPTIMIZE_CFLAGS)  \
 	     -c
 
-# On GCC version > 4.8.0 use the -fno-isolate-erroneous-paths-dereference flag
+# fno-isolate-erroneous-paths-dereference disables the check for pointers with the value of 0
+#  add this below when riscv-none-embed version is past 4.8 -fno-isolate-erroneous-paths-dereference
 ifeq "$(GCCVERSIONGTEQ4)" "1"
 CFLAGS += -fno-isolate-erroneous-paths-dereference
 endif
@@ -174,21 +223,25 @@ endif
 endif
 
 CFLAGS+=$(PROJ_CFLAGS)
-AS=${PREFIX}-as
-# The command for calling the library archiver.
-AR=${PREFIX}-ar
 
-# The command for calling the linker.
-LD=${PREFIX}-gcc
+# NOTE(JC): I'm leaving this commented because it's weird.  We used
+# to pass the linker **all** of the available extensions and no -mabi
+# option...  I don't think that was correct.  I have updated LDFLAGS
+# to match what we give the compiler but I will leave this relic for
+# future civilizations
+# ----
+# ifeq "$(RISCV_NOT_COMPRESSED)" ""
+# LDFLAGS=-march=rv32imafdc
+# else
+# LDFLAGS=-march=rv32imafd 
+# endif
+# ----
 
-# The flags passed to the linker.
-ifeq "$(RISCV_NOT_COMPRESSED)" ""
-LDFLAGS=-march=rv32imafdc 
-else
-LDFLAGS=-march=rv32imafd 
-endif
+# The flags passed to the linker
 LDFLAGS+=-Xlinker --gc-sections       \
-      -nostartfiles \
+      -nostartfiles 	\
+	  -march=$(MARCH) 	\
+	  -mabi=$(MABI)		\
       -Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
 LDFLAGS+=$(PROJ_LDFLAGS)
 
@@ -204,10 +257,6 @@ endif
 STD_LIBS+=-lnosys
 
 PROJ_LIBS:=$(addprefix -l, $(PROJ_LIBS))
-
-# The command for extracting images from the linked executables.
-OBJCOPY=${PREFIX}-objcopy
-OBJDUMP=${PREFIX}-objdump
 
 ifeq "$(CYGWIN)" "True"
 fixpath=$(shell echo $(1) | sed -r 's/\/cygdrive\/([A-Na-n])/\U\1:/g' )
@@ -371,23 +420,21 @@ ${BUILD_DIR}/%.elf: $(PROJECTMK)
 debug:
 	@echo CYGWIN = ${CYGWIN}
 	@echo
-	@echo BUILD_DIR = ${BUILD_DIR}
-	@echo
-	@echo SRCS = ${SRCS}
-	@echo
-	@echo SRCS_NOPATH = ${SRCS_NOPATH}
-	@echo
 	@echo CC = ${CC}
 	@echo
 	@echo AS = ${AS}
 	@echo
 	@echo LD = ${LD}
 	@echo
-	@echo CFLAGS = ${CFLAGS}
+	@echo TARGET = ${TARGET}
 	@echo
-	@echo AFLAGS = ${AFLAGS}
+	@echo BOARD = ${BOARD}
 	@echo
-	@echo LFLAGS = ${LFLAGS}
+	@echo BUILD_DIR = ${BUILD_DIR}
+	@echo
+	@echo SRCS = ${SRCS}
+	@echo
+	@echo SRCS_NOPATH = ${SRCS_NOPATH}
 	@echo
 	@echo OBJS_NOPATH = ${OBJS_NOPATH}
 	@echo
@@ -398,4 +445,23 @@ debug:
 	@echo VPATH = ${VPATH}
 	@echo
 	@echo IPATH = ${IPATH}
+	@echo
+	@echo CFLAGS = ${CFLAGS}
+	@echo
+	@echo AFLAGS = ${AFLAGS}
+	@echo
+	@echo LDFLAGS = ${LDFLAGS}
 
+################################################################################
+# Add a rule for generating a header file containing compiler definitions
+# that come from the build system and compiler itself.  This generates a
+# "project_defines.h" header file inside the build directory that can be
+# force included by VS Code to improve the intellisense engine.
+.PHONY: project_defines
+project_defines: $(BUILD_DIR)/project_defines.h
+$(BUILD_DIR)/project_defines.h: mkbuildir
+	$(file > $(BUILD_DIR)/empty.c,)
+	$(file > $(BUILD_DIR)/project_defines.h,// This is a generated file that's used to detect definitions that have been set by the compiler and build system.)
+	@$(CC) -E -P -dD $(BUILD_DIR)/empty.c $(CFLAGS) >> $(BUILD_DIR)/project_defines.h
+	@rm $(BUILD_DIR)/empty.c
+	@rm empty.d

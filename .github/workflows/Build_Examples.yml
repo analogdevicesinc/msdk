@@ -104,6 +104,20 @@ jobs:
           # Add riscv tools to path
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
 
+      - name: Install RISCV GCC Toolchain (riscv-none-elf-gcc)
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        run: |
+          # Install RISCV tools (updated)
+          npm install --global xpm@latest
+          
+          # https://www.npmjs.com/package/@xpack-dev-tools/riscv-none-elf-gcc
+          TOOL_VER=12.2.0-3.1
+          xpm install --global @xpack-dev-tools/riscv-none-elf-gcc@$TOOL_VER
+          cp -r /home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc /home/runner/riscv-none-elf-gcc
+          
+          # Add riscv tools to path
+          echo "/home/runner/riscv-none-elf-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
+
       - name: Install ccache
         if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
         run: |
