@@ -75,6 +75,7 @@
 uint16_t rx_data[DATA_LEN];
 uint16_t tx_data[DATA_LEN];
 volatile int SPI_FLAG;
+int TX_DMA_CH, RX_DMA_CH;
 
 /***** Functions *****/
 #if (SPI_INSTANCE_NUM == 0)
@@ -93,12 +94,12 @@ void SPI1_IRQHandler(void)
 }
 #endif
 
-void DMA0_IRQHandler(void)
+void DMA_TX_IRQHandler(void)
 {
     MXC_SPI_DMA_TX_Handler(SPI);
 }
 
-void DMA1_IRQHandler(void)
+void DMA_RX_IRQHandler(void)
 {
     MXC_SPI_DMA_RX_Handler(SPI);
 }
@@ -130,7 +131,7 @@ int main(void)
     printf("Performing transactions with DMA...\n");
 #endif
 
-    for (i = 2; i < 16; i++) {
+    for (i = 2; i < 17; i++) {
         // Sending out 2 to 16 bits
         for (j = 0; j < DATA_LEN; j++) {
             tx_data[j] = DATA_VALUE;
@@ -191,8 +192,14 @@ int main(void)
 #endif
 
 #if MASTERDMA
-        NVIC_EnableIRQ(DMA0_IRQn);
-        NVIC_EnableIRQ(DMA1_IRQn);
+        // Enable DMA TX/RX Interrupts
+        TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
+        RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI);
+
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(TX_DMA_CH));
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(RX_DMA_CH));
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
 
         MXC_SPI_MasterTransactionDMA(&req);
         while (SPI_FLAG == 1) {}
