@@ -33,3 +33,8 @@ IPATH += TFT/evkit/resources
 ifeq ($(BOARD),Aud01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
 endif
+
+ifeq ($(BOARD),CAM01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board)
+endif
+

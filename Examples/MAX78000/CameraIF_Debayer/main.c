@@ -74,7 +74,7 @@
 * over the serial port for use with
 * pc_utility/grab_image.py
 */
-#define ENABLE_TFT
+// #define ENABLE_TFT
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 

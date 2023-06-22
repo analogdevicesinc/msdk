@@ -52,6 +52,8 @@
 #include "pag7920_regs.h"
 #endif
 
+#include "debayering.h"
+
 #include "tmr_regs.h"
 
 #define STATUS_OK (0)
@@ -149,26 +151,6 @@ int camera_sleep(int enable);
 
 // Shutdown mode.
 int camera_shutdown(int enable);
-
-#ifdef CAMERA_BAYER
-/**
-* @brief Formulate a bayer "passthrough" image that splits an HM0360 bayer pattern into its RGB channels while preserving the bayer pattern.  Useful for debugging and demosaicing algorithm development.
-* @param[in] srcimg Pointer to the raw bayer pattern
-* @param[in] w Width of the bayer pattern (in pixels)
-* @param[in] h Height of the bayer pattern (in pixels)
-* @param[out] dstimg Output pointer for converted RGB565 image.
-****************************************************************************/
-void bayer_passthrough(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_t *dstimg);
-
-/**
-* @brief Color-correct and demosaic a raw HM0360 bayer-patterned image array and convert to RGB565.
-* @param[in] srcimg Pointer to the raw bayer pattern
-* @param[in] w Width of the bayer pattern (in pixels)
-* @param[in] h Height of the bayer pattern (in pixels)
-* @param[out] dstimg Output pointer for converted RGB565 image.
-****************************************************************************/
-void bayer_bilinear_demosaicing(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_t *dstimg);
-#endif
 
 #if defined(CAMERA_HM01B0) || (CAMERA_HM0360_MONO) || (CAMERA_HM0360_COLOR) || \
     defined(CAMERA_OV5642)
