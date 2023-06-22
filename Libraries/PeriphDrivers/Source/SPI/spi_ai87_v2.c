@@ -133,11 +133,6 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
     return E_NO_ERROR;
 }
 
-void MXC_SPI_UseDMA(int use)
-{
-    use_dma = use;
-}
-
 int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
                  unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
 {
@@ -523,16 +518,6 @@ int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vss
     return E_NO_ERROR;
 }
 
-int MXC_SPI_DMA_GetTXChannel(mxc_spi_regs_t *spi)
-{
-    return MXC_SPI_RevA2_DMA_GetTXChannel((mxc_spi_reva_regs_t *)spi);
-}
-
-int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi)
-{
-    return MXC_SPI_RevA2_DMA_GetRXChannel((mxc_spi_reva_regs_t *)spi);
-}
-
 int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, unsigned int hz)
 {
     return MXC_SPI_RevA2_SetFrequency((mxc_spi_reva_regs_t *)spi, hz);
@@ -571,6 +556,38 @@ int MXC_SPI_SetClkMode(mxc_spi_regs_t *spi, mxc_spi_clkmode_t clk_mode)
 mxc_spi_clkmode_t MXC_SPI_GetClkMode(mxc_spi_regs_t *spi)
 {
     return MXC_SPI_RevA2_GetClkMode((mxc_spi_reva_regs_t *)spi);
+}
+
+int MXC_SPI_SetRegisterCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data)
+{
+    return MXC_SPI_RevA2_SetRegisterCallback((mxc_spi_reva_regs_t *)spi, callback, data);
+}
+
+int MXC_SPI_GetActive(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_GetActive((mxc_spi_reva_regs_t *)spi);
+}
+
+/* ** DMA-Specific Functions ** */
+
+int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
+{
+    return MXC_SPI_RevA2_DMA_Init(init);
+}
+
+bool MXC_SPI_DMA_GetInitialized(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_DMA_GetInitialized((mxc_spi_reva_regs_t *)spi);
+}
+
+int MXC_SPI_DMA_GetTXChannel(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_DMA_GetTXChannel((mxc_spi_reva_regs_t *)spi);
+}
+
+int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_DMA_GetRXChannel((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_DMA_SetRequestSelect(mxc_spi_req_t *req)
@@ -618,16 +635,6 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_req_t *req)
                                               rx_reqsel);
 }
 
-int MXC_SPI_SetRegisterCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data)
-{
-    return MXC_SPI_RevA2_SetRegisterCallback((mxc_spi_reva_regs_t *)spi, callback, data);
-}
-
-int MXC_SPI_GetActive(mxc_spi_regs_t *spi)
-{
-    return MXC_SPI_RevA2_GetActive((mxc_spi_reva_regs_t *)spi);
-}
-
 /* ** Transaction Functions ** */
 
 int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
@@ -662,7 +669,19 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
     mxc_spi_target_t target;
+    mxc_spi_init_t init;
     target.index = req->ssIdx;
+
+    init.use_dma = true;
+    init.dma = MXC_DMA;
+
+    // More overhead, but this function will initalize DMA if not initialized.
+    if (MXC_SPI_DMA_GetInitialized(req->spi) == false) {
+        error = MXC_SPI_DMA_Init(&init);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+    }
 
     error = MXC_SPI_SetRegisterCallback(req->spi, req->callback, req->callback_data);
     if (error != E_NO_ERROR) {

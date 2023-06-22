@@ -52,9 +52,9 @@
 #include "dma.h"
 
 /***** Preprocessors *****/
-#define MASTERSYNC 1
+#define MASTERSYNC 0
 #define MASTERASYNC 0
-#define MASTERDMA 0
+#define MASTERDMA 1
 
 #if (!(MASTERSYNC || MASTERASYNC || MASTERDMA))
 #error "You must set either MASTERSYNC or MASTERASYNC or MASTERDMA to 1."

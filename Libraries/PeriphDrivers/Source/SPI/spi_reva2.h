@@ -99,6 +99,8 @@ int MXC_SPI_RevA2_GetActive(mxc_spi_reva_regs_t *spi);
 
 int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init);
 
+bool MXC_SPI_RevA2_DMA_GetInitialized(mxc_spi_reva_regs_t *spi);
+
 int MXC_SPI_RevA2_DMA_GetTXChannel(mxc_spi_reva_regs_t *spi);
 
 int MXC_SPI_RevA2_DMA_GetRXChannel(mxc_spi_reva_regs_t *spi);

@@ -52,6 +52,7 @@
 typedef struct {
     // Info from initialization.
     bool                initialized;
+    bool                dma_initialized;
     mxc_spi_init_t      init;
 
     // Transaction Data.
@@ -305,6 +306,7 @@ static int MXC_SPI_RevA2_resetStateStruct(int spi_num)
 
     // Init Data
     STATES[spi_num].initialized = false;
+    STATES[spi_num].dma_initialized = false;
     STATES[spi_num].init = (const mxc_spi_init_t){ 0 };
 
     // Transaction Members
@@ -536,6 +538,8 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
         STATES[spi_num].dma->ch[rx_ch].ctrl |=
             (MXC_F_DMA_REVA_CTRL_CTZ_IE); // | MXC_F_DMA_REVA_CTRL_DIS_IE);
         STATES[spi_num].dma->inten |= (1 << rx_ch);
+
+        STATES[spi_num].dma_initialized = true;
     }
 
     // If successful, mark STATE of this SPI instance as initialized.
@@ -1007,20 +1011,14 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
         return E_NULL_PTR;
     }
 
-    if (init->use_dma == false || init->dma == NULL) {
-        return E_BAD_PARAM;
-    }
-
-    // Ensure valid SPI instance.
-    spi_num = MXC_SPI_GET_IDX(init->spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+    if (init->dma == NULL || init->use_dma == false) {
         return E_BAD_PARAM;
     }
 
     // Even though the Init Struct has a pointer to the DMA instance,
     //   this will make the code a bit more readable since the DMA
     //   instance is now type casted with the DMA RevA Registers.
-    STATES[spi_num].dma = (mxc_dma_reva_regs_t *)(init->dma);
+    STATES[spi_num].dma = (mxc_dma_reva_regs_t *)(dma);
 
 #if (MXC_DMA_INSTANCES == 1)
     error = MXC_DMA_Init();
@@ -1052,6 +1050,20 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
     STATES[spi_num].dma->inten |= (1 << rx_ch);
 
     return E_NO_ERROR;
+}
+
+// Available to chech whether DMA is already initialized for SPI instance.
+//      Useful for switching from non-DMA to DMA transactions.
+bool MXC_SPI_RevA2_DMA_GetInitialized(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    return (STATES[spi_pins].dma_initialized);
 }
 
 int MXC_SPI_RevA2_DMA_GetTXChannel(mxc_spi_reva_regs_t *spi)
