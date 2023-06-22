@@ -52,8 +52,8 @@
 #include "dma.h"
 
 /***** Preprocessors *****/
-#define MASTERSYNC 0
-#define MASTERASYNC 1
+#define MASTERSYNC 1
+#define MASTERASYNC 0
 #define MASTERDMA 0
 
 #if (!(MASTERSYNC || MASTERASYNC || MASTERDMA))
@@ -65,9 +65,9 @@
 
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
-#define DATA_VALUE 0xA5B7 // This is for master mode only...
+#define DATA_VALUE 0xA5AB // This is for master mode only...
 #define VALUE 0xFFFF
-#define SPI_SPEED 1000000 // Bit Rate
+#define SPI_SPEED 100000 // Bit Rate
 
 #define SPI_INSTANCE_NUM 1
 
@@ -162,7 +162,7 @@ int main(void)
 
 #if defined(MXC_SPI_V2)
 #if MASTERDMA
-        // Helper function for new SPI drivers for DMA transactions.
+        // Helper function for SPI v2 drivers for DMA transactions.
         // Must be called before MXC_SPI_Init if using SPI DMA.
         MXC_SPI_UseDMA(1); // Use DMA (1)
 #else
@@ -208,7 +208,7 @@ int main(void)
 
 #if MASTERSYNC
 #if defined(MXC_SPI_V2)
-        // Blocking SPI Implementation is Interrupt driven, even for the blocking function.
+        // Blocking SPI v2 Implementation is Interrupt driven, even for the blocking function.
         NVIC_EnableIRQ(SPI_IRQ);
 #endif
         MXC_SPI_MasterTransaction(&req);
