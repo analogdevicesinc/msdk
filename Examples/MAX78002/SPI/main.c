@@ -142,13 +142,13 @@ int main(void)
         init.freq = SPI_SPEED;
         init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
         init.frame_size = i;
-        init.mode = MXC_SPI_INTERFACE_STANDARD;// Standard 4-wire mode
+        init.mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
         init.ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // use HW TS pins
         init.target.active_polarity = 0; // ACTIVE = LOW (0), IDLE = HIGH (1);
-        init.ts_mask = 0x01;// Note: The [] represents the bit location of ts_mask
-                            //       ts_mask[0] <= Target Select 0 (TS0)
-                            //       ts_mask[1] <= Target Select 1 (TS1)
-                            //       ts_mask[n] <= Target Select n (TSn)
+        init.ts_mask = 0x01; // Note: The [] represents the bit location of ts_mask
+            //       ts_mask[0] <= Target Select 0 (TS0)
+            //       ts_mask[1] <= Target Select 1 (TS1)
+            //       ts_mask[n] <= Target Select n (TSn)
 #if MASTERDMA
         init.use_dma = true;
         init.dma = MXC_DMA;
