@@ -74,6 +74,11 @@
         "TARGET=${config:target}",
         "TARGET_REV=0x4131",
         "__GNUC__"
-    ]
+    ],
+    "files.associations": {
+        "stdint.h": "c",
+        "cli.h": "c",
+        "sdhc.h": "c"
+    }
 }
 
