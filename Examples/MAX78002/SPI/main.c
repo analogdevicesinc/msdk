@@ -180,7 +180,7 @@ int main(void)
         SPI_FLAG = 1;
 
 #if MASTERSYNC
-        // Blocking SPI v2 Implementation is Interrupt driven, even for the blocking function.
+        // Blocking SPI v2 Implementation is Interrupt driven.
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransaction(&req);
 #endif
