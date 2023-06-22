@@ -19,8 +19,9 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Setup
 
-##### Board Selection
-Before building firmware you must select the correct value for _BOARD_  in "settings.json", either "EvKit\_V1" or "FTHR\_Apps\_P1", depending on the EV kit you are using to run the example.
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
 ##### Required Connections
 If using the Standard EV Kit (EvKit\_V1):
