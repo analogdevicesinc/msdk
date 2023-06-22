@@ -1,8 +1,6 @@
 {
     "configurations": [
         {
-<<<<<<< HEAD
-=======
             "name": "Debug Arm (Cortex-debug)",
             "cwd":"${workspaceRoot}",
             "executable": "${workspaceFolder}/build/${config:program_file}",
@@ -32,7 +30,6 @@
             "svdFile": "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include/${config:target}.svd"
         },
         {
->>>>>>> main
             "name": "GDB (Arm M4)",
             "type": "cppdbg",
             "request": "launch",

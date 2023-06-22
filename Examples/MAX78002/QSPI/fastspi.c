@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -32,7 +30,6 @@
  * ownership rights.
  *
  ******************************************************************************/
->>>>>>> main
 #include <stdint.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -42,21 +39,14 @@
 #include "spi.h"
 #include "dma.h"
 #include "nvic_table.h"
-<<<<<<< HEAD
-=======
 #include "mxc_delay.h"
->>>>>>> main
 
 int g_tx_channel;
 int g_rx_channel;
 int g_fill_dummy_bytes = 0;
 int g_dummy_len = 0;
-<<<<<<< HEAD
-uint8_t g_dummy_byte = 0x00;
-=======
 uint8_t g_dummy_byte = 0xFF;
 bool g_use_dma = false;
->>>>>>> main
 
 uint8_t *g_rx_buffer;
 uint8_t *g_tx_buffer;
@@ -64,19 +54,6 @@ uint32_t g_rx_len;
 uint32_t g_tx_len;
 
 // A macro to convert a DMA channel number to an IRQn number
-<<<<<<< HEAD
-#define GetIRQnForDMAChannel(x) ((IRQn_Type)(((x) == 0 ) ? DMA0_IRQn  : \
-                                             ((x) == 1 ) ? DMA1_IRQn  : \
-                                             ((x) == 2 ) ? DMA2_IRQn  : \
-                                                           DMA3_IRQn))
-
-void DMA_TX_IRQHandler()
-{
-    volatile mxc_dma_ch_regs_t *ch = &MXC_DMA->ch[g_tx_channel];  // Cast the pointer for readability in this ISR
-    uint32_t status = ch->status;
-
-    if (status & MXC_F_DMA_STATUS_CTZ_IF) { // Count-to-Zero (DMA TX complete)
-=======
 #define GetIRQnForDMAChannel(x)           \
     ((IRQn_Type)(((x) == 0) ? DMA0_IRQn : \
                  ((x) == 1) ? DMA1_IRQn : \
@@ -91,7 +68,6 @@ void DMA_TX_IRQHandler()
 
     if (status & MXC_F_DMA_STATUS_CTZ_IF) { // Count-to-Zero (DMA TX complete)
         g_tx_done = 1;
->>>>>>> main
         ch->status |= MXC_F_DMA_STATUS_CTZ_IF;
     }
 
@@ -102,12 +78,8 @@ void DMA_TX_IRQHandler()
 
 void DMA_RX_IRQHandler()
 {
-<<<<<<< HEAD
-    volatile mxc_dma_ch_regs_t *ch = &MXC_DMA->ch[g_rx_channel];  // Cast the pointer for readability in this ISR
-=======
     volatile mxc_dma_ch_regs_t *ch =
         &MXC_DMA->ch[g_rx_channel]; // Cast the pointer for readability in this ISR
->>>>>>> main
     uint32_t status = ch->status;
 
     if (status & MXC_F_DMA_STATUS_CTZ_IF) { // Count-to-Zero (DMA RX complete)
@@ -123,22 +95,11 @@ void DMA_RX_IRQHandler()
 void processSPI()
 {
     // Unload any SPI data that has come in
-<<<<<<< HEAD
-    while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL)) {
-=======
     while (g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL) && g_rx_len > 0) {
->>>>>>> main
         *g_rx_buffer++ = SPI->fifo8[0];
         g_rx_len--;
     }
 
-<<<<<<< HEAD
-    // Write any pending bytes out.
-    while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
-        SPI->fifo8[0] = *g_tx_buffer++;
-        g_tx_len--;
-    }
-=======
     if (g_rx_len <= 0) {
         g_rx_done = 1;
     }
@@ -154,7 +115,6 @@ void processSPI()
     if (g_tx_len <= 0) {
         g_tx_done = 1;
     }
->>>>>>> main
 }
 
 void SPI_IRQHandler()
@@ -162,40 +122,12 @@ void SPI_IRQHandler()
     uint32_t status = SPI->intfl;
 
     if (status & MXC_F_SPI_INTFL_MST_DONE) { // Master done (TX complete)
-<<<<<<< HEAD
-        g_tx_done = 1;
-        SPI->intfl |= MXC_F_SPI_INTFL_MST_DONE;  // Clear flag
-=======
         g_master_done = 1;
         SPI->intfl |= MXC_F_SPI_INTFL_MST_DONE; // Clear flag
->>>>>>> main
     }
 
     if (status & MXC_F_SPI_INTFL_RX_THD) {
         SPI->intfl |= MXC_F_SPI_INTFL_RX_THD;
-<<<<<<< HEAD
-    }
-
-    // Unload any SPI data that has come in
-    while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL)) {
-        *g_rx_buffer++ = SPI->fifo8[0];
-        g_rx_len--;
-    }
-
-    if (g_rx_len <= 0) {
-        g_rx_done = 1;
-    }
-
-    // Write any pending bytes out.
-    while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
-        SPI->fifo8[0] = *g_tx_buffer++;
-        g_tx_len--;
-    }
-
-    // if (g_tx_len <= 0) {
-    //     g_tx_done = 1;
-    // }
-=======
         if (!g_use_dma) {
             // RX threshold has been crossed, there's data to unload from the FIFO
             processSPI();
@@ -209,7 +141,6 @@ void SPI_IRQHandler()
             processSPI();
         }
     }
->>>>>>> main
 }
 
 int dma_init()
@@ -217,40 +148,15 @@ int dma_init()
     int err = MXC_DMA_Init();
     if (err)
         return err;
-<<<<<<< HEAD
-    
-    g_tx_channel = MXC_DMA_AcquireChannel();
-    g_rx_channel = MXC_DMA_AcquireChannel();
-    if (g_tx_channel < 0 || g_rx_channel < 0) {
-        return E_NONE_AVAIL;  // Failed to acquire DMA channels
-=======
 
     g_tx_channel = MXC_DMA_AcquireChannel();
     g_rx_channel = MXC_DMA_AcquireChannel();
     if (g_tx_channel < 0 || g_rx_channel < 0) {
         return E_NONE_AVAIL; // Failed to acquire DMA channels
->>>>>>> main
     }
 
     // TX Channel
     MXC_DMA->ch[g_tx_channel].ctrl &= ~(MXC_F_DMA_CTRL_EN);
-<<<<<<< HEAD
-    MXC_DMA->ch[g_tx_channel].ctrl = MXC_F_DMA_CTRL_SRCINC | (0x2F << MXC_F_DMA_CTRL_REQUEST_POS);  // Enable incrementing the src address pointer, set destination to SPI0 TX FIFO (REQSEL = 0x2F)
-    MXC_DMA->ch[g_tx_channel].ctrl |= (MXC_F_DMA_CTRL_CTZ_IE | MXC_F_DMA_CTRL_DIS_IE);              // Enable CTZ and DIS interrupts
-    MXC_DMA->inten |= (1 << g_tx_channel);                                                          // Enable DMA interrupts
-
-    // RX Channel
-    MXC_DMA->ch[g_rx_channel].ctrl &= ~(MXC_F_DMA_CTRL_EN);
-    MXC_DMA->ch[g_rx_channel].ctrl = MXC_F_DMA_CTRL_DSTINC | (0x0F << MXC_F_DMA_CTRL_REQUEST_POS);  // Enable incrementing the dest address pointer, set to source to SPI0 RX FIFO (REQSEL = 0x0F)
-    MXC_DMA->ch[g_rx_channel].ctrl |= (MXC_F_DMA_CTRL_CTZ_IE | MXC_F_DMA_CTRL_DIS_IE);              // Enable CTZ and DIS interrupts
-    MXC_DMA->inten |= (1 << g_rx_channel);                                                          // Enable DMA interrupts
-
-    MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_tx_channel), DMA_TX_IRQHandler);
-    NVIC_EnableIRQ(GetIRQnForDMAChannel(g_tx_channel));
-
-    MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_rx_channel), DMA_RX_IRQHandler);
-    NVIC_EnableIRQ(GetIRQnForDMAChannel(g_rx_channel));
-=======
     MXC_DMA->ch[g_tx_channel].ctrl =
         MXC_F_DMA_CTRL_SRCINC |
         (0x2F
@@ -276,63 +182,20 @@ int dma_init()
     MXC_NVIC_SetVector(GetIRQnForDMAChannel(g_rx_channel), DMA_RX_IRQHandler);
     NVIC_EnableIRQ(GetIRQnForDMAChannel(g_rx_channel));
     NVIC_SetPriority(GetIRQnForDMAChannel(g_tx_channel), 0);
->>>>>>> main
 
     return err;
 }
 
 int spi_init()
 {
-<<<<<<< HEAD
-    // TODO: Add software-controlled slave select functionality
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
-    MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
-
-    // TODO: Separate slave select config
-    const mxc_gpio_cfg_t spi_pins = {
-        .port = SPI_PINS_PORT,
-        .mask = SPI_PINS_MASK,
-        .func = MXC_GPIO_FUNC_ALT1,
-        .pad = MXC_GPIO_PAD_NONE,
-        .vssel = MXC_GPIO_VSSEL_VDDIOH
-    };
-
-=======
     // TODO(Jake): Add software-controlled slave select functionality
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
     MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
 
->>>>>>> main
     int err = MXC_GPIO_Config(&spi_pins);
     if (err)
         return err;
 
-<<<<<<< HEAD
-    // Set strongest possible drive strength for SPI pins
-    spi_pins.port->ds0 |= spi_pins.mask;
-    spi_pins.port->ds1 |= spi_pins.mask;
-    
-    // TODO: Expose some of the config options below
-    // TODO: Move QSPI-SRAM specific options into aps6404.c
-
-    SPI->ctrl0 = (1 << MXC_F_SPI_CTRL0_SS_ACTIVE_POS) |    // Set SSEL = SS0
-                        MXC_F_SPI_CTRL0_MST_MODE |         // Select controller mode
-                        MXC_F_SPI_CTRL0_EN;                // Enable SPI
-
-    SPI->ctrl2 = (8 << MXC_F_SPI_CTRL2_NUMBITS_POS);       // Set 8 bits per character
-    
-    SPI->sstime = (1 << MXC_F_SPI_SSTIME_PRE_POS) |        // Remove any delay time between SSEL and SCLK edges
-                        (128 << MXC_F_SPI_SSTIME_POST_POS) |
-                        (1 << MXC_F_SPI_SSTIME_INACT_POS);
-
-    SPI->dma = MXC_F_SPI_DMA_TX_FIFO_EN |                  // Enable TX FIFO
-                    (31 << MXC_F_SPI_DMA_TX_THD_VAL_POS) | // Set TX threshold to 31
-                    MXC_F_SPI_DMA_DMA_TX_EN;               // Enable DMA for the TX FIFO
-
-    SPI->inten |= MXC_F_SPI_INTFL_MST_DONE;                 // Enable the "Transaction complete" interrupt
-
-    SPI->intfl = SPI->intfl;                                // Clear any any interrupt flags that may already be set
-=======
     err = MXC_GPIO_Config(&spi_ss_pin);
     if (err)
         return err;
@@ -361,7 +224,6 @@ int spi_init()
     SPI->inten |= MXC_F_SPI_INTFL_MST_DONE; // Enable the "Transaction complete" interrupt
 
     SPI->intfl = SPI->intfl; // Clear any any interrupt flags that may already be set
->>>>>>> main
 
     err = MXC_SPI_SetFrequency(SPI, SPI_SPEED);
     if (err)
@@ -369,23 +231,13 @@ int spi_init()
 
     NVIC_EnableIRQ(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)));
     MXC_NVIC_SetVector(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), SPI_IRQHandler);
-<<<<<<< HEAD
-=======
     NVIC_SetPriority(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), 1);
->>>>>>> main
 
     err = dma_init();
 
     return err;
 }
 
-<<<<<<< HEAD
-int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert, bool use_dma, bool block)
-{
-    g_tx_done = 0;
-    g_rx_done = 0;
-    mxc_spi_width_t width = MXC_SPI_GetWidth(SPI); 
-=======
 int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bool deassert,
                  bool use_dma, bool block)
 {
@@ -393,7 +245,6 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
     g_rx_done = 0;
     g_master_done = 0;
     mxc_spi_width_t width = MXC_SPI_GetWidth(SPI);
->>>>>>> main
 
     // Set the number of bytes to transmit/receive for the SPI transaction
     if (width == SPI_WIDTH_STANDARD) {
@@ -414,20 +265,6 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
                      (rxlen << MXC_F_SPI_CTRL1_RX_NUM_CHAR_POS);
     }
 
-<<<<<<< HEAD
-    SPI->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);  // Disable FIFOs before clearing as recommended by UG
-    SPI->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);  // Clear the FIFOs
-
-    if (use_dma) {
-        // TX
-        if (txlen > 0) {
-            // Configure TX DMA channel to fill the SPI TX FIFO
-            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
-            MXC_DMA->ch[g_tx_channel].src = (uint32_t)src;
-            MXC_DMA->ch[g_tx_channel].cnt = txlen;
-            MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_SRCINC;
-            MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
-=======
     SPI->dma &= ~(MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN | MXC_F_SPI_DMA_RX_FIFO_EN |
                   MXC_F_SPI_DMA_DMA_RX_EN); // Disable FIFOs before clearing as recommended by UG
     SPI->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH); // Clear the FIFOs
@@ -450,18 +287,13 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
             SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
             SPI->fifo8[0] = src[0]; // Write first byte into FIFO
             g_tx_done = 1;
->>>>>>> main
         } else if (txlen == 0 && width == SPI_WIDTH_STANDARD) {
             // Configure TX DMA channel to retransmit a dummy byte
             SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
             MXC_DMA->ch[g_tx_channel].src = (uint32_t)&g_dummy_byte;
             MXC_DMA->ch[g_tx_channel].cnt = rxlen;
             MXC_DMA->ch[g_tx_channel].ctrl &= ~MXC_F_DMA_CTRL_SRCINC;
-<<<<<<< HEAD
-            MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
-=======
             MXC_DMA->ch[g_tx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
->>>>>>> main
         }
 
         // RX
@@ -470,46 +302,16 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
             SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
             MXC_DMA->ch[g_rx_channel].dst = (uint32_t)dest;
             MXC_DMA->ch[g_rx_channel].cnt = rxlen;
-<<<<<<< HEAD
-            MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN;  // Start the DMA
-        }
-
-    } else { // !use_dma
-=======
             MXC_DMA->ch[g_rx_channel].ctrl |= MXC_F_DMA_CTRL_EN; // Start the DMA
         }
 
     } else { // !use_dma
         g_use_dma = false;
->>>>>>> main
         g_rx_buffer = dest;
         g_tx_buffer = src;
         g_rx_len = rxlen;
         g_tx_len = txlen;
 
-<<<<<<< HEAD
-        if (txlen > 0) {
-            SPI->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN | MXC_F_SPI_DMA_DMA_TX_EN);
-        }
-
-        if (rxlen > 0) {
-            SPI->dma |= (MXC_F_SPI_DMA_RX_FIFO_EN | MXC_F_SPI_DMA_DMA_RX_EN);
-        }
-
-        SPI->inten |= MXC_F_SPI_INTEN_RX_THD | MXC_F_SPI_INTEN_MST_DONE;
-
-        // Unload any SPI data that has come in
-        while(g_rx_buffer && (SPI->dma & MXC_F_SPI_DMA_RX_LVL)) {
-            *g_rx_buffer++ = SPI->fifo8[0];
-            g_rx_len--;
-        }
-
-        // Write any pending bytes out.
-        while(g_tx_buffer && (((SPI->dma & MXC_F_SPI_DMA_TX_LVL) >> MXC_F_SPI_DMA_TX_LVL_POS) < MXC_SPI_FIFO_DEPTH)) {
-            SPI->fifo8[0] = *g_tx_buffer++;
-            g_tx_len--;
-        }
-=======
         SPI->inten |= MXC_F_SPI_INTEN_MST_DONE;
 
         if (txlen > 0) {
@@ -530,25 +332,11 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
         be handled from the SPI_IRQHandler. 
         */
         processSPI();
->>>>>>> main
     }
 
     // Start the SPI transaction
     SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
 
-<<<<<<< HEAD
-    if (deassert) {  // Peripheral select is deasserted at end of transmission
-        SPI->ctrl0 &= ~MXC_F_SPI_CTRL0_SS_CTRL;
-    } else {  // Peripheral select stays asserted at end of transmission
-        SPI->ctrl0 |= MXC_F_SPI_CTRL0_SS_CTRL;
-    }
-
-    if (block)
-        while(!(g_tx_done && (src != NULL && txlen > 0)) && !(g_rx_done && (dest != NULL && rxlen > 0))) {}
-
-    return E_SUCCESS;
-}
-=======
     /*
     Handle slave-select (SS) deassertion.  This must be done AFTER launching the transaction
     to avoid a glitch on the SS line if:
@@ -569,4 +357,3 @@ int spi_transmit(uint8_t *src, uint32_t txlen, uint8_t *dest, uint32_t rxlen, bo
 
     return E_SUCCESS;
 }
->>>>>>> main
