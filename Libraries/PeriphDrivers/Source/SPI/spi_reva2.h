@@ -56,9 +56,9 @@ extern "C" {
 
 int MXC_SPI_RevA2_Init(mxc_spi_init_t *init);
 
-int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init, mxc_spi_target_t *target);
+int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init);
 
-int MXC_SPI_RevA2_InitStruct_DMA(mxc_spi_init_t *init, mxc_spi_target_t *target);
+int MXC_SPI_RevA2_InitStruct_DMA(mxc_spi_init_t *init);
 
 int MXC_SPI_RevA2_Shutdown(mxc_spi_reva_regs_t *spi);
 

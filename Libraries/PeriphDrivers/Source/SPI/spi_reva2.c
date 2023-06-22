@@ -544,7 +544,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     return E_NO_ERROR;
 }
 
-int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init, mxc_spi_target_t *target)
+int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init)
 {
     if (init == NULL || target == NULL) {
         return E_BAD_PARAM;
@@ -557,7 +557,6 @@ int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init, mxc_spi_target_t *target)
     init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
     init->mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
     init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
-    init->target = target; // Caller must supply
     init->target.active_polarity = 0; // Active polarity is LOW (0). IDLE is HIGH (1).
     init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
     init->ts_mask = 0x01; // Default TS0
@@ -568,7 +567,7 @@ int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init, mxc_spi_target_t *target)
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_InitStruct_DMA(mxc_spi_init_t *init, mxc_spi_target_t *target)
+int MXC_SPI_RevA2_InitStruct_DMA(mxc_spi_init_t *init)
 {
     if (init == NULL || target == NULL) {
         return E_BAD_PARAM;
@@ -581,7 +580,6 @@ int MXC_SPI_RevA2_InitStruct_DMA(mxc_spi_init_t *init, mxc_spi_target_t *target)
     init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
     init->mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
     init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
-    init->target = target; // Caller must supply
     init->target.active_polarity = 0; // Active polarity is LOW (0), IDLE is HIGH (1)
     init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
     init->ts_mask = 0x01; // Default TS0

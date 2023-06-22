@@ -322,8 +322,7 @@ int MXC_SPI_Init_v2(mxc_spi_init_t *init);
  * @brief   Overwrites an init struct with default, example values (non-DMA).
  * 
  * Note: This function overwrites an mxc_spi_init_t init struct with
- *      arbitrary, default values. The mxc_spi_target target must be supplied
- *      by the caller.
+ *      arbitrary, default values.
  *
  * Settings:
  *      SPI0 instance
@@ -337,12 +336,11 @@ int MXC_SPI_Init_v2(mxc_spi_init_t *init);
  *      Target active polarity is LOW (0)
  *
  * @param   Init    Pointer to SPI registers (selects the SPI block used.)
- * @param   Target  Pointer to Target Pin.
  *
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_InitStruct(mxc_spi_init_t *init, mxc_spi_target_t *target);
+int MXC_SPI_InitStruct(mxc_spi_init_t *init);
 
 /**
  * @brief   Overwrites an init struct with default, example values (DMA).
@@ -368,7 +366,7 @@ int MXC_SPI_InitStruct(mxc_spi_init_t *init, mxc_spi_target_t *target);
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_InitStruct_DMA(mxc_spi_init_t *init, mxc_spi_target_t *target);
+int MXC_SPI_InitStruct_DMA(mxc_spi_init_t *init);
 
 /**
  * @brief   Disable and shutdown the SPI instance.
