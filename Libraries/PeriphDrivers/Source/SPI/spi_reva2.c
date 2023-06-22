@@ -1139,8 +1139,9 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
             // because the hardware always assume full duplex. Therefore extra
             // dummy bytes must be transmitted to support half duplex.
             tx_dummy_fr_len = rx_fr_len - tx_fr_len;
-            spi->ctrl1 |= (((tx_fr_len + tx_dummy_fr_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)
-                           && MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR);
+            spi->ctrl1 |=
+                (((tx_fr_len + tx_dummy_fr_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) &&
+                 MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR);
         } else {
             spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         }
@@ -1160,7 +1161,8 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
         spi->inten |= MXC_F_SPI_REVA_INTEN_TX_THD;
 
         // Set TX Threshold to minimum value after re-enabling TX FIFO.
-        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL, (1 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
+                     (1 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
     }
 
     if (rx_fr_len > 0) {
@@ -1169,7 +1171,8 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
         spi->inten |= MXC_F_SPI_REVA_INTEN_RX_THD;
 
         // Set RX Threshold to minimum value after re-enabling RX FIFO.
-        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL, (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
+        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
+                     (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
     }
 
     // This private function, MXC_SPI_RevA2_process, call fills the TX FIFO as much as possible
