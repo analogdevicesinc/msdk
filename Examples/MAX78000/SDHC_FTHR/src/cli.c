@@ -162,6 +162,7 @@ void handle_help(int argc, char *argv[])
 	for (int i = 0; i < num_commands;i++)
 		printf("%s --> %s", commands[i].name, commands[i].help_string);
 }
+
 /* @name handle_sp
  *
  * @brief: Prints the current stack pointer in hex which is fetched from the MSP [Main stack pointer register]
@@ -169,7 +170,7 @@ void handle_help(int argc, char *argv[])
 // void handle_sp(int argc, char *argv[])
 // {
 // 	  uint32_t *msp;
-// 	  asm("mrs %0, msp" : "=r" (msp)); // inline assembly to read the MSP (Main Stack Pointer) register of the Cortex-M0+ processor and store its value in the msp variable.
+// 	  asm("mrs %0, msp" : "=r" (msp)); // inline assembly to read the MSP (Main Stack Pointer) register of the Cortex-M4 processor and store its value in the msp variable.
 // 	  printf("\n\rStack Pointer (MSP): %08x\n\r", (unsigned int)msp); //The value of the msp variable is then printed to the terminal using printf()
 // }
 
@@ -182,6 +183,7 @@ void handle_help(int argc, char *argv[])
 //     printf("invalid command\n\r");
 // 	hexdump(argv[1], argv[2]);
 // }
+
 /* @name handle_info
  *
  * @brief: Prints a string with build information that is dynamically generated at build time from your machine.
