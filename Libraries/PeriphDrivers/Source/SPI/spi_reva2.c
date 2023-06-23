@@ -1017,7 +1017,7 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
     }
 
     // Exit function is DMA already initialized.
-    if (MXC_SPI_RevA2_DMA_GetInitialized(init->spi)) {
+    if (MXC_SPI_RevA2_DMA_GetInitialized((mxc_spi_reva_regs_t *)(init->spi))) {
         return E_NO_ERROR;
     }
 
