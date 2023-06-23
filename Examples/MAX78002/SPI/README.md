@@ -13,7 +13,7 @@ This example uses the SPI v2 Library.
 
 ### Porting Guide
 
-The SPI v2 Library is backwards compatible with the previous SPI API - meaning the previously existing function prototypes have not changed. There are functional differences with SPI DMA interrupt handling that must be updated when porting the project from using the previous SPI API to SPI v2.
+The SPI v2 Library is backwards compatible with the previous SPI API - meaning the previously existing function prototypes have not changed. There are functional differences with SPI DMA interrupt handling that must be updated when porting a project from using the previous SPI API to SPI v2.
 
 #### SPI v2 API Differences
 
@@ -21,7 +21,7 @@ The SPI v2 Library is backwards compatible with the previous SPI API - meaning t
 
 The `MXC_SPI_Init(...)` function is still supported with SPI v2, but there is some added overhead due to the limited settings that this function can set.
 
-Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead and 2) to give the caller control in the SPI setup.
+Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead and 2) to give the caller more control in the SPI setup.
 
 **`mxc_spi_init_t init` Fields**
 - `mxc_spi_regs_t *spi`              //<== SPI Instance
