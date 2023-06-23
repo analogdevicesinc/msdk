@@ -191,20 +191,6 @@ int main(void)
         req.completeCB = (mxc_spi_callback_t)SPI_Callback;
         SPI_FLAG = 1;
 
-        retVal = MXC_SPI_SetDataSize(SPI, i);
-
-        if (retVal != E_NO_ERROR) {
-            printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
-            return retVal;
-        }
-
-        retVal = MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
-
-        if (retVal != E_NO_ERROR) {
-            printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
-            return retVal;
-        }
-
 #if MASTERSYNC
         // Blocking SPI v2 Implementation is Interrupt driven.
         NVIC_EnableIRQ(SPI_IRQ);
@@ -216,16 +202,11 @@ int main(void)
         MXC_SPI_MasterTransactionAsync(&req);
 
         while (SPI_FLAG == 1) {}
-
 #endif
 
 #if MASTERDMA
         NVIC_EnableIRQ(DMA0_IRQn);
         NVIC_EnableIRQ(DMA1_IRQn);
-        // mxc_spi_init_t init;
-        // init.use_dma = true;
-        // init.dma = MXC_DMA;
-        // MXC_SPI_DMA_Init(&init);
         MXC_SPI_MasterTransactionDMA(&req);
 
         while (SPI_FLAG == 1) {}

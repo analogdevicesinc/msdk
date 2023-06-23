@@ -483,6 +483,12 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     MXC_SETFIELD((init->spi)->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
                  (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
 
+    // Interface mode: 3-wire, standard (4-wire), dual, quad.
+    error = MXC_SPI_SetModeIF((init->spi), (init->mode));
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
     error = MXC_SPI_SetFrequency((init->spi), (init->freq));
     if (error != E_NO_ERROR) {
         return error;
