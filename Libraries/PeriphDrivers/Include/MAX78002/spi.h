@@ -794,7 +794,7 @@ void MXC_SPI_ClearTXFIFO(mxc_spi_regs_t *spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-bool MXC_SPI_DMA_Init(mxc_spi_init_t *init);
+int MXC_SPI_DMA_Init(mxc_spi_init_t *init);
 
 /**
  * @brief   Helper function that checks whether the MXC_SPI_Init function

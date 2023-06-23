@@ -570,7 +570,7 @@ int MXC_SPI_GetActive(mxc_spi_regs_t *spi)
 
 /* ** DMA-Specific Functions ** */
 
-int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
+int MXC_SPI_DMA_Init(mxc_spi_init_t *init)
 {
     return MXC_SPI_RevA2_DMA_Init(init);
 }

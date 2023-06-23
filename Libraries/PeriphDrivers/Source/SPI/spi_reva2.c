@@ -369,11 +369,6 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     STATES[spi_num].dma = NULL;
     STATES[spi_num].current_target = *target;
 
-    // Abort any current transactions.
-    (init->spi)->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
-    (init->spi)->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
-    (init->spi)->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_EN;
-
     // Set up Target Select Control Scheme.
     //  Hardware (Automatic) Controlled.
     if (init->ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
@@ -457,7 +452,8 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     }
 
     // Enable SPI port.
-    (init->spi)->ctrl0 |= MXC_F_SPI_REVA_CTRL0_EN;
+    (init->spi)->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
+    (init->spi)->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
 
     // Select Controller (L. Master) or Target (L. Slave) Mode.
     if (init->type == MXC_SPI_TYPE_CONTROLLER) {
@@ -1007,6 +1003,11 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
     int error, spi_num;
     int tx_ch, rx_ch;
 
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(init->spi));
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
     if (init == NULL) {
         return E_NULL_PTR;
     }
@@ -1015,10 +1016,15 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
         return E_BAD_PARAM;
     }
 
+    // Exit function is DMA already initialized.
+    if (MXC_SPI_RevA2_DMA_GetInitialized(init->spi)) {
+        return E_NO_ERROR;
+    }
+
     // Even though the Init Struct has a pointer to the DMA instance,
     //   this will make the code a bit more readable since the DMA
     //   instance is now type casted with the DMA RevA Registers.
-    STATES[spi_num].dma = (mxc_dma_reva_regs_t *)(dma);
+    STATES[spi_num].dma = (mxc_dma_reva_regs_t *)(init->dma);
 
 #if (MXC_DMA_INSTANCES == 1)
     error = MXC_DMA_Init();
@@ -1049,6 +1055,8 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
     STATES[spi_num].dma->ch[rx_ch].ctrl |= (MXC_F_DMA_REVA_CTRL_CTZ_IE);
     STATES[spi_num].dma->inten |= (1 << rx_ch);
 
+    STATES[spi_num].dma_initialized = true;
+
     return E_NO_ERROR;
 }
 
@@ -1063,7 +1071,7 @@ bool MXC_SPI_RevA2_DMA_GetInitialized(mxc_spi_reva_regs_t *spi)
         return E_BAD_PARAM;
     }
 
-    return (STATES[spi_pins].dma_initialized);
+    return (STATES[spi_num].dma_initialized);
 }
 
 int MXC_SPI_RevA2_DMA_GetTXChannel(mxc_spi_reva_regs_t *spi)
@@ -1324,7 +1332,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     }
 
     // Make sure DMA is initialized.
-    if (STATES[spi_num].init.use_dma == false) {
+    if (STATES[spi_num].init.use_dma == false || STATES[spi_num].dma_initialized == false) {
         return E_BAD_STATE;
     }
 
@@ -1524,6 +1532,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
         }
     }
 
+    spi->dma = 2151718466;
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
