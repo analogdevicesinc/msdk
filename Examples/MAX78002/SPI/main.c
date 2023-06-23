@@ -52,11 +52,9 @@
 #include "dma.h"
 
 /***** Preprocessors *****/
-#define MASTERSYNC 0
+#define MASTERSYNC 1
 #define MASTERASYNC 0
-#define MASTERDMA 1
-
-#define MXC_SPI_V2
+#define MASTERDMA 0
 
 #if (!(MASTERSYNC || MASTERASYNC || MASTERDMA))
 #error "You must set either MASTERSYNC or MASTERASYNC or MASTERDMA to 1."
@@ -67,7 +65,7 @@
 
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
-#define DATA_VALUE 0xA5AB // This is for master mode only...
+#define DATA_VALUE 0xA5B7 // This is for master mode only...
 #define VALUE 0xFFFF
 #define SPI_SPEED 100000 // Bit Rate
 
@@ -77,6 +75,7 @@
 uint16_t rx_data[DATA_LEN];
 uint16_t tx_data[DATA_LEN];
 volatile int SPI_FLAG;
+int TX_DMA_CH, RX_DMA_CH;
 
 /***** Functions *****/
 #if (SPI_INSTANCE_NUM == 0)
@@ -95,12 +94,12 @@ void SPI1_IRQHandler(void)
 }
 #endif
 
-void DMA0_IRQHandler(void)
+void DMA_TX_IRQHandler(void)
 {
     MXC_SPI_DMA_TX_Handler(SPI);
 }
 
-void DMA1_IRQHandler(void)
+void DMA_RX_IRQHandler(void)
 {
     MXC_SPI_DMA_RX_Handler(SPI);
 }
@@ -115,6 +114,7 @@ int main(void)
     int i, j, retVal;
     uint16_t temp;
     mxc_spi_req_t req;
+    mxc_spi_init_t init;
 
     printf("\n**************************** SPI MASTER TEST *************************\n");
     printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
@@ -133,36 +133,22 @@ int main(void)
 
     for (i = 2; i < 17; i++) {
         // Sending out 2 to 16 bits
-
         for (j = 0; j < DATA_LEN; j++) {
             tx_data[j] = DATA_VALUE;
         }
 
-// #if MASTERDMA
-//         // Helper function for SPI v2 drivers for DMA transactions.
-//         // Must be called before MXC_SPI_Init if using SPI DMA.
-//         MXC_SPI_UseDMA(1); // Use DMA (1)
-// #else
-//         // Not necessary when not using SPI DMA.
-//         MXC_SPI_UseDMA(0); // Don't use DMA (0).
-// #endif
-
-//         // Configure the peripheral
-//         retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins);
-
-        mxc_spi_init_t init;
         init.spi = SPI;
         init.freq = SPI_SPEED;
-        init.spi_pins = NULL;
+        init.spi_pins = NULL; // Use default, predefined pins
         init.mode = MXC_SPI_INTERFACE_STANDARD;
         init.type = MXC_SPI_TYPE_CONTROLLER;
-        init.clk_mode = MXC_SPI_CLKMODE_0;
+        init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
         init.frame_size = i;
         init.ts_control = MXC_SPI_TSCONTROL_HW_AUTO;
         init.target.active_polarity = 0;
         init.vssel = MXC_GPIO_VSSEL_VDDIO;
-        init.ts_mask = 0x01;
-    
+        init.ts_mask = 0x01; // Use Target Select 0
+
 #if MASTERDMA
         init.use_dma = true;
         init.dma = MXC_DMA;
@@ -180,15 +166,15 @@ int main(void)
 
         // SPI Request
         req.spi = SPI;
-        req.txData = (uint8_t *)tx_data;
-        req.rxData = (uint8_t *)rx_data;
-        req.txLen = DATA_LEN;
-        req.rxLen = DATA_LEN;
-        req.ssIdx = 0;
-        req.ssDeassert = 1;
-        req.txCnt = 0;
-        req.rxCnt = 0;
-        req.completeCB = (mxc_spi_callback_t)SPI_Callback;
+        req.tx_buffer = (uint8_t *)tx_data;
+        req.rx_buffer = (uint8_t *)rx_data;
+        req.tx_len = DATA_LEN;
+        req.rx_len = DATA_LEN;
+        req.index = 0;
+        req.deassert = 1;
+        req.tx_cnt = 0;
+        req.rx_cnt = 0;
+        req.callback = (mxc_spi_callback_t)SPI_Callback;
         SPI_FLAG = 1;
 
 #if MASTERSYNC
@@ -205,8 +191,15 @@ int main(void)
 #endif
 
 #if MASTERDMA
-        NVIC_EnableIRQ(DMA0_IRQn);
-        NVIC_EnableIRQ(DMA1_IRQn);
+        TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
+        RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI);
+
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(TX_DMA_CH));
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(RX_DMA_CH));
+
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
+
         MXC_SPI_MasterTransactionDMA(&req);
 
         while (SPI_FLAG == 1) {}
