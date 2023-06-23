@@ -902,20 +902,20 @@ mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
     mode = MXC_SPI_GetInterface(spi);
 
     switch (mode) {
-        case MXC_SPI_INTERFACE_STANDARD:
-            return SPI_WIDTH_STANDARD;
+    case MXC_SPI_INTERFACE_STANDARD:
+        return SPI_WIDTH_STANDARD;
 
-        case MXC_SPI_INTERFACE_QUAD:
-            return SPI_WIDTH_QUAD;
+    case MXC_SPI_INTERFACE_QUAD:
+        return SPI_WIDTH_QUAD;
 
-        case MXC_SPI_INTERFACE_DUAL:
-            return SPI_WIDTH_DUAL;
+    case MXC_SPI_INTERFACE_DUAL:
+        return SPI_WIDTH_DUAL;
 
-        case MXC_SPI_INTERFACE_3WIRE:
-            return SPI_WIDTH_3WIRE;
+    case MXC_SPI_INTERFACE_3WIRE:
+        return SPI_WIDTH_3WIRE;
 
-        default:
-            return SPI_WIDTH_STANDARD;
+    default:
+        return SPI_WIDTH_STANDARD;
     }
 }
 
@@ -937,20 +937,20 @@ int MXC_SPI_GetSlave(mxc_spi_regs_t *spi)
 int MXC_SPI_SetMode(mxc_spi_regs_t *spi, mxc_spi_mode_t spiMode)
 {
     switch (spiMode) {
-        case SPI_MODE_0:
-            return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+    case SPI_MODE_0:
+        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
 
-        case SPI_MODE_1:
-            return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+    case SPI_MODE_1:
+        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
 
-        case SPI_MODE_2:
-            return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+    case SPI_MODE_2:
+        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
 
-        case SPI_MODE_3:
-            return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+    case SPI_MODE_3:
+        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 }
 
@@ -961,20 +961,20 @@ mxc_spi_mode_t MXC_SPI_GetMode(mxc_spi_regs_t *spi)
     clk_mode = MXC_SPI_GetClkMode(spi);
 
     switch (clk_mode) {
-        case MXC_SPI_CLKMODE_0:
-            return SPI_MODE_0;
+    case MXC_SPI_CLKMODE_0:
+        return SPI_MODE_0;
 
-        case MXC_SPI_CLKMODE_1:
-            return SPI_MODE_1;
+    case MXC_SPI_CLKMODE_1:
+        return SPI_MODE_1;
 
-        case MXC_SPI_CLKMODE_2:
-            return SPI_MODE_2;
+    case MXC_SPI_CLKMODE_2:
+        return SPI_MODE_2;
 
-        case MXC_SPI_CLKMODE_3:
-            return SPI_MODE_3;
+    case MXC_SPI_CLKMODE_3:
+        return SPI_MODE_3;
 
-        default:
-            return SPI_MODE_0;
+    default:
+        return SPI_MODE_0;
     }
 }
 

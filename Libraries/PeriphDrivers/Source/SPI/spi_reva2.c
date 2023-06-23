@@ -889,8 +889,7 @@ mxc_spi_clkmode_t MXC_SPI_RevA2_GetClkMode(mxc_spi_reva_regs_t *spi)
     return MXC_SPI_CLKMODE_0;
 }
 
-int MXC_SPI_RevA2_SetCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback,
-                                      void *data)
+int MXC_SPI_RevA2_SetCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback, void *data)
 {
     int spi_num;
 
@@ -1032,7 +1031,8 @@ uint8_t MXC_SPI_RevA2_GetTXFIFOAvailable(mxc_spi_reva_regs_t *spi)
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
 
-    return MXC_SPI_FIFO_DEPTH - ((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS);
+    return MXC_SPI_FIFO_DEPTH -
+           ((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS);
 }
 
 uint8_t MXC_SPI_RevA2_GetRXFIFOAvailable(mxc_spi_reva_regs_t *spi)
@@ -1062,7 +1062,8 @@ int MXC_SPI_RevA2_ClearTXFIFO(mxc_spi_reva_regs_t *spi)
     spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FLUSH);
 
     // Revert to previous state.
-    MXC_SETFIELD(spi->dma, (MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN), save_state);
+    MXC_SETFIELD(spi->dma, (MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN),
+                 save_state);
 
     return E_NO_ERROR;
 }
@@ -1084,7 +1085,8 @@ int MXC_SPI_RevA2_ClearRXFIFO(mxc_spi_reva_regs_t *spi)
     spi->dma |= (MXC_F_SPI_REVA_DMA_RX_FLUSH);
 
     // Revert to previous state.
-    MXC_SETFIELD(spi->dma, (MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN), save_state);
+    MXC_SETFIELD(spi->dma, (MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN),
+                 save_state);
 
     return E_NO_ERROR;
 }
