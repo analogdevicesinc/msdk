@@ -74,15 +74,15 @@ int MXC_SPI_RevA2_SetFrameSize(mxc_spi_reva_regs_t *spi, int frame_size);
 
 int MXC_SPI_RevA2_GetFrameSize(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevA2_SetModeIF(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode);
+int MXC_SPI_RevA2_SetInterface(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode);
 
-mxc_spi_interface_t MXC_SPI_RevA2_GetModeIF(mxc_spi_reva_regs_t *spi);
+mxc_spi_interface_t MXC_SPI_RevA2_GetInterface(mxc_spi_reva_regs_t *spi);
 
 int MXC_SPI_RevA2_SetClkMode(mxc_spi_reva_regs_t *spi, mxc_spi_clkmode_t clk_mode);
 
 mxc_spi_clkmode_t MXC_SPI_RevA2_GetClkMode(mxc_spi_reva_regs_t *spi);
 
-int MXC_SPI_RevA2_SetRegisterCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback,
+int MXC_SPI_RevA2_SetCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback,
                                       void *data);
 
 int MXC_SPI_RevA2_SetInitStruct(mxc_spi_reva_regs_t *spi, mxc_spi_init_t *init);
@@ -90,6 +90,30 @@ int MXC_SPI_RevA2_SetInitStruct(mxc_spi_reva_regs_t *spi, mxc_spi_init_t *init);
 mxc_spi_init_t MXC_SPI_RevA2_GetInitStruct(mxc_spi_reva_regs_t *spi);
 
 int MXC_SPI_RevA2_GetActive(mxc_spi_reva_regs_t *spi);
+
+int MXC_SPI_RevA2_ReadyForSleep(mxc_spi_reva_regs_t *spi);
+
+int MXC_SPI_RevA2_SetDummyTX(mxc_spi_reva_regs_t *spi, uint16_t tx_value);
+
+int MXC_SPI_RevA2_StartTransmission(mxc_spi_reva_regs_t *spi);
+
+int MXC_SPI_RevA2_AbortTransmission(mxc_spi_reva_regs_t *spi);
+
+uint8_t MXC_SPI_RevA2_GetTXFIFOAvailable(mxc_spi_reva_regs_t *spi);
+
+uint8_t MXC_SPI_RevA2_GetRXFIFOAvailable(mxc_spi_reva_regs_t *spi);
+
+int MXC_SPI_RevA2_ClearTXFIFO(mxc_spi_reva_regs_t *spi);
+
+int MXC_SPI_RevA2_ClearRXFIFO(mxc_spi_reva_regs_t *spi);
+
+int MXC_SPI_RevA2_SetTXThreshold(mxc_spi_reva_regs_t *spi, uint8_t thd_val);
+
+int MXC_SPI_RevA2_SetRXThreshold(mxc_spi_reva_regs_t *spi, uint8_t thd_val);
+
+uint8_t MXC_SPI_RevA2_GetTXThreshold(mxc_spi_reva_regs_t *spi);
+
+uint8_t MXC_SPI_RevA2_GetRXThreshold(mxc_spi_reva_regs_t *spi);
 
 /* ** DMA-Specific Functions ** */
 

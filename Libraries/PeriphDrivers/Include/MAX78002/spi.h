@@ -237,7 +237,7 @@ struct _mxc_spi_reva2_req_t {
     mxc_spi_target_t *target_pins; // Contains index, pins, and polarity mode
 
     union {
-        uint32_t index;
+        uint32_t ts_idx;
         int ssIdx;           // ssIdx - Deprecated name
     };
 
@@ -484,7 +484,7 @@ int MXC_SPI_GetFrameSize(mxc_spi_regs_t *spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetModeIF(mxc_spi_regs_t *spi, mxc_spi_interface_t mode);
+int MXC_SPI_SetInterface(mxc_spi_regs_t *spi, mxc_spi_interface_t mode);
 
 /**
  * @brief   Gets the SPI interface mode used for transmissions.
@@ -495,7 +495,7 @@ int MXC_SPI_SetModeIF(mxc_spi_regs_t *spi, mxc_spi_interface_t mode);
  *
  * @return  The selected SPI instance's data line width. See \ref mxc_spi_datawidth_t.
  */
-mxc_spi_interface_t MXC_SPI_GetModeIF(mxc_spi_regs_t *spi);
+mxc_spi_interface_t MXC_SPI_GetInterface(mxc_spi_regs_t *spi);
 
 /**
  * @brief   Sets the SPI clock mode (clock polarity and clock phase).
@@ -526,7 +526,7 @@ mxc_spi_clkmode_t MXC_SPI_GetClkMode(mxc_spi_regs_t *spi);
  *  
  * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetRegisterCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data);
+int MXC_SPI_SetCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data);
 
 /**
  * @brief   Checks the SPI instance for an ongoing transmission
@@ -538,6 +538,139 @@ int MXC_SPI_SetRegisterCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback
  * @return  Active/Inactive, see \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_GetActive(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Checks whether the SPI instance is ready for sleep.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  Busy/Ready, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_ReadyForSleep(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Starts a SPI Transmission
+ *
+ * This function is applicable in Master mode only
+ *
+ * The user must ensure that there are no ongoing transmissions before
+ * calling this function
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_StartTransmission(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Aborts an ongoing SPI Transmission
+ *
+ * This function is applicable in Master mode only
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_AbortTransmission(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Abort any asynchronous requests in progress.
+ *
+ * Abort any asynchronous requests in progress. Any callbacks associated with
+ * the active transaction will be executed to indicate when the transaction
+ * has been terminated.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ */
+void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Get the amount of free space available in the transmit FIFO.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  The number of bytes available.
+ */
+unsigned int MXC_SPI_GetTXFIFOAvailable(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Get the number of bytes currently available in the receive FIFO.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  The number of bytes available.
+ */
+unsigned int MXC_SPI_GetRXFIFOAvailable(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Removes and discards all bytes currently in the transmit FIFO.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ */
+void MXC_SPI_ClearTXFIFO(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Removes and discards all bytes currently in the receive FIFO.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ */
+void MXC_SPI_ClearRXFIFO(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Set the transmit threshold level.
+ *
+ * TX FIFO threshold. Smaller values will cause interrupts
+ * to occur more often, but reduce the possibility of terminating
+ * a transaction early in master mode, or transmitting invalid data
+ * in slave mode. Larger values will reduce the time required by
+ * the ISR, but increase the possibility errors occurring. Passing
+ * an invalid value will cause the driver to use the value already
+ * set in the appropriate register.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   numBytes    The threshold level to set.  This value must be
+ *                      between 0 and 8 inclusive.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_SetTXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes);
+
+/**
+ * @brief   Set the receive threshold level.
+ *
+ * RX FIFO Receive threshold. Smaller values will cause
+ * interrupts to occur more often, but reduce the possibility
+ * of losing data because of a FIFO overflow. Larger values
+ * will reduce the time required by the ISR, but increase the
+ * possibility of data loss. Passing an invalid value will
+ * cause the driver to use the value already set in the
+ * appropriate register.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   numBytes    The threshold level to set. This value must be
+ *                      between 0 and 8 inclusive.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_SPI_SetRXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes);
+
+/**
+ * @brief   Get the current transmit threshold level.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  The transmit threshold value (in bytes).
+ */
+unsigned int MXC_SPI_GetTXThreshold(mxc_spi_regs_t *spi);
+
+/**
+ * @brief   Get the current receive threshold level.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ *
+ * @return  The receive threshold value (in bytes).
+ */
+unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t *spi);
 
 ///>>> Previous Implementation
 /**
@@ -621,109 +754,15 @@ int MXC_SPI_SetMode(mxc_spi_regs_t *spi, mxc_spi_mode_t spiMode);
 mxc_spi_mode_t MXC_SPI_GetMode(mxc_spi_regs_t *spi);
 
 /**
- * @brief   Starts a SPI Transmission
- *
- * This function is applicable in Master mode only
- *
- * The user must ensure that there are no ongoing transmissions before
- * calling this function
+ * @brief   Loads bytes into the transmit FIFO.
  *
  * @param   spi         Pointer to SPI instance's registers.
+ * @param   bytes       The buffer containing the bytes to write
+ * @param   len         The number of bytes to write.
  *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ * @return  The number of bytes actually written.
  */
-int MXC_SPI_StartTransmission(mxc_spi_regs_t *spi);
-
-/**
- * @brief   Aborts an ongoing SPI Transmission
- *
- * This function is applicable in Master mode only
- *
- * @param   spi         Pointer to SPI instance's registers.
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
- */
-int MXC_SPI_AbortTransmission(mxc_spi_regs_t *spi);
-
-/**
- * @brief   Set the receive threshold level.
- *
- * RX FIFO Receive threshold. Smaller values will cause
- * interrupts to occur more often, but reduce the possibility
- * of losing data because of a FIFO overflow. Larger values
- * will reduce the time required by the ISR, but increase the
- * possibility of data loss. Passing an invalid value will
- * cause the driver to use the value already set in the
- * appropriate register.
- *
- * @param   spi         Pointer to SPI instance's registers.
- * @param   numBytes    The threshold level to set. This value must be
- *                      between 0 and 8 inclusive.
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
- */
-int MXC_SPI_SetRXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes);
-
-/**
- * @brief   Get the current receive threshold level.
- *
- * @param   spi         Pointer to SPI instance's registers.
- *
- * @return  The receive threshold value (in bytes).
- */
-unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t *spi);
-
-/**
- * @brief   Set the transmit threshold level.
- *
- * TX FIFO threshold. Smaller values will cause interrupts
- * to occur more often, but reduce the possibility of terminating
- * a transaction early in master mode, or transmitting invalid data
- * in slave mode. Larger values will reduce the time required by
- * the ISR, but increase the possibility errors occurring. Passing
- * an invalid value will cause the driver to use the value already
- * set in the appropriate register.
- *
- * @param   spi         Pointer to SPI instance's registers.
- * @param   numBytes    The threshold level to set.  This value must be
- *                      between 0 and 8 inclusive.
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
- */
-int MXC_SPI_SetTXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes);
-
-/**
- * @brief   Get the current transmit threshold level.
- *
- * @param   spi         Pointer to SPI instance's registers.
- *
- * @return  The transmit threshold value (in bytes).
- */
-unsigned int MXC_SPI_GetTXThreshold(mxc_spi_regs_t *spi);
-
-/**
- * @brief   Sets the TX data to transmit as a 'dummy' byte
- *
- * In single wire master mode, this data is transmitted on MOSI when performing
- * an RX (MISO) only transaction. This defaults to 0.
- *
- * @param   spi             Pointer to SPI registers (selects the SPI block used.)
- * @param   defaultTXData   Data to shift out in RX-only transactions
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
- */
-int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData);
-
-/**
- * @brief   Abort any asynchronous requests in progress.
- *
- * Abort any asynchronous requests in progress. Any callbacks associated with
- * the active transaction will be executed to indicate when the transaction
- * has been terminated.
- *
- * @param   spi         Pointer to SPI instance's registers.
- */
-void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi);
+unsigned int MXC_SPI_WriteTXFIFO(mxc_spi_regs_t *spi, unsigned char *bytes, unsigned int len);
 
 /**
  * @brief   Unloads bytes from the receive FIFO.
@@ -737,48 +776,17 @@ void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi);
 unsigned int MXC_SPI_ReadRXFIFO(mxc_spi_regs_t *spi, unsigned char *bytes, unsigned int len);
 
 /**
- * @brief   Get the number of bytes currently available in the receive FIFO.
+ * @brief   Sets the TX data to transmit as a 'dummy' byte
  *
- * @param   spi         Pointer to SPI instance's registers.
+ * In single wire master mode, this data is transmitted on MOSI when performing
+ * an RX (MISO) only transaction. This defaults to 0.
  *
- * @return  The number of bytes available.
+ * @param   spi             Pointer to SPI registers (selects the SPI block used.)
+ * @param   defaultTXData   Data to shift out in RX-only transactions
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-unsigned int MXC_SPI_GetRXFIFOAvailable(mxc_spi_regs_t *spi);
-
-/**
- * @brief   Loads bytes into the transmit FIFO.
- *
- * @param   spi         Pointer to SPI instance's registers.
- * @param   bytes       The buffer containing the bytes to write
- * @param   len         The number of bytes to write.
- *
- * @return  The number of bytes actually written.
- */
-unsigned int MXC_SPI_WriteTXFIFO(mxc_spi_regs_t *spi, unsigned char *bytes, unsigned int len);
-
-/**
- * @brief   Get the amount of free space available in the transmit FIFO.
- *
- * @param   spi         Pointer to SPI instance's registers.
- *
- * @return  The number of bytes available.
- */
-unsigned int MXC_SPI_GetTXFIFOAvailable(mxc_spi_regs_t *spi);
-
-/**
- * @brief   Removes and discards all bytes currently in the receive FIFO.
- *
- * @param   spi         Pointer to SPI instance's registers.
- */
-void MXC_SPI_ClearRXFIFO(mxc_spi_regs_t *spi);
-
-/**
- * @brief   Removes and discards all bytes currently in the transmit FIFO.
- *
- * @param   spi         Pointer to SPI instance's registers.
- */
-void MXC_SPI_ClearTXFIFO(mxc_spi_regs_t *spi);
-
+int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData);
 ///<<< Previous Implementation
 
 /* ** DMA Functions ** */

@@ -497,7 +497,7 @@ int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vss
 
 #ifdef MXC_SPI0
     } else if (spi == MXC_SPI0) {
-        if (index > MXC_SPI1_TS_INSTANCES) {
+        if (index > MXC_SPI0_TS_INSTANCES) {
             return E_BAD_PARAM;
         }
 
@@ -573,14 +573,14 @@ int MXC_SPI_GetFrameSize(mxc_spi_regs_t *spi)
     return MXC_SPI_RevA2_GetFrameSize((mxc_spi_reva_regs_t *)spi);
 }
 
-int MXC_SPI_SetModeIF(mxc_spi_regs_t *spi, mxc_spi_interface_t mode)
+int MXC_SPI_SetInterface(mxc_spi_regs_t *spi, mxc_spi_interface_t mode)
 {
-    return MXC_SPI_RevA2_SetModeIF((mxc_spi_reva_regs_t *)spi, mode);
+    return MXC_SPI_RevA2_SetInterface((mxc_spi_reva_regs_t *)spi, mode);
 }
 
-mxc_spi_interface_t MXC_SPI_GetModeIF(mxc_spi_regs_t *spi)
+mxc_spi_interface_t MXC_SPI_GetInterface(mxc_spi_regs_t *spi)
 {
-    return MXC_SPI_RevA2_GetModeIF((mxc_spi_reva_regs_t *)spi);
+    return MXC_SPI_RevA2_GetInterface((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_SetClkMode(mxc_spi_regs_t *spi, mxc_spi_clkmode_t clk_mode)
@@ -593,14 +593,74 @@ mxc_spi_clkmode_t MXC_SPI_GetClkMode(mxc_spi_regs_t *spi)
     return MXC_SPI_RevA2_GetClkMode((mxc_spi_reva_regs_t *)spi);
 }
 
-int MXC_SPI_SetRegisterCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data)
+int MXC_SPI_SetCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data)
 {
-    return MXC_SPI_RevA2_SetRegisterCallback((mxc_spi_reva_regs_t *)spi, callback, data);
+    return MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)spi, callback, data);
 }
 
 int MXC_SPI_GetActive(mxc_spi_regs_t *spi)
 {
     return MXC_SPI_RevA2_GetActive((mxc_spi_reva_regs_t *)spi);
+}
+
+int MXC_SPI_ReadyForSleep(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_ReadyForSleep((mxc_spi_reva_regs_t *)spi);
+}
+
+int MXC_SPI_SetDummyTX(mxc_spi_regs_t *spi, uint16_t tx_value)
+{
+    return MXC_SPI_RevA2_SetDummyTX((mxc_spi_reva_regs_t *)spi, tx_value);
+}
+
+int MXC_SPI_StartTransmission(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_StartTransmission((mxc_spi_reva_regs_t *)spi);
+}
+
+int MXC_SPI_AbortTransmission(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_AbortTransmission((mxc_spi_reva_regs_t *)spi);
+}
+
+unsigned int MXC_SPI_GetTXFIFOAvailable(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_GetTXFIFOAvailable((mxc_spi_reva_regs_t *)spi);
+}
+
+unsigned int MXC_SPI_GetRXFIFOAvailable(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_GetRXFIFOAvailable((mxc_spi_reva_regs_t *)spi);
+}
+
+void MXC_SPI_ClearTXFIFO(mxc_spi_regs_t *spi)
+{
+    MXC_SPI_RevA2_ClearTXFIFO((mxc_spi_reva_regs_t *)spi);
+}
+
+void MXC_SPI_ClearRXFIFO(mxc_spi_regs_t *spi)
+{
+    MXC_SPI_RevA2_ClearRXFIFO((mxc_spi_reva_regs_t *)spi);
+}
+
+int MXC_SPI_SetTXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes)
+{
+    return (int)MXC_SPI_RevA2_SetTXThreshold((mxc_spi_reva_regs_t *)spi, numBytes);
+}
+
+int MXC_SPI_SetRXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes)
+{
+    return (int)MXC_SPI_RevA2_SetRXThreshold((mxc_spi_reva_regs_t *)spi, numBytes);
+}
+
+unsigned int MXC_SPI_GetTXThreshold(mxc_spi_regs_t *spi)
+{
+    return (unsigned int)MXC_SPI_RevA2_GetTXThreshold((mxc_spi_reva_regs_t *)spi);
+}
+
+unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t *spi)
+{
+    return (unsigned int)MXC_SPI_RevA2_GetRXThreshold((mxc_spi_reva_regs_t *)spi);
 }
 
 /* ** DMA-Specific Functions ** */
@@ -690,7 +750,7 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
 
     target.index = req->ssIdx;
 
-    error = MXC_SPI_SetRegisterCallback(req->spi, req->callback, req->callback_data);
+    error = MXC_SPI_SetCallback(req->spi, req->callback, req->callback_data);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -718,7 +778,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
         }
     }
 
-    error = MXC_SPI_SetRegisterCallback(req->spi, req->callback, req->callback_data);
+    error = MXC_SPI_SetCallback(req->spi, req->callback, req);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -818,17 +878,17 @@ int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth)
 {
     switch (spiWidth) {
     case SPI_WIDTH_3WIRE:
-        return MXC_SPI_SetModeIF(spi, MXC_SPI_INTERFACE_3WIRE);
+        return MXC_SPI_SetInterface(spi, MXC_SPI_INTERFACE_3WIRE);
 
     case SPI_WIDTH_STANDARD:
-        return MXC_SPI_SetModeIF(spi, MXC_SPI_INTERFACE_STANDARD);
+        return MXC_SPI_SetInterface(spi, MXC_SPI_INTERFACE_STANDARD);
 
     case SPI_WIDTH_DUAL:
-        return MXC_SPI_SetModeIF(spi, MXC_SPI_INTERFACE_DUAL);
+        return MXC_SPI_SetInterface(spi, MXC_SPI_INTERFACE_DUAL);
         break;
 
     case SPI_WIDTH_QUAD:
-        return MXC_SPI_SetModeIF(spi, MXC_SPI_INTERFACE_QUAD);
+        return MXC_SPI_SetInterface(spi, MXC_SPI_INTERFACE_QUAD);
 
     default:
         return E_BAD_PARAM;
@@ -839,39 +899,29 @@ mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
 {
     mxc_spi_interface_t mode;
 
-    mode = MXC_SPI_GetModeIF(spi);
+    mode = MXC_SPI_GetInterface(spi);
 
     switch (mode) {
-    case MXC_SPI_INTERFACE_STANDARD:
-        return SPI_WIDTH_STANDARD;
+        case MXC_SPI_INTERFACE_STANDARD:
+            return SPI_WIDTH_STANDARD;
 
-    case MXC_SPI_INTERFACE_QUAD:
-        return SPI_WIDTH_QUAD;
+        case MXC_SPI_INTERFACE_QUAD:
+            return SPI_WIDTH_QUAD;
 
-    case MXC_SPI_INTERFACE_DUAL:
-        return SPI_WIDTH_DUAL;
+        case MXC_SPI_INTERFACE_DUAL:
+            return SPI_WIDTH_DUAL;
 
-    case MXC_SPI_INTERFACE_3WIRE:
-        return SPI_WIDTH_3WIRE;
+        case MXC_SPI_INTERFACE_3WIRE:
+            return SPI_WIDTH_3WIRE;
 
-    default:
-        return SPI_WIDTH_STANDARD;
+        default:
+            return SPI_WIDTH_STANDARD;
     }
-}
-
-int MXC_SPI_ReadyForSleep(mxc_spi_reva_regs_t *spi)
-{
-    return E_NOT_SUPPORTED;
-}
-
-int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData)
-{
-    return E_NOT_SUPPORTED;
 }
 
 void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi)
 {
-    return;
+    MXC_SPI_AbortTransmission(spi);
 }
 
 int MXC_SPI_SetSlave(mxc_spi_regs_t *spi, int ssIdx)
@@ -886,70 +936,49 @@ int MXC_SPI_GetSlave(mxc_spi_regs_t *spi)
 
 int MXC_SPI_SetMode(mxc_spi_regs_t *spi, mxc_spi_mode_t spiMode)
 {
-    return E_NOT_SUPPORTED;
+    switch (spiMode) {
+        case SPI_MODE_0:
+            return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+
+        case SPI_MODE_1:
+            return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+
+        case SPI_MODE_2:
+            return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+
+        case SPI_MODE_3:
+            return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+
+        default:
+            return E_BAD_PARAM;
+    }
 }
 
 mxc_spi_mode_t MXC_SPI_GetMode(mxc_spi_regs_t *spi)
 {
-    return E_NOT_SUPPORTED;
+    mxc_spi_clkmode_t clk_mode;
+
+    clk_mode = MXC_SPI_GetClkMode(spi);
+
+    switch (clk_mode) {
+        case MXC_SPI_CLKMODE_0:
+            return SPI_MODE_0;
+
+        case MXC_SPI_CLKMODE_1:
+            return SPI_MODE_1;
+
+        case MXC_SPI_CLKMODE_2:
+            return SPI_MODE_2;
+
+        case MXC_SPI_CLKMODE_3:
+            return SPI_MODE_3;
+
+        default:
+            return SPI_MODE_0;
+    }
 }
 
-int MXC_SPI_StartTransmission(mxc_spi_regs_t *spi)
+int MXC_SPI_SetDefaultTXData(mxc_spi_regs_t *spi, unsigned int defaultTXData)
 {
-    return E_NOT_SUPPORTED;
-}
-
-int MXC_SPI_AbortTransmission(mxc_spi_regs_t *spi)
-{
-    return E_NOT_SUPPORTED;
-}
-
-unsigned int MXC_SPI_ReadRXFIFO(mxc_spi_regs_t *spi, unsigned char *bytes, unsigned int len)
-{
-    return E_NOT_SUPPORTED;
-}
-
-unsigned int MXC_SPI_GetRXFIFOAvailable(mxc_spi_regs_t *spi)
-{
-    return E_NOT_SUPPORTED;
-}
-
-unsigned int MXC_SPI_WriteTXFIFO(mxc_spi_regs_t *spi, unsigned char *bytes, unsigned int len)
-{
-    return E_NOT_SUPPORTED;
-}
-
-unsigned int MXC_SPI_GetTXFIFOAvailable(mxc_spi_regs_t *spi)
-{
-    return E_NOT_SUPPORTED;
-}
-
-void MXC_SPI_ClearRXFIFO(mxc_spi_regs_t *spi)
-{
-    return;
-}
-
-void MXC_SPI_ClearTXFIFO(mxc_spi_regs_t *spi)
-{
-    return;
-}
-
-int MXC_SPI_SetRXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes)
-{
-    return E_NOT_SUPPORTED;
-}
-
-unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t *spi)
-{
-    return 0;
-}
-
-int MXC_SPI_SetTXThreshold(mxc_spi_regs_t *spi, unsigned int numBytes)
-{
-    return E_NOT_SUPPORTED;
-}
-
-unsigned int MXC_SPI_GetTXThreshold(mxc_spi_regs_t *spi)
-{
-    return 0xFFFFFFFF;
+    return MXC_SPI_RevA2_SetDummyTX((mxc_spi_reva_regs_t *)spi, defaultTXData);
 }

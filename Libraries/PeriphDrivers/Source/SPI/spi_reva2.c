@@ -484,7 +484,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
                  (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
 
     // Interface mode: 3-wire, standard (4-wire), dual, quad.
-    error = MXC_SPI_SetModeIF((init->spi), (init->mode));
+    error = MXC_SPI_SetInterface((init->spi), (init->mode));
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -760,7 +760,7 @@ int MXC_SPI_RevA2_GetFrameSize(mxc_spi_reva_regs_t *spi)
     }
 }
 
-int MXC_SPI_RevA2_SetModeIF(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode)
+int MXC_SPI_RevA2_SetInterface(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode)
 {
     int spi_num;
 
@@ -801,7 +801,7 @@ int MXC_SPI_RevA2_SetModeIF(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode)
     return E_NO_ERROR;
 }
 
-mxc_spi_interface_t MXC_SPI_RevA2_GetModeIF(mxc_spi_reva_regs_t *spi)
+mxc_spi_interface_t MXC_SPI_RevA2_GetInterface(mxc_spi_reva_regs_t *spi)
 {
     if (spi->ctrl2 & MXC_F_SPI_REVA_CTRL2_THREE_WIRE) {
         return MXC_SPI_INTERFACE_3WIRE;
@@ -889,7 +889,7 @@ mxc_spi_clkmode_t MXC_SPI_RevA2_GetClkMode(mxc_spi_reva_regs_t *spi)
     return MXC_SPI_CLKMODE_0;
 }
 
-int MXC_SPI_RevA2_SetRegisterCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback,
+int MXC_SPI_RevA2_SetCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback,
                                       void *data)
 {
     int spi_num;
@@ -949,6 +949,203 @@ int MXC_SPI_RevA2_GetActive(mxc_spi_reva_regs_t *spi)
     }
 
     return E_NO_ERROR;
+}
+
+int MXC_SPI_RevA2_ReadyForSleep(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    if (spi->stat & MXC_F_SPI_REVA_STAT_BUSY || (spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) ||
+        (spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL)) {
+        return E_BUSY;
+    } else {
+        return E_NO_ERROR;
+    }
+}
+
+int MXC_SPI_RevA2_SetDummyTX(mxc_spi_reva_regs_t *spi, uint16_t tx_value)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    STATES[spi_num].tx_dummy_value = tx_value;
+
+    return E_NO_ERROR;
+}
+
+int MXC_SPI_RevA2_StartTransmission(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    if (MXC_SPI_GetActive((mxc_spi_regs_t *)spi) == E_BUSY) {
+        return E_BUSY;
+    }
+
+    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
+
+    return E_NO_ERROR;
+}
+
+int MXC_SPI_RevA2_AbortTransmission(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    // Disable interrupts, clear the flags.
+    spi->inten = 0;
+    spi->intfl = spi->intfl;
+
+    // Reset the cancel the ongoing transaction/
+    spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
+    spi->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
+
+    // Callback if not NULL
+    if (STATES[spi_num].callback != NULL) {
+        STATES[spi_num].callback(STATES[spi_num].callback_data, E_ABORT);
+    }
+
+    return E_NO_ERROR;
+}
+
+uint8_t MXC_SPI_RevA2_GetTXFIFOAvailable(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    MXC_ASSERT(spi_num >= 0);
+
+    return MXC_SPI_FIFO_DEPTH - ((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS);
+}
+
+uint8_t MXC_SPI_RevA2_GetRXFIFOAvailable(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    MXC_ASSERT(spi_num >= 0);
+
+    return (spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL) >> MXC_F_SPI_REVA_DMA_RX_LVL_POS;
+}
+
+int MXC_SPI_RevA2_ClearTXFIFO(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+    uint32_t save_state;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    save_state = (spi->dma & (MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN));
+
+    // Disable FIFOs before clearing as recommended by UG.
+    spi->dma &= ~(MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN);
+    spi->dma |= (MXC_F_SPI_REVA_DMA_TX_FLUSH);
+
+    // Revert to previous state.
+    MXC_SETFIELD(spi->dma, (MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN), save_state);
+
+    return E_NO_ERROR;
+}
+
+int MXC_SPI_RevA2_ClearRXFIFO(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+    uint32_t save_state;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    save_state = (spi->dma & (MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN));
+
+    // Disable FIFOs before clearing as recommended by UG.
+    spi->dma &= ~(MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN);
+    spi->dma |= (MXC_F_SPI_REVA_DMA_RX_FLUSH);
+
+    // Revert to previous state.
+    MXC_SETFIELD(spi->dma, (MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN), save_state);
+
+    return E_NO_ERROR;
+}
+
+int MXC_SPI_RevA2_SetTXThreshold(mxc_spi_reva_regs_t *spi, uint8_t thd_val)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    // Valid values for the threshold are 0x1 to 0x1F
+    if (thd_val > (MXC_SPI_FIFO_DEPTH - 1) || thd_val == 0) {
+        return E_BAD_PARAM;
+    }
+
+    MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
+                 thd_val << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS);
+
+    return E_NO_ERROR;
+}
+
+int MXC_SPI_RevA2_SetRXThreshold(mxc_spi_reva_regs_t *spi, uint8_t thd_val)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    if (thd_val >= (MXC_SPI_FIFO_DEPTH - 1)) {
+        return E_BAD_PARAM;
+    }
+
+    MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
+                 thd_val << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS);
+
+    return E_NO_ERROR;
+}
+
+uint8_t MXC_SPI_RevA2_GetTXThreshold(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    MXC_ASSERT(spi_num >= 0);
+
+    return (spi->dma & MXC_F_SPI_REVA_DMA_TX_THD_VAL) >> MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS;
+}
+
+uint8_t MXC_SPI_RevA2_GetRXThreshold(mxc_spi_reva_regs_t *spi)
+{
+    int spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    MXC_ASSERT(spi_num >= 0);
+
+    return (spi->dma & MXC_F_SPI_REVA_DMA_RX_THD_VAL) >> MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS;
 }
 
 /* ** DMA-Specific Functions ** */
@@ -1488,7 +1685,6 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
         }
     }
 
-    spi->dma = 2151718466;
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
