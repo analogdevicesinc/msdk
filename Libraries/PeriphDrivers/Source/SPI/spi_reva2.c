@@ -550,56 +550,6 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     return E_NO_ERROR;
 }
 
-int MXC_SPI_RevA2_InitStruct(mxc_spi_init_t *init)
-{
-    if (init == NULL) {
-        return E_BAD_PARAM;
-    }
-
-    init->spi = MXC_SPI0;
-    init->spi_pins = NULL; // Use default, predefined pins
-    init->type = MXC_SPI_TYPE_CONTROLLER; // Controller mode
-    init->freq = 100000; // 100KHz
-    init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
-    init->mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
-    init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
-    init->target.active_polarity = 0; // Active polarity is LOW (0). IDLE is HIGH (1).
-    init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
-    init->ts_mask = 0x01; // Default TS0
-    init->use_dma = false; // DMA not used
-    init->dma = NULL;
-
-    return E_SUCCESS;
-}
-
-int MXC_SPI_RevA2_InitStruct_DMA(mxc_spi_init_t *init)
-{
-    if (init == NULL) {
-        return E_BAD_PARAM;
-    }
-
-    init->spi = MXC_SPI0; // Use first SPI instance
-    init->spi_pins = NULL; // Use default, predefined pins
-    init->type = MXC_SPI_TYPE_CONTROLLER; // Controller mode
-    init->freq = 100000; // 100KHz
-    init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
-    init->mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
-    init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
-    init->target.active_polarity = 0; // Active polarity is LOW (0), IDLE is HIGH (1)
-    init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
-    init->ts_mask = 0x01; // Default TS0
-    init->use_dma = true; // Use DMA
-
-    // Use first DMA instance
-#if (MXC_DMA_INSTANCES == 1)
-    init->dma = MXC_DMA;
-#else
-    init->dma = MXC_DMA0;
-#endif
-
-    return E_SUCCESS;
-}
-
 int MXC_SPI_RevA2_Shutdown(mxc_spi_reva_regs_t *spi)
 {
     int spi_num, error;

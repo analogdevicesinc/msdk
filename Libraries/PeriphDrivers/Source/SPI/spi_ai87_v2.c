@@ -45,6 +45,7 @@
 #include "spi_reva2.h"
 #include "spi.h"
 #include "dma.h"
+#include "gpio.h"
 
 /* **** Definitions **** */
 
@@ -333,12 +334,46 @@ int MXC_SPI_Init_v2(mxc_spi_init_t *init)
 
 int MXC_SPI_InitStruct(mxc_spi_init_t *init)
 {
-    return MXC_SPI_InitStruct(init);
+    if (init == NULL) {
+        return E_BAD_PARAM;
+    }
+
+    init->spi = MXC_SPI1; // SPI1 is available on both the ARM and RISCV core.
+    init->spi_pins = NULL; // Use default, predefined pins
+    init->type = MXC_SPI_TYPE_CONTROLLER; // Controller mode
+    init->freq = 100000; // 100KHz
+    init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
+    init->mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
+    init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
+    init->target.active_polarity = 0; // Active polarity is LOW (0). IDLE is HIGH (1).
+    init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
+    init->ts_mask = 0x01; // Default TS0
+    init->use_dma = false; // DMA not used
+    init->dma = NULL;
+
+    return E_SUCCESS;
 }
 
 int MXC_SPI_InitStruct_DMA(mxc_spi_init_t *init)
 {
-    return MXC_SPI_InitStruct_DMA(init);
+    if (init == NULL) {
+        return E_BAD_PARAM;
+    }
+
+    init->spi = MXC_SPI1; // SPI1 is available on both the ARM and RISCV core.
+    init->spi_pins = NULL; // Use default, predefined pins
+    init->type = MXC_SPI_TYPE_CONTROLLER; // Controller mode
+    init->freq = 100000; // 100KHz
+    init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
+    init->mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
+    init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
+    init->target.active_polarity = 0; // Active polarity is LOW (0), IDLE is HIGH (1)
+    init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
+    init->ts_mask = 0x01; // Default TS0
+    init->use_dma = true; // Use DMA
+    init->dma = MXC_DMA;
+
+    return E_SUCCESS;
 }
 
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
