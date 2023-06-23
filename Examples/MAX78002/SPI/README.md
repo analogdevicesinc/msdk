@@ -7,9 +7,68 @@ Multiple word sizes (2 through 16 bits) are demonstrated.
 
 By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the MASTERSYNC macro to 0 and set the MASTERASYNC macro to 1.  To use DMA transactions, set the MASTERDMA macro to 1 instead.
 
-This example also demonstrates the new SPI v2 API.  To use the new implementation, assign `MXC_SPI_V2` define to `1` in project.mk, then rebuild the project.
-
 ## Software
+
+This example uses the SPI v2 Library. 
+
+### Porting Guide
+
+The SPI v2 Library is backwards compatible with the previous SPI API - meaning the previously existing function prototypes have not changed. There are functional differences with SPI DMA interrupt handling that must be updated when porting the project from using the previous SPI API to SPI v2.
+
+#### SPI v2 API Differences
+
+##### SPI Init Function
+
+The `MXC_SPI_Init(...)` function is still supported with SPI v2, but there is some added overhead due to the limited settings that this function can set.
+
+Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead and 2) to give the caller control in the SPI setup.
+
+**`mxc_spi_init_t init` Fields**
+- `mxc_spi_regs_t *spi`              //<== SPI Instance
+- `mxc_gpio_cfg_t *spi_pins`         //<== (Optional) Caller supplied SPI pins.
+- `mxc_spi_type_t type`              //<== Controller (L. Master) or Target (L. Slave) Modes
+- `uint32_t freq`                    //<== SPI Frequency
+- `mxc_spi_clkmode_t clk_mode`       //<== Clock Mode (CPOL:CPHA)
+- `mxc_spi_interface_t mode`         //<== Select Interface (Standard 4-wire, 3-wire, dual, quad)
+- `mxc_spi_tscontrol_t ts_control`   //<== HW Auto, SW Driver, or SW Application Target Control
+- `mxc_spi_target_t target`          //<== 
+- `mxc_gpio_vssel_t vssel`           //<== Select Pin Voltage Level (VDDIO/VDDIOH)
+- `uint8_t ts_mask`                  //<== If using HW Auto mode, select the target to initlaize.
+- `bool use_dma`                     //<== TRUE/FALSE setting.
+- `mxc_dma_regs_t *dma`              //<== DMA Instance
+
+##### SPI DMA Interrupt Handling
+
+```c
+void DMA_TX_IRQHandler(void)
+{
+    MXC_SPI_DMA_TX_Handler(SPI);
+}
+
+void DMA_RX_IRQHandler(void)
+{
+    MXC_SPI_DMA_RX_Handler(SPI);
+}
+
+```
+The previous SPI API uses the MXC_DMA_Handler, but SPI v2 supplies its own Handler processing functions to call for TX and RX DMA.
+
+##### SPI DMA Setup
+```c
+    ...
+    TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
+    RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI);
+
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(TX_DMA_CH));
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(RX_DMA_CH));
+
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
+
+    MXC_SPI_MasterTransactionDMA(&req);
+    ...
+```
+Following the DMA channel interrupt changes from the previous section, it is recommended to set up a generic name DMA TX/RX vector because the the TX and RX DMA channels won't always acquire DMA_CH0 and DMA_CH1, respectively. 
 
 ### Project Usage
 
