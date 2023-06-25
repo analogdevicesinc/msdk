@@ -64,7 +64,9 @@ extern "C" {
 
 // clang-format off
 
-// Type or MSMode
+/**
+ * @brief   The list of types for the SPI peripheral.
+ */
 typedef enum {
     MXC_SPI_TYPE_MASTER = 0,
     MXC_SPI_TYPE_CONTROLLER = 0,
@@ -72,13 +74,19 @@ typedef enum {
     MXC_SPI_TYPE_TARGET = 1
 } mxc_spi_type_t;
 
-// Target Select (TS) Control Scheme
+/**
+ * @brief   The list of Target Select Control Scheme Options for
+ *          target assertion/deassertion.
+ */
 typedef enum {
     MXC_SPI_TSCONTROL_HW_AUTO = 0, // Automatically by hardware
     MXC_SPI_TSCONTROL_SW_DRV = 1,  // Through software by the driver
     MXC_SPI_TSCONTROL_SW_APP = 2   // Through software in the application
 } mxc_spi_tscontrol_t;
 
+/**
+ * @brief   The list of possible states for an SPI instance.
+ */
 typedef enum {
     MXC_SPI_STATE_READY = 0, // Ready for transaction
     MXC_SPI_STATE_BUSY = 1   // Busy transferring
@@ -90,6 +98,7 @@ typedef enum {
 typedef enum {
     MXC_SPI_INTERFACE_3WIRE = 0,
     MXC_SPI_INTERFACE_STANDARD = 1,
+    MXC_SPI_INTERFACE_4WIRE = 1,
     MXC_SPI_INTERFACE_DUAL = 2,
     MXC_SPI_INTERFACE_QUAD = 3
 } mxc_spi_interface_t;
@@ -111,10 +120,23 @@ typedef enum {
     MXC_SPI_CLKMODE_3 = 3  // CPOL: 1    CPHA: 1
 } mxc_spi_clkmode_t;
 
+/**
+ * @brief The settings for selecting TARGETS when in the SPI
+ *          peripheral is set in CONTROLLER mode.
+ * 
+ */
 typedef struct {
-    uint32_t index;
-    mxc_gpio_cfg_t pins;
-    uint8_t active_polarity; // Active High (1) or Low (0)
+    uint32_t index;          // Select target index for transactions.
+    mxc_gpio_cfg_t pins;     // User-configured Target Select SPI pins.
+
+    // Initialization Settings.
+    uint8_t active_polarity; // Active High (1) or Low (0).
+    uint8_t init_mask;       // Initialize HW TS pins if TS_CONTROL scheme is in
+                             // MXC_SPI_TSCONTROL_HW_AUTO mode.
+                             // The [] represents the bit location:
+                             //    init_mask[0] = Target Select Pin 0
+                             //    init_mask[1] = Target Select Pin 1
+                             //    init_mask[n] = Target Select Pin n
 } mxc_spi_target_t;
 
 ///>>> @deprecated
@@ -184,10 +206,7 @@ typedef struct {
     mxc_spi_tscontrol_t ts_control; // Target Select Control Scheme (auto HW, driver, or app controlled)
     mxc_spi_target_t target;        // Target Settings (index, pins, active_polarity)
     mxc_gpio_vssel_t vssel;         // Ensures selected VDDIO/VDDIOH setting
-    uint8_t ts_mask;                // Target Select Mask to initialize default target pins.
-                                    //    ts_mask[0] = Target Select Pin 0
-                                    //    ts_mask[1] = Target Select Pin 1
-                                    //    ts_mask[n] = Target Select Pin n
+
     // DMA
     bool use_dma;
     mxc_dma_regs_t *dma;
@@ -234,7 +253,7 @@ struct _mxc_spi_reva2_req_t {
     uint16_t tx_dummy_value; // Value of dummy bytes to be sent
 
     // Chip Select Options
-    mxc_spi_target_t *target_pins; // Contains index, pins, and polarity mode
+    mxc_spi_target_t *target_pins; // Contains index, pins, polarity mode, init mask.
 
     union {
         uint32_t ts_idx;
@@ -247,6 +266,8 @@ struct _mxc_spi_reva2_req_t {
         spi_complete_cb_t completeCB; // completeCB - Deprecated
     };
     void *callback_data;
+
+    mxc_spi_target_t target_sel; // Select Target
 };
 // clang-format on
 
@@ -257,9 +278,9 @@ struct _mxc_spi_reva2_req_t {
 /**
  * @brief   Initialize and enable SPI peripheral.
  *
- * This function initializes everything necessary to call a SPI transaction function.
- * Some parameters are set to defaults as follows:
- * SPI Mode - 0
+ * This function initializes y to call a SPI transaction function.
+ * Some parameters are set to their default:
+ * SPI Mode - 0 (Call MXC_SPI_SetMode or MXC_SPI_SetClkMode).
  * SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)
  *
  * These parameters can be modified after initialization using low level functions
@@ -292,9 +313,6 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
  * @brief   Initialize and enable SPI peripheral.
  *
  * This function initializes everything necessary to call a SPI transaction function.
- * Some parameters are set to defaults as follows:
- * SPI Mode - 0
- * SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)
  *
  * These parameters can be modified after initialization using low level functions
  *
@@ -309,10 +327,10 @@ int MXC_SPI_Init_v2(mxc_spi_init_t *init);
  * @brief   Overwrites an init struct with default, example values (non-DMA).
  * 
  * Note: This function overwrites an mxc_spi_init_t init struct with
- *      arbitrary, default values.
+ *      default values.
  *
  * Settings:
- *      SPI0 instance
+ *      SPI APB (SPI1) instance
  *      Default, predefined SPI pins at VDDIO
  *      Controller Mode
  *      Standard 4-wire mode
@@ -901,6 +919,9 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req);
 
 /**
  * @brief   Set up a non-blocking, interrupt-driven SPI controller transaction.
+ * 
+ * The MXC_SPI_Handler function must be called in the selected SPI instance's
+ * interrupt handler to process the transaction.
  *
  * @param   spi         Pointer to SPI instance's registers.
  * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).
@@ -918,6 +939,9 @@ int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint3
 
 /**
  * @brief   Set up a blocking, interrupt-driven SPI controller transaction.
+ * 
+ * The MXC_SPI_Handler function must be called in the selected SPI instance's
+ * interrupt handler to process the transaction.
  *
  * @param   spi         Pointer to SPI instance's registers.
  * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).

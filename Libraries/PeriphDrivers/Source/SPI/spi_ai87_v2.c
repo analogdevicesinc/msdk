@@ -99,15 +99,15 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
 
     // Set up Target Select pins.
     if (pins.ss0) {
-        init->ts_mask |= (1 << MXC_SPI_TS0_MASK_POS); // Bit position 0
+        init->target.init_mask |= (1 << MXC_SPI_TS0_MASK_POS); // Bit position 0
     }
 
     if (pins.ss1) {
-        init->ts_mask |= (1 << MXC_SPI_TS1_MASK_POS); // Bit position 1
+        init->target.init_mask |= (1 << MXC_SPI_TS1_MASK_POS); // Bit position 1
     }
 
     if (pins.ss2) {
-        init->ts_mask |= (1 << MXC_SPI_TS2_MASK_POS); // Bit position 2
+        init->target.init_mask |= (1 << MXC_SPI_TS2_MASK_POS); // Bit position 2
     }
 
     if (pins.sdio2 || pins.sdio3) {
@@ -121,6 +121,9 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
     //  set the message size until later by calling MXC_SPI_SetData.
     // By default for the new implementation, the frame_size will be set to 8 bits.
     init->frame_size = 8;
+
+    // Set default clock mode (0).
+    init->clk_mode = MXC_SPI_CLKMODE_0;
 
     // By default, DMA will be initalized for API function
     if (useDMA) {
@@ -246,15 +249,18 @@ int MXC_SPI_Init_v2(mxc_spi_init_t *init)
 
     spi_num = MXC_SPI_GET_IDX(init->spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        while(1);
         return E_BAD_PARAM;
     }
 
     // Check if frequency is too high
     if ((spi_num == 0) && (init->freq > MXC_SPI_GetPeripheralClock(init->spi))) {
+        while(1);
         return E_BAD_PARAM;
     }
 
     if ((spi_num == 1) && (init->freq > SystemCoreClock)) {
+        while(1);
         return E_BAD_PARAM;
     }
 
@@ -347,7 +353,7 @@ int MXC_SPI_InitStruct(mxc_spi_init_t *init)
     init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
     init->target.active_polarity = 0; // Active polarity is LOW (0). IDLE is HIGH (1).
     init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
-    init->ts_mask = 0x01; // Default TS0
+    init->target.init_mask = 0x01; // Default TS0
     init->use_dma = false; // DMA not used
     init->dma = NULL;
 
@@ -369,7 +375,7 @@ int MXC_SPI_InitStruct_DMA(mxc_spi_init_t *init)
     init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
     init->target.active_polarity = 0; // Active polarity is LOW (0), IDLE is HIGH (1)
     init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
-    init->ts_mask = 0x01; // Default TS0
+    init->target.init_mask = 0x01; // Default TS0
     init->use_dma = true; // Use DMA
     init->dma = MXC_DMA;
 
@@ -736,7 +742,15 @@ int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
 {
     mxc_spi_target_t target;
 
-    target.index = req->ssIdx;
+    // For backwards-compatibility with previous SPI implementation, use
+    //  use the req->ts_idx (L. req->ssIdx) as default.
+    // Note: the previous implementation did not have an option to select
+    //  targets for transactions.
+    target.index = req->ts_idx; // also req->ssIdx
+
+    // Mainly used if MXC_SPI_TSCONTROL_SW_DRV scheme was selected.
+    target.pins = req->target_sel.pins;
+    target.active_polarity = req->target_sel.active_polarity;
 
     return MXC_SPI_RevA2_ControllerTransactionB((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                 req->tx_len, req->rx_buffer, req->rx_len,
@@ -748,7 +762,15 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
     int error;
     mxc_spi_target_t target;
 
-    target.index = req->ssIdx;
+    // For backwards-compatibility with previous SPI implementation, use
+    //  use the req->ts_idx (L. req->ssIdx) as default.
+    // Note: the previous implementation did not have an option to select
+    //  targets for transactions.
+    target.index = req->ts_idx; // also req->ssIdx
+
+    // Mainly used if MXC_SPI_TSCONTROL_SW_DRV scheme was selected.
+    target.pins = req->target_sel.pins;
+    target.active_polarity = req->target_sel.active_polarity;
 
     error = MXC_SPI_SetCallback(req->spi, req->callback, req->callback_data);
     if (error != E_NO_ERROR) {
@@ -765,7 +787,16 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
     int error;
     mxc_spi_target_t target;
     mxc_spi_init_t init;
-    target.index = req->ssIdx;
+    
+    // For backwards-compatibility with previous SPI implementation, use
+    //  use the req->ts_idx (L. req->ssIdx) as default.
+    // Note: the previous implementation did not have an option to select
+    //  targets for transactions.
+    target.index = req->ts_idx; // also req->ssIdx
+
+    // Mainly used if MXC_SPI_TSCONTROL_SW_DRV scheme was selected.
+    target.pins = req->target_sel.pins;
+    target.active_polarity = req->target_sel.active_polarity;
 
     init.use_dma = true;
     init.dma = MXC_DMA;

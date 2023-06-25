@@ -56,6 +56,8 @@
 #define MASTERASYNC 0
 #define MASTERDMA 0
 
+#define CUSTOM_TARGET 0
+
 #if (!(MASTERSYNC || MASTERASYNC || MASTERDMA))
 #error "You must set either MASTERSYNC or MASTERASYNC or MASTERDMA to 1."
 #endif
@@ -137,18 +139,37 @@ int main(void)
             tx_data[j] = DATA_VALUE;
         }
 
+        // Initialization Settings.
         init.spi = SPI;
         init.freq = SPI_SPEED;
         init.spi_pins = NULL; // Use default, predefined pins
-        init.mode = MXC_SPI_INTERFACE_STANDARD;
+        init.mode = MXC_SPI_INTERFACE_STANDARD; // 4-wire
         init.type = MXC_SPI_TYPE_CONTROLLER;
         init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
         init.frame_size = i;
-        init.ts_control = MXC_SPI_TSCONTROL_HW_AUTO;
-        init.target.active_polarity = 0;
-        init.vssel = MXC_GPIO_VSSEL_VDDIO;
-        init.ts_mask = 0x01; // Use Target Select 0
 
+        // Target Select Settings
+#if CUSTOM_TARGET
+        // Example to select a custom target.
+        mxc_gpio_cfg_t target_pins;
+        target_pins.port = MXC_GPIO0;
+        target_pins.mask = MXC_GPIO_PIN_9;
+        target_pins.func = MXC_GPIO_FUNC_OUT;
+        target_pins.pad = MXC_GPIO_PAD_PULL_UP;
+        target_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
+
+        init.ts_control = MXC_SPI_TSCONTROL_SW_DRV; // SPI Driver will handle deassertion for TS pins.
+        init.target.pins = target_pins;
+        init.target.active_polarity = 0;
+        init.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set SPI pins to VDDIOH (3.3V).
+#else
+        init.ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // HW will deassert/assert TS pins.
+        init.target.active_polarity = 0;
+        init.target.init_mask = 0x01; // Initialize Target Select 0 pin.
+        init.vssel = MXC_GPIO_VSSEL_VDDIO;
+#endif
+
+        // DMA Settings.
 #if MASTERDMA
         init.use_dma = true;
         init.dma = MXC_DMA;
@@ -170,11 +191,12 @@ int main(void)
         req.rx_buffer = (uint8_t *)rx_data;
         req.tx_len = DATA_LEN;
         req.rx_len = DATA_LEN;
-        req.index = 0;
+        req.ts_idx = 0;
         req.deassert = 1;
         req.tx_cnt = 0;
         req.rx_cnt = 0;
         req.callback = (mxc_spi_callback_t)SPI_Callback;
+        req.target_sel = init.target;
         SPI_FLAG = 1;
 
 #if MASTERSYNC

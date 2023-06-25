@@ -372,15 +372,16 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     // Set up Target Select Control Scheme.
     //  Hardware (Automatic) Controlled.
     if (init->ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
-        // Set up preconfigured TSn Pins
-        if (init->ts_mask) {
+        // Set up preconfigured TSn Pins.
+        //   Use target.init_mask for most the convenience.
+        if (init->target.init_mask) {
             // Get total number of TSn instances for this SPI instance
             for (i = 0; i < MXC_SPI_GET_TOTAL_TS(init->spi); i++) {
-                // Note: The [] represents the bit location of ts_mask
-                //       ts_mask[0] <= Target Select 0 (TS0)
-                //       ts_mask[1] <= Target Select 1 (TS1)
-                //       ts_mask[n] <= Target Select n (TSn)
-                if (init->ts_mask & (1 << i)) {
+                // Note: The [] represents the bit location of init_mask
+                //       init_mask[0] <= Target Select 0 (TS0)
+                //       init_mask[1] <= Target Select 1 (TS1)
+                //       init_mask[n] <= Target Select n (TSn)
+                if (init->target.init_mask & (1 << i)) {
                     error = MXC_SPI_ConfigTargetSelect(init->spi, i, init->vssel);
                     if (error != E_NO_ERROR) {
                         return error;
@@ -389,9 +390,10 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
             }
 
             MXC_SETFIELD((init->spi)->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
-                         ((uint32_t)(init->ts_mask) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+                         ((uint32_t)(init->target.init_mask) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
 
-            // If ts_mask was not used, read the target settings and initalize the selected index
+            // If target.init_mask was not used, then read the target settings and initalize the selected index.
+            // Mainly used to test new HW TSn pins that aren't defined in the parts' mxc_pins.h and pins_{part}.c.
         } else {
             if (target->index >= MXC_SPI_GET_TOTAL_TS(init->spi)) {
                 return E_BAD_PARAM;
@@ -402,7 +404,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
                 return error;
             }
 
-            (init->spi)->ctrl0 |= (target->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
+            (init->spi)->ctrl0 |= ((1 << target->index) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
 
             // Set TS Polarity (Default - active low (0))
             if (target->active_polarity) {
@@ -430,7 +432,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
                 return error;
             }
 
-            // Set TS Polarity (Default - active low (0))
+            // Set IDLE TS Polarity (Default - active low (0))
             if (target->active_polarity) {
                 // Active HIGH (1), Set TS Idle State to LOW (0)
                 target_port->out_clr |= target->pins.mask;
@@ -482,6 +484,12 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
                  ((MXC_SPI_FIFO_DEPTH - 1) << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
     MXC_SETFIELD((init->spi)->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
                  (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
+
+    // Set Clock Mode (CPOL and CPHA).
+    error = MXC_SPI_SetClkMode((init->spi), (init->mode));
+    if (error != E_NO_ERROR) {
+        return error;
+    }
 
     // Interface mode: 3-wire, standard (4-wire), dual, quad.
     error = MXC_SPI_SetInterface((init->spi), (init->mode));
@@ -1012,7 +1020,7 @@ int MXC_SPI_RevA2_AbortTransmission(mxc_spi_reva_regs_t *spi)
     spi->inten = 0;
     spi->intfl = spi->intfl;
 
-    // Reset the cancel the ongoing transaction/
+    // Reset to cancel the ongoing transaction.
     spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
     spi->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
 
@@ -1327,7 +1335,6 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
         return E_BAD_STATE;
     }
 
-    // TODO(6-20-2023): Check if initializing DMA affects non-DMA transactions
     // Make sure DMA is not initialized.
     if (STATES[spi_num].init.use_dma == true) {
         return E_BAD_STATE;
@@ -1405,22 +1412,6 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     //   be handled from the MXC_SPI_Handler which should be called in SPI_IRQHandler.
     MXC_SPI_RevA2_process(spi);
 
-    // Toggle Chip Select Pin if handled by the driver.
-    if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
-        // Make sure the selected Target Select (L. SS) pin is enabled as an output.
-        if (target->pins.func != MXC_GPIO_FUNC_OUT) {
-            return E_BAD_STATE;
-        }
-
-        // Active HIGH (1).
-        if (target->active_polarity) {
-            target->pins.port->out_set |= target->pins.mask;
-            // Active LOW (0).
-        } else {
-            target->pins.port->out_clr |= target->pins.mask;
-        }
-    }
-
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
@@ -1435,12 +1426,27 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
         // In HW Auto Scheme, only use the target index member.
         // Limitation: This implemention only support transactions with one target at a time.
         MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
-                     ((1 << target->index) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+                    ((1 << target->index) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
 
         if (deassert) {
             spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
         } else {
             spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        }
+
+    // Toggle Chip Select Pin if handled by the driver.
+    } else if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
+        // Make sure the selected Target Select (L. SS) pin is enabled as an output.
+        if (target->pins.func != MXC_GPIO_FUNC_OUT) {
+            return E_BAD_STATE;
+        }
+
+        // Active HIGH (1).
+        if (target->active_polarity) {
+            target->pins.port->out_set |= target->pins.mask;
+            // Active LOW (0).
+        } else {
+            target->pins.port->out_clr |= target->pins.mask;
         }
     }
 
@@ -1671,22 +1677,6 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
         spi->dma |= (MXC_F_SPI_REVA_DMA_DMA_RX_EN);
     }
 
-    // Toggle Chip Select Pin if handled by the driver
-    if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
-        // Make sure the selected Target Select (L. SS) pin is enabled as an output.
-        if (target->pins.func != MXC_GPIO_FUNC_OUT) {
-            return E_BAD_STATE;
-        }
-
-        // Active HIGH (1).
-        if (target->active_polarity) {
-            target->pins.port->out_set |= target->pins.mask;
-            // Active LOW (0).
-        } else {
-            target->pins.port->out_clr |= target->pins.mask;
-        }
-    }
-
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
@@ -1706,6 +1696,21 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
             spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
         } else {
             spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        }
+
+    // Toggle Chip Select Pin if handled by the driver.
+    } else if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
+        // Make sure the selected Target Select (L. SS) pin is enabled as an output.
+        if (target->pins.func != MXC_GPIO_FUNC_OUT) {
+            return E_BAD_STATE;
+        }
+
+        // Active HIGH (1).
+        if (target->active_polarity) {
+            target->pins.port->out_set |= target->pins.mask;
+            // Active LOW (0).
+        } else {
+            target->pins.port->out_clr |= target->pins.mask;
         }
     }
 
