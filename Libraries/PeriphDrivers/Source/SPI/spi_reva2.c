@@ -1020,7 +1020,7 @@ int MXC_SPI_RevA2_AbortTransmission(mxc_spi_reva_regs_t *spi)
     spi->inten = 0;
     spi->intfl = spi->intfl;
 
-    // Reset to cancel the ongoing transaction.
+    // Cancel on-going transaction before enabling.
     spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
     spi->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
 
