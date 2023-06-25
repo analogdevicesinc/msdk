@@ -249,18 +249,15 @@ int MXC_SPI_Init_v2(mxc_spi_init_t *init)
 
     spi_num = MXC_SPI_GET_IDX(init->spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        while(1);
         return E_BAD_PARAM;
     }
 
     // Check if frequency is too high
     if ((spi_num == 0) && (init->freq > MXC_SPI_GetPeripheralClock(init->spi))) {
-        while(1);
         return E_BAD_PARAM;
     }
 
     if ((spi_num == 1) && (init->freq > SystemCoreClock)) {
-        while(1);
         return E_BAD_PARAM;
     }
 
