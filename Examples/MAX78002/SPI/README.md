@@ -33,9 +33,8 @@ Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead and 2) to gi
 - `mxc_spi_clkmode_t clk_mode`       //<== Clock Mode (CPOL:CPHA)
 - `mxc_spi_interface_t mode`         //<== Select Interface (Standard 4-wire, 3-wire, dual, quad)
 - `mxc_spi_tscontrol_t ts_control`   //<== HW Auto, SW Driver, or SW Application Target Control
-- `mxc_spi_target_t target`          //<== Target settings (provide TS and active polarity) 
+- `mxc_spi_target_t target`          //<== Target settings (custom TS pins, init mask, active polarity) 
 - `mxc_gpio_vssel_t vssel`           //<== Select Pin Voltage Level (VDDIO/VDDIOH)
-- `uint8_t ts_mask`                  //<== If using HW Auto mode, select the target to initlaize.
 - `bool use_dma`                     //<== TRUE/FALSE setting.
 - `mxc_dma_regs_t *dma`              //<== DMA Instance
 
