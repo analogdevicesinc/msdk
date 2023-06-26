@@ -9,3 +9,7 @@
 
 # Add your config here!
 
+# SPI v2 does not support Target (L. Slave) Transaction functions yet.
+# Set the MXC_SPI_LEGACY to 1 to build the previous SPI library.
+MXC_SPI_LEGACY=1
+export MXC_SPI_LEGACY
