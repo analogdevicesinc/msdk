@@ -10,6 +10,7 @@ Additionally, pressing push button SW3 will print the last 12 temperature readin
 
 The temperature limits, flash storage page, and RTC time-of-day alarm period are defined in [temp_monitor.c](./temp_monitor.c) with the HI/LO\_TEMP\_THRESHOLD, TR\_STORAGE\_PAGE, and TEMP\_CHECK\_PERIOD defines respectively.
 
+NOTE: This example is only supported by the MAX32655EVKIT.
 
 ## Software
 
@@ -19,10 +20,11 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+* This project comes pre-configured for the MAX32655EVKIT and is not yet supported by the MAX32655FTHR.
 
 ## Required Connections
 
+If using the MAX32655EVKIT:
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
