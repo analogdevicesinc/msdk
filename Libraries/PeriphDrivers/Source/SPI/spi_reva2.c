@@ -1352,6 +1352,15 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     STATES[spi_num].rx_cnt = 0;
     STATES[spi_num].rx_done = false;
 
+    // Max number of frames to transmit/receive.
+    if (tx_fr_len > (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)) {
+        return E_OVERFLOW;
+    }
+
+    if (rx_fr_len > (MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS)) {
+        return E_OVERFLOW;
+    }
+
     // STATES[n] TX/RX Length Fields are in terms of number of bytes to send/receive.
     if (STATES[spi_num].init.frame_size <= 8) {
         STATES[spi_num].tx_len = tx_fr_len;
@@ -1372,9 +1381,13 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
             // because the hardware always assume full duplex. Therefore extra
             // dummy bytes must be transmitted to support half duplex.
             tx_dummy_fr_len = rx_fr_len - tx_fr_len;
-            spi->ctrl1 |=
-                (((tx_fr_len + tx_dummy_fr_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS) &&
-                 MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR);
+
+            // Check whether new frame length exceeds the possible number of frames to transmit.
+            if ((tx_fr_len + tx_dummy_fr_len) > (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)) {
+                return E_OVERFLOW;
+            }
+
+            spi->ctrl1 = ((tx_fr_len + tx_dummy_fr_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         } else {
             spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         }
@@ -1512,6 +1525,15 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     STATES[spi_num].rx_buffer = rx_buffer;
     STATES[spi_num].rx_done = false;
 
+    // Max number of frames to transmit/receive.
+    if (tx_fr_len > (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)) {
+        return E_OVERFLOW;
+    }
+
+    if (rx_fr_len > (MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS)) {
+        return E_OVERFLOW;
+    }
+
     // STATES[n] TX/RX Length Fields are in terms of number of bytes to send/receive.
     if (STATES[spi_num].init.frame_size <= 8) {
         STATES[spi_num].tx_len = tx_fr_len;
@@ -1532,6 +1554,12 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
             //  because the hardware always assume full duplex. Therefore extra
             //  dummy bytes must be transmitted to support half duplex.
             tx_dummy_fr_len = rx_fr_len - tx_fr_len;
+            
+            // Check whether new frame length exceeds the possible number of frames to transmit.
+            if ((tx_fr_len + tx_dummy_fr_len) > (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)) {
+                return E_OVERFLOW;
+            }
+
             spi->ctrl1 = ((tx_fr_len + tx_dummy_fr_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         } else {
             spi->ctrl1 = (tx_fr_len << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
