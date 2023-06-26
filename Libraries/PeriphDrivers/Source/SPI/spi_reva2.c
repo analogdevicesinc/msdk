@@ -390,7 +390,8 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
             }
 
             MXC_SETFIELD((init->spi)->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
-                         ((uint32_t)(init->target.init_mask) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+                         ((uint32_t)(init->target.init_mask)
+                          << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
 
             // If target.init_mask was not used, then read the target settings and initalize the selected index.
             // Mainly used to test new HW TSn pins that aren't defined in the parts' mxc_pins.h and pins_{part}.c.
@@ -1426,7 +1427,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
         // In HW Auto Scheme, only use the target index member.
         // Limitation: This implemention only support transactions with one target at a time.
         MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
-                    ((1 << target->index) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+                     ((1 << target->index) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
 
         if (deassert) {
             spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
@@ -1434,7 +1435,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
             spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
         }
 
-    // Toggle Chip Select Pin if handled by the driver.
+        // Toggle Chip Select Pin if handled by the driver.
     } else if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
         // Make sure the selected Target Select (L. SS) pin is enabled as an output.
         if (target->pins.func != MXC_GPIO_FUNC_OUT) {
@@ -1698,7 +1699,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
             spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
         }
 
-    // Toggle Chip Select Pin if handled by the driver.
+        // Toggle Chip Select Pin if handled by the driver.
     } else if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
         // Make sure the selected Target Select (L. SS) pin is enabled as an output.
         if (target->pins.func != MXC_GPIO_FUNC_OUT) {

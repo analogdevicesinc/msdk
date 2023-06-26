@@ -158,7 +158,8 @@ int main(void)
         target_pins.pad = MXC_GPIO_PAD_PULL_UP;
         target_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
 
-        init.ts_control = MXC_SPI_TSCONTROL_SW_DRV; // SPI Driver will handle deassertion for TS pins.
+        init.ts_control =
+            MXC_SPI_TSCONTROL_SW_DRV; // SPI Driver will handle deassertion for TS pins.
         init.target.pins = target_pins;
         init.target.active_polarity = 0;
         init.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set SPI pins to VDDIOH (3.3V).

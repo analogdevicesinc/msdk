@@ -784,7 +784,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
     int error;
     mxc_spi_target_t target;
     mxc_spi_init_t init;
-    
+
     // For backwards-compatibility with previous SPI implementation, use
     //  use the req->ts_idx (L. req->ssIdx) as default.
     // Note: the previous implementation did not have an option to select
