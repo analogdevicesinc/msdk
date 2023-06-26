@@ -1383,7 +1383,8 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
             tx_dummy_fr_len = rx_fr_len - tx_fr_len;
 
             // Check whether new frame length exceeds the possible number of frames to transmit.
-            if ((tx_fr_len + tx_dummy_fr_len) > (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)) {
+            if ((tx_fr_len + tx_dummy_fr_len) >
+                (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)) {
                 return E_OVERFLOW;
             }
 
@@ -1554,9 +1555,10 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
             //  because the hardware always assume full duplex. Therefore extra
             //  dummy bytes must be transmitted to support half duplex.
             tx_dummy_fr_len = rx_fr_len - tx_fr_len;
-            
+
             // Check whether new frame length exceeds the possible number of frames to transmit.
-            if ((tx_fr_len + tx_dummy_fr_len) > (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)) {
+            if ((tx_fr_len + tx_dummy_fr_len) >
+                (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS)) {
                 return E_OVERFLOW;
             }
 
@@ -1654,7 +1656,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
         if (rx_fr_len > 0 && rx_buffer != NULL) {
             STATES[spi_num].controller_done = true;
         }
-        
+
         STATES[spi_num].tx_done = true;
 
         // 3) Set up DMA TX for RX only transactions.
