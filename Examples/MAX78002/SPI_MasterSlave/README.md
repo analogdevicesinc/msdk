@@ -10,7 +10,7 @@ Once the master ends the transaction, the data received by the master and the sl
 
 ### SPI v2 Library
 
-The SPI v2 Library does not support Target (L. Slave) Transaction functions yet. To use the previous SPI driver, set `MXC_SPI_LEGACY=1` in the Project's project.mk file.
+The SPI v2 Library does not support Target (L. Slave) Transaction functions yet. To use the previous SPI driver, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
 
 ### Project Usage
 

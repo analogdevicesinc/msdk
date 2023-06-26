@@ -11,7 +11,7 @@ This example also demonstrates the feature to use custom Target Selects that the
 
 ## Software
 
-This example uses the SPI v2 Library. To use the previous SPI library, set `MXC_SPI_LEGACY=1` in the Project's project.mk file.
+This example uses the SPI v2 Library. To use the previous SPI library, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
 
 ### Porting Guide
 
