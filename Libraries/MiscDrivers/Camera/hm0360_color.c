@@ -42,7 +42,7 @@
 #include "mxc_delay.h"
 #include "mxc_device.h"
 
-// clang-format off
+
 #define cambus_write(addr, x)     sccb_write_reg16(g_slv_addr, addr, x)
 #define cambus_read(addr, x)      sccb_read_reg16(g_slv_addr, addr, x)
 
@@ -519,11 +519,11 @@ static const uint16_t default_regs[][2] = {
     {   0x355E  ,   0x8E    },  // * FRAME_LENGTH_LINES_L
     {0x355F, 0x03},
     {0x3560, 0x00},
-    {0x3561, 0x02},
-    {0x3562, 0x02},
-    {0x3563, 0x03},
-    {0x3564, 0x11},
-    {0x3565, 0x01},
+    {0x3561, 0x02}, // H_SUB: sub4
+    {0x3562, 0x02}, // V_SUB: sub4
+    {0x3563, 0x00}, // BIN_MODE:  Disable binning
+    {0x3564, 0xFF}, // Magic value marked reserved in datasheet.  Must be 0xFF
+    {0x3565, 0x00}, // MONO_MODE_ISP:  Disable mono mode
     {0x3566, 0x00},
     {0x3567, 0x01},
     {0x3569, 0x00},
