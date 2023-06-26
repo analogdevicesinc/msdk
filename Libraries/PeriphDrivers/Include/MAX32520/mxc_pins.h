@@ -67,4 +67,20 @@ extern const mxc_gpio_cfg_t gpio_cfg_sfe;
 extern const mxc_gpio_cfg_t gpio_cfg_sfe_ss0;
 extern const mxc_gpio_cfg_t gpio_cfg_sfe_ss1;
 
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_quad;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_dual;
+// MXC_SPI1 does not support Quad SPI (No pins available).
+
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts2;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts3;
+
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_MXC_PINS_H_
