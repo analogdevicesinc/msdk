@@ -43,9 +43,13 @@
 
 /***** Global Variables *****/
 // Predefined GPIO Configurations
-extern const mxc_gpio_cfg_t gpio_cfg_extclk;
+extern const mxc_gpio_cfg_t gpio_cfg_hfextclk;
+#define gpio_cfg_extclk gpio_cfg_hfextclk
+/* ^ Defined for backwards compatability after renaming
+    gpio_cfg_extclk -> gpio_cfg_hfextclk
+*/
 extern const mxc_gpio_cfg_t gpio_cfg_i2c0;
-//extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
+extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2b;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2c;
@@ -92,5 +96,13 @@ extern const mxc_gpio_cfg_t gpio_cfg_lc2;
 extern const mxc_gpio_cfg_t gpio_cfg_mon_lc2;
 extern const mxc_gpio_cfg_t gpio_cfg_cmd_rs_lc2;
 extern const mxc_gpio_cfg_t gpio_cfg_chrg_lc2;
+
+// SPI v2 Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
+// MXC_SPI1 does not support Dual or Quad modes.
+
+// SPI v2 Target Selects Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts0;
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_MXC_PINS_H_

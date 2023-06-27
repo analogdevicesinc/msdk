@@ -22,6 +22,7 @@
  */
 /*************************************************************************************************/
 
+#include <string.h>
 #include "wsf_types.h"
 #include "wsf_msg.h"
 #include "wsf_assert.h"
@@ -70,7 +71,7 @@ void *WsfMsgAlloc(uint16_t len)
   wsfMsg_t  *pMsg;
 
   pMsg = WsfBufAlloc(len + sizeof(wsfMsg_t));
-
+  memset(pMsg, '\0', len + sizeof(wsfMsg_t));
   /* hide header */
   if (pMsg != NULL)
   {

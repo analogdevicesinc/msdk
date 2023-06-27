@@ -258,18 +258,20 @@ int MXC_SYS_GetUSN(uint8_t *serialNumber, int len)
 {
     if (len != 13) {
         return E_BAD_PARAM;
+    } else if (serialNumber == NULL) {
+        return E_NULL_PTR;
     }
 
     uint32_t infoblock[6];
 
-    MXC_FLC_UnlockInfoBlock(0x0000);
+    MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
     infoblock[0] = *(uint32_t *)MXC_INFO_MEM_BASE;
     infoblock[1] = *(uint32_t *)(MXC_INFO_MEM_BASE + 4);
     infoblock[2] = *(uint32_t *)(MXC_INFO_MEM_BASE + 8);
     infoblock[3] = *(uint32_t *)(MXC_INFO_MEM_BASE + 12);
     infoblock[4] = *(uint32_t *)(MXC_INFO_MEM_BASE + 16);
     infoblock[5] = *(uint32_t *)(MXC_INFO_MEM_BASE + 20);
-    MXC_FLC_LockInfoBlock(0x0000);
+    MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
 
     serialNumber[0] = (infoblock[0] & 0x007F8000) >> 15;
     serialNumber[1] = (infoblock[0] & 0x7F800000) >> 23;

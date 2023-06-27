@@ -27,6 +27,8 @@ Hello_World
 HTMR
 I2C
 ICC
+Library_Generate
+Library_Use
 LP
 lwIP_Ping
 lwIP_TCP

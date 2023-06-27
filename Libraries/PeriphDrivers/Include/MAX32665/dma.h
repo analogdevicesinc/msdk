@@ -253,6 +253,13 @@ typedef mxc_dma_srcdst_t (*mxc_dma_trans_chain_t)(mxc_dma_srcdst_t dest);
 int MXC_DMA_Init(mxc_dma_regs_t *dma);
 
 /**
+ * @brief      De-Initialize DMA resources.
+ * 
+ * @param      dma  Pointer to DMA registers.
+ */
+void MXC_DMA_DeInit(mxc_dma_regs_t *dma);
+
+/**
  * @brief      Request DMA channel
  * @param 	   dma 	Pointer to DMA registers.
  * @details    Returns a handle to the first free DMA channel, which can be used via API calls

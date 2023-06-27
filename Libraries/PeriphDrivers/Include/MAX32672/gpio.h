@@ -144,8 +144,8 @@ typedef enum {
     MXC_GPIO_PAD_NONE, /**< No pull-up or pull-down */
     MXC_GPIO_PAD_PULL_UP, /**< Set pad to strong pull-up */
     MXC_GPIO_PAD_PULL_DOWN, /**< Set pad to strong pull-down */
-    MXC_GPIO_PAD_WEAK_PULL_UP, /**< Set pad to weak pull-up */
-    MXC_GPIO_PAD_WEAK_PULL_DOWN, /**< Set pad to weak pull-down */
+    MXC_GPIO_PAD_WEAK_PULL_UP, /**< Reserved for future use. Included here to prevent build errors. */
+    MXC_GPIO_PAD_WEAK_PULL_DOWN, /**< Reserved for future use. Included here to prevent build errors. */
 } mxc_gpio_pad_t;
 
 /**
@@ -313,17 +313,6 @@ void MXC_GPIO_RegisterCallback(const mxc_gpio_cfg_t *cfg, mxc_gpio_callback_fn c
  *
  */
 void MXC_GPIO_Handler(unsigned int port);
-
-/**
- * @brief      Set Voltage select for pins to VDDIO or VDDIOH
- *
- * @param      port   The GPIO port
- * @param[in]  vssel  VDDIO or VDDIOH to set the voltatge to
- * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
- * 
- * @return     #E_NO_ERROR if everything is successful. See \ref MXC_Error_Codes for the list of error codes.
- */
-int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask);
 
 /**
  * @brief      Enables GPIO pins to be used as a wakeup source.

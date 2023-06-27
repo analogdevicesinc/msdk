@@ -38,10 +38,8 @@
 #include "mxc_errors.h"
 #include "mxc_assert.h"
 #include "mxc_lock.h"
-
 #include "dma.h"
 #include "aes_regs.h"
-#include "aeskeys_regs.h"
 #include "aes_revb.h"
 #include "trng_revb.h"
 

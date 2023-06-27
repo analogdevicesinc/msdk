@@ -34,6 +34,7 @@
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_MAX78002_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_MAX78002_H_
 
+// clang-format off
 #ifndef TARGET_NUM
 #define TARGET_NUM 78002
 #endif
@@ -52,7 +53,9 @@
 
 /* COMPILER SPECIFIC DEFINES (IAR, ARMCC and GNUC) */
 #if defined(__GNUC__)
+#ifndef __weak
 #define __weak __attribute__((weak))
+#endif
 
 #elif defined(__CC_ARM)
 
@@ -393,8 +396,12 @@ typedef enum {
 #define MXC_GPIO_GET_GPIO(i) \
     ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : (i) == 2 ? MXC_GPIO2 : (i) == 3 ? MXC_GPIO3 : 0)
 
-#define MXC_GPIO_GET_IRQ(i) \
-    ((i) == 0 ? GPIO0_IRQn : (i) == 1 ? GPIO1_IRQn : (i) == 2 ? GPIO2_IRQn : 0)
+#define MXC_GPIO_GET_IRQ(i)     \
+    ((i) == 0 ? GPIO0_IRQn :    \
+     (i) == 1 ? GPIO1_IRQn :    \
+     (i) == 2 ? GPIO2_IRQn :    \
+     (i) == 3 ? GPIOWAKE_IRQn : \
+                0)
 
 /******************************************************************************/
 /*                                                  Parallel Camera Interface */
@@ -494,6 +501,9 @@ typedef enum {
 #define MXC_DMA ((mxc_dma_regs_t *)MXC_BASE_DMA)
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
+
+#define MXC_DMA_CH_GET_IRQ(i) ((IRQn_Type)(((i) == 0) ? DMA0_IRQn : ((i) == 1) ? DMA1_IRQn : \
+                                ((i) == 2) ? DMA2_IRQn : ((i) == 3) ? DMA3_IRQn : 0))
 
 /******************************************************************************/
 /*                                                                        FLC */
@@ -616,9 +626,11 @@ typedef enum {
 
 #define MXC_BASE_SPI1 ((uint32_t)0x40046000UL)
 #define MXC_SPI1 ((mxc_spi_regs_t *)MXC_BASE_SPI1)
+#define MXC_SPI1_TS_INSTANCES (1)
 #ifndef __riscv
 #define MXC_BASE_SPI0 ((uint32_t)0x400BE000UL)
 #define MXC_SPI0 ((mxc_spi_regs_t *)MXC_BASE_SPI0)
+#define MXC_SPI0_TS_INSTANCES (3)
 
 // Note: These must be in order SPI1, SPI0 to support RISC-V
 #define MXC_SPI_GET_IDX(p) ((p) == MXC_SPI1 ? 0 : (p) == MXC_SPI0 ? 1 : -1)
@@ -628,6 +640,9 @@ typedef enum {
 #define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI1 : (i) == 1 ? MXC_SPI0 : 0)
 
 #define MXC_SPI_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SPI1_IRQn : (i) == 1 ? SPI0_IRQn : 0)
+
+#define MXC_SPI_GET_TOTAL_TS(p) \
+    ((p) == MXC_SPI1 ? MXC_SPI1_TS_INSTANCES : (p) == MXC_SPI0 ? MXC_SPI0_TS_INSTANCES : 0)
 #else // __riscv
 
 #define MXC_SPI_GET_IDX(p) ((p) == MXC_SPI1 ? 0 : -1)
@@ -637,6 +652,8 @@ typedef enum {
 #define MXC_SPI_GET_SPI(i) ((i) == 0 ? MXC_SPI1 : 0)
 
 #define MXC_SPI_GET_IRQ(i) (IRQn_Type)((i) == 0 ? SPI1_IRQn : 0)
+
+#define MXC_SPI_GET_TOTAL_TS(p) ((p) == MXC_SPI1 ? MXC_SPI1_TS_INSTANCES : 0)
 
 #endif // __riscv
 
@@ -749,5 +766,7 @@ typedef enum {
 #define SCB_CPACR_CP10_Msk (0x3UL << SCB_CPACR_CP10_Pos) /*!< SCB CPACR: Coprocessor 10 Mask */
 #define SCB_CPACR_CP11_Pos 22 /*!< SCB CPACR: Coprocessor 11 Position */
 #define SCB_CPACR_CP11_Msk (0x3UL << SCB_CPACR_CP11_Pos) /*!< SCB CPACR: Coprocessor 11 Mask */
+
+// clang-format on
 
 #endif // LIBRARIES_CMSIS_DEVICE_MAXIM_MAX78002_INCLUDE_MAX78002_H_

@@ -114,6 +114,11 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
     return E_NO_ERROR;
 }
 
+void MXC_DMA_RevA_DeInit(mxc_dma_reva_regs_t *dma)
+{
+    dma_initialized[MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma)] = 0;
+}
+
 int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t *dma)
 {
     int i, channel, numCh, offset;

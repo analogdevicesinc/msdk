@@ -68,11 +68,12 @@ static struct camera_reg default_regs[] = {
     {0x3018, 0x00},
 
     // SC PLL Control
-    {0x3034, 0x1a}, // MIPI 10-bit mode
+    // {0x3034, 0x1a}, // 10-bit RAW mode
+    {0x3034, 0x18}, // 8-bit RAW mode
     {0x3008, 0x02},
     {0x3035, 0x14},
-    {0x3036, 0x38},
-    {0x3037, 0x13},
+    {0x3036, 0x00},
+    {0x3037, 0x10},
 
     // SCCB Pad Clock Divide
     {0x3108, 0x01},
@@ -120,6 +121,8 @@ static struct camera_reg default_regs[] = {
     {0x3820, 0x06},
     {0x3821, 0x00},
 
+    // Active pixel array is 2592x1944
+
     // TIMING HS, X_ADDR_ST, X address start [11:8]
     {0x3800, 0x01},
     // TIMING HS, X_ADDR_ST, X address start [7:0]
@@ -159,9 +162,9 @@ static struct camera_reg default_regs[] = {
     {0x380f, 0xd8},
 
     {0x3810, 0x00},
-    {0x3811, 0x00},
+    {0x3811, 0x04},
     {0x3812, 0x00},
-    {0x3813, 0x00},
+    {0x3813, 0x04},
 
     {0x3618, 0x00},
     {0x3612, 0x29},
@@ -195,7 +198,7 @@ static struct camera_reg default_regs[] = {
     {0x4740, 0x22},
 
     // Format Control
-    {0x4300, 0x6f},
+    {0x4300, 0x61}, // RGB565 ({r[4:0]g[5:3]},{g[2:0],b[4:0]})
 
     // ISP Top Control
     {0x501f, 0x01},
@@ -212,7 +215,6 @@ static struct camera_reg default_regs[] = {
     {0x460c, 0x23},
 
     // MIPI Transmitter Control
-    {0x4837, 20},
     {0x3824, 0x02},
 
     // ISP Top Control
@@ -223,34 +225,35 @@ static struct camera_reg default_regs[] = {
     {0x5180, 0xff},
     {0x5181, 0xf2},
     {0x5182, 0x00},
-    {0x5183, 0x14},
     {0x5184, 0x25},
-    {0x5185, 0x24},
-    {0x5186, 0x09},
-    {0x5187, 0x09},
-    {0x5188, 0x09},
-    {0x5189, 0x88},
-    {0x518a, 0x54},
-    {0x518b, 0xee},
-    {0x518c, 0xb2},
-    {0x518d, 0x50},
-    {0x518e, 0x34},
-    {0x518f, 0x6b},
-    {0x5190, 0x46},
-    {0x5191, 0xf8},
-    {0x5192, 0x04},
-    {0x5193, 0x70},
-    {0x5194, 0xf0},
-    {0x5195, 0xf0},
-    {0x5196, 0x03},
-    {0x5197, 0x01},
-    {0x5198, 0x04},
-    {0x5199, 0x6c},
-    {0x519a, 0x04},
-    {0x519b, 0x00},
-    {0x519c, 0x09},
-    {0x519d, 0x2b},
-    {0x519e, 0x38},
+    // 4-3-2023:  Settings below removed.  AWB seems better without them.
+    // {0x5183, 0x14},
+    // {0x5185, 0x24},
+    // {0x5186, 0x09},
+    // {0x5187, 0x09},
+    // {0x5188, 0x09},
+    // {0x5189, 0x88},
+    // {0x518a, 0x54},
+    // {0x518b, 0xee},
+    // {0x518c, 0xb2},
+    // {0x518d, 0x50},
+    // {0x518e, 0x34},
+    // {0x518f, 0x6b},
+    // {0x5190, 0x46},
+    // {0x5191, 0xf8},
+    // {0x5192, 0x04},
+    // {0x5193, 0x70},
+    // {0x5194, 0xf0},
+    // {0x5195, 0xf0},
+    // {0x5196, 0x03},
+    // {0x5197, 0x01},
+    // {0x5198, 0x04},
+    // {0x5199, 0x6c},
+    // {0x519a, 0x04},
+    // {0x519b, 0x00},
+    // {0x519c, 0x09},
+    // {0x519d, 0x2b},
+    // {0x519e, 0x38},
 
     // CMX Control
     {0x5381, 0x1e},
@@ -307,69 +310,71 @@ static struct camera_reg default_regs[] = {
     {0x558b, 0xf8},
 
     // LENC Control
-    {0x5800, 0x23},
-    {0x5801, 0x14},
-    {0x5802, 0x0f},
-    {0x5803, 0x0f},
-    {0x5804, 0x12},
-    {0x5805, 0x26},
-    {0x5806, 0x0c},
-    {0x5807, 0x08},
-    {0x5808, 0x05},
-    {0x5809, 0x05},
-    {0x580a, 0x08},
-    {0x580b, 0x0d},
-    {0x580c, 0x08},
-    {0x580d, 0x03},
-    {0x580e, 0x00},
-    {0x580f, 0x00},
-    {0x5810, 0x03},
-    {0x5811, 0x09},
-    {0x5812, 0x07},
-    {0x5813, 0x03},
-    {0x5814, 0x00},
-    {0x5815, 0x01},
-    {0x5816, 0x03},
-    {0x5817, 0x08},
-    {0x5818, 0x0d},
-    {0x5819, 0x08},
-    {0x581a, 0x05},
-    {0x581b, 0x06},
-    {0x581c, 0x08},
-    {0x581d, 0x0e},
-    {0x581e, 0x29},
-    {0x581f, 0x17},
-    {0x5820, 0x11},
-    {0x5821, 0x11},
-    {0x5822, 0x15},
-    {0x5823, 0x28},
-    {0x5824, 0x46},
-    {0x5825, 0x26},
-    {0x5826, 0x08},
-    {0x5827, 0x26},
-    {0x5828, 0x64},
-    {0x5829, 0x26},
-    {0x582a, 0x24},
-    {0x582b, 0x22},
-    {0x582c, 0x24},
-    {0x582d, 0x24},
-    {0x582e, 0x06},
-    {0x582f, 0x22},
-    {0x5830, 0x40},
-    {0x5831, 0x42},
-    {0x5832, 0x24},
-    {0x5833, 0x26},
-    {0x5834, 0x24},
-    {0x5835, 0x22},
-    {0x5836, 0x22},
-    {0x5837, 0x26},
-    {0x5838, 0x44},
-    {0x5839, 0x24},
-    {0x583a, 0x26},
-    {0x583b, 0x28},
-    {0x583c, 0x42},
-    {0x583d, 0xce},
-    {0x5025, 0x00},
+    // 4-3-2023:  Settings below removed.  They seemed to have no performance
+    // impact at all
+    // {0x5800, 0x23},
+    // {0x5801, 0x14},
+    // {0x5802, 0x0f},
+    // {0x5803, 0x0f},
+    // {0x5804, 0x12},
+    // {0x5805, 0x26},
+    // {0x5806, 0x0c},
+    // {0x5807, 0x08},
+    // {0x5808, 0x05},
+    // {0x5809, 0x05},
+    // {0x580a, 0x08},
+    // {0x580b, 0x0d},
+    // {0x580c, 0x08},
+    // {0x580d, 0x03},
+    // {0x580e, 0x00},
+    // {0x580f, 0x00},
+    // {0x5810, 0x03},
+    // {0x5811, 0x09},
+    // {0x5812, 0x07},
+    // {0x5813, 0x03},
+    // {0x5814, 0x00},
+    // {0x5815, 0x01},
+    // {0x5816, 0x03},
+    // {0x5817, 0x08},
+    // {0x5818, 0x0d},
+    // {0x5819, 0x08},
+    // {0x581a, 0x05},
+    // {0x581b, 0x06},
+    // {0x581c, 0x08},
+    // {0x581d, 0x0e},
+    // {0x581e, 0x29},
+    // {0x581f, 0x17},
+    // {0x5820, 0x11},
+    // {0x5821, 0x11},
+    // {0x5822, 0x15},
+    // {0x5823, 0x28},
+    // {0x5824, 0x46},
+    // {0x5825, 0x26},
+    // {0x5826, 0x08},
+    // {0x5827, 0x26},
+    // {0x5828, 0x64},
+    // {0x5829, 0x26},
+    // {0x582a, 0x24},
+    // {0x582b, 0x22},
+    // {0x582c, 0x24},
+    // {0x582d, 0x24},
+    // {0x582e, 0x06},
+    // {0x582f, 0x22},
+    // {0x5830, 0x40},
+    // {0x5831, 0x42},
+    // {0x5832, 0x24},
+    // {0x5833, 0x26},
+    // {0x5834, 0x24},
+    // {0x5835, 0x22},
+    // {0x5836, 0x22},
+    // {0x5837, 0x26},
+    // {0x5838, 0x44},
+    // {0x5839, 0x24},
+    // {0x583a, 0x26},
+    // {0x583b, 0x28},
+    // {0x583c, 0x42},
+    // {0x583d, 0xce},
+    // {0x5025, 0x00},
 
     // AEC/AGC Power Down Domain Control
     {0x3a0f, 0x30},
@@ -401,19 +406,13 @@ static struct camera_reg default_regs[] = {
     {0x4800, 0x24},
     {0x300e, 0x45},
     {0x302e, 0x08},
-    // PLL control
-    {0x3036, 0x50},
-    {0x3037, 0x12},
     // SCLK divider
     {0x3108, 0x02},
     // PLL multiplier/divider
     {0x303d, 0x20},
     {0x303b, 0x1e},
-    {0x3034, 0x1a},
-    {0x3035, 0x13},
     {0x501f, 0x01},
     // Format control (RGB Type)
-    {0x4300, 0x00},
     {0x3630, 0x2e},
     {0x3632, 0xe2},
     {0x3633, 0x23},
@@ -442,6 +441,7 @@ static struct camera_reg default_regs[] = {
     {0x3709, 0x52},
     {0x370c, 0x03},
 
+
     {0x3008, 0x02},
 
     // Delay
@@ -453,8 +453,8 @@ static struct camera_reg default_regs[] = {
 //clang-format on
 
 static int g_slv_addr;
-// Default
-static mipi_pixformat_t g_pixelformat = MIPI_PIXFORMAT_RGB888;
+
+static mipi_camera_settings_t g_camera_settings;
 
 /******************************** Static Functions ***************************/
 static int init(void)
@@ -511,30 +511,26 @@ static int reset(void)
             MXC_Delay(MSEC(default_regs[i].val));
         } else {
             ret |= cambus_write(default_regs[i].addr, (uint8_t)default_regs[i].val);
+#ifdef VERIFY_STARTUP_SETTINGS
+            // Read back and check for value mismatches.  Used for troubleshooting
+
+            ret |= cambus_read(default_regs[i].addr, &value);
+
+            if (value != default_regs[i].val && default_regs[i].addr != 0x3102 && default_regs[i].addr != 0x3008) { // Skip validation of reset registers
+                printf("Mismatch at 0x%x!  Expected 0x%x but read 0x%x\n", default_regs[i].addr, default_regs[i].val, value);
+            }
+#endif
         }
     }
 
     return ret;
 }
 
-static int sleep(int enable)
+static int sleep(int sleep)
 {
     int ret = 0;
 
-    uint8_t reg;
-
-    ret = cambus_read(PAD_OUT_VALUE_0, &reg);
-
-    if (ret == 0) {
-        if (enable) {
-            reg |= 0x70;
-        } else {
-            reg &= ~0x70;
-        }
-
-        // Write back register
-        ret |= cambus_write(PAD_OUT_VALUE_0, reg);
-    }
+    ret = cambus_write(OV5640_SYSTEM_CTROL0, sleep ? 0x42 : 0x02);
 
     return ret;
 }
@@ -555,76 +551,99 @@ static int write_reg(uint16_t reg_addr, uint8_t reg_data)
     return cambus_write(reg_addr, reg_data);
 }
 
-static int set_pixformat(mipi_pixformat_t pixformat, uint32_t out_seq, int mux_ctrl)
+// Convert the given format to the correct output sequence value
+// to write to the FORMAT_CTRL register
+static uint8_t _camera_format_to_out_seq(pixel_order_t pixel_order)
+{
+    switch (pixel_order){
+        default:
+        return 0;
+        case PIXEL_ORDER_RAW_BGGR:
+        return 0x0;
+        case PIXEL_ORDER_RAW_GBRG:
+        return 0x1;
+        case PIXEL_ORDER_RAW_GRBG:
+        return 0x2;
+        case PIXEL_ORDER_RAW_RGGB:
+        return 0x3;
+        case PIXEL_ORDER_RGB565_BGR:
+        return 0x0;
+        case PIXEL_ORDER_RGB565_RGB:
+        return 0x1;
+        case PIXEL_ORDER_RGB565_GRB:
+        return 0x2;
+        case PIXEL_ORDER_RGB565_BRG:
+        return 0x3;
+        case PIXEL_ORDER_RGB565_GBR:
+        return 0x4;
+        case PIXEL_ORDER_RGB565_RBG:
+        return 0x5;
+    }
+}
+
+static int set_pixformat(mipi_camera_format_t camera_format)
 {
     int ret = 0;
+    uint8_t current_pll_ctrl = 0; // A field in SC_PLL_CTRL is used to set RAW8/RAW10
 
-    g_pixelformat = pixformat;
+    g_camera_settings.camera_format = camera_format;
 
-    ret |= cambus_write(FORMAT_MUX_CTRL, mux_ctrl);
+    ret |= cambus_write(FORMAT_MUX_CTRL, 1); // Enable ISP RGB
 
-    switch (pixformat) {
-    case MIPI_PIXFORMAT_RAW:
+    uint8_t out_seq = _camera_format_to_out_seq(camera_format.pixel_order);
+
+    switch (camera_format.pixel_format) {
+    case PIXEL_FORMAT_RAW8:
+        ret |= cambus_read(SC_PLL_CTRL0, &current_pll_ctrl);
+        ret |= cambus_write(SC_PLL_CTRL0, (current_pll_ctrl & (~0xF)) | 0x8); // 8-bit mode
+        ret |= cambus_write(FORMAT_CTRL00h, (0x00 << 4) | out_seq);
+        break;
+    case PIXEL_FORMAT_RAW10:
+        ret |= cambus_read(SC_PLL_CTRL0, &current_pll_ctrl);
+        ret |= cambus_write(SC_PLL_CTRL0, (current_pll_ctrl & (~0xF)) | 0xA); // 10-bit mode
         ret |= cambus_write(FORMAT_CTRL00h, (0x00 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_Y8:
-        ret |= cambus_write(FORMAT_CTRL00h, (0x01 << 4) | out_seq);
-        break;
-
-    case MIPI_PIXFORMAT_YUV422:
+    case PIXEL_FORMAT_YUV422:
         ret |= cambus_write(FORMAT_CTRL00h, (0x03 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_YUV420:
+    case PIXEL_FORMAT_YUV420:
         ret |= cambus_write(FORMAT_CTRL00h, (0x04 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_YUV420M:
-        ret |= cambus_write(FORMAT_CTRL00h, (0x05 << 4) | out_seq);
-        break;
-
-    case MIPI_PIXFORMAT_RGB444_1:
+    case PIXEL_FORMAT_RGB444: // Assume RGB444 format 1
         ret |= cambus_write(FORMAT_CTRL00h, (0x09 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_RGB444_2:
-        ret |= cambus_write(FORMAT_CTRL00h, (0x0a << 4) | out_seq);
-        break;
-
-    case MIPI_PIXFORMAT_RGB555_1:
+    case PIXEL_FORMAT_RGB555: // Assume RGB555 format 1
         ret |= cambus_write(FORMAT_CTRL00h, (0x07 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_RGB555_2:
-        ret |= cambus_write(FORMAT_CTRL00h, (0x08 << 4) | out_seq);
-        break;
-
-    case MIPI_PIXFORMAT_RGB565:
+    case PIXEL_FORMAT_RGB565:
         ret |= cambus_write(FORMAT_CTRL00h, (0x06 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_RGB888:
+    case PIXEL_FORMAT_RGB888:
         ret |= cambus_write(FORMAT_CTRL00h, (0x02 << 4) | out_seq);
         break;
 
-    case MIPI_PIXFORMAT_BYPASS:
+    case PIXEL_FORMAT_BYPASS:
         ret |= cambus_write(FORMAT_CTRL00h, (0x0f << 4) | out_seq);
         break;
 
     default:
-        ret = -1;
+        ret = E_NOT_SUPPORTED;
         break;
     }
 
     return ret;
 }
 
-static int get_pixformat(mipi_pixformat_t* pixformat)
+static int get_pixformat(mipi_camera_format_t* camera_format)
 {
-    int ret = 0;
-    *pixformat = g_pixelformat;
-    return ret;
+    *camera_format = g_camera_settings.camera_format;
+    return E_NO_ERROR;
 }
 
 static int set_framesize(int width, int height)
@@ -641,6 +660,18 @@ static int set_framesize(int width, int height)
     ret |= cambus_write(TIMING_DVPHO_1, (width >> 0) & 0xff);
     ret |= cambus_write(TIMING_DVPVO_0, (height >> 8) & 0xff);
     ret |= cambus_write(TIMING_DVPVO_1, (height >> 0) & 0xff);
+
+    if ((width * height) > (320 * 320)) {
+        /*
+        Divide PLL Clk for higher resolutions.  This reduces framerate,
+        but increases the bandwith we have to process the incoming data.
+        TODO: There has to be some way to modify the horizontal/vertical
+        blanking to preserve framerate, but the documentation on the HTS/VTS
+        registers is non-existent...  The drivers may also need to discard
+        the dummy pixels (?)
+        */
+        ret |= write_reg(0x3035, 0x44);
+    }
 
     // Software power up
     ret |= cambus_write(SYS_CTRL0, 0x02);

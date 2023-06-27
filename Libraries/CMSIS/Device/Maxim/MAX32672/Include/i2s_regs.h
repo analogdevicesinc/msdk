@@ -2,6 +2,7 @@
  * @file    i2s_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the I2S Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup i2s_registers
  */
 
 /******************************************************************************

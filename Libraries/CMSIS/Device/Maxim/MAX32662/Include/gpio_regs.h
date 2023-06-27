@@ -2,6 +2,7 @@
  * @file    gpio_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GPIO Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup gpio_registers
  */
 
 /******************************************************************************

@@ -1,6 +1,6 @@
 /**
- * @file mxc_pins.h
- * @brief      This file contains constant pin configurations for the peripherals.
+ * @file    mxc_pins.h
+ * @brief   This file contains constant pin configurations for the peripherals.
  */
 
 /******************************************************************************
@@ -113,5 +113,21 @@ extern const mxc_gpio_cfg_t gpio_cfg_cmp2;
 extern const mxc_gpio_cfg_t gpio_cfg_cmp3;
 
 extern const mxc_gpio_cfg_t gpio_cfg_sdhc;
+
+// SPI v2 Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_quad;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_quad;
+
+// SPI v2 Target Selects Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts2;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts0;
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_MXC_PINS_H_

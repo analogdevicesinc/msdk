@@ -22,7 +22,10 @@ GPIO
 Hello_World
 I2C_SCAN
 ICC
+Library_Generate
+Library_Use
 LP
+OTP_Dump
 OWM
 Pulse_Train
 RTC

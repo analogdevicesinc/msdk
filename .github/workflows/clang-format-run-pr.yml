@@ -59,18 +59,20 @@ jobs:
 
     - name: clang-format-run
       run: |
-          set -e
+          set +e
           # Don't return right away
           bash -e .github/workflows/clang-format-run.sh
           RETVAL=$?
-          set +e
+          set -e
 
           if [[ $RETVAL -eq 0 ]]
+          then
             exit 0
           fi
 
           # Files changed, not an error in this case
           if [[ $RETVAL -eq 1 ]]
+          then
             exit 0
           fi
 

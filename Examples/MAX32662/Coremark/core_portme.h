@@ -50,7 +50,7 @@ typedef unsigned int CORE_TICKS;
 */
 #ifndef COMPILER_VERSION
 #ifdef __GNUC__
-#define COMPILER_VERSION "GCC"__VERSION__
+#define COMPILER_VERSION "GCC" __VERSION__
 #else
 #define COMPILER_VERSION "Please put compiler version here (e.g. gcc 4.1)"
 #endif
@@ -79,7 +79,7 @@ typedef unsigned int ee_size_t;
 /* align_mem :
 	This macro is used to align an offset to point to a 32b value. It is used in the Matrix algorithm to initialize the input memory blocks.
 */
-#define align_mem(x) (void *)(4 + (((ee_ptr_int)(x) - 1) & ~3))
+#define align_mem(x) (void *)(4 + (((ee_ptr_int)(x)-1) & ~3))
 
 /* Configuration : SEED_METHOD
 	Defines method to get seed values that cannot be computed at compile time.
@@ -158,7 +158,7 @@ typedef unsigned int ee_size_t;
 extern ee_u32 default_num_contexts;
 
 typedef struct CORE_PORTABLE_S {
-    ee_u8	portable_id;
+    ee_u8 portable_id;
 } core_portable;
 
 /* target specific init/fini */
@@ -166,9 +166,9 @@ void portable_init(core_portable *p, int *argc, char *argv[]);
 void portable_fini(core_portable *p);
 
 #if !defined(PROFILE_RUN) && !defined(PERFORMANCE_RUN) && !defined(VALIDATION_RUN)
-#if (TOTAL_DATA_SIZE==1200)
+#if (TOTAL_DATA_SIZE == 1200)
 #define PROFILE_RUN 1
-#elif (TOTAL_DATA_SIZE==2000)
+#elif (TOTAL_DATA_SIZE == 2000)
 #define PERFORMANCE_RUN 1
 #else
 #define VALIDATION_RUN 1

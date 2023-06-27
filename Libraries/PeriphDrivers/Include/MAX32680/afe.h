@@ -49,6 +49,7 @@ extern "C" {
 #include "afe_adc_one_regs.h"
 #include "afe_dac_regs.h"
 #include "afe_hart_regs.h"
+#include "tmr.h"
 #include "mxc_sys.h"
 #include "mxc_assert.h"
 #include "infoblock.h"
@@ -71,8 +72,15 @@ extern "C" {
 /***** Function Prototypes *****/
 /**
  * @brief   Setup the AFE for transactions.
+ * @param   tmr    Pointer to Timer registers to use for internal AFE timing
  */
-int afe_setup(void);
+int afe_setup(mxc_tmr_regs_t *tmr);
+
+/**
+ * @brief  Puts the AFE into a RESET state to recover from errors, or reduce power consumption
+ * @note   Must call afe_load_trims to restore AFE functionality after a reset.
+ */
+void afe_reset(void);
 
 /**
  * @brief   Writes data to AFE register.
@@ -85,22 +93,45 @@ int afe_setup(void);
 int afe_write_register(uint32_t target_reg, uint32_t value);
 
 /**
+ * @brief   Writes data to AFE register in the specified bank.
+ *
+ * @param   target_reg  The register to write the data into
+ * @param   reg_bank    register bank
+ * @param   value       The data to write
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+int afe_bank_write_register(uint32_t target_reg, uint8_t reg_bank, uint32_t value);
+
+/**
  * @brief   Read data from AFE register.
  *
  * @param   target_reg  The register to read the data from
- * @param   value       Buffer to store data in 
+ * @param   value       Buffer to store data in
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
 int afe_read_register(uint32_t target_reg, uint32_t *value);
 
 /**
- * @brief   Load AFE Trims.
- * @note    Uncomment DUMP_TRIM_DATA in afe.c to print trime data.
+ * @brief   Read data from AFE register in the specified bank.
+ *
+ * @param   target_reg  The register to read the data from
+ * @param   reg_bank    register bank
+ * @param   value       Buffer to store data in
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int afe_load_trims(void);
+int afe_bank_read_register(uint32_t target_reg, uint8_t reg_bank, uint32_t *value);
+
+/**
+ * @brief   Load AFE Trims.
+ * @note    Uncomment DUMP_TRIM_DATA in afe.c to print trime data.
+ * @param   tmr    Pointer to Timer registers to use for internal AFE timing
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+int afe_load_trims(mxc_tmr_regs_t *tmr);
 
 /**
  * @brief   Dumps the AFE registers.

@@ -322,6 +322,8 @@ static uint8_t wsfFileHandle(uint8_t cmd, uint32_t param)
         /* Check the calculated CRC32 against what was received, 32 bits is 4 bytes */
         if (fileHeader.fileCRC != crcResult) {
             APP_TRACE_INFO0("Update file verification failure");
+            APP_TRACE_INFO0("Erasing first sector of external flash");
+            Ext_Flash_Erase(HEADER_LOCATION, Ext_Flash_Erase_4K);
             crcResult = 0;
             return WDX_FTC_ST_VERIFICATION;
         }

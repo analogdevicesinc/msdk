@@ -17,11 +17,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Setup
 
-##### Board Selection
-
-Before building firmware you must select the correct value for _BOARD_  in "[project.mk](project.mk)", either `EvKit_V1` or `FTHR_Apps_P1`, depending on the EV kit you are using to run the example.
-
-##### Required Connections
+### Required Connections
 If using the Standard EV Kit (EvKit\_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.

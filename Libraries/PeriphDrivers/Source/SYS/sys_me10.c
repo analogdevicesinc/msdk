@@ -373,6 +373,8 @@ int MXC_SYS_GetUSN(uint8_t *serialNumber, int len)
 {
     if (len != 13) {
         return E_BAD_PARAM;
+    } else if (serialNumber == NULL) {
+        return E_NULL_PTR;
     }
 
     uint32_t infoblock[6];

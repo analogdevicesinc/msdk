@@ -46,6 +46,13 @@
 extern "C" {
 #endif
 
+/**
+ * @defgroup mxc_sys System Configuration (MXC_SYS)
+ * @ingroup syscfg
+ * @details API for system configuration including clock source selection and entering critical sections of code.
+ * @{
+ */
+
 /** @brief System reset0 and reset1 enumeration. Used in SYS_PeriphReset0 function */
 typedef enum {
     MXC_SYS_RESET_DMA0 = MXC_F_GCR_RSTR0_DMA_POS, /**< Reset DMA */
@@ -205,8 +212,9 @@ typedef enum {
 #define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
 #define MXC_SYS_CTB_CLK 1 // Enable CTB CLK
 
-#define MXC_SYS_USN_CHECKSUM_LEN 16
-#define MXC_SYS_USN_LEN 16
+#define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
+#define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
+#define MXC_SYS_USN_LEN 13 // Size of the USN including the checksum
 
 /***** Function Prototypes *****/
 
@@ -215,7 +223,7 @@ typedef struct {
     int in_critical;
 } mxc_crit_state_t;
 
-static mxc_crit_state_t _state = { .ie_status = 0xFFFFFFFF, .in_critical = 0 };
+static mxc_crit_state_t _state = { .ie_status = (int)0xFFFFFFFF, .in_critical = 0 };
 
 static inline void _mxc_crit_get_state()
 {
@@ -243,7 +251,15 @@ static inline void _mxc_crit_get_state()
 }
 
 /**
- * @brief Enter a critical section of code that cannot be interrupted.
+ * @brief Enter a critical section of code that cannot be interrupted.  Call @ref MXC_SYS_Crit_Exit to exit the critical section.
+ * @details Ex:
+ * @code
+ * MXC_SYS_Crit_Enter();
+ * printf("Hello critical section!\n");
+ * MXC_SYS_Crit_Exit();
+ * @endcode
+ * The @ref MXC_CRITICAL macro is also provided as a convencience macro for wrapping a code section in this way.
+ * @returns None
  */
 static inline void MXC_SYS_Crit_Enter(void)
 {
@@ -254,8 +270,8 @@ static inline void MXC_SYS_Crit_Enter(void)
 }
 
 /**
- * @brief Exit a critical section of code, re-enabling interrupts if they
- *        were previously.
+ * @brief Exit a critical section of code from @ref MXC_SYS_Crit_Enter
+ * @returns None
  */
 static inline void MXC_SYS_Crit_Exit(void)
 {
@@ -284,8 +300,17 @@ static inline int MXC_SYS_In_Crit_Section(void)
 
 // clang-format off
 /**
- * @brief Macro for wrapping a section of code to make it critical.  Note: this macro
+ * @brief Macro for wrapping a section of code to make it critical (interrupts disabled).  Note: this macro
  * does not support nesting.
+ * @details
+ * Ex:
+ * \code
+ * MXC_CRITICAL(
+ *      printf("Hello critical section!\n");
+ * )
+ * \endcode
+ * This macro places a call to @ref MXC_SYS_Crit_Enter before the code, and a call to @ref MXC_SYS_Crit_Exit after.
+ * @param code The code section to wrap.
  */
 #define MXC_CRITICAL(code) {\
     MXC_SYS_Crit_Enter();\
@@ -295,9 +320,9 @@ static inline int MXC_SYS_In_Crit_Section(void)
 // clang-format on
 
 /**
- * @brief Reads the device USN.
- * @param usn       Pointer to store the USN.
- * @param checksum  Optional pointer to store the AES checksum.
+ * @brief Reads the device USN and verifies the checksum.
+ * @param usn       Pointer to store the USN. Array must be at least MXC_SYS_USN_LEN bytes long.
+ * @param checksum  Optional pointer to store the AES checksum. If not NULL, checksum is verified with AES engine.
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);

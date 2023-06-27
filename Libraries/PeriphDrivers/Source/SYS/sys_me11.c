@@ -65,25 +65,27 @@ int MXC_SYS_GetUSN(uint8_t *usn, int len, int part)
 {
     if (len != MXC_SYS_USN_LEN) {
         return E_BAD_PARAM;
+    } else if (usn == NULL) {
+        return E_NULL_PTR;
     }
 
     uint32_t infoblock[6];
 
-    MXC_FLC_UnlockInfoBlock(0x0000);
+    MXC_FLC_UnlockInfoBlock(MXC_INFO_MEM_BASE);
     infoblock[0] = *(uint32_t *)MXC_INFO_MEM_BASE;
     infoblock[1] = *(uint32_t *)(MXC_INFO_MEM_BASE + 4);
     infoblock[2] = *(uint32_t *)(MXC_INFO_MEM_BASE + 8);
     infoblock[3] = *(uint32_t *)(MXC_INFO_MEM_BASE + 12);
     infoblock[4] = *(uint32_t *)(MXC_INFO_MEM_BASE + 16);
     infoblock[5] = *(uint32_t *)(MXC_INFO_MEM_BASE + 20);
-    MXC_FLC_LockInfoBlock(0x0000);
+    MXC_FLC_LockInfoBlock(MXC_INFO_MEM_BASE);
 
     if (part == 0) {
         usn[0] = (infoblock[0] & 0x000000FF);
         usn[1] = (infoblock[0] & 0x0000FF00) >> 8;
         usn[2] = (infoblock[0] & 0x00FF0000) >> 16;
         usn[3] = (infoblock[0] & 0x3F000000) >> 24;
-        usn[3] |= (infoblock[1] & 0x00000003) << 30;
+        usn[3] |= (infoblock[1] & 0x00000003) << 6;
         usn[4] = (infoblock[1] & 0x000003FC) >> 2;
         usn[5] = (infoblock[1] & 0x0003FC00) >> 10;
         usn[6] = (infoblock[1] & 0x03FC0000) >> 18;
@@ -181,9 +183,8 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_NANORING:
-        // MXC_GCR->clk_ctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
+        // 80khz nanoring is always enabled
+        return E_NO_ERROR;
         break;
 
     default:
@@ -214,7 +215,7 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_NANORING:
-        // MXC_GCR->clk_ctrl &= ~MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        // 80khz nanoring is always enabled
         return E_BAD_PARAM;
 
     default:
@@ -284,18 +285,10 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_NANORING:
-        // Enable HIRC clock
-        // if(!(MXC_GCR->clk_ctrl & MXC_F_GCR_CLKCTRL_EXTCLK_EN)) {
-        //     MXC_GCR->clk_ctrl |=MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLK_CTRL_LIRC8K_RDY) != E_NO_ERROR) {
+            return E_TIME_OUT;
+        }
 
-        //     // Check if HIRC clock is ready
-        //     if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
-        //         return E_TIME_OUT;
-        //     }
-        // }
-
-        // Set HIRC clock as System Clock
-        // MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
         MXC_SETFIELD(MXC_GCR->clk_ctrl, MXC_F_GCR_CLK_CTRL_CLKSEL,
                      MXC_S_GCR_CLK_CTRL_CLKSEL_NANORING);
 

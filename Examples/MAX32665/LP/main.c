@@ -75,7 +75,7 @@
 
 #define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
-#define DO_BACKUP 0
+#define DO_BACKUP 1
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
@@ -160,82 +160,6 @@ void setTrigger(int waitForTrigger)
 }
 #endif // USE_BUTTON
 
-/*
- *  Switch the system clock to the HIRC / 4
- *
- *  Enable the HIRC, set the divide ration to /4, and disable the 96 MHz oscillator.
- */
-void switchToHIRCD4(void)
-{
-    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_PSC, MXC_S_GCR_CLKCN_PSC_DIV4);
-    MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC_EN;
-    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC);
-    /* Disable unused clocks */
-    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)) {}
-    /* Wait for the switch to occur */
-    MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC96M_EN);
-    SystemCoreClockUpdate();
-}
-
-/*
- *  Switch the system clock to the HIRC96
- *
- *  Enable the HIRC, set the divide ration to /1, and disable the 60 MHz oscillator.
- */
-void switchToHIRC96(void)
-{
-    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_PSC, MXC_S_GCR_CLKCN_PSC_DIV1);
-    MXC_GCR->clkcn |= MXC_F_GCR_CLKCN_HIRC96M_EN;
-    MXC_SETFIELD(MXC_GCR->clkcn, MXC_F_GCR_CLKCN_CLKSEL, MXC_S_GCR_CLKCN_CLKSEL_HIRC96);
-    /* Disable unused clocks */
-    while (!(MXC_GCR->clkcn & MXC_F_GCR_CLKCN_CKRDY)) {}
-    /* Wait for the switch to occur */
-    MXC_GCR->clkcn &= ~(MXC_F_GCR_CLKCN_HIRC_EN);
-    SystemCoreClockUpdate();
-}
-
-void prepForDeepSleep(void)
-{
-    MXC_ICC_Disable();
-    MXC_LP_ICache0Shutdown();
-
-    /* Shutdown unused power domains */
-    MXC_PWRSEQ->lpcn |= MXC_F_PWRSEQ_LPCN_BGOFF;
-
-    /* Prevent SIMO soft start on wakeup */
-    MXC_LP_FastWakeupDisable();
-
-    /* Enable VDDCSWEN=1 prior to enter backup/deepsleep mode */
-    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_VDDCSWEN;
-
-    switchToHIRCD4();
-
-    MXC_SIMO_SetVregO_B(810); /* Reduce VCOREB to 0.81v */
-}
-
-void recoverFromDeepSleep(void)
-{
-    /* Check to see if VCOREA is ready on  */
-    if (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYC)) {
-        /* Wait for VCOREB to be ready */
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
-
-        /* Move VCORE switch back to VCOREB */
-        MXC_MCR->ctrl = (MXC_MCR->ctrl & ~(MXC_F_MCR_CTRL_VDDCSW)) |
-                        (0x1 << MXC_F_MCR_CTRL_VDDCSW_POS);
-
-        /* Raise the VCORE_B voltage */
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
-        MXC_SIMO_SetVregO_B(1000);
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYB)) {}
-    }
-
-    MXC_LP_ICache0PowerUp();
-    MXC_ICC_Enable();
-
-    switchToHIRC96();
-}
-
 int main(void)
 {
     PRINT("\n\n****Low Power Mode Example****\n\n");
@@ -300,7 +224,6 @@ int main(void)
 
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
-    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
@@ -317,18 +240,14 @@ int main(void)
 #if DO_DEEPSLEEP
         PRINT("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
-        prepForDeepSleep();
         MXC_LP_EnterDeepSleepMode();
-        recoverFromDeepSleep();
         PRINT("Waking up from DEEPSLEEP mode.\n");
 #endif // DO_DEEPSLEEP
 
 #if DO_BACKUP
         PRINT("Entering BACKUP mode.\n");
         setTrigger(0);
-        prepForDeepSleep();
         MXC_LP_EnterBackupMode(NULL);
-        recoverFromDeepSleep();
 #endif // DO_BACKUP
     }
 }

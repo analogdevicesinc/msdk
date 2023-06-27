@@ -70,7 +70,12 @@ extern uint32_t _binary_riscv_bin_start;
 /* ************************************************************************** */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
+    int err = E_NO_ERROR;
     uint32_t *infoblock = (uint32_t *)MXC_INFO0_MEM_BASE;
+
+    if (usn == NULL) {
+        return E_NULL_PTR;
+    }
 
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
@@ -91,10 +96,45 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     usn[9] = (infoblock[3] & 0x00007F80) >> 7;
     usn[10] = (infoblock[3] & 0x007F8000) >> 15;
 
-    /* If requested, return the checksum */
+    /* If requested, verify and return the checksum */
     if (checksum != NULL) {
+        uint8_t check_csum[MXC_SYS_USN_CHECKSUM_LEN];
+        uint8_t aes_key[MXC_SYS_USN_CHECKSUM_LEN] = { 0 }; // NULL Key (per checksum spec)
+
         checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
         checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
+
+        err = MXC_AES_Init();
+        if (err) {
+            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            return err;
+        }
+
+        // Set NULL Key
+        MXC_AES_SetExtKey((const void *)aes_key, MXC_AES_128BITS);
+
+        // Compute Checksum
+        mxc_aes_req_t aes_req;
+        aes_req.length = MXC_SYS_USN_CHECKSUM_LEN / 4;
+        aes_req.inputData = (uint32_t *)usn;
+        aes_req.resultData = (uint32_t *)check_csum;
+        aes_req.keySize = MXC_AES_128BITS;
+        aes_req.encryption = MXC_AES_ENCRYPT_EXT_KEY;
+        aes_req.callback = NULL;
+
+        err = MXC_AES_Generic(&aes_req);
+        if (err) {
+            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            return err;
+        }
+
+        MXC_AES_Shutdown();
+
+        // Verify Checksum
+        if (check_csum[0] != checksum[1] || check_csum[1] != checksum[0]) {
+            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            return E_INVALID;
+        }
     }
 
     /* Add the info block checksum to the USN */
@@ -103,7 +143,13 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    return E_NO_ERROR;
+    return err;
+}
+
+/* ************************************************************************** */
+int MXC_SYS_GetRevision(void)
+{
+    return MXC_GCR->revision;
 }
 
 /* ************************************************************************** */
@@ -168,6 +214,20 @@ int MXC_SYS_RTCClockDisable(void)
     }
 }
 
+#if TARGET_NUM == 32655
+/******************************************************************************/
+void MXC_SYS_RTCClockPowerDownEn(void)
+{
+    MXC_MCR->ctrl |= MXC_F_MCR_CTRL_32KOSC_EN;
+}
+
+/******************************************************************************/
+void MXC_SYS_RTCClockPowerDownDis(void)
+{
+    MXC_MCR->ctrl &= ~MXC_F_MCR_CTRL_32KOSC_EN;
+}
+#endif //TARGET_NUM == 32655
+
 /******************************************************************************/
 int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
 {
@@ -183,9 +243,8 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
+        // No "RDY" bit to monitor, so just configure the GPIO
+        return MXC_GPIO_Config(&gpio_cfg_extclk);
         break;
 
     case MXC_SYS_CLOCK_INRO:
@@ -247,7 +306,13 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        /*
+        There's not a great way to disable the external clock.
+        Deinitializing the GPIO here may have unintended consequences
+        for application code.
+        Selecting a different system clock source is sufficient
+        to "disable" the EXT_CLK source.
+        */
         break;
 
     case MXC_SYS_CLOCK_INRO:
@@ -278,6 +343,7 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     while (!(MXC_GCR->clkctrl & ready)) {}
     return E_NO_ERROR;
 #else
+#ifndef BOARD_ME17_TESTER
     // Start timeout, wait for ready
     MXC_DelayAsync(MXC_SYS_CLOCK_TIMEOUT, NULL);
 
@@ -289,13 +355,18 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
     } while (MXC_DelayCheck() == E_BUSY);
 
     return E_TIME_OUT;
+#else
+
+    return E_NO_ERROR;
+#endif
+
 #endif // __riscv
 }
-
 /* ************************************************************************** */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 {
     uint32_t current_clock;
+    int err = E_NO_ERROR;
 
     // Save the current system clock
     current_clock = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL;
@@ -355,6 +426,13 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
+        /*
+        There's not "EXT_CLK RDY" bit for the ME17, so we'll
+        blindly enable (configure GPIO) the external clock every time.
+        */
+        err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        if (err)
+            return err;
 
         // Set EXT clock as System Clock
         MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,

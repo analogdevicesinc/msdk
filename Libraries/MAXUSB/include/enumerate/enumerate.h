@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,11 +29,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
- 
-#ifndef _ENUMERATE_H_
-#define _ENUMERATE_H_
+
+#ifndef LIBRARIES_MAXUSB_INCLUDE_ENUMERATE_ENUMERATE_H_
+#define LIBRARIES_MAXUSB_INCLUDE_ENUMERATE_ENUMERATE_H_
 
 /**
  * @file  enumerate.h
@@ -140,4 +139,4 @@ void enum_clearconfig(void);
 }
 #endif
 
-#endif
+#endif //LIBRARIES_MAXUSB_INCLUDE_ENUMERATE_ENUMERATE_H_

@@ -2,6 +2,7 @@
  * @file    owm_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the OWM Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup owm_registers
  */
 
 /******************************************************************************

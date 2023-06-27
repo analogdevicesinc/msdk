@@ -12,18 +12,18 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-# Enable CORDIO library
+# Enable Cordio library
 LIB_CORDIO = 1
 
-# Optimize for size
-MXC_OPTIMIZE_CFLAGS = -Os
-
-# Disable central and observer.  They're
-# not needed for this server app.
+# Cordio library options
 INIT_PERIPHERAL = 1
-INIT_BROADCASTER = 1
 INIT_CENTRAL = 0
-INIT_OBSERVER = 0
+
+# TRACE option
+# Set to 0 to disable
+# Set to 1 to enable serial port trace messages
+# Set to 2 to enable verbose messages
+TRACE = 1
 
 # Add services directory to build
 IPATH += services

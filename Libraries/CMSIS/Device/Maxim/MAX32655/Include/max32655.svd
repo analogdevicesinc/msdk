@@ -2254,6 +2254,34 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>ERFO_INTFL</name>
+     <description>ERFO Ready Interrupt Flag register.</description>
+     <addressOffset>0x1C</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>rdy</name>
+       <description>Ready interrupt flag.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>ERFO_INTEN</name>
+     <description>ERFO Ready Interrupt Enable register.</description>
+     <addressOffset>0x20</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>rdy</name>
+       <description>Ready interrupt enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 <!--FCR Function Control Register.-->
@@ -6366,6 +6394,24 @@
        <access>read-write</access>
       </field>
       <field>
+       <name>EXTCLK_EN</name>
+       <description>Selects the clock source for master mode operations in the ME17B.</description>
+       <bitRange>[14:14]</bitRange>
+       <access>read-write</access>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>erfo</name>
+         <description>Use ERFO.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>ext</name>
+         <description>Use External Clock.</description>
+         <value>1</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+      <field>
        <name>ADJUST</name>
        <description>LSB/MSB Justify.</description>
        <bitRange>[15:15]</bitRange>
@@ -6944,6 +6990,12 @@
      <addressOffset>0x10</addressOffset>
      <fields>
       <field>
+       <name>CMPHYST</name>
+       <description>Comparator hysteresis control.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+      <field>
        <name>INRO_EN</name>
        <description>INRO Enable.</description>
        <bitOffset>2</bitOffset>
@@ -6953,6 +7005,18 @@
        <name>ERTCO_EN</name>
        <description>ERTCO Enable.</description>
        <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBRO_EN</name>
+       <description>IBRO Enable.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>32KOSC_EN</name>
+       <description>Enable 32K Oscillator input.</description>
+       <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
@@ -7152,7 +7216,7 @@
       <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[7:7]</bitRange>
+       <bitRange>[5:5]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -7546,7 +7610,7 @@
    <access>read-write</access>
    <addressBlock>
     <offset>0</offset>
-    <size>0x0020</size>
+    <size>0x0018</size>
     <usage>registers</usage>
    </addressBlock>
    <interrupt>
@@ -7628,8 +7692,8 @@
      </fields>
     </register>
     <register>
-     <name>INTFL</name>
-     <description>Pulse Train Interrupt Flags</description>
+     <name>STOP_INTFL</name>
+     <description>Pulse Train Stop Interrupt Flags</description>
      <addressOffset>0x0008</addressOffset>
      <access>read-write</access>
      <fields>
@@ -7664,8 +7728,8 @@
      </fields>
     </register>
     <register>
-     <name>INTEN</name>
-     <description>Pulse Train Interrupt Enable/Disable</description>
+     <name>STOP_INTEN</name>
+     <description>Pulse Train Stop Interrupt Enable/Disable</description>
      <addressOffset>0x000C</addressOffset>
      <access>read-write</access>
      <fields>
@@ -7760,6 +7824,78 @@
        <bitOffset>3</bitOffset>
        <bitWidth>1</bitWidth>
        <access>write-only</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTFL</name>
+     <description>Pulse Train Ready Interrupt Flags</description>
+     <addressOffset>0x0018</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Flag</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Flag</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Flag</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Flag</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>READY_INTEN</name>
+     <description>Pulse Train Ready Interrupt Enable/Disable</description>
+     <addressOffset>0x001C</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>pt0</name>
+       <description>Pulse Train 0 Ready Interrupt Enable/Disable</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt1</name>
+       <description>Pulse Train 1 Ready Interrupt Enable/Disable</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt2</name>
+       <description>Pulse Train 2 Ready Interrupt Enable/Disable</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>pt3</name>
+       <description>Pulse Train 3 Ready Interrupt Enable/Disable</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+       <access>read-write</access>
       </field>
      </fields>
     </register>
@@ -8448,6 +8584,30 @@
      <addressOffset>0x18</addressOffset>
      <resetMask>0x00000000</resetMask>
      <fields>
+      <field>
+       <name>FILTER_EN</name>
+       <description>Enables analog deglitch filter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_SEL</name>
+       <description>If IBIAS_EN is 1, selects 4x,2x mode.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HYST_EN</name>
+       <description>Enables high current hysteresis buffer.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_EN</name>
+       <description>Enables higher 4x,2x current modes.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
       <field>
        <name>BYPASS</name>
        <description>RTC Crystal Bypass</description>
@@ -11352,6 +11512,12 @@
      <resetValue>0x00000003</resetValue>
      <fields>
       <field>
+       <name>ODHT</name>
+       <description>Start On-Demand health test.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>RND_IE</name>
        <description>To enable IRQ generation when a new 32-bit Random number is ready.</description>
        <bitOffset>1</bitOffset>
@@ -11368,6 +11534,12 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
+      </field>
+      <field>
+       <name>HEALTH_EN</name>
+       <description>Enable IRQ generation when a health test fails.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
       </field>
       <field>
        <name>KEYGEN</name>
@@ -11405,6 +11577,36 @@
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
+      </field>
+      <field>
+       <name>ODHT</name>
+       <description>On-Demand health test status.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HT</name>
+       <description>Health test status.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>SRCFAIL</name>
+       <description>Entropy source has failed.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>AESKGD</name>
+       <description>AESKGD.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>LD_CNT</name>
+       <description>LD_CNT.</description>
+       <bitOffset>24</bitOffset>
+       <bitWidth>8</bitWidth>
       </field>
      </fields>
     </register>
@@ -11686,6 +11888,12 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
+       <name>TX_OB</name>
+       <description>Enable Interrupt For TX FIFO has one byte remaining</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>TX_HE</name>
        <description>Enable Interrupt For TX FIFO has half empty</description>
        <bitOffset>6</bitOffset>
@@ -11726,6 +11934,12 @@
        <name>RX_THD</name>
        <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
        <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TX_OB</name>
+       <description>Flag for interrupt when TX FIFO has one byte remaining</description>
+       <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>

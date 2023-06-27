@@ -25,6 +25,8 @@ Hello_World
 I2C
 I2C_SCAN
 ICC
+Library_Generate
+Library_Use
 LP
 OLED_Demo
 RTC

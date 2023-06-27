@@ -40,14 +40,12 @@ SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
 SRCS += pb.c
-SRCS += rom_stub.c
 SRCS += ssd1306.c
 
-MISC_DRIVERS_DIR ?= $(BOARD_DIR)/../../../MiscDrivers
+MISC_DRIVERS_DIR= $(LIBS_DIR)/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
-VPATH += $(BOARD_DIR)/../Source
 VPATH += $(MISC_DRIVERS_DIR)
 VPATH += $(MISC_DRIVERS_DIR)/Display
 VPATH += $(MISC_DRIVERS_DIR)/LED
@@ -55,7 +53,6 @@ VPATH += $(MISC_DRIVERS_DIR)/PushButton
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
-IPATH += $(BOARD_DIR)/../Include
 IPATH += $(MISC_DRIVERS_DIR)
 IPATH += $(MISC_DRIVERS_DIR)/Display
 IPATH += $(MISC_DRIVERS_DIR)/LED

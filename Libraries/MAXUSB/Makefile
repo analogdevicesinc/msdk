@@ -105,6 +105,7 @@ SRCS += hid_raw.c
 SRCS += cdc_acm.c
 SRCS += fifo.c
 SRCS += msc.c
+SRCS += ccid.c
 # Generic debug log, useful for minimally-invasive tracing of the USB stack
 #SRCS += dbg_log.c
 

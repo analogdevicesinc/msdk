@@ -45,14 +45,20 @@ SRCS += w25.c
 
 PROJ_CFLAGS+=-DEXT_FLASH_W25
 
-MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
-VPATH += $(BOARD_DIR)/../Source
+VPATH += $(MISC_DRIVERS_DIR)
+VPATH += $(MISC_DRIVERS_DIR)/LED
+VPATH += $(MISC_DRIVERS_DIR)/PushButton
+VPATH += $(MISC_DRIVERS_DIR)/PMIC
 VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
-IPATH += $(BOARD_DIR)/../Include
+IPATH += $(MISC_DRIVERS_DIR)
+IPATH += $(MISC_DRIVERS_DIR)/LED
+IPATH += $(MISC_DRIVERS_DIR)/PushButton
+IPATH += $(MISC_DRIVERS_DIR)/PMIC
 IPATH += $(MISC_DRIVERS_DIR)/ExtMemory

@@ -13,14 +13,12 @@
 
 # Add your config here!
 
+# Set OV5640 camera drivers for use with the Pcam 5C.
+# These are the only drivers tested with this example.
 CAMERA=OV5640
 
-# Set a higher optimization level.  The increased performance
-# is required for the Camera DMA code to work within the
-# timing requirements of the CSI2 interface.
-MXC_OPTIMIZE_CFLAGS=-O2
-
-# Set the CSI2 linkerfile, which reserves an SRAM instance required
-# for the CSI2 hardware buffers
-LINKERFILE=max78002_csi2.ld
-
+# Add drivers for the APS6404 SRAM that is on-board the
+# MAX78002EVKIT.  We use this to buffer the incoming image
+# data.
+VPATH += src/sram
+IPATH += src/sram

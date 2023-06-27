@@ -45,6 +45,11 @@ one of the application files:
 	#define configAPPLICATION_PROVIDES_cOutputBuffer 0
 #endif
 
+/* Overides the use of "help" as the internal help command */
+#ifndef configUSE_CUSTOM_HELP_COMMAND
+	#define configUSE_CUSTOM_HELP_COMMAND 0
+#endif
+
 typedef struct xCOMMAND_INPUT_LIST
 {
 	const CLI_Command_Definition_t *pxCommandLineDefinition;
@@ -66,7 +71,11 @@ static int8_t prvGetNumberOfParameters( const char *pcCommandString );
 of the list of registered commands. */
 static const CLI_Command_Definition_t xHelpCommand =
 {
-	"help",
+#if configUSE_CUSTOM_HELP_COMMAND
+    "help-internal",
+#else
+    "help",
+#endif
 	"\r\nhelp:\r\n Lists all the registered commands\r\n\r\n",
 	prvHelpCommand,
 	0

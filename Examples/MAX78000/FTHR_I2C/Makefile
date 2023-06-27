@@ -72,7 +72,7 @@ TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 endif
 
 # Default board.
-BOARD ?= EvKit_V1
+BOARD ?= FTHR_RevA
 
 # *******************************************************************************
 # Locate the MaximSDK
@@ -103,8 +103,10 @@ endif
 # the variables below.
 
 
-include ./project.mk
+PROJECTMK ?= $(abspath ./project.mk)
+include $(PROJECTMK)
 $(info Loaded project.mk)
+# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
@@ -177,8 +179,9 @@ IPATH := $(IPATH)
 
 AUTOSEARCH ?= 1
 ifeq ($(AUTOSEARCH), 1)
-# Auto-detect all C source files on VPATH
+# Auto-detect all C/C++ source files on VPATH
 SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
+SRCS += $(wildcard $(addsuffix /*.cpp, $(VPATH)))
 endif
 
 # Collapse SRCS before passing them on to the next stage
@@ -249,22 +252,6 @@ PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
 MFLOAT_ABI ?= softfp
 # MFLOAT_ABI must be exported to other Makefiles
 export MFLOAT_ABI
-
-ifeq "$(RISCV_CORE)" ""
-# Default linkerfile is only specified for standard Arm-core projects.
-# Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
-LINKERFILE ?= $(TARGET_LC).ld
-LINKERPATH ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
-
-# Check if linkerfile exists
-ifeq ("$(wildcard $(LINKERPATH)/$(LINKERFILE))","")
-# Doesn't exists, attempt to use root project folder.
-LINKERPATH:=.
-endif
-
-# Form full path to linkerfile.  Works around MSYS2 edge case from (see MSDK-903).
-LINKERFILE:=$(LINKERPATH)/$(LINKERFILE)
-endif
 
 # This path contains system-level intialization files for the target micro.  Add to the build.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source

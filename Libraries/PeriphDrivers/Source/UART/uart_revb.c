@@ -705,6 +705,9 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
             return E_BAD_PARAM;
         }
 
+        // Save TX Request
+        AsyncTxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
+
         MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_EN_TX_HE);
         numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
@@ -717,19 +720,20 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
             (req->txCnt == req->txLen)) {
             NVIC_SetPendingIRQ(MXC_UART_GET_IRQ(uartNum));
         }
-
-        AsyncTxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
     }
 
     if (req->rxLen) {
-        // All error interrupts are related to RX
-        MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_UART_REVB_ERRINT_EN);
-
         if (req->rxData == NULL) {
             MXC_UART_DisableInt((mxc_uart_regs_t *)(req->uart), 0xFFFFFFFF);
             MXC_UART_ClearTXFIFO((mxc_uart_regs_t *)(req->uart));
             return E_BAD_PARAM;
         }
+
+        // Save RX Request
+        AsyncRxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
+
+        // All error interrupts are related to RX
+        MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_UART_REVB_ERRINT_EN);
 
         MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_EN_RX_THD);
         numToRead = MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
@@ -737,8 +741,6 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
         req->rxCnt += MXC_UART_ReadRXFIFO((mxc_uart_regs_t *)(req->uart), &req->rxData[req->rxCnt],
                                           numToRead);
         MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_FL_RX_THD);
-
-        AsyncRxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
     }
 
     return E_NO_ERROR;

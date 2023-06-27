@@ -48,6 +48,7 @@
 #include "gcr_regs.h"
 #include "pwrseq_regs.h"
 #include "mxc.h"
+#include "board.h"
 #include "lp.h"
 
 /***** Definitions *****/

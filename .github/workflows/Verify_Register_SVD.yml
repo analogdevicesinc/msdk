@@ -51,31 +51,65 @@ jobs:
             rm -rf *
           fi
           set -e
+
+          cd ..
+          pwd
+          ls
           
       # Checks-out MSDK and MSDK-INTERNAL repositories under $GITHUB_WORKSPACE, so your job can access it
       - name: Checkout msdk repository
         uses: actions/checkout@v3
         with:
           # Update the submodules below, doing so here will convert ssh to https
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
           submodules: false
           fetch-depth: 0
-          path: ${{ env.MSDK_DIR }}
+          # path: ${{ env.MSDK_DIR }}
       
       - name: Checkout msdk internal repository
         run: |
-          git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
+          cd ..
+          pwd
+          ls
+
+          # BTM-CI might already have the msdk-internal repo cloned.
+          if [[ -d ${{ env.MSDK-INTERNAL_DIR }} ]]; then
+            cd ${{ env.MSDK-INTERNAL_DIR }}
+            pwd
+            git pull
+            cd ..
+            pwd
+          else
+            pwd
+            git clone git@github.com:Analog-Devices-MSDK/msdk-internal.git
+            ls
+          fi
           
       # Use these next steps to verify if register files were updated.
       # Easier to read in Actions' console window if separated by steps.
       - name: Checking if register files or peripheral SVD files were updated.
         run: |
-          cd ${{ env.MSDK_DIR }}
-          CHANGED_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h' './Libraries/PeriphDrivers/Source/*/*.svd')
+          pwd
+          ls
+
+          enter_msdk=0
+          if [[ -d ${{ env.MSDK_DIR }} ]]; then
+            cd ${{ env.MSDK_DIR }}
+            enter_msdk=1
+          fi
+          
+          git fetch
+          CHANGED_FILES=$(git diff --ignore-submodules --name-only @ remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h' './Libraries/PeriphDrivers/Source/*/*.svd')
 
           if [[ -n ${CHANGED_FILES} ]]; then
             echo "DIFF_FILES_FLAG=true" >> $GITHUB_ENV
           else
             echo "No register file changed."
+          fi
+
+          if [[ $enter_msdk == 1 ]]; then
+            cd ..
           fi
           
       # This step is just to indicate status of job in Actions' console if there are no
@@ -90,10 +124,14 @@ jobs:
       - name: Verifying any deleted Peripheral SVD files.
         if: env.DIFF_FILES_FLAG == 'true'
         run: |
-          # Enter msdk repo.
+          # Workspace doesn't return to home after each step.
+          cd ..
+          pwd
+          ls
+
           cd ${{ env.MSDK_DIR }}
           PERIPH_SVD_FILE_LIST=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/PeriphDrivers/Source/*/*.svd')
-          
+
           # Save time if there weren't any peripheral SVD file changes.
           if [[ -n $PERIPH_SVD_FILE_LIST ]]; then
             # Keep track of all deleted SVD files.
@@ -175,7 +213,7 @@ jobs:
           CHIP_TO_DIE_NAMES[MAX32650]=ME10
           CHIP_TO_DIE_NAMES[MAX32660]=ME11
           CHIP_TO_DIE_NAMES[MAX32662]=ME12
-          CHIP_TO_DIE_NAMES[MAX32570]=ME13
+          # CHIP_TO_DIE_NAMES[MAX32570]=ME13
           CHIP_TO_DIE_NAMES[MAX32665]=ME14
           CHIP_TO_DIE_NAMES[MAX32670]=ME15
           CHIP_TO_DIE_NAMES[MAX32675]=ME16
@@ -183,15 +221,15 @@ jobs:
           CHIP_TO_DIE_NAMES[MAX32690]=ME18
           CHIP_TO_DIE_NAMES[MAX32680]=ME20
           CHIP_TO_DIE_NAMES[MAX32672]=ME21
-          CHIP_TO_DIE_NAMES[MAX32572]=ME55
+          #CHIP_TO_DIE_NAMES[MAX32572]=ME55
           
           DIE_TO_CHIP_NAMES[AI85]=MAX78000
-          DIE_TO_CHIP_NAMES[AI87]=MAX78000
+          DIE_TO_CHIP_NAMES[AI87]=MAX78002
           DIE_TO_CHIP_NAMES[ES17]=MAX32520
           DIE_TO_CHIP_NAMES[ME10]=MAX32650
           DIE_TO_CHIP_NAMES[ME11]=MAX32660
           DIE_TO_CHIP_NAMES[ME12]=MAX32662
-          DIE_TO_CHIP_NAMES[ME13]=MAX32570
+          # DIE_TO_CHIP_NAMES[ME13]=MAX32570
           DIE_TO_CHIP_NAMES[ME14]=MAX32665
           DIE_TO_CHIP_NAMES[ME15]=MAX32670
           DIE_TO_CHIP_NAMES[ME16]=MAX32675
@@ -199,7 +237,7 @@ jobs:
           DIE_TO_CHIP_NAMES[ME18]=MAX32690
           DIE_TO_CHIP_NAMES[ME20]=MAX32680
           DIE_TO_CHIP_NAMES[ME21]=MAX32672
-          DIE_TO_CHIP_NAMES[ME55]=MAX32572
+          #DIE_TO_CHIP_NAMES[ME55]=MAX32572
           
           # This set keeps tracks of all the parts (chip names) with updated register files. (No duplicates).
           # The path to the register files from top of MSDK repo requires chip name.
@@ -264,7 +302,7 @@ jobs:
                   # Need to generate register files for part if it wasn't already generated.
                   if [[ ! (-d ./chip_test) ]]; then
                     chmod u+x makeRegs.sh
-                    make=$(./makeRegs.sh ubuntu)
+                    make=$(bash makeRegs.sh ubuntu)
                   fi
 
                   # Currently in msdk-internal/SVD/Device/{PART}/
@@ -283,6 +321,7 @@ jobs:
                   fi
 
                   if [[ -n $check_linked_reg_diffs || -n $check_orig_reg_diffs ]]; then
+                    periph="${periph##*/}"
                     echo "Libraries/CMSIS/Device/Maxim/${DIE_TO_CHIP_NAMES[$part]}/Include/${periph}_regs.h"
                   fi
                 fi
@@ -304,12 +343,15 @@ jobs:
           echo -e "\n\e[0;33m==================================================================\n"
           echo -e "\e[0;33mScanning for any changes in register files"
           echo -e "\n\e[0;33m==================================================================\n"
-          
+
+          # Workspace doesn't return to home after each step.
+          cd ..
+
           # Find diff in MSDK repo
           cd ${{ env.MSDK_DIR }}
           CHANGED_REGISTER_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/CMSIS/Device/Maxim/*/Include/*_regs.h')
           CHANGED_PERIPH_SVD_FILES=$(git diff --ignore-submodules --name-only remotes/origin/main './Libraries/PeriphDrivers/Source/*/*.svd')
-          
+
           # This includes all register files linked to any changed peripheral SVD files even if said register files were not changed in the PR.
           CHANGED_OR_AFFECTED_REGISTER_FILES=$CHANGED_REGISTER_FILES
           if [[ -n $CHANGED_PERIPH_SVD_FILES ]]; then
@@ -319,22 +361,22 @@ jobs:
             for changed_svd_file in $CHANGED_PERIPH_SVD_FILES
             do
               # Isolate to file name.
-              periph=${changed_svd_file##*/}
-
-              # Adding '/' to differentiate between trimsir and sir.
-              periph="/${periph%*.svd}"
+              periph=${changed_svd_file##*/Source}
               
               # Check if "Peripheral Rev#" SVD File or "SYS/SVD" (e.g. gcr_me14.svd) SVD File.
               if [[ "$periph" =~ "_rev" ]]; then
-                periph="/${periph%_rev*}"
+                periph="${periph##*/AESKEYS}"
+                periph="${periph%_rev*}"
               else
+                periph="${periph##*/SVD}"
+
                 # Remove attached die type name (Usually SYS register SVD files like gcr_me14.svd and fcr_me18.svd)
                 for die_name in ${!DIE_TO_CHIP_NAMES[@]}
                 do
                   lowercase_die_name=${die_name,,}
                   
                   if [[  "$periph" =~ "_${lowercase_die_name}" ]]; then
-                    periph="/${periph%_${lowercase_die_name}*}"
+                    periph="${periph%_${lowercase_die_name}*}"
                     break
                   fi
                 done
@@ -343,6 +385,7 @@ jobs:
               if [[ -n $reg_files_linked_to_changed_svd_files ]]; then
                 reg_files_linked_to_changed_svd_files+=" "
               fi
+
               reg_files_linked_to_changed_svd_files+=$(find_linked_register_files $changed_svd_file $periph "" ../)
             done
             
@@ -416,7 +459,8 @@ jobs:
             echo -e "[\e[1;31mERROR\e[0m]: Please verify the part relating to the affected register file(s) is valid and defined in the workflow dictionary."
             echo -e "[\e[1;31mERROR\e[0m]: Contact ADI developers for more assistance.\n"            
             
-            exit 1
+            # TODO(5-1-2023): Uncomment this when MAX32572 and MAX32570 are released.
+            # exit 1
           fi
            
           # Exit out of msdk directory.
@@ -439,7 +483,7 @@ jobs:
           
               if [[ ! (-d ./chip_test) ]]; then
                 chmod u+x makeRegs.sh
-                makeregs_log=$(./makeRegs.sh ubuntu)
+                makeregs_log=$(bash makeRegs.sh ubuntu)
               fi
               
               # This list keeps track of all the affected register files for each part.
@@ -572,6 +616,9 @@ jobs:
               if [[ -n $check_for_at_deprecated ]]; then
                 # Exception for deprecated register files.
                 echo -e "[\e[0;31mERROR\e[0m] DO NOT UPDATE. This file is deprecated. Please contact ADI developers for more support.\n\n"
+
+                # Changing Deprecated Files doesn't matter.
+                CHECK_FAIL=0
               else
                 # Exception for entirely new register files.
                 if [[ -n ${REGISTER_SVD_FILE_LIST[${affected_pr_reg_file#./*/}]} ]]; then

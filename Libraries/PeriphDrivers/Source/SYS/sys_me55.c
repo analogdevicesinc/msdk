@@ -349,40 +349,108 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
 }
 
 /* ************************************************************************** */
-int MXC_SYS_GetUSN(uint8_t *serialNumber, int len)
+int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
     //FIXME: No flash for ME55
     return E_NOT_SUPPORTED;
-    // if (len != 13) {
-    //     return E_BAD_PARAM;
+
+    // if (usn == NULL) {
+    //     return E_NOT_SUPPORTED;
     // }
 
-    // uint32_t infoblock[6];
+    // uint32_t *infoblock = (uint32_t *)MXC_INFO0_MEM_BASE;
 
-    // MXC_FLC_UnlockInfoBlock(0x0000);
-    // infoblock[0] = * (uint32_t*) MXC_INFO_MEM_BASE;
-    // infoblock[1] = * (uint32_t*)(MXC_INFO_MEM_BASE + 4);
-    // infoblock[2] = * (uint32_t*)(MXC_INFO_MEM_BASE + 8);
-    // infoblock[3] = * (uint32_t*)(MXC_INFO_MEM_BASE + 12);
-    // infoblock[4] = * (uint32_t*)(MXC_INFO_MEM_BASE + 16);
-    // infoblock[5] = * (uint32_t*)(MXC_INFO_MEM_BASE + 20);
-    // MXC_FLC_LockInfoBlock(0x0000);
+    // /* Read the USN from the info block */
+    // MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    // serialNumber[0]  = (infoblock[0] & 0x007F8000) >> 15;
-    // serialNumber[1]  = (infoblock[0] & 0x7F800000) >> 23;
-    // serialNumber[2]  = (infoblock[0] & 0x80000000) >> 31;
-    // serialNumber[2] |= (infoblock[1] & 0x0000007F) << 1;
-    // serialNumber[3]  = (infoblock[1] & 0x00007F80) >> 7;
-    // serialNumber[4]  = (infoblock[1] & 0x007F8000) >> 15;
-    // serialNumber[5]  = (infoblock[1] & 0x7F800000) >> 23;
-    // serialNumber[6]  = (infoblock[2] & 0x007F8000) >> 15;
-    // serialNumber[7]  = (infoblock[2] & 0x7F800000) >> 23;
-    // serialNumber[8]  = (infoblock[2] & 0x80000000) >> 31;
-    // serialNumber[8] |= (infoblock[3] & 0x0000007F) << 1;
-    // serialNumber[9]  = (infoblock[3] & 0x00007F80) >> 7;
-    // serialNumber[10] = (infoblock[3] & 0x007F8000) >> 15;
-    // serialNumber[11] = (infoblock[3] & 0x7F800000) >> 23;
-    // serialNumber[12] = (infoblock[4] & 0x007F8000) >> 15;
+    // memset(usn, 0, MXC_SYS_CHECKSUM_LEN);
+
+    // usn[0] = (infoblock[0] & 0x007F8000) >> 15;
+    // usn[1] = (infoblock[0] & 0x7F800000) >> 23;
+    // usn[2] = (infoblock[1] & 0x0000007F) << 1;
+    // usn[2] |= (infoblock[0] & 0x80000000) >> 31;
+    // usn[3] = (infoblock[1] & 0x00007F80) >> 7;
+    // usn[4] = (infoblock[1] & 0x007F8000) >> 15;
+    // usn[5] = (infoblock[1] & 0x7F800000) >> 23;
+    // usn[6] = (infoblock[2] & 0x007F8000) >> 15;
+    // usn[7] = (infoblock[2] & 0x7F800000) >> 23;
+    // usn[8] = (infoblock[3] & 0x0000007F) << 1;
+    // usn[8] |= (infoblock[2] & 0x80000000) >> 31;
+    // usn[9] = (infoblock[3] & 0x00007F80) >> 7;
+    // usn[10] = (infoblock[3] & 0x007F8000) >> 15;
+
+    // // Compute the checksum
+    // if (checksum != NULL) {
+    //     uint32_t key[4];
+    //     uint32_t pt32[4];
+    //     uint32_t check_csum32[4];
+    //     uint8_t check_csum[MXC_SYS_CHECKSUM_LEN];
+
+    //     /* Initialize key and plaintext */
+    //     memset(key, 0, MXC_SYS_CHECKSUM_LEN);
+    //     memset(pt32, 0, MXC_SYS_CHECKSUM_LEN);
+    //     memcpy(pt32, usn, MXC_SYS_CHECKSUM_LEN);
+
+    //     /* Read the checksum from the info block */
+    //     checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
+    //     checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
+
+    //     MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER);
+
+    //     /* Reset the CTB */
+    //     MXC_CTB->ctrl = MXC_F_CTB_CTRL_RST;
+
+    //     /* Set the legacy bit */
+    //     MXC_CTB->ctrl |= MXC_F_CTB_CTRL_FLAG_MODE;
+
+    //     /* Clear interrupt flags */
+    //     MXC_CTB->ctrl |= MXC_F_CTB_CTRL_CPH_DONE;
+
+    //     /* Setup the key source */
+    //     MXC_CTB->cipher_ctrl = MXC_S_CTB_CIPHER_CTRL_SRC_CIPHERKEY;
+
+    //     /* Setup the CT calculation */
+    //     MXC_CTB->cipher_ctrl |= MXC_S_CTB_CIPHER_CTRL_CIPHER_AES128;
+
+    //     /* Load the key */
+    //     MXC_CTB->cipher_key[0] = key[0];
+    //     MXC_CTB->cipher_key[1] = key[1];
+    //     MXC_CTB->cipher_key[2] = key[2];
+    //     MXC_CTB->cipher_key[3] = key[3];
+
+    //     /* Wait for the ready flag */
+    //     while (!(MXC_CTB->ctrl & MXC_F_CTB_CTRL_RDY)) {}
+
+    //     /* Copy data to start the operation */
+    //     MXC_CTB->din[0] = pt32[0];
+    //     MXC_CTB->din[1] = pt32[1];
+    //     MXC_CTB->din[2] = pt32[2];
+    //     MXC_CTB->din[3] = pt32[3];
+
+    //     /* Wait for and clear the done flag */
+    //     while (!(MXC_CTB->ctrl & MXC_F_CTB_CTRL_CPH_DONE)) {}
+    //     MXC_CTB->ctrl |= MXC_F_CTB_CTRL_CPH_DONE;
+
+    //     /* Copy out the cipher text */
+    //     check_csum32[0] = MXC_CTB->dout[0];
+    //     check_csum32[1] = MXC_CTB->dout[1];
+    //     check_csum32[2] = MXC_CTB->dout[2];
+    //     check_csum32[3] = MXC_CTB->dout[3];
+
+    //     memcpy(check_csum, check_csum32, MXC_SYS_CHECKSUM_LEN);
+
+    //     /* Verify the checksum */
+    //     if ((checksum[1] != check_csum[0]) || (checksum[0] != check_csum[1])) {
+    //         MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+    //         return E_UNKNOWN;
+    //     }
+    // }
+
+    // /* Add the info block checksum to the USN */
+    // usn[11] = ((infoblock[3] & 0x7F800000) >> 23);
+    // usn[12] = ((infoblock[4] & 0x007F8000) >> 15);
+
+    // MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
 
     // return E_NO_ERROR;
 }

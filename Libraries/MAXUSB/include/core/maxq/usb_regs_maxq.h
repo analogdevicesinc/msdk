@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,11 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
- 
+
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USB_REGS_MAXQ_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USB_REGS_MAXQ_H_
+
 /* USB controller registers accessed via UADDR/UDATA interface */
 #define rFNADDR   0x01
 #define rUSBCN    0x02
@@ -98,7 +100,7 @@
 #define bmIN5BAVIE  0x80
 #define bmOUT4DAVIE 0x40
 #define bmSUDAVIE   0x20
-#define bmIN3BAVIE  0x10 
+#define bmIN3BAVIE  0x10
 #define bmIN2BAVIE  0x08
 #define bmOUT1DAVIE 0x04
 #define bmOUT0DAVIE 0x02
@@ -107,8 +109,8 @@
 /* EPINT Register */
 #define bmIN5BAV    0x80
 #define bmOUT4DAV   0x40
-#define bmSUDAV     0x20 
-#define bmIN3BAV    0x10 
+#define bmSUDAV     0x20
+#define bmIN3BAV    0x10
 #define bmIN2BAV    0x08
 #define bmOUT1DAV   0x04
 #define bmOUT0DAV   0x02
@@ -143,4 +145,4 @@
 #define bmCTGEP2    0x008
 #define bmCTGEP1    0x004
 
-
+#endif //LIBRARIES_MAXUSB_INCLUDE_CORE_MAXQ_USB_REGS_MAXQ_H_

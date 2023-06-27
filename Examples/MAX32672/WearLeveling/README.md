@@ -1,11 +1,16 @@
 ## Description
 
-A basic application to demonstrate the setup and usage of the LittleFS library.
+In this example, the MAX32672 accepts commands from the user which demonstrate various features of the LittleFS library, including flash wear leveling. User's may send commands to the device with their terminal application.
 
-There are two tests available in this application, the Flash test and the LittleFS test. The Flash test exercises the functions defined in *flash.h* and *flash.c* which perform basic read, write and erase Flash operations (these functions are passed as pointers for use by the LittleFS library). The test will erase a section of Flash, write sample data to it, and verify the write was successful. Enable the flash test by setting the "FLASH_TEST" macro to 1 in *main.c*.
+Below is a list of the supported commands:
+* help: Prints out the list of available commands and describes how each command is used.
+* stop: Ends the example.
+* read: Reads data from a file and prints it to the terminal.
+* write: Writes data to a file and can optionally create the file to write to if it does not already exist.
+* swl: Stands for "show wear leveling". This command performs a specified number of writes (passed as an argument on the command line) to a test file and prints out the number of times each filesystem block was written to. Users should see the writes occur somewhat evenly across most filesystem blocks. 
+	
+Enter "help" in the command line to see more details on the usage of each of the commands including what arguments/options need to be specified to successfully execute each command.
 
-The LittleFS test will attempt to mount a filesystem in the flash memory, open a file in that filesystem, then read/modify/write a value in that file which keeps track of the number of times the filesystem has booted. The updated boot count is printed to the terminal on each successful iteration of this test. Enable this test by setting the "FLASH_TEST" macro to 0 in *main.c*.
- 
 ## Software
 
 ### Project Usage
@@ -14,22 +19,12 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-MAX32672 internal flash is partitioned as follows:
- -  Application code area: 128kb (Flash memory pages 0 - 15)
- -  LittleFS area: 64kb (Flash memory pages 16 - 23)
- 
-To ensure that these partitions are enforced, a special linker file, either *wearlevel.ld* or *wearlevel-sla.ld*, is used that stores application code in flash addresses 0x10000000-0x1001FFFF.
- 
-The LittleFS memory area can be modified by changing the page count specified by the "LFS\_PGE\_CNT" macro. Valid values are 1-112.
- 
- ```
- #define LFS_PGE_CNT 8
- ```
+* This project comes pre-configured for the MAX32672EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Select RX0 and TX0 on Headers JP1 and JP3 (UART 0).
+-   Select RX0 and TX0 on Headers JP10 and JP11 (UART 0).
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output
@@ -37,14 +32,77 @@ The LittleFS memory area can be modified by changing the page count specified by
 If running the LittleFS test, the Console UART of the device will output these messages:
 
 ```
-***** MAX32672 Wear Leveling *****
-Filesystem is mounted
-boot_count: 3
+********** Wear Leveling Example **********
+Mounting the filesystem...
+C:/MaximSDK/Libraries/littlefs/lfs.c:1224:error: Corrupted dir pair at {0x0, 0x1}
+Filesystem is invalid, formatting...
+Filesystem is mounted! Ready for commands.
 
-Example Succeeded
-```
-If running the FLASH_TEST portion of the example, the Console UART will output these messages:
+cmd> help
 
+The available commands are:
+  * help
+       Description: Prints out list of available commands.
+       Usage: help
+
+  * stop
+       Description: Ends the example.
+       Usage: stop
+
+  * read
+       Description: Reads data from a specific location within a file. If
+                    the read is successful, the data read is printed to the
+                    terminal.
+       Usage: read <filename> <number of bytes to read> <location>
+
+  * write
+       Description: Writes a character string to a specific location within
+                    a file.
+       Usage: write (--create) <filename> <character string> <location>
+       Options:
+          --create: Creates file <filename> if it does not already exist.
+  * swl
+       DDescription: Stands for "show wear leveling". Writes to a file the
+                     specified number of times. Once all writes have completed,
+                     the number of times each flash page (filesystem block)
+                     was written to is printed to the terminal. This command may
+                     take a while to complete. LED0 is used as a heartbeat while
+                     the command is executing.
+       Usage: swl <number of writes>
+
+
+cmd> write --create demo_file thisisanexampledatastringtowritetodemofile 0
+42 bytes were written to demo_file in filesystem block 6.
+
+cmd> read demo_file 42 0
+42 bytes were read from demo_file in filesystem block 6.
+The following string was read from file demo_file:
+thisisanexampledatastringtowritetodemofile
+
+cmd> swl 1000
+All writes have completed. Here are the results:
+Block 0 was written to 0 times.
+Block 1 was written to 0 times.
+Block 2 was written to 83 times.
+Block 3 was written to 83 times.
+Block 4 was written to 42 times.
+Block 5 was written to 42 times.
+Block 6 was written to 0 times.
+Block 7 was written to 84 times.
+Block 8 was written to 84 times.
+Block 9 was written to 84 times.
+Block 10 was written to 83 times.
+Block 11 was written to 83 times.
+Block 12 was written to 83 times.
+Block 13 was written to 83 times.
+Block 14 was written to 83 times.
+Block 15 was written to 83 times.
+
+
+cmd> stop
+
+Filesystem resources released.
+Example complete!
 ```
 ***** MAX32672 Wear Leveling *****
 Flash erase is verified.

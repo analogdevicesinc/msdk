@@ -30,7 +30,9 @@ jobs:
           # Update the submodules below, doing so here will convert ssh to https
           submodules: false
           fetch-depth: 0
-          
+          ref: '${{ github.event.pull_request.head.ref }}'
+          repository: '${{ github.event.pull_request.head.repo.full_name }}'
+
       - name: Check watch files
         id: check_watch 
         run: |
@@ -64,11 +66,13 @@ jobs:
           echo "Checking the following changes"
           echo $CHANGE_FILES
 
-          # Assume we want to actually run the workflow if no files changed
           for watch_file in $WATCH_FILES; do 
-            if [[ "$CHANGE_FILES" == *"$watch_file" ]]; then
-              RUN_TEST=1
-            fi
+              for change_file in $CHANGE_FILES; do 
+                  if [[ "${change_file,,}" == *"${watch_file,,}" ]]; then
+                      echo "Match found. Watch type: $watch_file, File: $change_file"
+                      RUN_TEST=1
+                  fi
+              done
           done
 
           # End the test early if there wasn't a significant change
@@ -99,6 +103,36 @@ jobs:
           
           # Add riscv tools to path
           echo "/home/runner/riscv-none-embed-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
+
+      - name: Install RISCV GCC Toolchain (riscv-none-elf-gcc)
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        run: |
+          # Install RISCV tools (updated)
+          npm install --global xpm@latest
+          
+          # https://www.npmjs.com/package/@xpack-dev-tools/riscv-none-elf-gcc
+          TOOL_VER=12.2.0-3.1
+          xpm install --global @xpack-dev-tools/riscv-none-elf-gcc@$TOOL_VER
+          cp -r /home/runner/.local/xPacks/@xpack-dev-tools/riscv-none-elf-gcc /home/runner/riscv-none-elf-gcc
+          
+          # Add riscv tools to path
+          echo "/home/runner/riscv-none-elf-gcc/$TOOL_VER/.content/bin" >> $GITHUB_PATH
+
+      - name: Install ccache
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        run: |
+          # Install ccache
+          sudo apt install -y ccache
+
+      - name: Setup Python
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        uses: actions/setup-python@v4.5.0
+        with:
+          python-version: '3.10'
+
+      - name: Install packages
+        if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}
+        run: pip install -r .github/workflows/scripts/requirements.txt
 
       - name: Setup Python
         if: ${{ steps.check_watch.outputs.RUN_TEST == '1' }}

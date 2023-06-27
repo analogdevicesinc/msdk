@@ -33,6 +33,10 @@
 
 /* **** Includes **** */
 #include <string.h>
+#include "mxc_device.h"
+#include "mxc_assert.h"
+#include "mxc_pins.h"
+#include "mxc_sys.h"
 #include "cameraif.h"
 #include "cameraif_reva.h"
 
@@ -42,9 +46,43 @@
 
 /* **** Functions **** */
 
-int MXC_PCIF_Init(void)
+int MXC_PCIF_Init(mxc_pcif_gpio_datawidth_t gpioDataWidth)
 {
-    return MXC_PCIF_RevA_Init();
+    if ((gpioDataWidth != MXC_PCIF_GPIO_DATAWIDTH_8_BIT) &&
+        (gpioDataWidth != MXC_PCIF_GPIO_DATAWIDTH_10_BIT) &&
+        (gpioDataWidth != MXC_PCIF_GPIO_DATAWIDTH_12_BIT)) {
+        return E_BAD_PARAM;
+    }
+
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_PCIF);
+
+    switch (gpioDataWidth) {
+    case MXC_PCIF_DATAWIDTH_8_BIT:
+        MXC_GPIO_Config(&gpio_cfg_pcif_P0_BITS_0_7);
+        break;
+
+    case MXC_PCIF_DATAWIDTH_10_BIT:
+        MXC_GPIO_Config(&gpio_cfg_pcif_P0_BITS_0_7);
+        MXC_GPIO_Config(&gpio_cfg_pcif_P0_BITS_8);
+        MXC_GPIO_Config(&gpio_cfg_pcif_P1_BITS_9);
+        break;
+
+    case MXC_PCIF_DATAWIDTH_12_BIT:
+        MXC_GPIO_Config(&gpio_cfg_pcif_P0_BITS_0_7);
+        MXC_GPIO_Config(&gpio_cfg_pcif_P0_BITS_8);
+        MXC_GPIO_Config(&gpio_cfg_pcif_P1_BITS_9);
+        MXC_GPIO_Config(&gpio_cfg_pcif_P1_BITS_10_11);
+        break;
+    }
+
+    MXC_GPIO_Config(&gpio_cfg_pcif_hsync);
+    MXC_GPIO_Config(&gpio_cfg_pcif_vsync);
+    MXC_GPIO_Config(&gpio_cfg_pcif_pclk);
+    MXC_GPIO_Config(&gpio_cfg_pcif_pwrdwn);
+
+    MXC_GPIO_OutClr(gpio_cfg_pcif_pwrdwn.port, gpio_cfg_pcif_pwrdwn.mask);
+
+    return E_NO_ERROR;
 }
 
 void MXC_PCIF_SetDatawidth(mxc_pcif_datawidth_t datawidth)

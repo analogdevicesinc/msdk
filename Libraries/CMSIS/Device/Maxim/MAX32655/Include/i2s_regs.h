@@ -2,6 +2,7 @@
  * @file    i2s_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the I2S Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup i2s_registers
  */
 
 /******************************************************************************
@@ -198,6 +199,9 @@ typedef struct {
 
 #define MXC_F_I2S_CTRL1CH0_SMP_SIZE_POS                9 /**< CTRL1CH0_SMP_SIZE Position */
 #define MXC_F_I2S_CTRL1CH0_SMP_SIZE                    ((uint32_t)(0x1FUL << MXC_F_I2S_CTRL1CH0_SMP_SIZE_POS)) /**< CTRL1CH0_SMP_SIZE Mask */
+
+#define MXC_F_I2S_CTRL1CH0_EXTCLK_EN_POS               14 /**< CTRL1CH0_EXTCLK_EN Position */
+#define MXC_F_I2S_CTRL1CH0_EXTCLK_EN                   ((uint32_t)(0x1UL << MXC_F_I2S_CTRL1CH0_EXTCLK_EN_POS)) /**< CTRL1CH0_EXTCLK_EN Mask */
 
 #define MXC_F_I2S_CTRL1CH0_ADJUST_POS                  15 /**< CTRL1CH0_ADJUST Position */
 #define MXC_F_I2S_CTRL1CH0_ADJUST                      ((uint32_t)(0x1UL << MXC_F_I2S_CTRL1CH0_ADJUST_POS)) /**< CTRL1CH0_ADJUST Mask */

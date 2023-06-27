@@ -47,6 +47,13 @@
 extern "C" {
 #endif
 
+/**
+ * @defgroup mxc_sys System Configuration (MXC_SYS)
+ * @ingroup syscfg
+ * @details API for system configuration including clock source selection and entering critical sections of code.
+ * @{
+ */
+
 /** @brief System reset0 and reset1 enumeration. Used in MXC_SYS_PeriphReset0 function */
 typedef enum {
     MXC_SYS_RESET0_DMA = MXC_F_GCR_RST0_DMA_POS, /**< Reset DMA */
@@ -70,7 +77,7 @@ typedef enum {
     MXC_SYS_RESET0_CAN1 = MXC_F_GCR_RST0_CAN1_POS, /**< Reset CAN1 */
     MXC_SYS_RESET0_HPB = MXC_F_GCR_RST0_HPB_POS, /**< Reset HPB */
     MXC_SYS_RESET0_SMPHR = MXC_F_GCR_RST0_SMPHR_POS, /**< Reset SMPHR */
-    MXC_SYS_RESET0_USB = MXC_F_GCR_RST0_USB, /**< Reset USB */
+    MXC_SYS_RESET0_USB = MXC_F_GCR_RST0_USB_POS, /**< Reset USB */
     MXC_SYS_RESET0_TRNG = MXC_F_GCR_RST0_TRNG_POS, /**< Reset TRNG */
     MXC_SYS_RESET0_ADC = MXC_F_GCR_RST0_ADC_POS, /**< Reset ADC */
     MXC_SYS_RESET0_UART2 = MXC_F_GCR_RST0_UART2_POS, /**< Reset UART2 */
@@ -193,16 +200,25 @@ typedef enum {
 
 /** @brief Enumeration to select System Clock source */
 typedef enum {
-    MXC_SYS_CLOCK_IPO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO,
-    MXC_SYS_CLOCK_ERFO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO,
-    MXC_SYS_CLOCK_IBRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO,
-    MXC_SYS_CLOCK_ISO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO,
-    MXC_SYS_CLOCK_INRO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO,
-    MXC_SYS_CLOCK_ERTCO = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO,
-    MXC_SYS_CLOCK_EXTCLK = MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK
+    MXC_SYS_CLOCK_IPO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IPO, /**< Select the Internal Primary Oscillator (IPO) */
+    MXC_SYS_CLOCK_ERFO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERFO, /**< Select the External RF Crystal Oscillator */
+    MXC_SYS_CLOCK_IBRO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_IBRO, /**< Select the Internal Baud Rate Oscillator (IBRO) */
+    MXC_SYS_CLOCK_ISO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ISO, /**< Select the Internal Secondary Oscillator (ISO) */
+    MXC_SYS_CLOCK_INRO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_INRO, /**< Select the Internal Nanoring Oscillator (INRO) */
+    MXC_SYS_CLOCK_ERTCO =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
+    MXC_SYS_CLOCK_EXTCLK =
+        MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
 } mxc_sys_system_clock_t;
 
-#define MXC_SYS_USN_CHECKSUM_LEN 16
+#define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
+#define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
+#define MXC_SYS_USN_LEN 13 // Size of the USN including the checksum
 
 /***** Function Prototypes *****/
 
@@ -211,7 +227,7 @@ typedef struct {
     int in_critical;
 } mxc_crit_state_t;
 
-static mxc_crit_state_t _state = { .ie_status = 0xFFFFFFFF, .in_critical = 0 };
+static mxc_crit_state_t _state = { .ie_status = (int)0xFFFFFFFF, .in_critical = 0 };
 
 static inline void _mxc_crit_get_state()
 {
@@ -239,7 +255,15 @@ static inline void _mxc_crit_get_state()
 }
 
 /**
- * @brief Enter a critical section of code that cannot be interrupted.
+ * @brief Enter a critical section of code that cannot be interrupted.  Call @ref MXC_SYS_Crit_Exit to exit the critical section.
+ * @details Ex:
+ * @code
+ * MXC_SYS_Crit_Enter();
+ * printf("Hello critical section!\n");
+ * MXC_SYS_Crit_Exit();
+ * @endcode
+ * The @ref MXC_CRITICAL macro is also provided as a convencience macro for wrapping a code section in this way.
+ * @returns None
  */
 static inline void MXC_SYS_Crit_Enter(void)
 {
@@ -250,8 +274,8 @@ static inline void MXC_SYS_Crit_Enter(void)
 }
 
 /**
- * @brief Exit a critical section of code, re-enabling interrupts if they
- *        were previously.
+ * @brief Exit a critical section of code from @ref MXC_SYS_Crit_Enter
+ * @returns None
  */
 static inline void MXC_SYS_Crit_Exit(void)
 {
@@ -280,8 +304,17 @@ static inline int MXC_SYS_In_Crit_Section(void)
 
 // clang-format off
 /**
- * @brief Macro for wrapping a section of code to make it critical.  Note: this macro
+ * @brief Macro for wrapping a section of code to make it critical (interrupts disabled).  Note: this macro
  * does not support nesting.
+ * @details
+ * Ex:
+ * \code
+ * MXC_CRITICAL(
+ *      printf("Hello critical section!\n");
+ * )
+ * \endcode
+ * This macro places a call to @ref MXC_SYS_Crit_Enter before the code, and a call to @ref MXC_SYS_Crit_Exit after.
+ * @param code The code section to wrap.
  */
 #define MXC_CRITICAL(code) {\
     MXC_SYS_Crit_Enter();\
@@ -291,10 +324,10 @@ static inline int MXC_SYS_In_Crit_Section(void)
 // clang-format on
 
 /**
- * @brief Reads the device USN.
- * @param usn       Pointer to store the USN.
- * @param checksum  Optional pointer to store the AES checksum.
- * @returns       E_NO_ERROR if everything is successful.
+ * @brief Reads the device USN and verifies the checksum.
+ * @param usn       Pointer to store the USN. Array must be at least MXC_SYS_USN_LEN bytes long.
+ * @param checksum  Optional pointer to store the AES checksum. If not NULL, checksum is verified with AES engine.
+ * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
 
@@ -345,8 +378,8 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 
 /**
  * @brief Select the system clock.
- * @param clock     Enumeration for desired clock.
- * @param tmr       Optional tmr pointer for timeout. NULL if undesired.
+ * @param clock     Enumeration for desired clock.  Note:  If using the external clock input be sure to define EXTCLK_FREQ correctly.
+ *                  The default EXTCLK_FREQ value is defined in the system_max78002.h file and can be overridden at compile time.
  * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
