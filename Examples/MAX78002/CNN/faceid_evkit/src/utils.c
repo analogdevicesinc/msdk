@@ -50,8 +50,8 @@ uint32_t utils_get_time_ms(void)
     double subsec;
     uint32_t ms;
 
-    subsec = MXC_RTC_GetSubSeconds() / 4096.0;
-    sec = MXC_RTC_GetSeconds();
+    subsec = MXC_RTC_GetSubSecond() / 4096.0;
+    sec = MXC_RTC_GetSecond();
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 

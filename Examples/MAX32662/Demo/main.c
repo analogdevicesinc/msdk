@@ -143,7 +143,7 @@ int main(void)
     MXC_TFT_ConfigPrintf(&uptime_printf_area);
 
     while (1) {
-        sec = MXC_RTC_GetSeconds();
+        sec = MXC_RTC_GetSecond();
 
         hr = sec / SECS_PER_HR;
         sec -= hr * SECS_PER_HR;
