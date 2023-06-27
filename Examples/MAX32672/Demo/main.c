@@ -178,8 +178,8 @@ int main(void)
             printf("\n\n");
 
             MXC_TFT_Printf("\nContinue in\n");
-            for (i = 3; i > 0; i--) {
-                MXC_TFT_Printf("%ds...", i);
+            for (i = 5; i > 0; i--) {
+                MXC_TFT_Printf("%d..", i);
                 MXC_Delay(MXC_DELAY_SEC(1));
             }
 
