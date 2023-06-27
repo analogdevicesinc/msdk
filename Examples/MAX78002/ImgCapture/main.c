@@ -259,9 +259,9 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     }
 
     // 2. Retrieve image format and info.
-    img_data.pixel_format = camera_get_pixel_format(); // Retrieve the pixel format of the image
+    img_data.pixel_format = camera_get_pixel_format();
     camera_get_image(NULL, &img_data.imglen, &img_data.w,
-                     &img_data.h); // Retrieve info using driver function.
+                     &img_data.h);
     img_data.raw = (uint32_t *)
         CNN_QUAD0_DSRAM_START; // Manually save the destination address at the first quadrant of CNN data SRAM
 
@@ -279,9 +279,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     while (!camera_is_image_rcv()) {
         if ((data = get_camera_stream_buffer()) !=
             NULL) { // The stream buffer will return 'NULL' until an image row is received.
-            // 5. Unload buffer
             cnn_addr = write_bytes_to_cnn_sram(data, buffer_size, cnn_addr);
-            // 6. Release buffer in time for next row
             release_camera_stream_buffer();
         }
     }

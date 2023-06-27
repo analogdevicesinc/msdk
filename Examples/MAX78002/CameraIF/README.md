@@ -27,9 +27,16 @@ To change the camera drivers set the `CAMERA` build configuration variable in [p
 -   Connect the 5V power cable at (5V IN).
 -   Close jumper (RX - P0.0) and (TX - P0.1) at Headers JP23 (UART 0 EN).
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 921600, 8-N-1.
--   Close Jumper JP41 (DVP CAM PWR) to ON.
+-   Ensure JP41 (CSI CAM I2C EN) is _disconnected_.
+-   Ensure JP35 (I2C1 SDA) and JP36 (I2C1 SCL) are _disconnected_.
 -   Close Jumper JP45 (TFT_DC).
 -   Close Jumper JP46 (TFT_CS) to P0_3.
+
+Additionally, ensure JP41 (DVP CAM PWR) is connected properly.
+-   OV7692:  Connect JP41 to "ON"
+-   HM0360:  Connect JP41 to "OFF"
+
+Consult your camera module's power-down logic and the MAX78002EVKIT schematic for other camera modules.  
 
 
 ## Expected Output
