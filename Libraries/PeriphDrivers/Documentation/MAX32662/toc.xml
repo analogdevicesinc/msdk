@@ -1342,6 +1342,7 @@
       <topic label="MXC_DMA_ChannelEnableInt" href="group__dma.html#gacb333ebfaf0de4a92a0fa74df2cec4c8"/>
       <topic label="MXC_DMA_ChannelGetFlags" href="group__dma.html#ga4a43f6dbfc61c09827d632e7597e3e0d"/>
       <topic label="MXC_DMA_ConfigChannel" href="group__dma.html#ga0785016e54a398dd26eff367bff3e4ff"/>
+      <topic label="MXC_DMA_DeInit" href="group__dma.html#ga70aa5ed4dfe34a37b3ffd1f151da9494"/>
       <topic label="MXC_DMA_DisableInt" href="group__dma.html#ga8f82fbc66778a419868e0df597c5c3e4"/>
       <topic label="MXC_DMA_DoTransfer" href="group__dma.html#gab74a02c5bb28652810662cc22f463228"/>
       <topic label="MXC_DMA_EnableInt" href="group__dma.html#gafe5ad87a5e658a241bccedbbced00598"/>
@@ -3795,6 +3796,8 @@
           <topic label="MXC_F_UART_INTEN_RX_THD_POS" href="group___u_a_r_t___i_n_t_e_n.html#ga83e6bd29b3f63af87df5f683c62d520b"/>
           <topic label="MXC_F_UART_INTEN_TX_HE" href="group___u_a_r_t___i_n_t_e_n.html#gaa42a383f692ee12587e935f54eb66044"/>
           <topic label="MXC_F_UART_INTEN_TX_HE_POS" href="group___u_a_r_t___i_n_t_e_n.html#ga8c0c1735bf91ee6c89d1a41d047c91c5"/>
+          <topic label="MXC_F_UART_INTEN_TX_OB" href="group___u_a_r_t___i_n_t_e_n.html#ga949f73e04dd286195b5317497e4105b5"/>
+          <topic label="MXC_F_UART_INTEN_TX_OB_POS" href="group___u_a_r_t___i_n_t_e_n.html#ga9f2a6834850ae31f9a77952f476eaa5d"/>
         </topic>
         <topic label="UART_INTFL" href="group___u_a_r_t___i_n_t_f_l.html">
           <topic label="MXC_F_UART_INTFL_CTS_EV" href="group___u_a_r_t___i_n_t_f_l.html#ga7c2a1815a4f843a223fb6fec38bbdfb0"/>
@@ -3809,6 +3812,8 @@
           <topic label="MXC_F_UART_INTFL_RX_THD_POS" href="group___u_a_r_t___i_n_t_f_l.html#ga4c9448aafbbc58871ce8b538dfd785de"/>
           <topic label="MXC_F_UART_INTFL_TX_HE" href="group___u_a_r_t___i_n_t_f_l.html#gaabe12e4cb6f5095c0fa3b8fe63baba95"/>
           <topic label="MXC_F_UART_INTFL_TX_HE_POS" href="group___u_a_r_t___i_n_t_f_l.html#ga7fe267264201fba8c76600908b142313"/>
+          <topic label="MXC_F_UART_INTFL_TX_OB" href="group___u_a_r_t___i_n_t_f_l.html#ga08ab9e1fa77eea27a65a8ddfa5cc84de"/>
+          <topic label="MXC_F_UART_INTFL_TX_OB_POS" href="group___u_a_r_t___i_n_t_f_l.html#ga6a8b19f3f73c9ebd12bda55c06d6ae78"/>
         </topic>
         <topic label="UART_CLKDIV" href="group___u_a_r_t___c_l_k_d_i_v.html">
           <topic label="MXC_F_UART_CLKDIV_CLKDIV" href="group___u_a_r_t___c_l_k_d_i_v.html#gab2cccf38c22342143d4e431c3d095aa4"/>

@@ -1,19 +1,20 @@
 var NAVTREEINDEX32 =
 {
+"group__dma.html#ga96a3c79a7b2a7ef0ce2417fad715d333":[1,2,14],
 "group__dma.html#ga9780c41835a193d27557326bdb94d07c":[1,2,10],
 "group__dma.html#gab010374c529e9da4bf17c357dfa637eb":[1,2,9],
-"group__dma.html#gab74a02c5bb28652810662cc22f463228":[1,2,19],
+"group__dma.html#gab74a02c5bb28652810662cc22f463228":[1,2,20],
 "group__dma.html#gac03ba75f86ae81bc49177b95da1b2946":[1,2,6],
 "group__dma.html#gac179dfe4c1cf1b660432ced769ea6ec7":[1,2,4],
-"group__dma.html#gac4096ee4e50eab71c4b1416ea7261e97":[1,2,33],
+"group__dma.html#gac4096ee4e50eab71c4b1416ea7261e97":[1,2,34],
 "group__dma.html#gac5462bed630944916330f584bd0b10e3":[1,2,8],
 "group__dma.html#gac8020fcc00e0c2302f963ed1a743b660":[1,2,7],
 "group__dma.html#gacb333ebfaf0de4a92a0fa74df2cec4c8":[1,2,15],
-"group__dma.html#gae2dfa05453b55bc7379102c407f05235":[1,2,23],
+"group__dma.html#gae2dfa05453b55bc7379102c407f05235":[1,2,24],
 "group__dma.html#gae64f49dc062bd745088ae12eecc6ad33":[1,2,11],
-"group__dma.html#gaf3b612ad64be852f6dbf6ddda796ce45":[1,2,30],
-"group__dma.html#gafe5ad87a5e658a241bccedbbced00598":[1,2,20],
-"group__dma.html#gafe7fe8d66927bef5f74347087dcd59bd":[1,2,26],
+"group__dma.html#gaf3b612ad64be852f6dbf6ddda796ce45":[1,2,31],
+"group__dma.html#gafe5ad87a5e658a241bccedbbced00598":[1,2,21],
+"group__dma.html#gafe7fe8d66927bef5f74347087dcd59bd":[1,2,27],
 "group__dma.html#gga9780c41835a193d27557326bdb94d07ca0ff76611731718a84ab2010da825cdce":[1,2,10,1],
 "group__dma.html#gga9780c41835a193d27557326bdb94d07caacf74a8c4456c362853fce30cfd3d54b":[1,2,10,2],
 "group__dma.html#gga9780c41835a193d27557326bdb94d07cac830b228c9c7daad99ba165022af596d":[1,2,10,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX32 =
 "group__gpio__registers.html#a2bdfcae3e617d93ee178788949f22d4b":[1,5,1,33,17],
 "group__gpio__registers.html#a32c2f6d95f27de32ba46a8bbe53b2f1c":[1,5,1,33,25],
 "group__gpio__registers.html#a3613071cf4f8a3e502a18ec7631584c9":[1,5,1,33,29],
-"group__gpio__registers.html#a3e6d001d1e0e8d1e47c89262c1acc0f2":[1,5,1,33,12],
-"group__gpio__registers.html#a41910a99859b77e93dfb49f207ef99a9":[1,5,1,33,20]
+"group__gpio__registers.html#a3e6d001d1e0e8d1e47c89262c1acc0f2":[1,5,1,33,12]
 };

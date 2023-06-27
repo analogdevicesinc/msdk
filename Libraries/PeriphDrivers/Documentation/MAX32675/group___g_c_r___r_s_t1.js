@@ -4,6 +4,8 @@ var group___g_c_r___r_s_t1 =
     [ "MXC_F_GCR_RST1_AC_POS", "group___g_c_r___r_s_t1.html#ga488eadf94f4993b898fc127fcd5298d3", null ],
     [ "MXC_F_GCR_RST1_AES", "group___g_c_r___r_s_t1.html#ga590b710aa2eee8c566df45cfd1d36c86", null ],
     [ "MXC_F_GCR_RST1_AES_POS", "group___g_c_r___r_s_t1.html#ga7467dc33f13afaacee6aea8ac5e8cacc", null ],
+    [ "MXC_F_GCR_RST1_AFE", "group___g_c_r___r_s_t1.html#ga90f246ea85be2e0ea1fe4d833c73b5de", null ],
+    [ "MXC_F_GCR_RST1_AFE_POS", "group___g_c_r___r_s_t1.html#ga80585d017ff8b730fc4a7d9def9bb2a6", null ],
     [ "MXC_F_GCR_RST1_CRC", "group___g_c_r___r_s_t1.html#ga94845e5a6c93b2752d5d9c825da3d1d7", null ],
     [ "MXC_F_GCR_RST1_CRC_POS", "group___g_c_r___r_s_t1.html#ga60a5887d51b7ce01912a3e61237d13c3", null ],
     [ "MXC_F_GCR_RST1_I2C1", "group___g_c_r___r_s_t1.html#gafaa6b353e6b1ba5ce1536b5d46be89bb", null ],

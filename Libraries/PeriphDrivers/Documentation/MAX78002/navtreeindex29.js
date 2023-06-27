@@ -1,5 +1,16 @@
 var NAVTREEINDEX29 =
 {
+"group__uart__registers.html#ab0ebf69f73c81993f7d7bd8392111fc3":[1,25,0,14,3],
+"group__uart__registers.html#af3e2316348029c26147ceaba51512bf7":[1,25,0,14,9],
+"group__uart__registers.html#structmxc__uart__regs__t":[1,25,0,14],
+"group__usbhs__registers.html":[1,41],
+"group__usbhs__registers.html#a00bb686ac1031268395d114f66abb729":[1,41,48,25],
+"group__usbhs__registers.html#a02a5a57804e03525e58ac5c3b6811b9c":[1,41,48,6],
+"group__usbhs__registers.html#a0aa5a10f0b7fc5d50871bc37ef982a0f":[1,41,48,67],
+"group__usbhs__registers.html#a0d2f4af65bd28e4a7989b2cc3725fe17":[1,41,48,30],
+"group__usbhs__registers.html#a0fe77b575532f5cc1d8ef89e62dd6a19":[1,41,48,48],
+"group__usbhs__registers.html#a103aecc8d34ae9ecea24bcf5661e67f9":[1,41,48,23],
+"group__usbhs__registers.html#a10ab130bd4b81dc0351d505ca5f2750a":[1,41,48,54],
 "group__usbhs__registers.html#a10b4a772cbf2cfb294c0c7c256e74bba":[1,41,48,31],
 "group__usbhs__registers.html#a122f19d064c435f4b93b03c3f254ee1a":[1,41,48,5],
 "group__usbhs__registers.html#a1af87c461943264fc29d6587a494eed4":[1,41,48,53],

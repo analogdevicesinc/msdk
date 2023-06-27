@@ -689,6 +689,7 @@
       <topic label="MXC_DMA_ChannelEnableInt" href="group__dma.html#gacb333ebfaf0de4a92a0fa74df2cec4c8"/>
       <topic label="MXC_DMA_ChannelGetFlags" href="group__dma.html#ga4a43f6dbfc61c09827d632e7597e3e0d"/>
       <topic label="MXC_DMA_ConfigChannel" href="group__dma.html#ga0785016e54a398dd26eff367bff3e4ff"/>
+      <topic label="MXC_DMA_DeInit" href="group__dma.html#ga70aa5ed4dfe34a37b3ffd1f151da9494"/>
       <topic label="MXC_DMA_DisableInt" href="group__dma.html#ga8f82fbc66778a419868e0df597c5c3e4"/>
       <topic label="MXC_DMA_DoTransfer" href="group__dma.html#gab74a02c5bb28652810662cc22f463228"/>
       <topic label="MXC_DMA_EnableInt" href="group__dma.html#gafe5ad87a5e658a241bccedbbced00598"/>
@@ -3500,6 +3501,8 @@
           <topic label="MXC_F_UART_INT_EN_RX_THD_POS" href="group___u_a_r_t___i_n_t___e_n.html#ga9b87620c4bafd1af89b98280be35da1f"/>
           <topic label="MXC_F_UART_INT_EN_TX_HE" href="group___u_a_r_t___i_n_t___e_n.html#ga7c9c8d5037513d453f1ae52472a5e43e"/>
           <topic label="MXC_F_UART_INT_EN_TX_HE_POS" href="group___u_a_r_t___i_n_t___e_n.html#gad07033e39f360d45cd8f39a68d7b3ba9"/>
+          <topic label="MXC_F_UART_INT_EN_TX_OB" href="group___u_a_r_t___i_n_t___e_n.html#gaf31a2521410b39cd87b906a29007001d"/>
+          <topic label="MXC_F_UART_INT_EN_TX_OB_POS" href="group___u_a_r_t___i_n_t___e_n.html#ga7c04663070426c393bd131c7739f5c64"/>
         </topic>
         <topic label="UART_INT_FL" href="group___u_a_r_t___i_n_t___f_l.html">
           <topic label="MXC_F_UART_INT_FL_CTS_EV" href="group___u_a_r_t___i_n_t___f_l.html#ga76a79c5b449d14be3657beec50ded763"/>
@@ -3514,6 +3517,8 @@
           <topic label="MXC_F_UART_INT_FL_RX_THD_POS" href="group___u_a_r_t___i_n_t___f_l.html#ga3ee82db39ad51037b55931424d402b0c"/>
           <topic label="MXC_F_UART_INT_FL_TX_HE" href="group___u_a_r_t___i_n_t___f_l.html#gaa7aeef93f634c8c4c1c251d07cdcdc59"/>
           <topic label="MXC_F_UART_INT_FL_TX_HE_POS" href="group___u_a_r_t___i_n_t___f_l.html#gadee17f7a290f4fccc03b4cfd84276f96"/>
+          <topic label="MXC_F_UART_INT_FL_TX_OB" href="group___u_a_r_t___i_n_t___f_l.html#ga1418f33f0b1ea8e117bc4e0d904a628b"/>
+          <topic label="MXC_F_UART_INT_FL_TX_OB_POS" href="group___u_a_r_t___i_n_t___f_l.html#ga0e489ee294a16dc47ea7d20f57bd5943"/>
         </topic>
         <topic label="UART_CLKDIV" href="group___u_a_r_t___c_l_k_d_i_v.html">
           <topic label="MXC_F_UART_CLKDIV_CLKDIV" href="group___u_a_r_t___c_l_k_d_i_v.html#gab2cccf38c22342143d4e431c3d095aa4"/>
@@ -7446,6 +7451,14 @@
   </topic>
   <topic label="Data Structures" href="annotated.html">
     <topic label="Data Structures" href="annotated.html">
+      <topic label="hart_uart_callbacks_t" href="structhart__uart__callbacks__t.html">
+        <topic label="data_confirm_cb" href="structhart__uart__callbacks__t.html#a8cc99ca76e2c53914c4a59007e387bbd"/>
+        <topic label="data_indicate_cb" href="structhart__uart__callbacks__t.html#a606c373a9df92ff9525db12ed7de5577"/>
+        <topic label="enable_confirm_cb" href="structhart__uart__callbacks__t.html#ac3e6abbd56bd3d4cd1339c73c4bdb200"/>
+        <topic label="enable_indicate_cb" href="structhart__uart__callbacks__t.html#a8de530c8b7d9ce43dbef6fb523282dac"/>
+        <topic label="error_indicate_cb" href="structhart__uart__callbacks__t.html#a4396c2fe64b83704667033dd855b24a0"/>
+        <topic label="reset_confirm_cb" href="structhart__uart__callbacks__t.html#aca30327730730ab538a304dba2f9db83"/>
+      </topic>
       <topic label="mxc_adc_regs_t" href="group__adc__registers.html#structmxc__adc__regs__t">
         <topic label="ctrl" href="group__adc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3"/>
         <topic label="data" href="group__adc__registers.html#a11743546f5166381c1b12da20dc283b7"/>

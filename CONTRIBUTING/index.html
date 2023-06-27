@@ -59,6 +59,10 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#contribution-guidelines">Contribution Guidelines</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pr-title-subject-responsibilites-for-reviewersmergerspr-owners">PR Title - Subject Responsibilites for Reviewers/Mergers/PR Owners</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#pr-format-rules-workflow-enforced">PR Format Rules (Workflow Enforced)</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#style-guide">Style Guide</a>
         <ul>
     <li class="toctree-l3"><a class="reference internal" href="#running-the-linter-formatter">Running the Linter &amp; Formatter</a>
@@ -144,6 +148,73 @@
 <li>Generic development branch: <code>dev/branchname</code></li>
 <li>New and/or modified example branch: <code>example/branchname</code></li>
 </ul>
+<h2 id="pr-title-subject-responsibilites-for-reviewersmergerspr-owners">PR Title - Subject Responsibilites for Reviewers/Mergers/PR Owners</h2>
+<p>Format: 
+<code>type(scope)&lt;!&gt;: Subject</code></p>
+<p>For more information of the format, please review the <a href="https://github.com/Analog-Devices-MSDK/msdk/blob/main/Documentation/pull_request_template.md">pull_request_template.md</a>.</p>
+<p>These are the rules for the <code>Subject</code>.</p>
+<ol>
+<li>The first character is capitalized and the subject must not end with any punctuation (!,.?) </li>
+<li>Use imperative mood in the Subjects - meaning the tone of the Subject should be like giving an order or request.<ul>
+<li>“Add” instead of “Added” or “Adding”.</li>
+<li>“Fix” instead of “Fixed” or “Fixing”.</li>
+<li>“Update” instead of “Updated” or “Updating”.</li>
+<li>“Delete” instead of “Deleted” or “Deleting”.</li>
+</ul>
+</li>
+<li>The Subject contents should have useful and concise wording.<ul>
+<li>No long descriptive subjects - not concise if it gets too descriptive. <ul>
+<li>You can be more descriptive in the body or footer of the commit by running:
+<code>git commit -m “Title contents” -m “Body contents” -m “Footer contents”</code> </li>
+</ul>
+</li>
+<li>No simple titles like “Add small SPI change”</li>
+</ul>
+</li>
+<li>The Subject should include what parts are affected, if any. Only the parts’ CHIP NAME should be used in the Subject. No die names are allowed.<ul>
+<li>For the most readability, append the affected parts list at the end of the Subject, so the important, beginning part of the commit message is visible when traversing through the MSDK repo on GitHub.</li>
+<li>The list of chip names should be in ascending numerical order in the Subject.</li>
+<li>Examples:<ol>
+<li><code>fix(CMSIS): Rename TRIMSIR registers for MAX32670 and MAX32675</code></li>
+<li><code>fix(Third-Party): Remove USB DMA support for MAX32655, MAX32665, MAX32690, MAX78000, and MAX78002</code></li>
+<li><code>feat(Examples): Add console output in Hello_World READMEs for all parts</code></li>
+<li><code>fix(Examples,PeriphDrivers): Deprecate MXC\_RTC\_GetSecond and MXC\_RTC\_GetSubSecond for all parts except for MAX32520</code><ul>
+<li>Use this type of wording if all but a few parts were affected to shorten the Subject.</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>TIP</strong>: The auto-labeler workflow adds part labels to a PR depending on what specific files were updated. Use the list of labels to figure out what parts were affected by the PR's changes.</li>
+</ul>
+</li>
+<li>If the PR title is related to a Jira ticket or an issue, the Subject should begin with the ticket designation.<ul>
+<li>Examples:<ol>
+<li><code>fix(CMSIS): MSDK-123: Add missing I2C Target registers for MAX32670, MAX32672, and MAX32675</code> </li>
+<li><code>fix(PeriphDrivers): Ticket-321: Fix SPI hanging on 9-bit wide messages for all parts</code> </li>
+<li><code>fix(Documentation): Issue #123: Revise steps for MSDK installation in the user guides</code></li>
+</ol>
+</li>
+</ul>
+</li>
+<li>When a merger “Squash and Merges” an approved PR to main, do not delete the PR number that is automatically appended to the title. Ideally, the PR title should be following our rules before approval, so the merger just needs to press the “Squash and Merge” button.<ul>
+<li>Using previous examples from rule 4, this is what the commit should look like in the main branch:<ol>
+<li><code>fix(CMSIS): MSDK-123: Add missing I2C Target registers for all parts (#412)</code></li>
+<li><code>fix(PeriphDrivers): Ticket-321: Fix SPI hanging on 9-bit wide messages for all parts (#646)</code></li>
+<li><code>feat(Examples): Add console output in Hello_World READMEs for all parts (#342)</code></li>
+<li><code>fix(Examples,PeriphDrivers): Deprecate MXC\_RTC\_GetSecond and MXC\_RTC\_GetSubSecond for all parts except for MAX32520 (#248)</code></li>
+</ol>
+</li>
+</ul>
+</li>
+</ol>
+<p>Please ensure all actions have passed or successfully completed before merging a PR into <code>main</code>. MSDK maintainers have permissions to merge approved PRs even with a failing action.</p>
+<h2 id="pr-format-rules-workflow-enforced">PR Format Rules (Workflow Enforced)</h2>
+<ol>
+<li>The type is case-sensitive and must be one of the listed types.</li>
+<li>The scope is case-sensitive and must be one of the listed scopes.</li>
+<li>The first word of the Subject must be capitalized.</li>
+<li>The Subject must not end with any punctuation (periods, commas, exclamation marks).</li>
+</ol>
 <h2 id="style-guide">Style Guide</h2>
 <p>The MSDK code-base, for the most-part, follows the <a href="https://www.kernel.org/doc/html/v4.10/process/coding-style.html#linux-kernel-coding-style">Linux Kernel coding style</a> <em>and</em> <a href="https://google.github.io/styleguide/cppguide.html">Google's C++ Style Guide</a> with the following exception(s):</p>
 <ul>

@@ -1143,6 +1143,7 @@
       <topic label="MXC_DMA_ChannelEnableInt" href="group__dma.html#gacb333ebfaf0de4a92a0fa74df2cec4c8"/>
       <topic label="MXC_DMA_ChannelGetFlags" href="group__dma.html#ga4a43f6dbfc61c09827d632e7597e3e0d"/>
       <topic label="MXC_DMA_ConfigChannel" href="group__dma.html#ga0785016e54a398dd26eff367bff3e4ff"/>
+      <topic label="MXC_DMA_DeInit" href="group__dma.html#ga70aa5ed4dfe34a37b3ffd1f151da9494"/>
       <topic label="MXC_DMA_DisableInt" href="group__dma.html#ga8f82fbc66778a419868e0df597c5c3e4"/>
       <topic label="MXC_DMA_DoTransfer" href="group__dma.html#gab74a02c5bb28652810662cc22f463228"/>
       <topic label="MXC_DMA_EnableInt" href="group__dma.html#gafe5ad87a5e658a241bccedbbced00598"/>

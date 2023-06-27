@@ -11,5 +11,7 @@ var group___u_a_r_t___i_n_t___f_l =
     [ "MXC_F_UART_INT_FL_RX_THD", "group___u_a_r_t___i_n_t___f_l.html#gae1d0624311dc62d5db3af5c3e6c80329", null ],
     [ "MXC_F_UART_INT_FL_RX_THD_POS", "group___u_a_r_t___i_n_t___f_l.html#ga3ee82db39ad51037b55931424d402b0c", null ],
     [ "MXC_F_UART_INT_FL_TX_HE", "group___u_a_r_t___i_n_t___f_l.html#gaa7aeef93f634c8c4c1c251d07cdcdc59", null ],
-    [ "MXC_F_UART_INT_FL_TX_HE_POS", "group___u_a_r_t___i_n_t___f_l.html#gadee17f7a290f4fccc03b4cfd84276f96", null ]
+    [ "MXC_F_UART_INT_FL_TX_HE_POS", "group___u_a_r_t___i_n_t___f_l.html#gadee17f7a290f4fccc03b4cfd84276f96", null ],
+    [ "MXC_F_UART_INT_FL_TX_OB", "group___u_a_r_t___i_n_t___f_l.html#ga1418f33f0b1ea8e117bc4e0d904a628b", null ],
+    [ "MXC_F_UART_INT_FL_TX_OB_POS", "group___u_a_r_t___i_n_t___f_l.html#ga0e489ee294a16dc47ea7d20f57bd5943", null ]
 ];

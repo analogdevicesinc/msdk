@@ -26,7 +26,6 @@ var group__mxc__sys =
       [ "MXC_SYS_PERIPH_CLOCK_I2C2", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a5ec93f76c7edc65a49351834f28615b0", null ],
       [ "MXC_SYS_PERIPH_CLOCK_I2S", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a4ead9cce298467bd6eaca8dc76aca97b", null ],
       [ "MXC_SYS_PERIPH_CLOCK_TMR4", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a1ae7b18b9a7d8ca59a5413138190b9d7", null ],
-      [ "MXC_SYS_PERIPH_CLOCK_TMR5", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095ae1b06cc855678da2e5bbee29b63b5782", null ],
       [ "MXC_SYS_PERIPH_CLOCK_UART3", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a082867389aca95e59b3ff4b9df191ad1", null ]
     ] ],
     [ "mxc_sys_reset_t", "group__mxc__sys.html#gac071c2b6609556ddac3ebfe47f5f47ba", [
@@ -92,7 +91,6 @@ var group__mxc__sys =
     [ "MXC_SYS_PERIPH_CLOCK_TMR2", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a22e6651a0ff636561cd76c51c083aaff", null ],
     [ "MXC_SYS_PERIPH_CLOCK_TMR3", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a3b052fd73f3f9a923b2b52c01ce933d7", null ],
     [ "MXC_SYS_PERIPH_CLOCK_TMR4", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a1ae7b18b9a7d8ca59a5413138190b9d7", null ],
-    [ "MXC_SYS_PERIPH_CLOCK_TMR5", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095ae1b06cc855678da2e5bbee29b63b5782", null ],
     [ "MXC_SYS_PERIPH_CLOCK_TRNG", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a9bd6ea9d4e39fb51b3273e95b1bab0c2", null ],
     [ "MXC_SYS_PERIPH_CLOCK_UART0", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a18174d4e76b4b5dbe1f42997f4f0b8f8", null ],
     [ "MXC_SYS_PERIPH_CLOCK_UART1", "group__mxc__sys.html#gga6b3ca6c369c2018baa508a4f52526095a01a967d6dfabed9d1037e08f94d8fda9", null ],

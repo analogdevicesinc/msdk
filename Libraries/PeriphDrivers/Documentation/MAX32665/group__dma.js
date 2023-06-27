@@ -101,6 +101,7 @@ var group__dma =
     [ "MXC_DMA_ChannelEnableInt", "group__dma.html#gacb333ebfaf0de4a92a0fa74df2cec4c8", null ],
     [ "MXC_DMA_ChannelGetFlags", "group__dma.html#ga4a43f6dbfc61c09827d632e7597e3e0d", null ],
     [ "MXC_DMA_ConfigChannel", "group__dma.html#ga0785016e54a398dd26eff367bff3e4ff", null ],
+    [ "MXC_DMA_DeInit", "group__dma.html#ga4c29ccca96f38005ff4f2695fe2ca513", null ],
     [ "MXC_DMA_DisableInt", "group__dma.html#ga8f82fbc66778a419868e0df597c5c3e4", null ],
     [ "MXC_DMA_DoTransfer", "group__dma.html#ga38006a9d82d5e9e7c789a5aed86ea32d", null ],
     [ "MXC_DMA_EnableInt", "group__dma.html#gafe5ad87a5e658a241bccedbbced00598", null ],

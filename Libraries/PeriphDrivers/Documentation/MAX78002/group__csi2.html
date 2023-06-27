@@ -112,8 +112,10 @@ Data Structures</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:ga4ef6942f6bc9335e98ff97bede03c17e"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga4ef6942f6bc9335e98ff97bede03c17e">mxc_csi2_complete_cb_t</a>) (mxc_csi2_req_t *req, int result)</td></tr>
-<tr class="separator:ga4ef6942f6bc9335e98ff97bede03c17e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gae3939d68ae0a8e8b8cec08281aca03a3"><td class="memItemLeft" align="right" valign="top">typedef void(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#gae3939d68ae0a8e8b8cec08281aca03a3">mxc_csi2_frame_handler_cb_t</a>) (mxc_csi2_req_t *req, int result)</td></tr>
+<tr class="separator:gae3939d68ae0a8e8b8cec08281aca03a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga996ce12304d3252af3cfce08ca247b58"><td class="memItemLeft" align="right" valign="top">typedef int(*&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga996ce12304d3252af3cfce08ca247b58">mxc_csi2_line_handler_cb_t</a>) (uint8_t *data, unsigned int len)</td></tr>
+<tr class="separator:ga996ce12304d3252af3cfce08ca247b58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -156,18 +158,14 @@ Functions</h2></td></tr>
 <tr class="separator:ga35fc977447e0e3db1aa9fcce61fc995a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga1a89e1f701493409413fa0dc52fa4bc1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga1a89e1f701493409413fa0dc52fa4bc1">MXC_CSI2_CaptureFrame</a> (int num_data_lanes)</td></tr>
 <tr class="separator:ga1a89e1f701493409413fa0dc52fa4bc1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga84121eca203137b08053d7e0aa993fa2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga84121eca203137b08053d7e0aa993fa2">MXC_CSI2_CaptureFrameDMA</a> (int num_data_lanes)</td></tr>
-<tr class="separator:ga84121eca203137b08053d7e0aa993fa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaa6bb1f4f7cf974eb38b69f91990b456b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#gaa6bb1f4f7cf974eb38b69f91990b456b">MXC_CSI2_CaptureFrameDMA</a> ()</td></tr>
+<tr class="separator:gaa6bb1f4f7cf974eb38b69f91990b456b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaa25bd54e04c2a917b60d87719ea3369b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#gaa25bd54e04c2a917b60d87719ea3369b">MXC_CSI2_SetLaneCtrlSource</a> (<a class="el" href="group__csi2.html#structmxc__csi2__lane__src__t">mxc_csi2_lane_src_t</a> *src)</td></tr>
 <tr class="separator:gaa25bd54e04c2a917b60d87719ea3369b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga29f89837f37b5631c1fb1b0848b78200"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga29f89837f37b5631c1fb1b0848b78200">MXC_CSI2_GetLaneCtrlSource</a> (<a class="el" href="group__csi2.html#structmxc__csi2__lane__src__t">mxc_csi2_lane_src_t</a> *src)</td></tr>
 <tr class="separator:ga29f89837f37b5631c1fb1b0848b78200"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaf0cc96527fa35ea640255024f1defb78"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#gaf0cc96527fa35ea640255024f1defb78">MXC_CSI2_GetImageDetails</a> (uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h)</td></tr>
-<tr class="separator:gaf0cc96527fa35ea640255024f1defb78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga93cfcc3091a04b00775f2f0699b4e039"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga93cfcc3091a04b00775f2f0699b4e039">MXC_CSI2_Callback</a> (mxc_csi2_req_t *req, int retVal)</td></tr>
-<tr class="separator:ga93cfcc3091a04b00775f2f0699b4e039"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gadd8f7058a1bb6238b05b746f281d1a5c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#gadd8f7058a1bb6238b05b746f281d1a5c">MXC_CSI2_Handler</a> (void)</td></tr>
-<tr class="separator:gadd8f7058a1bb6238b05b746f281d1a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacfe27bd64e7a2195b3743b4a5d6fa0d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#gacfe27bd64e7a2195b3743b4a5d6fa0d1">MXC_CSI2_GetImageDetails</a> (uint32_t *imgLen, uint32_t *w, uint32_t *h)</td></tr>
+<tr class="separator:gacfe27bd64e7a2195b3743b4a5d6fa0d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9729dd230b2a6a2082f777b8ee067d7f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga9729dd230b2a6a2082f777b8ee067d7f">MXC_CSI2_CTRL_Config</a> (<a class="el" href="group__csi2.html#structmxc__csi2__ctrl__cfg__t">mxc_csi2_ctrl_cfg_t</a> *cfg)</td></tr>
 <tr class="separator:ga9729dd230b2a6a2082f777b8ee067d7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga97684642f541fde37463d28e1d83a739"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__csi2.html#ga97684642f541fde37463d28e1d83a739">MXC_CSI2_CTRL_EnableInt</a> (uint32_t mask)</td></tr>
@@ -374,9 +372,6 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rx_thd</b></td></
 <div class="textblock"><p >The information required to capture images. </p>
 </div><table class="memberdecls">
 <tr><td colspan="2"><h3>Data Fields</h3></td></tr>
-<tr class="memitem:a6010db1fecbecdf82fa3559cb5790117"><td class="memItemLeft" align="right" valign="top"><a id="a6010db1fecbecdf82fa3559cb5790117" name="a6010db1fecbecdf82fa3559cb5790117"></a>
-uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><b>img_addr</b></td></tr>
-<tr class="separator:a6010db1fecbecdf82fa3559cb5790117"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa637e4d5eca91502627847d30d69acdd"><td class="memItemLeft" align="right" valign="top"><a id="aa637e4d5eca91502627847d30d69acdd" name="aa637e4d5eca91502627847d30d69acdd"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>pixels_per_line</b></td></tr>
 <tr class="separator:aa637e4d5eca91502627847d30d69acdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -392,9 +387,9 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>bits_per_pixel_ev
 <tr class="memitem:a3e5402740465751f898996103a21c85c"><td class="memItemLeft" align="right" valign="top"><a id="a3e5402740465751f898996103a21c85c" name="a3e5402740465751f898996103a21c85c"></a>
 uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>frame_num</b></td></tr>
 <tr class="separator:a3e5402740465751f898996103a21c85c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8023140da48fc55b58365ab4394ef26"><td class="memItemLeft" align="right" valign="top"><a id="ae8023140da48fc55b58365ab4394ef26" name="ae8023140da48fc55b58365ab4394ef26"></a>
-<a class="el" href="group__csi2.html#ga4ef6942f6bc9335e98ff97bede03c17e">mxc_csi2_complete_cb_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>callback</b></td></tr>
-<tr class="separator:ae8023140da48fc55b58365ab4394ef26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c26769f96db981b2a80d596b70b544c"><td class="memItemLeft" align="right" valign="top"><a id="a8c26769f96db981b2a80d596b70b544c" name="a8c26769f96db981b2a80d596b70b544c"></a>
+<a class="el" href="group__csi2.html#ga996ce12304d3252af3cfce08ca247b58">mxc_csi2_line_handler_cb_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>line_handler</b></td></tr>
+<tr class="separator:a8c26769f96db981b2a80d596b70b544c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b97b2b33572ebfefe01e348c1ffdc76"><td class="memItemLeft" align="right" valign="top"><a id="a9b97b2b33572ebfefe01e348c1ffdc76" name="a9b97b2b33572ebfefe01e348c1ffdc76"></a>
 uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>process_raw_to_rgb</b></td></tr>
 <tr class="separator:a9b97b2b33572ebfefe01e348c1ffdc76"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -418,19 +413,19 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
 </div>
 </div>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="ga4ef6942f6bc9335e98ff97bede03c17e" name="ga4ef6942f6bc9335e98ff97bede03c17e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4ef6942f6bc9335e98ff97bede03c17e">&#9670;&nbsp;</a></span>mxc_csi2_complete_cb_t</h2>
+<a id="gae3939d68ae0a8e8b8cec08281aca03a3" name="gae3939d68ae0a8e8b8cec08281aca03a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gae3939d68ae0a8e8b8cec08281aca03a3">&#9670;&nbsp;</a></span>mxc_csi2_frame_handler_cb_t</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">typedef void(* mxc_csi2_complete_cb_t) (mxc_csi2_req_t *req, int result)</td>
+          <td class="memname">typedef void(* mxc_csi2_frame_handler_cb_t) (mxc_csi2_req_t *req, int result)</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>The callback routine used to indicate to indicate transaction has terminated. </p>
+<p>The callback routine used to indicate to indicate transaction has terminated. This is currently unused until multi-frame exposures are implemented. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">req</td><td>The details of the image capture. </td></tr>
@@ -438,6 +433,30 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="ga996ce12304d3252af3cfce08ca247b58" name="ga996ce12304d3252af3cfce08ca247b58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga996ce12304d3252af3cfce08ca247b58">&#9670;&nbsp;</a></span>mxc_csi2_line_handler_cb_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef int(* mxc_csi2_line_handler_cb_t) (uint8_t *data, unsigned int len)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The callback routine used to handle incoming image data from the camera sensor. It is triggered once per row. Application code should implement this and ensure that the callback is fast enough to keep up with the incoming data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[in]</td><td class="paramname">data</td><td>Pointer to the received bytes in memory. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">len</td><td>The number of bytes received.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>This function should return 0 on success. If non-zero, the CSI-2 controller will end the frame capture </dd></dl>
 
 </div>
 </div>
@@ -805,44 +824,6 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="ga93cfcc3091a04b00775f2f0699b4e039" name="ga93cfcc3091a04b00775f2f0699b4e039"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga93cfcc3091a04b00775f2f0699b4e039">&#9670;&nbsp;</a></span>MXC_CSI2_Callback()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int MXC_CSI2_Callback </td>
-          <td>(</td>
-          <td class="paramtype">mxc_csi2_req_t *&#160;</td>
-          <td class="paramname"><em>req</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>retVal</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Callback function for CSI2. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">req</td><td>The details of the image capture (holds callback). </td></tr>
-    <tr><td class="paramname">retVal</td><td>Return value for callback function, usually error code. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if everything is successful. </dd></dl>
-
-</div>
-</div>
 <a id="ga1a89e1f701493409413fa0dc52fa4bc1" name="ga1a89e1f701493409413fa0dc52fa4bc1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga1a89e1f701493409413fa0dc52fa4bc1">&#9670;&nbsp;</a></span>MXC_CSI2_CaptureFrame()</h2>
 
@@ -870,8 +851,8 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
 
 </div>
 </div>
-<a id="ga84121eca203137b08053d7e0aa993fa2" name="ga84121eca203137b08053d7e0aa993fa2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga84121eca203137b08053d7e0aa993fa2">&#9670;&nbsp;</a></span>MXC_CSI2_CaptureFrameDMA()</h2>
+<a id="gaa6bb1f4f7cf974eb38b69f91990b456b" name="gaa6bb1f4f7cf974eb38b69f91990b456b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaa6bb1f4f7cf974eb38b69f91990b456b">&#9670;&nbsp;</a></span>MXC_CSI2_CaptureFrameDMA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -879,8 +860,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
         <tr>
           <td class="memname">int MXC_CSI2_CaptureFrameDMA </td>
           <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>num_data_lanes</em></td><td>)</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1169,8 +1149,8 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
 
 </div>
 </div>
-<a id="gaf0cc96527fa35ea640255024f1defb78" name="gaf0cc96527fa35ea640255024f1defb78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaf0cc96527fa35ea640255024f1defb78">&#9670;&nbsp;</a></span>MXC_CSI2_GetImageDetails()</h2>
+<a id="gacfe27bd64e7a2195b3743b4a5d6fa0d1" name="gacfe27bd64e7a2195b3743b4a5d6fa0d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacfe27bd64e7a2195b3743b4a5d6fa0d1">&#9670;&nbsp;</a></span>MXC_CSI2_GetImageDetails()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1178,12 +1158,6 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
         <tr>
           <td class="memname">void MXC_CSI2_GetImageDetails </td>
           <td>(</td>
-          <td class="paramtype">uint8_t **&#160;</td>
-          <td class="paramname"><em>img</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">uint32_t *&#160;</td>
           <td class="paramname"><em>imgLen</em>, </td>
         </tr>
@@ -1210,10 +1184,9 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
 <p>Grab the configured image details. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">img</td><td>Pointer to image buffer. </td></tr>
-    <tr><td class="paramname">imgLen</td><td>Pointer to byte length of image. </td></tr>
-    <tr><td class="paramname">w</td><td>Pointer to Image Width. </td></tr>
-    <tr><td class="paramname">h</td><td>Pointer to Image Height. </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">imgLen</td><td>Pointer to the total length of the image (in bytes). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">w</td><td>Pointer to image width (in pixels). </td></tr>
+    <tr><td class="paramdir">[out]</td><td class="paramname">h</td><td>Pointer to image height (in pixels). </td></tr>
   </table>
   </dd>
 </dl>
@@ -1243,27 +1216,6 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if everything is successful. </dd></dl>
-
-</div>
-</div>
-<a id="gadd8f7058a1bb6238b05b746f281d1a5c" name="gadd8f7058a1bb6238b05b746f281d1a5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gadd8f7058a1bb6238b05b746f281d1a5c">&#9670;&nbsp;</a></span>MXC_CSI2_Handler()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int MXC_CSI2_Handler </td>
-          <td>(</td>
-          <td class="paramtype">void&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Interrupt Handler Function. </p>
 <dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if everything is successful. </dd></dl>
 
 </div>
@@ -2114,7 +2066,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>raw_buf1_addr</b>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed May 17 2023 20:30:39 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Jun 27 2023 19:15:09 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

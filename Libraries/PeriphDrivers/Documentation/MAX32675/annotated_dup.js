@@ -1,5 +1,6 @@
 var annotated_dup =
 [
+    [ "hart_uart_callbacks_t", "structhart__uart__callbacks__t.html", "structhart__uart__callbacks__t" ],
     [ "mxc_aes_key_regs_t", "group__aes__key__registers.html#structmxc__aes__key__regs__t", "group__aes__key__registers_structmxc__aes__key__regs__t" ],
     [ "mxc_aes_regs_t", "group__aes__registers.html#structmxc__aes__regs__t", "group__aes__registers_structmxc__aes__regs__t" ],
     [ "mxc_aes_req_t", "group__aes.html#structmxc__aes__req__t", "group__aes_structmxc__aes__req__t" ],

@@ -32,9 +32,8 @@ var group__csi2 =
       [ "autoflush", "group__csi2.html#a7ea4324c0b7c456f581971f50e720490", null ],
       [ "bits_per_pixel_even", "group__csi2.html#ae5c234cc412520b3f268b111efe80dcc", null ],
       [ "bits_per_pixel_odd", "group__csi2.html#a766e734c8914524795126caa65741b65", null ],
-      [ "callback", "group__csi2.html#ae8023140da48fc55b58365ab4394ef26", null ],
       [ "frame_num", "group__csi2.html#a3e5402740465751f898996103a21c85c", null ],
-      [ "img_addr", "group__csi2.html#a6010db1fecbecdf82fa3559cb5790117", null ],
+      [ "line_handler", "group__csi2.html#a8c26769f96db981b2a80d596b70b544c", null ],
       [ "lines_per_frame", "group__csi2.html#a1d449515f118f20459f6ddbe4ca2b806", null ],
       [ "pixels_per_line", "group__csi2.html#aa637e4d5eca91502627847d30d69acdd", null ],
       [ "process_raw_to_rgb", "group__csi2.html#a9b97b2b33572ebfefe01e348c1ffdc76", null ],
@@ -43,7 +42,8 @@ var group__csi2 =
       [ "raw_format", "group__csi2.html#a641de951aef5d97292bd446405677a78", null ],
       [ "rgb_type", "group__csi2.html#a7b8c800765ca62023de9b12f0be735a8", null ]
     ] ],
-    [ "mxc_csi2_complete_cb_t", "group__csi2.html#ga4ef6942f6bc9335e98ff97bede03c17e", null ],
+    [ "mxc_csi2_frame_handler_cb_t", "group__csi2.html#gae3939d68ae0a8e8b8cec08281aca03a3", null ],
+    [ "mxc_csi2_line_handler_cb_t", "group__csi2.html#ga996ce12304d3252af3cfce08ca247b58", null ],
     [ "mxc_csi2_ahbwait_t", "group__csi2.html#gae1673af7743a3431aae445c43b713cbb", [
       [ "MXC_CSI2_AHBWAIT_DISABLE", "group__csi2.html#ggae1673af7743a3431aae445c43b713cbba977c5d328e433f13cc876bcd484aa930", null ],
       [ "MXC_CSI2_AHBWAIT_ENABLE", "group__csi2.html#ggae1673af7743a3431aae445c43b713cbbac21547836ac6a343b6cf90e499af33ed", null ]
@@ -134,9 +134,8 @@ var group__csi2 =
       [ "MXC_CSI2_PAD_CDRX_PN_L3", "group__csi2.html#gga432c633fa93a084f9018680c989225a7a667f6dbdd1e6513eb0cf772d122fda6a", null ],
       [ "MXC_CSI2_PAD_CDRX_PN_L4", "group__csi2.html#gga432c633fa93a084f9018680c989225a7a77346ae060ba089a8bc382e4ba8fe72b", null ]
     ] ],
-    [ "MXC_CSI2_Callback", "group__csi2.html#ga93cfcc3091a04b00775f2f0699b4e039", null ],
     [ "MXC_CSI2_CaptureFrame", "group__csi2.html#ga1a89e1f701493409413fa0dc52fa4bc1", null ],
-    [ "MXC_CSI2_CaptureFrameDMA", "group__csi2.html#ga84121eca203137b08053d7e0aa993fa2", null ],
+    [ "MXC_CSI2_CaptureFrameDMA", "group__csi2.html#gaa6bb1f4f7cf974eb38b69f91990b456b", null ],
     [ "MXC_CSI2_CTRL_ClearFlags", "group__csi2.html#ga7c8eff31f13963d63bb13c357439913b", null ],
     [ "MXC_CSI2_CTRL_Config", "group__csi2.html#ga9729dd230b2a6a2082f777b8ee067d7f", null ],
     [ "MXC_CSI2_CTRL_DisableInt", "group__csi2.html#ga9a77ce1c33daa260997fdc47843fcab8", null ],
@@ -147,9 +146,8 @@ var group__csi2 =
     [ "MXC_CSI2_DMA_GetChannel", "group__csi2.html#gad9365421a0bd2a76ecd5f9190f189fe6", null ],
     [ "MXC_CSI2_DMA_GetCurrentFrameEndCnt", "group__csi2.html#ga849fc93859b08bb6df49fd595b83eb4b", null ],
     [ "MXC_CSI2_DMA_GetCurrentLineCnt", "group__csi2.html#ga8ca4ced1461740b8ba3b08209e6d30a4", null ],
-    [ "MXC_CSI2_GetImageDetails", "group__csi2.html#gaf0cc96527fa35ea640255024f1defb78", null ],
+    [ "MXC_CSI2_GetImageDetails", "group__csi2.html#gacfe27bd64e7a2195b3743b4a5d6fa0d1", null ],
     [ "MXC_CSI2_GetLaneCtrlSource", "group__csi2.html#ga29f89837f37b5631c1fb1b0848b78200", null ],
-    [ "MXC_CSI2_Handler", "group__csi2.html#gadd8f7058a1bb6238b05b746f281d1a5c", null ],
     [ "MXC_CSI2_Init", "group__csi2.html#ga6d216885a5c942c5c9343e39ca6f133c", null ],
     [ "MXC_CSI2_PPI_ClearFlags", "group__csi2.html#gaa8d33f647f4d2d229b37c055c9dec274", null ],
     [ "MXC_CSI2_PPI_DisableInt", "group__csi2.html#gad21624060aab120c75f4df9bd8ec3146", null ],

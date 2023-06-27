@@ -197,7 +197,7 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
 <div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    <span class="keywordtype">int</span> in_critical;</div>
 <div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>} mxc_crit_state_t;</div>
 <div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="keyword">static</span> mxc_crit_state_t _state = { .ie_status = 0xFFFFFFFF, .in_critical = 0 };</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="keyword">static</span> mxc_crit_state_t _state = { .ie_status = (int)0xFFFFFFFF, .in_critical = 0 };</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="keyword">static</span> <span class="keyword">inline</span> <span class="keywordtype">void</span> _mxc_crit_get_state()</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>{</div>
@@ -375,7 +375,7 @@ $(document).ready(function(){initNavTree('mxc__sys_8h_source.html',''); initResi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_6c2dc05b6a02a89df6bfbc7637170ed8.html">Include</a></li><li class="navelem"><a class="el" href="dir_b6433251c9df1dcc9492a8df6f91840d.html">MAX32660</a></li><li class="navelem"><b>mxc_sys.h</b></li>
-    <li class="footer">Generated on Wed May 17 2023 20:30:01 for MAX32660 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Jun 27 2023 19:14:29 for MAX32660 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,6 @@
 var NAVTREEINDEX25 =
 {
+"group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a03166d866880b6097ea68f28bafcef2d":[0,5,7,2],
 "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a03233831307f839eed86483ea7f3f53b":[0,5,7,8],
 "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a0b93b8c427b0468e41018677af5aa328":[0,5,7,1],
 "group__emac.html#gga914a3ec0eeeed411cab62a41ccbc3785a13dc075d2c9cd91ad20e67b67d1e2591":[0,5,7,6],
@@ -248,6 +249,5 @@ var NAVTREEINDEX25 =
 "group__gpio__registers.html#af010e38b101793fbad67f05b2718b919":[0,7,1,34,4],
 "group__gpio__registers.html#af2d2d31f5bfd87cd995ecc3c8178e7e4":[0,7,1,34,5],
 "group__gpio__registers.html#af3dad786f2e5e745ad3d0cbf2f6194b4":[0,7,1,34,2],
-"group__gpio__registers.html#affedcd0310ea8b53fcecb4538a47b550":[0,7,1,34,31],
-"group__gpio__registers.html#structmxc__gpio__regs__t":[0,7,1,34]
+"group__gpio__registers.html#affedcd0310ea8b53fcecb4538a47b550":[0,7,1,34,31]
 };

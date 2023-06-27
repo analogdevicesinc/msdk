@@ -239,8 +239,6 @@ Functions</h2></td></tr>
 </td></tr>
 <tr><td class="fieldname"><a id="gga6b3ca6c369c2018baa508a4f52526095a1ae7b18b9a7d8ca59a5413138190b9d7" name="gga6b3ca6c369c2018baa508a4f52526095a1ae7b18b9a7d8ca59a5413138190b9d7"></a>MXC_SYS_PERIPH_CLOCK_TMR4&#160;</td><td class="fielddoc"><p >Disable MXC_F_LPGCR_PCLKDIS_TMR4 clock </p>
 </td></tr>
-<tr><td class="fieldname"><a id="gga6b3ca6c369c2018baa508a4f52526095ae1b06cc855678da2e5bbee29b63b5782" name="gga6b3ca6c369c2018baa508a4f52526095ae1b06cc855678da2e5bbee29b63b5782"></a>MXC_SYS_PERIPH_CLOCK_TMR5&#160;</td><td class="fielddoc"><p >Disable MXC_F_LPGCR_PCLKDIS_TMR5 clock </p>
-</td></tr>
 <tr><td class="fieldname"><a id="gga6b3ca6c369c2018baa508a4f52526095a082867389aca95e59b3ff4b9df191ad1" name="gga6b3ca6c369c2018baa508a4f52526095a082867389aca95e59b3ff4b9df191ad1"></a>MXC_SYS_PERIPH_CLOCK_UART3&#160;</td><td class="fielddoc"><p >Disable MXC_F_LPGCR_PCLKDIS_UART3 clock </p>
 </td></tr>
 </table>
@@ -603,11 +601,11 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Reads the device USN. </p>
+<p>Reads the device USN and verifies the checksum. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">usn</td><td>Pointer to store the USN. </td></tr>
-    <tr><td class="paramname">checksum</td><td>Optional pointer to store the AES checksum. </td></tr>
+    <tr><td class="paramname">usn</td><td>Pointer to store the USN. Array must be at least MXC_SYS_USN_LEN bytes long. </td></tr>
+    <tr><td class="paramname">checksum</td><td>Optional pointer to store the AES checksum. If not NULL, checksum is verified with AES engine. </td></tr>
   </table>
   </dd>
 </dl>
@@ -748,7 +746,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed May 17 2023 20:30:22 for MAX32675 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Tue Jun 27 2023 19:14:50 for MAX32675 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

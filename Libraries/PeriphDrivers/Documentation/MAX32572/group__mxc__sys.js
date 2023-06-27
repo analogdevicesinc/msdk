@@ -178,7 +178,7 @@ var group__mxc__sys =
     [ "MXC_SYS_Crit_Enter", "group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44", null ],
     [ "MXC_SYS_Crit_Exit", "group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0", null ],
     [ "MXC_SYS_GetRev", "group__mxc__sys.html#ga78d0b6a8c817c114a29a8f5be67a0898", null ],
-    [ "MXC_SYS_GetUSN", "group__mxc__sys.html#ga75a557ab4342d521c52fd95f1a143042", null ],
+    [ "MXC_SYS_GetUSN", "group__mxc__sys.html#ga64494ce7b5aa5ee70e716f6a02f30d81", null ],
     [ "MXC_SYS_In_Crit_Section", "group__mxc__sys.html#ga67ad6842f412bbd588e3db6c2851a229", null ],
     [ "MXC_SYS_IsClockEnabled", "group__mxc__sys.html#ga99851205dae88b405f598e68fe984943", null ],
     [ "MXC_SYS_Reset_Periph", "group__mxc__sys.html#gad29f8c0ad27ccb5905322a5fe96a127c", null ],

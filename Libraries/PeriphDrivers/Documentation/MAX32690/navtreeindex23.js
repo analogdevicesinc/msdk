@@ -1,5 +1,9 @@
 var NAVTREEINDEX23 =
 {
+"group__can.html#ga93b88ad2d7acb5dc142b6fbcbc453b98":[1,2,20],
+"group__can.html#ga9519c17243da78254b54c9da3e729d8b":[1,2,30],
+"group__can.html#gaa0451977f56ab1591bf143f3bfc1cf31":[1,2,10],
+"group__can.html#gaa4be727b8d23d83b3d841c6bbdc09a6b":[1,2,21],
 "group__can.html#gaa8679b3ada612770186a0bfc23318e52":[1,2,13],
 "group__can.html#gaae464af14703a13cba8cd9f27cd396c5":[1,2,33],
 "group__can.html#gab32bc561ac2d1263b3371a3432371815":[1,2,27],
@@ -245,9 +249,5 @@ var NAVTREEINDEX23 =
 "group__ctb__registers.html#acbf23bc1499dfff7c18d18c779389b51":[1,4,0,23,13],
 "group__ctb__registers.html#ad8e1e6bef68139a50614df6c82c9be04":[1,4,0,23,0],
 "group__ctb__registers.html#ae6782d5b8290a9587c32fab27a88e396":[1,4,0,23,20],
-"group__ctb__registers.html#af1a4b2dc9792c4051c5f97ef7887f0fd":[1,4,0,23,21],
-"group__ctb__registers.html#afd17b9508eb5f17d19468507275bbab2":[1,4,0,23,18],
-"group__ctb__registers.html#structmxc__ctb__regs__t":[1,4,0,23],
-"group__dma.html":[1,5],
-"group__dma.html#a0a09d983e28062a1f69ff01ada58ab96":[1,5,3,5]
+"group__ctb__registers.html#af1a4b2dc9792c4051c5f97ef7887f0fd":[1,4,0,23,21]
 };

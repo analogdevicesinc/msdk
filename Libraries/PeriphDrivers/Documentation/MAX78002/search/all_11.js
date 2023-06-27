@@ -38,7 +38,7 @@ var searchData=
   ['rlr2_35',['rlr2',['../group__flc__registers.html#afcfe0af6f4f2d811c429d3e4ec5a82a2',1,'mxc_flc_regs_t']]],
   ['rlr3_36',['rlr3',['../group__flc__registers.html#a495d546b8ba5965592fa69f916a742f8',1,'mxc_flc_regs_t']]],
   ['rlr4_37',['rlr4',['../group__flc__registers.html#a9f477be769247e5c2a15e4ef693c327d',1,'mxc_flc_regs_t']]],
-  ['rst_38',['rst',['../group__lpgcr__registers.html#a6b354f86847ea7baeb4e7b6b35070422',1,'mxc_lpgcr_regs_t::rst()'],['../group__wdt__registers.html#a5e60cc2ae13ed2a525bbee7118ac69cd',1,'mxc_wdt_regs_t::rst()']]],
+  ['rst_38',['rst',['../group__wdt__registers.html#a5e60cc2ae13ed2a525bbee7118ac69cd',1,'mxc_wdt_regs_t::rst()'],['../group__lpgcr__registers.html#a6b354f86847ea7baeb4e7b6b35070422',1,'mxc_lpgcr_regs_t::rst()']]],
   ['rst0_39',['rst0',['../group__gcr__registers.html#a5557fd03ed7398e31f6611c6b0e23bd6',1,'mxc_gcr_regs_t']]],
   ['rst1_40',['rst1',['../group__gcr__registers.html#aa20185f27fffbec3311f25dd4ed63ed5',1,'mxc_gcr_regs_t']]],
   ['rtc_41',['rtc',['../group__trimsir__registers.html#a9a746db2451fb3ae05c8e0d596de0a9b',1,'mxc_trimsir_regs_t']]],
@@ -61,9 +61,9 @@ var searchData=
   ['rx_5flen_58',['rx_len',['../group__i2c.html#a7d1a4ab0355b90b84277c05f75119f55',1,'_i2c_req_t']]],
   ['rx_5fthd_59',['rx_thd',['../group__csi2.html#a2accd1d35705e2b32e75e21e1c04fde0',1,'mxc_csi2_vfifo_cfg_t']]],
   ['rxbyteclkhs_5finv_60',['rxbyteclkhs_inv',['../group__csi2__registers.html#a1a7bdfd1bdb64845fdbd971a3d14823f',1,'mxc_csi2_regs_t']]],
-  ['rxcnt_61',['rxCnt',['../group__uart.html#a5170bf9ee63cd6a1605360b56257439e',1,'_mxc_uart_req_t::rxCnt()'],['../group__spi.html#a1bf34bc0d63b8e4a68fa9fb295b03f34',1,'_mxc_spi_req_t::rxCnt()']]],
+  ['rxcnt_61',['rxCnt',['../group__uart.html#a5170bf9ee63cd6a1605360b56257439e',1,'_mxc_uart_req_t']]],
   ['rxctrl0_62',['rxctrl0',['../group__i2c__registers.html#afc1017ce62aa28e8a4cf9e7bce1b8783',1,'mxc_i2c_regs_t']]],
   ['rxctrl1_63',['rxctrl1',['../group__i2c__registers.html#a6450b2b775a252b29175a98b2ceaa67a',1,'mxc_i2c_regs_t']]],
-  ['rxdata_64',['rxData',['../group__uart.html#ab83c0e07099df7beb8e491cb91914de0',1,'_mxc_uart_req_t::rxData()'],['../group__spi.html#ab83c0e07099df7beb8e491cb91914de0',1,'_mxc_spi_req_t::rxData()']]],
-  ['rxlen_65',['rxLen',['../group__spi.html#a043f0f3e53b8233dca0b9446b9c36ccd',1,'_mxc_spi_req_t::rxLen()'],['../group__uart.html#a043f0f3e53b8233dca0b9446b9c36ccd',1,'_mxc_uart_req_t::rxLen()']]]
+  ['rxdata_64',['rxData',['../group__uart.html#ab83c0e07099df7beb8e491cb91914de0',1,'_mxc_uart_req_t']]],
+  ['rxlen_65',['rxLen',['../group__uart.html#a043f0f3e53b8233dca0b9446b9c36ccd',1,'_mxc_uart_req_t']]]
 ];

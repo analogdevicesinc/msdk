@@ -1,5 +1,6 @@
 var NAVTREEINDEX38 =
 {
+"group__uart.html#gaefee3a2e176828e5ce0825ee0e4d3920":[1,29,37],
 "group__uart.html#gaf4139bffa0406c40e3c2fa33ffa31ff1":[1,29,28],
 "group__uart.html#gaf72976d58f7956fe746b994ec5aad745":[1,29,27],
 "group__uart.html#gafdf7fe1ed637a04b8bee9ad19a2fdee6":[1,29,39],
