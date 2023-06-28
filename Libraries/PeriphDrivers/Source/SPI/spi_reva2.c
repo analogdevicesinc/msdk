@@ -512,6 +512,10 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
         (init->spi)->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
     }
 
+    // Set callback.
+    STATES[spi_num].callback = init->callback;
+    STATES[spi_num].callback_data = init->callback_data;
+
     // Setup DMA features if used.
     if (init->use_dma) {
         // Even though the Init Struct has a pointer to the DMA instance,
