@@ -57,6 +57,8 @@
 
 //#define PATTERN_GEN //  Replaces captured image with internally generated pattern
 
+#define RGB565
+
 void process_img(void);
 int initialize_camera(void);
 void load_input_camera(void);

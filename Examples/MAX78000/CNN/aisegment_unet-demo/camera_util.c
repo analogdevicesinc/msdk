@@ -93,9 +93,14 @@ int initialize_camera(void)
     printf("Init Camera\n");
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
+#ifndef RGB565
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA,
                        dma_channel); // RGB888 with 0 at MSB stream
+#else
+	ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+                       dma_channel);
 
+#endif
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
         return -1;
@@ -139,7 +144,9 @@ void load_row_cnn(uint8_t *data, int row)
     } m;
 
 #ifdef RGB565
-    uint16_t *dataptr = (uint16_t *)data;
+    ///uint16_t *dataptr = (uint16_t *)data;
+
+    uint8_t *dataptr = data;
 #else
     uint8_t *dataptr = data;
 #endif
@@ -202,34 +209,37 @@ void load_row_cnn(uint8_t *data, int row)
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
 #elif defined(RGB565)
+
+
         // RGB565 to packed 24-bit RGB
-        m.b[0] = (*dataptr & 0xF800) >> 11;
-        m.b[1] = (*dataptr & 0x07E0) >> 5;
-        m.b[2] = (*dataptr & 0x001F) << 3;
-        dataptr++;
-        m.b[3] = (*dataptr & 0xF800) >> 11;
+        m.b[0] = (*data & 0xF8);  // Red
+        m.b[1] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
+        m.b[2] = (*(data+1) << 3);  // Blue
+        data += 2;
+        m.b[3] = (*data & 0xF8);  // Red
 
         *addr = m.w ^ 0x80808080U;
         addr += offset0;
 
-        m.b[0] = (*dataptr & 0x07E0) >> 5;
-        m.b[1] = (*dataptr & 0x001F) << 3;
-        dataptr++;
-        m.b[2] = (*dataptr & 0xF800) >> 11;
-        m.b[3] = (*dataptr & 0x07E0) >> 5;
+        m.b[0] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
+        m.b[1] = (*(data+1) << 3);  // Blue
+        data += 2;
+        m.b[2] = (*data & 0xF8);  // Red
+        m.b[3] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
 
         *addr = m.w ^ 0x80808080U;
         addr += offset1;
 
-        m.b[0] = (*dataptr & 0x001F) << 3;
-        dataptr++;
-        m.b[1] = (*dataptr & 0xF800) >> 11;
-        m.b[2] = (*dataptr & 0x07E0) >> 5;
-        m.b[3] = (*dataptr & 0x001F) << 3;
-        dataptr++;
+        m.b[0] = (*(data+1) << 3);  // Blue
+        data += 2;
+        m.b[1] = (*data & 0xF8);  // Red
+        m.b[2] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
+        m.b[3] = (*(data+1) << 3);  // Blue
+        data += 2;
 
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
+
 #else
         // unpacked 24-bit RGB to packed 24-bit RGB
         m.b[0] = *dataptr++; // r0
@@ -424,6 +434,8 @@ void display_camera(void)
 
         // convert RGB888 to RGB565
         if (row < TFT_H) {
+#ifndef RGB565
+
 #ifdef BOARD_FTHR_REVA
 
             for (int k = 0; k < 4 * w; k += 4) {
@@ -432,6 +444,8 @@ void display_camera(void)
 
                 for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
 #endif
+
+
                     r = data[k];
                     g = data[k + 1];
                     b = data[k + 2];
@@ -440,8 +454,12 @@ void display_camera(void)
                     data565[j++] = (rgb >> 8) & 0xFF;
                     data565[j++] = rgb & 0xFF;
                 }
-
                 MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
+#else
+                MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data, w, 1);
+
+#endif
+
             }
 
             LED_Toggle(LED2);
