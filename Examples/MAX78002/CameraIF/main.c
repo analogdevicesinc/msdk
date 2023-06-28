@@ -190,6 +190,8 @@ int main(void)
         printf("Touch screen initialization failed\n");
         return E_ABORT;
     }
+    // Set 0 rotation to match camera orientation
+    MXC_TFT_SetRotation(ROTATE_0);
 #endif
 #endif
     MXC_TFT_SetBackGroundColor(0);
