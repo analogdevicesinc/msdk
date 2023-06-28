@@ -116,7 +116,7 @@ static const appSlaveCfg_t datsSlaveCfg = {
 
 /*! configurable parameters for security */
 static const appSecCfg_t datsSecCfg = {
-    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG, /*! Authentication and bonding flags */
+    DM_AUTH_BOND_FLAG | DM_AUTH_SC_FLAG | DM_AUTH_MITM_FLAG, /*! Authentication and bonding flags */
     DM_KEY_DIST_IRK, /*! Initiator key distribution flags */
     DM_KEY_DIST_LTK | DM_KEY_DIST_IRK, /*! Responder key distribution flags */
     FALSE, /*! TRUE if Out-of-band pairing data is present */
@@ -129,7 +129,7 @@ static const bool_t datsSendOobData = FALSE;
 /*! SMP security parameter configuration */
 static const smpCfg_t datsSmpCfg = {
     500, /*! 'Repeated attempts' timeout in msec */
-    SMP_IO_NO_IN_NO_OUT, /*! I/O Capability */
+    SMP_IO_KEY_ONLY, /*! I/O Capability */
     7, /*! Minimum encryption key length */
     16, /*! Maximum encryption key length */
     1, /*! Attempts to trigger 'repeated attempts' timeout */

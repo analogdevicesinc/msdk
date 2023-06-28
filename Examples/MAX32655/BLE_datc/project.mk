@@ -10,6 +10,9 @@
 # Enable Cordio library
 LIB_CORDIO = 1
 
+# Include RF PHY library
+LIB_RF_PHY = 1
+
 # Cordio library options
 INIT_PERIPHERAL = 0
 INIT_CENTRAL = 1

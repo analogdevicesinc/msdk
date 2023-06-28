@@ -16,6 +16,19 @@ ifeq ($(LIB_BOARD), 1)
 BOARD_DIR := $(LIBS_DIR)/Boards/$(TARGET_UC)/$(BOARD)
 include $(BOARD_DIR)/board.mk
 endif
+
+# RF_PHY (Disabled by default)
+# ************************
+LIB_RF_PHY ?= 0
+ifeq ($(LIB_RF_PHY), 1)
+# Include the RF-PHY Library
+RF_PHY_ROOT ?= $(LIBS_DIR)/RF-PHY
+include $(RF_PHY_ROOT)/$(TARGET_UC)/build/sources.mk
+VPATH += $(SRC_DIRS)
+SRCS += $(C_FILES)
+IPATH += $(INC_DIRS)
+endif
+
 # ************************
 
 # PeriphDrivers (Enabled by default)
