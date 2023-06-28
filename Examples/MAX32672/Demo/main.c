@@ -141,7 +141,7 @@ int main(void)
 
     while (1) {
         // This entire routine until first LED Toggles takes around ~180ms.
-        sec = MXC_RTC_GetSecond();;
+        MXC_RTC_GetSeconds(&sec);
 
         hr = sec / SECS_PER_HR;
         sec -= hr * SECS_PER_HR;
