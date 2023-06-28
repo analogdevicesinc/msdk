@@ -842,7 +842,7 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, ui
                                      mxc_spi_target_t *target)
 {
     int error;
-    
+
     error = MXC_SPI_DMA_SetRequestSelect(spi, tx_buffer, rx_buffer);
     if (error != E_NO_ERROR) {
         return error;
