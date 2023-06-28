@@ -199,12 +199,14 @@ int main(void)
 #if BLOCKING
         // Blocking SPI v2 Implementation is Interrupt driven.
         NVIC_EnableIRQ(SPI_IRQ);
-        MXC_SPI_ControllerTransactionB(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data, DATA_LEN, 1, &target);
+        MXC_SPI_ControllerTransactionB(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
+                                       DATA_LEN, 1, &target);
 #endif
 
 #if NON_BLOCKING
         NVIC_EnableIRQ(SPI_IRQ);
-        MXC_SPI_ControllerTransaction(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data, DATA_LEN, 1, &target);
+        MXC_SPI_ControllerTransaction(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
+                                      DATA_LEN, 1, &target);
 
         while (SPI_FLAG == 1) {}
 #endif
@@ -219,7 +221,8 @@ int main(void)
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
 
-        MXC_SPI_ControllerTransactionDMA(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data, DATA_LEN, 1, &target);
+        MXC_SPI_ControllerTransactionDMA(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
+                                         DATA_LEN, 1, &target);
 
         while (SPI_FLAG == 1) {}
 #endif

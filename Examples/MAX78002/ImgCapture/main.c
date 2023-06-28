@@ -260,8 +260,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
 
     // 2. Retrieve image format and info.
     img_data.pixel_format = camera_get_pixel_format();
-    camera_get_image(NULL, &img_data.imglen, &img_data.w,
-                     &img_data.h);
+    camera_get_image(NULL, &img_data.imglen, &img_data.w, &img_data.h);
     img_data.raw = (uint32_t *)
         CNN_QUAD0_DSRAM_START; // Manually save the destination address at the first quadrant of CNN data SRAM
 

@@ -729,8 +729,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_
         }
     }
 
-    return MXC_SPI_RevA2_DMA_SetRequestSelect((mxc_spi_reva_regs_t *)spi, tx_reqsel,
-                                              rx_reqsel);
+    return MXC_SPI_RevA2_DMA_SetRequestSelect((mxc_spi_reva_regs_t *)spi, tx_reqsel, rx_reqsel);
 }
 
 /* ** Transaction Functions ** */
