@@ -161,8 +161,11 @@ The MSDK officially supports the following microcontrollers and evaluation platf
     - Supported shells (Windows):
         - [MSYS2](https://www.msys2.org/)
 
-    - Supported shells (Ubuntu and MacOS):
+    - Supported shells (Ubuntu):
         - [Bash](https://tiswww.case.edu/php/chet/bash/bashtop.html)
+        - [Zsh](https://www.zsh.org/)
+
+    - Supposted shells (MacOS):
         - [Zsh](https://www.zsh.org/)
 
 ### Supported Languages
@@ -239,7 +242,7 @@ On MacOS, some additional missing packages must be manually installed with[Homeb
 
         brew install make libusb-compat libftdi hidapi libusb
 
-3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
 
         :::shell
         ==> make: stable 4.4.1 (bottled)
@@ -262,7 +265,7 @@ On MacOS, some additional missing packages must be manually installed with[Homeb
         install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
         build-error: 0 (30 days)
 
-    Typically, this involves adding the following line to your shell's startup script (`~/.zshrc`, `~/.bashrc`, etc.)
+    This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
 
         :::bash
         PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
@@ -312,7 +315,7 @@ The i386 version of Homebrew can be installed in parallel with the arm64 version
         :::shell
         /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
 
-7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
 
         :::shell
         ==> make: stable 4.4.1 (bottled)
@@ -335,7 +338,7 @@ The i386 version of Homebrew can be installed in parallel with the arm64 version
         install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
         build-error: 0 (30 days)
 
-    Typically, this involves adding the following line to your shell's startup script (`~/.zshrc`, `~/.bashrc`, etc.)
+    This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
 
         :::bash
         PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
@@ -1814,6 +1817,7 @@ The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level inte
 - MAX32650
 - MAX32570
 - MAX32665-MAX32666
+- MAX78000
 - MAX78002
 
 ---

@@ -5,7 +5,7 @@ MOSI (P0.21) pins.  Connect these two pins together.
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
-By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the MASTERSYNC macro to 0 and set the MASTERASYNC macro to 1.  To use DMA transactions, set the MASTERDMA macro to 1 instead.
+By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the BLOCKING macro to 0 and set the NON_BLOCKING macro to 1.  To use DMA transactions, set the DMA macro to 1 instead.
 
 This example also demonstrates the feature to use custom Target Selects that the SPI v2 Driver will automatically assert/deassert during transactions. Set the CUSTOM_TARGET macro to 1 to use the custom target. To use the default TS pins, set the CUSTOM_TARGET macro to 0 instead.
 
@@ -35,8 +35,10 @@ Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead and 2) to gi
 - `mxc_spi_tscontrol_t ts_control`   //<== HW Auto, SW Driver, or SW Application Target Control
 - `mxc_spi_target_t target`          //<== Target settings (custom TS pins, init mask, active polarity) 
 - `mxc_gpio_vssel_t vssel`           //<== Select Pin Voltage Level (VDDIO/VDDIOH)
-- `bool use_dma`                     //<== TRUE/FALSE setting.
+- `bool use_dma`                     //<== TRUE/FALSE DMA setting
 - `mxc_dma_regs_t *dma`              //<== DMA Instance
+- `mxc_spi_callback_t callback`      //<== Set Callback function for end of transaction
+- `void* callback_data`              //<== Data to pass through callback function
 
 ##### SPI DMA Interrupt Handling
 
@@ -105,7 +107,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-**************************** SPI MASTER TEST *************************
+**************************** SPI CONTROLLER TEST *************************
 This example configures the SPI to send data between the MISO (P0.22) and
 MOSI (P0.21) pins.  Connect these two pins together.
 

@@ -688,18 +688,18 @@ int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi)
     return MXC_SPI_RevA2_DMA_GetRXChannel((mxc_spi_reva_regs_t *)spi);
 }
 
-int MXC_SPI_DMA_SetRequestSelect(mxc_spi_req_t *req)
+int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_t *rx_buffer)
 {
     int spi_num;
     int tx_reqsel = -1;
     int rx_reqsel = -1;
 
-    spi_num = MXC_SPI_GET_IDX(req->spi);
+    spi_num = MXC_SPI_GET_IDX(spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_INVALID;
     }
 
-    if (req->tx_buffer != NULL) {
+    if (tx_buffer != NULL) {
         switch (spi_num) {
         case 0:
             tx_reqsel = MXC_DMA_REQUEST_SPI1TX;
@@ -714,7 +714,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_req_t *req)
         }
     }
 
-    if (req->rx_buffer != NULL) {
+    if (rx_buffer != NULL) {
         switch (spi_num) {
         case 0:
             rx_reqsel = MXC_DMA_REQUEST_SPI1RX;
@@ -729,8 +729,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_req_t *req)
         }
     }
 
-    return MXC_SPI_RevA2_DMA_SetRequestSelect((mxc_spi_reva_regs_t *)(req->spi), tx_reqsel,
-                                              rx_reqsel);
+    return MXC_SPI_RevA2_DMA_SetRequestSelect((mxc_spi_reva_regs_t *)spi, tx_reqsel, rx_reqsel);
 }
 
 /* ** Transaction Functions ** */
@@ -811,7 +810,7 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
         return error;
     }
 
-    error = MXC_SPI_DMA_SetRequestSelect(req);
+    error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -841,6 +840,13 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, ui
                                      uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
                                      mxc_spi_target_t *target)
 {
+    int error;
+
+    error = MXC_SPI_DMA_SetRequestSelect(spi, tx_buffer, rx_buffer);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
                                                   rx_buffer, rx_fr_len, deassert, target);
 }
