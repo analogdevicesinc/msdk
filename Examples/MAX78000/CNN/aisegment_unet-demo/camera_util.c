@@ -435,10 +435,8 @@ void display_camera(void)
 #endif
 #ifdef BOARD_EVKIT_V1
 
-                for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
+            for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
 #endif
-
-
                     r = data[k];
                     g = data[k + 1];
                     b = data[k + 2];
@@ -446,10 +444,10 @@ void display_camera(void)
                     rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
                     data565[j++] = (rgb >> 8) & 0xFF;
                     data565[j++] = rgb & 0xFF;
-                }
-                MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
+             }
+             MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
 #else
-                MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data, w, 1);
+             MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data, w, 1);
 
 #endif
 
@@ -537,26 +535,4 @@ void dump_inference(void)
 	printf("SUM: %08X \n", sum);
 
 	while (1) {}
-}
-
-void run_camera(void)
-{
-	// Start capturing a first camera image frame.
-	printf("Starting\n");
-	camera_start_capture_image();
-
-	while (1) {
-		// Check if image is acquired
-#ifndef STREAM_ENABLE
-		if (camera_is_image_rcv())
-#endif
-		{
-			// Process the image, send it through the UART console.
-			process_img();
-
-			// Prepare for another frame capture.
-			LED_Toggle(LED1);
-			camera_start_capture_image();
-		}
-	}
 }
