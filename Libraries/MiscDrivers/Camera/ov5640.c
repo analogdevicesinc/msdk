@@ -52,7 +52,7 @@
 #ifdef OV5640_DVP
 static struct camera_reg default_regs[] = {
     // power down
-    {0x3008, 0x42},  
+    {0x3008, 0x42},
     //# enable pll
     {0x3103, 0x03},
     // io direction
@@ -67,7 +67,7 @@ static struct camera_reg default_regs[] = {
     // clock enable
     {0x3004, 0xFF},
     {0x3006, 0xC3},
-	
+
     {0x3034, 0x1a}, // PLL, 10-bit
     {0x3037, 0x12}, // PLL
     {0x3108, 0x01}, // clock divider
@@ -78,7 +78,7 @@ static struct camera_reg default_regs[] = {
     //{0x3037, 0x1A},
     //{0x3108, 0x1},
     {0x3824, 0x1},
-	
+
     // ISP control
     {0x5000, 0xA7},
     {0x5001, 0xa3},  // // ISP Control: turn color matrix, awb, SDE and scaling
@@ -235,7 +235,7 @@ static struct camera_reg default_regs[] = {
     {0x3810, 0x00},  // X offset
     {0x3811, 0x10},
     {0x3812, 0x00},  // Y offset
-    {0x3813, 0x08},    
+    {0x3813, 0x08},
     {0x4520, 0x0B},
     {0x3814, 0x31}, // timing X inc
     {0x3815, 0x31}, // timing Y inc
