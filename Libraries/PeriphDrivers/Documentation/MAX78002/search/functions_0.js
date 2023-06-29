@@ -424,7 +424,7 @@ var searchData=
   ['mxc_5fspi_5fdma_5fgettxchannel_421',['MXC_SPI_DMA_GetTXChannel',['../group__spi.html#gac79d1bdacf4c3841cd6b73b2ee5b4928',1,'spi.h']]],
   ['mxc_5fspi_5fdma_5finit_422',['MXC_SPI_DMA_Init',['../group__spi.html#ga742c4006369ca380c4cad8362b5d2ccb',1,'spi.h']]],
   ['mxc_5fspi_5fdma_5frx_5fhandler_423',['MXC_SPI_DMA_RX_Handler',['../group__spi.html#ga95c817c0d261218ea5c6b5781d62e36e',1,'spi.h']]],
-  ['mxc_5fspi_5fdma_5fsetrequestselect_424',['MXC_SPI_DMA_SetRequestSelect',['../group__spi.html#gaa72d8051c86ee0e7fa6c179dee2872d3',1,'spi.h']]],
+  ['mxc_5fspi_5fdma_5fsetrequestselect_424',['MXC_SPI_DMA_SetRequestSelect',['../group__spi.html#ga3d1a2dc373641d98c6d528f4869babf7',1,'spi.h']]],
   ['mxc_5fspi_5fdma_5ftx_5fhandler_425',['MXC_SPI_DMA_TX_Handler',['../group__spi.html#ga0249dfe5641237a7fb2bb2b3bd424ee2',1,'spi.h']]],
   ['mxc_5fspi_5fenableint_426',['MXC_SPI_EnableInt',['../group__spi.html#ga20d10782044173a480247ece9bb4ee43',1,'spi.h']]],
   ['mxc_5fspi_5fgetactive_427',['MXC_SPI_GetActive',['../group__spi.html#gaa06214fd0986da99eef31b358385ca78',1,'spi.h']]],

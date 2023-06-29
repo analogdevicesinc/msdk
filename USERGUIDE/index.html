@@ -664,9 +664,15 @@
 </ul>
 </li>
 <li>
-<p>Supported shells (Ubuntu and MacOS):</p>
+<p>Supported shells (Ubuntu):</p>
 <ul>
 <li><a href="https://tiswww.case.edu/php/chet/bash/bashtop.html">Bash</a></li>
+<li><a href="https://www.zsh.org/">Zsh</a></li>
+</ul>
+</li>
+<li>
+<p>Supposted shells (MacOS):</p>
+<ul>
 <li><a href="https://www.zsh.org/">Zsh</a></li>
 </ul>
 </li>
@@ -756,7 +762,7 @@
 
 </li>
 <li>
-<p>The MSDK toolchain is dependent on GNU make 4.x+ being available as <code>make</code>, but Homebrew will install it as <code>gmake</code>.  Modify your shell's startup script to account for this.  Run <code>brew info make</code> for more details, and check the "caveats" section.</p>
+<p>The MSDK toolchain is dependent on GNU make 4.x+ being available as <code>make</code>, but Homebrew will install it as <code>gmake</code>.  Modify your shell's startup script (<code>~/.zshrc</code>) to account for this.  Run <code>brew info make</code> for more details, and check the "caveats" section.</p>
 <pre class="codehilite"><code class="language-shell">==&gt; make: stable 4.4.1 (bottled)
 Utility for directing compilation
 https://www.gnu.org/software/make/
@@ -778,7 +784,7 @@ install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
 build-error: 0 (30 days)
 </code></pre>
 
-<p>Typically, this involves adding the following line to your shell's startup script (<code>~/.zshrc</code>, <code>~/.bashrc</code>, etc.)</p>
+<p>This involves adding the following line to your shell's startup script. Open the <code>~/.zshrc</code> in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to <code>~/.zshrc</code>.  The exact path may vary across different systems and Homebrew versions.</p>
 <pre class="codehilite"><code class="language-bash">PATH=&quot;/usr/local/opt/make/libexec/gnubin:$PATH&quot;
 </code></pre>
 
@@ -839,7 +845,7 @@ build-error: 0 (30 days)
 
 </li>
 <li>
-<p>The MSDK toolchain is dependent on GNU make 4.x+ being available as <code>make</code>, but Homebrew will install it as <code>gmake</code>.  Modify your shell's startup script to account for this.  Run <code>brew info make</code> for more details, and check the "caveats" section.</p>
+<p>The MSDK toolchain is dependent on GNU make 4.x+ being available as <code>make</code>, but Homebrew will install it as <code>gmake</code>.  Modify your shell's startup script (<code>~/.zshrc</code>) to account for this.  Run <code>brew info make</code> for more details, and check the "caveats" section.</p>
 <pre class="codehilite"><code class="language-shell">==&gt; make: stable 4.4.1 (bottled)
 Utility for directing compilation
 https://www.gnu.org/software/make/
@@ -861,7 +867,7 @@ install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
 build-error: 0 (30 days)
 </code></pre>
 
-<p>Typically, this involves adding the following line to your shell's startup script (<code>~/.zshrc</code>, <code>~/.bashrc</code>, etc.)</p>
+<p>This involves adding the following line to your shell's startup script. Open the <code>~/.zshrc</code> in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to <code>~/.zshrc</code>.  The exact path may vary across different systems and Homebrew versions.</p>
 <pre class="codehilite"><code class="language-bash">PATH=&quot;/usr/local/opt/make/libexec/gnubin:$PATH&quot;
 </code></pre>
 
@@ -2696,6 +2702,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 <li>MAX32650</li>
 <li>MAX32570</li>
 <li>MAX32665-MAX32666</li>
+<li>MAX78000</li>
 <li>MAX78002</li>
 </ul>
 <hr />
