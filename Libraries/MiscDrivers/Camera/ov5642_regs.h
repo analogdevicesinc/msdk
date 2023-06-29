@@ -100,6 +100,6 @@
 // clang-format on
 
 // Special effects
-typedef enum { NORMAL = 0, BLUE, GREEN, RED, BLACK_WHITE, NEGATIVE, GRAY, SEPIA } ov5642_effect_t;
+//typedef enum { NORMAL = 0, BLUE, GREEN, RED, BLACK_WHITE, NEGATIVE, GRAY, SEPIA } ov5642_effect_t;
 
 #endif // LIBRARIES_MISCDRIVERS_CAMERA_OV5642_REGS_H_
