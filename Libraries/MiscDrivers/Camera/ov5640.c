@@ -81,8 +81,8 @@ static struct camera_reg default_regs[] = {
 
     // ISP control
     {0x5000, 0xA7},
-    {0x5001, 0xa3},  // // ISP Control: turn color matrix, awb, SDE and scaling
-	{0x5003, 0x04},  // bin enable
+    {0x5001, 0xa3},  // ISP Control: turn color matrix, awb, SDE and scaling
+    {0x5003, 0x04},  // bin enable
 
     {0x370C, 0x02},
     {0x3634, 0x40},
@@ -833,9 +833,9 @@ static int set_pixformat(mipi_camera_format_t camera_format)
         break;
 
     case PIXEL_FORMAT_RGB565:
-	#if defined(OV5640_DVP)
-	out_seq = 1;
-	#endif
+        #if defined(OV5640_DVP)
+        out_seq = 1;
+        #endif
         ret |= cambus_write(FORMAT_CTRL00h, (0x06 << 4) | out_seq);
         break;
 
