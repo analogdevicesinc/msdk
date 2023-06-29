@@ -446,50 +446,51 @@ void write_TFT_pixel(int row, int col, unsigned char value)
 }
 
 void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
-{
-    int index = 0;
-    unsigned char temp[2];
+    {
+        int index = 0;
+        unsigned char temp[2];
 
-    for (int r = 0; r < 88; r++) {
-        for (int c = 0; c < 8; c++) {
-            int idx = 22 * r + 88 * 22 * c;
+        for (int r = 0; r < 88; r++) {
+            for (int c = 0; c < 8; c++) {
+                int idx = 22 * r + 88 * 22 * c;
 
-            for (int d = 0; d < 22; d++) {
-                out_buff[index + d] = in_buff[idx + d];
+                for (int d = 0; d < 22; d++) {
+                    out_buff[index + d] = in_buff[idx + d];
+                }
+
+                index += 22;
             }
+        }
 
-            index += 22;
+        for (int s1 = 0; s1 < 352; s1++) {
+            for (int s2 = 0; s2 < 22; s2++) {
+                temp[0] = out_buff[s1 * 44 + s2 + 00];
+                temp[1] = out_buff[s1 * 44 + s2 + 22];
+
+                // extract bit per pixel from packed bytes
+                write_TFT_pixel(s1, (0 + 16 * s2), (temp[0] & 0x80) >> 7);
+                write_TFT_pixel(s1, (1 + 16 * s2), (temp[1] & 0x80) >> 7);
+                write_TFT_pixel(s1, (2 + 16 * s2), (temp[0] & 0x40) >> 6);
+                write_TFT_pixel(s1, (3 + 16 * s2), (temp[1] & 0x40) >> 6);
+
+                write_TFT_pixel(s1, (4 + 16 * s2), (temp[0] & 0x20) >> 5);
+                write_TFT_pixel(s1, (5 + 16 * s2), (temp[1] & 0x20) >> 5);
+                write_TFT_pixel(s1, (6 + 16 * s2), (temp[0] & 0x10) >> 4);
+                write_TFT_pixel(s1, (7 + 16 * s2), (temp[1] & 0x10) >> 4);
+
+                write_TFT_pixel(s1, (8 + 16 * s2), (temp[0] & 0x08) >> 3);
+                write_TFT_pixel(s1, (9 + 16 * s2), (temp[1] & 0x08) >> 3);
+                write_TFT_pixel(s1, (10 + 16 * s2), (temp[0] & 0x04) >> 2);
+                write_TFT_pixel(s1, (11 + 16 * s2), (temp[1] & 0x04) >> 2);
+
+                write_TFT_pixel(s1, (12 + 16 * s2), (temp[0] & 0x02) >> 1);
+                write_TFT_pixel(s1, (13 + 16 * s2), (temp[1] & 0x02) >> 1);
+                write_TFT_pixel(s1, (14 + 16 * s2), (temp[0] & 0x01) >> 0);
+                write_TFT_pixel(s1, (15 + 16 * s2), (temp[1] & 0x01) >> 0);
+            }
         }
     }
 
-    for (int s1 = 0; s1 < 352; s1++) {
-        for (int s2 = 0; s2 < 22; s2++) {
-            temp[0] = out_buff[s1 * 44 + s2 + 00];
-            temp[1] = out_buff[s1 * 44 + s2 + 22];
-
-            // extract bit per pixel from packed bytes
-            write_TFT_pixel(s1, (0 + 16 * s2), (temp[0] & 0x80) >> 7);
-            write_TFT_pixel(s1, (1 + 16 * s2), (temp[1] & 0x80) >> 7);
-            write_TFT_pixel(s1, (2 + 16 * s2), (temp[0] & 0x40) >> 6);
-            write_TFT_pixel(s1, (3 + 16 * s2), (temp[1] & 0x40) >> 6);
-
-            write_TFT_pixel(s1, (4 + 16 * s2), (temp[0] & 0x20) >> 5);
-            write_TFT_pixel(s1, (5 + 16 * s2), (temp[1] & 0x20) >> 5);
-            write_TFT_pixel(s1, (6 + 16 * s2), (temp[0] & 0x10) >> 4);
-            write_TFT_pixel(s1, (7 + 16 * s2), (temp[1] & 0x10) >> 4);
-
-            write_TFT_pixel(s1, (8 + 16 * s2), (temp[0] & 0x08) >> 3);
-            write_TFT_pixel(s1, (9 + 16 * s2), (temp[1] & 0x08) >> 3);
-            write_TFT_pixel(s1, (10 + 16 * s2), (temp[0] & 0x04) >> 2);
-            write_TFT_pixel(s1, (11 + 16 * s2), (temp[1] & 0x04) >> 2);
-
-            write_TFT_pixel(s1, (12 + 16 * s2), (temp[0] & 0x02) >> 1);
-            write_TFT_pixel(s1, (13 + 16 * s2), (temp[1] & 0x02) >> 1);
-            write_TFT_pixel(s1, (14 + 16 * s2), (temp[0] & 0x01) >> 0);
-            write_TFT_pixel(s1, (15 + 16 * s2), (temp[1] & 0x01) >> 0);
-        }
-    }
-}
 
 void TFT_Print(char *str, int x, int y, int font, int length)
 {

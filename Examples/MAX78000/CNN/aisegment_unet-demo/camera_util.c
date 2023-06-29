@@ -143,13 +143,6 @@ void load_row_cnn(uint8_t *data, int row)
         uint8_t b[4];
     } m;
 
-#ifdef RGB565
-    ///uint16_t *dataptr = (uint16_t *)data;
-
-    uint8_t *dataptr = data;
-#else
-    uint8_t *dataptr = data;
-#endif
 
     offset0 = 0x00002000;
     offset1 = 0x00002000;
@@ -242,30 +235,30 @@ void load_row_cnn(uint8_t *data, int row)
 
 #else
         // unpacked 24-bit RGB to packed 24-bit RGB
-        m.b[0] = *dataptr++; // r0
-        m.b[1] = *dataptr++; // g0
-        m.b[2] = *dataptr++; // b0
-        dataptr++; // skip MSB
-        m.b[3] = *dataptr++; // r1
+        m.b[0] = *data++; // r0
+        m.b[1] = *data++; // g0
+        m.b[2] = *data++; // b0
+        data++; // skip MSB
+        m.b[3] = *data++; // r1
 
         *addr = m.w ^ 0x80808080U;
         addr += offset0;
 
-        m.b[0] = *dataptr++; // g1
-        m.b[1] = *dataptr++; // b1
-        dataptr++; // skip MSB
-        m.b[2] = *dataptr++; // r2
-        m.b[3] = *dataptr++; // g2
+        m.b[0] = *data++; // g1
+        m.b[1] = *data++; // b1
+        data++; // skip MSB
+        m.b[2] = *data++; // r2
+        m.b[3] = *data++; // g2
 
         *addr = m.w ^ 0x80808080U;
         addr += offset1;
 
-        m.b[0] = *dataptr++; // b2
-        dataptr++; // skip MSB
-        m.b[1] = *dataptr++; // r3
-        m.b[2] = *dataptr++; // g3
-        m.b[3] = *dataptr++; // b3
-        dataptr++; // skip MSB
+        m.b[0] = *data++; // b2
+        data++; // skip MSB
+        m.b[1] = *data++; // r3
+        m.b[2] = *data++; // g3
+        m.b[3] = *data++; // b3
+        data++; // skip MSB
 
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
@@ -479,91 +472,91 @@ void display_camera(void)
         }
     }
 
-    static uint32_t sum = 0;
-    void dump_cnn(void)
-    {
-        uint32_t *data_addr[12] = { (uint32_t *)0x50400700, (uint32_t *)0x50408700,
-                                    (uint32_t *)0x50410700, (uint32_t *)0x50418700,
-                                    (uint32_t *)0x50800700, (uint32_t *)0x50808700,
-                                    (uint32_t *)0x50810700, (uint32_t *)0x50818700,
-                                    (uint32_t *)0x50c00700, (uint32_t *)0x50c08700,
-                                    (uint32_t *)0x50c10700, (uint32_t *)0x50c18700 };
+static uint32_t sum = 0;
+void dump_cnn(void)
+{
+	uint32_t *data_addr[12] = { (uint32_t *)0x50400700, (uint32_t *)0x50408700,
+								(uint32_t *)0x50410700, (uint32_t *)0x50418700,
+								(uint32_t *)0x50800700, (uint32_t *)0x50808700,
+								(uint32_t *)0x50810700, (uint32_t *)0x50818700,
+								(uint32_t *)0x50c00700, (uint32_t *)0x50c08700,
+								(uint32_t *)0x50c10700, (uint32_t *)0x50c18700 };
 
-        printf("\nDUMPING CNN, press PB0 \n");
+	printf("\nDUMPING CNN, press PB0 \n");
 
-        while (!PB_Get(0)) {}
+	while (!PB_Get(0)) {}
 
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 7744; j += 16) {
-                printf("\n%08X: ", data_addr[i]);
+	for (int i = 0; i < 12; i++) {
+		for (int j = 0; j < 7744; j += 16) {
+			printf("\n%08X: ", data_addr[i]);
 
-                for (int k = 0; k < 16; k++) {
-                    printf("%08X ", *data_addr[i]);
-                    sum += *data_addr[i];
-                    data_addr[i]++;
-                }
-            }
+			for (int k = 0; k < 16; k++) {
+				printf("%08X ", *data_addr[i]);
+				sum += *data_addr[i];
+				data_addr[i]++;
+			}
+		}
 
-            printf("\n");
-        }
+		printf("\n");
+	}
 
-        printf("SUM: %08X \n", sum);
+	printf("SUM: %08X \n", sum);
 
-        while (1) {}
-    }
+	while (1) {}
+}
 
-    void dump_inference(void)
-    {
-        uint32_t *data_addr[16] = {
-            (uint32_t *)0x50400000, (uint32_t *)0x50408000, (uint32_t *)0x50410000,
-            (uint32_t *)0x50418000, (uint32_t *)0x50800000, (uint32_t *)0x50808000,
-            (uint32_t *)0x50810000, (uint32_t *)0x50818000, (uint32_t *)0x50c00000,
-            (uint32_t *)0x50c08000, (uint32_t *)0x50c10000, (uint32_t *)0x50c18000,
-            (uint32_t *)0x51000000, (uint32_t *)0x51008000, (uint32_t *)0x51010000,
-            (uint32_t *)0x51018000,
-        };
+void dump_inference(void)
+{
+	uint32_t *data_addr[16] = {
+		(uint32_t *)0x50400000, (uint32_t *)0x50408000, (uint32_t *)0x50410000,
+		(uint32_t *)0x50418000, (uint32_t *)0x50800000, (uint32_t *)0x50808000,
+		(uint32_t *)0x50810000, (uint32_t *)0x50818000, (uint32_t *)0x50c00000,
+		(uint32_t *)0x50c08000, (uint32_t *)0x50c10000, (uint32_t *)0x50c18000,
+		(uint32_t *)0x51000000, (uint32_t *)0x51008000, (uint32_t *)0x51010000,
+		(uint32_t *)0x51018000,
+	};
 
-        printf("\nDUMPING INFERENCE, press PB0 \n");
+	printf("\nDUMPING INFERENCE, press PB0 \n");
 
-        while (!PB_Get(0)) {}
+	while (!PB_Get(0)) {}
 
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 7744; j += 16) {
-                printf("\n%08X: ", data_addr[i]);
+	for (int i = 0; i < 16; i++) {
+		for (int j = 0; j < 7744; j += 16) {
+			printf("\n%08X: ", data_addr[i]);
 
-                for (int k = 0; k < 16; k++) {
-                    printf("%08X ", *data_addr[i]);
-                    sum += *data_addr[i];
-                    data_addr[i]++;
-                }
-            }
+			for (int k = 0; k < 16; k++) {
+				printf("%08X ", *data_addr[i]);
+				sum += *data_addr[i];
+				data_addr[i]++;
+			}
+		}
 
-            printf("\n");
-        }
+		printf("\n");
+	}
 
-        printf("SUM: %08X \n", sum);
+	printf("SUM: %08X \n", sum);
 
-        while (1) {}
-    }
+	while (1) {}
+}
 
-    void run_camera(void)
-    {
-        // Start capturing a first camera image frame.
-        printf("Starting\n");
-        camera_start_capture_image();
+void run_camera(void)
+{
+	// Start capturing a first camera image frame.
+	printf("Starting\n");
+	camera_start_capture_image();
 
-        while (1) {
-            // Check if image is acquired
+	while (1) {
+		// Check if image is acquired
 #ifndef STREAM_ENABLE
-            if (camera_is_image_rcv())
+		if (camera_is_image_rcv())
 #endif
-            {
-                // Process the image, send it through the UART console.
-                process_img();
+		{
+			// Process the image, send it through the UART console.
+			process_img();
 
-                // Prepare for another frame capture.
-                LED_Toggle(LED1);
-                camera_start_capture_image();
-            }
-        }
-    }
+			// Prepare for another frame capture.
+			LED_Toggle(LED1);
+			camera_start_capture_image();
+		}
+	}
+}
