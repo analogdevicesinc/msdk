@@ -1,0 +1,46 @@
+name: Check for Stale Pull Requests
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Schedule workflow on timer
+on:
+  schedule:
+    # 'min hr day-of-month month day-of-week'
+    # Current schedule to run is: Every two hours of every day.
+    - cron: '0 0/2 * * *'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  MSDK_DIR: msdk
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # Check for stale PRs
+  stale:
+    # The type of runner that the job will run on
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - name: Checking for Stale Pull Requests
+        uses: actions/stale@v8
+        with:
+          # Issues won't get stale
+          days-before-issue-stale: -1
+
+          days-before-pr-stale: 30
+
+          days-before-pr-close: 7
+
+          stale-pr-message: 'This pull request is stale because it has been open for 30 days with no activity. Remove stale label, commit, or comment or this will be closed in 7 days.'
+
+          close-pr-message: 'This pull request was closed because it has been stalled for 7 days with no activity.'
+
+          exempt-pr-labels: 'WIP'
+
+          # False is default option, but adding to be explicit.
+          delete-branch: false

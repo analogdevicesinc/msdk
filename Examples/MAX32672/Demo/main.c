@@ -89,7 +89,7 @@ int main(void)
     area_t units_printf_area;
     area_t uptime_printf_area;
     int hr, min;
-    uint32_t sec, rtc_readout;
+    uint32_t sec;
     int error;
 
     printf("**** MAX32672 EV Kit Demo ****\n");
@@ -141,10 +141,7 @@ int main(void)
 
     while (1) {
         // This entire routine until first LED Toggles takes around ~180ms.
-        do {
-            error = MXC_RTC_GetSeconds(&rtc_readout);
-        } while (error != E_NO_ERROR);
-        sec = rtc_readout;
+        MXC_RTC_GetSeconds(&sec);
 
         hr = sec / SECS_PER_HR;
         sec -= hr * SECS_PER_HR;
@@ -178,8 +175,8 @@ int main(void)
             printf("\n\n");
 
             MXC_TFT_Printf("\nContinue in\n");
-            for (i = 3; i > 0; i--) {
-                MXC_TFT_Printf("%ds...", i);
+            for (i = 5; i > 0; i--) {
+                MXC_TFT_Printf("%d..", i);
                 MXC_Delay(MXC_DELAY_SEC(1));
             }
 

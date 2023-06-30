@@ -85,6 +85,7 @@ enum {
 **************************************************************************************************/
 
 /*! \brief      Test mode control block. */
+
 static volatile struct {
     uint8_t state; /*!< Test mode enable state. */
     uint16_t numPkt; /*!< Number of packet operations for auto-termination of tests. */
@@ -287,7 +288,21 @@ static void llTestTxAbortCback(BbOpDesc_t *pOp)
         WsfBufFree(pOp);
     }
 }
+static void llTestTxAbortCback(BbOpDesc_t *pOp)
+{
+    BbBleData_t *const pBle = pOp->prot.pBle;
+    BbBleTestTx_t *const pTx = &pBle->op.testTx;
 
+    if (llTestCb.state == LL_TEST_STATE_TX) {
+
+        SchInsertNextAvailable(pOp);
+
+    } else {
+        WsfBufFree(pTx->pTxBuf);
+        WsfBufFree(pBle);
+        WsfBufFree(pOp);
+    }
+}
 /*************************************************************************************************/
 /*!
  *  \brief  Tx operation end callback.
@@ -575,6 +590,7 @@ uint8_t LlEnhancedTxTest(uint8_t rfChan, uint8_t len, uint8_t pktType, uint8_t p
     pOp->endCback = llTestTxOpEndCback;
     pOp->abortCback = llTestTxAbortCback;
 
+
     /*** BLE General Setup ***/
 
     pBle->chan.opType = BB_BLE_OP_TEST_TX;
@@ -747,7 +763,20 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
         }
     }
 }
+static void llTestRxAbortCback(BbOpDesc_t *pOp)
+{
+    BbBleData_t *const pBle = pOp->prot.pBle;
+    BbBleTestRx_t *const pRx = &pBle->op.testRx;
 
+    if (llTestCb.state == LL_TEST_STATE_RX) {
+        SchInsertNextAvailable(pOp);
+    } else {
+        WsfBufFree(pBle);
+        WsfBufFree(pRx->pRxBuf);
+        WsfBufFree(pOp);
+        llTestCb.packetsFreed = TRUE;
+    }
+}
 /*************************************************************************************************/
 /*!
  *  \brief      Complete a receive.
@@ -833,6 +862,7 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
         }
         break;
     case LL_TEST_PHY_LE_CODED:
+
         if ((lmgrCb.features & LL_FEAT_LE_CODED_PHY) == 0) {
             return LL_ERROR_CODE_UNSUPPORTED_FEATURE_PARAM_VALUE;
         }
@@ -872,6 +902,7 @@ uint8_t LlEnhancedRxTest(uint8_t rfChan, uint8_t phy, uint8_t modIdx, uint16_t n
     pBle->chan.crcInit = LL_DTM_CRC_INIT;
     /* pBle->txPwrLevel = 0; */ /* value ignored */
     switch (phy) {
+
     case LL_TEST_PHY_LE_1M:
         pBle->chan.rxPhy = BB_PHY_BLE_1M;
         break;

@@ -81,9 +81,28 @@ SECTIONS {
         KEEP(*(.init))
         KEEP(*(.fini))
 
+        /* .ctors */
+        *crtbegin.o(.ctors)
+        *crtbegin?.o(.ctors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+        *(SORT(.ctors.*))
+        *(.ctors)
+
+        /* .dtors */
+        *crtbegin.o(.dtors)
+        *crtbegin?.o(.dtors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+        *(SORT(.dtors.*))
+        *(.dtors)
+
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
+    } > FLASH
+
+    .ARM.extab :
+    {
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > FLASH
 
     /* These sections allow code to be compiled/linked for HPB addresses, but reside in
@@ -122,13 +141,14 @@ SECTIONS {
     .ARM.exidx :
     {
         __exidx_start = .;
-        *(.ARM.exidx*)
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
         __exidx_end = .;
     } > FLASH
 
     .data :
     {
         _data = ALIGN(., 4);
+        *(vtable)
         *(.data*)           /*read-write initialized data: initialized global variable*/
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */

@@ -150,11 +150,14 @@ LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
 # Include memory definitions
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_memory.mk
 
+# Select the xpack toolchain to use
+RISCV_PREFIX ?= riscv-none-elf
+
 # Include the rules and goals for building
 ifeq "$(RISCV_CORE)" ""
-include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc.mk
+include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc.mk
 else
-include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc_riscv.mk
+include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc_riscv.mk
 endif
 
 # Include rules for flashing

@@ -161,7 +161,9 @@ typedef enum {
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Select the External RTC Crystal Oscillator */
 } mxc_sys_system_clock_t;
 
-#define MXC_SYS_USN_CHECKSUM_LEN 16
+#define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
+#define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
+#define MXC_SYS_USN_LEN 13 // Size of the USN including the checksum
 
 /***** Function Prototypes *****/
 
@@ -267,10 +269,10 @@ static inline int MXC_SYS_In_Crit_Section(void)
 // clang-format on
 
 /**
- * @brief Reads the device USN.
- * @param usn       Pointer to store the USN.
- * @param checksum  Optional pointer to store the AES checksum.
- * @returns       E_NO_ERROR if everything is successful.
+ * @brief Reads the device USN and verifies the checksum.
+ * @param usn       Pointer to store the USN. Array must be at least MXC_SYS_USN_LEN bytes long.
+ * @param checksum  Optional pointer to store the AES checksum. If not NULL, checksum is verified with AES engine.
+ * @returns         E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
 

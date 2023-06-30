@@ -1,7 +1,7 @@
 /**
  * @file    main.c
- * @brief   SPI Master Demo
- * @details Shows Master loopback demo for QSPI0
+ * @brief   SPI Controller Demo
+ * @details Shows Controller loopback demo for QSPI0
  *          Read the printf() for instructions
  */
 
@@ -52,13 +52,22 @@
 #include "dma.h"
 
 /***** Preprocessors *****/
-#define MASTERSYNC // 1. MASTERSYNC
-// 2. MASTERASYNC
-// 3. MASTERDMA
+#define BLOCKING 1
+#define NON_BLOCKING 0
+#define DMA 0
+
+#define CUSTOM_TARGET 0
+
+#if (!(BLOCKING || NON_BLOCKING || DMA))
+#error "You must set either BLOCKING or NON_BLOCKING or DMA to 1."
+#endif
+#if ((BLOCKING && NON_BLOCKING) || (NON_BLOCKING && DMA) || (DMA && BLOCKING))
+#error "You must select either BLOCKING or NON_BLOCKING or DMA, not all 3."
+#endif
 
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
-#define DATA_VALUE 0xA5A5 // This is for master mode only...
+#define DATA_VALUE 0xA5B7 // This is for master mode only...
 #define VALUE 0xFFFF
 #define SPI_SPEED 100000 // Bit Rate
 
@@ -68,7 +77,7 @@
 uint16_t rx_data[DATA_LEN];
 uint16_t tx_data[DATA_LEN];
 volatile int SPI_FLAG;
-volatile uint8_t DMA_FLAG = 0;
+int TX_DMA_CH, RX_DMA_CH;
 
 /***** Functions *****/
 #if (SPI_INSTANCE_NUM == 0)
@@ -87,18 +96,17 @@ void SPI1_IRQHandler(void)
 }
 #endif
 
-void DMA0_IRQHandler(void)
+void DMA_TX_IRQHandler(void)
 {
-    MXC_DMA_Handler();
+    MXC_SPI_DMA_TX_Handler(SPI);
 }
 
-void DMA1_IRQHandler(void)
+void DMA_RX_IRQHandler(void)
 {
-    MXC_DMA_Handler();
-    DMA_FLAG = 1;
+    MXC_SPI_DMA_RX_Handler(SPI);
 }
 
-void SPI_Callback(mxc_spi_req_t *req, int error)
+void SPI_Callback(void *data, int error)
 {
     SPI_FLAG = error;
 }
@@ -107,42 +115,77 @@ int main(void)
 {
     int i, j, retVal;
     uint16_t temp;
-    mxc_spi_req_t req;
-    mxc_spi_pins_t spi_pins;
+    mxc_spi_init_t init;
+    mxc_spi_target_t target;
 
-    printf("\n**************************** SPI MASTER TEST *************************\n");
+    printf("\n**************************** SPI CONTROLLER TEST *************************\n");
     printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
-    printf("MOSI (P0.21) pins.  Connect these two pins together.  \n\n");
+    printf("MOSI (P0.21) pins.  Connect these two pins together.\n\n");
     printf("Multiple word sizes (2 through 16 bits) are demonstrated.\n\n");
 
-    spi_pins.clock = TRUE;
-    spi_pins.miso = TRUE;
-    spi_pins.mosi = TRUE;
-    spi_pins.sdio2 = FALSE;
-    spi_pins.sdio3 = FALSE;
-    spi_pins.ss0 = TRUE;
-    spi_pins.ss1 = FALSE;
-    spi_pins.ss2 = FALSE;
-
-#ifdef MASTERSYNC
+#if BLOCKING
     printf("Performing blocking (synchronous) transactions...\n");
 #endif
-#ifdef MASTERASYNC
+#if NON_BLOCKING
     printf("Performing non-blocking (asynchronous) transactions...\n");
 #endif
-#ifdef MASTERDMA
+#if DMA
     printf("Performing transactions with DMA...\n");
 #endif
 
     for (i = 2; i < 17; i++) {
         // Sending out 2 to 16 bits
-
         for (j = 0; j < DATA_LEN; j++) {
             tx_data[j] = DATA_VALUE;
         }
 
-        // Configure the peripheral
-        retVal = MXC_SPI_Init(SPI, 1, 0, 1, 0, SPI_SPEED, spi_pins);
+        // Initialization Settings.
+        init.spi = SPI;
+        init.freq = SPI_SPEED;
+        init.spi_pins = NULL; // Use default, predefined pins
+        init.mode = MXC_SPI_INTERFACE_STANDARD; // 4-wire
+        init.type = MXC_SPI_TYPE_CONTROLLER;
+        init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
+        init.frame_size = i;
+        init.callback = SPI_Callback;
+
+        // Target Select Settings
+#if CUSTOM_TARGET
+        // Example to select a custom target.
+        mxc_gpio_cfg_t target_pins;
+        target_pins.port = MXC_GPIO0;
+        target_pins.mask = MXC_GPIO_PIN_9;
+        target_pins.func = MXC_GPIO_FUNC_OUT;
+        target_pins.pad = MXC_GPIO_PAD_PULL_UP;
+        target_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
+
+        init.ts_control =
+            MXC_SPI_TSCONTROL_SW_DRV; // SPI Driver will handle deassertion for TS pins.
+        init.target.pins = target_pins;
+        init.target.active_polarity = 0;
+        init.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set SPI pins to VDDIOH (3.3V).
+
+        // Select target for transaction.
+        target.pins = target_pins; // Custom pins
+#else
+        init.ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // HW will deassert/assert TS pins.
+        init.target.active_polarity = 0;
+        init.target.init_mask = 0x01; // Initialize Target Select 0 pin.
+        init.vssel = MXC_GPIO_VSSEL_VDDIO;
+
+        // Select target for transaction.
+        target.index = 0; // TS0
+#endif
+
+        // DMA Settings.
+#if DMA
+        init.use_dma = true;
+        init.dma = MXC_DMA;
+#else
+        init.use_dma = false;
+#endif
+
+        retVal = MXC_SPI_Init_v2(&init);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
             return retVal;
@@ -150,59 +193,41 @@ int main(void)
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
-        //SPI Request
-        req.spi = SPI;
-        req.txData = (uint8_t *)tx_data;
-        req.rxData = (uint8_t *)rx_data;
-        req.txLen = DATA_LEN;
-        req.rxLen = DATA_LEN;
-        req.ssIdx = 0;
-        req.ssDeassert = 1;
-        req.txCnt = 0;
-        req.rxCnt = 0;
-        req.completeCB = (spi_complete_cb_t)SPI_Callback;
+        // SPI Request (Callback)
         SPI_FLAG = 1;
 
-        retVal = MXC_SPI_SetDataSize(SPI, i);
-
-        if (retVal != E_NO_ERROR) {
-            printf("\nSPI SET DATASIZE ERROR: %d\n", retVal);
-            return retVal;
-        }
-
-        retVal = MXC_SPI_SetWidth(SPI, SPI_WIDTH_STANDARD);
-
-        if (retVal != E_NO_ERROR) {
-            printf("\nSPI SET WIDTH ERROR: %d\n", retVal);
-            return retVal;
-        }
-
-#ifdef MASTERSYNC
-        MXC_SPI_MasterTransaction(&req);
+#if BLOCKING
+        // Blocking SPI v2 Implementation is Interrupt driven.
+        NVIC_EnableIRQ(SPI_IRQ);
+        MXC_SPI_ControllerTransactionB(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
+                                       DATA_LEN, 1, &target);
 #endif
 
-#ifdef MASTERASYNC
+#if NON_BLOCKING
         NVIC_EnableIRQ(SPI_IRQ);
-        MXC_SPI_MasterTransactionAsync(&req);
+        MXC_SPI_ControllerTransaction(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
+                                      DATA_LEN, 1, &target);
 
         while (SPI_FLAG == 1) {}
-
 #endif
 
-#ifdef MASTERDMA
-        MXC_DMA_ReleaseChannel(0);
-        MXC_DMA_ReleaseChannel(1);
+#if DMA
+        TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
+        RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI);
 
-        NVIC_EnableIRQ(DMA0_IRQn);
-        NVIC_EnableIRQ(DMA1_IRQn);
-        MXC_SPI_MasterTransactionDMA(&req);
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(TX_DMA_CH));
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(RX_DMA_CH));
 
-        while (DMA_FLAG == 0) {}
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
 
-        DMA_FLAG = 0;
+        MXC_SPI_ControllerTransactionDMA(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
+                                         DATA_LEN, 1, &target);
+
+        while (SPI_FLAG == 1) {}
 #endif
 
-        uint8_t bits = MXC_SPI_GetDataSize(SPI);
+        uint8_t bits = MXC_SPI_GetFrameSize(SPI);
 
         for (j = 0; j < DATA_LEN; j++) {
             if (bits <= 8) {
