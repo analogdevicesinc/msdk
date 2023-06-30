@@ -99,8 +99,8 @@ int initialize_camera(void)
 #else
 	ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel);
-
 #endif
+
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
         return -1;
@@ -202,8 +202,6 @@ void load_row_cnn(uint8_t *data, int row)
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
 #elif defined(RGB565)
-
-
         // RGB565 to packed 24-bit RGB
         m.b[0] = (*data & 0xF8);  // Red
         m.b[1] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
@@ -232,7 +230,6 @@ void load_row_cnn(uint8_t *data, int row)
 
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
-
 #else
         // unpacked 24-bit RGB to packed 24-bit RGB
         m.b[0] = *data++; // r0
@@ -383,9 +380,6 @@ void load_input_camera(void)
     }
 
     stat = get_camera_stream_statistic();
-
-    //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-    //printf("OVERFLOW = %d\n", stat->overflow_count);
     if (stat->overflow_count > 0) {
         printf("OVERFLOW = %d\n", stat->overflow_count);
         LED_On(LED2); // Turn on red LED if overflow detected
@@ -398,10 +392,9 @@ void display_camera(void)
 {
     uint32_t imgLen;
     uint32_t w, h;
-    int j = 0;
+
     uint8_t *raw;
-    uint16_t rgb;
-    uint8_t r, g, b;
+
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
@@ -423,12 +416,12 @@ void display_camera(void)
 
         LED_Toggle(LED2);
 
-        j = 0;
-
         // convert RGB888 to RGB565
         if (row < TFT_H) {
 #ifndef RGB565
-
+            uint16_t rgb;
+            uint8_t r, g, b;
+            int j = 0;
 #ifdef BOARD_FTHR_REVA
 
             for (int k = 0; k < 4 * w; k += 4) {
@@ -459,9 +452,6 @@ void display_camera(void)
         }
 
         stat = get_camera_stream_statistic();
-
-        //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-        //printf("OVERFLOW = %d\n", stat->overflow_count);
         if (stat->overflow_count > 0) {
             printf("OVERFLOW DISP = %d\n", stat->overflow_count);
             LED_On(LED2); // Turn on red LED if overflow detected

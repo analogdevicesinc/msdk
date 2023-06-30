@@ -56,8 +56,7 @@
 #define TFT_H 240
 
 //#define PATTERN_GEN //  Replaces captured image with internally generated pattern
-
-#define RGB565
+#define RGB565      // Enables RGB565 camera settings, otherwise RGB888
 
 void process_img(void);
 int initialize_camera(void);

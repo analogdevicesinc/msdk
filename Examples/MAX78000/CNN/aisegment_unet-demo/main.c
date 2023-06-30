@@ -72,6 +72,7 @@ uint32_t cnn_out_packed[INFER_SIZE / 8];
 uint8_t cnn_out_unfolded[INFER_SIZE / 2];
 
 extern uint8_t data565[IMAGE_XRES * 2];
+extern uint8_t data565[IMAGE_XRES * 2];
 extern uint8_t *data;
 extern stream_stat_t *stat;
 void fail(void)
@@ -320,7 +321,6 @@ void load_input_serial(void)
 
 // Expected output of layer 18 for unet_v7_binary given the sample input (known-answer test)
 // Delete this function for production code
-//static const uint32_t sample_output[] = SAMPLE_OUTPUT;
 int check_output(void)
 {
     int i;
@@ -428,10 +428,8 @@ void cnn_unload_packed(uint32_t *p_out)
         }
     }
 }
-#define DISP_IMG_SIZE 160
-uint16_t display_buff[DISP_IMG_SIZE*DISP_IMG_SIZE];
-uint8_t *disp_buff = (uint8_t*)display_buff;
 
+#if 0
 void write_TFT_pixel_ORIG(int row, int col, unsigned char value)
 {
     int color;
@@ -480,17 +478,11 @@ void write_TFT_pixel_ORIG(int row, int col, unsigned char value)
         disp_buff[2*(col*DISP_IMG_SIZE + row) + 1] = 0;
     }
 }
-
-void write_TFT_pixel(int row, int col, unsigned char value)
+#endif
+void write_TFT_pixel(int col, unsigned char value)
 {
 	int color;
 	uint8_t r, g, b;
-
-	// Only display mask in TFT limits
-	if ((col >= TFT_W) || (row >= TFT_H)) {
-	//if ((col >= 2000) || (row >= TFT_H)) {
-		return;
-	}
 
 #ifdef USE_CAMERA
 	if (value == 1) {
@@ -512,19 +504,23 @@ void write_TFT_pixel(int row, int col, unsigned char value)
 #ifdef BOARD_FTHR_REVA
 		color = RGB(r, g, b); // convert to RGB565
 #endif
-	   /// MXC_TFT_WritePixel(col, row, 1, 1, color);
 		data[2*col] = color>>8 & 0xFF;
 		data[2*col+1] = color & 0xFF;
 	}
 
 }
 
-
+	static uint32_t t8,t9,t10;
 void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
 {
 	int index = 0;
 	unsigned char temp[2];
+    uint32_t imgLen;
+    uint32_t w, h;
 
+    uint8_t *raw;
+
+    // unfold image
 	for (int r = 0; r < 88; r++) {
 		for (int c = 0; c < 8; c++) {
 			int idx = 22 * r + 88 * 22 * c;
@@ -537,24 +533,14 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
 		}
 	}
 
-	///camera_start_capture_image(); // next frame
-
-    uint32_t imgLen;
-    uint32_t w, h;
-    int j = 0;
-    uint8_t *raw;
-    uint16_t rgb;
-    uint8_t r, g, b;
-
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
 
-    // Send image line by line TFT
+    // Send image line by line to TFT
     // Only display TFT width
     if (w > TFT_W) {
         w = TFT_W;
     }
-
 
 
 	for (int s1 = 0; s1 < 352; s1++) {
@@ -567,20 +553,17 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
         };
 
 
-        ///-------------------------------------------------
-
-        j = 0;
-
-        // convert RGB888 to RGB565
         if (s1 < TFT_H) {
 #ifndef RGB565
-
+            // convert RGB888 to RGB565
+            int j = 0;
+            uint16_t rgb;
+            uint8_t r, g, b;
 #ifdef BOARD_FTHR_REVA
-
             for (int k = 0; k < 4 * w; k += 4) {
 #endif
-#ifdef BOARD_EVKIT_V1
 
+#ifdef BOARD_EVKIT_V1
             for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
 #endif
                     r = data[k];
@@ -591,46 +574,42 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
                     data565[j++] = (rgb >> 8) & 0xFF;
                     data565[j++] = rgb & 0xFF;
              }
-             MXC_TFT_ShowImageCameraRGB565(0, Y_START + s1, data565, w, 1);
-#else
-             ///MXC_TFT_ShowImageCameraRGB565(0, Y_START + s1, data, w, 1);
+             //MXC_TFT_ShowImageCameraRGB565(0, Y_START + s1, data565, w, 1);
+
+             //memcpy32((uint32_t*)data, (uint32_t*)data565, w/4);
+             memcpy((uint8_t*)data, (uint8_t*)data565, 2*w);
 #endif
 
-            }
 
+			 for (int s2 = 0; s2 < 22; s2++) {
+				temp[0] = out_buff[s1 * 44 + s2 + 00];
+				temp[1] = out_buff[s1 * 44 + s2 + 22];
 
+				// extract bit per pixel from packed bytes
+				write_TFT_pixel((0 + 16 * s2), (temp[0] & 0x80) >> 7);
+				write_TFT_pixel((1 + 16 * s2), (temp[1] & 0x80) >> 7);
+				write_TFT_pixel((2 + 16 * s2), (temp[0] & 0x40) >> 6);
+				write_TFT_pixel((3 + 16 * s2), (temp[1] & 0x40) >> 6);
 
-        ///-------------------------------------------------
+				write_TFT_pixel((4 + 16 * s2), (temp[0] & 0x20) >> 5);
+				write_TFT_pixel((5 + 16 * s2), (temp[1] & 0x20) >> 5);
+				write_TFT_pixel((6 + 16 * s2), (temp[0] & 0x10) >> 4);
+				write_TFT_pixel((7 + 16 * s2), (temp[1] & 0x10) >> 4);
 
+				write_TFT_pixel((8 + 16 * s2), (temp[0] & 0x08) >> 3);
+				write_TFT_pixel((9 + 16 * s2), (temp[1] & 0x08) >> 3);
+				write_TFT_pixel((10 + 16 * s2), (temp[0] & 0x04) >> 2);
+				write_TFT_pixel((11 + 16 * s2), (temp[1] & 0x04) >> 2);
 
+				write_TFT_pixel((12 + 16 * s2), (temp[0] & 0x02) >> 1);
+				write_TFT_pixel((13 + 16 * s2), (temp[1] & 0x02) >> 1);
+				write_TFT_pixel((14 + 16 * s2), (temp[0] & 0x01) >> 0);
+				write_TFT_pixel((15 + 16 * s2), (temp[1] & 0x01) >> 0);
+			 }
 
-		for (int s2 = 0; s2 < 22; s2++) {
-			temp[0] = out_buff[s1 * 44 + s2 + 00];
-			temp[1] = out_buff[s1 * 44 + s2 + 22];
-
-			// extract bit per pixel from packed bytes
-			write_TFT_pixel(s1, (0 + 16 * s2), (temp[0] & 0x80) >> 7);
-			write_TFT_pixel(s1, (1 + 16 * s2), (temp[1] & 0x80) >> 7);
-			write_TFT_pixel(s1, (2 + 16 * s2), (temp[0] & 0x40) >> 6);
-			write_TFT_pixel(s1, (3 + 16 * s2), (temp[1] & 0x40) >> 6);
-
-			write_TFT_pixel(s1, (4 + 16 * s2), (temp[0] & 0x20) >> 5);
-			write_TFT_pixel(s1, (5 + 16 * s2), (temp[1] & 0x20) >> 5);
-			write_TFT_pixel(s1, (6 + 16 * s2), (temp[0] & 0x10) >> 4);
-			write_TFT_pixel(s1, (7 + 16 * s2), (temp[1] & 0x10) >> 4);
-
-			write_TFT_pixel(s1, (8 + 16 * s2), (temp[0] & 0x08) >> 3);
-			write_TFT_pixel(s1, (9 + 16 * s2), (temp[1] & 0x08) >> 3);
-			write_TFT_pixel(s1, (10 + 16 * s2), (temp[0] & 0x04) >> 2);
-			write_TFT_pixel(s1, (11 + 16 * s2), (temp[1] & 0x04) >> 2);
-
-			write_TFT_pixel(s1, (12 + 16 * s2), (temp[0] & 0x02) >> 1);
-			write_TFT_pixel(s1, (13 + 16 * s2), (temp[1] & 0x02) >> 1);
-			write_TFT_pixel(s1, (14 + 16 * s2), (temp[0] & 0x01) >> 0);
-			write_TFT_pixel(s1, (15 + 16 * s2), (temp[1] & 0x01) >> 0);
+			MXC_TFT_ShowImageCameraRGB565(0, Y_START + s1, data, w, 1);
 		}
 
-		MXC_TFT_ShowImageCameraRGB565(0, Y_START + s1, data, w, 1);
         //LED_Toggle(LED2);
         // Release stream buffer
         release_camera_stream_buffer();
@@ -644,56 +623,6 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
 		while (1) {}
 	}
 }
-
-void unfold_display_packed_ORIG(unsigned char *in_buff, unsigned char *out_buff)
-    {
-        int index = 0;
-        unsigned char temp[2];
-
-        for (int r = 0; r < 88; r++) {
-            for (int c = 0; c < 8; c++) {
-                int idx = 22 * r + 88 * 22 * c;
-
-                for (int d = 0; d < 22; d++) {
-                    out_buff[index + d] = in_buff[idx + d];
-                }
-
-                index += 22;
-            }
-        }
-
-        for (int s1 = 0; s1 < 352; s1++) {
-            for (int s2 = 0; s2 < 22; s2++) {
-                temp[0] = out_buff[s1 * 44 + s2 + 00];
-                temp[1] = out_buff[s1 * 44 + s2 + 22];
-
-                // extract bit per pixel from packed bytes
-                write_TFT_pixel(s1, (0 + 16 * s2), (temp[0] & 0x80) >> 7);
-                write_TFT_pixel(s1, (1 + 16 * s2), (temp[1] & 0x80) >> 7);
-                write_TFT_pixel(s1, (2 + 16 * s2), (temp[0] & 0x40) >> 6);
-                write_TFT_pixel(s1, (3 + 16 * s2), (temp[1] & 0x40) >> 6);
-
-                write_TFT_pixel(s1, (4 + 16 * s2), (temp[0] & 0x20) >> 5);
-                write_TFT_pixel(s1, (5 + 16 * s2), (temp[1] & 0x20) >> 5);
-                write_TFT_pixel(s1, (6 + 16 * s2), (temp[0] & 0x10) >> 4);
-                write_TFT_pixel(s1, (7 + 16 * s2), (temp[1] & 0x10) >> 4);
-
-                write_TFT_pixel(s1, (8 + 16 * s2), (temp[0] & 0x08) >> 3);
-                write_TFT_pixel(s1, (9 + 16 * s2), (temp[1] & 0x08) >> 3);
-                write_TFT_pixel(s1, (10 + 16 * s2), (temp[0] & 0x04) >> 2);
-                write_TFT_pixel(s1, (11 + 16 * s2), (temp[1] & 0x04) >> 2);
-
-                write_TFT_pixel(s1, (12 + 16 * s2), (temp[0] & 0x02) >> 1);
-                write_TFT_pixel(s1, (13 + 16 * s2), (temp[1] & 0x02) >> 1);
-                write_TFT_pixel(s1, (14 + 16 * s2), (temp[0] & 0x01) >> 0);
-                write_TFT_pixel(s1, (15 + 16 * s2), (temp[1] & 0x01) >> 0);
-            }
-        }
-
-
-        MXC_TFT_ShowImageCameraRGB565(0, 0, (unsigned char *)display_buff, DISP_IMG_SIZE, DISP_IMG_SIZE);
-    }
-
 
 void TFT_Print(char *str, int x, int y, int font, int length)
 {
@@ -710,6 +639,7 @@ int main(void)
     char buff[TFT_BUFF_SIZE];
     /* Get current time */
     static uint32_t t1,t2,t3,t4,t5,t6;
+
 
 #if defined(BOARD_FTHR_REVA)
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
@@ -755,8 +685,8 @@ int main(void)
     memset(buff, 32, TFT_BUFF_SIZE);
     TFT_Print(buff, 55, 30, font, snprintf(buff, sizeof(buff), "ANALOG DEVICES             "));
     TFT_Print(buff, 15, 50, font, snprintf(buff, sizeof(buff), "Portrait Segmentation Demo      "));
-    TFT_Print(buff, 120, 90, font, snprintf(buff, sizeof(buff), "Ver. 1.0.0                   "));
-    MXC_Delay(SEC(2));
+    TFT_Print(buff, 120, 90, font, snprintf(buff, sizeof(buff), "Ver. 1.1.0                   "));
+    MXC_Delay(SEC(1));
     MXC_TFT_ClearScreen();
 #ifdef BOARD_EVKIT_V1
     MXC_TFT_SetBackGroundColor(255);
@@ -794,15 +724,15 @@ int main(void)
         t2 = utils_get_time_ms();
 
         // start inference
-
         cnn_start(); // Start CNN processing
+
         t3 = utils_get_time_ms();
-#if 0//def USE_CAMERA
-        camera_write_reg(0x11, 0xF);
+
+#if 0 // enable to show the original camera image
+        camera_write_reg(0x11, 0xC);
         camera_start_capture_image(); // next frame
         printf("Display image\n");
         display_camera();
-        MXC_Delay(SEC(1));
 #endif
 
         SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
@@ -816,8 +746,9 @@ int main(void)
         t4 = utils_get_time_ms();
 
         printf("Display mask\n");
+
 #ifdef USE_CAMERA
-        camera_write_reg(0x11, 0xF);
+        camera_write_reg(0x11, 0xC);
         camera_start_capture_image(); // next frame
 #endif
         cnn_unload_packed(cnn_out_packed);
@@ -827,7 +758,6 @@ int main(void)
 #ifndef USE_CAMERA
         send_output(); // send CNN output to UART
 #endif
-       // MXC_Delay(SEC(1));
 
         if (PB_Get(0)) {
 #ifdef CNN_INFERENCE_TIMER
@@ -838,5 +768,7 @@ int main(void)
         // print timing data
         printf("start:%d  load_input_camera:%d  \cnn_start:%d  cnn_wait: %d  cnn_unload_packed:%d  unfold_display_packed:%d\n Total:%d\n",
         t1,t2-t1,t3-t2,t4-t3,t5-t4,t6-t5,t6-t1);
+
+        printf("t8:%d   t9-t8:%d  t10-t9:%d\n",t8,t9-t8,t10-t9);
     }
 }
