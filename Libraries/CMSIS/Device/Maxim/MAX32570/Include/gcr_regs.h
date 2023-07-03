@@ -575,8 +575,8 @@ typedef struct {
 #define MXC_F_GCR_PCLKDIS0_SPIXIP_POS                  30 /**< PCLKDIS0_SPIXIP Position */
 #define MXC_F_GCR_PCLKDIS0_SPIXIP                      ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS0_SPIXIP_POS)) /**< PCLKDIS0_SPIXIP Mask */
 
-#define MXC_F_GCR_PCLKDIS0_SPIXIPM_POS                 31 /**< PCLKDIS0_SPIXIPM Position */
-#define MXC_F_GCR_PCLKDIS0_SPIXIPM                     ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS0_SPIXIPM_POS)) /**< PCLKDIS0_SPIXIPM Mask */
+#define MXC_F_GCR_PCLKDIS0_SPIXIPC_POS                 31 /**< PCLKDIS0_SPIXIPC Position */
+#define MXC_F_GCR_PCLKDIS0_SPIXIPC                     ((uint32_t)(0x1UL << MXC_F_GCR_PCLKDIS0_SPIXIPC_POS)) /**< PCLKDIS0_SPIXIPC Mask */
 
 /**@} end of group GCR_PCLKDIS0_Register */
 
@@ -756,8 +756,8 @@ typedef struct {
 #define MXC_F_GCR_RST1_SPIXIP_POS                      3 /**< RST1_SPIXIP Position */
 #define MXC_F_GCR_RST1_SPIXIP                          ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SPIXIP_POS)) /**< RST1_SPIXIP Mask */
 
-#define MXC_F_GCR_RST1_SPIXIPM_POS                     4 /**< RST1_SPIXIPM Position */
-#define MXC_F_GCR_RST1_SPIXIPM                         ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SPIXIPM_POS)) /**< RST1_SPIXIPM Mask */
+#define MXC_F_GCR_RST1_SPIXIPC_POS                     4 /**< RST1_SPIXIPC Position */
+#define MXC_F_GCR_RST1_SPIXIPC                         ((uint32_t)(0x1UL << MXC_F_GCR_RST1_SPIXIPC_POS)) /**< RST1_SPIXIPC Mask */
 
 #define MXC_F_GCR_RST1_GPIO3_POS                       5 /**< RST1_GPIO3 Position */
 #define MXC_F_GCR_RST1_GPIO3                           ((uint32_t)(0x1UL << MXC_F_GCR_RST1_GPIO3_POS)) /**< RST1_GPIO3 Mask */

@@ -6906,7 +6906,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="GPIO0">
-       <name>SPIXIPM</name>
+       <name>SPIXIPC</name>
        <description>SPI XiP Master Controller Disable.</description>
        <bitOffset>31</bitOffset>
        <bitWidth>1</bitWidth>
@@ -7296,7 +7296,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="I2C1">
-       <name>SPIXIPM</name>
+       <name>SPIXIPC</name>
        <description>SPI XiP Master Controller Reset.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>
