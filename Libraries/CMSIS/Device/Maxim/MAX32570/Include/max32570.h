@@ -589,6 +589,46 @@ typedef enum {
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
 
+#if !(defined(__riscv0) || defined(__riscv1)) // not RISC-V
+#define MXC_DMA_CH_GET_IRQ(i)               \
+    ((IRQn_Type)(((i) == 0)  ? DMA0_IRQn :  \
+                 ((i) == 1)  ? DMA1_IRQn :  \
+                 ((i) == 2)  ? DMA2_IRQn :  \
+                 ((i) == 3)  ? DMA3_IRQn :  \
+                 ((i) == 4)  ? DMA4_IRQn :  \
+                 ((i) == 5)  ? DMA5_IRQn :  \
+                 ((i) == 6)  ? DMA6_IRQn :  \
+                 ((i) == 7)  ? DMA7_IRQn :  \
+                 ((i) == 8)  ? DMA8_IRQn :  \
+                 ((i) == 9)  ? DMA9_IRQn :  \
+                 ((i) == 10) ? DMA10_IRQn : \
+                 ((i) == 11) ? DMA11_IRQn : \
+                 ((i) == 12) ? DMA12_IRQn : \
+                 ((i) == 13) ? DMA13_IRQn : \
+                 ((i) == 14) ? DMA14_IRQn : \
+                 ((i) == 15) ? DMA15_IRQn : \
+                               0))
+#else
+#define MXC_DMA_CH_GET_IRQ(i)                 \
+    ((IRQn_Type)(((i) == 0)  ? DMA0_IRQn :    \
+                 ((i) == 1)  ? DMA1_IRQn :    \
+                 ((i) == 2)  ? DMA2_IRQn :    \
+                 ((i) == 3)  ? DMA3_IRQn :    \
+                 ((i) == 4)  ? DMA4_IRQn :    \
+                 ((i) == 5)  ? DMA5_IRQn :    \
+                 ((i) == 6)  ? DMA6_IRQn :    \
+                 ((i) == 7)  ? DMA7_IRQn :    \
+                 ((i) == 8)  ? DMA8_15_IRQn : \
+                 ((i) == 9)  ? DMA8_15_IRQn : \
+                 ((i) == 10) ? DMA8_15_IRQn : \
+                 ((i) == 11) ? DMA8_15_IRQn : \
+                 ((i) == 12) ? DMA8_15_IRQn : \
+                 ((i) == 13) ? DMA8_15_IRQn : \
+                 ((i) == 14) ? DMA8_15_IRQn : \
+                 ((i) == 15) ? DMA8_15_IRQn : \
+                               0))
+#endif  
+
 /******************************************************************************/
 /*                                                                        FLC */
 #define MXC_FLC_INSTANCES (2)
@@ -854,9 +894,14 @@ typedef enum {
 #define MXC_TRNG ((mxc_trng_regs_t *)MXC_BASE_TRNG)
 
 /******************************************************************************/
-/*                                                                Ethernet MAC*/
+/*                                                               Ethernet MAC */
 #define MXC_BASE_EMAC ((uint32_t)0x4004F000UL)
 #define MXC_EMAC ((mxc_emac_regs_t *)MXC_BASE_EMAC)
+
+/******************************************************************************/
+/*                                                                        I2S */
+#define MXC_BASE_I2S ((uint32_t)0x40060000UL)
+#define MXC_I2S ((mxc_i2s_regs_t *)MXC_BASE_I2S)
 
 /******************************************************************************/
 /*                                                                        USB */
