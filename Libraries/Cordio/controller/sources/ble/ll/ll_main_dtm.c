@@ -288,21 +288,6 @@ static void llTestTxAbortCback(BbOpDesc_t *pOp)
         WsfBufFree(pOp);
     }
 }
-static void llTestTxAbortCback(BbOpDesc_t *pOp)
-{
-    BbBleData_t *const pBle = pOp->prot.pBle;
-    BbBleTestTx_t *const pTx = &pBle->op.testTx;
-
-    if (llTestCb.state == LL_TEST_STATE_TX) {
-
-        SchInsertNextAvailable(pOp);
-
-    } else {
-        WsfBufFree(pTx->pTxBuf);
-        WsfBufFree(pBle);
-        WsfBufFree(pOp);
-    }
-}
 /*************************************************************************************************/
 /*!
  *  \brief  Tx operation end callback.
