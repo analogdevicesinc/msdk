@@ -45,7 +45,7 @@ bool white_space_present(char *p);
 
 bool white_space_not_present(char *p);
 
-
+char buf[256];
 /*
  * @name line_accumlator
  *
@@ -60,17 +60,16 @@ void line_accumlator(uint8_t user_char)
 {
     // Declare static variables
     static int idx = 0;
-    static char buf[256];
     
     switch (user_char) {
     case BACKSPACE:
-    case DELETE: {
+    {
         // Handle Backspace and Delete
         if (idx > 0) {
         	//Sequence to actually implement a backspace on the terminal
-            putchar(BACKSPACE);
-            putchar(SPACE);
-            putchar(BACKSPACE);
+            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
+            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),SPACE);
+            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
             idx--;
             buf[idx] = '\0';
         }
@@ -90,7 +89,7 @@ void line_accumlator(uint8_t user_char)
             // Handle all other characters
             if (idx < 255) {
                 buf[idx++] = user_char; //pushes characters into the buffer
-                putchar(user_char);
+                MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),user_char);
             }
             break;
         }

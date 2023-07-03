@@ -63,6 +63,14 @@
 
 /***** Definitions *****/
 
+// void UART_Handler(void)
+// {
+//     MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
+// }
+
+// void readCallback(mxc_uart_req_t *req, int error){
+    
+// }
 extern TCHAR *FF_ERRORS[20];
 
 /******************************************************************************/
@@ -93,12 +101,14 @@ int main(void)
 
     printf("\n\n***** " TOSTRING(TARGET) " SDHC FAT Filesystem Example *****\n");
 
-    waitCardInserted();
+    //waitCardInserted();
 
     printf("Card inserted.\n");
 
+
+
     while(1){
-        char character = getchar();
+        char character = MXC_UART_ReadCharacter(MXC_UART_GET_UART(CONSOLE_UART));
         line_accumlator(character); 
     }
 
