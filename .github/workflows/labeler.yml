@@ -3,7 +3,7 @@ name: Pull Request Labeler
 # Controls when the workflow will run
 on:
   pull_request_target:
-    types: [opened, edited, reopened, synchronize, converted_to_draft, readu_for_review, assigned, review_requested]
+    types: [opened, edited, reopened, synchronize, converted_to_draft, ready_for_review, assigned, review_requested]
 
 env:
   MSDK_DIR: msdk
