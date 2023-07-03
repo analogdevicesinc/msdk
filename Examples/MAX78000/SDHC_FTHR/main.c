@@ -56,21 +56,33 @@
 #include "ff.h"
 #include "sdhc.h"
 #include "cli.h"
+#include "nvic_table.h"
 
 #ifdef BOARD_EVKIT_V1
 #warning This example is not supported by the MAX78000EVKIT.
 #endif
 
+
 /***** Definitions *****/
+#define UART_BAUD 115200
+#define BUFF_SIZE 1
 
-// void UART_Handler(void)
-// {
-//     MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
-// }
+/****** Globals *********/
+volatile int READ_FLAG;
+volatile uint8_t RxData;
+volatile mxc_uart_req_t read_req;
+/******* Functions ********/
+void UART_Handler(void)
+{
+    MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
+}
 
-// void readCallback(mxc_uart_req_t *req, int error){
+void readCallback(mxc_uart_req_t *req, int error){
     
-// }
+    line_accumlator(RxData); 
+    READ_FLAG = error;
+    MXC_UART_TransactionAsync(req);
+}
 extern TCHAR *FF_ERRORS[20];
 
 /******************************************************************************/
@@ -97,7 +109,6 @@ int main(void)
     FF_ERRORS[18] = "FR_TOO_MANY_OPEN_FILES";
     FF_ERRORS[19] = "FR_INVALID_PARAMETER";
     srand(12347439);
-    //int run = 1, input = -1;
 
     printf("\n\n***** " TOSTRING(TARGET) " SDHC FAT Filesystem Example *****\n");
 
@@ -105,11 +116,33 @@ int main(void)
 
     printf("Card inserted.\n");
 
+    //UART initialized
+    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(CONSOLE_UART), UART_Handler);
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+
+    /* Initialize Console UART*/
+    int error;
+    if ((error = MXC_UART_Init(MXC_UART_GET_UART(CONSOLE_UART), UART_BAUD, MXC_UART_APB_CLK)) !=
+        E_NO_ERROR) {
+        printf("-->Error initializing UART: %d\n", error);
+        printf("-->Example Failed\n");
+        return error;
+    }
+
+    printf("-->UART Initialized\n\n");
 
 
+    read_req.uart = MXC_UART_GET_UART(CONSOLE_UART);
+    read_req.rxData = &RxData;
+    read_req.rxLen = BUFF_SIZE;
+    read_req.txLen = 0;
+    read_req.callback = readCallback;
+
+    error = MXC_UART_TransactionAsync(&read_req);
     while(1){
-        char character = MXC_UART_ReadCharacter(MXC_UART_GET_UART(CONSOLE_UART));
-        line_accumlator(character); 
+        
     }
 
     // while (run) {

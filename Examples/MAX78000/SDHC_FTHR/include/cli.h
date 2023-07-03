@@ -125,8 +125,8 @@ static const command_table_t commands[] = {{"Size", handle_size, "Find the Size 
                                             {"cd", handle_cd, "Move into a directory\n\r"},
                                             {"add_data", handle_add_data, "Add random Data to an Existing File\n\r"},
                                             {"Del", handle_del, "Delete a file\n\r"},
-                                            {"FatFs", handle_fatfs, "Format Card and Run Example of FatFS Operations"},
-                                            {"Unmount", handle_unmount, "Unmount card and Quit"},
+                                            {"FatFs", handle_fatfs, "Format Card and Run Example of FatFS Operations\n\r"},
+                                            {"Unmount", handle_unmount, "Unmount card and Quit\n\r"},
 											{"Help", handle_help, "Prints a help message with info about all of the supported commands.\n\r"}};
 //Calculates the number of commands based on commands and the command table
 static const int num_commands = sizeof(commands) / sizeof(command_table_t);
