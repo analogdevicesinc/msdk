@@ -2,6 +2,7 @@
  * @file    adc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the ADC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup adc_registers
  */
 
 /******************************************************************************

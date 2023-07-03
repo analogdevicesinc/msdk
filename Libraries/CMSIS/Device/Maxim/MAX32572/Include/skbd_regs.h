@@ -2,6 +2,7 @@
  * @file    skbd_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SKBD Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup skbd_registers
  */
 
 /******************************************************************************
