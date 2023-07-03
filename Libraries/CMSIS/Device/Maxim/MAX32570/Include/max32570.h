@@ -67,6 +67,7 @@
 #endif
 
 typedef enum {
+#if !(defined(__riscv0) || defined(__riscv1)) // not RISC-V
     NonMaskableInt_IRQn = -14,
     HardFault_IRQn = -13,
     MemoryManagement_IRQn = -12,
@@ -118,7 +119,7 @@ typedef enum {
     TMR6_IRQn, /* 0x30  0x00C0  48: Timer 6 */
     TMR7_IRQn, /* 0x31  0x00C4  49: Timer 7 */
     UART2_IRQn, /* 0x32  0x00C8  50: UART 2 */
-    CLC_IRQn, /* 0x33  0x00CC  51: Contactless Link Control */
+    NFC_IRQn, /* 0x33  0x00CC  51: NFC Link Control */
     I2C1_IRQn, /* 0x34  0x00D0  52: I2C1 */
     SC1_IRQn, /* 0x35  0x00D4  53: Smart Card 1 */
     SPIXFC_IRQn, /* 0x36  0x00D8  54: SPI execute in place */
@@ -143,10 +144,10 @@ typedef enum {
     WDT1_IRQn, /* 0x49  0x0124  73: Watchdog 1 */
     GPIO3_IRQn, /* 0x4A  0x0128  74: GPIO3 */
     PT_IRQn, /* 0x4B  0x012C  75: Pulse train */
-    HA0_IRQn, /* 0x4C  0x0130  76: Hardware Accelerator 0 */
+    RISCV1_IRQn, /* 0x4C  0x0130  76: RISCV 1 */
     RSV61_IRQn, /* 0x4D  0x0134  77: Reserved */
     I2C2_IRQn, /* 0x4E  0x0138  78: I2C 2 */
-    HA1_IRQn, /* 0x4F  0x013C  79: Hardware Accelerator 1 */
+    RISCV0_IRQn, /* 0x4F  0x013C  79: RISCV 0 */
     EMAC_IRQn, /* 0x50  0x0140  80: Ethernet MAC */
     RSV65_IRQn, /* 0x51  0x0144  81: Reserved */
     SDHC_IRQn, /* 0x52  0x0148  82: SDIO/SDHC */
@@ -168,16 +169,148 @@ typedef enum {
     ECC_IRQn, /* 0x62  0x0188  98: Error Correction */
     RSV83_IRQn, /* 0x63  0x018C  99: Reserved */
     RSV84_IRQn, /* 0x64  0x0190  100: Reserved */
-    RSV85_IRQn, /* 0x65  0x0194  101: Reserved */
+    SCA_IRQn, /* 0x65  0x0194  101: SCA */
     RSV86_IRQn, /* 0x66  0x0198  102: Reserved */
     FLC1_IRQn, /* 0x67  0x019C  103: Flash Control 1 */
     UART3_IRQn, /* 0x68  0x01A0  104: UART 3 */
     UART4_IRQn, /* 0x69  0x01A4  105: UART 4 */
     UART5_IRQn, /* 0x6A  0x01A8  106: UART 5 */
-    CameraIF_IRQn, /* 0x6B  0x01AC  107: Camera IF */
+    CAMERAIF_IRQn, /* 0x6B  0x01AC  107: Camera IF */
     RSV92_IRQn, /* 0x6C  0x01B0  108: Reserved */
     HTMR0_IRQn, /* 0x6D  0x01B4  109: HTimer0 */
     HTMR1_IRQn, /* 0x6E  0x01B8  110: HTimer1 */
+    RSV95_IRQn, /* 0x6F  0x01BC  111: Reserved */
+    RSV96_IRQn, /* 0x70  0x01C0  112: Reserved */
+    RSV97_IRQn, /* 0x71  0x01C4  113: Reserved */
+    RSV98_IRQn, /* 0x72  0x01C8  114: Reserved */
+    I2S_IRQn, /* 0x72  0x01CC  115: I2S */
+#else // RISCV
+#ifdef __riscv0
+    HardFault_IRQn = 3, /* 0x03,3 HardFault */
+    CM4_IRQn = 4, /* 0x04,4 from CM4 */
+    RSV5_IRQn, /* 0x05,5 Reserved */
+    RISCV1_IRQn, /* 0x06,6 from RISCV1 */
+    WDT0_IRQn, /* 0x07,7 Watchdog Timer 0 */
+    WDT1_IRQn, /* 0x08,8 Watchdog Timer 1 */
+    RTC_IRQn, /* 0x09,9 RTC */
+    MSRADC_IRQn, /* 0x0A,10 MSR ADC */
+    NFC_IRQn, /* 0x0B,11 NFC */
+    TMR0_IRQn, /* 0x0C,12 Timer 0 */
+    TMR1_IRQn, /* 0x0D,13 Timer 1 */
+    TMR2_IRQn, /* 0x0E,14 Timer 2 */
+    TMR3_IRQn, /* 0x0F,15 Timer 3 */
+    TMR4_IRQn, /* 0x10,16 Timer 4 */
+    TMR5_IRQn, /* 0x11,17 Timer 5 */
+    TMR6_IRQn, /* 0x12,18 Timer 6 */
+    TMR7_IRQn, /* 0x13,19 Timer 7 */
+    GPIO0_IRQn, /* 0x14,20 GPIO0 */
+    GPIO1_IRQn, /* 0x15,21 GPIO1 */
+    GPIO2_IRQn, /* 0x16,22 GPIO2 */
+    GPIO3_IRQn, /* 0x17,23 GPIO3 */
+    I2C0_IRQn, /* 0x18,24 I2C0 */
+    SPI0_IRQn, /* 0x19,25 SPI0 */
+    UART0_IRQn, /* 0x1A,26 UART0 */
+    I2C1_IRQn, /* 0x1B,27 I2C1 */
+    SPI1_IRQn, /* 0x1C,28 SPI1 */
+    UART1_IRQn, /* 0x1D,29 UART1 */
+    I2C2_IRQn, /* 0x1E,30 I2C2 */
+    SPI2_IRQn, /* 0x1F,31 SPI2 */
+    UART2_IRQn, /* 0x20,32 UART2 */
+    SPI3_IRQn, /* 0x21,33 SPI3 */
+    UART3_IRQn, /* 0x22,34 UART3 */
+    UART4_IRQn, /* 0x23,35 UART4 */
+    UART5_IRQn, /* 0x24,36 UART5 */
+    OWM_IRQn, /* 0x25,37 OWM */
+    TRNG_IRQn, /* 0x26,38 TRNG */
+    CRYPTO_IRQn, /* 0x27,39 Crypto Engine */
+    SCA_IRQn, /* 0x28,40 SCA Crypto Accelerator */
+    SC0_IRQn, /* 0x29,41 SC0 */
+    SC1_IRQn, /* 0x2A,42 SC1 */
+    SKBD_IRQn, /* 0x2B,43 Secure Keyboard */
+    ADC_IRQn, /* 0x2C,44 ADC */
+    PT_IRQn, /* 0x2D,45 Pulse Train */
+    EMAC_IRQn, /* 0x2E,46 Ethernet MAC */
+    SDHC_IRQn, /* 0x2F,47 SDHC */
+    CAMERAIF_IRQn, /* 0x30,48 Camera IF */
+    TFT_IRQn, /* 0x31,49 TFT Display Controller */
+    HTMR0_IRQn, /* 0x32,50 HTimer 0 */
+    HTMR1_IRQn, /* 0x33,51 HTimer 1 */
+    SPIXIP_IRQn, /* 0x34,52 SPI XIP */
+    FLC0_IRQn, /* 0x35,53 FLC0 */
+    FLC1_IRQn, /* 0x36,54 FLC1 */
+    DMA0_IRQn, /* 0x37,55 DMA0 */
+    DMA1_IRQn, /* 0x38,56 DMA1 */
+    DMA2_IRQn, /* 0x39,57 DMA2 */
+    DMA3_IRQn, /* 0x3A,58 DMA3 */
+    DMA4_IRQn, /* 0x3B,59 DMA4 */
+    DMA5_IRQn, /* 0x3C,60 DMA5 */
+    DMA6_IRQn, /* 0x3D,61 DMA6 */
+    DMA7_IRQn, /* 0x3E,62 DMA7 */
+    DMA8_15_IRQn, /* 0x3F,63 DMA(8-15) */
+#else // __riscv1
+    HardFault_IRQn = 3, /* 0x03,3 HardFault */
+    CM4_IRQn = 4, /* 0x04,4 from CM4 */
+    RISCV0_IRQn, /* 0x05,5 from RISCV0 */
+    RSV6_IRQn, /* 0x06,6 Reserved */
+    WDT0_IRQn, /* 0x07,7 Watchdog Timer 0 */
+    WDT1_IRQn, /* 0x08,8 Watchdog Timer 1 */
+    RTC_IRQn, /* 0x09,9 RTC */
+    MSRADC_IRQn, /* 0x0A,10 MSR ADC */
+    NFC_IRQn, /* 0x0B,11 NFC */
+    TMR0_IRQn, /* 0x0C,12 Timer 0 */
+    TMR1_IRQn, /* 0x0D,13 Timer 1 */
+    TMR2_IRQn, /* 0x0E,14 Timer 2 */
+    TMR3_IRQn, /* 0x0F,15 Timer 3 */
+    TMR4_IRQn, /* 0x10,16 Timer 4 */
+    TMR5_IRQn, /* 0x11,17 Timer 5 */
+    TMR6_IRQn, /* 0x12,18 Timer 6 */
+    TMR7_IRQn, /* 0x13,19 Timer 7 */
+    GPIO0_IRQn, /* 0x14,20 GPIO0 */
+    GPIO1_IRQn, /* 0x15,21 GPIO1 */
+    GPIO2_IRQn, /* 0x16,22 GPIO2 */
+    GPIO3_IRQn, /* 0x17,23 GPIO3 */
+    I2C0_IRQn, /* 0x18,24 I2C0 */
+    SPI0_IRQn, /* 0x19,25 SPI0 */
+    UART0_IRQn, /* 0x1A,26 UART0 */
+    I2C1_IRQn, /* 0x1B,27 I2C1 */
+    SPI1_IRQn, /* 0x1C,28 SPI1 */
+    UART1_IRQn, /* 0x1D,29 UART1 */
+    I2C2_IRQn, /* 0x1E,30 I2C2 */
+    SPI2_IRQn, /* 0x1F,31 SPI2 */
+    UART2_IRQn, /* 0x20,32 UART2 */
+    SPI3_IRQn, /* 0x21,33 SPI3 */
+    UART3_IRQn, /* 0x22,34 UART3 */
+    UART4_IRQn, /* 0x23,35 UART4 */
+    UART5_IRQn, /* 0x24,36 UART5 */
+    OWM_IRQn, /* 0x25,37 OWM */
+    TRNG_IRQn, /* 0x26,38 TRNG */
+    CRYPTO_IRQn, /* 0x27,39 Crypto Engine */
+    SCA_IRQn, /* 0x28,40 SCA Crypto Accelerator */
+    SC0_IRQn, /* 0x29,41 SC0 */
+    SC1_IRQn, /* 0x2A,42 SC1 */
+    SKBD_IRQn, /* 0x2B,43 Secure Keyboard */
+    ADC_IRQn, /* 0x2C,44 ADC */
+    PT_IRQn, /* 0x2D,45 Pulse Train */
+    EMAC_IRQn, /* 0x2E,46 Ethernet MAC */
+    SDHC_IRQn, /* 0x2F,47 SDHC */
+    CAMERAIF_IRQn, /* 0x30,48 Camera IF */
+    TFT_IRQn, /* 0x31,49 TFT Display Controller */
+    HTMR0_IRQn, /* 0x32,50 HTimer 0 */
+    HTMR1_IRQn, /* 0x33,51 HTimer 1 */
+    SPIXIP_IRQn, /* 0x34,52 SPI XIP */
+    FLC0_IRQn, /* 0x35,53 FLC0 */
+    FLC1_IRQn, /* 0x36,54 FLC1 */
+    DMA0_IRQn, /* 0x37,55 DMA0 */
+    DMA1_IRQn, /* 0x38,56 DMA1 */
+    DMA2_IRQn, /* 0x39,57 DMA2 */
+    DMA3_IRQn, /* 0x3A,58 DMA3 */
+    DMA4_IRQn, /* 0x3B,59 DMA4 */
+    DMA5_IRQn, /* 0x3C,60 DMA5 */
+    DMA6_IRQn, /* 0x3D,61 DMA6 */
+    DMA7_IRQn, /* 0x3E,62 DMA7 */
+    DMA8_15_IRQn, /* 0x3F,63 DMA(8-15) */
+#endif
+#endif // __riscv
     MXC_IRQ_EXT_COUNT
 } IRQn_Type;
 
@@ -187,22 +320,35 @@ typedef enum {
 /* ================      Processor and Core Peripheral Section     ================ */
 /* ================================================================================ */
 
-/* ----------------------  Configuration of the Cortex-M Processor and Core Peripherals  ---------------------- */
-#define __CM4_REV 0x0100 /*!< Cortex-M4 Core Revision                                */
+#if !(defined(__riscv0) || defined(__riscv1)) // ARM
+
+/* --------  Configuration of the Cortex-M Processor and Core Peripherals  -------- */
+#define __CM4_REV 0x0100 /*!< Cortex-M4 Core Revision                               */
 #define __MPU_PRESENT 1 /*!< MPU present or not                                     */
-#define __NVIC_PRIO_BITS 3 /*!< Number of Bits used for Priority Levels                */
-#define __Vendor_SysTickConfig 0 /*!< Set to 1 if different SysTick Config is used           */
+#define __NVIC_PRIO_BITS 3 /*!< Number of Bits used for Priority Levels             */
+#define __Vendor_SysTickConfig 0 /*!< Set to 1 if different SysTick Config is used  */
 #define __FPU_PRESENT 1 /*!< FPU present or not                                     */
 
-#include <core_cm4.h> /*!< Cortex-M4 processor and core peripherals               */
-#include "system_max32570.h" /*!< System Header                                          */
+#include <core_cm4.h> /*!< Cortex-M4 processor and core peripherals                 */
+
+#else // RISCV
+
+#include <core_rv32.h>
+
+#endif
+
+#include "system_max32570.h" /*!< System Header                                     */
 
 /* ================================================================================ */
 /* ==================       Device Specific Memory Section       ================== */
 /* ================================================================================ */
 
-#define MXC_ROM_MEM_BASE 0x00000000UL
-#define MXC_ROM_MEM_SIZE 0x00020000UL
+#define MXC_ROM0_MEM_BASE 0x00000000UL
+#define MXC_ROM0_MEM_SIZE 0x00020000UL
+#define MXC_ROM1_MEM_BASE 0x200C0000UL
+#define MXC_ROM1_MEM_SIZE 0x00008000UL
+#define MXC_ROM_MEM_BASE MXC_ROM0_MEM_BASE
+#define MXC_ROM_MEM_SIZE MXC_ROM0_MEM_SIZE
 #define MXC_XIP_MEM_BASE 0x08000000UL
 #define MXC_XIP_MEM_SIZE 0x08000000UL
 #define MXC_FLASH0_MEM_BASE 0x10000000UL
@@ -344,11 +490,11 @@ typedef enum {
 #define MXC_TMR3 ((mxc_tmr_regs_t *)MXC_BASE_TMR3)
 #define MXC_BASE_TMR4 ((uint32_t)0x40014000UL)
 #define MXC_TMR4 ((mxc_tmr_regs_t *)MXC_BASE_TMR4)
-#define MXC_BASE_TMR5 ((uint32_t)0x40015000UL)
+#define MXC_BASE_TMR5 ((uint32_t)0x40115000UL)
 #define MXC_TMR5 ((mxc_tmr_regs_t *)MXC_BASE_TMR5)
-#define MXC_BASE_TMR6 ((uint32_t)0x40016000UL)
+#define MXC_BASE_TMR6 ((uint32_t)0x40216000UL)
 #define MXC_TMR6 ((mxc_tmr_regs_t *)MXC_BASE_TMR6)
-#define MXC_BASE_TMR7 ((uint32_t)0x40017000UL)
+#define MXC_BASE_TMR7 ((uint32_t)0x40217000UL)
 #define MXC_TMR7 ((mxc_tmr_regs_t *)MXC_BASE_TMR7)
 
 #define MXC_TMR_GET_IRQ(i)             \
@@ -449,6 +595,46 @@ typedef enum {
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
 
+#if !(defined(__riscv0) || defined(__riscv1)) // not RISC-V
+#define MXC_DMA_CH_GET_IRQ(i)               \
+    ((IRQn_Type)(((i) == 0)  ? DMA0_IRQn :  \
+                 ((i) == 1)  ? DMA1_IRQn :  \
+                 ((i) == 2)  ? DMA2_IRQn :  \
+                 ((i) == 3)  ? DMA3_IRQn :  \
+                 ((i) == 4)  ? DMA4_IRQn :  \
+                 ((i) == 5)  ? DMA5_IRQn :  \
+                 ((i) == 6)  ? DMA6_IRQn :  \
+                 ((i) == 7)  ? DMA7_IRQn :  \
+                 ((i) == 8)  ? DMA8_IRQn :  \
+                 ((i) == 9)  ? DMA9_IRQn :  \
+                 ((i) == 10) ? DMA10_IRQn : \
+                 ((i) == 11) ? DMA11_IRQn : \
+                 ((i) == 12) ? DMA12_IRQn : \
+                 ((i) == 13) ? DMA13_IRQn : \
+                 ((i) == 14) ? DMA14_IRQn : \
+                 ((i) == 15) ? DMA15_IRQn : \
+                               0))
+#else
+#define MXC_DMA_CH_GET_IRQ(i)                 \
+    ((IRQn_Type)(((i) == 0)  ? DMA0_IRQn :    \
+                 ((i) == 1)  ? DMA1_IRQn :    \
+                 ((i) == 2)  ? DMA2_IRQn :    \
+                 ((i) == 3)  ? DMA3_IRQn :    \
+                 ((i) == 4)  ? DMA4_IRQn :    \
+                 ((i) == 5)  ? DMA5_IRQn :    \
+                 ((i) == 6)  ? DMA6_IRQn :    \
+                 ((i) == 7)  ? DMA7_IRQn :    \
+                 ((i) == 8)  ? DMA8_15_IRQn : \
+                 ((i) == 9)  ? DMA8_15_IRQn : \
+                 ((i) == 10) ? DMA8_15_IRQn : \
+                 ((i) == 11) ? DMA8_15_IRQn : \
+                 ((i) == 12) ? DMA8_15_IRQn : \
+                 ((i) == 13) ? DMA8_15_IRQn : \
+                 ((i) == 14) ? DMA8_15_IRQn : \
+                 ((i) == 15) ? DMA8_15_IRQn : \
+                               0))
+#endif  
+
 /******************************************************************************/
 /*                                                                        FLC */
 #define MXC_FLC_INSTANCES (2)
@@ -475,11 +661,8 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                       Magstripe Reader ADC */
-#define MXC_BASE_ADC9 ((uint32_t)0x4002B000UL)
-#define MXC_ADC9 ((mxc_adc9_regs_t *)MXC_BASE_ADC9)
-
-#define MXC_BASE_MSRADC MXC_BASE_ADC9
-#define MXC_MSRADC MXC_ADC9
+#define MXC_BASE_MSRADC ((uint32_t)0x4012B000UL)
+#define MXC_MSRADC ((mxc_msradc_regs_t *)MXC_BASE_MSRADC)
 
 /******************************************************************************/
 /*                                                                 Smart Card */
@@ -535,14 +718,14 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                               SPI XIP Data */
-#define MXC_BASE_SPID ((uint32_t)0x4003A000UL)
-#define MXC_SPID ((mxc_spid_regs_t *)MXC_BASE_SPID)
-#define MXC_SPIXR ((mxc_spixr_regs_t *)MXC_BASE_SPID)
+#define MXC_BASE_SPIXR ((uint32_t)0x4003A000UL)
+#define MXC_SPIXR ((mxc_spixr_regs_t *)MXC_BASE_SPIXR)
 
-/******************************************************************************/
-/*                                                                   MIPI DSI */
-#define MXC_BASE_MIPI ((uint32_t)0x4003B000UL)
-#define MXC_MIPI ((mxc_mipi_regs_t *)MXC_BASE_MIPI)
+// TODO(2-7-2023): Verify register file for MIPI DSI.
+// /******************************************************************************/
+//                                                                    MIPI DSI 
+// #define MXC_BASE_DSI ((uint32_t)0x4003B000UL)
+// #define MXC_DSI ((mxc_dsi_regs_t *)MXC_BASE_DSI)
 
 /*******************************************************************************/
 /*                                                      Pulse Train Generation */
@@ -619,7 +802,7 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                         Contactless RF NFC */
-#define MXC_BASE_NFC ((uint32_t)0x40040000UL)
+#define MXC_BASE_NFC ((uint32_t)0x40240000UL)
 #define MXC_NFC ((mxc_nfc_regs_t *)MXC_BASE_NFC)
 
 /******************************************************************************/
@@ -717,9 +900,14 @@ typedef enum {
 #define MXC_TRNG ((mxc_trng_regs_t *)MXC_BASE_TRNG)
 
 /******************************************************************************/
-/*                                                                Ethernet MAC*/
+/*                                                               Ethernet MAC */
 #define MXC_BASE_EMAC ((uint32_t)0x4004F000UL)
 #define MXC_EMAC ((mxc_emac_regs_t *)MXC_BASE_EMAC)
+
+/******************************************************************************/
+/*                                                                        I2S */
+#define MXC_BASE_I2S ((uint32_t)0x40060000UL)
+#define MXC_I2S ((mxc_i2s_regs_t *)MXC_BASE_I2S)
 
 /******************************************************************************/
 /*                                                                        USB */

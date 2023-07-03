@@ -16,8 +16,8 @@
     </interrupt>
     <registers>
       <register>
-        <name>CFG</name>
-        <description>Configuration Register.</description>
+        <name>CTRL0</name>
+        <description>Control Register.</description>
         <addressOffset>0x00</addressOffset>
         <fields>
           <field>
@@ -39,25 +39,31 @@
             </enumeratedValues>
           </field>
           <field>
+            <name>THREE_WIRE</name>
+            <description>Three Wire Mode.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>MODE</name>
             <description>Defines SPI Mode, Only valid values are 0 and 3.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>2</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>SPIX_Mode_0</name>
+                <name>SPI_Mode_0</name>
                 <description>SPIX Mode 0. CLK Polarity = 0, CLK Phase = 0.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>SPIX_Mode_3</name>
+                <name>SPI_Mode_3</name>
                 <description>SPIX Mode 3. CLK Polarity = 1, CLK Phase = 1.</description>
                 <value>3</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>PAGE_SIZE</name>
+            <name>PGSZ</name>
             <description>Page Size.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>2</bitWidth>
@@ -85,7 +91,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>HI_CLK</name>
+            <name>HICLK</name>
             <description>SCLK High Clocks. Number of system clocks that SCLK will be high when SCLK pulses are generated. 0 Correspond to 16 system clocks and, all other values defines the number of system clock taht SCLK will be held high.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>4</bitWidth>
@@ -98,7 +104,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>LO_CLK</name>
+            <name>LOCLK</name>
             <description>SCLK low Clocks. Number of system clocks that SCLK will be low when SCLK pulses are generated. 0 correspond to 16 system clocks and, all other values defines the number of system clock taht SCLK will be held low.</description>
             <bitOffset>12</bitOffset>
             <bitWidth>4</bitWidth>
@@ -139,7 +145,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SSIACT</name>
+            <name>SSINACT</name>
             <description>Slaves Select Inactive Timing.</description>
             <bitOffset>18</bitOffset>
             <bitWidth>2</bitWidth>
@@ -175,14 +181,32 @@
         </fields>
       </register>
       <register>
-        <name>SS_POL</name>
+        <name>SSPOL</name>
         <description>SPIX Controller Slave Select Polarity Register.</description>
         <addressOffset>0x04</addressOffset>
         <fields>
           <field>
-            <name>SSPOL_0</name>
+            <name>SSPOL</name>
             <description>Slave Select Polarity.</description>
             <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>lo</name>
+                <description>Active Low.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>hi</name>
+                <description>Active High.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>FCPOL</name>
+            <description>FC Polarity.</description>
+            <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
@@ -200,12 +224,12 @@
         </fields>
       </register>
       <register>
-        <name>GEN_CTRL</name>
+        <name>CTRL1</name>
         <description>SPIX Controller General Controller Register.</description>
         <addressOffset>0x08</addressOffset>
         <fields>
           <field>
-            <name>ENABLE</name>
+            <name>EN</name>
             <description>SPI Master enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -247,19 +271,19 @@
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>dis_rxfifo</name>
+                <name>DIS_RXFIFO</name>
                 <description>Disable Result FIFO.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>en_rxfifo</name>
+                <name>EN_RXFIFO</name>
                 <description>Enable Result FIFO.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>BBMODE</name>
+            <name>BB_EN</name>
             <description>Bit-Bang Mode.</description>
             <bitOffset>3</bitOffset>
             <bitWidth>1</bitWidth>
@@ -295,8 +319,14 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SCLK_DR</name>
-            <description>SSCLK Drive and State.</description>
+            <name>FCDR</name>
+            <description>This bits reflects the state of the selected FC.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SCLKDR</name>
+            <description>SCLK Drive and State.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
@@ -341,8 +371,8 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>BB_DATA</name>
-            <description>No description available.</description>
+            <name>BB_DATA_OUT</name>
+            <description>Bit Bang SDIO Output.</description>
             <bitOffset>12</bitOffset>
             <bitWidth>4</bitWidth>
             <enumeratedValues>
@@ -397,7 +427,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SIMPLE</name>
+            <name>SIMPLE_EN</name>
             <description>Simple Mode Enable.</description>
             <bitOffset>20</bitOffset>
             <bitWidth>1</bitWidth>
@@ -421,17 +451,17 @@
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>dis</name>
+                <name>Dis</name>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>en</name>
+                <name>En</name>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>SCLK_FB_INVERT</name>
+            <name>SCLK_FB_INV</name>
             <description>SCK Invert.</description>
             <bitOffset>25</bitOffset>
             <bitWidth>1</bitWidth>
@@ -439,30 +469,30 @@
         </fields>
       </register>
       <register>
-        <name>FIFO_CTRL</name>
+        <name>CTRL2</name>
         <description>SPIX Controller FIFO Control and Status Register.</description>
         <addressOffset>0x0C</addressOffset>
         <fields>
           <field>
-            <name>TX_FIFO_AE_LVL</name>
+            <name>TX_AE_LVL</name>
             <description>Transaction FIFO Almost Empty Level.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>4</bitWidth>
           </field>
           <field>
-            <name>TX_FIFO_CNT</name>
+            <name>TX_CNT</name>
             <description>Transaction FIFO Used.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>5</bitWidth>
           </field>
           <field>
-            <name>RX_FIFO_AF_LVL</name>
+            <name>RX_AF_LVL</name>
             <description>Results FIFO Almost Full Level.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>5</bitWidth>
           </field>
           <field>
-            <name>RX_FIFO_CNT</name>
+            <name>RX_CNT</name>
             <description>Result FIFO Used.</description>
             <bitOffset>24</bitOffset>
             <bitWidth>6</bitWidth>
@@ -470,12 +500,12 @@
         </fields>
       </register>
       <register>
-        <name>SP_CTRL</name>
+        <name>CTRL3</name>
         <description>SPIX Controller Special Control Register.</description>
         <addressOffset>0x10</addressOffset>
         <fields>
           <field>
-            <name>SAMPL</name>
+            <name>SAMPLE</name>
             <description>Setting this bit to a 1 enables the ability to drive SDIO outputs prior to the assertion of Slave Select. This bit must
                                                                          only be set when the SPIXF bus is idle and the transaction FIFO is empty. This bit is automatically cleared by hardware after the
                                                                          next slave select assertion.</description>
@@ -483,7 +513,13 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>SDIO_OUT</name>
+            <name>MISO_FC_EN</name>
+            <description>MISO FC Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>SDIO_OUT_VAL</name>
             <description>SDIO Output Value Sample Mode</description>
             <bitOffset>4</bitOffset>
             <bitWidth>4</bitWidth>
@@ -515,7 +551,7 @@
         </fields>
       </register>
       <register>
-        <name>INT_FL</name>
+        <name>INTFL</name>
         <description>SPIX Controller Interrupt Status Register.</description>
         <addressOffset>0x14</addressOffset>
         <fields>
@@ -556,7 +592,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_READY</name>
+            <name>TX_RDY</name>
             <description>Transaction Ready Interrupt Status.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -592,7 +628,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_FIFO_AE</name>
+            <name>TX_AE</name>
             <description>Transaction FIFO Almost Empty Flag.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
@@ -610,7 +646,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_FIFO_AF</name>
+            <name>RX_AF</name>
             <description>Results FIFO Almost Full Flag.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
@@ -630,7 +666,7 @@
         </fields>
       </register>
       <register>
-        <name>INT_EN</name>
+        <name>INTEN</name>
         <description>SPIX Controller Interrupt Enable Register.</description>
         <addressOffset>0x18</addressOffset>
         <fields>
@@ -641,12 +677,12 @@
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>en</name>
+                <name>EN</name>
                 <description>Disable Transaction Stalled Interrupt.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>dis</name>
+                <name>DIS</name>
                 <description>Enable Transaction Stalled Interrupt.</description>
                 <value>1</value>
               </enumeratedValue>
@@ -659,30 +695,30 @@
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>en</name>
+                <name>EN</name>
                 <description>Disable Results Stalled Interrupt.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>dis</name>
+                <name>DIS</name>
                 <description>Enable Results Stalled Interrupt.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_READY</name>
+            <name>TX_RDY</name>
             <description>Transaction Ready Interrupt Enable.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>en</name>
+                <name>EN</name>
                 <description>Disable FIFO Transaction Ready Interrupt.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>dis</name>
+                <name>DIS</name>
                 <description>Enable FIFO Transaction Ready Interrupt.</description>
                 <value>1</value>
               </enumeratedValue>
@@ -695,48 +731,48 @@
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>en</name>
+                <name>EN</name>
                 <description>Disable Results Done Interrupt.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>dis</name>
+                <name>DIS</name>
                 <description>Enable Results Done Interrupt.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>TX_FIFO_AE</name>
+            <name>TX_AE</name>
             <description>Transaction FIFO Almost Empty Interrupt Enable.</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>en</name>
+                <name>EN</name>
                 <description>Disable Transaction FIFO Almost Empty Interrupt.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>dis</name>
+                <name>DIS</name>
                 <description>Enable Transaction FIFO Almost Empty Interrupt.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>
           </field>
           <field>
-            <name>RX_FIFO_AF</name>
+            <name>RX_AF</name>
             <description>Results FIFO Almost Full Interrupt Enable.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
-                <name>en</name>
+                <name>EN</name>
                 <description>Disable Results FIFO Almost Full Interrupt.</description>
                 <value>0</value>
               </enumeratedValue>
               <enumeratedValue>
-                <name>dis</name>
+                <name>DIS</name>
                 <description>Enable Results FIFO Almost Full Interrupt.</description>
                 <value>1</value>
               </enumeratedValue>
@@ -744,8 +780,36 @@
           </field>
         </fields>
       </register>
+      <register>
+        <name>HEADER</name>
+        <description>Simple Header</description>
+        <addressOffset>0x1C</addressOffset>
+        <fields>
+          <field>
+            <name>TX_BIDIR</name>
+            <description>TX Bdirectional Header.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+          <field>
+            <name>RX_ONLY</name>
+            <description>RX Only Header.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>14</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>AUTOCTRL</name>
+        <description>Auto Control Register.</description>
+        <addressOffset>0x20</addressOffset>
+      </register>
+      <register>
+        <name>AUTOCMD</name>
+        <description>Auto Command Register.</description>
+        <addressOffset>0x24</addressOffset>
+      </register>
     </registers>
   </peripheral>
-  <!-- SPIXFC:
-                                                                         SPI XiP Master controller          -->
+  <!-- SPIXFC: SPI XiP Master controller-->
 </device>

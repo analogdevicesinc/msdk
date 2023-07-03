@@ -16,13 +16,13 @@
     </interrupt>
     <registers>
       <register>
-        <name>CN</name>
+        <name>CTRL</name>
         <description>TRNG Control Register.</description>
         <addressOffset>0x00</addressOffset>
         <resetValue>0x00000003</resetValue>
         <fields>
           <field>
-            <name>RND_IRQ_EN</name>
+            <name>RND_IE</name>
             <description>To enable IRQ generation when a new 32-bit Random number is ready.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -40,12 +40,6 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>AESKG</name>
-            <description>AES Key Generate.</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
             <name>AESKG_MEMPROTE</name>
             <description>AES Key Generate. When enabled, the key for securing NVSRAM is generated and transferred to the secure key register automatically without user visibility or intervention. This bit is cleared by hardware once the key has been transferred to the secure key register.</description>
             <bitOffset>4</bitOffset>
@@ -54,7 +48,7 @@
         </fields>
       </register>
       <register>
-        <name>ST</name>
+        <name>STATUS</name>
         <description>Data. The content of this register is valid only when RNG_IS = 1. When TRNG is disabled, read returns 0x0000 0000.</description>
         <addressOffset>0x04</addressOffset>
         <access>read-only</access>
@@ -78,7 +72,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>AESKGD_MEU_S</name>
+            <name>AESKGD_MEU</name>
             <description>Automatically AES transfer on going</description>
             <bitOffset>4</bitOffset>
             <bitWidth>1</bitWidth>

@@ -3,15 +3,17 @@
  * @brief   Watchdog timer (WDT) function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,7 +36,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_WDT_H_
@@ -60,22 +62,22 @@ extern "C" {
 /** @brief Watchdog period enumeration.
     Used to configure the period of the watchdog interrupt */
 typedef enum {
-    MXC_WDT_PERIOD_2_31 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW31, ///< Period 2^31
-    MXC_WDT_PERIOD_2_30 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW30, ///< Period 2^30
-    MXC_WDT_PERIOD_2_29 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW29, ///< Period 2^29
-    MXC_WDT_PERIOD_2_28 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW28, ///< Period 2^28
-    MXC_WDT_PERIOD_2_27 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW27, ///< Period 2^27
-    MXC_WDT_PERIOD_2_26 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW26, ///< Period 2^26
-    MXC_WDT_PERIOD_2_25 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW25, ///< Period 2^25
-    MXC_WDT_PERIOD_2_24 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW24, ///< Period 2^24
-    MXC_WDT_PERIOD_2_23 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW23, ///< Period 2^23
-    MXC_WDT_PERIOD_2_22 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW22, ///< Period 2^22
-    MXC_WDT_PERIOD_2_21 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW21, ///< Period 2^21
-    MXC_WDT_PERIOD_2_20 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW20, ///< Period 2^20
-    MXC_WDT_PERIOD_2_19 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW19, ///< Period 2^19
-    MXC_WDT_PERIOD_2_18 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW18, ///< Period 2^18
-    MXC_WDT_PERIOD_2_17 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW17, ///< Period 2^17
-    MXC_WDT_PERIOD_2_16 = MXC_S_WDT_CTRL_INT_PERIOD_WDT2POW16, ///< Period 2^16
+    MXC_WDT_PERIOD_2_31 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW31, ///< Period 2^31
+    MXC_WDT_PERIOD_2_30 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW30, ///< Period 2^30
+    MXC_WDT_PERIOD_2_29 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW29, ///< Period 2^29
+    MXC_WDT_PERIOD_2_28 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW28, ///< Period 2^28
+    MXC_WDT_PERIOD_2_27 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW27, ///< Period 2^27
+    MXC_WDT_PERIOD_2_26 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW26, ///< Period 2^26
+    MXC_WDT_PERIOD_2_25 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW25, ///< Period 2^25
+    MXC_WDT_PERIOD_2_24 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW24, ///< Period 2^24
+    MXC_WDT_PERIOD_2_23 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW23, ///< Period 2^23
+    MXC_WDT_PERIOD_2_22 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW22, ///< Period 2^22
+    MXC_WDT_PERIOD_2_21 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW21, ///< Period 2^21
+    MXC_WDT_PERIOD_2_20 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW20, ///< Period 2^20
+    MXC_WDT_PERIOD_2_19 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW19, ///< Period 2^19
+    MXC_WDT_PERIOD_2_18 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW18, ///< Period 2^18
+    MXC_WDT_PERIOD_2_17 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW17, ///< Period 2^17
+    MXC_WDT_PERIOD_2_16 = MXC_S_WDT_CTRL_INT_LATE_VAL_WDT2POW16, ///< Period 2^16
 } mxc_wdt_period_t;
 
 /* **** Function Prototypes **** */

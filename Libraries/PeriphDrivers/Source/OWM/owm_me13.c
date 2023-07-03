@@ -117,7 +117,7 @@ int MXC_OWM_Reset(void)
 
 int MXC_OWM_GetPresenceDetect(void)
 {
-    return (!!(MXC_OWM->ctrl_stat & MXC_F_OWM_CTRL_STAT_PRESENCE_DETECT));
+    return (!!(MXC_OWM->ctrl1 & MXC_F_OWM_CTRL1_PRESDET_ST));
 }
 
 int MXC_OWM_TouchByte(uint8_t data)

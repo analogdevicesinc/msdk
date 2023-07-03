@@ -3,15 +3,17 @@
  * @brief   System level header file.
  */
 
-/*******************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -41,6 +43,7 @@
 
 #include "mxc_device.h"
 #include "gcr_regs.h"
+#include "mcr_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -74,9 +77,7 @@ typedef enum {
     MXC_SYS_RESET0_SPI1 = MXC_F_GCR_RST0_SPI1_POS, /**< Reset SPI1 */
     MXC_SYS_RESET0_SPI2 = MXC_F_GCR_RST0_SPI2_POS, /**< Reset SPI2 */
     MXC_SYS_RESET0_I2C0 = MXC_F_GCR_RST0_I2C0_POS, /**< Reset I2C0 */
-    MXC_SYS_RESET0_RTC = MXC_F_GCR_RST0_RTC_POS, /**< Reset RTC */
     MXC_SYS_RESET0_CTB = MXC_F_GCR_RST0_CRYPTO_POS, /**< Reset CRYPTO */
-    MXC_SYS_RESET0_CLCD = MXC_F_GCR_RST0_CLCD_POS, /**< Reset CLCD */
     MXC_SYS_RESET0_USB = MXC_F_GCR_RST0_USB_POS, /**< Reset USB */
     MXC_SYS_RESET0_ADC = MXC_F_GCR_RST0_ADC_POS, /**< Reset ADC */
     MXC_SYS_RESET0_UART2 = MXC_F_GCR_RST0_UART2_POS, /**< Reset UART2 */
@@ -87,27 +88,28 @@ typedef enum {
     MXC_SYS_RESET1_I2C1 = (MXC_F_GCR_RST1_I2C1_POS + 32), /**< Reset I2C1 */
     MXC_SYS_RESET1_PT = (MXC_F_GCR_RST1_PT_POS + 32), /**< Reset PT */
     MXC_SYS_RESET1_SPIXIP = (MXC_F_GCR_RST1_SPIXIP_POS + 32), /**< Reset SPIXIP */
-    MXC_SYS_RESET1_XSPIM = (MXC_F_GCR_RST1_XSPIM_POS + 32), /**< Reset XSPIM */
-    MXC_SYS_RESET1_SDHC = (MXC_F_GCR_RST1_SDHC_POS + 32), /**< Reset SDHC */
+    MXC_SYS_RESET1_SPIXIPC = (MXC_F_GCR_RST1_SPIXIPC_POS + 32), /**< Reset SPIXIPC */
     MXC_SYS_RESET1_GPIO3 = (MXC_F_GCR_RST1_GPIO3_POS + 32), /**< Reset GPIO3 */
+    MXC_SYS_RESET1_SDHC = (MXC_F_GCR_RST1_SDHC_POS + 32), /**< Reset SDHC */
     MXC_SYS_RESET1_OWIRE = (MXC_F_GCR_RST1_OWIRE_POS + 32), /**< Reset OWIRE */
     MXC_SYS_RESET1_WDT1 = (MXC_F_GCR_RST1_WDT1_POS + 32), /**< Reset WDT1 */
     MXC_SYS_RESET1_SPI3 = (MXC_F_GCR_RST1_SPI3_POS + 32), /**< Reset SPI3 */
-    MXC_SYS_RESET1_SPIXMEM = (MXC_F_GCR_RST1_SPIXMEM_POS + 32), /**< Reset SPIXMEM */
+    MXC_SYS_RESET1_SPIXIPD = (MXC_F_GCR_RST1_SPIXIPD_POS + 32), /**< Reset SPIXIPD */
     MXC_SYS_RESET1_I2C2 = (MXC_F_GCR_RST1_I2C2_POS + 32), /**< Reset I2C2*/
     MXC_SYS_RESET1_UART3 = (MXC_F_GCR_RST1_UART3_POS + 32), /**< Reset UART3*/
     MXC_SYS_RESET1_UART4 = (MXC_F_GCR_RST1_UART4_POS + 32), /**< Reset USRT4*/
     MXC_SYS_RESET1_UART5 = (MXC_F_GCR_RST1_UART5_POS + 32), /**< Reset UART5*/
-    MXC_SYS_RESET1_KBD = (MXC_F_GCR_RST1_KBD_POS + 32), /**< Reset KBD*/
-    MXC_SYS_RESET1_ADC9 = (MXC_F_GCR_RST1_ADC9_POS + 32), /**< Reset ADC9*/
+    MXC_SYS_RESET1_SKBD = (MXC_F_GCR_RST1_SKBD_POS + 32), /**< Reset KBD*/
+    MXC_SYS_RESET1_MSRADC = (MXC_F_GCR_RST1_MSRADC_POS + 32), /**< Reset MSRADC*/
     MXC_SYS_RESET1_SC0 = (MXC_F_GCR_RST1_SC0_POS + 32), /**< Reset SC0*/
     MXC_SYS_RESET1_SC1 = (MXC_F_GCR_RST1_SC1_POS + 32), /**< Reset SC1*/
     MXC_SYS_RESET1_NFC = (MXC_F_GCR_RST1_NFC_POS + 32), /**< Reset NFC*/
     MXC_SYS_RESET1_EMAC = (MXC_F_GCR_RST1_EMAC_POS + 32), /**< Reset EMAC*/
-    MXC_SYS_RESET1_PCIF = (MXC_F_GCR_RST1_PCIF_POS + 32), /**< Reset PCIF*/
     MXC_SYS_RESET1_HTMR0 = (MXC_F_GCR_RST1_HTMR0_POS + 32), /**< Reset HTMR0*/
     MXC_SYS_RESET1_HTMR1 = (MXC_F_GCR_RST1_HTMR1_POS + 32), /**< Reset HTMR1*/
     MXC_SYS_RESET1_AC = (MXC_F_GCR_RST1_AC_POS + 32), /**< Reset AC*/
+    /* RESET Below this line are from miscellaneous registers. */
+    MXC_SYS_RESET_RTC = MXC_F_MCR_RTCRST_RTC, /**< Reset RTC */
 } mxc_sys_reset_t;
 
 /** @brief System clock disable enumeration. Used in MXC_SYS_ClockDisable and MXC_SYS_ClockEnable functions */
@@ -120,8 +122,6 @@ typedef enum {
         MXC_F_GCR_PCLKDIS0_GPIO2_POS, /**< Disable MXC_F_GCR_PCLKDIS0_GPIO2 clock */
     MXC_SYS_PERIPH_CLOCK_USB =
         MXC_F_GCR_PCLKDIS0_USB_POS, /**< Disable MXC_F_GCR_PCLKDIS0_USB clock */
-    MXC_SYS_PERIPH_CLOCK_CLCD =
-        MXC_F_GCR_PCLKDIS0_CLCD_POS, /**< Disable MXC_F_GCR_PCLKDIS0_CLC clock */
     MXC_SYS_PERIPH_CLOCK_DMA =
         MXC_F_GCR_PCLKDIS0_DMA_POS, /**< Disable MXC_F_GCR_PCLKDIS0_DMA clock */
     MXC_SYS_PERIPH_CLOCK_SPI0 =
@@ -154,8 +154,8 @@ typedef enum {
         MXC_F_GCR_PCLKDIS0_TMR6_POS, /**< Disable MXC_F_GCR_PCLKDIS0_TMR6 clock */
     MXC_SYS_PERIPH_CLOCK_TMR7 =
         MXC_F_GCR_PCLKDIS0_TMR7_POS, /**< Disable MXC_F_GCR_PCLKDIS0_TMR7 clock */
-    MXC_SYS_PERIPH_CLOCK_KBD =
-        MXC_F_GCR_PCLKDIS0_KBD_POS, /**< Disable MXC_F_GCR_PCLKDIS0_ADC clock */
+    MXC_SYS_PERIPH_CLOCK_SKBD =
+        MXC_F_GCR_PCLKDIS0_SKBD_POS, /**< Disable MXC_F_GCR_PCLKDIS0_SKBD clock */
     MXC_SYS_PERIPH_CLOCK_ADC =
         MXC_F_GCR_PCLKDIS0_ADC_POS, /**< Disable MXC_F_GCR_PCLKDIS0_ADC clock */
     MXC_SYS_PERIPH_CLOCK_HTMR0 =
@@ -167,8 +167,8 @@ typedef enum {
     MXC_SYS_PERIPH_CLOCK_PT = MXC_F_GCR_PCLKDIS0_PT_POS, /**< Disable MXC_F_GCR_PCLKDIS0_PT clock */
     MXC_SYS_PERIPH_CLOCK_SPIXIP =
         MXC_F_GCR_PCLKDIS0_SPIXIP_POS, /**< Disable MXC_F_GCR_PCLKDIS0_SPIXIP clock */
-    MXC_SYS_PERIPH_CLOCK_SPIXFC =
-        MXC_F_GCR_PCLKDIS0_SPIM_POS, /**< Disable MXC_F_GCR_PCLKDIS0_SPIM clock */
+    MXC_SYS_PERIPH_CLOCK_SPIXIPC =
+        MXC_F_GCR_PCLKDIS0_SPIXIPC_POS, /**< Disable MXC_F_GCR_PCLKDIS0_SPIXIPC clock */
     /* PCLKDIS1 Below this line we add 32 to separate PCLKDIS0 and PCLKDIS1 */
     MXC_SYS_PERIPH_CLOCK_UART2 =
         (MXC_F_GCR_PCLKDIS1_UART2_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_UART2 clock */
@@ -180,22 +180,20 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_WDT1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_WDT1 clock */
     MXC_SYS_PERIPH_CLOCK_GPIO3 =
         (MXC_F_GCR_PCLKDIS1_GPIO3_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_GPIO3 clock */
-    MXC_SYS_PERIPH_CLOCK_SCACHE =
-        (MXC_F_GCR_PCLKDIS1_SCACHE_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SCACHE clock */
-    MXC_SYS_PERIPH_CLOCK_HA0 =
-        (MXC_F_GCR_PCLKDIS1_HA0_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_HA0 clock */
+    MXC_SYS_PERIPH_CLOCK_SRCC =
+        (MXC_F_GCR_PCLKDIS1_SRCC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SRCC clock */
+    MXC_SYS_PERIPH_CLOCK_CAMERAIF =
+        (MXC_F_GCR_PCLKDIS1_CAMERAIF_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_CAMERAIF clock */
+    MXC_SYS_PERIPH_CLOCK_SEMA =
+        (MXC_F_GCR_PCLKDIS1_SEMA_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SEMA clock */
     MXC_SYS_PERIPH_CLOCK_SDHC =
         (MXC_F_GCR_PCLKDIS1_SDHC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SDHC clock */
-    MXC_SYS_PERIPH_CLOCK_ICACHE =
-        (MXC_F_GCR_PCLKDIS1_ICC0_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_ICACHE clock */
-    MXC_SYS_PERIPH_CLOCK_ICACHEXIP =
-        (MXC_F_GCR_PCLKDIS1_ICCXIP_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_ICACHEXIP clock */
     MXC_SYS_PERIPH_CLOCK_OWIRE =
         (MXC_F_GCR_PCLKDIS1_OWIRE_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_OWIRE clock */
     MXC_SYS_PERIPH_CLOCK_SPI3 =
         (MXC_F_GCR_PCLKDIS1_SPI3_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SPI3 clock */
     MXC_SYS_PERIPH_CLOCK_SPIXIPD =
-        (MXC_F_GCR_PCLKDIS1_SPIXIP_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SPIXIP clock */
+        (MXC_F_GCR_PCLKDIS1_SPIXIPD_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SPIXIPD clock */
     MXC_SYS_PERIPH_CLOCK_I2C2 =
         (MXC_F_GCR_PCLKDIS1_I2C2_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_I2C2 clock */
     MXC_SYS_PERIPH_CLOCK_UART3 =
@@ -204,8 +202,8 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_UART4_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_UART4 clock */
     MXC_SYS_PERIPH_CLOCK_UART5 =
         (MXC_F_GCR_PCLKDIS1_UART5_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_UART5 clock */
-    MXC_SYS_PERIPH_CLOCK_ADC9 =
-        (MXC_F_GCR_PCLKDIS1_ADC9_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_ADC9 clock */
+    MXC_SYS_PERIPH_CLOCK_MSRADC =
+        (MXC_F_GCR_PCLKDIS1_MSRADC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_MSRADC clock */
     MXC_SYS_PERIPH_CLOCK_SC0 =
         (MXC_F_GCR_PCLKDIS1_SC0_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_SC0 clock */
     MXC_SYS_PERIPH_CLOCK_SC1 =
@@ -214,10 +212,10 @@ typedef enum {
         (MXC_F_GCR_PCLKDIS1_NFC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_NFC clock */
     MXC_SYS_PERIPH_CLOCK_EMAC =
         (MXC_F_GCR_PCLKDIS1_EMAC_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_EMAC clock */
-    MXC_SYS_PERIPH_CLOCK_HA1 =
-        (MXC_F_GCR_PCLKDIS1_HA1_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_HA1 clock */
-    MXC_SYS_PERIPH_CLOCK_PCIF =
-        (MXC_F_GCR_PCLKDIS1_PCIF_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_PCIF clock */
+    MXC_SYS_PERIPH_CLOCK_CPU2 =
+        (MXC_F_GCR_PCLKDIS1_CPU2_POS + 32), /**<Disable MXC_F_GCR_PCLKDIS1_CPU2 clock */
+    MXC_SYS_PERIPH_CLOCK_CPU1 =
+        (MXC_F_GCR_PCLKDIS1_CPU1_POS + 32) /**<Disable MXC_F_GCR_PCLKDIS1_CPU1 clock */
 } mxc_sys_periph_clock_t;
 
 /** @brief Enumeration to select System Clock source */
@@ -236,7 +234,7 @@ typedef enum {
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_ERTCO, /**< Select the External RTC Crystal Oscillator */
 } mxc_sys_system_clock_t;
 
-#define MXC_SYS_SCACHE_CLK 1 // Enable SCACHE CLK
+#define MXC_SYS_SRCC_CLK 1 // Enable SRCC CLK
 #define MXC_SYS_CTB_CLK 1 // Enable CTB CLK
 
 /***** Function Prototypes *****/

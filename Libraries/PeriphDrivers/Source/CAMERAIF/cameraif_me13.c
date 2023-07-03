@@ -39,6 +39,7 @@
 #include "mxc_sys.h"
 #include "cameraif.h"
 #include "cameraif_reva.h"
+#include "mxc_sys.h"
 
 /* **** Definitions **** */
 

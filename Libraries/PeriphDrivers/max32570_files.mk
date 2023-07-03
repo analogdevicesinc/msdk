@@ -1,13 +1,14 @@
-
 ################################################################################
- # Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
- #
- # Permission is hereby granted, free of charge, to any person obtaining a
- # copy of this software and associated documentation files (the "Software"),
- # to deal in the Software without restriction, including without limitation
- # the rights to use, copy, modify, merge, publish, distribute, sublicense,
- # and/or sell copies of the Software, and to permit persons to whom the
- # Software is furnished to do so, subject to the following conditions:
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ # 
+ # This software is protected by copyright laws of the United States and
+ # of foreign countries. This material may also be protected by patent laws
+ # and technology transfer regulations of the United States and of foreign
+ # countries. This software is furnished under a license agreement and/or a
+ # nondisclosure agreement and may only be used or reproduced in accordance
+ # with the terms of those agreements. Dissemination of this information to
+ # any party or parties not specified in the license agreement and/or
+ # nondisclosure agreement is expressly prohibited.
  #
  # The above copyright notice and this permission notice shall be included
  # in all copies or substantial portions of the Software.
@@ -30,9 +31,6 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- # $Date: 2018-08-31 14:08:14 -0500 (Fri, 31 Aug 2018) $
- # $Revision: 37586 $
- #
  ###############################################################################
 
 # This is the name of the build output file
@@ -48,7 +46,6 @@ ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
 
-
 # This is the path to the CMSIS root directory
 ifeq "$(CMSIS_ROOT)" ""
 CMSIS_ROOT=../CMSIS
@@ -57,24 +54,32 @@ ifeq "$(LIBS_DIR)" ""
 LIBS_DIR = $(CMSIS_ROOT)/..
 endif
 
-
 PERIPH_DIR := $(LIBS_DIR)/PeriphDrivers
 SOURCE_DIR := $(PERIPH_DIR)/Source
 INCLUDE_DIR := $(PERIPH_DIR)/Include
 
 PERIPH_DRIVER_INCLUDE_DIR  += $(INCLUDE_DIR)/$(TARGET_UC)/
-# Source files)
+
+# Source files
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_assert.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_delay.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/mxc_lock.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/pins_me13.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/sys_me13.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SYS/nvic_table.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/ADC
-#PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_common.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_me13.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ADC/adc_reva.c
+
+# PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CAMERAIF
+# PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CAMERAIF/cameraif_me13.c
+# PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CAMERAIF/cameraif_reva.c
+
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CTB
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CTB/ctb_common.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CTB/ctb_me13.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CTB/ctb_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/DMA
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/DMA/dma_me13.c
@@ -84,21 +89,10 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/EMAC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/EMAC/emac_me13.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/EMAC/emac_reva.c
 
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/PT
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_me13.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_reva.c
-
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_me13.c
-
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SRCC
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SRCC/srcc_me13.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SRCC/srcc_reva.c
-
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/FLC
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_common.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_me13.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_reva.c
+# PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/FLC
+# PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_common.c
+# PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_me13.c
+# PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/FLC/flc_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/GPIO
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/GPIO/gpio_common.c
@@ -118,16 +112,16 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_common.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_me13.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/ICC/icc_reva.c
 
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SFCC
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SFCC/sfcc_me13.c
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/LP
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/LP/lp_me13.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/OWM
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/OWM/owm_me13.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/OWM/owm_reva.c
 
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CAMERAIF
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CAMERAIF/cameraif_me13.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CAMERAIF/cameraif_reva.c
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/PT
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_me13.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/PT/pt_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/RTC
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/RTC/rtc_me13.c
@@ -141,6 +135,9 @@ USE_NATIVE_SDHC = yes
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SEMA
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SEMA/sema_me13.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SEMA/sema_reva.c
+
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SFCC
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SFCC/sfcc_me13.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SKBD
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SKBD/skbd_me13.c
@@ -162,10 +159,9 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPIXR
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIXR/spixr_me13.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIXR/spixr_reva.c
 
-PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/CTB
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CTB/ctb_common.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CTB/ctb_me13.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/CTB/ctb_reva.c
+PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SRCC
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SRCC/srcc_me13.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SRCC/srcc_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/TMR
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/TMR/tmr_common.c

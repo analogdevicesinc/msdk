@@ -1,33 +1,84 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <device schemaVersion="1.1" xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="svd_schema.xsd">
- <peripheral>
-  <name>TRIMSIR</name>
-  <description>Trim System Initilazation Registers</description>
-  <baseAddress>0x40005400</baseAddress>
-  <addressBlock>
-   <offset>0x00</offset>
-   <size>0x400</size>
-   <usage>registers</usage>
-  </addressBlock>
-  <registers>
-   <register>
-    <name>rsv0</name>
-    <description>RFU</description>
-    <addressOffset>0x00</addressOffset>
-   </register>
-   <register>
-    <name>BB_SIR2</name>
-    <description>System Init. Configuration Register 2.</description>
-    <addressOffset>0x08</addressOffset>
-    <access>read-only</access>
-   </register>
-   <register>
-    <name>BB_SIR3</name>
-    <description>System Init. Configuration Register 3.</description>
-    <addressOffset>0x0C</addressOffset>
-    <access>read-only</access>
-   </register>
-  </registers>
- </peripheral>
-<!-- TRIMSIR:Trim System Initilazation Registers -->
+  <peripheral>
+    <name>TRIMSIR</name>
+    <description>Trim System Initilazation Registers</description>
+    <baseAddress>0x40005400</baseAddress>
+    <addressBlock>
+      <offset>0x00</offset>
+      <size>0x400</size>
+      <usage>registers</usage>
+    </addressBlock>
+    <registers>
+      <register>
+        <name>BB_SIR2</name>
+        <description>System Init. Configuration Register 2.</description>
+        <addressOffset>0x08</addressOffset>
+        <access>read-only</access>
+        <fields>
+          <field>
+            <name>RAM0ECCEN</name>
+            <description>ECC System RAM0 Enable.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM1ECCEN</name>
+            <description>ECC System RAM1 Enable.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM2ECCEN</name>
+            <description>ECC System RAM2 Enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM3ECCEN</name>
+            <description>ECC System RAM2 Enable.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM4ECCEN</name>
+            <description>ECC System RAM2 Enable.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RAM5ECCEN</name>
+            <description>ECC System RAM2 Enable.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ICCECCEN</name>
+            <description>ECC ICC Enable.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>ICCXIPECCEN</name>
+            <description>ECC ICC XIP Enable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FL0ECCEN</name>
+            <description>Flash 0 ECC Enable.</description>
+            <bitOffset>11</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>FL1ECCEN</name>
+            <description>Flash 1 ECC Enable.</description>
+            <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+        </fields>
+      </register>
+    </registers>
+  </peripheral>
+  <!-- TRIMSIR:Trim System Initilazation Registers -->
 </device>

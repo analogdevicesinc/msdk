@@ -1330,6 +1330,20 @@
         </fields>
       </register>
       <register>
+        <name>IO_CTRL</name>
+        <description>IO Control Register.</description>
+        <addressOffset>0xC0</addressOffset>
+        <fields>
+          <field>
+            <name>MODE</name>
+            <description>MII RMII Mode Select.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+            <access>read-write</access>
+          </field>
+        </fields>
+      </register>
+      <register>
         <name>REV</name>
         <description>Revision register.</description>
         <addressOffset>0xFC</addressOffset>

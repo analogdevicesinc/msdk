@@ -3,15 +3,17 @@
  * @brief   Crypto Toolbox driver.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,7 +36,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_CTB_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_CTB_H_
@@ -94,8 +96,8 @@ struct _mxc_ctb_dma_req_t {
   *
   */
 typedef enum {
-    MXC_CTB_DMA_READ_FIFO_DMA = MXC_V_CTB_CRYPTO_CTRL_RDSRC_DMAORAPB,
-    MXC_CTB_DMA_READ_FIFO_RNG = MXC_V_CTB_CRYPTO_CTRL_RDSRC_RNG
+    MXC_CTB_DMA_READ_FIFO_DMA = MXC_V_CTB_CTRL_RDSRC_DMAORAPB,
+    MXC_CTB_DMA_READ_FIFO_RNG = MXC_V_CTB_CTRL_RDSRC_RNG
 } mxc_ctb_dma_read_source_t;
 
 /**
@@ -103,9 +105,9 @@ typedef enum {
   *
   */
 typedef enum {
-    MXC_CTB_DMA_WRITE_FIFO_CIPHER = MXC_V_CTB_CRYPTO_CTRL_WRSRC_CIPHEROUTPUT,
-    MXC_CTB_DMA_WRITE_FIFO_READ_FIFO = MXC_V_CTB_CRYPTO_CTRL_WRSRC_READFIFO,
-    MXC_CTB_DMA_WRITE_FIFO_NONE = MXC_V_CTB_CRYPTO_CTRL_WRSRC_NONE
+    MXC_CTB_DMA_WRITE_FIFO_CIPHER = MXC_V_CTB_CTRL_WRSRC_CIPHEROUTPUT,
+    MXC_CTB_DMA_WRITE_FIFO_READ_FIFO = MXC_V_CTB_CTRL_WRSRC_READFIFO,
+    MXC_CTB_DMA_WRITE_FIFO_NONE = MXC_V_CTB_CTRL_WRSRC_NONE
 } mxc_ctb_dma_write_source_t;
 
 /* ************************************************************************* */

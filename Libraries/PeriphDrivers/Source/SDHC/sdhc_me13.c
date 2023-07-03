@@ -74,7 +74,7 @@ int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg)
 
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SDHC);
 
-    gpio->ds |= gpio_cfg_sdhc.mask;
+    gpio->ds0 |= gpio_cfg_sdhc.mask;
 
     MXC_GPIO_Config(&gpio_cfg_sdhc);
     return MXC_SDHC_RevA_Init((mxc_sdhc_reva_regs_t *)MXC_SDHC, cfg);

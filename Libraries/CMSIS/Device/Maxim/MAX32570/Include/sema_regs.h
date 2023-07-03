@@ -2,10 +2,11 @@
  * @file    sema_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SEMA Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup sema_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
@@ -92,8 +93,21 @@ extern "C" {
  * Structure type to access the SEMA Registers.
  */
 typedef struct {
-    __IO uint32_t semaphores[8];        /**< <tt>\b 0x000:</tt> SEMA SEMAPHORES Register */
-    __R  uint32_t rsv_0x20_0xff[56];
+    __IO uint32_t semaphores[8];        /**< <tt>\b 0x00:</tt> SEMA SEMAPHORES Register */
+    __R  uint32_t rsv_0x20_0x3f[8];
+    __IO uint32_t irq0;                 /**< <tt>\b 0x40:</tt> SEMA IRQ0 Register */
+    __IO uint32_t mail0;                /**< <tt>\b 0x44:</tt> SEMA MAIL0 Register */
+    __IO uint32_t irq1;                 /**< <tt>\b 0x48:</tt> SEMA IRQ1 Register */
+    __IO uint32_t mail1;                /**< <tt>\b 0x4C:</tt> SEMA MAIL1 Register */
+    __IO uint32_t irq2;                 /**< <tt>\b 0x50:</tt> SEMA IRQ2 Register */
+    __IO uint32_t mail2;                /**< <tt>\b 0x54:</tt> SEMA MAIL2 Register */
+    __IO uint32_t irq3;                 /**< <tt>\b 0x58:</tt> SEMA IRQ3 Register */
+    __IO uint32_t mail3;                /**< <tt>\b 0x5C:</tt> SEMA MAIL3 Register */
+    __IO uint32_t irq4;                 /**< <tt>\b 0x60:</tt> SEMA IRQ4 Register */
+    __IO uint32_t mail4;                /**< <tt>\b 0x64:</tt> SEMA MAIL4 Register */
+    __IO uint32_t irq5;                 /**< <tt>\b 0x68:</tt> SEMA IRQ5 Register */
+    __IO uint32_t mail5;                /**< <tt>\b 0x6C:</tt> SEMA MAIL5 Register */
+    __R  uint32_t rsv_0x70_0xff[36];
     __IO uint32_t status;               /**< <tt>\b 0x100:</tt> SEMA STATUS Register */
 } mxc_sema_regs_t;
 
@@ -105,6 +119,18 @@ typedef struct {
  * @{
  */
 #define MXC_R_SEMA_SEMAPHORES              ((uint32_t)0x00000000UL) /**< Offset from SEMA Base Address: <tt> 0x0000</tt> */
+#define MXC_R_SEMA_IRQ0                    ((uint32_t)0x00000040UL) /**< Offset from SEMA Base Address: <tt> 0x0040</tt> */
+#define MXC_R_SEMA_MAIL0                   ((uint32_t)0x00000044UL) /**< Offset from SEMA Base Address: <tt> 0x0044</tt> */
+#define MXC_R_SEMA_IRQ1                    ((uint32_t)0x00000048UL) /**< Offset from SEMA Base Address: <tt> 0x0048</tt> */
+#define MXC_R_SEMA_MAIL1                   ((uint32_t)0x0000004CUL) /**< Offset from SEMA Base Address: <tt> 0x004C</tt> */
+#define MXC_R_SEMA_IRQ2                    ((uint32_t)0x00000050UL) /**< Offset from SEMA Base Address: <tt> 0x0050</tt> */
+#define MXC_R_SEMA_MAIL2                   ((uint32_t)0x00000054UL) /**< Offset from SEMA Base Address: <tt> 0x0054</tt> */
+#define MXC_R_SEMA_IRQ3                    ((uint32_t)0x00000058UL) /**< Offset from SEMA Base Address: <tt> 0x0058</tt> */
+#define MXC_R_SEMA_MAIL3                   ((uint32_t)0x0000005CUL) /**< Offset from SEMA Base Address: <tt> 0x005C</tt> */
+#define MXC_R_SEMA_IRQ4                    ((uint32_t)0x00000060UL) /**< Offset from SEMA Base Address: <tt> 0x0060</tt> */
+#define MXC_R_SEMA_MAIL4                   ((uint32_t)0x00000064UL) /**< Offset from SEMA Base Address: <tt> 0x0064</tt> */
+#define MXC_R_SEMA_IRQ5                    ((uint32_t)0x00000068UL) /**< Offset from SEMA Base Address: <tt> 0x0068</tt> */
+#define MXC_R_SEMA_MAIL5                   ((uint32_t)0x0000006CUL) /**< Offset from SEMA Base Address: <tt> 0x006C</tt> */
 #define MXC_R_SEMA_STATUS                  ((uint32_t)0x00000100UL) /**< Offset from SEMA Base Address: <tt> 0x0100</tt> */
 /**@} end of group sema_registers */
 
@@ -121,12 +147,183 @@ typedef struct {
 
 /**
  * @ingroup  sema_registers
+ * @defgroup SEMA_IRQ0 SEMA_IRQ0
+ * @brief    Semaphore IRQ0 register.
+ * @{
+ */
+#define MXC_F_SEMA_IRQ0_EN_POS                         0 /**< IRQ0_EN Position */
+#define MXC_F_SEMA_IRQ0_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ0_EN_POS)) /**< IRQ0_EN Mask */
+
+#define MXC_F_SEMA_IRQ0_CM4_IRQ_POS                    16 /**< IRQ0_CM4_IRQ Position */
+#define MXC_F_SEMA_IRQ0_CM4_IRQ                        ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ0_CM4_IRQ_POS)) /**< IRQ0_CM4_IRQ Mask */
+
+/**@} end of group SEMA_IRQ0_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_MAIL0 SEMA_MAIL0
+ * @brief    Semaphore Mailbox 0 register.
+ * @{
+ */
+#define MXC_F_SEMA_MAIL0_DATA_POS                      0 /**< MAIL0_DATA Position */
+#define MXC_F_SEMA_MAIL0_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL0_DATA_POS)) /**< MAIL0_DATA Mask */
+
+/**@} end of group SEMA_MAIL0_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_IRQ1 SEMA_IRQ1
+ * @brief    Semaphore IRQ1 register.
+ * @{
+ */
+#define MXC_F_SEMA_IRQ1_EN_POS                         0 /**< IRQ1_EN Position */
+#define MXC_F_SEMA_IRQ1_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ1_EN_POS)) /**< IRQ1_EN Mask */
+
+#define MXC_F_SEMA_IRQ1_RV32_IRQ_POS                   16 /**< IRQ1_RV32_IRQ Position */
+#define MXC_F_SEMA_IRQ1_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ1_RV32_IRQ_POS)) /**< IRQ1_RV32_IRQ Mask */
+
+/**@} end of group SEMA_IRQ1_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_MAIL1 SEMA_MAIL1
+ * @brief    Semaphore Mailbox 1 register.
+ * @{
+ */
+#define MXC_F_SEMA_MAIL1_DATA_POS                      0 /**< MAIL1_DATA Position */
+#define MXC_F_SEMA_MAIL1_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL1_DATA_POS)) /**< MAIL1_DATA Mask */
+
+/**@} end of group SEMA_MAIL1_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_IRQ2 SEMA_IRQ2
+ * @brief    Semaphore IRQ2 register.
+ * @{
+ */
+#define MXC_F_SEMA_IRQ2_EN_POS                         0 /**< IRQ2_EN Position */
+#define MXC_F_SEMA_IRQ2_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ2_EN_POS)) /**< IRQ2_EN Mask */
+
+#define MXC_F_SEMA_IRQ2_RV32_IRQ_POS                   16 /**< IRQ2_RV32_IRQ Position */
+#define MXC_F_SEMA_IRQ2_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ2_RV32_IRQ_POS)) /**< IRQ2_RV32_IRQ Mask */
+
+/**@} end of group SEMA_IRQ2_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_MAIL2 SEMA_MAIL2
+ * @brief    Semaphore Mailbox 2 register.
+ * @{
+ */
+#define MXC_F_SEMA_MAIL2_DATA_POS                      0 /**< MAIL2_DATA Position */
+#define MXC_F_SEMA_MAIL2_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL2_DATA_POS)) /**< MAIL2_DATA Mask */
+
+/**@} end of group SEMA_MAIL2_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_IRQ3 SEMA_IRQ3
+ * @brief    Semaphore IRQ3 register.
+ * @{
+ */
+#define MXC_F_SEMA_IRQ3_EN_POS                         0 /**< IRQ3_EN Position */
+#define MXC_F_SEMA_IRQ3_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ3_EN_POS)) /**< IRQ3_EN Mask */
+
+#define MXC_F_SEMA_IRQ3_RV32_IRQ_POS                   16 /**< IRQ3_RV32_IRQ Position */
+#define MXC_F_SEMA_IRQ3_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ3_RV32_IRQ_POS)) /**< IRQ3_RV32_IRQ Mask */
+
+/**@} end of group SEMA_IRQ3_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_MAIL3 SEMA_MAIL3
+ * @brief    Semaphore Mailbox 3 register.
+ * @{
+ */
+#define MXC_F_SEMA_MAIL3_DATA_POS                      0 /**< MAIL3_DATA Position */
+#define MXC_F_SEMA_MAIL3_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL3_DATA_POS)) /**< MAIL3_DATA Mask */
+
+/**@} end of group SEMA_MAIL3_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_IRQ4 SEMA_IRQ4
+ * @brief    Semaphore IRQ4 register.
+ * @{
+ */
+#define MXC_F_SEMA_IRQ4_EN_POS                         0 /**< IRQ4_EN Position */
+#define MXC_F_SEMA_IRQ4_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ4_EN_POS)) /**< IRQ4_EN Mask */
+
+#define MXC_F_SEMA_IRQ4_RV32_IRQ_POS                   16 /**< IRQ4_RV32_IRQ Position */
+#define MXC_F_SEMA_IRQ4_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ4_RV32_IRQ_POS)) /**< IRQ4_RV32_IRQ Mask */
+
+/**@} end of group SEMA_IRQ4_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_MAIL4 SEMA_MAIL4
+ * @brief    Semaphore Mailbox 4 register.
+ * @{
+ */
+#define MXC_F_SEMA_MAIL4_DATA_POS                      0 /**< MAIL4_DATA Position */
+#define MXC_F_SEMA_MAIL4_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL4_DATA_POS)) /**< MAIL4_DATA Mask */
+
+/**@} end of group SEMA_MAIL4_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_IRQ5 SEMA_IRQ5
+ * @brief    Semaphore IRQ5 register.
+ * @{
+ */
+#define MXC_F_SEMA_IRQ5_EN_POS                         0 /**< IRQ5_EN Position */
+#define MXC_F_SEMA_IRQ5_EN                             ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ5_EN_POS)) /**< IRQ5_EN Mask */
+
+#define MXC_F_SEMA_IRQ5_RV32_IRQ_POS                   16 /**< IRQ5_RV32_IRQ Position */
+#define MXC_F_SEMA_IRQ5_RV32_IRQ                       ((uint32_t)(0x1UL << MXC_F_SEMA_IRQ5_RV32_IRQ_POS)) /**< IRQ5_RV32_IRQ Mask */
+
+/**@} end of group SEMA_IRQ5_Register */
+
+/**
+ * @ingroup  sema_registers
+ * @defgroup SEMA_MAIL5 SEMA_MAIL5
+ * @brief    Semaphore Mailbox 5 register.
+ * @{
+ */
+#define MXC_F_SEMA_MAIL5_DATA_POS                      0 /**< MAIL5_DATA Position */
+#define MXC_F_SEMA_MAIL5_DATA                          ((uint32_t)(0xFFFFFFFFUL << MXC_F_SEMA_MAIL5_DATA_POS)) /**< MAIL5_DATA Mask */
+
+/**@} end of group SEMA_MAIL5_Register */
+
+/**
+ * @ingroup  sema_registers
  * @defgroup SEMA_STATUS SEMA_STATUS
  * @brief    Semaphore status bits. 0 indicates the semaphore is free, 1 indicates taken.
  * @{
  */
-#define MXC_F_SEMA_STATUS_STATUS_POS                   0 /**< STATUS_STATUS Position */
-#define MXC_F_SEMA_STATUS_STATUS                       ((uint32_t)(0xFFUL << MXC_F_SEMA_STATUS_STATUS_POS)) /**< STATUS_STATUS Mask */
+#define MXC_F_SEMA_STATUS_STATUS0_POS                  0 /**< STATUS_STATUS0 Position */
+#define MXC_F_SEMA_STATUS_STATUS0                      ((uint32_t)(0x1UL << MXC_F_SEMA_STATUS_STATUS0_POS)) /**< STATUS_STATUS0 Mask */
+
+#define MXC_F_SEMA_STATUS_STATUS1_POS                  1 /**< STATUS_STATUS1 Position */
+#define MXC_F_SEMA_STATUS_STATUS1                      ((uint32_t)(0x1UL << MXC_F_SEMA_STATUS_STATUS1_POS)) /**< STATUS_STATUS1 Mask */
+
+#define MXC_F_SEMA_STATUS_STATUS2_POS                  2 /**< STATUS_STATUS2 Position */
+#define MXC_F_SEMA_STATUS_STATUS2                      ((uint32_t)(0x1UL << MXC_F_SEMA_STATUS_STATUS2_POS)) /**< STATUS_STATUS2 Mask */
+
+#define MXC_F_SEMA_STATUS_STATUS3_POS                  3 /**< STATUS_STATUS3 Position */
+#define MXC_F_SEMA_STATUS_STATUS3                      ((uint32_t)(0x1UL << MXC_F_SEMA_STATUS_STATUS3_POS)) /**< STATUS_STATUS3 Mask */
+
+#define MXC_F_SEMA_STATUS_STATUS4_POS                  4 /**< STATUS_STATUS4 Position */
+#define MXC_F_SEMA_STATUS_STATUS4                      ((uint32_t)(0x1UL << MXC_F_SEMA_STATUS_STATUS4_POS)) /**< STATUS_STATUS4 Mask */
+
+#define MXC_F_SEMA_STATUS_STATUS5_POS                  5 /**< STATUS_STATUS5 Position */
+#define MXC_F_SEMA_STATUS_STATUS5                      ((uint32_t)(0x1UL << MXC_F_SEMA_STATUS_STATUS5_POS)) /**< STATUS_STATUS5 Mask */
+
+#define MXC_F_SEMA_STATUS_STATUS6_POS                  6 /**< STATUS_STATUS6 Position */
+#define MXC_F_SEMA_STATUS_STATUS6                      ((uint32_t)(0x1UL << MXC_F_SEMA_STATUS_STATUS6_POS)) /**< STATUS_STATUS6 Mask */
+
+#define MXC_F_SEMA_STATUS_STATUS7_POS                  7 /**< STATUS_STATUS7 Position */
+#define MXC_F_SEMA_STATUS_STATUS7                      ((uint32_t)(0x1UL << MXC_F_SEMA_STATUS_STATUS7_POS)) /**< STATUS_STATUS7 Mask */
 
 /**@} end of group SEMA_STATUS_Register */
 

@@ -2,10 +2,11 @@
  * @file    scn_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SCN Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup scn_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws

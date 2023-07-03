@@ -79,7 +79,7 @@
         <resetMask>0xFFFFFF38</resetMask>
         <fields>
           <field>
-            <name>RTCE</name>
+            <name>EN</name>
             <description>Real Time Clock Enable. This bit enables the Real Time Clock. This bit can only be written when WE=1 and BUSY =0. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -97,7 +97,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ADE</name>
+            <name>TOD_ALARM_IE</name>
             <description>Alarm Time-of-Day Interrupt Enable. Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -115,7 +115,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ASE</name>
+            <name>SSEC_ALARM_IE</name>
             <description>Alarm Sub-second Interrupt Enable.  Change to this bit is effective only after BUSY is cleared from 1 to 0.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
@@ -170,7 +170,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>RDYE</name>
+            <name>RDY_IE</name>
             <description>RTC Ready Interrupt Enable.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
@@ -188,7 +188,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ALDF</name>
+            <name>TOD_ALARM_IF</name>
             <description>Time-of-Day Alarm Interrupt Flag.  This alarm is qualified as wake-up source to the processor.</description>
             <bitOffset>6</bitOffset>
             <bitWidth>1</bitWidth>
@@ -207,7 +207,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ALSF</name>
+            <name>SSEC_ALARM_IF</name>
             <description>Sub-second Alarm Interrupt Flag. This alarm is qualified as wake-up source to the processor.</description>
             <bitOffset>7</bitOffset>
             <bitWidth>1</bitWidth>
@@ -226,7 +226,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>SQE</name>
+            <name>SQW_EN</name>
             <description>Square Wave Output Enable.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
@@ -244,7 +244,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>FT</name>
+            <name>SQW_SEL</name>
             <description>Frequency Output Selection. When SQE=1, these bits specify the output frequency on the SQW pin.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>2</bitWidth>
@@ -267,7 +267,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ACRE</name>
+            <name>RD_EN</name>
             <description>Asynchronous Counter Read Enable.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
@@ -285,7 +285,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>WE</name>
+            <name>WR_EN</name>
             <description>Write Enable. This register bit serves as a protection mechanism against unintentional writes to critical RTC bits.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
@@ -317,7 +317,7 @@
             <bitWidth>8</bitWidth>
           </field>
           <field>
-            <name>COUNT</name>
+            <name>VBAT_TMR</name>
             <description>VBAT Timer Value. When RTC is running off of VBAT, this field is incremented every 32 seconds.</description>
             <bitOffset>8</bitOffset>
             <bitWidth>24</bitWidth>
@@ -330,6 +330,42 @@
         <addressOffset>0x18</addressOffset>
         <resetMask>0x00000000</resetMask>
         <fields>
+          <field>
+            <name>FILTER_EN</name>
+            <description>Enable Filter.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIAS_SEL</name>
+            <description>IBIAS Select.</description>
+            <bitOffset>1</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>2x</name>
+                <description>2x</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>4x</name>
+                <description>4x</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>HYST_EN</name>
+            <description>RTC Hysteresis Enable.</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>IBIAS_EN</name>
+            <description>RTC IBIAS Enable.</description>
+            <bitOffset>3</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
           <field>
             <name>BYPASS</name>
             <description>RTC Crystal Bypass</description>
@@ -349,7 +385,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>32KOUT</name>
+            <name>SQW_32K</name>
             <description>RTC 32kHz Square Wave Output</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>

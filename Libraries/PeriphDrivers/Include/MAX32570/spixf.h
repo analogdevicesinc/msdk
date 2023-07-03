@@ -3,15 +3,17 @@
  * @brief   SPI Flash Controller driver header file.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -34,7 +36,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32570_SPIXF_H_
@@ -179,10 +181,10 @@ typedef enum {
  * @brief      IO pullup/pulldown Control
  */
 typedef enum {
-    MXC_SPIXF_TRISTATE = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_TRI_STATE,
-    MXC_SPIXF_PULL_UP = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_UP,
-    MXC_SPIXF_PULL_DOWN = MXC_S_SPIXFM_IO_CTRL_PU_PD_CTRL_PULL_DOWN,
-} mxc_spixf_pup_t;
+    MXC_SPIXF_TRISTATE = MXC_S_SPIXFM_IOCTRL_PADCTRL_TRI_STATE,
+    MXC_SPIXF_PULL_UP = MXC_S_SPIXFM_IOCTRL_PADCTRL_PULL_UP,
+    MXC_SPIXF_PULL_DOWN = MXC_S_SPIXFM_IOCTRL_PADCTRL_PULL_DOWN,
+} mxc_spixf_padctrl_t;
 
 /**
  * @brief       SPIXF drive strentgh
@@ -241,7 +243,7 @@ void MXC_SPIXF_Shutdown(void);
  * @param      pupdctrl  IO Pullup/Pulldown Control
  */
 void MXC_SPIXF_IOCtrl(mxc_spixf_ds_t sclk_ds, mxc_spixf_ds_t ss_ds, mxc_spixf_ds_t sdio_ds,
-                      mxc_spixf_pup_t pupdctrl);
+                      mxc_spixf_padctrl_t padctrl);
 
 /**
  * @brief      Send Clock cycles on SCK without reading or writing.
@@ -962,18 +964,18 @@ void MXC_SPIXF_SetIoctrlSSDriveLow();
 uint8_t MXC_SPIXF_GetIoctrlSSDrive(void);
 
 /**
- * @brief      Set pull up pull down
+ * @brief      Set pull up, pull down
  *
- * @param[in]  pupd  The enum corresponding to Pull up pull down states
+ * @param[in]  pupd  The enum corresponding to pull up, pull down states
  */
-void MXC_SPIXF_SetPuPdCtrl(mxc_spixf_pup_t pupd);
+void MXC_SPIXF_SetPadCtrl(mxc_spixf_padctrl_t pad);
 
 /**
- * @brief      Get what setting the pull up pull down is set to
+ * @brief      Get what setting the pull up, pull down is set to
  *
- * @return     the enum value for pull up pull down state
+ * @return     the enum value for pull up, pull down state
  */
-uint8_t MXC_SPIXF_GetPuPdCtrl(void);
+uint8_t MXC_SPIXF_GetPadCtrl(void);
 
 /**
  * @brief      Set bus idle to a time where ss will be deactivated if timer runs out

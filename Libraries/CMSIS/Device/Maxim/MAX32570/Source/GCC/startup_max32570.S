@@ -134,7 +134,7 @@ __isr_vector:
     .long TMR6_IRQHandler           /* 0x30  0x00C0  48: Timer 6 */
     .long TMR7_IRQHandler           /* 0x31  0x00C4  49: Timer 7 */
     .long UART2_IRQHandler          /* 0x32  0x00C8  50: UART 2 */
-    .long CLC_IRQHandler            /* 0x33  0x00CC  51: Contact Link Control */
+    .long NFC_IRQHandler            /* 0x33  0x00CC  51: NFC Link Control */
     .long I2C1_IRQHandler           /* 0x34  0x00D0  52: I2C1 */
     .long SC1_IRQHandler            /* 0x35  0x00D4  53: Smart Card 1 */
     .long SPIXC_IRQHandler          /* 0x36  0x00D8  54: SPI execute in place */
@@ -159,10 +159,10 @@ __isr_vector:
     .long WDT1_IRQHandler           /* 0x49  0x0124  73: Watchdog 1 */
     .long GPIO3_IRQHandler          /* 0x4A  0x0128  74: GPIO 3 */
     .long PT_IRQHandler             /* 0x4B  0x012C  75: Pulse train */
-    .long HA0_IRQHandler            /* 0x4C  0x0130  76: Hardware Accelerator 0 */
+    .long RISCV1_IRQHandler         /* 0x4C  0x0130  76: RISCV 1 */
     .long RSV61_IRQHandler          /* 0x4D  0x0134  77: Reserved */
     .long I2C2_IRQHandler           /* 0x4E  0x0138  78: I2C 2 */
-    .long HA1_IRQHandler            /* 0x4F  0x013C  79: Hardware Accelerator 1 */
+    .long RISCV0_IRQHandler         /* 0x4F  0x013C  79: RISCV 0 */
     .long EMAC_IRQHandler           /* 0x50  0x0140  80: Ethernet MAC */
     .long RSV65_IRQHandler          /* 0x51  0x0144  81: Reserved */
     .long SDHC_IRQHandler           /* 0x52  0x0148  82: SDIO/SDHC */
@@ -184,7 +184,7 @@ __isr_vector:
     .long ECC_IRQHandler            /* 0x62  0x0188  98: Error Correction */
     .long RSV83_IRQHandler          /* 0x63  0x018C  99: Reserved */
     .long RSV84_IRQHandler          /* 0x64  0x0190  100: Reserved */
-    .long RSV85_IRQHandler          /* 0x65  0x0194  101: Reserved */
+    .long SCA_IRQHandler            /* 0x65  0x0194  101: SCA */
     .long RSV86_IRQHandler          /* 0x66  0x0198  102: Reserved */
     .long FLC1_IRQHandler           /* 0x67  0x019C  103: Flash Controller 1 */
     .long UART3_IRQHandler          /* 0x68  0x01A0  104: UART 3 */
@@ -372,7 +372,7 @@ Reset_Handler:
     def_irq_handler    TMR6_IRQHandler           /* 0x30  0x00C0  48: Timer 6 */
     def_irq_handler    TMR7_IRQHandler           /* 0x31  0x00C4  49: Timer 7 */
     def_irq_handler    UART2_IRQHandler          /* 0x32  0x00C8  50: UART 2 */
-    def_irq_handler    CLC_IRQHandler            /* 0x33  0x00CC  51: Contact Link Control */
+    def_irq_handler    NFC_IRQHandler            /* 0x33  0x00CC  51: NFC Link Control */
     def_irq_handler    I2C1_IRQHandler           /* 0x34  0x00D0  52: I2C1 */
     def_irq_handler    SC1_IRQHandler            /* 0x35  0x00D4  53: Smart Card 1 */
     def_irq_handler    SPIXC_IRQHandler          /* 0x36  0x00D8  54: SPI execute in place */
@@ -397,10 +397,10 @@ Reset_Handler:
     def_irq_handler    WDT1_IRQHandler           /* 0x49  0x0124  73: Watchdog 1 */
     def_irq_handler    GPIO3_IRQHandler          /* 0x4A  0x0128  74: GPIO3 */
     def_irq_handler    PT_IRQHandler             /* 0x4B  0x012C  75: Pulse train */
-    def_irq_handler    HA0_IRQHandler            /* 0x4C  0x0130  76: Hardware Accelerator 0 */
+    def_irq_handler    RISCV1_IRQHandler         /* 0x4C  0x0130  76: RISCV 1 */
     def_irq_handler    RSV61_IRQHandler          /* 0x4D  0x0134  77: Reserved */
     def_irq_handler    I2C2_IRQHandler           /* 0x4E  0x0138  78: I2C 2 */
-    def_irq_handler    HA1_IRQHandler            /* 0x4F  0x013C  79: Hardware Accelerator 1 */
+    def_irq_handler    RSICV0_IRQHandler         /* 0x4F  0x013C  79: RISCV 0 */
     def_irq_handler    EMAC_IRQHandler           /* 0x50  0x0140  80: Ethernet MAC */
     def_irq_handler    RSV65_IRQHandler          /* 0x51  0x0144  81: Reserved */
     def_irq_handler    SDHC_IRQHandler           /* 0x52  0x0148  82: SDIO/SDHC */
@@ -422,7 +422,7 @@ Reset_Handler:
     def_irq_handler    ECC_IRQHandler            /* 0x62  0x0188  98: Error Correction */
     def_irq_handler    RSV83_IRQHandler          /* 0x63  0x018C  99: Reserved */
     def_irq_handler    RSV84_IRQHandler          /* 0x64  0x0190  100: Reserved */
-    def_irq_handler    RSV85_IRQHandler          /* 0x65  0x0194  101: Reserved */
+    def_irq_handler    SCA_IRQHandler            /* 0x65  0x0194  101: SCA */
     def_irq_handler    RSV86_IRQHandler          /* 0x66  0x0198  102: Reserved */
     def_irq_handler    FLC1_IRQHandler           /* 0x67  0x019C  103: Reserved */
     def_irq_handler    UART3_IRQHandler          /* 0x68  0x01A0  104: UART 3 */

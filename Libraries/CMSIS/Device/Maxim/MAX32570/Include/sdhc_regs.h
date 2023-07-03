@@ -2,10 +2,11 @@
  * @file    sdhc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the SDHC Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup sdhc_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
@@ -88,14 +89,14 @@ extern "C" {
  * Structure type to access the SDHC Registers.
  */
 typedef struct {
-    __IO uint32_t sdma;                 /**< <tt>\b 0x00:</tt> SDHC SDMA Register */
-    __IO uint16_t blk_size;             /**< <tt>\b 0x04:</tt> SDHC BLK_SIZE Register */
-    __IO uint16_t blk_cnt;              /**< <tt>\b 0x06:</tt> SDHC BLK_CNT Register */
-    __IO uint32_t arg_1;                /**< <tt>\b 0x08:</tt> SDHC ARG_1 Register */
-    __IO uint16_t trans;                /**< <tt>\b 0x0C:</tt> SDHC TRANS Register */
-    __IO uint16_t cmd;                  /**< <tt>\b 0x0E:</tt> SDHC CMD Register */
-    __IO uint32_t resp[4];              /**< <tt>\b 0x010:</tt> SDHC RESP Register */
-    __IO uint32_t buffer;               /**< <tt>\b 0x20:</tt> SDHC BUFFER Register */
+    __IO uint32_t sdma;                 /**< <tt>\b 0x000:</tt> SDHC SDMA Register */
+    __IO uint16_t blk_size;             /**< <tt>\b 0x004:</tt> SDHC BLK_SIZE Register */
+    __IO uint16_t blk_cnt;              /**< <tt>\b 0x006:</tt> SDHC BLK_CNT Register */
+    __IO uint32_t arg_1;                /**< <tt>\b 0x008:</tt> SDHC ARG_1 Register */
+    __IO uint16_t trans;                /**< <tt>\b 0x00C:</tt> SDHC TRANS Register */
+    __IO uint16_t cmd;                  /**< <tt>\b 0x00E:</tt> SDHC CMD Register */
+    __IO uint16_t resp[8];              /**< <tt>\b 0x010:</tt> SDHC RESP Register */
+    __IO uint32_t buffer;               /**< <tt>\b 0x020:</tt> SDHC BUFFER Register */
     __I  uint32_t present;              /**< <tt>\b 0x024:</tt> SDHC PRESENT Register */
     __IO uint8_t  host_cn_1;            /**< <tt>\b 0x028:</tt> SDHC HOST_CN_1 Register */
     __IO uint8_t  pwr;                  /**< <tt>\b 0x029:</tt> SDHC PWR Register */
@@ -119,7 +120,7 @@ typedef struct {
     __O  uint16_t force_cmd;            /**< <tt>\b 0x050:</tt> SDHC FORCE_CMD Register */
     __IO uint16_t force_event_int_stat; /**< <tt>\b 0x052:</tt> SDHC FORCE_EVENT_INT_STAT Register */
     __IO uint8_t  adma_er;              /**< <tt>\b 0x054:</tt> SDHC ADMA_ER Register */
-    __R  uint8_t rsv_0x55_0x57[3];
+    __R  uint8_t  rsv_0x55_0x57[3];
     __IO uint32_t adma_addr_0;          /**< <tt>\b 0x058:</tt> SDHC ADMA_ADDR_0 Register */
     __IO uint32_t adma_addr_1;          /**< <tt>\b 0x05C:</tt> SDHC ADMA_ADDR_1 Register */
     __I  uint16_t preset_0;             /**< <tt>\b 0x060:</tt> SDHC PRESET_0 Register */
@@ -130,7 +131,9 @@ typedef struct {
     __I  uint16_t preset_5;             /**< <tt>\b 0x06A:</tt> SDHC PRESET_5 Register */
     __I  uint16_t preset_6;             /**< <tt>\b 0x06C:</tt> SDHC PRESET_6 Register */
     __I  uint16_t preset_7;             /**< <tt>\b 0x06E:</tt> SDHC PRESET_7 Register */
-    __R  uint32_t rsv_0x70_0xfb[35];
+    __R  uint32_t rsv_0x70_0xdf[28];
+    __IO uint16_t shared_bus;           /**< <tt>\b 0x0E0:</tt> SDHC SHARED_BUS Register */
+    __R  uint16_t rsv_0xe2_0xfb[13];
     __I  uint16_t slot_int;             /**< <tt>\b 0x0FC:</tt> SDHC SLOT_INT Register */
     __IO uint16_t host_cn_ver;          /**< <tt>\b 0x0FE:</tt> SDHC HOST_CN_VER Register */
 } mxc_sdhc_regs_t;
@@ -182,6 +185,7 @@ typedef struct {
 #define MXC_R_SDHC_PRESET_5                ((uint32_t)0x0000006AUL) /**< Offset from SDHC Base Address: <tt> 0x006A</tt> */
 #define MXC_R_SDHC_PRESET_6                ((uint32_t)0x0000006CUL) /**< Offset from SDHC Base Address: <tt> 0x006C</tt> */
 #define MXC_R_SDHC_PRESET_7                ((uint32_t)0x0000006EUL) /**< Offset from SDHC Base Address: <tt> 0x006E</tt> */
+#define MXC_R_SDHC_SHARED_BUS              ((uint32_t)0x000000E0UL) /**< Offset from SDHC Base Address: <tt> 0x00E0</tt> */
 #define MXC_R_SDHC_SLOT_INT                ((uint32_t)0x000000FCUL) /**< Offset from SDHC Base Address: <tt> 0x00FC</tt> */
 #define MXC_R_SDHC_HOST_CN_VER             ((uint32_t)0x000000FEUL) /**< Offset from SDHC Base Address: <tt> 0x00FE</tt> */
 /**@} end of group sdhc_registers */
@@ -295,7 +299,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_SDHC_RESP_CMD_RESP_POS                   0 /**< RESP_CMD_RESP Position */
-#define MXC_F_SDHC_RESP_CMD_RESP                       ((uint32_t)(0xFFFFFFFFUL << MXC_F_SDHC_RESP_CMD_RESP_POS)) /**< RESP_CMD_RESP Mask */
+#define MXC_F_SDHC_RESP_CMD_RESP                       ((uint16_t)(0xFFFFUL << MXC_F_SDHC_RESP_CMD_RESP_POS)) /**< RESP_CMD_RESP Mask */
 
 /**@} end of group SDHC_RESP_Register */
 
@@ -1138,6 +1142,17 @@ typedef struct {
 #define MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH            ((uint16_t)(0x3UL << MXC_F_SDHC_PRESET_7_DRIVER_STRENGTH_POS)) /**< PRESET_7_DRIVER_STRENGTH Mask */
 
 /**@} end of group SDHC_PRESET_7_Register */
+
+/**
+ * @ingroup  sdhc_registers
+ * @defgroup SDHC_SHARED_BUS SDHC_SHARED_BUS
+ * @brief    Shared Bus Register.
+ * @{
+ */
+#define MXC_F_SDHC_SHARED_BUS_INT_SIGNALS_POS          0 /**< SHARED_BUS_INT_SIGNALS Position */
+#define MXC_F_SDHC_SHARED_BUS_INT_SIGNALS              ((uint16_t)(0x1UL << MXC_F_SDHC_SHARED_BUS_INT_SIGNALS_POS)) /**< SHARED_BUS_INT_SIGNALS Mask */
+
+/**@} end of group SDHC_SHARED_BUS_Register */
 
 /**
  * @ingroup  sdhc_registers
