@@ -341,8 +341,12 @@ typedef enum {
 /* ==================       Device Specific Memory Section       ================== */
 /* ================================================================================ */
 
-#define MXC_ROM_MEM_BASE 0x00000000UL
-#define MXC_ROM_MEM_SIZE 0x00020000UL
+#define MXC_ROM0_MEM_BASE 0x00000000UL
+#define MXC_ROM0_MEM_SIZE 0x00020000UL
+#define MXC_ROM1_MEM_BASE 0x200C0000UL
+#define MXC_ROM1_MEM_SIZE 0x00008000UL
+#define MXC_ROM_MEM_BASE MXC_ROM0_MEM_BASE
+#define MXC_ROM_MEM_SIZE MXC_ROM0_MEM_SIZE
 #define MXC_XIP_MEM_BASE 0x08000000UL
 #define MXC_XIP_MEM_SIZE 0x08000000UL
 #define MXC_FLASH0_MEM_BASE 0x10000000UL
