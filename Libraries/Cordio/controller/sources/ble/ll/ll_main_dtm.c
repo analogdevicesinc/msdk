@@ -748,20 +748,7 @@ static void llTestRxOpEndCback(BbOpDesc_t *pOp)
         }
     }
 }
-static void llTestRxAbortCback(BbOpDesc_t *pOp)
-{
-    BbBleData_t *const pBle = pOp->prot.pBle;
-    BbBleTestRx_t *const pRx = &pBle->op.testRx;
 
-    if (llTestCb.state == LL_TEST_STATE_RX) {
-        SchInsertNextAvailable(pOp);
-    } else {
-        WsfBufFree(pBle);
-        WsfBufFree(pRx->pRxBuf);
-        WsfBufFree(pOp);
-        llTestCb.packetsFreed = TRUE;
-    }
-}
 /*************************************************************************************************/
 /*!
  *  \brief      Complete a receive.
