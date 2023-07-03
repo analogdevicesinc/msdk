@@ -240,6 +240,7 @@ int spi_init()
     if (err)
         return err;
 
+    NVIC_ClearPendingIRQ(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)));
     NVIC_EnableIRQ(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)));
     MXC_NVIC_SetVector(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), SPI_IRQHandler);
     NVIC_SetPriority(MXC_SPI_GET_IRQ(MXC_SPI_GET_IDX(SPI)), 0);

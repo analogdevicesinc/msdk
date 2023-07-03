@@ -52,7 +52,7 @@ unsigned int utils_get_time_ms(void)
 
     MXC_RTC_GetSeconds(&sec);
 
-    ms = (sec * 1000) + (int)(subsec * 1000);
+    ms = (sec * 1000) + (subsec * 1000);
 
     return ms;
 }

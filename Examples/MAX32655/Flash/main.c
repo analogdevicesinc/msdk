@@ -209,7 +209,7 @@ int erase_magic()
     //^ 8192 bytes per page / 4 bytes = 2048 uint32_t
 
     printf("Buffering page...\n");
-    MXC_FLC_Read(TEST_ADDRESS, buffer, MXC_FLASH_PAGE_SIZE);
+    memcpy(buffer, (void *)TEST_ADDRESS, MXC_FLASH_PAGE_SIZE);
 
     printf("Erasing page...\n");
     err = MXC_FLC_PageErase(TEST_ADDRESS);
@@ -218,7 +218,7 @@ int erase_magic()
         return err;
     }
 
-    printf("Modifying magic value in buffer...\n");
+    printf("Erasing magic in buffer...\n");
     buffer[0] = 0xABCD1234; // Erase magic value
 
     printf("Writing buffer back to flash...\n");

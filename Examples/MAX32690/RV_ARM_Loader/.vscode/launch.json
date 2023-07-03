@@ -1,6 +1,35 @@
 {
     "configurations": [
         {
+            "name": "Debug Arm (Cortex-debug)",
+            "cwd":"${workspaceRoot}",
+            "executable": "${workspaceFolder}/build/${config:program_file}",
+            "loadFiles": ["${workspaceFolder}/build/${config:program_file}"],
+            "symbolFiles": [{
+                "file": "${workspaceFolder}/build/${config:symbol_file}"
+            }],
+            "request": "launch",
+            "type": "cortex-debug",
+            "servertype": "openocd",
+            "linux": {
+                "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "serverpath": "${config:OCD_path}/openocd",
+            },
+            "windows": {
+                "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb.exe",
+                "serverpath": "${config:OCD_path}/openocd.exe",
+            },
+            "osx": {
+                "gdbPath": "${config:ARM_GCC_path}/bin/arm-none-eabi-gdb",
+                "serverpath": "${config:OCD_path}/openocd",
+            },
+            "searchDir": ["${config:OCD_path}/scripts"],
+            "configFiles": ["interface/${config:M4_OCD_interface_file}", "target/${config:M4_OCD_target_file}"],
+            "interface": "swd",
+            "runToEntryPoint": "main",
+            "svdFile": "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include/${config:target}.svd"
+        },
+        {
             "name": "GDB (Arm M4)",
             "type": "cppdbg",
             "request": "launch",
@@ -46,6 +75,7 @@
                 { "text":"symbol-file build/${config:symbol_file}" },
                 { "text":"target remote localhost:3333" },
                 { "text":"monitor reset halt" },
+                { "text":"set $pc=Reset_Handler"},
                 { "text":"b main" }
             ]
         },

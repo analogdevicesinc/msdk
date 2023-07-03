@@ -61,14 +61,12 @@ If using the MAX78000EVKIT (EvKit_V1):
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED2 EN).
--	Select "EvKit_V1" for _BOARD_ in "project.mk"
 -   Connect pins SCL - P0.30 (J4.11) and SDA - P0.31 (J4.12) to the I2C Bus
 -   Connect Ready Signal (P2.4) to the pin used for ready signal on your micro.
 
 If using the MAX78000FTHR (FTHR_RevA)
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -	Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--	Select "FTHR_RevA" for _BOARD_ in "project.mk"
 -   Connect pins SCL - P0.16 (J4.8) and SDA - P0.17 (J4.6) to the I2C Bus
 -   Connect Ready Signal - P0.19 (J4.9) to the pin used for ready signal on your micro.
 

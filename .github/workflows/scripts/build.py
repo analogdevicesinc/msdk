@@ -7,6 +7,7 @@ from rich.progress import Progress
 from rich.console import Console
 from rich.text import Text
 import time
+import shutil
 
 blacklist = [
     "MAX32570",
@@ -93,6 +94,9 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
     env["FORCE_COLOR"] = 1
 
     console = Console(emoji=False, color_system="standard")
+
+    # Remove the periphdrivers build directory
+    shutil.rmtree(Path(maxim_path) / "Libraries" / "PeriphDrivers" / "bin", ignore_errors=True)
 
     # Get list of target micros if none is specified
     if targets is None:

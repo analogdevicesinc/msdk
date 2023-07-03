@@ -161,13 +161,17 @@ The MSDK officially supports the following microcontrollers and evaluation platf
     - Supported shells (Windows):
         - [MSYS2](https://www.msys2.org/)
 
-    - Supported shells (Ubuntu and MacOS):
+    - Supported shells (Ubuntu):
         - [Bash](https://tiswww.case.edu/php/chet/bash/bashtop.html)
+        - [Zsh](https://www.zsh.org/)
+
+    - Supposted shells (MacOS):
         - [Zsh](https://www.zsh.org/)
 
 ### Supported Languages
 
 - C
+- C++
 - Assembly (Arm and/or RISC-V instruction set depending on the microcontroller)
 
 ## Installation
@@ -238,7 +242,7 @@ On MacOS, some additional missing packages must be manually installed with[Homeb
 
         brew install make libusb-compat libftdi hidapi libusb
 
-3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
 
         :::shell
         ==> make: stable 4.4.1 (bottled)
@@ -261,7 +265,7 @@ On MacOS, some additional missing packages must be manually installed with[Homeb
         install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
         build-error: 0 (30 days)
 
-    Typically, this involves adding the following line to your shell's startup script (`~/.zshrc`, `~/.bashrc`, etc.)
+    This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
 
         :::bash
         PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
@@ -311,7 +315,7 @@ The i386 version of Homebrew can be installed in parallel with the arm64 version
         :::shell
         /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
 
-7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
 
         :::shell
         ==> make: stable 4.4.1 (bottled)
@@ -334,7 +338,7 @@ The i386 version of Homebrew can be installed in parallel with the arm64 version
         install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
         build-error: 0 (30 days)
 
-    Typically, this involves adding the following line to your shell's startup script (`~/.zshrc`, `~/.bashrc`, etc.)
+    This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
 
         :::bash
         PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
@@ -1641,10 +1645,10 @@ If a value is set in an IDE _and_ project.mk, the IDE's value will take preceden
 | `MAXIM_PATH`           | (Optional) Specify the location of the MSDK                | This optional variable can be used to change where the Makefile looks for the MSDK installation. By default, the build system will attempt to locate the MSDK with a relative path. If a project is moved _outside_ of the SDK, this variable must be set to the absolute path of the MSDK installation. |
 | `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
 |                        |                                                            |                                                              |
-| `VPATH`                | Where to search for source (.c) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **source code** files. If `AUTOSEARCH` is enabled (which it is by default), all source code files in the directories specified by this option will be automatically added to the build. If `AUTOSEARCH` is disabled, this tells the Makefile where to look for the files specified by `SRCS`. |
+| `VPATH`                | Where to search for source (.c/.cpp) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **source code** files. If `AUTOSEARCH` is enabled (which it is by default), all source code files in the directories specified by this option will be automatically added to the build. If `AUTOSEARCH` is disabled, this tells the Makefile where to look for the files specified by `SRCS`. |
 | `IPATH`                | Where to search for header (.h) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **header** files. _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`. Individual header files are _not_ ever manually added to the build. Instead, you only need to specify the _location_ of your header files. |
-| `AUTOSEARCH`           | Automatically search for source (.c) files                 | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default). Set to `0` to disable or `1` to enable. If auto-search is disabled, source files must be manually added to `SRCS`. |
-| `SRCS`                 | List of source (.c) files to add to the build              | **Use the `+=` operator with this variable**. All of the files in this list will be added to the build. If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build. If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`. Otherwise, a full path relative to the Makefile must be used. |
+| `AUTOSEARCH`           | Automatically search for source (.c/.cpp) files                 | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default). Set to `0` to disable or `1` to enable. If auto-search is disabled, source files must be manually added to `SRCS`. |
+| `SRCS`                 | List of source (.c/.cpp) files to add to the build              | **Use the `+=` operator with this variable**. All of the files in this list will be added to the build. If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build. If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`. Otherwise, a full path relative to the Makefile must be used. |
 | `PROJECT`              | Set the output filename                                    | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  **For VS Code, you should use the [project_name](#project_name) advanced config option instead of project.mk.** |
 |                        |                                                            |                                                              |
 | `MXC_OPTIMIZE_CFLAGS`  | Set the optimization level                                 | See [Optimize Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details.  Normal builds will default to `-Og`, which is good for debugging, while release builds will default to `-O2`. |
@@ -1813,6 +1817,7 @@ The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level inte
 - MAX32650
 - MAX32570
 - MAX32665-MAX32666
+- MAX78000
 - MAX78002
 
 ---

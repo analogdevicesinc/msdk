@@ -25,7 +25,7 @@ endif
 # Place build files specific to FTHR_RevA here.
 ifeq "$(BOARD)" "FTHR_RevA"
 # Only Enable if 2.4" TFT is connected to Feather
-PROJ_CFLAGS+=-DTFT_ENABLE
+# PROJ_CFLAGS+=-DTFT_ENABLE
 IPATH += TFT/fthr
 VPATH += TFT/fthr
 endif

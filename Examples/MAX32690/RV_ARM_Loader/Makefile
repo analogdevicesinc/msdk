@@ -29,7 +29,7 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- ###############################################################################
+###############################################################################
 
 # ** Readme! **
 # Don't edit this file! This is the core Makefile for a MaximSDK 
@@ -37,7 +37,7 @@
 # in "project.mk", on the command-line, or with system environment 
 # variables.
 
-# See https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration 
+# See https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 # for more detailed instructions on how to use this system.
 
 # The detailed instructions mentioned above are easier to read than 
@@ -103,8 +103,10 @@ endif
 # the variables below.
 
 
-include ./project.mk
+PROJECTMK ?= $(abspath ./project.mk)
+include $(PROJECTMK)
 $(info Loaded project.mk)
+# PROJECTMK is also used by implicit rules and other libraries to add project.mk as a watch file
 
 # *******************************************************************************
 # Final path sanitization and re-calculation.  No options here.
@@ -113,7 +115,7 @@ ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
 DEPTH := ../../../
 MAXIM_PATH := $(abspath $(DEPTH))
-$(warning Warning:  MAXIM_PATH is not set!  It's recommended to set MAXIM_PATH in your environment or in project.mk)
+$(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
 else
 # Sanitize MAXIM_PATH for backslashes
@@ -139,12 +141,12 @@ export CMSIS_ROOT
 
 # The following paths are searched by default, where "./" is the project directory.
 # ./
-# ├─ *.h
-# ├─ *.c
-# ├─include (optional)
-#   └─ *.h
-# ├─src (optional)
-#   └─ *.c
+# |- *.h
+# |- *.c
+# |-include (optional)
+#   |- *.h
+# |-src (optional)
+#   |- *.c
 
 # Configuration Variables:
 # - VPATH : Tell this Makefile to search additional locations for source (.c) files.
@@ -177,8 +179,9 @@ IPATH := $(IPATH)
 
 AUTOSEARCH ?= 1
 ifeq ($(AUTOSEARCH), 1)
-# Auto-detect all C source files on VPATH
+# Auto-detect all C/C++ source files on VPATH
 SRCS += $(wildcard $(addsuffix /*.c, $(VPATH)))
+SRCS += $(wildcard $(addsuffix /*.cpp, $(VPATH)))
 endif
 
 # Collapse SRCS before passing them on to the next stage
@@ -198,6 +201,8 @@ PROJECT ?= $(TARGET_LC)
 # Compiler options
 
 # Configuration Variables:
+# - DEBUG : Set DEBUG=1 to build explicitly for debugging.  This adds some additional
+#			symbols and sets -Og as the default optimization level.
 # - MXC_OPTIMIZE_CFLAGS : Override the default compiler optimization level.  
 #			Ex: MXC_OPTIMIZE_CFLAGS = -O2
 # - PROJ_CFLAGS : Add additional compiler flags to the build.
@@ -208,7 +213,10 @@ PROJECT ?= $(TARGET_LC)
 #			Ex: MFLOAT_ABI = hard
 # - LINKERFILE : Override the default linkerfile.
 #			Ex: LINKERFILE = customlinkerfile.ld
-
+# - LINKERPATH : Override the default search location for $(LINKERFILE)
+#			The default search location is $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
+#			If $(LINKERFILE) cannot be found at this path, then the root project
+#			directory will be used as a fallback.
 
 # Select 'GCC' or 'IAR' compiler
 ifeq "$(COMPILER)" ""
@@ -223,16 +231,13 @@ DEBUG = 0
 endif
 
 ifeq ($(DEBUG),1)
-# Default optimization level for debug builds (make DEBUG=1 ...)
-# gcc.mk checks for this flag to add some additional debug
-# info to the build, and should be used when you really need to
-# debug.
-MXC_OPTIMIZE_CFLAGS ?= -Og
-endif
-
-# Fallback default optimizes for debugging as recommended
+# Optimizes for debugging as recommended
 # by GNU for code-edit-debug cycles
 # https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html#Optimize-Options
+MXC_OPTIMIZE_CFLAGS := -Og
+endif
+
+# Default level if not building for release or explicitly for debug
 MXC_OPTIMIZE_CFLAGS ?= -Og
 
 # Set compiler flags
@@ -245,55 +250,11 @@ PROJ_CFLAGS += -DMXC_ASSERT_ENABLE
 # - soft
 # - softfp (default if MFLOAT_ABI is not set)
 MFLOAT_ABI ?= softfp
-# MFLOAT_ABI must be exported to other Makefiles, who check this too
+# MFLOAT_ABI must be exported to other Makefiles
 export MFLOAT_ABI
-
-# Set the default linkerfile.  Since the core Makefiles later add the location of Maxim's
-# linkerfiles to VPATH, and the local project directory has also been added to VPATH, Make
-# will search both locations for the specified linkerfile if it can't find it by its path alone.
-# The result is that overriding LINKERFILE with the filename of one of Maxim's alternate linkerfiles
-# (ex: LINKERFILE=max78000_arm.ld) will work just the same as LINKERFILE=mycustom.ld 
-# even if mycustom.ld lives locally to this project.
-
-ifeq "$(RISCV_CORE)" ""
-# Default linkerfile is only specified for standard Arm-core projects.
-# Otherwise, gcc_riscv.mk sets the appropriate riscv linkerfile.
-LINKER = $(TARGET_LC).ld
-LINKERFILE ?= $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(LINKER)
-endif
 
 # This path contains system-level intialization files for the target micro.  Add to the build.
 VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
-
-# Get .DEFAULT_GOAL working.
-ifeq "$(MAKECMDGOALS)" ""
-MAKECMDGOALS:=$(.DEFAULT_GOAL)
-endif
-
-# *******************************************************************************
-# Libraries
-
-# This section offers "toggle switches" to include or exclude the libraries that
-# are available in the MaximSDK.  Set a configuration variable to 1 to include the
-# library in the build, or 0 to exclude.
-
-# Each library may also have its own library specific configuration variables.  See
-# Libraries/libs.mk for more details.
-
-# Configuration variables:
-# - LIB_BOARD : Include the Board-Support Package (BSP) library. (Enabled by default)
-# - LIB_PERIPHDRIVERS : Include the peripheral driver library.  (Enabled by default)
-# - LIB_CMSIS_DSP : Include the CMSIS-DSP library.
-# - LIB_CORDIO : Include the Cordio BLE library
-# - LIB_FCL : Include the Free Cryptographic Library (FCL)
-# - LIB_FREERTOS : Include the FreeRTOS and FreeRTOS-Plus-CLI libraries
-# - LIB_LC3 : Include the Low Complexity Communication Codec (LC3) library
-# - LIB_LITTLEFS : Include the "little file system" (littleFS) library
-# - LIB_LWIP : Include the lwIP library
-# - LIB_MAXUSB : Include the MAXUSB library
-# - LIB_SDHC : Include the SDHC library
-
-include $(LIBS_DIR)/libs.mk
 
 # *******************************************************************************
 # Secure Boot Tools (SBT)
@@ -325,9 +286,80 @@ MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
 
 export MAXIM_SBT_DIR # SBTs must have this environment variable defined to work
 
-include $(MAXIM_SBT_DIR)/SBT-config.mk
+# SBT-config.mk and SBT-rules.mk are included further down this Makefile.
 
+endif # SBT
+
+# *******************************************************************************
+# Default goal selection.  This section allows you to override the default goal
+# that will run if no targets are specified on the command-line.
+# (ie. just running 'make' instead of 'make all')
+
+# Configuration variables:
+#	.DEFAULT_GOAL : Set the default goal if no targets were specified on the 
+#			command-line
+#			** "override" must be used with this variable. **
+#			Ex: "override .DEFAULT_GOAL = mygoal"
+
+ifeq "$(.DEFAULT_GOAL)" ""
+ifeq ($(SBT),1)
+override .DEFAULT_GOAL := sla
+else
+override .DEFAULT_GOAL := all
 endif
+endif
+
+# Developer note:  'override' is used above for legacy Makefile compatibility.
+# gcc.mk/gcc_riscv.mk need to hard-set 'all' internally, so this new system
+# uses 'override' to come in over the top without breaking old projects.
+
+# It's also necessary to explicitly set MAKECMDGOALS...
+ifeq "$(MAKECMDGOALS)" ""
+MAKECMDGOALS:=$(.DEFAULT_GOAL)
+endif
+
+# Enable colors when --sync-output is used.
+# See https://www.gnu.org/software/make/manual/make.html#Terminal-Output (section 13.2)
+ifneq ($(MAKE_TERMOUT),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+ifneq ($(FORCE_COLOR),)
+PROJ_CFLAGS += -fdiagnostics-color=always
+endif
+
+# *******************************************************************************
+# Include SBT config.  We need to do this here because it needs to know
+# the current MAKECMDGOAL.
+ifeq ($(SBT),1)
+include $(MAXIM_PATH)/Tools/SBT/SBT-config.mk
+endif
+
+# *******************************************************************************
+# Libraries
+
+# This section offers "toggle switches" to include or exclude the libraries that
+# are available in the MaximSDK.  Set a configuration variable to 1 to include the
+# library in the build, or 0 to exclude.
+
+# Each library may also have its own library specific configuration variables.  See
+# Libraries/libs.mk for more details.
+
+# Configuration variables:
+# - LIB_BOARD : Include the Board-Support Package (BSP) library. (Enabled by default)
+# - LIB_PERIPHDRIVERS : Include the peripheral driver library.  (Enabled by default)
+# - LIB_CMSIS_DSP : Include the CMSIS-DSP library.
+# - LIB_CORDIO : Include the Cordio BLE library
+# - LIB_FCL : Include the Free Cryptographic Library (FCL)
+# - LIB_FREERTOS : Include the FreeRTOS and FreeRTOS-Plus-CLI libraries
+# - LIB_LC3 : Include the Low Complexity Communication Codec (LC3) library
+# - LIB_LITTLEFS : Include the "little file system" (littleFS) library
+# - LIB_LWIP : Include the lwIP library
+# - LIB_MAXUSB : Include the MAXUSB library
+# - LIB_SDHC : Include the SDHC library
+
+include $(LIBS_DIR)/libs.mk
+
 
 # *******************************************************************************
 # Rules
@@ -339,8 +371,15 @@ include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).
 # Include the rules that integrate the SBTs.  SBTs are a special case that must be
 # include after the core gcc rules to extend them.
 ifeq ($(SBT), 1)
-include $(MAXIM_SBT_DIR)/SBT-rules.mk
+include $(MAXIM_PATH)/Tools/SBT/SBT-rules.mk
 endif
+
+
+# Get .DEFAULT_GOAL working.
+ifeq "$(MAKECMDGOALS)" ""
+MAKECMDGOALS:=$(.DEFAULT_GOAL)
+endif
+
 
 all:
 # 	Extend the functionality of the "all" recipe here

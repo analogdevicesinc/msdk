@@ -17,7 +17,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 * NOTE: This example is only supported by the MAX32655EVKIT.
 
 ## Required Connections
-
+If using the MAX32655EVKIT (EvKit\_V1):
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 

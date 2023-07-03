@@ -1,5 +1,5 @@
 {
-	"name":"MiscDrivers",
+	"name":"SDHC",
 	"ipaths":[
         "Include",
         "ff14/Source"
@@ -15,11 +15,11 @@
         {
             "name":"MAX32665"
         },
-		{
-			"name":"MAX78000"
-		},
-		{
-			"name":"MAX78002"
-		}
+        {
+            "name":"MAX78000"
+        },
+        {
+            "name":"MAX78002"
+        }
 	]
 }

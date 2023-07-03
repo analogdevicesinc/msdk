@@ -89,14 +89,15 @@ void reset_arrays(void)
 
 uint32_t utils_get_time_ms(void)
 {
-    int sec;
-    double subsec;
+    uint32_t sec;
+    uint32_t subsec;
     uint32_t ms;
 
-    subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec = MXC_RTC_GetSecond();
+    MXC_RTC_GetSubSeconds(&subsec);
+    subsec /= 4096;
+    MXC_RTC_GetSeconds(&sec);
 
-    ms = (sec * 1000) + (int)(subsec * 1000);
+    ms = (sec * 1000) + (subsec * 1000);
 
     return ms;
 }
