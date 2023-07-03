@@ -4,6 +4,15 @@ This example demonstrates the use of the Real Time Clock (RTC) and its alarm fun
 
 The RTC time-of-day alarm is used to wake the device from backup mode every TIME\_OF\_DAY\_SECONDS seconds (defined at the top of main.c). When the device wakes up, it will print the current time of the RTC to the terminal window and return to backup mode while waiting for the next time-of-day alarm to fire.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
 
 ## Required Connections
 

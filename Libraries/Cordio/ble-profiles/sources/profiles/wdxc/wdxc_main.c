@@ -145,14 +145,28 @@ const uint8_t wdxcSvcUuid[ATT_16_UUID_LEN] =    {UINT16_TO_BYTES(WDX_SVC_UUID)};
 /*************************************************************************************************/
 void WdxcWdxsDiscover(dmConnId_t connId, uint16_t *pHdlList)
 {
+  WdxcStoreAttrHandles(connId , pHdlList);
+  /* Perform service discovery */
+  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) wdxcSvcUuid,
+                     WDXC_HDL_LIST_LEN, (attcDiscChar_t **) wdxcWdxsDiscCharList, pHdlList);
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief  Store pointer to the attribute handles in the control block
+ *          Parameter pHdlList must point to an array of length WDXC_WDX_HDL_LIST_LEN.
+ *          
+ *  \param  connId    Connection identifier.
+ *  \param  pHdlList  Characteristic handle list.
+ *
+ *  \return None.
+ */
+void WdxcStoreAttrHandles(dmConnId_t connId, uint16_t *pHdlList)
+{
   wdxcConnCb_t *pConnCb = &wdxcCb.conn[connId - 1];
 
   /* Store pointer to the attribute handles in the control block */
   pConnCb->pHdlList = pHdlList;
-
-  /* Perform service discovery */
-  AppDiscFindService(connId, ATT_16_UUID_LEN, (uint8_t *) wdxcSvcUuid,
-                     WDXC_HDL_LIST_LEN, (attcDiscChar_t **) wdxcWdxsDiscCharList, pHdlList);
 }
 
 /*************************************************************************************************/

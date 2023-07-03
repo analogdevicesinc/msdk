@@ -1,10 +1,11 @@
 /**
  * @file    aes.h
  * @brief   Advanced Encryption Standard driver.
+ * @ingroup aes
  */
 
-/* ****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,14 +35,15 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_AES_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_AES_H_
 
 /***** Includes *****/
 #include "aes_regs.h"
-#include "aeskeys_regs.h"
+#include "sys_aeskeys_regs.h"
+#include "usr_aeskeys_regs.h"
 
 #ifdef __cplusplus
 extern "C" {

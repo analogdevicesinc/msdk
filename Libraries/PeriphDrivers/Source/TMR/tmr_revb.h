@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_REVB_H_
 #define LIBRARIES_PERIPHDRIVERS_SOURCE_TMR_TMR_REVB_H_
@@ -52,6 +52,8 @@ typedef enum {
 
 /* **** Functions **** */
 int MXC_TMR_RevB_Init(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg, uint8_t clk_src);
+void MXC_TMR_RevB_SetClockSourceFreq(mxc_tmr_revb_regs_t *tmr, int clksrc_freq);
+int MXC_TMR_RevB_GetClockSourceFreq(mxc_tmr_revb_regs_t *tmr);
 void MXC_TMR_RevB_ConfigGeneric(mxc_tmr_revb_regs_t *tmr, mxc_tmr_cfg_t *cfg);
 void MXC_TMR_RevB_Shutdown(mxc_tmr_revb_regs_t *tmr);
 void MXC_TMR_RevB_Start(mxc_tmr_revb_regs_t *tmr);

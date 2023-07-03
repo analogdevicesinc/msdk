@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-10-10 15:10:41 -0500 (Mon, 10 Oct 2016) $
- * $Revision: 24650 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /**
  * @file mxc_sys.c
@@ -70,7 +67,12 @@
 /* ************************************************************************** */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
+    int err = E_NO_ERROR;
     uint32_t *infoblock = (uint32_t *)MXC_INFO0_MEM_BASE;
+
+    if (usn == NULL) {
+        return E_NULL_PTR;
+    }
 
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
@@ -91,10 +93,46 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
     usn[9] = (infoblock[3] & 0x00007F80) >> 7;
     usn[10] = (infoblock[3] & 0x007F8000) >> 15;
 
-    /* If requested, return the checksum */
+    /* If requested, verify and return the checksum */
     if (checksum != NULL) {
+        uint8_t check_csum[MXC_SYS_USN_CHECKSUM_LEN];
+        uint8_t aes_key[MXC_SYS_USN_CHECKSUM_LEN] = { 0 }; // NULL Key (per checksum spec)
+
+        // Read Checksum from the infoblock
         checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
         checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
+
+        err = MXC_AES_Init();
+        if (err) {
+            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            return err;
+        }
+
+        // Set NULL Key
+        MXC_AES_SetExtKey((const void *)aes_key, MXC_AES_128BITS);
+
+        // Compute Checksum
+        mxc_aes_req_t aes_req;
+        aes_req.length = MXC_SYS_USN_CHECKSUM_LEN / 4;
+        aes_req.inputData = (uint32_t *)usn;
+        aes_req.resultData = (uint32_t *)check_csum;
+        aes_req.keySize = MXC_AES_128BITS;
+        aes_req.encryption = MXC_AES_ENCRYPT_EXT_KEY;
+        aes_req.callback = NULL;
+
+        err = MXC_AES_Generic(&aes_req);
+        if (err) {
+            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            return err;
+        }
+
+        MXC_AES_Shutdown();
+
+        // Verify Checksum
+        if (check_csum[0] != checksum[1] || check_csum[1] != checksum[0]) {
+            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            return E_INVALID;
+        }
     }
 
     /* Add the info block checksum to the USN */
@@ -103,7 +141,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    return E_NO_ERROR;
+    return err;
 }
 
 /* ************************************************************************** */
@@ -188,9 +226,8 @@ int MXC_SYS_ClockSourceEnable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_EXTCLK_EN;
-        // return MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY);
-        return E_NOT_SUPPORTED;
+        // No EXT_CLK "RDY" bit for the AI85 so we return the GPIO config
+        return MXC_GPIO_Config(&gpio_cfg_extclk);
         break;
 
     case MXC_SYS_CLOCK_INRO:
@@ -246,7 +283,13 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // MXC_GCR->clkctrl &= ~MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        /*
+        There's not a great way to disable the external clock.
+        Deinitializing the GPIO here may have unintended consequences
+        for application code.
+        Selecting a different system clock source is sufficient
+        to "disable" the EXT_CLK source.
+        */
         break;
 
     case MXC_SYS_CLOCK_INRO:
@@ -317,6 +360,7 @@ int MXC_SYS_Clock_Timeout(uint32_t ready)
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
 {
     uint32_t current_clock;
+    int err = E_NO_ERROR;
 
     // Save the current system clock
     current_clock = MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_SYSCLK_SEL;
@@ -380,18 +424,14 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock)
         break;
 
     case MXC_SYS_CLOCK_EXTCLK:
-        // Enable HIRC clock
-        // if(!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_EXTCLK_EN)) {
-        //     MXC_GCR->clkctrl |=MXC_F_GCR_CLKCTRL_EXTCLK_EN;
+        // No EXT_CLK "RDY" bit for AI85 so we enable every time
+        err = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_EXTCLK);
+        if (err) {
+            return err;
+        }
 
-        //     // Check if HIRC clock is ready
-        //     if (MXC_SYS_Clock_Timeout(MXC_F_GCR_CLKCTRL_EXTCLK_RDY) != E_NO_ERROR) {
-        //         return E_TIME_OUT;
-        //     }
-        // }
-
-        // Set HIRC clock as System Clock
-        // MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL, MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
+        MXC_SETFIELD(MXC_GCR->clkctrl, MXC_F_GCR_CLKCTRL_SYSCLK_SEL,
+                     MXC_S_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK);
 
         break;
 

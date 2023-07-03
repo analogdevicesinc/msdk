@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-08-28 17:03:02 -0500 (Tue, 28 Aug 2018) $
- * $Revision: 37424 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <stddef.h>
@@ -46,7 +43,6 @@
 #include "mcr_regs.h"
 
 /* **** Definitions **** */
-#define MXC_GPIO_HART_UART (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1 | MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3)
 
 /* **** Globals **** */
 
@@ -96,21 +92,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     mxc_gpio_regs_t *gpio = cfg->port;
 
     port = MXC_GPIO_GET_IDX(cfg->port);
-
-    // TODO(jake.carter): Find restricted pins
-    // // Don't use inaccessible pins
-    // if((gpio == MXC_GPIO0) && (cfg->mask & MXC_GPIO_INACCESSIBLE)) {
-    //     return E_NOT_SUPPORTED;
-    // }
-
-    // Make sure UART2 pins aren't used by the HART Modem
-    if ((gpio == MXC_GPIO0) && (cfg->mask & MXC_GPIO_HART_UART) &&
-        (cfg->func == MXC_GPIO_FUNC_ALT2)) {
-        if ((gpio->en0 & MXC_GPIO_HART_UART) == 0 && (gpio->en1 & MXC_GPIO_HART_UART) &&
-            (gpio->en2 & MXC_GPIO_HART_UART) == 0) {
-            return E_BAD_STATE;
-        }
-    }
 
     if (cfg->port == MXC_GPIO3) {
         if (cfg->mask & MXC_GPIO_PIN_0) {
@@ -350,11 +331,13 @@ void MXC_GPIO_Handler(unsigned int port)
     MXC_GPIO_Common_Handler(port);
 }
 
+/* ************************************************************************** */
 void MXC_GPIO_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags)
 {
     MXC_GPIO_RevA_ClearFlags((mxc_gpio_reva_regs_t *)port, flags);
 }
 
+/* ************************************************************************** */
 uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 {
     return MXC_GPIO_RevA_GetFlags((mxc_gpio_reva_regs_t *)port);
@@ -363,4 +346,22 @@ uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
     return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
+}
+
+/* ************************************************************************** */
+void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    MXC_GPIO_RevA_SetWakeEn((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+/* ************************************************************************** */
+void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    MXC_GPIO_RevA_ClearWakeEn((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+/* ************************************************************************** */
+uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
+{
+    return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port);
 }

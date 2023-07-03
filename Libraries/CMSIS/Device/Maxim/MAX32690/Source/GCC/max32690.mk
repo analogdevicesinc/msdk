@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -28,9 +28,6 @@
  # trademarks, maskwork rights, or any other form of intellectual
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
- #
- # $Date: 2016-03-23 13:28:53 -0700 (Wed, 23 Mar 2016) $ 
- # $Revision: 22067 $
  #
  ###############################################################################
 
@@ -106,7 +103,7 @@ ifeq ($(RISCV_LOAD),1)
 LOADER_SCRIPT := $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/riscv-loader.S
 
 # Directory for RISCV code, defaults to Hello_World
-RISCV_APP ?= $(MAXIM_PATH)/Examples/$(TARGET_UC)/Hello_World
+RISCV_APP ?= $(CMSIS_ROOT)/../../Examples/$(TARGET_UC)/Hello_World
 
 # Build the RISC-V app inside of this project so that
 # "make clean" will catch it automatically.
@@ -155,9 +152,15 @@ LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
 # Include memory definitions
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_memory.mk
 
+# Select the xpack toolchain to use
+RISCV_PREFIX ?= riscv-none-elf
+
 # Include the rules and goals for building
 ifeq "$(RISCV_CORE)" ""
-include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc.mk
+include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc.mk
 else
-include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc_riscv.mk
+include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc_riscv.mk
 endif
+
+# Include rules for flashing
+include $(CMSIS_ROOT)/../../Tools/Flash/flash.mk

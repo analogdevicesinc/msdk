@@ -2,7 +2,7 @@
 
 # Overview
 
-The ASL Demo software demonstrates recognition of American Sign Language hand symbols using MAX78000 EVKIT. 
+The ASL Demo software demonstrates recognition of American Sign Language hand symbols using MAX78000 EVKIT.
 
 The ASL demo software utilizes an ASL dataset which consists of 26 hand symbols, one for each letter in the alphabet, and a total of 81000 images. Below is the pre-augmented dataset that was downloaded and used for training and testing:
 
@@ -14,64 +14,39 @@ The following 27 keyword subset from the complete dataset is used for this demo:
 
 In the demo, “empty” represents blank images missing hand symbols.
 
-# ASL Recognition Demo Software
+## Software
 
-### Building firmware:
+### Project Usage
 
-Navigate directory where ASL demo software is located and build the project:
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-```bash
-$ cd /Examples/MAX78000/CNN/asl_demo
-$ make
-```
+### Project-Specific Build Notes
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
-```bash
-$ make distclean
-```
+* This project supports output to a TFT display.
+    * For the MAX78000EVKIT, the TFT display is **enabled** by default.  It can be _disabled_ by commenting out `#define ENABLE_TFT` in [example_config.h](example_config.h).
 
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
+        ```C
+        #ifdef BOARD_EVKIT_V1
+        // #define ENABLE_TFT
+        #include "bitmap.h"
+        #include "tft_ssd2119.h"
+        #endif
+        ```
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
-```
+    * For the MAX78000FTHR, the TFT display is **disabled** by default.  The TFT display is not supplied with the MAX78000 Feather board. The compatible 2.4'' TFT FeatherWing display can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing).  To _enable_ the display code, uncomment `#define ENABLE_TFT` in [example_config.h](example_config.h)
 
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
+        ```C
+        #ifdef BOARD_FTHR_REVA
+        // #define ENABLE_TFT
+        #include "tft_ili9341.h"
+        #endif
+        ```
 
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
-BOARD=FTHR_RevA
-endif
-```
+## Hardware
 
-**Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
-
-*Right click project name > Properties > C/C++ Build > Environment > Board"*
-
-<img src="Resources/eclipse_board.png" style="zoom:33%;" />
-
-
-
-## Load firmware image to MAX78000 EVKIT                    [ ](af://n142/)
-
-Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
-
-Connect PICO adapter to JH5 SWD header.
-
-Load the firmware image using OpenOCD. If you are using Windows, perform this step in a MinGW shell.
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-## MAX78000 EVKIT operations                                 [ ](af://n152/)
+### MAX78000EVKIT operations                                 [ ](af://n152/)
 
 After power-cycle, if the TFT display is blank, or not shown properly as below, please press RESET (SW5).
 
@@ -87,37 +62,11 @@ The following 27 symbols can be detected:
 
  The MAX78000 ASL demo firmware recognizes keywords and reports result and confidence level.
 
+### MAX78000FTHR operations                               [ ](af://n152/)
 
-
-## Load firmware image to MAX78000 Feather                  [ ](af://n142/)
-
-Connect USB cable to CN1 USB connector.
-
-Load the firmware image using OpenOCD. If you are using Windows, perform this step in a MinGW shell.
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-## MAX78000 Feather operations                               [ ](af://n152/)
-
-The ASL demo starts automatically after power-up or pressing reset button (SW4). The TFT display is optional and not supplied with the MAX78000 Feather board. 
-
-The MAX78000 Feather compatible 2.4'' TFT FeatherWing display can be ordered here:
-
-https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing
-
-This TFT display comes fully assembled with dual sockets for MAX78000 Feather to plug into. To compile code with enabled TFT feature use following setting in project.mk:
-
-```bash
-ifeq "$(BOARD)" "FTHR_RevA"
-PROJ_CFLAGS += -DENABLE_TFT
-endif
-```
+The ASL demo starts automatically after power-up or pressing reset button (SW4).
 
 While using TFT display keep its power switch in "ON" position. The TFT "Reset" button also can be used as Feather reset. Press PB1 (SW1) button to start demo.
-
-
 
 ## CNN Model
 

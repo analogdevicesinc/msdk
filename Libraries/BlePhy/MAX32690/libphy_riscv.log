@@ -87,6 +87,48 @@ riscv-none-embed-gcc -std=c99 -Wall -Wextra -Wno-unused-parameter -Wshadow -Wund
 riscv-none-embed-gcc -std=c99 -Wall -Wextra -Wno-unused-parameter -Wshadow -Wundef -fno-common -fomit-frame-pointer -ffunction-sections -fdata-sections -march=rv32imc -mabi=ilp32 -c -DRISCV_CORE=1 -Os -g -DDEBUG -DLL_DBG_PIN_ENABLED=1 -I../../../../../Libraries/Cordio/wsf/include -I../../../../../Libraries/Cordio/wsf/include/util -I../../../../../Libraries/Cordio/platform/include -I../../../../../Libraries/PeriphDrivers/Include/MAX32690 -I../../../../../Libraries/CMSIS/Include -I../../../../../Libraries/CMSIS/Device/Maxim/MAX32690/Include -I../../llc -I../../llc/ble -I../../llc/shared -I../../include -I../../library -I../../dbb -I../../dbb/prot -I../../dbb/prot/ble -I../../dbb/prot/ble/pan2g5 -I../../dbb/prot/ble/pan2g5/include -I../../dbb/prot/ble/pan2g5/afe -I../../dbb/prot/ble/pan2g5/afe/max32665 -I../../dbb/prot/ble/pan2g5/afe/max32665/include -I../../dbb/prot/shared -I../../dbb/control -I../../dbb/control/pan -I../../debug -DBB_CLK_RATE_HZ=1000000 -DFORCE_PMU_WAKEUP=1 -DTARGET=MAX32690 -DTARGET_REV=0x4131 -MM -MF obj/dbb/control/pan/dbb_crypto.d -MP -MT obj/dbb/control/pan/dbb_crypto.o ../../dbb/control/pan/dbb_crypto.c
 +++ Compiling: ../../dbb/control/pan/dbb_intc.c
 riscv-none-embed-gcc -std=c99 -Wall -Wextra -Wno-unused-parameter -Wshadow -Wundef -fno-common -fomit-frame-pointer -ffunction-sections -fdata-sections -march=rv32imc -mabi=ilp32 -c -DRISCV_CORE=1 -Os -g -DDEBUG -DLL_DBG_PIN_ENABLED=1 -I../../../../../Libraries/Cordio/wsf/include -I../../../../../Libraries/Cordio/wsf/include/util -I../../../../../Libraries/Cordio/platform/include -I../../../../../Libraries/PeriphDrivers/Include/MAX32690 -I../../../../../Libraries/CMSIS/Include -I../../../../../Libraries/CMSIS/Device/Maxim/MAX32690/Include -I../../llc -I../../llc/ble -I../../llc/shared -I../../include -I../../library -I../../dbb -I../../dbb/prot -I../../dbb/prot/ble -I../../dbb/prot/ble/pan2g5 -I../../dbb/prot/ble/pan2g5/include -I../../dbb/prot/ble/pan2g5/afe -I../../dbb/prot/ble/pan2g5/afe/max32665 -I../../dbb/prot/ble/pan2g5/afe/max32665/include -I../../dbb/prot/shared -I../../dbb/control -I../../dbb/control/pan -I../../debug -DBB_CLK_RATE_HZ=1000000 -DFORCE_PMU_WAKEUP=1 -DTARGET=MAX32690 -DTARGET_REV=0x4131 -DMODULE_ID= -c -o obj/dbb/control/pan/dbb_intc.o ../../dbb/control/pan/dbb_intc.c
+../../dbb/control/pan/dbb_intc.c:279:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  279 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:325:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  325 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:354:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  354 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:378:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  378 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:408:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  408 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:432:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  432 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:455:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  455 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:480:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  480 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:499:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  499 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:513:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  513 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:522:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  522 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:527:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  527 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:532:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  532 | {
+      | ^
+../../dbb/control/pan/dbb_intc.c:537:1: warning: unrecognized argument to 'interrupt' attribute [-Wattributes]
+  537 | {
+      | ^
 riscv-none-embed-gcc -std=c99 -Wall -Wextra -Wno-unused-parameter -Wshadow -Wundef -fno-common -fomit-frame-pointer -ffunction-sections -fdata-sections -march=rv32imc -mabi=ilp32 -c -DRISCV_CORE=1 -Os -g -DDEBUG -DLL_DBG_PIN_ENABLED=1 -I../../../../../Libraries/Cordio/wsf/include -I../../../../../Libraries/Cordio/wsf/include/util -I../../../../../Libraries/Cordio/platform/include -I../../../../../Libraries/PeriphDrivers/Include/MAX32690 -I../../../../../Libraries/CMSIS/Include -I../../../../../Libraries/CMSIS/Device/Maxim/MAX32690/Include -I../../llc -I../../llc/ble -I../../llc/shared -I../../include -I../../library -I../../dbb -I../../dbb/prot -I../../dbb/prot/ble -I../../dbb/prot/ble/pan2g5 -I../../dbb/prot/ble/pan2g5/include -I../../dbb/prot/ble/pan2g5/afe -I../../dbb/prot/ble/pan2g5/afe/max32665 -I../../dbb/prot/ble/pan2g5/afe/max32665/include -I../../dbb/prot/shared -I../../dbb/control -I../../dbb/control/pan -I../../debug -DBB_CLK_RATE_HZ=1000000 -DFORCE_PMU_WAKEUP=1 -DTARGET=MAX32690 -DTARGET_REV=0x4131 -MM -MF obj/dbb/control/pan/dbb_intc.d -MP -MT obj/dbb/control/pan/dbb_intc.o ../../dbb/control/pan/dbb_intc.c
 +++ Compiling: ../../dbb/control/pan/dbb_cmu.c
 riscv-none-embed-gcc -std=c99 -Wall -Wextra -Wno-unused-parameter -Wshadow -Wundef -fno-common -fomit-frame-pointer -ffunction-sections -fdata-sections -march=rv32imc -mabi=ilp32 -c -DRISCV_CORE=1 -Os -g -DDEBUG -DLL_DBG_PIN_ENABLED=1 -I../../../../../Libraries/Cordio/wsf/include -I../../../../../Libraries/Cordio/wsf/include/util -I../../../../../Libraries/Cordio/platform/include -I../../../../../Libraries/PeriphDrivers/Include/MAX32690 -I../../../../../Libraries/CMSIS/Include -I../../../../../Libraries/CMSIS/Device/Maxim/MAX32690/Include -I../../llc -I../../llc/ble -I../../llc/shared -I../../include -I../../library -I../../dbb -I../../dbb/prot -I../../dbb/prot/ble -I../../dbb/prot/ble/pan2g5 -I../../dbb/prot/ble/pan2g5/include -I../../dbb/prot/ble/pan2g5/afe -I../../dbb/prot/ble/pan2g5/afe/max32665 -I../../dbb/prot/ble/pan2g5/afe/max32665/include -I../../dbb/prot/shared -I../../dbb/control -I../../dbb/control/pan -I../../debug -DBB_CLK_RATE_HZ=1000000 -DFORCE_PMU_WAKEUP=1 -DTARGET=MAX32690 -DTARGET_REV=0x4131 -DMODULE_ID= -c -o obj/dbb/control/pan/dbb_cmu.o ../../dbb/control/pan/dbb_cmu.c
@@ -115,4 +157,4 @@ riscv-none-embed-gcc-ar rcs -o ../../libphy_riscv.a obj/pal_bb.o obj/pal_bb_ble.
 riscv-none-embed-strip --strip-unneeded ../../libphy_riscv.a
 +++ Copying: ../../libphy_riscv.a to msdk
 cp ../../libphy_riscv.a ../../../../../Libraries/BlePhy/MAX32690/libphy_riscv.a
-revision: d3f6d97
+revision: 1d56fa0

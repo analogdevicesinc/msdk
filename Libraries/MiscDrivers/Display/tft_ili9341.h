@@ -2,8 +2,9 @@
  * @file
  * @brief   TFT driver API header file
  */
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_MISCDRIVERS_DISPLAY_TFT_ILI9341_H_
 #define LIBRARIES_MISCDRIVERS_DISPLAY_TFT_ILI9341_H_
@@ -46,7 +47,7 @@
 /************************************ DEFINES ********************************/
 #define DISPLAY_WIDTH 320
 #define DISPLAY_HEIGHT 240
-#define TFT_SPI_FREQ 10000000 // Hz
+#define TFT_SPI_FREQ 25000000 // Hz
 #define TFT_SPI0_PINS MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_11
 /************************************************************************************/
 typedef struct {
@@ -310,5 +311,15 @@ void MXC_TFT_Line(int x0, int y0, int x1, int y1, int color);
  * @param       color           rectangle color
  */
 void MXC_TFT_Rectangle(int x0, int y0, int x1, int y1, int color);
+
+/**
+ * @brief      Stream camera to TFT (feather only)
+ *
+ * @param      x0           x location of image
+ * @param      y0           y location of image
+ * @param      width        image width
+ * @param      height       image height
+ */
+void MXC_TFT_Stream(int x0, int y0, int width, int height);
 
 #endif // LIBRARIES_MISCDRIVERS_DISPLAY_TFT_ILI9341_H_

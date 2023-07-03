@@ -19,8 +19,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://aws.amazon.com/freertos
- * http://www.FreeRTOS.org
+ * https://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
  */
 
 
@@ -89,7 +89,7 @@ SocketSet_t xSocketSet;
 					xSocket = FreeRTOS_socket( FREERTOS_AF_INET, FREERTOS_SOCK_STREAM, FREERTOS_IPPROTO_TCP );
 					FreeRTOS_printf( ( "TCP socket on port %d\n", ( int )xPortNumber ) );
 
-					if( xSocket != FREERTOS_NO_SOCKET )
+					if( xSocket != FREERTOS_INVALID_SOCKET )
 					{
 						xAddress.sin_addr = FreeRTOS_GetIPAddress(); // Single NIC, currently not used
 						xAddress.sin_port = FreeRTOS_htons( xPortNumber );

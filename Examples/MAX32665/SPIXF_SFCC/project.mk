@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -11,3 +11,7 @@
 
 # Override the default linkerfile
 LINKERFILE=$(TARGET_LC)_spix.ld
+
+ifneq ($(BOARD),EvKit_V1)
+$(error ERR_NOTSUPPORTED: This example requires an external flash IC that is only available for the MAX32665EVKIT)
+endif

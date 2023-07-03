@@ -90,6 +90,10 @@ IPATH += $(CMSIS_ROOT)/Include
 IPATH += $(PERIPH_DRIVER_DIR)/Include/$(TARGET_UC)
 IPATH += $(BOARD_DIR)/Include
 
+# Since the diskio.c implementation file has some dependencies
+# on board files, we must set up the board build system as well
+include $(BOARD_DIR)/board.mk
+
 # Include the rules for building for this target
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk
 

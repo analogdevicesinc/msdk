@@ -25,70 +25,15 @@ Here are the instructions to play this game using speech command:
 
 5. The game is over if *stop* command is encountered or if the snake collides with itself
 
-## Building firmware:
+## Software
 
-Navigate directory where **snake_game_demo** software is located and build the project:
+### Project Usage
 
-```bash
-$ cd /Examples/MAX78000/CNN/snake_game_demo
-$ make
-```
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-If this is the first time after installing tools, or peripheral files have been updated, first clean drivers before rebuilding the project: 
+### Project-Specific Build Notes
 
-```bash
-$ make distclean
-```
-
-To compile code for MAX78000 EVKIT enable **BOARD=EvKit_V1** in project.mk:
-
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
-```
-
-To compile code for MAX78000 Feather board enable **BOARD=FTHR_RevA** in project.mk:
-
-```bash
-# Specify the board used
-ifeq "$(BOARD)" ""
-#BOARD=EvKit_V1
-BOARD=FTHR_RevA
-endif
-```
-
-<<<<<<< HEAD
-### Load firmware image to MAX78000 EVKIT
-=======
-**Note: If you are using Eclipse, please also make sure to change the value of Board environment variable to "FTHR_RevA by:**
-
-*Right click project name > Properties > C/C++ Build > Environment > Board"*
-
-<img src="Resources/eclipse_board.png" style="zoom:33%;" />
-
-
-
-## Load firmware image to MAX78000 EVKIT
->>>>>>> Set OV7692 as the default camera, updated copyright date and added Eclipse instruction to build for Feather
-
-Connect USB cable to CN1 (USB/PWR) and turn ON power switch (SW1).
-
-Connect PICO adapter to JH5 SWD header.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
+* This project comes pre-configured for the MAX78000EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the UG for instructions on changing the target board.
 
 ## MAX78000 EVKIT operations
 
@@ -97,22 +42,6 @@ If using Linux, perform this step:
 *   Place jumper P0\_0 and P0\_1 on UART\_0\_EN header JH1.
 *   Open a serial port application on the PC and connect to Ev-Kit's console UART at 115200, 8-N-1 configuration.
 *   Follow instructions on TFT display
-
-## Load firmware image to MAX78000 Feather
-
-Connect USB cable to CN1 USB connector.
-
-If you are using Windows, load the firmware image with OpenOCD in a MinGW shell:
-
-```bash
-openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78000.cfg -c "program build/MAX78000.elf reset exit"
-```
-
-If using Linux, perform this step:
-
-```bash
-./openocd -f tcl/interface/cmsis-dap.cfg -f tcl/target/max78000.cfg -c "program build/MAX78000.elf verify reset exit"
-```
 
 ## MAX78000 Feather operations
 

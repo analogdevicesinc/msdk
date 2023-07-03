@@ -3548,6 +3548,32 @@ void LlRecvAclDataComplete(uint8_t numBufs);
 
 /*************************************************************************************************/
 /*!
+ *  \brief      Calculate packet interval.
+ *
+ *  \param      len         Packet length.
+ *  \param      phy         PHY.
+ *  \param      phyOptions  PHY options.
+ *
+ *  \return     Packet length in microseconds.
+ */
+/*************************************************************************************************/
+uint32_t llCalcPacketTime(uint8_t len, uint8_t phy, uint8_t phyOptions);
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Calculate packet interval.
+ *
+ *  \param      len         Packet length.
+ *  \param      phy         PHY.
+ *  \param      phyOptions  PHY options.
+ *
+ *  \return     Interval between packets in microseconds.
+ */
+/*************************************************************************************************/
+uint32_t llCalcPacketInterval(uint8_t len, uint8_t phy, uint8_t phyOptions);
+
+/*************************************************************************************************/
+/*!
  *  \brief      Enter transmit test mode.
  *
  *  \param      rfChan      RF channel number, i.e. "rfChan = (F - 2402) / 2)".

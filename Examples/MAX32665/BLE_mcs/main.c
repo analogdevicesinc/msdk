@@ -46,6 +46,7 @@
 #include "app_api.h"
 #include "hci_core.h"
 #include "app_terminal.h"
+#include "wut.h"
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 #include "ll_init_api.h"
@@ -53,6 +54,8 @@
 
 #include "pal_bb.h"
 #include "pal_cfg.h"
+#include "pal_timer.h"
+#include "pal_sys.h"
 
 #include "mcs_app_api.h"
 #include "app_ui.h"
@@ -134,6 +137,21 @@ static void mainWsfInit(void)
 void setAdvTxPower(void)
 {
     LlSetAdvTxPower(DEFAULT_TX_POWER);
+}
+
+/*************************************************************************************************/
+/*!
+*  \fn     WUT_IRQHandler
+*
+*  \brief  WUT interrupt handler.
+*
+*  \return None.
+*/
+/*************************************************************************************************/
+void WUT_IRQHandler(void)
+{
+    MXC_WUT_Handler();
+    PalTimerIRQCallBack();
 }
 
 /*************************************************************************************************/

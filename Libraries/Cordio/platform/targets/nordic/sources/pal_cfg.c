@@ -129,16 +129,16 @@ void palCfgLoadLlParams(uint8_t *pConfig)
   const uint16_t maxGroup     = 1;
   const uint16_t maxStream    = 2;
 #else  /* Default */
-  const uint16_t maxAdvSets   = 6;
-  const uint16_t advDataLen   = 1650;
+  const uint16_t maxAdvSets   = 2;
+  const uint16_t advDataLen   = 256;
   const uint16_t aclDataLen   = 512;
-  const uint16_t maxConn      = 4;
-  const uint16_t maxGroup     = 2;
-  const uint16_t maxStream    = 6;
+  const uint16_t maxConn      = 2;
+  const uint16_t maxGroup     = 1;
+  const uint16_t maxStream    = 2;
 #endif
 
   pCfg->maxAdvSets            = maxAdvSets;
-  pCfg->maxAdvReports         = 8;
+  pCfg->maxAdvReports         = 4;
   pCfg->maxExtAdvDataLen      = advDataLen;
   /* pCfg->defExtAdvDataFragLen */  /* Use default. */
   pCfg->auxDelayUsec          = 0;
@@ -146,10 +146,10 @@ void palCfgLoadLlParams(uint8_t *pConfig)
   pCfg->maxExtScanDataLen     = advDataLen;
   pCfg->maxConn               = maxConn;
   pCfg->maxAclLen             = aclDataLen;
-  pCfg->numTxBufs             = 16;
+  pCfg->numTxBufs             = 8;
   pCfg->numRxBufs             = 8;
-  pCfg->numIsoTxBuf           = 16;
-  pCfg->numIsoRxBuf           = 8;
+  pCfg->numIsoTxBuf           = 0;
+  pCfg->numIsoRxBuf           = 0;
   pCfg->maxIsoSduLen          = aclDataLen;
   pCfg->maxIsoPduLen          = 251;
   pCfg->maxCig                = maxGroup;

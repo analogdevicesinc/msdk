@@ -2,6 +2,16 @@
 
 This example demonstrates use of the I2S peripheral on the MAX32690 by transmitting 64 16-bit words using DMA. The use of a DMA callback function can optionally be enabled using the DMA callback define.
 
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

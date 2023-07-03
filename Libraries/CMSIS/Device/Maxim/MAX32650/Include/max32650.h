@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-04-27 09:12:38 -0700 (Wed, 27 Apr 2016) $
- * $Revision: 22537 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_MAX32650_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32650_INCLUDE_MAX32650_H_
@@ -58,7 +55,9 @@
 
 /* COMPILER SPECIFIC DEFINES (IAR, ARMCC and GNUC) */
 #if defined(__GNUC__)
+#ifndef __weak
 #define __weak __attribute__((weak))
+#endif
 
 #elif defined(__CC_ARM)
 
@@ -401,6 +400,25 @@ typedef enum {
 #define MXC_DMA ((mxc_dma_regs_t *)MXC_BASE_DMA)
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
+
+#define MXC_DMA_CH_GET_IRQ(i)               \
+    ((IRQn_Type)(((i) == 0)  ? DMA0_IRQn :  \
+                 ((i) == 1)  ? DMA1_IRQn :  \
+                 ((i) == 2)  ? DMA2_IRQn :  \
+                 ((i) == 3)  ? DMA3_IRQn :  \
+                 ((i) == 4)  ? DMA4_IRQn :  \
+                 ((i) == 5)  ? DMA5_IRQn :  \
+                 ((i) == 6)  ? DMA6_IRQn :  \
+                 ((i) == 7)  ? DMA7_IRQn :  \
+                 ((i) == 8)  ? DMA8_IRQn :  \
+                 ((i) == 9)  ? DMA9_IRQn :  \
+                 ((i) == 10) ? DMA10_IRQn : \
+                 ((i) == 11) ? DMA11_IRQn : \
+                 ((i) == 12) ? DMA12_IRQn : \
+                 ((i) == 13) ? DMA13_IRQn : \
+                 ((i) == 14) ? DMA14_IRQn : \
+                 ((i) == 15) ? DMA15_IRQn : \
+                               0))
 
 /* ************************************************************************** */
 /*                                                                        FLC */

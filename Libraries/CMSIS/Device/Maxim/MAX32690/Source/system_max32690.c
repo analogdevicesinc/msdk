@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -127,6 +127,10 @@ __weak void SystemInit(void)
     /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
     SCB->VTOR = (uint32_t)__isr_vector;
 #endif /* __CC_ARM || __GNUC__ */
+
+    *(volatile uint32_t *)0x40000c00 = 1; // Enable test mode
+    *(volatile uint32_t *)0x4000040c = (1 << 6); // Disable cache read buffer
+    *(volatile uint32_t *)0x40000c00 = 0; // Disable test mode
 
     MXC_ICC_Enable(MXC_ICC0);
     MXC_ICC_Disable(MXC_ICC0);

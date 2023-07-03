@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -105,9 +105,10 @@ int main(void)
     PB_IntEnable(0);
 
     while (1) {
+        // Make sure print statements have finished before sleeping
         while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
-        //Make sure print statements have finished before sleeping
-        MXC_LP_EnterSleepMode(); //Wait for next RTC interrupt
+
+        MXC_LP_EnterSleepMode(); // Wait for next RTC interrupt
     }
 
     return E_NO_ERROR;

@@ -4,7 +4,7 @@
 */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -828,6 +828,16 @@ int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t *i2c, unsigned int numBytes);
  * @return  The transmit threshold value (in bytes).
  */
 int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Stop any asynchronous requests in progress.
+ *
+ * Stop any asynchronous requests in progress. Any callbacks associated with
+ * the active transaction will be NOT executed.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
+ */
+void MXC_I2C_AsyncStop(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Abort any asynchronous requests in progress.

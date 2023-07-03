@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -52,7 +52,9 @@
 
 /* COMPILER SPECIFIC DEFINES (IAR, ARMCC and GNUC) */
 #if defined(__GNUC__)
+#ifndef __weak
 #define __weak __attribute__((weak))
+#endif
 
 #elif defined(__CC_ARM)
 
@@ -267,7 +269,11 @@ typedef enum {
 #else // __riscv
 
 #include <core_rv32.h>
-
+#undef __CORTEX_M
+/* ^ TODO (Jake):  Re-work our core_rv32.h file so this isn't
+    necessary.  Somehow __CORTEX_M is still getting defined
+    even after removing it from the file.
+*/
 #endif // __riscv
 
 #include "system_max78000.h" /*!< System Header                                          */
@@ -395,9 +401,12 @@ typedef enum {
 #define MXC_GPIO_GET_GPIO(i) \
     ((i) == 0 ? MXC_GPIO0 : (i) == 1 ? MXC_GPIO1 : (i) == 2 ? MXC_GPIO2 : (i) == 3 ? MXC_GPIO3 : 0)
 
-#define MXC_GPIO_GET_IRQ(i) \
-    ((i) == 0 ? GPIO0_IRQn : (i) == 1 ? GPIO1_IRQn : (i) == 2 ? GPIO2_IRQn : 0)
-// GPIO3 does not have an interrupt
+#define MXC_GPIO_GET_IRQ(i)     \
+    ((i) == 0 ? GPIO0_IRQn :    \
+     (i) == 1 ? GPIO1_IRQn :    \
+     (i) == 2 ? GPIO2_IRQn :    \
+     (i) == 3 ? GPIOWAKE_IRQn : \
+                0)
 
 #define GPIOWake_IRQn GPIOWAKE_IRQn
 #define GPIOWake_IRQHandler GPIOWAKE_IRQHandler
@@ -500,6 +509,13 @@ typedef enum {
 #define MXC_DMA ((mxc_dma_regs_t *)MXC_BASE_DMA)
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
+
+#define MXC_DMA_CH_GET_IRQ(i)             \
+    ((IRQn_Type)(((i) == 0) ? DMA0_IRQn : \
+                 ((i) == 1) ? DMA1_IRQn : \
+                 ((i) == 2) ? DMA2_IRQn : \
+                 ((i) == 3) ? DMA3_IRQn : \
+                              0))
 
 /******************************************************************************/
 /*                                                                        FLC */

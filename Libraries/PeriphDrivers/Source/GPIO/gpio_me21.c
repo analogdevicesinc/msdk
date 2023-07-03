@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <stddef.h>
@@ -91,7 +91,6 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 
     // Configure alternate function
     error = MXC_GPIO_RevA_SetAF((mxc_gpio_reva_regs_t *)gpio, cfg->func, cfg->mask);
-
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -100,39 +99,23 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     switch (cfg->pad) {
     case MXC_GPIO_PAD_NONE:
         gpio->padctrl0 &= ~cfg->mask;
-        gpio->padctrl1 &= ~cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_WEAK_PULL_UP:
-        gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 &= ~cfg->mask;
-        gpio->ps &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_UP:
         gpio->padctrl0 |= cfg->mask;
-        gpio->padctrl1 &= ~cfg->mask;
         gpio->ps |= cfg->mask;
-        break;
-
-    case MXC_GPIO_PAD_WEAK_PULL_DOWN:
-        gpio->padctrl0 &= ~cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_DOWN:
-        gpio->padctrl0 &= ~cfg->mask;
-        gpio->padctrl1 |= cfg->mask;
-        gpio->ps |= cfg->mask;
+        gpio->padctrl0 |= cfg->mask;
+        gpio->ps &= ~cfg->mask;
         break;
 
     default:
         return E_BAD_PARAM;
     }
 
-    // Configure the vssel
-    return MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    return E_NO_ERROR;
 }
 
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
@@ -202,5 +185,20 @@ uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
-    return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
+    return E_NOT_SUPPORTED;
+}
+
+void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    MXC_GPIO_RevA_SetWakeEn((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    MXC_GPIO_RevA_ClearWakeEn((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
+{
+    return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port);
 }

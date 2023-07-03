@@ -3,8 +3,8 @@
  * @brief      This file contains constant pin configurations for the peripherals.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-10-24 16:10:14 -0500 (Thu, 24 Oct 2019) $
- * $Revision: 48075 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_PINS_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_PINS_H_
@@ -128,5 +125,34 @@ extern const mxc_gpio_cfg_t gpio_cfg_adc6;
 extern const mxc_gpio_cfg_t gpio_cfg_adc7;
 
 extern const mxc_gpio_cfg_t gpio_cfg_sdma;
+
+// SPI v2 Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0a_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0a_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0a_quad;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0b_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0b_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0b_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0b_qua;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_quad;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_quad;
+
+// SPI v2 Target Selects Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0a_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0b_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts2;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts2;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_ts2;
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_MXC_PINS_H_

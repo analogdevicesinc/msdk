@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -78,13 +78,13 @@ void RTC_IRQHandler(void) {}
 // *****************************************************************************
 void rescheduleAlarm()
 {
-    int time;
+    uint32_t time;
     int flags = MXC_RTC_GetFlags();
 
     if (flags & MXC_F_RTC_CTRL_TOD_ALARM) { // Check for TOD alarm flag
         MXC_RTC_ClearFlags(MXC_F_RTC_CTRL_TOD_ALARM);
 
-        time = MXC_RTC_GetSecond(); // Get Current time (s)
+        MXC_RTC_GetSeconds(&time); // Get Current time (s)
 
         while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
         // Disable interrupt while re-arming RTC alarm
@@ -104,9 +104,10 @@ void rescheduleAlarm()
 // *****************************************************************************
 void printTime()
 {
-    int day, hr, min, sec;
+    int day, hr, min;
+    uint32_t sec;
 
-    sec = MXC_RTC_GetSecond(); // Get current time
+    MXC_RTC_GetSeconds(&sec); // Get current time
 
     day = sec / SECS_PER_DAY;
     sec -= day * SECS_PER_DAY;
@@ -213,6 +214,7 @@ int main(void)
 
     rescheduleAlarm(); // Re-arm RTC TOD alarm
 
+    MXC_Delay(MXC_DELAY_SEC(1));
     LED_Off(LED_TODA);
 
     while (MXC_UART_ReadyForSleep(MXC_UART_GET_UART(CONSOLE_UART)) != E_NO_ERROR) {}

@@ -2,8 +2,9 @@
  * @file
  * @brief   LED driver API.
  */
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_MISCDRIVERS_LED_LED_H_
 #define LIBRARIES_MISCDRIVERS_LED_LED_H_
@@ -57,6 +58,13 @@ extern "C" {
 
 #ifndef LED_ON
 #define LED_ON 1 /**< Define to turn on the LED. */
+#endif
+
+#ifndef LED1
+#define LED1 0
+#endif
+#ifndef LED2
+#define LED2 1
 #endif
 
 /* **** Global Variables **** */

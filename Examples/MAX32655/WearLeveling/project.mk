@@ -3,9 +3,14 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
+
+#MXC_OPTIMIZE_CFLAGS = -Og
+# ^ For example, you can uncomment this line to 
+# optimize the project for debugging
 
 # **********************************************************
 
-# Enable the littleFS library
+# Add your config here!
+
 LIB_LITTLEFS = 1

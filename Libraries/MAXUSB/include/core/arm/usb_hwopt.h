@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,11 +29,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
  ******************************************************************************/
 
-#ifndef _USBIO_HWOPT_H_
-#define _USBIO_HWOPT_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_CORE_ARM_USB_HWOPT_H_
+#define LIBRARIES_MAXUSB_INCLUDE_CORE_ARM_USB_HWOPT_H_
 
 #include "mxc_device.h"
 #include "usb_regs.h"
@@ -76,4 +75,4 @@ static inline void MXC_USB_RemoteWakeup(void)
 }
 #endif
 
-#endif /* _USBIO_HWOPT_H_ */
+#endif // LIBRARIES_MAXUSB_INCLUDE_CORE_ARM_USB_HWOPT_H_

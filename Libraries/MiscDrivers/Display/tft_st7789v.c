@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -365,6 +365,9 @@ int MXC_TFT_Init(mxc_gpio_cfg_t *reset_ctrl, mxc_gpio_cfg_t *bl_ctrl)
 
     MXC_TFT_Backlight(1);
 
+    // This TFT is a vertical display.  Rotate it to horizontal to match a typical expected oritentation.
+    MXC_TFT_SetRotation(ROTATE_270);
+
     return E_NO_ERROR;
 }
 
@@ -522,6 +525,24 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int width, in
     window_max();
 
     __enable_irq();
+}
+
+/* This function writes an image data line by line, required by most UI libraries like LVGL */
+void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height)
+{
+    if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180) {
+        window(x0, y0, height, width);
+    } else {
+        window(x0, y0, width, height);
+    }
+
+    write_command(0x2C); // send pixel
+
+    for (unsigned int y = 0; y < width * height; y += width) { //height
+        TFT_SPI_Transmit(&image[y * 2], width * 2);
+    }
+
+    window_max();
 }
 
 void MXC_TFT_PrintPalette(void)
@@ -726,8 +747,26 @@ void MXC_TFT_PrintFont(int x0, int y0, int id, text_t *str, area_t *area)
     locate(x0, y0);
 
     // Check if IRQs are currently enabled
-    // __disable_irq always uses cpsid i, so check PRIMASK bit to save state
-    uint32_t irq_enabled = !(__get_PRIMASK() & 0b1);
+    uint32_t irq_enabled = 0;
+#ifndef __riscv
+    /*
+        On ARM M the 0th bit of the Priority Mask register indicates
+        whether interrupts are enabled or not.
+
+        0 = enabled
+        1 = disabled
+    */
+    irq_enabled = !(__get_PRIMASK() & 0b1);
+#else
+    /*
+        On RISC-V bit position 3 (Machine Interrupt Enable) of the
+        mstatus register indicates whether interrupts are enabled.
+
+        0 = disabled
+        1 = enabled
+    */
+    irq_enabled = ((get_mstatus() & (1 << 3)) != 0);
+#endif
     __disable_irq();
 
     for (i = 0; i < str->len; i++) {
@@ -764,7 +803,13 @@ void MXC_TFT_WriteReg(unsigned char command, unsigned char data)
 {
     // Check if IRQs are currently enabled
     // __disable_irq always uses cpsid i, so check PRIMASK bit to save state
-    uint32_t irq_enabled = !(__get_PRIMASK() & 0b1);
+    uint32_t irq_enabled = 0;
+
+#ifndef __riscv
+    irq_enabled = !(__get_PRIMASK() & 0b1);
+#else
+    irq_enabled = ((get_mstatus() & (1 << 3)) != 0);
+#endif
     __disable_irq();
 
     write_command(command);

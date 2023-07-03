@@ -4,7 +4,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -98,5 +98,20 @@ extern const mxc_gpio_cfg_t gpio_cfg_adc_trig_p0_0;
 
 extern const mxc_gpio_cfg_t gpio_cfg_can;
 extern const mxc_gpio_cfg_t gpio_cfg_canb;
+
+// SPI v2 Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_3wire;
+// MXC_SPI0 does not support Dual or Quad mode.
+extern const mxc_gpio_cfg_t gpio_cfg_spi1a_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1a_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1b_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1b_3wire;
+// MXC_SPI1 does not support Dual or Quad mode.
+
+// SPI v2 Target Selects Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1a_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1b_ts0;
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32662_MXC_PINS_H_

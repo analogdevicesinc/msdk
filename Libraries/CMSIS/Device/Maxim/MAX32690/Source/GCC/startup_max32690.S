@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,9 +28,6 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- * $Date: 2016-05-02 14:15:59 -0700 (Mon, 02 May 2016) $ 
- * $Revision: 22594 $
  *
  ******************************************************************************/
 
@@ -237,7 +234,7 @@ __isr_vector:
     .long RSV92_IRQHandler             /* 0x6C  0x01B0  108: Reserved */
     .long RSV93_IRQHandler             /* 0x6D  0x01B4  109: Reserved */
     .long RSV94_IRQHandler             /* 0x6E  0x01B8  110: Reserved */
-    .long PUF_IRQHandler               /* 0x6F  0x01BC  111: Physically Uncloneable Function */
+    .long RSV95_IRQHandler             /* 0x6F  0x01BC  111: Reserved */
     .long RSV96_IRQHandler             /* 0x70  0x01C0  112: Reserved */
     .long RSV97_IRQHandler             /* 0x71  0x01C4  113: Reserved */
     .long RSV98_IRQHandler             /* 0x72  0x01C8  114: Reserved */
@@ -457,7 +454,7 @@ Reset_Handler:
     def_irq_handler RSV92_IRQHandler             /* 0x6C  0x01B0  108: Reserved */
     def_irq_handler RSV93_IRQHandler             /* 0x6D  0x01B4  109: Reserved */
     def_irq_handler RSV94_IRQHandler             /* 0x6E  0x01B8  110: Reserved */
-    def_irq_handler PUF_IRQHandler               /* 0x6F  0x01BC  111: Physically Uncloneable Function */
+    def_irq_handler RSV95_IRQHandler             /* 0x6F  0x01BC  111: Reserved */
     def_irq_handler RSV96_IRQHandler             /* 0x70  0x01C0  112: Reserved */
     def_irq_handler RSV97_IRQHandler             /* 0x71  0x01C4  113: Reserved */
     def_irq_handler RSV98_IRQHandler             /* 0x72  0x01C8  114: Reserved */

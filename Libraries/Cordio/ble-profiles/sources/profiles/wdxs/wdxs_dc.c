@@ -56,8 +56,8 @@ void wdxsDcSend(dmConnId_t connId)
   if (AttsCccEnabled(connId, wdxsCb.dcCccIdx))
   {
     /* send notification */
-    AttsHandleValueNtf(connId, WDXS_DC_HDL, wdxsDcCb.dcMsgLen, wdxsDcCb.dcMsgBuf);
     wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_DC_BIT | WDXS_TX_MASK_READY_BIT);
+    AttsHandleValueNtf(connId, WDXS_DC_HDL, wdxsDcCb.dcMsgLen, wdxsDcCb.dcMsgBuf);
   }
 }
 

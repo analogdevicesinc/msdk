@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 #BOARD=FTHR_RevA
 # ^ For example, you can uncomment this line to make the 
@@ -13,5 +13,7 @@
 
 # Add your config here!
 
-# Use the local linker file
-LINKERFILE=lp.ld
+# Use local linker file that restricts SRAM usage to
+# SRAM0 and SRAM1 to prevent hardfault when all other
+# SRAMs shutdown.
+override LINKERFILE=lp.ld

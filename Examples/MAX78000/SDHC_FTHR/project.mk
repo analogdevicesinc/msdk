@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 #MXC_OPTIMIZE_CFLAGS = -Og
 # ^ For example, you can uncomment this line to 
@@ -13,10 +13,11 @@
 
 # Add your config here!
 
-# This example is only compatible with the FTHR board,
-# so we override the BOARD value to hard-set it.
-override BOARD=FTHR_RevA
-$(warning Warning: This project is forced to compile for the FTHR board only!)
+BOARD = FTHR_RevA
+
+ifneq ($(BOARD),FTHR_RevA)
+$(error ERR_NOTSUPPORTED: This project requires an SD card slot and is only supported for the MAX78000FTHR)
+endif
 
 LIB_SDHC = 1
 

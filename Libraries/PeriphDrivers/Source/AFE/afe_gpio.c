@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <stddef.h>
@@ -64,15 +64,18 @@ int MXC_AFE_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     switch (cfg->pad) {
     case MXC_GPIO_PAD_NONE:
         gpio->padctrl0 &= ~cfg->mask;
+        gpio->padctrl1 &= ~cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_UP:
         gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
         gpio->ps |= cfg->mask;
         break;
 
     case MXC_GPIO_PAD_PULL_DOWN:
         gpio->padctrl0 |= cfg->mask;
+        gpio->padctrl1 |= cfg->mask;
         gpio->ps &= ~cfg->mask;
         break;
 

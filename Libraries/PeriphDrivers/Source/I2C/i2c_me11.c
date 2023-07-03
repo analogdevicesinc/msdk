@@ -1,10 +1,10 @@
-/* ****************************************************************************
- * Copyright(C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"), 
+ * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
  * Software is furnished to do so, subject to the following conditions:
  *
@@ -15,7 +15,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -24,12 +24,12 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents, 
+ * of trade secrets, proprietary technology, copyrights, patents,
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stddef.h>
@@ -44,9 +44,6 @@
 #include "dma_regs.h"
 #include "i2c.h"
 #include "i2c_reva.h"
-
-/* **** Definitions **** */
-#define MXC_I2C_FASTPLUS_SPEED 1000000
 
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INTFL0_AMI | MXC_F_I2C_INTFL0_DNRERI;
@@ -137,11 +134,6 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t *i2c)
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz)
 {
-    // ME13 doesn't support high speed more
-    if (hz > MXC_I2C_FASTPLUS_SPEED) {
-        return E_NOT_SUPPORTED;
-    }
-
     return MXC_I2C_RevA_SetFrequency((mxc_i2c_reva_regs_t *)i2c, hz);
 }
 
@@ -380,6 +372,16 @@ int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t *i2c, unsigned int numBytes)
 unsigned int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t *i2c)
 {
     return MXC_I2C_RevA_GetTXThreshold((mxc_i2c_reva_regs_t *)i2c);
+}
+
+void MXC_I2C_AsyncStop(mxc_i2c_regs_t *i2c)
+{
+    MXC_I2C_RevA_AsyncStop((mxc_i2c_reva_regs_t *)i2c);
+}
+
+void MXC_I2C_AbortAsync(mxc_i2c_regs_t *i2c)
+{
+    MXC_I2C_RevA_AbortAsync((mxc_i2c_reva_regs_t *)i2c);
 }
 
 void MXC_I2C_AsyncHandler(mxc_i2c_regs_t *i2c)

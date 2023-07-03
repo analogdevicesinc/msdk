@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -31,24 +31,24 @@
  *
  ******************************************************************************/
 
-#ifndef _CDC_ACM_H_
-#define _CDC_ACM_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_CDC_ACM_H_
+#define LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_CDC_ACM_H_
 
 #include "usb_protocol.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-  
+
 /**
  * @file  cdc_acm.h
  * @brief Communications Device Class ACM (Serial Port) over USB.
  */
 
 #ifdef MAXUSB_HS_CAPABLE
-#define ACM_MAX_PACKET	  MXC_USBHS_MAX_PACKET
+#define ACM_MAX_PACKET    MXC_USBHS_MAX_PACKET
 #else
-#define ACM_MAX_PACKET	  64
+#define ACM_MAX_PACKET    64
 #endif
 
 #define ACM_PARITY_NONE   0
@@ -173,4 +173,4 @@ int acm_write(uint8_t *buf, unsigned int len);
 }
 #endif
 
-#endif /* _CDC_ACM_H_ */
+#endif // LIBRARIES_MAXUSB_INCLUDE_DEVCLASS_CDC_ACM_H_

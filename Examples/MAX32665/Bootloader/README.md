@@ -18,7 +18,12 @@ This Bootloader application needs to be loaded to the first two flash pages. The
 will run on top of this application. The linker file for the main application must coincide 
 with the memory sections defined in this application. The main application is responsible 
 for updating the update flash space.
-
+The `project.mk` in this `Bootloader` application in conjunction with `project.mk` in BLE_otas determine
+where the expected file is stored and read from.
+Default configuration is to use an external flash to store the transferd file before
+writing it to internal flash space during the update.
+Alternatively by changing `USE_INTERNAL_FLASH ?=0` to `USE_INTERNAL_FLASH ?=1` the transfered file
+is stored in the second flash bank. 
  
 ## Expected Output
 
@@ -29,3 +34,15 @@ The LED0 (Green LED) will blink when an update image has successfully been appli
 The LED1 (Red LED) will blink in the error case.
 
 Plesae note that: depend on your LED0/LED1 pin connection on your board, you might see different color on success/fail situations.
+
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+

@@ -3,8 +3,8 @@
  * @brief   This file contains constant pin configurations for the peripherals.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_MXC_PINS_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_MXC_PINS_H_
@@ -94,5 +94,17 @@ extern const mxc_gpio_cfg_t gpio_cfg_lc2;
 extern const mxc_gpio_cfg_t gpio_cfg_mon_lc2;
 extern const mxc_gpio_cfg_t gpio_cfg_cmd_rs_lc2;
 extern const mxc_gpio_cfg_t gpio_cfg_chrg_lc2;
+
+// SPI v2 Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_3wire;
+// MXC_SPI0 does not support Dual or Quad modes.
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
+// MXC_SPI1 does not support Dual or Quad modes.
+
+// SPI v2 Target Selects Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts0;
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32670_MXC_PINS_H_

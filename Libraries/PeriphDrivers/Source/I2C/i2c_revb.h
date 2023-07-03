@@ -3,8 +3,8 @@
  * @brief   Inter-integrated circuit (I2C_REVB) communications interface driver.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-06-28 09:42:42 -0500 (Fri, 28 Jun 2019) $
- * $Revision: 44330 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_I2C_I2C_REVB_H_
 #define LIBRARIES_PERIPHDRIVERS_SOURCE_I2C_I2C_REVB_H_

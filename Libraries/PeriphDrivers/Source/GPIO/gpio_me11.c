@@ -1,8 +1,8 @@
-/* *****************************************************************************
- * Copyright(C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"),
+ * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <stddef.h>
@@ -204,4 +204,19 @@ uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port)
 int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t mask)
 {
     return MXC_GPIO_RevA_SetVSSEL((mxc_gpio_reva_regs_t *)port, vssel, mask);
+}
+
+void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    MXC_GPIO_RevA_SetWakeEn((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask)
+{
+    MXC_GPIO_RevA_ClearWakeEn((mxc_gpio_reva_regs_t *)port, mask);
+}
+
+uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
+{
+    return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port);
 }

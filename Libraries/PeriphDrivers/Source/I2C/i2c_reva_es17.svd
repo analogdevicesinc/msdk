@@ -1260,47 +1260,6 @@
         </fields>
       </register>
       <register>
-        <name>SLA</name>
-        <description>Slave Address Register.</description>
-        <addressOffset>0x44</addressOffset>
-        <fields>
-          <field>
-            <name>SLA</name>
-            <description>Slave Address.</description>
-            <bitRange>[9:0]</bitRange>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>dis</name>
-                <description>Disable.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>en</name>
-                <description>Enable.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-          <field>
-            <name>EA</name>
-            <description>Extended Address Select. This bit selects whether the SLA contains a 7-bit or 10-bit address.</description>
-            <bitRange>[15:15]</bitRange>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>7_bit_address</name>
-                <description>7-bit address select.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>10_bit_address</name>
-                <description>10-bit address select.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-        </fields>
-      </register>
-      <register>
         <name>DMA</name>
         <description>DMA Register.</description>
         <addressOffset>0x48</addressOffset>
@@ -1335,6 +1294,47 @@
               <enumeratedValue>
                 <name>en</name>
                 <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>SLA</name>
+        <description>Slave Address Register.</description>
+        <addressOffset>0x4C</addressOffset>
+        <fields>
+          <field>
+            <name>SLA</name>
+            <description>Slave Address.</description>
+            <bitRange>[9:0]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>dis</name>
+                <description>Disable.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>en</name>
+                <description>Enable.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>EA</name>
+            <description>Extended Address Select. This bit selects whether the SLA contains a 7-bit or 10-bit address.</description>
+            <bitRange>[15:15]</bitRange>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>7_bit_address</name>
+                <description>7-bit address select.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>10_bit_address</name>
+                <description>10-bit address select.</description>
                 <value>1</value>
               </enumeratedValue>
             </enumeratedValues>

@@ -7,11 +7,13 @@ docs_dir: 'Documentation'
 site_dir: 'docs'
 nav:
   - Home: 'index.md'
-  - User Guide: 'USERGUIDE.md'
+  - MSDK User Guide: 'USERGUIDE.md'
+  - Cordio BLE User Guide: 'Libraries/Cordio/docs/CORDIO_USERGUIDE.md'
   - Contributing: 'CONTRIBUTING.md'
   - License: 'LICENSE.md'
 theme:
   name: readthedocs
 markdown_extensions:
+  tables: {}
   codehilite:
     use_pygments: False

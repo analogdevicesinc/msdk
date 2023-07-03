@@ -51,15 +51,25 @@ SRCS += led.c
 # SRCS += mx25.c
 SRCS += pb.c
 SRCS += rom_stub.c
-SRCS += touchscreen.c
-SRCS += tft.c
+# SRCS += tsc2046.c
+# SRCS += tft_ssd2119.c
 #SRCS += LPM012A260A.c
 #SRCS += mx25_stub.c
 
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
+
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
-VPATH += $(BOARD_DIR)/../Source
+VPATH += $(MISC_DRIVERS_DIR)
+VPATH += $(MISC_DRIVERS_DIR)/LED
+VPATH += $(MISC_DRIVERS_DIR)/PushButton
+VPATH += $(MISC_DRIVERS_DIR)/Display
+VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
-IPATH += $(BOARD_DIR)/../Include
+IPATH += $(MISC_DRIVERS_DIR)
+IPATH += $(MISC_DRIVERS_DIR)/LED
+IPATH += $(MISC_DRIVERS_DIR)/PushButton
+IPATH += $(MISC_DRIVERS_DIR)/Display
+IPATH += $(MISC_DRIVERS_DIR)/Touchscreen

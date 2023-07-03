@@ -3,12 +3,20 @@
 This application demonstrates both encryption and decryption using AES.  A block of data is encrypted.  The resulting encrypted data is then decrypted.  The new plain text is then compared with the original plain text to confirm they match.  This is repeated three times using a different key size each time.
 
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
+
 ## Setup
 
-##### Board Selection
-Before building firmware you must select the correct value for _BOARD_  in "project.mk", either "EvKit\_V1" or "FTHR\_Apps\_P1", depending on the EV kit you are using to run the example.
-
-##### Required Connections
+### Required Connections
 If using the standard EV Kit (EvKit\_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.

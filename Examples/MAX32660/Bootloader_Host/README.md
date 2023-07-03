@@ -18,6 +18,17 @@ This example able to communicate with flash based bootloaders.
 The purpose of this example is to provide a reference to how you communicate with 
 flash based bootloader. It is designed to easily be ported on any micro.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and MAX32660 EVKit board.

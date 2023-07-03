@@ -3,8 +3,8 @@
  * @brief   CAMERAIF function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-03-01 09:46:57 -0600 (Wed, 01 Mar 2017) $
- * $Revision: 26777 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_CAMERAIF_H_

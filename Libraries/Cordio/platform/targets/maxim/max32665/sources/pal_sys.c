@@ -32,11 +32,14 @@
 #include "wut.h"
 #include "uart.h"
 #include "dma.h"
-#include "board.h"
 
 /**************************************************************************************************
   Macros
 **************************************************************************************************/
+
+#ifndef PAL_SYS_SLEEP_DISABLE
+#define PAL_SYS_SLEEP_DISABLE             0
+#endif
 
 /**************************************************************************************************
   Global Variables
@@ -51,6 +54,7 @@ static volatile bool_t PalSysAssertTrapEnable;
 /*! \brief      Busy client count. */
 static uint32_t palSysBusyCount;
 
+static bool_t   palSharedWutTimerIsInit;
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
@@ -157,7 +161,6 @@ void PalSysInit(void)
 /*************************************************************************************************/
 void PalSysAssertTrap(void)
 {
-
   PalEnterCs();
   PalLedOn(PAL_LED_ID_ERROR);
   palSysAssertCount++;
@@ -216,6 +219,10 @@ void PalSysSleep(void)
     return;
   }
 
+  #if PAL_SYS_SLEEP_DISABLE
+  return;
+  #endif
+
   #ifdef DEBUG
   /* Stay active to prevent debugger dropout */
   return;
@@ -264,4 +271,29 @@ bool_t PalSysIsBusy(void)
   sysIsBusy = ((palSysBusyCount == 0) ? FALSE : TRUE);
   PalExitCs();
   return sysIsBusy;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Check if Pal shared timer is init.
+ *
+ *  \return     TRUE if timer is initialized.
+ */
+/*************************************************************************************************/
+
+bool_t PalSharedTimerIsInit(void)
+{
+  return palSharedWutTimerIsInit;
+}
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Set timer initalized state.
+ *
+ *  \return     None.
+ */
+/*************************************************************************************************/
+void PalSharedTimerInitState(bool_t state)
+{
+  palSharedWutTimerIsInit = state;
 }

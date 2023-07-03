@@ -6,6 +6,17 @@ Two timers are used to demonstrate two different modes of the general purpose ti
 
 2. Timer 0 is used to output a PWM signal on Port 1.0. The PWM frequency is 200 Hz and the duty cycle is 75%.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

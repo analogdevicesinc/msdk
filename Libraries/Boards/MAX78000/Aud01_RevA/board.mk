@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -39,16 +39,15 @@ endif
 SRCS += board.c
 SRCS += stdio.c
 SRCS += led.c
-MISC_DRIVERS_DIR=$(BOARD_DIR)/../../../MiscDrivers
+
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
-VPATH += $(BOARD_DIR)/../Source
 VPATH += $(MISC_DRIVERS_DIR)
 VPATH += $(MISC_DRIVERS_DIR)/LED
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
-IPATH += $(BOARD_DIR)/../Include
 IPATH += $(MISC_DRIVERS_DIR)
 IPATH += $(MISC_DRIVERS_DIR)/LED

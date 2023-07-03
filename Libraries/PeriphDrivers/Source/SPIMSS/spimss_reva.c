@@ -4,8 +4,8 @@
  *             Serial Peripheral Interface (SPIMSS) peripheral module.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -35,10 +35,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-05-06 14:44:04 -0500 (Mon, 06 May 2019) $
- * $Revision: 43157 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <string.h>

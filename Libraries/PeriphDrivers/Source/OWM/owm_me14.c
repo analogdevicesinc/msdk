@@ -1,8 +1,8 @@
-/* *****************************************************************************
- * Copyright(C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"),
+ * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-08-28 17:03:02 -0500(Tue, 28 Aug 2018) $
- * $Revision: 37424 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <string.h>

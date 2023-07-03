@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60,9 +60,9 @@ int main(void)
 
     while (1) {
         LED_On(0);
-        MXC_Delay(500000);
+        MXC_Delay(MXC_DELAY_MSEC(500));
         LED_Off(0);
-        MXC_Delay(500000);
+        MXC_Delay(MXC_DELAY_MSEC(500));
         printf("count = %d\n", count++);
     }
 

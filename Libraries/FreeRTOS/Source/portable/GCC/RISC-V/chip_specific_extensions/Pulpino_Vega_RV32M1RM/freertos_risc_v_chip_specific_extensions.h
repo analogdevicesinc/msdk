@@ -1,14 +1,14 @@
 /*
- * FreeRTOS Kernel V10.2.0
- * Copyright (C) 2019 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS Kernel V10.5.1
+ * Copyright (C) 2021 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ *
+ * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
  * the Software without restriction, including without limitation the rights to
  * use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
- * the Software, and t
-
- o permit persons to whom the Software is furnished to do so,
+ * the Software, and to permit persons to whom the Software is furnished to do so,
  * subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included in all
@@ -21,10 +21,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.FreeRTOS.org
- * http://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
+ * https://github.com/FreeRTOS
  *
- * 1 tab == 4 spaces!
  */
 
 /*
@@ -59,7 +58,7 @@
 #ifndef __FREERTOS_RISC_V_EXTENSIONS_H__
 #define __FREERTOS_RISC_V_EXTENSIONS_H__
 
-#define portasmHAS_CLINT 0
+#define portasmHAS_MTIME 0
 
 /* Constants to define the additional registers found on the Pulpino RI5KY. */
 #define lpstart0 	0x7b0

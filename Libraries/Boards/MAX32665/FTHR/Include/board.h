@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60,12 +60,22 @@ extern "C" {
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
+#ifdef LED_OFF
+#undef LED_OFF
+#endif
+#define LED_OFF 1 /// Override inactive state of LEDs
+
+#ifdef LED_ON
+#undef LED_ON
+#endif
+#define LED_ON 0 /// Override active state of LEDs
 
 #define LED_RED 0
+#define LED1 LED_RED
 #define LED_BLUE 1
+#define LED2 LED_BLUE
 #define LED_GREEN 2
+#define LED3 LED_GREEN
 
 #ifndef HCI_UART
 #define HCI_UART 2

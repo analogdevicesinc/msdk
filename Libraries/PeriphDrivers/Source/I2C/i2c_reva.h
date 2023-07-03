@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_I2C_I2C_REVA_H_
 #define LIBRARIES_PERIPHDRIVERS_SOURCE_I2C_I2C_REVA_H_
@@ -51,7 +51,7 @@
 #define MXC_I2C_REVA_STD_MODE 100000
 #define MXC_I2C_REVA_FAST_SPEED 400000
 #define MXC_I2C_REVA_FASTPLUS_SPEED 1000000
-#define MXC_I2C_REVA_HS_MODE 3400000
+#define MXC_I2C_REVA_HIGH_SPEED 3400000
 
 #define MXC_I2C_REVA_INTFL0_MASK 0x00FFFFFF
 #define MXC_I2C_REVA_INTFL1_MASK 0x00000007

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -37,6 +37,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "mxc.h"
+#include "board.h"
 
 #define TS_X_MIN 254
 #define TS_X_MAX 3680

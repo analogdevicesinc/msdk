@@ -1,16 +1,12 @@
-/*
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
- ******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
- *
- * This software is protected by copyright laws of the United States and
- * of foreign countries. This material may also be protected by patent laws
- * and technology transfer regulations of the United States and of foreign
- * countries. This software is furnished under a license agreement and/or a
- * nondisclosure agreement and may only be used or reproduced in accordance
- * with the terms of those agreements. Dissemination of this information to
- * any party or parties not specified in the license agreement and/or
- * nondisclosure agreement is expressly prohibited.
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -32,11 +28,22 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- ******************************************************************************
-*/
+ *
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_MXC_H_
+
+#ifdef __riscv
+// TODO(JC): This is a somewhat ugly hack added to avoid
+// implicit function warnings on RISC-V projects
+// when LIB_BOARD was added to libs.mk.  When the
+// RISC-V build system is improved to use libs.mk
+// this should be removed.
+#ifndef LIB_BOARD
+#define LIB_BOARD
+#endif
+#endif
 
 #include "mxc_device.h"
 #include "mxc_delay.h"
@@ -46,17 +53,9 @@
 #include "mxc_pins.h"
 #include "mxc_sys.h"
 #include "nvic_table.h"
+#ifdef LIB_BOARD
 #include "board.h"
-#include "led.h"
-#include "pb.h"
-
-#ifdef BOARD_FTHR_REVA
-#include "tft_ili9341.h"
 #endif
-#ifdef BOARD_EVKIT_V1
-#include "tft_ssd2119.h"
-#endif
-#include "tsc2046.h"
 
 /*
  *  Peripheral Driver Includes

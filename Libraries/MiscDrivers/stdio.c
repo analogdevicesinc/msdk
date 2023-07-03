@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -28,9 +28,6 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- *
- * $Date: 2017-09-18 16:45:06 -0500 (Mon, 18 Sep 2017) $
- * $Revision: 30883 $
  *
  ******************************************************************************/
 
@@ -179,15 +176,15 @@ int __write(int file, const unsigned char *ptr, size_t len)
         for (n = 0; n < len; n++) {
             if (*ptr == '\n') {
                 // Wait until there's room in the FIFO
-                while (MXC_UARTn->status & MXC_F_UART_STATUS_TX_FULL) {}
+                while (MXC_UART_GetTXFIFOAvailable(MXC_UARTn) == 0) {}
 
-                MXC_UARTn->fifo = '\r';
+                MXC_UART_WriteCharacter(MXC_UARTn, '\r');
             }
 
             // Wait until there's room in the FIFO
-            while (MXC_UARTn->status & MXC_F_UART_STATUS_TX_FULL) {}
+            while (MXC_UART_GetTXFIFOAvailable(MXC_UARTn) == 0) {}
 
-            MXC_UARTn->fifo = *ptr++;
+            MXC_UART_WriteCharacter(MXC_UARTn, *ptr++);
         }
 
         break;

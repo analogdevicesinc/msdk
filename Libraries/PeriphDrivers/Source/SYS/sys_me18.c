@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-10-10 15:10:41 -0500 (Mon, 10 Oct 2016) $
- * $Revision: 24650 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /**
  * @file mxc_sys.c
@@ -73,6 +70,10 @@ extern uint32_t _binary_riscv_bin_start;
 /* ************************************************************************** */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
+    if (usn == NULL) {
+        return E_NULL_PTR;
+    }
+
     uint32_t *infoblock = (uint32_t *)MXC_INFO0_MEM_BASE;
 
     /* Read the USN from the info block */
@@ -96,19 +97,19 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     // Compute the checksum
     if (checksum != NULL) {
-        uint8_t info_checksum[2];
         uint32_t key[4];
         uint32_t pt32[4];
-        uint32_t checksum32[4];
+        uint32_t check_csum32[4];
+        uint8_t check_csum[MXC_SYS_USN_CHECKSUM_LEN];
 
         /* Initialize key and plaintext */
-        memset(key, 0, 16);
-        memset(pt32, 0, 16);
+        memset(key, 0, MXC_SYS_USN_CHECKSUM_LEN);
+        memset(pt32, 0, MXC_SYS_USN_CHECKSUM_LEN);
         memcpy(pt32, usn, MXC_SYS_USN_CHECKSUM_LEN);
 
         /* Read the checksum from the info block */
-        info_checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
-        info_checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
+        checksum[1] = ((infoblock[3] & 0x7F800000) >> 23);
+        checksum[0] = ((infoblock[4] & 0x007F8000) >> 15);
 
         MXC_CTB_Init(MXC_CTB_FEATURE_CIPHER);
 
@@ -147,15 +148,15 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
         MXC_CTB->ctrl |= MXC_F_CTB_CTRL_CPH_DONE;
 
         /* Copy out the cipher text */
-        checksum32[0] = MXC_CTB->dout[0];
-        checksum32[1] = MXC_CTB->dout[1];
-        checksum32[2] = MXC_CTB->dout[2];
-        checksum32[3] = MXC_CTB->dout[3];
+        check_csum32[0] = MXC_CTB->dout[0];
+        check_csum32[1] = MXC_CTB->dout[1];
+        check_csum32[2] = MXC_CTB->dout[2];
+        check_csum32[3] = MXC_CTB->dout[3];
 
-        memcpy(checksum, checksum32, MXC_SYS_USN_CHECKSUM_LEN);
+        memcpy(check_csum, check_csum32, MXC_SYS_USN_CHECKSUM_LEN);
 
         /* Verify the checksum */
-        if ((checksum[1] != info_checksum[0]) || (checksum[0] != info_checksum[1])) {
+        if ((checksum[0] != check_csum[0]) || (checksum[1] != check_csum[1])) {
             MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
             return E_UNKNOWN;
         }

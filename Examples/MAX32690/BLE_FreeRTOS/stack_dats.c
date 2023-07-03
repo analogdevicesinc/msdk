@@ -78,7 +78,11 @@
 **************************************************************************************************/
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 16 } };
+static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 },
+                                           { 32, 4 },
+                                           { 192, 8 },
+                                           { 256, 16 },
+                                           { 512, 4 } };
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;

@@ -888,18 +888,6 @@
      <addressOffset>0x010</addressOffset>
      <size>128</size>
     </register>
-    <register>
-     <name>PUF_KEY1</name>
-     <description>PUF Key 1.</description>
-     <addressOffset>0x020</addressOffset>
-     <size>256</size>
-    </register>
-    <register>
-     <name>PUF_KEY2</name>
-     <description>PUF Key 2.</description>
-     <addressOffset>0x040</addressOffset>
-     <size>256</size>
-    </register>
    </registers>
   </peripheral>
 <!--AESKEYS AES Key Registers.-->
@@ -10980,7 +10968,7 @@ memory.
       <field>
        <name>presence_detect</name>
        <description>Presence Pulse Detected.</description>
-       <bitRange>[7:7]</bitRange>
+       <bitRange>[5:5]</bitRange>
        <access>read-only</access>
       </field>
      </fields>
@@ -13245,6 +13233,30 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
+       <name>FILTER_EN</name>
+       <description>Enables analog deglitch filter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_SEL</name>
+       <description>If IBIAS_EN is 1, selects 4x,2x mode.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HYST_EN</name>
+       <description>Enables high current hysteresis buffer.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_EN</name>
+       <description>Enables higher 4x,2x current modes.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>BYPASS</name>
        <description>RTC Crystal Bypass</description>
        <bitOffset>4</bitOffset>
@@ -13476,6 +13488,28 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        <name>ERRADDR</name>
        <bitOffset>0</bitOffset>
        <bitWidth>32</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>BTLE_LDO_TRIM</name>
+     <description>BTLE LDO Trim register.</description>
+     <addressOffset>0x28</addressOffset>
+     <access>read-write</access>
+     <fields>
+      <field>
+       <name>TX</name>
+       <description>TX LDO trim value.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
+      </field>
+      <field>
+       <name>RX</name>
+       <description>RX LDO trim value.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>5</bitWidth>
+       <access>read-write</access>
       </field>
      </fields>
     </register>
@@ -19884,6 +19918,12 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        <bitWidth>1</bitWidth>
       </field>
       <field>
+       <name>TX_OB</name>
+       <description>Enable Interrupt For TX FIFO has one byte remaining</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>TX_HE</name>
        <description>Enable Interrupt For TX FIFO has half empty</description>
        <bitOffset>6</bitOffset>
@@ -19924,6 +19964,12 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
        <name>RX_THD</name>
        <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
        <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TX_OB</name>
+       <description>Flag for interrupt when TX FIFO has one byte remaining</description>
+       <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>

@@ -10,6 +10,17 @@ The structure of resources directory shall be
 The tool **../Tools/BitmapConverter/maxim_bitmap_converter.exe** is used to convert bitmap and font files to maxim specific file format (.mpi maxim picture information)
 And **bitmap.h** file under resources/ directory will be created automatically.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ### bitmap.h file include bitmap definitions id. Like below:
 #ifndef _BITMAP_H_
 #define _BITMAP_H_

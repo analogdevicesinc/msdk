@@ -44,10 +44,9 @@ uint8_t wsfCsNesting = 0;
 /*************************************************************************************************/
 void WsfCsEnter(void)
 {
-    __asm volatile( "cpsid i" );
+    portDISABLE_INTERRUPTS();
 
     wsfCsNesting++;
-
 }
 
 /*************************************************************************************************/
@@ -60,6 +59,6 @@ void WsfCsExit(void)
     wsfCsNesting--;
 
     if (wsfCsNesting == 0) {
-        __asm volatile( "cpsie i" );
+        portENABLE_INTERRUPTS();
     }
 }

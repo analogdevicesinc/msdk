@@ -3,8 +3,8 @@
 * @brief   Inter-integrated circuit (I2C) communications interface driver.
 */
 
-/* ****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-05-13 16:43:27 -0500 (Mon, 13 May 2019) $
- * $Revision: 43332 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_I2C_H_
@@ -57,6 +54,12 @@ extern "C" {
  * @ingroup periphlibs
  * @{
  */
+
+/***** Definitions *****/
+#define MXC_I2C_STD_MODE 100000
+#define MXC_I2C_FAST_SPEED 400000
+#define MXC_I2C_FASTPLUS_SPEED 1000000
+#define MXC_I2C_HIGH_SPEED 3400000
 
 typedef struct _i2c_req_t mxc_i2c_req_t;
 /**
@@ -835,6 +838,16 @@ int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t *i2c, unsigned int numBytes);
  * @return  The transmit threshold value (in bytes).
  */
 int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Stop any asynchronous requests in progress.
+ *
+ * Stop any asynchronous requests in progress. Any callbacks associated with
+ * the active transaction will be NOT executed.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
+ */
+void MXC_I2C_AsyncStop(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Abort any asynchronous requests in progress.

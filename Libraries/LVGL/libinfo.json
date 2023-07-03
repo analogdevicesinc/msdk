@@ -1,0 +1,14 @@
+{
+    "name":"LVGL",
+    "ipaths":[
+        "lvgl",
+        "lvgl/src",
+        "lvgl/src/**"
+    ],
+    "vpaths":[
+        "lvgl/src",
+        "lvgl/src/**"
+    ],
+    "makefile":"lvgml.mk",
+    "whitelist":"False"
+}

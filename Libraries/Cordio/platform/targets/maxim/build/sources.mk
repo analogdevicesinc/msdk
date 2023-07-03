@@ -22,5 +22,15 @@
 #	Platform Abstraction Layer (PAL)
 #--------------------------------------------------------------------------------------------------
 
-include $(ROOT_DIR)/platform/targets/maxim/build/sources_cordio.mk
-include $(ROOT_DIR)/platform/targets/maxim/build/sources_bsp.mk
+C_FILES   += \
+	$(sort $(wildcard $(ROOT_DIR)/platform/targets/maxim/$(CHIP_LC)/sources/*.c))
+
+#--------------------------------------------------------------------------------------------------
+#	Third Party
+#--------------------------------------------------------------------------------------------------
+
+INC_DIRS  += \
+	$(ROOT_DIR)/thirdparty/uecc
+
+C_FILES   += \
+	$(ROOT_DIR)/thirdparty/uecc/uECC_ll.c

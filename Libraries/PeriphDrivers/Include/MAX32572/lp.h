@@ -278,6 +278,21 @@ void MXC_LP_SysRam2LightSleepEnable(void);
 void MXC_LP_SysRam3LightSleepEnable(void);
 
 /**
+ * @brief Enable System Ram 4 in light sleep
+ */
+void MXC_LP_SysRam4LightSleepEnable(void);
+
+/**
+ * @brief Enable System Ram 5 in light sleep
+ */
+void MXC_LP_SysRam5LightSleepEnable(void);
+
+/**
+ * @brief Enable System Ram 6 in light sleep
+ */
+void MXC_LP_SysRam6LightSleepEnable(void);
+
+/**
  * @brief Enable Icache XIP in light sleep
  */
 void MXC_LP_ICacheXIPLightSleepEnable(void);
@@ -321,6 +336,21 @@ void MXC_LP_SysRam1LightSleepDisable(void);
  * @brief Disable System Ram 2 in light sleep
  */
 void MXC_LP_SysRam2LightSleepDisable(void);
+
+/**
+ * @brief Enable System Ram 4 in light sleep
+ */
+void MXC_LP_SysRam4LightSleepDisable(void);
+
+/**
+ * @brief Enable System Ram 5 in light sleep
+ */
+void MXC_LP_SysRam5LightSleepDisable(void);
+
+/**
+ * @brief Enable System Ram 6 in light sleep
+ */
+void MXC_LP_SysRam6LightSleepDisable(void);
 
 /**
  * @brief Disable System Ram 3 in light sleep
@@ -398,6 +428,36 @@ void MXC_LP_SysRam3Shutdown(void);
 void MXC_LP_SysRam3PowerUp(void);
 
 /**
+ * @brief Shutdown System Ram 4
+ */
+void MXC_LP_SysRam4Shutdown(void);
+
+/**
+ * @brief PowerUp System Ram 4
+ */
+void MXC_LP_SysRam4PowerUp(void);
+
+/**
+ * @brief Shutdown System Ram 5
+ */
+void MXC_LP_SysRam5Shutdown(void);
+
+/**
+ * @brief PowerUp System Ram 5
+ */
+void MXC_LP_SysRam5PowerUp(void);
+
+/**
+ * @brief Shutdown System Ram 6
+ */
+void MXC_LP_SysRam6Shutdown(void);
+
+/**
+ * @brief PowerUp System Ram 6
+ */
+void MXC_LP_SysRam6PowerUp(void);
+
+/**
  * @brief Shutdown Internal Cache XIP
  */
 void MXC_LP_ICacheXIPShutdown(void);
@@ -418,14 +478,24 @@ void MXC_LP_USBFIFOShutdown(void);
 void MXC_LP_USBFIFOPowerUp(void);
 
 /**
- * @brief Shutdown ROM
+ * @brief Shutdown ROM0
  */
-void MXC_LP_ROMShutdown(void);
+void MXC_LP_ROM0Shutdown(void);
 
 /**
- * @brief PowerUp ROM
+ * @brief PowerUp ROM0
  */
-void MXC_LP_ROMPowerUp(void);
+void MXC_LP_ROM0PowerUp(void);
+
+/**
+ * @brief Shutdown ROM1
+ */
+void MXC_LP_ROM1Shutdown(void);
+
+/**
+ * @brief PowerUp ROM1
+ */
+void MXC_LP_ROM1PowerUp(void);
 
 /**@} end of group pwrseq */
 

@@ -473,3 +473,15 @@ uint32_t SchStatsGetDelayLoadTotalCount(void)
 {
   return schCb.delayLoadTotalCount;
 }
+
+/*************************************************************************************************/
+/*!
+ *  \brief      Get the scheduler state.
+ *
+ *  \return     State of the scheduler.
+ */
+/*************************************************************************************************/
+schState_t SchGetState(void)
+{
+  return schCb.state;
+}

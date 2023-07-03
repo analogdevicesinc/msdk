@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -46,11 +46,17 @@ MEMORY {
 
 SECTIONS {
 
+    .bootloader :
+    {
+        KEEP(*bootloader.o)
+    } > BOOT
+
     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))
         EXCLUDE_FILE (*riscv.o) *(.text*)    /* program code, exclude RISCV code */
+        EXCLUDE_FILE (*bootloader.o) *(.text*)    /* program code, exclude Bootloader code */
         *(.rodata*)  /* read-only data: "const" */
 
         KEEP(*(.init))

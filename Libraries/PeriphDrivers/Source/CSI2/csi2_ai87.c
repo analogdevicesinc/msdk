@@ -1,35 +1,35 @@
 /******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-* 
-******************************************************************************/
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <string.h>
@@ -42,6 +42,7 @@
 #include "dma.h"
 #include "dma_reva.h"
 #include "mcr_regs.h"
+#include "nvic_table.h"
 
 /* **** Definitions **** */
 
@@ -56,13 +57,30 @@
 int MXC_CSI2_Init(mxc_csi2_req_t *req, mxc_csi2_ctrl_cfg_t *ctrl_cfg,
                   mxc_csi2_vfifo_cfg_t *vfifo_cfg)
 {
-    MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPLL);
+    int error = E_NO_ERROR;
+#ifdef __riscv
+#warning "RISC-V Core does not have access to CSI2 IRQ.  Drivers are not supported on RISC-V"
+    return E_NOT_SUPPORTED;
+#else
+    error = MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPLL);
+    if (error)
+        return error;
+
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CSI2);
+    if (error)
+        return error;
 
     // Turn on LDO2P5
     MXC_MCR->ldoctrl |= MXC_F_MCR_LDOCTRL_2P5EN;
 
-    return MXC_CSI2_RevA_Init((mxc_csi2_reva_regs_t *)MXC_CSI2, req, ctrl_cfg, vfifo_cfg);
+    error = MXC_CSI2_RevA_Init((mxc_csi2_reva_regs_t *)MXC_CSI2, req, ctrl_cfg, vfifo_cfg);
+    if (error)
+        return error;
+
+    MXC_NVIC_SetVector(CSI2_IRQn, MXC_CSI2_RevA_Handler);
+    NVIC_EnableIRQ(CSI2_IRQn);
+#endif
+    return error;
 }
 
 int MXC_CSI2_Shutdown(void)
@@ -87,9 +105,9 @@ int MXC_CSI2_CaptureFrame(int num_data_lanes)
     return MXC_CSI2_RevA_CaptureFrameDMA(num_data_lanes);
 }
 
-int MXC_CSI2_CaptureFrameDMA(int num_data_lanes)
+int MXC_CSI2_CaptureFrameDMA()
 {
-    return MXC_CSI2_RevA_CaptureFrameDMA(num_data_lanes);
+    return MXC_CSI2_RevA_CaptureFrameDMA();
 }
 
 int MXC_CSI2_SetLaneCtrlSource(mxc_csi2_lane_src_t *src)
@@ -102,9 +120,9 @@ int MXC_CSI2_GetLaneCtrlSource(mxc_csi2_lane_src_t *src)
     return MXC_CSI2_RevA_GetLaneCtrlSource((mxc_csi2_reva_regs_t *)MXC_CSI2, src);
 }
 
-void MXC_CSI2_GetImageDetails(uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h)
+void MXC_CSI2_GetImageDetails(uint32_t *imgLen, uint32_t *w, uint32_t *h)
 {
-    MXC_CSI2_RevA_GetImageDetails(img, imgLen, w, h);
+    MXC_CSI2_RevA_GetImageDetails(imgLen, w, h);
 }
 
 int MXC_CSI2_Callback(mxc_csi2_req_t *req, int retVal)
@@ -112,10 +130,10 @@ int MXC_CSI2_Callback(mxc_csi2_req_t *req, int retVal)
     return MXC_CSI2_RevA_Callback(req, retVal);
 }
 
-int MXC_CSI2_Handler(void)
-{
-    return MXC_CSI2_RevA_Handler((mxc_csi2_reva_regs_t *)MXC_CSI2);
-}
+// int MXC_CSI2_Handler(void)
+// {
+//     return MXC_CSI2_RevA_Handler((mxc_csi2_reva_regs_t *)MXC_CSI2);
+// }
 
 /********************************/
 /* CSI2 RX Controller Functions */
@@ -288,6 +306,23 @@ int MXC_CSI2_PPI_Stop(void)
 /************************************/
 /* CSI2 DMA - Used for all features */
 /************************************/
+
+bool MXC_CSI2_DMA_Frame_Complete(void)
+{
+    return MXC_CSI2_RevA_DMA_Frame_Complete();
+}
+
+mxc_csi2_capture_stats_t MXC_CSI2_GetCaptureStats()
+{
+    mxc_csi2_reva_capture_stats_t stats = MXC_CSI2_RevA_DMA_GetCaptureStats();
+    mxc_csi2_capture_stats_t ret = { .success = stats.success,
+                                     .ctrl_err = stats.ctrl_err,
+                                     .ppi_err = stats.ppi_err,
+                                     .vfifo_err = stats.vfifo_err,
+                                     .frame_size = stats.frame_size,
+                                     .bytes_captured = stats.bytes_captured };
+    return ret;
+}
 
 int MXC_CSI2_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size)
 {

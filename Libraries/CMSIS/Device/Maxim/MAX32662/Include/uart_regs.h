@@ -2,10 +2,11 @@
  * @file    uart_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the UART Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup uart_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -253,6 +254,9 @@ typedef struct {
 #define MXC_F_UART_INTEN_RX_THD_POS                    4 /**< INTEN_RX_THD Position */
 #define MXC_F_UART_INTEN_RX_THD                        ((uint32_t)(0x1UL << MXC_F_UART_INTEN_RX_THD_POS)) /**< INTEN_RX_THD Mask */
 
+#define MXC_F_UART_INTEN_TX_OB_POS                     5 /**< INTEN_TX_OB Position */
+#define MXC_F_UART_INTEN_TX_OB                         ((uint32_t)(0x1UL << MXC_F_UART_INTEN_TX_OB_POS)) /**< INTEN_TX_OB Mask */
+
 #define MXC_F_UART_INTEN_TX_HE_POS                     6 /**< INTEN_TX_HE Position */
 #define MXC_F_UART_INTEN_TX_HE                         ((uint32_t)(0x1UL << MXC_F_UART_INTEN_TX_HE_POS)) /**< INTEN_TX_HE Mask */
 
@@ -278,6 +282,9 @@ typedef struct {
 
 #define MXC_F_UART_INTFL_RX_THD_POS                    4 /**< INTFL_RX_THD Position */
 #define MXC_F_UART_INTFL_RX_THD                        ((uint32_t)(0x1UL << MXC_F_UART_INTFL_RX_THD_POS)) /**< INTFL_RX_THD Mask */
+
+#define MXC_F_UART_INTFL_TX_OB_POS                     5 /**< INTFL_TX_OB Position */
+#define MXC_F_UART_INTFL_TX_OB                         ((uint32_t)(0x1UL << MXC_F_UART_INTFL_TX_OB_POS)) /**< INTFL_TX_OB Mask */
 
 #define MXC_F_UART_INTFL_TX_HE_POS                     6 /**< INTFL_TX_HE Position */
 #define MXC_F_UART_INTFL_TX_HE                         ((uint32_t)(0x1UL << MXC_F_UART_INTFL_TX_HE_POS)) /**< INTFL_TX_HE Mask */

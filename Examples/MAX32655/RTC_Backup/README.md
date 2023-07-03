@@ -5,12 +5,20 @@ This example demonstrates the use of the Real Time Clock (RTC) and its alarm fun
 The RTC time-of-day alarm is used to wake the device from backup mode every TIME\_OF\_DAY\_SECONDS seconds (defined at the top of main.c). When the device wakes up, it will print the current time of the RTC to the terminal window and return to backup mode while waiting for the next time-of-day alarm to fire.
 
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
+
 ## Setup
 
-##### Board Selection
-Before building firmware you must select the correct value for _BOARD_  in "project.mk", either "EvKit\_V1" or "FTHR\_Apps\_P1", depending on the EV kit you are using to run the example.
-
-##### Required Connections
+### Required Connections
 If using the Standard EV Kit (EvKit\_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.

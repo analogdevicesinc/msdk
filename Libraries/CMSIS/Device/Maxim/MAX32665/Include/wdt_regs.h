@@ -2,10 +2,11 @@
  * @file    wdt_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the WDT Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup wdt_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),

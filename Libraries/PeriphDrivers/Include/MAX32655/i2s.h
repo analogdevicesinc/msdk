@@ -3,8 +3,8 @@
  * @brief   I2S (Inter-Integrated Sound) driver function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_I2S_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32655_I2S_H_
@@ -71,6 +71,9 @@ typedef enum { MXC_I2S_MSB_FIRST, MXC_I2S_LSB_FIRST } mxc_i2s_bitorder_t;
 
 /** @brief I2S transaction justify order */
 typedef enum { MXC_I2S_MSB_JUSTIFY, MXC_I2S_LSB_JUSTIFY } mxc_i2s_justify_t;
+
+/** @brief I2S polarity configuration */
+typedef enum { MXC_I2S_CLKSRC_ERFO, MXC_I2S_CLKSRC_EXT } mxc_i2s_clksrc_t;
 
 /** @brief  I2S transaction word size */
 typedef enum {
@@ -136,6 +139,22 @@ int MXC_I2S_Shutdown(void);
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.   
  */
 int MXC_I2S_ConfigData(mxc_i2s_req_t *req);
+
+/**
+ * @brief   This function enables and selects the source clock for I2S master mode. By default
+ *          the driver assumes the ERFO will be used so this function only needs to be called
+ *          if switching to/from the external clock is required for the application.
+ * 
+ * @warning This function should be called before MXC_I2S_SetSampleRate, MXC_I2S_GetSampleRate, and
+ *          MXC_I2S_CalculateClockDiv to ensure they operate correctly.
+ *
+ * @param   clk_src     Selects which clock source to use.
+ * @param   freq_ext    Frequency of the clock source. This param only required if
+ *                      MXC_I2S_CLKSRC_EXT selected for clk_src.
+ * 
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2S_SelectClockSource(mxc_i2s_clksrc_t clk_src, uint32_t freq_ext);
 
 /**
  * @brief   Enable TX channel

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -83,12 +83,27 @@ typedef enum { COPY_FILE_OP, CALC_CRC32_OP } externFileOp_t;
 /* Defined in boot_lower.S */
 extern void Boot_Lower(void);
 
+void led_On(unsigned int idx)
+{
+    MXC_GPIO_OutClr(led_pin[idx].port, led_pin[idx].mask);
+}
+
+void led_Off(unsigned int idx)
+{
+    MXC_GPIO_OutSet(led_pin[idx].port, led_pin[idx].mask);
+}
+
+void led_Toggle(unsigned int idx)
+{
+    MXC_GPIO_OutToggle(led_pin[idx].port, led_pin[idx].mask);
+}
+
 void ledSuccessPattern(void)
 {
     /* Green LED blinks */
     volatile int i, j;
     for (j = 0; j < 10; j++) {
-        LED_Toggle(1);
+        led_Toggle(1);
         DELAY(0xFFFFF);
     }
 }
@@ -97,7 +112,7 @@ void ledFailPattern(void)
     /* Red LED blinks */
     volatile int i, j;
     for (j = 0; j < 10; j++) {
-        LED_Toggle(0);
+        led_Toggle(0);
         DELAY(0xFFFFF);
     }
 }
@@ -161,35 +176,6 @@ int flashPageErased(uint32_t *addr)
     }
 
     return 1;
-}
-
-uint32_t findUpperLen(void)
-{
-    uint32_t *flashPagePointer = (uint32_t *)FLASH1_START;
-
-    /* Find the first erased page in the upper flash*/
-    while (1) {
-        if (*flashPagePointer == FLASH_ERASED_WORD) {
-            /* Make sure the entire page is erased */
-            if (flashPageErased(flashPagePointer)) {
-                break;
-            }
-        }
-
-        flashPagePointer += (MXC_FLASH_PAGE_SIZE / 4);
-    }
-
-    /* Length is 0 */
-    if (flashPagePointer == (uint32_t *)FLASH1_START) {
-        return 0;
-    }
-
-    /* search backwards for the first bytes that isn't erased */
-    while (*(flashPagePointer--) == FLASH_ERASED_WORD) {}
-    flashPagePointer += 2;
-
-    /* return the starting address of the CRC, last address of the image */
-    return (uint32_t)(flashPagePointer - (4 / 4) - (FLASH1_START / 4));
 }
 
 static int multiPageErase(uint8_t *address, uint32_t pages)
@@ -296,9 +282,9 @@ int main(void)
 
     LED_Init();
     for (int led = 0; led < numLedsBlink; led++) {
-        LED_On(led);
+        led_On(led);
         DELAY(0x1FFFFF);
-        LED_Off(led);
+        led_Off(led);
         DELAY(0x1FFFFF);
     }
 

@@ -4,16 +4,17 @@ This example demonstrates the use of the Analog Comparator to wake up the device
 
 The example is configured to use analog channels 0 and 1 as the negative and positive comparator inputs respectively. A wakeup event is triggered when the comparator output transitions from low to high (analog 1 needs to transition from a voltage lower than analog 0 to voltage higher than analog 0).
 
-## Setup
 
-##### Building Firmware:
-Before building firmware you must select the correct value for _BOARD_  in "project.mk", either "EvKit\_V1" or "FTHR\_RevA", depending on the EV kit you are using to run the example.
+## Software
 
-After doing so, navigate to the directory where the example is located using a terminal window. Enter the following comand to build all of the files needed to run the example.
+### Project Usage
 
-```
-$ make
-```
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
+
 
 ##### Required Connections
 If using the Standard EV Kit (EvKit_V1):

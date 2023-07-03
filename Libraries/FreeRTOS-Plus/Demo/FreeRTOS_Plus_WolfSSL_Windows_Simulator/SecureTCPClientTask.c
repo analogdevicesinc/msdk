@@ -1,5 +1,5 @@
 /*
- * FreeRTOS Kernel V10.2.0
+ * FreeRTOS V202212.00
  * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,10 +19,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.FreeRTOS.org
- * http://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
+ * https://aws.amazon.com/freertos
  *
- * 1 tab == 4 spaces!
  */
 
 #pragma comment( lib, "ws2_32.lib" )
@@ -73,8 +72,8 @@ uint32_t ulCount = 0UL;
 	xConnection.sin_addr.s_addr = inet_addr("127.0.0.1");
 	xConnection.sin_port = htons( configTCP_PORT_NUMBER );
 
-    /* Attempt to create a context that uses the TLS 1.2 server protocol. */
-    xWolfSSL_ClientContext = wolfSSL_CTX_new( wolfTLSv1_2_client_method() );
+    /* Attempt to create a context that uses the TLS 1.3 server protocol. */
+    xWolfSSL_ClientContext = wolfSSL_CTX_new( wolfTLSv1_3_client_method() );
 	configASSERT( xWolfSSL_ClientContext );
 
     /* Load the CA certificate. */

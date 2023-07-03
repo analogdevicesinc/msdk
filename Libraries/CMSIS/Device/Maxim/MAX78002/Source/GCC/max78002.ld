@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -55,9 +55,28 @@ SECTIONS {
         KEEP(*(.init))
         KEEP(*(.fini))
 
+         /* .ctors */
+        *crtbegin.o(.ctors)
+        *crtbegin?.o(.ctors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+        *(SORT(.ctors.*))
+        *(.ctors)
+
+        /* .dtors */
+        *crtbegin.o(.dtors)
+        *crtbegin?.o(.dtors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+        *(SORT(.dtors.*))
+        *(.dtors)
+
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
+    } > FLASH
+
+    .ARM.extab :
+    {
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > FLASH
 
     /* Binary import */
@@ -99,7 +118,7 @@ SECTIONS {
     .ARM.exidx :
     {
         __exidx_start = .;
-        *(.ARM.exidx*)
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
         __exidx_end = .;
     } > FLASH
 
@@ -107,6 +126,7 @@ SECTIONS {
     {
         _data = ALIGN(., 4);
         _csi = . + 0x20000;
+        *(vtable)
         *(.data*)           /*read-write initialized data: initialized global variable*/
 
 

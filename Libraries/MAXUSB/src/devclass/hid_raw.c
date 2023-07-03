@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,7 @@
  * ownership rights.
  *
  ******************************************************************************/
- 
+
 #include <string.h>
 #include "usb.h"
 #include "enumerate.h"
@@ -112,7 +112,7 @@ int hidraw_init(const MXC_USB_interface_descriptor_t *if_desc, const hid_descrip
   enum_register_callback(ENUM_CLASS_REQ, class_req, NULL);
 
   /* Store interface number */
-  if_num = if_desc->bInterfaceNumber;  
+  if_num = if_desc->bInterfaceNumber;
 
   return 0;
 }
@@ -195,7 +195,6 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
   static MXC_USB_Req_t ep0req;
 
   if ((sud->bmRequestType & RT_RECIP_IFACE) && (sud->wIndex == if_num)) {
-
     switch (sud->bRequest) {
       case HID_GET_REPORT:
         /* The host should not use this as a substitute for the Interrupt EP */
@@ -205,10 +204,10 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
         ep0req.callback = NULL;
         ep0req.cbdata = NULL;
         result = MXC_USB_WriteEndpoint(&ep0req);
-	if (!result) {
-	  /* Success, with data stage */
-	  result = 1;
-	}
+        if (!result) {
+         /* Success, with data stage */
+         result = 1;
+        }
         break;
       case HID_GET_IDLE:
         /* Stall */
@@ -244,8 +243,8 @@ static int class_req(MXC_USB_SetupPkt *sud, void *cbdata)
     /* Not for this class, send to chained classes (if any) */
     if (chained_func != NULL) {
       result = chained_func(sud, chained_cbdata);
-    } 
-  }  
+    }
+  }
 
   return result;
 }

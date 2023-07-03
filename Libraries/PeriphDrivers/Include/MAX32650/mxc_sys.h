@@ -3,8 +3,8 @@
  * @brief   System level header file.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2015 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2015-12-03 12:01:29 -0600 (Thu, 03 Dec 2015) $
- * $Revision: 20227 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_MXC_SYS_H_
@@ -64,11 +61,12 @@ extern "C" {
 #endif
 
 /**
- * @ingroup    syscfg
- * @defgroup   mxc_sys System functions
- * @brief      System specific functions.
+ * @defgroup mxc_sys System Configuration (MXC_SYS)
+ * @ingroup syscfg
+ * @details API for system configuration including clock source selection and entering critical sections of code.
  * @{
  */
+
 #if defined(__CC_ARM) /* Suppressing the warning: "enum value is out of range of int" for Keil */
 #pragma push
 #pragma diag_suppress 66
@@ -245,6 +243,107 @@ typedef mxc_sys_cfg_t mxc_sys_cfg_usbhs_t;
 
 /***** Function Prototypes *****/
 
+typedef struct {
+    int ie_status;
+    int in_critical;
+} mxc_crit_state_t;
+
+static mxc_crit_state_t _state = { .ie_status = (int)0xFFFFFFFF, .in_critical = 0 };
+
+static inline void _mxc_crit_get_state()
+{
+#ifndef __riscv
+    /*
+        On ARM M the 0th bit of the Priority Mask register indicates
+        whether interrupts are enabled or not.
+
+        0 = enabled
+        1 = disabled
+    */
+    uint32_t primask = __get_PRIMASK();
+    _state.ie_status = (primask == 0);
+#else
+    /*
+        On RISC-V bit position 3 (Machine Interrupt Enable) of the
+        mstatus register indicates whether interrupts are enabled.
+
+        0 = disabled
+        1 = enabled
+    */
+    uint32_t mstatus = get_mstatus();
+    _state.ie_status = ((mstatus & (1 << 3)) != 0);
+#endif
+}
+
+/**
+ * @brief Enter a critical section of code that cannot be interrupted.  Call @ref MXC_SYS_Crit_Exit to exit the critical section.
+ * @details Ex:
+ * @code
+ * MXC_SYS_Crit_Enter();
+ * printf("Hello critical section!\n");
+ * MXC_SYS_Crit_Exit();
+ * @endcode
+ * The @ref MXC_CRITICAL macro is also provided as a convencience macro for wrapping a code section in this way.
+ * @returns None
+ */
+static inline void MXC_SYS_Crit_Enter(void)
+{
+    _mxc_crit_get_state();
+    if (_state.ie_status)
+        __disable_irq();
+    _state.in_critical = 1;
+}
+
+/**
+ * @brief Exit a critical section of code from @ref MXC_SYS_Crit_Enter
+ * @returns None
+ */
+static inline void MXC_SYS_Crit_Exit(void)
+{
+    if (_state.ie_status) {
+        __enable_irq();
+    }
+    _state.in_critical = 0;
+    _mxc_crit_get_state();
+    /*
+        ^ Reset the state again to prevent edge case
+        where interrupts get disabled, then Crit_Exit() gets
+        called, which would inadvertently re-enable interrupts
+        from old state.
+    */
+}
+
+/**
+ * @brief Polls whether code is currently executing from a critical section.
+ * @returns 1 if code is currently in a critical section (interrupts are disabled).
+ *          0 if code is not in a critical section.
+ */
+static inline int MXC_SYS_In_Crit_Section(void)
+{
+    return _state.in_critical;
+}
+
+// clang-format off
+/**
+ * @brief Macro for wrapping a section of code to make it critical (interrupts disabled).  Note: this macro
+ * does not support nesting.
+ * @details
+ * Ex:
+ * \code
+ * MXC_CRITICAL(
+ *      printf("Hello critical section!\n");
+ * )
+ * \endcode
+ * This macro places a call to @ref MXC_SYS_Crit_Enter before the code, and a call to @ref MXC_SYS_Crit_Exit after.
+ * @param code The code section to wrap.
+ */
+#define MXC_CRITICAL(code) {\
+    MXC_SYS_Crit_Enter();\
+    code;\
+    MXC_SYS_Crit_Exit();\
+}
+// clang-format on
+
 /**
  * @brief      Determines if the selected peripheral clock is enabled.
  * @param      clock   Enumeration for desired clock.
@@ -297,7 +396,6 @@ int MXC_SYS_ClockSourceDisable(mxc_sys_system_clock_t clock);
 /**
  * @brief      Select the system clock.
  * @param      clock     Enumeration for desired clock.
- * @param      unused       NULL (deprecated parameter)
  * @returns    #E_NO_ERROR if everything is successful.
  */
 int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);

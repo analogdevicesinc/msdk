@@ -4,7 +4,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -60,7 +60,9 @@
 
 /* COMPILER SPECIFIC DEFINES (IAR, ARMCC and GNUC) */
 #if defined(__GNUC__) /* GCC */
+#ifndef __weak
 #define __weak __attribute__((weak))
+#endif
 
 #elif defined(__CC_ARM) /* Keil */
 
@@ -372,6 +374,13 @@ typedef enum {
 #define MXC_DMA ((mxc_dma_regs_t *)MXC_BASE_DMA)
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
+
+#define MXC_DMA_CH_GET_IRQ(i)             \
+    ((IRQn_Type)(((i) == 0) ? DMA0_IRQn : \
+                 ((i) == 1) ? DMA1_IRQn : \
+                 ((i) == 2) ? DMA2_IRQn : \
+                 ((i) == 3) ? DMA3_IRQn : \
+                              0))
 
 /******************************************************************************/
 /*                                                                        FLC */

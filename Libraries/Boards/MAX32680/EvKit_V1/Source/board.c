@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -67,12 +67,15 @@ void mxc_assert(const char *expr, const char *file, int line)
 }
 
 /******************************************************************************/
-/*
-void SystemCoreClockUpdate(void)
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO0_IRQHandler(void)
 {
-    SystemCoreClock = RO_FREQ;
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
 }
-*/
+
 /******************************************************************************/
 int Board_Init(void)
 {

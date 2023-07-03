@@ -2,10 +2,11 @@
  * @file    gcr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GCR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup gcr_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -532,6 +533,9 @@ typedef struct {
 
 #define MXC_F_GCR_RST1_I2S_POS                         23 /**< RST1_I2S Position */
 #define MXC_F_GCR_RST1_I2S                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_I2S_POS)) /**< RST1_I2S Mask */
+
+#define MXC_F_GCR_RST1_AFE_POS                         25 /**< RST1_AFE Position */
+#define MXC_F_GCR_RST1_AFE                             ((uint32_t)(0x1UL << MXC_F_GCR_RST1_AFE_POS)) /**< RST1_AFE Mask */
 
 /**@} end of group GCR_RST1_Register */
 

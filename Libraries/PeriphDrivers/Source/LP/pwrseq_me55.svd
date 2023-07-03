@@ -428,9 +428,81 @@
             </enumeratedValues>
           </field>
           <field>
+            <name>RAM4</name>
+            <description>System RAM block 4 Shut Down.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM5</name>
+            <description>System RAM block 5 Shut Down.</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>RAM6</name>
+            <description>System RAM block 6 Shut Down.</description>
+            <bitOffset>6</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
             <name>ICCXIP</name>
             <description>XiP Instruction Cache RAM Shut Down.</description>
             <bitOffset>8</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>CRYPTO</name>
+            <description>MAA memory Shut Down.</description>
+            <bitOffset>10</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>
@@ -464,9 +536,45 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ROM</name>
-            <description>ROM Shut Down.</description>
+            <name>ROM0</name>
+            <description>ROM0 Shut Down.</description>
             <bitOffset>12</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>MEUMEM</name>
+            <description>MEU memory Shut Down.</description>
+            <bitOffset>13</bitOffset>
+            <bitWidth>1</bitWidth>
+            <enumeratedValues>
+              <enumeratedValue>
+                <name>normal</name>
+                <description>Normal Operating Mode.</description>
+                <value>0</value>
+              </enumeratedValue>
+              <enumeratedValue>
+                <name>shutdown</name>
+                <description>Shutdown Mode.</description>
+                <value>1</value>
+              </enumeratedValue>
+            </enumeratedValues>
+          </field>
+          <field>
+            <name>ROM1</name>
+            <description>ROM1 Shut Down.</description>
+            <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
             <enumeratedValues>
               <enumeratedValue>

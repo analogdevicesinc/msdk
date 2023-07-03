@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.2.0
- * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS V202212.00
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -19,22 +19,21 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.FreeRTOS.org
- * http://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
+ * https://github.com/FreeRTOS
  *
- * 1 tab == 4 spaces!
  */
 
 /*
  * A set of tasks are created that send TCP echo requests to the standard echo
  * port (port 7) on the IP address set by the configECHO_SERVER_ADDR0 to
  * configECHO_SERVER_ADDR3 constants, then wait for and verify the reply
- * (another demo is avilable that demonstrates the reception being performed in
+ * (another demo is available that demonstrates the reception being performed in
  * a task other than that from with the request was made).
  *
  * See the following web page for essential demo usage and configuration
  * details:
- * http://www.FreeRTOS.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/examples_FreeRTOS_simulator.html
+ * https://www.FreeRTOS.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/examples_FreeRTOS_simulator.html
  */
 
 /* Standard includes. */
@@ -50,6 +49,8 @@
 /* FreeRTOS+TCP includes. */
 #include "FreeRTOS_IP.h"
 #include "FreeRTOS_Sockets.h"
+
+#include "tcp_echo_config.h"
 
 /* Exclude the whole file if FreeRTOSIPConfig.h is configured to use UDP only. */
 #if( ipconfigUSE_TCP == 1 )
@@ -152,10 +153,7 @@ TickType_t xTimeOnEntering;
 	server is configured by the constants configECHO_SERVER_ADDR0 to
 	configECHO_SERVER_ADDR3 in FreeRTOSConfig.h. */
 	xEchoServerAddress.sin_port = FreeRTOS_htons( echoECHO_PORT );
-	xEchoServerAddress.sin_addr = FreeRTOS_inet_addr_quick( configECHO_SERVER_ADDR0,
-															configECHO_SERVER_ADDR1,
-															configECHO_SERVER_ADDR2,
-															configECHO_SERVER_ADDR3 );
+	xEchoServerAddress.sin_addr = FreeRTOS_inet_addr( configECHO_SERVER_ADDR );
 
 	for( ;; )
 	{
@@ -299,12 +297,14 @@ static BaseType_t prvCreateTxData( char *cBuffer, uint32_t ulBufferLength )
 BaseType_t lCharactersToAdd, lCharacter;
 char cChar = '0';
 const BaseType_t lMinimumLength = 60;
+uint32_t ulRandomNumber;
 
 	/* Randomise the number of characters that will be sent in the echo
 	request. */
 	do
 	{
-		lCharactersToAdd = ipconfigRAND32() % ( ulBufferLength - 20UL );
+                ( void ) xApplicationGetRandomNumber( &ulRandomNumber );
+		lCharactersToAdd = ulRandomNumber % ( ulBufferLength - 20UL );
 	} while ( ( lCharactersToAdd == 0 ) || ( lCharactersToAdd < lMinimumLength ) ); /* Must be at least enough to add the unique text to the start of the string later. */
 
 	/* Fill the buffer. */

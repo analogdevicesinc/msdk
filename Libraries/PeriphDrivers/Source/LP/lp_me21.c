@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include "mxc_device.h"
 #include "mxc_assert.h"
@@ -320,6 +320,11 @@ void MXC_LP_SysRam3LightSleepEnable(void)
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_RAM3LS_EN;
 }
 
+void MXC_LP_ICache0LightSleepEnable(void)
+{
+    MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ICC0LS_EN;
+}
+
 void MXC_LP_ROMLightSleepEnable(void)
 {
     MXC_GCR->memctrl |= MXC_F_GCR_MEMCTRL_ROMLS_EN;
@@ -345,9 +350,14 @@ void MXC_LP_SysRam3LightSleepDisable(void)
     MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM3LS_EN;
 }
 
+void MXC_LP_ICache0LightSleepDisable(void)
+{
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ICC0LS_EN;
+}
+
 void MXC_LP_ROMLightSleepDisable(void)
 {
-    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_RAM0LS_EN;
+    MXC_GCR->memctrl &= ~MXC_F_GCR_MEMCTRL_ROMLS_EN;
 }
 
 void MXC_LP_SysRam0Shutdown(void)

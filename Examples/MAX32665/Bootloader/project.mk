@@ -3,9 +3,14 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
+
+# If you have secure version of MCU (MAX32666), set SBT=1 to generate signed binary
+# For more information on how sing process works, see
+# https://www.analog.com/en/education/education-library/videos/6313214207112.html
+SBT=0
 
 # Optimize for size
 MXC_OPTIMIZE_CFLAGS=-Os
@@ -17,7 +22,13 @@ SRCS += boot_lower.S
 LINKERFILE = bootloader.ld
 
 AUTOSEARCH=0
-USE_INTERNAL_FLASH ?=0
+
+ifeq ($(BOARD),EvKit_V1)
+USE_INTERNAL_FLASH ?= 0
+else
+USE_INTERNAL_FLASH ?= 1
+endif
+
 ifeq ($(USE_INTERNAL_FLASH), 1)
 SRCS += main_int.c
 else

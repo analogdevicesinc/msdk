@@ -1,10 +1,10 @@
 /**
- * @file mxc_pins.c
- * @brief      This file contains constant pin configurations for the peripherals.
+ * @file    mxc_pins.c
+ * @brief   This file contains constant pin configurations for the peripherals.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date$
- * $Revision$
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #include "gpio.h"
 #include "mxc_device.h"
@@ -147,3 +144,28 @@ const mxc_gpio_cfg_t gpio_cfg_cmd_rs_lc2 = { MXC_GPIO0, MXC_GPIO_PIN_18, MXC_GPI
                                              MXC_GPIO_PAD_NONE };
 const mxc_gpio_cfg_t gpio_cfg_chrg_lc2 = { MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_ALT4,
                                            MXC_GPIO_PAD_NONE };
+
+// SPI v2 Pin Definitions
+const mxc_gpio_cfg_t gpio_cfg_spi0_standard = { MXC_GPIO0,
+                                                (MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4),
+                                                MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
+                                                MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_spi0_3wire = { MXC_GPIO0, (MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4),
+                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
+                                             MXC_GPIO_VSSEL_VDDIO };
+// MXC_SPI0 does not support Dual or Quad modes.
+
+const mxc_gpio_cfg_t gpio_cfg_spi1_standard = {
+    MXC_GPIO0, (MXC_GPIO_PIN_14 | MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16), MXC_GPIO_FUNC_ALT1,
+    MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO
+};
+const mxc_gpio_cfg_t gpio_cfg_spi1_3wire = { MXC_GPIO0, (MXC_GPIO_PIN_15 | MXC_GPIO_PIN_16),
+                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
+                                             MXC_GPIO_VSSEL_VDDIO };
+// MXC_SPI1 does not support Dual or Quad modes.
+
+// SPI v2 Target Selects Pin Definitions
+const mxc_gpio_cfg_t gpio_cfg_spi0_ts0 = { MXC_GPIO0, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_ALT1,
+                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_spi1_ts0 = { MXC_GPIO0, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_ALT1,
+                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };

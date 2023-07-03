@@ -6,6 +6,20 @@ SPI1 is setup as the master in this example and is configured by default to send
 
 Once the master ends the transaction, the data received by the master and the slave is compared to the data sent by their counterpart to ensure all bytes were received properly.
 
+## Software
+
+### SPI v2 Library
+
+The SPI v2 Library does not support Target (L. Slave) Transaction functions yet. To use the previous SPI driver, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

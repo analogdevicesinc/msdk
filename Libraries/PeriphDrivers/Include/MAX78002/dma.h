@@ -3,8 +3,8 @@
  * @brief   Direct Memory Access (DMA) driver function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_DMA_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78002_DMA_H_
@@ -204,6 +204,11 @@ typedef mxc_dma_srcdst_t (*mxc_dma_trans_chain_t)(mxc_dma_srcdst_t dest);
  * @return     #E_NO_ERROR if successful
  */
 int MXC_DMA_Init(void);
+
+/**
+ * @brief      De-Initialize DMA resources.
+ */
+void MXC_DMA_DeInit(void);
 
 /**
  * @brief      Request DMA channel

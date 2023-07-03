@@ -260,7 +260,7 @@ To configure the command-line for use with the development repo:
 
 ## License Agreement
 
-**© Copyright (C) 2022 Maxim Integrated Products, Inc., All rights Reserved.**
+**© Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.**
 
 This software is protected by copyright laws of the United States and
 of foreign countries. This material may also be protected by patent laws

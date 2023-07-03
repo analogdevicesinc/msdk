@@ -201,14 +201,8 @@ static BaseType_t prvUptimeCommand(char *pcWriteBuffer, size_t xWriteBufferLen,
 
     ticks = xTaskGetTickCount();
 
-#if configUSE_TICKLESS_IDLE
-    pcWriteBuffer += snprintf(pcWriteBuffer, xWriteBufferLen,
-                              "Uptime is 0x%08x (%u ms)\r\nMXC_WUT->cnt is %u\r\n", ticks,
-                              ticks / portTICK_PERIOD_MS, MXC_WUT->cnt);
-#else
     pcWriteBuffer += snprintf(pcWriteBuffer, xWriteBufferLen, "Uptime is 0x%08x (%u ms)\r\n", ticks,
                               ticks / portTICK_PERIOD_MS);
-#endif
 
     /* No more data to return */
     return pdFALSE;

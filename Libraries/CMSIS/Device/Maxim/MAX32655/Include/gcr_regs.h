@@ -2,10 +2,11 @@
  * @file    gcr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the GCR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup gcr_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -386,7 +387,7 @@ typedef struct {
  * @{
  */
 #define MXC_F_GCR_PCLKDIV_ADCFRQ_POS                   10 /**< PCLKDIV_ADCFRQ Position */
-#define MXC_F_GCR_PCLKDIV_ADCFRQ                       ((uint32_t)(0x7UL << MXC_F_GCR_PCLKDIV_ADCFRQ_POS)) /**< PCLKDIV_ADCFRQ Mask */
+#define MXC_F_GCR_PCLKDIV_ADCFRQ                       ((uint32_t)(0xFUL << MXC_F_GCR_PCLKDIV_ADCFRQ_POS)) /**< PCLKDIV_ADCFRQ Mask */
 
 #define MXC_F_GCR_PCLKDIV_CNNCLKDIV_POS                14 /**< PCLKDIV_CNNCLKDIV Position */
 #define MXC_F_GCR_PCLKDIV_CNNCLKDIV                    ((uint32_t)(0x7UL << MXC_F_GCR_PCLKDIV_CNNCLKDIV_POS)) /**< PCLKDIV_CNNCLKDIV Mask */
@@ -699,6 +700,17 @@ typedef struct {
 #define MXC_F_GCR_BTLELDOCTRL_LDOTXPULLD_POS           1 /**< BTLELDOCTRL_LDOTXPULLD Position */
 #define MXC_F_GCR_BTLELDOCTRL_LDOTXPULLD               ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_LDOTXPULLD_POS)) /**< BTLELDOCTRL_LDOTXPULLD Mask */
 
+#define MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL_POS            2 /**< BTLELDOCTRL_LDOTXVSEL Position */
+#define MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL                ((uint32_t)(0x3UL << MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL_POS)) /**< BTLELDOCTRL_LDOTXVSEL Mask */
+#define MXC_V_GCR_BTLELDOCTRL_LDOTXVSEL_0_7            ((uint32_t)0x0UL) /**< BTLELDOCTRL_LDOTXVSEL_0_7 Value */
+#define MXC_S_GCR_BTLELDOCTRL_LDOTXVSEL_0_7            (MXC_V_GCR_BTLELDOCTRL_LDOTXVSEL_0_7 << MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL_POS) /**< BTLELDOCTRL_LDOTXVSEL_0_7 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_LDOTXVSEL_0_85           ((uint32_t)0x1UL) /**< BTLELDOCTRL_LDOTXVSEL_0_85 Value */
+#define MXC_S_GCR_BTLELDOCTRL_LDOTXVSEL_0_85           (MXC_V_GCR_BTLELDOCTRL_LDOTXVSEL_0_85 << MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL_POS) /**< BTLELDOCTRL_LDOTXVSEL_0_85 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_LDOTXVSEL_0_9            ((uint32_t)0x2UL) /**< BTLELDOCTRL_LDOTXVSEL_0_9 Value */
+#define MXC_S_GCR_BTLELDOCTRL_LDOTXVSEL_0_9            (MXC_V_GCR_BTLELDOCTRL_LDOTXVSEL_0_9 << MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL_POS) /**< BTLELDOCTRL_LDOTXVSEL_0_9 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_LDOTXVSEL_1_1            ((uint32_t)0x3UL) /**< BTLELDOCTRL_LDOTXVSEL_1_1 Value */
+#define MXC_S_GCR_BTLELDOCTRL_LDOTXVSEL_1_1            (MXC_V_GCR_BTLELDOCTRL_LDOTXVSEL_1_1 << MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL_POS) /**< BTLELDOCTRL_LDOTXVSEL_1_1 Setting */
+
 #define MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL0_POS           2 /**< BTLELDOCTRL_LDOTXVSEL0 Position */
 #define MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL0               ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_LDOTXVSEL0_POS)) /**< BTLELDOCTRL_LDOTXVSEL0 Mask */
 
@@ -710,6 +722,17 @@ typedef struct {
 
 #define MXC_F_GCR_BTLELDOCTRL_LDORXPULLD_POS           5 /**< BTLELDOCTRL_LDORXPULLD Position */
 #define MXC_F_GCR_BTLELDOCTRL_LDORXPULLD               ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_LDORXPULLD_POS)) /**< BTLELDOCTRL_LDORXPULLD Mask */
+
+#define MXC_F_GCR_BTLELDOCTRL_LDORXVSEL_POS            6 /**< BTLELDOCTRL_LDORXVSEL Position */
+#define MXC_F_GCR_BTLELDOCTRL_LDORXVSEL                ((uint32_t)(0x3UL << MXC_F_GCR_BTLELDOCTRL_LDORXVSEL_POS)) /**< BTLELDOCTRL_LDORXVSEL Mask */
+#define MXC_V_GCR_BTLELDOCTRL_LDORXVSEL_0_7            ((uint32_t)0x0UL) /**< BTLELDOCTRL_LDORXVSEL_0_7 Value */
+#define MXC_S_GCR_BTLELDOCTRL_LDORXVSEL_0_7            (MXC_V_GCR_BTLELDOCTRL_LDORXVSEL_0_7 << MXC_F_GCR_BTLELDOCTRL_LDORXVSEL_POS) /**< BTLELDOCTRL_LDORXVSEL_0_7 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_LDORXVSEL_0_85           ((uint32_t)0x1UL) /**< BTLELDOCTRL_LDORXVSEL_0_85 Value */
+#define MXC_S_GCR_BTLELDOCTRL_LDORXVSEL_0_85           (MXC_V_GCR_BTLELDOCTRL_LDORXVSEL_0_85 << MXC_F_GCR_BTLELDOCTRL_LDORXVSEL_POS) /**< BTLELDOCTRL_LDORXVSEL_0_85 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_LDORXVSEL_0_9            ((uint32_t)0x2UL) /**< BTLELDOCTRL_LDORXVSEL_0_9 Value */
+#define MXC_S_GCR_BTLELDOCTRL_LDORXVSEL_0_9            (MXC_V_GCR_BTLELDOCTRL_LDORXVSEL_0_9 << MXC_F_GCR_BTLELDOCTRL_LDORXVSEL_POS) /**< BTLELDOCTRL_LDORXVSEL_0_9 Setting */
+#define MXC_V_GCR_BTLELDOCTRL_LDORXVSEL_1_1            ((uint32_t)0x3UL) /**< BTLELDOCTRL_LDORXVSEL_1_1 Value */
+#define MXC_S_GCR_BTLELDOCTRL_LDORXVSEL_1_1            (MXC_V_GCR_BTLELDOCTRL_LDORXVSEL_1_1 << MXC_F_GCR_BTLELDOCTRL_LDORXVSEL_POS) /**< BTLELDOCTRL_LDORXVSEL_1_1 Setting */
 
 #define MXC_F_GCR_BTLELDOCTRL_LDORXVSEL0_POS           6 /**< BTLELDOCTRL_LDORXVSEL0 Position */
 #define MXC_F_GCR_BTLELDOCTRL_LDORXVSEL0               ((uint32_t)(0x1UL << MXC_F_GCR_BTLELDOCTRL_LDORXVSEL0_POS)) /**< BTLELDOCTRL_LDORXVSEL0 Mask */

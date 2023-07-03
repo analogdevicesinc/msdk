@@ -1,8 +1,8 @@
-/* ****************************************************************************
- * Copyright(C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files(the "Software"),
+ * copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation
  * the rights to use, copy, modify, merge, publish, distribute, sublicense,
  * and/or sell copies of the Software, and to permit persons to whom the
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /****** Includes *******/
 #include <stddef.h>
@@ -80,6 +80,11 @@ int MXC_DMA_Init(mxc_dma_regs_t *dma)
     }
 
     return MXC_DMA_RevA_Init((mxc_dma_reva_regs_t *)dma);
+}
+
+void MXC_DMA_DeInit(mxc_dma_regs_t *dma)
+{
+    return MXC_DMA_RevA_DeInit((mxc_dma_reva_regs_t *)dma);
 }
 
 int MXC_DMA_AcquireChannel(mxc_dma_regs_t *dma)

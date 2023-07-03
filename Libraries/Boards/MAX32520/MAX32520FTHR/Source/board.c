@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -40,7 +40,6 @@
 #include "gpio.h"
 #include "mxc_pins.h"
 #include "led.h"
-#include "pb.h"
 #include "i2c.h"
 
 /***** Global Variables *****/

@@ -4,6 +4,17 @@ The SPI Execute-in-Place Flash (SPIXF) peripheral enables code stored in an exte
 
 To demonstrate, a sample function is loaded into the MX25 external flash chip. The function is then called twice, once with the SFCC enabled (Test 1) and once with the SFCC disabled (Test 2). For each function call, the RTC measures the execution time of each function call. After both function calls have completed, the execution times are compared. If Test 1 has a faster execution time than Test 2 a success message will be printed to the terminal.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.

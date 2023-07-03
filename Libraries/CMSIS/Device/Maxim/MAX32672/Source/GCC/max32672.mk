@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -28,9 +28,6 @@
  # trademarks, maskwork rights, or any other form of intellectual
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
- #
- # $Date: 2016-03-23 13:28:53 -0700 (Wed, 23 Mar 2016) $ 
- # $Revision: 22067 $
  #
  ###############################################################################
 
@@ -88,4 +85,7 @@ IPATH+=$(CMSIS_ROOT)/$(CMSIS_VER)/Core/Include
 LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
 
 # Include the rules and goals for building
-include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc.mk
+include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc.mk
+
+# Include rules for flashing
+include $(CMSIS_ROOT)/../../Tools/Flash/flash.mk

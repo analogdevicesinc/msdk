@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -195,7 +195,7 @@ void transmit_capture_uart(img_data_t img_data)
         // Since standard image captures are buffered into SRAM, sending them
         // over the serial port is straightforward...
         clear_serial_buffer();
-        MXC_UART_Write(Con_Uart, img_data.raw, (int *)&img_data.imglen);
+        MXC_UART_WriteBytes(Con_Uart, img_data.raw, img_data.imglen);
 
         int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
         printf("Done! (serial transmission took %i us)\n", elapsed);
@@ -259,9 +259,8 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     }
 
     // 2. Retrieve image format and info.
-    img_data.pixel_format = camera_get_pixel_format(); // Retrieve the pixel format of the image
-    camera_get_image(NULL, &img_data.imglen, &img_data.w,
-                     &img_data.h); // Retrieve info using driver function.
+    img_data.pixel_format = camera_get_pixel_format();
+    camera_get_image(NULL, &img_data.imglen, &img_data.w, &img_data.h);
     img_data.raw = (uint32_t *)
         CNN_QUAD0_DSRAM_START; // Manually save the destination address at the first quadrant of CNN data SRAM
 
@@ -279,9 +278,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     while (!camera_is_image_rcv()) {
         if ((data = get_camera_stream_buffer()) !=
             NULL) { // The stream buffer will return 'NULL' until an image row is received.
-            // 5. Unload buffer
             cnn_addr = write_bytes_to_cnn_sram(data, buffer_size, cnn_addr);
-            // 6. Release buffer in time for next row
             release_camera_stream_buffer();
         }
     }
@@ -339,7 +336,7 @@ void transmit_stream_uart(cnn_img_data_t img_data)
         // quadrant boundaries is required.
         for (int i = 0; i < img_data.imglen; i += transfer_len) {
             cnn_addr = read_bytes_from_cnn_sram((uint8_t *)g_serial_buffer, transfer_len, cnn_addr);
-            MXC_UART_Write(Con_Uart, (uint8_t *)g_serial_buffer, &transfer_len);
+            MXC_UART_WriteBytes(Con_Uart, (uint8_t *)g_serial_buffer, transfer_len);
         }
 
         int elapsed = MXC_TMR_SW_Stop(MXC_TMR0);
@@ -474,6 +471,7 @@ void service_console()
                 if (g_app_settings.bayer_function == BAYER_FUNCTION_PASSTHROUGH) {
                     bayer_passthrough(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
                 } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
+                    color_correct(img_data.raw, img_data.w, img_data.h);
                     bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h,
                                                (uint16_t *)bayer_data);
                 }

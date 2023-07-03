@@ -3,8 +3,8 @@
  * @brief   Timer (TMR) function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_TMR_H_
@@ -125,6 +125,7 @@ typedef enum {
     MXC_TMR_32K_CLK,
     /*8K and EXT clocks can only be used for Timers 4 and 5*/
     MXC_TMR_8K_CLK,
+    MXC_TMR_8M_DIV8_CLK
 } mxc_tmr_clock_t;
 
 /**

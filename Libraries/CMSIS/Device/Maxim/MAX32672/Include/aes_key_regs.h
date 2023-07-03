@@ -1,11 +1,11 @@
 /**
  * @file    aes_key_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the AES_KEY Peripheral Module.
- * @note    This file is @deprecated.
+ * @deprecated aeskeys_regs has been deprecated in favor of @ref sys_aeskeys_registers and @ref usr_aeskeys_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),

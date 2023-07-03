@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 #MXC_OPTIMIZE_CFLAGS = -Og
 # ^ For example, you can uncomment this line to 
@@ -20,9 +20,9 @@ CAMERA=OV7692
 # CAMERA=HM0360_MONO
 #CAMERA=HM01B0
 
-# Select TFT display drivers to match the connected display
-TFT=ADAFRUIT
-# TFT=NEWHAVEN
+# Uncomment to use legacy Adafruit 3315 TFT drivers (TFT = ADAFRUIT)
+# Otherwise, default drivers (TFT = NEWHAVEN) will be used for NewHaven NHD-2.4
+# TFT = ADAFRUIT
 
 # Set a higher optimization level.  The increased performance
 # is required for the CameraIF DMA code to work within the

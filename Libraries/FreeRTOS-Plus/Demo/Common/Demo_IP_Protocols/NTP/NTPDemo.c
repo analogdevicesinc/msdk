@@ -1,4 +1,9 @@
 /*
+ *!
+ *! The protocols implemented in this file are intended to be demo quality only,
+ *! and not for production devices.
+ *!
+ *
  * FreeRTOS+TCP V2.0.3
  * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
@@ -19,8 +24,8 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://aws.amazon.com/freertos
- * http://www.FreeRTOS.org
+ * https://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
  */
 
 /*
@@ -135,7 +140,7 @@ void vStartNTPTask( uint16_t usTaskStackSize, UBaseType_t uxTaskPriority )
 	else
 	{
 		xUDPSocket = FreeRTOS_socket( FREERTOS_AF_INET, FREERTOS_SOCK_DGRAM, FREERTOS_IPPROTO_UDP );
-		if( xUDPSocket != NULL )
+		if( xUDPSocket != FREERTOS_INVALID_SOCKET )
 		{
 		struct freertos_sockaddr xAddress;
 		#if( ipconfigUSE_CALLBACKS != 0 )

@@ -1,0 +1,13 @@
+{
+    "lib_name": "AWS SigV4 library",
+    "src": [
+        "source/sigv4.c",
+        "source/sigv4_quicksort.c"
+    ],
+    "include": [
+        "source/include"
+    ],
+    "compiler_flags": [
+        "SIGV4_DO_NOT_USE_CUSTOM_CONFIG"
+    ]
+}

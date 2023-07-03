@@ -3,8 +3,8 @@
  * @brief   Real Time Clock (RTC) functions and prototypes.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_RTC_H_
@@ -180,16 +180,38 @@ int MXC_RTC_ClearFlags(int flags);
  * @brief     Get SubSecond or E_BUSY, see /ref MXC_ERROR_CODES
  * @retval    Returns subsecond value
  */
+#ifdef __GNUC__
+__attribute__((deprecated("Use MXC_RTC_GetSubSeconds() instead.")))
+#endif
 int MXC_RTC_GetSubSecond(void);
+
+/**
+ * @brief     This function stores the current value of the sub-seconds counter into a
+ *            pointer if the RTC is not busy. If the RTC is busy, an error is returned.
+ * @param     ssec   Pointer to the variable to store the current sub-seconds value.
+ * @retval    E_NO_ERROR if successful, otherwise an error code (see /ref MXC_ERROR_CODES).
+ */
+int MXC_RTC_GetSubSeconds(uint32_t *ssec);
 
 /**
  * @brief     Get Second or E_BUSY, see /ref MXC_ERROR_CODES
  * @retval    returns second value
  */
+#ifdef __GNUC__
+__attribute__((deprecated("Use MXC_RTC_GetSeconds() instead.")))
+#endif
 int MXC_RTC_GetSecond(void);
 
 /**
- * @brief     Get the time using nuclear fusion. Or atomically. Something like that.
+ * @brief     This function stores the current value of the seconds counter into a
+ *            pointer if the RTC is not busy. If the RTC is busy, an error is returned.
+ * @param     sec   Pointer to the variable to store the current seconds value.
+ * @retval    E_NO_ERROR if successful, otherwise an error code (see /ref MXC_ERROR_CODES).
+ */
+int MXC_RTC_GetSeconds(uint32_t *sec);
+
+/**
+ * @brief     Get the current second and sub-second counts.
  * @param     sec pointer to store seconds value
  * @param     subsec pointer to store subseconds value
  * @retval    returns Success or Fail, see \ref MXC_Error_Codes

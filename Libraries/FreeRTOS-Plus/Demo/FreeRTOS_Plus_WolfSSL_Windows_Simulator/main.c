@@ -1,5 +1,5 @@
 /*
- * FreeRTOS Kernel V10.2.0
+ * FreeRTOS V202212.00
  * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
@@ -19,10 +19,9 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.FreeRTOS.org
- * http://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
+ * https://github.com/FreeRTOS
  *
- * 1 tab == 4 spaces!
  */
 
 /* Standard includes. */
@@ -86,18 +85,6 @@ const unsigned long ulMSToSleep = 5;
 	configUSE_IDLE_HOOK is set to 1 in FreeRTOSConfig.h.  Sleep to reduce CPU
 	load. */
 	Sleep( ulMSToSleep );
-}
-/*-----------------------------------------------------------*/
-
-void vAssertCalled( void )
-{
-const unsigned long ulLongSleep = 1000UL;
-
-	taskDISABLE_INTERRUPTS();
-	for( ;; )
-	{
-		Sleep( ulLongSleep );
-	}
 }
 /*-----------------------------------------------------------*/
 

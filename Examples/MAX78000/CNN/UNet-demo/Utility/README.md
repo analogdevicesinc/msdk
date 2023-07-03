@@ -60,3 +60,14 @@ The image is expected to be 80 by 80, or it will be resized. The EVKIT will show
 ## Reference:
 
 [1] https://github.com/MaximIntegratedMicros/cifar-10-png-loader
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+

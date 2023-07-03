@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_RTC_RTC_REVA_H_
 #define LIBRARIES_PERIPHDRIVERS_SOURCE_RTC_RTC_REVA_H_
@@ -72,6 +72,8 @@ int MXC_RTC_RevA_GetFlags(mxc_rtc_reva_regs_t *rtc);
 int MXC_RTC_RevA_ClearFlags(mxc_rtc_reva_regs_t *rtc, int flags);
 int MXC_RTC_RevA_GetSubSecond(mxc_rtc_reva_regs_t *rtc);
 int MXC_RTC_RevA_GetSecond(mxc_rtc_reva_regs_t *rtc);
+int MXC_RTC_RevA_GetSubSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t *ssec);
+int MXC_RTC_RevA_GetSeconds(mxc_rtc_reva_regs_t *rtc, uint32_t *sec);
 int MXC_RTC_RevA_GetTime(mxc_rtc_reva_regs_t *rtc, uint32_t *sec, uint32_t *subsec);
 int MXC_RTC_RevA_GetBusyFlag(mxc_rtc_reva_regs_t *rtc);
 int MXC_RTC_RevA_TrimCrystal(mxc_rtc_reva_regs_t *rtc, mxc_tmr_regs_t *tmr);

@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,11 +29,10 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *******************************************************************************
- */
+ ******************************************************************************/
 
-#ifndef _LOGGER_H_
-#define _LOGGER_H_
+#ifndef LIBRARIES_MAXUSB_INCLUDE_DBG_LOG_DBG_LOG_H_
+#define LIBRARIES_MAXUSB_INCLUDE_DBG_LOG_DBG_LOG_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -85,4 +84,4 @@ void dbg_log_print(int num);
 }
 #endif
 
-#endif
+#endif //LIBRARIES_MAXUSB_INCLUDE_DBG_LOG_DBG_LOG_H_

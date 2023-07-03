@@ -3,40 +3,38 @@
  * @brief   Analog Front End (AFE) communications r
  */
 
-/*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.
-*
-* This software is protected by copyright laws of the United States and
-* of foreign countries. This material may also be protected by patent laws
-* and technology transfer regulations of the United States and of foreign
-* countries. This software is furnished under a license agreement and/or a
-* nondisclosure agreement and may only be used or reproduced in accordance
-* with the terms of those agreements. Dissemination of this information to
-* any party or parties not specified in the license agreement and/or
-* nondisclosure agreement is expressly prohibited.
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*******************************************************************************
-*/
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_AFE_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_AFE_H_
@@ -51,6 +49,7 @@ extern "C" {
 #include "afe_adc_one_regs.h"
 #include "afe_dac_regs.h"
 #include "afe_hart_regs.h"
+#include "tmr.h"
 #include "mxc_sys.h"
 #include "mxc_assert.h"
 #include "infoblock.h"
@@ -73,8 +72,15 @@ extern "C" {
 /***** Function Prototypes *****/
 /**
  * @brief   Setup the AFE for transactions.
+ * @param   tmr    Pointer to Timer registers to use for internal AFE timing
  */
-int afe_setup(void);
+int afe_setup(mxc_tmr_regs_t *tmr);
+
+/**
+ * @brief  Puts the AFE into a RESET state to recover from errors, or reduce power consumption
+ * @note   Must call afe_load_trims to restore AFE functionality after a reset.
+ */
+void afe_reset(void);
 
 /**
  * @brief   Writes data to AFE register.
@@ -87,22 +93,45 @@ int afe_setup(void);
 int afe_write_register(uint32_t target_reg, uint32_t value);
 
 /**
+ * @brief   Writes data to AFE register in the specified bank.
+ *
+ * @param   target_reg  The register to write the data into
+ * @param   reg_bank    register bank
+ * @param   value       The data to write
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+int afe_bank_write_register(uint32_t target_reg, uint8_t reg_bank, uint32_t value);
+
+/**
  * @brief   Read data from AFE register.
  *
  * @param   target_reg  The register to read the data from
- * @param   value       Buffer to store data in 
+ * @param   value       Buffer to store data in
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
 int afe_read_register(uint32_t target_reg, uint32_t *value);
 
 /**
- * @brief   Load AFE Trims.
- * @note    Uncomment DUMP_TRIM_DATA in afe.c to print trime data.
+ * @brief   Read data from AFE register in the specified bank.
+ *
+ * @param   target_reg  The register to read the data from
+ * @param   reg_bank    register bank
+ * @param   value       Buffer to store data in
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int afe_load_trims(void);
+int afe_bank_read_register(uint32_t target_reg, uint8_t reg_bank, uint32_t *value);
+
+/**
+ * @brief   Load AFE Trims.
+ * @note    Uncomment DUMP_TRIM_DATA in afe.c to print trime data.
+ * @param   tmr    Pointer to Timer registers to use for internal AFE timing
+ *
+ * @return  See \ref MXC_Error_Codes for a list of return codes.
+ */
+int afe_load_trims(mxc_tmr_regs_t *tmr);
 
 /**
  * @brief   Dumps the AFE registers.

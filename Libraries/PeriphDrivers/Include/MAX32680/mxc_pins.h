@@ -3,8 +3,8 @@
  * @brief      This file contains constant pin configurations for the peripherals.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-10-27 16:45:57 -0500 (Fri, 27 Oct 2017) $
- * $Revision: 31663 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_MXC_PINS_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_MXC_PINS_H_
@@ -47,6 +44,10 @@
 /***** Global Variables *****/
 // Predefined GPIO Configurations
 extern const mxc_gpio_cfg_t gpio_cfg_extclk;
+#define gpio_cfg_hfextclk gpio_cfg_extclk
+/* ^ Defined for driver compatability that references
+    gpio_cfg_hfextclk instead of gpio_cfg_extclk
+*/
 extern const mxc_gpio_cfg_t gpio_cfg_i2c0;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c1;
 extern const mxc_gpio_cfg_t gpio_cfg_i2c2;
@@ -101,5 +102,16 @@ extern const mxc_gpio_cfg_t gpio_cfg_adc_ain6;
 extern const mxc_gpio_cfg_t gpio_cfg_adc_ain7;
 
 extern const mxc_gpio_cfg_t gpio_cfg_rv_jtag;
+
+// SPI v2 Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_quad;
+
+// SPI v2 Target Selects Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts2;
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32680_MXC_PINS_H_

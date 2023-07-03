@@ -133,8 +133,10 @@ extern const mxc_gpio_cfg_t gpio_cfg_emac_P2b;
 extern const mxc_gpio_cfg_t gpio_cfg_kbd_P2;
 
 // Note that both P0 and P1 must be configured for proper operation
-extern const mxc_gpio_cfg_t gpio_cfg_pcif_P0;
-extern const mxc_gpio_cfg_t gpio_cfg_pcif_P1;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_0_7;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_P0_BITS_8;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_P1_BITS_9;
+extern const mxc_gpio_cfg_t gpio_cfg_pcif_P1_BITS_10_11;
 extern const mxc_gpio_cfg_t gpio_cfg_pcif_hsync;
 extern const mxc_gpio_cfg_t gpio_cfg_pcif_vsync;
 extern const mxc_gpio_cfg_t gpio_cfg_pcif_pclk;

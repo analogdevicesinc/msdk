@@ -699,6 +699,9 @@ static void dmIsoHciIsoCback(uint8_t *pPacket)
   uint16_t  hciLen;
   uint8_t   *p = pPacket;
 
+  /* Suppress warnings when TRACE is disabled */
+  (void)hciLen;
+
   /* parse HCI handle and length */
   BSTREAM_TO_UINT16(handle, p);
   handle &= HCI_HANDLE_MASK;

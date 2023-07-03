@@ -1,35 +1,35 @@
 /******************************************************************************
-* Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
 
 #ifndef LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_MAX32690_H_
 #define LIBRARIES_CMSIS_DEVICE_MAXIM_MAX32690_INCLUDE_MAX32690_H_
@@ -52,7 +52,9 @@
 
 /* COMPILER SPECIFIC DEFINES (IAR, ARMCC and GNUC) */
 #if defined(__GNUC__)
+#ifndef __weak
 #define __weak __attribute__((weak))
+#endif
 
 #elif defined(__CC_ARM)
 
@@ -174,7 +176,7 @@ typedef enum {
     RSV92_IRQn, /* 0x6C  0x01B0 108: Reserved */
     RSV93_IRQn, /* 0x6D  0x01B4 109: Reserved */
     RSV94_IRQn, /* 0x6E  0x01B8 110: Reserved */
-    PUF_IRQn, /* 0x6F  0x01BC 111: Physically Uncloneable Function */
+    RSV95_IRQn, /* 0x6F  0x01BC 111: Reserved */
     RSV96_IRQn, /* 0x70  0x01C0 112: Reserved */
     RSV97_IRQn, /* 0x71  0x01C4 113: Reserved */
     RSV98_IRQn, /* 0x72  0x01C8 114: Reserved */
@@ -298,6 +300,7 @@ typedef enum {
 #define MXC_FLASH1_PAGE_SIZE 0x00002000UL
 #define MXC_FLASH0_MEM_SIZE 0x00300000UL
 #define MXC_FLASH1_MEM_SIZE 0x00040000UL
+#define MXC_FLASH_MEM_SIZE (MXC_FLASH0_MEM_SIZE + MXC_FLASH1_MEM_SIZE)
 #define MXC_INFO0_MEM_BASE 0x10800000UL
 #define MXC_INFO1_MEM_BASE 0x10802000UL
 #define MXC_INFO_MEM_BASE MXC_INFO0_MEM_BASE
@@ -394,11 +397,6 @@ typedef enum {
 #define MXC_MCR ((mxc_mcr_regs_t *)MXC_BASE_MCR)
 
 /******************************************************************************/
-/*                                                     PUF Secure Controller  */
-#define MXC_BASE_PUF ((uint32_t)0x40007000UL)
-#define MXC_PUF ((mxc_puf_regs_t *)MXC_BASE_PUF)
-
-/******************************************************************************/
 /*                                                                       GPIO */
 #define MXC_CFG_GPIO_INSTANCES (5)
 #define MXC_CFG_GPIO_PINS_PORT (32)
@@ -431,11 +429,12 @@ typedef enum {
      (i) == 4 ? MXC_GPIO4 :  \
                 0)
 
-#define MXC_GPIO_GET_IRQ(i)  \
-    ((i) == 0 ? GPIO0_IRQn : \
-     (i) == 1 ? GPIO1_IRQn : \
-     (i) == 2 ? GPIO2_IRQn : \
-     (i) == 3 ? GPIO3_IRQn : \
+#define MXC_GPIO_GET_IRQ(i)     \
+    ((i) == 0 ? GPIO0_IRQn :    \
+     (i) == 1 ? GPIO1_IRQn :    \
+     (i) == 2 ? GPIO2_IRQn :    \
+     (i) == 3 ? GPIO3_IRQn :    \
+     (i) == 4 ? GPIOWAKE_IRQn : \
                 0)
 
 /******************************************************************************/
@@ -541,6 +540,25 @@ typedef enum {
 #define MXC_DMA ((mxc_dma_regs_t *)MXC_BASE_DMA)
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
+
+#define MXC_DMA_CH_GET_IRQ(i)               \
+    ((IRQn_Type)(((i) == 0)  ? DMA0_IRQn :  \
+                 ((i) == 1)  ? DMA1_IRQn :  \
+                 ((i) == 2)  ? DMA2_IRQn :  \
+                 ((i) == 3)  ? DMA3_IRQn :  \
+                 ((i) == 4)  ? DMA4_IRQn :  \
+                 ((i) == 5)  ? DMA5_IRQn :  \
+                 ((i) == 6)  ? DMA6_IRQn :  \
+                 ((i) == 7)  ? DMA7_IRQn :  \
+                 ((i) == 8)  ? DMA8_IRQn :  \
+                 ((i) == 9)  ? DMA9_IRQn :  \
+                 ((i) == 10) ? DMA10_IRQn : \
+                 ((i) == 11) ? DMA11_IRQn : \
+                 ((i) == 12) ? DMA12_IRQn : \
+                 ((i) == 13) ? DMA13_IRQn : \
+                 ((i) == 14) ? DMA14_IRQn : \
+                 ((i) == 15) ? DMA15_IRQn : \
+                               0))
 
 /******************************************************************************/
 /*                                                                        FLC */
@@ -653,12 +671,12 @@ typedef enum {
 #define MXC_BASE_UART3 ((uint32_t)0x40081400UL)
 #define MXC_UART3 ((mxc_uart_regs_t *)MXC_BASE_UART3)
 
-#define MXC_UART_GET_IRQ(i)             \
-    (IRQn_Type)((i) == 0 ? UART0_IRQn : \
-                (i) == 1 ? UART1_IRQn : \
-                (i) == 2 ? UART2_IRQn : \
-                (i) == 3 ? UART3_IRQn : \
-                           0)
+#define MXC_UART_GET_IRQ(i)                        \
+    (IRQn_Type)((i) == 0            ? UART0_IRQn : \
+                (IRQn_Type)(i) == 1 ? UART1_IRQn : \
+                (IRQn_Type)(i) == 2 ? UART2_IRQn : \
+                (IRQn_Type)(i) == 3 ? UART3_IRQn : \
+                                      0)
 
 #define MXC_UART_GET_BASE(i)     \
     ((i) == 0 ? MXC_BASE_UART0 : \

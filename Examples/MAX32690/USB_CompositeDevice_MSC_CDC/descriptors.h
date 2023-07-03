@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,11 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2018-07-05 16:28:44 -0500 (Thu, 05 Jul 2018) $
- * $Revision: 36014 $
- *
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef EXAMPLES_MAX32690_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_
 #define EXAMPLES_MAX32690_USB_COMPOSITEDEVICE_MSC_CDC_DESCRIPTORS_H_

@@ -3,14 +3,8 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
-
-#BOARD=FTHR_RevA
-# ^ For example, you can uncomment this line to make the 
-# project build for the "FTHR_RevA" board.
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
-LINKERFILE=$(TARGET_LC)_ram.ld
-$(info This example executes out of RAM using a special linkerfile: $(LINKERFILE))
-
+# Add your config here!

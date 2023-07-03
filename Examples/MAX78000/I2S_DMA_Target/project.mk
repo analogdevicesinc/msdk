@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -11,6 +11,7 @@
 
 # This example is only compatible with the FTHR board,
 # so we override the BOARD value to hard-set it.
-override BOARD=FTHR_RevA
-$(warning Warning: This project is forced to compile for the FTHR board only!)
+ifneq ($(BOARD),FTHR_RevA)
+$(error ERR_NOTSUPPORTED: This project is only supported on the MAX78000FTHR board.  See https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages)
+endif
 

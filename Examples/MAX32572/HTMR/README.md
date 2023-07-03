@@ -5,6 +5,17 @@ This example demonstrates features of HTimer. It sets the short interval alarm t
 -   Pressing PB0 (P3.06) will print the current count to the console
 -   Pressing PB1 will set the Long Interval alarm to light LED1 in 10000 counts
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

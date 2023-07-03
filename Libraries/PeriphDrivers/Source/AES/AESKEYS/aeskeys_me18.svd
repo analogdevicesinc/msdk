@@ -23,18 +23,6 @@
         <addressOffset>0x010</addressOffset>
         <size>128</size>
       </register>
-      <register>
-        <name>PUF_KEY1</name>
-        <description>PUF Key 1.</description>
-        <addressOffset>0x020</addressOffset>
-        <size>256</size>
-      </register>
-      <register>
-        <name>PUF_KEY2</name>
-        <description>PUF Key 2.</description>
-        <addressOffset>0x040</addressOffset>
-        <size>256</size>
-      </register>
     </registers>
   </peripheral>
   <!-- AESKEYS-->

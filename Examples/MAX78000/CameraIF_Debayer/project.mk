@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 # **********************************************************
 
@@ -15,3 +15,11 @@ CAMERA=HM0360_COLOR
 # is required for the CameraIF DMA code to work within the
 # timing requirements of the Parallel Camera Interface.
 MXC_OPTIMIZE_CFLAGS = -O2
+
+ifeq ($(BOARD),FTHR_RevA)
+$(error ERR_NOTSUPPORTED: This example is not supported on the MAX78000FTHR!)
+endif
+
+ifeq ($(BOARD),Aud01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
+endif

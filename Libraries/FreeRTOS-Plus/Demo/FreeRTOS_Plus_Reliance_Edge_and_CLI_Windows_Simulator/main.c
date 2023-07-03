@@ -1,6 +1,6 @@
 /*
- * FreeRTOS Kernel V10.2.0
- * Copyright (C) 2017 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
+ * FreeRTOS V202212.00
+ * Copyright (C) 2020 Amazon.com, Inc. or its affiliates.  All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of
  * this software and associated documentation files (the "Software"), to deal in
@@ -19,17 +19,16 @@
  * IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
  * CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
- * http://www.FreeRTOS.org
- * http://aws.amazon.com/freertos
+ * https://www.FreeRTOS.org
+ * https://github.com/FreeRTOS
  *
- * 1 tab == 4 spaces!
  */
 
 /******************************************************************************
  *
  * This demo is described on the following web page:
  * TODO: This link describes the FAT version of this demo.
- * http://www.freertos.org/FreeRTOS-Plus/Fail_Safe_File_System/Fail_Safe_Embedded_File_System_demo.shtml
+ * https://www.FreeRTOS.org/FreeRTOS-Plus/Fail_Safe_File_System/Fail_Safe_Embedded_File_System_demo.shtml
  *
  ******************************************************************************/
 
@@ -123,24 +122,6 @@ const unsigned long ulMSToSleep = 5;
 	configUSE_IDLE_HOOK is set to 1 in FreeRTOSConfig.h.  Sleep to reduce CPU
 	load. */
 	Sleep( ulMSToSleep );
-}
-/*-----------------------------------------------------------*/
-
-void vAssertCalled( const char *pcFile, unsigned long ulLine )
-{
-volatile uint32_t ulSetToNonZeroToExitLoop = 0;
-
-	printf( "ASSERT FAILED: File %s, line %u\r\n", pcFile, ulLine );
-
-	taskENTER_CRITICAL();
-	{
-		while( ulSetToNonZeroToExitLoop == 0 )
-		{
-			/* Do not leave the assert function unless the debugger is used to
-			set ulSetToNonZeroToExitLoop to a non-zero value. */
-		}
-	}
-	taskEXIT_CRITICAL();
 }
 /*-----------------------------------------------------------*/
 

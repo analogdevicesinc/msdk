@@ -3,8 +3,8 @@
  * @brief   This file contains constant pin configurations for the peripherals.
  */
 
-/* *****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date$
- * $Revision$
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #include "gpio.h"
 #include "mxc_device.h"
@@ -160,3 +157,28 @@ const mxc_gpio_cfg_t gpio_cfg_rv_jtag = {
     MXC_GPIO1, (MXC_GPIO_PIN_0 | MXC_GPIO_PIN_1 | MXC_GPIO_PIN_2 | MXC_GPIO_PIN_3),
     MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO
 };
+
+// SPI v2 Pin Definitions
+const mxc_gpio_cfg_t gpio_cfg_spi0_standard = { MXC_GPIO0,
+                                                (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7),
+                                                MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
+                                                MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_spi0_3wire = { MXC_GPIO0, (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_7),
+                                             MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
+                                             MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_spi0_dual = { MXC_GPIO0,
+                                            (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7),
+                                            MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,
+                                            MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_spi0_quad = {
+    MXC_GPIO0, (MXC_GPIO_PIN_5 | MXC_GPIO_PIN_6 | MXC_GPIO_PIN_7 | MXC_GPIO_PIN_8 | MXC_GPIO_PIN_9),
+    MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO
+};
+
+// SPI v2 Target Selects Pin Definitions
+const mxc_gpio_cfg_t gpio_cfg_spi0_ts0 = { MXC_GPIO0, MXC_GPIO_PIN_4, MXC_GPIO_FUNC_ALT1,
+                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_spi0_ts1 = { MXC_GPIO0, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_ALT2,
+                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+const mxc_gpio_cfg_t gpio_cfg_spi0_ts2 = { MXC_GPIO0, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_ALT2,
+                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };

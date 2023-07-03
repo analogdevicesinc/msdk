@@ -23,13 +23,29 @@ jobs:
           cache: pip
           
       - name: Install mkdocs
-        run: pip install mkdocs
+        run: pip install -r Documentation/requirements.txt
 
       - name: Doxygen (MAX32520)
         uses: mattnotmitt/doxygen-action@1.9.4
         with:
           # Path to Doxyfile
           doxyfile-path: max32520_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32570)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32570_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32572)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32572_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
 
@@ -54,6 +70,14 @@ jobs:
         with:
           # Path to Doxyfile
           doxyfile-path: max32660_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
+      - name: Doxygen (MAX32662)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32662_Doxyfile
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
 
@@ -97,6 +121,14 @@ jobs:
           # Working directory
           working-directory: Libraries/PeriphDrivers/Documentation
 
+      - name: Doxygen (MAX32690)
+        uses: mattnotmitt/doxygen-action@1.9.4
+        with:
+          # Path to Doxyfile
+          doxyfile-path: max32690_Doxyfile
+          # Working directory
+          working-directory: Libraries/PeriphDrivers/Documentation
+
       - name: Doxygen (MAX78000)
         uses: mattnotmitt/doxygen-action@1.9.4
         with:
@@ -115,26 +147,7 @@ jobs:
 
       - name: Build User Guide
         run: | # Build Documentation Folder and run mkdocs
-          SOURCE=Libraries/PeriphDrivers/Documentation
-          DEST=Documentation/$SOURCE
-
-          echo "Copying Periph Driver APIs..."
-          mkdir -p $DEST/MAX32520 && cp -r $SOURCE/MAX32520 $DEST/
-          mkdir -p $DEST/MAX32650 && cp -r $SOURCE/MAX32650 $DEST/
-          mkdir -p $DEST/MAX32655 && cp -r $SOURCE/MAX32655 $DEST/
-          mkdir -p $DEST/MAX32660 && cp -r $SOURCE/MAX32660 $DEST/
-          mkdir -p $DEST/MAX32665 && cp -r $SOURCE/MAX32665 $DEST/
-          mkdir -p $DEST/MAX32670 && cp -r $SOURCE/MAX32670 $DEST/
-          mkdir -p $DEST/MAX32672 && cp -r $SOURCE/MAX32672 $DEST/
-          mkdir -p $DEST/MAX32675 && cp -r $SOURCE/MAX32675 $DEST/
-          mkdir -p $DEST/MAX32680 && cp -r $SOURCE/MAX32680 $DEST/
-          mkdir -p $DEST/MAX78000 && cp -r $SOURCE/MAX78000 $DEST/
-          mkdir -p $DEST/MAX78002 && cp -r $SOURCE/MAX78002 $DEST/
-
-          echo "Copying any root markdown files into Documentation..."
-          cp -r *.md Documentation/
-
-          mkdocs build
+          python3 Documentation/build.py
 
       - name: Publish
         uses: JamesIves/github-pages-deploy-action@v4.3.0

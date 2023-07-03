@@ -32,7 +32,6 @@
 #include "pal_uart.h"
 #include "pal_bb.h"
 #include "mxc_device.h"
-#include "board.h"
 #include "mcr_regs.h"
 #include "gcr_regs.h"
 #include "lp.h"
@@ -46,6 +45,10 @@
 
 #ifndef PAL_SYS_RISCV_LOAD
 #define PAL_SYS_RISCV_LOAD                0
+#endif
+
+#ifndef PAL_SYS_SLEEP_DISABLE
+#define PAL_SYS_SLEEP_DISABLE             0
 #endif
 
 /**************************************************************************************************
@@ -159,7 +162,6 @@ void PalSysInit(void)
 /*************************************************************************************************/
 void PalSysAssertTrap(void)
 {
-
   PalEnterCs();
   PalLedOn(PAL_LED_ID_ERROR);
   palSysAssertCount++;
@@ -217,6 +219,10 @@ void PalSysSleep(void)
     /* Work pending; do not sleep yet. */
     return;
   }
+
+  #if PAL_SYS_SLEEP_DISABLE
+  return;
+  #endif
 
   #ifdef DEBUG
   /* Stay active to prevent debugger dropout */

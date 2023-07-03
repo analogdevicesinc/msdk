@@ -19,45 +19,25 @@ It supports the following output destinations:
 
 * Save image to SD card. (MAX7800FTHR only)
 
-## Building, Flashing, & Debugging
+## Software
 
-For instructions on how to build, flash, and debug this example see [.vscode/readme.md](.vscode/readme.md).
+### Project Usage
 
-## Console Interface & Utilites
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
 
-For more details on running the serial console, converting images, and excercising the example, see [utils/README.md](utils/README.md)
+### Console Interface & Utilites
 
-## Build Notes
+For more details on running the serial console, converting images, and excercising the example with serial commands, see [utils/README.md](utils/README.md)
 
-Full documentation on the build system can be found in the "Build Configuration" section of [.vscode/README.md](.vscode/README.md#build-configuration).  The following notes contain important quick-start info.
+### Project-Specific Build Notes
 
-### Enabling Firmware Features
+#### Enabling Firmware Features
 
 Firmware features can be toggled in [project.mk](project.mk).
 
-* The console is enabled by default.  It will wait for a valid connection from [utils/console.py](utils/console.py) on startup.
+* The console is enabled by default.  It will wait for a valid connection from [utils/console.py](utils/console.py) on startup.  Toggle the console with the `CONSOLE` variable in [project.mk](project.mk)
 
-* SD card functionality is disabled by default.  It will attempt to mount the SD card on startup using the FAT32 format.  If it detects a blank card has been inserted (the drive name is empty) then it will attempt to format the card to FAT32.
-
-After making any changes, fully clean the project and then rebuild.
-
-### Setting CAMERA
-
-The `CAMERA` variable in [project.mk](project.mk) is used to select the correct drivers for the attached camera.  When this variable is changed, you should also ensure the `CAMERA_xxx` compiler definitions in [.vscode/settings.json](.vscode/settings.json) is also changed to match.  The project settings cannot automatically changes in the compiler definitons to match the camera.
-
-For the OV7692:
-
-* Define `CAMERA_OV7692`
-
-For the HM0360 (mono):
-
-* Define `CAMERA_HM0360_MONO`
-* Define `CAMERA_MONO`
-
-For the HM0360 (color):
-
-* Define `CAMERA_HM0360_COLOR`
-* Define `CAMERA_BAYER`
+* SD card functionality is disabled by default.  It will attempt to mount the SD card on startup using the FAT32 format.  If it detects a blank card has been inserted (the drive name is empty) then it will attempt to format the card to FAT32.  Toggle the SD card functionality with the `SD` variable in [project.mk](project.mk)
 
 ## OVM7692 Quick-Start
 
@@ -65,13 +45,21 @@ For the HM0360 (color):
 
 2. Clean and rebuild the firmware.
 
-3. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN1.
+3. Ensure JP38 (DVP CAM PWR) is connected to the "ON" position.
 
-4. Power on the board take note of the COM port presented by CN1.
+4. Ensure JP41 (CSI CAM I2C EN) is _disconnected_.
 
-5. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED1 on the board will be blinking.
+5. Ensure JP35 (I2C1 SDA) and JP36 (I2C1 SCL) are _disconnected_.
 
-6. Connect [console.py](utils/README.md) to the COM port presented by CN1.
+6. Connect the PICO debugger to the SWD port (JH8)
+
+7. Connect a micro-USB cable to CN2.
+
+8. Power on the board take note of the COM port presented by CN2.
+
+9. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED0 on the board will be blinking.
+
+10. Connect [console.py](utils/README.md) to the COM port presented by CN2.
 
     ```shell
     $ python console.py COM19
@@ -98,7 +86,7 @@ For the HM0360 (color):
 
     ```
 
-7. Run a standard `capture` with default settings.
+11. Run a standard `capture` with default settings.
 
     ```shell
     $ capture
@@ -113,7 +101,7 @@ For the HM0360 (color):
     MCU: Done! (serial transmission took 88480 us)
     ```
 
-8. Increase image resolution and recapture.
+12. Increase image resolution and recapture.
 
     ```shell
     $ imgres 128 128
@@ -131,7 +119,7 @@ For the HM0360 (color):
     MCU: Done! (serial transmission took 353104 us)
     ```
 
-9. Increase image resolution beyond SRAM limits and perform streaming capture.
+13. Increase image resolution beyond SRAM limits and perform streaming capture.
 
     ```shell
     $ imgres 320 240
@@ -159,13 +147,19 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
 
 2. [Clean and rebuild](.vscode/README.md#build-tasks) the firmware.
 
-3. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN1.
+3. Ensure JP38 (DVP CAM PWR) is connected to the "OFF" position.
 
-4. Power on the board take note of the COM port presented by CN1.
+4. Ensure JP41 (CSI CAM I2C EN) is _disconnected_.
 
-5. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED1 on the board will be blinking.
+5. Ensure JP35 (I2C1 SDA) and JP36 (I2C1 SCL) are _disconnected_.
 
-6. Connect [console.py](utils/README.md) to the COM port presented by CN1.
+6. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN2.
+
+7. Power on the board take note of the COM port presented by CN2.
+
+8. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED0 on the board will be blinking.
+
+9. Connect [console.py](utils/README.md) to the COM port presented by CN2.
 
     ```shell
     $ python console.py COM19
@@ -191,7 +185,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
     $
     ```
 
-7. Run a standard `capture` with default settings.
+10. Run a standard `capture` with default settings.
 
     ```shell
     $ capture
@@ -208,7 +202,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
 
     ![HM0360_320_240](res/HM0360_320_240.png)
 
-8. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
+11. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
 
     The active context is selected via register `0x3024`.
 
@@ -252,13 +246,19 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
 
 2. [Clean and rebuild](.vscode/README.md#build-tasks) the firmware.
 
-3. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN1.
+3. Ensure JP38 (DVP CAM PWR) is connected to the "OFF" position.
 
-4. Power on the board take note of the COM port presented by CN1.
+4. Ensure JP41 (CSI CAM I2C EN) is _disconnected_.
 
-5. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED1 on the board will be blinking.
+5. Ensure JP35 (I2C1 SDA) and JP36 (I2C1 SCL) are _disconnected_.
 
-6. Connect [console.py](utils/README.md) to the COM port presented by CN1.
+6. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN2.
+
+7. Power on the board take note of the COM port presented by CN2.
+
+8. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED0 on the board will be blinking.
+
+9. Connect [console.py](utils/README.md) to the COM port presented by CN2.
 
     ```shell
     $ python console.py COM19
@@ -285,7 +285,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     $
     ```
 
-7. Run a standard `capture` with default settings.
+10. Run a standard `capture` with default settings.
 
     ```shell
     $ capture
@@ -305,7 +305,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
 
     ![HM0360_Bilinear_320_240](res/HM0360_Bilinear_320_240.png)
 
-8. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
+11. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
 
     The active context is selected via register `0x3024`.
 
@@ -339,7 +339,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     MCU: Done! (serial transmission took 206999 us)
     ```
 
-9. The raw debayer pattern can also be viewed using the `set-debayer` command.  This is useful for testing and development of additional debayering algorithms.
+12. The raw debayer pattern can also be viewed using the `set-debayer` command.  This is useful for testing and development of additional debayering algorithms.
 
     ```shell
     $ set-debayer passthrough 

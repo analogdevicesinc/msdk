@@ -4,6 +4,17 @@ This example demostrates the use of the ADC on the MAX32675.
 
 Each of the ADC modules are set to sample differentially between ADC channels AIN2(+) and AIN3(-), with ADC0 configured with an 8x input gain and ADC1 configured with a 16x input gain. Samples are continuously collected and every 50 samples collected, the average of those 50 samples is printed to the terminal. The reference voltage is set to 3.3V, thus the difference between the inputs cannot exceed 3.3V.
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.

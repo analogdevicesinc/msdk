@@ -3,8 +3,8 @@
  * @brief   Trust Protection Unit driver.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2018 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,10 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date$
- * $Revision$
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include "mxc_device.h"
 #include "mxc_errors.h"
@@ -104,12 +101,11 @@ void MXC_TRNG_RandomAsync(uint8_t *data, uint32_t len, mxc_trng_complete_t callb
     MXC_TRNG_RevB_RandomAsync((mxc_trng_revb_regs_t *)MXC_TRNG, data, len, callback);
 }
 
-void MXC_TRNG_GenerateKey(void)
-{
-    MXC_TRNG_RevB_GenerateKey((mxc_trng_revb_regs_t *)MXC_TRNG);
-}
-
 int MXC_TRNG_HealthTest(void)
 {
-    return E_NOT_SUPPORTED;
+    if ((MXC_SYS_GetRevision() & 0xF0) == 0xA0) { // ME17 Rev. A does not support health tests.
+        return E_NOT_SUPPORTED;
+    }
+
+    return MXC_TRNG_RevB_HealthTest((mxc_trng_revb_regs_t *)MXC_TRNG);
 }

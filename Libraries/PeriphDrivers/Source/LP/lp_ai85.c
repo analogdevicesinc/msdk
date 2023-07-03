@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -30,7 +30,6 @@
  * ownership rights.
  *
  *************************************************************************** */
-#ifndef __riscv
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_sys.h"
@@ -40,15 +39,18 @@
 
 void MXC_LP_EnterSleepMode(void)
 {
+#ifndef __riscv
     MXC_LP_ClearWakeStatus();
 
-    /* Clear SLEEPDEEP bit */
+    /* Clear SLEEPDEEP bit on the Arm core*/
     SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk;
+#endif
 
     /* Go into Sleep mode and wait for an interrupt to wake the processor */
     __WFI();
 }
 
+#ifndef __riscv
 void MXC_LP_EnterLowPowerMode(void)
 {
     MXC_LP_ClearWakeStatus();

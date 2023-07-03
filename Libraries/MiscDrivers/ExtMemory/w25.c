@@ -2,8 +2,9 @@
  * @file    w25.c
  * @brief   Board layer Driver for the Micron W25 Serial Multi-I/O Flash Memory.
  */
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,8 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 /* **** Includes **** */
 #include <stdint.h>
@@ -238,7 +238,7 @@ int Ext_Flash_Reset(void)
 
     while (flash_busy()) {
         busy_count++;
-        if (busy_count > 10000) {
+        if (busy_count > 20000) {
             return EF_E_TIME_OUT;
         }
     }
@@ -374,7 +374,7 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
                            Ext_Flash_DataLine_t d_line)
 {
     int err = EF_E_SUCCESS;
-    int timeout = 0;
+    volatile int timeout = 0;
     uint8_t cmd[4] = { 0 };
     uint32_t len = 0;
     uint32_t next_page = 0;
@@ -470,7 +470,7 @@ int Ext_Flash_Bulk_Erase(void)
 {
     int err = EF_E_SUCCESS;
     uint8_t cmd = W25_CMD_BULK_ERASE;
-    int timeout = 0;
+    volatile int timeout = 0;
 
     if (flash_busy()) {
         return EF_E_BUSY;
@@ -500,7 +500,7 @@ int Ext_Flash_Erase(uint32_t address, Ext_Flash_Erase_t size)
 {
     int err = EF_E_SUCCESS;
     uint8_t cmd[4] = { 0 };
-    int timeout = 0;
+    volatile int timeout = 0;
 
     if (flash_busy()) {
         return EF_E_BUSY;

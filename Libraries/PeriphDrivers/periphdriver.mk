@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -28,9 +28,6 @@
  # trademarks, maskwork rights, or any other form of intellectual
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
- #
- # $Date: 2018-12-18 15:37:22 -0600 (Tue, 18 Dec 2018) $ 
- # $Revision: 40072 $
  #
  ###############################################################################
 
@@ -95,8 +92,8 @@ export PERIPH_DRIVER_BUILD_DIR
 # Add to library list
 LIBS += ${PERIPH_DRIVER_BUILD_DIR}/${PERIPH_DRIVER_LIB}
 # Add rule to build the Driver Library
-${PERIPH_DRIVER_BUILD_DIR}/${PERIPH_DRIVER_LIB}: ${PERIPH_DRIVER_C_FILES} ${PERIPH_DRIVER_A_FILES} ${PERIPH_DRIVER_H_FILES}
-	$(MAKE) -f ${PERIPH_DRIVER_DIR}/libPeriphDriver.mk  lib BUILD_DIR=${PERIPH_DRIVER_BUILD_DIR} PROJ_CFLAGS="$(PROJ_CFLAGS)" PROJ_LDFLAGS="$(PROJ_LDFLAGS)" MXC_OPTIMIZE_CFLAGS=$(MXC_OPTIMIZE_CFLAGS) MFLOAT_ABI=$(MFLOAT_ABI) DUAL_CORE=$(DUAL_CORE) RISCV_CORE=$(RISCV_CORE)
+${PERIPH_DRIVER_BUILD_DIR}/${PERIPH_DRIVER_LIB}: ${PERIPH_DRIVER_C_FILES} ${PERIPH_DRIVER_A_FILES} ${PERIPH_DRIVER_H_FILES} ${PROJECTMK}
+	$(MAKE) -f ${PERIPH_DRIVER_DIR}/libPeriphDriver.mk  lib BUILD_DIR=${PERIPH_DRIVER_BUILD_DIR} PROJ_CFLAGS="$(PROJ_CFLAGS)" PROJ_LDFLAGS="$(PROJ_LDFLAGS)" MXC_OPTIMIZE_CFLAGS=$(MXC_OPTIMIZE_CFLAGS) MFLOAT_ABI=$(MFLOAT_ABI) DUAL_CORE=$(DUAL_CORE) RISCV_CORE=$(RISCV_CORE) PROJECTMK=$(PROJECTMK)
 
 clean.periph:
 	@rm -rf ${PERIPH_DRIVER_BUILD_DIR}/*

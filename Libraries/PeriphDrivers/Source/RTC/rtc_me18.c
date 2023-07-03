@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,8 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #include "mxc_device.h"
 #include "rtc_regs.h"
@@ -120,6 +119,22 @@ int MXC_RTC_GetSubSecond(void)
 int MXC_RTC_GetSecond(void)
 {
     return MXC_RTC_RevA_GetSecond((mxc_rtc_reva_regs_t *)MXC_RTC);
+}
+
+int MXC_RTC_GetSubSeconds(uint32_t *ssec)
+{
+    MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_RDY; // Ensure valid data is in SSEC register
+    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) {}
+
+    return MXC_RTC_RevA_GetSubSeconds((mxc_rtc_reva_regs_t *)MXC_RTC, ssec);
+}
+
+int MXC_RTC_GetSeconds(uint32_t *sec)
+{
+    MXC_RTC->ctrl &= ~MXC_F_RTC_CTRL_RDY; // Ensure valid data is in SEC register
+    while (!(MXC_RTC->ctrl & MXC_F_RTC_CTRL_RDY)) {}
+
+    return MXC_RTC_RevA_GetSeconds((mxc_rtc_reva_regs_t *)MXC_RTC, sec);
 }
 
 int MXC_RTC_GetTime(uint32_t *sec, uint32_t *subsec)

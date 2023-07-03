@@ -3,7 +3,7 @@
 # "Makefile" that is located next to this one.
 
 # For instructions on how to use this system, see
-# https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/develop#build-configuration
+# https://analog-devices-msdk.github.io/msdk/USERGUIDE/#build-system
 
 #MXC_OPTIMIZE_CFLAGS = -Og
 # ^ For example, you can uncomment this line to 
@@ -13,21 +13,12 @@
 
 # Add your config here!
 
-# Set the camera drivers.  Select a line to match the
-# connected camera.  These are some common values.  
-# For a full list of options for the 'CAMERA' variable, 
-# see the documentation.
-#CAMERA=OV7692
+# Set OV5640 camera drivers for use with the Pcam 5C.
+# These are the only drivers tested with this example.
 CAMERA=OV5640
-#CAMERA=HM0360_MONO
-#CAMERA=HM01B0
 
-# Set a higher optimization level.  The increased performance
-# is required for the Camera DMA code to work within the
-# timing requirements of the CSI2 interface.
-MXC_OPTIMIZE_CFLAGS=-O2
-
-# Set the CSI2 linkerfile, which reserves an SRAM instance required
-# for the CSI2 hardware buffers
-LINKERFILE=max78002_csi2.ld
-
+# Add drivers for the APS6404 SRAM that is on-board the
+# MAX78002EVKIT.  We use this to buffer the incoming image
+# data.
+VPATH += src/sram
+IPATH += src/sram

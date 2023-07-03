@@ -3,8 +3,8 @@
  * @brief   Low Power(LP) function prototypes and data types.
  */
 
-/* ****************************************************************************
- * Copyright (C) 2019 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -34,7 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 /* Define to prevent redundant inclusion */
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_LP_H_
@@ -330,39 +330,9 @@ void MXC_LP_SysRam2LightSleepEnable(void);
 void MXC_LP_SysRam3LightSleepEnable(void);
 
 /**
- * @brief Enable System Ram 4 in light sleep
- */
-void MXC_LP_SysRam4LightSleepEnable(void);
-
-/**
- * @brief Enable System Ram 5 in light sleep
- */
-void MXC_LP_SysRam5LightSleepEnable(void);
-
-/**
  * @brief Enable Icache 0 in light sleep
  */
 void MXC_LP_ICache0LightSleepEnable(void);
-
-/**
- * @brief Enable Icache XIP in light sleep
- */
-void MXC_LP_ICacheXIPLightSleepEnable(void);
-
-/**
- * @brief Enable System Cache in light sleep
- */
-void MXC_LP_SRCCLightSleepEnable(void);
-
-/**
- * @brief Enable Crypto in light sleep
- */
-void MXC_LP_CryptoLightSleepEnable(void);
-
-/**
- * @brief Enable USB in light sleep
- */
-void MXC_LP_USBFIFOLightSleepEnable(void);
 
 /**
  * @brief Enable ROM 0 in light sleep
@@ -390,39 +360,9 @@ void MXC_LP_SysRam2LightSleepDisable(void);
 void MXC_LP_SysRam3LightSleepDisable(void);
 
 /**
- * @brief Disable System Ram 4 in light sleep
- */
-void MXC_LP_SysRam4LightSleepDisable(void);
-
-/**
- * @brief Disable System Ram 5 in light sleep
- */
-void MXC_LP_SysRam5LightSleepDisable(void);
-
-/**
  * @brief Disable Icache 0 in light sleep
  */
 void MXC_LP_ICache0LightSleepDisable(void);
-
-/**
- * @brief Disable Icache XIP in light sleep
- */
-void MXC_LP_ICacheXIPLightSleepDisable(void);
-
-/**
- * @brief Disable System Cache in light sleep
- */
-void MXC_LP_SRCCLightSleepDisable(void);
-
-/**
- * @brief Disable Crypto in light sleep
- */
-void MXC_LP_CryptoLightSleepDisable(void);
-
-/**
- * @brief Disable USB in light sleep
- */
-void MXC_LP_USBFIFOLightSleepDisable(void);
 
 /**
  * @brief Disable ROM 0 in light sleep

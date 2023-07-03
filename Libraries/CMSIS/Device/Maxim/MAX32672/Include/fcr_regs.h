@@ -2,10 +2,11 @@
  * @file    fcr_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the FCR Peripheral Module.
  * @note    This file is @generated.
+ * @ingroup fcr_registers
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -271,8 +272,8 @@ typedef struct {
  * @brief    ADC Reference Trim 2
  * @{
  */
-#define MXC_F_FCR_ADCREFTRIM2_IDRV_IP25_POS            0 /**< ADCREFTRIM2_IDRV_IP25 Position */
-#define MXC_F_FCR_ADCREFTRIM2_IDRV_IP25                ((uint32_t)(0xFUL << MXC_F_FCR_ADCREFTRIM2_IDRV_IP25_POS)) /**< ADCREFTRIM2_IDRV_IP25 Mask */
+#define MXC_F_FCR_ADCREFTRIM2_IDRV_1P25_POS            0 /**< ADCREFTRIM2_IDRV_1P25 Position */
+#define MXC_F_FCR_ADCREFTRIM2_IDRV_1P25                ((uint32_t)(0xFUL << MXC_F_FCR_ADCREFTRIM2_IDRV_1P25_POS)) /**< ADCREFTRIM2_IDRV_1P25 Mask */
 
 #define MXC_F_FCR_ADCREFTRIM2_IBOOST_1P25_POS          4 /**< ADCREFTRIM2_IBOOST_1P25 Position */
 #define MXC_F_FCR_ADCREFTRIM2_IBOOST_1P25              ((uint32_t)(0x1UL << MXC_F_FCR_ADCREFTRIM2_IBOOST_1P25_POS)) /**< ADCREFTRIM2_IBOOST_1P25 Mask */

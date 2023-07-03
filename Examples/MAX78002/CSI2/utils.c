@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -48,21 +48,18 @@
 /***************************** VARIABLES *************************************/
 
 /************************    PUBLIC FUNCTIONS  *******************************/
-//void utils_delay_ms(uint32_t ms)
-//{
-//    MXC_Delay(ms * 1000UL);
-//}
 
 uint32_t utils_get_time_ms(void)
 {
-    int sec;
-    double subsec;
+    uint32_t sec;
+    uint32_t subsec;
     uint32_t ms;
 
-    subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec = MXC_RTC_GetSecond();
+    MXC_RTC_GetSubSeconds(&subsec);
+    subsec /= 4096;
+    MXC_RTC_GetSeconds(&sec);
 
-    ms = (sec * 1000) + (int)(subsec * 1000);
+    ms = (sec * 1000) + (subsec * 1000);
 
     return ms;
 }

@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -47,6 +47,9 @@ int main(void)
     Debug_Init(); // Set up RISCV JTAG
     MXC_ICC_Enable(MXC_ICC1); // Enable cache
 
+    // Signal the Cortex-M4
+    MXC_SEMA->irq0 = MXC_F_SEMA_IRQ0_EN | MXC_F_SEMA_IRQ0_CM4_IRQ;
+
     printf("Hello World!\n");
     while (1) {
         LED_On(0);
@@ -55,9 +58,6 @@ int main(void)
         MXC_Delay(500000);
         printf("count = %d\n", cnt++);
     }
-
-    // Signal the Cortex-M4
-    MXC_SEMA->irq0 = MXC_F_SEMA_IRQ0_EN | MXC_F_SEMA_IRQ0_CM4_IRQ;
 
     return 0;
 }

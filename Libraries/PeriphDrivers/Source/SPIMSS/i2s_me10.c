@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2017-05-23 14:40:34 -0500 (Tue, 23 May 2017) $
- * $Revision: 28122 $
- *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stddef.h>
 #include <stdint.h>

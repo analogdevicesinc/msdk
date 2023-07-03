@@ -13,6 +13,17 @@ PROJ_CFLAGS+=-DMAX32665_A2
 3. Send SCP Packages to device with scp_sender or SBT GUI tool  <br />
    Please check: https://pdfserv.maximintegrated.com/en/an/ug7637-secure-boot-tools.pdf  <br />
 
+
+## Software
+
+### Project Usage
+
+Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.
+
+### Project-Specific Build Notes
+
+(None - this project builds as a standard example)
+
 ## Required Connections
 
 -   Connect a USB cables between the PC and your EvKit connector.

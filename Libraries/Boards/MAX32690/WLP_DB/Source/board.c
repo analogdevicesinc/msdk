@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -53,11 +53,11 @@
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
-const mxc_gpio_cfg_t pb_pin[] = { { MXC_GPIO0, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_IN,
+const mxc_gpio_cfg_t pb_pin[] = { { MXC_GPIO3, MXC_GPIO_PIN_9, MXC_GPIO_FUNC_IN,
                                     MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO } };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
-const mxc_gpio_cfg_t led_pin[] = { { MXC_GPIO0, MXC_GPIO_PIN_23, MXC_GPIO_FUNC_OUT,
+const mxc_gpio_cfg_t led_pin[] = { { MXC_GPIO3, MXC_GPIO_PIN_8, MXC_GPIO_FUNC_OUT,
                                      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO } };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
@@ -67,6 +67,16 @@ void mxc_assert(const char *expr, const char *file, int line)
     printf("MXC_ASSERT %s #%d: (%s)\n", file, line, expr);
 
     while (1) {}
+}
+
+/******************************************************************************/
+/** 
+ * NOTE: This weak definition is included to support Push Button interrupts in
+ *       case the user does not define this interrupt handler in their application.
+ **/
+__weak void GPIO3_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO3));
 }
 
 /******************************************************************************/

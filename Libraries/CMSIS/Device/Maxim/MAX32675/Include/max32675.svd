@@ -2793,6 +2793,12 @@
        <bitOffset>23</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
+      <field derivedFrom="I2C1">
+       <name>AFE</name>
+       <description>AFE Reset.</description>
+       <bitOffset>25</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
      </fields>
     </register>
     <register>
@@ -6725,6 +6731,30 @@
      <resetMask>0x00000000</resetMask>
      <fields>
       <field>
+       <name>FILTER_EN</name>
+       <description>Enables analog deglitch filter.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_SEL</name>
+       <description>If IBIAS_EN is 1, selects 4x,2x mode.</description>
+       <bitOffset>1</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>HYST_EN</name>
+       <description>Enables high current hysteresis buffer.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>IBIAS_EN</name>
+       <description>Enables higher 4x,2x current modes.</description>
+       <bitOffset>3</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>BYPASS</name>
        <description>RTC Crystal Bypass</description>
        <bitOffset>4</bitOffset>
@@ -9103,6 +9133,12 @@
        <bitWidth>1</bitWidth>
       </field>
       <field>
+       <name>TX_OB</name>
+       <description>Enable Interrupt For TX FIFO has one byte remaining</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
        <name>TX_HE</name>
        <description>Enable Interrupt For TX FIFO has half empty</description>
        <bitOffset>6</bitOffset>
@@ -9143,6 +9179,12 @@
        <name>RX_THD</name>
        <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
        <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>TX_OB</name>
+       <description>Flag for interrupt when TX FIFO has one byte remaining</description>
+       <bitOffset>5</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>

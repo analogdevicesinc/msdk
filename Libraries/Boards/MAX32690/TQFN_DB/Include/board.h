@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -45,17 +45,35 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 #ifndef CONSOLE_UART
-#define CONSOLE_UART 0 /// UART instance to use for console
+#define CONSOLE_UART 2 /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
 #define CONSOLE_BAUD 115200 /// Console baud rate
 #endif
 
-#define LED_OFF 1 /// Inactive state of LEDs
-#define LED_ON 0 /// Active state of LEDs
+#ifndef HCI_UART
+#define HCI_UART 3
+#endif
+
+#ifndef TERMINAL_UART
+#define TERMINAL_UART CONSOLE_UART
+#endif
+
+#ifndef USER_UART
+#define USER_UART 1
+#endif
+
+#ifdef LED_OFF
+#undef LED_OFF
+#endif
+#define LED_OFF 1 /// Override inactive state of LEDs
+
+#ifdef LED_ON
+#undef LED_ON
+#endif
+#define LED_ON 0 /// Override active state of LEDs
 
 #define TQFN_DB /// Used in examples to control program flow
 

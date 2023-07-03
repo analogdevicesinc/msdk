@@ -1,5 +1,5 @@
-/* *****************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,10 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2019-07-01 11:06:19 -0500 (Mon, 01 Jul 2019) $
- * $Revision: 44383 $
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #include <stddef.h>
 #include <stdint.h>
@@ -52,6 +49,12 @@ int MXC_DMA_Init(void)
     }
 
     return MXC_DMA_RevA_Init((mxc_dma_reva_regs_t *)MXC_DMA);
+}
+
+/* ************************************************************************* */
+void MXC_DMA_DeInit(void)
+{
+    return MXC_DMA_RevA_DeInit((mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 /* ************************************************************************* */

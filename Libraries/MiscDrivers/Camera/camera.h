@@ -1,35 +1,36 @@
-/*******************************************************************************
-* Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
-*
-* Permission is hereby granted, free of charge, to any person obtaining a
-* copy of this software and associated documentation files (the "Software"),
-* to deal in the Software without restriction, including without limitation
-* the rights to use, copy, modify, merge, publish, distribute, sublicense,
-* and/or sell copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following conditions:
-*
-* The above copyright notice and this permission notice shall be included
-* in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-* OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-* IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
-* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-*
-* Except as contained in this notice, the name of Maxim Integrated
-* Products, Inc. shall not be used except as stated in the Maxim Integrated
-* Products, Inc. Branding Policy.
-*
-* The mere transfer of this software does not imply any licenses
-* of trade secrets, proprietary technology, copyrights, patents,
-* trademarks, maskwork rights, or any other form of intellectual
-* property whatsoever. Maxim Integrated Products, Inc. retains all
-* ownership rights.
-*
-******************************************************************************/
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a
+ * copy of this software and associated documentation files (the "Software"),
+ * to deal in the Software without restriction, including without limitation
+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
+ * and/or sell copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included
+ * in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Except as contained in this notice, the name of Maxim Integrated
+ * Products, Inc. shall not be used except as stated in the Maxim Integrated
+ * Products, Inc. Branding Policy.
+ *
+ * The mere transfer of this software does not imply any licenses
+ * of trade secrets, proprietary technology, copyrights, patents,
+ * trademarks, maskwork rights, or any other form of intellectual
+ * property whatsoever. Maxim Integrated Products, Inc. retains all
+ * ownership rights.
+ *
+ ******************************************************************************/
+
 #ifndef LIBRARIES_MISCDRIVERS_CAMERA_CAMERA_H_
 #define LIBRARIES_MISCDRIVERS_CAMERA_CAMERA_H_
 
@@ -50,6 +51,8 @@
 #elif defined(CAMERA_PAG7920)
 #include "pag7920_regs.h"
 #endif
+
+#include "debayering.h"
 
 #include "tmr_regs.h"
 
@@ -149,26 +152,6 @@ int camera_sleep(int enable);
 // Shutdown mode.
 int camera_shutdown(int enable);
 
-#ifdef CAMERA_BAYER
-/**
-* @brief Formulate a bayer "passthrough" image that splits an HM0360 bayer pattern into its RGB channels while preserving the bayer pattern.  Useful for debugging and demosaicing algorithm development.
-* @param[in] srcimg Pointer to the raw bayer pattern
-* @param[in] w Width of the bayer pattern (in pixels)
-* @param[in] h Height of the bayer pattern (in pixels)
-* @param[out] dstimg Output pointer for converted RGB565 image.
-****************************************************************************/
-void bayer_passthrough(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_t *dstimg);
-
-/**
-* @brief Color-correct and demosaic a raw HM0360 bayer-patterned image array and convert to RGB565.
-* @param[in] srcimg Pointer to the raw bayer pattern
-* @param[in] w Width of the bayer pattern (in pixels)
-* @param[in] h Height of the bayer pattern (in pixels)
-* @param[out] dstimg Output pointer for converted RGB565 image.
-****************************************************************************/
-void bayer_bilinear_demosaicing(uint8_t *srcimg, uint32_t w, uint32_t h, uint16_t *dstimg);
-#endif
-
 #if defined(CAMERA_HM01B0) || (CAMERA_HM0360_MONO) || (CAMERA_HM0360_COLOR) || \
     defined(CAMERA_OV5642)
 // Write a sensor register.
@@ -187,6 +170,10 @@ int camera_set_frame_info(int width, int height, pixformat_t pixformat);
 // Setup the camera resolution, pixel format, expand bits option, fifo byte mode and dma option.
 int camera_setup(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode,
                  dmamode_t dma_mode, int dma_channel);
+
+// Setup the camera resolution, pixel format, expand bits option, fifo byte mode and dma option and stream to TFT
+int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_mode,
+                     dmamode_t dma_mode, int dma_channel);
 
 // Set the sensor contrast level (from -2 to +2).
 int camera_set_contrast(int level);
@@ -213,10 +200,13 @@ int camera_set_vflip(int enable);
 // start to capture image
 int camera_start_capture_image(void);
 
+// start to capture image
+int camera_start_capture_image_tft(void);
+
 // check whether all image data rcv or not
 int camera_is_image_rcv(void);
 
-// Retreive the camera pixel format of the camera.
+// Retrieve the camera pixel format of the camera.
 uint8_t *camera_get_pixel_format(void);
 
 // Get a pointer to the camera frame buffer, also get the image length and resolution.

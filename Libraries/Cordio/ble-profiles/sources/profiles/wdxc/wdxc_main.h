@@ -132,6 +132,18 @@ void WdxcFtcSendPutReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset,
 /*************************************************************************************************/
 void WdxcFtcSendGetReq(dmConnId_t connId, uint16_t fileHdl, uint32_t offset, uint32_t len, uint8_t type);
 
+/*************************************************************************************************/
+/*!
+ *  \brief  Store pointer to the attribute handles in the control block
+ *          Parameter pHdlList must point to an array of length \ref WDXC_HDL_LIST_LEN.
+ *
+ *  \param  connId    Connection identifier.
+ *  \param  pHdlList  Characteristic handle list.
+ *
+ *  \return None.
+ */
+/*************************************************************************************************/
+void WdxcStoreAttrHandles(dmConnId_t connId, uint16_t *pHdlList);
 /*! \} */    /* WIRELESS_DATA_EXCHANGE_PROFILE */
 
 #ifdef __cplusplus

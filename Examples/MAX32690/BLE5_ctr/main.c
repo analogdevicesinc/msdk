@@ -36,6 +36,13 @@
 #include "bb_ble_sniffer_api.h"
 #include "pal_bb.h"
 #include "pal_cfg.h"
+#include "mxc_device.h"
+#include "uart.h"
+#include "nvic_table.h"
+#include "board.h"
+#include "pal_timer.h"
+
+#define MAX_PRIORITY ((0x1 << __NVIC_PRIO_BITS) - 1)
 
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
@@ -181,6 +188,61 @@ static bool_t mainCheckServiceTokens(void)
 
 /*************************************************************************************************/
 /*!
+ *  \brief  Adjust interrupt priorities to let HCI UART interrupt have second highest after PAL timer
+ *
+ *  \return None
+ */
+/*************************************************************************************************/
+void setInterruptPriority(void)
+{
+    /* Interrupts using FreeRTOS functions must have priorities between MAX_PRIORITY and
+    configMAX_SYSCALL_INTERRUPT_PRIORITY, lower priority number is higher priority */
+
+    /* Setup BLE hardware interrupt priorities */
+    NVIC_SetPriority(BTLE_TX_DONE_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_RX_RCVD_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_RX_ENG_DET_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_SFD_DET_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_SFD_TO_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_GP_EVENT_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_CFO_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_SIG_DET_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_AGC_EVENT_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_RFFE_SPIM_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_TX_AES_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_RX_AES_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_INV_APB_ADDR_IRQn, (MAX_PRIORITY - 2));
+    NVIC_SetPriority(BTLE_IQ_DATA_VALID_IRQn, (MAX_PRIORITY - 2));
+
+    /* Setup scheduler timer priorities */
+    NVIC_SetPriority(TMR0_IRQn, (MAX_PRIORITY - 1));
+    NVIC_SetPriority(TMR1_IRQn, (MAX_PRIORITY - 1));
+
+    NVIC_SetPriority(WUT0_IRQn, (MAX_PRIORITY - 1));
+
+    /* Setup additional peripheral timer priorities */
+    NVIC_SetPriority(UART1_IRQn, (MAX_PRIORITY - 0));
+    NVIC_SetPriority(UART2_IRQn, (MAX_PRIORITY - 0));
+    NVIC_SetPriority(UART3_IRQn, (MAX_PRIORITY - 0));
+
+    NVIC_SetPriority(DMA0_IRQn, (MAX_PRIORITY - 0));
+    NVIC_SetPriority(DMA1_IRQn, (MAX_PRIORITY - 0));
+    NVIC_SetPriority(DMA2_IRQn, (MAX_PRIORITY - 0));
+    NVIC_SetPriority(DMA3_IRQn, (MAX_PRIORITY - 0));
+
+    NVIC_SetPriority(GPIO0_IRQn, (MAX_PRIORITY - 0));
+    NVIC_SetPriority(GPIO1_IRQn, (MAX_PRIORITY - 0));
+
+    /* Trace UART */
+    NVIC_SetPriority(UART0_IRQn, 3);
+    /* HCI UART highest priority */
+    NVIC_SetPriority(MXC_UART_GET_IRQ(MXC_UART_GET_UART(HCI_UART)), 0);
+    /* PAL Timer */
+    PalTimerSetIRQPriority(2);
+}
+
+/*************************************************************************************************/
+/*!
  *  \brief  Main entry point.
  */
 /*************************************************************************************************/
@@ -219,7 +281,7 @@ int main(void)
 
     WsfOsRegisterSleepCheckFunc(mainCheckServiceTokens);
     WsfOsRegisterSleepCheckFunc(ChciTrService);
-
+    setInterruptPriority();
     WsfOsEnterMainLoop();
 
     /* Does not return. */

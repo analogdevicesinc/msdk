@@ -1,5 +1,5 @@
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -73,7 +73,7 @@
 #define DO_SLEEP 1
 #define DO_DEEPSLEEP 1
 #define DO_BACKUP 0
-#define DO_SHUTDOWN 0
+#define DO_STORAGE 0
 
 #if (!(USE_BUTTON || USE_ALARM))
 #error "You must set either USE_BUTTON or USE_ALARM to 1."
@@ -101,12 +101,12 @@ void alarmHandler(void)
     int flags = MXC_RTC->ctrl;
     alarmed = 1;
 
-    if ((flags & MXC_F_RTC_CTRL_ALSF) >> MXC_F_RTC_CTRL_ALSF_POS) {
-        MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_ALSF);
+    if ((flags & MXC_F_RTC_CTRL_SSEC_ALARM) >> MXC_F_RTC_CTRL_SSEC_ALARM_POS) {
+        MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_SSEC_ALARM);
     }
 
-    if ((flags & MXC_F_RTC_CTRL_ALDF) >> MXC_F_RTC_CTRL_ALDF_POS) {
-        MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_ALDF);
+    if ((flags & MXC_F_RTC_CTRL_TOD_ALARM) >> MXC_F_RTC_CTRL_TOD_ALARM_POS) {
+        MXC_RTC->ctrl &= ~(MXC_F_RTC_CTRL_TOD_ALARM);
     }
 }
 
@@ -116,11 +116,11 @@ void setTrigger(int waitForTrigger)
 
     while (MXC_RTC_Init(0, 0) == E_BUSY) {}
 
-    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY) {}
+    while (MXC_RTC_DisableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
     while (MXC_RTC_SetTimeofdayAlarm(DELAY_IN_SEC) == E_BUSY) {}
 
-    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_ADE) == E_BUSY) {}
+    while (MXC_RTC_EnableInt(MXC_F_RTC_CTRL_TOD_ALARM_IE) == E_BUSY) {}
 
     while (MXC_RTC_Start() == E_BUSY) {}
 
@@ -170,22 +170,30 @@ void setTrigger(int waitForTrigger)
 
 void configure_gpio(void)
 {
-    //Set GPIOs to output mode except PB0 and UART0 pins
-    MXC_GPIO0->en0 |= 0xFFDFFCFFUL;
-    MXC_GPIO0->outen |= 0xFFDFFCFFUL;
+#if USE_CONSOLE
+    // Set all of port 0 except UART, PB0, and I2C ports to input pull-down.
+    // Set I2C ports as high-z.
+    // Set PB to input pull-up.
+    MXC_GPIO0->en0 = 0xFFFFFCFFUL;
+    MXC_GPIO0->inen = 0xFFFFFFFFUL;
+    MXC_GPIO0->padctrl0 = 0xFFF3FC3FUL;
+    MXC_GPIO0->ps = 0x00200000UL;
 
-    MXC_GPIO1->en0 |= 0xFFFFFFFFUL;
-    MXC_GPIO1->outen |= 0xFFFFFFFFUL;
+#else
+    // Set all of port 0 except PB0 and I2C ports to input pull-down.
+    // Set I2C ports as high-z.
+    // Set PB to input pull-up.
+    MXC_GPIO0->en0 = 0xFFFFFFFFUL;
+    MXC_GPIO0->inen = 0xFFFFFFFFUL;
+    MXC_GPIO0->padctrl0 = 0xFFF3FF3FUL;
+    MXC_GPIO0->ps = 0x00200000UL;
+#endif
 
-    // Pull down all the GPIO pins except PB0 and UART0
-    MXC_GPIO0->padctrl0 |= 0xFFDFFCFFUL;
-    MXC_GPIO0->ps &= ~0xFFDFFCFFUL;
-    MXC_GPIO1->padctrl0 |= 0xFFFFFFFFUL;
-    MXC_GPIO1->ps &= ~0xFFFFFFFFUL;
-
-    //Set output low
-    // MXC_GPIO0->out      &= ~0xFFDFFCFFUL;
-    // MXC_GPIO1->out      &= ~0xFFFFFFFFUL;
+    // Set all of port 1 in input pull-down mode.
+    MXC_GPIO1->en0 = 0xFFFFFFFFUL;
+    MXC_GPIO1->inen = 0xFFFFFFFFUL;
+    MXC_GPIO1->padctrl0 = 0xFFFFFFFFUL;
+    MXC_GPIO1->ps = 0x00000000UL;
 }
 
 int main(void)
@@ -196,6 +204,7 @@ int main(void)
 
 #if USE_BUTTON
     MXC_LP_EnableGPIOWakeup((mxc_gpio_cfg_t *)&pb_pin[0]);
+    MXC_GPIO_SetWakeEn(pb_pin[0].port, pb_pin[0].mask);
 #endif // USE_BUTTON
 #if USE_ALARM
     MXC_LP_EnableRTCAlarmWakeup();
@@ -224,7 +233,20 @@ int main(void)
     setTrigger(1);
 
     MXC_LP_ROMLightSleepEnable();
-    PRINT("ROM placed in LIGHT SLEEP mode.\n");
+    MXC_LP_ICache0LightSleepEnable();
+    MXC_LP_SysRam3LightSleepEnable();
+    MXC_LP_SysRam2LightSleepEnable();
+    MXC_LP_SysRam1LightSleepDisable(); // Global variables RAM 0 and 1.
+    MXC_LP_SysRam0LightSleepDisable();
+    PRINT("Unused RAMs placed in LIGHT SLEEP mode.\n");
+
+    setTrigger(1);
+
+    MXC_LP_SysRam3Shutdown();
+    MXC_LP_SysRam2Shutdown();
+    MXC_LP_SysRam1PowerUp(); // Global variables RAM 0 and 1.
+    MXC_LP_SysRam0PowerUp();
+    PRINT("Unused RAMs shutdown.\n");
 
     setTrigger(1);
 
@@ -236,6 +258,7 @@ int main(void)
         PRINT("Waking up from SLEEP mode.\n");
 
 #endif // DO_SLEEP
+
 #if DO_DEEPSLEEP
         PRINT("Entering DEEPSLEEP mode.\n");
         setTrigger(0);
@@ -249,10 +272,10 @@ int main(void)
         MXC_LP_EnterBackupMode();
 #endif // DO_BACKUP
 
-#if DO_SHUTDOWN
-        PRINT("Entering Shutdown mode.\n");
+#if DO_STORAGE
+        PRINT("Entering Storage mode.\n");
         setTrigger(0);
-        MXC_LP_EnterShutDownMode();
+        MXC_LP_EnterStorageMode();
 #endif // DO_STORAGE
     }
 }

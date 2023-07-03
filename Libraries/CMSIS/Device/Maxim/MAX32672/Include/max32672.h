@@ -59,7 +59,9 @@
 
 /* COMPILER SPECIFIC DEFINES (IAR, ARMCC and GNUC) */
 #if defined(__GNUC__)
+#ifndef __weak
 #define __weak __attribute__((weak))
+#endif
 
 #elif defined(__CC_ARM)
 
@@ -278,13 +280,32 @@ typedef enum {
 #define MXC_WDT1 ((mxc_wdt_regs_t *)MXC_BASE_WDT1)
 
 /******************************************************************************/
-/*                                                                   AES Keys */
-#define MXC_BASE_AESKEYS ((uint32_t)0x40205000UL)
-#define MXC_AESKEYS ((mxc_aeskeys_regs_t *)MXC_BASE_AESKEYS)
+/*                                                   System and User AES Keys */
+#define MXC_BASE_SYS_AESKEYS ((uint32_t)0x40205000UL)
+#define MXC_SYS_AESKEYS ((mxc_sys_aeskeys_regs_t *)MXC_BASE_SYS_AESKEYS)
 
-// DEPRECATED(1-10-2023): Scheduled for removal.
-#define MXC_BASE_AESKEY MXC_BASE_AESKEYS
-#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_AESKEY)
+#define MXC_BASE_USR_AESKEYS ((uint32_t)0x40005000UL)
+#define MXC_USR_AESKEYS ((mxc_usr_aeskeys_regs_t *)MXC_BASE_USR_AESKEYS)
+
+/*
+ * @deprecated (1-10-2023): Scheduled for removal. Use MXC_BASE_SYS_AESKEYS instead.
+ */
+#define MXC_BASE_AESKEY MXC_BASE_SYS_AESKEYS
+
+/*
+ * @deprecated (1-10-2023): Scheduled for removal. Use MXC_SYS_AESKEYS instead.
+ */
+#define MXC_AESKEY ((mxc_aes_key_regs_t *)MXC_BASE_SYS_AESKEY)
+
+/*
+ * @deprecated (4-7-2023): Scheduled for removal. Use MXC_BASE_SYS_AESKEYS instead.
+ */
+#define MXC_BASE_AESKEYS MXC_BASE_SYS_AESKEYS
+
+/*
+ * @deprecated (4-7-2023): Scheduled for removal. Use MXC_SYS_AESKEYS instead.
+ */
+#define MXC_AESKEYS MXC_SYS_AESKEYS
 
 /******************************************************************************/
 /*                                                            Real Time Clock */
@@ -422,6 +443,21 @@ mxc_aes_regs_t mxc_sys_aes_regs_t;
 #define MXC_DMA ((mxc_dma_regs_t *)MXC_BASE_DMA)
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
+
+#define MXC_DMA_CH_GET_IRQ(i)               \
+    ((IRQn_Type)(((i) == 0)  ? DMA0_IRQn :  \
+                 ((i) == 1)  ? DMA1_IRQn :  \
+                 ((i) == 2)  ? DMA2_IRQn :  \
+                 ((i) == 3)  ? DMA3_IRQn :  \
+                 ((i) == 4)  ? DMA4_IRQn :  \
+                 ((i) == 5)  ? DMA5_IRQn :  \
+                 ((i) == 6)  ? DMA6_IRQn :  \
+                 ((i) == 7)  ? DMA7_IRQn :  \
+                 ((i) == 8)  ? DMA8_IRQn :  \
+                 ((i) == 9)  ? DMA9_IRQn :  \
+                 ((i) == 10) ? DMA10_IRQn : \
+                 ((i) == 11) ? DMA11_IRQn : \
+                               0))
 
 /******************************************************************************/
 /*                                                                        FLC */

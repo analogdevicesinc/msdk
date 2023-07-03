@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -46,18 +46,22 @@ SRCS += w25.c
 
 PROJ_CFLAGS+=-DEXT_FLASH_W25
 
-MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source
-VPATH += $(BOARD_DIR)/../Source
+VPATH += $(MISC_DRIVERS_DIR)
+VPATH += $(MISC_DRIVERS_DIR)/LED
+VPATH += $(MISC_DRIVERS_DIR)/PushButton
 VPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 VPATH += $(MISC_DRIVERS_DIR)/Display
 VPATH += $(MISC_DRIVERS_DIR)/Touchscreen
 
 # Where to find BSP header files
 IPATH += $(BOARD_DIR)/Include
-IPATH += $(BOARD_DIR)/../Include
+IPATH += $(MISC_DRIVERS_DIR)
+IPATH += $(MISC_DRIVERS_DIR)/LED
+IPATH += $(MISC_DRIVERS_DIR)/PushButton
 IPATH += $(MISC_DRIVERS_DIR)/ExtMemory
 IPATH += $(MISC_DRIVERS_DIR)/Display
 IPATH += $(MISC_DRIVERS_DIR)/Touchscreen

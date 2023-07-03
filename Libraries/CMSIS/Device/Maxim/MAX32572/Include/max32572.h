@@ -55,7 +55,9 @@
 
 /* COMPILER SPECIFIC DEFINES (IAR, ARMCC and GNUC) */
 #if defined(__GNUC__)
+#ifndef __weak
 #define __weak __attribute__((weak))
+#endif
 
 #elif defined(__CC_ARM)
 
@@ -519,8 +521,13 @@ typedef enum {
 
 /******************************************************************************/
 /*                                           Instruction Cache XIP Controller */
+<<<<<<< HEAD
 #define MXC_BASE_SFCC                   ((uint32_t)0x4002F000UL)
 #define MXC_SFCC                        ((mxc_sfcc_regs_t *)MXC_BASE_SFCC)
+=======
+#define MXC_BASE_SFCC ((uint32_t)0x4002F000UL)
+#define MXC_SFCC ((mxc_sfcc_regs_t *)MXC_BASE_SFCC)
+>>>>>>> main
 
 /******************************************************************************/
 /*                                                            Secure Keyboard */

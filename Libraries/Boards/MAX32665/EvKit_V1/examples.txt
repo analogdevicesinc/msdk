@@ -26,10 +26,14 @@ BLE_otas
 BLE_periph
 Bootloader
 Bootloader_Host
+Coremark
 CRC
+Demo
 DES
+Display
 DMA
 ECC
+EEPROM_Emulator
 Flash
 Flash_CLI
 FreeRTOSDemo
@@ -42,8 +46,11 @@ I2C_MNGR
 I2C_SCAN
 I2C_Sensor
 ICC
+Library_Generate
+Library_Use
 LP
 MAA
+OTP_Dump
 OWM
 Pulse_Train
 RPU

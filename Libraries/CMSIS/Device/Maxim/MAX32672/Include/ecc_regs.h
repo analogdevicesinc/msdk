@@ -1,11 +1,11 @@
 /**
  * @file    ecc_regs.h
  * @brief   Registers, Bit Masks and Bit Positions for the ECC Peripheral Module.
- *          This file is @deprecated.
+ * @deprecated         This file is deprecated in favor of @ref trimsir_registers.
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),

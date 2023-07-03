@@ -1,5 +1,5 @@
-/* ****************************************************************************
- * Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,7 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *************************************************************************** */
+ ******************************************************************************/
 
 #include <stdio.h>
 #include <stddef.h>
@@ -363,6 +363,16 @@ int MXC_I2C_SetTXThreshold(mxc_i2c_regs_t *i2c, unsigned int numBytes)
 unsigned int MXC_I2C_GetTXThreshold(mxc_i2c_regs_t *i2c)
 {
     return MXC_I2C_RevA_GetTXThreshold((mxc_i2c_reva_regs_t *)i2c);
+}
+
+void MXC_I2C_AsyncStop(mxc_i2c_regs_t *i2c)
+{
+    MXC_I2C_RevA_AsyncStop((mxc_i2c_reva_regs_t *)i2c);
+}
+
+void MXC_I2C_AbortAsync(mxc_i2c_regs_t *i2c)
+{
+    MXC_I2C_RevA_AbortAsync((mxc_i2c_reva_regs_t *)i2c);
 }
 
 void MXC_I2C_AsyncHandler(mxc_i2c_regs_t *i2c)

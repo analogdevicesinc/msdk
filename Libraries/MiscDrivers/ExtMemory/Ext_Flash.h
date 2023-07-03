@@ -2,8 +2,9 @@
  * @file
  * @brief BSP driver to communicate via SPI/QPI with an External Flash Memory.
  */
-/* ****************************************************************************
- * Copyright (C) Maxim Integrated Products, Inc., All Rights Reserved.
+
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -33,8 +34,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- *
- **************************************************************************** */
+ ******************************************************************************/
 
 #ifndef LIBRARIES_MISCDRIVERS_EXTMEMORY_EXT_FLASH_H_
 #define LIBRARIES_MISCDRIVERS_EXTMEMORY_EXT_FLASH_H_
@@ -89,6 +89,23 @@ extern "C" {
     6 /**< Dummy data sent on a fast-read (Quad) read command per the W25 datasheet. */
 
 #define EXT_FLASH_EXP_ID 0x00EF4018
+
+#define EXT_FLASH_CMD_READ 0x0B /**< Read                           */
+#define EXT_FLASH_CMD_DREAD 0xBB /**< Dual SPI Read                  */
+#define EXT_FLASH_CMD_QREAD 0xEB /**< Quad SPI Read                  */
+
+#elif defined(EXT_FLASH_MX25_64MB)
+
+#define EXT_FLASH_NAME "MX25_64MB"
+
+#define EXT_FLASH_Read_DUMMY \
+    8 /**< Dummy byte sent on a standard read command per the MX25 datasheet.         */
+#define EXT_FLASH_DREAD_DUMMY \
+    4 /**< Dummy data sent on a fast-read (Dual) read command per the MX25 datasheet. */
+#define EXT_FLASH_QREAD_DUMMY \
+    10 /**< Dummy data sent on a fast-read (Quad) read command per the MX25 datasheet. */
+
+#define EXT_FLASH_EXP_ID 0x00c2953a
 
 #define EXT_FLASH_CMD_READ 0x0B /**< Read                           */
 #define EXT_FLASH_CMD_DREAD 0xBB /**< Dual SPI Read                  */

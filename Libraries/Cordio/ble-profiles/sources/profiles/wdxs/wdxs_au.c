@@ -57,10 +57,9 @@ void wdxsAuSend(dmConnId_t connId)
   if (AttsCccEnabled(connId, wdxsCb.auCccIdx))
   {
     /* send notification */
-    AttsHandleValueNtf(connId, WDXS_AU_HDL, wdxsAuCb.auMsgLen, wdxsAuCb.auMsgBuf);
     wdxsCb.txReadyMask &= ~(WDXS_TX_MASK_AU_BIT | WDXS_TX_MASK_READY_BIT);
-
     wdxsAuCb.authState = WDXS_AU_STATE_WAIT_REPLY;
+    AttsHandleValueNtf(connId, WDXS_AU_HDL, wdxsAuCb.auMsgLen, wdxsAuCb.auMsgBuf);
   }
 }
 

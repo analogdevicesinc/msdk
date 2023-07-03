@@ -7,7 +7,7 @@
  */
 
 /******************************************************************************
- * Copyright (C) 2022 Maxim Integrated Products, Inc., All Rights Reserved.
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -72,7 +72,7 @@ int main()
     printf("\nby connecting jumpers JP4 and JP5.\n\n");
 #endif
 
-    //Setup the I2CM
+    //Setup the I2C master
     if (E_NO_ERROR != MXC_I2C_Init(I2C_MASTER, 1, 0)) {
         printf("-->Failed master\n");
         return -1;
@@ -92,11 +92,15 @@ int main()
     reqMaster.restart = 0;
     reqMaster.callback = NULL;
 
+    // Loop through valid I2C slave addresses
     for (uint8_t address = 8; address < 120; address++) {
         printf(".");
         fflush(0);
 
+        // Set next slave address
         reqMaster.addr = address;
+
+        // Do I2C inquiry
         if (E_NO_ERROR == MXC_I2C_MasterTransaction(&reqMaster)) {
             printf("\nFound slave ID %03d; 0x%02X\n", address, address);
             counter++;
