@@ -54,6 +54,7 @@
 #include "pb.h"
 
 /***** Definitions *****/
+#define WORDS_PER_FLASH_PG (MXC_FLASH_PAGE_SIZE / 4)
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
 /*
     ^ Points to last page in flash, which is guaranteed to be unused by this small example.
@@ -205,8 +206,9 @@ int erase_magic()
         Therefore, the entire page must be buffered, erased, then modified.
     */
     int err;
-    uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2];
-    //^ 8192 bytes per page / 4 bytes = 2048 uint32_t
+    uint32_t buffer[WORDS_PER_FLASH_PG] = {
+        0xFFFFFFFF
+    }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
 
     printf("Buffering page...\n");
     memcpy(buffer, (void *)TEST_ADDRESS, MXC_FLASH_PAGE_SIZE);
@@ -221,7 +223,7 @@ int erase_magic()
     printf("Erasing magic in buffer...\n");
     buffer[0] = 0xABCD1234; // Erase magic value
 
-    printf("Writing buffer back to flash...\n");
+    printf("Re-writing from buffer...\n");
     for (int i = 0; i < (MXC_FLASH_PAGE_SIZE >> 2); i++) {
         err = MXC_FLC_Write32(TEST_ADDRESS + 4 * i, buffer[i]);
         if (err) {
@@ -229,7 +231,6 @@ int erase_magic()
             return err;
         }
     }
-
     uint32_t magic = 0;
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
     printf("New magic value: 0x%x\n", magic);
@@ -274,14 +275,12 @@ int main(void)
             printf("----------------\n");
         )
         // clang-format on
-        if (err) {
+        if (err)
             return err;
-        }
 
         err = validate_test_pattern();
-        if (err) {
+        if (err)
             return err;
-        }
 
         printf("\nNow reset or power cycle the board...\n");
     } else { // Starting example after reset or power cycle
@@ -289,9 +288,8 @@ int main(void)
         printf("(Flash modifications have survived a reset and/or power cycle.)\n\n");
 
         err = validate_test_pattern();
-        if (err) {
+        if (err)
             return err;
-        }
 
         // clang-format off
         MXC_CRITICAL(
@@ -300,14 +298,12 @@ int main(void)
             printf("----------------\n");
         )
         // clang-format on
-        if (err) {
+        if (err)
             return err;
-        }
 
         err = validate_test_pattern();
-        if (err) {
+        if (err)
             return err;
-        }
 
         printf("Flash example successfully completed.\n");
     }
