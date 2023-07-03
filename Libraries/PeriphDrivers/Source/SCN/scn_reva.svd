@@ -152,7 +152,7 @@
       </register>
       <register>
         <name>PN</name>
-        <description>Pin Register,</description>
+        <description>Pin Register.</description>
         <addressOffset>0x08</addressOffset>
         <fields>
           <field>
@@ -419,7 +419,7 @@
       </register>
       <register>
         <name>CCR</name>
-        <description>Clock Counter Register,</description>
+        <description>Clock Counter Register.</description>
         <addressOffset>0x2C</addressOffset>
         <fields>
           <field>

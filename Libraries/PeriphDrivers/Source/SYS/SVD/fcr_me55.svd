@@ -115,7 +115,7 @@
         <access>read-write</access>
         <fields>
           <field>
-            <name>ACEN</name>
+            <name>AC_EN</name>
             <description>Auto-calibration Enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
@@ -133,7 +133,7 @@
             </enumeratedValues>
           </field>
           <field>
-            <name>ACRUN</name>
+            <name>AC_RUN</name>
             <description>Autocalibration Run.</description>
             <bitOffset>1</bitOffset>
             <bitWidth>1</bitWidth>
@@ -199,30 +199,10 @@
             <bitWidth>12</bitWidth>
           </field>
           <field>
-            <name>TRIM</name>
+            <name>AC_TRIM</name>
             <description>150MHz HFIO Auto Calibration Trim</description>
             <bitOffset>23</bitOffset>
             <bitWidth>9</bitWidth>
-          </field>
-        </fields>
-      </register>
-      <register>
-        <name>FCTRL2</name>
-        <description>Register 2.</description>
-        <addressOffset>0x08</addressOffset>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>MSR_R1</name>
-            <description>MSR R1</description>
-            <bitOffset>16</bitOffset>
-            <bitWidth>2</bitWidth>
-          </field>
-          <field>
-            <name>MSR_R2</name>
-            <description>MSR R2</description>
-            <bitOffset>18</bitOffset>
-            <bitWidth>2</bitWidth>
           </field>
         </fields>
       </register>
@@ -285,6 +265,40 @@
             <description>General Purpose.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>32</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>TRIMCTRL</name>
+        <description>MSR ADC Trim Register.</description>
+        <addressOffset>0x20</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>MSR_R1</name>
+            <description>MSR R1</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>2</bitWidth>
+          </field>
+          <field>
+            <name>MSR_R2</name>
+            <description>MSR R2</description>
+            <bitOffset>2</bitOffset>
+            <bitWidth>3</bitWidth>
+          </field>
+        </fields>
+      </register>
+      <register>
+        <name>ERFOKS</name>
+        <description>ERFO Kick Start Register.</description>
+        <addressOffset>0x24</addressOffset>
+        <access>read-write</access>
+        <fields>
+          <field>
+            <name>CTRL</name>
+            <description>Kick Start Control.</description>
+            <bitOffset>0</bitOffset>
+            <bitWidth>16</bitWidth>
           </field>
         </fields>
       </register>

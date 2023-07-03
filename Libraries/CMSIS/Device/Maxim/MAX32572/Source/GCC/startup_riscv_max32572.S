@@ -63,66 +63,66 @@ __isr_vector:
   jal x0, illegal_insn_handler
   jal x0, ecall_insn_handler
   jal x0, HardFault_IRQHandler    
-  jal x0, RSV4_IRQHandler       
+  jal x0, CM4_IRQHandler       
   jal x0, RSV5_IRQHandler     
-  jal x0, MSRADC_IRQHandler 
-  jal x0, RSV7_IRQHandler      
-  jal x0, RSV8_IRQHandler     
-  jal x0, RSV9_IRQHandler     
-  jal x0, RSV10_IRQHandler     
+  jal x0, RSV6_IRQHandler 
+  jal x0, WDT0_IRQHandler      
+  jal x0, WDT1_IRQHandler     
+  jal x0, RTC_IRQHandler     
+  jal x0, MSRADC_IRQHandler     
   jal x0, RSV11_IRQHandler     
-  jal x0, RSV12_IRQHandler     
+  jal x0, TMR0_IRQHandler     
+  jal x0, TMR1_IRQHandler     
+  jal x0, TMR2_IRQHandler     
+  jal x0, TMR3_IRQHandler    
+  jal x0, TMR4_IRQHandler     
   jal x0, TMR5_IRQHandler     
-  jal x0, RSV14_IRQHandler     
-  jal x0, RSV15_IRQHandler    
-  jal x0, CM4_IRQHandler     
-  jal x0, RSV17_IRQHandler     
   jal x0, RSV18_IRQHandler 
   jal x0, RSV19_IRQHandler    
-  jal x0, RSV20_IRQHandler     
-  jal x0, RSV21_IRQHandler     
+  jal x0, GPIO0_IRQHandler     
+  jal x0, GPIO1_IRQHandler     
   jal x0, RSV22_IRQHandler    
   jal x0, RSV23_IRQHandler     
-  jal x0, RSV24_IRQHandler 
-  jal x0, GPIO0_IRQHandler     
-  jal x0, GPIO1_IRQHandler    
-  jal x0, RSV27_IRQHandler    
-  jal x0, RSV28_IRQHandler    
-  jal x0, RSV29_IRQHandler     
+  jal x0, I2C0_IRQHandler 
+  jal x0, SPI0_IRQHandler     
+  jal x0, UART0_IRQHandler    
+  jal x0, I2C1_IRQHandler    
+  jal x0, SPI1_IRQHandler    
+  jal x0, UART1_IRQHandler     
   jal x0, RSV30_IRQHandler     
   jal x0, RSV31_IRQHandler     
-  jal x0, RSV32_IRQHandler 
-  jal x0, RSV33_IRQHandler  
-  jal x0, RSV34_IRQHandler 
+  jal x0, UART2_IRQHandler 
+  jal x0, SPI3_IRQHandler  
+  jal x0, UART3_IRQHandler 
   jal x0, RSV35_IRQHandler  
   jal x0, RSV36_IRQHandler
   jal x0, RSV37_IRQHandler 
-  jal x0, RSV38_IRQHandler 
-  jal x0, RSV39_IRQHandler 
-  jal x0, RSV40_IRQHandler 
-  jal x0, RSV41_IRQHandler 
-  jal x0, RSV42_IRQHandler 
-  jal x0, RSV43_IRQHandler 
-  jal x0, RSV44_IRQHandler 
-  jal x0, RSV45_IRQHandler 
+  jal x0, TRNG_IRQHandler 
+  jal x0, CRYPTO_IRQHandler 
+  jal x0, SCA_IRQHandler 
+  jal x0, SC0_IRQHandler 
+  jal x0, SC1_IRQHandler 
+  jal x0, SKBD_IRQHandler 
+  jal x0, ADC_IRQHandler 
+  jal x0, PT_IRQHandler 
   jal x0, RSV46_IRQHandler 
   jal x0, RSV47_IRQHandler 
   jal x0, RSV48_IRQHandler 
   jal x0, RSV49_IRQHandler 
-  jal x0, RSV50_IRQHandler 
-  jal x0, RSV51_IRQHandler 
-  jal x0, RSV52_IRQHandler 
+  jal x0, HTMR0_IRQHandler 
+  jal x0, HTMR1_IRQHandler 
+  jal x0, SPIXIP_IRQHandler 
   jal x0, RSV53_IRQHandler 
   jal x0, RSV54_IRQHandler 
-  jal x0, RSV55_IRQHandler
-  jal x0, RSV56_IRQHandler
-  jal x0, RSV57_IRQHandler
-  jal x0, RSV58_IRQHandler
-  jal x0, RSV59_IRQHandler
-  jal x0, RSV60_IRQHandler
-  jal x0, RSV61_IRQHandler
-  jal x0, RSV62_IRQHandler
-  jal x0, RSV63_IRQHandler 
+  jal x0, DMA0_IRQHandler
+  jal x0, DMA1_IRQHandler
+  jal x0, DMA2_IRQHandler
+  jal x0, DMA3_IRQHandler
+  jal x0, DMA4_IRQHandler
+  jal x0, DMA5_IRQHandler
+  jal x0, DMA6_IRQHandler
+  jal x0, DMA7_IRQHandler
+  jal x0, DMA8_15_IRQHandler 
 
   .section .text
     .align 2
@@ -239,66 +239,66 @@ main_entry:
   def_irq_handler illegal_insn_handler
   def_irq_handler ecall_insn_handler
   def_irq_handler HardFault_IRQHandler    
-  def_irq_handler RSV4_IRQHandler       
+  def_irq_handler CM4_IRQHandler       
   def_irq_handler RSV5_IRQHandler     
-  def_irq_handler MSRADC_IRQHandler 
-  def_irq_handler RSV7_IRQHandler      
-  def_irq_handler RSV8_IRQHandler     
-  def_irq_handler RSV9_IRQHandler     
-  def_irq_handler RSV10_IRQHandler     
+  def_irq_handler RSV6_IRQHandler 
+  def_irq_handler WDT0_IRQHandler      
+  def_irq_handler WDT1_IRQHandler     
+  def_irq_handler RTC_IRQHandler     
+  def_irq_handler MSRADC_IRQHandler     
   def_irq_handler RSV11_IRQHandler     
-  def_irq_handler RSV12_IRQHandler     
+  def_irq_handler TMR0_IRQHandler     
+  def_irq_handler TMR1_IRQHandler     
+  def_irq_handler TMR2_IRQHandler     
+  def_irq_handler TMR3_IRQHandler    
+  def_irq_handler TMR4_IRQHandler     
   def_irq_handler TMR5_IRQHandler     
-  def_irq_handler RSV14_IRQHandler     
-  def_irq_handler RSV15_IRQHandler    
-  def_irq_handler CM4_IRQHandler     
-  def_irq_handler RSV17_IRQHandler     
   def_irq_handler RSV18_IRQHandler    
   def_irq_handler RSV19_IRQHandler     
-  def_irq_handler RSV20_IRQHandler     
-  def_irq_handler RSV21_IRQHandler    
+  def_irq_handler GPIO0_IRQHandler     
+  def_irq_handler GPIO1_IRQHandler    
   def_irq_handler RSV22_IRQHandler     
   def_irq_handler RSV23_IRQHandler 
-  def_irq_handler RSV24_IRQHandler     
-  def_irq_handler GPIO0_IRQHandler    
-  def_irq_handler GPIO1_IRQHandler    
-  def_irq_handler RSV27_IRQHandler    
-  def_irq_handler RSV28_IRQHandler     
-  def_irq_handler RSV29_IRQHandler     
+  def_irq_handler I2C0_IRQHandler     
+  def_irq_handler SPI0_IRQHandler    
+  def_irq_handler UART0_IRQHandler    
+  def_irq_handler I2C1_IRQHandler    
+  def_irq_handler SPI1_IRQHandler     
+  def_irq_handler UART1_IRQHandler     
   def_irq_handler RSV30_IRQHandler     
   def_irq_handler RSV31_IRQHandler 
-  def_irq_handler RSV32_IRQHandler 
-  def_irq_handler RSV33_IRQHandler  
-  def_irq_handler RSV34_IRQHandler 
+  def_irq_handler UART2_IRQHandler 
+  def_irq_handler SPI3_IRQHandler  
+  def_irq_handler UART3_IRQHandler 
   def_irq_handler RSV35_IRQHandler  
   def_irq_handler RSV36_IRQHandler
   def_irq_handler RSV37_IRQHandler 
-  def_irq_handler RSV38_IRQHandler 
-  def_irq_handler RSV39_IRQHandler 
-  def_irq_handler RSV40_IRQHandler 
-  def_irq_handler RSV41_IRQHandler 
-  def_irq_handler RSV42_IRQHandler 
-  def_irq_handler RSV43_IRQHandler 
-  def_irq_handler RSV44_IRQHandler 
-  def_irq_handler RSV45_IRQHandler 
+  def_irq_handler TRNG_IRQHandler 
+  def_irq_handler CRYPTO_IRQHandler 
+  def_irq_handler SCA_IRQHandler 
+  def_irq_handler SC0_IRQHandler 
+  def_irq_handler SC1_IRQHandler 
+  def_irq_handler SKBD_IRQHandler 
+  def_irq_handler ADC_IRQHandler 
+  def_irq_handler PT_IRQHandler 
   def_irq_handler RSV46_IRQHandler 
   def_irq_handler RSV47_IRQHandler 
   def_irq_handler RSV48_IRQHandler 
   def_irq_handler RSV49_IRQHandler 
-  def_irq_handler RSV50_IRQHandler 
-  def_irq_handler RSV51_IRQHandler 
-  def_irq_handler RSV52_IRQHandler 
+  def_irq_handler HTMR0_IRQHandler 
+  def_irq_handler HTMR1_IRQHandler 
+  def_irq_handler SPIXIP_IRQHandler 
   def_irq_handler RSV53_IRQHandler 
   def_irq_handler RSV54_IRQHandler 
-  def_irq_handler RSV55_IRQHandler
-  def_irq_handler RSV56_IRQHandler
-  def_irq_handler RSV57_IRQHandler
-  def_irq_handler RSV58_IRQHandler
-  def_irq_handler RSV59_IRQHandler
-  def_irq_handler RSV60_IRQHandler 
-  def_irq_handler RSV61_IRQHandler
-  def_irq_handler RSV62_IRQHandler
-  def_irq_handler RSV63_IRQHandler 
+  def_irq_handler DMA0_IRQHandler
+  def_irq_handler DMA1_IRQHandler
+  def_irq_handler DMA2_IRQHandler
+  def_irq_handler DMA3_IRQHandler
+  def_irq_handler DMA4_IRQHandler
+  def_irq_handler DMA5_IRQHandler 
+  def_irq_handler DMA6_IRQHandler
+  def_irq_handler DMA7_IRQHandler
+  def_irq_handler DMA8_15_IRQHandler 
 
   .global _init
   .global _fini
