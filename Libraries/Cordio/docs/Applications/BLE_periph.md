@@ -162,7 +162,42 @@ The MTU must be less than or equal to the MaxRxAclLen - L2C Header Length (4 byt
     attExecCallback(0, DM_ERROR_IND, 0, DM_ERR_ATT_RX_PDU_LEN_EXCEEDED, 0);
   }
 ```
+The maximum MTU size is defined by the constant ATT_MAX_MTU, which has a value of 517. If you set the MTU to ATT_MAX_MTU or a value larger than any of the memory pools configured in `main.c` , you must create a new pool with a size of at least (new MTU size + 20) to allow for packet headers. 
 
+
+For exmaple to set MTU to ATT_MAX_MUT the relavent changes must look like this:
+- periph_main.c
+```c
+/*! ATT configurable parameters (increase MTU) */
+static const attCfg_t periphAttCfg = {
+    15, /* ATT server service discovery connection idle timeout in seconds */
+    ATT_MAX_MTU, /* desired ATT MTU */
+    ATT_MAX_TRANS_TIMEOUT, /* transcation timeout in seconds */
+    4 /* number of queued prepare writes supported by server */
+};
+```
+- stack_periph.c
+```c
+void StackInitPeriph(void)
+{
+    ..
+
+    handlerId = WsfOsSetNextHandler(SmpHandler);
+    SmpHandlerInit(handlerId);
+    SmprInit();
+    SmprScInit();
+    HciSetMaxRxAclLen(ATT_MAX_MTU + L2C_HDR_LEN);
+
+    ...
+
+}
+```
+- main.c
+```c
+/*! \brief  Pool runtime configuration. */
+static wsfBufPoolDesc_t mainPoolDesc[] = 
+{ { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 8 } , {ATT_MAX_MTU + 20} };
+```
 ## Callbacks
 
 ## Adding WSF events and handlers
