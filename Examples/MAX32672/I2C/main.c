@@ -174,7 +174,7 @@ void printData(void)
 }
 
 //Compare data to see if they are the same
-int verifyData()
+int verifyData(void)
 {
     int i, fails = 0;
 
