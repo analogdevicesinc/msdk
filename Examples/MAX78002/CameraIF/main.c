@@ -193,6 +193,8 @@ int main(void)
         printf("Touch screen initialization failed\n");
         return E_ABORT;
     }
+    // Set 0 rotation to match camera orientation
+    MXC_TFT_SetRotation(ROTATE_0);
 #endif
     MXC_TFT_SetBackGroundColor(0);
 #endif
@@ -216,13 +218,13 @@ int main(void)
         return -1;
     }
 
-    // Start capturing a first  camera image frame.
-    camera_start_capture_image();
-    printf("Capture image\n");
-
 #if defined(OV5640_DVP)
     camera_write_reg(0x503d, 0x0); // workaround: disable test pattern: color bar
 #endif
+
+    // Start capturing a first  camera image frame.
+    camera_start_capture_image();
+    printf("Capture image\n");
 
     while (1) {
         // Check if image is acquired.
