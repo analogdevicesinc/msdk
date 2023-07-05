@@ -202,7 +202,7 @@ typedef struct {
     mxc_adc_avg_t avg_number; ///< no of samples to average
     mxc_adc_div_lpmode_t lpmode_divder; ///< Divide by 2 control in lpmode
     uint8_t num_slots; ///< num of slots in the sequence
-    int8_t dma_channel; ///< User should call MXC_DMA_AcquireChannel() to assign DMA Channel number for this field
+    int8_t dma_channel; ///< User should call MXC_DMA_AcquireChannel() to assign DMA Channel number
 } mxc_adc_conversion_req_t;
 
 /**
