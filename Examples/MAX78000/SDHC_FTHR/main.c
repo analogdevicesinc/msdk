@@ -112,11 +112,11 @@ int main(void)
 
     printf("\n\n***** " TOSTRING(TARGET) " SDHC FAT Filesystem Example *****\n");
 
-    //waitCardInserted();
+    waitCardInserted();
 
     printf("Card inserted.\n");
 
-    //UART initialized
+    // UART interrupt setup
     NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
     NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
     MXC_NVIC_SetVector(MXC_UART_GET_IRQ(CONSOLE_UART), UART_Handler);
