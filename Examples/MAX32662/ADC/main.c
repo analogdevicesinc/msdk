@@ -362,8 +362,8 @@ int main(void)
         int dma_channel = MXC_DMA_AcquireChannel();
         adc_conv.dma_channel = dma_channel;
 
-        MXC_NVIC_SetVector(MXC_DMA_GET_IRQ(dma_channel), DMA_IRQHandler);
-        NVIC_EnableIRQ(MXC_DMA_GET_IRQ(dma_channel));
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_channel), DMA_IRQHandler);
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(dma_channel));
         MXC_ADC_StartConversionDMA(&adc_conv, adc_val, adc_dma_callback);
 
         while (!dma_done) {}
