@@ -59,6 +59,7 @@
 //                      MACROS
 /* -------------------------------------------------- */
 #define ENTER 0X0D
+#define NEW_LINE 0x0A
 #define SPACE 0x20
 #define TAB 0x09
 #define BACKSPACE 0X08
@@ -126,12 +127,10 @@ static const command_table_t commands[] = {{"Size", handle_size, "Find the Size 
                                             {"add_data", handle_add_data, "Add random Data to an Existing File\n\r"},
                                             {"Del", handle_del, "Delete a file\n\r"},
                                             {"FatFs", handle_fatfs, "Format Card and Run Example of FatFS Operations\n\r"},
-                                            {"Unmount", handle_unmount, "Unmount card and Quit\n\r"},
+                                            {"Unmount", handle_unmount, "Unmount card\n\r"},
 											{"Help", handle_help, "Prints a help message with info about all of the supported commands.\n\r"}};
 //Calculates the number of commands based on commands and the command table
 static const int num_commands = sizeof(commands) / sizeof(command_table_t);
-
-
 
 
 #endif /* EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_CLI_H_ */

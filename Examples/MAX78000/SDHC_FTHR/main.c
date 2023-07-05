@@ -115,7 +115,8 @@ int main(void)
     waitCardInserted();
 
     printf("Card inserted.\n");
-
+    MXC_Delay(1000); //Delay inserted here to avoid weird printf values between previous and next printf command.
+    
     // UART interrupt setup
     NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
     NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
@@ -130,9 +131,8 @@ int main(void)
         printf("-->Example Failed\n");
         return error;
     }
-
+    
     printf("-->UART Initialized\n\n");
-
 
     read_req.uart = MXC_UART_GET_UART(CONSOLE_UART);
     read_req.rxData = &RxData;
@@ -141,94 +141,8 @@ int main(void)
     read_req.callback = readCallback;
 
     error = MXC_UART_TransactionAsync(&read_req);
-    while(1){
-        
-    }
+    //while(1){}
 
-    // while (run) {
-    //     f_getcwd(cwd, sizeof(cwd));
-
-    //     printf("\nChoose one of the following options: \n");
-    //     printf("0. Find the Size of the SD Card and Free Space\n");
-    //     printf("1. Format the Card\n");
-    //     printf("2. Manually Mount Card\n");
-    //     printf("3. List Contents of Current Directory\n");
-    //     printf("4. Create a Directory\n");
-    //     printf("5. Move into a Directory (cd)\n");
-    //     printf("6. Create a File of Random Data\n");
-    //     printf("7. Add Random Data to an Existing File\n");
-    //     printf("8. Delete a File\n");
-    //     printf("9. Format Card and Run Exmaple of FatFS Operations\n");
-    //     printf("10. Unmount Card and Quit\n");
-    //     printf("%s>>", cwd);
-
-    //     input = -1;
-    //     scanf("%d", &input);
-    //     printf("%d\n", input);
-
-    //     err = 0;
-
-    //     switch (input) {
-    //     case 0:
-    //         getSize();
-    //         break;
-
-    //     case 1:
-    //         formatSDHC();
-    //         break;
-
-    //     case 3:
-    //         ls();
-    //         break;
-
-    //     case 6:
-    //         createFile();
-    //         break;
-
-    //     case 7:
-    //         appendFile();
-    //         break;
-
-    //     case 4:
-    //         mkdir();
-    //         break;
-
-    //     case 5:
-    //         cd();
-    //         break;
-
-    //     case 9:
-    //         example();
-    //         break;
-
-    //     case 10:
-    //         umount();
-    //         run = 0;
-    //         break;
-
-    //     case 2:
-    //         mount();
-    //         break;
-
-    //     case 8:
-    //         delete ();
-    //         break;
-
-    //     default:
-    //         printf("Invalid Selection %d!\n", input);
-    //         err = -1;
-    //         break;
-    //     }
-
-    //     if (err >= 0 && err <= 20) {
-    //         printf("Function Returned with code: %s\n", FF_ERRORS[err]);
-    //     } else {
-    //         printf("Function Returned with code: %d\n", err);
-    //     }
-
-    //     MXC_Delay(MSEC(500));
-    // }
-
-    printf("End of example, please try to read the card.\n");
+    //printf("End of example, please try to read the card.\n");
     return 0;
 }

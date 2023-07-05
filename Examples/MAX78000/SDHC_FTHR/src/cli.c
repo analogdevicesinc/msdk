@@ -77,7 +77,8 @@ void line_accumlator(uint8_t user_char)
     	}
         case ENTER: {
             // Handle Enter or carriage return
-            printf("\r");
+            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),NEW_LINE);
+            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),ENTER);
             buf[idx++] = '\r';
             buf[idx] = '\0';
             idx = 0;
@@ -309,7 +310,7 @@ void process_command(char *input)
     }
 
     //Print prompt
-    printf("$$ ");
+    //printf("$$ ");
 }
 /*
  * @name white_space_present

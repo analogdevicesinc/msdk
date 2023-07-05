@@ -83,5 +83,4 @@ int example();
 
 void waitCardInserted();
 
-
 #endif //SDHC_HEADER
