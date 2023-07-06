@@ -441,6 +441,12 @@ endif
 
 # The rule for linking the application.
 ${BUILD_DIR}/%.elf: $(PROJECTMK)
+# This rule parses the linker arguments into a text file to work around issues
+# with string length limits on the command line
+ifeq "$(_OS)" "windows_msys"
+# MSYS2 will create /c/-like paths, but GCC needs C:/-like paths on Windows.
+# So the only difference between this command and the "standard" command for
+# creating ln_args.txt is the sed call to perform the path replacement.
 	@echo -T ${LINKERFILE}                                       \
 	      --entry ${ENTRY}                                                       \
 	      ${LDFLAGS}                                             \
@@ -451,7 +457,22 @@ ${BUILD_DIR}/%.elf: $(PROJECTMK)
 	      ${PROJ_LIBS}                                                           \
 	      ${STD_LIBS}                                                            \
 	      -Xlinker --end-group                                                   \
-	      | sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ln_args.txt
+		  | sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ln_args.txt    \
+	      > ${BUILD_DIR}/ln_args.txt
+else
+	@echo -T ${LINKERFILE}                                       \
+	      --entry ${ENTRY}                                                       \
+	      ${LDFLAGS}                                             \
+	      -o ${@}                                                \
+	      $(filter %.o, ${^})                                    \
+	      -Xlinker --start-group                                                 \
+	      $(filter %.a, ${^})                                    \
+	      ${PROJ_LIBS}                                                           \
+	      ${STD_LIBS}                                                            \
+	      -Xlinker --end-group                                                   \
+	      > ${BUILD_DIR}/ln_args.txt
+endif
+
 ifneq "$(VERBOSE)" ""
 	@echo ${LD} -T ${LINKERFILE}                          \
 	        --entry ${ENTRY}                                             \
