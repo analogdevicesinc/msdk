@@ -62,6 +62,9 @@ colors = read_output_from_txtfile(output_filename)
 f, ax = plt.subplots(1, 3, figsize=(12, 4))
 ax[0].imshow(img_resize1)
 ax[1].imshow(colors, cmap='Greys')
-ax[2].imshow(img_resize1)
-ax[2].imshow(colors, cmap='Greys', alpha=0.2)
+
+# apply mask to the image
+colors = np.repeat(colors[:,:,np.newaxis], 3, axis=2)
+colors=np.bitwise_xor(colors, 1)
+ax[2].imshow(np.multiply(img_resize1,colors))
 plt.show() 

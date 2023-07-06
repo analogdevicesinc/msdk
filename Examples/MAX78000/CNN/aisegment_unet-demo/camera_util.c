@@ -440,7 +440,18 @@ void display_camera(void)
              }
              MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
 #else
+
+#ifdef BOARD_EVKIT_V1
+            int j = 0;
+            for (int k = 2 * w - 1; k > 0; k -= 2) { // reverse order to display
+
+                    data565[j++] =  data[k+1];
+                    data565[j++] =  data[k];
+             }
+             MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
+#else
              MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data, w, 1);
+#endif
 
 #endif
 
