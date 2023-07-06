@@ -70,8 +70,8 @@
 /* If enabled, camera is setup in streaming mode to send the image
 line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
 image first and then sends to TFT or serial port.
-With serial port set at 900kbps, it can stream for up to 80x80 with OV5642 camera in 
-stream mode, or 176x144 when stream mode is disabled.  It can display on TFT up to 176x144 
+With serial port set at 900kbps, it can stream for up to 80x80 with OV5642 camera in
+stream mode, or 176x144 when stream mode is disabled.  It can display on TFT up to 176x144
 if stream mode is disabled, or 320x240 if enabled
 */
 // #define BUTTON
@@ -287,7 +287,7 @@ int main(void)
     slaveAddress = camera_get_slave_address();
     printf("Camera I2C slave address: %02x\n", slaveAddress);
 
-	// Obtain product ID of the camera.
+    // Obtain product ID of the camera.
     ret = camera_get_product_id(&id);
 
     if (ret != STATUS_OK) {
