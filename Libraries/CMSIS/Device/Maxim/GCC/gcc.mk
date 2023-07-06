@@ -50,6 +50,22 @@ OBJS_NOPATH += $(BINS_NOPATH:.bin=.o)
 OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
 OBJS        += $(PROJ_OBJS)
 
+# Detect target OS
+# Maintainer note: We use _OS because OS is defined in Windows environments
+ifeq "$(OS)" "Windows_NT"
+_OS = windows
+else
+
+UNAME_RESULT := $(shell uname -s)
+ifeq "$(UNAME_RESULT)" "Linux"
+_OS = linux
+endif
+ifeq "$(UNAME_RESULT)" "Darwin"
+_OS = macos
+endif
+
+endif
+
 ################################################################################
 # Goals
 
@@ -77,12 +93,22 @@ lib: ${BUILD_DIR}/${PROJECT}.a
 # The goal to create the target directory.
 .PHONY: mkbuildir
 mkbuildir:
+	@echo Creating build directory...
+ifneq "_OS" "windows"
 	@mkdir -p ${BUILD_DIR}
+else
+	@if not exist ${shell cygpath -w ${BUILD_DIR}} mkdir ${shell cygpath -w ${BUILD_DIR}}
+endif
 
 # The goal to clean out all the build products.
 .PHONY: clean
 clean:
+	@echo Cleaning build directory...
+ifneq "_OS" "windows"
 	@rm -rf ${BUILD_DIR} ${wildcard *~}
+else
+	@if exist $(shell cygpath -w $(BUILD_DIR)) rmdir /s /q $(shell cygpath -w $(BUILD_DIR))
+endif
 
 ${BUILD_DIR}/${PROJECT}.elf: ${LIBS} ${OBJS} ${LINKERFILE}
 ${BUILD_DIR}/${PROJECT}.a: ${OBJS}
