@@ -84,7 +84,7 @@ MSYS=True
 _OS = windows_msys
 endif
 
-else
+else # OS
 
 UNAME_RESULT := $(shell uname -s)
 ifeq "$(UNAME_RESULT)" "Linux"
@@ -123,7 +123,7 @@ lib: ${BUILD_DIR}/${PROJECT}.a
 # The goal to create the target directory.
 .PHONY: mkbuildir
 mkbuildir:
-	@echo MKDIR $(BUILD_DIR)
+	@echo -  MKDIR    $(BUILD_DIR)
 ifeq "$(_OS)" "windows"
 	@if not exist ${shell cygpath -w ${BUILD_DIR}} mkdir ${shell cygpath -w ${BUILD_DIR}}
 else
@@ -347,13 +347,13 @@ ifneq "${ECLIPSE}" ""
 	@echo ${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g'
 else
 ifneq "${VERBOSE}" ""
-	@echo ${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<})
+	@echo ${CC} ${CFLAGS} -o ${@} ${<}
 else
 	@echo -  CC    ${<}
 endif
 endif
 
-	@${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<})
+	@${CC} ${CFLAGS} -o ${@} ${<}
 
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
@@ -365,13 +365,13 @@ ifneq "${ECLIPSE}" ""
 	@echo ${CXX} ${CXXFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g'
 else
 ifneq "${VERBOSE}" ""
-	@echo ${CXX} ${CXXFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<})
+	@echo ${CXX} ${CXXFLAGS} -o ${@} ${<}
 else
 	@echo -  CXX    ${<}
 endif
 endif
 
-	@${CXX} ${CXXFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<})
+	@${CXX} ${CXXFLAGS} -o ${@} ${<}
 
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
@@ -380,12 +380,12 @@ endif
 # The rule for building the object file from each assembly source file.
 ${BUILD_DIR}/%.o: %.S $(PROJECTMK)
 ifneq "${VERBOSE}" ""
-	@echo ${CC} ${AFLAGS} -o $(call fixpath,${@}) -c $(call fixpath,${<})
+	@echo ${CC} ${AFLAGS} -o ${@} -c ${<}
 else
 	@echo -  AS    ${<}
 endif
 
-	@${CC} ${AFLAGS} -o $(call fixpath,${@}) -c $(call fixpath,${<})
+	@${CC} ${AFLAGS} -o ${@} -c ${<}
 
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
@@ -393,10 +393,10 @@ endif
 
 # The rule for creating an object library.
 ${BUILD_DIR}/%.a: $(PROJECTMK)
-	@echo -cr $(call fixpath,${@}) $(call fixpath,${^})                          \
+	@echo -cr ${@} ${^}                          \
 	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
 ifneq "$(VERBOSE)" ""
-	@echo ${AR} -cr $(call fixpath,${@}) $(call fixpath,${^})
+	@echo ${AR} -cr ${@} ${^}
 else
 	@echo -  AR    ${@}
 endif
@@ -408,14 +408,14 @@ ifneq "$(ECLIPSE)" ""
 else
 
 ifneq "$(VERBOSE)" ""
-	@echo ${STRIP} --strip-unneeded $(call fixpath,${@})
+	@echo ${STRIP} --strip-unneeded ${@}
 else
 	@echo -  STRIP ${@}
 endif # VERBOSE
 
 endif # ECLIPSE
 
-	@${STRIP} --strip-unneeded $(call fixpath,${@})
+	@${STRIP} --strip-unneeded ${@}
 
 endif # STRIP_LIBRARIES
 
@@ -427,13 +427,13 @@ endif # STRIP_LIBRARIES
 ${BUILD_DIR}/%.o: %.bin $(PROJECTMK)
 ifneq "$(VERBOSE)" ""
 	echo ${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section    \
-	    .data=.text $(call fixpath,${<}) $(call fixpath,${@})
+	    .data=.text ${<} ${@}
 else
 	echo -  CP    ${<}
 endif
 
 	@${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section            \
-	.data=.text $(call fixpath,${<}) $(call fixpath,${@})
+	.data=.text ${<} ${@}
 
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
@@ -441,25 +441,25 @@ endif
 
 # The rule for linking the application.
 ${BUILD_DIR}/%.elf: $(PROJECTMK)
-	@echo -T $(call fixpath,${LINKERFILE})                                       \
+	@echo -T ${LINKERFILE}                                       \
 	      --entry ${ENTRY}                                                       \
-	      $(call fixpath,${LDFLAGS})                                             \
-	      -o $(call fixpath,${@})                                                \
-	      $(call fixpath,$(filter %.o, ${^}))                                    \
+	      ${LDFLAGS}                                             \
+	      -o ${@}                                                \
+	      $(filter %.o, ${^})                                    \
 	      -Xlinker --start-group                                                 \
-	      $(call fixpath,$(filter %.a, ${^}))                                    \
+	      $(filter %.a, ${^})                                    \
 	      ${PROJ_LIBS}                                                           \
 	      ${STD_LIBS}                                                            \
 	      -Xlinker --end-group                                                   \
 	      | sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ln_args.txt
 ifneq "$(VERBOSE)" ""
-	@echo ${LD} -T $(call fixpath,${LINKERFILE})                          \
+	@echo ${LD} -T ${LINKERFILE}                          \
 	        --entry ${ENTRY}                                             \
-	        $(call fixpath,${LDFLAGS})                                   \
-	        -o $(call fixpath,${@})                                      \
-	        $(call fixpath,$(filter %.o, ${^}))                          \
+	        ${LDFLAGS}                                   \
+	        -o ${@}                                      \
+	        $(filter %.o, ${^})                          \
 	        -Xlinker --start-group                                       \
-	        $(call fixpath,$(filter %.a, ${^}))                          \
+	        $(filter %.a, ${^})                          \
 	        ${PROJ_LIBS}                                                 \
 	        ${STD_LIBS}                                                  \
 	        -Xlinker --end-group
@@ -472,42 +472,42 @@ endif
 # Create S-Record output file
 %.srec: %.elf
 ifneq "$(VERBOSE)" ""
-	@echo ${OBJCOPY} -O srec $(call fixpath,${<}) $(call fixpath,${@})
+	@echo ${OBJCOPY} -O srec ${<} ${@}
 else
 	@echo Creating ${@}
 endif
 
-	@$(OBJCOPY) -O srec $< $(call fixpath,${@})
+	@$(OBJCOPY) -O srec $< ${@}
 
 # Create Intex Hex output file
 %.hex: %.elf
 ifneq "$(VERBOSE)" ""
-	@echo ${OBJCOPY} -O ihex $(call fixpath,${<}) $(call fixpath,${@})
+	@echo ${OBJCOPY} -O ihex ${<} ${@}
 else
 	@echo Creating ${@}
 endif
 
-	@$(OBJCOPY) -O ihex $< $(call fixpath,${@})
+	@$(OBJCOPY) -O ihex $< ${@}
 
 # Create binary output file
 %.bin: %.elf
 ifneq "$(VERBOSE)" ""
-	@echo ${OBJCOPY} -O binary $(call fixpath,${<}) $(call fixpath,${@})
+	@echo ${OBJCOPY} -O binary ${<} ${@}
 else
 	@echo Creating ${@}
 endif
 
-	@$(OBJCOPY) -O binary $< $(call fixpath,${@})
+	@$(OBJCOPY) -O binary $< ${@}
 
 # Create disassembly file
 %.dasm: %.elf
 ifneq "$(VERBOSE)" ""
-	@echo $(OBJDUMP) -S $(call fixpath,${<}) $(call fixpath,${@})
+	@echo $(OBJDUMP) -S ${<} ${@}
 else
 	@echo Creating ${@}
 endif
 
-	@$(OBJDUMP) -S $< > $(call fixpath,${@})
+	@$(OBJDUMP) -S $< > ${@}
 
 ################################################################################
 .PHONY: debug
