@@ -82,8 +82,8 @@
 #error "You must select either USE_BUTTON or USE_ALARM, not both."
 #endif
 
-#if (DO_BACKUP && DO_STORAGE)
-#error "You must select either DO_BACKUP or DO_STORAGE or neither, not both."
+#if (DO_BACKUP && DO_STANDBY)
+#error "You must select either DO_BACKUP or DO_STANDBY or neither, not both."
 #endif
 
 #if USE_CONSOLE

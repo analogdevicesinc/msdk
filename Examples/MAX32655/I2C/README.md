@@ -1,7 +1,12 @@
 ## Description
 
-This example uses the I2C Master to read/write from/to the I2C Slave. 
+This is a basic getting started example for the I2C. 
 
+In this example, one I2C block is configured in master mode and another is configured in slave mode.
+
+The example will proceed as follows. The master and slave will each fill of their transmit buffers with identical data. The master will then transmit all data in it's transmit buffer to the slave. Next, the master will issue a repeated start and read request, and clock out all data bytes from the slave's transmit buffer. Once the entire transaction is complete the data received from the slave is compared against the master's transmit FIFO to ensure the master received the data successfully.
+
+NOTE: This example is not supported by the MAX32655FTHR kit due to a lack of exposed I2C ports.
 
 ## Software
 
@@ -11,20 +16,15 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
+* NOTE: This project comes pre-configured for the MAX32655EVKIT.  It is not supported by the MAX32655FTHR kit.
 
-## Setup
-
-### Required Connections
-If using the Standard EV Kit (EvKit_V1):
+## Required Connections
+If using the MAX32655EVKIT (EvKit_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   You must connect P0.10 to P0.16 (SCL) and P0.11 to P0.17 (SCL).
 -   You must also connect the pull-up jumpers (JP21 and JP22) to the proper I/O voltage.
-
-If using the Featherboard (FTHR\_Apps\_P1):
--   Only one I2C instance available. Example not supported.
 
 ## Expected Output
 

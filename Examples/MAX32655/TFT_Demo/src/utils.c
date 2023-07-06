@@ -43,12 +43,13 @@
 /************************   PUBLIC FUNCTIONS  *******************************/
 unsigned int utils_get_time_ms(void)
 {
-    uint32_t sec;
-    uint32_t subsec;
-    uint32_t ms;
+    uint32_t sec, ssec;
+    double subsec;
+    unsigned int ms;
 
-    MXC_RTC_GetSubSeconds(&subsec);
-    subsec /= 4096;
+    MXC_RTC_GetSubSeconds(&ssec);
+    subsec = ssec / 4096.0;
+
     MXC_RTC_GetSeconds(&sec);
 
     ms = (sec * 1000) + (subsec * 1000);

@@ -137,6 +137,8 @@ int ext_flash_init(void)
         printf("Erase failed with error: %d", err);
     }
 
+    Ext_Flash_Quad(1);
+
     return err;
 }
 
@@ -264,6 +266,8 @@ int main()
     printf("\nPlayback starting.\n");
     playback_audio(eor_addr); // Playback audio recording
     printf("Playback ended.\n");
+
+    MXC_I2S_Shutdown();
 
     return E_NO_ERROR;
 }

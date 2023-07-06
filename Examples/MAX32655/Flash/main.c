@@ -54,6 +54,7 @@
 #include "pb.h"
 
 /***** Definitions *****/
+#define WORDS_PER_FLASH_PG (MXC_FLASH_PAGE_SIZE / 4)
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
 /*
     ^ Points to last page in flash, which is guaranteed to be unused by this small example.
@@ -205,7 +206,7 @@ int erase_magic()
         Therefore, the entire page must be buffered, erased, then modified.
     */
     int err;
-    uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = {
+    uint32_t buffer[WORDS_PER_FLASH_PG] = {
         0xFFFFFFFF
     }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
 
