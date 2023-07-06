@@ -125,7 +125,9 @@ lib: ${BUILD_DIR}/${PROJECT}.a
 mkbuildir:
 	@echo -  MKDIR $(BUILD_DIR)
 ifeq "$(_OS)" "windows"
-	@if not exist ${shell cygpath -w ${BUILD_DIR}} mkdir ${shell cygpath -w ${BUILD_DIR}}
+# Make run on native Windows will yield C:/-like paths, but the mkdir commands needs
+# paths with backslashes.
+	@if not exist ${subst /,\,${BUILD_DIR}} mkdir ${subst /,\,${BUILD_DIR}}
 else
 	@mkdir -p ${BUILD_DIR}
 endif
@@ -137,7 +139,7 @@ clean:
 ifneq "$(_OS)" "windows"
 	@rm -rf ${BUILD_DIR} ${wildcard *~}
 else
-	@if exist $(shell cygpath -w $(BUILD_DIR)) rmdir /s /q $(shell cygpath -w $(BUILD_DIR))
+	@if exist ${subst /,\,${BUILD_DIR}} rmdir /s /q ${subst /,\,${BUILD_DIR}}
 endif
 
 ${BUILD_DIR}/${PROJECT}.elf: ${LIBS} ${OBJS} ${LINKERFILE}
@@ -393,8 +395,13 @@ endif
 
 # The rule for creating an object library.
 ${BUILD_DIR}/%.a: $(PROJECTMK)
+ifeq "$(_OS)" "windows_msys"
 	@echo -cr ${@} ${^}                          \
 	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
+else
+	@echo -cr ${@} ${^} > ${BUILD_DIR}/ar_args.txt
+endif
+
 ifneq "$(VERBOSE)" ""
 	@echo ${AR} -cr ${@} ${^}
 else
@@ -579,7 +586,7 @@ $(BUILD_DIR)/project_defines.h: mkbuildir
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
 	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(CFLAGS) >> $@
 ifeq "$(_OS)" "windows"
-	@del $(shell cygpath -w $(BUILD_DIR)/_empty_tmp_file.c)
+	@del ${subst /,\,${BUILD_DIR}/_empty_tmp_file.c}
 	@del _empty_tmp_file.d
 else
 	@rm $(BUILD_DIR)/_empty_tmp_file.c
