@@ -183,7 +183,8 @@ static lightCb_t lightCb;
 /*************************************************************************************************/
 static void lightBtnCback(uint8_t btnId, PalBtnPos_t state)
 {
-    // APP_TRACE_INFO0("BTN Pressed");
+    APP_TRACE_INFO0("BTN Pressed");
+    
     /* Only alert application of button press and not release. */
     if ((btnId < LIGHT_BUTTON_MAX) && (state == PAL_BTN_POS_DOWN)) {
         lightCb.newBtnStates |= 1 << btnId;
@@ -206,7 +207,7 @@ static void lightDmCback(dmEvt_t *pDmEvt)
     dmEvt_t *pMsg;
     uint16_t len;
 
-    // APP_TRACE_INFO0("Light DM CBACK");
+    APP_TRACE_INFO0("Light DM CBACK");
 
     len = DmSizeOfEvt(pDmEvt);
 
@@ -230,7 +231,7 @@ static void lightCccCback(attsCccEvt_t *pEvt)
     attsCccEvt_t *pMsg;
     appDbHdl_t dbHdl;
 
-    // APP_TRACE_INFO0("ATTS CBACK");
+    APP_TRACE_INFO0("ATTS CBACK");
 
     /* If CCC not set from initialization and there's a device record. */
     if ((pEvt->handle != ATT_HANDLE_NONE) &&
@@ -401,7 +402,6 @@ static void lightProcMeshPrvSrMsg(const meshPrvSrEvt_t *pMsg)
 
         /* Start Node. */
         MeshStartNode();
-        
 
         if (MeshIsGattProxyEnabled()) {
             APP_TRACE_INFO0("Gatt Proxy Enabled Still!");
@@ -440,6 +440,8 @@ static void lightProcMeshPrvSrMsg(const meshPrvSrEvt_t *pMsg)
 /*************************************************************************************************/
 static void lightProcMeshCfgMdlSrMsg(const meshCfgMdlSrEvt_t *pEvt)
 {
+    APP_TRACE_INFO0("Identifying");
+
     switch (pEvt->hdr.param) {
     case MESH_CFG_MDL_GATT_PROXY_SET_EVENT:
 
@@ -617,6 +619,7 @@ static void lightProcMeshCoreMsg(meshEvt_t *pMsg)
 
                 /* Start advertising with node identity on the primary subnet. */
                 MeshProxySrGetServiceData(lightCb.netKeyIndexAdv, MESH_PROXY_NODE_IDENTITY_TYPE);
+                GattBearerSrSetPrxSvcData("MESH",5);
 
                 lightCb.nodeIdentityRunning = TRUE;
             }
@@ -914,14 +917,13 @@ static void lightSetup(void)
 {
     static bool_t setupComplete = FALSE;
 
-    /* This function is called once. */
+    // /* This function is called once. */
     if (setupComplete) {
         return;
     }
 
     /* Check if device is provisioned. */
     if (MeshIsProvisioned()) {
-        /* Start Node. */
         MeshStartNode();
 
         /* Register the Mesh Proxy Service. */
@@ -938,14 +940,18 @@ static void lightSetup(void)
 
         /* Register GATT Bearer callback */
         MeshRegisterGattProxyPduSendCback(MprxsSendDataOut);
+
         if (MeshIsGattProxyEnabled()) {
             lightCb.netKeyIndexAdv = 0xFFFF;
             lightCb.proxyFeatEnabled = TRUE;
 
             /* Enable bearer slot */
+            GattBearerSrSetPrxSvcData("MESH",5);
             AppBearerEnableSlot(BR_GATT_SLOT);
-        } else {
-            APP_TRACE_INFO0("GATT Proxy disabled");
+            // MeshAddAdvIf(LIGHT_ADV_IF_ID);
+        }
+        else{
+            APP_TRACE_INFO0("Gatt Prox");
         }
 
     } else {
@@ -963,6 +969,9 @@ static void lightSetup(void)
         /* Add the Mesh Prov Service. */
         SvcMprvsAddGroup();
 
+        SvcMprxsRegister(MprxsWriteCback);
+        SvcMprxsAddGroup();
+
         /* Register Mesh Provisioning Service CCC. */
         AttsCccRegister(LIGHT_NUM_CCC_IDX, (attsCccSet_t *)lightPrvCccSet, lightCccCback);
 
@@ -974,6 +983,7 @@ static void lightSetup(void)
 
         /* Set ADV data for an unprovisioned node. */
         GattBearerSrSetPrvSvcData(pMeshPrvSrCfg->devUuid, lightPrvSrUpdInfo.oobInfoSrc);
+        // GattBearerSrSetPrxSvcData("MESH",5);
 
         /* Enable bearer slot. */
         /* TODO Enable Proxy Bearer */
@@ -989,12 +999,12 @@ static void lightSetup(void)
         }
 
         // /* Enter provisioning. */
-        // MeshPrvSrEnterPbAdvProvisioningMode(LIGHT_ADV_IF_ID, 10000);
+        // MeshPrvSrEnterPbAdvProvisioningMode(LIGHT_ADV_IF_ID, 500);
 
         // /* Provisioning started. */
-        // lightCb.prvSrStarted = TRUE;
+        lightCb.prvSrStarted = TRUE;
 
-        // LIGHT_PRINT0("prvsr_ind prv_started" LIGHT_NEWLINE);
+        LIGHT_PRINT0("prvsr_ind prv_started" LIGHT_NEWLINE);
     }
 
     setupComplete = TRUE;
@@ -1182,7 +1192,6 @@ void LightStart(void)
     /* TODO Schedule GATT bearer. */
     AppBearerScheduleSlot(BR_GATT_SLOT, GattBearerSrStart, GattBearerSrStop, GattBearerSrProcDmMsg,
                           500);
-
     /* Register ADV Bearer callback. */
     MeshRegisterAdvIfPduSendCback(AdvBearerSendPacket);
 

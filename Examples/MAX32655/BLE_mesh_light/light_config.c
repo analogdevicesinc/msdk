@@ -93,15 +93,13 @@ static meshMemoryConfig_t lightMeshMemConfig = {
 };
 
 /*! Mesh Provisioning Server Capabilities */
-static const meshPrvCapabilities_t lightPrvSrCapabilities = { LIGHT_ELEMENT_COUNT,
-                                                              MESH_PRV_ALGO_FIPS_P256_ELLIPTIC_CURVE,
-                                                              0,
-                                                              // MESH_PRV_PUB_KEY_OOB,
-                                                              MESH_PRV_STATIC_OOB_INFO_AVAILABLE,
-                                                              MESH_PRV_OUTPUT_OOB_NOT_SUPPORTED,
-                                                              MESH_PRV_OUTPUT_OOB_ACTION_BLINK,
-                                                              MESH_PRV_INPUT_OOB_NOT_SUPPORTED,
-                                                              MESH_PRV_INPUT_OOB_ACTION_PUSH };
+static const meshPrvCapabilities_t lightPrvSrCapabilities = {
+    LIGHT_ELEMENT_COUNT, MESH_PRV_ALGO_FIPS_P256_ELLIPTIC_CURVE, 0,
+    // MESH_PRV_PUB_KEY_OOB,
+    MESH_PRV_STATIC_OOB_INFO_AVAILABLE, MESH_PRV_OUTPUT_OOB_NOT_SUPPORTED,
+    MESH_PRV_OUTPUT_OOB_ACTION_BLINK, MESH_PRV_INPUT_OOB_NOT_SUPPORTED,
+    MESH_PRV_INPUT_OOB_ACTION_PUSH
+};
 
 /*! Mesh Provisioning Server Static OOB data */
 static uint8_t lightPrvSrStaticOobData[MESH_PRV_STATIC_OOB_SIZE] = {
@@ -418,35 +416,21 @@ const meshElement_t lightElements[LIGHT_ELEMENT_COUNT] = {
 
 /*! Mesh Provisioning Server configuration parameters*/
 meshPrvSrCfg_t lightMeshPrvSrCfg = {
-    { 0 }, /*!< Device UUID.  */
+    { 0x1, 0x2, 0x3, 0x4, 0x5, 0x6, 0x7, 0x8, 0x9, 0xA, 0xB, 0xC, 0xD, 0xE, 0xF }, /*!< Device UUID.  */
     1000, /*!< Provisioning Bearer advertising interval */
     0, /*!< Provisioning Bearer ADV interface ID */
-    FALSE, /*!< Auto-restart Provisioning */
+    TRUE, /*!< Auto-restart Provisioning */
 };
-
-static const uint8_t EccKeysX[32] = { 0x00, 0x1,  0x2,  0x3, 0x00, 0x1,  0x2,  0x3, 0x00, 0x1,  0x2,
-                                      0x3,  0x00, 0x1,  0x2, 0x3,  0x00, 0x1,  0x2, 0x3,  0x00, 0x1,
-                                      0x2,  0x3,  0x00, 0x1, 0x2,  0x3,  0x00, 0x1, 0x2,  0x3 };
-static const uint8_t EccKeysY[32] = { 0x00, 0x1,  0x2,  0x3, 0x00, 0x1,  0x2,  0x3, 0x00, 0x1,  0x2,
-                                      0x3,  0x00, 0x1,  0x2, 0x3,  0x00, 0x1,  0x2, 0x3,  0x00, 0x1,
-                                      0x2,  0x3,  0x00, 0x1, 0x2,  0x3,  0x00, 0x1, 0x2,  0x3 };
-static const uint8_t EccKeysPriv[32] = { 0x00, 0x1, 0x2, 0x3, 0x00, 0x1, 0x2, 0x3,
-                                         0x00, 0x1, 0x2, 0x3, 0x00, 0x1, 0x2, 0x3,
-                                         0x00, 0x1, 0x2, 0x3, 0x00, 0x1, 0x2, 0x3,
-                                         0x00, 0x1, 0x2, 0x3, 0x00, 0x1, 0x2, 0x3 };
 
 /*! Mesh Unprovisioned Device info */
 meshPrvSrUnprovisionedDeviceInfo_t lightPrvSrUpdInfo = {
-    &lightPrvSrCapabilities,
-    lightMeshPrvSrCfg.devUuid,
-    MESH_PRV_OOB_INFO_OTHER,
-    lightPrvSrStaticOobData,
-    MESH_PRV_URI_DATA_LEN,
-  //   lightPrvSrUriData,
-    
-  //   .pAppOobEccKeys = { EccKeysX, EccKeysY, EccKeysPriv
+    &lightPrvSrCapabilities, lightMeshPrvSrCfg.devUuid, MESH_PRV_OOB_INFO_OTHER,
+    lightPrvSrStaticOobData, MESH_PRV_URI_DATA_LEN,
+    //   lightPrvSrUriData,
 
-  // },
+    //   .pAppOobEccKeys = { EccKeysX, EccKeysY, EccKeysPriv
+
+    // },
     NULL
 };
 

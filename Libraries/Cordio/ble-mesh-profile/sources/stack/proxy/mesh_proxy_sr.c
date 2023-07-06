@@ -524,6 +524,10 @@ void MeshProxySrInit(void)
   {
     MeshLocalCfgSetGattProxyState(MESH_GATT_PROXY_FEATURE_DISABLED);
   }
+  else
+  {
+    MeshLocalCfgSetGattProxyState(MESH_GATT_PROXY_FEATURE_ENABLED);
+  }
 
   /* Set Node Identity state to stopped for all subnets. */
   while (MeshLocalCfgGetNextNetKeyIndex(&keyIndex, &indexer) == MESH_SUCCESS)
