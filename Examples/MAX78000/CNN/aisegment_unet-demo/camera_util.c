@@ -97,7 +97,7 @@ int initialize_camera(void)
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA,
                        dma_channel); // RGB888 with 0 at MSB stream
 #else
-	ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
                        dma_channel);
 #endif
 
@@ -142,7 +142,6 @@ void load_row_cnn(uint8_t *data, int row)
         uint32_t w;
         uint8_t b[4];
     } m;
-
 
     offset0 = 0x00002000;
     offset1 = 0x00002000;
@@ -203,29 +202,29 @@ void load_row_cnn(uint8_t *data, int row)
         addr -= subtract;
 #elif defined(RGB565)
         // RGB565 to packed 24-bit RGB
-        m.b[0] = (*data & 0xF8);  // Red
-        m.b[1] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
-        m.b[2] = (*(data+1) << 3);  // Blue
+        m.b[0] = (*data & 0xF8); // Red
+        m.b[1] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
+        m.b[2] = (*(data + 1) << 3); // Blue
         data += 2;
-        m.b[3] = (*data & 0xF8);  // Red
+        m.b[3] = (*data & 0xF8); // Red
 
         *addr = m.w ^ 0x80808080U;
         addr += offset0;
 
-        m.b[0] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
-        m.b[1] = (*(data+1) << 3);  // Blue
+        m.b[0] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
+        m.b[1] = (*(data + 1) << 3); // Blue
         data += 2;
-        m.b[2] = (*data & 0xF8);  // Red
-        m.b[3] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
+        m.b[2] = (*data & 0xF8); // Red
+        m.b[3] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
 
         *addr = m.w ^ 0x80808080U;
         addr += offset1;
 
-        m.b[0] = (*(data+1) << 3);  // Blue
+        m.b[0] = (*(data + 1) << 3); // Blue
         data += 2;
-        m.b[1] = (*data & 0xF8);  // Red
-        m.b[2] = (*data << 5) | ((*(data+1) & 0xE0) >> 3);  // Green
-        m.b[3] = (*(data+1) << 3);  // Blue
+        m.b[1] = (*data & 0xF8); // Red
+        m.b[2] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
+        m.b[3] = (*(data + 1) << 3); // Blue
         data += 2;
 
         *addr = m.w ^ 0x80808080U;
@@ -395,7 +394,6 @@ void display_camera(void)
 
     uint8_t *raw;
 
-
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
 
@@ -428,7 +426,7 @@ void display_camera(void)
 #endif
 #ifdef BOARD_EVKIT_V1
 
-            for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
+                for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
 #endif
                     r = data[k];
                     g = data[k + 1];
@@ -437,24 +435,23 @@ void display_camera(void)
                     rgb = ((r & 0b11111000) << 8) | ((g & 0b11111100) << 3) | (b >> 3);
                     data565[j++] = (rgb >> 8) & 0xFF;
                     data565[j++] = rgb & 0xFF;
-             }
-             MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
+                }
+                MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
 #else
 
 #ifdef BOARD_EVKIT_V1
             int j = 0;
             for (int k = 2 * w - 1; k > 0; k -= 2) { // reverse order to display
 
-                    data565[j++] =  data[k+1];
-                    data565[j++] =  data[k];
-             }
-             MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
+                data565[j++] = data[k + 1];
+                data565[j++] = data[k];
+            }
+            MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
 #else
-             MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data, w, 1);
+            MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data, w, 1);
 #endif
 
 #endif
-
             }
 
             LED_Toggle(LED2);
@@ -471,69 +468,69 @@ void display_camera(void)
         }
     }
 
-static uint32_t sum = 0;
-void dump_cnn(void)
-{
-	uint32_t *data_addr[12] = { (uint32_t *)0x50400700, (uint32_t *)0x50408700,
-								(uint32_t *)0x50410700, (uint32_t *)0x50418700,
-								(uint32_t *)0x50800700, (uint32_t *)0x50808700,
-								(uint32_t *)0x50810700, (uint32_t *)0x50818700,
-								(uint32_t *)0x50c00700, (uint32_t *)0x50c08700,
-								(uint32_t *)0x50c10700, (uint32_t *)0x50c18700 };
+    static uint32_t sum = 0;
+    void dump_cnn(void)
+    {
+        uint32_t *data_addr[12] = { (uint32_t *)0x50400700, (uint32_t *)0x50408700,
+                                    (uint32_t *)0x50410700, (uint32_t *)0x50418700,
+                                    (uint32_t *)0x50800700, (uint32_t *)0x50808700,
+                                    (uint32_t *)0x50810700, (uint32_t *)0x50818700,
+                                    (uint32_t *)0x50c00700, (uint32_t *)0x50c08700,
+                                    (uint32_t *)0x50c10700, (uint32_t *)0x50c18700 };
 
-	printf("\nDUMPING CNN, press PB0 \n");
+        printf("\nDUMPING CNN, press PB0 \n");
 
-	while (!PB_Get(0)) {}
+        while (!PB_Get(0)) {}
 
-	for (int i = 0; i < 12; i++) {
-		for (int j = 0; j < 7744; j += 16) {
-			printf("\n%08X: ", data_addr[i]);
+        for (int i = 0; i < 12; i++) {
+            for (int j = 0; j < 7744; j += 16) {
+                printf("\n%08X: ", data_addr[i]);
 
-			for (int k = 0; k < 16; k++) {
-				printf("%08X ", *data_addr[i]);
-				sum += *data_addr[i];
-				data_addr[i]++;
-			}
-		}
+                for (int k = 0; k < 16; k++) {
+                    printf("%08X ", *data_addr[i]);
+                    sum += *data_addr[i];
+                    data_addr[i]++;
+                }
+            }
 
-		printf("\n");
-	}
+            printf("\n");
+        }
 
-	printf("SUM: %08X \n", sum);
+        printf("SUM: %08X \n", sum);
 
-	while (1) {}
-}
+        while (1) {}
+    }
 
-void dump_inference(void)
-{
-	uint32_t *data_addr[16] = {
-		(uint32_t *)0x50400000, (uint32_t *)0x50408000, (uint32_t *)0x50410000,
-		(uint32_t *)0x50418000, (uint32_t *)0x50800000, (uint32_t *)0x50808000,
-		(uint32_t *)0x50810000, (uint32_t *)0x50818000, (uint32_t *)0x50c00000,
-		(uint32_t *)0x50c08000, (uint32_t *)0x50c10000, (uint32_t *)0x50c18000,
-		(uint32_t *)0x51000000, (uint32_t *)0x51008000, (uint32_t *)0x51010000,
-		(uint32_t *)0x51018000,
-	};
+    void dump_inference(void)
+    {
+        uint32_t *data_addr[16] = {
+            (uint32_t *)0x50400000, (uint32_t *)0x50408000, (uint32_t *)0x50410000,
+            (uint32_t *)0x50418000, (uint32_t *)0x50800000, (uint32_t *)0x50808000,
+            (uint32_t *)0x50810000, (uint32_t *)0x50818000, (uint32_t *)0x50c00000,
+            (uint32_t *)0x50c08000, (uint32_t *)0x50c10000, (uint32_t *)0x50c18000,
+            (uint32_t *)0x51000000, (uint32_t *)0x51008000, (uint32_t *)0x51010000,
+            (uint32_t *)0x51018000,
+        };
 
-	printf("\nDUMPING INFERENCE, press PB0 \n");
+        printf("\nDUMPING INFERENCE, press PB0 \n");
 
-	while (!PB_Get(0)) {}
+        while (!PB_Get(0)) {}
 
-	for (int i = 0; i < 16; i++) {
-		for (int j = 0; j < 7744; j += 16) {
-			printf("\n%08X: ", data_addr[i]);
+        for (int i = 0; i < 16; i++) {
+            for (int j = 0; j < 7744; j += 16) {
+                printf("\n%08X: ", data_addr[i]);
 
-			for (int k = 0; k < 16; k++) {
-				printf("%08X ", *data_addr[i]);
-				sum += *data_addr[i];
-				data_addr[i]++;
-			}
-		}
+                for (int k = 0; k < 16; k++) {
+                    printf("%08X ", *data_addr[i]);
+                    sum += *data_addr[i];
+                    data_addr[i]++;
+                }
+            }
 
-		printf("\n");
-	}
+            printf("\n");
+        }
 
-	printf("SUM: %08X \n", sum);
+        printf("SUM: %08X \n", sum);
 
-	while (1) {}
-}
+        while (1) {}
+    }
