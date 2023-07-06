@@ -52,6 +52,7 @@ extern "C" {
 /**
  * @defgroup adc ADC
  * @ingroup periphlibs
+ * @details API for Analog to Digital Converter (ADC).
  * @{
  */
 
@@ -180,6 +181,9 @@ typedef enum {
 ///< Callback used when a conversion event is complete
 typedef void (*mxc_adc_complete_cb_t)(void *req, int error);
 
+/**
+ * @brief  ADC Settings
+ */
 typedef struct {
     mxc_adc_clock_t clock; ///< clock to use
     mxc_adc_clkdiv_t clkdiv; ///< clock divider
@@ -272,10 +276,10 @@ int MXC_ADC_StartConversionAsync(mxc_adc_complete_cb_t callback);
 
 /**
  * @brief   Perform a conversion on a specific channel using a DMA transfer
- * @note    DMA channel must be acquired using \ref MXC_DMA_AcquireChannel
- *          and should be passed via req input struct.
- *          DMA Interrupt should be enabled using \ref NVIC_EnableIRQ and the
- *          correct DMA IRQ must be enabled using \ref MXC_NVIC_SetVector by the user.
+ * @note    DMA channel must be acquired using \ref MXC_DMA_AcquireChannel and should
+ *          be passed to this function via "dma_channel" member of "req" input struct.
+ *          DMA IRQ corresponding to that channel must be enabled using \ref MXC_NVIC_SetVector,
+ *          and the \ref MXC_DMA_Handler should be called from the respective ISR.
  *
  * @param   req \ref mxc_adc_conversion_req_t
  * @param   pointer to the variable to hold the conversion result
