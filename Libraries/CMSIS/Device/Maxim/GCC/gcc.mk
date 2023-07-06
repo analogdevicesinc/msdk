@@ -123,7 +123,7 @@ lib: ${BUILD_DIR}/${PROJECT}.a
 # The goal to create the target directory.
 .PHONY: mkbuildir
 mkbuildir:
-	@echo -  MKDIR    $(BUILD_DIR)
+	@echo -  MKDIR $(BUILD_DIR)
 ifeq "$(_OS)" "windows"
 	@if not exist ${shell cygpath -w ${BUILD_DIR}} mkdir ${shell cygpath -w ${BUILD_DIR}}
 else
@@ -133,7 +133,7 @@ endif
 # The goal to clean out all the build products.
 .PHONY: clean
 clean:
-	@echo RMDIR $(BUILD_DIR)
+	@echo -  RMDIR $(BUILD_DIR)
 ifneq "$(_OS)" "windows"
 	@rm -rf ${BUILD_DIR} ${wildcard *~}
 else
