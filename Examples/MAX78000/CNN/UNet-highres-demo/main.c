@@ -42,6 +42,7 @@
 #include "cnn.h"
 #include "mxc_delay.h"
 #include "led.h"
+#include "rtc.h"
 #include "camera.h"
 #include "camera_util.h"
 #ifdef BOARD_EVKIT_V1
@@ -73,6 +74,9 @@ volatile uint32_t cnn_time; // Stopwatch
 uint32_t cnn_out_packed[INFER_SIZE / 4];
 uint8_t cnn_out_unfolded[INFER_SIZE];
 
+extern uint8_t data565[IMAGE_XRES * 2];
+extern uint8_t *data;
+extern stream_stat_t *stat;
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
@@ -167,6 +171,20 @@ static void console_uart_send_bytes(uint8_t *ptr, int length)
         console_uart_send_byte(ptr[i]);
         //printf("%d\n", ptr[i]);
     }
+}
+
+uint32_t utils_get_time_ms(void)
+{
+    uint32_t sec, ssec;
+    double subsec;
+    uint32_t ms;
+    MXC_RTC_GetSubSeconds(&ssec);
+    subsec = ssec / 4096.0;
+    MXC_RTC_GetSeconds(&sec);
+
+    ms = (sec * 1000) + (int)(subsec * 1000);
+
+    return ms;
 }
 
 void load_input_serial(void)
@@ -478,87 +496,6 @@ void cnn_unload_packed(uint32_t *p_out)
         }
     }
 }
-
-void write_TFT_pixel(int row, int col, unsigned char value)
-{
-    int color;
-    uint8_t r, g, b;
-
-    // Only display mask in TFT limits
-    if ((col >= TFT_W) || (row >= TFT_H)) {
-        return;
-    }
-
-    r = 0;
-    g = 0;
-    b = 0;
-
-    //set mask color
-    if (value == 1) {
-        g = 255; // Green
-    } else if (value == 2) {
-        b = 255; // Blue
-    } else if (value == 3) {
-        r = 255; // Red
-    }
-
-#ifdef BOARD_EVKIT_V1
-    color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
-#endif
-#ifdef BOARD_FTHR_REVA
-    color = RGB(r, g, b); // convert to RGB565
-#endif
-    MXC_TFT_WritePixel(col, row, 1, 1, color);
-}
-
-void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
-{
-    int index = 0;
-    unsigned char temp[4];
-
-    for (int r = 0; r < 88; r++) {
-        for (int c = 0; c < 16; c++) {
-            int idx = 22 * r + 88 * 22 * c;
-
-            for (int d = 0; d < 22; d++) {
-                out_buff[index + d] = in_buff[idx + d];
-            }
-
-            index += 22;
-        }
-    }
-
-    for (int s1 = 0; s1 < 352; s1++) {
-        for (int s2 = 0; s2 < 22; s2++) {
-            temp[0] = out_buff[s1 * 88 + s2 + 00];
-            temp[1] = out_buff[s1 * 88 + s2 + 22];
-            temp[2] = out_buff[s1 * 88 + s2 + 44];
-            temp[3] = out_buff[s1 * 88 + s2 + 66];
-
-            // bit manipulations to place each 2 bits into a byte
-            write_TFT_pixel(s1, (0 + 16 * s2), (temp[0] & 0xc0) >> 6);
-            write_TFT_pixel(s1, (1 + 16 * s2), (temp[1] & 0xc0) >> 6);
-            write_TFT_pixel(s1, (2 + 16 * s2), (temp[2] & 0xc0) >> 6);
-            write_TFT_pixel(s1, (3 + 16 * s2), (temp[3] & 0xc0) >> 6);
-
-            write_TFT_pixel(s1, (4 + 16 * s2), (temp[0] & 0x30) >> 4);
-            write_TFT_pixel(s1, (5 + 16 * s2), (temp[1] & 0x30) >> 4);
-            write_TFT_pixel(s1, (6 + 16 * s2), (temp[2] & 0x30) >> 4);
-            write_TFT_pixel(s1, (7 + 16 * s2), (temp[3] & 0x30) >> 4);
-
-            write_TFT_pixel(s1, (8 + 16 * s2), (temp[0] & 0x0c) >> 2);
-            write_TFT_pixel(s1, (9 + 16 * s2), (temp[1] & 0x0c) >> 2);
-            write_TFT_pixel(s1, (10 + 16 * s2), (temp[2] & 0x0c) >> 2);
-            write_TFT_pixel(s1, (11 + 16 * s2), (temp[3] & 0x0c) >> 2);
-
-            write_TFT_pixel(s1, (12 + 16 * s2), (temp[0] & 0x03) >> 0);
-            write_TFT_pixel(s1, (13 + 16 * s2), (temp[1] & 0x03) >> 0);
-            write_TFT_pixel(s1, (14 + 16 * s2), (temp[2] & 0x03) >> 0);
-            write_TFT_pixel(s1, (15 + 16 * s2), (temp[3] & 0x03) >> 0);
-        }
-    }
-}
-
 // define mask colors in RGB565
 #define R 0x00F8U
 #define G 0xE007U
@@ -676,6 +613,9 @@ int main(void)
 {
     char buff[TFT_BUFF_SIZE];
 
+    /* Get current time */
+    static uint32_t t1, t2, t3, t4, t5, t6;
+
 #if defined(BOARD_FTHR_REVA)
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
     MXC_Delay(200000);
@@ -694,9 +634,12 @@ int main(void)
     // Initialize UART
     console_UART_init(CON_BAUD);
 
+    // Initialize RTC
+    MXC_RTC_Init(0, 0);
+    MXC_RTC_Start();
+
 #ifdef USE_CAMERA
     initialize_camera();
-    //run_camera();
 #else
     printf("Start SerialLoader.py script...\n");
 #endif
@@ -715,11 +658,11 @@ int main(void)
     memset(buff, 32, TFT_BUFF_SIZE);
     TFT_Print(buff, 55, 30, font, snprintf(buff, sizeof(buff), "ANALOG DEVICES             "));
     TFT_Print(buff, 15, 50, font, snprintf(buff, sizeof(buff), "U-Net Hi-Resolution Demo      "));
-    TFT_Print(buff, 120, 90, font, snprintf(buff, sizeof(buff), "Ver. 1.0.0                   "));
+    TFT_Print(buff, 120, 90, font, snprintf(buff, sizeof(buff), "Ver. 1.1.0                   "));
     TFT_Print(buff, 55, 130, font,
               snprintf(buff, sizeof(buff), "Building(Red), Sky(Blue)          "));
     TFT_Print(buff, 5, 170, font, snprintf(buff, sizeof(buff), "Foliage(Green), Unknown(Black)  "));
-    MXC_Delay(SEC(3));
+    MXC_Delay(SEC(2));
 
     // Enable peripheral, enable CNN interrupt, turn on CNN clock
     // CNN clock: 50 MHz div 1
@@ -729,58 +672,66 @@ int main(void)
     cnn_load_weights(); // Load kernels
     cnn_load_bias();
     cnn_configure(); // Configure state machine
-
 #ifdef USE_CAMERA
     // Start getting images from camera and processing them
     printf("Start capturing\n");
+    camera_write_reg(0x11, 0x1);
     camera_start_capture_image();
 #endif
 
     while (1) {
         LED_Toggle(LED1);
 
+        t1 = utils_get_time_ms();
+
 #ifndef USE_CAMERA
         load_input_serial(); // Load data input from serial port
 #else
         load_input_camera(); // Load data input from camera
+#ifndef BOARD_FTHR_REVA
+        camera_write_reg(0x11, 0x8); // make camera prescaller slower for TFT
+#else
+        camera_write_reg(0x11, 0xB); // make camera prescaller slower for TFT
 #endif
-
-#ifdef PATTERN_GEN
-        //dump_cnn();
-#endif
-
-        // start inference
-#ifdef USE_CAMERA
         camera_start_capture_image(); // next frame
 #endif
+
+        t2 = utils_get_time_ms();
+
         cnn_start(); // Start CNN processing
 
+#if 1 // enable to display the original image
 #ifdef USE_CAMERA
         printf("Display image\n");
         display_camera();
-        MXC_Delay(SEC(1));
+        camera_write_reg(0x11, 0x0); // make camera prescaller faster for CNN load
 #endif
-
+#endif
+        t3 = utils_get_time_ms();
         SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
 
         while (cnn_time == 0) {
             __WFI(); // Wait for CNN
         }
 
+        t4 = utils_get_time_ms();
+
         // unload
         //dump_inference();
+        cnn_unload_packed(cnn_out_packed);
+
+        t5 = utils_get_time_ms();
 
         printf("Display mask\n");
-        cnn_unload_packed(cnn_out_packed);
-        //unfold_display_packed((unsigned char*)cnn_out_packed, cnn_out_unfolded);
         unfold_display_packed_fast((unsigned char *)cnn_out_packed, cnn_out_unfolded);
+
+        t6 = utils_get_time_ms();
 
 #ifndef USE_CAMERA
         send_output(); // send CNN output to UART
 #endif
-        MXC_Delay(SEC(1));
-
 #ifdef USE_CAMERA
+        camera_write_reg(0x11, 0x1); // make camera prescaller faster for CNN load
         camera_start_capture_image();
 #endif
 
@@ -789,5 +740,9 @@ int main(void)
             printf("\n*** Approximate inference time: %u us ***\n\n", cnn_time);
 #endif
         }
+
+        // print timing data
+        printf("load:%d TFT:%d cnn_wait:%d cnn_unload:%d unfold_display:%d Total:%dms\n", t2 - t1,
+               t3 - t2, t4 - t3, t5 - t4, t6 - t5, t6 - t1);
     }
 }
