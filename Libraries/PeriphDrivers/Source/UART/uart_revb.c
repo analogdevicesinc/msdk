@@ -708,7 +708,7 @@ int MXC_UART_RevB_TransactionAsync(mxc_uart_revb_req_t *req)
         // Save TX Request
         AsyncTxRequests[MXC_UART_GET_IDX((mxc_uart_regs_t *)(req->uart))] = (void *)req;
 
-        MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_EN_TX_HE);
+        MXC_UART_EnableInt((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVB_INT_EN_TX_HE | MXC_F_UART_REVB_INT_EN_TX_OB);
         numToWrite = MXC_UART_GetTXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
         req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart), &req->txData[req->txCnt],
@@ -801,7 +801,7 @@ int MXC_UART_RevB_AsyncStopTx(mxc_uart_revb_regs_t *uart)
         return E_BAD_PARAM;
     }
 
-    MXC_UART_DisableInt((mxc_uart_regs_t *)uart, MXC_F_UART_REVB_INT_EN_TX_HE);
+    MXC_UART_DisableInt((mxc_uart_regs_t *)uart, MXC_F_UART_REVB_INT_EN_TX_HE | MXC_F_UART_REVB_INT_EN_TX_OB);
 
     return E_NO_ERROR;
 }
@@ -871,7 +871,7 @@ int MXC_UART_RevB_AsyncHandler(mxc_uart_revb_regs_t *uart)
         numToWrite = numToWrite > (req->txLen - req->txCnt) ? req->txLen - req->txCnt : numToWrite;
         req->txCnt += MXC_UART_WriteTXFIFO((mxc_uart_regs_t *)(req->uart), &req->txData[req->txCnt],
                                            numToWrite);
-        MXC_UART_ClearFlags(req->uart, MXC_F_UART_REVB_INT_FL_TX_HE);
+        MXC_UART_ClearFlags(req->uart, MXC_F_UART_REVB_INT_FL_TX_HE | MXC_F_UART_REVB_INT_FL_TX_OB);
     }
 
     req = (mxc_uart_req_t *)AsyncRxRequests[uartNum];
