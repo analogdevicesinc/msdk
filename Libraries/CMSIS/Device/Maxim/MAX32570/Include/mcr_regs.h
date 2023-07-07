@@ -137,15 +137,6 @@ typedef struct {
  * @brief    Control Register
  * @{
  */
-#define MXC_F_MCR_CTRL_VDDCSW_EN_POS                   0 /**< CTRL_VDDCSW_EN Position */
-#define MXC_F_MCR_CTRL_VDDCSW_EN                       ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_VDDCSW_EN_POS)) /**< CTRL_VDDCSW_EN Mask */
-
-#define MXC_F_MCR_CTRL_VDDCSW_POS                      1 /**< CTRL_VDDCSW Position */
-#define MXC_F_MCR_CTRL_VDDCSW                          ((uint32_t)(0x3UL << MXC_F_MCR_CTRL_VDDCSW_POS)) /**< CTRL_VDDCSW Mask */
-
-#define MXC_F_MCR_CTRL_USBSW_DIS_POS                   3 /**< CTRL_USBSW_DIS Position */
-#define MXC_F_MCR_CTRL_USBSW_DIS                       ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_USBSW_DIS_POS)) /**< CTRL_USBSW_DIS Mask */
-
 #define MXC_F_MCR_CTRL_PADPUP_RST_POS                  9 /**< CTRL_PADPUP_RST Position */
 #define MXC_F_MCR_CTRL_PADPUP_RST                      ((uint32_t)(0x1UL << MXC_F_MCR_CTRL_PADPUP_RST_POS)) /**< CTRL_PADPUP_RST Mask */
 
@@ -216,11 +207,14 @@ typedef struct {
 #define MXC_F_MCR_PWRMONST_PORZ_VBAT_POS               1 /**< PWRMONST_PORZ_VBAT Position */
 #define MXC_F_MCR_PWRMONST_PORZ_VBAT                   ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_PORZ_VBAT_POS)) /**< PWRMONST_PORZ_VBAT Mask */
 
-#define MXC_F_MCR_PWRMONST_PORZ_VRTC_POS               2 /**< PWRMONST_PORZ_VRTC Position */
-#define MXC_F_MCR_PWRMONST_PORZ_VRTC                   ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_PORZ_VRTC_POS)) /**< PWRMONST_PORZ_VRTC Mask */
+#define MXC_F_MCR_PWRMONST_PORZ_VBB_POS                2 /**< PWRMONST_PORZ_VBB Position */
+#define MXC_F_MCR_PWRMONST_PORZ_VBB                    ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_PORZ_VBB_POS)) /**< PWRMONST_PORZ_VBB Mask */
 
-#define MXC_F_MCR_PWRMONST_PORZ_VDDC_POS               5 /**< PWRMONST_PORZ_VDDC Position */
-#define MXC_F_MCR_PWRMONST_PORZ_VDDC                   ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_PORZ_VDDC_POS)) /**< PWRMONST_PORZ_VDDC Mask */
+#define MXC_F_MCR_PWRMONST_PORZ_VDDCA_POS              4 /**< PWRMONST_PORZ_VDDCA Position */
+#define MXC_F_MCR_PWRMONST_PORZ_VDDCA                  ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_PORZ_VDDCA_POS)) /**< PWRMONST_PORZ_VDDCA Mask */
+
+#define MXC_F_MCR_PWRMONST_PORZ_VDDCB_POS              5 /**< PWRMONST_PORZ_VDDCB Position */
+#define MXC_F_MCR_PWRMONST_PORZ_VDDCB                  ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_PORZ_VDDCB_POS)) /**< PWRMONST_PORZ_VDDCB Mask */
 
 #define MXC_F_MCR_PWRMONST_PORZ_VDDA_POS               6 /**< PWRMONST_PORZ_VDDA Position */
 #define MXC_F_MCR_PWRMONST_PORZ_VDDA                   ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_PORZ_VDDA_POS)) /**< PWRMONST_PORZ_VDDA Mask */
@@ -228,8 +222,8 @@ typedef struct {
 #define MXC_F_MCR_PWRMONST_PORZ_VDDB_POS               7 /**< PWRMONST_PORZ_VDDB Position */
 #define MXC_F_MCR_PWRMONST_PORZ_VDDB                   ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_PORZ_VDDB_POS)) /**< PWRMONST_PORZ_VDDB Mask */
 
-#define MXC_F_MCR_PWRMONST_RSTZ_VDDC_POS               9 /**< PWRMONST_RSTZ_VDDC Position */
-#define MXC_F_MCR_PWRMONST_RSTZ_VDDC                   ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VDDC_POS)) /**< PWRMONST_RSTZ_VDDC Mask */
+#define MXC_F_MCR_PWRMONST_RSTZ_VDDCB_POS              9 /**< PWRMONST_RSTZ_VDDCB Position */
+#define MXC_F_MCR_PWRMONST_RSTZ_VDDCB                  ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VDDCB_POS)) /**< PWRMONST_RSTZ_VDDCB Mask */
 
 #define MXC_F_MCR_PWRMONST_RSTZ_VDDA_POS               10 /**< PWRMONST_RSTZ_VDDA Position */
 #define MXC_F_MCR_PWRMONST_RSTZ_VDDA                   ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VDDA_POS)) /**< PWRMONST_RSTZ_VDDA Mask */
@@ -243,8 +237,8 @@ typedef struct {
 #define MXC_F_MCR_PWRMONST_RSTZ_VDDIOH_POS             13 /**< PWRMONST_RSTZ_VDDIOH Position */
 #define MXC_F_MCR_PWRMONST_RSTZ_VDDIOH                 ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VDDIOH_POS)) /**< PWRMONST_RSTZ_VDDIOH Mask */
 
-#define MXC_F_MCR_PWRMONST_RSTZ_VRTC_POS               14 /**< PWRMONST_RSTZ_VRTC Position */
-#define MXC_F_MCR_PWRMONST_RSTZ_VRTC                   ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VRTC_POS)) /**< PWRMONST_RSTZ_VRTC Mask */
+#define MXC_F_MCR_PWRMONST_RSTZ_VBB_POS                14 /**< PWRMONST_RSTZ_VBB Position */
+#define MXC_F_MCR_PWRMONST_RSTZ_VBB                    ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VBB_POS)) /**< PWRMONST_RSTZ_VBB Mask */
 
 #define MXC_F_MCR_PWRMONST_RSTZ_LDO0P9V_POS            16 /**< PWRMONST_RSTZ_LDO0P9V Position */
 #define MXC_F_MCR_PWRMONST_RSTZ_LDO0P9V                ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_LDO0P9V_POS)) /**< PWRMONST_RSTZ_LDO0P9V Mask */
@@ -260,6 +254,15 @@ typedef struct {
 
 #define MXC_F_MCR_PWRMONST_RSTZ_VDDIOHHV_POS           20 /**< PWRMONST_RSTZ_VDDIOHHV Position */
 #define MXC_F_MCR_PWRMONST_RSTZ_VDDIOHHV               ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VDDIOHHV_POS)) /**< PWRMONST_RSTZ_VDDIOHHV Mask */
+
+#define MXC_F_MCR_PWRMONST_RSTZ_VNFCRX_POS             21 /**< PWRMONST_RSTZ_VNFCRX Position */
+#define MXC_F_MCR_PWRMONST_RSTZ_VNFCRX                 ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VNFCRX_POS)) /**< PWRMONST_RSTZ_VNFCRX Mask */
+
+#define MXC_F_MCR_PWRMONST_RSTZ_VNFCTX_POS             22 /**< PWRMONST_RSTZ_VNFCTX Position */
+#define MXC_F_MCR_PWRMONST_RSTZ_VNFCTX                 ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VNFCTX_POS)) /**< PWRMONST_RSTZ_VNFCTX Mask */
+
+#define MXC_F_MCR_PWRMONST_RSTZ_VNFC1V_POS             23 /**< PWRMONST_RSTZ_VNFC1V Position */
+#define MXC_F_MCR_PWRMONST_RSTZ_VNFC1V                 ((uint32_t)(0x1UL << MXC_F_MCR_PWRMONST_RSTZ_VNFC1V_POS)) /**< PWRMONST_RSTZ_VNFC1V Mask */
 
 /**@} end of group MCR_PWRMONST_Register */
 
