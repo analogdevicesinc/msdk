@@ -232,10 +232,7 @@ typedef struct {
     mxc_adc_avg_t avg_number; ///< no of samples to average
     mxc_adc_div_lpmode_t lpmode_divder; ///< Divide by 2 control in lpmode
     uint8_t num_slots; ///< num of slots in the sequence
-    int8_t dma_channel; /*!<The channel to use for DMA-enabled transactions.
-                            Users should call \ref MXC_DMA_AcquireChannel
-                            to assign the DMA channel number.
-                            For non-DMA transactions, this field is ignored.*/
+    int8_t dma_channel; ///<The channel to use for DMA-enabled transactions
 } mxc_adc_conversion_req_t;
 
 /**
@@ -310,8 +307,8 @@ int MXC_ADC_StartConversion(void);
 int MXC_ADC_StartConversionAsync(mxc_adc_complete_cb_t callback);
 
 /**
- * @brief   Perform a conversion on a specific channel using a DMA transfer
- * @note    DMA channel must be acquired using \ref MXC_DMA_AcquireChannel and should
+ * @brief   Perform a conversion on a specific channel using a DMA transfer.
+ *          DMA channel must be acquired using \ref MXC_DMA_AcquireChannel and should
  *          be passed to this function via "dma_channel" member of "req" input struct.
  *          DMA IRQ corresponding to that channel must be enabled using \ref MXC_NVIC_SetVector,
  *          and the \ref MXC_DMA_Handler should be called from the respective ISR.
