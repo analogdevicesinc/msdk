@@ -9,7 +9,12 @@
 
 # Add your config here!
 
+# This example is only compatible with the MAX32655EVKIT
+ifneq ($(BOARD),EvKit_V1)
+$(error ERR_NOTSUPPORTED: This project is only supported on the MAX32655EVKIT.  (see https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages))
+endif
 
+# Include temperature sensor driver
 SRCS+=max31889_driver.c
 
 VPATH+=$(LIBS_DIR)/MiscDrivers/TempSensor
