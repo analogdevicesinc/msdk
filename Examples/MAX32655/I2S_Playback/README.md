@@ -6,7 +6,6 @@ Once the green LED is illiuminated the system is ready to begin recording. Recor
 
 After the recording has finished the audio will begin playing after a 3 second delay. 
 
-
 ## Software
 
 ### Project Usage
@@ -19,9 +18,18 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
--   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
+If using the Standard EV Kit (EvKit\_V1):
+-   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
+-   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Close jumper JP2 (LED0 EN).
+-   Close jumper JP3 (LED1 EN).
 -   Plug in headphones to the headphone jack (connector J3).
+
+If using the Featherboard (FTHR\_Apps\_P1):
+-   Connect a USB cable between the PC and the J4 (USB/PWR) connector.
+-   Open an terminal application on the PC and connect to the board's console UART at 115200, 8-N-1.
+-   Plug in headphones to the headphone jack (connector J2).
 
 ## Expected Output
 
