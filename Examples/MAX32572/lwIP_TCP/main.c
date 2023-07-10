@@ -125,7 +125,7 @@ static unsigned int sys_get_ms(void)
     uint32_t ms;
 
     MXC_RTC_GetSubSeconds(&ssec);
-    subsec = (double)ssec / 4096.0;
+    subsec = (double)ssec / (double)(4096.0);
 
     MXC_RTC_GetSeconds(&sec);
 
