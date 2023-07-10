@@ -460,8 +460,8 @@ debug:
 .PHONY: project_defines
 project_defines: $(BUILD_DIR)/project_defines.h
 $(BUILD_DIR)/project_defines.h: mkbuildir
-	$(file > $(BUILD_DIR)/empty.c,)
-	$(file > $(BUILD_DIR)/project_defines.h,// This is a generated file that's used to detect definitions that have been set by the compiler and build system.)
-	@$(CC) -E -P -dD $(BUILD_DIR)/empty.c $(CFLAGS) >> $(BUILD_DIR)/project_defines.h
-	@rm $(BUILD_DIR)/empty.c
-	@rm empty.d
+	@echo "" > $(BUILD_DIR)/_empty_tmp_file.c
+	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
+	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(CFLAGS) >> $@
+	@rm $(BUILD_DIR)/_empty_tmp_file.c
+	@rm _empty_tmp_file.d
