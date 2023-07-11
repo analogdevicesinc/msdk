@@ -1,6 +1,6 @@
 ## Description
 
-This example demonstrates the use of the LCD Display on the MAX32650 EV Kit. This is accomplished by showing and clearing the Maxim Intergrated on the display continuously in a loop.
+This example demonstrates the use of the LCD Display on the MAX32650 EV Kit. This is accomplished by showing and clearing the ADI logo on the display continuously in a loop.
 
 
 ## Software
@@ -26,4 +26,4 @@ The Console UART of the device will output these messages:
 ********** CLCD Example **********
 ```
 
-The LCD Display will show the following patter in a loop: the Maxim Integrated logo for 3 seconds, logo fades to blank, white screen, white screen holds for 3 seconds.
+The LCD Display will show the following patter in a loop: the ADI logo for 3 seconds, logo fades to blank, white screen, white screen holds for 3 seconds.
