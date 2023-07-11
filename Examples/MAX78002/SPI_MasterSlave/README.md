@@ -2,15 +2,87 @@
 
 This example demonstrates a SPI transaction between two distinct SPI peripherals on the MAX78002. 
 
-SPI1 is setup as the master in this example and is configured by default to send/receive 1024 8-bit words to and from the slave. Likewise, SPI0 is setup as the slave and is also expecting to both send and receive 1024 8-bit words to and from the master.
+SPI1 is setup as the controller (L. Master) in this example and is configured by default to send/receive 1024 8-bit words to and from the slave. Likewise, SPI0 is setup as the slave and is also expecting to both send and receive 1024 8-bit words to and from the master.
 
-Once the master ends the transaction, the data received by the master and the slave is compared to the data sent by their counterpart to ensure all bytes were received properly.
+Once the controller ends the transaction, the data received by the controller (L. Master) and the target (L. Slave) is compared to the data sent by their counterpart to ensure all bytes were received properly.
 
 ## Software
 
-### SPI v2 Library
+This example uses the SPI v2 Library. To use the previous SPI library, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
 
-The SPI v2 Library does not support Target (L. Slave) Transaction functions yet. To use the previous SPI driver, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
+### Porting Guide
+
+The SPI v2 Library is backwards compatible with the previous SPI API - meaning the previously existing function prototypes have not changed. There are functional differences with SPI DMA interrupt handling that must be updated when porting a project from using the previous SPI API to SPI v2.
+
+#### SPI v2 API Differences
+
+##### SPI Init Function
+
+The `MXC_SPI_Init(...)` function is still supported with SPI v2, but there is some added overhead due to the limited settings that this function can set.
+
+Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead of initialization and 2) to give the caller more control in the SPI setup.
+
+**`mxc_spi_init_t init` Fields**
+- `mxc_spi_regs_t *spi`              //<== SPI Instance
+- `mxc_gpio_cfg_t *spi_pins`         //<== (Optional) Caller supplied SPI pins
+- `mxc_spi_type_t type`              //<== Controller (L. Master) or Target (L. Slave) Modes
+- `uint32_t freq`                    //<== SPI Frequency
+- `mxc_spi_clkmode_t clk_mode`       //<== Clock Mode (CPOL:CPHA)
+- `mxc_spi_interface_t mode`         //<== Select Interface (Standard 4-wire, 3-wire, dual, quad)
+- `mxc_spi_tscontrol_t ts_control`   //<== HW Auto, SW Driver, or SW Application Target Control
+- `mxc_spi_target_t target`          //<== Target settings (custom TS pins, init mask, active polarity) 
+- `mxc_gpio_vssel_t vssel`           //<== Select Pin Voltage Level (VDDIO/VDDIOH)
+- `bool use_dma`                     //<== TRUE/FALSE DMA setting
+- `mxc_dma_regs_t *dma`              //<== DMA Instance
+- `mxc_spi_callback_t callback`      //<== Set Callback function for end of transaction
+- `void* callback_data`              //<== Data to pass through callback function
+
+##### SPI DMA Interrupt Handling
+
+```c
+void DMA_TX_IRQHandler(void)
+{
+    MXC_SPI_DMA_TX_Handler(SPI);
+}
+
+void DMA_RX_IRQHandler(void)
+{
+    MXC_SPI_DMA_RX_Handler(SPI);
+}
+
+```
+The previous SPI API uses the MXC_DMA_Handler, but SPI v2 supplies its own Handler processing functions to call for TX and RX DMA.
+
+##### SPI DMA Setup
+```c
+    ...
+    TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
+    RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI);
+
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(TX_DMA_CH));
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(RX_DMA_CH));
+
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
+
+    MXC_SPI_MasterTransactionDMA(&req);
+    ...
+```
+Following the DMA channel interrupt changes from the previous section, it is recommended to set up a generic name DMA TX/RX vector because the the TX and RX DMA channels won't always acquire DMA_CH0 and DMA_CH1, respectively.
+
+##### Blocking SPI Transaction (MXC_SPI_MasterTransaction(...))
+```c
+void SPI_IRQHandler(void)
+{
+    MXC_SPI_Handler(SPI); // Or MXC_SPI_AsyncHandler(SPI); Same function, different names.
+}   
+
+    ...
+    NVIC_EnableIRQ(SPI);
+    MXC_SPI_MasterTransaction(&req);
+    ...
+```
+The blocking SPI transaction function is now interrupt driven for SPI v2 - meaning the SPI instances' IRQ must be enabled and the MXC_SPI_Handler(...) or MXC_SPI_AsyncHandler(...) function must be called in the interrupt routine.
 
 ### Project Usage
 
@@ -35,12 +107,13 @@ Universal instructions on building, flashing, and debugging this project can be 
 The Console UART of the device will output these messages:
 
 ```
-************************ SPI Master-Slave Example ************************
+************************ SPI Controller-Target Example ************************
 This example sends data between two SPI peripherals in the MAX78002.
-SPI1 is configured as the slave and SPI0 is configured as the master.
-Each SPI peripheral sends 1024 bytes on the SPI bus. If the data received
-by each SPI instance matches the data sent by the other instance, the
-green LED will illuminate, otherwise the red LED will illuminate.
+SPI1 is configured as the target (L. Slave) and SPI0 is configured
+as the controller (L. Master). Each SPI peripheral sends 1024 bytes
+on the SPI bus. If the data received by each SPI instance matches the
+the data sent by the other instance, then the green LED will illuminate,
+otherwise the red LED will illuminate.
 
 Press PB1 to begin transaction.
 
