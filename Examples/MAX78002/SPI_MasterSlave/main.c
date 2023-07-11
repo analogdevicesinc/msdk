@@ -106,7 +106,8 @@ int main(void)
 
     printf("\n************************ SPI Controller-Target Example ************************\n");
     printf("This example sends data between two SPI peripherals in the MAX78002.\n");
-    printf("SPI%d is configured as the target (L. Slave) and SPI%d is configured\n", MXC_SPI_GET_IDX(SPI_TARGET), MXC_SPI_GET_IDX(SPI_CONTROLLER));
+    printf("SPI%d is configured as the target (L. Slave) and SPI%d is configured\n",
+           MXC_SPI_GET_IDX(SPI_TARGET), MXC_SPI_GET_IDX(SPI_CONTROLLER));
     printf("as the controller (L. Master). Each SPI peripheral sends %d bytes\n", DATA_LEN);
     printf("on the SPI bus. If the data received by each SPI instance matches the\n");
     printf("the data sent by the other instance, then the green LED will illuminate,\n");
@@ -181,7 +182,8 @@ int main(void)
     target_init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
     target_init.frame_size = DATA_SIZE;
     target_init.callback = NULL;
-    target_init.ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Target transactions only supports HW_AUTO mode
+    target_init.ts_control =
+        MXC_SPI_TSCONTROL_HW_AUTO; // Target transactions only supports HW_AUTO mode
     target_init.target.active_polarity = 0;
     target_init.target.init_mask = 1 << SPI_TARGET_TSIDX; // Initialize Target Select 0 pin.
     target_init.vssel = MXC_GPIO_VSSEL_VDDIO;
@@ -220,7 +222,8 @@ int main(void)
     MXC_SPI_TargetTransaction(SPI_TARGET, target_tx, DATA_LEN, target_rx, DATA_LEN, 1);
 #endif
 
-    MXC_SPI_ControllerTransactionB(SPI_CONTROLLER, controller_tx, DATA_LEN, controller_rx, DATA_LEN, 1, &target);
+    MXC_SPI_ControllerTransactionB(SPI_CONTROLLER, controller_tx, DATA_LEN, controller_rx, DATA_LEN,
+                                   1, &target);
 
     /***** Verify Results *****/
     if (memcmp(target_rx, controller_tx, sizeof(controller_tx)) != 0) { // Controller->Target

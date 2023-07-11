@@ -1051,9 +1051,8 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req);
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer,
-                                        uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
-                                        uint8_t deassert);
+int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                              uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert);
 
 /**
  * @brief   Setup a DMA driven SPI Target transaction.
@@ -1067,9 +1066,8 @@ int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer,
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_TargetTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer,
-                                        uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
-                                        uint8_t deassert);
+int MXC_SPI_TargetTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                                 uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert);
 
 /* ** Handler Functions ** */
 

@@ -395,8 +395,8 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
             }
 
             MXC_SETFIELD((init->spi)->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
-                        ((uint32_t)(init->target.init_mask)
-                        << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+                         ((uint32_t)(init->target.init_mask)
+                          << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
 
             // If target.init_mask was not used, then read the target settings and initalize the selected index.
             // Mainly used to test new HW TSn pins that aren't defined in the parts' mxc_pins.h and pins_{part}.c.
@@ -1794,8 +1794,8 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
 }
 
 int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                        uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
-                                        uint8_t deassert)
+                                    uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
+                                    uint8_t deassert)
 {
     int spi_num, tx_dummy_fr_len;
 
@@ -1904,8 +1904,8 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
 }
 
 int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                           uint32_t tx_fr_len, uint8_t *rx_buffer,
-                                           uint32_t rx_fr_len, uint8_t deassert)
+                                       uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
+                                       uint8_t deassert)
 {
     int spi_num, tx_dummy_fr_len;
     // For readability purposes.
@@ -2027,8 +2027,8 @@ int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buf
             // 9-16 bit wide frames.
         } else {
             // Hardware requires writing the first bytes into the FIFO manually.
-            STATES[spi_num].tx_cnt += MXC_SPI_RevA2_writeTXFIFO16(
-                spi, (uint8_t *)(STATES[spi_num].tx_buffer), 2);
+            STATES[spi_num].tx_cnt +=
+                MXC_SPI_RevA2_writeTXFIFO16(spi, (uint8_t *)(STATES[spi_num].tx_buffer), 2);
 
             // Threshold set to 3 frames (6 bytes) after pre-loading FIFO for DMA.
             //  This is the minimum threshold to handle any number of transmitting frames.
@@ -2104,7 +2104,8 @@ int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buf
         spi->dma |= (MXC_F_SPI_REVA_DMA_RX_FIFO_EN);
 
         // Set RX threshold to minimum value to handle any number of received frames.
-        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL, (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
+        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
+                     (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
 
         STATES[spi_num].dma->ch[rx_ch].dst = (uint32_t)rx_buffer;
         STATES[spi_num].dma->ch[rx_ch].cnt = STATES[spi_num].rx_len;
