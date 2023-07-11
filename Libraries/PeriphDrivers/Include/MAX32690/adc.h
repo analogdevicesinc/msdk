@@ -217,12 +217,18 @@ typedef struct {
     uint32_t idleCount; ///< Sample Clock Low time
 } mxc_adc_req_t;
 
+/**
+ * @brief  ADC Slot Settings
+ */
 typedef struct {
     mxc_adc_chsel_t channel; ///< channel select
     //    mxc_adc_divsel_t div;                    ///< Analog input divider
     //    mxc_adc_dynamic_pullup_t pullup_dyn;     ///< Dynamic Pullup
 } mxc_adc_slot_req_t;
 
+/**
+ * @brief  ADC Conversion Settings
+ */
 typedef struct {
     mxc_adc_conversion_mode_t mode; ///< conversion mode
     mxc_adc_trig_mode_t trig; ///< trigger mode
