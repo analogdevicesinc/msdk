@@ -64,6 +64,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     if (spi == MXC_SPI0) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI0);
+        MXC_GPIO_Config(&gpio_cfg_spi0);
 
         //ME21 SPI0 supports ss0-ss3 ship select
         if (numSlaves == 1) {
