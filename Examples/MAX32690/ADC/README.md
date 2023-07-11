@@ -18,10 +18,16 @@ Universal instructions on building, flashing, and debugging this project on supp
 
 ## Required Connections
 
+If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install headers JP7(RX\_EN) and JP8(TX\_EN).
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Apply an input voltage between 0 and 1.25V to pin labeled 0 of the JH6 (Analog) header.
+
+If using the MAX32690FTHR:
+-   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Apply an input voltage between 0 and 1.25V to pin labeled AIN0 of the J2 header.
 
 ## Expected Output
 
@@ -41,9 +47,19 @@ readings with either a software or hardware trigger. The
 hardware trigger demonstrated is the output from Timer 1,
 triggering the reading every 2 seconds.
 
-0: 0x0688
+CH : Data
+03 : 5C1
 
 
-0: 0x0685
+Running Single Channel Example
+CH : Data
+03 : 5C6
+
+
+Running Temperature Sensor Example
+CH : Data
+0C : 6F2
+0D : 453
+0E : 8BB
 ...
 ```
