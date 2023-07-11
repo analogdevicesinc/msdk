@@ -23,11 +23,11 @@ The SPI v2 Library is backwards compatible with the previous SPI API - meaning t
 
 The `MXC_SPI_Init(...)` function is still supported with SPI v2, but there is some added overhead due to the limited settings that this function can set.
 
-Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead and 2) to give the caller more control in the SPI setup.
+Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead of initialization and 2) to give the caller more control in the SPI setup.
 
 **`mxc_spi_init_t init` Fields**
 - `mxc_spi_regs_t *spi`              //<== SPI Instance
-- `mxc_gpio_cfg_t *spi_pins`         //<== (Optional) Caller supplied SPI pins.
+- `mxc_gpio_cfg_t *spi_pins`         //<== (Optional) Caller supplied SPI pins
 - `mxc_spi_type_t type`              //<== Controller (L. Master) or Target (L. Slave) Modes
 - `uint32_t freq`                    //<== SPI Frequency
 - `mxc_spi_clkmode_t clk_mode`       //<== Clock Mode (CPOL:CPHA)
