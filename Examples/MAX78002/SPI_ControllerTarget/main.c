@@ -1,10 +1,3 @@
-/**
- * @file    main.c
- * @brief   SPI_MasterSlave Demo
- * @details Shows Master loopback demo for QSPI0
- *          Read the printf() for instructions
- */
-
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -37,6 +30,12 @@
  * ownership rights.
  *
  ******************************************************************************/
+
+/**
+ * @file    main.c
+ * @brief   SPI_ControllerTarget Demo
+ * @details Shows Controller and Target transactions between two SPI instances.
+ */
 
 /***** Includes *****/
 #include <stdio.h>

@@ -15,7 +15,7 @@ This example uses the SPI v2 Library. To use the previous SPI library, set `MXC_
 
 ### Porting Guide
 
-The SPI v2 Library is backwards compatible with the previous SPI API - meaning the previously existing function prototypes have not changed. There are functional differences with SPI DMA interrupt handling that must be updated when porting a project from using the previous SPI API to SPI v2.
+The SPI v2 Library still supports the previous SPI API - meaning the previously existing function prototypes have not changed. However, there are functional differences with the interrupt handling for both SPI DMA and blocking SPI transactions that must be updated when porting a project from using the previous SPI API to SPI v2.
 
 #### SPI v2 API Differences
 
