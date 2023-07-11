@@ -774,8 +774,8 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
     }
 
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                               req->tx_len, req->rx_buffer, req->rx_len,
-                                               req->deassert, &target);
+                                                req->tx_len, req->rx_buffer, req->rx_len,
+                                                req->deassert, &target);   
 }
 
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
@@ -866,12 +866,64 @@ int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
 
 int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
 {
-    return E_NOT_SUPPORTED;
+    int error;
+
+    error = MXC_SPI_SetCallback(req->spi, req->callback, req->callback_data);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_len, req->rx_buffer, req->rx_len, req->deassert);
 }
 
 int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
 {
-    return E_NOT_SUPPORTED;
+    int error;
+    mxc_spi_init_t init;
+
+    init.use_dma = true;
+    init.dma = MXC_DMA;
+
+    // More overhead, but this function will initalize DMA if not initialized.
+    if (MXC_SPI_DMA_GetInitialized(req->spi) == false) {
+        error = MXC_SPI_DMA_Init(&init);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+    }
+
+    error = MXC_SPI_SetCallback(req->spi, req->callback, req);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_len, req->rx_buffer, req->rx_len, req->deassert);
+}
+
+int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                                  uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert)
+{
+    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
+                                               rx_buffer, rx_fr_len, deassert);
+}
+
+int MXC_SPI_TargetTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                                     uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert)
+{
+    int error;
+
+    error = MXC_SPI_DMA_SetRequestSelect(spi, tx_buffer, rx_buffer);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
+                                                  rx_buffer, rx_fr_len, deassert);
 }
 
 /* ** Handler Functions ** */
