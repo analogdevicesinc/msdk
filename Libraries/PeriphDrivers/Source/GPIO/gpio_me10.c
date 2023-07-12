@@ -151,7 +151,14 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         return E_BAD_PARAM;
     }
 
-    return MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    // Configure the vssel
+    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    // Configure the drive strength
+    return MXC_GPIO_SetDriveStrength(gpio, cfg->dssel, cfg->mask);
 }
 
 /* ************************************************************************** */

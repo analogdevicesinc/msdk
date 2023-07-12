@@ -212,7 +212,8 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
         return error;
     }
 
-    return MXC_GPIO_SetDriveStrength(gpio, cfg->ds, cfg->mask);
+    // Configure the drive strength
+    return MXC_GPIO_SetDriveStrength(gpio, cfg->dssel, cfg->mask);
 }
 
 /* ************************************************************************** */
