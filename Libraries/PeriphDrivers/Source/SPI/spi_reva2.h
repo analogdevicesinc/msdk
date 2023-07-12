@@ -153,7 +153,7 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
                                     uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len);
 
 int MXC_SPI_RevA2_TargetTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                    uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len);
+                                     uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len);
 
 int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                        uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len);

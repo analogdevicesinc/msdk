@@ -2106,7 +2106,7 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
 }
 
 int MXC_SPI_RevA2_TargetTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                    uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
+                                     uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
     int spi_num, tx_dummy_fr_len;
 
@@ -2125,7 +2125,7 @@ int MXC_SPI_RevA2_TargetTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffe
     if (STATES[spi_num].init.use_dma == true) {
         return E_BAD_STATE;
     }
-    
+
     // Make sure SPI Instance is in Target mode (L. Slave).
     if (STATES[spi_num].init.type != MXC_SPI_TYPE_TARGET) {
         return E_BAD_STATE;
@@ -2214,13 +2214,14 @@ int MXC_SPI_RevA2_TargetTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffe
     // This private function, MXC_SPI_RevA2_process, call fills the TX FIFO as much as possible
     //   before launching the transaction. Subsequent FIFO management will
     //   be handled from the MXC_SPI_Handler which should be called in SPI_IRQHandler.
-    while(STATES[spi_num].transaction_done == false) {
-        if (STATES[spi_num].tx_cnt == STATES[spi_num].tx_len && STATES[spi_num].rx_cnt == STATES[spi_num].rx_len) {
+    while (STATES[spi_num].transaction_done == false) {
+        if (STATES[spi_num].tx_cnt == STATES[spi_num].tx_len &&
+            STATES[spi_num].rx_cnt == STATES[spi_num].rx_len) {
             if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY)) {
                 STATES[spi_num].transaction_done = true;
             }
         }
-        
+
         MXC_SPI_RevA2_process(spi);
     }
 

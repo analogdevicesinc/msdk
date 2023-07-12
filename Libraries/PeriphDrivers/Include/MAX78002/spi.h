@@ -1054,7 +1054,7 @@ int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t 
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_SPI_TargetTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                              uint8_t *rx_buffer, uint32_t rx_fr_len);
+                               uint8_t *rx_buffer, uint32_t rx_fr_len);
 
 /**
  * @brief   Setup a DMA driven SPI Target transaction.

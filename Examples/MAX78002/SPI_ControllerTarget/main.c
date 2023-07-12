@@ -109,7 +109,8 @@ int main(void)
     printf("otherwise the red LED will illuminate.\n\n");
 
 #if CUSTOM_TARGET
-    printf("A custom Target Select pin for the Controller (SPI%d) was selected.\n", MXC_SPI_GET_IDX(SPI_CONTROLLER));
+    printf("A custom Target Select pin for the Controller (SPI%d) was selected.\n",
+           MXC_SPI_GET_IDX(SPI_CONTROLLER));
     printf("Please connect the custom TS pin P0.9 to P0.20.\n\n");
 #endif
 
