@@ -145,7 +145,7 @@ int main(void)
     target_pins.func = MXC_GPIO_FUNC_OUT;
     target_pins.pad = MXC_GPIO_PAD_PULL_UP;
     target_pins.vssel = MXC_GPIO_VSSEL_VDDIO; // Set custom target pin to VDDIOH (3.3V).
-    target_pins.ds = MXC_GPIO_DS_3; // Set custom target pin to VDDIOH (3.3V).
+    target_pins.dssel = MXC_GPIO_DRVSTR_3; // Set custom target pin to VDDIOH (3.3V).
 
     controller_init.ts_control =
         MXC_SPI_TSCONTROL_SW_DRV; // SPI Driver will handle deassertion for TS pins.
