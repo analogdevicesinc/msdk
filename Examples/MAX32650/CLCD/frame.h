@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief   This file contains the Maxim logo for display on the
+ * @brief   This file contains the ADI logo for display on the
  *          CLCD for the demo.
  */
 

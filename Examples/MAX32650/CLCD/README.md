@@ -11,7 +11,12 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+To generate a bitmap C array for a particular image, external tools like GIMP (GNU Image Manipulation Program) or **[LVGL Online Image Converter](https://lvgl.io/tools/imageconverter)** can be used.
+
+For example, to generate an 8 Bits Per Pixel palletized image array using GIMP:
+- scale image to appropriate dimensions (Image -> Scale Image...)
+- convert image mode to "Indexed" with a maximum of 255 colors (Image -> Mode -> Indexed...)
+- export image as "C source code header" (File -> Export As...)
 
 ## Required Connections
 
