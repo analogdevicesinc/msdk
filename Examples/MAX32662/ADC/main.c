@@ -128,7 +128,7 @@ void adc_dma_callback(int ch, int err)
     dma_done = 1;
 }
 
-void DMA0_IRQHandler(void)
+void DMA_IRQHandler(void)
 {
     MXC_DMA_Handler();
 }
@@ -335,7 +335,6 @@ int main(void)
 
 #ifdef DMA
     MXC_DMA_Init();
-    NVIC_EnableIRQ(DMA0_IRQn);
 #endif
     while (1) {
         /* Flash LED when starting ADC cycle */
@@ -360,10 +359,16 @@ int main(void)
 #ifdef DMA
         dma_done = 0;
 
-        MXC_DMA_ReleaseChannel(0);
+        int dma_channel = MXC_DMA_AcquireChannel();
+        adc_conv.dma_channel = dma_channel;
+
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(dma_channel), DMA_IRQHandler);
+        NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(dma_channel));
         MXC_ADC_StartConversionDMA(&adc_conv, adc_val, adc_dma_callback);
 
         while (!dma_done) {}
+
+        MXC_DMA_ReleaseChannel(adc_conv.dma_channel);
 #endif
 
         ShowAdcResult();

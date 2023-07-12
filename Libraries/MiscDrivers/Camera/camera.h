@@ -46,6 +46,8 @@
 #include "hm0360_regs.h"
 #elif defined(CAMERA_OV5642)
 #include "ov5642_regs.h"
+#elif defined(CAMERA_OV5640)
+#include "ov5640_regs.h"
 #elif defined(CAMERA_OV7692)
 #include "ov7692_regs.h"
 #elif defined(CAMERA_PAG7920)
@@ -100,7 +102,7 @@ typedef struct _camera {
     int (*reset)(void);
     int (*sleep)(int enable);
 #if defined(CAMERA_HM01B0) || (CAMERA_HM0360_MONO) || (CAMERA_HM0360_COLOR) || \
-    defined(CAMERA_OV5642)
+    defined(CAMERA_OV5642) || defined(CAMERA_OV5640)
     int (*read_reg)(uint16_t reg_addr, uint8_t *reg_data);
     int (*write_reg)(uint16_t reg_addr, uint8_t reg_data);
 #else //(CAMERA_OV7692) || (CAMERA_PAG7920)
@@ -153,7 +155,7 @@ int camera_sleep(int enable);
 int camera_shutdown(int enable);
 
 #if defined(CAMERA_HM01B0) || (CAMERA_HM0360_MONO) || (CAMERA_HM0360_COLOR) || \
-    defined(CAMERA_OV5642)
+    defined(CAMERA_OV5642) || defined(CAMERA_OV5640)
 // Write a sensor register.
 int camera_write_reg(uint16_t reg_addr, uint8_t reg_data);
 int camera_read_reg(uint16_t reg_addr, uint8_t *reg_data);
