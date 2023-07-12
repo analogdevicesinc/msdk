@@ -1594,6 +1594,8 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL, (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
 
     // Set up DMA TX Transactions.
+    // Note: Number of transmitting frames greatly depends on the SPI DMA register settings for
+    //      the DMA burst size and TX Threshold values.
     // 1) For TX transmissions.
     if (tx_fr_len > 1) {
         // For readability purposes.
@@ -1605,16 +1607,22 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
             // Hardware requires writing the first byte into the FIFO manually.
             spi->fifo8[0] = tx_buffer[0];
 
-            // Threshold set to 1 frame (1 byte) after pre-loading first byte for DMA.
+            // Threshold set to 2 frames (2 byte) after pre-loading first byte for DMA.
+            //  This is the minimum threshold to handle any number of transmitting frames.
+            //  Note: This case is handling TX transactions of greater than 1 frame.
+            //        Threshold of 1 frame does not work.
             MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
-                         (1 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+                         (2 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
 
             STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + 1); // 1 Byte offset
             STATES[spi_num].dma->ch[tx_ch].cnt = (tx_fr_len - 1);
 
-            // Set to one byte burst size.
+            // Set to 3 byte (3 frames) burst size.
+            //  Due to design: burst_size = threshold + 1
+            //  Note: Assigning value of 2 to register-field equals 3 bytes transferred in/out of DMA.
+            //        Add 1 to the register-field setting to get the number of bytes for burst.
             MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE,
-                         (0 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
+                         (2 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
 
             // Set source and destination width to one byte.
             MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
@@ -1625,19 +1633,25 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
             // 9-16 bit wide frames.
         } else {
             // Hardware requires writing the first bytes into the FIFO manually.
-            STATES[spi_num].tx_cnt += MXC_SPI_RevA2_writeTXFIFO16(
-                spi, (uint8_t *)(STATES[spi_num].tx_buffer), STATES[spi_num].tx_len);
+            STATES[spi_num].tx_cnt +=
+                MXC_SPI_RevA2_writeTXFIFO16(spi, (uint8_t *)(STATES[spi_num].tx_buffer), 2);
 
-            // Threshold set to 1 frame (2 bytes) after pre-loading FIFO for DMA.
+            // Threshold set to 3 frames (6 bytes) after pre-loading FIFO for DMA.
+            //  This is the minimum threshold to handle any number of transmitting frames.
+            //  Note: This case is handling TX transactions of greater than 1 frame.
+            //        Threshold of 1 or 2 frames does not work.
             MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
-                         (2 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+                         (3 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
 
             STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + STATES[spi_num].tx_cnt);
             STATES[spi_num].dma->ch[tx_ch].cnt = (STATES[spi_num].tx_len - STATES[spi_num].tx_cnt);
 
-            // Set to two byte burst size.
+            // Set to 4 byte (2 frames) burst size.
+            //  Due to design: burst_size = threshold + 1
+            //  Note: Assigning value of 3 to register-field equals 4 bytes.
+            //        Add 1 to the register-field setting to get the number of bytes for burst.
             MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE,
-                         (1 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
+                         (3 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
 
             // Set source and destination width to two bytes.
             MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
@@ -1695,10 +1709,14 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
         // Enable RX DMA channel before configuring.
         spi->dma |= (MXC_F_SPI_REVA_DMA_RX_FIFO_EN);
 
+        // Set RX threshold to minimum value to handle any number of received frames.
+        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
+                     (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
+
         STATES[spi_num].dma->ch[rx_ch].dst = (uint32_t)rx_buffer;
         STATES[spi_num].dma->ch[rx_ch].cnt = STATES[spi_num].rx_len;
 
-        // Set to one byte burst size.
+        // Set to one byte burst size - minimum value to handle any number of recevied frames.
         MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE,
                      (0 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
 
