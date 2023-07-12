@@ -70,20 +70,6 @@ The previous SPI API uses the MXC_DMA_Handler, but SPI v2 supplies its own Handl
 ```
 Following the DMA channel interrupt changes from the previous section, it is recommended to set up a generic name DMA TX/RX vector because the the TX and RX DMA channels won't always acquire DMA_CH0 and DMA_CH1, respectively.
 
-##### Blocking SPI Transaction (MXC_SPI_MasterTransaction(...))
-```c
-void SPI_IRQHandler(void)
-{
-    MXC_SPI_Handler(SPI); // Or MXC_SPI_AsyncHandler(SPI); Same function, different names.
-}   
-
-    ...
-    NVIC_EnableIRQ(SPI);
-    MXC_SPI_MasterTransaction(&req);
-    ...
-```
-The blocking SPI transaction function is now interrupt driven for SPI v2 - meaning the SPI instances' IRQ must be enabled and the MXC_SPI_Handler(...) or MXC_SPI_AsyncHandler(...) function must be called in the interrupt routine.
-
 ### Project Usage
 
 Universal instructions on building, flashing, and debugging this project can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**.

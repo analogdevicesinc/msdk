@@ -197,8 +197,6 @@ int main(void)
         SPI_FLAG = 1;
 
 #if BLOCKING
-        // Blocking SPI v2 Implementation is Interrupt driven.
-        NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_ControllerTransactionB(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
                                        DATA_LEN, 1, &target);
 #endif
