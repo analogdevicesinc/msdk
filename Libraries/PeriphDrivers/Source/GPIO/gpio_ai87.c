@@ -417,7 +417,7 @@ uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
 }
 
 /* ************************************************************************** */
-int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_ds_t ds, uint32_t mask)
+int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t dssel, uint32_t mask)
 {
-    return MXC_GPIO_RevA_SetDriveStrength((mxc_gpio_reva_regs_t *)port, ds, mask);
+    return MXC_GPIO_RevA_SetDriveStrength((mxc_gpio_reva_regs_t *)port, dssel, mask);
 }
