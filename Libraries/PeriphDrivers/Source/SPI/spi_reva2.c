@@ -1638,13 +1638,14 @@ int MXC_SPI_RevA2_ControllerTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
         }
     }
 
-    while(STATES[spi_num].transaction_done == false) {
-        if (STATES[spi_num].tx_cnt == STATES[spi_num].tx_len && STATES[spi_num].rx_cnt == STATES[spi_num].rx_len) {
+    while (STATES[spi_num].transaction_done == false) {
+        if (STATES[spi_num].tx_cnt == STATES[spi_num].tx_len &&
+            STATES[spi_num].rx_cnt == STATES[spi_num].rx_len) {
             if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY)) {
                 STATES[spi_num].transaction_done = true;
             }
         }
-        
+
         MXC_SPI_RevA2_process(spi);
     }
 
@@ -1931,7 +1932,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
         if (target->active_polarity) {
             // Set Idle state.
             target->pins.port->out_clr |= target->pins.mask;
-        // Active LOW (0) - Idle HIGH (1)
+            // Active LOW (0) - Idle HIGH (1)
         } else {
             // Set Idle state.
             target->pins.port->out_set |= target->pins.mask;
