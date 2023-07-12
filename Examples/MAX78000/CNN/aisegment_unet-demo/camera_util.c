@@ -111,10 +111,10 @@ int initialize_camera(void)
 #if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
     // set camera clock prescaller to prevent streaming overflow due to TFT display latency
 #ifdef BOARD_EVKIT_V1
-    camera_write_reg(0x11, 0x8);
+    camera_write_reg(0x11, 0x5);
 #endif
 #ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x11, 0xF);
+    camera_write_reg(0x11, 0x3);
 #endif
 #endif
 
@@ -387,6 +387,133 @@ void load_input_camera(void)
     }
 }
 
+static uint32_t sum = 0;
+void dump_cnn(void)
+{
+    uint32_t *data_addr[12] = { (uint32_t *)0x50400700, (uint32_t *)0x50408700,
+                                (uint32_t *)0x50410700, (uint32_t *)0x50418700,
+                                (uint32_t *)0x50800700, (uint32_t *)0x50808700,
+                                (uint32_t *)0x50810700, (uint32_t *)0x50818700,
+                                (uint32_t *)0x50c00700, (uint32_t *)0x50c08700,
+                                (uint32_t *)0x50c10700, (uint32_t *)0x50c18700 };
+
+    printf("\nDUMPING CNN, press PB0 \n");
+
+    while (!PB_Get(0)) {}
+
+    for (int i = 0; i < 12; i++) {
+        for (int j = 0; j < 7744; j += 16) {
+            printf("\n%08X: ", data_addr[i]);
+
+            for (int k = 0; k < 16; k++) {
+                printf("%08X ", *data_addr[i]);
+                sum += *data_addr[i];
+                data_addr[i]++;
+            }
+        }
+
+        printf("\n");
+    }
+
+    printf("SUM: %08X \n", sum);
+
+    while (1) {}
+}
+
+void dump_inference(void)
+{
+    uint32_t *data_addr[16] = {
+        (uint32_t *)0x50400000, (uint32_t *)0x50408000, (uint32_t *)0x50410000,
+        (uint32_t *)0x50418000, (uint32_t *)0x50800000, (uint32_t *)0x50808000,
+        (uint32_t *)0x50810000, (uint32_t *)0x50818000, (uint32_t *)0x50c00000,
+        (uint32_t *)0x50c08000, (uint32_t *)0x50c10000, (uint32_t *)0x50c18000,
+        (uint32_t *)0x51000000, (uint32_t *)0x51008000, (uint32_t *)0x51010000,
+        (uint32_t *)0x51018000,
+    };
+
+    printf("\nDUMPING INFERENCE, press PB0 \n");
+
+    while (!PB_Get(0)) {}
+
+    for (int i = 0; i < 16; i++) {
+        for (int j = 0; j < 7744; j += 16) {
+            printf("\n%08X: ", data_addr[i]);
+
+            for (int k = 0; k < 16; k++) {
+                printf("%08X ", *data_addr[i]);
+                sum += *data_addr[i];
+                data_addr[i]++;
+            }
+        }
+
+        printf("\n");
+    }
+
+    printf("SUM: %08X \n", sum);
+
+    while (1) {}
+}
+
+//--------------------------------------------------------------------
+
+int dma_channel;
+int g_dma_channel_tft = 1;
+static uint8_t *rx_data = NULL;
+
+void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt)
+{
+    // TFT DMA
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
+    }
+
+    MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
+    MXC_DMA->ch[g_dma_channel_tft].dst = (uint32_t)rx_data; // Cast Pointer
+    MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
+    MXC_DMA->ch[g_dma_channel_tft].cnt = byte_cnt;
+
+    MXC_DMA->ch[g_dma_channel_tft].ctrl =
+        ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS) + (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS) +
+         (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) + (0x0 << MXC_F_DMA_CTRL_DSTINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_DSTWD_POS) + (0x1 << MXC_F_DMA_CTRL_SRCINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_SRCWD_POS) + (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
+         (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) + (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // SPI0 -> TFT
+         (0x0 << MXC_F_DMA_CTRL_PRI_POS) + // High Priority
+         (0x0 << MXC_F_DMA_CTRL_RLDEN_POS) // Disable Reload
+        );
+
+    MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
+    MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR,
+                 (byte_cnt) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
+
+    // Clear SPI master done flag
+    MXC_SPI0->intfl = MXC_F_SPI_INTFL_MST_DONE;
+    MXC_SETFIELD(MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_DMA_TX_EN);
+    MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
+}
+
+void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt)
+{
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
+    }
+
+    if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF) {
+        MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
+    }
+
+    MXC_DMA->ch[g_dma_channel_tft].cnt = byte_cnt;
+    MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
+
+    // Enable DMA channel
+    MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+    // Start DMA
+    MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+}
+
 void display_camera(void)
 {
     uint32_t imgLen;
@@ -436,8 +563,14 @@ void display_camera(void)
                     data565[j++] = (rgb >> 8) & 0xFF;
                     data565[j++] = rgb & 0xFF;
                 }
+
+#ifdef BOARD_EVKIT_V1
                 MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
 #else
+        tft_dma_display(0, Y_START + row, TFT_W, 1, (uint32_t *)data565);
+#endif
+
+#else //#ifndef RGB565
 
 #ifdef BOARD_EVKIT_V1
             int j = 0;
@@ -446,12 +579,21 @@ void display_camera(void)
                 data565[j++] = data[k + 1];
                 data565[j++] = data[k];
             }
+#ifdef BOARD_EVKIT_V1
             MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
 #else
-            MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data, w, 1);
+            tft_dma_display(0, Y_START + row, TFT_W, 1, (uint32_t *)data565);
 #endif
 
+#else
+#ifdef BOARD_EVKIT_V1
+            MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data, w, 1);
+#else
+            tft_dma_display(0, Y_START + row, TFT_W, 1, (uint32_t *)data);
 #endif
+#endif
+
+#endif //#ifndef RGB565
             }
 
             LED_Toggle(LED2);
@@ -466,71 +608,4 @@ void display_camera(void)
 
             while (1) {}
         }
-    }
-
-    static uint32_t sum = 0;
-    void dump_cnn(void)
-    {
-        uint32_t *data_addr[12] = { (uint32_t *)0x50400700, (uint32_t *)0x50408700,
-                                    (uint32_t *)0x50410700, (uint32_t *)0x50418700,
-                                    (uint32_t *)0x50800700, (uint32_t *)0x50808700,
-                                    (uint32_t *)0x50810700, (uint32_t *)0x50818700,
-                                    (uint32_t *)0x50c00700, (uint32_t *)0x50c08700,
-                                    (uint32_t *)0x50c10700, (uint32_t *)0x50c18700 };
-
-        printf("\nDUMPING CNN, press PB0 \n");
-
-        while (!PB_Get(0)) {}
-
-        for (int i = 0; i < 12; i++) {
-            for (int j = 0; j < 7744; j += 16) {
-                printf("\n%08X: ", data_addr[i]);
-
-                for (int k = 0; k < 16; k++) {
-                    printf("%08X ", *data_addr[i]);
-                    sum += *data_addr[i];
-                    data_addr[i]++;
-                }
-            }
-
-            printf("\n");
-        }
-
-        printf("SUM: %08X \n", sum);
-
-        while (1) {}
-    }
-
-    void dump_inference(void)
-    {
-        uint32_t *data_addr[16] = {
-            (uint32_t *)0x50400000, (uint32_t *)0x50408000, (uint32_t *)0x50410000,
-            (uint32_t *)0x50418000, (uint32_t *)0x50800000, (uint32_t *)0x50808000,
-            (uint32_t *)0x50810000, (uint32_t *)0x50818000, (uint32_t *)0x50c00000,
-            (uint32_t *)0x50c08000, (uint32_t *)0x50c10000, (uint32_t *)0x50c18000,
-            (uint32_t *)0x51000000, (uint32_t *)0x51008000, (uint32_t *)0x51010000,
-            (uint32_t *)0x51018000,
-        };
-
-        printf("\nDUMPING INFERENCE, press PB0 \n");
-
-        while (!PB_Get(0)) {}
-
-        for (int i = 0; i < 16; i++) {
-            for (int j = 0; j < 7744; j += 16) {
-                printf("\n%08X: ", data_addr[i]);
-
-                for (int k = 0; k < 16; k++) {
-                    printf("%08X ", *data_addr[i]);
-                    sum += *data_addr[i];
-                    data_addr[i]++;
-                }
-            }
-
-            printf("\n");
-        }
-
-        printf("SUM: %08X \n", sum);
-
-        while (1) {}
     }

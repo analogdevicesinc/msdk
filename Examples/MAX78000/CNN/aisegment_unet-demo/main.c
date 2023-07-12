@@ -91,6 +91,11 @@ uint8_t cnn_out_unfolded[INFER_SIZE / 2];
 extern uint8_t data565[IMAGE_XRES * 2];
 extern uint8_t *data;
 extern stream_stat_t *stat;
+extern int g_dma_channel_tft;
+
+void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt);
+void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt);
+
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
@@ -449,12 +454,12 @@ void write_TFT_pixel(int col, unsigned char value)
 {
     if (value == MASK) {
 #ifdef BOARD_EVKIT_V1
-        data[2 * (TFT_W - col)] = COLOR >> 8 & 0xFF;
-        data[2 * (TFT_W - col) + 1] = COLOR & 0xFF;
+        data565[2 * (TFT_W - col)] = COLOR >> 8 & 0xFF;
+        data565[2 * (TFT_W - col) + 1] = COLOR & 0xFF;
 #endif
 #ifdef BOARD_FTHR_REVA
-        data[2 * col] = COLOR >> 8 & 0xFF;
-        data[2 * col + 1] = COLOR & 0xFF;
+        data565[2 * col] = COLOR >> 8 & 0xFF;
+        data565[2 * col + 1] = COLOR & 0xFF;
 #endif
     }
 }
@@ -501,7 +506,7 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
         };
 
 #else
-        memset((uint8_t *)data, 0x00, 2 * w);
+        memset((uint8_t *)data565, 0x00, 2 * w);
 #endif
 
         if (s1 < TFT_H) {
@@ -526,7 +531,6 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
                     data565[j++] = (rgb >> 8) & 0xFF;
                     data565[j++] = rgb & 0xFF;
                 }
-                memcpy((uint8_t *)data, (uint8_t *)data565, 2 * w);
 
 #else //#ifndef RGB565
 
@@ -537,8 +541,9 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
                 data565[j++] = data[k + 1];
                 data565[j++] = data[k];
             }
+#else
 
-            memcpy((uint8_t *)data, (uint8_t *)data565, 2 * w);
+            memcpy((uint8_t *)data565, (uint8_t *)data, 2 * w);
 #endif
 
 #endif //#ifndef RGB565
@@ -571,7 +576,11 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
                     write_TFT_pixel((15 + 16 * s2), (temp[1] & 0x01) >> 0);
                 }
 
-                MXC_TFT_ShowImageCameraRGB565(0, Y_START + s1, data, w, 1);
+#if defined(BOARD_EVKIT_V1) || !defined(USE_CAMERA)
+                MXC_TFT_ShowImageCameraRGB565(0, Y_START + s1, data565, w, 1);
+#else
+            tft_dma_display(0, Y_START + s1, TFT_W, 1, (uint32_t *)data565);
+#endif
             }
 
 #ifdef USE_CAMERA
@@ -672,8 +681,8 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
 #ifdef USE_CAMERA
         // Start getting images from camera and processing them
         printf("Start capturing\n");
-        camera_write_reg(0x11, 0x1);
         camera_start_capture_image();
+        MXC_Delay(MSEC(100));
 #endif
         while (1) {
             LED_Toggle(LED1);
@@ -684,11 +693,6 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
             load_input_serial(); // Load data input from serial port
 #else
         load_input_camera(); // Load data input from camera
-#ifndef BOARD_FTHR_REVA
-        camera_write_reg(0x11, 0x8); // make camera prescaller slower for TFT
-#else
-        camera_write_reg(0x11, 0xB); // make camera prescaller slower for TFT
-#endif
         camera_start_capture_image(); // next frame
 #endif
             t2 = utils_get_time_ms();
@@ -696,11 +700,9 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
             // start inference
             cnn_start(); // Start CNN processing
 
-#if 1 // enable to display the original image
 #ifdef USE_CAMERA
             printf("Display image\n");
             display_camera();
-#endif
 #endif
 
             t3 = utils_get_time_ms();
@@ -714,24 +716,23 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
             //dump_inference();
             t4 = utils_get_time_ms();
 
-            printf("Display mask\n");
-
 #ifdef USE_CAMERA
-            camera_write_reg(0x11, 0xC);
             camera_start_capture_image(); // next frame
 #endif
+
+            printf("Display mask\n");
             cnn_unload_packed(cnn_out_packed);
+
             t5 = utils_get_time_ms();
 
             unfold_display_packed((unsigned char *)cnn_out_packed, cnn_out_unfolded);
 
 #ifndef USE_CAMERA
             send_output(); // send CNN output to UART
+#else
+        camera_start_capture_image();
 #endif
-#ifdef USE_CAMERA
-            camera_write_reg(0x11, 0x1); // make camera prescaller faster for CNN load
-            camera_start_capture_image();
-#endif
+
             t6 = utils_get_time_ms();
             if (PB_Get(0)) {
 #ifdef CNN_INFERENCE_TIMER
