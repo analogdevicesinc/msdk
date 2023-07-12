@@ -1480,11 +1480,13 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
             return E_BAD_STATE;
         }
 
-        // Active HIGH (1).
+        // Active HIGH (1) - Idle LOW (0)
         if (target->active_polarity) {
+            // Set Active state.
             target->pins.port->out_set |= target->pins.mask;
-            // Active LOW (0).
+            // Active LOW (0) - Idle HIGH (1)
         } else {
+            // Set Active state.
             target->pins.port->out_clr |= target->pins.mask;
         }
     }
@@ -1639,12 +1641,14 @@ int MXC_SPI_RevA2_ControllerTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
             return E_BAD_STATE;
         }
 
-        // Active HIGH (1).
+        // Active HIGH (1) - Idle LOW (0)
         if (target->active_polarity) {
-            target->pins.port->out_clr |= target->pins.mask;
-            // Active LOW (0).
-        } else {
+            // Set Active state.
             target->pins.port->out_set |= target->pins.mask;
+            // Active LOW (0) - Idle HIGH (1)
+        } else {
+            // Set Active state.
+            target->pins.port->out_clr |= target->pins.mask;
         }
     }
 
@@ -1945,12 +1949,12 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
         // Active HIGH (1) - Idle LOW (0)
         if (target->active_polarity) {
-            // Set Idle state.
-            target->pins.port->out_clr |= target->pins.mask;
+            // Set Active state.
+            target->pins.port->out_set |= target->pins.mask;
             // Active LOW (0) - Idle HIGH (1)
         } else {
-            // Set Idle state.
-            target->pins.port->out_set |= target->pins.mask;
+            // Set Active state.
+            target->pins.port->out_clr |= target->pins.mask;
         }
     }
 
@@ -2102,8 +2106,7 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
 }
 
 int MXC_SPI_RevA2_TargetTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                    uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
-                                    uint8_t deassert)
+                                    uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
     int spi_num, tx_dummy_fr_len;
 
@@ -2225,8 +2228,7 @@ int MXC_SPI_RevA2_TargetTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffe
 }
 
 int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                       uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
-                                       uint8_t deassert)
+                                       uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
     int spi_num, tx_dummy_fr_len;
     // For readability purposes.

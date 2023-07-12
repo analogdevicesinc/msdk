@@ -6,6 +6,12 @@ SPI1 is setup as the controller (L. Master) in this example and is configured by
 
 Once the controller ends the transaction, the data received by the controller (L. Master) and the target (L. Slave) is compared to the data sent by their counterpart to ensure all bytes were received properly.
 
+This example also demonstrates the feature to use custom Target Selects (TS) for the Controller. The SPI v2 Driver will automatically assert/deassert the custom TS pin during transactions. Set the CUSTOM_TARGET macro to 1 to use the custom target (P0.9). To use the default TS pins, set the CUSTOM_TARGET macro to 0 instead. Note, the TS pin connections must be reconnected depending on the selected CUSTOM_TARGET option.
+
+Target Select (CS) Pin Connections
+- CUSTOM_TARGET (0): Connect (P0.4 to P0.20).
+- CUSTOM_TARGET (1): Connect (P0.9 to P0.20).
+
 ## Software
 
 This example uses the SPI v2 Library. To use the previous SPI library, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
@@ -87,6 +93,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED2 EN).
 -   Connect the SPI pins on headers JH6 and JH9. (P0.4-->P0.20 (CS), P0.5-->P0.21 (MOSI), P0.6-->P0.22 (MISO), and P0.7-->P0.23 (SCK))
+-   If custom target select pin was selected, re-connect the CS pins (P0.9-->P0.20).
 
 ## Expected Output
 

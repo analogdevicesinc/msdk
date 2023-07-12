@@ -54,6 +54,8 @@
 
 #define DMA 0
 
+#define CUSTOM_TARGET 1
+
 #define DATA_LEN 1024 // Words
 #define DATA_SIZE 8
 #define VALUE 0xFF
@@ -61,24 +63,18 @@
 
 #define SPI_CONTROLLER MXC_SPI1
 #define SPI_CONTROLLER_TSIDX 0
-#define SPI_CONTROLLER_IRQ SPI1_IRQn
 #define SPI_TARGET MXC_SPI0
 #define SPI_TARGET_TSIDX 0
 #define SPI_TARGET_IRQ SPI0_IRQn
 
 /***** Globals *****/
-uint16_t controller_rx[DATA_LEN];
-uint16_t controller_tx[DATA_LEN];
-uint16_t target_rx[DATA_LEN];
-uint16_t target_tx[DATA_LEN];
+uint8_t controller_rx[DATA_LEN];
+uint8_t controller_tx[DATA_LEN];
+uint8_t target_rx[DATA_LEN];
+uint8_t target_tx[DATA_LEN];
 uint8_t TX_DMA_CH, RX_DMA_CH;
 
 /***** Functions *****/
-void SPI_Controller_IRQHandler(void)
-{
-    MXC_SPI_AsyncHandler(SPI_CONTROLLER);
-}
-
 void SPI_Target_IRQHandler(void)
 {
     MXC_SPI_AsyncHandler(SPI_TARGET);
@@ -112,6 +108,11 @@ int main(void)
     printf("the data sent by the other instance, then the green LED will illuminate,\n");
     printf("otherwise the red LED will illuminate.\n\n");
 
+#if CUSTOM_TARGET
+    printf("A custom Target Select pin for the Controller (SPI%d) was selected.\n", MXC_SPI_GET_IDX(SPI_CONTROLLER));
+    printf("Please connect the custom TS pin P0.9 to P0.20.\n\n");
+#endif
+
     printf("Press PB1 to begin transaction.\n");
     while (!PB_Get(0)) {}
 
@@ -140,10 +141,11 @@ int main(void)
     // Example to select a custom target.
     mxc_gpio_cfg_t target_pins;
     target_pins.port = MXC_GPIO0;
-    target_pins.mask = MXC_GPIO_PIN_9;
+    target_pins.mask = MXC_GPIO_PIN_12;
     target_pins.func = MXC_GPIO_FUNC_OUT;
     target_pins.pad = MXC_GPIO_PAD_PULL_UP;
-    target_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
+    target_pins.vssel = MXC_GPIO_VSSEL_VDDIO; // Set custom target pin to VDDIOH (3.3V).
+    target_pins.ds = MXC_GPIO_DS_3; // Set custom target pin to VDDIOH (3.3V).
 
     controller_init.ts_control =
         MXC_SPI_TSCONTROL_SW_DRV; // SPI Driver will handle deassertion for TS pins.
@@ -168,9 +170,6 @@ int main(void)
         printf("\nSPI CONTROLLER INITIALIZATION ERROR\n");
         while (1) {}
     }
-
-    MXC_NVIC_SetVector(SPI_CONTROLLER_IRQ, SPI_Controller_IRQHandler);
-    NVIC_EnableIRQ(SPI_CONTROLLER_IRQ);
 
     /***** Configure Target (L. Slave) *****/
     target_init.spi = SPI_TARGET;

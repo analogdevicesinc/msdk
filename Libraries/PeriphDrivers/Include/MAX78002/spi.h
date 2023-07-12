@@ -1036,12 +1036,11 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req);
  * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
  * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
  * @param   rx_fr_len   Number of frames to store in recieve buffer.
- * @param   deassert    True(1)/False(0) whether to deassert target select at end of transactions.
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                              uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert);
+                              uint8_t *rx_buffer, uint32_t rx_fr_len);
 
 /**
  * @brief   Setup a blocking SPI Target transaction.
@@ -1051,12 +1050,11 @@ int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t 
  * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
  * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
  * @param   rx_fr_len   Number of frames to store in recieve buffer.
- * @param   deassert    True(1)/False(0) whether to deassert target select at end of transactions.
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_SPI_TargetTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                              uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert);
+                              uint8_t *rx_buffer, uint32_t rx_fr_len);
 
 /**
  * @brief   Setup a DMA driven SPI Target transaction.
@@ -1071,7 +1069,7 @@ int MXC_SPI_TargetTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
 int MXC_SPI_TargetTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                                 uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert);
+                                 uint8_t *rx_buffer, uint32_t rx_fr_len);
 
 /* ** Handler Functions ** */
 
