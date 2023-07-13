@@ -722,7 +722,6 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
             //dump_inference();
             t4 = utils_get_time_ms();
 
-
             printf("Display mask\n");
             cnn_unload_packed(cnn_out_packed);
 
