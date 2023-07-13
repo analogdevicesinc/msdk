@@ -179,18 +179,15 @@ int ls()
     return err;
 }
 
-int createFile()
+int createFile(char* file_name, unsigned int length)
 {
-    unsigned int length = 128;
+    // unsigned int length = 128;
 
     if (!mounted) {
         mount();
     }
 
-    printf("Enter the name of the text file: \n");
-    scanf("%255s", filename);
-    printf("Enter the length of the file: (%d max)\n", MAXLEN);
-    scanf("%d", &length);
+    strcpy(filename, file_name);
 
     if (length > MAXLEN) {
         printf("Error. File size limit for this example is %d bytes.\n", MAXLEN);
@@ -227,18 +224,14 @@ int createFile()
     return err;
 }
 
-int appendFile()
+int appendFile(char* file_name, unsigned int length)
 {
-    unsigned int length = 0;
 
     if (!mounted) {
         mount();
     }
 
-    printf("Enter name of file to append: \n");
-    scanf("%255s", filename);
-    printf("Enter length of random data to append: (%d max)\n", MAXLEN);
-    scanf("%d", &length);
+    strcpy(filename, file_name);
 
     if ((err = f_stat((const TCHAR *)filename, &fno)) == FR_NO_FILE) {
         printf("File %s doesn't exist!\n", (const TCHAR *)filename);
@@ -275,14 +268,13 @@ int appendFile()
     return err;
 }
 
-int mkdir()
+int mkdir(char* dir_name)
 {
     if (!mounted) {
         mount();
     }
 
-    printf("Enter directory name: \n");
-    scanf("%255s", directory);
+    strcpy(directory, dir_name);
 
     err = f_stat((const TCHAR *)directory, &fno);
 
@@ -304,14 +296,13 @@ int mkdir()
     return err;
 }
 
-int cd()
+int cd(char* dir_name)
 {
     if (!mounted) {
         mount();
     }
 
-    printf("Directory to change into: \n");
-    scanf("%255s", directory);
+    strcpy(directory, dir_name);
 
     if ((err = f_stat((const TCHAR *)directory, &fno)) == FR_NO_FILE) {
         printf("Directory doesn't exist (Did you mean mkdir?)\n");
@@ -330,14 +321,13 @@ int cd()
     return err;
 }
 
-int delete ()
+int delete(char* file_name)
 {
     if (!mounted) {
         mount();
     }
 
-    printf("File or directory to delete (always recursive!)\n");
-    scanf("%255s", filename);
+    strcpy(filename,file_name);
 
     if ((err = f_stat((const TCHAR *)filename, &fno)) == FR_NO_FILE) {
         printf("File or directory doesn't exist\n");

@@ -45,6 +45,8 @@ bool white_space_present(char *p);
 
 bool white_space_not_present(char *p);
 
+char *prev_commands[100];
+int cmd_idx = 0;
 char buf[256];
 /*
  * @name line_accumlator
@@ -84,6 +86,8 @@ void line_accumlator(uint8_t user_char)
             idx = 0;
             char *accum = buf; //Assign buf
             process_command(accum);
+            prev_commands[cmd_idx++] = accum; //Storing the excecuted command into a buffer
+
             break;
         }
         default: {
@@ -125,23 +129,25 @@ void handle_ls(int argc, char *argv[]){
 }
 
 void handle_mkdir(int argc, char *argv[]){
-    mkdir();
+    mkdir(argv[1]);
 }
 
 void handle_createfile(int argc, char *argv[]){
-    createFile();
+    unsigned int length = str_to_dec(argv[2]);
+    createFile(argv[1],length);
 }
 
 void handle_cd(int argc, char *argv[]){
-    cd();
+    cd(argv[1]);
 }
 
 void handle_add_data(int argc, char *argv[]){
-    appendFile();
+    unsigned int length = str_to_dec(argv[2]);
+    appendFile(argv[1],length);
 }
 
 void handle_del(int argc, char *argv[]){
-    delete();
+    delete(argv[1]);
 }
 
 void handle_fatfs(int argc, char *argv[]){
@@ -339,4 +345,26 @@ bool white_space_present(char *p){
  */
 bool white_space_not_present(char *p){
 	return *p != SPACE || *p != TAB;
+}
+
+
+int str_to_dec(const char *str)
+{
+    int val = 0;
+
+    // Loop through each character in the string
+    for (int i = 0; str[i] != '\0'; i++) {
+        char c = str[i];
+
+        // Check if the character is a valid hexadecimal digit
+        if (isdigit(c)) {
+            val = (val * 10) + (c - '0');
+        // } else if (isxdigit(c)) {
+        //     val = (val << 4) + (toupper(c) - 'A' + 10);
+        } else {
+            // Invalid character
+            return -1;
+        }
+    }
+    return val;
 }

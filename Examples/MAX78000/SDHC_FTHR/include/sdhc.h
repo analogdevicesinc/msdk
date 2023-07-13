@@ -69,15 +69,15 @@ int getSize();
 
 int ls();
 
-int createFile();
+int createFile(char* file_name, unsigned int length);
 
-int appendFile();
+int appendFile(char* file_name, unsigned int length);
 
-int mkdir();
+int mkdir(char* dir_name);
 
-int cd();
+int cd(char* dir_name);
 
-int delete();
+int delete(char* file_name);
 
 int example();
 

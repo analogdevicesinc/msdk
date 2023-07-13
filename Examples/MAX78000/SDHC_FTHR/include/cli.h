@@ -109,6 +109,8 @@ void handle_help(int argc, char *argv[]);
 
 void process_command(char *input);
 
+int str_to_dec(const char *str);
+
 /*
  * This table is an array of command_table_t structures that defines a set of supported commands in the program.
  * Each command_table_t structure contains the name of the command, a function pointer to the corresponding command handler function,
