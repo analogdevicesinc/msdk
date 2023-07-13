@@ -45,7 +45,8 @@ bool white_space_present(char *p);
 
 bool white_space_not_present(char *p);
 
-char *prev_commands[100];
+char *cmd_history_str[100];
+// int cmd_history_len[100];
 int cmd_idx = 0;
 char buf[256];
 /*
@@ -83,12 +84,41 @@ void line_accumlator(uint8_t user_char)
             MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),ENTER);
             buf[idx++] = '\r';
             buf[idx] = '\0';
+
+            // cmd_history_len[cmd_idx] = idx;     //Storing the length of the command into an array
+            cmd_history_str[cmd_idx++] = buf; //Storing the excecuted command into a buffer
             idx = 0;
             char *accum = buf; //Assign buf
             process_command(accum);
-            prev_commands[cmd_idx++] = accum; //Storing the excecuted command into a buffer
-
             break;
+        }
+        case ARROW_KEY_CODE_LEFT: 
+        case ARROW_KEY_CODE_RIGHT: 
+        case ARROW_KEY_CODE_UP:
+        case ARROW_KEY_CODE_DOWN:{
+            // Check the sequence to see if one of the arrow keys were pressed
+            if (buf[idx] == ARROW_KEY_CODE_2 && buf[idx - 1] == ARROW_KEY_CODE_1){
+                MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
+                MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
+
+                if(user_char == ARROW_KEY_CODE_UP && cmd_idx > 0){
+                    //Erase what's currently on the prompt
+                    //MXC_UART_Write(MXC_UART_GET_UART(CONSOLE_UART), )
+                    MXC_UART_Write(MXC_UART_GET_UART(CONSOLE_UART),cmd_history_str[--cmd_idx],strlen(cmd_history_str[cmd_idx]));
+
+                    //Empty current value of buf and assign respective cmd_history_str
+                    idx = strlen(cmd_history_str[cmd_idx]);
+
+                }
+            }
+            // This else statement is excecuted when the arrow keys weren't pressed and the user entered W,A,S or D keys
+            else {
+                if (idx < 255) {
+                buf[idx++] = user_char; //pushes characters into the buffer
+                MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),user_char);
+            }
+            break;
+            }
         }
         default: {
             // Handle all other characters
@@ -116,6 +146,17 @@ void handle_size(int argc, char *argv[]){
     getSize();
 }
 
+/*
+ * @name handle_format
+ *
+ * @brief han
+ *
+ * @param argc and *argv[]
+ *
+ *
+ * @return
+ * 		   void
+ */
 void handle_format(int argc, char *argv[]){
     formatSDHC();
 }
@@ -169,40 +210,6 @@ void handle_help(int argc, char *argv[])
 		printf("%s --> %s", commands[i].name, commands[i].help_string);
 }
 
-/* @name handle_sp
- *
- * @brief: Prints the current stack pointer in hex which is fetched from the MSP [Main stack pointer register]
- */
-// void handle_sp(int argc, char *argv[])
-// {
-// 	  uint32_t *msp;
-// 	  asm("mrs %0, msp" : "=r" (msp)); // inline assembly to read the MSP (Main Stack Pointer) register of the Cortex-M4 processor and store its value in the msp variable.
-// 	  printf("\n\rStack Pointer (MSP): %08x\n\r", (unsigned int)msp); //The value of the msp variable is then printed to the terminal using printf()
-// }
-
-/* @name handle_dump
- *
- * @brief: Prints a hexdump of the memory requested, with up to 8 bytes per line of output.
- */
-// void handle_dump(int argc, char *argv[])
-// {
-//     printf("invalid command\n\r");
-// 	hexdump(argv[1], argv[2]);
-// }
-
-/* @name handle_info
- *
- * @brief: Prints a string with build information that is dynamically generated at build time from your machine.
- * 			Referencing macros defined in the makefile.def file
- *
- */
-// void handle_info(int argc, char *argv[])
-// {
-// 	printf("\n\rVersion");
-// 	// printf("built on %s", MACHINE);
-// 	// printf(" at %s\n\r", DATE_TIME);
-// 	// printf("Commit %s\n\r", COMMIT_HASH);
-// }
 /*
  * @name process_command
  *
@@ -316,7 +323,7 @@ void process_command(char *input)
     }
 
     //Print prompt
-    //printf("$$ ");
+    user_prompt_sequence();
 }
 /*
  * @name white_space_present
@@ -347,7 +354,17 @@ bool white_space_not_present(char *p){
 	return *p != SPACE || *p != TAB;
 }
 
-
+/*
+*
+* @name str_to_dec
+*
+* @brief Converts a string into an integer
+*
+* @param const char *str
+*
+* @return int
+*           converted integer 
+*/
 int str_to_dec(const char *str)
 {
     int val = 0;
@@ -356,15 +373,19 @@ int str_to_dec(const char *str)
     for (int i = 0; str[i] != '\0'; i++) {
         char c = str[i];
 
-        // Check if the character is a valid hexadecimal digit
+        // Check if the character is a valid decimal digit
         if (isdigit(c)) {
             val = (val * 10) + (c - '0');
-        // } else if (isxdigit(c)) {
-        //     val = (val << 4) + (toupper(c) - 'A' + 10);
         } else {
             // Invalid character
             return -1;
         }
     }
     return val;
+}
+
+void user_prompt_sequence(void)
+{
+    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),DOLLAR);
+    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),SPACE);
 }

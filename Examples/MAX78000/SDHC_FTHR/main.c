@@ -133,6 +133,7 @@ int main(void)
     }
     
     printf("-->UART Initialized\n\n");
+    user_prompt_sequence();
 
     read_req.uart = MXC_UART_GET_UART(CONSOLE_UART);
     read_req.rxData = &RxData;

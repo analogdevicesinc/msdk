@@ -58,13 +58,20 @@
 /* -------------------------------------------------- */
 //                      MACROS
 /* -------------------------------------------------- */
-#define ENTER 0X0D
-#define NEW_LINE 0x0A
-#define SPACE 0x20
-#define TAB 0x09
-#define BACKSPACE 0X08
-#define MAXBUFF 2000
-#define DELETE 0x7F
+#define ENTER                   0X0D
+#define NEW_LINE                0x0A
+#define SPACE                   0x20
+#define TAB                     0x09
+#define BACKSPACE               0X08
+#define MAXBUFF                 2000
+#define DELETE                  0x7F
+#define ARROW_KEY_CODE_1        0x1B
+#define ARROW_KEY_CODE_2        0x5B
+#define ARROW_KEY_CODE_LEFT     0x44
+#define ARROW_KEY_CODE_RIGHT    0x43
+#define ARROW_KEY_CODE_UP       0x41
+#define ARROW_KEY_CODE_DOWN     0x42
+#define DOLLAR                  0x24
 
 void line_accumlator(uint8_t user_char);
 
@@ -110,6 +117,8 @@ void handle_help(int argc, char *argv[]);
 void process_command(char *input);
 
 int str_to_dec(const char *str);
+
+void user_prompt_sequence(void);
 
 /*
  * This table is an array of command_table_t structures that defines a set of supported commands in the program.
