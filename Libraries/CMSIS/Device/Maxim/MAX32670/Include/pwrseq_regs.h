@@ -187,9 +187,6 @@ typedef struct {
 #define MXC_F_PWRSEQ_LPCN_ERTCO_EN_POS                 29 /**< LPCN_ERTCO_EN Position */
 #define MXC_F_PWRSEQ_LPCN_ERTCO_EN                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_ERTCO_EN_POS)) /**< LPCN_ERTCO_EN Mask */
 
-#define MXC_F_PWRSEQ_LPCN_ERTCO_PD_POS                 31 /**< LPCN_ERTCO_PD Position */
-#define MXC_F_PWRSEQ_LPCN_ERTCO_PD                     ((uint32_t)(0x1UL << MXC_F_PWRSEQ_LPCN_ERTCO_PD_POS)) /**< LPCN_ERTCO_PD Mask */
-
 /**@} end of group PWRSEQ_LPCN_Register */
 
 /**

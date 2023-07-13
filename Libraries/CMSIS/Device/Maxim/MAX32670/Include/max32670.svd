@@ -6215,12 +6215,6 @@
        <bitOffset>29</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
-      <field>
-       <name>ERTCO_PD</name>
-       <description>ERTCO Powerdown.</description>
-       <bitOffset>31</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
      </fields>
     </register>
     <register>
