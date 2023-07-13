@@ -56,9 +56,11 @@ LWIP_LIBRARY_FILE = $(LWIP_BUILD_DIR)/$(LWIP_LIBRARY_NAME).a
 # Add to library list
 LIBS += $(LWIP_LIBRARY_FILE)
 
-# Add source files for the library
+# Add include paths to the build.  This file is used to add lwIP as a library,
+# so we just need to add relevant include paths...
 include ${LWIP_DIR}/lwip_files.mk
 IPATH += ${LWIP_INCLUDE_DIR}
+# ... ^ here
 
 # Export other variables needed by the peripheral driver makefile
 export TARGET
@@ -67,10 +69,6 @@ export TARGET_MAKEFILE
 export PROJ_CFLAGS
 export PROJ_LDFLAGS
 export MXC_OPTIMIZE_CFLAGS
-
-# export LWIP_DIR
-# export LWIP_LIB
-export LWIP_BUILD_DIR
 
 # Add rule to build the Driver Library
 ${LWIP_BUILD_DIR}/${LWIP_LIBRARY_NAME}.a: ${LWIP_C_FILES} ${LWIP_H_FILES}

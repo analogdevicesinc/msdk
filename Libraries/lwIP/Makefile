@@ -50,7 +50,8 @@ endif
 
 include ${LWIP_DIR}/lwip_files.mk
 
-# # Where to find header files for this project
+# Add library files to the build.  Since this file drives the
+# actual build of the library, we add them to IPATH, SRCS, and VPATH.
 IPATH += $(LWIP_INCLUDE_DIR)
 SRCS  += $(LWIP_C_FILES)
 VPATH += $(dir $(SRCS))
