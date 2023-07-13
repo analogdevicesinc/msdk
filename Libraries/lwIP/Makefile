@@ -31,25 +31,9 @@
  #
  ###############################################################################
 
-# This is the name of the build output file
-PROJECT_NAME=liblwip
-
-# Specify the project variant.
-ifeq "$(MFLOAT_ABI)" "hardfp"
-PROJECT_VARIANT=hardfp
-else
-ifeq "$(MFLOAT_ABI)" "hard"
-PROJECT_VARIANT=hardfp
-else
-PROJECT_VARIANT=softfp
-endif
-endif
-
-# Use these to specify the project.
-ifeq "$(PROJECT_VARIANT)" ""
-PROJECT=$(PROJECT_NAME)
-else
-PROJECT=$(PROJECT_NAME)_$(PROJECT_VARIANT)
+ifeq "$(LWIP_DIR)" ""
+# If the location of the library is not specified, this Makefile will locate itself.
+LWIP_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 endif
 
 ifeq "$(TARGET)" ""
@@ -60,22 +44,11 @@ TARGET_UC:=$(shell echo $(TARGET) | tr a-z A-Z)
 TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
 $(info $(TARGET_UC))
 
-
 ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
 
-
-ifeq "$(BUILD_DIR)" ""
-BUILD_DIR=./Build
-endif
-
-# This is the path to the CMSIS root directory
-ifeq "$(CMSIS_ROOT)" ""
-CMSIS_ROOT=../CMSIS
-endif
-
-include ${CMSIS_ROOT}/../lwIP/lwip_files.mk
+include ${LWIP_DIR}/lwip_files.mk
 
 # # Where to find header files for this project
 IPATH += $(LWIP_INCLUDE_DIR)
