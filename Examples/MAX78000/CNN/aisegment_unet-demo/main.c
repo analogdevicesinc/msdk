@@ -682,7 +682,6 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
         // Start getting images from camera and processing them
         printf("Start capturing\n");
         camera_start_capture_image();
-        MXC_Delay(MSEC(100));
 #endif
         while (1) {
             LED_Toggle(LED1);
@@ -693,6 +692,13 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
             load_input_serial(); // Load data input from serial port
 #else
         load_input_camera(); // Load data input from camera
+
+#ifdef BOARD_FTHR_REVA
+        camera_write_reg(0x11, 0x3); // change camera clock prescaler
+#endif
+#ifdef BOARD_EVKIT_V1
+        camera_write_reg(0x11, 0x5); // change camera clock prescaler
+#endif
         camera_start_capture_image(); // next frame
 #endif
             t2 = utils_get_time_ms();
@@ -716,20 +722,21 @@ void unfold_display_packed(unsigned char *in_buff, unsigned char *out_buff)
             //dump_inference();
             t4 = utils_get_time_ms();
 
-#ifdef USE_CAMERA
-            camera_start_capture_image(); // next frame
-#endif
 
             printf("Display mask\n");
             cnn_unload_packed(cnn_out_packed);
 
             t5 = utils_get_time_ms();
 
+#ifdef USE_CAMERA
+            camera_start_capture_image(); // next frame
+#endif
             unfold_display_packed((unsigned char *)cnn_out_packed, cnn_out_unfolded);
 
 #ifndef USE_CAMERA
             send_output(); // send CNN output to UART
 #else
+        camera_write_reg(0x11, 0x1); // change camera clock prescaler
         camera_start_capture_image();
 #endif
 

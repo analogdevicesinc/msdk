@@ -109,13 +109,8 @@ int initialize_camera(void)
     MXC_Delay(SEC(1));
 
 #if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
-    // set camera clock prescaller to prevent streaming overflow due to TFT display latency
-#ifdef BOARD_EVKIT_V1
-    camera_write_reg(0x11, 0x5);
-#endif
-#ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x11, 0x3);
-#endif
+    // set camera clock prescaler to prevent streaming overflow due to TFT display latency
+    camera_write_reg(0x11, 0x1);
 #endif
 
     // make the scale ratio of camera input size the same as output size, make is faster and regular
