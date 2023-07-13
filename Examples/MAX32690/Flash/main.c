@@ -54,7 +54,7 @@
 #include "pb.h"
 
 /***** Definitions *****/
-#define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
+#define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH0_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
 /*
     ^ Points to last page in flash, which is guaranteed to be unused by this small example.
     For larger applications it's recommended to reserve a dedicated flash region by creating
@@ -177,22 +177,20 @@ int write_test_pattern()
 
 int validate_test_pattern()
 {
-    int err = 0;
-
     printf("Verifying test pattern...\n");
     uint32_t readval = 0;
     for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
         MXC_FLC_Read(addr, &readval, 4);
         if (readval != TEST_VALUE) {
             printf(
-                "Failed verification at address 0x%x with error code %i!  Expected: 0x%x\tRead: 0x%x\n",
-                addr, err, TEST_VALUE, readval);
+                "Failed verification at address 0x%x!  Expected: 0x%x\tRead: 0x%x\n",
+                addr, TEST_VALUE, readval);
             return E_ABORT;
         }
     }
 
     printf("Successfully verified test pattern!\n\n");
-    return err;
+    return E_NO_ERROR;
 }
 
 int erase_magic()
@@ -241,8 +239,11 @@ int main(void)
     int err = 0;
 
     printf("\n\n***** Flash Control Example *****\n");
+#if defined(EvKit_V1)
     printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
-
+#else
+    printf("Press Push Button 1 (PB1/SW3) to continue...\n\n");
+#endif
     PB_RegisterCallback(0, (pb_callback)button_handler);
 
     while (!button_pressed) {
