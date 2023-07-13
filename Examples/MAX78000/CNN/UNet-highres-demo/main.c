@@ -77,6 +77,11 @@ uint8_t cnn_out_unfolded[INFER_SIZE];
 extern uint8_t data565[IMAGE_XRES * 2];
 extern uint8_t *data;
 extern stream_stat_t *stat;
+extern int g_dma_channel_tft;
+
+void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt);
+void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt);
+
 void fail(void)
 {
     printf("\n*** FAIL ***\n\n");
@@ -586,16 +591,16 @@ void unfold_display_packed_fast(unsigned char *in_buff, unsigned char *out_buff)
 #endif
         }
 
-        if (s1 < TFT_H) // limit to display height
-#ifdef BOARD_FTHR_REVA
-            MXC_TFT_ShowImageCameraRGB565(0, s1, (uint8_t *)&mask_line[0], TFT_W,
-                                          1); // limit to display width
+        if (s1 < TFT_H) { // limit to display height
+
+#if defined(BOARD_EVKIT_V1) || !defined(USE_CAMERA)
+            MXC_TFT_ShowImageCameraRGB565(
+                0, s1, (uint8_t *)&mask_line[352 - TFT_W], TFT_W,
+                1); // limit to display width, offset=(352-TFT_W) due to reverse order
+#else
+            tft_dma_display(0, s1, TFT_W, 1, (uint32_t *)&mask_line[0]);
 #endif
-#ifdef BOARD_EVKIT_V1
-        MXC_TFT_ShowImageCameraRGB565(
-            0, s1, (uint8_t *)&mask_line[352 - TFT_W], TFT_W,
-            1); // limit to display width, offset=(352-TFT_W) due to reverse order
-#endif
+        }
     }
 }
 
@@ -675,7 +680,6 @@ int main(void)
 #ifdef USE_CAMERA
     // Start getting images from camera and processing them
     printf("Start capturing\n");
-    camera_write_reg(0x11, 0x1);
     camera_start_capture_image();
 #endif
 
@@ -688,11 +692,14 @@ int main(void)
         load_input_serial(); // Load data input from serial port
 #else
         load_input_camera(); // Load data input from camera
-#ifndef BOARD_FTHR_REVA
-        camera_write_reg(0x11, 0x8); // make camera prescaller slower for TFT
-#else
-        camera_write_reg(0x11, 0xB); // make camera prescaller slower for TFT
+
+#ifdef BOARD_FTHR_REVA
+        camera_write_reg(0x11, 0x3); // change camera clock prescaler
 #endif
+#ifdef BOARD_EVKIT_V1
+        camera_write_reg(0x11, 0x5); // change camera clock prescaler
+#endif
+
         camera_start_capture_image(); // next frame
 #endif
 
@@ -700,13 +707,12 @@ int main(void)
 
         cnn_start(); // Start CNN processing
 
-#if 1 // enable to display the original image
 #ifdef USE_CAMERA
         printf("Display image\n");
         display_camera();
-        camera_write_reg(0x11, 0x0); // make camera prescaller faster for CNN load
+        camera_write_reg(0x11, 0x0); // added to make the frame end faster
 #endif
-#endif
+
         t3 = utils_get_time_ms();
         SCB->SCR &= ~SCB_SCR_SLEEPDEEP_Msk; // SLEEPDEEP=0
 
@@ -731,7 +737,7 @@ int main(void)
         send_output(); // send CNN output to UART
 #endif
 #ifdef USE_CAMERA
-        camera_write_reg(0x11, 0x1); // make camera prescaller faster for CNN load
+        camera_write_reg(0x11, 0x1); // make camera prescaler faster for CNN load
         camera_start_capture_image();
 #endif
 
