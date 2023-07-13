@@ -1,0 +1,22 @@
+{
+    "name":"lwIP",
+    "ipaths":[
+        "include",
+        "include/Maxim"
+    ],
+    "vpaths":[
+        "Maxim",
+        "netif",
+        "core",
+        "api"
+    ],
+    "whitelist":"True",
+    "targets":[
+        {
+            "name":"MAX32570"
+        },
+        {
+            "name":"MAX32572"
+        }
+    ]
+}
