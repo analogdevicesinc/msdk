@@ -505,6 +505,7 @@ void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt)
 
     // Enable DMA channel
     MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+    MXC_Delay(1); // to fix artifacts in the image
     // Start DMA
     MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
 }

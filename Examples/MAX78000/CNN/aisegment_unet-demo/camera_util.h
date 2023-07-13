@@ -33,7 +33,7 @@
 #ifndef __CAMERA_UTIL_H__
 #define __CAMERA_UTIL_H__
 
-#define CAMERA_FREQ (8.330*1000*1000) // (10 * 1000 * 1000)
+#define CAMERA_FREQ (8.330*1000*1000)
 
 #define BYTE_PER_PIXEL 2
 
