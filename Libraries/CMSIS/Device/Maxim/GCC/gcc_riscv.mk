@@ -36,6 +36,12 @@ ifeq "$(BUILD_DIR)" ""
 BUILD_DIR=$(CURDIR)/buildrv
 endif
 
+# Make sure VPATH has the location of any absolute paths given to SRCS
+# This allows users to specify SRCS += /absolute/path/to/file.c to add a single file to the build
+# without also having to add VPATH += /absolute/path/to
+# This is necessary because we create our object file definitions with OBJS_NOPATH.
+VPATH += $(sort $(abspath $(dir $(SRCS))))
+
 # Create output object file names
 SRCS_NOPATH := $(foreach NAME,$(SRCS),$(basename $(notdir $(NAME))).c)
 OBJS_NOPATH := $(SRCS_NOPATH:.c=.o)
