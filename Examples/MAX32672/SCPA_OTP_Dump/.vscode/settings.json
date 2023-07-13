@@ -38,7 +38,6 @@
     "C_Cpp.default.includePath": [
         "${workspaceFolder}",
         "${workspaceFolder}/**",
-        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Include",
         "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Include",
         "${config:MAXIM_PATH}/Libraries/CMSIS/Device/Maxim/${config:target}/Include",
         "${config:MAXIM_PATH}/Libraries/CMSIS/Include",
@@ -58,7 +57,6 @@
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
-        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
         "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source",
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
