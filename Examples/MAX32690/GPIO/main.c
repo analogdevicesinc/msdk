@@ -87,7 +87,7 @@ int main(void)
     		MXC_GPIO_GET_IDX(MXC_GPIO_PORT_IN));
 #if defined(EvKit_V1)
     printf("2. A falling edge interrupt is set up on P2.11. P2.12 toggles when\n");
-	printf("   that interrupt occurs.\n\n");
+    printf("   that interrupt occurs.\n\n");
     printf("Connect P4.0->P2.11 to use SW2 to trigger a falling edge interrupt\n");
     printf("on each press.\n");
 

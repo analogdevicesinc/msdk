@@ -182,9 +182,8 @@ int validate_test_pattern()
     for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
         MXC_FLC_Read(addr, &readval, 4);
         if (readval != TEST_VALUE) {
-            printf(
-                "Failed verification at address 0x%x!  Expected: 0x%x\tRead: 0x%x\n",
-                addr, TEST_VALUE, readval);
+            printf("Failed verification at address 0x%x!  Expected: 0x%x\tRead: 0x%x\n", addr,
+                   TEST_VALUE, readval);
             return E_ABORT;
         }
     }

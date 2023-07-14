@@ -201,7 +201,7 @@ int main(void)
     MXC_NVIC_SetVector(GPIOWAKE_IRQn, GPIO4_Handler);
 #else
     PRINT("This code cycles through the MAX32690 power modes. Use push button (SW2)\nto exit from "
-              "each power mode and enter the next.\n\n");
+          "each power mode and enter the next.\n\n");
 #endif
     PB_RegisterCallback(0, buttonHandler);
     PB_IntEnable(0);

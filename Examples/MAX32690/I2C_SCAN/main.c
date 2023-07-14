@@ -62,7 +62,7 @@ int main()
     printf("\nsame bus as I2C0 (SDA - P2.7, SCL - P2.8).");
 #if defined(EvKit_V1)
     printf("\nSelect the proper voltage for the I2C0 pullup resistors using jumper JP2 ");
-	printf("\nand enable them by installing jumpers JP3 and JP4.");
+    printf("\nand enable them by installing jumpers JP3 and JP4.");
 #endif
 
     int error;

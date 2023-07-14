@@ -259,7 +259,7 @@ int main(void)
            "lptimer in oneshot mode thereafter.\n\n");
 #else
     printf("Push SW3 to start the PWM and continuous timers initially. Then\nuse SW3 to run the "
-               "lptimer in oneshot mode thereafter.\n\n");
+           "lptimer in oneshot mode thereafter.\n\n");
 #endif
 
     // Wait until button press to start PWM and continuous timers
