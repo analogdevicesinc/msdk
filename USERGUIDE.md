@@ -78,7 +78,7 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 ---
 
-* [**MAX32662**](https://www.analog.com/en/products/max32662.html)
+* [**MAX32662**](https://www.analog.com/en/products/max32662.html): Arm Cortex-M4 Processor with FPU-Based Microcontroller (MCU) with 256KB Flash and 80KB SRAM
 
     - [MAX32662EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32662EVKIT.html)
 
