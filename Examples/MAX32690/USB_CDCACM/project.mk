@@ -14,3 +14,5 @@ SBT=0
 
 # Enable MAXUSB library
 LIB_MAXUSB = 1
+BOARD = FTHR_APPS_P1
+MAXIM_PATH = C:\Proj\msdk
