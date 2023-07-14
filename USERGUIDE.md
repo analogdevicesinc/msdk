@@ -162,11 +162,11 @@ The MSDK officially supports the following microcontrollers and evaluation platf
     - Supported shells (Windows)
         - [MSYS2](https://www.msys2.org/)
 
-    -Supported shells (Ubuntu)
+    - Supported shells (Ubuntu)
         - [Bash](https://tiswww.case.edu/php/chet/bash/bashtop.html)
         - [Zsh](https://www.zsh.org/)
 
-    -Supported shells (MacOS)
+    - Supported shells (MacOS)
         - [Zsh](https://www.zsh.org/)
 
 ### Supported Languages
@@ -181,15 +181,14 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 - **Elevated/Administrator rights**
 
-??? warning "**⚠️ MacOS**"
+- ???+ warning "**⚠️ MacOS**"
     On MacOS, please also download and install [Homebrew](https://brew.sh/).  It will be used in [Completing the Installation on MacOS](#completing-the-installation-on-macos) later on.
 
-??? warning "**⚠️ Ubuntu**"
-
+- ???+ warning "**⚠️ Ubuntu**"
     Several GUI packages are required by the QT installer framework _even on headless systems_.  Run the following command _before_ running the installer to retrieve them.
 
-        :::shell
-        sudo apt update && sudo apt install libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
+            :::shell
+            sudo apt update && sudo apt install libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
 
 ### Download
 
@@ -199,14 +198,13 @@ The MSDK installer is available for supported Operating Systems from the downloa
 
 - [**Linux (Ubuntu)**](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720B)
 
-    ???+ note "ℹ️ **Note:**"
+    - ???+ note "ℹ️ **Note**"
         This file must be made executable before running (`chmod +x MaximMicrosSDK_linux.run`). Alternatively, set `Allow executing as program" in the Ubuntu GUI.
-
         ![Figure 1](res/Fig1.jpg)
 
 - [**MacOS**](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610B)
 
-    ???+ note "ℹ️ **Note:**"
+    - ???+ note "ℹ️ **Note**"
         On MacOS, the installer is distributed inside a .dmg disk image file. Double-click the downloaded file to mount it. Afterward, the installer executable will be made available inside the mounted drive.
 
 ### Setup
@@ -238,17 +236,19 @@ The MSDK installer can be run through a [**GUI Installation**](#gui-installation
     ![Figure 8](res/Fig8.jpg)
 
 7. You should now see the contents of the installation directory populated with the MSDK.  
-    ??? note "ℹ️ **Note:**"
-        On MacOS, some [additional steps](#completing-the-installation-on-macos) are required.
 
-        ![Figure 10](res/Fig10.jpg)
+    ![Figure 10](res/Fig10.jpg)
+
+    ???+ warning "⚠️ **Warning**"
+        On MacOS, some [_additional steps_](#completing-the-installation-on-macos) are required.
+
 
 #### Command-Line Installation
 
 The MSDK installer features a command-line interface that can be used as an alternative to its GUI.  This is useful for installations on "headless" systems and scripting.
 
 ??? note "ℹ️ **Note:**" The `--help` Command"
-    The available commands can be retrieved by running the executable with the `--help` option on the command line.  For example:
+    The available commands can be retrieved by running the MSDK installer executable with the `--help` option on the command line.  For example:
 
         :::shell
         $ ./MaximMicrosSDK_linux.run --help
@@ -286,7 +286,7 @@ To run a _headless_ installation:
     ???+ note "Ubuntu and MacOS"
         Ensure you have `sudo` rights.
 
-3. Run the installer with the arguments `in --root <install location>`.
+3. Run the installer with the arguments `in --root <install location>`
 
     ???+ note "Windows"
             :::shell
@@ -309,7 +309,7 @@ To run a _headless_ installation:
         :::shell
         sudo chown -R $(whoami):$(whoami) <MSDK installation folder>
 
-    ??? note "ℹ️ **Note**"
+    ??? note "ℹ️ **Note: Folder Ownership**"
         Usually, running the installation with `sudo` results in an installation owned by the `root` user.
 
         You can verify this with the `ls -la` command.
@@ -337,9 +337,9 @@ To run a _headless_ installation:
             -rwxrwxrwx   1 root     root         1129 Jun 29 00:47 setenv.sh
             -rwxrwxrwx   1 root     root          300 Jun 29 00:47 updates.sh
 
-        The owner of the MSDK installation should be changed back to the normal user, otherwise the toolchain may behave inconsistently against file permission issues.
+        The owner of the MSDK installation should be changed back to the normal user with the command above.  Otherwise, the toolchain may behave inconsistently against file permission issues.
 
-        After running the command above, `ls -la` should looking something like:
+        Once complete, `ls -la` should look similar to below (where `username` is your username).
 
             :::shell
             ls -la ~/MaximSDK
@@ -363,6 +363,8 @@ To run a _headless_ installation:
             -rw-r--r--   1 username     username          362 Jul 13 20:41 network.xml
             -rwxrwxrwx   1 username     username         1129 Jun 29 00:47 setenv.sh
             -rwxrwxrwx   1 username     username          300 Jun 29 00:47 updates.sh
+
+    
     
 #### Completing the Installation on MacOS
 
@@ -502,7 +504,7 @@ Users can obtain development copies of the MSDK resources from [Github](https://
 
 The MSDK is designed for both evaluation and end-application development. The typical **evaluation** cycle usually involves setting up the development environment, running demos, and exercising the peripheral driver API on an _evaluation platform_. The typical **development** cycle typically involves building a prototype application on an _evaluation platform_ first, then porting the application to a custom board. This section describes how to get started with the MSDK focusing on the _evaluation_ cycle.
 
-**First**, review the [Key Concepts](#key-concepts) below.  Then, proceed to the section for your preferred IDE. Each sub-section is written as a self-contained quick-start with links to additional documentation on important topics.
+**First**, review the [**Key Concepts**](#key-concepts) below.  Then, proceed to the section for your preferred IDE. Each sub-section is written as a self-contained quick-start with links to additional documentation on important topics.
 
 - [Getting Started with Visual Studio Code](#getting-started-with-visual-studio-code)
 - [Getting Started with Eclipse](#getting-started-with-eclipse)
@@ -516,15 +518,25 @@ The MSDK supports multiple development environments with different features that
 
     For example, if the [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html) _or_ [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html) is being used, the _Target Microcontroller_ is the MAX78000.
 
+---
+
 - **Board Support Package (BSP)**:  The MSDK supports evaluation platforms for target microcontrollers with _Board Support Packages_.  For microcontrollers with multiple evaluation platforms, multiple BSPs are available. These can be found in the `Libraries/Boards` folder of the MSDK installation.
 
     By default, most projects in the MSDK come pre-configured for the "EVKIT"-type BSP, which is generally the largest evaluation platform for that device with most (or all) pins broken out. It's important to note that the active BSP may need to be reconfigured for a project, which is done slightly differently for each development environment.
 
+---
+
 - **System Environment**:  Your system's _environment_ is a broad term that encapsulates the programs and variables available to your system's shell on the command line. The user is expected to have some basic familiarity with this concept.
+
+---
 
 - **System Path**:  Your system's _Path_ is a unique environment variable that tells it where to search for program binaries. The user is expected to be familiar with this concept and how to modify the system Path if necessary.
 
+---
+
 - **Integrated Development Environment (IDE)**:  An IDE offers a higher-level user interface (typically with a GUI) that manages the tools for **editing** source code, **building** source code, **flashing** program binaries, and **debugging**. The abbreviation is frequently used in this document, and the MSDK supports _multiple_ IDEs that can be used depending on preference. (See ["Supported Development Environments"](#supported-development-environments))
+
+---
 
 - **Build Configuration vs. Project Configuration**: An MSDK project is comprised of two complementary systems:  The _Build System_ and the _Integrated Development Environment (IDE)_. These systems each offer their own configuration interfaces, and it's important to note what each is used for.
 
@@ -540,7 +552,9 @@ The MSDK supports multiple development environments with different features that
 
 The MSDK includes Visual Studio Code ("VS Code") support through the [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim) project.
 
-This section walks through setup, opening, and running an example project with VS Code. This material is also available in video form targeting the MAX78000 in ["Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code"](https://www.analog.com/en/education/education-library/videos/6313212752112.html). For complete documentation, see the [Visual Studio Code](#visual-studio-code) section of this User Guide.
+This section walks through setup, opening, and running an example project with VS Code. This material is also available in video form targeting the MAX78000 in ["Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code"](https://www.analog.com/en/education/education-library/videos/6313212752112.html). 
+
+For complete documentation, see the [Visual Studio Code](#visual-studio-code) section of this User Guide.
 
 #### Setup (VS Code)
 
@@ -552,13 +566,15 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
 3. Install the Microsoft [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-4. Use **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS) to open the developer prompt.
+4. Install the [Cortex-Debug extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
 
-5. Type "open user settings" and select the **"Preferences: Open User Settings (JSON)"** option.
+5. Use **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS) to open the developer prompt.
+
+6. Type "open user settings" and select the **"Preferences: Open User Settings (JSON)"** option.
 
     ![Open Settings JSON Command](res/Fig42.jpg)
 
-6. Add the entries below to your user settings.json file.  **Change the `MAXIM_PATH` option to point to the MSDK installation**.
+7. Add the entries below to your user settings.json file.
 
         :::json
         // There may be other settings up here...        
@@ -569,9 +585,14 @@ The setup below only needs to be done once per MSDK [installation](#installation
         
         // There may be other settings down here...
 
-    For example, you might set `"MAXIM_PATH":"C:/MaximSDK"` on Windows, `"MAXIM_PATH":"/home/username/MaximSDK"` on Linux/MacOS, etc.
+    ???+ warning "⚠️ **Setting MAXIM_PATH**"
+        Set the `MAXIM_PATH` option to the _absolute path_ of the MSDK installation.
+        For example, you might set `"MAXIM_PATH":"C:/MaximSDK"` on Windows and `"MAXIM_PATH":"/home/username/MaximSDK"` on Ubuntu/MacOS.
 
-7. Save your changes to the file with **`CTRL + S`** and restart VS Code.
+    ???+ note "ℹ️ **Note: Automatic Updates**"
+        `"update.mode: "manual"` and `"extensions.autoUpdate": false` _disable_ automatic updates of VS Code and its extensions, respectively.  This is an _optional_ (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn.  Things have stabilized more as of version 1.70+, but updates remain frequent.  For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the [VSCode-Maxim Releases](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases) page.
+
+8. Save your changes to the file with **`CTRL + S`** and restart VS Code.
 
 #### Building and Running a Project (VS Code)
 
@@ -581,9 +602,12 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
     ![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
 
-3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder and open it with **Select Folder**.
+3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder.
 
     ![Figure 43](res/Fig43.jpg)
+
+    ???+ warning "**⚠️ Copying Examples**"
+        It's strongly recommended to copy example projects to an _outside_ folder before working with them.  This keeps the MSDK's "source" copy unmodified for reference.  The only requirement is that the full path to the project folder _does **not** have any spaces in it_. 
 
 4. VS Code will prompt for trust the first time. Select _Trust folder and enable all features_
 
@@ -595,7 +619,8 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
 6. Set the **Board Support Package** to match your evaluation platform. In VS Code, this is done by editing the `.vscode/settings.json` file and setting the `"board"`  project configuration option.  
 
-    See [Board Support Packages](#board-support-packages) for more details.
+    ???+ note "ℹ️ **Note**"
+        See [Board Support Packages](#board-support-packages) for more details and a table of values.
 
     ![Figure 17](res/Fig17.jpg)
 
@@ -636,6 +661,9 @@ The setup below only needs to be done once per MSDK [installation](#installation
         Continue | Step Over | Step Into | Step Out | Restart | Stop
 
 16. Exercise the debugger and press stop to disconnect when finished.
+
+    ???+ note "ℹ️ **Note**"
+        See [Visual Studio Code](#visual-studio-code) for additional more detailed documentation.
 
 ---
 
@@ -694,6 +722,9 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 
 12. **Terminate** the debugger (**`CTRL+F2`**) when finished.
 
+    ???+ note "ℹ️ **Note**"
+        See [Eclipse](#eclipse) for additional more detailed documentation.
+
 ---
 
 ### Getting Started with Command-Line Development
@@ -747,7 +778,10 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 #### Building and Running an Example (Command-Line)
 
-1. First, copy an [example project](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) to an accessible directory outside of the SDK. It is strongly recommended to keep the MSDK examples unmodified in case they need to be referenced again later.
+1. First, copy an [example project](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) to an accessible directory outside of the SDK. The `Hello_World` project is a good one to start with.
+
+    ???+ warning "**⚠️ Copying Examples**"
+        It's strongly recommended to copy example projects to an _outside_ folder before working with them.  This keeps the MSDK's "source" copy unmodified for reference.  The only requirement is that the full path to the project folder _does **not** have any spaces in it_. 
 
 2. Launch your terminal. On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
 
@@ -755,10 +789,20 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 4. Run the following command to build the example:
 
-        make -r -j
+        make
 
-    - `-r` is an option that improves build speed.
-    - `-j` enables parallel execution of the build in the maximum number of threads.
+    ???+ note "ℹ️ **Note: Improving Build Speed**"
+        The following command can be used to enable parallel builds and drastically improve build speed:
+
+            :::shell
+            make -r -j --output-sync=target --no-print-directory
+
+        - `-r` is an option that ignores some of Make's implicit rules to improve build speed.
+        - `-j` enables parallel execution of the build in the maximum number of threads.
+        
+            ???+ warning "**⚠️ Parallel Builds**"
+                Parallel builds can mangle the console output.  To deal with this, the `--output-sync=target` option can be used.  However, _this is only available in Make version 4 or higher_.  When this option is used, `--no-print-directory` is also used to declutter the build output.
+
 
     Expected output:
 
@@ -785,9 +829,10 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 5. Connect a debug adapter between the host PC and the evaluation platform. Detailed instructions on this hardware setup can be found in the evaluation platform's Datasheet and Quick-Start Guide, which are available on its [analog.com](https://analog.com) product page.
 
-6. Run the command below to launch an **OpenOCD _server_**, **flash** the program binary, and **halt** the program execution.
+6. Flash and run the program with OpenOCD.
 
-        openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify; init; reset halt"
+        :::shell
+        make flash.openocd
 
     Expected output:
 
@@ -818,104 +863,14 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
         ** Programming Finished **
         ** Verify Started **
         ** Verified OK **
-        Info : Listening on port 6666 for tcl connections
-        Info : Listening on port 4444 for telnet connections 
-        # Note: OpenOCD is now waiting for a GDB client
+        ** Resetting Target **
+        Info : SWD DPIDR 0x2ba01477
+        shutdown command invoked
 
-7. Launch a **_new_ separate terminal**. On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
+7. The program has been flashed and the target micro has been reset.  The flashed program should now be running.  For the `Hello_World` example, an LED on the board should be blinking.
 
-8. `cd` into the location of the copied example project.
-
-9. Run the following command to launch a **GDB *client***.
-
-        arm-none-eabi-gdb --se=build/max78002.elf
-
-    - `--se` sets the symbol and executable file to the compiled program file. By default, the output filename matches the target microcontroller.
-
-    Expected output:
-
-        :::bash
-        GNU gdb (GNU Arm Embedded Toolchain 10.3-2021.10) 10.2.90.20210621-git
-        Copyright (C) 2021 Free Software Foundation, Inc.
-        License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-        This is free software: you are free to change and redistribute it.
-        There is NO WARRANTY, to the extent permitted by law.
-        Type "show copying" and "show warranty" for details.
-        This GDB was configured as "--host=i686-w64-mingw32 --target=arm-none-eabi".
-        Type "show configuration" for configuration details.
-        For bug reporting instructions, please see:
-        <https://www.gnu.org/software/gdb/bugs/>.
-        Find the GDB manual and other documentation resources online at:
-        <http://www.gnu.org/software/gdb/documentation/>.
-        
-        For help, type "help".
-        Type "apropos word" to search for commands related to "word"...
-        Reading symbols from build/max78002.elf...
-        (gdb)
-
-10. Connect the GDB Client to the OpenOCD server with the following command.
-
-        target extended-remote localhost:3333
-
-    Expected output:
-
-        :::bash
-        Remote debugging using localhost:3333
-        0x0000fff4 in ?? () # Note: ?? may be present at this stage, which is OK.
-
-11. Reset the target microcontroller.
-
-        monitor reset halt
-
-    Expected output:
-
-        :::bash
-        SWD DPIDR 0x2ba01477
-        target halted due to debug-request, current mode: Thread
-        xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
-
-12. Set a breakpoint on `main`.
-
-        b main
-
-    Expected output:
-
-        :::bash
-        Breakpoint 1 at 0x10000224: file main.c, line 62.
-        Note: automatically using hardware breakpoints for read-only addresses.
-
-13. Continue the debugger.
-
-        continue
-
-    Expected output (for the Hello World example):
-
-        :::bash
-        Continuing.
-        
-        Breakpoint 1, main () at main.c:62
-        62     printf("Hello World!\n");
-
-14. (Optional) Continue exercising the debugger.
-
-    Run `help` for GDB help, or see [Common GDB Commands](#common-gdb-commands).
-
-15. Quit GDB.
-
-        quit
-
-    Expected output:
-
-        :::shell
-        A debugging session is active.
-        
-        Inferior 1 [Remote target] will be detached.
-        
-        Quit anyway? (y or n) [answered Y; input not from terminal]
-        Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, Remote target
-        [Inferior 1 (Remote target) detached]
-
-16. In the terminal window running the OpenOCD _server_, press `CTRL + C` to issue the shutdown command and quit.
+    ???+ note "ℹ️ **Note**"
+        See [Command-Line Development](#command-line-development) for additional more detailed documentation.
 
 ## Visual Studio Code
 
@@ -942,9 +897,12 @@ To open a project:
 
     ![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
 
-3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder and open it with **Select Folder**.
+3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder.
 
     ![Figure 43](res/Fig43.jpg)
+
+    ???+ warning "**⚠️ Copying Examples**"
+        It's strongly recommended to copy example projects to an _outside_ folder before working with them.  This keeps the MSDK's "source" copy unmodified for reference.  The only requirement is that the full path to the project folder _does **not** have any spaces in it_. 
 
 4. VS Code will prompt for trust the first time. Select _Trust folder and enable all features_
 
@@ -954,7 +912,7 @@ To open a project:
 
     ![Figure 16](res/Fig16.jpg)
 
-6. Verify the **_Board Support Package_** for the project is set correctly.  See [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code) below.
+6. Verify the **_Board Support Package_** for the project is set correctly.
 
 ### How to Set the BSP (VS Code)
 
@@ -986,7 +944,8 @@ Run the **"build"** task to compile the project for the configured _Target Micro
 
 To **clean** a project, run the _clean_ [build task](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks).  This will delete the build folder and its contents. The next time the project is built, it will be rebuilt from scratch.
 
-It should be noted that _clean_ will only remove the _project's_ build output. The **clean-periph** task can be used to clean the project _and_ the peripheral driver libraries.
+???+ note "ℹ️ **Note: Cleaning Peripheral Drivers**"
+    It should be noted that _clean_ will only remove the _project's_ build output. The **clean-periph** task can be used to clean the project _and_ the peripheral driver libraries.
 
 ### Flashing and Debugging
 
@@ -1051,7 +1010,10 @@ It should be noted that the debugger's watch points are *contextual*, meaning th
 
 #### Dual Core Debugging
 
-For microcontrollers with _both_ an Arm M4 and a RISC-V core, the _GDB (RISC-V)_ launch profile is provided to enable RISC-V debugging. The RISC-V core requires setup and handoff from the Arm M4 core. As a result, this is an advanced configuration requiring a unique combination of the project's source code, Makefiles, and VSCode-Maxim project settings. Such projects are appended with the `-riscv` suffix in the project's folder name.
+For microcontrollers with _both_ an Arm M4 and a RISC-V core, the _GDB (RISC-V)_ launch profile is provided to enable RISC-V debugging. 
+
+???+ note "ℹ️ **Note**"
+    The RISC-V core requires setup and handoff from the Arm M4 core. As a result, this is an advanced configuration requiring a unique combination of the project's source code, Makefiles, and VSCode-Maxim project settings. Such projects are appended with the `-riscv` suffix in the project's folder name.
 
 This section demonstrates how to debug `-riscv` projects in VS Code using the [mnist-riscv](Examples/MAX78000/CNN/mnist-riscv) project for the MAX78000 as an example.
 
@@ -1059,34 +1021,36 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 
     ![Debugger-EvKIT Connections](https://user-images.githubusercontent.com/38844790/190749647-f4ef066a-afcc-4749-bb9c-53c7e33e2cf9.jpg)
 
-2. Make sure your Olimex debugger drivers are installed correctly. Sometimes they need to be updated using the "zadig" tool. See Section 3.3.3 of the [Olimex User Manual](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf), and use the [Zadig](https://zadig.akeo.ie/) tool to install WinUSB drivers.
+    ???+ warning "**⚠️ Olimex Drivers**"
+        If connection issues occur with the Olimex adapter, verify that the drivers are installed correctly.  See Section 3.3.3 of the [Olimex User Manual](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf).  The [Zadig](https://zadig.akeo.ie/) tool to install WinUSB drivers.
 
-3. [Open](#opening-example-projects) the project in VS Code.
+2. [Open](#opening-example-projects) the project in VS Code.
 
-4. Run the "Flash" task.
+3. Run the "Flash" task.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398354-2ac2961b-6d45-4f84-8805-0ab5339a4b98.png)
 
-5. Launch the debugger using the **Debug Arm (Cortex-Debug)** or **GDB (Arm M4)** profile **first**:
+4. Launch the debugger using the **Debug Arm (Cortex-Debug)** or **GDB (Arm M4)** profile **first**:
 
     ![Figure 46](res/Fig46.jpg)
 
     ... which should hit the breakpoint in `main.c`...
     ![image](https://user-images.githubusercontent.com/38844790/168398503-0f2ae9c1-f535-4d41-aed9-9d9e19b16303.png)
 
-6. **Continue** the debugger.  The code in `main.c` will boot up the RISC-V core. You can optionally set a breakpoint on `WakeISR` to see when the RISC-V core has signaled it's ready.
+5. **Continue** the debugger.  The code in `main.c` will boot up the RISC-V core. You can optionally set a breakpoint on `WakeISR` to see when the RISC-V core has signaled it's ready.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398665-9486e1b6-73bd-481e-a4b5-15dd44c7d7b9.png)
 
-7. Now, switch the debugger profile to the **GDB (RISC-V) profile** and launch it. This will launch an additional instance on a separate port and connect to the Olimex adapter.
+6. Now, switch the debugger profile to the **GDB (RISC-V) profile** and launch it. This will launch an additional instance on a separate port and connect to the Olimex adapter.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398707-b6771bf3-b6bf-47a2-b963-b0b9fc003ca4.png)
 
-    The "Signal 0" exception below is a known issue caused by a reset bug on the RISC-V core. The exception message is harmless and can be safely ignored.
+    ???+ note "ℹ️ **Note: Signal 0 Exception**"
+        The "Signal 0" exception below is a known issue caused by a signaling mismatch between the RISC-V core and VS Code's debugger engine. The exception message is harmless and can be safely ignored.
 
-    ![image](https://user-images.githubusercontent.com/38844790/168399130-95fe7539-fb46-4c06-a268-6b720403b539.png)
+        ![image](https://user-images.githubusercontent.com/38844790/168399130-95fe7539-fb46-4c06-a268-6b720403b539.png)
 
-8. From here, the debugger should be fully functional. The Arm vs. RISC-V debugger instance can be selected with the dropdown on the debugger control bar.
+7. From here, the debugger should be fully functional. The Arm vs. RISC-V debugger instance can be selected with the dropdown on the debugger control bar.
 
     ![image](https://user-images.githubusercontent.com/38844790/168399419-d0488a0e-2068-4cc7-9108-0a296fdc04b4.png)
 
@@ -1230,7 +1194,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 ### How to Set the BSP (Command-Line)
 
-- To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_. by editing the **project.mk** that can be found inside each project.
+- To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ by editing the **project.mk** that can be found inside each project.
 
         :::makefile
         # This file can be used to set build configuration
@@ -1483,7 +1447,8 @@ The MSDK supports multiple parts and evaluation platforms (see [supported parts]
 
 The role of a _BSP_ is to provide a hardware abstraction layer for the initialization and management of board-level hardware such as serial interfaces, pushbuttons, LEDs, external peripheral devices, TFT displays, etc. which will vary between evaluation platforms. The BSP abstraction layer also improves code portability to custom devices.  
 
-The first task when opening or creating any project is to ensure the BSP is set correctly.
+???+ note "ℹ️ **Note**"
+    The first task when opening or creating any project is to ensure the BSP is set correctly.
 
 ### How to Set the BSP
 
@@ -1598,12 +1563,17 @@ The name of the BSP's root folder will be the string used with the `BOARD` [buil
 
 #### BSP Search Directory
 
-By default, the MSDK searches for BSPs in the `Libraries/Boards` folder for each microcontroller.  This can be changed using the `BSP_SEARCH_DIR` [build configuration variable](#build-configuration-variables), which allows users to load a BSP from a directory outside of the MSDK.  The MSDK also uses the `BOARD` variable in its search path.  For example, the configuration...
+By default, the MSDK searches for BSPs in the `Libraries/Boards` folder for each microcontroller.  This can be changed using the `BSP_SEARCH_DIR` [build configuration variable](#build-configuration-variables), which allows users to load a BSP from a directory outside of the MSDK.  The MSDK also uses the `BOARD` variable in its search path.  
+
+For example, the configuration...
 
     :::Makefile
-    // project.mk
-    BSP_SEARCH_DIR = /home/username/mybsps # "root" of the BSP search path
-    BOARD = CustomBSP # "stem" of the BSP search path
+    # project.mk
+
+    BSP_SEARCH_DIR = /home/username/mybsps
+    # ^ "root" of the BSP search path
+    BOARD = CustomBSP
+    # "stem" of the BSP search path
 
 ... will attempt to load the `/home/username/msbsps/CustomBSP/board.mk` file.
 
@@ -1646,6 +1616,8 @@ The following contents can be used as a bare-bones starter template for a custom
 * _board.mk_
 
         :::Makefile
+        # board.mk
+
         ifeq "$(BOARD_DIR)" ""
         # This Makefile will self-locate if BOARD_DIR is not specified.
         BOARD_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -1661,19 +1633,29 @@ It should also be noted that BSP integration can be disabled entirely by setting
 
 This option can also be used to implement a custom BSP inside of a project's application code.  For example, a user could implement `Board_Init` inside of a project's `main.c` file without having to create a separate BSP folder with `LIB_BOARD = 0`.
 
-    :::C
-    // main.c
-    int Board_Init(void)
-    {
-        // Implement me!
-        return E_NO_ERROR;
-    }
+* _project.mk_
 
-    int main(void)
-    {
-        Board_Init();
-        // ...
-    }
+        :::Makefile
+        # project.mk
+
+        LIB_BOARD = 0
+
+* _main.c_
+
+        :::C
+        // main.c
+        int Board_Init(void)
+        {
+            // Implement me!
+            return E_NO_ERROR;
+        }
+
+        int main(void)
+        {
+            Board_Init();
+            // ...
+        }
+
 
 ## Build System
 
