@@ -26,6 +26,7 @@ If using the MAX32690EVKIT:
 If using the MAX32690FTHR:
 -   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
 -   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Select the proper pullup voltage for I2C0 using jumper J6.
 -   Connect I2C0 (SDA - P2.7, SCL - P2.8) to I2C bus.
 
 ## Expected Output
