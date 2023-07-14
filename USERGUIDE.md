@@ -752,8 +752,8 @@ On Windows, use the MinGW shortcut to launch an MSYS2/MinGW terminal. This short
         export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
         export PATH=$ARM_GCC_ROOT/bin:$PATH
         
-        # Add xPack RISC-V GCC to path (v10.2)
-        export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
+        # Add xPack RISC-V GCC to path (v12.2)
+        export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-elf-gcc/12.2.0-3.1
         export PATH=$XPACK_GCC_ROOT/bin:$PATH
         
         # Add OpenOCD to path
