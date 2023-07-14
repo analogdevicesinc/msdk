@@ -74,7 +74,11 @@ int main(void)
     printf("\nThe device will be placed in sleep mode and requires a rising edge of the\n");
     printf("comparator output to wakeup.\n\n");
 
+#if defined(EvKit_V1)
     printf("Press SW2 to begin.\n");
+#else
+    printf("Press SW3 to begin.\n");
+#endif
     while (!PB_Get(0)) {}
 
     // Enable comparator 0
