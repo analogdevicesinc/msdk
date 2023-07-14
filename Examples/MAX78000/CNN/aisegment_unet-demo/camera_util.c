@@ -575,18 +575,10 @@ void display_camera(void)
                 data565[j++] = data[k + 1];
                 data565[j++] = data[k];
             }
-#ifdef BOARD_EVKIT_V1
+
             MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
 #else
-            tft_dma_display(0, Y_START + row, TFT_W, 1, (uint32_t *)data565);
-#endif
-
-#else
-#ifdef BOARD_EVKIT_V1
-            MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data, w, 1);
-#else
             tft_dma_display(0, Y_START + row, TFT_W, 1, (uint32_t *)data);
-#endif
 #endif
 
 #endif //#ifndef RGB565
