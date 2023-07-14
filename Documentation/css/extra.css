@@ -16,3 +16,8 @@ img {
     margin-right: auto;
     max-width: 100%;
 }
+
+.rst-content pre code {
+    border-color: black;
+    border-radius: 8px;
+}
