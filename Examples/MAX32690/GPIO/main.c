@@ -84,7 +84,7 @@ int main(void)
 
     printf("\n\n************************* GPIO Example ***********************\n\n");
     printf("1. This example reads P%d.11 and outputs the same state onto P0.14.\n",
-    		MXC_GPIO_GET_IDX(MXC_GPIO_PORT_IN));
+           MXC_GPIO_GET_IDX(MXC_GPIO_PORT_IN));
 #if defined(EvKit_V1)
     printf("2. A falling edge interrupt is set up on P2.11. P2.12 toggles when\n");
     printf("   that interrupt occurs.\n\n");
