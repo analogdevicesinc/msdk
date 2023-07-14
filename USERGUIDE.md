@@ -834,6 +834,9 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
         :::shell
         make flash.openocd
 
+    ???+ note "ℹ️ **Note: Flashing with Make**"
+        The command `make flash.openocd` is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the `Tools/Flash/flash.mk` file for implementation details, and [Flashing on the Command-Line](#flashing-on-the-command-line) for more details on launching debug server/clients manually.
+
     Expected output:
 
         :::bash
@@ -891,6 +894,7 @@ As a result, you'll notice that there is no "New Project" mechanism. A "project"
 _(Note:  You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder)._
 
 To open a project:
+
 1. Launch Visual Studio Code.
 
 2. Select **File -> Open Folder...**
@@ -1237,89 +1241,102 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 ### Flashing on the Command-Line
 
+???+ note "ℹ️ **A Note on Flashing**"
+    The commands below are not a comprehensive list of all the possible options for flashing.  They are the most common and useful ones.  For full documentation, see the "Flash Programming" section of the [**OpenOCD User Manual**](https://openocd.org/doc/pdf/openocd.pdf)
+
 1. [Build](#building-on-the-command-line) the project.  
 
 2. Connect a debug adapter between the host PC and the evaluation platform. For more detailed instructions on this hardware setup, refer to the evaluation platform's Datasheet and Quick-Start Guide, which are available on its [analog.com](https://analog.com) product page.
 
-3. Flash the program using `openocd`.
+3. Flash the program using `openocd`.  It's recommended to use the `make` command below for convenience.
 
-    - **Flash and exit:**  Use this command if you just want to flash the program _but **not debug**_. OpenOCD will **flash** the program and **exit** on completion.
+    - ???+ note "ℹ️ **Flashing with Make**"
+        This command is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It will **flash** _and_ **run** the project with OpenOCD.  See the `Tools/Flash/flash.mk` file for implementation details.
 
-            openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify exit"
+                :::shell
+                make flash.openocd
 
-        - `-f target/max78002.cfg` sets the OpenOCD config file for the _Target microcontroller_.  Supported options can be found in the [Tools/OpenOCD/scripts/target](Tools/OpenOCD/scripts/target) folder.  **Change this to match the target microcontroller**.
-        - `-c "program build/max78002.elf verify exit" ` flashes the program binary. Change `build/max78002.elf` to match the correct filename.
+            Expected output:
 
-        Expected output:
+                :::bash
+                Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
+                Licensed under GNU GPL v2
+                For bug reports, read
+                    http://openocd.org/doc/doxygen/bugs.html
+                DEPRECATED! use 'adapter driver' not 'interface'
+                Info : CMSIS-DAP: SWD supported
+                Info : CMSIS-DAP: Atomic commands supported
+                Info : CMSIS-DAP: Test domain timer supported
+                Info : CMSIS-DAP: FW Version = 0256
+                Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
+                Info : CMSIS-DAP: Interface Initialised (SWD)
+                Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+                Info : CMSIS-DAP: Interface ready
+                Info : clock speed 2000 kHz
+                Info : SWD DPIDR 0x2ba01477
+                Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
+                Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
+                Info : starting gdb server for max32xxx.cpu on 3333
+                Info : Listening on port 3333 for gdb connections
+                Info : SWD DPIDR 0x2ba01477
+                target halted due to debug-request, current mode: Thread
+                xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
+                ** Programming Started **
+                ** Programming Finished **
+                ** Verify Started **
+                ** Verified OK **
+                ** Resetting Target **
+                Info : SWD DPIDR 0x2ba01477
+                shutdown command invoked
 
-            :::bash
-            Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
-            Licensed under GNU GPL v2
-            For bug reports, read
-                http://openocd.org/doc/doxygen/bugs.html
-            DEPRECATED! use 'adapter driver' not 'interface'
-            Info : CMSIS-DAP: SWD supported
-            Info : CMSIS-DAP: Atomic commands supported
-            Info : CMSIS-DAP: Test domain timer supported
-            Info : CMSIS-DAP: FW Version = 0256
-            Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
-            Info : CMSIS-DAP: Interface Initialised (SWD)
-            Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
-            Info : CMSIS-DAP: Interface ready
-            Info : clock speed 2000 kHz
-            Info : SWD DPIDR 0x2ba01477
-            Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
-            Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
-            Info : starting gdb server for max32xxx.cpu on 3333
-            Info : Listening on port 3333 for gdb connections
-            Info : SWD DPIDR 0x2ba01477
-            target halted due to debug-request, current mode: Thread
-            xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
-            ** Programming Started **
-            ** Programming Finished **
-            ** Verify Started **
-            ** Verified OK **
-            shutdown command invoked
+    - ???+ note "ℹ️ **OpenOCD Flash & Hold**"
+        The following command template can be used if you just want to flash the program with OpenOCD manually, and halt the target micro.  This is used when you want to start a command-line debugging session.
 
-    - **Flash and hold:**  Use this if you want to also **debug** the program. OpenOCD will **flash** the program, **reset** the MAX78002, **halt** program execution, and **wait** for a GDB debugger client connection.
+                :::shell
+                openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/<target>.cfg -c "program build/<filename>.elf verify; init; reset halt"
 
-            openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify; init; reset halt"
+            - ???+ note "**ℹ️ `-s $MAXIM_PATH/Tools/OpenOCD/scripts`**"
+                    This option loads an OpenOCD config file for the _target microcontroller_.  Supported options can be found in the `Tools/OpenOCD/scripts/target` folder.  **Change `<target>` to match the target micro**.
 
-        - `-f target/max78002.cfg` sets the OpenOCD config file for the _Target microcontroller_.  Supported options can be found in the [Tools/OpenOCD/scripts/target](Tools/OpenOCD/scripts/target) folder.  **Change this to match the target microcontroller**.
-        - `-c "program build/max78002.elf verify exit" ` flashes the program binary. Change **`build/max78002.elf`** to match the correct filename.
+            - ???+ warning "**⚠️ -f `target/<target>.cfg`**"
+                    This option loads an OpenOCD config file for the _target microcontroller_.  Supported options can be found in the `Tools/OpenOCD/scripts/target` folder.  **Change `<target>` to match the target micro**.
+            
+                
 
-        Expected output:
+            - `-c "program build/<filename>.elf verify exit" ` flashes the program binary. Change `<filename>.elf` to match the correct filename.
 
-            :::bash
-            Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
-            Licensed under GNU GPL v2
-            For bug reports, read
-                http://openocd.org/doc/doxygen/bugs.html
-            DEPRECATED! use 'adapter driver' not 'interface'
-            Info : CMSIS-DAP: SWD supported
-            Info : CMSIS-DAP: Atomic commands supported
-            Info : CMSIS-DAP: Test domain timer supported
-            Info : CMSIS-DAP: FW Version = 0256
-            Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
-            Info : CMSIS-DAP: Interface Initialised (SWD)
-            Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
-            Info : CMSIS-DAP: Interface ready
-            Info : clock speed 2000 kHz
-            Info : SWD DPIDR 0x2ba01477
-            Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
-            Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
-            Info : starting gdb server for max32xxx.cpu on 3333
-            Info : Listening on port 3333 for gdb connections
-            Info : SWD DPIDR 0x2ba01477
-            target halted due to debug-request, current mode: Thread
-            xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
-            ** Programming Started **
-            ** Programming Finished **
-            ** Verify Started **
-            ** Verified OK **
-            Info : Listening on port 6666 for tcl connections
-            Info : Listening on port 4444 for telnet connections
-            # Note: OpenOCD is now waiting for a GDB client connection
+            Expected output:
+
+                :::bash
+                Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
+                Licensed under GNU GPL v2
+                For bug reports, read
+                    http://openocd.org/doc/doxygen/bugs.html
+                DEPRECATED! use 'adapter driver' not 'interface'
+                Info : CMSIS-DAP: SWD supported
+                Info : CMSIS-DAP: Atomic commands supported
+                Info : CMSIS-DAP: Test domain timer supported
+                Info : CMSIS-DAP: FW Version = 0256
+                Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
+                Info : CMSIS-DAP: Interface Initialised (SWD)
+                Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+                Info : CMSIS-DAP: Interface ready
+                Info : clock speed 2000 kHz
+                Info : SWD DPIDR 0x2ba01477
+                Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
+                Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
+                Info : starting gdb server for max32xxx.cpu on 3333
+                Info : Listening on port 3333 for gdb connections
+                Info : SWD DPIDR 0x2ba01477
+                target halted due to debug-request, current mode: Thread
+                xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
+                ** Programming Started **
+                ** Programming Finished **
+                ** Verify Started **
+                ** Verified OK **
+                Info : Listening on port 6666 for tcl connections
+                Info : Listening on port 4444 for telnet connections
+                # Note: OpenOCD is now waiting for a GDB client connection
 
 ### Debugging on the Command-Line
 
@@ -1401,7 +1418,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 9. (Optional) Continue exercising the debugger. 
 
-   Run `help` for GDB help, or see [Common GDB Commands](#common-gdb-commands).
+    Run `help` for GDB help, or see [Common GDB Commands](#common-gdb-commands).
 
 10. Quit GDB.
 
