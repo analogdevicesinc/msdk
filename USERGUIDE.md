@@ -1806,7 +1806,7 @@ A microcontroller is made up of a Central Processing Unit (CPU) that is surround
 
 ![Figure 38](res/Fig38.jpg)
 
-#### API Documentation
+#### API Documentation (PeriphDrivers)
 
 The links below will open detailed API references for each microcontroller. Offline copies of these API references can also be found in the `Documentation` folder of the MSDK [installation](#installation).
 
