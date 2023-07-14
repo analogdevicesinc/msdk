@@ -1441,6 +1441,143 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 | `help <cmd>`                    |                   | Print description for given command.                         |
 | `quit`                          | `q`               | Quit the GDB client                                          |
 
+## Build System
+
+### Build System Overview
+
+The **Build System** manages the compilation of source code into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**. All IDEs interface with this system.
+
+The Build System is managed by two files found in a project's root directory, one called **Makefile** and one called **project.mk**. These files are used by the [GNU Make](https://www.gnu.org/software/make/) program (which is a part of the MSDK toolchain) to locate and build a project's source code.
+
+* **Makefile** is the "core" file and should not be edited directly. Instead, it exposes the **CLI** that can be accessed in the _project.mk_ file, on the command line, in your system's environment, or through your IDE. It also comes with a default configuration that is suitable for most projects.
+* **project.mk** offers a convenient and stable access point for advanced build configuration, and this is the file that should be edited if necessary.
+
+When the command
+
+    make
+
+is run from inside of a project folder, the program `make` will resolve any project-specific settings and then build the project's source code.
+
+### Default Build Behavior
+
+By default, the build system will **auto-search** the **root** project directory for _source code_ (**`*.c`**) and _header files_ (**`*.h`**) to compile into a program binary. The _optional_ **include** and **src** directories are also searched if they exist.
+
+    :::bash
+    Root Project Directory
+    ├─ project.mk
+    ├─ Makefile
+    ├─ *.h
+    ├─ *.c
+    ├─include  # <-- Optional
+    └─ *.h
+    ├─src      # <-- Optional
+    └─ *.c
+
+Additionally, a project's build system will come pre-configured for a specific _Target Microcontroller_ and its primary _BSP_.
+
+The default configuration is suitable for most use cases, but a system of _Build Configuration Variables_ is available if additional configuration is needed.
+
+### Build Configuration Variables
+
+A **Build Configuration Variable** is a [Makefile variable](https://www.gnu.org/software/make/manual/make.html#Using-Variables) and therefore follows the same rules. However, they have been streamlined to be made much easier to use, so most of the [official GNU Make documentation](https://www.gnu.org/software/make/manual/make.html) is only needed for advanced use cases.
+
+#### How to Set a Build Configuration Variable
+
+To set a **standard** configuration variable, **use the `=` syntax**...
+
+    VARIABLE=VALUE
+
+The **`=`** operator is used for _most_ configuration variables with a few exceptions (documented in the [reference table](#build-configuration-variables-reference-table)) when a variable should contain a **_list_ of values**. In such cases, **use `+=` the syntax** to _add_ values to the list.
+
+    VARIABLE+=VALUE1
+    VARIABLE+=VALUE2
+
+#### Where to Set a Build Configuration Variable
+
+For most variables, you should set them in the **project.mk** file (exceptions are documented in the [reference table](#build-configuration-variables-reference-table) and IDE-specific sections).
+
+For example, to enable hardware floating-point acceleration for a project, the **`MFLOAT_ABI`** configuration variable can be used with a value of **`hard`**. The contents of **project.mk** might then look as follows:
+
+(_Inside project.mk_)
+
+    :::Make
+    # This file can be used to set build configuration
+    # variables. These variables are defined in a file called 
+    # "Makefile" that is located next to this one.
+    
+    # For instructions on how to use this system, see
+    # https://analog-devices-msdk.github.io/msdk/USERGUIDE/
+    
+    # **********************************************************
+    
+    MFLOAT_ABI=hard # Enable hardware floating point acceleration
+
+It should also be noted that configuration variables can be set on the **command line** as well. For example
+
+    make MFLOAT_ABI=hard
+
+will have the same effect.
+
+Additionally, **environment variables** can be used. For example (on Linux)
+
+    export MFLOAT_ABI=hard
+
+will set the hardware floating point acceleration as the default for all projects with an environment variable.
+
+However, there is a _precedence hierarchy_ that should be taken into consideration.
+
+#### Precedence Hierarchy
+
+The precedence hierarchy for the value of a configuration variable is:
+
+- **IDE/command-line > project.mk > environment variable > default value**
+
+If a value is set in an IDE _and_ project.mk, the IDE's value will take precedence. However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
+
+#### Build Configuration Variables Reference Table
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+|                        |                                                            |                                                              |
+| `TARGET`               | Set the _Target Microcontroller_                           | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk** |
+| `BOARD`                | Set the _Board Support Package (BSP)_                      | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk.**  See [Board Support Packages](#board-support-packages) for more details.  When you change this option, it's usually a good idea to fully clean your project, then rebuild. |
+| `BSP_SEARCH_DIR`       | Set the directory to search for the _Board Support Package (BSP)_                      | By default, the `Libraries/Boards` folder of the MSDK is searched for the `TARGET` microcontroller.  This setting is useful for loading custom BSPs from outside of the MSDK.  When `LIB_BOARD=1`, the build system looks for the file path at `$(BSP_SEARCH_DIR)/$(BOARD)/board.mk`. |
+|                        |                                                            |                                                              |
+| `MAXIM_PATH`           | (Optional) Specify the location of the MSDK                | This optional variable can be used to change where the Makefile looks for the MSDK installation. By default, the build system will attempt to locate the MSDK with a relative path. If a project is moved _outside_ of the SDK, this variable must be set to the absolute path of the MSDK installation. |
+| `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
+|                        |                                                            |                                                              |
+| `VPATH`                | Where to search for source (.c/.cpp) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **source code** files. If `AUTOSEARCH` is enabled (which it is by default), all source code files in the directories specified by this option will be automatically added to the build. If `AUTOSEARCH` is disabled, this tells the Makefile where to look for the files specified by `SRCS`. |
+| `IPATH`                | Where to search for header (.h) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **header** files. _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`. Individual header files are _not_ ever manually added to the build. Instead, you only need to specify the _location_ of your header files. |
+| `AUTOSEARCH`           | Automatically search for source (.c/.cpp) files                 | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default). Set to `0` to disable or `1` to enable. If auto-search is disabled, source files must be manually added to `SRCS`. |
+| `SRCS`                 | List of source (.c/.cpp) files to add to the build              | **Use the `+=` operator with this variable**. All of the files in this list will be added to the build. If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build. If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`. Otherwise, a full path relative to the Makefile must be used. |
+| `PROJECT`              | Set the output filename                                    | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  **For VS Code, you should use the [project_name](#project_name) advanced config option instead of project.mk.** |
+|                        |                                                            |                                                              |
+| `MXC_OPTIMIZE_CFLAGS`  | Set the optimization level                                 | See [Optimize Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details.  Normal builds will default to `-Og`, which is good for debugging, while release builds will default to `-O2`. |
+| `PROJ_CFLAGS`          | Add a compiler flag to the build                           | **Use the `+=` operator with this variable**.  Compiler flags can be added with this option, including compiler definitions. For each value, the same syntax should be used as if the compiler flag was passed in over the command line. These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options. |
+| `PROJ_AFLAGS`          | Add an assembler flag to the build                         | **Use the `+=` operator with this variable**.  Assembler flags can be added with this option. |
+| `MFLOAT_ABI`           | Set the floating point acceleration level                  | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, and `softfp` (default). To enable full hardware acceleration instructions, use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`. If there is any conflict, you'll get a linker error. For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html). |
+|                        |                                                            |                                                              |
+| `LINKERFILE`           | Set the linkerfile to use                                  | Set the linkerfile with this option.  The file should exist in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MSDK, or it should be placed inside the root directory of the project. |
+| `PROJ_LDFLAGS`         | Add a linker flag to the build                             | **Use the `+=` operator with this variable**.  Flags can be passed to the linker with this option. See [GCC Options for Linking](https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#Link-Options) |
+|                        |                                                            |                                                              |
+| `LIB_BOARD`            | Include the BSP library (enabled by default)               | Inclusion of the Board-Support Package (BSP) library, which is enabled by default, can be toggled with this variable. Set to `0` to disable or `1` to enable. |
+| `LIB_PERIPHDRIVERS`    | Include the peripheral driver library (enabled by default) | The peripheral driver library can be toggled with this option. If disabled, you'll lose access to the higher-level driver functions but still have access to the register-level files. Set to `0` to disable or `1` to enable. |
+| `LIB_CMSIS_DSP`        | Include the CMSIS-DSP library                              | The [CMSIS-DSP library](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) can be enabled with this option.  Set to `0` to disable or `1` to enable. |
+| `LIB_CORDIO`           | Include the Cordio library                                 | The Cordio BLE library can be included with this option. This is only applicable for microcontrollers with an integrated BLE controller. |
+| `LIB_FCL`              | Include the Free Cryptographic Library (FCL)               | This option toggles the Free Cryptographic Library (FCL), which is a collection of software-implemented common cryptographic functions that can be included with this option. Set to `0` to disable or `1` to enable. |
+| `LIB_FREERTOS`         | Include the FreeRTOS library                               | The [FreeRTOS](https://freertos.org/) library can be enabled with this option, which is an open-source Real-Time Operating System (RTOS). Set to `0` to disable or `1` to enable. |
+| `LIB_LC3`              | Include the LC3 codec library                              | This option enables the inclusion of the Low Complexity Communication Codec (LC3), which is an efficient low latency audio codec. Set to `0` to disable or `1` to enable. |
+| `LIB_LITTLEFS`         | Include the littleFS library                               | This option toggles the ["Little File System"](https://github.com/littlefs-project/littlefs) library - a small filesystem library designed for microcontrollers.  Set to `0` to disable or `1` to enable. |
+| `LIB_LWIP`             | Include the lwIP library                                   |                                                              |
+| `LIB_MAXUSB`           | Include the MaxUSB library                                 | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to `0` to disable or `1` to enable. |
+| `LIB_SDHC`             | Include the SDHC library                                   | This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem. |
+|                        |                                                            |                                                              |
+| `SBT`                  | Toggle SBT integration                                     | Toggles integration with the [Secure Boot Tools (SBTs)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C). These are a suite of applications designed for use with microcontrollers that have secure bootloaders. When this is enabled, some additional rules become available such as `make sla` and `make scpa`. Set to `0` to disable or `1` to enable. |
+| `MAXIM_SBT_DIR`        | Where to find the SBTs                                     | This option can be used to manually specify the location of the SBTs. Usually, this is not necessary. By default, the `Tools/SBT` directory of the MaximSDK will be searched. If the [SBT installer](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C) is used, it will set the `MAXIM_SBT_DIR` environment variable to point to itself automatically. |
+| `TARGET_SEC`           | Secure part number to use                                  | Some secure microcontrollers have multiple secure variants, and this option can be used to specify the variant to use with the SBTs.  Defaults are intelligently selected and can be found in `$(MAXIM_SBT_DIR)/SBT-config.mk` |
+| `SCP_PACKETS`          | Where to build the scp_packets folder                      | Defaults to `build/scp_packets`                              |
+| `TEST_KEY`             | Which test key to sign applications with                   | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the Maxim test key that can be used for development. |
+
 ## Board Support Packages
 
 The MSDK supports multiple parts and evaluation platforms (see [supported parts](#supported-parts)) through **"Board Support Packages" (BSPs)**. For microcontrollers with multiple evaluation platforms, multiple BSPs will be available.
@@ -1656,149 +1793,20 @@ This option can also be used to implement a custom BSP inside of a project's app
             // ...
         }
 
+## Libraries
 
-## Build System
+The MSDK contains a large number of libraries, both third-party and in-house. The main library is the [Peripheral Driver API](#peripheral-driver-api), but the MSDK also contains drivers for various _external_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices. Additionally, dedicated libraries for more complex _internal_ hardware peripherals such as USB, the SDHC interface, and the Cordio BLE stack are also available.  These usually build on _top_ of the Peripheral Driver API.
 
-### Build System Overview
+???+ note "ℹ️ **Note: Enabling Libraries**"
+    Libraries can be enabled for a project with a convenient *toggle switch* provided by the build system (See the **"Libraries"** section of the _[Build Configuration Variables](#build-configuration-variables-reference-table)_). When a library is enabled, it may offer _additional_ Build Configuration Variables.
 
-The **Build System** manages the compilation of source code into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**. All IDEs interface with this system.
-
-The Build System is managed by two files found in a project's root directory, one called **Makefile** and one called **project.mk**. These files are used by the [GNU Make](https://www.gnu.org/software/make/) program (which is a part of the MSDK toolchain) to locate and build a project's source code.
-
-* **Makefile** is the "core" file and should not be edited directly. Instead, it exposes the **CLI** that can be accessed in the _project.mk_ file, on the command line, in your system's environment, or through your IDE. It also comes with a default configuration that is suitable for most projects.
-* **project.mk** offers a convenient and stable access point for advanced build configuration, and this is the file that should be edited if necessary.
-
-When the command
-
-    make
-
-is run from inside of a project folder, the program `make` will resolve any project-specific settings and then build the project's source code.
-
-### Default Build Behavior
-
-By default, the build system will **auto-search** the **root** project directory for _source code_ (**`*.c`**) and _header files_ (**`*.h`**) to compile into a program binary. The _optional_ **include** and **src** directories are also searched if they exist.
-
-    :::bash
-    Root Project Directory
-    ├─ project.mk
-    ├─ Makefile
-    ├─ *.h
-    ├─ *.c
-    ├─include  # <-- Optional
-    └─ *.h
-    ├─src      # <-- Optional
-    └─ *.c
-
-Additionally, a project's build system will come pre-configured for a specific _Target Microcontroller_ and its primary _BSP_.
-
-The default configuration is suitable for most use cases, but a system of _Build Configuration Variables_ is available if additional configuration is needed.
-
-### Build Configuration Variables
-
-A **Build Configuration Variable** is a [Makefile variable](https://www.gnu.org/software/make/manual/make.html#Using-Variables) and therefore follows the same rules. However, they have been streamlined to be made much easier to use, so most of the [official GNU Make documentation](https://www.gnu.org/software/make/manual/make.html) is only needed for advanced use cases.
-
-#### How to Set a Build Configuration Variable
-
-To set a **standard** configuration variable, **use the `=` syntax**...
-
-    VARIABLE=VALUE
-
-The **`=`** operator is used for _most_ configuration variables with a few exceptions (documented in the [reference table](#build-configuration-variables-reference-table)) when a variable should contain a **_list_ of values**. In such cases, **use `+=` the syntax** to _add_ values to the list.
-
-    VARIABLE+=VALUE1
-    VARIABLE+=VALUE2
-
-#### Where to Set a Build Configuration Variable
-
-For most variables, you should set them in the **project.mk** file (exceptions are documented in the [reference table](#build-configuration-variables-reference-table) and IDE-specific sections).
-
-For example, to enable hardware floating-point acceleration for a project, the **`MFLOAT_ABI`** configuration variable can be used with a value of **`hard`**. The contents of **project.mk** might then look as follows:
-
-(_Inside project.mk_)
-
-    :::Make
-    # This file can be used to set build configuration
-    # variables. These variables are defined in a file called 
-    # "Makefile" that is located next to this one.
-    
-    # For instructions on how to use this system, see
-    # https://analog-devices-msdk.github.io/msdk/USERGUIDE/
-    
-    # **********************************************************
-    
-    MFLOAT_ABI=hard # Enable hardware floating point acceleration
-
-It should also be noted that configuration variables can be set on the **command line** as well. For example
-
-    make MFLOAT_ABI=hard
-
-will have the same effect.
-
-Additionally, **environment variables** can be used. For example (on Linux)
-
-    export MFLOAT_ABI=hard
-
-will set the hardware floating point acceleration as the default for all projects with an environment variable.
-
-However, there is a _precedence hierarchy_ that should be taken into consideration.
-
-#### Precedence Hierarchy
-
-The precedence hierarchy for the value of a configuration variable is:
-
-- **IDE/command-line > project.mk > environment variable > default value**
-
-If a value is set in an IDE _and_ project.mk, the IDE's value will take precedence. However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
-
-#### Build Configuration Variables Reference Table
-
-| Configuration Variable | Description                                                | Details                                                      |
-| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-|                        |                                                            |                                                              |
-| `TARGET`               | Set the _Target Microcontroller_                           | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk** |
-| `BOARD`                | Set the _Board Support Package (BSP)_                      | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk.**  See [Board Support Packages](#board-support-packages) for more details.  When you change this option, it's usually a good idea to fully clean your project, then rebuild. |
-| `BSP_SEARCH_DIR`       | Set the directory to search for the _Board Support Package (BSP)_                      | By default, the `Libraries/Boards` folder of the MSDK is searched for the `TARGET` microcontroller.  This setting is useful for loading custom BSPs from outside of the MSDK.  When `LIB_BOARD=1`, the build system looks for the file path at `$(BSP_SEARCH_DIR)/$(BOARD)/board.mk`. |
-|                        |                                                            |                                                              |
-| `MAXIM_PATH`           | (Optional) Specify the location of the MSDK                | This optional variable can be used to change where the Makefile looks for the MSDK installation. By default, the build system will attempt to locate the MSDK with a relative path. If a project is moved _outside_ of the SDK, this variable must be set to the absolute path of the MSDK installation. |
-| `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
-|                        |                                                            |                                                              |
-| `VPATH`                | Where to search for source (.c/.cpp) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **source code** files. If `AUTOSEARCH` is enabled (which it is by default), all source code files in the directories specified by this option will be automatically added to the build. If `AUTOSEARCH` is disabled, this tells the Makefile where to look for the files specified by `SRCS`. |
-| `IPATH`                | Where to search for header (.h) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **header** files. _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`. Individual header files are _not_ ever manually added to the build. Instead, you only need to specify the _location_ of your header files. |
-| `AUTOSEARCH`           | Automatically search for source (.c/.cpp) files                 | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default). Set to `0` to disable or `1` to enable. If auto-search is disabled, source files must be manually added to `SRCS`. |
-| `SRCS`                 | List of source (.c/.cpp) files to add to the build              | **Use the `+=` operator with this variable**. All of the files in this list will be added to the build. If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build. If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`. Otherwise, a full path relative to the Makefile must be used. |
-| `PROJECT`              | Set the output filename                                    | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  **For VS Code, you should use the [project_name](#project_name) advanced config option instead of project.mk.** |
-|                        |                                                            |                                                              |
-| `MXC_OPTIMIZE_CFLAGS`  | Set the optimization level                                 | See [Optimize Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details.  Normal builds will default to `-Og`, which is good for debugging, while release builds will default to `-O2`. |
-| `PROJ_CFLAGS`          | Add a compiler flag to the build                           | **Use the `+=` operator with this variable**.  Compiler flags can be added with this option, including compiler definitions. For each value, the same syntax should be used as if the compiler flag was passed in over the command line. These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options. |
-| `PROJ_AFLAGS`          | Add an assembler flag to the build                         | **Use the `+=` operator with this variable**.  Assembler flags can be added with this option. |
-| `MFLOAT_ABI`           | Set the floating point acceleration level                  | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, and `softfp` (default). To enable full hardware acceleration instructions, use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`. If there is any conflict, you'll get a linker error. For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html). |
-|                        |                                                            |                                                              |
-| `LINKERFILE`           | Set the linkerfile to use                                  | Set the linkerfile with this option.  The file should exist in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MSDK, or it should be placed inside the root directory of the project. |
-| `PROJ_LDFLAGS`         | Add a linker flag to the build                             | **Use the `+=` operator with this variable**.  Flags can be passed to the linker with this option. See [GCC Options for Linking](https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#Link-Options) |
-|                        |                                                            |                                                              |
-| `LIB_BOARD`            | Include the BSP library (enabled by default)               | Inclusion of the Board-Support Package (BSP) library, which is enabled by default, can be toggled with this variable. Set to `0` to disable or `1` to enable. |
-| `LIB_PERIPHDRIVERS`    | Include the peripheral driver library (enabled by default) | The peripheral driver library can be toggled with this option. If disabled, you'll lose access to the higher-level driver functions but still have access to the register-level files. Set to `0` to disable or `1` to enable. |
-| `LIB_CMSIS_DSP`        | Include the CMSIS-DSP library                              | The [CMSIS-DSP library](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) can be enabled with this option.  Set to `0` to disable or `1` to enable. |
-| `LIB_CORDIO`           | Include the Cordio library                                 | The Cordio BLE library can be included with this option. This is only applicable for microcontrollers with an integrated BLE controller. |
-| `LIB_FCL`              | Include the Free Cryptographic Library (FCL)               | This option toggles the Free Cryptographic Library (FCL), which is a collection of software-implemented common cryptographic functions that can be included with this option. Set to `0` to disable or `1` to enable. |
-| `LIB_FREERTOS`         | Include the FreeRTOS library                               | The [FreeRTOS](https://freertos.org/) library can be enabled with this option, which is an open-source Real-Time Operating System (RTOS). Set to `0` to disable or `1` to enable. |
-| `LIB_LC3`              | Include the LC3 codec library                              | This option enables the inclusion of the Low Complexity Communication Codec (LC3), which is an efficient low latency audio codec. Set to `0` to disable or `1` to enable. |
-| `LIB_LITTLEFS`         | Include the littleFS library                               | This option toggles the ["Little File System"](https://github.com/littlefs-project/littlefs) library - a small filesystem library designed for microcontrollers.  Set to `0` to disable or `1` to enable. |
-| `LIB_LWIP`             | Include the lwIP library                                   |                                                              |
-| `LIB_MAXUSB`           | Include the MaxUSB library                                 | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to `0` to disable or `1` to enable. |
-| `LIB_SDHC`             | Include the SDHC library                                   | This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem. |
-|                        |                                                            |                                                              |
-| `SBT`                  | Toggle SBT integration                                     | Toggles integration with the [Secure Boot Tools (SBTs)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C). These are a suite of applications designed for use with microcontrollers that have secure bootloaders. When this is enabled, some additional rules become available such as `make sla` and `make scpa`. Set to `0` to disable or `1` to enable. |
-| `MAXIM_SBT_DIR`        | Where to find the SBTs                                     | This option can be used to manually specify the location of the SBTs. Usually, this is not necessary. By default, the `Tools/SBT` directory of the MaximSDK will be searched. If the [SBT installer](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C) is used, it will set the `MAXIM_SBT_DIR` environment variable to point to itself automatically. |
-| `TARGET_SEC`           | Secure part number to use                                  | Some secure microcontrollers have multiple secure variants, and this option can be used to specify the variant to use with the SBTs.  Defaults are intelligently selected and can be found in `$(MAXIM_SBT_DIR)/SBT-config.mk` |
-| `SCP_PACKETS`          | Where to build the scp_packets folder                      | Defaults to `build/scp_packets`                              |
-| `TEST_KEY`             | Which test key to sign applications with                   | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the Maxim test key that can be used for development. |
-
-## Peripheral Driver API
+### Peripheral Driver API
 
 A microcontroller is made up of a Central Processing Unit (CPU) that is surrounded by additional _peripheral_ hardware blocks such as timers, memory controllers, UART controllers, ADCs, RTCs, audio interfaces, and many more. The **Peripheral Driver API** is an important core library in the MSDK that allows the CPU to utilize the microcontroller's hardware blocks over a higher-level **_Application Programming Interface (API)_**.
 
 ![Figure 38](res/Fig38.jpg)
+
+#### API Documentation
 
 The links below will open detailed API references for each microcontroller. Offline copies of these API references can also be found in the `Documentation` folder of the MSDK [installation](#installation).
 
@@ -1826,56 +1834,39 @@ The links below will open detailed API references for each microcontroller. Offl
 
 - [MAX78002 API](Libraries/PeriphDrivers/Documentation/MAX78002/index.html)
 
-### Organization
+#### Organization
 
 The Peripheral Driver API's source code is organized as follows:
 
-- **Header files _(.h)_** can be found in the [`Libraries/PeriphDrivers/Include`](Libraries/PeriphDrivers/Include) folder.
+- **Header files _(.h)_** can be found in the `Libraries/PeriphDrivers/Include` folder.
     - These files contain function _declarations_ for the API, describing the function prototypes and their associated documentation.
-- **Source files _(.c)_** can be found in the [`Libraries/PeriphDrivers/Source`](Libraries/PeriphDrivers/Source) folder.
+- **Source files _(.c)_** can be found in the `Libraries/PeriphDrivers/Source` folder.
     - These files contain the function _definitions_ for the API - the _implementations_ of the functions declared by the header files.
 
 The _**implementation**_ files are further organized based on _**die type**_ and **_hardware revision_**. This is worth noting when browsing or debugging through the drivers.  
 
 - The **_die type_** files follow the **`_ESXX`** , **`_MEXX`** , or **`_AIXX`** naming convention.
     - These files' responsibility is to manage microcontroller-specific implementation details that may interact with other peripheral APIs _before_ ultimately calling the revision-specific files.
-    - This table shows which part numbers correspond to each die type:
-
-      | Part Number | Die Type
-      | -------- | ----------- |
-      | MAX32520 | ES17 |
-      | MAX32570 | ME13 |
-      | MAX32650 | ME10 |
-      | MAX32655 | ME17 |
-      | MAX32660 | ME11 |
-      | MAX32662 | ME12 |
-      | MAX32665 | ME14 |
-      | MAX32670 | ME15 |
-      | MAX32672 | ME21 |
-      | MAX32675 | ME16 |
-      | MAX32680 | ME20 |
-      | MAX32690 | ME18 |
-      | MAX78000 | AI85 |
-      | MAX78002 | AI87 |
+    - ???+ note "ℹ️ **Note: Die Types Table**"
+        | Part Number | Die Type
+        | -------- | ----------- |
+        | MAX32520 | ES17 |
+        | MAX32570 | ME13 |
+        | MAX32650 | ME10 |
+        | MAX32655 | ME17 |
+        | MAX32660 | ME11 |
+        | MAX32662 | ME12 |
+        | MAX32665 | ME14 |
+        | MAX32670 | ME15 |
+        | MAX32672 | ME21 |
+        | MAX32675 | ME16 |
+        | MAX32680 | ME20 |
+        | MAX32690 | ME18 |
+        | MAX78000 | AI85 |
+        | MAX78002 | AI87 |
 
 - The **_hardware revision_** files follow the **`_revX`** naming convention.  
     - These files contain the _pure_ driver implementation for a peripheral block and typically interact with the hardware almost entirely at the register level.
-
-## Examples
-
-The MSDK contains examples for each microcontroller that demonstrate the usage of its [Peripheral APIs](#peripheral-driver-api). They can be found in the `Examples` folder of an MSDK installation.
-
-![Figure 40](res/Fig40.jpg)
-
-Each example contains a `README.md` file describing what it does. In general, there is at least one example per peripheral block, and the example's name will indicate what it matches (i.e., `DMA`, `ADC`, `SPI`).
-
-![Figure 41](res/Fig41.jpg)
-
-## Libraries
-
-The MSDK contains a large number of libraries, both third-party and in-house. These libraries are an extension to the "core" SDK resources and contain drivers for various _external_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices. The MSDK also contains libraries for more advanced _internal_ hardware peripherals that provide an additional abstraction layer over the [Peripheral Driver API](#peripheral-driver-api), such as USB, the SDHC interface, and the Cordio BLE stack.
-
-Libraries are enabled for a project with a convenient *toggle switch* (See the **"Libraries"** section of the _[Build Configuration Variables](#build-configuration-variables-reference-table)_). When a library is enabled, it may also offer its _own_ Build Configuration Variables in addition to those already available in the core [Build System](#build-system).  
 
 ### CMSIS-DSP
 
@@ -1953,3 +1944,13 @@ FreeRTOS is supported by all parts in the MSDK.  See the `FreeRTOSDemo` example 
 
 - [FreeRTOS-Plus-CLI](https://www.freertos.org/FreeRTOS-Plus/index.html): **Supported**
 - [FreeRTOS-Plus-TCP](https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/index.html): **Not supported** (Contributions welcome!)
+
+## Examples
+
+The MSDK contains examples for each microcontroller that demonstrate the usage of its [Peripheral APIs](#peripheral-driver-api) and other supported libraries. They can be found in the `Examples` folder of an MSDK installation.
+
+![Figure 40](res/Fig40.jpg)
+
+Each example contains a `README.md` file describing what it does. In general, there is at least one example per peripheral block, and the example's name will indicate what it matches (i.e., `DMA`, `ADC`, `SPI`).
+
+![Figure 41](res/Fig41.jpg)
