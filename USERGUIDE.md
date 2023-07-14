@@ -158,14 +158,15 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 - [IAR Embedded Workbench](https://www.iar.com/ewarm)
 - [Keil MDK](https://www2.keil.com/mdk5/)
 - Command-line Development
-    - Supported shells (Windows):
+
+    - Supported shells (Windows)
         - [MSYS2](https://www.msys2.org/)
 
-    - Supported shells (Ubuntu):
+    -Supported shells (Ubuntu)
         - [Bash](https://tiswww.case.edu/php/chet/bash/bashtop.html)
         - [Zsh](https://www.zsh.org/)
 
-    - Supposted shells (MacOS):
+    -Supported shells (MacOS)
         - [Zsh](https://www.zsh.org/)
 
 ### Supported Languages
@@ -178,32 +179,43 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 ### Prerequisites
 
-- Administrator rights
-- (On MacOS) - [Homebrew](https://brew.sh/)
-- (On Ubuntu) the following packages are required to run the installer:
+- **Elevated/Administrator rights**
+
+??? warning "**⚠️ MacOS**"
+    On MacOS, please also download and install [Homebrew](https://brew.sh/).  It will be used in [Completing the Installation on MacOS](#completing-the-installation-on-macos) later on.
+
+??? warning "**⚠️ Ubuntu**"
+
+    Several GUI packages are required by the QT installer framework _even on headless systems_.  Run the following command _before_ running the installer to retrieve them.
 
         :::shell
-        libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
+        sudo apt update && sudo apt install libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
 
 ### Download
 
 The MSDK installer is available for supported Operating Systems from the download links below.
 
-- [Windows 10](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820B)
+- [**Windows 10**](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820B)
 
-- [Linux (Ubuntu)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720B)
+- [**Linux (Ubuntu)**](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720B)
 
-    - This file must be made executable before running (`chmod +x MaximMicrosSDK_linux.run`). Alternatively, set `Allow executing as program" in the Ubuntu GUI.  
+    ???+ note "ℹ️ **Note:**"
+        This file must be made executable before running (`chmod +x MaximMicrosSDK_linux.run`). Alternatively, set `Allow executing as program" in the Ubuntu GUI.
 
         ![Figure 1](res/Fig1.jpg)
 
-- [MacOS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610B)
+- [**MacOS**](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610B)
 
-    - On MacOS, the installer is distributed inside a .dmg disk image file. Double-click the downloaded file to mount it. Afterward, the installer executable will be made available inside the mounted drive.
+    ???+ note "ℹ️ **Note:**"
+        On MacOS, the installer is distributed inside a .dmg disk image file. Double-click the downloaded file to mount it. Afterward, the installer executable will be made available inside the mounted drive.
 
 ### Setup
 
-1. [Download](#download) the installer executable to an accessible location and launch it.
+The MSDK installer can be run through a [**GUI Installation**](#gui-installation) or a [**Command-Line Installation**](#command-line-installation)
+
+#### GUI Installation
+
+1. [**Download**](#download) the installer executable to an accessible location and launch it.
 
 2. Click **Next** to proceed from the Welcome screen.
 
@@ -221,129 +233,252 @@ The MSDK installer is available for supported Operating Systems from the downloa
 
     ![Figure 7](res/Fig7.jpg)
 
-6. Click Finish to complete the installation.
+6. Click **Finish** to complete the installation.
 
     ![Figure 8](res/Fig8.jpg)
 
 7. You should now see the contents of the installation directory populated with the MSDK.  
-   **Note:** On MacOS, some [additional steps](#completing-the-installation-on-macos) are required.
+    ??? note "ℹ️ **Note:**"
+        On MacOS, some [additional steps](#completing-the-installation-on-macos) are required.
 
-    ![Figure 10](res/Fig10.jpg)
+        ![Figure 10](res/Fig10.jpg)
 
+#### Command-Line Installation
+
+The MSDK installer features a command-line interface that can be used as an alternative to its GUI.  This is useful for installations on "headless" systems and scripting.
+
+??? note "ℹ️ **Note:**" The `--help` Command"
+    The available commands can be retrieved by running the executable with the `--help` option on the command line.  For example:
+
+        :::shell
+        $ ./MaximMicrosSDK_linux.run --help
+
+        Usage: ./MaximMicrosSDK_linux.run [options] command <args> <key=value>
+
+        Qt Installer Framework supports both GUI and headless mode. The installation operations can be invoked with the following commands and options. Note that the options marked with "CLI" are available in the headless mode only.
+
+        Commands:
+        in, install - install default or selected packages - <pkg ...>
+        ch, check-updates - show available updates information on maintenance tool
+        up, update - update all or selected packages - <pkg ...>
+        rm, remove - uninstall packages and their child components - <pkg ...>
+        li, list - list currently installed packages - <regexp>
+        se, search - search available packages - <regexp>
+            Note: The --filter-packages option can be used to specify
+            additional filters for the search operation
+        co, create-offline - create offline installer from selected packages - <pkg ...>
+        pr, purge - uninstall all packages and remove entire program directory
+
+        Options:
+        -h, --help                                     Displays help on commandline
+                                                        options.
+        # ...
+
+To run a _headless_ installation:
+
+1. [**Download**](#download) the installer executable to an accessible location.
+
+2. Ensure that you are able to run the installer with **_elevated permissions_**.
+    
+    ???+ note "Windows"
+        Open a Command Prompt or PowerShell **_as administrator_**.
+
+    ???+ note "Ubuntu and MacOS"
+        Ensure you have `sudo` rights.
+
+3. Run the installer with the arguments `in --root <install location>`.
+
+    ???+ note "Windows"
+            :::shell
+            .\MaximMicrosSDK_win.exe in --root C:/MaximSDK
+    
+    ???+ note "Ubuntu and MacOS"
+            :::shell
+            sudo ./MaximMicrosSDK_linux.run in --root ~/MaximSDK
+
+4. Follow the installer's command-line instructions to accept licenses and confirm installation size.
+
+    ??? note "ℹ️ **Note: Unattended Installations**"
+        You can run the installer without any user input by auto-accepting all licenses, messages, and input. 
+        
+            :::shell
+            sudo ./MaximMicrosSDK_linux.run in --root ~/MaximSDK --accept-licenses --accept-messages --confirm-command
+
+5. (Ubuntu and MacOS) Change ownership of the installation folder with: 
+
+        :::shell
+        sudo chown -R $(whoami):$(whoami) <MSDK installation folder>
+
+    ??? note "ℹ️ **Note**"
+        Usually, running the installation with `sudo` results in an installation owned by the `root` user.
+
+        You can verify this with the `ls -la` command.
+
+            :::shell
+            ls -la ~/MaximSDK
+            total 29656
+            drwxr-xr-x   8 root     root         4096 Jul 13 20:41 .
+            drwxr-x---  17 username username     4096 Jul 13 20:41 ..
+            drwxr-xr-x   2 root     root         4096 Jul 13 20:41 Documentation
+            drwxr-xr-x  15 root     root         4096 Jul 13 20:41 Examples
+            -rw-r--r--   1 root     root       171189 Jul 13 20:41 InstallationLog.txt
+            drwxr-xr-x  17 root     root         4096 Jun 28 23:42 Libraries
+            drwxr-xr-x   2 root     root         4096 Jul 13 20:41 Licenses
+            -rwxr-xr-x   1 root     root     28287992 Jul 13 20:41 MaintenanceTool
+            -rw-r--r--   1 root     root      1719694 Jul 13 20:41 MaintenanceTool.dat
+            -rw-r--r--   1 root     root         9770 Jul 13 20:41 MaintenanceTool.ini
+            drwxr-xr-x  11 root     root         4096 Jun 28 23:42 Tools
+            -rw-r--r--   1 root     root        13123 Jun 28 23:48 changelog.txt
+            -rw-r--r--   1 root     root        67664 Jul 13 20:41 components.xml
+            -rw-r--r--   1 root     root           48 Jul 13 20:41 installer.dat
+            drwxr-xr-x 112 root     root        12288 Jul 13 20:41 installerResources
+            -rw-r--r--   1 root     root        25214 Jun 29 00:47 maxim.ico
+            -rw-r--r--   1 root     root          362 Jul 13 20:41 network.xml
+            -rwxrwxrwx   1 root     root         1129 Jun 29 00:47 setenv.sh
+            -rwxrwxrwx   1 root     root          300 Jun 29 00:47 updates.sh
+
+        The owner of the MSDK installation should be changed back to the normal user, otherwise the toolchain may behave inconsistently against file permission issues.
+
+        After running the command above, `ls -la` should looking something like:
+
+            :::shell
+            ls -la ~/MaximSDK
+            total 29656
+            drwxr-xr-x   8 username     username         4096 Jul 13 20:41 .
+            drwxr-x---  17 username     username         4096 Jul 13 20:41 ..
+            drwxr-xr-x   2 username     username         4096 Jul 13 20:41 Documentation
+            drwxr-xr-x  15 username     username         4096 Jul 13 20:41 Examples
+            -rw-r--r--   1 username     username       171189 Jul 13 20:41 InstallationLog.txt
+            drwxr-xr-x  17 username     username         4096 Jun 28 23:42 Libraries
+            drwxr-xr-x   2 username     username         4096 Jul 13 20:41 Licenses
+            -rwxr-xr-x   1 username     username     28287992 Jul 13 20:41 MaintenanceTool
+            -rw-r--r--   1 username     username      1719694 Jul 13 20:41 MaintenanceTool.dat
+            -rw-r--r--   1 username     username         9770 Jul 13 20:41 MaintenanceTool.ini
+            drwxr-xr-x  11 username     username         4096 Jun 28 23:42 Tools
+            -rw-r--r--   1 username     username        13123 Jun 28 23:48 changelog.txt
+            -rw-r--r--   1 username     username        67664 Jul 13 20:41 components.xml
+            -rw-r--r--   1 username     username           48 Jul 13 20:41 installer.dat
+            drwxr-xr-x 112 username     username        12288 Jul 13 20:41 installerResources
+            -rw-r--r--   1 username     username        25214 Jun 29 00:47 maxim.ico
+            -rw-r--r--   1 username     username          362 Jul 13 20:41 network.xml
+            -rwxrwxrwx   1 username     username         1129 Jun 29 00:47 setenv.sh
+            -rwxrwxrwx   1 username     username          300 Jun 29 00:47 updates.sh
+    
 #### Completing the Installation on MacOS
 
-On MacOS, some additional missing packages must be manually installed with[Homebrew](https://brew.sh/).
+???+ warning "⚠️ **Warning**"
+    On MacOS, some additional missing packages must be manually installed with [Homebrew](https://brew.sh/).  There are also some manual setup steps required to retrieve `make` version 4.  The instructions in this section are critical.
 
-**For non-M1 platforms:**
+??? note "**Completing Installation on M1 platforms**"
 
-1. Follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
+    The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
 
-2. Then, open a terminal and run the command
+    Additionally, the MSDK toolchain requires Make 4.x+, which must also be retrieved via Homebrew.
 
-        brew install make libusb-compat libftdi hidapi libusb
+    The i386 version of Homebrew can be installed in parallel with the arm64 version and typically installs into a separate filesystem.
 
-3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+    1. Open a terminal and update Rosetta.
 
-        :::shell
-        ==> make: stable 4.4.1 (bottled)
-        Utility for directing compilation
-        https://www.gnu.org/software/make/
-        /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-        Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-        From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-        License: GPL-3.0-only
-        ==> Dependencies
-        Build: lzip, lzip
-        ==> Caveats
-        GNU "make" has been installed as "gmake".
-        If you need to use it as "make", you can add a "gnubin" directory
-        to your PATH from your bashrc like:
+            :::shell
+            softwareupdate --install-rosetta --agree-to-license
 
+    2. Close the terminal.
+
+    3. Create a new Rosetta terminal:
+
+        1. Launch Finder.
+
+        2. Navigate to Applications and find the "Terminal" application.
+
+        3. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".  This will be a new application shortcut to the Rosetta terminal.
+
+        4. Right-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
+
+        5. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
+
+    4. From your Rosetta terminal, follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
+
+    5. Verify the correct version of Homebrew is running from your Rosetta terminal using the `which brew` command. This command should return a path beginning with `/usr/local`.
+
+        **Note:** On systems with multiple or pre-existing Homebrew installations, the arm64 version of Homebrew may still take precedence over the newly installed x86_64 version. If `which brew` contains `/opt/homebrew` instead, you may need to edit your terminal profile's startup script. Alternatively, you can directly run the correct Homebrew binary using its absolute path.
+
+    6. Run the command
+
+            :::shell
+            brew install make libusb-compat libftdi hidapi libusb
+
+        (or, if you need to use the absolute path)
+
+            :::shell
+            /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
+
+    7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+
+            :::shell
+            ==> make: stable 4.4.1 (bottled)
+            Utility for directing compilation
+            https://www.gnu.org/software/make/
+            /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
+            Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
+            From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
+            License: GPL-3.0-only
+            ==> Dependencies
+            Build: lzip, lzip
+            ==> Caveats
+            GNU "make" has been installed as "gmake".
+            If you need to use it as "make", you can add a "gnubin" directory
+            to your PATH from your bashrc like:
+
+                PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+            ==> Analytics
+            install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
+            install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
+            build-error: 0 (30 days)
+
+        This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
+
+            :::bash
             PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-        ==> Analytics
-        install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-        install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-        build-error: 0 (30 days)
 
-    This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
+    8. Restart your shell and verify that `make --version` returns 4.x+.
 
-        :::bash
-        PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+??? note "**Completing Installation on non-M1 platforms**"
 
-4. Restart your shell and verify that `make --version` returns 4.x+.
+    1. Follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
 
-**For M1 platforms**:
+    2. Then, open a terminal and run the command
 
-The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
+            brew install make libusb-compat libftdi hidapi libusb
 
-Additionally, the MSDK toolchain requires Make 4.x+, which must also be retrieved via Homebrew.
+    3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
 
-The i386 version of Homebrew can be installed in parallel with the arm64 version and typically installs into a separate filesystem.
+            :::shell
+            ==> make: stable 4.4.1 (bottled)
+            Utility for directing compilation
+            https://www.gnu.org/software/make/
+            /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
+            Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
+            From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
+            License: GPL-3.0-only
+            ==> Dependencies
+            Build: lzip, lzip
+            ==> Caveats
+            GNU "make" has been installed as "gmake".
+            If you need to use it as "make", you can add a "gnubin" directory
+            to your PATH from your bashrc like:
 
-1. Open a terminal and update Rosetta.
+                PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+            ==> Analytics
+            install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
+            install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
+            build-error: 0 (30 days)
 
-        :::shell
-        softwareupdate --install-rosetta --agree-to-license
+        This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
 
-2. Close the terminal.
-
-3. Create a new Rosetta terminal:
-
-    1. Launch Finder.
-
-    2. Navigate to Applications and find the "Terminal" application.
-
-    3. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".  This will be a new application shortcut to the Rosetta terminal.
-
-    4. Right-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
-
-    5. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
-
-4. From your Rosetta terminal, follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
-
-5. Verify the correct version of Homebrew is running from your Rosetta terminal using the `which brew` command. This command should return a path beginning with `/usr/local`.
-
-    **Note:** On systems with multiple or pre-existing Homebrew installations, the arm64 version of Homebrew may still take precedence over the newly installed x86_64 version. If `which brew` contains `/opt/homebrew` instead, you may need to edit your terminal profile's startup script. Alternatively, you can directly run the correct Homebrew binary using its absolute path.
-
-6. Run the command
-
-        :::shell
-        brew install make libusb-compat libftdi hidapi libusb
-
-    (or, if you need to use the absolute path)
-
-        :::shell
-        /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
-
-7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
-
-        :::shell
-        ==> make: stable 4.4.1 (bottled)
-        Utility for directing compilation
-        https://www.gnu.org/software/make/
-        /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-        Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-        From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-        License: GPL-3.0-only
-        ==> Dependencies
-        Build: lzip, lzip
-        ==> Caveats
-        GNU "make" has been installed as "gmake".
-        If you need to use it as "make", you can add a "gnubin" directory
-        to your PATH from your bashrc like:
-
+            :::bash
             PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-        ==> Analytics
-        install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-        install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-        build-error: 0 (30 days)
 
-    This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
-
-        :::bash
-        PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-
-8. Restart your shell and verify that `make --version` returns 4.x+.
+    4. Restart your shell and verify that `make --version` returns 4.x+.
 
 ### Maintenance
 
