@@ -1251,7 +1251,6 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 3. Flash the program using `openocd`.  It's recommended to use the `make` command below for convenience.
 
     - ???+ note "ℹ️ **Flashing with Make**"
-        This command is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It will **flash** _and_ **run** the project with OpenOCD.  See the `Tools/Flash/flash.mk` file for implementation details.
 
                 :::shell
                 make flash.openocd
@@ -1289,6 +1288,8 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
                 Info : SWD DPIDR 0x2ba01477
                 shutdown command invoked
 
+            This command is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It will **flash** _and_ **run** the project with OpenOCD.  See the `Tools/Flash/flash.mk` file for implementation details.
+
     - ???+ note "ℹ️ **OpenOCD Flash & Hold**"
         The following command template can be used if you just want to flash the program with OpenOCD manually, and halt the target micro.  This is used when you want to start a command-line debugging session.
 
@@ -1296,14 +1297,19 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
                 openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/<target>.cfg -c "program build/<filename>.elf verify; init; reset halt"
 
             - ???+ note "**ℹ️ `-s $MAXIM_PATH/Tools/OpenOCD/scripts`**"
-                    This option loads an OpenOCD config file for the _target microcontroller_.  Supported options can be found in the `Tools/OpenOCD/scripts/target` folder.  **Change `<target>` to match the target micro**.
+                This option tells OpenOCD to search the `Tools/OpenOCD/scripts` folder of the MSDK installation for files.
+                ???+ warning "**⚠️ Warning: Windows**"
+                    On Windows you should use `%MAXIM_PATH%` (Command Prompt) or `$env:MAXIM_PATH` (PowerShell) to dereference the `MAXIM_PATH` environment variable 
 
-            - ???+ warning "**⚠️ -f `target/<target>.cfg`**"
-                    This option loads an OpenOCD config file for the _target microcontroller_.  Supported options can be found in the `Tools/OpenOCD/scripts/target` folder.  **Change `<target>` to match the target micro**.
+            - ???+ note "**ℹ️ `-f target/<target>.cfg`**"
+                This option loads an OpenOCD config file for the _target microcontroller_.  Supported options can be found in the `Tools/OpenOCD/scripts/target` folder.  
+                ???+ warning "⚠️**Change `<target>` to match the target micro**"
+
+            - ???+ note "**ℹ️ `-f interface/cmsis-dap.cfg`**"
+                This option loads an OpenOCD config file for the MAX32625PICO SWD debugger that is included with most EVKITs.  You may need to change this option for other debuggers. Supported options can be found in the `Tools/OpenOCD/scripts/interface` folder.
             
-                
-
-            - `-c "program build/<filename>.elf verify exit" ` flashes the program binary. Change `<filename>.elf` to match the correct filename.
+            - ???+ note "`-c "program build/<filename>.elf verify; init; reset halt"`"
+                This command flashes the program binary (`program`), performs a flash verification (`verify`), initializes the connection to the target micro (`init`), and finally resets/halts the micro to prepare for debug (`reset halt`).
 
             Expected output:
 
@@ -1340,17 +1346,21 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 ### Debugging on the Command-Line
 
-1. [Flash](#flashing-on-the-command-line) the program using the **Flash and Hold** command.
+1. [Flash](#flashing-on-the-command-line) the program using the **Flash and Hold** command above.
 
-2. Launch an **_new_ separate terminal**. On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
+2. Launch an **_new_ separate terminal**. 
+
+    ???+ warning "⚠️ On **Windows**, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal."
 
 3. `cd` into the location of the copied example project.
 
 4. Run the following command to launch a **GDB *client***.
 
-        arm-none-eabi-gdb --se=build/max78002.elf
+        arm-none-eabi-gdb --se=build/<filename>.elf
 
-    - `--se` sets the symbol and executable file to the compiled program file. **Change this to match the build output filename.**
+    - ???+ note "**ℹ️ `--se=build/<filename>.elf`**"
+        This sets the symbol and executable file to the compiled program file.
+        ???+ warning "⚠️ **Change this to match the build output filename.**"
 
     Expected output:
 
@@ -1372,6 +1382,9 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
         Type "apropos word" to search for commands related to "word"...
         Reading symbols from build/max78002.elf...
         (gdb)
+
+    ???+ note "**ℹ️ Note**"
+        The terminal is now in an interactive GDB client window.  It accepts GDB commands.  Run `help` at any time, or see [Common GDB Commands](#common-gdb-commands) in this document.
 
 5. Connect the GDB Client to the OpenOCD server with the following command.
 
@@ -1418,8 +1431,6 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 9. (Optional) Continue exercising the debugger. 
 
-    Run `help` for GDB help, or see [Common GDB Commands](#common-gdb-commands).
-
 10. Quit GDB.
 
         quit
@@ -1443,7 +1454,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 | ------------------------------- | ----------------- | ------------------------------------------------------------ |
 | `monitor halt`                  |                   | Halt the microcontroller.                                    |
 | `monitor reset halt`            |                   | Reset the microcontroller and immediately halt.              |
-| `monitor max32xxx mass_erase 0` |                   | Mass erase the flash.                                        |
+| `monitor max32xxx mass_erase 0` |                   | Mass erase flash bank 0.                                        |
 | `file <filename>`               |                   | Set the program file to `<filename>`                         |
 | `load`                          |                   | Flash the current program file                               |
 | `continue`                      | `c`               | Continue execution.                                          |
