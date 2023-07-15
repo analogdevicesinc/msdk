@@ -5,11 +5,82 @@ from mkdocs.commands.build import build
 from mkdocs.config import load_config
 from os import listdir
 import os
+from typing import Tuple
+import re
 
 # Locate some directories relative to this file
 here = Path(__file__).parent.absolute()
 repo = here.parent
 periph_docs_dir = repo / "Libraries" / "PeriphDrivers" / "Documentation"
+examples_dir = repo / "Examples"
+
+def parse_example_description(f: Path) -> Tuple[Path, str, str, str]:
+    example_folder = f.parent
+    example_name = f.parent.name
+    example_description = "Empty Description"
+    example_details = "No details"
+    with open(f, "r", encoding="utf-8") as file:
+        print(Path(f))
+        file_content = file.read()
+        lines = file_content.splitlines()
+        for i in range(len(lines)):
+            if "/*" in lines[i]:
+                comment_block = [ lines[i] ]
+                while "*/" not in lines[i] and i < len(lines) - 1:
+                    i += 1
+                    comment_block.append(lines[i])
+                if "@file" in "\n".join(comment_block):
+                    for l in comment_block:
+                        if "@brief" in l:
+                            regex = re.compile(r"@brief[\s]*[^\n]*")
+                            # Match @brief, 
+                            # then any whitespace [\s]*
+                            # then any character except newline [^\n]*
+                            match = regex.findall(l)
+                            if match:
+                                example_description = str(match[0]).partition(" ")[2].strip()
+                                break
+
+        return (example_folder, example_name, example_description, example_details)
+
+
+
+example_md_files_list = []
+for i in os.scandir(examples_dir):
+    target_micro = Path(i).name
+    file_path = f"{repo / target_micro.upper()}_Examples.md"
+    with open(file_path, "w", encoding="utf-8") as md_file:
+        md_file.write(f"# {target_micro} MSDK Examples\n")
+        md_file.write("| Example | Description |\n")
+        md_file.write("| --- | --- |\n")
+        examples_list = []
+        for main_file in Path(i).rglob("**/main.c"):
+            ret = parse_example_description(main_file)
+            if ret:
+                example_folder = ret[0]
+                example_name = ret[1]
+                example_description = ret[2]
+                example_details = ret[3]
+                link = f"https://github.com/Analog-Devices-MSDK/msdk/tree/release/{Path(example_folder).relative_to(repo).as_posix()}"
+                examples_list.append(f"| [{example_name}]({link})| {example_description} |\n")
+        md_file.writelines(sorted(examples_list))
+    example_md_files_list.append(Path(file_path).relative_to(repo))
+
+# Pre-populate markdown files
+print("Copying markdown files")
+for f in repo.glob("*.md"):
+    print(f.name)
+    shutil.copy(f, here)
+
+ug_content = ""
+with open(repo / "Documentation" / "USERGUIDE.md", "r", encoding="utf-8") as userguide:
+    ug_content = userguide.read()
+with open(repo / "Documentation" / "USERGUIDE.md", "w", encoding="utf-8") as userguide:
+    markdown_insertion = ""
+    for i in sorted(example_md_files_list):
+        link_name = str(i).partition("_")[0]
+        markdown_insertion += f"* [{link_name} Examples]({str(i)})\n"
+    userguide.write(ug_content.replace("##__EXAMPLES_LIST__##", markdown_insertion))
 
 # Run Doxygen builds
 for f in periph_docs_dir.glob("*_Doxyfile"):
@@ -25,12 +96,6 @@ for f in periph_docs_dir.glob("*_Doxyfile"):
 # Copy res (resources) folder
 print("Copying res folder")
 shutil.copytree(repo / "res", repo / "Documentation" / "res", dirs_exist_ok=True)
-
-# Pre-populate markdown files
-print("Copying markdown files")
-for f in repo.glob("*.md"):
-    print(f.name)
-    shutil.copy(f, here)
 
 for f in (repo / "Tools" / "Bluetooth").glob("*.md"):
     print(f.name)

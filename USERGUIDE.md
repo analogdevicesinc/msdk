@@ -1993,3 +1993,5 @@ The MSDK contains examples for each microcontroller that demonstrate the usage o
 Each example contains a `README.md` file describing what it does. In general, there is at least one example per peripheral block, and the example's name will indicate what it matches (i.e., `DMA`, `ADC`, `SPI`).
 
 ![Figure 41](res/Fig41.jpg)
+
+##__EXAMPLES_LIST__##
