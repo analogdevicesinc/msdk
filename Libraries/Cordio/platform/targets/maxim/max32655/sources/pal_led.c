@@ -18,6 +18,7 @@
 /*************************************************************************************************/
 
 #include "pal_led.h"
+#include "gpio.h"
 
 /**************************************************************************************************
   Macros
@@ -33,11 +34,6 @@
 #define PAL_BB_LED_RX_TO      0x88
 #define PAL_BB_LED_RX_CRC     0x90
 
-/* BSP LED Driver */
-extern const unsigned int num_leds;
-extern int LED_Init(void);
-extern void LED_On(unsigned int idx);
-extern void LED_Off(unsigned int idx);
 
 /**************************************************************************************************
   Local Variables
@@ -48,9 +44,16 @@ static struct {
   bool_t init;
 } palLedCb;
 
+extern const mxc_gpio_cfg_t led_pin[];
+
 /**************************************************************************************************
   Functions: Initialization
 **************************************************************************************************/
+/* BSP LED Driver */
+extern const unsigned int num_leds;
+extern int LED_Init(void);
+extern void LED_On(unsigned int idx);
+extern void LED_Off(unsigned int idx);
 
 
 
@@ -207,4 +210,38 @@ void PalLedOff(uint8_t ledId)
       }
     }
 #endif
+}
+/*************************************************************************************************/
+/*!
+ *  \brief      Set LED On Fast as possible, by eliminating overhead.
+ *
+ *  \param      ledId           LED ID.
+ *
+ *  \return     None.
+ */
+/*************************************************************************************************/
+void PalLedFastOn(uint8_t id)
+{
+    #if LED_ON == 0
+        led_pin[id].port->out_clr = led_pin[id].mask;
+    #else
+        led_pin[id].port->out_set = led_pin[id].mask;
+    #endif
+}
+/*************************************************************************************************/
+/*!
+ *  \brief      Set LED Off Fast as possible, by eliminating overhead.
+ *
+ *  \param      ledId           LED ID.
+ *
+ *  \return     None.
+ */
+/*************************************************************************************************/
+void PalLedFastOff(uint8_t id)
+{
+  #if LED_ON == 0
+        led_pin[id].port->out_set = led_pin[id].mask;
+    #else
+        led_pin[id].port->out_clr = led_pin[id].mask;
+    #endif
 }
