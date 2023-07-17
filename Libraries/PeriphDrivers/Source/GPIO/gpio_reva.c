@@ -235,3 +235,35 @@ uint32_t MXC_GPIO_RevA_GetWakeEn(mxc_gpio_reva_regs_t *port)
 {
     return port->wken;
 }
+
+int MXC_GPIO_RevA_SetDriveStrength(mxc_gpio_reva_regs_t *port, mxc_gpio_drvstr_t dssel,
+                                   uint32_t mask)
+{
+    // Configure the drive strength.
+    switch (dssel) {
+    case MXC_GPIO_DRVSTR_0:
+        port->ds0 &= ~mask;
+        port->ds1 &= ~mask;
+        break;
+
+    case MXC_GPIO_DRVSTR_1:
+        port->ds0 |= mask;
+        port->ds1 &= ~mask;
+        break;
+
+    case MXC_GPIO_DRVSTR_2:
+        port->ds0 &= ~mask;
+        port->ds1 |= mask;
+        break;
+
+    case MXC_GPIO_DRVSTR_3:
+        port->ds0 |= mask;
+        port->ds1 |= mask;
+        break;
+
+    default:
+        return E_BAD_PARAM;
+    }
+
+    return E_NO_ERROR;
+}
