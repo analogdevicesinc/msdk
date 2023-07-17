@@ -1609,7 +1609,7 @@ int MXC_SPI_RevA2_ControllerTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
 
     // This private function, MXC_SPI_RevA2_process, call fills the TX FIFO as much as possible
     //   before launching the transaction. Subsequent FIFO management will
-    //   be handled from the MXC_SPI_Handler which should be called in SPI_IRQHandler.
+    //   be handled below after transaction has started.
     MXC_SPI_RevA2_process(spi);
 
     // Start the SPI transaction.
@@ -1652,6 +1652,7 @@ int MXC_SPI_RevA2_ControllerTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
         }
     }
 
+    // Complete transaction once it started.
     while (STATES[spi_num].transaction_done == false) {
         if (STATES[spi_num].tx_cnt == STATES[spi_num].tx_len &&
             STATES[spi_num].rx_cnt == STATES[spi_num].rx_len) {
@@ -1991,8 +1992,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
 }
 
 int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                    uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
-                                    uint8_t deassert)
+                                    uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
     int spi_num, tx_dummy_fr_len;
 
@@ -2045,8 +2045,6 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
         STATES[spi_num].tx_len = tx_fr_len * 2;
         STATES[spi_num].rx_len = rx_fr_len * 2;
     }
-
-    STATES[spi_num].deassert = deassert;
 
     // Set the number of messages to transmit/receive for the SPI transaction.
     if (STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
@@ -2160,8 +2158,6 @@ int MXC_SPI_RevA2_TargetTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffe
         STATES[spi_num].rx_len = rx_fr_len * 2;
     }
 
-    STATES[spi_num].deassert = deassert;
-
     // Set the number of messages to transmit/receive for the SPI transaction.
     if (STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
         if (rx_fr_len > tx_fr_len) {
@@ -2213,17 +2209,24 @@ int MXC_SPI_RevA2_TargetTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffe
 
     // This private function, MXC_SPI_RevA2_process, call fills the TX FIFO as much as possible
     //   before launching the transaction. Subsequent FIFO management will
-    //   be handled from the MXC_SPI_Handler which should be called in SPI_IRQHandler.
+    //   be handled below once transaction has started.
+    MXC_SPI_RevA2_process(spi);
+
+    // Wait for Target Select pin to be asserted before starting transaction.
+    while ((spi->stat & MXC_F_SPI_REVA_STAT_BUSY) == 0) {}
+
+    // Complete transaction once started.
     while (STATES[spi_num].transaction_done == false) {
         if (STATES[spi_num].tx_cnt == STATES[spi_num].tx_len &&
             STATES[spi_num].rx_cnt == STATES[spi_num].rx_len) {
-            if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY)) {
-                STATES[spi_num].transaction_done = true;
-            }
+            STATES[spi_num].transaction_done = true;
         }
 
         MXC_SPI_RevA2_process(spi);
     }
+
+    // Wait until transaction is complete.
+    while (spi->stat & MXC_F_SPI_REVA_STAT_BUSY) {}
 
     return E_SUCCESS;
 }
@@ -2281,8 +2284,6 @@ int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buf
         STATES[spi_num].tx_len = tx_fr_len * 2;
         STATES[spi_num].rx_len = rx_fr_len * 2;
     }
-
-    STATES[spi_num].deassert = deassert;
 
     // Set the number of bytes to transmit/receive for the SPI transaction.
     if (STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {

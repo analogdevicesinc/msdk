@@ -54,7 +54,7 @@
 
 #define DMA 0
 
-#define CUSTOM_TARGET 1
+#define CUSTOM_TARGET 0
 
 #define DATA_LEN 1024 // Words
 #define DATA_SIZE 8
@@ -114,9 +114,6 @@ int main(void)
     printf("Please connect the custom TS pin P0.9 to P0.20.\n\n");
 #endif
 
-    printf("Press PB1 to begin transaction.\n");
-    while (!PB_Get(0)) {}
-
     /***** Initialize data buffers *****/
     for (int i = 0; i < DATA_LEN; i++) {
         controller_tx[i] = i;
@@ -146,7 +143,7 @@ int main(void)
     target_pins.func = MXC_GPIO_FUNC_OUT;
     target_pins.pad = MXC_GPIO_PAD_PULL_UP;
     target_pins.vssel = MXC_GPIO_VSSEL_VDDIO; // Set custom target pin to VDDIOH (3.3V).
-    target_pins.dssel = MXC_GPIO_DRVSTR_3; // Set custom target pin to VDDIOH (3.3V).
+    target_pins.dssel = MXC_GPIO_DRVSTR_0; // Set custom target pin to VDDIOH (3.3V).
 
     controller_init.ts_control =
         MXC_SPI_TSCONTROL_SW_DRV; // SPI Driver will handle deassertion for TS pins.
@@ -214,11 +211,14 @@ int main(void)
     NVIC_EnableIRQ(SPI_TARGET_IRQ);
 #endif
 
+    printf("Press PB1 to begin transaction.\n");
+    while (!PB_Get(0)) {}
+
     /***** Perform Transaction *****/
 #if DMA
-    MXC_SPI_TargetTransactionDMA(SPI_TARGET, target_tx, DATA_LEN, target_rx, DATA_LEN, 1);
+    MXC_SPI_TargetTransactionDMA(SPI_TARGET, target_tx, DATA_LEN, target_rx, DATA_LEN);
 #else
-    MXC_SPI_TargetTransaction(SPI_TARGET, target_tx, DATA_LEN, target_rx, DATA_LEN, 1);
+    MXC_SPI_TargetTransaction(SPI_TARGET, target_tx, DATA_LEN, target_rx, DATA_LEN);
 #endif
 
     MXC_SPI_ControllerTransactionB(SPI_CONTROLLER, controller_tx, DATA_LEN, controller_rx, DATA_LEN,
