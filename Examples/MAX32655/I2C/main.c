@@ -51,8 +51,6 @@
 #include "dma.h"
 
 /***** Definitions *****/
-// #define MASTERDMA
-
 #define I2C_MASTER MXC_I2C1
 #define I2C_SLAVE MXC_I2C0
 
