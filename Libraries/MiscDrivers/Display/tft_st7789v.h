@@ -392,6 +392,16 @@ void MXC_TFT_Line(int x0, int y0, int x1, int y1, int color);
  * @param       color           Rectangle color
  */
 void MXC_TFT_Rectangle(int x0, int y0, int x1, int y1, int color);
+
+/**
+ * @brief      Stream camera to TFT
+ *
+ * @param      x0           x location of image
+ * @param      y0           y location of image
+ * @param      width        image width
+ * @param      height       image height
+ */
+void MXC_TFT_Stream(int x0, int y0, int width, int height);
 /**@} end of group tft_st7789v */
 
 #ifdef __cplusplus
