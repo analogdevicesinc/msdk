@@ -67,4 +67,4 @@ FCL_INCLUDE_DIR += $(PERIPH_DRIVER)/Include/$(TARGET_UC)
 
 FCL_C_FILES += $(sort $(wildcard $(FCL_DIR)/src/*.c))
 # Where to find header files for this project
-FCL_H_FILES +=  $(shell find $(FCL_INCLUDE_DIR) -name '*.h')
+FCL_H_FILES +=  $(wildcard $(addsuffix /*.h,$(FCL_INCLUDE_DIR)))

@@ -89,4 +89,4 @@ LWIP_C_FILES += $(sort $(wildcard $(LWIP_DIR)/netif/ppp/polarssl/*.c))
 LWIP_C_FILES += $(sort $(wildcard $(LWIP_DIR)/Maxim/*.c))
 
 # Where to find header files for this project
-LWIP_H_FILES +=  $(shell find $(LWIP_INCLUDE_DIR) -name '*.h')
+LWIP_H_FILES += $(wildcard $(addsuffix /*.h,$(LWIP_INCLUDE_DIR)))
