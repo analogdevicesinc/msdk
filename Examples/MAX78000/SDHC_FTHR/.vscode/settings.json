@@ -78,7 +78,11 @@
     "files.associations": {
         "stdint.h": "c",
         "cli.h": "c",
-        "sdhc.h": "c"
+        "sdhc.h": "c",
+        "user-cli.h": "c",
+        "uart.h": "c",
+        "nvic_table.h": "c",
+        "cstdlib": "c"
     }
 }
 

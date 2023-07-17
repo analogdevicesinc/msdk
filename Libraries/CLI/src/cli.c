@@ -37,7 +37,6 @@
 
 #include "cli.h"
 
-
 /* -------------------------------------------------- */
 //             FUNCTION PROTOTYPES
 /* -------------------------------------------------- */
@@ -45,8 +44,9 @@ bool white_space_present(char *p);
 
 bool white_space_not_present(char *p);
 
-char *cmd_history_str[100];
-// int cmd_history_len[100];
+/* -------------------------------------------------- */
+//                      GLOBALS
+/* -------------------------------------------------- */
 int cmd_idx = 0;
 char buf[256];
 /*
@@ -84,41 +84,10 @@ void line_accumlator(uint8_t user_char)
             MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),ENTER);
             buf[idx++] = '\r';
             buf[idx] = '\0';
-
-            // cmd_history_len[cmd_idx] = idx;     //Storing the length of the command into an array
-            cmd_history_str[cmd_idx++] = buf; //Storing the excecuted command into a buffer
             idx = 0;
             char *accum = buf; //Assign buf
             process_command(accum);
             break;
-        }
-        case ARROW_KEY_CODE_LEFT: 
-        case ARROW_KEY_CODE_RIGHT: 
-        case ARROW_KEY_CODE_UP:
-        case ARROW_KEY_CODE_DOWN:{
-            // Check the sequence to see if one of the arrow keys were pressed
-            if (buf[idx] == ARROW_KEY_CODE_2 && buf[idx - 1] == ARROW_KEY_CODE_1){
-                MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
-                MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
-
-                if(user_char == ARROW_KEY_CODE_UP && cmd_idx > 0){
-                    //Erase what's currently on the prompt
-                    //MXC_UART_Write(MXC_UART_GET_UART(CONSOLE_UART), )
-                    MXC_UART_Write(MXC_UART_GET_UART(CONSOLE_UART),cmd_history_str[--cmd_idx],strlen(cmd_history_str[cmd_idx]));
-
-                    //Empty current value of buf and assign respective cmd_history_str
-                    idx = strlen(cmd_history_str[cmd_idx]);
-
-                }
-            }
-            // This else statement is excecuted when the arrow keys weren't pressed and the user entered W,A,S or D keys
-            else {
-                if (idx < 255) {
-                buf[idx++] = user_char; //pushes characters into the buffer
-                MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),user_char);
-            }
-            break;
-            }
         }
         default: {
             // Handle all other characters
@@ -130,86 +99,6 @@ void line_accumlator(uint8_t user_char)
         }
     }
 }
-
-/*
- * @name handle_size
- *
- * @brief Finds the Size of the SD Card and Free Space
- *
- * @param argc and *argv[]
- *
- *
- * @return
- * 		   void
- */
-void handle_size(int argc, char *argv[]){
-    getSize();
-}
-
-/*
- * @name handle_format
- *
- * @brief han
- *
- * @param argc and *argv[]
- *
- *
- * @return
- * 		   void
- */
-void handle_format(int argc, char *argv[]){
-    formatSDHC();
-}
-
-void hande_mount(int argc, char *argv[]){
-    mount();
-}
-
-void handle_ls(int argc, char *argv[]){
-    ls();
-}
-
-void handle_mkdir(int argc, char *argv[]){
-    mkdir(argv[1]);
-}
-
-void handle_createfile(int argc, char *argv[]){
-    unsigned int length = str_to_dec(argv[2]);
-    createFile(argv[1],length);
-}
-
-void handle_cd(int argc, char *argv[]){
-    cd(argv[1]);
-}
-
-void handle_add_data(int argc, char *argv[]){
-    unsigned int length = str_to_dec(argv[2]);
-    appendFile(argv[1],length);
-}
-
-void handle_del(int argc, char *argv[]){
-    delete(argv[1]);
-}
-
-void handle_fatfs(int argc, char *argv[]){
-    example();
-}
-
-void handle_unmount(int argc, char *argv[]){
-    umount();
-}
-/* @name handle_help
- *
- * @brief: Prints a help message with info about all of the supported commands.
- *
- */
-void handle_help(int argc, char *argv[])
-{
-	printf("\n\r");
-	for (int i = 0; i < num_commands;i++)
-		printf("%s --> %s", commands[i].name, commands[i].help_string);
-}
-
 /*
  * @name process_command
  *
@@ -323,7 +212,7 @@ void process_command(char *input)
     }
 
     //Print prompt
-    user_prompt_sequence();
+    User_Prompt_Sequence();
 }
 /*
  * @name white_space_present
@@ -356,35 +245,16 @@ bool white_space_not_present(char *p){
 
 /*
 *
-* @name str_to_dec
+* @name User_Prompt_Sequence
 *
-* @brief Converts a string into an integer
+* @brief Prints out the user command prompt sequence o the uart console 
 *
-* @param const char *str
+* @param void
 *
 * @return int
 *           converted integer 
 */
-int str_to_dec(const char *str)
-{
-    int val = 0;
-
-    // Loop through each character in the string
-    for (int i = 0; str[i] != '\0'; i++) {
-        char c = str[i];
-
-        // Check if the character is a valid decimal digit
-        if (isdigit(c)) {
-            val = (val * 10) + (c - '0');
-        } else {
-            // Invalid character
-            return -1;
-        }
-    }
-    return val;
-}
-
-void user_prompt_sequence(void)
+void User_Prompt_Sequence(void)
 {
     MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),DOLLAR);
     MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),SPACE);

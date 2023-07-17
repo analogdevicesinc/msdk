@@ -23,13 +23,12 @@ Universal instructions on building, flashing, and debugging this project can be 
 ```
 ***** MAX78000 SDHC FAT Filesystem Example *****
 Card inserted.
--->UART Initialized
-
-help
+$ Help
 
 Size --> Find the Size of the SD Card and Free Space
 Format --> Format the Card
-Mount --> Manually Mount Cardls --> list the contents of the current directory
+Mount --> Manually Mount Card
+ls --> list the contents of the current directory
 mkdir --> Create a directory
 file_create --> Create a file of random data
 cd --> Move into a directory
@@ -38,11 +37,11 @@ Del --> Delete a file
 FatFs --> Format Card and Run Example of FatFS Operations
 Unmount --> Unmount card
 Help --> Prints a help message with info about all of the supported commands.
-  size
+$ SIZE
 SD card mounted.
 Disk Size: 31163072 bytes
-Available: 31163040 bytes
-FORMAT
+Available: 31163008 bytes
+$ Format
 
 
 *****THE DRIVE WILL BE FORMATTED IN 5 SECONDS*****
@@ -52,25 +51,30 @@ FORMATTING DRIVE
 Drive formatted.
 SD card mounted.
 SD card unmounted.
-mount
+$ mount
 SD card mounted.
-mkdir Maxim
+$ mkdir Analog_Devices
 Creating directory...
-Directory Maxim created.
-cd Maxim
-Changed to Maxim
-file_create ADI 30
-Creating file ADI with length 30
+Directory Analog_Devices created.
+$ cd Analog_Devices
+Changed to Analog_Devices
+$ file_create Maxim 30
+Creating file Maxim with length 30
 File opened!
 30 bytes written to file!
 File Closed!
-add_data ADI 22
+$ add_data Maxim 25
 File opened!
-22 bytes written to file
+25 bytes written to file
 File closed.
-Del ADI
-Deleted file ADI
-Fatfs
+$ ls
+Listing Contents of 0:/Analog_Devices -
+0:/Analog_Devices/Maxim
+
+Finished listing contents
+$ Del Maxim
+Deleted file Maxim
+$ fatfs
 
 
 *****THE DRIVE WILL BE FORMATTED IN 5 SECONDS*****
@@ -89,9 +93,9 @@ Creating Directory...
 Renaming File...
 Attempting to read back file...
 Read Back 256 bytes
-Message: loZStiUH7-HxP!fffB,q.DqMnI2nvSnchst.ZaLTpG'w8I7Tg0,l6VVkEsehp#IHSMZN94WDc'N#-0qkBlAil,'#DvMJZ!zzf,j?Lm,H5cbfFfVNHUlPF9GsTWbrop0EG7VV57qZZzjdvzJH5Xh2'82'fz9t#R,kzoaqYBJVRhrlD5W1mZItggYqyIICUvWOOppJQIVvt.BR0Vy4#YwqiNYj'jYnX8j7ePtuzJO?t-sTCGvibwYn81?Sutq'Q0s7
+Message: StiUH7-HxP!fffB,q.DqMnI2nvSnchst.ZaLTpG'w8I7Tg0,l6VVkEsehp#IHSMZN94WDc'N#-0qkBlAil,'#DvMJZ!zzf,j?Lm,H5cbfFfVNHUlPF9GsTWbrop0EG7VV57qZZzjdvzJH5Xh2'82'fz9t#R,kzoaqYBJVRhrlD5W1mZItggYqyIICUvWOOppJQIVvt.BR0Vy4#YwqiNYj'jYnX8j7ePtuzJO?t-sTCGvibwYn81?Sutq'Q0s7udL
 File Closed!
-unmount
+$ unmount
 SD card unmounted.
 ```
 

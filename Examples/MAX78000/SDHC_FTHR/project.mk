@@ -21,3 +21,5 @@ endif
 
 LIB_SDHC = 1
 
+include ${MAXIM_PATH}/Libraries/CLI/CLI.mk 
+

@@ -48,12 +48,11 @@
 #include <stdint.h>
 #include <string.h>
 #include "board.h"
-#include "sdhc.h"
 #include "led.h"
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "uart.h"
-#include "sdhc.h"
+#include "user-cli.h"
 
 /* -------------------------------------------------- */
 //                      MACROS
@@ -65,15 +64,17 @@
 #define BACKSPACE               0X08
 #define MAXBUFF                 2000
 #define DELETE                  0x7F
-#define ARROW_KEY_CODE_1        0x1B
-#define ARROW_KEY_CODE_2        0x5B
-#define ARROW_KEY_CODE_LEFT     0x44
-#define ARROW_KEY_CODE_RIGHT    0x43
-#define ARROW_KEY_CODE_UP       0x41
-#define ARROW_KEY_CODE_DOWN     0x42
 #define DOLLAR                  0x24
 
+
+/* -------------------------------------------------- */
+//                 FUNCTION PROTOTYPES
+/* -------------------------------------------------- */
 void line_accumlator(uint8_t user_char);
+
+void process_command(char *input);
+
+void User_Prompt_Sequence(void);
 
 // Command table hander prototype with parameters
 typedef void (*command_handler_t)(int, char *argv[]);
@@ -86,40 +87,6 @@ typedef struct
 	const char *help_string;
 } command_table_t;
 
-
-/* -------------------------------------------------- */
-//             FUNCTION PROTOTYPES
-/* -------------------------------------------------- */
-void handle_size(int argc, char *argv[]);
-
-void handle_format(int argc, char *argv[]);
-
-void hande_mount(int argc, char *argv[]);
-
-void handle_ls(int argc, char *argv[]);
-
-void handle_mkdir(int argc, char *argv[]);
-
-void handle_createfile(int argc, char *argv[]);
-
-void handle_cd(int argc, char *argv[]);
-
-void handle_add_data(int argc, char *argv[]);
-
-void handle_del(int argc, char *argv[]);
-
-void handle_fatfs(int argc, char *argv[]);
-
-void handle_unmount(int argc, char *argv[]);
-
-void handle_help(int argc, char *argv[]);
-
-void process_command(char *input);
-
-int str_to_dec(const char *str);
-
-void user_prompt_sequence(void);
-
 /*
  * This table is an array of command_table_t structures that defines a set of supported commands in the program.
  * Each command_table_t structure contains the name of the command, a function pointer to the corresponding command handler function,
@@ -127,21 +94,10 @@ void user_prompt_sequence(void);
  *
  * The structure of this lookup table makes it trivially easy to add a new command to this command processor.
  */
+extern const command_table_t commands[];
 
-static const command_table_t commands[] = {{"Size", handle_size, "Find the Size of the SD Card and Free Space\n\r"},
-											{"Format", handle_format, "Format the Card\n\r"},
-                                            {"Mount", hande_mount, "Manually Mount Card"},
-											{"ls", handle_ls, "list the contents of the current directory\n\r"},
-											{"mkdir", handle_mkdir, "Create a directory\n\r"},
-                                            {"file_create", handle_createfile, "Create a file of random data\n\r"},
-                                            {"cd", handle_cd, "Move into a directory\n\r"},
-                                            {"add_data", handle_add_data, "Add random Data to an Existing File\n\r"},
-                                            {"Del", handle_del, "Delete a file\n\r"},
-                                            {"FatFs", handle_fatfs, "Format Card and Run Example of FatFS Operations\n\r"},
-                                            {"Unmount", handle_unmount, "Unmount card\n\r"},
-											{"Help", handle_help, "Prints a help message with info about all of the supported commands.\n\r"}};
 //Calculates the number of commands based on commands and the command table
-static const int num_commands = sizeof(commands) / sizeof(command_table_t);
+extern const int num_commands;
 
 
 #endif /* EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_CLI_H_ */

@@ -51,11 +51,10 @@
 #include "mxc_delay.h"
 #include "mxc_device.h"
 #include "gpio.h"
-#include "uart.h"
+#include "nvic_table.h"
 
-#include "ff.h"
-#include "sdhc.h"
-#include "cli.h"
+//#include "cli.h"
+#include "user-cli.h"
 #include "nvic_table.h"
 
 #ifdef BOARD_EVKIT_V1
@@ -69,8 +68,8 @@
 
 /****** Globals *********/
 volatile int READ_FLAG;
-volatile uint8_t RxData;
-volatile mxc_uart_req_t read_req;
+uint8_t RxData;
+mxc_uart_req_t read_req;
 /******* Functions ********/
 void UART_Handler(void)
 {
@@ -132,8 +131,8 @@ int main(void)
         return error;
     }
     
-    printf("-->UART Initialized\n\n");
-    user_prompt_sequence();
+    //printf("-->UART Initialized");
+    User_Prompt_Sequence();
 
     read_req.uart = MXC_UART_GET_UART(CONSOLE_UART);
     read_req.rxData = &RxData;
@@ -142,8 +141,7 @@ int main(void)
     read_req.callback = readCallback;
 
     error = MXC_UART_TransactionAsync(&read_req);
-    //while(1){}
+    while(1){}
 
-    //printf("End of example, please try to read the card.\n");
     return 0;
 }
