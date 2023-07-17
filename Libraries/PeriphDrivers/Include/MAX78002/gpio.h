@@ -141,11 +141,11 @@ typedef enum {
  * @brief   Enumeration type for drive strength configuration.
  */
 typedef enum {
-    MXC_GPIO_DS_0, /**< Drive Strength 0 */
-    MXC_GPIO_DS_1, /**< Drive Strength 1 */
-    MXC_GPIO_DS_2, /**< Drive Strength 2 */
-    MXC_GPIO_DS_3, /**< Drive Strength 3 */
-} mxc_gpio_ds_t;
+    MXC_GPIO_DRVSTR_0, /**< Drive Strength 0 */
+    MXC_GPIO_DRVSTR_1, /**< Drive Strength 1 */
+    MXC_GPIO_DRVSTR_2, /**< Drive Strength 2 */
+    MXC_GPIO_DRVSTR_3, /**< Drive Strength 3 */
+} mxc_gpio_drvstr_t;
 
 /**
  * @brief   Enumeration type for the type of GPIO pad on a given pin.
@@ -167,7 +167,7 @@ typedef struct {
     mxc_gpio_func_t func; /**< Function type */
     mxc_gpio_pad_t pad; /**< Pad type */
     mxc_gpio_vssel_t vssel; /**< Voltage select */
-    mxc_gpio_ds_t ds; /**< Drive Strength select */
+    mxc_gpio_drvstr_t dssel; /**< Drive Strength select */
 } mxc_gpio_cfg_t;
 
 /**
@@ -366,7 +366,7 @@ uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port);
  * @param[in]  ds     Drive strength level. Ref /mxc_gpio_ds_t enum type.
  * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
  */
-int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_ds_t ds, uint32_t mask);
+int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t dssel, uint32_t mask);
 
 /**@} end of group gpio */
 
