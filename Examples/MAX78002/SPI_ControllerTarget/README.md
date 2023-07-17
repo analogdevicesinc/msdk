@@ -10,7 +10,7 @@ This example also demonstrates the feature to use custom Target Selects (TS) for
 
 Target Select (CS) Pin Connections
 - CUSTOM_TARGET (0): Connect (P0.4 to P0.20).
-- CUSTOM_TARGET (1): Connect (P0.9 to P0.20).
+- CUSTOM_TARGET (1): Connect (P0.4 to P0.12).
 
 ## Software
 
@@ -93,7 +93,7 @@ Universal instructions on building, flashing, and debugging this project can be 
 -   Close jumper JP1 (LED1 EN).
 -   Close jumper JP2 (LED2 EN).
 -   Connect the SPI pins on headers JH6 and JH9. (P0.4-->P0.20 (CS), P0.5-->P0.21 (MOSI), P0.6-->P0.22 (MISO), and P0.7-->P0.23 (SCK))
--   If custom target select pin was selected, re-connect the CS pins (P0.9-->P0.20).
+-   If custom target select pin was selected, re-connect the CS pins (P0.4-->P0.12).
 
 ## Expected Output
 
