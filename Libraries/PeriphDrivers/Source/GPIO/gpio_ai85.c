@@ -207,13 +207,7 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     }
 
     // Configure the vssel
-    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    // Configure the drive strength
-    return MXC_GPIO_SetDriveStrength(gpio, cfg->dssel, cfg->mask);
+    return MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
 }
 
 /* ************************************************************************** */
@@ -415,10 +409,4 @@ uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port)
     }
 
     return MXC_GPIO_RevA_GetWakeEn((mxc_gpio_reva_regs_t *)port);
-}
-
-/* ************************************************************************** */
-int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t dssel, uint32_t mask)
-{
-    return MXC_GPIO_RevA_SetDriveStrength((mxc_gpio_reva_regs_t *)port, dssel, mask);
 }
