@@ -1,0 +1,20 @@
+--- glob-old.c	2023-07-15 18:06:47.276205928 -0500
++++ glob.c	2023-07-15 18:08:24.256204829 -0500
+@@ -207,7 +207,7 @@
+ #endif /* __GNU_LIBRARY__ */
+ 
+ 
+-#if !defined __alloca && !defined __GNU_LIBRARY__
++#if !defined __alloca && defined __GNU_LIBRARY__
+ 
+ # ifdef	__GNUC__
+ #  undef alloca
+@@ -230,7 +230,7 @@
+ 
+ #endif
+ 
+-#ifndef __GNU_LIBRARY__
++#ifdef __GNU_LIBRARY__
+ # define __stat stat
+ # ifdef STAT_MACROS_BROKEN
+ #  undef S_ISDIR
