@@ -300,9 +300,10 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
     }
 
     // Handle Target Transaction Completion.
-    //  Unlike the Controller, there is no Target Done interrupt. In order to call
+    //  Unlike the Controller, there is no Target Done interrupt to handle the callback and set the
+    //  transaction_done flag.
     if (STATES[spi_num].init.type == MXC_SPI_TYPE_TARGET) {
-        // Check if transaction is complete.
+        // Check if the transaction is complete.
         if (STATES[spi_num].tx_done == true && STATES[spi_num].rx_done == true) {
             // Callback if valid.
             // Note: If Target Select (TS) Control Scheme is set in SW_App mode, then the caller needs to ensure the
