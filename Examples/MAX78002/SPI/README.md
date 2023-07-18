@@ -11,11 +11,11 @@ This example also demonstrates the feature to use custom Target Selects that the
 
 ## Software
 
-This example uses the SPI v2 Library. To use the previous SPI library, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
+This example uses the SPI v2 Library. To use the previous SPI (RevA1) library, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
 
 ### Porting Guide
 
-The SPI v2 Library still supports the previous SPI API - meaning the previously existing function prototypes have not changed. However, there are functional differences with the interrupt handling for both SPI DMA and blocking SPI transactions that must be updated when porting a project from using the previous SPI API to SPI v2.
+The SPI v2 Library is still compatible with the previous SPI API (RevA1) - meaning the previously existing function prototypes have not changed. However, there are functional differences with the interrupt handling for SPI DMA transactions that must be updated when porting a project from using the previous SPI API to SPI v2.
 
 #### SPI v2 API Differences
 
@@ -71,7 +71,7 @@ The previous SPI API uses the MXC_DMA_Handler, but SPI v2 supplies its own Handl
     MXC_SPI_MasterTransactionDMA(&req);
     ...
 ```
-Following the DMA channel interrupt changes from the previous section, it is recommended to set up a generic name DMA TX/RX vector because the the TX and RX DMA channels won't always acquire DMA_CH0 and DMA_CH1, respectively.
+Following the DMA channel interrupt changes from the previous section, it is recommended to set up a generic-named DMA TX/RX vector because the SPI TX and RX DMA channels won't always acquire DMA_CH0 and DMA_CH1, respectively.
 
 ### Project Usage
 
