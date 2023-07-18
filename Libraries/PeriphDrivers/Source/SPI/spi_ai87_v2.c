@@ -748,7 +748,7 @@ int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
     target.pins = req->target_sel.pins;
     target.active_polarity = req->target_sel.active_polarity;
 
-    return MXC_SPI_RevA2_ControllerTransactionB((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
+    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                 req->tx_len, req->rx_buffer, req->rx_len,
                                                 req->deassert, &target);
 }
@@ -773,7 +773,7 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
         return error;
     }
 
-    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
+    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                req->tx_len, req->rx_buffer, req->rx_len,
                                                req->deassert, &target);
 }
@@ -828,11 +828,11 @@ int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint3
                                                rx_buffer, rx_fr_len, deassert, target);
 }
 
-int MXC_SPI_ControllerTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+int MXC_SPI_ControllerTransactionAsync(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
                                    uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
                                    mxc_spi_target_t *target)
 {
-    return MXC_SPI_RevA2_ControllerTransactionB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
+    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
                                                 rx_buffer, rx_fr_len, deassert, target);
 }
 
@@ -861,7 +861,7 @@ int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, u
 
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_TargetTransactionB((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
+    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                             req->tx_len, req->rx_buffer, req->rx_len);
 }
 
@@ -874,7 +874,7 @@ int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
         return error;
     }
 
-    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
+    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                            req->tx_len, req->rx_buffer, req->rx_len);
 }
 
@@ -915,10 +915,10 @@ int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t 
                                            rx_buffer, rx_fr_len);
 }
 
-int MXC_SPI_TargetTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+int MXC_SPI_TargetTransactionAsync(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
                                uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
-    return MXC_SPI_RevA2_TargetTransactionB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
+    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
                                             rx_buffer, rx_fr_len);
 }
 

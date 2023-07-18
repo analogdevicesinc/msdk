@@ -5,7 +5,7 @@ MOSI (P0.21) pins.  Connect these two pins together.
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
-By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the BLOCKING macro to 0 and set the NON_BLOCKING macro to 1.  To use DMA transactions, set the DMA macro to 1 instead.
+By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the CONTROLLER_SYNC macro to 0 and set the CONTROLLER_ASYNC macro to 1.  To use DMA transactions, set the DMA macro to 1 instead.
 
 This example also demonstrates the feature to use custom Target Selects that the SPI v2 Driver will automatically assert/deassert during transactions. Set the CUSTOM_TARGET macro to 1 to use the custom target. To use the default TS pins, set the CUSTOM_TARGET macro to 0 instead.
 
@@ -13,9 +13,9 @@ This example also demonstrates the feature to use custom Target Selects that the
 
 This example uses the SPI v2 Library. To use the previous SPI (RevA1) library, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
 
-### Porting Guide
+### Optional Porting Guide
 
-The SPI v2 Library is still compatible with the previous SPI API (RevA1) - meaning the previously existing function prototypes have not changed. However, there are functional differences with the interrupt handling for SPI DMA transactions that must be updated when porting a project from using the previous SPI API to SPI v2.
+This guide shows how to update an existing project that is using the previous SPI API (RevA1) to SPI v2. The main difference between SPI API (RevA1) and SPI v2 is the DMA interrupt handling for SPI DMA transactions.
 
 #### SPI v2 API Differences
 

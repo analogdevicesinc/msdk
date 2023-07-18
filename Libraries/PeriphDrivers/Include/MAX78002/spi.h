@@ -920,26 +920,6 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req);
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req);
 
 /**
- * @brief   Set up a non-blocking, interrupt-driven SPI controller transaction.
- * 
- * The MXC_SPI_Handler function must be called in the selected SPI instance's
- * interrupt handler to process the transaction.
- *
- * @param   spi         Pointer to SPI instance's registers.
- * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).
- * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
- * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
- * @param   rx_fr_len   Number of frames to store in recieve buffer.
- * @param   deassert    True(1)/False(0) whether to deassert target select at end of transactions.
- * @param   target      Pointer to select target for SPI transaction.
- *
- * @return  See \ref MXC_Error_Codes for the list of error return codes.
- */
-int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                                  uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
-                                  mxc_spi_target_t *target);
-
-/**
  * @brief   Set up a blocking, non-interrupt-driven SPI controller transaction.
  * 
  * The MXC_SPI_Handler function must be called in the selected SPI instance's
@@ -955,9 +935,29 @@ int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint3
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_ControllerTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
                                    uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
                                    mxc_spi_target_t *target);
+
+/**
+ * @brief   Set up a non-blocking, interrupt-driven SPI controller transaction.
+ * 
+ * The MXC_SPI_Handler function must be called in the selected SPI instance's
+ * interrupt handler to process the transaction.
+ *
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
+ * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   rx_fr_len   Number of frames to store in recieve buffer.
+ * @param   deassert    True(1)/False(0) whether to deassert target select at end of transactions.
+ * @param   target      Pointer to select target for SPI transaction.
+ *
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
+ */
+int MXC_SPI_ControllerTransactionAsync(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                                  uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
+                                  mxc_spi_target_t *target);
 
 /**
  * @brief   Set up a non-blocking, DMA-driven SPI controller transaction.
@@ -1029,20 +1029,6 @@ int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req);
 int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req);
 
 /**
- * @brief   Setup an interrupt-driven, non-blocking SPI Target transaction.
- * 
- * @param   spi         Pointer to SPI instance's registers.
- * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).
- * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
- * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
- * @param   rx_fr_len   Number of frames to store in recieve buffer.
- *
- * @return  See \ref MXC_Error_Codes for the list of error return codes.
- */
-int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                              uint8_t *rx_buffer, uint32_t rx_fr_len);
-
-/**
  * @brief   Setup a blocking SPI Target transaction.
  * 
  * @param   spi         Pointer to SPI instance's registers.
@@ -1053,8 +1039,22 @@ int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t 
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
  */
-int MXC_SPI_TargetTransactionB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
                                uint8_t *rx_buffer, uint32_t rx_fr_len);
+
+/**
+ * @brief   Setup an interrupt-driven, non-blocking SPI Target transaction.
+ * 
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   tx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   tx_fr_len   Number of frames to transmit from transmit buffer.
+ * @param   rx_buffer   Pointer to transmit buffer (in terms of bytes).
+ * @param   rx_fr_len   Number of frames to store in recieve buffer.
+ *
+ * @return  See \ref MXC_Error_Codes for the list of error return codes.
+ */
+int MXC_SPI_TargetTransactionAsync(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
+                              uint8_t *rx_buffer, uint32_t rx_fr_len);
 
 /**
  * @brief   Setup a DMA driven SPI Target transaction.

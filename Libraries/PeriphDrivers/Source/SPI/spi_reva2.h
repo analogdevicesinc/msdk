@@ -135,7 +135,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
                                         uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
                                         uint8_t deassert, mxc_spi_target_t *target);
 
-int MXC_SPI_RevA2_ControllerTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                          uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
                                          uint8_t deassert, mxc_spi_target_t *target);
 
@@ -152,7 +152,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
 int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                     uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len);
 
-int MXC_SPI_RevA2_TargetTransactionB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                      uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len);
 
 int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,

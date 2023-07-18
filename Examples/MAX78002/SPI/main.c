@@ -52,17 +52,17 @@
 #include "dma.h"
 
 /***** Preprocessors *****/
-#define BLOCKING 1
-#define NON_BLOCKING 0
-#define DMA 0
+#define CONTROLLER_SYNC 1
+#define CONTROLLER_ASYNC 0
+#define CONTROLLER_DMA 0
 
 #define CUSTOM_TARGET 0
 
-#if (!(BLOCKING || NON_BLOCKING || DMA))
-#error "You must set either BLOCKING or NON_BLOCKING or DMA to 1."
+#if (!(CONTROLLER_SYNC || CONTROLLER_ASYNC || CONTROLLER_DMA))
+#error "You must set either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA to 1."
 #endif
-#if ((BLOCKING && NON_BLOCKING) || (NON_BLOCKING && DMA) || (DMA && BLOCKING))
-#error "You must select either BLOCKING or NON_BLOCKING or DMA, not all 3."
+#if ((CONTROLLER_SYNC && CONTROLLER_ASYNC) || (CONTROLLER_ASYNC && CONTROLLER_DMA) || (CONTROLLER_DMA && CONTROLLER_SYNC))
+#error "You must select either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA, not all 3."
 #endif
 
 /***** Definitions *****/
@@ -123,10 +123,10 @@ int main(void)
     printf("MOSI (P0.21) pins.  Connect these two pins together.\n\n");
     printf("Multiple word sizes (2 through 16 bits) are demonstrated.\n\n");
 
-#if BLOCKING
+#if CONTROLLER_SYNC
     printf("Performing blocking (synchronous) transactions...\n");
 #endif
-#if NON_BLOCKING
+#if CONTROLLER_ASYNC
     printf("Performing non-blocking (asynchronous) transactions...\n");
 #endif
 #if DMA
@@ -196,20 +196,20 @@ int main(void)
         // SPI Request (Callback)
         SPI_FLAG = 1;
 
-#if BLOCKING
-        MXC_SPI_ControllerTransactionB(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
+#if CONTROLLER_SYNC
+        MXC_SPI_ControllerTransaction(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
                                        DATA_LEN, 1, &target);
 #endif
 
-#if NON_BLOCKING
+#if CONTROLLER_ASYNC
         NVIC_EnableIRQ(SPI_IRQ);
-        MXC_SPI_ControllerTransaction(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
+        MXC_SPI_ControllerTransactionAsync(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
                                       DATA_LEN, 1, &target);
 
         while (SPI_FLAG == 1) {}
 #endif
 
-#if DMA
+#if CONTROLLER_DMA
         TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
         RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI);
 
