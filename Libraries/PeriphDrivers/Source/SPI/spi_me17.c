@@ -45,7 +45,7 @@
 #include "dma.h"
 
 /* **** Definitions **** */
-
+// Testing change
 /* ************************************************************************** */
 int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
                  unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
