@@ -669,11 +669,11 @@ void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi);
 void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi);
 
 /**
- * @brief   Enable disable HW CS control feature.
+ * @brief   Enable/Disable HW CS control feature.
  *
- * Depend on the application user might would like to drive slave select pin
- * The SPI driver able to drive SS pin automatically this feature can be disable/enable
- * by this function
+ * Depending on the application, the user might need to manually drive the slave select pin.
+ * The SPI driver automatically drives the SS pin and this function enables/disables this
+ * feature.
  *
  * @param   spi             Pointer to SPI registers (selects the SPI block used.)
  * @param   state           true or false
