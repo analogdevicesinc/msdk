@@ -298,6 +298,30 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
     if (STATES[spi_num].rx_cnt == STATES[spi_num].rx_len) {
         STATES[spi_num].rx_done = true;
     }
+
+    // Handle Target Transaction Completion.
+    //  Unlike the Controller, there is no Target Done interrupt. In order to call
+    if (STATES[spi_num].init.type == MXC_SPI_TYPE_TARGET) {
+        // Check if transaction is complete.
+        if (STATES[spi_num].tx_done == true && STATES[spi_num].rx_done == true) {
+            // Callback if valid.
+            // Note: If Target Select (TS) Control Scheme is set in SW_App mode, then the caller needs to ensure the
+            //   Target Select (TS) pin is asserted or deasserted in their application.
+            if (STATES[spi_num].callback) {
+                STATES[spi_num].callback(STATES[spi_num].callback_data, E_NO_ERROR);
+            }
+
+            // Target is done after callback (if valid) is handled.
+            STATES[spi_num].transaction_done = true;
+
+            // Reset the SPI to complete the on-going transaction.
+            //  SPIn may remain busy (SPI_STAT) even after the target select input
+            //  is deasserted. This ensures the SPI block is not busy after a
+            //  target transaction is completed.
+            spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
+            spi->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
+        }
+    }
 }
 
 /** Private Function: resetStateStruct
@@ -523,8 +547,11 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     (init->spi)->inten = 0;
 
     if (init->use_dma == false) {
-        // Enable Controller Done Interrupt.
-        (init->spi)->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
+        // Only enable controller done interrupt in Controller (L. Master) mode.
+        if (init->type == MXC_SPI_TYPE_CONTROLLER) {
+            // Enable Controller Done Interrupt.
+            (init->spi)->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
+        }
     }
 
     // Set callback.
