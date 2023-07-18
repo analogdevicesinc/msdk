@@ -55,14 +55,14 @@
 - 'Libraries/Boards/MAX32520/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32520/*'
 - 'Libraries/PeriphDrivers/max32520_files.mk'
-- 'Libraries/Include/MAX32520/*'
+- 'Libraries/PeriphDrivers/Include/MAX32520/*'
 
 'MAX32570':
 - '*me13*.*'
 - 'Libraries/Boards/MAX32570/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32570/*'
 - 'Libraries/PeriphDrivers/max32570_files.mk'
-- 'Libraries/Include/MAX32570/*'
+- 'Libraries/PeriphDrivers/Include/MAX32570/*'
 
 'MAX32650':
 - 'Examples/MAX32650/*'
@@ -70,7 +70,7 @@
 - 'Libraries/Boards/MAX32650/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32650/*'
 - 'Libraries/PeriphDrivers/max32650_files.mk'
-- 'Libraries/Include/MAX32650/*'
+- 'Libraries/PeriphDrivers/Include/MAX32650/*'
 
 'MAX32655':
 - 'Examples/MAX32655/*'
@@ -78,7 +78,7 @@
 - 'Libraries/Boards/MAX32655/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32655/*'
 - 'Libraries/PeriphDrivers/max32655_files.mk'
-- 'Libraries/Include/MAX32655/*'
+- 'Libraries/PeriphDrivers/Include/MAX32655/*'
 
 'MAX32660':
 - 'Examples/MAX32660/*'
@@ -86,7 +86,7 @@
 - 'Libraries/Boards/MAX32660/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32660/*'
 - 'Libraries/PeriphDrivers/max32660_files.mk'
-- 'Libraries/Include/MAX32660/*'
+- 'Libraries/PeriphDrivers/Include/MAX32660/*'
 
 'MAX32662':
 - 'Examples/MAX32662/*'
@@ -94,7 +94,7 @@
 - 'Libraries/Boards/MAX32662/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32662/*'
 - 'Libraries/PeriphDrivers/max32662_files.mk'
-- 'Libraries/Include/MAX32662/*'
+- 'Libraries/PeriphDrivers/Include/MAX32662/*'
 
 'MAX32665':
 - 'Examples/MAX32665/*'
@@ -102,7 +102,7 @@
 - 'Libraries/Boards/MAX32665/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32665/*'
 - 'Libraries/PeriphDrivers/max32665_files.mk'
-- 'Libraries/Include/MAX32665/*'
+- 'Libraries/PeriphDrivers/Include/MAX32665/*'
 
 'MAX32670':
 - 'Examples/MAX32670/*'
@@ -110,7 +110,7 @@
 - 'Libraries/Boards/MAX32670/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32670/*'
 - 'Libraries/PeriphDrivers/max32670_files.mk'
-- 'Libraries/Include/MAX32670/*'
+- 'Libraries/PeriphDrivers/Include/MAX32670/*'
 
 'MAX32672':
 - 'Examples/MAX32672/*'
@@ -118,7 +118,7 @@
 - 'Libraries/Boards/MAX32672/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32672/*'
 - 'Libraries/PeriphDrivers/max32672_files.mk'
-- 'Libraries/Include/MAX32672/*'
+- 'Libraries/PeriphDrivers/Include/MAX32672/*'
 
 'MAX32675':
 - 'Examples/MAX32675/*'
@@ -126,7 +126,7 @@
 - 'Libraries/Boards/MAX32675/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32675/*'
 - 'Libraries/PeriphDrivers/max32675_files.mk'
-- 'Libraries/Include/MAX32675/*'
+- 'Libraries/PeriphDrivers/Include/MAX32675/*'
 - '*aes_me15*.*'
 - '*afe*'
 - '*crc_me15*.*'
@@ -154,7 +154,7 @@
 - 'Libraries/Boards/MAX32680/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32680/*'
 - 'Libraries/PeriphDrivers/max32680_files.mk'
-- 'Libraries/Include/MAX32680/*'
+- 'Libraries/PeriphDrivers/Include/MAX32680/*'
 - '*adc*me17*.*'
 - '*aes_me17*.*'
 - '*afe*'
@@ -185,7 +185,7 @@
 - 'Libraries/Boards/MAX32690/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX32690/*'
 - 'Libraries/PeriphDrivers/max32690_files.mk'
-- 'Libraries/Include/MAX32690/*'
+- 'Libraries/PeriphDrivers/Include/MAX32690/*'
 
 'MAX78000':
 - 'Examples/MAX78000/*'
@@ -193,7 +193,7 @@
 - 'Libraries/Boards/MAX78000/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX78000/*'
 - 'Libraries/PeriphDrivers/max78000_files.mk'
-- 'Libraries/Include/MAX78000/*'
+- 'Libraries/PeriphDrivers/Include/MAX78000/*'
 - '*adc*me17*.*'
 - '*aes_me17*.*'
 - '*crc_me17*.*'
@@ -216,7 +216,7 @@
 - 'Libraries/Boards/MAX78002/*'
 - 'Libraries/CMSIS/Device/Maxim/MAX78002/*'
 - 'Libraries/PeriphDrivers/max78002_files.mk'
-- 'Libraries/Include/MAX78002/*'
+- 'Libraries/PeriphDrivers/Include/MAX78002/*'
 
 'Register Change':
 - '*_regs.h'
@@ -227,4 +227,4 @@
 
 'Workflow':
 - '.github/workflows/*'
-- '.github/labeler.yml'
+- '.github/*'
