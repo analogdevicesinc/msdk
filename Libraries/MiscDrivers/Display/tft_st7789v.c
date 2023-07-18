@@ -536,7 +536,7 @@ void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int he
         window(x0, y0, width, height);
     }
 
-    write_command(0x2C); // send pixel
+    write_command(MEM_WRITE); // send pixel
 
     for (unsigned int y = 0; y < width * height; y += width) { //height
         TFT_SPI_Transmit(&image[y * 2], width * 2);
@@ -822,14 +822,11 @@ void MXC_TFT_WriteReg(unsigned char command, unsigned char data)
 
 void MXC_TFT_Stream(int x0, int y0, int width, int height)
 {
-    if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180)
-	{
+    if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180) {
         window(x0, y0, height, width);
-	}
-    else
-	{
+    } else {
         window(x0, y0, width, height);
-	}
-    
-	write_command(0x2C); // send pixel
+    }
+
+    write_command(MEM_WRITE); // send pixel
 }

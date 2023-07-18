@@ -229,6 +229,8 @@ void MXC_TFT_ShowImage(int x0, int y0, int id);
  */
 void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, int iHeight);
 
+void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height);
+
 /**
  * @brief      Fills screen with one color
  *
@@ -273,7 +275,7 @@ void MXC_TFT_SetFont(int font_id);
  *
  * @param      format           Char array formatted like printf
  *             NOTE: up to 3 additional arguments are supported
- * 
+ *
  *  \note Unimplemented function.
  */
 void MXC_TFT_Printf(const char *format, ...);

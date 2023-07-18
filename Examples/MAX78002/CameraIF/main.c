@@ -96,11 +96,9 @@
 #define X_START 0
 #define Y_START 0
 
-
 void process_img(void)
 {
-	uint32_t i;
-	uint8_t *raw;
+    uint8_t *raw;
     uint32_t imgLen;
     uint32_t w, h;
 
@@ -114,21 +112,18 @@ void process_img(void)
     // to an image file
     utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
 #else
-	#ifdef TFT_NEWHAVEN
-	MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);	
-	
-	// Stream captured image to TFT display (not more than 65K bytes in one transaction)
-	for(i = 0; i < 3; i++)
-		TFT_SPI_Transmit((raw + i*IMAGE_XRES*IMAGE_YRES*2/3), IMAGE_XRES*IMAGE_YRES*2/3);
-
-	#else //#ifdef TFT_NEWHAVEN
-     #ifndef CAMERA_MONO
-     // Send the image to TFT
-     MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
-     #else
-     MXC_TFT_ShowImageCameraMono(X_START, Y_START, raw, w, h);
-     #endif // #ifndef CAMERA_MONO
-   #endif //#ifdef TFT_NEWHAVEN
+#ifdef TFT_NEWHAVEN
+    MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
+    // Stream captured image to TFT display
+    TFT_SPI_Transmit(raw, IMAGE_XRES * IMAGE_YRES * 2);
+#else //#ifdef TFT_NEWHAVEN
+#ifndef CAMERA_MONO
+    // Send the image to TFT
+    MXC_TFT_WriteBufferRGB565(X_START, Y_START, raw, w, h);
+#else
+    MXC_TFT_ShowImageCameraMono(X_START, Y_START, raw, w, h);
+#endif // #ifndef CAMERA_MONO
+#endif //#ifdef TFT_NEWHAVEN
 #endif // #ifndef ENABLE_TFT
 }
 
@@ -146,7 +141,6 @@ int main(void)
     /* Set system clock to 100 MHz */
     MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
     SystemCoreClockUpdate();
-
 
     // Initialize DMA for camera interface
     MXC_DMA_Init();
@@ -199,16 +193,14 @@ int main(void)
         printf("TFT initialization failed\n");
         return E_ABORT;
     }
-
 #else
     /* Initialize TFT display */
     if (MXC_TFT_Init(NULL, NULL) != E_NO_ERROR) {
         printf("TFT initialization failed\n");
         return E_ABORT;
     }
-
-    MXC_TFT_SetRotation(ROTATE_90);
 #endif
+    MXC_TFT_SetRotation(ROTATE_90);
     MXC_TFT_SetBackGroundColor(4);
 #endif
 
@@ -241,8 +233,7 @@ int main(void)
 
     while (1) {
         // Check if image is acquired.
-        if (camera_is_image_rcv())
-        {
+        if (camera_is_image_rcv()) {
             // Process the image, send it through the UART console.
             process_img();
 

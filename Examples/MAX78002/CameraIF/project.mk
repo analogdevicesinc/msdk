@@ -27,7 +27,7 @@ endif
 
 # Uncomment to use legacy Adafruit 3315 TFT drivers (TFT = ADAFRUIT)
 # Otherwise, default drivers (TFT = NEWHAVEN) will be used for NewHaven NHD-2.4
-# TFT = ADAFRUIT
+#TFT = ADAFRUIT
 
 # Set a higher optimization level.  The increased performance
 # is required for the CameraIF DMA code to work within the

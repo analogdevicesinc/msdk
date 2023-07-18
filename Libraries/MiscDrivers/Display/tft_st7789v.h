@@ -294,7 +294,7 @@ void MXC_TFT_SetFont(int font_id);
  *
  * @param      format           Char array formatted like printf
  *             NOTE: up to 3 additional arguments are supported
- * 
+ *
  *  \note Unimplemented function.
  */
 void MXC_TFT_Printf(const char *format, ...);
