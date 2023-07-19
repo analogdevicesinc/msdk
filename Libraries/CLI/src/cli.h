@@ -31,6 +31,27 @@
  *
  ******************************************************************************/
 
+/*! \file cli.c
+    \brief A CLI Implementation using a command table to store command string, function pointer and a help string is dispatched.
+
+    Details. 
+
+    1.  Line Accumlator 
+
+    Reads the incoming bytes
+    Accumulates into a line buffer
+    Echos char back to the emulator
+    Handles backspace
+
+    2.  Prcoess Command
+
+    Processes input into a series of tokens
+    All tokes are seperated by whitespace characters 
+    Lookup first token in a table of functions
+    Dispatch to handler functions 
+    
+*/
+
 /* -------------------------------------------------- */
 //                 INCLUDE GUARD
 /* -------------------------------------------------- */
@@ -67,13 +88,44 @@
 #define DOLLAR                  0x24
 
 
+#define ARROW_KEY_CODE_1        0x1B
+#define ARROW_KEY_CODE_2        0x5B
+#define ARROW_KEY_CODE_LEFT     0x44
+#define ARROW_KEY_CODE_RIGHT    0x43
+#define ARROW_KEY_CODE_UP       0x41
+#define ARROW_KEY_CODE_DOWN     0x42
+
+
 /* -------------------------------------------------- */
 //                 FUNCTION PROTOTYPES
 /* -------------------------------------------------- */
+
+/**
+ * @brief Reads incoming bytes, Accumulate into line buffer, Echo's chars back to the other side and handles backspace.
+ * 		  It calls the process_command function upon pressing the ENTER key
+ *
+ * @param   user_char       User input of each character
+ */
 void line_accumlator(uint8_t user_char);
 
+/**
+ * @name process_command
+ *
+ * @brief Performs a Lexical analysis and tokenisis the user's commands
+ * 		  Lookup first token in a table of functions, dispatch to handler function
+ *
+ * @param   input   Character pointer containing the line accumulator input when enter key is pressed 
+ *
+ * @return  void
+ */
 void process_command(char *input);
 
+/** Prints out the user command prompt sequence o the uart console 
+*
+* @param void
+*
+* @return void
+*/
 void User_Prompt_Sequence(void);
 
 // Command table hander prototype with parameters
@@ -82,9 +134,9 @@ typedef void (*command_handler_t)(int, char *argv[]);
 //Command table structure
 typedef struct
 {
-	const char *name;
-	command_handler_t handler;
-	const char *help_string;
+	const char *name;			/**< command string */
+	command_handler_t handler;	/**< function pointer of the handler function */
+	const char *help_string;	/**< help string of each command */
 } command_table_t;
 
 /*

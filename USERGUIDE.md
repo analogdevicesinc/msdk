@@ -1832,3 +1832,9 @@ FreeRTOS is supported by all parts in the MSDK.  See the `FreeRTOSDemo` example 
 
 - [FreeRTOS-Plus-CLI](https://www.freertos.org/FreeRTOS-Plus/index.html): **Supported**
 - [FreeRTOS-Plus-TCP](https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/index.html): **Not supported** (Contributions welcome!)
+
+
+### CLI
+
+The [`Libraries/CLI`](Libraries/CLI) folder of the MSDK contains a ready to use CLI feature which uses a 2-step process of a line accumulator and a process command function to perform the CLI operationgs. Refer to [`Examples/MAX78000/SDHC_FTHR`](Examples/MAX78000/SDHC_FTHR) for implementation.
+

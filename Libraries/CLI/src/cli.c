@@ -31,64 +31,85 @@
  *
  ******************************************************************************/\
 
-///* -------------------------------------------------- */
-////                      INCLUDES
-///* -------------------------------------------------- */
+
+/* -------------------------------------------------- */
+//                      INCLUDES
+/* -------------------------------------------------- */
 
 #include "cli.h"
 
 /* -------------------------------------------------- */
 //             FUNCTION PROTOTYPES
 /* -------------------------------------------------- */
+
+/** Checks if there is white space present in the given character pointer
+ *
+ * @param p
+ * 		  character pointer containing the line accumulator input
+ *
+ * @return 1 if white space is present
+ * 		   0 if no white space is present
+ */
 bool white_space_present(char *p);
 
+/** Checks if there is no white space present in the given character pointer
+ *
+ * @param p
+ * 		  character pointer containing the line accumulator input
+ *
+ * @return 1 if no white space is present
+ * 		   0 if white space is present
+ */
 bool white_space_not_present(char *p);
+
+void User_Prompt_Sequence(void);
+
+void Console_Backspace_Sequence(void);
+
+void Console_Cmd_Clear(void);
+
+void Clear_buffer(void);
 
 /* -------------------------------------------------- */
 //                      GLOBALS
 /* -------------------------------------------------- */
-int cmd_idx = 0;
+
+/*! \name buf
+    \brief Buffer to store the characters of the command 
+*/
 char buf[256];
-/*
- * @name line_accumlator
- *
- * @brief Reads incoming bytes, Accumulate into line buffer, Echo's chars back to the other side and handles backspace.
- * 		  It calls the process_command function upon pressing the ENTER key
- *
- * @param:
- * 		uint8_t user_char
- * 		User input of characters
- */
+int idx = 0;
+
+// Define a buffer to store commands
+#define MAX_COMMAND_LENGTH 256
+
 void line_accumlator(uint8_t user_char)
 {
-    // Declare static variables
-    static int idx = 0;
     
     switch (user_char) {
     case BACKSPACE:
     {
         // Handle Backspace and Delete
         if (idx > 0) {
-        	//Sequence to actually implement a backspace on the terminal
-            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
-            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),SPACE);
-            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
+        	//Sequence to implement a backspace on the terminal
+            Console_Backspace_Sequence();
             idx--;
             buf[idx] = '\0';
         }
         break;
     	}
-        case ENTER: {
-            // Handle Enter or carriage return
-            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),NEW_LINE);
-            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),ENTER);
-            buf[idx++] = '\r';
-            buf[idx] = '\0';
-            idx = 0;
-            char *accum = buf; //Assign buf
-            process_command(accum);
-            break;
+    case ENTER: {
+        // Handle Enter or carriage return
+        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),NEW_LINE);
+        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),ENTER);
+        buf[idx++] = '\r';
+        buf[idx] = '\0';
+        idx = 0;
+        process_command(buf); 
+        Clear_buffer();
+        break;
         }
+
         default: {
             // Handle all other characters
             if (idx < 255) {
@@ -99,18 +120,7 @@ void line_accumlator(uint8_t user_char)
         }
     }
 }
-/*
- * @name process_command
- *
- * @brief Performs a Lexical analysis and tokenisis the user's commands
- * 		  Lookup first token in a table of functions, dispatch to handler function
- *
- * @param char *input
- * 		  character pointer containing the line accumulator input
- *
- * @return
- * 		   void
- */
+
 void process_command(char *input)
 {
     //Initialize p and end pointers
@@ -214,48 +224,56 @@ void process_command(char *input)
     //Print prompt
     User_Prompt_Sequence();
 }
-/*
- * @name white_space_present
- *
- * @brief Checks if white space is present in the given character pointer
- *
- * @param char *p
- * 		  character pointer containing the line accumulator input
- *
- * @return 1 if white space is present
- * 		   0 if white space isn't present
- */
+
+
+
 bool white_space_present(char *p){
 	return *p == SPACE || *p == TAB;
 }
-/*
- * @name white_space_not_present
- *
- * @brief Checks if there is no white space present in the given character pointer
- *
- * @param char *p
- * 		  character pointer containing the line accumulator input
- *
- * @return 1 if no white space is present
- * 		   0 if white space is present
- */
+
+
 bool white_space_not_present(char *p){
 	return *p != SPACE || *p != TAB;
 }
 
-/*
-*
-* @name User_Prompt_Sequence
-*
-* @brief Prints out the user command prompt sequence o the uart console 
-*
-* @param void
-*
-* @return int
-*           converted integer 
-*/
 void User_Prompt_Sequence(void)
 {
     MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),DOLLAR);
     MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),SPACE);
+}
+
+/** Clears the buffer storing each character of the user command input
+*
+* @param void
+*
+* @return void
+*/
+void Clear_buffer(void) {
+    for (int i = 0; i < MAX_COMMAND_LENGTH; i++) {
+        buf[i] = '\0';
+    }
+}
+
+/** CLears the line on the uart console
+*
+* @param void
+*
+* @return void
+*/
+void Console_Cmd_Clear(void){
+    for (int i = 0; i < idx; i++){
+        Console_Backspace_Sequence();
+    }
+}
+
+/** Writes the backspace in sequence to the uart console
+*
+* @param void
+*
+* @return void
+*/
+void Console_Backspace_Sequence(void){
+        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
+        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),SPACE);
+        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
 }
