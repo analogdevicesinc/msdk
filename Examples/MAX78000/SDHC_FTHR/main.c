@@ -61,7 +61,6 @@
 #warning This example is not supported by the MAX78000EVKIT.
 #endif
 
-
 /***** Definitions *****/
 #define UART_BAUD 115200
 #define BUFF_SIZE 1
@@ -76,9 +75,9 @@ void UART_Handler(void)
     MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
 }
 
-void readCallback(mxc_uart_req_t *req, int error){
-    
-    line_accumlator(RxData); 
+void readCallback(mxc_uart_req_t *req, int error)
+{
+    line_accumlator(RxData);
     READ_FLAG = error;
     MXC_UART_TransactionAsync(req);
 }
@@ -114,8 +113,9 @@ int main(void)
     waitCardInserted();
 
     printf("Card inserted.\n");
-    MXC_Delay(1000); //Delay inserted here to avoid weird printf values between previous and next printf command.
-    
+    MXC_Delay(
+        1000); //Delay inserted here to avoid weird printf values between previous and next printf command.
+
     // UART interrupt setup
     NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
     NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
@@ -130,7 +130,7 @@ int main(void)
         printf("-->Example Failed\n");
         return error;
     }
-    
+
     //printf("-->UART Initialized");
     User_Prompt_Sequence();
 
@@ -141,7 +141,7 @@ int main(void)
     read_req.callback = readCallback;
 
     error = MXC_UART_TransactionAsync(&read_req);
-    while(1){}
+    while (1) {}
 
     return 0;
 }
