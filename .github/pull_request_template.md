@@ -52,9 +52,10 @@ The scopes are dependent on the changes based on their location in the MSDK. The
 9.  **ThirdParty** – Any third-party library changes (e.g. FreeRTOS, LVGL, lwIP)
 10. **MAXUSB** – Any MAXUSB changes
 11. **SDHC** – Any SDHC changes
-12. **ignore** – Small and quick miscellaneous fixes (should not be used often)
-13. **workflow** – Any GitHub workflow-related changes
-14. **Other** – Any changes that may not fit in the other scopes
+12. **Build** – Any changes involving the build system
+13. **ignore** – Small and quick miscellaneous fixes (should not be used often)
+14. **workflow** – Any GitHub workflow-related changes
+15. **Other** – Any changes that may not fit in the other scopes
 
 NOTE: The scope is case-sensitive and must match one of the listed scopes.
 

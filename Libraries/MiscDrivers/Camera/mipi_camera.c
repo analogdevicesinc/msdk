@@ -70,9 +70,11 @@ extern int mipi_sensor_register(mipi_camera_t *camera);
 
 static mipi_camera_t camera;
 
+#ifndef OV5640_DVP
 static mxc_csi2_req_t g_req;
 static mxc_csi2_ctrl_cfg_t g_ctrl_cfg;
 static mxc_csi2_vfifo_cfg_t g_vfifo_cfg;
+#endif
 
 static mipi_camera_settings_t g_camera_settings;
 static char g_image_header[256];
@@ -215,6 +217,7 @@ int mipi_camera_init(mipi_camera_settings_t camera_settings)
     // Link function pointers from camera drivers
     mipi_sensor_register(&camera);
 
+#ifndef OV5640_DVP
     error = camera.init();
     if (error)
         return error;
@@ -280,6 +283,7 @@ int mipi_camera_init(mipi_camera_settings_t camera_settings)
     if (error != E_NO_ERROR) {
         return error;
     }
+#endif
 
     return error;
 }
