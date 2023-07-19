@@ -42,6 +42,7 @@
 #include "uart.h"
 #include "tft_utils.h"
 #include "example_config.h"
+#include "post_process.h"
 
 #ifdef TFT_ENABLE
 #ifdef BOARD_EVKIT_V1
@@ -123,14 +124,24 @@ void draw_obj_rect(float *xy, int class_idx, uint32_t w, uint32_t h, uint8_t sca
     int y2 = h * xy[3];
     int x, y;
 
-    if (x1<0)
-    	x1 = 0;
-    if (y1<0)
-    	y1 = 0;
-    if (x2<0)
-    	x2=0;
-    if (y2<0)
-    	y2=0;
+    // sanity check
+    if (x1 < 1)
+        x1 = 1;
+    if (y1 < 1)
+        y1 = 1;
+    if (x2 < 1)
+        x2 = 1;
+    if (y2 < 1)
+        y2 = 1;
+
+    if (x1 > w-1)
+        x1 = w-1;
+    if (y1 > h-1)
+        y1 = h-1;
+    if (x2 > w-1)
+        x2 = w-1;
+    if (y2 > h-1)
+        y2 = h-1;
 
 #ifdef BOARD_EVKIT_V1
     color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
@@ -141,17 +152,17 @@ void draw_obj_rect(float *xy, int class_idx, uint32_t w, uint32_t h, uint8_t sca
 #endif
 
     for (x = x1; x < x2; ++x) {
-        MXC_TFT_WritePixel(x * scale, y1 * scale, scale, scale, color);
-        MXC_TFT_WritePixel(x * scale, y2 * scale, scale, scale, color);
+        MXC_TFT_WritePixel(x * scale + TFT_X_OFFSET, y1 * scale, scale, scale, color);
+        MXC_TFT_WritePixel(x * scale + TFT_X_OFFSET, y2 * scale, scale, scale, color);
     }
 
     for (y = y1; y < y2; ++y) {
-        MXC_TFT_WritePixel(x1 * scale, y * scale, scale, scale, color);
-        MXC_TFT_WritePixel(x2 * scale, y * scale, scale, scale, color);
+        MXC_TFT_WritePixel(x1 * scale + TFT_X_OFFSET, y * scale, scale, scale, color);
+        MXC_TFT_WritePixel(x2 * scale + TFT_X_OFFSET, y * scale, scale, scale, color);
     }
 
-    MXC_TFT_PrintFont(x1 * scale + THICKNESS, y1 * scale + THICKNESS, font, &label_text[class_idx],
-                      NULL);
+    MXC_TFT_PrintFont(x1 * scale + THICKNESS + TFT_X_OFFSET, y1 * scale + THICKNESS, font,
+                      &label_text[class_idx], NULL);
 #endif
 }
 int dma_channel;
@@ -211,4 +222,13 @@ void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt)
     MXC_Delay(1); // to fix artifacts in the image
     // Start DMA
     MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+}
+
+void tft_dma_display(int x, int y, int w, int h, uint32_t *data)
+{
+    // setup dma
+    setup_dma_tft((uint32_t *)data, w * h * 2);
+
+    // Send a line of captured image to TFT
+    start_tft_dma((uint32_t *)data, w * h * 2);
 }

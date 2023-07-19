@@ -1,6 +1,7 @@
 #ifndef EXAMPLE_CONFIG_H
 #define EXAMPLE_CONFIG_H
 
+// Use RGB565 in camera setup, otherwise use RGB888
 #define RGB565
 
 #ifdef BOARD_EVKIT_V1
@@ -10,7 +11,7 @@
 
 #ifdef BOARD_FTHR_REVA
 // Disable TFT by default on FTHR
-//#define TFT_ENABLE
+#define TFT_ENABLE
 #endif
 
 //#define USE_SAMPLEDATA
