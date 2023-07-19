@@ -7334,38 +7334,38 @@ memory.
      <addressOffset>0x74</addressOffset>
      <fields>
       <field>
-       <name>LDOTXEN</name>
-       <description>LDOTX Enable.</description>
+       <name>LDORXEN</name>
+       <description>LDORX Enable.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
-       <name>LDOTXPULLD</name>
-       <description>LDOTX Pull Down.</description>
-       <bitOffset>1</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
-       <name>LDOTXVSEL</name>
-       <description>LDOTX Voltage Setting.</description>
-       <bitOffset>2</bitOffset>
-       <bitWidth>2</bitWidth>
-      </field>
-      <field>
-       <name>LDORXEN</name>
-       <description>LDORX Enable.</description>
-       <bitOffset>4</bitOffset>
-       <bitWidth>1</bitWidth>
-      </field>
-      <field>
        <name>LDORXPULLD</name>
-       <description>LDOrX Pull Down.</description>
-       <bitOffset>5</bitOffset>
+       <description>LDORX Pull Down.</description>
+       <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
       </field>
       <field>
        <name>LDORXVSEL</name>
        <description>LDORX Voltage Setting.</description>
+       <bitOffset>2</bitOffset>
+       <bitWidth>2</bitWidth>
+      </field>
+      <field>
+       <name>LDOTXEN</name>
+       <description>LDOTX Enable.</description>
+       <bitOffset>4</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>LDOTXPULLD</name>
+       <description>LDOTX Pull Down.</description>
+       <bitOffset>5</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>LDOTXVSEL</name>
+       <description>LDOTX Voltage Setting.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>2</bitWidth>
       </field>
