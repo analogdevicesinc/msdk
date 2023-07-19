@@ -656,17 +656,17 @@ typedef enum {
 #define MXC_BASE_PT15 ((uint32_t)0x4003C200UL)
 #define MXC_PT15 ((mxc_pt_regs_t *)MXC_BASE_PT15)
 
-#define MXC_PT_GET_BASE(i)     \
-    ((i) == 0 ? MXC_BASE_PT0 : \
-     (i) == 1 ? MXC_BASE_PT1 : \
-     (i) == 2 ? MXC_BASE_PT2 : \
-     (i) == 3 ? MXC_BASE_PT3 : \
-     (i) == 4 ? MXC_BASE_PT4 : \
-     (i) == 5 ? MXC_BASE_PT5 : \
-     (i) == 6 ? MXC_BASE_PT6 : \
-     (i) == 7 ? MXC_BASE_PT7 : \
-     (i) == 8 ? MXC_BASE_PT8 : \
-     (i) == 9 ? MXC_BASE_PT9 : \
+#define MXC_PT_GET_BASE(i)       \
+    ((i) == 0  ? MXC_BASE_PT0 :  \
+     (i) == 1  ? MXC_BASE_PT1 :  \
+     (i) == 2  ? MXC_BASE_PT2 :  \
+     (i) == 3  ? MXC_BASE_PT3 :  \
+     (i) == 4  ? MXC_BASE_PT4 :  \
+     (i) == 5  ? MXC_BASE_PT5 :  \
+     (i) == 6  ? MXC_BASE_PT6 :  \
+     (i) == 7  ? MXC_BASE_PT7 :  \
+     (i) == 8  ? MXC_BASE_PT8 :  \
+     (i) == 9  ? MXC_BASE_PT9 :  \
      (i) == 10 ? MXC_BASE_PT10 : \
      (i) == 11 ? MXC_BASE_PT11 : \
      (i) == 12 ? MXC_BASE_PT12 : \
@@ -675,17 +675,17 @@ typedef enum {
      (i) == 15 ? MXC_BASE_PT15 : \
                  0)
 
-#define MXC_PT_GET_PT(i) \
-    ((i) == 0 ? MXC_PT0 : \
-     (i) == 1 ? MXC_PT1 : \
-     (i) == 2 ? MXC_PT2 : \
-     (i) == 3 ? MXC_PT3 : \
-     (i) == 4 ? MXC_PT4 : \
-     (i) == 5 ? MXC_PT5 : \
-     (i) == 6 ? MXC_PT6 : \
-     (i) == 7 ? MXC_PT7 : \
-     (i) == 8 ? MXC_PT8 : \
-     (i) == 9 ? MXC_PT9 : \
+#define MXC_PT_GET_PT(i)    \
+    ((i) == 0  ? MXC_PT0 :  \
+     (i) == 1  ? MXC_PT1 :  \
+     (i) == 2  ? MXC_PT2 :  \
+     (i) == 3  ? MXC_PT3 :  \
+     (i) == 4  ? MXC_PT4 :  \
+     (i) == 5  ? MXC_PT5 :  \
+     (i) == 6  ? MXC_PT6 :  \
+     (i) == 7  ? MXC_PT7 :  \
+     (i) == 8  ? MXC_PT8 :  \
+     (i) == 9  ? MXC_PT9 :  \
      (i) == 10 ? MXC_PT10 : \
      (i) == 11 ? MXC_PT11 : \
      (i) == 12 ? MXC_PT12 : \
@@ -694,24 +694,24 @@ typedef enum {
      (i) == 15 ? MXC_PT15 : \
                  0)
 
-#define MXC_PT_GET_IDX(p) \
-    ((p) == MXC_PT0 ? 0 : \
-     (p) == MXC_PT1 ? 1 : \
-     (p) == MXC_PT2 ? 2 : \
-     (p) == MXC_PT3 ? 3 : \
-     (p) == MXC_PT4 ? 4 : \
-     (p) == MXC_PT5 ? 5 : \
-     (p) == MXC_PT6 ? 6 : \
-     (p) == MXC_PT7 ? 7 : \
-     (p) == MXC_PT8 ? 8 : \
-     (p) == MXC_PT9 ? 9 : \
+#define MXC_PT_GET_IDX(p)   \
+    ((p) == MXC_PT0 ? 0 :   \
+     (p) == MXC_PT1 ? 1 :   \
+     (p) == MXC_PT2 ? 2 :   \
+     (p) == MXC_PT3 ? 3 :   \
+     (p) == MXC_PT4 ? 4 :   \
+     (p) == MXC_PT5 ? 5 :   \
+     (p) == MXC_PT6 ? 6 :   \
+     (p) == MXC_PT7 ? 7 :   \
+     (p) == MXC_PT8 ? 8 :   \
+     (p) == MXC_PT9 ? 9 :   \
      (p) == MXC_PT10 ? 10 : \
      (p) == MXC_PT11 ? 11 : \
      (p) == MXC_PT12 ? 12 : \
      (p) == MXC_PT13 ? 13 : \
      (p) == MXC_PT14 ? 14 : \
      (p) == MXC_PT15 ? 15 : \
-            -1)
+                       -1)
 
 /******************************************************************************/
 /*                                                            One Wire Master */
