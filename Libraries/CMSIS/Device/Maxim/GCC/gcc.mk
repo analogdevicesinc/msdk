@@ -36,6 +36,12 @@ ifeq "$(BUILD_DIR)" ""
 BUILD_DIR=$(CURDIR)/build
 endif
 
+# Make sure VPATH has the location of any absolute paths given to SRCS
+# This allows users to specify SRCS += /absolute/path/to/file.c to add a single file to the build
+# without also having to add VPATH += /absolute/path/to
+# This is necessary because we create our object file definitions with OBJS_NOPATH.
+VPATH += $(sort $(abspath $(dir $(SRCS))))
+
 # Create output object file names
 SRCS_NOPATH := $(foreach NAME,$(SRCS),$(basename $(notdir $(NAME))).c)
 BINS_NOPATH := $(foreach NAME,$(BINS),$(basename $(notdir $(NAME))).bin)
@@ -52,6 +58,7 @@ OBJS        += $(PROJ_OBJS)
 .PHONY: all
 all: mkbuildir
 all: ${BUILD_DIR}/${PROJECT}.elf
+all: project_defines
 
 # Goal to build for release without debug
 .PHONY: release
@@ -104,11 +111,17 @@ ifneq ($(findstring MSYS, $(UNAME)), )
 MSYS=True
 endif
 
-# Get the prefix for the tools to use.
-ifeq "$(TOOL_DIR)" ""
-PREFIX=arm-none-eabi
+# Set the toolchain prefix.  Top-level makefiles can specify ARM_PREFIX or
+# PREFIX directly.  ARM_PREFIX is given to improve dual-core projects
+ifeq "$(ARM_PREFIX)" ""
+PREFIX ?= arm-none-eabi
 else
-PREFIX=$(TOOL_DIR)/arm-none-eabi
+PREFIX ?= $(ARM_PREFIX)
+endif
+
+# Set absolute path to tools if TOOL_DIR is specified
+ifneq "$(TOOL_DIR)" ""
+PREFIX=$(TOOL_DIR)/$(PREFIX)
 endif
 
 # The command for calling the compiler.
@@ -456,6 +469,16 @@ ${BUILD_DIR}/%.elf: $(PROJECTMK)
 debug:
 	@echo CYGWIN = ${CYGWIN}
 	@echo
+	@echo CC = ${CC}
+	@echo
+	@echo AS = ${AS}
+	@echo
+	@echo LD = ${LD}
+	@echo
+	@echo TARGET = ${TARGET}
+	@echo
+	@echo BOARD = ${BOARD}
+	@echo
 	@echo BUILD_DIR = ${BUILD_DIR}
 	@echo
 	@echo SRCS = ${SRCS}
@@ -471,4 +494,23 @@ debug:
 	@echo VPATH = ${VPATH}
 	@echo
 	@echo IPATH = ${IPATH}
+	@echo
+	@echo CFLAGS = ${CFLAGS}
+	@echo
+	@echo AFLAGS = ${AFLAGS}
+	@echo
+	@echo LDFLAGS = ${LDFLAGS}
 
+################################################################################
+# Add a rule for generating a header file containing compiler definitions
+# that come from the build system and compiler itself.  This generates a
+# "project_defines.h" header file inside the build directory that can be
+# force included by VS Code to improve the intellisense engine.
+.PHONY: project_defines
+project_defines: $(BUILD_DIR)/project_defines.h
+$(BUILD_DIR)/project_defines.h: mkbuildir
+	@echo "" > $(BUILD_DIR)/_empty_tmp_file.c
+	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
+	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(CFLAGS) >> $@
+	@rm $(BUILD_DIR)/_empty_tmp_file.c
+	@rm _empty_tmp_file.d

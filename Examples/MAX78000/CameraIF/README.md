@@ -5,6 +5,7 @@ This example demonstrates the Parallel Camera Interface (PCIF) drivers and camer
 * OV7962 (Default)
 * HM0360 (MONO), for color use the CameraIF_Debayer example
 * OV5642
+* OV5640
 * HM01B0
 
 ## Software

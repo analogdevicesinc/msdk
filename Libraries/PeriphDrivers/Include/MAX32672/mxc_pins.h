@@ -133,4 +133,23 @@ extern const mxc_gpio_cfg_t gpio_cfg_adc_ain9;
 extern const mxc_gpio_cfg_t gpio_cfg_adc_ain10;
 extern const mxc_gpio_cfg_t gpio_cfg_adc_ain11;
 
+// SPI v2 Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_3wire;
+// MXC_SPI0 does not support Dual or Quad modes
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
+// MXC_SPI1 does not support Dual or Quad modes
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_3wire;
+// MXC_SPI2 does not support Dual or Quad modes
+
+// SPI v2 Target Selects Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts2;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts3;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_ts0;
+
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32672_MXC_PINS_H_

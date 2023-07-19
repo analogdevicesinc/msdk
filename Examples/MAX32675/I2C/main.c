@@ -178,7 +178,7 @@ void printData(void)
 }
 
 //Compare data to see if they are the same
-int verifyData()
+int verifyData(void)
 {
     int i, fails = 0;
 
@@ -190,9 +190,9 @@ int verifyData()
 
     if (fails > 0) {
         return E_FAIL;
-    } else {
-        return E_NO_ERROR;
     }
+
+    return E_NO_ERROR;
 }
 
 // *****************************************************************************
@@ -274,7 +274,7 @@ int main()
 
     printf("\n");
 
-    if (verifyData()) {
+    if (verifyData() == E_NO_ERROR) {
         printf("\n-->I2C Transaction Successful\n");
     } else {
         printf("\n-->I2C Transaction Failed\n");

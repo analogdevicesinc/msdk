@@ -130,6 +130,36 @@ extern const mxc_gpio_cfg_t gpio_cfg_clcd_2;
 
 extern const mxc_gpio_cfg_t gpio_cfg_i2s;
 
+// SPI v2 Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_3wire;
+// MXC_SPI0 does not support Dual or Quad mode.
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_3wire;
+// MXC_SPI1 does not support Dual or Quad mode.
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_3wire;
+// MXC_SPI2 does not support Dual or Quad mode.
+extern const mxc_gpio_cfg_t gpio_cfg_spi3_standard;
+extern const mxc_gpio_cfg_t gpio_cfg_spi3_3wire;
+extern const mxc_gpio_cfg_t gpio_cfg_spi3_dual;
+extern const mxc_gpio_cfg_t gpio_cfg_spi3_quad;
+
+// SPI v2 Target Selects Pin Definitions
+extern const mxc_gpio_cfg_t gpio_cfg_spi0_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts2;
+extern const mxc_gpio_cfg_t gpio_cfg_spi1_ts3;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_ts2;
+extern const mxc_gpio_cfg_t gpio_cfg_spi2_ts3;
+extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts0;
+extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts1;
+extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts2;
+extern const mxc_gpio_cfg_t gpio_cfg_spi3_ts3;
+
 #ifdef __cplusplus
 }
 #endif

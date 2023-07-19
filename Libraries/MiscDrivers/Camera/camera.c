@@ -788,7 +788,7 @@ int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_
 #endif
 
 #if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
-    defined(CAMERA_OV5642)
+    defined(CAMERA_OV5642) || defined(CAMERA_OV5640)
 int camera_read_reg(uint16_t reg_addr, uint8_t *reg_data)
 {
     return camera.read_reg(reg_addr, reg_data);

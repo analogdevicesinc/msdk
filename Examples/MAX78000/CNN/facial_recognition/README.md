@@ -25,6 +25,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 * This project is supported on the MAX78000FTHR board only.
 
+* This project supports displaying its results to a TFT display.  The TFT display is **disabled** by default since it's not supplied with the MAX78000 Feather board. The compatible 2.4'' TFT FeatherWing display can be ordered [here](https://learn.adafruit.com/adafruit-2-4-tft-touch-screen-featherwing).  To _enable_ the display code, uncomment `# PROJ_CFLAGS+=-DTFT_ENABLE` in [project.mk](project.mk)
+
 ## Required Connections
 
 Before running this project:

@@ -41,7 +41,7 @@ all: build/$(PROJECT)-combined.elf
 build/$(PROJECT)-combined.elf: build/$(PROJECT).elf buildrv/$(PROJECT).elf arm riscv
 	@arm-none-eabi-objcopy -I elf32-littlearm build/$(PROJECT).elf -O ihex build/$(PROJECT).hex
 	@cat build/$(PROJECT).hex | sed '/^:00000001FF/d' > build/$(PROJECT)a.hex
-	@riscv-none-embed-objcopy buildrv/$(PROJECT).elf -O ihex buildrv/$(PROJECT).hex
+	@riscv-none-elf-objcopy buildrv/$(PROJECT).elf -O ihex buildrv/$(PROJECT).hex
 	@cat build/$(PROJECT)a.hex buildrv/$(PROJECT).hex > build/$(PROJECT)-combined.hex
 	@arm-none-eabi-objcopy -I ihex build/$(PROJECT)-combined.hex -O elf32-littlearm build/$(PROJECT)-combined.elf
 

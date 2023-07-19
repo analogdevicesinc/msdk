@@ -43,15 +43,21 @@
 /***************************** VARIABLES *************************************/
 
 /************************    PUBLIC FUNCTIONS  *******************************/
+void utils_delay_ms(uint32_t ms)
+{
+    MXC_Delay(ms * 1000UL);
+}
 
 uint32_t utils_get_time_ms(void)
 {
-    int sec;
+    uint32_t sec, ssec;
     double subsec;
     uint32_t ms;
 
-    subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec = MXC_RTC_GetSecond();
+    MXC_RTC_GetSubSeconds(&ssec);
+    subsec = (double)ssec / (double)(4096.0);
+
+    MXC_RTC_GetSeconds(&sec);
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 

@@ -4,6 +4,7 @@ This example demonstrates how to take temperature readings from the MAX31889 usi
 
 After initialization, a new reading is printed to the terminal every second.
 
+NOTE: This example is only supported on the MAX32655EVKIT.
 
 ## Software
 
@@ -13,10 +14,11 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+* This project comes pre-configured for the MAX32655EVKIT and is not yet supported by the MAX32655FTHR kit.
 
 ## Required Connections
 
+If using the MAX32655EVKIT (EvKit\_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Select RX0 and TX0 on Headers JP1 and JP3 (UART 0).
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.

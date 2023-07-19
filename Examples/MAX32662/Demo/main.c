@@ -89,8 +89,11 @@ int main(void)
     area_t units_printf_area;
     area_t uptime_printf_area;
     int hr, min;
-    uint32_t sec, rtc_readout;
+    uint32_t sec;
     int error;
+
+    MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_IPO);
+    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
 
     printf("**** MAX32662 EV Kit Demo ****\n");
 
@@ -113,6 +116,18 @@ int main(void)
 
     MXC_TFT_SetFont((int)&SansSerif16x16[0]);
 
+    error = MXC_RTC_Init(0, 0);
+    if (error != E_NO_ERROR) {
+        printf("Failed RTC Initialization\n");
+        return error;
+    }
+
+    error = MXC_RTC_Start();
+    if (error != E_NO_ERROR) {
+        printf("Failed RTC_Start\n");
+        return error;
+    }
+
     // Set print area
     units_printf_area.x = 24;
     units_printf_area.y = 25;
@@ -127,23 +142,8 @@ int main(void)
     uptime_printf_area.h = 30;
     MXC_TFT_ConfigPrintf(&uptime_printf_area);
 
-    error = MXC_RTC_Init(0, 0);
-    if (error != E_NO_ERROR) {
-        printf("Failed RTC Initialization\n");
-        return error;
-    }
-
-    error = MXC_RTC_Start();
-    if (error != E_NO_ERROR) {
-        printf("Failed RTC_Start\n");
-        return error;
-    }
-
     while (1) {
-        do {
-            error = MXC_RTC_GetSeconds(&rtc_readout);
-        } while (error != E_NO_ERROR);
-        sec = rtc_readout;
+        MXC_RTC_GetSeconds(&sec);
 
         hr = sec / SECS_PER_HR;
         sec -= hr * SECS_PER_HR;
@@ -177,8 +177,8 @@ int main(void)
             printf("\n\n");
 
             MXC_TFT_Printf("\nContinue in\n");
-            for (i = 3; i > 0; i--) {
-                MXC_TFT_Printf("%ds...", i);
+            for (i = 5; i > 0; i--) {
+                MXC_TFT_Printf("%d..", i);
                 MXC_Delay(MXC_DELAY_SEC(1));
             }
 

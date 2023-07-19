@@ -1,13 +1,9 @@
 name: Pull Request Labeler
 
-concurrency: 
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
 # Controls when the workflow will run
 on:
   pull_request_target:
-    types: [opened, edited, reopened]
+    types: [opened, edited, reopened, synchronize, converted_to_draft, ready_for_review, assigned, review_requested]
 
 env:
   MSDK_DIR: msdk
@@ -24,6 +20,14 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          submodules: false
+          fetch-depth: 0
+          
       - name: Labeling
         uses: actions/labeler@v4
         with:

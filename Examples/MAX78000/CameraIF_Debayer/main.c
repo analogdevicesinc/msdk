@@ -74,7 +74,7 @@
 * over the serial port for use with
 * pc_utility/grab_image.py
 */
-#define ENABLE_TFT
+// #define ENABLE_TFT
 
 #define CAMERA_FREQ (10 * 1000 * 1000)
 
@@ -120,6 +120,7 @@ void process_img(void)
             bayer_passthrough(raw, w, h, (uint16_t *)image_data);
             break;
         case (BAYER_FUNCTION_BILINEAR):
+            color_correct(raw, w, h);
             bayer_bilinear_demosaicing(raw, w, h, (uint16_t *)image_data);
             break;
         }

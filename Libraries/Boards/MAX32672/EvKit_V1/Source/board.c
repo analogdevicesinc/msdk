@@ -129,7 +129,7 @@ int Console_Shutdown(void)
 /******************************************************************************/
 void TFT_SPI_Init(void)
 {
-    int spi_speed = 4 * 1000 * 1000; // x*MHz
+    int spi_speed = 24 * 1000 * 1000; // x*MHz
     int error;
 
     error = MXC_SPI_Init(MXC_SPI0, 1, 0, 1, 0, spi_speed);
