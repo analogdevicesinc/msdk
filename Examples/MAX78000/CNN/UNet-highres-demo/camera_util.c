@@ -57,20 +57,9 @@ int id;
 int dma_channel;
 
 static uint32_t *data_addr0 = (uint32_t *)0x50400700;
-//static uint32_t * data_addr1 = (uint32_t *) 0x50408700;
-//static uint32_t * data_addr2 = (uint32_t *) 0x50410700;
 static uint32_t *data_addr3 = (uint32_t *)0x50418700;
-
-//static uint32_t * data_addr4 = (uint32_t *) 0x50800700;
-//static uint32_t * data_addr5 = (uint32_t *) 0x50808700;
 static uint32_t *data_addr6 = (uint32_t *)0x50810700;
-//static uint32_t * data_addr7 = (uint32_t *) 0x50818700;
-
-//static uint32_t * data_addr8 = (uint32_t *) 0x50c00700;
 static uint32_t *data_addr9 = (uint32_t *)0x50c08700;
-//static uint32_t * data_addr10 = (uint32_t *) 0x50c10700;
-//static uint32_t * data_addr11 = (uint32_t *) 0x50c18700;
-
 static uint32_t *addr, offset0, offset1, subtract;
 
 uint8_t data565[IMAGE_XRES * 2];
@@ -104,8 +93,13 @@ int initialize_camera(void)
     printf("Init Camera\n");
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
+#ifndef RGB565
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB888, FIFO_THREE_BYTE, STREAMING_DMA,
                        dma_channel); // RGB888 with 0 at MSB stream
+#else
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+                       dma_channel);
+#endif
 
     if (ret != STATUS_OK) {
         printf("Error returned from setting up camera. Error %d\n", ret);
@@ -115,13 +109,8 @@ int initialize_camera(void)
     MXC_Delay(SEC(1));
 
 #if defined(CAMERA_OV7692) && defined(STREAM_ENABLE)
-// set camera clock prescaller to prevent streaming overflow due to TFT display latency
-#ifdef BOARD_EVKIT_V1
-    camera_write_reg(0x11, 0x8);
-#endif
-#ifdef BOARD_FTHR_REVA
-    camera_write_reg(0x11, 0xB);
-#endif
+    // set camera clock prescaler to prevent streaming overflow due to TFT display latency
+    camera_write_reg(0x11, 0x1);
 #endif
 
     // make the scale ratio of camera input size the same as output size, make is faster and regular
@@ -148,12 +137,6 @@ void load_row_cnn(uint8_t *data, int row)
         uint32_t w;
         uint8_t b[4];
     } m;
-
-#ifdef RGB565
-    uint16_t *dataptr = (uint16_t *)data;
-#else
-    uint8_t *dataptr = data;
-#endif
 
     offset0 = 0x00002000;
     offset1 = 0x00002000;
@@ -214,59 +197,59 @@ void load_row_cnn(uint8_t *data, int row)
         addr -= subtract;
 #elif defined(RGB565)
         // RGB565 to packed 24-bit RGB
-        m.b[0] = (*dataptr & 0xF800) >> 11;
-        m.b[1] = (*dataptr & 0x07E0) >> 5;
-        m.b[2] = (*dataptr & 0x001F) << 3;
-        dataptr++;
-        m.b[3] = (*dataptr & 0xF800) >> 11;
+        m.b[0] = (*data & 0xF8); // Red
+        m.b[1] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
+        m.b[2] = (*(data + 1) << 3); // Blue
+        data += 2;
+        m.b[3] = (*data & 0xF8); // Red
 
         *addr = m.w ^ 0x80808080U;
         addr += offset0;
 
-        m.b[0] = (*dataptr & 0x07E0) >> 5;
-        m.b[1] = (*dataptr & 0x001F) << 3;
-        dataptr++;
-        m.b[2] = (*dataptr & 0xF800) >> 11;
-        m.b[3] = (*dataptr & 0x07E0) >> 5;
+        m.b[0] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
+        m.b[1] = (*(data + 1) << 3); // Blue
+        data += 2;
+        m.b[2] = (*data & 0xF8); // Red
+        m.b[3] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
 
         *addr = m.w ^ 0x80808080U;
         addr += offset1;
 
-        m.b[0] = (*dataptr & 0x001F) << 3;
-        dataptr++;
-        m.b[1] = (*dataptr & 0xF800) >> 11;
-        m.b[2] = (*dataptr & 0x07E0) >> 5;
-        m.b[3] = (*dataptr & 0x001F) << 3;
-        dataptr++;
+        m.b[0] = (*(data + 1) << 3); // Blue
+        data += 2;
+        m.b[1] = (*data & 0xF8); // Red
+        m.b[2] = (*data << 5) | ((*(data + 1) & 0xE0) >> 3); // Green
+        m.b[3] = (*(data + 1) << 3); // Blue
+        data += 2;
 
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
 #else
         // unpacked 24-bit RGB to packed 24-bit RGB
-        m.b[0] = *dataptr++; // r0
-        m.b[1] = *dataptr++; // g0
-        m.b[2] = *dataptr++; // b0
-        dataptr++; // skip MSB
-        m.b[3] = *dataptr++; // r1
+        m.b[0] = *data++; // r0
+        m.b[1] = *data++; // g0
+        m.b[2] = *data++; // b0
+        data++; // skip MSB
+        m.b[3] = *data++; // r1
 
         *addr = m.w ^ 0x80808080U;
         addr += offset0;
 
-        m.b[0] = *dataptr++; // g1
-        m.b[1] = *dataptr++; // b1
-        dataptr++; // skip MSB
-        m.b[2] = *dataptr++; // r2
-        m.b[3] = *dataptr++; // g2
+        m.b[0] = *data++; // g1
+        m.b[1] = *data++; // b1
+        data++; // skip MSB
+        m.b[2] = *data++; // r2
+        m.b[3] = *data++; // g2
 
         *addr = m.w ^ 0x80808080U;
         addr += offset1;
 
-        m.b[0] = *dataptr++; // b2
-        dataptr++; // skip MSB
-        m.b[1] = *dataptr++; // r3
-        m.b[2] = *dataptr++; // g3
-        m.b[3] = *dataptr++; // b3
-        dataptr++; // skip MSB
+        m.b[0] = *data++; // b2
+        data++; // skip MSB
+        m.b[1] = *data++; // r3
+        m.b[2] = *data++; // g3
+        m.b[3] = *data++; // b3
+        data++; // skip MSB
 
         *addr = m.w ^ 0x80808080U;
         addr -= subtract;
@@ -391,25 +374,79 @@ void load_input_camera(void)
     }
 
     stat = get_camera_stream_statistic();
-
-    //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-    //printf("OVERFLOW = %d\n", stat->overflow_count);
     if (stat->overflow_count > 0) {
-        printf("OVERFLOW = %d\n", stat->overflow_count);
+        printf("OVERFLOW Loading= %d\n", stat->overflow_count);
         LED_On(LED2); // Turn on red LED if overflow detected
 
         while (1) {}
     }
 }
 
+int dma_channel;
+int g_dma_channel_tft = 1;
+static uint8_t *rx_data = NULL;
+
+void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt)
+{
+    // TFT DMA
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
+    }
+
+    MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
+    MXC_DMA->ch[g_dma_channel_tft].dst = (uint32_t)rx_data; // Cast Pointer
+    MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
+    MXC_DMA->ch[g_dma_channel_tft].cnt = byte_cnt;
+
+    MXC_DMA->ch[g_dma_channel_tft].ctrl =
+        ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS) + (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS) +
+         (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) + (0x0 << MXC_F_DMA_CTRL_DSTINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_DSTWD_POS) + (0x1 << MXC_F_DMA_CTRL_SRCINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_SRCWD_POS) + (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
+         (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) + (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // SPI0 -> TFT
+         (0x0 << MXC_F_DMA_CTRL_PRI_POS) + // High Priority
+         (0x0 << MXC_F_DMA_CTRL_RLDEN_POS) // Disable Reload
+        );
+
+    MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
+    MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR,
+                 (byte_cnt) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
+
+    // Clear SPI master done flag
+    MXC_SPI0->intfl = MXC_F_SPI_INTFL_MST_DONE;
+    MXC_SETFIELD(MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_DMA_TX_EN);
+    MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
+}
+
+void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt)
+{
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
+    }
+
+    if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF) {
+        MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
+    }
+
+    MXC_DMA->ch[g_dma_channel_tft].cnt = byte_cnt;
+    MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
+
+    // Enable DMA channel
+    MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+    MXC_Delay(1); // to fix artifacts in the image
+    // Start DMA
+    MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+}
+
 void display_camera(void)
 {
     uint32_t imgLen;
     uint32_t w, h;
-    int j = 0;
+
     uint8_t *raw;
-    uint16_t rgb;
-    uint8_t r, g, b;
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
@@ -431,14 +468,18 @@ void display_camera(void)
 
         LED_Toggle(LED2);
 
-        j = 0;
-
         // convert RGB888 to RGB565
         if (row < TFT_H) {
+#ifndef RGB565
+            uint16_t rgb;
+            uint8_t r, g, b;
+            int j = 0;
 #ifdef BOARD_FTHR_REVA
+
             for (int k = 0; k < 4 * w; k += 4) {
 #endif
 #ifdef BOARD_EVKIT_V1
+
                 for (int k = 4 * w - 1; k > 0; k -= 4) { // reverse order to display
 #endif
                     r = data[k];
@@ -450,7 +491,29 @@ void display_camera(void)
                     data565[j++] = rgb & 0xFF;
                 }
 
+#ifdef BOARD_EVKIT_V1
                 MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
+#else
+        tft_dma_display(0, Y_START + row, TFT_W, 1, (uint32_t *)data565);
+#endif
+
+#else //#ifndef RGB565
+
+#ifdef BOARD_EVKIT_V1
+            int j = 0;
+            for (int k = 2 * w - 1; k > 0; k -= 2) { // reverse order to display
+
+                data565[j++] = data[k + 1];
+                data565[j++] = data[k];
+            }
+
+            MXC_TFT_ShowImageCameraRGB565(0, Y_START + row, data565, w, 1);
+
+#else
+            tft_dma_display(0, Y_START + row, TFT_W, 1, (uint32_t *)data);
+#endif
+
+#endif //#ifndef RGB565
             }
 
             LED_Toggle(LED2);
@@ -459,9 +522,6 @@ void display_camera(void)
         }
 
         stat = get_camera_stream_statistic();
-
-        //printf("DMA transfer count = %d\n", stat->dma_transfer_count);
-        //printf("OVERFLOW = %d\n", stat->overflow_count);
         if (stat->overflow_count > 0) {
             printf("OVERFLOW DISP = %d\n", stat->overflow_count);
             LED_On(LED2); // Turn on red LED if overflow detected
@@ -535,26 +595,4 @@ void display_camera(void)
         printf("SUM: %08X \n", sum);
 
         while (1) {}
-    }
-
-    void run_camera(void)
-    {
-        // Start capturing a first camera image frame.
-        printf("Starting\n");
-        camera_start_capture_image();
-
-        while (1) {
-            // Check if image is acquired
-#ifndef STREAM_ENABLE
-            if (camera_is_image_rcv())
-#endif
-            {
-                // Process the image, send it through the UART console.
-                process_img();
-
-                // Prepare for another frame capture.
-                LED_Toggle(LED1);
-                camera_start_capture_image();
-            }
-        }
     }
