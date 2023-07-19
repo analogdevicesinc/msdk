@@ -82,7 +82,8 @@
         "user-cli.h": "c",
         "uart.h": "c",
         "nvic_table.h": "c",
-        "cstdlib": "c"
+        "cstdlib": "c",
+        "adc_reva.h": "c"
     }
 }
 

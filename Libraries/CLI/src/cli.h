@@ -31,7 +31,7 @@
  *
  ******************************************************************************/
 
-/*! \file cli.c
+/*! \file cli.h
     \brief A CLI Implementation using a command table to store command string, function pointer and a help string is dispatched.
 
     Details. 
