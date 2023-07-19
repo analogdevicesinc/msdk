@@ -113,6 +113,54 @@ int MXC_PT_Config(mxc_pt_cfg_t *cfg)
         MXC_GPIO_Config(&gpio_cfg_pt3);
         break;
 
+    case 4:
+        MXC_GPIO_Config(&gpio_cfg_pt4);
+        break;
+
+    case 5:
+        MXC_GPIO_Config(&gpio_cfg_pt5);
+        break;
+
+    case 6:
+        MXC_GPIO_Config(&gpio_cfg_pt6);
+        break;
+
+    case 7:
+        MXC_GPIO_Config(&gpio_cfg_pt7);
+        break;
+
+    case 8:
+        MXC_GPIO_Config(&gpio_cfg_pt8);
+        break;
+
+    case 9:
+        MXC_GPIO_Config(&gpio_cfg_pt9);
+        break;
+
+    case 10:
+        MXC_GPIO_Config(&gpio_cfg_pt10);
+        break;
+
+    case 11:
+        MXC_GPIO_Config(&gpio_cfg_pt11);
+        break;
+
+    case 12:
+        MXC_GPIO_Config(&gpio_cfg_pt12);
+        break;
+
+    case 13:
+        MXC_GPIO_Config(&gpio_cfg_pt13);
+        break;
+
+    case 14:
+        MXC_GPIO_Config(&gpio_cfg_pt14);
+        break;
+
+    case 15:
+        MXC_GPIO_Config(&gpio_cfg_pt15);
+        break;
+
     default:
         return E_BAD_PARAM;
     }
