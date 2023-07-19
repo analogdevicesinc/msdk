@@ -695,16 +695,16 @@ typedef enum {
                  0)
 
 #define MXC_PT_GET_IDX(p)   \
-    ((p) == MXC_PT0 ? 0 :   \
-     (p) == MXC_PT1 ? 1 :   \
-     (p) == MXC_PT2 ? 2 :   \
-     (p) == MXC_PT3 ? 3 :   \
-     (p) == MXC_PT4 ? 4 :   \
-     (p) == MXC_PT5 ? 5 :   \
-     (p) == MXC_PT6 ? 6 :   \
-     (p) == MXC_PT7 ? 7 :   \
-     (p) == MXC_PT8 ? 8 :   \
-     (p) == MXC_PT9 ? 9 :   \
+    ((p) == MXC_PT0  ? 0 :  \
+     (p) == MXC_PT1  ? 1 :  \
+     (p) == MXC_PT2  ? 2 :  \
+     (p) == MXC_PT3  ? 3 :  \
+     (p) == MXC_PT4  ? 4 :  \
+     (p) == MXC_PT5  ? 5 :  \
+     (p) == MXC_PT6  ? 6 :  \
+     (p) == MXC_PT7  ? 7 :  \
+     (p) == MXC_PT8  ? 8 :  \
+     (p) == MXC_PT9  ? 9 :  \
      (p) == MXC_PT10 ? 10 : \
      (p) == MXC_PT11 ? 11 : \
      (p) == MXC_PT12 ? 12 : \
