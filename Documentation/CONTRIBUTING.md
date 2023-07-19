@@ -275,10 +275,11 @@ The `Documentation/build.py` script can be used to build the MSDK User Guide and
 To **build** the docs:
 
 1. Install [doxygen](https://www.doxygen.nl/download.html)
-2. Install Python 3
-3. `pip install -r Documentation/requirements.txt`
-4. `python Documentation/build.py`
-5. The site will be built in the `docs` folder of the repo.
+2. Add doxygen's binary diretory to the [Environmental Path](https://learn.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ee537574(v=office.14)) Variable
+3. Install Python 3
+4. `pip install -r Documentation/requirements.txt`
+5. `python Documentation/build.py`
+6. The site will be built in the `docs` folder of the repo.
 
 To **preview** the generated site:
 

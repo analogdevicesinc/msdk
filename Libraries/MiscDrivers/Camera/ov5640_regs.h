@@ -67,6 +67,7 @@
 #define SYS_CTRL0               (0x3008)
 #define CHIPID_H                (0x300a)
 #define CHIPID_L                (0x300b)
+#define CHIPREV                 (0x302a)
 
 #define MIPI_CTRL0              (0x300e)
 
