@@ -619,7 +619,7 @@ typedef enum {
 
 /*******************************************************************************/
 /*                                                      Pulse Train Generation */
-#define MXC_CFG_PT_INSTANCES (4)
+#define MXC_CFG_PT_INSTANCES (16)
 
 #define MXC_BASE_PTG ((uint32_t)0x4003C000UL)
 #define MXC_PTG ((mxc_ptg_regs_t *)MXC_BASE_PTG)
@@ -631,19 +631,87 @@ typedef enum {
 #define MXC_PT2 ((mxc_pt_regs_t *)MXC_BASE_PT2)
 #define MXC_BASE_PT3 ((uint32_t)0x4003C080UL)
 #define MXC_PT3 ((mxc_pt_regs_t *)MXC_BASE_PT3)
+#define MXC_BASE_PT4 ((uint32_t)0x4003C0A0UL)
+#define MXC_PT4 ((mxc_pt_regs_t *)MXC_BASE_PT4)
+#define MXC_BASE_PT5 ((uint32_t)0x4003C0C0UL)
+#define MXC_PT5 ((mxc_pt_regs_t *)MXC_BASE_PT5)
+#define MXC_BASE_PT6 ((uint32_t)0x4003C0E0UL)
+#define MXC_PT6 ((mxc_pt_regs_t *)MXC_BASE_PT6)
+#define MXC_BASE_PT7 ((uint32_t)0x4003C100UL)
+#define MXC_PT7 ((mxc_pt_regs_t *)MXC_BASE_PT7)
+#define MXC_BASE_PT8 ((uint32_t)0x4003C120UL)
+#define MXC_PT8 ((mxc_pt_regs_t *)MXC_BASE_PT8)
+#define MXC_BASE_PT9 ((uint32_t)0x4003C140UL)
+#define MXC_PT9 ((mxc_pt_regs_t *)MXC_BASE_PT9)
+#define MXC_BASE_PT10 ((uint32_t)0x4003C160UL)
+#define MXC_PT10 ((mxc_pt_regs_t *)MXC_BASE_PT10)
+#define MXC_BASE_PT11 ((uint32_t)0x4003C180UL)
+#define MXC_PT11 ((mxc_pt_regs_t *)MXC_BASE_PT11)
+#define MXC_BASE_PT12 ((uint32_t)0x4003C1A0UL)
+#define MXC_PT12 ((mxc_pt_regs_t *)MXC_BASE_PT12)
+#define MXC_BASE_PT13 ((uint32_t)0x4003C1C0UL)
+#define MXC_PT13 ((mxc_pt_regs_t *)MXC_BASE_PT13)
+#define MXC_BASE_PT14 ((uint32_t)0x4003C1E0UL)
+#define MXC_PT14 ((mxc_pt_regs_t *)MXC_BASE_PT14)
+#define MXC_BASE_PT15 ((uint32_t)0x4003C200UL)
+#define MXC_PT15 ((mxc_pt_regs_t *)MXC_BASE_PT15)
 
-#define MXC_PT_GET_BASE(i)     \
-    ((i) == 0 ? MXC_BASE_PT0 : \
-     (i) == 1 ? MXC_BASE_PT1 : \
-     (i) == 2 ? MXC_BASE_PT2 : \
-     (i) == 3 ? MXC_BASE_PT3 : \
-                0)
+#define MXC_PT_GET_BASE(i)       \
+    ((i) == 0  ? MXC_BASE_PT0 :  \
+     (i) == 1  ? MXC_BASE_PT1 :  \
+     (i) == 2  ? MXC_BASE_PT2 :  \
+     (i) == 3  ? MXC_BASE_PT3 :  \
+     (i) == 4  ? MXC_BASE_PT4 :  \
+     (i) == 5  ? MXC_BASE_PT5 :  \
+     (i) == 6  ? MXC_BASE_PT6 :  \
+     (i) == 7  ? MXC_BASE_PT7 :  \
+     (i) == 8  ? MXC_BASE_PT8 :  \
+     (i) == 9  ? MXC_BASE_PT9 :  \
+     (i) == 10 ? MXC_BASE_PT10 : \
+     (i) == 11 ? MXC_BASE_PT11 : \
+     (i) == 12 ? MXC_BASE_PT12 : \
+     (i) == 13 ? MXC_BASE_PT13 : \
+     (i) == 14 ? MXC_BASE_PT14 : \
+     (i) == 15 ? MXC_BASE_PT15 : \
+                 0)
 
-#define MXC_PT_GET_PT(i) \
-    ((i) == 0 ? MXC_PT0 : (i) == 1 ? MXC_PT1 : (i) == 2 ? MXC_PT2 : (i) == 3 ? MXC_PT3 : 0)
+#define MXC_PT_GET_PT(i)    \
+    ((i) == 0  ? MXC_PT0 :  \
+     (i) == 1  ? MXC_PT1 :  \
+     (i) == 2  ? MXC_PT2 :  \
+     (i) == 3  ? MXC_PT3 :  \
+     (i) == 4  ? MXC_PT4 :  \
+     (i) == 5  ? MXC_PT5 :  \
+     (i) == 6  ? MXC_PT6 :  \
+     (i) == 7  ? MXC_PT7 :  \
+     (i) == 8  ? MXC_PT8 :  \
+     (i) == 9  ? MXC_PT9 :  \
+     (i) == 10 ? MXC_PT10 : \
+     (i) == 11 ? MXC_PT11 : \
+     (i) == 12 ? MXC_PT12 : \
+     (i) == 13 ? MXC_PT13 : \
+     (i) == 14 ? MXC_PT14 : \
+     (i) == 15 ? MXC_PT15 : \
+                 0)
 
-#define MXC_PT_GET_IDX(p) \
-    ((p) == MXC_PT0 ? 0 : (p) == MXC_PT1 ? 1 : (p) == MXC_PT2 ? 2 : (p) == MXC_PT3 ? 3 : -1)
+#define MXC_PT_GET_IDX(p)   \
+    ((p) == MXC_PT0  ? 0 :  \
+     (p) == MXC_PT1  ? 1 :  \
+     (p) == MXC_PT2  ? 2 :  \
+     (p) == MXC_PT3  ? 3 :  \
+     (p) == MXC_PT4  ? 4 :  \
+     (p) == MXC_PT5  ? 5 :  \
+     (p) == MXC_PT6  ? 6 :  \
+     (p) == MXC_PT7  ? 7 :  \
+     (p) == MXC_PT8  ? 8 :  \
+     (p) == MXC_PT9  ? 9 :  \
+     (p) == MXC_PT10 ? 10 : \
+     (p) == MXC_PT11 ? 11 : \
+     (p) == MXC_PT12 ? 12 : \
+     (p) == MXC_PT13 ? 13 : \
+     (p) == MXC_PT14 ? 14 : \
+     (p) == MXC_PT15 ? 15 : \
+                       -1)
 
 /******************************************************************************/
 /*                                                            One Wire Master */
@@ -760,34 +828,6 @@ typedef enum {
     (IRQn_Type)((i) == 0 ? SPI0_IRQn : (i) == 1 ? SPI1_IRQn : (i) == 2 ? SPI2_IRQn : 0)
 
 #endif // __riscv
-
-/*******************************************************************************/
-/*                                                      Pulse Train Generation */
-#define MXC_CFG_PT_INSTANCES (4)
-
-#define MXC_BASE_PTG ((uint32_t)0x4003C000UL)
-#define MXC_PTG ((mxc_ptg_regs_t *)MXC_BASE_PTG)
-#define MXC_BASE_PT0 ((uint32_t)0x4003C020UL)
-#define MXC_PT0 ((mxc_pt_regs_t *)MXC_BASE_PT0)
-#define MXC_BASE_PT1 ((uint32_t)0x4003C040UL)
-#define MXC_PT1 ((mxc_pt_regs_t *)MXC_BASE_PT1)
-#define MXC_BASE_PT2 ((uint32_t)0x4003C060UL)
-#define MXC_PT2 ((mxc_pt_regs_t *)MXC_BASE_PT2)
-#define MXC_BASE_PT3 ((uint32_t)0x4003C080UL)
-#define MXC_PT3 ((mxc_pt_regs_t *)MXC_BASE_PT3)
-
-#define MXC_PT_GET_BASE(i)     \
-    ((i) == 0 ? MXC_BASE_PT0 : \
-     (i) == 1 ? MXC_BASE_PT1 : \
-     (i) == 2 ? MXC_BASE_PT2 : \
-     (i) == 3 ? MXC_BASE_PT3 : \
-                0)
-
-#define MXC_PT_GET_PT(i) \
-    ((i) == 0 ? MXC_PT0 : (i) == 1 ? MXC_PT1 : (i) == 2 ? MXC_PT2 : (i) == 3 ? MXC_PT3 : 0)
-
-#define MXC_PT_GET_IDX(p) \
-    ((p) == MXC_PT0 ? 0 : (p) == MXC_PT1 ? 1 : (p) == MXC_PT2 ? 2 : (p) == MXC_PT3 ? 3 : -1)
 
 /******************************************************************************/
 /*                                                                       TRNG */
