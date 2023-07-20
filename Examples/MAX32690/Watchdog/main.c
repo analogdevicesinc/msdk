@@ -154,7 +154,7 @@ int main(void)
     //Push SW2/SW3 to start longer delay - shows Interrupt before the reset happens
 
     while (1) {
-        //Push SW1 to reset watchdog
+        //Push SW2/SW3 to reset watchdog
         if (PB_Get(0)) {
             SW_Callback();
 #ifdef OVERFLOW

@@ -122,12 +122,8 @@ int main(void)
         data_tx[i] = i;
     }
 
-#if defined(EvKit_V1)
-    printf("Press button SW2 to begin example.\n");
-#else
-    printf("Press button SW3 to begin example.\n");
-#endif
-    while (!PB_Get(0)) {}
+    printf("Press any user push button to begin example.\n");
+    while (!PB_IsPressedAny()) {}
     MXC_Delay(MXC_DELAY_MSEC(500));
 
 #if SEND_CAN
