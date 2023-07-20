@@ -248,6 +248,15 @@ void MXC_TFT_ShowImageCameraMono(int x0, int y0, uint8_t *image, int width, int 
  */
 void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, int iHeight);
 
+/**
+ * @brief      Draw a RGB565 buffer to a window location
+ *
+ * @param      x0           x location of image
+ * @param      y0           y location of image
+ * @param      image        RGB565 image buffer (pointer)
+ * @param      width        image width
+ * @param      height       image height
+ */
 void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height);
 
 /**

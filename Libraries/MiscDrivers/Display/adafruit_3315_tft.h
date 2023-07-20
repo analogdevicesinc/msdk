@@ -54,7 +54,7 @@ extern "C" {
 
 #define DISPLAY_WIDTH 320 /**< TFT width in pixels. */
 #define DISPLAY_HEIGHT 240 /**< TFT height in pixels. */
-#define TFT_SPI_FREQ 10000000 /**< SPI clock frequency in Hertz. */
+#define TFT_SPI_FREQ 25000000 /**< SPI clock frequency in Hertz. */
 
 #if (TARGET_NUM == 78000)
 #define TFT_SPI_PORT MXC_GPIO0 /**< GPIO port for SPI peripheral pins. */
@@ -229,6 +229,15 @@ void MXC_TFT_ShowImage(int x0, int y0, int id);
  */
 void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, int iHeight);
 
+/**
+ * @brief      Draw a RGB565 buffer to a window location
+ *
+ * @param      x0           x location of image
+ * @param      y0           y location of image
+ * @param      image        RGB565 image buffer (pointer)
+ * @param      width        image width
+ * @param      height       image height
+ */
 void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height);
 
 /**
@@ -383,7 +392,7 @@ void MXC_TFT_Rectangle(int x0, int y0, int x1, int y1, int color);
  * @param      height       image height
  */
 void MXC_TFT_Stream(int x0, int y0, int width, int height);
-/**@} end of group adafruit_3315 */
+/**@} end of group adafruit_3315_tft */
 
 #ifdef __cplusplus
 }
