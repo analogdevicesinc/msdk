@@ -14,8 +14,10 @@ nav:
   - License: 'LICENSE.md'
 theme:
   name: readthedocs
+  analytics:
+    gtag: G-79C65FSVL6
 markdown_extensions:
 - pymdownx.details
 - tables: {}
 - codehilite:
-    use_pygments: False  
+    use_pygments: False
