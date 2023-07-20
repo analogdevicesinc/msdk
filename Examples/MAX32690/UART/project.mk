@@ -14,6 +14,6 @@
 # https://www.analog.com/en/education/education-library/videos/6313214207112.html
 SBT=0
 
-ifeq ($(BOARD),FTHR_APPS_P1)
-$(error ERR_NOTSUPPORTED: This project is not supported for the FTHR_APPS_P1 board)
+ifeq ($(BOARD),FTHR)
+$(error ERR_NOTSUPPORTED: This project is not supported for the FTHR board)
 endif

@@ -38,8 +38,8 @@
 
 #include <stdio.h>
 
-#ifndef LIBRARIES_BOARDS_MAX32690_FTHR_APPS_P1_INCLUDE_BOARD_H_
-#define LIBRARIES_BOARDS_MAX32690_FTHR_APPS_P1_INCLUDE_BOARD_H_
+#ifndef LIBRARIES_BOARDS_MAX32690_FTHR_INCLUDE_BOARD_H_
+#define LIBRARIES_BOARDS_MAX32690_FTHR_INCLUDE_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -79,7 +79,7 @@ extern "C" {
 #define EXT_FLASH_BAUD 4000000
 #endif
 
-#define FTHR_APPS_P1 1 /// Used in examples to control program flow.
+#define BOARD_FTHR 1 /// Used in examples to control program flow.
 
 /**
  *  A reference to LED1 (RED LED in the RGB LED) of the board.
@@ -121,4 +121,4 @@ int Console_PrepForSleep(void);
 }
 #endif
 
-#endif // LIBRARIES_BOARDS_MAX32690_FTHR_APPS_P1_INCLUDE_BOARD_H_
+#endif // LIBRARIES_BOARDS_MAX32690_FTHR_INCLUDE_BOARD_H_
