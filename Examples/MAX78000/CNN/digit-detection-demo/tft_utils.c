@@ -134,14 +134,14 @@ void draw_obj_rect(float *xy, int class_idx, uint32_t w, uint32_t h, uint8_t sca
     if (y2 < 1)
         y2 = 1;
 
-    if (x1 > w-1)
-        x1 = w-1;
-    if (y1 > h-1)
-        y1 = h-1;
-    if (x2 > w-1)
-        x2 = w-1;
-    if (y2 > h-1)
-        y2 = h-1;
+    if (x1 > w - 1)
+        x1 = w - 1;
+    if (y1 > h - 1)
+        y1 = h - 1;
+    if (x2 > w - 1)
+        x2 = w - 1;
+    if (y2 > h - 1)
+        y2 = h - 1;
 
 #ifdef BOARD_EVKIT_V1
     color = (0x01000100 | ((b & 0xF8) << 13) | ((g & 0x1C) << 19) | ((g & 0xE0) >> 5) | (r & 0xF8));
