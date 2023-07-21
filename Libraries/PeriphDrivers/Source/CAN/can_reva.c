@@ -141,11 +141,11 @@ mxc_can_capabilities_t MXC_CAN_RevA_GetCapabilities(void)
 int MXC_CAN_RevA_Init(mxc_can_reva_regs_t *can, mxc_can_unit_event_cb_t unit_cb,
                       mxc_can_object_event_cb_t obj_cb)
 {
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-        
+
     obj_evt_cb[can_idx] = obj_cb; // Set callback function pointers
     unit_evt_cb[can_idx] = unit_cb;
 
@@ -159,11 +159,11 @@ int MXC_CAN_RevA_Init(mxc_can_reva_regs_t *can, mxc_can_unit_event_cb_t unit_cb,
 /**********************************************************************************************************************************************************************/
 int MXC_CAN_RevA_UnInit(mxc_can_reva_regs_t *can)
 {
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     obj_evt_cb[can_idx] = NULL; // Clear callback function pointers
     unit_evt_cb[can_idx] = NULL;
 
@@ -177,11 +177,11 @@ int MXC_CAN_RevA_UnInit(mxc_can_reva_regs_t *can)
 /**********************************************************************************************************************************************************************/
 int MXC_CAN_RevA_PowerControl(mxc_can_reva_regs_t *can, mxc_can_pwr_ctrl_t pwr)
 {
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     if (pwr == MXC_CAN_PWR_CTRL_SLEEP) {
         // CAN periph able to go into sleep mode?
         if (can->stat & MXC_F_CAN_REVA_STAT_TX || can->intfl || can->eintfl || !can->wupclkdiv) {
@@ -409,19 +409,17 @@ int MXC_CAN_RevA_ObjectSetFilter(mxc_can_reva_regs_t *can, mxc_can_filt_cfg_t cf
     uint32_t op_type = (cfg & MXC_CAN_FILT_OP_TYPE_MASK);
     uint32_t filt_sel = (cfg & MXC_CAN_FILT_SEL_MASK);
     uint32_t dual_filt_sel;
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     if (filt_sel ==
         MXC_CAN_FILT_CFG_DUAL_GEN) { // If using middleware dual filter select, figure out which filter to set
         if (op_type == MXC_CAN_FILT_CFG_EXACT_ADD || op_type == MXC_CAN_FILT_CFG_MASK_ADD) {
-            filt_sel = ((filt_in_use[can_idx] + 1) * 2)
-                       << MXC_CAN_FILT_SEL_SHIFT;
+            filt_sel = ((filt_in_use[can_idx] + 1) * 2) << MXC_CAN_FILT_SEL_SHIFT;
         } else if (op_type == MXC_CAN_FILT_CFG_EXACT_DEL || op_type == MXC_CAN_FILT_CFG_MASK_DEL) {
-            filt_sel = (filt_in_use[can_idx] * 2)
-                       << MXC_CAN_FILT_SEL_SHIFT;
+            filt_sel = (filt_in_use[can_idx] * 2) << MXC_CAN_FILT_SEL_SHIFT;
         }
     }
 
@@ -531,11 +529,11 @@ int MXC_CAN_RevA_ObjectSetFilter(mxc_can_reva_regs_t *can, mxc_can_filt_cfg_t cf
 /**********************************************************************************************************************************************************************/
 int MXC_CAN_RevA_ObjectConfigure(mxc_can_reva_regs_t *can, mxc_can_obj_cfg_t cfg)
 {
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     switch (cfg) {
     case MXC_CAN_OBJ_CFG_INACTIVE: // Configure object as inactive
         MXC_CAN_PowerControl(can_idx, MXC_CAN_PWR_CTRL_SLEEP);
@@ -626,11 +624,11 @@ int MXC_CAN_RevA_ReadRXFIFO(mxc_can_reva_regs_t *can, mxc_can_msg_info_t *info, 
     uint8_t rxfifo_idx = 0, rxbuf_parse = 0, dma_buf_idx = 0;
     uint32_t rx_data = 0;
     uint32_t *dma_buf = dma_rx0;
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     if (info == NULL || data == NULL) {
         return E_NULL_PTR;
     } else if (!dma && can->rxdcnt == 0) {
@@ -727,11 +725,11 @@ int MXC_CAN_RevA_MessageSend(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
 {
     int err;
     uint8_t flags, ext_flags;
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     if (req == NULL) {
         return E_NULL_PTR;
     } else if (MXC_GetLock(&tx_lock[can_idx], 1)) {
@@ -740,8 +738,7 @@ int MXC_CAN_RevA_MessageSend(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
     }
 
     // Format and write message to FIFO
-    if ((err = MXC_CAN_WriteTXFIFO(can_idx, req->msg_info, req->data,
-                                   req->data_sz)) < E_NO_ERROR) {
+    if ((err = MXC_CAN_WriteTXFIFO(can_idx, req->msg_info, req->data, req->data_sz)) < E_NO_ERROR) {
         return err;
     }
 
@@ -760,8 +757,7 @@ int MXC_CAN_RevA_MessageSend(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
     } while (!(flags & MXC_F_CAN_REVA_INTFL_TX));
 
     if (flags & MXC_F_CAN_REVA_INTFL_TX) { // If TX complete call callback function
-        MXC_CAN_SignalObjectEvent(can_idx,
-                                  MXC_CAN_OBJ_EVT_TX_COMPLETE);
+        MXC_CAN_SignalObjectEvent(can_idx, MXC_CAN_OBJ_EVT_TX_COMPLETE);
     }
 
     MXC_FreeLock(&tx_lock[can_idx]); // Free TX lock
@@ -773,11 +769,11 @@ int MXC_CAN_RevA_MessageSend(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
 int MXC_CAN_RevA_MessageSendAsync(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
 {
     int err;
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     if (req == NULL) {
         return E_NULL_PTR;
     } else if (MXC_GetLock(&tx_lock[can_idx], 1)) {
@@ -786,8 +782,7 @@ int MXC_CAN_RevA_MessageSendAsync(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
     }
 
     // Format and write message to TX FIFO
-    if ((err = MXC_CAN_WriteTXFIFO(can_idx, req->msg_info, req->data,
-                                   req->data_sz)) < E_NO_ERROR) {
+    if ((err = MXC_CAN_WriteTXFIFO(can_idx, req->msg_info, req->data, req->data_sz)) < E_NO_ERROR) {
         MXC_FreeLock(&tx_lock[can_idx]);
         return err;
     }
@@ -816,11 +811,11 @@ int MXC_CAN_RevA_MessageRead(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
 {
     int err = 0;
     uint8_t flags = 0, ext_flags = 0;
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     // Check for bad parameters
     if (req == NULL) {
         return E_NULL_PTR;
@@ -838,14 +833,13 @@ int MXC_CAN_RevA_MessageRead(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
     } while (!(flags & (MXC_F_CAN_REVA_INTFL_RX | MXC_F_CAN_REVA_INTFL_DOR)));
 
     if (flags & MXC_F_CAN_REVA_INTFL_DOR) {
-        MXC_CAN_SignalObjectEvent(can_idx,
-                                  MXC_CAN_OBJ_EVT_RX_OVERRUN);
+        MXC_CAN_SignalObjectEvent(can_idx, MXC_CAN_OBJ_EVT_RX_OVERRUN);
     }
 
     if (flags & MXC_F_CAN_REVA_INTFL_RX) {
         // Read data from FIFO
-        if ((err = MXC_CAN_ReadRXFIFO(can_idx, req->msg_info,
-                                      req->data, req->data_sz)) < E_NO_ERROR) {
+        if ((err = MXC_CAN_ReadRXFIFO(can_idx, req->msg_info, req->data, req->data_sz)) <
+            E_NO_ERROR) {
             MXC_FreeLock(&rx_lock[can_idx]);
             return err;
         }
@@ -860,11 +854,11 @@ int MXC_CAN_RevA_MessageRead(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
 /**********************************************************************************************************************************************************************/
 int MXC_CAN_RevA_MessageReadAsync(mxc_can_reva_regs_t *can, mxc_can_req_t *req)
 {
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     if (req == NULL) {
         return E_NULL_PTR;
     } else if (MXC_GetLock(&rx_lock[can_idx], 1)) {
@@ -893,11 +887,11 @@ int MXC_CAN_RevA_MessageReadDMA(mxc_can_reva_regs_t *can, mxc_can_req_t *req,
     int ch;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     if (req == NULL) {
         return E_NULL_PTR;
     } else if (MXC_GetLock(&rx_lock[can_idx], 1)) {
@@ -963,11 +957,11 @@ int MXC_CAN_RevA_MessageReadDMA(mxc_can_reva_regs_t *can, mxc_can_req_t *req,
 int MXC_CAN_RevA_Handler(mxc_can_reva_regs_t *can, uint8_t *intfl, uint8_t *eintfl)
 {
     uint8_t flg, ext_flg;
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     MXC_CAN_GetFlags(can_idx, &flg, &ext_flg); // Get and clear flags
     MXC_CAN_ClearFlags(can_idx, flg, ext_flg);
 
@@ -979,8 +973,7 @@ int MXC_CAN_RevA_Handler(mxc_can_reva_regs_t *can, uint8_t *intfl, uint8_t *eint
     if (flg & MXC_F_CAN_REVA_INTFL_ERWARN) {
         if (can->stat & MXC_F_CAN_REVA_STAT_BUS_OFF) {
             // Bus entered bus off state
-            MXC_CAN_SignalUnitEvent(can_idx,
-                                    MXC_CAN_UNIT_EVT_BUS_OFF);
+            MXC_CAN_SignalUnitEvent(can_idx, MXC_CAN_UNIT_EVT_BUS_OFF);
 
             if (tx_lock[can_idx]) {
                 MXC_FreeLock(&tx_lock[can_idx]);
@@ -988,32 +981,28 @@ int MXC_CAN_RevA_Handler(mxc_can_reva_regs_t *can, uint8_t *intfl, uint8_t *eint
             return E_COMM_ERR;
         } else if (can->stat & MXC_F_CAN_REVA_STAT_ERR) {
             // Bus entered err warning state (> 127 errs)
-            MXC_CAN_SignalUnitEvent(can_idx,
-                                    MXC_CAN_UNIT_EVT_WARNING);
+            MXC_CAN_SignalUnitEvent(can_idx, MXC_CAN_UNIT_EVT_WARNING);
         }
     }
 
     if (flg & MXC_F_CAN_REVA_INTFL_ERPSV) {
         if (can->txerr > MXC_CAN_ERRPSV_THRESH || can->rxerr > MXC_CAN_ERRPSV_THRESH) {
             // Bus entered error passive state
-            MXC_CAN_SignalUnitEvent(can_idx,
-                                    MXC_CAN_UNIT_EVT_PASSIVE);
+            MXC_CAN_SignalUnitEvent(can_idx, MXC_CAN_UNIT_EVT_PASSIVE);
         } else {
             // Bus exited from error passive state
-            MXC_CAN_SignalUnitEvent(can_idx,
-                                    MXC_CAN_UNIT_EVT_ACTIVE);
+            MXC_CAN_SignalUnitEvent(can_idx, MXC_CAN_UNIT_EVT_ACTIVE);
         }
     }
 
     if ((flg & MXC_F_CAN_REVA_INTFL_TX) && (can->inten & MXC_F_CAN_REVA_INTEN_TX)) {
         // TX completed
         MXC_FreeLock(&tx_lock[can_idx]);
-        MXC_CAN_SignalObjectEvent(can_idx,
-                                  MXC_CAN_OBJ_EVT_TX_COMPLETE);
+        MXC_CAN_SignalObjectEvent(can_idx, MXC_CAN_OBJ_EVT_TX_COMPLETE);
     }
 
-    if ((flg & MXC_F_CAN_REVA_INTFL_RX) && ((can->inten & MXC_F_CAN_REVA_INTEN_RX) ||
-                                            rx_dma_lock[can_idx])) {
+    if ((flg & MXC_F_CAN_REVA_INTFL_RX) &&
+        ((can->inten & MXC_F_CAN_REVA_INTEN_RX) || rx_dma_lock[can_idx])) {
         // RX completed
         mxc_can_req_t *msg_req = rx_req[can_idx];
 
@@ -1032,8 +1021,7 @@ int MXC_CAN_RevA_Handler(mxc_can_reva_regs_t *can, uint8_t *intfl, uint8_t *eint
 
     // Data overrun
     if (flg & MXC_F_CAN_REVA_INTFL_DOR) {
-        MXC_CAN_SignalObjectEvent(can_idx,
-                                  MXC_CAN_OBJ_EVT_RX_OVERRUN);
+        MXC_CAN_SignalObjectEvent(can_idx, MXC_CAN_OBJ_EVT_RX_OVERRUN);
     }
 
     return E_NO_ERROR;
@@ -1087,11 +1075,11 @@ int MXC_CAN_RevA_SetWakeupTimer(mxc_can_reva_regs_t *can, uint8_t prescaler, uin
 mxc_can_stat_t MXC_CAN_RevA_GetStatus(mxc_can_reva_regs_t *can)
 {
     mxc_can_stat_t stat;
-    int can_idx; 
-    
+    int can_idx;
+
     can_idx = MXC_CAN_GET_IDX((mxc_can_regs_t *)can);
     MXC_ASSERT(can_idx >= 0);
-    
+
     // Get unit state
     if (obj_state[can_idx] == MXC_CAN_OBJ_CFG_INACTIVE) {
         stat.unit_state = MXC_CAN_UNIT_STATE_INACTIVE;
