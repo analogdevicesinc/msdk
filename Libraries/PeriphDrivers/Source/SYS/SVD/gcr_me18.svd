@@ -1633,50 +1633,50 @@
             <bitWidth>2</bitWidth>
           </field>
           <field>
-            <name>LDORXBYP</name>
-            <description>LDORX Bypass Enable.</description>
-            <bitOffset>8</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>LDORXDISCH</name>
-            <description>LDORX Discharge.</description>
-            <bitOffset>9</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
             <name>LDOTXBYP</name>
             <description>LDOTX Bypass Enable.</description>
-            <bitOffset>10</bitOffset>
+            <bitOffset>8</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>LDOTXDISCH</name>
             <description>LDOTX Discharge.</description>
-            <bitOffset>11</bitOffset>
+            <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>LDOTXENDLY</name>
-            <description>LDOTX Enable Delay.</description>
-            <bitOffset>12</bitOffset>
+            <name>LDORXBYP</name>
+            <description>LDORX Bypass Enable.</description>
+            <bitOffset>10</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDORXDISCH</name>
+            <description>LDORX Discharge.</description>
+            <bitOffset>11</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>LDORXENDLY</name>
             <description>LDORX Enable Delay.</description>
-            <bitOffset>13</bitOffset>
+            <bitOffset>12</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>LDORXBYPENENDLY</name>
-            <description>LDORX Bypass Enable Delay.</description>
-            <bitOffset>14</bitOffset>
+            <name>LDOTXENDLY</name>
+            <description>LDOTX Enable Delay.</description>
+            <bitOffset>13</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>LDOTXBYPENENDLY</name>
             <description>LDOTX Bypass Enable Delay.</description>
+            <bitOffset>14</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>LDORXBYPENENDLY</name>
+            <description>LDORX Bypass Enable Delay.</description>
             <bitOffset>15</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
