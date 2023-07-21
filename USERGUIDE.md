@@ -369,7 +369,7 @@ To run a _headless_ installation:
 ???+ warning "⚠️ **Warning**"
     On MacOS, some additional missing packages must be manually installed with [Homebrew](https://brew.sh/).  There are also some manual setup steps required to retrieve `make` version 4.  The instructions in this section are critical.
 
-??? note "**Completing Installation on M1 platforms**"
+??? note "ℹ️ **Instructions for M1 platforms**"
 
     The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
 
@@ -442,7 +442,7 @@ To run a _headless_ installation:
 
     8. Restart your shell and verify that `make --version` returns 4.x+.
 
-??? note "**Completing Installation on non-M1 platforms**"
+??? note "ℹ️ **Instructions for non-M1 platforms**"
 
     1. Follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
 
