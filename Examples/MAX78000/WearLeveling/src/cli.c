@@ -310,14 +310,14 @@ uint8_t abortSequence[2] = { POWER_OF, CAPITAL_C };
 /********************************************************************************/
 int cmd_get(char *cmd, size_t size)
 {
-    /* Clear the buffer before storing the command */
-    memset(cmd, 0x00, CMD_MAX_SIZE);
-
     if (cmd == NULL) {
         return E_NULL_PTR;
     } else if (size < 0) {
         return E_BAD_PARAM;
     }
+
+    /* Clear the buffer before storing the command */
+    memset(cmd, 0x00, CMD_MAX_SIZE);
 
     bool eoc = false;
     unsigned int num_recv = 0;

@@ -469,6 +469,7 @@ void service_console()
                 if (g_app_settings.bayer_function == BAYER_FUNCTION_PASSTHROUGH) {
                     bayer_passthrough(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
                 } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
+                    color_correct(img_data.raw, img_data.w, img_data.h);
                     bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h,
                                                (uint16_t *)bayer_data);
                 }

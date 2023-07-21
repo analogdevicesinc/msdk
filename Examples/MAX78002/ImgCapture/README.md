@@ -35,29 +35,9 @@ For more details on running the serial console, converting images, and excercisi
 
 Firmware features can be toggled in [project.mk](project.mk).
 
-* The console is enabled by default.  It will wait for a valid connection from [utils/console.py](utils/console.py) on startup.
+* The console is enabled by default.  It will wait for a valid connection from [utils/console.py](utils/console.py) on startup.  Toggle the console with the `CONSOLE` variable in [project.mk](project.mk)
 
-* SD card functionality is disabled by default.  It will attempt to mount the SD card on startup using the FAT32 format.  If it detects a blank card has been inserted (the drive name is empty) then it will attempt to format the card to FAT32.
-
-After making any changes, fully clean the project and then rebuild.
-
-#### Setting CAMERA
-
-The `CAMERA` variable in [project.mk](project.mk) is used to select the correct drivers for the attached camera.  When this variable is changed, you should also ensure the `CAMERA_xxx` compiler definitions in [.vscode/settings.json](.vscode/settings.json) is also changed to match.  The project settings cannot automatically changes in the compiler definitons to match the camera.
-
-For the OV7692:
-
-* Define `CAMERA_OV7692`
-
-For the HM0360 (mono):
-
-* Define `CAMERA_HM0360_MONO`
-* Define `CAMERA_MONO`
-
-For the HM0360 (color):
-
-* Define `CAMERA_HM0360_COLOR`
-* Define `CAMERA_BAYER`
+* SD card functionality is disabled by default.  It will attempt to mount the SD card on startup using the FAT32 format.  If it detects a blank card has been inserted (the drive name is empty) then it will attempt to format the card to FAT32.  Toggle the SD card functionality with the `SD` variable in [project.mk](project.mk)
 
 ## OVM7692 Quick-Start
 
@@ -65,15 +45,21 @@ For the HM0360 (color):
 
 2. Clean and rebuild the firmware.
 
-3. Ensure JP38 (DVP CAM PWR) is connected to the "ON" position.  This routes GND to the PWDN input of the OVM7692 which is active LOW.
+3. Ensure JP38 (DVP CAM PWR) is connected to the "ON" position.
 
-4. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN1.
+4. Ensure JP41 (CSI CAM I2C EN) is _disconnected_.
 
-5. Power on the board take note of the COM port presented by CN1.
+5. Ensure JP35 (I2C1 SDA) and JP36 (I2C1 SCL) are _disconnected_.
 
-6. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED1 on the board will be blinking.
+6. Connect the PICO debugger to the SWD port (JH8)
 
-7. Connect [console.py](utils/README.md) to the COM port presented by CN1.
+7. Connect a micro-USB cable to CN2.
+
+8. Power on the board take note of the COM port presented by CN2.
+
+9. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED0 on the board will be blinking.
+
+10. Connect [console.py](utils/README.md) to the COM port presented by CN2.
 
     ```shell
     $ python console.py COM19
@@ -100,7 +86,7 @@ For the HM0360 (color):
 
     ```
 
-8. Run a standard `capture` with default settings.
+11. Run a standard `capture` with default settings.
 
     ```shell
     $ capture
@@ -115,7 +101,7 @@ For the HM0360 (color):
     MCU: Done! (serial transmission took 88480 us)
     ```
 
-9. Increase image resolution and recapture.
+12. Increase image resolution and recapture.
 
     ```shell
     $ imgres 128 128
@@ -133,7 +119,7 @@ For the HM0360 (color):
     MCU: Done! (serial transmission took 353104 us)
     ```
 
-10. Increase image resolution beyond SRAM limits and perform streaming capture.
+13. Increase image resolution beyond SRAM limits and perform streaming capture.
 
     ```shell
     $ imgres 320 240
@@ -161,15 +147,19 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
 
 2. [Clean and rebuild](.vscode/README.md#build-tasks) the firmware.
 
-3. Ensure JP38 (DVP CAM PWR) is connected to the "OFF" position.  This routes 1V8 to the PWDN input of the HM0360 which is active HIGH.
+3. Ensure JP38 (DVP CAM PWR) is connected to the "OFF" position.
 
-4. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN1.
+4. Ensure JP41 (CSI CAM I2C EN) is _disconnected_.
 
-5. Power on the board take note of the COM port presented by CN1.
+5. Ensure JP35 (I2C1 SDA) and JP36 (I2C1 SCL) are _disconnected_.
 
-6. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED1 on the board will be blinking.
+6. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN2.
 
-7. Connect [console.py](utils/README.md) to the COM port presented by CN1.
+7. Power on the board take note of the COM port presented by CN2.
+
+8. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED0 on the board will be blinking.
+
+9. Connect [console.py](utils/README.md) to the COM port presented by CN2.
 
     ```shell
     $ python console.py COM19
@@ -195,7 +185,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
     $
     ```
 
-8. Run a standard `capture` with default settings.
+10. Run a standard `capture` with default settings.
 
     ```shell
     $ capture
@@ -212,7 +202,7 @@ This quick-start is applicable for the [HM0360-MWA](https://www.digikey.com/en/p
 
     ![HM0360_320_240](res/HM0360_320_240.png)
 
-9. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
+11. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
 
     The active context is selected via register `0x3024`.
 
@@ -256,15 +246,19 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
 
 2. [Clean and rebuild](.vscode/README.md#build-tasks) the firmware.
 
-3. Ensure JP38 (DVP CAM PWR) is connected to the "OFF" position.  This routes 1V8 to the PWDN input of the HM0360 which is active HIGH.
+3. Ensure JP38 (DVP CAM PWR) is connected to the "OFF" position.
 
-4. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN1.
+4. Ensure JP41 (CSI CAM I2C EN) is _disconnected_.
 
-5. Power on the board take note of the COM port presented by CN1.
+5. Ensure JP35 (I2C1 SDA) and JP36 (I2C1 SCL) are _disconnected_.
 
-6. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED1 on the board will be blinking.
+6. Connect the PICO debugger to the SWD port (JH5) and a micro-USB cable to CN2.
 
-7. Connect [console.py](utils/README.md) to the COM port presented by CN1.
+7. Power on the board take note of the COM port presented by CN2.
+
+8. [Flash & run](.vscode/README.md#build-tasks) the firmware.  LED0 on the board will be blinking.
+
+9. Connect [console.py](utils/README.md) to the COM port presented by CN2.
 
     ```shell
     $ python console.py COM19
@@ -291,7 +285,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     $
     ```
 
-8. Run a standard `capture` with default settings.
+10. Run a standard `capture` with default settings.
 
     ```shell
     $ capture
@@ -311,7 +305,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
 
     ![HM0360_Bilinear_320_240](res/HM0360_Bilinear_320_240.png)
 
-9. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
+11. Decrease image resolution and recapture.  The HM0360 requires switching the active context to one that has been configured for the target resolution.
 
     The active context is selected via register `0x3024`.
 
@@ -345,7 +339,7 @@ This quick-start is applicable for the [HM0360-AWA](https://www.digikey.com/en/p
     MCU: Done! (serial transmission took 206999 us)
     ```
 
-10. The raw debayer pattern can also be viewed using the `set-debayer` command.  This is useful for testing and development of additional debayering algorithms.
+12. The raw debayer pattern can also be viewed using the `set-debayer` command.  This is useful for testing and development of additional debayering algorithms.
 
     ```shell
     $ set-debayer passthrough 

@@ -401,6 +401,25 @@ typedef enum {
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
 
+#define MXC_DMA_CH_GET_IRQ(i)               \
+    ((IRQn_Type)(((i) == 0)  ? DMA0_IRQn :  \
+                 ((i) == 1)  ? DMA1_IRQn :  \
+                 ((i) == 2)  ? DMA2_IRQn :  \
+                 ((i) == 3)  ? DMA3_IRQn :  \
+                 ((i) == 4)  ? DMA4_IRQn :  \
+                 ((i) == 5)  ? DMA5_IRQn :  \
+                 ((i) == 6)  ? DMA6_IRQn :  \
+                 ((i) == 7)  ? DMA7_IRQn :  \
+                 ((i) == 8)  ? DMA8_IRQn :  \
+                 ((i) == 9)  ? DMA9_IRQn :  \
+                 ((i) == 10) ? DMA10_IRQn : \
+                 ((i) == 11) ? DMA11_IRQn : \
+                 ((i) == 12) ? DMA12_IRQn : \
+                 ((i) == 13) ? DMA13_IRQn : \
+                 ((i) == 14) ? DMA14_IRQn : \
+                 ((i) == 15) ? DMA15_IRQn : \
+                               0))
+
 /* ************************************************************************** */
 /*                                                                        FLC */
 #define MXC_FLC_INSTANCES (1)

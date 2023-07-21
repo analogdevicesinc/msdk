@@ -206,6 +206,8 @@ typedef struct {
     mxc_spi_tscontrol_t ts_control; // Target Select Control Scheme (auto HW, driver, or app controlled)
     mxc_spi_target_t target;        // Target Settings (index, pins, active_polarity)
     mxc_gpio_vssel_t vssel;         // Ensures selected VDDIO/VDDIOH setting
+    mxc_spi_callback_t callback;    // Set Callback function for end of transaction.
+    void* callback_data;            // Data to pass through callback function.
 
     // DMA
     bool use_dma;
@@ -853,11 +855,13 @@ int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi);
 /**
  * @brief   Sets the SPI instance's DMA TX/RX request select.
  * 
- * @param   req         Pointer to details of the transaction.
+ * @param   spi         Pointer to SPI instance's registers.
+ * @param   tx_buffer   Pointer to transmit buffer.
+ * @param   rx_buffer   Pointer to receive buffer.
  *  
  * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_DMA_SetRequestSelect(mxc_spi_req_t *req);
+int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_t *rx_buffer);
 
 /* ** Transaction Functions ** */
 

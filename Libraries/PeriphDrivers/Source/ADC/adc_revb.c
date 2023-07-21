@@ -214,7 +214,7 @@ int MXC_ADC_RevB_StartConversionDMA(mxc_adc_revb_regs_t *adc, mxc_adc_conversion
 
     num_bytes = (req->num_slots + 1) * 4; //Support 8 slots (32 bytes) only. (TODO)
 
-    channel = MXC_DMA_AcquireChannel();
+    channel = req->dma_channel;
 
     config.reqsel = MXC_S_DMA_CTRL_REQUEST_ADC;
     config.ch = channel;

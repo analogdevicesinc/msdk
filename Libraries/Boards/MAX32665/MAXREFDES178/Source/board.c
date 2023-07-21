@@ -68,6 +68,17 @@ __weak void GPIO1_IRQHandler(void)
 }
 
 /******************************************************************************/
+/** 
+ * NOTE: This is a legacy definition from the previous implementation of pb.c. This
+ *       definition will prevent the MAXREFDES178 from hanging until a permanent fix
+ *       is added to the MaximIntegratedAI/refdes github repository.
+ **/
+__weak void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
+/******************************************************************************/
 static int ext_flash_board_init(void)
 {
     int err;
