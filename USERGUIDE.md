@@ -939,7 +939,7 @@ To open a project:
 
 To set the BSP for an open project:
 
-1. Set the `"board"` [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-configuration-variables-reference-table)_.
+1. Set the `"board"` [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-tables)_.
 
     See [Board Support Packages](#board-support-packages) for a table of possible values.
 
@@ -1165,7 +1165,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 [Imported](#importing-examples) Eclipse projects files are configured for the **EVKIT**-type _BSP_ by default. To set the BSP:
 
 1. Right click the project name and select _Properties_.  Navigate to **C/C++ Build -> Environment**.
-2. Set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ to match the target evaluation platform.
+2. Set the **`BOARD`** _[Build Configuration Variable](#build-tables)_ to match the target evaluation platform.
 
     See [Board Support Packages](#board-support-packages) for a table of possible values.
 
@@ -1239,7 +1239,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 ### How to Set the BSP (Command-Line)
 
-- To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ by editing the **project.mk** that can be found inside each project.
+- To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables)_ by editing the **project.mk** that can be found inside each project.
 
         :::makefile
         # This file can be used to set build configuration
@@ -1556,14 +1556,14 @@ To set a **standard** configuration variable, **use the `=` syntax**...
 
     VARIABLE=VALUE
 
-The **`=`** operator is used for _most_ configuration variables with a few exceptions (documented in the [reference table](#build-configuration-variables-reference-table)) when a variable should contain a **_list_ of values**. In such cases, **use `+=` the syntax** to _add_ values to the list.
+The **`=`** operator is used for _most_ configuration variables with a few exceptions (documented in the [reference table](#build-tables)) when a variable should contain a **_list_ of values**. In such cases, **use `+=` the syntax** to _add_ values to the list.
 
     VARIABLE+=VALUE1
     VARIABLE+=VALUE2
 
 #### Where to Set a Build Configuration Variable
 
-For most variables, you should set them in the **project.mk** file (exceptions are documented in the [reference table](#build-configuration-variables-reference-table) and IDE-specific sections).
+For most variables, you should set them in the **project.mk** file (exceptions are documented in the [reference table](#build-tables) and IDE-specific sections).
 
 For example, to enable hardware floating-point acceleration for a project, the **`MFLOAT_ABI`** configuration variable can be used with a value of **`hard`**. The contents of **project.mk** might then look as follows:
 
@@ -1937,7 +1937,7 @@ This option can also be used to implement a custom BSP inside of a project's app
 The MSDK contains a large number of libraries, both third-party and in-house. The main library is the [Peripheral Driver API](#peripheral-driver-api), but the MSDK also contains drivers for various _external_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices. Additionally, dedicated libraries for more complex _internal_ hardware peripherals such as USB, the SDHC interface, and the Cordio BLE stack are also available.  These usually build on _top_ of the Peripheral Driver API.
 
 ???+ note "ℹ️ **Note: Enabling Libraries**"
-    Libraries can be enabled for a project with a convenient *toggle switch* provided by the build system (See the **"Libraries"** section of the _[Build Configuration Variables](#build-configuration-variables-reference-table)_). When a library is enabled, it may offer _additional_ Build Configuration Variables.
+    Libraries can be enabled for a project with a convenient *toggle switch* provided by the build system (See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries))). When a library is enabled, it may offer _additional_ Build Configuration Variables.
 
 ### Peripheral Driver API
 
