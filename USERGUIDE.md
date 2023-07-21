@@ -949,22 +949,46 @@ To set the BSP for an open project:
 
     ![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
 
-### Building a Project
+### Build Tasks
 
-An open project will present four available [build tasks](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks) from **Terminal > Run Build task...** or the shortcut **`Ctrl+Shift+B`**.
+Once a project is opened 4 available build tasks will become available via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.  These tasks are configured by the `.vscode/task.json` file.
 
-![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
+![Build Tasks Image](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/buildtasks.JPG)
 
-Run the **"build"** task to compile the project for the configured _Target Microcontroller_ and _BSP_. Notice the **`TARGET`**, **`BOARD`** , and **`PROJECT`** Build Configuration Variables being set on the command line, and the program binary successfully compiled into the `.elf` program binary in the **build** sub-folder of the project.
+#### Build
 
-![Figure 18](res/Fig18.jpg)
+* Compiles the code with a `make all` command.
+* Additional options are passed into Make on the command-line based on the project's settings.json file.
+* The `./build` directory will be created and will contain the output binary, as well as all intermediary object files.
+* Notice the **`TARGET`**, **`BOARD`** , and **`PROJECT`** Build Configuration Variables being set on the command line, and the program binary successfully compiled into the `.elf` program binary in the **build** sub-folder of the project.
 
-### Cleaning a Project
+    ![Figure 18](res/Fig18.jpg)
 
-To **clean** a project, run the _clean_ [build task](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks).  This will delete the build folder and its contents. The next time the project is built, it will be rebuilt from scratch.
+#### Clean
 
-???+ note "ℹ️ **Note: Cleaning Peripheral Drivers**"
-    It should be noted that _clean_ will only remove the _project's_ build output. The **clean-periph** task can be used to clean the project _and_ the peripheral driver libraries.
+* Cleans the build output, removing the `./build` directory and all of its contents.
+
+#### Clean-Periph
+
+* This task is the same as 'clean', but it also removes the build output for the MSDK's peripheral drivers.
+* Use this if you would like to recompile the peripheral drivers from source on the next build.
+
+#### Flash
+
+* Launching this task automatically runs the `Build` task first.  Then, it flashes the output binary to the microcontroller.
+* It uses the GDB `load` and `compare-sections` commands, and handles launching an OpenOCD internally via a pipe connection.
+* The flashed program will be halted until the microcontroller is reset, power cycled, or a debugger is connected.
+* A debugger must be connected correctly to use this task.  Refer to the datasheet of your microcontroller's evaluation board for instructions.
+  
+#### Flash & Run
+
+* This is the same as the `Flash` task, but it also will launch execution of the program once flashing is complete.
+  
+#### Erase Flash
+
+* Completely erases all of the application code in the flash memory bank.
+* Once complete, the target microcontroller will be effectively "blank".
+* This can be useful for recovering from Low-Power (LP) lockouts, bad firmware, etc.
 
 ### Flashing and Debugging
 
@@ -972,7 +996,7 @@ This section assumes a debugger is connected between the host PC and the evaluat
 
 #### Arm Core Debugging
 
-1. Run the **`flash`**  [build task](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks).  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.  
+1. Run the **`flash`**  [build task](#build-tasks).  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.  
 
     **Flashing does not happen automatically when launching the debugger**. This is an intentional design choice for VS Code to allow the debugger to quickly restart the program under debug without a lengthy re-flash procedure.
 
@@ -1096,6 +1120,192 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 7. From here, the debugger should be fully functional. The Arm vs. RISC-V debugger instance can be selected with the dropdown on the debugger control bar.
 
     ![image](https://user-images.githubusercontent.com/38844790/168399419-d0488a0e-2068-4cc7-9108-0a296fdc04b4.png)
+
+### Project Settings
+
+`.vscode/settings.json` is the main project configuration file.  Values set here are parsed into the other .json config files.  
+
+**When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -> Reload Window (or alternatively restarted completely) to force a re-parse.**
+
+![Reload Window](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/reload_window.JPG)
+
+The default project configuration should work for most use cases as long as [`"target"`](#target) and [`"board"`](#board) are set correctly.
+
+???+ note "ℹ️ **Note**"
+    Any field from `settings.json` can be referenced from any other VS Code config file (including itself) with `"${config:[fieldname]}"`
+
+The following configuration options are available:
+
+#### `"MAXIM_PATH"`
+
+* This option must point to the root installation directory of the MSDK.  
+* It should be placed in the _global_ user settings.json file during first-time VSCode-Maxim setup.  See [Getting Started with Visual Studio Code](#getting-started-with-visual-studio-code).
+
+#### `"target"`
+
+* This sets the target microcontroller for the project.
+* It sets the `TARGET` [Build Configuration](#build-configuration-variables) variable.
+
+#### `"board"`
+
+* This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
+* See [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code)
+
+#### `"terminal.integrated.env.[platform]:Path"`
+
+* This prepends the location of the MSDK toolchain binaries to the system `Path` used by VSCode's integrated terminal.
+* The Path is not sanitized by default, which means that the terminal inherits the system path.
+
+#### `"project_name"`
+
+* Sets the name of project.  This is used in other config options such as `program_file`.
+* Default value: `"${workspaceFolderBasename}"`
+
+#### `"program_file"`
+
+* Sets the name of the file to flash and debug.  This is provided in case it's needed, but for most use cases should be left at its default.  
+* File extension must be included.
+* Default value: `"${config:project_name}.elf"`
+
+#### `"symbol_file"`
+
+* Sets the name of the file that GDB will load debug symbols from.
+* File extension must be included.
+* Default value: `"${config:program_file}"`
+
+#### `"M4_OCD_interface_file"`
+
+* Sets the OpenOCD interface file to use to connect to the Arm M4 core.  This should match the debugger being used for the M4 core.
+* The `MaximSDK/Tools/OpenOCD/scripts/interface` folder is searched for the file specified by this setting.
+* `.cfg` file extension must be included.
+* Default value: `"cmsis-dap.cfg"`
+
+#### `"M4_OCD_target_file"`
+
+* Sets the OpenOCD target file to use for the Arm M4 core.  This should match the target microcontroller.
+* `.cfg` file extension must be included.
+* The `MaximSDK/Tools/OpenOCD/scripts/target` folder is searched for the file specified by this setting.
+* Default value: `"${config:target}.cfg"`
+
+#### `"RV_OCD_interface_file"`
+
+* Sets the OpenOCD interface file to use to connect to the RISC-V core.  This should match the debugger being used for the RISC-V core.
+* The `MaximSDK/Tools/OpenOCD/scripts/interface` folder is searched for the file specified by this setting.
+* `.cfg` file extension must be included.
+* Default value: `"ftdi/olimex-arm-usb-ocd-h.cfg"`
+
+#### `"RV_OCD_target_file"`
+
+* Sets the OpenOCD target file to use for the RISC-V core.
+* The `MaximSDK/Tools/OpenOCD/scripts/target` folder is searched for the file specified by this setting.
+* `.cfg` file extension must be included.
+* Default value: `"${config:target}_riscv.cfg"`
+
+#### `"v_Arm_GCC"`
+
+* Sets the version of the Arm Embedded GCC to use, including toolchain binaries and the standard library version.
+* This gets parsed into `ARM_GCC_path`.
+* Default value:  `"10.3"`
+
+#### `"v_xPack_GCC"`
+
+* Sets the version of the xPack RISC-V GCC to use.
+* This gets parsed into `xPack_GCC_path`.
+* Default value: `"12.2.0-3.1"`
+
+#### `"OCD_path"`
+
+* Where to find the OpenOCD.
+* Default value: `"${config:MAXIM_PATH}/Tools/OpenOCD"`
+
+#### `"ARM_GCC_path"`
+
+* Where to find the Arm Embedded GCC Toolchain.
+* Default value: `"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}"`
+
+#### `"xPack_GCC_path"`
+
+* Where to find the RISC-V GCC Toolchain.
+* Default value: `"${config:MAXIM_PATH}/Tools/xPack/riscv-none-elf-gcc/${config:v_xPack_GCC}"`
+
+#### `"Make_path"`
+
+* Where to find Make binaries (only used on Windows)
+* Default value: `"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin"`
+
+#### `"C_Cpp.default.includePath"`
+
+* Which paths to search to find header (.h) files.
+* Does not recursively search by default.  To recursively search, use `/**`.
+
+#### `"C_Cpp.default.browse.path"`
+
+* Which paths to search to find source (.c) files.
+* Does not recursively search by default.  To recursively search, use `/**`.
+
+#### `"C_Cpp.default.defines"`
+
+* Sets the compiler definitions to use for the intellisense engine.
+* Most definitions should be defined in header files, but if a definition is missing it can be entered here to get the intellisense engine to recognize it.
+
+### Setting Search Paths for Intellisense
+
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, the MSDK's peripheral drivers, the C standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
+
+To add additional search paths :
+
+1. Open the `.vscode/settings.json` file.  
+
+2. Add the include path(s) to the `C_Cpp.default.includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
+
+3. Add the path(s) to any relevant implementation files to the `C_Cpp.default.browse.path` list.  This list contains the paths that will be searched when using "Go to Definition".
+
+### Project Creation
+
+#### Option 1.  Copying a Pre-Made Project
+
+Copying a pre-made example project is a great way to get rolling quickly, and is currently the recommended method for creating new projects.  
+
+The release package for this project (Located at `Tools/VSCode-Maxim` in the MSDK) contains a `New_Project` folder designed for such purposes. Additionally, any of the VS Code-enabled Example projects can be copied from the MSDK.
+
+1. Copy the existing project folder to an accessible location.  This will be the location of your new project.
+
+    ???+ warning "**⚠️ Warning**"
+        The full path to the project must _not_ have any spaces in it.
+
+2. (Optional) Rename the folder.  For example, I might rename the folder to `MyProject`.
+
+3. Open the project in VS Code (`File -> Open Folder...`)
+
+4. Set your [target](#target) microcontroller and [board](#board) correctly.
+
+5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
+
+6. That's it!  The existing project is ready to build, debug, and modify.
+
+#### Option 2 - Injecting
+
+VSCode-Maxim releases provide the `Inject` folder for "injecting" into an existing folder.  If you want to start from scratch or use the project files with existing source code, take this option.
+
+1. Create your project folder if necessary.  For example, I might create a new project in a workspace folder with the path: `C:/Users/Jake.Carter/workspace/MyNewProject`.
+
+2. Copy the **contents** of the `Inject` folder into the project folder from step 1.  The contents to copy include a `.vscode` folder, a `Makefile`, and a `project.mk` file.  For this example, the contents of the 'MyProject' folder would be the following:
+
+        :::shell
+        C:/Users/Jake.Carter/workspace/MyNewProject
+        |- .vscode
+        |- Makefile
+        |- project.mk
+
+3. Open the project in VS Code (`File -> Open Folder...`)
+
+4. Set your [target](#target) microcontroller and [board](#board) correctly.
+
+5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
+
+6. Configure the [build system](#build-system) for use with any pre-existing source code.
+
+7. That's it!  Your new project can now be opened with `File > Open Folder` from within VS Code.
 
 ## Eclipse
 
@@ -2186,7 +2396,7 @@ Before following the procedure below, ensure that you have updated the PICO debu
 
 ##### Unlock with VS Code
 
-For VS Code users, the `"erase flash"``[build task](#building-a-project) can be used to attempt a mass erase.  If this task fails to recover the part, attempt the procedure below.
+For VS Code users, the `"erase flash"``[build task](#build-tasks) can be used to attempt a mass erase.  If this task fails to recover the part, attempt the procedure below.
 
 ##### Unlock with `erase.act`
 
