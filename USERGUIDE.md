@@ -1937,7 +1937,7 @@ This option can also be used to implement a custom BSP inside of a project's app
 The MSDK contains a large number of libraries, both third-party and in-house. The main library is the [Peripheral Driver API](#peripheral-driver-api), but the MSDK also contains drivers for various _external_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices. Additionally, dedicated libraries for more complex _internal_ hardware peripherals such as USB, the SDHC interface, and the Cordio BLE stack are also available.  These usually build on _top_ of the Peripheral Driver API.
 
 ???+ note "ℹ️ **Note: Enabling Libraries**"
-    Libraries can be enabled for a project with a convenient *toggle switch* provided by the build system (See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries))). When a library is enabled, it may offer _additional_ Build Configuration Variables.
+    Libraries can be enabled for a project with a convenient *toggle switch* provided by the build system (See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries))).
 
 ### Peripheral Driver API
 
