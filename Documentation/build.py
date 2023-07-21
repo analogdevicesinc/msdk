@@ -22,7 +22,6 @@ def parse_example_description(f: Path) -> Tuple[Path, str, str, str]:
     example_description = "Empty Description"
     example_details = "No details"
     with open(f, "r", encoding="utf-8") as file:
-        print(Path(f))
         file_content = file.read()
         lines = file_content.splitlines()
         for i in range(len(lines)):
@@ -49,17 +48,13 @@ def parse_example_description(f: Path) -> Tuple[Path, str, str, str]:
 
 # Create an auto-generated table of examples for each micro.
 example_md_files_list = []
-examples_list_content = ""
-for i in sorted(Path(dir) for dir in os.scandir(examples_dir)):
+markdown_content = ""
+for i in sorted(Path(dir) for dir in os.scandir(examples_dir)):    
     target_micro = Path(i).name
-    examples_list_content += f"### {target_micro.upper()} Examples\n\n" # Add header
-    examples_list_content += "| Example | Description | MSDK Location |\n" # Start a table
-    examples_list_content += "| --- | --- | --- |\n"
-    # file_path = f"{repo / target_micro.upper()}_Examples.md"
-    # with open(file_path, "w", encoding="utf-8") as md_file:
-        # md_file.write(f"# {target_micro} MSDK Examples\n")
-        # md_file.write("| Example | Description |\n")
-        # md_file.write("| --- | --- |\n")
+    print(f"Generating examples table for {target_micro}")
+    markdown_content += f"### {target_micro.upper()} Examples\n\n" # Add header
+    markdown_content += "| Example | Description | MSDK Location |\n" # Start a table
+    markdown_content += "| --- | --- | --- |\n"
     table_entries = []
     for main_file in Path(i).rglob("**/main.c"):
         ret = parse_example_description(main_file)
@@ -70,8 +65,8 @@ for i in sorted(Path(dir) for dir in os.scandir(examples_dir)):
             example_details = ret[3]
             link = f"https://github.com/Analog-Devices-MSDK/msdk/tree/release/{Path(example_folder).relative_to(repo).as_posix()}"
             table_entries.append(f"| **{example_name}**<br>([_Github_]({link})) | {example_description} | `{Path(example_folder).relative_to(repo)}`")
-    examples_list_content += "\n".join(sorted(table_entries))
-    examples_list_content += "\n\n"
+    markdown_content += "\n".join(sorted(table_entries))
+    markdown_content += "\n\n"
 
 # Pre-populate markdown files
 print("Copying markdown files")
@@ -86,7 +81,7 @@ ug_content = ""
 with open(repo / "Documentation" / "USERGUIDE.md", "r", encoding="utf-8") as userguide:
     ug_content = userguide.read()
 with open(repo / "Documentation" / "USERGUIDE.md", "w", encoding="utf-8") as userguide:
-    userguide.write(ug_content.replace("##__EXAMPLES_LIST__##", examples_list_content))
+    userguide.write(ug_content.replace("##__EXAMPLES_LIST__##", markdown_content))
 
 # Run Doxygen builds
 for f in periph_docs_dir.glob("*_Doxyfile"):
