@@ -38,28 +38,16 @@
 
 #include "cli.h"
 
+// Define a buffer length to store commands
+#define MAX_COMMAND_LENGTH 256
+
 /* -------------------------------------------------- */
 //             FUNCTION PROTOTYPES
 /* -------------------------------------------------- */
 
-/** Checks if there is white space present in the given character pointer
- *
- * @param p
- * 		  character pointer containing the line accumulator input
- *
- * @return 1 if white space is present
- * 		   0 if no white space is present
- */
+
 bool white_space_present(char *p);
 
-/** Checks if there is no white space present in the given character pointer
- *
- * @param p
- * 		  character pointer containing the line accumulator input
- *
- * @return 1 if no white space is present
- * 		   0 if white space is present
- */
 bool white_space_not_present(char *p);
 
 void User_Prompt_Sequence(void);
@@ -77,13 +65,14 @@ void Clear_buffer(void);
 /*! \name buf
     \brief Buffer to store the characters of the command 
 */
-char buf[256];
-int idx = 0;
+char buf[MAX_COMMAND_LENGTH];
 
-// Define a buffer to store commands
-#define MAX_COMMAND_LENGTH 256
+/*! \name idx
+    \brief Idx to keep track of the buffer which stores the characters of the command 
+*/
+uint16_t idx = 0;
 
-void line_accumlator(uint8_t user_char)
+void line_accumulator(uint8_t user_char)
 {
     
     switch (user_char) {
@@ -112,7 +101,7 @@ void line_accumlator(uint8_t user_char)
 
         default: {
             // Handle all other characters
-            if (idx < 255) {
+            if (idx < MAX_COMMAND_LENGTH - 1) {
                 buf[idx++] = user_char; //pushes characters into the buffer
                 MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),user_char);
             }
@@ -249,12 +238,10 @@ void User_Prompt_Sequence(void)
 * @return void
 */
 void Clear_buffer(void) {
-    for (int i = 0; i < MAX_COMMAND_LENGTH; i++) {
-        buf[i] = '\0';
-    }
+    memset(buf, '\0', MAX_COMMAND_LENGTH);
 }
 
-/** CLears the line on the uart console
+/** Clears the line on the uart console
 *
 * @param void
 *
@@ -276,4 +263,12 @@ void Console_Backspace_Sequence(void){
         MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
         MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),SPACE);
         MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
+}
+
+
+void handle_help(int argc, char *argv[])
+{
+	printf("\n\r");
+	for (int i = 0; i < num_commands;i++)
+		printf("%s --> %s", commands[i].name, commands[i].help_string);
 }

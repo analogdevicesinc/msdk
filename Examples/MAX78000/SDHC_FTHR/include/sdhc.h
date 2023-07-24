@@ -44,9 +44,7 @@
 #include "mxc_device.h"
 #include "gpio.h"
 #include "uart.h"
-
 #include "ff.h"
-#include "cli.h"
 
 /***** Definitions *****/
 

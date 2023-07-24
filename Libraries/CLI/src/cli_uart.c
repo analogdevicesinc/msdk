@@ -1,3 +1,4 @@
+
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -31,44 +32,62 @@
  *
  ******************************************************************************/
 
-/* -------------------------------------------------- */
-//                 INCLUDE GUARD
-/* -------------------------------------------------- */
-#ifndef USER_CLI_H
-#define USER_CLI_H
+#include "cli_uart.h"
 
-//mxc_cli_config.c/.h
+/***** Definitions *****/
+#define UART_BAUD 115200
+#define BUFF_SIZE 1
 
-/* -------------------------------------------------- */
-//                      INCLUDES
-/* -------------------------------------------------- */
-#include "cli.h"
-#include <stdlib.h>
-#include "sdhc.h"
-/* -------------------------------------------------- */
-//             FUNCTION PROTOTYPES
-/* -------------------------------------------------- */
-void handle_size(int argc, char *argv[]);
+/****** Globals *********/
+volatile int READ_FLAG;
+uint8_t RxData;
+mxc_uart_req_t read_req;
 
-void handle_format(int argc, char *argv[]);
+/******* Functions ********/
+void UART_Handler(void)
+{
+    MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
+}
 
-void hande_mount(int argc, char *argv[]);
+void readCallback(mxc_uart_req_t *req, int error){
+    
+    line_accumulator(RxData); 
+    READ_FLAG = error;
+    MXC_UART_TransactionAsync(req);
+}
 
-void handle_ls(int argc, char *argv[]);
+/** Initializes an asychronous uart transaction for CLI operations. This enables the console read
+ * 
+ * @param none
+ * 
+ * @return void
+ */
+int MXC_CLI_Uart_Init(void){
 
-void handle_mkdir(int argc, char *argv[]);
+    // UART interrupt setup
+    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(CONSOLE_UART), UART_Handler);
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
 
-void handle_createfile(int argc, char *argv[]);
+    /* Initialize Console UART*/
+    int error;
+    if ((error = MXC_UART_Init(MXC_UART_GET_UART(CONSOLE_UART), UART_BAUD, MXC_UART_APB_CLK)) !=
+        E_NO_ERROR) {
+        printf("-->Error initializing UART: %d\n", error);
+        printf("-->Example Failed\n");
+        return error;
+    }
+    
+    User_Prompt_Sequence();
 
-void handle_cd(int argc, char *argv[]);
+    read_req.uart = MXC_UART_GET_UART(CONSOLE_UART);
+    read_req.rxData = &RxData;
+    read_req.rxLen = BUFF_SIZE;
+    read_req.txLen = 0;
+    read_req.callback = readCallback;
 
-void handle_add_data(int argc, char *argv[]);
+    error = MXC_UART_TransactionAsync(&read_req);
 
-void handle_del(int argc, char *argv[]);
-
-void handle_fatfs(int argc, char *argv[]);
-
-void handle_unmount(int argc, char *argv[]);
-
-
-#endif /* USER_CLI_H */
+    return error;
+}

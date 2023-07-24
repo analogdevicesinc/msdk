@@ -36,7 +36,8 @@
  * @brief   read and write sdhc
  * @details This example uses the sdhc and ffat to read/write the file system on
  *          an SD card. The Fat library used supports long filenames (see ffconf.h)
- *          the max length is 256 characters.
+ *          the max length is 256 characters. It uses the CLI library for taking user
+ *          user commands.
  *
  *          You must connect an sd card to the sd card slot.
  */
@@ -52,36 +53,14 @@
 #include "mxc_device.h"
 #include "gpio.h"
 #include "nvic_table.h"
-
-//#include "cli.h"
-#include "user-cli.h"
-#include "nvic_table.h"
+#include "ff.h"
+#include "cli_uart.h"
+#include "sdhc.h"
 
 #ifdef BOARD_EVKIT_V1
 #warning This example is not supported by the MAX78000EVKIT.
 #endif
 
-
-/***** Definitions *****/
-#define UART_BAUD 115200
-#define BUFF_SIZE 1
-
-/****** Globals *********/
-volatile int READ_FLAG;
-uint8_t RxData;
-mxc_uart_req_t read_req;
-/******* Functions ********/
-void UART_Handler(void)
-{
-    MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
-}
-
-void readCallback(mxc_uart_req_t *req, int error){
-    
-    line_accumlator(RxData); 
-    READ_FLAG = error;
-    MXC_UART_TransactionAsync(req);
-}
 extern TCHAR *FF_ERRORS[20];
 
 /******************************************************************************/
@@ -116,32 +95,9 @@ int main(void)
     printf("Card inserted.\n");
     MXC_Delay(1000); //Delay inserted here to avoid weird printf values between previous and next printf command.
     
-    // UART interrupt setup
-    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
-    NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
-    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(CONSOLE_UART), UART_Handler);
-    NVIC_EnableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
-
-    /* Initialize Console UART*/
-    int error;
-    if ((error = MXC_UART_Init(MXC_UART_GET_UART(CONSOLE_UART), UART_BAUD, MXC_UART_APB_CLK)) !=
-        E_NO_ERROR) {
-        printf("-->Error initializing UART: %d\n", error);
-        printf("-->Example Failed\n");
-        return error;
-    }
-    
-    //printf("-->UART Initialized");
-    User_Prompt_Sequence();
-
-    read_req.uart = MXC_UART_GET_UART(CONSOLE_UART);
-    read_req.rxData = &RxData;
-    read_req.rxLen = BUFF_SIZE;
-    read_req.txLen = 0;
-    read_req.callback = readCallback;
-
-    error = MXC_UART_TransactionAsync(&read_req);
+    if(MXC_CLI_Uart_Init() != E_NO_ERROR);
     while(1){}
+
 
     return 0;
 }

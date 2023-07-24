@@ -49,32 +49,12 @@ const command_table_t commands[] = {{"Size", handle_size, "Find the Size of the 
 											{"Help", handle_help, "Prints a help message with info about all of the supported commands.\n\r"}};
 
 const int num_commands = sizeof(commands) / sizeof(command_table_t);
-/*
- * @name handle_size
- *
- * @brief Finds the Size of the SD Card and Free Space
- *
- * @param argc and *argv[]
- *
- *
- * @return
- * 		   void
- */
+
 void handle_size(int argc, char *argv[]){
     getSize();
 }
 
-/*
- * @name handle_format
- *
- * @brief han
- *
- * @param argc and *argv[]
- *
- *
- * @return
- * 		   void
- */
+
 void handle_format(int argc, char *argv[]){
     formatSDHC();
 }
@@ -116,15 +96,4 @@ void handle_fatfs(int argc, char *argv[]){
 void handle_unmount(int argc, char *argv[]){
     umount();
 
-}
-/* @name handle_help
- *
- * @brief: Prints a help message with info about all of the supported commands.
- *
- */
-void handle_help(int argc, char *argv[])
-{
-	printf("\n\r");
-	for (int i = 0; i < num_commands;i++)
-		printf("%s --> %s", commands[i].name, commands[i].help_string);
 }

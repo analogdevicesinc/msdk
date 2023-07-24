@@ -41,7 +41,12 @@ ifeq "$(CLI_DIR)" ""
 CLI_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 endif
 
-IPATH += ${CLI_DIR}/src
+IPATH += ${CLI_DIR}/inc
 VPATH += ${CLI_DIR}/src
 
-SRCS += cli.c
+VPATH += $(dir $(SRCS))
+
+# Use absolute paths if building within eclipse environment.
+ifeq "$(ECLIPSE)" "1"
+SRCS := $(abspath $(SRCS))
+endif

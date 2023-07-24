@@ -55,8 +55,8 @@
 /* -------------------------------------------------- */
 //                 INCLUDE GUARD
 /* -------------------------------------------------- */
-#ifndef EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_CLI_H_
-#define EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_CLI_H_
+#ifndef MXC_CLI_H
+#define MXC_CLI_H
 
 /* -------------------------------------------------- */
 //                      INCLUDES
@@ -73,7 +73,7 @@
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "uart.h"
-#include "user-cli.h"
+#include "user-cli.h" // Change to user implementation header
 
 /* -------------------------------------------------- */
 //                      MACROS
@@ -87,7 +87,6 @@
 #define DELETE                  0x7F
 #define DOLLAR                  0x24
 
-
 #define ARROW_KEY_CODE_1        0x1B
 #define ARROW_KEY_CODE_2        0x5B
 #define ARROW_KEY_CODE_LEFT     0x44
@@ -100,19 +99,15 @@
 //                 FUNCTION PROTOTYPES
 /* -------------------------------------------------- */
 
-/**
- * @brief Reads incoming bytes, Accumulate into line buffer, Echo's chars back to the other side and handles backspace.
+/** Reads incoming bytes, Accumulate into line buffer, Echo's chars back to the other side and handles backspace.
  * 		  It calls the process_command function upon pressing the ENTER key
  *
  * @param   user_char       User input of each character
  */
-void line_accumlator(uint8_t user_char);
+void line_accumulator(uint8_t user_char);
 
-/**
- * @name process_command
- *
- * @brief Performs a Lexical analysis and tokenisis the user's commands
- * 		  Lookup first token in a table of functions, dispatch to handler function
+/** Performs a Lexical analysis and tokenisis the user's commands
+ *  Lookup first token in a table of functions, dispatch to handler function
  *
  * @param   input   Character pointer containing the line accumulator input when enter key is pressed 
  *
@@ -120,18 +115,30 @@ void line_accumlator(uint8_t user_char);
  */
 void process_command(char *input);
 
-/** Prints out the user command prompt sequence o the uart console 
+/** Prints the help string of each command from the command table
 *
-* @param void
+* @param argc The command element number within the command string
+* 
+* @param argv[] array of arguments storing different tokens of the command string in the same order as they were
+*   passed in the command line.
 *
 * @return void
 */
-void User_Prompt_Sequence(void);
+void handle_help(int argc, char *argv[]);
 
-// Command table hander prototype with parameters
+
+/** Command table hander prototype with parameters
+ * 
+ * @param argc Used to determine which token element of the commands string is being used.
+ * 
+ * @param argv[] Char Array of tokens of the command string entered by the user.
+ * */ 
 typedef void (*command_handler_t)(int, char *argv[]);
 
-//Command table structure
+/** This command table structure contains the name of the command, a function pointer to the corresponding command handler function,
+ *  and the help string which provides a short description of what the command does.
+ *
+ * */
 typedef struct
 {
 	const char *name;			/**< command string */
@@ -139,17 +146,15 @@ typedef struct
 	const char *help_string;	/**< help string of each command */
 } command_table_t;
 
-/*
- * This table is an array of command_table_t structures that defines a set of supported commands in the program.
- * Each command_table_t structure contains the name of the command, a function pointer to the corresponding command handler function,
- * and a short description of what the command does.
+/** This table is an array of command_table_t structures which should be initialized by the user in user-cli.c to define a set of supported commands in the program.
+ *  The structure of this lookup table makes it trivially easy to add a new command to this command processor.
  *
- * The structure of this lookup table makes it trivially easy to add a new command to this command processor.
- */
+ * */
 extern const command_table_t commands[];
 
-//Calculates the number of commands based on commands and the command table
+/** Calculates the number of commands based on commands and the command table
+ *
+ * */
 extern const int num_commands;
 
-
-#endif /* EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_CLI_H_ */
+#endif /* MXC_CLI_H */ 
