@@ -1350,8 +1350,10 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
     STATES[spi_num].rx_done = false;
 
     // Max number of frames to transmit/receive.
-    MXC_ASSERT(tx_fr_len < (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
-    MXC_ASSERT(rx_fr_len < (MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS));
+    MXC_ASSERT(tx_fr_len <
+               (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
+    MXC_ASSERT(rx_fr_len <
+               (MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS));
 
     // STATES[n] TX/RX Length Fields are in terms of number of bytes to send/receive.
     if (STATES[spi_num].init.frame_size <= 8) {
@@ -1629,9 +1631,8 @@ static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deas
 /* ** Transaction Functions ** */
 
 int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
-                                            uint32_t rx_fr_len, uint8_t deassert,
-                                            mxc_spi_target_t *target)
+                                        uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
+                                        uint8_t deassert, mxc_spi_target_t *target)
 {
     int spi_num;
 
@@ -1692,9 +1693,9 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
 }
 
 int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
-                                            uint32_t rx_fr_len, uint8_t deassert,
-                                            mxc_spi_target_t *target)
+                                             uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                             uint32_t rx_fr_len, uint8_t deassert,
+                                             mxc_spi_target_t *target)
 {
     int spi_num;
 
@@ -1737,9 +1738,9 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *
 }
 
 int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
-                                            uint32_t rx_fr_len, uint8_t deassert,
-                                            mxc_spi_target_t *target)
+                                           uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                           uint32_t rx_fr_len, uint8_t deassert,
+                                           mxc_spi_target_t *target)
 {
     int spi_num;
 
@@ -1794,7 +1795,8 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
     }
 
     // This function fills in the STATES value for the flags that checks for blocking status.
-    error = MXC_SPI_RevA2_ControllerTransactionDMA(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, deassert, target);
+    error = MXC_SPI_RevA2_ControllerTransactionDMA(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len,
+                                                   deassert, target);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -1809,8 +1811,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
 }
 
 int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
-                                            uint32_t rx_fr_len)
+                                    uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
     int spi_num;
 
@@ -1858,8 +1859,7 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
 }
 
 int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
-                                            uint32_t rx_fr_len)
+                                         uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
     int spi_num;
 
@@ -1891,8 +1891,7 @@ int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
 }
 
 int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
-                                            uint32_t rx_fr_len)
+                                       uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
     int spi_num;
 
