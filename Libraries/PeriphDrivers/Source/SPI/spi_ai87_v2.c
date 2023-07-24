@@ -736,7 +736,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_
 
 int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_ControllerTransaction(req);
+    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, req->deassert, req->target_sel);
 }
 
 int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
@@ -748,7 +748,7 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
         return error;
     }
 
-    return MXC_SPI_RevA2_ControllerTransactionAsync(req);
+    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, req->deassert, req->target_sel);
 }
 
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
@@ -777,39 +777,51 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
         return error;
     }
 
-    return MXC_SPI_RevA2_ControllerTransactionDMA(req);
+    return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, req->deassert, req->target_sel);
 }
 
 int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_ControllerTransaction(req);
+    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, req->deassert, req->target_sel);
 }
 
 int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_ControllerTransactionAsync(req);
+    int error;
+
+    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, req->deassert, req->target_sel);
 }
 
 int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
+    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
     error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    return MXC_SPI_RevA2_ControllerTransactionDMA(req);
+    return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, req->deassert, req->target_sel);
 }
 
 int MXC_SPI_ControllerTransactionDMAB(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_ControllerTransactionDMAB(req);
+    return MXC_SPI_RevA2_ControllerTransactionDMAB((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, req->deassert, req->target_sel);
 }
 
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_TargetTransaction(req);
+    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
 }
 
 int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
@@ -821,7 +833,7 @@ int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
         return error;
     }
 
-    return MXC_SPI_RevA2_TargetTransactionAsync(req);
+    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
 }
 
 int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
@@ -850,29 +862,41 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
         return error;
     }
 
-    return MXC_SPI_RevA2_TargetTransactionDMA(req);
+    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
 }
 
 int MXC_SPI_TargetTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_TargetTransaction(req);
+    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
 }
 
 int MXC_SPI_TargetTransactionAsync(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_TargetTransactionAsync(req);
+    int error;
+
+    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
+    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
 }
 
 int MXC_SPI_TargetTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
+    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
+
     error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    return MXC_SPI_RevA2_TargetTransactionDMA(req);
+    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
 }
 
 /* ** Handler Functions ** */

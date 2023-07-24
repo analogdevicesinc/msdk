@@ -1324,52 +1324,6 @@ void MXC_SPI_RevA2_DMA_SwapByte(uint8_t *buffer, uint32_t len_bytes)
 
 /* ** Transaction Helper Functions ** */
 
-// Set up STATES[SPIn] parameters
-static void MXC_SPI_RevA2_setupSTATE(mxc_spi_req_t *req)
-{
-    int spi_num;
-
-    // Ensure valid SPI Instance.
-    spi_num = MXC_SPI_GET_IDX(req->spi);
-    MXC_ASSERT(spi_num >= 0);
-
-    // Initialize SPIn state to handle data.
-    STATES[spi_num].transaction_done = false;
-
-    STATES[spi_num].tx_buffer = req->tx_buffer;
-    STATES[spi_num].tx_cnt = 0;
-    STATES[spi_num].tx_done = false;
-
-    STATES[spi_num].rx_buffer = req->rx_buffer;
-    STATES[spi_num].rx_cnt = 0;
-    STATES[spi_num].rx_done = false;
-
-    // Max number of frames to transmit/receive.
-    MXC_ASSERT(req->tx_fr_len <
-               (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
-    MXC_ASSERT(req->rx_fr_len <
-               (MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS));
-
-    // STATES[n] TX/RX Length Fields are in terms of number of bytes to send/receive.
-    if (STATES[spi_num].init.frame_size <= 8) {
-        STATES[spi_num].tx_len = req->tx_fr_len;
-        STATES[spi_num].rx_len = req->rx_fr_len;
-    } else {
-        STATES[spi_num].tx_len = (req->tx_fr_len) * 2;
-        STATES[spi_num].rx_len = (req->rx_fr_len) * 2;
-    }
-
-    STATES[spi_num].deassert = req->deassert;
-    STATES[spi_num].current_target = *(req->target_sel);
-
-    // Set callback
-    STATES[spi_num].callback = req->callback;
-    STATES[spi_num].callback_data = req->callback_data;
-
-    // Set dummy TX value to send for receiving.
-    STATES[spi_num].tx_dummy_value = req->tx_dummy_value;
-}
-
 // SPI DMA/non-DMA Transaction Setup Helper Function.
 static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
@@ -1383,6 +1337,30 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
     // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     MXC_ASSERT(spi_num >= 0);
+
+    // Initialize SPIn state to handle data.
+    STATES[spi_num].transaction_done = false;
+
+    STATES[spi_num].tx_buffer = tx_buffer;
+    STATES[spi_num].tx_cnt = 0;
+    STATES[spi_num].tx_done = false;
+
+    STATES[spi_num].rx_buffer = rx_buffer;
+    STATES[spi_num].rx_cnt = 0;
+    STATES[spi_num].rx_done = false;
+
+    // Max number of frames to transmit/receive.
+    MXC_ASSERT(tx_fr_len < (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
+    MXC_ASSERT(rx_fr_len < (MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS));
+
+    // STATES[n] TX/RX Length Fields are in terms of number of bytes to send/receive.
+    if (STATES[spi_num].init.frame_size <= 8) {
+        STATES[spi_num].tx_len = tx_fr_len;
+        STATES[spi_num].rx_len = rx_fr_len;
+    } else {
+        STATES[spi_num].tx_len = tx_fr_len * 2;
+        STATES[spi_num].rx_len = rx_fr_len * 2;
+    }
 
     // Set the number of messages to transmit/receive for the SPI transaction.
     if (STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
@@ -1650,13 +1628,15 @@ static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deas
 
 /* ** Transaction Functions ** */
 
-int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_req_t *req)
+int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                            uint32_t rx_fr_len, uint8_t deassert,
+                                            mxc_spi_target_t *target)
 {
     int spi_num;
-    mxc_spi_reva_regs_t *spi = (mxc_spi_reva_regs_t *)(req->spi);
 
     // Ensure valid SPI Instance.
-    spi_num = MXC_SPI_GET_IDX(req->spi);
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
@@ -1676,18 +1656,18 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_req_t *req)
         return E_BAD_STATE;
     }
 
-    // Initialize SPIn state resource to handle transaction data.
-    MXC_SPI_RevA2_setupSTATE(req);
+    // Save target settings.
+    STATES[spi_num].deassert = deassert;
+    STATES[spi_num].current_target = *target;
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer,
-                                   req->rx_fr_len, false);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, false);
 
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     // Handle Target Select Pin
-    MXC_SPI_RevA2_handleTSControl(spi, req->deassert, req->target_sel);
+    MXC_SPI_RevA2_handleTSControl(spi, deassert, target);
 
     // Complete transaction once it started.
     while (STATES[spi_num].transaction_done == false) {
@@ -1704,20 +1684,22 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_req_t *req)
     if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
         // Don't deassert the Target Select (TS) pin if false for multiple repeated transactions.
         if (STATES[spi_num].deassert == true) {
-            req->target_sel->pins.port->out ^= req->target_sel->pins.mask;
+            target->pins.port->out ^= target->pins.mask;
         }
     }
 
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_req_t *req)
+int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                            uint32_t rx_fr_len, uint8_t deassert,
+                                            mxc_spi_target_t *target)
 {
     int spi_num;
-    mxc_spi_reva_regs_t *spi = (mxc_spi_reva_regs_t *)(req->spi);
 
     // Ensure valid SPI Instance.
-    spi_num = MXC_SPI_GET_IDX(req->spi);
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
@@ -1737,29 +1719,31 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_req_t *req)
         return E_BAD_STATE;
     }
 
-    // Initialize SPIn state resource to handle transaction data.
-    MXC_SPI_RevA2_setupSTATE(req);
+    // Save target settings.
+    STATES[spi_num].deassert = deassert;
+    STATES[spi_num].current_target = *target;
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer,
-                                   req->rx_fr_len, false);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, false);
 
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     // Depending on selected TS control scheme, set Target Select pin assertion/deassertion
     //  for start of transaction.
-    MXC_SPI_RevA2_handleTSControl(spi, req->deassert, req->target_sel);
+    MXC_SPI_RevA2_handleTSControl(spi, deassert, target);
 
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_req_t *req)
+int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                            uint32_t rx_fr_len, uint8_t deassert,
+                                            mxc_spi_target_t *target)
 {
     int spi_num;
-    mxc_spi_reva_regs_t *spi = (mxc_spi_reva_regs_t *)(req->spi);
 
-    spi_num = MXC_SPI_GET_IDX(req->spi);
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
@@ -1779,35 +1763,38 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_req_t *req)
         return E_BAD_STATE;
     }
 
-    // Initialize SPIn state resource to handle transaction data.
-    MXC_SPI_RevA2_setupSTATE(req);
+    // Save target settings.
+    STATES[spi_num].deassert = deassert;
+    STATES[spi_num].current_target = *target;
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer,
-                                   req->rx_fr_len, true);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, true);
 
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     // Depending on selected TS control scheme, set Target Select pin assertion/deassertion
     //  for start of transaction.
-    MXC_SPI_RevA2_handleTSControl(spi, req->deassert, req->target_sel);
+    MXC_SPI_RevA2_handleTSControl(spi, deassert, target);
 
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_req_t *req)
+int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                            uint32_t rx_fr_len, uint8_t deassert,
+                                            mxc_spi_target_t *target)
 {
     int error;
     int spi_num;
 
-    spi_num = MXC_SPI_GET_IDX(req->spi);
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
 
     // This function fills in the STATES value for the flags that checks for blocking status.
-    error = MXC_SPI_RevA2_ControllerTransactionDMA(req);
+    error = MXC_SPI_RevA2_ControllerTransactionDMA(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, deassert, target);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -1821,13 +1808,14 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_req_t *req)
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_TargetTransaction(mxc_spi_req_t *req)
+int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                            uint32_t rx_fr_len)
 {
     int spi_num;
-    mxc_spi_reva_regs_t *spi = (mxc_spi_reva_regs_t *)(req->spi);
 
     // Ensure valid SPI Instance.
-    spi_num = MXC_SPI_GET_IDX(req->spi);
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
@@ -1847,12 +1835,8 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_req_t *req)
         return E_BAD_STATE;
     }
 
-    // Initialize SPIn state resource to handle transaction data.
-    MXC_SPI_RevA2_setupSTATE(req);
-
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer,
-                                   req->rx_fr_len, false);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, false);
 
     // Wait for Target Select pin to be asserted before starting transaction.
     while ((spi->stat & MXC_F_SPI_REVA_STAT_BUSY) == 0) {}
@@ -1873,12 +1857,14 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_req_t *req)
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_req_t *req)
+int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                            uint32_t rx_fr_len)
 {
     int spi_num;
 
     // Ensure valid SPI Instance.
-    spi_num = MXC_SPI_GET_IDX(req->spi);
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
@@ -1898,21 +1884,19 @@ int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_req_t *req)
         return E_BAD_STATE;
     }
 
-    // Initialize SPIn state resource to handle transaction data.
-    MXC_SPI_RevA2_setupSTATE(req);
-
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                   req->tx_fr_len, req->rx_buffer, req->rx_fr_len, false);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, false);
 
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_req_t *req)
+int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                            uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                            uint32_t rx_fr_len)
 {
     int spi_num;
 
-    spi_num = MXC_SPI_GET_IDX(req->spi);
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
@@ -1932,12 +1916,8 @@ int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_req_t *req)
         return E_BAD_STATE;
     }
 
-    // Initialize SPIn state resource to handle transaction data.
-    MXC_SPI_RevA2_setupSTATE(req);
-
     // Setup SPI registers for DMA transaction.
-    MXC_SPI_RevA2_transactionSetup((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                   req->tx_fr_len, req->rx_buffer, req->rx_fr_len, true);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len, true);
 
     // Target transaction is ready.
     return E_SUCCESS;
