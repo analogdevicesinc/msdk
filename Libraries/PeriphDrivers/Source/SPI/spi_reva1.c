@@ -71,10 +71,14 @@ static int MXC_SPI_RevA1_TransSetup(mxc_spi_reva_req_t *req);
 int MXC_SPI_RevA1_Init(mxc_spi_reva_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
                        unsigned ssPolarity, unsigned int hz)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
+    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    /*  Validate that the specified SPI instance exists.
+        Note:  The Init function is the only one that performs this check.
+        It catches the rare edge case where a user has casted
+        a custom SPI regs struct with an incorrect base address.
+     */
+    if (spi_num < 0)
+        return E_BAD_PARAM;
 
     states[spi_num].req = NULL;
     states[spi_num].last_size = 0;
@@ -137,10 +141,8 @@ int MXC_SPI_RevA1_Init(mxc_spi_reva_regs_t *spi, int masterMode, int quadModeUse
 
 int MXC_SPI_RevA1_Shutdown(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
     mxc_spi_reva_req_t *temp_req;
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
+    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
     //disable and clear interrupts
     spi->inten = 0;
@@ -149,9 +151,6 @@ int MXC_SPI_RevA1_Shutdown(mxc_spi_reva_regs_t *spi)
     // Disable SPI and FIFOS
     spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
     spi->dma &= ~(MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_RX_FIFO_EN);
-
-    //call all of the pending callbacks for this spi
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
     if (states[spi_num].req != NULL) {
         //save the request
@@ -185,8 +184,6 @@ int MXC_SPI_RevA1_Shutdown(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA1_ReadyForSleep(mxc_spi_reva_regs_t *spi)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
-
     if (spi->stat & MXC_F_SPI_REVA_STAT_BUSY || (spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) ||
         (spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL)) {
         return E_BUSY;
@@ -255,15 +252,12 @@ unsigned int MXC_SPI_RevA1_GetFrequency(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA1_SetDataSize(mxc_spi_reva_regs_t *spi, int dataSize)
 {
-    int spi_num;
-
     // HW has problem with these two character sizes
     if (dataSize == 1 || dataSize > 16) {
         return E_BAD_PARAM;
     }
 
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
+    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
     // Setup the character size
     if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY) && states[spi_num].ssDeassert == 1) {
@@ -291,11 +285,6 @@ int MXC_SPI_RevA1_SetDataSize(mxc_spi_reva_regs_t *spi, int dataSize)
 
 int MXC_SPI_RevA1_GetDataSize(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-    (void)spi_num;
-
     if (!(spi->ctrl2 & MXC_F_SPI_REVA_CTRL2_NUMBITS)) {
         return 16;
     }
@@ -305,10 +294,7 @@ int MXC_SPI_RevA1_GetDataSize(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA1_SetMTMode(mxc_spi_reva_regs_t *spi, int mtMode)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
+    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
     if ((mtMode != 0) && (mtMode != 1)) {
         return E_BAD_PARAM;
@@ -338,18 +324,13 @@ int MXC_SPI_RevA1_SetMTMode(mxc_spi_reva_regs_t *spi, int mtMode)
 
 int MXC_SPI_RevA1_GetMTMode(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
+    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
     return states[spi_num].mtMode;
 }
 
 int MXC_SPI_RevA1_SetSlave(mxc_spi_reva_regs_t *spi, int ssIdx)
 {
-    int spi_num;
-
     // HW has problem with these two character sizes
     if (ssIdx >= MXC_SPI_SS_INSTANCES) {
         return E_BAD_PARAM;
@@ -359,10 +340,6 @@ int MXC_SPI_RevA1_SetSlave(mxc_spi_reva_regs_t *spi, int ssIdx)
     if (!(spi->ctrl0 & MXC_F_SPI_REVA_CTRL0_MST_MODE)) {
         return E_BAD_STATE;
     }
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-    (void)spi_num;
 
     // Setup the slave select
     // Activate chosen SS pin
@@ -375,21 +352,12 @@ int MXC_SPI_RevA1_SetSlave(mxc_spi_reva_regs_t *spi, int ssIdx)
 
 int MXC_SPI_RevA1_GetSlave(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-    (void)spi_num;
-
     return ((spi->ctrl0 & MXC_F_SPI_REVA_CTRL0_SS_ACTIVE) >> MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS) >>
            1;
 }
 
 int MXC_SPI_RevA1_SetWidth(mxc_spi_reva_regs_t *spi, mxc_spi_reva_width_t spiWidth)
 {
-    int spi_num;
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-    (void)spi_num;
-
     spi->ctrl2 &= ~(MXC_F_SPI_REVA_CTRL2_THREE_WIRE | MXC_F_SPI_REVA_CTRL2_DATA_WIDTH);
 
     switch (spiWidth) {
@@ -432,10 +400,6 @@ mxc_spi_reva_width_t MXC_SPI_RevA1_GetWidth(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA1_SetMode(mxc_spi_reva_regs_t *spi, mxc_spi_reva_mode_t spiMode)
 {
-    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-    (void)spi_num;
-
     switch (spiMode) {
     case SPI_REVA_MODE_0:
         spi->ctrl2 &= ~MXC_F_SPI_REVA_CTRL2_CLKPHA;
@@ -466,10 +430,6 @@ int MXC_SPI_RevA1_SetMode(mxc_spi_reva_regs_t *spi, mxc_spi_reva_mode_t spiMode)
 
 mxc_spi_reva_mode_t MXC_SPI_RevA1_GetMode(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-    (void)spi_num;
-
     if (spi->ctrl2 & MXC_F_SPI_REVA_CTRL2_CLKPHA) {
         if (spi->ctrl2 & MXC_F_SPI_REVA_CTRL2_CLKPOL) {
             return SPI_REVA_MODE_3;
@@ -487,10 +447,6 @@ mxc_spi_reva_mode_t MXC_SPI_RevA1_GetMode(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA1_StartTransmission(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-    (void)spi_num;
-
     if (MXC_SPI_GetActive((mxc_spi_regs_t *)spi) == E_BUSY) {
         return E_BUSY;
     }
@@ -511,9 +467,7 @@ int MXC_SPI_RevA1_GetActive(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA1_AbortTransmission(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
+    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
     // Disable interrupts, clear the flags
     spi->inten = 0;
@@ -552,7 +506,6 @@ unsigned int MXC_SPI_RevA1_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
                                       unsigned int len)
 {
     unsigned rx_avail, bits;
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
 
     if (!bytes || !len) {
         return 0;
@@ -607,7 +560,6 @@ unsigned int MXC_SPI_RevA1_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *
                                        unsigned int len)
 {
     unsigned tx_avail, bits;
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
 
     if (!bytes || !len) {
         return 0;
@@ -650,27 +602,22 @@ unsigned int MXC_SPI_RevA1_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *
 
 unsigned int MXC_SPI_RevA1_GetTXFIFOAvailable(mxc_spi_reva_regs_t *spi)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
     return MXC_SPI_FIFO_DEPTH -
            ((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS);
 }
 
 void MXC_SPI_RevA1_ClearRXFIFO(mxc_spi_reva_regs_t *spi)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
     spi->dma |= MXC_F_SPI_REVA_DMA_RX_FLUSH;
 }
 
 void MXC_SPI_RevA1_ClearTXFIFO(mxc_spi_reva_regs_t *spi)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
     spi->dma |= MXC_F_SPI_REVA_DMA_TX_FLUSH;
 }
 
 int MXC_SPI_RevA1_SetRXThreshold(mxc_spi_reva_regs_t *spi, unsigned int numBytes)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
-
     if (numBytes > 30) {
         return E_BAD_PARAM;
     }
@@ -683,14 +630,11 @@ int MXC_SPI_RevA1_SetRXThreshold(mxc_spi_reva_regs_t *spi, unsigned int numBytes
 
 unsigned int MXC_SPI_RevA1_GetRXThreshold(mxc_spi_reva_regs_t *spi)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
     return (spi->dma & MXC_F_SPI_REVA_DMA_RX_THD_VAL) >> MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS;
 }
 
 int MXC_SPI_RevA1_SetTXThreshold(mxc_spi_reva_regs_t *spi, unsigned int numBytes)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
-
     // Valid values for the threshold are 0x1 to 0x1F
     if (numBytes > 31 || numBytes == 0) {
         return E_BAD_PARAM;
@@ -704,31 +648,26 @@ int MXC_SPI_RevA1_SetTXThreshold(mxc_spi_reva_regs_t *spi, unsigned int numBytes
 
 unsigned int MXC_SPI_RevA1_GetTXThreshold(mxc_spi_reva_regs_t *spi)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
     return (spi->dma & MXC_F_SPI_REVA_DMA_TX_THD_VAL) >> MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS;
 }
 
 unsigned int MXC_SPI_RevA1_GetFlags(mxc_spi_reva_regs_t *spi)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
     return spi->intfl;
 }
 
 void MXC_SPI_RevA1_ClearFlags(mxc_spi_reva_regs_t *spi)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
     spi->intfl = spi->intfl;
 }
 
 void MXC_SPI_RevA1_EnableInt(mxc_spi_reva_regs_t *spi, unsigned int intEn)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
     spi->inten |= intEn;
 }
 
 void MXC_SPI_RevA1_DisableInt(mxc_spi_reva_regs_t *spi, unsigned int intDis)
 {
-    MXC_ASSERT(MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) >= 0);
     spi->inten &= ~(intDis);
 }
 
@@ -738,7 +677,7 @@ int MXC_SPI_RevA1_TransSetup(mxc_spi_reva_req_t *req)
     uint8_t bits;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(req->spi));
-    MXC_ASSERT(spi_num >= 0);
+
     MXC_ASSERT(req->ssIdx < MXC_SPI_SS_INSTANCES);
 
     if ((!req) || ((req->txData == NULL) && (req->rxData == NULL))) {
@@ -819,9 +758,7 @@ int MXC_SPI_RevA1_TransSetup(mxc_spi_reva_req_t *req)
 uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva_req_t *req)
 {
     uint32_t retval;
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
     // Leave slave select asserted at the end of the transaction
     if (!req->ssDeassert) {
@@ -985,7 +922,6 @@ int MXC_SPI_RevA1_MasterTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, in
     mxc_dma_adv_config_t advConfig = { 0, 0, 0, 0, 0, 0 };
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(req->spi));
-    MXC_ASSERT(spi_num >= 0);
 
     if (req->txData == NULL && req->rxData == NULL) {
         return E_BAD_PARAM;
@@ -1165,7 +1101,6 @@ int MXC_SPI_RevA1_SlaveTransactionDMA(mxc_spi_reva_req_t *req, int reqselTx, int
     mxc_dma_adv_config_t advConfig = { 0, 0, 0, 0, 0, 0 };
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(req->spi));
-    MXC_ASSERT(spi_num >= 0);
 
     if (req->txData == NULL && req->rxData == NULL) {
         return E_BAD_PARAM;
@@ -1339,7 +1274,7 @@ void MXC_SPI_RevA1_DMACallback(int ch, int error)
 int MXC_SPI_RevA1_SetDefaultTXData(mxc_spi_reva_regs_t *spi, unsigned int defaultTXData)
 {
     int spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
+
     states[spi_num].defaultTXData = defaultTXData;
     return E_NO_ERROR;
 }
