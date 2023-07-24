@@ -47,7 +47,11 @@ CORDIO_DIR ?= $(LIBS_DIR)/Cordio
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
 
 ifeq ($(RISCV_CORE),)
+ifeq ($(MFLOAT_ABI),hard)
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_hard.a
+else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
+endif
 else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
 endif
