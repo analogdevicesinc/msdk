@@ -98,6 +98,8 @@ int main(void)
     mxc_spi_init_t controller_init; // L. Master
     mxc_spi_init_t target_init; // L. Slave
     mxc_spi_target_t target;
+    mxc_spi_req_t controller_req;
+    mxc_spi_req_t target_req;
 
     printf("\n************************ SPI Controller-Target Example ************************\n");
     printf("This example sends data between two SPI peripherals in the MAX78002.\n");
@@ -131,7 +133,6 @@ int main(void)
     controller_init.type = MXC_SPI_TYPE_CONTROLLER; // L. Master
     controller_init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
     controller_init.frame_size = DATA_SIZE;
-    controller_init.callback = NULL;
     controller_init.use_dma = false;
 
     // Target Select Settings
@@ -168,6 +169,16 @@ int main(void)
         while (1) {}
     }
 
+    // Setup Controller Request.
+    controller_req.spi = SPI_CONTROLLER;
+    controller_req.tx_buffer = (uint8_t *)controller_tx;
+    controller_req.tx_fr_len = DATA_LEN;
+    controller_req.rx_buffer = (uint8_t *)controller_rx;
+    controller_req.rx_fr_len = DATA_LEN;
+    controller_req.deassert = 1;
+    controller_req.callback = NULL;
+    controller_req.target_sel = &target;
+
     /***** Configure Target (L. Slave) *****/
     target_init.spi = SPI_TARGET;
     target_init.freq = SPI_SPEED;
@@ -176,7 +187,6 @@ int main(void)
     target_init.type = MXC_SPI_TYPE_TARGET; // L. Slave
     target_init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
     target_init.frame_size = DATA_SIZE;
-    target_init.callback = NULL;
     target_init.ts_control =
         MXC_SPI_TSCONTROL_HW_AUTO; // Target transactions only supports HW_AUTO mode
     target_init.target.active_polarity = 0;
@@ -195,6 +205,15 @@ int main(void)
         printf("\nSPI TARGET INITIALIZATION ERROR\n");
         while (1) {}
     }
+
+    // Setup Target Request.
+    target_req.spi = SPI_TARGET;
+    target_req.tx_buffer = (uint8_t *)target_tx;
+    target_req.tx_fr_len = DATA_LEN;
+    target_req.rx_buffer = (uint8_t *)target_rx;
+    target_req.rx_fr_len = DATA_LEN;
+    target_req.deassert = 1;
+    target_req.callback = NULL;
 
 #if DMA
     TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI_TARGET);
@@ -215,13 +234,12 @@ int main(void)
 
     /***** Perform Transaction *****/
 #if DMA
-    MXC_SPI_TargetTransactionDMA(SPI_TARGET, target_tx, DATA_LEN, target_rx, DATA_LEN);
+    MXC_SPI_TargetTransactionDMA(&target_req);
 #else
-    MXC_SPI_TargetTransaction(SPI_TARGET, target_tx, DATA_LEN, target_rx, DATA_LEN);
+    MXC_SPI_TargetTransactionAsync(&target_req);
 #endif
 
-    MXC_SPI_ControllerTransactionB(SPI_CONTROLLER, controller_tx, DATA_LEN, controller_rx, DATA_LEN,
-                                   1, &target);
+    MXC_SPI_ControllerTransaction(&controller_req);
 
     /***** Verify Results *****/
     if (memcmp(target_rx, controller_tx, sizeof(controller_tx)) != 0) { // Controller->Target
