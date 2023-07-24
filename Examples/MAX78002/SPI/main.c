@@ -61,7 +61,8 @@
 #if (!(CONTROLLER_SYNC || CONTROLLER_ASYNC || CONTROLLER_DMA))
 #error "You must set either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA to 1."
 #endif
-#if ((CONTROLLER_SYNC && CONTROLLER_ASYNC) || (CONTROLLER_ASYNC && CONTROLLER_DMA) || (CONTROLLER_DMA && CONTROLLER_SYNC))
+#if ((CONTROLLER_SYNC && CONTROLLER_ASYNC) || (CONTROLLER_ASYNC && CONTROLLER_DMA) || \
+     (CONTROLLER_DMA && CONTROLLER_SYNC))
 #error "You must select either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA, not all 3."
 #endif
 
@@ -198,13 +199,13 @@ int main(void)
 
 #if CONTROLLER_SYNC
         MXC_SPI_ControllerTransaction(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
-                                       DATA_LEN, 1, &target);
+                                      DATA_LEN, 1, &target);
 #endif
 
 #if CONTROLLER_ASYNC
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_ControllerTransactionAsync(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
-                                      DATA_LEN, 1, &target);
+                                           DATA_LEN, 1, &target);
 
         while (SPI_FLAG == 1) {}
 #endif

@@ -1355,7 +1355,6 @@ void MXC_SPI_RevA2_DMA_SwapByte(uint8_t *buffer, uint32_t len_bytes)
     }
 }
 
-
 /* ** Transaction Helper Functions ** */
 
 // Set up STATES[SPIn] parameters
@@ -1379,8 +1378,10 @@ static void MXC_SPI_RevA2_setupSTATE(mxc_spi_req_t *req)
     STATES[spi_num].rx_done = false;
 
     // Max number of frames to transmit/receive.
-    MXC_ASSERT(req->tx_fr_len < (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
-    MXC_ASSERT(req->rx_fr_len < (MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS));
+    MXC_ASSERT(req->tx_fr_len <
+               (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
+    MXC_ASSERT(req->rx_fr_len <
+               (MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_RX_NUM_CHAR_POS));
 
     // STATES[n] TX/RX Length Fields are in terms of number of bytes to send/receive.
     if (STATES[spi_num].init.frame_size <= 8) {
@@ -1403,7 +1404,9 @@ static void MXC_SPI_RevA2_setupSTATE(mxc_spi_req_t *req)
 }
 
 // SPI DMA/non-DMA Transaction Setup Helper Function.
-static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, bool use_dma)
+static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                           uint32_t tx_fr_len, uint8_t *rx_buffer,
+                                           uint32_t rx_fr_len, bool use_dma)
 {
     int tx_dummy_fr_len;
     int spi_num;
@@ -1424,7 +1427,8 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
             tx_dummy_fr_len = rx_fr_len - tx_fr_len;
 
             // Check whether new frame length exceeds the possible number of frames to transmit.
-            MXC_ASSERT((tx_fr_len + tx_dummy_fr_len) > (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
+            MXC_ASSERT((tx_fr_len + tx_dummy_fr_len) >
+                       (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
 
             spi->ctrl1 = ((tx_fr_len + tx_dummy_fr_len) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         } else {
@@ -1447,8 +1451,9 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
         // Set TX and RX Thresholds before loading FIFO.
         MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
-                    ((MXC_SPI_FIFO_DEPTH - 1) << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
-        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL, (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
+                     ((MXC_SPI_FIFO_DEPTH - 1) << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+        MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
+                     (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
 
         // Set up DMA TX Transactions.
         // Note: Number of transmitting frames greatly depends on the SPI DMA register settings for
@@ -1469,7 +1474,7 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
                 //  Note: This case is handling TX transactions of greater than 1 frame.
                 //        Threshold of 1 frame does not work.
                 MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
-                            (2 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+                             (2 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
 
                 STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + 1); // 1 Byte offset
                 STATES[spi_num].dma->ch[tx_ch].cnt = (tx_fr_len - 1);
@@ -1479,13 +1484,13 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
                 //  Note: Assigning value of 2 to register-field equals 3 bytes transferred in/out of DMA.
                 //        Add 1 to the register-field setting to get the number of bytes for burst.
                 MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE,
-                            (2 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
+                             (2 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
 
                 // Set source and destination width to one byte.
                 MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
-                            MXC_S_DMA_REVA_CTRL_SRCWD_BYTE);
+                             MXC_S_DMA_REVA_CTRL_SRCWD_BYTE);
                 MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
-                            MXC_S_DMA_REVA_CTRL_DSTWD_BYTE);
+                             MXC_S_DMA_REVA_CTRL_DSTWD_BYTE);
 
                 // 9-16 bit wide frames.
             } else {
@@ -1498,23 +1503,24 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
                 //  Note: This case is handling TX transactions of greater than 1 frame.
                 //        Threshold of 1 or 2 frames does not work.
                 MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
-                            (3 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+                             (3 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
 
                 STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + STATES[spi_num].tx_cnt);
-                STATES[spi_num].dma->ch[tx_ch].cnt = (STATES[spi_num].tx_len - STATES[spi_num].tx_cnt);
+                STATES[spi_num].dma->ch[tx_ch].cnt =
+                    (STATES[spi_num].tx_len - STATES[spi_num].tx_cnt);
 
                 // Set to 4 bytes (2 frames) burst size.
                 //  Due to design: burst_size = threshold + 1
                 //  Note: Assigning value of 3 to register-field equals 4 bytes.
                 //        Add 1 to the register-field setting to get the number of bytes for burst.
                 MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE,
-                            (3 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
+                             (3 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
 
                 // Set source and destination width to two bytes.
                 MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
-                            MXC_S_DMA_REVA_CTRL_SRCWD_HALFWORD);
+                             MXC_S_DMA_REVA_CTRL_SRCWD_HALFWORD);
                 MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
-                            MXC_S_DMA_REVA_CTRL_DSTWD_HALFWORD);
+                             MXC_S_DMA_REVA_CTRL_DSTWD_HALFWORD);
             }
 
             STATES[spi_num].dma->ch[tx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_SRCINC;
@@ -1568,28 +1574,28 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
             // Set RX threshold to minimum value to handle any number of received frames.
             MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
-                        (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
+                         (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
 
             STATES[spi_num].dma->ch[rx_ch].dst = (uint32_t)rx_buffer;
             STATES[spi_num].dma->ch[rx_ch].cnt = STATES[spi_num].rx_len;
 
             // Set to one byte burst size - minimum value to handle any number of recevied frames.
             MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE,
-                        (0 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
+                         (0 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
 
             // Match frame size (in terms of bytes) in DMA ctrl settings.
             if (STATES[spi_num].init.frame_size <= 8) {
                 // Set source and destination width to one byte
                 MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
-                            MXC_S_DMA_REVA_CTRL_SRCWD_BYTE);
+                             MXC_S_DMA_REVA_CTRL_SRCWD_BYTE);
                 MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
-                            MXC_S_DMA_REVA_CTRL_DSTWD_BYTE);
+                             MXC_S_DMA_REVA_CTRL_DSTWD_BYTE);
             } else {
                 // Set source destination width to 2 bytes
                 MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
-                            MXC_S_DMA_REVA_CTRL_SRCWD_HALFWORD);
+                             MXC_S_DMA_REVA_CTRL_SRCWD_HALFWORD);
                 MXC_SETFIELD(STATES[spi_num].dma->ch[rx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
-                            MXC_S_DMA_REVA_CTRL_DSTWD_HALFWORD);
+                             MXC_S_DMA_REVA_CTRL_DSTWD_HALFWORD);
             }
 
             STATES[spi_num].dma->ch[rx_ch].ctrl |= MXC_F_DMA_REVA_CTRL_DSTINC;
@@ -1598,8 +1604,8 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
             // Enable SPI RX DMA after configuring.
             spi->dma |= (MXC_F_SPI_REVA_DMA_DMA_RX_EN);
         }
-    //<<< End of SPI DMA transaction setup.
-    //>>> Start of SPI non-DMA transaction setup.
+        //<<< End of SPI DMA transaction setup.
+        //>>> Start of SPI non-DMA transaction setup.
     } else {
         // Finish setting up SPI for TX and RX.
         if (tx_fr_len > 0) {
@@ -1609,7 +1615,7 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
             // Set TX Threshold to minimum value after re-enabling TX FIFO.
             MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
-                        (1 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+                         (1 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
         }
 
         if (rx_fr_len > 0) {
@@ -1619,18 +1625,19 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
             // Set RX Threshold to minimum value after re-enabling RX FIFO.
             MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL,
-                        (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
+                         (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
         }
 
         // This private function, MXC_SPI_RevA2_process, call fills the TX FIFO as much as possible
-        //   before launching the transaction. Subsequent FIFO management will be handled after 
+        //   before launching the transaction. Subsequent FIFO management will be handled after
         //   transaction has started.
         MXC_SPI_RevA2_process(spi);
     } //<<< End of SPI non-DMA transaction setup.
 }
 
 // Helper function that handles the Target Select assertion/deassertion at start of transaction.
-static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert, mxc_spi_target_t *target)
+static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert,
+                                          mxc_spi_target_t *target)
 {
     int spi_num;
 
@@ -1706,41 +1713,42 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_req_t *req)
     MXC_SPI_RevA2_setupSTATE(req);
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, false);
+    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer,
+                                   req->rx_fr_len, false);
 
-            STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + 1); // 1 Byte offset
-            STATES[spi_num].dma->ch[tx_ch].cnt = (tx_fr_len - 1);
+    STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + 1); // 1 Byte offset
+    STATES[spi_num].dma->ch[tx_ch].cnt = (tx_fr_len - 1);
 
-    // Depending on selected TS control scheme, set Target Select pin assertion/deassertion 
+    // Depending on selected TS control scheme, set Target Select pin assertion/deassertion
     //  for start of transaction.
     MXC_SPI_RevA2_handleTSControl(spi, req->deassert, req->target_sel);
 
-            // Set to 4 byte (2 frames) burst size.
-            //  Due to design: burst_size = threshold + 1
-            //  Note: Assigning value of 3 to register-field equals 4 bytes.
-            //        Add 1 to the register-field setting to get the number of bytes for burst.
-            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE,
-                         (3 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
+    // Set to 4 byte (2 frames) burst size.
+    //  Due to design: burst_size = threshold + 1
+    //  Note: Assigning value of 3 to register-field equals 4 bytes.
+    //        Add 1 to the register-field setting to get the number of bytes for burst.
+    MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE,
+                 (3 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
 
-            // Set source and destination width to two bytes.
-            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
-                         MXC_S_DMA_REVA_CTRL_SRCWD_HALFWORD);
-            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
-                         MXC_S_DMA_REVA_CTRL_DSTWD_HALFWORD);
-        }
+    // Set source and destination width to two bytes.
+    MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
+                 MXC_S_DMA_REVA_CTRL_SRCWD_HALFWORD);
+    MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
+                 MXC_S_DMA_REVA_CTRL_DSTWD_HALFWORD);
+}
 
-        MXC_SPI_RevA2_process(spi);
+MXC_SPI_RevA2_process(spi);
+}
+
+// Toggle Chip Select Pin after transaction is complete if handled by the driver.
+if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
+    // Don't deassert the Target Select (TS) pin if false for multiple repeated transactions.
+    if (STATES[spi_num].deassert == true) {
+        req->target_sel->pins.port->out ^= req->target_sel->pins.mask;
     }
+}
 
-    // Toggle Chip Select Pin after transaction is complete if handled by the driver.
-    if (STATES[spi_num].init.ts_control == MXC_SPI_TSCONTROL_SW_DRV) {
-        // Don't deassert the Target Select (TS) pin if false for multiple repeated transactions.
-        if (STATES[spi_num].deassert == true) {
-            req->target_sel->pins.port->out ^= req->target_sel->pins.mask;
-        }
-    }
-
-    return E_SUCCESS;
+return E_SUCCESS;
 }
 
 int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_req_t *req)
@@ -1768,17 +1776,18 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_req_t *req)
     if (STATES[spi_num].init.type != MXC_SPI_TYPE_CONTROLLER) {
         return E_BAD_STATE;
     }
-    
+
     // Initialize SPIn state resource to handle transaction data.
     MXC_SPI_RevA2_setupSTATE(req);
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, false);
+    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer,
+                                   req->rx_fr_len, false);
 
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
-    // Depending on selected TS control scheme, set Target Select pin assertion/deassertion 
+    // Depending on selected TS control scheme, set Target Select pin assertion/deassertion
     //  for start of transaction.
     MXC_SPI_RevA2_handleTSControl(spi, req->deassert, req->target_sel);
 
@@ -1814,12 +1823,13 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_req_t *req)
     MXC_SPI_RevA2_setupSTATE(req);
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, true);
+    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer,
+                                   req->rx_fr_len, true);
 
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
-    // Depending on selected TS control scheme, set Target Select pin assertion/deassertion 
+    // Depending on selected TS control scheme, set Target Select pin assertion/deassertion
     //  for start of transaction.
     MXC_SPI_RevA2_handleTSControl(spi, req->deassert, req->target_sel);
 
@@ -1881,7 +1891,8 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_req_t *req)
     MXC_SPI_RevA2_setupSTATE(req);
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, false);
+    MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer,
+                                   req->rx_fr_len, false);
 
     // Wait for Target Select pin to be asserted before starting transaction.
     while ((spi->stat & MXC_F_SPI_REVA_STAT_BUSY) == 0) {}
@@ -1936,7 +1947,8 @@ int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_req_t *req)
     MXC_SPI_RevA2_setupSTATE(req);
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, false);
+    MXC_SPI_RevA2_transactionSetup((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
+                                   req->tx_fr_len, req->rx_buffer, req->rx_fr_len, false);
 
     return E_SUCCESS;
 }
@@ -1969,7 +1981,8 @@ int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_req_t *req)
     MXC_SPI_RevA2_setupSTATE(req);
 
     // Setup SPI registers for DMA transaction.
-    MXC_SPI_RevA2_transactionSetup((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, true);
+    MXC_SPI_RevA2_transactionSetup((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
+                                   req->tx_fr_len, req->rx_buffer, req->rx_fr_len, true);
 
     // Target transaction is ready.
     return E_SUCCESS;
