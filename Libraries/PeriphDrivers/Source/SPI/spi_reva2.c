@@ -1831,8 +1831,8 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
         return E_BAD_STATE;
     }
 
-    // Make sure SPI Instance is in Controller mode (L. Master).
-    if (STATES[spi_num].init.type != MXC_SPI_TYPE_CONTROLLER) {
+    // Make sure SPI Instance is in Target mode (L. Slave).
+    if (STATES[spi_num].init.type != MXC_SPI_TYPE_TARGET) {
         return E_BAD_STATE;
     }
 
@@ -1879,8 +1879,8 @@ int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
         return E_BAD_STATE;
     }
 
-    // Make sure SPI Instance is in Controller mode (L. Master).
-    if (STATES[spi_num].init.type != MXC_SPI_TYPE_CONTROLLER) {
+    // Make sure SPI Instance is in Target mode (L. Slave).
+    if (STATES[spi_num].init.type != MXC_SPI_TYPE_TARGET) {
         return E_BAD_STATE;
     }
 
@@ -1910,8 +1910,8 @@ int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buf
         return E_BAD_STATE;
     }
 
-    // Make sure SPI Instance is in Controller mode (L. Master).
-    if (STATES[spi_num].init.type != MXC_SPI_TYPE_CONTROLLER) {
+    // Make sure SPI Instance is in Target mode (L. Slave).
+    if (STATES[spi_num].init.type != MXC_SPI_TYPE_TARGET) {
         return E_BAD_STATE;
     }
 
