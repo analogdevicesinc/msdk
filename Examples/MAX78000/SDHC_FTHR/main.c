@@ -98,6 +98,5 @@ int main(void)
     if(MXC_CLI_Uart_Init() != E_NO_ERROR);
     while(1){}
 
-
     return 0;
 }

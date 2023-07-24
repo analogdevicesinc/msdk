@@ -72,6 +72,19 @@ TaskHandle_t cmd_task_id;
 #define STRING(x) STRING_(x)
 #define STRING_(x) #x
 
+/* ASCII macros */
+#define END_OF_TEXT 0x03
+#define BACK_SPACE 0x08
+#define SPACE_BAR 0x20
+#define NULL_TERMINATION 0x00
+#define ARROW_KEY_CODE_1 0x1B
+#define ARROW_KEY_CODE_2 0x5B
+#define ARROW_KEY_CODE_LEFT 0x44
+#define ARROW_KEY_CODE_RIGHT 0x43
+#define ARROW_KEY_CODE_UP 0x41
+#define ARROW_KEY_CODE_DOWN 0x42
+#define TAB_SPACE 0x09
+
 /* Console ISR selection */
 #if (CONSOLE_UART == 0)
 #define UARTx_IRQHandler UART0_IRQHandler
@@ -120,6 +133,53 @@ void vCmdLineTask_cb(mxc_uart_req_t *req, int error)
     xHigherPriorityTaskWoken = pdFALSE;
     vTaskNotifyGiveFromISR(cmd_task_id, &xHigherPriorityTaskWoken);
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+}
+
+/* =| checkLeadingSpaces |======================================
+ *
+ * Function to check for the leading spaces in the 
+ *  input command.
+ *
+ * If any Leading spaces are present, the function would remove 
+ *  those spaces and returns a valid Null terminated command 
+ *  in the same input buffer.
+ * 
+ * =============================================================
+ */
+void checkLeadingSpaces(char *buffer, unsigned int *index)
+{
+    unsigned int leadingZerosCount = 0;
+    for (leadingZerosCount = 0; leadingZerosCount < (*index); leadingZerosCount++) {
+        if (buffer[leadingZerosCount] != SPACE_BAR)
+            break;
+    }
+    if (leadingZerosCount > 0) {
+        memmove(buffer, buffer + leadingZerosCount, (*index) - leadingZerosCount);
+        *index = *index - leadingZerosCount;
+        buffer[*index] = NULL_TERMINATION;
+        ++(*index);
+    }
+}
+
+/* =| checkArrowKeys |======================================
+ *
+ * Function to check for the presence of arrow keys in the 
+ *  input command.
+ *
+ * NOTE: The buffer should have atleast 3 bytes of data to 
+ *  check for the arrow keys. Sanity check should be done 
+ *  before calling this function.
+ * 
+ * =============================================================
+ */
+bool checkArrowKeys(char *buffer)
+{
+    if (((buffer[0] == ARROW_KEY_CODE_1) && (buffer[1] == ARROW_KEY_CODE_2)) &&
+        ((buffer[2] == ARROW_KEY_CODE_UP) || (buffer[2] == ARROW_KEY_CODE_DOWN) ||
+         (buffer[2] == ARROW_KEY_CODE_RIGHT) || (buffer[2] == ARROW_KEY_CODE_LEFT)))
+        return true;
+    else
+        return false;
 }
 
 /* =| vCmdLineTask |======================================
@@ -184,14 +244,18 @@ void vCmdLineTask(void *pvParameters)
         if (async_read_req.rxCnt > 0) {
             /* Process character */
             do {
-                if (tmp == 0x08) {
+                if (tmp == BACK_SPACE) {
                     /* Backspace */
                     if (index > 0) {
                         index--;
-                        printf("\x08 \x08");
+                        printf("%c %c", BACK_SPACE, BACK_SPACE);
+                        buffer[index] = NULL_TERMINATION;
                     }
                     fflush(stdout);
-                } else if (tmp == 0x03) {
+                } else if (tmp == TAB_SPACE) {
+                    /* Ignore Tab Space input */
+                    continue;
+                } else if (tmp == END_OF_TEXT) {
                     /* ^C abort */
                     index = 0;
                     printf("^C");
@@ -200,26 +264,42 @@ void vCmdLineTask(void *pvParameters)
                 } else if ((tmp == '\r') || (tmp == '\n')) {
                     printf("\r\n");
                     /* Null terminate for safety */
-                    buffer[index] = 0x00;
+                    buffer[index] = NULL_TERMINATION;
+                    checkLeadingSpaces(buffer, &index);
                     /* Evaluate */
-                    do {
-                        xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
-                        /* If xMore == pdTRUE, then output buffer contains no null
-						 * termination, so we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can
-						 * use strlen.
-						 */
-                        for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output)); x++) {
-                            putchar(*(output + x));
-                        }
-                    } while (xMore != pdFALSE);
+                    if (index != 0) {
+                        do {
+                            xMore = FreeRTOS_CLIProcessCommand(buffer, output, OUTPUT_BUF_SIZE);
+                            /* If xMore == pdTRUE, then output buffer contains no null
+						    * termination, so we know it is OUTPUT_BUF_SIZE. If pdFALSE, we can
+						    * use strlen.
+						    */
+                            for (x = 0; x < (xMore == pdTRUE ? OUTPUT_BUF_SIZE : strlen(output));
+                                 x++) {
+                                putchar(*(output + x));
+                            }
+                        } while (xMore != pdFALSE);
+                    }
                     /* New prompt */
                     index = 0;
                     printf("\ncmd> ");
                     fflush(stdout);
                 } else if (index < CMD_LINE_BUF_SIZE) {
-                    putchar(tmp);
                     buffer[index++] = tmp;
-                    fflush(stdout);
+                    bool arrowKey = false;
+                    if (index >= 3) {
+                        arrowKey = checkArrowKeys(buffer + index - 3);
+                        if (arrowKey) {
+                            /* Remove the arrow key from the buffer */
+                            buffer[index - 3] = NULL_TERMINATION;
+                            index -= 3;
+                        }
+                    }
+                    if ((!arrowKey) && (tmp != ARROW_KEY_CODE_1) && (tmp != ARROW_KEY_CODE_2)) {
+                        /* Echo out if not an arrow key */
+                        putchar(tmp);
+                        fflush(stdout);
+                    }
                 } else {
                     /* Throw away data and beep terminal */
                     putchar(0x07);

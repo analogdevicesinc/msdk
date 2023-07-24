@@ -496,13 +496,20 @@ typedef enum {
 
 /******************************************************************************/
 /*                                                                        DMA */
-#define MXC_DMA_CHANNELS (16)
+#define MXC_DMA_CHANNELS (4)
 #define MXC_DMA_INSTANCES (1)
 
 #define MXC_BASE_DMA ((uint32_t)0x40028000UL)
 #define MXC_DMA ((mxc_dma_regs_t *)MXC_BASE_DMA)
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
+
+#define MXC_DMA_CH_GET_IRQ(i)             \
+    ((IRQn_Type)(((i) == 0) ? DMA0_IRQn : \
+                 ((i) == 1) ? DMA1_IRQn : \
+                 ((i) == 2) ? DMA2_IRQn : \
+                 ((i) == 3) ? DMA3_IRQn : \
+                              0))
 
 /******************************************************************************/
 /*                                                                        FLC */

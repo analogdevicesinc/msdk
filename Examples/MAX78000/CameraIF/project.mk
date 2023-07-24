@@ -14,6 +14,7 @@
 # For a full list of options for the 'CAMERA' variable, 
 # see the documentation.
 CAMERA=OV7692
+#CAMERA=OV5640
 #CAMERA=OV5642
 #CAMERA=HM0360_MONO
 #CAMERA=HM01B0
@@ -25,3 +26,8 @@ MXC_OPTIMIZE_CFLAGS=-O2
 ifeq ($(BOARD),Aud01_RevA)
 $(error ERR_NOTSUPPORTED: This project is not supported for the Audio board)
 endif
+
+ifeq ($(BOARD),CAM01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board.  Use the CAMERAIF_Debayer project instead.)
+endif
+

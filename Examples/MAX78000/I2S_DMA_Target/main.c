@@ -45,7 +45,7 @@
 
 #undef USE_I2S_INTERRUPTS
 
-#define CODEC_I2C MXC_I2C0
+#define CODEC_I2C MXC_I2C1
 #define CODEC_I2C_FREQ 100000
 
 #define CODEC_MCLOCK 12288000
@@ -144,6 +144,8 @@ void i2c_init(void)
 {
     if (MXC_I2C_Init(CODEC_I2C, 1, 0) != E_NO_ERROR)
         blink_halt("Error initializing I2C controller");
+    else
+        printf("I2C initialized successfully \n");
 
     MXC_I2C_SetFrequency(CODEC_I2C, CODEC_I2C_FREQ);
 }
@@ -167,6 +169,8 @@ void codec_init(void)
 
     if (max9867_linein_gain(-6, -6) != E_NO_ERROR)
         blink_halt("Error setting Line-In gain");
+    else
+        printf("Codec initialized successfully \n");
 }
 
 void i2s_init(void)
@@ -193,6 +197,8 @@ void i2s_init(void)
 
     if (MXC_I2S_Init(&req) != E_NO_ERROR)
         blink_halt("Error initializing I2S");
+    else
+        printf("I2S initialized successfully \n");
 
     MXC_I2S_SetFrequency(MXC_I2S_EXTERNAL_SCK_EXTERNAL_WS, 0);
 }

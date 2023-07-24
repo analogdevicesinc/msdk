@@ -6,7 +6,9 @@ from typing import Tuple
 from rich.progress import Progress
 from rich.console import Console
 from rich.text import Text
+from rich import inspect
 import time
+import shutil
 
 blacklist = [
     "MAX32570",
@@ -37,7 +39,7 @@ def build_project(project:Path, target, board, maxim_path:Path, distclean=False)
     res = run(clean_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
     # Test build
-    build_cmd = f"make -r -j 8 --output-sync=target --no-print-directory TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} FORCE_COLOR=1"
+    build_cmd = f"make -r -j 8 TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} FORCE_COLOR=1"
     res = run(build_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
     project_info = {
@@ -82,20 +84,27 @@ def build_project(project:Path, target, board, maxim_path:Path, distclean=False)
     return (return_code, project_info)
 
 
-def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
-    env = os.environ.copy()
-    if maxim_path is None and "MAXIM_PATH" in env.keys():
-        maxim_path = Path(env['MAXIM_PATH']).absolute()
-    else:
-        print("MAXIM_PATH not set.")
-        return
-
-    env["FORCE_COLOR"] = 1
+def test(maxim_path : Path = None, targets=None, boards=None, projects=None): 
 
     console = Console(emoji=False, color_system="standard")
 
+    env = os.environ.copy()
+    if maxim_path is None and "MAXIM_PATH" in env.keys():
+        maxim_path = Path(env['MAXIM_PATH']).absolute()
+        console.print(f"[green]Detected MAXIM_PATH[/green] = {maxim_path}")
+    else:
+        console.print("MAXIM_PATH not set.")
+        return
+    
+    env["FORCE_COLOR"] = 1
+
+    # Remove the periphdrivers build directory
+    console.print("Cleaning PeriphDrivers build directories...")
+    shutil.rmtree(Path(maxim_path) / "Libraries" / "PeriphDrivers" / "bin", ignore_errors=True)
+
     # Get list of target micros if none is specified
     if targets is None:
+        console.print("[yellow]Auto-searching for targets...[/yellow]")
         targets = []
 
         for dir in os.scandir(f"{maxim_path}/Examples"):
@@ -118,11 +127,15 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
 
     for target in sorted(targets):
 
+        console.print("====================")
+        console.print(f"Testing {target}...")
+
         target_fails = 0
         target_warnings = 0
 
         # Get list of supported boards for this target.
         if boards is None:
+            console.print(f"[yellow]Auto-searching for {target} BSPs...[/yellow]")
             boards = []
             for dirpath, subdirs, items in os.walk(maxim_path / "Libraries" / "Boards" / target):
                 if "board.mk" in items and Path(dirpath).name not in blacklist:
@@ -135,36 +148,34 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
         boards = sorted(boards) # Enforce alphabetical ordering
                 
         # Get list of examples for this target.
+        _projects = []
         if projects is None:
-            projects = []
+            console.print(f"[yellow]Auto-searching for {target} examples...[/yellow]")
             for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
                 if 'Makefile' in items and ("main.c" in items or "project.mk" in items):
-                    projects.append(Path(dirpath))
+                    _projects.append(Path(dirpath))
 
         else:
             assert(type(projects) is list)
             for dirpath, subdirs, items in os.walk(maxim_path / "Examples" / target):
                 dirpath = Path(dirpath)
                 if dirpath.name in projects:
-                    projects.remove(dirpath.name)
-                    projects.append(dirpath)
-
-
-        console.print("====================")
-        console.print(f"Found {len(projects)} projects for [bold cyan]{target}[/bold cyan]")
+                    _projects.append(dirpath)
+        
+        console.print(f"Found {len(_projects)} projects for [bold cyan]{target}[/bold cyan]")
         console.print(f"Detected boards: {boards}")
 
-        projects = sorted(projects) # Enforce alphabetical ordering
+        _projects = sorted(_projects) # Enforce alphabetical ordering
                 
 
         with Progress(console=console) as progress:
-            task_build = progress.add_task(description=f"{target}: PeriphDrivers", total=(len(projects) * len(boards)) + len(boards))
+            task_build = progress.add_task(description=f"{target}: PeriphDrivers", total=(len(_projects) * len(boards)) + len(boards))
 
             periph_success = True
 
             # Find Hello_World and do a PeriphDriver build test first.
             hello_world = None
-            for p in projects:
+            for p in _projects:
                 if p.name == "Hello_World":
                     hello_world = p
             
@@ -207,7 +218,7 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
 
             if periph_success:
                 # Iteratively across and test example projects
-                for project in projects:
+                for project in _projects:
                     project_name = project.name
 
                     for board in boards:
@@ -250,10 +261,10 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
             elif not periph_success:
                 progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]PeriphDriver build failed.[/red]", refresh=True)
             else:
-                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]Failed for {target_fails}/{len(projects)} projects[/red]", refresh=True)            
+                progress.update(task_build, description=f"[bold cyan]{target}[/bold cyan]: [red]Failed for {target_fails}/{len(_projects)} projects[/red]", refresh=True)            
 
         boards = None # Reset boards list
-        projects = None # Reset projects list
+        _projects = None # Reset projects list
 
     console.print(f"Tested {count} cases.  {count - len(failed)}/{count} succeeded.")
     if (len(warnings) > 0):
@@ -279,6 +290,7 @@ parser.add_argument("--projects", type=str, nargs="+", required=False, help="Exa
 
 if __name__ == "__main__":
     args = parser.parse_args()
+    inspect(args, title="Script arguments:", )
     exit(
         test(
             maxim_path=args.maxim_path,

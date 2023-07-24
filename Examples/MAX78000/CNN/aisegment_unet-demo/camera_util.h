@@ -33,7 +33,8 @@
 #ifndef __CAMERA_UTIL_H__
 #define __CAMERA_UTIL_H__
 
-#define CAMERA_FREQ (10 * 1000 * 1000)
+#define CAMERA_FREQ (8.330 * 1000 * 1000)
+
 #define BYTE_PER_PIXEL 2
 
 #if defined(CAMERA_OV7692)
@@ -57,6 +58,8 @@
 
 //#define PATTERN_GEN //  Replaces captured image with internally generated pattern
 
+//#define RGB565      // Enables RGB565 camera settings, otherwise RGB888
+
 void process_img(void);
 int initialize_camera(void);
 void load_input_camera(void);
@@ -64,4 +67,10 @@ void run_camera(void);
 void dump_cnn(void);
 void display_camera(void);
 
+#define tft_dma_display(x, y, w, h, data)                                     \
+    MXC_TFT_Stream(x, y, w, h);                                               \
+    setup_dma_tft((uint32_t *)data, w *h * 2);                                \
+    start_tft_dma((uint32_t *)data, w *h * 2);                                \
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) \
+        ;
 #endif

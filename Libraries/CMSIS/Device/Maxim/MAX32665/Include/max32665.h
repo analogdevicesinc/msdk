@@ -477,6 +477,28 @@ typedef enum {
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA0 ? 0 : (p) == MXC_DMA1 ? 1 : -1)
 
+#define MXC_DMA0_CH_GET_IRQ(i)            \
+    ((IRQn_Type)(((i) == 0) ? DMA0_IRQn : \
+                 ((i) == 1) ? DMA1_IRQn : \
+                 ((i) == 2) ? DMA2_IRQn : \
+                 ((i) == 3) ? DMA3_IRQn : \
+                 ((i) == 4) ? DMA4_IRQn : \
+                 ((i) == 5) ? DMA5_IRQn : \
+                 ((i) == 6) ? DMA6_IRQn : \
+                 ((i) == 7) ? DMA7_IRQn : \
+                              0))
+
+#define MXC_DMA1_CH_GET_IRQ(i)             \
+    ((IRQn_Type)(((i) == 0) ? DMA8_IRQn :  \
+                 ((i) == 1) ? DMA9_IRQn :  \
+                 ((i) == 2) ? DMA10_IRQn : \
+                 ((i) == 3) ? DMA11_IRQn : \
+                 ((i) == 4) ? DMA12_IRQn : \
+                 ((i) == 5) ? DMA13_IRQn : \
+                 ((i) == 6) ? DMA14_IRQn : \
+                 ((i) == 7) ? DMA15_IRQn : \
+                              0))
+
 /* Create alias for MXC_DMA0 for backwards compatibility with code that was
    written for parts that only had one DMA instance. */
 #define MXC_DMA MXC_DMA0

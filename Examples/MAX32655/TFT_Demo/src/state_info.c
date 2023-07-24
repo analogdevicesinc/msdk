@@ -1,6 +1,3 @@
-/*
- * @file state_info.c
- *
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
