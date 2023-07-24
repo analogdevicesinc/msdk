@@ -129,7 +129,7 @@ int main(void)
 #if CONTROLLER_ASYNC
     printf("Performing non-blocking (asynchronous) transactions...\n");
 #endif
-#if DMA
+#if CONTROLLER_DMA
     printf("Performing transactions with DMA...\n");
 #endif
 
@@ -147,7 +147,6 @@ int main(void)
         init.type = MXC_SPI_TYPE_CONTROLLER;
         init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
         init.frame_size = i;
-        init.callback = SPI_Callback;
 
         // Target Select Settings
 #if CUSTOM_TARGET
@@ -178,7 +177,7 @@ int main(void)
 #endif
 
         // DMA Settings.
-#if DMA
+#if CONTROLLER_DMA
         init.use_dma = true;
         init.dma = MXC_DMA;
 #else
@@ -194,17 +193,24 @@ int main(void)
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
         // SPI Request (Callback)
+        mxc_spi_req_t req;
+        req.spi = SPI;
+        req.tx_buffer = (uint8_t *)tx_data;
+        req.tx_fr_len = DATA_LEN;
+        req.rx_buffer = (uint8_t *)rx_data;
+        req.rx_fr_len = DATA_LEN;
+        req.deassert = 1;
+        req.callback = SPI_Callback;
+        req.target_sel = &target;
         SPI_FLAG = 1;
 
 #if CONTROLLER_SYNC
-        MXC_SPI_ControllerTransaction(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
-                                       DATA_LEN, 1, &target);
+        MXC_SPI_ControllerTransaction(&req);
 #endif
 
 #if CONTROLLER_ASYNC
         NVIC_EnableIRQ(SPI_IRQ);
-        MXC_SPI_ControllerTransactionAsync(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
-                                      DATA_LEN, 1, &target);
+        MXC_SPI_ControllerTransactionAsync(&req);
 
         while (SPI_FLAG == 1) {}
 #endif
@@ -219,8 +225,7 @@ int main(void)
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
 
-        MXC_SPI_ControllerTransactionDMA(SPI, (uint8_t *)tx_data, DATA_LEN, (uint8_t *)rx_data,
-                                         DATA_LEN, 1, &target);
+        MXC_SPI_ControllerTransactionDMA(&req);
 
         while (SPI_FLAG == 1) {}
 #endif

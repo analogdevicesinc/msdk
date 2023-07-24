@@ -371,8 +371,8 @@ static int MXC_SPI_RevA2_resetStateStruct(int spi_num)
 int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
 {
     int error, spi_num, i;
-    int tx_ch, rx_ch;
     mxc_spi_target_t *target;
+    // For readability.
     mxc_gpio_regs_t *target_port;
 
     if (init == NULL) {
@@ -557,43 +557,10 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
 
     // Setup DMA features if used.
     if (init->use_dma) {
-        // Even though the Init Struct has a pointer to the DMA instance,
-        //   this will make the code a bit more readable since the DMA
-        //   instance is now type casted with the DMA RevA Registers.
-        STATES[spi_num].dma = (mxc_dma_reva_regs_t *)(init->dma);
-
-#if (MXC_DMA_INSTANCES == 1)
-        error = MXC_DMA_Init();
-#else
-        error = MXC_DMA_Init(init->dma);
-#endif
+        error = MXC_SPI_RevA2_DMA_Init(init);
         if (error != E_NO_ERROR) {
             return error;
         }
-
-        // Acquire DMA Channels for SPI TX/RX
-        STATES[spi_num].tx_dma_ch = MXC_DMA_AcquireChannel();
-        STATES[spi_num].rx_dma_ch = MXC_DMA_AcquireChannel();
-
-        tx_ch = STATES[spi_num].tx_dma_ch;
-        rx_ch = STATES[spi_num].rx_dma_ch;
-
-        // Check if failed to acquire channel.
-        if (STATES[spi_num].tx_dma_ch < 0 || STATES[spi_num].rx_dma_ch < 0) {
-            return E_NONE_AVAIL;
-        }
-
-        // TX Channel
-        STATES[spi_num].dma->ch[tx_ch].ctrl |=
-            (MXC_F_DMA_REVA_CTRL_CTZ_IE); // | MXC_F_DMA_REVA_CTRL_DIS_IE);
-        STATES[spi_num].dma->inten |= (1 << tx_ch);
-
-        // RX Channel
-        STATES[spi_num].dma->ch[rx_ch].ctrl |=
-            (MXC_F_DMA_REVA_CTRL_CTZ_IE); // | MXC_F_DMA_REVA_CTRL_DIS_IE);
-        STATES[spi_num].dma->inten |= (1 << rx_ch);
-
-        STATES[spi_num].dma_initialized = true;
     }
 
     // If successful, mark STATE of this SPI instance as initialized.
@@ -1708,25 +1675,18 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_req_t *req)
     // Setup SPI registers for non-DMA transaction.
     MXC_SPI_RevA2_transactionSetup(spi, req->tx_buffer, req->tx_fr_len, req->rx_buffer, req->rx_fr_len, false);
 
-            STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + 1); // 1 Byte offset
-            STATES[spi_num].dma->ch[tx_ch].cnt = (tx_fr_len - 1);
+    // Start the SPI transaction.
+    spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
-    // Depending on selected TS control scheme, set Target Select pin assertion/deassertion 
-    //  for start of transaction.
+    // Handle Target Select Pin
     MXC_SPI_RevA2_handleTSControl(spi, req->deassert, req->target_sel);
 
-            // Set to 4 byte (2 frames) burst size.
-            //  Due to design: burst_size = threshold + 1
-            //  Note: Assigning value of 3 to register-field equals 4 bytes.
-            //        Add 1 to the register-field setting to get the number of bytes for burst.
-            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_BURST_SIZE,
-                         (3 << MXC_F_DMA_REVA_CTRL_BURST_SIZE_POS));
-
-            // Set source and destination width to two bytes.
-            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
-                         MXC_S_DMA_REVA_CTRL_SRCWD_HALFWORD);
-            MXC_SETFIELD(STATES[spi_num].dma->ch[tx_ch].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
-                         MXC_S_DMA_REVA_CTRL_DSTWD_HALFWORD);
+    // Complete transaction once it started.
+    while (STATES[spi_num].transaction_done == false) {
+        if (STATES[spi_num].tx_done == true && STATES[spi_num].rx_done == true) {
+            if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY)) {
+                STATES[spi_num].transaction_done = true;
+            }
         }
 
         MXC_SPI_RevA2_process(spi);
@@ -1910,11 +1870,6 @@ int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_req_t *req)
     spi_num = MXC_SPI_GET_IDX(req->spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
-    }
-
-    // Ensure valid chip select option.
-    if (target == NULL) {
-        return E_NULL_PTR;
     }
 
     // Make sure SPI Instance was initialized.
