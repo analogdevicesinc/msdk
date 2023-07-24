@@ -70,5 +70,4 @@ void handle_fatfs(int argc, char *argv[]);
 
 void handle_unmount(int argc, char *argv[]);
 
-
 #endif /* USER_CLI_H */

@@ -78,22 +78,21 @@
 /* -------------------------------------------------- */
 //                      MACROS
 /* -------------------------------------------------- */
-#define ENTER                   0X0D
-#define NEW_LINE                0x0A
-#define SPACE                   0x20
-#define TAB                     0x09
-#define BACKSPACE               0X08
-#define MAXBUFF                 2000
-#define DELETE                  0x7F
-#define DOLLAR                  0x24
+#define ENTER 0X0D
+#define NEW_LINE 0x0A
+#define SPACE 0x20
+#define TAB 0x09
+#define BACKSPACE 0X08
+#define MAXBUFF 2000
+#define DELETE 0x7F
+#define DOLLAR 0x24
 
-#define ARROW_KEY_CODE_1        0x1B
-#define ARROW_KEY_CODE_2        0x5B
-#define ARROW_KEY_CODE_LEFT     0x44
-#define ARROW_KEY_CODE_RIGHT    0x43
-#define ARROW_KEY_CODE_UP       0x41
-#define ARROW_KEY_CODE_DOWN     0x42
-
+#define ARROW_KEY_CODE_1 0x1B
+#define ARROW_KEY_CODE_2 0x5B
+#define ARROW_KEY_CODE_LEFT 0x44
+#define ARROW_KEY_CODE_RIGHT 0x43
+#define ARROW_KEY_CODE_UP 0x41
+#define ARROW_KEY_CODE_DOWN 0x42
 
 /* -------------------------------------------------- */
 //                 FUNCTION PROTOTYPES
@@ -126,24 +125,22 @@ void process_command(char *input);
 */
 void handle_help(int argc, char *argv[]);
 
-
 /** Command table hander prototype with parameters
  * 
  * @param argc Used to determine which token element of the commands string is being used.
  * 
  * @param argv[] Char Array of tokens of the command string entered by the user.
- * */ 
+ * */
 typedef void (*command_handler_t)(int, char *argv[]);
 
 /** This command table structure contains the name of the command, a function pointer to the corresponding command handler function,
  *  and the help string which provides a short description of what the command does.
  *
  * */
-typedef struct
-{
-	const char *name;			/**< command string */
-	command_handler_t handler;	/**< function pointer of the handler function */
-	const char *help_string;	/**< help string of each command */
+typedef struct {
+    const char *name; /**< command string */
+    command_handler_t handler; /**< function pointer of the handler function */
+    const char *help_string; /**< help string of each command */
 } command_table_t;
 
 /** This table is an array of command_table_t structures which should be initialized by the user in user-cli.c to define a set of supported commands in the program.
@@ -157,4 +154,4 @@ extern const command_table_t commands[];
  * */
 extern const int num_commands;
 
-#endif /* MXC_CLI_H */ 
+#endif /* MXC_CLI_H */

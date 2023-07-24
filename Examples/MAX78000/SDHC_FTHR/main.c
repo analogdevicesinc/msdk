@@ -93,11 +93,11 @@ int main(void)
     waitCardInserted();
 
     printf("Card inserted.\n");
-    MXC_Delay(1000); //Delay inserted here to avoid weird printf values between previous and next printf command.
-    
-    if(MXC_CLI_Uart_Init() != E_NO_ERROR);
-    while(1){}
+    MXC_Delay(
+        1000); //Delay inserted here to avoid weird printf values between previous and next printf command.
 
+    if (MXC_CLI_Uart_Init() != E_NO_ERROR) {}
+    while (1) {}
 
     return 0;
 }

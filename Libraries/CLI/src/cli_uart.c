@@ -49,9 +49,9 @@ void UART_Handler(void)
     MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
 }
 
-void readCallback(mxc_uart_req_t *req, int error){
-    
-    line_accumulator(RxData); 
+void readCallback(mxc_uart_req_t *req, int error)
+{
+    line_accumulator(RxData);
     READ_FLAG = error;
     MXC_UART_TransactionAsync(req);
 }
@@ -62,8 +62,8 @@ void readCallback(mxc_uart_req_t *req, int error){
  * 
  * @return void
  */
-int MXC_CLI_Uart_Init(void){
-
+int MXC_CLI_Uart_Init(void)
+{
     // UART interrupt setup
     NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
     NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
@@ -78,7 +78,7 @@ int MXC_CLI_Uart_Init(void){
         printf("-->Example Failed\n");
         return error;
     }
-    
+
     User_Prompt_Sequence();
 
     read_req.uart = MXC_UART_GET_UART(CONSOLE_UART);

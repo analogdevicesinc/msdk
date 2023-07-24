@@ -29,8 +29,7 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- ******************************************************************************/\
-
+ ******************************************************************************/
 
 /* -------------------------------------------------- */
 //                      INCLUDES
@@ -44,7 +43,6 @@
 /* -------------------------------------------------- */
 //             FUNCTION PROTOTYPES
 /* -------------------------------------------------- */
-
 
 bool white_space_present(char *p);
 
@@ -74,39 +72,37 @@ uint16_t idx = 0;
 
 void line_accumulator(uint8_t user_char)
 {
-    
     switch (user_char) {
-    case BACKSPACE:
-    {
+    case BACKSPACE: {
         // Handle Backspace and Delete
         if (idx > 0) {
-        	//Sequence to implement a backspace on the terminal
+            //Sequence to implement a backspace on the terminal
             Console_Backspace_Sequence();
             idx--;
             buf[idx] = '\0';
         }
         break;
-    	}
+    }
     case ENTER: {
         // Handle Enter or carriage return
-        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),NEW_LINE);
-        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),ENTER);
+        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), NEW_LINE);
+        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), ENTER);
         buf[idx++] = '\r';
         buf[idx] = '\0';
         idx = 0;
-        process_command(buf); 
+        process_command(buf);
         Clear_buffer();
         break;
-        }
+    }
 
-        default: {
-            // Handle all other characters
-            if (idx < MAX_COMMAND_LENGTH - 1) {
-                buf[idx++] = user_char; //pushes characters into the buffer
-                MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),user_char);
-            }
-            break;
+    default: {
+        // Handle all other characters
+        if (idx < MAX_COMMAND_LENGTH - 1) {
+            buf[idx++] = user_char; //pushes characters into the buffer
+            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), user_char);
         }
+        break;
+    }
     }
 }
 
@@ -117,67 +113,57 @@ void process_command(char *input)
     char *end;
 
     //Find end of string
-    for (end = input; *end != '\0'; end++);
+    for (end = input; *end != '\0'; end++) {}
 
     //Initialize variables
     bool in_token = false;
     bool beginning_space;
-    if(*p == SPACE || *p == TAB)
+    if (*p == SPACE || *p == TAB)
         beginning_space = true;
     char *argv[10];
     int argc = 0;
     memset(argv, 0, sizeof(argv));
 
     //Iterate over each character in input
-    for (p = input; p < end; p++)
-    {
+    for (p = input; p < end; p++) {
         //If in a token
-        if (in_token)
-        {
+        if (in_token) {
             //If whitespace found, token ends
-            if (white_space_present(p))
-            {
+            if (white_space_present(p)) {
                 in_token = true;
             }
             //Else, token continues
-            else if(white_space_not_present(p))
-            {
+            else if (white_space_not_present(p)) {
                 input = p;
                 in_token = false;
             }
         }
         //If not in a token
-        else
-        {
+        else {
             //If ENTER or whitespace found
-            if(*p == ENTER || (white_space_present(p)))
-            {
+            if (*p == ENTER || (white_space_present(p))) {
                 //If ENTER, end of command
-                if(*p == ENTER)
-                {
+                if (*p == ENTER) {
                     *p = '\0';
                     argv[argc++] = input;
                     break;
                 }
 
                 //If whitespace found, end of token
-                if(white_space_present(p) && !beginning_space)
-                {
+                if (white_space_present(p) && !beginning_space) {
                     *p = '\0';
                     argv[argc++] = input;
                     in_token = true;
                 }
             }
             //If not in token and whitespace not found, new token starts
-            else if (white_space_not_present(p) && beginning_space)
-            {
+            else if (white_space_not_present(p) && beginning_space) {
                 input = p;
                 in_token = false;
                 beginning_space = false;
             }
             //If not in token and whitespace not found and beginning_space is false, token continues
-            else if (white_space_not_present(p) && !beginning_space)
-            {
+            else if (white_space_not_present(p) && !beginning_space) {
                 in_token = false;
             }
         }
@@ -193,10 +179,8 @@ void process_command(char *input)
     bool success_flag = 0; //True if input command matches
 
     //Iterate over all commands to check if input command matches
-    for (int i=0; i < num_commands; i++)
-    {
-        if (strcasecmp(argv[0], commands[i].name) == 0)
-        {
+    for (int i = 0; i < num_commands; i++) {
+        if (strcasecmp(argv[0], commands[i].name) == 0) {
             //Call corresponding command's handler
             commands[i].handler(argc, argv);
             success_flag = 1;
@@ -205,8 +189,7 @@ void process_command(char *input)
     }
 
     //If no commands match, print error message
-    if (success_flag == 0)
-    {
+    if (success_flag == 0) {
         printf("\n\rCommand isn't valid!\n\r");
     }
 
@@ -214,21 +197,20 @@ void process_command(char *input)
     User_Prompt_Sequence();
 }
 
-
-
-bool white_space_present(char *p){
-	return *p == SPACE || *p == TAB;
+bool white_space_present(char *p)
+{
+    return *p == SPACE || *p == TAB;
 }
 
-
-bool white_space_not_present(char *p){
-	return *p != SPACE || *p != TAB;
+bool white_space_not_present(char *p)
+{
+    return *p != SPACE || *p != TAB;
 }
 
 void User_Prompt_Sequence(void)
 {
-    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),DOLLAR);
-    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),SPACE);
+    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), DOLLAR);
+    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), SPACE);
 }
 
 /** Clears the buffer storing each character of the user command input
@@ -237,7 +219,8 @@ void User_Prompt_Sequence(void)
 *
 * @return void
 */
-void Clear_buffer(void) {
+void Clear_buffer(void)
+{
     memset(buf, '\0', MAX_COMMAND_LENGTH);
 }
 
@@ -247,8 +230,9 @@ void Clear_buffer(void) {
 *
 * @return void
 */
-void Console_Cmd_Clear(void){
-    for (int i = 0; i < idx; i++){
+void Console_Cmd_Clear(void)
+{
+    for (int i = 0; i < idx; i++) {
         Console_Backspace_Sequence();
     }
 }
@@ -259,16 +243,16 @@ void Console_Cmd_Clear(void){
 *
 * @return void
 */
-void Console_Backspace_Sequence(void){
-        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
-        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),SPACE);
-        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART),BACKSPACE);
+void Console_Backspace_Sequence(void)
+{
+    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), BACKSPACE);
+    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), SPACE);
+    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), BACKSPACE);
 }
-
 
 void handle_help(int argc, char *argv[])
 {
-	printf("\n\r");
-	for (int i = 0; i < num_commands;i++)
-		printf("%s --> %s", commands[i].name, commands[i].help_string);
+    printf("\n\r");
+    for (int i = 0; i < num_commands; i++)
+        printf("%s --> %s", commands[i].name, commands[i].help_string);
 }
