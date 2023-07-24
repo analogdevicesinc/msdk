@@ -52,6 +52,7 @@
 #define TOSTRING(x) STRINGIFY(x)
 #define MAXLEN 256
 
+
 /***** FUNCTION PROTOTYPES *****/
 
 void generateMessage(unsigned length);
@@ -66,15 +67,15 @@ int getSize();
 
 int ls();
 
-int createFile(char *file_name, unsigned int length);
+int createFile(char* file_name, unsigned int length);
 
-int appendFile(char *file_name, unsigned int length);
+int appendFile(char* file_name, unsigned int length);
 
-int mkdir(char *dir_name);
+int mkdir(char* dir_name);
 
-int cd(char *dir_name);
+int cd(char* dir_name);
 
-int delete (char *file_name);
+int delete(char* file_name);
 
 int example();
 

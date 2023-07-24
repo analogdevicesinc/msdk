@@ -179,7 +179,7 @@ int ls()
     return err;
 }
 
-int createFile(char *file_name, unsigned int length)
+int createFile(char* file_name, unsigned int length)
 {
     // unsigned int length = 128;
 
@@ -224,8 +224,9 @@ int createFile(char *file_name, unsigned int length)
     return err;
 }
 
-int appendFile(char *file_name, unsigned int length)
+int appendFile(char* file_name, unsigned int length)
 {
+
     if (!mounted) {
         mount();
     }
@@ -267,7 +268,7 @@ int appendFile(char *file_name, unsigned int length)
     return err;
 }
 
-int mkdir(char *dir_name)
+int mkdir(char* dir_name)
 {
     if (!mounted) {
         mount();
@@ -295,7 +296,7 @@ int mkdir(char *dir_name)
     return err;
 }
 
-int cd(char *dir_name)
+int cd(char* dir_name)
 {
     if (!mounted) {
         mount();
@@ -320,13 +321,13 @@ int cd(char *dir_name)
     return err;
 }
 
-int delete (char *file_name)
+int delete(char* file_name)
 {
     if (!mounted) {
         mount();
     }
 
-    strcpy(filename, file_name);
+    strcpy(filename,file_name);
 
     if ((err = f_stat((const TCHAR *)filename, &fno)) == FR_NO_FILE) {
         printf("File or directory doesn't exist\n");

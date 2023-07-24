@@ -31,23 +31,22 @@
  *
  ******************************************************************************/
 
+
 #include "user-cli.h"
 
-const command_table_t commands[] = {
-    { "Size", handle_size, "Find the Size of the SD Card and Free Space\n\r" },
-    { "Format", handle_format, "Format the Card\n\r" },
-    { "Mount", hande_mount, "Manually Mount Card\n\r" },
-    { "ls", handle_ls, "list the contents of the current directory\n\r" },
-    { "mkdir", handle_mkdir, "Create a directory\n\r" },
-    { "file_create", handle_createfile, "Create a file of random data\n\r" },
-    { "cd", handle_cd, "Move into a directory\n\r" },
-    { "add_data", handle_add_data, "Add random Data to an Existing File\n\r" },
-    { "Del", handle_del, "Delete a file\n\r" },
-    { "FatFs", handle_fatfs, "Format Card and Run Example of FatFS Operations\n\r" },
-    { "Unmount", handle_unmount, "Unmount card\n\r" },
-    { "Help", handle_help,
-      "Prints a help message with info about all of the supported commands.\n\r" }
-};
+
+const command_table_t commands[] = {{"Size", handle_size, "Find the Size of the SD Card and Free Space\n\r"},
+											{"Format", handle_format, "Format the Card\n\r"},
+                                            {"Mount", hande_mount, "Manually Mount Card\n\r"},
+											{"ls", handle_ls, "list the contents of the current directory\n\r"},
+											{"mkdir", handle_mkdir, "Create a directory\n\r"},
+                                            {"file_create", handle_createfile, "Create a file of random data\n\r"},
+                                            {"cd", handle_cd, "Move into a directory\n\r"},
+                                            {"add_data", handle_add_data, "Add random Data to an Existing File\n\r"},
+                                            {"Del", handle_del, "Delete a file\n\r"},
+                                            {"FatFs", handle_fatfs, "Format Card and Run Example of FatFS Operations\n\r"},
+                                            {"Unmount", handle_unmount, "Unmount card\n\r"},
+											{"Help", handle_help, "Prints a help message with info about all of the supported commands.\n\r"}};
 
 const int num_commands = sizeof(commands) / sizeof(command_table_t);
 
@@ -57,53 +56,44 @@ void handle_size(int argc, char *argv[]){
 
 
 void handle_format(int argc, char *argv[]){
-
     formatSDHC();
 }
 
-void hande_mount(int argc, char *argv[])
-{
+void hande_mount(int argc, char *argv[]){
     mount();
 }
 
-void handle_ls(int argc, char *argv[])
-{
+void handle_ls(int argc, char *argv[]){
     ls();
 }
 
-void handle_mkdir(int argc, char *argv[])
-{
+void handle_mkdir(int argc, char *argv[]){
     mkdir(argv[1]);
 }
 
-void handle_createfile(int argc, char *argv[])
-{
+void handle_createfile(int argc, char *argv[]){
     unsigned int length = atoi(argv[2]);
-    createFile(argv[1], length);
+    createFile(argv[1],length);
 }
 
-void handle_cd(int argc, char *argv[])
-{
+void handle_cd(int argc, char *argv[]){
     cd(argv[1]);
 }
 
-void handle_add_data(int argc, char *argv[])
-{
+void handle_add_data(int argc, char *argv[]){
     unsigned int length = atoi(argv[2]);
-    appendFile(argv[1], length);
+    appendFile(argv[1],length);
 }
 
-void handle_del(int argc, char *argv[])
-{
-    delete (argv[1]);
+void handle_del(int argc, char *argv[]){
+    delete(argv[1]);
 }
 
-void handle_fatfs(int argc, char *argv[])
-{
+void handle_fatfs(int argc, char *argv[]){
     example();
 }
 
-void handle_unmount(int argc, char *argv[])
-{
+void handle_unmount(int argc, char *argv[]){
     umount();
+
 }
