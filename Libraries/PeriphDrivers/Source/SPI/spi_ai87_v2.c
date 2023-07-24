@@ -736,63 +736,25 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_
 
 int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
 {
-    mxc_spi_target_t target;
-
-    // For backwards-compatibility with previous SPI implementation, use
-    //  use the req->ts_idx (L. req->ssIdx) as default.
-    // Note: the previous implementation did not have an option to select
-    //  targets for transactions.
-    target.index = req->ts_idx; // also req->ssIdx
-
-    // Mainly used if MXC_SPI_TSCONTROL_SW_DRV scheme was selected.
-    target.pins = req->target_sel.pins;
-    target.active_polarity = req->target_sel.active_polarity;
-
-    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                req->tx_len, req->rx_buffer, req->rx_len,
-                                                req->deassert, &target);
+    return MXC_SPI_RevA2_ControllerTransaction(req);
 }
 
 int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
 {
     int error;
-    mxc_spi_target_t target;
-
-    // For backwards-compatibility with previous SPI implementation, use
-    //  use the req->ts_idx (L. req->ssIdx) as default.
-    // Note: the previous implementation did not have an option to select
-    //  targets for transactions.
-    target.index = req->ts_idx; // also req->ssIdx
-
-    // Mainly used if MXC_SPI_TSCONTROL_SW_DRV scheme was selected.
-    target.pins = req->target_sel.pins;
-    target.active_polarity = req->target_sel.active_polarity;
 
     error = MXC_SPI_SetCallback(req->spi, req->callback, req->callback_data);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                               req->tx_len, req->rx_buffer, req->rx_len,
-                                               req->deassert, &target);
+    return MXC_SPI_RevA2_ControllerTransactionAsync(req);
 }
 
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
-    mxc_spi_target_t target;
     mxc_spi_init_t init;
-
-    // For backwards-compatibility with previous SPI implementation, use
-    //  use the req->ts_idx (L. req->ssIdx) as default.
-    // Note: the previous implementation did not have an option to select
-    //  targets for transactions.
-    target.index = req->ts_idx; // also req->ssIdx
-
-    // Mainly used if MXC_SPI_TSCONTROL_SW_DRV scheme was selected.
-    target.pins = req->target_sel.pins;
-    target.active_polarity = req->target_sel.active_polarity;
 
     init.use_dma = true;
     init.dma = MXC_DMA;
@@ -815,54 +777,39 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
         return error;
     }
 
-    return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                  req->tx_len, req->rx_buffer, req->rx_len,
-                                                  req->deassert, &target);
+    return MXC_SPI_RevA2_ControllerTransactionDMA(req);
 }
 
-int MXC_SPI_ControllerTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                                  uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
-                                  mxc_spi_target_t *target)
+int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
-                                               rx_buffer, rx_fr_len, deassert, target);
+    return MXC_SPI_RevA2_ControllerTransaction(req);
 }
 
-int MXC_SPI_ControllerTransactionAsync(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                                   uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
-                                   mxc_spi_target_t *target)
+int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
-                                                rx_buffer, rx_fr_len, deassert, target);
+    return MXC_SPI_RevA2_ControllerTransactionAsync(req);
 }
 
-int MXC_SPI_ControllerTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                                     uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
-                                     mxc_spi_target_t *target)
+int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
-    error = MXC_SPI_DMA_SetRequestSelect(spi, tx_buffer, rx_buffer);
+    error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
-                                                  rx_buffer, rx_fr_len, deassert, target);
+    return MXC_SPI_RevA2_ControllerTransactionDMA(req);
 }
 
-int MXC_SPI_ControllerTransactionDMAB(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                                      uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert,
-                                      mxc_spi_target_t *target)
+int MXC_SPI_ControllerTransactionDMAB(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_ControllerTransactionDMAB((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
-                                                   rx_buffer, rx_fr_len, deassert, target);
+    return MXC_SPI_RevA2_ControllerTransactionDMAB(req);
 }
 
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                            req->tx_len, req->rx_buffer, req->rx_len);
+    return MXC_SPI_RevA2_TargetTransaction(req);
 }
 
 int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
@@ -874,8 +821,7 @@ int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
         return error;
     }
 
-    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                           req->tx_len, req->rx_buffer, req->rx_len);
+    return MXC_SPI_RevA2_TargetTransactionAsync(req);
 }
 
 int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
@@ -904,36 +850,29 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
         return error;
     }
 
-    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                              req->tx_len, req->rx_buffer, req->rx_len);
+    return MXC_SPI_RevA2_TargetTransactionDMA(req);
 }
 
-int MXC_SPI_TargetTransaction(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                              uint8_t *rx_buffer, uint32_t rx_fr_len)
+int MXC_SPI_TargetTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
-                                           rx_buffer, rx_fr_len);
+    return MXC_SPI_RevA2_TargetTransaction(req);
 }
 
-int MXC_SPI_TargetTransactionAsync(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                               uint8_t *rx_buffer, uint32_t rx_fr_len)
+int MXC_SPI_TargetTransactionAsync(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
-                                            rx_buffer, rx_fr_len);
+    return MXC_SPI_RevA2_TargetTransactionAsync(req);
 }
 
-int MXC_SPI_TargetTransactionDMA(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_fr_len,
-                                 uint8_t *rx_buffer, uint32_t rx_fr_len)
+int MXC_SPI_TargetTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
-    error = MXC_SPI_DMA_SetRequestSelect(spi, tx_buffer, rx_buffer);
+    error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)spi, tx_buffer, tx_fr_len,
-                                              rx_buffer, rx_fr_len);
+    return MXC_SPI_RevA2_TargetTransactionDMA(req);
 }
 
 /* ** Handler Functions ** */
