@@ -202,7 +202,7 @@ typedef struct {
     uint32_t freq;                  // Clock Frequency
     mxc_spi_clkmode_t clk_mode;     // Clock modes
     uint8_t frame_size;             // Number of bits per character sent
-    mxc_spi_interface_t mode;       // 3-wire, standard, dual, and quad modes
+    mxc_spi_interface_t if_mode;    // 3-wire, standard, dual, and quad modes
     mxc_spi_tscontrol_t ts_control; // Target Select Control Scheme (auto HW, driver, or app controlled)
     mxc_spi_target_t target;        // Target Settings (index, pins, active_polarity)
     mxc_gpio_vssel_t vssel;         // Ensures selected VDDIO/VDDIOH setting
@@ -493,12 +493,12 @@ int MXC_SPI_GetFrameSize(mxc_spi_regs_t *spi);
  * 3-Wire, Standard (4-Wire), Quad, Dual Modes
  * 
  * @param   spi         Pointer to SPI instance's registers.
- * @param   mode        SPI interface mode (3-Wire, Standard, Dual SPI, Quad SPI).
+ * @param   if_mode     SPI interface mode (3-Wire, Standard, Dual SPI, Quad SPI).
  *                      See \ref mxc_spi_datawidth_t
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetInterface(mxc_spi_regs_t *spi, mxc_spi_interface_t mode);
+int MXC_SPI_SetInterface(mxc_spi_regs_t *spi, mxc_spi_interface_t if_mode);
 
 /**
  * @brief   Gets the SPI interface mode used for transmissions.

@@ -144,7 +144,7 @@ int main(void)
         init.spi = SPI;
         init.freq = SPI_SPEED;
         init.spi_pins = NULL; // Use default, predefined pins
-        init.mode = MXC_SPI_INTERFACE_STANDARD; // 4-wire
+        init.if_mode = MXC_SPI_INTERFACE_STANDARD; // 4-wire
         init.type = MXC_SPI_TYPE_CONTROLLER;
         init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
         init.frame_size = i;

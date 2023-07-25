@@ -13,7 +13,7 @@ This example also demonstrates the feature to use custom Target Selects that the
 
 This example uses the SPI v2 Library. To use the previous SPI (RevA1) library, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
 
-### Optional Porting Guide
+### Porting Guide
 
 This guide shows how to update an existing project that is using the previous SPI API (RevA1) to SPI v2. The main difference between SPI API (RevA1) and SPI v2 is the DMA interrupt handling for SPI DMA transactions.
 
@@ -31,14 +31,12 @@ Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead of initializ
 - `mxc_spi_type_t type`              //<== Controller (L. Master) or Target (L. Slave) Modes
 - `uint32_t freq`                    //<== SPI Frequency
 - `mxc_spi_clkmode_t clk_mode`       //<== Clock Mode (CPOL:CPHA)
-- `mxc_spi_interface_t mode`         //<== Select Interface (Standard 4-wire, 3-wire, dual, quad)
+- `mxc_spi_interface_t if_mode`      //<== Select Interface (Standard 4-wire, 3-wire, dual, quad)
 - `mxc_spi_tscontrol_t ts_control`   //<== HW Auto, SW Driver, or SW Application Target Control
 - `mxc_spi_target_t target`          //<== Target settings (custom TS pins, init mask, active polarity) 
 - `mxc_gpio_vssel_t vssel`           //<== Select Pin Voltage Level (VDDIO/VDDIOH)
 - `bool use_dma`                     //<== TRUE/FALSE DMA setting
 - `mxc_dma_regs_t *dma`              //<== DMA Instance
-- `mxc_spi_callback_t callback`      //<== Set Callback function for end of transaction
-- `void* callback_data`              //<== Data to pass through callback function
 
 ##### SPI DMA Interrupt Handling
 

@@ -494,7 +494,7 @@ int MXC_SPI_RevA1_StartTransmission(mxc_spi_reva_regs_t *spi)
     if (MXC_SPI_GetActive((mxc_spi_regs_t *)spi) == E_BUSY) {
         return E_BUSY;
     }
-
+    LED_Toggle(0);
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     return E_NO_ERROR;

@@ -157,6 +157,7 @@ int main(void)
 
     /***** Perform Transaction *****/
     MXC_SPI_SlaveTransactionAsync(&slave_req);
+    LED_Toggle(0);
     MXC_SPI_MasterTransaction(&master_req);
 
     /***** Verify Results *****/

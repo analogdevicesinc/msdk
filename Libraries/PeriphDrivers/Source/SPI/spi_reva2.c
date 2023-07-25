@@ -104,11 +104,7 @@ static uint32_t MXC_SPI_RevA2_writeTXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *b
                                             uint32_t len_bytes)
 {
     uint32_t tx_avail;
-    int spi_num;
     uint32_t cnt = 0;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
 
     if (buffer == NULL || len_bytes == 0) {
         return 0;
@@ -160,11 +156,7 @@ static uint32_t MXC_SPI_RevA2_readRXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *bu
                                            uint32_t len_bytes)
 {
     uint32_t rx_avail;
-    int spi_num;
     uint32_t cnt = 0;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
 
     if (buffer == NULL || len_bytes == 0) {
         return 0;
@@ -214,11 +206,10 @@ static uint32_t MXC_SPI_RevA2_readRXFIFO16(mxc_spi_reva_regs_t *spi, uint8_t *bu
  */
 static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
+    int8_t spi_num;
     int remain;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
 
     // Write any pending bytes out.
     //  Dependent on 1) Valid TX Buffer, 2) TX Length not 0, and 3) TX FIFO Not Empty.
@@ -329,15 +320,9 @@ static void MXC_SPI_RevA2_process(mxc_spi_reva_regs_t *spi)
  * This functions resets the STATE of an SPI instance.
  * 
  * @param   spi_num     Index number of SPI instance.
- * 
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-static int MXC_SPI_RevA2_resetStateStruct(int spi_num)
+static void MXC_SPI_RevA2_resetStateStruct(int8_t spi_num)
 {
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
     // Init Data
     STATES[spi_num].initialized = false;
     STATES[spi_num].dma_initialized = false;
@@ -362,15 +347,14 @@ static int MXC_SPI_RevA2_resetStateStruct(int spi_num)
     STATES[spi_num].transaction_done = false;
     STATES[spi_num].tx_done = false;
     STATES[spi_num].rx_done = false;
-
-    return E_NO_ERROR;
 }
 
 /* **** Public Functions **** */
 
 int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
 {
-    int error, spi_num, i;
+    int error, i;
+    int8_t spi_num;
     mxc_spi_target_t *target;
     // For readability.
     mxc_gpio_regs_t *target_port;
@@ -392,10 +376,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     }
 
     // Reset STATE of current SPI instance.
-    error = MXC_SPI_RevA2_resetStateStruct(spi_num);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
+    MXC_SPI_RevA2_resetStateStruct(spi_num);
 
     // Save init data for transactions and handlers.
     STATES[spi_num].init = *init;
@@ -432,27 +413,8 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
             MXC_SETFIELD((init->spi)->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
                          ((uint32_t)(init->target.init_mask)
                           << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
-
-            // If target.init_mask was not used, then read the target settings and initalize the selected index.
-            // Mainly used to test new HW TSn pins that aren't defined in the parts' mxc_pins.h and pins_{part}.c.
         } else {
-            if (target->index >= MXC_SPI_GET_TOTAL_TS(init->spi)) {
-                return E_BAD_PARAM;
-            }
-
-            error = MXC_SPI_ConfigTargetSelect(init->spi, target->index, init->vssel);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-            (init->spi)->ctrl0 |= ((1 << target->index) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS);
-
-            // Set TS Polarity (Default - active low (0))
-            if (target->active_polarity) {
-                (init->spi)->ctrl2 |= ((1 << target->index) << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
-            } else {
-                (init->spi)->ctrl2 &= ~((1 << target->index) << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
-            }
+            return E_BAD_PARAM;
         }
 
         //  Software Driver Controlled.
@@ -533,7 +495,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     }
 
     // Interface mode: 3-wire, standard (4-wire), dual, quad.
-    error = MXC_SPI_SetInterface((init->spi), (init->mode));
+    error = MXC_SPI_SetInterface((init->spi), (init->if_mode));
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -547,19 +509,17 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
     (init->spi)->intfl = (init->spi)->intfl;
     (init->spi)->inten = 0;
 
-    if (init->use_dma == false) {
-        // Only enable controller done interrupt in Controller (L. Master) mode.
-        if (init->type == MXC_SPI_TYPE_CONTROLLER) {
-            // Enable Controller Done Interrupt.
-            (init->spi)->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
-        }
-    }
-
     // Setup DMA features if used.
     if (init->use_dma) {
         error = MXC_SPI_RevA2_DMA_Init(init);
         if (error != E_NO_ERROR) {
             return error;
+        }
+    } else {
+        // Only enable controller done interrupt in Controller (L. Master) mode.
+        if (init->type == MXC_SPI_TYPE_CONTROLLER) {
+            // Enable Controller Done Interrupt.
+            (init->spi)->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
         }
     }
 
@@ -571,7 +531,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_init_t *init)
 
 int MXC_SPI_RevA2_Shutdown(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num, error;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
@@ -607,55 +567,28 @@ int MXC_SPI_RevA2_Shutdown(mxc_spi_reva_regs_t *spi)
     }
 
     // Reset the SPI instance's STATE when shutting down.
-    error = MXC_SPI_RevA2_resetStateStruct(spi_num);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
+    MXC_SPI_RevA2_resetStateStruct(spi_num);
 
     return E_NO_ERROR;
 }
 
 uint32_t MXC_SPI_RevA2_GetFlags(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-
-    MXC_ASSERT(spi_num >= 0);
-
     return spi->intfl;
 }
 
 void MXC_SPI_RevA2_ClearFlags(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-
-    MXC_ASSERT(spi_num >= 0);
-
     spi->intfl = spi->intfl;
 }
 
 void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-
-    MXC_ASSERT(spi_num >= 0);
-
     spi->inten |= en;
 }
 
 void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-
-    MXC_ASSERT(spi_num >= 0);
-
     spi->inten &= ~(dis);
 }
 
@@ -704,10 +637,6 @@ int MXC_SPI_RevA2_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq)
 
 int MXC_SPI_RevA2_GetFrequency(mxc_spi_reva_regs_t *spi)
 {
-    if (MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi) < 0) {
-        return E_BAD_PARAM;
-    }
-
     unsigned scale, lo_clk, hi_clk;
 
     scale = (spi->clkctrl & MXC_F_SPI_REVA_CLKCTRL_CLKDIV) >> MXC_F_SPI_REVA_CLKCTRL_CLKDIV_POS;
@@ -719,7 +648,7 @@ int MXC_SPI_RevA2_GetFrequency(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA2_SetFrameSize(mxc_spi_reva_regs_t *spi, int frame_size)
 {
-    int spi_num;
+    int8_t spi_num;
     int saved_enable_state;
 
     // HW has problem with these two character sizes
@@ -728,9 +657,6 @@ int MXC_SPI_RevA2_SetFrameSize(mxc_spi_reva_regs_t *spi, int frame_size)
     }
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Set up the character size.
     if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY)) {
@@ -764,13 +690,6 @@ int MXC_SPI_RevA2_SetFrameSize(mxc_spi_reva_regs_t *spi, int frame_size)
 
 int MXC_SPI_RevA2_GetFrameSize(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
     // NUMBITS = 0 means 16-bits per character
     if (!(spi->ctrl2 & MXC_F_SPI_REVA_CTRL2_NUMBITS)) {
         return 16;
@@ -779,19 +698,12 @@ int MXC_SPI_RevA2_GetFrameSize(mxc_spi_reva_regs_t *spi)
     }
 }
 
-int MXC_SPI_RevA2_SetInterface(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mode)
+int MXC_SPI_RevA2_SetInterface(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t if_mode)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
     // Clear before setting
     spi->ctrl2 &= ~(MXC_F_SPI_REVA_CTRL2_THREE_WIRE | MXC_F_SPI_REVA_CTRL2_DATA_WIDTH);
 
-    switch (mode) {
+    switch (if_mode) {
     case MXC_SPI_INTERFACE_3WIRE:
         spi->ctrl2 |= MXC_F_SPI_REVA_CTRL2_THREE_WIRE;
         break;
@@ -815,7 +727,7 @@ int MXC_SPI_RevA2_SetInterface(mxc_spi_reva_regs_t *spi, mxc_spi_interface_t mod
     }
 
     // Save state of new mode
-    STATES[spi_num].init.mode = mode;
+    STATES[MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi)].init.if_mode = if_mode;
 
     return E_NO_ERROR;
 }
@@ -839,13 +751,6 @@ mxc_spi_interface_t MXC_SPI_RevA2_GetInterface(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA2_SetClkMode(mxc_spi_reva_regs_t *spi, mxc_spi_clkmode_t clk_mode)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
     switch (clk_mode) {
     // CPOL: 0    CPHA: 0
     case MXC_SPI_CLKMODE_0:
@@ -879,20 +784,13 @@ int MXC_SPI_RevA2_SetClkMode(mxc_spi_reva_regs_t *spi, mxc_spi_clkmode_t clk_mod
     }
 
     // Save state of new clock mode.
-    STATES[spi_num].init.clk_mode = clk_mode;
+    STATES[MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi)].init.clk_mode = clk_mode;
 
     return E_NO_ERROR;
 }
 
 mxc_spi_clkmode_t MXC_SPI_RevA2_GetClkMode(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
     if (spi->ctrl2 & MXC_F_SPI_REVA_CTRL2_CLKPHA) {
         if (spi->ctrl2 & MXC_F_SPI_REVA_CTRL2_CLKPOL) {
             return MXC_SPI_CLKMODE_3;
@@ -910,12 +808,9 @@ mxc_spi_clkmode_t MXC_SPI_RevA2_GetClkMode(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA2_SetCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callback, void *data)
 {
-    int spi_num;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     if (STATES[spi_num].initialized == false) {
         return E_BAD_STATE;
@@ -929,12 +824,9 @@ int MXC_SPI_RevA2_SetCallback(mxc_spi_reva_regs_t *spi, mxc_spi_callback_t callb
 
 int MXC_SPI_RevA2_SetInitStruct(mxc_spi_reva_regs_t *spi, mxc_spi_init_t *init)
 {
-    int spi_num;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Make sure SPI instance is initialized
     if (STATES[spi_num].initialized != true) {
@@ -949,15 +841,7 @@ int MXC_SPI_RevA2_SetInitStruct(mxc_spi_reva_regs_t *spi, mxc_spi_init_t *init)
 
 mxc_spi_init_t MXC_SPI_RevA2_GetInitStruct(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-
-    // Make sure SPI instance is initialized
-    MXC_ASSERT(STATES[spi_num].initialized == true);
-
-    return (STATES[spi_num].init);
+    return (STATES[MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi)].init);
 }
 
 int MXC_SPI_RevA2_GetActive(mxc_spi_reva_regs_t *spi)
@@ -971,13 +855,6 @@ int MXC_SPI_RevA2_GetActive(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA2_ReadyForSleep(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
     if (spi->stat & MXC_F_SPI_REVA_STAT_BUSY || (spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) ||
         (spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL)) {
         return E_BUSY;
@@ -988,27 +865,13 @@ int MXC_SPI_RevA2_ReadyForSleep(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA2_SetDummyTX(mxc_spi_reva_regs_t *spi, uint16_t tx_value)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
-    STATES[spi_num].tx_dummy_value = tx_value;
+    STATES[MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi)].tx_dummy_value = tx_value;
 
     return E_NO_ERROR;
 }
 
 int MXC_SPI_RevA2_StartTransmission(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
     if (MXC_SPI_GetActive((mxc_spi_regs_t *)spi) == E_BUSY) {
         return E_BUSY;
     }
@@ -1020,12 +883,9 @@ int MXC_SPI_RevA2_StartTransmission(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA2_AbortTransmission(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Disable interrupts, clear the flags.
     spi->inten = 0;
@@ -1045,34 +905,18 @@ int MXC_SPI_RevA2_AbortTransmission(mxc_spi_reva_regs_t *spi)
 
 uint8_t MXC_SPI_RevA2_GetTXFIFOAvailable(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-
     return MXC_SPI_FIFO_DEPTH -
            ((spi->dma & MXC_F_SPI_REVA_DMA_TX_LVL) >> MXC_F_SPI_REVA_DMA_TX_LVL_POS);
 }
 
 uint8_t MXC_SPI_RevA2_GetRXFIFOAvailable(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-
     return (spi->dma & MXC_F_SPI_REVA_DMA_RX_LVL) >> MXC_F_SPI_REVA_DMA_RX_LVL_POS;
 }
 
 int MXC_SPI_RevA2_ClearTXFIFO(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
     uint32_t save_state;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     save_state = (spi->dma & (MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_TX_EN));
 
@@ -1089,13 +933,7 @@ int MXC_SPI_RevA2_ClearTXFIFO(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA2_ClearRXFIFO(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
     uint32_t save_state;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     save_state = (spi->dma & (MXC_F_SPI_REVA_DMA_RX_FIFO_EN | MXC_F_SPI_REVA_DMA_DMA_RX_EN));
 
@@ -1112,13 +950,6 @@ int MXC_SPI_RevA2_ClearRXFIFO(mxc_spi_reva_regs_t *spi)
 
 int MXC_SPI_RevA2_SetTXThreshold(mxc_spi_reva_regs_t *spi, uint8_t thd_val)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
     // Valid values for the threshold are 0x1 to 0x1F
     if (thd_val > (MXC_SPI_FIFO_DEPTH - 1) || thd_val == 0) {
         return E_BAD_PARAM;
@@ -1132,13 +963,6 @@ int MXC_SPI_RevA2_SetTXThreshold(mxc_spi_reva_regs_t *spi, uint8_t thd_val)
 
 int MXC_SPI_RevA2_SetRXThreshold(mxc_spi_reva_regs_t *spi, uint8_t thd_val)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
     if (thd_val >= (MXC_SPI_FIFO_DEPTH - 1)) {
         return E_BAD_PARAM;
     }
@@ -1151,21 +975,11 @@ int MXC_SPI_RevA2_SetRXThreshold(mxc_spi_reva_regs_t *spi, uint8_t thd_val)
 
 uint8_t MXC_SPI_RevA2_GetTXThreshold(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-
     return (spi->dma & MXC_F_SPI_REVA_DMA_TX_THD_VAL) >> MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS;
 }
 
 uint8_t MXC_SPI_RevA2_GetRXThreshold(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
-
     return (spi->dma & MXC_F_SPI_REVA_DMA_RX_THD_VAL) >> MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS;
 }
 
@@ -1174,13 +988,11 @@ uint8_t MXC_SPI_RevA2_GetRXThreshold(mxc_spi_reva_regs_t *spi)
 // Available for switching between DMA and non-DMA transactions
 int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
 {
-    int error, spi_num;
+    int error;
     int tx_ch, rx_ch;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)(init->spi));
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     if (init == NULL) {
         return E_NULL_PTR;
@@ -1190,8 +1002,8 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
         return E_BAD_PARAM;
     }
 
-    // Exit function is DMA already initialized.
-    if (MXC_SPI_RevA2_DMA_GetInitialized((mxc_spi_reva_regs_t *)(init->spi))) {
+    if (STATES[spi_num].dma_initialized) {
+        // Exit function is DMA already initialized.
         return E_NO_ERROR;
     }
 
@@ -1238,51 +1050,27 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_init_t *init)
 //      Useful for switching from non-DMA to DMA transactions.
 bool MXC_SPI_RevA2_DMA_GetInitialized(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
-    return (STATES[spi_num].dma_initialized);
+    return (STATES[MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi)].dma_initialized);
 }
 
 int MXC_SPI_RevA2_DMA_GetTXChannel(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
-    return (STATES[spi_num].tx_dma_ch);
+    return (STATES[MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi)].tx_dma_ch);
 }
 
 int MXC_SPI_RevA2_DMA_GetRXChannel(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
-    return (STATES[spi_num].rx_dma_ch);
+    return (STATES[MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi)].rx_dma_ch);
 }
 
 int MXC_SPI_RevA2_DMA_SetRequestSelect(mxc_spi_reva_regs_t *spi, uint32_t tx_reqsel,
                                        uint32_t rx_reqsel)
 {
-    int spi_num;
+    int8_t spi_num;
     uint32_t tx_ch;
     uint32_t rx_ch;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Ensure DMA was configured before setting DMA Request Selects.
     if (STATES[spi_num].dma == NULL) {
@@ -1330,13 +1118,12 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
                                            uint32_t rx_fr_len, bool use_dma)
 {
     int tx_dummy_fr_len;
-    int spi_num;
+    int8_t spi_num;
     // For readability purposes.
     int rx_ch, tx_ch;
 
     // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
 
     // Initialize SPIn state to handle data.
     STATES[spi_num].transaction_done = false;
@@ -1365,7 +1152,7 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
     }
 
     // Set the number of messages to transmit/receive for the SPI transaction.
-    if (STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
+    if (STATES[spi_num].init.if_mode == MXC_SPI_INTERFACE_STANDARD) {
         if (rx_fr_len > tx_fr_len) {
             // In standard 4-wire mode, the RX_NUM_CHAR field of ctrl1 is ignored.
             // The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
@@ -1497,7 +1284,7 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
             //      the hardware always assume full duplex. Therefore dummy bytes
             //      must be transmitted to support half duplex. The number of bytes to transmit
             //      AND receive is set by TX_NUM_CHAR, and the RX_NUM_CHAR field of ctrl1 is ignored.
-        } else if (tx_fr_len == 0 && STATES[spi_num].init.mode == MXC_SPI_INTERFACE_STANDARD) {
+        } else if (tx_fr_len == 0 && STATES[spi_num].init.if_mode == MXC_SPI_INTERFACE_STANDARD) {
             // For readability purposes.
             tx_ch = STATES[spi_num].tx_dma_ch;
 
@@ -1586,11 +1373,10 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert,
                                           mxc_spi_target_t *target)
 {
-    int spi_num;
+    int8_t spi_num;
 
     // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
 
     // Handle target-select (L. SS) deassertion if HW is selected as Target Select (TS) Control Scheme. This must be done
     //   AFTER launching the transaction to avoid a glitch on the TS line if:
@@ -1634,13 +1420,9 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
                                         uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len,
                                         uint8_t deassert, mxc_spi_target_t *target)
 {
-    int spi_num;
+    int8_t spi_num;
 
-    // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Make sure SPI Instance was initialized.
     if (STATES[spi_num].initialized == false) {
@@ -1697,13 +1479,9 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *
                                              uint32_t rx_fr_len, uint8_t deassert,
                                              mxc_spi_target_t *target)
 {
-    int spi_num;
+    int8_t spi_num;
 
-    // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Make sure SPI Instance was initialized.
     if (STATES[spi_num].initialized == false) {
@@ -1742,12 +1520,9 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
                                            uint32_t rx_fr_len, uint8_t deassert,
                                            mxc_spi_target_t *target)
 {
-    int spi_num;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Make sure DMA is initialized.
     if (STATES[spi_num].init.use_dma == false || STATES[spi_num].dma_initialized == false) {
@@ -1787,12 +1562,9 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
                                             mxc_spi_target_t *target)
 {
     int error;
-    int spi_num;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // This function fills in the STATES value for the flags that checks for blocking status.
     error = MXC_SPI_RevA2_ControllerTransactionDMA(spi, tx_buffer, tx_fr_len, rx_buffer, rx_fr_len,
@@ -1813,13 +1585,10 @@ int MXC_SPI_RevA2_ControllerTransactionDMAB(mxc_spi_reva_regs_t *spi, uint8_t *t
 int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                     uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
-    int spi_num;
+    int8_t spi_num;
 
     // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Make sure SPI Instance was initialized.
     if (STATES[spi_num].initialized == false) {
@@ -1861,13 +1630,10 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
 int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                          uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
-    int spi_num;
+    int8_t spi_num;
 
     // Ensure valid SPI Instance.
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Make sure SPI Instance was initialized.
     if (STATES[spi_num].initialized == false) {
@@ -1893,12 +1659,9 @@ int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
 int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                        uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len)
 {
-    int spi_num;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
 
     // Make sure DMA is initialized.
     if (STATES[spi_num].init.use_dma == false || STATES[spi_num].dma_initialized == false) {
@@ -1926,7 +1689,7 @@ int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buf
 
 void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
+    int8_t spi_num;
     uint32_t status = spi->intfl;
 
     // Used later for readability purposes on handling Chip Select.
@@ -1934,7 +1697,6 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
     uint32_t target_mask;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
 
     // Master done (TX complete)
     if (status & MXC_F_SPI_REVA_INTFL_MST_DONE) {
@@ -1983,7 +1745,7 @@ void MXC_SPI_RevA2_Handler(mxc_spi_reva_regs_t *spi)
 
 void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
+    int8_t spi_num;
     uint32_t tx_ch;
     uint32_t status;
 
@@ -1992,7 +1754,6 @@ void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
     uint32_t target_mask;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
 
     tx_ch = STATES[spi_num].tx_dma_ch;
     status = STATES[spi_num].dma->ch[tx_ch].status;
@@ -2039,7 +1800,7 @@ void MXC_SPI_RevA2_DMA_TX_Handler(mxc_spi_reva_regs_t *spi)
 
 void MXC_SPI_RevA2_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
 {
-    int spi_num;
+    int8_t spi_num;
     uint32_t rx_ch;
     uint32_t status;
     // Used later for readability purposes on handling Chip Select.
@@ -2047,7 +1808,6 @@ void MXC_SPI_RevA2_DMA_RX_Handler(mxc_spi_reva_regs_t *spi)
     uint32_t target_mask;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
 
     rx_ch = STATES[spi_num].rx_dma_ch;
     status = STATES[spi_num].dma->ch[rx_ch].status;

@@ -77,9 +77,9 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
     init->freq = hz;
 
     if (quadModeUsed) {
-        init->mode = MXC_SPI_INTERFACE_QUAD;
+        init->if_mode = MXC_SPI_INTERFACE_QUAD;
     } else {
-        init->mode = MXC_SPI_INTERFACE_STANDARD;
+        init->if_mode = MXC_SPI_INTERFACE_STANDARD;
     }
 
     // New SPI drivers will not use "mxc_spi_pins_t pins" anymore.
@@ -140,7 +140,8 @@ static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, i
 int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
                  unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
 {
-    int error, spi_num;
+    int error;
+    int8_t spi_num;
 
     // TODO(5-15-2023): Remove this section when the Init function is updated to
     //      int MXC_SPI_Init(mxc_spi_init_t *init)
@@ -177,16 +178,16 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->mode == MXC_SPI_INTERFACE_3WIRE) {
+            if (init->if_mode == MXC_SPI_INTERFACE_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_3wire);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_STANDARD) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_DUAL) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_dual);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_QUAD) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_quad);
 
             } else {
@@ -210,16 +211,16 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->mode == MXC_SPI_INTERFACE_3WIRE) {
+            if (init->if_mode == MXC_SPI_INTERFACE_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_STANDARD) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_DUAL) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_dual);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_QUAD) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_quad);
 
             } else {
@@ -245,7 +246,8 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
 
 int MXC_SPI_Init_v2(mxc_spi_init_t *init)
 {
-    int error, spi_num;
+    int error;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX(init->spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
@@ -269,16 +271,16 @@ int MXC_SPI_Init_v2(mxc_spi_init_t *init)
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->mode == MXC_SPI_INTERFACE_3WIRE) {
+            if (init->if_mode == MXC_SPI_INTERFACE_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_3wire);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_STANDARD) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_DUAL) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_dual);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_QUAD) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi1_quad);
 
             } else {
@@ -302,16 +304,16 @@ int MXC_SPI_Init_v2(mxc_spi_init_t *init)
 
         // Configure SPI to default pins if not provided.
         if (init->spi_pins == NULL) {
-            if (init->mode == MXC_SPI_INTERFACE_3WIRE) {
+            if (init->if_mode == MXC_SPI_INTERFACE_3WIRE) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_STANDARD) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_STANDARD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_DUAL) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_DUAL) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_dual);
 
-            } else if (init->mode == MXC_SPI_INTERFACE_QUAD) {
+            } else if (init->if_mode == MXC_SPI_INTERFACE_QUAD) {
                 error = MXC_GPIO_Config(&gpio_cfg_spi0_quad);
 
             } else {
@@ -346,7 +348,7 @@ int MXC_SPI_InitStruct(mxc_spi_init_t *init)
     init->type = MXC_SPI_TYPE_CONTROLLER; // Controller mode
     init->freq = 100000; // 100KHz
     init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
-    init->mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
+    init->if_mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
     init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
     init->target.active_polarity = 0; // Active polarity is LOW (0). IDLE is HIGH (1).
     init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
@@ -368,7 +370,7 @@ int MXC_SPI_InitStruct_DMA(mxc_spi_init_t *init)
     init->type = MXC_SPI_TYPE_CONTROLLER; // Controller mode
     init->freq = 100000; // 100KHz
     init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
-    init->mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
+    init->if_mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
     init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
     init->target.active_polarity = 0; // Active polarity is LOW (0), IDLE is HIGH (1)
     init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
@@ -381,7 +383,7 @@ int MXC_SPI_InitStruct_DMA(mxc_spi_init_t *init)
 
 int MXC_SPI_Shutdown(mxc_spi_regs_t *spi)
 {
-    int spi_num;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX(spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
@@ -467,7 +469,8 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
 
 int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vssel_t vssel)
 {
-    int error, spi_num;
+    int error;
+    int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX(spi);
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
@@ -690,7 +693,7 @@ int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi)
 
 int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_t *rx_buffer)
 {
-    int spi_num;
+    int8_t spi_num;
     int tx_reqsel = -1;
     int rx_reqsel = -1;
 
@@ -976,11 +979,11 @@ int MXC_SPI_SetWidth(mxc_spi_regs_t *spi, mxc_spi_width_t spiWidth)
 
 mxc_spi_width_t MXC_SPI_GetWidth(mxc_spi_regs_t *spi)
 {
-    mxc_spi_interface_t mode;
+    mxc_spi_interface_t if_mode;
 
-    mode = MXC_SPI_GetInterface(spi);
+    if_mode = MXC_SPI_GetInterface(spi);
 
-    switch (mode) {
+    switch (if_mode) {
     case MXC_SPI_INTERFACE_STANDARD:
         return SPI_WIDTH_STANDARD;
 

@@ -129,7 +129,7 @@ int main(void)
     controller_init.spi = SPI_CONTROLLER;
     controller_init.freq = SPI_SPEED;
     controller_init.spi_pins = NULL; // Use default, predefined pins
-    controller_init.mode = MXC_SPI_INTERFACE_STANDARD;
+    controller_init.if_mode = MXC_SPI_INTERFACE_STANDARD;
     controller_init.type = MXC_SPI_TYPE_CONTROLLER; // L. Master
     controller_init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
     controller_init.frame_size = DATA_SIZE;
@@ -183,7 +183,7 @@ int main(void)
     target_init.spi = SPI_TARGET;
     target_init.freq = SPI_SPEED;
     target_init.spi_pins = NULL; // Use default, predefined pins
-    target_init.mode = MXC_SPI_INTERFACE_STANDARD;
+    target_init.if_mode = MXC_SPI_INTERFACE_STANDARD;
     target_init.type = MXC_SPI_TYPE_TARGET; // L. Slave
     target_init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
     target_init.frame_size = DATA_SIZE;
