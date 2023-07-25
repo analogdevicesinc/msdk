@@ -657,7 +657,7 @@ void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi);
  * feature.
  *
  * @param   spi             Pointer to SPI registers (selects the SPI block used.)
- * @param   state           true or false
+ * @param   state           Non-zero values: enable HW SS mode. Zero: disable HW SS mode.
  */
 void MXC_SPI_HWSSControl(mxc_spi_regs_t *spi, int state);
 
