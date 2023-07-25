@@ -50,8 +50,13 @@
 
 /***** Definitions *****/
 #define EEPROM_I2C MXC_I2C0
+#if defined(EvKit_V1)
 #define SYNC_PIN_PORT MXC_GPIO2
 #define SYNC_PIN_MASK MXC_GPIO_PIN_11
+#else
+#define SYNC_PIN_PORT MXC_GPIO1
+#define SYNC_PIN_MASK MXC_GPIO_PIN_11
+#endif
 
 /***** Functions *****/
 int main(void)

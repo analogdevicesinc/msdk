@@ -10,6 +10,8 @@ On the standard EV Kit:
 -    PT2: P1.8
 -    PT3: P1.9
 
+On the feather board, use a logic analyzer to observe the signals on P1.8 and P1.9.
+
 ## Software
 
 ### Project Usage
@@ -22,11 +24,18 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
+If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install JP7(RX_EN) and JP8(TX_EN) headers.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Connect pin 1.8 to pin 1 of JP5 (LED1_EN).
 -   Connect pin 1.9 to pin 1 of JP6 (LED2_EN).
+
+If using the MAX32690FTHR:
+-   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect pin 1.8 on J1 to a logic analyzer channel.
+-   Connect pin 1.9 on J2 to a logic analyzer channel.
 
 ## Expected Output
 

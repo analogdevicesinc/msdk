@@ -16,11 +16,18 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
+If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
--   Install headers JP7(RX\_EN) and JP8(TX\_EN).
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Install JP7(RX_EN) and JP8(TX_EN) headers.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   Apply the negative comparator input to the pin labeled 0 of the JH6 (Analog) header.
--	Apply the positive comparator input to the pin labeled 1 of the JH6 (Analog) header.
+-   Apply the positive comparator input to the pin labeled 1 of the JH6 (Analog) header.
+
+If using the MAX32690FTHR:
+-   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Apply the negative comparator input to the pin labeled AIN0 of the J2 header.
+-   Apply the positive comparator input to the pin labeled AIN1 of the J2 header.
 
 ## Expected Output
 

@@ -91,7 +91,7 @@ int main(void)
     printf("well as receiving a CAN message (any type except CAN FD). These\n");
     printf("operations can be performed with either blocking, non-blocking or\n");
     printf("DMA methods (selectable with the macros defined above.)\n\n");
-    printf("Connect CAN signals on header JH8 to CAN bus.\n\n");
+    printf("Connect CAN signals on CAN header to CAN bus.\n\n");
 
 #if ASYNC || DMA
     NVIC_EnableIRQ(CAN0_IRQn);
@@ -122,8 +122,8 @@ int main(void)
         data_tx[i] = i;
     }
 
-    printf("Press button SW2 to begin example.\n");
-    while (!PB_Get(0)) {}
+    printf("Press any user push button to begin example.\n");
+    while (!PB_IsPressedAny()) {}
     MXC_Delay(MXC_DELAY_MSEC(500));
 
 #if SEND_CAN
