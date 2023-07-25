@@ -1339,7 +1339,6 @@ void MXC_SPI_RevA1_HWSSControl(mxc_spi_reva_regs_t *spi, int state)
     int spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    MXC_ASSERT(spi_num >= 0);
 
     states[spi_num].hw_ss_control = state ? true : false;
 
