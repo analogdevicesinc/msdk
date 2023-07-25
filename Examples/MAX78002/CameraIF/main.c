@@ -61,6 +61,7 @@
 #include "mipi_camera.h"
 #include "utils.h"
 #include "dma.h"
+
 #ifdef TFT_ADAFRUIT
 #include "adafruit_3315_tft.h"
 #endif
@@ -111,13 +112,19 @@ void process_img(void)
     // to an image file
     utils_send_img_to_pc(raw, imgLen, w, h, camera_get_pixel_format());
 #else
+#ifdef TFT_NEWHAVEN
+    MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
+    // Stream captured image to TFT display
+    TFT_SPI_Transmit(raw, IMAGE_XRES * IMAGE_YRES * 2);
+#else //#ifdef TFT_NEWHAVEN
 #ifndef CAMERA_MONO
     // Send the image to TFT
-    MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
+    MXC_TFT_WriteBufferRGB565(X_START, Y_START, raw, w, h);
 #else
     MXC_TFT_ShowImageCameraMono(X_START, Y_START, raw, w, h);
 #endif // #ifndef CAMERA_MONO
-#endif // ##ifndef ENABLE_TFT
+#endif //#ifdef TFT_NEWHAVEN
+#endif // #ifndef ENABLE_TFT
 }
 
 // *****************************************************************************
@@ -182,21 +189,19 @@ int main(void)
     printf("Init TFT\n");
     /* Initialize TFT display */
 #ifdef TFT_ADAFRUIT
-    /* Initialize touch screen */
-    if (MXC_TS_Init(MXC_SPI0, -1, NULL, NULL) != E_NO_ERROR) {
-        printf("Touch screen initialization failed\n");
+    if (MXC_TFT_Init(MXC_SPI0, 1, NULL, NULL) != E_NO_ERROR) {
+        printf("TFT initialization failed\n");
         return E_ABORT;
     }
 #else
     /* Initialize TFT display */
     if (MXC_TFT_Init(NULL, NULL) != E_NO_ERROR) {
-        printf("Touch screen initialization failed\n");
+        printf("TFT initialization failed\n");
         return E_ABORT;
     }
-    // Set 0 rotation to match camera orientation
-    MXC_TFT_SetRotation(ROTATE_0);
 #endif
-    MXC_TFT_SetBackGroundColor(0);
+    MXC_TFT_SetRotation(ROTATE_90);
+    MXC_TFT_SetBackGroundColor(4);
 #endif
 
     // Setup the camera image dimensions, pixel format and data acquiring details.
@@ -228,10 +233,7 @@ int main(void)
 
     while (1) {
         // Check if image is acquired.
-#ifndef STREAM_ENABLE
-        if (camera_is_image_rcv())
-#endif
-        {
+        if (camera_is_image_rcv()) {
             // Process the image, send it through the UART console.
             process_img();
 
