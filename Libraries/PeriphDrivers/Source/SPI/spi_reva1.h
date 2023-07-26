@@ -127,6 +127,7 @@ void MXC_SPI_RevA1_DMACallback(int ch, int error);
 int MXC_SPI_RevA1_SetDefaultTXData(mxc_spi_reva_regs_t *spi, unsigned int defaultTXData);
 void MXC_SPI_RevA1_AbortAsync(mxc_spi_reva_regs_t *spi);
 void MXC_SPI_RevA1_AsyncHandler(mxc_spi_reva_regs_t *spi);
+void MXC_SPI_RevA1_HWSSControl(mxc_spi_reva_regs_t *spi, int state);
 
 #ifdef __cplusplus
 }
