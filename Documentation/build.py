@@ -6,9 +6,7 @@ from mkdocs.commands.build import build
 from mkdocs.config import load_config
 from os import listdir
 import os
-from typing import Tuple
 import re
-from rich import inspect
 from operator import attrgetter
 
 # Locate some directories relative to this file
