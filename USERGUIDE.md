@@ -1863,10 +1863,11 @@ The `MXC_SPI_Init(...)` function used in SPI v1 is still supported with SPI v2, 
 
 **Limitations with `MXC_SPI_Init(...)`**
 1. This function does not give you the option to select which HW TS pins to drive.
-2. This function does not set the Clock Mode.
-3. This function only supports standard or quad mode interface modes.
-4. This function does not initialize the DMA for SPI DMA Transactions.
-5. Only the Master and Slave Transaction functions will work with `MXC_SPI_Init(...)`. The Controller and Target functions must use `MXC_SPI_Init_v2(...)`.
+2. This function does not set other Clock Modes.
+3. This function does not set the frame size (2 - 16 bits).
+4. This function only supports standard or quad mode interface modes.
+5. This function does not initialize the DMA for SPI DMA Transactions.
+6. Only the Master and Slave Transaction functions will work with `MXC_SPI_Init(...)`. The Controller and Target functions must use `MXC_SPI_Init_v2(...)`.
 
 Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead of initialization and 2) to give the caller more control in the SPI setup.
 
