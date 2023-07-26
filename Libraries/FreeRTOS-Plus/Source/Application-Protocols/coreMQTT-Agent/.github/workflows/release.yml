@@ -1,0 +1,174 @@
+name: Release automation
+
+on:
+  workflow_dispatch:
+    inputs:
+      commit_id:
+        description: 'Commit ID to tag and create a release for'
+        required: true
+      version_number:
+        description: 'Release Version Number (Eg, v1.0.0)'
+        required: true
+      delete_existing_tag_release:
+        description: 'Is this a re-release of existing tag/release? (Default: false)'
+        default: 'false'
+        required: false
+jobs:
+  clean-existing-tag-and-release:
+    if: ${{ github.event.inputs.delete_existing_tag_release == 'true' }}
+    runs-on: ubuntu-latest
+    env:
+      VERSION_NUM: ${{ github.event.inputs.version_number }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Check if tag exists
+        run: |
+          git fetch origin
+          if git tag --list $VERSION_NUM
+          then
+              echo "Deleting existing tag for $VERSION_NUM"
+              git push origin --delete tags/$VERSION_NUM
+          fi
+      - name: Check if release exists
+        run: |
+          sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-key 23F3D4EA75716059
+          sudo apt-add-repository https://cli.github.com/packages
+          sudo apt update
+          sudo apt-get install gh
+          if gh release list | grep $VERSION_NUM
+          then
+              echo "Deleting existing release for $VERSION_NUM"
+              gh release delete --yes $VERSION_NUM
+          fi
+  tag-commit:
+    if: ${{ ( github.event.inputs.delete_existing_tag_release == 'true' && success() )  || ( github.event.inputs.delete_existing_tag_release == 'false' && always() ) }}
+    needs: clean-existing-tag-and-release
+    name: Tag commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.commit_id }}
+      - name: Configure git identity
+        run: |
+            git config --global user.name "Release Workflow"
+      - name: Tag Commit and Push to remote
+        run: |
+          git tag ${{ github.event.inputs.version_number }} -a -m "coreMQTT-Agent Library ${{ github.event.inputs.version_number }}"
+          git push origin --tags
+      - name: Verify tag on remote
+        run: |
+          git tag -d ${{ github.event.inputs.version_number }}
+          git remote update
+          git checkout tags/${{ github.event.inputs.version_number }}
+          git diff ${{ github.event.inputs.commit_id }} tags/${{ github.event.inputs.version_number }}
+  create-zip:
+    if: ${{ ( github.event.inputs.delete_existing_tag_release == 'true' && success() )  || ( github.event.inputs.delete_existing_tag_release == 'false' && always() ) }}
+    needs: tag-commit
+    name: Create ZIP and verify package for release asset.
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install ZIP tools
+        run: sudo apt-get install zip unzip
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.inputs.commit_id }}
+          path: coreMQTT-Agent
+          submodules: recursive
+      - name: Checkout disabled submodules
+        run: |
+          cd coreMQTT-Agent
+          git submodule update --init --checkout --recursive
+      - name: Create ZIP
+        run: |
+          zip -r coreMQTT-Agent-${{ github.event.inputs.version_number }}.zip coreMQTT-Agent -x "*.git*"
+          ls ./
+      - name: Validate created ZIP
+        run: |
+          mkdir zip-check
+          mv coreMQTT-Agent-${{ github.event.inputs.version_number }}.zip zip-check
+          cd zip-check
+          unzip coreMQTT-Agent-${{ github.event.inputs.version_number }}.zip -d coreMQTT-Agent-${{ github.event.inputs.version_number }}
+          ls coreMQTT-Agent-${{ github.event.inputs.version_number }}
+          diff -r -x "*.git*" coreMQTT-Agent-${{ github.event.inputs.version_number }}/coreMQTT-Agent/ ../coreMQTT-Agent/
+          cd ../
+      - name: Build
+        run: |
+          cd zip-check/coreMQTT-Agent-${{ github.event.inputs.version_number }}/coreMQTT-Agent
+          sudo apt-get install -y lcov
+          cmake -S test -B build/ \
+          -G "Unix Makefiles" \
+          -DCMAKE_BUILD_TYPE=Debug \
+          -DBUILD_CLONE_SUBMODULES=ON \
+          -DCMAKE_C_FLAGS='--coverage -Wall -Wextra -Werror -DNDEBUG'
+          make -C build/ all
+      - name: Test
+        run: |
+          cd zip-check/coreMQTT-Agent-${{ github.event.inputs.version_number }}/coreMQTT-Agent/build/
+          ctest -E system --output-on-failure
+          cd ..
+      - name: Create artifact of ZIP
+        uses: actions/upload-artifact@v2
+        with:
+          name: coreMQTT-Agent-${{ github.event.inputs.version_number }}.zip
+          path: zip-check/coreMQTT-Agent-${{ github.event.inputs.version_number }}.zip
+  deploy-doxygen:
+    needs: tag-commit
+    if: ${{ ( github.event.inputs.delete_existing_tag_release == 'true' && success() )  || ( github.event.inputs.delete_existing_tag_release == 'false' && always() ) }}
+    name: Deploy doxygen documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Doxygen generation
+        uses: FreeRTOS/CI-CD-Github-Actions/doxygen-generation@main
+        with:
+          ref: ${{ github.event.inputs.version_number }}
+          add_release: "true"
+          generate_command: |
+            # generate coreMQTT docs
+            git submodule update --init --checkout source/dependency/coreMQTT
+            cd source/dependency/coreMQTT
+            doxygen docs/doxygen/config.doxyfile 2>&1 | tee doxyoutput.txt
+            cd ../../..
+            # generate coreMQTT-Agent docs
+            ( cat docs/doxygen/config.doxyfile;
+              echo "TAGFILES = source/dependency/coreMQTT/docs/doxygen/output/mqtt.tag=coreMQTT"
+            ) | doxygen - 2>&1 | tee -a doxyoutput.txt
+            mv source/dependency/coreMQTT/docs/doxygen/output/html docs/doxygen/output/html/coreMQTT
+            if [ "$(wc -c < doxyoutput.txt | bc)" = "0" ]; then exit 0; else exit 1; fi
+  create-release:
+    needs:
+      - create-zip
+      - deploy-doxygen
+    if: ${{ ( github.event.inputs.delete_existing_tag_release == 'true' && success() )  || ( github.event.inputs.delete_existing_tag_release == 'false' && always() ) }}
+    name: Create Release and Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version_number }}
+          release_name: ${{ github.event.inputs.version_number }}
+          body: Release ${{ github.event.inputs.version_number }} of the coreMQTT-Agent Library.
+          draft: false
+          prerelease: false
+      - name: Download ZIP artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: coreMQTT-Agent-${{ github.event.inputs.version_number }}.zip
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./coreMQTT-Agent-${{ github.event.inputs.version_number }}.zip
+          asset_name: coreMQTT-Agent-${{ github.event.inputs.version_number }}.zip
+          asset_content_type: application/zip

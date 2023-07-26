@@ -1,0 +1,12 @@
+{
+    "lib_name": "AWS IoT Device Shadow",
+    "src": [
+        "source/shadow.c"
+    ],
+    "include": [
+        "source/include"
+    ],
+    "compiler_flags": [
+        "SHADOW_DO_NOT_USE_CUSTOM_CONFIG"
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "lib_name" : "cellularLibrary",
+    "src": [
+        "source/cellular_3gpp_api.c",
+        "source/cellular_3gpp_urc_handler.c",
+        "source/cellular_at_core.c",
+        "source/cellular_common_api.c",
+        "source/cellular_common.c",
+        "source/cellular_pkthandler.c",
+        "source/cellular_pktio.c"
+    ],
+    "include": [
+        "source/include",
+        "source/include/common",
+        "source/include/private",
+        "source/interface",
+        "test/unit-test"
+    ],
+    "compiler_flags": [
+        "CELLULAR_DO_NOT_USE_CUSTOM_CONFIG"
+    ]
+}

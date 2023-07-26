@@ -1,0 +1,36 @@
+SPDXVersion: SPDX-2.2
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: SigV4-for-AWS-IoT-embedded-sdk
+DocumentNamespace: https://github.com/FreeRTOS/SigV4-for-AWS-IoT-embedded-sdk/blob/v1.2.0/sbom.spdx
+Creator: Amazon Web Services
+Created: 2022-10-14T20:15:40Z
+CreatorComment: NOASSERTION
+DocumentComment: NOASSERTION
+
+PackageName: SigV4-for-AWS-IoT-embedded-sdk
+SPDXID: SPDXRef-Package-SigV4-for-AWS-IoT-embedded-sdk
+PackageVersion: v1.2.0
+PackageDownloadLocation: https://github.com/aws/SigV4-for-AWS-IoT-embedded-sdk/tree/v1.2.0
+PackageLicenseConcluded: MIT
+FilesAnalyzed: True
+PackageVerificationCode: 8f6d21857c89b72cd4da54d9a189fb10b5321c82
+PackageCopyrightText: NOASSERTION
+PackageSummary: NOASSERTION
+PackageDescription: "Library used in client authorization over HTTP with AWS IoT, on embedded devices.\n"
+
+
+FileName: ./sigv4.c
+SPDXID: SPDXRef-File-sigv4.c
+FileChecksum: SHA1: b953340742ff75a3bb022b2a0afcaea36f6ed640
+LicenseConcluded: MIT
+FileCopyrightText: NOASSERTION
+FileComment: NOASSERTION
+
+FileName: ./sigv4_quicksort.c
+SPDXID: SPDXRef-File-sigv4_quicksort.c
+FileChecksum: SHA1: c0ca152e0924bd4b7a6b267fc3d53853beb4578c
+LicenseConcluded: MIT
+FileCopyrightText: NOASSERTION
+FileComment: NOASSERTION
+
