@@ -36,7 +36,6 @@
  * @brief       FreeRTOS Example Application.
  */
 
-
 /* config.h is the required application configuration; RAM layout, stack, chip type etc. */
 
 #include <stdio.h>
