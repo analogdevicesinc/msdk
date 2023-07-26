@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "initializeLocalBuffers",
-  "proof-root": "test/cbmc/proofs"
-}

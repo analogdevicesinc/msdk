@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "Free_FreeRTOS",
-  "proof-root": "test/cbmc/proofs"
-}

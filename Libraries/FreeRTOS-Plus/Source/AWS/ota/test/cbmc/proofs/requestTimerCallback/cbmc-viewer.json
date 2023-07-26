@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "requestTimerCallback",
-  "proof-root": "test/cbmc/proofs"
-}

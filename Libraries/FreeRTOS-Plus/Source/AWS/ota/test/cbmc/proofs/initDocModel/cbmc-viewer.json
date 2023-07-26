@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "initDocModel",
-  "proof-root": "test/cbmc/proofs"
-}

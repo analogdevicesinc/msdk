@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "closeFileHandler",
-  "proof-root": "test/cbmc/proofs"
-}

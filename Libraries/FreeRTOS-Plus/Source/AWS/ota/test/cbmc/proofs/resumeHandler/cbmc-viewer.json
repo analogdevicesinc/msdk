@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "resumeHandler",
-  "proof-root": "test/cbmc/proofs"
-}

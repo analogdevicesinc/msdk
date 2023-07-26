@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "Posix_OtaSendEvent",
-  "proof-root": "test/cbmc/proofs"
-}

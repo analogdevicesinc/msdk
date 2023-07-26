@@ -1,5 +1,0 @@
-name : "SigV4-for-AWS-IoT-embedded-sdk"
-version: "v1.2.0"
-description: |
-  "Library used in client authorization over HTTP with AWS IoT, on embedded devices.\n"
-license: "MIT"

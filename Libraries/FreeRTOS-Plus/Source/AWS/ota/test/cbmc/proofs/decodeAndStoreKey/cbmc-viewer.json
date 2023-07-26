@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "decodeAndStoreKey",
-  "proof-root": "test/cbmc/proofs"
-}

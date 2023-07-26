@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "OtaStartTimer_FreeRTOS",
-  "proof-root": "test/cbmc/proofs"
-}

@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "updateJobStatus_Mqtt",
-  "proof-root": "test/cbmc/proofs"
-}

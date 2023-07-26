@@ -1,7 +1,0 @@
-{ "expected-missing-functions":
-  [
-
-  ],
-  "proof-name": "MQTTAgent_ResumeSession",
-  "proof-root": "test/cbmc/proofs"
-}

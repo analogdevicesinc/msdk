@@ -1,7 +1,0 @@
-{ "expected-missing-functions":
-  [
-
-  ],
-  "proof-name": "MQTTAgent_CommandLoop",
-  "proof-root": "test/cbmc/proofs"
-}

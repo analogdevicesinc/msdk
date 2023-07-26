@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "handleCustomJob",
-  "proof-root": "test/cbmc/proofs"
-}

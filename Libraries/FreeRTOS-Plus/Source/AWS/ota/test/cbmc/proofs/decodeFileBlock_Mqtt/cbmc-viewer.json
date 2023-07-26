@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "decodeFileBlock_Mqtt",
-  "proof-root": "test/cbmc/proofs"
-}

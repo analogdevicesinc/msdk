@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "OTA_Shutdown",
-  "proof-root": "test/cbmc/proofs"
-}

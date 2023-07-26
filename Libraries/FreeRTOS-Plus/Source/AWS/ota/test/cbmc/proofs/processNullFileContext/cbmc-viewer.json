@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "processNullFileContext",
-  "proof-root": "test/cbmc/proofs"
-}

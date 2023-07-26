@@ -1,2 +1,0 @@
-# This file marks this directory as containing a CBMC proof.
-# This file is required by the run-cbmc-proofs.py to differentiate between a proof directory from a normal directory.

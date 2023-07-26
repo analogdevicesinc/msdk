@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "prvBuildStatusMessageFinish",
-  "proof-root": "test/cbmc/proofs"
-}

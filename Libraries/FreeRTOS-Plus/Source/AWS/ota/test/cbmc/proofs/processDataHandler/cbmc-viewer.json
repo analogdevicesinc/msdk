@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "processDataHandler",
-  "proof-root": "test/cbmc/proofs"
-}

@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "stringBuilderUInt32Hex",
-  "proof-root": "/test/cbmc/proofs"
-}

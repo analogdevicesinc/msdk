@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "STDC_Free",
-  "proof-root": "test/cbmc/proofs"
-}

@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "selfTestTimerCallback",
-  "proof-root": "test/cbmc/proofs"
-}

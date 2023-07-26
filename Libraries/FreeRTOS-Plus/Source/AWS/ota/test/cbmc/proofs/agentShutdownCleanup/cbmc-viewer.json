@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "agentShutdownCleanup",
-  "proof-root": "test/cbmc/proofs"
-}

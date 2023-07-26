@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "Posix_OtaDeleteTimer",
-  "proof-root": "test/cbmc/proofs"
-}

@@ -1,6 +1,0 @@
-{ "expected-missing-functions":
-  [
-  ],
-  "proof-name": "cleanupData_Http ",
-  "proof-root": "test/cbmc/proofs"
-}
