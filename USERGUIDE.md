@@ -1836,3 +1836,97 @@ FreeRTOS is supported by all parts in the MSDK.  See the `FreeRTOSDemo` example 
 
 - [FreeRTOS-Plus-CLI](https://www.freertos.org/FreeRTOS-Plus/index.html): **Supported**
 - [FreeRTOS-Plus-TCP](https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/index.html): **Not supported** (Contributions welcome!)
+
+## Developer Notes
+
+### SPI v2 Library
+
+The SPI v2 Library is the latest version of the MSDK SPI drivers which highlights:
+- New Target Select Control Scheme which provides users the option to drive their own TS pins.
+- More control in selecting options during initialization by using an `mxc_spi_init_t` struct rather than calling multiple functions to set the desired SPI settings.
+- Allow for re-arming an SPI transaction within the callback function for chained SPI messages.
+- Decrease in setup overhead in a Transaction function call. Less nested function calls within drivers.
+- Improved SPI DMA support and DMA Channel IRQ vector flexibility by providing acquired DMA channel numbers before a SPI DMA transaction call.
+- The use of Controller and Target terms instead of Master and Slave, respectively.
+- Still supports SPI v1 function prototypes for backwards-compatibility. 
+- Bug fixes from the SPI v1 API.
+
+#### Porting Projects to use SPI v2
+
+The latest SPI examples in the MSDK use the SPI v2 libraries. Set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file to continue using the previous SPI v1 API.
+
+This guide shows how to update an existing project that is using the SPI v1 to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main difference in the SPI DMA interrupt handling (see **SPI DMA Interrupt Handling** section below for more info). However, there are several changes required in order to use the full set of the SPI v2 features. 
+
+##### SPI Init Function
+
+The `MXC_SPI_Init(...)` function used in SPI v1 is still supported with SPI v2, but there is some added overhead due to the limited settings that this function can set. Several function calls must be made to set the desired SPI settings.
+
+**Limitations with `MXC_SPI_Init(...)`**
+1. This function does not give you the option to select which HW TS pins to drive.
+2. This function does not set the Clock Mode.
+3. This function only supports standard or quad mode interface modes.
+4. This function does not initialize the DMA for SPI DMA Transactions.
+5. Only the Master and Slave Transaction functions will work with `MXC_SPI_Init(...)`. The Controller and Target functions must use `MXC_SPI_Init_v2(...)`.
+
+Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead of initialization and 2) to give the caller more control in the SPI setup.
+
+**`mxc_spi_init_t init` Fields**
+- `mxc_spi_regs_t *spi`              //<== SPI Instance
+- `mxc_gpio_cfg_t *spi_pins`         //<== (Optional) Caller supplied SPI pins
+- `mxc_spi_type_t type`              //<== Controller (L. Master) or Target (L. Slave) Modes
+- `uint32_t freq`                    //<== SPI Frequency
+- `mxc_spi_clkmode_t clk_mode`       //<== Clock Mode (CPOL:CPHA)
+- `mxc_spi_interface_t if_mode`      //<== Select Interface (Standard 4-wire, 3-wire, dual, quad)
+- `mxc_spi_tscontrol_t ts_control`   //<== HW Auto, SW Driver, or SW Application Target Control
+- `mxc_spi_target_t target`          //<== Target settings (custom TS pins, init mask, active polarity) 
+- `mxc_gpio_vssel_t vssel`           //<== Select Pin Voltage Level (VDDIO/VDDIOH)
+- `bool use_dma`                     //<== TRUE/FALSE DMA setting
+- `mxc_dma_regs_t *dma`              //<== DMA Instance
+
+##### SPI Transaction Functions
+
+The SPI v2 Libraries follows the terms used in the user guide: Controller and Target instead of Master and Slave, respectively.
+
+`MXC_SPI_MasterTransaction(...)`      -> `MXC_SPI_ControllerTransaction(...)`
+`MXC_SPI_MasterTransactionAsync(...)` -> `MXC_SPI_ControllerTransactionAsync(...)`
+`MXC_SPI_MasterTransactionDMA(...)`   -> `MXC_SPI_ControllerTransactionDMA(...)`
+`MXC_SPI_SlaveTransaction(...)`       -> `MXC_SPI_TargetTransaction(...)`
+`MXC_SPI_SlaveTransactionAsync(...)`  -> `MXC_SPI_TargetTransactionAsync(...)`
+`MXC_SPI_SlaveTransactionDMA(...)`    -> `MXC_SPI_TargetTransactionDMA(...)`
+
+The `MXC_SPI_Init_v2(...)` function must be called before using the Controller and Target functions. These functions won't work when using `MXC_SPI_Init(...)`.
+
+The SPI v2 Library still supports the Master and Slave functions for backwards-compatibility with SPI v1; however, their functionality is more limited and there is more setup overhead.
+
+##### SPI DMA Setup for `MXC_SPI_ControllerTransactionDMA(...)`
+```c
+    ...
+    int TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
+    int RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI);
+
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(TX_DMA_CH));
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(RX_DMA_CH));
+
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
+
+    MXC_SPI_ControllerTransactionDMA(&req);
+    ...
+```
+The DMA is initialized in `MXC_SPI_Init_v2(...)` or `MXC_SPI_DMA_Init(...)`. This provides information on what DMA channels were acquired for a SPI instance's TX and RX DMA before calling the DMA transaction function. Following the example above, it is recommended to set up a generic-named DMA TX/RX vector because the SPI TX and RX DMA channels won't always acquire DMA_CH0 and DMA_CH1, respectively. 
+
+##### SPI DMA Interrupt Handling
+
+```c
+void DMA_TX_IRQHandler(void)
+{
+    MXC_SPI_DMA_TX_Handler(SPI);
+}
+
+void DMA_RX_IRQHandler(void)
+{
+    MXC_SPI_DMA_RX_Handler(SPI);
+}
+
+```
+The SPI v1 API requires `MXC_DMA_Handler()` to be called in the TX and RX DMA Channel interrupt handlers. Following the generic vector names used in the previous section, the SPI v2 supplies its own TX/RX DMA Handler processing functions (`MXC_SPI_DMA_RX_Handler(...)` and `MXC_SPI_DMA_RX_Handler(...)`) that must be called within their appropriate DMA channel interrupt handlers. 

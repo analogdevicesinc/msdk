@@ -312,7 +312,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
  *
  * These parameters can be modified after initialization using low level functions
  *
- * @param   Init    Pointer to SPI registers (selects the SPI block used.)         
+ * @param   init    Pointer to SPI registers (selects the SPI block used.)         
  *
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
@@ -917,10 +917,10 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req);
 
 /**
  * @brief   Set up a blocking, non-interrupt-driven SPI controller transaction.
- * 
- * The MXC_SPI_Handler function must be called in the selected SPI instance's
- * interrupt handler to process the transaction.
  *
+ * The MXC_SPI_Init_v2(...) function must be called before using this transaction
+ * function.
+ * 
  * @param   req         Pointer to details of the transaction.
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
@@ -932,6 +932,9 @@ int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req);
  * 
  * The MXC_SPI_Handler function must be called in the selected SPI instance's
  * interrupt handler to process the transaction.
+ * 
+ * The MXC_SPI_Init_v2(...) function must be called before using this transaction
+ * function.
  *
  * @param   req         Pointer to details of the transaction.
  *
@@ -941,6 +944,10 @@ int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req);
 
 /**
  * @brief   Set up a non-blocking, DMA-driven SPI controller transaction.
+ * 
+ * The MXC_SPI_Init_v2(...) or MXC_SPI_DMA_Init(...) functions must be
+ * called before calling this DMA transaction function. This function
+ * does not initialize the DMA.
  *
  * @param   req         Pointer to details of the transaction.
  *
@@ -950,6 +957,9 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req);
 
 /**
  * @brief   Set up a blocking, DMA-driven SPI controller transaction.
+ * 
+ * The MXC_SPI_Init_v2(...) function must be called before using this transaction
+ * function.
  *
  * @param   req         Pointer to details of the transaction.
  *
@@ -995,6 +1005,9 @@ int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req);
 /**
  * @brief   Setup a blocking SPI Target transaction.
  * 
+ * The MXC_SPI_Init_v2(...) function must be called before using this transaction
+ * function.
+ * 
  * @param   req         Pointer to details of the transaction.
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
@@ -1004,6 +1017,9 @@ int MXC_SPI_TargetTransaction(mxc_spi_req_t *req);
 /**
  * @brief   Setup an interrupt-driven, non-blocking SPI Target transaction.
  * 
+ * The MXC_SPI_Init_v2(...) function must be called before using this transaction
+ * function.
+ * 
  * @param   req         Pointer to details of the transaction.
  *
  * @return  See \ref MXC_Error_Codes for the list of error return codes.
@@ -1012,6 +1028,10 @@ int MXC_SPI_TargetTransactionAsync(mxc_spi_req_t *req);
 
 /**
  * @brief   Setup a DMA driven SPI Target transaction.
+ *
+ * The MXC_SPI_Init_v2(...) or MXC_SPI_DMA_Init(...) functions must be
+ * called before calling this DMA transaction function. This function
+ * does not initialize the DMA.
  *
  * @param   req         Pointer to details of the transaction.
  *

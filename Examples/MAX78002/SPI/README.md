@@ -11,11 +11,13 @@ This example also demonstrates the feature to use custom Target Selects that the
 
 ## Software
 
-This example uses the SPI v2 Library. To use the previous SPI (RevA1) library, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
+This example uses the SPI v2 Library. To use the SPI v1 library, set `MXC_SPI_BUILD_LEGACY=1` in the Project's project.mk file.
+
+More information over the SPI v2 Library can be found in the **[MSDK User Guide](https://analog-devices-msdk.github.io/msdk/USERGUIDE/)**
 
 ### Porting Guide
 
-This guide shows how to update an existing project that is using the previous SPI API (RevA1) to SPI v2. The main difference between SPI API (RevA1) and SPI v2 is the DMA interrupt handling for SPI DMA transactions.
+This guide shows how to update an existing project that is using the SPI v1 to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main difference in the SPI DMA interrupt handling (see **SPI DMA Interrupt Handling** section below for more info). However, there are several changes required in order to use the full set of the SPI v2 features. 
 
 #### SPI v2 API Differences
 
@@ -52,9 +54,9 @@ void DMA_RX_IRQHandler(void)
 }
 
 ```
-The previous SPI API uses the MXC_DMA_Handler, but SPI v2 supplies its own Handler processing functions to call for TX and RX DMA.
+The SPI v1 API requires `MXC_DMA_Handler()` to be called in the TX and RX DMA Channel interrupt handlers. Following the generic vector names used in the previous section, the SPI v2 supplies its own TX/RX DMA Handler processing functions (`MXC_SPI_DMA_RX_Handler(...)` and `MXC_SPI_DMA_RX_Handler(...)`) that must be called within their appropriate DMA channel interrupt handlers. 
 
-##### SPI DMA Setup
+##### SPI DMA Setup for `MXC_SPI_ControllerTransactionDMA(...)`
 ```c
     ...
     TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
@@ -66,10 +68,10 @@ The previous SPI API uses the MXC_DMA_Handler, but SPI v2 supplies its own Handl
     MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
     MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
 
-    MXC_SPI_MasterTransactionDMA(&req);
+    MXC_SPI_ControllerTransactionDMA(&req);
     ...
 ```
-Following the DMA channel interrupt changes from the previous section, it is recommended to set up a generic-named DMA TX/RX vector because the SPI TX and RX DMA channels won't always acquire DMA_CH0 and DMA_CH1, respectively.
+The DMA is initialized in `MXC_SPI_Init_v2(...)` or `MXC_SPI_DMA_Init(...)`. This provides information on what DMA channels were acquired for a SPI instance's TX and RX DMA before calling the DMA transaction function. Following the example above, it is recommended to set up a generic-named DMA TX/RX vector because the SPI TX and RX DMA channels won't always acquire DMA_CH0 and DMA_CH1, respectively. 
 
 ### Project Usage
 
