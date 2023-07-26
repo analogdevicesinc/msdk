@@ -33,7 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   EEPROM_Emulator Example
+ * @brief   Example firmware for emulating an EEPROM chip with an I2C interface.
  * @details This example can be used to emulate the behavior of
  *          an EEPROM chip with an I2C interface. See README for
  *          details on how to perform read and write operations

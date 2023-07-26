@@ -33,7 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Security MOnitor
+ * @brief   Security Monitor example
  *
  * @details
  */
