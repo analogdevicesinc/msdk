@@ -1888,12 +1888,12 @@ Use the `MXC_SPI_Init_v2(...)` function for 1) to decrease overhead of initializ
 
 The SPI v2 Libraries follows the terms used in the user guide: Controller and Target instead of Master and Slave, respectively.
 
-`MXC_SPI_MasterTransaction(...)`      -> `MXC_SPI_ControllerTransaction(...)`
-`MXC_SPI_MasterTransactionAsync(...)` -> `MXC_SPI_ControllerTransactionAsync(...)`
-`MXC_SPI_MasterTransactionDMA(...)`   -> `MXC_SPI_ControllerTransactionDMA(...)`
-`MXC_SPI_SlaveTransaction(...)`       -> `MXC_SPI_TargetTransaction(...)`
-`MXC_SPI_SlaveTransactionAsync(...)`  -> `MXC_SPI_TargetTransactionAsync(...)`
-`MXC_SPI_SlaveTransactionDMA(...)`    -> `MXC_SPI_TargetTransactionDMA(...)`
+- `MXC_SPI_MasterTransaction(...)`        -> `MXC_SPI_ControllerTransaction(...)`
+- `MXC_SPI_MasterTransactionAsync(...)`   -> `MXC_SPI_ControllerTransactionAsync(...)`
+- `MXC_SPI_MasterTransactionDMA(...)`     -> `MXC_SPI_ControllerTransactionDMA(...)`
+- `MXC_SPI_SlaveTransaction(...)`         -> `MXC_SPI_TargetTransaction(...)`
+- `MXC_SPI_SlaveTransactionAsync(...)`    -> `MXC_SPI_TargetTransactionAsync(...)`
+- `MXC_SPI_SlaveTransactionDMA(...)`      -> `MXC_SPI_TargetTransactionDMA(...)`
 
 The `MXC_SPI_Init_v2(...)` function must be called before using the Controller and Target functions. These functions won't work when using `MXC_SPI_Init(...)`.
 
