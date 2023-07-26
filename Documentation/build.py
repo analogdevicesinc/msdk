@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from pathlib import Path
 import shutil
 from subprocess import run
@@ -7,6 +8,8 @@ from os import listdir
 import os
 from typing import Tuple
 import re
+from rich import inspect
+from operator import attrgetter
 
 # Locate some directories relative to this file
 here = Path(__file__).parent.absolute()
@@ -14,9 +17,16 @@ repo = here.parent
 periph_docs_dir = repo / "Libraries" / "PeriphDrivers" / "Documentation"
 examples_dir = repo / "Examples"
 
+@dataclass
+class ExampleInfo():
+    folder: Path
+    name: str
+    description: str
+    details: str
+
 # Given a path to a directory, look for a main.c file and attempt to parse
 # information from a @file-tagged Doxygen block (if it exists)
-def parse_example_description(f: Path) -> Tuple[Path, str, str, str]:
+def parse_example_info(f: Path) -> ExampleInfo:
     example_folder = f.parent
     example_name = f.parent.name
     example_description = "Empty Description"
@@ -44,27 +54,70 @@ def parse_example_description(f: Path) -> Tuple[Path, str, str, str]:
 
                         # TODO: @details (this is more difficult because it spans multiple lines)
 
-        return (example_folder, example_name, example_description, example_details)
+        return ExampleInfo(example_folder, example_name, example_description, example_details)
+
+@dataclass
+class CommonExampleInfo(ExampleInfo):
+    supported_parts: list
+
+markdown_content = ""
+common_examples = []
+print("Searching for shared examples...")
+# Start a table
+markdown_content += f"### Common Examples\n\n"
+markdown_content += "The following common examples are supported across multiple microcontrollers.\n\n"
+markdown_content += "| Example | Description | Supported Parts |\n"
+markdown_content += "| --- | --- | --- |\n"
+for i in sorted(Path(dir) for dir in os.scandir(examples_dir)):
+    target_micro = Path(i).name
+    for main_file in Path(i).rglob("**/main.c"):
+        example_info = parse_example_info(main_file)
+        if example_info:            
+            if example_info.name not in [i.name for i in common_examples]:
+                # Example does not exist in the table yet.
+                common_examples.append(
+                    CommonExampleInfo(
+                        example_info.folder,
+                        example_info.name,
+                        example_info.description,
+                        example_info.details,
+                        [target_micro]
+                    )
+                )
+            else:
+                idx = [example_info.name == i.name for i in common_examples].index(True)
+                if target_micro not in common_examples[idx].supported_parts:
+                    # Example exists in the table, but the current micro has not been added
+                    # to the list of suppored parts yet.
+                    common_examples[idx].supported_parts.append(target_micro)
+
+# Remove entries with only 1 micro
+common_examples = [i for i in common_examples if len(i.supported_parts) > 1]
+common_examples.sort(key=attrgetter("name")) # Sort using example name attribute
+
+for i in common_examples:
+    _list = '<br>'.join(i.supported_parts)
+    markdown_content += f"| **{i.name}** | {i.description} | {_list} |\n"
+
+markdown_content += "\n\n"
+
+common_example_names = [i.name for i in common_examples] # We'll use this as a filter for the part-specific tables below
 
 # Create an auto-generated table of examples for each micro.
 example_md_files_list = []
-markdown_content = ""
 for i in sorted(Path(dir) for dir in os.scandir(examples_dir)):    
     target_micro = Path(i).name
     print(f"Generating examples table for {target_micro}")
     markdown_content += f"### {target_micro.upper()} Examples\n\n" # Add header
+    markdown_content += f"In addition to the [Common Examples](#common-examples), the following examples are available specifically for the {target_micro.upper()}.\n\n"
     markdown_content += "| Example | Description | MSDK Location |\n" # Start a table
     markdown_content += "| --- | --- | --- |\n"
     table_entries = []
     for main_file in Path(i).rglob("**/main.c"):
-        ret = parse_example_description(main_file)
-        if ret:
-            example_folder = ret[0]
-            example_name = ret[1]
-            example_description = ret[2]
-            example_details = ret[3]
-            link = f"https://github.com/Analog-Devices-MSDK/msdk/tree/release/{Path(example_folder).relative_to(repo).as_posix()}"
-            table_entries.append(f"| **{example_name}**<br>([_Github_]({link})) | {example_description} | `{Path(example_folder).relative_to(repo)}`")
+        example_info = parse_example_info(main_file)
+        if example_info and example_info.name not in common_example_names:
+            link = f"https://github.com/Analog-Devices-MSDK/msdk/tree/release/{Path(example_info.folder).relative_to(repo).as_posix()}"
+            table_entries.append(f"| **{example_info.name}** | {example_info.description} | _Local:_`{Path(example_info.folder).relative_to(repo)}`<br>_Github:_ [link]({link})")
     markdown_content += "\n".join(sorted(table_entries))
     markdown_content += "\n\n"
 
