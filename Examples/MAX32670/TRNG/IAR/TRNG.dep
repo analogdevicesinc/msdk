@@ -1,208 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>5</fileVersion>
-    <fileChecksum>4282430395</fileChecksum>
+    <fileChecksum>3629150660</fileChecksum>
     <configuration>
         <name>Debug</name>
         <outputs>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\Source\led.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\mxc_lock.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\nvic_table.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\I2C\i2c_me15.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\GPIO\gpio_me15.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\mxc_assert.c</file>
             <file>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\low_level_init.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\Source\stdio.c</file>
-            <file>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\system_max32670.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\EvKit_V1\Source\board.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\mxc_assert.c</file>
-            <file>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\startup_max32670.s</file>
-            <file>$PROJ_DIR$\..\main.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.TRNG_1.0.3\trng_revb.o</file>
             <file>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\max32670.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\sys_me15.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\nvic_table.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\Source\pb.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TMR\tmr_common.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\mxc_lock.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TRNG\trng_revb.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\UART\uart_me15.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\mxc_delay.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TMR\tmr_me15.c</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.UART_1.0.3\uart_common.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.UART_1.0.3\uart_me15.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.TRNG_1.0.3\trng_me15.o</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\pins_me15.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\GPIO\gpio_me15.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TMR\tmr_revb.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\UART\uart_common.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\UART\uart_revb.c</file>
+            <file>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\system_max32670.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\I2C\i2c_reva.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\GPIO\gpio_common.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TMR\tmr_revb.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\GPIO\gpio_reva.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TRNG\trng_revb.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TRNG\trng_me15.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\mxc_delay.c</file>
             <file>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\cmain.s</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TMR\tmr_me15.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\UART\uart_common.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\pins_me15.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\sys_me15.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\PushButton\pb.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\PMIC\max20303.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TMR\tmr_common.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\LED\led.c</file>
+            <file>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\startup_max32670.s</file>
             <file>$PROJ_DIR$\..\RTE\RTE_Components.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TRNG\trng_me15.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\GPIO\gpio_common.c</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\GPIO\gpio_reva.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\UART\uart_me15.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\UART\uart_revb.c</file>
+            <file>$PROJ_DIR$\..\main.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\LED\led.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32670 BSP _BSP.LED_1.1.0\led.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.UART_1.1.0\uart_me15.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Timers_1.1.0\tmr_me15.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.GPIO_1.1.0\gpio_common.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.UART_1.1.0\uart_revb.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.I2C_1.1.0\i2c_reva.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.UART_1.1.0\uart_common.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Timers_1.1.0\tmr_common.o</file>
+            <file>$PROJ_DIR$\Debug\Exe\TRNG.out</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.TRNG_1.1.0\trng_me15.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Timers_1.1.0\tmr_revb.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\system_max32670.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.I2C_1.1.0\i2c_me15.o</file>
             <file>$PROJ_DIR$\Debug\Obj\main.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.UART_1.0.3\uart_revb.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\mxc_delay.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32670 BSP _BSP.EvKit V1_1.0.3\pb.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32670 BSP _BSP.EvKit V1_1.0.3\stdio.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32670 BSP _BSP.EvKit V1_1.0.3\led.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\nvic_table.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.GPIO_1.0.3\gpio_me15.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.GPIO_1.0.3\gpio_reva.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Timers_1.0.3\tmr_revb.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\mxc_assert.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Timers_1.0.3\tmr_common.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\sys_me15.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\mxc_lock.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\system_max32670.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.GPIO_1.0.3\gpio_common.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32670 BSP _BSP.EvKit V1_1.0.3\board.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\pins_me15.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Timers_1.0.3\tmr_me15.o</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\low_level_init.o</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TMR\tmr_common.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\cmain.o.rsp</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32670 BSP _BSP.PMIC_1.1.0\max20303.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.GPIO_1.1.0\gpio_me15.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.TRNG_1.1.0\trng_revb.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\low_level_init.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32670 BSP _BSP.Push Btn_1.1.0\pb.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.GPIO_1.1.0\gpio_reva.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\cmain.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\startup_max32670.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TMR\tmr_revb.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\pwrseq_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\trng.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\i2c.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\i2c_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\dma.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\uart_regs.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_iccarm.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\core_cm4.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\system_max32670.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\tmr_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\mcr_regs.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
             <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
             <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\mxc_lock.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_iccarm.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\mxc_sys.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\mxc_assert.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\UART\uart_revb_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\mxc_delay.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\mxc_errors.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\gpio.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\gpio_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\trng_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\system_max32670.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TMR\tmr_revb.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\dma_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TMR\tmr_revb_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\aes.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TRNG\trng_revb_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\aes_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\aes_key_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\flc.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\flc_regs.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\uart.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\tmr_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\UART\uart_revb.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\dma.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\aarch32\iccarm_builtin.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TRNG\trng_revb.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\fcr_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\GPIO\gpio_reva.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\GPIO\gpio_reva_regs.h</file>
-            <file>$PROJ_DIR$\Debug\Exe\TRNG.out</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_version.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\cmsis_compiler.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\UART\uart_common.h</file>
             <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\mxc_pins.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\mpu_armv7.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\gcr_regs.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\startup_max32670.o</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\mxc_device.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\ARM\CMSIS\5.8.0\CMSIS\Core\Include\core_cm4.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\mxc_pins.h</file>
             <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\mxc_lock.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TRNG\trng_revb.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TRNG\trng_revb_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\mpu_armv7.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_version.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\gpio_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\UART\uart_revb.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\dma_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TMR\tmr_revb_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\trng_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\gcr_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\max32670.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\GPIO\gpio_reva_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\mxc_sys.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\aarch32\iccarm_builtin.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
             <file>$TOOLKIT_DIR$\inc\c\stddef.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\tmr.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\mcr_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\nvic_table.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Include\MAX32670\trng.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\cmain.o</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\max32670.h</file>
-            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.0.3\startup_max32670.o.rsp</file>
-            <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\GPIO\gpio_common.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\EvKit_V1\Include\board.h</file>
-            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
-            <file>$PROJ_DIR$\Debug\List\TRNG.map</file>
-            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\errno.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\Include\pb.h</file>
-            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\Include\led.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\.iar\config\linker\MAX32670_IAR.icf</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\tmr.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\GPIO\gpio_reva.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\PushButton\pb.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\mxc_delay.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\mxc_errors.h</file>
             <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\CMSIS\Device\Maxim\MAX32670\Include\uart_regs.h</file>
-            <file>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\UART\uart_common.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\mxc_device.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\uart.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\gpio.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TMR\tmr_common.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\UART\uart_revb_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\GPIO\gpio_common.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\mxc_assert.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\ARM\CMSIS\5.9.0\CMSIS\Core\Include\cmsis_compiler.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\I2C\i2c_reva.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\I2C\i2c_reva_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\nvic_table.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\PMIC\max20303.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\aes.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\flc_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\aeskeys_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\fcr_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Include\MAX32670\flc.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\CMSIS\Device\Maxim\MAX32670\Include\aes_regs.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\Boards\MAX32670\Include\led.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\Boards\MAX32670\Include\pb.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\.iar\config\linker\MAX32670_IAR.icf</file>
+            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32670 BSP _BSP.Board Type.EvKit_1.1.0\stdio.o</file>
+            <file>$TOOLKIT_DIR$\inc\c\errno.h</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim MAX32670 BSP _BSP.Board Type.EvKit_1.1.0\board.o</file>
+            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+            <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\sys_me15.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\nvic_table.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\mxc_assert.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\mxc_delay.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\pins_me15.o</file>
+            <file>$PROJ_DIR$\Debug\Obj\CMSIS-Pack\Maxim Maxim API _Device.Startup_1.1.0\mxc_lock.o</file>
+            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
+            <file>$PROJ_DIR$\Debug\List\TRNG.map</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\stdio.c</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\Boards\MAX32670\EvKit_V1\Include\board.h</file>
+            <file>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\Boards\MAX32670\EvKit_V1\Source\board.c</file>
         </outputs>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\Source\led.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\mxc_lock.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 37</file>
+                    <file> 132</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 99 110 123 91 94 79 65 88 100 92 93 57 84 96 69 63 95 64 67 28 121 60 114 101 102</file>
+                    <file> 99 85 97 66 70 90 60 98 62 78 107 61 88 76 63 96 71 101 79 25 73</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\low_level_init.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\nvic_table.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 51</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\Source\stdio.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 36</file>
+                    <file> 128</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 118 91 94 79 65 88 101 102 123 103 59 54 55 99 110 100 92 93 57 84 96 69 63 95 64 67 28 58 97 106 114 80 124</file>
+                    <file> 72 66 70 90 60 98 77 89 99 85 97 62 78 107 61 88 76 63 96 71 101 79 25 110</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\system_max32670.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 46</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 103 91 94 79 65 88 102 59 101 54 55 9 123 100 92 93 57 84 96 69 97 58 99 63 95 64 67 28 106</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\EvKit_V1\Source\board.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 48</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 101 91 94 79 65 88 102 99 110 123 100 92 93 57 84 96 69 63 95 64 67 28 58 97 106 60 114 80 124 121 119</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\mxc_assert.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\I2C\i2c_me15.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
@@ -212,102 +185,12 @@
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 99 110 123 91 94 79 65 88 100 92 93 57 84 96 69 63 95 64 67 28</file>
+                    <file> 106 66 70 90 60 98 77 91 97 99 85 62 78 107 61 88 76 63 96 71 101 79 25 105 73 87 84 65 95 57 81 56 108 109 58 52</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\startup_max32670.s</name>
-            <outputs>
-                <tool>
-                    <name>AARM</name>
-                    <file> 98</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>AARM</name>
-                    <file> 111</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\main.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 32</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 101 91 94 79 65 88 102 123 103 59 110 100 92 93 57 84 96 69 107 108 68</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\sys_me15.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 44</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 104 91 94 79 65 88 102 103 59 99 110 123 100 92 93 57 84 96 69 63 95 64 67 28 60 58 97 106 62 73 75 76 77 78 86</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\nvic_table.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 38</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 99 110 123 91 94 79 65 88 100 92 93 57 84 96 69 63 95 64 67 28 103 102 59 107</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\Boards\MAX32670\Source\pb.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 35</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 104 91 94 79 65 88 102 99 110 123 100 92 93 57 84 96 69 63 95 64 67 28 60 119</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TMR\tmr_common.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 43</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 104 91 94 79 65 88 102 60 105 99 110 123 100 92 93 57 84 96 69 63 95 64 67 28 81 58 97 106 66 52</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\mxc_lock.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\GPIO\gpio_me15.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
@@ -317,102 +200,36 @@
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 99 110 123 91 94 79 65 88 100 92 93 57 84 96 69 63 95 64 67 28 56</file>
+                    <file> 91 66 70 90 60 98 77 99 85 97 62 78 107 61 88 76 63 96 71 101 79 25 105 93 86 104 87 84 65</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TRNG\trng_revb.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\mxc_assert.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 8</file>
+                    <file> 129</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 54 91 94 79 65 88 102 55 103 59 58 99 110 123 100 92 93 57 84 96 69 63 95 64 67 28 97 106 60 56 68 108 85 74</file>
+                    <file> 99 85 97 66 70 90 60 98 62 78 107 61 88 76 63 96 71 101 79 25</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\UART\uart_me15.c</name>
+            <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\low_level_init.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 20</file>
+                    <file> 47</file>
                 </tool>
             </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 80 124 123 91 94 79 65 88 58 99 110 100 92 93 57 84 96 69 63 95 64 67 28 97 106 60 82 83 66 71 61 125</file>
-                </tool>
-            </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\mxc_delay.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 34</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 123 91 94 79 65 88 104 102 99 110 100 92 93 57 84 96 69 63 95 64 67 28 62 58 97 106</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TMR\tmr_me15.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 50</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 105 99 110 123 91 94 79 65 88 100 92 93 57 84 96 69 63 95 64 67 28 81 58 97 106 66 70 104 102 60 56 72 52</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\SYS\pins_me15.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 49</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 64 67 123 91 94 79 65 88 99 110 100 92 93 57 84 96 69 63 95 28</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\GPIO\gpio_me15.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 39</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 99 110 123 91 94 79 65 88 100 92 93 57 84 96 69 63 95 64 67 28 60 87 89 113 104 102 58 97 106</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TMR\tmr_revb.c</name>
+            <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\system_max32670.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
@@ -422,27 +239,27 @@
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 104 91 94 79 65 88 102 60 105 99 110 123 100 92 93 57 84 96 69 63 95 64 67 28 81 58 97 106 66 70 56 72</file>
+                    <file> 72 66 70 90 60 98 77 89 106 67 68 6 97 62 78 107 61 88 76 63 84 54 87 99 96 71 101 79 25 65</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\UART\uart_common.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\I2C\i2c_reva.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 19</file>
+                    <file> 35</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 125 124 123 91 94 79 65 88 80 58 99 110 100 92 93 57 84 96 69 63 95 64 67 28 97 106</file>
+                    <file> 106 66 70 90 60 98 77 91 97 99 85 62 78 107 61 88 76 63 96 71 101 79 25 105 73 87 84 65 95 57 56 108 109 58 52 81</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\UART\uart_revb.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\GPIO\gpio_common.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
@@ -452,57 +269,12 @@
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 101 91 94 79 65 88 102 99 110 123 100 92 93 57 84 96 69 63 95 64 67 28 60 80 124 58 97 106 82 83 66 71 61</file>
+                    <file> 91 66 70 90 60 98 77 104 79 97 101 99 85 62 78 107 61 88 76 63 96 71 25 105</file>
                 </tool>
             </inputs>
         </file>
         <file>
-            <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\cmain.s</name>
-            <outputs>
-                <tool>
-                    <name>AARM</name>
-                    <file> 109</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>AARM</name>
-                    <file> 53</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\TRNG\trng_me15.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 21</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 99 110 123 91 94 79 65 88 100 92 93 57 84 96 69 63 95 64 67 28 60 58 97 106 85 108 68 74</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\GPIO\gpio_common.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 47</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 99 110 123 91 94 79 65 88 100 92 93 57 84 96 69 63 95 64 67 28 60 104 102</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\..\..\..\..\Users\SRV-JenkinsIDE\IAR-CMSIS-Packs\Maxim\MAX32670\1.0.3\Libraries\PeriphDrivers\Source\GPIO\gpio_reva.c</name>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TMR\tmr_revb.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
@@ -512,7 +284,250 @@
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 99 110 123 91 94 79 65 88 100 92 93 57 84 96 69 63 95 64 67 28 60 87 89 113 104 102</file>
+                    <file> 91 66 70 90 60 98 77 52 105 92 97 99 85 62 78 107 61 88 76 63 96 71 101 79 25 64 87 84 65 53 73 82</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\GPIO\gpio_reva.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 49</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 91 66 70 90 60 98 77 99 85 97 62 78 107 61 88 76 63 96 71 101 79 25 105 93 86 104</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TRNG\trng_revb.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 46</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 67 66 70 90 60 98 77 68 72 89 87 99 85 97 62 78 107 61 88 76 63 96 71 101 79 25 84 65 105 73 83 55 74 75</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TRNG\trng_me15.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 39</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 99 85 97 66 70 90 60 98 62 78 107 61 88 76 63 96 71 101 79 25 105 87 84 65 74 55 83 75</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\mxc_delay.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 130</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 97 66 70 90 60 98 91 77 99 85 62 78 107 61 88 76 63 96 71 101 79 25 95 87 84 65</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\cmain.s</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 50</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TMR\tmr_me15.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 32</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 52 92 97 66 70 90 60 98 99 85 62 78 107 61 88 76 63 96 71 101 79 25 64 87 84 65 53 91 77 105 73 82 102</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\UART\uart_common.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 36</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 69 59 97 66 70 90 60 98 100 87 99 85 62 78 107 61 88 76 63 96 71 101 79 25 84 65</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\pins_me15.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 131</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 101 79 97 66 70 90 60 98 99 85 62 78 107 61 88 76 63 96 71 25</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\SYS\sys_me15.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 127</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 91 66 70 90 60 98 77 72 89 99 85 97 62 78 107 61 88 76 63 96 71 101 79 25 105 87 84 65 95 112 117 114 116 113 115 54</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\PushButton\pb.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 48</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 91 66 70 90 60 98 77 99 85 97 62 78 107 61 88 76 63 96 71 101 79 25 105 94</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\PMIC\max20303.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 44</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 97 66 70 90 60 98 91 77 99 85 62 78 107 61 88 76 63 96 71 101 79 25 95 56 87 84 65 57 111</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\TMR\tmr_common.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 37</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 91 66 70 90 60 98 77 105 92 97 52 99 85 62 78 107 61 88 76 63 96 71 101 79 25 64 87 84 65 102</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\LED\led.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 30</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 99 85 97 66 70 90 60 98 62 78 107 61 88 76 63 96 71 101 79 25 29 105 136 106 77</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\startup_max32670.s</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 51</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\UART\uart_me15.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 31</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 100 59 97 66 70 90 60 98 87 99 85 62 78 107 61 88 76 63 96 71 101 79 25 84 65 105 80 58 52 81 103 69</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\PeriphDrivers\Source\UART\uart_revb.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 34</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 106 66 70 90 60 98 77 99 85 97 62 78 107 61 88 76 63 96 71 101 79 25 105 100 59 87 84 65 80 58 52 81 103</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\main.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 43</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 106 66 70 90 60 98 77 97 72 89 85 62 78 107 61 88 76 63 110 55 83</file>
                 </tool>
             </inputs>
         </file>
@@ -521,7 +536,7 @@
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 90 116</file>
+                    <file> 38 134</file>
                 </tool>
             </outputs>
         </file>
@@ -530,16 +545,49 @@
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 116</file>
+                    <file> 134</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 122 48 109 47 39 40 37 51 32 42 34 45 38 35 49 98 36 44 46 43 50 41 21 8 19 20 33 115 117 112 120</file>
+                    <file> 120 124 50 33 45 49 42 35 30 47 43 44 129 130 132 128 48 131 51 122 127 41 37 32 40 39 46 36 31 34 125 121 126 133</file>
                 </tool>
             </inputs>
         </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\MiscDrivers\stdio.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 122</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 123 66 70 90 60 98 106 77 97 72 89 67 68 99 85 62 78 107 61 88 76 63 96 71 101 79 25 87 84 65 136 100 59</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\..\..\..\..\..\Users\FTariq\IAR-CMSIS-Packs\Maxim\MAX32670\1.1.0\Libraries\Boards\MAX32670\EvKit_V1\Source\board.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 124</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 106 66 70 90 60 98 77 99 85 97 62 78 107 61 88 76 63 96 71 101 79 25 87 84 65 105 136 100 59 118 119</file>
+                </tool>
+            </inputs>
+        </file>
+        <forcedrebuild>
+            <name>[REBUILD_ALL]</name>
+        </forcedrebuild>
     </configuration>
     <configuration>
         <name>Release</name>
@@ -547,6 +595,9 @@
         <forcedrebuild>
             <name>[MULTI_TOOL]</name>
             <tool>ILINK</tool>
+        </forcedrebuild>
+        <forcedrebuild>
+            <name>[REBUILD_ALL]</name>
         </forcedrebuild>
     </configuration>
 </project>

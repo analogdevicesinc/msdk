@@ -2854,19 +2854,19 @@
             <name>$PROJ_DIR$\..\RTE\RTE_Components.h</name>
         </file>
         <group>
-            <name>Maxim Maxim API _Device.UART_1.0.3</name>
+            <name>Maxim Maxim API _Device.UART_1.1.0</name>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/UART/uart_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/UART/uart_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/UART/uart_me15.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/UART/uart_revb.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.Startup_1.0.3</name>
+            <name>Maxim Maxim API _Device.Startup_1.1.0</name>
             <file>
                 <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\cmain.s</name>
             </file>
@@ -2877,79 +2877,79 @@
                 <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\max32670.h</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/mxc_assert.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_assert.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/mxc_delay.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_delay.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/mxc_lock.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/SYS/mxc_lock.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/nvic_table.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/SYS/nvic_table.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/pins_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/SYS/pins_me15.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\startup_max32670.s</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/SYS/sys_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/SYS/sys_me15.c</name>
             </file>
             <file>
                 <name>$PROJ_DIR$\..\RTE\Device\MAX32670_Cortex-M4\system_max32670.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.ICC_1.0.3</name>
+            <name>Maxim Maxim API _Device.ICC_1.1.0</name>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/ICC/icc_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/ICC/icc_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/ICC/icc_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/ICC/icc_me15.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/ICC/icc_reva.c</name>
-            </file>
-        </group>
-        <group>
-            <name>Maxim Maxim API _Device.GPIO_1.0.3</name>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me15.c</name>
-            </file>
-            <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/ICC/icc_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim Maxim API _Device.FLC_1.0.3</name>
+            <name>Maxim Maxim API _Device.GPIO_1.1.0</name>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/FLC/flc_common.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/FLC/flc_me15.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_me15.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/PeriphDrivers/Source/FLC/flc_reva.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/GPIO/gpio_reva.c</name>
             </file>
         </group>
         <group>
-            <name>Maxim MAX32670 BSP _BSP.EvKit V1_1.0.3</name>
+            <name>Maxim Maxim API _Device.FLC_1.1.0</name>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/Boards/MAX32670/EvKit_V1/Source/board.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/FLC/flc_common.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/Boards/MAX32670/Source/led.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/FLC/flc_me15.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/Boards/MAX32670/Source/pb.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/PeriphDrivers/Source/FLC/flc_reva.c</name>
+            </file>
+        </group>
+        <group>
+            <name>Maxim MAX32670 BSP _BSP.EvKit V1_1.1.0</name>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/Boards/MAX32670/EvKit_V1/Source/board.c</name>
             </file>
             <file>
-                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\Libraries/Boards/MAX32670/Source/stdio.c</name>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/Boards/MAX32670/Source/led.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/Boards/MAX32670/Source/pb.c</name>
+            </file>
+            <file>
+                <name>${CMSIS_PACK_PATH_Maxim#MAX32670#1.1.0}$\Libraries/Boards/MAX32670/Source/stdio.c</name>
             </file>
         </group>
     </group>
