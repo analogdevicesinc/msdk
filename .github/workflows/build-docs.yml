@@ -150,5 +150,7 @@ jobs:
           python3 Documentation/build.py
 
       - name: Publish
-        run: | # Deploy using built-in mkdocs command
-          python3 -m mkdocs gh-deploy
+        uses: JamesIves/github-pages-deploy-action@v4.3.0
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: docs # Deploy the built docs folder
