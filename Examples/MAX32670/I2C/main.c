@@ -59,8 +59,8 @@
 /***** Definitions *****/
 #define MASTERDMA //Comment this line out if standard I2C transaction is required
 
-#define I2C_MASTER MXC_I2C0
-#define I2C_SLAVE MXC_I2C1
+#define I2C_MASTER MXC_I2C1
+#define I2C_SLAVE MXC_I2C0
 
 #define I2C_FREQ 100000
 // This example may become unreliable at I2C frequencies above 100kHz.
@@ -83,7 +83,7 @@ volatile int rxnum = 0;
 /***** Functions *****/
 
 //Slave interrupt handler
-void I2C1_IRQHandler(void)
+void I2C0_IRQHandler(void)
 {
     MXC_I2C_AsyncHandler(I2C_SLAVE);
     return;
@@ -222,8 +222,8 @@ int main()
         return error;
     }
 
-    MXC_NVIC_SetVector(I2C1_IRQn, I2C1_IRQHandler);
-    NVIC_EnableIRQ(I2C1_IRQn);
+    MXC_NVIC_SetVector(I2C0_IRQn, I2C0_IRQHandler);
+    NVIC_EnableIRQ(I2C0_IRQn);
     __enable_irq();
 
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
