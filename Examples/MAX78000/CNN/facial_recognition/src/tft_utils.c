@@ -58,7 +58,7 @@ void draw_obj_rect(float *xy, uint32_t w, uint32_t h)
 int dma_channel;
 int g_dma_channel_tft = 1;
 uint8_t *rx_data = NULL;
-void setup_dma_tft(uint32_t* src_ptr)
+void setup_dma_tft(uint32_t *src_ptr)
 {
     printf("TFT DMA setup\n");
     // TFT DMA
@@ -67,56 +67,50 @@ void setup_dma_tft(uint32_t* src_ptr)
     MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
     MXC_DMA->ch[g_dma_channel_tft].cnt = IMAGE_XRES * IMAGE_YRES;
 
-    MXC_DMA->ch[g_dma_channel_tft].ctrl = ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS)  +
-                                       (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS)  +
-                                       (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) +
-                                       (0x0 << MXC_F_DMA_CTRL_DSTINC_POS)  +
-                                       (0x1 << MXC_F_DMA_CTRL_DSTWD_POS)   +
-                                       (0x1 << MXC_F_DMA_CTRL_SRCINC_POS)  +
-                                       (0x1 << MXC_F_DMA_CTRL_SRCWD_POS)   +
-                                       (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
-                                       (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) +
-                                       (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // SPI0 -> TFT
-                                       (0x0 << MXC_F_DMA_CTRL_PRI_POS)     +  // High Priority
-									   (0x0 << MXC_F_DMA_CTRL_RLDEN_POS)      // Disable Reload
-                                      );
+    MXC_DMA->ch[g_dma_channel_tft].ctrl =
+        ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS) + (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS) +
+         (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) + (0x0 << MXC_F_DMA_CTRL_DSTINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_DSTWD_POS) + (0x1 << MXC_F_DMA_CTRL_SRCINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_SRCWD_POS) + (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
+         (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) + (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // SPI0 -> TFT
+         (0x0 << MXC_F_DMA_CTRL_PRI_POS) + // High Priority
+         (0x0 << MXC_F_DMA_CTRL_RLDEN_POS) // Disable Reload
+        );
 
-	MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
-	MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR, (IMAGE_XRES*IMAGE_YRES) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
-    MXC_SPI0->dma   |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
+    MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
+    MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR,
+                 (IMAGE_XRES * IMAGE_YRES) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
 
     // Clear SPI master done flag
     MXC_SPI0->intfl = MXC_F_SPI_INTFL_MST_DONE;
-    MXC_SETFIELD (MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
+    MXC_SETFIELD(MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
     MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN);
     MXC_SPI0->dma |= (MXC_F_SPI_DMA_DMA_TX_EN);
     MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
 }
 
-void start_tft_dma(uint32_t* src_ptr)
+void start_tft_dma(uint32_t *src_ptr)
 {
-	while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-    {
-    	;
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
     }
 
-    if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF)
-    {
+    if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF) {
         MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
     }
 
-	MXC_DMA->ch[g_dma_channel_tft].cnt = IMAGE_XRES * IMAGE_YRES;
-	MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
+    MXC_DMA->ch[g_dma_channel_tft].cnt = IMAGE_XRES * IMAGE_YRES;
+    MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
 
-	// Enable DMA channel
-	MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
-	// Start DMA
-	MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+    // Enable DMA channel
+    MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+    // Start DMA
+    MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
 
-   	// Wait for DMA to finish
-   	while((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-    {
-      	;
+    // Wait for DMA to finish
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
     }
 }
 

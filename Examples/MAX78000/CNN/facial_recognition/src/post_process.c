@@ -445,9 +445,9 @@ void localize_objects(void)
 
                 box_sanity_check(&xy[0]);
 
-                box[0] = (uint8_t)(IMAGE_SIZE_X * (xy[0]));
+                box[0] = (uint8_t)(IMAGE_SIZE_X * xy[0]);
                 box[1] = (uint8_t)(IMAGE_SIZE_Y * xy[1]);
-                box[2] = (uint8_t)(IMAGE_SIZE_X * (xy[2]));
+                box[2] = (uint8_t)(IMAGE_SIZE_X * xy[2]);
                 box[3] = (uint8_t)(IMAGE_SIZE_Y * xy[3]);
 #if 0
 			    PR_DEBUG("class: %d, prior_idx: %d, prior: %d, x1: %.2f, y1: %.2f, x2: %.2f, y2: "

@@ -59,9 +59,9 @@ static void run_cnn_1(int x_offset, int y_offset);
 int face_detection(void)
 {
     // Capture the image
-    ///camera_start_capture_image();
+    camera_start_capture_image();
     /* Sleep until camera interrupt */
-    ///MXC_LP_EnterSleepMode();
+    MXC_LP_EnterSleepMode();
 
 #define PRINT_TIME 1
 #if (PRINT_TIME == 1)
@@ -71,7 +71,7 @@ int face_detection(void)
 #endif
 
     /* Check for received image */
-    if(1){ /// (camera_is_image_rcv()) {
+    if (camera_is_image_rcv()) {
 #if (PRINT_TIME == 1)
         process_time = utils_get_time_ms();
 #endif
@@ -106,17 +106,11 @@ int face_detection(void)
     return 0;
 }
 
-
-
-extern int dma_channel;
-extern int g_dma_channel_tft;
-
-
 static void run_cnn_1(int x_offset, int y_offset)
 {
-	uint8_t *raw;
-	uint32_t imgLen;
-	uint32_t w, h;
+    uint8_t *raw;
+    uint32_t imgLen;
+    uint32_t w, h;
     /* Get current time */
     uint32_t pass_time = 0;
 
@@ -124,30 +118,24 @@ static void run_cnn_1(int x_offset, int y_offset)
     camera_get_image(&raw, &imgLen, &w, &h);
 #ifdef TFT_ENABLE
 #ifdef BOARD_FTHR_REVA
-    printf("w:%d  h:%d \n",w,h);
-
-    // Capture the image
-    camera_start_capture_image();
-    /* Sleep until camera interrupt */
-    //MXC_LP_EnterSleepMode();
 
     MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
 
-    setup_dma_tft((uint32_t*)raw);
+    setup_dma_tft((uint32_t *)raw);
 
     // Wait to complete image capture
-    while(camera_is_image_rcv() == 0);
+    while (camera_is_image_rcv() == 0)
+        ;
 
     // Send a first half of captured image to TFT (Max DMA = 32KB)
-    start_tft_dma((uint32_t*)raw);
+    start_tft_dma((uint32_t *)raw);
 
-    setup_dma_tft((uint32_t*)(raw + IMAGE_XRES*IMAGE_YRES));
+    setup_dma_tft((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
 
     // Send a second half of captured image to TFT
-    start_tft_dma((uint32_t*)(raw + IMAGE_XRES*IMAGE_YRES));
-
+    start_tft_dma((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
 
 #endif
 #endif

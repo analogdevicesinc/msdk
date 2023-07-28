@@ -145,7 +145,6 @@ static void run_cnn_2(void)
     pass_time = utils_get_time_ms();
 
     PR_INFO("x1: %d, y1: %d", x1, y1);
-    printf("x1: %d, y1: %d box_width:%d   box_height:%d\n", x1, y1, box_width, box_height);
 
     // Resize image inside facedetection box to 160x120 and load to CNN memory
     for (int i = 0; i < HEIGHT_ID; i++) {
@@ -293,5 +292,4 @@ static void run_cnn_2(void)
 
 #endif
     }
-
 }

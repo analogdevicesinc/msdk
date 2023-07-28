@@ -61,7 +61,6 @@
 #include "faceID.h"
 #include "embedding_process.h"
 
-#include "tft_utils.h"
 #define CONSOLE_BAUD 115200
 
 extern void SD_Init(void);
@@ -70,15 +69,6 @@ extern volatile uint8_t face_detected;
 mxc_uart_regs_t *CommUart;
 #ifdef TFT_ENABLE
 area_t area = { 50, 290, 180, 30 };
-#endif
-
-uint32_t camera_image[IMAGE_XRES*IMAGE_YRES*2/4];
-
-#if 1
-uint8_t *raw;
-uint32_t imgLen;
- uint32_t w, h;
-
 #endif
 
 // *****************************************************************************
@@ -164,12 +154,12 @@ int main(void)
     }
 
     // double camera PCLK speed
-	camera_write_reg(0x11, 0x80);
+    camera_write_reg(0x11, 0x80);
 
 #ifdef ROTATE_FEATHER_BOARD
     camera_set_hmirror(0);
 #else
-   camera_set_vflip(1);
+    camera_set_vflip(1); // for DMA TFT
 #endif
 
 #ifdef TFT_ENABLE
@@ -179,19 +169,19 @@ int main(void)
 #ifdef ROTATE_FEATHER_BOARD
     MXC_TFT_SetRotation(ROTATE_0);
 #else
-    MXC_TFT_SetRotation(ROTATE_270);
+    MXC_TFT_SetRotation(ROTATE_270); // for DMA TFT
 #endif
     MXC_TFT_SetBackGroundColor(4);
     MXC_TFT_SetForeGroundColor(WHITE); // set font color to white
-
-    MXC_TFT_Rectangle(X_START - 4, Y_START - 4, X_START + IMAGE_XRES + 4, Y_START + IMAGE_YRES + 4, FRAME_GREEN);
+    MXC_TFT_Rectangle(X_START - 4, Y_START - 4, X_START + IMAGE_XRES + 4, Y_START + IMAGE_YRES + 4,
+                      FRAME_GREEN);
 #endif
 #endif
 
     /* Initilize SD card */
     SD_Init();
-    while (1) {
 
+    while (1) {
         face_detection();
 
         if (face_detected) {
