@@ -145,6 +145,7 @@ static void run_cnn_2(void)
     pass_time = utils_get_time_ms();
 
     PR_INFO("x1: %d, y1: %d", x1, y1);
+    printf("x1: %d, y1: %d box_width:%d   box_height:%d\n", x1, y1, box_width, box_height);
 
     // Resize image inside facedetection box to 160x120 and load to CNN memory
     for (int i = 0; i < HEIGHT_ID; i++) {
@@ -280,6 +281,7 @@ static void run_cnn_2(void)
         PR_DEBUG("Decision: %d Name:%s\n", decision, name);
 
 #ifdef TFT_ENABLE
+        MXC_TFT_SetRotation(ROTATE_180);
         text_t printResult;
         if (decision != prev_decision) {
             printResult.data = name;
@@ -287,7 +289,9 @@ static void run_cnn_2(void)
             MXC_TFT_ClearArea(&area, 4);
             MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &printResult, NULL);
         }
+        MXC_TFT_SetRotation(ROTATE_270);
 
 #endif
     }
+
 }
