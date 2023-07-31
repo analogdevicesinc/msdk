@@ -74,7 +74,8 @@ static uint8_t Stxdata[I2C_BYTES];
 static uint8_t Srxdata[I2C_BYTES];
 static uint8_t txdata[I2C_BYTES];
 static uint8_t rxdata[I2C_BYTES];
-volatile uint8_t DMA_FLAG = 0;
+int8_t DMA_TX_CH;
+int8_t DMA_RX_CH;
 volatile int I2C_FLAG;
 volatile int txnum = 0;
 volatile int txcnt = 0;
@@ -89,18 +90,14 @@ void I2C1_IRQHandler(void)
     return;
 }
 
-void DMA0_IRQHandler(void)
+void DMA_TX_IRQHandler(void)
 {
     MXC_DMA_Handler();
-    MXC_DMA_ReleaseChannel(0);
-    DMA_FLAG = 1;
 }
 
-void DMA1_IRQHandler(void)
+void DMA_RX_IRQHandler(void)
 {
     MXC_DMA_Handler();
-    MXC_DMA_ReleaseChannel(1);
-    DMA_FLAG = 1;
 }
 
 //I2C callback function
@@ -215,6 +212,13 @@ int main()
         return error;
     }
 
+    //Setup the I2CM DMA
+    error = MXC_I2C_DMA_Init(I2C_MASTER, MXC_DMA);
+    if (error != E_NO_ERROR) {
+        printf("Failed DMA master\n");
+        return error;
+    }
+
     //Setup the I2CS
     error = MXC_I2C_Init(I2C_SLAVE, 0, I2C_SLAVE_ADDR);
     if (error != E_NO_ERROR) {
@@ -250,37 +254,40 @@ int main()
     I2C_FLAG = 1;
 
     printf("\n\n-->Writing data to slave, and reading the data back\n");
-
     if ((error = MXC_I2C_SlaveTransactionAsync(I2C_SLAVE, slaveHandler)) != 0) {
         printf("Error Starting Slave Transaction %d\n", error);
         return error;
     }
 
 #ifdef MASTERDMA
-    MXC_DMA_ReleaseChannel(0);
-    MXC_DMA_ReleaseChannel(1);
+    DMA_TX_CH = MXC_I2C_DMA_GetTXChannel(I2C_MASTER);
+    DMA_RX_CH = MXC_I2C_DMA_GetRXChannel(I2C_MASTER);
 
-    NVIC_EnableIRQ(DMA0_IRQn);
-    NVIC_EnableIRQ(DMA1_IRQn);
-    __enable_irq();
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(DMA_TX_CH));
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(DMA_RX_CH));
+
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(DMA_TX_CH), DMA_TX_IRQHandler);
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(DMA_RX_CH), DMA_RX_IRQHandler);
 
     if ((error = MXC_I2C_MasterTransactionDMA(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
         return error;
     }
-    while (DMA_FLAG == 0) {}
 #else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
         return error;
     }
+#endif
 
     while (I2C_FLAG == 1) {}
-#endif
 
     printf("\n-->Result: \n");
     printData();
     printf("\n");
+
+    MXC_I2C_Shutdown(I2C_MASTER);
+    MXC_I2C_Shutdown(I2C_SLAVE);
 
     if (verifyData() == E_NO_ERROR) {
         printf("\n-->I2C Transaction Successful\n");
