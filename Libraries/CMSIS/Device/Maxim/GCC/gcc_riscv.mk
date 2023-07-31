@@ -438,7 +438,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for linking the application.
-${BUILD_DIR}/%.elf: $(PROJECTMK) $(BUILD_DIR)/buildrv/common_riscv.ld
+${BUILD_DIR}/%.elf: $(PROJECTMK)
 # This rule parses the linker arguments into a text file to work around issues
 # with string length limits on the command line
 ifeq "$(_OS)" "windows_msys"
