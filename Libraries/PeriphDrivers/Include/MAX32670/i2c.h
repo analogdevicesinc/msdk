@@ -611,8 +611,6 @@ void MXC_I2C_DisableGeneralCall(mxc_i2c_regs_t *i2c);
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   timeout     Timeout in uS
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 void MXC_I2C_SetTimeout(mxc_i2c_regs_t *i2c, unsigned int timeout);
 

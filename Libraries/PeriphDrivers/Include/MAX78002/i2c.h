@@ -285,6 +285,47 @@ int MXC_I2C_SetClockStretching(mxc_i2c_regs_t *i2c, int enable);
  */
 int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c);
 
+/**
+ * @brief   Initializes the DMA for I2C DMA transactions.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ * @param   dma         Pointer to DMA registers (selects the DMA block used).
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma);
+
+/**
+ * @brief   Retreive the DMA TX Channel associated with I2C instance.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ *
+ * @return  If successful, the DMA TX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_GetTXChannel(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Retreive the DMA RX Channel associated with I2C instance.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ *
+ * @return  If successful, the DMA RX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_GetRXChannel(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Sets the I2C instance's DMA TX/RX request select.
+ * 
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ * @param   txData      Pointer to transmit buffer.
+ * @param   rxData      Pointer to receive buffer.
+ *  
+ * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *rxData);
+
 /* ************************************************************************* */
 /* Low-level functions                                                       */
 /* ************************************************************************* */
@@ -569,8 +610,6 @@ void MXC_I2C_DisableGeneralCall(mxc_i2c_regs_t *i2c);
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   timeout     Timeout in uS
- *
- * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
 void MXC_I2C_SetTimeout(mxc_i2c_regs_t *i2c, unsigned int timeout);
 
@@ -664,8 +703,14 @@ int MXC_I2C_MasterTransaction(mxc_i2c_req_t *req);
 int MXC_I2C_MasterTransactionAsync(mxc_i2c_req_t *req);
 
 /**
- * @brief   Performs a non-blocking I2C transaction using DMA for reduced time
- *          in the ISR.
+ * @brief   Performs a non-blocking I2C Master transaction using DMA for reduced time
+ *          in the ISR. This function initializes the DMA and acquires DMA channels
+ *          if MXC_I2C_DMA_Init(...) was not called earlier.
+ * 
+ * It is recommended to initialize the DMA by calling MXC_I2C_DMA_Init(...) function
+ * before calling MXC_I2C_MasterTransactionDMA(...). This provides flexibility in
+ * setting up generic DMA channel vectors during run-time without knowing what DMA 
+ * channels will be acquired beforehand.
  *
  * Performs a non-blocking I2C transaction.  These actions will be performed:
  *   1. If necessary, generate a start condition on the bus.
