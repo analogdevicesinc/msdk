@@ -69,6 +69,15 @@ endif
 #
 # Ex:  "make RISCV_LOAD=1 RISCV_APP=../GPIO"
 ################################################################################
+# Linker scripts unfortunately do not accept environment variables
+# or compiler definitions as input.  The only way to parameterize a
+# linkerfile is to include a separate generated linkerfile, which
+# complicates things significantly.  The RISC-V linkerfile (max78000_riscv.ld)
+# has a hard-coded INCLUDE "buildrv/common_riscv.ld" to look for this file.
+RISCV_COMMON_LD = $(BUILD_DIR)/buildrv/common_riscv.ld
+PROJ_LDFLAGS += -L$(abspath $(BUILD_DIR))
+# ^ Add to search path to locate buildrv/common_riscv.ld
+
 ifeq ($(RISCV_LOAD),1)
 
 LOADER_SCRIPT := $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/riscv-loader.S
@@ -106,15 +115,6 @@ $(ARM_MAP_FILE):
 # The rule to build the arm-only map file re-builds the project with RISCV_LOAD set to 0.
 	$(MAKE) -C $(CURDIR) RISCV_LOAD=0 PROJECT=$(PROJECT)
 
-# Linker scripts unfortunately do not accept environment variables
-# or compiler definitions as input.  The only way to parameterize a
-# linkerfile is to include a separate generated linkerfile, which
-# complicates things significantly.  The RISC-V linkerfile (max78000_riscv.ld)
-# has a hard-coded INCLUDE "buildrv/common_riscv.ld" to look for this file.
-RISCV_COMMON_LD = $(BUILD_DIR)/buildrv/common_riscv.ld
-PROJ_LDFLAGS += -L$(abspath $(BUILD_DIR))
-# ^ Add to search path to locate buildrv/common_riscv.ld
-
 .PHONY: rvcommonld
 rvcommonld: $(RISCV_COMMON_LD)
 
@@ -122,6 +122,7 @@ rvcommonld: $(RISCV_COMMON_LD)
 # 1) Parse the memory address of the "_riscv_boot" symbol.
 # 2) Write definitions for __FlashStart and __FlashLength in the auto-generated linkerfile.
 $(RISCV_COMMON_LD): $(ARM_MAP_FILE)
+	$(info - Detecting Arm code size and generating $(@))
 	@mkdir -p $(dir $(@)) && touch $(@)
 	@echo "__FlashStart = $(shell grep -o "0x[[:alnum:]]*[[:blank:]]*_riscv_boot = ." $(<) | cut -d " " -f 1);" > $(@)
 #   ^ grep gives us the line with a regex, and the "-o" gives us an exact match that strips some extra whitespace.
@@ -147,6 +148,20 @@ rvobj: $(RISCV_APP_OBJ)
 
 ${RISCV_APP_OBJ}: $(LOADER_SCRIPT) $(RISCV_APP_BIN)
 	@${CC} ${AFLAGS} -o ${@} -c $(LOADER_SCRIPT)
+
+else # RISCV_LOAD
+# This condition is hit when building a RISCV project as "standalone" (ie. make RISCV_CORE=1) without using RISCV_LOAD
+# In this case, we still need to provide the linker
+# with a generated input file.  We give the RISCV
+# complete ownership of flash here.  Note that 
+# the RISC-V core still needs to be "spun up" by
+# the Arm core, so this is really only useful for
+# being able to compile and link quickly for RISC-V.
+$(RISCV_COMMON_LD):
+	$(info - Generating $(@))
+	@mkdir -p $(dir $(@)) && touch $(@)
+	@echo "__FlashStart = 0x10000000;" > $(@)
+	@echo "__FlashLength = 0x10080000 - __FlashStart;" >> $(@)
 
 endif
 ################################################################################
