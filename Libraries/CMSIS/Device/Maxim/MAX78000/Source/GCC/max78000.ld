@@ -48,7 +48,8 @@ SECTIONS {
     {
         _text = .;
         KEEP(*(.isr_vector))
-        *(.text*)    /* program code */
+        /* *(.text*)     program code */
+        EXCLUDE_FILE (*riscv.o) *(.text*)    /* exclude RISCV code */
         *(.rodata*)  /* read-only data: "const" */
 
         KEEP(*(.init))
@@ -119,7 +120,7 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
         __exidx_end = .;
-    } > FLASH
+    } > FLASH    
 
     .data :
     {
@@ -153,6 +154,13 @@ SECTIONS {
     } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
 
+    /* Section used by RISCV loader projects.  See RISCV_LOAD documentation in the build system */
+    .riscv_flash :
+    {
+        _riscv_boot = .;
+        KEEP(*riscv.o (.text*))
+    } > FLASH
+
     .bss :
     {
         . = ALIGN(4);
@@ -170,7 +178,7 @@ SECTIONS {
         . = ALIGN(4);
         *(.shared*)     /*read-write zero initialized data: uninitialzed global variable*/
         _eshared = ALIGN(., 4);
-    } > SRAM
+    } > SRAM AT>FLASH
     __shared_data = LOADADDR(.shared);
 
     /* Set stack top to end of RAM, and stack limit move down by
