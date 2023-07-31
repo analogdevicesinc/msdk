@@ -52,7 +52,6 @@
 
 /***** Globals *****/
 
-
 /***** Functions *****/
 
 void WakeISR(void)
