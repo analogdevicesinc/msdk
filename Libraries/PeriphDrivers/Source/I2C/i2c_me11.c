@@ -129,7 +129,7 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t *i2c)
         return E_BAD_PARAM;
     }
 
-    return E_NO_ERROR;
+    return MXC_I2C_RevA_Shutdown((mxc_i2c_reva_regs_t *)i2c);
 }
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz)
