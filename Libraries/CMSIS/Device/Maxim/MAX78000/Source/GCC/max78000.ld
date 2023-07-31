@@ -202,7 +202,9 @@ SECTIONS {
     /* Section used by RISCV loader projects.  See RISCV_LOAD documentation in the build system. */
     .riscv_flash :
     {
-        . = ((. & 0x1FFFFF00) + 0x100); /* Align address to mod 256 with a small offset. This is required to match the flash page size.*/
+        /* Align address to mod 256 with a small offset. This is required to match the flash page size.*/
+        . = ALIGN(256); /* ALIGN operatator is used here.  Note that (. & 0x1FFFFF00) was used in the past, but a strange bug was seen on Windows where the & did not behave as expected.*/
+        . += 0x100;
         _riscv_boot = .;
         KEEP(*riscv.o (.text*))
     } > FLASH
