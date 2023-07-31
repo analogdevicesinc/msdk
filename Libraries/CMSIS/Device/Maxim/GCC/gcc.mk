@@ -464,7 +464,7 @@ ifeq "$(_OS)" "windows_msys"
 	      ${PROJ_LIBS}                                                           \
 	      ${STD_LIBS}                                                            \
 	      -Xlinker --end-group                                                   \
-		  | sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ln_args.txt    \
+		  | sed -r -e 's/\/([A-Za-z])\//\1:\//g'    \
 	      > ${BUILD_DIR}/ln_args.txt
 else
 	@echo -T ${LINKERFILE}                                       \
