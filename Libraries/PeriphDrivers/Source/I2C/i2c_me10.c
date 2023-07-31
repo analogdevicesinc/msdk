@@ -147,6 +147,71 @@ int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c)
     return MXC_I2C_RevB_GetClockStretching((mxc_i2c_revb_regs_t *)i2c);
 }
 
+/* ************************************************************************* */
+int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma)
+{
+    return MXC_I2C_RevA_DMA_Init((mxc_i2c_reva_regs_t *)i2c, (mxc_dma_reva_regs_t *)dma);
+}
+
+/* ************************************************************************* */
+int MXC_I2C_DMA_GetTXChannel(mxc_i2c_regs_t *i2c)
+{
+    return MXC_I2C_RevA_DMA_GetTXChannel((mxc_i2c_reva_regs_t *)i2c);
+}
+
+/* ************************************************************************* */
+int MXC_I2C_DMA_GetRXChannel(mxc_i2c_regs_t *i2c)
+{
+    return MXC_I2C_RevA_DMA_GetRXChannel((mxc_i2c_reva_regs_t *)i2c);
+}
+
+/* ************************************************************************* */
+int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *rxData)
+{
+    int i2cNum;
+    int txReqSel = -1;
+    int rxReqSel = -1;
+
+    if (i2c == NULL) {
+        return E_NULL_PTR;
+    }
+
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+
+    if (txData != NULL) {
+        switch (i2cNum) {
+        case 0:
+            txReqSel = MXC_DMA_REQUEST_I2C0TX;
+            break;
+
+        case 1:
+            txReqSel = MXC_DMA_REQUEST_I2C1TX;
+            break;
+
+        default:
+            return E_BAD_PARAM;
+        }
+    }
+
+    if (rxData != NULL) {
+        switch (i2cNum) {
+        case 0:
+            rxReqSel = MXC_DMA_REQUEST_I2C0RX;
+            break;
+
+        case 1:
+            rxReqSel = MXC_DMA_REQUEST_I2C1RX;
+            break;
+
+        default:
+            return E_BAD_PARAM;
+        }
+    }
+
+    return MXC_I2C_RevA_DMA_SetRequestSelect((mxc_i2c_reva_regs_t *)i2c,
+                                             (mxc_dma_reva_regs_t *)MXC_DMA, txReqSel, rxReqSel);
+}
+
 /* ************************************************************************** */
 int MXC_I2C_Start(mxc_i2c_regs_t *i2c)
 {
@@ -200,21 +265,8 @@ int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t *i2c, volatile unsigned char *bytes, unsig
 int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int len,
                           mxc_i2c_dma_complete_cb_t callback)
 {
-    mxc_dma_config_t config;
-
-    switch (MXC_I2C_GET_IDX(i2c)) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_I2C0RX;
-        break;
-    case 1:
-        config.reqsel = MXC_DMA_REQUEST_I2C1RX;
-        break;
-    default:
-        return E_BAD_PARAM;
-    }
-
-    return MXC_I2C_RevB_ReadRXFIFODMA((mxc_i2c_revb_regs_t *)i2c, bytes, len, callback, config,
-                                      MXC_DMA);
+    // The callback parameter was previously unused but keeping it for backwards-compatibility.
+    return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, MXC_DMA);
 }
 
 /* ************************************************************************** */
@@ -233,21 +285,8 @@ int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t *i2c, volatile unsigned char *bytes, unsi
 int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int len,
                            mxc_i2c_dma_complete_cb_t callback)
 {
-    mxc_dma_config_t config;
-
-    switch (MXC_I2C_GET_IDX(i2c)) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_I2C0TX;
-        break;
-    case 1:
-        config.reqsel = MXC_DMA_REQUEST_I2C1TX;
-        break;
-    default:
-        return E_BAD_PARAM;
-    }
-
-    return MXC_I2C_RevB_WriteTXFIFODMA((mxc_i2c_revb_regs_t *)i2c, bytes, len, callback, config,
-                                       MXC_DMA);
+    // The callback parameter was previously unused but keeping it for backwards-compatibility.
+    return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, MXC_DMA);
 }
 
 /* ************************************************************************** */

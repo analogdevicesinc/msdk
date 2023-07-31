@@ -207,6 +207,10 @@ int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *
             txReqSel = MXC_DMA_REQUEST_I2C1TX;
             break;
 
+        case 2:
+            txReqSel = MXC_DMA_REQUEST_I2C2TX;
+            break;
+
         default:
             return E_BAD_PARAM;
         }
@@ -220,6 +224,10 @@ int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *
 
         case 1:
             rxReqSel = MXC_DMA_REQUEST_I2C1RX;
+            break;
+
+        case 2:
+            rxReqSel = MXC_DMA_REQUEST_I2C2RX;
             break;
 
         default:
