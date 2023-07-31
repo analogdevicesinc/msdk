@@ -295,7 +295,6 @@ int MXC_I2C_RevA_GetClockStretching(mxc_i2c_reva_regs_t *i2c)
     return !((i2c->ctrl & MXC_F_I2C_REVA_CTRL_CLKSTR_DIS) >> MXC_F_I2C_REVA_CTRL_CLKSTR_DIS_POS);
 }
 
-
 int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma)
 {
     int8_t i2cNum;
@@ -329,10 +328,14 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma)
     rxConfig.srcwd = MXC_DMA_WIDTH_BYTE;
     rxConfig.dstwd = MXC_DMA_WIDTH_BYTE;
 
-    MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD, (rxConfig.srcwd << MXC_F_DMA_REVA_CTRL_SRCWD_POS));
-    MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD, (rxConfig.dstwd << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
-    MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD, (txConfig.srcwd << MXC_F_DMA_REVA_CTRL_SRCWD_POS));
-    MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD, (txConfig.dstwd << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
+    MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
+                 (rxConfig.srcwd << MXC_F_DMA_REVA_CTRL_SRCWD_POS));
+    MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
+                 (rxConfig.dstwd << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
+    MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
+                 (txConfig.srcwd << MXC_F_DMA_REVA_CTRL_SRCWD_POS));
+    MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
+                 (txConfig.dstwd << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
 
     // Set Source and Destination Increment.
     txConfig.srcinc_en = 1;
@@ -340,10 +343,14 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma)
     rxConfig.srcinc_en = 0;
     rxConfig.dstinc_en = 1;
 
-    MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCINC, (txConfig.srcinc_en << MXC_F_DMA_REVA_CTRL_SRCINC_POS));
-    MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTINC, (txConfig.dstinc_en << MXC_F_DMA_REVA_CTRL_DSTINC_POS));
-    MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCINC, (rxConfig.srcinc_en << MXC_F_DMA_REVA_CTRL_SRCINC_POS));
-    MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTINC, (rxConfig.dstinc_en << MXC_F_DMA_REVA_CTRL_DSTINC_POS));
+    MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCINC,
+                 (txConfig.srcinc_en << MXC_F_DMA_REVA_CTRL_SRCINC_POS));
+    MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTINC,
+                 (txConfig.dstinc_en << MXC_F_DMA_REVA_CTRL_DSTINC_POS));
+    MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCINC,
+                 (rxConfig.srcinc_en << MXC_F_DMA_REVA_CTRL_SRCINC_POS));
+    MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTINC,
+                 (rxConfig.dstinc_en << MXC_F_DMA_REVA_CTRL_DSTINC_POS));
 
     if (states[i2cNum].master) {
         MXC_DMA_SetCallback(txChannel, MXC_I2C_RevA_DMACallback);
@@ -393,8 +400,8 @@ int MXC_I2C_RevA_DMA_GetRXChannel(mxc_i2c_reva_regs_t *i2c)
     return states[i2cNum].channelRx;
 }
 
-int MXC_I2C_RevA_DMA_SetRequestSelect(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, uint32_t txReqSel,
-                                       uint32_t rxReqSel)
+int MXC_I2C_RevA_DMA_SetRequestSelect(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma,
+                                      uint32_t txReqSel, uint32_t rxReqSel)
 {
     int i2cNum;
     uint32_t txChannel;
@@ -588,7 +595,8 @@ int MXC_I2C_RevA_ReadRXFIFO(mxc_i2c_reva_regs_t *i2c, volatile unsigned char *by
     return read;
 }
 
-int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len, mxc_dma_regs_t *dma)
+int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len,
+                               mxc_dma_regs_t *dma)
 {
     uint8_t i2cNum;
     mxc_dma_srcdst_t srcdst;
@@ -636,7 +644,8 @@ int MXC_I2C_RevA_WriteTXFIFO(mxc_i2c_reva_regs_t *i2c, volatile unsigned char *b
     return written;
 }
 
-int MXC_I2C_RevA_WriteTXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len, mxc_dma_regs_t *dma)
+int MXC_I2C_RevA_WriteTXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len,
+                                mxc_dma_regs_t *dma)
 {
     int8_t i2cNum;
     mxc_dma_srcdst_t srcdst;
@@ -1049,13 +1058,13 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
 
     // Initialize DMA if it wasn't done earlier.
     if (states[i2cNum].dma_initialized == false) {
-        error = MXC_I2C_DMA_Init((mxc_i2c_regs_t*)i2c, (mxc_dma_regs_t *)dma);
+        error = MXC_I2C_DMA_Init((mxc_i2c_regs_t *)i2c, (mxc_dma_regs_t *)dma);
         if (error != E_NO_ERROR) {
             return error;
         }
     }
 
-    error = MXC_I2C_DMA_SetRequestSelect((mxc_i2c_regs_t*)i2c, req->tx_buf, req->rx_buf);
+    error = MXC_I2C_DMA_SetRequestSelect((mxc_i2c_regs_t *)i2c, req->tx_buf, req->rx_buf);
     if (error != E_NO_ERROR) {
         return error;
     }
