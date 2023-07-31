@@ -227,7 +227,8 @@ int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *
         }
     }
 
-    return MXC_I2C_RevA_DMA_SetRequestSelect((mxc_i2c_reva_regs_t *)i2c, (mxc_dma_reva_regs_t *)MXC_DMA, txReqSel, rxReqSel);
+    return MXC_I2C_RevA_DMA_SetRequestSelect((mxc_i2c_reva_regs_t *)i2c,
+                                             (mxc_dma_reva_regs_t *)MXC_DMA, txReqSel, rxReqSel);
 }
 
 /* ************************************************************************* */

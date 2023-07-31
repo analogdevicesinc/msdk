@@ -110,7 +110,8 @@ int MXC_I2C_RevA_GetClockStretching(mxc_i2c_reva_regs_t *i2c);
 int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma);
 int MXC_I2C_RevA_DMA_GetTXChannel(mxc_i2c_reva_regs_t *i2c);
 int MXC_I2C_RevA_DMA_GetRXChannel(mxc_i2c_reva_regs_t *i2c);
-int MXC_I2C_RevA_DMA_SetRequestSelect(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, uint32_t txReqSel, uint32_t rxReqSel);
+int MXC_I2C_RevA_DMA_SetRequestSelect(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma,
+                                      uint32_t txReqSel, uint32_t rxReqSel);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */
@@ -125,11 +126,13 @@ int MXC_I2C_RevA_Write(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned 
 int MXC_I2C_RevA_Read(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int *len, int ack);
 int MXC_I2C_RevA_ReadRXFIFO(mxc_i2c_reva_regs_t *i2c, volatile unsigned char *bytes,
                             unsigned int len);
-int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len, mxc_dma_regs_t *dma);
+int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len,
+                               mxc_dma_regs_t *dma);
 int MXC_I2C_RevA_GetRXFIFOAvailable(mxc_i2c_reva_regs_t *i2c);
 int MXC_I2C_RevA_WriteTXFIFO(mxc_i2c_reva_regs_t *i2c, volatile unsigned char *bytes,
                              unsigned int len);
-int MXC_I2C_RevA_WriteTXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len, mxc_dma_regs_t *dma);
+int MXC_I2C_RevA_WriteTXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len,
+                                mxc_dma_regs_t *dma);
 int MXC_I2C_RevA_GetTXFIFOAvailable(mxc_i2c_reva_regs_t *i2c);
 void MXC_I2C_RevA_ClearRXFIFO(mxc_i2c_reva_regs_t *i2c);
 void MXC_I2C_RevA_ClearTXFIFO(mxc_i2c_reva_regs_t *i2c);
