@@ -120,7 +120,7 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx* .gnu.linkonce.armexidx.*)
         __exidx_end = .;
-    } > FLASH    
+    } > FLASH
 
     .data :
     {
@@ -153,13 +153,6 @@ SECTIONS {
         _edata = ALIGN(., 4);
     } > SRAM AT>FLASH
     __load_data = LOADADDR(.data);
-
-    /* Section used by RISCV loader projects.  See RISCV_LOAD documentation in the build system */
-    .riscv_flash :
-    {
-        _riscv_boot = .;
-        KEEP(*riscv.o (.text*))
-    } > FLASH
 
     .bss :
     {
@@ -205,4 +198,12 @@ SECTIONS {
 
     /* Check if data + heap + stack exceeds RAM limit */
     ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
+
+    /* Section used by RISCV loader projects.  See RISCV_LOAD documentation in the build system. */
+    .riscv_flash :
+    {
+        . = ((. & 0x1FFFFF00) + 0x100); /* Align address to mod 256 with a small offset. This is required to match the flash page size.*/
+        _riscv_boot = .;
+        KEEP(*riscv.o (.text*))
+    } > FLASH
 }
