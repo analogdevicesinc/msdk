@@ -168,7 +168,7 @@ $(RISCV_COMMON_LD): $(ARM_MAP_FILE)
 	$(info - Output file: $(@))
 ifeq "$(_OS)" "windows"
 # Forgive me...
-	@powershell -Command "New-Item -Force -Path \"$(dir $(@))\" -ItemType \"directory\""
+	@powershell -Command "New-Item -Force -Path \"$(dir $(@))\" -ItemType \"directory\" | Out-Null"
 # 	^ Create the directory for the file
 	@powershell -Command "Out-File -FilePath $(@) -Encoding \"ascii\" -InputObject (-join(\"__FlashStart = \", ((Get-Content $(<) | Select-String -Pattern _riscv_boot).Line.Trim() -Split \" \")[0], \";\"))"
 # 	This one-liner was generally constructed in the following order
@@ -223,7 +223,7 @@ PROJ_LDFLAGS += -L$(abspath $(BUILD_DIR))
 $(RISCV_COMMON_LD):
 	$(info - Generating $(@))
 ifeq "$(_OS)" "windows"
-	@powershell -Command "New-Item -Force -Path \"$(dir $(@))\" -ItemType \"directory\""
+	@powershell -Command "New-Item -Force -Path \"$(dir $(@))\" -ItemType \"directory\" | Out-Null"
 	@powershell -Command "Out-File -FilePath $(@) -Encoding \"ascii\" -InputObject \"__FlashStart = 0x10000000;\""
 	@powershell -Command "Out-File -FilePath $(@) -Encoding \"ascii\" -Append -InputObject \"__FlashLength = 0x10080000 - __FlashStart;\""
 else
