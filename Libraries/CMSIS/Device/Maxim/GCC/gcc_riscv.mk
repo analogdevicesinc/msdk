@@ -391,7 +391,7 @@ endif
 ${BUILD_DIR}/%.a: $(PROJECTMK)
 ifeq "$(_OS)" "windows_msys"
 	@echo -cr ${@} ${^}                          \
-	| sed -r -e 's/\/([A-Za-z])\//\1:\//g' > ${BUILD_DIR}/ar_args.txt
+	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
 else
 	@echo -cr ${@} ${^} > ${BUILD_DIR}/ar_args.txt
 endif
