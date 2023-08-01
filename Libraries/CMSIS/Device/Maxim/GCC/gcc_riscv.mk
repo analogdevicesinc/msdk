@@ -98,13 +98,13 @@ endif
 # The default goal, which causes the example to be built.
 .DEFAULT_GOAL :=
 .PHONY: all
-all: mkbuildir
+all: $(BUILD_DIR)
 all: ${BUILD_DIR}/${PROJECT}.elf
-all: project_defines
+all: $(BUILD_DIR)/project_defines.h
 
 # Goal to build for release without debug
 .PHONY: release
-release: mkbuildir
+release: $(BUILD_DIR)
 release: ${BUILD_DIR}/${PROJECT}.elf
 release: ${BUILD_DIR}/${PROJECT}.srec
 release: ${BUILD_DIR}/${PROJECT}.hex
@@ -113,12 +113,13 @@ release: ${BUILD_DIR}/${PROJECT}.dasm
 
 # The goal to build as a library
 .PHONY: lib
-lib: mkbuildir
+lib: $(BUILD_DIR)
 lib: ${BUILD_DIR}/${PROJECT}.a
 
 # The goal to create the target directory.
 .PHONY: mkbuildir
-mkbuildir:
+mkbuildir: $(BUILD_DIR)
+$(BUILD_DIR):
 	@echo -  MKDIR $(BUILD_DIR)
 ifeq "$(_OS)" "windows"
 # Make run on native Windows will yield C:/-like paths, but the mkdir commands needs
@@ -572,18 +573,12 @@ debug:
 # that come from the build system and compiler itself.  This generates a
 # "project_defines.h" header file inside the build directory that can be
 # force included by VS Code to improve the intellisense engine.
-$(BUILD_DIR)/_empty_tmp_file.c: $(BUILD_DIR)
-	@echo "" > $(BUILD_DIR)/_empty_tmp_file.c
+$(BUILD_DIR)/_empty_tmp_file.c: | $(BUILD_DIR)
+	@echo "// Temp file used to detect compiler defs at build time.  Safely ignore/delete" > $(BUILD_DIR)/_empty_tmp_file.c
 
 .PHONY: project_defines
 project_defines: $(BUILD_DIR)/project_defines.h
-$(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c
+$(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c | $(BUILD_DIR)
+	@echo "- Detecting compiler definitions"
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
-	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(CFLAGS) >> $@
-ifeq "$(_OS)" "windows"
-	@del ${subst /,\,${BUILD_DIR}/_empty_tmp_file.c}
-	@del _empty_tmp_file.d
-else
-	@rm $(BUILD_DIR)/_empty_tmp_file.c
-	@rm _empty_tmp_file.d
-endif
+	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
