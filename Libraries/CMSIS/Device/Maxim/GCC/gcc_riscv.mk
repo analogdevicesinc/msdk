@@ -55,6 +55,8 @@ OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
 # windows_cygwin : Cygwin on windows (legacy config from old sdk)
 # linux : Any linux distro
 # macos : MacOS
+ifeq "$(_OS)" ""
+
 ifeq "$(OS)" "Windows_NT"
 _OS = windows
 
@@ -84,6 +86,8 @@ _OS = linux
 endif
 ifeq "$(UNAME_RESULT)" "Darwin"
 _OS = macos
+endif
+
 endif
 
 endif
