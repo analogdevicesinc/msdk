@@ -1074,14 +1074,6 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
         return error;
     }
 
-    if (states[i2cNum].master) {
-        MXC_DMA_SetCallback(states[i2cNum].channelTx, MXC_I2C_RevA_DMACallback);
-        MXC_DMA_SetCallback(states[i2cNum].channelRx, MXC_I2C_RevA_DMACallback);
-    } else {
-        MXC_DMA_SetCallback(states[i2cNum].channelTx, NULL);
-        MXC_DMA_SetCallback(states[i2cNum].channelRx, NULL);
-    }
-
     //tx
     if ((req->tx_buf != NULL) && !(states[i2cNum].writeDone)) {
         i2c->fifo = ((req->addr) << 1) & ~0x1; // Load the slave address with write bit set
@@ -1097,7 +1089,7 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
 
     if (req->rx_buf != NULL) {
         while (states[i2cNum].writeDone != 1) {}
-        //Ensure DMA transmit has finished before attempting to receive
+        //Ensure DMA transmission has finished before attempting to receive
 
         if ((states[i2cNum].writeDone) && (!states[i2cNum].readDone)) {
             if (req->rx_len > MXC_I2C_REVA_MAX_FIFO_TRANSACTION) {
