@@ -84,6 +84,10 @@ ifneq ($(findstring MSYS, $(UNAME_RESULT)), )
 MSYS=True
 _OS = windows_msys
 endif
+ifneq ($(findstring MINGW, $(UNAME_RESULT)), )
+MSYS=True
+_OS = windows_msys
+endif
 
 else # OS
 

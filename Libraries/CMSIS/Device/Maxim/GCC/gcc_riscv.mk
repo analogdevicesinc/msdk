@@ -77,6 +77,10 @@ ifneq ($(findstring MSYS, $(UNAME_RESULT)), )
 MSYS=True
 _OS = windows_msys
 endif
+ifneq ($(findstring MINGW, $(UNAME_RESULT)), )
+MSYS=True
+_OS = windows_msys
+endif
 
 else # OS
 
@@ -540,7 +544,7 @@ endif
 ################################################################################
 .PHONY: debug
 debug:
-	@echo CYGWIN = ${CYGWIN}
+	@echo OS = ${_OS}
 	@echo
 	@echo CC = ${CC}
 	@echo
