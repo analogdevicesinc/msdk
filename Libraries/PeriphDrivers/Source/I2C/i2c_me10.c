@@ -43,16 +43,6 @@
 #include "mxc_delay.h"
 
 /* **** Definitions **** */
-#define I2C_ERROR                                                                                \
-    (MXC_F_I2C_INT_FL0_ARB_ER | MXC_F_I2C_INT_FL0_TO_ER | MXC_F_I2C_INT_FL0_ADDR_NACK_ER |       \
-     MXC_F_I2C_INT_FL0_DATA_ER | MXC_F_I2C_INT_FL0_DO_NOT_RESP_ER | MXC_F_I2C_INT_FL0_START_ER | \
-     MXC_F_I2C_INT_FL0_STOP_ER)
-#define MASTER 1
-#define SLAVE 0
-
-#define MXC_I2C_MAX_ADDR_WIDTH 0x7F
-#define MXC_I2C_STD_MODE 100000
-#define MXC_I2C_FAST_SPEED 400000
 
 /* **** Variable Declaration **** */
 
@@ -113,7 +103,7 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t *i2c)
 /* ************************************************************************** */
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz)
 {
-    if (hz > MXC_I2C_FAST_SPEED) {
+    if (hz > MXC_I2C_REVB_FASTPLUS_SPEED) {
         return E_NOT_SUPPORTED;
     }
 

@@ -169,6 +169,7 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_
 
 #define MXC_I2C_STD_MODE 100000
 #define MXC_I2C_FAST_SPEED 400000
+#define MXC_I2C_FASTPLUS_SPEED 1000000
 
 /***** Function Prototypes *****/
 
