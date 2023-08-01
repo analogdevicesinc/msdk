@@ -303,7 +303,7 @@ int main()
 
     MXC_I2C_Shutdown(I2C_MASTER);
     MXC_I2C_Shutdown(I2C_SLAVE);
-    
+
     if (verifyData() == E_NO_ERROR) {
         printf("\n-->I2C Transaction Successful\n");
     } else {
