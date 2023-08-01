@@ -344,7 +344,7 @@ STRIP = $(PREFIX)-strip
 
 ################################################################################
 # The rule for building the object file from each C source file.
-${BUILD_DIR}/%.o: %.c $(PROJECTMK)
+${BUILD_DIR}/%.o: %.c $(PROJECTMK) | $(BUILD_DIR)
 ifneq "${ECLIPSE}" ""
 	@echo ${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g'
 else
@@ -362,7 +362,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule to build an object file from a C++ source file
-${BUILD_DIR}/%.o: %.cpp $(PROJECTMK)
+${BUILD_DIR}/%.o: %.cpp $(PROJECTMK) | $(BUILD_DIR)
 ifneq "${ECLIPSE}" ""
 	@echo ${CXX} ${CXXFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g'
 else
@@ -380,7 +380,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for building the object file from each assembly source file.
-${BUILD_DIR}/%.o: %.S $(PROJECTMK)
+${BUILD_DIR}/%.o: %.S $(PROJECTMK) | $(BUILD_DIR)
 ifneq "${VERBOSE}" ""
 	@echo ${CC} ${AFLAGS} -o ${@} -c ${<}
 else
@@ -431,7 +431,7 @@ endif # STRIP_LIBRARIES
 # _binary_<file_name>_bin_start
 # _binary_<file_name>_bin_end
 # _binary_<file_name>_bin_size
-${BUILD_DIR}/%.o: %.bin $(PROJECTMK)
+${BUILD_DIR}/%.o: %.bin $(PROJECTMK) | $(BUILD_DIR)
 ifneq "$(VERBOSE)" ""
 	echo ${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section    \
 	    .data=.text ${<} ${@}
@@ -447,7 +447,7 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for linking the application.
-${BUILD_DIR}/%.elf: $(PROJECTMK)
+${BUILD_DIR}/%.elf: $(PROJECTMK) | $(BUILD_DIR)
 # This rule parses the linker arguments into a text file to work around issues
 # with string length limits on the command line
 ifeq "$(_OS)" "windows_msys"
@@ -584,7 +584,7 @@ $(BUILD_DIR)/_empty_tmp_file.c: | $(BUILD_DIR)
 
 .PHONY: project_defines
 project_defines: $(BUILD_DIR)/project_defines.h
+
 $(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c | $(BUILD_DIR)
-	@echo "- Detecting compiler definitions"
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
 	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
