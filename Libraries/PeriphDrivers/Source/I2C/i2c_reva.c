@@ -315,8 +315,8 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma)
 
 #if TARGET_NUM == 32665
     MXC_DMA_Init((mxc_dma_regs_t *)dma);
-    txChannel = MXC_DMA_AcquireChannel(dma);
-    rxChannel = MXC_DMA_AcquireChannel(dma);
+    txChannel = MXC_DMA_AcquireChannel((mxc_dma_regs_t *)dma);
+    rxChannel = MXC_DMA_AcquireChannel((mxc_dma_regs_t *)dma);
 #else
     MXC_DMA_Init();
     txChannel = MXC_DMA_AcquireChannel();
