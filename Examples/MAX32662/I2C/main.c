@@ -44,6 +44,7 @@
  */
 
 /***** Includes *****/
+
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -67,11 +68,13 @@
 #define I2C_BYTES 255
 
 /***** Globals *****/
+
 static uint8_t Stxdata[I2C_BYTES];
 static uint8_t Srxdata[I2C_BYTES];
 static uint8_t txdata[I2C_BYTES];
 static uint8_t rxdata[I2C_BYTES];
-volatile uint8_t DMA_FLAG = 0;
+int8_t DMA_TX_CH;
+int8_t DMA_RX_CH;
 volatile int I2C_FLAG;
 volatile int txnum = 0;
 volatile int txcnt = 0;
@@ -147,7 +150,7 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
         if (*((int *)data) == E_COMM_ERR) {
             printf("I2C Slave Error!\n");
             printf("i2c->intfl0 = 0x%08x\n", i2c->intfl0);
-            printf("i2c->status  = 0x%08x\n", i2c->status);
+            printf("i2c->status = 0x%08x\n", i2c->status);
             I2C_Callback(NULL, E_COMM_ERR);
             return 1;
 

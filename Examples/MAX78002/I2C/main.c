@@ -149,7 +149,7 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
         if (*((int *)data) == E_COMM_ERR) {
             printf("I2C Slave Error!\n");
             printf("i2c->intfl0 = 0x%08x\n", i2c->intfl0);
-            printf("i2c->status  = 0x%08x\n", i2c->status);
+            printf("i2c->status = 0x%08x\n", i2c->status);
             I2C_Callback(NULL, E_COMM_ERR);
             return 1;
 

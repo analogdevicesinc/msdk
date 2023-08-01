@@ -55,6 +55,7 @@ typedef struct {
     volatile int writeDone; // Write done flag
     volatile int readDone; // Flag done flag
     bool dma_initialized; // Check to see whether DMA was initialized
+    mxc_dma_reva_regs_t *dma; // Save DMA Instance
 } mxc_i2c_reva_req_state_t;
 
 static mxc_i2c_reva_req_state_t states[MXC_I2C_INSTANCES];
@@ -170,8 +171,11 @@ int MXC_I2C_RevA_Shutdown(mxc_i2c_reva_regs_t *i2c)
     MXC_I2C_ClearTXFIFO((mxc_i2c_regs_t *)i2c);
 
     if (states[i2cNum].dma_initialized == true) {
+#if TARGET_NUM == 32665
+        MXC_DMA_DeInit((mxc_dma_reva_regs_t *)(states[i2cNum].dma));
+#else
         MXC_DMA_DeInit();
-
+#endif
         // Release any acquired DMA channels.
         if (states[i2cNum].channelTx >= 0) {
             MXC_DMA_ReleaseChannel(states[i2cNum].channelTx);
@@ -370,6 +374,7 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma)
     states[i2cNum].channelRx = rxChannel;
 
     states[i2cNum].dma_initialized = true;
+    states[i2cNum].dma = dma;
 
     return E_NO_ERROR;
 }

@@ -120,14 +120,14 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
 
         txnum = I2C_BYTES;
         txcnt = 0;
-        i2c->intfl0 = MXC_F_I2C_INTFL0_TX_LOCKOUT | MXC_F_I2C_INTFL0_ADDR_MATCH;
+        i2c->int_fl0 = MXC_F_I2C_INT_FL0_TXLOI | MXC_F_I2C_INT_FL0_AMI;
         break;
 
     case MXC_I2C_EVT_RX_THRESH:
     case MXC_I2C_EVT_OVERFLOW:
         rxnum += MXC_I2C_ReadRXFIFO(i2c, &Srxdata[rxnum], MXC_I2C_GetRXFIFOAvailable(i2c));
         if (rxnum == I2C_BYTES) {
-            i2c->inten0 |= MXC_F_I2C_INTEN0_ADDR_MATCH;
+            i2c->int_en0 |= MXC_F_I2C_INT_EN0_AMIE;
         }
 
         break;
@@ -148,8 +148,8 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
     default:
         if (*((int *)data) == E_COMM_ERR) {
             printf("I2C Slave Error!\n");
-            printf("i2c->intfl0 = 0x%08x\n", i2c->intfl0);
-            printf("i2c->status  = 0x%08x\n", i2c->status);
+            printf("i2c->int_fl0 = 0x%08x\n", i2c->int_fl0);
+            printf("i2c->stat    = 0x%08x\n", i2c->stat);
             I2C_Callback(NULL, E_COMM_ERR);
             return 1;
 

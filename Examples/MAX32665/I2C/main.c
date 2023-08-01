@@ -79,8 +79,8 @@ static uint8_t Stxdata[I2C_BYTES];
 static uint8_t Srxdata[I2C_BYTES];
 static uint8_t txdata[I2C_BYTES];
 static uint8_t rxdata[I2C_BYTES];
-int8_t DMA_TX_CH;
-int8_t DMA_RX_CH;
+int8_t DMA0_TX_CH;
+int8_t DMA0_RX_CH;
 volatile int I2C_FLAG;
 volatile int txnum = 0;
 volatile int txcnt = 0;
@@ -94,14 +94,14 @@ void I2C_Slave_IRQHandler(void)
     MXC_I2C_AsyncHandler(I2C_SLAVE);
 }
 
-void DMA_TX_IRQHandler(void)
+void DMA0_TX_IRQHandler(void)
 {
-    MXC_DMA_Handler();
+    MXC_DMA_Handler(MXC_DMA0);
 }
 
-void DMA_RX_IRQHandler(void)
+void DMA0_RX_IRQHandler(void)
 {
-    MXC_DMA_Handler();
+    MXC_DMA_Handler(MXC_DMA0);
 }
 
 //I2C callback function
@@ -127,14 +127,14 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
 
         txnum = I2C_BYTES;
         txcnt = 0;
-        i2c->intfl0 = MXC_F_I2C_INTFL0_TX_LOCKOUT | MXC_F_I2C_INTFL0_ADDR_MATCH;
+        i2c->int_fl0 = MXC_F_I2C_INT_FL0_TX_LOCK_OUT | MXC_F_I2C_INT_FL0_ADDR_MATCH;
         break;
 
     case MXC_I2C_EVT_RX_THRESH:
     case MXC_I2C_EVT_OVERFLOW:
         rxnum += MXC_I2C_ReadRXFIFO(i2c, &Srxdata[rxnum], MXC_I2C_GetRXFIFOAvailable(i2c));
         if (rxnum == I2C_BYTES) {
-            i2c->inten0 |= MXC_F_I2C_INTEN0_ADDR_MATCH;
+            i2c->int_en0 |= MXC_F_I2C_INT_EN0_ADDR_MATCH;
         }
 
         break;
@@ -155,7 +155,7 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
     default:
         if (*((int *)data) == E_COMM_ERR) {
             printf("I2C Slave Error!\n");
-            printf("i2c->intfl0 = 0x%08x\n", i2c->intfl0);
+            printf("i2c->int_fl0 = 0x%08x\n", i2c->int_fl0);
             printf("i2c->status  = 0x%08x\n", i2c->status);
             I2C_Callback(NULL, E_COMM_ERR);
             return 1;
@@ -290,16 +290,17 @@ int main()
     }
 
 #ifdef MASTERDMA
-    DMA_TX_CH = MXC_I2C_DMA_GetTXChannel(I2C_MASTER);
-    DMA_RX_CH = MXC_I2C_DMA_GetRXChannel(I2C_MASTER);
+    DMA0_TX_CH = MXC_I2C_DMA_GetTXChannel(I2C_MASTER);
+    DMA0_RX_CH = MXC_I2C_DMA_GetRXChannel(I2C_MASTER);
 
-    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(DMA_TX_CH));
-    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(DMA_RX_CH));
+    //There are two DMA instances for the MAX32665
+    NVIC_EnableIRQ(MXC_DMA0_CH_GET_IRQ(DMA0_TX_CH));
+    NVIC_EnableIRQ(MXC_DMA0_CH_GET_IRQ(DMA0_RX_CH));
 
-    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(DMA_TX_CH), DMA_TX_IRQHandler);
-    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(DMA_RX_CH), DMA_RX_IRQHandler);
+    MXC_NVIC_SetVector(MXC_DMA0_CH_GET_IRQ(DMA0_TX_CH), DMA0_TX_IRQHandler);
+    MXC_NVIC_SetVector(MXC_DMA0_CH_GET_IRQ(DMA0_RX_CH), DMA0_RX_IRQHandler);
 
-    if ((error = MXC_I2C_MasterTransactionDMA(&reqMaster)) != 0) {
+    if ((error = MXC_I2C_MasterTransactionDMA(&reqMaster, MXC_DMA0)) != 0) {
         printf("Error writing: %d\n", error);
         return error;
     }
