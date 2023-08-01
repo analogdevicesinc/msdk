@@ -179,7 +179,7 @@ AR=${PREFIX}-ar
 LD=${PREFIX}-gcc
 # The command for calling the compiler.
 CC=${PREFIX}-gcc
-CPP=${PREFIX}-g++
+CXX=${PREFIX}-g++
 # The command for extracting images from the linked executables.
 OBJCOPY=${PREFIX}-objcopy
 OBJDUMP=${PREFIX}-objdump
@@ -285,6 +285,11 @@ endif
 endif
 
 CFLAGS+=$(PROJ_CFLAGS)
+CXX += $(CFLAGS)
+CXXFLAGS += \
+	-fno-rtti				\
+	-fno-exceptions			\
+	-std=c++11				\
 
 # NOTE(JC): I'm leaving this commented because it's weird.  We used
 # to pass the linker **all** of the available extensions and no -mabi
@@ -329,6 +334,7 @@ endif
 # Add the include file paths to AFLAGS and CFLAGS.
 AFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 CFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
+CXXFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 LDFLAGS+=${patsubst %,-L%,$(call fixpath,$(LIBPATH))}
 
 # Add an option for stripping unneeded symbols from archive files
