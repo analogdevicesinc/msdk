@@ -57,6 +57,47 @@ STARTUPFILE=startup_riscv_$(TARGET_LC).S
 endif
 endif
 
+################################################################################
+# Detect target OS
+# windows : native windows
+# windows_msys : MSYS2 on windows
+# windows_cygwin : Cygwin on windows (legacy config from old sdk)
+# linux : Any linux distro
+# macos : MacOS
+ifeq "$(OS)" "Windows_NT"
+_OS = windows
+
+UNAME_RESULT := $(shell uname -s 2>&1)
+# MSYS2 may be present on Windows.  In this case,
+# linux utilities should be used.  However, the OS environment
+# variable will still be set to Windows_NT since we configure
+# MSYS2 to inherit from Windows by default.
+# Here we'll attempt to call uname (only present on MSYS2)
+# while routing stderr -> stdout to avoid throwing an error 
+# if uname can't be found.
+ifneq ($(findstring CYGWIN, $(UNAME_RESULT)), )
+CYGWIN=True
+_OS = windows_cygwin
+endif
+
+ifneq ($(findstring MSYS, $(UNAME_RESULT)), )
+MSYS=True
+_OS = windows_msys
+endif
+
+else # OS
+
+UNAME_RESULT := $(shell uname -s)
+ifeq "$(UNAME_RESULT)" "Linux"
+_OS = linux
+endif
+ifeq "$(UNAME_RESULT)" "Darwin"
+_OS = macos
+endif
+
+endif
+################################################################################
+
 # RISC-V Loader - compile a project for the RISC-V core
 # and link it into the same executable as the ARM code
 # Configuration Variables:
@@ -69,15 +110,6 @@ endif
 #
 # Ex:  "make RISCV_LOAD=1 RISCV_APP=../GPIO"
 ################################################################################
-# Linker scripts unfortunately do not accept environment variables
-# or compiler definitions as input.  The only way to parameterize a
-# linkerfile is to include a separate generated linkerfile, which
-# complicates things significantly.  The RISC-V linkerfile (max78000_riscv.ld)
-# has a hard-coded INCLUDE "buildrv/common_riscv.ld" to look for this file.
-RISCV_COMMON_LD = $(BUILD_DIR)/buildrv/common_riscv.ld
-PROJ_LDFLAGS += -L$(abspath $(BUILD_DIR))
-# ^ Add to search path to locate buildrv/common_riscv.ld
-
 ifeq ($(RISCV_LOAD),1)
 
 LOADER_SCRIPT := $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/riscv-loader.S
@@ -115,6 +147,15 @@ $(ARM_MAP_FILE):
 # The rule to build the arm-only map file re-builds the project with RISCV_LOAD set to 0.
 	$(MAKE) -C $(CURDIR) RISCV_LOAD=0 PROJECT=$(PROJECT)
 
+# Linker scripts unfortunately do not accept environment variables
+# or compiler definitions as input.  The only way to parameterize a
+# linkerfile is to include a separate generated linkerfile, which
+# complicates things significantly.  The RISC-V linkerfile (max78000_riscv.ld)
+# has a hard-coded INCLUDE "buildrv/common_riscv.ld" to look for this file.
+RISCV_COMMON_LD = $(BUILD_DIR)/buildrv/common_riscv.ld
+PROJ_LDFLAGS += -L$(abspath $(BUILD_DIR))
+# ^ Add to search path to locate buildrv/common_riscv.ld
+
 .PHONY: rvcommonld
 rvcommonld: $(RISCV_COMMON_LD)
 
@@ -123,11 +164,29 @@ rvcommonld: $(RISCV_COMMON_LD)
 # 2) Write definitions for __FlashStart and __FlashLength in the auto-generated linkerfile.
 $(RISCV_COMMON_LD): $(ARM_MAP_FILE)
 	$(info - Detecting Arm code size and generating $(@))
+	$(info - Input file: $(ARM_MAP_FILE))
+	$(info - Output file: $(@))
+ifeq "$(_OS)" "windows"
+# Forgive me...
+	@powershell -Command "New-Item -Force -Path \"$(dir $(@))\" -ItemType \"directory\""
+# 	^ Create the directory for the file
+	@powershell -Command "Out-File -FilePath $(@) -Encoding \"ascii\" -InputObject (-join(\"__FlashStart = \", ((Get-Content $(<) | Select-String -Pattern _riscv_boot).Line.Trim() -Split \" \")[0], \";\"))"
+# 	This one-liner was generally constructed in the following order
+#	- Read the file with Get-Content
+#	- Perform the pattern matching with Select-String.  This gives us a Match object.  The .Line attribute gives us the whole line, including whitespace
+#	- Use the string object's built-in Trim() method to remove leading/extra whitespace.
+#	- Now we can split on the space with the -Split command, and the address is the first entry in the array.
+#	- We have the address as a string now.  We need to parse it into another string like "__FlashStart = 0x10040000;"  The -join function seems the best way to keep this a one-liner...  It joins all given strings together.
+#	- Write to the file with Out-File.  Note the explicit 'ascii' encoding.  UTF-8 has issues injecting a BOM (Byte Order Mark) and the linker will throw a warning about \357\273\277 chars.  utf8NoBOM is listed as an encoding option in the documentation, but PowerShell throws an error... ascii it is!
+	@powershell -Command "Out-File -FilePath $(@) -Encoding \"ascii\" -Append -InputObject \"__FlashLength = 0x10080000 - __FlashStart;\""
+else
+# Linux/MacOS
 	@mkdir -p $(dir $(@)) && touch $(@)
 	@echo "__FlashStart = $(shell grep -o "0x[[:alnum:]]*[[:blank:]]*_riscv_boot = ." $(<) | cut -d " " -f 1);" > $(@)
 #   ^ grep gives us the line with a regex, and the "-o" gives us an exact match that strips some extra whitespace.
 # 	Then, we cut the line on the space delimiter and save the first entry.
 	@echo "__FlashLength = 0x10080000 - __FlashStart;" >> $(@)
+endif
 
 # Now we can build and link the RISC-V app, and then create an object file that the linker can
 # use to combine it with the Arm code.  Given that the two binaries share different instruction
@@ -157,11 +216,21 @@ else # RISCV_LOAD
 # the RISC-V core still needs to be "spun up" by
 # the Arm core, so this is really only useful for
 # being able to compile and link quickly for RISC-V.
+RISCV_COMMON_LD = $(BUILD_DIR)/common_riscv.ld
+PROJ_LDFLAGS += -L$(abspath $(BUILD_DIR))
+# ^ Add to search path to locate buildrv/common_riscv.ld
+
 $(RISCV_COMMON_LD):
 	$(info - Generating $(@))
+ifeq "$(_OS)" "windows"
+	@powershell -Command "New-Item -Force -Path \"$(dir $(@))\" -ItemType \"directory\""
+	@powershell -Command "Out-File -FilePath $(@) -Encoding \"ascii\" -InputObject \"__FlashStart = 0x10000000;\""
+	@powershell -Command "Out-File -FilePath $(@) -Encoding \"ascii\" -Append -InputObject \"__FlashLength = 0x10080000 - __FlashStart;\""
+else
 	@mkdir -p $(dir $(@)) && touch $(@)
 	@echo "__FlashStart = 0x10000000;" > $(@)
 	@echo "__FlashLength = 0x10080000 - __FlashStart;" >> $(@)
+endif
 
 endif
 ################################################################################
