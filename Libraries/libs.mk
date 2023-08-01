@@ -139,7 +139,7 @@ ifeq ($(LIB_SDHC), 1)
 SDHC_DRIVER_DIR ?= $(LIBS_DIR)/SDHC
 
 # Set the FAT32 driver directory
-FAT32_DRIVER_DIR ?= $(SDHC_DRIVER_DIR)/ff13
+FAT32_DRIVER_DIR ?= $(SDHC_DRIVER_DIR)/ff15
 
 # Include the SDHC library
 include $(FAT32_DRIVER_DIR)/fat32.mk
