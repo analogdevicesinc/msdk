@@ -29,7 +29,6 @@ read and write to another I2C which acts as a slave.
 You will need to connect P2.7 to P2.17 (SDA) and
 P2.8 to P2.18 (SCL).
 
-
 -->I2C Master Initialization Complete
 -->I2C Slave Initialization Complete
 

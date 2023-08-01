@@ -31,7 +31,6 @@ read and write to another I2C which acts as a slave.
 You will need to connect P0.6 (I2C0 SDA) to P0.14 (I2C1 SDA) and
 P0.7 (I2C0 SCL) to P0.15 (I2C1 SCL).
 
-
 -->I2C Master Initialization Complete
 -->I2C Slave Initialization Complete
 

@@ -33,7 +33,6 @@ AIN11 (P0.19) to P0.7 (SDA).
 Connect the I2C Pull-Up Registers by connecting jumpers
 at JP4 and JP5.
 
-
 -->I2C Master Initialization Complete
 -->I2C Slave Initialization Complete
 
