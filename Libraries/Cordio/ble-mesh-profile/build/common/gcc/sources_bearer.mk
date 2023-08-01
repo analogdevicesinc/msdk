@@ -25,7 +25,9 @@ INC_DIRS += \
 	$(ROOT_DIR)/ble-mesh-profile/sources/bearer/adv \
 	$(ROOT_DIR)/ble-mesh-profile/sources/bearer/gatt
 
-C_FILES += \
-	$(sort $(shell find $(ROOT_DIR)/ble-mesh-profile/sources/bearer/adv -name *.c)) \
-	$(sort $(shell find $(ROOT_DIR)/ble-mesh-profile/sources/bearer/gatt -name *.c))
+# Located with the command "find ble-mesh-profile/sources/bearer -name '*.c'"
+# run from Cordio root directory
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/bearer/adv/adv_bearer.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/bearer/gatt/gatt_bearer_sr.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/bearer/gatt/gatt_bearer_cl.c
 	

@@ -107,6 +107,8 @@ extern const mxc_gpio_cfg_t gpio_cfg_adc_ain5;
 extern const mxc_gpio_cfg_t gpio_cfg_adc_ain6;
 extern const mxc_gpio_cfg_t gpio_cfg_adc_ain7;
 
+extern const mxc_gpio_cfg_t gpio_cfg_rv_jtag;
+
 extern const mxc_gpio_cfg_t gpio_cfg_cmp0;
 extern const mxc_gpio_cfg_t gpio_cfg_cmp1;
 extern const mxc_gpio_cfg_t gpio_cfg_cmp2;

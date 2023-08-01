@@ -35,8 +35,8 @@ ifeq "$(FCL_DIR)" ""
 $(error FCL_DIR must be specified")
 endif
 
-TARGET_UC:=$(shell echo $(TARGET) | tr a-z A-Z)
-TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
 # Specify the library variant.
 ifeq "$(MFLOAT_ABI)" "hardfp"

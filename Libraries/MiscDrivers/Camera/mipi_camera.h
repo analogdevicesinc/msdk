@@ -35,8 +35,9 @@
 #define LIBRARIES_MISCDRIVERS_CAMERA_MIPI_CAMERA_H_
 
 #include <stdint.h>
+#ifndef OV5640_DVP
 #include "csi2.h"
-
+#endif
 /**
  * @brief Pixel format enumerations.
 */
@@ -89,12 +90,15 @@ typedef struct _mipi_camera_format {
  * @brief Camera settings struct.  This is the "top-level" configuration struct
  * encapsulating all camera settings.  Pass this in to the @ref mipi_camera_init function.
 */
+
 typedef struct _mipi_camera_settings_t {
     unsigned int width; /**< Image width in pixels */
     unsigned int height; /**< Image height in pixels */
     mipi_camera_format_t camera_format; /**< Image format */
+#ifndef OV5640_DVP
     mxc_csi2_line_handler_cb_t
         line_handler; /**< Line handler provided by application to process incoming camera data */
+#endif
 } mipi_camera_settings_t;
 
 typedef enum {
@@ -208,8 +212,9 @@ mipi_camera_settings_t mipi_camera_get_camera_settings(void);
  * @brief Get detailed statistics about the last image capture and any errors that occurred.
  * @return A @ref mxc_csi2_capture_stats_t struct
  */
+#ifndef OV5640_DVP
 mxc_csi2_capture_stats_t mipi_camera_get_capture_stats(void);
-
+#endif
 /**
  * @brief Parse a string containing information about the last captured image.
  * This is used with console.py utilities.

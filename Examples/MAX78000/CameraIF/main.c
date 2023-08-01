@@ -33,7 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Parallel camera example with the OV7692/OV5642/HM01B0/HM0360/PAG7920 camera sensors as defined in the makefile.
+ * @brief   Parallel camera example with the OV7692/OV5642/OV5640/HM01B0/HM0360/PAG7920 camera sensors as defined in the makefile.
  *
  * @details This example uses the UART to stream out the image captured from the camera.
  *          Alternatively, it can display the captured image on TFT is it is enabled in the make file.
@@ -56,8 +56,10 @@
 #include "uart.h"
 #include "led.h"
 #include "board.h"
-
 #include "camera.h"
+#if defined(OV5640_DVP)
+#include "mipi_camera.h"
+#endif
 #include "utils.h"
 #include "dma.h"
 
@@ -68,8 +70,8 @@
 /* If enabled, camera is setup in streaming mode to send the image
 line by line to TFT, or serial port as they are captured. Otherwise, it buffers the entire
 image first and then sends to TFT or serial port.
-With serial port set at 900kbps, it can stream for up to 80x80 with OV5642 camera in 
-stream mode, or 176x144 when stream mode is disabled.  It can display on TFT up to 176x144 
+With serial port set at 900kbps, it can stream for up to 80x80 with OV5642 camera in
+stream mode, or 176x144 when stream mode is disabled.  It can display on TFT up to 176x144
 if stream mode is disabled, or 320x240 if enabled
 */
 // #define BUTTON
@@ -134,8 +136,7 @@ Compiler definitions...  These configure TFT and camera settings based on the op
 
 #endif
 
-#if defined(CAMERA_OV7692) || defined(CAMERA_OV5642)
-
+#if defined(CAMERA_OV7692) || defined(CAMERA_OV5642) || defined(CAMERA_OV5640)
 #ifdef ENABLE_TFT
 #ifdef STREAM_ENABLE
 #define IMAGE_XRES 320
@@ -281,13 +282,13 @@ int main(void)
 
     // Initialize the camera driver.
     camera_init(CAMERA_FREQ);
-    printf("\n\nCamera Example\n");
+    printf("\n\nCameraIF Example\n");
 
     slaveAddress = camera_get_slave_address();
     printf("Camera I2C slave address: %02x\n", slaveAddress);
 
-    // Obtain the manufacturer ID of the camera.
-    ret = camera_get_manufacture_id(&id);
+    // Obtain product ID of the camera.
+    ret = camera_get_product_id(&id);
 
     if (ret != STATUS_OK) {
         printf("Error returned from reading camera id. Error %d\n", ret);
@@ -334,8 +335,13 @@ int main(void)
     // Setup the camera image dimensions, pixel format and data acquiring details.
 #ifndef STREAM_ENABLE
 #ifndef CAMERA_MONO
+#if defined(OV5640_DVP)
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXEL_FORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
+                       dma_channel); // RGB565
+#else
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, USE_DMA,
                        dma_channel); // RGB565
+#endif
 #else
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_BAYER, FIFO_FOUR_BYTE, USE_DMA,
                        dma_channel); // Mono
@@ -352,8 +358,13 @@ int main(void)
 #else //STREAM_ENABLE
 #ifndef CAMERA_MONO
 #ifndef FEATHER_FAST_STREAM
+#if defined(OV5640_DVP)
+    ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXEL_FORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
+                       dma_channel); // RGB565
+#else
     ret = camera_setup(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
-                       dma_channel); // RGB565 stream
+                       dma_channel); // RGB565
+#endif
 #else
     MXC_TFT_Stream(0, 0, IMAGE_XRES, IMAGE_YRES);
     ret = camera_setup_tft(IMAGE_XRES, IMAGE_YRES, PIXFORMAT_RGB565, FIFO_FOUR_BYTE, STREAMING_DMA,
@@ -379,6 +390,9 @@ int main(void)
         return -1;
     }
 
+#if defined(OV5640_DVP)
+    camera_write_reg(0x503d, 0x0); // workaround: disable test pattern: color bar
+#endif
     MXC_Delay(SEC(1));
 
     // Start capturing a first camera image frame.

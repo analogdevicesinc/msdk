@@ -40,8 +40,8 @@ ifeq "$(TARGET)" ""
 $(error TARGET must be specified)
 endif
 
-TARGET_UC:=$(shell echo $(TARGET) | tr a-z A-Z)
-TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
@@ -67,4 +67,4 @@ FCL_INCLUDE_DIR += $(PERIPH_DRIVER)/Include/$(TARGET_UC)
 
 FCL_C_FILES += $(sort $(wildcard $(FCL_DIR)/src/*.c))
 # Where to find header files for this project
-FCL_H_FILES +=  $(shell find $(FCL_INCLUDE_DIR) -name '*.h')
+FCL_H_FILES +=  $(wildcard $(addsuffix /*.h,$(FCL_INCLUDE_DIR)))

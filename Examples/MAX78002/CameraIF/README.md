@@ -34,6 +34,7 @@ To change the camera drivers set the `CAMERA` build configuration variable in [p
 
 Additionally, ensure JP38 (DVP CAM PWR) is connected properly.
 -   OV7692:  Connect JP38 to "ON"
+-   OV5640:  Connect JP38 to "ON"
 -   HM0360:  Connect JP38 to "OFF"
 
 Consult your camera module's power-down logic and the MAX78002EVKIT schematic for other camera modules.  
