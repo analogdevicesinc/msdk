@@ -40,8 +40,8 @@ override PROJECT=FAT32
 ifeq "$(TARGET)" ""
 $(error TARGET must be specified)
 endif
-TARGET_UC:=$(shell echo $(TARGET) | tr a-z A-Z)
-TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
 ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
