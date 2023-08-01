@@ -74,9 +74,6 @@ endif
 # Default board.
 BOARD ?= EvKit_V1
 
-generated_linkerfile.ld:
-	echo "VARIABLE=0x1000000;"
-
 # *******************************************************************************
 # Locate the MaximSDK
 
