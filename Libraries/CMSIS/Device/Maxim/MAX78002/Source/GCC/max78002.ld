@@ -49,7 +49,7 @@ SECTIONS {
     {
         _text = .;
         KEEP(*(.isr_vector))
-        *(.text*)    /* program code */
+        EXCLUDE_FILE (*riscv.o) *(.text*)    /* Program code (exclude RISCV code) */
         *(.rodata*)  /* read-only data: "const" */
 
         KEEP(*(.init))
