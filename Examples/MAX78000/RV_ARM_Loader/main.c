@@ -54,12 +54,6 @@
 
 /***** Functions *****/
 
-void WakeISR(void)
-{
-    MXC_SEMA->irq0 = MXC_F_SEMA_IRQ0_EN & ~MXC_F_SEMA_IRQ0_CM4_IRQ;
-    printf("Hello RISC-V!\n");
-}
-
 // *****************************************************************************
 int main(void)
 {
@@ -67,22 +61,12 @@ int main(void)
 
     MXC_Delay(MXC_DELAY_SEC(2));
 
-    // printf("_riscv_boot: 0x%x\n", (uint32_t)&_riscv_boot);
-
-    // Switch to 100 MHz clock
-    // MXC_SYS_Clock_Select(MXC_SYS_CLOCK_IPO);
-    SystemCoreClockUpdate();
-
-    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SMPHR); // Enable Sempahore clock
-    NVIC_EnableIRQ(RISCV_IRQn);
-    MXC_NVIC_SetVector(RISCV_IRQn, WakeISR); // Set wakeup ISR
-
     /* Enable RISCV debugger GPIO */
     MXC_GPIO_Config(&gpio_cfg_rv_jtag);
 
     /* Start the RISCV core */
     MXC_SYS_RISCVRun();
 
-    /* Enter LPM */
+    /* Spin */
     while (1) {}
 }
