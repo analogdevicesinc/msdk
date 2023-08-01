@@ -152,9 +152,6 @@ endif
 # auto-generated dependencies. Also if this is Cygwin, file paths for ARM GCC
 # will be converted from /cygdrive/c to C:.
 ################################################################################
-ifneq ($(findstring CYGWIN, ${shell uname -s}), )
-CYGWIN=True
-endif
 
 # Set the toolchain prefix.  Top-level makefiles can specify RISCV_PREFIX or
 # PREFIX directly.  RISCV_PREFIX is given to improve dual-core projects
@@ -183,15 +180,16 @@ OBJCOPY=${PREFIX}-objcopy
 OBJDUMP=${PREFIX}-objdump
 
 # Discover if we are using GCC > 4.8.0
-GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \> 4)
-ifeq "$(GCCVERSIONGTEQ4)" "0"
-GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \>= 4)
+GCCVERSIONGTEQ4 := 1
+# GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \> 4)
+# ifeq "$(GCCVERSIONGTEQ4)" "0"
+# GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \>= 4)
 	
-ifeq "$(GCCVERSIONGTEQ4)" "1"
-GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f2 -d.` \>= 8)
-endif
+# ifeq "$(GCCVERSIONGTEQ4)" "1"
+# GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f2 -d.` \>= 8)
+# endif
 
-endif
+# endif
 
 # Set -march, which defines the instruction set the compiler is allowed to use
 # -march=[BASE][EXTENSION][EXTRAS]
