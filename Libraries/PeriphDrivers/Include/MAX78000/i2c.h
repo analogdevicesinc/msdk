@@ -43,7 +43,7 @@
 #include <stdint.h>
 #include "mxc_sys.h"
 #include "i2c_regs.h"
-/***** Definitions *****/
+#include "dma_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
