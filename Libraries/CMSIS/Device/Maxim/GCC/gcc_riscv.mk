@@ -36,61 +36,10 @@ ifeq "$(BUILD_DIR)" ""
 BUILD_DIR=$(CURDIR)/buildrv
 endif
 
-# Make sure VPATH has the location of any absolute paths given to SRCS
-# This allows users to specify SRCS += /absolute/path/to/file.c to add a single file to the build
-# without also having to add VPATH += /absolute/path/to
-# This is necessary because we create our object file definitions with OBJS_NOPATH.
-VPATH += $(sort $(abspath $(dir $(SRCS))))
-
 # Create output object file names
 SRCS_NOPATH := $(foreach NAME,$(SRCS),$(basename $(notdir $(NAME))).c)
 OBJS_NOPATH := $(SRCS_NOPATH:.c=.o)
 OBJS        := $(OBJS_NOPATH:%.o=$(BUILD_DIR)/%.o)
-
-################################################################################
-
-# Detect target OS
-# windows : native windows
-# windows_msys : MSYS2 on windows
-# windows_cygwin : Cygwin on windows (legacy config from old sdk)
-# linux : Any linux distro
-# macos : MacOS
-ifeq "$(_OS)" ""
-
-ifeq "$(OS)" "Windows_NT"
-_OS = windows
-
-UNAME_RESULT := $(shell uname -s 2>&1)
-# MSYS2 may be present on Windows.  In this case,
-# linux utilities should be used.  However, the OS environment
-# variable will still be set to Windows_NT since we configure
-# MSYS2 to inherit from Windows by default.
-# Here we'll attempt to call uname (only present on MSYS2)
-# while routing stderr -> stdout to avoid throwing an error 
-# if uname can't be found.
-ifneq ($(findstring CYGWIN, $(UNAME_RESULT)), )
-CYGWIN=True
-_OS = windows_cygwin
-endif
-
-ifneq ($(findstring MSYS, $(UNAME_RESULT)), )
-MSYS=True
-_OS = windows_msys
-endif
-
-else # OS
-
-UNAME_RESULT := $(shell uname -s)
-ifeq "$(UNAME_RESULT)" "Linux"
-_OS = linux
-endif
-ifeq "$(UNAME_RESULT)" "Darwin"
-_OS = macos
-endif
-
-endif
-
-endif
 
 ################################################################################
 # Goals
@@ -98,13 +47,13 @@ endif
 # The default goal, which causes the example to be built.
 .DEFAULT_GOAL :=
 .PHONY: all
-all: $(BUILD_DIR)
+all: mkbuildir
 all: ${BUILD_DIR}/${PROJECT}.elf
-all: $(BUILD_DIR)/project_defines.h
+all: project_defines
 
 # Goal to build for release without debug
 .PHONY: release
-release: $(BUILD_DIR)
+release: mkbuildir
 release: ${BUILD_DIR}/${PROJECT}.elf
 release: ${BUILD_DIR}/${PROJECT}.srec
 release: ${BUILD_DIR}/${PROJECT}.hex
@@ -113,31 +62,18 @@ release: ${BUILD_DIR}/${PROJECT}.dasm
 
 # The goal to build as a library
 .PHONY: lib
-lib: $(BUILD_DIR)
+lib: mkbuildir
 lib: ${BUILD_DIR}/${PROJECT}.a
 
 # The goal to create the target directory.
 .PHONY: mkbuildir
-mkbuildir: $(BUILD_DIR)
-$(BUILD_DIR):
-	@echo -  MKDIR $(BUILD_DIR)
-ifeq "$(_OS)" "windows"
-# Make run on native Windows will yield C:/-like paths, but the mkdir commands needs
-# paths with backslashes.
-	@if not exist ${subst /,\,${BUILD_DIR}} mkdir ${subst /,\,${BUILD_DIR}}
-else
+mkbuildir:
 	@mkdir -p ${BUILD_DIR}
-endif
 
 # The goal to clean out all the build products.
 .PHONY: clean
 clean:
-	@echo -  RMDIR $(BUILD_DIR)
-ifneq "$(_OS)" "windows"
 	@rm -rf ${BUILD_DIR} ${wildcard *~}
-else
-	@if exist ${subst /,\,${BUILD_DIR}} rmdir /s /q ${subst /,\,${BUILD_DIR}}
-endif
 
 ${BUILD_DIR}/${PROJECT}.elf: ${LIBS} ${OBJS} ${LINKERFILE}
 ${BUILD_DIR}/${PROJECT}.a: ${OBJS}
@@ -157,6 +93,9 @@ endif
 # auto-generated dependencies. Also if this is Cygwin, file paths for ARM GCC
 # will be converted from /cygdrive/c to C:.
 ################################################################################
+ifneq ($(findstring CYGWIN, ${shell uname -s}), )
+CYGWIN=True
+endif
 
 # Set the toolchain prefix.  Top-level makefiles can specify RISCV_PREFIX or
 # PREFIX directly.  RISCV_PREFIX is given to improve dual-core projects
@@ -179,22 +118,21 @@ AR=${PREFIX}-ar
 LD=${PREFIX}-gcc
 # The command for calling the compiler.
 CC=${PREFIX}-gcc
-CXX=${PREFIX}-g++
+CPP=${PREFIX}-g++
 # The command for extracting images from the linked executables.
 OBJCOPY=${PREFIX}-objcopy
 OBJDUMP=${PREFIX}-objdump
 
 # Discover if we are using GCC > 4.8.0
-GCCVERSIONGTEQ4 := 1
-# GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \> 4)
-# ifeq "$(GCCVERSIONGTEQ4)" "0"
-# GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \>= 4)
+GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \> 4)
+ifeq "$(GCCVERSIONGTEQ4)" "0"
+GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f1 -d.` \>= 4)
 	
-# ifeq "$(GCCVERSIONGTEQ4)" "1"
-# GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f2 -d.` \>= 8)
-# endif
+ifeq "$(GCCVERSIONGTEQ4)" "1"
+GCCVERSIONGTEQ4 := $(shell expr `$(CC) -dumpversion | cut -f2 -d.` \>= 8)
+endif
 
-# endif
+endif
 
 # Set -march, which defines the instruction set the compiler is allowed to use
 # -march=[BASE][EXTENSION][EXTRAS]
@@ -285,11 +223,6 @@ endif
 endif
 
 CFLAGS+=$(PROJ_CFLAGS)
-CXX += $(CFLAGS)
-CXXFLAGS += \
-	-fno-rtti				\
-	-fno-exceptions			\
-	-std=c++11				\
 
 # NOTE(JC): I'm leaving this commented because it's weird.  We used
 # to pass the linker **all** of the available extensions and no -mabi
@@ -334,7 +267,6 @@ endif
 # Add the include file paths to AFLAGS and CFLAGS.
 AFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 CFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
-CXXFLAGS+=${patsubst %,-I%,$(call fixpath,$(IPATH))}
 LDFLAGS+=${patsubst %,-L%,$(call fixpath,$(LIBPATH))}
 
 # Add an option for stripping unneeded symbols from archive files
@@ -344,198 +276,144 @@ STRIP = $(PREFIX)-strip
 
 ################################################################################
 # The rule for building the object file from each C source file.
-${BUILD_DIR}/%.o: %.c $(PROJECTMK) | $(BUILD_DIR)
-ifneq "${ECLIPSE}" ""
-	@echo ${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g'
-else
-ifneq "${VERBOSE}" ""
-	@echo ${CC} ${CFLAGS} -o ${@} ${<}
-else
-	@echo -  CC    ${<}
-endif
-endif
+${BUILD_DIR}/%.o: %.c $(PROJECTMK)
+	@if [ '${ECLIPSE}' != '' ]; 																			\
+	then 																									\
+		echo ${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g' ; \
+	elif [ '${VERBOSE}' != '' ];                                               								\
+	then 																									\
+	    echo ${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<});     								\
+	else                                                                       								\
+	    echo "  CC    ${<}";                                                   								\
+	fi
 
-	@${CC} ${CFLAGS} -o ${@} ${<}
-
+	@${CC} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<})
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
 endif
 
 # The rule to build an object file from a C++ source file
-${BUILD_DIR}/%.o: %.cpp $(PROJECTMK) | $(BUILD_DIR)
-ifneq "${ECLIPSE}" ""
-	@echo ${CXX} ${CXXFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g'
-else
-ifneq "${VERBOSE}" ""
-	@echo ${CXX} ${CXXFLAGS} -o ${@} ${<}
-else
-	@echo -  CXX    ${<}
-endif
-endif
-
-	@${CXX} ${CXXFLAGS} -o ${@} ${<}
-
+${BUILD_DIR}/%.o: %.cpp $(PROJECTMK)
+	@if [ '${ECLIPSE}' != '' ]; 																			\
+	then 																									\
+		echo ${CPP} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<}) | sed 's/-I\/\(.\)\//-I\1:\//g' ; \
+	elif [ '${VERBOSE}' != '' ];                                               								\
+	then 																									\
+	    echo ${CPP} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<});     								\
+	else                                                                       								\
+	    echo "  CC    ${<}";                                                   								\
+	fi
+	
+	@${CPP} ${CFLAGS} -o $(call fixpath,${@}) $(call fixpath,${<})
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
 endif
 
 # The rule for building the object file from each assembly source file.
-${BUILD_DIR}/%.o: %.S $(PROJECTMK) | $(BUILD_DIR)
-ifneq "${VERBOSE}" ""
-	@echo ${CC} ${AFLAGS} -o ${@} -c ${<}
-else
-	@echo -  AS    ${<}
-endif
-
-	@${CC} ${AFLAGS} -o ${@} -c ${<}
-
+${BUILD_DIR}/%.o: %.S $(PROJECTMK)
+	@if [ '${VERBOSE}' = '' ];                                                   \
+	 then                                                                        \
+	     echo "  AS    ${<}";                                                    \
+	 else                                                                        \
+	     echo ${CC} ${AFLAGS} -o $(call fixpath,${@}) -c $(call fixpath,${<});   \
+	 fi
+	@${CC} ${AFLAGS} -o $(call fixpath,${@}) -c $(call fixpath,${<})
 ifeq "$(CYGWIN)" "True"
 	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
 endif
 
 # The rule for creating an object library.
 ${BUILD_DIR}/%.a: $(PROJECTMK)
-ifeq "$(_OS)" "windows_msys"
-	@echo -cr ${@} ${^}                          \
-	| sed -r -e 's/ \/([A-Za-z])\// \1:\//g' > ${BUILD_DIR}/ar_args.txt
-else
-	@echo -cr ${@} ${^} > ${BUILD_DIR}/ar_args.txt
-endif
-
-ifneq "$(VERBOSE)" ""
-	@echo ${AR} -cr ${@} ${^}
-else
-	@echo -  AR    ${@}
-endif
-	@${AR} @${BUILD_DIR}/ar_args.txt
-
+	@if [ '${VERBOSE}' = '' ];                                                   \
+	 then                                                                        \
+	     echo "  AR    ${@}";                                                    \
+	 else                                                                        \
+	     echo ${AR} -cr $(call fixpath,${@}) $(call fixpath,${^});               \
+	 fi
+	@${AR} -cr $(call fixpath,${@}) $(call fixpath,${^})
 ifeq ($(STRIP_LIBRARIES),1)
-ifneq "$(ECLIPSE)" ""
-	@echo ${STRIP} $(call fixpath,${@}) | sed 's/-I\/\(.\)\//-I\1:\//g'
-else
-
-ifneq "$(VERBOSE)" ""
-	@echo ${STRIP} --strip-unneeded ${@}
-else
-	@echo -  STRIP ${@}
-endif # VERBOSE
-
-endif # ECLIPSE
-
-	@${STRIP} --strip-unneeded ${@}
-
-endif # STRIP_LIBRARIES
-
-# The rule for building the object file from binary source file.
-# Resulting object will have the following symbols
-# _binary_<file_name>_bin_start
-# _binary_<file_name>_bin_end
-# _binary_<file_name>_bin_size
-${BUILD_DIR}/%.o: %.bin $(PROJECTMK) | $(BUILD_DIR)
-ifneq "$(VERBOSE)" ""
-	echo ${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section    \
-	    .data=.text ${<} ${@}
-else
-	echo -  CP    ${<}
-endif
-
-	@${OBJCOPY} -I binary -B arm -O elf32-littlearm --rename-section            \
-	.data=.text ${<} ${@}
-
-ifeq "$(CYGWIN)" "True"
-	@sed -i -r -e 's/([A-Na-n]):/\/cygdrive\/\L\1/g' -e 's/\\([A-Za-z])/\/\1/g' ${@:.o=.d}
+	@if [ 'x${ECLIPSE}' != x ];                                                 \
+	 then                                                                       \
+	    echo ${STRIP} $(call fixpath,${@}) | sed 's/-I\/\(.\)\//-I\1:\//g' ;    \
+	elif [ 'x${VERBOSE}' != x ];                                                \
+	then                                                                        \
+	    echo ${STRIP} --strip-unneeded $(call fixpath,${@});                    \
+	elif [ 'x${QUIET}' != x ];                                                  \
+	then                                                                        \
+	    :;                                                                      \
+	else                                                                        \
+	    echo "  STRIP ${@}";                                                    \
+	fi
+	@${STRIP} --strip-unneeded $(call fixpath,${@})
 endif
 
 # The rule for linking the application.
-${BUILD_DIR}/%.elf: $(PROJECTMK) | $(BUILD_DIR)
-# This rule parses the linker arguments into a text file to work around issues
-# with string length limits on the command line
-ifeq "$(_OS)" "windows_msys"
-# MSYS2 will create /c/-like paths, but GCC needs C:/-like paths on Windows.
-# So the only difference between this command and the "standard" command for
-# creating ln_args.txt is the sed call to perform the path replacement.
-	@echo -T ${LINKERFILE}                                       \
+${BUILD_DIR}/%.elf: $(PROJECTMK)
+	@if [ '${VERBOSE}' = '' ];                                                   \
+	 then                                                                        \
+	     echo "  LD    ${@} ${LNK_SCP}";                                         \
+	 else                                                                        \
+	     echo ${LD} -T $(call fixpath,${LINKERFILE})                             \
+	          --entry ${ENTRY}                                                   \
+	          $(call fixpath,${LDFLAGS})                                         \
+	          -o $(call fixpath,${@})                                            \
+	          $(call fixpath,$(filter %.o, ${^}))                                \
+	          -Xlinker --start-group                                             \
+	          $(call fixpath,$(filter %.a, ${^}))                                \
+	          ${PROJ_LIBS}                                                       \
+	          ${STD_LIBS}                                                        \
+	          -Xlinker --end-group;                                              \
+	 fi;                                                                         \
+	${LD} -T $(call fixpath,${LINKERFILE})                                       \
 	      --entry ${ENTRY}                                                       \
-	      ${LDFLAGS}                                             \
-	      -o ${@}                                                \
-	      $(filter %.o, ${^})                                    \
+	      $(call fixpath,${LDFLAGS})                                             \
+	      -o $(call fixpath,${@})                                                \
+	      $(call fixpath,$(filter %.o, ${^}))                                    \
 	      -Xlinker --start-group                                                 \
-	      $(filter %.a, ${^})                                    \
+	      $(call fixpath,$(filter %.a, ${^}))                                    \
 	      ${PROJ_LIBS}                                                           \
 	      ${STD_LIBS}                                                            \
-	      -Xlinker --end-group                                                   \
-		  | sed -r -e 's/\/([A-Za-z])\//\1:\//g'    \
-	      > ${BUILD_DIR}/ln_args.txt
-else
-	@echo -T ${LINKERFILE}                                       \
-	      --entry ${ENTRY}                                                       \
-	      ${LDFLAGS}                                             \
-	      -o ${@}                                                \
-	      $(filter %.o, ${^})                                    \
-	      -Xlinker --start-group                                                 \
-	      $(filter %.a, ${^})                                    \
-	      ${PROJ_LIBS}                                                           \
-	      ${STD_LIBS}                                                            \
-	      -Xlinker --end-group                                                   \
-	      > ${BUILD_DIR}/ln_args.txt
-endif
-
-ifneq "$(VERBOSE)" ""
-	@echo ${LD} -T ${LINKERFILE}                          \
-	        --entry ${ENTRY}                                             \
-	        ${LDFLAGS}                                   \
-	        -o ${@}                                      \
-	        $(filter %.o, ${^})                          \
-	        -Xlinker --start-group                                       \
-	        $(filter %.a, ${^})                          \
-	        ${PROJ_LIBS}                                                 \
-	        ${STD_LIBS}                                                  \
-	        -Xlinker --end-group
-else
-	@echo -  LD    ${@}
-endif
-
-	@${LD} @${BUILD_DIR}/ln_args.txt
+	      -Xlinker --end-group
 
 # Create S-Record output file
 %.srec: %.elf
-ifneq "$(VERBOSE)" ""
-	@echo ${OBJCOPY} -O srec ${<} ${@}
-else
-	@echo Creating ${@}
-endif
-
-	@$(OBJCOPY) -O srec $< ${@}
+	@if [ '${VERBOSE}' = '' ];                                                   \
+	 then                                                                        \
+	     echo "Creating ${@}";                                                   \
+	 else                                                                        \
+	     echo ${OBJCOPY} -O srec $(call fixpath,${<}) $(call fixpath,${@});      \
+	 fi
+	@$(OBJCOPY) -O srec $< $(call fixpath,${@})
 
 # Create Intex Hex output file
 %.hex: %.elf
-ifneq "$(VERBOSE)" ""
-	@echo ${OBJCOPY} -O ihex ${<} ${@}
-else
-	@echo Creating ${@}
-endif
-
-	@$(OBJCOPY) -O ihex $< ${@}
+	@if [ '${VERBOSE}' = '' ];                                                   \
+	 then                                                                        \
+	     echo "Creating ${@}";                                                   \
+	 else                                                                        \
+	     echo ${OBJCOPY} -O ihex $(call fixpath,${<}) $(call fixpath,${@});      \
+	 fi
+	@$(OBJCOPY) -O ihex $< $(call fixpath,${@})
 
 # Create binary output file
 %.bin: %.elf
-ifneq "$(VERBOSE)" ""
-	@echo ${OBJCOPY} -O binary ${<} ${@}
-else
-	@echo Creating ${@}
-endif
-
-	@$(OBJCOPY) -O binary $< ${@}
+	@if [ '${VERBOSE}' = '' ];                                                   \
+	 then                                                                        \
+	     echo "Creating ${@}";                                                   \
+	 else                                                                        \
+	     echo ${OBJCOPY} -O binary $(call fixpath,${<}) $(call fixpath,${@});    \
+	 fi
+	@$(OBJCOPY) -O binary $< $(call fixpath,${@})
 
 # Create disassembly file
 %.dasm: %.elf
-ifneq "$(VERBOSE)" ""
-	@echo $(OBJDUMP) -S ${<} ${@}
-else
-	@echo Creating ${@}
-endif
-
-	@$(OBJDUMP) -S $< > ${@}
+	@if [ '${VERBOSE}' = '' ];                                                   \
+	 then                                                                        \
+	     echo "Creating ${@}";                                                   \
+	 else                                                                        \
+	     echo $(OBJDUMP) -S $(call fixpath,${<}) $(call fixpath,${@});        \
+	 fi
+	@$(OBJDUMP) -S $< > $(call fixpath,${@})
 
 ################################################################################
 .PHONY: debug
@@ -579,12 +457,11 @@ debug:
 # that come from the build system and compiler itself.  This generates a
 # "project_defines.h" header file inside the build directory that can be
 # force included by VS Code to improve the intellisense engine.
-$(BUILD_DIR)/_empty_tmp_file.c: | $(BUILD_DIR)
-	@echo "// Temp file used to detect compiler defs at build time.  Safely ignore/delete" > $(BUILD_DIR)/_empty_tmp_file.c
-
 .PHONY: project_defines
 project_defines: $(BUILD_DIR)/project_defines.h
-
-$(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c | $(BUILD_DIR)
-	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
-	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
+$(BUILD_DIR)/project_defines.h: mkbuildir
+	$(file > $(BUILD_DIR)/empty.c,)
+	$(file > $(BUILD_DIR)/project_defines.h,// This is a generated file that's used to detect definitions that have been set by the compiler and build system.)
+	@$(CC) -E -P -dD $(BUILD_DIR)/empty.c $(CFLAGS) >> $(BUILD_DIR)/project_defines.h
+	@rm $(BUILD_DIR)/empty.c
+	@rm empty.d

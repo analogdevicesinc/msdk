@@ -20,14 +20,6 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          submodules: false
-          fetch-depth: 0
-          
       - name: Labeling
         uses: actions/labeler@v4
         with:

@@ -106,4 +106,4 @@ ${CORDIO_BUILD_DIR}/${CORDIO_LIB}: ${CORDIO_C_FILES} ${PROJECTMK}
     
 
 clean.cordio:
-	@$(MAKE) -f ${CORDIO_DIR}/platform/targets/maxim/build/libCordio.mk BUILD_DIR=${CORDIO_BUILD_DIR} clean
+	@rm -rf ${CORDIO_BUILD_DIR}/*

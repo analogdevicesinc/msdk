@@ -139,7 +139,7 @@ show.includes:
 	done
 
 show.headers:
-	@for f in $(subst $(ROOT_DIR)/,,$(sort $(wildcard $(addsuffix *.h,$(dir $(INC_DIRS)))))); \
+	@for f in $(subst $(ROOT_DIR)/,,$(sort $(shell find $(INC_DIRS) -name *.h -print))); \
 		do echo $$f; \
 	done
 

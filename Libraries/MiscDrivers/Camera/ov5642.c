@@ -784,7 +784,6 @@ static int set_saturation(int level)
 
     return ret;
 }
-
 #if 0
 static int set_hue(int degree)
 {
@@ -904,50 +903,50 @@ static int set_special_effect(ov5642_effect_t effect)
     int ret = 0;
 
     switch (effect) {
-    case SE_NORMAL:
+    case NORMAL:
         ret |= cambus_write(0x5001, 0x7f);
         ret |= cambus_write(0x5580, 0x00);
         break;
 
-    case SE_BLUE:
+    case BLUE:
         ret |= cambus_write(0x5001, 0xff);
         ret |= cambus_write(0x5580, 0x18);
         ret |= cambus_write(0x5585, 0xa0);
         ret |= cambus_write(0x5586, 0x40);
         break;
 
-    case SE_GREEN:
+    case GREEN:
         ret |= cambus_write(0x5001, 0xff);
         ret |= cambus_write(0x5580, 0x18);
         ret |= cambus_write(0x5585, 0x60);
         ret |= cambus_write(0x5586, 0x60);
         break;
 
-    case SE_RED:
+    case RED:
         ret |= cambus_write(0x5001, 0xff);
         ret |= cambus_write(0x5580, 0x18);
         ret |= cambus_write(0x5585, 0x80);
         ret |= cambus_write(0x5586, 0xc0);
         break;
 
-    case SE_BLACK_WHITE:
+    case BLACK_WHITE:
         ret |= cambus_write(0x5001, 0xff);
         ret |= cambus_write(0x5580, 0x18);
         ret |= cambus_write(0x5585, 0x80);
         ret |= cambus_write(0x5586, 0x80);
         break;
 
-    case SE_NEGATIVE:
+    case NEGATIVE:
         ret |= cambus_write(0x5001, 0xff);
         ret |= cambus_write(0x5580, 0x40);
         break;
 
-    case SE_GRAY:
+    case GRAY:
         ret |= cambus_write(0x5001, 0xff);
         ret |= cambus_write(0x5580, 0x20);
         break;
 
-    case SE_SEPIA:
+    case SEPIA:
         ret |= cambus_write(0x5001, 0xff);
         ret |= cambus_write(0x5580, 0x18);
         ret |= cambus_write(0x5585, 0x40);

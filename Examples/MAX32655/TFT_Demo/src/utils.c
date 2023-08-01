@@ -45,14 +45,14 @@ unsigned int utils_get_time_ms(void)
 {
     uint32_t sec, ssec;
     double subsec;
-    uint32_t ms;
+    unsigned int ms;
 
     MXC_RTC_GetSubSeconds(&ssec);
-    subsec = (double)ssec / (double)(4096.0);
+    subsec = ssec / 4096.0;
 
     MXC_RTC_GetSeconds(&sec);
 
-    ms = (sec * 1000) + (int)(subsec * 1000);
+    ms = (sec * 1000) + (subsec * 1000);
 
     return ms;
 }

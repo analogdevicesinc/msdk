@@ -45,7 +45,6 @@ jobs:
           scopes: |
             Documentation
             Examples
-            Build
             Tools
             BLE
             Boards
