@@ -32,6 +32,9 @@ P0.13->P0.9 (SDA). As well jumper JP1 (VREF) needs
 to be removed.
 
 
+-->I2C Master Initialization Complete
+-->I2C Slave Initialization Complete
+
 -->Writing data to slave, and reading the data back
 
 -->Result:
