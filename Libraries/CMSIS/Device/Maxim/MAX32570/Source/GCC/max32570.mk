@@ -43,15 +43,27 @@ TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
 
 # The build directory
 ifeq "$(BUILD_DIR)" ""
+ifeq "$(RISCV_CORE)" ""
 BUILD_DIR=$(CURDIR)/build
+else
+BUILD_DIR=$(CURDIR)/buildrv
+endif
 endif
 
 ifeq "$(STARTUPFILE)" ""
+ifeq "$(RISCV_CORE)" ""
 STARTUPFILE=startup_$(TARGET_LC).S
+else
+STARTUPFILE=startup_riscv_$(TARGET_LC).S
+endif
 endif
 
 ifeq "$(LINKERFILE)" ""
+ifeq "$(RISCV_CORE)" ""
 LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC).ld
+else
+LINKERFILE=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/$(TARGET_LC)_riscv.ld
+endif
 endif
 
 ifeq "$(ENTRY)" ""
@@ -66,12 +78,13 @@ endif
 
 # Add target specific CMSIS source files
 ifneq (${MAKECMDGOALS},lib)
-
-ifneq (${MAKECMDGOALS},scpa)
 SRCS += ${STARTUPFILE}
-endif
 SRCS += heap.c
+ifeq "$(RISCV_CORE)" ""
 SRCS += system_$(TARGET_LC).c
+else
+SRCS += system_riscv_$(TARGET_LC).c
+endif
 endif
 
 # Add target specific CMSIS source directories
@@ -89,4 +102,8 @@ IPATH+=$(CMSIS_ROOT)/$(CMSIS_VER)/Core/Include
 LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
 
 # Include the rules and goals for building
+ifeq "$(RISCV_CORE)" ""
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc.mk
+else
+include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc_riscv.mk
+endif
