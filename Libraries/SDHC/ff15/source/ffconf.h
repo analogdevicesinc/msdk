@@ -113,7 +113,7 @@
 */
 
 
-#define FF_USE_LFN		0
+#define FF_USE_LFN		1
 #define FF_MAX_LFN		255
 /* The FF_USE_LFN switches the support for LFN (long file name).
 /
@@ -231,7 +231,7 @@
 /  buffer in the filesystem object (FATFS) is used for the file data transfer. */
 
 
-#define FF_FS_EXFAT		0
+#define FF_FS_EXFAT		1
 /* This option switches support for exFAT filesystem. (0:Disable or 1:Enable)
 /  To enable exFAT, also LFN needs to be enabled. (FF_USE_LFN >= 1)
 /  Note that enabling exFAT discards ANSI C (C89) compatibility. */
