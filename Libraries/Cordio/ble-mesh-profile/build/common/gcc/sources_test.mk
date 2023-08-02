@@ -23,5 +23,6 @@
 INC_DIRS += \
 	$(ROOT_DIR)/ble-mesh-profile/include
 
-C_FILES += \
-	$(sort $(shell find $(ROOT_DIR)/ble-mesh-profile/sources/test -name *.c))
+# Found with the command "find ble-mesh-profile/sources/test -name '*.c'"
+# run from Cordio root dir
+C_FILES += (ROOT_DIR)/ble-mesh-profile/sources/test/mesh_test_main.c

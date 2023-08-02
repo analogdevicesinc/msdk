@@ -62,6 +62,9 @@
 
 /* **** Globals **** */
 
+/* Symbol defined by the build system when loading RISCV image */
+extern volatile void const *_riscv_boot; // Defined in linker file
+
 /* **** Functions **** */
 
 /* ************************************************************************** */
@@ -515,6 +518,31 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
         MXC_GCR->rst0 = (0x1 << reset);
         while (MXC_GCR->rst0 & (0x1 << reset)) {}
     }
+}
+
+/* ************************************************************************** */
+void MXC_SYS_RISCVRun(void)
+{
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CPU1);
+
+    /* Disable the the RSCV */
+    MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
+
+    /* Set the interrupt vector base address */
+    MXC_FCR->urvbootaddr = (uint32_t)&_riscv_boot;
+
+    /* Power up the RSCV */
+    MXC_GCR->pclkdis1 &= ~(MXC_F_GCR_PCLKDIS1_CPU1);
+
+    /* CPU1 reset */
+    MXC_GCR->rst1 |= MXC_F_GCR_RST1_CPU1;
+}
+
+/* ************************************************************************** */
+void MXC_SYS_RISCVShutdown(void)
+{
+    /* Disable the the RSCV */
+    MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
 }
 
 /* ************************************************************************** */
