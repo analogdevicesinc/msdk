@@ -107,11 +107,6 @@ void start_tft_dma(uint32_t *src_ptr)
     MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
     // Start DMA
     MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
-
-    // Wait for DMA to finish
-    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
-        ;
-    }
 }
 
 #endif

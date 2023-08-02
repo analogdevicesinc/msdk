@@ -54,6 +54,7 @@
 /************************************ VARIABLES ******************************/
 volatile uint32_t cnn_time; // Stopwatch
 
+extern int g_dma_channel_tft;
 static void run_cnn_1(int x_offset, int y_offset);
 
 int face_detection(void)
@@ -131,6 +132,10 @@ static void run_cnn_1(int x_offset, int y_offset)
 
     // Send a first half of captured image to TFT (Max DMA = 32KB)
     start_tft_dma((uint32_t *)raw);
+    // Wait for DMA to finish
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
+    }
 
     setup_dma_tft((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
 

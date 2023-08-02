@@ -60,6 +60,7 @@
 #include "post_process.h"
 #include "faceID.h"
 #include "embedding_process.h"
+#include "utils.h"
 
 #define CONSOLE_BAUD 115200
 
@@ -180,6 +181,7 @@ int main(void)
 
     /* Initilize SD card */
     SD_Init();
+    uint32_t t1 = utils_get_time_ms();
 
     while (1) {
         face_detection();
@@ -197,6 +199,9 @@ int main(void)
             undetect_count = 0;
         }
 #endif
+
+        PR_DEBUG("Total time: %dms", utils_get_time_ms() - t1);
+        t1 = utils_get_time_ms();
     }
 
     return 0;
