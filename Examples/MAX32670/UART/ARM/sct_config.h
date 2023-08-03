@@ -31,11 +31,10 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32670_UART_ARM_SCT_CONFIG_H_
-#define EXAMPLES_MAX32670_UART_ARM_SCT_CONFIG_H_
+#ifndef EXAMPLES_MAX32670_AES_ARM_SCT_CONFIG_H_
+#define EXAMPLES_MAX32670_AES_ARM_SCT_CONFIG_H_
 
 /*-Memory Regions-*/
 #define _BIN_START_ 0x1000A000
-#define _BINARY_RISCV_BIN_START 0x10075000
 
-#endif // EXAMPLES_MAX32670_UART_ARM_SCT_CONFIG_H_
+#endif // EXAMPLES_MAX32670_AES_ARM_SCT_CONFIG_H_

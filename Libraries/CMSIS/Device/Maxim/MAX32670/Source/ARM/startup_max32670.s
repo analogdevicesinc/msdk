@@ -298,6 +298,7 @@ Default_Handler\
                 EXPORT  RSV21_IRQHandler              [WEAK]  ; 0x25  0x0094  37: Reserved
                 EXPORT  RSV22_IRQHandler              [WEAK]  ; 0x26  0x0098  38: Reserved
                 EXPORT  FLC0_IRQHandler               [WEAK]  ; 0x27  0x009C  39: Flash Controller 0
+			    ; GPIO0_IRQHandler has a weak function in board.c. Hence it is commented out below				
                 ;EXPORT  GPIO0_IRQHandler              [WEAK]  ; 0x28  0x00A0  40: GPIO0
                 EXPORT  GPIO1_IRQHandler              [WEAK]  ; 0x29  0x00A4  41: GPIO1
                 EXPORT  RSV26_IRQHandler              [WEAK]  ; 0x2A  0x00A8  42: Reserved
