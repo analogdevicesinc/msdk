@@ -68,7 +68,7 @@ static int font = (int)&SansSerif16x16[0];
 #endif
 #endif //#ifdef TFT_ENABLE
 
-static int8_t prev_decision = -2;
+int8_t prev_decision = -2;
 static int8_t decision = -2;
 extern uint8_t box[4]; // x1, y1, x2, y2
 

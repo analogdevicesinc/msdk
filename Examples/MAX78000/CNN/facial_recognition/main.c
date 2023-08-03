@@ -68,6 +68,7 @@ extern void SD_Init(void);
 extern volatile uint8_t face_detected;
 extern int reload_faceid;
 extern int reload_facedet;
+extern int8_t prev_decision;
 mxc_uart_regs_t *CommUart;
 #ifdef TFT_ENABLE
 area_t area = { 50, 290, 180, 30 };
@@ -210,6 +211,7 @@ int main(void)
             MXC_TFT_ClearArea(&area, 4);
             MXC_TFT_SetRotation(ROTATE_270);
             undetect_count = 0;
+            prev_decision = -5;
         }
 #endif
 
