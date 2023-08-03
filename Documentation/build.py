@@ -15,6 +15,8 @@ repo = here.parent
 periph_docs_dir = repo / "Libraries" / "PeriphDrivers" / "Documentation"
 examples_dir = repo / "Examples"
 
+target_blacklist = ["MAX32572"]
+
 @dataclass
 class ExampleInfo():
     folder: Path
@@ -68,26 +70,27 @@ markdown_content += "| Example | Description | Supported Parts |\n"
 markdown_content += "| --- | --- | --- |\n"
 for i in sorted(Path(dir) for dir in os.scandir(examples_dir)):
     target_micro = Path(i).name
-    for main_file in Path(i).rglob("**/main.c"):
-        example_info = parse_example_info(main_file)
-        if example_info:            
-            if example_info.name not in [i.name for i in common_examples]:
-                # Example does not exist in the table yet.
-                common_examples.append(
-                    CommonExampleInfo(
-                        example_info.folder,
-                        example_info.name,
-                        example_info.description,
-                        example_info.details,
-                        [target_micro]
+    if target_micro not in target_blacklist:
+        for main_file in Path(i).rglob("**/main.c"):
+            example_info = parse_example_info(main_file)
+            if example_info:
+                if example_info.name not in [i.name for i in common_examples]:
+                    # Example does not exist in the table yet.
+                    common_examples.append(
+                        CommonExampleInfo(
+                            example_info.folder,
+                            example_info.name,
+                            example_info.description,
+                            example_info.details,
+                            [target_micro]
+                        )
                     )
-                )
-            else:
-                idx = [example_info.name == i.name for i in common_examples].index(True)
-                if target_micro not in common_examples[idx].supported_parts:
-                    # Example exists in the table, but the current micro has not been added
-                    # to the list of suppored parts yet.
-                    common_examples[idx].supported_parts.append(target_micro)
+                else:
+                    idx = [example_info.name == i.name for i in common_examples].index(True)
+                    if target_micro not in common_examples[idx].supported_parts:
+                        # Example exists in the table, but the current micro has not been added
+                        # to the list of suppored parts yet.
+                        common_examples[idx].supported_parts.append(target_micro)
 
 # Remove entries with only 1 micro
 common_examples = [i for i in common_examples if len(i.supported_parts) > 1]
@@ -105,19 +108,22 @@ common_example_names = [i.name for i in common_examples] # We'll use this as a f
 example_md_files_list = []
 for i in sorted(Path(dir) for dir in os.scandir(examples_dir)):    
     target_micro = Path(i).name
-    print(f"Generating examples table for {target_micro}")
-    markdown_content += f"### {target_micro.upper()} Examples\n\n" # Add header
-    markdown_content += f"In addition to the [Common Examples](#common-examples), the following examples are available specifically for the {target_micro.upper()}.\n\n"
-    markdown_content += "| Example | Description | MSDK Location |\n" # Start a table
-    markdown_content += "| --- | --- | --- |\n"
-    table_entries = []
-    for main_file in Path(i).rglob("**/main.c"):
-        example_info = parse_example_info(main_file)
-        if example_info and example_info.name not in common_example_names:
-            link = f"https://github.com/Analog-Devices-MSDK/msdk/tree/release/{Path(example_info.folder).relative_to(repo).as_posix()}"
-            table_entries.append(f"| **{example_info.name}** | {example_info.description} | _Local:_`{Path(example_info.folder).relative_to(repo)}`<br>_Github:_ [link]({link})")
-    markdown_content += "\n".join(sorted(table_entries))
-    markdown_content += "\n\n"
+    if target_micro in target_blacklist:
+        print(f"Skipping {target_micro}...  (in blacklist)")
+    else:
+        print(f"Generating examples table for {target_micro}")
+        markdown_content += f"### {target_micro.upper()} Examples\n\n" # Add header
+        markdown_content += f"In addition to the [Common Examples](#common-examples), the following examples are available specifically for the {target_micro.upper()}.\n\n"
+        markdown_content += "| Example | Description | MSDK Location |\n" # Start a table
+        markdown_content += "| --- | --- | --- |\n"
+        table_entries = []
+        for main_file in Path(i).rglob("**/main.c"):
+            example_info = parse_example_info(main_file)
+            if example_info and example_info.name not in common_example_names:
+                link = f"https://github.com/Analog-Devices-MSDK/msdk/tree/release/{Path(example_info.folder).relative_to(repo).as_posix()}"
+                table_entries.append(f"| **{example_info.name}** | {example_info.description} | _Local:_`{Path(example_info.folder).relative_to(repo)}`<br>_Github:_ [link]({link})")
+        markdown_content += "\n".join(sorted(table_entries))
+        markdown_content += "\n\n"
 
 # Pre-populate markdown files
 print("Copying markdown files")
