@@ -1,8 +1,7 @@
 /*************************************************************************************************/
 /*!
-*  \file   main.c
-*
-*  \brief  Main file for fit application.
+ * @file    main.c
+ * @brief   Bluetooth fitness device. Showcases heart rate, battery level, running speed and cadence.
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *

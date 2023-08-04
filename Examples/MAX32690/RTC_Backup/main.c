@@ -33,8 +33,7 @@
 
 /**
  * @file        main.c
- * @brief       Configures and starts the RTC and demonstrates the use of the
- * alarms.
+ * @brief       Demonstrates the alarm functionality of the Real-Time Clock (RTC)
  * @details     The RTC is enabled and the sub-second alarm set to trigger every
  * 250 ms. P2.25 (LED0) is toggled each time the sub-second alarm triggers.  The
  *              time-of-day alarm is set to 2 seconds.  When the time-of-day

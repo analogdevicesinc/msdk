@@ -1,8 +1,7 @@
 /*************************************************************************************************/
 /*!
- *  \file
- *
- *  \brief  Main module.
+ * @file    main.c
+ * @brief   Bluetooth version 5.2 controller, accepts HCI commands via Serial Port.
  *
  *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
  *

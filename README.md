@@ -127,7 +127,7 @@ This repository contains the MSDK's *source code* only.  In order to develop on 
         
         The [Tools](Tools) directory of the MSDK repo should now contain valid symbolic links to the full installation's toolchain.
         
-        ![Symbolic links (windows)](Documentation/res/symlinks-windows.jpg)
+        ![Symbolic links (windows)](res/symlinks-windows.jpg)
 
     On **Linux/MacOS**:
     * Open a terminal

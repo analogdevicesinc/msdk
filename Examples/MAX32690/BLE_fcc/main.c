@@ -1,8 +1,7 @@
 /*************************************************************************************************/
 /*!
- *  \file
- *
- *  \brief  Main module.
+ * @file    main.c
+ * @brief   BLE project with simple serial console for FCC testing
  *
  *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
  *

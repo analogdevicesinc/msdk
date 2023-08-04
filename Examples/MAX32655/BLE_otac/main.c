@@ -1,8 +1,7 @@
 /*************************************************************************************************/
 /*!
-*  \file   main.c
-*
-*  \brief  Main file for dats application.
+ * @file    main.c
+ * @brief   Bluetooth data client that scans for and connects to advertisers with the name of "OTAS".  Demonstrates Over-the-Air (OTA) firmware updates.
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *

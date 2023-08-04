@@ -31,7 +31,10 @@
  *
  ******************************************************************************/
 
-// faceid
+/**
+ * @file    main.c
+ * @brief   Known Answer Test (KAT) for the faceid model
+ */
 // Created using ai8xize.py --test-dir sdk/Examples/MAX78000/CNN --prefix faceid --checkpoint-file trained/ai85-faceid-qat8-q.pth.tar --config-file networks/faceid.yaml --fifo --device MAX78000 --timer 0 --display-checkpoint --verbose
 
 #include <stdlib.h>

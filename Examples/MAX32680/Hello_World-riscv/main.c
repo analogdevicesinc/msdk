@@ -31,6 +31,11 @@
  *
  ******************************************************************************/
 
+/**
+ * @file    main.c
+ * @brief   Hello RISC-V core!  Good starter project for dual-core development.
+*/
+
 #include <stdlib.h>
 #include <stdint.h>
 #include "mxc.h"

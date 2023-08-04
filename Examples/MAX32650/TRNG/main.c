@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief      TRNG Example
+ * @brief      True Random Number Generator (TRNG) example
  * @note       Generates random 32-bit number for first part followed by an
  *             application (AES) with TRNG
  */
