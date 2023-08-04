@@ -2331,12 +2331,10 @@ The tables below are offered to facilitate easier browsing through the MSDK exam
 ### Debug Limitations
 
 - ???+ warning "**⚠️ Warning**"
-    It’s important to note some fundamental limitations of debugging the MSDK's supported parts:
+    It’s important to note some fundamental limitations of debugging the MSDK's supported parts.  These limitations may make the device difficult (or impossible) for the debugger to connect in certain states. In such cases, the device can attempt to be recovered using a [MAX32625PICO](#max32625pico-pico).  See [How to Unlock a Microcontroller That Can No Longer Be Programmed](#how-to-unlock-a-microcontroller-that-can-no-longer-be-programmed)
     * A debugger can not be connected to a microcontroller _while_ the device is in reset.
-    * A microcontroller can not be debugged while it's _Sleep_, _Low Power Mode_, _Micro Power Mode_, _Standby_, _Backup_, or _Shutdown_ mode.
-        * These modes shut down the SWD clock.
-        * Examples that enter these low power modes usually have a 2-second delay in place at the beginning of code to give the debugger a window to connect. For low-power development, it is also recommended to have the same delay in place.
-    These limitations may make the device difficult (or impossible) for the debugger to connect in certain states. In such cases, the device can attempt to be recovered using a [MAX32625PICO](#max32625pico-pico).  See [How to Unlock a Microcontroller That Can No Longer Be Programmed](#how-to-unlock-a-microcontroller-that-can-no-longer-be-programmed)
+    * A microcontroller can not be debugged while it's _Sleep_, _Low Power Mode_, _Micro Power Mode_, _Standby_, _Backup_, or _Shutdown_ mode.  These modes shut down the SWD clock.
+        * For low-power development, it's recommended to place a 2-second blocking delay at the start of `main`.
 
 ### MAX32625PICO (PICO)
 
@@ -2396,7 +2394,7 @@ Before following the procedure below, ensure that you have updated the PICO debu
 
 ##### Unlock with VS Code
 
-For VS Code users, the `"erase flash"``[build task](#build-tasks) can be used to attempt a mass erase.  If this task fails to recover the part, attempt the procedure below.
+For VS Code users, the `"erase flash"` [build task](#build-tasks) can be used to attempt a mass erase.  If this task fails to recover the part, attempt the procedure below.
 
 ##### Unlock with `erase.act`
 
