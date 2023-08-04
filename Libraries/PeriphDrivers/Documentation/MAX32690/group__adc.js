@@ -1,6 +1,28 @@
 var group__adc =
 [
     [ "ADC_Registers", "group__adc__registers.html", "group__adc__registers" ],
+    [ "mxc_adc_req_t", "group__adc.html#structmxc__adc__req__t", [
+      [ "cal", "group__adc.html#acba254612c36539a6cf13a3d16aef3ef", null ],
+      [ "clkdiv", "group__adc.html#aceee74972e6b3608eb0f72a2f07fc08d", null ],
+      [ "clock", "group__adc.html#a4e5ef262f3568e7d5831ee932f5be020", null ],
+      [ "idleCount", "group__adc.html#a9979e3c27f522bb6d13cff22efd2e488", null ],
+      [ "ref", "group__adc.html#a9d764890e25fce4307ea858424220a1d", null ],
+      [ "trackCount", "group__adc.html#a4195bd582154c7bc3f01414361f844a8", null ]
+    ] ],
+    [ "mxc_adc_slot_req_t", "group__adc.html#structmxc__adc__slot__req__t", [
+      [ "channel", "group__adc.html#a357b882bb2876a13a5d94a6d657630b7", null ]
+    ] ],
+    [ "mxc_adc_conversion_req_t", "group__adc.html#structmxc__adc__conversion__req__t", [
+      [ "avg_number", "group__adc.html#a4e805b7a6435347d6ed37649da4bde18", null ],
+      [ "dma_channel", "group__adc.html#add47e6ae8085171443f7c8c44448d541", null ],
+      [ "fifo_format", "group__adc.html#ae021f325a649739e90245a1535986fc4", null ],
+      [ "fifo_threshold", "group__adc.html#a27cf32b1a08dabd2b7c6488bd9b5ee9c", null ],
+      [ "hwTrig", "group__adc.html#a266ae982deed12a0cce8244dc1a6be09", null ],
+      [ "lpmode_divder", "group__adc.html#a0c42f7817c5773fb228fe2649c661432", null ],
+      [ "mode", "group__adc.html#ade688bc3a300282de031480e6e88e766", null ],
+      [ "num_slots", "group__adc.html#aee2e38bff904bc64ba7828aea972815c", null ],
+      [ "trig", "group__adc.html#a6393389f0fd9f80a49bad3cc05664c89", null ]
+    ] ],
     [ "mxc_adc_complete_cb_t", "group__adc.html#ga3ff3078b59da334b33cbfcc3413ecfe6", null ],
     [ "mxc_adc_avg_t", "group__adc.html#ga078a0bca06eba4bfe414d8cdd05d4089", [
       [ "MXC_ADC_AVG_1", "group__adc.html#gga078a0bca06eba4bfe414d8cdd05d4089a1b237f559647e1fde90f84bf2eaec302", null ],

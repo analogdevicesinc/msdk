@@ -5,5 +5,6 @@ var searchData=
   ['hash_5fdigest_2',['hash_digest',['../group__ctb__registers.html#a7d1fd61e8572bdb0073455b3d324eee6',1,'mxc_ctb_regs_t']]],
   ['hash_5fmsg_5fsz_3',['hash_msg_sz',['../group__ctb__registers.html#aca985e364705cabb381dc54db55cfd98',1,'mxc_ctb_regs_t']]],
   ['hsclk_4',['hsclk',['../group__i2c__registers.html#afbe146e6d1b127ea50e54438e5c9175a',1,'mxc_i2c_regs_t']]],
-  ['hysen_5',['hysen',['../group__gpio__registers.html#a841317f7bb3d4ed370636f01a4f399e8',1,'mxc_gpio_regs_t']]]
+  ['hwtrig_5',['hwTrig',['../group__adc.html#a266ae982deed12a0cce8244dc1a6be09',1,'mxc_adc_conversion_req_t']]],
+  ['hysen_6',['hysen',['../group__gpio__registers.html#a841317f7bb3d4ed370636f01a4f399e8',1,'mxc_gpio_regs_t']]]
 ];

@@ -21,13 +21,14 @@ var searchData=
   ['prio_18',['prio',['../group__dma.html#a8cab43eacc30026a0679ceaf05791301',1,'mxc_dma_adv_config_t']]],
   ['ps_19',['ps',['../group__gpio__registers.html#a5a1d26602cf5c5fa9f23c0fcfa2ccb12',1,'mxc_gpio_regs_t']]],
   ['pssel_20',['pssel',['../group__dma.html#acb6885039c6762ab023729939db525f5',1,'mxc_dma_adv_config_t']]],
-  ['pwm_21',['pwm',['../group__tmr__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_tmr_regs_t']]],
-  ['pwrseq_5flpcn_22',['PWRSEQ_LPCN',['../group___p_w_r_s_e_q___l_p_c_n.html',1,'']]],
-  ['pwrseq_5flpmemsd_23',['PWRSEQ_LPMEMSD',['../group___p_w_r_s_e_q___l_p_m_e_m_s_d.html',1,'']]],
-  ['pwrseq_5flppwken_24',['PWRSEQ_LPPWKEN',['../group___p_w_r_s_e_q___l_p_p_w_k_e_n.html',1,'']]],
-  ['pwrseq_5flppwkst_25',['PWRSEQ_LPPWKST',['../group___p_w_r_s_e_q___l_p_p_w_k_s_t.html',1,'']]],
-  ['pwrseq_5flpwken0_26',['PWRSEQ_LPWKEN0',['../group___p_w_r_s_e_q___l_p_w_k_e_n0.html',1,'']]],
-  ['pwrseq_5flpwkst0_27',['PWRSEQ_LPWKST0',['../group___p_w_r_s_e_q___l_p_w_k_s_t0.html',1,'']]],
-  ['pwrseq_5fregisters_28',['PWRSEQ_Registers',['../group__pwrseq__registers.html',1,'']]],
-  ['pwrseq_5fregs_2eh_29',['pwrseq_regs.h',['../pwrseq__regs_8h.html',1,'']]]
+  ['pullup_5fdyn_21',['pullup_dyn',['../group__adc.html#a926f4ff3626f195d5272c7f3f9ddac16',1,'mxc_adc_slot_req_t']]],
+  ['pwm_22',['pwm',['../group__tmr__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_tmr_regs_t']]],
+  ['pwrseq_5flpcn_23',['PWRSEQ_LPCN',['../group___p_w_r_s_e_q___l_p_c_n.html',1,'']]],
+  ['pwrseq_5flpmemsd_24',['PWRSEQ_LPMEMSD',['../group___p_w_r_s_e_q___l_p_m_e_m_s_d.html',1,'']]],
+  ['pwrseq_5flppwken_25',['PWRSEQ_LPPWKEN',['../group___p_w_r_s_e_q___l_p_p_w_k_e_n.html',1,'']]],
+  ['pwrseq_5flppwkst_26',['PWRSEQ_LPPWKST',['../group___p_w_r_s_e_q___l_p_p_w_k_s_t.html',1,'']]],
+  ['pwrseq_5flpwken0_27',['PWRSEQ_LPWKEN0',['../group___p_w_r_s_e_q___l_p_w_k_e_n0.html',1,'']]],
+  ['pwrseq_5flpwkst0_28',['PWRSEQ_LPWKST0',['../group___p_w_r_s_e_q___l_p_w_k_s_t0.html',1,'']]],
+  ['pwrseq_5fregisters_29',['PWRSEQ_Registers',['../group__pwrseq__registers.html',1,'']]],
+  ['pwrseq_5fregs_2eh_30',['pwrseq_regs.h',['../pwrseq__regs_8h.html',1,'']]]
 ];

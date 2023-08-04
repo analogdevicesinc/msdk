@@ -1,5 +1,6 @@
 var NAVTREEINDEX29 =
 {
+"group__uart.html#gaeba392c61e0bb738d66cd8b8027ce3d9":[1,26,49],
 "group__uart.html#gaed0ae1159045ba5ebba86436b154df65":[1,26,9],
 "group__uart.html#gaedb7868e4c73e7621833179d2e54517a":[1,26,24],
 "group__uart.html#gaefee3a2e176828e5ce0825ee0e4d3920":[1,26,37],
@@ -248,6 +249,5 @@ var NAVTREEINDEX29 =
 "tmr__regs_8h.html":[1,23,0,4],
 "tpu__regs_8h.html":[1,24,0,20],
 "trimsir__regs_8h.html":[1,40,4],
-"trng__regs_8h.html":[1,25,0,4],
-"uart__regs_8h.html":[1,26,0,11]
+"trng__regs_8h.html":[1,25,0,4]
 };

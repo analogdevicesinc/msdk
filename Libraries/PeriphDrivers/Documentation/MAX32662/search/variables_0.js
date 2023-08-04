@@ -29,5 +29,6 @@ var searchData=
   ['api_26',['api',['../group__can.html#ad180da20fbde1d3dafc074af87c19540',1,'mxc_can_drv_version_t']]],
   ['autocal0_27',['autocal0',['../group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26',1,'mxc_fcr_regs_t']]],
   ['autocal1_28',['autocal1',['../group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba',1,'mxc_fcr_regs_t']]],
-  ['autocal2_29',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]]
+  ['autocal2_29',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]],
+  ['avg_5fnumber_30',['avg_number',['../group__adc.html#a4e805b7a6435347d6ed37649da4bde18',1,'mxc_adc_conversion_req_t']]]
 ];

@@ -49,7 +49,7 @@ var searchData=
   ['memz_46',['memz',['../group__gcr__registers.html#a6826ace542358140e4ade1c99ed5ca87',1,'mxc_gcr_regs_t']]],
   ['message_5fdepth_47',['message_depth',['../group__can.html#ac0d0372436645259c621df418ed9e4ad',1,'mxc_can_obj_capabilities_t']]],
   ['meucfg_48',['meucfg',['../group__smon__registers.html#aff65fc2c0786bf363ee4212ff522707c',1,'mxc_smon_regs_t']]],
-  ['mode_49',['mode',['../group__spixf.html#a201f2e77d898bf18378030602de654e2',1,'mxc_spixf_cfg_t::mode()'],['../group__can__registers.html#a2488444fd6af619df4566397a486ee7b',1,'mxc_can_regs_t::mode()'],['../group__wdt.html#af095484763b40d0ce2649b916f0ef898',1,'mxc_wdt_cfg_t::mode()'],['../group__tmr.html#ad09582679ae9f272be80f259ccce9248',1,'mxc_tmr_cfg_t::mode()']]],
+  ['mode_49',['mode',['../group__adc.html#ade688bc3a300282de031480e6e88e766',1,'mxc_adc_conversion_req_t::mode()'],['../group__can__registers.html#a2488444fd6af619df4566397a486ee7b',1,'mxc_can_regs_t::mode()'],['../group__wdt.html#af095484763b40d0ce2649b916f0ef898',1,'mxc_wdt_cfg_t::mode()'],['../group__tmr.html#ad09582679ae9f272be80f259ccce9248',1,'mxc_tmr_cfg_t::mode()'],['../group__spixf.html#a201f2e77d898bf18378030602de654e2',1,'mxc_spixf_cfg_t::mode()']]],
   ['modectrl_50',['modectrl',['../group__spixfm__registers.html#a1f414a1231f6ec9262c2fa7a57795e7e',1,'mxc_spixfm_regs_t']]],
   ['modedata_51',['modedata',['../group__spixfm__registers.html#a45724dba6b5745b02e69aef3515ac002',1,'mxc_spixfm_regs_t']]],
   ['monitor_5fmode_52',['monitor_mode',['../group__can.html#a176f42e68d9cba86b3594c40044b86c6',1,'mxc_can_capabilities_t']]],

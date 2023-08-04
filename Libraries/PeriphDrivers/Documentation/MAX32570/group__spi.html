@@ -198,6 +198,8 @@ Functions</h2></td></tr>
 <tr class="separator:gac1faca4d71abb6b56bf43e9eabcf73be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9d7f7ec4a2f457569169a8194ea29555"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga9d7f7ec4a2f457569169a8194ea29555">MXC_SPI_AsyncHandler</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
 <tr class="separator:ga9d7f7ec4a2f457569169a8194ea29555"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaf9df08a8b18d74c3c9a06ca5a328398d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gaf9df08a8b18d74c3c9a06ca5a328398d">MXC_SPI_HWSSControl</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, int state)</td></tr>
+<tr class="separator:gaf9df08a8b18d74c3c9a06ca5a328398d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -934,6 +936,44 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Spi Width <a class="el" href="group__spi.html#ga7a218a6e76f22dccdd5680b1eca14409">mxc_spi_width_t</a> </dd></dl>
+
+</div>
+</div>
+<a id="gaf9df08a8b18d74c3c9a06ca5a328398d" name="gaf9df08a8b18d74c3c9a06ca5a328398d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaf9df08a8b18d74c3c9a06ca5a328398d">&#9670;&nbsp;</a></span>MXC_SPI_HWSSControl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MXC_SPI_HWSSControl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>state</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enable/Disable HW CS control feature. </p>
+<p >Depending on the application, the user might need to manually drive the slave select pin. The SPI driver automatically drives the SS pin and this function enables/disables this feature.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
+    <tr><td class="paramname">state</td><td>Non-zero values: enable HW SS mode. Zero: disable HW SS mode. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -1681,7 +1721,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 29 2023 16:59:52 for MAX32570 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Fri Aug 4 2023 17:11:22 for MAX32570 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

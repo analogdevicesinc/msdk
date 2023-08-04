@@ -1,5 +1,7 @@
 var NAVTREEINDEX17 =
 {
+"group__pulsetrain.html#ga28a6a9fc0ad5e482fea68ab4d08e4bdc":[1,17,9],
+"group__pulsetrain.html#ga44502cec6b847ba2542f3d82229199a5":[1,17,10],
 "group__pulsetrain.html#ga4f3c1a4ef23a2d59455fa89fb1ed78a4":[1,17,14],
 "group__pulsetrain.html#ga4f46b075c2c7e89198c3cf063cf40166":[1,17,15],
 "group__pulsetrain.html#ga568a519909a28db4ed7fad0cec567665":[1,17,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX17 =
 "group__tmr.html#ga17ce01e32c05bbca3c52c2ff6e20ad95":[1,21,18],
 "group__tmr.html#ga2d67231e90c7b452e8e20951c0d72469":[1,21,23],
 "group__tmr.html#ga38a13c176ec7b4dcf1c961d912d55e4c":[1,21,14],
-"group__tmr.html#ga3b5c29727e46f47978286b2afd0c3e8a":[1,21,22],
-"group__tmr.html#ga42cb3aa8f52dbdb93c35710fea893b42":[1,21,27],
-"group__tmr.html#ga4a27534d7cd8f1108fc5b129a7074017":[1,21,31]
+"group__tmr.html#ga3b5c29727e46f47978286b2afd0c3e8a":[1,21,22]
 };

@@ -86,6 +86,7 @@ $(document).ready(function(){initNavTree('group__adc.html',''); initResizable();
 <div class="header">
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
+<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -97,6 +98,15 @@ $(document).ready(function(){initNavTree('group__adc.html',''); initResizable();
 Modules</h2></td></tr>
 <tr class="memitem:group__adc__registers"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc__registers.html">ADC_Registers</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:structmxc__adc__req__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#structmxc__adc__req__t">mxc_adc_req_t</a></td></tr>
+<tr class="separator:structmxc__adc__req__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structmxc__adc__slot__req__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#structmxc__adc__slot__req__t">mxc_adc_slot_req_t</a></td></tr>
+<tr class="separator:structmxc__adc__slot__req__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:structmxc__adc__conversion__req__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a></td></tr>
+<tr class="separator:structmxc__adc__conversion__req__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -130,7 +140,7 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga8620921a855062d0e6154ff85ded5c9b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga8620921a855062d0e6154ff85ded5c9b">MXC_ADC_Init</a> (mxc_adc_req_t *req)</td></tr>
+<tr class="memitem:ga8620921a855062d0e6154ff85ded5c9b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga8620921a855062d0e6154ff85ded5c9b">MXC_ADC_Init</a> (<a class="el" href="group__adc.html#structmxc__adc__req__t">mxc_adc_req_t</a> *req)</td></tr>
 <tr class="separator:ga8620921a855062d0e6154ff85ded5c9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafb7f2e91520a063ee70e6b8512b6ab19"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gafb7f2e91520a063ee70e6b8512b6ab19">MXC_ADC_Shutdown</a> (void)</td></tr>
 <tr class="separator:gafb7f2e91520a063ee70e6b8512b6ab19"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,7 +156,7 @@ Functions</h2></td></tr>
 <tr class="separator:ga0941e17352facec13ce9678ab4b4f478"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga829322b651373ea1c6aaf5cf9f3af0ae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga829322b651373ea1c6aaf5cf9f3af0ae">MXC_ADC_StartConversionAsync</a> (<a class="el" href="group__adc.html#ga3ff3078b59da334b33cbfcc3413ecfe6">mxc_adc_complete_cb_t</a> callback)</td></tr>
 <tr class="separator:ga829322b651373ea1c6aaf5cf9f3af0ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac9e16e2c247cde3718ce090499a1d6fc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gac9e16e2c247cde3718ce090499a1d6fc">MXC_ADC_StartConversionDMA</a> (mxc_adc_conversion_req_t *req, int *data, void(*callback)(int, int))</td></tr>
+<tr class="memitem:gac9e16e2c247cde3718ce090499a1d6fc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gac9e16e2c247cde3718ce090499a1d6fc">MXC_ADC_StartConversionDMA</a> (<a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *req, int *data, void(*callback)(int, int))</td></tr>
 <tr class="separator:gac9e16e2c247cde3718ce090499a1d6fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaf6b898d481c517dd1b04288559182d38"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gaf6b898d481c517dd1b04288559182d38">MXC_ADC_Handler</a> (void)</td></tr>
 <tr class="separator:gaf6b898d481c517dd1b04288559182d38"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,9 +170,9 @@ Functions</h2></td></tr>
 <tr class="separator:ga53f92fa5f31f5840df90e42d2675a4fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga43fabd6bd533aa71fba1471358cd66f7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga43fabd6bd533aa71fba1471358cd66f7">MXC_ADC_GetData</a> (int *outdata)</td></tr>
 <tr class="separator:ga43fabd6bd533aa71fba1471358cd66f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga006e20c416a1202205da265641515be7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga006e20c416a1202205da265641515be7">MXC_ADC_Configuration</a> (mxc_adc_conversion_req_t *req)</td></tr>
+<tr class="memitem:ga006e20c416a1202205da265641515be7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga006e20c416a1202205da265641515be7">MXC_ADC_Configuration</a> (<a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *req)</td></tr>
 <tr class="separator:ga006e20c416a1202205da265641515be7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7b7d2ae8a609605cadf8944058d18a2d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga7b7d2ae8a609605cadf8944058d18a2d">MXC_ADC_SlotConfiguration</a> (mxc_adc_slot_req_t *req, uint32_t slot_length)</td></tr>
+<tr class="memitem:ga7b7d2ae8a609605cadf8944058d18a2d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga7b7d2ae8a609605cadf8944058d18a2d">MXC_ADC_SlotConfiguration</a> (<a class="el" href="group__adc.html#structmxc__adc__slot__req__t">mxc_adc_slot_req_t</a> *req, uint32_t slot_length)</td></tr>
 <tr class="separator:ga7b7d2ae8a609605cadf8944058d18a2d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac465c735401b1572e31c2a58a59300bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gac465c735401b1572e31c2a58a59300bc">MXC_ADC_TS_SelectEnable</a> (void)</td></tr>
 <tr class="separator:gac465c735401b1572e31c2a58a59300bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,13 +192,13 @@ Functions</h2></td></tr>
 <tr class="separator:ga3f3447493074d58e9f64d82648bcf847"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4654d61f04ac656e1f038af44b4e8867"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga4654d61f04ac656e1f038af44b4e8867">MXC_ADC_Clear_ChannelSelect</a> (void)</td></tr>
 <tr class="separator:ga4654d61f04ac656e1f038af44b4e8867"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gae2c6fbb39ed81f30cbbb69d6544a11e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gae2c6fbb39ed81f30cbbb69d6544a11e4">MXC_ADC_TriggerConfig</a> (mxc_adc_conversion_req_t *req)</td></tr>
+<tr class="memitem:gae2c6fbb39ed81f30cbbb69d6544a11e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gae2c6fbb39ed81f30cbbb69d6544a11e4">MXC_ADC_TriggerConfig</a> (<a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *req)</td></tr>
 <tr class="separator:gae2c6fbb39ed81f30cbbb69d6544a11e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaff468c0a0bde0a7dee1d4cc504c28647"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gaff468c0a0bde0a7dee1d4cc504c28647">MXC_ADC_ConversionModeConfig</a> (mxc_adc_conversion_req_t *req)</td></tr>
+<tr class="memitem:gaff468c0a0bde0a7dee1d4cc504c28647"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gaff468c0a0bde0a7dee1d4cc504c28647">MXC_ADC_ConversionModeConfig</a> (<a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *req)</td></tr>
 <tr class="separator:gaff468c0a0bde0a7dee1d4cc504c28647"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga78650e285a66f4f39e8d59ccfb998450"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga78650e285a66f4f39e8d59ccfb998450">MXC_ADC_SetConversionDelay</a> (int delay)</td></tr>
 <tr class="separator:ga78650e285a66f4f39e8d59ccfb998450"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaadd72fde24d5890f5c80391d087e98e4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gaadd72fde24d5890f5c80391d087e98e4">MXC_ADC_SlotsConfig</a> (mxc_adc_conversion_req_t *req)</td></tr>
+<tr class="memitem:gaadd72fde24d5890f5c80391d087e98e4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#gaadd72fde24d5890f5c80391d087e98e4">MXC_ADC_SlotsConfig</a> (<a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *req)</td></tr>
 <tr class="separator:gaadd72fde24d5890f5c80391d087e98e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga250b367409c32626bdfd9669a450e80c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__adc.html#ga250b367409c32626bdfd9669a450e80c">MXC_ConvertTemperature_ToK</a> (uint16_t tempSensor_Readout, <a class="el" href="group__adc.html#gaab87c0ccba621e7d3028e5428b6618d4">mxc_adc_refsel_t</a> ref, float ext_ref, float *temp_k)</td></tr>
 <tr class="separator:ga250b367409c32626bdfd9669a450e80c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -198,6 +208,110 @@ Functions</h2></td></tr>
 <tr class="separator:gae3b0ca9ba12aff1f02d9e6685288d7a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<p >API for Analog to Digital Converter (ADC). </p>
+<hr/><h2 class="groupheader">Data Structure Documentation</h2>
+<a name="structmxc__adc__req__t" id="structmxc__adc__req__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmxc__adc__req__t">&#9670;&nbsp;</a></span>mxc_adc_req_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct mxc_adc_req_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p >ADC Settings. </p>
+</div><table class="memberdecls">
+<tr><td colspan="2"><h3>Data Fields</h3></td></tr>
+<tr class="memitem:a4e5ef262f3568e7d5831ee932f5be020"><td class="memItemLeft" align="right" valign="top"><a id="a4e5ef262f3568e7d5831ee932f5be020" name="a4e5ef262f3568e7d5831ee932f5be020"></a>
+<a class="el" href="group__adc.html#gaed6234ec75977b9308230146e8e325d0">mxc_adc_clock_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clock</b></td></tr>
+<tr class="separator:a4e5ef262f3568e7d5831ee932f5be020"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aceee74972e6b3608eb0f72a2f07fc08d"><td class="memItemLeft" align="right" valign="top"><a id="aceee74972e6b3608eb0f72a2f07fc08d" name="aceee74972e6b3608eb0f72a2f07fc08d"></a>
+<a class="el" href="group__adc.html#ga4ac852f4bda65a1cda7a4061d1d3fb03">mxc_adc_clkdiv_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>clkdiv</b></td></tr>
+<tr class="separator:aceee74972e6b3608eb0f72a2f07fc08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acba254612c36539a6cf13a3d16aef3ef"><td class="memItemLeft" align="right" valign="top"><a id="acba254612c36539a6cf13a3d16aef3ef" name="acba254612c36539a6cf13a3d16aef3ef"></a>
+<a class="el" href="group__adc.html#ga08319a8398613e59d1e707f30e843e03">mxc_adc_calibration_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cal</b></td></tr>
+<tr class="separator:acba254612c36539a6cf13a3d16aef3ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d764890e25fce4307ea858424220a1d"><td class="memItemLeft" align="right" valign="top"><a id="a9d764890e25fce4307ea858424220a1d" name="a9d764890e25fce4307ea858424220a1d"></a>
+<a class="el" href="group__adc.html#gaab87c0ccba621e7d3028e5428b6618d4">mxc_adc_refsel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ref</b></td></tr>
+<tr class="separator:a9d764890e25fce4307ea858424220a1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4195bd582154c7bc3f01414361f844a8"><td class="memItemLeft" align="right" valign="top"><a id="a4195bd582154c7bc3f01414361f844a8" name="a4195bd582154c7bc3f01414361f844a8"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>trackCount</b></td></tr>
+<tr class="separator:a4195bd582154c7bc3f01414361f844a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9979e3c27f522bb6d13cff22efd2e488"><td class="memItemLeft" align="right" valign="top"><a id="a9979e3c27f522bb6d13cff22efd2e488" name="a9979e3c27f522bb6d13cff22efd2e488"></a>
+uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>idleCount</b></td></tr>
+<tr class="separator:a9979e3c27f522bb6d13cff22efd2e488"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+
+</div>
+</div>
+<a name="structmxc__adc__slot__req__t" id="structmxc__adc__slot__req__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmxc__adc__slot__req__t">&#9670;&nbsp;</a></span>mxc_adc_slot_req_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct mxc_adc_slot_req_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p >ADC Slot Settings. </p>
+</div><table class="memberdecls">
+<tr><td colspan="2"><h3>Data Fields</h3></td></tr>
+<tr class="memitem:a357b882bb2876a13a5d94a6d657630b7"><td class="memItemLeft" align="right" valign="top"><a id="a357b882bb2876a13a5d94a6d657630b7" name="a357b882bb2876a13a5d94a6d657630b7"></a>
+<a class="el" href="group__adc.html#ga835531087194a290825c7f7d0dcc3ce3">mxc_adc_chsel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>channel</b></td></tr>
+<tr class="separator:a357b882bb2876a13a5d94a6d657630b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+
+</div>
+</div>
+<a name="structmxc__adc__conversion__req__t" id="structmxc__adc__conversion__req__t"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#structmxc__adc__conversion__req__t">&#9670;&nbsp;</a></span>mxc_adc_conversion_req_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct mxc_adc_conversion_req_t</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="textblock"><p >ADC Conversion Settings. </p>
+</div><table class="memberdecls">
+<tr><td colspan="2"><h3>Data Fields</h3></td></tr>
+<tr class="memitem:ade688bc3a300282de031480e6e88e766"><td class="memItemLeft" align="right" valign="top"><a id="ade688bc3a300282de031480e6e88e766" name="ade688bc3a300282de031480e6e88e766"></a>
+<a class="el" href="group__adc.html#gaa767a14c1a88223fc3d3ec3bb32d33eb">mxc_adc_conversion_mode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>mode</b></td></tr>
+<tr class="separator:ade688bc3a300282de031480e6e88e766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6393389f0fd9f80a49bad3cc05664c89"><td class="memItemLeft" align="right" valign="top"><a id="a6393389f0fd9f80a49bad3cc05664c89" name="a6393389f0fd9f80a49bad3cc05664c89"></a>
+<a class="el" href="group__adc.html#ga371f9a528f0a7f98e1e7c8861a606b7c">mxc_adc_trig_mode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>trig</b></td></tr>
+<tr class="separator:a6393389f0fd9f80a49bad3cc05664c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a266ae982deed12a0cce8244dc1a6be09"><td class="memItemLeft" align="right" valign="top"><a id="a266ae982deed12a0cce8244dc1a6be09" name="a266ae982deed12a0cce8244dc1a6be09"></a>
+<a class="el" href="group__adc.html#ga191d1a56112de2fe48802321dfcbe106">mxc_adc_trig_sel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>hwTrig</b></td></tr>
+<tr class="separator:a266ae982deed12a0cce8244dc1a6be09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae021f325a649739e90245a1535986fc4"><td class="memItemLeft" align="right" valign="top"><a id="ae021f325a649739e90245a1535986fc4" name="ae021f325a649739e90245a1535986fc4"></a>
+<a class="el" href="group__adc.html#gafcae8c4b464c0621554994b36709ed0e">mxc_adc_fifodataformat_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_format</b></td></tr>
+<tr class="separator:ae021f325a649739e90245a1535986fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27cf32b1a08dabd2b7c6488bd9b5ee9c"><td class="memItemLeft" align="right" valign="top"><a id="a27cf32b1a08dabd2b7c6488bd9b5ee9c" name="a27cf32b1a08dabd2b7c6488bd9b5ee9c"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>fifo_threshold</b></td></tr>
+<tr class="separator:a27cf32b1a08dabd2b7c6488bd9b5ee9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e805b7a6435347d6ed37649da4bde18"><td class="memItemLeft" align="right" valign="top"><a id="a4e805b7a6435347d6ed37649da4bde18" name="a4e805b7a6435347d6ed37649da4bde18"></a>
+<a class="el" href="group__adc.html#ga078a0bca06eba4bfe414d8cdd05d4089">mxc_adc_avg_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>avg_number</b></td></tr>
+<tr class="separator:a4e805b7a6435347d6ed37649da4bde18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c42f7817c5773fb228fe2649c661432"><td class="memItemLeft" align="right" valign="top"><a id="a0c42f7817c5773fb228fe2649c661432" name="a0c42f7817c5773fb228fe2649c661432"></a>
+<a class="el" href="group__adc.html#ga892b956209a12f669be305eccb88b901">mxc_adc_div_lpmode_t</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lpmode_divder</b></td></tr>
+<tr class="separator:a0c42f7817c5773fb228fe2649c661432"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee2e38bff904bc64ba7828aea972815c"><td class="memItemLeft" align="right" valign="top"><a id="aee2e38bff904bc64ba7828aea972815c" name="aee2e38bff904bc64ba7828aea972815c"></a>
+uint8_t&#160;</td><td class="memItemRight" valign="bottom"><b>num_slots</b></td></tr>
+<tr class="separator:aee2e38bff904bc64ba7828aea972815c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:add47e6ae8085171443f7c8c44448d541"><td class="memItemLeft" align="right" valign="top"><a id="add47e6ae8085171443f7c8c44448d541" name="add47e6ae8085171443f7c8c44448d541"></a>
+int8_t&#160;</td><td class="memItemRight" valign="bottom"><b>dma_channel</b></td></tr>
+<tr class="separator:add47e6ae8085171443f7c8c44448d541"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+
+</div>
+</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="ga3ff3078b59da334b33cbfcc3413ecfe6" name="ga3ff3078b59da334b33cbfcc3413ecfe6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga3ff3078b59da334b33cbfcc3413ecfe6">&#9670;&nbsp;</a></span>mxc_adc_complete_cb_t</h2>
@@ -631,7 +745,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MXC_ADC_Configuration </td>
           <td>(</td>
-          <td class="paramtype">mxc_adc_conversion_req_t *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *&#160;</td>
           <td class="paramname"><em>req</em></td><td>)</td>
           <td></td>
         </tr>
@@ -658,7 +772,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void MXC_ADC_ConversionModeConfig </td>
           <td>(</td>
-          <td class="paramtype">mxc_adc_conversion_req_t *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *&#160;</td>
           <td class="paramname"><em>req</em></td><td>)</td>
           <td></td>
         </tr>
@@ -960,7 +1074,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MXC_ADC_Init </td>
           <td>(</td>
-          <td class="paramtype">mxc_adc_req_t *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__adc.html#structmxc__adc__req__t">mxc_adc_req_t</a> *&#160;</td>
           <td class="paramname"><em>req</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1085,7 +1199,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MXC_ADC_SlotConfiguration </td>
           <td>(</td>
-          <td class="paramtype">mxc_adc_slot_req_t *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__adc.html#structmxc__adc__slot__req__t">mxc_adc_slot_req_t</a> *&#160;</td>
           <td class="paramname"><em>req</em>, </td>
         </tr>
         <tr>
@@ -1123,7 +1237,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MXC_ADC_SlotsConfig </td>
           <td>(</td>
-          <td class="paramtype">mxc_adc_conversion_req_t *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *&#160;</td>
           <td class="paramname"><em>req</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1202,7 +1316,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MXC_ADC_StartConversionDMA </td>
           <td>(</td>
-          <td class="paramtype">mxc_adc_conversion_req_t *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *&#160;</td>
           <td class="paramname"><em>req</em>, </td>
         </tr>
         <tr>
@@ -1225,10 +1339,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Perform a conversion on a specific channel using a DMA transfer. </p>
+<p>Perform a conversion on a specific channel using a DMA transfer. DMA channel must be acquired using <a class="el" href="group__dma.html#gae64f49dc062bd745088ae12eecc6ad33">MXC_DMA_AcquireChannel</a> and should be passed to this function via "dma_channel" member of "req" input struct. DMA IRQ corresponding to that channel must be enabled using MXC_NVIC_SetVector, and the <a class="el" href="group__dma.html#gad78154cfcf66654d774ff416fcf6c6c6">MXC_DMA_Handler</a> should be called from the respective ISR. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">req</td><td>mxc_adc_conversion_req_t </td></tr>
+    <tr><td class="paramname">req</td><td><a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> </td></tr>
     <tr><td class="paramname">pointer</td><td>to the variable to hold the conversion result </td></tr>
     <tr><td class="paramname">callback</td><td>the function to call when the conversion is complete</td></tr>
   </table>
@@ -1247,7 +1361,7 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">void MXC_ADC_TriggerConfig </td>
           <td>(</td>
-          <td class="paramtype">mxc_adc_conversion_req_t *&#160;</td>
+          <td class="paramtype"><a class="el" href="group__adc.html#structmxc__adc__conversion__req__t">mxc_adc_conversion_req_t</a> *&#160;</td>
           <td class="paramname"><em>req</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1478,7 +1592,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jun 29 2023 17:00:39 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Fri Aug 4 2023 17:12:11 for MAX32690 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

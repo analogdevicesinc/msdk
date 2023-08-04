@@ -35,7 +35,7 @@ var searchData=
   ['adcreftrim0_32',['adcreftrim0',['../group__fcr__registers.html#ab62d451d29d5513f7694c78fe6ec076d',1,'mxc_fcr_regs_t']]],
   ['adcreftrim1_33',['adcreftrim1',['../group__fcr__registers.html#a6fea4d8c3a223824e6c5aa61310ef174',1,'mxc_fcr_regs_t']]],
   ['adcreftrim2_34',['adcreftrim2',['../group__fcr__registers.html#aab4172ae9cc238fc7d0b45e684a635a0',1,'mxc_fcr_regs_t']]],
-  ['addr_35',['addr',['../group__i2c.html#ab36863a07751ac73459d46b677c33b57',1,'_i2c_req_t::addr()'],['../group__flc__registers.html#a87bb0a6e89a1714dbecd29f53d0e7045',1,'mxc_flc_regs_t::addr()']]],
+  ['addr_35',['addr',['../group__flc__registers.html#a87bb0a6e89a1714dbecd29f53d0e7045',1,'mxc_flc_regs_t::addr()'],['../group__i2c.html#ab36863a07751ac73459d46b677c33b57',1,'_i2c_req_t::addr()']]],
   ['adj_5fdwn_36',['adj_dwn',['../group__dvs__registers.html#a5eac2d950b841761b2b73569999fc8b1',1,'mxc_dvs_regs_t']]],
   ['adj_5fup_37',['adj_up',['../group__dvs__registers.html#a6be90a96a2e5deb856deef08eded7ab9',1,'mxc_dvs_regs_t']]],
   ['adma_5faddr_5f0_38',['adma_addr_0',['../group__sdhc__registers.html#a79a249bce1c145986774a185795cdab6',1,'mxc_sdhc_regs_t']]],
@@ -67,5 +67,6 @@ var searchData=
   ['autocal0_64',['autocal0',['../group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26',1,'mxc_fcr_regs_t']]],
   ['autocal1_65',['autocal1',['../group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba',1,'mxc_fcr_regs_t']]],
   ['autocal2_66',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]],
-  ['autoflush_67',['autoflush',['../group__csi2.html#a7ea4324c0b7c456f581971f50e720490',1,'_mxc_csi2_req_t']]]
+  ['autoflush_67',['autoflush',['../group__csi2.html#a7ea4324c0b7c456f581971f50e720490',1,'_mxc_csi2_req_t']]],
+  ['avg_5fnumber_68',['avg_number',['../group__adc.html#a4e805b7a6435347d6ed37649da4bde18',1,'mxc_adc_conversion_req_t']]]
 ];

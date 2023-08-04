@@ -51,6 +51,7 @@ var group__spi =
     [ "MXC_SPI_GetTXFIFOAvailable", "group__spi.html#ga168bef8ae6817c9494bdc15a93cd7a44", null ],
     [ "MXC_SPI_GetTXThreshold", "group__spi.html#ga3fa6c3821155ce8782390638f2632a86", null ],
     [ "MXC_SPI_GetWidth", "group__spi.html#ga88101bd57a262e6719d5b497a692d528", null ],
+    [ "MXC_SPI_HWSSControl", "group__spi.html#gaf9df08a8b18d74c3c9a06ca5a328398d", null ],
     [ "MXC_SPI_Init", "group__spi.html#ga812c8b820873b071de819b8db2c1a845", null ],
     [ "MXC_SPI_MasterTransaction", "group__spi.html#gaefbd13c12a7d9fbaef9595df2cd6c308", null ],
     [ "MXC_SPI_MasterTransactionAsync", "group__spi.html#ga6c9da2bba6624ca85e0aaafc94bad2f6", null ],

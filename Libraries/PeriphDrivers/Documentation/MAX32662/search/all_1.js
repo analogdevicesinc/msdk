@@ -34,7 +34,7 @@ var searchData=
   ['adcreftrim0_31',['adcreftrim0',['../group__fcr__registers.html#ab62d451d29d5513f7694c78fe6ec076d',1,'mxc_fcr_regs_t']]],
   ['adcreftrim1_32',['adcreftrim1',['../group__fcr__registers.html#a6fea4d8c3a223824e6c5aa61310ef174',1,'mxc_fcr_regs_t']]],
   ['adcreftrim2_33',['adcreftrim2',['../group__fcr__registers.html#aab4172ae9cc238fc7d0b45e684a635a0',1,'mxc_fcr_regs_t']]],
-  ['addr_34',['addr',['../group__flc__registers.html#a87bb0a6e89a1714dbecd29f53d0e7045',1,'mxc_flc_regs_t::addr()'],['../group__i2c.html#ab36863a07751ac73459d46b677c33b57',1,'_i2c_req_t::addr()']]],
+  ['addr_34',['addr',['../group__i2c.html#ab36863a07751ac73459d46b677c33b57',1,'_i2c_req_t::addr()'],['../group__flc__registers.html#a87bb0a6e89a1714dbecd29f53d0e7045',1,'mxc_flc_regs_t::addr()']]],
   ['aes_35',['AES',['../group__aes.html',1,'']]],
   ['aes_5fctrl_36',['AES_CTRL',['../group___a_e_s___c_t_r_l.html',1,'']]],
   ['aes_5ffifo_37',['AES_FIFO',['../group___a_e_s___f_i_f_o.html',1,'']]],
@@ -65,5 +65,6 @@ var searchData=
   ['assertion_20checks_20for_20debugging_62',['Assertion Checks for Debugging',['../group__mxc__assertions.html',1,'']]],
   ['autocal0_63',['autocal0',['../group__fcr__registers.html#a1d8eedfed72ce233471a470a13687f26',1,'mxc_fcr_regs_t']]],
   ['autocal1_64',['autocal1',['../group__fcr__registers.html#ab4c3fbf92b83352bf7ecb6fa0afa82ba',1,'mxc_fcr_regs_t']]],
-  ['autocal2_65',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]]
+  ['autocal2_65',['autocal2',['../group__fcr__registers.html#a288d04869d16ec3e6b2bd720288269f9',1,'mxc_fcr_regs_t']]],
+  ['avg_5fnumber_66',['avg_number',['../group__adc.html#a4e805b7a6435347d6ed37649da4bde18',1,'mxc_adc_conversion_req_t']]]
 ];

@@ -18,5 +18,6 @@ var searchData=
   ['prio_15',['prio',['../group__dma.html#a8cab43eacc30026a0679ceaf05791301',1,'mxc_dma_adv_config_t']]],
   ['ps_16',['ps',['../group__gpio__registers.html#a5a1d26602cf5c5fa9f23c0fcfa2ccb12',1,'mxc_gpio_regs_t']]],
   ['pssel_17',['pssel',['../group__dma.html#acb6885039c6762ab023729939db525f5',1,'mxc_dma_adv_config_t']]],
-  ['pwm_18',['pwm',['../group__tmr__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_tmr_regs_t']]]
+  ['pullup_5fdyn_18',['pullup_dyn',['../group__adc.html#a926f4ff3626f195d5272c7f3f9ddac16',1,'mxc_adc_slot_req_t']]],
+  ['pwm_19',['pwm',['../group__tmr__registers.html#a28e2ac624d26d2bdb969b4ff2b88c6fd',1,'mxc_tmr_regs_t']]]
 ];

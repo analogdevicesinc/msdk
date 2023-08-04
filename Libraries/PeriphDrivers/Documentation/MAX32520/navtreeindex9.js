@@ -1,8 +1,8 @@
 var NAVTREEINDEX9 =
 {
-"group__dma.html#a30df446d01f80e4211b2fcef8f754436":[1,1,3,1],
-"group__dma.html#a30df446d01f80e4211b2fcef8f754436":[1,1,2,0],
 "group__dma.html#a30df446d01f80e4211b2fcef8f754436":[1,1,1,0],
+"group__dma.html#a30df446d01f80e4211b2fcef8f754436":[1,1,2,0],
+"group__dma.html#a30df446d01f80e4211b2fcef8f754436":[1,1,3,1],
 "group__dma.html#a3cc0364b140d69c23114b1c565ebe09e":[1,1,3,4],
 "group__dma.html#a4eafb4b34c56771f54f68f3fa7117434":[1,1,3,0],
 "group__dma.html#a73003d93442717af85a1e961c7b00780":[1,1,1,1],
