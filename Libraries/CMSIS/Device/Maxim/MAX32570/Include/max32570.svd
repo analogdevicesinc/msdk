@@ -8011,6 +8011,97 @@
       </field>
      </fields>
     </register>
+    <register>
+     <name>FLVRST</name>
+     <description>Flash Low Voltage Reset Control Register</description>
+     <addressOffset>0x80</addressOffset>
+     <fields>
+      <field>
+       <name>EN</name>
+       <description>Flash Low Voltage Reset Enable.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>FLVCLKCTRL</name>
+     <description>Flash Low Voltage Clock Control Register</description>
+     <addressOffset>0x84</addressOffset>
+     <fields>
+      <field>
+       <name>DIV</name>
+       <description>Flash Low Voltage Clock Divider Select.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>2</bitWidth>
+       <enumeratedValues>
+        <enumeratedValue>
+         <name>512</name>
+         <description>Divide 512.</description>
+         <value>0</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>256</name>
+         <description>Divide 256</description>
+         <value>1</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>128</name>
+         <description>Divide 128</description>
+         <value>2</value>
+        </enumeratedValue>
+        <enumeratedValue>
+         <name>64</name>
+         <description>Divide 64</description>
+         <value>3</value>
+        </enumeratedValue>
+       </enumeratedValues>
+      </field>
+     </fields>
+    </register>
+    <register>
+     <name>FLVSTAT</name>
+     <description>Flash Low Voltage Status Register</description>
+     <addressOffset>0x88</addressOffset>
+     <fields>
+      <field>
+       <name>FLV</name>
+       <description>Live Flash Low Voltage Detect Status.</description>
+       <bitOffset>0</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ONES</name>
+       <description>FLV Buffer contains all ones if supply is above safe operating range.</description>
+       <bitOffset>6</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ZEROS</name>
+       <description>FLV Buffer contains all zeros if supply is below safe operating voltage.</description>
+       <bitOffset>7</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ONES_FL</name>
+       <description>Sticky version of ONES status. Write 1 to clear.</description>
+       <bitOffset>14</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>ZEROS_FL</name>
+       <description>Sticky version of ZEROS status. Write 1 to clear.</description>
+       <bitOffset>15</bitOffset>
+       <bitWidth>1</bitWidth>
+      </field>
+      <field>
+       <name>BUF</name>
+       <description>10 Sample History of FLV status.</description>
+       <bitOffset>16</bitOffset>
+       <bitWidth>10</bitWidth>
+      </field>
+     </fields>
+    </register>
    </registers>
   </peripheral>
 <!--GCR Global Control Registers.-->
