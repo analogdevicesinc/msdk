@@ -218,9 +218,9 @@ ifeq "$(PREFIX)" "riscv-none-elf"
 # With the upgrade to riscv-none-elf came a new ISA spec
 # See https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/aE1ZeHHCYf4
 # BASE = RV32I
-# EXTENSION = M
+# EXTENSION = MC
 # EXTRAS = _zicsr_zifencei as recommended above
-MARCH ?= rv32im_zicsr_zifencei
+MARCH ?= rv32imc_zicsr_zifencei
 endif
 
 # Default option (riscv-none-embed)
