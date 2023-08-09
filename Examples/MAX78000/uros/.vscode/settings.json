@@ -15,7 +15,7 @@
     },
     
     "target":"MAX78000",
-    "board":"EvKit_V1",
+    "board":"FTHR_RevA",
 
     "project_name":"${workspaceFolderBasename}",
 
@@ -75,13 +75,20 @@
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/RISC-V",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
+        "/home/jhcarter/repos/uros_ws/src/uros/rclc/rclc/src/rclc"
     ],
     "C_Cpp.default.defines": [
         
     ],
     "C_Cpp.default.forcedInclude": [
         "${workspaceFolder}/build/project_defines.h"
-    ]
+    ],
+    "files.associations": {
+        "time.h": "c",
+        "freertos.h": "c",
+        "portable.h": "c",
+        "unistd.h": "c"
+    }
 }
 

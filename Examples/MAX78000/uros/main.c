@@ -52,6 +52,12 @@
 #include "lp.h"
 #include "led.h"
 #include "board.h"
+#include "mxc_delay.h"
+#include "rtc.h"
+
+#include <rmw_microros/rmw_microros.h>
+
+#include "transports.h"
 
 /* FreeRTOS+CLI */
 void vRegisterCLICommands(void);
@@ -333,24 +339,6 @@ void vCmdLineTask(void *pvParameters)
     }
 }
 
-#if configUSE_TICKLESS_IDLE
-/* =| freertos_permit_tickless |==========================
- *
- * Determine if any hardware activity should prevent
- *  low-power tickless operation.
- *
- * =======================================================
- */
-int freertos_permit_tickless(void)
-{
-    if (disable_tickless == 1) {
-        return E_BUSY;
-    }
-
-    return MXC_UART_GetActive(ConsoleUART);
-}
-#endif
-
 /* =| WUT_IRQHandler |==========================
  *
  * Interrupt handler for the wake up timer.
@@ -370,56 +358,49 @@ void WUT_IRQHandler(void)
  *
  * =======================================================
  */
+
+// app.c calls usleep, whose prototype is defined in unistd.h
+int 	usleep (useconds_t __useconds) 
+{
+    MXC_Delay(MXC_DELAY_USEC(__useconds));
+    return 0;
+}
+
+int clock_gettime (clockid_t clock_id, struct timespec *tp)
+{
+    uint32_t sec = 0, subsec = 0;
+    MXC_RTC_GetSubSeconds(&subsec);
+    MXC_RTC_GetSeconds(&sec);
+    tp->tv_sec = sec;
+    int nsec = (int)((subsec / 4096.0f) * 1000000000);
+    tp->tv_nsec = nsec;
+    return 0;
+}
+
+void appMain(void *argument);
+
 int main(void)
 {
     /* Delay to prevent bricks */
-    volatile int i;
-    for (i = 0; i < 0xFFFFFF; i++) {}
-
-    /* Setup manual CTS/RTS to lockout console and wake from deep sleep */
-    MXC_GPIO_Config(&uart_cts);
-    MXC_GPIO_Config(&uart_rts);
-
-    /* Enable incoming characters */
-    MXC_GPIO_OutClr(uart_rts.port, uart_rts.mask);
-
-#if configUSE_TICKLESS_IDLE
-
-    /* Initialize Wakeup timer */
-    MXC_WUT_Init(MXC_WUT_PRES_1);
-    mxc_wut_cfg_t wut_cfg;
-    wut_cfg.mode = MXC_WUT_MODE_COMPARE;
-    wut_cfg.cmp_cnt = 0xFFFFFFFF;
-
-    /* Enable WUT as a wakup source */
-    MXC_LP_EnableWUTAlarmWakeup();
-
-    NVIC_ClearPendingIRQ(WUT_IRQn);
-    NVIC_EnableIRQ(WUT_IRQn);
-
-    /* Configure and start the WUT */
-    MXC_WUT_Config(&wut_cfg);
-    MXC_WUT_Enable();
-
-    /* Setup CTS interrupt */
-    MXC_GPIO_IntConfig(&uart_cts, MXC_GPIO_INT_FALLING);
-    MXC_GPIO_EnableInt(uart_cts.port, uart_cts.mask);
-
-    NVIC_ClearPendingIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(uart_cts.port)));
-    NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(uart_cts.port)));
-    MXC_LP_EnableGPIOWakeup(&uart_cts);
-
-    /* Initialize CPU Active LED */
-    LED_On(1);
-
-#endif
+    MXC_Delay(MXC_DELAY_SEC(2));
 
     /* Print banner (RTOS scheduler not running) */
     printf("\n-=- %s FreeRTOS (%s) Demo -=-\n", STRING(TARGET), tskKERNEL_VERSION_NUMBER);
-#if configUSE_TICKLESS_IDLE
-    printf("Tickless idle is configured. Type 'tickless 1' to enable.\n");
-#endif
     printf("SystemCoreClock = %d\n", SystemCoreClock);
+
+    printf("Initializing RTC\n");
+    if (MXC_RTC_Init(0, 0) != E_NO_ERROR) printf("Failed RTC init\n");
+    if (MXC_RTC_Start() != E_NO_ERROR) printf("Failed RTC start\n");
+
+    printf("Assigning custom transports\n");
+    rmw_uros_set_custom_transport(
+        true,
+        MXC_UART_GET_UART(CONSOLE_UART),
+        MXC_Serial_Open,
+        MXC_Serial_Close,
+        MXC_Serial_Write,
+        MXC_Serial_Read
+    );
 
     /* Create mutexes */
     xGPIOmutex = xSemaphoreCreateMutex();
@@ -431,15 +412,13 @@ int main(void)
                          tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
             (xTaskCreate(vTask1, (const char *)"Task1", configMINIMAL_STACK_SIZE, NULL,
                          tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
-            (xTaskCreate(vTickTockTask, (const char *)"TickTock", 2 * configMINIMAL_STACK_SIZE,
-                         NULL, tskIDLE_PRIORITY + 2, NULL) != pdPASS) ||
-            (xTaskCreate(vCmdLineTask, (const char *)"CmdLineTask",
-                         configMINIMAL_STACK_SIZE + CMD_LINE_BUF_SIZE + OUTPUT_BUF_SIZE, NULL,
-                         tskIDLE_PRIORITY + 1, &cmd_task_id) != pdPASS)) {
+            (xTaskCreate(appMain, "uros_task", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)) {
+                            // start microROS task
             printf("xTaskCreate() failed to create a task.\n");
         } else {
             /* Start scheduler */
-            printf("Starting scheduler.\n");
+            printf("Starting scheduler in 1s...\n");
+            MXC_Delay(MXC_DELAY_SEC(1));
             vTaskStartScheduler();
         }
     }
