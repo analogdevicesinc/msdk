@@ -4,6 +4,7 @@ Examples/*/*/*/build
 Examples/*/*/*/buildrv
 .vscode/settings.json
 Libraries/PeriphDrivers/Documentation/MAX*
+Libraries/PeriphDrivers/bin
 docs
 Documentation/Libraries
 Documentation/res
