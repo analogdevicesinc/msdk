@@ -164,6 +164,10 @@ rvcommonld: $(RISCV_COMMON_LD)
 # This is where the implementation gets complicated...  but what we want to do is simple.
 # 1) Parse the memory address of the "_riscv_boot" symbol.
 # 2) Write definitions for __FlashStart and __FlashLength in the auto-generated linkerfile.
+.NOTPARALLEL: $(RISCV_COMMON_LD)
+# ^ Note ".NOTPARALLEL" is used.  Despite explicitly listing the arm map file as a dependency,
+# parallel builds would sometimes break this target.
+# (https://www.gnu.org/software/make/manual/make.html#Parallel-Disable)
 $(RISCV_COMMON_LD): $(ARM_MAP_FILE)
 	$(info - Detecting Arm code size and generating $(@))
 	$(info - Input file: $(ARM_MAP_FILE))
