@@ -201,6 +201,7 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
 unsigned int MXC_I2C_RevA_GetFrequency(mxc_i2c_reva_regs_t *i2c)
 {
     unsigned int sclCycles = 2;
+    // sclCycles Initialized to 2 b/c formula is sclCycles = (lo_clks + 1) + (hi_clks + 1)
 
     if (i2c->ctrl & MXC_F_I2C_REVA_CTRL_HS_EN) {
         // HS-Mode enabled, calculate HS Frequency
