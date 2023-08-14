@@ -56,328 +56,150 @@
 #define MXC_SPI_TS1_MASK_POS (1)
 #define MXC_SPI_TS2_MASK_POS (2)
 
-// Private variable used to check if DMA is used or not for Init function.
-static int use_dma = 0;
-
-// Private helper function to set up Init struct from legacy implementation.
-// Returns Success/Error Codes.
-static int MXC_SPI_legacy_setupInit(mxc_spi_init_t *init, mxc_spi_regs_t *spi, int masterMode,
-                                    int quadModeUsed, int numSlaves, unsigned ssPolarity,
-                                    unsigned int hz, mxc_spi_pins_t pins, bool useDMA)
+int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode, int unusedParameter,
+                 uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins)
 {
-    // Set up init struct.
-    init->spi = spi;
+    int error;
+    int8_t spi_num;
+    uint8_t ts_init_mask = 0;
+    mxc_spi_tscontrol_t ts_control;
+    mxc_gpio_vssel_t vssel;
 
-    if (masterMode) {
-        init->type = MXC_SPI_TYPE_CONTROLLER; // L. Master
-    } else {
-        init->type = MXC_SPI_TYPE_TARGET; // L. Slave
+    spi_num = MXC_SPI_GET_IDX(spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
     }
 
-    init->freq = hz;
-
-    if (quadModeUsed) {
-        init->if_mode = MXC_SPI_INTERFACE_QUAD;
-    } else {
-        init->if_mode = MXC_SPI_INTERFACE_STANDARD;
+    // Check if frequency is too high
+    if ((spi_num == 0) && (freq > MXC_SPI_GetPeripheralClock(spi))) {
+        return E_BAD_PARAM;
     }
 
-    // New SPI drivers will not use "mxc_spi_pins_t pins" anymore.
-    init->spi_pins = NULL;
-
-    // Set up SPI pins like the legacy implementation.
-    init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO;
-    init->target.pins = (const mxc_gpio_cfg_t){ 0 };
-    init->target.active_polarity = ssPolarity;
-
-    // Set VSSEL level
-    if (pins.vddioh) {
-        init->vssel = MXC_GPIO_VSSEL_VDDIOH;
-    } else {
-        init->vssel = MXC_GPIO_VSSEL_VDDIO;
+    if ((spi_num == 1) && (freq > SystemCoreClock)) {
+        return E_BAD_PARAM;
     }
 
     // Set up Target Select pins.
     if (pins.ss0) {
-        init->target.init_mask |= (1 << MXC_SPI_TS0_MASK_POS); // Bit position 0
+        ts_init_mask |= (1 << MXC_SPI_TS0_MASK_POS); // Bit position 0
     }
 
     if (pins.ss1) {
-        init->target.init_mask |= (1 << MXC_SPI_TS1_MASK_POS); // Bit position 1
+        ts_init_mask |= (1 << MXC_SPI_TS1_MASK_POS); // Bit position 1
     }
 
     if (pins.ss2) {
-        init->target.init_mask |= (1 << MXC_SPI_TS2_MASK_POS); // Bit position 2
+        ts_init_mask |= (1 << MXC_SPI_TS2_MASK_POS); // Bit position 2
     }
 
-    if (pins.sdio2 || pins.sdio3) {
-        // Ensure QUAD mode is enabled if SDIO2/SDIO3 are true.
-        if (quadModeUsed == 0) {
-            return E_BAD_PARAM;
-        }
-    }
-
-    // In the previous implementation, the MXC_SPI_Init function does not
-    //  set the message size until later by calling MXC_SPI_SetData.
-    // By default for the new implementation, the frame_size will be set to 8 bits.
-    init->frame_size = 8;
-
-    // Set default clock mode (0).
-    init->clk_mode = MXC_SPI_CLKMODE_0;
-
-    // By default, DMA will be initalized for API function
-    if (useDMA) {
-        init->use_dma = true;
-        init->dma = MXC_DMA;
+    if (ts_init_mask) {
+        ts_control = MXC_SPI_TSCONTROL_HW_AUTO;
     } else {
-        init->use_dma = false;
-        init->dma = NULL;
+        ts_control = MXC_SPI_TSCONTROL_SW_APP;
     }
 
-    return E_NO_ERROR;
-}
+    if (pins.vddioh) {
+        vssel = MXC_GPIO_VSSEL_VDDIOH;
+    } else {
+        vssel = MXC_GPIO_VSSEL_VDDIO;
+    }
 
-int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
-                 unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
-{
-    int error;
-    int8_t spi_num;
+    // Note: Target Select (L. SS) Pins will be configured in MXC_SPI_RevA2_Init.
+    // Configure GPIO for spi
+    if (spi == MXC_SPI1) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
 
-    // TODO(5-15-2023): Remove this section when the Init function is updated to
-    //      int MXC_SPI_Init(mxc_spi_init_t *init)
-    // This function is for backwards compatibility, before fully updating to new
-    //   implementation.
-    mxc_spi_init_t spi_init = (const mxc_spi_init_t){ 0 };
-    mxc_spi_init_t *init = &spi_init;
+        switch (if_mode) {
+            case MXC_SPI_INTERFACE_STANDARD:
+                error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
+                break;
 
-    error = MXC_SPI_legacy_setupInit(init, spi, masterMode, quadModeUsed, numSlaves, ssPolarity, hz,
-                                     pins, use_dma);
+            case MXC_SPI_INTERFACE_QUAD:
+                error = MXC_GPIO_Config(&gpio_cfg_spi1_quad);
+                break;
+
+            case MXC_SPI_INTERFACE_3WIRE:
+                error = MXC_GPIO_Config(&gpio_cfg_spi1_3wire);
+                break;
+
+            case MXC_SPI_INTERFACE_DUAL:
+                error = MXC_GPIO_Config(&gpio_cfg_spi1_dual);
+                break;
+
+            default:
+                return E_BAD_PARAM;
+        }
+
+// Handles RISCV SPI Numbering.
+#ifdef MXC_SPI0
+    } else if (spi == MXC_SPI0) {
+        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
+        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
+
+        switch (if_mode) {
+            case MXC_SPI_INTERFACE_STANDARD:
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
+                break;
+
+            case MXC_SPI_INTERFACE_QUAD:
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_quad);
+                break;
+
+            case MXC_SPI_INTERFACE_3WIRE:
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
+                break;
+
+            case MXC_SPI_INTERFACE_DUAL:
+                error = MXC_GPIO_Config(&gpio_cfg_spi0_dual);
+                break;
+
+            default:
+                return E_BAD_PARAM;
+        }
+#endif
+
+    } else {
+        return E_NO_DEVICE;
+    }
+
+    // Ensure SPI GPIO pins were properly configured.
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    spi_num = MXC_SPI_GET_IDX(init->spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+    return MXC_SPI_RevA2_Init((mxc_spi_reva_regs_t *)spi, controller_target, if_mode, freq, vssel, ts_control, ts_init_mask, ts_active_pol_mask);
+}
+
+int MXC_SPI_Config(mxc_spi_cfg_t *cfg)
+{
+    return MXC_SPI_RevA2_Config(cfg);
+}
+
+int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma)
+{
+    if (cfg == NULL) {
         return E_BAD_PARAM;
     }
 
-    // Check if frequency is too high
-    if ((spi_num == 0) && (init->freq > MXC_SPI_GetPeripheralClock(init->spi))) {
-        return E_BAD_PARAM;
-    }
+    cfg->spi = MXC_SPI1; // SPI1 is available on both the ARM and RISCV core.
+    cfg->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
+    // cfg->if_mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
+    cfg->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
+    // cfg->target.active_pol = 0; // Active polarity is LOW (0). IDLE is HIGH (1).
+    // cfg->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
+    // cfg->target.cfg_mask = 0x01; // Default TS0
 
-    if ((spi_num == 1) && (init->freq > SystemCoreClock)) {
-        return E_BAD_PARAM;
-    }
-
-    // Note: Target Select (L. SS) Pins will be configured in MXC_SPI_RevA2_Init.
-    // Configure GPIO for spi
-    if (init->spi == MXC_SPI1) {
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
-
-        // Configure SPI to default pins if not provided.
-        if (init->spi_pins == NULL) {
-            if (init->if_mode == MXC_SPI_INTERFACE_3WIRE) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi1_3wire);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_STANDARD) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_DUAL) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi1_dual);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_QUAD) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi1_quad);
-
-            } else {
-                return E_BAD_PARAM;
-            }
-
-        } else {
-            error = MXC_GPIO_Config(init->spi_pins);
-        }
-
-        // Ensure SPI GPIO pins were properly configured.
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-
-// Handles RISCV SPI Numbering.
-#ifdef MXC_SPI0
-    } else if (init->spi == MXC_SPI0) {
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
-
-        // Configure SPI to default pins if not provided.
-        if (init->spi_pins == NULL) {
-            if (init->if_mode == MXC_SPI_INTERFACE_3WIRE) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_STANDARD) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_DUAL) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi0_dual);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_QUAD) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi0_quad);
-
-            } else {
-                return E_BAD_PARAM;
-            }
-
-        } else {
-            error = MXC_GPIO_Config(init->spi_pins);
-        }
-
-        // Ensure SPI GPIO pins were properly configured.
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-#endif
-
+    if (use_dma) {
+        cfg->use_dma_tx = true;
+        cfg->use_dma_rx = true;
+        cfg->dma = MXC_DMA;
     } else {
-        return E_NO_DEVICE;
+        cfg->use_dma_tx = false;
+        cfg->use_dma_rx = false;
+        cfg->dma = NULL;
     }
-
-    return MXC_SPI_RevA2_Init(init);
-}
-
-int MXC_SPI_Init_v2(mxc_spi_init_t *init)
-{
-    int error;
-    int8_t spi_num;
-
-    spi_num = MXC_SPI_GET_IDX(init->spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
-    // Check if frequency is too high
-    if ((spi_num == 0) && (init->freq > MXC_SPI_GetPeripheralClock(init->spi))) {
-        return E_BAD_PARAM;
-    }
-
-    if ((spi_num == 1) && (init->freq > SystemCoreClock)) {
-        return E_BAD_PARAM;
-    }
-
-    // Note: Target Select (L. SS) Pins will be configured in MXC_SPI_RevA2_Init.
-    // Configure GPIO for spi
-    if (init->spi == MXC_SPI1) {
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET0_SPI1);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI1);
-
-        // Configure SPI to default pins if not provided.
-        if (init->spi_pins == NULL) {
-            if (init->if_mode == MXC_SPI_INTERFACE_3WIRE) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi1_3wire);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_STANDARD) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi1_standard);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_DUAL) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi1_dual);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_QUAD) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi1_quad);
-
-            } else {
-                return E_BAD_PARAM;
-            }
-
-        } else {
-            error = MXC_GPIO_Config(init->spi_pins);
-        }
-
-        // Ensure SPI GPIO pins were properly configured.
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-
-// Handles RISCV SPI Numbering.
-#ifdef MXC_SPI0
-    } else if (init->spi == MXC_SPI0) {
-        MXC_SYS_Reset_Periph(MXC_SYS_RESET1_SPI0);
-        MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_SPI0);
-
-        // Configure SPI to default pins if not provided.
-        if (init->spi_pins == NULL) {
-            if (init->if_mode == MXC_SPI_INTERFACE_3WIRE) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi0_3wire);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_STANDARD) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi0_standard);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_DUAL) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi0_dual);
-
-            } else if (init->if_mode == MXC_SPI_INTERFACE_QUAD) {
-                error = MXC_GPIO_Config(&gpio_cfg_spi0_quad);
-
-            } else {
-                return E_BAD_PARAM;
-            }
-
-        } else {
-            error = MXC_GPIO_Config(init->spi_pins);
-        }
-
-        // Ensure SPI GPIO pins were properly configured.
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-#endif
-
-    } else {
-        return E_NO_DEVICE;
-    }
-
-    return MXC_SPI_RevA2_Init(init);
-}
-
-int MXC_SPI_InitStruct(mxc_spi_init_t *init)
-{
-    if (init == NULL) {
-        return E_BAD_PARAM;
-    }
-
-    init->spi = MXC_SPI1; // SPI1 is available on both the ARM and RISCV core.
-    init->spi_pins = NULL; // Use default, predefined pins
-    init->type = MXC_SPI_TYPE_CONTROLLER; // Controller mode
-    init->freq = 100000; // 100KHz
-    init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
-    init->if_mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
-    init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
-    init->target.active_polarity = 0; // Active polarity is LOW (0). IDLE is HIGH (1).
-    init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
-    init->target.init_mask = 0x01; // Default TS0
-    init->use_dma = false; // DMA not used
-    init->dma = NULL;
-
-    return E_SUCCESS;
-}
-
-int MXC_SPI_InitStruct_DMA(mxc_spi_init_t *init)
-{
-    if (init == NULL) {
-        return E_BAD_PARAM;
-    }
-
-    init->spi = MXC_SPI1; // SPI1 is available on both the ARM and RISCV core.
-    init->spi_pins = NULL; // Use default, predefined pins
-    init->type = MXC_SPI_TYPE_CONTROLLER; // Controller mode
-    init->freq = 100000; // 100KHz
-    init->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
-    init->if_mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
-    init->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
-    init->target.active_polarity = 0; // Active polarity is LOW (0), IDLE is HIGH (1)
-    init->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
-    init->target.init_mask = 0x01; // Default TS0
-    init->use_dma = true; // Use DMA
-    init->dma = MXC_DMA;
-
+    
     return E_SUCCESS;
 }
 
@@ -467,7 +289,7 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
     return retval;
 }
 
-int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vssel_t vssel)
+int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_targetsel_t *ts, mxc_gpio_vssel_t vssel, bool use_custom)
 {
     int error;
     int8_t spi_num;
@@ -477,83 +299,109 @@ int MXC_SPI_ConfigTargetSelect(mxc_spi_regs_t *spi, uint32_t index, mxc_gpio_vss
         return E_BAD_PARAM;
     }
 
-    if (spi == MXC_SPI1) {
-        if (index > MXC_SPI1_TS_INSTANCES) {
-            return E_BAD_PARAM;
+    // Configure custom TS pins.
+    if (use_custom) {
+        // If SPI driver is handling target assertions, make sure the pin function is set as an output (AF: IO).
+        if ((ts->pins.port != NULL) && (ts->pins.func == MXC_GPIO_FUNC_OUT)) {
+            error = MXC_GPIO_Config(&(ts->pins));
+            if (error != E_NO_ERROR) {
+                return error;
+            }
+
+            // Ensure VDDIO/VDDIOH Selection
+            error = MXC_GPIO_SetVSSEL(ts->pins.port, vssel, ts->pins.mask);
+            if (error != E_NO_ERROR) {
+                return error;
+            }
+
+            // Readbility for register access.
+            mxc_gpio_regs_t *ts_port = ts->pins.port;
+
+            // Set IDLE TS Polarity (Default - active low (0))
+            if (ts->active_pol) {
+                // Active HIGH (1), Set TS Idle State to LOW (0)
+                ts_port->out_clr |= ts->pins.mask;
+            } else {
+                // Active LOW (0), Set TS Idle State to HIGH (1)
+                ts_port->out_set |= ts->pins.mask;
+            }
+
+        } else {
+            return E_BAD_STATE;
         }
 
-        switch (index) {
-        // Target Select 0 - TS0 (L. SS0 pin)
-        case 0:
-            error = MXC_GPIO_Config(&gpio_cfg_spi1_ts0);
-            if (error != E_NO_ERROR) {
-                return error;
+        // Configure HW TS pins.
+    } else {
+        if (spi == MXC_SPI1) {
+            switch (ts->index) {
+                // Target Select 0 - TS0 (L. SS0 pin)
+                case 0:
+                    error = MXC_GPIO_Config(&gpio_cfg_spi1_ts0);
+                    if (error != E_NO_ERROR) {
+                        return error;
+                    }
+
+                    error = MXC_GPIO_SetVSSEL(gpio_cfg_spi1_ts0.port, vssel, gpio_cfg_spi1_ts0.mask);
+                    if (error != E_NO_ERROR) {
+                        return error;
+                    }
+
+                    break;
+
+                default:
+                    return E_BAD_PARAM;
             }
 
-            error = MXC_GPIO_SetVSSEL(gpio_cfg_spi1_ts0.port, vssel, gpio_cfg_spi1_ts0.mask);
-            if (error != E_NO_ERROR) {
-                return error;
+    #ifdef MXC_SPI0
+        } else if (spi == MXC_SPI0) {
+            switch (ts->index) {
+                // Target Select 0 - TS0 (L. SS0 pin)
+                case 0:
+                    error = MXC_GPIO_Config(&gpio_cfg_spi0_ts0);
+                    if (error != E_NO_ERROR) {
+                        return error;
+                    }
+
+                    error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts0.port, vssel, gpio_cfg_spi0_ts0.mask);
+                    if (error != E_NO_ERROR) {
+                        return error;
+                    }
+
+                    break;
+
+                // Target Select 1 - TS1 (L. SS1 pin)
+                case 1:
+                    error = MXC_GPIO_Config(&gpio_cfg_spi0_ts1);
+                    if (error != E_NO_ERROR) {
+                        return error;
+                    }
+
+                    error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts1.port, vssel, gpio_cfg_spi0_ts1.mask);
+                    if (error != E_NO_ERROR) {
+                        return error;
+                    }
+
+                    break;
+
+                // Target Select 2 (TS2 - L. SS2 pin)
+                case 2:
+                    error = MXC_GPIO_Config(&gpio_cfg_spi0_ts2);
+                    if (error != E_NO_ERROR) {
+                        return error;
+                    }
+
+                    error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts2.port, vssel, gpio_cfg_spi0_ts2.mask);
+                    if (error != E_NO_ERROR) {
+                        return error;
+                    }
+
+                    break;
+
+                default:
+                    return E_BAD_PARAM;
             }
-
-            break;
-
-        default:
-            return E_BAD_PARAM;
+    #endif
         }
-
-#ifdef MXC_SPI0
-    } else if (spi == MXC_SPI0) {
-        if (index > MXC_SPI0_TS_INSTANCES) {
-            return E_BAD_PARAM;
-        }
-
-        switch (index) {
-        // Target Select 0 - TS0 (L. SS0 pin)
-        case 0:
-            error = MXC_GPIO_Config(&gpio_cfg_spi0_ts0);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-            error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts0.port, vssel, gpio_cfg_spi0_ts0.mask);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-            break;
-
-        // Target Select 1 - TS1 (L. SS1 pin)
-        case 1:
-            error = MXC_GPIO_Config(&gpio_cfg_spi0_ts1);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-            error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts1.port, vssel, gpio_cfg_spi0_ts1.mask);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-            break;
-
-        // Target Select 2 (TS2 - L. SS2 pin)
-        case 2:
-            error = MXC_GPIO_Config(&gpio_cfg_spi0_ts2);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-            error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts2.port, vssel, gpio_cfg_spi0_ts2.mask);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-            break;
-
-        default:
-            return E_BAD_PARAM;
-        }
-#endif
     }
 
     return E_NO_ERROR;
@@ -671,9 +519,9 @@ unsigned int MXC_SPI_GetRXThreshold(mxc_spi_regs_t *spi)
 
 /* ** DMA-Specific Functions ** */
 
-int MXC_SPI_DMA_Init(mxc_spi_init_t *init)
+int MXC_SPI_DMA_Init(mxc_spi_regs_t *spi, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx)
 {
-    return MXC_SPI_RevA2_DMA_Init(init);
+    return MXC_SPI_RevA2_DMA_Init((mxc_spi_reva_regs_t *)spi, (mxc_dma_reva_regs_t *)dma, use_dma_tx, use_dma_rx);
 }
 
 bool MXC_SPI_DMA_GetInitialized(mxc_spi_regs_t *spi)
@@ -691,7 +539,7 @@ int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi)
     return MXC_SPI_RevA2_DMA_GetRXChannel((mxc_spi_reva_regs_t *)spi);
 }
 
-int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_t *rx_buffer)
+int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_dma_rx)
 {
     int8_t spi_num;
     int tx_reqsel = -1;
@@ -702,7 +550,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_
         return E_INVALID;
     }
 
-    if (tx_buffer != NULL) {
+    if (use_dma_tx) {
         switch (spi_num) {
         case 0:
             tx_reqsel = MXC_DMA_REQUEST_SPI1TX;
@@ -717,7 +565,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_
         }
     }
 
-    if (rx_buffer != NULL) {
+    if (use_dma_rx) {
         switch (spi_num) {
         case 0:
             rx_reqsel = MXC_DMA_REQUEST_SPI1RX;
@@ -740,7 +588,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, uint8_t *tx_buffer, uint8_
 int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
 {
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                               req->tx_fr_len, req->rx_buffer, req->rx_fr_len,
+                                               req->tx_length_frames, req->rx_buffer, req->rx_length_frames,
                                                req->deassert, req->target_sel);
 }
 
@@ -754,45 +602,28 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
     }
 
     return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi),
-                                                    req->tx_buffer, req->tx_fr_len, req->rx_buffer,
-                                                    req->rx_fr_len, req->deassert, req->target_sel);
+                                                    req->tx_buffer, req->tx_length_frames, req->rx_buffer,
+                                                    req->rx_length_frames, req->deassert, req->target_sel);
 }
 
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
-    mxc_spi_init_t init;
 
-    init.use_dma = true;
-    init.dma = MXC_DMA;
-
-    // More overhead, but this function will initalize DMA if not initialized.
-    if (MXC_SPI_DMA_GetInitialized(req->spi) == false) {
-        error = MXC_SPI_DMA_Init(&init);
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-    }
-
-    error = MXC_SPI_SetCallback(req->spi, req->callback, req);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
+    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
     if (error != E_NO_ERROR) {
         return error;
     }
 
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                  req->tx_fr_len, req->rx_buffer, req->rx_fr_len,
-                                                  req->deassert, req->target_sel);
+                                                  req->tx_length_frames, req->rx_buffer, req->rx_length_frames,
+                                                  req->deassert, req->target_sel, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
 {
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                               req->tx_fr_len, req->rx_buffer, req->rx_fr_len,
+                                               req->tx_length_frames, req->rx_buffer, req->rx_length_frames,
                                                req->deassert, req->target_sel);
 }
 
@@ -806,8 +637,8 @@ int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
     }
 
     return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi),
-                                                    req->tx_buffer, req->tx_fr_len, req->rx_buffer,
-                                                    req->rx_fr_len, req->deassert, req->target_sel);
+                                                    req->tx_buffer, req->tx_length_frames, req->rx_buffer,
+                                                    req->rx_length_frames, req->deassert, req->target_sel);
 }
 
 int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
@@ -819,27 +650,15 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
         return error;
     }
 
-    error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                  req->tx_fr_len, req->rx_buffer, req->rx_fr_len,
-                                                  req->deassert, req->target_sel);
-}
-
-int MXC_SPI_ControllerTransactionDMAB(mxc_spi_req_t *req)
-{
-    return MXC_SPI_RevA2_ControllerTransactionDMAB((mxc_spi_reva_regs_t *)(req->spi),
-                                                   req->tx_buffer, req->tx_fr_len, req->rx_buffer,
-                                                   req->rx_fr_len, req->deassert, req->target_sel);
+                                                  req->tx_length_frames, req->rx_buffer, req->rx_length_frames,
+                                                  req->deassert, req->target_sel, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
 {
     return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                           req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
+                                           req->tx_length_frames, req->rx_buffer, req->rx_length_frames);
 }
 
 int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
@@ -852,43 +671,26 @@ int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
     }
 
     return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
+                                                req->tx_length_frames, req->rx_buffer, req->rx_length_frames);
 }
 
 int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
-    mxc_spi_init_t init;
-
-    init.use_dma = true;
-    init.dma = MXC_DMA;
-
-    // More overhead, but this function will initalize DMA if not initialized.
-    if (MXC_SPI_DMA_GetInitialized(req->spi) == false) {
-        error = MXC_SPI_DMA_Init(&init);
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-    }
 
     error = MXC_SPI_SetCallback(req->spi, req->callback, req);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
     return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                              req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
+                                              req->tx_length_frames, req->rx_buffer, req->rx_length_frames, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_TargetTransaction(mxc_spi_req_t *req)
 {
     return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                           req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
+                                           req->tx_length_frames, req->rx_buffer, req->rx_length_frames);
 }
 
 int MXC_SPI_TargetTransactionAsync(mxc_spi_req_t *req)
@@ -901,7 +703,7 @@ int MXC_SPI_TargetTransactionAsync(mxc_spi_req_t *req)
     }
 
     return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
+                                                req->tx_length_frames, req->rx_buffer, req->rx_length_frames);
 }
 
 int MXC_SPI_TargetTransactionDMA(mxc_spi_req_t *req)
@@ -913,13 +715,8 @@ int MXC_SPI_TargetTransactionDMA(mxc_spi_req_t *req)
         return error;
     }
 
-    error = MXC_SPI_DMA_SetRequestSelect(req->spi, req->tx_buffer, req->rx_buffer);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
     return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                              req->tx_fr_len, req->rx_buffer, req->rx_fr_len);
+                                              req->tx_length_frames, req->rx_buffer, req->rx_length_frames, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 /* ** Handler Functions ** */
