@@ -208,7 +208,8 @@ unsigned int MXC_I2C_RevA_GetFrequency(mxc_i2c_reva_regs_t *i2c)
         sclCycles += (i2c->hsclk & MXC_F_I2C_REVA_HSCLK_HI) >> MXC_F_I2C_REVA_HSCLK_HI_POS;
     } else {
         // HS-Mode not enabled, calculate nominal frequency
-        sclCycles += (i2c->clklo & MXC_F_I2C_REVA_CLKLO_LO) + (i2c->clkhi & MXC_F_I2C_REVA_CLKHI_HI);
+        sclCycles += (i2c->clklo & MXC_F_I2C_REVA_CLKLO_LO);
+        sclCycles += (i2c->clkhi & MXC_F_I2C_REVA_CLKHI_HI);
     }
 
     return PeripheralClock / sclCycles;
