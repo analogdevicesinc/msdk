@@ -264,7 +264,7 @@ DWORD get_fattime(void) {
         uint8_t year, month, day, hour, minute, half_seconds;
         
         //Convert RTC Seconds to time
-        seconds = MXC_RTC->sec + (FF_RTC_EPOCH_DELTA);
+        seconds = MXC_RTC->sec;
         year = seconds/SEC_IN_YEAR_AVG;    //year from epoch
         seconds = seconds%SEC_IN_YEAR_AVG; //seconds from Jan 1, $year
         month = seconds/SEC_IN_MONTH_AVG;
