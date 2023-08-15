@@ -185,7 +185,7 @@ int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma)
     cfg->spi = MXC_SPI1; // SPI1 is available on both the ARM and RISCV core.
     cfg->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
     // cfg->if_mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
-    cfg->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
+    // cfg->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
     // cfg->target.active_pol = 0; // Active polarity is LOW (0). IDLE is HIGH (1).
     // cfg->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
     // cfg->target.cfg_mask = 0x01; // Default TS0
@@ -289,7 +289,7 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
     return retval;
 }
 
-int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_targetsel_t *ts, mxc_gpio_vssel_t vssel, bool use_custom)
+int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts, mxc_gpio_vssel_t vssel)
 {
     int error;
     int8_t spi_num;
@@ -300,111 +300,133 @@ int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_targetsel_t *ts, mxc_gpio_
     }
 
     // Configure custom TS pins.
-    if (use_custom) {
-        // If SPI driver is handling target assertions, make sure the pin function is set as an output (AF: IO).
-        if ((ts->pins.port != NULL) && (ts->pins.func == MXC_GPIO_FUNC_OUT)) {
-            error = MXC_GPIO_Config(&(ts->pins));
-            if (error != E_NO_ERROR) {
-                return error;
-            }
+    switch (ts_control) {
+        case MXC_SPI_TSCONTROL_SW_DRV:
+            // If SPI driver is handling target assertions, make sure the pin function is set as an output (AF: IO).
+            if ((ts->pins.port != NULL) && (ts->pins.func == MXC_GPIO_FUNC_OUT)) {
+                error = MXC_GPIO_Config(&(ts->pins));
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
 
-            // Ensure VDDIO/VDDIOH Selection
-            error = MXC_GPIO_SetVSSEL(ts->pins.port, vssel, ts->pins.mask);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
+                // Ensure VDDIO/VDDIOH Selection
+                error = MXC_GPIO_SetVSSEL(ts->pins.port, vssel, ts->pins.mask);
+                if (error != E_NO_ERROR) {
+                    return error;
+                }
 
-            // Readbility for register access.
-            mxc_gpio_regs_t *ts_port = ts->pins.port;
+                // Readbility for register access.
+                mxc_gpio_regs_t *ts_port = ts->pins.port;
 
-            // Set IDLE TS Polarity (Default - active low (0))
-            if (ts->active_pol) {
-                // Active HIGH (1), Set TS Idle State to LOW (0)
-                ts_port->out_clr |= ts->pins.mask;
+                // Set IDLE TS Polarity (Default - active low (0))
+                if (ts->active_pol) {
+                    // Active HIGH (1), Set TS Idle State to LOW (0)
+                    ts_port->out_clr |= ts->pins.mask;
+                } else {
+                    // Active LOW (0), Set TS Idle State to HIGH (1)
+                    ts_port->out_set |= ts->pins.mask;
+                }
+
             } else {
-                // Active LOW (0), Set TS Idle State to HIGH (1)
-                ts_port->out_set |= ts->pins.mask;
+                return E_BAD_STATE;
             }
 
-        } else {
-            return E_BAD_STATE;
-        }
+            break;
 
         // Configure HW TS pins.
-    } else {
-        if (spi == MXC_SPI1) {
-            switch (ts->index) {
-                // Target Select 0 - TS0 (L. SS0 pin)
-                case 0:
-                    error = MXC_GPIO_Config(&gpio_cfg_spi1_ts0);
-                    if (error != E_NO_ERROR) {
-                        return error;
-                    }
+        case MXC_SPI_TSCONTROL_HW_AUTO:
+            if (spi == MXC_SPI1) {
+                switch (ts->index) {
+                    // Target Select 0 - TS0 (L. SS0 pin)
+                    case 0:
+                        error = MXC_GPIO_Config(&gpio_cfg_spi1_ts0);
+                        if (error != E_NO_ERROR) {
+                            return error;
+                        }
 
-                    error = MXC_GPIO_SetVSSEL(gpio_cfg_spi1_ts0.port, vssel, gpio_cfg_spi1_ts0.mask);
-                    if (error != E_NO_ERROR) {
-                        return error;
-                    }
+                        error = MXC_GPIO_SetVSSEL(gpio_cfg_spi1_ts0.port, vssel, gpio_cfg_spi1_ts0.mask);
+                        if (error != E_NO_ERROR) {
+                            return error;
+                        }
 
-                    break;
+                        break;
 
-                default:
-                    return E_BAD_PARAM;
+                    default:
+                        return E_BAD_PARAM;
+                }
+
+#ifdef MXC_SPI0
+            } else if (spi == MXC_SPI0) {
+                switch (ts->index) {
+                    // Target Select 0 - TS0 (L. SS0 pin)
+                    case 0:
+                        error = MXC_GPIO_Config(&gpio_cfg_spi0_ts0);
+                        if (error != E_NO_ERROR) {
+                            return error;
+                        }
+
+                        error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts0.port, vssel, gpio_cfg_spi0_ts0.mask);
+                        if (error != E_NO_ERROR) {
+                            return error;
+                        }
+
+                        break;
+
+                    // Target Select 1 - TS1 (L. SS1 pin)
+                    case 1:
+                        error = MXC_GPIO_Config(&gpio_cfg_spi0_ts1);
+                        if (error != E_NO_ERROR) {
+                            return error;
+                        }
+
+                        error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts1.port, vssel, gpio_cfg_spi0_ts1.mask);
+                        if (error != E_NO_ERROR) {
+                            return error;
+                        }
+
+                        break;
+
+                    // Target Select 2 (TS2 - L. SS2 pin)
+                    case 2:
+                        error = MXC_GPIO_Config(&gpio_cfg_spi0_ts2);
+                        if (error != E_NO_ERROR) {
+                            return error;
+                        }
+
+                        error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts2.port, vssel, gpio_cfg_spi0_ts2.mask);
+                        if (error != E_NO_ERROR) {
+                            return error;
+                        }
+
+                        break;
+
+                    default:
+                        return E_BAD_PARAM;
+                }
+#endif
             }
 
-    #ifdef MXC_SPI0
-        } else if (spi == MXC_SPI0) {
-            switch (ts->index) {
-                // Target Select 0 - TS0 (L. SS0 pin)
-                case 0:
-                    error = MXC_GPIO_Config(&gpio_cfg_spi0_ts0);
-                    if (error != E_NO_ERROR) {
-                        return error;
-                    }
+            break;
+        
+        case MXC_SPI_TSCONTROL_SW_APP:
+            // SW Application drives the TS pins.
+            break;
 
-                    error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts0.port, vssel, gpio_cfg_spi0_ts0.mask);
-                    if (error != E_NO_ERROR) {
-                        return error;
-                    }
-
-                    break;
-
-                // Target Select 1 - TS1 (L. SS1 pin)
-                case 1:
-                    error = MXC_GPIO_Config(&gpio_cfg_spi0_ts1);
-                    if (error != E_NO_ERROR) {
-                        return error;
-                    }
-
-                    error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts1.port, vssel, gpio_cfg_spi0_ts1.mask);
-                    if (error != E_NO_ERROR) {
-                        return error;
-                    }
-
-                    break;
-
-                // Target Select 2 (TS2 - L. SS2 pin)
-                case 2:
-                    error = MXC_GPIO_Config(&gpio_cfg_spi0_ts2);
-                    if (error != E_NO_ERROR) {
-                        return error;
-                    }
-
-                    error = MXC_GPIO_SetVSSEL(gpio_cfg_spi0_ts2.port, vssel, gpio_cfg_spi0_ts2.mask);
-                    if (error != E_NO_ERROR) {
-                        return error;
-                    }
-
-                    break;
-
-                default:
-                    return E_BAD_PARAM;
-            }
-    #endif
-        }
+        default:
+            return E_BAD_PARAM;
     }
 
-    return E_NO_ERROR;
+    return MXC_SPI_RevA2_ConfigTSPins((mxc_spi_reva_regs_t *)spi, ts_control, ts);
+}
+
+int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control)
+{
+    return MXC_SPI_RevA2_SetTSControl((mxc_spi_reva_regs_t *)spi, ts_control);
+}
+
+mxc_spi_tscontrol_t MXC_SPI_GetTSControl(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_RevA2_GetTSControl((mxc_spi_reva_regs_t *)spi);
 }
 
 int MXC_SPI_SetFrequency(mxc_spi_regs_t *spi, unsigned int hz)
@@ -589,7 +611,7 @@ int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
 {
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                req->tx_length_frames, req->rx_buffer, req->rx_length_frames,
-                                               req->deassert, req->target_sel);
+                                               req->deassert, req->ts);
 }
 
 int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
@@ -603,7 +625,7 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
 
     return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi),
                                                     req->tx_buffer, req->tx_length_frames, req->rx_buffer,
-                                                    req->rx_length_frames, req->deassert, req->target_sel);
+                                                    req->rx_length_frames, req->deassert, req->ts);
 }
 
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
@@ -617,14 +639,14 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                   req->tx_length_frames, req->rx_buffer, req->rx_length_frames,
-                                                  req->deassert, req->target_sel, (mxc_dma_reva_regs_t *)MXC_DMA);
+                                                  req->deassert, req->ts, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
 {
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                req->tx_length_frames, req->rx_buffer, req->rx_length_frames,
-                                               req->deassert, req->target_sel);
+                                               req->deassert, req->ts);
 }
 
 int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
@@ -638,7 +660,7 @@ int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
 
     return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi),
                                                     req->tx_buffer, req->tx_length_frames, req->rx_buffer,
-                                                    req->rx_length_frames, req->deassert, req->target_sel);
+                                                    req->rx_length_frames, req->deassert, req->ts);
 }
 
 int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
@@ -652,7 +674,7 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
 
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                   req->tx_length_frames, req->rx_buffer, req->rx_length_frames,
-                                                  req->deassert, req->target_sel, (mxc_dma_reva_regs_t *)MXC_DMA);
+                                                  req->deassert, req->ts, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)

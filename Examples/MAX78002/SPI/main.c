@@ -52,12 +52,16 @@
 #include "dma.h"
 
 /***** Preprocessors *****/
-#define CONTROLLER_SYNC 1
-#define CONTROLLER_ASYNC 0
+#define CONTROLLER_SYNC 0
+#define CONTROLLER_ASYNC 1
 #define CONTROLLER_DMA 0
 
-#define CUSTOM_TARGET 0
+// Target Select Control Scheme
+#define TSCONTROL_HW_AUTO 0 // Hardware asserts/deasserts TSn pins.
+#define TSCONTROL_SW_DRV 1 // SPI Driver asserts/deasserts custom TS pins.
+#define TSCONTROL_SW_APP 0 // Application asserts/deasserts TS pins.
 
+// Preprocessor Error Checking
 #if (!(CONTROLLER_SYNC || CONTROLLER_ASYNC || CONTROLLER_DMA))
 #error "You must set either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA to 1."
 #endif
@@ -66,9 +70,16 @@
 #error "You must select either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA, not all 3."
 #endif
 
+#if (!(TSCONTROL_HW_AUTO || TSCONTROL_SW_DRV || TSCONTROL_SW_APP))
+#error "You must set either TSCONTROL_HW_AUTO or TSCONTROL_SW_DRV or TSCONTROL_SW_APP to 1."
+#endif
+#if ((TSCONTROL_HW_AUTO && TSCONTROL_SW_DRV) || (TSCONTROL_SW_DRV && TSCONTROL_SW_APP) || (TSCONTROL_SW_APP && TSCONTROL_HW_AUTO))
+#error "You must select either TSCONTROL_HW_AUTO or TSCONTROL_SW_DRV or TSCONTROL_SW_APP, not all 3."
+#endif
+
 /***** Definitions *****/
-#define DATA_LEN 100 // Words
-#define DATA_VALUE 0xA5B7 // This is for master mode only...
+#define DATA_LEN 1 // Words
+#define DATA_VALUE 0xA5B7 // This is for Controller mode only...
 #define VALUE 0xFFFF
 #define SPI_SPEED 100000 // Bit Rate
 
@@ -116,8 +127,8 @@ int main(void)
 {
     int i, j, retVal;
     uint16_t temp;
-    mxc_spi_init_t init;
-    mxc_spi_target_t target;
+    mxc_spi_cfg_t cfg;
+    mxc_spi_ts_t ts;
 
     printf("\n**************************** SPI CONTROLLER TEST *************************\n");
     printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
@@ -140,56 +151,85 @@ int main(void)
             tx_data[j] = DATA_VALUE;
         }
 
-        // Initialization Settings.
-        init.spi = SPI;
-        init.freq = SPI_SPEED;
-        init.spi_pins = NULL; // Use default, predefined pins
-        init.if_mode = MXC_SPI_INTERFACE_STANDARD; // 4-wire
-        init.type = MXC_SPI_TYPE_CONTROLLER;
-        init.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
-        init.frame_size = i;
+        mxc_spi_pins_t spi_pins;
+        spi_pins.ts0 = true;
+        spi_pins.ts1 = false;
+        spi_pins.ts2 = true;
+        spi_pins.vddioh = true;
 
-        // Target Select Settings
-#if CUSTOM_TARGET
-        // Example to select a custom target.
-        mxc_gpio_cfg_t target_pins;
-        target_pins.port = MXC_GPIO0;
-        target_pins.mask = MXC_GPIO_PIN_9;
-        target_pins.func = MXC_GPIO_FUNC_OUT;
-        target_pins.pad = MXC_GPIO_PAD_PULL_UP;
-        target_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
-
-        init.ts_control =
-            MXC_SPI_TSCONTROL_SW_DRV; // SPI Driver will handle deassertion for TS pins.
-        init.target.pins = target_pins;
-        init.target.active_polarity = 0;
-        init.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set SPI pins to VDDIOH (3.3V).
-
-        // Select target for transaction.
-        target.pins = target_pins; // Custom pins
-#else
-        init.ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // HW will deassert/assert TS pins.
-        init.target.active_polarity = 0;
-        init.target.init_mask = 0x01; // Initialize Target Select 0 pin.
-        init.vssel = MXC_GPIO_VSSEL_VDDIO;
-
-        // Select target for transaction.
-        target.index = 0; // TS0
-#endif
-
-        // DMA Settings.
-#if CONTROLLER_DMA
-        init.use_dma = true;
-        init.dma = MXC_DMA;
-#else
-        init.use_dma = false;
-#endif
-
-        retVal = MXC_SPI_Init_v2(&init);
+        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, 0b101, SPI_SPEED, spi_pins);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
             return retVal;
         }
+
+        // SPI Settings.
+        cfg.spi = SPI;
+        cfg.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
+        cfg.frame_size = i;
+
+        // DMA Settings.
+#if CONTROLLER_DMA
+        cfg.use_dma_tx = true;
+        cfg.use_dma_rx = true;
+        cfg.dma = MXC_DMA;
+#else
+        cfg.use_dma_tx = false;
+#endif
+
+        retVal = MXC_SPI_Config(&cfg);
+        if (retVal != E_NO_ERROR) {
+            printf("\nSPI CONFIGURATION ERROR\n");
+            return retVal;
+        }
+
+        // Custom Target Select (TS) Settings.
+#if TSCONTROL_SW_DRV
+        // Set up custom TS0 pin.
+        mxc_gpio_cfg_t ts0_pins;
+        ts0_pins.port = MXC_GPIO0;
+        ts0_pins.mask = MXC_GPIO_PIN_9;
+        ts0_pins.func = MXC_GPIO_FUNC_OUT;
+        ts0_pins.pad = MXC_GPIO_PAD_PULL_UP;
+        ts0_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
+
+        // Setup target select for transaction.
+        mxc_spi_ts_t ts0;
+        ts0.pins = ts0_pins; // Custom pins
+        ts0.active_pol = 0;
+
+        retVal = MXC_SPI_ConfigTSPins(SPI, MXC_SPI_TSCONTROL_SW_DRV, &ts0, MXC_GPIO_VSSEL_VDDIOH);
+        if (retVal != E_NO_ERROR) {
+            printf("\nSPI TS0 CONFIGURATION ERROR\n");
+            return retVal;
+        }
+
+        // Set up custom TS1 pin.
+        mxc_gpio_cfg_t ts1_pins;
+        ts1_pins.port = MXC_GPIO0;
+        ts1_pins.mask = MXC_GPIO_PIN_10;
+        ts1_pins.func = MXC_GPIO_FUNC_OUT;
+        ts1_pins.pad = MXC_GPIO_PAD_PULL_UP;
+        ts1_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
+
+        // Setup target select for transaction.
+        mxc_spi_ts_t ts1;
+        ts1.pins = ts1_pins;
+        ts1.active_pol = 1; // Active HIGH (1), Idle LOW (0).
+
+        retVal = MXC_SPI_ConfigTSPins(SPI, MXC_SPI_TSCONTROL_SW_DRV, &ts1, MXC_GPIO_VSSEL_VDDIOH);
+        if (retVal != E_NO_ERROR) {
+            printf("\nSPI TS1 CONFIGURATION ERROR\n");
+            return retVal;
+        }
+
+#elif TSCONTROL_SW_APP
+        retVal = MXC_SPI_SetTSControl(SPI, MXC_SPI_TSCONTROL_SW_APP);
+        if (retVal != E_NO_ERROR) {
+            printf("\nSPI TS CONTROL SW_APP ERROR\n");
+            return retVal;
+        }
+#endif
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
@@ -197,12 +237,12 @@ int main(void)
         mxc_spi_req_t req;
         req.spi = SPI;
         req.tx_buffer = (uint8_t *)tx_data;
-        req.tx_fr_len = DATA_LEN;
+        req.tx_length_frames = DATA_LEN;
         req.rx_buffer = (uint8_t *)rx_data;
-        req.rx_fr_len = DATA_LEN;
+        req.rx_length_frames = DATA_LEN;
         req.deassert = 1;
         req.callback = SPI_Callback;
-        req.target_sel = &target;
+        req.ts = &ts0;
         SPI_FLAG = 1;
 
 #if CONTROLLER_SYNC
@@ -233,6 +273,7 @@ int main(void)
 
         uint8_t bits = MXC_SPI_GetFrameSize(SPI);
 
+        // Reformat tx_data to match rx_data frame size.
         for (j = 0; j < DATA_LEN; j++) {
             if (bits <= 8) {
                 if (j < (DATA_LEN / 2)) {
@@ -258,6 +299,7 @@ int main(void)
         // Printf needs the Uart turned on since they share the same pins
         if (memcmp(rx_data, tx_data, sizeof(tx_data)) != 0) {
             printf("\n-->%2d Bits Transaction Failed\n", i);
+            LED_On(1);
             return E_COMM_ERR;
         } else {
             printf("-->%2d Bits Transaction Successful\n", i);
@@ -272,5 +314,6 @@ int main(void)
     }
 
     printf("\nExample Complete.\n");
+    LED_On(0);
     return E_NO_ERROR;
 }

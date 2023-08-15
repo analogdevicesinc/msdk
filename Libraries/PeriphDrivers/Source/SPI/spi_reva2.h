@@ -68,6 +68,12 @@ void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en);
 
 void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis);
 
+int MXC_SPI_RevA2_ConfigTSPins(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts);
+
+int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control);
+
+mxc_spi_tscontrol_t MXC_SPI_RevA2_GetTSControl(mxc_spi_reva_regs_t *spi);
+
 int MXC_SPI_RevA2_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq);
 
 int MXC_SPI_RevA2_GetFrequency(mxc_spi_reva_regs_t *spi);
@@ -131,17 +137,17 @@ void MXC_SPI_RevA2_DMA_SwapByte(uint8_t *buffer, uint32_t len_bytes);
 
 int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                         uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames,
-                                        uint8_t deassert, mxc_spi_targetsel_t *ts);
+                                        uint8_t deassert, mxc_spi_ts_t *ts);
 
 int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                              uint32_t tx_length_frames, uint8_t *rx_buffer,
                                              uint32_t rx_length_frames, uint8_t deassert,
-                                             mxc_spi_targetsel_t *ts);
+                                             mxc_spi_ts_t *ts);
 
 int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                            uint32_t tx_length_frames, uint8_t *rx_buffer,
                                            uint32_t rx_length_frames, uint8_t deassert,
-                                           mxc_spi_targetsel_t *ts, mxc_dma_reva_regs_t *dma);
+                                           mxc_spi_ts_t *ts, mxc_dma_reva_regs_t *dma);
 
 int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                     uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames);

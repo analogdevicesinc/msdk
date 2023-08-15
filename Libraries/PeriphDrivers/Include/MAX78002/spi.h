@@ -123,17 +123,14 @@ typedef enum {
 /**
  * @brief The settings for selecting TARGETS when in the SPI
  *          peripheral is set in CONTROLLER mode.
- * 
  */
 typedef struct {
-    // union {
+    union {
         uint32_t index;          // Select target index for transactions.
-        // struct {
-            mxc_gpio_cfg_t pins;     // User-configured Target Select SPI pins.
-            uint8_t active_pol; // Active High (1) or Low (0).
-        // };
-    // };
-} mxc_spi_targetsel_t;
+        mxc_gpio_cfg_t pins;     // User-configured Target Select SPI pins.
+    };
+    uint8_t active_pol; // Active High (1) or Low (0).
+} mxc_spi_ts_t;
 
 ///>>> @deprecated
 /**
@@ -203,22 +200,12 @@ struct _mxc_spi_pins_t {
 };
 
 typedef struct {
+    // SPI Settings.
     mxc_spi_regs_t *spi;                // Selected SPI Instance
     mxc_spi_clkmode_t clk_mode;         // Clock modes
     uint8_t frame_size;                 // Number of bits per character sent
-    mxc_spi_tscontrol_t ts_control;     // Target Select Control Scheme (auto HW, driver, or app controlled)
-    mxc_gpio_vssel_t vssel;
 
-    union {
-        mxc_gpio_cfg_t ts_pins_a;
-        uint8_t ts_init_mask_b;
-    };
-    union {
-        uint8_t ts_active_pol_a;
-        uint8_t ts_active_pol_mask_b;
-    };
-
-    // DMA
+    // DMA Settings.
     bool use_dma_tx;                    // Enable DMA TX.
     bool use_dma_rx;                    // Enable DMA RX. (use_dma_tx must be true to use DMA RX).
     mxc_dma_regs_t *dma;                // Select DMA instance for SPI DMA.
@@ -265,7 +252,7 @@ struct _mxc_spi_reva2_req_t {
     uint16_t tx_dummy_value; // Value of dummy bytes to be sent
 
     // Chip Select Options
-    mxc_spi_targetsel_t *target_sel; // Contains index, pins, polarity mode, cfg mask.
+    mxc_spi_ts_t *ts; // Contains index, pins, polarity mode, cfg mask.
 
     union {
         uint32_t ts_idx;
@@ -316,7 +303,7 @@ struct _mxc_spi_reva2_req_t {
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode, int unusedParameter,
+int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode, int unusedNumSlaves,
                  uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins);
 
 /**
@@ -425,12 +412,13 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi);
  * @brief   Configures the Pre-defined SPI Target Select pins for a specific instance.
  *
  * @param   spi         Pointer to SPI instance's registers.
- * @param   index       Target Select Index (TS0, TS1, TS2, ..)..
+ * @param   ts_control  Target Select Control Scheme (\ref mxc_spi_tscontrol_t).
+ * @param   ts          Target Select Settings (\ref mxc_spi_ts_t).
  * @param   vssel       Voltage Setting for TS pins (\ref mxc_gpio_vssel_t).
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_targetsel_t *ts, mxc_gpio_vssel_t vssel, bool use_custom);
+int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts, mxc_gpio_vssel_t vssel);
 
 /**
  * @brief   Set the frequency of the SPI interface.

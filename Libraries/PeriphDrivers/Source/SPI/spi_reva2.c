@@ -72,7 +72,7 @@ typedef struct {
     // Chip Select Info.
     bool                deassert;               // Target Select (TS) Deasserted at the end of a transmission.
     mxc_spi_tscontrol_t ts_control;
-    mxc_spi_targetsel_t current_ts;
+    mxc_spi_ts_t current_ts;
 
     // DMA Settings.
     mxc_dma_reva_regs_t *dma;
@@ -342,7 +342,7 @@ static void MXC_SPI_RevA2_resetStateStruct(int8_t spi_num)
     STATES[spi_num].deassert =
         true; // Default state is TS will be deasserted at the end of a transmission.
     STATES[spi_num].ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Default (0) state.
-    STATES[spi_num].current_ts = (const mxc_spi_targetsel_t){ 0 };
+    STATES[spi_num].current_ts = (const mxc_spi_ts_t){ 0 };
 
     // DMA
     STATES[spi_num].dma = NULL;
@@ -371,7 +371,7 @@ int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_targe
     MXC_SPI_RevA2_resetStateStruct(spi_num);
 
     // Set up Target Select Control Scheme.
-    //``HW Auto and SW App schemes are the only possible options for MXC_SPI_Init(...) function.
+    //  HW Auto and SW App schemes are the only possible options for MXC_SPI_Init(...) function.
     //  Hardware (Automatic) Controlled.
     if (ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
         // Set up preconfigured TSn Pins.
@@ -384,17 +384,21 @@ int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_targe
                 //       init_mask[1] <= Target Select 1 (TS1)
                 //       init_mask[n] <= Target Select n (TSn)
                 if (ts_init_mask & (1 << i)) {
-                    mxc_spi_targetsel_t ts = (const mxc_spi_targetsel_t){ 0 };
+                    mxc_spi_ts_t ts = (const mxc_spi_ts_t){ 0 };
                     ts.index = i;
 
-                    error = MXC_SPI_ConfigTSPins((mxc_spi_regs_t *)spi, &ts, vssel, false); // Configure HW TS pins -> false options.
+                    if (ts_active_pol_mask & (1 << i)) {
+                        ts.active_pol = 1;
+                    } else {
+                        ts.active_pol = 0;
+                    }
+
+                    error = MXC_SPI_ConfigTSPins((mxc_spi_regs_t *)spi, ts_control, &ts, vssel);
                     if (error != E_NO_ERROR) {
                         return error;
                     }
                 }
             }
-
-            MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, ((uint32_t)(ts_init_mask) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
         }
     } // Don't do anything if SW App is driving TS pins.
 
@@ -455,22 +459,13 @@ int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_targe
     spi->intfl = spi->intfl;
     spi->inten = 0;
 
-    if (ts_active_pol_mask > (MXC_F_SPI_REVA_CTRL2_SS_POL >> MXC_F_SPI_REVA_CTRL2_SS_POL_POS)) {
-        return E_BAD_PARAM;
-    }
-
-    // Added for backward-compatibility with RevA1.
-    // Set Target Active Polarity.
-    MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL, (ts_active_pol_mask << MXC_F_SPI_REVA_CTRL2_SS_POL_POS));
-
     return E_NO_ERROR;
 }
 
 int MXC_SPI_RevA2_Config(mxc_spi_cfg_t *cfg)
 {
-    int error, i;
+    int error;
     int8_t spi_num;
-    mxc_spi_targetsel_t ts;
 
     if (cfg == NULL) {
         return E_NULL_PTR;
@@ -481,74 +476,6 @@ int MXC_SPI_RevA2_Config(mxc_spi_cfg_t *cfg)
     if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
         return E_BAD_PARAM;
     }
-
-    // Reset STATE of current SPI instance.
-    MXC_SPI_RevA2_resetStateStruct(spi_num);
-
-    // Only supported TSCONTROL mode for Targets is Hardware (Automatic) Controlled.
-    if (STATES[spi_num].controller_target == MXC_SPI_TYPE_TARGET) {
-        if (cfg->ts_control != MXC_SPI_TSCONTROL_HW_AUTO) {
-            return E_BAD_PARAM;
-        }
-    }
-
-    // Set up Target Select Control Scheme.
-    //  Hardware (Automatic) Controlled.
-    switch (cfg->ts_control) {
-        case MXC_SPI_TSCONTROL_HW_AUTO:
-            // Set up preconfigured TSn Pins.
-            //   Use target.init_mask for most the convenience.
-            if (cfg->ts_init_mask_b) {
-                // Get total number of TSn instances for this SPI instance
-                for (i = 0; i < MXC_SPI_GET_TOTAL_TS(cfg->spi); i++) {
-                    // Note: The [] represents the bit location of init_mask
-                    //       ts_init_mask[0] <= Target Select 0 (TS0)
-                    //       ts_init_mask[1] <= Target Select 1 (TS1)
-                    //       ts_init_mask[n] <= Target Select n (TSn)
-                    if (cfg->ts_init_mask_b & (1 << i)) {
-                        mxc_spi_targetsel_t ts = (const mxc_spi_targetsel_t){ 0 };
-                        ts.index = i;
-
-                        error = MXC_SPI_ConfigTSPins((mxc_spi_regs_t *)(cfg->spi), &ts, cfg->vssel, false); // Configure HW TS pins -> false options.
-                        if (error != E_NO_ERROR) {
-                            return error;
-                        }
-                    }
-                }
-
-                MXC_SETFIELD((cfg->spi)->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, ((uint32_t)(cfg->ts_init_mask_b) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
-            }
-
-            break;
-
-        case MXC_SPI_TSCONTROL_SW_DRV:
-            ts.pins = cfg->ts_pins_a;
-            ts.active_pol = cfg->ts_active_pol_a;
-            error = MXC_SPI_ConfigTSPins((mxc_spi_regs_t *)(cfg->spi), &ts, cfg->vssel, true);
-            if (error != E_NO_ERROR) {
-                return error;
-            }
-
-            break;
-
-        case MXC_SPI_TSCONTROL_SW_APP:
-            // Do nothing. The application drives the TS pins.
-            break;
-
-        default:
-            return E_BAD_PARAM;
-    }
-
-    // // Enable SPI port.
-    // (cfg->spi)->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
-    // (cfg->spi)->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
-
-    // // Select Controller (L. Master) or Target (L. Slave) Mode.
-    // if (cfg->type == MXC_SPI_TYPE_CONTROLLER) {
-    //     (cfg->spi)->ctrl0 |= MXC_F_SPI_REVA_CTRL0_MST_MODE;
-    // } else {
-    //     (cfg->spi)->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_MST_MODE;
-    // }
 
     // Set frame size.
     if (cfg->frame_size <= 1 || cfg->frame_size > 16) {
@@ -635,6 +562,71 @@ void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en)
 void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis)
 {
     spi->inten &= ~(dis);
+}
+
+int MXC_SPI_RevA2_ConfigTSPins(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts)
+{
+    int8_t spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    // Set SPI TSCONTROL
+    if (ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
+        spi->ctrl0 |= ((ts->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS) & MXC_F_SPI_REVA_CTRL0_SS_ACTIVE);
+        spi->ctrl0 |= ((ts->active_pol << MXC_F_SPI_REVA_CTRL2_SS_POL_POS) & MXC_F_SPI_REVA_CTRL2_SS_POL);
+    }
+
+    return MXC_SPI_RevA2_SetTSControl(spi, ts_control);
+}
+
+int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control)
+{
+    int8_t spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    // Only supported TSCONTROL mode for Targets is Hardware (Automatic) Controlled.
+    if (STATES[spi_num].controller_target == MXC_SPI_TYPE_TARGET) {
+        if (ts_control != MXC_SPI_TSCONTROL_HW_AUTO) {
+            return E_BAD_STATE;
+        }
+    }
+
+    switch (ts_control) {
+        case MXC_SPI_TSCONTROL_HW_AUTO:
+            break;
+
+        case MXC_SPI_TSCONTROL_SW_DRV:
+        case MXC_SPI_TSCONTROL_SW_APP:
+            spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_SS_ACTIVE);
+            spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL2_SS_POL);      
+            break;
+
+        default:
+            return E_BAD_PARAM;
+    }
+
+    STATES[spi_num].ts_control = ts_control;
+
+    return E_NO_ERROR;
+}
+
+mxc_spi_tscontrol_t MXC_SPI_RevA2_GetTSControl(mxc_spi_reva_regs_t *spi)
+{
+    int8_t spi_num;
+
+    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
+    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
+        return E_BAD_PARAM;
+    }
+
+    return (STATES[spi_num].ts_control);
 }
 
 int MXC_SPI_RevA2_SetFrequency(mxc_spi_reva_regs_t *spi, uint32_t freq)
@@ -1398,7 +1390,7 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
 // Helper function that handles the Target Select assertion/deassertion at start of transaction.
 static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert,
-                                          mxc_spi_targetsel_t *ts)
+                                          mxc_spi_ts_t *ts)
 {
     int8_t spi_num;
 
@@ -1445,7 +1437,7 @@ static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deas
 
 int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                         uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames,
-                                        uint8_t deassert, mxc_spi_targetsel_t *ts)
+                                        uint8_t deassert, mxc_spi_ts_t *ts)
 {
     int8_t spi_num;
 
@@ -1499,7 +1491,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
 int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                              uint32_t tx_length_frames, uint8_t *rx_buffer,
                                              uint32_t rx_length_frames, uint8_t deassert,
-                                             mxc_spi_targetsel_t *ts)
+                                             mxc_spi_ts_t *ts)
 {
     int8_t spi_num;
 
@@ -1538,7 +1530,7 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *
 int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                            uint32_t tx_length_frames, uint8_t *rx_buffer,
                                            uint32_t rx_length_frames, uint8_t deassert,
-                                           mxc_spi_targetsel_t *ts, mxc_dma_reva_regs_t *dma)
+                                           mxc_spi_ts_t *ts, mxc_dma_reva_regs_t *dma)
 {
     int8_t spi_num;
     int error;
