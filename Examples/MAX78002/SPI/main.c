@@ -57,8 +57,8 @@
 #define CONTROLLER_DMA 0
 
 // Target Select Control Scheme
-#define TSCONTROL_HW_AUTO 0 // Hardware asserts/deasserts TSn pins.
-#define TSCONTROL_SW_DRV 1 // SPI Driver asserts/deasserts custom TS pins.
+#define TSCONTROL_HW_AUTO 1 // Hardware asserts/deasserts TSn pins.
+#define TSCONTROL_SW_DRV 0 // SPI Driver asserts/deasserts custom TS pins.
 #define TSCONTROL_SW_APP 0 // Application asserts/deasserts TS pins.
 
 // Preprocessor Error Checking
@@ -128,7 +128,7 @@ int main(void)
     int i, j, retVal;
     uint16_t temp;
     mxc_spi_cfg_t cfg;
-    mxc_spi_ts_t ts;
+    mxc_spi_ts_t ts0;
 
     printf("\n**************************** SPI CONTROLLER TEST *************************\n");
     printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
@@ -152,12 +152,19 @@ int main(void)
         }
 
         mxc_spi_pins_t spi_pins;
+        // This example enables the TS0 and TS2 HW pins.
         spi_pins.ts0 = true;
         spi_pins.ts1 = false;
         spi_pins.ts2 = true;
         spi_pins.vddioh = true;
 
-        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, 0b101, SPI_SPEED, spi_pins);
+        // This demonstrates how to set the Active Polarity for each TSn pin.
+        // ts_active_pol_mask[0] = 0 -> Active LOW (0)
+        // ts_active_pol_mask[1] = 0 -> Active LOW (0)
+        // ts_active_pol_mask[2] = 1 -> Active HIGH (1)
+        int ts_active_pol_mask = 0b0101;
+
+        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, ts_active_pol_mask, SPI_SPEED, spi_pins);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
             return retVal;
@@ -194,7 +201,6 @@ int main(void)
         ts0_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
 
         // Setup target select for transaction.
-        mxc_spi_ts_t ts0;
         ts0.pins = ts0_pins; // Custom pins
         ts0.active_pol = 0;
 
@@ -204,6 +210,7 @@ int main(void)
             return retVal;
         }
 
+        // This demonstrates how to set up another custom TS pin.
         // Set up custom TS1 pin.
         mxc_gpio_cfg_t ts1_pins;
         ts1_pins.port = MXC_GPIO0;
@@ -229,6 +236,11 @@ int main(void)
             printf("\nSPI TS CONTROL SW_APP ERROR\n");
             return retVal;
         }
+
+#else // TSCONTROL_HW_AUTO
+        // Select TS0 HW pin.
+        ts0.index = 0;
+        ts0.active_pol = 0;
 #endif
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
@@ -242,7 +254,11 @@ int main(void)
         req.rx_length_frames = DATA_LEN;
         req.deassert = 1;
         req.callback = SPI_Callback;
+#if TSCONTROL_SW_APP
+        req.ts = NULL;
+#else
         req.ts = &ts0;
+#endif
         SPI_FLAG = 1;
 
 #if CONTROLLER_SYNC

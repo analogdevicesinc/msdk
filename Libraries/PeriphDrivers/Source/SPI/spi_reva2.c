@@ -477,11 +477,10 @@ int MXC_SPI_RevA2_Config(mxc_spi_cfg_t *cfg)
         return E_BAD_PARAM;
     }
 
-    // Set frame size.
-    if (cfg->frame_size <= 1 || cfg->frame_size > 16) {
-        return E_BAD_PARAM;
-    } else {
-        (cfg->spi)->ctrl2 |= (cfg->frame_size) << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS;
+    // Set Single Frame Size.
+    error = MXC_SPI_SetFrameSize((cfg->spi), (cfg->frame_size));
+    if (error != E_NO_ERROR) {
+        return error;
     }
 
     // Set Clock Mode (CPOL and CPHA).
