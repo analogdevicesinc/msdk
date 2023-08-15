@@ -473,7 +473,7 @@
           <field>
             <name>DELAY</name>
             <description>Defines the delay from change in system clock divider until ROM begins filtering process of the FLV status.</description>
-            <bitOffset>8</bitOffset>
+            <bitOffset>16</bitOffset>
             <bitWidth>8</bitWidth>
           </field>
         </fields>

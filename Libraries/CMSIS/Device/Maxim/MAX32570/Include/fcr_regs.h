@@ -294,7 +294,7 @@ typedef struct {
 #define MXC_F_FCR_FLVFILT_RATE_POS                     8 /**< FLVFILT_RATE Position */
 #define MXC_F_FCR_FLVFILT_RATE                         ((uint32_t)(0xFFUL << MXC_F_FCR_FLVFILT_RATE_POS)) /**< FLVFILT_RATE Mask */
 
-#define MXC_F_FCR_FLVFILT_DELAY_POS                    8 /**< FLVFILT_DELAY Position */
+#define MXC_F_FCR_FLVFILT_DELAY_POS                    16 /**< FLVFILT_DELAY Position */
 #define MXC_F_FCR_FLVFILT_DELAY                        ((uint32_t)(0xFFUL << MXC_F_FCR_FLVFILT_DELAY_POS)) /**< FLVFILT_DELAY Mask */
 
 /**@} end of group FCR_FLVFILT_Register */
