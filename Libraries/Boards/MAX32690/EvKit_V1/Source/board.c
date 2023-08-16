@@ -101,6 +101,19 @@ __weak void GPIOWAKE_IRQHandler(void)
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO4));
 }
 
+// Default handler for generic GPIO interrupts on port 2 (used by GPIO example)
+__weak void GPIO2_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
+}
+
+
+// Default handler for generic GPIO interrupts on port 4 (used by pushbutton)
+__weak void GPIO4_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO4));
+}
+
 /******************************************************************************/
 int Board_Init(void)
 {
