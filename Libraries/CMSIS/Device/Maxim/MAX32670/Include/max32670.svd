@@ -542,7 +542,7 @@
        <bitWidth>1</bitWidth>
       </field>
       <field derivedFrom="CH0">
-       <name>CH4</name>
+       <name>CHANNEL4</name>
        <description>Channel 4 Interrupt Enable.</description>
        <bitOffset>4</bitOffset>
        <bitWidth>1</bitWidth>

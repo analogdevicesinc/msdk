@@ -142,8 +142,8 @@ typedef struct {
 #define MXC_F_DMA_INTEN_CH3_POS                        3 /**< INTEN_CH3 Position */
 #define MXC_F_DMA_INTEN_CH3                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH3_POS)) /**< INTEN_CH3 Mask */
 
-#define MXC_F_DMA_INTEN_CH4_POS                        4 /**< INTEN_CH4 Position */
-#define MXC_F_DMA_INTEN_CH4                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH4_POS)) /**< INTEN_CH4 Mask */
+#define MXC_F_DMA_INTEN_CHANNEL4_POS                   4 /**< INTEN_CHANNEL4 Position */
+#define MXC_F_DMA_INTEN_CHANNEL4                       ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CHANNEL4_POS)) /**< INTEN_CHANNEL4 Mask */
 
 #define MXC_F_DMA_INTEN_CH5_POS                        5 /**< INTEN_CH5 Position */
 #define MXC_F_DMA_INTEN_CH5                            ((uint32_t)(0x1UL << MXC_F_DMA_INTEN_CH5_POS)) /**< INTEN_CH5 Mask */
