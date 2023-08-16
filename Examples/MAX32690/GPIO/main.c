@@ -67,7 +67,8 @@
 
 /***** Functions *****/
 
-void gpio_callback(void *cbdata) {
+void gpio_callback(void *cbdata)
+{
     mxc_gpio_cfg_t *cfg = cbdata;
     MXC_GPIO_OutToggle(cfg->port, cfg->mask);
 }
