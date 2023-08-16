@@ -1282,7 +1282,7 @@ void MXC_I2C_RevA_MasterAsyncHandler(int i2cNum)
     }
 }
 
-void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave_handler_t callback,
+/*void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave_handler_t callback,
                                     uint32_t *int_en, int *retVal)
 {
     uint32_t tFlags = i2c->intfl0;
@@ -1452,6 +1452,139 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
         int_en[0] = 0;
         int_en[1] = 0;
         AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+    }
+
+    if (tFlags & MXC_F_I2C_REVA_INTFL0_DONE) {
+		i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_DONE;
+		int_en[0] |= MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+	}
+}*/
+
+void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave_handler_t callback,
+                                    uint32_t *int_en, int *retVal)
+{
+    uint32_t tFlags = i2c->intfl0;
+    *retVal = E_NO_ERROR;
+
+    // Check for errors
+    if (tFlags & MXC_I2C_REVA_ERROR) {
+    	// Error occurred, notify callback function and end transaction
+        *retVal = E_COMM_ERR;
+
+        if (callback != NULL) {
+            callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
+        }
+
+        MXC_I2C_RevA_ClearFlags(i2c, MXC_I2C_REVA_INTFL0_MASK,
+                                MXC_I2C_REVA_INTFL1_MASK); // clear all i2c interrupts
+        MXC_I2C_RevA_ClearTXFIFO(i2c);
+        MXC_I2C_RevA_ClearRXFIFO(i2c);
+        int_en[0] = 0;
+        int_en[1] = 0;
+        AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+    }
+
+    // Check whether data is available if we received an interrupt occurred while receiving
+    if (int_en[0] & MXC_F_I2C_REVA_INTFL0_RX_THD || int_en[1] & MXC_F_I2C_REVA_INTFL1_RX_OV) {
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_RX_THD) {
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_RX_THRESH, NULL);
+            }
+
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RX_THD;
+        }
+
+        if (i2c->intfl1 & MXC_F_I2C_REVA_INTFL1_RX_OV) {
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_OVERFLOW, NULL);
+            }
+
+            i2c->intfl1 = MXC_F_I2C_REVA_INTFL1_RX_OV;
+        }
+    }
+
+    // Check whether TX FIFO needs to be refilled if interrupt ocurred while transmitting
+    if (int_en[0] & (MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT) ||
+        int_en[1] & MXC_F_I2C_REVA_INTFL1_TX_UN) {
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_TX_THD) {
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_TX_THRESH, NULL);
+            }
+
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_THD;
+        }
+
+        if (i2c->intfl1 & MXC_F_I2C_REVA_INTFL1_TX_UN) {
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_UNDERFLOW, NULL);
+            }
+
+            i2c->intfl1 = MXC_F_I2C_REVA_INTFL1_TX_UN;
+        }
+
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT) {
+            *retVal = E_NO_ERROR;
+
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
+            }
+
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
+            int_en[0] = 0;
+            int_en[1] = 0;
+            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+        }
+    }
+
+    // Check for address match interrupt
+    if(int_en[0] & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
+		if (tFlags & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
+			if (i2c->ctrl & MXC_F_I2C_REVA_CTRL_READ) {
+				// Read request received from the master
+				if (callback != NULL) {
+					callback(i2c, MXC_I2C_REVA_EVT_MASTER_RD, NULL);
+				}
+
+				i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH;
+				i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+				i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
+
+				int_en[0] = MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT | MXC_F_I2C_REVA_INTFL0_DONE |
+							MXC_I2C_REVA_ERROR;
+				int_en[1] = MXC_F_I2C_REVA_INTFL1_TX_UN;
+			} else {
+				// Write request received from the master
+				if (callback != NULL) {
+					callback(i2c, MXC_I2C_REVA_EVT_MASTER_WR, NULL);
+				}
+
+				i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH;
+				i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+				int_en[0] = MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL0_DONE | MXC_I2C_REVA_ERROR;
+				int_en[1] = MXC_F_I2C_REVA_INTFL1_RX_OV;
+			}
+		}
+    }
+
+    // Check if transaction completed or restart occurred
+    if(int_en[0] & MXC_F_I2C_REVA_INTFL0_DONE) {
+		if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP) {
+			// Stop/NACK condition occurred, transaction complete
+			*retVal = E_NO_ERROR;
+
+			if (callback != NULL) {
+				callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
+			}
+
+			i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
+			int_en[0] = 0;
+			int_en[1] = 0;
+			AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+		} else if(tFlags & MXC_F_I2C_REVA_INTFL0_DONE) {
+			// Restart detected, re-arm address match interrupt
+			i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_DONE;
+			int_en[0] = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+		}
     }
 }
 
