@@ -151,8 +151,7 @@ int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 
     MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    if (usn != NULL)
-        memcpy(usn, _usn_8, MXC_SYS_USN_LEN);
+    memcpy(usn, _usn_8, MXC_SYS_USN_LEN);
 
     return err;
 }
