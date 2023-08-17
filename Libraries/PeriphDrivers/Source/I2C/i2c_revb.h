@@ -161,9 +161,8 @@ void MXC_I2C_RevB_AsyncCallback(mxc_i2c_revb_regs_t *i2c, int retVal);
 void MXC_I2C_RevB_AsyncStop(mxc_i2c_revb_regs_t *i2c);
 void MXC_I2C_RevB_AbortAsync(mxc_i2c_revb_regs_t *i2c);
 void MXC_I2C_RevB_MasterAsyncHandler(int i2cNum);
-unsigned int MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t *i2c,
-                                            mxc_i2c_revb_slave_handler_t callback,
-                                            unsigned int interruptEnables, int *retVal);
+void MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t *i2c, mxc_i2c_revb_slave_handler_t callback,
+                                    uint32_t *int_en, int *retVal);
 void MXC_I2C_RevB_AsyncHandler(mxc_i2c_revb_regs_t *i2c, uint32_t interruptCheck);
 void MXC_I2C_RevB_DMACallback(int ch, int error);
 
