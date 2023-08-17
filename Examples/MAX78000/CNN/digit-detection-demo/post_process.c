@@ -110,12 +110,12 @@ void softmax(void)
         }
 
         for (ch = 0; ch < (NUM_CLASSES); ++ch) {
-            sum += exp(prior_cls[i * NUM_CLASSES + ch] / 128.);
+            sum += (float)exp(prior_cls[i * NUM_CLASSES + ch] / 128.);
         }
 
         for (ch = 0; ch < (NUM_CLASSES); ++ch) {
             prior_cls_softmax[i * NUM_CLASSES + ch] =
-                (uint16_t)(65536. * exp(prior_cls[i * NUM_CLASSES + ch] / 128.) / sum);
+                (uint16_t)(65536. * (float)exp(prior_cls[i * NUM_CLASSES + ch] / 128.) / sum);
         }
     }
 }
@@ -212,8 +212,8 @@ void get_cxcy(float *cxcy, int prior_idx)
     cx = rel_idx % dims[scale_idx];
     cxcy[0] = (float)((float)(cx + 0.5) / dims[scale_idx]);
     cxcy[1] = (float)((float)(cy + 0.5) / dims[scale_idx]);
-    cxcy[2] = scales[scale_idx] * sqrt(ars[ar_idx]);
-    cxcy[3] = scales[scale_idx] / sqrt(ars[ar_idx]);
+    cxcy[2] = scales[scale_idx] * (float)sqrt(ars[ar_idx]);
+    cxcy[3] = scales[scale_idx] / (float)sqrt(ars[ar_idx]);
 
     for (i = 0; i < 4; ++i) {
         cxcy[i] = MAX(0.0, cxcy[i]);
@@ -231,8 +231,8 @@ void gcxgcy_to_cxcy(float *cxcy, int prior_idx, float *priors_cxcy)
 
     cxcy[0] = priors_cxcy[0] + gcxgcy[0] * priors_cxcy[2] / 10;
     cxcy[1] = priors_cxcy[1] + gcxgcy[1] * priors_cxcy[3] / 10;
-    cxcy[2] = exp(gcxgcy[2] / 5) * priors_cxcy[2];
-    cxcy[3] = exp(gcxgcy[3] / 5) * priors_cxcy[3];
+    cxcy[2] = (float)exp(gcxgcy[2] / 5) * priors_cxcy[2];
+    cxcy[3] = (float)exp(gcxgcy[3] / 5) * priors_cxcy[3];
 }
 
 void cxcy_to_xy(float *xy, float *cxcy)
@@ -375,8 +375,9 @@ void localize_objects(void)
 
                 printf("class: %d, prior_idx: %d, prior: %d, x1: %.2f, y1: %.2f, x2: %.2f, y2: "
                        "%.2f \n",
-                       class_idx + 1, prior_idx, global_prior_idx, xy[0], xy[1], xy[2], xy[3]);
-                draw_obj_rect(xy, class_idx, IMAGE_SIZE_X, IMAGE_SIZE_Y, IMG_SCALE);
+                       class_idx + 1, prior_idx, global_prior_idx, (double)xy[0], (double)xy[1],
+                       (double)xy[2], (double)xy[3]);
+                draw_obj_rect(xy, class_idx, IMAGE_SIZE_X, IMAGE_SIZE_Y, 3); ///IMG_SCALE);
             }
         }
     }

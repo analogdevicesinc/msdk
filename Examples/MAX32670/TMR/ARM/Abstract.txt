@@ -1,1 +1,1 @@
-TIMER Example!
+Hello World Example!

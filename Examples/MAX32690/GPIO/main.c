@@ -48,18 +48,20 @@
 #include "mxc_delay.h"
 
 /***** Definitions *****/
+#if defined(EvKit_V1)
 #define MXC_GPIO_PORT_IN MXC_GPIO2
+#else
+#define MXC_GPIO_PORT_IN MXC_GPIO1
+#endif
 #define MXC_GPIO_PIN_IN MXC_GPIO_PIN_11
 
 #define MXC_GPIO_PORT_OUT MXC_GPIO0
 #define MXC_GPIO_PIN_OUT MXC_GPIO_PIN_14
 
+#if defined(EvKit_V1)
 #define MXC_GPIO_PORT_INTERRUPT_STATUS MXC_GPIO2
 #define MXC_GPIO_PIN_INTERRUPT_STATUS MXC_GPIO_PIN_12
-
-#define Int_Pin 11
-#define LED1_Pin 14
-#define LED2_Pin 12
+#endif
 
 /***** Globals *****/
 
@@ -81,8 +83,10 @@ int main(void)
     mxc_gpio_cfg_t gpio_interrupt_status;
 
     printf("\n\n************************* GPIO Example ***********************\n\n");
-    printf("1. This example reads P2.11 and outputs the same state onto P0.24.\n");
-    printf("2. An falling edge interrupt is set up on P2.11. P2.12 toggles when\n");
+    printf("1. This example reads P%d.11 and outputs the same state onto P0.14.\n",
+           MXC_GPIO_GET_IDX(MXC_GPIO_PORT_IN));
+#if defined(EvKit_V1)
+    printf("2. A falling edge interrupt is set up on P2.11. P2.12 toggles when\n");
     printf("   that interrupt occurs.\n\n");
     printf("Connect P4.0->P2.11 to use SW2 to trigger a falling edge interrupt\n");
     printf("on each press.\n");
@@ -94,6 +98,7 @@ int main(void)
     gpio_interrupt_status.func = MXC_GPIO_FUNC_OUT;
     gpio_interrupt_status.vssel = MXC_GPIO_VSSEL_VDDIO;
     MXC_GPIO_Config(&gpio_interrupt_status);
+#endif
 
     /*
      *   Set up interrupt input pin.

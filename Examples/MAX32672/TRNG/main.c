@@ -1,6 +1,6 @@
 /**
  * @file        main.c
- * @brief       TRNG Example
+ * @brief      True Random Number Generator (TRNG) example
  * @details
  */
 

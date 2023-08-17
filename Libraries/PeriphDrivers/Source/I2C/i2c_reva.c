@@ -154,7 +154,7 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
         hsHiClks = ticksTotal / 3 - 1;
 
         // For rounding errors, adjust by 1 clock tick
-        if (ticksTotal % 1) {
+        if (ticksTotal % 2) {
             hsHiClks++;
         }
 
@@ -182,7 +182,7 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
     lowClks = (ticksTotal >> 1) - 1;
 
     // Adjust for rounding errors
-    if (ticksTotal % 1) {
+    if (ticksTotal % 2) {
         hiClks++;
     }
 
@@ -200,10 +200,18 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
 
 unsigned int MXC_I2C_RevA_GetFrequency(mxc_i2c_reva_regs_t *i2c)
 {
-    unsigned int sclCycles = 0;
+    unsigned int sclCycles = 2;
+    // sclCycles Initialized to 2 b/c formula is sclCycles = (lo_clks + 1) + (hi_clks + 1)
 
-    // Calculate the speed based on what we've written into registers
-    sclCycles = (i2c->clklo & MXC_F_I2C_REVA_CLKLO_LO) + (i2c->clkhi & MXC_F_I2C_REVA_CLKHI_HI);
+    if (i2c->ctrl & MXC_F_I2C_REVA_CTRL_HS_EN) {
+        // HS-Mode enabled, calculate HS Frequency
+        sclCycles += (i2c->hsclk & MXC_F_I2C_REVA_HSCLK_LO) >> MXC_F_I2C_REVA_HSCLK_LO_POS;
+        sclCycles += (i2c->hsclk & MXC_F_I2C_REVA_HSCLK_HI) >> MXC_F_I2C_REVA_HSCLK_HI_POS;
+    } else {
+        // HS-Mode not enabled, calculate nominal frequency
+        sclCycles += (i2c->clklo & MXC_F_I2C_REVA_CLKLO_LO);
+        sclCycles += (i2c->clkhi & MXC_F_I2C_REVA_CLKHI_HI);
+    }
 
     return PeripheralClock / sclCycles;
 }

@@ -37,5 +37,54 @@ INC_DIRS += \
 	$(ROOT_DIR)/ble-mesh-profile/sources/stack/services/utils \
 	$(ROOT_DIR)/ble-mesh-profile/sources/stack/transports
 
-C_FILES += \
-	$(sort $(shell find $(ROOT_DIR)/ble-mesh-profile/sources/stack -name *.c))
+# Found with the command "find ble-mesh-profile/sources/stack -name '*.c'"
+# run from Cordio root dir
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/services/utils/mesh_utils.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/friend/mesh_friend_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/friend/mesh_friend_data.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/friend/mesh_friend_queue.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/friend/mesh_friend_sm.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/friend/mesh_friend_act.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/lpn/mesh_lpn_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/lpn/mesh_lpn_act.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/lpn/mesh_lpn_sm.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/seq_manager/mesh_seq_manager.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/bearer/mesh_gatt_bearer.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/bearer/mesh_bearer.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/bearer/mesh_adv_bearer.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/security/mesh_security_crypto_nwk.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/security/mesh_security_crypto_utr.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/security/mesh_security_toolbox.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/security/mesh_security_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/security/mesh_security_deriv.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/security/mesh_security_crypto_beacon.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/transports/mesh_upper_transport.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/transports/mesh_sar_rx_history.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/transports/mesh_sar_tx.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/transports/mesh_upper_transport_heartbeat.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/transports/mesh_lower_transport.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/transports/mesh_sar_rx.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/transports/mesh_replay_protection.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/local_config/mesh_local_config.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/cfg/cfg_mesh_stack.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/proxy/mesh_proxy_sr.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/proxy/mesh_proxy_cl.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/proxy/mesh_proxy_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_api.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_sr_app_key.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_cl_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_sr_app_net_key.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_messages.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_sr_api.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_sr_pub_subscr.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_cl_api.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_sr_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/api/mesh_cfg_mdl_opcodes.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/access/mesh_access_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/access/mesh_access_period_pub.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/network/mesh_network_cache.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/network/mesh_network_mgmt.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/network/mesh_network_if.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/network/mesh_network_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/stack/network/mesh_network_beacon.c

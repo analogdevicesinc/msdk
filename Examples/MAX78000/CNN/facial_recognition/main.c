@@ -60,16 +60,20 @@
 #include "post_process.h"
 #include "faceID.h"
 #include "embedding_process.h"
+#include "utils.h"
 
 #define CONSOLE_BAUD 115200
 
 extern void SD_Init(void);
 extern volatile uint8_t face_detected;
-
+extern int reload_faceid;
+extern int reload_facedet;
+extern int8_t prev_decision;
 mxc_uart_regs_t *CommUart;
 #ifdef TFT_ENABLE
 area_t area = { 50, 290, 180, 30 };
 #endif
+
 // *****************************************************************************
 int main(void)
 {
@@ -152,10 +156,13 @@ int main(void)
         return -1;
     }
 
+    // double camera PCLK speed
+    camera_write_reg(0x11, 0x80);
+
 #ifdef ROTATE_FEATHER_BOARD
     camera_set_hmirror(0);
 #else
-    camera_set_vflip(0);
+    camera_set_vflip(1); // for DMA TFT
 #endif
 
 #ifdef TFT_ENABLE
@@ -165,32 +172,51 @@ int main(void)
 #ifdef ROTATE_FEATHER_BOARD
     MXC_TFT_SetRotation(ROTATE_0);
 #else
-    MXC_TFT_SetRotation(ROTATE_180);
+    MXC_TFT_SetRotation(ROTATE_270); // for DMA TFT
 #endif
     MXC_TFT_SetBackGroundColor(4);
     MXC_TFT_SetForeGroundColor(WHITE); // set font color to white
+    MXC_TFT_Rectangle(X_START - 4, Y_START - 4, X_START + IMAGE_XRES + 4, Y_START + IMAGE_YRES + 4,
+                      FRAME_GREEN);
 #endif
 #endif
 
     /* Initilize SD card */
     SD_Init();
+    uint32_t t1 = utils_get_time_ms();
 
     while (1) {
-        face_detection();
-
-        if (face_detected) {
-            face_id();
-            face_detected = 0;
-            undetect_count = 0;
-        } else
+        if (face_detected == 0) {
+            // run face detection
+            face_detection();
             undetect_count++;
+        } else // face is detected
+        {
+            PR_DEBUG("Face Detected");
+            // run face id
+            face_id();
+            undetect_count = 0;
+
+            if (reload_faceid) {
+                // redo face id
+                face_detected = 0;
+            }
+            // reload weights for next face detection
+            reload_facedet = 1;
+        }
 
 #ifdef TFT_ENABLE
         if (undetect_count > 5) {
+            MXC_TFT_SetRotation(ROTATE_180);
             MXC_TFT_ClearArea(&area, 4);
+            MXC_TFT_SetRotation(ROTATE_270);
             undetect_count = 0;
+            prev_decision = -5;
         }
 #endif
+
+        PR_DEBUG("\nTotal time: %dms", utils_get_time_ms() - t1);
+        t1 = utils_get_time_ms();
     }
 
     return 0;

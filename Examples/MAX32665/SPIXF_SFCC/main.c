@@ -1,7 +1,6 @@
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Demonstrates the SPIXF Cache Controller (SFCC)
  */
 
 /******************************************************************************

@@ -210,7 +210,7 @@ int erase_magic()
     }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
 
     printf("Buffering page...\n");
-    memcpy(buffer, (void *)TEST_ADDRESS, MXC_FLASH_PAGE_SIZE);
+    MXC_FLC_Read(TEST_ADDRESS, buffer, MXC_FLASH_PAGE_SIZE);
 
     printf("Erasing page...\n");
     err = MXC_FLC_PageErase(TEST_ADDRESS);

@@ -1,7 +1,7 @@
 
 /**
  * @file    main.c
- * @brief   Demonstration of SRAM ECC
+ * @brief   Demonstration of SRAM Error Correcting Code (ECC) features
  * @details This program demonstrates single and double-bit error detection and
  *          single-bit correction for SRAM memories.
  */

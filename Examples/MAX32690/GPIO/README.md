@@ -2,7 +2,7 @@
 
 Basic GPIO input, output, and interrupts are demonstrated in this example.
 
-P2.11 is continuously scanned and whatever value is read on that pin is then output to LED 1.  An interrupt is set up on P2.11, LED 2 is toggled on each falling edge.
+P2.11 (P1.11 on MAX32690FTHR) is continuously scanned and whatever value is read on that pin is then output to LED 1.  An interrupt is set up on P2.11, LED 2 is toggled on each falling edge.
 
 ## Software
 
@@ -12,16 +12,22 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+Interrupt feature is only shown on MAX32690EVKIT because input buttons cannot be shorted to P1.11 on MAX32690FTHR.
 
 ## Required Connections
 
+If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
 -   Install JP7(RX_EN) and JP8(TX_EN) headers.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--	Connect pins P4.0 (on header JH5) and P2.11 (on header JH4).
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect pins P4.0 (on header JH5) and P2.11 (on header JH4).
 -   Close jumper JP5 (LED1 EN).
 -   Close jumper JP6 (LED2_EN).
+
+If using the MAX32690FTHR:
+-   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Connect pin P1.11 (on header J1, 5th pin) and ground (on header J2, 4th pin).
 
 ## Expected Output
 

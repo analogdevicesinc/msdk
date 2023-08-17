@@ -20,3 +20,7 @@ SBT=0
 
 IPATH += resources
 VPATH += resources/tft_demo
+
+ifeq ($(BOARD),FTHR)
+$(error ERR_NOTSUPPORTED: This project is not supported for the FTHR board)
+endif
