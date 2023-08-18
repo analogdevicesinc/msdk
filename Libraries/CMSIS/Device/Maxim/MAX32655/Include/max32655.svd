@@ -3878,7 +3878,7 @@
        <description>LDORF Voltage Setting.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>2</bitWidth>
-     <enumeratedValues>
+       <enumeratedValues>
         <enumeratedValue>
          <name>0_85</name>
          <description>0.85V</description>
@@ -3969,8 +3969,8 @@
        <bitWidth>9</bitWidth>
       </field>
       <field>
-       <name>LDORFDLYCNT</name>
-       <description>LDORF Delay Count.</description>
+       <name>LDOBBDLYCNT</name>
+       <description>LDOBB Delay Count.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>9</bitWidth>
       </field>

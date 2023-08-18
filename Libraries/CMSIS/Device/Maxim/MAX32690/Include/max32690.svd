@@ -7390,7 +7390,7 @@ memory.
        <description>LDORF Voltage Setting.</description>
        <bitOffset>6</bitOffset>
        <bitWidth>2</bitWidth>
-        <enumeratedValues>
+       <enumeratedValues>
         <enumeratedValue>
          <name>0_85</name>
          <description>0.85V</description>
@@ -13482,7 +13482,8 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
      <fields>
       <field>
        <name>MAGIC</name>
-       <description>Magic Word Validation.  This bit is set by the system initialization block following power-up.</description>
+       <description>Magic Word Validation. This bit is set by the system initialization block
+              following power-up.</description>
        <bitOffset>0</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-only</access>
@@ -13502,7 +13503,8 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
       </field>
       <field>
        <name>CRCERR</name>
-       <description>CRC Error Status.  This bit is set by the system initialization block following power-up.</description>
+       <description>CRC Error Status. This bit is set by the system initialization block
+              following power-up.</description>
        <bitOffset>1</bitOffset>
        <bitWidth>1</bitWidth>
        <access>read-only</access>
@@ -13515,7 +13517,8 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
         </enumeratedValue>
         <enumeratedValue>
          <name>error</name>
-         <description>A CRC error occurred while reading the OTP. The address of the failure location in the OTP memory is stored in the ERRADDR register.</description>
+         <description>A CRC error occurred while reading the OTP. The address of the failure
+                  location in the OTP memory is stored in the ERRADDR register.</description>
          <value>1</value>
         </enumeratedValue>
        </enumeratedValues>
@@ -13524,7 +13527,8 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
     </register>
     <register>
      <name>SIADDR</name>
-     <description>Read-only field set by the SIB block if a CRC error occurs during the read of the OTP memory. Contains the failing address in OTP memory (when CRCERR equals 1).</description>
+     <description>Read-only field set by the SIB block if a CRC error occurs during the read of
+          the OTP memory. Contains the failing address in OTP memory (when CRCERR equals 1).</description>
      <addressOffset>0x04</addressOffset>
      <access>read-only</access>
      <fields>
