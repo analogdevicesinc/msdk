@@ -24,5 +24,14 @@ INC_DIRS += \
 	$(ROOT_DIR)/ble-mesh-profile/include \
 	$(ROOT_DIR)/ble-mesh-profile/sources/provisioning
 
-C_FILES += \
-	$(sort $(shell find $(ROOT_DIR)/ble-mesh-profile/sources/provisioning -name *.c))
+# Found with the command "find ble-mesh-profile/sources/provisioning -name '*.c'"
+# run from Cordio root directory
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/provisioning/mesh_prv_cl_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/provisioning/mesh_prv_sr_sm.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/provisioning/mesh_prv_cl_act.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/provisioning/mesh_prv_common.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/provisioning/mesh_prv_beacon.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/provisioning/mesh_prv_sr_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/provisioning/mesh_prv_cl_sm.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/provisioning/mesh_prv_br_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/provisioning/mesh_prv_sr_act.c

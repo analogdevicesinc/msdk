@@ -5,6 +5,7 @@ repo_url: https://github.com/Analog-Devices-MSDK/msdk
 edit_uri: null
 docs_dir: 'Documentation'
 site_dir: 'docs'
+extra_css: [css/extra.css]
 nav:
   - Home: 'index.md'
   - MSDK User Guide: 'USERGUIDE.md'
@@ -13,7 +14,10 @@ nav:
   - License: 'LICENSE.md'
 theme:
   name: readthedocs
+  analytics:
+    gtag: G-79C65FSVL6
 markdown_extensions:
-  tables: {}
-  codehilite:
+- pymdownx.details
+- tables: {}
+- codehilite:
     use_pygments: False

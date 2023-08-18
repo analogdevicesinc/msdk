@@ -34,12 +34,22 @@ known_errors = [
     "[WARNING] - This tool does not handle keys in a PCI-PTS compliant way, only for test"
 ]
 
-def build_project(project:Path, target, board, maxim_path:Path, distclean=False) -> Tuple[int, tuple]:
+hardfp_test_list = [
+    "Hello_World",
+    "BLE_periph",
+    "BLE_datc",
+    "BLE_dats",
+    "BLE_FreeRTOS"
+]
+
+def build_project(project:Path, target, board, maxim_path:Path, distclean=False, extra_args=None) -> Tuple[int, tuple]:
     clean_cmd = "make clean" if not distclean else "make distclean"
     res = run(clean_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
     # Test build
     build_cmd = f"make -r -j 8 TARGET={target} MAXIM_PATH={maxim_path.as_posix()} BOARD={board} FORCE_COLOR=1"
+    if extra_args:
+        build_cmd += f" {str(extra_args)}"
     res = run(build_cmd, cwd=project, shell=True, capture_output=True, encoding="utf-8")
 
     project_info = {
@@ -252,6 +262,39 @@ def test(maxim_path : Path = None, targets=None, boards=None, projects=None):
                                 target_warnings += 1
 
                         count += 1
+
+                    if project_name in hardfp_test_list:
+                        console.print(f"[yellow]{target}: {project_name} found in hardfp test whitelist.[/yellow]")
+                        progress.update(task_build, advance=1, description=f"{target} (hardfp): {project_name}", refresh=True)
+                        (return_code, project_info) = build_project(project, target, board, maxim_path, distclean=False, extra_args="MFLOAT_ABI=hard")
+                        project_info['project'] += " [italic](hardfp)[/italic]" # Add a string to differentiate this test
+
+                        # Error check hardfp builds
+                        if return_code == 1:
+                            console.print(f"\n[red]{target}: {project_name} failed to build with hardware floating-point acceleration enabled.[/red]")
+                            print(f"Build command: {project_info['build_cmd']}")
+                            console.print("[bold]Errors:[/bold]")
+                            console.print("[red]----------------------------------------[/red]")
+                            console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                            console.print("[red]----------------------------------------[/red]\n")
+
+                            if project_info not in failed:
+                                failed.append(project_info)
+                                target_fails += 1
+
+                        elif return_code == 2:
+                            console.print(f"\n[yellow]{target}: {project_name} built for hardware floating point acceleration, but with warnings.[/yellow]")
+                            print(f"Build command: {project_info['build_cmd']}")
+                            console.print("[bold]Warnings:[/bold]")
+                            console.print("[yellow]----------------------------------------[/yellow]")
+                            console.print(Text.from_ansi(project_info['stderr']), markup=False)
+                            console.print("[yellow]----------------------------------------[/yellow]\n")
+
+                            if project_info not in warnings:
+                                warnings.append(project_info)
+                                target_warnings += 1
+
+
 
             if target_warnings != 0:
                 console.print(f"[bold cyan]{target}[/bold cyan]: [yellow]{target_warnings} projects built with warnings.[/yellow]")

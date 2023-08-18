@@ -31,6 +31,11 @@
 *
 ******************************************************************************/
 
+/*
+ * @file    main.c
+ * @brief   Decode barcodes from an image.  Supports Code39, Code128, and QR decoding algorithms.
+*/
+
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>

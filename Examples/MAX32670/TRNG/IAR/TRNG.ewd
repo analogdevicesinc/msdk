@@ -44,7 +44,7 @@
                 </option>
                 <option>
                     <name>MemFile</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\.iar\config\debugger\MAX32670.ddf</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\.iar\config\debugger\MAX32670.ddf</state>
                 </option>
                 <option>
                     <name>RunToEnable</name>
@@ -80,7 +80,7 @@
                 </option>
                 <option>
                     <name>OCProductVersion</name>
-                    <state>8.30.1.37146</state>
+                    <state>8.30.3.07146</state>
                 </option>
                 <option>
                     <name>OCDynDriverList</name>
@@ -88,7 +88,7 @@
                 </option>
                 <option>
                     <name>OCLastSavedByProductVersion</name>
-                    <state>9.20.4.46976</state>
+                    <state>8.50.4.26131</state>
                 </option>
                 <option>
                     <name>UseFlashLoader</name>
@@ -112,7 +112,7 @@
                 </option>
                 <option>
                     <name>FlashLoadersV3</name>
-                    <state>${CMSIS_PACK_PATH_Maxim#MAX32670#1.0.3}$\.iar\config\flashloader\MAX32670.board</state>
+                    <state>${CMSIS_PACK_PATH_Maxim#MAX32670#1.2.0}$\.iar\config\flashloader\MAX32670.board</state>
                 </option>
                 <option>
                     <name>OCImagesSuppressCheck1</name>
@@ -1417,7 +1417,7 @@
                 </option>
                 <option>
                     <name>CCXds100ResetList</name>
-                    <version>1</version>
+                    <version>0</version>
                     <state>0</state>
                 </option>
                 <option>
@@ -1622,7 +1622,7 @@
                 </option>
                 <option>
                     <name>OCProductVersion</name>
-                    <state>8.30.1.37146</state>
+                    <state>8.30.3.07146</state>
                 </option>
                 <option>
                     <name>OCDynDriverList</name>
@@ -2959,7 +2959,7 @@
                 </option>
                 <option>
                     <name>CCXds100ResetList</name>
-                    <version>1</version>
+                    <version>0</version>
                     <state>0</state>
                 </option>
                 <option>

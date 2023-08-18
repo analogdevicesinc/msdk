@@ -1,0 +1,23 @@
+/* Set note color */
+.rst-content .note {
+    background:#d7eeff;
+    border-radius: 8px;
+}
+
+/* Prevent tables from stretching off infinitely to the right */
+.wy-table-responsive table td,.wy-table-responsive table th {
+    white-space: normal
+}
+
+/* center images */
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 100%;
+}
+
+.rst-content pre code {
+    border-color: black;
+    border-radius: 8px;
+}

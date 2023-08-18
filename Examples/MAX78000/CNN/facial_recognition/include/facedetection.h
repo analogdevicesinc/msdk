@@ -58,6 +58,8 @@
 
 #define FRAME_ORANGE 0xFD20
 #define FRAME_BLUE 0x001F
+#define FRAME_WHITE 0xFFFF
+#define FRAME_GREEN 0x07E0
 
 #define BYTE_PER_PIXEL 2
 

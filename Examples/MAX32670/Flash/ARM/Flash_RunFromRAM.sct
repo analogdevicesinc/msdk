@@ -1,4 +1,4 @@
-#! armcc -E
+#! armclang -E --target=arm-arm-none-eabi -mcpu=cortex-m4 -x c
 
 
 ; *************************************************************

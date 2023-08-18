@@ -55,3 +55,7 @@ bl_obj: $(BOOTLOADER_OBJ)
 ${BOOTLOADER_OBJ}: bl_build.S ${BOOTLOADER_BIN}
 	${CC} ${AFLAGS} -o ${@} -c bl_build.S
 endif
+
+ifeq ($(BOARD),FTHR)
+$(error ERR_NOTSUPPORTED: This project is not supported for the FTHR board)
+endif
