@@ -3969,7 +3969,7 @@
        <bitWidth>9</bitWidth>
       </field>
       <field>
-       <name>LDOBBDLYCNT</name>
+       <name>LDORFDLYCNT</name>
        <description>LDOBB Delay Count.</description>
        <bitOffset>20</bitOffset>
        <bitWidth>9</bitWidth>
