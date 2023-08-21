@@ -1383,7 +1383,7 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
                 i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH;
                 i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
                 int_en[0] = MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL0_DONE |
-                             MXC_I2C_REVA_ERROR;
+                            MXC_I2C_REVA_ERROR;
                 int_en[1] = MXC_F_I2C_REVA_INTFL1_RX_OV;
             }
         }
