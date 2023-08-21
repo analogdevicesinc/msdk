@@ -73,6 +73,10 @@ extern void llc_api_tx_ldo_setup(void);
 extern void dbb_seq_tx_enable(void);
 extern void dbb_seq_tx_disable(void);
 
+extern bool_t   PalBbAfeSetTxPower(int8_t txPower);
+extern void PalBbAfeSetChannelTx(uint8_t rfChannel);
+extern void PalBbDbbEnableCw(void);
+
 /*************************************************************************************************/
 /*!
  *  \fn     Get PHY String.
@@ -236,17 +240,17 @@ static void processConsoleRX(uint8_t rxByte)
 
         switch (param) {
         case '0':
-            llc_api_set_txpower(-10);
+            PalBbAfeSetTxPower(-10);
             LlSetAdvTxPower(-10);
             APP_TRACE_INFO0("Power set to -10 dBm");
             break;
         case '1':
-            llc_api_set_txpower(0);
+            PalBbAfeSetTxPower(0);
             LlSetAdvTxPower(0);
             APP_TRACE_INFO0("Power set to 0 dBm");
             break;
         case '2':
-            llc_api_set_txpower(4);
+            PalBbAfeSetTxPower(4);
             LlSetAdvTxPower(4);
             APP_TRACE_INFO0("Power set to 4.5 dBm");
             break;
@@ -269,15 +273,15 @@ static void processConsoleRX(uint8_t rxByte)
 
         switch (param) {
         case '0':
-            dbb_seq_select_rf_channel(0);
+            PalBbAfeSetChannelTx(0);
             APP_TRACE_INFO0("Channel set to 0");
             break;
         case '1':
-            dbb_seq_select_rf_channel(19);
+            PalBbAfeSetChannelTx(19);
             APP_TRACE_INFO0("Channel set to 19");
             break;
         case '2':
-            dbb_seq_select_rf_channel(39);
+            PalBbAfeSetChannelTx(39);
             APP_TRACE_INFO0("Channel set to 39");
             break;
         default:
@@ -288,11 +292,12 @@ static void processConsoleRX(uint8_t rxByte)
         APP_TRACE_INFO0("Starting TX");
 
         PalBbEnable();
-
-        llc_api_tx_ldo_setup();
+            
+        // llc_api_tx_ldo_setup();
 
         /* Enable constant TX */
-        dbb_seq_tx_enable();
+        // dbb_seq_tx_enable();
+        PalBbDbbEnableCw();
 
         cmd = 0;
         param = 0;
@@ -302,7 +307,8 @@ static void processConsoleRX(uint8_t rxByte)
         APP_TRACE_INFO0("Disabling TX");
 
         /* Disable constant TX */
-        dbb_seq_tx_disable();
+        PalBbDbbDisableCw();
+        // dbb_seq_tx_disable();
 
         PalBbDisable();
 
