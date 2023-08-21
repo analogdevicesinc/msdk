@@ -415,15 +415,6 @@ void MXC_I2C_MasterAsyncHandler(int i2cNum)
 }
 
 /* ************************************************************************* */
-unsigned int MXC_I2C_SlaveAsyncHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_handler_t callback,
-                                       unsigned int interruptEnables, int *retVal)
-{
-    return MXC_I2C_RevB_SlaveAsyncHandler((mxc_i2c_revb_regs_t *)i2c,
-                                          (mxc_i2c_revb_slave_handler_t)callback, interruptEnables,
-                                          retVal);
-}
-
-/* ************************************************************************* */
 void MXC_I2C_AsyncHandler(mxc_i2c_regs_t *i2c)
 {
     MXC_I2C_RevB_AsyncHandler((mxc_i2c_revb_regs_t *)i2c, MXC_F_I2C_INT_FL0_AMI);
