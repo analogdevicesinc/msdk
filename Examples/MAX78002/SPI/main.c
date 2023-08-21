@@ -73,8 +73,10 @@
 #if (!(TSCONTROL_HW_AUTO || TSCONTROL_SW_DRV || TSCONTROL_SW_APP))
 #error "You must set either TSCONTROL_HW_AUTO or TSCONTROL_SW_DRV or TSCONTROL_SW_APP to 1."
 #endif
-#if ((TSCONTROL_HW_AUTO && TSCONTROL_SW_DRV) || (TSCONTROL_SW_DRV && TSCONTROL_SW_APP) || (TSCONTROL_SW_APP && TSCONTROL_HW_AUTO))
-#error "You must select either TSCONTROL_HW_AUTO or TSCONTROL_SW_DRV or TSCONTROL_SW_APP, not all 3."
+#if ((TSCONTROL_HW_AUTO && TSCONTROL_SW_DRV) || (TSCONTROL_SW_DRV && TSCONTROL_SW_APP) || \
+     (TSCONTROL_SW_APP && TSCONTROL_HW_AUTO))
+#error \
+    "You must select either TSCONTROL_HW_AUTO or TSCONTROL_SW_DRV or TSCONTROL_SW_APP, not all 3."
 #endif
 
 /***** Definitions *****/
@@ -164,7 +166,8 @@ int main(void)
         // ts_active_pol_mask[2] = 1 -> Active HIGH (1)
         int ts_active_pol_mask = 0b0101;
 
-        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, ts_active_pol_mask, SPI_SPEED, spi_pins);
+        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0,
+                              ts_active_pol_mask, SPI_SPEED, spi_pins);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
             return retVal;
@@ -237,8 +240,8 @@ int main(void)
             return retVal;
         }
 
-#else // TSCONTROL_HW_AUTO
-        // Select TS0 HW pin.
+#else // TSCONTROL_HW_AUTO \
+    // Select TS0 HW pin.
         ts0.index = 0;
         ts0.active_pol = 0;
 #endif

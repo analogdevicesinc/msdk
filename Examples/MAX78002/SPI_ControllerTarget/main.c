@@ -132,8 +132,6 @@ int main(void)
 
     /***** Configure Controller (L. Master) *****/
 
-
-
     controller_cfg.spi = SPI_CONTROLLER;
     controller_cfg.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
     controller_cfg.frame_size = DATA_SIZE;
@@ -171,7 +169,8 @@ int main(void)
     ts.active_pol = 0;
 #endif
 
-    error = MXC_SPI_Init(SPI_CONTROLLER, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, 0b000, SPI_SPEED, controller_pins);
+    error = MXC_SPI_Init(SPI_CONTROLLER, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0,
+                         0b000, SPI_SPEED, controller_pins);
     if (error != E_NO_ERROR) {
         printf("\nSPI CONTROLLER INITIALIZATION ERROR\n");
         while (1) {}
@@ -207,7 +206,8 @@ int main(void)
     target_cfg.use_dma_rx = false;
 #endif
 
-    error = MXC_SPI_Init(SPI_TARGET, MXC_SPI_TYPE_TARGET, MXC_SPI_INTERFACE_STANDARD, 0, 0, SPI_SPEED, target_pins);
+    error = MXC_SPI_Init(SPI_TARGET, MXC_SPI_TYPE_TARGET, MXC_SPI_INTERFACE_STANDARD, 0, 0,
+                         SPI_SPEED, target_pins);
     if (error != E_NO_ERROR) {
         printf("\nSPI TARGET INITIALIZATION ERROR\n");
         while (1) {}
