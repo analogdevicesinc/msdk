@@ -704,7 +704,8 @@ int MXC_SPI_RevA2_SetFrameSize(mxc_spi_reva_regs_t *spi, int frame_size)
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
-    if ((spi->stat & MXC_F_SPI_REVA_STAT_BUSY) && (STATES[spi_num].controller_target == MXC_SPI_TYPE_CONTROLLER)) {
+    if ((spi->stat & MXC_F_SPI_REVA_STAT_BUSY) &&
+        (STATES[spi_num].controller_target == MXC_SPI_TYPE_CONTROLLER)) {
         return E_BAD_STATE;
     }
 
@@ -721,11 +722,11 @@ int MXC_SPI_RevA2_SetFrameSize(mxc_spi_reva_regs_t *spi, int frame_size)
 
     if (frame_size < 16) {
         MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
-                        frame_size << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
+                     frame_size << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
     } else {
         // Set to 16 bits per character as default.
         MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
-                        0 << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
+                     0 << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
     }
 
     // Return back to original SPI enable state.
