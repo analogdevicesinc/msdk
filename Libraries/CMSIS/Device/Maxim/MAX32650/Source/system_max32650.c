@@ -40,7 +40,6 @@
 #include "usbhs_regs.h"
 #include "flc_regs.h"
 #include "icc_regs.h"
-#include "mxc_sys.h"
 #include "mxc_errors.h"
 
 extern void (*const __isr_vector[])(void);
