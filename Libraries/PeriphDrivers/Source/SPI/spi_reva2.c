@@ -357,7 +357,10 @@ static void MXC_SPI_RevA2_resetStateStruct(int8_t spi_num)
 
 /* **** Public Functions **** */
 
-int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode, uint32_t freq, mxc_gpio_vssel_t vssel, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask, uint8_t ts_active_pol_mask)
+int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target,
+                       mxc_spi_interface_t if_mode, uint32_t freq, mxc_gpio_vssel_t vssel,
+                       mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask,
+                       uint8_t ts_active_pol_mask)
 {
     int error, i;
     int8_t spi_num;
@@ -413,29 +416,31 @@ int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_targe
 
     // Set Controller (L. Master) or Target (L. Slave) mode.
     switch (controller_target) {
-        case MXC_SPI_TYPE_CONTROLLER:
-            spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_MST_MODE;
-            break;
+    case MXC_SPI_TYPE_CONTROLLER:
+        spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_MST_MODE;
+        break;
 
-        case MXC_SPI_TYPE_TARGET:
-            spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_MST_MODE);
-            break;
+    case MXC_SPI_TYPE_TARGET:
+        spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_MST_MODE);
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     // Set default frame size to 8 bits wide.
     MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS, 8 << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
 
     // Remove any delay between TS (L. SS) and SCLK edges.
-    spi->sstime = (1 << MXC_F_SPI_REVA_SSTIME_PRE_POS) | (1 << MXC_F_SPI_REVA_SSTIME_POST_POS) | (1 << MXC_F_SPI_REVA_SSTIME_INACT_POS);
+    spi->sstime = (1 << MXC_F_SPI_REVA_SSTIME_PRE_POS) | (1 << MXC_F_SPI_REVA_SSTIME_POST_POS) |
+                  (1 << MXC_F_SPI_REVA_SSTIME_INACT_POS);
 
     // Enable TX/RX FIFOs
     spi->dma |= MXC_F_SPI_REVA_DMA_TX_FIFO_EN | MXC_F_SPI_REVA_DMA_RX_FIFO_EN;
 
     // Set TX and RX Threshold to (FIFO_DEPTH - 1) and (0), respectively.
-    MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL, ((MXC_SPI_FIFO_DEPTH - 1) << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
+    MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
+                 ((MXC_SPI_FIFO_DEPTH - 1) << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
     MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_RX_THD_VAL, (0 << MXC_F_SPI_REVA_DMA_RX_THD_VAL_POS));
 
     // Set Default Clock Mode (CPOL: 0, and CPHA: 0).
@@ -491,7 +496,9 @@ int MXC_SPI_RevA2_Config(mxc_spi_cfg_t *cfg)
 
     // Setup DMA features if used.
     if (cfg->use_dma_tx || cfg->use_dma_rx) {
-        error = MXC_SPI_RevA2_DMA_Init((mxc_spi_reva_regs_t *)(cfg->spi), (mxc_dma_reva_regs_t *)(cfg->dma), (cfg->use_dma_tx), (cfg->use_dma_rx));
+        error = MXC_SPI_RevA2_DMA_Init((mxc_spi_reva_regs_t *)(cfg->spi),
+                                       (mxc_dma_reva_regs_t *)(cfg->dma), (cfg->use_dma_tx),
+                                       (cfg->use_dma_rx));
         if (error != E_NO_ERROR) {
             return error;
         }
@@ -563,7 +570,8 @@ void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis)
     spi->inten &= ~(dis);
 }
 
-int MXC_SPI_RevA2_ConfigTSPins(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts)
+int MXC_SPI_RevA2_ConfigTSPins(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control,
+                               mxc_spi_ts_t *ts)
 {
     int8_t spi_num;
 
@@ -574,8 +582,10 @@ int MXC_SPI_RevA2_ConfigTSPins(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_
 
     // Set SPI TSCONTROL
     if (ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
-        spi->ctrl0 |= ((ts->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS) & MXC_F_SPI_REVA_CTRL0_SS_ACTIVE);
-        spi->ctrl0 |= ((ts->active_pol << MXC_F_SPI_REVA_CTRL2_SS_POL_POS) & MXC_F_SPI_REVA_CTRL2_SS_POL);
+        spi->ctrl0 |=
+            ((ts->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS) & MXC_F_SPI_REVA_CTRL0_SS_ACTIVE);
+        spi->ctrl0 |=
+            ((ts->active_pol << MXC_F_SPI_REVA_CTRL2_SS_POL_POS) & MXC_F_SPI_REVA_CTRL2_SS_POL);
     }
 
     return MXC_SPI_RevA2_SetTSControl(spi, ts_control);
@@ -598,17 +608,17 @@ int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_
     }
 
     switch (ts_control) {
-        case MXC_SPI_TSCONTROL_HW_AUTO:
-            break;
+    case MXC_SPI_TSCONTROL_HW_AUTO:
+        break;
 
-        case MXC_SPI_TSCONTROL_SW_DRV:
-        case MXC_SPI_TSCONTROL_SW_APP:
-            spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_SS_ACTIVE);
-            spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL2_SS_POL);      
-            break;
+    case MXC_SPI_TSCONTROL_SW_DRV:
+    case MXC_SPI_TSCONTROL_SW_APP:
+        spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_SS_ACTIVE);
+        spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL2_SS_POL);
+        break;
 
-        default:
-            return E_BAD_PARAM;
+    default:
+        return E_BAD_PARAM;
     }
 
     STATES[spi_num].ts_control = ts_control;
@@ -993,7 +1003,8 @@ uint8_t MXC_SPI_RevA2_GetRXThreshold(mxc_spi_reva_regs_t *spi)
 /* ** DMA-Specific Functions ** */
 
 // Available for switching between DMA and non-DMA transactions
-int MXC_SPI_RevA2_DMA_Init(mxc_spi_reva_regs_t *spi, mxc_dma_reva_regs_t *dma, bool use_dma_tx, bool use_dma_rx)
+int MXC_SPI_RevA2_DMA_Init(mxc_spi_reva_regs_t *spi, mxc_dma_reva_regs_t *dma, bool use_dma_tx,
+                           bool use_dma_rx)
 {
     int error;
     int tx_ch, rx_ch; // For readability.
@@ -1048,7 +1059,7 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_reva_regs_t *spi, mxc_dma_reva_regs_t *dma, b
         if (STATES[spi_num].tx_dma_ch < 0) {
             return E_NONE_AVAIL;
         }
-        
+
         // RX Channel
         STATES[spi_num].dma->ch[rx_ch].ctrl |= (MXC_F_DMA_REVA_CTRL_CTZ_IE);
         STATES[spi_num].dma->inten |= (1 << rx_ch);
@@ -1182,7 +1193,8 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
             MXC_ASSERT((tx_length_frames + tx_dummy_fr_length) >
                        (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
 
-            spi->ctrl1 = ((tx_length_frames + tx_dummy_fr_length) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
+            spi->ctrl1 =
+                ((tx_length_frames + tx_dummy_fr_length) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         } else {
             spi->ctrl1 = (tx_length_frames << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         }
@@ -1257,7 +1269,8 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
                 MXC_SETFIELD(spi->dma, MXC_F_SPI_REVA_DMA_TX_THD_VAL,
                              (3 << MXC_F_SPI_REVA_DMA_TX_THD_VAL_POS));
 
-                STATES[spi_num].dma->ch[tx_ch].src = (uint32_t)(tx_buffer + STATES[spi_num].tx_count_bytes);
+                STATES[spi_num].dma->ch[tx_ch].src =
+                    (uint32_t)(tx_buffer + STATES[spi_num].tx_count_bytes);
                 STATES[spi_num].dma->ch[tx_ch].cnt =
                     (STATES[spi_num].tx_length_bytes - STATES[spi_num].tx_count_bytes);
 
@@ -1435,8 +1448,9 @@ static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deas
 /* ** Transaction Functions ** */
 
 int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                        uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames,
-                                        uint8_t deassert, mxc_spi_ts_t *ts)
+                                        uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                        uint32_t rx_length_frames, uint8_t deassert,
+                                        mxc_spi_ts_t *ts)
 {
     int8_t spi_num;
 
@@ -1457,7 +1471,8 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     STATES[spi_num].current_ts = *ts;
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames, false);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames,
+                                   false);
 
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
@@ -1511,7 +1526,8 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *
     STATES[spi_num].current_ts = *ts;
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames, false);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames,
+                                   false);
 
     // Enable Controller Done Interrupt.
     spi->inten |= MXC_F_SPI_REVA_INTEN_MST_DONE;
@@ -1554,7 +1570,8 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     STATES[spi_num].current_ts = *ts;
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames, true);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames,
+                                   true);
 
     // Start the SPI transaction.
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
@@ -1567,7 +1584,8 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
 }
 
 int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                    uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames)
+                                    uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                    uint32_t rx_length_frames)
 {
     int8_t spi_num;
 
@@ -1585,7 +1603,8 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
     }
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames, false);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames,
+                                   false);
 
     // Wait for Target Select pin to be asserted before starting transaction.
     while ((spi->stat & MXC_F_SPI_REVA_STAT_BUSY) == 0) {}
@@ -1607,7 +1626,8 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
 }
 
 int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                         uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames)
+                                         uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                         uint32_t rx_length_frames)
 {
     int8_t spi_num;
 
@@ -1625,13 +1645,15 @@ int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
     }
 
     // Setup SPI registers for non-DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames, false);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames,
+                                   false);
 
     return E_SUCCESS;
 }
 
 int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                       uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames, mxc_dma_reva_regs_t *dma)
+                                       uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                       uint32_t rx_length_frames, mxc_dma_reva_regs_t *dma)
 {
     int8_t spi_num;
     int error;
@@ -1652,7 +1674,8 @@ int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buf
     }
 
     // Setup SPI registers for DMA transaction.
-    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames, true);
+    MXC_SPI_RevA2_transactionSetup(spi, tx_buffer, tx_length_frames, rx_buffer, rx_length_frames,
+                                   true);
 
     // Target transaction is ready.
     return E_SUCCESS;

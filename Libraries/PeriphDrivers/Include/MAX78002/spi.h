@@ -303,8 +303,9 @@ struct _mxc_spi_reva2_req_t {
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode, int unusedNumSlaves,
-                 uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins);
+int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
+                 int unusedNumSlaves, uint8_t ts_active_pol_mask, uint32_t freq,
+                 mxc_spi_pins_t pins);
 
 /**
  * @brief   Configure the SPI peripheral.
@@ -418,7 +419,8 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts, mxc_gpio_vssel_t vssel);
+int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts,
+                         mxc_gpio_vssel_t vssel);
 
 /**
  * @brief   Set the frequency of the SPI interface.

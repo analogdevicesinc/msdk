@@ -54,7 +54,10 @@ extern "C" {
 
 /* **** Functions **** */
 
-int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode, uint32_t freq, mxc_gpio_vssel_t vssel, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask, uint8_t ts_active_pol_mask);
+int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target,
+                       mxc_spi_interface_t if_mode, uint32_t freq, mxc_gpio_vssel_t vssel,
+                       mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask,
+                       uint8_t ts_active_pol_mask);
 
 int MXC_SPI_RevA2_Config(mxc_spi_cfg_t *cfg);
 
@@ -68,7 +71,8 @@ void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en);
 
 void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis);
 
-int MXC_SPI_RevA2_ConfigTSPins(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts);
+int MXC_SPI_RevA2_ConfigTSPins(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control,
+                               mxc_spi_ts_t *ts);
 
 int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control);
 
@@ -120,7 +124,8 @@ uint8_t MXC_SPI_RevA2_GetRXThreshold(mxc_spi_reva_regs_t *spi);
 
 /* ** DMA-Specific Functions ** */
 
-int MXC_SPI_RevA2_DMA_Init(mxc_spi_reva_regs_t *spi, mxc_dma_reva_regs_t *dma, bool use_dma_tx, bool use_dma_rx);
+int MXC_SPI_RevA2_DMA_Init(mxc_spi_reva_regs_t *spi, mxc_dma_reva_regs_t *dma, bool use_dma_tx,
+                           bool use_dma_rx);
 
 bool MXC_SPI_RevA2_DMA_GetInitialized(mxc_spi_reva_regs_t *spi);
 
@@ -136,8 +141,9 @@ void MXC_SPI_RevA2_DMA_SwapByte(uint8_t *buffer, uint32_t len_bytes);
 /* ** Transaction Functions ** */
 
 int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                        uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames,
-                                        uint8_t deassert, mxc_spi_ts_t *ts);
+                                        uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                        uint32_t rx_length_frames, uint8_t deassert,
+                                        mxc_spi_ts_t *ts);
 
 int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                              uint32_t tx_length_frames, uint8_t *rx_buffer,
@@ -150,14 +156,16 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
                                            mxc_spi_ts_t *ts, mxc_dma_reva_regs_t *dma);
 
 int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                    uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames);
+                                    uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                    uint32_t rx_length_frames);
 
 int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                          uint32_t tx_length_frames, uint8_t *rx_buffer,
                                          uint32_t rx_length_frames);
 
 int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
-                                       uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames, mxc_dma_reva_regs_t *dma);
+                                       uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                       uint32_t rx_length_frames, mxc_dma_reva_regs_t *dma);
 
 /* ** Handler Functions ** */
 
