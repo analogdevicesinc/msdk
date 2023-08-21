@@ -76,6 +76,10 @@ extern void dbb_seq_tx_disable(void);
 extern bool_t   PalBbAfeSetTxPower(int8_t txPower);
 extern void PalBbAfeSetChannelTx(uint8_t rfChannel);
 extern void PalBbDbbEnableCw(void);
+extern void PalBbDbbDisableCw(void);
+extern bool_t PalBbAfeTxSetup(void);
+extern bool_t PalBbAfeTxDone(void);
+
 
 /*************************************************************************************************/
 /*!
@@ -292,11 +296,12 @@ static void processConsoleRX(uint8_t rxByte)
         APP_TRACE_INFO0("Starting TX");
 
         PalBbEnable();
-            
+
         // llc_api_tx_ldo_setup();
 
         /* Enable constant TX */
         // dbb_seq_tx_enable();
+        PalBbAfeTxSetup();
         PalBbDbbEnableCw();
 
         cmd = 0;
@@ -307,6 +312,7 @@ static void processConsoleRX(uint8_t rxByte)
         APP_TRACE_INFO0("Disabling TX");
 
         /* Disable constant TX */
+        PalBbAfeTxDone();
         PalBbDbbDisableCw();
         // dbb_seq_tx_disable();
 

@@ -76,7 +76,9 @@ extern void dbb_seq_tx_disable(void);
 extern bool_t   PalBbAfeSetTxPower(int8_t txPower);
 extern void PalBbAfeSetChannelTx(uint8_t rfChannel);
 extern void PalBbDbbEnableCw(void);
-
+extern void PalBbDbbDisableCw(void);
+extern bool_t PalBbAfeTxSetup(void);
+extern bool_t PalBbAfeTxDone(void);
 
 
 
@@ -302,6 +304,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         /* Enable constant TX */
         // dbb_seq_tx_enable();
+        PalBbAfeTxSetup();
         PalBbDbbEnableCw();
 
         cmd = 0;
@@ -313,6 +316,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         /* Disable constant TX */
         // dbb_seq_tx_disable();
+        PalBbAfeTxDone();
         PalBbDbbDisableCw();
         PalBbDisable();
 
