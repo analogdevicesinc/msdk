@@ -694,32 +694,32 @@ int MXC_SPI_RevA2_SetFrameSize(mxc_spi_reva_regs_t *spi, int frame_size)
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
 
-    // Set up the character size.
-    if (!(spi->stat & MXC_F_SPI_REVA_STAT_BUSY)) {
-        saved_enable_state = spi->ctrl0 | MXC_F_SPI_REVA_CTRL0_EN;
-
-        // If enabled, disable SPI before changing character size.
-        if (saved_enable_state) {
-            spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
-        }
-
-        // Update data size from save Init function.
-        STATES[spi_num].frame_size = frame_size;
-
-        if (frame_size < 16) {
-            MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
-                         frame_size << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
-        } else {
-            // Set to 16 bits per character as default.
-            MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
-                         0 << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
-        }
-
-        // Return back to original SPI enable state.
-        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_EN, saved_enable_state);
-    } else {
+    if ((spi->stat & MXC_F_SPI_REVA_STAT_BUSY) && (STATES[spi_num].controller_target == MXC_SPI_TYPE_CONTROLLER)) {
         return E_BAD_STATE;
     }
+
+    // Set up the character size.
+    saved_enable_state = spi->ctrl0 | MXC_F_SPI_REVA_CTRL0_EN;
+
+    // If enabled, disable SPI before changing character size.
+    if (saved_enable_state) {
+        spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_EN);
+    }
+
+    // Update data size from save Init function.
+    STATES[spi_num].frame_size = frame_size;
+
+    if (frame_size < 16) {
+        MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
+                        frame_size << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
+    } else {
+        // Set to 16 bits per character as default.
+        MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_NUMBITS,
+                        0 << MXC_F_SPI_REVA_CTRL2_NUMBITS_POS);
+    }
+
+    // Return back to original SPI enable state.
+    MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_EN, saved_enable_state);
 
     return E_NO_ERROR;
 }
