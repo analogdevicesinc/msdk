@@ -407,7 +407,7 @@ void MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t *i2c, mxc_i2c_revb_slave
     }
 
     // Check for address match interrupt
-    if(int_en[0] & MXC_F_I2C_REVB_INT_FL0_AMI) {
+    if (int_en[0] & MXC_F_I2C_REVB_INT_FL0_AMI) {
         if (tFlags & MXC_F_I2C_REVB_INT_FL0_AMI) {
             if (i2c->ctrl0 & MXC_F_I2C_REVB_CTRL0_READ) {
                 // Read request received from the master
@@ -418,8 +418,8 @@ void MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t *i2c, mxc_i2c_revb_slave
                 i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
                 i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_TXLOI;
 
-                int_en[0] = MXC_F_I2C_REVB_INT_FL0_TXTHI | MXC_F_I2C_REVB_INT_FL0_TXLOI | MXC_F_I2C_REVB_INT_FL0_DONEI |
-                            MXC_I2C_REVB_ERROR;
+                int_en[0] = MXC_F_I2C_REVB_INT_FL0_TXTHI | MXC_F_I2C_REVB_INT_FL0_TXLOI |
+                            MXC_F_I2C_REVB_INT_FL0_DONEI | MXC_I2C_REVB_ERROR;
                 int_en[1] = MXC_F_I2C_REVB_INT_FL1_TXUFI;
             } else {
                 // Write request received from the master
@@ -428,14 +428,15 @@ void MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t *i2c, mxc_i2c_revb_slave
                 }
 
                 i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_AMI;
-                int_en[0] = MXC_F_I2C_REVB_INT_FL0_RXTHI | MXC_F_I2C_REVB_INT_FL0_DONEI | MXC_I2C_REVB_ERROR;
+                int_en[0] = MXC_F_I2C_REVB_INT_FL0_RXTHI | MXC_F_I2C_REVB_INT_FL0_DONEI |
+                            MXC_I2C_REVB_ERROR;
                 int_en[1] = MXC_F_I2C_REVB_INT_FL1_RXOFI;
             }
         }
     }
 
     // Check if transaction completed or restart occurred
-    if(int_en[0] & MXC_F_I2C_REVB_INT_FL0_DONEI) {
+    if (int_en[0] & MXC_F_I2C_REVB_INT_FL0_DONEI) {
         if (tFlags & MXC_F_I2C_REVB_INT_FL0_STOPI) {
             // Stop/NACK condition occurred, transaction complete
             *retVal = E_NO_ERROR;
@@ -448,7 +449,7 @@ void MXC_I2C_RevB_SlaveAsyncHandler(mxc_i2c_revb_regs_t *i2c, mxc_i2c_revb_slave
             int_en[0] = 0;
             int_en[1] = 0;
             AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
-        } else if(tFlags & MXC_F_I2C_REVB_INT_FL0_DONEI) {
+        } else if (tFlags & MXC_F_I2C_REVB_INT_FL0_DONEI) {
             // Restart detected, re-arm address match interrupt
             i2c->int_fl0 = MXC_F_I2C_REVB_INT_FL0_DONEI;
             int_en[0] = MXC_F_I2C_REVB_INT_FL0_AMI;
