@@ -214,6 +214,12 @@ typedef struct {
 // Suppport names for backwards compatibility.
 struct _mxc_spi_reva2_req_t {
     mxc_spi_regs_t *spi;     // Pointer to SPI registers
+
+    union {
+        uint32_t ts_idx;
+        int ssIdx;           // ssIdx - Deprecated name
+    };
+
     union {
         int deassert;
         int ssDeassert;      // ssDeassert - deprecated name
@@ -249,22 +255,18 @@ struct _mxc_spi_reva2_req_t {
         uint32_t rxCnt;      // rxCnt - deprecated name
     };
 
-    uint16_t tx_dummy_value; // Value of dummy bytes to be sent
-
-    // Chip Select Options
-    mxc_spi_ts_t *ts; // Contains index, pins, polarity mode, cfg mask.
-
-    union {
-        uint32_t ts_idx;
-        int ssIdx;           // ssIdx - Deprecated name
-    };
-
     // Callback
     union {
         mxc_spi_callback_t callback;
         spi_complete_cb_t completeCB; // completeCB - Deprecated
     };
+
     void *callback_data;
+
+    uint16_t tx_dummy_value; // Value of dummy bytes to be sent
+
+    // Chip Select Options
+    mxc_spi_ts_t *ts; // Contains index, pins, polarity mode, cfg mask.
 };
 // clang-format on
 
@@ -282,30 +284,36 @@ struct _mxc_spi_reva2_req_t {
  *
  * These parameters can be modified after cfgialization using low level functions
  *
- * @param   spi             Pointer to SPI instance's registers.
- * @param   masterMode      Whether to put the device in master or slave mode. Use
- *                          non-zero for master mode, and zero for slave mode.
- * @param   quadModeUsed    Whether to obtain control of the SDIO2/3 pins. Use
- *                          non-zero if the pins are needed (if Quad Mode will
- *                          be used), and zero if they are not needed (quad mode
- *                          will never be used).
- * @param   numSlaves       The number of slaves used, if in master mode. This
- *                          is used to obtain control of the necessary SS pins.
- *                          In slave mode this is ignored and SS1 is used.
- * @param   ssPolarity      This field sets the SS active polarity for each
- *                          slave, each bit position corresponds to each SS line.
- * @param   hz              The requested clock frequency. The actual clock frequency
- *                          will be returned by the function if successful. Used in
- *                          master mode only.
- * @param   pins            SPI pin structure. Pins selected as true will be initialized 
- *                          for the requested SPI block.            
+ * @param   spi                 Pointer to SPI instance's registers.
+ * @param   controller_target   Whether to put the device in controller or target mode. Use
+ *                              non-zero for controller mode, and zero for target mode.
+ *                                  MXC_SPI_TYPE_CONTROLLER - 1
+ *                                  MXC_SPI_TYPE_TARGET - 0
+ * @param   if_mode             Set the interface mode.
+ *                                  MXC_SPI_INTERFACE_STANDARD - 0 (4 wire)
+ *                                  MXC_SPI_INTERFACE_QUAD - 1
+ *                                  MXC_SPI_INTERFACE_3WIRE - 2
+ *                                  MXC_SPI_INTERFACE_DUAL - 3
+ * @param   numTargets          The number of target used, if in controller mode. This
+ *                              is used to obtain control of the necessary TS pins.
+ *                              In target mode this is ignored and TS1 is used. This
+ *                              parameter is unused for SPI v2.
+ * @param   ts_active_pol_mask  This field sets the TS active polarity for each
+ *                              target, each bit position corresponds to each TS line.
+ *                                  ts_active_pol_mask[0] - TS0
+ *                                  ts_active_pol_mask[1] - TS1
+ *                                  ts_active_pol_mask[n] - TSn
+ * @param   freq                The requested clock frequency. The actual clock frequency
+ *                              will be returned by the function if successful. Used in
+ *                              master mode only.
+ * @param   pins                SPI pin structure. Pins selected as true will be initialized 
+ *                              for the requested SPI block.            
  *
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
-                 int unusedNumSlaves, uint8_t ts_active_pol_mask, uint32_t freq,
-                 mxc_spi_pins_t pins);
+                 int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins);
 
 /**
  * @brief   Configure the SPI peripheral.
