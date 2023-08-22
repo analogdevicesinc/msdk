@@ -279,13 +279,20 @@ int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c);
 
 /**
  * @brief   Initializes the DMA for I2C DMA transactions.
+ * 
+ * This function will release any acquired DMA channels before reacquiring and
+ * reconfiguring selected I2C DMA TX or RX channels.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used).
  * @param   dma         Pointer to DMA registers (selects the DMA block used).
+ * @param   use_dma_tx  If true, acquire and configure DMA TX channel, else release any 
+ *                      acquired DMA TX channel.
+ * @param   use_dma_rx  If true, acquire and configure DMA RX channel, else release any 
+ *                      acquired DMA RX channel.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma);
+int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx);
 
 /**
  * @brief   Retreive the DMA TX Channel associated with I2C instance.
