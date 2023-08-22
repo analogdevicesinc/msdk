@@ -41,6 +41,7 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_I2C_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "mxc_sys.h"
 #include "i2c_regs.h"
 #include "dma_regs.h"

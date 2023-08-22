@@ -326,7 +326,7 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
 #if TARGET_NUM == 32665
         MXC_DMA_ReleaseChannel((mxc_dma_regs_t *)dma, states[i2cNum].channelTx);
 #else
-        MXC_DMA_ReleaseChannel(states[i2cNum].channelTx)
+        MXC_DMA_ReleaseChannel(states[i2cNum].channelTx);
 #endif
     }
 
@@ -335,7 +335,7 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
 #if TARGET_NUM == 32665
         MXC_DMA_ReleaseChannel((mxc_dma_regs_t *)dma, states[i2cNum].channelRx);
 #else
-        MXC_DMA_ReleaseChannel(states[i2cNum].channelRx)
+        MXC_DMA_ReleaseChannel(states[i2cNum].channelRx);
 #endif
     }
 
@@ -380,7 +380,7 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
     }
 
     // Set up I2C DMA RX.
-    if (use_dma_tx == true) {
+    if (use_dma_rx == true) {
 #if TARGET_NUM == 32665
         rxChannel = MXC_DMA_AcquireChannel((mxc_dma_regs_t *)dma);
 #else
@@ -399,8 +399,8 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
                      (rxConfig.dstwd << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
 
         // Set Source and Destination Increment.
-        txConfig.srcinc_en = 1;
-        txConfig.dstinc_en = 0;
+        rxConfig.srcinc_en = 0;
+        rxConfig.dstinc_en = 1;
 
         MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCINC,
                      (rxConfig.srcinc_en << MXC_F_DMA_REVA_CTRL_SRCINC_POS));
@@ -1107,9 +1107,9 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
     states[i2cNum].writeDone = 0;
     states[i2cNum].readDone = 0;
 
-    // Initialize DMA if it wasn't done earlier.
-    if (states[i2cNum].dma_initialized == false) {
-        error = MXC_I2C_DMA_Init((mxc_i2c_regs_t *)i2c, (mxc_dma_regs_t *)dma);
+    // If MXC_I2C_DMA_Init(...) was not already called, then configure both DMA TX/RXchannels by default.
+    if (states[i2cNum].dma_initialized != true) {
+        error = MXC_I2C_DMA_Init((mxc_i2c_regs_t *)i2c, (mxc_dma_regs_t *)dma, true, true);
         if (error != E_NO_ERROR) {
             return error;
         }
