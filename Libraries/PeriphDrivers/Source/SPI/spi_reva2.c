@@ -1189,8 +1189,8 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
             MXC_ASSERT((tx_length_frames + tx_dummy_length_frames) <
                        (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
 
-            spi->ctrl1 =
-                ((tx_length_frames + tx_dummy_length_frames) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
+            spi->ctrl1 = ((tx_length_frames + tx_dummy_length_frames)
+                          << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         } else {
             spi->ctrl1 = (tx_length_frames << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         }

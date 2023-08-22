@@ -57,8 +57,7 @@
 #define MXC_SPI_TS2_MASK_POS (2)
 
 int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
-                 int numTargets, uint8_t ts_active_pol_mask, uint32_t freq,
-                 mxc_spi_pins_t pins)
+                 int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins)
 {
     int error;
     int8_t spi_num;

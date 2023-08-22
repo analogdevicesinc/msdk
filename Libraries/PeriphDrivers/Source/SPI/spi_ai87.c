@@ -56,7 +56,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
     int masterMode = controller_target;
     int quadModeUsed = if_mode;
     int numSlaves = numTargets;
-    int ssPolarity =  ts_active_pol_mask;
+    int ssPolarity = ts_active_pol_mask;
     int hz = freq;
 
     spi_num = MXC_SPI_GET_IDX(spi);
