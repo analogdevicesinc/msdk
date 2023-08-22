@@ -13,3 +13,5 @@
 
 # Add your config here!
 
+# Build SPI v2 library for example.
+MXC_SPI_BUILD_V1=0
