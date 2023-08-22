@@ -110,7 +110,7 @@ void mxc_assert(const char *expr, const char *file, int line)
 }
 
 /******************************************************************************/
-/** 
+/**
  * NOTE: This weak definition is included to support Push Button interrupts in
  *       case the user does not define this interrupt handler in their application.
  **/
@@ -186,38 +186,49 @@ void TFT_SPI_Write(uint8_t data, bool cmd)
 
 void TFT_SPI_Transmit(void *src, int count)
 {
+    int tx_count;
     uint8_t *buf = (uint8_t *)src;
 
     // TFT and TS share the same SPI bus, and TS will set a lower SPI freq
     // So explicity set the TFT speed again before transmitting
     MXC_SPI_SetFrequency(TFT_SPI, TFT_SPI_FREQ);
 
-    // Software controlled Slave Select
-    MXC_GPIO_OutClr(TFT_SS_PORT, TFT_SS_PIN);
+    while (count > 0) {
+        if (count > 65000)
+            tx_count = 65000;
+        else
+            tx_count = count;
 
-    MXC_GPIO_OutSet(TFT_DC_PORT, TFT_DC_PIN);
+        count -= tx_count;
 
-    TFT_SPI->dma = MXC_F_SPI_DMA_TX_FIFO_EN;
+        // Software controlled Slave Select
+        MXC_GPIO_OutClr(TFT_SS_PORT, TFT_SS_PIN);
 
-    TFT_SPI->ctrl1 = count << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
+        MXC_GPIO_OutSet(TFT_DC_PORT, TFT_DC_PIN);
 
-    while (count--) {
-        while ((TFT_SPI->dma & MXC_F_SPI_DMA_TX_LVL) ==
-               (MXC_SPI_FIFO_DEPTH << MXC_F_SPI_DMA_TX_LVL_POS)) {}
+        TFT_SPI->dma = MXC_F_SPI_DMA_TX_FIFO_EN;
 
-        *TFT_SPI->fifo8 = *buf++;
+        // SPI TX byte count is 16-bit value
+        TFT_SPI->ctrl1 = tx_count << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS;
 
-        if (!(TFT_SPI->ctrl0 & MXC_F_SPI_CTRL0_START))
-            TFT_SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+        while (tx_count--) {
+            while ((TFT_SPI->dma & MXC_F_SPI_DMA_TX_LVL) ==
+                   (MXC_SPI_FIFO_DEPTH << MXC_F_SPI_DMA_TX_LVL_POS)) {}
+
+            *TFT_SPI->fifo8 = *buf++;
+
+            if (!(TFT_SPI->ctrl0 & MXC_F_SPI_CTRL0_START))
+                TFT_SPI->ctrl0 |= MXC_F_SPI_CTRL0_START;
+        }
+
+        // MAX78002 Evaluation Kit is designed for firmware control of device select.
+        // Wait here until done as caller will negate select on return, possibly before FIFO is empty.
+        while (!(TFT_SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
+
+        TFT_SPI->intfl = TFT_SPI->intfl;
+
+        MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
     }
-
-    // MAX78002 Evaluation Kit is designed for firmware control of device select.
-    // Wait here until done as caller will negate select on return, possibly before FIFO is empty.
-    while (!(TFT_SPI->intfl & MXC_F_SPI_INTFL_MST_DONE)) {}
-
-    TFT_SPI->intfl = TFT_SPI->intfl;
-
-    MXC_GPIO_OutSet(TFT_SS_PORT, TFT_SS_PIN);
 }
 
 void TS_SPI_Init(void)

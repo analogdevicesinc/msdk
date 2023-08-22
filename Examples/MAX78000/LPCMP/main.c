@@ -33,8 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   ADC demo application
- * @details Continuously monitors the ADC channels
+ * @brief   This example demonstrates the use of the Analog Comparator to wake up the device from sleep mode.
  */
 
 /***** Includes *****/

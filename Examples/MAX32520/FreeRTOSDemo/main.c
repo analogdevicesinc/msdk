@@ -31,6 +31,11 @@
  *
  ******************************************************************************/
 
+/**
+ * @file        main.c
+ * @brief       FreeRTOS Example Application.
+ */
+
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>

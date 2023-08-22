@@ -33,8 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Wake-Up Timer (WUT) example for low power modes.
  */
 
 /***** Includes *****/
@@ -81,7 +80,11 @@ int main(void)
 
     printf("\n\n/*********** Wakeup timer example *************/\n");
     printf("This example demonstrates how to use the Wakeup Timer.\n\n");
+#if defined(EvKit_V1)
     printf("Pressing SW2 to will put the chip to sleep and enable the\n");
+#else
+    printf("Pressing SW3 to will put the chip to sleep and enable the\n");
+#endif
     printf("wakeup timer to wake the device in %d Miliseconds.\n\n", MILLISECONDS_WUT);
 
     // Initialize WUT

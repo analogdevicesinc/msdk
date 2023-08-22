@@ -1,1 +1,1 @@
-TRNG Example!
+Hello World Example!

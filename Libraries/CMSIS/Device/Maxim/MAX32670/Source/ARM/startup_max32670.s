@@ -70,6 +70,7 @@ __heap_limit
                 EXPORT  __Vectors_Size
                 EXPORT  __isr_vector
                 IMPORT  SysTick_Handler
+				IMPORT  GPIO0_IRQHandler
                 ; Core Level - CM4
                                                 ; Most names are to help the FreeRTOS port.
 
@@ -297,7 +298,8 @@ Default_Handler\
                 EXPORT  RSV21_IRQHandler              [WEAK]  ; 0x25  0x0094  37: Reserved
                 EXPORT  RSV22_IRQHandler              [WEAK]  ; 0x26  0x0098  38: Reserved
                 EXPORT  FLC0_IRQHandler               [WEAK]  ; 0x27  0x009C  39: Flash Controller 0
-                EXPORT  GPIO0_IRQHandler              [WEAK]  ; 0x28  0x00A0  40: GPIO0
+			    ; GPIO0_IRQHandler has a weak function in board.c. Hence it is commented out below				
+                ;EXPORT  GPIO0_IRQHandler              [WEAK]  ; 0x28  0x00A0  40: GPIO0
                 EXPORT  GPIO1_IRQHandler              [WEAK]  ; 0x29  0x00A4  41: GPIO1
                 EXPORT  RSV26_IRQHandler              [WEAK]  ; 0x2A  0x00A8  42: Reserved
                 EXPORT  RSV27_IRQHandler              [WEAK]  ; 0x2B  0x00AC  43: Reserved
@@ -402,7 +404,7 @@ RSV20_IRQHandler                ; 0x24  0x0090  36: Reserved
 RSV21_IRQHandler                ; 0x25  0x0094  37: Reserved
 RSV22_IRQHandler                ; 0x26  0x0098  38: Reserved
 FLC0_IRQHandler                 ; 0x27  0x009C  39: Flash Controller 0
-GPIO0_IRQHandler                ; 0x28  0x00A0  40: GPIO0
+;GPIO0_IRQHandler                ; 0x28  0x00A0  40: GPIO0
 GPIO1_IRQHandler                ; 0x29  0x00A4  41: GPIO1
 RSV26_IRQHandler                ; 0x2A  0x00A8  42: Reserved
 RSV27_IRQHandler                ; 0x2B  0x00AC  43: Reserved

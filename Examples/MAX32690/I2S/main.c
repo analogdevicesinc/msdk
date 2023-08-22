@@ -135,8 +135,7 @@ int main()
     }
 
     Console_Init();
-    printf("\nI2S Transaction Complete. Ignore any random characters previously");
-    printf("\ndisplayed. The I2S and UART are sharing the same pins.\n");
+    printf("\nI2S Transaction Complete.\n");
 
     return 0;
 }

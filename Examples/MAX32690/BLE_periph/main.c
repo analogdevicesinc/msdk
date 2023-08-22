@@ -1,8 +1,7 @@
 /*************************************************************************************************/
 /*!
-*  \file   main.c
-*
-*  \brief  Main file for periph application.
+ * @file    main.c
+ * @brief   Simple BLE app that advertises as "Periph".  Recommended app for getting started with MSDK BLE.
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *
