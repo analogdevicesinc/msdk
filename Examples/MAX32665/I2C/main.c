@@ -235,7 +235,7 @@ int main()
 
 #ifdef MASTERDMA
     //Setup the I2CM DMA
-    error = MXC_I2C_DMA_Init(I2C_MASTER, MXC_DMA0);
+    error = MXC_I2C_DMA_Init(I2C_MASTER, MXC_DMA0, true, true);
     if (error != E_NO_ERROR) {
         printf("Failed DMA master\n");
         return error;
