@@ -262,7 +262,9 @@ int MXC_GPIO_RevA_SetDriveStrength(mxc_gpio_reva_regs_t *port, mxc_gpio_drvstr_t
         break;
 
     default:
-        return E_BAD_PARAM;
+        // Set default drive strength to type 0.
+        port->ds0 &= ~mask;
+        port->ds1 &= ~mask;
     }
 
     return E_NO_ERROR;
