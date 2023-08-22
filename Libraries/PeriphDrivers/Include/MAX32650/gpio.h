@@ -139,6 +139,16 @@ typedef enum {
 } mxc_gpio_vssel_t;
 
 /**
+ * @brief   Enumeration type for drive strength configuration.
+ */
+typedef enum {
+    MXC_GPIO_DRVSTR_0, /**< Drive Strength 0 */
+    MXC_GPIO_DRVSTR_1, /**< Drive Strength 1 */
+    MXC_GPIO_DRVSTR_2, /**< Drive Strength 2 */
+    MXC_GPIO_DRVSTR_3, /**< Drive Strength 3 */
+} mxc_gpio_drvstr_t;
+
+/**
  * Structure type for configuring a GPIO port.
  */
 typedef struct {
