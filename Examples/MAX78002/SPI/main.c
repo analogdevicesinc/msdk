@@ -52,8 +52,8 @@
 #include "dma.h"
 
 /***** Preprocessors *****/
-#define CONTROLLER_SYNC 0
-#define CONTROLLER_ASYNC 1
+#define CONTROLLER_SYNC 1
+#define CONTROLLER_ASYNC 0
 #define CONTROLLER_DMA 0
 
 // Target Select Control Scheme
@@ -240,8 +240,8 @@ int main(void)
             return retVal;
         }
 
-#else // TSCONTROL_HW_AUTO \
-    // Select TS0 HW pin.
+#else // TSCONTROL_HW_AUTO
+        // Select TS0 HW pin.
         ts0.index = 0;
         ts0.active_pol = 0;
 #endif
