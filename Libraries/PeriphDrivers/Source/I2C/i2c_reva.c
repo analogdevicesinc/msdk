@@ -1109,7 +1109,7 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
     states[i2cNum].readDone = 0;
 
     // If MXC_I2C_DMA_Init(...) was not already called, then configure both DMA TX/RXchannels by default.
-    if (states[i2cNum].dma_initialized != true) {
+    if (states[i2cNum].dma_initialized == false) {
         error = MXC_I2C_DMA_Init((mxc_i2c_regs_t *)i2c, (mxc_dma_regs_t *)dma, true, true);
         if (error != E_NO_ERROR) {
             return error;
