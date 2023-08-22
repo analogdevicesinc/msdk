@@ -172,7 +172,7 @@ int MXC_I2C_RevA_Shutdown(mxc_i2c_reva_regs_t *i2c)
 
     if (states[i2cNum].dma_initialized == true) {
 #if TARGET_NUM == 32665
-        MXC_DMA_DeInit((mxc_dma_reva_regs_t *)(states[i2cNum].dma));
+        MXC_DMA_DeInit((mxc_dma_regs_t *)(states[i2cNum].dma));
 #else
         MXC_DMA_DeInit();
 #endif
