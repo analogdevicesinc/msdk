@@ -299,7 +299,8 @@ int MXC_I2C_RevA_GetClockStretching(mxc_i2c_reva_regs_t *i2c)
     return !((i2c->ctrl & MXC_F_I2C_REVA_CTRL_CLKSTR_DIS) >> MXC_F_I2C_REVA_CTRL_CLKSTR_DIS_POS);
 }
 
-int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bool use_dma_tx, bool use_dma_rx)
+int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bool use_dma_tx,
+                          bool use_dma_rx)
 {
     int8_t i2cNum;
     int8_t rxChannel;

@@ -166,7 +166,8 @@ int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c)
 
 int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx)
 {
-    return MXC_I2C_RevA_DMA_Init((mxc_i2c_reva_regs_t *)i2c, (mxc_dma_reva_regs_t *)dma, use_dma_tx, use_dma_rx);
+    return MXC_I2C_RevA_DMA_Init((mxc_i2c_reva_regs_t *)i2c, (mxc_dma_reva_regs_t *)dma, use_dma_tx,
+                                 use_dma_rx);
 }
 
 int MXC_I2C_DMA_GetTXChannel(mxc_i2c_regs_t *i2c)

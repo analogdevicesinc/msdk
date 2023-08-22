@@ -107,7 +107,8 @@ unsigned int MXC_I2C_RevA_GetFrequency(mxc_i2c_reva_regs_t *i2c);
 int MXC_I2C_RevA_ReadyForSleep(mxc_i2c_reva_regs_t *i2c);
 int MXC_I2C_RevA_SetClockStretching(mxc_i2c_reva_regs_t *i2c, int enable);
 int MXC_I2C_RevA_GetClockStretching(mxc_i2c_reva_regs_t *i2c);
-int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bool use_dma_tx, bool use_dma_rx);
+int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bool use_dma_tx,
+                          bool use_dma_rx);
 int MXC_I2C_RevA_DMA_GetTXChannel(mxc_i2c_reva_regs_t *i2c);
 int MXC_I2C_RevA_DMA_GetRXChannel(mxc_i2c_reva_regs_t *i2c);
 int MXC_I2C_RevA_DMA_SetRequestSelect(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma,
