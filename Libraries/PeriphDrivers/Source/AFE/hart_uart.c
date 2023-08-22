@@ -565,8 +565,8 @@ int hart_clock_enable(void)
 
     //enable ISO before enabling ERFO
     MXC_GCR->btleldoctrl |= (MXC_F_GCR_BTLELDOCTRL_LDORFEN | MXC_F_GCR_BTLELDOCTRL_LDOBBEN |
-                             MXC_F_GCR_BTLELDOCTRL_LDORFVSEL0 | MXC_F_GCR_BTLELDOCTRL_LDORFVSEL1 |
-                             MXC_F_GCR_BTLELDOCTRL_LDOBBVSEL0 | MXC_F_GCR_BTLELDOCTRL_LDOBBVSEL1);
+                             MXC_S_GCR_BTLELDOCTRL_LDORFVSEL_0_9|
+                             MXC_S_GCR_BTLELDOCTRL_LDOBBVSEL_0_9 );
 
     MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ISO_EN;
 
