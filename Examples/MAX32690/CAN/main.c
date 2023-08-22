@@ -33,8 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Demonstrates Controller Area Network (CAN) drivers and transactions.
  */
 
 /***** Includes *****/

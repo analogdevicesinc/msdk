@@ -1,7 +1,8 @@
 ## Description
 
-TBD<!--TBD-->
+This example demonstrates the Modular Arithmetic Accelerator feature of the Trust Protection Unit.
 
+In this particular example the MAA is configured to compute an exponentiation. The result of the MAA calculation is compared to the expected result.
 
 ## Software
 

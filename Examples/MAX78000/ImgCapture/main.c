@@ -115,10 +115,11 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
     // camera.h drivers will allocate an SRAM buffer whose size is equal to
     // width * height * bytes_per_pixel.  See camera.c for implementation details.
     printf("Configuring camera\n");
+    fifomode_t fifo_mode = (pixel_format == PIXFORMAT_RGB888) ? FIFO_THREE_BYTE : FIFO_FOUR_BYTE;
     int ret = camera_setup(w, // width
                            h, // height
                            pixel_format, // pixel format
-                           FIFO_FOUR_BYTE, // FIFO mode (four bytes is suitable for most cases)
+                           fifo_mode, // FIFO mode (four bytes is suitable for most cases)
                            dma_mode, // DMA (enabling DMA will drastically decrease capture time)
                            dma_channel); // Allocate the DMA channel retrieved in initialization
 
@@ -239,10 +240,11 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     // 1. Configure the camera.  This is the same as the standard blocking capture, except
     // the DMA mode is set to "STREAMING_DMA".
     printf("Configuring camera\n");
+    fifomode_t fifo_mode = (pixel_format == PIXFORMAT_RGB888) ? FIFO_THREE_BYTE : FIFO_FOUR_BYTE;
     int ret = camera_setup(w, // width
                            h, // height
                            pixel_format, // pixel format
-                           FIFO_FOUR_BYTE, // FIFO mode
+                           fifo_mode, // FIFO mode
                            STREAMING_DMA, // Set streaming mode
                            dma_channel); // Allocate the DMA channel retrieved in initialization
 
@@ -621,7 +623,7 @@ int main(void)
     g_app_settings.dma_mode = USE_DMA;
     g_app_settings.imgres_w = IMAGE_XRES;
     g_app_settings.imgres_h = IMAGE_YRES;
-    g_app_settings.pixel_format = PIXFORMAT_RGB565; // This default may change during initialization
+    g_app_settings.pixel_format = PIXFORMAT_RGB888; // This default may change during initialization
 
 #if defined(CAMERA_MONO)
     g_app_settings.pixel_format = PIXFORMAT_BAYER;

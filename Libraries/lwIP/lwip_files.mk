@@ -40,8 +40,8 @@ ifeq "$(TARGET)" ""
 $(error TARGET must be specified)
 endif
 
-TARGET_UC:=$(shell echo $(TARGET) | tr a-z A-Z)
-TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
@@ -89,4 +89,4 @@ LWIP_C_FILES += $(sort $(wildcard $(LWIP_DIR)/netif/ppp/polarssl/*.c))
 LWIP_C_FILES += $(sort $(wildcard $(LWIP_DIR)/Maxim/*.c))
 
 # Where to find header files for this project
-LWIP_H_FILES +=  $(shell find $(LWIP_INCLUDE_DIR) -name '*.h')
+LWIP_H_FILES += $(wildcard $(addsuffix /*.h,$(LWIP_INCLUDE_DIR)))

@@ -172,5 +172,4 @@ PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/WUT
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/WUT/wut_ai87.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/WUT/wut_reva.c
 
-# Where to find header files for this project
-PERIPH_DRIVER_H_FILES +=  $(shell find $(PERIPH_DRIVER_INCLUDE_DIR) -name '*.h')
+

@@ -1,8 +1,8 @@
 /*************************************************************************************************/
 /*!
-*  \file   main.c
-*
-*  \brief  Main file for dats application.
+ * @file    main.c
+ * @brief   Bluetooth data server that advertises as "OTAS" and accepts connection requests. 
+ Demonstrates Over-the-Air (OTA) firmware updates.
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *

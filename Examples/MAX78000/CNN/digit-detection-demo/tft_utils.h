@@ -44,3 +44,6 @@
 
 void TFT_Print(char *str, int x, int y, int font, int length);
 void draw_obj_rect(float *xy, int class_idx, uint32_t w, uint32_t h, uint8_t scale);
+void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt);
+void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt);
+void tft_dma_display(int x, int y, int w, int h, uint32_t *data);

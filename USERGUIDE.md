@@ -1,7 +1,5 @@
 # MSDK User Guide
 
-[TOC]
-
 ## Overview
 
 The Maxim Microcontrollers SDK (MSDK), now a part of [Analog Devices](https://www.analog.com/en/index.html), contains the necessary software and tools to develop firmware for the [MAX32xxx and MAX78xxx Microcontrollers](https://www.analog.com/en/parametricsearch/10984). That includes register and system startup files to enable low-level development for its [supported parts](#supported-parts). It also provides higher-level peripheral driver APIs (written in C) alongside various utilities, third-party libraries, Board Support Packages (BSPs), and a set of example programs for each microcontroller.
@@ -78,7 +76,7 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 ---
 
-* [**MAX32662**](https://www.analog.com/en/products/max32662.html)
+* [**MAX32662**](https://www.analog.com/en/products/max32662.html): Arm Cortex-M4 Processor with FPU-Based Microcontroller (MCU) with 256KB Flash and 80KB SRAM
 
     - [MAX32662EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/MAX32662EVKIT.html)
 
@@ -158,14 +156,15 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 - [IAR Embedded Workbench](https://www.iar.com/ewarm)
 - [Keil MDK](https://www2.keil.com/mdk5/)
 - Command-line Development
-    - Supported shells (Windows):
+
+    - Supported shells (Windows)
         - [MSYS2](https://www.msys2.org/)
 
-    - Supported shells (Ubuntu):
+    - Supported shells (Ubuntu)
         - [Bash](https://tiswww.case.edu/php/chet/bash/bashtop.html)
         - [Zsh](https://www.zsh.org/)
 
-    - Supposted shells (MacOS):
+    - Supported shells (MacOS)
         - [Zsh](https://www.zsh.org/)
 
 ### Supported Languages
@@ -178,32 +177,41 @@ The MSDK officially supports the following microcontrollers and evaluation platf
 
 ### Prerequisites
 
-- Administrator rights
-- (On MacOS) - [Homebrew](https://brew.sh/)
-- (On Ubuntu) the following packages are required to run the installer:
+- **Elevated/Administrator rights**
 
-        :::shell
-        libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
+- ???+ warning "**⚠️ MacOS**"
+    On MacOS, please also download and install [Homebrew](https://brew.sh/).  It will be used in [Completing the Installation on MacOS](#completing-the-installation-on-macos) later on.
+
+- ???+ warning "**⚠️ Ubuntu**"
+    Several GUI packages are required by the QT installer framework _even on headless systems_.  Run the following command _before_ running the installer to retrieve them.
+
+            :::shell
+            sudo apt update && sudo apt install libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-shm0 libxcb-util1 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-sync1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1 libxkbcommon-x11-0 libxkbcommon0 libgl1 libusb-0.1-4 libhidapi-libusb0 libhidapi-hidraw0
 
 ### Download
 
 The MSDK installer is available for supported Operating Systems from the download links below.
 
-- [Windows 10](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820B)
+- [**Windows 10**](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820B)
 
-- [Linux (Ubuntu)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720B)
+- [**Linux (Ubuntu)**](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018720B)
 
-    - This file must be made executable before running (`chmod +x MaximMicrosSDK_linux.run`). Alternatively, set `Allow executing as program" in the Ubuntu GUI.  
-
+    - ???+ note "ℹ️ **Note**"
+        This file must be made executable before running (`chmod +x MaximMicrosSDK_linux.run`). Alternatively, set `Allow executing as program" in the Ubuntu GUI.
         ![Figure 1](res/Fig1.jpg)
 
-- [MacOS](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610B)
+- [**MacOS**](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0018610B)
 
-    - On MacOS, the installer is distributed inside a .dmg disk image file. Double-click the downloaded file to mount it. Afterward, the installer executable will be made available inside the mounted drive.
+    - ???+ note "ℹ️ **Note**"
+        On MacOS, the installer is distributed inside a .dmg disk image file. Double-click the downloaded file to mount it. Afterward, the installer executable will be made available inside the mounted drive.
 
 ### Setup
 
-1. [Download](#download) the installer executable to an accessible location and launch it.
+The MSDK installer can be run through a [**GUI Installation**](#gui-installation) or a [**Command-Line Installation**](#command-line-installation)
+
+#### GUI Installation
+
+1. [**Download**](#download) the installer executable to an accessible location and launch it.
 
 2. Click **Next** to proceed from the Welcome screen.
 
@@ -221,129 +229,256 @@ The MSDK installer is available for supported Operating Systems from the downloa
 
     ![Figure 7](res/Fig7.jpg)
 
-6. Click Finish to complete the installation.
+6. Click **Finish** to complete the installation.
 
     ![Figure 8](res/Fig8.jpg)
 
 7. You should now see the contents of the installation directory populated with the MSDK.  
-   **Note:** On MacOS, some [additional steps](#completing-the-installation-on-macos) are required.
 
     ![Figure 10](res/Fig10.jpg)
 
+    ???+ warning "⚠️ **Warning**"
+        On MacOS, some [_additional steps_](#completing-the-installation-on-macos) are required.
+
+
+#### Command-Line Installation
+
+The MSDK installer features a command-line interface that can be used as an alternative to its GUI.  This is useful for installations on "headless" systems and scripting.
+
+??? note "ℹ️ **Note:**" The `--help` Command"
+    The available commands can be retrieved by running the MSDK installer executable with the `--help` option on the command line.  For example:
+
+        :::shell
+        $ ./MaximMicrosSDK_linux.run --help
+
+        Usage: ./MaximMicrosSDK_linux.run [options] command <args> <key=value>
+
+        Qt Installer Framework supports both GUI and headless mode. The installation operations can be invoked with the following commands and options. Note that the options marked with "CLI" are available in the headless mode only.
+
+        Commands:
+        in, install - install default or selected packages - <pkg ...>
+        ch, check-updates - show available updates information on maintenance tool
+        up, update - update all or selected packages - <pkg ...>
+        rm, remove - uninstall packages and their child components - <pkg ...>
+        li, list - list currently installed packages - <regexp>
+        se, search - search available packages - <regexp>
+            Note: The --filter-packages option can be used to specify
+            additional filters for the search operation
+        co, create-offline - create offline installer from selected packages - <pkg ...>
+        pr, purge - uninstall all packages and remove entire program directory
+
+        Options:
+        -h, --help                                     Displays help on commandline
+                                                        options.
+        # ...
+
+To run a _headless_ installation:
+
+1. [**Download**](#download) the installer executable to an accessible location.
+
+2. Ensure that you are able to run the installer with **_elevated permissions_**.
+    
+    ???+ note "Windows"
+        Open a Command Prompt or PowerShell **_as administrator_**.
+
+    ???+ note "Ubuntu and MacOS"
+        Ensure you have `sudo` rights.
+
+3. Run the installer with the arguments `in --root <install location>`
+
+    ???+ note "Windows"
+            :::shell
+            .\MaximMicrosSDK_win.exe in --root C:/MaximSDK
+    
+    ???+ note "Ubuntu and MacOS"
+            :::shell
+            sudo ./MaximMicrosSDK_linux.run in --root ~/MaximSDK
+
+4. Follow the installer's command-line instructions to accept licenses and confirm installation size.
+
+    ??? note "ℹ️ **Note: Unattended Installations**"
+        You can run the installer without any user input by auto-accepting all licenses, messages, and input. 
+        
+            :::shell
+            sudo ./MaximMicrosSDK_linux.run in --root ~/MaximSDK --accept-licenses --accept-messages --confirm-command
+
+5. (Ubuntu and MacOS) Change ownership of the installation folder with: 
+
+        :::shell
+        sudo chown -R $(whoami):$(whoami) <MSDK installation folder>
+
+    ??? note "ℹ️ **Note: Folder Ownership**"
+        Usually, running the installation with `sudo` results in an installation owned by the `root` user.
+
+        You can verify this with the `ls -la` command.
+
+            :::shell
+            ls -la ~/MaximSDK
+            total 29656
+            drwxr-xr-x   8 root     root         4096 Jul 13 20:41 .
+            drwxr-x---  17 username username     4096 Jul 13 20:41 ..
+            drwxr-xr-x   2 root     root         4096 Jul 13 20:41 Documentation
+            drwxr-xr-x  15 root     root         4096 Jul 13 20:41 Examples
+            -rw-r--r--   1 root     root       171189 Jul 13 20:41 InstallationLog.txt
+            drwxr-xr-x  17 root     root         4096 Jun 28 23:42 Libraries
+            drwxr-xr-x   2 root     root         4096 Jul 13 20:41 Licenses
+            -rwxr-xr-x   1 root     root     28287992 Jul 13 20:41 MaintenanceTool
+            -rw-r--r--   1 root     root      1719694 Jul 13 20:41 MaintenanceTool.dat
+            -rw-r--r--   1 root     root         9770 Jul 13 20:41 MaintenanceTool.ini
+            drwxr-xr-x  11 root     root         4096 Jun 28 23:42 Tools
+            -rw-r--r--   1 root     root        13123 Jun 28 23:48 changelog.txt
+            -rw-r--r--   1 root     root        67664 Jul 13 20:41 components.xml
+            -rw-r--r--   1 root     root           48 Jul 13 20:41 installer.dat
+            drwxr-xr-x 112 root     root        12288 Jul 13 20:41 installerResources
+            -rw-r--r--   1 root     root        25214 Jun 29 00:47 maxim.ico
+            -rw-r--r--   1 root     root          362 Jul 13 20:41 network.xml
+            -rwxrwxrwx   1 root     root         1129 Jun 29 00:47 setenv.sh
+            -rwxrwxrwx   1 root     root          300 Jun 29 00:47 updates.sh
+
+        The owner of the MSDK installation should be changed back to the normal user with the command above.  Otherwise, the toolchain may behave inconsistently against file permission issues.
+
+        Once complete, `ls -la` should look similar to below (where `username` is your username).
+
+            :::shell
+            ls -la ~/MaximSDK
+            total 29656
+            drwxr-xr-x   8 username     username         4096 Jul 13 20:41 .
+            drwxr-x---  17 username     username         4096 Jul 13 20:41 ..
+            drwxr-xr-x   2 username     username         4096 Jul 13 20:41 Documentation
+            drwxr-xr-x  15 username     username         4096 Jul 13 20:41 Examples
+            -rw-r--r--   1 username     username       171189 Jul 13 20:41 InstallationLog.txt
+            drwxr-xr-x  17 username     username         4096 Jun 28 23:42 Libraries
+            drwxr-xr-x   2 username     username         4096 Jul 13 20:41 Licenses
+            -rwxr-xr-x   1 username     username     28287992 Jul 13 20:41 MaintenanceTool
+            -rw-r--r--   1 username     username      1719694 Jul 13 20:41 MaintenanceTool.dat
+            -rw-r--r--   1 username     username         9770 Jul 13 20:41 MaintenanceTool.ini
+            drwxr-xr-x  11 username     username         4096 Jun 28 23:42 Tools
+            -rw-r--r--   1 username     username        13123 Jun 28 23:48 changelog.txt
+            -rw-r--r--   1 username     username        67664 Jul 13 20:41 components.xml
+            -rw-r--r--   1 username     username           48 Jul 13 20:41 installer.dat
+            drwxr-xr-x 112 username     username        12288 Jul 13 20:41 installerResources
+            -rw-r--r--   1 username     username        25214 Jun 29 00:47 maxim.ico
+            -rw-r--r--   1 username     username          362 Jul 13 20:41 network.xml
+            -rwxrwxrwx   1 username     username         1129 Jun 29 00:47 setenv.sh
+            -rwxrwxrwx   1 username     username          300 Jun 29 00:47 updates.sh
+
+    
+    
 #### Completing the Installation on MacOS
 
-On MacOS, some additional missing packages must be manually installed with[Homebrew](https://brew.sh/).
+???+ warning "⚠️ **Warning**"
+    On MacOS, some additional missing packages must be manually installed with [Homebrew](https://brew.sh/).  There are also some manual setup steps required to retrieve `make` version 4.  The instructions in this section are critical.
 
-**For non-M1 platforms:**
+??? note "ℹ️ **Instructions for M1 platforms**"
 
-1. Follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
+    The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
 
-2. Then, open a terminal and run the command
+    Additionally, the MSDK toolchain requires Make 4.x+, which must also be retrieved via Homebrew.
 
-        brew install make libusb-compat libftdi hidapi libusb
+    The i386 version of Homebrew can be installed in parallel with the arm64 version and typically installs into a separate filesystem.
 
-3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+    1. Open a terminal and update Rosetta.
 
-        :::shell
-        ==> make: stable 4.4.1 (bottled)
-        Utility for directing compilation
-        https://www.gnu.org/software/make/
-        /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-        Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-        From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-        License: GPL-3.0-only
-        ==> Dependencies
-        Build: lzip, lzip
-        ==> Caveats
-        GNU "make" has been installed as "gmake".
-        If you need to use it as "make", you can add a "gnubin" directory
-        to your PATH from your bashrc like:
+            :::shell
+            softwareupdate --install-rosetta --agree-to-license
 
+    2. Close the terminal.
+
+    3. Create a new Rosetta terminal:
+
+        1. Launch Finder.
+
+        2. Navigate to Applications and find the "Terminal" application.
+
+        3. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".  This will be a new application shortcut to the Rosetta terminal.
+
+        4. Right-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
+
+        5. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
+
+    4. From your Rosetta terminal, follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
+
+    5. Verify the correct version of Homebrew is running from your Rosetta terminal using the `which brew` command. This command should return a path beginning with `/usr/local`.
+
+        **Note:** On systems with multiple or pre-existing Homebrew installations, the arm64 version of Homebrew may still take precedence over the newly installed x86_64 version. If `which brew` contains `/opt/homebrew` instead, you may need to edit your terminal profile's startup script. Alternatively, you can directly run the correct Homebrew binary using its absolute path.
+
+    6. Run the command
+
+            :::shell
+            brew install make libusb-compat libftdi hidapi libusb
+
+        (or, if you need to use the absolute path)
+
+            :::shell
+            /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
+
+    7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
+
+            :::shell
+            ==> make: stable 4.4.1 (bottled)
+            Utility for directing compilation
+            https://www.gnu.org/software/make/
+            /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
+            Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
+            From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
+            License: GPL-3.0-only
+            ==> Dependencies
+            Build: lzip, lzip
+            ==> Caveats
+            GNU "make" has been installed as "gmake".
+            If you need to use it as "make", you can add a "gnubin" directory
+            to your PATH from your bashrc like:
+
+                PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+            ==> Analytics
+            install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
+            install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
+            build-error: 0 (30 days)
+
+        This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
+
+            :::bash
             PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-        ==> Analytics
-        install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-        install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-        build-error: 0 (30 days)
 
-    This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
+    8. Restart your shell and verify that `make --version` returns 4.x+.
 
-        :::bash
-        PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+??? note "ℹ️ **Instructions for non-M1 platforms**"
 
-4. Restart your shell and verify that `make --version` returns 4.x+.
+    1. Follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
 
-**For M1 platforms**:
+    2. Then, open a terminal and run the command
 
-The MSDK's OpenOCD binaries ship pre-compiled for Intel Silicon (i386). As a result, you should use a [Rosetta](https://developer.apple.com/documentation/apple-silicon/about-the-rosetta-translation-environment) terminal on M1 platforms to install the _i386 version_ of Homebrew and retrieve OpenOCD's dependencies with it. Installing from Rosetta ensures OpenOCD gets the packages with the architecture it needs. From there, Rosetta will handle the rest and allow running the binaries on the M1 platform's arm64 architecture.
+            brew install make libusb-compat libftdi hidapi libusb
 
-Additionally, the MSDK toolchain requires Make 4.x+, which must also be retrieved via Homebrew.
+    3. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
 
-The i386 version of Homebrew can be installed in parallel with the arm64 version and typically installs into a separate filesystem.
+            :::shell
+            ==> make: stable 4.4.1 (bottled)
+            Utility for directing compilation
+            https://www.gnu.org/software/make/
+            /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
+            Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
+            From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
+            License: GPL-3.0-only
+            ==> Dependencies
+            Build: lzip, lzip
+            ==> Caveats
+            GNU "make" has been installed as "gmake".
+            If you need to use it as "make", you can add a "gnubin" directory
+            to your PATH from your bashrc like:
 
-1. Open a terminal and update Rosetta.
+                PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
+            ==> Analytics
+            install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
+            install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
+            build-error: 0 (30 days)
 
-        :::shell
-        softwareupdate --install-rosetta --agree-to-license
+        This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
 
-2. Close the terminal.
-
-3. Create a new Rosetta terminal:
-
-    1. Launch Finder.
-
-    2. Navigate to Applications and find the "Terminal" application.
-
-    3. Right-Click Terminal and Duplicate it. Rename it to "Terminal i386".  This will be a new application shortcut to the Rosetta terminal.
-
-    4. Right-Click "Terminal i386" > Get Info > Enable "Open using Rosetta"
-
-    5. Launch the new "Terminal i386" and type `arch` to verify that it says `i386` now.
-
-4. From your Rosetta terminal, follow the instructions on the [Homebrew home page](https://brew.sh/) to install Homebrew on your system.
-
-5. Verify the correct version of Homebrew is running from your Rosetta terminal using the `which brew` command. This command should return a path beginning with `/usr/local`.
-
-    **Note:** On systems with multiple or pre-existing Homebrew installations, the arm64 version of Homebrew may still take precedence over the newly installed x86_64 version. If `which brew` contains `/opt/homebrew` instead, you may need to edit your terminal profile's startup script. Alternatively, you can directly run the correct Homebrew binary using its absolute path.
-
-6. Run the command
-
-        :::shell
-        brew install make libusb-compat libftdi hidapi libusb
-
-    (or, if you need to use the absolute path)
-
-        :::shell
-        /usr/local/homebrew/bin/brew make install libusb-compat libftdi hidapi libusb
-
-7. The MSDK toolchain is dependent on GNU make 4.x+ being available as `make`, but Homebrew will install it as `gmake`.  Modify your shell's startup script (`~/.zshrc`) to account for this.  Run `brew info make` for more details, and check the "caveats" section.
-
-        :::shell
-        ==> make: stable 4.4.1 (bottled)
-        Utility for directing compilation
-        https://www.gnu.org/software/make/
-        /usr/local/Cellar/make/4.4.1 (16 files, 1.3MB) *
-        Poured from bottle using the formulae.brew.sh API on 2023-03-28 at 17:46:43
-        From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/make.rb
-        License: GPL-3.0-only
-        ==> Dependencies
-        Build: lzip, lzip
-        ==> Caveats
-        GNU "make" has been installed as "gmake".
-        If you need to use it as "make", you can add a "gnubin" directory
-        to your PATH from your bashrc like:
-
+            :::bash
             PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-        ==> Analytics
-        install: 549 (30 days), 30,768 (90 days), 164,034 (365 days)
-        install-on-request: 405 (30 days), 19,728 (90 days), 109,440 (365 days)
-        build-error: 0 (30 days)
 
-    This involves adding the following line to your shell's startup script. Open the `~/.zshrc` in a text editor and follow the instructions that Homebrew listed in the "Caveats" section.  For example, given the Homebrew output above one would add the following contents to `~/.zshrc`.  The exact path may vary across different systems and Homebrew versions.
-
-        :::bash
-        PATH="/usr/local/opt/make/libexec/gnubin:$PATH"
-
-8. Restart your shell and verify that `make --version` returns 4.x+.
+    4. Restart your shell and verify that `make --version` returns 4.x+.
 
 ### Maintenance
 
@@ -367,7 +502,7 @@ Users can obtain development copies of the MSDK resources from [Github](https://
 
 The MSDK is designed for both evaluation and end-application development. The typical **evaluation** cycle usually involves setting up the development environment, running demos, and exercising the peripheral driver API on an _evaluation platform_. The typical **development** cycle typically involves building a prototype application on an _evaluation platform_ first, then porting the application to a custom board. This section describes how to get started with the MSDK focusing on the _evaluation_ cycle.
 
-**First**, review the [Key Concepts](#key-concepts) below.  Then, proceed to the section for your preferred IDE. Each sub-section is written as a self-contained quick-start with links to additional documentation on important topics.
+**First**, review the [**Key Concepts**](#key-concepts) below.  Then, proceed to the section for your preferred IDE. Each sub-section is written as a self-contained quick-start with links to additional documentation on important topics.
 
 - [Getting Started with Visual Studio Code](#getting-started-with-visual-studio-code)
 - [Getting Started with Eclipse](#getting-started-with-eclipse)
@@ -381,15 +516,25 @@ The MSDK supports multiple development environments with different features that
 
     For example, if the [MAX78000EVKIT](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000evkit.html) _or_ [MAX78000FTHR](https://www.analog.com/en/design-center/evaluation-hardware-and-software/evaluation-boards-kits/max78000fthr.html) is being used, the _Target Microcontroller_ is the MAX78000.
 
+---
+
 - **Board Support Package (BSP)**:  The MSDK supports evaluation platforms for target microcontrollers with _Board Support Packages_.  For microcontrollers with multiple evaluation platforms, multiple BSPs are available. These can be found in the `Libraries/Boards` folder of the MSDK installation.
 
     By default, most projects in the MSDK come pre-configured for the "EVKIT"-type BSP, which is generally the largest evaluation platform for that device with most (or all) pins broken out. It's important to note that the active BSP may need to be reconfigured for a project, which is done slightly differently for each development environment.
 
+---
+
 - **System Environment**:  Your system's _environment_ is a broad term that encapsulates the programs and variables available to your system's shell on the command line. The user is expected to have some basic familiarity with this concept.
+
+---
 
 - **System Path**:  Your system's _Path_ is a unique environment variable that tells it where to search for program binaries. The user is expected to be familiar with this concept and how to modify the system Path if necessary.
 
+---
+
 - **Integrated Development Environment (IDE)**:  An IDE offers a higher-level user interface (typically with a GUI) that manages the tools for **editing** source code, **building** source code, **flashing** program binaries, and **debugging**. The abbreviation is frequently used in this document, and the MSDK supports _multiple_ IDEs that can be used depending on preference. (See ["Supported Development Environments"](#supported-development-environments))
+
+---
 
 - **Build Configuration vs. Project Configuration**: An MSDK project is comprised of two complementary systems:  The _Build System_ and the _Integrated Development Environment (IDE)_. These systems each offer their own configuration interfaces, and it's important to note what each is used for.
 
@@ -405,7 +550,9 @@ The MSDK supports multiple development environments with different features that
 
 The MSDK includes Visual Studio Code ("VS Code") support through the [VSCode-Maxim](https://github.com/MaximIntegratedTechSupport/VSCode-Maxim) project.
 
-This section walks through setup, opening, and running an example project with VS Code. This material is also available in video form targeting the MAX78000 in ["Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code"](https://www.analog.com/en/education/education-library/videos/6313212752112.html). For complete documentation, see the [Visual Studio Code](#visual-studio-code) section of this User Guide.
+This section walks through setup, opening, and running an example project with VS Code. This material is also available in video form targeting the MAX78000 in ["Understanding Artificial Intelligence Episode 8.5 - Visual Studio Code"](https://www.analog.com/en/education/education-library/videos/6313212752112.html). 
+
+For complete documentation, see the [Visual Studio Code](#visual-studio-code) section of this User Guide.
 
 #### Setup (VS Code)
 
@@ -417,13 +564,15 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
 3. Install the Microsoft [C/C++ extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools).
 
-4. Use **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS) to open the developer prompt.
+4. Install the [Cortex-Debug extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
 
-5. Type "open user settings" and select the **"Preferences: Open User Settings (JSON)"** option.
+5. Use **`CTRL + SHIFT + P`** (or **`COMMAND + SHIFT + P`** on MacOS) to open the developer prompt.
+
+6. Type "open user settings" and select the **"Preferences: Open User Settings (JSON)"** option.
 
     ![Open Settings JSON Command](res/Fig42.jpg)
 
-6. Add the entries below to your user settings.json file.  **Change the `MAXIM_PATH` option to point to the MSDK installation**.
+7. Add the entries below to your user settings.json file.
 
         :::json
         // There may be other settings up here...        
@@ -434,9 +583,14 @@ The setup below only needs to be done once per MSDK [installation](#installation
         
         // There may be other settings down here...
 
-    For example, you might set `"MAXIM_PATH":"C:/MaximSDK"` on Windows, `"MAXIM_PATH":"/home/username/MaximSDK"` on Linux/MacOS, etc.
+    ???+ warning "⚠️ **Setting MAXIM_PATH**"
+        Set the `MAXIM_PATH` option to the _absolute path_ of the MSDK installation.
+        For example, you might set `"MAXIM_PATH":"C:/MaximSDK"` on Windows and `"MAXIM_PATH":"/home/username/MaximSDK"` on Ubuntu/MacOS.
 
-7. Save your changes to the file with **`CTRL + S`** and restart VS Code.
+    ???+ note "ℹ️ **Note: Automatic Updates**"
+        `"update.mode: "manual"` and `"extensions.autoUpdate": false` _disable_ automatic updates of VS Code and its extensions, respectively.  This is an _optional_ (but recommended) addition left over from the early days of VS Code development when there was lots of feature churn.  Things have stabilized more as of version 1.70+, but updates remain frequent.  For the VSCode-Maxim project files, the exact version numbers tested with each release can be found on the [VSCode-Maxim Releases](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/releases) page.
+
+8. Save your changes to the file with **`CTRL + S`** and restart VS Code.
 
 #### Building and Running a Project (VS Code)
 
@@ -446,9 +600,12 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
     ![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
 
-3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder and open it with **Select Folder**.
+3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder.
 
     ![Figure 43](res/Fig43.jpg)
+
+    ???+ warning "**⚠️ Copying Examples**"
+        It's strongly recommended to copy example projects to an _outside_ folder before modifying them.  This keeps the MSDK's "source" copy preserved for reference.  Project folders must be copied to a location _without_ any spaces in its filepath.
 
 4. VS Code will prompt for trust the first time. Select _Trust folder and enable all features_
 
@@ -460,7 +617,8 @@ The setup below only needs to be done once per MSDK [installation](#installation
 
 6. Set the **Board Support Package** to match your evaluation platform. In VS Code, this is done by editing the `.vscode/settings.json` file and setting the `"board"`  project configuration option.  
 
-    See [Board Support Packages](#board-support-packages) for more details.
+    ???+ note "ℹ️ **Note**"
+        See [Board Support Packages](#board-support-packages) for more details and a table of values.
 
     ![Figure 17](res/Fig17.jpg)
 
@@ -501,6 +659,9 @@ The setup below only needs to be done once per MSDK [installation](#installation
         Continue | Step Over | Step Into | Step Out | Restart | Stop
 
 16. Exercise the debugger and press stop to disconnect when finished.
+
+    ???+ note "ℹ️ **Note**"
+        See [Visual Studio Code](#visual-studio-code) for additional more detailed documentation.
 
 ---
 
@@ -559,6 +720,9 @@ This section is an Eclipse "quick-start" that walks through creating, building, 
 
 12. **Terminate** the debugger (**`CTRL+F2`**) when finished.
 
+    ???+ note "ℹ️ **Note**"
+        See [Eclipse](#eclipse) for additional more detailed documentation.
+
 ---
 
 ### Getting Started with Command-Line Development
@@ -577,6 +741,23 @@ On Windows, use the MinGW shortcut to launch an MSYS2/MinGW terminal. This short
 
 ##### Linux/MacOS
 
+###### Sourcing `setenv`
+
+A `setenv.sh` script is available in the root directory of an MSDK installation.  This file can be sourced to facilitate the setup of an environment for MSDK development.
+
+```bash
+source ~/MaximSDK/setenv.sh
+```
+
+This command can also be added to shell startup scripts (`~/.bashrc`, `~/.zshrc`, etc.) to automate the environment setup.
+
+???+ note "ℹ️ **Note: Automatic Updates**"
+    `setenv.sh` will automatically check for available updates to the MSDK.  This can be permanently disabled by following its prompt on startup, or by deleting/moving the `updates.sh` script in the root directory of the MSDK installation. 
+
+    ![Figure 51](res/Fig51.jpg)
+
+###### Manual Setup
+
 1. On Linux and MacOS, copy the following contents into your shell's terminal profile/startup script to manually configure your environment for MSDK development. Depending on your system and shell, this could be `~/.profile`, `~/.zprofile`, `~/.bashrc`, `~/.zshrc`, etc. Command-line Linux/MacOS users are expected to know which file to edit for their particular system and preferences.
 
         # Set MAXIM_PATH to point to the MSDK
@@ -586,8 +767,8 @@ On Windows, use the MinGW shortcut to launch an MSYS2/MinGW terminal. This short
         export ARM_GCC_ROOT=$MAXIM_PATH/Tools/GNUTools/10.3
         export PATH=$ARM_GCC_ROOT/bin:$PATH
         
-        # Add xPack RISC-V GCC to path (v10.2)
-        export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-embed-gcc/10.2.0-1.2
+        # Add xPack RISC-V GCC to path (v12.2)
+        export XPACK_GCC_ROOT=$MAXIM_PATH/Tools/xPack/riscv-none-elf-gcc/12.2.0-3.1
         export PATH=$XPACK_GCC_ROOT/bin:$PATH
         
         # Add OpenOCD to path
@@ -612,7 +793,10 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 #### Building and Running an Example (Command-Line)
 
-1. First, copy an [example project](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) to an accessible directory outside of the SDK. It is strongly recommended to keep the MSDK examples unmodified in case they need to be referenced again later.
+1. First, copy an [example project](https://github.com/Analog-Devices-MSDK/msdk/tree/main/Examples) to an accessible directory outside of the SDK. The `Hello_World` project is a good one to start with.
+
+    ???+ warning "**⚠️ Copying Examples**"
+        It's strongly recommended to copy example projects to an _outside_ folder before modifying them.  This keeps the MSDK's "source" copy preserved for reference.  Project folders must be copied to a location _without_ any spaces in its filepath.
 
 2. Launch your terminal. On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
 
@@ -620,10 +804,20 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 4. Run the following command to build the example:
 
-        make -r -j
+        make
 
-    - `-r` is an option that improves build speed.
-    - `-j` enables parallel execution of the build in the maximum number of threads.
+    ???+ note "ℹ️ **Note: Improving Build Speed**"
+        The following command can be used to enable parallel builds and drastically improve build speed:
+
+            :::shell
+            make -r -j --output-sync=target --no-print-directory
+
+        - `-r` is an option that ignores some of Make's implicit rules to improve build speed.
+        - `-j` enables parallel execution of the build in the maximum number of threads.
+        
+            ???+ warning "**⚠️ Parallel Builds**"
+                Parallel builds can mangle the console output.  To deal with this, the `--output-sync=target` option can be used.  However, _this is only available in Make version 4 or higher_.  When this option is used, `--no-print-directory` is also used to declutter the build output.
+
 
     Expected output:
 
@@ -650,9 +844,13 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
 
 5. Connect a debug adapter between the host PC and the evaluation platform. Detailed instructions on this hardware setup can be found in the evaluation platform's Datasheet and Quick-Start Guide, which are available on its [analog.com](https://analog.com) product page.
 
-6. Run the command below to launch an **OpenOCD _server_**, **flash** the program binary, and **halt** the program execution.
+6. Flash and run the program with OpenOCD.
 
-        openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify; init; reset halt"
+        :::shell
+        make flash.openocd
+
+    ???+ note "ℹ️ **Note: Flashing with Make**"
+        The command `make flash.openocd` is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It launches and drives an OpenOCD server behind the scenes to flash the project's binary.  See the `Tools/Flash/flash.mk` file for implementation details, and [Flashing on the Command-Line](#flashing-on-the-command-line) for more details on launching debug server/clients manually.
 
     Expected output:
 
@@ -683,104 +881,14 @@ Any "file not found" errors indicate that `MAXIM_PATH` has not been set correctl
         ** Programming Finished **
         ** Verify Started **
         ** Verified OK **
-        Info : Listening on port 6666 for tcl connections
-        Info : Listening on port 4444 for telnet connections 
-        # Note: OpenOCD is now waiting for a GDB client
+        ** Resetting Target **
+        Info : SWD DPIDR 0x2ba01477
+        shutdown command invoked
 
-7. Launch a **_new_ separate terminal**. On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
+7. The program has been flashed and the target micro has been reset.  The flashed program should now be running.  For the `Hello_World` example, an LED on the board should be blinking.
 
-8. `cd` into the location of the copied example project.
-
-9. Run the following command to launch a **GDB *client***.
-
-        arm-none-eabi-gdb --se=build/max78002.elf
-
-    - `--se` sets the symbol and executable file to the compiled program file. By default, the output filename matches the target microcontroller.
-
-    Expected output:
-
-        :::bash
-        GNU gdb (GNU Arm Embedded Toolchain 10.3-2021.10) 10.2.90.20210621-git
-        Copyright (C) 2021 Free Software Foundation, Inc.
-        License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
-        This is free software: you are free to change and redistribute it.
-        There is NO WARRANTY, to the extent permitted by law.
-        Type "show copying" and "show warranty" for details.
-        This GDB was configured as "--host=i686-w64-mingw32 --target=arm-none-eabi".
-        Type "show configuration" for configuration details.
-        For bug reporting instructions, please see:
-        <https://www.gnu.org/software/gdb/bugs/>.
-        Find the GDB manual and other documentation resources online at:
-        <http://www.gnu.org/software/gdb/documentation/>.
-        
-        For help, type "help".
-        Type "apropos word" to search for commands related to "word"...
-        Reading symbols from build/max78002.elf...
-        (gdb)
-
-10. Connect the GDB Client to the OpenOCD server with the following command.
-
-        target extended-remote localhost:3333
-
-    Expected output:
-
-        :::bash
-        Remote debugging using localhost:3333
-        0x0000fff4 in ?? () # Note: ?? may be present at this stage, which is OK.
-
-11. Reset the target microcontroller.
-
-        monitor reset halt
-
-    Expected output:
-
-        :::bash
-        SWD DPIDR 0x2ba01477
-        target halted due to debug-request, current mode: Thread
-        xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
-
-12. Set a breakpoint on `main`.
-
-        b main
-
-    Expected output:
-
-        :::bash
-        Breakpoint 1 at 0x10000224: file main.c, line 62.
-        Note: automatically using hardware breakpoints for read-only addresses.
-
-13. Continue the debugger.
-
-        continue
-
-    Expected output (for the Hello World example):
-
-        :::bash
-        Continuing.
-        
-        Breakpoint 1, main () at main.c:62
-        62     printf("Hello World!\n");
-
-14. (Optional) Continue exercising the debugger.
-
-    Run `help` for GDB help, or see [Common GDB Commands](#common-gdb-commands).
-
-15. Quit GDB.
-
-        quit
-
-    Expected output:
-
-        :::shell
-        A debugging session is active.
-        
-        Inferior 1 [Remote target] will be detached.
-        
-        Quit anyway? (y or n) [answered Y; input not from terminal]
-        Detaching from program: C:\Users\User\codespace\Hello_World\build\max78002.elf, Remote target
-        [Inferior 1 (Remote target) detached]
-
-16. In the terminal window running the OpenOCD _server_, press `CTRL + C` to issue the shutdown command and quit.
+    ???+ note "ℹ️ **Note**"
+        See [Command-Line Development](#command-line-development) for additional more detailed documentation.
 
 ## Visual Studio Code
 
@@ -801,15 +909,19 @@ As a result, you'll notice that there is no "New Project" mechanism. A "project"
 _(Note:  You may need to enable viewing of hidden items in your file explorer to see the .vscode sub-folder)._
 
 To open a project:
+
 1. Launch Visual Studio Code.
 
 2. Select **File -> Open Folder...**
 
     ![File -> Open Folder](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/file_openfolder.JPG)
 
-3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder and open it with **Select Folder**.
+3. Navigate to an example project for the target microcontroller in the MSDK's `Examples` folder.
 
     ![Figure 43](res/Fig43.jpg)
+
+    ???+ warning "**⚠️ Copying Examples**"
+        It's strongly recommended to copy example projects to an _outside_ folder before modifying them.  This keeps the MSDK's "source" copy preserved for reference.  Project folders must be copied to a location _without_ any spaces in its filepath.
 
 4. VS Code will prompt for trust the first time. Select _Trust folder and enable all features_
 
@@ -819,13 +931,13 @@ To open a project:
 
     ![Figure 16](res/Fig16.jpg)
 
-6. Verify the **_Board Support Package_** for the project is set correctly.  See [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code) below.
+6. Verify the **_Board Support Package_** for the project is set correctly.
 
 ### How to Set the BSP (VS Code)
 
 To set the BSP for an open project:
 
-1. Set the `"board"` [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-configuration-variables-reference-table)_.
+1. Set the `"board"` [project configuration](https://github.com/Analog-Devices-MSDK/VSCode-Maxim/tree/main#project-configuration) option in `.vscode/settings.json`, which maps to the `BOARD` _[Build Configuration Variable](#build-tables)_.
 
     See [Board Support Packages](#board-support-packages) for a table of possible values.
 
@@ -837,21 +949,46 @@ To set the BSP for an open project:
 
     ![Reload window](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/reload_window.JPG)
 
-### Building a Project
+### Build Tasks
 
-An open project will present four available [build tasks](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks) from **Terminal > Run Build task...** or the shortcut **`Ctrl+Shift+B`**.
+Once a project is opened 4 available build tasks will become available via `Terminal > Run Build task...` or the shortcut `Ctrl+Shift+B`.  These tasks are configured by the `.vscode/task.json` file.
 
-![Build Tasks Image](https://raw.githubusercontent.com/MaximIntegratedTechSupport/VSCode-Maxim/main/img/buildtasks.JPG)
+![Build Tasks Image](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/buildtasks.JPG)
 
-Run the **"build"** task to compile the project for the configured _Target Microcontroller_ and _BSP_. Notice the **`TARGET`**, **`BOARD`** , and **`PROJECT`** Build Configuration Variables being set on the command line, and the program binary successfully compiled into the `.elf` program binary in the **build** sub-folder of the project.
+#### Build
 
-![Figure 18](res/Fig18.jpg)
+* Compiles the code with a `make all` command.
+* Additional options are passed into Make on the command-line based on the project's settings.json file.
+* The `./build` directory will be created and will contain the output binary, as well as all intermediary object files.
+* Notice the **`TARGET`**, **`BOARD`** , and **`PROJECT`** Build Configuration Variables being set on the command line, and the program binary successfully compiled into the `.elf` program binary in the **build** sub-folder of the project.
 
-### Cleaning a Project
+    ![Figure 18](res/Fig18.jpg)
 
-To **clean** a project, run the _clean_ [build task](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks).  This will delete the build folder and its contents. The next time the project is built, it will be rebuilt from scratch.
+#### Clean
 
-It should be noted that _clean_ will only remove the _project's_ build output. The **clean-periph** task can be used to clean the project _and_ the peripheral driver libraries.
+* Cleans the build output, removing the `./build` directory and all of its contents.
+
+#### Clean-Periph
+
+* This task is the same as 'clean', but it also removes the build output for the MSDK's peripheral drivers.
+* Use this if you would like to recompile the peripheral drivers from source on the next build.
+
+#### Flash
+
+* Launching this task automatically runs the `Build` task first.  Then, it flashes the output binary to the microcontroller.
+* It uses the GDB `load` and `compare-sections` commands, and handles launching an OpenOCD internally via a pipe connection.
+* The flashed program will be halted until the microcontroller is reset, power cycled, or a debugger is connected.
+* A debugger must be connected correctly to use this task.  Refer to the datasheet of your microcontroller's evaluation board for instructions.
+  
+#### Flash & Run
+
+* This is the same as the `Flash` task, but it also will launch execution of the program once flashing is complete.
+  
+#### Erase Flash
+
+* Completely erases all of the application code in the flash memory bank.
+* Once complete, the target microcontroller will be effectively "blank".
+* This can be useful for recovering from Low-Power (LP) lockouts, bad firmware, etc.
 
 ### Flashing and Debugging
 
@@ -859,7 +996,7 @@ This section assumes a debugger is connected between the host PC and the evaluat
 
 #### Arm Core Debugging
 
-1. Run the **`flash`**  [build task](https://github.com/Analog-Devices-MSDK/VSCode-Maxim#build-tasks).  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.  
+1. Run the **`flash`**  [build task](#build-tasks).  Running this task will automatically build the project if needed, flash the program binary, and halt the program execution to await a debugger connection.  
 
     **Flashing does not happen automatically when launching the debugger**. This is an intentional design choice for VS Code to allow the debugger to quickly restart the program under debug without a lengthy re-flash procedure.
 
@@ -914,9 +1051,36 @@ Alternatively, *watch expressions* can be used.  These can be set for registers 
 
 It should be noted that the debugger's watch points are *contextual*, meaning that its symbol look-ups will depend on the active point in your program.
 
+#### Disassembly View
+
+Stepping through disassembly is supported and enabled by the [Cortex-Debug](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug) launch profile.
+
+![Figure 48](res/Fig48.jpg)
+
+To open the disassembly view:
+
+1. [Launch a debug session](#arm-core-debugging) with the `Debug Arm (Cortex-Debug)` profile.
+
+2. Open the developer command prompt with `CTRL + SHIFT + P`.
+
+3. Run the "Open Disassembly View" developer command.
+
+    ![Figure 49](res/Fig49.jpg)
+
+    Alternatively, right click -> "Open Disassembly View"
+
+    ![Figure 50](res/Fig50.jpg)
+
+4. The debugger will step through whichever window has the active focus.  Set the focus to the disassembly window to step through the assembly code.
+
+See the [Cortex-Debug Wiki](https://github.com/Marus/cortex-debug/wiki/Disassembly-Debugging) for more details.
+
 #### Dual Core Debugging
 
-For microcontrollers with _both_ an Arm M4 and a RISC-V core, the _GDB (RISC-V)_ launch profile is provided to enable RISC-V debugging. The RISC-V core requires setup and handoff from the Arm M4 core. As a result, this is an advanced configuration requiring a unique combination of the project's source code, Makefiles, and VSCode-Maxim project settings. Such projects are appended with the `-riscv` suffix in the project's folder name.
+For microcontrollers with _both_ an Arm M4 and a RISC-V core, the _GDB (RISC-V)_ launch profile is provided to enable RISC-V debugging. 
+
+???+ note "ℹ️ **Note**"
+    The RISC-V core requires setup and handoff from the Arm M4 core. As a result, this is an advanced configuration requiring a unique combination of the project's source code, Makefiles, and VSCode-Maxim project settings. Such projects are appended with the `-riscv` suffix in the project's folder name.
 
 This section demonstrates how to debug `-riscv` projects in VS Code using the [mnist-riscv](Examples/MAX78000/CNN/mnist-riscv) project for the MAX78000 as an example.
 
@@ -924,36 +1088,224 @@ This section demonstrates how to debug `-riscv` projects in VS Code using the [m
 
     ![Debugger-EvKIT Connections](https://user-images.githubusercontent.com/38844790/190749647-f4ef066a-afcc-4749-bb9c-53c7e33e2cf9.jpg)
 
-2. Make sure your Olimex debugger drivers are installed correctly. Sometimes they need to be updated using the "zadig" tool. See Section 3.3.3 of the [Olimex User Manual](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf), and use the [Zadig](https://zadig.akeo.ie/) tool to install WinUSB drivers.
+    ???+ warning "**⚠️ Olimex Drivers**"
+        If connection issues occur with the Olimex adapter, verify that the drivers are installed correctly.  See Section 3.3.3 of the [Olimex User Manual](https://www.olimex.com/Products/ARM/JTAG/_resources/ARM-USB-OCD_and_OCD_H_manual.pdf).  The [Zadig](https://zadig.akeo.ie/) tool to install WinUSB drivers.
 
-3. [Open](#opening-example-projects) the project in VS Code.
+2. [Open](#opening-example-projects) the project in VS Code.
 
-4. Run the "Flash" task.
+3. Run the "Flash" task.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398354-2ac2961b-6d45-4f84-8805-0ab5339a4b98.png)
 
-5. Launch the debugger using the **Debug Arm (Cortex-Debug)** or **GDB (Arm M4)** profile **first**:
+4. Launch the debugger using the **Debug Arm (Cortex-Debug)** or **GDB (Arm M4)** profile **first**:
 
     ![Figure 46](res/Fig46.jpg)
 
     ... which should hit the breakpoint in `main.c`...
     ![image](https://user-images.githubusercontent.com/38844790/168398503-0f2ae9c1-f535-4d41-aed9-9d9e19b16303.png)
 
-6. **Continue** the debugger.  The code in `main.c` will boot up the RISC-V core. You can optionally set a breakpoint on `WakeISR` to see when the RISC-V core has signaled it's ready.
+5. **Continue** the debugger.  The code in `main.c` will boot up the RISC-V core. You can optionally set a breakpoint on `WakeISR` to see when the RISC-V core has signaled it's ready.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398665-9486e1b6-73bd-481e-a4b5-15dd44c7d7b9.png)
 
-7. Now, switch the debugger profile to the **GDB (RISC-V) profile** and launch it. This will launch an additional instance on a separate port and connect to the Olimex adapter.
+6. Now, switch the debugger profile to the **GDB (RISC-V) profile** and launch it. This will launch an additional instance on a separate port and connect to the Olimex adapter.
 
     ![image](https://user-images.githubusercontent.com/38844790/168398707-b6771bf3-b6bf-47a2-b963-b0b9fc003ca4.png)
 
-    The "Signal 0" exception below is a known issue caused by a reset bug on the RISC-V core. The exception message is harmless and can be safely ignored.
+    ???+ note "ℹ️ **Note: Signal 0 Exception**"
+        The "Signal 0" exception below is a known issue caused by a signaling mismatch between the RISC-V core and VS Code's debugger engine. The exception message is harmless and can be safely ignored.
 
-    ![image](https://user-images.githubusercontent.com/38844790/168399130-95fe7539-fb46-4c06-a268-6b720403b539.png)
+        ![image](https://user-images.githubusercontent.com/38844790/168399130-95fe7539-fb46-4c06-a268-6b720403b539.png)
 
-8. From here, the debugger should be fully functional. The Arm vs. RISC-V debugger instance can be selected with the dropdown on the debugger control bar.
+7. From here, the debugger should be fully functional. The Arm vs. RISC-V debugger instance can be selected with the dropdown on the debugger control bar.
 
     ![image](https://user-images.githubusercontent.com/38844790/168399419-d0488a0e-2068-4cc7-9108-0a296fdc04b4.png)
+
+### Project Settings
+
+`.vscode/settings.json` is the main project configuration file.  Values set here are parsed into the other .json config files.  
+
+**When a change is made to this file, VS Code should be reloaded with CTRL+SHIFT+P -> Reload Window (or alternatively restarted completely) to force a re-parse.**
+
+![Reload Window](https://raw.githubusercontent.com/Analog-Devices-MSDK/VSCode-Maxim/main/img/reload_window.JPG)
+
+The default project configuration should work for most use cases as long as [`"target"`](#target) and [`"board"`](#board) are set correctly.
+
+???+ note "ℹ️ **Note**"
+    Any field from `settings.json` can be referenced from any other VS Code config file (including itself) with `"${config:[fieldname]}"`
+
+The following configuration options are available:
+
+#### `"MAXIM_PATH"`
+
+* This option must point to the root installation directory of the MSDK.  
+* It should be placed in the _global_ user settings.json file during first-time VSCode-Maxim setup.  See [Getting Started with Visual Studio Code](#getting-started-with-visual-studio-code).
+
+#### `"target"`
+
+* This sets the target microcontroller for the project.
+* It sets the `TARGET` [Build Configuration](#build-configuration-variables) variable.
+
+#### `"board"`
+
+* This sets the target board for the project (ie. Evaluation Kit, Feather board, etc.)
+* See [How to Set the BSP (VS Code)](#how-to-set-the-bsp-vs-code)
+
+#### `"terminal.integrated.env.[platform]:Path"`
+
+* This prepends the location of the MSDK toolchain binaries to the system `Path` used by VSCode's integrated terminal.
+* The Path is not sanitized by default, which means that the terminal inherits the system path.
+
+#### `"project_name"`
+
+* Sets the name of project.  This is used in other config options such as `program_file`.
+* Default value: `"${workspaceFolderBasename}"`
+
+#### `"program_file"`
+
+* Sets the name of the file to flash and debug.  This is provided in case it's needed, but for most use cases should be left at its default.  
+* File extension must be included.
+* Default value: `"${config:project_name}.elf"`
+
+#### `"symbol_file"`
+
+* Sets the name of the file that GDB will load debug symbols from.
+* File extension must be included.
+* Default value: `"${config:program_file}"`
+
+#### `"M4_OCD_interface_file"`
+
+* Sets the OpenOCD interface file to use to connect to the Arm M4 core.  This should match the debugger being used for the M4 core.
+* The `MaximSDK/Tools/OpenOCD/scripts/interface` folder is searched for the file specified by this setting.
+* `.cfg` file extension must be included.
+* Default value: `"cmsis-dap.cfg"`
+
+#### `"M4_OCD_target_file"`
+
+* Sets the OpenOCD target file to use for the Arm M4 core.  This should match the target microcontroller.
+* `.cfg` file extension must be included.
+* The `MaximSDK/Tools/OpenOCD/scripts/target` folder is searched for the file specified by this setting.
+* Default value: `"${config:target}.cfg"`
+
+#### `"RV_OCD_interface_file"`
+
+* Sets the OpenOCD interface file to use to connect to the RISC-V core.  This should match the debugger being used for the RISC-V core.
+* The `MaximSDK/Tools/OpenOCD/scripts/interface` folder is searched for the file specified by this setting.
+* `.cfg` file extension must be included.
+* Default value: `"ftdi/olimex-arm-usb-ocd-h.cfg"`
+
+#### `"RV_OCD_target_file"`
+
+* Sets the OpenOCD target file to use for the RISC-V core.
+* The `MaximSDK/Tools/OpenOCD/scripts/target` folder is searched for the file specified by this setting.
+* `.cfg` file extension must be included.
+* Default value: `"${config:target}_riscv.cfg"`
+
+#### `"v_Arm_GCC"`
+
+* Sets the version of the Arm Embedded GCC to use, including toolchain binaries and the standard library version.
+* This gets parsed into `ARM_GCC_path`.
+* Default value:  `"10.3"`
+
+#### `"v_xPack_GCC"`
+
+* Sets the version of the xPack RISC-V GCC to use.
+* This gets parsed into `xPack_GCC_path`.
+* Default value: `"12.2.0-3.1"`
+
+#### `"OCD_path"`
+
+* Where to find the OpenOCD.
+* Default value: `"${config:MAXIM_PATH}/Tools/OpenOCD"`
+
+#### `"ARM_GCC_path"`
+
+* Where to find the Arm Embedded GCC Toolchain.
+* Default value: `"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}"`
+
+#### `"xPack_GCC_path"`
+
+* Where to find the RISC-V GCC Toolchain.
+* Default value: `"${config:MAXIM_PATH}/Tools/xPack/riscv-none-elf-gcc/${config:v_xPack_GCC}"`
+
+#### `"Make_path"`
+
+* Where to find Make binaries (only used on Windows)
+* Default value: `"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin"`
+
+#### `"C_Cpp.default.includePath"`
+
+* Which paths to search to find header (.h) files.
+* Does not recursively search by default.  To recursively search, use `/**`.
+
+#### `"C_Cpp.default.browse.path"`
+
+* Which paths to search to find source (.c) files.
+* Does not recursively search by default.  To recursively search, use `/**`.
+
+#### `"C_Cpp.default.defines"`
+
+* Sets the compiler definitions to use for the intellisense engine.
+* Most definitions should be defined in header files, but if a definition is missing it can be entered here to get the intellisense engine to recognize it.
+
+### Setting Search Paths for Intellisense
+
+VS Code's intellisense engine must be told where to find the header files for your source code.  By default, the MSDK's peripheral drivers, the C standard libraries, and all of the sub-directories of the workspace will be searched for header files to use with Intellisense.  If VS Code throws an error on an `#include` statement (and the file exists), then a search path is most likely missing.
+
+To add additional search paths :
+
+1. Open the `.vscode/settings.json` file.  
+
+2. Add the include path(s) to the `C_Cpp.default.includePath` list.  The paths set here should contain header files, and will be searched by the Intellisense engine and when using "Go to Declaration" in the editor.
+
+3. Add the path(s) to any relevant implementation files to the `C_Cpp.default.browse.path` list.  This list contains the paths that will be searched when using "Go to Definition".
+
+### Project Creation
+
+#### Option 1.  Copying a Pre-Made Project
+
+Copying a pre-made example project is a great way to get rolling quickly, and is currently the recommended method for creating new projects.  
+
+The release package for this project (Located at `Tools/VSCode-Maxim` in the MSDK) contains a `New_Project` folder designed for such purposes. Additionally, any of the VS Code-enabled Example projects can be copied from the MSDK.
+
+1. Copy the existing project folder to an accessible location.  This will be the location of your new project.
+
+    ???+ warning "**⚠️ Warning**"
+        The full path to the project must _not_ have any spaces in it.
+
+2. (Optional) Rename the folder.  For example, I might rename the folder to `MyProject`.
+
+3. Open the project in VS Code (`File -> Open Folder...`)
+
+4. Set your [target](#target) microcontroller and [board](#board) correctly.
+
+5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
+
+6. That's it!  The existing project is ready to build, debug, and modify.
+
+#### Option 2 - Injecting
+
+VSCode-Maxim releases provide the `Inject` folder for "injecting" into an existing folder.  If you want to start from scratch or use the project files with existing source code, take this option.
+
+1. Create your project folder if necessary.  For example, I might create a new project in a workspace folder with the path: `C:/Users/Jake.Carter/workspace/MyNewProject`.
+
+2. Copy the **contents** of the `Inject` folder into the project folder from step 1.  The contents to copy include a `.vscode` folder, a `Makefile`, and a `project.mk` file.  For this example, the contents of the 'MyProject' folder would be the following:
+
+        :::shell
+        C:/Users/Jake.Carter/workspace/MyNewProject
+        |- .vscode
+        |- Makefile
+        |- project.mk
+
+3. Open the project in VS Code (`File -> Open Folder...`)
+
+4. Set your [target](#target) microcontroller and [board](#board) correctly.
+
+5. `CTRL+SHIFT+P -> Reload Window` to re-parse the project settings.
+
+6. Configure the [build system](#build-system) for use with any pre-existing source code.
+
+7. That's it!  Your new project can now be opened with `File > Open Folder` from within VS Code.
 
 ## Eclipse
 
@@ -1021,7 +1373,7 @@ When Eclipse is launched, it will prompt for a **_workspace_** location. This is
 [Imported](#importing-examples) Eclipse projects files are configured for the **EVKIT**-type _BSP_ by default. To set the BSP:
 
 1. Right click the project name and select _Properties_.  Navigate to **C/C++ Build -> Environment**.
-2. Set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_ to match the target evaluation platform.
+2. Set the **`BOARD`** _[Build Configuration Variable](#build-tables)_ to match the target evaluation platform.
 
     See [Board Support Packages](#board-support-packages) for a table of possible values.
 
@@ -1095,7 +1447,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 ### How to Set the BSP (Command-Line)
 
-- To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables-reference-table)_. by editing the **project.mk** that can be found inside each project.
+- To _persistently_ the BSP, set the **`BOARD`** _[Build Configuration Variable](#build-configuration-variables)_ by editing the **project.mk** that can be found inside each project.
 
         :::makefile
         # This file can be used to set build configuration
@@ -1138,103 +1490,126 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 ### Flashing on the Command-Line
 
+???+ note "ℹ️ **A Note on Flashing**"
+    The commands below are not a comprehensive list of all the possible options for flashing.  They are the most common and useful ones.  For full documentation, see the "Flash Programming" section of the [**OpenOCD User Manual**](https://openocd.org/doc/pdf/openocd.pdf)
+
 1. [Build](#building-on-the-command-line) the project.  
 
 2. Connect a debug adapter between the host PC and the evaluation platform. For more detailed instructions on this hardware setup, refer to the evaluation platform's Datasheet and Quick-Start Guide, which are available on its [analog.com](https://analog.com) product page.
 
-3. Flash the program using `openocd`.
+3. Flash the program using `openocd`.  It's recommended to use the `make` command below for convenience.
 
-    - **Flash and exit:**  Use this command if you just want to flash the program _but **not debug**_. OpenOCD will **flash** the program and **exit** on completion.
+    - ???+ note "ℹ️ **Flashing with Make**"
 
-            openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify exit"
+                :::shell
+                make flash.openocd
 
-        - `-f target/max78002.cfg` sets the OpenOCD config file for the _Target microcontroller_.  Supported options can be found in the [Tools/OpenOCD/scripts/target](Tools/OpenOCD/scripts/target) folder.  **Change this to match the target microcontroller**.
-        - `-c "program build/max78002.elf verify exit" ` flashes the program binary. Change `build/max78002.elf` to match the correct filename.
+            Expected output:
 
-        Expected output:
+                :::bash
+                Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
+                Licensed under GNU GPL v2
+                For bug reports, read
+                    http://openocd.org/doc/doxygen/bugs.html
+                DEPRECATED! use 'adapter driver' not 'interface'
+                Info : CMSIS-DAP: SWD supported
+                Info : CMSIS-DAP: Atomic commands supported
+                Info : CMSIS-DAP: Test domain timer supported
+                Info : CMSIS-DAP: FW Version = 0256
+                Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
+                Info : CMSIS-DAP: Interface Initialised (SWD)
+                Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+                Info : CMSIS-DAP: Interface ready
+                Info : clock speed 2000 kHz
+                Info : SWD DPIDR 0x2ba01477
+                Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
+                Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
+                Info : starting gdb server for max32xxx.cpu on 3333
+                Info : Listening on port 3333 for gdb connections
+                Info : SWD DPIDR 0x2ba01477
+                target halted due to debug-request, current mode: Thread
+                xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
+                ** Programming Started **
+                ** Programming Finished **
+                ** Verify Started **
+                ** Verified OK **
+                ** Resetting Target **
+                Info : SWD DPIDR 0x2ba01477
+                shutdown command invoked
 
-            :::bash
-            Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
-            Licensed under GNU GPL v2
-            For bug reports, read
-                http://openocd.org/doc/doxygen/bugs.html
-            DEPRECATED! use 'adapter driver' not 'interface'
-            Info : CMSIS-DAP: SWD supported
-            Info : CMSIS-DAP: Atomic commands supported
-            Info : CMSIS-DAP: Test domain timer supported
-            Info : CMSIS-DAP: FW Version = 0256
-            Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
-            Info : CMSIS-DAP: Interface Initialised (SWD)
-            Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
-            Info : CMSIS-DAP: Interface ready
-            Info : clock speed 2000 kHz
-            Info : SWD DPIDR 0x2ba01477
-            Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
-            Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
-            Info : starting gdb server for max32xxx.cpu on 3333
-            Info : Listening on port 3333 for gdb connections
-            Info : SWD DPIDR 0x2ba01477
-            target halted due to debug-request, current mode: Thread
-            xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
-            ** Programming Started **
-            ** Programming Finished **
-            ** Verify Started **
-            ** Verified OK **
-            shutdown command invoked
+            This command is a build target added to the MSDK as of the [June 2023 Release](https://github.com/Analog-Devices-MSDK/msdk/releases/tag/v2023_06) to make flashing over the command-line easier.  It will **flash** _and_ **run** the project with OpenOCD.  See the `Tools/Flash/flash.mk` file for implementation details.
 
-    - **Flash and hold:**  Use this if you want to also **debug** the program. OpenOCD will **flash** the program, **reset** the MAX78002, **halt** program execution, and **wait** for a GDB debugger client connection.
+    - ???+ note "ℹ️ **OpenOCD Flash & Hold**"
+        The following command template can be used if you just want to flash the program with OpenOCD manually, and halt the target micro.  This is used when you want to start a command-line debugging session.
 
-            openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/max78002.cfg -c "program build/max78002.elf verify; init; reset halt"
+                :::shell
+                openocd -s $MAXIM_PATH/Tools/OpenOCD/scripts -f interface/cmsis-dap.cfg -f target/<target>.cfg -c "program build/<filename>.elf verify; init; reset halt"
 
-        - `-f target/max78002.cfg` sets the OpenOCD config file for the _Target microcontroller_.  Supported options can be found in the [Tools/OpenOCD/scripts/target](Tools/OpenOCD/scripts/target) folder.  **Change this to match the target microcontroller**.
-        - `-c "program build/max78002.elf verify exit" ` flashes the program binary. Change **`build/max78002.elf`** to match the correct filename.
+            - ???+ note "**ℹ️ `-s $MAXIM_PATH/Tools/OpenOCD/scripts`**"
+                This option tells OpenOCD to search the `Tools/OpenOCD/scripts` folder of the MSDK installation for files.
+                ???+ warning "**⚠️ Warning: Windows**"
+                    On Windows you should use `%MAXIM_PATH%` (Command Prompt) or `$env:MAXIM_PATH` (PowerShell) to dereference the `MAXIM_PATH` environment variable 
 
-        Expected output:
+            - ???+ note "**ℹ️ `-f target/<target>.cfg`**"
+                This option loads an OpenOCD config file for the _target microcontroller_.  Supported options can be found in the `Tools/OpenOCD/scripts/target` folder.  
+                ???+ warning "⚠️**Change `<target>` to match the target micro**"
 
-            :::bash
-            Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
-            Licensed under GNU GPL v2
-            For bug reports, read
-                http://openocd.org/doc/doxygen/bugs.html
-            DEPRECATED! use 'adapter driver' not 'interface'
-            Info : CMSIS-DAP: SWD supported
-            Info : CMSIS-DAP: Atomic commands supported
-            Info : CMSIS-DAP: Test domain timer supported
-            Info : CMSIS-DAP: FW Version = 0256
-            Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
-            Info : CMSIS-DAP: Interface Initialised (SWD)
-            Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
-            Info : CMSIS-DAP: Interface ready
-            Info : clock speed 2000 kHz
-            Info : SWD DPIDR 0x2ba01477
-            Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
-            Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
-            Info : starting gdb server for max32xxx.cpu on 3333
-            Info : Listening on port 3333 for gdb connections
-            Info : SWD DPIDR 0x2ba01477
-            target halted due to debug-request, current mode: Thread
-            xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
-            ** Programming Started **
-            ** Programming Finished **
-            ** Verify Started **
-            ** Verified OK **
-            Info : Listening on port 6666 for tcl connections
-            Info : Listening on port 4444 for telnet connections
-            # Note: OpenOCD is now waiting for a GDB client connection
+            - ???+ note "**ℹ️ `-f interface/cmsis-dap.cfg`**"
+                This option loads an OpenOCD config file for the MAX32625PICO SWD debugger that is included with most EVKITs.  You may need to change this option for other debuggers. Supported options can be found in the `Tools/OpenOCD/scripts/interface` folder.
+            
+            - ???+ note "`-c "program build/<filename>.elf verify; init; reset halt"`"
+                This command flashes the program binary (`program`), performs a flash verification (`verify`), initializes the connection to the target micro (`init`), and finally resets/halts the micro to prepare for debug (`reset halt`).
+
+            Expected output:
+
+                :::bash
+                Open On-Chip Debugger 0.11.0+dev-g4cdaa275b (2022-03-02-09:57)
+                Licensed under GNU GPL v2
+                For bug reports, read
+                    http://openocd.org/doc/doxygen/bugs.html
+                DEPRECATED! use 'adapter driver' not 'interface'
+                Info : CMSIS-DAP: SWD supported
+                Info : CMSIS-DAP: Atomic commands supported
+                Info : CMSIS-DAP: Test domain timer supported
+                Info : CMSIS-DAP: FW Version = 0256
+                Info : CMSIS-DAP: Serial# = 044417016af50c6500000000000000000000000097969906
+                Info : CMSIS-DAP: Interface Initialised (SWD)
+                Info : SWCLK/TCK = 1 SWDIO/TMS = 1 TDI = 0 TDO = 0 nTRST = 0 nRESET = 1
+                Info : CMSIS-DAP: Interface ready
+                Info : clock speed 2000 kHz
+                Info : SWD DPIDR 0x2ba01477
+                Info : max32xxx.cpu: Cortex-M4 r0p1 processor detected
+                Info : max32xxx.cpu: target has 6 breakpoints, 4 watchpoints
+                Info : starting gdb server for max32xxx.cpu on 3333
+                Info : Listening on port 3333 for gdb connections
+                Info : SWD DPIDR 0x2ba01477
+                target halted due to debug-request, current mode: Thread
+                xPSR: 0x81000000 pc: 0x0000fff4 msp: 0x20003ff0
+                ** Programming Started **
+                ** Programming Finished **
+                ** Verify Started **
+                ** Verified OK **
+                Info : Listening on port 6666 for tcl connections
+                Info : Listening on port 4444 for telnet connections
+                # Note: OpenOCD is now waiting for a GDB client connection
 
 ### Debugging on the Command-Line
 
-1. [Flash](#flashing-on-the-command-line) the program using the **Flash and Hold** command.
+1. [Flash](#flashing-on-the-command-line) the program using the **Flash and Hold** command above.
 
-2. Launch an **_new_ separate terminal**. On Windows, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal.
+2. Launch an **_new_ separate terminal**. 
+
+    ???+ warning "⚠️ On **Windows**, use the MinGW shortcut or `Tools/MSYS2/msys.bat` file to launch the MSYS2 terminal."
 
 3. `cd` into the location of the copied example project.
 
 4. Run the following command to launch a **GDB *client***.
 
-        arm-none-eabi-gdb --se=build/max78002.elf
+        arm-none-eabi-gdb --se=build/<filename>.elf
 
-    - `--se` sets the symbol and executable file to the compiled program file. **Change this to match the build output filename.**
+    - ???+ note "**ℹ️ `--se=build/<filename>.elf`**"
+        This sets the symbol and executable file to the compiled program file.
+        ???+ warning "⚠️ **Change this to match the build output filename.**"
 
     Expected output:
 
@@ -1256,6 +1631,9 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
         Type "apropos word" to search for commands related to "word"...
         Reading symbols from build/max78002.elf...
         (gdb)
+
+    ???+ note "**ℹ️ Note**"
+        The terminal is now in an interactive GDB client window.  It accepts GDB commands.  Run `help` at any time, or see [Common GDB Commands](#common-gdb-commands) in this document.
 
 5. Connect the GDB Client to the OpenOCD server with the following command.
 
@@ -1302,8 +1680,6 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 
 9. (Optional) Continue exercising the debugger. 
 
-   Run `help` for GDB help, or see [Common GDB Commands](#common-gdb-commands).
-
 10. Quit GDB.
 
         quit
@@ -1327,7 +1703,7 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 | ------------------------------- | ----------------- | ------------------------------------------------------------ |
 | `monitor halt`                  |                   | Halt the microcontroller.                                    |
 | `monitor reset halt`            |                   | Reset the microcontroller and immediately halt.              |
-| `monitor max32xxx mass_erase 0` |                   | Mass erase the flash.                                        |
+| `monitor max32xxx mass_erase 0` |                   | Mass erase flash bank 0.                                        |
 | `file <filename>`               |                   | Set the program file to `<filename>`                         |
 | `load`                          |                   | Flash the current program file                               |
 | `continue`                      | `c`               | Continue execution.                                          |
@@ -1342,13 +1718,221 @@ For setup/quick-start, see ["Getting Started with Command-Line Development"](#ge
 | `help <cmd>`                    |                   | Print description for given command.                         |
 | `quit`                          | `q`               | Quit the GDB client                                          |
 
+## Build System
+
+### Build System Overview
+
+The **Build System** manages the compilation of source code into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**. All IDEs interface with this system.
+
+The Build System is managed by two files found in a project's root directory, one called **Makefile** and one called **project.mk**. These files are used by the [GNU Make](https://www.gnu.org/software/make/) program (which is a part of the MSDK toolchain) to locate and build a project's source code.
+
+* **Makefile** is the "core" file and should not be edited directly. Instead, it exposes the **CLI** that can be accessed in the _project.mk_ file, on the command line, in your system's environment, or through your IDE. It also comes with a default configuration that is suitable for most projects.
+* **project.mk** offers a convenient and stable access point for advanced build configuration, and this is the file that should be edited if necessary.
+
+When the command
+
+    make
+
+is run from inside of a project folder, the program `make` will resolve any project-specific settings and then build the project's source code.
+
+### Default Build Behavior
+
+By default, the build system will **auto-search** the **root** project directory for _source code_ (**`*.c`**) and _header files_ (**`*.h`**) to compile into a program binary. The _optional_ **include** and **src** directories are also searched if they exist.
+
+    :::bash
+    Root Project Directory
+    ├─ project.mk
+    ├─ Makefile
+    ├─ *.h
+    ├─ *.c
+    ├─include  # <-- Optional
+    └─ *.h
+    ├─src      # <-- Optional
+    └─ *.c
+
+Additionally, a project's build system will come pre-configured for a specific _Target Microcontroller_ and its primary _BSP_.
+
+The default configuration is suitable for most use cases, but a system of _Build Configuration Variables_ is available if additional configuration is needed.
+
+### Build Configuration Variables
+
+A **Build Configuration Variable** is a [Makefile variable](https://www.gnu.org/software/make/manual/make.html#Using-Variables) and therefore follows the same rules. However, they have been streamlined to be made much easier to use, so most of the [official GNU Make documentation](https://www.gnu.org/software/make/manual/make.html) is only needed for advanced use cases.
+
+#### How to Set a Build Configuration Variable
+
+To set a **standard** configuration variable, **use the `=` syntax**...
+
+    VARIABLE=VALUE
+
+The **`=`** operator is used for _most_ configuration variables with a few exceptions (documented in the [reference table](#build-tables)) when a variable should contain a **_list_ of values**. In such cases, **use `+=` the syntax** to _add_ values to the list.
+
+    VARIABLE+=VALUE1
+    VARIABLE+=VALUE2
+
+#### Where to Set a Build Configuration Variable
+
+For most variables, you should set them in the **project.mk** file (exceptions are documented in the [reference table](#build-tables) and IDE-specific sections).
+
+For example, to enable hardware floating-point acceleration for a project, the **`MFLOAT_ABI`** configuration variable can be used with a value of **`hard`**. The contents of **project.mk** might then look as follows:
+
+(_Inside project.mk_)
+
+    :::Make
+    # This file can be used to set build configuration
+    # variables. These variables are defined in a file called 
+    # "Makefile" that is located next to this one.
+    
+    # For instructions on how to use this system, see
+    # https://analog-devices-msdk.github.io/msdk/USERGUIDE/
+    
+    # **********************************************************
+    
+    MFLOAT_ABI=hard # Enable hardware floating point acceleration
+
+It should also be noted that configuration variables can be set on the **command line** as well. For example
+
+    make MFLOAT_ABI=hard
+
+will have the same effect.
+
+Additionally, **environment variables** can be used. For example (on Linux)
+
+    export MFLOAT_ABI=hard
+
+will set the hardware floating point acceleration as the default for all projects with an environment variable.
+
+However, there is a _precedence hierarchy_ that should be taken into consideration.
+
+#### Precedence Hierarchy
+
+The precedence hierarchy for the value of a configuration variable is:
+
+- **IDE/command-line > project.mk > environment variable > default value**
+
+If a value is set in an IDE _and_ project.mk, the IDE's value will take precedence. However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
+
+### Build Tables
+
+The following sections present the available [Build Configuration Variables](#build-configuration-variables).
+
+#### Primary Build Variables
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `MAXIM_PATH`           | (Optional) Specify the location of the MSDK                | This optional variable can be used to change where the Makefile looks for the MSDK installation. By default, the build system will attempt to locate the MSDK with a relative path. If a project is moved _outside_ of the SDK, this variable must be set to the absolute path of the MSDK installation. |
+| `TARGET`               | Set the _Target Microcontroller_                           | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk** |
+| `BOARD`                | Set the _Board Support Package (BSP)_                      | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk.**  See [Board Support Packages](#board-support-packages) for more details.  When you change this option, it's usually a good idea to fully clean your project, then rebuild. |
+| `BSP_SEARCH_DIR`       | Set the directory to search for the _Board Support Package (BSP)_                      | By default, the `Libraries/Boards` folder of the MSDK is searched for the `TARGET` microcontroller.  This setting is useful for loading custom BSPs from outside of the MSDK.  When `LIB_BOARD=1`, the build system looks for the file path at `$(BSP_SEARCH_DIR)/$(BOARD)/board.mk`.<br>See [BSP Search Directory](#bsp-search-directory) for more details. |
+
+#### Project Build Variables
+
+The following variables deal with fundamental project tasks such as adding source code, include paths, changing the output filename, etc.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `VPATH`                | Where to search for source (.c/.cpp) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **source code** files. If `AUTOSEARCH` is enabled (which it is by default), all source code files in the directories specified by this option will be automatically added to the build. If `AUTOSEARCH` is disabled, this tells the Makefile where to look for the files specified by `SRCS`. |
+| `IPATH`                | Where to search for header (.h) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **header** files. _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`. Individual header files are _not_ ever manually added to the build. Instead, you only need to specify the _location_ of your header files. |
+| `SRCS`                 | List of source (.c/.cpp) files to add to the build              | **Use the `+=` operator with this variable**. All of the files in this list will be added to the build. If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build. If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`. Otherwise, a full path relative to the Makefile must be used. |
+| `AUTOSEARCH`           | Automatically search for source (.c/.cpp) files                 | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default). Set to `0` to disable or `1` to enable. If auto-search is disabled, source files must be manually added to `SRCS`. |
+| `PROJECT`              | Set the output filename                                    | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  **For VS Code, you should use the [project_name](#project_name) advanced config option instead of project.mk.** |
+| `PROJ_LIBS`            | Add a static library file (.a) to the project              | **Use the `+=` operator with this variable**.  Additional static libraries to link against can be added with this option.<br>It should be noted that static library files are named with the `lib<libraryname>.a` convention.  Only add `<libraryname>` to this variable.<br>Ex: Give a file called `libEXAMPLE.a`, write `PROJ_LIBS += EXAMPLE`<br>Additionally, ensure that the location of the library is added to `PROJ_LDFLAGS`.<br>Ex: `PROJ_LDFLAGS += -Lsome/library/search/directory` |
+
+#### Build Variables for the Compiler
+
+The following variables can be used to interface with the compiler to perform common tasks such as changing the optimization level, adding compiler definitions to the build, and changing floating point acceleration.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `MXC_OPTIMIZE_CFLAGS`  | Set the optimization level                                 | See [Optimize Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details.  Normal builds will default to `-Og`, which is good for debugging, while release builds will default to `-O2`. |
+| `PROJ_CFLAGS`          | Add compiler flags to the build                            | **Use the `+=` operator with this variable**.  Compiler flags can be added with this option, including compiler definitions. For each value, the same syntax should be used as if the compiler flag was passed in over the command line. These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options. |
+| `PROJ_AFLAGS`          | Add assemblers flag to the build                           | **Use the `+=` operator with this variable**.  Assembler flags can be added with this option. |
+| `PROJ_OBJS`            | Add object files to the build                              | **Use the `+=` operator with this variable**.  If needed, object files (.o) can be added to the build with this option. |
+| `DEBUG`                | Toggle extra debug information  | Set this to `1` to enable extra debug information at compile time.  This generally improves the reliability of debugging at some increase in code size.  Set to `0` to disable.
+
+#### Build Variables for the Linker
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `LINKERFILE`           | Set the linkerfile to use                                  | A linkerfile is responsible for specifying the available memory banks, their layout, and the organization of program binaries memory.  The file should exist in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MSDK, or it should be placed inside the root directory of the project. |
+| `PROJ_LDFLAGS`         | Add a linker flag to the build                             | **Use the `+=` operator with this variable**.  Flags can be passed to the linker with this option. See [GCC Options for Linking](https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#Link-Options) |
+
+#### Build Variables for Arm Cortex-M4 Cores
+
+The following build variables are used to control options specific to the Arm Cortex-M4 core available.  They are available on all microcontrollers, and for all projects unless that project is built for a RISC-V core.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `MFLOAT_ABI`           | Set the floating point acceleration level                  | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, and `softfp` (default). To enable full hardware acceleration instructions, use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`. If there is any conflict, you'll get a linker error. For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html). |
+| `DEFAULT_OPTIMIZE_FLAGS` | Override the default extra optimization flags | Extra compiler optimization flags are added to the build.  They are defined in `Libraries/CMSIS/Device/Maxim/GCC/gcc.mk`.  These can be disabled entirely by setting this variable to empty (`DEFAULT_OPTIMIZE_FLAGS=`). |
+| `DEFAULT_WARNING_FLAGS` | Override the default warning flags | Default flags controlling warning output are added in `Libraries/CMSIS/Device/Maxim/GCC/gcc.mk`.  These can be disabled entirely by setting this variable to empty (`DEFAULT_OPTIMIZE_FLAGS=`). |
+
+#### Build Variables for RISC-V Cores
+
+The following build variables are used for RISC-V development.  They are only available on microcontrollers with RISC-V cores.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `RISCV_CORE`           | Build a project for the RISC-V core                        | Set to `1` to convert an entire project to use the RISC-V toolchain.  Only available on microcontrollers with a RISC-V core. |
+| `RISCV_LOAD`           | Compile and load project for the RISC-V core               | **Only available on the MAX32655, MAX32680, and MAX32690**.  Set to `1` compile the project specified by `RISCV_APP` for the RISC-V core and link it into the same binary as the current project.  Useful for dual-core projects.
+| `RISCV_APP`            | Project folder to compile for the `RISCV_LOAD` option      | **Only available on the MAX32655, MAX32680, and MAX32690**.  This option specifies the project to build for the RISC-V core when `RISCV_LOAD` is enabled.  Must be a path relative to the project that enables `RISCV_LOAD`, or an absolute path. |
+| `RISCV_PREFIX`         | Change the toolchain prefix                                | This option can be used to override the GCC toolchain prefix if needed.  For example, to use the legacy RISC-V toolchain `RISCV_PREFIX = riscv-none-embed` will attempt to compile with `riscv-none-embed-gcc`. |
+
+#### Build Variables for Toggling Libraries
+
+The following variables can be used to modularly toggle the [available libraries](#libraries) in the MSDK.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `LIB_BOARD`            | Include the BSP library (enabled by default)               | Inclusion of the Board-Support Package (BSP) library, which is enabled by default, can be toggled with this variable. Set to `0` to disable or `1` to enable. |
+| `LIB_PERIPHDRIVERS`    | Include the peripheral driver library (enabled by default) | The peripheral driver library can be toggled with this option. If disabled, you'll lose access to the higher-level driver functions but still have access to the register-level files. Set to `0` to disable or `1` to enable. |
+| `LIB_CMSIS_DSP`        | Include the CMSIS-DSP library                              | The [CMSIS-DSP library](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) can be enabled with this option.  Set to `0` to disable or `1` to enable. |
+| `LIB_CORDIO`           | Include the Cordio library                                 | The Cordio BLE library can be included with this option. This is only applicable for microcontrollers with an integrated BLE controller. |
+| `LIB_FCL`              | Include the Free Cryptographic Library (FCL)               | This option toggles the Free Cryptographic Library (FCL), which is a collection of software-implemented common cryptographic functions that can be included with this option. Set to `0` to disable or `1` to enable. |
+| `LIB_FREERTOS`         | Include the FreeRTOS library                               | The [FreeRTOS](https://freertos.org/) library can be enabled with this option, which is an open-source Real-Time Operating System (RTOS). Set to `0` to disable or `1` to enable. |
+| `LIB_LC3`              | Include the LC3 codec library                              | This option enables the inclusion of the Low Complexity Communication Codec (LC3), which is an efficient low latency audio codec. Set to `0` to disable or `1` to enable. |
+| `LIB_LITTLEFS`         | Include the littleFS library                               | This option toggles the ["Little File System"](https://github.com/littlefs-project/littlefs) library - a small filesystem library designed for microcontrollers.  Set to `0` to disable or `1` to enable. |
+| `LIB_LWIP`             | Include the lwIP library                                   |                                                              |
+| `LIB_MAXUSB`           | Include the MaxUSB library                                 | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to `0` to disable or `1` to enable. |
+| `LIB_SDHC`             | Include the SDHC library                                   | This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem. |
+
+#### Build Variables for Secure Boot Tools (SBTs)
+
+For microcontrollers with a secure bootloader, the following build configuration variables can be used to enable integration with the Secure Boot Tools.  These are a suite of applications designed for use with microcontrollers that have secure bootloaders.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `SBT`                  | Toggle SBT integration                                     | Toggles integration with the [Secure Boot Tools (SBTs)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C). These are a suite of applications designed for use with microcontrollers that have secure bootloaders. When this is enabled, some additional rules become available such as `make sla` and `make scpa`. Set to `0` to disable or `1` to enable. |
+| `MAXIM_SBT_DIR`        | Where to find the SBTs                                     | This option can be used to manually specify the location of the SBTs. Usually, this is not necessary. By default, the `Tools/SBT` directory of the MaximSDK will be searched. If the [SBT installer](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C) is used, it will set the `MAXIM_SBT_DIR` environment variable to point to itself automatically. |
+| `TARGET_SEC`           | Secure part number to use                                  | Some secure microcontrollers have multiple secure variants, and this option can be used to specify the variant to use with the SBTs.  Defaults are intelligently selected and can be found in `$(MAXIM_SBT_DIR)/SBT-config.mk` |
+| `SCP_PACKETS`          | Where to build the scp_packets folder                      | Defaults to `build/scp_packets`                              |
+| `TEST_KEY`             | Which test key to sign applications with                   | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the Maxim test key that can be used for development. |
+
+#### Build Variables Controlling the Output
+
+The following build variables can be used to control how to build output is formatted.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `VERBOSE`              | Toggle verbose builds             | Set to `1` to enable a verbose build that prints exactly what the compiler is doing for each step.  This is useful for troubleshooting.
+| `FORCE_COLOR`          | Force colorized compiler output   | By default, GCC will attempt to autodetect whether colorized output is supported or not.  Set to `1` to force color (equivalent to `PROJ_CFLAGS += -fdiagnostics-color=always`).  This is useful for forcing color in CI systems. |
+
+#### Miscellaneous Build Variables
+
+Other miscellaneous build variables specific to individual microcontrollers or otherwise not belonging in any other category are documented here.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+|                        |                                                            |                                                              |
+| `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
+
 ## Board Support Packages
 
 The MSDK supports multiple parts and evaluation platforms (see [supported parts](#supported-parts)) through **"Board Support Packages" (BSPs)**. For microcontrollers with multiple evaluation platforms, multiple BSPs will be available.
 
 The role of a _BSP_ is to provide a hardware abstraction layer for the initialization and management of board-level hardware such as serial interfaces, pushbuttons, LEDs, external peripheral devices, TFT displays, etc. which will vary between evaluation platforms. The BSP abstraction layer also improves code portability to custom devices.  
 
-The first task when opening or creating any project is to ensure the BSP is set correctly.
+???+ note "ℹ️ **Note**"
+    The first task when opening or creating any project is to ensure the BSP is set correctly.
 
 ### How to Set the BSP
 
@@ -1463,12 +2047,17 @@ The name of the BSP's root folder will be the string used with the `BOARD` [buil
 
 #### BSP Search Directory
 
-By default, the MSDK searches for BSPs in the `Libraries/Boards` folder for each microcontroller.  This can be changed using the `BSP_SEARCH_DIR` [build configuration variable](#build-configuration-variables), which allows users to load a BSP from a directory outside of the MSDK.  The MSDK also uses the `BOARD` variable in its search path.  For example, the configuration...
+By default, the MSDK searches for BSPs in the `Libraries/Boards` folder for each microcontroller.  This can be changed using the `BSP_SEARCH_DIR` [build configuration variable](#build-configuration-variables), which allows users to load a BSP from a directory outside of the MSDK.  The MSDK also uses the `BOARD` variable in its search path.  
+
+For example, the configuration...
 
     :::Makefile
-    // project.mk
-    BSP_SEARCH_DIR = /home/username/mybsps # "root" of the BSP search path
-    BOARD = CustomBSP # "stem" of the BSP search path
+    # project.mk
+
+    BSP_SEARCH_DIR = /home/username/mybsps
+    # ^ "root" of the BSP search path
+    BOARD = CustomBSP
+    # "stem" of the BSP search path
 
 ... will attempt to load the `/home/username/msbsps/CustomBSP/board.mk` file.
 
@@ -1511,6 +2100,8 @@ The following contents can be used as a bare-bones starter template for a custom
 * _board.mk_
 
         :::Makefile
+        # board.mk
+
         ifeq "$(BOARD_DIR)" ""
         # This Makefile will self-locate if BOARD_DIR is not specified.
         BOARD_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -1526,164 +2117,45 @@ It should also be noted that BSP integration can be disabled entirely by setting
 
 This option can also be used to implement a custom BSP inside of a project's application code.  For example, a user could implement `Board_Init` inside of a project's `main.c` file without having to create a separate BSP folder with `LIB_BOARD = 0`.
 
-    :::C
-    // main.c
-    int Board_Init(void)
-    {
-        // Implement me!
-        return E_NO_ERROR;
-    }
+* _project.mk_
 
-    int main(void)
-    {
-        Board_Init();
-        // ...
-    }
+        :::Makefile
+        # project.mk
 
-## Build System
+        LIB_BOARD = 0
 
-### Build System Overview
+* _main.c_
 
-The **Build System** manages the compilation of source code into program binaries and offers a **Command-Line Interface (CLI)** for setting **Build Configuration Variables**. All IDEs interface with this system.
+        :::C
+        // main.c
+        int Board_Init(void)
+        {
+            // Implement me!
+            return E_NO_ERROR;
+        }
 
-The Build System is managed by two files found in a project's root directory, one called **Makefile** and one called **project.mk**. These files are used by the [GNU Make](https://www.gnu.org/software/make/) program (which is a part of the MSDK toolchain) to locate and build a project's source code.
+        int main(void)
+        {
+            Board_Init();
+            // ...
+        }
 
-* **Makefile** is the "core" file and should not be edited directly. Instead, it exposes the **CLI** that can be accessed in the _project.mk_ file, on the command line, in your system's environment, or through your IDE. It also comes with a default configuration that is suitable for most projects.
-* **project.mk** offers a convenient and stable access point for advanced build configuration, and this is the file that should be edited if necessary.
+## Libraries
 
-When the command
+The MSDK contains a large number of libraries, both third-party and in-house. The main library is the [Peripheral Driver API](#peripheral-driver-api), but the MSDK also contains drivers for various _external_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices. Additionally, dedicated libraries for more complex _internal_ hardware peripherals such as USB, the SDHC interface, and the Cordio BLE stack are also available.  These usually build on _top_ of the Peripheral Driver API.
 
-    make
+???+ note "ℹ️ **Note: Enabling Libraries**"
+    Libraries can be enabled for a project with a convenient *toggle switch* provided by the build system (See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries))).
 
-is run from inside of a project folder, the program `make` will resolve any project-specific settings and then build the project's source code.
-
-### Default Build Behavior
-
-By default, the build system will **auto-search** the **root** project directory for _source code_ (**`*.c`**) and _header files_ (**`*.h`**) to compile into a program binary. The _optional_ **include** and **src** directories are also searched if they exist.
-
-    :::bash
-    Root Project Directory
-    ├─ project.mk
-    ├─ Makefile
-    ├─ *.h
-    ├─ *.c
-    ├─include  # <-- Optional
-    └─ *.h
-    ├─src      # <-- Optional
-    └─ *.c
-
-Additionally, a project's build system will come pre-configured for a specific _Target Microcontroller_ and its primary _BSP_.
-
-The default configuration is suitable for most use cases, but a system of _Build Configuration Variables_ is available if additional configuration is needed.
-
-### Build Configuration Variables
-
-A **Build Configuration Variable** is a [Makefile variable](https://www.gnu.org/software/make/manual/make.html#Using-Variables) and therefore follows the same rules. However, they have been streamlined to be made much easier to use, so most of the [official GNU Make documentation](https://www.gnu.org/software/make/manual/make.html) is only needed for advanced use cases.
-
-#### How to Set a Build Configuration Variable
-
-To set a **standard** configuration variable, **use the `=` syntax**...
-
-    VARIABLE=VALUE
-
-The **`=`** operator is used for _most_ configuration variables with a few exceptions (documented in the [reference table](#build-configuration-variables-reference-table)) when a variable should contain a **_list_ of values**. In such cases, **use `+=` the syntax** to _add_ values to the list.
-
-    VARIABLE+=VALUE1
-    VARIABLE+=VALUE2
-
-#### Where to Set a Build Configuration Variable
-
-For most variables, you should set them in the **project.mk** file (exceptions are documented in the [reference table](#build-configuration-variables-reference-table) and IDE-specific sections).
-
-For example, to enable hardware floating-point acceleration for a project, the **`MFLOAT_ABI`** configuration variable can be used with a value of **`hard`**. The contents of **project.mk** might then look as follows:
-
-(_Inside project.mk_)
-
-    :::Make
-    # This file can be used to set build configuration
-    # variables. These variables are defined in a file called 
-    # "Makefile" that is located next to this one.
-    
-    # For instructions on how to use this system, see
-    # https://analog-devices-msdk.github.io/msdk/USERGUIDE/
-    
-    # **********************************************************
-    
-    MFLOAT_ABI=hard # Enable hardware floating point acceleration
-
-It should also be noted that configuration variables can be set on the **command line** as well. For example
-
-    make MFLOAT_ABI=hard
-
-will have the same effect.
-
-Additionally, **environment variables** can be used. For example (on Linux)
-
-    export MFLOAT_ABI=hard
-
-will set the hardware floating point acceleration as the default for all projects with an environment variable.
-
-However, there is a _precedence hierarchy_ that should be taken into consideration.
-
-#### Precedence Hierarchy
-
-The precedence hierarchy for the value of a configuration variable is:
-
-- **IDE/command-line > project.mk > environment variable > default value**
-
-If a value is set in an IDE _and_ project.mk, the IDE's value will take precedence. However, the ["override" directive](https://www.gnu.org/software/make/manual/make.html#Override-Directive) can be used in project.mk to give it max precedence.
-
-#### Build Configuration Variables Reference Table
-
-| Configuration Variable | Description                                                | Details                                                      |
-| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-|                        |                                                            |                                                              |
-| `TARGET`               | Set the _Target Microcontroller_                           | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk** |
-| `BOARD`                | Set the _Board Support Package (BSP)_                      | **If you are using an IDE, set this variable in the IDE's settings instead of project.mk.**  See [Board Support Packages](#board-support-packages) for more details.  When you change this option, it's usually a good idea to fully clean your project, then rebuild. |
-| `BSP_SEARCH_DIR`       | Set the directory to search for the _Board Support Package (BSP)_                      | By default, the `Libraries/Boards` folder of the MSDK is searched for the `TARGET` microcontroller.  This setting is useful for loading custom BSPs from outside of the MSDK.  When `LIB_BOARD=1`, the build system looks for the file path at `$(BSP_SEARCH_DIR)/$(BOARD)/board.mk`. |
-|                        |                                                            |                                                              |
-| `MAXIM_PATH`           | (Optional) Specify the location of the MSDK                | This optional variable can be used to change where the Makefile looks for the MSDK installation. By default, the build system will attempt to locate the MSDK with a relative path. If a project is moved _outside_ of the SDK, this variable must be set to the absolute path of the MSDK installation. |
-| `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
-|                        |                                                            |                                                              |
-| `VPATH`                | Where to search for source (.c/.cpp) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **source code** files. If `AUTOSEARCH` is enabled (which it is by default), all source code files in the directories specified by this option will be automatically added to the build. If `AUTOSEARCH` is disabled, this tells the Makefile where to look for the files specified by `SRCS`. |
-| `IPATH`                | Where to search for header (.h) files                      | **Use the `+=` operator with this variable**.  This controls where the Makefile will look for **header** files. _Unlike_ the `VPATH` option, this is not related to `AUTOSEARCH`. Individual header files are _not_ ever manually added to the build. Instead, you only need to specify the _location_ of your header files. |
-| `AUTOSEARCH`           | Automatically search for source (.c/.cpp) files                 | Enable or disable the automatic detection of .c files on `VPATH` (enabled by default). Set to `0` to disable or `1` to enable. If auto-search is disabled, source files must be manually added to `SRCS`. |
-| `SRCS`                 | List of source (.c/.cpp) files to add to the build              | **Use the `+=` operator with this variable**. All of the files in this list will be added to the build. If `AUTOSEARCH` is enabled, this is most useful for adding the full absolute path to a singular source file to selectively add to the build. If `AUTOSEARCH` is disabled, _all_ of the source files for the project must be added to `SRCS`, and they must also all be located on an entry in `VPATH`. Otherwise, a full path relative to the Makefile must be used. |
-| `PROJECT`              | Set the output filename                                    | This controls the output filename of the build.  File extensions should _not_ be included in the filename.  **For VS Code, you should use the [project_name](#project_name) advanced config option instead of project.mk.** |
-|                        |                                                            |                                                              |
-| `MXC_OPTIMIZE_CFLAGS`  | Set the optimization level                                 | See [Optimize Options](https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html) for more details.  Normal builds will default to `-Og`, which is good for debugging, while release builds will default to `-O2`. |
-| `PROJ_CFLAGS`          | Add a compiler flag to the build                           | **Use the `+=` operator with this variable**.  Compiler flags can be added with this option, including compiler definitions. For each value, the same syntax should be used as if the compiler flag was passed in over the command line. These can include standard [GCC options](https://gcc.gnu.org/onlinedocs/gcc-10.4.0/gcc/Option-Summary.html#Option-Summary) and/or [ARM-specific](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html) options. |
-| `PROJ_AFLAGS`          | Add an assembler flag to the build                         | **Use the `+=` operator with this variable**.  Assembler flags can be added with this option. |
-| `MFLOAT_ABI`           | Set the floating point acceleration level                  | Sets the floating-point acceleration level.  Permitted values are `hard`, `soft`, and `softfp` (default). To enable full hardware acceleration instructions, use `hard`, but keep in mind that _all_ libraries your source code uses must also be compiled with `hard`. If there is any conflict, you'll get a linker error. For more details, see `-mfloat-abi` under [ARM Options](https://gcc.gnu.org/onlinedocs/gcc/ARM-Options.html). |
-|                        |                                                            |                                                              |
-| `LINKERFILE`           | Set the linkerfile to use                                  | Set the linkerfile with this option.  The file should exist in `Libraries/CMSIS/Device/Maxim/TARGET/Source/GCC` in the MSDK, or it should be placed inside the root directory of the project. |
-| `PROJ_LDFLAGS`         | Add a linker flag to the build                             | **Use the `+=` operator with this variable**.  Flags can be passed to the linker with this option. See [GCC Options for Linking](https://gcc.gnu.org/onlinedocs/gcc/Link-Options.html#Link-Options) |
-|                        |                                                            |                                                              |
-| `LIB_BOARD`            | Include the BSP library (enabled by default)               | Inclusion of the Board-Support Package (BSP) library, which is enabled by default, can be toggled with this variable. Set to `0` to disable or `1` to enable. |
-| `LIB_PERIPHDRIVERS`    | Include the peripheral driver library (enabled by default) | The peripheral driver library can be toggled with this option. If disabled, you'll lose access to the higher-level driver functions but still have access to the register-level files. Set to `0` to disable or `1` to enable. |
-| `LIB_CMSIS_DSP`        | Include the CMSIS-DSP library                              | The [CMSIS-DSP library](https://www.keil.com/pack/doc/CMSIS/DSP/html/index.html) can be enabled with this option.  Set to `0` to disable or `1` to enable. |
-| `LIB_CORDIO`           | Include the Cordio library                                 | The Cordio BLE library can be included with this option. This is only applicable for microcontrollers with an integrated BLE controller. |
-| `LIB_FCL`              | Include the Free Cryptographic Library (FCL)               | This option toggles the Free Cryptographic Library (FCL), which is a collection of software-implemented common cryptographic functions that can be included with this option. Set to `0` to disable or `1` to enable. |
-| `LIB_FREERTOS`         | Include the FreeRTOS library                               | The [FreeRTOS](https://freertos.org/) library can be enabled with this option, which is an open-source Real-Time Operating System (RTOS). Set to `0` to disable or `1` to enable. |
-| `LIB_LC3`              | Include the LC3 codec library                              | This option enables the inclusion of the Low Complexity Communication Codec (LC3), which is an efficient low latency audio codec. Set to `0` to disable or `1` to enable. |
-| `LIB_LITTLEFS`         | Include the littleFS library                               | This option toggles the ["Little File System"](https://github.com/littlefs-project/littlefs) library - a small filesystem library designed for microcontrollers.  Set to `0` to disable or `1` to enable. |
-| `LIB_LWIP`             | Include the lwIP library                                   |                                                              |
-| `LIB_MAXUSB`           | Include the MaxUSB library                                 | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to `0` to disable or `1` to enable. |
-| `LIB_SDHC`             | Include the SDHC library                                   | This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem. |
-|                        |                                                            |                                                              |
-| `SBT`                  | Toggle SBT integration                                     | Toggles integration with the [Secure Boot Tools (SBTs)](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C). These are a suite of applications designed for use with microcontrollers that have secure bootloaders. When this is enabled, some additional rules become available such as `make sla` and `make scpa`. Set to `0` to disable or `1` to enable. |
-| `MAXIM_SBT_DIR`        | Where to find the SBTs                                     | This option can be used to manually specify the location of the SBTs. Usually, this is not necessary. By default, the `Tools/SBT` directory of the MaximSDK will be searched. If the [SBT installer](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download.html?swpart=SFW0015360C) is used, it will set the `MAXIM_SBT_DIR` environment variable to point to itself automatically. |
-| `TARGET_SEC`           | Secure part number to use                                  | Some secure microcontrollers have multiple secure variants, and this option can be used to specify the variant to use with the SBTs.  Defaults are intelligently selected and can be found in `$(MAXIM_SBT_DIR)/SBT-config.mk` |
-| `SCP_PACKETS`          | Where to build the scp_packets folder                      | Defaults to `build/scp_packets`                              |
-| `TEST_KEY`             | Which test key to sign applications with                   | Defaults to `$(MAXIM_SBT_DIR)/devices/$(TARGET_SEC)/keys/maximtestcrk.key`, which is the Maxim test key that can be used for development. |
-
-## Peripheral Driver API
+### Peripheral Driver API
 
 A microcontroller is made up of a Central Processing Unit (CPU) that is surrounded by additional _peripheral_ hardware blocks such as timers, memory controllers, UART controllers, ADCs, RTCs, audio interfaces, and many more. The **Peripheral Driver API** is an important core library in the MSDK that allows the CPU to utilize the microcontroller's hardware blocks over a higher-level **_Application Programming Interface (API)_**.
 
 ![Figure 38](res/Fig38.jpg)
 
-The links below will open detailed API references for each microcontroller. Offline copies of these API references can also be found in the `Documentation` folder of the MSDK [installation](#installation).
+#### API Documentation (PeriphDrivers)
+
+The links below will open detailed API references for each microcontroller. Offline copies of these API references can also be found in the `Documentation` folder of the MSDK installation.
 
 - [MAX32520 API](Libraries/PeriphDrivers/Documentation/MAX32520/index.html)
 
@@ -1709,56 +2181,46 @@ The links below will open detailed API references for each microcontroller. Offl
 
 - [MAX78002 API](Libraries/PeriphDrivers/Documentation/MAX78002/index.html)
 
-### Organization
+#### PeriphDrivers Organization
 
 The Peripheral Driver API's source code is organized as follows:
 
-- **Header files _(.h)_** can be found in the [`Libraries/PeriphDrivers/Include`](Libraries/PeriphDrivers/Include) folder.
+- **Header files _(.h)_** can be found in the `Libraries/PeriphDrivers/Include` folder.
     - These files contain function _declarations_ for the API, describing the function prototypes and their associated documentation.
-- **Source files _(.c)_** can be found in the [`Libraries/PeriphDrivers/Source`](Libraries/PeriphDrivers/Source) folder.
+- **Source files _(.c)_** can be found in the `Libraries/PeriphDrivers/Source` folder.
     - These files contain the function _definitions_ for the API - the _implementations_ of the functions declared by the header files.
 
 The _**implementation**_ files are further organized based on _**die type**_ and **_hardware revision_**. This is worth noting when browsing or debugging through the drivers.  
 
 - The **_die type_** files follow the **`_ESXX`** , **`_MEXX`** , or **`_AIXX`** naming convention.
-    - These files' responsibility is to manage microcontroller-specific implementation details that may interact with other peripheral APIs _before_ ultimately calling the revision-specific files.
-    - This table shows which part numbers correspond to each die type:
-
-      | Part Number | Die Type
-      | -------- | ----------- |
-      | MAX32520 | ES17 |
-      | MAX32570 | ME13 |
-      | MAX32650 | ME10 |
-      | MAX32655 | ME17 |
-      | MAX32660 | ME11 |
-      | MAX32662 | ME12 |
-      | MAX32665 | ME14 |
-      | MAX32670 | ME15 |
-      | MAX32672 | ME21 |
-      | MAX32675 | ME16 |
-      | MAX32680 | ME20 |
-      | MAX32690 | ME18 |
-      | MAX78000 | AI85 |
-      | MAX78002 | AI87 |
+    - These files' responsibility is to manage microcontroller-specific implementation details that may interact with other peripheral APIs _before_ ultimately calling the revision-specific files.  See [Die Types to Part Numbers](#die-types-to-part-numbers)
 
 - The **_hardware revision_** files follow the **`_revX`** naming convention.  
     - These files contain the _pure_ driver implementation for a peripheral block and typically interact with the hardware almost entirely at the register level.
 
-## Examples
+#### Die Types to Part Numbers
 
-The MSDK contains examples for each microcontroller that demonstrate the usage of its [Peripheral APIs](#peripheral-driver-api). They can be found in the `Examples` folder of an MSDK installation.
+The following table matches external part numbers to internal die types.  This is useful for browsing through the PeriphDrivers source code, which uses the die types.
 
-![Figure 40](res/Fig40.jpg)
+- ???+ note "ℹ️ **Note: Die Types Table**"
+    | Part Number | Die Type
+    | -------- | ----------- |
+    | MAX32520 | ES17 |
+    | MAX32570 | ME13 |
+    | MAX32650 | ME10 |
+    | MAX32655 | ME17 |
+    | MAX32660 | ME11 |
+    | MAX32662 | ME12 |
+    | MAX32665 | ME14 |
+    | MAX32670 | ME15 |
+    | MAX32672 | ME21 |
+    | MAX32675 | ME16 |
+    | MAX32680 | ME20 |
+    | MAX32690 | ME18 |
+    | MAX78000 | AI85 |
+    | MAX78002 | AI87 |
 
-Each example contains a `README.md` file describing what it does. In general, there is at least one example per peripheral block, and the example's name will indicate what it matches (i.e., `DMA`, `ADC`, `SPI`).
-
-![Figure 41](res/Fig41.jpg)
-
-## Libraries
-
-The MSDK contains a large number of libraries, both third-party and in-house. These libraries are an extension to the "core" SDK resources and contain drivers for various _external_ components such as TFT displays, cameras, accelerometers, audio codecs, and other devices. The MSDK also contains libraries for more advanced _internal_ hardware peripherals that provide an additional abstraction layer over the [Peripheral Driver API](#peripheral-driver-api), such as USB, the SDHC interface, and the Cordio BLE stack.
-
-Libraries are enabled for a project with a convenient *toggle switch* (See the **"Libraries"** section of the _[Build Configuration Variables](#build-configuration-variables-reference-table)_). When a library is enabled, it may also offer its _own_ Build Configuration Variables in addition to those already available in the core [Build System](#build-system).  
+---
 
 ### CMSIS-DSP
 
@@ -1804,7 +2266,7 @@ The MAXUSB library provides a higher-level interface for utilizing the built-in 
 
 ### Miscellaneous Drivers
 
-The [`Libraries/MiscDrivers`](Libraries/MiscDrivers) folder of the MSDK contains drivers for miscellaneous external components such as TFT displays, cameras, audio codecs, PMICs, pushbuttons, etc. These resources are usually closely tied with the [Board Support Packages](#board-support-packages).
+The `Libraries/MiscDrivers` folder of the MSDK contains drivers for miscellaneous external components such as TFT displays, cameras, audio codecs, PMICs, pushbuttons, etc. These resources are usually closely tied with the [Board Support Packages](#board-support-packages).
 
 ---
 
@@ -1836,3 +2298,150 @@ FreeRTOS is supported by all parts in the MSDK.  See the `FreeRTOSDemo` example 
 
 - [FreeRTOS-Plus-CLI](https://www.freertos.org/FreeRTOS-Plus/index.html): **Supported**
 - [FreeRTOS-Plus-TCP](https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/index.html): **Not supported** (Contributions welcome!)
+
+### CoreMark
+
+[EEMBC’s CoreMark®](https://www.eembc.org/coremark/) is a benchmark that measures the performance of microcontrollers (MCUs) and central processing units (CPUs) used in embedded systems.  CoreMark is a simple, yet sophisticated benchmark that is designed specifically to test the functionality of a processor core. Running CoreMark produces a single-number score allowing users to make quick comparisons between processors.
+
+#### CoreMark Supported Parts
+
+All parts in the MSDK support the Coremark library via a `Coremark` example application.
+
+???+ note "ℹ️ **Note**"
+    The source code of the `Coremark` examples are somewhat unique.  They only contain a `core_portme.c`/`core_portme.h`.  These files are provided by CoreMark libraries to give the MSDK an implementation layer for a few hardware-dependent functions.  Otherwise, the remainder of the source code (located in `Libraries/Coremark`) must remain unmodified to comply with the CoreMark rules.
+
+## Examples
+
+The MSDK contains examples for each microcontroller that demonstrate the usage of its [Peripheral APIs](#peripheral-driver-api) and other supported libraries. They can be found in the `Examples` folder of an MSDK installation.
+
+![Figure 40](res/Fig40.jpg)
+
+???+ warning "**⚠️ Copying Examples**"
+    It's strongly recommended to copy example projects to an _outside_ folder before modifying them.  This keeps the MSDK's "source" copy preserved for reference.  Project folders must be copied to a location _without_ any spaces in its filepath.
+
+Each example contains a `README.md` file describing what it does. In general, there is at least one example per peripheral block, and the example's name will indicate what it matches (i.e., `DMA`, `ADC`, `SPI`).
+
+The tables below are offered to facilitate easier browsing through the MSDK examples.  They are autogenerated from the available projects for each microcontroller.  A link to the example's source code on Github is available, as well as its location inside of the MSDK.
+
+<!-- Note for maintainers: The autogeneration is handled in "Documentation/build.py" -->
+##__EXAMPLES_LIST__##
+
+## Debuggers
+
+### Debug Limitations
+
+- ???+ warning "**⚠️ Warning**"
+    It’s important to note some fundamental limitations of debugging the MSDK's supported parts.  These limitations may make the device difficult (or impossible) for the debugger to connect in certain states. In such cases, the device can attempt to be recovered using a [MAX32625PICO](#max32625pico-pico).  See [How to Unlock a Microcontroller That Can No Longer Be Programmed](#how-to-unlock-a-microcontroller-that-can-no-longer-be-programmed)
+    * A debugger can not be connected to a microcontroller _while_ the device is in reset.
+    * A microcontroller can not be debugged while it's _Sleep_, _Low Power Mode_, _Micro Power Mode_, _Standby_, _Backup_, or _Shutdown_ mode.  These modes shut down the SWD clock.
+        * For low-power development, it's recommended to place a 2-second blocking delay at the start of `main`.
+
+### MAX32625PICO (PICO)
+
+A MAX32625PICO (affectionately called the "PICO") debug adapter is provided with almost all the evaluation platforms supported by the MSDK.  Additionally, most small form-factor evaluation kits have a PICO _embedded_ into the PCB.
+
+It's good practice to update the PICO's firmware to the latest version, which can be found on the [MAX32625PICO Firmware Images](https://github.com/MaximIntegrated/max32625pico-firmware-images) Github page.
+
+#### Updating the MAX32625PICO (PICO) Debug Adapter Firmware
+
+1. Download the correct image for your evaluation platform from the [MAX32625PICO Firmware Images](https://github.com/MaximIntegrated/max32625pico-firmware-images) Github page.
+
+2. Connect the included micro-USB cable to the PICO _without_ connecting the other side of the cable to your host PC yet.
+
+    ![Pico USB Connection](res/pico_partial_connected.jpg)
+
+3. Press and hold the pushbutton on the top of the PICO.
+
+    ![Pico Pushbutton](res/pico_pushbutton.jpg)
+
+4. _While holding down the pushbutton on the PICO_ connect the other side of the micro-USB cable to your host PC.
+
+    Keep the pushbutton held down until the LED on the PICO blinks and becomes solid.
+
+    ![Pico Connected](res/pico_connected.jpg)
+
+5. A `MAINTENANCE` drive should now appear on your file system.
+
+    ![Maintenance Drive](res/MAINTENANCE.jpg)
+
+6. Drag and drop the downloaded file from step 1 onto the `MAINTENANCE` drive. This will flash the PICO with the updated firmware.
+
+    ![Maintenance Drive](res/MAINTENANCE.jpg)
+
+    ![Drag and Drop](res/drag_and_drop.JPG)
+
+    ![Flashing](res/pico_flashing.JPG)
+
+7. Once the flashing is complete, the PICO will restart and present itself as a `DAPLINK` drive.
+
+    ![DAPLINK Drive](res/DAPLINK.jpg)
+
+8. Open the `DAPLINK` drive.
+
+    ![Opened DAPLINK Drive](res/DAPLINK_opened.jpg)
+
+9. Open the `DETAILS.TXT` file and verify the Git SHA matches the expected value for the updated file.
+
+    ![DETAILS.TXT](res/DETAILS_Git_SHA.jpg)
+
+10. Your PICO debugger is now ready to use with the latest firmware.
+
+#### How to Unlock a Microcontroller That Can No Longer Be Programmed
+
+The [debug limitations](#debug-limitations) of the MSDK's supported parts may make some devices difficult to connect to if bad firmware has been flashed.  In such cases, the device can attempt to be recovered from the “locked out” firmware by mass erasing the application code from the flash memory bank.  Note that this does not always work.  Success will depend on a small window being available for the debugger to connect immediately after reset. 
+
+Before following the procedure below, ensure that you have updated the PICO debugger firmware to the latest version. See [Updating the MAX32625PICO (PICO) Debug Adapter Firmware](#updating-the-max32625pico-pico-debug-adapter-firmware)
+
+##### Unlock with VS Code
+
+For VS Code users, the `"erase flash"` [build task](#build-tasks) can be used to attempt a mass erase.  If this task fails to recover the part, attempt the procedure below.
+
+##### Unlock with `erase.act`
+
+1. Connect the PICO debugger to the microcontroller to recover.
+
+2. Connect the PICO debugger to the host PC with the included micro-USB cable.
+
+3. Open the DAPLINK` drive on the host PC.
+
+    ![DAPLINK Drive](res/DAPLINK.jpg)
+
+4. Open the `DETAILS.TXT` inside of the `DAPLINK` drive in a text editor.
+
+    ![DAPLINK Opened](res/DAPLINK_opened.jpg)
+
+5. Verify that the “Automation allowed” field is set to 1.
+
+    ![Automation Allowed](res/DETAILS_automation_allowed.jpg)
+
+    ??? note "ℹ️ **Enabling Automation**"
+        If this field is _not_ set to 1, follow the procedure below:
+
+        1. Create a new _empty_ file, and save it as `auto_on.cfg`.
+
+        2. Press and hold the pushbutton on top of the PICO.
+
+            ![PICO Pushbutton](res/pico_pushbutton.jpg)
+
+        3. _While holding the pushbutton_, drag and drop the `auto_on.cfg` file onto the `DAPLINK` drive.
+
+            ![Drag and Drop File](res/auto_on.cfg.jpg)
+
+        4. Continue holding the pushbutton until the file is finished transferring over, then release it.
+
+        5. The PICO should power cycle, and the DAPLINK drive should re-appear with “Automation allowed” set to 1.
+
+6. Power on the evaluation platform (if it isn’t already).
+
+7. Create an empty file called `erase.act`.
+
+7. Drag and drop the `erase.act` file onto the `DAPLINK` drive.
+
+    ![Drag and Drop erase.act](res/erase.act.jpg)
+
+8. The PICO debugger will attempt to mass erase the microcontroller's flash bank, which will completely wipe any application firmware that is programmed on the device.
+
+    ???+ note "ℹ️ **Note**"
+        If this process fails, a `FAIL.TXT` file will be present in the DAPLINK drive with an additional error message inside of it.  A failure is generally indicative of firmware that has completely shut down the debug port, or has entered low power loop immediately on power-up.  In these cases, it's not possible to recover the device.
+
+9. Power cycle the microcontroller. It step 8 succeeded, it's blank and ready to re-program. The debugger should have no issues connecting to the device in this blank state.
