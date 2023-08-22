@@ -50,6 +50,7 @@
 #include "uart.h"
 #include "spi.h"
 #include "dma.h"
+#include "led.h"
 
 /***** Preprocessors *****/
 #define CONTROLLER_SYNC 1
