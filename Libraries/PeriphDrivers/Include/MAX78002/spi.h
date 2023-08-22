@@ -349,11 +349,12 @@ int MXC_SPI_Config(mxc_spi_cfg_t *cfg);
  *      If use_dma = true, set DMATX and RX to true and set the DMA0 as the default instance.
  *
  * @param   cfg         Pointer to SPI configuration struct.    
- * @param   use_dma     True/False option to configure DMA.  
+ * @param   use_dma_tx  True/False option to configure DMA TX. 
+ * @param   use_dma_rx  True/False option to configure DMA RX.  
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.odes.
  */
-int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma);
+int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma_tx, bool use_dma_rx);
 
 /**
  * @brief   Disable and shutdown the SPI instance.

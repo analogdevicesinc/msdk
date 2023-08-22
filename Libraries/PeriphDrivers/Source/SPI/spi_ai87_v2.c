@@ -57,7 +57,7 @@
 #define MXC_SPI_TS2_MASK_POS (2)
 
 int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
-                 int unusedParameter, uint8_t ts_active_pol_mask, uint32_t freq,
+                 int numTargets, uint8_t ts_active_pol_mask, uint32_t freq,
                  mxc_spi_pins_t pins)
 {
     int error;
@@ -178,7 +178,7 @@ int MXC_SPI_Config(mxc_spi_cfg_t *cfg)
     return MXC_SPI_RevA2_Config(cfg);
 }
 
-int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma)
+int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma_tx, bool use_dma_rx)
 {
     if (cfg == NULL) {
         return E_BAD_PARAM;
@@ -187,9 +187,9 @@ int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma)
     cfg->spi = MXC_SPI1; // SPI1 is available on both the ARM and RISCV core.
     cfg->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
 
-    if (use_dma) {
-        cfg->use_dma_tx = true;
-        cfg->use_dma_rx = true;
+    if (use_dma_tx || use_dma_rx) {
+        cfg->use_dma_tx = use_dma_tx;
+        cfg->use_dma_rx = use_dma_rx;
         cfg->dma = MXC_DMA;
     } else {
         cfg->use_dma_tx = false;

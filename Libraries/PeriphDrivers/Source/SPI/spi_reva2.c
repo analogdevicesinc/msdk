@@ -1017,11 +1017,6 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_reva_regs_t *spi, mxc_dma_reva_regs_t *dma, b
         return E_NULL_PTR;
     }
 
-    // DMA TX must be true to use SPI DMA.
-    if (use_dma_tx == false) {
-        return E_BAD_STATE;
-    }
-
     if (STATES[spi_num].dma_initialized) {
         // Exit function if DMA is already initialized.
         return E_NO_ERROR;
