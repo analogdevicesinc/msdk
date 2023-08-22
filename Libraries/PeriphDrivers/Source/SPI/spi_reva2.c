@@ -72,7 +72,7 @@ typedef struct {
     // Chip Select Info.
     bool                deassert;               // Target Select (TS) Deasserted at the end of a transmission.
     mxc_spi_tscontrol_t ts_control;
-    mxc_spi_ts_t current_ts;
+    mxc_spi_ts_t        current_ts;
 
     // DMA Settings.
     mxc_dma_reva_regs_t *dma;
@@ -1147,7 +1147,7 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
                                            uint32_t tx_length_frames, uint8_t *rx_buffer,
                                            uint32_t rx_length_frames, bool use_dma)
 {
-    int tx_dummy_fr_length;
+    int tx_dummy_length_frames;
     int8_t spi_num;
     // For readability purposes.
     int rx_ch, tx_ch;
@@ -1188,14 +1188,14 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
             // The number of bytes to transmit AND receive is set by TX_NUM_CHAR,
             // because the hardware always assume full duplex. Therefore extra
             // dummy bytes must be transmitted to support half duplex.
-            tx_dummy_fr_length = rx_length_frames - tx_length_frames;
+            tx_dummy_length_frames = rx_length_frames - tx_length_frames;
 
             // Check whether new frame length exceeds the possible number of frames to transmit.
-            MXC_ASSERT((tx_length_frames + tx_dummy_fr_length) >
+            MXC_ASSERT((tx_length_frames + tx_dummy_length_frames) <
                        (MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR >> MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS));
 
             spi->ctrl1 =
-                ((tx_length_frames + tx_dummy_fr_length) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
+                ((tx_length_frames + tx_dummy_length_frames) << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         } else {
             spi->ctrl1 = (tx_length_frames << MXC_F_SPI_REVA_CTRL1_TX_NUM_CHAR_POS);
         }

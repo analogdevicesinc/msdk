@@ -186,11 +186,6 @@ int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma)
 
     cfg->spi = MXC_SPI1; // SPI1 is available on both the ARM and RISCV core.
     cfg->clk_mode = MXC_SPI_CLKMODE_0; // 0 - CPOL :: 0 - CPHA
-    // cfg->if_mode = MXC_SPI_INTERFACE_STANDARD; // Standard 4-wire mode
-    // cfg->ts_control = MXC_SPI_TSCONTROL_HW_AUTO; // Automatic Hardware Driven TS Control
-    // cfg->target.active_pol = 0; // Active polarity is LOW (0). IDLE is HIGH (1).
-    // cfg->vssel = MXC_GPIO_VSSEL_VDDIO; // VDDIO - 1.8V
-    // cfg->target.cfg_mask = 0x01; // Default TS0
 
     if (use_dma) {
         cfg->use_dma_tx = true;
@@ -613,14 +608,33 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_
 
 int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
 {
+    mxc_spi_ts_t ts;
+
+    // If legacy req->ts_idx (req->ssIdx) was used, then assign to ts struct.
+    if (req->ts_idx > 0 || req->ts_idx < MXC_SPI_GET_TOTAL_TS(req->spi)) {
+        ts.index = req->ts_idx;
+    } else {
+        // Copy contents to ts struct.
+        ts = *(req->ts);
+    }
+
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                req->tx_length_frames, req->rx_buffer,
-                                               req->rx_length_frames, req->deassert, req->ts);
+                                               req->rx_length_frames, req->deassert, &ts);
 }
 
 int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
 {
     int error;
+    mxc_spi_ts_t ts;
+
+    // If legacy req->ts_idx (req->ssIdx) was used, then assign to ts struct.
+    if (req->ts_idx > 0 || req->ts_idx < MXC_SPI_GET_TOTAL_TS(req->spi)) {
+        ts.index = req->ts_idx;
+    } else {
+        // Copy contents to ts struct.
+        ts = *(req->ts);
+    }
 
     error = MXC_SPI_SetCallback(req->spi, req->callback, req->callback_data);
     if (error != E_NO_ERROR) {
@@ -630,12 +644,21 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
     return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi),
                                                     req->tx_buffer, req->tx_length_frames,
                                                     req->rx_buffer, req->rx_length_frames,
-                                                    req->deassert, req->ts);
+                                                    req->deassert, &ts);
 }
 
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
+    mxc_spi_ts_t ts;
+
+    // If legacy req->ts_idx (req->ssIdx) was used, then assign to ts struct.
+    if (req->ts_idx > 0 || req->ts_idx < MXC_SPI_GET_TOTAL_TS(req->spi)) {
+        ts.index = req->ts_idx;
+    } else {
+        // Copy contents to ts struct.
+        ts = *(req->ts);
+    }
 
     error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
     if (error != E_NO_ERROR) {
@@ -644,20 +667,39 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                   req->tx_length_frames, req->rx_buffer,
-                                                  req->rx_length_frames, req->deassert, req->ts,
+                                                  req->rx_length_frames, req->deassert, &ts,
                                                   (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
 {
+    mxc_spi_ts_t ts;
+
+    // If legacy req->ts_idx (req->ssIdx) was used, then assign to ts struct.
+    if (req->ts_idx > 0 || req->ts_idx < MXC_SPI_GET_TOTAL_TS(req->spi)) {
+        ts.index = req->ts_idx;
+    } else {
+        // Copy contents to ts struct.
+        ts = *(req->ts);
+    }
+
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                req->tx_length_frames, req->rx_buffer,
-                                               req->rx_length_frames, req->deassert, req->ts);
+                                               req->rx_length_frames, req->deassert, &ts);
 }
 
 int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
 {
     int error;
+    mxc_spi_ts_t ts;
+
+    // If legacy req->ts_idx (req->ssIdx) was used, then assign to ts struct.
+    if (req->ts_idx > 0 || req->ts_idx < MXC_SPI_GET_TOTAL_TS(req->spi)) {
+        ts.index = req->ts_idx;
+    } else {
+        // Copy contents to ts struct.
+        ts = *(req->ts);
+    }
 
     error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
     if (error != E_NO_ERROR) {
@@ -667,12 +709,21 @@ int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
     return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi),
                                                     req->tx_buffer, req->tx_length_frames,
                                                     req->rx_buffer, req->rx_length_frames,
-                                                    req->deassert, req->ts);
+                                                    req->deassert, &ts);
 }
 
 int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
+    mxc_spi_ts_t ts;
+
+    // If legacy req->ts_idx (req->ssIdx) was used, then assign to ts struct.
+    if (req->ts_idx > 0 || req->ts_idx < MXC_SPI_GET_TOTAL_TS(req->spi)) {
+        ts.index = req->ts_idx;
+    } else {
+        // Copy contents to ts struct.
+        ts = *(req->ts);
+    }
 
     error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
     if (error != E_NO_ERROR) {
@@ -681,7 +732,7 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
 
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                   req->tx_length_frames, req->rx_buffer,
-                                                  req->rx_length_frames, req->deassert, req->ts,
+                                                  req->rx_length_frames, req->deassert, &ts,
                                                   (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
