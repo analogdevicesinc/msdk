@@ -330,22 +330,14 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
 #endif
     }
 
-    // Release any acquire DMA RX or TX channels before configuring.
+    // Release any acquire DMA TX channels before configuring.
     if (states[i2cNum].channelTx != E_NO_DEVICE) {
-#if TARGET_NUM == 32665
-        MXC_DMA_ReleaseChannel((mxc_dma_regs_t *)dma, states[i2cNum].channelTx);
-#else
         MXC_DMA_ReleaseChannel(states[i2cNum].channelTx);
-#endif
     }
 
-    // Release any acquire DMA RX or TX channels before configuring.
+    // Release any acquire DMA RX channels before configuring.
     if (states[i2cNum].channelRx != E_NO_DEVICE) {
-#if TARGET_NUM == 32665
-        MXC_DMA_ReleaseChannel((mxc_dma_regs_t *)dma, states[i2cNum].channelRx);
-#else
         MXC_DMA_ReleaseChannel(states[i2cNum].channelRx);
-#endif
     }
 
     // Set up I2C DMA TX.
