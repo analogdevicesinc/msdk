@@ -152,8 +152,8 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     }
 
     // Configure the vssel
-    error = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
-    if (error != E_NO_ERROR) {
+    err = MXC_GPIO_SetVSSEL(gpio, cfg->vssel, cfg->mask);
+    if (err != E_NO_ERROR) {
         return error;
     }
 

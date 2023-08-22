@@ -72,6 +72,7 @@ int MXC_GPIO_Reset(uint32_t portmask)
 
 int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
 {
+    int error;
     mxc_gpio_regs_t *gpio = cfg->port;
 
     // Set the GPIO type
