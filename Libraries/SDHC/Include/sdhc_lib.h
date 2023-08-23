@@ -52,6 +52,8 @@
 #include "sdhc.h"
 #include "sdhc_resp_regs.h"
 
+#define SDHC_CLK_FREQ 10000000
+
 /**
  * @ingroup sdhc
  * @{
