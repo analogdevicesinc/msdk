@@ -167,7 +167,7 @@ typedef struct {
     mxc_gpio_func_t func; /**< Function type */
     mxc_gpio_pad_t pad; /**< Pad type */
     mxc_gpio_vssel_t vssel; /**< Voltage select */
-    mxc_gpio_drvstr_t dssel; /**< Drive Strength select */
+    mxc_gpio_drvstr_t drvstr; /**< Drive Strength select */
 } mxc_gpio_cfg_t;
 
 /**
@@ -368,7 +368,7 @@ uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port);
  * @param[in]  ds     Drive strength level. Ref /mxc_gpio_ds_t enum type.
  * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
  */
-int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t dssel, uint32_t mask);
+int MXC_GPIO_SetDriveStrength(mxc_gpio_regs_t *port, mxc_gpio_drvstr_t drvstr, uint32_t mask);
 
 /**@} end of group gpio */
 
