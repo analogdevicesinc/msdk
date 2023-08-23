@@ -50,13 +50,12 @@
 
 #define FREQ_HOP_PERIOD_US 20000
 
-typedef enum
-{
-  PAL_BB_CW,
-  PAL_BB_PRBS9,
-  PAL_BB_PRBS15,
+typedef enum {
+    PAL_BB_CW,
+    PAL_BB_PRBS9,
+    PAL_BB_PRBS15,
 
-}PalBbDbbPrbsType_t;
+} PalBbDbbPrbsType_t;
 
 /**************************************************************************************************
   Global Variables
@@ -71,18 +70,17 @@ static LlRtCfg_t mainLlRtCfg;
 static uint8_t phy = LL_PHY_LE_1M;
 static uint8_t phy_str[16];
 static uint8_t txFreqHopCh;
-static uint32_t numTxPowers; 
-static int8_t *txPowersAvailable; 
+static uint32_t numTxPowers;
+static int8_t *txPowersAvailable;
 
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
 
-
 extern bool_t PalBbAfeSetTxPower(int8_t txPower);
 extern void PalBbAfeSetChannelTx(uint8_t rfChannel);
-extern void     PalBbDbbEnablePatternGen(PalBbDbbPrbsType_t prbsType);
-extern void     PalBbDbbDisablePatternGen(void);
+extern void PalBbDbbEnablePatternGen(PalBbDbbPrbsType_t prbsType);
+extern void PalBbDbbDisablePatternGen(void);
 extern bool_t PalBbAfeTxSetup(void);
 extern bool_t PalBbAfeTxDone(void);
 extern void PalBbSeqTxEnable(void);
@@ -160,15 +158,11 @@ void TMR2_IRQHandler(void)
 /*************************************************************************************************/
 static void printAvailablePowers(void)
 {
-
-
     uint8_t top = numTxPowers > 9 ? 9 : numTxPowers;
 
-    for(uint32_t i = 0; i < top; i++)
-    {
+    for (uint32_t i = 0; i < top; i++) {
         APP_TRACE_INFO2("%u: %d", i, txPowersAvailable[i]);
     }
-
 }
 /*************************************************************************************************/
 /*!
@@ -260,33 +254,27 @@ static void processConsoleRX(uint8_t rxByte)
         break;
 
     case '4':
-        
+
         PalBbEnable();
-        
-        if(param == 0)
-        {
+
+        if (param == 0) {
             printAvailablePowers();
             break;
-        }
-        else if(param >= '0' && param <= '0' + numTxPowers)
-        {
+        } else if (param >= '0' && param <= '0' + numTxPowers) {
             PalBbAfeSetTxPower(txPowersAvailable[param - '0']);
             LlSetAdvTxPower(txPowersAvailable[param - '0']);
             APP_TRACE_INFO1("Power set to %d dBm", txPowersAvailable[param - '0']);
-            
-        }
-        else if(param < '0' || param > '9' )
-        {
+
+        } else if (param < '0' || param > '9') {
             APP_TRACE_INFO0("Invalid selection");
         }
 
         PalBbDisable();
-        
+
         cmd = 0;
         param = 0;
 
         break;
-
 
     case '5':
         PalBbEnable();
@@ -318,10 +306,7 @@ static void processConsoleRX(uint8_t rxByte)
 
         APP_TRACE_INFO0("Starting TX");
 
-
-    
-
-        /* Enable constant TX */    
+        /* Enable constant TX */
         PalBbAfeTxSetup();
 
         PalBbDbbEnablePatternGen(PAL_BB_CW);
@@ -335,7 +320,6 @@ static void processConsoleRX(uint8_t rxByte)
         /* Disable constant TX */
         PalBbAfeTxDone();
         PalBbDbbDisablePatternGen();
-        
 
         PalBbDisable();
 
@@ -444,18 +428,15 @@ static void mainLoadConfiguration(void)
 /*************************************************************************************************/
 static void mainInitTxPowers(void)
 {
-    numTxPowers = PalRadioGetNumAvailableTxPowers(); 
+    numTxPowers = PalRadioGetNumAvailableTxPowers();
     txPowersAvailable = malloc(numTxPowers * sizeof(int8_t));
 
-    if(txPowersAvailable == NULL)
-    {
+    if (txPowersAvailable == NULL) {
         APP_TRACE_ERR0("Failed to get number of available TX powers.");
         APP_TRACE_ERR0("Malloc returned NULL");
     }
 
-
     numTxPowers = PalRadioGetAvailableTxPowers(txPowersAvailable, numTxPowers);
-    
 }
 /*************************************************************************************************/
 /*!
