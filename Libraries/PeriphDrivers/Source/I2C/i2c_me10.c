@@ -39,7 +39,7 @@
 #include "mxc_lock.h"
 #include "mxc_sys.h"
 #include "i2c.h"
-#include "i2c_revb.h"
+#include "i2c_reva.h"
 #include "mxc_delay.h"
 
 /* **** Definitions **** */
@@ -142,7 +142,7 @@ unsigned int MXC_I2C_GetFrequency(mxc_i2c_regs_t *i2c)
 /* ************************************************************************** */
 int MXC_I2C_ReadyForSleep(mxc_i2c_regs_t *i2c)
 {
-    if (i2c->stat & MXC_F_I2C_REVB_STAT_BUSY) {
+    if (i2c->stat & MXC_F_I2C_REVA_STATUS_BUSY) {
         return E_BUSY;
     }
     return MXC_I2C_RevA_ReadyForSleep((mxc_i2c_reva_regs_t *)i2c);
