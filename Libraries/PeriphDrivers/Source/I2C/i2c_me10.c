@@ -101,7 +101,6 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
     i2c->slv_addr |= slaveAddr & MXC_F_I2C_SLV_ADDR_SLA;
 
     return E_NO_ERROR;
-    // return MXC_I2C_RevB_SetSlaveAddr((mxc_i2c_reva_regs_t *)i2c, slaveAddr, idx);
 }
 
 /* ************************************************************************** */
