@@ -307,33 +307,28 @@ LDFLAGS=-mthumb                                                                \
 	-Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
 
 # Add --no-warn-rwx-segments on GCC 12+
-# This is not supported by earlier versions, so we need to check GCC first
+# This is not universally supported or enabled by default, so we need to check whether the linker supports it first
 RWX_SEGMENTS_SUPPORTED ?=
 ifeq "$(RWX_SEGMENTS_SUPPORTED)" "" # -------------------------------------
-GCC_VERSION := $(shell $(CC) -dumpversion)
-
-ifeq "$(_OS)" "windows"
-# On Windows, type-cast to the System.Version object to do the comparison over PowerShell.
-# TODO: The escape syntax here will only work if called from a command prompt.
-COMMAND = powershell -Command "if ([System.Version]\"$(GCC_VERSION)\" -ge [System.Version]\"12.0.0\") {echo 1}
+# Print the linker's help string and parse it for --no-warn-rwx-segments
+# Note we invoke the linker through the compiler "-Xlinker" because ld may not
+# be on the path, and that's how we invoke the linker for our implicit rules
+LINKER_OPTIONS := $(shell $(CC) -Xlinker --help)
+ifneq "$(findstring --no-warn-rwx-segments,$(LINKER_OPTIONS))" ""
+RWX_SEGMENTS_SUPPORTED := 1
 else
-# On linux/macos, leverage the 'expr' utility.
-COMMAND = expr $(GCC_VERSION) \>= 12
+RWX_SEGMENTS_SUPPORTED := 0
 endif
 
 # export the variable for sub-make calls, so we don't need to interact with the shell again (it's slow).
-ifeq "$(shell $(COMMAND))" "1"
-export RWX_SEGMENTS_SUPPORTED = 1
-else
-export RWX_SEGMENTS_SUPPORTED = 0
-endif
-
+export RWX_SEGMENTS_SUPPORTED
 endif # ------------------------------------------------------------------
 
 ifeq "$(RWX_SEGMENTS_SUPPORTED)" "1"
 LDFLAGS += -Xlinker --no-warn-rwx-segments
 endif
 
+# Add project-specific linker flags
 LDFLAGS+=$(PROJ_LDFLAGS)
 
 # Include math library
