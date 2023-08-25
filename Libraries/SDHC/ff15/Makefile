@@ -80,10 +80,10 @@ PROJ_CFLAGS += -DNATIVE_SDHC
 endif
 
 # Where to find source files for this project
-VPATH  = Source
+VPATH  = source
 
 # Where to find header files for this project
-IPATH  = Source
+IPATH  = source
 IPATH += $(SDHC_DRIVER_DIR)/Include
 IPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET)/Include
 IPATH += $(CMSIS_ROOT)/Include
