@@ -2,10 +2,11 @@
 	"name":"SDHC",
 	"ipaths":[
         "Include",
-        "ff14/Source"
+        "ff15/Source"
 	],
 	"vpaths":[
-		"ff14/Source"
+		"ff15/Source",
+        "Source"
     ],
 	"whitelist":"True",
 	"targets":[
