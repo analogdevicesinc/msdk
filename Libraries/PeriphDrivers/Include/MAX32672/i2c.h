@@ -189,7 +189,10 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_
  * @param   masterMode  Whether to put the device in master or slave mode. Use
  *                      non-zero
  *                      for master mode, and zero for slave mode.
- * @param   slaveAddr   7-bit or 10-bit address to use when in slave mode.
+ * @param   slaveAddr   7-bit or 10-bit address to use when in slave mode. By 
+ *                      default this value will be set to slave index 0. Use
+ *                      MXC_I2C_SetSlaveAddr() to set additional slave addresses
+ *                      if needed.
  *                      This parameter is ignored when masterMode is non-zero.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
@@ -198,8 +201,6 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr);
 
 /**
  * @brief   Initialize and enable I2C peripheral.
- * @note    Set idx to 0, multiple I2C instances acting as slaves is not yet
- *          supported.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   slaveAddr   7-bit or 10-bit address to use when in slave mode.

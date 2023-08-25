@@ -104,7 +104,7 @@ typedef struct {
     __IO uint32_t clkhi;                /**< <tt>\b 0x38:</tt> I2C CLKHI Register */
     __IO uint32_t hsclk;                /**< <tt>\b 0x3C:</tt> I2C HSCLK Register */
     __IO uint32_t timeout;              /**< <tt>\b 0x40:</tt> I2C TIMEOUT Register */
-    __R  uint32_t rsv_0x44;
+    __IO uint32_t slave_a1;             /**< <tt>\b 0x44:</tt> I2C SLAVE_A1 Register */
     __IO uint32_t dma;                  /**< <tt>\b 0x48:</tt> I2C DMA Register */
     union {
         __IO uint32_t slave_multi[4];   /**< <tt>\b 0x4C:</tt> I2C SLAVE_MULTI Register */
@@ -141,6 +141,7 @@ typedef struct {
 #define MXC_R_I2C_CLKHI                    ((uint32_t)0x00000038UL) /**< Offset from I2C Base Address: <tt> 0x0038</tt> */
 #define MXC_R_I2C_HSCLK                    ((uint32_t)0x0000003CUL) /**< Offset from I2C Base Address: <tt> 0x003C</tt> */
 #define MXC_R_I2C_TIMEOUT                  ((uint32_t)0x00000040UL) /**< Offset from I2C Base Address: <tt> 0x0040</tt> */
+#define MXC_R_I2C_SLAVE_A1                 ((uint32_t)0x00000044UL) /**< Offset from I2C Base Address: <tt> 0x0044</tt> */
 #define MXC_R_I2C_DMA                      ((uint32_t)0x00000048UL) /**< Offset from I2C Base Address: <tt> 0x0048</tt> */
 #define MXC_R_I2C_SLAVE_MULTI              ((uint32_t)0x0000004CUL) /**< Offset from I2C Base Address: <tt> 0x004C</tt> */
 #define MXC_R_I2C_SLAVE0                   ((uint32_t)0x0000004CUL) /**< Offset from I2C Base Address: <tt> 0x004C</tt> */
@@ -557,6 +558,26 @@ typedef struct {
 #define MXC_F_I2C_TIMEOUT_SCL_TO_VAL                   ((uint32_t)(0xFFFFUL << MXC_F_I2C_TIMEOUT_SCL_TO_VAL_POS)) /**< TIMEOUT_SCL_TO_VAL Mask */
 
 /**@} end of group I2C_TIMEOUT_Register */
+
+/**
+ * @ingroup  i2c_registers
+ * @defgroup I2C_SLAVE_A1 I2C_SLAVE_A1
+ * @brief    Slave Address Register for MAX32672 Rev. A Parts.
+ * @{
+ */
+#define MXC_F_I2C_SLAVE_A1_ADDR_POS                    0 /**< SLAVE_A1_ADDR Position */
+#define MXC_F_I2C_SLAVE_A1_ADDR                        ((uint32_t)(0x3FFUL << MXC_F_I2C_SLAVE_A1_ADDR_POS)) /**< SLAVE_A1_ADDR Mask */
+
+#define MXC_F_I2C_SLAVE_A1_DIS_POS                     10 /**< SLAVE_A1_DIS Position */
+#define MXC_F_I2C_SLAVE_A1_DIS                         ((uint32_t)(0x1UL << MXC_F_I2C_SLAVE_A1_DIS_POS)) /**< SLAVE_A1_DIS Mask */
+
+#define MXC_F_I2C_SLAVE_A1_IDX_POS                     11 /**< SLAVE_A1_IDX Position */
+#define MXC_F_I2C_SLAVE_A1_IDX                         ((uint32_t)(0x3UL << MXC_F_I2C_SLAVE_A1_IDX_POS)) /**< SLAVE_A1_IDX Mask */
+
+#define MXC_F_I2C_SLAVE_A1_EXT_ADDR_EN_POS             15 /**< SLAVE_A1_EXT_ADDR_EN Position */
+#define MXC_F_I2C_SLAVE_A1_EXT_ADDR_EN                 ((uint32_t)(0x1UL << MXC_F_I2C_SLAVE_A1_EXT_ADDR_EN_POS)) /**< SLAVE_A1_EXT_ADDR_EN Mask */
+
+/**@} end of group I2C_SLAVE_A1_Register */
 
 /**
  * @ingroup  i2c_registers
