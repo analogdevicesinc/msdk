@@ -82,6 +82,11 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
 
 int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
 {
+    if ((MXC_SYS_GetRev() & 0xF0) == 0xA0 && idx != 0) {
+        // MAX32570 Rev. A only supports one slave address
+        return E_NOT_SUPPORTED;
+    }
+
     return MXC_I2C_RevA_SetSlaveAddr((mxc_i2c_reva_regs_t *)i2c, slaveAddr, idx);
 }
 
