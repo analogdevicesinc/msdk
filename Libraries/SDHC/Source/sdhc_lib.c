@@ -433,13 +433,9 @@ int MXC_SDHC_Lib_InitCard(int retries)
 
     // Calculate clk div to achieve target SDHC clk.
     // First, there is a GCR register setting to determine the input clock to the peripheral.
-    // Check the UG.
-    unsigned int sdhc_clk_freq = 0;
-    if (MXC_GCR->pckdiv & MXC_F_GCR_PCKDIV_SDHCFRQ) {
-        sdhc_clk_freq = SystemCoreClock >> 2; // Div by 4
-    } else {
-        sdhc_clk_freq = SystemCoreClock >> 1; // Div by 2
-    }
+    // This varies between micros, so a native implementation for each one is maintained in
+    // sdhc_mexx.c
+    unsigned int sdhc_clk_freq = MXC_SDHC_Get_Input_Clock_Freq();
     unsigned int sdhc_clk_div = sdhc_clk_freq / (2 * SDHC_CLK_FREQ);
     MXC_SDHC_Set_Clock_Config(sdhc_clk_div);
 
