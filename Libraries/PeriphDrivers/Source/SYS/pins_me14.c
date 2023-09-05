@@ -225,7 +225,7 @@ const mxc_gpio_cfg_t gpio_cfg_spi1_dual = { MXC_GPIO0, (MXC_GPIO_PIN_17 | MXC_GP
 const mxc_gpio_cfg_t gpio_cfg_spi1_quad = { MXC_GPIO0, (MXC_GPIO_PIN_17 | MXC_GPIO_PIN_18 | MXC_GPIO_PIN_19 | MXC_GPIO_PIN_20 | MXC_GPIO_PIN_21),
                                             MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 
-const mxc_gpio_cfg_t gpio_cfg_spi2_standard = { MXC_GPIO0, (MXC_GPIO_PIN_25 | MXC_GPIO_PIN_26 | MXC_GPIO_PIN_27), 
+const mxc_gpio_cfg_t gpio_cfg_spi2_standard = { MXC_GPIO0, (MXC_GPIO_PIN_25 | MXC_GPIO_PIN_26 | MXC_GPIO_PIN_27),
                                                 MXC_GPIO_FUNC_ALT2, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_spi2_3wire = { MXC_GPIO0, (MXC_GPIO_PIN_25 | MXC_GPIO_PIN_27), MXC_GPIO_FUNC_ALT2,
                                              MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
