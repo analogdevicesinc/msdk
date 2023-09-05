@@ -173,10 +173,8 @@ static uint8_t *stream_buffer_ptr = NULL;
 
 #ifdef TFT_DMA_DEBUG
 const mxc_gpio_cfg_t debug_pin[] = {
-    { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH,
-      MXC_GPIO_DRVSTR_0 },
-    { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH,
-      MXC_GPIO_DRVSTR_0 },
+    { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0},
+    { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0},
 };
 const unsigned int num_debugs = (sizeof(debug_pin) / sizeof(mxc_gpio_cfg_t));
 

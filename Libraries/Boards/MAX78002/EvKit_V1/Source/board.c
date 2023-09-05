@@ -71,22 +71,17 @@ const uint32_t _port1_vddioh_mask = (MXC_GPIO_PIN_10 | MXC_GPIO_PIN_11 | MXC_GPI
 const uint32_t _port2_vddioh_mask = MXC_GPIO_PIN_2;
 
 // TFT Data/Command pin
-const mxc_gpio_cfg_t tft_dc_pin = { TFT_DC_PORT,           TFT_DC_PIN,
-                                    MXC_GPIO_FUNC_OUT,     MXC_GPIO_PAD_NONE,
+const mxc_gpio_cfg_t tft_dc_pin = { TFT_DC_PORT, TFT_DC_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
                                     MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 // TFT Slave Select pin
-const mxc_gpio_cfg_t tft_ss_pin = { TFT_SS_PORT,           TFT_SS_PIN,
-                                    MXC_GPIO_FUNC_OUT,     MXC_GPIO_PAD_NONE,
+const mxc_gpio_cfg_t tft_ss_pin = { TFT_SS_PORT, TFT_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
                                     MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 // TS IRQ pin
-mxc_gpio_cfg_t ts_irq_pin = { TS_IRQ_PORT,           TS_IRQ_PIN,
-                              MXC_GPIO_FUNC_IN,      MXC_GPIO_PAD_NONE,
+mxc_gpio_cfg_t ts_irq_pin = { TS_IRQ_PORT, TS_IRQ_PIN, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
                               MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 // TS SS pin
-const mxc_gpio_cfg_t ts_ss_pin = {
-    TS_SS_PORT,       TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH,
-    MXC_GPIO_DRVSTR_0
-};
+const mxc_gpio_cfg_t ts_ss_pin = { TS_SS_PORT, TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
+                                   MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 
 /***** File Scope Variables *****/
 // const uart_cfg_t uart_cfg = {
