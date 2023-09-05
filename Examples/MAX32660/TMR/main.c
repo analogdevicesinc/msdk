@@ -99,6 +99,7 @@ void PWMTimer()
     pwmOut.func = MXC_GPIO_FUNC_ALT3;
     pwmOut.pad = MXC_GPIO_PAD_NONE;
     pwmOut.vssel = MXC_GPIO_VSSEL_VDDIO;
+    pwmOut.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&pwmOut);
 
     /*    

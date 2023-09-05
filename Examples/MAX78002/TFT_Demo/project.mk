@@ -14,8 +14,12 @@
 # Uncomment to use legacy Adafruit 3315 TFT drivers (TFT = ADAFRUIT)
 # Otherwise, default drivers (TFT = NEWHAVEN) will be used for NewHaven NHD-2.4
 # TFT = ADAFRUIT
+TFT = NEWHAVEN
 
 # Add TFT resources folder to build
 VPATH += resources/tft
 IPATH += resources/tft
 
+MXC_SPI_BUILD_V1 = 0
+
+LIBS_DIR = ../../../Libraries

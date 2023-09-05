@@ -1047,6 +1047,7 @@ mxc_gpio_cfg_t indicator = { .func = MXC_GPIO_FUNC_OUT,
                              .port = GPIO_INDICATOR_PORT,
                              .mask = GPIO_INDICATOR_PIN,
                              .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                             .drvstr = MXC_GPIO_DRVSTR_0,
                              .pad = MXC_GPIO_PAD_NONE };
 #endif
 
