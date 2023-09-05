@@ -214,10 +214,10 @@ int Board_Init(void)
         .ss_idx = 0,
     };
 
-    mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO1, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT,
+    mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO1,         MXC_GPIO_PIN_17,       MXC_GPIO_FUNC_OUT,
                                      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
-    mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO1, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                  MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO1,         MXC_GPIO_PIN_16,       MXC_GPIO_FUNC_OUT,
+                                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 
     MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
 
