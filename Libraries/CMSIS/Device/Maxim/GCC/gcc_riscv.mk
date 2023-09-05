@@ -218,9 +218,9 @@ ifeq "$(PREFIX)" "riscv-none-elf"
 # With the upgrade to riscv-none-elf came a new ISA spec
 # See https://groups.google.com/a/groups.riscv.org/g/sw-dev/c/aE1ZeHHCYf4
 # BASE = RV32I
-# EXTENSION = M
+# EXTENSION = MC
 # EXTRAS = _zicsr_zifencei as recommended above
-MARCH ?= rv32im_zicsr_zifencei
+MARCH ?= rv32imc_zicsr_zifencei
 endif
 
 # Default option (riscv-none-embed)
@@ -451,7 +451,9 @@ ifeq "$(CYGWIN)" "True"
 endif
 
 # The rule for linking the application.
-${BUILD_DIR}/%.elf: $(PROJECTMK) | $(BUILD_DIR)
+# Note "RISCV_COMMON_LD" in the dependency tree.  Part-specific makefiles (ie. max78000.mk)
+# are responsible for defining this optional variable.
+${BUILD_DIR}/%.elf: $(PROJECTMK) $(RISCV_COMMON_LD) | $(BUILD_DIR)
 # This rule parses the linker arguments into a text file to work around issues
 # with string length limits on the command line
 ifeq "$(_OS)" "windows_msys"

@@ -54,8 +54,8 @@ extern "C" {
  * 
  */
 typedef enum {
-    MXC_LPCMP_POL_RISE, //< Comparator interrupt happens on rising edge of comparator output
-    MXC_LPCMP_POL_FALL, //< Comparator interrupt occurs on falling edge of comparator output
+    MXC_LPCMP_POL_RISE = 0, //< Comparator interrupt happens on rising edge of comparator output
+    MXC_LPCMP_POL_FALL = 1, //< Comparator interrupt occurs on falling edge of comparator output
 } mxc_lpcmp_polarity_t;
 
 /**
