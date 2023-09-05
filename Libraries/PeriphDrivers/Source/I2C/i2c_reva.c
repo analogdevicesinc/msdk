@@ -313,8 +313,6 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
     int8_t i2cNum;
     int8_t rxChannel;
     int8_t txChannel;
-    mxc_dma_config_t rxConfig;
-    mxc_dma_config_t txConfig;
 
     if (i2c == NULL || dma == NULL) {
         return E_NULL_PTR;
@@ -348,21 +346,13 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
         txChannel = MXC_DMA_AcquireChannel();
 #endif
 
-        txConfig.ch = txChannel;
-
         // Set Source and Destination Widths.
-        txConfig.srcwd = MXC_DMA_WIDTH_BYTE;
-        txConfig.dstwd = MXC_DMA_WIDTH_BYTE;
-
         MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
                      (txConfig.srcwd << MXC_F_DMA_REVA_CTRL_SRCWD_POS));
         MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
                      (txConfig.dstwd << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
 
         // Set Source and Destination Increment.
-        txConfig.srcinc_en = 1;
-        txConfig.dstinc_en = 0;
-
         MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCINC,
                      (txConfig.srcinc_en << MXC_F_DMA_REVA_CTRL_SRCINC_POS));
         MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTINC,
@@ -388,21 +378,13 @@ int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bo
         rxChannel = MXC_DMA_AcquireChannel();
 #endif
 
-        rxConfig.ch = rxChannel;
-
         // Set Source and Destination Widths.
-        rxConfig.srcwd = MXC_DMA_WIDTH_BYTE;
-        rxConfig.dstwd = MXC_DMA_WIDTH_BYTE;
-
         MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
                      (rxConfig.srcwd << MXC_F_DMA_REVA_CTRL_SRCWD_POS));
         MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
                      (rxConfig.dstwd << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
 
         // Set Source and Destination Increment.
-        rxConfig.srcinc_en = 0;
-        rxConfig.dstinc_en = 1;
-
         MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCINC,
                      (rxConfig.srcinc_en << MXC_F_DMA_REVA_CTRL_SRCINC_POS));
         MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTINC,
@@ -659,6 +641,10 @@ int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, u
 
     i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
 
+    if (states[i2cNum].channelRx == E_NO_DEVICE) {
+        return E_BAD_STATE;
+    }
+
     srcdst.ch = states[i2cNum].channelRx;
     srcdst.dest = bytes;
     srcdst.len = len;
@@ -709,6 +695,10 @@ int MXC_I2C_RevA_WriteTXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, 
     i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
 
     i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_START;
+
+    if (states[i2cNum].channelTx == E_NO_DEVICE) {
+        return E_BAD_STATE;
+    }
 
     srcdst.ch = states[i2cNum].channelTx;
     srcdst.source = bytes;
