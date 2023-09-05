@@ -63,7 +63,7 @@
 #define I2C_SLAVE MXC_I2C1
 
 #define I2C_FREQ 100000
-#define I2C_SLAVE_ADDR (0x51)
+#define I2C_SLAVE_ADDR 0x51
 #define I2C_BYTES 255
 
 /***** Globals *****/

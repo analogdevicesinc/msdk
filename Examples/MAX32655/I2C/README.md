@@ -23,7 +23,7 @@ If using the MAX32655EVKIT (EvKit_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   You must connect P0.10 to P0.16 (SCL) and P0.11 to P0.17 (SCL).
+-   You must connect P0.10 to P0.16 (SCL) and P0.11 to P0.17 (SDA).
 -   You must also connect the pull-up jumpers (JP21 and JP22) to the proper I/O voltage.
 
 ## Expected Output
