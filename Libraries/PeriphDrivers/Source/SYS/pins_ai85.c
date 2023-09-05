@@ -99,7 +99,7 @@ const mxc_gpio_cfg_t gpio_cfg_owm = { MXC_GPIO0, (MXC_GPIO_PIN_6 | MXC_GPIO_PIN_
 const mxc_gpio_cfg_t gpio_cfg_owmb = { MXC_GPIO0, (MXC_GPIO_PIN_18 | MXC_GPIO_PIN_19), MXC_GPIO_FUNC_ALT2,
                                        MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 
-const mxc_gpio_cfg_t gpio_cfg_rtcsqw = { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE
+const mxc_gpio_cfg_t gpio_cfg_rtcsqw = { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NON,
                                          MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 
 const mxc_gpio_cfg_t gpio_cfg_pt0 = { MXC_GPIO0, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE,

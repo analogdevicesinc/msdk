@@ -113,7 +113,7 @@ const mxc_gpio_cfg_t gpio_cfg_rtcsqwb = { MXC_GPIO1, MXC_GPIO_PIN_11, MXC_GPIO_F
                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 
 const mxc_gpio_cfg_t gpio_cfg_lc1 = { MXC_GPIO1, MXC_GPIO_PIN_9, MXC_GPIO_FUNC_ALT4,
-                                      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO,, MXC_GPIO_DRVSTR_0 };
+                                      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_mon_lc1 = { MXC_GPIO1, MXC_GPIO_PIN_10, MXC_GPIO_FUNC_ALT4,
                                           MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_cmd_rs_lc1 = { MXC_GPIO1, MXC_GPIO_PIN_11, MXC_GPIO_FUNC_ALT4,
