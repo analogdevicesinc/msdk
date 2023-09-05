@@ -396,15 +396,15 @@ int Board_Init(void)
     mxc_tft_spi_config tft_spi_config = {
         .regs = MXC_SPI1,
         .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_20,
-                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0},
+                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
         .freq = 12000000,
         .ss_idx = 0,
     };
 
     mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO3, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_OUT,
-                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0};
+                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
     mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO0, MXC_GPIO_PIN_27, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                  MXC_GPIO_VSSEL_VDDIOH };
+                                  MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 
     /* Initialize TFT display */
     MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
@@ -413,17 +413,17 @@ int Board_Init(void)
     mxc_ts_spi_config ts_spi_config = {
         .regs = MXC_SPI1,
         .gpio = { MXC_GPIO0, MXC_GPIO_PIN_21 | MXC_GPIO_PIN_22 | MXC_GPIO_PIN_23 | MXC_GPIO_PIN_26,
-                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0},
+                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
         .freq = 200000,
         .ss_idx = 1,
     };
 
     /* Touch screen controller interrupt signal */
     mxc_gpio_cfg_t int_pin = { MXC_GPIO0, MXC_GPIO_PIN_13, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                               MXC_GPIO_VSSEL_VDDIOH };
+                               MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
     /* Touch screen controller busy signal */
     mxc_gpio_cfg_t busy_pin = { MXC_GPIO0, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                                MXC_GPIO_VSSEL_VDDIOH };
+                                MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
     /* Initialize Touch Screen controller */
     MXC_TS_PreInit(&ts_spi_config, &int_pin, &busy_pin);
 #endif

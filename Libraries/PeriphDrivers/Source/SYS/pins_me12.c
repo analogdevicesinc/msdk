@@ -42,6 +42,8 @@
 /***** Definitions *****/
 
 /***** Global Variables *****/
+
+// clang-format off
 const mxc_gpio_cfg_t gpio_cfg_lp_extclk = { MXC_GPIO0, (MXC_GPIO_PIN_11), MXC_GPIO_FUNC_ALT5,
                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t gpio_cfg_hf_extclk = { MXC_GPIO0, (MXC_GPIO_PIN_6), MXC_GPIO_FUNC_ALT4,
