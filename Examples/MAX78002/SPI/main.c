@@ -241,7 +241,7 @@ int main(void)
             return retVal;
         }
 
-#else // TSCONTROL_HW_AUTO \
+#else // TSCONTROL_HW_AUTO
     // Select TS0 HW pin.
         ts0.index = 0;
         ts0.active_pol = 0;
