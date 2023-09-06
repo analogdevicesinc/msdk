@@ -242,7 +242,7 @@ int main(void)
         }
 
 #else // TSCONTROL_HW_AUTO
-        ts0.index = 0;  // Select TS0 HW pin.
+        ts0.index = 0; // Select TS0 HW pin.
         ts0.active_pol = 0;
 #endif
 
