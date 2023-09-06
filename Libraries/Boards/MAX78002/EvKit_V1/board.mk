@@ -105,11 +105,6 @@ PROJ_CFLAGS+=-DCAMERA_OV7692
 endif
 SRCS += sccb.c
 
-ifeq "$(MXC_SPI_BUILD_V1)" "0"
-MXC_SPI_V1=0
-PROJ_CFLAGS+=-DMXC_SPI_V1
-endif
-
 MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files

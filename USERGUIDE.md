@@ -1895,6 +1895,14 @@ The following variables can be used to modularly toggle the [available libraries
 | `LIB_MAXUSB`           | Include the MaxUSB library                                 | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to `0` to disable or `1` to enable. |
 | `LIB_SDHC`             | Include the SDHC library                                   | This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem. |
 
+#### Build Variables for the PeriphDrivers Library
+
+The following variables are specific to the PeriphDrivers library.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `MXC_SPI_VERSION`            | Set the SPI drivers to use (default is `v1`) | The PeriphDrivers offer two versions of the SPI API in order to maintain backwards compatibility.  Acceptable values are `v1` (legacy) or `v2`.  See [The SPI V2 Developer Note](#spi-v2-library) for more details. |
+
 #### Build Variables for Secure Boot Tools (SBTs)
 
 For microcontrollers with a secure bootloader, the following build configuration variables can be used to enable integration with the Secure Boot Tools.  These are a suite of applications designed for use with microcontrollers that have secure bootloaders.
@@ -2463,9 +2471,9 @@ The SPI v2 Library is the latest version of the MSDK SPI drivers which highlight
 
 #### Porting Projects to use SPI v2
 
-The latest SPI examples in the MSDK defaults to build the SPI v1 libraries. Set `MXC_SPI_BUILD_V1=0` in the Project's project.mk file to use the SPI v2 API.
+The latest SPI examples in the MSDK defaults to build the SPI v1 libraries. Set the `MXC_SPI_VERSION` [build configuration variable](#build-configuration-variables) to `v2` (case sensitive) use the SPI v2 API.
 
-This guide shows how to update an existing project that is using the SPI v1 API to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main difference in the SPI DMA interrupt handling (see **SPI DMA Interrupt Handling** section below for more info).
+This guide shows how to update an existing project that is using the SPI v1 API to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main difference in the SPI DMA interrupt handling (see [SPI DMA Interrupt Handling](#spi-dma-interrupt-handling) section below for more info).
 
 Note: The SPI v2 API is only a drop in replacement to SPI v1 if SPI DMA is **not** used; should the user choose to continue building with the SPI v1 convention but with the underlying SPI v2 implementation. This porting guide demonstrates how to use the full extent of the SPI v2 features.
 
