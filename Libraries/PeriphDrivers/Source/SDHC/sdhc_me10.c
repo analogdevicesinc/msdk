@@ -100,7 +100,7 @@ unsigned int MXC_SDHC_Get_Input_Clock_Freq(void)
     if (MXC_GCR->pclk_div & MXC_F_GCR_PCLK_DIV_SDHCFRQ) {
         return SystemCoreClock >> 1; // Div by 2
     } else {
-        return 50000000;  // UG specifies a hard-coded 50Mhz value in this case
+        return 50000000; // UG specifies a hard-coded 50Mhz value in this case
     }
 }
 

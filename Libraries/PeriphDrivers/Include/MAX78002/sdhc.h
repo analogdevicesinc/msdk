@@ -154,7 +154,6 @@ void MXC_SDHC_Set_Clock_Config(unsigned int clk_div);
  */
 unsigned int MXC_SDHC_Get_Clock_Config(void);
 
-
 /**
  * @brief      Get the input clock frequency for the SDHC peripheral.
  * @return     Input clock frequency in Hz

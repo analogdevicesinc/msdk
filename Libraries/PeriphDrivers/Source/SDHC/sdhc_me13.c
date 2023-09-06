@@ -86,7 +86,7 @@ unsigned int MXC_SDHC_Get_Input_Clock_Freq(void)
     if (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_SDHCFRQ) {
         return SystemCoreClock >> 2; // Div by 4
     } else {
-       return SystemCoreClock >> 1; // Div by 2
+        return SystemCoreClock >> 1; // Div by 2
     }
 }
 
