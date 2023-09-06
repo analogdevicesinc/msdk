@@ -82,7 +82,7 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
         // MAX32655 only supports one slave device
         return E_NOT_SUPPORTED;
     }
-    
+
     return MXC_I2C_RevA_SetSlaveAddr((mxc_i2c_reva_regs_t *)i2c, slaveAddr, idx);
 }
 
