@@ -620,7 +620,7 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_
 
 int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_MasterrTransaction(req);
+    return MXC_SPI_MasterTransaction(req);
 }
 
 int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
