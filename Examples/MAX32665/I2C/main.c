@@ -68,9 +68,6 @@
 #endif
 
 #define I2C_FREQ 100000
-// This example may become unreliable at I2C frequencies above 100kHz.
-// This is only an issue in the loopback configuration, where the I2C block is
-// connected to itself.
 #define I2C_SLAVE_ADDR 0x51
 #define I2C_BYTES 255
 

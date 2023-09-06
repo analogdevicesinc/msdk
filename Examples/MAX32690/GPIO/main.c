@@ -66,14 +66,17 @@
 /***** Globals *****/
 
 /***** Functions *****/
-void gpio_isr(void *cbdata)
-{
-    MXC_Delay(MXC_DELAY_MSEC(100));
-    uint32_t flags = MXC_GPIO_GetFlags(MXC_GPIO_PORT_IN);
-    MXC_GPIO_ClearFlags(MXC_GPIO_PORT_IN, flags);
 
+void gpio_callback(void *cbdata)
+{
     mxc_gpio_cfg_t *cfg = cbdata;
     MXC_GPIO_OutToggle(cfg->port, cfg->mask);
+}
+
+void gpio_isr(void)
+{
+    MXC_Delay(MXC_DELAY_MSEC(100)); // Debounce
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO_PORT_IN));
 }
 
 int main(void)
@@ -111,10 +114,11 @@ int main(void)
     gpio_interrupt.func = MXC_GPIO_FUNC_IN;
     gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIOH;
     MXC_GPIO_Config(&gpio_interrupt);
-    MXC_GPIO_RegisterCallback(&gpio_interrupt, gpio_isr, &gpio_interrupt_status);
+    MXC_GPIO_RegisterCallback(&gpio_interrupt, gpio_callback, &gpio_interrupt_status);
     MXC_GPIO_IntConfig(&gpio_interrupt, MXC_GPIO_INT_FALLING);
     MXC_GPIO_EnableInt(gpio_interrupt.port, gpio_interrupt.mask);
     NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(MXC_GPIO_PORT_IN)));
+    MXC_NVIC_SetVector(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(MXC_GPIO_PORT_IN)), gpio_isr);
 
     /* Setup output pin. */
     gpio_out.port = MXC_GPIO_PORT_OUT;
