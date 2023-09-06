@@ -594,6 +594,6 @@ $(BUILD_DIR)/_empty_tmp_file.c: | $(BUILD_DIR)
 .PHONY: project_defines
 project_defines: $(BUILD_DIR)/project_defines.h
 
-$(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c | $(BUILD_DIR)
+$(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c $(PROJECTMK) | $(BUILD_DIR)
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
 	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
