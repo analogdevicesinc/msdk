@@ -111,7 +111,8 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
         }
 
         // Set the slave address
-        MXC_SETFIELD(i2c->slave_a1, MXC_F_I2C_SLAVE_A1_ADDR, (slaveAddr << MXC_F_I2C_SLAVE_A1_ADDR_POS));
+        MXC_SETFIELD(i2c->slave_a1, MXC_F_I2C_SLAVE_A1_ADDR,
+                     (slaveAddr << MXC_F_I2C_SLAVE_A1_ADDR_POS));
 
         // Enable the slave address
         i2c->slave_a1 &= ~MXC_F_I2C_SLAVE_A1_DIS;
