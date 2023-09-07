@@ -1360,47 +1360,6 @@
         </fields>
       </register>
       <register>
-        <name>SLAVE_A1</name>
-        <description>Slave Address Register for MAX32672 Rev. A Parts.</description>
-        <addressOffset>0x44</addressOffset>
-        <size>32</size>
-        <access>read-write</access>
-        <fields>
-          <field>
-            <name>ADDR</name>
-            <description>Slave Address.</description>
-            <bitRange>[9:0]</bitRange>
-          </field>
-          <field>
-            <name>DIS</name>
-            <description>Slave Disable.</description>
-            <bitRange>[10:10]</bitRange>
-          </field>
-          <field>
-            <name>IDX</name>
-            <description>Slave index.</description>
-            <bitRange>[12:11]</bitRange>
-          </field>
-          <field>
-            <name>EXT_ADDR_EN</name>
-            <description>Extended Address Select.</description>
-            <bitRange>[15:15]</bitRange>
-            <enumeratedValues>
-              <enumeratedValue>
-                <name>7_bits_address</name>
-                <description>7-bit address.</description>
-                <value>0</value>
-              </enumeratedValue>
-              <enumeratedValue>
-                <name>10_bits_address</name>
-                <description>10-bit address.</description>
-                <value>1</value>
-              </enumeratedValue>
-            </enumeratedValues>
-          </field>
-        </fields>
-      </register>
-      <register>
         <name>DMA</name>
         <description>DMA Register.</description>
         <addressOffset>0x48</addressOffset>
