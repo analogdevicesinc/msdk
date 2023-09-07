@@ -64,7 +64,8 @@
 #define SLAVE_A1_IDX ((uint32_t)(0x3UL << SLAVE_A1_IDX_POS)) /**< SLAVE_A1_IDX Mask */
 
 #define SLAVE_A1_EXT_ADDR_EN_POS 15 /**< SLAVE_A1_EXT_ADDR_EN Position */
-#define SLAVE_A1_EXT_ADDR_EN ((uint32_t)(0x1UL << SLAVE_A1_EXT_ADDR_EN_POS)) /**< SLAVE_A1_EXT_ADDR_EN Mask */
+#define SLAVE_A1_EXT_ADDR_EN \
+    ((uint32_t)(0x1UL << SLAVE_A1_EXT_ADDR_EN_POS)) /**< SLAVE_A1_EXT_ADDR_EN Mask */
 
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INTFL0_ADDR_MATCH | MXC_F_I2C_INTFL0_DNR_ERR;
@@ -132,8 +133,7 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
         }
 
         // Set the slave address
-        MXC_SETFIELD((*slave_a1), SLAVE_A1_ADDR,
-                     (slaveAddr << SLAVE_A1_ADDR_POS));
+        MXC_SETFIELD((*slave_a1), SLAVE_A1_ADDR, (slaveAddr << SLAVE_A1_ADDR_POS));
 
         // Enable the slave address
         *slave_a1 &= ~SLAVE_A1_DIS;
