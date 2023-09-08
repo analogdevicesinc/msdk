@@ -78,7 +78,37 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
 
 int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
 {
-    return MXC_I2C_RevA_SetSlaveAddr(i2c, slaveAddr, idx);
+    if (i2c == NULL) {
+        return E_NULL_PTR;
+    }
+
+    if (idx >= MXC_I2C_NUM_TARGET_ADDR) {
+        return E_NOT_SUPPORTED;
+    }
+
+    if (slaveAddr > MXC_F_I2C_SLAVE_ADDR) {
+        // Only support addresses up to 10 bits
+        return E_BAD_PARAM;
+    }
+
+    // Set the slave address to operate on
+    MXC_SETFIELD(i2c->slave, MXC_F_I2C_SLAVE_IDX, (idx << MXC_F_I2C_SLAVE_IDX_POS));
+
+    if (slaveAddr > MXC_I2C_MAX_ADDR_WIDTH) {
+        // Set for 10bit addressing mode
+        i2c->slave |= MXC_F_I2C_SLAVE_EXT_ADDR_EN;
+    } else {
+        // Clear for 7bit addressing mode
+        i2c->slave &= ~MXC_F_I2C_SLAVE_EXT_ADDR_EN;
+    }
+
+    // Set the slave address
+    MXC_SETFIELD(i2c->slave, MXC_F_I2C_SLAVE_ADDR, (slaveAddr << MXC_F_I2C_SLAVE_ADDR_POS));
+
+    // Enable the slave address
+    i2c->slave &= ~MXC_F_I2C_SLAVE_DIS;
+
+    return E_NO_ERROR;
 }
 
 int MXC_I2C_Shutdown(mxc_i2c_regs_t *i2c)
