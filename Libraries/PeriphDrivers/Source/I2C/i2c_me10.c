@@ -53,6 +53,7 @@
 #define MXC_I2C_MAX_ADDR_WIDTH 0x7F
 #define MXC_I2C_STD_MODE 100000
 #define MXC_I2C_FAST_SPEED 400000
+#define MXC_I2C_FASTPLUS_SPEED 1000000
 
 /* **** Variable Declaration **** */
 
@@ -125,7 +126,7 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t *i2c)
 /* ************************************************************************** */
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz)
 {
-    if (hz > MXC_I2C_FAST_SPEED) {
+    if (hz > MXC_I2C_FASTPLUS_SPEED) {
         return E_NOT_SUPPORTED;
     }
 

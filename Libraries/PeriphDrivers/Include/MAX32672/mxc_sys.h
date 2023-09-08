@@ -285,6 +285,13 @@ static inline int MXC_SYS_In_Crit_Section(void)
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum);
 
 /**
+ * @brief Gets design revision of the chip.
+ * 
+ * @return Design revision.
+ */
+int MXC_SYS_GetRevision(void);
+
+/**
  * @brief Determines if the selected peripheral clock is enabled.
  * @param clock   Enumeration for desired clock.
  * @returns       0 is the clock is disabled, non 0 if the clock is enabled.
