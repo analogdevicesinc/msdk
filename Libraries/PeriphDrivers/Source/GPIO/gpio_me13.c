@@ -160,7 +160,11 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg)
     }
 
     // Configure the drive strength
-    return MXC_GPIO_SetDriveStrength(gpio, cfg->drvstr, cfg->mask);
+    if (cfg->func == MXC_GPIO_FUNC_IN) {
+        return E_NO_ERROR;
+    } else {
+        return MXC_GPIO_SetDriveStrength(gpio, cfg->drvstr, cfg->mask);
+    }
 }
 
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask)
