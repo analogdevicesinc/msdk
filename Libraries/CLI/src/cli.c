@@ -32,9 +32,17 @@
  ******************************************************************************/
 
 /* -------------------------------------------------- */
-//                      INCLUDES
+//                     INCLUDES
 /* -------------------------------------------------- */
+#include <stddef.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "board.h"
 #include "cli.h"
+#include "nvic_table.h"
+#include "uart.h"
+#include "user-cli.h" // Change to user implementation header
 
 /* -------------------------------------------------- */
 //                      MACROS
@@ -58,11 +66,23 @@
 // Define a buffer length to store commands
 #define MAX_COMMAND_LENGTH 256
 
+#define UART_BAUD 115200
+#define BUFF_SIZE 1
+
 /* -------------------------------------------------- */
-//                      GLOBALS
+//                FUNCTION PROTOTYPES
+/* -------------------------------------------------- */
+void line_accumulator(uint8_t user_char);
+void process_command(char *input);
+
+/* -------------------------------------------------- */
+//                 GLOBAL VARIABLES
 /* -------------------------------------------------- */
 char cmd_buf[MAX_COMMAND_LENGTH]; // Command buffer
 uint16_t buf_idx = 0;
+
+uint8_t char_recv; // Variable to store characters received by CLI UART
+mxc_uart_req_t cli_req; // CLI UART transaction request structure
 
 /* -------------------------------------------------- */
 //            PRIVATE FUNCTION DEFINITIONS
@@ -78,14 +98,6 @@ bool white_space_present(char *p)
 {
     return *p == SPACE || *p == TAB;
 }
-
-// /** 
-//  * @brief Clears the buffer storing each character of the user command input
-//  */
-// bool white_space_not_present(char *p)
-// {
-//     return *p != SPACE || *p != TAB;
-// }
 
 /** 
  * @brief Clears the buffer storing each character of the user command input
@@ -123,6 +135,23 @@ void Console_Cmd_Clear(void)
     for (int i = 0; i < buf_idx; i++) {
         Console_Backspace_Sequence();
     }
+}
+
+/**
+ * @brief IRQ Handler for the CLI UART
+ */ 
+void UART_Handler(void)
+{
+    MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
+}
+
+/**
+ * @brief Callback function for when a character is received by the CLI
+ */ 
+void CLI_Callback(mxc_uart_req_t *req, int error)
+{
+    line_accumulator(char_recv);
+    MXC_UART_TransactionAsync(req);
 }
 
 /* -------------------------------------------------- */
@@ -189,10 +218,6 @@ void process_command(char *input)
             if (white_space_present(p)) {
                 //If whitespace found, token ends
                 in_token = true;
-            // } else if (white_space_not_present(p)) {
-            //     //Else, token continues
-            //     input = p;
-            //     in_token = false;
             } else {
                 //Else, token continues
                 input = p;
@@ -256,6 +281,39 @@ void handle_help(int argc, char *argv[])
 {
     printf("\n\r");
     for (int i = 0; i < num_commands; i++) {
-        printf("%s --> %s", commands[i].name, commands[i].help_string);
+        printf("%s:\n", commands[i].name);
+        printf("  Usage: %s\n", commands[i].usage);
+        printf("  Description: %s\n\n", commands[i].description);
     }
+}
+
+int CLI_Init(void)
+{
+    int error;
+
+    // UART interrupt setup
+    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(CONSOLE_UART), UART_Handler);
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
+
+    /* Initialize Console UART*/
+    if ((error = MXC_UART_Init(MXC_UART_GET_UART(CONSOLE_UART), UART_BAUD, MXC_UART_APB_CLK)) !=
+        E_NO_ERROR) {
+        printf("-->Error initializing UART: %d\n", error);
+        printf("-->Example Failed\n");
+        return error;
+    }
+
+    User_Prompt_Sequence();
+
+    cli_req.uart = MXC_UART_GET_UART(CONSOLE_UART);
+    cli_req.rxData = &char_recv;
+    cli_req.rxLen = BUFF_SIZE;
+    cli_req.txLen = 0;
+    cli_req.callback = CLI_Callback;
+
+    error = MXC_UART_TransactionAsync(&cli_req);
+
+    return error;
 }
