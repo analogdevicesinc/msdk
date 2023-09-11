@@ -32,9 +32,8 @@
  ******************************************************************************/
 
 /**
- * @file    main.c
- * @brief   FreeRTOSDemo
- * @details This example demonstrates FreeRTOS.
+ * @file        main.c
+ * @brief       FreeRTOS Example Application.
  */
 
 #include <stdio.h>

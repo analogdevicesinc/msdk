@@ -230,7 +230,7 @@ void OneshotTimer(void)
     MXC_TMR_Start(OST_TIMER);
 }
 
-void SW2Handler(void)
+void SWHandler(void)
 {
     // Start PWM timer
     PWMTimer();
@@ -254,12 +254,17 @@ int main(void)
     printf("   mode which is used to create an interrupt at a freq of %d Hz.\n", CONT_FREQ);
     printf("   LED 1 (Port 0.14) will toggle each time the oneshot timer is\n   finished "
            "running.\n\n");
+#if defined(EvKit_V1)
     printf("Push SW2 to start the PWM and continuous timers initially. Then\nuse SW2 to run the "
            "lptimer in oneshot mode thereafter.\n\n");
+#else
+    printf("Push SW3 to start the PWM and continuous timers initially. Then\nuse SW3 to run the "
+           "lptimer in oneshot mode thereafter.\n\n");
+#endif
 
     // Wait until button press to start PWM and continuous timers
     while (!PB_Get(0)) {}
-    SW2Handler();
+    SWHandler();
     MXC_Delay(MXC_DELAY_SEC(1));
 
     while (1) {

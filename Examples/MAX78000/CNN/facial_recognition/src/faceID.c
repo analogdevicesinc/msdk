@@ -60,7 +60,7 @@ extern area_t area;
 /************************************ VARIABLES ******************************/
 extern volatile uint32_t cnn_time; // Stopwatch
 
-static void run_cnn_2(void);
+static void run_cnn_2(int x_offset, int y_offset);
 
 #ifdef TFT_ENABLE
 #ifdef BOARD_FTHR_REVA
@@ -68,9 +68,11 @@ static int font = (int)&SansSerif16x16[0];
 #endif
 #endif //#ifdef TFT_ENABLE
 
-static int8_t prev_decision = -2;
+int8_t prev_decision = -2;
 static int8_t decision = -2;
 extern uint8_t box[4]; // x1, y1, x2, y2
+
+int reload_faceid = 1;
 
 int face_id(void)
 {
@@ -81,25 +83,34 @@ int face_id(void)
     uint32_t weight_load_time = 0;
 #endif
 
+    if (reload_faceid) {
+        // Power off CNN after unloading result to clear all CNN registers.
+        // It's needed to load and run other CNN model
+        cnn_disable();
+
+        // Enable CNN peripheral, enable CNN interrupt, turn on CNN clock
+        // CNN clock: 50 MHz div 1
+        cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
+        ///weight_load_time = utils_get_time_ms();
+        /* Configure CNN 2 to recognize a face */
+        cnn_2_init(); // Bring state machine into consistent state
+
+        weight_load_time = utils_get_time_ms();
+        cnn_2_load_weights_from_SD(); // Load CNN kernels from SD card
+        PR_DEBUG("FaceID CNN weight load time: %dms", utils_get_time_ms() - weight_load_time);
+        cnn_2_load_bias(); // Reload CNN bias
+        cnn_2_configure(); // Configure state machine
+    }
+
     /* Check for received image */
     if (camera_is_image_rcv()) {
 #if (PRINT_TIME == 1)
         process_time = utils_get_time_ms();
 #endif
-
-        // Enable CNN peripheral, enable CNN interrupt, turn on CNN clock
-        // CNN clock: 50 MHz div 1
-        cnn_enable(MXC_S_GCR_PCLKDIV_CNNCLKSEL_PCLK, MXC_S_GCR_PCLKDIV_CNNCLKDIV_DIV1);
-        weight_load_time = utils_get_time_ms();
-        /* Configure CNN 2 to recognize a face */
-        cnn_2_init(); // Bring state machine into consistent state
-        cnn_2_load_weights_from_SD(); // Load CNN kernels from SD card
-        PR_DEBUG("CNN weight load time: %dms", utils_get_time_ms() - weight_load_time);
-        cnn_2_load_bias(); // Reload CNN bias
-        cnn_2_configure(); // Configure state machine
-
-        /* Run CNN */
-        run_cnn_2();
+        /* Run CNN 3 times with slight offset */
+        run_cnn_2(0, 0);
+        run_cnn_2(-10, -10);
+        run_cnn_2(10, 10);
 
 #if (PRINT_TIME == 1)
         PR_INFO("Process Time Total : %dms", utils_get_time_ms() - process_time);
@@ -115,7 +126,7 @@ int face_id(void)
     return 0;
 }
 
-static void run_cnn_2(void)
+static void run_cnn_2(int x_offset, int y_offset)
 {
     uint32_t imgLen;
     uint32_t w, h;
@@ -147,12 +158,12 @@ static void run_cnn_2(void)
     PR_INFO("x1: %d, y1: %d", x1, y1);
 
     // Resize image inside facedetection box to 160x120 and load to CNN memory
-    for (int i = 0; i < HEIGHT_ID; i++) {
+    for (int i = y_offset; i < HEIGHT_ID + y_offset; i++) {
         y_prime = ((float)(i) / HEIGHT_ID) * box_height;
         y_loc = (uint8_t)(MIN(round(y_prime), box_height - 1)); // + y1;
         data = raw + y1 * IMAGE_W * BYTE_PER_PIXEL + y_loc * BYTE_PER_PIXEL;
         data += x1 * BYTE_PER_PIXEL;
-        for (int j = 0; j < WIDTH_ID; j++) {
+        for (int j = x_offset; j < WIDTH_ID + x_offset; j++) {
             uint8_t ur, ug, ub;
             int8_t r, g, b;
             uint32_t number;
@@ -179,7 +190,7 @@ static void run_cnn_2(void)
     }
 
     int cnn_load_time = utils_get_time_ms() - pass_time;
-    PR_DEBUG("CNN load data time : %d", cnn_load_time);
+    PR_DEBUG("FaceID CNN load data time : %d", cnn_load_time);
 
     pass_time = utils_get_time_ms();
 
@@ -190,23 +201,24 @@ static void run_cnn_2(void)
         asm volatile("wfi"); // Sleep and wait for CNN interrupt
     }
 
-    PR_INFO("CNN wait time : %d", utils_get_time_ms() - pass_time);
+    PR_INFO("FaceID CNN wait time : %d", utils_get_time_ms() - pass_time);
 
     pass_time = utils_get_time_ms();
 
     cnn_2_unload((uint32_t *)(raw));
 
-    // Power off CNN after unloading result to clear all CNN registers.
-    // It's needed to load and run other CNN model
-    cnn_disable();
-
-    PR_INFO("CNN unload time : %d", utils_get_time_ms() - pass_time);
+    PR_INFO("FaceID CNN unload time : %d", utils_get_time_ms() - pass_time);
 
     pass_time = utils_get_time_ms();
 
     int pResult = calculate_minDistance((uint8_t *)(raw));
     PR_DEBUG("Embedding time : %d", utils_get_time_ms() - pass_time);
     PR_DEBUG("Result = %d \n", pResult);
+
+    if (pResult == 0) {
+        reload_faceid = 1; // it will go to face detection again and reload facid
+    } else
+        reload_faceid = 0; // no need to go to face detection and reload faceid
 
     if (pResult == 0) {
         char *name;
@@ -280,6 +292,7 @@ static void run_cnn_2(void)
         PR_DEBUG("Decision: %d Name:%s\n", decision, name);
 
 #ifdef TFT_ENABLE
+        MXC_TFT_SetRotation(ROTATE_180);
         text_t printResult;
         if (decision != prev_decision) {
             printResult.data = name;
@@ -287,6 +300,7 @@ static void run_cnn_2(void)
             MXC_TFT_ClearArea(&area, 4);
             MXC_TFT_PrintFont(CAPTURE_X, CAPTURE_Y, font, &printResult, NULL);
         }
+        MXC_TFT_SetRotation(ROTATE_270);
 
 #endif
     }

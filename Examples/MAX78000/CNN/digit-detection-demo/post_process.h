@@ -42,6 +42,16 @@
 
 #define IMG_SCALE 3
 
+#define IMAGE_SIZE_X 74
+#define IMAGE_SIZE_Y 74
+
+#define CAMERA_SIZE_X (IMG_SCALE * IMAGE_SIZE_X)
+#define CAMERA_SIZE_Y (IMG_SCALE * IMAGE_SIZE_Y)
+
+#define TFT_X_OFFSET 50
+
+#define TFT_W 320
+#define TFT_H 240
 #define NUM_ARS 4
 #define NUM_SCALES 4
 #define NUM_CLASSES 12

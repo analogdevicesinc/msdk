@@ -1,8 +1,3 @@
-/**
- * @file        main.c
- * @brief       FreeRTOS Example Application.
- */
-
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -35,6 +30,11 @@
  * ownership rights.
  *
  ******************************************************************************/
+
+/**
+ * @file        main.c
+ * @brief       FreeRTOS Example Application.
+ */
 
 /* **** Includes **** */
 #include <stdio.h>

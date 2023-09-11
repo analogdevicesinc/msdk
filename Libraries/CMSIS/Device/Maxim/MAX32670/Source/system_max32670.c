@@ -45,6 +45,21 @@ extern void (*const __isr_vector[])(void);
 
 uint32_t SystemCoreClock = HIRC_FREQ;
 
+/*
+The libc implementation from GCC 11+ depends on _getpid and _kill in some places.
+There is no concept of processes/PIDs in the baremetal PeriphDrivers, therefore
+we implement stub functions that return an error code to resolve linker warnings.
+*/
+int _getpid(void)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int _kill(void)
+{
+    return E_NOT_SUPPORTED;
+}
+
 __weak void SystemCoreClockUpdate(void)
 {
     uint32_t base_freq, div, clk_src;
@@ -117,7 +132,7 @@ __weak void SystemInit(void)
 {
     /* Configure the interrupt controller to use the application vector table in */
     /* the application space */
-#if defined(__CC_ARM) || defined(__GNUC__)
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION) || defined(__GNUC__)
     /* IAR sets the VTOR pointer incorrectly and causes stack corruption */
     SCB->VTOR = (uint32_t)__isr_vector;
 #endif /* __CC_ARM || __GNUC__ */
@@ -149,7 +164,7 @@ __weak void SystemInit(void)
     Board_Init();
 }
 
-#if defined(__CC_ARM)
+#if defined(__CC_ARM) || defined(__ARMCC_VERSION)
 /* Global variable initialization does not occur until post scatterload in Keil tools.*/
 
 /* External function called after our post scatterload function implementation. */

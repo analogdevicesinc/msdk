@@ -72,8 +72,8 @@ def yuv422_to_blackAndWhite(bytesequence):
 
 def rgb888_to_rgb(bytesequence):
 	img = []
-	for i in range(len(bytesequence) // 3):
-		offset = i * 3
+	for i in range(len(bytesequence) // 4):
+		offset = i * 4
 		byte1 = bytesequence[offset + 0]
 		byte2 = bytesequence[offset + 1]
 		byte3 = bytesequence[offset + 2]

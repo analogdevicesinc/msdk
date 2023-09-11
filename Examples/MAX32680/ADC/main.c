@@ -54,7 +54,7 @@
 volatile unsigned int adc_done = 0;
 #endif
 
-static uint16_t adc_val;
+static int32_t adc_val;
 uint8_t overflow;
 
 /***** Functions *****/

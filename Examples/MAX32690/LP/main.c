@@ -146,10 +146,17 @@ void buttonHandler(void *pb)
     buttonPressed = 1;
 }
 
+#if defined(EvKit_V1)
 void GPIO4_Handler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO4));
 }
+#else
+void GPIOWAKE_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
+}
+#endif
 
 void setTrigger(int waitForTrigger)
 {
@@ -188,9 +195,14 @@ int main(void)
 #endif // USE_ALARM
 
 #if USE_BUTTON
+#if defined(EvKit_V1)
     PRINT("This code cycles through the MAX32690 power modes. Use push button (SW2)\nto exit from "
           "each power mode and enter the next.\n\n");
     MXC_NVIC_SetVector(GPIOWAKE_IRQn, GPIO4_Handler);
+#else
+    PRINT("This code cycles through the MAX32690 power modes. Use push button (SW2)\nto exit from "
+          "each power mode and enter the next.\n\n");
+#endif
     PB_RegisterCallback(0, buttonHandler);
     PB_IntEnable(0);
 #endif // USE_BUTTON

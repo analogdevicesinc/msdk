@@ -33,7 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Demo
+ * @brief   This example demonstrates the use of the TFT Display, UART Terminal, RTC, Pushbuttons, and LEDs.
  * @details This example displays the uptime to the TFT Display and Terminal,
  *          toggles the LED at 1-2Hz depending on pushbutton press, and shows
  *          the chip information if the pushbutton is pressed 5 times.

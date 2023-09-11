@@ -31,6 +31,11 @@
  *
  ******************************************************************************/
 
+/**
+  * @file main.c
+  * @brief USB composite device with Mass Storage driver class and HID driver class.
+*/
+
 #include <stdio.h>
 #include <stddef.h>
 #include "led.h"
