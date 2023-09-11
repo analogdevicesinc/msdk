@@ -32,7 +32,11 @@
  *
  ******************************************************************************/
 
+#include "board.h"
+#include "cli.h"
 #include "cli_uart.h"
+#include "nvic_table.h"
+#include "uart.h"
 
 /***** Definitions *****/
 #define UART_BAUD 115200
@@ -56,13 +60,7 @@ void readCallback(mxc_uart_req_t *req, int error)
     MXC_UART_TransactionAsync(req);
 }
 
-/** Initializes an asychronous uart transaction for CLI operations. This enables the console read
- * 
- * @param none
- * 
- * @return void
- */
-int MXC_CLI_Uart_Init(void)
+int MXC_CLI_UART_Init(void)
 {
     // UART interrupt setup
     NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));

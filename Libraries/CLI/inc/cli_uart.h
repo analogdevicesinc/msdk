@@ -35,11 +35,10 @@
 #ifndef CLI_UART_HEADER
 #define CLI_UART_HEADER
 
-#include "uart.h"
-#include "nvic_table.h"
-#include "cli.h"
-#include "board.h"
-
-int MXC_CLI_Uart_Init(void);
+/** Initializes the Console UART for CLI operations.
+ * 
+ * @return E_NO_ERROR if successful, otherwise an error code.
+ */
+int MXC_CLI_UART_Init(void);
 
 #endif //CLI_UART_HEADER

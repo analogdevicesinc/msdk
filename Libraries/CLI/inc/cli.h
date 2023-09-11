@@ -76,25 +76,6 @@
 #include "user-cli.h" // Change to user implementation header
 
 /* -------------------------------------------------- */
-//                      MACROS
-/* -------------------------------------------------- */
-#define ENTER 0X0D
-#define NEW_LINE 0x0A
-#define SPACE 0x20
-#define TAB 0x09
-#define BACKSPACE 0X08
-#define MAXBUFF 2000
-#define DELETE 0x7F
-#define DOLLAR 0x24
-
-#define ARROW_KEY_CODE_1 0x1B
-#define ARROW_KEY_CODE_2 0x5B
-#define ARROW_KEY_CODE_LEFT 0x44
-#define ARROW_KEY_CODE_RIGHT 0x43
-#define ARROW_KEY_CODE_UP 0x41
-#define ARROW_KEY_CODE_DOWN 0x42
-
-/* -------------------------------------------------- */
 //                 FUNCTION PROTOTYPES
 /* -------------------------------------------------- */
 
