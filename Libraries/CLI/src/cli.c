@@ -42,7 +42,6 @@
 #include "cli.h"
 #include "nvic_table.h"
 #include "uart.h"
-#include "user-cli.h" // Change to user implementation header
 
 /* -------------------------------------------------- */
 //                      MACROS
