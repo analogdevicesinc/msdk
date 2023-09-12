@@ -23,25 +23,58 @@ Universal instructions on building, flashing, and debugging this project can be 
 ```
 ***** MAX78000 SDHC FAT Filesystem Example *****
 Card inserted.
-$ Help
+CLI Initialized! Enter 'help' to see a list of available commands.
 
-Size --> Find the Size of the SD Card and Free Space
-Format --> Format the Card
-Mount --> Manually Mount Card
-ls --> list the contents of the current directory
-mkdir --> Create a directory
-file_create --> Create a file of random data
-cd --> Move into a directory
-add_data --> Add random Data to an Existing File
-Del --> Delete a file
-FatFs --> Format Card and Run Example of FatFS Operations
-Unmount --> Unmount card
-Help --> Prints a help message with info about all of the supported commands.
-$ SIZE
-SD card mounted.
-Disk Size: 31163072 bytes
-Available: 31163008 bytes
-$ Format
+$ help
+help
+
+size:
+  Usage: size
+  Description: Find the Size of the SD Card and Free Space
+
+format:
+  Usage: format
+  Description: Format the Card
+
+mount:
+  Usage: mount
+  Description: Manually Mount Card
+
+ls:
+  Usage: ls
+  Description: list the contents of the current directory
+
+mkdir:
+  Usage: mkdir <directory name>
+  Description: Create a directory
+
+file_create:
+  Usage: file_create <file name> <number of bytes to add>
+  Description: Create a file of random data
+
+cd:
+  Usage: cd <directory name>
+  Description: Move into a directory
+
+add_data:
+  Usage: add_data <file name> <number of bytes to add>
+  Description: Add random Data to an Existing File
+
+del:
+  Usage: del <file name>
+  Description: Delete a file
+
+fatfs:
+  Usage: fatfs
+  Description: Format Card and Run Example of FatFS Operations
+
+unmount:
+  Usage: unmount
+  Description: Unmount card
+
+
+$ format
+format
 
 
 *****THE DRIVE WILL BE FORMATTED IN 5 SECONDS*****
@@ -51,30 +84,52 @@ FORMATTING DRIVE
 Drive formatted.
 SD card mounted.
 SD card unmounted.
-$ mount
+
+$ size
+size
 SD card mounted.
+Disk Size: 7760896 bytes
+Available: 7760864 bytes
+
+$ mount
+mount
+SD card mounted.
+
 $ mkdir Analog_Devices
+mkdir Analog_Devices
 Creating directory...
 Directory Analog_Devices created.
+
 $ cd Analog_Devices
+cd Analog_Devices
 Changed to Analog_Devices
-$ file_create Maxim 30
-Creating file Maxim with length 30
+
+$ file_create ADI 30
+file_create ADI 30
+Creating file ADI with length 30
 File opened!
 30 bytes written to file!
 File Closed!
-$ add_data Maxim 25
+
+$ add_data ADI 25
+add_data ADI 25
 File opened!
 25 bytes written to file
 File closed.
+
 $ ls
+ls
 Listing Contents of 0:/Analog_Devices -
-0:/Analog_Devices/Maxim
+0:/Analog_Devices/ADI
 
 Finished listing contents
-$ Del Maxim
-Deleted file Maxim
+
+$ del ADI
+del ADI
+Deleted file ADI
+
 $ fatfs
+fatfs
 
 
 *****THE DRIVE WILL BE FORMATTED IN 5 SECONDS*****
@@ -93,9 +148,11 @@ Creating Directory...
 Renaming File...
 Attempting to read back file...
 Read Back 256 bytes
-Message: StiUH7-HxP!fffB,q.DqMnI2nvSnchst.ZaLTpG'w8I7Tg0,l6VVkEsehp#IHSMZN94WDc'N#-0qkBlAil,'#DvMJZ!zzf,j?Lm,H5cbfFfVNHUlPF9GsTWbrop0EG7VV57qZZzjdvzJH5Xh2'82'fz9t#R,kzoaqYBJVRhrlD5W1mZItggYqyIICUvWOOppJQIVvt.BR0Vy4#YwqiNYj'jYnX8j7ePtuzJO?t-sTCGvibwYn81?Sutq'Q0s7udL
+Message: sjVNXdwfl-owoXGcTZ,5z,Sy8lfsNqDGrzio'O6vntRMoWODcIKP!C'y7tF.'W88ZjR81BpiibPhokQfa3w'cvmnr0EgE1MNDIhXKfBJGP6b?0tvHEPK-WNc7yuPdFNL6FPq10',Q,GSf3jSyY?MU0wv'FToTI!ct.E6Q4nbVuavg6h'48D5sR5mcepxf1l!MesddI7aZ9s?KIVnybRwZ.UBJpX1b?5oXP9wLKZcgW-k,gZ5HMIMwAcy!n9S?E57Analog_Devices
 File Closed!
+
 $ unmount
+unmount
 SD card unmounted.
 ```
 

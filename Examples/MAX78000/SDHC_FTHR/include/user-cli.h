@@ -30,44 +30,38 @@
  * ownership rights.
  *
  ******************************************************************************/
-
-/* -------------------------------------------------- */
-//                 INCLUDE GUARD
-/* -------------------------------------------------- */
 #ifndef USER_CLI_H
 #define USER_CLI_H
 
-//mxc_cli_config.c/.h
+/* -------------------------------------------------- */
+//                GLOBAL VARIABLE
+/* -------------------------------------------------- */
+extern const command_t user_commands[];
+extern const unsigned int num_user_commands;
 
-/* -------------------------------------------------- */
-//                      INCLUDES
-/* -------------------------------------------------- */
-#include "cli.h"
-#include <stdlib.h>
-#include "sdhc.h"
 /* -------------------------------------------------- */
 //             FUNCTION PROTOTYPES
 /* -------------------------------------------------- */
-void handle_size(int argc, char *argv[]);
+int handle_size(int argc, char *argv[]);
 
-void handle_format(int argc, char *argv[]);
+int handle_format(int argc, char *argv[]);
 
-void hande_mount(int argc, char *argv[]);
+int handle_mount(int argc, char *argv[]);
 
-void handle_ls(int argc, char *argv[]);
+int handle_ls(int argc, char *argv[]);
 
-void handle_mkdir(int argc, char *argv[]);
+int handle_mkdir(int argc, char *argv[]);
 
-void handle_createfile(int argc, char *argv[]);
+int handle_createfile(int argc, char *argv[]);
 
-void handle_cd(int argc, char *argv[]);
+int handle_cd(int argc, char *argv[]);
 
-void handle_add_data(int argc, char *argv[]);
+int handle_add_data(int argc, char *argv[]);
 
-void handle_del(int argc, char *argv[]);
+int handle_del(int argc, char *argv[]);
 
-void handle_fatfs(int argc, char *argv[]);
+int handle_fatfs(int argc, char *argv[]);
 
-void handle_unmount(int argc, char *argv[]);
+int handle_unmount(int argc, char *argv[]);
 
 #endif /* USER_CLI_H */
