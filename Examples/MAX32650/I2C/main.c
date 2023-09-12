@@ -61,9 +61,6 @@
 #define I2C_SLAVE MXC_I2C1
 
 #define I2C_FREQ 100000
-// This example may become unreliable at I2C frequencies above 100kHz.
-// This is only an issue in the loopback configuration, where the I2C block is
-// connected to itself.
 #define I2C_SLAVE_ADDR 0x51
 #define I2C_BYTES 255
 
@@ -176,7 +173,7 @@ void printData(void)
 }
 
 //Compare data to see if they are the same
-int verifyData()
+int verifyData(void)
 {
     int i, fails = 0;
     for (i = 0; i < I2C_BYTES; ++i) {
@@ -276,7 +273,8 @@ int main()
     printf("\n-->Result: \n");
     printData();
     printf("\n");
-    if (verifyData()) {
+
+    if (verifyData() == E_NO_ERROR) {
         printf("\n-->I2C Transaction Successful\n");
     } else {
         printf("\n-->I2C Transaction Failed\n");

@@ -382,6 +382,16 @@ int MXC_SYS_Clock_Timeout(uint32_t ready);
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
 
 /**
+ * @brief Setup and run RISCV core 
+ */
+void MXC_SYS_RISCVRun(void);
+
+/**
+ * @brief Shutdown the RISCV core 
+ */
+void MXC_SYS_RISCVShutdown(void);
+
+/**
  * @brief Returns the clock rate (in Hz) of the Risc-V core.
  */
 uint32_t MXC_SYS_RiscVClockRate(void);

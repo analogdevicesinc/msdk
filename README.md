@@ -127,7 +127,7 @@ This repository contains the MSDK's *source code* only.  In order to develop on 
         
         The [Tools](Tools) directory of the MSDK repo should now contain valid symbolic links to the full installation's toolchain.
         
-        ![Symbolic links (windows)](Documentation/res/symlinks-windows.jpg)
+        ![Symbolic links (windows)](res/symlinks-windows.jpg)
 
     On **Linux/MacOS**:
     * Open a terminal
@@ -253,8 +253,8 @@ To configure the command-line for use with the development repo:
 
 1. Set the `MAXIM_PATH` environment variable to the cloned location of the development repo instead of the release MSDK.
 
-    - Windows:  Edit `Tools/MSYS2/msys.bat`
-    - Linux/MacOS:  Edit your shell's profile/startup script
+    - Windows:  Edit `setenv.bat` in the root directory of the MSDK.
+    - Linux/MacOS:  Edit your shell's profile/startup script.  Alternatively, edit `setenv.sh` in the root directory of the MSDK and `source` it from the shell's profile/startup script (see [here](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#setup-command-line))
     
 2. Restart your shell
 

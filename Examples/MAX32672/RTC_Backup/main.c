@@ -33,8 +33,7 @@
 
 /**
  * @file        main.c
- * @brief       Configures and starts the RTC and demonstrates the use of the
- * alarms.
+ * @brief       Demonstrates the alarm functionality of the Real-Time Clock (RTC)
  * @details     THE RTC is configured to wake the device from backup mode every
  * 				TIME_OF_DAY seconds. On wakeup, the device will print the current
  * 				time, rearm the alarm, and

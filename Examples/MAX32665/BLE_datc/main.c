@@ -1,8 +1,7 @@
 /*************************************************************************************************/
 /*!
-*  \file   main.c
-*
-*  \brief  Main file for datc application.
+ * @file    main.c
+ * @brief   Simple BLE Data Client for unformatted data exchange.
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *

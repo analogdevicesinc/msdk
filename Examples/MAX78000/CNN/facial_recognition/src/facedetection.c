@@ -48,11 +48,13 @@
 #endif
 #include "led.h"
 #include "lp.h"
+#include "tft_utils.h"
 
 #define S_MODULE_NAME "facedetection"
 /************************************ VARIABLES ******************************/
 volatile uint32_t cnn_time; // Stopwatch
-
+int reload_facedet = 1;
+extern int g_dma_channel_tft;
 static void run_cnn_1(int x_offset, int y_offset);
 
 int face_detection(void)
@@ -69,15 +71,10 @@ int face_detection(void)
     uint32_t total_time = utils_get_time_ms();
 #endif
 
-    /* Check for received image */
-    if (camera_is_image_rcv()) {
-#if (PRINT_TIME == 1)
-        process_time = utils_get_time_ms();
-#endif
-
-#ifdef IMAGE_TO_UART
-        break;
-#endif
+    if (reload_facedet) {
+        // Power off CNN after unloading result to clear all CNN registers.
+        // It's needed to load and run other CNN model
+        cnn_disable();
 
         // Enable CNN peripheral, enable CNN interrupt, turn on CNN clock
         // CNN clock: 50 MHz div 1
@@ -87,6 +84,17 @@ int face_detection(void)
         cnn_1_load_weights(); // Load CNN kernels
         cnn_1_load_bias(); // Load CNN bias
         cnn_1_configure(); // Configure CNN state machine
+    }
+
+    /* Check for received image */
+    if (camera_is_image_rcv()) {
+#if (PRINT_TIME == 1)
+        process_time = utils_get_time_ms();
+#endif
+
+#ifdef IMAGE_TO_UART
+        break;
+#endif
 
         /* Run CNN on time on original and shifted images */
         run_cnn_1(0, 0);
@@ -107,16 +115,39 @@ int face_detection(void)
 
 static void run_cnn_1(int x_offset, int y_offset)
 {
+    uint8_t *raw;
     uint32_t imgLen;
     uint32_t w, h;
     /* Get current time */
     uint32_t pass_time = 0;
-    uint8_t *raw;
+
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
+
 #ifdef TFT_ENABLE
 #ifdef BOARD_FTHR_REVA
-    MXC_TFT_ShowImageCameraRGB565(X_START, Y_START, raw, w, h);
+    pass_time = utils_get_time_ms();
+
+    MXC_TFT_Stream(X_START, Y_START, IMAGE_XRES, IMAGE_YRES);
+
+    setup_dma_tft((uint32_t *)raw);
+
+    // Wait to complete image capture
+    while (camera_is_image_rcv() == 0)
+        ;
+
+    // Send a first half of captured image to TFT (Max DMA = 32KB)
+    start_tft_dma((uint32_t *)raw);
+    // Wait for DMA to finish
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
+    }
+
+    setup_dma_tft((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
+
+    // Send a second half of captured image to TFT
+    start_tft_dma((uint32_t *)(raw + IMAGE_XRES * IMAGE_YRES));
+    PR_DEBUG("TFT time : %dms", utils_get_time_ms() - pass_time);
 #endif
 #endif
 
@@ -155,7 +186,7 @@ static void run_cnn_1(int x_offset, int y_offset)
     }
 
     int cnn_load_time = utils_get_time_ms() - pass_time;
-    PR_DEBUG("CNN load data time : %dms", cnn_load_time);
+    PR_DEBUG("FaceDet CNN load data time : %dms", cnn_load_time);
 
     pass_time = utils_get_time_ms();
 
@@ -167,11 +198,8 @@ static void run_cnn_1(int x_offset, int y_offset)
         asm volatile("wfi"); // Sleep and wait for CNN interrupt
     }
 
-    PR_DEBUG("CNN wait time : %dms", utils_get_time_ms() - pass_time);
+    PR_DEBUG("FaceDet CNN wait time : %dms", utils_get_time_ms() - pass_time);
 
     get_priors();
     localize_objects();
-    // Power off CNN after unloading result to clear all CNN registers.
-    // It's needed to load and run other CNN model
-    cnn_disable();
 }

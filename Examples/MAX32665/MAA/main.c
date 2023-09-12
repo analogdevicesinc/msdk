@@ -31,6 +31,11 @@
  *
  ******************************************************************************/
 
+/**
+ * @file   main.c
+ * @brief  This example demonstrates the Modular Arithmetic Accelerator feature of the Trust Protection Unit.
+ */
+
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>

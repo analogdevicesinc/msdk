@@ -1,9 +1,6 @@
-import serial
 import time
 from datetime import datetime
-import os
 import sys
-import string
 import comManager
 import imgConverter
 import cv2
@@ -83,7 +80,7 @@ while True:
 			#image_file.write(hex_string)
 			#image_file.close()
 
-			image = cv2.imread("image-out.png")
+			image = cv2.imread("image.png")
 			cv2.imshow(" ", image)
 			cv2.waitKey(1)
 			#exit(0)

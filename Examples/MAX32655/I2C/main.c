@@ -35,7 +35,7 @@
  * @file        main.c
  * @brief       I2C Loopback Example
  * @details     This example uses the I2C Master to read/write from/to the I2C Slave. For
- *              this example you must connect P0.10 to P0.16 (SCL) and P0.11 to P0.17 (SCL). The Master
+ *              this example you must connect P0.10 to P0.16 (SCL) and P0.11 to P0.17 (SDA). The Master
  *              will use P0.10 and P0.11. The Slave will use P0.16 and P0.17. You must also
  *              connect the pull-up jumpers (JP21 and JP22) to the proper I/O voltage.
  */
@@ -51,15 +51,10 @@
 #include "dma.h"
 
 /***** Definitions *****/
-// #define MASTERDMA
-
 #define I2C_MASTER MXC_I2C1
 #define I2C_SLAVE MXC_I2C0
 
 #define I2C_FREQ 100000
-// This example may become unreliable at I2C frequencies above 100kHz.
-// This is only an issue in the loopback configuration, where the I2C block is
-// connected to itself.
 #define I2C_SLAVE_ADDR (0x51)
 #define I2C_BYTES 100
 
@@ -174,7 +169,7 @@ void printData(void)
 }
 
 //Compare data to see if they are the same
-int verifyData()
+int verifyData(void)
 {
     int i, fails = 0;
 
@@ -271,7 +266,7 @@ int main()
 
     printf("\n");
 
-    if (verifyData()) {
+    if (verifyData() == E_NO_ERROR) {
         printf("\n-->I2C Transaction Successful\n");
     } else {
         printf("\n-->I2C Transaction Failed\n");

@@ -33,8 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   FreeRTOSDemo
- * @details This example demonstrates FreeRTOS.
+ * @brief   This example shows how to manage multiple concurrent I2C transactions from a single I2C instance.
  */
 
 #include <stdint.h>
