@@ -74,6 +74,7 @@
 /* -------------------------------------------------- */
 void line_accumulator(uint8_t user_char);
 void process_command(char *input);
+int handle_help(int argc, char *argv[]);
 
 /* -------------------------------------------------- */
 //                 GLOBAL VARIABLES
@@ -83,6 +84,13 @@ uint16_t buf_idx = 0;
 
 uint8_t char_recv; // Variable to store characters received by CLI UART
 mxc_uart_req_t cli_req; // CLI UART transaction request structure
+
+// Help Command
+const command_t help_command = { "Help", "help", "Prints details regarding the usage of the supported commands.", handle_help };
+
+// Command table parameters;
+const command_t *command_table;
+unsigned int command_table_sz;
 
 /* -------------------------------------------------- */
 //            PRIVATE FUNCTION DEFINITIONS
@@ -137,26 +145,9 @@ void Console_Cmd_Clear(void)
     }
 }
 
-/**
- * @brief IRQ Handler for the CLI UART
- */ 
-void UART_Handler(void)
-{
-    MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
-}
-
-/**
- * @brief Callback function for when a character is received by the CLI
- */ 
-void CLI_Callback(mxc_uart_req_t *req, int error)
-{
-    line_accumulator(char_recv);
-    MXC_UART_TransactionAsync(req);
-}
-
-/* -------------------------------------------------- */
-//             PUBLIC FUNCTION DEFINITIONS
-/* -------------------------------------------------- */
+/** 
+ * @brief Adds characters to the command string as they are received and echos them to the terminal
+ */
 void line_accumulator(uint8_t user_char)
 {
     switch (user_char) {
@@ -191,16 +182,21 @@ void line_accumulator(uint8_t user_char)
     }
 }
 
+/**
+ * @brief Determines whether the command received was valid and calls the appropriate handler
+ * 
+ * @param input   Command string received by the CLI 
+ */
 void process_command(char *input)
 {
-    //Initialize p and end pointers
+    // Initialize p and end pointers
     char *p = input;
     char *end;
 
-    //Find end of string
+    // Find end of string
     for (end = input; *end != '\0'; end++) {}
 
-    //Initialize variables
+    // Initialize variables
     bool in_token = false;
     bool beginning_space;
     char *argv[10];
@@ -211,85 +207,136 @@ void process_command(char *input)
         beginning_space = true;
     }
 
-    //Iterate over each character in input
+    // Iterate over each character in input
     for (p = input; p < end; p++) {
         if (in_token) {
-            //If in a token
+            // If in a token
             if (white_space_present(p)) {
-                //If whitespace found, token ends
+                // If whitespace found, token ends
                 in_token = true;
             } else {
-                //Else, token continues
+                // Else, token continues
                 input = p;
                 in_token = false;
             }
         } else {
-            //If not in a token
+            // If not in a token
             if (*p == ENTER || (white_space_present(p))) {
-                //If ENTER or whitespace found
+                // If ENTER or whitespace found
                 if (*p == ENTER) {
-                    //If ENTER, end of command
+                    // If ENTER, end of command
                     *p = '\0';
                     argv[argc++] = input;
                 } else if (white_space_present(p) && !beginning_space) {
-                    //If whitespace found, end of token
+                    // If whitespace found, end of token
                     *p = '\0';
                     argv[argc++] = input;
                     in_token = true;
                 }
             } else if (!white_space_present(p) && beginning_space) {
-                //If not in token and whitespace not found, new token starts
+                // If not in token and whitespace not found, new token starts
                 input = p;
                 in_token = false;
                 beginning_space = false;
             } else if (!white_space_present(p) && !beginning_space) {
-                //If not in token and whitespace not found and beginning_space is false, token continues
+                // If not in token and whitespace not found and beginning_space is false, token continues
                 in_token = false;
             }
         }
     }
 
-    //Set last argv value to NULL
+    // Set last argv value to NULL
     argv[argc] = NULL;
 
-    //If no arguments, return
-    if (argc == 0)
+    // If no arguments, return
+    if (argc == 0) {
         return;
+    }
 
-    bool success_flag = 0; //True if input command matches
+    int success_flag = 1;
 
-    //Iterate over all commands to check if input command matches
-    for (int i = 0; i < num_commands; i++) {
-        if (strcasecmp(argv[0], commands[i].name) == 0) {
-            //Call corresponding command's handler
-            commands[i].handler(argc, argv);
-            success_flag = 1;
-            break;
+    // Check for a valid command
+    if (strcasecmp(argv[0], help_command.name) == 0) {
+        // Help command received
+    	success_flag = help_command.handler(argc, argv);
+    } else {
+        // Help command not received, iterate over all user-defined commands
+        for (int i = 0; i < command_table_sz; i++) {
+            if (strcasecmp(argv[0], command_table[i].name) == 0) {
+                // Call corresponding command's handler
+                success_flag = command_table[i].handler(argc, argv);
+                break;
+            }
         }
     }
 
-    //If no commands match, print error message
-    if (success_flag == 0) {
+    // If no commands match, print error message
+    if (success_flag == 1) {
         printf("\n\rCommand isn't valid!\n\r");
+    } else if (success_flag < E_NO_ERROR) {
+    	printf("\n\rEnter 'help' to see a list of available commands.\n\r");
     }
 
-    //Print prompt
+    // Print prompt
     User_Prompt_Sequence();
 }
 
-void handle_help(int argc, char *argv[])
+/**
+ * @brief Prints the help string of each command from the command table
+ *
+ * @param argc      The command element number within the command string
+ * @param argv[]    Array of arguments storing different tokens of the
+ *                  command string in the same order as they were passed
+ *                  in the command line.
+ * 
+ * @returns E_NO_ERROR if successful, otherwise an error code.
+ */
+int handle_help(int argc, char *argv[])
 {
     printf("\n\r");
-    for (int i = 0; i < num_commands; i++) {
-        printf("%s:\n", commands[i].name);
-        printf("  Usage: %s\n", commands[i].usage);
-        printf("  Description: %s\n\n", commands[i].description);
+    for (int i = 0; i < command_table_sz; i++) {
+        printf("%s:\n", command_table[i].name);
+        printf("  Usage: %s\n", command_table[i].usage);
+        printf("  Description: %s\n\n", command_table[i].description);
     }
+
+    return E_NO_ERROR;
 }
 
-int CLI_Init(void)
+/**
+ * @brief IRQ Handler for the CLI UART
+ */ 
+void UART_Handler(void)
+{
+    MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
+}
+
+/**
+ * @brief Callback function for when a character is received by the CLI
+ */ 
+void CLI_Callback(mxc_uart_req_t *req, int error)
+{
+    line_accumulator(char_recv);
+    MXC_UART_TransactionAsync(req);
+}
+
+/* -------------------------------------------------- */
+//             PUBLIC FUNCTION DEFINITIONS
+/* -------------------------------------------------- */
+int CLI_Init(const command_t *commands, unsigned int num_commands)
 {
     int error;
+
+    // Check for valid parameters
+    if (commands == NULL) {
+        return E_NULL_PTR;
+    } else if (num_commands <= 0) {
+        return E_BAD_PARAM;
+    }
+
+    // Save the command table
+    command_table = commands;
+    command_table_sz = num_commands;
 
     // UART interrupt setup
     NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
@@ -297,16 +344,19 @@ int CLI_Init(void)
     MXC_NVIC_SetVector(MXC_UART_GET_IRQ(CONSOLE_UART), UART_Handler);
     NVIC_EnableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
 
-    /* Initialize Console UART*/
+    // Initialize Console UART
     if ((error = MXC_UART_Init(MXC_UART_GET_UART(CONSOLE_UART), UART_BAUD, MXC_UART_APB_CLK)) !=
         E_NO_ERROR) {
-        printf("-->Error initializing UART: %d\n", error);
-        printf("-->Example Failed\n");
+        printf("-->Error initializing CLI UART: %d\n", error);
         return error;
     }
 
+    // Print success message and prompt
+    printf("CLI Initialized! Enter 'help' to see a list of available commands.\n");
     User_Prompt_Sequence();
+    while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
 
+    // Initialize an asynchoronous request for the first character
     cli_req.uart = MXC_UART_GET_UART(CONSOLE_UART);
     cli_req.rxData = &char_recv;
     cli_req.rxLen = BUFF_SIZE;

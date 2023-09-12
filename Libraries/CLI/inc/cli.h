@@ -57,71 +57,36 @@
 
 #include <stdint.h>
 
-// /**
-//  * @brief Reads incoming bytes, Accumulate into line buffer, Echo's chars back to the other side and handles backspace.
-//  * 		  It calls the process_command function upon pressing the ENTER key
-//  *
-//  * @param   user_char       User input of each character
-//  */
-// void line_accumulator(uint8_t user_char);
-
-// /**
-//  * @brief Performs a Lexical analysis and tokenisis the user's commands
-//  *        Lookup first token in a table of functions, dispatch to handler function
-//  *
-//  * @param   input   Character pointer containing the line accumulator input when enter key is pressed 
-//  *
-//  * @return  void
-//  */
-// void process_command(char *input);
+/**
+ * @brief Command handler function prototype
+ * 
+ * @param argc      Used to determine which token element of the
+ *                  commands string is being used.
+ * @param argv[]    Char Array of tokens of the command string
+ *                  entered by the user.
+ * 
+ * @returns E_NO_ERROR if successful, otherwise an error code.
+ */
+typedef int (*command_handler_t)(int argc, char *argv[]);
 
 /**
- * @brief Prints the help string of each command from the command table
- *
- * @param argc The command element number within the command string
- * 
- * @param argv[] array of arguments storing different tokens of the command string in the same order as they were
- *   passed in the command line.
- *
- * @return void
+ * @brief Structure used to define the commands supported by the CLI
  */
-void handle_help(int argc, char *argv[]);
+typedef struct {
+    const char *name; /**< name of the command */
+    const char *usage; /**< string to show how the command should be entered on the command line */
+    const char *description; /**< string describing what the command does */
+    command_handler_t handler; /**< function pointer of the command handler function */
+} command_t;
 
-/** Initializes the Console UART for CLI operations.
+/**
+ * @brief Initializes the Console UART for CLI operations.
+ * 
+ * @param commands      Pointer to the list of user-defined CLI commands
+ * @param num_commands  Number of commands in the command table
  * 
  * @return E_NO_ERROR if successful, otherwise an error code.
  */
-int CLI_Init(void);
-
-/**
- * @brief Command table hander prototype with parameters
- * 
- * @param argc Used to determine which token element of the commands string is being used.
- * 
- * @param argv[] Char Array of tokens of the command string entered by the user.
- */
-typedef void (*command_handler_t)(int, char *argv[]);
-
-/**
- * @brief This command table structure contains the name of the command, a function pointer to the corresponding command handler function,
- *        and the help string which provides a short description of what the command does.
- */
-typedef struct {
-    const char *name; /**< command string */
-    const char *usage; /**< help string of each command */
-    const char *description; /**< help string of each command */
-    command_handler_t handler; /**< function pointer of the handler function */
-} command_t;
-
-/** 
- * @brief This table is an array of command_table_t structures which should be initialized by the user in user-cli.c to define a set of supported commands in the program.
- *        The structure of this lookup table makes it trivially easy to add a new command to this command processor.
- */
-extern const command_t commands[];
-
-/** 
- * @brief Calculates the number of commands based on commands and the command table
- */
-extern const int num_commands;
+int CLI_Init(const command_t *commands, unsigned int num_commands);
 
 #endif /* MXC_CLI_H */
