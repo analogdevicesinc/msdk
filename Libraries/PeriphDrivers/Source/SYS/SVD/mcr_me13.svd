@@ -35,24 +35,6 @@
         <addressOffset>0x10</addressOffset>
         <fields>
           <field>
-            <name>VDDCSW_EN</name>
-            <description>Enable switching of VCORE</description>
-            <bitOffset>0</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
-            <name>VDDCSW</name>
-            <description>Controls switching of VCORE</description>
-            <bitOffset>1</bitOffset>
-            <bitWidth>2</bitWidth>
-          </field>
-          <field>
-            <name>USBSW_DIS</name>
-            <description>USB Switch Control</description>
-            <bitOffset>3</bitOffset>
-            <bitWidth>1</bitWidth>
-          </field>
-          <field>
             <name>PADPUP_RST</name>
             <description>Enable the Reset Pad Pull Up Resistors</description>
             <bitOffset>9</bitOffset>
@@ -160,14 +142,20 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>PORZ_VRTC</name>
-            <description>Sticky bit indicating power-on status of the RTC.</description>
+            <name>PORZ_VBB</name>
+            <description>Sticky bit indicating power-on status of the VBB.</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>PORZ_VDDC</name>
-            <description>Sticky bit indicating power-on status of VCORE supply.</description>
+            <name>PORZ_VDDCA</name>
+            <description>Sticky bit indicating power-on status of VAON_SW supply.</description>
+            <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>PORZ_VDDCB</name>
+            <description>Sticky bit indicating power-on status of VCORE_PAD supply.</description>
             <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -184,7 +172,7 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RSTZ_VDDC</name>
+            <name>RSTZ_VDDCB</name>
             <description>Sticky bit indicating reset condition on VCORE supply.</description>
             <bitOffset>9</bitOffset>
             <bitWidth>1</bitWidth>
@@ -214,39 +202,57 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
-            <name>RSTZ_VRTC</name>
-            <description>Sticky bit indicating reset condition on RTC supply.</description>
+            <name>RSTZ_VBB</name>
+            <description>Sticky bit indicating reset condition on VBB supply.</description>
             <bitOffset>14</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>RSTZ_LDO0P9V</name>
-            <description>Non-Sticky bit indicating reset condition on 0.9V USB supply.</description>
+            <description>Sticky bit indicating reset condition on 0.9V USB supply.</description>
             <bitOffset>16</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>RSTZ_VDDCA</name>
-            <description>Non-Sticky bit indicating reset condition on VCORE in Analog supply.</description>
+            <description>Sticky bit indicating reset condition on VCORE in Analog supply.</description>
             <bitOffset>17</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>RSTZ_VCOREHV</name>
-            <description>Non-Sticky bit indicating high voltage reset condition on VCORE supply.</description>
+            <description>Sticky bit indicating high voltage reset condition on VCORE supply.</description>
             <bitOffset>18</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>RSTZ_VDDIOHV</name>
-            <description>Non-Sticky bit indicating high voltage reset condition on VDDIO supply.</description>
+            <description>Sticky bit indicating high voltage reset condition on VDDIO supply.</description>
             <bitOffset>19</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
             <name>RSTZ_VDDIOHHV</name>
-            <description>Non-Sticky bit indicating high voltage reset condition on VDDIOH supply.</description>
+            <description>Sticky bit indicating high voltage reset condition on VDDIOH supply.</description>
             <bitOffset>20</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VNFCRX</name>
+            <description>Sticky bit indicating reset condition on VNFCRX supply.</description>
+            <bitOffset>21</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VNFCTX</name>
+            <description>Sticky bit indicating reset condition on VNFCTX supply.</description>
+            <bitOffset>22</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>RSTZ_VNFC1V</name>
+            <description>Sticky bit indicating reset condition on VNFC1V supply.</description>
+            <bitOffset>23</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
         </fields>

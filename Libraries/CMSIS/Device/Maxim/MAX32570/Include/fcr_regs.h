@@ -98,7 +98,7 @@ typedef struct {
     __R  uint32_t rsv_0x18;
     __IO uint32_t gp;                   /**< <tt>\b 0x1C:</tt> FCR GP Register */
     __IO uint32_t msrtrim;              /**< <tt>\b 0x20:</tt> FCR MSRTRIM Register */
-    __IO uint32_t erfoks;               /**< <tt>\b 0x24:</tt> FCR ERFOKS Register */
+    __IO uint32_t flvfilt;              /**< <tt>\b 0x24:</tt> FCR FLVFILT Register */
 } mxc_fcr_regs_t;
 
 /* Register offsets for module FCR */
@@ -116,7 +116,7 @@ typedef struct {
 #define MXC_R_FCR_URV1BOOTADDR             ((uint32_t)0x00000014UL) /**< Offset from FCR Base Address: <tt> 0x0014</tt> */
 #define MXC_R_FCR_GP                       ((uint32_t)0x0000001CUL) /**< Offset from FCR Base Address: <tt> 0x001C</tt> */
 #define MXC_R_FCR_MSRTRIM                  ((uint32_t)0x00000020UL) /**< Offset from FCR Base Address: <tt> 0x0020</tt> */
-#define MXC_R_FCR_ERFOKS                   ((uint32_t)0x00000024UL) /**< Offset from FCR Base Address: <tt> 0x0024</tt> */
+#define MXC_R_FCR_FLVFILT                  ((uint32_t)0x00000024UL) /**< Offset from FCR Base Address: <tt> 0x0024</tt> */
 /**@} end of group fcr_registers */
 
 /**
@@ -284,14 +284,20 @@ typedef struct {
 
 /**
  * @ingroup  fcr_registers
- * @defgroup FCR_ERFOKS FCR_ERFOKS
- * @brief    ERFO Kick Start Control Register.
+ * @defgroup FCR_FLVFILT FCR_FLVFILT
+ * @brief    Flash Low Voltage Filter Control Register.
  * @{
  */
-#define MXC_F_FCR_ERFOKS_CTRL_POS                      0 /**< ERFOKS_CTRL Position */
-#define MXC_F_FCR_ERFOKS_CTRL                          ((uint32_t)(0xFFFFUL << MXC_F_FCR_ERFOKS_CTRL_POS)) /**< ERFOKS_CTRL Mask */
+#define MXC_F_FCR_FLVFILT_NUM_POS                      0 /**< FLVFILT_NUM Position */
+#define MXC_F_FCR_FLVFILT_NUM                          ((uint32_t)(0xFFUL << MXC_F_FCR_FLVFILT_NUM_POS)) /**< FLVFILT_NUM Mask */
 
-/**@} end of group FCR_ERFOKS_Register */
+#define MXC_F_FCR_FLVFILT_RATE_POS                     8 /**< FLVFILT_RATE Position */
+#define MXC_F_FCR_FLVFILT_RATE                         ((uint32_t)(0xFFUL << MXC_F_FCR_FLVFILT_RATE_POS)) /**< FLVFILT_RATE Mask */
+
+#define MXC_F_FCR_FLVFILT_DELAY_POS                    16 /**< FLVFILT_DELAY Position */
+#define MXC_F_FCR_FLVFILT_DELAY                        ((uint32_t)(0xFFUL << MXC_F_FCR_FLVFILT_DELAY_POS)) /**< FLVFILT_DELAY Mask */
+
+/**@} end of group FCR_FLVFILT_Register */
 
 #ifdef __cplusplus
 }

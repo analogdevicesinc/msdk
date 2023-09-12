@@ -116,6 +116,10 @@ typedef struct {
     __IO uint32_t eccaddr;              /**< <tt>\b 0x70:</tt> GCR ECCADDR Register */
     __IO uint32_t nfcldoctrl;           /**< <tt>\b 0x74:</tt> GCR NFCLDOCTRL Register */
     __IO uint32_t nfcldodly;            /**< <tt>\b 0x78:</tt> GCR NFCLDODLY Register */
+    __R  uint32_t rsv_0x7c;
+    __IO uint32_t flvrst;               /**< <tt>\b 0x80:</tt> GCR FLVRST Register */
+    __IO uint32_t flvclkctrl;           /**< <tt>\b 0x84:</tt> GCR FLVCLKCTRL Register */
+    __IO uint32_t flvstat;              /**< <tt>\b 0x88:</tt> GCR FLVSTAT Register */
 } mxc_gcr_regs_t;
 
 /* Register offsets for module GCR */
@@ -147,6 +151,9 @@ typedef struct {
 #define MXC_R_GCR_ECCADDR                  ((uint32_t)0x00000070UL) /**< Offset from GCR Base Address: <tt> 0x0070</tt> */
 #define MXC_R_GCR_NFCLDOCTRL               ((uint32_t)0x00000074UL) /**< Offset from GCR Base Address: <tt> 0x0074</tt> */
 #define MXC_R_GCR_NFCLDODLY                ((uint32_t)0x00000078UL) /**< Offset from GCR Base Address: <tt> 0x0078</tt> */
+#define MXC_R_GCR_FLVRST                   ((uint32_t)0x00000080UL) /**< Offset from GCR Base Address: <tt> 0x0080</tt> */
+#define MXC_R_GCR_FLVCLKCTRL               ((uint32_t)0x00000084UL) /**< Offset from GCR Base Address: <tt> 0x0084</tt> */
+#define MXC_R_GCR_FLVSTAT                  ((uint32_t)0x00000088UL) /**< Offset from GCR Base Address: <tt> 0x0088</tt> */
 /**@} end of group gcr_registers */
 
 /**
@@ -1151,6 +1158,62 @@ typedef struct {
 #define MXC_F_GCR_NFCLDODLY_EN_CNT                     ((uint32_t)(0xFFUL << MXC_F_GCR_NFCLDODLY_EN_CNT_POS)) /**< NFCLDODLY_EN_CNT Mask */
 
 /**@} end of group GCR_NFCLDODLY_Register */
+
+/**
+ * @ingroup  gcr_registers
+ * @defgroup GCR_FLVRST GCR_FLVRST
+ * @brief    Flash Low Voltage Reset Control Register
+ * @{
+ */
+#define MXC_F_GCR_FLVRST_EN_POS                        0 /**< FLVRST_EN Position */
+#define MXC_F_GCR_FLVRST_EN                            ((uint32_t)(0x1UL << MXC_F_GCR_FLVRST_EN_POS)) /**< FLVRST_EN Mask */
+
+/**@} end of group GCR_FLVRST_Register */
+
+/**
+ * @ingroup  gcr_registers
+ * @defgroup GCR_FLVCLKCTRL GCR_FLVCLKCTRL
+ * @brief    Flash Low Voltage Clock Control Register
+ * @{
+ */
+#define MXC_F_GCR_FLVCLKCTRL_DIV_POS                   0 /**< FLVCLKCTRL_DIV Position */
+#define MXC_F_GCR_FLVCLKCTRL_DIV                       ((uint32_t)(0x3UL << MXC_F_GCR_FLVCLKCTRL_DIV_POS)) /**< FLVCLKCTRL_DIV Mask */
+#define MXC_V_GCR_FLVCLKCTRL_DIV_512                   ((uint32_t)0x0UL) /**< FLVCLKCTRL_DIV_512 Value */
+#define MXC_S_GCR_FLVCLKCTRL_DIV_512                   (MXC_V_GCR_FLVCLKCTRL_DIV_512 << MXC_F_GCR_FLVCLKCTRL_DIV_POS) /**< FLVCLKCTRL_DIV_512 Setting */
+#define MXC_V_GCR_FLVCLKCTRL_DIV_256                   ((uint32_t)0x1UL) /**< FLVCLKCTRL_DIV_256 Value */
+#define MXC_S_GCR_FLVCLKCTRL_DIV_256                   (MXC_V_GCR_FLVCLKCTRL_DIV_256 << MXC_F_GCR_FLVCLKCTRL_DIV_POS) /**< FLVCLKCTRL_DIV_256 Setting */
+#define MXC_V_GCR_FLVCLKCTRL_DIV_128                   ((uint32_t)0x2UL) /**< FLVCLKCTRL_DIV_128 Value */
+#define MXC_S_GCR_FLVCLKCTRL_DIV_128                   (MXC_V_GCR_FLVCLKCTRL_DIV_128 << MXC_F_GCR_FLVCLKCTRL_DIV_POS) /**< FLVCLKCTRL_DIV_128 Setting */
+#define MXC_V_GCR_FLVCLKCTRL_DIV_64                    ((uint32_t)0x3UL) /**< FLVCLKCTRL_DIV_64 Value */
+#define MXC_S_GCR_FLVCLKCTRL_DIV_64                    (MXC_V_GCR_FLVCLKCTRL_DIV_64 << MXC_F_GCR_FLVCLKCTRL_DIV_POS) /**< FLVCLKCTRL_DIV_64 Setting */
+
+/**@} end of group GCR_FLVCLKCTRL_Register */
+
+/**
+ * @ingroup  gcr_registers
+ * @defgroup GCR_FLVSTAT GCR_FLVSTAT
+ * @brief    Flash Low Voltage Status Register
+ * @{
+ */
+#define MXC_F_GCR_FLVSTAT_FLV_POS                      0 /**< FLVSTAT_FLV Position */
+#define MXC_F_GCR_FLVSTAT_FLV                          ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_FLV_POS)) /**< FLVSTAT_FLV Mask */
+
+#define MXC_F_GCR_FLVSTAT_ONES_POS                     6 /**< FLVSTAT_ONES Position */
+#define MXC_F_GCR_FLVSTAT_ONES                         ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_ONES_POS)) /**< FLVSTAT_ONES Mask */
+
+#define MXC_F_GCR_FLVSTAT_ZEROS_POS                    7 /**< FLVSTAT_ZEROS Position */
+#define MXC_F_GCR_FLVSTAT_ZEROS                        ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_ZEROS_POS)) /**< FLVSTAT_ZEROS Mask */
+
+#define MXC_F_GCR_FLVSTAT_ONES_FL_POS                  14 /**< FLVSTAT_ONES_FL Position */
+#define MXC_F_GCR_FLVSTAT_ONES_FL                      ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_ONES_FL_POS)) /**< FLVSTAT_ONES_FL Mask */
+
+#define MXC_F_GCR_FLVSTAT_ZEROS_FL_POS                 15 /**< FLVSTAT_ZEROS_FL Position */
+#define MXC_F_GCR_FLVSTAT_ZEROS_FL                     ((uint32_t)(0x1UL << MXC_F_GCR_FLVSTAT_ZEROS_FL_POS)) /**< FLVSTAT_ZEROS_FL Mask */
+
+#define MXC_F_GCR_FLVSTAT_BUF_POS                      16 /**< FLVSTAT_BUF Position */
+#define MXC_F_GCR_FLVSTAT_BUF                          ((uint32_t)(0x3FFUL << MXC_F_GCR_FLVSTAT_BUF_POS)) /**< FLVSTAT_BUF Mask */
+
+/**@} end of group GCR_FLVSTAT_Register */
 
 #ifdef __cplusplus
 }

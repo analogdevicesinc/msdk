@@ -453,16 +453,28 @@
         </fields>
       </register>
       <register>
-        <name>ERFOKS</name>
-        <description>ERFO Kick Start Control Register.</description>
+        <name>FLVFILT</name>
+        <description>Flash Low Voltage Filter Control Register.</description>
         <addressOffset>0x24</addressOffset>
         <access>read-write</access>
         <fields>
           <field>
-            <name>CTRL</name>
-            <description>Kickstart Control.</description>
+            <name>NUM</name>
+            <description>Defines the number of consecutive samples of FLV status that must be good for ROM to continue.</description>
             <bitOffset>0</bitOffset>
-            <bitWidth>16</bitWidth>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>RATE</name>
+            <description>Defines the rate for ROM sampling of the FLV status.</description>
+            <bitOffset>8</bitOffset>
+            <bitWidth>8</bitWidth>
+          </field>
+          <field>
+            <name>DELAY</name>
+            <description>Defines the delay from change in system clock divider until ROM begins filtering process of the FLV status.</description>
+            <bitOffset>16</bitOffset>
+            <bitWidth>8</bitWidth>
           </field>
         </fields>
       </register>

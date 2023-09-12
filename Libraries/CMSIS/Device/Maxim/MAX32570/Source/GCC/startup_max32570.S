@@ -400,7 +400,7 @@ Reset_Handler:
     def_irq_handler    RISCV1_IRQHandler         /* 0x4C  0x0130  76: RISCV 1 */
     def_irq_handler    RSV61_IRQHandler          /* 0x4D  0x0134  77: Reserved */
     def_irq_handler    I2C2_IRQHandler           /* 0x4E  0x0138  78: I2C 2 */
-    def_irq_handler    RSICV0_IRQHandler         /* 0x4F  0x013C  79: RISCV 0 */
+    def_irq_handler    RISCV0_IRQHandler         /* 0x4F  0x013C  79: RISCV 0 */
     def_irq_handler    EMAC_IRQHandler           /* 0x50  0x0140  80: Ethernet MAC */
     def_irq_handler    RSV65_IRQHandler          /* 0x51  0x0144  81: Reserved */
     def_irq_handler    SDHC_IRQHandler           /* 0x52  0x0148  82: SDIO/SDHC */
