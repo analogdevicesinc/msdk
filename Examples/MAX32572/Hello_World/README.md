@@ -2,8 +2,7 @@
 
 A basic getting started program.
 
-This version of Hello_World prints an incrementing count to the console UART and toggles a GPIO (P2.17 - LED1) once every 500 ms.
-
+This version of Hello_World prints an incrementing count to the console UART and toggles a LED1 every 500 ms.
 
 ## Software
 
@@ -17,10 +16,16 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
--   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
--   Connect a USB cable between the PC and the CN1 (USB/UART0) connector.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   Close jumper JP10 (LED1 EN).
+If using the MAX32572EVKIT:
+-   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
+-   Install JP7(RX_EN) and JP8(TX_EN) headers.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+-   Close jumper JP5 (LED1 EN).
+-   Close jumper JP6 (LED2 EN).
+
+If using the MAX32572FTHR:
+-   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output
 

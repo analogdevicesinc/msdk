@@ -192,7 +192,7 @@ struct mxc_spixf_reva_req {
     spixr_complete_cb_t callback; ///< callback function
 };
 
-typedef mxc_spixf_padctrl_t mxc_spixf_pup_t;
+typedef mxc_spixf_pup_t mxc_spixf_padctrl_t;
 
 /***** Function Prototypes *****/
 int MXC_SPIXF_RevA_Init(mxc_spixfc_reva_regs_t *spixfc, mxc_spixfm_reva_regs_t *spixfm,

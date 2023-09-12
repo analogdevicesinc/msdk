@@ -1,5 +1,5 @@
-/*******************************************************************************
- * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,109 +29,31 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- * $Date: 2016-05-02 14:15:59 -0700 (Mon, 02 May 2016) $ 
- * $Revision: 22594 $
- *
  ******************************************************************************/
- /* Allocate space if SDMA_SIZE is defined at the start of SRAM*/
-SRAM_START  = 0x20000000;
-SRAM_SIZE   = 760 * 1024;
-SRAM_END	= SRAM_START + SRAM_SIZE;
 
-/* SHARED start point */
-SHARED_REGION_START  = SRAM_START;
-SHARED_REGION_SIZE   = DEFINED(MSR_SDMA_SIZE) ? 512 : 0;
-SHARED_REGION_END    = SHARED_REGION_START + SHARED_REGION_SIZE;
 
-/* SDMA start point */
-MSR_SDMA_REGION_START = SHARED_REGION_END;
-MSR_SDMA_REGION_SIZE  = DEFINED(MSR_SDMA_SIZE) ? MSR_SDMA_SIZE : 0;
-MSR_SDMA_REGION_END   = MSR_SDMA_REGION_START + MSR_SDMA_REGION_SIZE;
-
-/* Remaining SRAM */
-SRAM_ADDR  	= MSR_SDMA_REGION_END;
-SRAM_LEN	= SRAM_END - MSR_SDMA_REGION_END;
- 
 MEMORY {
-    SPIX (rx)  		: ORIGIN = 0x08000000, 				LENGTH = 128M
-    HEADER (rx)		: ORIGIN = 0x10000000, 				LENGTH = 0x200     /* 256B SLA Header, start on next page */
-    FLASH (rx) 		: ORIGIN = 0x10000200, 				LENGTH = 0x0FFE00  /* Remainder of 1MB flash */
-    SHARED (rwx)   	: ORIGIN = SHARED_REGION_START,    	LENGTH = SHARED_REGION_SIZE
-    MSR_SDMA (rwx) 	: ORIGIN = MSR_SDMA_REGION_START,  	LENGTH = MSR_SDMA_REGION_SIZE
-    SRAM (rwx) 		: ORIGIN = SRAM_ADDR,  				LENGTH = SRAM_LEN
-    SPID (r)   		: ORIGIN = 0x80000000, 				LENGTH = 512M
+    ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB ROM */
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x0006C000 /* 432kB SRAM */
 }
 
-/* Added Oct 9, 2018 to go to correct reset vector. */
-ENTRY(Reset_Handler)
-PROVIDE( _start_SWAP = (((Reset_Handler) >> 24) | (((Reset_Handler) & 0x00FF0000) >> 8) | (((Reset_Handler) & 0x0000FF00) << 8) | ((Reset_Handler) << 24)));
-PROVIDE_HIDDEN( _SLA_Size = _endimage - __end_header );
-PROVIDE( _SLA_Size_SWAP = (((_SLA_Size) >> 24) | (((_SLA_Size) & 0x00FF0000) >> 8) | (((_SLA_Size) & 0x0000FF00) << 8) | ((_SLA_Size) << 24)));
-
-/* Sections Definitions */
 SECTIONS {
-	 .sla_header : ALIGN(4)
-    {
-	FILL(0xFF)
-		KEEP(*(.sb_sla_header)) /* Header for ROM code */ 
-		 __end_header = . ;
-		. = ALIGN(512);
-    } >HEADER
-
     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))
-        *(.text*)    /* program code */
-        *(.rodata*)  /* read-only data: "const" */
+        *(.text*)       /* program code */
+        *(.rodata*)     /* read-only data: "const" */
+	    *(.flashprog*)  /* Flash program */
 
         KEEP(*(.init))
         KEEP(*(.fini))
 
-        /* .ctors */
-        *crtbegin.o(.ctors)
-        *crtbegin?.o(.ctors)
-        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
-        *(SORT(.ctors.*))
-        *(.ctors)
-
-        /* .dtors */
-        *crtbegin.o(.dtors)
-        *crtbegin?.o(.dtors)
-        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
-        *(SORT(.dtors.*))
-        *(.dtors)
-
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
-    } > FLASH
+    } > SRAM
 
-	/* Binary import */
-    .bin_storage :
-    {
-	   FILL(0xFF)
-      _bin_start_ = .;
-      KEEP(*(.bin_storage_img))
-      _bin_end_ = .;
-	  . = ALIGN(4);
-    } > FLASH
-	
-	.msr_sdma :
-    {
-		FILL(0xFF)
-		_msr_sdma = .;
-		KEEP(*(.msr_sdma_code*))   
-		_emsr_sdma = .;
-		. = ALIGN(4);
-    } > MSR_SDMA AT>FLASH
-    __load_msr_sdma = LOADADDR(.msr_sdma);
-
-    .ARM.extab :
-    {
-        *(.ARM.extab* .gnu.linkonce.armextab.*)
-    } > FLASH
-    
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
     .ARM.exidx :
@@ -139,26 +61,13 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx*)
         __exidx_end = .;
-    } > FLASH
+    } > SRAM
 
-    /* This section will keep the SPIX data until loaded into the external device */
-    /* Upon initialization of SPIX (user code needs to do this) */
-    .xip_section :
-    {
-        KEEP(*(.xip_section*))
-    } > SPIX AT>FLASH
-
-    __load_start_xip = LOADADDR(.xip_section);
-    __load_length_xip = SIZEOF(.xip_section);
-    
     .data :
     {
         _data = ALIGN(., 4);
-        *(vtable)
         *(.data*)           /*read-write initialized data: initialized global variable*/
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
-        *(.flashprog*)      /* Flash program */
-        
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -182,27 +91,9 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-    } > SRAM AT>FLASH
+    } > SRAM AT>SRAM
     __load_data = LOADADDR(.data);
-    _enddata = LOADADDR(.data)+SIZEOF(.data);
 
-    .sb_sla_trailer : AT(_enddata)
-    {
-        KEEP(*(.sb_sla_trailer))
-        /* Align image with 16 byte boundary to conform to flash encryption block size. */
-        FILL(0xDEADC0DE);
-        /* NOTE: The FILL and ALIGN will not work unless something is written to the section.  So, we use LONG. */
-        LONG(0xDEADC0DE);
-        . = ALIGN(16);
-    }  > FLASH
-    _endimage = LOADADDR(.sb_sla_trailer)+SIZEOF(.sb_sla_trailer);
-    .sig :
-    {
-        KEEP(*(.sig))
-        LONG(0xDEADBEEF);
-
-    }  > FLASH
-    
     .bss :
     {
         . = ALIGN(4);
