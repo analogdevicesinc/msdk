@@ -266,9 +266,7 @@ static void attsConnCback(attCcb_t *pCcb, dmEvt_t *pDmEvt)
 	  /* if idle timer timed has already timed out then DM_IDLE_ATTS_DISC won't be set.
 	   * extra calls to WsfTimerStop() ok because it will just skip inactive timers */
       //if (DmConnCheckIdle(pAttsCb->connId) & DM_IDLE_ATTS_DISC)
-      {
-        WsfTimerStop(&pAttsCb->idleTimer);
-      }
+      WsfTimerStop(&pAttsCb->idleTimer);
     }
   }
 
