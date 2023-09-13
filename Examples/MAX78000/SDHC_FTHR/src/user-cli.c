@@ -52,6 +52,11 @@ const command_t user_commands[] = {
 
 const unsigned int num_user_commands = sizeof(user_commands) / sizeof(command_t);
 
+void CLI_IRQHandler(void)
+{
+	MXC_CLI_Handler();
+}
+
 int handle_size(int argc, char *argv[])
 {
 	if(argc != 1) {

@@ -42,6 +42,8 @@ extern const unsigned int num_user_commands;
 /* -------------------------------------------------- */
 //             FUNCTION PROTOTYPES
 /* -------------------------------------------------- */
+void CLI_IRQHandler(void);
+
 int handle_size(int argc, char *argv[]);
 
 int handle_format(int argc, char *argv[]);
