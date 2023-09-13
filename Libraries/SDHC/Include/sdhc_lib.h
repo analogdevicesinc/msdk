@@ -91,7 +91,7 @@ int MXC_SDHC_Lib_SetRCA(void);
 int MXC_SDHC_Lib_GetCSD(mxc_sdhc_csd_regs_t *csd);
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd);
+unsigned long long MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd);
 
 /* ************************************************************************** */
 unsigned int MXC_SDHC_Lib_GetSectors(mxc_sdhc_csd_regs_t* csd);

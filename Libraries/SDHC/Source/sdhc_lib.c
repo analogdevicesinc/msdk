@@ -159,11 +159,17 @@ int MXC_SDHC_Lib_GetCSD(mxc_sdhc_csd_regs_t *csd)
 }
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd)
+unsigned long long MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd)
 {
     unsigned int size = csd->csd.c_size;
 
-    return (size*(512*1024));
+    return ((unsigned long long)size)*((unsigned long long)512*1024);
+}
+
+/* ************************************************************************** */
+unsigned int MXC_SDHC_Lib_GetSectors(mxc_sdhc_csd_regs_t* csd)
+{
+    return csd->csd.c_size;
 }
 
 /* ************************************************************************** */
