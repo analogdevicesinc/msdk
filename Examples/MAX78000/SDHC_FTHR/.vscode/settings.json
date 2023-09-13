@@ -69,20 +69,10 @@
         "${config:MAXIM_PATH}/Libraries/SDHC/ff14/Source"
     ],
     "C_Cpp.default.defines": [
-        "${config:board}",
-        "TARGET=${config:target}",
-        "TARGET_REV=0x4131",
-        "__GNUC__"
+        
     ],
-    "files.associations": {
-        "stdint.h": "c",
-        "cli.h": "c",
-        "sdhc.h": "c",
-        "user-cli.h": "c",
-        "uart.h": "c",
-        "nvic_table.h": "c",
-        "cstdlib": "c",
-        "adc_reva.h": "c"
-    }
+    "C_Cpp.default.forcedInclude": [
+        "${workspaceFolder}/build/project_defines.h"
+    ]
 }
 
