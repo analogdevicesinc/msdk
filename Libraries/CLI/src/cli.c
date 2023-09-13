@@ -41,7 +41,6 @@
 #include "board.h"
 #include "cli.h"
 #include "nvic_table.h"
-#include "uart.h"
 
 /* -------------------------------------------------- */
 //                      MACROS
@@ -83,13 +82,14 @@ uint16_t buf_idx = 0;
 
 uint8_t char_recv; // Variable to store characters received by CLI UART
 mxc_uart_req_t cli_req; // CLI UART transaction request structure
+mxc_uart_regs_t *cli_uart = NULL;
 
 // Help Command
 const command_t help_command = { "Help", "help", "Prints details regarding the usage of the supported commands.", handle_help };
 
 // Command table parameters;
-const command_t *command_table;
-unsigned int command_table_sz;
+const command_t *command_table = NULL;
+unsigned int command_table_sz = 0;
 
 /* -------------------------------------------------- */
 //            PRIVATE FUNCTION DEFINITIONS
@@ -303,66 +303,98 @@ int handle_help(int argc, char *argv[])
 }
 
 /**
- * @brief IRQ Handler for the CLI UART
- */ 
-void UART_Handler(void)
-{
-    MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
-}
-
-/**
  * @brief Callback function for when a character is received by the CLI
  */ 
 void CLI_Callback(mxc_uart_req_t *req, int error)
 {
+	if(error == E_ABORT) {
+		// Shutdown called, nothing to do in callback
+		return;
+	}
+
+    // Process received character
     line_accumulator(char_recv);
+
+    // Start transaction to receive next character
     MXC_UART_TransactionAsync(req);
 }
 
 /* -------------------------------------------------- */
 //             PUBLIC FUNCTION DEFINITIONS
 /* -------------------------------------------------- */
-int CLI_Init(const command_t *commands, unsigned int num_commands)
+int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int num_commands)
 {
     int error;
 
     // Check for valid parameters
-    if (commands == NULL) {
+    if (MXC_UART_GET_IDX(uart) < 0) {
+        return E_BAD_PARAM;
+    } else if (commands == NULL) {
         return E_NULL_PTR;
     } else if (num_commands <= 0) {
         return E_BAD_PARAM;
     }
 
+    // Return error if CLI is already initialized
+    if(cli_uart != NULL) {
+        return E_BAD_STATE;
+    }
+
     // Save the command table
+    cli_uart = uart;
     command_table = commands;
     command_table_sz = num_commands;
 
-    // UART interrupt setup
-    NVIC_ClearPendingIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
-    NVIC_DisableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
-    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(CONSOLE_UART), UART_Handler);
-    NVIC_EnableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
-
     // Initialize Console UART
-    if ((error = MXC_UART_Init(MXC_UART_GET_UART(CONSOLE_UART), UART_BAUD, MXC_UART_APB_CLK)) !=
+    if ((error = MXC_UART_Init(uart, UART_BAUD, MXC_UART_APB_CLK)) !=
         E_NO_ERROR) {
         printf("-->Error initializing CLI UART: %d\n", error);
         return error;
     }
 
-    // Print success message and prompt
-    printf("CLI Initialized! Enter 'help' to see a list of available commands.\n");
-    User_Prompt_Sequence();
-    while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
-
     // Initialize an asynchoronous request for the first character
-    cli_req.uart = MXC_UART_GET_UART(CONSOLE_UART);
+    cli_req.uart = cli_uart;
     cli_req.rxData = &char_recv;
     cli_req.rxLen = BUFF_SIZE;
     cli_req.txLen = 0;
     cli_req.callback = CLI_Callback;
+    if ((error = MXC_UART_TransactionAsync(&cli_req)) != E_NO_ERROR) {
+        return error;
+    }
 
-    error = MXC_UART_TransactionAsync(&cli_req);
+    // Print success message and prompt
+	printf("CLI Initialized! Enter 'help' to see a list of available commands.\n");
+	User_Prompt_Sequence();
+	while(MXC_UART_GetActive(uart)) {}
 
-    return error;
+    return E_NO_ERROR;
+}
+
+int MXC_CLI_Shutdown(void)
+{
+    // Return if CLI is uninitialized
+    if (cli_uart == NULL) {
+        return E_BAD_STATE;
+    }
+
+    // Abort existing async transaction
+    MXC_UART_AbortAsync(MXC_UART_GET_UART(CONSOLE_UART));
+
+    // Reset state variables
+    cli_uart = NULL;
+    command_table = NULL;
+    command_table_sz = 0;
+    buf_idx = 0;
+    
+    return E_NO_ERROR;
+}
+
+void MXC_CLI_Handler(void)
+{
+    // Return if CLI is uninitialized
+    if (cli_uart == NULL) {
+        return;
+    }
+
+    MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
 }

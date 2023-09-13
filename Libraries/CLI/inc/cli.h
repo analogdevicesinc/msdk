@@ -56,6 +56,7 @@
 #define MXC_CLI_H
 
 #include <stdint.h>
+#include "uart.h"
 
 /**
  * @brief Command handler function prototype
@@ -82,11 +83,25 @@ typedef struct {
 /**
  * @brief Initializes the Console UART for CLI operations.
  * 
+ * @param uart          Pointer to UART instance to use for the CLI
  * @param commands      Pointer to the list of user-defined CLI commands
  * @param num_commands  Number of commands in the command table
  * 
  * @return E_NO_ERROR if successful, otherwise an error code.
  */
-int CLI_Init(const command_t *commands, unsigned int num_commands);
+int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int num_commands);
+
+/**
+ * @brief Shutdown the CLI. (Console UART will remain enabled.)
+ * 
+ * @return E_NO_ERROR if successful, otheriwse an error code.
+ */
+int MXC_CLI_Shutdown(void);
+
+/**
+ * @brief IRQ Handler for the CLI UART. This function should be called from the
+ *        MXC_UARTx_Handler in the user application.
+ */ 
+void MXC_CLI_Handler(void);
 
 #endif /* MXC_CLI_H */
