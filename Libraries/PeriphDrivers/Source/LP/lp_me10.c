@@ -711,3 +711,21 @@ void MXC_LP_EnterBackupMode(void)
     MXC_GCR->pmr |= MXC_S_GCR_PMR_MODE_BACKUP;
     while (1) {}
 }
+
+/* ************************************************************************** */
+void MXC_LP_USBClearPONRST(void)
+{
+    // This register is used during the power-on stage or used as a global reset
+    // for the USB block. For this case, the PONRST is used as a global reset 
+    // and setting this register to 0 will force the USB block to its initial
+    // state - where the operating current is at its minimum.
+    MXC_USBHS->m31_phy_ponrst = 0;
+}
+
+/* ************************************************************************** */
+void MXC_LP_USBSetPONRST(void)
+{
+    // Re-enables the clock generator and the USB block if PONRST was used as
+    // a global reset for operating in low power modes.
+    MXC_USBHS->m31_phy_ponrst = 1;
+}
