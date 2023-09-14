@@ -6,7 +6,7 @@
 
 A command-line interface or command language interpreter (CLI), also known as command-line user interface, console user interface, and character user interface (CUI), is a means of interacting with an embedded system where the user (or client) issues commands to the program in the form of successive lines of text (command lines).
 
-This library provides an extensible command processor on device to:
+This library provides an extensible command processor to:
 * Allow developers to get diagnostics and change device parameters interactively
 * Easily automate testing of the device, through PC-side scripting
 
@@ -15,8 +15,6 @@ The current CLI Library includes the following features:
 - Can have spaces at beginning or end of string
 - Can have multiple spaces between words
 - Backspace
-- Arrow keys
-- Tab completion
 - An internally defined 'help' command which lists information about each of the user-defined commands
 
 ## CLI Software Flow
@@ -47,7 +45,7 @@ Return Value
 
 Parameters
 - argc   - Argument counter, number of tokens in the argument vector
-- argv[] - Argument vector, tokenized command string
+- argv[] - Argument vector, an srray of arguments storing different tokens of the command string in the same order as they were passed in the command line. (argv[0] is the command, argv[1:argc] are the arguments (if any are passed), and the last element in the argument vector is always a NULL pointer.)
 
 Below is a sample handler function prototype for a "make directory" command.
 ```
@@ -64,4 +62,4 @@ The CLI library will tokenize the command string "mkdir new_folder" into "mkdir"
 
 5. Include cli.h in the approriate source file and initialize the CLI by calling the MXC_CLI_Init function with a pointer to to the UART for the CLI to use, a pointer to the command table, and the number of commands in the command table.
 
-6. Enable the appropriate interupt vector for the UART used in the CLI (NVIC_EnableIRQ(...)).
+6. Enable the appropriate interupt vector for the UART used in the CLI (i.e. NVIC_EnableIRQ(...)).
