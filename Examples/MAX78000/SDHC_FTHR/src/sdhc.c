@@ -320,7 +320,7 @@ int cd(char *dir_name)
     return err;
 }
 
-int delete (char *file_name)
+int deleteFile(char *file_name)
 {
     if (!mounted) {
         mount();

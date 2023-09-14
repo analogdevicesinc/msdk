@@ -74,7 +74,7 @@ int mkdir(char *dir_name);
 
 int cd(char *dir_name);
 
-int delete (char *file_name);
+int deleteFile(char *file_name);
 
 int example();
 

@@ -76,7 +76,9 @@ uint8_t char_recv; // Variable to store characters received by CLI UART
 mxc_uart_req_t cli_req; // CLI UART transaction request structure
 
 // Help Command
-const command_t help_command = { "Help", "help", "Prints details regarding the usage of the supported commands.", handle_help };
+const command_t help_command = { "Help", "help",
+                                 "Prints details regarding the usage of the supported commands.",
+                                 handle_help };
 
 // Command table parameters;
 const command_t *command_table = NULL;
@@ -173,7 +175,7 @@ void line_accumulator(uint8_t user_char)
 void process_command(char *input)
 {
     // Initialize variables
-    char *argv[MAX_COMMAND_TOKENS+1]; // Plus 1 so that argv can always be null terminated
+    char *argv[MAX_COMMAND_TOKENS + 1]; // Plus 1 so that argv can always be null terminated
     int argc = 0;
     int success_flag = 1;
 
@@ -246,7 +248,7 @@ int handle_help(int argc, char *argv[])
 
 /**
  * @brief Callback function for when a character is received by the CLI
- */ 
+ */
 void CLI_Callback(mxc_uart_req_t *req, int error)
 {
     if (error == E_ABORT) {
@@ -278,7 +280,7 @@ int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int 
     }
 
     // Return error if CLI is already initialized
-    if(cli_uart != NULL) {
+    if (cli_uart != NULL) {
         return E_BAD_STATE;
     }
 
@@ -288,8 +290,7 @@ int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int 
     command_table_sz = num_commands;
 
     // Initialize Console UART
-    if ((error = MXC_UART_Init(uart, UART_BAUD, MXC_UART_APB_CLK)) !=
-        E_NO_ERROR) {
+    if ((error = MXC_UART_Init(uart, UART_BAUD, MXC_UART_APB_CLK)) != E_NO_ERROR) {
         printf("-->Error initializing CLI UART: %d\n", error);
         return error;
     }

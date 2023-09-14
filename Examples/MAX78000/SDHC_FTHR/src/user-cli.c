@@ -42,9 +42,11 @@ const command_t user_commands[] = {
     { "mount", "mount", "Manually Mount Card", handle_mount },
     { "ls", "ls", "list the contents of the current directory", handle_ls },
     { "mkdir", "mkdir <directory name>", "Create a directory", handle_mkdir },
-    { "file_create", "file_create <file name> <number of bytes to add>", "Create a file of random data", handle_createfile },
+    { "file_create", "file_create <file name> <number of bytes to add>",
+      "Create a file of random data", handle_createfile },
     { "cd", "cd <directory name>", "Move into a directory", handle_cd },
-    { "add_data", "add_data <file name> <number of bytes to add>", "Add random Data to an Existing File", handle_add_data },
+    { "add_data", "add_data <file name> <number of bytes to add>",
+      "Add random Data to an Existing File", handle_add_data },
     { "del", "del <file name>", "Delete a file", handle_del },
     { "fatfs", "fatfs", "Format Card and Run Example of FatFS Operations", handle_fatfs },
     { "unmount", "unmount", "Unmount card", handle_unmount },
@@ -146,7 +148,7 @@ int handle_del(int argc, char *argv[])
         return E_INVALID;
     }
 
-    return delete(argv[1]);
+    return deleteFile(argv[1]);
 }
 
 int handle_fatfs(int argc, char *argv[])

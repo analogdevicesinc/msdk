@@ -64,10 +64,11 @@ int main(void)
     waitCardInserted();
 
     printf("Card inserted.\n");
-    while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
+    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
 
     // Initialize CLI
-    if ((err = MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), user_commands, num_user_commands)) != E_NO_ERROR) {
+    if ((err = MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), user_commands, num_user_commands)) !=
+        E_NO_ERROR) {
         return err;
     }
 

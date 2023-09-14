@@ -103,7 +103,7 @@ int MXC_CLI_Shutdown(void);
 /**
  * @brief IRQ Handler for the CLI UART. This function should be called from the
  *        MXC_UARTx_Handler in the user application.
- */ 
+ */
 void MXC_CLI_Handler(void);
 
 #endif // LIBRARIES_CLI_INC_CLI_H_
