@@ -45,24 +45,16 @@
 /* -------------------------------------------------- */
 //                      MACROS
 /* -------------------------------------------------- */
-#define ENTER 0X0D
+// Characters
+#define ENTER 0x0D
 #define NEW_LINE 0x0A
 #define SPACE 0x20
-#define TAB 0x09
-#define BACKSPACE 0X08
-#define MAXBUFF 2000
-#define DELETE 0x7F
+#define BACKSPACE 0x08
 #define DOLLAR 0x24
-
-#define ARROW_KEY_CODE_1 0x1B
-#define ARROW_KEY_CODE_2 0x5B
-#define ARROW_KEY_CODE_LEFT 0x44
-#define ARROW_KEY_CODE_RIGHT 0x43
-#define ARROW_KEY_CODE_UP 0x41
-#define ARROW_KEY_CODE_DOWN 0x42
 
 // Define a buffer length to store commands
 #define MAX_COMMAND_LENGTH 256
+#define MAX_COMMAND_TOKENS 10
 
 #define UART_BAUD 115200
 #define BUFF_SIZE 1
@@ -82,7 +74,6 @@ uint16_t buf_idx = 0;
 
 uint8_t char_recv; // Variable to store characters received by CLI UART
 mxc_uart_req_t cli_req; // CLI UART transaction request structure
-mxc_uart_regs_t *cli_uart = NULL;
 
 // Help Command
 const command_t help_command = { "Help", "help", "Prints details regarding the usage of the supported commands.", handle_help };
@@ -91,23 +82,14 @@ const command_t help_command = { "Help", "help", "Prints details regarding the u
 const command_t *command_table = NULL;
 unsigned int command_table_sz = 0;
 
+// UART instance used for CLI operations
+mxc_uart_regs_t *cli_uart = NULL;
+
 /* -------------------------------------------------- */
 //            PRIVATE FUNCTION DEFINITIONS
 /* -------------------------------------------------- */
 /** 
- * @brief Checks whether the current character is a white space character
- * 
- * @param p     Character to check
- * 
- * @returns True - chacracter is whitespace, False - character is not whitespace
- */
-bool white_space_present(char *p)
-{
-    return *p == SPACE || *p == TAB;
-}
-
-/** 
- * @brief Clears the buffer storing each character of the user command input
+ * @brief Prints the CLI prompt
  */
 void User_Prompt_Sequence(void)
 {
@@ -117,7 +99,7 @@ void User_Prompt_Sequence(void)
 }
 
 /** 
- * @brief Clears the buffer storing each character of the user command input
+ * @brief Clears the buffer storing the command string
  */
 void Clear_buffer(void)
 {
@@ -164,16 +146,18 @@ void line_accumulator(uint8_t user_char)
         // Handle Enter or carriage return
         MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), NEW_LINE);
         MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), ENTER);
-        cmd_buf[buf_idx++] = '\r';
-        cmd_buf[buf_idx] = '\0';
-        buf_idx = 0;
+
+        // Parse and execute command
         process_command(cmd_buf);
+
+        // Reset command buffer
+        buf_idx = 0;
         Clear_buffer();
         break;
 
     default:
         // Handle all other characters
-        if (buf_idx < MAX_COMMAND_LENGTH - 1) {
+        if (buf_idx < MAX_COMMAND_LENGTH) {
             cmd_buf[buf_idx++] = user_char; //pushes characters into the buffer
             MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), user_char);
         }
@@ -188,60 +172,18 @@ void line_accumulator(uint8_t user_char)
  */
 void process_command(char *input)
 {
-    // Initialize p and end pointers
-    char *p = input;
-    char *end;
-
-    // Find end of string
-    for (end = input; *end != '\0'; end++) {}
-
     // Initialize variables
-    bool in_token = false;
-    bool beginning_space;
-    char *argv[10];
+    char *argv[MAX_COMMAND_TOKENS+1]; // Plus 1 so that argv can always be null terminated
     int argc = 0;
-    memset(argv, 0, sizeof(argv));
+    int success_flag = 1;
 
-    if (*p == SPACE || *p == TAB) {
-        beginning_space = true;
-    }
+    // Initialize command string and token pointers
+    char *cmd = input;
+    char *token;
 
-    // Iterate over each character in input
-    for (p = input; p < end; p++) {
-        if (in_token) {
-            // If in a token
-            if (white_space_present(p)) {
-                // If whitespace found, token ends
-                in_token = true;
-            } else {
-                // Else, token continues
-                input = p;
-                in_token = false;
-            }
-        } else {
-            // If not in a token
-            if (*p == ENTER || (white_space_present(p))) {
-                // If ENTER or whitespace found
-                if (*p == ENTER) {
-                    // If ENTER, end of command
-                    *p = '\0';
-                    argv[argc++] = input;
-                } else if (white_space_present(p) && !beginning_space) {
-                    // If whitespace found, end of token
-                    *p = '\0';
-                    argv[argc++] = input;
-                    in_token = true;
-                }
-            } else if (!white_space_present(p) && beginning_space) {
-                // If not in token and whitespace not found, new token starts
-                input = p;
-                in_token = false;
-                beginning_space = false;
-            } else if (!white_space_present(p) && !beginning_space) {
-                // If not in token and whitespace not found and beginning_space is false, token continues
-                in_token = false;
-            }
-        }
+    // Parse command string (delimiters: space and tab)
+    while(argc < MAX_COMMAND_TOKENS && (token = strtok_r(cmd, " \t", &cmd))) {
+        argv[argc++] = token;
     }
 
     // Set last argv value to NULL
@@ -252,16 +194,14 @@ void process_command(char *input)
         return;
     }
 
-    int success_flag = 1;
-
     // Check for a valid command
-    if (strcasecmp(argv[0], help_command.name) == 0) {
+    if (strcasecmp(argv[0], help_command.cmd) == 0) {
         // Help command received
     	success_flag = help_command.handler(argc, argv);
     } else {
         // Help command not received, iterate over all user-defined commands
         for (int i = 0; i < command_table_sz; i++) {
-            if (strcasecmp(argv[0], command_table[i].name) == 0) {
+            if (strcasecmp(argv[0], command_table[i].cmd) == 0) {
                 // Call corresponding command's handler
                 success_flag = command_table[i].handler(argc, argv);
                 break;
@@ -269,11 +209,13 @@ void process_command(char *input)
         }
     }
 
-    // If no commands match, print error message
+    // Check for errors
     if (success_flag == 1) {
-        printf("\n\rCommand isn't valid!\n\r");
+        // Command entered is not supported
+        printf("\nCommand isn't valid!\n");
     } else if (success_flag < E_NO_ERROR) {
-    	printf("\n\rEnter 'help' to see a list of available commands.\n\r");
+        // Command entered is supported, but arguments entered incorrectly
+    	printf("\nEnter 'help' for details on how to use the '%s' command.\n", argv[0]);
     }
 
     // Print prompt
@@ -292,9 +234,9 @@ void process_command(char *input)
  */
 int handle_help(int argc, char *argv[])
 {
-    printf("\n\r");
+    // Print out name, usage, and description of each supported command
     for (int i = 0; i < command_table_sz; i++) {
-        printf("%s:\n", command_table[i].name);
+        printf("\n%s:\n", command_table[i].cmd);
         printf("  Usage: %s\n", command_table[i].usage);
         printf("  Description: %s\n\n", command_table[i].description);
     }
@@ -315,7 +257,7 @@ void CLI_Callback(mxc_uart_req_t *req, int error)
     // Process received character
     line_accumulator(char_recv);
 
-    // Start transaction to receive next character
+    // Get ready to receive next character
     MXC_UART_TransactionAsync(req);
 }
 

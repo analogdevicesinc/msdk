@@ -49,7 +49,6 @@
     All tokes are seperated by whitespace characters 
     Lookup first token in a table of functions
     Dispatch to handler functions 
-    
 */
 
 #ifndef MXC_CLI_H
@@ -59,14 +58,17 @@
 #include "uart.h"
 
 /**
- * @brief Command handler function prototype
+ * @brief Command handler function prototype. Once a command is entered in the CLI, it is parsed
+ *        ("tokenized") into an argument vector. The argument counter and argument vector are
+ *        passed to the command's handler function where the command is executed. 
  * 
- * @param argc      Used to determine which token element of the
- *                  commands string is being used.
- * @param argv[]    Char Array of tokens of the command string
- *                  entered by the user.
+ * @param argc      Number of tokens in the argument vector
+ * @param argv[]    Array of arguments storing different tokens of the command string in the
+ *                  same order as they were passed in the command line. (argv[0] is the command,
+ *                  argv[1:argc] are the arguments (if any are passed), and the last element in the
+ *                  argument vector is always a NULL pointer.)
  * 
- * @returns E_NO_ERROR if successful, otherwise an error code.
+ * @returns E_NO_ERROR if successful, otherwise an error code (error code must be a negative integer)
  */
 typedef int (*command_handler_t)(int argc, char *argv[]);
 
@@ -74,17 +76,17 @@ typedef int (*command_handler_t)(int argc, char *argv[]);
  * @brief Structure used to define the commands supported by the CLI
  */
 typedef struct {
-    const char *name; /**< name of the command */
+    const char *cmd; /**< name of the command (as it should be entered on the command line) */
     const char *usage; /**< string to show how the command should be entered on the command line */
     const char *description; /**< string describing what the command does */
     command_handler_t handler; /**< function pointer of the command handler function */
 } command_t;
 
 /**
- * @brief Initializes the Console UART for CLI operations.
+ * @brief Initializes the CLI state variables and configures the uart for CLI operations.
  * 
  * @param uart          Pointer to UART instance to use for the CLI
- * @param commands      Pointer to the list of user-defined CLI commands
+ * @param commands      Pointer to the command table storing user-defined CLI commands
  * @param num_commands  Number of commands in the command table
  * 
  * @return E_NO_ERROR if successful, otherwise an error code.
@@ -92,7 +94,7 @@ typedef struct {
 int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int num_commands);
 
 /**
- * @brief Shutdown the CLI. (Console UART will remain enabled.)
+ * @brief Shuts down the CLI. (UART will remain enabled.)
  * 
  * @return E_NO_ERROR if successful, otheriwse an error code.
  */
