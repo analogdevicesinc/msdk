@@ -51,8 +51,8 @@
     Dispatch to handler functions 
 */
 
-#ifndef MXC_CLI_H
-#define MXC_CLI_H
+#ifndef LIBRARIES_CLI_INC_CLI_H_
+#define LIBRARIES_CLI_INC_CLI_H_
 
 #include <stdint.h>
 #include "uart.h"
@@ -106,4 +106,4 @@ int MXC_CLI_Shutdown(void);
  */ 
 void MXC_CLI_Handler(void);
 
-#endif /* MXC_CLI_H */
+#endif // LIBRARIES_CLI_INC_CLI_H_

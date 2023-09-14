@@ -187,7 +187,7 @@ int createFile(char *file_name, unsigned int length)
         mount();
     }
 
-    strcpy(filename, file_name);
+    snprintf(filename, MAXLEN, "%s", file_name);
 
     if (length > MAXLEN) {
         printf("Error. File size limit for this example is %d bytes.\n", MAXLEN);
@@ -230,7 +230,7 @@ int appendFile(char *file_name, unsigned int length)
         mount();
     }
 
-    strcpy(filename, file_name);
+    snprintf(filename, MAXLEN, "%s", file_name);
 
     if ((err = f_stat((const TCHAR *)filename, &fno)) == FR_NO_FILE) {
         printf("File %s doesn't exist!\n", (const TCHAR *)filename);
@@ -273,7 +273,7 @@ int mkdir(char *dir_name)
         mount();
     }
 
-    strcpy(directory, dir_name);
+    snprintf(directory, MAXLEN, "%s", dir_name);
 
     err = f_stat((const TCHAR *)directory, &fno);
 
@@ -301,7 +301,7 @@ int cd(char *dir_name)
         mount();
     }
 
-    strcpy(directory, dir_name);
+    snprintf(directory, MAXLEN, "%s", dir_name);
 
     if ((err = f_stat((const TCHAR *)directory, &fno)) == FR_NO_FILE) {
         printf("Directory doesn't exist (Did you mean mkdir?)\n");
@@ -326,7 +326,7 @@ int delete (char *file_name)
         mount();
     }
 
-    strcpy(filename, file_name);
+    snprintf(filename, MAXLEN, "%s", file_name);
 
     if ((err = f_stat((const TCHAR *)filename, &fno)) == FR_NO_FILE) {
         printf("File or directory doesn't exist\n");

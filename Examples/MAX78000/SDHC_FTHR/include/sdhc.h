@@ -30,8 +30,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef SDHC_HEADER
-#define SDHC_HEADER
+#ifndef EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_
+#define EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_
 
 /***** Includes *****/
 #include <stdio.h>
@@ -80,4 +80,4 @@ int example();
 
 void waitCardInserted();
 
-#endif //SDHC_HEADER
+#endif // EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_

@@ -30,8 +30,8 @@
  * ownership rights.
  *
  ******************************************************************************/
-#ifndef USER_CLI_H
-#define USER_CLI_H
+#ifndef EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_USER_CLI_H_
+#define EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_USER_CLI_H_
 
 /* -------------------------------------------------- */
 //                GLOBAL VARIABLE
@@ -66,4 +66,4 @@ int handle_fatfs(int argc, char *argv[]);
 
 int handle_unmount(int argc, char *argv[]);
 
-#endif /* USER_CLI_H */
+#endif // EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_USER_CLI_H_

@@ -182,7 +182,7 @@ void process_command(char *input)
     char *token;
 
     // Parse command string (delimiters: space and tab)
-    while(argc < MAX_COMMAND_TOKENS && (token = strtok_r(cmd, " \t", &cmd))) {
+    while (argc < MAX_COMMAND_TOKENS && (token = strtok_r(cmd, " \t", &cmd))) {
         argv[argc++] = token;
     }
 
@@ -197,7 +197,7 @@ void process_command(char *input)
     // Check for a valid command
     if (strcasecmp(argv[0], help_command.cmd) == 0) {
         // Help command received
-    	success_flag = help_command.handler(argc, argv);
+        success_flag = help_command.handler(argc, argv);
     } else {
         // Help command not received, iterate over all user-defined commands
         for (int i = 0; i < command_table_sz; i++) {
@@ -215,7 +215,7 @@ void process_command(char *input)
         printf("\nCommand isn't valid!\n");
     } else if (success_flag < E_NO_ERROR) {
         // Command entered is supported, but arguments entered incorrectly
-    	printf("\nEnter 'help' for details on how to use the '%s' command.\n", argv[0]);
+        printf("\nEnter 'help' for details on how to use the '%s' command.\n", argv[0]);
     }
 
     // Print prompt
@@ -249,10 +249,10 @@ int handle_help(int argc, char *argv[])
  */ 
 void CLI_Callback(mxc_uart_req_t *req, int error)
 {
-	if(error == E_ABORT) {
-		// Shutdown called, nothing to do in callback
-		return;
-	}
+    if (error == E_ABORT) {
+        // Shutdown called, nothing to do in callback
+        return;
+    }
 
     // Process received character
     line_accumulator(char_recv);
@@ -305,9 +305,9 @@ int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int 
     }
 
     // Print success message and prompt
-	printf("CLI Initialized! Enter 'help' to see a list of available commands.\n");
-	User_Prompt_Sequence();
-	while(MXC_UART_GetActive(uart)) {}
+    printf("CLI Initialized! Enter 'help' to see a list of available commands.\n");
+    User_Prompt_Sequence();
+    while (MXC_UART_GetActive(uart)) {}
 
     return E_NO_ERROR;
 }
@@ -327,7 +327,7 @@ int MXC_CLI_Shutdown(void)
     command_table = NULL;
     command_table_sz = 0;
     buf_idx = 0;
-    
+
     return E_NO_ERROR;
 }
 

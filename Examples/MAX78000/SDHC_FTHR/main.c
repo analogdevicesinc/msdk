@@ -57,10 +57,10 @@
 /******************************************************************************/
 int main(void)
 {
-	int err;
-	printf("\n\n***** MAX78000 SDHC FAT Filesystem Example *****\n");
+    int err;
+    printf("\n\n***** MAX78000 SDHC FAT Filesystem Example *****\n");
 
-	// Wait for SD Card to be inserted
+    // Wait for SD Card to be inserted
     waitCardInserted();
 
     printf("Card inserted.\n");
@@ -68,7 +68,7 @@ int main(void)
 
     // Initialize CLI
     if ((err = MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), user_commands, num_user_commands)) != E_NO_ERROR) {
-    	return err;
+        return err;
     }
 
     // Enable Console/CLI UART IRQ vector

@@ -54,65 +54,65 @@ const unsigned int num_user_commands = sizeof(user_commands) / sizeof(command_t)
 
 void CLI_IRQHandler(void)
 {
-	MXC_CLI_Handler();
+    MXC_CLI_Handler();
 }
 
 int handle_size(int argc, char *argv[])
 {
-	if(argc != 1) {
-		printf("Incorrect usage. Too many parameters.\n");
-		return E_INVALID;
-	}
+    if (argc != 1) {
+        printf("Incorrect usage. Too many parameters.\n");
+        return E_INVALID;
+    }
 
     return getSize();
 }
 
 int handle_format(int argc, char *argv[])
 {
-	if(argc != 1) {
-		printf("Incorrect usage. Too many parameters.\n");
-		return E_INVALID;
-	}
+    if (argc != 1) {
+        printf("Incorrect usage. Too many parameters.\n");
+        return E_INVALID;
+    }
 
     return formatSDHC();
 }
 
 int handle_mount(int argc, char *argv[])
 {
-	if(argc != 1) {
-		printf("Incorrect usage. Too many parameters.\n");
-		return E_INVALID;
-	}
+    if (argc != 1) {
+        printf("Incorrect usage. Too many parameters.\n");
+        return E_INVALID;
+    }
 
     return mount();
 }
 
 int handle_ls(int argc, char *argv[])
 {
-	if(argc != 1) {
-		printf("Incorrect usage. Too many parameters.\n");
-		return E_INVALID;
-	}
+    if (argc != 1) {
+        printf("Incorrect usage. Too many parameters.\n");
+        return E_INVALID;
+    }
 
     return ls();
 }
 
 int handle_mkdir(int argc, char *argv[])
 {
-	if(argc != 2) {
-		printf("Incorrect usage. Please provide directory name.\n");
-		return E_INVALID;
-	}
+    if (argc != 2) {
+        printf("Incorrect usage. Please provide directory name.\n");
+        return E_INVALID;
+    }
 
     return mkdir(argv[1]);
 }
 
 int handle_createfile(int argc, char *argv[])
 {
-	if(argc != 3) {
-		printf("Incorrect usage. Please provide filename and length.\n");
-		return E_INVALID;
-	}
+    if (argc != 3) {
+        printf("Incorrect usage. Please provide filename and length.\n");
+        return E_INVALID;
+    }
 
     unsigned int length = atoi(argv[2]);
     return createFile(argv[1], length);
@@ -120,20 +120,20 @@ int handle_createfile(int argc, char *argv[])
 
 int handle_cd(int argc, char *argv[])
 {
-	if(argc != 2) {
-		printf("Incorrect usage. Please provide directory name.\n");
-		return E_INVALID;
-	}
+    if (argc != 2) {
+        printf("Incorrect usage. Please provide directory name.\n");
+        return E_INVALID;
+    }
 
     return cd(argv[1]);
 }
 
 int handle_add_data(int argc, char *argv[])
 {
-	if(argc != 3) {
-		printf("Incorrect usage. Please provide filename and length.\n");
-		return E_INVALID;
-	}
+    if (argc != 3) {
+        printf("Incorrect usage. Please provide filename and length.\n");
+        return E_INVALID;
+    }
 
     unsigned int length = atoi(argv[2]);
     return appendFile(argv[1], length);
@@ -141,30 +141,30 @@ int handle_add_data(int argc, char *argv[])
 
 int handle_del(int argc, char *argv[])
 {
-	if(argc != 2) {
-		printf("Incorrect usage. Please provide filename.\n");
-		return E_INVALID;
-	}
+    if (argc != 2) {
+        printf("Incorrect usage. Please provide filename.\n");
+        return E_INVALID;
+    }
 
     return delete(argv[1]);
 }
 
 int handle_fatfs(int argc, char *argv[])
 {
-	if(argc != 1) {
-		printf("Incorrect usage. Too many parameters.\n");
-		return E_INVALID;
-	}
+    if (argc != 1) {
+        printf("Incorrect usage. Too many parameters.\n");
+        return E_INVALID;
+    }
 
     return example();
 }
 
 int handle_unmount(int argc, char *argv[])
 {
-	if(argc != 1) {
-		printf("Incorrect usage. Too many parameters.\n");
-		return E_INVALID;
-	}
+    if (argc != 1) {
+        printf("Incorrect usage. Too many parameters.\n");
+        return E_INVALID;
+    }
 
     return umount();
 }
