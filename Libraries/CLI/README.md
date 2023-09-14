@@ -25,7 +25,7 @@ The following graphic describes the software flow of the CLI.
 
 ## Porting Guide
 
-The CLI library expects the user to implement the following steps:
+The CLI library expects the user to implement the following steps in their application:
 
 1. Add the following line to your project.mk file to include the CLI library in your project:
 ```
@@ -60,4 +60,8 @@ mkdir new_folder
 ```
 The CLI library will tokenize the command string "mkdir new_folder" into "mkdir" and "new_folder" and assigns them to argv[0] and argv[1] respectively. The library would then determine that this is the "make directory" command and would call "handle_mkdir" with argc=2 and a pointer to the argument vector.
 
-4. Include cli.h in the approriate source file and initialize the CLI by calling the CLI_Init function with a pointer to the command table, along with the number of entries in the command table.
+4. Define an IRQ handler for the UART used in the CLI (i.e. UARTx_IRQHandler). This function should call MXC_CLI_Handler() which handles all of the interrupt processing for the CLI.
+
+5. Include cli.h in the approriate source file and initialize the CLI by calling the MXC_CLI_Init function with a pointer to to the UART for the CLI to use, a pointer to the command table, and the number of commands in the command table.
+
+6. Enable the appropriate interupt vector for the UART used in the CLI (NVIC_EnableIRQ(...)).
