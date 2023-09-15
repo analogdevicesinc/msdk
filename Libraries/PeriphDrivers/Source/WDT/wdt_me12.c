@@ -43,11 +43,13 @@
 
 int MXC_WDT_Init(mxc_wdt_regs_t *wdt, mxc_wdt_cfg_t *cfg)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (wdt == MXC_WDT) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_WDT);
     } else {
         return E_BAD_PARAM;
     }
+#endif
 
     MXC_WDT_RevB_Init((mxc_wdt_revb_regs_t *)wdt, (mxc_wdt_revb_cfg_t *)cfg);
 
