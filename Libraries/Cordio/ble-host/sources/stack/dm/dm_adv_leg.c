@@ -142,7 +142,7 @@ void dmAdvActSetData(dmAdvMsg_t *pMsg)
 
   DM_TRACE_INFO1("dmAdvActSetData: state: %d", dmAdvCb.advState[DM_ADV_HANDLE_DEFAULT]);
 
-  if (dmAdvCb.advState[DM_ADV_HANDLE_DEFAULT] == DM_ADV_STATE_IDLE)
+  if ((dmAdvCb.advState[DM_ADV_HANDLE_DEFAULT] == DM_ADV_STATE_IDLE) || (dmAdvCb.advState[DM_ADV_HANDLE_DEFAULT] == DM_ADV_STATE_ADVERTISING))
   {
     /* set new data in HCI */
     if (pMsg->apiSetData.location == DM_DATA_LOC_ADV)
