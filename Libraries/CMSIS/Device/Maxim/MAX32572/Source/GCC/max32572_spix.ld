@@ -35,15 +35,9 @@
  ******************************************************************************/ 
 
 MEMORY {
-    ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB ROM */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x0006C000 /* 432kB SRAM */
+    ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 64K
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000 /* 32kB SRAM */
     SPIX (rx)  : ORIGIN = 0x08000000, LENGTH = 128M
-    SPID (r)   : ORIGIN = 0x80000000, LENGTH = 512M
-
-    XIP_0 (rx)   : ORIGIN = 0x08000000, LENGTH = 0x00010000
-    XIP_1 (rx)   : ORIGIN = 0x08010000, LENGTH = 0x00010000
-    XIP_2 (rx)   : ORIGIN = 0x08020000, LENGTH = 0x00010000
-    XIP_SLEEP (rx)   : ORIGIN = 0x08030000, LENGTH = 0x00010000    
 }
 
 SECTIONS {
@@ -66,7 +60,7 @@ SECTIONS {
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
-    } > SRAM
+    } > SPIX
 
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
@@ -75,14 +69,13 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx*)
         __exidx_end = .;
-    } > SRAM
+    } > ROM
 
     .data :
     {
         _data = ALIGN(., 4);
-        *(.data*)           /*read-write initialized data: initialized global variable*/
+        *(.data*)           /* read-write initialized data: initialized global variable */
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
-        *(.flashprog*)      /* Flash program */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);
@@ -106,42 +99,14 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-    } > SRAM AT>FLASH
+    } > SRAM AT>SPIX
     __load_data = LOADADDR(.data);
-
-    .xip_0 :  AT(0x10000)
-    {
-        _XIP_START_0 = .;
-        *(.xip_0*)
-        _XIP_END_0 = .;
-    } > XIP_0
-
-    .xip_1 :  AT(0x11000)
-    {
-        _XIP_START_1 = .;
-        *(.xip_1*)
-        _XIP_END_1 = .;
-    } > XIP_1
-
-    .xip_2 : AT(0x12000)
-    {
-        _XIP_START_2 = .;
-        *(.xip_2*)
-        _XIP_END_2 = .;
-    } > XIP_2
-
-    .xip_sleep : AT(0x13000)
-    {
-        _XIP_START_SLEEP = .;
-        *(.xip_sleep*)
-        _XIP_END_SLEEP = .;
-    } > XIP_SLEEP
 
     .bss :
     {
         . = ALIGN(4);
         _bss = .;
-        *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
+        *(.bss*)     /* read-write zero initialized data: uninitialzed global variable */
         *(COMMON)
         _ebss = ALIGN(., 4);
     } > SRAM
