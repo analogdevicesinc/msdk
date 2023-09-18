@@ -48,7 +48,8 @@
 #define MXC_I2C_FASTPLUS_SPEED 1000000
 
 /* **** Variable Declaration **** */
-uint32_t interruptCheck = MXC_F_I2C_INT0_RDAMI | MXC_F_I2C_INT0_WRAMI | MXC_F_I2C_INT0_DNRERI;
+uint32_t interruptCheck = MXC_F_I2C_INT0_RDAMI | MXC_F_I2C_INT0_WRAMI | MXC_F_I2C_INT0_AMI |
+                          MXC_F_I2C_INT0_DNRERI;
 
 /* **** Function Prototypes **** */
 

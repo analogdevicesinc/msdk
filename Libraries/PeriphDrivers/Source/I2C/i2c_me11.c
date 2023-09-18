@@ -45,6 +45,9 @@
 #include "i2c.h"
 #include "i2c_reva.h"
 
+/* **** Definitions **** */
+#define MXC_I2C_MAX_ADDR_WIDTH 0x7F
+
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INTFL0_AMI | MXC_F_I2C_INTFL0_DNRERI;
 
@@ -80,8 +83,7 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
         return E_NULL_PTR;
     }
 
-    if (idx != 0) {
-        // Multiple slaves are not supported yet
+    if (idx >= MXC_I2C_NUM_TARGET_ADDR) {
         return E_NOT_SUPPORTED;
     }
 
@@ -90,14 +92,22 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
         return E_BAD_PARAM;
     }
 
-    i2c->sladdr = 0;
+    // Set the slave address to operate on
+    MXC_SETFIELD(i2c->sladdr, MXC_F_I2C_SLADDR_SLAIDX, (idx << MXC_F_I2C_SLADDR_SLAIDX_POS));
 
-    if (slaveAddr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
+    if (slaveAddr > MXC_I2C_MAX_ADDR_WIDTH) {
         // Set for 10bit addressing mode
-        i2c->sladdr = MXC_F_I2C_SLADDR_EA;
+        i2c->sladdr |= MXC_F_I2C_SLADDR_EA;
+    } else {
+        // Clear for 7bit addressing mode
+        i2c->sladdr &= ~MXC_F_I2C_SLADDR_EA;
     }
 
-    i2c->sladdr |= slaveAddr;
+    // Set the slave address
+    MXC_SETFIELD(i2c->sladdr, MXC_F_I2C_SLADDR_SLA, (slaveAddr << MXC_F_I2C_SLADDR_SLA_POS));
+
+    // Enable the slave address
+    i2c->sladdr &= ~MXC_F_I2C_SLADDR_SLADIS;
 
     return E_NO_ERROR;
 }

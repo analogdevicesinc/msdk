@@ -46,7 +46,7 @@
 
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INTFL0_RD_ADDR_MATCH | MXC_F_I2C_INTFL0_WR_ADDR_MATCH |
-                          MXC_F_I2C_INTFL0_DNR_ERR;
+                          MXC_F_I2C_INTFL0_ADDR_MATCH | MXC_F_I2C_INTFL0_DNR_ERR;
 
 /* **** Function Prototypes **** */
 

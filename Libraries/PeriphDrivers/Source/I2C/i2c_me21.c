@@ -44,6 +44,29 @@
 #include "i2c.h"
 #include "i2c_reva.h"
 
+/* **** Definitions **** */
+#define MXC_I2C_MAX_ADDR_WIDTH 0x7F
+
+/*
+ *  These definitions are used to set the slave address register
+ *  for MAX32672 Rev. A parts. MAX32672 Rev.B was updated to use
+ *  the i2c_reva_regs.h register set.
+ */
+#define SLAVE_A1_REG_OFFSET ((uint32_t)0x44UL) /**< SLAVE_A1_REG_OFFSET */
+
+#define SLAVE_A1_ADDR_POS 0 /**< SLAVE_A1_ADDR Position */
+#define SLAVE_A1_ADDR ((uint32_t)(0x3FFUL << SLAVE_A1_ADDR_POS)) /**< SLAVE_A1_ADDR Mask */
+
+#define SLAVE_A1_DIS_POS 10 /**< SLAVE_A1_DIS Position */
+#define SLAVE_A1_DIS ((uint32_t)(0x1UL << SLAVE_A1_DIS_POS)) /**< SLAVE_A1_DIS Mask */
+
+#define SLAVE_A1_IDX_POS 11 /**< SLAVE_A1_IDX Position */
+#define SLAVE_A1_IDX ((uint32_t)(0x3UL << SLAVE_A1_IDX_POS)) /**< SLAVE_A1_IDX Mask */
+
+#define SLAVE_A1_EXT_ADDR_EN_POS 15 /**< SLAVE_A1_EXT_ADDR_EN Position */
+#define SLAVE_A1_EXT_ADDR_EN \
+    ((uint32_t)(0x1UL << SLAVE_A1_EXT_ADDR_EN_POS)) /**< SLAVE_A1_EXT_ADDR_EN Mask */
+
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INTFL0_ADDR_MATCH | MXC_F_I2C_INTFL0_DNR_ERR;
 
@@ -78,28 +101,43 @@ int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr)
 
 int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
 {
-    if (i2c == NULL) {
-        return E_NULL_PTR;
+    if ((MXC_SYS_GetRevision() & 0xF0) == 0xB0) {
+        // Use multi-slave for MAX32672 Rev. B parts
+        return MXC_I2C_RevA_SetSlaveAddr((mxc_i2c_reva_regs_t *)i2c, slaveAddr, idx);
+    } else {
+        // Use single-slave for MAX32672 Rev. A parts
+        if (i2c == NULL) {
+            return E_NULL_PTR;
+        }
+
+        if (idx >= MXC_I2C_NUM_TARGET_ADDR) {
+            return E_NOT_SUPPORTED;
+        }
+
+        if (slaveAddr > SLAVE_A1_ADDR) {
+            // Only support addresses up to 10 bits
+            return E_BAD_PARAM;
+        }
+
+        uint32_t *slave_a1 = (uint32_t *)((uint32_t)i2c + SLAVE_A1_REG_OFFSET);
+
+        // Set the slave address to operate on
+        MXC_SETFIELD((*slave_a1), SLAVE_A1_IDX, (idx << SLAVE_A1_IDX_POS));
+
+        if (slaveAddr > MXC_I2C_MAX_ADDR_WIDTH) {
+            // Set for 10bit addressing mode
+            *slave_a1 |= SLAVE_A1_EXT_ADDR_EN;
+        } else {
+            // Clear for 7bit addressing mode
+            *slave_a1 &= ~SLAVE_A1_EXT_ADDR_EN;
+        }
+
+        // Set the slave address
+        MXC_SETFIELD((*slave_a1), SLAVE_A1_ADDR, (slaveAddr << SLAVE_A1_ADDR_POS));
+
+        // Enable the slave address
+        *slave_a1 &= ~SLAVE_A1_DIS;
     }
-
-    // Zero indexed
-    if (idx > (MXC_I2C_NUM_TARGET_ADDR - 1)) {
-        return E_NOT_SUPPORTED;
-    }
-
-    if (slaveAddr > MXC_F_I2C_SLAVE_MULTI_ADDR) {
-        // Only support addresses up to 10 bits
-        return E_BAD_PARAM;
-    }
-
-    i2c->slave_multi[idx] = 0;
-
-    if (slaveAddr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
-        // Set for 10bit addressing mode
-        i2c->slave_multi[idx] = MXC_F_I2C_SLAVE_MULTI_EXT_ADDR_EN;
-    }
-
-    i2c->slave_multi[idx] |= slaveAddr;
 
     return E_NO_ERROR;
 }

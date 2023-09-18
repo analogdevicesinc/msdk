@@ -67,6 +67,8 @@ int MXC_GPIO_RevA_SetAF(mxc_gpio_reva_regs_t *port, mxc_gpio_func_t func, uint32
 void MXC_GPIO_RevA_SetWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask);
 void MXC_GPIO_RevA_ClearWakeEn(mxc_gpio_reva_regs_t *port, uint32_t mask);
 uint32_t MXC_GPIO_RevA_GetWakeEn(mxc_gpio_reva_regs_t *port);
+int MXC_GPIO_RevA_SetDriveStrength(mxc_gpio_reva_regs_t *port, mxc_gpio_drvstr_t drvstr,
+                                   uint32_t mask);
 
 /**@} end of group gpio */
 

@@ -38,6 +38,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #ifndef LIBRARIES_BOARDS_MAX32672_EVKIT_V1_INCLUDE_BOARD_H_
 #define LIBRARIES_BOARDS_MAX32672_EVKIT_V1_INCLUDE_BOARD_H_

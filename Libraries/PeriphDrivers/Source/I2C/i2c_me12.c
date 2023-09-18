@@ -117,11 +117,6 @@ int MXC_I2C_Reset(mxc_i2c_regs_t *i2c)
 
 int MXC_I2C_SetFrequency(mxc_i2c_regs_t *i2c, unsigned int hz)
 {
-    // ME17 doesn't support high speed more
-    if (hz > MXC_I2C_FASTPLUS_SPEED) {
-        return E_NOT_SUPPORTED;
-    }
-
     return MXC_I2C_RevA_SetFrequency((mxc_i2c_reva_regs_t *)i2c, hz);
 }
 
