@@ -201,6 +201,8 @@ int main(void)
     gpio_trig1.mask = MXC_GPIO_PIN_6;
     gpio_trig1.pad = MXC_GPIO_PAD_NONE;
     gpio_trig1.func = MXC_GPIO_FUNC_OUT;
+    gpio_trig1.vssel = MXC_GPIO_VSSEL_VDDIO;
+    gpio_trig1.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_trig1);
 
 #if DISABLE_GPIO
@@ -211,6 +213,7 @@ int main(void)
     gpios_in.pad = MXC_GPIO_PAD_PULL_UP;
     gpios_in.func = MXC_GPIO_FUNC_IN;
     gpios_in.vssel = MXC_GPIO_VSSEL_VDDIO;
+    gpios_in.drvstr = MXC_GPIO_DRVSTR_0;
 
     // PORT3 input
     gpios_in.port = MXC_GPIO3;

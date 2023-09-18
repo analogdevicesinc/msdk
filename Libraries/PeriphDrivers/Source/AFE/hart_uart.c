@@ -284,6 +284,7 @@ static int setup_rts_pin(void)
     hart_rts.pad = MXC_GPIO_PAD_NONE;
     hart_rts.func = MXC_GPIO_FUNC_OUT;
     hart_rts.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    hart_rts.drvstr = MXC_GPIO_DRVSTR_0;
 
     retval = MXC_AFE_GPIO_Config(&hart_rts);
     if (retval != E_NO_ERROR) {
@@ -305,6 +306,7 @@ static int idle_rts_pin(void)
     hart_rts.pad = MXC_GPIO_PAD_PULL_DOWN;
     hart_rts.func = MXC_GPIO_FUNC_OUT;
     hart_rts.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    hart_rts.drvstr = MXC_GPIO_DRVSTR_0;
 
     retval = MXC_AFE_GPIO_Config(&hart_rts);
     if (retval != E_NO_ERROR) {
@@ -324,6 +326,7 @@ static int setup_cd_pin(void)
     hart_cd.pad = MXC_GPIO_PAD_NONE;
     hart_cd.func = MXC_GPIO_FUNC_IN;
     hart_cd.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    hart_cd.drvstr = MXC_GPIO_DRVSTR_0;
 
     retval = MXC_AFE_GPIO_Config(&hart_cd);
     if (retval != E_NO_ERROR) {
@@ -353,6 +356,7 @@ static int idle_cd_pin(void)
     hart_cd.pad = MXC_GPIO_PAD_PULL_DOWN;
     hart_cd.func = MXC_GPIO_FUNC_IN;
     hart_cd.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    hart_cd.drvstr = MXC_GPIO_DRVSTR_0;
 
     retval = MXC_AFE_GPIO_Config(&hart_cd);
     if (retval != E_NO_ERROR) {
@@ -377,6 +381,7 @@ static int setup_hart_in_pin(void)
     hart_in.pad = MXC_GPIO_PAD_NONE;
     hart_in.func = MXC_GPIO_FUNC_OUT;
     hart_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    hart_in.drvstr = MXC_GPIO_DRVSTR_0;
 
     retval = MXC_AFE_GPIO_Config(&hart_in);
     if (retval != E_NO_ERROR) {
@@ -399,6 +404,7 @@ static int idle_hart_in_pin(void)
     hart_in.pad = MXC_GPIO_PAD_PULL_DOWN;
     hart_in.func = MXC_GPIO_FUNC_OUT;
     hart_in.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    hart_in.drvstr = MXC_GPIO_DRVSTR_0;
 
     retval = MXC_AFE_GPIO_Config(&hart_in);
     if (retval != E_NO_ERROR) {
@@ -418,6 +424,7 @@ static int setup_hart_out_pin(void)
     hart_out.pad = MXC_GPIO_PAD_NONE;
     hart_out.func = MXC_GPIO_FUNC_IN;
     hart_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    hart_out.drvstr = MXC_GPIO_DRVSTR_0;
 
     retval = MXC_AFE_GPIO_Config(&hart_out);
     if (retval != E_NO_ERROR) {
@@ -437,6 +444,7 @@ static int idle_hart_out_pin(void)
     hart_out.pad = MXC_GPIO_PAD_PULL_DOWN;
     hart_out.func = MXC_GPIO_FUNC_OUT;
     hart_out.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    hart_out.drvstr = MXC_GPIO_DRVSTR_0;
 
     retval = MXC_AFE_GPIO_Config(&hart_out);
     if (retval != E_NO_ERROR) {

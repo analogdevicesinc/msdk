@@ -55,20 +55,22 @@
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
+// clang-format off
 const mxc_gpio_cfg_t pb_pin[] = { { MXC_GPIO0, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_IN,
-                                    MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO } };
+                                    MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 } };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = { { MXC_GPIO2, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT,
-                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO } };
+                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 } };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 
 /* Touch screen controller interrupt signal */
 const mxc_gpio_cfg_t ts_int_pin = { MXC_GPIO0, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                                    MXC_GPIO_VSSEL_VDDIOH };
+                                    MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 /* Touch screen controller busy signal */
 const mxc_gpio_cfg_t ts_busy_pin = { MXC_GPIO0, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                                     MXC_GPIO_VSSEL_VDDIOH };
+                                     MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+// clang-format on
 
 /******************************************************************************/
 /** 
@@ -204,15 +206,15 @@ int Board_Init(void)
     mxc_tft_spi_config tft_spi_config = {
         .regs = MXC_SPI1,
         .gpio = { MXC_GPIO0, MXC_GPIO_PIN_3 | MXC_GPIO_PIN_4 | MXC_GPIO_PIN_5 | MXC_GPIO_PIN_31,
-                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+                  MXC_GPIO_FUNC_ALT1, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
         .freq = 12000000,
         .ss_idx = 0,
     };
 
-    mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO1, MXC_GPIO_PIN_17, MXC_GPIO_FUNC_OUT,
-                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH };
-    mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO1, MXC_GPIO_PIN_16, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                  MXC_GPIO_VSSEL_VDDIOH };
+    mxc_gpio_cfg_t tft_reset_pin = { MXC_GPIO1,         MXC_GPIO_PIN_17,       MXC_GPIO_FUNC_OUT,
+                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
+    mxc_gpio_cfg_t tft_bl_pin = { MXC_GPIO1,         MXC_GPIO_PIN_16,       MXC_GPIO_FUNC_OUT,
+                                  MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 
     MXC_TFT_PreInit(&tft_spi_config, &tft_reset_pin, &tft_bl_pin);
 
