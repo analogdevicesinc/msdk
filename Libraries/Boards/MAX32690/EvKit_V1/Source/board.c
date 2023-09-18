@@ -50,36 +50,41 @@
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
+// clang-format off
 const mxc_gpio_cfg_t pb_pin[] = {
-    { MXC_GPIO4, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO4, MXC_GPIO_PIN_0, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0},
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    { MXC_GPIO0, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO2, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
+    { MXC_GPIO2, MXC_GPIO_PIN_12, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
     /* Logical LEDs for Bluetooth debug signals */
-    { MXC_GPIO0, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO0, MXC_GPIO_PIN_8, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
-    { MXC_GPIO0, MXC_GPIO_PIN_9, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO0, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
+    { MXC_GPIO0, MXC_GPIO_PIN_8, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
+    { MXC_GPIO0, MXC_GPIO_PIN_9, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
+// clang-format on
 
 const mxc_gpio_cfg_t tft_mosi = (mxc_gpio_cfg_t){ .port = MXC_GPIO2,
                                                   .mask = MXC_GPIO_PIN_24,
                                                   .func = MXC_GPIO_FUNC_OUT,
                                                   .pad = MXC_GPIO_PAD_NONE,
-                                                  .vssel = MXC_GPIO_VSSEL_VDDIOH };
+                                                  .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                                                  .drvstr = MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t tft_clk = (mxc_gpio_cfg_t){ .port = MXC_GPIO2,
                                                  .mask = MXC_GPIO_PIN_25,
                                                  .func = MXC_GPIO_FUNC_OUT,
                                                  .pad = MXC_GPIO_PAD_NONE,
-                                                 .vssel = MXC_GPIO_VSSEL_VDDIOH };
+                                                 .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                                                 .drvstr = MXC_GPIO_DRVSTR_0 };
 const mxc_gpio_cfg_t tft_cs = (mxc_gpio_cfg_t){ .port = MXC_GPIO2,
                                                 .mask = MXC_GPIO_PIN_11,
                                                 .func = MXC_GPIO_FUNC_OUT,
                                                 .pad = MXC_GPIO_PAD_NONE,
-                                                .vssel = MXC_GPIO_VSSEL_VDDIOH };
+                                                .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                                                .drvstr = MXC_GPIO_DRVSTR_0 };
 
 /******************************************************************************/
 void mxc_assert(const char *expr, const char *file, int line)

@@ -524,6 +524,7 @@ void waitCardInserted()
     cardDetect.func = MXC_GPIO_FUNC_IN;
     cardDetect.pad = MXC_GPIO_PAD_NONE;
     cardDetect.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    cardDetect.drvstr = MXC_GPIO_DRVSTR_0;
 
     MXC_GPIO_Config(&cardDetect);
 
