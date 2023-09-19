@@ -36,6 +36,7 @@
 #include "pwrseq_regs.h"
 #include "mxc_errors.h"
 #include "gcr_regs.h"
+#include "usbhs_regs.h"
 #include "mxc_sys.h"
 
 /* **** Variable Declaration **** */
@@ -716,7 +717,7 @@ void MXC_LP_EnterBackupMode(void)
 void MXC_LP_USBClearPONRST(void)
 {
     // This register is used during the power-on stage or used as a global reset
-    // for the USB block. For this case, the PONRST is used as a global reset 
+    // for the USB block. For this case, the PONRST is used as a global reset
     // and setting this register to 0 will force the USB block to its initial
     // state - where the operating current is at its minimum.
     MXC_USBHS->m31_phy_ponrst = 0;
