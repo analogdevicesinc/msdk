@@ -41,9 +41,11 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32665_I2C_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "mxc_sys.h"
 #include "i2c_regs.h"
 #include "dma.h"
+#include "dma_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -275,6 +277,54 @@ int MXC_I2C_SetClockStretching(mxc_i2c_regs_t *i2c, int enable);
  * @return  Zero if clock stretching is disabled, non-zero otherwise
  */
 int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Initializes the DMA for I2C DMA transactions.
+ * 
+ * This function will release any acquired DMA channels before reacquiring and
+ * reconfiguring selected I2C DMA TX or RX channels.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ * @param   dma         Pointer to DMA registers (selects the DMA block used).
+ * @param   use_dma_tx  If true, acquire and configure DMA TX channel, else release any 
+ *                      acquired DMA TX channel.
+ * @param   use_dma_rx  If true, acquire and configure DMA RX channel, else release any 
+ *                      acquired DMA RX channel.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx);
+
+/**
+ * @brief   Retreive the DMA TX Channel associated with I2C instance.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ *
+ * @return  If successful, the DMA TX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_GetTXChannel(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Retreive the DMA RX Channel associated with I2C instance.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ *
+ * @return  If successful, the DMA RX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_GetRXChannel(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Sets the I2C instance's DMA TX/RX request select.
+ * 
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ * @param   txData      Pointer to transmit buffer.
+ * @param   rxData      Pointer to receive buffer.
+ *  
+ * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *rxData);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */

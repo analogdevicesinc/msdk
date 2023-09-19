@@ -68,12 +68,12 @@
 
 #define WAIT_US 4
 #define DELAY_US(us) MXC_Delay(us)
-// clang-format on
 
 static const mxc_gpio_cfg_t gpio_cfg_scl = { SCL_PORT, SCL_PIN, MXC_GPIO_FUNC_OUT,
-                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
 static const mxc_gpio_cfg_t gpio_cfg_sda = { SDA_PORT, SDA_PIN, MXC_GPIO_FUNC_OUT,
-                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO };
+                                             MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 };
+// clang-format on
 
 /******************************** Static Functions ***************************/
 static void start(void)

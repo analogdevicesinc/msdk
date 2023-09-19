@@ -210,6 +210,7 @@ int main(void)
     gpios_in.pad = MXC_GPIO_PAD_PULL_UP;
     gpios_in.func = MXC_GPIO_FUNC_IN;
     gpios_in.vssel = MXC_GPIO_VSSEL_VDDIO;
+    gpios_in.drvstr = MXC_GPIO_DRVSTR_0;
 
     // PORT3 input
     gpios_in.port = MXC_GPIO3;
