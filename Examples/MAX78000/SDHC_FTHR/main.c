@@ -135,9 +135,7 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    MKFS_PARM format_options = {
-        .fmt = FM_FAT32
-    };
+    MKFS_PARM format_options = { .fmt = FM_ANY };
 
     if ((err = f_mkfs("", &format_options, work, sizeof(work))) !=
         FR_OK) { //Format the default drive to FAT32
