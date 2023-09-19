@@ -1,5 +1,5 @@
 /**
-* @file     i2c.h 
+* @file     i2c.h
 * @brief    Inter-integrated circuit (I2C) communications interface driver.
 */
 
@@ -41,8 +41,10 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32520_I2C_H_
 
 #include <stdint.h>
+#include <stdbool.h>
 #include "mxc_sys.h"
 #include "i2c_regs.h"
+#include "dma_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,6 +55,8 @@ extern "C" {
  * @ingroup periphlibs
  * @{
  */
+
+/***** Definitions *****/
 
 typedef struct _i2c_req_t mxc_i2c_req_t;
 
@@ -191,14 +195,14 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_
 int MXC_I2C_Init(mxc_i2c_regs_t *i2c, int masterMode, unsigned int slaveAddr);
 
 /**
- * @brief   Set slave address for I2C instances acting as slaves on the bus.
- * @note    Set idx to zero, multiple I2C instances acting as slaves on the
- *          bus is not yet supported.
+ * @brief   Initialize and enable I2C peripheral.
+ * @note    Set idx to 0, multiple I2C instances acting as slaves is not yet
+ *          supported.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   slaveAddr   7-bit or 10-bit address to use when in slave mode.
  *                      This parameter is ignored when masterMode is non-zero.
- * @param   idx         Index of the I2C slave. 
+ * @param   idx         Index of the I2C slave instance.
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
@@ -278,6 +282,54 @@ int MXC_I2C_SetClockStretching(mxc_i2c_regs_t *i2c, int enable);
  * @return  Zero if clock stretching is disabled, non-zero otherwise
  */
 int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Initializes the DMA for I2C DMA transactions.
+ * 
+ * This function will release any acquired DMA channels before reacquiring and
+ * reconfiguring selected I2C DMA TX or RX channels.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ * @param   dma         Pointer to DMA registers (selects the DMA block used).
+ * @param   use_dma_tx  If true, acquire and configure DMA TX channel, else release any 
+ *                      acquired DMA TX channel.
+ * @param   use_dma_rx  If true, acquire and configure DMA RX channel, else release any 
+ *                      acquired DMA RX channel.
+ *
+ * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx);
+
+/**
+ * @brief   Retreive the DMA TX Channel associated with I2C instance.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ *
+ * @return  If successful, the DMA TX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_GetTXChannel(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Retreive the DMA RX Channel associated with I2C instance.
+ *
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ *
+ * @return  If successful, the DMA RX Channel number is returned. Otherwise, see
+ *          \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_GetRXChannel(mxc_i2c_regs_t *i2c);
+
+/**
+ * @brief   Sets the I2C instance's DMA TX/RX request select.
+ * 
+ * @param   i2c         Pointer to I2C registers (selects the I2C block used).
+ * @param   txData      Pointer to transmit buffer.
+ * @param   rxData      Pointer to receive buffer.
+ *  
+ * @return Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
+ */
+int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *rxData);
 
 /* ************************************************************************* */
 /* Low-level functions                                                       */
@@ -413,13 +465,13 @@ int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t *i2c, volatile unsigned char *bytes, unsig
 
 /**
  * @brief   Unloads bytes from the receive FIFO using DMA for longer reads.
- *
- * @note    The operation is not complete until the callback has been called
+ *          This function does not initialize the DMA or acquire any DMA channels.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   bytes       The buffer to read the data into.
  * @param   len         The number of bytes to read.
- * @param   callback    The function to call when the read is complete
+ * @param   callback    The function to call when the read is complete. This parameter
+ *                      was never used but it's left in to preserve project builds.
  *
  * @return  See \ref MXC_Error_Codes for a list of return values.
  */
@@ -448,12 +500,14 @@ int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t *i2c, volatile unsigned char *bytes, unsi
 
 /**
  * @brief   Loads bytes into the transmit FIFO using DMA for longer writes.
+ *          This function does not initialize the DMA or acquire any DMA channels.
  *
  * @note    The operation is not complete until the callback has been called
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   bytes       The buffer containing the bytes to write
  * @param   len         The number of bytes to write.
- * @param   callback    The function to call when the read is complete
+ * @param   callback    The function to call when the read is complete. This parameter
+ *                      was never used but it's left in to preserve project builds.
  *
  * @return  See \ref MXC_Error_Codes for a list of return values
  */
@@ -487,8 +541,8 @@ void MXC_I2C_ClearTXFIFO(mxc_i2c_regs_t *i2c);
  * @brief   Get the presently set interrupt flags.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
- * @param   flags0      Pointer to variable to store flags currently set in intfl0
- * @param   flags1      Pointer to variable to store flags currently set in intfl1
+ * @param   flags0      Pointer to store flags currently set in interrupt register intfl0.
+ * @param   flags1      Pointer to store flags currently set in interrupt register intfl1.
  *
  * @return  See \ref MXC_Error_Codes for a list of return values
  */
@@ -498,8 +552,8 @@ int MXC_I2C_GetFlags(mxc_i2c_regs_t *i2c, unsigned int *flags0, unsigned int *fl
  * @brief   Clears the Interrupt Flags.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
- * @param   flags0      Interrupts to be cleared in intfl0
- * @param   flags1      Interrupts to be enabled in intfl1
+ * @param   flags0      Flags to be cleared in interrupt register intfl0.
+ * @param   flags1      Flags to be cleared in interrupt register intfl1.
  */
 void MXC_I2C_ClearFlags(mxc_i2c_regs_t *i2c, unsigned int flags0, unsigned int flags1);
 
@@ -604,7 +658,7 @@ int MXC_I2C_Recover(mxc_i2c_regs_t *i2c, unsigned int retries);
 /* ************************************************************************* */
 
 /**
- * @brief   Performs a blocking I2C master transaction.
+ * @brief   Performs a blocking I2C Master transaction.
  *
  * Performs a blocking I2C transaction.  These actions will be performed:
  *   1. If necessary, generate a start condition on the bus.
@@ -655,7 +709,13 @@ int MXC_I2C_MasterTransactionAsync(mxc_i2c_req_t *req);
 
 /**
  * @brief   Performs a non-blocking I2C Master transaction using DMA for reduced time
- *          in the ISR.
+ *          in the ISR. This function initializes the DMA and acquires DMA channels
+ *          if MXC_I2C_DMA_Init(...) was not called earlier.
+ * 
+ * It is recommended to initialize the DMA by calling MXC_I2C_DMA_Init(...) function
+ * before calling MXC_I2C_MasterTransactionDMA(...). This provides flexibility in
+ * setting up generic DMA channel vectors during run-time without knowing what DMA 
+ * channels will be acquired beforehand.
  *
  * Performs a non-blocking I2C transaction.  These actions will be performed:
  *   1. If necessary, generate a start condition on the bus.
