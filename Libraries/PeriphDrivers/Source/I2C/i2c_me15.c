@@ -44,6 +44,12 @@
 #include "dma_regs.h"
 #include "i2c.h"
 #include "i2c_reva.h"
+#include "dma.h"
+#include "dma_reva.h"
+#include "dma_reva_regs.h"
+
+/* **** Definitions **** */
+#define MXC_I2C_MAX_ADDR_WIDTH 0x7F
 
 /* **** Variable Declaration **** */
 uint32_t interruptCheck = MXC_F_I2C_INTFL0_ADDR_MATCH | MXC_F_I2C_INTFL0_DNR_ERR;
@@ -85,8 +91,7 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
         return E_NULL_PTR;
     }
 
-    if (idx != 0) {
-        // Multiple slaves are not supported yet
+    if (idx >= MXC_I2C_NUM_TARGET_ADDR) {
         return E_NOT_SUPPORTED;
     }
 
@@ -95,14 +100,22 @@ int MXC_I2C_SetSlaveAddr(mxc_i2c_regs_t *i2c, unsigned int slaveAddr, int idx)
         return E_BAD_PARAM;
     }
 
-    i2c->slave = 0;
+    // Set the slave address to operate on
+    MXC_SETFIELD(i2c->slave, MXC_F_I2C_SLAVE_IDX, (idx << MXC_F_I2C_SLAVE_IDX_POS));
 
-    if (slaveAddr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
+    if (slaveAddr > MXC_I2C_MAX_ADDR_WIDTH) {
         // Set for 10bit addressing mode
-        i2c->slave = MXC_F_I2C_SLAVE_EXT_ADDR_EN;
+        i2c->slave |= MXC_F_I2C_SLAVE_EXT_ADDR_EN;
+    } else {
+        // Clear for 7bit addressing mode
+        i2c->slave &= ~MXC_F_I2C_SLAVE_EXT_ADDR_EN;
     }
 
-    i2c->slave |= slaveAddr;
+    // Set the slave address
+    MXC_SETFIELD(i2c->slave, MXC_F_I2C_SLAVE_ADDR, (slaveAddr << MXC_F_I2C_SLAVE_ADDR_POS));
+
+    // Enable the slave address
+    i2c->slave &= ~MXC_F_I2C_SLAVE_DIS;
 
     return E_NO_ERROR;
 }
@@ -123,7 +136,7 @@ int MXC_I2C_Shutdown(mxc_i2c_regs_t *i2c)
         return E_NO_DEVICE;
     }
 
-    return E_NO_ERROR;
+    return MXC_I2C_RevA_Shutdown((mxc_i2c_reva_regs_t *)i2c);
 }
 
 int MXC_I2C_Reset(mxc_i2c_regs_t *i2c)
@@ -167,6 +180,76 @@ int MXC_I2C_GetClockStretching(mxc_i2c_regs_t *i2c)
     return MXC_I2C_RevA_GetClockStretching((mxc_i2c_reva_regs_t *)i2c);
 }
 
+int MXC_I2C_DMA_Init(mxc_i2c_regs_t *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx)
+{
+    return MXC_I2C_RevA_DMA_Init((mxc_i2c_reva_regs_t *)i2c, (mxc_dma_reva_regs_t *)dma, use_dma_tx,
+                                 use_dma_rx);
+}
+
+int MXC_I2C_DMA_GetTXChannel(mxc_i2c_regs_t *i2c)
+{
+    return MXC_I2C_RevA_DMA_GetTXChannel((mxc_i2c_reva_regs_t *)i2c);
+}
+
+int MXC_I2C_DMA_GetRXChannel(mxc_i2c_regs_t *i2c)
+{
+    return MXC_I2C_RevA_DMA_GetRXChannel((mxc_i2c_reva_regs_t *)i2c);
+}
+
+int MXC_I2C_DMA_SetRequestSelect(mxc_i2c_regs_t *i2c, uint8_t *txData, uint8_t *rxData)
+{
+    int i2cNum;
+    int txReqSel = -1;
+    int rxReqSel = -1;
+
+    if (i2c == NULL) {
+        return E_NULL_PTR;
+    }
+
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+
+    if (txData != NULL) {
+        switch (i2cNum) {
+        case 0:
+            txReqSel = MXC_DMA_REQUEST_I2C0TX;
+            break;
+
+        case 1:
+            txReqSel = MXC_DMA_REQUEST_I2C1TX;
+            break;
+
+        case 2:
+            txReqSel = MXC_DMA_REQUEST_I2C2TX;
+            break;
+
+        default:
+            return E_BAD_PARAM;
+        }
+    }
+
+    if (rxData != NULL) {
+        switch (i2cNum) {
+        case 0:
+            rxReqSel = MXC_DMA_REQUEST_I2C0RX;
+            break;
+
+        case 1:
+            rxReqSel = MXC_DMA_REQUEST_I2C1RX;
+            break;
+
+        case 2:
+            rxReqSel = MXC_DMA_REQUEST_I2C2RX;
+            break;
+
+        default:
+            return E_BAD_PARAM;
+        }
+    }
+
+    return MXC_I2C_RevA_DMA_SetRequestSelect((mxc_i2c_reva_regs_t *)i2c,
+                                             (mxc_dma_reva_regs_t *)MXC_DMA, txReqSel, rxReqSel);
+}
+
 /* ************************************************************************* */
 /* Low-level functions                                                       */
 /* ************************************************************************* */
@@ -189,8 +272,6 @@ int MXC_I2C_ReadByte(mxc_i2c_regs_t *i2c, unsigned char *byte, int ack)
 {
     return MXC_I2C_RevA_ReadByte((mxc_i2c_reva_regs_t *)i2c, byte, ack);
 }
-// return MXC_I2C_RevA_ReadByteInteractive ((mxc_i2c_reva_regs_t*) i2c, byte, (mxc_i2c_reva_getAck_t) getAck);
-// }
 
 int MXC_I2C_Write(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int *len)
 {
@@ -210,26 +291,8 @@ int MXC_I2C_ReadRXFIFO(mxc_i2c_regs_t *i2c, volatile unsigned char *bytes, unsig
 int MXC_I2C_ReadRXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int len,
                           mxc_i2c_dma_complete_cb_t callback)
 {
-    uint8_t i2cNum;
-    mxc_dma_config_t config;
-
-    i2cNum = MXC_I2C_GET_IDX(i2c);
-
-    switch (i2cNum) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_I2C0RX;
-        break;
-
-    case 1:
-        config.reqsel = MXC_DMA_REQUEST_I2C1RX;
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
-
-    return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, callback, config,
-                                      MXC_DMA);
+    // The callback parameter was previously unused but keeping it for backwards-compatibility.
+    return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, MXC_DMA);
 }
 
 int MXC_I2C_GetRXFIFOAvailable(mxc_i2c_regs_t *i2c)
@@ -245,26 +308,8 @@ int MXC_I2C_WriteTXFIFO(mxc_i2c_regs_t *i2c, volatile unsigned char *bytes, unsi
 int MXC_I2C_WriteTXFIFODMA(mxc_i2c_regs_t *i2c, unsigned char *bytes, unsigned int len,
                            mxc_i2c_dma_complete_cb_t callback)
 {
-    uint8_t i2cNum;
-    mxc_dma_config_t config;
-
-    i2cNum = MXC_I2C_GET_IDX(i2c);
-
-    switch (i2cNum) {
-    case 0:
-        config.reqsel = MXC_DMA_REQUEST_I2C0TX;
-        break;
-
-    case 1:
-        config.reqsel = MXC_DMA_REQUEST_I2C1TX;
-        break;
-
-    default:
-        return E_BAD_PARAM;
-    }
-
-    return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, callback, config,
-                                       MXC_DMA);
+    // The callback parameter was previously unused but keeping it for backwards-compatibility.
+    return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, MXC_DMA);
 }
 
 int MXC_I2C_GetTXFIFOAvailable(mxc_i2c_regs_t *i2c)

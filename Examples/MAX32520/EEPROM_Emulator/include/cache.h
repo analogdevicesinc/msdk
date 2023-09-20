@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX78000_EEPROM_EMULATOR_CACHE_H_
-#define EXAMPLES_MAX78000_EEPROM_EMULATOR_CACHE_H_
+#ifndef EXAMPLES_MAX32520_EEPROM_EMULATOR_INCLUDE_CACHE_H_
+#define EXAMPLES_MAX32520_EEPROM_EMULATOR_INCLUDE_CACHE_H_
 
 /***** Included Files *****/
 #include <stdbool.h>
@@ -79,4 +79,4 @@ int cache_refresh(cache_t *cache, uint32_t next_addr);
  */
 int cache_write_back(cache_t *cache);
 
-#endif // EXAMPLES_MAX78000_EEPROM_EMULATOR_CACHE_H_
+#endif // EXAMPLES_MAX32520_EEPROM_EMULATOR_INCLUDE_CACHE_H_
