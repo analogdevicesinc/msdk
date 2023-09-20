@@ -16,7 +16,6 @@ extern "C" {
 #endif
 
 #include "rtc.h"
-
 /* Status of Disk Functions */
 typedef BYTE	DSTATUS;
 

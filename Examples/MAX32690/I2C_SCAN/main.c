@@ -1,9 +1,9 @@
 /**
  * @file        main.c
- * @brief       I2C Scanner Example
+ * @brief     Example code for scanning the available addresses on an I2C bus
  * @details     This example uses the I2C Master to found addresses of the I2C Slave devices 
- *              connected to the bus. You must connect the pull-up jumpers (JP21 and JP22) 
- *              to the proper I/O voltage.
+ *              connected to the bus. If using EvKit, you must connect the pull-up jumpers
+ *              (JP21 and JP22) to the proper I/O voltage.
  */
 
 /******************************************************************************
@@ -59,9 +59,11 @@ int main()
 
     printf("\n******** I2C SLAVE ADDRESS SCANNER *********\n");
     printf("\nThis example finds the addresses of any I2C Slave devices connected to the");
-    printf("\nsame bus as I2C0 (SDA - P2.7, SCL - P2.8). Select the proper voltage for");
-    printf("\nthe I2C0 pullup resistors using jumper JP2 and enable them by installing");
-    printf("\njumpers JP3 and JP4.");
+    printf("\nsame bus as I2C0 (SDA - P2.7, SCL - P2.8).");
+#if defined(EvKit_V1)
+    printf("\nSelect the proper voltage for the I2C0 pullup resistors using jumper JP2 ");
+    printf("\nand enable them by installing jumpers JP3 and JP4.");
+#endif
 
     int error;
 

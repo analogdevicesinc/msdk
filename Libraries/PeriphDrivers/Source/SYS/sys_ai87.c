@@ -62,45 +62,97 @@
 
 /* **** Globals **** */
 
+/* Symbol defined by the build system when loading RISCV image */
+extern volatile void const *_riscv_boot; // Defined in linker file
+
 /* **** Functions **** */
 
 /* ************************************************************************** */
 int MXC_SYS_GetUSN(uint8_t *usn, uint8_t *checksum)
 {
+    int err = E_NO_ERROR;
     uint32_t *infoblock = (uint32_t *)MXC_INFO0_MEM_BASE;
+
+    if (usn == NULL) {
+        return E_NULL_PTR;
+    }
 
     /* Read the USN from the info block */
     MXC_FLC_UnlockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    memset(usn, 0, MXC_SYS_USN_CHECKSUM_LEN);
+    uint32_t _usn_32[MXC_SYS_USN_CHECKSUM_LEN / 4];
+    // ^ Declare as uint32_t to preserve mem alignment
+    uint8_t *_usn_8 = (uint8_t *)_usn_32;
+    memset(_usn_8, 0, MXC_SYS_USN_CHECKSUM_LEN);
 
-    usn[0] = (infoblock[0] & 0x007F8000) >> 15;
-    usn[1] = (infoblock[0] & 0x7F800000) >> 23;
-    usn[2] = (infoblock[1] & 0x0000007F) << 1;
-    usn[2] |= (infoblock[0] & 0x80000000) >> 31;
-    usn[3] = (infoblock[1] & 0x00007F80) >> 7;
-    usn[4] = (infoblock[1] & 0x007F8000) >> 15;
-    usn[5] = (infoblock[1] & 0x7F800000) >> 23;
-    usn[6] = (infoblock[2] & 0x007F8000) >> 15;
-    usn[7] = (infoblock[2] & 0x7F800000) >> 23;
-    usn[8] = (infoblock[3] & 0x0000007F) << 1;
-    usn[8] |= (infoblock[2] & 0x80000000) >> 31;
-    usn[9] = (infoblock[3] & 0x00007F80) >> 7;
-    usn[10] = (infoblock[3] & 0x007F8000) >> 15;
+    _usn_8[0] = (infoblock[0] & 0x007F8000) >> 15;
+    _usn_8[1] = (infoblock[0] & 0x7F800000) >> 23;
+    _usn_8[2] = (infoblock[1] & 0x0000007F) << 1;
+    _usn_8[2] |= (infoblock[0] & 0x80000000) >> 31;
+    _usn_8[3] = (infoblock[1] & 0x00007F80) >> 7;
+    _usn_8[4] = (infoblock[1] & 0x007F8000) >> 15;
+    _usn_8[5] = (infoblock[1] & 0x7F800000) >> 23;
+    _usn_8[6] = (infoblock[2] & 0x007F8000) >> 15;
+    _usn_8[7] = (infoblock[2] & 0x7F800000) >> 23;
+    _usn_8[8] = (infoblock[3] & 0x0000007F) << 1;
+    _usn_8[8] |= (infoblock[2] & 0x80000000) >> 31;
+    _usn_8[9] = (infoblock[3] & 0x00007F80) >> 7;
+    _usn_8[10] = (infoblock[3] & 0x007F8000) >> 15;
 
-    /* If requested, return the checksum */
+    /* If requested, verify and return the checksum */
     if (checksum != NULL) {
+        uint32_t _check_csum_32[MXC_SYS_USN_CHECKSUM_LEN / 4];
+        // ^ Declare as uint32_t to preserve mem alignment
+        uint8_t *check_csum = (uint8_t *)_check_csum_32;
+        memset(check_csum, 0, MXC_SYS_USN_CHECKSUM_LEN);
+        uint8_t aes_key[MXC_SYS_USN_CHECKSUM_LEN] = { 0 }; // NULL Key (per checksum spec)
+
+        // Read Checksum from the infoblock
         checksum[0] = ((infoblock[3] & 0x7F800000) >> 23);
         checksum[1] = ((infoblock[4] & 0x007F8000) >> 15);
+
+        err = MXC_AES_Init();
+        if (err) {
+            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            return err;
+        }
+
+        // Set NULL Key
+        MXC_AES_SetExtKey((const void *)aes_key, MXC_AES_128BITS);
+
+        // Compute Checksum
+        mxc_aes_req_t aes_req;
+        aes_req.length = MXC_SYS_USN_CHECKSUM_LEN / 4;
+        aes_req.inputData = _usn_32;
+        aes_req.resultData = _check_csum_32;
+        aes_req.keySize = MXC_AES_128BITS;
+        aes_req.encryption = MXC_AES_ENCRYPT_EXT_KEY;
+        aes_req.callback = NULL;
+
+        err = MXC_AES_Generic(&aes_req);
+        if (err) {
+            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            return err;
+        }
+
+        MXC_AES_Shutdown();
+
+        // Verify Checksum
+        if (check_csum[0] != checksum[1] || check_csum[1] != checksum[0]) {
+            MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
+            return E_INVALID;
+        }
     }
 
     /* Add the info block checksum to the USN */
-    usn[11] = ((infoblock[3] & 0x7F800000) >> 23);
-    usn[12] = ((infoblock[4] & 0x007F8000) >> 15);
+    _usn_8[11] = ((infoblock[3] & 0x7F800000) >> 23);
+    _usn_8[12] = ((infoblock[4] & 0x007F8000) >> 15);
 
     MXC_FLC_LockInfoBlock(MXC_INFO0_MEM_BASE);
 
-    return E_NO_ERROR;
+    memcpy(usn, _usn_8, MXC_SYS_USN_LEN);
+
+    return err;
 }
 
 /* ************************************************************************** */
@@ -474,6 +526,31 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
         MXC_GCR->rst0 = (0x1 << reset);
         while (MXC_GCR->rst0 & (0x1 << reset)) {}
     }
+}
+
+/* ************************************************************************** */
+void MXC_SYS_RISCVRun(void)
+{
+    MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_CPU1);
+
+    /* Disable the the RSCV */
+    MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
+
+    /* Set the interrupt vector base address */
+    MXC_FCR->urvbootaddr = (uint32_t)&_riscv_boot;
+
+    /* Power up the RSCV */
+    MXC_GCR->pclkdis1 &= ~(MXC_F_GCR_PCLKDIS1_CPU1);
+
+    /* CPU1 reset */
+    MXC_GCR->rst1 |= MXC_F_GCR_RST1_CPU1;
+}
+
+/* ************************************************************************** */
+void MXC_SYS_RISCVShutdown(void)
+{
+    /* Disable the the RSCV */
+    MXC_GCR->pclkdis1 |= MXC_F_GCR_PCLKDIS1_CPU1;
 }
 
 // AI87-TODO: Neede to verify these changes

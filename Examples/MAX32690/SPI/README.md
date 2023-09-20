@@ -5,7 +5,7 @@ MOSI (P2.28) pins.  Connect these two pins together.
 
 Multiple word sizes (2 through 16 bits) are demonstrated.
 
-By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, undefine the MASTERSYNC macro and define the MASTERASYNC macro.  To use DMA transactions, define the MASTERDMA macro instead.
+By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the MASTERSYNC macro to 0 and set the MASTERASYNC macro to 1.  To use DMA transactions, set the MASTERDMA macro to 1 instead.
 
 ## Software
 
@@ -19,10 +19,14 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ## Required Connections
 
+If using the MAX32690EVKIT:
 -   Connect a USB cable between the PC and the CN2 (USB/PWR) connector.
--   Install JP4(RX_SEL) and JP5(TX_SEL) headers.
--   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
--   Connect pins P2.27->P2.28 together.
+-   Install JP7(RX_EN) and JP8(TX_EN) headers.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
+
+If using the MAX32690FTHR:
+-   Connect a USB cable between the PC and the J5 (USB/PWR) connector.
+-   Open a terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 
 ## Expected Output
 

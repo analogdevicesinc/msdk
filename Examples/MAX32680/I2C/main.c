@@ -33,7 +33,7 @@
 
 /**
  * @file        main.c
- * @brief       I2C Loopback Example
+ * @brief       I2C Master-Slave Transaction Demo
  * @details     This example uses the I2C Master to read/write from/to the I2C Slave. For
  *              this example you must connect P0.10 to P0.16 (SCL) and P0.11 to P0.17 (SCL). The Master
  *              will use P0.10 and P0.11. The Slave will use P0.16 and P0.17. You must also
@@ -51,43 +51,51 @@
 #include "dma.h"
 
 /***** Definitions *****/
-// #define MASTERDMA
+
+#define MASTERDMA //Comment this line out if standard I2C transaction is required
 
 #define I2C_MASTER MXC_I2C1
 #define I2C_SLAVE MXC_I2C0
 
 #define I2C_FREQ 100000
-// This example may become unreliable at I2C frequencies above 100kHz.
-// This is only an issue in the loopback configuration, where the I2C block is
-// connected to itself.
 #define I2C_SLAVE_ADDR (0x51)
-#define I2C_BYTES 100
+#define I2C_BYTES 255
 
 /***** Globals *****/
+
 static uint8_t Stxdata[I2C_BYTES];
 static uint8_t Srxdata[I2C_BYTES];
 static uint8_t txdata[I2C_BYTES];
 static uint8_t rxdata[I2C_BYTES];
-volatile uint8_t DMA_FLAG = 0;
+int8_t DMA_TX_CH;
+int8_t DMA_RX_CH;
 volatile int I2C_FLAG;
 volatile int txnum = 0;
 volatile int txcnt = 0;
 volatile int rxnum = 0;
-volatile int num;
+
 /***** Functions *****/
 
 //Slave interrupt handler
 void I2C0_IRQHandler(void)
 {
     MXC_I2C_AsyncHandler(I2C_SLAVE);
-    return;
+}
+
+void DMA_TX_IRQHandler(void)
+{
+    MXC_DMA_Handler();
+}
+
+void DMA_RX_IRQHandler(void)
+{
+    MXC_DMA_Handler();
 }
 
 //I2C callback function
 void I2C_Callback(mxc_i2c_req_t *req, int error)
 {
     I2C_FLAG = error;
-    return;
 }
 
 int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
@@ -100,12 +108,7 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
         break;
 
     case MXC_I2C_EVT_MASTER_RD:
-
         // Serve as a 16 byte loopback, returning data*2
-        for (int i = 0; i < I2C_BYTES; i++) {
-            Stxdata[i] = Srxdata[i];
-        }
-
         txnum = I2C_BYTES;
         txcnt = 0;
         i2c->intfl0 = MXC_F_I2C_INTFL0_TX_LOCKOUT | MXC_F_I2C_INTFL0_ADDR_MATCH;
@@ -114,7 +117,6 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
     case MXC_I2C_EVT_RX_THRESH:
     case MXC_I2C_EVT_OVERFLOW:
         rxnum += MXC_I2C_ReadRXFIFO(i2c, &Srxdata[rxnum], MXC_I2C_GetRXFIFOAvailable(i2c));
-
         if (rxnum == I2C_BYTES) {
             i2c->inten0 |= MXC_F_I2C_INTEN0_ADDR_MATCH;
         }
@@ -123,7 +125,6 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
 
     case MXC_I2C_EVT_TX_THRESH:
     case MXC_I2C_EVT_UNDERFLOW:
-
         // Write as much data as possible into TX FIFO
         // Unless we're at the end of the transaction (only write what's needed)
         if (txcnt >= txnum) {
@@ -138,10 +139,11 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
     default:
         if (*((int *)data) == E_COMM_ERR) {
             printf("I2C Slave Error!\n");
-            printf("i2c->int_fl0 = 0x%08x\n", i2c->intfl0);
-            printf("i2c->status  = 0x%08x\n", i2c->status);
+            printf("i2c->intfl0 = 0x%08x\n", i2c->intfl0);
+            printf("i2c->status = 0x%08x\n", i2c->status);
             I2C_Callback(NULL, E_COMM_ERR);
             return 1;
+
         } else if (*((int *)data) == E_NO_ERROR) {
             rxnum += MXC_I2C_ReadRXFIFO(i2c, &Srxdata[rxnum], MXC_I2C_GetRXFIFOAvailable(i2c));
             I2C_Callback(NULL, E_NO_ERROR);
@@ -156,6 +158,7 @@ int slaveHandler(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_t event, void *data)
 void printData(void)
 {
     int i;
+
     printf("\n-->TxData: ");
 
     for (i = 0; i < sizeof(txdata); ++i) {
@@ -174,7 +177,7 @@ void printData(void)
 }
 
 //Compare data to see if they are the same
-int verifyData()
+int verifyData(void)
 {
     int i, fails = 0;
 
@@ -194,7 +197,7 @@ int verifyData()
 // *****************************************************************************
 int main()
 {
-    printf("\n******** I2C SLAVE ASYNC TRANSACTION TEST *********\n");
+    printf("\n******** I2C Master-Slave Transaction Demo *********\n");
     printf("\nThis example uses one I2C peripheral as a master to\n");
     printf("read and write to another I2C which acts as a slave.\n");
 
@@ -205,26 +208,34 @@ int main()
 
     //Setup the I2CM
     error = MXC_I2C_Init(I2C_MASTER, 1, 0);
-
     if (error != E_NO_ERROR) {
-        printf("-->Failed master\n");
+        printf("Failed master\n");
         return error;
-    } else {
-        printf("\n-->I2C Master Initialization Complete");
     }
+
+#ifdef MASTERDMA
+    //Setup the I2CM DMA
+    error = MXC_I2C_DMA_Init(I2C_MASTER, MXC_DMA, true, true);
+    if (error != E_NO_ERROR) {
+        printf("Failed DMA master\n");
+        return error;
+    }
+#endif
+
+    printf("\n-->I2C Master Initialization Complete");
 
     //Setup the I2CS
     error = MXC_I2C_Init(I2C_SLAVE, 0, I2C_SLAVE_ADDR);
-
     if (error != E_NO_ERROR) {
         printf("Failed slave\n");
         return error;
-    } else {
-        printf("\n-->I2C Slave Initialization Complete");
     }
+
+    printf("\n-->I2C Slave Initialization Complete");
 
     MXC_NVIC_SetVector(I2C0_IRQn, I2C0_IRQHandler);
     NVIC_EnableIRQ(I2C0_IRQn);
+    __enable_irq();
 
     MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
 
@@ -258,20 +269,37 @@ int main()
         return error;
     }
 
+#ifdef MASTERDMA
+    DMA_TX_CH = MXC_I2C_DMA_GetTXChannel(I2C_MASTER);
+    DMA_RX_CH = MXC_I2C_DMA_GetRXChannel(I2C_MASTER);
+
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(DMA_TX_CH));
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(DMA_RX_CH));
+
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(DMA_TX_CH), DMA_TX_IRQHandler);
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(DMA_RX_CH), DMA_RX_IRQHandler);
+
+    if ((error = MXC_I2C_MasterTransactionDMA(&reqMaster)) != 0) {
+        printf("Error writing: %d\n", error);
+        return error;
+    }
+#else
     if ((error = MXC_I2C_MasterTransaction(&reqMaster)) != 0) {
         printf("Error writing: %d\n", error);
         return error;
     }
+#endif
 
     while (I2C_FLAG == 1) {}
 
     printf("\n-->Result: \n");
-
     printData();
-
     printf("\n");
 
-    if (verifyData()) {
+    MXC_I2C_Shutdown(I2C_MASTER);
+    MXC_I2C_Shutdown(I2C_SLAVE);
+
+    if (verifyData() == E_NO_ERROR) {
         printf("\n-->I2C Transaction Successful\n");
     } else {
         printf("\n-->I2C Transaction Failed\n");

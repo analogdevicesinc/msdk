@@ -32,9 +32,8 @@
  ******************************************************************************/
 
 /**
- * @file    main.c
- * @brief   FreeRTOSDemo
- * @details This example demonstrates FreeRTOS.
+ * @file        main.c
+ * @brief       FreeRTOS Example Application.
  */
 
 #include <stdio.h>
@@ -77,6 +76,9 @@ mxc_gpio_cfg_t uart_cts = { MXC_GPIO1, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPI
                             MXC_GPIO_VSSEL_VDDIOH };
 mxc_gpio_cfg_t uart_rts = { MXC_GPIO1, MXC_GPIO_PIN_8, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
                             MXC_GPIO_VSSEL_VDDIOH };
+#elif (CONSOLE_UART == 0)
+#define UARTx_IRQHandler UART0_IRQHandler
+#define UARTx_IRQn UART0_IRQn
 #else
 #error "Please update ISR macro for UART CONSOLE_UART"
 #endif
@@ -373,12 +375,14 @@ int main(void)
     volatile int i;
     for (i = 0; i < 0xFFFFFF; i++) {}
 
+#if defined(EvKit_V1)
     /* Setup manual CTS/RTS to lockout console and wake from deep sleep */
     MXC_GPIO_Config(&uart_cts);
     MXC_GPIO_Config(&uart_rts);
 
     /* Enable incoming characters */
     MXC_GPIO_OutClr(uart_rts.port, uart_rts.mask);
+#endif
 
 #if configUSE_TICKLESS_IDLE
 

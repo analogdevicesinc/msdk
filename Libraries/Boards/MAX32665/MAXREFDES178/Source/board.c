@@ -49,13 +49,15 @@
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
+// clang-format off
 const mxc_gpio_cfg_t pb_pin[] = {
-    { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO },
+    { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {};
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
+// clang-format on
 
 /******************************************************************************/
 /** 
@@ -65,6 +67,17 @@ const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
 __weak void GPIO1_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
+}
+
+/******************************************************************************/
+/** 
+ * NOTE: This is a legacy definition from the previous implementation of pb.c. This
+ *       definition will prevent the MAXREFDES178 from hanging until a permanent fix
+ *       is added to the MaximIntegratedAI/refdes github repository.
+ **/
+__weak void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
 }
 
 /******************************************************************************/

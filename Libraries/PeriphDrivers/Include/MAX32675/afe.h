@@ -49,6 +49,7 @@ extern "C" {
 #include "afe_adc_one_regs.h"
 #include "afe_dac_regs.h"
 #include "afe_hart_regs.h"
+#include "tmr.h"
 #include "mxc_sys.h"
 #include "mxc_assert.h"
 #include "infoblock.h"
@@ -71,8 +72,9 @@ extern "C" {
 /***** Function Prototypes *****/
 /**
  * @brief   Setup the AFE for transactions.
+ * @param   tmr    Pointer to Timer registers to use for internal AFE timing
  */
-int afe_setup(void);
+int afe_setup(mxc_tmr_regs_t *tmr);
 
 /**
  * @brief  Puts the AFE into a RESET state to recover from errors, or reduce power consumption
@@ -125,10 +127,11 @@ int afe_bank_read_register(uint32_t target_reg, uint8_t reg_bank, uint32_t *valu
 /**
  * @brief   Load AFE Trims.
  * @note    Uncomment DUMP_TRIM_DATA in afe.c to print trime data.
+ * @param   tmr    Pointer to Timer registers to use for internal AFE timing
  *
  * @return  See \ref MXC_Error_Codes for a list of return codes.
  */
-int afe_load_trims(void);
+int afe_load_trims(mxc_tmr_regs_t *tmr);
 
 /**
  * @brief   Dumps the AFE registers.

@@ -52,13 +52,15 @@
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
+// clang-format off
 const mxc_gpio_cfg_t pb_pin[] = { { MXC_GPIO0, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN,
-                                    MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH } };
+                                    MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0} };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = { { MXC_GPIO0, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT,
-                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO } };
+                                     MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 } };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
+// clang-format on
 
 /***** File Scope Variables *****/
 
@@ -127,7 +129,7 @@ int Console_Shutdown(void)
 /******************************************************************************/
 void TFT_SPI_Init(void)
 {
-    int spi_speed = 4 * 1000 * 1000; // x*MHz
+    int spi_speed = 24 * 1000 * 1000; // x*MHz
     int error;
     mxc_spi_pins_t tft_pins;
 

@@ -13,7 +13,9 @@ LIBS_DIR ?= $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 # ************************
 LIB_BOARD ?= 1
 ifeq ($(LIB_BOARD), 1)
-BOARD_DIR := $(LIBS_DIR)/Boards/$(TARGET_UC)/$(BOARD)
+BSP_SEARCH_DIR ?= $(LIBS_DIR)/Boards/$(TARGET_UC)
+BOARD_DIR := $(BSP_SEARCH_DIR)/$(BOARD)
+PROJ_CFLAGS += -DLIB_BOARD
 include $(BOARD_DIR)/board.mk
 endif
 # ************************
@@ -45,7 +47,11 @@ CORDIO_DIR ?= $(LIBS_DIR)/Cordio
 include $(CORDIO_DIR)/platform/targets/maxim/build/cordio_lib.mk
 
 ifeq ($(RISCV_CORE),)
+ifeq ($(MFLOAT_ABI),hard)
+LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_hard.a
+else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy.a
+endif
 else
 LIBS      += $(LIBS_DIR)/BlePhy/$(CHIP_UC)/libphy_riscv.a
 endif

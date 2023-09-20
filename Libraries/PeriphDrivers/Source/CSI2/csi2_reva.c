@@ -31,8 +31,14 @@
  *
  ******************************************************************************/
 
+#ifdef __riscv
+#warning "CSI2 drivers not supported on RISC-V"
+#else
+
 /* **** Includes **** */
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_pins.h"
@@ -67,10 +73,15 @@
     (MXC_F_CSI2_REVA_RX_EINT_VFF_IE_FNEMP_MD | MXC_F_CSI2_REVA_RX_EINT_VFF_IE_FTHD_MD | \
      MXC_F_CSI2_REVA_RX_EINT_VFF_IE_FFUL_MD)
 
+// A macro to convert a DMA channel number to an IRQn number
+#define GetIRQnForDMAChannel(x)           \
+    ((IRQn_Type)(((x) == 0) ? DMA0_IRQn : \
+                 ((x) == 1) ? DMA1_IRQn : \
+                 ((x) == 2) ? DMA2_IRQn : \
+                              DMA3_IRQn))
+
 /* **** Globals **** */
 
-static volatile uint8_t *rx_data = NULL;
-static volatile uint32_t rx_data_index;
 static volatile uint32_t dphy_rdy;
 static volatile uint32_t frame_end_cnt;
 static volatile uint32_t line_cnt;
@@ -78,6 +89,7 @@ static volatile uint32_t odd_line_byte_num;
 static volatile uint32_t even_line_byte_num;
 static volatile uint32_t line_byte_num;
 static volatile uint32_t frame_byte_num;
+static volatile bool g_frame_complete = false;
 
 // Used for Non-DMA CSI2 Cases
 static volatile uint32_t bits_per_pixel;
@@ -85,14 +97,56 @@ static volatile uint32_t fifo_burst_size;
 static volatile mxc_csi2_reva_fifo_trig_t fifo_int_trig;
 static volatile mxc_csi2_ahbwait_t ahbwait_en;
 
+struct line_buffer {
+    uint8_t *a; // Line buffer A
+    uint8_t *b; // Line buffer B
+    uint8_t *active; // Pointer to the active line buffer (volatile!)
+    uint8_t *inactive; // Pointer to the inactive line buffer (safe to read)
+} lb;
+
+void _free_line_buffer(void)
+{
+    if (lb.a != NULL) {
+        free((uint8_t *)lb.a);
+        lb.a = NULL;
+    }
+    if (lb.b != NULL) {
+        free((uint8_t *)lb.b);
+        lb.b = NULL;
+    }
+}
+
+int _init_line_buffer()
+{
+    _free_line_buffer();
+
+    lb.a = (uint8_t *)malloc(line_byte_num);
+    lb.b = (uint8_t *)malloc(line_byte_num);
+    if (lb.a == NULL || lb.b == NULL)
+        return E_NULL_PTR;
+
+    lb.active = lb.a;
+    lb.inactive = lb.b;
+    return E_NO_ERROR;
+}
+
+void _swap_line_buffer()
+{
+    uint8_t *temp = lb.active;
+    lb.active = lb.inactive;
+    lb.inactive = temp;
+}
+
 typedef struct {
     mxc_csi2_req_t *req;
     mxc_csi2_ctrl_cfg_t *ctrl_cfg;
     mxc_csi2_vfifo_cfg_t *vfifo_cfg;
     int dma_channel;
+    bool synced;
+    mxc_csi2_reva_capture_stats_t capture_stats;
 } csi2_reva_req_state_t;
 
-csi2_reva_req_state_t csi2_state;
+volatile csi2_reva_req_state_t csi2_state;
 
 /* **** Functions **** */
 
@@ -112,9 +166,7 @@ int MXC_CSI2_RevA_Init(mxc_csi2_reva_regs_t *csi2, mxc_csi2_req_t *req,
     csi2_state.req = req;
     csi2_state.ctrl_cfg = ctrl_cfg;
     csi2_state.vfifo_cfg = vfifo_cfg;
-
-    rx_data = (uint8_t *)(req->img_addr);
-    rx_data_index = 0;
+    csi2_state.synced = false;
 
     // Convert respective pixel bit number to bytes
     frame_byte_num = ((req->bits_per_pixel_odd + req->bits_per_pixel_even) * req->pixels_per_line *
@@ -138,6 +190,9 @@ int MXC_CSI2_RevA_Init(mxc_csi2_reva_regs_t *csi2, mxc_csi2_req_t *req,
     if (error != E_NO_ERROR) {
         return error;
     }
+
+    int channel = MXC_DMA_AcquireChannel();
+    csi2_state.dma_channel = channel;
 
     // Configure VFIFO
     csi2->vfifo_pixel_num = req->pixels_per_line;
@@ -185,13 +240,14 @@ int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t *csi2, int num_data_lanes)
     dphy_rdy = 0;
     line_cnt = 0;
     frame_end_cnt = 0;
+    csi2_state.synced = false;
 
     MXC_CSI2_CTRL_ClearFlags(0xFFFFFFFF);
     MXC_CSI2_VFIFO_ClearFlags(0xFFFFFFFF);
     MXC_CSI2_PPI_ClearFlags(0xFFFFFFFF);
 
     // Enable VFIFO
-    MXC_CSI2_VFIFO_Enable();
+    csi2->vfifo_ctrl |= MXC_F_CSI2_REVA_VFIFO_CTRL_FIFOEN;
 
     // Release DPHY reset
     csi2->dphy_rst_n |= 0x01;
@@ -215,17 +271,8 @@ int MXC_CSI2_RevA_Start(mxc_csi2_reva_regs_t *csi2, int num_data_lanes)
 
 int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
 {
-    int error;
+    g_frame_complete = true;
 
-    // Only release channel when DMA was used
-    if (csi2_state.vfifo_cfg->dma_mode != MXC_CSI2_DMA_NO_DMA) {
-        error = MXC_DMA_ReleaseChannel(csi2_state.dma_channel);
-        if (error != E_NO_ERROR) {
-            return error;
-        }
-    }
-
-    // Enable VFIFO
     MXC_CSI2_VFIFO_Disable();
 
     // Reset DPHY
@@ -235,15 +282,24 @@ int MXC_CSI2_RevA_Stop(mxc_csi2_reva_regs_t *csi2)
     csi2->cfg_clk_lane_en = 0;
     csi2->cfg_data_lane_en = 0;
 
+    _free_line_buffer();
+
     return E_NO_ERROR;
 }
 
-int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
+int MXC_CSI2_RevA_CaptureFrameDMA()
 {
     int i;
     int error;
     int dma_byte_cnt;
     int dlane_stop_inten;
+
+    csi2_state.capture_stats.success = false;
+    csi2_state.capture_stats.ctrl_err = 0;
+    csi2_state.capture_stats.ppi_err = 0;
+    csi2_state.capture_stats.vfifo_err = 0;
+    csi2_state.capture_stats.bytes_captured = 0;
+    g_frame_complete = false;
 
     mxc_csi2_req_t *req = csi2_state.req;
     mxc_csi2_vfifo_cfg_t *vfifo = csi2_state.vfifo_cfg;
@@ -252,40 +308,78 @@ int MXC_CSI2_RevA_CaptureFrameDMA(int num_data_lanes)
     frame_byte_num = ((req->bits_per_pixel_odd + req->bits_per_pixel_even) * req->pixels_per_line *
                       req->lines_per_frame) >>
                      4;
+    csi2_state.capture_stats.frame_size = frame_byte_num;
     odd_line_byte_num = (req->bits_per_pixel_odd * req->pixels_per_line) >> 3;
     even_line_byte_num = (req->bits_per_pixel_even * req->pixels_per_line) >> 3;
 
     // Select lower line byte number (Odd line)
     line_byte_num = odd_line_byte_num;
 
-    // Use whole frame vs line by line
     if (vfifo->dma_whole_frame == MXC_CSI2_DMA_WHOLE_FRAME) {
-        dma_byte_cnt = frame_byte_num;
-    } else {
-        // Smaller
-        dma_byte_cnt = line_byte_num;
-    }
+        // Whole frame
+        // dma_byte_cnt = frame_byte_num;
+        // error = MXC_CSI2_DMA_Config(req->img_addr, dma_byte_cnt, vfifo->rx_thd);
+        // if (error != E_NO_ERROR) {
+        //     return error;
+        // }
 
-    error = MXC_CSI2_DMA_Config(req->img_addr, dma_byte_cnt, vfifo->rx_thd);
-    if (error != E_NO_ERROR) {
-        return error;
+        /*
+        Whole frame captures have been defeatured in favor of application-defined line handlers.
+        We won't entirely burn this bridge now, so we'll leave the framework intact and return not supported.
+        */
+        return E_NOT_SUPPORTED;
+    } else {
+        // Line by line
+        dma_byte_cnt = line_byte_num;
+
+        error = _init_line_buffer();
+        if (error)
+            return error;
+
+        error = MXC_CSI2_DMA_Config(lb.a, dma_byte_cnt, vfifo->rx_thd);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
     }
 
     // Enable Stop State interrupts for all used data lanes
     dlane_stop_inten = 0;
-    for (i = 0; i < num_data_lanes; i++) {
+    for (i = 0; i < csi2_state.ctrl_cfg->num_lanes; i++) {
         dlane_stop_inten |= (1 << i);
     }
 
     dlane_stop_inten <<= MXC_F_CSI2_RX_EINT_PPI_IE_DL0STOP_POS;
     MXC_CSI2_PPI_EnableInt(dlane_stop_inten);
 
-    error = MXC_CSI2_Start(num_data_lanes);
+    // Clear all flags, enable all interrupts.
+    MXC_CSI2->rx_eint_ctrl_if = 0xFFFFFFFF;
+    MXC_CSI2->rx_eint_ppi_if = 0xFFFFFFFF;
+    MXC_CSI2->rx_eint_vff_if = 0xFFFFFFFF;
+    MXC_CSI2->rx_eint_ctrl_ie = 0xFFFFFFFF;
+    MXC_CSI2->rx_eint_ppi_ie = 0xFFFFFFFF;
+    MXC_CSI2->rx_eint_vff_ie = 0xFFFFFFFF;
+
+    error = MXC_CSI2_Start(csi2_state.ctrl_cfg->num_lanes);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    return E_NO_ERROR;
+    /*
+    After starting, the drivers should wait for the PPI interrupt flags
+    to indicate the CSI2 is synced up with the sensor.  Then, they should
+    wait for the Frame Start VFIFO interrupt flag before enabling the DMA
+    pipeline.
+
+    Register polling is too slow to do that here, so it's implemented in the 
+    interrupt handler. (MXC_CSI2_RevA_Handler)
+    */
+
+    while (!g_frame_complete) {}
+
+    if (!csi2_state.capture_stats.success)
+        return E_FAIL;
+    else
+        return E_NO_ERROR;
 }
 
 int MXC_CSI2_RevA_SetLaneCtrlSource(mxc_csi2_reva_regs_t *csi2, mxc_csi2_lane_src_t *src)
@@ -318,100 +412,75 @@ int MXC_CSI2_RevA_GetLaneCtrlSource(mxc_csi2_reva_regs_t *csi2, mxc_csi2_lane_sr
     return E_NO_ERROR;
 }
 
-void MXC_CSI2_RevA_GetImageDetails(uint8_t **img, uint32_t *imgLen, uint32_t *w, uint32_t *h)
+void MXC_CSI2_RevA_GetImageDetails(uint32_t *imgLen, uint32_t *w, uint32_t *h)
 {
-    *img = (uint8_t *)csi2_state.req->img_addr;
     *imgLen = frame_byte_num;
-
     *w = csi2_state.req->pixels_per_line;
     *h = csi2_state.req->lines_per_frame;
 }
 
-int MXC_CSI2_RevA_Callback(mxc_csi2_req_t *req, int retVal)
-{
-    if (req == NULL) {
-        return E_BAD_PARAM;
-    }
-
-    if (req->callback != NULL) {
-        req->callback(req, retVal);
-    }
-
-    return E_NO_ERROR;
-}
-
-int MXC_CSI2_RevA_Handler(mxc_csi2_reva_regs_t *csi2)
+void MXC_CSI2_RevA_Handler()
 {
     uint32_t ctrl_flags, vfifo_flags, ppi_flags;
-    mxc_csi2_req_t *req = csi2_state.req;
 
     ctrl_flags = MXC_CSI2_CTRL_GetFlags();
     ppi_flags = MXC_CSI2_PPI_GetFlags();
     vfifo_flags = MXC_CSI2_VFIFO_GetFlags();
 
-    // Clear Flags
+    // Clear Flags.
     MXC_CSI2_CTRL_ClearFlags(ctrl_flags);
     MXC_CSI2_PPI_ClearFlags(ppi_flags);
     MXC_CSI2_VFIFO_ClearFlags(vfifo_flags);
 
-    // Handle RX CTRL Interrupts
-    if (ctrl_flags & MXC_F_CSI2_REVA_RX_EINT_CTRL_IE_PKTFFOV) {
-        MXC_CSI2_Callback(req, E_OVERRUN);
-        MXC_CSI2_Stop();
-        return E_OVERRUN;
+    // Mask out non-critical CTRL status flags
+    ctrl_flags &= (0b11111);
+    if (ctrl_flags) {
+        csi2_state.capture_stats.ctrl_err |= ctrl_flags;
     }
 
-    // Check for RX CTRL CRC, ECC, and ID Errors
-    if (ctrl_flags & MXC_CSI2_REVA_CTRL_ERRINT_FL) {
-        MXC_CSI2_Callback(req, E_COMM_ERR);
-        MXC_CSI2_Stop();
-        return E_COMM_ERR;
+    if (!csi2_state.synced && ppi_flags != 0) {
+        /*
+        When the PPI flags below have been signaled, the CSI2 interface
+        has synced up with the sensor.  It's now safe to monitor the VFIFO.
+        */
+        csi2_state.synced = (bool)(ppi_flags & (MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP |
+                                                MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP |
+                                                MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP));
     }
 
-    // Handle PPI if waiting for frame capture
-    if (ppi_flags & MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP) {
-        MXC_CSI2_PPI_Stop();
-        MXC_CSI2_Callback(req, E_NO_ERROR);
+    // Mask out non-critical PPI status flags
+    ppi_flags &= ~(MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL0STOP | MXC_F_CSI2_REVA_RX_EINT_PPI_IF_DL1STOP |
+                   MXC_F_CSI2_REVA_RX_EINT_PPI_IF_CL0STOP);
 
-        MXC_CSI2_PPI_ClearFlags(ppi_flags);
-
-        // Handle VFIFO Flags
-    } else {
-        // VFIFO Error Checking
-        if (vfifo_flags & MXC_F_CSI2_REVA_RX_EINT_VFF_IF_UNDERRUN) {
-            MXC_CSI2_Callback(req, E_UNDERRUN);
-            MXC_CSI2_VFIFO_Disable(); // Stop VFIFO
-            return E_UNDERRUN;
-        }
-
-        if (vfifo_flags &
-            (MXC_F_CSI2_REVA_RX_EINT_VFF_IF_OVERRUN | MXC_F_CSI2_REVA_RX_EINT_VFF_IF_RAW_OVR)) {
-            MXC_CSI2_Callback(req, E_OVERRUN);
-            MXC_CSI2_VFIFO_Disable(); // Stop VFIFO
-            return E_OVERRUN;
-        }
-
-        if (vfifo_flags & MXC_F_CSI2_REVA_RX_EINT_VFF_IF_AHBWTO) {
-            MXC_CSI2_Callback(req, E_TIME_OUT);
-            MXC_CSI2_VFIFO_Disable(); // Stop VFIFO
-            return E_TIME_OUT;
-        }
-
-        // Check for Out of Sync, Formatting, or RAW AHB errors.
-        if (vfifo_flags & MXC_CSI2_REVA_VFIFO_ERRINT_FL) {
-            MXC_CSI2_Callback(req, E_COMM_ERR);
-            MXC_CSI2_VFIFO_Disable(); // Stop VFIFO
-            return E_COMM_ERR;
-        }
-
-        // Check for frame end flag if no errors.
-        if (vfifo_flags & MXC_F_CSI2_REVA_RX_EINT_VFF_IF_FE) { // GT
-            frame_end_cnt++;
-        }
-        MXC_CSI2_VFIFO_ClearFlags(vfifo_flags);
+    if (ppi_flags) {
+        csi2_state.capture_stats.ppi_err |= ppi_flags;
     }
 
-    return E_NO_ERROR;
+    if (vfifo_flags != 0) {
+        if (vfifo_flags & MXC_F_CSI2_RX_EINT_VFF_IF_FS && csi2_state.synced) {
+            /*
+            "Frame Start" has been received.  Enable the DMA channel.
+            MXC_CSI2_RevA_DMA_Handler does the heavy lifting from here.
+            */
+            MXC_DMA_Start(csi2_state.dma_channel);
+        }
+
+        // Mask out non-critical VFIFO status flags
+        vfifo_flags &= (MXC_F_CSI2_RX_EINT_VFF_IF_UNDERRUN | MXC_F_CSI2_RX_EINT_VFF_IF_OVERRUN |
+                        MXC_F_CSI2_RX_EINT_VFF_IF_OUTSYNC | MXC_F_CSI2_RX_EINT_VFF_IF_FMTERR |
+                        MXC_F_CSI2_RX_EINT_VFF_IF_AHBWTO | MXC_F_CSI2_RX_EINT_VFF_IF_RAW_OVR |
+                        MXC_F_CSI2_RX_EINT_VFF_IF_RAW_AHBERR);
+
+        if (vfifo_flags) {
+            csi2_state.capture_stats.vfifo_err |= vfifo_flags;
+        }
+    }
+
+    if (csi2_state.capture_stats.ctrl_err | csi2_state.capture_stats.ppi_err |
+        csi2_state.capture_stats.vfifo_err) {
+        csi2_state.capture_stats.success = false;
+        MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+    }
 }
 
 /********************************/
@@ -521,7 +590,7 @@ int MXC_CSI2_RevA_VFIFO_Config(mxc_csi2_reva_regs_t *csi2, mxc_csi2_vfifo_cfg_t 
     }
 
     // Enable Error Detection
-    if (cfg->err_det_en) {
+    if (cfg->err_det_en == MXC_CSI2_ERR_DETECT_ENABLE) {
         MXC_SETFIELD(csi2->vfifo_cfg0, MXC_F_CSI2_REVA_VFIFO_CFG0_ERRDE,
                      0x1 << MXC_F_CSI2_REVA_VFIFO_CFG0_ERRDE_POS);
     } else {
@@ -549,6 +618,10 @@ int MXC_CSI2_RevA_VFIFO_Config(mxc_csi2_reva_regs_t *csi2, mxc_csi2_vfifo_cfg_t 
     return E_NO_ERROR;
 }
 
+/* Note for maintainers: The CSI2 RevA hardware has significant issues with its RAW->RGB
+debayering engine.  It is strongly recommended to avoid using this until the 
+issues have been resolved.  See the AI87 Design Jira for more details.
+*/
 int MXC_CSI2_RevA_VFIFO_ProcessRAWtoRGB(mxc_csi2_reva_regs_t *csi2, mxc_csi2_req_t *req)
 {
     int error;
@@ -962,28 +1035,96 @@ int MXC_CSI2_RevA_PPI_Stop(void)
 /* CSI2 DMA - Used for all features */
 /************************************/
 
+// #define GPIO_INDICATOR
+/* ^ This can be uncommented to enable a GPIO toggle as each row is received
+from the camera.  Each edge corresponds to a received row.  Useful for
+debugging timing issues.
+*/
+#ifdef GPIO_INDICATOR
+#define GPIO_INDICATOR_PORT MXC_GPIO1
+#define GPIO_INDICATOR_PIN MXC_GPIO_PIN_11
+mxc_gpio_cfg_t indicator = { .func = MXC_GPIO_FUNC_OUT,
+                             .port = GPIO_INDICATOR_PORT,
+                             .mask = GPIO_INDICATOR_PIN,
+                             .vssel = MXC_GPIO_VSSEL_VDDIOH,
+                             .drvstr = MXC_GPIO_DRVSTR_0,
+                             .pad = MXC_GPIO_PAD_NONE };
+#endif
+
+bool MXC_CSI2_RevA_DMA_Frame_Complete(void)
+{
+    return g_frame_complete;
+}
+
+mxc_csi2_reva_capture_stats_t MXC_CSI2_RevA_DMA_GetCaptureStats()
+{
+    return csi2_state.capture_stats;
+}
+
+void MXC_CSI2_RevA_DMA_Handler()
+{
+    // Clear CTZ Status Flag
+    if (MXC_DMA->ch[csi2_state.dma_channel].status & MXC_F_DMA_STATUS_CTZ_IF) {
+        MXC_DMA->ch[csi2_state.dma_channel].status |= MXC_F_DMA_STATUS_CTZ_IF;
+
+        if (csi2_state.vfifo_cfg->dma_whole_frame != MXC_CSI2_DMA_WHOLE_FRAME) {
+            // line by line
+            line_cnt++;
+#ifdef GPIO_INDICATOR
+            MXC_GPIO_OutToggle(indicator.port, indicator.mask);
+#endif
+            if (line_cnt > csi2_state.req->lines_per_frame) {
+                // Frame complete
+                line_cnt = 0;
+                MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+                csi2_state.capture_stats.success = true;
+                // TODO(Jake): Call frame complete handler here when multi-frame exposures are implemented.
+            } else {
+                // There is a line to process
+                // Swap line buffers and reload DMA
+                csi2_state.capture_stats.bytes_captured += line_byte_num;
+                _swap_line_buffer();
+                MXC_DMA->ch[csi2_state.dma_channel].cnt = line_byte_num;
+                MXC_DMA->ch[csi2_state.dma_channel].dst = (uint32_t)lb.active;
+                MXC_DMA->ch[csi2_state.dma_channel].ctrl |= MXC_F_DMA_REVA_CTRL_EN;
+
+                if (csi2_state.req->line_handler != NULL) {
+                    // Call line handler with a pointer to the inactive line buffer
+                    int error = csi2_state.req->line_handler(lb.inactive, line_byte_num);
+                    if (error)
+                        MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+                }
+            }
+        } else {
+            // whole frame
+            MXC_CSI2_RevA_Stop((mxc_csi2_reva_regs_t *)MXC_CSI2);
+        }
+    }
+}
+
 int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burst_size)
 {
     int error;
-    uint8_t channel;
     mxc_dma_config_t config;
     mxc_dma_srcdst_t srcdst;
-    mxc_dma_adv_config_t advConfig = { 0, 0, 0, 0, 0, 0 };
+    mxc_dma_adv_config_t advConfig = { csi2_state.dma_channel, 0, 0, 0, 0, 0 };
 
-    channel = MXC_DMA_AcquireChannel();
-    csi2_state.dma_channel = channel;
+#ifdef GPIO_INDICATOR
+    MXC_GPIO_Config(&indicator);
+    MXC_GPIO_OutSet(indicator.port, indicator.mask);
+#endif
 
     config.reqsel = MXC_DMA_REQUEST_CSI2RX;
-    config.ch = channel;
+    config.ch = csi2_state.dma_channel;
     config.srcwd = MXC_DMA_WIDTH_WORD;
     config.dstwd = MXC_DMA_WIDTH_WORD;
     config.srcinc_en = 0;
     config.dstinc_en = 1;
 
-    advConfig.ch = channel;
+    advConfig.ch = csi2_state.dma_channel;
     advConfig.burst_size = burst_size;
 
-    srcdst.ch = channel;
+    srcdst.ch = csi2_state.dma_channel;
     srcdst.source = MXC_CSI2_FIFO;
     srcdst.dest = dst_addr;
     srcdst.len = byte_cnt;
@@ -993,12 +1134,7 @@ int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burs
         return error;
     }
 
-    error = MXC_DMA_SetCallback(channel, MXC_CSI2_DMA_Callback);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    error = MXC_DMA_SetChannelInterruptEn(channel, false, true);
+    error = MXC_DMA_SetChannelInterruptEn(csi2_state.dma_channel, false, true);
     if (error != E_NO_ERROR) {
         return error;
     }
@@ -1008,15 +1144,13 @@ int MXC_CSI2_RevA_DMA_Config(uint8_t *dst_addr, uint32_t byte_cnt, uint32_t burs
         return error;
     }
 
-    error = MXC_DMA_EnableInt(channel);
+    error = MXC_DMA_EnableInt(csi2_state.dma_channel);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    error = MXC_DMA_Start(channel);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
+    MXC_NVIC_SetVector(GetIRQnForDMAChannel(csi2_state.dma_channel), MXC_CSI2_RevA_DMA_Handler);
+    NVIC_EnableIRQ(GetIRQnForDMAChannel(csi2_state.dma_channel));
 
     return E_NO_ERROR;
 }
@@ -1036,46 +1170,6 @@ int MXC_CSI2_RevA_DMA_GetCurrentFrameEndCnt(void)
     return frame_end_cnt;
 }
 
-void MXC_CSI2_RevA_DMA_Callback(mxc_dma_reva_regs_t *dma, int a, int b)
-{
-    mxc_csi2_req_t *req = csi2_state.req;
-    uint32_t dma_channel = csi2_state.dma_channel;
-    uint32_t dma_whole_frame = csi2_state.vfifo_cfg->dma_whole_frame;
-
-    // Clear CTZ Status Flag
-    dma->ch[dma_channel].status |= MXC_F_DMA_STATUS_CTZ_IF;
-
-    // Track frame completion
-    if (!dma_whole_frame) {
-        // This should be the only place to write line_cnt.
-        line_cnt++;
-        if (line_cnt >= req->lines_per_frame) {
-            line_cnt -= req->lines_per_frame;
-            frame_end_cnt++;
-        }
-    } else {
-        line_cnt += csi2_state.req->lines_per_frame;
-        frame_end_cnt++;
-    }
-
-    // Set DMA Counter
-    if (frame_end_cnt < req->frame_num) {
-        if (dma_whole_frame) {
-            dma->ch[dma_channel].cnt = frame_byte_num;
-        } else {
-            // Handle image types with different even and odd line
-            if (line_cnt & 0x01) {
-                dma->ch[dma_channel].cnt = odd_line_byte_num;
-            } else {
-                dma->ch[dma_channel].cnt = even_line_byte_num;
-            }
-        }
-
-        // Re-enable DMA Channel
-        dma->ch[dma_channel].ctrl |= MXC_F_DMA_REVA_CTRL_EN;
-    } else {
-        MXC_CSI2_VFIFO_Disable();
-    }
-}
+#endif
 
 /**@} end of group csi2 */

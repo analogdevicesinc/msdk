@@ -44,7 +44,7 @@
   The SPI interface is shared by the TFT and touchscreen controllers.
 
   The touchscreen events generate an external interrupt.  The TFT driver
-  disables interrupts to prevent the touchscreen driver from accessing the 
+  disables interrupts to prevent the touchscreen driver from accessing the
   SPI bus during TFT activity.  Firmware control of the TFT Data/Command signal
   and the use of GPIO as device delect signals bars a interrupt SPI interface.
 
@@ -621,6 +621,28 @@ void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int width, in
     __enable_irq();
 }
 
+/* This function writes an image data line by line, required by most UI libraries like LVGL */
+void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height)
+{
+    __disable_irq();
+
+    if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180) {
+        window(x0, y0, height, width);
+    } else {
+        window(x0, y0, width, height);
+    }
+
+    write_command(MEM_WRITE); // send pixel
+
+    for (unsigned int y = 0; y < width * height; y += width) { //height
+        spi_transmit_data_buf(&image[y * 2], width * 2); //width
+    }
+
+    window_max();
+
+    __enable_irq();
+}
+
 void MXC_TFT_PrintPalette(void)
 {
     area_t area = { 10, 10, 2, 25 };
@@ -860,4 +882,13 @@ void MXC_TFT_WriteReg(unsigned char command, unsigned char data)
     write_data(data);
 
     __enable_irq();
+}
+
+void MXC_TFT_Stream(int x0, int y0, int width, int height)
+{
+    if (tft_rotation == ROTATE_0 || tft_rotation == ROTATE_180)
+        window(x0, y0, height, width);
+    else
+        window(x0, y0, width, height);
+    write_command(MEM_WRITE); // send pixel
 }

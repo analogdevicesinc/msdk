@@ -92,7 +92,11 @@ int main(void)
     printf("Otherwise if the temperature is within the defined limits, the green LED\n");
     printf("will continue to toggle each time a new measurement is taken.\n\n");
 
+#if defined(EvKit_V1)
     printf("Press SW2 to print the last 12 temperature readings taken.\n\n");
+#else
+    printf("Press SW3 to print the last 12 temperature readings taken.\n\n");
+#endif
 
     // Initialize Temperature Monitor
     if ((err = temp_monitor_init()) != E_NO_ERROR) {

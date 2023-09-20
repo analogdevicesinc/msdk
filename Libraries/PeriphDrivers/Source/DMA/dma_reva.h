@@ -44,6 +44,7 @@
 
 /****** Functions ******/
 int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma);
+void MXC_DMA_RevA_DeInit(mxc_dma_reva_regs_t *dma);
 int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t *dma);
 int MXC_DMA_RevA_ReleaseChannel(int ch);
 int MXC_DMA_RevA_ConfigChannel(mxc_dma_config_t config, mxc_dma_srcdst_t srcdst);

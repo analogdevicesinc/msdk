@@ -34,6 +34,7 @@
 #include <stdio.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "mxc_assert.h"
 #include "mxc_lock.h"
@@ -43,6 +44,7 @@
 #include "i2c.h"
 #include "i2c_reva.h"
 #include "dma.h"
+#include "dma_reva.h"
 
 /* **** Variable Declaration **** */
 typedef struct {
@@ -52,6 +54,8 @@ typedef struct {
     int channelRx; // DMA channel for RX transaction
     volatile int writeDone; // Write done flag
     volatile int readDone; // Flag done flag
+    bool dma_initialized; // Check to see whether DMA was initialized
+    mxc_dma_reva_regs_t *dma; // Save DMA Instance
 } mxc_i2c_reva_req_state_t;
 
 static mxc_i2c_reva_req_state_t states[MXC_I2C_INSTANCES];
@@ -75,10 +79,13 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
 int MXC_I2C_RevA_Init(mxc_i2c_reva_regs_t *i2c, int masterMode, unsigned int slaveAddr)
 {
     int err;
+    int8_t i2cNum;
 
     if (i2c == NULL) {
         return E_NULL_PTR;
     }
+
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
 
     if ((err = MXC_I2C_Recover((mxc_i2c_regs_t *)i2c, 16)) != E_NO_ERROR) {
         return err;
@@ -100,6 +107,13 @@ int MXC_I2C_RevA_Init(mxc_i2c_reva_regs_t *i2c, int masterMode, unsigned int sla
         states[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)].master = 1;
     }
 
+    // Prepare I2C instance state.
+    states[i2cNum].channelTx = E_NO_DEVICE;
+    states[i2cNum].channelRx = E_NO_DEVICE;
+    states[i2cNum].writeDone = 0;
+    states[i2cNum].readDone = 0;
+    states[i2cNum].dma_initialized = false;
+
     return E_NO_ERROR;
 }
 
@@ -109,31 +123,70 @@ int MXC_I2C_RevA_SetSlaveAddr(mxc_i2c_reva_regs_t *i2c, unsigned int slaveAddr, 
         return E_NULL_PTR;
     }
 
-    if (idx != 0) {
-        // Multiple slaves are not supported yet
+    if (idx >= (sizeof(i2c->slave_multi) / sizeof(uint32_t))) {
         return E_NOT_SUPPORTED;
     }
 
-    if (slaveAddr > MXC_F_I2C_REVA_SLAVE_ADDR) {
+    if (slaveAddr > MXC_F_I2C_REVA_SLAVE_MULTI_ADDR) {
         // Only support addresses up to 10 bits
         return E_BAD_PARAM;
     }
 
-    i2c->slave = 0;
+    i2c->slave_multi[idx] = 0;
 
     if (slaveAddr > MXC_I2C_REVA_MAX_ADDR_WIDTH) {
         // Set for 10bit addressing mode
-        i2c->slave = MXC_F_I2C_REVA_SLAVE_EXT_ADDR_EN;
+        i2c->slave_multi[idx] = MXC_F_I2C_REVA_SLAVE_MULTI_EXT_ADDR_EN;
     }
 
-    i2c->slave |= slaveAddr;
+    i2c->slave_multi[idx] |= slaveAddr;
 
     return E_NO_ERROR;
 }
 
 int MXC_I2C_RevA_Shutdown(mxc_i2c_reva_regs_t *i2c)
 {
-    return E_NOT_SUPPORTED;
+    int8_t i2cNum;
+
+    if (i2c == NULL) {
+        return E_NULL_PTR;
+    }
+
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+
+    i2c->ctrl = 0;
+    i2c->inten0 = 0;
+    i2c->inten1 = 0;
+    i2c->intfl0 = i2c->intfl0;
+    i2c->intfl1 = i2c->intfl1;
+    i2c->rxctrl0 = 0;
+    i2c->rxctrl1 = 0;
+    i2c->txctrl0 = 0;
+    i2c->txctrl1 = 0;
+
+    states[i2cNum] = (const mxc_i2c_reva_req_state_t){ 0 };
+
+    MXC_I2C_ClearRXFIFO((mxc_i2c_regs_t *)i2c);
+    MXC_I2C_ClearTXFIFO((mxc_i2c_regs_t *)i2c);
+
+    if (states[i2cNum].dma_initialized == true) {
+#if TARGET_NUM == 32665
+        MXC_DMA_DeInit((mxc_dma_regs_t *)(states[i2cNum].dma));
+#else
+        MXC_DMA_DeInit();
+#endif
+        // Release any acquired DMA channels.
+        if (states[i2cNum].channelTx >= 0) {
+            MXC_DMA_ReleaseChannel(states[i2cNum].channelTx);
+            states[i2cNum].channelTx = E_NO_DEVICE;
+        }
+        if (states[i2cNum].channelRx >= 0) {
+            MXC_DMA_ReleaseChannel(states[i2cNum].channelRx);
+            states[i2cNum].channelRx = E_NO_DEVICE;
+        }
+    }
+
+    return E_NO_ERROR;
 }
 
 int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
@@ -154,7 +207,7 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
         hsHiClks = ticksTotal / 3 - 1;
 
         // For rounding errors, adjust by 1 clock tick
-        if (ticksTotal % 1) {
+        if (ticksTotal % 2) {
             hsHiClks++;
         }
 
@@ -182,7 +235,7 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
     lowClks = (ticksTotal >> 1) - 1;
 
     // Adjust for rounding errors
-    if (ticksTotal % 1) {
+    if (ticksTotal % 2) {
         hiClks++;
     }
 
@@ -200,10 +253,18 @@ int MXC_I2C_RevA_SetFrequency(mxc_i2c_reva_regs_t *i2c, unsigned int hz)
 
 unsigned int MXC_I2C_RevA_GetFrequency(mxc_i2c_reva_regs_t *i2c)
 {
-    unsigned int sclCycles = 0;
+    unsigned int sclCycles = 2;
+    // sclCycles Initialized to 2 b/c formula is sclCycles = (lo_clks + 1) + (hi_clks + 1)
 
-    // Calculate the speed based on what we've written into registers
-    sclCycles = (i2c->clklo & MXC_F_I2C_REVA_CLKLO_LO) + (i2c->clkhi & MXC_F_I2C_REVA_CLKHI_HI);
+    if (i2c->ctrl & MXC_F_I2C_REVA_CTRL_HS_EN) {
+        // HS-Mode enabled, calculate HS Frequency
+        sclCycles += (i2c->hsclk & MXC_F_I2C_REVA_HSCLK_LO) >> MXC_F_I2C_REVA_HSCLK_LO_POS;
+        sclCycles += (i2c->hsclk & MXC_F_I2C_REVA_HSCLK_HI) >> MXC_F_I2C_REVA_HSCLK_HI_POS;
+    } else {
+        // HS-Mode not enabled, calculate nominal frequency
+        sclCycles += (i2c->clklo & MXC_F_I2C_REVA_CLKLO_LO);
+        sclCycles += (i2c->clkhi & MXC_F_I2C_REVA_CLKHI_HI);
+    }
 
     return PeripheralClock / sclCycles;
 }
@@ -243,6 +304,161 @@ int MXC_I2C_RevA_GetClockStretching(mxc_i2c_reva_regs_t *i2c)
     }
 
     return !((i2c->ctrl & MXC_F_I2C_REVA_CTRL_CLKSTR_DIS) >> MXC_F_I2C_REVA_CTRL_CLKSTR_DIS_POS);
+}
+
+int MXC_I2C_RevA_DMA_Init(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma, bool use_dma_tx,
+                          bool use_dma_rx)
+{
+    int8_t i2cNum;
+    int8_t rxChannel;
+    int8_t txChannel;
+
+    if (i2c == NULL || dma == NULL) {
+        return E_NULL_PTR;
+    }
+
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+
+    if (states[i2cNum].dma_initialized == false) {
+#if TARGET_NUM == 32665
+        MXC_DMA_Init((mxc_dma_regs_t *)dma);
+#else
+        MXC_DMA_Init();
+#endif
+    }
+
+    // Release any acquire DMA TX channels before configuring.
+    if (states[i2cNum].channelTx != E_NO_DEVICE) {
+        MXC_DMA_ReleaseChannel(states[i2cNum].channelTx);
+    }
+
+    // Release any acquire DMA RX channels before configuring.
+    if (states[i2cNum].channelRx != E_NO_DEVICE) {
+        MXC_DMA_ReleaseChannel(states[i2cNum].channelRx);
+    }
+
+    // Set up I2C DMA TX.
+    if (use_dma_tx == true) {
+#if TARGET_NUM == 32665
+        txChannel = MXC_DMA_AcquireChannel((mxc_dma_regs_t *)dma);
+#else
+        txChannel = MXC_DMA_AcquireChannel();
+#endif
+
+        // Set Source and Destination Widths.
+        MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
+                     (MXC_DMA_WIDTH_BYTE << MXC_F_DMA_REVA_CTRL_SRCWD_POS));
+        MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
+                     (MXC_DMA_WIDTH_BYTE << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
+
+        // Set Source and Destination Increment.
+        MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCINC,
+                     (1 << MXC_F_DMA_REVA_CTRL_SRCINC_POS));
+        MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTINC,
+                     (0 << MXC_F_DMA_REVA_CTRL_DSTINC_POS));
+
+        if (states[i2cNum].master) {
+            MXC_DMA_SetCallback(txChannel, MXC_I2C_RevA_DMACallback);
+        } else {
+            MXC_DMA_SetCallback(txChannel, NULL);
+        }
+
+        MXC_DMA_EnableInt(txChannel);
+        MXC_DMA_SetChannelInterruptEn(txChannel, 0, 1);
+
+        states[i2cNum].channelTx = txChannel;
+    }
+
+    // Set up I2C DMA RX.
+    if (use_dma_rx == true) {
+#if TARGET_NUM == 32665
+        rxChannel = MXC_DMA_AcquireChannel((mxc_dma_regs_t *)dma);
+#else
+        rxChannel = MXC_DMA_AcquireChannel();
+#endif
+
+        // Set Source and Destination Widths.
+        MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCWD,
+                     (MXC_DMA_WIDTH_BYTE << MXC_F_DMA_REVA_CTRL_SRCWD_POS));
+        MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTWD,
+                     (MXC_DMA_WIDTH_BYTE << MXC_F_DMA_REVA_CTRL_DSTWD_POS));
+
+        // Set Source and Destination Increment.
+        MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_SRCINC,
+                     (0 << MXC_F_DMA_REVA_CTRL_SRCINC_POS));
+        MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_DSTINC,
+                     (1 << MXC_F_DMA_REVA_CTRL_DSTINC_POS));
+
+        if (states[i2cNum].master) {
+            MXC_DMA_SetCallback(rxChannel, MXC_I2C_RevA_DMACallback);
+        } else {
+            MXC_DMA_SetCallback(rxChannel, NULL);
+        }
+
+        MXC_DMA_EnableInt(rxChannel);
+        MXC_DMA_SetChannelInterruptEn(rxChannel, 0, 1);
+
+        states[i2cNum].channelRx = rxChannel;
+    }
+
+    states[i2cNum].dma_initialized = true;
+    states[i2cNum].dma = dma;
+
+    return E_NO_ERROR;
+}
+
+int MXC_I2C_RevA_DMA_GetTXChannel(mxc_i2c_reva_regs_t *i2c)
+{
+    int i2cNum;
+
+    if (i2c == NULL) {
+        return E_NULL_PTR;
+    }
+
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+
+    return states[i2cNum].channelTx;
+}
+
+int MXC_I2C_RevA_DMA_GetRXChannel(mxc_i2c_reva_regs_t *i2c)
+{
+    int i2cNum;
+
+    if (i2c == NULL) {
+        return E_NULL_PTR;
+    }
+
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+
+    return states[i2cNum].channelRx;
+}
+
+int MXC_I2C_RevA_DMA_SetRequestSelect(mxc_i2c_reva_regs_t *i2c, mxc_dma_reva_regs_t *dma,
+                                      uint32_t txReqSel, uint32_t rxReqSel)
+{
+    int i2cNum;
+    uint32_t txChannel;
+    uint32_t rxChannel;
+
+    if (i2c == NULL || dma == NULL) {
+        return E_NULL_PTR;
+    }
+
+    i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
+
+    txChannel = states[i2cNum].channelTx;
+    rxChannel = states[i2cNum].channelRx;
+
+    // This function will overwrite the current DMA TX/RX Request Selects.
+    if (txReqSel != -1) {
+        MXC_SETFIELD(dma->ch[txChannel].ctrl, MXC_F_DMA_REVA_CTRL_REQUEST, txReqSel);
+    }
+
+    if (rxReqSel != -1) {
+        MXC_SETFIELD(dma->ch[rxChannel].ctrl, MXC_F_DMA_REVA_CTRL_REQUEST, rxReqSel);
+    }
+
+    return E_NO_ERROR;
 }
 
 /* ************************************************************************* */
@@ -413,11 +629,9 @@ int MXC_I2C_RevA_ReadRXFIFO(mxc_i2c_reva_regs_t *i2c, volatile unsigned char *by
 }
 
 int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len,
-                               mxc_i2c_reva_dma_complete_cb_t callback, mxc_dma_config_t config,
                                mxc_dma_regs_t *dma)
 {
     uint8_t i2cNum;
-    uint8_t channel;
     mxc_dma_srcdst_t srcdst;
 
     if ((i2c == NULL) || (bytes == NULL)) {
@@ -426,37 +640,17 @@ int MXC_I2C_RevA_ReadRXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, u
 
     i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
 
-#if TARGET_NUM == 32665
-    channel = MXC_DMA_AcquireChannel(dma);
-#else
-    channel = MXC_DMA_AcquireChannel();
-#endif
+    if (states[i2cNum].channelRx == E_NO_DEVICE) {
+        return E_BAD_STATE;
+    }
 
-    config.ch = channel;
-
-    config.srcwd = MXC_DMA_WIDTH_BYTE;
-    config.dstwd = MXC_DMA_WIDTH_BYTE;
-
-    config.srcinc_en = 0;
-    config.dstinc_en = 1;
-
-    srcdst.ch = channel;
+    srcdst.ch = states[i2cNum].channelRx;
     srcdst.dest = bytes;
     srcdst.len = len;
 
-    states[i2cNum].channelRx = channel;
-    MXC_DMA_ConfigChannel(config, srcdst);
+    MXC_DMA_SetSrcDst(srcdst);
 
-    if (states[i2cNum].master) {
-        MXC_DMA_SetCallback(channel, MXC_I2C_RevA_DMACallback);
-    } else {
-        MXC_DMA_SetCallback(channel, NULL);
-    }
-
-    MXC_DMA_EnableInt(channel);
-    MXC_DMA_Start(channel);
-    //MXC_DMA->ch[channel].cfg |= MXC_F_DMA_CFG_CTZIEN;
-    MXC_DMA_SetChannelInterruptEn(channel, 0, 1);
+    MXC_DMA_Start(states[i2cNum].channelRx);
     i2c->dma |= MXC_F_I2C_REVA_DMA_RX_EN;
 
     return E_NO_ERROR;
@@ -488,11 +682,9 @@ int MXC_I2C_RevA_WriteTXFIFO(mxc_i2c_reva_regs_t *i2c, volatile unsigned char *b
 }
 
 int MXC_I2C_RevA_WriteTXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, unsigned int len,
-                                mxc_i2c_reva_dma_complete_cb_t callback, mxc_dma_config_t config,
                                 mxc_dma_regs_t *dma)
 {
-    uint8_t i2cNum;
-    uint8_t channel;
+    int8_t i2cNum;
     mxc_dma_srcdst_t srcdst;
 
     if ((i2c == NULL) || (bytes == NULL)) {
@@ -503,37 +695,17 @@ int MXC_I2C_RevA_WriteTXFIFODMA(mxc_i2c_reva_regs_t *i2c, unsigned char *bytes, 
 
     i2c->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_START;
 
-#if TARGET_NUM == 32665
-    channel = MXC_DMA_AcquireChannel(dma);
-#else
-    channel = MXC_DMA_AcquireChannel();
-#endif
+    if (states[i2cNum].channelTx == E_NO_DEVICE) {
+        return E_BAD_STATE;
+    }
 
-    config.ch = channel;
-
-    config.srcwd = MXC_DMA_WIDTH_BYTE;
-    config.dstwd = MXC_DMA_WIDTH_BYTE;
-
-    config.srcinc_en = 1;
-    config.dstinc_en = 0;
-
-    srcdst.ch = channel;
+    srcdst.ch = states[i2cNum].channelTx;
     srcdst.source = bytes;
     srcdst.len = len;
 
-    states[i2cNum].channelTx = channel;
-    MXC_DMA_ConfigChannel(config, srcdst);
+    MXC_DMA_SetSrcDst(srcdst);
 
-    if (states[i2cNum].master) {
-        MXC_DMA_SetCallback(channel, MXC_I2C_RevA_DMACallback);
-    } else {
-        MXC_DMA_SetCallback(channel, NULL);
-    }
-
-    MXC_DMA_EnableInt(channel);
-    MXC_DMA_Start(channel);
-    // MXC_DMA->ch[channel].cfg |= MXC_F_DMA_CFG_CTZIEN;
-    MXC_DMA_SetChannelInterruptEn(channel, 0, 1);
+    MXC_DMA_Start(states[i2cNum].channelTx);
     i2c->dma |= MXC_F_I2C_REVA_DMA_TX_EN;
 
     return E_NO_ERROR;
@@ -891,7 +1063,8 @@ int MXC_I2C_RevA_MasterTransactionAsync(mxc_i2c_reva_req_t *req)
 
 int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *dma)
 {
-    int i2cNum;
+    int error;
+    int8_t i2cNum;
 
     mxc_i2c_reva_regs_t *i2c = req->i2c; // Save off pointer for faster access
     i2cNum = MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c);
@@ -921,15 +1094,21 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
     MXC_I2C_SetRXThreshold((mxc_i2c_regs_t *)i2c, 1);
 
     states[i2cNum].req = req;
+    states[i2cNum].writeDone = 0;
+    states[i2cNum].readDone = 0;
 
-    states[i2cNum].channelTx = 0xFF;
-    states[i2cNum].channelRx = 0xFF;
+    // If MXC_I2C_DMA_Init(...) was not already called, then configure both DMA TX/RXchannels by default.
+    if (states[i2cNum].dma_initialized == false) {
+        error = MXC_I2C_DMA_Init((mxc_i2c_regs_t *)i2c, (mxc_dma_regs_t *)dma, true, true);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
+    }
 
-#if TARGET_NUM == 32665
-    MXC_DMA_Init(dma);
-#else
-    MXC_DMA_Init();
-#endif
+    error = MXC_I2C_DMA_SetRequestSelect((mxc_i2c_regs_t *)i2c, req->tx_buf, req->rx_buf);
+    if (error != E_NO_ERROR) {
+        return error;
+    }
 
     //tx
     if ((req->tx_buf != NULL) && !(states[i2cNum].writeDone)) {
@@ -946,7 +1125,7 @@ int MXC_I2C_RevA_MasterTransactionDMA(mxc_i2c_reva_req_t *req, mxc_dma_regs_t *d
 
     if (req->rx_buf != NULL) {
         while (states[i2cNum].writeDone != 1) {}
-        //Ensure DMA transmit has finished before attempting to receive
+        //Ensure DMA transmission has finished before attempting to receive
 
         if ((states[i2cNum].writeDone) && (!states[i2cNum].readDone)) {
             if (req->rx_len > MXC_I2C_REVA_MAX_FIFO_TRANSACTION) {
@@ -991,9 +1170,6 @@ void MXC_I2C_RevA_DMACallback(int ch, int error)
                     (temp_req->i2c)->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_STOP;
                 }
 
-                MXC_DMA_ReleaseChannel(states[i].channelRx);
-                MXC_DMA_ReleaseChannel(states[i].channelTx);
-
                 // Callback if not NULL
                 if (temp_req->callback != NULL) {
                     temp_req->callback(temp_req, E_NO_ERROR);
@@ -1010,9 +1186,6 @@ void MXC_I2C_RevA_DMACallback(int ch, int error)
                 } else {
                     (temp_req->i2c)->mstctrl |= MXC_F_I2C_REVA_MSTCTRL_STOP;
                 }
-
-                MXC_DMA_ReleaseChannel(states[i].channelRx);
-                MXC_DMA_ReleaseChannel(states[i].channelTx);
 
                 // Callback if not NULL
                 if (temp_req->callback != NULL) {
@@ -1288,157 +1461,9 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
     uint32_t tFlags = i2c->intfl0;
     *retVal = E_NO_ERROR;
 
-    uint32_t readFlag = i2c->ctrl & MXC_F_I2C_REVA_CTRL_READ;
-    // Callback called on
-    // Slave Address Match (distinguish read/write)
-    // RX Threshold
-    // TX Threshold
-    // Done
-    // TX Underflow
-    // RX Overflow
-    //
-    // Event Codes
-    // I2C_EVT_MASTER_WR
-    // I2C_EVT_MASTER_RD
-    // I2C_EVT_RX_THRESH
-    // I2C_EVT_TX_THRESH
-    // I2C_EVT_TRANS_COMP
-    // I2C_EVT_UNDERFLOW
-    // I2C_EVT_OVERFLOW
-    if (!(int_en[0] & (MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH | MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH |
-                       MXC_F_I2C_REVA_INTFL0_ADDR_MATCH))) {
-        // The STOPERR/STARTERR interrupt that's enabled here could fire before we are addressed
-        // (fires anytime a stop/start is detected out of sequence).
-        if (tFlags & MXC_I2C_REVA_ERROR) {
-            *retVal = E_COMM_ERR;
-
-            if (callback != NULL) {
-                callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
-            }
-
-            MXC_I2C_ClearFlags((mxc_i2c_regs_t *)i2c, MXC_I2C_REVA_INTFL0_MASK,
-                               MXC_I2C_REVA_INTFL1_MASK); // Clear all I2C Interrupts
-            MXC_I2C_ClearTXFIFO((mxc_i2c_regs_t *)i2c);
-            MXC_I2C_ClearRXFIFO((mxc_i2c_regs_t *)i2c);
-            int_en[0] = 0;
-            int_en[1] = 0;
-            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
-        }
-
-        if (int_en[0] & MXC_F_I2C_REVA_INTFL0_RX_THD || int_en[1] & MXC_F_I2C_REVA_INTFL1_RX_OV) {
-            if (tFlags & MXC_F_I2C_REVA_INTFL0_RX_THD) {
-                if (callback != NULL) {
-                    callback(i2c, MXC_I2C_REVA_EVT_RX_THRESH, NULL);
-                }
-
-                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RX_THD;
-            }
-
-            if (i2c->intfl1 & MXC_F_I2C_REVA_INTFL1_RX_OV) {
-                if (callback != NULL) {
-                    callback(i2c, MXC_I2C_REVA_EVT_OVERFLOW, NULL);
-                }
-
-                i2c->intfl1 = MXC_F_I2C_REVA_INTFL1_RX_OV;
-            }
-        }
-
-        if (int_en[0] & (MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT) ||
-            int_en[1] & MXC_F_I2C_REVA_INTFL1_TX_UN) {
-            if (tFlags & MXC_F_I2C_REVA_INTFL0_TX_THD) {
-                if (callback != NULL) {
-                    callback(i2c, MXC_I2C_REVA_EVT_TX_THRESH, NULL);
-                }
-
-                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_THD;
-            }
-
-            if (i2c->intfl1 & MXC_F_I2C_REVA_INTFL1_TX_UN) {
-                if (callback != NULL) {
-                    callback(i2c, MXC_I2C_REVA_EVT_UNDERFLOW, NULL);
-                }
-
-                i2c->intfl1 = MXC_F_I2C_REVA_INTFL1_TX_UN;
-            }
-
-            if (tFlags & MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT) {
-                *retVal = E_NO_ERROR;
-
-                if (callback != NULL) {
-                    callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
-                }
-
-                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
-                int_en[0] = 0;
-                int_en[1] = 0;
-                AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
-            }
-        }
-
-        if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP) {
-            *retVal = E_NO_ERROR;
-
-            if (callback != NULL) {
-                callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
-            }
-
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
-            int_en[0] = 0;
-            int_en[1] = 0;
-            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
-        }
-    }
-
-    if (tFlags & MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH) {
-        if (callback != NULL) {
-            callback(i2c, MXC_I2C_REVA_EVT_MASTER_WR, NULL);
-        }
-
-        i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH;
-        i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
-        i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
-
-        int_en[0] = MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL0_DONE | MXC_I2C_REVA_ERROR;
-        int_en[1] = MXC_F_I2C_REVA_INTFL1_RX_OV;
-    }
-
-    if (tFlags & MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH) {
-        if (callback != NULL) {
-            callback(i2c, MXC_I2C_REVA_EVT_MASTER_RD, NULL);
-        }
-
-        i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH;
-        i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
-        int_en[0] = MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT |
-                    MXC_I2C_REVA_ERROR;
-        int_en[1] = MXC_F_I2C_REVA_INTFL1_TX_UN;
-    }
-
-    if (tFlags & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
-        if (readFlag & MXC_F_I2C_REVA_CTRL_READ) {
-            if (callback != NULL) {
-                callback(i2c, MXC_I2C_REVA_EVT_MASTER_RD, NULL);
-            }
-
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH;
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
-
-            int_en[0] = MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT |
-                        MXC_I2C_REVA_ERROR;
-            int_en[1] = MXC_F_I2C_REVA_INTFL1_TX_UN;
-        } else {
-            if (callback != NULL) {
-                callback(i2c, MXC_I2C_REVA_EVT_MASTER_WR, NULL);
-            }
-
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH;
-            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
-            int_en[0] = MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL0_DONE |
-                        MXC_I2C_REVA_ERROR;
-            int_en[1] = MXC_F_I2C_REVA_INTFL1_RX_OV;
-        }
-    } else if (tFlags & MXC_I2C_REVA_ERROR) {
+    // Check for errors
+    if (tFlags & MXC_I2C_REVA_ERROR) {
+        // Error occurred, notify callback function and end transaction
         *retVal = E_COMM_ERR;
 
         if (callback != NULL) {
@@ -1452,6 +1477,110 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
         int_en[0] = 0;
         int_en[1] = 0;
         AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+    }
+
+    // Check whether data is available if we received an interrupt occurred while receiving
+    if (int_en[0] & MXC_F_I2C_REVA_INTFL0_RX_THD || int_en[1] & MXC_F_I2C_REVA_INTFL1_RX_OV) {
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_RX_THD) {
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_RX_THRESH, NULL);
+            }
+
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RX_THD;
+        }
+
+        if (i2c->intfl1 & MXC_F_I2C_REVA_INTFL1_RX_OV) {
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_OVERFLOW, NULL);
+            }
+
+            i2c->intfl1 = MXC_F_I2C_REVA_INTFL1_RX_OV;
+        }
+    }
+
+    // Check whether TX FIFO needs to be refilled if interrupt ocurred while transmitting
+    if (int_en[0] & (MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT) ||
+        int_en[1] & MXC_F_I2C_REVA_INTFL1_TX_UN) {
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_TX_THD) {
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_TX_THRESH, NULL);
+            }
+
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_THD;
+        }
+
+        if (i2c->intfl1 & MXC_F_I2C_REVA_INTFL1_TX_UN) {
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_UNDERFLOW, NULL);
+            }
+
+            i2c->intfl1 = MXC_F_I2C_REVA_INTFL1_TX_UN;
+        }
+
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT) {
+            *retVal = E_NO_ERROR;
+
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
+            }
+
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
+            int_en[0] = 0;
+            int_en[1] = 0;
+            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+        }
+    }
+
+    // Check for address match interrupt
+    if (int_en[0] & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
+            if (i2c->ctrl & MXC_F_I2C_REVA_CTRL_READ) {
+                // Read request received from the master
+                if (callback != NULL) {
+                    callback(i2c, MXC_I2C_REVA_EVT_MASTER_RD, NULL);
+                }
+
+                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_RD_ADDR_MATCH;
+                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT;
+
+                int_en[0] = MXC_F_I2C_REVA_INTFL0_TX_THD | MXC_F_I2C_REVA_INTFL0_TX_LOCKOUT |
+                            MXC_F_I2C_REVA_INTFL0_DONE | MXC_I2C_REVA_ERROR;
+                int_en[1] = MXC_F_I2C_REVA_INTFL1_TX_UN;
+            } else {
+                // Write request received from the master
+                if (callback != NULL) {
+                    callback(i2c, MXC_I2C_REVA_EVT_MASTER_WR, NULL);
+                }
+
+                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_WR_ADDR_MATCH;
+                i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+                int_en[0] = MXC_F_I2C_REVA_INTFL0_RX_THD | MXC_F_I2C_REVA_INTFL0_DONE |
+                            MXC_I2C_REVA_ERROR;
+                int_en[1] = MXC_F_I2C_REVA_INTFL1_RX_OV;
+            }
+        }
+    }
+
+    // Check if transaction completed or restart occurred
+    if (int_en[0] & MXC_F_I2C_REVA_INTFL0_DONE) {
+        if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP) {
+            // Stop/NACK condition occurred, transaction complete
+            *retVal = E_NO_ERROR;
+
+            if (callback != NULL) {
+                callback(i2c, MXC_I2C_REVA_EVT_TRANS_COMP, retVal);
+            }
+
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
+            int_en[0] = 0;
+            int_en[1] = 0;
+            AsyncRequests[MXC_I2C_GET_IDX((mxc_i2c_regs_t *)i2c)] = NULL;
+        } else if (tFlags & MXC_F_I2C_REVA_INTFL0_DONE) {
+            // Restart detected, re-arm address match interrupt
+            i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_DONE;
+            int_en[0] = MXC_F_I2C_REVA_INTFL0_ADDR_MATCH;
+        }
     }
 }
 

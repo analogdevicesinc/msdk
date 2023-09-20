@@ -120,12 +120,14 @@ static void link_callback_func(struct netif *netif)
 
 static unsigned int sys_get_ms(void)
 {
-    int sec;
+    uint32_t sec, ssec;
     double subsec;
-    unsigned int ms;
+    uint32_t ms;
 
-    subsec = MXC_RTC_GetSubSecond() / 4096.0;
-    sec = MXC_RTC_GetSecond();
+    MXC_RTC_GetSubSeconds(&ssec);
+    subsec = (double)ssec / (double)(4096.0);
+
+    MXC_RTC_GetSeconds(&sec);
 
     ms = (sec * 1000) + (int)(subsec * 1000);
 

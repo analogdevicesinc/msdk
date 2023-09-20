@@ -49,15 +49,34 @@ SECTIONS {
     {
         _text = .;
         KEEP(*(.isr_vector))
-        *(.text*)    /* program code */
+        EXCLUDE_FILE (*riscv.o) *(.text*)    /* Program code (exclude RISCV code) */
         *(.rodata*)  /* read-only data: "const" */
 
         KEEP(*(.init))
         KEEP(*(.fini))
 
+         /* .ctors */
+        *crtbegin.o(.ctors)
+        *crtbegin?.o(.ctors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
+        *(SORT(.ctors.*))
+        *(.ctors)
+
+        /* .dtors */
+        *crtbegin.o(.dtors)
+        *crtbegin?.o(.dtors)
+        *(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
+        *(SORT(.dtors.*))
+        *(.dtors)
+
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
+    } > FLASH
+
+    .ARM.extab :
+    {
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
     } > FLASH
 
     /* Binary import */
@@ -99,7 +118,7 @@ SECTIONS {
     .ARM.exidx :
     {
         __exidx_start = .;
-        *(.ARM.exidx*)
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
         __exidx_end = .;
     } > FLASH
 
@@ -107,6 +126,7 @@ SECTIONS {
     {
         _data = ALIGN(., 4);
         _csi = . + 0x20000;
+        *(vtable)
         *(.data*)           /*read-write initialized data: initialized global variable*/
 
 
@@ -180,4 +200,14 @@ SECTIONS {
 
     /* Check if data + heap + stack exceeds RAM limit */
     ASSERT(__StackLimit >= _ebss, "region RAM overflowed with stack")
+
+    /* Section used by RISCV loader projects.  See RISCV_LOAD documentation in the build system. */
+    .riscv_flash :
+    {
+        /* Align address to mod 256 with a small offset. This is required to match the flash page size.*/
+        . = ALIGN(256); /* ALIGN operatator is used here.  Note that (. & 0x1FFFFF00) was used in the past, but a strange bug was seen on Windows where the & did not behave as expected.*/
+        . += 0x100;
+        _riscv_boot = .;
+        KEEP(*riscv.o (.text*))
+    } > FLASH
 }

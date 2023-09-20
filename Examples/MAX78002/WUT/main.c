@@ -33,8 +33,7 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Wake-Up Timer (WUT) example for low power modes.
  */
 
 /***** Includes *****/
@@ -43,6 +42,7 @@
 #include "mxc_device.h"
 #include "mxc_delay.h"
 #include "mxc.h"
+#include "board.h"
 
 /***** Definitions *****/
 #define SLEEP_MODE // Select between SLEEP_MODE and DEEPSLEEP_MODE

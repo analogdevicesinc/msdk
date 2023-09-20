@@ -43,7 +43,7 @@
 #include "mxc_errors.h"
 #include "mxc_pins.h"
 
-#if defined(__ICCARM__) || (__CC_ARM)
+#if defined(__ICCARM__) || defined(__CC_ARM) || defined(__ARMCC_VERSION)
 #include "RTE_Components.h"
 #endif
 

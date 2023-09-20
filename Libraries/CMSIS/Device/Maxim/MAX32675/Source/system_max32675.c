@@ -37,13 +37,27 @@
 #include "max32675.h"
 #include "gcr_regs.h"
 #include "mxc_sys.h"
-#include "afe.h"
 
 extern void (*const __vector_table[])(void);
 
 extern void (*const __isr_vector[])(void);
 
 uint32_t SystemCoreClock = HIRC_FREQ;
+
+/*
+The libc implementation from GCC 11+ depends on _getpid and _kill in some places.
+There is no concept of processes/PIDs in the baremetal PeriphDrivers, therefore
+we implement stub functions that return an error code to resolve linker warnings.
+*/
+int _getpid(void)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int _kill(void)
+{
+    return E_NOT_SUPPORTED;
+}
 
 __weak void SystemCoreClockUpdate(void)
 {
@@ -144,8 +158,6 @@ __weak void SystemInit(void)
     MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_GPIO1);
 
     Board_Init();
-
-    afe_load_trims();
 }
 
 #if defined(__CC_ARM)

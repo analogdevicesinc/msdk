@@ -244,7 +244,7 @@
           </field>
           <field>
             <name>CTS_EV</name>
-            <description>Enable Interrupt For CTS signal change Error</description>
+            <description>Enable Interrupt For changeCTS signal change Error</description>
             <bitOffset>2</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
@@ -258,6 +258,12 @@
             <name>RX_THD</name>
             <description>Enable Interrupt For RX FIFO reaches the number of bytes configured by RXTHD</description>
             <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX_OB</name>
+            <description>Enable Interrupt For TX FIFO has one byte remaning</description>
+            <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>
@@ -301,6 +307,12 @@
             <name>RX_THD</name>
             <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
             <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX_OB</name>
+            <description>Flag for interrupt when TX FIFO has one byte remaining</description>
+            <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>

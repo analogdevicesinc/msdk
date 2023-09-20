@@ -7,12 +7,6 @@
 
 # **********************************************************
 
-# Specify the board used
-ifeq "$(BOARD)" ""
-BOARD=EvKit_V1
-#BOARD=FTHR_RevA
-endif
-
 # Place build files specific to EvKit_V1 here.
 ifeq "$(BOARD)" "EvKit_V1"
 PROJ_CFLAGS+=-DENABLE_TFT
@@ -24,7 +18,7 @@ ifeq "$(BOARD)" "FTHR_RevA"
 #PROJ_CFLAGS+=-DENABLE_TFT
 endif
 
-# Set a higher optimization level to maximize performance
-MXC_OPTIMIZE_CFLAGS = -O2
-# Default optimization level for debugging purpose
-#MXC_OPTIMIZE_CFLAGS = -Og
+ifeq ($(BOARD),CAM01_RevA)
+$(error ERR_NOTSUPPORTED: This project is not supported for the CAM01 board)
+endif
+

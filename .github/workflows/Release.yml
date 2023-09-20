@@ -1,0 +1,37 @@
+name: "Package Release Components"
+
+on:
+  release:
+    types:
+      - "published"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: "Release"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout the repository"
+        uses: "actions/checkout@v3.5.3"
+
+      - name: "Archive Tools"
+        shell: "bash"
+        run: tar -cf Tools.tar.xz --use-compress-program='xz -9' ./Tools
+
+      - name: "Archive Examples"
+        shell: "bash"
+        run: tar -cf Examples.tar.xz --use-compress-program='xz -9' ./Examples
+
+      - name: "Archive Libraries"
+        shell: "bash"
+        run: tar -cf Libraries.tar.xz --use-compress-program='xz -9' ./Libraries
+
+      - name: "Upload the achives to the release"
+        uses: softprops/action-gh-release@v0.1.15
+        with:
+          files: |
+            ${{ github.workspace }}/Tools.tar.xz
+            ${{ github.workspace }}/Examples.tar.xz
+            ${{ github.workspace }}/Libraries.tar.xz

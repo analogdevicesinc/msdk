@@ -15,9 +15,8 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 (None - this project builds as a standard example)
 
-## Setup
+## Required Connections
 
-##### Required Connections
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP22(RX_SEL) and JP23(TX_SEL) to UART1 header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.

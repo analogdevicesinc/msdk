@@ -33,14 +33,14 @@
 
 /**
  * @file    main.c
- * @brief   Hello World!
- * @details This example uses the UART to print to a terminal and flashes an LED.
+ * @brief   Wake-Up Timer (WUT) example for low power modes.
  */
 
 /***** Includes *****/
 #include <stdio.h>
 #include <stdint.h>
 #include "mxc.h"
+#include "board.h"
 #include "pb.h"
 
 /***** Definitions *****/

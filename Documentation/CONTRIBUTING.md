@@ -19,6 +19,56 @@ If a direct branch on the mainline MSDK repo is made, the following branch namin
 - Generic development branch: `dev/branchname`
 - New and/or modified example branch: `example/branchname`
 
+## PR Title - Subject Responsibilites for Reviewers/Mergers/PR Owners
+
+Format: 
+`type(scope)<!>: Subject`
+
+For more information of the format, please review the [pull_request_template.md](https://github.com/Analog-Devices-MSDK/msdk/blob/main/Documentation/pull_request_template.md).
+
+These are the rules for the `Subject`.
+
+1.  The first character is capitalized and the subject must not end with any punctuation (!,.?) 
+2.  Use imperative mood in the Subjects - meaning the tone of the Subject should be like giving an order or request.
+    * “Add” instead of “Added” or “Adding”.
+    * “Fix” instead of “Fixed” or “Fixing”.
+    * “Update” instead of “Updated” or “Updating”.
+    * “Delete” instead of “Deleted” or “Deleting”.
+3.  The Subject contents should have useful and concise wording.
+    * No long descriptive subjects - not concise if it gets too descriptive. 
+        * You can be more descriptive in the body or footer of the commit by running:
+        `git commit -m “Title contents” -m “Body contents” -m “Footer contents”` 
+    * No simple titles like “Add small SPI change”
+4.  The Subject should include what parts are affected, if any. Only the parts’ CHIP NAME should be used in the Subject. No die names are allowed.
+    * For the most readability, append the affected parts list at the end of the Subject, so the important, beginning part of the commit message is visible when traversing through the MSDK repo on GitHub.
+    * The list of chip names should be in ascending numerical order in the Subject.
+    * Examples:
+        1. `fix(CMSIS): Rename TRIMSIR registers for MAX32670 and MAX32675`
+        2. `fix(Third-Party): Remove USB DMA support for MAX32655, MAX32665, MAX32690, MAX78000, and MAX78002`
+        3. `feat(Examples): Add console output in Hello_World READMEs for all parts`
+        4. `fix(Examples,PeriphDrivers): Deprecate MXC\_RTC\_GetSecond and MXC\_RTC\_GetSubSecond for all parts except for MAX32520`
+            * Use this type of wording if all but a few parts were affected to shorten the Subject.
+    * **TIP**: The auto-labeler workflow adds part labels to a PR depending on what specific files were updated. Use the list of labels to figure out what parts were affected by the PR's changes.
+5.  If the PR title is related to a Jira ticket or an issue, the Subject should begin with the ticket designation.
+    * Examples:
+        1. `fix(CMSIS): MSDK-123: Add missing I2C Target registers for MAX32670, MAX32672, and MAX32675` 
+        2. `fix(PeriphDrivers): Ticket-321: Fix SPI hanging on 9-bit wide messages for all parts` 
+        3. `fix(Documentation): Issue #123: Revise steps for MSDK installation in the user guides`
+6.  When a merger “Squash and Merges” an approved PR to main, do not delete the PR number that is automatically appended to the title. Ideally, the PR title should be following our rules before approval, so the merger just needs to press the “Squash and Merge” button.
+    * Using previous examples from rule 4, this is what the commit should look like in the main branch:
+        1. `fix(CMSIS): MSDK-123: Add missing I2C Target registers for all parts (#412)`
+        2. `fix(PeriphDrivers): Ticket-321: Fix SPI hanging on 9-bit wide messages for all parts (#646)`
+        3. `feat(Examples): Add console output in Hello_World READMEs for all parts (#342)`
+        4. `fix(Examples,PeriphDrivers): Deprecate MXC\_RTC\_GetSecond and MXC\_RTC\_GetSubSecond for all parts except for MAX32520 (#248)`
+
+Please ensure all actions have passed or successfully completed before merging a PR into `main`. MSDK maintainers have permissions to merge approved PRs even with a failing action.
+
+## PR Format Rules (Workflow Enforced)
+1.  The type is case-sensitive and must be one of the listed types.
+2.  The scope is case-sensitive and must be one of the listed scopes.
+3.  The first word of the Subject must be capitalized.
+4.  The Subject must not end with any punctuation (periods, commas, exclamation marks).
+
 ## Style Guide
 
 The MSDK code-base, for the most-part, follows the [Linux Kernel coding style](https://www.kernel.org/doc/html/v4.10/process/coding-style.html#linux-kernel-coding-style) _and_ [Google's C++ Style Guide](https://google.github.io/styleguide/cppguide.html) with the following exception(s):
@@ -225,10 +275,11 @@ The `Documentation/build.py` script can be used to build the MSDK User Guide and
 To **build** the docs:
 
 1. Install [doxygen](https://www.doxygen.nl/download.html)
-2. Install Python 3
-3. `pip install -r Documentation/requirements.txt`
-4. `python Documentation/build.py`
-5. The site will be built in the `docs` folder of the repo.
+2. Add doxygen's binary diretory to the [Environmental Path](https://learn.microsoft.com/en-us/previous-versions/office/developer/sharepoint-2010/ee537574(v=office.14)) Variable
+3. Install Python 3
+4. `pip install -r Documentation/requirements.txt`
+5. `python Documentation/build.py`
+6. The site will be built in the `docs` folder of the repo.
 
 To **preview** the generated site:
 

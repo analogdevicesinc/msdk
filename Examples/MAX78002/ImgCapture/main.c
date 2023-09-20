@@ -120,10 +120,11 @@ img_data_t capture_img(uint32_t w, uint32_t h, pixformat_t pixel_format, dmamode
     // camera.h drivers will allocate an SRAM buffer whose size is equal to
     // width * height * bytes_per_pixel.  See camera.c for implementation details.
     printf("Configuring camera\n");
+    fifomode_t fifo_mode = (pixel_format == PIXFORMAT_RGB888) ? FIFO_THREE_BYTE : FIFO_FOUR_BYTE;
     int ret = camera_setup(w, // width
                            h, // height
                            pixel_format, // pixel format
-                           FIFO_FOUR_BYTE, // FIFO mode (four bytes is suitable for most cases)
+                           fifo_mode, // FIFO mode (four bytes is suitable for most cases)
                            dma_mode, // DMA (enabling DMA will drastically decrease capture time)
                            dma_channel); // Allocate the DMA channel retrieved in initialization
 
@@ -244,10 +245,11 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     // 1. Configure the camera.  This is the same as the standard blocking capture, except
     // the DMA mode is set to "STREAMING_DMA".
     printf("Configuring camera\n");
+    fifomode_t fifo_mode = (pixel_format == PIXFORMAT_RGB888) ? FIFO_THREE_BYTE : FIFO_FOUR_BYTE;
     int ret = camera_setup(w, // width
                            h, // height
                            pixel_format, // pixel format
-                           FIFO_FOUR_BYTE, // FIFO mode
+                           fifo_mode, // FIFO mode
                            STREAMING_DMA, // Set streaming mode
                            dma_channel); // Allocate the DMA channel retrieved in initialization
 
@@ -259,9 +261,8 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     }
 
     // 2. Retrieve image format and info.
-    img_data.pixel_format = camera_get_pixel_format(); // Retrieve the pixel format of the image
-    camera_get_image(NULL, &img_data.imglen, &img_data.w,
-                     &img_data.h); // Retrieve info using driver function.
+    img_data.pixel_format = camera_get_pixel_format();
+    camera_get_image(NULL, &img_data.imglen, &img_data.w, &img_data.h);
     img_data.raw = (uint32_t *)
         CNN_QUAD0_DSRAM_START; // Manually save the destination address at the first quadrant of CNN data SRAM
 
@@ -279,9 +280,7 @@ cnn_img_data_t stream_img(uint32_t w, uint32_t h, pixformat_t pixel_format, int 
     while (!camera_is_image_rcv()) {
         if ((data = get_camera_stream_buffer()) !=
             NULL) { // The stream buffer will return 'NULL' until an image row is received.
-            // 5. Unload buffer
             cnn_addr = write_bytes_to_cnn_sram(data, buffer_size, cnn_addr);
-            // 6. Release buffer in time for next row
             release_camera_stream_buffer();
         }
     }
@@ -474,6 +473,7 @@ void service_console()
                 if (g_app_settings.bayer_function == BAYER_FUNCTION_PASSTHROUGH) {
                     bayer_passthrough(img_data.raw, img_data.w, img_data.h, (uint16_t *)bayer_data);
                 } else if (g_app_settings.bayer_function == BAYER_FUNCTION_BILINEAR) {
+                    color_correct(img_data.raw, img_data.w, img_data.h);
                     bayer_bilinear_demosaicing(img_data.raw, img_data.w, img_data.h,
                                                (uint16_t *)bayer_data);
                 }

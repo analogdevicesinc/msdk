@@ -39,6 +39,7 @@
 
 #include "mxc_errors.h"
 #include "gpio.h"
+#include "gpiolib.h"
 
 void gpio_set(const mxc_gpio_cfg_t *gpio)
 {

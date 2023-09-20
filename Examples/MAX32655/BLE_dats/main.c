@@ -1,8 +1,7 @@
 /*************************************************************************************************/
 /*!
-*  \file   main.c
-*
-*  \brief  Main file for dats application.
+ * @file    main.c
+ * @brief   Simple BLE Data Server for unformatted data exchange.
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *

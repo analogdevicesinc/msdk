@@ -40,8 +40,8 @@ override PROJECT=sdhc
 ifeq "$(TARGET)" ""
 $(error TARGET must be specified)
 endif
-TARGET_UC:=$(shell echo $(TARGET) | tr a-z A-Z)
-TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
 ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
@@ -74,7 +74,10 @@ IPATH = Include
 IPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET)/Include
 IPATH += $(CMSIS_ROOT)/Include
 IPATH += $(PERIPH_DRIVER_DIR)/Include/$(TARGET_UC)
-$(info $(IPATH))
+
+# Since the diskio.c implementation file has some dependencies
+# on board files, we must set up the board build system as well
+include $(BOARD_DIR)/board.mk
 
 # Include the rules for building for this target
 include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/$(COMPILER)/$(TARGET_LC).mk

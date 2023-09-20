@@ -59,7 +59,7 @@
 // Comment out USE_SAMPLEDATA to use Camera module
 //#define USE_SAMPLEDATA
 
-#define ASCII_ART
+//#define ASCII_ART
 
 #define IMAGE_SIZE_X (64 * 2)
 #define IMAGE_SIZE_Y (64 * 2)
@@ -104,7 +104,6 @@ static uint32_t input_0[IMAGE_SIZE_X * IMAGE_SIZE_Y]; // buffer for camera image
 
 /* **************************************************************************** */
 #ifdef ASCII_ART
-
 //char * brightness = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\"^`'. "; // standard
 char *brightness = "@%#*+=-:. "; // simple
 #define RATIO 2 // ratio of scaling down the image to display in ascii
@@ -146,17 +145,88 @@ void asciiart(uint8_t *img)
 #endif
 
 /* **************************************************************************** */
-
+#ifdef TFT_ENABLE
 void TFT_Print(char *str, int x, int y, int font, int length)
 {
-#ifdef TFT_ENABLE
     // fonts id
     text_t text;
     text.data = str;
     text.len = length;
     MXC_TFT_PrintFont(x, y, font, &text, NULL);
-#endif
 }
+
+/* **************************************************************************** */
+
+int dma_channel;
+int g_dma_channel_tft = 1;
+static uint8_t *rx_data = NULL;
+
+void setup_dma_tft(uint32_t *src_ptr, uint16_t byte_cnt)
+{
+    // TFT DMA
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
+    }
+
+    MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF; // Clear CTZ status flag
+    MXC_DMA->ch[g_dma_channel_tft].dst = (uint32_t)rx_data; // Cast Pointer
+    MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
+    MXC_DMA->ch[g_dma_channel_tft].cnt = byte_cnt;
+
+    MXC_DMA->ch[g_dma_channel_tft].ctrl =
+        ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS) + (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS) +
+         (0x1 << MXC_F_DMA_CTRL_BURST_SIZE_POS) + (0x0 << MXC_F_DMA_CTRL_DSTINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_DSTWD_POS) + (0x1 << MXC_F_DMA_CTRL_SRCINC_POS) +
+         (0x1 << MXC_F_DMA_CTRL_SRCWD_POS) + (0x0 << MXC_F_DMA_CTRL_TO_CLKDIV_POS) +
+         (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) + (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // SPI0 -> TFT
+         (0x0 << MXC_F_DMA_CTRL_PRI_POS) + // High Priority
+         (0x0 << MXC_F_DMA_CTRL_RLDEN_POS) // Disable Reload
+        );
+
+    MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
+    MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR,
+                 (byte_cnt) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FLUSH | MXC_F_SPI_DMA_RX_FLUSH);
+
+    // Clear SPI master done flag
+    MXC_SPI0->intfl = MXC_F_SPI_INTFL_MST_DONE;
+    MXC_SETFIELD(MXC_SPI0->dma, MXC_F_SPI_DMA_TX_THD_VAL, 0x10 << MXC_F_SPI_DMA_TX_THD_VAL_POS);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_TX_FIFO_EN);
+    MXC_SPI0->dma |= (MXC_F_SPI_DMA_DMA_TX_EN);
+    MXC_SPI0->ctrl0 |= (MXC_F_SPI_CTRL0_EN);
+}
+
+/* **************************************************************************** */
+void start_tft_dma(uint32_t *src_ptr, uint16_t byte_cnt)
+{
+    while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {
+        ;
+    }
+
+    if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF) {
+        MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
+    }
+
+    MXC_DMA->ch[g_dma_channel_tft].cnt = byte_cnt;
+    MXC_DMA->ch[g_dma_channel_tft].src = (uint32_t)src_ptr;
+
+    // Enable DMA channel
+    MXC_DMA->ch[g_dma_channel_tft].ctrl += (0x1 << MXC_F_DMA_CTRL_EN_POS);
+    MXC_Delay(1); // to fix artifacts in the image
+    // Start DMA
+    MXC_SPI0->ctrl0 |= MXC_F_SPI_CTRL0_START;
+}
+
+/* **************************************************************************** */
+void tft_dma_display(int x, int y, int w, int h, uint32_t *data)
+{
+    // setup dma
+    setup_dma_tft((uint32_t *)data, w * h * 2);
+
+    // Send a line of captured image to TFT
+    start_tft_dma((uint32_t *)data, w * h * 2);
+}
+#endif
 
 /* **************************************************************************** */
 void fail(void)
@@ -181,7 +251,7 @@ void cnn_load_input(void)
 }
 
 /* **************************************************************************** */
-#if defined USE_SAMPLEDATA && defined TFT_ENABLE
+#if defined(USE_SAMPLEDATA) && defined(TFT_ENABLE)
 void display_sampledata(void)
 {
 #ifdef TFT_ENABLE
@@ -193,8 +263,7 @@ void display_sampledata(void)
     uint32_t temp;
 
     int cnt = 0;
-    {
-    }
+
     w = IMAGE_SIZE_X;
 
     // Get image line by line
@@ -255,6 +324,12 @@ void capture_process_camera(void)
 
     // Get the details of the image from the camera driver.
     camera_get_image(&raw, &imgLen, &w, &h);
+    printf("W:%d H:%d L:%d \n", w, h, imgLen);
+
+#if defined(TFT_ENABLE) && defined(BOARD_FTHR_REVA)
+    // Initialize FTHR TFT for DMA streaming
+    MXC_TFT_Stream(TFT_X_START, TFT_Y_START, w, h);
+#endif
 
     // Get image line by line
     for (int row = 0; row < h; row++) {
@@ -292,7 +367,14 @@ void capture_process_camera(void)
 #endif
         }
 #ifdef TFT_ENABLE
+
+#ifdef BOARD_EVKIT_V1
         MXC_TFT_ShowImageCameraRGB565(TFT_X_START, TFT_Y_START + row, data565, w, 1);
+#endif
+#ifdef BOARD_FTHR_REVA
+        tft_dma_display(TFT_X_START, TFT_Y_START + row, w, 1, (uint32_t *)data565);
+#endif
+
 #endif
 
         //LED_Toggle(LED2);
@@ -320,7 +402,9 @@ int main(void)
     int result[CNN_NUM_OUTPUTS]; // = {0};
     int dma_channel;
 
+#ifdef TFT_ENABLE
     char buff[TFT_BUFF_SIZE];
+#endif
 
 #if defined(BOARD_FTHR_REVA)
     // Wait for PMIC 1.8V to become available, about 180ms after power up.
@@ -393,7 +477,7 @@ int main(void)
 #ifdef BOARD_EVKIT_V1
     camera_write_reg(0x11, 0x1); // set camera clock prescaller to prevent streaming overflow
 #else
-    camera_write_reg(0x11, 0x3); // set camera clock prescaller to prevent streaming overflow
+    camera_write_reg(0x11, 0x0); // set camera clock prescaller to prevent streaming overflow
 #endif
 
 #ifdef TFT_ENABLE
@@ -467,7 +551,7 @@ int main(void)
         MXC_TFT_ClearArea(&area, 4);
 
         memset(buff, 32, TFT_BUFF_SIZE);
-#endif
+
         if (result[0] == result[1]) {
             TFT_Print(buff, TFT_X_START + 10, TFT_Y_START - 30, font_1,
                       snprintf(buff, sizeof(buff), "Unknown"));
@@ -487,16 +571,17 @@ int main(void)
         }
 
         memset(buff, 32, TFT_BUFF_SIZE);
-        TFT_Print(buff, TFT_X_START + 30, TFT_Y_START + IMAGE_SIZE_Y + 10, font_1,
+        TFT_Print(buff, TFT_X_START + 40, TFT_Y_START + IMAGE_SIZE_Y + 10, font_1,
                   snprintf(buff, sizeof(buff), "%dms", cnn_time / 1000));
         TFT_Print(buff, 20, TFT_Y_START + IMAGE_SIZE_Y + 35, font_2,
                   snprintf(buff, sizeof(buff), "PRESS PB1(SW1) TO CAPTURE"));
+#endif
 
 #ifdef ASCII_ART
         asciiart((uint8_t *)input_0);
         printf("********** Press PB1(SW1) to capture an image **********\r\n");
-        while (!PB_Get(0)) {}
 #endif
+        while (!PB_Get(0)) {}
     }
 
     return 0;

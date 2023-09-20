@@ -119,13 +119,11 @@ int MXC_I2C_RevB_Read(mxc_i2c_revb_regs_t *i2c, unsigned char *bytes, unsigned i
 int MXC_I2C_RevB_ReadRXFIFO(mxc_i2c_revb_regs_t *i2c, volatile unsigned char *bytes,
                             unsigned int len);
 int MXC_I2C_RevB_ReadRXFIFODMA(mxc_i2c_revb_regs_t *i2c, unsigned char *bytes, unsigned int len,
-                               mxc_i2c_revb_dma_complete_cb_t callback, mxc_dma_config_t config,
                                mxc_dma_regs_t *dma);
 int MXC_I2C_RevB_GetRXFIFOAvailable(mxc_i2c_revb_regs_t *i2c);
 int MXC_I2C_RevB_WriteTXFIFO(mxc_i2c_revb_regs_t *i2c, volatile unsigned char *bytes,
                              unsigned int len);
 int MXC_I2C_RevB_WriteTXFIFODMA(mxc_i2c_revb_regs_t *i2c, unsigned char *bytes, unsigned int len,
-                                mxc_i2c_revb_dma_complete_cb_t callback, mxc_dma_config_t config,
                                 mxc_dma_regs_t *dma);
 int MXC_I2C_RevB_GetTXFIFOAvailable(mxc_i2c_revb_regs_t *i2c);
 void MXC_I2C_RevB_ClearRXFIFO(mxc_i2c_revb_regs_t *i2c);

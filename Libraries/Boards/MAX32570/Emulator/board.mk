@@ -56,7 +56,7 @@ SRCS += rom_stub.c
 #SRCS += LPM012A260A.c
 #SRCS += mx25_stub.c
 
-MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
+MISC_DRIVERS_DIR ?= $(MAXIM_PATH)/Libraries/MiscDrivers
 
 # Where to find BSP source files
 VPATH += $(BOARD_DIR)/Source

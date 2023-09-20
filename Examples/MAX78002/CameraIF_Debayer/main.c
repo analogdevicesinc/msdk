@@ -123,6 +123,7 @@ void process_img(void)
             bayer_passthrough(raw, w, h, (uint16_t *)debayered);
             break;
         case (BAYER_FUNCTION_BILINEAR):
+            color_correct(raw, w, h);
             bayer_bilinear_demosaicing(raw, w, h, (uint16_t *)debayered);
             break;
         }

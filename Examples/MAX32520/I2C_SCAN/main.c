@@ -32,7 +32,7 @@
  ******************************************************************************/
 /**
  * @file        main.c
- * @brief       I2C Scanner Example
+ * @brief     Example code for scanning the available addresses on an I2C bus
  * @details     This example uses the I2C Master to found addresses of the I2C Slave devices
  *              connected to the bus. You must connect the pull-up jumpers (JP3 and JP4)
  *              to the proper I/O voltage.

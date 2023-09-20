@@ -60,7 +60,9 @@
 
 /* COMPILER SPECIFIC DEFINES (IAR, ARMCC and GNUC) */
 #if defined(__GNUC__) /* GCC */
+#ifndef __weak
 #define __weak __attribute__((weak))
+#endif
 
 #elif defined(__CC_ARM) /* Keil */
 
@@ -259,6 +261,7 @@ typedef enum {
 /*                                                                        I2C */
 #define MXC_I2C_INSTANCES (2)
 #define MXC_I2C_FIFO_DEPTH (8)
+#define MXC_I2C_NUM_TARGET_ADDR (4)
 
 #define MXC_BASE_I2C0 ((uint32_t)0x4001D000UL)
 #define MXC_I2C0 ((mxc_i2c_regs_t *)MXC_BASE_I2C0)
@@ -282,6 +285,13 @@ typedef enum {
 #define MXC_DMA ((mxc_dma_regs_t *)MXC_BASE_DMA)
 
 #define MXC_DMA_GET_IDX(p) ((p) == MXC_DMA ? 0 : -1)
+
+#define MXC_DMA_CH_GET_IRQ(i)             \
+    ((IRQn_Type)(((i) == 0) ? DMA0_IRQn : \
+                 ((i) == 1) ? DMA1_IRQn : \
+                 ((i) == 2) ? DMA2_IRQn : \
+                 ((i) == 3) ? DMA3_IRQn : \
+                              0))
 
 /******************************************************************************/
 /*                                                                        FLC */

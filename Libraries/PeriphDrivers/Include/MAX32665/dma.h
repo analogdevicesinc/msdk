@@ -122,6 +122,8 @@ typedef enum {
         MXC_S_DMA_CFG_REQSEL_I2C0TX, /**< I2C0 Transmit DMA Request Selection */
     MXC_DMA_REQUEST_I2C1TX =
         MXC_S_DMA_CFG_REQSEL_I2C1TX, /**< I2C1 Transmit DMA Request Selection */
+    MXC_DMA_REQUEST_I2C2TX =
+        MXC_S_DMA_CFG_REQSEL_I2C2TX, /**< I2C2 Transmit DMA Request Selection */
     MXC_DMA_REQUEST_UART2TX =
         MXC_S_DMA_CFG_REQSEL_UART2TX, /**< UART 2 Transmit DMA Request Selection */
     //MXC_DMA_REQUEST_SPI3TX = MXC_S_DMA_CFG_REQSEL_SPI3TX,            /**< SPI3 Transmit DMA Request Selection */
@@ -251,6 +253,13 @@ typedef mxc_dma_srcdst_t (*mxc_dma_trans_chain_t)(mxc_dma_srcdst_t dest);
  * @return     #E_NO_ERROR if successful
  */
 int MXC_DMA_Init(mxc_dma_regs_t *dma);
+
+/**
+ * @brief      De-Initialize DMA resources.
+ * 
+ * @param      dma  Pointer to DMA registers.
+ */
+void MXC_DMA_DeInit(mxc_dma_regs_t *dma);
 
 /**
  * @brief      Request DMA channel

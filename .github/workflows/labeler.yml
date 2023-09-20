@@ -1,0 +1,34 @@
+name: Pull Request Labeler
+
+# Controls when the workflow will run
+on:
+  pull_request_target:
+    types: [opened, edited, reopened, synchronize, converted_to_draft, ready_for_review, assigned, review_requested]
+
+env:
+  MSDK_DIR: msdk
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # The verify job will check the differences with any updated register file.
+  label:
+    # The type of runner that the job will run on
+    runs-on: [ ubuntu-latest ]
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          submodules: false
+          fetch-depth: 0
+          
+      - name: Labeling
+        uses: actions/labeler@v4
+        with:
+          sync-labels: true

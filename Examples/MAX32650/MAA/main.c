@@ -1,6 +1,6 @@
 /**
  * @file   main.c
- * @brief  MAA Example
+ * @brief  This example demonstrates the Modular Arithmetic Accelerator feature of the Trust Protection Unit.
  */
 
 /******************************************************************************
@@ -35,6 +35,11 @@
  * ownership rights.
  *
  ******************************************************************************/
+
+/**
+ * @file   main.c
+ * @brief  This example demonstrates the Modular Arithmetic Accelerator feature of the Trust Protection Unit.
+ */
 
 /* **** Includes **** */
 #include <stdio.h>

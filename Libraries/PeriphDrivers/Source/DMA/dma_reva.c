@@ -71,15 +71,20 @@ static void transfer_callback(int ch, int error);
 int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
 {
     int i, numCh, offset;
+    int dma_idx;
+
+    dma_idx = MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
+    MXC_ASSERT(dma_idx >= 0);
+
 #if TARGET_NUM == 32665
     numCh = MXC_DMA_CH_OFFSET;
-    offset = numCh * MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
+    offset = numCh * dma_idx;
 #else
     numCh = MXC_DMA_CHANNELS;
     offset = 0;
 #endif
 
-    if (dma_initialized[MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma)]) {
+    if (dma_initialized[dma_idx]) {
         return E_BAD_STATE;
     }
 
@@ -106,7 +111,7 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
         dma_resource[i].cb = NULL;
     }
 
-    dma_initialized[MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma)]++;
+    dma_initialized[dma_idx]++;
 #ifndef __riscv
     MXC_FreeLock(&dma_lock);
 #endif
@@ -114,18 +119,32 @@ int MXC_DMA_RevA_Init(mxc_dma_reva_regs_t *dma)
     return E_NO_ERROR;
 }
 
+void MXC_DMA_RevA_DeInit(mxc_dma_reva_regs_t *dma)
+{
+    int dma_idx;
+
+    dma_idx = MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
+    MXC_ASSERT(dma_idx >= 0);
+
+    dma_initialized[dma_idx] = 0;
+}
+
 int MXC_DMA_RevA_AcquireChannel(mxc_dma_reva_regs_t *dma)
 {
     int i, channel, numCh, offset;
+    int dma_idx;
+
+    dma_idx = MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
+    MXC_ASSERT(dma_idx >= 0);
 
     /* Check for initialization */
-    if (!dma_initialized[MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma)]) {
+    if (!dma_initialized[dma_idx]) {
         return E_BAD_STATE;
     }
 
 #if TARGET_NUM == 32665
     numCh = MXC_DMA_CH_OFFSET;
-    offset = MXC_DMA_CH_OFFSET * MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
+    offset = MXC_DMA_CH_OFFSET * dma_idx;
 #else
     numCh = MXC_DMA_CHANNELS;
     offset = 0;
@@ -414,7 +433,13 @@ mxc_dma_ch_regs_t *MXC_DMA_RevA_GetCHRegs(int ch)
 void MXC_DMA_RevA_Handler(mxc_dma_reva_regs_t *dma)
 {
     int numCh = MXC_DMA_CHANNELS / MXC_DMA_INSTANCES;
-    int offset = numCh * MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
+    int dma_idx;
+    int offset;
+
+    dma_idx = MXC_DMA_GET_IDX((mxc_dma_regs_t *)dma);
+    MXC_ASSERT(dma_idx >= 0);
+
+    offset = numCh * dma_idx;
     /* Do callback, if enabled */
     for (int i = offset; i < (offset + numCh); i++) {
         if (CHECK_HANDLE(i)) {

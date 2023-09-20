@@ -38,8 +38,8 @@ ifeq "$(CMSIS_ROOT)" ""
 $(error CMSIS_ROOT must be specified)
 endif
 
-TARGET_UC:=$(shell echo $(TARGET) | tr a-z A-Z)
-TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 
 # The build directory
 ifeq "$(BUILD_DIR)" ""
@@ -89,7 +89,7 @@ IPATH+=$(CMSIS_ROOT)/$(CMSIS_VER)/Core/Include
 LIBPATH+=$(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC
 
 # Include the rules and goals for building
-include $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source/GCC/gcc.mk
+include $(CMSIS_ROOT)/Device/Maxim/GCC/gcc.mk
 
 # Include rules for flashing
 include $(CMSIS_ROOT)/../../Tools/Flash/flash.mk

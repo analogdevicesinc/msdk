@@ -262,11 +262,11 @@ static void attsConnCback(attCcb_t *pCcb, dmEvt_t *pDmEvt)
       /* clear prepare write queue */
       attsClearPrepWrites(pAttsCb);
 
-      /* stop service discovery idle timer, if running */
-      if (DmConnCheckIdle(pCcb->connId) & DM_IDLE_ATTS_DISC)
-      {
-        WsfTimerStop(&pAttsCb->idleTimer);
-      }
+	  /* always stop service discovery idle timer(s) */
+	  /* if idle timer timed has already timed out then DM_IDLE_ATTS_DISC won't be set.
+	   * extra calls to WsfTimerStop() ok because it will just skip inactive timers */
+      //if (DmConnCheckIdle(pAttsCb->connId) & DM_IDLE_ATTS_DISC)
+      WsfTimerStop(&pAttsCb->idleTimer);
     }
   }
 

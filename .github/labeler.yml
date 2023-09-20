@@ -1,0 +1,230 @@
+## 
+# Configuration File for Labeler Workflow.
+# 
+# This files lists all labels and their corresponding globs (paths) to match
+#   for the workflow to apply the correct labels for each PR.
+#
+
+################################################################################
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+ # 
+ # This software is protected by copyright laws of the United States and
+ # of foreign countries. This material may also be protected by patent laws
+ # and technology transfer regulations of the United States and of foreign
+ # countries. This software is furnished under a license agreement and/or a
+ # nondisclosure agreement and may only be used or reproduced in accordance
+ # with the terms of those agreements. Dissemination of this information to
+ # any party or parties not specified in the license agreement and/or
+ # nondisclosure agreement is expressly prohibited.
+ #
+ # The above copyright notice and this permission notice shall be included
+ # in all copies or substantial portions of the Software.
+ #
+ # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+ # OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ # IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
+ # OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ # ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ # OTHER DEALINGS IN THE SOFTWARE.
+ #
+ # Except as contained in this notice, the name of Maxim Integrated
+ # Products, Inc. shall not be used except as stated in the Maxim Integrated
+ # Products, Inc. Branding Policy.
+ #
+ # The mere transfer of this software does not imply any licenses
+ # of trade secrets, proprietary technology, copyrights, patents,
+ # trademarks, maskwork rights, or any other form of intellectual
+ # property whatsoever. Maxim Integrated Products, Inc. retains all
+ # ownership rights.
+ #
+ ###############################################################################
+
+'BLE':
+- '**/Examples/**/BLE*/**/*'
+- '**/Libraries/BlePhy/**/*'
+- '**/Libraries/Cordio/**/*'
+- '**/Tools/Bluetooth/**/*'
+
+'documentation':
+- '**/Documentation/**/*'
+
+'MAX32520':
+- '**/Examples/MAX32520/**/*'
+- '**/**/*es17*.*'
+- '**/Libraries/Boards/MAX32520/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32520/**/*'
+- '**/Libraries/PeriphDrivers/max32520_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32520/**/*'
+
+'MAX32570':
+- '**/*me13*.*'
+- '**/Libraries/Boards/MAX32570/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32570/**/*'
+- '**/Libraries/PeriphDrivers/max32570_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32570/**/*'
+
+'MAX32650':
+- '**/Examples/MAX32650/**/*'
+- '**/*me10*.*'
+- '**/Libraries/Boards/MAX32650/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32650/**/*'
+- '**/Libraries/PeriphDrivers/max32650_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32650/**/*'
+
+'MAX32655':
+- '**/Examples/MAX32655/**/*'
+- '**/*me17*.*'
+- '**/Libraries/Boards/MAX32655/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32655/**/*'
+- '**/Libraries/PeriphDrivers/max32655_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32655/**/*'
+
+'MAX32660':
+- '**/Examples/MAX32660/**/*'
+- '**/*me11*.*'
+- '**/Libraries/Boards/MAX32660/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32660/**/*'
+- '**/Libraries/PeriphDrivers/max32660_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32660/**/*'
+
+'MAX32662':
+- '**/Examples/MAX32662/**/*'
+- '**/*me12*.*'
+- '**/Libraries/Boards/MAX32662/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32662/**/*'
+- '**/Libraries/PeriphDrivers/max32662_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32662/**/*'
+
+'MAX32665':
+- '**/Examples/MAX32665/**/*'
+- '**/*me14*.*'
+- '**/Libraries/Boards/MAX32665/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32665/**/*'
+- '**/Libraries/PeriphDrivers/max32665_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32665/**/*'
+
+'MAX32670':
+- '**/Examples/MAX32670/**/*'
+- '**/*me15*.*'
+- '**/Libraries/Boards/MAX32670/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32670/**/*'
+- '**/Libraries/PeriphDrivers/max32670_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32670/**/*'
+
+'MAX32672':
+- '**/Examples/MAX32672/**/*'
+- '**/*me21*.*'
+- '**/Libraries/Boards/MAX32672/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32672/**/*'
+- '**/Libraries/PeriphDrivers/max32672_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32672/**/*'
+
+'MAX32675':
+- '**/Examples/MAX32675/**/*'
+- '**/*me16*.*'
+- '**/Libraries/Boards/MAX32675/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32675/**/*'
+- '**/Libraries/PeriphDrivers/max32675_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32675/**/*'
+- '**/*aes_me15*.*'
+- '**/*afe*'
+- '**/*crc_me15*.*'
+- '**/*dma*me15*.*'
+- '**/*gpio*me15*.svd'
+- '**/*flc*me15*.*'
+- '**/*i2c*me15*.*'
+- '**/*i2s*me15*.*'
+- '**/*icc*me15*.*'
+- '**/*lp*me15*.*'
+- '**/*pwrseq*me15*.*'
+- '**/*lpgcr_me17*.*'
+- '**/*mcr_me15*.svd'
+- '**/*rtc*me15*.svd'
+- '**/*sir_me15*.svd'
+- '**/*spi*me15*.*'
+- '**/*sys_me15*.c'
+- '**/*tmr*me15*.svd'
+- '**/*trimsir_me15*.*'
+- '**/*wdt*me15*.*'
+
+'MAX32680':
+- '**/Examples/MAX32680/**/*'
+- '**/*me20*.*'
+- '**/Libraries/Boards/MAX32680/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32680/**/*'
+- '**/Libraries/PeriphDrivers/max32680_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32680/**/*'
+- '**/*adc*me17*.*'
+- '**/*aes_me17*.*'
+- '**/*afe*'
+- '**/*crc_me17*.*'
+- '**/*dma*me17*.*'
+- '**/*gpio*me17*.*'
+- '**/*flc*me17*.*'
+- '**/*i2c*me17*.*'
+- '**/*icc*me17*.*'
+- '**/*lp*me17*.*'
+- '**/*pwrseq_me17*.*'
+- '**/*lpgcr_me17*.*'
+- '**/*owm*me17*.*'
+- '**/*rtc*me17*.*'
+- '**/*sema*me17*.*'
+- '**/*simo*me17*.*'
+- '**/*spi*me17*.*'
+- '**/*sys_me17*.c'
+- '**/*tmr_me17*.c'
+- '**/*sir_me17*.*'
+- '**/*trimsir_me17*.*'
+- '**/*uart*me17*.*'
+- '**/*wut*me17*.*'
+
+'MAX32690':
+- '**/Examples/MAX32690/**/*'
+- '**/*me18*.*'
+- '**/Libraries/Boards/MAX32690/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX32690/**/*'
+- '**/Libraries/PeriphDrivers/max32690_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX32690/**/*'
+
+'MAX78000':
+- '**/Examples/MAX78000/**/*'
+- '**/*ai85*.*'
+- '**/Libraries/Boards/MAX78000/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX78000/**/*'
+- '**/Libraries/PeriphDrivers/max78000_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX78000/**/*'
+- '**/*adc*me17*.*'
+- '**/*aes_me17*.*'
+- '**/*crc_me17*.*'
+- '**/*dma_me17*.*'
+- '**/*flc*me17*.*'
+- '**/*i2c*me17*.*'
+- '**/*icc*me17*.*'
+- '**/*owm*me17*.*'
+- '**/*rtc*me17*.*'
+- '**/*sema*me17*.*'
+- '**/*spi*me17*.*'
+- '**/*trimsir*me17*.*'
+- '**/*uart*me17*.svd'
+- '**/*wdt_me17*.*'
+- '**/*wut*me17*.svd'
+
+'MAX78002':
+- '**/Examples/MAX78002/**/*'
+- '**/*ai87*.*'
+- '**/Libraries/Boards/MAX78002/**/*'
+- '**/Libraries/CMSIS/Device/Maxim/MAX78002/**/*'
+- '**/Libraries/PeriphDrivers/max78002_files.mk'
+- '**/Libraries/PeriphDrivers/Include/MAX78002/**/*'
+
+'Register Change':
+- '**/*_regs.h'
+- '**/*.svd'
+
+'Tools':
+- '**/Tools/**/*'
+
+'Workflow':
+- '**/.github/workflows/**/*'
+- '**/.github/**/*'

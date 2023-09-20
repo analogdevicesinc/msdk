@@ -41,8 +41,8 @@ ifeq "$(TARGET)" ""
 $(error TARGET must be specified)
 endif
 
-TARGET_UC:=$(shell echo $(TARGET) | tr a-z A-Z)
-TARGET_LC:=$(shell echo $(TARGET) | tr A-Z a-z)
+TARGET_UC := $(subst m,M,$(subst a,A,$(subst x,X,$(TARGET))))
+TARGET_LC := $(subst M,m,$(subst A,a,$(subst X,x,$(TARGET))))
 ifeq "$(COMPILER)" ""
 $(error COMPILER must be specified)
 endif
@@ -117,7 +117,7 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SMON/smon_reva.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPI
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_me55.c
-PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_reva.c
+PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_reva1.c
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPIXF
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPIXF/spixf_me55.c
@@ -143,5 +143,4 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/WDT/wdt_common.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/WDT/wdt_me55.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/WDT/wdt_revb.c
 
-# Where to find header files for this project
-PERIPH_DRIVER_H_FILES +=  $(shell find $(PERIPH_DRIVER_INCLUDE_DIR) -name '*.h')
+

@@ -24,5 +24,11 @@ INC_DIRS += \
 	$(ROOT_DIR)/ble-mesh-profile/sources/ble-profiles/profiles \
 	$(ROOT_DIR)/ble-mesh-profile/sources/ble-profiles/services
 
-C_FILES += \
-	$(sort $(shell find $(ROOT_DIR)/ble-mesh-profile/sources/ble-profiles -name *.c))
+# Found with the command "find ble-mesh-profile/sources/ble-profiles -name '*.c'"
+# run from Cordio root dir
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/ble-profiles/services/svc_mprxs.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/ble-profiles/services/svc_mprvs.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/ble-profiles/profiles/mprvc/mprvc_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/ble-profiles/profiles/mprxc/mprxc_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/ble-profiles/profiles/mprxs/mprxs_main.c
+C_FILES += $(ROOT_DIR)/ble-mesh-profile/sources/ble-profiles/profiles/mprvs/mprvs_main.c

@@ -1,5 +1,5 @@
 ################################################################################
- # Copyright (C) 2016 Maxim Integrated Products, Inc., All Rights Reserved.
+ # Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  #
  # Permission is hereby granted, free of charge, to any person obtaining a
  # copy of this software and associated documentation files (the "Software"),
@@ -29,9 +29,6 @@
  # property whatsoever. Maxim Integrated Products, Inc. retains all
  # ownership rights.
  #
- # $Date: 2016-05-26 16:10:11 -0500 (Thu, 26 May 2016) $ 
- # $Revision: 23077 $
- #
  ###############################################################################
 
 ################################################################################
@@ -57,6 +54,7 @@ SDHC_DRIVER_BUILD_DIR := ${abspath ${SDHC_DRIVER_BUILD_DIR}}
 export TOOL_DIR := ${abspath ${TOOL_DIR}}
 export CMSIS_ROOT := ${abspath ${CMSIS_ROOT}}
 export PERIPH_DRIVER_DIR := ${abspath ${PERIPH_DRIVER_DIR}}
+export MISC_DRIVERS_DIR=$(LIBS_DIR)/MiscDrivers
 
 # Export other variables needed by the peripheral driver makefile
 export TARGET
@@ -67,7 +65,7 @@ export PROJ_LDFLAGS
 export MXC_OPTIMIZE_CFLAGS
 export BOARD_DIR
 export USE_NATIVE_SDHC
-
+export EXTERNAL_FLASH
 # Add to library list
 LIBS += ${SDHC_DRIVER_BUILD_DIR}/sdhc.a
 
@@ -76,5 +74,5 @@ IPATH += ${SDHC_DRIVER_DIR}/Include
 
 # Add rule to build the Driver Library
 ${SDHC_DRIVER_BUILD_DIR}/sdhc.a: FORCE
-	$(MAKE) -C ${SDHC_DRIVER_DIR} lib BUILD_DIR=${SDHC_DRIVER_BUILD_DIR}
+	$(MAKE) -C ${SDHC_DRIVER_DIR} lib BUILD_DIR=${SDHC_DRIVER_BUILD_DIR} BOARD=${BOARD}
 

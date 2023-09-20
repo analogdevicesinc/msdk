@@ -6,6 +6,7 @@ More specifically, in this example the EEPROM0 task attempts to read data from E
 
 You may change the configuration of each EEPROM's I2C transaction parameters (slave address, bus frequency, EEPROM read address, transaction interval, I2C timeout) by modifying their definitions at the top of main.
 
+NOTE: This example is not supported by the MAX32655FTHR. 
 
 ## Software
 
@@ -15,9 +16,10 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+* This project comes pre-configured for the MAX32655EVKIT and is not yet supported on the MAX32655FTHR.
 
-## Setup
+## Required Connections
+If using the MAX32655EVKIT (EvKit\_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.

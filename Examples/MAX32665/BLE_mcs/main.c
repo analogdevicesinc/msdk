@@ -1,8 +1,8 @@
 /*************************************************************************************************/
 /*!
-*  \file   main.c
-*
-*  \brief  Main file for mcs application.
+ * @file    main.c
+ * @brief   Maxim custom Bluetooth profile and service that advertises as "MCS" and accepts
+connection requests.
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *
@@ -46,6 +46,7 @@
 #include "app_api.h"
 #include "hci_core.h"
 #include "app_terminal.h"
+#include "wut.h"
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 #include "ll_init_api.h"

@@ -98,6 +98,7 @@ int eeprom_init(mxc_i2c_regs_t *eeprom_i2c, mxc_gpio_cfg_t rdy_pin)
     eeprom.rdy_pin.func = MXC_GPIO_FUNC_OUT;
     eeprom.rdy_pin.pad = MXC_GPIO_PAD_NONE;
     eeprom.rdy_pin.vssel = MXC_GPIO_VSSEL_VDDIO;
+    eeprom.rdy_pin.drvstr = MXC_GPIO_DRVSTR_0;
 
     err = MXC_GPIO_Config(&eeprom.rdy_pin);
     if (err != E_NO_ERROR) {

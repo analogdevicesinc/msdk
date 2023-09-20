@@ -140,7 +140,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>CMSIS_AGDI</Key>
-          <Name>-X"CMSIS-DAP v1" -U040900010edc805e0000000000000000 -O1007 -S10 -C0 -P00 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO65554 -TC10000000 -TT10000000 -TP20 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO23 -FD20000000 -FC3000 -FN1 -FF0MAX32670.FLM -FS010000000 -FL05FFFF -FP0($$Device:MAX32670$Flash\MAX32670.FLM)</Name>
+          <Name>-X"CMSIS-DAP v1" -U04091701998e033f0000000000000000 -O1006 -S10 -C0 -P00000000 -N00("ARM CoreSight SW-DP") -D00(2BA01477) -L00(0) -TO65554 -TC10000000 -TT10000000 -TP20 -TDS8007 -TDT0 -TDC1F -TIEFFFFFFFF -TIP8 -FO23 -FD20000000 -FC1000 -FN1 -FF0MAX32670.FLM -FS010000000 -FL080000 -FP0($$Device:MAX32670$Flash\MAX32670.FLM)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -191,10 +191,16 @@
       <pszMrulep></pszMrulep>
       <pSingCmdsp></pSingCmdsp>
       <pMultCmdsp></pMultCmdsp>
+      <SystemViewers>
+        <Entry>
+          <Name>System Viewer\UART</Name>
+          <WinId>35905</WinId>
+        </Entry>
+      </SystemViewers>
       <DebugDescription>
-        <Enable>1</Enable>
+        <Enable>0</Enable>
         <EnableFlashSeq>1</EnableFlashSeq>
-        <EnableLog>1</EnableLog>
+        <EnableLog>0</EnableLog>
         <Protocol>2</Protocol>
         <DbgClock>2000000</DbgClock>
       </DebugDescription>
@@ -211,23 +217,23 @@
       <GroupNumber>1</GroupNumber>
       <FileNumber>1</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>..\main.c</PathWithFileName>
-      <FilenameWithoutPath>main.c</FilenameWithoutPath>
+      <PathWithFileName>..\LinkerAddr.c</PathWithFileName>
+      <FilenameWithoutPath>LinkerAddr.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>
     <File>
       <GroupNumber>1</GroupNumber>
       <FileNumber>2</FileNumber>
-      <FileType>5</FileType>
+      <FileType>1</FileType>
       <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
-      <PathWithFileName>.\Abstract.txt</PathWithFileName>
-      <FilenameWithoutPath>Abstract.txt</FilenameWithoutPath>
+      <PathWithFileName>..\main.c</PathWithFileName>
+      <FilenameWithoutPath>main.c</FilenameWithoutPath>
       <RteFlg>0</RteFlg>
       <bShared>0</bShared>
     </File>

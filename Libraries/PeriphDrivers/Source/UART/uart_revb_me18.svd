@@ -261,6 +261,12 @@
             <bitWidth>1</bitWidth>
           </field>
           <field>
+            <name>TX_OB</name>
+            <description>Enable Interrupt For TX FIFO has one byte remaining</description>
+            <bitOffset>5</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
             <name>TX_HE</name>
             <description>Enable Interrupt For TX FIFO has half empty</description>
             <bitOffset>6</bitOffset>
@@ -301,6 +307,12 @@
             <name>RX_THD</name>
             <description>Flag for interrupt when RX FIFO reaches the number of bytes configured by the RXTHD field</description>
             <bitOffset>4</bitOffset>
+            <bitWidth>1</bitWidth>
+          </field>
+          <field>
+            <name>TX_OB</name>
+            <description>Flag for interrupt when TX FIFO has one byte remaining</description>
+            <bitOffset>5</bitOffset>
             <bitWidth>1</bitWidth>
           </field>
           <field>

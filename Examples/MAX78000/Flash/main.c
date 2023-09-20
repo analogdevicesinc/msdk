@@ -212,7 +212,7 @@ int erase_magic()
     }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
 
     printf("Buffering page...\n");
-    memcpy(buffer, (uint32_t *)TEST_ADDRESS, MXC_FLASH_PAGE_SIZE);
+    MXC_FLC_Read(TEST_ADDRESS, buffer, MXC_FLASH_PAGE_SIZE);
 
     printf("Erasing page...\n");
     err = MXC_FLC_PageErase(TEST_ADDRESS);
@@ -222,10 +222,7 @@ int erase_magic()
     }
 
     printf("Erasing magic in buffer...\n");
-    // Calculate buffer index based on flash address (4 bytes per 32-bit word)
-    unsigned int target_address = TEST_ADDRESS;
-    unsigned int buffer_index = (target_address - TEST_ADDRESS) >> 2;
-    buffer[buffer_index] = 0xABCD1234; // Erase magic value
+    buffer[0] = 0xABCD1234; // Erase magic value
 
     printf("Re-writing from buffer...\n");
     for (int i = 0; i < (MXC_FLASH_PAGE_SIZE >> 2); i++) {
@@ -246,7 +243,8 @@ int main(void)
     int err = 0;
 
     printf("\n\n***** Flash Control Example *****\n");
-#ifndef BOARD_AUD01_REVA
+#if !(defined BOARD_AUD01_REVA) && !(defined BOARD_CAM01_REVA)
+    // ^ This check ensures the board we're running on has a pushbutton
     printf("Press Push Button 1 (PB1/SW1) to continue...\n\n");
     PB_RegisterCallback(0, (pb_callback)button_handler);
     while (!button_pressed) {

@@ -208,7 +208,7 @@ int erase_magic()
     uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = { 0xFFFFFFFF };
 
     printf("Buffering page...\n");
-    memcpy(buffer, (uint32_t *)TEST_ADDRESS, MXC_FLASH_PAGE_SIZE);
+    MXC_FLC_Read(TEST_ADDRESS, buffer, MXC_FLASH_PAGE_SIZE);
 
     printf("Erasing page...\n");
     err = MXC_FLC_PageErase(TEST_ADDRESS);
@@ -218,10 +218,7 @@ int erase_magic()
     }
 
     printf("Erasing magic in buffer...\n");
-    // Calculate buffer index based on flash address (4 bytes per 32-bit word)
-    unsigned int target_address = TEST_ADDRESS;
-    unsigned int buffer_index = (target_address - TEST_ADDRESS) >> 2;
-    buffer[buffer_index] = 0xABCD1234; // Erase magic value
+    buffer[0] = 0xABCD1234; // Erase magic value
 
     printf("Re-writing from buffer...\n");
     for (int i = 0; i < (MXC_FLASH_PAGE_SIZE >> 2); i++) {

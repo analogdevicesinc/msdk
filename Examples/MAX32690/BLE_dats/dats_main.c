@@ -422,12 +422,19 @@ static void trimStart(void)
 uint8_t datsWpWriteCback(dmConnId_t connId, uint16_t handle, uint8_t operation, uint16_t offset,
                          uint16_t len, uint8_t *pValue, attsAttr_t *pAttr)
 {
+    static uint32_t packetCount = 0;
+
     if (len < 64) {
         /* print received data if not a speed test message */
         APP_TRACE_INFO0((const char *)pValue);
 
         /* send back some data */
         datsSendData(connId);
+    } else {
+        APP_TRACE_INFO1("Speed test packet Count [%d]", packetCount++);
+        if (packetCount >= 5000) {
+            packetCount = 0;
+        }
     }
     return ATT_SUCCESS;
 }
@@ -745,7 +752,12 @@ static void datsProcMsg(dmEvt_t *pMsg)
 /*************************************************************************************************/
 void DatsHandlerInit(wsfHandlerId_t handlerId)
 {
+    uint8_t addr[6] = { 0 };
     APP_TRACE_INFO0("DatsHandlerInit");
+    AppGetBdAddr(addr);
+    APP_TRACE_INFO6("MAC Addr: %02x:%02x:%02x:%02x:%02x:%02x", addr[5], addr[4], addr[3], addr[2],
+                    addr[1], addr[0]);
+    APP_TRACE_INFO1("Adv local name: %s", &datsScanDataDisc[2]);
 
     /* store handler ID */
     datsCb.handlerId = handlerId;

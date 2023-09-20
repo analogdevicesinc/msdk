@@ -172,11 +172,13 @@ static volatile uint32_t current_stream_buffer = 0;
 static uint8_t *stream_buffer_ptr = NULL;
 
 #ifdef TFT_DMA_DEBUG
+// clang-format off
 const mxc_gpio_cfg_t debug_pin[] = {
-    { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO1, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
+    { MXC_GPIO3, MXC_GPIO_PIN_1, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
 };
 const unsigned int num_debugs = (sizeof(debug_pin) / sizeof(mxc_gpio_cfg_t));
+// clang-format on
 
 int debug_Init(void)
 {
@@ -247,8 +249,7 @@ static void stream_callback_tft(int a, int b)
             // Set buffer[0] for next DMA transfer
             MXC_DMA->ch[g_dma_channel].dst = (uint32_t)rx_data;
             // wait until TFT is done
-            while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-                ;
+            while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {}
             if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF)
                 MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
             //MXC_DMA->ch[g_dma_channel].dst = (uint32_t)rx_data;
@@ -270,8 +271,7 @@ static void stream_callback_tft(int a, int b)
             // Set buffer[1] for next DMA transfer
             MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
             // wait until TFT is done
-            while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS))
-                ;
+            while ((MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_STATUS)) {}
             if (MXC_DMA->ch[g_dma_channel_tft].status & MXC_F_DMA_STATUS_CTZ_IF)
                 MXC_DMA->ch[g_dma_channel_tft].status = MXC_F_DMA_STATUS_CTZ_IF;
             //MXC_DMA->ch[g_dma_channel].dst = (uint32_t)(rx_data + g_stream_buffer_size);
@@ -402,8 +402,7 @@ static void setup_dma_tft(void)
          (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) + (0xD << MXC_F_DMA_CTRL_REQUEST_POS) + // From PCIF_RX
          (0x0 << MXC_F_DMA_CTRL_PRI_POS) + // High Priority
          (0x0 << MXC_F_DMA_CTRL_RLDEN_POS) + // Reload disabled
-         (0x1 << MXC_F_DMA_CTRL_EN_POS) // Enable DMA channel
-        );
+         (0x1 << MXC_F_DMA_CTRL_EN_POS)); // Enable DMA channel
 
     MXC_DMA->ch[g_dma_channel_tft].ctrl =
         ((0x1 << MXC_F_DMA_CTRL_CTZ_IE_POS) + (0x0 << MXC_F_DMA_CTRL_DIS_IE_POS) +
@@ -413,9 +412,8 @@ static void setup_dma_tft(void)
          (0x0 << MXC_F_DMA_CTRL_TO_WAIT_POS) +
          (0x2F << MXC_F_DMA_CTRL_REQUEST_POS) + // To SPI0 -> TFT
          (0x0 << MXC_F_DMA_CTRL_PRI_POS) + // High Priority
-         (0x0 << MXC_F_DMA_CTRL_RLDEN_POS) //+  // Reload disabled
-         // (0x1 << MXC_F_DMA_CTRL_EN_POS)         // Enable DMA channel
-        );
+         (0x0 << MXC_F_DMA_CTRL_RLDEN_POS)); //+  // Reload disabled
+
     MXC_SPI0->ctrl0 &= ~(MXC_F_SPI_CTRL0_EN);
     MXC_SETFIELD(MXC_SPI0->ctrl1, MXC_F_SPI_CTRL1_TX_NUM_CHAR,
                  (g_total_img_size / 4) << MXC_F_SPI_CTRL1_TX_NUM_CHAR_POS);
@@ -745,8 +743,7 @@ int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_
             break;
         default:
             printf("DMA channel not supported!\n");
-            while (1)
-                ;
+            while (1) {}
         }
 
 #else
@@ -793,7 +790,7 @@ int camera_setup_tft(int xres, int yres, pixformat_t pixformat, fifomode_t fifo_
 #endif
 
 #if defined(CAMERA_HM01B0) || defined(CAMERA_HM0360_MONO) || defined(CAMERA_HM0360_COLOR) || \
-    defined(CAMERA_OV5642)
+    defined(CAMERA_OV5642) || defined(CAMERA_OV5640)
 int camera_read_reg(uint16_t reg_addr, uint8_t *reg_data)
 {
     return camera.read_reg(reg_addr, reg_data);

@@ -54,7 +54,7 @@ extern "C" {
 
 #define DISPLAY_WIDTH 320 /**< TFT width in pixels. */
 #define DISPLAY_HEIGHT 240 /**< TFT height in pixels. */
-#define TFT_SPI_FREQ 10000000 /**< SPI clock frequency in Hertz. */
+#define TFT_SPI_FREQ 25000000 /**< SPI clock frequency in Hertz. */
 
 #if (TARGET_NUM == 78000)
 #define TFT_SPI_PORT MXC_GPIO0 /**< GPIO port for SPI peripheral pins. */
@@ -230,6 +230,17 @@ void MXC_TFT_ShowImage(int x0, int y0, int id);
 void MXC_TFT_ShowImageCameraRGB565(int x0, int y0, uint8_t *image, int iWidth, int iHeight);
 
 /**
+ * @brief      Draw a RGB565 buffer to a window location
+ *
+ * @param      x0           x location of image
+ * @param      y0           y location of image
+ * @param      image        RGB565 image buffer (pointer)
+ * @param      width        image width
+ * @param      height       image height
+ */
+void MXC_TFT_WriteBufferRGB565(int x0, int y0, uint8_t *image, int width, int height);
+
+/**
  * @brief      Fills screen with one color
  *
  * @param      color            Index of screen color
@@ -273,7 +284,7 @@ void MXC_TFT_SetFont(int font_id);
  *
  * @param      format           Char array formatted like printf
  *             NOTE: up to 3 additional arguments are supported
- * 
+ *
  *  \note Unimplemented function.
  */
 void MXC_TFT_Printf(const char *format, ...);
@@ -371,6 +382,16 @@ void MXC_TFT_Line(int x0, int y0, int x1, int y1, int color);
  * @param       color           Rectangle color
  */
 void MXC_TFT_Rectangle(int x0, int y0, int x1, int y1, int color);
+
+/**
+ * @brief      Stream camera to TFT
+ *
+ * @param      x0           x location of image
+ * @param      y0           y location of image
+ * @param      width        image width
+ * @param      height       image height
+ */
+void MXC_TFT_Stream(int x0, int y0, int width, int height);
 /**@} end of group adafruit_3315_tft */
 
 #ifdef __cplusplus

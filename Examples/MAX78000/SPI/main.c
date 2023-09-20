@@ -54,9 +54,16 @@
 #include "uart.h"
 
 /***** Preprocessors *****/
-#define MASTERSYNC
-// #define MASTERASYNC
-// #define MASTERDMA
+#define MASTERSYNC 1
+#define MASTERASYNC 0
+#define MASTERDMA 0
+
+#if (!(MASTERSYNC || MASTERASYNC || MASTERDMA))
+#error "You must set either MASTERSYNC or MASTERASYNC or MASTERDMA to 1."
+#endif
+#if ((MASTERSYNC && MASTERASYNC) || (MASTERASYNC && MASTERDMA) || (MASTERDMA && MASTERSYNC))
+#error "You must select either MASTERSYNC or MASTERASYNC or MASTERDMA, not all 3."
+#endif
 
 /***** Definitions *****/
 #define DATA_LEN 100 // Words
@@ -129,14 +136,14 @@ int main(void)
     spi_pins.ss1 = FALSE;
     spi_pins.ss2 = FALSE;
 
-#ifdef MASTERSYNC
+#if MASTERSYNC
     printf("Performing blocking (synchronous) transactions...\n");
 #endif
-#ifdef MASTERASYNC
+#if MASTERASYNC
     printf("Performing non-blocking (asynchronous) transactions...\n");
     MXC_NVIC_SetVector(SPI_IRQ, SPI_IRQHandler);
 #endif
-#ifdef MASTERDMA
+#if MASTERDMA
     printf("Performing transactions with DMA...\n");
 #endif
 
@@ -189,11 +196,11 @@ int main(void)
             return retVal;
         }
 
-#ifdef MASTERSYNC
+#if MASTERSYNC
         MXC_SPI_MasterTransaction(&req);
 #endif
 
-#ifdef MASTERASYNC
+#if MASTERASYNC
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
 
@@ -201,7 +208,7 @@ int main(void)
 
 #endif
 
-#ifdef MASTERDMA
+#if MASTERDMA
         MXC_DMA_ReleaseChannel(0);
         MXC_DMA_ReleaseChannel(1);
 

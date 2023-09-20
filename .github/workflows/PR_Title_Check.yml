@@ -1,0 +1,74 @@
+name: Pull Request Title Checker
+
+concurrency: 
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+# Controls when the workflow will run
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  pull-requests: read
+
+env:
+  MSDK_DIR: msdk
+  
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # The verify job will check the differences with any updated register file.
+  check:
+    # The type of runner that the job will run on
+    runs-on: [ ubuntu-latest ]
+
+    steps:
+      - name: Checking PR Title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+        with:
+          types: |
+            fix
+            feat
+            chore
+            refactor
+            docs
+            style
+            test
+            perf
+            ci
+            build
+            revert
+
+          scopes: |
+            Documentation
+            Examples
+            Build
+            Tools
+            BLE
+            Boards
+            CMSIS
+            MiscDrivers
+            PeriphDrivers
+            ThirdParty
+            MAXUSB
+            SDHC
+            ignore
+            workflow
+            Other
+
+          requireScope: true
+          disallowScopes: |
+            release
+
+          # Check that first character of the subject is capitalized and
+          # the subject doesn't terminate with any punctuation.
+          subjectPattern: ^[A-Z].*$
+
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            starts with an uppercase character
+        

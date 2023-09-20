@@ -1,9 +1,8 @@
 ## Description
 
-This example uses the I2C Master to find the addresses of any I2C Slave devices connected to the same bus as I2C1.
+This example uses the I2C Master to find the addresses of any I2C Slave devices connected to the same bus as I2C2 on the MAX32655EVKIT and I2C1 on the MAX32655FTHR.
 
-Please check schematic diagram to get more information about the discovered devices
-
+Please check schematic diagram to get more information about the discovered devices.
 
 ## Software
 
@@ -13,13 +12,19 @@ Universal instructions on building, flashing, and debugging this project can be 
 
 ### Project-Specific Build Notes
 
-(None - this project builds as a standard example)
+* This project comes pre-configured for the MAX32655EVKIT.  See [Board Support Packages](https://analog-devices-msdk.github.io/msdk/USERGUIDE/#board-support-packages) in the MSDK User Guide for instructions on changing the target board.
 
 ## Required Connections
+If using the MAX32655EVKIT (EvKit\_V1):
 -   Connect a USB cable between the PC and the CN1 (USB/PWR) connector.
 -   Connect pins JP4(RX_SEL) and JP5(TX_SEL) to RX0 and TX0  header.
 -   Open an terminal application on the PC and connect to the EV kit's console UART at 115200, 8-N-1.
 -   You must also connect the pull-up jumpers (JP21 and JP22) to the proper I/O voltage.
+-   Connect I2C2 (SCL - P0.30 and SDA - P0.31) to the I2C bus to scan.
+
+If using the MAX32655FTHR (FTHR\_Apps\_V1):
+-   Connect a USB cable between the PC and the J4 (USB/PWR) connector.
+-   Open an terminal application on the PC and connect to the board's console UART at 115200, 8-N-1.
 
 ## Expected Output
 

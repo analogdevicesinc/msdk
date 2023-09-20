@@ -1,6 +1,6 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${config:MSYS_path}/usr/bin;${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -28,12 +28,13 @@
     "RV_OCD_target_file":"${config:target}_riscv.cfg",
 
     "v_Arm_GCC":"10.3",
-    "v_xPack_GCC":"10.2.0-1.2",
+    "v_xPack_GCC":"12.2.0-3.1",
 
     "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}",
-    "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-embed-gcc/${config:v_xPack_GCC}",
-    "Make_path":"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin",
+    "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-elf-gcc/${config:v_xPack_GCC}",
+    "Make_path":"${config:MAXIM_PATH}/Tools/GNUTools/Make",
+    "MSYS_path":"${config:MAXIM_PATH}/Tools/MSYS2",
 
     "C_Cpp.default.includePath": [
         "${workspaceFolder}",
@@ -55,13 +56,6 @@
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/include",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/RISC-V",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
     "C_Cpp.default.browse.path": [
@@ -79,20 +73,14 @@
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/ARM_CM4F",
         "${config:MAXIM_PATH}/Libraries/FreeRTOS/Source/portable/GCC/RISC-V",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Display",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/LED",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC",
-        "${config:MAXIM_PATH}/Libraries/MiscDrivers"
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/ADC",
+        "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
     "C_Cpp.default.defines": [
-        "${config:board}",
-        "TARGET=${config:target}",
-        "TARGET_REV=0x4131",
-        "__GNUC__"
+        
+    ],
+    "C_Cpp.default.forcedInclude": [
+        "${workspaceFolder}/build/project_defines.h"
     ]
 }
 
