@@ -36,22 +36,24 @@
 # project.
 ###############################################################################
 
-ifeq "$(CLI_DIR)" ""
+ifeq "$(LIB_CLI_DIR)" ""
 # If CLI_DIR is not specified, this Makefile will locate itself.
-CLI_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+LIB_CLI_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 endif
 
-IPATH += ${CLI_DIR}/inc
-VPATH += ${CLI_DIR}/src
-
-VPATH += $(dir $(SRCS))
+IPATH += ${LIB_CLI_DIR}/inc
+VPATH += ${LIB_CLI_DIR}/src
+SRCS += cli.c
 
 # By default, with USE_CLI_LIB_IRQHANDLER defined, the CLI library will handle the
 # UART interrupts internally. Users have the option to define their own UART IRQ
 # Handler for the CLI UART in their application. If users choose to define their own
 # IRQ handler they should delete this definition of USE_CLI_LIB_IRQHANDLER and call
 # MXC_CLI_Handler in their handler function when the CLI is in use.
+LIB_CLI_USE_DEFAULT_HANDLER ?= 1
+ifeq "$(LIB_CLI_USE_DEFAULT_HANDLER)" "1"
 PROJ_CFLAGS += -DUSE_CLI_LIB_IRQHANDLER
+endif
 
 # Use absolute paths if building within eclipse environment.
 ifeq "$(ECLIPSE)" "1"

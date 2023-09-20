@@ -19,7 +19,8 @@ ifneq ($(BOARD),FTHR_RevA)
 $(error ERR_NOTSUPPORTED: This project requires an SD card slot and is only supported for the MAX78000FTHR)
 endif
 
+# Enable SDHC library
 LIB_SDHC = 1
 
-include ${MAXIM_PATH}/Libraries/CLI/CLI.mk 
-
+# Enable CLI library
+LIB_CLI = 1
