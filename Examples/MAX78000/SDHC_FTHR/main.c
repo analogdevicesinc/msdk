@@ -72,10 +72,6 @@ int main(void)
         return err;
     }
 
-    // Enable Console/CLI UART IRQ vector
-    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(CONSOLE_UART), CLI_IRQHandler);
-    NVIC_EnableIRQ(MXC_UART_GET_IRQ(CONSOLE_UART));
-
     // Run CLI
     while (1) {}
 }
