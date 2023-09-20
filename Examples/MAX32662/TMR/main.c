@@ -224,6 +224,7 @@ void OneshotTimer()
     ost_pin.func = MXC_GPIO_FUNC_OUT;
     ost_pin.pad = MXC_GPIO_PAD_NONE;
     ost_pin.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    ost_pin.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&ost_pin);
     MXC_GPIO_OutClr(ost_pin.port, ost_pin.mask);
 }
