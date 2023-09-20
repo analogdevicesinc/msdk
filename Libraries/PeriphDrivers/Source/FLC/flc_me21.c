@@ -228,11 +228,11 @@ int MXC_FLC_Write32(uint32_t address, uint32_t data)
 
     // Ensure ECC is disabled for the respective flash bank
     if (address < MXC_FLASH0_MEM_BASE + MXC_FLASH_MEM_SIZE) {
-        if (MXC_TRIMSIR->bb_sir2 & MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN) {
+        if (MXC_SYS_ECC_GetEnabled(MXC_SYS_ECCEN_FLASH0)) {
             return E_BAD_STATE;
         }
     } else if (address < MXC_FLASH1_MEM_BASE + MXC_FLASH_MEM_SIZE) {
-        if (MXC_TRIMSIR->bb_sir2 & MXC_F_TRIMSIR_BB_SIR2_FL1ECCEN) {
+        if (MXC_SYS_ECC_GetEnabled(MXC_SYS_ECCEN_FLASH1)) {
             return E_BAD_STATE;
         }
     }

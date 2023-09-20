@@ -42,6 +42,7 @@
 #include "mxc_device.h"
 #include "gcr_regs.h"
 #include "mcr_regs.h"
+#include "trimsir_regs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -168,6 +169,16 @@ typedef enum {
     MXC_SYS_CLOCK_EXTCLK =
         MXC_V_GCR_CLKCTRL_SYSCLK_SEL_EXTCLK /**< Use the external system clock input */
 } mxc_sys_system_clock_t;
+
+/** @brief Enumeration to enable/disable ECCs on various memory banks */
+typedef enum {
+    MXC_SYS_ECCEN_RAM01 = MXC_F_TRIMSIR_BB_SIR2_RAM0_1ECCEN, /**< Select ECC for RAM0/1 */
+    MXC_SYS_ECCEN_RAM2 = MXC_F_TRIMSIR_BB_SIR2_RAM2ECCEN, /**< Select ECC for RAM2 */
+    MXC_SYS_ECCEN_RAM3 = MXC_F_TRIMSIR_BB_SIR2_RAM3ECCEN, /**< Select ECC for RAM3 */
+    MXC_SYS_ECCEN_ICC0 = MXC_F_TRIMSIR_BB_SIR2_ICC0ECCEN, /**< Select ECC for ICC0 */
+    MXC_SYS_ECCEN_FLASH0 = MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN, /**< Select ECC for Flash 0 */
+    MXC_SYS_ECCEN_FLASH1 = MXC_F_TRIMSIR_BB_SIR2_FL1ECCEN, /**< Select ECC for Flash 1 */
+} mxc_sys_eccen_t;
 
 #define MXC_SYS_USN_CHECKSUM_LEN 16 // Length of the USN + padding for checksum compute
 #define MXC_SYS_USN_CSUM_FIELD_LEN 2 // Size of the checksum field in the USN
@@ -350,11 +361,75 @@ int MXC_SYS_Clock_Select(mxc_sys_system_clock_t clock);
  * @return     E_NO_ERROR if ready, E_TIME_OUT if timeout
  */
 int MXC_SYS_Clock_Timeout(uint32_t ready);
+
 /**
  * @brief Reset the peripherals and/or CPU in the rstr0 or rstr1 register.
  * @param           Enumeration for what to reset. Can reset multiple items at once.
  */
 void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset);
+
+/**
+ * @brief   Enable ECCs. Select which ECCs to enable by masking together the
+ *          appropriate mxc_sys_eccen_t options.
+ * 
+ * @param ecc_mask   Mask of mxc_sys_eccen_t to select which ECCs to enable
+ */
+void MXC_SYS_ECC_Enable(uint32_t ecc_mask);
+
+/**
+ * @brief   Disable ECCs. Select which ECCs to disable by masking together the
+ *          appropriate mxc_sys_eccen_t options.
+ * 
+ * @param ecc_mask   Mask of mxc_sys_eccen_t to select which ECCs to disable
+ */
+void MXC_SYS_ECC_Disable(uint32_t ecc_mask);
+
+/**
+ * @brief   Checks whether the selected ECC instance is enabled.
+ * 
+ * @param ecc   Selects which ECC to check the enabled status of
+ * 
+ * @return  0 - ECC not enabled, 1 - ECC enabled, or an error code if an invalid
+ *          parameter was passed to function.
+ */
+int MXC_SYS_ECC_GetEnabled(mxc_sys_eccen_t ecc);
+
+/**
+ * @brief Enable ECC interrupt sources.
+ * 
+ * @param flags  Mask of flags to enable in the ECC interrupt enable register.
+ */
+void MXC_SYS_ECC_EnableInt(unsigned int flags);
+
+/**
+ * @brief Disable ECC interrupt sources.
+ * 
+ * @param flags  Mask of flags to disable in the ECC interrupt enable register.
+ */
+void MXC_SYS_ECC_DisableInt(unsigned int flags);
+
+/**
+ * @brief Get the value of the interrupt flags in the ECC interrupt register.
+ * 
+ * @param err_flags  Pointer to variable to store the value of ECC interrupt flag register.
+ * @param ced_flags  Pointer to variable to store the value of correctable error flag register.
+ */
+void MXC_SYS_ECC_GetFlags(unsigned int *err_flags, unsigned int *ced_flags);
+
+/**
+ * @brief Clears flags in the ECC interrupt register
+ *
+ * @param err_flags  Mask of flags to clear in the ECC interrupt flag register.
+ * @param ced_flags  Mask of flags to clear in correctable error flag register
+ */
+void MXC_SYS_ECC_ClearFlags(unsigned int err_flags, unsigned int ced_flags);
+
+/**
+ * @brief  Get the memory address of the most recent error detected by ECC.
+ * 
+ * @returns The address of the the last detected ECC error.
+ */
+int MXC_SYS_ECC_GetErrorAddress(void);
 
 #ifdef __cplusplus
 }

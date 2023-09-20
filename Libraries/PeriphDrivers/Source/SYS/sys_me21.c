@@ -59,6 +59,9 @@
 /* **** Definitions **** */
 #define MXC_SYS_CLOCK_TIMEOUT MSEC(100)
 
+#define MXC_SYS_ECCEN_MASK (MXC_SYS_ECCEN_RAM01 | MXC_SYS_ECCEN_RAM2 | MXC_SYS_ECCEN_RAM3 |\
+                            MXC_SYS_ECCEN_ICC0 | MXC_SYS_ECCEN_FLASH0 | MXC_SYS_ECCEN_FLASH1)
+
 /* **** Globals **** */
 
 /* **** Functions **** */
@@ -461,4 +464,69 @@ void MXC_SYS_Reset_Periph(mxc_sys_reset_t reset)
         while (MXC_GCR->rst0 & (0x1 << reset)) {}
     }
 }
+
+/* ************************************************************************** */
+void MXC_SYS_ECC_Enable(uint32_t ecc_mask)
+{
+    MXC_TRIMSIR->bb_sir2 |= (ecc_mask & MXC_SYS_ECCEN_MASK);
+}
+
+/* ************************************************************************** */
+void MXC_SYS_ECC_Disable(uint32_t ecc_mask)
+{
+    MXC_TRIMSIR->bb_sir2 &= ~(ecc_mask & MXC_SYS_ECCEN_MASK);
+}
+
+/* ************************************************************************** */
+int MXC_SYS_ECC_GetEnabled(mxc_sys_eccen_t ecc)
+{
+    if (!(ecc & MXC_SYS_ECCEN_MASK)) {
+        return E_BAD_PARAM;
+    }
+
+    return !!(MXC_TRIMSIR->bb_sir2 & ecc);
+}
+
+/* ************************************************************************** */
+void MXC_SYS_ECC_EnableInt(unsigned int flags)
+{
+    MXC_GCR->eccie |= flags;
+}
+
+/* ************************************************************************** */
+void MXC_SYS_ECC_DisableInt(unsigned int flags)
+{
+    MXC_GCR->eccie &= ~flags;
+}
+
+/* ************************************************************************** */
+void MXC_SYS_ECC_GetFlags(unsigned int *err_flags, unsigned int *ced_flags)
+{
+    if (err_flags != NULL) {
+        // Return ECC error flags
+        *err_flags = MXC_GCR->eccerr;
+    }
+
+    if (ced_flags != NULL) {
+        // Return correctable error flags
+        *ced_flags = MXC_GCR->eccced;
+    }
+}
+
+/* ************************************************************************** */
+void MXC_SYS_ECC_ClearFlags(unsigned int err_flags, unsigned int ced_flags)
+{
+    // Clear ECC error flags
+    MXC_GCR->eccerr = err_flags;
+
+    // Clear correctable ECC error flags
+    MXC_GCR->eccced = ced_flags;
+}
+
+/* ************************************************************************** */
+int MXC_SYS_ECC_GetErrorAddress(void)
+{
+    return MXC_GCR->eccaddr;
+}
+
 /**@} end of mxc_sys */
