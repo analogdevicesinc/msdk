@@ -1,4 +1,4 @@
-# Command Line Interface
+# MSDK CLI Library
 
 ## Description
 
@@ -21,19 +21,14 @@ The current CLI Library includes the following features:
 - White-space insensitive.
 - Easy built-in 'help' command and custom help strings.
 
-## CLI Software Flow
-
-The following graphic describes the software flow of the CLI.
-![Processing steps](res/CLI-Processing-steps.png)
-
-## Porting Guide
+## Usage Guide
 
 To use the CLI library, users are expected to implement the following steps in their application:
 
 1. Add the following line to your [project.mk](../../USERGUIDE.md#build-configuration-variables) file to enable the CLI library for your project:
 
-    :::Makefile
-    LIB_CLI = 1
+        :::Makefile
+        LIB_CLI = 1
 
 2. `#include "cli.h"` in your application code.
 
@@ -44,12 +39,11 @@ To use the CLI library, users are expected to implement the following steps in t
     3. A description of what the command does
     4. A function pointer to a wrapper function.
 
-For example, the following is subset of the SDHC example command set:
+    For example, the following is subset of the SDHC example command set:
 
-```
-const command_t user_commands[] = {{ "format", "format", "Format the Card", handle_format },
-    							   { "mkdir", "mkdir <directory name>", "Create a directory", handle_mkdir }}
-```
+        :::C
+        const command_t user_commands[] = {{ "format", "format", "Format the Card", handle_format },
+                                        { "mkdir", "mkdir <directory name>", "Create a directory", handle_mkdir }}
 
 4. Implement a handler function for each command.
 
@@ -57,25 +51,31 @@ const command_t user_commands[] = {{ "format", "format", "Format the Card", hand
 
     Parameters
 
-    - int argc   - This tells the handler function how many arguments were received.
-    - char* argv[] - This array holds the received arguments (in order) as strings. (Note: argv[0] holds the command string, argv[1:argc] are the arguments (if any are passed), and the last element in the argument vector is always a NULL pointer.)
+    - `int argc`   - This tells the handler function how many arguments were received.
+    - `char* argv[]` - This array holds the received arguments (in order) as strings. (Note: argv[0] holds the command string, argv[1:argc] are the arguments (if any are passed), and the last element in the argument vector is always a NULL pointer.)
 
     Return Value
 
     - The function needs to return an integer type. It should return 0 (E_NO_ERROR) if the command was executed successfuly, otherwise it should return a negative integer as an error code.
 
-    Below is a sample handler function prototype for a "make directory" command.
+    Below is a sample handler function for a "make directory" command, where `mkdir` is some function in the user's application code that does the work.
 
-    :::C
-    int handle_mkdir(int argc, char *argv[]);
+        :::C
+        int handle_mkdir(int argc, char *argv[]) {
+            mkdir(argv[1]);
+        }
 
     As an example, suppose a user entered the command:
 
-    :::C
-    mkdir new_folder
+        :::C
+        mkdir new_folder
 
     The CLI library will tokenize the command string "mkdir new_folder" into "mkdir" and "new_folder" and assigns them to argv[0] and argv[1] respectively. The library would then determine that this is the "make directory" command and would call "handle_mkdir" with argc=2 and a pointer to the argument vector.
 
-5. Add a call to `MXC_CLI_Init` to the application's startup code.  Pass in the UART instance for the CLI to use, a pointer to the command table, and the number of commands in the command table.
+5. Add a call to `MXC_CLI_Init` to the application's startup code.  
 
-6. (OPTIONAL) The CLI library will enable and handle UART interrupts automatically.  Users who would like more control over the interrupt handling have the option to disable the default handler and define their own.  To do so, set the `LIB_CLI_USE_DEFAULT_HANDLER` [build configuration variable](../../USERGUIDE.md#build-configuration-variables) to `0`.  Users may now enable and handle the interrupt with a custom function.  However, users must call `MXC_CLI_Handler()` from the custom function for the CLI to work.
+    Pass in the UART instance for the CLI to use, a pointer to the command table, and the number of commands in the command table.
+
+6. (OPTIONAL) The CLI library will enable and handle UART interrupts automatically.  Users who would like more control over the interrupt handling have the option to disable the default handler and define their own.
+
+    To do so, set the `LIB_CLI_USE_DEFAULT_HANDLER` [build configuration variable](../../USERGUIDE.md#build-configuration-variables) to `0`.  Users may now enable and handle the interrupt with a custom function.  However, users must call `MXC_CLI_Handler()` from the custom function for the CLI to work.
