@@ -95,9 +95,13 @@ mxc_uart_regs_t *cli_uart = NULL;
  */
 void User_Prompt_Sequence(void)
 {
-    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), NEW_LINE);
-    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), DOLLAR);
-    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), SPACE);
+    if (cli_uart == NULL) {
+        return;
+    }
+
+    MXC_UART_WriteCharacter(cli_uart, NEW_LINE);
+    MXC_UART_WriteCharacter(cli_uart, DOLLAR);
+    MXC_UART_WriteCharacter(cli_uart, SPACE);
 }
 
 /** 
@@ -113,9 +117,13 @@ void Clear_buffer(void)
  */
 void Console_Backspace_Sequence(void)
 {
-    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), BACKSPACE);
-    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), SPACE);
-    MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), BACKSPACE);
+    if (cli_uart == NULL) {
+        return;
+    }
+
+    MXC_UART_WriteCharacter(cli_uart, BACKSPACE);
+    MXC_UART_WriteCharacter(cli_uart, SPACE);
+    MXC_UART_WriteCharacter(cli_uart, BACKSPACE);
 }
 
 /** 
@@ -133,6 +141,10 @@ void Console_Cmd_Clear(void)
  */
 void line_accumulator(uint8_t user_char)
 {
+    if (cli_uart == NULL) {
+        return;
+    }
+
     switch (user_char) {
     case BACKSPACE:
         // Handle Backspace and Delete
@@ -146,8 +158,8 @@ void line_accumulator(uint8_t user_char)
 
     case ENTER:
         // Handle Enter or carriage return
-        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), NEW_LINE);
-        MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), ENTER);
+        MXC_UART_WriteCharacter(cli_uart, NEW_LINE);
+        MXC_UART_WriteCharacter(cli_uart, ENTER);
 
         // Parse and execute command
         process_command(cmd_buf);
@@ -161,7 +173,7 @@ void line_accumulator(uint8_t user_char)
         // Handle all other characters
         if (buf_idx < MAX_COMMAND_LENGTH) {
             cmd_buf[buf_idx++] = user_char; //pushes characters into the buffer
-            MXC_UART_WriteCharacter(MXC_UART_GET_UART(CONSOLE_UART), user_char);
+            MXC_UART_WriteCharacter(cli_uart, user_char);
         }
         break;
     }
@@ -269,9 +281,10 @@ void CLI_Callback(mxc_uart_req_t *req, int error)
 int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int num_commands)
 {
     int error;
+    int uart_idx = MXC_UART_GET_IDX(uart);
 
     // Check for valid parameters
-    if (MXC_UART_GET_IDX(uart) < 0) {
+    if (uart_idx < 0) {
         return E_BAD_PARAM;
     } else if (commands == NULL) {
         return E_NULL_PTR;
@@ -310,6 +323,15 @@ int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int 
     User_Prompt_Sequence();
     while (MXC_UART_GetActive(uart)) {}
 
+    #ifdef USE_CLI_LIB_IRQHANDLER
+    // Give users the option to define their own IRQ handler in their application. By default,
+    // we point the interrupt vector at MXC_CLI_Handler.
+    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(uart_idx), MXC_CLI_Handler);
+    #endif // USE_CLI_LIB_IRQHANDLER
+
+    // Enable interrupts
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(uart_idx));
+
     return E_NO_ERROR;
 }
 
@@ -321,7 +343,7 @@ int MXC_CLI_Shutdown(void)
     }
 
     // Abort existing async transaction
-    MXC_UART_AbortAsync(MXC_UART_GET_UART(CONSOLE_UART));
+    MXC_UART_AbortAsync(cli_uart);
 
     // Reset state variables
     cli_uart = NULL;
@@ -339,5 +361,5 @@ void MXC_CLI_Handler(void)
         return;
     }
 
-    MXC_UART_AsyncHandler(MXC_UART_GET_UART(CONSOLE_UART));
+    MXC_UART_AsyncHandler(cli_uart);
 }

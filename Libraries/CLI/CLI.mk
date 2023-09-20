@@ -46,6 +46,13 @@ VPATH += ${CLI_DIR}/src
 
 VPATH += $(dir $(SRCS))
 
+# By default, with USE_CLI_LIB_IRQHANDLER defined, the CLI library will handle the
+# UART interrupts internally. Users have the option to define their own UART IRQ
+# Handler for the CLI UART in their application. If users choose to define their own
+# IRQ handler they should delete this definition of USE_CLI_LIB_IRQHANDLER and call
+# MXC_CLI_Handler in their handler function when the CLI is in use.
+PROJ_CFLAGS += -DUSE_CLI_LIB_IRQHANDLER
+
 # Use absolute paths if building within eclipse environment.
 ifeq "$(ECLIPSE)" "1"
 SRCS := $(abspath $(SRCS))

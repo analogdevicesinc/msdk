@@ -58,8 +58,6 @@ mkdir new_folder
 ```
 The CLI library will tokenize the command string "mkdir new_folder" into "mkdir" and "new_folder" and assigns them to argv[0] and argv[1] respectively. The library would then determine that this is the "make directory" command and would call "handle_mkdir" with argc=2 and a pointer to the argument vector.
 
-4. Define an IRQ handler for the UART used in the CLI (i.e. UARTx_IRQHandler). This function should call MXC_CLI_Handler() which handles all of the interrupt processing for the CLI.
+4. Include cli.h in the approriate source file and initialize the CLI by calling the MXC_CLI_Init function with a pointer to to the UART for the CLI to use, a pointer to the command table, and the number of commands in the command table.
 
-5. Include cli.h in the approriate source file and initialize the CLI by calling the MXC_CLI_Init function with a pointer to to the UART for the CLI to use, a pointer to the command table, and the number of commands in the command table.
-
-6. Enable the appropriate interupt vector for the UART used in the CLI (i.e. NVIC_EnableIRQ(...)).
+5. THIS IS OPTIONAL! Users have the option to either allow the CLI library to override the CLI UART interrupt vector and handle interrupts internally (default behavior, no additional steps necessary) or to define an IRQ handler for the CLI UART in their application. If the user chooses to define an IRQ handler in their application they will also need to comment out the definition of "USE_CLI_LIB_IRQHANDLER" in the CLI.mk file and call MXC_CLI_Handler() from their handler function whenever they are using the CLI.
