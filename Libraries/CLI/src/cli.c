@@ -323,11 +323,11 @@ int MXC_CLI_Init(mxc_uart_regs_t *uart, const command_t *commands, unsigned int 
     User_Prompt_Sequence();
     while (MXC_UART_GetActive(uart)) {}
 
-    #ifdef USE_CLI_LIB_IRQHANDLER
+#ifdef USE_CLI_LIB_IRQHANDLER
     // Give users the option to define their own IRQ handler in their application. By default,
     // we point the interrupt vector at MXC_CLI_Handler.
     MXC_NVIC_SetVector(MXC_UART_GET_IRQ(uart_idx), MXC_CLI_Handler);
-    #endif // USE_CLI_LIB_IRQHANDLER
+#endif // USE_CLI_LIB_IRQHANDLER
 
     // Enable interrupts
     NVIC_EnableIRQ(MXC_UART_GET_IRQ(uart_idx));
