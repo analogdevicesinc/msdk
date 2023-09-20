@@ -47,6 +47,14 @@ extern "C" {
   Macros
 **************************************************************************************************/
 
+/* maximum number of event handlers per task */
+#ifndef WSF_MAX_HANDLERS
+#define WSF_MAX_HANDLERS                          16
+#endif
+
+/*! \brief OS serivice function number */
+#define WSF_OS_MAX_SERVICE_FUNCTIONS                  3
+
 /*! \brief Derive task from handler ID */
 #define WSF_TASK_FROM_ID(handlerID)       (((handlerID) >> 4) & 0x0F)
 
@@ -108,6 +116,7 @@ typedef struct
   uint16_t        param;          /*!< \brief General purpose parameter passed to event handler */
   uint8_t         event;          /*!< \brief General purpose event value passed to event handler */
   uint8_t         status;         /*!< \brief General purpose status value passed to event handler */
+  uint8_t         msg_ndx;        /*!< \brief message index */
 } wsfMsgHdr_t;
 
 /**************************************************************************************************
@@ -123,6 +132,31 @@ typedef struct
  */
 /*************************************************************************************************/
 typedef void (*wsfEventHandler_t)(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
+
+/*! \brief  Task structure */
+typedef struct
+{
+  wsfEventHandler_t     handler[WSF_MAX_HANDLERS];
+  wsfEventMask_t        handlerEventMask[WSF_MAX_HANDLERS];
+  wsfQueue_t            msgQueue;
+  wsfTaskEvent_t        taskEventMask;
+  uint8_t               numHandler;
+} wsfOsTask_t;
+
+/*! \brief  OS structure */
+typedef struct
+{
+  wsfOsTask_t                 task;
+  WsfOsIdleCheckFunc_t        sleepCheckFuncs[WSF_OS_MAX_SERVICE_FUNCTIONS];
+  uint8_t                     numFunc;
+} wsfOs_t;
+
+/**************************************************************************************************
+  External Variables
+**************************************************************************************************/
+
+/*! \brief Diagnostic Task Identifier */
+extern wsfHandlerId_t WsfActiveHandler;
 
 /**************************************************************************************************
   Function Declarations

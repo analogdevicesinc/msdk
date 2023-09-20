@@ -348,7 +348,7 @@ void hciEvtProcessMsg(uint8_t *pEvt)
       event = pMsg->hdr.event;
 
       /* Note: HCI and LL event structures identical, no translation needed */
-      hciCb.evtCback((hciEvt_t *)pMsg);
+      hciCb.evtCback((hciEvt_t *)pMsg);  // dmHciEvtCback
 
       /* execute core procedure for connection close after callback */
       if (event == HCI_DISCONNECT_CMPL_CBACK_EVT)

@@ -68,30 +68,14 @@ WSF_CT_ASSERT(sizeof(uint32_t) == 4);
 #define WSF_OS_THREAD_SLEEP_WAKEUP_FLAG           0x0001
 #endif
 
-/*! \brief OS serivice function number */
-#define WSF_OS_MAX_SERVICE_FUNCTIONS                  3
-
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/
 
-/*! \brief  Task structure */
-typedef struct
-{
-  wsfEventHandler_t     handler[WSF_MAX_HANDLERS];
-  wsfEventMask_t        handlerEventMask[WSF_MAX_HANDLERS];
-  wsfQueue_t            msgQueue;
-  wsfTaskEvent_t        taskEventMask;
-  uint8_t               numHandler;
-} wsfOsTask_t;
-
-/*! \brief  OS structure */
-typedef struct
-{
-  wsfOsTask_t                 task;
-  WsfOsIdleCheckFunc_t        sleepCheckFuncs[WSF_OS_MAX_SERVICE_FUNCTIONS];
-  uint8_t                     numFunc;
-} wsfOs_t;
+/**************************************************************************************************
+  Global Variables
+**************************************************************************************************/
+extern uint8_t msg_ndx;
 
 /**************************************************************************************************
   Local Variables

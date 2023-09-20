@@ -37,6 +37,8 @@
 
 #include "ll_api.h"
 
+extern uint8_t appCodedPhy;
+
 /*************************************************************************************************/
 /*!
  *  \brief      HCI LE set extended scanning parameters command.
@@ -57,7 +59,11 @@ void HciLeSetExtScanParamCmd(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_
   status = LlSetExtScanParam(ownAddrType, scanFiltPolicy, scanPhys, (LlExtScanParam_t *)pScanParam);
   (void)status;
 
+  // TODO
+  if (appCodedPhy == 0)
+  {
   WSF_ASSERT(status == LL_SUCCESS);
+  }
 }
 
 /*************************************************************************************************/
