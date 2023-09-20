@@ -55,6 +55,15 @@
 #define SDHC_CLK_FREQ 10000000
 
 /**
+ * @brief SDHC target clock frequency.
+ * @details Max freq. is limited by GCR register to be @ref SystemCoreClock / 2 or @ref SystemCoreClock / 4.
+ * This field is used as a target for the SDHC peripheral's internal clock divider.
+ * R/W reliability issues can sometimes be eliminated by reducing the clock frequency, which is a good first step for troubleshooting.
+ */
+#define SDHC_CLK_FREQ 40000000
+
+
+/**
  * @ingroup sdhc
  * @{
  */

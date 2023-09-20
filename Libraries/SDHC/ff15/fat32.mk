@@ -71,7 +71,7 @@ export USE_NATIVE_SDHC
 LIBS += ${FAT32_DRIVER_BUILD_DIR}/FAT32.a
 
 # Add to include directory list
-IPATH += ${FAT32_DRIVER_DIR}/Source
+IPATH += ${FAT32_DRIVER_DIR}/source
 
 # Add rule to build the Driver Library
 ${FAT32_DRIVER_BUILD_DIR}/FAT32.a: FORCE
