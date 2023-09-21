@@ -229,10 +229,23 @@ static DRESULT get_sector_count(void *buff)
     DRESULT status = RES_ERROR;
 
     if (init_done) {
-    	if (MXC_SDHC_Lib_GetCSD(&csd) == E_NO_ERROR) {
-	    	*((DWORD *)buff) = MXC_SDHC_Lib_GetCapacity(&csd) / FF_MIN_SS;
-	    	status = RES_OK;
-		}
+    	int err = MXC_SDHC_Lib_GetCSD(&csd);
+        if (err == E_NO_ERROR) {
+            *((DWORD *)buff) = (csd.csd.c_size + 1) << 10;
+            // The "sector count" for FatFS is the total data area capacity (in bytes)
+            // divided by the size of a sector (in bytes).  An SDHC sector is always 512 bytes,
+            // and this is guaranteed by the spec.
+
+            // The formula given by the CSD register spec v2.0 (which can be found in the SD 
+            // physical layer spec) is
+            // memory capacity = (C_SIZE + 1) * 512 * 1024
+            // so dividing by the sector size, we have
+            // sector count = memory capacity / 512 = (C_SIZE + 1) * 1024 = (C_SIZE + 1) << 10
+
+            // NOTE: We used to multiply by 512 in MXC_SDHC_Lib_GetCSD, then divide again by 512 here.
+            // That caused 32-bit integer overflow...  so be wary of overflow!
+            status = RES_OK;
+        }
     } else {
 		status = RES_NOTRDY;
     }
