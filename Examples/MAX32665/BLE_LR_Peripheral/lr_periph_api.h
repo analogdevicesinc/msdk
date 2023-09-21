@@ -23,8 +23,8 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
-#ifndef EXAMPLES_MAX32665_BLE_LR_PERIPHERAL_API_H_
-#define EXAMPLES_MAX32665_BLE_LR_PERIPHERAL_API_H_
+#ifndef EXAMPLES_MAX32665_BLE_LR_PERIPHERAL_LR_PERIPH_API_H_
+#define EXAMPLES_MAX32665_BLE_LR_PERIPHERAL_LR_PERIPH_API_H_
 
 #include "wsf_os.h"
 
@@ -81,4 +81,4 @@ void FitHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif // EXAMPLES_MAX32665_BLE_LR_PERIPHERAL_API_H_
+#endif // EXAMPLES_MAX32665_BLE_LR_PERIPHERAL_LR_PERIPH_API_H_

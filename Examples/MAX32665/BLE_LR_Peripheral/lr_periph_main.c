@@ -98,8 +98,8 @@ typedef union {
 
 /*! configurable parameters for advertising */
 static const appAdvCfg_t fitAdvCfg = {
-    {0, 0, 0}, /*! Advertising durations in ms */
-    {64, 0, 0} /*! Advertising intervals in 0.625 ms units */
+    { 0, 0, 0 }, /*! Advertising durations in ms */
+    { 64, 0, 0 } /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
