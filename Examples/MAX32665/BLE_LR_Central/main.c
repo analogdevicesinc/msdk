@@ -1,7 +1,7 @@
 /*************************************************************************************************/
 /*!
  * @file    main.c
- * @brief   Bluetooth fitness device. Showcases heart rate, battery level, running speed and cadence.
+ * @brief   Simple BLE Data Client for unformatted data exchange.
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *
@@ -21,7 +21,6 @@
 */
 /*************************************************************************************************/
 
-#include <stdio.h>
 #include <string.h>
 #include "wsf_types.h"
 #include "wsf_trace.h"
@@ -32,6 +31,7 @@
 #include "wsf_heap.h"
 #include "wsf_cs.h"
 #include "wsf_timer.h"
+#include "wsf_trace.h"
 #include "wsf_os.h"
 
 #include "sec_api.h"
@@ -58,9 +58,8 @@
 #include "pal_cfg.h"
 #include "pal_timer.h"
 #include "pal_sys.h"
-#include "pal_uart.h"
 
-#include "fit_api.h"
+#include "datc_api.h"
 #include "app_ui.h"
 
 /**************************************************************************************************
@@ -69,14 +68,14 @@
 
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
+#define DEFAULT_TX_POWER 0 /* dBm */
 
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
-extern uint8_t appCodedPhyDemo;
 
 /*! \brief  Pool runtime configuration. */
-static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 8 } };
+static wsfBufPoolDesc_t mainPoolDesc[] = { { 16, 8 }, { 32, 4 }, { 192, 8 }, { 256, 16 } };
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
 static LlRtCfg_t mainLlRtCfg;
@@ -84,12 +83,14 @@ static LlRtCfg_t mainLlRtCfg;
 
 volatile int wutTrimComplete;
 
+extern uint8_t appCodedPhyDemo;
+
 /**************************************************************************************************
   Functions
 **************************************************************************************************/
 
 /*! \brief  Stack initialization for app. */
-extern void StackInitFit(void);
+extern void StackInitDatc(void);
 
 /*************************************************************************************************/
 /*!
@@ -221,6 +222,11 @@ int main(void)
     */
     mainBbRtCfg.clkPpm = 20;
 
+    /* Increase the default ACL buffer size and count */
+    mainLlRtCfg.numTxBufs = 8;
+    mainLlRtCfg.numRxBufs = 8;
+    mainLlRtCfg.maxAclLen = 256;
+
     /* Set the default connection power level */
     mainLlRtCfg.defTxPwrLvl = DEFAULT_TX_POWER;
 #endif
@@ -233,11 +239,11 @@ int main(void)
 
     mainWsfInit();
     AppTerminalInit();
-    
-    APP_TRACE_INFO0("===============================");
-    APP_TRACE_INFO0("Long range demo (coded-PHY s=8)");
-    APP_TRACE_INFO0("===============================");
-    APP_TRACE_INFO1("BT_VER: %d", BT_VER);
+
+    APP_TRACE_INFO0("==========================================");
+    APP_TRACE_INFO0("Long distance scanner demo (CODED PHY S=8)");
+    APP_TRACE_INFO1("BT_VER=%d", BT_VER);
+    APP_TRACE_INFO0("==========================================");
     appCodedPhyDemo = 1;
 
 #if defined(HCI_TR_EXACTLE) && (HCI_TR_EXACTLE == 1)
@@ -275,8 +281,8 @@ int main(void)
     PalBbDisable();
 #endif
 
-    StackInitFit();
-    FitStart();
+    StackInitDatc();
+    DatcStart();
 
     WsfOsEnterMainLoop();
 

@@ -94,7 +94,7 @@ typedef struct
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
-extern uint8_t appCodedPhy;
+extern uint8_t appCodedPhyDemo;
 
 /**************************************************************************************************
   Local Variables
@@ -170,7 +170,7 @@ static void dmExtAdvCbInit(uint8_t advHandle)
   /* initialize advertising set */
   dmExtAdvCb[advHandle].advType = DM_ADV_NONE;
 
-  if (appCodedPhy) {
+  if (appCodedPhyDemo) {
     dmExtAdvCb[advHandle].useLegacyPdu = FALSE;
     dmExtAdvCb[advHandle].priAdvPhy = HCI_ADV_PHY_LE_CODED;
     dmExtAdvCb[advHandle].secAdvPhy = HCI_ADV_PHY_LE_CODED;

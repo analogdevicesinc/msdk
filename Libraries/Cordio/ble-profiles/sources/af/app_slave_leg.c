@@ -31,7 +31,7 @@
 #include "app_api.h"
 #include "app_main.h"
 
-extern uint8_t appCodedPhy;
+extern uint8_t appCodedPhyDemo;
 
 /*************************************************************************************************/
 /*!
@@ -232,7 +232,7 @@ void AppAdvSetData(uint8_t location, uint8_t len, uint8_t *pData)
 {
   if (appSlaveAdvMode())
   {
-    if (appCodedPhy) {
+    if (appCodedPhyDemo) {
       // TODO: check and set length
       appAdvSetData(DM_ADV_HANDLE_DEFAULT, location, len, pData, 58, 58);
     } else {

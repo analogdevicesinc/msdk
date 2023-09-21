@@ -29,7 +29,7 @@
 #include "app_api.h"
 #include "app_main.h"
 
-extern uint8_t appCodedPhy;
+extern uint8_t appCodedPhyDemo;
 
 /*************************************************************************************************/
 /*!
@@ -78,7 +78,7 @@ void AppScanStart(uint8_t mode, uint8_t scanType, uint16_t duration)
 {
   if (appMasterScanMode())
   {
-    if (appCodedPhy)
+    if (appCodedPhyDemo)
     {
       DmScanSetInterval(HCI_SCAN_PHY_LE_CODED_BIT, &pAppMasterCfg->scanInterval, &pAppMasterCfg->scanWindow);
 

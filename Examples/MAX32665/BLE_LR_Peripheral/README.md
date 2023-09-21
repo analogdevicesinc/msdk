@@ -2,7 +2,7 @@
 
 This project is a demo for long range advertising. The coded PHY (s=8) is used. The advertising interval is 40 ms. And in each advertising data, it includes 50-byte user data.
 
-The project is modified from the BLE_fit project.
+The project is modified from the BLE_fit project. It works with the BLE_LR_Central project.
 
 ### Project Usage
 

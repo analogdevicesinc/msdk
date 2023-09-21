@@ -37,7 +37,7 @@
 
 #include "ll_api.h"
 
-extern uint8_t appCodedPhy;
+extern uint8_t appCodedPhyDemo;
 
 /*************************************************************************************************/
 /*!
@@ -60,7 +60,7 @@ void HciLeSetExtScanParamCmd(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_
   (void)status;
 
   // TODO
-  if (appCodedPhy == 0)
+  if (appCodedPhyDemo == 0)
   {
   WSF_ASSERT(status == LL_SUCCESS);
   }

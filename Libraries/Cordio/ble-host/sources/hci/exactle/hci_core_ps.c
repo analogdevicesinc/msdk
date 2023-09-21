@@ -44,7 +44,7 @@
 #include "../../../controller/sources/common/sch/sch_int.h"
 
 extern void LED_On(unsigned int idx);
-extern uint8_t appCodedPhy;
+extern uint8_t appCodedPhyDemo;
 
 /**************************************************************************************************
   Local Variables
@@ -196,7 +196,7 @@ bool_t hciCoreEvtProcessLlEvt(LlEvt_t *pEvt)
       
       // for long range demo, display aux scan data here
       // 00:18:80 ADI
-      if (appCodedPhy)
+      if (appCodedPhyDemo)
       {
         if (pMsg->extAdvReportInd.addr[5] == 0 && pMsg->extAdvReportInd.addr[4] == 0x18 && pMsg->extAdvReportInd.addr[3] == 0x80)
         {

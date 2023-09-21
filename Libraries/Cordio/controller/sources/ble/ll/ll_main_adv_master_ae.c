@@ -33,7 +33,7 @@
 #include "wsf_msg.h"
 #include "wsf_trace.h"
 
-extern uint8_t appCodedPhy;
+extern uint8_t appCodedPhyDemo;
 
 /*************************************************************************************************/
 /*!
@@ -171,7 +171,7 @@ void LlExtScanEnable(uint8_t enable, uint8_t filterDup, uint16_t duration, uint1
   const unsigned int perMsPerUnit = 1280;
   unsigned int filterDupMax;
   
-  if (appCodedPhy)
+  if (appCodedPhyDemo)
   {
     filterDupMax = LL_SCAN_FILTER_DUP_DISABLE;
   }

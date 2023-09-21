@@ -83,7 +83,7 @@ lctrSyncInfo_t trsfSyncInfo;
 /*! \brief      Active extended scan contexts. */
 lctrActiveExtScan_t lctrActiveExtScan;
 
-extern uint8_t appCodedPhy;
+extern uint8_t appCodedPhyDemo;
 
 /*************************************************************************************************/
 /*!
@@ -851,7 +851,7 @@ void LctrMstExtScanDefaults(void)
   lmgrCb.numExtScanPhys = 1;
   lctrMstExtScanTbl[LCTR_SCAN_PHY_1M]->scanParam = defScanParam;
 
-  if (appCodedPhy)
+  if (appCodedPhyDemo)
   {
     lctrMstExtScan.enaPhys = 1 << LCTR_SCAN_PHY_CODED;
   }
@@ -1573,7 +1573,7 @@ lctrPerScanCtx_t *lctrAllocPerScanCtx(void)
       pMsg->event = LCTR_PER_SCAN_SUP_TIMEOUT;
 
       /* Update once PHY is known. */
-      if (appCodedPhy)
+      if (appCodedPhyDemo)
       {
         pCtx->bleData.chan.txPhy = pCtx->bleData.chan.rxPhy = BB_PHY_BLE_CODED;
       }
