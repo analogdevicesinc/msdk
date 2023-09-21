@@ -23,3 +23,6 @@ endif
 LIB_SDHC = 1
 # Use FatFS version R0.15
 FATFS_VERSION = ff15
+
+# Enable CLI library
+LIB_CLI = 1

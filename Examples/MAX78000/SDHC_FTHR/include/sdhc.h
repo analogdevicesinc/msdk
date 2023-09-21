@@ -30,48 +30,54 @@
  * ownership rights.
  *
  ******************************************************************************/
-
-/**
- * @file    main.c
- * @brief   read and write sdhc
- * @details This example uses the sdhc and ffat to read/write the file system on
- *          an SD card. The Fat library used supports long filenames (see ffconf.h)
- *          the max length is 256 characters. It uses the CLI library for taking user
- *          user commands.
- *
- *          You must connect an sd card to the sd card slot.
- */
+#ifndef EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_
+#define EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_
 
 /***** Includes *****/
+#include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "board.h"
-#include "cli.h"
-#include "nvic_table.h"
-#include "sdhc.h"
+#include "mxc_delay.h"
+#include "mxc_device.h"
+#include "gpio.h"
 #include "uart.h"
-#include "user-cli.h"
+#include "ff.h"
 
-#ifdef BOARD_EVKIT_V1
-#warning This example is not supported by the MAX78000EVKIT.
-#endif
+/***** Definitions *****/
 
-/******************************************************************************/
-int main(void)
-{
-    int err;
-    printf("\n\n***** MAX78000 SDHC FAT Filesystem Example *****\n");
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+#define MAXLEN 256
 
-    // Wait for SD Card to be inserted
-    waitCardInserted();
+/***** FUNCTION PROTOTYPES *****/
 
-    printf("Card inserted.\n");
-    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
+void generateMessage(unsigned length);
 
-    // Initialize CLI
-    if ((err = MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), user_commands, num_user_commands)) !=
-        E_NO_ERROR) {
-        return err;
-    }
+int mount();
 
-    // Run CLI
-    while (1) {}
-}
+int umount();
+
+int formatSDHC();
+
+int getSize();
+
+int ls();
+
+int createFile(char *file_name, unsigned int length);
+
+int appendFile(char *file_name, unsigned int length);
+
+int mkdir(char *dir_name);
+
+int cd(char *dir_name);
+
+int deleteFile(char *file_name);
+
+int example();
+
+void waitCardInserted();
+
+#endif // EXAMPLES_MAX78000_SDHC_FTHR_INCLUDE_SDHC_H_

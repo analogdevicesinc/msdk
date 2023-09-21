@@ -245,3 +245,12 @@ BARCODE_DECODER_DIR ?= $(LIBS_DIR)/MiscDrivers/BarcodeDecoder/zbar
 include $(BARCODE_DECODER_DIR)/barcode_decoder.mk
 endif
 # ************************
+
+# CLI (Disabled by default)
+# ************************
+LIB_CLI ?= 0
+ifeq ($(LIB_CLI), 1)
+LIB_CLI_DIR ?= $(LIBS_DIR)/CLI
+include $(LIB_CLI_DIR)/CLI.mk
+endif
+# ************************
