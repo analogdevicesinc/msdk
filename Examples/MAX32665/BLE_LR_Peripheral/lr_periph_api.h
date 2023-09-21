@@ -2,11 +2,13 @@
 /*!
  *  \file
  *
- *  \brief  Fitness sample application interface.
+ *  \brief  Long range application interface.
  *
  *  Copyright (c) 2011-2018 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019 Packetcraft, Inc.
+ * 
+ *  Paritial Copyright (c) 2023 Analog Devices, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -38,7 +40,7 @@ extern "C" {
 #define FIT_CONN_MAX 1
 #endif
 
-#define DEFAULT_TX_POWER    4 /* dBm */
+#define DEFAULT_TX_POWER 4 /* dBm */
 
 /**************************************************************************************************
   Function Declarations

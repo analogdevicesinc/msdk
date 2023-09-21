@@ -2,12 +2,13 @@
 /*!
  *  \file
  *
- *  \brief  Fitness sample application for the following profiles:
- *            Heart Rate profile
+ *  \brief  Long range application demo
  *
  *  Copyright (c) 2011-2019 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019 Packetcraft, Inc.
+ *
+ *  Paritial Copyright (c) 2023 Analog Devices, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,6 +23,7 @@
  *  limitations under the License.
  */
 /*************************************************************************************************/
+
 
 #include <string.h>
 #include "wsf_types.h"
@@ -47,7 +49,7 @@
 #include "bas/bas_api.h"
 #include "hrps/hrps_api.h"
 #include "rscp/rscp_api.h"
-#include "fit_api.h"
+#include "lr_periph_api.h"
 #include "pal_btn.h"
 #include "tmr.h"
 
@@ -96,8 +98,8 @@ typedef union {
 
 /*! configurable parameters for advertising */
 static const appAdvCfg_t fitAdvCfg = {
-    { 0, 0, 0 }, /*! Advertising durations in ms */
-    { 64, 0, 0 } /*! Advertising intervals in 0.625 ms units */
+    {0, 0, 0}, /*! Advertising durations in ms */
+    {64, 0, 0} /*! Advertising intervals in 0.625 ms units */
 };
 
 /*! configurable parameters for slave */
@@ -178,7 +180,14 @@ static const uint8_t fitScanDataDisc[] = {
     /*! device name */
     9, /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
-    'L', 'o', 'n', 'g', 'R', 'a', 'n', 'g'
+    'L',
+    'o',
+    'n',
+    'g',
+    'R',
+    'a',
+    'n',
+    'g'
 };
 
 /**************************************************************************************************
@@ -407,8 +416,7 @@ static void fitClose(fitMsg_t *pMsg)
 static void fitSetup(fitMsg_t *pMsg)
 {
     /* set advertising and scan response data for discoverable mode */
-    for (uint8_t i = 0; i < USER_SPEC_ADV_DATA_LEN; ++i)
-    {
+    for (uint8_t i = 0; i < USER_SPEC_ADV_DATA_LEN; ++i) {
         fitAdvDataDisc[8 + i] = i + 1;
     }
     AppAdvSetData(APP_ADV_DATA_DISCOVERABLE, sizeof(fitAdvDataDisc), (uint8_t *)fitAdvDataDisc);

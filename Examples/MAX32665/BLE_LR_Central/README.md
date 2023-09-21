@@ -30,6 +30,7 @@ An arbitrary pin can be entered in the format `pin (connId) passkey`
     * ***Note***: *Either the client or server can enter the passkey first. The peer device must then match.*
 
 ### Logs
+```
 terminal: init␍␊  
 ==========================================␍␊  
 Long distance scanner demo (CODED PHY S=8)␍␊  
@@ -69,3 +70,4 @@ dmDevPassEvtToDevPriv: event: 12, param: 74, advHandle: 0␍␊
 00:18:80:00:a2:22 D8 02 03 ... 30 31 D8␍␊  
 00:18:80:00:a2:22 D9 02 03 ... 30 31 D9␍␊  
 ...  
+```

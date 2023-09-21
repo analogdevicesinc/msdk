@@ -1,11 +1,13 @@
 /*************************************************************************************************/
 /*!
  * @file    main.c
- * @brief   Simple BLE Data Client for unformatted data exchange.
+ * @brief   Long range demo on a central device
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *
 *  Copyright (c) 2019 Packetcraft, Inc.
+*
+*  Partial Copyright (c) 2023 Analog Devices, Inc.
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -31,7 +33,6 @@
 #include "wsf_heap.h"
 #include "wsf_cs.h"
 #include "wsf_timer.h"
-#include "wsf_trace.h"
 #include "wsf_os.h"
 
 #include "sec_api.h"
@@ -59,7 +60,7 @@
 #include "pal_timer.h"
 #include "pal_sys.h"
 
-#include "datc_api.h"
+#include "lr_central_api.h"
 #include "app_ui.h"
 
 /**************************************************************************************************

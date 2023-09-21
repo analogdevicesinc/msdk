@@ -2,11 +2,13 @@
 /*!
  *  \file
  *
- *  \brief  Stack initialization for dats.
+ *  \brief  Stack initialization for long range central.
  *
  *  Copyright (c) 2016-2019 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019 Packetcraft, Inc.
+ * 
+ *  Partial Copyright (c) 2023 Analog Devices, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -24,10 +26,9 @@
 
 #include "wsf_types.h"
 #include "wsf_os.h"
-#include "wsf_trace.h"
 #include "util/bstream.h"
 
-#include "fit_api.h"
+#include "lr_central_api.h"
 
 #include "hci_handler.h"
 #include "dm_handler.h"
@@ -44,25 +45,7 @@
 #include "sec_api.h"
 #include "hci_defs.h"
 
-typedef struct
-{
-  uint8_t             advType;         /*!< Advertising type. */
-  bool_t              useLegacyPdu;    /*!< Use legacy advertising PDUs. */
-  bool_t              omitAdvAddr;     /*!< Omit advertiser's address from all PDUs. */
-  bool_t              incTxPwr;        /*!< Include TxPower in extended header of advertising PDU. */
-  int8_t              advTxPwr;        /*!< Advertising Tx Power. */
-  uint8_t             priAdvPhy;       /*!< Primary Advertising PHY. */
-  uint8_t             secAdvMaxSkip;   /*!< Secondary Advertising Maximum Skip. */
-  uint8_t             secAdvPhy;       /*!< Secondary Advertising PHY. */
-  bool_t              scanReqNotifEna; /*!< Scan request notification enable. */
-  uint8_t             fragPref;        /*!< Fragment preference for advertising data. */
-  uint8_t             advSid;          /*!< Advertising Sid. */
-  bool_t              advDataSet;      /*!< TRUE if extended adv data has been set. */
-  bool_t              scanDataSet;     /*!< TRUE if extended scan data has been set. */
-  uint8_t             connId;          /*!< Connection identifier (used by directed advertising). */
-} dmExtAdvCb_t;
-
-extern dmExtAdvCb_t dmExtAdvCb[];
+extern uint8_t appCodedPhyDemo;
 
 /*************************************************************************************************/
 /*!
@@ -71,7 +54,7 @@ extern dmExtAdvCb_t dmExtAdvCb[];
  *  \return     None.
  */
 /*************************************************************************************************/
-void StackInitFit(void)
+void StackInitDatc(void)
 {
     wsfHandlerId_t handlerId;
 
@@ -85,48 +68,39 @@ void StackInitFit(void)
 
     handlerId = WsfOsSetNextHandler(DmHandler);
     DmDevVsInit(0);
+    DmDevPrivInit();
     DmConnInit();
-#if BT_VER >= HCI_VER_BT_CORE_SPEC_5_0
-    APP_TRACE_INFO0("DmExtAdvInit");
-    DmExtAdvInit();
 
-    for (uint8_t i = 0; i < DM_NUM_ADV_SETS; i++)
-    {
-        // dmExtAdvCbInit(i);
-        dmExtAdvCb[i].useLegacyPdu = FALSE;
-        dmExtAdvCb[i].priAdvPhy = HCI_ADV_PHY_LE_CODED;
-        dmExtAdvCb[i].secAdvPhy = HCI_ADV_PHY_LE_CODED;
+    if (appCodedPhyDemo) {
+        DmExtScanInit();
+    } else {
+        DmScanInit();
     }
-    
-    DmExtConnSlaveInit();
-#else
-    DmAdvInit();
-    DmConnSlaveInit();
-#endif
+
+    DmConnMasterInit();
     DmSecInit();
     DmSecLescInit();
     DmPrivInit();
     DmHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(L2cSlaveHandler);
-    L2cSlaveHandlerInit(handlerId);
     L2cInit();
-    L2cSlaveInit();
+    L2cMasterInit();
 
     handlerId = WsfOsSetNextHandler(AttHandler);
     AttHandlerInit(handlerId);
     AttsInit();
     AttsIndInit();
+    AttcInit();
 
     handlerId = WsfOsSetNextHandler(SmpHandler);
     SmpHandlerInit(handlerId);
-    SmprInit();
-    SmprScInit();
-    HciSetMaxRxAclLen(100);
+    SmpiInit();
+    SmpiScInit();
+    HciSetMaxRxAclLen(256);
 
     handlerId = WsfOsSetNextHandler(AppHandler);
     AppHandlerInit(handlerId);
 
-    handlerId = WsfOsSetNextHandler(FitHandler);
-    FitHandlerInit(handlerId);
+    handlerId = WsfOsSetNextHandler(DatcHandler);
+    DatcHandlerInit(handlerId);
 }

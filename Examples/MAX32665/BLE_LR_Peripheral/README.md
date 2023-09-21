@@ -26,6 +26,7 @@ viewing the trace messages and interacting with the application. Port uses setti
     - SW Flow Control : No  
 
 ### Log
+```
 terminal: init␍␊  
 ===============================␍␊  
 Long range demo (coded-PHY s=8)␍␊  
@@ -56,4 +57,4 @@ Fit got evt 52␍␊
 0A␍␊  
 0B␍␊  
 ...  
-
+```

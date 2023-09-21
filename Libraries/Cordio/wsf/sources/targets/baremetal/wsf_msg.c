@@ -42,8 +42,6 @@ typedef struct wsfMsg_tag
   wsfHandlerId_t      handlerId;
 } wsfMsg_t;
 
-uint8_t msg_ndx = 0;
-
 /*************************************************************************************************/
 /*!
  *  \brief  Allocate a data message buffer to be sent with WsfMsgSend().
@@ -125,12 +123,6 @@ void WsfMsgSend(wsfHandlerId_t handlerId, void *pMsg)
 /*************************************************************************************************/
 void WsfMsgEnq(wsfQueue_t *pQueue, wsfHandlerId_t handlerId, void *pMsg)
 {
-  /*
-  wsfMsgHdr_t *h = (wsfMsgHdr_t *)pMsg;
-  h->msg_ndx = ++msg_ndx;
-  WsfTrace("msg_enq %03d hndrId=%u p=0x%04X evt=%03d st=%d", h->msg_ndx, handlerId, h->param, h->event, h->status);
-  */
-
   wsfMsg_t    *p;
 
   WSF_ASSERT(pMsg != NULL);

@@ -1,11 +1,13 @@
 /*************************************************************************************************/
 /*!
  * @file    main.c
- * @brief   Bluetooth fitness device. Showcases heart rate, battery level, running speed and cadence.
+ * @brief   BLE long range application demo on a peripheral device.
 *
 *  Copyright (c) 2013-2019 Arm Ltd. All Rights Reserved.
 *
 *  Copyright (c) 2019 Packetcraft, Inc.
+*
+*  Paritial Copyright (c) 2023 Analog Devices, Inc.
 *
 *  Licensed under the Apache License, Version 2.0 (the "License");
 *  you may not use this file except in compliance with the License.
@@ -60,7 +62,7 @@
 #include "pal_sys.h"
 #include "pal_uart.h"
 
-#include "fit_api.h"
+#include "lr_periph_api.h"
 #include "app_ui.h"
 
 /**************************************************************************************************
@@ -233,7 +235,7 @@ int main(void)
 
     mainWsfInit();
     AppTerminalInit();
-    
+
     APP_TRACE_INFO0("===============================");
     APP_TRACE_INFO0("Long range demo (coded-PHY s=8)");
     APP_TRACE_INFO0("===============================");

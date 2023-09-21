@@ -116,7 +116,6 @@ typedef struct
   uint16_t        param;          /*!< \brief General purpose parameter passed to event handler */
   uint8_t         event;          /*!< \brief General purpose event value passed to event handler */
   uint8_t         status;         /*!< \brief General purpose status value passed to event handler */
-  uint8_t         msg_ndx;        /*!< \brief message index */
 } wsfMsgHdr_t;
 
 /**************************************************************************************************

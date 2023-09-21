@@ -41,7 +41,6 @@
 #include "hci_main.h"
 #include "hci_core_ps.h"
 #include "pal_led.h"
-#include "../../../controller/sources/common/sch/sch_int.h"
 
 extern void LED_On(unsigned int idx);
 extern uint8_t appCodedPhyDemo;
@@ -203,7 +202,7 @@ bool_t hciCoreEvtProcessLlEvt(LlEvt_t *pEvt)
           LED_On(0);  // 0: red led ID
         }
 
-        printf("\n%02x:%02x:%02x:%02x:%02x:%02x %02X %02X %02X ... %02X %02X %02X", 
+        WsfTrace("\n%02x:%02x:%02x:%02x:%02x:%02x %02X %02X %02X ... %02X %02X %02X", 
                   pMsg->extAdvReportInd.addr[5], pMsg->extAdvReportInd.addr[4], pMsg->extAdvReportInd.addr[3],
                   pMsg->extAdvReportInd.addr[2], pMsg->extAdvReportInd.addr[1], pMsg->extAdvReportInd.addr[0],
                   pMsg->extAdvReportInd.pData[8 + 0], 

@@ -2,11 +2,13 @@
 /*!
  *  \file
  *
- *  \brief  Proprietary data transfer client sample application.
+ *  \brief  Long range central device demo interface
  *
  *  Copyright (c) 2012-2018 Arm Ltd. All Rights Reserved.
  *
  *  Copyright (c) 2019 Packetcraft, Inc.
+ * 
+ *  Partial Copyright (c) 2023 Analog Devices, Inc.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -69,4 +71,4 @@ void DatcHandler(wsfEventMask_t event, wsfMsgHdr_t *pMsg);
 };
 #endif
 
-#endif // EXAMPLES_MAX32665_BLE_LR_CENTRAL_API_H_
+#endif  // EXAMPLES_MAX32665_BLE_LR_CENTRAL_API_H_

@@ -2,7 +2,7 @@
 /*!
  *  \file
  *
- *  \brief  Proprietary data transfer client sample application for Nordic-ble.
+ *  \brief  Long range application on a central device
  *
  *  Copyright (c) 2012-2019 Arm Ltd. All Rights Reserved.
  *
@@ -46,7 +46,7 @@
 #include "svc_ch.h"
 #include "gatt/gatt_api.h"
 #include "wpc/wpc_api.h"
-#include "datc_api.h"
+#include "lr_central_api.h"
 #include "util/calc128.h"
 #include "pal_btn.h"
 #include "pal_led.h"
@@ -71,11 +71,11 @@ Macros
 #define SPEED_TEST_PACKET_LEN 238
 #define SPEED_TEST_TMR MXC_TMR3
 
-#define SCAN_START_EVT          0x99
-#define USER_APP_TMR_EVT        0x9A
+#define SCAN_START_EVT 0x99
+#define USER_APP_TMR_EVT 0x9A
 
-#define SCAN_START_MS           500
-#define USER_APP_TMR_MS         5000
+#define SCAN_START_MS 500
+#define USER_APP_TMR_MS 5000
 
 /* Down sample the number of scan reports we print */
 #define SCAN_REPORT_DOWN_SAMPLE 20
@@ -386,7 +386,7 @@ static void datcDmCback(dmEvt_t *pDmEvt)
                 pMsg->scanReport.pData = (uint8_t *)((uint8_t *)pMsg + len);
                 memcpy(pMsg->scanReport.pData, pDmEvt->scanReport.pData, reportLen);
             }
-            
+
             WsfMsgSend(datcCb.handlerId, pMsg);
         }
     }
@@ -1214,7 +1214,7 @@ static void datcProcMsg(dmEvt_t *pMsg)
 
     case USER_APP_TMR_EVT:
         WsfTimerStartMs(&userAppTmr, USER_APP_TMR_MS);
-        LED_Off(0);     // turn off red led
+        LED_Off(0); // turn off red led
         break;
 
     default:
