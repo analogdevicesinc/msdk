@@ -175,8 +175,9 @@ int getSize()
 
     sectors_total = (fs->n_fatent - 2) * fs->csize;
     sectors_free = clusters_free * fs->csize;
-    disksize = (QWORD) (sectors_total / 2) * (QWORD) (1024); // for cards over 3GB, we need QWORD to hold size
-    available_bytes = (QWORD) (sectors_free / 2) * (QWORD) (1024);
+    disksize = (QWORD)(sectors_total / 2) *
+               (QWORD)(1024); // for cards over 3GB, we need QWORD to hold size
+    available_bytes = (QWORD)(sectors_free / 2) * (QWORD)(1024);
 
     printf("Disk Size: %llu bytes\n", disksize);
     printf("Available: %llu bytes\n", available_bytes);
@@ -492,8 +493,7 @@ int example()
     if ((err = f_mount(NULL, "", 0)) != FR_OK) {
         printf("Error unmounting volume: %s\n", FF_ERRORS[err]);
         return err;
-    }
-   else {
+    } else {
         mounted = 0;
     }
     return 0;
