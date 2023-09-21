@@ -106,9 +106,7 @@ int formatSDHC()
 
     MKFS_PARM format_options = { .fmt = FM_ANY };
 
-
-    if ((err = f_mkfs("", &format_options, work, sizeof(work))) !=
-        FR_OK) {
+    if ((err = f_mkfs("", &format_options, work, sizeof(work))) != FR_OK) {
         printf("Error formatting SD card: %s\n", FF_ERRORS[err]);
     } else {
         printf("Drive formatted.\n");
