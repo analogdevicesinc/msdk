@@ -104,8 +104,9 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    if ((err = f_mkfs("", FM_ANY, 0, work, sizeof(work))) !=
-        FR_OK) { //Format the default drive to FAT32
+    MKFS_PARM format_options = { .fmt = FM_ANY };
+
+    if ((err = f_mkfs("", &format_options, work, sizeof(work))) != FR_OK) {
         printf("Error formatting SD card: %s\n", FF_ERRORS[err]);
     } else {
         printf("Drive formatted.\n");

@@ -138,8 +138,22 @@ ifeq ($(LIB_SDHC), 1)
 # Set the SDHC driver directory
 SDHC_DRIVER_DIR ?= $(LIBS_DIR)/SDHC
 
+# Create option for FatFS version selection
+# Acceptable values:
+# - ff13
+# - ff14
+# - ff15
+FATFS_VERSION ?= ff13
+ifneq "$(FATFS_VERSION)" "ff13"
+ifneq "$(FATFS_VERSION)" "ff14"
+ifneq "$(FATFS_VERSION)" "ff15"
+$(error Invalid FATFS_VERSION.  Acceptable values are "ff13" "ff14" or "ff15")
+endif
+endif
+endif
+
 # Set the FAT32 driver directory
-FAT32_DRIVER_DIR ?= $(SDHC_DRIVER_DIR)/ff13
+FAT32_DRIVER_DIR ?= $(SDHC_DRIVER_DIR)/$(FATFS_VERSION)
 
 # Include the SDHC library
 include $(FAT32_DRIVER_DIR)/fat32.mk
