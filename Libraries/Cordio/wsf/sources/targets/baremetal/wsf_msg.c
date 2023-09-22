@@ -156,12 +156,6 @@ void *WsfMsgDeq(wsfQueue_t *pQueue, wsfHandlerId_t *pHandlerId)
 
     /* hide header */
     pMsg++;
-
-    /*
-    uint8_t *pData = (uint8_t *)pMsg;
-    
-    WsfTrace("msg_deq %03d hndrId=%d p=0x%02X%02X evt=%03d st=%d", pData[4], *pHandlerId, pData[1], pData[0], pData[2], pData[3]);
-    */
   }
 
   return pMsg;
