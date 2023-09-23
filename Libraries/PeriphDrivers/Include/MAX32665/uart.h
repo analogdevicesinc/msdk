@@ -157,11 +157,17 @@ struct _mxc_uart_req_t {
  * UART Clock        - 7.37MHz Clock (for baud > 7372800, PCLK is used)
  *
  * These parameters can be modified after initialization using low level functions
+ * 
+ * @note    On default this function enables UART peripheral clock.
+ *          if you wish to manage clock and gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ *          By this flag this function will remove clock and gpio related codes from file.
  *
  * @param   uart            Pointer to UART registers (selects the UART block used.)
  * @param   baud            The requested clock frequency. The actual clock frequency
  *                          will be returned by the function if successful.
- * @param   map            	MAP_A or MAP_B uart pins select
+ * @param   map            	MAP_A or MAP_B uart pins select, Has no effect incase of 
+ *                          MSDK_NO_GPIO_CLK_INIT has been defined.
  *
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.

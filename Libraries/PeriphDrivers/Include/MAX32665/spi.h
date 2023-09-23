@@ -153,6 +153,11 @@ struct _mxc_spi_req_t {
  * SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)
  *
  * These parameters can be modified after initialization using low level functions
+ * 
+ * @note    On default this function enables SPI peripheral clock and spi gpio pins.
+ * if you wish to manage clock and gpio related things in upper level instead of here.
+ * Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ * By this flag this function will remove clock and gpio related codes from file.
  *
  * @param   spi             Pointer to SPI registers (selects the SPI block used.)
  * @param   masterMode      Whether to put the device in master or slave mode. Use
@@ -169,7 +174,8 @@ struct _mxc_spi_req_t {
  * @param   hz              The requested clock frequency. The actual clock frequency
  *                          will be returned by the function if successful. Used in
  *                          master mode only.
- * @param   map      		Mapping (MAP_A or MAP_B) to use for SPIO
+ * @param   map      		Mapping (MAP_A or MAP_B) to use for SPIO, Has no effect 
+ *                          incase of MSDK_NO_GPIO_CLK_INIT has been defined.
  *
  * @return  If successful, the actual clock frequency is returned. Otherwise, see
  *          \ref MXC_Error_Codes for a list of return codes.

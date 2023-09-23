@@ -51,6 +51,8 @@ int MXC_WDT_Init(mxc_wdt_regs_t *wdt)
     } else {
         return E_BAD_PARAM;
     }
+#else
+    (void)wdt;
 #endif
 
     return E_NO_ERROR;
