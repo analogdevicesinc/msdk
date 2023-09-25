@@ -162,6 +162,7 @@ int main(void)
 #endif
 
 #if MASTERASYNC
+        MXC_NVIC_SetVector(SPI_IRQ, SPI_IRQHandler);
         NVIC_EnableIRQ(SPI_IRQ);
         MXC_SPI_MasterTransactionAsync(&req);
 
