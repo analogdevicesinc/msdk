@@ -185,6 +185,7 @@ extern "C" {
 #define LL_TRACE_INFO1(msg, var1)                   WSF_TRACE(INFO, LL, msg, var1)
 #define LL_TRACE_INFO2(msg, var1, var2)             WSF_TRACE(INFO, LL, msg, var1, var2)
 #define LL_TRACE_INFO3(msg, var1, var2, var3)       WSF_TRACE(INFO, LL, msg, var1, var2, var3)
+#define LL_TRACE_INFO4(msg, var1, var2, var3, var4) WSF_TRACE(INFO, LL, msg, var1, var2, var3, var4)
 
 /*! \brief 0 argument MESH info trace. */
 #define MESH_TRACE_INFO0(msg)                       WSF_TRACE(INFO, MESH, msg)

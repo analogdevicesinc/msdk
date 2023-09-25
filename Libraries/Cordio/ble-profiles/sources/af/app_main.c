@@ -88,6 +88,9 @@ appReqActCfg_t *pAppMasterReqActCfg = (appReqActCfg_t *) &appReqActCfg;
 /*! Configurable pointer for incoming request actions on slave */
 appReqActCfg_t *pAppSlaveReqActCfg = (appReqActCfg_t *) &appReqActCfg;
 
+/*! For long distance test, use CODED PHY */
+uint8_t appCodedPhyDemo = 0;
+
 /*************************************************************************************************/
 /*!
  *  \brief  Process messages from the event handler.
