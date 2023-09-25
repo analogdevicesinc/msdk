@@ -163,7 +163,7 @@ unsigned long long MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd)
 {
     unsigned int size = csd->csd.c_size;
 
-    return ((unsigned long long)size)*((unsigned long long)512*1024);
+    return ((unsigned long long)(size+1))*((unsigned long long)512*1024);
 }
 
 /* ************************************************************************** */
