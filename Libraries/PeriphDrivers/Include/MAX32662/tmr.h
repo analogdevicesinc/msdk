@@ -147,11 +147,17 @@ typedef void (*mxc_tmr_complete_t)(int error);
 
 /**
  * @brief   Initialize timer module clock.
+ * @note    On default this function enables TMR peripheral clock and related GPIOs.
+ *          if you wish to manage clock and gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ *          By this flag this function will remove clock and gpio related codes from file.
+ * 
  * @param   tmr        Pointer to timer module to initialize.
  * @param   cfg        System configuration object
  * @param   init_pins  True will initialize pins corresponding to the TMR and False will not if pins are pinned out otherwise it will not
- *                     be used
- * @param   pin_sel    Selects which set of pins to initialize (if init_pins set to true) for the given timer instance  
+ *                     be used,  has no effect incase of MSDK_NO_GPIO_CLK_INIT has been defined.
+ * @param   pin_sel    Selects which set of pins to initialize (if init_pins set to true) for the given timer instance,
+ *                     has no effect incase of MSDK_NO_GPIO_CLK_INIT has been defined.
  * 
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
