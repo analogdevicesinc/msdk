@@ -121,6 +121,16 @@ void mxc_assert(const char *expr, const char *file, int line)
  * NOTE: This weak definition is included to support Push Button interrupts in
  *       case the user does not define this interrupt handler in their application.
  **/
+__weak void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
+__weak void GPIO1_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
+}
+
 __weak void GPIO2_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));
@@ -352,13 +362,13 @@ int Board_Init(void)
     }
 
 #ifdef TFT_NEWHAVEN
-    // Set falling edge triggered interrupt for TouchScreen
-    // MXC_TS_PreInit is not used because we need to take more direct
-    // control of SPI routines and initialization
-    ts_irq_pin.port->intmode |= ts_irq_pin.mask;
-    ts_irq_pin.port->intpol &= ~(ts_irq_pin.mask);
-    MXC_TS_AssignInterruptPin(ts_irq_pin);
-    MXC_TFT_Init(NULL, NULL);
+    // // Set falling edge triggered interrupt for TouchScreen
+    // // MXC_TS_PreInit is not used because we need to take more direct
+    // // control of SPI routines and initialization
+    // ts_irq_pin.port->intmode |= ts_irq_pin.mask;
+    // ts_irq_pin.port->intpol &= ~(ts_irq_pin.mask);
+    // MXC_TS_AssignInterruptPin(ts_irq_pin);
+    // MXC_TFT_Init(NULL, NULL);
 #endif
 
 // AI87-TODO: What's the reason for this deletion?
