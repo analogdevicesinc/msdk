@@ -50,11 +50,25 @@
 #include "pb.h"
 #include "spi.h"
 
+/***** Preprocessors *****/
+
+#define TARGET_DMA 0
+
+// Target Select Control Scheme
+#define TSCONTROL_HW_AUTO 0 // Hardware asserts/deasserts TSn pins.
+#define TSCONTROL_SW_DRV 0 // SPI Driver asserts/deasserts custom TS pins.
+#define TSCONTROL_SW_APP 1 // Application asserts/deasserts custom TS pins.
+
+// Preprocessor Error Checking
+#if (!(TSCONTROL_HW_AUTO || TSCONTROL_SW_DRV || TSCONTROL_SW_APP))
+#error "You must set either TSCONTROL_HW_AUTO, TSCONTROL_SW_DRV, or TSCONTROL_SW_APP to 1."
+#endif
+#if ((TSCONTROL_HW_AUTO && TSCONTROL_SW_DRV) || (TSCONTROL_SW_DRV && TSCONTROL_SW_APP) || \
+     (TSCONTROL_SW_APP && TSCONTROL_HW_AUTO))
+#error "You must select either CONTROLLER_SYNC, TSCONTROL_SW_DRV, or TSCONTROL_SW_APP, not all 3."
+#endif
+
 /***** Definitions *****/
-
-#define DMA 0
-
-#define CUSTOM_TARGET 0
 
 #define DATA_LEN 1024 // Words
 #define DATA_SIZE 8
@@ -70,8 +84,8 @@
 /***** Globals *****/
 uint8_t controller_rx[DATA_LEN];
 uint8_t controller_tx[DATA_LEN];
-uint8_t ts_rx[DATA_LEN];
-uint8_t ts_tx[DATA_LEN];
+uint8_t target_rx[DATA_LEN];
+uint8_t target_tx[DATA_LEN];
 uint8_t TX_DMA_CH, RX_DMA_CH;
 
 /***** Functions *****/
@@ -80,7 +94,7 @@ void SPI_Target_IRQHandler(void)
     MXC_SPI_AsyncHandler(SPI_TARGET);
 }
 
-#if DMA
+#if TARGET_DMA
 void DMA_TX_IRQHandler(void)
 {
     MXC_SPI_DMA_TX_Handler(SPI_TARGET);
@@ -95,6 +109,7 @@ void DMA_RX_IRQHandler(void)
 int main(void)
 {
     int error;
+    int ts_active_pol_mask = 0;
     // Controller (L. Master)
     mxc_spi_pins_t controller_pins;
     mxc_spi_cfg_t controller_cfg;
@@ -115,20 +130,22 @@ int main(void)
     printf("the data sent by the other instance, then the green LED will illuminate,\n");
     printf("otherwise the red LED will illuminate.\n\n");
 
-#if CUSTOM_TARGET
-    printf("A custom Target Select pin for the Controller (SPI%d) was selected.\n",
+#if TSCONTROL_SW_DRV || TSCONTROL_SW_APP
+    printf("A custom Target Select pin was set up for the Controller (SPI%d).\n",
            MXC_SPI_GET_IDX(SPI_CONTROLLER));
-    printf("Please connect the custom TS pin P0.9 to P0.20.\n\n");
+    printf("Please connect the custom TS pins: P0.4 to P0.12.\n\n");
+#else // TSCONTROL_HW_AUTO
+    printf("Please connect the HW TS pins: P0.4 to P0.20.\n\n");
 #endif
 
     /***** Initialize data buffers *****/
     for (int i = 0; i < DATA_LEN; i++) {
         controller_tx[i] = i;
-        ts_tx[i] = i;
+        target_tx[i] = i;
     }
 
     memset(controller_rx, 0x0, DATA_LEN * sizeof(uint8_t));
-    memset(ts_rx, 0x0, DATA_LEN * sizeof(uint8_t));
+    memset(target_rx, 0x0, DATA_LEN * sizeof(uint8_t));
 
     /***** Configure Controller (L. Master) *****/
 
@@ -139,38 +156,62 @@ int main(void)
     controller_cfg.use_dma_rx = false;
 
     // Target Select Settings
-#if CUSTOM_TARGET
-    // Example to select a custom ts.
-    mxc_gpio_cfg_t ts_pins;
-    ts_pins.port = MXC_GPIO0;
-    ts_pins.mask = MXC_GPIO_PIN_12;
-    ts_pins.func = MXC_GPIO_FUNC_OUT;
-    ts_pins.pad = MXC_GPIO_PAD_PULL_UP;
-    ts_pins.vssel = MXC_GPIO_VSSEL_VDDIO; // Set custom ts pin to VDDIOH (3.3V).
-
-    // Initialize HW TS0 pin.
-    controller_pins.ts0 = false;
-    controller_pins.ts1 = false;
-    controller_pins.ts2 = false;
-    controller_pins.vddioh = false;
-
-    // Select ts for transaction.
-    ts.pins = ts_pins; // Custom pins
-    ts.active_pol = 0;
-#else
+#if TSCONTROL_HW_AUTO
     // Initialize HW TS0 pin.
     controller_pins.ts0 = true;
     controller_pins.ts1 = false;
     controller_pins.ts2 = false;
     controller_pins.vddioh = false;
 
+    // This demonstrates how to set the Active Polarity for each TSn pin.
+    // This setting is passed into MXC_SPI_Init(...) and should match between 
+    // the Controller and Target.
+    //  ts_active_pol_mask[0] = 1 -> Active HIGH (1)
+    //  ts_active_pol_mask[1] = 0 -> Active LOW (0)
+    //  ts_active_pol_mask[2] = 0 -> Active LOW (0)
+    ts_active_pol_mask = 0b0001;
+
     // Select TSn pin for transaction.
     ts.index = SPI_CONTROLLER_TSIDX;
-    ts.active_pol = 0;
+    ts.active_pol = 1;
+
+#else // TSCONTROL_SW_DRV or TSCONTROL_SW_APP
+    // Example to set up a custom TS pin.
+    mxc_gpio_cfg_t ts_pins;
+    ts_pins.port = MXC_GPIO0;
+    ts_pins.mask = MXC_GPIO_PIN_12;
+    ts_pins.func = MXC_GPIO_FUNC_OUT;
+    ts_pins.pad = MXC_GPIO_PAD_NONE;
+    ts_pins.vssel = MXC_GPIO_VSSEL_VDDIO; // Set custom ts pin to VDDIO.
+
+    // Don't initialize HW TS pins in this scheme.
+    controller_pins.ts0 = false;
+    controller_pins.ts1 = false;
+    controller_pins.ts2 = false;
+    controller_pins.vddioh = false;
+
+    // No HW TS pins are used in this scheme.
+    ts_active_pol_mask = 0;
+
+    // Select ts for transaction.
+    ts.pins = ts_pins; // Custom pins.
+    ts.active_pol = 1;
+
+    // Configure the custom TS pin.
+    MXC_GPIO_Config(&ts_pins);
+
+    // Set the IDLE state of TS pin.
+    if (ts.active_pol == 1) {
+        // Active HIGH, Idle LOW.
+        MXC_GPIO_OutClr(ts_pins.port, ts_pins.mask);
+    } else {
+        // Active LOW, Idle HIGH.
+        MXC_GPIO_OutSet(ts_pins.port, ts_pins.mask);
+    }
 #endif
 
     error = MXC_SPI_Init(SPI_CONTROLLER, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0,
-                         0b000, SPI_SPEED, controller_pins);
+                         ts_active_pol_mask, SPI_SPEED, controller_pins);
     if (error != E_NO_ERROR) {
         printf("\nSPI CONTROLLER INITIALIZATION ERROR\n");
         while (1) {}
@@ -181,6 +222,23 @@ int main(void)
         printf("\nSPI CONTROLLER CONFIGURATION ERROR\n");
         while (1) {}
     }
+
+    // Select control scheme for the SPI v2 library to handle.
+    // As per the documentation, this funciton must be called after the MXC_SPI_Init(...) function.
+    // The MXC_SPI_Init(...) function already sets the scheme to HW_AUTO mode if HW TS pins are used.
+#if TSCONTROL_SW_DRV
+    error = MXC_SPI_SetTSControl(SPI_CONTROLLER, MXC_SPI_TSCONTROL_SW_DRV, 0, 0);
+    if (error != E_NO_ERROR) {
+        printf("\nSPI TS CONTROL SW_DRV ERROR\n");
+        return error;
+    }
+#elif TSCONTROL_SW_APP
+    error = MXC_SPI_SetTSControl(SPI_CONTROLLER, MXC_SPI_TSCONTROL_SW_APP, 0, 0);
+    if (error != E_NO_ERROR) {
+        printf("\nSPI TS CONTROL SW_APP ERROR\n");
+        return error;
+    }
+#endif
 
     // Setup Controller Request.
     controller_req.spi = SPI_CONTROLLER;
@@ -193,11 +251,25 @@ int main(void)
     controller_req.ts = &ts;
 
     /***** Configure Target (L. Slave) *****/
+    // Initialize HW TS0 pin.
+    target_pins.ts0 = true;
+    target_pins.ts1 = false;
+    target_pins.ts2 = false;
+    target_pins.vddioh = false;
+
+    // This demonstrates how to set the Active Polarity for each TSn pin.
+    // This setting is passed into MXC_SPI_Init(...) and should match between 
+    // the Controller and Target.
+    //  ts_active_pol_mask[0] = 1 -> Active HIGH (1)
+    //  ts_active_pol_mask[1] = 0 -> Active LOW (0)
+    //  ts_active_pol_mask[2] = 0 -> Active LOW (0)
+    ts_active_pol_mask = 0b0001;
+
     target_cfg.spi = SPI_TARGET;
     target_cfg.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
     target_cfg.frame_size = DATA_SIZE;
 
-#if DMA
+#if TARGET_DMA
     target_cfg.use_dma_tx = true;
     target_cfg.use_dma_rx = true;
     target_cfg.dma = MXC_DMA;
@@ -206,7 +278,7 @@ int main(void)
     target_cfg.use_dma_rx = false;
 #endif
 
-    error = MXC_SPI_Init(SPI_TARGET, MXC_SPI_TYPE_TARGET, MXC_SPI_INTERFACE_STANDARD, 0, 0,
+    error = MXC_SPI_Init(SPI_TARGET, MXC_SPI_TYPE_TARGET, MXC_SPI_INTERFACE_STANDARD, 0, ts_active_pol_mask,
                          SPI_SPEED, target_pins);
     if (error != E_NO_ERROR) {
         printf("\nSPI TARGET INITIALIZATION ERROR\n");
@@ -221,14 +293,14 @@ int main(void)
 
     // Setup Target Request.
     target_req.spi = SPI_TARGET;
-    target_req.tx_buffer = (uint8_t *)ts_tx;
+    target_req.tx_buffer = (uint8_t *)target_tx;
     target_req.tx_length_frames = DATA_LEN;
-    target_req.rx_buffer = (uint8_t *)ts_rx;
+    target_req.rx_buffer = (uint8_t *)target_rx;
     target_req.rx_length_frames = DATA_LEN;
     target_req.deassert = 1;
     target_req.callback = NULL;
 
-#if DMA
+#if TARGET_DMA
     TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI_TARGET);
     RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI_TARGET);
 
@@ -246,20 +318,29 @@ int main(void)
     while (!PB_Get(0)) {}
 
     /***** Perform Transaction *****/
-#if DMA
+#if TARGET_DMA
     MXC_SPI_TargetTransactionDMA(&target_req);
 #else
     MXC_SPI_TargetTransactionAsync(&target_req);
 #endif
 
+#if TSCONTROL_SW_APP
+    // Assert custom TS pin.
+    MXC_GPIO_OutToggle(ts_pins.port, ts_pins.mask);
+#endif
+
     MXC_SPI_ControllerTransaction(&controller_req);
 
+#if TSCONTROL_SW_APP
+    MXC_GPIO_OutToggle(ts_pins.port, ts_pins.mask);
+#endif
+
     /***** Verify Results *****/
-    if (memcmp(ts_rx, controller_tx, sizeof(controller_tx)) != 0) { // Controller->Target
+    if (memcmp(target_rx, controller_tx, sizeof(controller_tx)) != 0) { // Controller->Target
         printf("\nTarget failed to receive data.\n");
         LED_On(1);
         return E_COMM_ERR;
-    } else if (memcmp(controller_rx, ts_tx, sizeof(ts_tx)) != 0) { // Target->Controller
+    } else if (memcmp(controller_rx, target_tx, sizeof(target_tx)) != 0) { // Target->Controller
         printf("\nController failed to receive data.\n");
         LED_On(1);
         return E_COMM_ERR;

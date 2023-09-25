@@ -357,12 +357,9 @@ static void MXC_SPI_RevA2_resetStateStruct(int8_t spi_num)
 
 /* **** Public Functions **** */
 
-int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target,
-                       mxc_spi_interface_t if_mode, uint32_t freq, mxc_gpio_vssel_t vssel,
-                       mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask,
-                       uint8_t ts_active_pol_mask)
+int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode, uint32_t freq)
 {
-    int error, i;
+    int error;
     int8_t spi_num;
 
     spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
@@ -372,38 +369,6 @@ int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_targe
 
     // Reset STATE of current SPI instance.
     MXC_SPI_RevA2_resetStateStruct(spi_num);
-
-    // Set up Target Select Control Scheme.
-    //  HW Auto and SW App schemes are the only possible options for MXC_SPI_Init(...) function.
-    //  Hardware (Automatic) Controlled.
-    if (ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
-        // Set up preconfigured TSn Pins.
-        //   Use target.init_mask for most the convenience.
-        if (ts_init_mask) {
-            // Get total number of TSn instances for this SPI instance
-            for (i = 0; i < MXC_SPI_GET_TOTAL_TS((mxc_spi_regs_t *)spi); i++) {
-                // Note: The [] represents the bit location of init_mask
-                //       init_mask[0] <= Target Select 0 (TS0)
-                //       init_mask[1] <= Target Select 1 (TS1)
-                //       init_mask[n] <= Target Select n (TSn)
-                if (ts_init_mask & (1 << i)) {
-                    mxc_spi_ts_t ts = (const mxc_spi_ts_t){ 0 };
-                    ts.index = i;
-
-                    if (ts_active_pol_mask & (1 << i)) {
-                        ts.active_pol = 1;
-                    } else {
-                        ts.active_pol = 0;
-                    }
-
-                    error = MXC_SPI_ConfigTSPins((mxc_spi_regs_t *)spi, ts_control, &ts, vssel);
-                    if (error != E_NO_ERROR) {
-                        return error;
-                    }
-                }
-            }
-        }
-    } // Don't do anything if SW App is driving TS pins.
 
     // Save init data states.
     STATES[spi_num].controller_target = controller_target;
@@ -570,28 +535,7 @@ void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis)
     spi->inten &= ~(dis);
 }
 
-int MXC_SPI_RevA2_ConfigTSPins(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control,
-                               mxc_spi_ts_t *ts)
-{
-    int8_t spi_num;
-
-    spi_num = MXC_SPI_GET_IDX((mxc_spi_regs_t *)spi);
-    if (spi_num < 0 || spi_num >= MXC_SPI_INSTANCES) {
-        return E_BAD_PARAM;
-    }
-
-    // Set SPI TSCONTROL
-    if (ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
-        spi->ctrl0 |=
-            ((ts->index << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS) & MXC_F_SPI_REVA_CTRL0_SS_ACTIVE);
-        spi->ctrl0 |=
-            ((ts->active_pol << MXC_F_SPI_REVA_CTRL2_SS_POL_POS) & MXC_F_SPI_REVA_CTRL2_SS_POL);
-    }
-
-    return MXC_SPI_RevA2_SetTSControl(spi, ts_control);
-}
-
-int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control)
+int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask, uint8_t ts_active_pol_mask)
 {
     int8_t spi_num;
 
@@ -609,6 +553,8 @@ int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_
 
     switch (ts_control) {
     case MXC_SPI_TSCONTROL_HW_AUTO:
+        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, (ts_init_mask << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+        MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL, (ts_active_pol_mask << MXC_F_SPI_REVA_CTRL2_SS_POL_POS));
         break;
 
     case MXC_SPI_TSCONTROL_SW_DRV:

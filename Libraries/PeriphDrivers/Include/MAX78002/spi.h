@@ -178,25 +178,27 @@ typedef void (*spi_complete_cb_t)(void *req, int result);
 typedef struct _mxc_spi_pins_t mxc_spi_pins_t;
 struct _mxc_spi_pins_t {
     union {
-        bool ts0;           ///< Target select pin 0.
-        bool ss0;           ///< Deprecated name.
+        bool ts0;               ///< Target select pin 0.
+        bool ss0;               ///< Deprecated name.
     };
     union {
-        bool ts1;   ///< Target select pin 1.
-        bool ss1;   ///< Deprecated name.
+        bool ts1;               ///< Target select pin 1.
+        bool ss1;               ///< Deprecated name.
     };
     union {
-        bool ts2;   ///< Target select pin 2.
-        bool ss2;   ///< Deprecated name.
+        bool ts2;               ///< Target select pin 2.
+        bool ss2;               ///< Deprecated name.
     };
 
-    bool vddioh;///< VDDIOH Select
+    bool vddioh;                ///< VDDIOH Select
 
-    bool clock; ///< Clock pin
-    bool miso;  ///< miso pin
-    bool mosi;  ///< mosi pin
-    bool sdio2; ///< SDIO2 pin
-    bool sdio3; ///< SDIO3 pin
+    bool clock;                 ///< Clock pin
+    bool miso;                  ///< miso pin
+    bool mosi;                  ///< mosi pin
+    bool sdio2;                 ///< SDIO2 pin
+    bool sdio3;                 ///< SDIO3 pin
+
+    mxc_gpio_drvstr_t drvstr;   ///< Drive strength setting
 };
 
 typedef struct {
@@ -204,6 +206,7 @@ typedef struct {
     mxc_spi_regs_t *spi;                // Selected SPI Instance
     mxc_spi_clkmode_t clk_mode;         // Clock modes
     uint8_t frame_size;                 // Number of bits per character sent
+    mxc_spi_tscontrol_t ts_control;     // Target Control Scheme
 
     // DMA Settings.
     bool use_dma_tx;                    // Enable DMA TX.
@@ -420,16 +423,26 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi);
 
 /**
  * @brief   Configures the Pre-defined SPI Target Select pins for a specific instance.
- *
- * @param   spi         Pointer to SPI instance's registers.
- * @param   ts_control  Target Select Control Scheme (\ref mxc_spi_tscontrol_t).
- * @param   ts          Target Select Settings (\ref mxc_spi_ts_t).
- * @param   vssel       Voltage Setting for TS pins (\ref mxc_gpio_vssel_t).
+ *          Must be called after MXC_SPI_Init(...)
+ * 
+ * @param   spi                 Pointer to SPI instance's registers.
+ * @param   ts_control          Target Select Control Scheme (\ref mxc_spi_tscontrol_t).
+ * @param   ts_init_mask        Mask to initialize the default HW TS pins (Only valid in
+ *                              MXC_SPI_TSCONTROL_HW_AUTO mode). Other TS control schemes
+ *                              disregards this parameter.
+ *                                  ts_init_mask[0] => TS0
+ *                                  ts_init_mask[1] => TS1
+ *                                  ts_init_mask[n] => TSn
+ * @param   ts_active_pol_mask  Mask to set the active polarity of default HW TS pins
+ *                              (Only valid in MXC_SPI_TSCONTROL_HW_AUTO mode). Other
+ *                              TS control schemes disregards this parameter.
+ *                                  ts_active_pol_mask[0] = 0 (LOW) or 1 (HIGH) => TS0
+ *                                  ts_active_pol_mask[1] = 0 (LOW) or 1 (HIGH) => TS1
+ *                                  ts_active_pol_mask[n] = 0 (LOW) or 1 (HIGH) => TSn
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts,
-                         mxc_gpio_vssel_t vssel);
+int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask, uint8_t ts_active_pol_mask);
 
 /**
  * @brief   Set the frequency of the SPI interface.
