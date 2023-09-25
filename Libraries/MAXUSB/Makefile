@@ -63,6 +63,9 @@ CMSIS_ROOT=../CMSIS
 endif
 
 # Select Full Speed or High Speed Library
+ifeq "$(TARGET_UC)" "MAX32572"
+TARGET_USB=MUSBHSFC
+endif
 ifeq "$(TARGET_UC)" "MAX32650"
 TARGET_USB=MUSBHSFC
 endif
