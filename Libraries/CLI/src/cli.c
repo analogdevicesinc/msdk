@@ -240,7 +240,7 @@ int handle_help(int argc, char *argv[])
     for (int i = 0; i < command_table_sz; i++) {
         printf("\n%s:\n", command_table[i].cmd);
         printf("  Usage: %s\n", command_table[i].usage);
-        printf("  Description: %s\n\n", command_table[i].description);
+        printf("  Description: %s\n", command_table[i].description);
     }
 
     return E_NO_ERROR;
