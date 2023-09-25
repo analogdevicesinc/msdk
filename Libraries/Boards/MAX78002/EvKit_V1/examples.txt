@@ -58,7 +58,7 @@ SDHC_FAT
 SDHC_Raw
 SPI
 SPI_ControllerTarget
-SPI_MasterController
+SPI_MasterSlave
 Temp_Monitor
 TFT_Demo
 TMR
