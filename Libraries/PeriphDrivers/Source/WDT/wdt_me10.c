@@ -48,6 +48,7 @@
 /* ************************************************************************** */
 int MXC_WDT_Init(mxc_wdt_regs_t *wdt)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (wdt == MXC_WDT0) {
         MXC_SYS_Reset_Periph(MXC_SYS_RESET_WDT);
     } else if (wdt == MXC_WDT1) {
@@ -55,6 +56,9 @@ int MXC_WDT_Init(mxc_wdt_regs_t *wdt)
     } else {
         return E_BAD_PARAM;
     }
+#else
+    (void)wdt;
+#endif
 
     return E_NO_ERROR;
 }

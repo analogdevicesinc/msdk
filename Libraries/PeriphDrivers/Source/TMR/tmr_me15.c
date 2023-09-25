@@ -103,6 +103,7 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
         break;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     //enable peripheral clock and configure gpio pins
     switch (tmr_id) {
     case 0:
@@ -187,6 +188,9 @@ int MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg, bool init_pins)
 
         break;
     }
+#else
+    (void)init_pins;
+#endif
 
     return MXC_TMR_RevB_Init((mxc_tmr_revb_regs_t *)tmr, cfg, clockSource);
 }

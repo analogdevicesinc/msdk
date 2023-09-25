@@ -43,10 +43,12 @@
 /* ************************************************************************* */
 int MXC_DMA_Init(void)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     if (!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA)) {
         MXC_SYS_ClockEnable(MXC_SYS_PERIPH_CLOCK_DMA);
         MXC_SYS_Reset_Periph(MXC_SYS_RESET_DMA);
     }
+#endif
 
     return MXC_DMA_RevA_Init((mxc_dma_reva_regs_t *)MXC_DMA);
 }

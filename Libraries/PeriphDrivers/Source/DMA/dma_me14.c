@@ -62,6 +62,7 @@ static mxc_dma_regs_t *getDMAInstance(int ch)
 
 int MXC_DMA_Init(mxc_dma_regs_t *dma)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     switch (MXC_DMA_GET_IDX(dma)) {
     case 0:
         if (!MXC_SYS_IsClockEnabled(MXC_SYS_PERIPH_CLOCK_DMA)) {
@@ -78,6 +79,7 @@ int MXC_DMA_Init(mxc_dma_regs_t *dma)
     default:
         return E_BAD_PARAM;
     }
+#endif
 
     return MXC_DMA_RevA_Init((mxc_dma_reva_regs_t *)dma);
 }
