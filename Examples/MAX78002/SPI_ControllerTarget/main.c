@@ -55,9 +55,9 @@
 #define TARGET_DMA 0
 
 // Target Select Control Scheme
-#define TSCONTROL_HW_AUTO 0 // Hardware asserts/deasserts TSn pins.
+#define TSCONTROL_HW_AUTO 1 // Hardware asserts/deasserts TSn pins.
 #define TSCONTROL_SW_DRV 0 // SPI Driver asserts/deasserts custom TS pins.
-#define TSCONTROL_SW_APP 1 // Application asserts/deasserts custom TS pins.
+#define TSCONTROL_SW_APP 0 // Application asserts/deasserts custom TS pins.
 
 // Preprocessor Error Checking
 #if (!(TSCONTROL_HW_AUTO || TSCONTROL_SW_DRV || TSCONTROL_SW_APP))
