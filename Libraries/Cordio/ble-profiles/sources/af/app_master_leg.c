@@ -29,6 +29,8 @@
 #include "app_api.h"
 #include "app_main.h"
 
+extern uint8_t appCodedPhyDemo;
+
 /*************************************************************************************************/
 /*!
  *  \brief  Check if current scanning mode is legacy scanning.
@@ -76,9 +78,18 @@ void AppScanStart(uint8_t mode, uint8_t scanType, uint16_t duration)
 {
   if (appMasterScanMode())
   {
+    if (appCodedPhyDemo)
+    {
+      DmScanSetInterval(HCI_SCAN_PHY_LE_CODED_BIT, &pAppMasterCfg->scanInterval, &pAppMasterCfg->scanWindow);
+
+      DmScanStart(HCI_SCAN_PHY_LE_CODED_BIT, mode, &scanType, FALSE, duration, 0);
+    }
+    else
+    {
     DmScanSetInterval(HCI_SCAN_PHY_LE_1M_BIT, &pAppMasterCfg->scanInterval, &pAppMasterCfg->scanWindow);
 
     DmScanStart(HCI_SCAN_PHY_LE_1M_BIT, mode, &scanType, TRUE, duration, 0);
+    }
   }
 }
 
