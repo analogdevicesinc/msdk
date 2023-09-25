@@ -37,6 +37,7 @@
 #include "max32655.h"
 #include "gcr_regs.h"
 #include "icc.h"
+#include "mxc_sys.h"
 
 #define MXC_NBBFC_REG4 *((volatile uint32_t *)(0x40000810))
 
@@ -44,6 +45,21 @@ uint32_t SystemCoreClock = HIRC_FREQ;
 static volatile int intContext;
 
 extern uint32_t *__isr_vector;
+
+/*
+The libc implementation from GCC 11+ depends on _getpid and _kill in some places.
+There is no concept of processes/PIDs in the baremetal PeriphDrivers, therefore
+we implement stub functions that return an error code to resolve linker warnings.
+*/
+int _getpid(void)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int _kill(void)
+{
+    return E_NOT_SUPPORTED;
+}
 
 void illegal_ISNHandler(void);
 

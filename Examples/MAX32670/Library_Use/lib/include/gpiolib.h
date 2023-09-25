@@ -37,8 +37,8 @@
  *
  ******************************************************************************/
 
-#ifndef GPIOLIB_H_
-#define GPIOLIB_H_
+#ifndef EXAMPLES_MAX32670_LIBRARY_USE_LIB_INCLUDE_GPIOLIB_H_
+#define EXAMPLES_MAX32670_LIBRARY_USE_LIB_INCLUDE_GPIOLIB_H_
 
 #include "gpio.h"
 
@@ -61,4 +61,4 @@ void gpio_clear(const mxc_gpio_cfg_t *gpio);
  */
 int gpio_get(const mxc_gpio_cfg_t *gpio);
 
-#endif /* GPIOLIB_H_ */
+#endif // EXAMPLES_MAX32670_LIBRARY_USE_LIB_INCLUDE_GPIOLIB_H_

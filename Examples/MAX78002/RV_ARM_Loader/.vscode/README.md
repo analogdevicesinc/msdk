@@ -23,7 +23,7 @@ The following features are supported:
 * [Visual Studio Code](https://code.visualstudio.com/)
   * [C/C++ VSCode Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.cpptools)
   * [Cortex-Debug Extension](https://marketplace.visualstudio.com/items?itemName=marus25.cortex-debug)
-* [Analog Devices MSDK](https://www.analog.com/en/design-center/evaluation-hardware-and-software/software/software-download?swpart=SFW0010820A)
+* [Analog Devices MSDK](https://analog-devices-msdk.github.io/msdk/)
 
 ## Installation
 

@@ -213,6 +213,9 @@ int main(void)
 
     MXC_LP_EnableSRAM0(); // Global variables are in RAM0
 
+    // Resets the USB block to its initial state - where the operating current is at its minimum.
+    MXC_LP_USBClearPONRST();
+
     PRINT("All unused RAMs shutdown.\n");
     setTrigger(1);
 

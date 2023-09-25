@@ -84,7 +84,7 @@ int MXC_I2C_RevB_SetSlaveAddr(mxc_i2c_revb_regs_t *i2c, unsigned int slaveAddr, 
 
 int MXC_I2C_RevB_Shutdown(mxc_i2c_revb_regs_t *i2c)
 {
-    return E_NOT_SUPPORTED;
+    return MXC_I2C_RevA_Shutdown((mxc_i2c_reva_regs_t *)i2c);
 }
 
 int MXC_I2C_RevB_SetFrequency(mxc_i2c_revb_regs_t *i2c, unsigned int hz)
@@ -160,11 +160,9 @@ int MXC_I2C_RevB_ReadRXFIFO(mxc_i2c_revb_regs_t *i2c, volatile unsigned char *by
 }
 
 int MXC_I2C_RevB_ReadRXFIFODMA(mxc_i2c_revb_regs_t *i2c, unsigned char *bytes, unsigned int len,
-                               mxc_i2c_revb_dma_complete_cb_t callback, mxc_dma_config_t config,
                                mxc_dma_regs_t *dma)
 {
-    return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, callback, config,
-                                      dma);
+    return MXC_I2C_RevA_ReadRXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, dma);
 }
 
 int MXC_I2C_RevB_GetRXFIFOAvailable(mxc_i2c_revb_regs_t *i2c)
@@ -179,11 +177,9 @@ int MXC_I2C_RevB_WriteTXFIFO(mxc_i2c_revb_regs_t *i2c, volatile unsigned char *b
 }
 
 int MXC_I2C_RevB_WriteTXFIFODMA(mxc_i2c_revb_regs_t *i2c, unsigned char *bytes, unsigned int len,
-                                mxc_i2c_revb_dma_complete_cb_t callback, mxc_dma_config_t config,
                                 mxc_dma_regs_t *dma)
 {
-    return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, callback, config,
-                                       dma);
+    return MXC_I2C_RevA_WriteTXFIFODMA((mxc_i2c_reva_regs_t *)i2c, bytes, len, dma);
 }
 
 int MXC_I2C_RevB_GetTXFIFOAvailable(mxc_i2c_revb_regs_t *i2c)

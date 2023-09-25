@@ -1879,7 +1879,7 @@ The following build variables are used for RISC-V development.  They are only av
 
 #### Build Variables for Toggling Libraries
 
-The following variables can be used to modularly toggle the [available libraries](#libraries) in the MSDK.
+The following variables can be used to enable the [available libraries](#libraries) in the MSDK.  Each library may also offer its own build configuration variables when enabled, which are documented in the [libraries](#libraries) section.
 
 | Configuration Variable | Description                                                | Details                                                      |
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
@@ -1894,6 +1894,7 @@ The following variables can be used to modularly toggle the [available libraries
 | `LIB_LWIP`             | Include the lwIP library                                   |                                                              |
 | `LIB_MAXUSB`           | Include the MaxUSB library                                 | This option toggles the inclusion of the MAXUSB library, which facilitates the use of the native USB peripherals on some microcontrollers. Set to `0` to disable or `1` to enable. |
 | `LIB_SDHC`             | Include the SDHC library                                   | This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) library, which implements a generic FAT filesystem. |
+| `LIB_CLI`             | Include the MSDK's built-in CLI library                     | This option toggles the MSDK's built-in CLI library, which can be used to process received commands over UART. |
 
 #### Build Variables for the PeriphDrivers Library
 
@@ -1923,15 +1924,6 @@ The following build variables can be used to control how to build output is form
 | ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
 | `VERBOSE`              | Toggle verbose builds             | Set to `1` to enable a verbose build that prints exactly what the compiler is doing for each step.  This is useful for troubleshooting.
 | `FORCE_COLOR`          | Force colorized compiler output   | By default, GCC will attempt to autodetect whether colorized output is supported or not.  Set to `1` to force color (equivalent to `PROJ_CFLAGS += -fdiagnostics-color=always`).  This is useful for forcing color in CI systems. |
-
-#### Miscellaneous Build Variables
-
-Other miscellaneous build variables specific to individual microcontrollers or otherwise not belonging in any other category are documented here.
-
-| Configuration Variable | Description                                                | Details                                                      |
-| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
-|                        |                                                            |                                                              |
-| `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
 
 ## Board Support Packages
 
@@ -2276,11 +2268,20 @@ The MAXUSB library provides a higher-level interface for utilizing the built-in 
 
 The `Libraries/MiscDrivers` folder of the MSDK contains drivers for miscellaneous external components such as TFT displays, cameras, audio codecs, PMICs, pushbuttons, etc. These resources are usually closely tied with the [Board Support Packages](#board-support-packages).
 
+#### Miscellaneous Build Variables
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+|                        |                                                            |                                                              |
+| `CAMERA`               | (Optional) Set the Camera drivers to use                   | This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are `HM01B0`, `HM0360_MONO`, `HM0360_COLOR`, `OV5642`, `OV7692` (default), or `PAG7920`. Camera drivers can be found in the [`Libraries/MiscDrivers/Camera`](Libraries/MiscDrivers/Camera) folder. Depending on the selected camera, a compiler definition may be added to the build. See the `board.mk` file for the active BSP for more details. |
+
 ---
 
 ### SDHC
 
 The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level interface built on top of the SDHC [Peripheral Driver API](#peripheral-driver-api) that includes a [FatFS File System](http://elm-chan.org/fsw/ff/00index_e.html) implementation for managing files on SD cards.
+
+See [Build Variables for Toggling Libraries](#build-variables-for-toggling-libraries) for instructions on enabling the SDHC library.
 
 #### SDHC Supported Parts
 
@@ -2289,6 +2290,14 @@ The **Secure Digital High Capacity *(SDHC)*** library offers a higher-level inte
 - MAX32665-MAX32666
 - MAX78000
 - MAX78002
+
+#### SDHC Build Variables
+
+Once enabled, the following [build configuration variables](#build-configuration-variables) become available.
+
+| Configuration Variable | Description                                                | Details                                                      |
+| ---------------------- | ---------------------------------------------------------- | ------------------------------------------------------------ |
+| `FATFS_VERSION`            | Specify the version of [FatFS](http://elm-chan.org/fsw/ff/00index_e.html) to use | FatFS is a generic FAT/exFAT filesystem that comes as a sub-component of the SDHC library.  This variable can be used to change the [version](http://elm-chan.org/fsw/ff/updates.html) to use.  Acceptable values are `ff13` (R0.13), `ff14` (R0.14b), or `ff15` (R0.15) |
 
 ---
 
@@ -2306,6 +2315,13 @@ FreeRTOS is supported by all parts in the MSDK.  See the `FreeRTOSDemo` example 
 
 - [FreeRTOS-Plus-CLI](https://www.freertos.org/FreeRTOS-Plus/index.html): **Supported**
 - [FreeRTOS-Plus-TCP](https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/index.html): **Not supported** (Contributions welcome!)
+
+
+### CLI
+
+Developing a UART Command-Line Interface (CLI) is a common task while developing embedded firmware.  The MSDK contains a pre-made command processing library in the `Libraries/CLI` that can be used to simplify and speed up development.
+
+See the [`Libraries/CLI/README.md`](Libraries/CLI/README.md) document for more details.
 
 ### CoreMark
 

@@ -189,6 +189,7 @@ void configure_gpios(void)
     out_clr.func = MXC_GPIO_FUNC_OUT;
     out_clr.pad = MXC_GPIO_PAD_NONE;
     out_clr.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    out_clr.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&out_clr);
     MXC_GPIO_OutClr(out_clr.port, out_clr.mask);
 
@@ -198,6 +199,7 @@ void configure_gpios(void)
     out_set.func = MXC_GPIO_FUNC_OUT;
     out_set.pad = MXC_GPIO_PAD_NONE;
     out_set.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    out_set.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&out_set);
     MXC_GPIO_OutSet(out_set.port, out_set.mask);
 }

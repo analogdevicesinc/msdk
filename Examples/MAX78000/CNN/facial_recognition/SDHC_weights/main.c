@@ -138,7 +138,9 @@ int formatSDHC()
 
     printf("FORMATTING DRIVE\n");
 
-    if ((err = f_mkfs("", FM_ANY, 0, work, sizeof(work))) !=
+    MKFS_PARM format_options = { .fmt = FM_ANY };
+
+    if ((err = f_mkfs("", &format_options, work, sizeof(work))) !=
         FR_OK) { //Format the default drive to FAT32
         printf("Error formatting SD card: %s\n", FF_ERRORS[err]);
     } else {
@@ -396,6 +398,7 @@ void waitCardInserted()
     cardDetect.func = MXC_GPIO_FUNC_IN;
     cardDetect.pad = MXC_GPIO_PAD_NONE;
     cardDetect.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    cardDetect.drvstr = MXC_GPIO_DRVSTR_0;
 
     MXC_GPIO_Config(&cardDetect);
 

@@ -60,17 +60,19 @@ mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 extern uint8_t ChipRevision;
 
+// clang-format off
 const mxc_gpio_cfg_t pb_pin[] = {
-    { MXC_GPIO1, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP },
-    { MXC_GPIO1, MXC_GPIO_PIN_21, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP },
+    { MXC_GPIO1, MXC_GPIO_PIN_19, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
+    { MXC_GPIO1, MXC_GPIO_PIN_21, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_WEAK_PULL_UP, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    { MXC_GPIO1, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE },
-    { MXC_GPIO1, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE },
+    { MXC_GPIO1, MXC_GPIO_PIN_14, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
+    { MXC_GPIO1, MXC_GPIO_PIN_18, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO, MXC_GPIO_DRVSTR_0 },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
+// clang-format on
 
 #ifdef ENABLE_MAX11261_ADC
 /* **** Functions **** */
@@ -193,6 +195,8 @@ int MAX11261_Init(void)
     adc_reset_n.pad = MXC_GPIO_PAD_NONE;
     adc_reset_n.port = MXC_GPIO0;
     adc_reset_n.mask = MXC_GPIO_PIN_16;
+    adc_reset_n.vssel = MXC_GPIO_VSSEL_VDDIO; /* 3V3 */
+    adc_reset_n.drvstr = MXC_GPIO_DRVSTR_0; /* 3V3 */
     MXC_GPIO_Config(&adc_reset_n);
 
     /* Setup ready GPIO */
@@ -201,6 +205,7 @@ int MAX11261_Init(void)
     adc_int_n.port = MXC_GPIO0;
     adc_int_n.mask = MXC_GPIO_PIN_17;
     adc_int_n.vssel = MXC_GPIO_VSSEL_VDDIO; /* 3V3 */
+    adc_int_n.drvstr = MXC_GPIO_DRVSTR_0; /* 3V3 */
     //MXC_GPIO_RegisterCallback(&gpioCfg, gpio_irq_handler, NULL);
     MXC_GPIO_Config(&adc_int_n);
 
