@@ -1038,7 +1038,7 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_reva_regs_t *spi, mxc_dma_reva_regs_t *dma, b
         STATES[spi_num].tx_dma_ch = MXC_DMA_AcquireChannel();
         tx_ch = STATES[spi_num].tx_dma_ch;
 
-        if (STATES[spi_num].rx_dma_ch < 0) {
+        if (STATES[spi_num].tx_dma_ch < 0) {
             return E_NONE_AVAIL;
         }
 
@@ -1052,7 +1052,7 @@ int MXC_SPI_RevA2_DMA_Init(mxc_spi_reva_regs_t *spi, mxc_dma_reva_regs_t *dma, b
         STATES[spi_num].rx_dma_ch = MXC_DMA_AcquireChannel();
         rx_ch = STATES[spi_num].rx_dma_ch;
 
-        if (STATES[spi_num].tx_dma_ch < 0) {
+        if (STATES[spi_num].rx_dma_ch < 0) {
             return E_NONE_AVAIL;
         }
 

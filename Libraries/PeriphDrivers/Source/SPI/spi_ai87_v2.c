@@ -908,13 +908,13 @@ int MXC_SPI_SetMode(mxc_spi_regs_t *spi, mxc_spi_mode_t spiMode)
         return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
 
     case SPI_MODE_1:
-        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_1);
 
     case SPI_MODE_2:
-        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_2);
 
     case SPI_MODE_3:
-        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_0);
+        return MXC_SPI_SetClkMode(spi, MXC_SPI_CLKMODE_3);
 
     default:
         return E_BAD_PARAM;

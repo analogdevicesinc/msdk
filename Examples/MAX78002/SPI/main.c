@@ -53,14 +53,9 @@
 #include "led.h"
 
 /***** Preprocessors *****/
-#define CONTROLLER_SYNC 1
+#define CONTROLLER_SYNC 0
 #define CONTROLLER_ASYNC 0
-#define CONTROLLER_DMA 0
-
-// Target Select Control Scheme
-#define TSCONTROL_HW_AUTO 1 // Hardware asserts/deasserts TSn pins.
-#define TSCONTROL_SW_DRV 0 // SPI Driver asserts/deasserts custom TS pins.
-#define TSCONTROL_SW_APP 0 // Application asserts/deasserts TS pins.
+#define CONTROLLER_DMA 1
 
 // Preprocessor Error Checking
 #if (!(CONTROLLER_SYNC || CONTROLLER_ASYNC || CONTROLLER_DMA))
@@ -71,17 +66,8 @@
 #error "You must select either CONTROLLER_SYNC or CONTROLLER_ASYNC or CONTROLLER_DMA, not all 3."
 #endif
 
-#if (!(TSCONTROL_HW_AUTO || TSCONTROL_SW_DRV || TSCONTROL_SW_APP))
-#error "You must set either TSCONTROL_HW_AUTO or TSCONTROL_SW_DRV or TSCONTROL_SW_APP to 1."
-#endif
-#if ((TSCONTROL_HW_AUTO && TSCONTROL_SW_DRV) || (TSCONTROL_SW_DRV && TSCONTROL_SW_APP) || \
-     (TSCONTROL_SW_APP && TSCONTROL_HW_AUTO))
-#error \
-    "You must select either TSCONTROL_HW_AUTO or TSCONTROL_SW_DRV or TSCONTROL_SW_APP, not all 3."
-#endif
-
 /***** Definitions *****/
-#define DATA_LEN 1 // Words
+#define DATA_LEN 100 // Words
 #define DATA_VALUE 0xA5B7 // This is for Controller mode only...
 #define VALUE 0xFFFF
 #define SPI_SPEED 100000 // Bit Rate
@@ -155,17 +141,17 @@ int main(void)
         }
 
         mxc_spi_pins_t spi_pins;
-        // This example enables the TS0 and TS2 HW pins.
+        // This example enables the TS0 HW pin.
         spi_pins.ts0 = true;
         spi_pins.ts1 = false;
-        spi_pins.ts2 = true;
+        spi_pins.ts2 = false;
         spi_pins.vddioh = true;
 
         // This demonstrates how to set the Active Polarity for each TSn pin.
         // ts_active_pol_mask[0] = 0 -> Active LOW (0)
         // ts_active_pol_mask[1] = 0 -> Active LOW (0)
         // ts_active_pol_mask[2] = 1 -> Active HIGH (1)
-        int ts_active_pol_mask = 0b0101;
+        int ts_active_pol_mask = 0b0001;
 
         retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0,
                               ts_active_pol_mask, SPI_SPEED, spi_pins);
@@ -194,57 +180,9 @@ int main(void)
             return retVal;
         }
 
-        // Custom Target Select (TS) Settings.
-#if TSCONTROL_SW_DRV
-        // Set up custom TS0 pin.
-        mxc_gpio_cfg_t ts0_pins;
-        ts0_pins.port = MXC_GPIO0;
-        ts0_pins.mask = MXC_GPIO_PIN_9;
-        ts0_pins.func = MXC_GPIO_FUNC_OUT;
-        ts0_pins.pad = MXC_GPIO_PAD_PULL_UP;
-        ts0_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
-
-        // Setup target select for transaction.
-        ts0.pins = ts0_pins; // Custom pins
-        ts0.active_pol = 0;
-
-        retVal = MXC_SPI_ConfigTSPins(SPI, MXC_SPI_TSCONTROL_SW_DRV, &ts0, MXC_GPIO_VSSEL_VDDIOH);
-        if (retVal != E_NO_ERROR) {
-            printf("\nSPI TS0 CONFIGURATION ERROR\n");
-            return retVal;
-        }
-
-        // This demonstrates how to set up another custom TS pin.
-        // Set up custom TS1 pin.
-        mxc_gpio_cfg_t ts1_pins;
-        ts1_pins.port = MXC_GPIO0;
-        ts1_pins.mask = MXC_GPIO_PIN_10;
-        ts1_pins.func = MXC_GPIO_FUNC_OUT;
-        ts1_pins.pad = MXC_GPIO_PAD_PULL_UP;
-        ts1_pins.vssel = MXC_GPIO_VSSEL_VDDIOH; // Set custom target pin to VDDIOH (3.3V).
-
-        // Setup target select for transaction.
-        mxc_spi_ts_t ts1;
-        ts1.pins = ts1_pins;
-        ts1.active_pol = 1; // Active HIGH (1), Idle LOW (0).
-
-        retVal = MXC_SPI_ConfigTSPins(SPI, MXC_SPI_TSCONTROL_SW_DRV, &ts1, MXC_GPIO_VSSEL_VDDIOH);
-        if (retVal != E_NO_ERROR) {
-            printf("\nSPI TS1 CONFIGURATION ERROR\n");
-            return retVal;
-        }
-
-#elif TSCONTROL_SW_APP
-        retVal = MXC_SPI_SetTSControl(SPI, MXC_SPI_TSCONTROL_SW_APP);
-        if (retVal != E_NO_ERROR) {
-            printf("\nSPI TS CONTROL SW_APP ERROR\n");
-            return retVal;
-        }
-
-#else // TSCONTROL_HW_AUTO
+        // Set up Target instance for transaction request.
         ts0.index = 0; // Select TS0 HW pin.
         ts0.active_pol = 0;
-#endif
 
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
@@ -257,11 +195,7 @@ int main(void)
         req.rx_length_frames = DATA_LEN;
         req.deassert = 1;
         req.callback = SPI_Callback;
-#if TSCONTROL_SW_APP
-        req.ts = NULL;
-#else
         req.ts = &ts0;
-#endif
         SPI_FLAG = 1;
 
 #if CONTROLLER_SYNC
