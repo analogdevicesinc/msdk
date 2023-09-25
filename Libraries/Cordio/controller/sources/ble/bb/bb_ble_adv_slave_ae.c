@@ -22,11 +22,13 @@
  */
 /*************************************************************************************************/
 
+#include <string.h>
 #include "bb_ble_int.h"
 #include "bb_ble_sniffer_api.h"
 #include "sch_api.h"
 #include "sch_api_ble.h"
-#include <string.h>
+#include "wsf_trace.h"
+#include "lmgr_api.h"
 
 /**************************************************************************************************
   Macros
@@ -35,8 +37,11 @@
 /**************************************************************************************************
   Global Variables
 **************************************************************************************************/
+extern lmgrCtrlBlk_t lmgrCb;
 
 BbBleAuxAdvPktStats_t bbAuxAdvStats; /*!< Auxiliary advertising packet statistics. */
+
+extern int8_t PalRadioGetActualTxPower(int8_t txPwr, bool_t compFlag);
 
 /*************************************************************************************************/
 /*!
@@ -396,6 +401,13 @@ static void bbSlvExecuteAuxAdvOp(BbOpDesc_t *pBod, BbBleData_t *pBle)
     /* CHAIN_IND (i.e. >=MAFS) expected or no request expected. */
     bbBleClrIfs();
   }
+  
+  // for long range adv demo, update the ADV data here
+  uint8_t *pData = (uint8_t *)pAuxAdv->txAuxAdvPdu[1].pBuf;
+  uint8_t const pos = 8;
+  pData[pos]++;                     // the first byte of the 50-byte data
+  pData[pos + 49] = pData[pos];     // the last byte
+  APP_TRACE_INFO1("%02X", pData[pos]);
 
   PalBbBleTxData(pAuxAdv->txAuxAdvPdu, 2);
 }

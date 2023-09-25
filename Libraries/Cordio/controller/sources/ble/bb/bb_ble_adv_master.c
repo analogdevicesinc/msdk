@@ -23,6 +23,7 @@
 /*************************************************************************************************/
 
 #include "bb_api.h"
+#include "../../common/bb/bb_int.h"
 #include "pal_bb.h"
 #include "bb_ble_int.h"
 #include "sch_api.h"
@@ -41,6 +42,7 @@
 BbBleScanPktStats_t bbScanStats;          /*!< Scan packet statistics. */
 
 extern const BbRtCfg_t *pBbRtCfg;
+extern BbCtrlBlk_t bbCb;
 
 /*************************************************************************************************/
 /*!
@@ -165,6 +167,7 @@ static bool_t bbContScanOp(BbOpDesc_t *pBod, BbBleMstAdvEvent_t *pScan)
   {
     bbBleClrIfs();    /* passive scan */
   }
+
   PalBbBleRxData(pScan->pRxAdvBuf, BB_ADVB_MAX_LEN);
 
   return FALSE;
@@ -374,7 +377,7 @@ static void bbMstScanRxCompCback(uint8_t status, int8_t rssi, uint32_t crc, uint
 
           if (pduAllow && pScan->rxAdvPostCback)
           {
-            pScan->rxAdvPostCback(pCur, pScan->pRxAdvBuf);
+            pScan->rxAdvPostCback(pCur, pScan->pRxAdvBuf);  // lctrMstDiscoverRxExtAdvPktPostProcessHandler
           }
 
           break;

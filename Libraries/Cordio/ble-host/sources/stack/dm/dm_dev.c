@@ -201,7 +201,7 @@ void dmDevPassEvtToDevPriv(uint8_t event, uint8_t param, uint8_t advHandle, bool
   evt.privCtrl.connectable = connectable;
 
   /* pass event to device privacy */
-  (*(dmFcnIfTbl[DM_ID_DEV_PRIV]->msgHandler))((wsfMsgHdr_t *) &evt);
+  (*(dmFcnIfTbl[DM_ID_DEV_PRIV]->msgHandler))((wsfMsgHdr_t *) &evt);  // dmDevPrivMsgHandler
 }
 
 /*************************************************************************************************/

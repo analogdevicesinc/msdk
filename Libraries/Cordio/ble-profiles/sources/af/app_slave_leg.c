@@ -31,6 +31,8 @@
 #include "app_api.h"
 #include "app_main.h"
 
+extern uint8_t appCodedPhyDemo;
+
 /*************************************************************************************************/
 /*!
  *  \brief  Utility function to start legacy advertising.
@@ -230,14 +232,19 @@ void AppAdvSetData(uint8_t location, uint8_t len, uint8_t *pData)
 {
   if (appSlaveAdvMode())
   {
-    /* legacy advertising data length cannot exceed 31 bytes */
-    if (len > HCI_ADV_DATA_LEN)
-    {
-      len = HCI_ADV_DATA_LEN;
-    }
+    if (appCodedPhyDemo) {
+      // TODO: check and set length
+      appAdvSetData(DM_ADV_HANDLE_DEFAULT, location, len, pData, 58, 58);
+    } else {
+      /* legacy advertising data length cannot exceed 31 bytes */
+      if (len > HCI_ADV_DATA_LEN)
+      {
+        len = HCI_ADV_DATA_LEN;
+      }
 
-    /* maximum advertising data length supported by Controller is 31 bytes */
-    appAdvSetData(DM_ADV_HANDLE_DEFAULT, location, len, pData, HCI_ADV_DATA_LEN, HCI_ADV_DATA_LEN);
+      /* maximum advertising data length supported by Controller is 31 bytes */
+      appAdvSetData(DM_ADV_HANDLE_DEFAULT, location, len, pData, HCI_ADV_DATA_LEN, HCI_ADV_DATA_LEN);
+    }
   }
 }
 
