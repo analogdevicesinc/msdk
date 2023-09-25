@@ -24,9 +24,13 @@
 
 #define CMD_TABLE { { "stop", "stop", "Ends the example", handle_stop }, \
 	                { "read", "read <filename> <number of bytes> <location>", "Reads data from a specific location within a file.", handle_read }, \
-	                { "write", "write (--create) <filename> <character string> <location>", "Writes a character string to a specific location within a file.\n    If the create flag is included and the file does not exist, the file will\n    be created.", handle_write }, \
+	                { "write", "write <filename> <character string> <location>", "Writes a character string to a specific location within a file.\n    If the create flag is included and the file does not exist, the file will\n    be created.", handle_write }, \
 	                { "swl", "swl <number of writes>", "Stands for \"show wear leveling.\" This command writes to a file\n    the specified number of times. Once all writes have completed, the number\n    of times each flash page (filesystem block) was written to is printed to\n    the terminal. (Writes should be distributed somewhat evenly across many\n    filesystem blocks.) This command may take a while to complete. LED0 is\n    used as a heartbeat while the command is executing.", handle_swl } };
 
-
+#define FILENAME_POS 1
+#define NUM_WRITES_POS 1
+#define NUM_BYTES_POS 2
+#define DATA_POS 2
+#define LOCATION_POS 3
 
 #endif /* EXAMPLES_MAX32670_WEARLEVELING_INCLUDE_CMD_TABLE_H_ */

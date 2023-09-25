@@ -50,12 +50,9 @@ int handle_stop(int argc, char *argv[]);
 int handle_read(int argc, char *argv[]);
 int handle_write(int argc, char *argv[]);
 int handle_swl(int argc, char *argv[]);
-int mount_filesystem(void);
+int mount_filesystem(lfs_t *filesystem, const struct lfs_config *cfg);
 
 /***** Global Variables ******/
-const command_t cmd_table[] = CMD_TABLE; // List of commands available to the user
-const unsigned int cmd_table_sz = sizeof(cmd_table) / sizeof(command_t); // Number of commands
-
 lfs_t lfs; // LFS filesystem instance
 volatile bool stop_recv = false; // Used to signal whether the example has completed
 
@@ -66,9 +63,33 @@ int main(void)
 
     printf("\n\n*************** Wear Leveling Example ***************\n");
 
+    // Create command table (defined cmd_table.h)
+    const command_t cmd_table[] = CMD_TABLE;
+    const unsigned int cmd_table_sz = sizeof(cmd_table) / sizeof(command_t);
+
+    // Initialize LFS configuration variables
+    uint32_t start_block = LFS_START_PAGE;
+    const struct lfs_config cfg = {
+        .context = &start_block,
+        // block device operations
+        .read = flash_read,
+        .prog = flash_write,
+        .erase = flash_erase,
+        .sync = flash_sync,
+
+        // block device configuration
+        .read_size = 1,
+        .prog_size = 4,
+        .block_size = MXC_FLASH_PAGE_SIZE,
+        .block_count = LFS_PAGE_CNT,
+        .cache_size = 16,
+        .lookahead_size = 16,
+        .block_cycles = 500,
+    };
+
     printf("Mounting the file system...\n");
 
-    if ((err = mount_filesystem()) != E_NO_ERROR) {
+    if ((err = mount_filesystem(&lfs, &cfg)) != E_NO_ERROR) {
     	printf("Unable to mount file system!\n");
     	return err;
     }
@@ -113,9 +134,9 @@ int handle_read(int argc, char *argv[])
     char data[MAX_FILE_READ_SIZE];
 
     // Assign CLI arguments to appropriate variables
-    char *filename = argv[1];
-    int num = atoi(argv[2]);
-    int pos = atoi(argv[3]);
+    char *filename = argv[FILENAME_POS];
+    int num = atoi(argv[NUM_BYTES_POS]);
+    int pos = atoi(argv[LOCATION_POS]);
     memset(data, '\0', sizeof(data));
 
     // Read data from file
@@ -142,37 +163,20 @@ int handle_read(int argc, char *argv[])
 int handle_write(int argc, char *argv[])
 {
     // Check for invalid arguments
-    if (!(argc == 4 || argc == 5) || argv == NULL) {
+    if (argc != 4 || argv == NULL) {
         printf("Invalid command. Aborting file write.\n");
         return E_INVALID;
     }
 
+    // Assign CLI arguments to appropriate variables
     lfs_file_t file;
-    char *filename;
-    char *data;
-    int pos, err;
-    bool create;
-
-    // Parse remainder of the arguments based on whether not create flag was passed
-    if (argc == 5 && memcmp(argv[1], "--create", sizeof("--create") - 1) == 0) {
-        // Create flag passed, next argument is filename
-        create = true;
-        filename = argv[2];
-        data = argv[3];
-        pos = atoi(argv[4]);
-    } else if (argc == 4) {
-        // create flag not passed
-        create = false;
-        filename = argv[1];
-        data = argv[2];
-        pos = atoi(argv[3]);
-    } else {
-    	printf("Invalid command. Aborting file write.\n");
-    	return E_BAD_PARAM;
-    }
+    char *filename = argv[FILENAME_POS];;
+    char *data = argv[DATA_POS];
+    int pos = atoi(argv[LOCATION_POS]);
+	int err;
 
     // Write data to the file
-    err = file_write(&lfs, &file, filename, data, strlen(data), pos, create);
+    err = file_write(&lfs, &file, filename, data, strlen(data), pos, true);
     if (err < LFS_ERR_OK) {
         printf("Write failed with error code %d.\n", err);
     } else {
@@ -195,7 +199,7 @@ int handle_swl(int argc, char *argv[])
     int hit_count[LFS_PAGE_CNT] = { 0 };
 
     // Assign CLI arguments to appropriate variables
-    num_writes = atoi(argv[1]);
+    num_writes = atoi(argv[NUM_WRITES_POS]);
 
     //Set up dummy arguments
     char filename[] = "swl_test_file";
@@ -234,37 +238,19 @@ int handle_swl(int argc, char *argv[])
 }
 
 //******************************************************************************
-int mount_filesystem(void)
+int mount_filesystem(lfs_t *filesystem, const struct lfs_config *cfg)
 {
 	int err;
-	uint32_t start_block = LFS_START_PAGE;
-	const struct lfs_config cfg = {
-	    .context = &start_block,
-	    // block device operations
-	    .read = flash_read,
-	    .prog = flash_write,
-	    .erase = flash_erase,
-	    .sync = flash_sync,
-
-	    // block device configuration
-	    .read_size = 1,
-	    .prog_size = 4,
-	    .block_size = MXC_FLASH_PAGE_SIZE,
-	    .block_count = LFS_PAGE_CNT,
-	    .cache_size = 16,
-	    .lookahead_size = 16,
-	    .block_cycles = 500,
-	};
 
 	// mount the file system
-	err = lfs_mount(&lfs, &cfg);
+	err = lfs_mount(filesystem, cfg);
 
 	// reformat if we can't mount the filesystem
 	// this should only happen on the first boot
 	if (err) {
 		printf("Filesystem is invalid, formatting...\n");
-		lfs_format(&lfs, &cfg);
-		err = lfs_mount(&lfs, &cfg);
+		lfs_format(filesystem, cfg);
+		err = lfs_mount(filesystem, cfg);
 	}
 
 	if (err) {
