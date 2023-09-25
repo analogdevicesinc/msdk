@@ -69,7 +69,7 @@
 
 /*! \brief UART TX buffer size */
 #define PLATFORM_UART_TERMINAL_BUFFER_SIZE 2048U
-#define DEFAULT_TX_POWER 0 /* dBm */
+#define DEFAULT_TX_POWER 4 /* dBm */
 
 /**************************************************************************************************
   Global Variables

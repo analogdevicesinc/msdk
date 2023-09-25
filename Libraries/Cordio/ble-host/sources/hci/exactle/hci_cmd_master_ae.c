@@ -62,7 +62,7 @@ void HciLeSetExtScanParamCmd(uint8_t ownAddrType, uint8_t scanFiltPolicy, uint8_
   // TODO
   if (appCodedPhyDemo == 0)
   {
-  WSF_ASSERT(status == LL_SUCCESS);
+    WSF_ASSERT(status == LL_SUCCESS);
   }
 }
 

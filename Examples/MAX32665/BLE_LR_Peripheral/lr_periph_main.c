@@ -177,7 +177,7 @@ uint8_t fitAdvDataDisc[ADV_DATA_DISC_LEN] = {
 /*! scan data, discoverable mode */
 static const uint8_t fitScanDataDisc[] = {
     /*! device name */
-    9, /*! length */
+    10, /*! length */
     DM_ADV_TYPE_LOCAL_NAME, /*! AD type */
     'L',
     'o',
@@ -186,7 +186,8 @@ static const uint8_t fitScanDataDisc[] = {
     'R',
     'a',
     'n',
-    'g'
+    'g',
+    'e'
 };
 
 /**************************************************************************************************
