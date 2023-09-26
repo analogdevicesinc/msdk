@@ -442,7 +442,8 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi);
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask, uint8_t ts_active_pol_mask);
+int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask,
+                         uint8_t ts_active_pol_mask);
 
 /**
  * @brief   Set the frequency of the SPI interface.

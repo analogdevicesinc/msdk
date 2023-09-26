@@ -54,7 +54,8 @@ extern "C" {
 
 /* **** Functions **** */
 
-int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode, uint32_t freq);
+int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target,
+                       mxc_spi_interface_t if_mode, uint32_t freq);
 
 int MXC_SPI_RevA2_Config(mxc_spi_cfg_t *cfg);
 
@@ -68,7 +69,8 @@ void MXC_SPI_RevA2_EnableInt(mxc_spi_reva_regs_t *spi, uint32_t en);
 
 void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis);
 
-int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask, uint8_t ts_active_pol_mask);
+int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control,
+                               uint8_t ts_init_mask, uint8_t ts_active_pol_mask);
 
 mxc_spi_tscontrol_t MXC_SPI_RevA2_GetTSControl(mxc_spi_reva_regs_t *spi);
 

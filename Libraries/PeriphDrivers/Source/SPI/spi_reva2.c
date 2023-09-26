@@ -357,7 +357,8 @@ static void MXC_SPI_RevA2_resetStateStruct(int8_t spi_num)
 
 /* **** Public Functions **** */
 
-int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode, uint32_t freq)
+int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target,
+                       mxc_spi_interface_t if_mode, uint32_t freq)
 {
     int error;
     int8_t spi_num;
@@ -535,7 +536,8 @@ void MXC_SPI_RevA2_DisableInt(mxc_spi_reva_regs_t *spi, uint32_t dis)
     spi->inten &= ~(dis);
 }
 
-int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask, uint8_t ts_active_pol_mask)
+int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_control,
+                               uint8_t ts_init_mask, uint8_t ts_active_pol_mask)
 {
     int8_t spi_num;
 
@@ -553,8 +555,10 @@ int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_
 
     switch (ts_control) {
     case MXC_SPI_TSCONTROL_HW_AUTO:
-        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, (ts_init_mask << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
-        MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL, (ts_active_pol_mask << MXC_F_SPI_REVA_CTRL2_SS_POL_POS));
+        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
+                     (ts_init_mask << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
+        MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL,
+                     (ts_active_pol_mask << MXC_F_SPI_REVA_CTRL2_SS_POL_POS));
         break;
 
     case MXC_SPI_TSCONTROL_SW_DRV:

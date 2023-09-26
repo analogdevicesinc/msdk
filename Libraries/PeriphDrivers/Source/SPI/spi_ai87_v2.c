@@ -89,7 +89,9 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
 
         // Create mask based on true/false conditions of mxc_spi_pins_t parameter.
         // Shortened function length.
-        ts_init_mask = (pins.ts0 ? 1 << MXC_SPI_TS0_MASK_POS : 0) | (pins.ts1 ? 1 << MXC_SPI_TS1_MASK_POS : 0) | (pins.ts2 ? 1 << MXC_SPI_TS2_MASK_POS : 0);
+        ts_init_mask = (pins.ts0 ? 1 << MXC_SPI_TS0_MASK_POS : 0) |
+                       (pins.ts1 ? 1 << MXC_SPI_TS1_MASK_POS : 0) |
+                       (pins.ts2 ? 1 << MXC_SPI_TS2_MASK_POS : 0);
     } else {
         ts_control = MXC_SPI_TSCONTROL_SW_APP;
 
@@ -346,9 +348,11 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
     return retval;
 }
 
-int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask, uint8_t ts_active_pol_mask)
+int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask,
+                         uint8_t ts_active_pol_mask)
 {
-    return MXC_SPI_RevA2_SetTSControl((mxc_spi_reva_regs_t *)spi, ts_control, ts_init_mask, ts_active_pol_mask);
+    return MXC_SPI_RevA2_SetTSControl((mxc_spi_reva_regs_t *)spi, ts_control, ts_init_mask,
+                                      ts_active_pol_mask);
 }
 
 mxc_spi_tscontrol_t MXC_SPI_GetTSControl(mxc_spi_regs_t *spi)
