@@ -537,12 +537,12 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_
 
 int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
 {
-    // For backwards compatibility. SPI v2 does not use req->ts_idx.
-#if MXC_SPI_VERSION != v2
+    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
     mxc_spi_ts_t ts;
-    ts.index = req->ts_idx;
-    req->ts = &ts;
-#endif
+    if (req->ts == 0x0) {
+        ts.index = req->ts_idx;
+        req->ts = &ts;
+    }
 
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                req->tx_length_frames, req->rx_buffer,
@@ -553,12 +553,12 @@ int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
 {
     int error;
 
-    // For backwards compatibility. SPI v2 does not use req->ts_idx.
-#if MXC_SPI_VERSION != v2
+    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
     mxc_spi_ts_t ts;
-    ts.index = req->ts_idx;
-    req->ts = &ts;
-#endif
+    if (req->ts == 0x0) {
+        ts.index = req->ts_idx;
+        req->ts = &ts;
+    }
 
     error = MXC_SPI_SetCallback(req->spi, req->callback, req->callback_data);
     if (error != E_NO_ERROR) {
@@ -575,12 +575,12 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
-    // For backwards compatibility. SPI v2 does not use req->ts_idx.
-#if MXC_SPI_VERSION != v2
+    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
     mxc_spi_ts_t ts;
-    ts.index = req->ts_idx;
-    req->ts = &ts;
-#endif
+    if (req->ts == 0x0) {
+        ts.index = req->ts_idx;
+        req->ts = &ts;
+    }
 
     error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
     if (error != E_NO_ERROR) {
@@ -595,12 +595,12 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 
 int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
 {
-    // For backwards compatibility. SPI v2 does not use req->ts_idx.
-#if MXC_SPI_VERSION != v2
+    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
     mxc_spi_ts_t ts;
-    ts.index = req->ts_idx;
-    req->ts = &ts;
-#endif
+    if (req->ts == 0x0) {
+        ts.index = req->ts_idx;
+        req->ts = &ts;
+    }
 
     return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
                                                req->tx_length_frames, req->rx_buffer,
@@ -611,12 +611,12 @@ int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
 {
     int error;
 
-    // For backwards compatibility. SPI v2 does not use req->ts_idx.
-#if MXC_SPI_VERSION != v2
+    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
     mxc_spi_ts_t ts;
-    ts.index = req->ts_idx;
-    req->ts = &ts;
-#endif
+    if (req->ts == 0x0) {
+        ts.index = req->ts_idx;
+        req->ts = &ts;
+    }
 
     error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
     if (error != E_NO_ERROR) {
@@ -633,12 +633,12 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
-    // For backwards compatibility. SPI v2 does not use req->ts_idx.
-#if MXC_SPI_VERSION != v2
+    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
     mxc_spi_ts_t ts;
-    ts.index = req->ts_idx;
-    req->ts = &ts;
-#endif
+    if (req->ts == 0x0) {
+        ts.index = req->ts_idx;
+        req->ts = &ts;
+    }
 
     error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
     if (error != E_NO_ERROR) {
