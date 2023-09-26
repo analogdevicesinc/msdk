@@ -533,13 +533,7 @@ int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma_tx, bool use_dma_rx)
     return E_NOT_SUPPORTED;
 }
 
-int MXC_SPI_ConfigTSPins(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, mxc_spi_ts_t *ts,
-                         mxc_gpio_vssel_t vssel)
-{
-    return E_NOT_SUPPORTED;
-}
-
-int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control)
+int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask, uint8_t ts_active_pol_mask)
 {
     return E_NOT_SUPPORTED;
 }
