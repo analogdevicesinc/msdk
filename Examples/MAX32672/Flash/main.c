@@ -146,29 +146,55 @@ int write_test_pattern()
         return err;
     }
 
-    printf("Writing magic value 0x%x to address 0x%x...\n", MAGIC, TEST_ADDRESS);
-    err = MXC_FLC_Write32(TEST_ADDRESS, MAGIC);
-    if (err) {
-        printf("Failed to write magic value to 0x%x with error code %i!\n", TEST_ADDRESS, err);
-        return err;
-    }
+    if (MXC_SYS_ECC_GetEnabled(MXC_SYS_ECCEN_FLASH0)) {
+    	// ECC enabled, must use 128-bit writes to record the test pattern and magic value to ensure ECC code calculated correctly
+    	uint32_t test_val[4];
+    	for(int i = 1; i < (sizeof(test_val) / sizeof(uint32_t)); i++) {
+    		test_val[i] = TEST_VALUE;
+    	}
 
-    printf("Writing test pattern...\n");
-    for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
-        /*  
-            A single flash page is organized into 4096 128-bit "words", but is still 
-            byte-addressible.  Increment the address by 4 bytes to write in 32-bit 
-            chunks.  
-            
-            The Flash Controller also only supports 128-bit writes. The driver
-            function below handles the technicalities of inserting the 32-bit value 
-            into a 128-bit word without modifying the rest of the word.
-        */
-        err = MXC_FLC_Write32(addr, TEST_VALUE);
-        if (err) {
-            printf("Failed write on address 0x%x with error code %i\n", addr, err);
-            return err;
-        }
+    	test_val[0] = MAGIC; // Write magic value in the first 128-bit word
+
+    	printf("Writing magic value 0x%x to address 0x%x...\n", MAGIC, TEST_ADDRESS);
+		printf("Writing test pattern...\n");
+		for (uint32_t addr = TEST_ADDRESS; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 16) {
+			err = MXC_FLC_Write128(addr, test_val);
+			if (err) {
+				printf("Failed write on address 0x%x with error code %i\n", addr, err);
+				return err;
+			}
+
+			if (addr == TEST_ADDRESS) {
+				// Write test value for remainder of 128-bit words in the flash page
+				test_val[0] = TEST_VALUE;
+			}
+		}
+    } else {
+    	// ECC disabled, able to use 32-bit writes to record the test pattern and magic value
+		printf("Writing magic value 0x%x to address 0x%x...\n", MAGIC, TEST_ADDRESS);
+		err = MXC_FLC_Write32(TEST_ADDRESS, MAGIC);
+		if (err) {
+			printf("Failed to write magic value to 0x%x with error code %i!\n", TEST_ADDRESS, err);
+			return err;
+		}
+
+		printf("Writing test pattern...\n");
+		for (uint32_t addr = TEST_ADDRESS + 4; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4) {
+			/*
+				A single flash page is organized into 4096 128-bit "words", but is still
+				byte-addressible.  Increment the address by 4 bytes to write in 32-bit
+				chunks.
+
+				The Flash Controller also only supports 128-bit writes. The driver
+				function below handles the technicalities of inserting the 32-bit value
+				into a 128-bit word without modifying the rest of the word.
+			*/
+			err = MXC_FLC_Write32(addr, TEST_VALUE);
+			if (err) {
+				printf("Failed write on address 0x%x with error code %i\n", addr, err);
+				return err;
+			}
+		}
     }
     printf("Done!\n");
 
@@ -204,7 +230,7 @@ int erase_magic()
         at a time.
         Therefore, the entire page must be buffered, erased, then modified.
     */
-    int err;
+    int err, i = 0;
     uint32_t buffer[MXC_FLASH_PAGE_SIZE >> 2] = {
         0xFFFFFFFF
     }; // 8192 bytes per page / 4 bytes = 2048 uint32_t
@@ -223,11 +249,24 @@ int erase_magic()
     buffer[0] = 0xABCD1234; // Erase magic value
 
     printf("Re-writing from buffer...\n");
-    for (int i = 0; i < (MXC_FLASH_PAGE_SIZE >> 2); i++) {
-        err = MXC_FLC_Write32(TEST_ADDRESS + 4 * i, buffer[i]);
-        if (err) {
-            printf("Failed at address 0x%x with error code %i\n", (TEST_ADDRESS + 4) * i, err);
-            return err;
+
+    if (MXC_SYS_ECC_GetEnabled(MXC_SYS_ECCEN_FLASH0)) {
+    	// ECC enabled, must use 128-bit writes to rewrite the buffer to ensure the ECC code is calculated correctly
+    	for (uint32_t addr = TEST_ADDRESS; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 16, i += 4) {
+    		err = MXC_FLC_Write128(addr, &buffer[i]);
+    		if (err) {
+				printf("Failed at address 0x%x with error code %i\n", addr, err);
+				return err;
+			}
+    	}
+    } else {
+    	// ECC disabled, able to use 32-bit writes to re-write the buffer
+        for (uint32_t addr = TEST_ADDRESS; addr < TEST_ADDRESS + MXC_FLASH_PAGE_SIZE; addr += 4, i++) {
+            err = MXC_FLC_Write32(addr, buffer[i]);
+            if (err) {
+                printf("Failed at address 0x%x with error code %i\n", TEST_ADDRESS + (4 * i), err);
+                return err;
+            }
         }
     }
     uint32_t magic = 0;
