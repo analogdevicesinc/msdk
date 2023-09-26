@@ -103,6 +103,11 @@ typedef enum {
     MXC_TMR_UNIT_MICROSEC, ///< Microsecond Unit Indicator
     MXC_TMR_UNIT_MILLISEC, ///< Millisecond Unit Indicator
     MXC_TMR_UNIT_SEC, ///< Second Unit Indicator
+
+    TMR_UNIT_NANOSEC = MXC_TMR_UNIT_NANOSEC, ///< Deprecated name
+    TMR_UNIT_MICROSEC = MXC_TMR_UNIT_MICROSEC, ///< Deprecated name
+    TMR_UNIT_MILLISEC = MXC_TMR_UNIT_MILLISEC, ///< Deprecated name
+    TMR_UNIT_SEC = MXC_TMR_UNIT_SEC, ///< Deprecated name
 } mxc_tmr_unit_t;
 
 /**

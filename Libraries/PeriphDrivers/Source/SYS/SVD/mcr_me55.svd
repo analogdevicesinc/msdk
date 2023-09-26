@@ -166,7 +166,7 @@
         <addressOffset>0x60</addressOffset>
         <fields>
           <field>
-            <name>LDO0P9_EN</name>
+            <name>0P9V_EN</name>
             <description>LDO 0.9V Enable.</description>
             <bitOffset>0</bitOffset>
             <bitWidth>1</bitWidth>
