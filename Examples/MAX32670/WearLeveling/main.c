@@ -90,17 +90,17 @@ int main(void)
     printf("Mounting the file system...\n");
 
     if ((err = mount_filesystem(&lfs, &cfg)) != E_NO_ERROR) {
-    	printf("Unable to mount file system!\n");
-    	return err;
+        printf("Unable to mount file system!\n");
+        return err;
     }
 
     printf("File system is mounted!\n\n");
-    while(MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
+    while (MXC_UART_GetActive(MXC_UART_GET_UART(CONSOLE_UART))) {}
 
     // Initialize command-line interface
     if (MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), cmd_table, cmd_table_sz) != E_NO_ERROR) {
-    	printf("Unable to initialize the command-line interface.\n");
-    	return E_BAD_STATE;
+        printf("Unable to initialize the command-line interface.\n");
+        return E_BAD_STATE;
     }
 
     // CLI running in the background. Continue to receive and process commands until 'stop' command received
@@ -117,7 +117,7 @@ int main(void)
 //******************************************************************************
 int handle_stop(int argc, char *argv[])
 {
-	stop_recv = true;
+    stop_recv = true;
     return E_NO_ERROR;
 }
 
@@ -170,10 +170,12 @@ int handle_write(int argc, char *argv[])
 
     // Assign CLI arguments to appropriate variables
     lfs_file_t file;
-    char *filename = argv[FILENAME_POS];;
+    char *filename = argv[FILENAME_POS];
+    {
+    }
     char *data = argv[DATA_POS];
     int pos = atoi(argv[LOCATION_POS]);
-	int err;
+    int err;
 
     // Write data to the file
     err = file_write(&lfs, &file, filename, data, strlen(data), pos, true);
@@ -190,7 +192,7 @@ int handle_write(int argc, char *argv[])
 int handle_swl(int argc, char *argv[])
 {
     // Check for invalid arguments
-	if (argc != 2 || argv == NULL) {
+    if (argc != 2 || argv == NULL) {
         printf("Invalid command format. Aborting swl.\n");
         return E_INVALID;
     }
@@ -240,22 +242,22 @@ int handle_swl(int argc, char *argv[])
 //******************************************************************************
 int mount_filesystem(lfs_t *filesystem, const struct lfs_config *cfg)
 {
-	int err;
+    int err;
 
-	// mount the file system
-	err = lfs_mount(filesystem, cfg);
+    // mount the file system
+    err = lfs_mount(filesystem, cfg);
 
-	// reformat if we can't mount the filesystem
-	// this should only happen on the first boot
-	if (err) {
-		printf("Filesystem is invalid, formatting...\n");
-		lfs_format(filesystem, cfg);
-		err = lfs_mount(filesystem, cfg);
-	}
+    // reformat if we can't mount the filesystem
+    // this should only happen on the first boot
+    if (err) {
+        printf("Filesystem is invalid, formatting...\n");
+        lfs_format(filesystem, cfg);
+        err = lfs_mount(filesystem, cfg);
+    }
 
-	if (err) {
-		return E_BAD_STATE;
-	}
+    if (err) {
+        return E_BAD_STATE;
+    }
 
-	return err;
+    return err;
 }
