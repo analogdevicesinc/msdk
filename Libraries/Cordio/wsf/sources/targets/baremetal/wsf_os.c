@@ -68,9 +68,6 @@ WSF_CT_ASSERT(sizeof(uint32_t) == 4);
 #define WSF_OS_THREAD_SLEEP_WAKEUP_FLAG           0x0001
 #endif
 
-/*! \brief OS serivice function number */
-#define WSF_OS_MAX_SERVICE_FUNCTIONS                  3
-
 /**************************************************************************************************
   Data Types
 **************************************************************************************************/

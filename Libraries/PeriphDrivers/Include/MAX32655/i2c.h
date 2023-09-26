@@ -185,6 +185,10 @@ typedef int (*mxc_i2c_slave_handler_t)(mxc_i2c_regs_t *i2c, mxc_i2c_slave_event_
  * @brief   Initialize and enable I2C peripheral.
  * @note    This function sets the I2C Speed to 100kHz,  if another speed is
  *          desired use the MXC_I2C_SetFrequency() function to set it.
+ * @note    On default this function enables I2C peripheral clock and i2c gpio pins.
+ *          if you wish to manage clock and gpio related things in upper level instead of here.
+ *          Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ *          By this flag this function will remove clock and gpio related codes from file.
  *
  * @param   i2c         Pointer to I2C registers (selects the I2C block used.)
  * @param   masterMode  Whether to put the device in master or slave mode. Use

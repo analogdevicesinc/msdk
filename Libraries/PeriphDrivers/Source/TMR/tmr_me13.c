@@ -37,6 +37,7 @@
 
 void MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg)
 {
+#ifndef MSDK_NO_GPIO_CLK_INIT
     int tmr_id = MXC_TMR_GET_IDX(tmr);
     MXC_ASSERT(tmr_id >= 0);
 
@@ -113,6 +114,7 @@ void MXC_TMR_Init(mxc_tmr_regs_t *tmr, mxc_tmr_cfg_t *cfg)
     if (cfg->pins != NULL) {
         MXC_GPIO_Config(cfg->pins);
     }
+#endif
 
     MXC_TMR_RevA_Init((mxc_tmr_reva_regs_t *)tmr, cfg);
 }

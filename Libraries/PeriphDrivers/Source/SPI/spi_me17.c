@@ -68,6 +68,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
         return E_BAD_PARAM;
     }
 
+#ifndef MSDK_NO_GPIO_CLK_INIT
     mxc_gpio_cfg_t gpio_cfg_spi;
     gpio_cfg_spi.pad = MXC_GPIO_PAD_NONE;
     gpio_cfg_spi.port = MXC_GPIO0;
@@ -182,6 +183,9 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numS
     }
 
     MXC_GPIO_Config(&gpio_cfg_spi);
+#else
+    (void)pins;
+#endif // MSDK_NO_GPIO_CLK_INIT
 
     return MXC_SPI_RevA1_Init((mxc_spi_reva_regs_t *)spi, masterMode, quadModeUsed, numSlaves,
                               ssPolarity, hz);

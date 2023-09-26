@@ -82,7 +82,13 @@ typedef enum {
 
 /**
  * @brief       Initialize the Watchdog Timer
- * @param       wdt      Pointer to the watchdog registers
+ * @note        On default this function enables WDT peripheral clock.
+ *              if you wish to manage clock and gpio related things in upper level instead of here.
+ *              Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. 
+ *              By this flag this function will remove clock and gpio related codes from file.
+ * 
+ * @param       wdt      Pointer to the watchdog registers, has no effect incase of
+ *                       MSDK_NO_GPIO_CLK_INIT has been defiend.
  * @return      See \ref MXC_Error_Codes for the list of error codes.
  */
 int MXC_WDT_Init(mxc_wdt_regs_t *wdt);
