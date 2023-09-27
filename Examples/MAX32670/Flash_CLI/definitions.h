@@ -53,6 +53,10 @@
 					  "Calculates CRC of entire flash page", \
 					  handle_crc } }
 
+#define WORD_OFFSET_POS 1
+#define DATA_POS 2
+#define LENGTH_POS 2
+
 /***** Function Prototypes *****/
 // Command handler functions
 int handle_write(int argc, char *argv[]);

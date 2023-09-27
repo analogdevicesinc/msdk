@@ -82,8 +82,8 @@ int handle_write(int argc, char *argv[])
 	}
 
 	// Get command-line arguments
-	int startaddr = FLASH_STORAGE_START_ADDR + atoi(argv[1]) * 4;
-	char *text = argv[2];
+	int startaddr = FLASH_STORAGE_START_ADDR + atoi(argv[WORD_OFFSET_POS]) * 4;
+	char *text = argv[DATA_POS];
 
 	// Convert character string to uint32_t since we must write flash in 32-bit words
 	for (int i = 0; i < strlen(text); i++) {
@@ -140,8 +140,8 @@ int handle_read(int argc, char *argv[])
 	}
 
 	// Get command-line arguments
-    int startaddr = FLASH_STORAGE_START_ADDR + atoi(argv[1]) * 4;
-    int length = atoi(argv[2]);
+    int startaddr = FLASH_STORAGE_START_ADDR + atoi(argv[WORD_OFFSET_POS]) * 4;
+    int length = atoi(argv[LENGTH_POS]);
 
     // Initialize data buffer
     memset(data, 0x0, sizeof(data));
