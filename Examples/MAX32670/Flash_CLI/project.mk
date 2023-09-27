@@ -13,5 +13,5 @@
 
 # Add your config here!
 
-# Enable the FreeRTOS library
-LIB_FREERTOS=1
+# Enable the CLI library
+LIB_CLI=1
