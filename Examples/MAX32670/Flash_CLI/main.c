@@ -169,6 +169,12 @@ int handle_erase(int argc, char *argv[])
 {
 	int err = E_NO_ERROR;
 
+    // Check for an invalid command
+    if (argc != 1 || argv == NULL) {
+        printf("Invalid command format. Aborting flash erase.\n");
+        return E_BAD_PARAM;
+    }
+
 	// Check whether the flash page is already erased
     if (!check_erased(FLASH_STORAGE_START_ADDR, MXC_FLASH_PAGE_SIZE)) {
     	// Erase flash page if it's not already erased
@@ -188,6 +194,12 @@ int handle_crc(int argc, char *argv[])
 {
 	int err;
     mxc_crc_req_t req;
+
+    // Check for an invalid command
+    if (argc != 1 || argv == NULL) {
+        printf("Invalid command format. Aborting CRC compute.\n");
+        return E_BAD_PARAM;
+    }
 
     // Setup CRC request to calculate CRC value for the entire flash page
     req.dataBuffer = (uint32_t *)FLASH_STORAGE_START_ADDR;
