@@ -1344,7 +1344,8 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
 // Helper function that handles the Target Select assertion/deassertion at start of transaction.
 // hw_ts_active_pol is either 1 or 0.
-static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert, uint8_t hw_ts_index, uint8_t hw_ts_active_pol)
+static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert,
+                                          uint8_t hw_ts_index, uint8_t hw_ts_active_pol)
 {
     int8_t spi_num;
 
@@ -1379,7 +1380,10 @@ static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deas
 
 /* ** Transaction Functions ** */
 
-int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames, uint8_t deassert, uint8_t hw_ts_index, uint8_t hw_ts_active_pol)
+int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                        uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                        uint32_t rx_length_frames, uint8_t deassert,
+                                        uint8_t hw_ts_index, uint8_t hw_ts_active_pol)
 {
     int8_t spi_num;
 
@@ -1422,7 +1426,10 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames, uint8_t deassert, uint8_t hw_ts_index, uint8_t hw_ts_active_pol)
+int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                             uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                             uint32_t rx_length_frames, uint8_t deassert,
+                                             uint8_t hw_ts_index, uint8_t hw_ts_active_pol)
 {
     int8_t spi_num;
 
@@ -1457,7 +1464,11 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames, uint8_t deassert, uint8_t hw_ts_index, uint8_t hw_ts_active_pol, mxc_dma_reva_regs_t *dma)
+int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                           uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                           uint32_t rx_length_frames, uint8_t deassert,
+                                           uint8_t hw_ts_index, uint8_t hw_ts_active_pol,
+                                           mxc_dma_reva_regs_t *dma)
 {
     int8_t spi_num;
     int error;
@@ -1493,7 +1504,9 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames)
+int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                    uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                    uint32_t rx_length_frames)
 {
     int8_t spi_num;
 
@@ -1533,7 +1546,9 @@ int MXC_SPI_RevA2_TargetTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames)
+int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                         uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                         uint32_t rx_length_frames)
 {
     int8_t spi_num;
 
@@ -1557,7 +1572,9 @@ int MXC_SPI_RevA2_TargetTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_b
     return E_SUCCESS;
 }
 
-int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer, uint32_t tx_length_frames, uint8_t *rx_buffer, uint32_t rx_length_frames, mxc_dma_reva_regs_t *dma)
+int MXC_SPI_RevA2_TargetTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
+                                       uint32_t tx_length_frames, uint8_t *rx_buffer,
+                                       uint32_t rx_length_frames, mxc_dma_reva_regs_t *dma)
 {
     int8_t spi_num;
     int error;

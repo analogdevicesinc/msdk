@@ -146,8 +146,8 @@ int main(void)
         spi_pins.ss2 = false; // TS2
         spi_pins.vddioh = true;
 
-        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0,
-                              0, SPI_SPEED, spi_pins);
+        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, 0,
+                              SPI_SPEED, spi_pins);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
             return retVal;
@@ -157,7 +157,7 @@ int main(void)
         cfg.spi = SPI;
         cfg.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
         cfg.frame_size = i;
-        
+
         // DMA Settings.
 #if CONTROLLER_DMA
         cfg.use_dma_tx = true;

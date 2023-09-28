@@ -83,7 +83,9 @@ mxc_gpio_cfg_t ts_irq_pin = { TS_IRQ_PORT,           TS_IRQ_PIN,
                               MXC_GPIO_FUNC_IN,      MXC_GPIO_PAD_NONE,
                               MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 // TS SS pin
-const mxc_gpio_cfg_t ts_ss_pin = { TS_SS_PORT, TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0
+const mxc_gpio_cfg_t ts_ss_pin = {
+    TS_SS_PORT,       TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH,
+    MXC_GPIO_DRVSTR_0
 };
 
 /***** File Scope Variables *****/
