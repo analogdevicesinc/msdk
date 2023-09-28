@@ -221,7 +221,8 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
         return error;
     }
 
-    return MXC_SPI_RevA2_Init((mxc_spi_reva_regs_t *)spi, controller_target, if_mode, freq, ts_active_pol_mask);
+    return MXC_SPI_RevA2_Init((mxc_spi_reva_regs_t *)spi, controller_target, if_mode, freq,
+                              ts_active_pol_mask);
 }
 
 int MXC_SPI_Config(mxc_spi_cfg_t *cfg)
@@ -564,7 +565,8 @@ int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->txData,
                                                   req->txLen, req->rxData, req->rxLen,
-                                                  req->ssDeassert, req->ssIdx, (mxc_dma_reva_regs_t *)MXC_DMA);
+                                                  req->ssDeassert, req->ssIdx,
+                                                  (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
@@ -605,7 +607,8 @@ int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
 
     return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->txData,
                                                   req->txLen, req->rxData, req->rxLen,
-                                                  req->ssDeassert, req->ssIdx, (mxc_dma_reva_regs_t *)MXC_DMA);
+                                                  req->ssDeassert, req->ssIdx,
+                                                  (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)

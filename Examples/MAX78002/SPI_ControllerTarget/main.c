@@ -195,8 +195,8 @@ int main(void)
     MXC_GPIO_OutClr(ts_pins.port, ts_pins.mask);
 #endif
 
-    error = MXC_SPI_Init(SPI_CONTROLLER, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, ts_active_pol_mask,
-                         SPI_SPEED, controller_pins);
+    error = MXC_SPI_Init(SPI_CONTROLLER, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0,
+                         ts_active_pol_mask, SPI_SPEED, controller_pins);
     if (error != E_NO_ERROR) {
         printf("\nSPI CONTROLLER INITIALIZATION ERROR\n");
         while (1) {}
@@ -246,8 +246,8 @@ int main(void)
     target_cfg.use_dma_rx = false;
 #endif
 
-    error = MXC_SPI_Init(SPI_TARGET, MXC_SPI_TYPE_TARGET, MXC_SPI_INTERFACE_STANDARD, 0, ts_active_pol_mask,
-                         SPI_SPEED, target_pins);
+    error = MXC_SPI_Init(SPI_TARGET, MXC_SPI_TYPE_TARGET, MXC_SPI_INTERFACE_STANDARD, 0,
+                         ts_active_pol_mask, SPI_SPEED, target_pins);
     if (error != E_NO_ERROR) {
         printf("\nSPI TARGET INITIALIZATION ERROR\n");
         while (1) {}

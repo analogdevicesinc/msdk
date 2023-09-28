@@ -432,7 +432,8 @@ int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_targe
     MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, 0);
 
     // Set the TS Active Polarity settings.
-    MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL, ts_active_pol_mask << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
+    MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL,
+                 ts_active_pol_mask << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
 
     return E_NO_ERROR;
 }
@@ -1339,7 +1340,8 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
 // Helper function that handles the Target Select assertion/deassertion at start of transaction.
 // hw_ts_active_pol is either 1 or 0.
-static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert, uint8_t hw_ts_index)
+static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert,
+                                          uint8_t hw_ts_index)
 {
     int8_t spi_num;
 
