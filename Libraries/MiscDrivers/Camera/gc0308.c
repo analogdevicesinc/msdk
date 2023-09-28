@@ -56,17 +56,11 @@ static const uint8_t default_regs[][2] = {
                                                 If you see a bar on the left side of
                                                 the image you need to tweak (probably
                                                 increase) the horizontal blanking.
-                                            */
-
-		{AAAA_ENABLE,			0x55},   	// Turn-off AWB
+                                            */		
 
 		{EXPOSURE_MSB,			0x01},		// Set exposure time
 		{EXPOSURE_LSB,			0x2c},
-
-		{AWB_R_GAIN,			0x56},		// White balancing red channel gain
-		{AWB_G_GAIN,			0x40},		// White balancing green channel gain
-		{AWB_G_GAIN,			0x4a},		// White balancing blue channel gain
-		///{0x22,0x57},   // Open AWB
+        {AAAA_ENABLE,			0x01},      // Enable AWB
 		
 		{0x0f,0x00},
 		{0xe2,0x00},   //anti-flicker step [11:8]
@@ -91,7 +85,6 @@ static const uint8_t default_regs[][2] = {
 		{WINDOW_WIDTH_LSB,			0x88},
 
 		{CROP_WIN_MODE,				0x00},		// Disable Crop Mode
-
 
 		{0x0d,0x02},
 		{0x0e,0x02},
@@ -118,8 +111,7 @@ static const uint8_t default_regs[][2] = {
 		{0x1f,0x16},
 		{0x20,0xff},
 		{0x21,0xf8},
-		{0x22,0x00},
-		{OUTPUT_FORMAT,		0xa6},		// {0x24,0xa2},
+		{OUTPUT_FORMAT,		0xa6}, // RGB565
 		{OUTPUT_EN,			0x0f},
 		{SYNC_MODE,			0x36},		// {0x26,0x06},
 		{0x2f,0x01},
