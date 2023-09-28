@@ -204,7 +204,6 @@ struct _mxc_spi_req_t {
     uint32_t rxCnt; // Number of bytes stored in rxData (Unused for SPI v2)
     mxc_spi_callback_t completeCB; // completeCB
     uint16_t txDummyValue; // Value of dummy bytes to be sent
-    uint8_t ssActivePol;
 };
 // clang-format on
 
@@ -236,8 +235,7 @@ struct _mxc_spi_req_t {
  *                              The number of target used, if in controller mode. This
  *                              is used to obtain control of the necessary TS pins.
  *                              In target mode this is ignored and TS1 is used.
- * @param   tsPolarity          This parameter is UNUSED for SPI v2.
- *                              This field sets the TS active polarity for each
+ * @param   ts_active_pol_mask  This field sets the TS active polarity for each
  *                              target, each bit position corresponds to each TS line.
  *                                  ts_active_pol_mask[0] - TS0
  *                                  ts_active_pol_mask[1] - TS1
@@ -252,7 +250,7 @@ struct _mxc_spi_req_t {
  *          \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
-                 int numTargets, uint8_t tsPolarity, uint32_t freq, mxc_spi_pins_t pins);
+                 int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins);
 
 /**
  * @brief   Configure the SPI peripheral.

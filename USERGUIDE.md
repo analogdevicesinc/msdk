@@ -2490,7 +2490,7 @@ The SPI v2 Library is the latest version of the MSDK SPI drivers which highlight
 
 The latest SPI examples in the MSDK defaults to build the SPI v1 libraries. Set the `MXC_SPI_VERSION` [build configuration variable](#build-configuration-variables) to `v2` (case sensitive) use the SPI v2 API.
 
-This guide shows how to update an existing project that is using the SPI v1 API to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main differences being 1) the requirement of added parameter in the `mxc_spi_req_t` struct and 2) the SPI DMA interrupt handling (see [SPI DMA Interrupt Handling](#spi-dma-interrupt-handling) section below for more info).
+This guide shows how to update an existing project that is using the SPI v1 API to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main difference being the SPI DMA interrupt handling (see [SPI DMA Interrupt Handling](#spi-dma-interrupt-handling) section below for more info).
 
 Note: The SPI v2 API is only a drop in replacement to SPI v1 if SPI DMA is **not** used; should the user choose to continue building with the SPI v1 convention but with the underlying SPI v2 implementation. This porting guide demonstrates how to use the full extent of the SPI v2 features.
 
@@ -2516,7 +2516,7 @@ SPI v2:
                     mxc_spi_type_t controller_target, 
                     mxc_spi_interface_t if_mode, 
                     int numTargets, 
-                    uint8_t tsPolarity, 
+                    uint8_t ts_active_pol_mask, 
                     uint32_t freq, 
                     mxc_spi_pins_t pins)
 
@@ -2526,7 +2526,7 @@ Input Parameters:
 - `int masterMode` -> `mxc_spi_type_t controller_target`. The enum `mxc_spi_type_t` was added for increased code readability.
 - `int quadModeUsed` -> `mxc_spi_interface_t if_mode`. Previously, the `MXC_SPI_Init(...)` function could only select between standard (4wire) and quad interface modes. With SPI v2, the user can select either standard (`MXC_SPI_INTERFACE_STANDARD`), quad (`MXC_SPI_INTERFACE_QUAD`), 3wire (`MXC_SPI_INTERFACE_3WIRE`), or dual (`MXC_SPI_INTERFACE_DUAL`) mode.
 - `int numSlaves` -> `int numTargets`. SPI v2 does not use this parameter and was kept to continue supporting SPI v1.
-- `unsigned ssPolarity` -> `uint8_t tsPolarity`. SPI v2 does not use this parameter and was kept to continue supporting SPI v1.
+- `unsigned ssPolarity` -> `uint8_t ts_active_pol_mask`. Updated to a more descriptive name.
 - `unsigned int hz` -> `uint32_t freq`.
 - `mxc_spi_pins_t pins` remains unchanged.
 
@@ -2547,8 +2547,6 @@ This function also sets up the DMA and acquires DMA TX/RX channels for SPI DMA t
 
 ##### SPI Request Struct
 
-There is an extra parameter in the request struct that must be added to use the SPI v2 libraries if porting from a SPI v1-based project.
-
 `mxc_spi_req_t` struct:
 
 - `mxc_spi_regs_t *spi` - Remains unchanged.
@@ -2561,8 +2559,6 @@ There is an extra parameter in the request struct that must be added to use the 
 - `uint32_t txCnt` - Not used in SPI v2.
 - `uint32_t rxCnt` - Not used in SPI v2.
 - `mxc_spi_callback_t completeCB` - Type was renamed, but funtionally, remains unchanged.
-- `uint16_t txDummyValue` - Added parameter to set the transmit buffer with a dummy value when only receiving.
-- `uint8_t ssActivePol` - Added parameter that sets the Active state polarity (0 - LOW, or 1 - HIGH) for selected TS (ssIdx).
 
 ##### SPI Transaction Functions
 

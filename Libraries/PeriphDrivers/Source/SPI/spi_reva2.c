@@ -356,7 +356,7 @@ static void MXC_SPI_RevA2_resetStateStruct(int8_t spi_num)
 /* **** Public Functions **** */
 
 int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_target,
-                       mxc_spi_interface_t if_mode, uint32_t freq)
+                       mxc_spi_interface_t if_mode, uint32_t freq, uint8_t ts_active_pol_mask)
 {
     int error;
     int8_t spi_num;
@@ -430,7 +430,9 @@ int MXC_SPI_RevA2_Init(mxc_spi_reva_regs_t *spi, mxc_spi_type_t controller_targe
 
     // Clear the HW TS settings (These are set in the transaction functions).
     MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE, 0);
-    MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL, 0);
+
+    // Set the TS Active Polarity settings.
+    MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL, ts_active_pol_mask << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
 
     return E_NO_ERROR;
 }
@@ -549,13 +551,6 @@ int MXC_SPI_RevA2_SetTSControl(mxc_spi_reva_regs_t *spi, mxc_spi_tscontrol_t ts_
 
     switch (ts_control) {
     case MXC_SPI_TSCONTROL_HW_AUTO:
-<<<<<<< Updated upstream
-        MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
-                     (ts_init_mask << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
-        MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL,
-                     (ts_active_pol_mask << MXC_F_SPI_REVA_CTRL2_SS_POL_POS));
-=======
->>>>>>> Stashed changes
         break;
 
     case MXC_SPI_TSCONTROL_SW_APP:
@@ -1344,8 +1339,7 @@ static void MXC_SPI_RevA2_transactionSetup(mxc_spi_reva_regs_t *spi, uint8_t *tx
 
 // Helper function that handles the Target Select assertion/deassertion at start of transaction.
 // hw_ts_active_pol is either 1 or 0.
-static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert,
-                                          uint8_t hw_ts_index, uint8_t hw_ts_active_pol)
+static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deassert, uint8_t hw_ts_index)
 {
     int8_t spi_num;
 
@@ -1365,9 +1359,6 @@ static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deas
         MXC_SETFIELD(spi->ctrl0, MXC_F_SPI_REVA_CTRL0_SS_ACTIVE,
                      ((1 << hw_ts_index) << MXC_F_SPI_REVA_CTRL0_SS_ACTIVE_POS));
 
-        MXC_SETFIELD(spi->ctrl2, MXC_F_SPI_REVA_CTRL2_SS_POL,
-                     ((1 & hw_ts_active_pol) << hw_ts_index) << MXC_F_SPI_REVA_CTRL2_SS_POL_POS);
-
         if (deassert) {
             spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
         } else {
@@ -1383,7 +1374,7 @@ static void MXC_SPI_RevA2_handleTSControl(mxc_spi_reva_regs_t *spi, uint8_t deas
 int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                         uint32_t tx_length_frames, uint8_t *rx_buffer,
                                         uint32_t rx_length_frames, uint8_t deassert,
-                                        uint8_t hw_ts_index, uint8_t hw_ts_active_pol)
+                                        uint8_t hw_ts_index)
 {
     int8_t spi_num;
 
@@ -1410,7 +1401,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     // Handle Target Select Pin (Only applicable in HW_AUTO TS control scheme).
-    MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index, hw_ts_active_pol);
+    MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index);
 
     // Complete transaction once it started.
     while (STATES[spi_num].transaction_done == false) {
@@ -1429,7 +1420,7 @@ int MXC_SPI_RevA2_ControllerTransaction(mxc_spi_reva_regs_t *spi, uint8_t *tx_bu
 int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                              uint32_t tx_length_frames, uint8_t *rx_buffer,
                                              uint32_t rx_length_frames, uint8_t deassert,
-                                             uint8_t hw_ts_index, uint8_t hw_ts_active_pol)
+                                             uint8_t hw_ts_index)
 {
     int8_t spi_num;
 
@@ -1459,7 +1450,7 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     // Handle Target Select Pin (Only applicable in HW_AUTO TS control scheme).
-    MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index, hw_ts_active_pol);
+    MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index);
 
     return E_SUCCESS;
 }
@@ -1467,8 +1458,7 @@ int MXC_SPI_RevA2_ControllerTransactionAsync(mxc_spi_reva_regs_t *spi, uint8_t *
 int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx_buffer,
                                            uint32_t tx_length_frames, uint8_t *rx_buffer,
                                            uint32_t rx_length_frames, uint8_t deassert,
-                                           uint8_t hw_ts_index, uint8_t hw_ts_active_pol,
-                                           mxc_dma_reva_regs_t *dma)
+                                           uint8_t hw_ts_index, mxc_dma_reva_regs_t *dma)
 {
     int8_t spi_num;
     int error;
@@ -1499,7 +1489,7 @@ int MXC_SPI_RevA2_ControllerTransactionDMA(mxc_spi_reva_regs_t *spi, uint8_t *tx
     spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_START;
 
     // Handle Target Select Pin (Only applicable in HW_AUTO TS control scheme).
-    MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index, hw_ts_active_pol);
+    MXC_SPI_RevA2_handleTSControl(spi, deassert, hw_ts_index);
 
     return E_SUCCESS;
 }

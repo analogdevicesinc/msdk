@@ -107,6 +107,7 @@ void DMA_RX_IRQHandler(void)
 int main(void)
 {
     int error;
+    uint8_t ts_active_pol_mask = 0;
 
     // Controller (L. Master)
     mxc_spi_pins_t controller_pins;
@@ -159,6 +160,15 @@ int main(void)
     controller_pins.ss1 = false;
     controller_pins.ss2 = false;
     controller_pins.vddioh = false;
+    controller_pins.drvstr = MXC_GPIO_DRVSTR_0;
+
+    // This demonstrates how to set the Active Polarity for each TSn pin.
+    // This setting is passed into MXC_SPI_Init(...) and should match between
+    // the Controller and Target.
+    //  ts_active_pol_mask[0] = 1 -> Active HIGH (1)
+    //  ts_active_pol_mask[1] = 0 -> Active LOW (0)
+    //  ts_active_pol_mask[2] = 0 -> Active LOW (0)
+    ts_active_pol_mask = 0b0001;
 
 #else // TSCONTROL_SW_DRV or TSCONTROL_SW_APP
     // Example to set up a custom TS pin with Active HIGH polarity.
@@ -174,6 +184,10 @@ int main(void)
     controller_pins.ss1 = false;
     controller_pins.ss2 = false;
     controller_pins.vddioh = false;
+    controller_pins.drvstr = MXC_GPIO_DRVSTR_0;
+
+    // No HW TS pins are used in this scheme.
+    ts_active_pol_mask = 0;
 
     // Configure the custom TS pin.
     MXC_GPIO_Config(&ts_pins);
@@ -181,7 +195,7 @@ int main(void)
     MXC_GPIO_OutClr(ts_pins.port, ts_pins.mask);
 #endif
 
-    error = MXC_SPI_Init(SPI_CONTROLLER, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, 0,
+    error = MXC_SPI_Init(SPI_CONTROLLER, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, ts_active_pol_mask,
                          SPI_SPEED, controller_pins);
     if (error != E_NO_ERROR) {
         printf("\nSPI CONTROLLER INITIALIZATION ERROR\n");
@@ -201,7 +215,6 @@ int main(void)
     controller_req.rxData = (uint8_t *)controller_rx;
     controller_req.rxLen = DATA_LEN;
     controller_req.ssDeassert = 1;
-    controller_req.ssActivePol = 1; // Active HIGH (1).
     controller_req.completeCB = NULL;
 
     /***** Configure Target (L. Slave) *****/
@@ -210,6 +223,15 @@ int main(void)
     target_pins.ss1 = false;
     target_pins.ss2 = false;
     target_pins.vddioh = false;
+    target_pins.drvstr = MXC_GPIO_DRVSTR_0;
+
+    // This demonstrates how to set the Active Polarity for each TSn pin.
+    // This setting is passed into MXC_SPI_Init(...) and should match between
+    // the Controller and Target.
+    //  ts_active_pol_mask[0] = 1 -> Active HIGH (1)
+    //  ts_active_pol_mask[1] = 0 -> Active LOW (0)
+    //  ts_active_pol_mask[2] = 0 -> Active LOW (0)
+    ts_active_pol_mask = 0b0001;
 
     target_cfg.spi = SPI_TARGET;
     target_cfg.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
@@ -224,7 +246,7 @@ int main(void)
     target_cfg.use_dma_rx = false;
 #endif
 
-    error = MXC_SPI_Init(SPI_TARGET, MXC_SPI_TYPE_TARGET, MXC_SPI_INTERFACE_STANDARD, 0, 0,
+    error = MXC_SPI_Init(SPI_TARGET, MXC_SPI_TYPE_TARGET, MXC_SPI_INTERFACE_STANDARD, 0, ts_active_pol_mask,
                          SPI_SPEED, target_pins);
     if (error != E_NO_ERROR) {
         printf("\nSPI TARGET INITIALIZATION ERROR\n");
@@ -244,7 +266,6 @@ int main(void)
     target_req.rxData = (uint8_t *)target_rx;
     target_req.rxLen = DATA_LEN;
     target_req.ssDeassert = 1;
-    target_req.ssActivePol = 1; // Active HIGH (1).
     target_req.completeCB = NULL;
 
 #if TARGET_DMA

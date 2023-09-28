@@ -145,8 +145,9 @@ int main(void)
         spi_pins.ss1 = false; // TS1
         spi_pins.ss2 = false; // TS2
         spi_pins.vddioh = true;
+        spi_pins.drvstr = MXC_GPIO_DRVSTR_0;
 
-        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, 0,
+        retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0, 0b000,
                               SPI_SPEED, spi_pins);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
@@ -185,7 +186,6 @@ int main(void)
         req.rxData = (uint8_t *)rx_data;
         req.rxLen = DATA_LEN;
         req.ssDeassert = 1;
-        req.ssActivePol = 1; // Active HIGH (1)
         req.completeCB = SPI_Callback;
         SPI_FLAG = 1;
 
