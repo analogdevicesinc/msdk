@@ -80,8 +80,7 @@ typedef enum {
  */
 typedef enum {
     MXC_SPI_TSCONTROL_HW_AUTO = 0, // Automatically by hardware
-    MXC_SPI_TSCONTROL_SW_DRV = 1,  // Through software by the driver
-    MXC_SPI_TSCONTROL_SW_APP = 2   // Through software in the application
+    MXC_SPI_TSCONTROL_SW_APP = 1   // Through software in the application
 } mxc_spi_tscontrol_t;
 
 /**
@@ -120,18 +119,6 @@ typedef enum {
     MXC_SPI_CLKMODE_3 = 3  // CPOL: 1    CPHA: 1
 } mxc_spi_clkmode_t;
 
-/**
- * @brief The settings for selecting TARGETS when in the SPI
- *          peripheral is set in CONTROLLER mode.
- */
-typedef struct {
-    union {
-        uint32_t index;          // Select target index for transactions.
-        mxc_gpio_cfg_t pins;     // User-configured Target Select SPI pins.
-    };
-    uint8_t active_pol; // Active High (1) or Low (0).
-} mxc_spi_ts_t;
-
 ///>>> @deprecated
 /**
  * @brief   The list of SPI Widths supported
@@ -164,7 +151,7 @@ typedef enum {
 } mxc_spi_mode_t;
 ///<<< Deprecated
 
-typedef struct _mxc_spi_reva2_req_t mxc_spi_req_t;
+typedef struct _mxc_spi_req_t mxc_spi_req_t;
 
 /**
  * @brief   The callback routine used to indicate the transaction has terminated.
@@ -173,22 +160,13 @@ typedef struct _mxc_spi_reva2_req_t mxc_spi_req_t;
  * @param   result      See \ref MXC_Error_Codes for the list of error codes.
  */
 typedef void (*mxc_spi_callback_t)(void *, int result);
-typedef void (*spi_complete_cb_t)(void *req, int result);
+typedef mxc_spi_callback_t spi_complete_cb_t; // Support SPI v1 name.
 
 typedef struct _mxc_spi_pins_t mxc_spi_pins_t;
 struct _mxc_spi_pins_t {
-    union {
-        bool ts0;               ///< Target select pin 0.
-        bool ss0;               ///< Deprecated name.
-    };
-    union {
-        bool ts1;               ///< Target select pin 1.
-        bool ss1;               ///< Deprecated name.
-    };
-    union {
-        bool ts2;               ///< Target select pin 2.
-        bool ss2;               ///< Deprecated name.
-    };
+    bool ss0;                   ///< Target select pin 0.
+    bool ss1;                   ///< Target select pin 1.
+    bool ss2;                   ///< Target select pin 2.
 
     bool vddioh;                ///< VDDIOH Select
 
@@ -206,7 +184,6 @@ typedef struct {
     mxc_spi_regs_t *spi;                // Selected SPI Instance
     mxc_spi_clkmode_t clk_mode;         // Clock modes
     uint8_t frame_size;                 // Number of bits per character sent
-    mxc_spi_tscontrol_t ts_control;     // Target Control Scheme
 
     // DMA Settings.
     bool use_dma_tx;                    // Enable DMA TX.
@@ -215,61 +192,19 @@ typedef struct {
 } mxc_spi_cfg_t;
 
 // Suppport names for backwards compatibility.
-struct _mxc_spi_reva2_req_t {
+struct _mxc_spi_req_t {
     mxc_spi_regs_t *spi;     // Pointer to SPI registers
-
-    union {
-        uint32_t ts_idx;
-        int ssIdx;           // ssIdx - Deprecated name
-    };
-
-    union {
-        int deassert;
-        int ssDeassert;      // ssDeassert - deprecated name
-    };
-
-    union {
-        uint8_t *tx_buffer;
-        uint8_t *txData;     // txData - deprecated name
-    };
-
-    union {
-        uint8_t *rx_buffer;
-        uint8_t *rxData;     // rxData - deprecated name
-    };
-
-    union {
-        uint32_t tx_length_frames;  // Number of frames to be sent from txData
-        uint32_t txLen;      // txLen - deprecated name
-    };
-
-    union {
-        uint32_t rx_length_frames;  // Number of frames to be stored in rxData
-        uint32_t rxLen;      // rxLen - deprecated name
-    };
-
-    union {
-        uint32_t tx_count_bytes;     // Number of bytes actually transmitted from txData
-        uint32_t txCnt;      // txCnt - deprecated name
-    };
-
-    union {
-        uint32_t rx_count_bytes;     // Number of bytes stored in rxData
-        uint32_t rxCnt;      // rxCnt - deprecated name
-    };
-
-    // Callback
-    union {
-        mxc_spi_callback_t callback;
-        spi_complete_cb_t completeCB; // completeCB - Deprecated
-    };
-
-    void *callback_data;
-
-    uint16_t tx_dummy_value; // Value of dummy bytes to be sent
-
-    // Chip Select Options
-    mxc_spi_ts_t *ts; // Contains index, pins, polarity mode, cfg mask.
+    int ssIdx;
+    int ssDeassert;
+    uint8_t *txData;
+    uint8_t *rxData;
+    uint32_t txLen; // Number of frames to be stored in txData
+    uint32_t rxLen; // Number of frames to be stored in rxData
+    uint32_t txCnt; // Number of bytes transmitted from txData (Unused for SPI v2)
+    uint32_t rxCnt; // Number of bytes stored in rxData (Unused for SPI v2)
+    mxc_spi_callback_t completeCB; // completeCB
+    uint16_t txDummyValue; // Value of dummy bytes to be sent
+    uint8_t ssActivePol;
 };
 // clang-format on
 
@@ -297,11 +232,12 @@ struct _mxc_spi_reva2_req_t {
  *                                  MXC_SPI_INTERFACE_QUAD - 1
  *                                  MXC_SPI_INTERFACE_3WIRE - 2
  *                                  MXC_SPI_INTERFACE_DUAL - 3
- * @param   numTargets          The number of target used, if in controller mode. This
+ * @param   numTargets          This parameter is UNUSED for SPI v2.
+ *                              The number of target used, if in controller mode. This
  *                              is used to obtain control of the necessary TS pins.
- *                              In target mode this is ignored and TS1 is used. This
- *                              parameter is unused for SPI v2.
- * @param   ts_active_pol_mask  This field sets the TS active polarity for each
+ *                              In target mode this is ignored and TS1 is used.
+ * @param   tsPolarity          This parameter is UNUSED for SPI v2.
+ *                              This field sets the TS active polarity for each
  *                              target, each bit position corresponds to each TS line.
  *                                  ts_active_pol_mask[0] - TS0
  *                                  ts_active_pol_mask[1] - TS1
@@ -316,7 +252,7 @@ struct _mxc_spi_reva2_req_t {
  *          \ref MXC_Error_Codes for a list of return codes.
  */
 int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
-                 int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins);
+                 int numTargets, uint8_t tsPolarity, uint32_t freq, mxc_spi_pins_t pins);
 
 /**
  * @brief   Configure the SPI peripheral.
@@ -325,10 +261,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
  *      Clock Mode.
  *      Frame Size (bits).
  *      Interface Mode (Dual, Quad, Standard, 3-Wire).
- *      TS Control Scheme (HW Auto, SW Driver, SW App).
- *      Target Settings (inded, pins, active_pol).
- *      Voltage Select (VDDIO/VDDIOH).
- *      If true, configure and acquire DMA channels.
+ *      If DMA selections are true, configure and acquire DMA channels.
  * 
  * @param   cfg         Pointer to SPI configuration struct.         
  *
@@ -423,27 +356,13 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi);
 
 /**
  * @brief   Configures the Pre-defined SPI Target Select pins for a specific instance.
- *          Must be called after MXC_SPI_Init(...)
  * 
  * @param   spi                 Pointer to SPI instance's registers.
  * @param   ts_control          Target Select Control Scheme (\ref mxc_spi_tscontrol_t).
- * @param   ts_init_mask        Mask to initialize the default HW TS pins (Only valid in
- *                              MXC_SPI_TSCONTROL_HW_AUTO mode). Other TS control schemes
- *                              disregards this parameter.
- *                                  ts_init_mask[0] => TS0
- *                                  ts_init_mask[1] => TS1
- *                                  ts_init_mask[n] => TSn
- * @param   ts_active_pol_mask  Mask to set the active polarity of default HW TS pins
- *                              (Only valid in MXC_SPI_TSCONTROL_HW_AUTO mode). Other
- *                              TS control schemes disregards this parameter.
- *                                  ts_active_pol_mask[0] = 0 (LOW) or 1 (HIGH) => TS0
- *                                  ts_active_pol_mask[1] = 0 (LOW) or 1 (HIGH) => TS1
- *                                  ts_active_pol_mask[n] = 0 (LOW) or 1 (HIGH) => TSn
  *
  * @return  Success/Fail, see \ref MXC_Error_Codes for a list of return codes.
  */
-int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask,
-                         uint8_t ts_active_pol_mask);
+int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control);
 
 /**
  * @brief   Set the frequency of the SPI interface.

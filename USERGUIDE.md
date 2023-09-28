@@ -2516,7 +2516,7 @@ SPI v2:
                     mxc_spi_type_t controller_target, 
                     mxc_spi_interface_t if_mode, 
                     int numTargets, 
-                    uint8_t ts_active_pol_mask, 
+                    uint8_t tsPolarity, 
                     uint32_t freq, 
                     mxc_spi_pins_t pins)
 
@@ -2526,7 +2526,7 @@ Input Parameters:
 - `int masterMode` -> `mxc_spi_type_t controller_target`. The enum `mxc_spi_type_t` was added for increased code readability.
 - `int quadModeUsed` -> `mxc_spi_interface_t if_mode`. Previously, the `MXC_SPI_Init(...)` function could only select between standard (4wire) and quad interface modes. With SPI v2, the user can select either standard (`MXC_SPI_INTERFACE_STANDARD`), quad (`MXC_SPI_INTERFACE_QUAD`), 3wire (`MXC_SPI_INTERFACE_3WIRE`), or dual (`MXC_SPI_INTERFACE_DUAL`) mode.
 - `int numSlaves` -> `int numTargets`. SPI v2 does not use this parameter and was kept to continue supporting SPI v1.
-- `unsigned ssPolarity` -> `uint8_t ts_active_pol_mask`. Updated to more descriptive name.
+- `unsigned ssPolarity` -> `uint8_t tsPolarity`. SPI v2 does not use this parameter and was kept to continue supporting SPI v1.
 - `unsigned int hz` -> `uint32_t freq`.
 - `mxc_spi_pins_t pins` remains unchanged.
 

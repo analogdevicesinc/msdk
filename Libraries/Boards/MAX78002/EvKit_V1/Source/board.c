@@ -83,9 +83,7 @@ mxc_gpio_cfg_t ts_irq_pin = { TS_IRQ_PORT,           TS_IRQ_PIN,
                               MXC_GPIO_FUNC_IN,      MXC_GPIO_PAD_NONE,
                               MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 // TS SS pin
-const mxc_gpio_cfg_t ts_ss_pin = {
-    TS_SS_PORT,       TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH,
-    MXC_GPIO_DRVSTR_0
+const mxc_gpio_cfg_t ts_ss_pin = { TS_SS_PORT, TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0
 };
 
 /***** File Scope Variables *****/
@@ -118,9 +116,19 @@ void mxc_assert(const char *expr, const char *file, int line)
 
 /******************************************************************************/
 /**
- * NOTE: This weak definition is included to support Push Button interrupts in
+ * NOTE: This weak definition is included to support Touchscreen and Push Button interrupts in
  *       case the user does not define this interrupt handler in their application.
  **/
+__weak void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
+__weak void GPIO1_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
+}
+
 __weak void GPIO2_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));

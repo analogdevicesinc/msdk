@@ -117,7 +117,6 @@ int main(void)
     int i, j, retVal;
     uint16_t temp;
     mxc_spi_cfg_t cfg;
-    mxc_spi_ts_t ts0;
 
     printf("\n**************************** SPI CONTROLLER TEST *************************\n");
     printf("This example configures the SPI to send data between the MISO (P0.22) and\n");
@@ -142,19 +141,13 @@ int main(void)
 
         mxc_spi_pins_t spi_pins;
         // This example enables the TS0 HW pin.
-        spi_pins.ts0 = true;
-        spi_pins.ts1 = false;
-        spi_pins.ts2 = false;
+        spi_pins.ss0 = true; // TS0
+        spi_pins.ss1 = false; // TS1
+        spi_pins.ss2 = false; // TS2
         spi_pins.vddioh = true;
 
-        // This demonstrates how to set the Active Polarity for each TSn pin.
-        // ts_active_pol_mask[0] = 0 -> Active LOW (0)
-        // ts_active_pol_mask[1] = 0 -> Active LOW (0)
-        // ts_active_pol_mask[2] = 1 -> Active HIGH (1)
-        int ts_active_pol_mask = 0b0001;
-
         retVal = MXC_SPI_Init(SPI, MXC_SPI_TYPE_CONTROLLER, MXC_SPI_INTERFACE_STANDARD, 0,
-                              ts_active_pol_mask, SPI_SPEED, spi_pins);
+                              0, SPI_SPEED, spi_pins);
         if (retVal != E_NO_ERROR) {
             printf("\nSPI INITIALIZATION ERROR\n");
             return retVal;
@@ -164,14 +157,16 @@ int main(void)
         cfg.spi = SPI;
         cfg.clk_mode = MXC_SPI_CLKMODE_0; // CPOL: 0, CPHA: 0
         cfg.frame_size = i;
-
+        
         // DMA Settings.
 #if CONTROLLER_DMA
         cfg.use_dma_tx = true;
         cfg.use_dma_rx = true;
         cfg.dma = MXC_DMA;
 #else
+        cfg.use_dma_rx = false;
         cfg.use_dma_tx = false;
+        cfg.dma = MXC_DMA;
 #endif
 
         retVal = MXC_SPI_Config(&cfg);
@@ -180,22 +175,18 @@ int main(void)
             return retVal;
         }
 
-        // Set up Target instance for transaction request.
-        ts0.index = 0; // Select TS0 HW pin.
-        ts0.active_pol = 0;
-
         memset(rx_data, 0x0, DATA_LEN * sizeof(uint16_t));
 
         // SPI Request (Callback)
         mxc_spi_req_t req;
         req.spi = SPI;
-        req.tx_buffer = (uint8_t *)tx_data;
-        req.tx_length_frames = DATA_LEN;
-        req.rx_buffer = (uint8_t *)rx_data;
-        req.rx_length_frames = DATA_LEN;
-        req.deassert = 1;
-        req.callback = SPI_Callback;
-        req.ts = &ts0;
+        req.txData = (uint8_t *)tx_data;
+        req.txLen = DATA_LEN;
+        req.rxData = (uint8_t *)rx_data;
+        req.rxLen = DATA_LEN;
+        req.ssDeassert = 1;
+        req.ssActivePol = 1; // Active HIGH (1)
+        req.completeCB = SPI_Callback;
         SPI_FLAG = 1;
 
 #if CONTROLLER_SYNC

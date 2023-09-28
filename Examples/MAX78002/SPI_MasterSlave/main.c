@@ -98,6 +98,10 @@ int main(void)
     printf("by each SPI instance matches the data sent by the other instance, the\n");
     printf("green LED will illuminate, otherwise the red LED will illuminate.\n\n");
 
+    printf("Note: This example was originally built with the SPI v1 library. This example\n");
+    printf("demonstrates porting a SPI v1-based project to SPI v2 is mostly seemless with the\n");
+    printf("exception of adding the 'ssActivePol' parameter in the 'mxc_spi_req_t' struct.\n\n");
+
     printf("Press PB1 to begin transaction.\n\n");
     while (!PB_Get(0)) {}
 
@@ -140,6 +144,7 @@ int main(void)
     master_req.rxLen = DATA_LEN;
     master_req.ssIdx = SPI_MASTER_SSIDX;
     master_req.ssDeassert = 1;
+    master_req.ssActivePol = 1; // Active HIGH (1).
     master_req.txCnt = 0;
     master_req.rxCnt = 0;
     master_req.completeCB = NULL;
@@ -151,6 +156,7 @@ int main(void)
     slave_req.rxLen = DATA_LEN;
     slave_req.ssIdx = SPI_SLAVE_SSIDX;
     slave_req.ssDeassert = 1;
+    slave_req.ssActivePol = 1; // Active HIGH (1);
     slave_req.txCnt = 0;
     slave_req.rxCnt = 0;
     slave_req.completeCB = NULL;

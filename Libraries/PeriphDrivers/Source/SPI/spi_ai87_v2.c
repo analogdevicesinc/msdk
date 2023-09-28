@@ -57,14 +57,13 @@
 #define MXC_SPI_TS2_MASK_POS (2)
 
 int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
-                 int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins)
+                 int numTargets, uint8_t tsPolarity, uint32_t freq, mxc_spi_pins_t pins)
 {
     int error;
     int8_t spi_num;
-    uint8_t ts_init_mask = 0;
+    mxc_spi_tscontrol_t ts_control;
     mxc_gpio_cfg_t temp_cfg; // main SPI pins.
     mxc_gpio_cfg_t temp_ts_cfg; // TS pins.
-    mxc_spi_tscontrol_t ts_control;
     mxc_gpio_vssel_t vssel;
 
     spi_num = MXC_SPI_GET_IDX(spi);
@@ -81,27 +80,22 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
         return E_BAD_PARAM;
     }
 
-    // Only HW_AUTO and SW_APP TS control schemes are supported for
-    //  SPI v1 compatibility.
-    // SPI Target mode only supports HW_AUTO.
-    if (pins.ts0 || pins.ts1 || pins.ts2 || (controller_target == MXC_SPI_TYPE_TARGET)) {
-        ts_control = MXC_SPI_TSCONTROL_HW_AUTO;
-
-        // Create mask based on true/false conditions of mxc_spi_pins_t parameter.
-        // Shortened function length.
-        ts_init_mask = (pins.ts0 ? 1 << MXC_SPI_TS0_MASK_POS : 0) |
-                       (pins.ts1 ? 1 << MXC_SPI_TS1_MASK_POS : 0) |
-                       (pins.ts2 ? 1 << MXC_SPI_TS2_MASK_POS : 0);
-    } else {
-        ts_control = MXC_SPI_TSCONTROL_SW_APP;
-
-        ts_init_mask = 0;
-    }
-
     if (pins.vddioh) {
         vssel = MXC_GPIO_VSSEL_VDDIOH;
     } else {
         vssel = MXC_GPIO_VSSEL_VDDIO;
+    }
+
+    // SPI Target mode only supports HW_AUTO.
+    if (pins.ss0 || pins.ss1 || pins.ss2 || (controller_target == MXC_SPI_TYPE_TARGET)) {
+        ts_control = MXC_SPI_TSCONTROL_HW_AUTO;
+    } else {
+        ts_control = MXC_SPI_TSCONTROL_SW_APP;
+    }
+
+    error = MXC_SPI_RevA2_SetTSControl((mxc_spi_reva_regs_t *)spi, ts_control);
+    if (error != E_NO_ERROR) {
+        return error;
     }
 
     // Configure SPI peripheral and pins.
@@ -134,7 +128,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
         // Voltage and drive strength settings will match the SPI pins.
         if (ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
             // Target Select 0 - TS0 (L. SS0 pin)
-            if (pins.ts0 == true) {
+            if (pins.ss0 == true) {
                 temp_ts_cfg = gpio_cfg_spi1_ts0;
                 temp_ts_cfg.vssel = vssel;
                 temp_ts_cfg.drvstr = pins.drvstr;
@@ -177,7 +171,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
         // Voltage and drive strength settings will match the SPI pins.
         if (ts_control == MXC_SPI_TSCONTROL_HW_AUTO) {
             // Target Select 0 - TS0 (L. SS0 pin)
-            if (pins.ts0 == true) {
+            if (pins.ss0 == true) {
                 temp_ts_cfg = gpio_cfg_spi0_ts0;
                 temp_ts_cfg.vssel = vssel;
                 temp_ts_cfg.drvstr = pins.drvstr;
@@ -189,7 +183,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
             }
 
             // Target Select 1 - TS1 (L. SS1 pin)
-            if (pins.ts1 == true) {
+            if (pins.ss1 == true) {
                 temp_ts_cfg = gpio_cfg_spi0_ts1;
                 temp_ts_cfg.vssel = vssel;
                 temp_ts_cfg.drvstr = pins.drvstr;
@@ -201,7 +195,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
             }
 
             // Target Select 2 - TS2 (L. SS2 pin)
-            if (pins.ts2 == true) {
+            if (pins.ss2 == true) {
                 temp_ts_cfg = gpio_cfg_spi0_ts2;
                 temp_ts_cfg.vssel = vssel;
                 temp_ts_cfg.drvstr = pins.drvstr;
@@ -227,12 +221,7 @@ int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_
         return error;
     }
 
-    error = MXC_SPI_RevA2_Init((mxc_spi_reva_regs_t *)spi, controller_target, if_mode, freq);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    return MXC_SPI_SetTSControl(spi, ts_control, ts_init_mask, ts_active_pol_mask);
+    return MXC_SPI_RevA2_Init((mxc_spi_reva_regs_t *)spi, controller_target, if_mode, freq);
 }
 
 int MXC_SPI_Config(mxc_spi_cfg_t *cfg)
@@ -348,11 +337,9 @@ int MXC_SPI_GetPeripheralClock(mxc_spi_regs_t *spi)
     return retval;
 }
 
-int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control, uint8_t ts_init_mask,
-                         uint8_t ts_active_pol_mask)
+int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control)
 {
-    return MXC_SPI_RevA2_SetTSControl((mxc_spi_reva_regs_t *)spi, ts_control, ts_init_mask,
-                                      ts_active_pol_mask);
+    return MXC_SPI_RevA2_SetTSControl((mxc_spi_reva_regs_t *)spi, ts_control);
 }
 
 mxc_spi_tscontrol_t MXC_SPI_GetTSControl(mxc_spi_regs_t *spi)
@@ -400,9 +387,9 @@ mxc_spi_clkmode_t MXC_SPI_GetClkMode(mxc_spi_regs_t *spi)
     return MXC_SPI_RevA2_GetClkMode((mxc_spi_reva_regs_t *)spi);
 }
 
-int MXC_SPI_SetCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data)
+int MXC_SPI_SetCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t completeCB, void *data)
 {
-    return MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)spi, callback, data);
+    return MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)spi, completeCB, data);
 }
 
 int MXC_SPI_GetActive(mxc_spi_regs_t *spi)
@@ -541,190 +528,136 @@ int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_
 
 int MXC_SPI_MasterTransaction(mxc_spi_req_t *req)
 {
-    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
-    mxc_spi_ts_t ts;
-    if (req->ts == 0x0) {
-        ts.index = req->ts_idx;
-        req->ts = &ts;
-    }
-
-    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                               req->tx_length_frames, req->rx_buffer,
-                                               req->rx_length_frames, req->deassert, req->ts);
+    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen, req->ssDeassert, req->ssIdx, req->ssActivePol);
 }
 
 int MXC_SPI_MasterTransactionAsync(mxc_spi_req_t *req)
 {
     int error;
 
-    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
-    mxc_spi_ts_t ts;
-    if (req->ts == 0x0) {
-        ts.index = req->ts_idx;
-        req->ts = &ts;
+    // Users can set their own callback and pass in their own data if they choose to.
+    if (req->completeCB != NULL) {
+        error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->completeCB, req);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
     }
 
-    error = MXC_SPI_SetCallback(req->spi, req->callback, req->callback_data);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi),
-                                                    req->tx_buffer, req->tx_length_frames,
-                                                    req->rx_buffer, req->rx_length_frames,
-                                                    req->deassert, req->ts);
+    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen, req->ssDeassert, req->ssIdx, req->ssActivePol);
 }
 
 int MXC_SPI_MasterTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
-    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
-    mxc_spi_ts_t ts;
-    if (req->ts == 0x0) {
-        ts.index = req->ts_idx;
-        req->ts = &ts;
+    // Users can set their own callback and pass in their own data if they choose to.
+    if (req->completeCB != NULL) {
+        error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->completeCB, req);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
     }
 
-    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                  req->tx_length_frames, req->rx_buffer,
-                                                  req->rx_length_frames, req->deassert, req->ts,
-                                                  (mxc_dma_reva_regs_t *)MXC_DMA);
+    return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen, req->ssDeassert, req->ssIdx, req->ssActivePol, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
 {
-    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
-    mxc_spi_ts_t ts;
-    if (req->ts == 0x0) {
-        ts.index = req->ts_idx;
-        req->ts = &ts;
-    }
-
-    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                               req->tx_length_frames, req->rx_buffer,
-                                               req->rx_length_frames, req->deassert, req->ts);
+    return MXC_SPI_RevA2_ControllerTransaction((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen, req->ssDeassert, req->ssIdx, req->ssActivePol);
 }
 
 int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
 {
     int error;
 
-    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
-    mxc_spi_ts_t ts;
-    if (req->ts == 0x0) {
-        ts.index = req->ts_idx;
-        req->ts = &ts;
+    // Users can set their own callback and pass in their own data if they choose to.
+    if (req->completeCB != NULL) {
+        error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->completeCB, req);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
     }
 
-    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi),
-                                                    req->tx_buffer, req->tx_length_frames,
-                                                    req->rx_buffer, req->rx_length_frames,
-                                                    req->deassert, req->ts);
+    return MXC_SPI_RevA2_ControllerTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen, req->ssDeassert, req->ssIdx, req->ssActivePol);
 }
 
 int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
-    // For backwards compatibility from SPI v1. SPI v2 does not use req->ts_idx.
-    mxc_spi_ts_t ts;
-    if (req->ts == 0x0) {
-        ts.index = req->ts_idx;
-        req->ts = &ts;
+    // Users can set their own callback and pass in their own data if they choose to.
+    if (req->completeCB != NULL) {
+        error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->completeCB, req);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
     }
 
-    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
-    if (error != E_NO_ERROR) {
-        return error;
-    }
-
-    return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                  req->tx_length_frames, req->rx_buffer,
-                                                  req->rx_length_frames, req->deassert, req->ts,
-                                                  (mxc_dma_reva_regs_t *)MXC_DMA);
+    return MXC_SPI_RevA2_ControllerTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen, req->ssDeassert, req->ssIdx, req->ssActivePol, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_SlaveTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                           req->tx_length_frames, req->rx_buffer,
-                                           req->rx_length_frames);
+    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen);
 }
 
 int MXC_SPI_SlaveTransactionAsync(mxc_spi_req_t *req)
 {
     int error;
 
-    error = MXC_SPI_SetCallback(req->spi, req->callback, req->callback_data);
-    if (error != E_NO_ERROR) {
-        return error;
+    // Users can set their own callback and pass in their own data if they choose to.
+    if (req->completeCB != NULL) {
+        error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->completeCB, req);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
     }
 
-    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                req->tx_length_frames, req->rx_buffer,
-                                                req->rx_length_frames);
+    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen);
 }
 
 int MXC_SPI_SlaveTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
-    error = MXC_SPI_SetCallback(req->spi, req->callback, req);
-    if (error != E_NO_ERROR) {
-        return error;
+    // Users can set their own callback and pass in their own data if they choose to.
+    if (req->completeCB != NULL) {
+        error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->completeCB, req);
+        if (error != E_NO_ERROR) {
+            return error;
+        }
     }
 
-    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                              req->tx_length_frames, req->rx_buffer,
-                                              req->rx_length_frames,
-                                              (mxc_dma_reva_regs_t *)MXC_DMA);
+    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 int MXC_SPI_TargetTransaction(mxc_spi_req_t *req)
 {
-    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                           req->tx_length_frames, req->rx_buffer,
-                                           req->rx_length_frames);
+    return MXC_SPI_RevA2_TargetTransaction((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen);
 }
 
 int MXC_SPI_TargetTransactionAsync(mxc_spi_req_t *req)
 {
     int error;
 
-    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
+    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->completeCB, req);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                                req->tx_length_frames, req->rx_buffer,
-                                                req->rx_length_frames);
+    return MXC_SPI_RevA2_TargetTransactionAsync((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen);
 }
 
 int MXC_SPI_TargetTransactionDMA(mxc_spi_req_t *req)
 {
     int error;
 
-    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->callback, req);
+    error = MXC_SPI_RevA2_SetCallback((mxc_spi_reva_regs_t *)(req->spi), req->completeCB, req);
     if (error != E_NO_ERROR) {
         return error;
     }
 
-    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->tx_buffer,
-                                              req->tx_length_frames, req->rx_buffer,
-                                              req->rx_length_frames,
-                                              (mxc_dma_reva_regs_t *)MXC_DMA);
+    return MXC_SPI_RevA2_TargetTransactionDMA((mxc_spi_reva_regs_t *)(req->spi), req->txData, req->txLen, req->rxData, req->rxLen, (mxc_dma_reva_regs_t *)MXC_DMA);
 }
 
 /* ** Handler Functions ** */
