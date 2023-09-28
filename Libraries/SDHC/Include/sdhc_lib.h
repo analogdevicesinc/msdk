@@ -52,8 +52,6 @@
 #include "sdhc.h"
 #include "sdhc_resp_regs.h"
 
-#define SDHC_CLK_FREQ 10000000
-
 /**
  * @brief SDHC target clock frequency.
  * @details Max freq. is limited by GCR register to be @ref SystemCoreClock / 2 or @ref SystemCoreClock / 4.
