@@ -46,11 +46,18 @@
 
 #define ORGN
 
+#define MSB(val) (((val) >> 8) & 0xFF)
+#define LSB(val) ((val) & 0xFF)
+
 static const uint8_t default_regs[][2] = {
 		{BANKSEL_RESET,			0x80},		// Reset Chip
 		{BANKSEL_RESET,			0x00},		// Release from reset and select Page-0
+        {HORIZONTAL_BLANKING,   0x6a},      /*
+                                                If you see a bar on the left side of
+                                                the image you need to tweak (probably
+                                                increase) the horizontal blanking.
+                                            */
 
-		{AEC_MODE3,				0x10},   	// Turn-off AEC
 		{AAAA_ENABLE,			0x55},   	// Turn-off AWB
 
 		{EXPOSURE_MSB,			0x01},		// Set exposure time
@@ -60,8 +67,7 @@ static const uint8_t default_regs[][2] = {
 		{AWB_G_GAIN,			0x40},		// White balancing green channel gain
 		{AWB_G_GAIN,			0x4a},		// White balancing blue channel gain
 		///{0x22,0x57},   // Open AWB
-		{HORIZONTAL_BLANKING,	0x00}, //0x6a},		// Horizontal blanking in pixel clock units
-		{VERTICAL_BLANKING,		0x0b}, //0x70	// Vertical blankin
+		
 		{0x0f,0x00},
 		{0xe2,0x00},   //anti-flicker step [11:8]
 		{0xe3,0x96},   //anti-flicker step [7:0]
@@ -84,13 +90,7 @@ static const uint8_t default_regs[][2] = {
 		{WINDOW_WIDTH_MSB,			0x02},
 		{WINDOW_WIDTH_LSB,			0x88},
 
-		{CROP_WIN_MODE,				0x80},		// Disable Crop Mode
-		{CROP_WIN_Y1,				0x40},
-		{CROP_WIN_X1,				0x40},
-		{CROP_WIN_HEIGHT_MSB,		0x00},		// 0x120 = 288		0x090 = 144
-		{CROP_WIN_HEIGHT_LSB,		0x90},
-		{CROP_WIN_WIDTH_MSB,		0x00},		// 0x160 = 352		0x0b0 = 176
-		{CROP_WIN_WIDTH_LSB,		0xb0},
+		{CROP_WIN_MODE,				0x00},		// Disable Crop Mode
 
 
 		{0x0d,0x02},
@@ -372,9 +372,8 @@ static const uint8_t default_regs[][2] = {
 		{0x14,0x10},
 
 		{BANKSEL_RESET,			0x01},	// Switch to Page-1
-	    //{SUBSAMPLE,				0x22},  // Sub-sample Horizontal:1/2  Vertical:1/2
-		{SUBSAMPLE,				0x22},  // Sub-sample Horizontal:1/2  Vertical:1/2
-		{SUB_MODE,				0x00},
+		{SUBSAMPLE,				0x11},
+		{SUB_MODE,				0x01},
 		{BANKSEL_RESET,			0x00},
 
 //#endif
@@ -433,21 +432,14 @@ static int get_product_id(int* id)
     int ret = 0;
     uint8_t rev;
 
-    ret |= cambus_read(REVISION, &rev);
+    ret |= cambus_read(CHIP_ID, &rev);
     *id = (int)rev;
     return ret;
 }
 
 static int get_manufacture_id(int* id)
 {
-    int ret = 0;
-    uint8_t cam_id;
-
-    ret = 0;
-    ret |= cambus_read(MODEL, &cam_id);
-
-    *id = (int) cam_id;
-    return ret;
+    return get_product_id(id);
 }
 
 static int dump_registers(void)
@@ -514,34 +506,15 @@ static int reset(void)
         //    printf("fail");
     }
 #endif
-
-    printf("fail");
     return ret;
 }
 
 static int sleep(int enable)
 {
-    int ret = 0;
-    uint8_t reg;
-
-  ///  ret = cambus_read(MODE_SELECT, &reg);
-
-    if (ret == 0) {
-        if (enable) {
-          //  reg = STANDBY_MODE;
-        }
-        else {
-          //  reg = SW_STEAMING_MODE;
-        }
-
-        // Write back register
-  ///      ret |= cambus_write(MODE_SELECT, reg);
-    }
-
-    return ret;
+    return E_NOT_SUPPORTED;
 }
 
-static int read_reg(uint16_t reg_addr, uint8_t* reg_data)
+static int read_reg(uint8_t reg_addr, uint8_t* reg_data)
 {
     *reg_data = 0xff;
 
@@ -552,7 +525,7 @@ static int read_reg(uint16_t reg_addr, uint8_t* reg_data)
     return 0;
 }
 
-static int write_reg(uint16_t reg_addr, uint8_t reg_data)
+static int write_reg(uint8_t reg_addr, uint8_t reg_data)
 {
     return cambus_write(reg_addr, reg_data);
 }
@@ -569,7 +542,6 @@ static int set_pixformat(pixformat_t pixformat)
     buffer &= ~(0b11111);
 
     switch (pixformat) {
-    case PIXFORMAT_RGB888:
     case PIXFORMAT_RGB565:
         ret |= cambus_write(OUTPUT_FORMAT, buffer | 0x06);
         break;
@@ -578,7 +550,7 @@ static int set_pixformat(pixformat_t pixformat)
         break;
 
     default:
-        ret = -1;
+        ret = E_NOT_SUPPORTED;
         break;
     }
 
@@ -595,18 +567,94 @@ static int get_pixformat(pixformat_t* pixformat)
 static int set_framesize(int width, int height)
 {
     int ret = 0;
-#if 0
-    // Image typically outputs one line short, add a line to account.
-    //height = height + 1;
-    // Apply passed in resolution as output resolution.
+    uint16_t w_offset = 0; 
+    uint16_t h_offset = 0; 
 
-    ret |= cambus_write(WINDOW_WIDTH_MSB, (width >> 8) & 0xff);
-    ret |= cambus_write(WINDOW_WIDTH_LSB, (width >> 0) & 0xff);
-    ret |= cambus_write(WINDOW_HEIGHT_MSB, (height >> 8) & 0xff);
-    ret |= cambus_write(WINDOW_HEIGHT_LSB, (height >> 0) & 0xff);
+#if GC03080_SENSOR_CROP
+    // Simplest approach is to center crop, but FOV is lost.
+    w_offset = (GC0308_SENSOR_WIDTH - width) / 2;
+    h_offset = (GC0308_SENSOR_HEIGHT - height) / 2;
 
+    ret |= cambus_write(0xFE, 0x00);  // Select page 0
+    ret |= cambus_write(ROW_START_H, MSB(h_offset));
+    ret |= cambus_write(ROW_START_L, LSB(h_offset));
+    ret |= cambus_write(COLUMN_START_H, MSB(w_offset));
+    ret |= cambus_write(COLUMN_START_L, LSB(w_offset));
+    ret |= cambus_write(WINDOW_HEIGHT_H, MSB(height + 8));
+    ret |= cambus_write(WINDOW_HEIGHT_L, LSB(height + 8));
+    ret |= cambus_write(WINDOW_WIDTH_H, MSB(width + 8));
+    ret |= cambus_write(WINDOW_WIDTH_L, LSB(width + 8));
+#else
+    /* 
+    The GC0308 app note gives us some predefined register settings for common
+    subsample ratios.  We will define a struct and table to hold these settings
+    */
+    struct subsample_cfg {
+        unsigned int num; // numerator
+        unsigned int denom; // denominator
+        uint8_t p1_0x54; // Register settings (page 1 reg 0xNN)...
+        uint8_t p1_0x56;
+        uint8_t p1_0x57;
+        uint8_t p1_0x58;
+        uint8_t p1_0x59;
+    };
+    struct subsample_cfg subsample_table[] = {
+        {1, 4, 0x44, 0x00, 0x00, 0x00, 0x00}, // 1/4
+        {1, 3, 0x33, 0x00, 0x00, 0x00, 0x00}, // 1/3
+        {1, 2, 0x22, 0x00, 0x00, 0x00, 0x00}, // 1/2
+        {4, 7, 0x77, 0x02, 0x46, 0x02, 0x46}, // 4/7
+        {3, 5, 0x55, 0x02, 0x04, 0x02, 0x04}, // 3/5
+        {2, 3, 0x33, 0x02, 0x00, 0x02, 0x00}, // 2/3
+        {1, 1, 0x11, 0x00, 0x00, 0x00, 0x00}, // 1/1        
+    };
+
+    /*
+    Now, given the target resolution (width x height) as an input, we want to find
+    the largest window size that matches one of the ratios in the table.
+    */
+    struct subsample_cfg *ss = NULL;
+    unsigned int window_w = GC0308_SENSOR_WIDTH;
+    unsigned int window_h = GC0308_SENSOR_HEIGHT;
+
+    /*
+    Multiply the sensor size by the ratio, and check if the target window can fit inside it.
+    */
+    for (size_t i = 0; i < sizeof(subsample_table) / sizeof(struct subsample_cfg); i++) {
+        ss = &subsample_table[i];
+        if ((window_w * ss->num / ss->denom >= width) && (window_h * ss->num / ss->denom >= height)) {
+            window_w = width * ss->denom / ss->num;
+            window_h = height * ss->denom / ss->num;
+            /* ^ Note: We've _divided_ by the ratio here.  This is because the
+            ISP subsamples _after_ the main window is acquired.
+            */
+            w_offset = (GC0308_SENSOR_WIDTH - window_w) / 2;
+            h_offset = (GC0308_SENSOR_HEIGHT - window_h) / 2;
+            printf("Subsample window:  %ix%i, ratio: %i/%i\n", window_w, window_h, ss->num, ss->denom);
+            break;
+        }
+    }
+
+    ret |= cambus_write(0xFE, 0); // Select page 0
+    // Set capture window size
+    ret |= cambus_write(ROW_START_H, MSB(h_offset));
+    ret |= cambus_write(ROW_START_L, LSB(h_offset));
+    ret |= cambus_write(COLUMN_START_H, MSB(w_offset));
+    ret |= cambus_write(COLUMN_START_L, LSB(w_offset));
+    ret |= cambus_write(WINDOW_HEIGHT_H, MSB(window_h + 8));
+    ret |= cambus_write(WINDOW_HEIGHT_L, LSB(window_h + 8));
+    ret |= cambus_write(WINDOW_WIDTH_H, MSB(window_w + 8));
+    ret |= cambus_write(WINDOW_WIDTH_L, LSB(window_w + 8));
+
+    ret |= cambus_write(0xFE, 1); // Select page 1
+    // Set sub-sampling
+    ret |= cambus_write(0x54, ss->p1_0x54);
+    ret |= cambus_write(0x56, ss->p1_0x56);
+    ret |= cambus_write(0x57, ss->p1_0x57);
+    ret |= cambus_write(0x58, ss->p1_0x58);
+    ret |= cambus_write(0x59, ss->p1_0x59);
+
+    ret |= cambus_write(0xFE, 0); // Reset back to page 0
 #endif
-
 
     return ret;
 }
@@ -659,20 +707,15 @@ static int set_gainceiling(gainceiling_t gainceiling)
 static int set_colorbar(int enable)
 {
     int ret = 0;
-
-    if (enable) {
-		ret |= cambus_write(TEST_PATTERN_MODE, 0x11);
-    }
-    else {
-        ret |= cambus_write(TEST_PATTERN_MODE, 0x0);
-    }
+    ret = cambus_write(0xFE, 0x00); // Select page 0
+    ret |= cambus_write(0x2E, 0x01);
     return ret;
 }
 
 static int set_hmirror(int enable)
 {
     int ret = 0;
-    uint8_t reg;
+    // uint8_t reg;
 /*
     ret = cambus_read(IMAGE_ORIENTATION, &reg);
 
@@ -698,7 +741,7 @@ static int set_negateimage(int enable)
 static int set_vflip(int enable)
 {
     int ret = 0;
-    uint8_t reg;
+    // uint8_t reg;
 /*
     ret = cambus_read(IMAGE_ORIENTATION, &reg);
 
@@ -749,33 +792,6 @@ int sensor_register(camera_t* camera)
     camera->set_negateimage     = set_negateimage;
     camera->get_luminance       = get_luminance;
     return 0;
-}
-
-
-int context_switch(int enable, int context)
-{
-    int ret = 0;
-    uint8_t reg;
-
-    reg = 0;
-/*
-    if ( enable ) {
-    	reg = reg & 0xf7;		// clear CXT_disable bit
-
-    	if ( context == 1 )
-    		reg = reg | 1;		// If Context B is selected, set bit 0
-
-    	printf("Context Selected %d\n\n", reg);
-    }
-    else {
-    	reg = reg | 0x08;		// set CXT disable bit
-    	printf("Context Disabled %d\n\n", reg);
-
-    }
-*/
-    ret |= cambus_write(PMU_CFG_3, reg);
-    return ret;
-
 }
 
 int set_subsampling(int context, int h_sub, int v_sub, int h_binning, int v_binning)
