@@ -678,30 +678,32 @@ static int set_windowing(int width, int height, int hsize, int vsize)
 
 static int set_contrast(int level)
 {
+    // Note: level=0x40 -> multiplier of 1.0x
     int ret = 0;
+    if (level == 0) return E_BAD_PARAM;
+
+    ret = cambus_write(0xFE, 0x00);  // Set page 0
+    ret |= cambus_write(0xB3, level);
 
     return ret;
 }
 
 static int set_brightness(int level)
 {
-    int ret = 0;
-
-    return ret;
+    return E_NOT_SUPPORTED;
 }
 
 static int set_saturation(int level)
 {
-    int ret = 0;
+    int ret = cambus_write(0xFE, 0x00);  // Set page 0
+    ret |= cambus_write(0xB0, level);
 
     return ret;
 }
 
 static int set_gainceiling(gainceiling_t gainceiling)
 {
-    int ret = 0;
-
-    return ret;
+    return E_NOT_SUPPORTED;
 }
 
 static int set_colorbar(int enable)
@@ -715,19 +717,11 @@ static int set_colorbar(int enable)
 static int set_hmirror(int enable)
 {
     int ret = 0;
-    // uint8_t reg;
-/*
-    ret = cambus_read(IMAGE_ORIENTATION, &reg);
-
-    if (enable) {
-        reg |= H_MIRROR;
-    }
-    else {
-        reg &= ~H_MIRROR;
-    }
-
-    ret |= cambus_write(IMAGE_ORIENTATION, reg);
-*/
+    uint8_t val;
+    ret = cambus_read(0x14, &val);
+    val &= ~(0b1);
+    val |= enable;
+    ret |= cambus_write(0x14, val);
     return ret;
 }
 
@@ -741,23 +735,15 @@ static int set_negateimage(int enable)
 static int set_vflip(int enable)
 {
     int ret = 0;
-    // uint8_t reg;
-/*
-    ret = cambus_read(IMAGE_ORIENTATION, &reg);
-
-    if (enable) {
-        reg |= V_FLIP;
-    }
-    else {
-        reg &= ~V_FLIP;
-    }
-
-    ret |= cambus_write(IMAGE_ORIENTATION, reg);
-*/
+    uint8_t val;
+    ret = cambus_read(0x14, &val);
+    val &= ~(0b1 << 1);
+    val |= (enable << 1);
+    ret |= cambus_write(0x14, val);
     return ret;
 }
 
-static  int get_luminance(int* lum)
+static int get_luminance(int* lum)
 {
     int ret = 0;
 
