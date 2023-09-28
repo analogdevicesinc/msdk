@@ -2490,7 +2490,7 @@ The SPI v2 Library is the latest version of the MSDK SPI drivers which highlight
 
 The latest SPI examples in the MSDK defaults to build the SPI v1 libraries. Set the `MXC_SPI_VERSION` [build configuration variable](#build-configuration-variables) to `v2` (case sensitive) use the SPI v2 API.
 
-This guide shows how to update an existing project that is using the SPI v1 API to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main difference in the SPI DMA interrupt handling (see [SPI DMA Interrupt Handling](#spi-dma-interrupt-handling) section below for more info).
+This guide shows how to update an existing project that is using the SPI v1 API to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main differences being 1) the requirement of added parameter in the `mxc_spi_req_t` struct and 2) the SPI DMA interrupt handling (see [SPI DMA Interrupt Handling](#spi-dma-interrupt-handling) section below for more info).
 
 Note: The SPI v2 API is only a drop in replacement to SPI v1 if SPI DMA is **not** used; should the user choose to continue building with the SPI v1 convention but with the underlying SPI v2 implementation. This porting guide demonstrates how to use the full extent of the SPI v2 features.
 
@@ -2544,6 +2544,25 @@ This function also sets up the DMA and acquires DMA TX/RX channels for SPI DMA t
 - `bool use_dma_tx` - Enable SPI DMA TX (acquire and configure TX channel).
 - `bool use_dma_rx` - Enable SPI DMA RX (acquire and configure RX channel).
 - `mxc_dma_regs_t *dma` - Select DMA Instance to configure for SPI DMA (Valid only if `use_dma_tx` or `use_dma_rx` is set to true).
+
+##### SPI Request Struct
+
+There is an extra parameter in the request struct that must be added to use the SPI v2 libraries if porting from a SPI v1-based project.
+
+`mxc_spi_req_t` struct:
+
+- `mxc_spi_regs_t *spi` - Remains unchanged.
+- `int ssIdx` - Remains unchanged.
+- `int ssDeassert` - Remains unchanged.
+- `uint8_t *txData` - Remains unchanged.
+- `uint8_t *rxData` - Remains unchanged.
+- `uint32_t txLen` - Remains unchanged.
+- `uint32_t rxLen` - Remains unchanged.
+- `uint32_t txCnt` - Not used in SPI v2.
+- `uint32_t rxCnt` - Not used in SPI v2.
+- `mxc_spi_callback_t completeCB` - Type was renamed, but funtionally, remains unchanged.
+- `uint16_t txDummyValue` - Added parameter to set the transmit buffer with a dummy value when only receiving.
+- `uint8_t ssActivePol` - Added parameter that sets the Active state polarity (0 - LOW, or 1 - HIGH) for selected TS (ssIdx).
 
 ##### SPI Transaction Functions
 
