@@ -6,7 +6,7 @@ Multiple word sizes (2 through 16 bits) are demonstrated.
 
 By default, the example performs blocking SPI transactions.  To switch to non-blocking (asynchronous) transactions, reset the `CONTROLLER_SYNC` macro to 0 and set the `CONTROLLER_ASYNC` macro to 1.  To use DMA transactions, set the `CONTROLLER_DMA` macro to 1 instead.
 
-This example uses the Target Select Hardware Scheme (driver or application does not assert the TS pins).
+This example uses the Hardware Target Select control scheme (application does not assert the TS pins).
 
 ## Software
 

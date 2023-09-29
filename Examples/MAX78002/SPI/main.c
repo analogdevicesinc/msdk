@@ -1,10 +1,3 @@
-/**
- * @file    main.c
- * @brief   SPI Controller Demo
- * @details Shows Controller loopback demo for QSPI0
- *          Read the printf() for instructions
- */
-
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
  *
@@ -37,6 +30,12 @@
  * ownership rights.
  *
  ******************************************************************************/
+
+/**
+ * @file    main.c
+ * @brief   SPI Controller Demo
+ * @details This example demonstrates the SPI controller loopback transactions.
+ */
 
 /***** Includes *****/
 #include <stdio.h>
