@@ -46,14 +46,14 @@
 extern "C" {
 #endif
 
-#define BOARD_CAM01_REVA
+#define BOARD_CAM02_REVA
 
 #ifndef CONSOLE_UART
 #define CONSOLE_UART    0      /// UART instance to use for console
 #endif
 
 #ifndef CONSOLE_BAUD
-#define CONSOLE_BAUD    230400   /// Console baud rate
+#define CONSOLE_BAUD    115200   /// Console baud rate
 #endif
 
 #define SCCB_SCL_PORT   MXC_GPIO0        /// SCCB clock port
