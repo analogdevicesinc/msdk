@@ -69,12 +69,12 @@
 		</cconfiguration>
 	</storageModule>
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-		<project id="cam01_facedetect_demo.null.923778415" name="cam01_facedetect_demo"/>
+		<project id="cam02_facedetect_demo.null.923778415" name="cam02_facedetect_demo"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Default">
-			<resource resourceType="PROJECT" workspacePath="/cam01_facedetect_demo"/>
+			<resource resourceType="PROJECT" workspacePath="/cam02_facedetect_demo"/>
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>

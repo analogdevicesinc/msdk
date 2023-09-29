@@ -1,6 +1,6 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${config:MSYS_path}/usr/bin;${env:PATH}",
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -33,8 +33,7 @@
     "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}",
     "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-elf-gcc/${config:v_xPack_GCC}",
-    "Make_path":"${config:MAXIM_PATH}/Tools/GNUTools/Make",
-    "MSYS_path":"${config:MAXIM_PATH}/Tools/MSYS2",
+    "Make_path":"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin",
 
     "C_Cpp.default.includePath": [
         "${workspaceFolder}",

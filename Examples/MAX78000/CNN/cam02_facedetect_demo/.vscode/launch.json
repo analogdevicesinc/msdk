@@ -91,15 +91,15 @@
             "externalConsole": false,
             "MIMode": "gdb",
             "linux": {
-                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-elf-gdb",
+                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-embed-gdb",
                 "debugServerPath": "${config:OCD_path}/openocd",
             },
             "windows": {
-                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-elf-gdb.exe",
+                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-embed-gdb.exe",
                 "debugServerPath": "${config:OCD_path}/openocd.exe",
             },
             "osx": {
-                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-elf-gdb",
+                "miDebuggerPath": "${config:xPack_GCC_path}/bin/riscv-none-embed-gdb",
                 "debugServerPath": "${config:OCD_path}/bin/openocd",
             },
             "logging": {
