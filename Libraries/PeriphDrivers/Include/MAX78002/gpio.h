@@ -221,29 +221,29 @@ int MXC_GPIO_Config(const mxc_gpio_cfg_t *cfg);
 
 /**
  * @brief      Gets the pin(s) input state.
- * @param      cfg   Pointer to configuration structure describing the pin.
- * @param      mask  Mask of the pin to read
+ * @param      port  Pointer to the selected GPIO port instance.
+ * @param      mask  Mask of the pin to read.
  * @return     The requested pin state.
  */
 uint32_t MXC_GPIO_InGet(mxc_gpio_regs_t *port, uint32_t mask);
 
 /**
  * @brief      Sets the pin(s) to a high level output.
- * @param      cfg   Pointer to configuration structure describing the pin.
- * @param      mask  Mask of the pin to set
+ * @param      port  Pointer to the selected GPIO port instance.
+ * @param      mask  Mask of the pin to set.
  */
 void MXC_GPIO_OutSet(mxc_gpio_regs_t *port, uint32_t mask);
 
 /**
  * @brief      Clears the pin(s) to a low level output.
- * @param      cfg   Pointer to configuration structure describing the pin.
- * @param      mask  Mask of the pin to clear
+ * @param      port  Pointer to the selected GPIO port instance.
+ * @param      mask  Mask of the pin to clear.
  */
 void MXC_GPIO_OutClr(mxc_gpio_regs_t *port, uint32_t mask);
 
 /**
  * @brief      Gets the pin(s) output state.
- * @param      cfg   Pointer to configuration structure describing the pin.
+ * @param      port  Pointer to the selected GPIO port instance.
  * @param      mask  Mask of the pin to read the output state of
  * @return     The state of the requested pin.
  *
@@ -252,8 +252,8 @@ uint32_t MXC_GPIO_OutGet(mxc_gpio_regs_t *port, uint32_t mask);
 
 /**
  * @brief      Write the pin(s) to a desired output level.
- * @param      cfg   Pointer to configuration structure describing the pin.
- * @param      mask  Mask of the pin to set output level of
+ * @param      port  Pointer to the selected GPIO port instance.
+ * @param      mask  Mask of the pin to set output level.
  * @param      val   Desired output level of the pin(s). This will be masked
  *                   with the configuration mask.
  */
@@ -261,7 +261,7 @@ void MXC_GPIO_OutPut(mxc_gpio_regs_t *port, uint32_t mask, uint32_t val);
 
 /**
  * @brief      Toggles the the pin(s) output level.
- * @param      cfg   Pointer to configuration structure describing the pin.
+ * @param      port  Pointer to the selected GPIO port instance.
  * @param      mask  Mask of the pin to toggle the output
  */
 void MXC_GPIO_OutToggle(mxc_gpio_regs_t *port, uint32_t mask);
@@ -276,23 +276,23 @@ int MXC_GPIO_IntConfig(const mxc_gpio_cfg_t *cfg, mxc_gpio_int_pol_t pol);
 
 /**
  * @brief      Enables the specified GPIO interrupt
- * @param      cfg   Pointer to configuration structure describing the pin.
- * @param      mask  mask of the pin to enable interrupt
+ * @param      port  Pointer to the selected GPIO port instance.
+ * @param      mask  Mask of the pin to enable interrupt.
  * 
  */
 void MXC_GPIO_EnableInt(mxc_gpio_regs_t *port, uint32_t mask);
 
 /**
  * @brief      Disables the specified GPIO interrupt.
- * @param      cfg   Pointer to configuration structure describing the pin.
- * @param      mask  mask of the pin to disable interrupt
+ * @param      port  Pointer to the selected GPIO port instance.
+ * @param      mask  Mask of the pin to disable interrupt.
  */
 void MXC_GPIO_DisableInt(mxc_gpio_regs_t *port, uint32_t mask);
 
 /**
  * @brief      Gets the interrupt(s) status on a GPIO port
  *
- * @param      port   Pointer to the port requested
+ * @param      port  Pointer to the selected GPIO port instance.
  *
  * @return     The requested interrupt status.
  */
@@ -301,7 +301,7 @@ uint32_t MXC_GPIO_GetFlags(mxc_gpio_regs_t *port);
 /**
  * @brief      Gets the interrupt(s) status on a GPIO port
  *
- * @param      port   Pointer to the port requested
+ * @param      port   Pointer to the selected GPIO port instance.
  * @param      flags  The flags to clear
  */
 void MXC_GPIO_ClearFlags(mxc_gpio_regs_t *port, uint32_t flags);
@@ -328,7 +328,7 @@ void MXC_GPIO_Handler(unsigned int port);
 /**
  * @brief      Set Voltage select for pins to VDDIO or VDDIOH
  *
- * @param      port   The GPIO port
+ * @param      port   Pointer to the selected GPIO port instance.
  * @param[in]  vssel  VDDIO or VDDIOH to set the voltatge to
  * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
  */
@@ -337,7 +337,7 @@ int MXC_GPIO_SetVSSEL(mxc_gpio_regs_t *port, mxc_gpio_vssel_t vssel, uint32_t ma
 /**
  * @brief      Enables GPIO pins to be used as a wakeup source.
  *
- * @param      port   The GPIO port
+ * @param      port   Pointer to the selected GPIO port instance.
  * @param      mask   Pins in the GPIO port that will be enabled as a wakeup source.
  */
 void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask);
@@ -345,7 +345,7 @@ void MXC_GPIO_SetWakeEn(mxc_gpio_regs_t *port, uint32_t mask);
 /**
  * @brief      Disables GPIO pins from being used as a wakeup source.
  *
- * @param      port   The GPIO port
+ * @param      port   Pointer to the selected GPIO port instance.
  * @param      mask   Pins in the GPIO port that will be disabled as a wakeup source.
  */
 void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask);
@@ -353,7 +353,7 @@ void MXC_GPIO_ClearWakeEn(mxc_gpio_regs_t *port, uint32_t mask);
 /**
  * @brief      Returns the pins currently enabled as wakeup sources.
  *
- * @param      port   The GPIO port to check.
+ * @param      port   Pointer to the selected GPIO port instance.
  * 
  * @returns    The value of the wake enable register.
  */
@@ -362,7 +362,7 @@ uint32_t MXC_GPIO_GetWakeEn(mxc_gpio_regs_t *port);
 /**
  * @brief      Set Drive Strength for pins.
  *
- * @param      port   The GPIO port.
+ * @param      port   Pointer to the selected GPIO port instance.
  * @param[in]  ds     Drive strength level. Ref /mxc_gpio_ds_t enum type.
  * @param[in]  mask   Pins in the GPIO port that will be set to the voltage.
  */

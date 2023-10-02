@@ -47,10 +47,17 @@
 /* **** Definitions **** */
 
 /* ************************************************************************** */
-int MXC_SPI_Init(mxc_spi_regs_t *spi, int masterMode, int quadModeUsed, int numSlaves,
-                 unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)
+int MXC_SPI_Init(mxc_spi_regs_t *spi, mxc_spi_type_t controller_target, mxc_spi_interface_t if_mode,
+                 int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins)
 {
     int spi_num;
+
+    // Remap input parameters for v1 implementation.
+    int masterMode = controller_target;
+    int quadModeUsed = if_mode;
+    int numSlaves = numTargets;
+    int ssPolarity = ts_active_pol_mask;
+    int hz = freq;
 
     spi_num = MXC_SPI_GET_IDX(spi);
     MXC_ASSERT(spi_num >= 0);
@@ -512,4 +519,142 @@ void MXC_SPI_AbortAsync(mxc_spi_regs_t *spi)
 void MXC_SPI_AsyncHandler(mxc_spi_regs_t *spi)
 {
     MXC_SPI_RevA1_AsyncHandler((mxc_spi_reva_regs_t *)spi);
+}
+
+/* ** SPI v2 functions to prevent build errors ** */
+
+int MXC_SPI_Config(mxc_spi_cfg_t *cfg)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_ConfigStruct(mxc_spi_cfg_t *cfg, bool use_dma_tx, bool use_dma_rx)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetTSControl(mxc_spi_regs_t *spi, mxc_spi_tscontrol_t ts_control)
+{
+    return E_NOT_SUPPORTED;
+}
+
+mxc_spi_tscontrol_t MXC_SPI_GetTSControl(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetFrameSize(mxc_spi_regs_t *spi, int frame_size)
+{
+    return MXC_SPI_SetDataSize(spi, frame_size);
+}
+
+int MXC_SPI_GetFrameSize(mxc_spi_regs_t *spi)
+{
+    return MXC_SPI_GetDataSize(spi);
+}
+
+int MXC_SPI_SetInterface(mxc_spi_regs_t *spi, mxc_spi_interface_t mode)
+{
+    return E_NOT_SUPPORTED;
+}
+
+mxc_spi_interface_t MXC_SPI_GetInterface(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetClkMode(mxc_spi_regs_t *spi, mxc_spi_clkmode_t clk_mode)
+{
+    return E_NOT_SUPPORTED;
+}
+
+mxc_spi_clkmode_t MXC_SPI_GetClkMode(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetCallback(mxc_spi_regs_t *spi, mxc_spi_callback_t callback, void *data)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_SetDummyTX(mxc_spi_regs_t *spi, uint16_t tx_value)
+{
+    return MXC_SPI_SetDefaultTXData(spi, tx_value);
+}
+
+/* ** DMA-Specific Functions ** */
+
+int MXC_SPI_DMA_Init(mxc_spi_regs_t *spi, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx)
+{
+    return E_NOT_SUPPORTED;
+}
+
+bool MXC_SPI_DMA_GetInitialized(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_DMA_GetTXChannel(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_DMA_GetRXChannel(mxc_spi_regs_t *spi)
+{
+    return E_NOT_SUPPORTED;
+}
+
+int MXC_SPI_DMA_SetRequestSelect(mxc_spi_regs_t *spi, bool use_dma_tx, bool use_dma_rx)
+{
+    return E_NOT_SUPPORTED;
+}
+
+/* ** Transaction Functions ** */
+
+int MXC_SPI_ControllerTransaction(mxc_spi_req_t *req)
+{
+    return MXC_SPI_MasterTransaction(req);
+}
+
+int MXC_SPI_ControllerTransactionAsync(mxc_spi_req_t *req)
+{
+    return MXC_SPI_MasterTransactionAsync(req);
+}
+
+int MXC_SPI_ControllerTransactionDMA(mxc_spi_req_t *req)
+{
+    return MXC_SPI_MasterTransactionDMA(req);
+}
+
+int MXC_SPI_TargetTransaction(mxc_spi_req_t *req)
+{
+    return MXC_SPI_SlaveTransaction(req);
+}
+
+int MXC_SPI_TargetTransactionAsync(mxc_spi_req_t *req)
+{
+    return MXC_SPI_SlaveTransactionAsync(req);
+}
+
+int MXC_SPI_TargetTransactionDMA(mxc_spi_req_t *req)
+{
+    return MXC_SPI_SlaveTransactionDMA(req);
+}
+
+/* ** Handler Functions ** */
+
+void MXC_SPI_Handler(mxc_spi_regs_t *spi)
+{
+    MXC_SPI_AsyncHandler(spi);
+}
+
+void MXC_SPI_DMA_TX_Handler(mxc_spi_regs_t *spi)
+{
+    return;
+}
+
+void MXC_SPI_DMA_RX_Handler(mxc_spi_regs_t *spi)
+{
+    return;
 }

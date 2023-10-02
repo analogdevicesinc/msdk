@@ -530,22 +530,22 @@ unsigned int MXC_SPI_RevA1_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
         len &= ~(unsigned)0x1;
     }
 
-    unsigned cnt = 0;
+    unsigned count = 0;
 
     if (bits <= 8 || len >= 2) {
         // Read from the FIFO
         while (len) {
             if (len > 3) {
-                memcpy((uint8_t *)(&bytes[cnt]), (void *)(&spi->fifo32), 4);
+                memcpy((uint8_t *)(&bytes[count]), (void *)(&spi->fifo32), 4);
                 len -= 4;
-                cnt += 4;
+                count += 4;
             } else if (len > 1) {
-                memcpy((uint8_t *)(&bytes[cnt]), (void *)(&spi->fifo16[0]), 2);
+                memcpy((uint8_t *)(&bytes[count]), (void *)(&spi->fifo16[0]), 2);
                 len -= 2;
-                cnt += 2;
+                count += 2;
 
             } else {
-                ((uint8_t *)bytes)[cnt++] = spi->fifo8[0];
+                ((uint8_t *)bytes)[count++] = spi->fifo8[0];
                 len -= 1;
             }
 
@@ -556,7 +556,7 @@ unsigned int MXC_SPI_RevA1_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
         }
     }
 
-    return cnt;
+    return count;
 }
 
 unsigned int MXC_SPI_RevA1_GetRXFIFOAvailable(mxc_spi_reva_regs_t *spi)
@@ -584,28 +584,28 @@ unsigned int MXC_SPI_RevA1_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *
         len &= ~(unsigned)0x1;
     }
 
-    unsigned cnt = 0;
+    unsigned count = 0;
 
     while (len) {
         if (len > 3) {
-            memcpy((void *)(&spi->fifo32), (uint8_t *)(&bytes[cnt]), 4);
+            memcpy((void *)(&spi->fifo32), (uint8_t *)(&bytes[count]), 4);
 
             len -= 4;
-            cnt += 4;
+            count += 4;
 
         } else if (len > 1) {
-            memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&bytes[cnt]), 2);
+            memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&bytes[count]), 2);
 
             len -= 2;
-            cnt += 2;
+            count += 2;
 
         } else if (bits <= 8) {
-            spi->fifo8[0] = ((uint8_t *)bytes)[cnt++];
+            spi->fifo8[0] = ((uint8_t *)bytes)[count++];
             len--;
         }
     }
 
-    return cnt;
+    return count;
 }
 
 unsigned int MXC_SPI_RevA1_GetTXFIFOAvailable(mxc_spi_reva_regs_t *spi)
@@ -770,7 +770,9 @@ uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva
 
     // Leave slave select asserted at the end of the transaction
     if (states[spi_num].hw_ss_control && !req->ssDeassert) {
-        spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        spi->ctrl0 = (spi->ctrl0 & ~MXC_F_SPI_REVA_CTRL0_START) | MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        // Note: Setting 0 to START bit to avoid race condition and duplicated starts.
+        // See https://github.com/Analog-Devices-MSDK/msdk/issues/713
     }
 
     retval = MXC_SPI_RevA1_TransHandler(spi, req);
@@ -782,7 +784,7 @@ uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva
 
     // Deassert slave select at the end of the transaction
     if (states[spi_num].hw_ss_control && req->ssDeassert) {
-        spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_START | MXC_F_SPI_REVA_CTRL0_SS_CTRL);
     }
 
     return retval;
