@@ -267,7 +267,7 @@ int Ext_Flash_Write_SR(uint8_t value, Ext_Flash_StatusReg_t reg_num);
  * @retval      0           Success
  * @retval      Non-zero    Error condition    
  */
-int Ext_Flash_Flash_Block_WP(uint32_t addr, uint32_t begin);
+int Ext_Flash_Block_WP(uint32_t addr, uint32_t begin);
 
 /**
  * @brief       Returns the start and end address of the available flash memory based on the current write protection scheme
