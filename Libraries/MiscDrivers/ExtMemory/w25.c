@@ -385,7 +385,7 @@ int Ext_Flash_Program_Page(uint32_t address, uint8_t *tx_buf, uint32_t tx_len,
     }
 
     // if flash address is out-of-range
-    if ((address >= W25_DEVICE_SIZE) || ((address + tx_len) >= W25_DEVICE_SIZE)) {
+    if ((address >= W25_DEVICE_SIZE) || ((address + tx_len) > W25_DEVICE_SIZE)) {
         return EF_E_BAD_PARAM; // attempt to write outside flash memory size
     }
 
