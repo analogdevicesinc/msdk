@@ -136,17 +136,25 @@ PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SDHC/sdhc_ai87.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SDHC/sdhc_reva.c
 USE_NATIVE_SDHC = yes
 
-MXC_SPI_LEGACY?=0
+MXC_SPI_VERSION ?= v1
+# Selects the SPI drivers to build with.  Acceptable values are:
+# - v1
+# - v2
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/SPI
-export MXC_SPI_LEGACY
-ifeq ($(MXC_SPI_LEGACY),1)
-# Legacy SPI Implementation
+export MXC_SPI_VERSION
+ifeq ($(MXC_SPI_VERSION),v1)
+# SPI v1 (Legacy) Implementation
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_ai87.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_reva1.c
+PROJ_CFLAGS+=-DMXC_SPI_V1
 else
+ifeq ($(MXC_SPI_VERSION),v2)
 # SPI v2 Implementation
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_ai87_v2.c
 PERIPH_DRIVER_C_FILES += $(SOURCE_DIR)/SPI/spi_reva2.c
+else
+$(error Invalid value for MXC_SPI_VERSION = "$(MXC_SPI_VERSION)"  Acceptable values are "v1" or "v2")
+endif
 endif
 
 PERIPH_DRIVER_INCLUDE_DIR += $(SOURCE_DIR)/TRNG
