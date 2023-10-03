@@ -111,7 +111,7 @@ static const uint8_t default_regs[][2] = {
 		{0x1f,0x16},
 		{0x20,0xff},
 		{0x21,0xf8},
-		{OUTPUT_FORMAT,		0xa6}, // RGB565
+		{OUTPUT_FORMAT,		0x86}, // RGB565 with average chroma disabled
 		{OUTPUT_EN,			0x0f},
 		{SYNC_MODE,			0x36},		// {0x26,0x06},
 		{0x2f,0x01},
