@@ -38,8 +38,8 @@
  *
  ******************************************************************************/
 
-#ifndef EEPROM_24LC256_DRIVER_H_
-#define EEPROM_24LC256_DRIVER_H_
+#ifndef LIBRARIES_MISCDRIVERS_EEPROM_EEPROM_24LC256_DRIVER_H_
+#define LIBRARIES_MISCDRIVERS_EEPROM_EEPROM_24LC256_DRIVER_H_
 
 #include <stdint.h>
 #include <stdio.h>
@@ -79,4 +79,4 @@ typedef struct {
  */
 eeprom_24LC256_driver_t eeprom_24LC256_Open();
 
-#endif /* EEPROM_24LC256_DRIVER_H_ */
+#endif  // LIBRARIES_MISCDRIVERS_EEPROM_EEPROM_24LC256_DRIVER_H_
