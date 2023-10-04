@@ -55,7 +55,7 @@
 /**@def _24LC256_EEPROM_SIZE
  * @brief Total size of  24LC256 EEPROM = 256 Kbit
  **/
-#define _24LC256_EEPROM_SIZE 0x8000			// 32 KByte = 256 Kbit
+#define _24LC256_EEPROM_SIZE 0x8000 // 32 KByte = 256 Kbit
 
 /**@def I2C
  * @brief I2C Max read size for single transaction
@@ -67,9 +67,9 @@
  */
 typedef struct {
     int (*init)(mxc_i2c_regs_t *i2c, uint8_t addr); ///< Pointer to
-    int (*read)(uint16_t addr, uint8_t* data_buffer, uint16_t length);
-    int (*write_chunk)(uint16_t addr, uint8_t* data_buffer, uint16_t length);
-    int (*write)(uint16_t addr, uint8_t* data_buffer, uint32_t length);
+    int (*read)(uint16_t addr, uint8_t *data_buffer, uint16_t length);
+    int (*write_chunk)(uint16_t addr, uint8_t *data_buffer, uint16_t length);
+    int (*write)(uint16_t addr, uint8_t *data_buffer, uint32_t length);
 } eeprom_24LC256_driver_t;
 
 /**
@@ -78,6 +78,5 @@ typedef struct {
  * @return eeprom_24LC256_driver_t instance
  */
 eeprom_24LC256_driver_t eeprom_24LC256_Open();
-
 
 #endif /* EEPROM_24LC256_DRIVER_H_ */
