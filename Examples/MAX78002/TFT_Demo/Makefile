@@ -123,8 +123,7 @@ MAXIM_PATH := $(subst \,/,$(MAXIM_PATH))
 endif
 
 # Final recalculation of LIBS_DIR/CMSIS_ROOT
-# LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
-LIBS_DIR := ../../../Libraries
+LIBS_DIR := $(abspath $(MAXIM_PATH)/Libraries)
 CMSIS_ROOT := $(LIBS_DIR)/CMSIS
 
 # One final UC/LC check in case user set TARGET in project.mk
