@@ -1,6 +1,6 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${config:MSYS_path}/usr/bin;${env:PATH}",
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:MSYS_path}/usr/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -54,7 +54,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/SDHC/Include",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff14/Source"
+        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
@@ -68,7 +68,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff14/Source"
+        "${config:MAXIM_PATH}/Libraries/SDHC/ff13/Source"
     ],
     "C_Cpp.default.defines": [
         
