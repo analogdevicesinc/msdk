@@ -102,14 +102,14 @@ int Hid_SW_Init(void)
 /******************************************************************************/
 void HID_SW_Handler(void)
 {
-	MXC_GPIO_Handler(MXC_GPIO_GET_IDX(hid_sw[0].port));
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(hid_sw[0].port));
 }
 
 int Hid_SW_RegisterCallback(unsigned int pb, pb_callback callback)
 {
-	if(pb != 0) {
-		return E_INVALID;
-	}
+    if (pb != 0) {
+        return E_INVALID;
+    }
 
     if (callback) {
         // Register callback
