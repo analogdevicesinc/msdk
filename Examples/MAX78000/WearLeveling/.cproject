@@ -34,6 +34,7 @@
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/Boards/${TARGET}/${BOARD}/Include&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/littlefs&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/littlefs/bd&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/CLI/inc&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Camera&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Display&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory&quot;"/>
