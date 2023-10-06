@@ -538,7 +538,7 @@ unsigned int MXC_SPI_RevA1_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
         //  swaps the ordering of the message.
         //  Example:
         //      When the SPI FIFO receives the message '00, 01, 02, 03', reading the FIFO16
-        //      or FIFO32 register will result in '01, 00, 03, 02'.
+        //      or FIFO32 register could result in '01, 00, 03, 02' - depending on the part.
         if (bits > 8) {
             if (len > 3) {
                 memcpy((uint8_t *)(&bytes[count]), (void *)(&spi->fifo32), 4);
@@ -600,8 +600,8 @@ unsigned int MXC_SPI_RevA1_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *
         //  swaps the ordering of the message.
         //  Example:
         //      SPI FIFO is expected to transmit the message '00, 01, 02, 03'.
-        //      Writing the four byte-wide characters to the FIFO16 or FIFO32 register
-        //      results in this message shifted out: '01, 00, 03, 02'.
+        //      Writing the four byte-wide characters to the FIFO16 or FIFO32 register could
+        //      result in this message shifted out: '01, 00, 03, 02' - depending on the part.
         if (bits > 8) {
             if (len > 3) {
                 memcpy((void *)(&spi->fifo32), (uint8_t *)(&bytes[count]), 4);
