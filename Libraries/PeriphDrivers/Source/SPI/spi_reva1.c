@@ -557,8 +557,8 @@ unsigned int MXC_SPI_RevA1_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
                 break;
             }
 
-        // 9-16 bit wide messages should not be read from the FIFO8 register (cuts
-        //  off the upper byte).
+            // 9-16 bit wide messages should not be read from the FIFO8 register (cuts
+            //  off the upper byte).
         } else {
             ((uint8_t *)bytes)[count++] = spi->fifo8[0];
             len -= 1;
@@ -613,8 +613,8 @@ unsigned int MXC_SPI_RevA1_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *
                 count += 2;
             }
 
-        // 9-16 bit wide messages should not be written to the FIFO8 register (cuts
-        //  off the upper byte).
+            // 9-16 bit wide messages should not be written to the FIFO8 register (cuts
+            //  off the upper byte).
         } else {
             spi->fifo8[0] = ((uint8_t *)bytes)[count++];
             len -= 1;
