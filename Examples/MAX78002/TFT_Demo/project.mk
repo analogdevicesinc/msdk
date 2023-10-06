@@ -20,6 +20,4 @@ TFT = NEWHAVEN
 VPATH += resources/tft
 IPATH += resources/tft
 
-MXC_SPI_BUILD_V1 = 0
-
-LIBS_DIR = ../../../Libraries
+MXC_SPI_VERSION = v1

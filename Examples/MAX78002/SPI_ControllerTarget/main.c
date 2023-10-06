@@ -215,6 +215,7 @@ int main(void)
     controller_req.rxData = (uint8_t *)controller_rx;
     controller_req.rxLen = DATA_LEN;
     controller_req.ssDeassert = 1;
+    controller_req.ssIdx = SPI_CONTROLLER_TSIDX;
     controller_req.completeCB = NULL;
 
     /***** Configure Target (L. Slave) *****/
