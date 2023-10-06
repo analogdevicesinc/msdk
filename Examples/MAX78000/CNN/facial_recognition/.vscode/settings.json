@@ -77,9 +77,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/CODEC"
     ],
     "C_Cpp.default.defines": [
-        "ARM_MATH_CM4",
-        "__FPU_PRESENT",
-        "SEMIHOSTING"
+        
     ],
     "C_Cpp.default.forcedInclude": [
         "${workspaceFolder}/build/project_defines.h"
