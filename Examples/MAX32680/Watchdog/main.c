@@ -160,14 +160,12 @@ int main(void)
             MXC_WDT_SetResetPeriod(MXC_WDT0, &cfg);
             MXC_WDT_ResetTimer(MXC_WDT0);
             MXC_WDT_EnableReset(MXC_WDT0);
-            MXC_NVIC_SetVector(WDT0_IRQn, WDT0_IRQHandler);
-            NVIC_EnableIRQ(WDT0_IRQn);
 
             MXC_WDT_Enable(MXC_WDT0);
         }
 
         //blink LED0
-        blinkled(0, 1, 500);
+        blinkled(0, 1, 100);
 
         //Reset watchdog
         MXC_WDT_ResetTimer(MXC_WDT0);
