@@ -52,6 +52,7 @@
 #include "uart.h"
 #include "led.h"
 #include "pb.h"
+#include "trimsir_regs.h"
 
 /***** Definitions *****/
 #define TEST_ADDRESS (MXC_FLASH_MEM_BASE + MXC_FLASH_MEM_SIZE) - (1 * MXC_FLASH_PAGE_SIZE)
@@ -262,6 +263,14 @@ int main(void)
     since modifying flash contents may invalidate cached instructions.
     */
     MXC_ICC_Disable();
+
+    /*
+    Disable Flash ECC. Because this example uses 32-bit flash writes, 
+    ECC must be disabled.Only 128-bit writes are supported when ECC
+    is enabled.
+    */
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_FL0ECCEN;
+    MXC_TRIMSIR->bb_sir2 &= ~MXC_F_TRIMSIR_BB_SIR2_FL1ECCEN;
 
     uint32_t magic = 0;
     MXC_FLC_Read(TEST_ADDRESS, &magic, 4);
