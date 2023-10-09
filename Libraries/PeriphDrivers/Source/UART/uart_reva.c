@@ -98,6 +98,13 @@ int MXC_UART_RevA_Init(mxc_uart_reva_regs_t *uart, unsigned int baud)
 
     MXC_UART_SetFrequency((mxc_uart_regs_t *)uart, baud);
 
+    // Initialize state struct
+    for (int i = 0; i < MXC_UART_INSTANCES; i++) {
+        states[i].channelRx = -1;
+        states[i].channelTx = -1;
+        states[i].req = NULL;
+    }
+
     return E_NO_ERROR;
 }
 
@@ -942,6 +949,8 @@ int MXC_UART_RevA_TransactionDMA(mxc_uart_reva_req_t *req, mxc_dma_regs_t *dma)
         }
     }
 
+    states[uart_num].req = req; // Callback lookups are dependent saved state info
+
     MXC_UART_DisableInt((mxc_uart_regs_t *)(req->uart), 0xFFFFFFFF);
     MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart), 0xFFFFFFFF);
 
@@ -996,21 +1005,15 @@ void MXC_UART_RevA_DMACallback(int ch, int error)
     mxc_uart_reva_req_t *temp_req;
 
     for (int i = 0; i < MXC_UART_INSTANCES; i++) {
-        if (states[i].channelTx == ch) {
+        if (states[i].channelTx == ch || states[i].channelRx == ch) {
             //save the request
             temp_req = states[i].req;
             // Callback if not NULL
             if (temp_req->callback != NULL) {
                 temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
             }
-            break;
-        } else if (states[i].channelRx == ch) {
-            //save the request
-            temp_req = states[i].req;
-            // Callback if not NULL
-            if (temp_req->callback != NULL) {
-                temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
-            }
+
+            MXC_DMA_ReleaseChannel(ch);
             break;
         }
     }
