@@ -37,6 +37,9 @@
 #include "uart.h"
 #include "uart_reva.h"
 #include "dma.h"
+#ifdef __arm__
+#include "nvic_table.h"
+#endif
 
 /* **** Definitions **** */
 #define MXC_UART_REVA_ERRINT_EN                                                       \
@@ -555,6 +558,43 @@ unsigned int MXC_UART_RevA_ReadRXFIFO(mxc_uart_reva_regs_t *uart, unsigned char 
     return read;
 }
 
+#if MXC_DMA_INSTANCES > 1
+
+void MXC_UART_RevA_DMA0_Handler(void)
+{
+    MXC_DMA_Handler(MXC_DMA0);
+}
+
+void MXC_UART_RevA_DMA1_Handler(void)
+{
+    MXC_DMA_Handler(MXC_DMA1);
+}
+
+#endif
+
+void MXC_UART_RevA_DMA_SetupChannel(mxc_dma_regs_t *dma_instance, unsigned int channel)
+{
+#ifdef __arm__
+    
+    NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(channel));
+
+#if MXC_DMA_INSTANCES > 1
+    /* (JC): This is not the cleanest or most scalable way to do this,
+        but I tried defining default handler's in the system file.
+        Some complications make this the most attractive short-term
+        option.  We could handle multiple DMA instances better in the DMA API (See the mismatch between the size of "dma_resource" array and the number of channels per instance, to start)*/
+    if (dma_instance == MXC_DMA0) {
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA0_Handler);
+    } else if (dma_instance == MXC_DMA1) {
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA1_Handler);
+    }
+#else
+    MXC_NVIC_SetVector(MXC_UART_RevA_DMA0_Handler, MXC_DMA_Handler);
+#endif // MXC_DMA_INSTANCES > 1
+
+#endif // __arm__
+}
+
 int MXC_UART_RevA_ReadRXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
                                 unsigned char *bytes, unsigned int len,
                                 mxc_uart_dma_complete_cb_t callback, mxc_dma_config_t config)
@@ -591,6 +631,12 @@ int MXC_UART_RevA_ReadRXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
     srcdst.len = len;
 
     states[uart_num].channelRx = channel;
+
+    /*
+    (JC) Since we're automatically acquiring a channel here, we need the
+    ISR for that channel to call MXC_DMA_Handler.
+    */
+    MXC_UART_RevA_DMA_SetupChannel(dma, channel);
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt(channel);
@@ -661,6 +707,12 @@ unsigned int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_re
     srcdst.len = len;
 
     states[uart_num].channelTx = channel;
+
+    /*
+    (JC) Since we're automatically acquiring a channel here, we need the
+    ISR for that channel to call MXC_DMA_Handler.
+    */
+    MXC_UART_RevA_DMA_SetupChannel(dma, channel);
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt(channel);
