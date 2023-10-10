@@ -112,4 +112,10 @@ int MXC_UART_RevA_TxAsyncCallback(mxc_uart_reva_regs_t *uart, int retVal);
 int MXC_UART_RevA_RxAsyncCallback(mxc_uart_reva_regs_t *uart, int retVal);
 void MXC_UART_RevA_DMACallback(int ch, int error);
 
+int MXC_UART_RevA_SetAutoDMAHandlers(mxc_uart_reva_regs_t *uart, bool enable);
+int MXC_UART_RevA_SetTXDMAChannel(mxc_uart_reva_regs_t *uart, unsigned int channel);
+int MXC_UART_RevA_GetTXDMAChannel(mxc_uart_reva_regs_t *uart);
+int MXC_UART_RevA_SetRXDMAChannel(mxc_uart_reva_regs_t *uart, unsigned int channel);
+int MXC_UART_RevA_GetRXDMAChannel(mxc_uart_reva_regs_t *uart);
+
 #endif // LIBRARIES_PERIPHDRIVERS_SOURCE_UART_UART_REVA_H_

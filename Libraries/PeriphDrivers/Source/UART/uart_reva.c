@@ -59,6 +59,7 @@ typedef struct {
     mxc_uart_reva_req_t *req;
     int channelTx;
     int channelRx;
+    bool auto_dma_handlers;
 } uart_reva_req_state_t;
 
 uart_reva_req_state_t states[MXC_UART_INSTANCES];
@@ -106,6 +107,7 @@ int MXC_UART_RevA_Init(mxc_uart_reva_regs_t *uart, unsigned int baud)
         states[i].channelRx = -1;
         states[i].channelTx = -1;
         states[i].req = NULL;
+        states[i].auto_dma_handlers = false;
     }
 
     return E_NO_ERROR;
@@ -572,10 +574,12 @@ void MXC_UART_RevA_DMA1_Handler(void)
 
 #endif
 
-void MXC_UART_RevA_DMA_SetupChannel(mxc_dma_regs_t *dma_instance, unsigned int channel)
+/* "Auto" handlers just need to call MXC_DMA_Handler with the correct
+DMA instance.
+*/
+void MXC_UART_RevA_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned int channel)
 {
 #ifdef __arm__
-    
     NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(channel));
 
 #if MXC_DMA_INSTANCES > 1
@@ -589,8 +593,12 @@ void MXC_UART_RevA_DMA_SetupChannel(mxc_dma_regs_t *dma_instance, unsigned int c
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA1_Handler);
     }
 #else
+    // Only one DMA instance, we can point direct to MXC_DMA_Handler
     MXC_NVIC_SetVector(MXC_UART_RevA_DMA0_Handler, MXC_DMA_Handler);
 #endif // MXC_DMA_INSTANCES > 1
+
+#else
+// TODO(JC): RISC-V
 
 #endif // __arm__
 }
@@ -612,11 +620,24 @@ int MXC_UART_RevA_ReadRXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
         return E_NULL_PTR;
     }
 
+    if (states[uart_num].auto_dma_handlers) {        
+        /* Acquire channel */
 #if TARGET_NUM == 32665
-    channel = MXC_DMA_AcquireChannel(dma);
+        channel = MXC_DMA_AcquireChannel(dma);
 #else
-    channel = MXC_DMA_AcquireChannel();
+        channel = MXC_DMA_AcquireChannel();
 #endif
+        MXC_UART_RevA_SetRXDMAChannel(uart, channel);
+        /* (JC) Since we're automatically acquiring a channel here, we need the ISR for that channel to call MXC_DMA_Handler. */
+        MXC_UART_RevA_DMA_SetupAutoHandlers(dma, channel);
+    } else {
+        /* Rely on application-defined handlers. */
+        if (states[uart_num].channelRx < 0)
+            return E_BAD_STATE;
+        channel = states[uart_num].channelRx;
+    }
+
+    // states[uart_num].channelRx = channel;
 
     config.ch = channel;
 
@@ -628,15 +649,8 @@ int MXC_UART_RevA_ReadRXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
 
     srcdst.ch = channel;
     srcdst.dest = bytes;
-    srcdst.len = len;
+    srcdst.len = len;    
 
-    states[uart_num].channelRx = channel;
-
-    /*
-    (JC) Since we're automatically acquiring a channel here, we need the
-    ISR for that channel to call MXC_DMA_Handler.
-    */
-    MXC_UART_RevA_DMA_SetupChannel(dma, channel);
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt(channel);
@@ -670,12 +684,63 @@ unsigned int MXC_UART_RevA_WriteTXFIFO(mxc_uart_reva_regs_t *uart, unsigned char
     return written;
 }
 
+int MXC_UART_RevA_SetAutoDMAHandlers(mxc_uart_reva_regs_t *uart, bool enable)
+{
+    int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
+    if (n < 0)
+        return E_BAD_PARAM;
+
+    states[n].auto_dma_handlers = enable;
+
+    return E_NO_ERROR;
+}
+
+int MXC_UART_RevA_SetTXDMAChannel(mxc_uart_reva_regs_t *uart, unsigned int channel)
+{
+    int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
+    if (n < 0)
+        return E_BAD_PARAM;
+    
+    states[n].channelTx = channel;
+
+    return E_NO_ERROR;
+}
+
+int MXC_UART_RevA_GetTXDMAChannel(mxc_uart_reva_regs_t *uart)
+{
+    int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
+    if (n < 0)
+        return E_BAD_PARAM;
+    
+    return states[n].channelTx;
+}
+
+int MXC_UART_RevA_SetRXDMAChannel(mxc_uart_reva_regs_t *uart, unsigned int channel)
+{
+    int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
+    if (n < 0)
+        return E_BAD_PARAM;
+    
+    states[n].channelRx = channel;
+
+    return E_NO_ERROR;
+}
+
+int MXC_UART_RevA_GetRXDMAChannel(mxc_uart_reva_regs_t *uart)
+{
+    int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
+    if (n < 0)
+        return E_BAD_PARAM;
+    
+    return states[n].channelRx;
+}
+
 unsigned int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
                                           unsigned char *bytes, unsigned int len,
                                           mxc_uart_dma_complete_cb_t callback,
                                           mxc_dma_config_t config)
 {
-    uint8_t channel;
+    uint8_t channel = -1;
     mxc_dma_srcdst_t srcdst;
 
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
@@ -688,11 +753,22 @@ unsigned int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_re
         return E_NULL_PTR;
     }
 
+    if (states[uart_num].auto_dma_handlers) {
+        /* Acquire channel */
 #if TARGET_NUM == 32665
-    channel = MXC_DMA_AcquireChannel(dma);
+        channel = MXC_DMA_AcquireChannel(dma);
 #else
-    channel = MXC_DMA_AcquireChannel();
+        channel = MXC_DMA_AcquireChannel();
 #endif
+        MXC_UART_RevA_SetTXDMAChannel(uart, channel); // Set state variable
+        /* (JC) Since we're automatically acquiring a channel here, we need the ISR for that channel to call MXC_DMA_Handler.*/
+        MXC_UART_RevA_DMA_SetupAutoHandlers(dma, channel);
+    } else {
+        /* Rely on application-defined handlers (from SetTXDMAChannel) */
+        if (states[uart_num].channelTx < 0)
+            return E_BAD_STATE;
+        channel = MXC_UART_RevA_GetTXDMAChannel(uart);
+    }
 
     config.ch = channel;
 
@@ -706,13 +782,6 @@ unsigned int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_re
     srcdst.source = bytes;
     srcdst.len = len;
 
-    states[uart_num].channelTx = channel;
-
-    /*
-    (JC) Since we're automatically acquiring a channel here, we need the
-    ISR for that channel to call MXC_DMA_Handler.
-    */
-    MXC_UART_RevA_DMA_SetupChannel(dma, channel);
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
     MXC_DMA_EnableInt(channel);
@@ -1065,7 +1134,14 @@ void MXC_UART_RevA_DMACallback(int ch, int error)
                 temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
             }
 
-            MXC_DMA_ReleaseChannel(ch);
+            if (states[i].auto_dma_handlers) {
+                MXC_DMA_ReleaseChannel(ch);
+                if (ch == states[i].channelRx)
+                    states[i].channelRx = -1;
+                else
+                    states[i].channelTx = -1;   
+            }                
+
             break;
         }
     }
