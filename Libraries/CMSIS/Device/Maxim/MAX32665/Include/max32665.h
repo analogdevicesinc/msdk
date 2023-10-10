@@ -499,8 +499,9 @@ typedef enum {
                  ((i) == 7) ? DMA15_IRQn : \
                               0))
 
-#define MXC_DMA_CH_GET_IRQ(i)               \
-    (((i) > (MXC_DMA_CH_OFFSET - 1)) ? MXC_DMA1_CH_GET_IRQ(i % MXC_DMA_CH_OFFSET) : MXC_DMA0_CH_GET_IRQ(i))
+#define MXC_DMA_CH_GET_IRQ(i)                                                       \
+    (((i) > (MXC_DMA_CH_OFFSET - 1)) ? MXC_DMA1_CH_GET_IRQ(i % MXC_DMA_CH_OFFSET) : \
+                                       MXC_DMA0_CH_GET_IRQ(i))
 
 /* Create alias for MXC_DMA0 for backwards compatibility with code that was
    written for parts that only had one DMA instance. */

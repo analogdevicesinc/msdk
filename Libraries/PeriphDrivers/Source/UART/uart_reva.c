@@ -598,7 +598,7 @@ void MXC_UART_RevA_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
 #endif // MXC_DMA_INSTANCES > 1
 
 #else
-// TODO(JC): RISC-V
+    // TODO(JC): RISC-V
 
 #endif // __arm__
 }
@@ -620,7 +620,7 @@ int MXC_UART_RevA_ReadRXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
         return E_NULL_PTR;
     }
 
-    if (states[uart_num].auto_dma_handlers) {        
+    if (states[uart_num].auto_dma_handlers) {
         /* Acquire channel */
 #if TARGET_NUM == 32665
         channel = MXC_DMA_AcquireChannel(dma);
@@ -649,7 +649,7 @@ int MXC_UART_RevA_ReadRXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_regs_t *dma,
 
     srcdst.ch = channel;
     srcdst.dest = bytes;
-    srcdst.len = len;    
+    srcdst.len = len;
 
     MXC_DMA_ConfigChannel(config, srcdst);
     MXC_DMA_SetCallback(channel, MXC_UART_DMACallback);
@@ -700,7 +700,7 @@ int MXC_UART_RevA_SetTXDMAChannel(mxc_uart_reva_regs_t *uart, unsigned int chann
     int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
     if (n < 0)
         return E_BAD_PARAM;
-    
+
     states[n].channelTx = channel;
 
     return E_NO_ERROR;
@@ -711,7 +711,7 @@ int MXC_UART_RevA_GetTXDMAChannel(mxc_uart_reva_regs_t *uart)
     int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
     if (n < 0)
         return E_BAD_PARAM;
-    
+
     return states[n].channelTx;
 }
 
@@ -720,7 +720,7 @@ int MXC_UART_RevA_SetRXDMAChannel(mxc_uart_reva_regs_t *uart, unsigned int chann
     int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
     if (n < 0)
         return E_BAD_PARAM;
-    
+
     states[n].channelRx = channel;
 
     return E_NO_ERROR;
@@ -731,7 +731,7 @@ int MXC_UART_RevA_GetRXDMAChannel(mxc_uart_reva_regs_t *uart)
     int n = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
     if (n < 0)
         return E_BAD_PARAM;
-    
+
     return states[n].channelRx;
 }
 
@@ -1139,8 +1139,8 @@ void MXC_UART_RevA_DMACallback(int ch, int error)
                 if (ch == states[i].channelRx)
                     states[i].channelRx = -1;
                 else
-                    states[i].channelTx = -1;   
-            }                
+                    states[i].channelTx = -1;
+            }
 
             break;
         }
