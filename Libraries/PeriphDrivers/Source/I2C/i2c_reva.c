@@ -1556,7 +1556,7 @@ void MXC_I2C_RevA_SlaveAsyncHandler(mxc_i2c_reva_regs_t *i2c, mxc_i2c_reva_slave
     if (int_en[0] & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
         if (tFlags & MXC_F_I2C_REVA_INTFL0_ADDR_MATCH) {
             // Address match occurred, prepare for transaction
-            if(tFlags & MXC_F_I2C_REVA_INTFL0_STOP && !(tFlags & MXC_F_I2C_REVA_INTFL0_DONE)) {
+            if (tFlags & MXC_F_I2C_REVA_INTFL0_STOP && !(tFlags & MXC_F_I2C_REVA_INTFL0_DONE)) {
                 // Clear stop flag if it was asserted in a previous transaction
                 i2c->intfl0 = MXC_F_I2C_REVA_INTFL0_STOP;
             }
