@@ -119,6 +119,8 @@ Enumerations</h2></td></tr>
 <tr class="separator:ga7547d2cdf42ac3ed10586c8d3d44cdcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga03b13c78f2f773dabd26b93943a4b201"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">mxc_gpio_vssel_t</a> </td></tr>
 <tr class="separator:ga03b13c78f2f773dabd26b93943a4b201"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaced0392721f83747a888ad3f64508e14"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">mxc_gpio_drvstr_t</a> </td></tr>
+<tr class="separator:gaced0392721f83747a888ad3f64508e14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga230f0630427af37d07ebacf3a1340120"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga230f0630427af37d07ebacf3a1340120">mxc_gpio_int_mode_t</a> </td></tr>
 <tr class="separator:ga230f0630427af37d07ebacf3a1340120"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga20f1f6c8da57f1612d4b5d9ce65dc92d"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga20f1f6c8da57f1612d4b5d9ce65dc92d">mxc_gpio_int_pol_t</a> </td></tr>
@@ -168,6 +170,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga7893e171ce9cb1008acb7c587e140e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6e08685c79836b62652ea85c583ed406"><td class="memItemLeft" align="right" valign="top">uint32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga6e08685c79836b62652ea85c583ed406">MXC_GPIO_GetWakeEn</a> (<a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *port)</td></tr>
 <tr class="separator:ga6e08685c79836b62652ea85c583ed406"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga63004e4c450b8f1a755c88393668e0b2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ga63004e4c450b8f1a755c88393668e0b2">MXC_GPIO_SetDriveStrength</a> (<a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *port, <a class="el" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">mxc_gpio_drvstr_t</a> drvstr, uint32_t mask)</td></tr>
+<tr class="separator:ga63004e4c450b8f1a755c88393668e0b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <hr/><h2 class="groupheader">Data Structure Documentation</h2>
@@ -195,8 +199,25 @@ Functions</h2></td></tr>
 <tr class="separator:a8da839c23daf8bc3c04c00ec207ae50c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a717b92819b1b33b48303b9f819510eb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">mxc_gpio_vssel_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#a717b92819b1b33b48303b9f819510eb7">vssel</a></td></tr>
 <tr class="separator:a717b92819b1b33b48303b9f819510eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae47f3c6571885f5689eced52d0e66eca"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">mxc_gpio_drvstr_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__gpio.html#ae47f3c6571885f5689eced52d0e66eca">drvstr</a></td></tr>
+<tr class="separator:ae47f3c6571885f5689eced52d0e66eca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h4 class="groupheader">Field Documentation</h4>
+<a id="ae47f3c6571885f5689eced52d0e66eca" name="ae47f3c6571885f5689eced52d0e66eca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae47f3c6571885f5689eced52d0e66eca">&#9670;&nbsp;</a></span>drvstr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">mxc_gpio_drvstr_t</a> drvstr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p >Drive Strength select </p>
+
+</div>
+</div>
 <a id="a82db8d3ca4a2643b6b3214d4e16b832a" name="a82db8d3ca4a2643b6b3214d4e16b832a"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a82db8d3ca4a2643b6b3214d4e16b832a">&#9670;&nbsp;</a></span>func</h2>
 
@@ -300,6 +321,32 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="gaced0392721f83747a888ad3f64508e14" name="gaced0392721f83747a888ad3f64508e14"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaced0392721f83747a888ad3f64508e14">&#9670;&nbsp;</a></span>mxc_gpio_drvstr_t</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">mxc_gpio_drvstr_t</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enumeration type for drive strength configuration. </p>
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ggaced0392721f83747a888ad3f64508e14a693b43114c62adc1c8c3ddd100ba4e03" name="ggaced0392721f83747a888ad3f64508e14a693b43114c62adc1c8c3ddd100ba4e03"></a>MXC_GPIO_DRVSTR_0&#160;</td><td class="fielddoc"><p >Drive Strength 0 </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggaced0392721f83747a888ad3f64508e14a61a7eee49be32e156bbf95152e5c5e1f" name="ggaced0392721f83747a888ad3f64508e14a61a7eee49be32e156bbf95152e5c5e1f"></a>MXC_GPIO_DRVSTR_1&#160;</td><td class="fielddoc"><p >Drive Strength 1 </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggaced0392721f83747a888ad3f64508e14ae7a2e3bf3cb50222dbfeb7dc7f524869" name="ggaced0392721f83747a888ad3f64508e14ae7a2e3bf3cb50222dbfeb7dc7f524869"></a>MXC_GPIO_DRVSTR_2&#160;</td><td class="fielddoc"><p >Drive Strength 2 </p>
+</td></tr>
+<tr><td class="fieldname"><a id="ggaced0392721f83747a888ad3f64508e14a3ed5375f8bc5465c8888316c7c3603e3" name="ggaced0392721f83747a888ad3f64508e14a3ed5375f8bc5465c8888316c7c3603e3"></a>MXC_GPIO_DRVSTR_3&#160;</td><td class="fielddoc"><p >Drive Strength 3 </p>
+</td></tr>
+</table>
+
+</div>
+</div>
 <a id="ga61baee17171940ad183cabe62297e891" name="ga61baee17171940ad183cabe62297e891"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga61baee17171940ad183cabe62297e891">&#9670;&nbsp;</a></span>mxc_gpio_func_t</h2>
 
@@ -1034,6 +1081,50 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga63004e4c450b8f1a755c88393668e0b2" name="ga63004e4c450b8f1a755c88393668e0b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga63004e4c450b8f1a755c88393668e0b2">&#9670;&nbsp;</a></span>MXC_GPIO_SetDriveStrength()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_GPIO_SetDriveStrength </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__gpio__registers.html#structmxc__gpio__regs__t">mxc_gpio_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>port</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">mxc_gpio_drvstr_t</a>&#160;</td>
+          <td class="paramname"><em>drvstr</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>mask</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set Drive Strength for pins. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir"></td><td class="paramname">port</td><td>The GPIO port. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">ds</td><td>Drive strength level. Ref /mxc_gpio_ds_t enum type. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">mask</td><td>Pins in the GPIO port that will be set to the voltage. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ga53687f1fd275708a6404f9d64b6e0549" name="ga53687f1fd275708a6404f9d64b6e0549"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga53687f1fd275708a6404f9d64b6e0549">&#9670;&nbsp;</a></span>MXC_GPIO_SetVSSEL()</h2>
 
@@ -1148,7 +1239,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 4 2023 17:11:32 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Oct 11 2023 21:27:08 for MAX32650 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

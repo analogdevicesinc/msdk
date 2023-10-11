@@ -603,6 +603,7 @@ unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>pol</b></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize timer module clock. </p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables TMR peripheral clock and related GPIOs. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">tmr</td><td>Pointer to timer module to initialize. </td></tr>
@@ -1033,7 +1034,7 @@ unsigned&#160;</td><td class="memItemRight" valign="bottom"><b>pol</b></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 4 2023 17:11:27 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Oct 11 2023 21:27:02 for MAX32572 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

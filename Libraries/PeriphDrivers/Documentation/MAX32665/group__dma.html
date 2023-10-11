@@ -452,6 +452,8 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 </td></tr>
 <tr><td class="fieldname"><a id="ggac5462bed630944916330f584bd0b10e3ad76f922bf33c3640d79ee9b0a6b48cfc" name="ggac5462bed630944916330f584bd0b10e3ad76f922bf33c3640d79ee9b0a6b48cfc"></a>MXC_DMA_REQUEST_I2C1TX&#160;</td><td class="fielddoc"><p >I2C1 Transmit DMA Request Selection </p>
 </td></tr>
+<tr><td class="fieldname"><a id="ggac5462bed630944916330f584bd0b10e3aa4caf29680b045eb492b19b7f52a7b7e" name="ggac5462bed630944916330f584bd0b10e3aa4caf29680b045eb492b19b7f52a7b7e"></a>MXC_DMA_REQUEST_I2C2TX&#160;</td><td class="fielddoc"><p >I2C2 Transmit DMA Request Selection </p>
+</td></tr>
 <tr><td class="fieldname"><a id="ggac5462bed630944916330f584bd0b10e3a68c1b577821399e2f8690d434e6b696a" name="ggac5462bed630944916330f584bd0b10e3a68c1b577821399e2f8690d434e6b696a"></a>MXC_DMA_REQUEST_UART2TX&#160;</td><td class="fielddoc"><p >UART 2 Transmit DMA Request Selection </p>
 </td></tr>
 <tr><td class="fieldname"><a id="ggac5462bed630944916330f584bd0b10e3a490dfbfb3282470dddd2104dedc6b970" name="ggac5462bed630944916330f584bd0b10e3a490dfbfb3282470dddd2104dedc6b970"></a>MXC_DMA_REQUEST_USBTXEP1&#160;</td><td class="fielddoc"><p >USB TX Endpoint 1 DMA Request Selection </p>
@@ -1046,7 +1048,8 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
   </table>
   </dd>
 </dl>
-<p>This initialization is required before using the DMA driver functions. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if successful </dd></dl>
+<p>This initialization is required before using the DMA driver functions. </p><dl class="section note"><dt>Note</dt><dd>On default this function enables DMA peripheral clock. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if successful </dd></dl>
 
 </div>
 </div>
@@ -1343,7 +1346,7 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 4 2023 17:11:48 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Oct 11 2023 21:27:24 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

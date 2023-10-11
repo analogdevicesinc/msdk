@@ -86,7 +86,6 @@ $(document).ready(function(){initNavTree('group__spi.html',''); initResizable();
 <div class="header">
   <div class="summary">
 <a href="#groups">Modules</a> &#124;
-<a href="#nested-classes">Data Structures</a> &#124;
 <a href="#typedef-members">Typedefs</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
@@ -98,11 +97,6 @@ $(document).ready(function(){initNavTree('group__spi.html',''); initResizable();
 Modules</h2></td></tr>
 <tr class="memitem:group__spi__registers"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi__registers.html">SPI_Registers</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Data Structures</h2></td></tr>
-<tr class="memitem:structmxc__spi__target__t"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#structmxc__spi__target__t">mxc_spi_target_t</a></td></tr>
-<tr class="separator:structmxc__spi__target__t"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
@@ -128,14 +122,12 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ga812c8b820873b071de819b8db2c1a845"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga812c8b820873b071de819b8db2c1a845">MXC_SPI_Init</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, int masterMode, int quadModeUsed, int numSlaves, unsigned ssPolarity, unsigned int hz, mxc_spi_pins_t pins)</td></tr>
-<tr class="separator:ga812c8b820873b071de819b8db2c1a845"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga645c2b71f8ff2b295b471f805c9d215e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga645c2b71f8ff2b295b471f805c9d215e">MXC_SPI_Init_v2</a> (mxc_spi_init_t *init)</td></tr>
-<tr class="separator:ga645c2b71f8ff2b295b471f805c9d215e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga418ce783bb5c3242dbfd74a32d8c5580"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga418ce783bb5c3242dbfd74a32d8c5580">MXC_SPI_InitStruct</a> (mxc_spi_init_t *init)</td></tr>
-<tr class="separator:ga418ce783bb5c3242dbfd74a32d8c5580"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3daaebe3d54ac6d4337a1c529f957827"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga3daaebe3d54ac6d4337a1c529f957827">MXC_SPI_InitStruct_DMA</a> (mxc_spi_init_t *init)</td></tr>
-<tr class="separator:ga3daaebe3d54ac6d4337a1c529f957827"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga06f41ee71f978fd9ae872238d26fef28"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga06f41ee71f978fd9ae872238d26fef28">MXC_SPI_Init</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, <a class="el" href="group__spi.html#ga5447fbf3228e462c455f8108ea0bbd99">mxc_spi_type_t</a> controller_target, <a class="el" href="group__spi.html#ga235c514a114e1ddd7e331df383f7ed31">mxc_spi_interface_t</a> if_mode, int numTargets, uint8_t ts_active_pol_mask, uint32_t freq, mxc_spi_pins_t pins)</td></tr>
+<tr class="separator:ga06f41ee71f978fd9ae872238d26fef28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga74e0e8e4bbf79fa4e274a2cbb6ebd16d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga74e0e8e4bbf79fa4e274a2cbb6ebd16d">MXC_SPI_Config</a> (mxc_spi_cfg_t *cfg)</td></tr>
+<tr class="separator:ga74e0e8e4bbf79fa4e274a2cbb6ebd16d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaff025d7fc1e4b2eb37c2bda3f065f924"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gaff025d7fc1e4b2eb37c2bda3f065f924">MXC_SPI_ConfigStruct</a> (mxc_spi_cfg_t *cfg, bool use_dma_tx, bool use_dma_rx)</td></tr>
+<tr class="separator:gaff025d7fc1e4b2eb37c2bda3f065f924"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga85d98037b8a7ff2f1d54db8ac7edbf74"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga85d98037b8a7ff2f1d54db8ac7edbf74">MXC_SPI_Shutdown</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
 <tr class="separator:ga85d98037b8a7ff2f1d54db8ac7edbf74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga0975fa702566dae897a0a77417129808"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga0975fa702566dae897a0a77417129808">MXC_SPI_GetFlags</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
@@ -148,8 +140,8 @@ Functions</h2></td></tr>
 <tr class="separator:gab0b1eced2e0aa8a79a1d84953652085e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga41228df9f274fb42a12807d40770e3ea"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga41228df9f274fb42a12807d40770e3ea">MXC_SPI_GetPeripheralClock</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
 <tr class="separator:ga41228df9f274fb42a12807d40770e3ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga56b3047c82b05f2122aac3f4619ee8ef"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga56b3047c82b05f2122aac3f4619ee8ef">MXC_SPI_ConfigTargetSelect</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, uint32_t index, <a class="el" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">mxc_gpio_vssel_t</a> vssel)</td></tr>
-<tr class="separator:ga56b3047c82b05f2122aac3f4619ee8ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga382b178822d9231fdf48dc3fb186d520"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga382b178822d9231fdf48dc3fb186d520">MXC_SPI_SetTSControl</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, <a class="el" href="group__spi.html#ga44ea3296716bcd6f1f87802e7ea47ca2">mxc_spi_tscontrol_t</a> ts_control)</td></tr>
+<tr class="separator:ga382b178822d9231fdf48dc3fb186d520"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga040221eafa059cdc505e50e3a64c9b13"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga040221eafa059cdc505e50e3a64c9b13">MXC_SPI_SetFrequency</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, unsigned int hz)</td></tr>
 <tr class="separator:ga040221eafa059cdc505e50e3a64c9b13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga66094aea21801b4d038717eee7151dcc"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga66094aea21801b4d038717eee7151dcc">MXC_SPI_GetFrequency</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
@@ -158,8 +150,8 @@ Functions</h2></td></tr>
 <tr class="separator:ga81b5bc04070404c4c5320b6660cff2df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga5c1e4368c1fa524ba906923b8bd58715"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga5c1e4368c1fa524ba906923b8bd58715">MXC_SPI_GetFrameSize</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
 <tr class="separator:ga5c1e4368c1fa524ba906923b8bd58715"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gacdd85d1eded7f6cc25ff07754decb9e0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gacdd85d1eded7f6cc25ff07754decb9e0">MXC_SPI_SetInterface</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, <a class="el" href="group__spi.html#ga235c514a114e1ddd7e331df383f7ed31">mxc_spi_interface_t</a> mode)</td></tr>
-<tr class="separator:gacdd85d1eded7f6cc25ff07754decb9e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4f3d44756a61830bb26ca7536461ba74"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga4f3d44756a61830bb26ca7536461ba74">MXC_SPI_SetInterface</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, <a class="el" href="group__spi.html#ga235c514a114e1ddd7e331df383f7ed31">mxc_spi_interface_t</a> if_mode)</td></tr>
+<tr class="separator:ga4f3d44756a61830bb26ca7536461ba74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga39198d494d267642b4b9e1274614cd55"><td class="memItemLeft" align="right" valign="top"><a class="el" href="group__spi.html#ga235c514a114e1ddd7e331df383f7ed31">mxc_spi_interface_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga39198d494d267642b4b9e1274614cd55">MXC_SPI_GetInterface</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
 <tr class="separator:ga39198d494d267642b4b9e1274614cd55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gacc29168d155798eeb3fcc8eb3bba2ca4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gacc29168d155798eeb3fcc8eb3bba2ca4">MXC_SPI_SetClkMode</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, <a class="el" href="group__spi.html#gadad43261c98c744d491fb810d949fac7">mxc_spi_clkmode_t</a> clk_mode)</td></tr>
@@ -216,36 +208,42 @@ Functions</h2></td></tr>
 <tr class="separator:ga276dd82fa052f27cbc8d44101905f30d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac14dbfc876d9d2342d1158b910a65b78"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gac14dbfc876d9d2342d1158b910a65b78">MXC_SPI_SetDefaultTXData</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, unsigned int defaultTXData)</td></tr>
 <tr class="separator:gac14dbfc876d9d2342d1158b910a65b78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga742c4006369ca380c4cad8362b5d2ccb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga742c4006369ca380c4cad8362b5d2ccb">MXC_SPI_DMA_Init</a> (mxc_spi_init_t *init)</td></tr>
-<tr class="separator:ga742c4006369ca380c4cad8362b5d2ccb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga5d6132a2bfc754c950bd7083bec8561b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga5d6132a2bfc754c950bd7083bec8561b">MXC_SPI_DMA_Init</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx)</td></tr>
+<tr class="separator:ga5d6132a2bfc754c950bd7083bec8561b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga156db190ebf27068466d2bcc7c8f6e62"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga156db190ebf27068466d2bcc7c8f6e62">MXC_SPI_DMA_GetInitialized</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
 <tr class="separator:ga156db190ebf27068466d2bcc7c8f6e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gac79d1bdacf4c3841cd6b73b2ee5b4928"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gac79d1bdacf4c3841cd6b73b2ee5b4928">MXC_SPI_DMA_GetTXChannel</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
 <tr class="separator:gac79d1bdacf4c3841cd6b73b2ee5b4928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaac6f6a8c6fb9403e1bfaa70c5e6f0b7e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gaac6f6a8c6fb9403e1bfaa70c5e6f0b7e">MXC_SPI_DMA_GetRXChannel</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
 <tr class="separator:gaac6f6a8c6fb9403e1bfaa70c5e6f0b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3d1a2dc373641d98c6d528f4869babf7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga3d1a2dc373641d98c6d528f4869babf7">MXC_SPI_DMA_SetRequestSelect</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, uint8_t *tx_buffer, uint8_t *rx_buffer)</td></tr>
-<tr class="separator:ga3d1a2dc373641d98c6d528f4869babf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga0de67ce7d5117b54b43f222926f13783"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga0de67ce7d5117b54b43f222926f13783">MXC_SPI_DMA_SetRequestSelect</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, bool use_dma_tx, bool use_dma_rx)</td></tr>
+<tr class="separator:ga0de67ce7d5117b54b43f222926f13783"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaefbd13c12a7d9fbaef9595df2cd6c308"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gaefbd13c12a7d9fbaef9595df2cd6c308">MXC_SPI_MasterTransaction</a> (mxc_spi_req_t *req)</td></tr>
 <tr class="separator:gaefbd13c12a7d9fbaef9595df2cd6c308"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6c9da2bba6624ca85e0aaafc94bad2f6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga6c9da2bba6624ca85e0aaafc94bad2f6">MXC_SPI_MasterTransactionAsync</a> (mxc_spi_req_t *req)</td></tr>
 <tr class="separator:ga6c9da2bba6624ca85e0aaafc94bad2f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gaef4e7a1d2d209ec09ac0f5c230b7987a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gaef4e7a1d2d209ec09ac0f5c230b7987a">MXC_SPI_MasterTransactionDMA</a> (mxc_spi_req_t *req)</td></tr>
 <tr class="separator:gaef4e7a1d2d209ec09ac0f5c230b7987a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gaec7acde65957ca36b59d2981e6d1a2ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gaec7acde65957ca36b59d2981e6d1a2ed">MXC_SPI_ControllerTransaction</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, <a class="el" href="group__spi.html#structmxc__spi__target__t">mxc_spi_target_t</a> *target)</td></tr>
-<tr class="separator:gaec7acde65957ca36b59d2981e6d1a2ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga0b7d1629f417c84886d8a9c4b47cddba"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga0b7d1629f417c84886d8a9c4b47cddba">MXC_SPI_ControllerTransactionB</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, <a class="el" href="group__spi.html#structmxc__spi__target__t">mxc_spi_target_t</a> *target)</td></tr>
-<tr class="separator:ga0b7d1629f417c84886d8a9c4b47cddba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga97d9dbb0a5124f2560941ad4ccbb0749"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga97d9dbb0a5124f2560941ad4ccbb0749">MXC_SPI_ControllerTransactionDMA</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, <a class="el" href="group__spi.html#structmxc__spi__target__t">mxc_spi_target_t</a> *target)</td></tr>
-<tr class="separator:ga97d9dbb0a5124f2560941ad4ccbb0749"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga4fd2c0126a869fa9db7688b22bf1be86"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga4fd2c0126a869fa9db7688b22bf1be86">MXC_SPI_ControllerTransactionDMAB</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi, uint8_t *tx_buffer, uint32_t tx_fr_len, uint8_t *rx_buffer, uint32_t rx_fr_len, uint8_t deassert, <a class="el" href="group__spi.html#structmxc__spi__target__t">mxc_spi_target_t</a> *target)</td></tr>
-<tr class="separator:ga4fd2c0126a869fa9db7688b22bf1be86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga007be007fff978483a8b3c62d4122fb4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga007be007fff978483a8b3c62d4122fb4">MXC_SPI_ControllerTransaction</a> (mxc_spi_req_t *req)</td></tr>
+<tr class="separator:ga007be007fff978483a8b3c62d4122fb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga59adf68071046d8e0f516c860f6e1845"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga59adf68071046d8e0f516c860f6e1845">MXC_SPI_ControllerTransactionAsync</a> (mxc_spi_req_t *req)</td></tr>
+<tr class="separator:ga59adf68071046d8e0f516c860f6e1845"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga7790c0deb2ab343f04386c15717706ff"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga7790c0deb2ab343f04386c15717706ff">MXC_SPI_ControllerTransactionDMA</a> (mxc_spi_req_t *req)</td></tr>
+<tr class="separator:ga7790c0deb2ab343f04386c15717706ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab139788d8913e6955cc5d0cbe192c7c6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gab139788d8913e6955cc5d0cbe192c7c6">MXC_SPI_ControllerTransactionDMAB</a> (mxc_spi_req_t *req)</td></tr>
+<tr class="separator:gab139788d8913e6955cc5d0cbe192c7c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga8bd2984da7fd84362fe59e2add1e3bb9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga8bd2984da7fd84362fe59e2add1e3bb9">MXC_SPI_SlaveTransaction</a> (mxc_spi_req_t *req)</td></tr>
 <tr class="separator:ga8bd2984da7fd84362fe59e2add1e3bb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga61e3b8fcccf23091e3faa01c739f5aa8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga61e3b8fcccf23091e3faa01c739f5aa8">MXC_SPI_SlaveTransactionAsync</a> (mxc_spi_req_t *req)</td></tr>
 <tr class="separator:ga61e3b8fcccf23091e3faa01c739f5aa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga86f66284a2899897a4e0fc760d01bc6d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga86f66284a2899897a4e0fc760d01bc6d">MXC_SPI_SlaveTransactionDMA</a> (mxc_spi_req_t *req)</td></tr>
 <tr class="separator:ga86f66284a2899897a4e0fc760d01bc6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacb42582d12777a46132c79ce7f7bc85c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gacb42582d12777a46132c79ce7f7bc85c">MXC_SPI_TargetTransaction</a> (mxc_spi_req_t *req)</td></tr>
+<tr class="separator:gacb42582d12777a46132c79ce7f7bc85c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gacdf16ffb2d49806f0e519bb1579b241e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gacdf16ffb2d49806f0e519bb1579b241e">MXC_SPI_TargetTransactionAsync</a> (mxc_spi_req_t *req)</td></tr>
+<tr class="separator:gacdf16ffb2d49806f0e519bb1579b241e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gab1117c58d5e784b6977edac58442a370"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#gab1117c58d5e784b6977edac58442a370">MXC_SPI_TargetTransactionDMA</a> (mxc_spi_req_t *req)</td></tr>
+<tr class="separator:gab1117c58d5e784b6977edac58442a370"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9d7f7ec4a2f457569169a8194ea29555"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga9d7f7ec4a2f457569169a8194ea29555">MXC_SPI_AsyncHandler</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
 <tr class="separator:ga9d7f7ec4a2f457569169a8194ea29555"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga68ec0bb5be7e56ed9f64ae1d66d054dd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__spi.html#ga68ec0bb5be7e56ed9f64ae1d66d054dd">MXC_SPI_Handler</a> (<a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *spi)</td></tr>
@@ -256,22 +254,6 @@ Functions</h2></td></tr>
 <tr class="separator:ga95c817c0d261218ea5c6b5781d62e36e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<hr/><h2 class="groupheader">Data Structure Documentation</h2>
-<a name="structmxc__spi__target__t" id="structmxc__spi__target__t"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#structmxc__spi__target__t">&#9670;&nbsp;</a></span>mxc_spi_target_t</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">struct mxc_spi_target_t</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="textblock"><p >The settings for selecting TARGETS when in the SPI peripheral is set in CONTROLLER mode. </p>
-</div>
-</div>
-</div>
 <h2 class="groupheader">Typedef Documentation</h2>
 <a id="gaba3c6d2bc79934fde136458297af2753" name="gaba3c6d2bc79934fde136458297af2753"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gaba3c6d2bc79934fde136458297af2753">&#9670;&nbsp;</a></span>mxc_spi_callback_t</h2>
@@ -481,10 +463,10 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Clears the interrupt flags that are currently set. </p>
-<p >These functions should not be used while using non-blocking Transaction Level functions (Async or DMA)</p>
+<p >These functions should not be used while using non-blocking Transaction Level functions (Async or DMA).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used). </td></tr>
   </table>
   </dd>
 </dl>
@@ -543,29 +525,58 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga56b3047c82b05f2122aac3f4619ee8ef" name="ga56b3047c82b05f2122aac3f4619ee8ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga56b3047c82b05f2122aac3f4619ee8ef">&#9670;&nbsp;</a></span>MXC_SPI_ConfigTargetSelect()</h2>
+<a id="ga74e0e8e4bbf79fa4e274a2cbb6ebd16d" name="ga74e0e8e4bbf79fa4e274a2cbb6ebd16d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga74e0e8e4bbf79fa4e274a2cbb6ebd16d">&#9670;&nbsp;</a></span>MXC_SPI_Config()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int MXC_SPI_ConfigTargetSelect </td>
+          <td class="memname">int MXC_SPI_Config </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *&#160;</td>
-          <td class="paramname"><em>spi</em>, </td>
+          <td class="paramtype">mxc_spi_cfg_t *&#160;</td>
+          <td class="paramname"><em>cfg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configure the SPI peripheral. </p>
+<p >List of Setting that will be updated: Clock Mode. Frame Size (bits). Interface Mode (Dual, Quad, Standard, 3-Wire). If DMA selections are true, configure and acquire DMA channels.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cfg</td><td>Pointer to SPI configuration struct. <br  />
+</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="gaff025d7fc1e4b2eb37c2bda3f065f924" name="gaff025d7fc1e4b2eb37c2bda3f065f924"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gaff025d7fc1e4b2eb37c2bda3f065f924">&#9670;&nbsp;</a></span>MXC_SPI_ConfigStruct()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPI_ConfigStruct </td>
+          <td>(</td>
+          <td class="paramtype">mxc_spi_cfg_t *&#160;</td>
+          <td class="paramname"><em>cfg</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>index</em>, </td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_dma_tx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">mxc_gpio_vssel_t</a>&#160;</td>
-          <td class="paramname"><em>vssel</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_dma_rx</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -575,21 +586,24 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Configures the Pre-defined SPI Target Select pins for a specific instance. </p>
+<p>Overwrite the cfg struct with default values. </p>
+<p >Settings: SPI APB (SPI1) instance Default, predefined SPI pins at VDDIO Controller Mode Standard 4-wire mode 100KHz speed CPOL: 0, CPHA: 0 Automatic Hardware mode for TS Control TS0 pin Target active polarity is LOW (0) If use_dma = true, set DMATX and RX to true and set the DMA0 as the default instance.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">index</td><td>Target Select Index (TS0, TS1, TS2, ...). </td></tr>
-    <tr><td class="paramname">vssel</td><td>Voltage Setting for TS pins (<a class="el" href="group__gpio.html#ga03b13c78f2f773dabd26b93943a4b201">mxc_gpio_vssel_t</a>).</td></tr>
+    <tr><td class="paramname">cfg</td><td>Pointer to SPI configuration struct. <br  />
+ </td></tr>
+    <tr><td class="paramname">use_dma_tx</td><td>True/False option to configure DMA TX. </td></tr>
+    <tr><td class="paramname">use_dma_rx</td><td>True/False option to configure DMA RX. <br  />
+</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes.odes. </dd></dl>
 
 </div>
 </div>
-<a id="gaec7acde65957ca36b59d2981e6d1a2ed" name="gaec7acde65957ca36b59d2981e6d1a2ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gaec7acde65957ca36b59d2981e6d1a2ed">&#9670;&nbsp;</a></span>MXC_SPI_ControllerTransaction()</h2>
+<a id="ga007be007fff978483a8b3c62d4122fb4" name="ga007be007fff978483a8b3c62d4122fb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga007be007fff978483a8b3c62d4122fb4">&#9670;&nbsp;</a></span>MXC_SPI_ControllerTransaction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -597,49 +611,36 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MXC_SPI_ControllerTransaction </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *&#160;</td>
-          <td class="paramname"><em>spi</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">mxc_spi_req_t *&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>tx_buffer</em>, </td>
         </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Set up a blocking, non-interrupt-driven SPI controller transaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">req</td><td>Pointer to details of the transaction.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for the list of error return codes. </dd></dl>
+
+</div>
+</div>
+<a id="ga59adf68071046d8e0f516c860f6e1845" name="ga59adf68071046d8e0f516c860f6e1845"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga59adf68071046d8e0f516c860f6e1845">&#9670;&nbsp;</a></span>MXC_SPI_ControllerTransactionAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
         <tr>
-          <td class="paramkey"></td>
+          <td class="memname">int MXC_SPI_ControllerTransactionAsync </td>
+          <td>(</td>
+          <td class="paramtype">mxc_spi_req_t *&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>tx_fr_len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>rx_buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>rx_fr_len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>deassert</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__spi.html#structmxc__spi__target__t">mxc_spi_target_t</a> *&#160;</td>
-          <td class="paramname"><em>target</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -648,13 +649,7 @@ Functions</h2></td></tr>
 <p >The MXC_SPI_Handler function must be called in the selected SPI instance's interrupt handler to process the transaction.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">tx_buffer</td><td>Pointer to transmit buffer (in terms of bytes). </td></tr>
-    <tr><td class="paramname">tx_fr_len</td><td>Number of frames to transmit from transmit buffer. </td></tr>
-    <tr><td class="paramname">rx_buffer</td><td>Pointer to transmit buffer (in terms of bytes). </td></tr>
-    <tr><td class="paramname">rx_fr_len</td><td>Number of frames to store in recieve buffer. </td></tr>
-    <tr><td class="paramname">deassert</td><td>True(1)/False(0) whether to deassert target select at end of transactions. </td></tr>
-    <tr><td class="paramname">target</td><td>Pointer to select target for SPI transaction.</td></tr>
+    <tr><td class="paramname">req</td><td>Pointer to details of the transaction.</td></tr>
   </table>
   </dd>
 </dl>
@@ -662,82 +657,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga0b7d1629f417c84886d8a9c4b47cddba" name="ga0b7d1629f417c84886d8a9c4b47cddba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga0b7d1629f417c84886d8a9c4b47cddba">&#9670;&nbsp;</a></span>MXC_SPI_ControllerTransactionB()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int MXC_SPI_ControllerTransactionB </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *&#160;</td>
-          <td class="paramname"><em>spi</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>tx_buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>tx_fr_len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>rx_buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>rx_fr_len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>deassert</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__spi.html#structmxc__spi__target__t">mxc_spi_target_t</a> *&#160;</td>
-          <td class="paramname"><em>target</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Set up a blocking, interrupt-driven SPI controller transaction. </p>
-<p >The MXC_SPI_Handler function must be called in the selected SPI instance's interrupt handler to process the transaction.</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">tx_buffer</td><td>Pointer to transmit buffer (in terms of bytes). </td></tr>
-    <tr><td class="paramname">tx_fr_len</td><td>Number of frames to transmit from transmit buffer. </td></tr>
-    <tr><td class="paramname">rx_buffer</td><td>Pointer to transmit buffer (in terms of bytes). </td></tr>
-    <tr><td class="paramname">rx_fr_len</td><td>Number of frames to store in recieve buffer. </td></tr>
-    <tr><td class="paramname">deassert</td><td>True(1)/False(0) whether to deassert target select at end of transactions. </td></tr>
-    <tr><td class="paramname">target</td><td>Pointer to select target for SPI transaction.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for the list of error return codes. </dd></dl>
-
-</div>
-</div>
-<a id="ga97d9dbb0a5124f2560941ad4ccbb0749" name="ga97d9dbb0a5124f2560941ad4ccbb0749"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga97d9dbb0a5124f2560941ad4ccbb0749">&#9670;&nbsp;</a></span>MXC_SPI_ControllerTransactionDMA()</h2>
+<a id="ga7790c0deb2ab343f04386c15717706ff" name="ga7790c0deb2ab343f04386c15717706ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga7790c0deb2ab343f04386c15717706ff">&#9670;&nbsp;</a></span>MXC_SPI_ControllerTransactionDMA()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -745,63 +666,18 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MXC_SPI_ControllerTransactionDMA </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *&#160;</td>
-          <td class="paramname"><em>spi</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">mxc_spi_req_t *&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>tx_buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>tx_fr_len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>rx_buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>rx_fr_len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>deassert</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__spi.html#structmxc__spi__target__t">mxc_spi_target_t</a> *&#160;</td>
-          <td class="paramname"><em>target</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Set up a non-blocking, DMA-driven SPI controller transaction. </p>
+<p >The MXC_SPI_Config(...) or MXC_SPI_DMA_Init(..). functions must be called before calling this DMA transaction function. This function does not initialize the DMA.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">tx_buffer</td><td>Pointer to transmit buffer (in terms of bytes). </td></tr>
-    <tr><td class="paramname">tx_fr_len</td><td>Number of frames to transmit from transmit buffer. </td></tr>
-    <tr><td class="paramname">rx_buffer</td><td>Pointer to transmit buffer (in terms of bytes). </td></tr>
-    <tr><td class="paramname">rx_fr_len</td><td>Number of frames to store in recieve buffer. </td></tr>
-    <tr><td class="paramname">deassert</td><td>True(1)/False(0) whether to deassert target select at end of transactions. </td></tr>
-    <tr><td class="paramname">target</td><td>Pointer to select target for SPI transaction.</td></tr>
+    <tr><td class="paramname">req</td><td>Pointer to details of the transaction.</td></tr>
   </table>
   </dd>
 </dl>
@@ -809,8 +685,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga4fd2c0126a869fa9db7688b22bf1be86" name="ga4fd2c0126a869fa9db7688b22bf1be86"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga4fd2c0126a869fa9db7688b22bf1be86">&#9670;&nbsp;</a></span>MXC_SPI_ControllerTransactionDMAB()</h2>
+<a id="gab139788d8913e6955cc5d0cbe192c7c6" name="gab139788d8913e6955cc5d0cbe192c7c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab139788d8913e6955cc5d0cbe192c7c6">&#9670;&nbsp;</a></span>MXC_SPI_ControllerTransactionDMAB()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -818,49 +694,9 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MXC_SPI_ControllerTransactionDMAB </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *&#160;</td>
-          <td class="paramname"><em>spi</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramtype">mxc_spi_req_t *&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>tx_buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>tx_fr_len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>rx_buffer</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint32_t&#160;</td>
-          <td class="paramname"><em>rx_fr_len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">uint8_t&#160;</td>
-          <td class="paramname"><em>deassert</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="group__spi.html#structmxc__spi__target__t">mxc_spi_target_t</a> *&#160;</td>
-          <td class="paramname"><em>target</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -868,13 +704,7 @@ Functions</h2></td></tr>
 <p>Set up a blocking, DMA-driven SPI controller transaction. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">tx_buffer</td><td>Pointer to transmit buffer (in terms of bytes). </td></tr>
-    <tr><td class="paramname">tx_fr_len</td><td>Number of frames to transmit from transmit buffer. </td></tr>
-    <tr><td class="paramname">rx_buffer</td><td>Pointer to transmit buffer (in terms of bytes). </td></tr>
-    <tr><td class="paramname">rx_fr_len</td><td>Number of frames to store in recieve buffer. </td></tr>
-    <tr><td class="paramname">deassert</td><td>True(1)/False(0) whether to deassert target select at end of transactions. </td></tr>
-    <tr><td class="paramname">target</td><td>Pointer to select target for SPI transaction.</td></tr>
+    <tr><td class="paramname">req</td><td>Pointer to details of the transaction.</td></tr>
   </table>
   </dd>
 </dl>
@@ -912,7 +742,7 @@ Functions</h2></td></tr>
 <p >These functions should not be used while using non-blocking Transaction Level functions (Async or DMA)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used). </td></tr>
     <tr><td class="paramname">intDis</td><td>The interrupts to be disabled </td></tr>
   </table>
   </dd>
@@ -936,7 +766,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Helper function that checks whether the MXC_SPI_Init function initalized DMA for SPI DMA transactons. </p>
+<p>Helper function that checks whether the MXC_SPI_Init function cfgalized DMA for SPI DMA transactons. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers.</td></tr>
@@ -1001,8 +831,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga742c4006369ca380c4cad8362b5d2ccb" name="ga742c4006369ca380c4cad8362b5d2ccb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga742c4006369ca380c4cad8362b5d2ccb">&#9670;&nbsp;</a></span>MXC_SPI_DMA_Init()</h2>
+<a id="ga5d6132a2bfc754c950bd7083bec8561b" name="ga5d6132a2bfc754c950bd7083bec8561b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga5d6132a2bfc754c950bd7083bec8561b">&#9670;&nbsp;</a></span>MXC_SPI_DMA_Init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1010,18 +840,43 @@ Functions</h2></td></tr>
         <tr>
           <td class="memname">int MXC_SPI_DMA_Init </td>
           <td>(</td>
-          <td class="paramtype">mxc_spi_init_t *&#160;</td>
-          <td class="paramname"><em>init</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">mxc_dma_regs_t *&#160;</td>
+          <td class="paramname"><em>dma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_dma_tx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_dma_rx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>This function initializes the DMA for SPI DMA transactions. </p>
-<dl class="section note"><dt>Note</dt><dd>This function must run before the MXC_SPI_MasterTransactionDMA function i</dd></dl>
+<dl class="section note"><dt>Note</dt><dd>This function must run before any SPI DMA transactions.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">init</td><td>Pointer to init struct with init.use_dma is set to true and a DMA instance is assigned to init.dma (init.dma = MXC_DMA).</td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used). </td></tr>
+    <tr><td class="paramname">dma</td><td>Pointer to DMA registers (selects the DMA block used). </td></tr>
+    <tr><td class="paramname">use_dma_tx</td><td>True/False setting to initialize SPI DMA TX. Acquire DMA TX channel. </td></tr>
+    <tr><td class="paramname">use_dma_rx</td><td>True/False setting to initialize SPI DMA RX. Acquire DMA RX channel. use_dma_tx must be true even if use_dma_rx is false.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1056,8 +911,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga3d1a2dc373641d98c6d528f4869babf7" name="ga3d1a2dc373641d98c6d528f4869babf7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3d1a2dc373641d98c6d528f4869babf7">&#9670;&nbsp;</a></span>MXC_SPI_DMA_SetRequestSelect()</h2>
+<a id="ga0de67ce7d5117b54b43f222926f13783" name="ga0de67ce7d5117b54b43f222926f13783"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga0de67ce7d5117b54b43f222926f13783">&#9670;&nbsp;</a></span>MXC_SPI_DMA_SetRequestSelect()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1071,14 +926,14 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>tx_buffer</em>, </td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_dma_tx</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">uint8_t *&#160;</td>
-          <td class="paramname"><em>rx_buffer</em>&#160;</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_dma_rx</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1092,8 +947,8 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">tx_buffer</td><td>Pointer to transmit buffer. </td></tr>
-    <tr><td class="paramname">rx_buffer</td><td>Pointer to receive buffer.</td></tr>
+    <tr><td class="paramname">use_dma_tx</td><td>True/False setting to set SPI DMA TX request select. </td></tr>
+    <tr><td class="paramname">use_dma_rx</td><td>True/False setting to set SPI DMA RX request select.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1155,11 +1010,11 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Enables specific interrupts. </p>
-<p >These functions should not be used while using non-blocking Transaction Level functions (Async or DMA)</p>
+<p >These functions should not be used while using non-blocking Transaction Level functions (Async or DMA).</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
-    <tr><td class="paramname">intEn</td><td>The interrupts to be enabled </td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used). </td></tr>
+    <tr><td class="paramname">intEn</td><td>The interrupts to be enabled. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1241,7 +1096,7 @@ Functions</h2></td></tr>
 <p>Gets the number of bits per character. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.)</td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used).</td></tr>
   </table>
   </dd>
 </dl>
@@ -1269,11 +1124,11 @@ Functions</h2></td></tr>
 <p >These functions should not be used while using non-blocking Transaction Level functions (Async or DMA)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.)</td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used).</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>The interrupt flags </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The interrupt flags. </dd></dl>
 
 </div>
 </div>
@@ -1379,7 +1234,7 @@ Functions</h2></td></tr>
 <p>Gets the spi mode. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.)</td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used).</td></tr>
   </table>
   </dd>
 </dl>
@@ -1569,7 +1424,7 @@ Functions</h2></td></tr>
 <p>Gets the SPI width used for transmissions. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.)</td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used).</td></tr>
   </table>
   </dd>
 </dl>
@@ -1604,8 +1459,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="ga812c8b820873b071de819b8db2c1a845" name="ga812c8b820873b071de819b8db2c1a845"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga812c8b820873b071de819b8db2c1a845">&#9670;&nbsp;</a></span>MXC_SPI_Init()</h2>
+<a id="ga06f41ee71f978fd9ae872238d26fef28" name="ga06f41ee71f978fd9ae872238d26fef28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga06f41ee71f978fd9ae872238d26fef28">&#9670;&nbsp;</a></span>MXC_SPI_Init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1619,32 +1474,32 @@ Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>masterMode</em>, </td>
+          <td class="paramtype"><a class="el" href="group__spi.html#ga5447fbf3228e462c455f8108ea0bbd99">mxc_spi_type_t</a>&#160;</td>
+          <td class="paramname"><em>controller_target</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spi.html#ga235c514a114e1ddd7e331df383f7ed31">mxc_spi_interface_t</a>&#160;</td>
+          <td class="paramname"><em>if_mode</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>quadModeUsed</em>, </td>
+          <td class="paramname"><em>numTargets</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>numSlaves</em>, </td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>ts_active_pol_mask</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">unsigned&#160;</td>
-          <td class="paramname"><em>ssPolarity</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">unsigned int&#160;</td>
-          <td class="paramname"><em>hz</em>, </td>
+          <td class="paramtype">uint32_t&#160;</td>
+          <td class="paramname"><em>freq</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -1661,105 +1516,17 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize and enable SPI peripheral. </p>
-<p >This function does not set the Clock Mode (defaults to Clock Mode 0) and only two interface modes are selectable (Quad Mode or 4-Wire Standard Mode). To change the clock mode, call MXC_SPI_SetClkMode(...). To select another interface mode, call MXC_SPI_SetInterface(...).</p>
-<p >These parameters can be modified after initialization using low level functions</p>
+<p >This function does not set the Clock Mode (defaults to Clock Mode 0) and only two interface modes are selectable (Quad Mode or 4-Wire Standard Mode). To change the clock mode, call MXC_SPI_SetClkMode(..).. To select another interface mode, call MXC_SPI_SetInterface(..)..</p>
+<p >These parameters can be modified after cfgialization using low level functions</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">masterMode</td><td>Whether to put the device in master or slave mode. Use non-zero for master mode, and zero for slave mode. </td></tr>
-    <tr><td class="paramname">quadModeUsed</td><td>Whether to obtain control of the SDIO2/3 pins. Use non-zero if the pins are needed (if Quad Mode will be used), and zero if they are not needed (quad mode will never be used). </td></tr>
-    <tr><td class="paramname">numSlaves</td><td>The number of slaves used, if in master mode. This is used to obtain control of the necessary SS pins. In slave mode this is ignored and SS1 is used. </td></tr>
-    <tr><td class="paramname">ssPolarity</td><td>This field sets the SS active polarity for each slave, each bit position corresponds to each SS line. </td></tr>
-    <tr><td class="paramname">hz</td><td>The requested clock frequency. The actual clock frequency will be returned by the function if successful. Used in master mode only. </td></tr>
+    <tr><td class="paramname">controller_target</td><td>Whether to put the device in controller or target mode. Use non-zero for controller mode, and zero for target mode. MXC_SPI_TYPE_CONTROLLER - 1 MXC_SPI_TYPE_TARGET - 0 </td></tr>
+    <tr><td class="paramname">if_mode</td><td>Set the interface mode. MXC_SPI_INTERFACE_STANDARD - 0 (4 wire) MXC_SPI_INTERFACE_QUAD - 1 MXC_SPI_INTERFACE_3WIRE - 2 MXC_SPI_INTERFACE_DUAL - 3 </td></tr>
+    <tr><td class="paramname">numTargets</td><td>This parameter is UNUSED for SPI v2. The number of target used, if in controller mode. This is used to obtain control of the necessary TS pins. In target mode this is ignored and TS1 is used. </td></tr>
+    <tr><td class="paramname">ts_active_pol_mask</td><td>This field sets the TS active polarity for each target, each bit position corresponds to each TS line. ts_active_pol_mask[0] - TS0 ts_active_pol_mask[1] - TS1 ts_active_pol_mask[n] - TSn </td></tr>
+    <tr><td class="paramname">freq</td><td>The requested clock frequency. The actual clock frequency will be returned by the function if successful. Used in master mode only. </td></tr>
     <tr><td class="paramname">pins</td><td>SPI pin structure. Pins selected as true will be initialized for the requested SPI block. <br  />
-</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>If successful, the actual clock frequency is returned. Otherwise, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
-
-</div>
-</div>
-<a id="ga645c2b71f8ff2b295b471f805c9d215e" name="ga645c2b71f8ff2b295b471f805c9d215e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga645c2b71f8ff2b295b471f805c9d215e">&#9670;&nbsp;</a></span>MXC_SPI_Init_v2()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int MXC_SPI_Init_v2 </td>
-          <td>(</td>
-          <td class="paramtype">mxc_spi_init_t *&#160;</td>
-          <td class="paramname"><em>init</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Initialize and enable SPI peripheral. </p>
-<p >These parameters can be modified after initialization using low level functions</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Init</td><td>Pointer to SPI registers (selects the SPI block used.) <br  />
-</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>If successful, the actual clock frequency is returned. Otherwise, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
-
-</div>
-</div>
-<a id="ga418ce783bb5c3242dbfd74a32d8c5580" name="ga418ce783bb5c3242dbfd74a32d8c5580"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga418ce783bb5c3242dbfd74a32d8c5580">&#9670;&nbsp;</a></span>MXC_SPI_InitStruct()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int MXC_SPI_InitStruct </td>
-          <td>(</td>
-          <td class="paramtype">mxc_spi_init_t *&#160;</td>
-          <td class="paramname"><em>init</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Overwrites an init struct with default, example values (non-DMA). </p>
-<p >Note: This function overwrites an mxc_spi_init_t init struct with default values.</p>
-<p >Settings: SPI APB (SPI1) instance Default, predefined SPI pins at VDDIO Controller Mode Standard 4-wire mode 100KHz speed CPOL: 0, CPHA: 0 Automatic Hardware mode for TS Control TS0 pin Target active polarity is LOW (0)</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Init</td><td>Pointer to SPI registers (selects the SPI block used.)</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>If successful, the actual clock frequency is returned. Otherwise, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
-
-</div>
-</div>
-<a id="ga3daaebe3d54ac6d4337a1c529f957827" name="ga3daaebe3d54ac6d4337a1c529f957827"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ga3daaebe3d54ac6d4337a1c529f957827">&#9670;&nbsp;</a></span>MXC_SPI_InitStruct_DMA()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">int MXC_SPI_InitStruct_DMA </td>
-          <td>(</td>
-          <td class="paramtype">mxc_spi_init_t *&#160;</td>
-          <td class="paramname"><em>init</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Overwrites an init struct with default, example values (DMA). </p>
-<p >Note: This function overwrites an mxc_spi_init_t init struct with arbitrary, default values. The mxc_spi_target target must be supplied by the caller.</p>
-<p >Settings: SPI0 instance (MXC_SPI0) Default, predefined SPI pins at VDDIO Controller Mode Standard 4-wire mode 100KHz speed CPOL: 0, CPHA: 0 Automatic Hardware mode for TS Control TS0 pin Target active polarity is LOW (0) DMA0 instance (MXC_DMA)</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">Init</td><td>Pointer to SPI registers (selects the SPI block used.) <br  />
 </td></tr>
   </table>
   </dd>
@@ -2046,18 +1813,10 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p><blockquote class="doxtable">
-<blockquote class="doxtable">
-<blockquote class="doxtable">
-<p >&zwj;Previous Implementation </p>
-</blockquote>
-</blockquote>
-</blockquote>
-</p>
-<p >Sets the number of bits per character</p>
+<p>Sets the number of bits per character. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used). </td></tr>
     <tr><td class="paramname">dataSize</td><td>The number of bits per character</td></tr>
   </table>
   </dd>
@@ -2096,12 +1855,12 @@ Functions</h2></td></tr>
 <p >In single wire master mode, this data is transmitted on MOSI when performing an RX (MISO) only transaction. This defaults to 0.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used). </td></tr>
     <tr><td class="paramname">defaultTXData</td><td>Data to shift out in RX-only transactions</td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. &lt;&lt; Previous Implementation </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
 
 </div>
 </div>
@@ -2182,8 +1941,8 @@ Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="gacdd85d1eded7f6cc25ff07754decb9e0" name="gacdd85d1eded7f6cc25ff07754decb9e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#gacdd85d1eded7f6cc25ff07754decb9e0">&#9670;&nbsp;</a></span>MXC_SPI_SetInterface()</h2>
+<a id="ga4f3d44756a61830bb26ca7536461ba74" name="ga4f3d44756a61830bb26ca7536461ba74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4f3d44756a61830bb26ca7536461ba74">&#9670;&nbsp;</a></span>MXC_SPI_SetInterface()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2198,7 +1957,7 @@ Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="group__spi.html#ga235c514a114e1ddd7e331df383f7ed31">mxc_spi_interface_t</a>&#160;</td>
-          <td class="paramname"><em>mode</em>&#160;</td>
+          <td class="paramname"><em>if_mode</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -2213,7 +1972,7 @@ Functions</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
-    <tr><td class="paramname">mode</td><td>SPI interface mode (3-Wire, Standard, Dual SPI, Quad SPI). See mxc_spi_datawidth_t</td></tr>
+    <tr><td class="paramname">if_mode</td><td>SPI interface mode (3-Wire, Standard, Dual SPI, Quad SPI). See mxc_spi_datawidth_t</td></tr>
   </table>
   </dd>
 </dl>
@@ -2250,7 +2009,7 @@ Functions</h2></td></tr>
 <p>Sets the spi mode using clock polarity and clock phase. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used). </td></tr>
     <tr><td class="paramname">spiMode</td><td><a class="el" href="group__spi.html#ga60b8dae244994cc57471750e249bc09c">mxc_spi_mode_t</a></td></tr>
   </table>
   </dd>
@@ -2337,6 +2096,44 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ga382b178822d9231fdf48dc3fb186d520" name="ga382b178822d9231fdf48dc3fb186d520"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga382b178822d9231fdf48dc3fb186d520">&#9670;&nbsp;</a></span>MXC_SPI_SetTSControl()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPI_SetTSControl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__spi__registers.html#structmxc__spi__regs__t">mxc_spi_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>spi</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="group__spi.html#ga44ea3296716bcd6f1f87802e7ea47ca2">mxc_spi_tscontrol_t</a>&#160;</td>
+          <td class="paramname"><em>ts_control</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Configures the Pre-defined SPI Target Select pins for a specific instance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">spi</td><td>Pointer to SPI instance's registers. </td></tr>
+    <tr><td class="paramname">ts_control</td><td>Target Select Control Scheme (<a class="el" href="group__spi.html#ga44ea3296716bcd6f1f87802e7ea47ca2">mxc_spi_tscontrol_t</a>).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
 <a id="ga7fd5b76f6fb558d0556927afaf263cc8" name="ga7fd5b76f6fb558d0556927afaf263cc8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ga7fd5b76f6fb558d0556927afaf263cc8">&#9670;&nbsp;</a></span>MXC_SPI_SetTXThreshold()</h2>
 
@@ -2405,7 +2202,7 @@ Functions</h2></td></tr>
 <p>Sets the SPI width used for transmissions. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
+    <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used). </td></tr>
     <tr><td class="paramname">spiWidth</td><td>SPI Width (3-Wire, Standard, Dual SPI, Quad SPI)</td></tr>
   </table>
   </dd>
@@ -2458,13 +2255,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Performs a blocking SPI transaction. </p>
-<p >Performs a blocking SPI transaction. These actions will be performed in Slave Mode:</p><ol type="1">
-<li>Fill FIFO with txData</li>
-<li>Wait for SS Assert</li>
-<li>If needed, pad txData with DefaultTXData</li>
-<li>Unload RX FIFO as needed</li>
-<li>On SS Deassert, return</li>
-</ol>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">req</td><td>Pointer to details of the transaction</td></tr>
@@ -2492,7 +2282,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Setup an interrupt-driven SPI transaction. </p>
-<p >The TX FIFO will be filled with txData, padded with DefaultTXData if necessary Relevant interrupts will be enabled, and relevant registers set (SS, Width, etc)</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">req</td><td>Pointer to details of the transactionz</td></tr>
@@ -2561,6 +2350,88 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="gacb42582d12777a46132c79ce7f7bc85c" name="gacb42582d12777a46132c79ce7f7bc85c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacb42582d12777a46132c79ce7f7bc85c">&#9670;&nbsp;</a></span>MXC_SPI_TargetTransaction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPI_TargetTransaction </td>
+          <td>(</td>
+          <td class="paramtype">mxc_spi_req_t *&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setup a blocking SPI Target transaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">req</td><td>Pointer to details of the transaction.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for the list of error return codes. </dd></dl>
+
+</div>
+</div>
+<a id="gacdf16ffb2d49806f0e519bb1579b241e" name="gacdf16ffb2d49806f0e519bb1579b241e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gacdf16ffb2d49806f0e519bb1579b241e">&#9670;&nbsp;</a></span>MXC_SPI_TargetTransactionAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPI_TargetTransactionAsync </td>
+          <td>(</td>
+          <td class="paramtype">mxc_spi_req_t *&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setup an interrupt-driven, non-blocking SPI Target transaction. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">req</td><td>Pointer to details of the transaction.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for the list of error return codes. </dd></dl>
+
+</div>
+</div>
+<a id="gab1117c58d5e784b6977edac58442a370" name="gab1117c58d5e784b6977edac58442a370"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gab1117c58d5e784b6977edac58442a370">&#9670;&nbsp;</a></span>MXC_SPI_TargetTransactionDMA()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_SPI_TargetTransactionDMA </td>
+          <td>(</td>
+          <td class="paramtype">mxc_spi_req_t *&#160;</td>
+          <td class="paramname"><em>req</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Setup a DMA-driven SPI Target transaction. </p>
+<p >The MXC_SPI_Config(...) or MXC_SPI_DMA_Init(..). functions must be called before calling this DMA transaction function. This function does not initialize the DMA.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">req</td><td>Pointer to details of the transaction.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>See <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for the list of error return codes. </dd></dl>
+
+</div>
+</div>
 <a id="gabf15ece606f89a319844ea494817c792" name="gabf15ece606f89a319844ea494817c792"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gabf15ece606f89a319844ea494817c792">&#9670;&nbsp;</a></span>MXC_SPI_WriteTXFIFO()</h2>
 
@@ -2611,7 +2482,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 4 2023 17:12:20 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Oct 11 2023 21:27:56 for MAX78002 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

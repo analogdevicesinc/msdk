@@ -916,11 +916,12 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Initialize timer module clock. </p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables TMR peripheral clock and related GPIOs. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">tmr</td><td>Pointer to timer module to initialize. </td></tr>
     <tr><td class="paramname">cfg</td><td>System configuration object </td></tr>
-    <tr><td class="paramname">init_pins</td><td>True will initialize pins corresponding to the TMR and False will not if pins are pinned out otherwise it will not be used</td></tr>
+    <tr><td class="paramname">init_pins</td><td>True will initialize pins corresponding to the TMR and False will not if pins are pinned out otherwise it will not be used, has no effect incase of MSDK_NO_GPIO_CLK_INIT has been defined.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1348,7 +1349,7 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 4 2023 17:11:37 for MAX32655 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Oct 11 2023 21:27:12 for MAX32655 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

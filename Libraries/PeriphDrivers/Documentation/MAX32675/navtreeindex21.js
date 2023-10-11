@@ -1,5 +1,16 @@
 var NAVTREEINDEX21 =
 {
+"group__spi.html#ga040221eafa059cdc505e50e3a64c9b13":[1,16,34],
+"group__spi.html#ga0975fa702566dae897a0a77417129808":[1,16,15],
+"group__spi.html#ga0c0e27e72171a55780d097ff2c2ffada":[1,16,21],
+"group__spi.html#ga168bef8ae6817c9494bdc15a93cd7a44":[1,16,22],
+"group__spi.html#ga21e310e59d113a6feccf3b43777f8bda":[1,16,8],
+"group__spi.html#ga24e177a4dd64fff54b71480f00778b2c":[1,16,12],
+"group__spi.html#ga276dd82fa052f27cbc8d44101905f30d":[1,16,30],
+"group__spi.html#ga2a8e364f66ab638743be826e242021ee":[1,16,11],
+"group__spi.html#ga38048f4a4e31ceda3c3220a004b0d877":[1,16,36],
+"group__spi.html#ga398e4c89b65cd9ad803c79b699199b80":[1,16,39],
+"group__spi.html#ga3d9f3a2760a4caa850ffcae7edd99d8b":[1,16,37],
 "group__spi.html#ga3f463c4883d810768f1c37654907c449":[1,16,14],
 "group__spi.html#ga3fa6c3821155ce8782390638f2632a86":[1,16,23],
 "group__spi.html#ga41228df9f274fb42a12807d40770e3ea":[1,16,18],
@@ -238,16 +249,5 @@ var NAVTREEINDEX21 =
 "group__uart__registers.html#a4eb41b50b3d4ab4736942a6ce0ee4f46":[1,19,0,14,6],
 "group__uart__registers.html#a5f3ab705a4a67b17dcc04560cef193f3":[1,19,0,14,1],
 "group__uart__registers.html#a71c81fbb80641b4b170ab374e553582c":[1,19,0,14,11],
-"group__uart__registers.html#aab1cd293f21e42b2e6b96937ad70f02a":[1,19,0,14,2],
-"group__uart__registers.html#ab0ebf69f73c81993f7d7bd8392111fc3":[1,19,0,14,3],
-"group__uart__registers.html#af3e2316348029c26147ceaba51512bf7":[1,19,0,14,9],
-"group__uart__registers.html#structmxc__uart__regs__t":[1,19,0,14],
-"group__wdt.html":[1,20],
-"group__wdt.html#a0fb6f702a2d2ef7e64d45746508dd675":[1,20,1,0],
-"group__wdt.html#a7248d988facbc4deda93907b9c214a79":[1,20,1,1],
-"group__wdt.html#acd62253017205694e2f82a2cec6da3fa":[1,20,1,4],
-"group__wdt.html#ae1cc47fde12916cf75532b6bc1a80d90":[1,20,1,3],
-"group__wdt.html#af095484763b40d0ce2649b916f0ef898":[1,20,1,2],
-"group__wdt.html#ga038303b14f3ff9771b7f9f511e75972d":[1,20,13],
-"group__wdt.html#ga12467c52fd011a002b1f9c0efa11d7db":[1,20,14]
+"group__uart__registers.html#aab1cd293f21e42b2e6b96937ad70f02a":[1,19,0,14,2]
 };

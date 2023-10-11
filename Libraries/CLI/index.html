@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Analog Devices" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>MSDK CLI Library - Analog Devices MSDK Documentation</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../../css/extra.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "MSDK CLI Library";
+        var mkdocs_page_input_path = "Libraries/CLI/README.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-79C65FSVL6"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', "G-79C65FSVL6");
+      </script>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> Analog Devices MSDK Documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../USERGUIDE/">MSDK User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../Cordio/docs/CORDIO_USERGUIDE/">Cordio BLE User Guide</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING/">Contributing</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../LICENSE/">License</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">Analog Devices MSDK Documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">MSDK CLI Library</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/Libraries/CLI/README.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="msdk-cli-library">MSDK CLI Library</h1>
+<h2 id="description">Description</h2>
+<h4 id="what-is-a-command-line-interfacecli">What is a Command Line Interface(CLI)?</h4>
+<p>A command-line interface or command language interpreter (CLI), also known as command-line user interface, console user interface, and character user interface (CUI), is a means of interacting with an embedded system where the user (or client) issues commands to the program in the form of successive lines of text (command lines).</p>
+<p>This library provides an extensible command processor to:</p>
+<ul>
+<li>Quickly and easily wrap user functions with a CLI</li>
+<li>Allow developers to get diagnostics and change device parameters interactively</li>
+<li>Easily automate testing of the device, through PC-side scripting</li>
+</ul>
+<p>The current CLI Library includes the following features:</p>
+<ul>
+<li>UART interface support</li>
+<li>Custom commands with support for multiple arguments</li>
+<li>No modification of functions required.  Users implement a command table and simple wrapper functions.</li>
+<li>Case insensitive commands &amp; arguments.</li>
+<li>White-space insensitive.</li>
+<li>Easy built-in 'help' command and custom help strings.</li>
+</ul>
+<h2 id="usage-guide">Usage Guide</h2>
+<p>To use the CLI library, users are expected to implement the following steps in their application:</p>
+<ol>
+<li>
+<p>Add the following line to your <a href="../../USERGUIDE/#build-configuration-variables">project.mk</a> file to enable the CLI library for your project:</p>
+<pre class="codehilite"><code class="language-makefile">LIB_CLI = 1
+</code></pre>
+
+</li>
+<li>
+<p><code>#include "cli.h"</code> in your application code.</p>
+</li>
+<li>
+<p>Define an array of type <code>const command_t</code>.  This is your command table.  Include an array element for each command you want your CLI to support. Each element should define:</p>
+<ol>
+<li>The name of the command</li>
+<li>A string showing how to enter the command in the terminal</li>
+<li>A description of what the command does</li>
+<li>A function pointer to a wrapper function.</li>
+</ol>
+<p>For example, the following is subset of the SDHC example command set:</p>
+<pre class="codehilite"><code class="language-c">const command_t user_commands[] = {{ &quot;format&quot;, &quot;format&quot;, &quot;Format the Card&quot;, handle_format },
+                                { &quot;mkdir&quot;, &quot;mkdir &lt;directory name&gt;&quot;, &quot;Create a directory&quot;, handle_mkdir }}
+</code></pre>
+
+</li>
+<li>
+<p>Implement a handler function for each command.</p>
+<p>The handler functions provided to the <code>user_commands</code> table are "wrappers" around the code that should be run for each received command.  The handlers must conform to the following definition:</p>
+<p>Parameters</p>
+<ul>
+<li><code>int argc</code>   - This tells the handler function how many arguments were received.</li>
+<li><code>char* argv[]</code> - This array holds the received arguments (in order) as strings. (Note: argv[0] holds the command string, argv[1:argc] are the arguments (if any are passed), and the last element in the argument vector is always a NULL pointer.)</li>
+</ul>
+<p>Return Value</p>
+<ul>
+<li>The function needs to return an integer type. It should return 0 (E_NO_ERROR) if the command was executed successfuly, otherwise it should return a negative integer as an error code.</li>
+</ul>
+<p>Below is a sample handler function for a "make directory" command, where <code>mkdir</code> is some function in the user's application code that does the work.</p>
+<pre class="codehilite"><code class="language-c">int handle_mkdir(int argc, char *argv[]) {
+    mkdir(argv[1]);
+}
+</code></pre>
+
+<p>As an example, suppose a user entered the command:</p>
+<pre class="codehilite"><code class="language-c">mkdir new_folder
+</code></pre>
+
+<p>The CLI library will tokenize the command string "mkdir new_folder" into "mkdir" and "new_folder" and assigns them to argv[0] and argv[1] respectively. The library would then determine that this is the "make directory" command and would call "handle_mkdir" with argc=2 and a pointer to the argument vector.</p>
+</li>
+<li>
+<p>Add a call to <code>MXC_CLI_Init</code> to the application's startup code.  </p>
+<p>Pass in the UART instance for the CLI to use, a pointer to the command table, and the number of commands in the command table.</p>
+</li>
+<li>
+<p>(OPTIONAL) The CLI library will enable and handle UART interrupts automatically.  Users who would like more control over the interrupt handling have the option to disable the default handler and define their own.</p>
+<p>To do so, set the <code>LIB_CLI_USE_DEFAULT_HANDLER</code> <a href="../../USERGUIDE/#build-configuration-variables">build configuration variable</a> to <code>0</code>.  Users may now enable and handle the interrupt with a custom function.  However, users must call <code>MXC_CLI_Handler()</code> from the custom function for the CLI to work.</p>
+</li>
+</ol>
+              
+            </div>
+          </div><footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>Copyright (C) Maxim Integrated Products, Inc., All rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Analog-Devices-MSDK/msdk" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

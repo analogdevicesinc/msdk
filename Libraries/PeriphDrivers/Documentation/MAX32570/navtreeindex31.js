@@ -1,5 +1,17 @@
 var NAVTREEINDEX31 =
 {
+"group__spixr__registers.html#aab1cd293f21e42b2e6b96937ad70f02a":[0,28,0,16,7],
+"group__spixr__registers.html#adef50da3520f7ff420a0ef7fdaa17256":[0,28,0,16,1],
+"group__spixr__registers.html#ae11b73e624e946ab2645f23538ec2083":[0,28,0,16,4],
+"group__spixr__registers.html#af8524d8c395fc8a6799a944d793f6245":[0,28,0,16,2],
+"group__spixr__registers.html#affedcd0310ea8b53fcecb4538a47b550":[0,28,0,16,12],
+"group__spixr__registers.html#structmxc__spixr__regs__t":[0,28,0,16],
+"group__srcc.html":[0,29],
+"group__srcc.html#ga2172453ec177bccce41b5af3b65008bd":[0,29,7],
+"group__srcc.html#ga788900c9a6cf09caebe2b877a275f31d":[0,29,9],
+"group__srcc.html#ga7e4c462a6ef31947fee1866249441441":[0,29,5],
+"group__srcc.html#ga82eef6554756d23d32d0a1f3a70ee67a":[0,29,6],
+"group__srcc.html#ga848602e92830fb7f1cab094f427441c5":[0,29,4],
 "group__srcc.html#ga8616ad2d318f973204e64c6d7b3fc9f8":[0,29,11],
 "group__srcc.html#ga87d5dc72d568234b768ac33d1442ead2":[0,29,8],
 "group__srcc.html#ga8ba1e7b71dc57c34732eb23712fc9c42":[0,29,10],
@@ -237,17 +249,5 @@ var NAVTREEINDEX31 =
 "group__usbhs__registers.html#a8e7aa5a614b9300d61c049a4727df906":[0,44,48,76],
 "group__usbhs__registers.html#a9201c63586d858ef772c92bed0bd8889":[0,44,48,46],
 "group__usbhs__registers.html#a948c942c3e51c963259aa73ec3b74074":[0,44,48,17],
-"group__usbhs__registers.html#a9518424013975d672e81df9fa366a014":[0,44,48,74],
-"group__usbhs__registers.html#a9655059b3ef7fc3251419b012ab2f726":[0,44,48,16],
-"group__usbhs__registers.html#a98a936be2665f7aea3604491dfff4167":[0,44,48,77],
-"group__usbhs__registers.html#a9b520433b48d213bb4c87efcbf94af86":[0,44,48,3],
-"group__usbhs__registers.html#aa4a7fa2b9d94684120e72b34fca844cb":[0,44,48,38],
-"group__usbhs__registers.html#aa540ad90824d9c489a1fc2840de5f774":[0,44,48,67],
-"group__usbhs__registers.html#aa7cd01db5da5a08f2b48bc457346d3cb":[0,44,48,19],
-"group__usbhs__registers.html#aa985fefe96b59f1f8d71017201001091":[0,44,48,51],
-"group__usbhs__registers.html#aab298862f1cfb826caad5be8f5e88ce5":[0,44,48,80],
-"group__usbhs__registers.html#ab2f1f5ce88589f00f3e327c6bf1b1d11":[0,44,48,62],
-"group__usbhs__registers.html#ab70fd44e649769d568797646fd3df11c":[0,44,48,35],
-"group__usbhs__registers.html#abc61831f7848695662e632a2c82f3e5b":[0,44,48,72],
-"group__usbhs__registers.html#ac867c11e33423ee5e414f002c39ccaf6":[0,44,48,2]
+"group__usbhs__registers.html#a9518424013975d672e81df9fa366a014":[0,44,48,74]
 };

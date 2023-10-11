@@ -1,5 +1,16 @@
 var NAVTREEINDEX18 =
 {
+"group__spi.html#ga812c8b820873b071de819b8db2c1a845":[1,20,28],
+"group__spi.html#ga85d98037b8a7ff2f1d54db8ac7edbf74":[1,20,43],
+"group__spi.html#ga86f66284a2899897a4e0fc760d01bc6d":[1,20,46],
+"group__spi.html#ga88101bd57a262e6719d5b497a692d528":[1,20,26],
+"group__spi.html#ga8bd2984da7fd84362fe59e2add1e3bb9":[1,20,44],
+"group__spi.html#ga9a92d8991186982b927fee7dbb5e8cab":[1,20,37],
+"group__spi.html#ga9d7f7ec4a2f457569169a8194ea29555":[1,20,8],
+"group__spi.html#gaa06214fd0986da99eef31b358385ca78":[1,20,14],
+"group__spi.html#gaa0c86f7cbe59a6f3c95f3e86aa9a07c7":[1,20,38],
+"group__spi.html#gaa834986af29c54377bbfb7cf3ade1b81":[1,20,10],
+"group__spi.html#gaaab4ba92652dff76e85c778b6170779a":[1,20,7],
 "group__spi.html#gab0b1eced2e0aa8a79a1d84953652085e":[1,20,12],
 "group__spi.html#gabf15ece606f89a319844ea494817c792":[1,20,48],
 "group__spi.html#gac14dbfc876d9d2342d1158b910a65b78":[1,20,35],
@@ -238,16 +249,5 @@ var NAVTREEINDEX18 =
 "group__wdt.html#ga70bd68a16ab4d9d0d7e2fabe0ddc4a46":[1,24,19],
 "group__wdt.html#ga93c35a51533fd9ae4e81cae08f9bd5d5":[1,24,20],
 "group__wdt.html#ga9d9b340687177f4f4d6e2949fece4bd7":[1,24,17],
-"group__wdt.html#ga9f25e5fd4661ddca2ed23d837c83f5b5":[1,24,11],
-"group__wdt.html#gaa068a29ec73fdb8334b5a8c870f36f22":[1,24,2],
-"group__wdt.html#gabef6d4a15432a2bfeee7bc30f30ae416":[1,24,7],
-"group__wdt.html#gac26cd15702604c4a9f46baed84bdf77a":[1,24,10],
-"group__wdt.html#gacd94865c8871f5f8d01fb60b2632b00d":[1,24,9],
-"group__wdt.html#gad1323db0b92fc78344932bf42af62bc7":[1,24,3],
-"group__wdt.html#gad82681e5605833e6740fb100287e10f5":[1,24,6],
-"group__wdt.html#gae2acf5376e6ebc5b4ffce66625c8b61c":[1,24,15],
-"group__wdt.html#gafb04f47384eb5ee6af9e178894dc2dd5":[1,24,12],
-"group__wdt.html#gga402e160fed5337127134084c4042c598a00ad8586d232f3e8a4e2a5b43bbc3b62":[1,24,4,12],
-"group__wdt.html#gga402e160fed5337127134084c4042c598a1759232c59a565f33bd31a7f11c765cf":[1,24,4,13],
-"group__wdt.html#gga402e160fed5337127134084c4042c598a2bd80de10c95f7a0f539559015c16477":[1,24,4,15]
+"group__wdt.html#ga9f25e5fd4661ddca2ed23d837c83f5b5":[1,24,11]
 };

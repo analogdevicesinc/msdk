@@ -1,5 +1,16 @@
 var NAVTREEINDEX31 =
 {
+"group__wut__registers.html#a7685bb716d1f212d33a78a78fd778665":[1,29,0,10,5],
+"group__wut__registers.html#a79022a0bcd2d28e1ce44db00b05edd11":[1,29,0,10,4],
+"group__wut__registers.html#a79669bb18d8e3f917f9a9ed84c0828fb":[1,29,0,10,1],
+"group__wut__registers.html#aaef723fce280474468bb54f8caaf9782":[1,29,0,10,0],
+"group__wut__registers.html#ae7b291bdf41c8f597fdc59f9ef87c4a0":[1,29,0,10,6],
+"group__wut__registers.html#ae991811ce95dc2ea8be1f59848562bcd":[1,29,0,10,7],
+"group__wut__registers.html#structmxc__wut__regs__t":[1,29,0,10],
+"hpb__regs_8h.html":[1,8,0,7],
+"i2c__regs_8h.html":[1,9,0,20],
+"i2s__regs_8h.html":[1,10,0,8],
+"icc__regs_8h.html":[1,11,0,5],
 "index.html":[],
 "lpcmp__regs_8h.html":[1,35,2],
 "lpgcr__regs_8h.html":[1,36,3],

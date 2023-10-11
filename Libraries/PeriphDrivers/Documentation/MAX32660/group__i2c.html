@@ -138,6 +138,14 @@ Functions</h2></td></tr>
 <tr class="separator:ga35511bf2fd8213685ba6202b8b81929b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga913e7debd6310460beba186cd4eb2712"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#ga913e7debd6310460beba186cd4eb2712">MXC_I2C_GetClockStretching</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c)</td></tr>
 <tr class="separator:ga913e7debd6310460beba186cd4eb2712"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gad207529023caa8ffc550eec5bb6f51ce"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#gad207529023caa8ffc550eec5bb6f51ce">MXC_I2C_DMA_Init</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx)</td></tr>
+<tr class="separator:gad207529023caa8ffc550eec5bb6f51ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gabf39c8a30f3042844a198bc44a369740"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#gabf39c8a30f3042844a198bc44a369740">MXC_I2C_DMA_GetTXChannel</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c)</td></tr>
+<tr class="separator:gabf39c8a30f3042844a198bc44a369740"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga4c3ccb2ce18ad6d421cff8fd81c81f6f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#ga4c3ccb2ce18ad6d421cff8fd81c81f6f">MXC_I2C_DMA_GetRXChannel</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c)</td></tr>
+<tr class="separator:ga4c3ccb2ce18ad6d421cff8fd81c81f6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafbf8e8e9c4a612322c8f12d35bd693b7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#gafbf8e8e9c4a612322c8f12d35bd693b7">MXC_I2C_DMA_SetRequestSelect</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c, uint8_t *txData, uint8_t *rxData)</td></tr>
+<tr class="separator:gafbf8e8e9c4a612322c8f12d35bd693b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gabe385d2386e3828c8ee1843eefb2bdb8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#gabe385d2386e3828c8ee1843eefb2bdb8">MXC_I2C_Start</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c)</td></tr>
 <tr class="separator:gabe385d2386e3828c8ee1843eefb2bdb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga4b23466f882ed573b26bf35fae91684f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__i2c.html#ga4b23466f882ed573b26bf35fae91684f">MXC_I2C_Stop</a> (<a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *i2c)</td></tr>
@@ -746,6 +754,158 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
 
 </div>
 </div>
+<a id="ga4c3ccb2ce18ad6d421cff8fd81c81f6f" name="ga4c3ccb2ce18ad6d421cff8fd81c81f6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ga4c3ccb2ce18ad6d421cff8fd81c81f6f">&#9670;&nbsp;</a></span>MXC_I2C_DMA_GetRXChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_I2C_DMA_GetRXChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retreive the DMA RX Channel associated with I2C instance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If successful, the DMA RX Channel number is returned. Otherwise, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="gabf39c8a30f3042844a198bc44a369740" name="gabf39c8a30f3042844a198bc44a369740"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gabf39c8a30f3042844a198bc44a369740">&#9670;&nbsp;</a></span>MXC_I2C_DMA_GetTXChannel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_I2C_DMA_GetTXChannel </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Retreive the DMA TX Channel associated with I2C instance. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used).</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>If successful, the DMA TX Channel number is returned. Otherwise, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="gad207529023caa8ffc550eec5bb6f51ce" name="gad207529023caa8ffc550eec5bb6f51ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gad207529023caa8ffc550eec5bb6f51ce">&#9670;&nbsp;</a></span>MXC_I2C_DMA_Init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_I2C_DMA_Init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">mxc_dma_regs_t *&#160;</td>
+          <td class="paramname"><em>dma</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_dma_tx</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>use_dma_rx</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initializes the DMA for I2C DMA transactions. </p>
+<p >This function will release any acquired DMA channels before reacquiring and reconfiguring selected I2C DMA TX or RX channels.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used). </td></tr>
+    <tr><td class="paramname">dma</td><td>Pointer to DMA registers (selects the DMA block used). </td></tr>
+    <tr><td class="paramname">use_dma_tx</td><td>If true, acquire and configure DMA TX channel, else release any acquired DMA TX channel. </td></tr>
+    <tr><td class="paramname">use_dma_rx</td><td>If true, acquire and configure DMA RX channel, else release any acquired DMA RX channel.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
+<a id="gafbf8e8e9c4a612322c8f12d35bd693b7" name="gafbf8e8e9c4a612322c8f12d35bd693b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#gafbf8e8e9c4a612322c8f12d35bd693b7">&#9670;&nbsp;</a></span>MXC_I2C_DMA_SetRequestSelect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int MXC_I2C_DMA_SetRequestSelect </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="group__i2c__registers.html#structmxc__i2c__regs__t">mxc_i2c_regs_t</a> *&#160;</td>
+          <td class="paramname"><em>i2c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>txData</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t *&#160;</td>
+          <td class="paramname"><em>rxData</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets the I2C instance's DMA TX/RX request select. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used). </td></tr>
+    <tr><td class="paramname">txData</td><td>Pointer to transmit buffer. </td></tr>
+    <tr><td class="paramname">rxData</td><td>Pointer to receive buffer.</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
+
+</div>
+</div>
 <a id="gada949222dbe550f528f7a52fd19b7723" name="gada949222dbe550f528f7a52fd19b7723"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#gada949222dbe550f528f7a52fd19b7723">&#9670;&nbsp;</a></span>MXC_I2C_DMACallback()</h2>
 
@@ -1251,7 +1411,8 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
       </table>
 </div><div class="memdoc">
 
-<p>Performs a non-blocking I2C Master transaction using DMA for reduced time in the ISR. </p>
+<p>Performs a non-blocking I2C Master transaction using DMA for reduced time in the ISR. This function initializes the DMA and acquires DMA channels if MXC_I2C_DMA_Init(...) was not called earlier. </p>
+<p >It is recommended to initialize the DMA by calling MXC_I2C_DMA_Init(...) function before calling MXC_I2C_MasterTransactionDMA(...). This provides flexibility in setting up generic DMA channel vectors during run-time without knowing what DMA channels will be acquired beforehand.</p>
 <p >Performs a non-blocking I2C transaction. These actions will be performed:</p><ol type="1">
 <li>If necessary, generate a start condition on the bus.</li>
 <li>Send the slave address with the low bit set to 0 (indicating a write).</li>
@@ -1785,11 +1946,10 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">i2c</td><td>Pointer to I2C registers (selects the I2C block used.) </td></tr>
-    <tr><td class="paramname">timeout</td><td>Timeout in uS</td></tr>
+    <tr><td class="paramname">timeout</td><td>Timeout in uS </td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>Success/Fail, see <a class="el" href="group___m_x_c___error___codes.html">Error Codes</a> for a list of return codes. </dd></dl>
 
 </div>
 </div>
@@ -2199,7 +2359,7 @@ unsigned char *&#160;</td><td class="memItemRight" valign="bottom"><b>rx_buf</b>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 4 2023 17:11:40 for MAX32660 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Oct 11 2023 21:27:16 for MAX32660 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

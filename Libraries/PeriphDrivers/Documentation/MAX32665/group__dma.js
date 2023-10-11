@@ -66,6 +66,7 @@ var group__dma =
       [ "MXC_DMA_REQUEST_UART1TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ac46857f03461dad3f1af8f282db4f8c0", null ],
       [ "MXC_DMA_REQUEST_I2C0TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a5a557a2247336c3e09517404b9459508", null ],
       [ "MXC_DMA_REQUEST_I2C1TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ad76f922bf33c3640d79ee9b0a6b48cfc", null ],
+      [ "MXC_DMA_REQUEST_I2C2TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3aa4caf29680b045eb492b19b7f52a7b7e", null ],
       [ "MXC_DMA_REQUEST_UART2TX", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a68c1b577821399e2f8690d434e6b696a", null ],
       [ "MXC_DMA_REQUEST_USBTXEP1", "group__dma.html#ggac5462bed630944916330f584bd0b10e3a490dfbfb3282470dddd2104dedc6b970", null ],
       [ "MXC_DMA_REQUEST_USBTXEP2", "group__dma.html#ggac5462bed630944916330f584bd0b10e3ac4c0cbc95caa9821e05e2a6b991c889f", null ],

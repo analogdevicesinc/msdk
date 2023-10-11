@@ -62,5 +62,7 @@ var group__pwrseq =
     [ "MXC_LP_EnterBackgroundMode", "group__pwrseq.html#gab5d14a849bb4bc76755f06c5130a93a8", null ],
     [ "MXC_LP_EnterBackupMode", "group__pwrseq.html#ga7114f139cf0400c690ad23f16320e65c", null ],
     [ "MXC_LP_EnterDeepSleepMode", "group__pwrseq.html#ga95c80fbcb83070408fac907302718dcc", null ],
-    [ "MXC_LP_EnterSleepMode", "group__pwrseq.html#gade48c6aae021a798a082c9e3ff143e50", null ]
+    [ "MXC_LP_EnterSleepMode", "group__pwrseq.html#gade48c6aae021a798a082c9e3ff143e50", null ],
+    [ "MXC_LP_USBClearPONRST", "group__pwrseq.html#gac371035c0c592a0693185f3c3f6af5e4", null ],
+    [ "MXC_LP_USBSetPONRST", "group__pwrseq.html#ga5e93b1e123b01c0164a2e6d85c09e11d", null ]
 ];

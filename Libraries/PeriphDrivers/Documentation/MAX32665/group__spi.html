@@ -1036,6 +1036,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 <p>Initialize and enable SPI peripheral. </p>
 <p >This function initializes everything necessary to call a SPI transaction function. Some parameters are set to defaults as follows: SPI Mode - 0 SPI Width - SPI_WIDTH_STANDARD (even if quadModeUsed is set)</p>
 <p >These parameters can be modified after initialization using low level functions</p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables SPI peripheral clock and spi gpio pins. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">spi</td><td>Pointer to SPI registers (selects the SPI block used.) </td></tr>
@@ -1044,7 +1045,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
     <tr><td class="paramname">numSlaves</td><td>The number of slaves used, if in master mode. This is used to obtain control of the necessary SS pins. In slave mode this is ignored and SS1 is used. </td></tr>
     <tr><td class="paramname">ssPolarity</td><td>This field sets the SS active polarity for each slave, each bit position corresponds to each SS line. </td></tr>
     <tr><td class="paramname">hz</td><td>The requested clock frequency. The actual clock frequency will be returned by the function if successful. Used in master mode only. </td></tr>
-    <tr><td class="paramname">map</td><td>Mapping (MAP_A or MAP_B) to use for SPIO</td></tr>
+    <tr><td class="paramname">map</td><td>Mapping (MAP_A or MAP_B) to use for SPIO, Has no effect incase of MSDK_NO_GPIO_CLK_INIT has been defined.</td></tr>
   </table>
   </dd>
 </dl>
@@ -1750,7 +1751,7 @@ uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b></td></t
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 4 2023 17:11:48 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Oct 11 2023 21:27:24 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

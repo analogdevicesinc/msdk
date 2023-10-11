@@ -1,5 +1,16 @@
 var NAVTREEINDEX28 =
 {
+"group__rtc.html#gga5c85a643a530f9c5252170d930e36ab3a29b53b8804b477f258248c41bc153035":[1,20,1,0],
+"group__rtc.html#gga5c85a643a530f9c5252170d930e36ab3aa2562f7f98addc82621ebbb99a450bf1":[1,20,1,3],
+"group__rtc.html#gga5c85a643a530f9c5252170d930e36ab3ac9960183dfcceb6b145ff84deeb63387":[1,20,1,2],
+"group__rtc.html#gga5c85a643a530f9c5252170d930e36ab3acc829bc79f7a7de80d666baf8a949417":[1,20,1,1],
+"group__rtc.html#ggac5db0f84d3ced6519a0378e1f0ec99cea615c00e5710efe1837a8ff0ba430a22e":[1,20,3,1],
+"group__rtc.html#ggac5db0f84d3ced6519a0378e1f0ec99ceabcdfe5a068a54811c05fa53d87346e47":[1,20,3,0],
+"group__rtc.html#ggac5db0f84d3ced6519a0378e1f0ec99ceac1cd3c6e30ee22bf471290810877346c":[1,20,3,2],
+"group__rtc__registers.html":[1,20,0],
+"group__rtc__registers.html#a42840f18466e61b7fe0bde5d005a6a66":[1,20,0,9,2],
+"group__rtc__registers.html#a5f3ab705a4a67b17dcc04560cef193f3":[1,20,0,9,0],
+"group__rtc__registers.html#a6e9e5d8e5cf19db0bdb0307fba6d32c3":[1,20,0,9,5],
 "group__rtc__registers.html#a88982a5a39dfc897f8e4d4c0803e01b4":[1,20,0,9,1],
 "group__rtc__registers.html#a9d47e29f781e748ae7d3528ebc2d6da1":[1,20,0,9,6],
 "group__rtc__registers.html#ac0f6c8e68c7a45258b05008101fbc49d":[1,20,0,9,4],
@@ -238,16 +249,5 @@ var NAVTREEINDEX28 =
 "group__spixf.html#gae84b5d992a38b665d419f76cddd7c048":[1,23,75],
 "group__spixf.html#gae8d011370a5bb9f049b3b607c34e7298":[1,23,45],
 "group__spixf.html#gaea1ebb029aab6b67345bf946fde31de9":[1,23,20],
-"group__spixf.html#gaea29175d6c77ecf4cd35655b7675f477":[1,23,58],
-"group__spixf.html#gaeca310fabe1487df6c8f0a1e840b7b0e":[1,23,73],
-"group__spixf.html#gaefd096452c568c00a45d198bb2b71ba7":[1,23,119],
-"group__spixf.html#gaf0d078a5151daa4a90877f37f664e6eb":[1,23,90],
-"group__spixf.html#gaf17e866ff8ff99110a62c28e3c6644aa":[1,23,16],
-"group__spixf.html#gaf38b599ff1da5c8927bae562bf30739e":[1,23,69],
-"group__spixf.html#gaf538a8391c75a2e4c975b0eaa548b9bf":[1,23,92],
-"group__spixf.html#gaf651012e51db888879d10112d903e3b9":[1,23,97],
-"group__spixf.html#gaf8209e4bec055840ba9cb9d7f9ea7af9":[1,23,31],
-"group__spixf.html#gaf87ee5f2852a54886474fb495f15e771":[1,23,107],
-"group__spixf.html#gaf88c494e5b8a2c5c7f8b69b4eb4cecc3":[1,23,27],
-"group__spixf.html#ggad36d93555513eb7b4aa5a00814558b71a531c9533f673e6f4b32d061bc22162a0":[1,23,18,1]
+"group__spixf.html#gaea29175d6c77ecf4cd35655b7675f477":[1,23,58]
 };

@@ -1,5 +1,16 @@
 var NAVTREEINDEX29 =
 {
+"group__spixf.html#gaeca310fabe1487df6c8f0a1e840b7b0e":[1,23,73],
+"group__spixf.html#gaefd096452c568c00a45d198bb2b71ba7":[1,23,119],
+"group__spixf.html#gaf0d078a5151daa4a90877f37f664e6eb":[1,23,90],
+"group__spixf.html#gaf17e866ff8ff99110a62c28e3c6644aa":[1,23,16],
+"group__spixf.html#gaf38b599ff1da5c8927bae562bf30739e":[1,23,69],
+"group__spixf.html#gaf538a8391c75a2e4c975b0eaa548b9bf":[1,23,92],
+"group__spixf.html#gaf651012e51db888879d10112d903e3b9":[1,23,97],
+"group__spixf.html#gaf8209e4bec055840ba9cb9d7f9ea7af9":[1,23,31],
+"group__spixf.html#gaf87ee5f2852a54886474fb495f15e771":[1,23,107],
+"group__spixf.html#gaf88c494e5b8a2c5c7f8b69b4eb4cecc3":[1,23,27],
+"group__spixf.html#ggad36d93555513eb7b4aa5a00814558b71a531c9533f673e6f4b32d061bc22162a0":[1,23,18,1],
 "group__spixf.html#ggad36d93555513eb7b4aa5a00814558b71a75721623418d05ddd57331d2dd552e9a":[1,23,18,2],
 "group__spixf.html#ggad36d93555513eb7b4aa5a00814558b71aa8776089a0369189a69138133586e4b7":[1,23,18,0],
 "group__spixf.html#ggaf17e866ff8ff99110a62c28e3c6644aaa869dd9a24bf9499bb52e0eb16341678f":[1,23,16,1],
@@ -238,16 +249,5 @@ var NAVTREEINDEX29 =
 "group__uart.html#ga48d266430dbc2da08edffcbc7419464a":[1,27,26],
 "group__uart.html#ga4d26cb8508423a52afb05195b917e1f2":[1,27,27],
 "group__uart.html#ga4dcacc595458a92e0ffa5e42fc139d4b":[1,27,12],
-"group__uart.html#ga502dc967866e68ae8c27826fb170ffc1":[1,27,50],
-"group__uart.html#ga5128672adc1a7880f77da128753ead73":[1,27,32],
-"group__uart.html#ga56e16b50653c8574a3c67d64f084799f":[1,27,8],
-"group__uart.html#ga59d00ccf6ed8d09e32a11768d711b2cb":[1,27,22],
-"group__uart.html#ga5d377cae041f2db6ae76d1d07063e89f":[1,27,45],
-"group__uart.html#ga5fd085debd53242cec896a06880bcea3":[1,27,16],
-"group__uart.html#ga6ab7c853437b7e94c10b116affd99663":[1,27,31],
-"group__uart.html#ga6ae308768f43f08d99184d2a7e40b90d":[1,27,36],
-"group__uart.html#ga6eabea818d1d4817481cf7b4cc401fe5":[1,27,24],
-"group__uart.html#ga707af12ae69509a55967aa9e002664a5":[1,27,40],
-"group__uart.html#ga724bb717925ccf2f4c4643a9d9949315":[1,27,19],
-"group__uart.html#ga7445f1b48110715c38070749e0952235":[1,27,4]
+"group__uart.html#ga502dc967866e68ae8c27826fb170ffc1":[1,27,50]
 };

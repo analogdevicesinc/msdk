@@ -1087,11 +1087,12 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
 <p>Initialize and enable UART peripheral. </p>
 <p >This function initializes everything necessary to call a UART transaction function. Some parameters are set to defaults as follows: UART Data Size - 8 bits UART Stop Bits - 1 bit UART Parity - None UART Flow Control - None UART Clock - 7.37MHz Clock (for baud &gt; 7372800, PCLK is used)</p>
 <p >These parameters can be modified after initialization using low level functions</p>
+<dl class="section note"><dt>Note</dt><dd>On default this function enables UART peripheral clock. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">uart</td><td>Pointer to UART registers (selects the UART block used.) </td></tr>
     <tr><td class="paramname">baud</td><td>The requested clock frequency. The actual clock frequency will be returned by the function if successful. </td></tr>
-    <tr><td class="paramname">map</td><td>MAP_A or MAP_B uart pins select</td></tr>
+    <tr><td class="paramname">map</td><td>MAP_A or MAP_B uart pins select, Has no effect incase of MSDK_NO_GPIO_CLK_INIT has been defined.</td></tr>
   </table>
   </dd>
 </dl>
@@ -2070,7 +2071,7 @@ volatile uint32_t&#160;</td><td class="memItemRight" valign="bottom"><b>rxCnt</b
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 4 2023 17:11:48 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Oct 11 2023 21:27:24 for MAX32665 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

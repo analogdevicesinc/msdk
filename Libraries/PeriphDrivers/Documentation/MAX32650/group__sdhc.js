@@ -23,6 +23,7 @@ var group__sdhc =
     [ "MXC_SDHC_ClearFlags", "group__sdhc.html#ga792d935d928797dbaa43ce99a42ad6aa", null ],
     [ "MXC_SDHC_Get_Clock_Config", "group__sdhc.html#gacee4399e921d839474c42ea8a42bdfa0", null ],
     [ "MXC_SDHC_Get_Host_Cn_1", "group__sdhc.html#gad58d9861ae574e8cc881a80f010d98b8", null ],
+    [ "MXC_SDHC_Get_Input_Clock_Freq", "group__sdhc.html#gaed5886ab0604ce9e83c6cf1942dea9b1", null ],
     [ "MXC_SDHC_Get_Response128", "group__sdhc.html#gad35460c504b2293857f5fcc13d2e005c", null ],
     [ "MXC_SDHC_Get_Response32", "group__sdhc.html#gadc9785956d71368aac0d2a0b11003197", null ],
     [ "MXC_SDHC_Get_Response32_Auto", "group__sdhc.html#gae0d6d270245ca6a835acc59ba8c07768", null ],

@@ -1,5 +1,16 @@
 var NAVTREEINDEX23 =
 {
+"group__smon__registers.html#a9e3cac9f744050c11ef0042e8b2dc108":[0,17,0,9,0],
+"group__smon__registers.html#aabd33fcaa588759c79aab55d6ddee5d2":[0,17,0,9,7],
+"group__smon__registers.html#adb4c7731dc38612872c0525340c90cd1":[0,17,0,9,1],
+"group__smon__registers.html#aecf2e0d01501fec9796f43ec9ceff647":[0,17,0,9,2],
+"group__smon__registers.html#structmxc__smon__regs__t":[0,17,0,9],
+"group__spi.html":[0,18],
+"group__spi.html#a03c054bb486fb65133eb9f6849266fb1":[0,18,1,8],
+"group__spi.html#a043f0f3e53b8233dca0b9446b9c36ccd":[0,18,1,3],
+"group__spi.html#a1bf34bc0d63b8e4a68fa9fb295b03f34":[0,18,1,1],
+"group__spi.html#a265582641e03d3e8aab76429d632d7bd":[0,18,1,6],
+"group__spi.html#a43bd328124d967686e9583453c3ac8e9":[0,18,1,4],
 "group__spi.html#a9dbc802d61ebc798f973339cc603ded7":[0,18,1,0],
 "group__spi.html#ab08c6d802a1534b503d57b1cfb785bbf":[0,18,1,7],
 "group__spi.html#ab83c0e07099df7beb8e491cb91914de0":[0,18,1,2],
@@ -238,16 +249,5 @@ var NAVTREEINDEX23 =
 "group__spixfm__registers.html#a1f414a1231f6ec9262c2fa7a57795e7e":[0,19,0,0,10,8],
 "group__spixfm__registers.html#a2b4643d34b1bdc7691f00a4fe4d69210":[0,19,0,0,10,6],
 "group__spixfm__registers.html#a3446f578529e74077de3c6733af3b305":[0,19,0,0,10,7],
-"group__spixfm__registers.html#a45724dba6b5745b02e69aef3515ac002":[0,19,0,0,10,9],
-"group__spixfm__registers.html#a5f3ab705a4a67b17dcc04560cef193f3":[0,19,0,0,10,3],
-"group__spixfm__registers.html#a6f12c2662009a8d7af1c357dbb6c530d":[0,19,0,0,10,5],
-"group__spixfm__registers.html#a7a9000f89ccb4165b43d895250b6217d":[0,19,0,0,10,1],
-"group__spixfm__registers.html#aab70b3480c0e5172b77f4f5d23c0aaf6":[0,19,0,0,10,4],
-"group__spixfm__registers.html#ad94dc28c2150c1e77a75ea3676f4cb2b":[0,19,0,0,10,0],
-"group__spixfm__registers.html#ae9d1edc28ce27171c180c9e2d4501e81":[0,19,0,0,10,2],
-"group__spixfm__registers.html#structmxc__spixfm__regs__t":[0,19,0,0,10],
-"group__tmr.html":[0,20],
-"group__tmr.html#a382d2b99c2706065d65af4d94cacaf3f":[0,20,1,2],
-"group__tmr.html#a5003c035ba324f076222cc14167b5950":[0,20,1,3],
-"group__tmr.html#a8bad5edf8d5b4929b1a5ce52ab78253d":[0,20,1,0]
+"group__spixfm__registers.html#a45724dba6b5745b02e69aef3515ac002":[0,19,0,0,10,9]
 };

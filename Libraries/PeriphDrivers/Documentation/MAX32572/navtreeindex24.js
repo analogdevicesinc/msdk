@@ -1,5 +1,16 @@
 var NAVTREEINDEX24 =
 {
+"group__spixfm__registers.html#a5f3ab705a4a67b17dcc04560cef193f3":[0,19,0,0,10,3],
+"group__spixfm__registers.html#a6f12c2662009a8d7af1c357dbb6c530d":[0,19,0,0,10,5],
+"group__spixfm__registers.html#a7a9000f89ccb4165b43d895250b6217d":[0,19,0,0,10,1],
+"group__spixfm__registers.html#aab70b3480c0e5172b77f4f5d23c0aaf6":[0,19,0,0,10,4],
+"group__spixfm__registers.html#ad94dc28c2150c1e77a75ea3676f4cb2b":[0,19,0,0,10,0],
+"group__spixfm__registers.html#ae9d1edc28ce27171c180c9e2d4501e81":[0,19,0,0,10,2],
+"group__spixfm__registers.html#structmxc__spixfm__regs__t":[0,19,0,0,10],
+"group__tmr.html":[0,20],
+"group__tmr.html#a382d2b99c2706065d65af4d94cacaf3f":[0,20,1,2],
+"group__tmr.html#a5003c035ba324f076222cc14167b5950":[0,20,1,3],
+"group__tmr.html#a8bad5edf8d5b4929b1a5ce52ab78253d":[0,20,1,0],
 "group__tmr.html#ad09582679ae9f272be80f259ccce9248":[0,20,1,1],
 "group__tmr.html#ga015873a7d2728533fe422e8c952b0556":[0,20,8],
 "group__tmr.html#ga08c77f22d309e526ba7aa347ea56bb46":[0,20,11],
@@ -238,16 +249,5 @@ var NAVTREEINDEX24 =
 "group__usbhs__registers.html#af730b385d497944f94ab4a9a4fbdd640":[0,35,48,21],
 "group__usbhs__registers.html#afa3d90c65b959a6ac9333f9f910890a7":[0,35,48,78],
 "group__usbhs__registers.html#afbedbb2818ec94a5db4b2e37f0ff0d82":[0,35,48,27],
-"group__usbhs__registers.html#afd34ccbb05103a8b9d734766e7ad6fd2":[0,35,48,48],
-"group__usbhs__registers.html#affcf07d37683da339e73bc4f380cd528":[0,35,48,14],
-"group__usbhs__registers.html#structmxc__usbhs__regs__t":[0,35,48],
-"group__wdt.html":[0,22],
-"group__wdt.html#ga038303b14f3ff9771b7f9f511e75972d":[0,22,9],
-"group__wdt.html#ga12467c52fd011a002b1f9c0efa11d7db":[0,22,10],
-"group__wdt.html#ga402e160fed5337127134084c4042c598":[0,22,1],
-"group__wdt.html#ga432d61cbf2535f750633d045fbed4f14":[0,22,4],
-"group__wdt.html#ga63e4d46d9d18c84f4342db3b0af6ee36":[0,22,12],
-"group__wdt.html#ga728057692810f2433103cbb4839658e8":[0,22,15],
-"group__wdt.html#ga93c35a51533fd9ae4e81cae08f9bd5d5":[0,22,16],
-"group__wdt.html#ga9d9b340687177f4f4d6e2949fece4bd7":[0,22,13]
+"group__usbhs__registers.html#afd34ccbb05103a8b9d734766e7ad6fd2":[0,35,48,48]
 };

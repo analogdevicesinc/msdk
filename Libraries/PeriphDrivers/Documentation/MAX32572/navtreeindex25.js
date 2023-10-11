@@ -1,5 +1,16 @@
 var NAVTREEINDEX25 =
 {
+"group__usbhs__registers.html#affcf07d37683da339e73bc4f380cd528":[0,35,48,14],
+"group__usbhs__registers.html#structmxc__usbhs__regs__t":[0,35,48],
+"group__wdt.html":[0,22],
+"group__wdt.html#ga038303b14f3ff9771b7f9f511e75972d":[0,22,9],
+"group__wdt.html#ga12467c52fd011a002b1f9c0efa11d7db":[0,22,10],
+"group__wdt.html#ga402e160fed5337127134084c4042c598":[0,22,1],
+"group__wdt.html#ga432d61cbf2535f750633d045fbed4f14":[0,22,4],
+"group__wdt.html#ga63e4d46d9d18c84f4342db3b0af6ee36":[0,22,12],
+"group__wdt.html#ga728057692810f2433103cbb4839658e8":[0,22,15],
+"group__wdt.html#ga93c35a51533fd9ae4e81cae08f9bd5d5":[0,22,16],
+"group__wdt.html#ga9d9b340687177f4f4d6e2949fece4bd7":[0,22,13],
 "group__wdt.html#ga9f25e5fd4661ddca2ed23d837c83f5b5":[0,22,7],
 "group__wdt.html#gaa97af54926bbc90b0c9b2379045dbb3b":[0,22,14],
 "group__wdt.html#gabef6d4a15432a2bfeee7bc30f30ae416":[0,22,3],

@@ -1,5 +1,16 @@
 var NAVTREEINDEX11 =
 {
+"group__pwrseq.html#gab0c960dba59216e44b2adbfdb5434789":[1,6,9],
+"group__pwrseq.html#gab3b67f7fc15cf5c2f98d21e4936b90dc":[1,6,18],
+"group__pwrseq.html#gac3b5e76ca0f6bec5b04da4a2fd91bdb2":[1,6,35],
+"group__pwrseq.html#gac53ccc1699bf67e1fe77ced677e9a328":[1,6,5],
+"group__pwrseq.html#gac9a75c73a8123cfc06510f6d265e546d":[1,6,28],
+"group__pwrseq.html#gacd205072c73ec94bf493058c162a64ab":[1,6,24],
+"group__pwrseq.html#gace289ece77a63e2524866d16f8302585":[1,6,19],
+"group__pwrseq.html#gad939c99da902f0df05a7ae22d0ad40ab":[1,6,16],
+"group__pwrseq.html#gadabad2ba77443823611af98d5e259231":[1,6,1],
+"group__pwrseq.html#gadd2c669905153cc460ab63ec93593f4e":[1,6,4],
+"group__pwrseq.html#gade48c6aae021a798a082c9e3ff143e50":[1,6,10],
 "group__pwrseq.html#gadf4613453d9264d3a1519df224bfbac5":[1,6,25],
 "group__pwrseq.html#gae243ac487366fe75cd9ac6028031e615":[1,6,11],
 "group__pwrseq.html#gaf0ea0a3da2db9eb02f3a8a636bb3b324":[1,6,13],
@@ -238,16 +249,5 @@ var NAVTREEINDEX11 =
 "group__uart.html#a03c054bb486fb65133eb9f6849266fb1":[1,16,1,5],
 "group__uart.html#a043f0f3e53b8233dca0b9446b9c36ccd":[1,16,1,3],
 "group__uart.html#a1490246c0470b7a850eb417d3c7f6e13":[1,16,1,7],
-"group__uart.html#a204f0cb05dab7675aa7b7f7a2fd0e886":[1,16,1,4],
-"group__uart.html#a5170bf9ee63cd6a1605360b56257439e":[1,16,1,1],
-"group__uart.html#ab83c0e07099df7beb8e491cb91914de0":[1,16,1,2],
-"group__uart.html#abaa4e72af025cc3c53b626f14cb40c1d":[1,16,1,6],
-"group__uart.html#af33f8259bdf30484df63a458cbfc0fc5":[1,16,1,0],
-"group__uart.html#ga0c5dd769413d02c4bcd53e7fba7a7e2f":[1,16,46],
-"group__uart.html#ga0c6a9a0836596871c254f5faca574099":[1,16,37],
-"group__uart.html#ga11ea066a51c2abbfabb2998b41017be8":[1,16,19],
-"group__uart.html#ga1275a45a60c1cfd4cb4acbd6737a1c50":[1,16,13],
-"group__uart.html#ga256350715ed900f67d05e7a29f8632fc":[1,16,16],
-"group__uart.html#ga2a94d8e0754408cd985f63d7423b70e8":[1,16,12],
-"group__uart.html#ga2d56d88b91d8407f611671b5fb94539b":[1,16,28]
+"group__uart.html#a204f0cb05dab7675aa7b7f7a2fd0e886":[1,16,1,4]
 };

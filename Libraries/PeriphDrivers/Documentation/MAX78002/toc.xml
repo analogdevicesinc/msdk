@@ -2693,6 +2693,7 @@
         </topic>
       </topic>
       <topic label="mxc_gpio_cfg_t" href="group__gpio.html#structmxc__gpio__cfg__t">
+        <topic label="drvstr" href="group__gpio.html#ae47f3c6571885f5689eced52d0e66eca"/>
         <topic label="func" href="group__gpio.html#a82db8d3ca4a2643b6b3214d4e16b832a"/>
         <topic label="mask" href="group__gpio.html#ad3bee21df6875eeccd25d3c577e0600a"/>
         <topic label="pad" href="group__gpio.html#a8da839c23daf8bc3c04c00ec207ae50c"/>
@@ -2700,6 +2701,12 @@
         <topic label="vssel" href="group__gpio.html#a717b92819b1b33b48303b9f819510eb7"/>
       </topic>
       <topic label="mxc_gpio_callback_fn" href="group__gpio.html#gacf8ba5a444349caba7cdbe2861ca06b0"/>
+      <topic label="mxc_gpio_drvstr_t" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">
+        <topic label="MXC_GPIO_DRVSTR_0" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a693b43114c62adc1c8c3ddd100ba4e03"/>
+        <topic label="MXC_GPIO_DRVSTR_1" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a61a7eee49be32e156bbf95152e5c5e1f"/>
+        <topic label="MXC_GPIO_DRVSTR_2" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14ae7a2e3bf3cb50222dbfeb7dc7f524869"/>
+        <topic label="MXC_GPIO_DRVSTR_3" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a3ed5375f8bc5465c8888316c7c3603e3"/>
+      </topic>
       <topic label="mxc_gpio_func_t" href="group__gpio.html#ga61baee17171940ad183cabe62297e891">
         <topic label="MXC_GPIO_FUNC_IN" href="group__gpio.html#gga61baee17171940ad183cabe62297e891ad883cc21c3c163837666be25f5415827"/>
         <topic label="MXC_GPIO_FUNC_OUT" href="group__gpio.html#gga61baee17171940ad183cabe62297e891a84a4fa624bcb7ac3b50e437cedcb6d57"/>
@@ -2748,6 +2755,7 @@
       <topic label="MXC_GPIO_OutToggle" href="group__gpio.html#ga756e913d214298748f0107c0f10b6a5d"/>
       <topic label="MXC_GPIO_RegisterCallback" href="group__gpio.html#ga3265819f3bee4f107d6f02716b4394d1"/>
       <topic label="MXC_GPIO_Reset" href="group__gpio.html#gaa54a2fd9780d13ef0805aff24e3b2345"/>
+      <topic label="MXC_GPIO_SetDriveStrength" href="group__gpio.html#ga63004e4c450b8f1a755c88393668e0b2"/>
       <topic label="MXC_GPIO_SetVSSEL" href="group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549"/>
       <topic label="MXC_GPIO_SetWakeEn" href="group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f"/>
       <topic label="MXC_GPIO_Shutdown" href="group__gpio.html#ga573834d158ef9678e57c5f677b3a5c22"/>
@@ -3068,6 +3076,10 @@
       <topic label="MXC_I2C_DisableGeneralCall" href="group__i2c.html#ga63aab1fcc4e60971532b8b6dcf9f2037"/>
       <topic label="MXC_I2C_DisableInt" href="group__i2c.html#gadc27ac288f41d583048b9f90cf8aebd9"/>
       <topic label="MXC_I2C_DisablePreload" href="group__i2c.html#ga1d80b18ac960c15b428533c3a029cec7"/>
+      <topic label="MXC_I2C_DMA_GetRXChannel" href="group__i2c.html#ga4c3ccb2ce18ad6d421cff8fd81c81f6f"/>
+      <topic label="MXC_I2C_DMA_GetTXChannel" href="group__i2c.html#gabf39c8a30f3042844a198bc44a369740"/>
+      <topic label="MXC_I2C_DMA_Init" href="group__i2c.html#gad207529023caa8ffc550eec5bb6f51ce"/>
+      <topic label="MXC_I2C_DMA_SetRequestSelect" href="group__i2c.html#gafbf8e8e9c4a612322c8f12d35bd693b7"/>
       <topic label="MXC_I2C_DMACallback" href="group__i2c.html#gada949222dbe550f528f7a52fd19b7723"/>
       <topic label="MXC_I2C_EnableGeneralCall" href="group__i2c.html#ga53bfbcf321baaf94f79712c2f1e422a5"/>
       <topic label="MXC_I2C_EnableInt" href="group__i2c.html#ga3191ddeb97b19c0c103ad9e78c1f12c9"/>
@@ -4675,6 +4687,7 @@
       <topic label="MXC_SDHC_ClearFlags" href="group__sdhc.html#ga792d935d928797dbaa43ce99a42ad6aa"/>
       <topic label="MXC_SDHC_Get_Clock_Config" href="group__sdhc.html#gacee4399e921d839474c42ea8a42bdfa0"/>
       <topic label="MXC_SDHC_Get_Host_Cn_1" href="group__sdhc.html#gad58d9861ae574e8cc881a80f010d98b8"/>
+      <topic label="MXC_SDHC_Get_Input_Clock_Freq" href="group__sdhc.html#gaed5886ab0604ce9e83c6cf1942dea9b1"/>
       <topic label="MXC_SDHC_Get_Response128" href="group__sdhc.html#gad35460c504b2293857f5fcc13d2e005c"/>
       <topic label="MXC_SDHC_Get_Response32" href="group__sdhc.html#gadc9785956d71368aac0d2a0b11003197"/>
       <topic label="MXC_SDHC_Get_Response32_Auto" href="group__sdhc.html#gae0d6d270245ca6a835acc59ba8c07768"/>
@@ -4997,8 +5010,6 @@
           <topic label="wkfl" href="group__spi__registers.html#a71c81fbb80641b4b170ab374e553582c"/>
         </topic>
       </topic>
-      <topic label="mxc_spi_target_t" href="group__spi.html#structmxc__spi__target__t">
-      </topic>
       <topic label="mxc_spi_callback_t" href="group__spi.html#gaba3c6d2bc79934fde136458297af2753"/>
       <topic label="mxc_spi_clkmode_t" href="group__spi.html#gadad43261c98c744d491fb810d949fac7">
       </topic>
@@ -5028,18 +5039,19 @@
       <topic label="MXC_SPI_ClearFlags" href="group__spi.html#ga21e310e59d113a6feccf3b43777f8bda"/>
       <topic label="MXC_SPI_ClearRXFIFO" href="group__spi.html#gaa834986af29c54377bbfb7cf3ade1b81"/>
       <topic label="MXC_SPI_ClearTXFIFO" href="group__spi.html#ga689879f735755146668290b134e25aed"/>
-      <topic label="MXC_SPI_ConfigTargetSelect" href="group__spi.html#ga56b3047c82b05f2122aac3f4619ee8ef"/>
-      <topic label="MXC_SPI_ControllerTransaction" href="group__spi.html#gaec7acde65957ca36b59d2981e6d1a2ed"/>
-      <topic label="MXC_SPI_ControllerTransactionB" href="group__spi.html#ga0b7d1629f417c84886d8a9c4b47cddba"/>
-      <topic label="MXC_SPI_ControllerTransactionDMA" href="group__spi.html#ga97d9dbb0a5124f2560941ad4ccbb0749"/>
-      <topic label="MXC_SPI_ControllerTransactionDMAB" href="group__spi.html#ga4fd2c0126a869fa9db7688b22bf1be86"/>
+      <topic label="MXC_SPI_Config" href="group__spi.html#ga74e0e8e4bbf79fa4e274a2cbb6ebd16d"/>
+      <topic label="MXC_SPI_ConfigStruct" href="group__spi.html#gaff025d7fc1e4b2eb37c2bda3f065f924"/>
+      <topic label="MXC_SPI_ControllerTransaction" href="group__spi.html#ga007be007fff978483a8b3c62d4122fb4"/>
+      <topic label="MXC_SPI_ControllerTransactionAsync" href="group__spi.html#ga59adf68071046d8e0f516c860f6e1845"/>
+      <topic label="MXC_SPI_ControllerTransactionDMA" href="group__spi.html#ga7790c0deb2ab343f04386c15717706ff"/>
+      <topic label="MXC_SPI_ControllerTransactionDMAB" href="group__spi.html#gab139788d8913e6955cc5d0cbe192c7c6"/>
       <topic label="MXC_SPI_DisableInt" href="group__spi.html#gab0b1eced2e0aa8a79a1d84953652085e"/>
       <topic label="MXC_SPI_DMA_GetInitialized" href="group__spi.html#ga156db190ebf27068466d2bcc7c8f6e62"/>
       <topic label="MXC_SPI_DMA_GetRXChannel" href="group__spi.html#gaac6f6a8c6fb9403e1bfaa70c5e6f0b7e"/>
       <topic label="MXC_SPI_DMA_GetTXChannel" href="group__spi.html#gac79d1bdacf4c3841cd6b73b2ee5b4928"/>
-      <topic label="MXC_SPI_DMA_Init" href="group__spi.html#ga742c4006369ca380c4cad8362b5d2ccb"/>
+      <topic label="MXC_SPI_DMA_Init" href="group__spi.html#ga5d6132a2bfc754c950bd7083bec8561b"/>
       <topic label="MXC_SPI_DMA_RX_Handler" href="group__spi.html#ga95c817c0d261218ea5c6b5781d62e36e"/>
-      <topic label="MXC_SPI_DMA_SetRequestSelect" href="group__spi.html#ga3d1a2dc373641d98c6d528f4869babf7"/>
+      <topic label="MXC_SPI_DMA_SetRequestSelect" href="group__spi.html#ga0de67ce7d5117b54b43f222926f13783"/>
       <topic label="MXC_SPI_DMA_TX_Handler" href="group__spi.html#ga0249dfe5641237a7fb2bb2b3bd424ee2"/>
       <topic label="MXC_SPI_EnableInt" href="group__spi.html#ga20d10782044173a480247ece9bb4ee43"/>
       <topic label="MXC_SPI_GetActive" href="group__spi.html#gaa06214fd0986da99eef31b358385ca78"/>
@@ -5058,10 +5070,7 @@
       <topic label="MXC_SPI_GetTXThreshold" href="group__spi.html#ga3fa6c3821155ce8782390638f2632a86"/>
       <topic label="MXC_SPI_GetWidth" href="group__spi.html#ga88101bd57a262e6719d5b497a692d528"/>
       <topic label="MXC_SPI_Handler" href="group__spi.html#ga68ec0bb5be7e56ed9f64ae1d66d054dd"/>
-      <topic label="MXC_SPI_Init" href="group__spi.html#ga812c8b820873b071de819b8db2c1a845"/>
-      <topic label="MXC_SPI_Init_v2" href="group__spi.html#ga645c2b71f8ff2b295b471f805c9d215e"/>
-      <topic label="MXC_SPI_InitStruct" href="group__spi.html#ga418ce783bb5c3242dbfd74a32d8c5580"/>
-      <topic label="MXC_SPI_InitStruct_DMA" href="group__spi.html#ga3daaebe3d54ac6d4337a1c529f957827"/>
+      <topic label="MXC_SPI_Init" href="group__spi.html#ga06f41ee71f978fd9ae872238d26fef28"/>
       <topic label="MXC_SPI_MasterTransaction" href="group__spi.html#gaefbd13c12a7d9fbaef9595df2cd6c308"/>
       <topic label="MXC_SPI_MasterTransactionAsync" href="group__spi.html#ga6c9da2bba6624ca85e0aaafc94bad2f6"/>
       <topic label="MXC_SPI_MasterTransactionDMA" href="group__spi.html#gaef4e7a1d2d209ec09ac0f5c230b7987a"/>
@@ -5073,10 +5082,11 @@
       <topic label="MXC_SPI_SetDefaultTXData" href="group__spi.html#gac14dbfc876d9d2342d1158b910a65b78"/>
       <topic label="MXC_SPI_SetFrameSize" href="group__spi.html#ga81b5bc04070404c4c5320b6660cff2df"/>
       <topic label="MXC_SPI_SetFrequency" href="group__spi.html#ga040221eafa059cdc505e50e3a64c9b13"/>
-      <topic label="MXC_SPI_SetInterface" href="group__spi.html#gacdd85d1eded7f6cc25ff07754decb9e0"/>
+      <topic label="MXC_SPI_SetInterface" href="group__spi.html#ga4f3d44756a61830bb26ca7536461ba74"/>
       <topic label="MXC_SPI_SetMode" href="group__spi.html#ga9a92d8991186982b927fee7dbb5e8cab"/>
       <topic label="MXC_SPI_SetRXThreshold" href="group__spi.html#ga38048f4a4e31ceda3c3220a004b0d877"/>
       <topic label="MXC_SPI_SetSlave" href="group__spi.html#ga3d9f3a2760a4caa850ffcae7edd99d8b"/>
+      <topic label="MXC_SPI_SetTSControl" href="group__spi.html#ga382b178822d9231fdf48dc3fb186d520"/>
       <topic label="MXC_SPI_SetTXThreshold" href="group__spi.html#ga7fd5b76f6fb558d0556927afaf263cc8"/>
       <topic label="MXC_SPI_SetWidth" href="group__spi.html#ga398e4c89b65cd9ad803c79b699199b80"/>
       <topic label="MXC_SPI_Shutdown" href="group__spi.html#ga85d98037b8a7ff2f1d54db8ac7edbf74"/>
@@ -5084,6 +5094,9 @@
       <topic label="MXC_SPI_SlaveTransactionAsync" href="group__spi.html#ga61e3b8fcccf23091e3faa01c739f5aa8"/>
       <topic label="MXC_SPI_SlaveTransactionDMA" href="group__spi.html#ga86f66284a2899897a4e0fc760d01bc6d"/>
       <topic label="MXC_SPI_StartTransmission" href="group__spi.html#gaeda5570dcb3ea4e3f40df35070f6922d"/>
+      <topic label="MXC_SPI_TargetTransaction" href="group__spi.html#gacb42582d12777a46132c79ce7f7bc85c"/>
+      <topic label="MXC_SPI_TargetTransactionAsync" href="group__spi.html#gacdf16ffb2d49806f0e519bb1579b241e"/>
+      <topic label="MXC_SPI_TargetTransactionDMA" href="group__spi.html#gab1117c58d5e784b6977edac58442a370"/>
       <topic label="MXC_SPI_WriteTXFIFO" href="group__spi.html#gabf15ece606f89a319844ea494817c792"/>
     </topic>
     <topic label="Timer (TMR)" href="group__tmr.html">
@@ -8491,6 +8504,7 @@
         <topic label="sysst" href="group__gcr__registers.html#a6e139ffb1b218877f74b83aaddd17439"/>
       </topic>
       <topic label="mxc_gpio_cfg_t" href="group__gpio.html#structmxc__gpio__cfg__t">
+        <topic label="drvstr" href="group__gpio.html#ae47f3c6571885f5689eced52d0e66eca"/>
         <topic label="func" href="group__gpio.html#a82db8d3ca4a2643b6b3214d4e16b832a"/>
         <topic label="mask" href="group__gpio.html#ad3bee21df6875eeccd25d3c577e0600a"/>
         <topic label="pad" href="group__gpio.html#a8da839c23daf8bc3c04c00ec207ae50c"/>
@@ -8782,8 +8796,6 @@
         <topic label="stat" href="group__spi__registers.html#a165ffa7e0db53fbc622c375b63a436d7"/>
         <topic label="wken" href="group__spi__registers.html#a180fb4301217e58b8b04d69910d55e7d"/>
         <topic label="wkfl" href="group__spi__registers.html#a71c81fbb80641b4b170ab374e553582c"/>
-      </topic>
-      <topic label="mxc_spi_target_t" href="group__spi.html#structmxc__spi__target__t">
       </topic>
       <topic label="mxc_tmr_cfg_t" href="group__tmr.html#structmxc__tmr__cfg__t">
         <topic label="bitMode" href="group__tmr.html#a672ceb3b39bde94e7fe00024275208a1"/>

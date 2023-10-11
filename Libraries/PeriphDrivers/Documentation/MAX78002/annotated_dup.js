@@ -49,7 +49,6 @@ var annotated_dup =
     [ "mxc_simo_regs_t", "group__simo__registers.html#structmxc__simo__regs__t", "group__simo__registers_structmxc__simo__regs__t" ],
     [ "mxc_sir_regs_t", "group__sir__registers.html#structmxc__sir__regs__t", "group__sir__registers_structmxc__sir__regs__t" ],
     [ "mxc_spi_regs_t", "group__spi__registers.html#structmxc__spi__regs__t", "group__spi__registers_structmxc__spi__regs__t" ],
-    [ "mxc_spi_target_t", "group__spi.html#structmxc__spi__target__t", null ],
     [ "mxc_tmr_cfg_t", "group__tmr.html#structmxc__tmr__cfg__t", "group__tmr_structmxc__tmr__cfg__t" ],
     [ "mxc_tmr_regs_t", "group__tmr__registers.html#structmxc__tmr__regs__t", "group__tmr__registers_structmxc__tmr__regs__t" ],
     [ "mxc_trimsir_regs_t", "group__trimsir__registers.html#structmxc__trimsir__regs__t", "group__trimsir__registers_structmxc__trimsir__regs__t" ],

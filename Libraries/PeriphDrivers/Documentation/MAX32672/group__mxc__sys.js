@@ -145,6 +145,7 @@ var group__mxc__sys =
     [ "MXC_SYS_ClockSourceEnable", "group__mxc__sys.html#gae281e8f30ddaa90d30ba423c84f9b993", null ],
     [ "MXC_SYS_Crit_Enter", "group__mxc__sys.html#ga6a5ac1a2bb2796cf0f56f8a23ca49e44", null ],
     [ "MXC_SYS_Crit_Exit", "group__mxc__sys.html#ga658226f266a50d2fa0d69bfb5d14c7b0", null ],
+    [ "MXC_SYS_GetRevision", "group__mxc__sys.html#ga9c5731e7cae255874eb1fc1625535f70", null ],
     [ "MXC_SYS_GetUSN", "group__mxc__sys.html#ga64494ce7b5aa5ee70e716f6a02f30d81", null ],
     [ "MXC_SYS_In_Crit_Section", "group__mxc__sys.html#ga67ad6842f412bbd588e3db6c2851a229", null ],
     [ "MXC_SYS_IsClockEnabled", "group__mxc__sys.html#ga99851205dae88b405f598e68fe984943", null ],

@@ -29,11 +29,12 @@ var searchData=
   ['dmach0_26',['dmach0',['../group__i2s__registers.html#a54da5cb46f0741da08482f576500b10f',1,'mxc_i2s_regs_t']]],
   ['dperr_27',['dperr',['../group__can__registers.html#a7f22fb723138fb4a01e00ebeb13cf1a1',1,'mxc_can_regs_t']]],
   ['drv_28',['drv',['../group__can.html#adcd153bc4507926c792e86ebe74e6455',1,'mxc_can_drv_version_t']]],
-  ['ds0_29',['ds0',['../group__gpio__registers.html#af3fd471fbfb5eddfdcd5067069138b32',1,'mxc_gpio_regs_t']]],
-  ['ds1_30',['ds1',['../group__gpio__registers.html#aded1d97628851ac331d217c8f8d08e33',1,'mxc_gpio_regs_t']]],
-  ['dst_31',['dst',['../group__dma__registers.html#a3bc0e1ff850a4c8740cb63d9211fd176',1,'mxc_dma_ch_regs_t']]],
-  ['dstinc_5fen_32',['dstinc_en',['../group__dma.html#a73003d93442717af85a1e961c7b00780',1,'mxc_dma_config_t']]],
-  ['dstrld_33',['dstrld',['../group__dma__registers.html#ac330d46ea42d4137bdf3206bd47ffc09',1,'mxc_dma_ch_regs_t']]],
-  ['dstwd_34',['dstwd',['../group__dma.html#aa0c8a19f6815c4b2c762290d0ea439be',1,'mxc_dma_config_t']]],
-  ['dualedge_35',['dualedge',['../group__gpio__registers.html#a5e96d32a7707ea2866d9719df0654f16',1,'mxc_gpio_regs_t']]]
+  ['drvstr_29',['drvstr',['../group__gpio.html#ae47f3c6571885f5689eced52d0e66eca',1,'mxc_gpio_cfg_t']]],
+  ['ds0_30',['ds0',['../group__gpio__registers.html#af3fd471fbfb5eddfdcd5067069138b32',1,'mxc_gpio_regs_t']]],
+  ['ds1_31',['ds1',['../group__gpio__registers.html#aded1d97628851ac331d217c8f8d08e33',1,'mxc_gpio_regs_t']]],
+  ['dst_32',['dst',['../group__dma__registers.html#a3bc0e1ff850a4c8740cb63d9211fd176',1,'mxc_dma_ch_regs_t']]],
+  ['dstinc_5fen_33',['dstinc_en',['../group__dma.html#a73003d93442717af85a1e961c7b00780',1,'mxc_dma_config_t']]],
+  ['dstrld_34',['dstrld',['../group__dma__registers.html#ac330d46ea42d4137bdf3206bd47ffc09',1,'mxc_dma_ch_regs_t']]],
+  ['dstwd_35',['dstwd',['../group__dma.html#aa0c8a19f6815c4b2c762290d0ea439be',1,'mxc_dma_config_t']]],
+  ['dualedge_36',['dualedge',['../group__gpio__registers.html#a5e96d32a7707ea2866d9719df0654f16',1,'mxc_gpio_regs_t']]]
 ];

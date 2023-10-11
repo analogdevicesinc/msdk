@@ -2320,6 +2320,7 @@
         </topic>
       </topic>
       <topic label="mxc_gpio_cfg_t" href="group__gpio.html#structmxc__gpio__cfg__t">
+        <topic label="drvstr" href="group__gpio.html#ae47f3c6571885f5689eced52d0e66eca"/>
         <topic label="func" href="group__gpio.html#a82db8d3ca4a2643b6b3214d4e16b832a"/>
         <topic label="mask" href="group__gpio.html#ad3bee21df6875eeccd25d3c577e0600a"/>
         <topic label="pad" href="group__gpio.html#a8da839c23daf8bc3c04c00ec207ae50c"/>
@@ -2327,6 +2328,12 @@
         <topic label="vssel" href="group__gpio.html#a717b92819b1b33b48303b9f819510eb7"/>
       </topic>
       <topic label="mxc_gpio_callback_fn" href="group__gpio.html#gacf8ba5a444349caba7cdbe2861ca06b0"/>
+      <topic label="mxc_gpio_drvstr_t" href="group__gpio.html#gaced0392721f83747a888ad3f64508e14">
+        <topic label="MXC_GPIO_DRVSTR_0" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a693b43114c62adc1c8c3ddd100ba4e03"/>
+        <topic label="MXC_GPIO_DRVSTR_1" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a61a7eee49be32e156bbf95152e5c5e1f"/>
+        <topic label="MXC_GPIO_DRVSTR_2" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14ae7a2e3bf3cb50222dbfeb7dc7f524869"/>
+        <topic label="MXC_GPIO_DRVSTR_3" href="group__gpio.html#ggaced0392721f83747a888ad3f64508e14a3ed5375f8bc5465c8888316c7c3603e3"/>
+      </topic>
       <topic label="mxc_gpio_func_t" href="group__gpio.html#ga61baee17171940ad183cabe62297e891">
         <topic label="MXC_GPIO_FUNC_IN" href="group__gpio.html#gga61baee17171940ad183cabe62297e891ad883cc21c3c163837666be25f5415827"/>
         <topic label="MXC_GPIO_FUNC_OUT" href="group__gpio.html#gga61baee17171940ad183cabe62297e891a84a4fa624bcb7ac3b50e437cedcb6d57"/>
@@ -2375,6 +2382,7 @@
       <topic label="MXC_GPIO_OutToggle" href="group__gpio.html#ga756e913d214298748f0107c0f10b6a5d"/>
       <topic label="MXC_GPIO_RegisterCallback" href="group__gpio.html#ga3265819f3bee4f107d6f02716b4394d1"/>
       <topic label="MXC_GPIO_Reset" href="group__gpio.html#gaa54a2fd9780d13ef0805aff24e3b2345"/>
+      <topic label="MXC_GPIO_SetDriveStrength" href="group__gpio.html#ga63004e4c450b8f1a755c88393668e0b2"/>
       <topic label="MXC_GPIO_SetVSSEL" href="group__gpio.html#ga53687f1fd275708a6404f9d64b6e0549"/>
       <topic label="MXC_GPIO_SetWakeEn" href="group__gpio.html#gae3e2023e6c3b8783aaaa2f68aa4d9b2f"/>
       <topic label="MXC_GPIO_Shutdown" href="group__gpio.html#ga573834d158ef9678e57c5f677b3a5c22"/>
@@ -2746,6 +2754,10 @@
       <topic label="MXC_I2C_DisableGeneralCall" href="group__i2c.html#ga63aab1fcc4e60971532b8b6dcf9f2037"/>
       <topic label="MXC_I2C_DisableInt" href="group__i2c.html#gadc27ac288f41d583048b9f90cf8aebd9"/>
       <topic label="MXC_I2C_DisablePreload" href="group__i2c.html#ga1d80b18ac960c15b428533c3a029cec7"/>
+      <topic label="MXC_I2C_DMA_GetRXChannel" href="group__i2c.html#ga4c3ccb2ce18ad6d421cff8fd81c81f6f"/>
+      <topic label="MXC_I2C_DMA_GetTXChannel" href="group__i2c.html#gabf39c8a30f3042844a198bc44a369740"/>
+      <topic label="MXC_I2C_DMA_Init" href="group__i2c.html#gad207529023caa8ffc550eec5bb6f51ce"/>
+      <topic label="MXC_I2C_DMA_SetRequestSelect" href="group__i2c.html#gafbf8e8e9c4a612322c8f12d35bd693b7"/>
       <topic label="MXC_I2C_DMACallback" href="group__i2c.html#gada949222dbe550f528f7a52fd19b7723"/>
       <topic label="MXC_I2C_EnableGeneralCall" href="group__i2c.html#ga53bfbcf321baaf94f79712c2f1e422a5"/>
       <topic label="MXC_I2C_EnableInt" href="group__i2c.html#ga3191ddeb97b19c0c103ad9e78c1f12c9"/>
@@ -4514,6 +4526,7 @@
       <topic label="MXC_SDHC_ClearFlags" href="group__sdhc.html#ga792d935d928797dbaa43ce99a42ad6aa"/>
       <topic label="MXC_SDHC_Get_Clock_Config" href="group__sdhc.html#gacee4399e921d839474c42ea8a42bdfa0"/>
       <topic label="MXC_SDHC_Get_Host_Cn_1" href="group__sdhc.html#gad58d9861ae574e8cc881a80f010d98b8"/>
+      <topic label="MXC_SDHC_Get_Input_Clock_Freq" href="group__sdhc.html#gaed5886ab0604ce9e83c6cf1942dea9b1"/>
       <topic label="MXC_SDHC_Get_Response128" href="group__sdhc.html#gad35460c504b2293857f5fcc13d2e005c"/>
       <topic label="MXC_SDHC_Get_Response32" href="group__sdhc.html#gadc9785956d71368aac0d2a0b11003197"/>
       <topic label="MXC_SDHC_Get_Response32_Auto" href="group__sdhc.html#gae0d6d270245ca6a835acc59ba8c07768"/>
@@ -8985,6 +8998,7 @@
         <topic label="sysst" href="group__gcr__registers.html#a6e139ffb1b218877f74b83aaddd17439"/>
       </topic>
       <topic label="mxc_gpio_cfg_t" href="group__gpio.html#structmxc__gpio__cfg__t">
+        <topic label="drvstr" href="group__gpio.html#ae47f3c6571885f5689eced52d0e66eca"/>
         <topic label="func" href="group__gpio.html#a82db8d3ca4a2643b6b3214d4e16b832a"/>
         <topic label="mask" href="group__gpio.html#ad3bee21df6875eeccd25d3c577e0600a"/>
         <topic label="pad" href="group__gpio.html#a8da839c23daf8bc3c04c00ec207ae50c"/>

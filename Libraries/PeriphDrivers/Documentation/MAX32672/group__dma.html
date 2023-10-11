@@ -967,7 +967,8 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 </div><div class="memdoc">
 
 <p>Initialize DMA resources. </p>
-<p >This initialization is required before using the DMA driver functions. </p><dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if successful </dd></dl>
+<p >This initialization is required before using the DMA driver functions. </p><dl class="section note"><dt>Note</dt><dd>On default this function enables DMA peripheral clock. if you wish to manage clock and gpio related things in upper level instead of here. Define MSDK_NO_GPIO_CLK_INIT flag in project.mk file. By this flag this function will remove clock and gpio related codes from file. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="group___m_x_c___error___codes.html#gaa1f0dfda864fa9d2630645f233e1fdb4">E_NO_ERROR</a> if successful </dd></dl>
 
 </div>
 </div>
@@ -1256,7 +1257,7 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>burst_size</b
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 4 2023 17:11:57 for MAX32672 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
+    <li class="footer">Generated on Wed Oct 11 2023 21:27:32 for MAX32672 Peripheral Driver API by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4 </li>
   </ul>
 </div>
 </body>

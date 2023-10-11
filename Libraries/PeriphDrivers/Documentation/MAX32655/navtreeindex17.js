@@ -1,5 +1,16 @@
 var NAVTREEINDEX17 =
 {
+"group__owm.html#gada30eb50664a62c8c1e5e5dc2f430397":[1,15,2],
+"group__owm.html#gadaed2256b86e3d96aa105f2e50b17198":[1,15,17],
+"group__owm.html#gae42d83358ca468c9a57a4af62eba9a38":[1,15,3],
+"group__owm.html#gae761cfafa604b559bda40242a3ba4fd4":[1,15,41],
+"group__owm.html#gaf68e5019e22fcd4427ce43cc5bea54f3":[1,15,43],
+"group__owm.html#gafa8aad100fe08c50375562892990d761":[1,15,4],
+"group__owm.html#gga7ea4dcc0c110361bf2b9b8b875b7c3e4a7e71cec8682ee5cfc4e24d32f4cd9dc3":[1,15,9,1],
+"group__owm.html#gga7ea4dcc0c110361bf2b9b8b875b7c3e4a7f30a8309d657a2d62153d08ede46d62":[1,15,9,0],
+"group__owm.html#gga7ea4dcc0c110361bf2b9b8b875b7c3e4ab03dfba768c0276304fe48e44ebf284d":[1,15,9,2],
+"group__owm.html#structmxc__owm__cfg__t":[1,15,1],
+"group__owm__registers.html":[1,15,0],
 "group__owm__registers.html#a11743546f5166381c1b12da20dc283b7":[1,15,0,8,3],
 "group__owm__registers.html#a3bb3ae3f634e0aaa7f9292a06a4b241a":[1,15,0,8,2],
 "group__owm__registers.html#a4043deaf58b8c69a3d760825df5d9074":[1,15,0,8,5],
@@ -238,16 +249,5 @@ var NAVTREEINDEX17 =
 "group__spi.html#ga689879f735755146668290b134e25aed":[1,20,11],
 "group__spi.html#ga6c9da2bba6624ca85e0aaafc94bad2f6":[1,20,30],
 "group__spi.html#ga7a218a6e76f22dccdd5680b1eca14409":[1,20,5],
-"group__spi.html#ga7fd5b76f6fb558d0556927afaf263cc8":[1,20,41],
-"group__spi.html#ga812c8b820873b071de819b8db2c1a845":[1,20,28],
-"group__spi.html#ga85d98037b8a7ff2f1d54db8ac7edbf74":[1,20,43],
-"group__spi.html#ga86f66284a2899897a4e0fc760d01bc6d":[1,20,46],
-"group__spi.html#ga88101bd57a262e6719d5b497a692d528":[1,20,26],
-"group__spi.html#ga8bd2984da7fd84362fe59e2add1e3bb9":[1,20,44],
-"group__spi.html#ga9a92d8991186982b927fee7dbb5e8cab":[1,20,37],
-"group__spi.html#ga9d7f7ec4a2f457569169a8194ea29555":[1,20,8],
-"group__spi.html#gaa06214fd0986da99eef31b358385ca78":[1,20,14],
-"group__spi.html#gaa0c86f7cbe59a6f3c95f3e86aa9a07c7":[1,20,38],
-"group__spi.html#gaa834986af29c54377bbfb7cf3ade1b81":[1,20,10],
-"group__spi.html#gaaab4ba92652dff76e85c778b6170779a":[1,20,7]
+"group__spi.html#ga7fd5b76f6fb558d0556927afaf263cc8":[1,20,41]
 };

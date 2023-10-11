@@ -1,5 +1,16 @@
 var NAVTREEINDEX17 =
 {
+"group__pwrseq.html#gabb6c99f86c25abe408c3a4fe27d80f28":[1,10,23],
+"group__pwrseq.html#gadd2c669905153cc460ab63ec93593f4e":[1,10,6],
+"group__pwrseq.html#gade48c6aae021a798a082c9e3ff143e50":[1,10,28],
+"group__pwrseq.html#gaf204ecd230a338a431543e03d019afe1":[1,10,16],
+"group__pwrseq.html#gafb0558155a4a6e363dc0ced783cd8f60":[1,10,9],
+"group__pwrseq.html#gafc72801a23b9d57627a4b4ade155c672":[1,10,2],
+"group__pwrseq__registers.html":[1,10,0],
+"group__pwrseq__registers.html#a3888dedbd963b732349044838c1e25fd":[1,10,0,8,5],
+"group__pwrseq__registers.html#a97f282caf7d5e2e5915beeb9c503c65d":[1,10,0,8,4],
+"group__pwrseq__registers.html#aaa59ede1c2a52cc9d9e7515c73289a6d":[1,10,0,8,2],
+"group__pwrseq__registers.html#ae172155029f5978c0e1ac48d015b233a":[1,10,0,8,1],
 "group__pwrseq__registers.html#ae29b83a5e86744bceecd3ab595b22cae":[1,10,0,8,0],
 "group__pwrseq__registers.html#ae6ba5a8a2b9842d80cab170c2672796d":[1,10,0,8,3],
 "group__pwrseq__registers.html#structmxc__pwrseq__regs__t":[1,10,0,8],
@@ -238,16 +249,5 @@ var NAVTREEINDEX17 =
 "group__trng__registers.html#a447ee92b40e1e0d8006d65d3cf735d84":[1,20,0,5,1],
 "group__trng__registers.html#a5f3ab705a4a67b17dcc04560cef193f3":[1,20,0,5,0],
 "group__trng__registers.html#af65ae05bcce5786d892c6a2bd1141292":[1,20,0,5,2],
-"group__trng__registers.html#structmxc__trng__regs__t":[1,20,0,5],
-"group__uart.html":[1,21],
-"group__uart.html#a043f0f3e53b8233dca0b9446b9c36ccd":[1,21,1,3],
-"group__uart.html#a1490246c0470b7a850eb417d3c7f6e13":[1,21,1,7],
-"group__uart.html#a1bf34bc0d63b8e4a68fa9fb295b03f34":[1,21,1,1],
-"group__uart.html#a7dbe1c75593b075e387474ea112ce73b":[1,21,1,5],
-"group__uart.html#ab08c6d802a1534b503d57b1cfb785bbf":[1,21,1,4],
-"group__uart.html#ab83c0e07099df7beb8e491cb91914de0":[1,21,1,2],
-"group__uart.html#abaa4e72af025cc3c53b626f14cb40c1d":[1,21,1,6],
-"group__uart.html#af33f8259bdf30484df63a458cbfc0fc5":[1,21,1,0],
-"group__uart.html#ga0c6a9a0836596871c254f5faca574099":[1,21,39],
-"group__uart.html#ga1275a45a60c1cfd4cb4acbd6737a1c50":[1,21,14]
+"group__trng__registers.html#structmxc__trng__regs__t":[1,20,0,5]
 };

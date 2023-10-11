@@ -1,5 +1,14 @@
 var NAVTREEINDEX14 =
 {
+"group__uart__registers.html#af3e2316348029c26147ceaba51512bf7":[1,18,0,14,9],
+"group__uart__registers.html#structmxc__uart__regs__t":[1,18,0,14],
+"group__wdt.html":[1,19],
+"group__wdt.html#a0fb6f702a2d2ef7e64d45746508dd675":[1,19,1,0],
+"group__wdt.html#a7248d988facbc4deda93907b9c214a79":[1,19,1,1],
+"group__wdt.html#acd62253017205694e2f82a2cec6da3fa":[1,19,1,4],
+"group__wdt.html#ae1cc47fde12916cf75532b6bc1a80d90":[1,19,1,3],
+"group__wdt.html#af095484763b40d0ce2649b916f0ef898":[1,19,1,2],
+"group__wdt.html#ga038303b14f3ff9771b7f9f511e75972d":[1,19,13],
 "group__wdt.html#ga12467c52fd011a002b1f9c0efa11d7db":[1,19,14],
 "group__wdt.html#ga186a18f3f76e3138e5dfe243cca1ff11":[1,19,18],
 "group__wdt.html#ga3e80540eb80f9f39cc5ff51b0231f319":[1,19,5],

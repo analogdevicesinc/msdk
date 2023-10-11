@@ -1,5 +1,17 @@
 var NAVTREEINDEX30 =
 {
+"group__spi__registers.html#a3e6d001d1e0e8d1e47c89262c1acc0f2":[0,26,0,15,8],
+"group__spi__registers.html#a7cb0501c3f4c44f074057ea0a162aa18":[0,26,0,15,6],
+"group__spi__registers.html#a86e747d72e3f115caa508519dc0a79ea":[0,26,0,15,10],
+"group__spi__registers.html#aab1cd293f21e42b2e6b96937ad70f02a":[0,26,0,15,7],
+"group__spi__registers.html#adef50da3520f7ff420a0ef7fdaa17256":[0,26,0,15,2],
+"group__spi__registers.html#ae11b73e624e946ab2645f23538ec2083":[0,26,0,15,4],
+"group__spi__registers.html#ae27e4f404d38ab2c3785c0ae3c30578a":[0,26,0,15,0],
+"group__spi__registers.html#af8524d8c395fc8a6799a944d793f6245":[0,26,0,15,3],
+"group__spi__registers.html#affedcd0310ea8b53fcecb4538a47b550":[0,26,0,15,12],
+"group__spi__registers.html#structmxc__spi__regs__t":[0,26,0,15],
+"group__spixf.html":[0,27],
+"group__spixf.html#a07d305a0ba2fd7e4a00394f7bf221567":[0,27,4,0],
 "group__spixf.html#a201f2e77d898bf18378030602de654e2":[0,27,3,1],
 "group__spixf.html#a256d7e94a7be63f0ce48b1e8a676c690":[0,27,4,6],
 "group__spixf.html#a2784c14f1a43996c8f438c8b7546f0ed":[0,27,4,8],
@@ -237,17 +249,5 @@ var NAVTREEINDEX30 =
 "group__spixr__registers.html#a3e6d001d1e0e8d1e47c89262c1acc0f2":[0,28,0,16,8],
 "group__spixr__registers.html#a54231319a86f336883cece7855774f08":[0,28,0,16,3],
 "group__spixr__registers.html#a7cb0501c3f4c44f074057ea0a162aa18":[0,28,0,16,6],
-"group__spixr__registers.html#a86e747d72e3f115caa508519dc0a79ea":[0,28,0,16,10],
-"group__spixr__registers.html#aab1cd293f21e42b2e6b96937ad70f02a":[0,28,0,16,7],
-"group__spixr__registers.html#adef50da3520f7ff420a0ef7fdaa17256":[0,28,0,16,1],
-"group__spixr__registers.html#ae11b73e624e946ab2645f23538ec2083":[0,28,0,16,4],
-"group__spixr__registers.html#af8524d8c395fc8a6799a944d793f6245":[0,28,0,16,2],
-"group__spixr__registers.html#affedcd0310ea8b53fcecb4538a47b550":[0,28,0,16,12],
-"group__spixr__registers.html#structmxc__spixr__regs__t":[0,28,0,16],
-"group__srcc.html":[0,29],
-"group__srcc.html#ga2172453ec177bccce41b5af3b65008bd":[0,29,7],
-"group__srcc.html#ga788900c9a6cf09caebe2b877a275f31d":[0,29,9],
-"group__srcc.html#ga7e4c462a6ef31947fee1866249441441":[0,29,5],
-"group__srcc.html#ga82eef6554756d23d32d0a1f3a70ee67a":[0,29,6],
-"group__srcc.html#ga848602e92830fb7f1cab094f427441c5":[0,29,4]
+"group__spixr__registers.html#a86e747d72e3f115caa508519dc0a79ea":[0,28,0,16,10]
 };

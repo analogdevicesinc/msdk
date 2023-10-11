@@ -289,11 +289,11 @@
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#build-variables-for-toggling-libraries">Build Variables for Toggling Libraries</a>
     </li>
+    <li class="toctree-l4"><a class="reference internal" href="#build-variables-for-the-periphdrivers-library">Build Variables for the PeriphDrivers Library</a>
+    </li>
     <li class="toctree-l4"><a class="reference internal" href="#build-variables-for-secure-boot-tools-sbts">Build Variables for Secure Boot Tools (SBTs)</a>
     </li>
     <li class="toctree-l4"><a class="reference internal" href="#build-variables-controlling-the-output">Build Variables Controlling the Output</a>
-    </li>
-    <li class="toctree-l4"><a class="reference internal" href="#miscellaneous-build-variables">Miscellaneous Build Variables</a>
     </li>
         </ul>
     </li>
@@ -348,10 +348,16 @@
         </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#miscellaneous-drivers">Miscellaneous Drivers</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#miscellaneous-build-variables">Miscellaneous Build Variables</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#sdhc">SDHC</a>
         <ul>
     <li class="toctree-l4"><a class="reference internal" href="#sdhc-supported-parts">SDHC Supported Parts</a>
+    </li>
+    <li class="toctree-l4"><a class="reference internal" href="#sdhc-build-variables">SDHC Build Variables</a>
     </li>
         </ul>
     </li>
@@ -362,6 +368,8 @@
     <li class="toctree-l4"><a class="reference internal" href="#freertos-plus">FreeRTOS-Plus</a>
     </li>
         </ul>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#cli">CLI</a>
     </li>
     <li class="toctree-l3"><a class="reference internal" href="#coremark">CoreMark</a>
         <ul>
@@ -417,6 +425,16 @@
     </li>
         </ul>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#developer-notes">Developer Notes</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#spi-v2-library">SPI v2 Library</a>
+        <ul>
+    <li class="toctree-l4"><a class="reference internal" href="#porting-projects-to-use-spi-v2">Porting Projects to use SPI v2</a>
+    </li>
+        </ul>
+    </li>
+        </ul>
+    </li>
     </ul>
                 </li>
               </ul>
@@ -445,7 +463,7 @@
       <div class="wy-nav-content">
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
-    <li><a href=".." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
       <li class="breadcrumb-item active">MSDK User Guide</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/Analog-Devices-MSDK/msdk/edit/master/docs/USERGUIDE.md" class="icon icon-github"> Edit on GitHub</a>
@@ -2683,7 +2701,7 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 </tbody>
 </table>
 <h4 id="build-variables-for-toggling-libraries">Build Variables for Toggling Libraries</h4>
-<p>The following variables can be used to modularly toggle the <a href="#libraries">available libraries</a> in the MSDK.</p>
+<p>The following variables can be used to enable the <a href="#libraries">available libraries</a> in the MSDK.  Each library may also offer its own build configuration variables when enabled, which are documented in the <a href="#libraries">libraries</a> section.</p>
 <table>
 <thead>
 <tr>
@@ -2748,6 +2766,29 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 <td>Include the SDHC library</td>
 <td>This option toggles the Secure Digital High Capacity (SDHC) library, which can be used to interface with SD cards. Additionally, it enables the <a href="http://elm-chan.org/fsw/ff/00index_e.html">FatFS</a> library, which implements a generic FAT filesystem.</td>
 </tr>
+<tr>
+<td><code>LIB_CLI</code></td>
+<td>Include the MSDK's built-in CLI library</td>
+<td>This option toggles the MSDK's built-in CLI library, which can be used to process received commands over UART.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="build-variables-for-the-periphdrivers-library">Build Variables for the PeriphDrivers Library</h4>
+<p>The following variables are specific to the PeriphDrivers library.</p>
+<table>
+<thead>
+<tr>
+<th>Configuration Variable</th>
+<th>Description</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>MXC_SPI_VERSION</code></td>
+<td>Set the SPI drivers to use (default is <code>v1</code>)</td>
+<td>The PeriphDrivers offer two versions of the SPI API in order to maintain backwards compatibility.  Acceptable values are <code>v1</code> (legacy) or <code>v2</code>.  See <a href="#spi-v2-library">The SPI V2 Developer Note</a> for more details.</td>
+</tr>
 </tbody>
 </table>
 <h4 id="build-variables-for-secure-boot-tools-sbts">Build Variables for Secure Boot Tools (SBTs)</h4>
@@ -2808,29 +2849,6 @@ MFLOAT_ABI=hard # Enable hardware floating point acceleration
 <td><code>FORCE_COLOR</code></td>
 <td>Force colorized compiler output</td>
 <td>By default, GCC will attempt to autodetect whether colorized output is supported or not.  Set to <code>1</code> to force color (equivalent to <code>PROJ_CFLAGS += -fdiagnostics-color=always</code>).  This is useful for forcing color in CI systems.</td>
-</tr>
-</tbody>
-</table>
-<h4 id="miscellaneous-build-variables">Miscellaneous Build Variables</h4>
-<p>Other miscellaneous build variables specific to individual microcontrollers or otherwise not belonging in any other category are documented here.</p>
-<table>
-<thead>
-<tr>
-<th>Configuration Variable</th>
-<th>Description</th>
-<th>Details</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td><code>CAMERA</code></td>
-<td>(Optional) Set the Camera drivers to use</td>
-<td>This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are <code>HM01B0</code>, <code>HM0360_MONO</code>, <code>HM0360_COLOR</code>, <code>OV5642</code>, <code>OV7692</code> (default), or <code>PAG7920</code>. Camera drivers can be found in the <a href="Libraries/MiscDrivers/Camera"><code>Libraries/MiscDrivers/Camera</code></a> folder. Depending on the selected camera, a compiler definition may be added to the build. See the <code>board.mk</code> file for the active BSP for more details.</td>
 </tr>
 </tbody>
 </table>
@@ -3318,9 +3336,32 @@ int main(void)
 <hr />
 <h3 id="miscellaneous-drivers">Miscellaneous Drivers</h3>
 <p>The <code>Libraries/MiscDrivers</code> folder of the MSDK contains drivers for miscellaneous external components such as TFT displays, cameras, audio codecs, PMICs, pushbuttons, etc. These resources are usually closely tied with the <a href="#board-support-packages">Board Support Packages</a>.</p>
+<h4 id="miscellaneous-build-variables">Miscellaneous Build Variables</h4>
+<table>
+<thead>
+<tr>
+<th>Configuration Variable</th>
+<th>Description</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><code>CAMERA</code></td>
+<td>(Optional) Set the Camera drivers to use</td>
+<td>This option is only useful for the MAX78000 and MAX78002 and sets the camera drivers to use for the project. Permitted values are <code>HM01B0</code>, <code>HM0360_MONO</code>, <code>HM0360_COLOR</code>, <code>OV5642</code>, <code>OV7692</code> (default), or <code>PAG7920</code>. Camera drivers can be found in the <a href="Libraries/MiscDrivers/Camera"><code>Libraries/MiscDrivers/Camera</code></a> folder. Depending on the selected camera, a compiler definition may be added to the build. See the <code>board.mk</code> file for the active BSP for more details.</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h3 id="sdhc">SDHC</h3>
 <p>The <strong>Secure Digital High Capacity <em>(SDHC)</em></strong> library offers a higher-level interface built on top of the SDHC <a href="#peripheral-driver-api">Peripheral Driver API</a> that includes a <a href="http://elm-chan.org/fsw/ff/00index_e.html">FatFS File System</a> implementation for managing files on SD cards.</p>
+<p>See <a href="#build-variables-for-toggling-libraries">Build Variables for Toggling Libraries</a> for instructions on enabling the SDHC library.</p>
 <h4 id="sdhc-supported-parts">SDHC Supported Parts</h4>
 <ul>
 <li>MAX32650</li>
@@ -3329,6 +3370,24 @@ int main(void)
 <li>MAX78000</li>
 <li>MAX78002</li>
 </ul>
+<h4 id="sdhc-build-variables">SDHC Build Variables</h4>
+<p>Once enabled, the following <a href="#build-configuration-variables">build configuration variables</a> become available.</p>
+<table>
+<thead>
+<tr>
+<th>Configuration Variable</th>
+<th>Description</th>
+<th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>FATFS_VERSION</code></td>
+<td>Specify the version of <a href="http://elm-chan.org/fsw/ff/00index_e.html">FatFS</a> to use</td>
+<td>FatFS is a generic FAT/exFAT filesystem that comes as a sub-component of the SDHC library.  This variable can be used to change the <a href="http://elm-chan.org/fsw/ff/updates.html">version</a> to use.  Acceptable values are <code>ff13</code> (R0.13), <code>ff14</code> (R0.14b), or <code>ff15</code> (R0.15)</td>
+</tr>
+</tbody>
+</table>
 <hr />
 <h3 id="freertos">FreeRTOS</h3>
 <p><a href="https://www.freertos.org/index.html">FreeRTOS</a> is a Real-Time Operating System (RTOS), which offers basic abstractions for multi-tasking and an OS layer specifically targeted at embedded systems with real-time requirements.  The MSDK maintains an official support layer for the FreeRTOS kernel.  Official documentation can be found on the <a href="https://www.freertos.org/index.html">FreeRTOS website</a>.</p>
@@ -3340,6 +3399,9 @@ int main(void)
 <li><a href="https://www.freertos.org/FreeRTOS-Plus/index.html">FreeRTOS-Plus-CLI</a>: <strong>Supported</strong></li>
 <li><a href="https://www.freertos.org/FreeRTOS-Plus/FreeRTOS_Plus_TCP/index.html">FreeRTOS-Plus-TCP</a>: <strong>Not supported</strong> (Contributions welcome!)</li>
 </ul>
+<h3 id="cli">CLI</h3>
+<p>Developing a UART Command-Line Interface (CLI) is a common task while developing embedded firmware.  The MSDK contains a pre-made command processing library in the <code>Libraries/CLI</code> that can be used to simplify and speed up development.</p>
+<p>See the <a href="../Libraries/CLI/"><code>Libraries/CLI/README.md</code></a> document for more details.</p>
 <h3 id="coremark">CoreMark</h3>
 <p><a href="https://www.eembc.org/coremark/">EEMBC’s CoreMark®</a> is a benchmark that measures the performance of microcontrollers (MCUs) and central processing units (CPUs) used in embedded systems.  CoreMark is a simple, yet sophisticated benchmark that is designed specifically to test the functionality of a processor core. Running CoreMark produces a single-number score allowing users to make quick comparisons between processors.</p>
 <h4 id="coremark-supported-parts">CoreMark Supported Parts</h4>
@@ -3541,7 +3603,7 @@ int main(void)
 </tr>
 <tr>
 <td><strong>I2C</strong></td>
-<td>I2C Loopback Example</td>
+<td>I2C Master-Slave Transaction Demo</td>
 <td>MAX32650<br>MAX32655<br>MAX32660<br>MAX32662<br>MAX32665<br>MAX32670<br>MAX32672<br>MAX32675<br>MAX32680<br>MAX32690<br>MAX78002</td>
 </tr>
 <tr>
@@ -3938,6 +4000,16 @@ int main(void)
 </thead>
 <tbody>
 <tr>
+<td><strong>BLE_LR_Central</strong></td>
+<td>Long range demo on a central device</td>
+<td><em>Local:</em><code>Examples/MAX32665/BLE_LR_Central</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/BLE_LR_Central">link</a></td>
+</tr>
+<tr>
+<td><strong>BLE_LR_Peripheral</strong></td>
+<td>BLE long range application demo on a peripheral device.</td>
+<td><em>Local:</em><code>Examples/MAX32665/BLE_LR_Peripheral</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/BLE_LR_Peripheral">link</a></td>
+</tr>
+<tr>
 <td><strong>HTMR</strong></td>
 <td>Configures and starts the HTMR and demonstrates the use of the alarms.</td>
 <td><em>Local:</em><code>Examples/MAX32665/HTMR</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX32665/HTMR">link</a></td>
@@ -4254,6 +4326,11 @@ int main(void)
 <td><em>Local:</em><code>Examples/MAX78002/QSPI</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/QSPI">link</a></td>
 </tr>
 <tr>
+<td><strong>SPI_ControllerTarget</strong></td>
+<td>SPI_ControllerTarget Demo</td>
+<td><em>Local:</em><code>Examples/MAX78002/SPI_ControllerTarget</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/SPI_ControllerTarget">link</a></td>
+</tr>
+<tr>
 <td><strong>USB_MassStorage_ThroughPut</strong></td>
 <td>USB Mass Storage Class example</td>
 <td><em>Local:</em><code>Examples/MAX78002/USB_MassStorage_ThroughPut</code><br><em>Github:</em> <a href="https://github.com/Analog-Devices-MSDK/msdk/tree/release/Examples/MAX78002/USB_MassStorage_ThroughPut">link</a></td>
@@ -4417,6 +4494,128 @@ It’s important to note some fundamental limitations of debugging the MSDK's su
 <p>Power cycle the microcontroller. It step 8 succeeded, it's blank and ready to re-program. The debugger should have no issues connecting to the device in this blank state.</p>
 </li>
 </ol>
+<h2 id="developer-notes">Developer Notes</h2>
+<h3 id="spi-v2-library">SPI v2 Library</h3>
+<p>The SPI v2 Library is the latest version of the MSDK SPI drivers which highlights:</p>
+<ul>
+<li>Target Select (TS) Control Scheme which provides users the option to drive their own TS pins.</li>
+<li>Optional<code>MXC_SPI_Config(...)</code> and <code>mxc_spi_cfg_t</code> struct to reduce the use of multiple functions to select proper SPI settings.</li>
+<li>Re-mapped the <code>MXC_SPI_Init(...)</code> function input parameters (same behavior as SPI v1).</li>
+<li>Allow for re-arming an SPI transaction within the callback function for chained SPI messages.</li>
+<li>Decrease in setup overhead in a Transaction function call. Less nested function calls within drivers.</li>
+<li>Improved SPI DMA support and DMA Channel IRQ vector flexibility by providing acquired DMA channel numbers before a SPI DMA transaction call.</li>
+<li>The use of Controller and Target terms instead of Master and Slave, respectively.</li>
+<li>Still supports SPI v1 function prototypes for backwards-compatibility.</li>
+<li>Bug fixes from the SPI v1 API.</li>
+</ul>
+<h4 id="porting-projects-to-use-spi-v2">Porting Projects to use SPI v2</h4>
+<p>The latest SPI examples in the MSDK defaults to build the SPI v1 libraries. Set the <code>MXC_SPI_VERSION</code> <a href="#build-configuration-variables">build configuration variable</a> to <code>v2</code> (case sensitive) use the SPI v2 API.</p>
+<p>This guide shows how to update an existing project that is using the SPI v1 API to SPI v2. The SPI v2 Library still supports the SPI v1 function prototypes for backwards-compatibility with the main difference being the SPI DMA interrupt handling (see <a href="#spi-dma-interrupt-handling">SPI DMA Interrupt Handling</a> section below for more info).</p>
+<p>Note: The SPI v2 API is only a drop in replacement to SPI v1 if SPI DMA is <strong>not</strong> used; should the user choose to continue building with the SPI v1 convention but with the underlying SPI v2 implementation. This porting guide demonstrates how to use the full extent of the SPI v2 features.</p>
+<h5 id="spi-init-function">SPI Init Function</h5>
+<p>The input parameters for the <code>MXC_SPI_Init(...)</code> function were updated in SPI v2 to allow for more user-selectable options during initialization. This should not cause any errors or behavioral differences with the <code>MXC_SPI_Init(...)</code> function when switching between SPI v1 and SPI v2 builds as the input parameters were essentially re-mapped to more descriptive names.</p>
+<p>SPI v1:</p>
+<pre class="codehilite"><code class="language-c">int MXC_SPI_Init(mxc_spi_regs_t *spi, 
+                int masterMode, 
+                int quadModeUsed, 
+                int numSlaves, 
+                unsigned ssPolarity, 
+                unsigned int hz, 
+                mxc_spi_pins_t pins)
+</code></pre>
+
+<p>SPI v2:</p>
+<pre class="codehilite"><code class="language-c">int MXC_SPI_Init(mxc_spi_regs_t *spi, 
+                mxc_spi_type_t controller_target, 
+                mxc_spi_interface_t if_mode, 
+                int numTargets, 
+                uint8_t ts_active_pol_mask, 
+                uint32_t freq, 
+                mxc_spi_pins_t pins)
+</code></pre>
+
+<p>Input Parameters:</p>
+<ul>
+<li><code>mxc_spi_regs_t *spi</code> remains unchanged.</li>
+<li><code>int masterMode</code> -&gt; <code>mxc_spi_type_t controller_target</code>. The enum <code>mxc_spi_type_t</code> was added for increased code readability.</li>
+<li><code>int quadModeUsed</code> -&gt; <code>mxc_spi_interface_t if_mode</code>. Previously, the <code>MXC_SPI_Init(...)</code> function could only select between standard (4wire) and quad interface modes. With SPI v2, the user can select either standard (<code>MXC_SPI_INTERFACE_STANDARD</code>), quad (<code>MXC_SPI_INTERFACE_QUAD</code>), 3wire (<code>MXC_SPI_INTERFACE_3WIRE</code>), or dual (<code>MXC_SPI_INTERFACE_DUAL</code>) mode.</li>
+<li><code>int numSlaves</code> -&gt; <code>int numTargets</code>. SPI v2 does not use this parameter and was kept to continue supporting SPI v1.</li>
+<li><code>unsigned ssPolarity</code> -&gt; <code>uint8_t ts_active_pol_mask</code>. Updated to a more descriptive name.</li>
+<li><code>unsigned int hz</code> -&gt; <code>uint32_t freq</code>.</li>
+<li><code>mxc_spi_pins_t pins</code> remains unchanged.</li>
+</ul>
+<h5 id="spi-config-function">SPI Config Function</h5>
+<p>The <code>int MXC_SPI_Config(mxc_spi_cfg_t cfg)</code> function was added to reduce the number of helper function calls to set the appropriate settings that the <code>MXC_SPI_Init(...)</code> function did not set.</p>
+<p>This function also sets up the DMA and acquires DMA TX/RX channels for SPI DMA transactions.</p>
+<p><code>mxc_spi_cfg_t</code> struct:</p>
+<ul>
+<li><code>mxc_spi_regs_t *spi</code> - Select SPI Instance to configure.</li>
+<li><code>mxc_spi_clkmode_t clk_mode</code> - Select clock mode.</li>
+<li><code>uint8_t frame_size</code> - Select single frame size (2 - 16 bits).</li>
+<li><code>bool use_dma_tx</code> - Enable SPI DMA TX (acquire and configure TX channel).</li>
+<li><code>bool use_dma_rx</code> - Enable SPI DMA RX (acquire and configure RX channel).</li>
+<li><code>mxc_dma_regs_t *dma</code> - Select DMA Instance to configure for SPI DMA (Valid only if <code>use_dma_tx</code> or <code>use_dma_rx</code> is set to true).</li>
+</ul>
+<h5 id="spi-request-struct">SPI Request Struct</h5>
+<p><code>mxc_spi_req_t</code> struct:</p>
+<ul>
+<li><code>mxc_spi_regs_t *spi</code> - Remains unchanged.</li>
+<li><code>int ssIdx</code> - Remains unchanged.</li>
+<li><code>int ssDeassert</code> - Remains unchanged.</li>
+<li><code>uint8_t *txData</code> - Remains unchanged.</li>
+<li><code>uint8_t *rxData</code> - Remains unchanged.</li>
+<li><code>uint32_t txLen</code> - Remains unchanged.</li>
+<li><code>uint32_t rxLen</code> - Remains unchanged.</li>
+<li><code>uint32_t txCnt</code> - Not used in SPI v2.</li>
+<li><code>uint32_t rxCnt</code> - Not used in SPI v2.</li>
+<li><code>mxc_spi_callback_t completeCB</code> - Type was renamed, but funtionally, remains unchanged.</li>
+</ul>
+<h5 id="spi-transaction-functions">SPI Transaction Functions</h5>
+<p>The SPI v2 Libraries follows the terms used in the user guide: Controller and Target instead of Master and Slave, respectively.</p>
+<ul>
+<li><code>MXC_SPI_MasterTransaction(...)</code>        -&gt; <code>MXC_SPI_ControllerTransaction(...)</code></li>
+<li><code>MXC_SPI_MasterTransactionAsync(...)</code>   -&gt; <code>MXC_SPI_ControllerTransactionAsync(...)</code></li>
+<li><code>MXC_SPI_MasterTransactionDMA(...)</code>     -&gt; <code>MXC_SPI_ControllerTransactionDMA(...)</code></li>
+<li><code>MXC_SPI_SlaveTransaction(...)</code>         -&gt; <code>MXC_SPI_TargetTransaction(...)</code></li>
+<li><code>MXC_SPI_SlaveTransactionAsync(...)</code>    -&gt; <code>MXC_SPI_TargetTransactionAsync(...)</code></li>
+<li><code>MXC_SPI_SlaveTransactionDMA(...)</code>      -&gt; <code>MXC_SPI_TargetTransactionDMA(...)</code></li>
+</ul>
+<h5 id="spi-dma-setup-for-mxc_spi_controllertransactiondma">SPI DMA Setup for <code>MXC_SPI_ControllerTransactionDMA(...)</code></h5>
+<p>The SPI v2 library allows for more flexibility in setting generic DMA TX/RX channel vectors for SPI DMA transactions during run-time. Compared to SPI v1 where the user must know the acquired SPI DMA TX/RX channel numbers and define the appropriate DMA channel handlers before compile-time.</p>
+<p>There are two ways to initialize and configure the DMA before starting a SPI DMA transaction.</p>
+<p>Method 1: Call <code>int MXC_SPI_DMA_Init(mxc_spi_regs_t *spi, mxc_dma_regs_t *dma, bool use_dma_tx, bool use_dma_rx)</code>.</p>
+<p>Method 2: Set up the DMA options in the <code>mxc_spi_cfg_t</code> struct and call <code>int MXC_SPI_Config(mxc_spi_cfg_t cfg)</code>.</p>
+<pre class="codehilite"><code class="language-c">...
+// Initialize SPI DMA ahead of time.
+MXC_SPI_DMA_Init(SPI, DMA, true, true);
+
+int TX_DMA_CH = MXC_SPI_DMA_GetTXChannel(SPI);
+int RX_DMA_CH = MXC_SPI_DMA_GetRXChannel(SPI);
+
+NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(TX_DMA_CH));
+NVIC_EnableIRQ(MXC_DMA_CH_GET_IRQ(RX_DMA_CH));
+
+MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(TX_DMA_CH), DMA_TX_IRQHandler);
+MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(RX_DMA_CH), DMA_RX_IRQHandler);
+
+MXC_SPI_ControllerTransactionDMA(&amp;req);
+...
+</code></pre>
+
+<p>The DMA is initialized in <code>MXC_SPI_DMA_Init(...)</code> or <code>MXC_SPI_Config(...)</code>. This provides information on what DMA channels were acquired for a SPI instance's TX and RX DMA before calling the DMA transaction function. Following the example above, it is recommended to set up a generic-named DMA TX/RX vector because the SPI TX and RX DMA channels won't always acquire DMA_CH0 and DMA_CH1, respectively.</p>
+<h5 id="spi-dma-interrupt-handling">SPI DMA Interrupt Handling</h5>
+<pre class="codehilite"><code class="language-c">void DMA_TX_IRQHandler(void)
+{
+    MXC_SPI_DMA_TX_Handler(SPI);
+}
+
+void DMA_RX_IRQHandler(void)
+{
+    MXC_SPI_DMA_RX_Handler(SPI);
+}
+</code></pre>
+
+<p>The SPI v1 API requires <code>MXC_DMA_Handler()</code> to be called in the TX and RX DMA Channel interrupt handlers. Following the generic vector names used in the previous section, the SPI v2 supplies its own TX/RX DMA Handler processing functions (<code>MXC_SPI_DMA_RX_Handler(...)</code> and <code>MXC_SPI_DMA_RX_Handler(...)</code>) that must be called within their appropriate DMA channel interrupt handlers. </p>
               
             </div>
           </div><footer>

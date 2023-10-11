@@ -1,5 +1,18 @@
 var NAVTREEINDEX30 =
 {
+"simo__regs_8h.html":[1,37,21],
+"sir__regs_8h.html":[1,38,5],
+"smon__regs_8h.html":[1,39,9],
+"spi__regs_8h.html":[1,19,0,15],
+"spixfc__fifo__regs_8h.html":[1,20,2,0,1],
+"spixfc__regs_8h.html":[1,20,1,0,8],
+"spixfm__regs_8h.html":[1,20,0,0,9],
+"spixr__regs_8h.html":[1,21,0,16],
+"srcc__regs_8h.html":[1,22,0,5],
+"tmr__regs_8h.html":[1,23,0,4],
+"tpu__regs_8h.html":[1,24,0,20],
+"trimsir__regs_8h.html":[1,40,4],
+"trng__regs_8h.html":[1,25,0,4],
 "uart__regs_8h.html":[1,26,0,11],
 "usbhs__regs_8h.html":[1,41,47],
 "wdt__regs_8h.html":[1,27,0,3],
