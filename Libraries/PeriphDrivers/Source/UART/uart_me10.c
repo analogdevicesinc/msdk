@@ -450,57 +450,57 @@ void MXC_UART_DMACallback(int ch, int error)
 }
 
 /* ************************************************************************* */
-void MXC_UART_AsyncCallback(mxc_uart_regs_t *uart, int retVal)
+int MXC_UART_AsyncCallback(mxc_uart_regs_t *uart, int retVal)
 {
-    MXC_UART_RevA_AsyncCallback((mxc_uart_reva_regs_t *)uart, retVal);
+    return MXC_UART_RevA_AsyncCallback((mxc_uart_reva_regs_t *)uart, retVal);
 }
 
 /* ************************************************************************* */
-void MXC_UART_TxAsyncCallback(mxc_uart_regs_t *uart, int retVal)
+int MXC_UART_TxAsyncCallback(mxc_uart_regs_t *uart, int retVal)
 {
-    MXC_UART_RevA_TxAsyncCallback((mxc_uart_reva_regs_t *)uart, retVal);
+    return MXC_UART_RevA_TxAsyncCallback((mxc_uart_reva_regs_t *)uart, retVal);
 }
 
 /* ************************************************************************* */
-void MXC_UART_RxAsyncCallback(mxc_uart_regs_t *uart, int retVal)
+int MXC_UART_RxAsyncCallback(mxc_uart_regs_t *uart, int retVal)
 {
-    MXC_UART_RevA_RxAsyncCallback((mxc_uart_reva_regs_t *)uart, retVal);
+    return MXC_UART_RevA_RxAsyncCallback((mxc_uart_reva_regs_t *)uart, retVal);
 }
 
 /* ************************************************************************* */
-void MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
+int MXC_UART_AsyncStop(mxc_uart_regs_t *uart)
 {
-    MXC_UART_RevA_AsyncStop((mxc_uart_reva_regs_t *)uart);
+    return MXC_UART_RevA_AsyncStop((mxc_uart_reva_regs_t *)uart);
 }
 
 /* ************************************************************************* */
-void MXC_UART_TxAsyncStop(mxc_uart_regs_t *uart)
+int MXC_UART_TxAsyncStop(mxc_uart_regs_t *uart)
 {
-    MXC_UART_RevA_TxAsyncStop((mxc_uart_reva_regs_t *)uart);
+    return MXC_UART_RevA_TxAsyncStop((mxc_uart_reva_regs_t *)uart);
 }
 
 /* ************************************************************************* */
-void MXC_UART_RxAsyncStop(mxc_uart_regs_t *uart)
+int MXC_UART_RxAsyncStop(mxc_uart_regs_t *uart)
 {
-    MXC_UART_RevA_RxAsyncStop((mxc_uart_reva_regs_t *)uart);
+    return MXC_UART_RevA_RxAsyncStop((mxc_uart_reva_regs_t *)uart);
 }
 
 /* ************************************************************************* */
-void MXC_UART_AbortAsync(mxc_uart_regs_t *uart)
+int MXC_UART_AbortAsync(mxc_uart_regs_t *uart)
 {
-    MXC_UART_RevA_AbortAsync((mxc_uart_reva_regs_t *)uart);
+    return MXC_UART_RevA_AbortAsync((mxc_uart_reva_regs_t *)uart);
 }
 
 /* ************************************************************************* */
-void MXC_UART_TxAbortAsync(mxc_uart_regs_t *uart)
+int MXC_UART_TxAbortAsync(mxc_uart_regs_t *uart)
 {
-    MXC_UART_RevA_TxAbortAsync((mxc_uart_reva_regs_t *)uart);
+    return MXC_UART_RevA_TxAbortAsync((mxc_uart_reva_regs_t *)uart);
 }
 
 /* ************************************************************************* */
-void MXC_UART_RxAbortAsync(mxc_uart_regs_t *uart)
+int MXC_UART_RxAbortAsync(mxc_uart_regs_t *uart)
 {
-    MXC_UART_RevA_RxAbortAsync((mxc_uart_reva_regs_t *)uart);
+    return MXC_UART_RevA_RxAbortAsync((mxc_uart_reva_regs_t *)uart);
 }
 
 /* ************************************************************************* */
