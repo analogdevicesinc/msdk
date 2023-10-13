@@ -65,6 +65,7 @@ IPATH += uros/include/visualization_msgs
 PROJ_LDFLAGS += -Luros # Search directory
 PROJ_LIBS += microros # Library name
 
+DEBUG = 1
 MXC_OPTIMIZE_CFLAGS = -Og
 
 ifeq ($(BOARD),Aud01_RevA)

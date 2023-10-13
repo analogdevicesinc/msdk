@@ -1,5 +1,34 @@
 #include <rmw_microros/rmw_microros.h>
+#include "rmw/rmw/ret_types.h"
 #include "uart.h"
+#include "time.h"
+#include "nvic_table.h"
+
+typedef struct custom_transport_args {
+    mxc_uart_regs_t * uart_instance;
+} custom_transport_args_t;
+
+static custom_transport_args_t transport_cfg = {
+    .uart_instance = MXC_UART0
+};
+
+static volatile bool rx_finished = false, tx_finished = false;
+
+void UART_ISR(void)
+{
+    MXC_UART_AsyncHandler(transport_cfg.uart_instance);
+}
+
+void UART_RX_Callback(mxc_uart_req_t * req, int error_code)
+{
+    printf("error code: %i\n", error_code);
+    rx_finished = true;
+}
+
+void UART_TX_Callback(mxc_uart_req_t * req, int error_code)
+{
+    tx_finished = true;
+}
 
 /**
  * @brief Function signature callback for opening a custom transport.
@@ -8,12 +37,16 @@
  */
 bool MXC_Serial_Open(struct uxrCustomTransport* transport) 
 {
-    mxc_uart_regs_t *uart_instance = (mxc_uart_regs_t *)transport->args;
-    if (MXC_UART_Init(uart_instance, 115200, MXC_UART_APB_CLK) != E_NO_ERROR) {
+    custom_transport_args_t *args = (custom_transport_args_t *)transport->args;
+    int error = MXC_UART_Init(args->uart_instance, 115200, MXC_UART_APB_CLK);
+    if (error != E_NO_ERROR) {
         return false;
     }
-    MXC_UART_ClearRXFIFO(uart_instance);
-    MXC_UART_ClearTXFIFO(uart_instance);
+    MXC_UART_ClearRXFIFO(args->uart_instance);
+    MXC_UART_ClearTXFIFO(args->uart_instance);
+
+    NVIC_EnableIRQ(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(args->uart_instance)));
+    MXC_NVIC_SetVector(MXC_UART_GET_IRQ(MXC_UART_GET_IDX(args->uart_instance)), UART_ISR);
     return true;
 }
 
@@ -24,8 +57,8 @@ bool MXC_Serial_Open(struct uxrCustomTransport* transport)
  */
 bool MXC_Serial_Close(struct uxrCustomTransport* transport) 
 {
-    mxc_uart_regs_t *uart_instance = (mxc_uart_regs_t *)transport->args;
-    return (MXC_UART_Shutdown(uart_instance) == E_NO_ERROR);
+    struct custom_transport_args *args = (struct custom_transport_args *)transport->args;
+    return (MXC_UART_Shutdown(args->uart_instance) == E_NO_ERROR);
 }
 
 /**
@@ -42,13 +75,39 @@ size_t MXC_Serial_Write (
         size_t length,
         uint8_t* error_code)
 {
-    mxc_uart_regs_t *uart_instance = (mxc_uart_regs_t *)transport->args;
-    for (int i = 0; i < length; i++) {
-        // Wait until FIFO has space for the character.
-        while (MXC_UART_GetTXFIFOAvailable(uart_instance) < 1) {}
-        MXC_UART_WriteCharacterRaw(uart_instance, buffer[i]);
+    struct custom_transport_args *args = (struct custom_transport_args *)transport->args;
+    // mxc_uart_regs_t *uart_instance = (mxc_uart_regs_t *)args->uart_instance;
+    // int transmitted = 0;
+    // int fifo_available = 0;
+    // while (transmitted < length) {
+    //     fifo_available = MXC_UART_GetTXFIFOAvailable(uart_instance);
+    //     if (fifo_available > 0) {
+    //         transmitted += MXC_UART_WriteTXFIFO(uart_instance, &buffer[transmitted], fifo_available);
+    //     }
+    // }
+
+    mxc_uart_req_t req = {
+        .uart = args->uart_instance,
+        .rxLen = 0,
+        .rxData = NULL,
+        .txLen = length,
+        .txData = buffer,
+        .callback = UART_TX_Callback
+    };
+
+    tx_finished = false;
+    MXC_UART_TransactionAsync(&req);
+
+    while(!tx_finished) {
+
     }
-    return length;
+
+    return req.txCnt;
+}
+
+static inline int TS_TO_MSEC(struct timespec ts)
+{
+    return (int)((ts.tv_sec * 1000) + (ts.tv_nsec / 1000000));
 }
 
 /**
@@ -67,17 +126,35 @@ size_t MXC_Serial_Read (
         int timeout,
         uint8_t* error_code)
 {
-    int ticker = 0;
-    int i = 0;
-    mxc_uart_regs_t *uart_instance = (mxc_uart_regs_t *)transport->args;
-    while(MXC_UART_GetRXFIFOAvailable(uart_instance) > 0 && i < length) {
-        int result = MXC_UART_ReadCharacterRaw(uart_instance);
-        if (result < 0) {
-            // Error reading from FIFO
-            return i;
-        } else {
-            buffer[i++] = (uint8_t)result;
+    struct custom_transport_args *args = (struct custom_transport_args *)transport->args;
+    // int fifo_available = 0;
+    // int read = 0;
+
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    int start_ms = TS_TO_MSEC(ts);
+    int elapsed = 0;
+
+    mxc_uart_req_t req = {
+        .uart = args->uart_instance,
+        .rxLen = length,
+        .rxData = buffer,
+        .txLen = 0,
+        .txData = NULL,
+        .callback = UART_RX_Callback
+    };
+
+    rx_finished = false;
+    MXC_UART_TransactionAsync(&req);
+
+    while(!rx_finished) {
+        clock_gettime(CLOCK_REALTIME, &ts);
+        elapsed = TS_TO_MSEC(ts) - start_ms;
+        if (elapsed > timeout) {
+            MXC_UART_AbortAsync(args->uart_instance);
+            break;
         }
     }
-    return i;
+
+    return req.rxCnt;
 }

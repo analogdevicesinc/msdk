@@ -13,6 +13,8 @@
 #include "FreeRTOSConfig.h"
 #include "task.h"
 
+#include "led.h"
+
 #define STRING_BUFFER_LEN 50
 
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); vTaskDelete(NULL);}}
@@ -51,6 +53,8 @@ void ping_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 		pong_count = 0;
 		rcl_publish(&ping_publisher, (const void*)&outcoming_ping, NULL);
 		printf("Ping send seq %s\n", outcoming_ping.frame_id.data);
+
+        LED_Toggle(0);
 	}
 }
 
@@ -62,6 +66,7 @@ void ping_subscription_callback(const void * msgin)
 	if(strcmp(outcoming_ping.frame_id.data, msg->frame_id.data) != 0){
 		printf("Ping received with seq %s. Answering.\n", msg->frame_id.data);
 		rcl_publish(&pong_publisher, (const void*)msg, NULL);
+        LED_Toggle(1);
 	}
 }
 
