@@ -14,4 +14,4 @@
 # Add your config here!
 
 # Enable the CLI library
-LIB_CLI=1
+LIB_CLI = 1
