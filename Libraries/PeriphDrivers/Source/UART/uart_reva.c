@@ -1024,7 +1024,7 @@ void MXC_UART_RevA_DMACallback(int ch, int error)
 int MXC_UART_RevA_RxAsyncCallback(mxc_uart_reva_regs_t *uart, int retVal)
 {
     mxc_uart_reva_req_t *req;
-    int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);  
+    int uartNum = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
 
     if (uartNum < 0) {
         return E_BAD_PARAM;
@@ -1079,7 +1079,7 @@ int MXC_UART_RevA_AsyncCallback(mxc_uart_reva_regs_t *uart, int retVal)
     // Call RX callback if the TX and RX requests are not the same request
     if (TxAsyncRequests[uartNum] != RxAsyncRequests[uartNum]) {
         err = MXC_UART_RxAsyncCallback((mxc_uart_regs_t *)uart, retVal);
-    } 
+    }
 
     return err;
 }
@@ -1140,7 +1140,7 @@ int MXC_UART_RevA_TxAbortAsync(mxc_uart_reva_regs_t *uart)
     }
 
     mxc_uart_reva_req_t *req = (mxc_uart_reva_req_t *)TxAsyncRequests[uartNum];
-    
+
     if (req != NULL) {
         MXC_UART_TxAsyncCallback((mxc_uart_regs_t *)uart, E_ABORT);
         MXC_UART_TxAsyncStop((mxc_uart_regs_t *)uart);
@@ -1198,10 +1198,10 @@ int MXC_UART_RevA_AsyncHandler(mxc_uart_reva_regs_t *uart)
     flags = MXC_UART_GetFlags((mxc_uart_regs_t *)uart);
 
     if (flags & MXC_UART_REVA_ERRINT_FL & uart->int_en) {
-        MXC_UART_DisableInt((mxc_uart_regs_t *)uart, (MXC_F_UART_REVA_INT_EN_TX_FIFO_THRESH |
-                                                      MXC_UART_REVA_ERRINT_EN |
-                                                      MXC_F_UART_REVA_INT_EN_RX_FIFO_THRESH));
-        
+        MXC_UART_DisableInt((mxc_uart_regs_t *)uart,
+                            (MXC_F_UART_REVA_INT_EN_TX_FIFO_THRESH | MXC_UART_REVA_ERRINT_EN |
+                             MXC_F_UART_REVA_INT_EN_RX_FIFO_THRESH));
+
         MXC_UART_AsyncCallback((mxc_uart_regs_t *)uart, E_COMM_ERR);
 
         RxAsyncRequests[uartNum] = NULL;
@@ -1225,15 +1225,16 @@ int MXC_UART_RevA_AsyncHandler(mxc_uart_reva_regs_t *uart)
     if ((flags & MXC_F_UART_REVA_INT_FL_RX_FIFO_THRESH) && (req != NULL) && (req->rxLen)) {
         numToRead = MXC_UART_GetRXFIFOAvailable((mxc_uart_regs_t *)(req->uart));
         numToRead = numToRead > (req->rxLen - req->rxCnt) ? req->rxLen - req->rxCnt : numToRead;
-        req->rxCnt += MXC_UART_ReadRXFIFO((mxc_uart_regs_t *)(req->uart), &req->rxData[req->rxCnt], numToRead);
+        req->rxCnt += MXC_UART_ReadRXFIFO((mxc_uart_regs_t *)(req->uart), &req->rxData[req->rxCnt],
+                                          numToRead);
         MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart), MXC_F_UART_REVA_INT_FL_RX_FIFO_THRESH);
     }
 
     if (RxAsyncRequests[uartNum] == TxAsyncRequests[uartNum]) {
         if ((req != NULL) && (req->rxCnt == req->rxLen) && (req->txCnt == req->txLen)) {
-            MXC_UART_DisableInt((mxc_uart_regs_t *)uart, (MXC_F_UART_REVA_INT_EN_TX_FIFO_THRESH |
-                                                          MXC_UART_REVA_ERRINT_EN |
-                                                          MXC_F_UART_REVA_INT_EN_RX_FIFO_THRESH));
+            MXC_UART_DisableInt((mxc_uart_regs_t *)uart,
+                                (MXC_F_UART_REVA_INT_EN_TX_FIFO_THRESH | MXC_UART_REVA_ERRINT_EN |
+                                 MXC_F_UART_REVA_INT_EN_RX_FIFO_THRESH));
 
             RxAsyncRequests[uartNum] = NULL;
             TxAsyncRequests[uartNum] = NULL;
@@ -1260,8 +1261,8 @@ int MXC_UART_RevA_AsyncHandler(mxc_uart_reva_regs_t *uart)
 
     req = RxAsyncRequests[uartNum];
     if (req != NULL && req->rxCnt == req->rxLen) {
-        MXC_UART_DisableInt((mxc_uart_regs_t *)uart, (MXC_UART_REVA_ERRINT_EN |
-                                                      MXC_F_UART_REVA_INT_EN_RX_FIFO_THRESH));
+        MXC_UART_DisableInt((mxc_uart_regs_t *)uart,
+                            (MXC_UART_REVA_ERRINT_EN | MXC_F_UART_REVA_INT_EN_RX_FIFO_THRESH));
         RxAsyncRequests[uartNum] = NULL;
 
         if (req->callback != NULL) {
