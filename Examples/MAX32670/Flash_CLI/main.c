@@ -73,7 +73,7 @@ int main(void)
 int handle_write(int argc, char *argv[])
 {
     int err, i = 0;
-    uint32_t data[MXC_FLASH_PAGE_SIZE/4];
+    uint32_t data[MXC_FLASH_PAGE_SIZE / 4];
 
     // Check for an invalid command
     if (argc != 3 || argv == NULL) {
@@ -131,7 +131,7 @@ int handle_write(int argc, char *argv[])
 int handle_read(int argc, char *argv[])
 {
     uint32_t addr;
-    uint8_t data[MXC_FLASH_PAGE_SIZE/4];
+    uint8_t data[MXC_FLASH_PAGE_SIZE / 4];
 
     // Check for an invalid command
     if (argc != 3 || argv == NULL) {
