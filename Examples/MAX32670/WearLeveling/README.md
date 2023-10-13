@@ -7,7 +7,7 @@ Below is a list of the supported commands:
 * stop: Ends the example.
 * read: Reads data from a file and prints it to the terminal.
 * write: Writes a characterstring to a file
-* swl: Stands for "show wear leveling". This command performs a specified number of writes (passed as an argument on the command line) to a test file and prints out the number of times each filesystem block was written to. Users should see the writes occur somewhat evenly across most filesystem blocks. 
+* swl: Stands for "show wear leveling". This command performs a specified number of writes (passed as an argument on the command line) to a test file and prints out the number of times each filesystem block was written to. Users should see the writes distributed somewhat evenly across most filesystem blocks. 
 	
 Enter "help" in the command line to see more details on the usage of each of the commands including what arguments/options need to be specified to successfully execute each command.
 
