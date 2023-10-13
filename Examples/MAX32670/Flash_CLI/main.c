@@ -58,9 +58,9 @@ int main(void)
     const unsigned int cmd_table_sz = sizeof(cmd_table) / sizeof(command_t);
 
     // Initialize CLI
-    if(MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), cmd_table, cmd_table_sz) != E_NO_ERROR) {
-    	printf("Failed to initialize command-line interface.\n");
-    	return E_BAD_STATE;
+    if (MXC_CLI_Init(MXC_UART_GET_UART(CONSOLE_UART), cmd_table, cmd_table_sz) != E_NO_ERROR) {
+        printf("Failed to initialize command-line interface.\n");
+        return E_BAD_STATE;
     }
 
     // Run CLI
@@ -72,23 +72,23 @@ int main(void)
 // *****************************************************************************
 int handle_write(int argc, char *argv[])
 {
-	int err, i = 0;
-	uint32_t data[MXC_FLASH_PAGE_SIZE/4];
+    int err, i = 0;
+    uint32_t data[MXC_FLASH_PAGE_SIZE/4];
 
-	// Check for an invalid command
-	if (argc != 3 || argv == NULL) {
-		printf("Invalid command format. Aborting flash write.\n");
-		return E_BAD_PARAM;
-	}
+    // Check for an invalid command
+    if (argc != 3 || argv == NULL) {
+        printf("Invalid command format. Aborting flash write.\n");
+        return E_BAD_PARAM;
+    }
 
-	// Get command-line arguments
-	int startaddr = FLASH_STORAGE_START_ADDR + atoi(argv[WORD_OFFSET_POS]) * 4;
-	char *text = argv[DATA_POS];
+    // Get command-line arguments
+    int startaddr = FLASH_STORAGE_START_ADDR + atoi(argv[WORD_OFFSET_POS]) * 4;
+    char *text = argv[DATA_POS];
 
-	// Convert character string to uint32_t since we must write flash in 32-bit words
-	for (int i = 0; i < strlen(text); i++) {
-		data[i] = (uint32_t)text[i];
-	}
+    // Convert character string to uint32_t since we must write flash in 32-bit words
+    for (int i = 0; i < strlen(text); i++) {
+        data[i] = (uint32_t)text[i];
+    }
 
     // Check if flash controller is busy
     if (MXC_FLC0->ctrl & MXC_F_FLC_CTRL_PEND) {
@@ -118,28 +118,28 @@ int handle_write(int argc, char *argv[])
 
     // Verify the flash write was successful
     err = flash_verify(startaddr, strlen(text), data);
-	if (err != E_NO_ERROR) {
-		printf("Write failed with error %i\n", err);
-	} else {
-		printf("Success\n");
-	}
+    if (err != E_NO_ERROR) {
+        printf("Write failed with error %i\n", err);
+    } else {
+        printf("Success\n");
+    }
 
-	return E_NO_ERROR;
+    return E_NO_ERROR;
 }
 
 // *****************************************************************************
 int handle_read(int argc, char *argv[])
 {
-	uint32_t addr;
-	uint8_t data[MXC_FLASH_PAGE_SIZE/4];
+    uint32_t addr;
+    uint8_t data[MXC_FLASH_PAGE_SIZE/4];
 
-	// Check for an invalid command
-	if (argc != 3 || argv == NULL) {
-		printf("Invalid command format. Aborting flash read.\n");
-		return E_BAD_PARAM;
-	}
+    // Check for an invalid command
+    if (argc != 3 || argv == NULL) {
+        printf("Invalid command format. Aborting flash read.\n");
+        return E_BAD_PARAM;
+    }
 
-	// Get command-line arguments
+    // Get command-line arguments
     int startaddr = FLASH_STORAGE_START_ADDR + atoi(argv[WORD_OFFSET_POS]) * 4;
     int length = atoi(argv[LENGTH_POS]);
 
@@ -152,14 +152,14 @@ int handle_read(int argc, char *argv[])
         data[i] = *(uint32_t *)addr;
 
         if (data[i] == 0xFF) {
-			printf("Read addr 0x%08X: %s\n", addr, "empty");
-		} else {
-			printf("Read addr 0x%08X: %c\n", addr, data[i]);
-		}
+            printf("Read addr 0x%08X: %s\n", addr, "empty");
+        } else {
+            printf("Read addr 0x%08X: %c\n", addr, data[i]);
+        }
     }
 
-	printf("Success:\n");
-	printf("%s\n", (char *)data);
+    printf("Success:\n");
+    printf("%s\n", (char *)data);
 
     return E_NO_ERROR;
 }
@@ -167,7 +167,7 @@ int handle_read(int argc, char *argv[])
 // *****************************************************************************
 int handle_erase(int argc, char *argv[])
 {
-	int err = E_NO_ERROR;
+    int err = E_NO_ERROR;
 
     // Check for an invalid command
     if (argc != 1 || argv == NULL) {
@@ -175,12 +175,12 @@ int handle_erase(int argc, char *argv[])
         return E_BAD_PARAM;
     }
 
-	// Check whether the flash page is already erased
+    // Check whether the flash page is already erased
     if (!check_erased(FLASH_STORAGE_START_ADDR, MXC_FLASH_PAGE_SIZE)) {
-    	// Erase flash page if it's not already erased
+        // Erase flash page if it's not already erased
         if ((err = MXC_FLC_PageErase(FLASH_STORAGE_START_ADDR)) != E_NO_ERROR) {
-        	printf("Failed to erase flash page.\n");
-        	return err;
+            printf("Failed to erase flash page.\n");
+            return err;
         }
     }
 
@@ -192,7 +192,7 @@ int handle_erase(int argc, char *argv[])
 // *****************************************************************************
 int handle_crc(int argc, char *argv[])
 {
-	int err;
+    int err;
     mxc_crc_req_t req;
 
     // Check for an invalid command
@@ -255,6 +255,6 @@ int check_mem(uint32_t startaddr, uint32_t length, uint32_t data)
 //******************************************************************************
 int check_erased(uint32_t startaddr, uint32_t length)
 {
-	// Check whether flash memory is set to all 1's (erased state)
+    // Check whether flash memory is set to all 1's (erased state)
     return check_mem(startaddr, length, 0xFFFFFFFF);
 }

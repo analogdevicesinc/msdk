@@ -32,26 +32,28 @@
 #define POLY 0xEDB88320 // CRC Polynomial
 
 // CLI command table
-#define CMD_TABLE { { "write",                                                                     \
-				      "write <word offset> <text>",                                                \
-	                  "Writes text string to flash starting at the 32-bit word in the\n    flash " \
-					  "page specified by \"word offset\" (e.g. word offset=3 -> address\n    "     \
-					  "offset=0xC, word offset=4 -> address offset=0x10)",                         \
-    				  handle_write },                                                              \
-					{ "erase",                                                                     \
-    				  "erase",                                                                     \
-					  "Erases page in flash being operated on",                                    \
-					  handle_erase },                                                              \
-					{ "read",                                                                      \
-					  "read <word offset> <number of letters>",                                    \
-					  "Reads text from flash starting at the 32-bit word in the flash\n    page "  \
-					  "specified by \"word offset\" (e.g. word offset=3 -> address offset=0xC,\n"  \
-					  "    word offset=4 -> address offset=0x10)",                                 \
-    				  handle_read },                                                               \
-					{ "crc",                                                                       \
-    				  "crc",                                                                       \
-					  "Calculates CRC of entire flash page",                                       \
+// clang-format off
+#define CMD_TABLE { { "write",                                                                             \
+				      "write <word offset> <text>",                                                        \
+	                  "Writes text string to flash starting at the 32-bit word in the\n"                   \
+					  "    flash page specified by \"word offset\" (e.g. word offset=3 -> address\n"       \
+					  "    offset=0xC, word offset=4 -> address offset=0x10)",                             \
+    				  handle_write },                                                                      \
+					{ "erase",                                                                             \
+    				  "erase",                                                                             \
+					  "Erases page in flash being operated on",                                            \
+					  handle_erase },                                                                      \
+					{ "read",                                                                              \
+					  "read <word offset> <number of letters>",                                            \
+					  "Reads text from flash starting at the 32-bit word in the flash\n"                   \
+					  "    page specified by \"word offset\" (e.g. word offset=3 -> address offset=0xC,\n" \
+					  "    word offset=4 -> address offset=0x10)",                                         \
+    				  handle_read },                                                                       \
+					{ "crc",                                                                               \
+    				  "crc",                                                                               \
+					  "Calculates CRC of entire flash page",                                               \
 					  handle_crc } }
+// clang-format on
 
 #define WORD_OFFSET_POS 1
 #define DATA_POS 2

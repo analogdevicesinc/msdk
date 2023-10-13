@@ -65,63 +65,62 @@ mxc_gpio_cfg_t SDPowerEnablePin = { MXC_GPIO3, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT
 // ******************************************************************************
 int sdhc_init(void)
 {
-	mxc_sdhc_cfg_t cfg;
+    mxc_sdhc_cfg_t cfg;
 
-	FF_ERRORS[0] = "FR_OK";
-	FF_ERRORS[1] = "FR_DISK_ERR";
-	FF_ERRORS[2] = "FR_INT_ERR";
-	FF_ERRORS[3] = "FR_NOT_READY";
-	FF_ERRORS[4] = "FR_NO_FILE";
-	FF_ERRORS[5] = "FR_NO_PATH";
-	FF_ERRORS[6] = "FR_INVLAID_NAME";
-	FF_ERRORS[7] = "FR_DENIED";
-	FF_ERRORS[8] = "FR_EXIST";
-	FF_ERRORS[9] = "FR_INVALID_OBJECT";
-	FF_ERRORS[10] = "FR_WRITE_PROTECTED";
-	FF_ERRORS[11] = "FR_INVALID_DRIVE";
-	FF_ERRORS[12] = "FR_NOT_ENABLED";
-	FF_ERRORS[13] = "FR_NO_FILESYSTEM";
-	FF_ERRORS[14] = "FR_MKFS_ABORTED";
-	FF_ERRORS[15] = "FR_TIMEOUT";
-	FF_ERRORS[16] = "FR_LOCKED";
-	FF_ERRORS[17] = "FR_NOT_ENOUGH_CORE";
-	FF_ERRORS[18] = "FR_TOO_MANY_OPEN_FILES";
-	FF_ERRORS[19] = "FR_INVALID_PARAMETER";
+    FF_ERRORS[0] = "FR_OK";
+    FF_ERRORS[1] = "FR_DISK_ERR";
+    FF_ERRORS[2] = "FR_INT_ERR";
+    FF_ERRORS[3] = "FR_NOT_READY";
+    FF_ERRORS[4] = "FR_NO_FILE";
+    FF_ERRORS[5] = "FR_NO_PATH";
+    FF_ERRORS[6] = "FR_INVLAID_NAME";
+    FF_ERRORS[7] = "FR_DENIED";
+    FF_ERRORS[8] = "FR_EXIST";
+    FF_ERRORS[9] = "FR_INVALID_OBJECT";
+    FF_ERRORS[10] = "FR_WRITE_PROTECTED";
+    FF_ERRORS[11] = "FR_INVALID_DRIVE";
+    FF_ERRORS[12] = "FR_NOT_ENABLED";
+    FF_ERRORS[13] = "FR_NO_FILESYSTEM";
+    FF_ERRORS[14] = "FR_MKFS_ABORTED";
+    FF_ERRORS[15] = "FR_TIMEOUT";
+    FF_ERRORS[16] = "FR_LOCKED";
+    FF_ERRORS[17] = "FR_NOT_ENOUGH_CORE";
+    FF_ERRORS[18] = "FR_TOO_MANY_OPEN_FILES";
+    FF_ERRORS[19] = "FR_INVALID_PARAMETER";
 
-	// Enable Power To Card
-	MXC_GPIO_Config(&SDPowerEnablePin);
-	MXC_GPIO_OutClr(MXC_GPIO1, SDPowerEnablePin.mask);
+    // Enable Power To Card
+    MXC_GPIO_Config(&SDPowerEnablePin);
+    MXC_GPIO_OutClr(MXC_GPIO1, SDPowerEnablePin.mask);
 
-	// Initialize SDHC peripheral
-	cfg.bus_voltage = MXC_SDHC_Bus_Voltage_3_3;
-	cfg.block_gap = 0;
-	cfg.clk_div =
-		0x0b0; // Maximum divide ratio, frequency must be >= 400 kHz during Card Identification phase
-	if (MXC_SDHC_Init(&cfg) != E_NO_ERROR) {
-		printf("Unable to initialize SDHC driver.\n");
-		return 1;
-	}
+    // Initialize SDHC peripheral
+    cfg.bus_voltage = MXC_SDHC_Bus_Voltage_3_3;
+    cfg.block_gap = 0;
+    cfg.clk_div =
+        0x0b0; // Maximum divide ratio, frequency must be >= 400 kHz during Card Identification phase
+    if (MXC_SDHC_Init(&cfg) != E_NO_ERROR) {
+        printf("Unable to initialize SDHC driver.\n");
+        return 1;
+    }
 
-	// wait for card to be inserted
-	while (!MXC_SDHC_Card_Inserted()) {}
-	printf("Card inserted.\n");
+    // wait for card to be inserted
+    while (!MXC_SDHC_Card_Inserted()) {}
+    printf("Card inserted.\n");
 
-	// set up card to get it ready for a transaction
-	if (MXC_SDHC_Lib_InitCard(10) == E_NO_ERROR) {
-		printf("Card Initialized.\n");
-	} else {
-		printf("No card response! Remove card, reset EvKit, and try again.\n");
+    // set up card to get it ready for a transaction
+    if (MXC_SDHC_Lib_InitCard(10) == E_NO_ERROR) {
+        printf("Card Initialized.\n");
+    } else {
+        printf("No card response! Remove card, reset EvKit, and try again.\n");
+        return -1;
+    }
 
-		return -1;
-	}
+    if (MXC_SDHC_Lib_Get_Card_Type() == CARD_SDHC) {
+        printf("Card type: SDHC\n");
+    } else {
+        printf("Card type: MMC/eMMC\n");
+    }
 
-	if (MXC_SDHC_Lib_Get_Card_Type() == CARD_SDHC) {
-		printf("Card type: SDHC\n");
-	} else {
-		printf("Card type: MMC/eMMC\n");
-	}
-
-	return E_NO_ERROR;
+    return E_NO_ERROR;
 }
 
 // ******************************************************************************

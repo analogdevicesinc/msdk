@@ -48,15 +48,15 @@
 /***** Functions *****/
 int main(void)
 {
-	int err;
+    int err;
 
     printf("\n\n***** " TOSTRING(TARGET) " SDHC FAT Filesystem Example *****\n");
 
     MXC_ICC_Disable();
 
     if (sdhc_init() != E_NO_ERROR) {
-    	printf("Unable to initialize the SDHC card.\n");
-    	return E_BAD_STATE;
+        printf("Unable to initialize the SDHC card.\n");
+        return E_BAD_STATE;
     }
 
     printf("SDHC Ready!\n");

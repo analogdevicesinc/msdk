@@ -51,7 +51,7 @@
 // Macro to call MXC_UART_Init function with appropriate parameters
 #if (TARGET_NUM == 32520 || TARGET_NUM == 32570 || TARGET_NUM == 32650)
 #define UART_INIT(uart) MXC_UART_Init(uart, UART_BAUD)
-#elif TARGET_NUM == 32660 
+#elif TARGET_NUM == 32660
 #define UART_INIT(uart) MXC_UART_Init(uart, UART_BAUD, MAP_A)
 #elif TARGET_NUM == 32662
 #define UART_INIT(uart) MXC_UART_Init(uart, UART_BAUD, MXC_UART_APB_CLK, MAP_A)
