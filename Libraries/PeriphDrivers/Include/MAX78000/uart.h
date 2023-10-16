@@ -41,6 +41,7 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX78000_UART_H_
 
 /***** Definitions *****/
+#include <stdbool.h>
 #include "uart_regs.h"
 #include "mxc_sys.h"
 
@@ -670,6 +671,12 @@ uint32_t MXC_UART_GetAsyncTXCount(mxc_uart_req_t *req);
  * @return  Returns receive bytes (in FIFO).
  */
 uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req);
+
+int MXC_UART_SetAutoDMAHandlers(mxc_uart_regs_t *uart, bool enable);
+int MXC_UART_SetTXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel);
+int MXC_UART_GetTXDMAChannel(mxc_uart_regs_t *uart);
+int MXC_UART_SetRXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel);
+int MXC_UART_GetRXDMAChannel(mxc_uart_regs_t *uart);
 
 /**@} end of group uart */
 
