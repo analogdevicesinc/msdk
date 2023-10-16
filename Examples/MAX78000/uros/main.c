@@ -240,26 +240,14 @@ int main(void)
     if (MXC_RTC_Init(0, 0) != E_NO_ERROR) printf("Failed RTC init\n");
     if (MXC_RTC_Start() != E_NO_ERROR) printf("Failed RTC start\n");
 
-    MXC_Serial_Open(MXC_UART0, 115200);
-
-    uint8_t buffer[16] = { 'D', 'E', 'A', 'D', '\n', '\n' };
-    int error = 0;
-    uxrCustomTransport transport = {
-        .args = &transport_config
-    };
-    vMXC_Serial_Write((void*)&transport, buffer, 5, &error);
-    vMXC_Serial_Read((void*)&transport, buffer, 5, 1000, &error);
-    printf("\nplease Jesus\n");
-
-#if 0
     printf("Assigning custom transports\n");
     rmw_uros_set_custom_transport(
         MICROROS_TRANSPORTS_FRAMING_MODE,
-        (void *)&transport_cfg,
-        MXC_Serial_Open,
-        MXC_Serial_Close,
-        MXC_Serial_Write,
-        MXC_Serial_Read
+        (void *)&transport_config,
+        vMXC_Serial_Open,
+        vMXC_Serial_Close,
+        vMXC_Serial_Write,
+        vMXC_Serial_Read
     );
 
     /* Create mutexes */
@@ -288,7 +276,6 @@ int main(void)
     while (1) {
         __NOP();
     }
-#endif
 
     /* Quiet GCC warnings */
     return -1;

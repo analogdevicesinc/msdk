@@ -1,9 +1,11 @@
+#include <time.h>
 #include "transports.h"
 #include "FreeRTOSConfig.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "dma.h"
 #include "nvic_table.h"
+#include "gpio.h"
 
 static TaskHandle_t xTaskToNotify = NULL;
 const UBaseType_t xArrayIndexWrite = 1, xArrayIndexRead = 2;
@@ -11,15 +13,31 @@ const UBaseType_t xArrayIndexWrite = 1, xArrayIndexRead = 2;
 volatile bool tx_flag = 0;
 volatile bool rx_flag = 0;
 
-void TX_DMA_ISR(void)
+mxc_gpio_cfg_t indicator = {
+    .port = MXC_GPIO2,
+    .mask = MXC_GPIO_PIN_4,
+    .pad = MXC_GPIO_PAD_NONE,
+    .func = MXC_GPIO_FUNC_OUT,
+};
+
+static inline int TS_TO_MSEC(struct timespec ts)
 {
-    MXC_DMA_Handler();
+    return (int)((ts.tv_sec * 1000) + (ts.tv_nsec / 1000000));
 }
 
-void RX_DMA_ISR(void)
-{
-    MXC_DMA_Handler();
-}
+bool MXC_Serial_Open(mxc_uart_regs_t *uart_instance, unsigned int baudrate);
+size_t MXC_Serial_Write (mxc_uart_regs_t *uart, const uint8_t* buffer, size_t length);
+size_t MXC_Serial_Read (mxc_uart_regs_t *uart, uint8_t* buffer, size_t length, int timeout);
+
+// void TX_DMA_ISR(void)
+// {
+//     MXC_DMA_Handler();
+// }
+
+// void RX_DMA_ISR(void)
+// {
+//     MXC_DMA_Handler();
+// }
 
 void rx_callback(mxc_uart_req_t *req, int error)
 {
@@ -39,6 +57,9 @@ void tx_callback(mxc_uart_req_t *req, int error)
 bool vMXC_Serial_Open(struct uxrCustomTransport* transport)
 {
     transport_config_t *args = (transport_config_t *)transport->args;
+
+    MXC_GPIO_Config(&indicator);
+    MXC_GPIO_OutClr(indicator.port, indicator.mask);
     return MXC_Serial_Open(args->uart_instance, args->baudrate);
 }
 
@@ -53,11 +74,14 @@ bool MXC_Serial_Open(mxc_uart_regs_t *uart_instance, unsigned int baudrate)
     if (error)
         return false;
 
-    NVIC_EnableIRQ(DMA0_IRQn);
-    MXC_NVIC_SetVector(DMA0_IRQn, TX_DMA_ISR);
+    MXC_UART_SetAutoDMAHandlers(uart_instance, true);
+
+    // NVIC_EnableIRQ(DMA0_IRQn);
+    // MXC_NVIC_SetVector(DMA0_IRQn, TX_DMA_ISR);
     
-    NVIC_EnableIRQ(DMA1_IRQn);
-    MXC_NVIC_SetVector(DMA1_IRQn, RX_DMA_ISR);
+    // NVIC_EnableIRQ(DMA1_IRQn);
+    // MXC_NVIC_SetVector(DMA1_IRQn, RX_DMA_ISR);
+    return true;
 }
 
 /**
@@ -67,7 +91,9 @@ bool MXC_Serial_Open(mxc_uart_regs_t *uart_instance, unsigned int baudrate)
  */
 bool vMXC_Serial_Close(struct uxrCustomTransport* transport) 
 {
-
+    transport_config_t *args = (transport_config_t *)transport->args;
+    int error = MXC_UART_Shutdown(args->uart_instance);
+    return (error == E_NO_ERROR);
 }
 
 /**
@@ -99,16 +125,12 @@ size_t MXC_Serial_Write (mxc_uart_regs_t *uart, const uint8_t* buffer, size_t le
         .callback = tx_callback
     };
 
-    while(uart->status & MXC_F_UART_STATUS_RX_BUSY) {
-        // Our UART says it's full duplex, but results shows otherwise...
-    }
-
     tx_flag = 0;
     MXC_UART_TransactionDMA(&req);
 
     while(!tx_flag) {}
 
-    return true;
+    return req.txCnt;
 }
 
 /**
@@ -128,11 +150,13 @@ size_t vMXC_Serial_Read (
         uint8_t* error_code)
 {
     transport_config_t *args = (transport_config_t *)transport->args;
-    return MXC_Serial_Read(args->uart_instance, buffer, length);
+    return MXC_Serial_Read(args->uart_instance, buffer, length, timeout);
 }
 
-size_t MXC_Serial_Read (mxc_uart_regs_t *uart, uint8_t* buffer, size_t length)
+size_t MXC_Serial_Read (mxc_uart_regs_t *uart, uint8_t* buffer, size_t length, int timeout)
 {
+    MXC_GPIO_OutSet(indicator.port, indicator.mask);
+
     mxc_uart_req_t req = {
         .uart = uart,
         .rxLen = length,
@@ -142,14 +166,24 @@ size_t MXC_Serial_Read (mxc_uart_regs_t *uart, uint8_t* buffer, size_t length)
         .callback = rx_callback
     };
 
-    while(uart->status & MXC_F_UART_STATUS_TX_BUSY) {
-        // Our UART says it's full duplex, but results shows otherwise...
-    }
+    struct timespec ts;
+    clock_gettime(CLOCK_REALTIME, &ts);
+    unsigned int start_ms = TS_TO_MSEC(ts);
+    unsigned int elapsed = 0;
 
     rx_flag = 0;
     MXC_UART_TransactionDMA(&req);
 
-    while(!rx_flag) {}
+    while(!rx_flag) {
+        clock_gettime(CLOCK_REALTIME, &ts);
+        elapsed = TS_TO_MSEC(ts) - start_ms;
+        if (elapsed > timeout) {
+            MXC_UART_AbortTransmission(uart);
+            break;
+        }
+    }
 
-    return true;
+    MXC_GPIO_OutClr(indicator.port, indicator.mask);
+
+    return req.rxCnt;
 }

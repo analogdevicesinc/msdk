@@ -11,10 +11,6 @@ static transport_config_t transport_config = {
     .baudrate = 115200
 };
 
-bool MXC_Serial_Open(mxc_uart_regs_t *uart_instance, unsigned int baudrate);
-size_t MXC_Serial_Write (mxc_uart_regs_t *uart, const uint8_t* buffer, size_t length);
-size_t MXC_Serial_Read (mxc_uart_regs_t *uart, uint8_t* buffer, size_t length);
-
 /**
  * @brief Function signature callback for opening a custom transport.
  * @param transport     Custom transport structure. Has the args passed through bool uxr_init_custom_transport(uxrCustomTransport* transport, void * args);.
