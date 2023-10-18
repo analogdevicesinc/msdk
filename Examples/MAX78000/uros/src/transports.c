@@ -172,7 +172,9 @@ size_t MXC_Serial_Read (mxc_uart_regs_t *uart, uint8_t* buffer, size_t length, i
     unsigned int elapsed = 0;
 
     rx_flag = 0;
+    MXC_GPIO_OutToggle(indicator.port, indicator.mask);
     MXC_UART_TransactionDMA(&req);
+    MXC_GPIO_OutToggle(indicator.port, indicator.mask);
 
     while(!rx_flag) {
         clock_gettime(CLOCK_REALTIME, &ts);
