@@ -371,7 +371,7 @@ int MXC_UART_RevB_AbortTransmission(mxc_uart_revb_regs_t *uart)
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
 
     if (states[uart_num].channelTx >= 0) {
-        MXC_DMA_Stop(states[uart_num].channelTx);        
+        MXC_DMA_Stop(states[uart_num].channelTx);
     }
     if (states[uart_num].channelRx >= 0) {
         MXC_DMA_Stop(states[uart_num].channelRx);
@@ -1187,7 +1187,9 @@ void MXC_UART_RevB_DMACallback(int ch, int error)
                 states[i].channelTx = -1;
             }
 
-            if (temp_req->callback != NULL && ((states[i].tx_req->rxCnt == states[i].tx_req->rxLen) || states[i].tx_req->rxData == NULL)) {
+            if (temp_req->callback != NULL &&
+                ((states[i].tx_req->rxCnt == states[i].tx_req->rxLen) ||
+                 states[i].tx_req->rxData == NULL)) {
                 /* Only call TX callback if RX component is complete/disabled. Note that
                 we are checking the request associated with the _channel_ assignment, not
                 the other side of the state struct. */
@@ -1203,7 +1205,9 @@ void MXC_UART_RevB_DMACallback(int ch, int error)
                 states[i].channelRx = -1;
             }
 
-            if (temp_req->callback != NULL && ((states[i].rx_req->txCnt == states[i].rx_req->txLen) || states[i].rx_req->txData == NULL)) {
+            if (temp_req->callback != NULL &&
+                ((states[i].rx_req->txCnt == states[i].rx_req->txLen) ||
+                 states[i].rx_req->txData == NULL)) {
                 temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
             }
             break;

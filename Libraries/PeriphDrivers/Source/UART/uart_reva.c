@@ -590,7 +590,7 @@ void MXC_UART_RevA_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
         Some complications make this the most attractive short-term
         option.  We could handle multiple DMA instances better in the DMA API (See the mismatch between the size of "dma_resource" array and the number of channels per instance, to start)*/
     if (dma_instance == MXC_DMA0) {
-        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA0_Handler);        
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA0_Handler);
     } else if (dma_instance == MXC_DMA1) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA1_Handler);
     }
@@ -926,7 +926,8 @@ int MXC_UART_RevA_Busy(mxc_uart_reva_regs_t *uart)
         return E_BUSY;
     }
     // Check to see if there are any ongoing transactions and the UART has room in its FIFO
-    if ((states[uart_num].tx_req == NULL) && (states[uart_num].rx_req == NULL) && !(uart->status & MXC_F_UART_REVA_STATUS_TX_FULL)) {
+    if ((states[uart_num].tx_req == NULL) && (states[uart_num].rx_req == NULL) &&
+        !(uart->status & MXC_F_UART_REVA_STATUS_TX_FULL)) {
         return E_NO_ERROR;
     }
 
@@ -1149,7 +1150,9 @@ void MXC_UART_RevA_DMACallback(int ch, int error)
                 states[i].channelTx = -1;
             }
 
-            if (temp_req->callback != NULL && ((states[i].tx_req->rxCnt == states[i].tx_req->rxLen) || states[i].tx_req->rxData == NULL)) {
+            if (temp_req->callback != NULL &&
+                ((states[i].tx_req->rxCnt == states[i].tx_req->rxLen) ||
+                 states[i].tx_req->rxData == NULL)) {
                 /* Only call TX callback if RX component is complete/disabled. Note that
                 we are checking the request associated with the _channel_ assignment, not
                 the other side of the state struct. */
@@ -1165,7 +1168,9 @@ void MXC_UART_RevA_DMACallback(int ch, int error)
                 states[i].channelRx = -1;
             }
 
-            if (temp_req->callback != NULL && ((states[i].rx_req->txCnt == states[i].rx_req->txLen) || states[i].rx_req->txData == NULL)) {
+            if (temp_req->callback != NULL &&
+                ((states[i].rx_req->txCnt == states[i].rx_req->txLen) ||
+                 states[i].rx_req->txData == NULL)) {
                 temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
             }
             break;

@@ -735,7 +735,6 @@ int MXC_UART_SetRXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel);
  */
 int MXC_UART_GetRXDMAChannel(mxc_uart_regs_t *uart);
 
-
 /**@} end of group uart */
 
 #ifdef __cplusplus
