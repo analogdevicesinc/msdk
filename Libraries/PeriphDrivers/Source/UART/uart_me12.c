@@ -387,3 +387,28 @@ int MXC_UART_AsyncHandler(mxc_uart_regs_t *uart)
 {
     return MXC_UART_RevB_AsyncHandler((mxc_uart_revb_regs_t *)uart);
 }
+
+int MXC_UART_SetAutoDMAHandlers(mxc_uart_regs_t *uart, bool enable)
+{
+    return MXC_UART_RevB_SetAutoDMAHandlers((mxc_uart_revb_regs_t *)uart, enable);
+}
+
+int MXC_UART_SetTXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel)
+{
+    return MXC_UART_RevB_SetTXDMAChannel((mxc_uart_revb_regs_t *)uart, channel);
+}
+
+int MXC_UART_GetTXDMAChannel(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevB_GetTXDMAChannel((mxc_uart_revb_regs_t *)uart);
+}
+
+int MXC_UART_SetRXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel)
+{
+    return MXC_UART_RevB_SetRXDMAChannel((mxc_uart_revb_regs_t *)uart, channel);
+}
+
+int MXC_UART_GetRXDMAChannel(mxc_uart_regs_t *uart)
+{
+    return MXC_UART_RevB_GetTXDMAChannel((mxc_uart_revb_regs_t *)uart);
+}
