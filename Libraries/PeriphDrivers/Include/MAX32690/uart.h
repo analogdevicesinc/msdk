@@ -678,6 +678,69 @@ uint32_t MXC_UART_GetAsyncTXCount(mxc_uart_req_t *req);
  */
 uint32_t MXC_UART_GetAsyncRXCount(mxc_uart_req_t *req);
 
+/**
+ * @brief Enable or disable automatic DMA interrupt handlers for the UART module.
+ * 
+ * The @ref MXC_UART_TransactionDMA functions require special interrupt handlers to work.
+ *  
+ * When "Auto" DMA handlers are enabled, the UART drivers will acquire DMA channels
+ * and assign the appropriate handlers automatically.  The acquired channels are
+ * released after each transaction.
+ * 
+ * If "Auto" DMA handlers are disabled, the user must acquire DMA channels manually
+ * and assign them to the drivers with the @ref MXC_UART_SetTXDMAChannel and
+ * @ref MXC_UART_SetRXDMAChannel functions.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @param enable true to enable Auto DMA handlers, false to disable.
+ * @return 0 on success, or a non-zero error code on failure.
+ */
+int MXC_UART_SetAutoDMAHandlers(mxc_uart_regs_t *uart, bool enable);
+
+/**
+ * @brief Set the TX (Transmit) DMA channel for a UART module.
+ *
+ * This function assigns the DMA channel for transmitting data
+ * when @ref is MXC_UART_SetAutoDMAHandlers disabled.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @param channel The DMA channel number to be used for @ref MXC_UART_TransactionDMA.
+ */
+int MXC_UART_SetTXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel);
+
+/**
+ * @brief Get the TX (Transmit) DMA channel for a UART module.
+ *
+ * This function retrieves the currently assigned DMA channel for transmitting data
+ * when @ref is MXC_UART_SetAutoDMAHandlers disabled.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @return The currently assigned TX DMA channel.
+ */
+int MXC_UART_GetTXDMAChannel(mxc_uart_regs_t *uart);
+
+/**
+ * @brief Set the RX (Receive) DMA channel for a UART module.
+ *
+ * This function assigns the DMA channel for receiving data
+ * when @ref is MXC_UART_SetAutoDMAHandlers disabled.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @param channel The DMA channel number to be used for @ref MXC_UART_TransactionDMA.
+ */
+int MXC_UART_SetRXDMAChannel(mxc_uart_regs_t *uart, unsigned int channel);
+
+/**
+ * @brief Get the RX (Receive) DMA channel for a UART module.
+ *
+ * This function retrieves the currently configured DMA channel for receiving data
+ * when @ref is MXC_UART_SetAutoDMAHandlers disabled.
+ *
+ * @param uart Pointer to the UART module's registers.
+ * @return The currently configured RX DMA channel.
+ */
+int MXC_UART_GetRXDMAChannel(mxc_uart_regs_t *uart);
+
 /**@} end of group uart */
 
 #ifdef __cplusplus
