@@ -41,6 +41,7 @@
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32650_UART_H_
 
 /***** Includes *****/
+#include <stdbool.h>
 #include <stdint.h>
 #include "uart_regs.h"
 #include "mxc_sys.h"
