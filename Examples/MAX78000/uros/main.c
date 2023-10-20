@@ -54,6 +54,7 @@
 #include "board.h"
 #include "mxc_delay.h"
 #include "rtc.h"
+#include "timer.h"
 
 #include <rmw_microros/rmw_microros.h>
 
@@ -163,6 +164,31 @@ void vTask1(void *pvParameters)
     }
 }
 
+void vTaskSerial(void *pvParameters)
+{
+    uxrCustomTransport test = {
+        .args = &transport_config
+    };
+
+    printf("Hello task!\n");
+    MXC_Delay(MXC_DELAY_MSEC(500));
+
+    uint8_t rx_buffer[512];
+    uint8_t tx_buffer[512] = {
+        'X','R','C','E','\r','\n'
+    };
+    uint8_t error = 0;
+
+    vMXC_Serial_Open(&test);
+    // vMXC_Serial_Read(&test, rx_buffer, 512, portMAX_DELAY, &error);
+
+    while(1) {        
+        // vMXC_Serial_Write(&test, tx_buffer, 6, &error);
+        MXC_Delay(MXC_DELAY_SEC(1));
+        LED_Toggle(0);
+    }
+}
+
 /* =| vTickTockTask |============================================
  *
  * This task writes the current RTOS tick time to the console
@@ -240,9 +266,13 @@ int main(void)
     if (MXC_RTC_Init(0, 0) != E_NO_ERROR) printf("Failed RTC init\n");
     if (MXC_RTC_Start() != E_NO_ERROR) printf("Failed RTC start\n");
 
+    vTaskSerial(NULL);
+
+#if 0
     printf("Assigning custom transports\n");
     rmw_uros_set_custom_transport(
         MICROROS_TRANSPORTS_FRAMING_MODE,
+        // MICROROS_TRANSPORTS_PACKET_MODE,
         (void *)&transport_config,
         vMXC_Serial_Open,
         vMXC_Serial_Close,
@@ -256,11 +286,15 @@ int main(void)
         printf("xSemaphoreCreateMutex failed to create a mutex.\n");
     } else {
         /* Configure task */
+
+
         if ((xTaskCreate(vTask0, (const char *)"Task0", configMINIMAL_STACK_SIZE, NULL,
                          tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
             (xTaskCreate(vTask1, (const char *)"Task1", configMINIMAL_STACK_SIZE, NULL,
                          tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
-            (xTaskCreate(appMain, "uros_task", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)) {
+            (xTaskCreate(appMain, "uros_task", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS))
+        if (xTaskCreate(vTaskSerial, (const char *)"TaskSerial", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
+            {
                             // start microROS task
             printf("xTaskCreate() failed to create a task.\n");
         } else {
@@ -276,6 +310,7 @@ int main(void)
     while (1) {
         __NOP();
     }
+#endif 
 
     /* Quiet GCC warnings */
     return -1;
