@@ -596,7 +596,7 @@ void MXC_UART_RevA_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
     }
 #else
     // Only one DMA instance, we can point direct to MXC_DMA_Handler
-    MXC_NVIC_SetVector(MXC_UART_RevA_DMA0_Handler, MXC_DMA_Handler);
+    MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_DMA_Handler);
 #endif // MXC_DMA_INSTANCES > 1
 
 #else
