@@ -56,7 +56,8 @@ static void *RxAsyncRequests[MXC_UART_INSTANCES];
 
 // Structure to save DMA state
 typedef struct {
-    mxc_uart_reva_req_t *req;
+    mxc_uart_reva_req_t *tx_req;
+    mxc_uart_reva_req_t *rx_req;
     int channelTx;
     int channelRx;
     bool auto_dma_handlers;
@@ -106,7 +107,8 @@ int MXC_UART_RevA_Init(mxc_uart_reva_regs_t *uart, unsigned int baud)
     for (int i = 0; i < MXC_UART_INSTANCES; i++) {
         states[i].channelRx = -1;
         states[i].channelTx = -1;
-        states[i].req = NULL;
+        states[i].tx_req = NULL;
+        states[i].rx_req = NULL;
         states[i].auto_dma_handlers = false;
     }
 
@@ -588,7 +590,7 @@ void MXC_UART_RevA_DMA_SetupAutoHandlers(mxc_dma_regs_t *dma_instance, unsigned 
         Some complications make this the most attractive short-term
         option.  We could handle multiple DMA instances better in the DMA API (See the mismatch between the size of "dma_resource" array and the number of channels per instance, to start)*/
     if (dma_instance == MXC_DMA0) {
-        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA0_Handler);
+        MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA0_Handler);        
     } else if (dma_instance == MXC_DMA1) {
         MXC_NVIC_SetVector(MXC_DMA_CH_GET_IRQ(channel), MXC_UART_RevA_DMA1_Handler);
     }
@@ -924,7 +926,7 @@ int MXC_UART_RevA_Busy(mxc_uart_reva_regs_t *uart)
         return E_BUSY;
     }
     // Check to see if there are any ongoing transactions and the UART has room in its FIFO
-    if ((states[uart_num].req == NULL) && !(uart->status & MXC_F_UART_REVA_STATUS_TX_FULL)) {
+    if ((states[uart_num].tx_req == NULL) && (states[uart_num].rx_req == NULL) && !(uart->status & MXC_F_UART_REVA_STATUS_TX_FULL)) {
         return E_NO_ERROR;
     }
 
@@ -1070,13 +1072,13 @@ int MXC_UART_RevA_TransactionDMA(mxc_uart_reva_req_t *req, mxc_dma_regs_t *dma)
         }
     }
 
-    states[uart_num].req = req; // Callback lookups are dependent saved state info
-
     MXC_UART_DisableInt((mxc_uart_regs_t *)(req->uart), 0xFFFFFFFF);
     MXC_UART_ClearFlags((mxc_uart_regs_t *)(req->uart), 0xFFFFFFFF);
 
-    MXC_UART_ClearRXFIFO((mxc_uart_regs_t *)(req->uart));
-    MXC_UART_ClearTXFIFO((mxc_uart_regs_t *)(req->uart));
+    /* Clearing the RX FIFOs here makes RX-only or TX-only transactions half-duplex...
+    Commenting out for now.*/
+    // MXC_UART_ClearRXFIFO((mxc_uart_regs_t *)(req->uart));
+    // MXC_UART_ClearTXFIFO((mxc_uart_regs_t *)(req->uart));
 
     (req->uart)->dma |=
         (1 << MXC_F_UART_REVA_DMA_RXDMA_LEVEL_POS); // Set RX DMA threshold to 1 byte
@@ -1089,8 +1091,14 @@ int MXC_UART_RevA_TransactionDMA(mxc_uart_reva_req_t *req, mxc_dma_regs_t *dma)
     MXC_DMA_Init();
 #endif
 
+    // Reset rx/tx counters
+    req->rxCnt = 0;
+    req->txCnt = 0;
+
     //tx
     if ((req->txData != NULL) && (req->txLen)) {
+        /* Save TX req, the DMA handler will use this later. */
+        states[uart_num].tx_req = req;
 #if TARGET_NUM == 32665
         if (MXC_UART_WriteTXFIFODMA((mxc_uart_regs_t *)(req->uart), dma, req->txData, req->txLen,
                                     NULL) != E_NO_ERROR) {
@@ -1105,6 +1113,7 @@ int MXC_UART_RevA_TransactionDMA(mxc_uart_reva_req_t *req, mxc_dma_regs_t *dma)
     }
 
     if ((req->rxData != NULL) && (req->rxLen)) {
+        states[uart_num].rx_req = req;
 #if TARGET_NUM == 32665
         if (MXC_UART_ReadRXFIFODMA((mxc_uart_regs_t *)(req->uart), dma, req->rxData, req->rxLen,
                                    NULL) != E_NO_ERROR) {
@@ -1123,25 +1132,42 @@ int MXC_UART_RevA_TransactionDMA(mxc_uart_reva_req_t *req, mxc_dma_regs_t *dma)
 
 void MXC_UART_RevA_DMACallback(int ch, int error)
 {
-    mxc_uart_reva_req_t *temp_req;
+    mxc_uart_reva_req_t *temp_req = NULL;
 
     for (int i = 0; i < MXC_UART_INSTANCES; i++) {
-        if (states[i].channelTx == ch || states[i].channelRx == ch) {
-            //save the request
-            temp_req = states[i].req;
-            // Callback if not NULL
-            if (temp_req->callback != NULL) {
-                temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
-            }
+        if (states[i].channelTx == ch) {
+            /* Populate txLen.  The number of "remainder" bytes is what's left on the 
+            DMA channel's count register. */
+            states[i].tx_req->txCnt = states[i].tx_req->txLen - MXC_DMA->ch[ch].cnt;
+
+            temp_req = states[i].tx_req;
 
             if (states[i].auto_dma_handlers) {
+                /* Release channel _before_ running callback in case 
+                user wants to start another transaction inside it */
                 MXC_DMA_ReleaseChannel(ch);
-                if (ch == states[i].channelRx)
-                    states[i].channelRx = -1;
-                else
-                    states[i].channelTx = -1;
+                states[i].channelTx = -1;
             }
 
+            if (temp_req->callback != NULL && ((states[i].tx_req->rxCnt == states[i].tx_req->rxLen) || states[i].tx_req->rxData == NULL)) {
+                /* Only call TX callback if RX component is complete/disabled. Note that
+                we are checking the request associated with the _channel_ assignment, not
+                the other side of the state struct. */
+                temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
+            }
+            break;
+        } else if (states[i].channelRx == ch) {
+            /* Same as above, but for RX */
+            states[i].rx_req->rxCnt = states[i].rx_req->rxLen - MXC_DMA->ch[ch].cnt;
+            temp_req = states[i].rx_req;
+            if (states[i].auto_dma_handlers) {
+                MXC_DMA_ReleaseChannel(ch);
+                states[i].channelRx = -1;
+            }
+
+            if (temp_req->callback != NULL && ((states[i].rx_req->txCnt == states[i].rx_req->txLen) || states[i].rx_req->txData == NULL)) {
+                temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
+            }
             break;
         }
     }
