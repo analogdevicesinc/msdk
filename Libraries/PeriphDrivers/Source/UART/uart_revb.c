@@ -53,7 +53,8 @@ static void *AsyncTxRequests[MXC_UART_INSTANCES];
 static void *AsyncRxRequests[MXC_UART_INSTANCES];
 
 typedef struct {
-    mxc_uart_revb_req_t *req;
+    mxc_uart_revb_req_t *tx_req;
+    mxc_uart_revb_req_t *rx_req;
     int channelTx;
     int channelRx;
     bool auto_dma_handlers;
@@ -103,7 +104,8 @@ int MXC_UART_RevB_Init(mxc_uart_revb_regs_t *uart, unsigned int baud, mxc_uart_r
     for (int i = 0; i < MXC_UART_INSTANCES; i++) {
         states[i].channelRx = -1;
         states[i].channelTx = -1;
-        states[i].req = NULL;
+        states[i].tx_req = NULL;
+        states[i].rx_req = NULL;
         states[i].auto_dma_handlers = false;
     }
 
@@ -1140,26 +1142,27 @@ int MXC_UART_RevB_TransactionDMA(mxc_uart_revb_req_t *req)
 
     MXC_DMA_Init();
 
+    // Reset rx/tx counters,
+    req->rxCnt = 0;
+    req->txCnt = 0;
+
     //tx
     if ((req->txData != NULL) && (req->txLen)) {
+        /* Save TX req, the DMA handler will use this later. */
+        states[uart_num].tx_req = req;
         if (MXC_UART_WriteTXFIFODMA((mxc_uart_regs_t *)(req->uart), req->txData, req->txLen,
                                     NULL) != E_NO_ERROR) {
             return E_BAD_PARAM;
         }
-
-        // Save state for UART DMACallback function.
-        states[uart_num].req = req;
     }
 
     //rx
     if ((req->rxData != NULL) && (req->rxLen)) {
+        states[uart_num].rx_req = req;
         if (MXC_UART_ReadRXFIFODMA((mxc_uart_regs_t *)(req->uart), req->rxData, req->rxLen, NULL) !=
             E_NO_ERROR) {
             return E_BAD_PARAM;
         }
-
-        // Save state for UART DMACallback function.
-        states[uart_num].req = req;
     }
 
     return E_NO_ERROR;
@@ -1171,36 +1174,36 @@ void MXC_UART_RevB_DMACallback(int ch, int error)
 
     for (int i = 0; i < MXC_UART_INSTANCES; i++) {
         if (states[i].channelTx == ch) {
-            // Populate txLen.  The number of "remainder" bytes is what's left on the
-            // DMA channel's count register.
-            states[i].req->txCnt = states[i].req->txLen - MXC_DMA->ch[ch].cnt;
-            //save the request            
+            /* Populate txLen.  The number of "remainder" bytes is what's left on the 
+            DMA channel's count register. */
+            states[i].tx_req->txCnt = states[i].tx_req->txLen - MXC_DMA->ch[ch].cnt;
+
+            temp_req = states[i].tx_req;
 
             if (states[i].auto_dma_handlers) {
+                /* Release channel _before_ running callback in case 
+                user wants to start another transaction inside it */
                 MXC_DMA_ReleaseChannel(ch);
                 states[i].channelTx = -1;
             }
 
-            temp_req = states[i].req;
-
-            // Callback if not NULL
-            if (temp_req->callback != NULL) {
+            if (temp_req->callback != NULL && ((states[i].tx_req->rxCnt == states[i].tx_req->rxLen) || states[i].tx_req->rxData == NULL)) {
+                /* Only call TX callback if RX component is complete/disabled. Note that
+                we are checking the request associated with the _channel_ assignment, not
+                the other side of the state struct. */
                 temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
             }
             break;
         } else if (states[i].channelRx == ch) {
-            states[i].req->rxCnt = states[i].req->rxLen - MXC_DMA->ch[ch].cnt;            
-
+            /* Same as above, but for RX */
+            states[i].rx_req->rxCnt = states[i].rx_req->rxLen - MXC_DMA->ch[ch].cnt;
+            temp_req = states[i].rx_req;
             if (states[i].auto_dma_handlers) {
                 MXC_DMA_ReleaseChannel(ch);
                 states[i].channelRx = -1;
             }
 
-            //save the request
-            temp_req = states[i].req;
-
-            // Callback if not NULL
-            if (temp_req->callback != NULL) {
+            if (temp_req->callback != NULL && ((states[i].rx_req->txCnt == states[i].rx_req->txLen) || states[i].rx_req->txData == NULL)) {
                 temp_req->callback((mxc_uart_req_t *)temp_req, E_NO_ERROR);
             }
             break;
