@@ -82,6 +82,8 @@ to exclude the API function. */
 #define INCLUDE_uxTaskPriorityGet 0
 #define INCLUDE_vTaskDelay 1
 
+#define configTASK_NOTIFICATION_ARRAY_ENTRIES 2
+
 /* # of priority bits (configured in hardware) is provided by CMSIS */
 #define configPRIO_BITS __NVIC_PRIO_BITS
 
