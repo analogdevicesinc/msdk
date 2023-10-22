@@ -180,11 +180,10 @@ void vTaskSerial(void *pvParameters)
     uint8_t error = 0;
 
     vMXC_Serial_Open(&test);
-    // vMXC_Serial_Read(&test, rx_buffer, 512, portMAX_DELAY, &error);
+    vMXC_Serial_Read(&test, rx_buffer, 8, portMAX_DELAY, &error);
 
     while(1) {        
-        // vMXC_Serial_Write(&test, tx_buffer, 6, &error);
-        MXC_Delay(MXC_DELAY_SEC(1));
+        vMXC_Serial_Write(&test, tx_buffer, 6, &error);
         LED_Toggle(0);
     }
 }
@@ -266,9 +265,6 @@ int main(void)
     if (MXC_RTC_Init(0, 0) != E_NO_ERROR) printf("Failed RTC init\n");
     if (MXC_RTC_Start() != E_NO_ERROR) printf("Failed RTC start\n");
 
-    vTaskSerial(NULL);
-
-#if 0
     printf("Assigning custom transports\n");
     rmw_uros_set_custom_transport(
         MICROROS_TRANSPORTS_FRAMING_MODE,
@@ -287,13 +283,11 @@ int main(void)
     } else {
         /* Configure task */
 
-
         if ((xTaskCreate(vTask0, (const char *)"Task0", configMINIMAL_STACK_SIZE, NULL,
                          tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
             (xTaskCreate(vTask1, (const char *)"Task1", configMINIMAL_STACK_SIZE, NULL,
                          tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
             (xTaskCreate(appMain, "uros_task", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS))
-        if (xTaskCreate(vTaskSerial, (const char *)"TaskSerial", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)
             {
                             // start microROS task
             printf("xTaskCreate() failed to create a task.\n");
@@ -310,7 +304,6 @@ int main(void)
     while (1) {
         __NOP();
     }
-#endif 
 
     /* Quiet GCC warnings */
     return -1;

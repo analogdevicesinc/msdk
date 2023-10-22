@@ -8,7 +8,7 @@ typedef struct {
 
 static transport_config_t transport_config = {
     .uart_instance = MXC_UART0,
-    .baudrate = 9600
+    .baudrate = 115200
 };
 
 /**
