@@ -151,11 +151,14 @@ void MXC_SDHC_Set_Clock_Config(unsigned int clk_div);
 /**
  * @brief   Get clock divider
  * @return  Clock divider setting
- * s
- * @returns #E_NO_ERROR SDHC shutdown successfully, @ref MXC_Error_Codes "error" if
- *             unsuccessful.
  */
 unsigned int MXC_SDHC_Get_Clock_Config(void);
+
+/**
+ * @brief      Get the input clock frequency for the SDHC peripheral.
+ * @return     Input clock frequency in Hz
+ */
+unsigned int MXC_SDHC_Get_Input_Clock_Freq(void);
 
 /**
  * @brief      Send Command, <em>blocking</em>.

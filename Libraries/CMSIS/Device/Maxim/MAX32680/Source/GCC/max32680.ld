@@ -145,6 +145,7 @@ SECTIONS {
         _data = ALIGN(., 4);
         *(vtable)
         *(.data*)           /*read-write initialized data: initialized global variable*/
+        *(.flashprog*)
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
         . = ALIGN(4);

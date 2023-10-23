@@ -2,15 +2,18 @@
 	"name":"SDHC",
 	"ipaths":[
         "Include",
-        "ff14/Source"
+        "ff13/Source"
 	],
 	"vpaths":[
-		"ff14/Source"
+		"ff13/Source"
     ],
 	"whitelist":"True",
 	"targets":[
         {
             "name":"MAX32650"
+        },
+        {
+            "name":"MAX32570"
         },
         {
             "name":"MAX32665"

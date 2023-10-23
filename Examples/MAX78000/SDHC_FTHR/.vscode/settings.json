@@ -1,6 +1,6 @@
 {
     "terminal.integrated.env.windows": {
-        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:Make_path};${env:PATH}",
+        "Path":"${config:OCD_path};${config:ARM_GCC_path}/bin;${config:xPack_GCC_path}/bin;${config:MSYS_path}/usr/bin;${config:Make_path};${env:PATH}",
         "MAXIM_PATH":"${config:MAXIM_PATH}"
     },
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
@@ -33,7 +33,8 @@
     "OCD_path":"${config:MAXIM_PATH}/Tools/OpenOCD",
     "ARM_GCC_path":"${config:MAXIM_PATH}/Tools/GNUTools/${config:v_Arm_GCC}",
     "xPack_GCC_path":"${config:MAXIM_PATH}/Tools/xPack/riscv-none-elf-gcc/${config:v_xPack_GCC}",
-    "Make_path":"${config:MAXIM_PATH}/Tools/MSYS2/usr/bin",
+    "Make_path":"${config:MAXIM_PATH}/Tools/GNUTools/Make",
+    "MSYS_path":"${config:MAXIM_PATH}/Tools/MSYS2",
 
     "C_Cpp.default.includePath": [
         "${workspaceFolder}",
@@ -52,11 +53,11 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PMIC",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
-        "${config:MAXIM_PATH}/Libraries/SDHC/Include",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff14/Source"
+        "${config:MAXIM_PATH}/Libraries/CLI/inc"
     ],
     "C_Cpp.default.browse.path": [
         "${workspaceFolder}",
+        "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/Source",
         "${config:MAXIM_PATH}/Libraries/Boards/${config:target}/${config:board}/Source",
         "${config:MAXIM_PATH}/Libraries/PeriphDrivers/Source",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Camera",
@@ -66,7 +67,7 @@
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/PushButton",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers/Touchscreen",
         "${config:MAXIM_PATH}/Libraries/MiscDrivers",
-        "${config:MAXIM_PATH}/Libraries/SDHC/ff14/Source"
+        "${config:MAXIM_PATH}/Libraries/CLI/src"
     ],
     "C_Cpp.default.defines": [
         

@@ -53,6 +53,15 @@
 #include "sdhc_resp_regs.h"
 
 /**
+ * @brief SDHC target clock frequency.
+ * @details Max freq. is limited by GCR register to be @ref SystemCoreClock / 2 or @ref SystemCoreClock / 4.
+ * This field is used as a target for the SDHC peripheral's internal clock divider.
+ * R/W reliability issues can sometimes be eliminated by reducing the clock frequency, which is a good first step for troubleshooting.
+ */
+#define SDHC_CLK_FREQ 40000000
+
+
+/**
  * @ingroup sdhc
  * @{
  */
@@ -91,7 +100,7 @@ int MXC_SDHC_Lib_SetRCA(void);
 int MXC_SDHC_Lib_GetCSD(mxc_sdhc_csd_regs_t *csd);
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd);
+unsigned long long MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd);
 
 /* ************************************************************************** */
 unsigned int MXC_SDHC_Lib_GetSectors(mxc_sdhc_csd_regs_t* csd);

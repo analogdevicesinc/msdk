@@ -31,8 +31,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX78000_EEPROM_EMULATOR_EEPROM_H_
-#define EXAMPLES_MAX78000_EEPROM_EMULATOR_EEPROM_H_
+#ifndef EXAMPLES_MAX32520_EEPROM_EMULATOR_INCLUDE_EEPROM_H_
+#define EXAMPLES_MAX32520_EEPROM_EMULATOR_INCLUDE_EEPROM_H_
 
 /***** Included Files *****/
 #include <stdbool.h>
@@ -80,4 +80,4 @@ int eeprom_init(mxc_i2c_regs_t *eeprom_i2c, mxc_gpio_cfg_t rdy_pin);
  */
 void eeprom_prep_for_txn(void);
 
-#endif // EXAMPLES_MAX78000_EEPROM_EMULATOR_EEPROM_H_
+#endif // EXAMPLES_MAX32520_EEPROM_EMULATOR_INCLUDE_EEPROM_H_

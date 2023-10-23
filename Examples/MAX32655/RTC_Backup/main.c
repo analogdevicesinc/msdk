@@ -125,24 +125,10 @@ void printTime()
 int configureRTC()
 {
     int rtcTrim;
-    volatile int i;
+    MXC_Delay(MXC_DELAY_SEC(2)); // Delay to give debugger a window to connect
 
-    for (i = 0; i < 0xFFFFFF; i++) {}
-    // Prevent bricks
-
-    if (!(MXC_GCR->clkctrl &
-          MXC_F_GCR_CLKCTRL_ERFO_RDY)) { // Enable 32Mhz clock if not already enabled
-        MXC_SIMO->vrego_d = (0x3c << MXC_F_SIMO_VREGO_D_VSETD_POS); // Power VREGO_D
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
-
-        MXC_GCR->btleldoctrl = 0x3055; // Restore btleldoctrl setting
-        while (!(MXC_SIMO->buck_out_ready & MXC_F_SIMO_BUCK_OUT_READY_BUCKOUTRDYD)) {}
-
-        MXC_GCR->clkctrl |= MXC_F_GCR_CLKCTRL_ERFO_EN; // Enable 32Mhz oscillator
-        while (!(MXC_GCR->clkctrl & MXC_F_GCR_CLKCTRL_ERFO_RDY)) {}
-    }
-
-    MXC_SYS_Clock_Select(MXC_SYS_CLOCK_ERFO); // Set 32MHz clock as system clock
+    /* Switch the system clock to the 32 MHz oscillator */
+    MXC_SYS_ClockSourceEnable(MXC_SYS_CLOCK_ERFO);
     MXC_SYS_SetClockDiv(MXC_SYS_CLOCK_DIV_1);
     SystemCoreClockUpdate();
 

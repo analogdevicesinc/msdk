@@ -92,6 +92,11 @@ typedef struct
 } dmPerAdvCb_t;
 
 /**************************************************************************************************
+  Global Variables
+**************************************************************************************************/
+extern uint8_t appCodedPhyDemo;
+
+/**************************************************************************************************
   Local Variables
 **************************************************************************************************/
 
@@ -134,7 +139,7 @@ static const dmFcnIf_t dmPerAdvFcnIf =
 };
 
 /* extended advertising control block */
-static dmExtAdvCb_t dmExtAdvCb[DM_NUM_ADV_SETS];
+dmExtAdvCb_t dmExtAdvCb[DM_NUM_ADV_SETS];
 
 /* periodic advertising control block */
 static dmPerAdvCb_t dmPerAdvCb[DM_NUM_ADV_SETS];
@@ -164,13 +169,21 @@ static void dmExtAdvCbInit(uint8_t advHandle)
 {
   /* initialize advertising set */
   dmExtAdvCb[advHandle].advType = DM_ADV_NONE;
-  dmExtAdvCb[advHandle].useLegacyPdu = TRUE;
+
+  if (appCodedPhyDemo) {
+    dmExtAdvCb[advHandle].useLegacyPdu = FALSE;
+    dmExtAdvCb[advHandle].priAdvPhy = HCI_ADV_PHY_LE_CODED;
+    dmExtAdvCb[advHandle].secAdvPhy = HCI_ADV_PHY_LE_CODED;
+  } else {
+    dmExtAdvCb[advHandle].useLegacyPdu = TRUE;
+    dmExtAdvCb[advHandle].priAdvPhy = HCI_ADV_PHY_LE_1M;
+    dmExtAdvCb[advHandle].secAdvPhy = HCI_ADV_PHY_LE_1M;
+  }
+
   dmExtAdvCb[advHandle].omitAdvAddr = FALSE;
   dmExtAdvCb[advHandle].incTxPwr = FALSE;
   dmExtAdvCb[advHandle].advTxPwr = HCI_TX_PWR_NO_PREFERENCE;
-  dmExtAdvCb[advHandle].priAdvPhy = HCI_ADV_PHY_LE_1M;
   dmExtAdvCb[advHandle].secAdvMaxSkip = 0;
-  dmExtAdvCb[advHandle].secAdvPhy = HCI_ADV_PHY_LE_1M;
   dmExtAdvCb[advHandle].scanReqNotifEna = FALSE;
   dmExtAdvCb[advHandle].fragPref = HCI_ADV_DATA_FRAG_PREF_FRAG;
   dmExtAdvCb[advHandle].advSid = 0;

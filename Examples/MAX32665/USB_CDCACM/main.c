@@ -84,7 +84,7 @@ static void echoUSB(void);
 /***** File Scope Variables *****/
 
 /* This EP assignment must match the Configuration Descriptor */
-static const acm_cfg_t acm_cfg = {
+static acm_cfg_t acm_cfg = {
     1, /* EP OUT */
     MXC_USBHS_MAX_PACKET, /* OUT max packet size */
     2, /* EP IN */
@@ -279,6 +279,14 @@ static int setconfigCallback(MXC_USB_SetupPkt *sud, void *cbdata)
     if (sud->wValue == config_descriptor.config_descriptor.bConfigurationValue) {
         configured = 1;
         MXC_SETBIT(&event_flags, EVENT_ENUM_COMP);
+
+        acm_cfg.out_ep = config_descriptor.endpoint_descriptor_1.bEndpointAddress & 0x7;
+        acm_cfg.out_maxpacket = config_descriptor.endpoint_descriptor_1.wMaxPacketSize;
+        acm_cfg.in_ep = config_descriptor.endpoint_descriptor_2.bEndpointAddress & 0x7;
+        acm_cfg.in_maxpacket = config_descriptor.endpoint_descriptor_2.wMaxPacketSize;
+        acm_cfg.notify_ep = config_descriptor.endpoint_descriptor_3.bEndpointAddress & 0x7;
+        acm_cfg.notify_maxpacket = config_descriptor.endpoint_descriptor_3.wMaxPacketSize;
+
         return acm_configure(&acm_cfg); /* Configure the device class */
     } else if (sud->wValue == 0) {
         configured = 0;

@@ -110,6 +110,7 @@ static void initGPIOforHWTrig(mxc_adc_trig_sel_t hwTrig)
         gpioCfg.func = MXC_GPIO_FUNC_ALT2;
         gpioCfg.pad = MXC_GPIO_PAD_NONE;
         gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
+        gpioCfg.drvstr = MXC_GPIO_DRVSTR_0;
         MXC_GPIO_Config(&gpioCfg);
         break;
     case MXC_ADC_TRIG_SEL_P1_13:
@@ -118,6 +119,7 @@ static void initGPIOforHWTrig(mxc_adc_trig_sel_t hwTrig)
         gpioCfg.func = MXC_GPIO_FUNC_ALT2;
         gpioCfg.pad = MXC_GPIO_PAD_NONE;
         gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
+        gpioCfg.drvstr = MXC_GPIO_DRVSTR_0;
         MXC_GPIO_Config(&gpioCfg);
         break;
     case MXC_ADC_TRIG_SEL_P1_14:
@@ -126,6 +128,7 @@ static void initGPIOforHWTrig(mxc_adc_trig_sel_t hwTrig)
         gpioCfg.func = MXC_GPIO_FUNC_ALT2;
         gpioCfg.pad = MXC_GPIO_PAD_NONE;
         gpioCfg.vssel = MXC_GPIO_VSSEL_VDDIOH;
+        gpioCfg.drvstr = MXC_GPIO_DRVSTR_0;
         MXC_GPIO_Config(&gpioCfg);
         break;
     }

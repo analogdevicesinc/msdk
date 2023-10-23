@@ -197,6 +197,7 @@ static inline void schInsertToEmptyList(BbOpDesc_t *pItem)
 
   schCb.pHead = pItem;
   schCb.pTail = pItem;
+  schCb.cnt++;
 
   pItem->pPrev = NULL;
   pItem->pNext = NULL;
@@ -233,6 +234,8 @@ static inline void schInsertBefore(BbOpDesc_t *pItem, BbOpDesc_t *pTgt)
     schCb.pHead = pItem;
   }
 
+  schCb.cnt++;
+
   SCH_TRACE_INFO1("++| schInsertBefore      |++ pBod=0x%08x", (uint32_t)pItem);
   SCH_TRACE_INFO1("++|                      |++     .dueUsec=%u", pItem->dueUsec);
   SCH_TRACE_INFO1("++|                      |++     .minDurUsec=%u", pItem->minDurUsec);
@@ -265,6 +268,8 @@ static inline void schInsertAfter(BbOpDesc_t *pItem, BbOpDesc_t *pTgt)
     schCb.pTail = pItem;
   }
 
+  schCb.cnt++;
+
   SCH_TRACE_INFO1("++| schInsertAfter       |++ pBod=0x%08x", (uint32_t)pItem);
   SCH_TRACE_INFO1("++|                      |++     .dueUsec=%u", pItem->dueUsec);
   SCH_TRACE_INFO1("++|                      |++     .minDurUsec=%u", pItem->minDurUsec);
@@ -290,6 +295,11 @@ void schRemoveHead(void)
   {
     /* Now empty list */
     schCb.pTail = NULL;
+  }
+
+  if (schCb.cnt)
+  {
+    schCb.cnt--;
   }
 }
 
@@ -326,6 +336,11 @@ static void schRemoveMiddle(BbOpDesc_t *pBod)
     /* Middle element */
     pBod->pPrev->pNext = pBod->pNext;
     pBod->pNext->pPrev = pBod->pPrev;
+  }
+
+  if (schCb.cnt)
+  {
+    schCb.cnt--;
   }
 }
 

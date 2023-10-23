@@ -50,6 +50,7 @@
 #include "msc.h"
 #include "descriptors.h"
 #include "mscmem.h"
+#include "nvic_table.h"
 
 /* **** Definitions **** */
 #define EVENT_ENUM_COMP MAXUSB_NUM_EVENTS
@@ -113,8 +114,17 @@ int Hid_SW_Init(void)
 }
 
 /******************************************************************************/
+void HID_SW_Handler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(hid_sw[0].port));
+}
+
 int Hid_SW_RegisterCallback(unsigned int pb, pb_callback callback)
 {
+    if (pb != 0) {
+        return E_INVALID;
+    }
+
     if (callback) {
         // Register callback
         MXC_GPIO_RegisterCallback(&hid_sw[pb], callback, (void *)pb);
@@ -122,6 +132,7 @@ int Hid_SW_RegisterCallback(unsigned int pb, pb_callback callback)
         // Configure and enable interrupt
         MXC_GPIO_IntConfig(&hid_sw[pb], MXC_GPIO_INT_FALLING);
         MXC_GPIO_EnableInt(hid_sw[pb].port, hid_sw[pb].mask);
+        MXC_NVIC_SetVector(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(hid_sw[pb].port)), HID_SW_Handler);
         NVIC_EnableIRQ(MXC_GPIO_GET_IRQ(MXC_GPIO_GET_IDX(hid_sw[pb].port)));
     } else { // Disable interrupt and clear callback
         MXC_GPIO_DisableInt(hid_sw[pb].port, hid_sw[pb].mask);

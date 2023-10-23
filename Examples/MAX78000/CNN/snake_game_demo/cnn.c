@@ -854,6 +854,8 @@ int cnn_boost_enable(mxc_gpio_regs_t *port, uint32_t pin)
     gpio_out.mask = pin;
     gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
+    gpio_out.vssel = MXC_GPIO_VSSEL_VDDIO;
+    gpio_out.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
 
@@ -867,6 +869,8 @@ int cnn_boost_disable(mxc_gpio_regs_t *port, uint32_t pin)
     gpio_out.mask = pin;
     gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
+    gpio_out.vssel = MXC_GPIO_VSSEL_VDDIO;
+    gpio_out.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
 

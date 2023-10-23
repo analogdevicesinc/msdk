@@ -36,7 +36,7 @@
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/CMSIS/5.9.0/DSP/Include&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/CMSIS/5.9.0/DSP/Include/dsp&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/SDHC/Include&quot;"/>
-<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/SDHC/ff14/Source&quot;"/>
+<listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/SDHC/ff13/Source&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Camera&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/Display&quot;"/>
 <listOptionValue builtIn="false" value="&quot;${MAXIM_PATH}/Libraries/MiscDrivers/ExtMemory&quot;"/>

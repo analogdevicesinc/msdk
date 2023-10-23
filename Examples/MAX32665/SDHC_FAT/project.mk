@@ -14,3 +14,5 @@ SBT=0
 
 # Enable SDHC library
 LIB_SDHC = 1
+# Use FatFS version R0.15
+FATFS_VERSION = ff15

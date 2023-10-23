@@ -80,6 +80,16 @@ int MXC_SDHC_Init(const mxc_sdhc_cfg_t *cfg)
     return MXC_SDHC_RevA_Init((mxc_sdhc_reva_regs_t *)MXC_SDHC, cfg);
 }
 
+unsigned int MXC_SDHC_Get_Input_Clock_Freq(void)
+{
+    // TODO(JC): Confirm this is the scheme used by ME13
+    if (MXC_GCR->pclkdiv & MXC_F_GCR_PCLKDIV_SDHCFRQ) {
+        return SystemCoreClock >> 2; // Div by 4
+    } else {
+        return SystemCoreClock >> 1; // Div by 2
+    }
+}
+
 /* ************************************************************************** */
 void MXC_SDHC_PowerUp(void)
 {
