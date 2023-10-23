@@ -45,7 +45,7 @@ SRCS += led.c
 SRCS += mx25.c
 SRCS += pb.c
 SRCS += tsc2046.c
-SRCS += tft.c
+SRCS += tft_ssd2119.c
 
 PROJ_CFLAGS+=-DEXT_FLASH_MX25
 

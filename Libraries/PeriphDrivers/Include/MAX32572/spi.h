@@ -59,6 +59,8 @@ extern "C" {
 
 /***** Definitions *****/
 
+#define OLD_SPI_API_FUNCTIONS
+
 /**
  * @brief   The list of SPI Widths supported
  *
