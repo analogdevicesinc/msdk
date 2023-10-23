@@ -197,10 +197,19 @@ void PalFlashEraseSector(uint32_t size, uint32_t startAddr)
   }
 
   /* Offset the address into flash */
+#if defined (__GNUC__)	
   startAddr += (uint32_t)&__pal_nvm_db_start__;
+#elif defined (__CC_ARM)
+  startAddr += (uint32_t)__pal_nvm_db_start__;	
+#elif defined (__ICCARM__)
+  startAddr += (uint32_t)__pal_nvm_db_start__;	
+#endif 
 
   while(size) {
+    WsfCsEnter();
     MXC_FLC_PageErase(startAddr);
+    WsfCsExit();
+
     startAddr += MXC_FLASH_PAGE_SIZE;
     size --;
   }
