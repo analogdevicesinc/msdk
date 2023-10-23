@@ -224,7 +224,7 @@ void PalFlashEraseSector(uint32_t size, uint32_t startAddr)
 /*************************************************************************************************/
 void PalFlashEraseChip(void)
 {
-uint32_t startAddr, size;
+  uint32_t startAddr, size;
 
 #if defined (__GNUC__)
   /* Offset the address into flash */
