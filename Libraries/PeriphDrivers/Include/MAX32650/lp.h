@@ -381,6 +381,19 @@ void MXC_LP_EnterDeepSleepMode(void);
  */
 void MXC_LP_EnterBackupMode(void);
 
+/**
+ * @brief      Places the USB block into its initial state where the operating current is at its minimum.
+ *             This function must be called when the USB block is not used in order to achieve low power 
+ *             current readings.
+ */
+void MXC_LP_USBClearPONRST(void);
+
+/**
+ * @brief      Enables the USB (clock generator) if the USB PONRST (0x410) register was previously cleared
+ *             to put the device into a low power mode.
+ */
+void MXC_LP_USBSetPONRST(void);
+
 /**@} end of group lp */
 
 #ifdef __cplusplus

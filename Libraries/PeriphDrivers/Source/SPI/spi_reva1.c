@@ -530,33 +530,42 @@ unsigned int MXC_SPI_RevA1_ReadRXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *b
         len &= ~(unsigned)0x1;
     }
 
-    unsigned cnt = 0;
+    unsigned count = 0;
 
-    if (bits <= 8 || len >= 2) {
-        // Read from the FIFO
-        while (len) {
+    // Read from the FIFO
+    while (len) {
+        // Reading 2-8 bit wide messages from the FIFO16 or FIFO32 register
+        //  swaps the ordering of the message.
+        //  Example:
+        //      When the SPI FIFO receives the message '00, 01, 02, 03', reading the FIFO16
+        //      or FIFO32 register could result in '01, 00, 03, 02' - depending on the part.
+        if (bits > 8) {
             if (len > 3) {
-                memcpy((uint8_t *)(&bytes[cnt]), (void *)(&spi->fifo32), 4);
+                memcpy((uint8_t *)(&bytes[count]), (void *)(&spi->fifo32), 4);
                 len -= 4;
-                cnt += 4;
+                count += 4;
             } else if (len > 1) {
-                memcpy((uint8_t *)(&bytes[cnt]), (void *)(&spi->fifo16[0]), 2);
+                memcpy((uint8_t *)(&bytes[count]), (void *)(&spi->fifo16[0]), 2);
                 len -= 2;
-                cnt += 2;
-
-            } else {
-                ((uint8_t *)bytes)[cnt++] = spi->fifo8[0];
-                len -= 1;
+                count += 2;
             }
 
-            // Don't read less than 2 bytes if we are using greater than 8 bit characters
-            if (len == 1 && bits > 8) {
+            // Don't read less than 2 bytes if we are using greater than 8 bit wide messages.
+            //  Due to the nature of how this function is called in the drivers, it should never
+            //  reach to this point.
+            if (len == 1) {
                 break;
             }
+
+            // 9-16 bit wide messages should not be read from the FIFO8 register (cuts
+            //  off the upper byte).
+        } else {
+            ((uint8_t *)bytes)[count++] = spi->fifo8[0];
+            len -= 1;
         }
     }
 
-    return cnt;
+    return count;
 }
 
 unsigned int MXC_SPI_RevA1_GetRXFIFOAvailable(mxc_spi_reva_regs_t *spi)
@@ -584,28 +593,35 @@ unsigned int MXC_SPI_RevA1_WriteTXFIFO(mxc_spi_reva_regs_t *spi, unsigned char *
         len &= ~(unsigned)0x1;
     }
 
-    unsigned cnt = 0;
+    unsigned count = 0;
 
     while (len) {
-        if (len > 3) {
-            memcpy((void *)(&spi->fifo32), (uint8_t *)(&bytes[cnt]), 4);
+        // Writing 2-8 bit wide messages to the FIFO16 or FIFO32 register
+        //  swaps the ordering of the message.
+        //  Example:
+        //      SPI FIFO is expected to transmit the message '00, 01, 02, 03'.
+        //      Writing the four byte-wide characters to the FIFO16 or FIFO32 register could
+        //      result in this message shifted out: '01, 00, 03, 02' - depending on the part.
+        if (bits > 8) {
+            if (len > 3) {
+                memcpy((void *)(&spi->fifo32), (uint8_t *)(&bytes[count]), 4);
+                len -= 4;
+                count += 4;
+            } else if (len > 1) {
+                memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&bytes[count]), 2);
+                len -= 2;
+                count += 2;
+            }
 
-            len -= 4;
-            cnt += 4;
-
-        } else if (len > 1) {
-            memcpy((void *)(&spi->fifo16[0]), (uint8_t *)(&bytes[cnt]), 2);
-
-            len -= 2;
-            cnt += 2;
-
-        } else if (bits <= 8) {
-            spi->fifo8[0] = ((uint8_t *)bytes)[cnt++];
-            len--;
+            // 9-16 bit wide messages should not be written to the FIFO8 register (cuts
+            //  off the upper byte).
+        } else {
+            spi->fifo8[0] = ((uint8_t *)bytes)[count++];
+            len -= 1;
         }
     }
 
-    return cnt;
+    return count;
 }
 
 unsigned int MXC_SPI_RevA1_GetTXFIFOAvailable(mxc_spi_reva_regs_t *spi)
@@ -753,6 +769,7 @@ int MXC_SPI_RevA1_TransSetup(mxc_spi_reva_req_t *req)
     } else {
         states[spi_num].txrx_req = false;
     }
+
     (req->spi)->dma |= (MXC_F_SPI_REVA_DMA_TX_FLUSH | MXC_F_SPI_REVA_DMA_RX_FLUSH);
     (req->spi)->ctrl0 |= (MXC_F_SPI_REVA_CTRL0_EN);
 
@@ -770,7 +787,9 @@ uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva
 
     // Leave slave select asserted at the end of the transaction
     if (states[spi_num].hw_ss_control && !req->ssDeassert) {
-        spi->ctrl0 |= MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        spi->ctrl0 = (spi->ctrl0 & ~MXC_F_SPI_REVA_CTRL0_START) | MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        // Note: Setting 0 to START bit to avoid race condition and duplicated starts.
+        // See https://github.com/Analog-Devices-MSDK/msdk/issues/713
     }
 
     retval = MXC_SPI_RevA1_TransHandler(spi, req);
@@ -782,7 +801,7 @@ uint32_t MXC_SPI_RevA1_MasterTransHandler(mxc_spi_reva_regs_t *spi, mxc_spi_reva
 
     // Deassert slave select at the end of the transaction
     if (states[spi_num].hw_ss_control && req->ssDeassert) {
-        spi->ctrl0 &= ~MXC_F_SPI_REVA_CTRL0_SS_CTRL;
+        spi->ctrl0 &= ~(MXC_F_SPI_REVA_CTRL0_START | MXC_F_SPI_REVA_CTRL0_SS_CTRL);
     }
 
     return retval;

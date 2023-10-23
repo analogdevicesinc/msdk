@@ -62,6 +62,7 @@ const mxc_gpio_cfg_t led_pin[] = { { MXC_GPIO1, MXC_GPIO_PIN_30, MXC_GPIO_FUNC_O
                                    { MXC_GPIO1, MXC_GPIO_PIN_31, MXC_GPIO_FUNC_OUT,
                                      MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIO } };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
+// clang-format on
 
 /******************************************************************************/
 void mxc_assert(const char *expr, const char *file, int line)

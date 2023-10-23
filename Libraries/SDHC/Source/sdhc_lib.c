@@ -41,6 +41,7 @@
  **************************************************************************** */
 
 /* **** Includes **** */
+#include <stdbool.h>
 #include "mxc_device.h"
 #include "mxc_errors.h"
 #include "mxc_assert.h"
@@ -105,6 +106,8 @@
 /* **** Globals **** */
 int card_rca;
 mxc_sdhc_lib_card_type card_type = CARD_NONE;
+mxc_sdhc_csd_regs_t g_csd;
+bool g_csd_is_cached = false;
 
 /* **** Functions **** */
 
@@ -142,28 +145,48 @@ int MXC_SDHC_Lib_SetRCA()
 /* ************************************************************************** */
 int MXC_SDHC_Lib_GetCSD(mxc_sdhc_csd_regs_t *csd)
 {
-    mxc_sdhc_cmd_cfg_t cmd_cfg;
     int result;
 
-    cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
-    cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
-    cmd_cfg.callback = NULL;
-    cmd_cfg.arg_1 = card_rca;
-    cmd_cfg.command = MXC_SDHC_LIB_CMD9;
+    /* 
+    TODO: We cache the CSD because there seems to be some issues
+        with reading out the CSD after R/W sequences to the card.  We need
+        to investigate this further.
+    */
 
-    if ((result = MXC_SDHC_SendCommand(&cmd_cfg)) == E_NO_ERROR) {
-    MXC_SDHC_Get_Response128((unsigned char *)csd->array);
+    if (g_csd_is_cached) {
+        *csd = g_csd;
+        result = E_NO_ERROR;
+    } else {
+        mxc_sdhc_cmd_cfg_t cmd_cfg;
+
+        cmd_cfg.direction = MXC_SDHC_DIRECTION_CFG;
+        cmd_cfg.host_control_1 = MXC_SDHC_Get_Host_Cn_1();
+        cmd_cfg.callback = NULL;
+        cmd_cfg.arg_1 = card_rca;
+        cmd_cfg.command = MXC_SDHC_LIB_CMD9;
+
+        if ((result = MXC_SDHC_SendCommand(&cmd_cfg)) == E_NO_ERROR) {
+            MXC_SDHC_Get_Response128((unsigned char *)g_csd.array);
+            g_csd_is_cached = true;
+            *csd = g_csd;
+        }
     }
 
     return result;
 }
 
 /* ************************************************************************** */
-unsigned int MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd)
+unsigned long long MXC_SDHC_Lib_GetCapacity(mxc_sdhc_csd_regs_t* csd)
 {
     unsigned int size = csd->csd.c_size;
 
-    return (size*(512*1024));
+    return ((unsigned long long)(size+1))*((unsigned long long)512*1024);
+}
+
+/* ************************************************************************** */
+unsigned int MXC_SDHC_Lib_GetSectors(mxc_sdhc_csd_regs_t* csd)
+{
+    return csd->csd.c_size;
 }
 
 /* ************************************************************************** */
@@ -280,6 +303,9 @@ int MXC_SDHC_Lib_InitCard(int retries)
     int err;
     int cmd0 = 1;
     uint32_t response;
+
+    g_csd_is_cached = false;
+    // Reset CSD cache so that we read CSD at least once on init.
 
     card_type = CARD_NONE;
 
@@ -406,6 +432,18 @@ int MXC_SDHC_Lib_InitCard(int retries)
         if (err != E_NO_ERROR) {
         return err;
     }
+
+    err = MXC_SDHC_Lib_GetCSD(&g_csd);
+    if (err != E_NO_ERROR)
+        return err;
+
+    // Calculate clk div to achieve target SDHC clk.
+    // First, there is a GCR register setting to determine the input clock to the peripheral.
+    // This varies between micros, so a native implementation for each one is maintained in
+    // sdhc_mexx.c
+    unsigned int sdhc_clk_freq = MXC_SDHC_Get_Input_Clock_Freq();
+    unsigned int sdhc_clk_div = sdhc_clk_freq / (2 * SDHC_CLK_FREQ);
+    MXC_SDHC_Set_Clock_Config(sdhc_clk_div);
 
     return E_NO_ERROR;
 }

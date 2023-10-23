@@ -305,6 +305,30 @@ LDFLAGS=-mthumb                                                                \
         -mfpu=$(MFPU)                                                          \
         -Xlinker --gc-sections                                                 \
 	-Xlinker -Map -Xlinker ${BUILD_DIR}/$(PROJECT).map
+
+# Add --no-warn-rwx-segments on GCC 12+
+# This is not universally supported or enabled by default, so we need to check whether the linker supports it first
+RWX_SEGMENTS_SUPPORTED ?=
+ifeq "$(RWX_SEGMENTS_SUPPORTED)" "" # -------------------------------------
+# Print the linker's help string and parse it for --no-warn-rwx-segments
+# Note we invoke the linker through the compiler "-Xlinker" because ld may not
+# be on the path, and that's how we invoke the linker for our implicit rules
+LINKER_OPTIONS := $(shell $(CC) -Xlinker --help)
+ifneq "$(findstring --no-warn-rwx-segments,$(LINKER_OPTIONS))" ""
+RWX_SEGMENTS_SUPPORTED := 1
+else
+RWX_SEGMENTS_SUPPORTED := 0
+endif
+
+# export the variable for sub-make calls, so we don't need to interact with the shell again (it's slow).
+export RWX_SEGMENTS_SUPPORTED
+endif # ------------------------------------------------------------------
+
+ifeq "$(RWX_SEGMENTS_SUPPORTED)" "1"
+LDFLAGS += -Xlinker --no-warn-rwx-segments
+endif
+
+# Add project-specific linker flags
 LDFLAGS+=$(PROJ_LDFLAGS)
 
 # Include math library
@@ -594,6 +618,23 @@ $(BUILD_DIR)/_empty_tmp_file.c: | $(BUILD_DIR)
 .PHONY: project_defines
 project_defines: $(BUILD_DIR)/project_defines.h
 
-$(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c | $(BUILD_DIR)
+$(BUILD_DIR)/project_defines.h: $(BUILD_DIR)/_empty_tmp_file.c $(PROJECTMK) | $(BUILD_DIR)
 	@echo "// This is a generated file that's used to detect definitions that have been set by the compiler and build system." > $@
 	@$(CC) -E -P -dD $(BUILD_DIR)/_empty_tmp_file.c $(filter-out -MD,$(CFLAGS)) >> $@
+
+#################################################################################
+SUPPRESS_HELP ?= 0
+ifeq "$(SUPPRESS_HELP)" "0"
+ifneq "$(HELP_COMPLETE)" "1"
+$(info ****************************************************************************)
+$(info * Analog Devices MSDK)
+$(info * - User Guide: https://analog-devices-msdk.github.io/msdk/USERGUIDE/)
+$(info * - Get Support: https://www.analog.com/support/technical-support.html)
+$(info * - Report Issues: https://github.com/Analog-Devices-MSDK/msdk/issues)
+$(info * - Contributing: https://analog-devices-msdk.github.io/msdk/CONTRIBUTING/)
+$(info ****************************************************************************)
+# export HELP_COMPLETE so that it's only printed once.
+HELP_COMPLETE = 1
+export HELP_COMPLETE
+endif
+endif

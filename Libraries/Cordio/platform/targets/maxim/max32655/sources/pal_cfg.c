@@ -178,8 +178,6 @@ void palCfgLoadBdAddress(uint8_t *pDevAddr)
     PalSysAssertTrap();
   }
 
-  
-
   /* MA-L assigend by IEEE to Maxim Integrated Products */
   pDevAddr[5] = 0x00;
   pDevAddr[4] = 0x18;

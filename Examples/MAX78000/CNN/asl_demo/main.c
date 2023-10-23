@@ -317,6 +317,8 @@ int main(void)
     gpio_out.mask = MXC_GPIO_PIN_5;
     gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
+    gpio_out.vssel = MXC_GPIO_VSSEL_VDDIO;
+    gpio_out.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_out);
     MXC_GPIO_OutSet(gpio_out.port, gpio_out.mask);
     /* Initialize TFT display */

@@ -48,17 +48,19 @@
 mxc_uart_regs_t *ConsoleUart = MXC_UART_GET_UART(CONSOLE_UART);
 extern uint32_t SystemCoreClock;
 
+// clang-format off
 const mxc_gpio_cfg_t pb_pin[] = {
-    { MXC_GPIO2, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO2, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_6, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
+    { MXC_GPIO2, MXC_GPIO_PIN_7, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_PULL_UP, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
 };
 const unsigned int num_pbs = (sizeof(pb_pin) / sizeof(mxc_gpio_cfg_t));
 
 const mxc_gpio_cfg_t led_pin[] = {
-    { MXC_GPIO2, MXC_GPIO_PIN_4, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
-    { MXC_GPIO2, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH },
+    { MXC_GPIO2, MXC_GPIO_PIN_4, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
+    { MXC_GPIO2, MXC_GPIO_PIN_5, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 },
 };
 const unsigned int num_leds = (sizeof(led_pin) / sizeof(mxc_gpio_cfg_t));
+// clang-format on
 
 // The following pins are pulled up to 3V3 via external resistors on the AI87 EVKIT,
 // and therefore must be initialized to VDDIOH to prevent current injection into VDDIO/VDDA
@@ -69,17 +71,22 @@ const uint32_t _port1_vddioh_mask = (MXC_GPIO_PIN_10 | MXC_GPIO_PIN_11 | MXC_GPI
 const uint32_t _port2_vddioh_mask = MXC_GPIO_PIN_2;
 
 // TFT Data/Command pin
-const mxc_gpio_cfg_t tft_dc_pin = { TFT_DC_PORT, TFT_DC_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                    MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t tft_dc_pin = { TFT_DC_PORT,           TFT_DC_PIN,
+                                    MXC_GPIO_FUNC_OUT,     MXC_GPIO_PAD_NONE,
+                                    MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 // TFT Slave Select pin
-const mxc_gpio_cfg_t tft_ss_pin = { TFT_SS_PORT, TFT_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                    MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t tft_ss_pin = { TFT_SS_PORT,           TFT_SS_PIN,
+                                    MXC_GPIO_FUNC_OUT,     MXC_GPIO_PAD_NONE,
+                                    MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 // TS IRQ pin
-mxc_gpio_cfg_t ts_irq_pin = { TS_IRQ_PORT, TS_IRQ_PIN, MXC_GPIO_FUNC_IN, MXC_GPIO_PAD_NONE,
-                              MXC_GPIO_VSSEL_VDDIOH };
+mxc_gpio_cfg_t ts_irq_pin = { TS_IRQ_PORT,           TS_IRQ_PIN,
+                              MXC_GPIO_FUNC_IN,      MXC_GPIO_PAD_NONE,
+                              MXC_GPIO_VSSEL_VDDIOH, MXC_GPIO_DRVSTR_0 };
 // TS SS pin
-const mxc_gpio_cfg_t ts_ss_pin = { TS_SS_PORT, TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE,
-                                   MXC_GPIO_VSSEL_VDDIOH };
+const mxc_gpio_cfg_t ts_ss_pin = {
+    TS_SS_PORT,       TS_SS_PIN, MXC_GPIO_FUNC_OUT, MXC_GPIO_PAD_NONE, MXC_GPIO_VSSEL_VDDIOH,
+    MXC_GPIO_DRVSTR_0
+};
 
 /***** File Scope Variables *****/
 // const uart_cfg_t uart_cfg = {
@@ -111,9 +118,19 @@ void mxc_assert(const char *expr, const char *file, int line)
 
 /******************************************************************************/
 /**
- * NOTE: This weak definition is included to support Push Button interrupts in
+ * NOTE: This weak definition is included to support Touchscreen and Push Button interrupts in
  *       case the user does not define this interrupt handler in their application.
  **/
+__weak void GPIO0_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO0));
+}
+
+__weak void GPIO1_IRQHandler(void)
+{
+    MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO1));
+}
+
 __weak void GPIO2_IRQHandler(void)
 {
     MXC_GPIO_Handler(MXC_GPIO_GET_IDX(MXC_GPIO2));

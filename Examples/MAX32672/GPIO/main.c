@@ -103,6 +103,7 @@ int main(void)
     gpio_interrupt_status.pad = MXC_GPIO_PAD_NONE;
     gpio_interrupt_status.func = MXC_GPIO_FUNC_OUT;
     gpio_interrupt_status.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    gpio_interrupt_status.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_interrupt_status);
 
     /*
@@ -115,6 +116,7 @@ int main(void)
     gpio_interrupt.pad = MXC_GPIO_PAD_PULL_UP;
     gpio_interrupt.func = MXC_GPIO_FUNC_IN;
     gpio_interrupt.vssel = MXC_GPIO_VSSEL_VDDIOH;
+    gpio_interrupt.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_interrupt);
     MXC_GPIO_RegisterCallback(&gpio_interrupt, gpio_isr, &gpio_interrupt_status);
     MXC_GPIO_IntConfig(&gpio_interrupt, MXC_GPIO_INT_FALLING);
@@ -126,6 +128,8 @@ int main(void)
     gpio_out.mask = MXC_GPIO_PIN_OUT;
     gpio_out.pad = MXC_GPIO_PAD_NONE;
     gpio_out.func = MXC_GPIO_FUNC_OUT;
+    gpio_out.vssel = MXC_GPIO_VSSEL_VDDIO;
+    gpio_out.drvstr = MXC_GPIO_DRVSTR_0;
     MXC_GPIO_Config(&gpio_out);
 
     while (1) {
