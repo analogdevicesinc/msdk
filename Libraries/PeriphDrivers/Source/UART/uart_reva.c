@@ -742,7 +742,7 @@ unsigned int MXC_UART_RevA_WriteTXFIFODMA(mxc_uart_reva_regs_t *uart, mxc_dma_re
                                           mxc_uart_dma_complete_cb_t callback,
                                           mxc_dma_config_t config)
 {
-    uint8_t channel = -1;
+    int channel = -1;
     mxc_dma_srcdst_t srcdst;
 
     int uart_num = MXC_UART_GET_IDX((mxc_uart_regs_t *)uart);
