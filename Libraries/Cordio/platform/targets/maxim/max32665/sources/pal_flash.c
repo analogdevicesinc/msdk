@@ -224,14 +224,27 @@ void PalFlashEraseSector(uint32_t size, uint32_t startAddr)
 /*************************************************************************************************/
 void PalFlashEraseChip(void)
 {
-  uint32_t startAddr, size;
+uint32_t startAddr, size;
 
+#if defined (__GNUC__)
   /* Offset the address into flash */
   startAddr = (uint32_t)&__pal_nvm_db_start__;
   size = (uint32_t)&__pal_nvm_db_end__ - (uint32_t)&__pal_nvm_db_start__;
+#elif defined (__CC_ARM)
+  /* Offset the address into flash */
+  startAddr = (uint32_t)__pal_nvm_db_start__;
+  size = (uint32_t)__pal_nvm_db_end__ - (uint32_t)__pal_nvm_db_start__;
+#elif defined (__ICCARM__)
+  /* Offset the address into flash */
+  startAddr = (uint32_t)__pal_nvm_db_start__;
+  size = (uint32_t)__pal_nvm_db_end__ - (uint32_t)__pal_nvm_db_start__ -1;
+#endif 
 
   while(size) {
+    WsfCsEnter();
     MXC_FLC_PageErase(startAddr);
+    WsfCsExit();
+
     startAddr += MXC_FLASH_PAGE_SIZE;
     size -= MXC_FLASH_PAGE_SIZE;
   }
