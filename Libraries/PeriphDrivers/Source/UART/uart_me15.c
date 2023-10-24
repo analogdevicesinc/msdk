@@ -574,4 +574,3 @@ int MXC_UART_GetRXDMAChannel(mxc_uart_regs_t *uart)
 {
     return MXC_UART_RevB_GetTXDMAChannel((mxc_uart_revb_regs_t *)uart);
 }
-
