@@ -125,6 +125,14 @@ typedef void (*mxc_adc_complete_cb_t)(void *req, int error);
 typedef void (*mxc_adc_monitor_cb_t)(void *req, int error);
 
 /**
+ * Enumeration type for ADC reference sources
+ */
+typedef enum {
+    MXC_ADC_REF_INT, // Selects internal bandgap reference
+    MXC_ADC_REF_EXT, // Selects external reference pins
+} mxc_adc_ref_t;
+
+/**
  * @brief   Used to set up a monitor to watch a channel
  *
  */

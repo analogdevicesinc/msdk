@@ -128,6 +128,13 @@ typedef enum {
     MXC_ADC_SCALE_6, ///< ADC Scale by 1/6 (this uses 1/3 and an additional 1/2 scaling)
     MXC_ADC_SCALE_8, ///< ADC Scale by 1/8 (this uses 1/4 and an additional 1/2 scaling)
 } mxc_adc_scale_t;
+/**
+ * Enumeration type for ADC reference sources
+ */
+typedef enum {
+    MXC_ADC_REF_INT, // Selects internal bandgap reference
+    MXC_ADC_REF_EXT, // Selects external reference pins
+} mxc_adc_ref_t;
 
 /**
  * @brief   Callback used when a conversion event is complete
