@@ -1,11 +1,3 @@
-/**
- * @file        main.c
- * @brief     Example code for scanning the available addresses on an I2C bus
- * @details     This example uses the I2C Master to found addresses of the I2C Slave devices 
- *              connected to the bus. You must set the pull-up jumpers on the line
- *              to the proper I/O voltage.
- */
-
 /******************************************************************************
  *
  * Copyright 2023 Analog Devices, Inc.
@@ -55,6 +47,14 @@
  * ownership rights.
  *
  ******************************************************************************/
+
+/**
+ * @file        main.c
+ * @brief     Example code for scanning the available addresses on an I2C bus
+ * @details     This example uses the I2C Master to found addresses of the I2C Slave devices 
+ *              connected to the bus. You must set the pull-up jumpers on the line
+ *              to the proper I/O voltage.
+ */
 
 /***** Includes *****/
 #include <stdio.h>

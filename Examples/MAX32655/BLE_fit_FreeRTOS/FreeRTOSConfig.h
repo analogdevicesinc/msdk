@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32655_FREERTOSDEMO_FREERTOSCONFIG_H_
-#define EXAMPLES_MAX32655_FREERTOSDEMO_FREERTOSCONFIG_H_
+#ifndef EXAMPLES_MAX32655_BLE_FIT_FREERTOS_FREERTOSCONFIG_H_
+#define EXAMPLES_MAX32655_BLE_FIT_FREERTOS_FREERTOSCONFIG_H_
 
 #include <stdint.h>
 #include "max32655.h"

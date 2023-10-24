@@ -1,11 +1,3 @@
-/**
- * @file
- * @brief   SPIXR example writing to External SRAM
- * @details Setup, Initialize, Write, and verifies the data written to SRAM.
- *          This example shows how to configure the External SRAM and
- *          uses the SPIXR library to write and read data from it in Quad mode.
- */
-
 /******************************************************************************
  *
  * Copyright 2023 Analog Devices, Inc.
@@ -55,6 +47,14 @@
  * ownership rights.
  *
  ******************************************************************************/
+
+/**
+ * @file
+ * @brief   SPIXR example writing to External SRAM
+ * @details Setup, Initialize, Write, and verifies the data written to SRAM.
+ *          This example shows how to configure the External SRAM and
+ *          uses the SPIXR library to write and read data from it in Quad mode.
+ */
 
 /* **** Includes **** */
 #include <stdio.h>
