@@ -231,7 +231,6 @@ void MXC_ADC_RevA_SetExtScale(mxc_adc_reva_regs_t *adc, mxc_adc_scale_t scale)
     adc->ctrl ^= (1 << MXC_F_ADC_REVA_CTRL_CH_SEL_POS);
     //Reset the channel to original selected channel
     adc->ctrl ^= (1 << MXC_F_ADC_REVA_CTRL_CH_SEL_POS);
-
 }
 
 void MXC_ADC_RevA_EnableMonitor(mxc_adc_reva_regs_t *adc, mxc_adc_monitor_t monitor)
