@@ -1,9 +1,9 @@
 /*
  * @file cc.h
  *
- ******************************************************************************
- * Copyright (C) 2019 Maxim Integrated Products, Inc., All rights Reserved.
- *
+/******************************************************************************
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
  * and technology transfer regulations of the United States and of foreign
@@ -33,8 +33,8 @@
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
- ******************************************************************************
- */
+ *
+ ******************************************************************************/
 #ifndef LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_CC_H_
 #define LIBRARIES_LWIP_INCLUDE_MAXIM_ARCH_CC_H_
 
