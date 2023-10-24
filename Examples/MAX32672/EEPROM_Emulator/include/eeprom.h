@@ -98,4 +98,3 @@ int eeprom_init(mxc_i2c_regs_t *eeprom_i2c, mxc_gpio_cfg_t rdy_pin);
 void eeprom_prep_for_txn(void);
 
 #endif // EXAMPLES_MAX32672_EEPROM_EMULATOR_INCLUDE_EEPROM_H_
-
