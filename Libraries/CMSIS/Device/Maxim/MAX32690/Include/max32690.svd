@@ -16256,7 +16256,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
   <peripheral derivedFrom="SPI0">
    <name>SPI1</name>
    <description>SPI peripheral. 1</description>
-   <baseAddress>0x400BE000</baseAddress>
+   <baseAddress>0x40047000</baseAddress>
    <interrupt>
     <name>SPI1</name>
     <description>SPI1 IRQ</description>
@@ -16267,7 +16267,7 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
   <peripheral derivedFrom="SPI0">
    <name>SPI2</name>
    <description>SPI peripheral. 2</description>
-   <baseAddress>0x400BE400</baseAddress>
+   <baseAddress>0x40048000</baseAddress>
    <interrupt>
     <name>SPI2</name>
     <description>SPI2 IRQ</description>
@@ -16275,6 +16275,28 @@ signal(s) on transition(s) from low to high or high to low when PM.USBWKEN is se
    </interrupt>
   </peripheral>
 <!--SPI2 SPI peripheral. 2-->
+  <peripheral derivedFrom="SPI0">
+   <name>SPI3</name>
+   <description>SPI peripheral. 3</description>
+   <baseAddress>0x400BE000</baseAddress>
+   <interrupt>
+    <name>SPI3</name>
+    <description>SPI3 IRQ</description>
+    <value>56</value>
+   </interrupt>
+  </peripheral>
+<!--SPI3 SPI peripheral. 3-->
+  <peripheral derivedFrom="SPI0">
+   <name>SPI4</name>
+   <description>SPI peripheral. 4</description>
+   <baseAddress>0x400BE400</baseAddress>
+   <interrupt>
+    <name>SPI4</name>
+    <description>SPI4 IRQ</description>
+    <value>105</value>
+   </interrupt>
+  </peripheral>
+<!--SPI4 SPI peripheral. 4-->
   <peripheral>
    <name>SPIXR</name>
    <description>SPIXR peripheral.</description>
