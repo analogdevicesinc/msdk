@@ -1,6 +1,3 @@
-//SHA3 implementation
-//this implementation used the implementation from Markku-Juhani O.Saarinen
-//as a starting point
 /******************************************************************************
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
@@ -35,6 +32,10 @@
  * ownership rights.
  *
  ******************************************************************************/
+
+//SHA3 implementation
+//this implementation used the implementation from Markku-Juhani O.Saarinen
+//as a starting point
  
 #include <ucl/ucl_hash.h>
 #ifdef HASH_SHA3
@@ -42,14 +43,14 @@
 #include <ucl/ucl_config.h>
 #include <ucl/ucl_retdefs.h>
 #include <ucl/ucl_types.h>
-#include "ucl/ucl_sha3.h"
+#include <ucl/ucl_sha3.h>
 #include <ucl/ucl_sys.h>
 
 #define N_ROUNDS 24 //the specialization for keccak-f from keccak-p
 
 #define ROTL64(x, y) (((x) << (y)) | ((x) >> ((sizeof(u64)*8) - (y))))
 
-const u64 kcf_rc[24] = {0x0000000000000001,0x0000000000008082,0x800000000000808a,0x8000000080008000,0x000000000000808b,0x0000000080000001,0x8000000080008081,0x8000000000008009,0x000000000000008a,0x0000000000000088,0x0000000080008009,0x000000008000000a,0x000000008000808b,0x800000000000008b,0x8000000000008089,0x8000000000008003,0x8000000000008002,0x8000000000000080,0x000000000000800a,0x800000008000000a,0x8000000080008081,0x8000000000008080,0x0000000080000001,0x8000000080008008};
+const u64 kcf_rc[24] = {0x0000000000000001, 0x0000000000008082, 0x800000000000808a, 0x8000000080008000, 0x000000000000808b, 0x0000000080000001, 0x8000000080008081, 0x8000000000008009, 0x000000000000008a, 0x0000000000000088, 0x0000000080008009, 0x000000008000000a, 0x000000008000808b, 0x800000000000008b, 0x8000000000008089, 0x8000000000008003, 0x8000000000008002, 0x8000000000000080, 0x000000000000800a, 0x800000008000000a, 0x8000000080008081, 0x8000000000008080, 0x0000000080000001, 0x8000000080008008};
 
 static const u8 kcf_rho[24] = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 2, 14, 27, 41, 56, 8, 25, 43, 62, 18, 39, 61, 20, 44};
 
@@ -116,7 +117,7 @@ int  ucl_sha3_224_init(ucl_sha3_ctx_t *ctx)
 
 int  ucl_sha3_256_init(ucl_sha3_ctx_t *ctx)
 {
-  if(NULL==ctx)
+  if(NULL == ctx)
     return(UCL_INVALID_INPUT);
   memset(ctx, 0, sizeof(*ctx));
   ctx->capacityWords = 512 / (8 * sizeof(u64));
@@ -130,7 +131,7 @@ int ucl_shake256_init(ucl_sha3_ctx_t *ctx)
 
 int  ucl_sha3_384_init(ucl_sha3_ctx_t *ctx)
 {
-  if(NULL==ctx)
+  if(NULL == ctx)
     return(UCL_INVALID_INPUT);
   memset(ctx, 0, sizeof(*ctx));
   ctx->capacityWords = 768 / (8 * sizeof(u64));
@@ -139,7 +140,7 @@ int  ucl_sha3_384_init(ucl_sha3_ctx_t *ctx)
 
 int  ucl_sha3_512_init(ucl_sha3_ctx_t *ctx)
 {
-  if(NULL==ctx)
+  if(NULL == ctx)
     return(UCL_INVALID_INPUT);
   memset(ctx, 0, sizeof(*ctx));
   ctx->capacityWords = 1024 / (8 * sizeof(u64));
@@ -153,9 +154,9 @@ int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8 *bufIn, u32 len)
   int tail;
   size_t i;
   const u8 *buf = bufIn;
-  if(NULL==ctx)
+  if(NULL == ctx)
     return(UCL_INVALID_INPUT);
-  if(NULL==bufIn)
+  if(NULL == bufIn)
     return(UCL_INVALID_INPUT);
   if(len < old_tail)
     {
@@ -296,9 +297,9 @@ ucl_sha3_ctx_t ctx;
 int ucl_shake128(u8 *digest,u8 *msg,u32 msgLen)
 {
 ucl_sha3_ctx_t ctx;
-  if(NULL==msg)
+  if(NULL == msg)
     return(UCL_INVALID_INPUT);
-  if(NULL==digest)
+  if(NULL == digest)
     return(UCL_INVALID_OUTPUT);
 
   if(UCL_OK!=ucl_shake128_init(&ctx))
@@ -313,9 +314,9 @@ ucl_sha3_ctx_t ctx;
 int ucl_sha3_384(u8 *digest,u8 *msg,u32 msgLen)
 {
 ucl_sha3_ctx_t ctx;
-  if(NULL==msg)
+  if(NULL == msg)
     return(UCL_INVALID_INPUT);
-  if(NULL==digest)
+  if(NULL == digest)
     return(UCL_INVALID_OUTPUT);
 
   if(UCL_OK!=ucl_sha3_384_init(&ctx))
@@ -329,9 +330,9 @@ ucl_sha3_ctx_t ctx;
 int ucl_sha3_512(u8 *digest,u8 *msg,u32 msgLen)
 {
 ucl_sha3_ctx_t ctx;
-  if(NULL==msg)
+  if(NULL == msg)
     return(UCL_INVALID_INPUT);
-  if(NULL==digest)
+  if(NULL == digest)
     return(UCL_INVALID_OUTPUT);
 
   if(UCL_OK!=ucl_sha3_512_init(&ctx))
@@ -345,9 +346,9 @@ ucl_sha3_ctx_t ctx;
 int ucl_shake256(u8 *digest,u8 *msg,u32 msgLen)
 {
 ucl_sha3_ctx_t ctx;
-  if(NULL==msg)
+  if(NULL == msg)
     return(UCL_INVALID_INPUT);
-  if(NULL==digest)
+  if(NULL == digest)
     return(UCL_INVALID_OUTPUT);
 
   if(UCL_OK!=ucl_shake256_init(&ctx))

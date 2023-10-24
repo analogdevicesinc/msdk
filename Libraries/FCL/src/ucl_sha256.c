@@ -32,6 +32,7 @@
  * ownership rights.
  *
  ******************************************************************************/
+
 #include <string.h>
 #include <ucl/ucl_hash.h>
 #ifdef HASH_SHA256

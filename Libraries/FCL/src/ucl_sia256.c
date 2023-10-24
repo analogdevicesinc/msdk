@@ -1,29 +1,14 @@
 /******************************************************************************
- *
- * Copyright 2023 Analog Devices, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- ******************************************************************************
- *
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a
- * copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * Copyright (C) 2012-2023 Maxim Integrated Products, Inc., All rights Reserved.
+ * 
+ * This software is protected by copyright laws of the United States and
+ * of foreign countries. This material may also be protected by patent laws
+ * and technology transfer regulations of the United States and of foreign
+ * countries. This software is furnished under a license agreement and/or a
+ * nondisclosure agreement and may only be used or reproduced in accordance
+ * with the terms of those agreements. Dissemination of this information to
+ * any party or parties not specified in the license agreement and/or
+ * nondisclosure agreement is expressly prohibited.
  *
  * The above copyright notice and this permission notice shall be included
  * in all copies or substantial portions of the Software.
@@ -47,30 +32,7 @@
  * ownership rights.
  *
  ******************************************************************************/
-//------------Copyright (C) 2012 Maxim Integrated Products --------------
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the "Software"),
-// to deal in the Software without restriction, including without limitation
-// the rights to use, copy, modify, merge, publish, distribute, sublicense,
-// and/or sell copies of the Software, and to permit persons to whom the
-// Software is furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY,  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-// IN NO EVENT SHALL MAXIM INTEGRATED PRODCUTS BE LIABLE FOR ANY CLAIM, DAMAGES
-// OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-// OTHER DEALINGS IN THE SOFTWARE.
-//
-// Except as contained in this notice, the name of Maxim Integrated Products
-// shall not be used except as stated in the Maxim Integrated Products
-// Branding Policy.
-// ---------------------------------------------------------------------------
+
 //
 // ucl_sia256.c - SHA-256 implementation in software compliant with Maxim devices.
 //
@@ -79,12 +41,12 @@
 #include <ucl/ucl_hash.h>
 #ifdef HASH_SIA256
 
+#include <string.h>
+
 #include "ucl/ucl_config.h"
 #include "ucl/ucl_types.h"
 #include "ucl/ucl_defs.h"
 #include "ucl/ucl_retdefs.h"
-
-#include <string.h>
 
 #define SHA_256_INITIAL_LENGTH    8
 
@@ -128,8 +90,7 @@ u32 SHA_256_Initial[] =
    0x5be0cd19
 };
 
-u32 SHA_CONSTANTS[] =  
-{
+u32 SHA_CONSTANTS[] = {
   0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
   0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
   0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
@@ -148,8 +109,8 @@ u32 a32, b32, c32, d32, e32, f32, g32, h32; // SHA working variables
 u32 W32[16];                                // SHA message schedule
 u32 H32[8];                                 // last SHA result variables
  
-int reverse_endian=1; 
-int sha_debug=1;
+int reverse_endian = 1;
+int sha_debug = 1;
 
 //----------------------------------------------------------------------
 // Set the Secret to be used for calculating MAC's in the ComputeMAC
@@ -160,7 +121,7 @@ void set_secret(u8 *secret)
    int i;
 
    for (i = 0; i < 32; i++)
-      SECRET[i] = secret[i];   
+      SECRET[i] = secret[i];
 }
 
 //----------------------------------------------------------------------
@@ -175,8 +136,8 @@ void set_secret(u8 *secret)
 //
 int ComputeMAC256(u8* MT, int length, u8* MAC)
 {
-   int i,j;  
-   u8 tmp[4]; 
+   int i, j;
+   u8 tmp[4];
 
    // check for two block format
    if (length == 119)
@@ -403,7 +364,7 @@ void sha_writeResult(u32 reverse, u8* outpointer)
    int i;
    u8 tmp;
 
-   sha_copyWordsToBytes32(H32, outpointer, 8); 
+   sha_copyWordsToBytes32(H32, outpointer, 8);
 
    if (reverse)
    {
@@ -428,10 +389,7 @@ u32 sha_getW(int indexh)
       return W32[indexh];
    }
 
-   newW = sha_littlesigma256_1(W32[(indexh-2)&0x0f]) + 
-            W32[(indexh-7)&0x0f] + 
-          sha_littlesigma256_0(W32[(indexh-15)&0x0f]) + 
-            W32[(indexh-16)&0x0f];
+   newW = sha_littlesigma256_1(W32[(indexh-2)&0x0f]) + W32[(indexh-7)&0x0f] + sha_littlesigma256_0(W32[(indexh-15)&0x0f]) + W32[(indexh-16)&0x0f];
    W32[indexh & 0x0f] = newW & 0xFFFFFFFFL;  // just in case...
 
    return newW;
@@ -443,7 +401,7 @@ u32 sha_getW(int indexh)
 void sha_prepareSchedule(u8* message)
 {
    // we need to copy the initial message into the 16 W registers
-   u32 i,j;
+   u32 i, j;
    u32 temp;
    for (i = 0; i < 16; i++)
    {
@@ -487,7 +445,7 @@ void sha256_hashblock(u8* message, u32 lastblock)
    for (i = 0; i < 64; i++)
    {
      Wt = sha_getW((int)i);
-      Kt = SHA_CONSTANTS[i]; 
+      Kt = SHA_CONSTANTS[i];
 
       nodeT1 = (h32 + sha_bigsigma256_1(e32) + sha_ch(e32,f32,g32) + Kt + Wt); // & 0xFFFFFFFFL;
       nodeT2 = (sha_bigsigma256_0(a32) + sha_maj(a32,b32,c32)); // & 0xFFFFFFFFL;
@@ -501,11 +459,11 @@ void sha256_hashblock(u8* message, u32 lastblock)
       a32 = nodeT1 + nodeT2;
 
       sha1counter++;
-      if (sha1counter==20)
+      if (sha1counter == 20)
       {
          sha1functionselect++;
          sha1counter = 0;
-      }			
+      }
 
    }
 
@@ -520,9 +478,7 @@ void sha256_hashblock(u8* message, u32 lastblock)
       H32[5] += f32;
       H32[6] += g32;
       H32[7] += h32;
-   }
-   else
-   {
+   } else {
       // now fix up our H array
       H32[0] = a32;
       H32[1] = b32;
@@ -546,90 +502,85 @@ void sha256_hashblock(u8* message, u32 lastblock)
 //
 int ComputeSHA256(u8* message, int length, u32 skipconst, u32 reverse, u8* digest)
 {
-   u32 bytes_per_block;
-   u32 nonpaddedlength;
-   u32 numblocks;
-   u32 i,j;
-   u32 bitlength;
-   u32 markerwritten;
-   u32 lastblock;
+    u32 bytes_per_block;
+    u32 nonpaddedlength;
+    u32 numblocks;
+    u32 i,j;
+    u32 bitlength;
+    u32 markerwritten;
+    u32 lastblock;
 
-   u32 wordsize = 32;
-
-
-   // if wordsize is 32 bits, we need 512 bit blocks.  else 1024 bit blocks.
-   // that means 16 words are in one message.
-   bytes_per_block = 16 * (wordsize / 8);
-   // 1 byte for the '80' that follows the message, 8 or 16 bytes of length
-   nonpaddedlength = (u32)length + 1 + (wordsize/4);
-   numblocks = nonpaddedlength / bytes_per_block;
-   if ((nonpaddedlength % bytes_per_block) != 0) 
-   {
-      // then there is some remainder we need to pad
-      numblocks++;
-   }
-
-   sha_copy32(SHA_256_Initial, H32, SHA_256_INITIAL_LENGTH); 
-
-   bitlength = 8 * (u32)length;
-   markerwritten = 0;
-   // 'length' is our number of bytes remaining.
-   for (i = 0; i < numblocks; i++)
-   {
-     if ((u32)length > bytes_per_block)
-      {
-         memcpy(workbuffer, message, bytes_per_block);
-         length -= (int)bytes_per_block;
-      }
-     else if (length==(int)bytes_per_block)
-      {
-	memcpy(workbuffer, message, (size_t)length);
-         length = 0;
-      }
-      else // length is less than number of bytes in a block
-      {
-	memcpy(workbuffer, message, (size_t)length);
-         // message is now used for temporary space
-         message = workbuffer + length;     
-         if (markerwritten == 0)
-         {
-            *message++ = 0x80;
-            length++;
-         }
-
-         while (length < (int)bytes_per_block)
-         {
-            // this loop is inserting padding, in this case all zeroes
-            *message++ = 0;
-            length++;
-         }
-         length = 0;
-         // signify that we have already written the 80h
-         markerwritten = 1;
-      }
-
-      // on the last block, put the bit length at the very end
-      lastblock = (i == (numblocks - 1));
-      if (lastblock)
-      {
-         // point at the last byte in the block
-         message = workbuffer + bytes_per_block - 1;
-         for (j = 0; j < wordsize/4; j++)
-         {
-            *message-- = (u8)bitlength;
-            bitlength = bitlength >> 8;
-         }
-      }
-
-      // SHA in software 
-      sha256_hashblock(workbuffer, (u32)(lastblock && skipconst));
-      message += bytes_per_block;
-   }
-
-   sha_writeResult(reverse, digest);
+    u32 wordsize = 32;
 
 
-   return (UCL_OK);
+    // if wordsize is 32 bits, we need 512 bit blocks.  else 1024 bit blocks.
+    // that means 16 words are in one message.
+    bytes_per_block = 16 * (wordsize / 8);
+    // 1 byte for the '80' that follows the message, 8 or 16 bytes of length
+    nonpaddedlength = (u32)length + 1 + (wordsize/4);
+    numblocks = nonpaddedlength / bytes_per_block;
+    if ((nonpaddedlength % bytes_per_block) != 0) 
+    {
+        // then there is some remainder we need to pad
+        numblocks++;
+    }
+
+    sha_copy32(SHA_256_Initial, H32, SHA_256_INITIAL_LENGTH);
+
+    bitlength = 8 * (u32)length;
+    markerwritten = 0;
+    // 'length' is our number of bytes remaining.
+    for (i = 0; i < numblocks; i++)
+    {
+        if ((u32)length > bytes_per_block)
+        {
+            memcpy(workbuffer, message, bytes_per_block);
+            length -= (int)bytes_per_block;
+        } else if (length == (int)bytes_per_block) {
+	        memcpy(workbuffer, message, (size_t)length);
+            length = 0;
+        } else { // length is less than number of bytes in a block
+	        memcpy(workbuffer, message, (size_t)length);
+            // message is now used for temporary space
+            message = workbuffer + length;
+            if (markerwritten == 0)
+            {
+                *message++ = 0x80;
+                length++;
+            }
+
+            while (length < (int)bytes_per_block)
+            {
+                // this loop is inserting padding, in this case all zeroes
+                *message++ = 0;
+                length++;
+            }
+            length = 0;
+            // signify that we have already written the 80h
+            markerwritten = 1;
+        }
+
+        // on the last block, put the bit length at the very end
+        lastblock = (i == (numblocks - 1));
+        if (lastblock)
+        {
+            // point at the last byte in the block
+            message = workbuffer + bytes_per_block - 1;
+            for (j = 0; j < wordsize/4; j++)
+            {
+                *message-- = (u8)bitlength;
+                bitlength = bitlength >> 8;
+            }
+        }
+
+        // SHA in software 
+        sha256_hashblock(workbuffer, (u32)(lastblock && skipconst));
+        message += bytes_per_block;
+    }
+
+    sha_writeResult(reverse, digest);
+
+    return (UCL_OK);
 }
 
 int __API__ ucl_sia256(u8 *hash, u8 *data, u32 data_byteLen)
@@ -643,7 +594,7 @@ int __API__ ucl_sia256(u8 *hash, u8 *data, u32 data_byteLen)
 // 'reverse' - reverse order of digest (reverse=1, MSWord first, LSByte first)
 // 'digest'   - result hash digest in byte order used by 1-Wire device
 //
-  return(ComputeSHA256(data, (int)data_byteLen, 1,0,hash));
+  return(ComputeSHA256(data, (int)data_byteLen, 1, 0, hash));
 }
 #endif//SIA256
 #endif//PROFILE2

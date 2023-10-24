@@ -97,4 +97,5 @@ void ssd1306_flush_area(ssd1306_dev *dev, const display_area_t *area, const uint
 void ssd1306_set_buffer_pixel_util(uint8_t *buf, uint16_t buf_w, uint32_t buf_max, uint16_t x,
                                    uint16_t y, uint8_t color, uint8_t is_opaque);
 
-#endif /* DRIVER_SSD1306_H_ */
+#endif // LIBRARIES_MISCDRIVERS_DISPLAY_SSD1306_H_
+

@@ -112,3 +112,4 @@ void MXC_ICC_FlushInst(mxc_icc_regs_t *icc)
     MXC_ICC_DisableInst(icc);
     MXC_ICC_EnableInst(icc);
 }
+

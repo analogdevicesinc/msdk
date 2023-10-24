@@ -1,11 +1,3 @@
-/**
- * @file       infoblock.h
- * @brief      Infoblock interface
- * @details    
- *      This driver can be used to interface with the infoblock,
- *      reading and writing select locations.
- */
-
 /******************************************************************************
  *
  * Copyright 2023 Analog Devices, Inc.
@@ -55,6 +47,14 @@
  * ownership rights.
  *
  ******************************************************************************/
+
+/**
+ * @file       infoblock.h
+ * @brief      Infoblock interface
+ * @details    
+ *      This driver can be used to interface with the infoblock,
+ *      reading and writing select locations.
+ */
 
 #ifndef LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_
 #define LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_
@@ -216,3 +216,4 @@ int infoblock_read(uint32_t offset, uint8_t *data, int length);
 #endif
 
 #endif // LIBRARIES_PERIPHDRIVERS_INCLUDE_MAX32675_INFOBLOCK_H_
+

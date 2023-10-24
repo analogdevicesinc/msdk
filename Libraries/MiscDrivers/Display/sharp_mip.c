@@ -192,7 +192,7 @@ void sharp_mip_flush_area(sharp_mip_dev *dev, const display_area_t *area, const 
 void sharp_mip_set_buffer_pixel_util(sharp_mip_dev *dev, uint8_t *buf, uint16_t buf_w, uint16_t x,
                                      uint16_t y, uint8_t color, uint8_t is_opaque)
 {
-    //TODO:: check buf_w with dev->init_param.col!
+    //TODO(10-20-2023): check buf_w with dev->init_param.col!
     if (color == 0 && is_opaque) {
         BIT_SET(buf[BUFIDX(x, y)],
                 PIXIDX(x)); /*Set draw_buf pixel bit to 1 for other colors than BLACK*/

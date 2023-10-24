@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32660_SECURE_ROM_BL_HOST_TEST_IMAGES_TEST_IMAGES_H_
-#define EXAMPLES_MAX32660_SECURE_ROM_BL_HOST_TEST_IMAGES_TEST_IMAGES_H_
+#ifndef EXAMPLES_MAX32660_SECUREROM_BL_HOST_TEST_IMAGES_TEST_IMAGES_H_
+#define EXAMPLES_MAX32660_SECUREROM_BL_HOST_TEST_IMAGES_TEST_IMAGES_H_
 
 /*******************************      INCLUDES    ****************************/
 
@@ -64,4 +64,4 @@ extern scp_packet_struct scp_MAX32651EVKIT_blinkled_P2_25[];
 
 /******************************* Public Functions ****************************/
 
-#endif // EXAMPLES_MAX32660_SECURE_ROM_BL_HOST_TEST_IMAGES_TEST_IMAGES_H_
+#endif // EXAMPLES_MAX32660_SECUREROM_BL_HOST_TEST_IMAGES_TEST_IMAGES_H_

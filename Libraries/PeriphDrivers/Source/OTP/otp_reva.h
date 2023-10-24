@@ -48,6 +48,9 @@
  *
  ******************************************************************************/
 
+#ifndef LIBRARIES_PERIPHDRIVERS_SOURCE_OTP_OTP_REVA_H_
+#define LIBRARIES_PERIPHDRIVERS_SOURCE_OTP_OTP_REVA_H_
+
 /* **** Includes **** */
 #include <stdint.h>
 #include "otp_reva_regs.h"
@@ -79,3 +82,7 @@ int MXC_OTP_RevA_Read32(mxc_otp_reva_regs_t *otp, uint16_t addr, uint32_t *data)
 #ifdef __cplusplus
 }
 #endif
+
+#endif //LIBRARIES_PERIPHDRIVERS_SOURCE_OTP_OTP_REVA_H_
+
+

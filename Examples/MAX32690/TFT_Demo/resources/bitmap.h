@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX78000_TFT_DEMO_RESOURCES_BITMAP_H_
-#define EXAMPLES_MAX78000_TFT_DEMO_RESOURCES_BITMAP_H_
+#ifndef EXAMPLES_MAX32690_TFT_DEMO_RESOURCES_BITMAP_H_
+#define EXAMPLES_MAX32690_TFT_DEMO_RESOURCES_BITMAP_H_
 
 // bitmaps id
 #define check_empty_bg_white_bmp 0
@@ -103,4 +103,5 @@
 #define urw_gothic_13_grey_bg_white 2
 #define urw_gothic_13_white_bg_grey 3
 
-#endif // EXAMPLES_MAX78000_TFT_DEMO_RESOURCES_BITMAP_H_
+#endif // EXAMPLES_MAX32690_TFT_DEMO_RESOURCES_BITMAP_H_
+

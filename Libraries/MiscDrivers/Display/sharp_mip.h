@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef DRIVER_SHARP_MIPH_
-#define DRIVER_SHARP_MIPH_
+#ifndef LIBRARIES_MISCDRIVERS__DISPLAY_SHARP_MIP_H_
+#define LIBRARIES_MISCDRIVERS__DISPLAY_SHARP_MIP_H_
 
 #include <stdio.h>
 #include <stdint.h>
@@ -82,4 +82,5 @@ void sharp_mip_set_buffer_pixel_util(sharp_mip_dev *dev, uint8_t *buf, uint16_t 
                                      uint16_t y, uint8_t color, uint8_t is_opaque);
 void sharp_mip_com_inversion(sharp_mip_dev *dev, int inversion_on);
 
-#endif /* DRIVER_SHARP_MIPH_ */
+#endif // LIBRARIES_MISCDRIVERS__DISPLAY_SHARP_MIP_H_
+

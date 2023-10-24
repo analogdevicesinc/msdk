@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef DRIVER_DISPLAY_H_
-#define DRIVER_DISPLAY_H_
+#ifndef LIBRARIES_MISCDRIVERS_DISPLAY_DISPLAY_H_
+#define LIBRARIES_MISCDRIVERS_DISPLAY_DISPLAY_H_
 
 #define DISP_E_SUCCESS 0
 #define DISP_E_ERROR -1
@@ -79,4 +79,5 @@ typedef struct {
     uint32_t comm_buffer_len;
 } display_comm_api;
 
-#endif /* DRIVER_DISPLAY_H_ */
+#endif // LIBRARIES_MISCDRIVERS_DISPLAY_DISPLAY_H_
+

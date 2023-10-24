@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32660_SECUREROM_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
-#define EXAMPLES_MAX32660_SECUREROM_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
+#ifndef EXAMPLES_MAX32660_SECUREROM_BL_HOST_BOOTLOADER_BOOTLOADER_H_
+#define EXAMPLES_MAX32660_SECUREROM_BL_HOST_BOOTLOADER_BOOTLOADER_H_
 
 /*******************************      INCLUDES    ****************************/
 
@@ -96,4 +96,4 @@ typedef struct {
 int sbl_init(bl_conf_struct_t *plt_funcs);
 int sbl_load(scp_packet_struct *scp_packets);
 
-#endif // EXAMPLES_MAX32660_SECUREROM_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
+#endif // EXAMPLES_MAX32660_SECUREROM_BL_HOST_BOOTLOADER_BOOTLOADER_H_

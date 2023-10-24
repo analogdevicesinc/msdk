@@ -48,10 +48,11 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32670_SECUREROM_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
-#define EXAMPLES_MAX32670_SECUREROM_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
+#ifndef EXAMPLES_MAX32670_SECUREROM_BL_HOST_BOOTLOADER_BOOTLOADER_H_
+#define EXAMPLES_MAX32670_SECUREROM_BL_HOST_BOOTLOADER_BOOTLOADER_H_
 
 /*******************************      INCLUDES    ****************************/
+#include <stdint.h>
 
 /*******************************      DEFINES     ****************************/
 // RESET pin used to restart target before SCP communication
@@ -88,7 +89,7 @@ typedef struct {
 typedef struct {
     unsigned char type; // 1:hello_reply, 2:erase/del_mem
     unsigned char is_tx; // 1: From host to target, 0: From target to host
-    unsigned short len;
+    uint16_t len;
     const unsigned char *data;
 } scp_packet_struct;
 
@@ -96,4 +97,4 @@ typedef struct {
 int sbl_init(bl_conf_struct_t *plt_funcs);
 int sbl_load(scp_packet_struct *scp_packets);
 
-#endif // EXAMPLES_MAX32670_SECUREROM_BOOTLOADER_HOST_BOOTLOADER_BOOTLOADER_H_
+#endif // EXAMPLES_MAX32670_SECUREROM_BL_HOST_BOOTLOADER_BOOTLOADER_H_

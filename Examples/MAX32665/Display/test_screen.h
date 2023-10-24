@@ -48,8 +48,8 @@
  *
  ******************************************************************************/
 
-#ifndef TEST_SCREEN_H_
-#define TEST_SCREEN_H_
+#ifndef EXAMPLES_MAX32665_DISPLAY_TEST_SCREEN_H_
+#define EXAMPLES_MAX32665_DISPLAY_TEST_SCREEN_H_
 
 #include "lvgl.h"
 
@@ -58,4 +58,4 @@ extern lv_obj_t *chart;
 
 void test_screen(void);
 
-#endif /* TEST_SCREEN_H_ */
+#endif // EXAMPLES_MAX32665_DISPLAY_TEST_SCREEN_H_

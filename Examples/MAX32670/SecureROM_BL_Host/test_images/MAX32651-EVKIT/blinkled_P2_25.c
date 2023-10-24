@@ -48,6 +48,8 @@
  *
  ******************************************************************************/
 
+#include <stdint.h>
+
 static const unsigned char scp_0000001_connection_request[] = { 0xbe, 0xef, 0xed, 0x01,
                                                                 0x00, 0x00, 0x90, 0xf3 };
 
@@ -2887,7 +2889,7 @@ static const unsigned char scp_0000037_disconnection_reply[] = { 0xbe, 0xef, 0xe
 typedef struct {
     unsigned char type; // 1:hello_reply, 2:erase/del_mem
     unsigned char is_tx; // 1: From host to target, 0: From target to host
-    unsigned short len;
+    uint16_t len;
     const unsigned char *data;
 } scp_packet_struct;
 

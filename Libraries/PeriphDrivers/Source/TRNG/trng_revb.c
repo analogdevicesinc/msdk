@@ -174,7 +174,7 @@ void MXC_TRNG_RevB_GenerateKey(mxc_trng_revb_regs_t *trng)
     trng->ctrl |= MXC_F_TRNG_REVB_CTRL_AESKG_USR;
 
     // Wait for key transfer to complete
-    while (trng->status & MXC_F_TRNG_REVB_STATUS_AESKGD) {};
+    while (trng->status & MXC_F_TRNG_REVB_STATUS_AESKGD) {}
 }
 
 int MXC_TRNG_RevB_HealthTest(mxc_trng_revb_regs_t *trng)

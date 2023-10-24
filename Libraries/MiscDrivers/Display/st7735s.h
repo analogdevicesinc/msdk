@@ -1,9 +1,3 @@
-/**
- * @file    st7735s.h
- * @brief   Sitronix ST7735S LCD controller driver
- *          
- */
-
 /******************************************************************************
  *
  * Copyright 2023 Analog Devices, Inc.
@@ -54,8 +48,14 @@
  *
  ******************************************************************************/
 
-#ifndef EXAMPLES_MAX32672_DISPLAY_ST7735S_DRV_H_
-#define EXAMPLES_MAX32672_DISPLAY_ST7735S_DRV_H_
+/**
+ * @file    st7735s.h
+ * @brief   Sitronix ST7735S LCD controller driver
+ *          
+ */
+
+#ifndef LIBRARIES_MISCDRIVERS_DISPLAY_ST7735S_H_
+#define LIBRARIES_MISCDRIVERS_DISPLAY_ST7735S_H_
 
 #define DISP_HOR_RES 128
 #define DISP_VER_RES 128
@@ -111,4 +111,5 @@ int st7735s_pixel(uint32_t x, uint32_t y, uint32_t z);
 int st7735s_write_pixels(uint8_t *data, unsigned int len);
 int st7735s_xyloc(uint8_t row, uint8_t col);
 
-#endif // EXAMPLES_MAX32672_DISPLAY_ST7735S_DRV_H_
+#endif // LIBRARIES_MISCDRIVERS_DISPLAY_ST7735S_H_
+
