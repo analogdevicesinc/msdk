@@ -62,8 +62,11 @@ void ping_subscription_callback(const void * msgin)
 {
 	const std_msgs__msg__Header * msg = (const std_msgs__msg__Header *)msgin;
 
+    int incoming_id = 0, incoming_seq_no = 0;
+    sscanf(msg->frame_id.data, "%i_%i", &seq_no, &incoming_id);
+
 	// Dont pong my own pings
-	if(strcmp(outcoming_ping.frame_id.data, msg->frame_id.data) != 0){
+	if(incoming_id != device_id) {
 		printf("Ping received with seq %s. Answering.\n", msg->frame_id.data);
 		rcl_publish(&pong_publisher, (const void*)msg, NULL);
         LED_Toggle(1);
