@@ -219,7 +219,7 @@ void PalFlashWrite(void *pBuf, uint32_t size, uint32_t dstAddr)
 /*!
  *  \brief  Erase sector.
  *
- *  \param[in] size       Data size in bytes to be erased.
+ *  \param[in] size       Data size in sectors to be erased.
  *  \param[in] startAddr  Word aligned address.
  *
  *  \return None.
@@ -246,7 +246,7 @@ void PalFlashEraseSector(uint32_t size, uint32_t startAddr)
     WsfCsExit();
 
     startAddr += MXC_FLASH_PAGE_SIZE;
-    size -= MXC_FLASH_PAGE_SIZE;
+    size --;
   }
 }
 
