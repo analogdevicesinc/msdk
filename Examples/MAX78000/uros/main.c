@@ -40,6 +40,7 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
+#include <time.h>
 #include "FreeRTOS.h"
 #include "FreeRTOSConfig.h"
 #include "portmacro.h"
@@ -233,9 +234,10 @@ void WUT_IRQHandler(void)
  */
 
 // app.c calls usleep, whose prototype is defined in unistd.h
-int 	usleep (useconds_t __useconds) 
+int usleep (useconds_t __useconds) 
 {
-    MXC_Delay(MXC_DELAY_USEC(__useconds));
+    // MXC_Delay(MXC_DELAY_USEC(__useconds));
+    MXC_TMR_Delay(MXC_TMR0, __useconds);
     return 0;
 }
 
@@ -283,13 +285,7 @@ int main(void)
     } else {
         /* Configure task */
 
-        if ((xTaskCreate(vTask0, (const char *)"Task0", configMINIMAL_STACK_SIZE, NULL,
-                         tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
-            (xTaskCreate(vTask1, (const char *)"Task1", configMINIMAL_STACK_SIZE, NULL,
-                         tskIDLE_PRIORITY + 1, NULL) != pdPASS) ||
-            (xTaskCreate(appMain, "uros_task", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS))
-            {
-                            // start microROS task
+        if ((xTaskCreate(appMain, "uros_task", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)) {
             printf("xTaskCreate() failed to create a task.\n");
         } else {
             /* Start scheduler */
