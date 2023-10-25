@@ -10,8 +10,9 @@
 
 static TaskHandle_t xTaskToNotify = NULL;
 
-/*
-Our UART FIFOs are pretty shallow (8 bytes), so we'll configure a DMA channel
+#define FIFO_BUFFER_SIZE 256
+
+/* Our UART FIFOs are pretty shallow (8 bytes), so we'll configure a DMA channel
 to constantly unload the UART RX FIFO into a queue that our custom read transport
 function can pull from.  This prevents overflow and missed data, especially in 
 framed mode.  
@@ -22,10 +23,8 @@ frame request and the data request.
 [read frame] [~1ms delay] [read data]
 */
 
-#define FIFO_BUFFER_SIZE 256
 
-/* A FreeRTOS queue will work and has built-in mechanisms for thread safety */
-QueueHandle_t rx_queue;
+QueueHandle_t rx_queue; // A FreeRTOS queue will work and has built-in mechanisms for thread safety
 uint8_t rx_buf; // Buffer for received byte
 mxc_uart_req_t rx_req; // UART request, initialized in MXC_Serial_Open
 
@@ -138,6 +137,8 @@ size_t vMXC_Serial_Read (
         }
         elapsed++;
     }
+
+    MXC_GPIO_OutClr(indicator.port, indicator.mask); // B
 
     return num_received;
 }
