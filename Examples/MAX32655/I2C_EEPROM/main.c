@@ -53,10 +53,13 @@
 
 #define EEPROM_24LC256_I2C_SLAVE_ADDR0 0x50 //(0xA0 >> 1)
 
-#define EEPROM_DEMO_BUFFER_PAGE_COUNT 4
+#define EEPROM_DEMO_BUFFER_PAGE_COUNT 16
 #define EEPROM_DEMO_BUFFER_SIZE _24LC256_EEPROM_PAGE_SIZE *EEPROM_DEMO_BUFFER_PAGE_COUNT // Bytes
-// *****************************************************************************
 
+/******************************* Globals *******************************/
+static eeprom_24lc256_req_t eeprom1_req; ///< EEPROM request
+
+/***** Functions *****/
 int main(void)
 {
     int err = E_NO_ERROR;
@@ -73,28 +76,23 @@ int main(void)
     printf("Press ENTER key to Continue\n\n");
     getchar();
 
-    err = MXC_I2C_Init(I2C_MASTER, 1, 0);
+    err = Eeprom_24LC256_Init(&eeprom1_req, I2C_MASTER, EEPROM_24LC256_I2C_SLAVE_ADDR0,
+                              I2C_FREQ); // init the EEPROM
     if (err != E_NO_ERROR) {
         printf("EEPROM configure failed with error %i\n", err);
         return err;
     }
 
-    MXC_I2C_SetFrequency(I2C_MASTER, I2C_FREQ);
-
-    eeprom_24LC256_driver_t eeprom_24LC256 = eeprom_24LC256_Open();
-
-    eeprom_24LC256.init(I2C_MASTER, EEPROM_24LC256_I2C_SLAVE_ADDR0); // init the EEPROM
-
     printf("EEPROM DEMO - Test 1: Writing and reading 1 byte:\n\n");
     for (i = 0; i < 5; i++) {
-        err = eeprom_24LC256.write(eeprom_memory_addr, &written_val, 1);
+        err = Eeprom_24LC256_Write(&eeprom1_req, eeprom_memory_addr, &written_val, 1);
         if (err != E_NO_ERROR) {
             printf("EEPROM write error, error code = %d\n", err);
         } else {
             printf("The value: 0x%02X is written to the address: 0x%04X\n", written_val,
                    eeprom_memory_addr);
         }
-        err = eeprom_24LC256.read(eeprom_memory_addr, &readed_val, 1);
+        err = Eeprom_24LC256_Read(&eeprom1_req, eeprom_memory_addr, &readed_val, 1);
         if (err != E_NO_ERROR) {
             printf("EEPROM read error, error code = %d\n", err);
         } else {
@@ -120,7 +118,8 @@ int main(void)
         }
     }
 
-    err = eeprom_24LC256.write(eeprom_memory_addr, &eeprom_demo_buffer[0], EEPROM_DEMO_BUFFER_SIZE);
+    err = Eeprom_24LC256_Write(&eeprom1_req, eeprom_memory_addr, &eeprom_demo_buffer[0],
+                               EEPROM_DEMO_BUFFER_SIZE);
     if (err != E_NO_ERROR) {
         printf("EEPROM write error, error code = %d\n", err);
     } else {
@@ -133,7 +132,8 @@ int main(void)
         eeprom_demo_buffer[i] = 0;
     }
 
-    err = eeprom_24LC256.read(eeprom_memory_addr, &eeprom_demo_buffer[0], EEPROM_DEMO_BUFFER_SIZE);
+    err = Eeprom_24LC256_Read(&eeprom1_req, eeprom_memory_addr, &eeprom_demo_buffer[0],
+                              EEPROM_DEMO_BUFFER_SIZE);
     if (err != E_NO_ERROR) {
         printf("EEPROM read %d bytes error, error code = %d\n", EEPROM_DEMO_BUFFER_SIZE, err);
     } else {
@@ -164,7 +164,7 @@ int main(void)
         eeprom_demo_buffer[i] = test_val;
     }
 
-    err = eeprom_24LC256.write(eeprom_memory_addr, &eeprom_demo_buffer[0], test_size);
+    err = Eeprom_24LC256_Write(&eeprom1_req, eeprom_memory_addr, &eeprom_demo_buffer[0], test_size);
     if (err != E_NO_ERROR) {
         printf("EEPROM write error, error code = %d\n", err);
     } else {
@@ -177,7 +177,7 @@ int main(void)
         eeprom_demo_buffer[i] = 0;
     }
 
-    err = eeprom_24LC256.read(eeprom_memory_addr, &eeprom_demo_buffer[0], test_size);
+    err = Eeprom_24LC256_Read(&eeprom1_req, eeprom_memory_addr, &eeprom_demo_buffer[0], test_size);
     if (err != E_NO_ERROR) {
         printf("EEPROM read error, error code = %d\n", err);
     } else {

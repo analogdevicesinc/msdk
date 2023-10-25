@@ -31,10 +31,8 @@
  *
  ******************************************************************************/
 
+/***** Includes *****/
 #include "eeprom_24lc256_driver.h"
-
-/******************************* Globals *******************************/
-static mxc_i2c_req_t req; ///< I2C request
 
 /******************************* Functions *******************************/
 static int i2c_transfer(mxc_i2c_req_t *req, uint8_t *txData, int txSize, uint8_t *rxData,
@@ -57,36 +55,37 @@ static int i2c_read(mxc_i2c_req_t *req, uint8_t *txData, uint8_t *rxData, int rx
     return i2c_transfer(req, txData, 2, rxData, rxSize); // Create I2C read request
 }
 
-/**
- * @brief   Initializes I2C registers EEPROM
- * @param   i2c		I2C registers
- * @param   addr	Slave I2C address of EEPROM.
- * @returns #E_NO_ERROR if init succeeded.
- *
- */
-static int eeprom_24LC256_init(mxc_i2c_regs_t *i2c, uint8_t addr)
+int Eeprom_24LC256_Init(eeprom_24lc256_req_t *req, mxc_i2c_regs_t *i2c, uint8_t addr,
+                        unsigned int i2c_freq)
 {
-    req.i2c = i2c;
-    req.addr = addr;
-    req.tx_buf = NULL;
-    req.tx_len = 0;
-    req.rx_buf = NULL;
-    req.rx_len = 0;
-    req.restart = 0;
-    req.callback = NULL;
+    int err = E_NO_ERROR;
+    int return_val = 0;
+
+    err = MXC_I2C_Init(i2c, 1, 0);
+    if (err != E_NO_ERROR) {
+        return err;
+    }
+
+    return_val = MXC_I2C_SetFrequency(i2c, i2c_freq);
+    if (return_val <= 0) {
+        err = return_val;
+        return err;
+    }
+
+    req->i2c_req.i2c = i2c;
+    req->i2c_req.addr = addr;
+    req->i2c_req.tx_buf = NULL;
+    req->i2c_req.tx_len = 0;
+    req->i2c_req.rx_buf = NULL;
+    req->i2c_req.rx_len = 0;
+    req->i2c_req.restart = 0;
+    req->i2c_req.callback = NULL;
 
     return E_NO_ERROR;
 }
 
-/**
- * @brief   Writes data from EEPROM
- * @param   addr		Start address we want to read.
- * @param   data_buffer	Data buffer to read.
- * @param   length		Number of bytes to read.
- * @returns #E_NO_ERROR if read succeeded. non-zero if an error occurred.
- *
- */
-static int eeprom_24LC256_read(uint16_t addr, uint8_t *data_buffer, uint16_t length)
+int Eeprom_24LC256_Read(eeprom_24lc256_req_t *req, uint16_t addr, uint8_t *data_buffer,
+                        uint16_t length)
 {
     int err = E_NO_ERROR;
     uint16_t remaining = length;
@@ -104,7 +103,7 @@ static int eeprom_24LC256_read(uint16_t addr, uint8_t *data_buffer, uint16_t len
             send_buffer[1] = (eeprom_addr_to_read & 0x00FF);
 
             // Read
-            err = i2c_read(&req, send_buffer, current_data_buffer, remaining);
+            err = i2c_read(&req->i2c_req, send_buffer, current_data_buffer, remaining);
             if (err != E_NO_ERROR) {
                 return err;
             } else {
@@ -115,7 +114,7 @@ static int eeprom_24LC256_read(uint16_t addr, uint8_t *data_buffer, uint16_t len
             send_buffer[1] = (eeprom_addr_to_read & 0x00FF);
 
             // Read
-            err = i2c_read(&req, send_buffer, current_data_buffer, I2C_MAX_READ_SIZE);
+            err = i2c_read(&req->i2c_req, send_buffer, current_data_buffer, I2C_MAX_READ_SIZE);
             if (err != E_NO_ERROR) {
                 return err;
             }
@@ -127,19 +126,18 @@ static int eeprom_24LC256_read(uint16_t addr, uint8_t *data_buffer, uint16_t len
     return E_NO_ERROR;
 }
 
-/**
- * @brief   Writes a small chunk of data directly to the EEPROM. The written memory should be in the same page of EEPROM (1 page = 64 bytes)
- * @param   addr		Address we want to write to.
- * @param   data_buffer	Data buffer to write.
- * @param   length		Number of bytes to write.
- * @returns #E_NO_ERROR if write succeeded. non-zero if an error occurred.
- *
- */
-static int eeprom_24LC256_write_chunk(uint16_t addr, uint8_t *data_buffer, uint16_t length)
+int Eeprom_24LC256_Write_Chunk(eeprom_24lc256_req_t *req, uint16_t addr, uint8_t *data_buffer,
+                               uint16_t length)
 {
     int err = E_NO_ERROR;
     int i = 0;
     uint8_t send_buffer[66]; // Page size (64) + 2 bytes
+
+    uint16_t remaining_size_until_page_end = _24LC256_EEPROM_PAGE_SIZE - (addr & 0x3F);
+    if (length > remaining_size_until_page_end) {
+        return E_BAD_PARAM;
+    }
+
     send_buffer[0] = addr >> 8;
     send_buffer[1] = (addr & 0x00FF);
     for (i = 0; i < length; i++) {
@@ -147,22 +145,15 @@ static int eeprom_24LC256_write_chunk(uint16_t addr, uint8_t *data_buffer, uint1
     }
 
     // Write
-    err = i2c_write(&req, send_buffer, (length + 2));
+    err = i2c_write(&req->i2c_req, send_buffer, (length + 2));
     if (err != E_NO_ERROR) {
         return err;
     }
     return E_NO_ERROR;
 }
 
-/**
- * @brief   Writes data to the EEPROM
- * @param   addr		Address we want to write to.
- * @param   data_buffer	Data buffer to write.
- * @param   length		Number of bytes to write.
- * @returns #E_NO_ERROR if write succeeded. non-zero if an error occurred.
- *
- */
-static int eeprom_24LC256_write(uint16_t addr, uint8_t *data_buffer, uint32_t length)
+int Eeprom_24LC256_Write(eeprom_24lc256_req_t *req, uint16_t addr, uint8_t *data_buffer,
+                         uint32_t length)
 {
     int err = E_NO_ERROR;
     uint16_t remaining_data_length_to_write = length;
@@ -181,7 +172,7 @@ static int eeprom_24LC256_write(uint16_t addr, uint8_t *data_buffer, uint32_t le
         if (remaining_data_length_to_write <=
             remaining_size_until_page_end) // if remaining data size is smaller than remaining page size
         {
-            err = eeprom_24LC256_write_chunk(eeprom_addr_to_write, current_data_buffer,
+            err = Eeprom_24LC256_Write_Chunk(req, eeprom_addr_to_write, current_data_buffer,
                                              remaining_data_length_to_write);
             if (err != E_NO_ERROR) {
                 return err;
@@ -189,8 +180,8 @@ static int eeprom_24LC256_write(uint16_t addr, uint8_t *data_buffer, uint32_t le
                 remaining_data_length_to_write = 0;
             }
         } else {
-            err = eeprom_24LC256_write_chunk(
-                eeprom_addr_to_write, current_data_buffer,
+            err = Eeprom_24LC256_Write_Chunk(
+                req, eeprom_addr_to_write, current_data_buffer,
                 remaining_size_until_page_end); // Write until the end of the page
             if (err != E_NO_ERROR) {
                 return err;
@@ -205,14 +196,14 @@ static int eeprom_24LC256_write(uint16_t addr, uint8_t *data_buffer, uint32_t le
 
     while (remaining_data_length_to_write) {
         if (remaining_data_length_to_write <= _24LC256_EEPROM_PAGE_SIZE) {
-            err = eeprom_24LC256_write_chunk(eeprom_addr_to_write, current_data_buffer,
+            err = Eeprom_24LC256_Write_Chunk(req, eeprom_addr_to_write, current_data_buffer,
                                              remaining_data_length_to_write);
             if (err != E_NO_ERROR) {
                 return err;
             }
             return E_NO_ERROR;
         } else {
-            err = eeprom_24LC256_write_chunk(eeprom_addr_to_write, current_data_buffer,
+            err = Eeprom_24LC256_Write_Chunk(req, eeprom_addr_to_write, current_data_buffer,
                                              _24LC256_EEPROM_PAGE_SIZE);
             if (err != E_NO_ERROR) {
                 return err;
@@ -225,15 +216,4 @@ static int eeprom_24LC256_write(uint16_t addr, uint8_t *data_buffer, uint32_t le
         }
     }
     return E_NO_ERROR;
-}
-
-eeprom_24LC256_driver_t eeprom_24LC256_Open(void)
-{
-    eeprom_24LC256_driver_t SD;
-    SD.init = eeprom_24LC256_init;
-    SD.read = eeprom_24LC256_read;
-    SD.write_chunk = eeprom_24LC256_write_chunk;
-    SD.write = eeprom_24LC256_write;
-
-    return SD;
 }
