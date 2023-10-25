@@ -512,25 +512,16 @@ unsigned int MXC_UART_GetStatus(mxc_uart_regs_t *uart)
 
 int MXC_UART_Transaction(mxc_uart_req_t *req)
 {
-    MXC_UART_ClearRXFIFO(req->uart);
-    MXC_UART_ClearTXFIFO(req->uart);
-
     return MXC_UART_RevB_Transaction((mxc_uart_revb_req_t *)req);
 }
 
 int MXC_UART_TransactionAsync(mxc_uart_req_t *req)
 {
-    MXC_UART_ClearRXFIFO(req->uart);
-    MXC_UART_ClearTXFIFO(req->uart);
-
     return MXC_UART_RevB_TransactionAsync((mxc_uart_revb_req_t *)req);
 }
 
 int MXC_UART_TransactionDMA(mxc_uart_req_t *req)
 {
-    MXC_UART_ClearRXFIFO(req->uart);
-    MXC_UART_ClearTXFIFO(req->uart);
-
     return MXC_UART_RevB_TransactionDMA((mxc_uart_revb_req_t *)req);
 }
 
