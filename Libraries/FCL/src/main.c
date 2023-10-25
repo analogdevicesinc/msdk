@@ -90,7 +90,7 @@ int ucl_testing(void)
 
     PRINTF("FCL testing\n");
     ucl_init();
-    test_sha(); 
+    test_sha();
 //  test_aes();
 #ifdef ECDSA
     test_ecdsa();

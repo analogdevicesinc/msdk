@@ -65,7 +65,7 @@ int ucl_aes(u8 *dst, u8 *src, u8 *key, u32 keylen, int mode)
     } else if (mode == UCL_CIPHER_DECRYPT) {
         aes_set_dkey(&aeskey, key, keylen);
 
-        return(aes_decrypt(dst, src, &aeskey)); 
+        return(aes_decrypt(dst, src, &aeskey));
     } else {
         return(UCL_INVALID_ARG);
     }

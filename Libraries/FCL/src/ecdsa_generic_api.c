@@ -572,7 +572,7 @@ int ecc_double(ucl_type_ecc_digit_affine_point Q3, ucl_type_ecc_digit_affine_poi
     //lambda = (3*x1^2+a)*(2*y)^-1 mod p
     ecc_modmult(lambda, tmp1, tmp3, curve_params);
     //tmp1 = Lambda^2 mod p
-    ecc_modsquare(tmp1, lambda, curve_params); 
+    ecc_modsquare(tmp1, lambda, curve_params);
     //tmp2 = Lambda^2 mod p -x1
     ecc_modsub(tmp2, tmp1, Q1.x, curve_params);
     //x3  = Lambda^2 mod p -x1 -x2

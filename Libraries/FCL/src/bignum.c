@@ -569,7 +569,7 @@ void bignum_divide(u32 *a, u32 *b, u32 *c, u32 cDigits, u32 *d, u32 dDigits)
             ai++;
             cc[i+(int)ddDigits] -= bignum_sub(&cc[i], &cc[i], dd, ddDigits);
         }
-        
+       
         if (NULL != a) {
             a[i] = ai;
         }

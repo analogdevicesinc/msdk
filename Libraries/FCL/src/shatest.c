@@ -181,7 +181,7 @@ int test_sia256(void)
     if (memcmp(sha256res1, digest, UCL_SIA256_HASHSIZE) != 0) {
         return(UCL_ERROR);
     }
-    
+   
     return(UCL_OK);
 }
 
@@ -492,7 +492,7 @@ int test_sha384(void)
     if (memcmp(e, digest_1220, 48) != 0) {
         return(UCL_ERROR);
     }
-    
+   
     ucl_sha384(e, tab, 1000);
 #ifdef VERBOSE
     PRINTF("sha384(1000-0):");
@@ -501,7 +501,7 @@ int test_sha384(void)
     if (memcmp(e, digest_10000, 48) != 0) {
         return(UCL_ERROR);
     }
-    
+   
     for (i = 0; i < 1000; i++) {
         tab[i] = 'A';
     }

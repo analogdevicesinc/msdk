@@ -204,7 +204,7 @@ int aes_set_ekey(AES_KEY *key,const u8 *userKey,const int len)
     rk[1] = GETU32(userKey +  4);
     rk[2] = GETU32(userKey +  8);
     rk[3] = GETU32(userKey + 12);
-  
+ 
     if (len == 16) {
         while (1) {
             temp  = rk[3];
@@ -379,7 +379,7 @@ int aes_decrypt(u8 *out,const u8 *in,const AES_KEY *key)
 
         s0 = Td0[(t0 >> 24)] ^ MACRO_ROTR(Td0[(t3 >> 16) & 0xff],1) ^ MACRO_ROTR(Td0[(t2 >> 8) & 0xff],2) ^ MACRO_ROTR(Td0[(t1) & 0xff],3) ^ rk[0];
         s1 = Td0[(t1 >> 24)] ^ MACRO_ROTR(Td0[(t0 >> 16) & 0xff],1) ^ MACRO_ROTR(Td0[(t3 >> 8) & 0xff],2) ^ MACRO_ROTR(Td0[(t2) & 0xff],3) ^ rk[1];
-        s2 = Td0[(t2 >> 24)] ^ MACRO_ROTR(Td0[(t1 >> 16) & 0xff],1) ^ MACRO_ROTR(Td0[(t0 >> 8) & 0xff],2) ^ MACRO_ROTR(Td0[(t3) & 0xff],3) ^ rk[2]; 
+        s2 = Td0[(t2 >> 24)] ^ MACRO_ROTR(Td0[(t1 >> 16) & 0xff],1) ^ MACRO_ROTR(Td0[(t0 >> 8) & 0xff],2) ^ MACRO_ROTR(Td0[(t3) & 0xff],3) ^ rk[2];
         s3 = Td0[(t3 >> 24)] ^ MACRO_ROTR(Td0[(t2 >> 16) & 0xff],1) ^ MACRO_ROTR(Td0[(t1 >> 8) & 0xff],2) ^ MACRO_ROTR(Td0[(t0) & 0xff],3) ^ rk[3];
     }
 

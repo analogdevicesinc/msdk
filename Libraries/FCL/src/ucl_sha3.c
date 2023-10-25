@@ -51,7 +51,7 @@
 //SHA3 implementation
 //this implementation used the implementation from Markku-Juhani O.Saarinen
 //as a starting point
- 
+
 #include <ucl/ucl_hash.h>
 #ifdef HASH_SHA3
 #include <string.h>
@@ -71,15 +71,15 @@ static const u8 kcf_rho[24] = {1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 2, 14, 27, 4
 
 static const u8 kcf_pilane[24] = {10, 7, 11, 17, 18, 3, 5, 16, 8, 21, 24, 4, 15, 23, 19, 13, 12, 2, 20, 14, 22, 9, 6, 1};
 
-// generally called after SHA3_SPONGE_WORDS-ctx->capacityWords words 
- // are XORed into the state s 
+// generally called after SHA3_SPONGE_WORDS-ctx->capacityWords words
+ // are XORed into the state s
 static void kcf(u64 state[25])
 {
     int i, j, round;
     u64 t, c[5];
 
-    //I(chi(Pi(ro(theta(  
-    for (round = 0; round < N_ROUNDS; round++) {      
+    //I(chi(Pi(ro(theta( 
+    for (round = 0; round < N_ROUNDS; round++) {     
         // Theta
         for (i = 0; i < 5; i++) {
             c[i] = state[i] ^ state[i + 5] ^ state[i + 10] ^ state[i + 15] ^ state[i + 20];
@@ -87,7 +87,7 @@ static void kcf(u64 state[25])
 
         for (i = 0; i < 5; i++) {
             t = c[(i + 4) % 5] ^ (u64)ROTL64(c[(i + 1) % 5], 1);
-        
+       
             for (j = 0; j < 25; j += 5) {
                 state[j + i] ^ = t;
             }
@@ -203,7 +203,7 @@ int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8 *bufIn, u32 len)
         while (len--) {
             ctx->saved | = (u64) (*(buf++)) << ((ctx->byteIndex++) * 8);
         }
-        
+       
         return(UCL_OK);
     }
 

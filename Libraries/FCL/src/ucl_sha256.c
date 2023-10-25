@@ -129,7 +129,7 @@ int ucl_sha256_init(ucl_sha256_ctx_t *ctx)
     ctx->state[5] = 0x9b05688c;
     ctx->state[6] = 0x1f83d9ab;
     ctx->state[7] = 0x5be0cd19;
-    
+   
     ctx->count[0] = 0;
     ctx->count[1] = 0;
 
@@ -195,7 +195,7 @@ int ucl_sha256_finish(u8 *hash, ucl_sha256_ctx_t *ctx)
     padding[0] = 0x80;
 
     memset(padding + 1, 0, 63);
-    
+   
     if (hash == NULL) {
         return UCL_INVALID_OUTPUT;
     }

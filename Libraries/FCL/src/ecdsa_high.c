@@ -201,7 +201,7 @@ int ucl_ecdsa_verification(ucl_type_ecc_u8_affine_point Q, ucl_type_ecdsa_signat
     u8 e[64];
     int hash, input_format;
     int curve_wsize, curve_bsize, hashsize;
-  
+ 
     //check parameters
     if (NULL == input) {
         return(UCL_INVALID_INPUT);
@@ -214,7 +214,7 @@ int ucl_ecdsa_verification(ucl_type_ecc_u8_affine_point Q, ucl_type_ecdsa_signat
     if (UCL_NO_INPUT == input_format) {
         return(UCL_INVALID_INPUT);
     }
-    
+   
     //hash computation only if input format is UCL_MSG_INPUT
       //1. e = SHA(m)
     hashsize = hash_size[hash];

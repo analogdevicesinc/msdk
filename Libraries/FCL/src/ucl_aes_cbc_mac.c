@@ -193,8 +193,8 @@ int ucl_aes_cbc_mac_finish(u8 *tmac, u32 tmac_byteLen, ucl_aes_ctx_t *ctx)
     if (ctx == NULL) {
         return UCL_INVALID_OUTPUT;
     }
-    
+   
     memcpy(tmac, ctx->memory, tmac_byteLen);
-    
+   
     return(UCL_OK);
 }

@@ -89,31 +89,31 @@ void sha_prepareSchedule(u8* message);
 void sha256_hashblock(u8* message, u32 lastblock);
 
 
-// hold secret for creating a 
+// hold secret for creating a
 static u8 SECRET[32];
 
 // SHA-256 globals values
 u32 SHA_256_Initial[] = {
-    0x6a09e667, 
-    0xbb67ae85, 
-    0x3c6ef372, 
-    0xa54ff53a, 
-    0x510e527f, 
-    0x9b05688c, 
-    0x1f83d9ab, 
+    0x6a09e667,
+    0xbb67ae85,
+    0x3c6ef372,
+    0xa54ff53a,
+    0x510e527f,
+    0x9b05688c,
+    0x1f83d9ab,
     0x5be0cd19
 };
 
 u32 SHA_CONSTANTS[] = {
-    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5, 
-    0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174, 
-    0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da, 
-    0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967, 
-    0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85, 
-    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070, 
-    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3, 
-    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2, 
-    0xca273ece, 0xd186b8c7, 0xeada7dd6, 0xf57d4f7f, 0x06f067aa, 0x0a637dc5, 0x113f9804, 0x1b710b35, 
+    0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+    0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3, 0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
+    0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc, 0x2de92c6f, 0x4a7484aa, 0x5cb0a9dc, 0x76f988da,
+    0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
+    0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
+    0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
+    0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+    0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2,
+    0xca273ece, 0xd186b8c7, 0xeada7dd6, 0xf57d4f7f, 0x06f067aa, 0x0a637dc5, 0x113f9804, 0x1b710b35,
     0x28db77f5, 0x32caab7b, 0x3c9ebe0a, 0x431d67c4, 0x4cc5d4be, 0x597f299c, 0x5fcb6fab, 0x6c44198c
 };
 
@@ -122,7 +122,7 @@ u8 workbuffer[128];
 u32 a32, b32, c32, d32, e32, f32, g32, h32; // SHA working variables
 u32 W32[16];                                // SHA message schedule
 u32 H32[8];                                 // last SHA result variables
- 
+
 int reverse_endian = 1;
 int sha_debug = 1;
 
@@ -131,7 +131,7 @@ int sha_debug = 1;
 // function.
 //
 void set_secret(u8 *secret)
-{ 
+{
     int i;
 
     for (i = 0; i < 32; i++) {
@@ -171,7 +171,7 @@ int ComputeMAC256(u8* MT, int length, u8* MAC)
                 }
             }
         }
-   
+  
         ComputeSHA256(MT, 119, UCL_TRUE, UCL_TRUE, MAC);
     } else { // one block format
         // insert secret
@@ -229,7 +229,7 @@ int VerifyMAC256(u8* MT, int length, u8* compare_MAC)
 // Performs a Compute Next SHA-256 calculation given the provided 32-bytes
 // of binding data and 8 byte partial secret. The first 8 bytes of the
 // resulting MAC is set as the new secret.
-// 
+//
 // 'binding'  - 32 byte buffer containing the binding data
 // 'partial'  - 8 byte buffer with new partial secret
 // 'page_num'  - page number that the compute is calculated on
@@ -245,7 +245,7 @@ int CalculateNextSecret256(u8* binding, u8* partial, int page_num, u8* manid)
     u8 MT[128];
     u8 MAC[64];
 
-    // clear 
+    // clear
     memset(MT, 0, 128);
 
     // insert page data
@@ -426,7 +426,7 @@ void sha_prepareSchedule(u8* message)
 }
 
 //----------------------------------------------------------------------
-// Hash a single block of data. 
+// Hash a single block of data.
 //
 void sha256_hashblock(u8* message, u32 lastblock)
 {
@@ -496,10 +496,10 @@ void sha256_hashblock(u8* message, u32 lastblock)
 }
 
 //----------------------------------------------------------------------
-// Computes SHA-256 given the data block 'message' with no padding. 
-// The result is returned in 'digest'.   
+// Computes SHA-256 given the data block 'message' with no padding.
+// The result is returned in 'digest'.  
 //
-// 'message'  - buffer containing the message 
+// 'message'  - buffer containing the message
 // 'skipconst' - skip adding constant on last block (skipconst = 1)
 // 'reverse' - reverse order of digest (reverse = 1, MSWord first, LSByte first)
 // 'digest'   - result hash digest in byte order used by 1-Wire device
@@ -572,7 +572,7 @@ int ComputeSHA256(u8* message, int length, u32 skipconst, u32 reverse, u8* diges
             }
         }
 
-        // SHA in software 
+        // SHA in software
         sha256_hashblock(workbuffer, (u32)(lastblock && skipconst));
         message += bytes_per_block;
     }
@@ -585,10 +585,10 @@ int ComputeSHA256(u8* message, int length, u32 skipconst, u32 reverse, u8* diges
 int __API__ ucl_sia256(u8 *hash, u8 *data, u32 data_byteLen)
 {
     //----------------------------------------------------------------------
-    // Computes SHA-256 given the data block 'message' with no padding. 
-    // The result is returned in 'digest'.   
+    // Computes SHA-256 given the data block 'message' with no padding.
+    // The result is returned in 'digest'.  
     //
-    // 'message'  - buffer containing the message 
+    // 'message'  - buffer containing the message
     // 'skipconst' - skip adding constant on last block (skipconst = 1)
     // 'reverse' - reverse order of digest (reverse = 1, MSWord first, LSByte first)
     // 'digest'   - result hash digest in byte order used by 1-Wire device
