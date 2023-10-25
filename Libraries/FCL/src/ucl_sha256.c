@@ -1,4 +1,11 @@
 /******************************************************************************
+ *
+ * Copyright (C) 2023 Analog Devices, In.c All Rights Reserved.
+ *
+ * This software is proprietary to Analog Devices, Inc. and its licensors.
+ *
+ ******************************************************************************
+ *
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
@@ -17,7 +24,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -26,7 +33,7 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
+ * of trade secrets, proprietary technology, copyrights, patents, 
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
@@ -46,8 +53,7 @@
 
 static u32 _wsb_b2w(u8 *src)
 {
-  return ((u32)src[3] | ((u32)src[2] << 8) |
-	  ((u32)src[1] << 16) | ((u32)src[0] << 24));
+    return ((u32)src[3] | ((u32)src[2] << 8) | ((u32)src[1] << 16) | ((u32)src[0] << 24));
 }
 
 static void _wsb_w2b(u8 *dst, u32 src)
@@ -65,8 +71,7 @@ void swapcpy_b2w(u32 *dst, const u8 *src, u32 wordlen)
 {
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
+    for (i = 0; i < (int)wordlen; i++) {
         dst[i] = _wsb_b2w((u8 *) src);
         src += 4;
     }
@@ -77,8 +82,7 @@ void swapcpy_w2b(u8 *dst, const u32 *src, u32 wordlen)
 {
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
+    for (i = 0; i < (int)wordlen; i++) {
         _wsb_w2b(dst, src[i]);
         dst += 4;
     }
@@ -89,8 +93,7 @@ void swapcpy_b2b(u8 *dst, u8 *src, u32 wordlen)
     u8 tmp;
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
+    for (i = 0; i < (int)wordlen; i++) {
         tmp = src[0];
         dst[0] = src[3];
         dst[3] = tmp;
@@ -106,8 +109,10 @@ void swapcpy_b2b(u8 *dst, u8 *src, u32 wordlen)
 
 int ucl_sha256_init(ucl_sha256_ctx_t *ctx)
 {
-    if (ctx == NULL)
+    if (ctx == NULL) {
         return UCL_INVALID_INPUT;
+    }
+
     ctx->state[0] = 0x6A09E667;
     ctx->state[1] = 0xBB67AE85;
     ctx->state[2] = 0x3C6EF372;
@@ -126,17 +131,21 @@ int ucl_sha256_init(ucl_sha256_ctx_t *ctx)
 int ucl_sha256_core(ucl_sha256_ctx_t *ctx, u8 *data, u32 dataLen)
 {
     u32 indexh, partLen, i;
-    if (ctx == NULL)
+    if (ctx == NULL) {
         return UCL_INVALID_INPUT;
+    }
 
-    if ((data == NULL)  || (dataLen == 0))
+    if ((data == NULL)  || (dataLen == 0)) {
         return UCL_NOP;
+    }
+
     /** Compute number of bytes mod 64 */
     indexh = (u32)((ctx->count[1] >> 3) & 0x3F);
 
     /** Update number of bits */
-    if ((ctx->count[1] += ((u32)dataLen << 3)) < ((u32)dataLen << 3))
+    if ((ctx->count[1] += ((u32)dataLen << 3)) < ((u32)dataLen << 3)) {
         ctx->count[0]++;
+    }
 
     ctx->count[0] += ((u32)dataLen >> 29);
 
@@ -144,26 +153,21 @@ int ucl_sha256_core(ucl_sha256_ctx_t *ctx, u8 *data, u32 dataLen)
 
     /** Process 512-bits block as many times as possible. */
 
-    if (dataLen >= partLen)
-    {
+    if (dataLen >= partLen) {
         memcpy(&ctx->buffer[indexh], data, partLen);
 
         swapcpy_b2b(ctx->buffer, ctx->buffer, 16);
 
         sha256_stone(ctx->state, (u32 *) ctx->buffer);
 
-        for (i = partLen; i + 63 < dataLen; i += 64)
-        {
+        for (i = partLen; i + 63 < dataLen; i += 64) {
             swapcpy_b2b(ctx->buffer, &data[i], 16);
 
             sha256_stone(ctx->state, (u32 *) ctx->buffer);
         }
 
         indexh = 0;
-    }
-
-    else
-    {
+    } else {
         i = 0;
     }
 
@@ -184,11 +188,14 @@ int ucl_sha256_finish(u8 *hash, ucl_sha256_ctx_t *ctx)
 
     memset(padding + 1, 0, 63);
     
-    if (hash == NULL)
+    if (hash == NULL) {
         return UCL_INVALID_OUTPUT;
+    }
 
-    if (ctx == NULL)
+    if (ctx == NULL) {
         return UCL_INVALID_INPUT;
+    }
+
     /** Save number of bits */
     swapcpy_w2b(bits, ctx->count, 2);
 
@@ -210,16 +217,20 @@ int ucl_sha256_finish(u8 *hash, ucl_sha256_ctx_t *ctx)
 
     return UCL_OK;
 }
+
 int ucl_sha256(u8 *hash, u8 *message, u32 byteLength)
 {
     ucl_sha256_ctx_t ctx;
 
-    if (hash == NULL)
+    if (hash == NULL) {
         return UCL_INVALID_OUTPUT;
+    }
 
     ucl_sha256_init(&ctx);
     ucl_sha256_core(&ctx, message, byteLength);
     ucl_sha256_finish(hash, &ctx);
+
     return UCL_OK;
 }
+
 #endif//HASH_SHA256

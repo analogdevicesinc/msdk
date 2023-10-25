@@ -1,4 +1,11 @@
 /******************************************************************************
+ *
+ * Copyright (C) 2023 Analog Devices, In.c All Rights Reserved.
+ *
+ * This software is proprietary to Analog Devices, Inc. and its licensors.
+ *
+ ******************************************************************************
+ *
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
@@ -17,7 +24,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -26,7 +33,7 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
+ * of trade secrets, proprietary technology, copyrights, patents, 
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
@@ -61,19 +68,19 @@ __API__ int hash_size[MAX_HASH_FUNCTIONS];
 int __API__ ucl_init(void)
 {
 #ifdef HASH_SHA256
-    hash_size[UCL_SHA256]=UCL_SHA256_HASHSIZE;
+    hash_size[UCL_SHA256] = UCL_SHA256_HASHSIZE;
 #endif
 #ifdef HASH_SHA512
-    hash_size[UCL_SHA512]=UCL_SHA256_HASHSIZE;
+    hash_size[UCL_SHA512] = UCL_SHA256_HASHSIZE;
 #endif
 #ifdef HASH_SHA384
-    hash_size[UCL_SHA384]=UCL_SHA256_HASHSIZE;
+    hash_size[UCL_SHA384] = UCL_SHA256_HASHSIZE;
 #endif
 #ifdef HASH_SHA3
-    hash_size[UCL_SHA3]=UCL_SHA3_512_HASHSIZE;
+    hash_size[UCL_SHA3] = UCL_SHA3_512_HASHSIZE;
 #endif
 #ifdef HASH_SIA256
-    hash_size[UCL_SIA256]=UCL_SIA256_HASHSIZE;
+    hash_size[UCL_SIA256] = UCL_SIA256_HASHSIZE;
 #endif
     return(UCL_OK);
 }

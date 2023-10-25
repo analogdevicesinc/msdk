@@ -1,4 +1,11 @@
 /******************************************************************************
+ *
+ * Copyright (C) 2023 Analog Devices, In.c All Rights Reserved.
+ *
+ * This software is proprietary to Analog Devices, Inc. and its licensors.
+ *
+ ******************************************************************************
+ *
  * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
@@ -17,7 +24,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -26,7 +33,7 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
+ * of trade secrets, proprietary technology, copyrights, patents, 
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
@@ -45,29 +52,28 @@
 
 void _wsb_ll2b(u8 *dst, u64 src)
 {
-  dst[7] = src & 0xFF;
-  src >>= 8;
-  dst[6] = src & 0xFF;
-  src >>= 8;
-  dst[5] = src & 0xFF;
-  src >>= 8;
-  dst[4] = src & 0xFF;
-  src >>= 8;
-  dst[3] = src & 0xFF;
-  src >>= 8;
-  dst[2] = src & 0xFF;
-  src >>= 8;
-  dst[1] = src & 0xFF;
-  src >>= 8;
-  dst[0] = src & 0xFF;
+    dst[7] = src & 0xFF;
+    src >>= 8;
+    dst[6] = src & 0xFF;
+    src >>= 8;
+    dst[5] = src & 0xFF;
+    src >>= 8;
+    dst[4] = src & 0xFF;
+    src >>= 8;
+    dst[3] = src & 0xFF;
+    src >>= 8;
+    dst[2] = src & 0xFF;
+    src >>= 8;
+    dst[1] = src & 0xFF;
+    src >>= 8;
+    dst[0] = src & 0xFF;
 }
 
 void swapcpy_ll2b(u8 *dst, const u64 *src, u32 wordlen)
 {
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
+    for (i = 0; i < (int)wordlen; i++) {
         _wsb_ll2b(dst, src[i]);
         dst += 8;
     }
@@ -78,8 +84,7 @@ void swapcpy_b2b64(u8 *dst, u8 *src, u32 wordlen)
     u8 tmp;
     int i;
 
-    for (i = 0 ; i < (int)wordlen ; i++)
-    {
+    for (i = 0; i < (int)wordlen; i++) {
         tmp = src[0];
         dst[0] = src[7];
         dst[7] = tmp;
@@ -100,8 +105,10 @@ void swapcpy_b2b64(u8 *dst, u8 *src, u32 wordlen)
 
 int ucl_sha512_init(ucl_sha512_ctx_t *ctx)
 {
-    if (ctx == NULL)
+    if (ctx == NULL) {
         return UCL_INVALID_INPUT;
+    }
+
     ctx->state[0] = 0x6a09e667f3bcc908ULL;
     ctx->state[1] = 0xbb67ae8584caa73bULL;
     ctx->state[2] = 0x3c6ef372fe94f82bULL;
@@ -119,32 +126,35 @@ int ucl_sha512_init(ucl_sha512_ctx_t *ctx)
 int ucl_sha512_core(ucl_sha512_ctx_t *ctx, u8 *data, u32 dataLen)
 {
     u32 indexh, partLen, i;
-    if (ctx == NULL)
-        return UCL_INVALID_INPUT;
 
-    if ((data == NULL)  || (dataLen == 0))
+    if (ctx == NULL) {
+        return UCL_INVALID_INPUT;
+    }
+
+    if ((data == NULL)  || (dataLen == 0)) {
         return UCL_NOP;
+    }
 
     indexh = (u32)((ctx->count[1] >> 3) & 0x7F);
-    ctx->count[1]+=(u64)(dataLen << 3);
+    ctx->count[1] += (u64)(dataLen << 3);
     ctx->count[0] += ((u64)dataLen >> 29);
     partLen = 128 - indexh;
 
-    if (dataLen >= partLen)
-    {
+    if (dataLen >= partLen) {
         memcpy(&ctx->buffer[indexh], data, partLen);
         swapcpy_b2b64(ctx->buffer, ctx->buffer, 16);
         sha512_stone(ctx->state, (u64 *) ctx->buffer);
-        for (i = partLen; i + 127 < dataLen; i += 128)
-        {
+
+        for (i = partLen; i + 127 < dataLen; i += 128) {
             swapcpy_b2b64(ctx->buffer, &data[i], 16);
             sha512_stone(ctx->state, (u64 *) ctx->buffer);
         }
+
         indexh = 0;
     } else {
         i = 0;
     }
-    
+
     memcpy(&ctx->buffer[indexh], &data[i], dataLen - i);
     return UCL_OK;
 }
@@ -154,28 +164,41 @@ int ucl_sha512_finish(u8 *hash, ucl_sha512_ctx_t *ctx)
     u8 bits[16];
     u64 indexh, padLen;
     u8 padding[128];
+
     padding[0] = 0x80;
     memset(padding + 1, 0, 127);
-    if (hash == NULL)
+
+    if (hash == NULL) {
         return UCL_INVALID_OUTPUT;
-    if (ctx == NULL)
+    }
+
+    if (ctx == NULL) {
         return UCL_INVALID_INPUT;
+    }
+
     swapcpy_ll2b(bits, ctx->count, 2);
     indexh = (u32)((ctx->count[1] >> 3) & 0x7f);
     padLen = (indexh < 112) ? (112 - indexh) : (240 - indexh);
+
     ucl_sha512_core(ctx, padding, (u32)padLen);
     ucl_sha512_core(ctx, bits, 16);
     swapcpy_ll2b(hash, ctx->state, 8);
+
     return UCL_OK;
 }
+
 int ucl_sha512(u8 *hash, u8 *message, u32 byteLength)
 {
     ucl_sha512_ctx_t ctx;
-    if (hash == NULL)
+
+    if (hash == NULL) {
         return UCL_INVALID_OUTPUT;
+    }
+
     ucl_sha512_init(&ctx);
     ucl_sha512_core(&ctx, message, byteLength);
     ucl_sha512_finish(hash, &ctx);
     return UCL_OK;
 }
+
 #endif//HASH_SHA512

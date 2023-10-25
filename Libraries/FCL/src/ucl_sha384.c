@@ -1,5 +1,12 @@
 /******************************************************************************
- * Copyright (C) 2018-2023 Maxim Integrated Products, Inc., All rights Reserved.
+ *
+ * Copyright (C) 2023 Analog Devices, In.c All Rights Reserved.
+ *
+ * This software is proprietary to Analog Devices, Inc. and its licensors.
+ *
+ ******************************************************************************
+ *
+ * Copyright (C) 2023 Maxim Integrated Products, Inc., All rights Reserved.
  * 
  * This software is protected by copyright laws of the United States and
  * of foreign countries. This material may also be protected by patent laws
@@ -17,7 +24,7 @@
  * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
  * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
  * IN NO EVENT SHALL MAXIM INTEGRATED BE LIABLE FOR ANY CLAIM, DAMAGES
- * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  * OTHER DEALINGS IN THE SOFTWARE.
  *
@@ -26,18 +33,18 @@
  * Products, Inc. Branding Policy.
  *
  * The mere transfer of this software does not imply any licenses
- * of trade secrets, proprietary technology, copyrights, patents,
+ * of trade secrets, proprietary technology, copyrights, patents, 
  * trademarks, maskwork rights, or any other form of intellectual
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
  ******************************************************************************/
 
-/*============================================================================
+/*============================================================================ 
  *
  * Purpose : SHA384
  *
- *==========================================================================*/
+ *========================================================================== */
 
 #include <string.h>
 #include <ucl/ucl_hash.h>
@@ -48,16 +55,18 @@
 #include <ucl/ucl_retdefs.h>
 #include <ucl/ucl_types.h>
 
-#include "ucl/ucl_sha384.h"
+#include <ucl/ucl_sha384.h>
 #include <ucl/ucl_sys.h>
-#include "ucl/bignum_ecdsa_generic_api.h"
+#include <ucl/bignum_ecdsa_generic_api.h>
 
 extern int using_sha_hardware;
 
 int __API__ ucl_sha384_init(ucl_sha384_ctx_t *ctx)
 {
-    if (ctx == NULL)
+    if (ctx == NULL) {
         return UCL_INVALID_INPUT;
+    }
+
     ctx->state[0] = 0xcbbb9d5dc1059ed8ULL;
     ctx->state[1] = 0x629a292a367cd507ULL;
     ctx->state[2] = 0x9159015a3070dd17ULL;
@@ -75,28 +84,34 @@ int __API__ ucl_sha384_init(ucl_sha384_ctx_t *ctx)
 
 int ucl_sha384_core(ucl_sha384_ctx_t *ctx, u8 *data, u32 dataLen)
 {
-    return(ucl_sha512_core(ctx,data,dataLen));
+    return(ucl_sha512_core(ctx, data, dataLen));
 }
-
 
 int ucl_sha384_finish(u8 *hash, ucl_sha384_ctx_t *ctx)
 {
-  u8 sha512_hash[64];
-  int i;
+    u8 sha512_hash[64];
+    int i;
 
-  ucl_sha512_finish(sha512_hash,ctx);
-  for(i=0;i<UCL_SHA384_HASHSIZE;i++)
-    hash[i]=sha512_hash[i];
-  return UCL_OK;
+    ucl_sha512_finish(sha512_hash, ctx);
+    for (i = 0; i < UCL_SHA384_HASHSIZE; i++) {
+        hash[i] = sha512_hash[i];
+    }
+
+    return UCL_OK;
 }
 int ucl_sha384(u8 *hash, u8 *message, u32 byteLength)
 {
     ucl_sha384_ctx_t ctx;
-    if (hash == NULL)
+
+    if (hash == NULL) {
         return UCL_INVALID_OUTPUT;
+    }
+
     ucl_sha384_init(&ctx);
     ucl_sha384_core(&ctx, message, byteLength);
     ucl_sha384_finish(hash, &ctx);
+
     return UCL_OK;
 }
+
 #endif//HASH_SHA384

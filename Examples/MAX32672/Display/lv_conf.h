@@ -107,10 +107,10 @@
     #if LV_MEM_ADR == 0
         #undef LV_MEM_POOL_INCLUDE
         #undef LV_MEM_POOL_ALLOC
-    #endif
+#endif
 
 #else       /*LV_MEM_CUSTOM*/
-    #define LV_MEM_CUSTOM_INCLUDE <stdlib.h>   /*Header for the dynamic memory function*/
+    #define LV_MEM_CUSTOM_INCLUDE < stdlib.h>   /*Header for the dynamic memory function*/
     #define LV_MEM_CUSTOM_ALLOC   malloc
     #define LV_MEM_CUSTOM_FREE    free
     #define LV_MEM_CUSTOM_REALLOC realloc
@@ -257,7 +257,7 @@
 /*Use SDL renderer API*/
 #define LV_USE_GPU_SDL 0
 #if LV_USE_GPU_SDL
-    #define LV_GPU_SDL_INCLUDE_PATH <SDL2/SDL.h>
+    #define LV_GPU_SDL_INCLUDE_PATH < SDL2/SDL.h>
     /*Texture cache size, 8MB by default*/
     #define LV_GPU_SDL_LRU_SIZE (1024 * 1024 * 8)
     /*Custom blend mode for mask drawing, disable if you need to link with older SDL2 lib*/
@@ -310,7 +310,7 @@
 #define LV_USE_ASSERT_OBJ           0   /*Check the object's type and existence (e.g. not deleted). (Slow)*/
 
 /*Add a custom handler when assert happens e.g. to restart the MCU*/
-#define LV_ASSERT_HANDLER_INCLUDE <stdint.h>
+#define LV_ASSERT_HANDLER_INCLUDE < stdint.h>
 #define LV_ASSERT_HANDLER while (1);   /*Halt by default*/
 
 /*-------------
@@ -336,7 +336,7 @@
 /*Change the built in (v)snprintf functions*/
 #define LV_SPRINTF_CUSTOM 0
 #if LV_SPRINTF_CUSTOM
-    #define LV_SPRINTF_INCLUDE <stdio.h>
+    #define LV_SPRINTF_INCLUDE < stdio.h>
     #define lv_snprintf  snprintf
     #define lv_vsnprintf vsnprintf
 #else   /*LV_SPRINTF_CUSTOM*/
@@ -387,7 +387,7 @@
 /*Prefix variables that are used in GPU accelerated operations, often these need to be placed in RAM sections that are DMA accessible*/
 #define LV_ATTRIBUTE_DMA
 
-/*Export integer constant to binding. This macro is used with constants in the form of LV_<CONST> that
+/*Export integer constant to binding. This macro is used with constants in the form of LV_ < CONST> that
  *should also appear on LVGL binding API such as Micropython.*/
 #define LV_EXPORT_CONST_INT(int_value) struct _silence_gcc_warning /*The default value just prevents GCC warning*/
 
@@ -474,7 +474,7 @@
 #define LV_TXT_BREAK_CHARS " ,.;:-_"
 
 /*If a word is at least this long, will break wherever "prettiest"
- *To disable, set to a value <= 0*/
+ *To disable, set to a value < = 0*/
 #define LV_TXT_LINE_BREAK_LONG_LEN 0
 
 /*Minimum number of characters in a long word to put on a line before a break.
@@ -566,7 +566,7 @@
         #define LV_CALENDAR_DEFAULT_DAY_NAMES {"Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"}
     #else
         #define LV_CALENDAR_DEFAULT_DAY_NAMES {"Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"}
-    #endif
+#endif
 
     #define LV_CALENDAR_DEFAULT_MONTH_NAMES {"January", "February", "March",  "April", "May",  "June", "July", "August", "September", "October", "November", "December"}
     #define LV_USE_CALENDAR_HEADER_ARROW 1
@@ -708,7 +708,7 @@
         /* (0:use system defaults) */
         #define LV_FREETYPE_CACHE_FT_FACES 0
         #define LV_FREETYPE_CACHE_FT_SIZES 0
-    #endif
+#endif
 #endif
 
 /*Rlottie library*/
@@ -759,7 +759,7 @@
     #define LV_IME_PINYIN_USE_K9_MODE      1
     #if LV_IME_PINYIN_USE_K9_MODE == 1
         #define LV_IME_PINYIN_K9_CAND_TEXT_NUM 3
-    #endif // LV_IME_PINYIN_USE_K9_MODE
+#endif // LV_IME_PINYIN_USE_K9_MODE
 #endif
 
 /*==================
