@@ -536,7 +536,7 @@ int ComputeSHA256(u8* message, int length, u32 skipconst, u32 reverse, u8* diges
     for (i = 0; i < numblocks; i++) {
         if ((u32)length > bytes_per_block) {
             memcpy(workbuffer, message, bytes_per_block);
-            length - = (int)bytes_per_block;
+            length -= (int)bytes_per_block;
         } else if (length == (int)bytes_per_block) {
             memcpy(workbuffer, message, (size_t)length);
             length = 0;
@@ -567,7 +567,7 @@ int ComputeSHA256(u8* message, int length, u32 skipconst, u32 reverse, u8* diges
             // point at the last byte in the block
             message = workbuffer + bytes_per_block - 1;
             for (j = 0; j < wordsize/4; j++) {
-                *message-- = (u8)bitlength;
+                *message--= (u8)bitlength;
                 bitlength = bitlength >> 8;
             }
         }

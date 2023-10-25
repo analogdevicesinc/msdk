@@ -281,7 +281,7 @@ int aes_set_dkey(AES_KEY *key,const u8 *userKey,const int len)
     }
 
     rk = key->rd_key;
-    for (i = 0,j = 4 * (key->rounds); i < j; i += 4,j - = 4) {
+    for (i = 0,j = 4 * (key->rounds); i < j; i += 4,j -= 4) {
         temp = rk[i];
         rk[i] = rk[j];
         rk[j] = temp;

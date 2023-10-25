@@ -116,28 +116,28 @@ int hex(char c1, char c2)
     int value;
 
     value = 0;
-    if (c1 >= 'A' && c1 < = 'F') {
+    if (c1 >= 'A' && c1 <= 'F') {
           value = (c1-'A'+10);
     }
 
-    if (c1 >= 'a' && c1 < = 'f') {
+    if (c1 >= 'a' && c1 <= 'f') {
           value = (c1-'a'+10);
     }
 
-    if (c1 >= '0' && c1 < = '9') {
+    if (c1 >= '0' && c1 <= '9') {
           value = (c1-'0');
     }
 
     value *= 16;
-    if (c2 >= 'A' && c2 < = 'F') {
+    if (c2 >= 'A' && c2 <= 'F') {
       value += (c2-'A'+10);
     }
 
-    if (c2 >= 'a' && c2 < = 'f') {
+    if (c2 >= 'a' && c2 <= 'f') {
           value += (c2-'a'+10);
     }
 
-    if (c2 >= '0' && c2 < = '9') {
+    if (c2 >= '0' && c2 <= '9') {
           value += (c2-'0');
     }
 

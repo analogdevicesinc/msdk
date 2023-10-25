@@ -217,7 +217,7 @@ u32 bignum_sub(u32 *w, u32 *x, u32 *y, u32 digits)
         if ((wi = x[i] - borrow) > (MAX_DIGIT - borrow)) {
             wi = MAX_DIGIT - y[i];
         } else {
-            borrow = ((wi - = y[i]) > (MAX_DIGIT - y[i])) ? 1 : 0;
+            borrow = ((wi -= y[i]) > (MAX_DIGIT - y[i])) ? 1 : 0;
             w[i] = wi;
         }
     }
@@ -263,7 +263,7 @@ void bignum_mult_scfo(u32 *t, u32 *a, u32 *b, u32 n)
     u32 r2 = 0;
     int i, k;
     for (k = 0; k < (int)n; ++k) {
-        for (i = 0; i < = k; ++i)
+        for (i = 0; i <= k; ++i)
         scalarmult(&r0, &r1, &r2, a[i], b[k-i]);
         t[k] = r0;
         r0 = r1;
@@ -430,7 +430,7 @@ u32 bignum_subscalarmult(u32 *a, u32 *b, u32 c, u32 *d, u32 digits)
             borrow = 0;
         }
 
-        ai - = t[0];
+        ai -= t[0];
         val = MAX_DIGIT - t[0];
         if (ai > val) {
             borrow++;
@@ -564,10 +564,10 @@ void bignum_divide(u32 *a, u32 *b, u32 *c, u32 cDigits, u32 *d, u32 dDigits)
             bignum_scalardiv(&ai, &cc[i+(int)ddDigits-1], t + 1);
         }
 
-        cc[i+(int)ddDigits] - = bignum_subscalarmult(&cc[i], &cc[i], ai, dd, ddDigits);
+        cc[i+(int)ddDigits] -= bignum_subscalarmult(&cc[i], &cc[i], ai, dd, ddDigits);
         while(cc[i+(int)ddDigits] || (bignum_cmp(&cc[i], dd, ddDigits) >= 0)) {
             ai++;
-            cc[i+(int)ddDigits] - = bignum_sub(&cc[i], &cc[i], dd, ddDigits);
+            cc[i+(int)ddDigits] -= bignum_sub(&cc[i], &cc[i], dd, ddDigits);
         }
         
         if (NULL != a) {

@@ -208,7 +208,7 @@ int ucl_sha3_core(ucl_sha3_ctx_t *ctx, const u8 *bufIn, u32 len)
     }
 
     if (old_tail) {
-        len - = old_tail;
+        len -= old_tail;
         while (old_tail--)
         ctx->saved | = (u64) (*(buf++)) << ((ctx->byteIndex++) * 8);
         ctx->s[ctx->wordIndex] ^ = ctx->saved;

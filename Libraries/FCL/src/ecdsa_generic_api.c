@@ -560,7 +560,7 @@ int ecc_double(ucl_type_ecc_digit_affine_point Q3, ucl_type_ecc_digit_affine_poi
     //tmp1   = x1^2
     ecc_modsquare(tmp1, Q1.x, curve_params);
     //lambda = 3*x1^2
-    ecc_modmult(lambda, t rois, tmp1, curve_params);
+    ecc_modmult(lambda, trois, tmp1, curve_params);
     //tmp1   = 3*x1^2+a
     tmp1[curve_params->curve_wsize] = bignum_add(tmp1, lambda, (u32*)(curve_params->a), curve_params->curve_wsize);
     ecc_modcurve(tmp1, tmp1, curve_params->curve_wsize+1, curve_params);
@@ -580,7 +580,7 @@ int ecc_double(ucl_type_ecc_digit_affine_point Q3, ucl_type_ecc_digit_affine_poi
     //tmp2 = x1-x3
     ecc_modsub(tmp2, Q1.x, Q3.x, curve_params);
     //tmp1 = Lambda * (x1-x3)
-    ecc_modmult(tmp1, lambda, t mp2, curve_params);
+    ecc_modmult(tmp1, lambda, tmp2, curve_params);
     //y3 = Lambda * (x1-x3) -y1
     ecc_modsub(Q3.y, tmp1, Q1.y, curve_params);
 
