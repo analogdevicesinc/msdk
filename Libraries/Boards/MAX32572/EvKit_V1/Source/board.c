@@ -87,10 +87,6 @@ int Board_Init(void)
 {
     int err;
 
-    if ((err = MX25_Board_Init()) != E_NO_ERROR) {
-        return err;
-    }
-
     if ((err = Console_Init()) < E_NO_ERROR) {
         return err;
     }
@@ -134,47 +130,4 @@ int Console_Shutdown(void)
 __weak void NMI_Handler(void)
 {
     __NOP();
-}
-
-/******************************************************************************/
-int MX25_Board_Init(void)
-{
-    int err;
-    err = MXC_SPIXF_Init(0x0B, MX25_BAUD);
-
-    if (err == E_NO_ERROR) {
-        MXC_SPIXF_Enable();
-    }
-
-    return err;
-}
-
-/******************************************************************************/
-int MX25_Board_Read(uint8_t *read, unsigned len, unsigned deassert, mxc_spixf_width_t width)
-{
-    mxc_spixf_req_t req = { deassert, 0, NULL, read, width, len, 0, 0, NULL };
-
-    if (MXC_SPIXF_Transaction(&req) != len) {
-        return E_COMM_ERR;
-    }
-
-    return E_NO_ERROR;
-}
-
-/******************************************************************************/
-int MX25_Board_Write(const uint8_t *write, unsigned len, unsigned deassert, mxc_spixf_width_t width)
-{
-    mxc_spixf_req_t req = { deassert, 0, write, NULL, width, len, 0, 0, NULL };
-
-    if (MXC_SPIXF_Transaction(&req) != len) {
-        return E_COMM_ERR;
-    }
-
-    return E_NO_ERROR;
-}
-
-/******************************************************************************/
-int MX25_Clock(unsigned len, unsigned deassert)
-{
-    return MXC_SPIXF_Clocks(len, deassert);
 }
