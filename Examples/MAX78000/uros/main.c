@@ -56,6 +56,7 @@
 #include "mxc_delay.h"
 #include "rtc.h"
 #include "timer.h"
+#include "camera.h"
 
 #include <rmw_microros/rmw_microros.h>
 
