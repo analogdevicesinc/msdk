@@ -181,7 +181,7 @@ int test_sia256(void)
     if (memcmp(sha256res1, digest, UCL_SIA256_HASHSIZE) != 0) {
         return(UCL_ERROR);
     }
-   
+
     return(UCL_OK);
 }
 
@@ -492,7 +492,7 @@ int test_sha384(void)
     if (memcmp(e, digest_1220, 48) != 0) {
         return(UCL_ERROR);
     }
-   
+
     ucl_sha384(e, tab, 1000);
 #ifdef VERBOSE
     PRINTF("sha384(1000-0):");
@@ -501,7 +501,7 @@ int test_sha384(void)
     if (memcmp(e, digest_10000, 48) != 0) {
         return(UCL_ERROR);
     }
-   
+
     for (i = 0; i < 1000; i++) {
         tab[i] = 'A';
     }
@@ -722,7 +722,7 @@ int test_sha512(void)
 #ifdef VERBOSE
     PRINTF("sha512(1000-A):");
 #endif
-    //#7) 1000 bytes of 0x41 �A�
+    //#7) 1000 bytes of 0x41
     if (memcmp(e, digest_100041, 64) != 0) {
         return(UCL_ERROR);
     }
@@ -734,7 +734,7 @@ int test_sha512(void)
 #ifdef VERBOSE
     PRINTF("sha512(1005-U):");
 #endif
-    //#8) 1005 bytes of 0x55 �U�
+    //#8) 1005 bytes of 0x55
     if (memcmp(e, digest_1005U, 64) != 0) {
         return(UCL_ERROR);
     }
@@ -768,7 +768,7 @@ int test_sha512(void)
 #ifdef VERBOSE
     PRINTF("sha512(2^29-Z):");
 #endif
-    //#10) 0x20000000 (536870912) bytes of 0x5a �Z�
+    //#10) 0x20000000 (536870912) bytes of 0x5a
     if (memcmp(e, digest_5a, 64) != 0)
         return(UCL_ERROR);
 
@@ -801,7 +801,7 @@ int test_sha512(void)
 #ifdef VERBOSE
     PRINTF("sha512(2*59*13649261-'B'):");
 #endif
-    //#12) 0x6000003e (1610612798) bytes of 0x42 �B�
+    //#12) 0x6000003e (1610612798) bytes of 0x42
     if (memcmp(e, digest_42, 64) != 0) {
         return(UCL_ERROR);
     }

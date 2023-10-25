@@ -529,7 +529,7 @@ u32 bignum_rightshift(u32 *a, u32 *b, u32 c, u32 digits)
         for (i = (int)(digits-1-m); i >= 0; i--) {
             bi = b[i+(int)m];
             a[i] = (borrow | (bi >> p));
-            borrow = p ? (bi << t ) : 0;
+            borrow = p ? (bi << t) : 0;
         }
     }
 
@@ -565,11 +565,11 @@ void bignum_divide(u32 *a, u32 *b, u32 *c, u32 cDigits, u32 *d, u32 dDigits)
         }
 
         cc[i+(int)ddDigits] -= bignum_subscalarmult(&cc[i], &cc[i], ai, dd, ddDigits);
-        while(cc[i+(int)ddDigits] || (bignum_cmp(&cc[i], dd, ddDigits) >= 0)) {
+        while (cc[i+(int)ddDigits] || (bignum_cmp(&cc[i], dd, ddDigits) >= 0)) {
             ai++;
             cc[i+(int)ddDigits] -= bignum_sub(&cc[i], &cc[i], dd, ddDigits);
         }
-       
+
         if (NULL != a) {
             a[i] = ai;
         }
@@ -651,9 +651,9 @@ void bignum_modinv(u32 *x, u32 *a0, u32 *b0, u32 digits)
     bignum_copydigit(a, 1, digits);
     bignum_copyzero(c, digits);
 
-    while(!bignum_isnul(u, digits)) {
+    while (!bignum_isnul(u, digits)) {
         //while u is even, so lsb is 0
-        while((u[0] & 1) == 0) {
+        while ((u[0] & 1) == 0) {
             bignum_rightshift(u, u, 1, digits);
             //if a is even
             if ((a[0] & 1) == 0) {
@@ -665,7 +665,7 @@ void bignum_modinv(u32 *x, u32 *a0, u32 *b0, u32 digits)
         }
 
         //while v is even
-        while((v[0] & 1) == 0) {
+        while ((v[0] & 1) == 0) {
             bignum_rightshift(v, v, 1, digits);
             //if c is even
             if ((c[0] & 1) == 0) {

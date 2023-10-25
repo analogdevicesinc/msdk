@@ -75,19 +75,19 @@
 #define PACKET_WAIT_WRITE_MEM_RSP 5000 // ms
 
 /******************************* Type Definitions ****************************/
-typedef int (*comm_read_t)(unsigned char *dst,unsigned int len,unsigned int to);
+typedef int (*comm_read_t)(unsigned char *dst, unsigned int len, unsigned int to);
 typedef int (*comm_write_t)(const unsigned char *src,unsigned int len,unsigned int to);
 
 typedef struct {
     comm_read_t read;
     comm_write_t write;
-    void (*gpio_set)(unsigned int idx,int state);
+    void (*gpio_set)(unsigned int idx, int state);
     void (*delay_ms)(unsigned int ms);
-    int (*printf)(const char *pcFmt,...);
+    int (*printf)(const char *pcFmt, ...);
 } bl_conf_struct_t;
 
 typedef struct {
-    unsigned char type; // 1:hello_reply,2:erase/del_mem
+    unsigned char type; // 1:hello_reply, 2:erase/del_mem
     unsigned char is_tx; // 1: From host to target,0: From target to host
     uint16_t len;
     const unsigned char *data;

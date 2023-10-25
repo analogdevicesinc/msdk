@@ -57,14 +57,14 @@
 #include "ucl/ucl_retdefs.h"
 #include "ucl/ucl_sha512.h"
 
-#define ROTR(x, n)   ( ( (x) >> (n)) | ( (x) << (64 - n) ) )
-#define SHR(x, n)    ( (x) >> (n) )
-#define CH(x, y, z)   ( (z) ^ ((x) & ( (y) ^ (z) ) ))
-#define MAJ(x, y, z)  ( ( (x) & (y) ) ^ ( (x) & (z) ) ^ ( (y) & (z) ) )
-#define BIGSIGMA1(x)   ( ((ROTR(x, 14)) ^ (ROTR(x, 18)) ^ (ROTR(x, 41))) )
-#define BIGSIGMA0(x)   ( ((ROTR(x, 28)) ^ (ROTR(x, 34)) ^ (ROTR(x, 39))) )
-#define SIGMA0(x)   ( ((ROTR(x, 1)) ^ (ROTR(x, 8)) ^ (SHR(x, 7))) )
-#define SIGMA1(x)   ( (ROTR(x, 19) ^ ROTR(x, 61) ^ SHR(x, 6)) )
+#define ROTR(x, n)   (((x) >> (n)) | ((x) << (64 - n)))
+#define SHR(x, n)    ((x) >> (n))
+#define CH(x, y, z)   ((z) ^ ((x) & ((y) ^ (z))))
+#define MAJ(x, y, z)  (((x) & (y)) ^ ((x) & (z)) ^ ((y) & (z)))
+#define BIGSIGMA1(x)   (((ROTR(x, 14)) ^ (ROTR(x, 18)) ^ (ROTR(x, 41))))
+#define BIGSIGMA0(x)   (((ROTR(x, 28)) ^ (ROTR(x, 34)) ^ (ROTR(x, 39))))
+#define SIGMA0(x)   (((ROTR(x, 1)) ^ (ROTR(x, 8)) ^ (SHR(x, 7))))
+#define SIGMA1(x)   ((ROTR(x, 19) ^ ROTR(x, 61) ^ SHR(x, 6)))
 #define ROUND(a, b, c, e, f, g, h, i)                                  \
                     T1 = h + BIGSIGMA1(e) + CH(e, f, g) + K[i] + W[i]; \
                     T2 = BIGSIGMA0(a) + MAJ(a, b, c);

@@ -138,7 +138,7 @@ void ecc_modbp512r1(u32 *b, u32 *c, u32 cDigits, u32 *p, u32 pDigits)
 
 void ecc_modcurve(u32 *b, u32 *c, u32 cDigits, ucl_type_curve *curve_params)
 {
-    switch(curve_params->curve) {
+    switch (curve_params->curve) {
 #ifdef P192
         case SECP192R1:
             ecc_mod192r1(b, c, cDigits, (u32*)(curve_params->p), curve_params->curve_wsize);

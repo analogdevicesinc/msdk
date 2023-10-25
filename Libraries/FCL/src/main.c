@@ -101,7 +101,7 @@ int ucl_testing(void)
 int main(void)
 {
     int result = UCL_OK;
-    PRINTF("FCL validation tool %d %d %d\n",MAJVER,MINVER,ZVER);
+    PRINTF("FCL validation tool %d %d %d\n", MAJVER, MINVER, ZVER);
     ucl_testing();
 
     PRINTF("this is the end...\n");
