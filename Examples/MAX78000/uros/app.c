@@ -51,8 +51,11 @@ void ping_timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 
 		// Reset the pong count and publish the ping message
 		pong_count = 0;
-		rcl_publish(&ping_publisher, (const void*)&outcoming_ping, NULL);
-		printf("Ping send seq %s\n", outcoming_ping.frame_id.data);
+		if (rcl_publish(&ping_publisher, (const void*)&outcoming_ping, NULL) == RCL_RET_OK) {
+            printf("Ping send seq %s\n", outcoming_ping.frame_id.data);
+        } else {
+            printf("Ping send req error\n");
+        }
 
         LED_Toggle(0);
 	}
@@ -63,13 +66,16 @@ void ping_subscription_callback(const void * msgin)
 	const std_msgs__msg__Header * msg = (const std_msgs__msg__Header *)msgin;
 
     int incoming_id = 0, incoming_seq_no = 0;
-    sscanf(msg->frame_id.data, "%i_%i", &seq_no, &incoming_id);
+    sscanf(msg->frame_id.data, "%i_%i", &incoming_seq_no, &incoming_id);
 
 	// Dont pong my own pings
 	if(incoming_id != device_id) {
 		printf("Ping received with seq %s. Answering.\n", msg->frame_id.data);
-		rcl_publish(&pong_publisher, (const void*)msg, NULL);
-        LED_Toggle(1);
+		if (rcl_publish(&pong_publisher, (const void*)msg, NULL) == RCL_RET_OK) {
+            LED_Toggle(1);
+        } else {
+            printf("Pong send req error\n");
+        }
 	}
 }
 

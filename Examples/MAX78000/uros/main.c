@@ -61,182 +61,14 @@
 
 #include "transports.h"
 
-/* FreeRTOS+CLI */
-void vRegisterCLICommands(void);
-
-/* Mutual exclusion (mutex) semaphores */
-SemaphoreHandle_t xGPIOmutex;
-
-/* Task IDs */
-TaskHandle_t cmd_task_id;
-
-/* Enables/disables tick-less mode */
-unsigned int disable_tickless = 1;
-
-/* Stringification macros */
 #define STRING(x) STRING_(x)
 #define STRING_(x) #x
 
-/* Array sizes */
-#define CMD_LINE_BUF_SIZE 80
-#define OUTPUT_BUF_SIZE 512
-
-/* Defined in freertos_tickless.c */
-extern void wutHitSnooze(void);
-
-/* =| vTask0 |============================================
- *
- * This task blinks LED0 at a 0.5Hz rate, and does not
- *  drift due to the use of vTaskDelayUntil(). It may have
- *  jitter, however, due to any higher-priority task or
- *  interrupt causing delays in scheduling.
- *
- * =======================================================
- */
-void vTask0(void *pvParameters)
-{
-    TickType_t xLastWakeTime;
-    unsigned int x = LED_OFF;
-
-    /* Get task start time */
-    xLastWakeTime = xTaskGetTickCount();
-
-    while (1) {
-        /* Protect hardware access with mutex
-     *
-     * Note: This is not strictly necessary, since MXC_GPIO_SetOutVal() is implemented with bit-band
-     * access, which is inherently task-safe. However, for other drivers, this would be required.
-     *
-     */
-        if (xSemaphoreTake(xGPIOmutex, portMAX_DELAY) == pdTRUE) {
-            if (x == LED_OFF) {
-                x = LED_ON;
-            } else {
-                x = LED_OFF;
-            }
-            /* Return the mutex after we have modified the hardware state */
-            xSemaphoreGive(xGPIOmutex);
-        }
-        /* Wait 1 second until next run */
-        vTaskDelayUntil(&xLastWakeTime, configTICK_RATE_HZ);
-    }
-}
-
-/* =| vTask1 |============================================
- *
- * This task blinks LED1 at a 0.5Hz rate, and does not
- *  drift due to the use of vTaskDelayUntil(). It may have
- *  jitter, however, due to any higher-priority task or
- *  interrupt causing delays in scheduling.
- *
- * NOTE: The MAX32660 EV Kit has only 1 LED, so this task
- *  does not blink an LED.
- *
- * =======================================================
- */
-void vTask1(void *pvParameters)
-{
-    TickType_t xLastWakeTime;
-    unsigned int x = LED_ON;
-
-    /* Get task start time */
-    xLastWakeTime = xTaskGetTickCount();
-
-    while (1) {
-        /* Protect hardware access with mutex
-     *
-     * Note: This is not strictly necessary, since MXC_GPIO_SetOutVal() is implemented with bit-band
-     * access, which is inherently task-safe. However, for other drivers, this would be required.
-     *
-     */
-        if (xSemaphoreTake(xGPIOmutex, portMAX_DELAY) == pdTRUE) {
-            if (x == LED_OFF) {
-                LED_On(0);
-                x = LED_ON;
-            } else {
-                LED_Off(0);
-                x = LED_OFF;
-            }
-            /* Return the mutex after we have modified the hardware state */
-            xSemaphoreGive(xGPIOmutex);
-        }
-        /* Wait 1 second until next run */
-        vTaskDelayUntil(&xLastWakeTime, configTICK_RATE_HZ);
-    }
-}
-
-void vTaskSerial(void *pvParameters)
-{
-    uxrCustomTransport test = {
-        .args = &transport_config
-    };
-
-    printf("Hello task!\n");
-    MXC_Delay(MXC_DELAY_MSEC(500));
-
-    uint8_t rx_buffer[512];
-    uint8_t tx_buffer[512] = {
-        'X','R','C','E','\r','\n'
-    };
-    uint8_t error = 0;
-
-    vMXC_Serial_Open(&test);
-    vMXC_Serial_Read(&test, rx_buffer, 8, portMAX_DELAY, &error);
-
-    while(1) {        
-        vMXC_Serial_Write(&test, tx_buffer, 6, &error);
-        LED_Toggle(0);
-    }
-}
-
-/* =| vTickTockTask |============================================
- *
- * This task writes the current RTOS tick time to the console
- *
- * =======================================================
- */
-void vTickTockTask(void *pvParameters)
-{
-    TickType_t ticks = 0;
-    TickType_t xLastWakeTime;
-
-    /* Get task start time */
-    xLastWakeTime = xTaskGetTickCount();
-
-    while (1) {
-        ticks = xTaskGetTickCount();
-        printf("Uptime is 0x%08x (%u seconds), tickless-idle is %s\n", ticks,
-               ticks / configTICK_RATE_HZ, disable_tickless ? "disabled" : "ENABLED");
-        vTaskDelayUntil(&xLastWakeTime, (configTICK_RATE_HZ * 10));
-    }
-}
-
 /***** Functions *****/
-
-/* =| WUT_IRQHandler |==========================
- *
- * Interrupt handler for the wake up timer.
- *
- * =======================================================
- */
-void WUT_IRQHandler(void)
-{
-    MXC_WUT_IntClear();
-    NVIC_ClearPendingIRQ(WUT_IRQn);
-}
-
-/* =| main |==============================================
- *
- * This program demonstrates FreeRTOS tasks, mutexes,
- *  and the FreeRTOS+CLI extension.
- *
- * =======================================================
- */
 
 // app.c calls usleep, whose prototype is defined in unistd.h
 int usleep (useconds_t __useconds) 
 {
-    // MXC_Delay(MXC_DELAY_USEC(__useconds));
     MXC_TMR_Delay(MXC_TMR0, __useconds);
     return 0;
 }
@@ -260,7 +92,7 @@ int main(void)
     MXC_Delay(MXC_DELAY_SEC(2));
 
     /* Print banner (RTOS scheduler not running) */
-    printf("\n-=- %s FreeRTOS (%s) Demo -=-\n", STRING(TARGET), tskKERNEL_VERSION_NUMBER);
+    printf("\n-=- %s micro-ROS + FreeRTOS (%s) Demo -=-\n", STRING(TARGET), tskKERNEL_VERSION_NUMBER);
     printf("SystemCoreClock = %d\n", SystemCoreClock);
 
     printf("Initializing RTC\n");
@@ -278,21 +110,13 @@ int main(void)
         vMXC_Serial_Read
     );
 
-    /* Create mutexes */
-    xGPIOmutex = xSemaphoreCreateMutex();
-    if (xGPIOmutex == NULL) {
-        printf("xSemaphoreCreateMutex failed to create a mutex.\n");
+    if ((xTaskCreate(appMain, "uros_task", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)) {
+        printf("xTaskCreate() failed to create a task.\n");
     } else {
-        /* Configure task */
-
-        if ((xTaskCreate(appMain, "uros_task", 4096, NULL, tskIDLE_PRIORITY + 1, NULL) != pdPASS)) {
-            printf("xTaskCreate() failed to create a task.\n");
-        } else {
-            /* Start scheduler */
-            printf("Starting scheduler in 1s...\n");
-            MXC_Delay(MXC_DELAY_SEC(1));
-            vTaskStartScheduler();
-        }
+        /* Start scheduler */
+        printf("Starting scheduler in 1s...\n");
+        MXC_Delay(MXC_DELAY_SEC(1));
+        vTaskStartScheduler();
     }
 
     /* This code is only reached if the scheduler failed to start */

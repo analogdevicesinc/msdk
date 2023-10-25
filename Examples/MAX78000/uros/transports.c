@@ -124,11 +124,8 @@ size_t vMXC_Serial_Read (
         int timeout,
         uint8_t* error_code)
 {
-    TickType_t start = xTaskGetTickCount();
     TickType_t elapsed = 0;
     const TickType_t xMaxBlockTime = pdMS_TO_TICKS(timeout);
-
-    transport_config_t *args = (transport_config_t *)transport->args;
 
     MXC_GPIO_OutSet(indicator.port, indicator.mask); // A
 
@@ -178,6 +175,9 @@ size_t vMXC_Serial_Write (
     tx_flag = 0;
     MXC_UART_TransactionDMA(&req);
     ulNotificationValue = ulTaskNotifyTake(pdTRUE, portMAX_DELAY);
+    if (ulNotificationValue != 1) {
+        // TODO: Value is hitting here, which seems to indicate timeout.  Not sure why
+    }
     while (!tx_flag); // TODO: ulTaskNotifyTake doesn't seem to be working?
 
     return req.txCnt;
