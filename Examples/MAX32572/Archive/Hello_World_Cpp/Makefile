@@ -60,9 +60,9 @@
 
 ifeq "$(TARGET)" ""
 # Default target microcontroller
-TARGET := MAX78002
-TARGET_UC := MAX78002
-TARGET_LC := max78002
+TARGET := MAX32572
+TARGET_UC := MAX32572
+TARGET_LC := max32572
 else
 # "TARGET" has been overridden in the environment or on the command-line.
 # We need to calculate an upper and lowercase version of the part number,
@@ -113,7 +113,7 @@ $(info Loaded project.mk)
 
 ifeq "$(MAXIM_PATH)" ""
 # MAXIM_PATH is still not defined...
-DEPTH := ../../../
+DEPTH := ../../../../
 MAXIM_PATH := $(abspath $(DEPTH))
 $(warning Warning:  MAXIM_PATH is not set!  Set MAXIM_PATH in your environment or in project.mk to clear this warning.)
 $(warning Warning:  Attempting to use $(MAXIM_PATH) calculated from relative path)
@@ -238,7 +238,7 @@ MXC_OPTIMIZE_CFLAGS := -Og
 endif
 
 # Default level if not building for release or explicitly for debug
-MXC_OPTIMIZE_CFLAGS ?= -O2
+MXC_OPTIMIZE_CFLAGS ?= -Og
 
 # Set compiler flags
 PROJ_CFLAGS += -Wall # Enable warnings
@@ -277,7 +277,7 @@ VPATH += $(CMSIS_ROOT)/Device/Maxim/$(TARGET_UC)/Source
 #					However, if there are multiple secure part #s for the target
 #					microcontroller this variable may need to be changed.
 
-SBT ?= 0
+SBT ?= 1
 ifeq ($(SBT), 1)
 MAXIM_SBT_DIR ?= $(MAXIM_PATH)/Tools/SBT
 MAXIM_SBT_DIR := $(subst \,/,$(MAXIM_SBT_DIR))
