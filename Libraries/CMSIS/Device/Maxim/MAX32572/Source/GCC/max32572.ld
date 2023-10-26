@@ -1,5 +1,5 @@
-/******************************************************************************
- * Copyright (C) 2023 Maxim Integrated Products, Inc., All Rights Reserved.
+/*******************************************************************************
+ * Copyright (C) 2017 Maxim Integrated Products, Inc., All Rights Reserved.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -29,22 +29,30 @@
  * property whatsoever. Maxim Integrated Products, Inc. retains all
  * ownership rights.
  *
- ******************************************************************************/
-
+ * $Date: 2016-05-02 14:15:59 -0700 (Mon, 02 May 2016) $ 
+ * $Revision: 22594 $
+ *
+ ******************************************************************************/ 
 
 MEMORY {
-    ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 0x00020000 /* 128kB ROM */
-    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x0006C000 /* 432kB SRAM */
+    ROM (rx)   : ORIGIN = 0x00000000, LENGTH = 64K
+    SRAM (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00008000 /* 32kB SRAM */
+    SPIX (rx)  : ORIGIN = 0x08000000, LENGTH = 128M
 }
 
 SECTIONS {
+    .rom :
+    {
+        KEEP(*(.rom_vector))
+        *(.rom_handlers*)
+    } > ROM
+
     .text :
     {
         _text = .;
         KEEP(*(.isr_vector))
-        *(.text*)       /* program code */
-        *(.rodata*)     /* read-only data: "const" */
-	    *(.flashprog*)  /* Flash program */
+        *(.text*)    /* program code */
+        *(.rodata*)  /* read-only data: "const" */
 
         KEEP(*(.init))
         KEEP(*(.fini))
@@ -52,7 +60,7 @@ SECTIONS {
         /* C++ Exception handling */
         KEEP(*(.eh_frame*))
         _etext = .;
-    } > SRAM
+    } > SPIX
 
     /* it's used for C++ exception handling      */
     /* we need to keep this to avoid overlapping */
@@ -61,12 +69,12 @@ SECTIONS {
         __exidx_start = .;
         *(.ARM.exidx*)
         __exidx_end = .;
-    } > SRAM
+    } > ROM
 
     .data :
     {
         _data = ALIGN(., 4);
-        *(.data*)           /*read-write initialized data: initialized global variable*/
+        *(.data*)           /* read-write initialized data: initialized global variable */
         *(.spix_config*)    /* SPIX configuration functions need to be run from SRAM */
 
         /* These array sections are used by __libc_init_array to call static C++ constructors */
@@ -91,14 +99,14 @@ SECTIONS {
         PROVIDE_HIDDEN (__fini_array_end = .);
 
         _edata = ALIGN(., 4);
-    } > SRAM AT>SRAM
+    } > SRAM AT>SPIX
     __load_data = LOADADDR(.data);
 
     .bss :
     {
         . = ALIGN(4);
         _bss = .;
-        *(.bss*)     /*read-write zero initialized data: uninitialzed global variable*/
+        *(.bss*)     /* read-write zero initialized data: uninitialzed global variable */
         *(COMMON)
         _ebss = ALIGN(., 4);
     } > SRAM
