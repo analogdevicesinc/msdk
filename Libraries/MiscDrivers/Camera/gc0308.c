@@ -550,12 +550,17 @@ static int set_framesize(int width, int height)
 {
     int ret = 0;
     uint16_t w_offset = 0; 
-    uint16_t h_offset = 0; 
+    uint16_t h_offset = 0;
 
 #ifdef GC03080_SENSOR_CROP
     // Simplest approach is to center crop, but FOV is lost.
     w_offset = (GC0308_SENSOR_WIDTH - width) / 2;
     h_offset = (GC0308_SENSOR_HEIGHT - height) / 2;
+
+    if (width >= 276) {
+        // Some extra horizontal blanking is needed
+        ret |= cambus_write(HORIZONTAL_BLANKING, 0xb2);
+    }
 
     ret |= cambus_write(0xFE, 0x00);  // Select page 0
     ret |= cambus_write(ROW_START_H, MSB(h_offset));
