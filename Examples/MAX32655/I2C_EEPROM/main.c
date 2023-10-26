@@ -66,7 +66,7 @@ int main(void)
     int i = 0, j = 0;
     uint16_t eeprom_memory_addr = 0x0000;
     uint8_t written_val = 0;
-    uint8_t readed_val = 0;
+    uint8_t read_val = 0;
     uint8_t eeprom_demo_buffer[EEPROM_DEMO_BUFFER_SIZE];
     uint32_t page_offset = 0;
 
@@ -92,15 +92,15 @@ int main(void)
             printf("The value: 0x%02X is written to the address: 0x%04X\n", written_val,
                    eeprom_memory_addr);
         }
-        err = Eeprom_24LC256_Read(&eeprom1_req, eeprom_memory_addr, &readed_val, 1);
+        err = Eeprom_24LC256_Read(&eeprom1_req, eeprom_memory_addr, &read_val, 1);
         if (err != E_NO_ERROR) {
             printf("EEPROM read error, error code = %d\n", err);
         } else {
-            printf("The value: 0x%02X is read from the address: 0x%04X\n", readed_val,
+            printf("The value: 0x%02X is read from the address: 0x%04X\n", read_val,
                    eeprom_memory_addr);
         }
-        if (readed_val != written_val) {
-            printf("EEPROM error; written and read values are different\n", readed_val,
+        if (read_val != written_val) {
+            printf("EEPROM error; written and read values are different\n", read_val,
                    eeprom_memory_addr);
         }
 
